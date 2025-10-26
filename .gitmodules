@@ -1,0 +1,9 @@
+[submodule "Tools/batariBASIC"]
+	path = Tools/batariBASIC
+	url = https://github.com/batari-Basic/batari-Basic
+[submodule "Tools/dasm"]
+	path = Tools/dasm
+	url = https://github.com/dasm-assembler/dasm
+[submodule "SkylineTool"]
+	path = SkylineTool
+	url = https://github.com/brpocock/skyline-tool

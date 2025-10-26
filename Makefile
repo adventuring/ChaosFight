@@ -44,29 +44,29 @@ doc: Dist/$(GAME).pdf
 Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: $(ALL_SOURCES)
 	mkdir -p Dist $(GENERATED_DIR)
 	cpp -P -I. Source/Platform/NTSC.bas > $(GENERATED_DIR)/$(GAME).NTSC.bas
-	bin/preprocess < $(GENERATED_DIR)/$(GAME).NTSC.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/bB.s
-	cp $(GENERATED_DIR)/bB.s bB.asm
-	bin/postprocess -i Tools/batariBASIC < bB.asm > $(GENERATED_DIR)/$(GAME).s
-	bin/dasm $(GENERATED_DIR)/$(GAME).s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
-	rm -f $(GENERATED_DIR)/bB.s bB.asm $(GENERATED_DIR)/$(GAME).s
+	bin/preprocess < $(GENERATED_DIR)/$(GAME).NTSC.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/$(GAME).NTSC.bB.s
+	cp $(GENERATED_DIR)/$(GAME).NTSC.bB.s $(GENERATED_DIR)/$(GAME).NTSC.bB.asm
+	bin/postprocess -i Tools/batariBASIC < $(GENERATED_DIR)/$(GAME).NTSC.bB.asm > $(GENERATED_DIR)/$(GAME).NTSC.s
+	bin/dasm $(GENERATED_DIR)/$(GAME).NTSC.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
+	rm -f $(GENERATED_DIR)/$(GAME).NTSC.bB.s $(GENERATED_DIR)/$(GAME).NTSC.bB.asm $(GENERATED_DIR)/$(GAME).NTSC.s
 
 Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: $(ALL_SOURCES)
 	mkdir -p Dist $(GENERATED_DIR)
 	cpp -P -I. Source/Platform/PAL.bas > $(GENERATED_DIR)/$(GAME).PAL.bas
-	bin/preprocess < $(GENERATED_DIR)/$(GAME).PAL.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/bB_PAL.s
-	cp $(GENERATED_DIR)/bB_PAL.s bB.asm
-	bin/postprocess -i Tools/batariBASIC < bB.asm > $(GENERATED_DIR)/$(GAME)_PAL.s
-	bin/dasm $(GENERATED_DIR)/$(GAME)_PAL.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
-	rm -f $(GENERATED_DIR)/bB_PAL.s bB.asm $(GENERATED_DIR)/$(GAME)_PAL.s
+	bin/preprocess < $(GENERATED_DIR)/$(GAME).PAL.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/$(GAME).PAL.bB.s
+	cp $(GENERATED_DIR)/$(GAME).PAL.bB.s $(GENERATED_DIR)/$(GAME).PAL.bB.asm
+	bin/postprocess -i Tools/batariBASIC < $(GENERATED_DIR)/$(GAME).PAL.bB.asm > $(GENERATED_DIR)/$(GAME).PAL.s
+	bin/dasm $(GENERATED_DIR)/$(GAME).PAL.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
+	rm -f $(GENERATED_DIR)/$(GAME).PAL.bB.s $(GENERATED_DIR)/$(GAME).PAL.bB.asm $(GENERATED_DIR)/$(GAME).PAL.s
 
 Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: $(ALL_SOURCES)
 	mkdir -p Dist $(GENERATED_DIR)
 	cpp -P -I. Source/Platform/SECAM.bas > $(GENERATED_DIR)/$(GAME).SECAM.bas
-	bin/preprocess < $(GENERATED_DIR)/$(GAME).SECAM.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/bB_SECAM.s
-	cp $(GENERATED_DIR)/bB_SECAM.s bB.asm
-	bin/postprocess -i Tools/batariBASIC < bB.asm > $(GENERATED_DIR)/$(GAME)_SECAM.s
-	bin/dasm $(GENERATED_DIR)/$(GAME)_SECAM.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
-	rm -f $(GENERATED_DIR)/bB_SECAM.s bB.asm $(GENERATED_DIR)/$(GAME)_SECAM.s
+	bin/preprocess < $(GENERATED_DIR)/$(GAME).SECAM.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/$(GAME).SECAM.bB.s
+	cp $(GENERATED_DIR)/$(GAME).SECAM.bB.s $(GENERATED_DIR)/$(GAME).SECAM.bB.asm
+	bin/postprocess -i Tools/batariBASIC < $(GENERATED_DIR)/$(GAME).SECAM.bB.asm > $(GENERATED_DIR)/$(GAME).SECAM.s
+	bin/dasm $(GENERATED_DIR)/$(GAME).SECAM.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
+	rm -f $(GENERATED_DIR)/$(GAME).SECAM.bB.s $(GENERATED_DIR)/$(GAME).SECAM.bB.asm $(GENERATED_DIR)/$(GAME).SECAM.s
 
 # Run emulator
 emu: $(ROM)

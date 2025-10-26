@@ -9,6 +9,7 @@
 BB = Tools/batariBASIC/2600basic.sh
 DASM = Tools/dasm-binary
 STELLA = stella
+WASMTIME = ~/.wasmtime/bin/wasmtime
 SOURCE_DIR = .
 BANKS_DIR = Source/Banks
 COMMON_DIR = Source/Common
@@ -45,7 +46,7 @@ $(NTSC_ROM): $(MAIN_SOURCE) $(BANK_SOURCES) $(COMMON_SOURCES) | $(DIST_DIR) $(OB
 	@echo "Building NTSC version..."
 	@sed 's/set tv .*/set tv ntsc/' $(MAIN_SOURCE) > $(GENERATED_DIR)/temp_ntsc.bas
 	@cp $(GENERATED_DIR)/temp_ntsc.bas $(GENERATED_DIR)/$(BASENAME).bas
-	$(BB) $(GENERATED_DIR)/$(BASENAME).bas -O
+	@bB=Tools/batariBASIC $(BB) $(GENERATED_DIR)/$(BASENAME).bas -O
 	$(DASM) $(ASM_FILE) -f3 -o$(NTSC_ROM) -l$(LIST_FILE) -s$(SYMBOL_FILE) -M$(OBJECT_DIR)/$(BASENAME).map
 	@rm -f $(GENERATED_DIR)/temp_ntsc.bas $(GENERATED_DIR)/$(BASENAME).bas
 	@echo "NTSC ROM created: $(NTSC_ROM)"
@@ -55,7 +56,7 @@ $(PAL_ROM): $(MAIN_SOURCE) $(BANK_SOURCES) $(COMMON_SOURCES) | $(DIST_DIR) $(OBJ
 	@echo "Building PAL version..."
 	@sed 's/set tv .*/set tv pal/' $(MAIN_SOURCE) > $(GENERATED_DIR)/temp_pal.bas
 	@cp $(GENERATED_DIR)/temp_pal.bas $(GENERATED_DIR)/$(BASENAME).bas
-	$(BB) $(GENERATED_DIR)/$(BASENAME).bas -O
+	@bB=Tools/batariBASIC $(BB) $(GENERATED_DIR)/$(BASENAME).bas -O
 	$(DASM) $(ASM_FILE) -f3 -o$(PAL_ROM) -l$(LIST_FILE) -s$(SYMBOL_FILE) -M$(OBJECT_DIR)/$(BASENAME).map
 	@rm -f $(GENERATED_DIR)/temp_pal.bas $(GENERATED_DIR)/$(BASENAME).bas
 	@echo "PAL ROM created: $(PAL_ROM)"
@@ -65,7 +66,7 @@ $(SECAM_ROM): $(MAIN_SOURCE) $(BANK_SOURCES) $(COMMON_SOURCES) | $(DIST_DIR) $(O
 	@echo "Building SECAM version..."
 	@sed 's/set tv .*/set tv secam/' $(MAIN_SOURCE) > $(GENERATED_DIR)/temp_secam.bas
 	@cp $(GENERATED_DIR)/temp_secam.bas $(GENERATED_DIR)/$(BASENAME).bas
-	$(BB) $(GENERATED_DIR)/$(BASENAME).bas -O
+	@bB=Tools/batariBASIC $(BB) $(GENERATED_DIR)/$(BASENAME).bas -O
 	$(DASM) $(ASM_FILE) -f3 -o$(SECAM_ROM) -l$(LIST_FILE) -s$(SYMBOL_FILE) -M$(OBJECT_DIR)/$(BASENAME).map
 	@rm -f $(GENERATED_DIR)/temp_secam.bas $(GENERATED_DIR)/$(BASENAME).bas
 	@echo "SECAM ROM created: $(SECAM_ROM)"

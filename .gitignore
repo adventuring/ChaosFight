@@ -1,0 +1,36 @@
+# Build outputs
+Dist/
+Object/
+Source/Generated/
+
+# Intermediate files
+*.asm
+*.lst
+*.sym
+*.map
+*.bin
+bB.asm
+
+# Test files
+simple_game.bas
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log

@@ -1,0 +1,10 @@
+2600basicheader.asm
+startup.asm
+std_kernel.asm
+pf_drawing.asm
+pf_scrolling.asm
+std_routines.asm
+std_overscan.asm
+bB.asm
+score_graphics.asm
+2600basicfooter.asm

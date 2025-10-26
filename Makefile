@@ -1,130 +1,105 @@
-# ===========================================================================
-# ChaosFight - Makefile
-# ===========================================================================
-# This Makefile compiles the batariBASIC game to multiple TV standards
-# and provides targets for building, cleaning, and running the game.
-# ===========================================================================
-
 # Tools and directories
-BB = Tools/batariBASIC/2600basic.sh
-DASM = Tools/dasm-binary
+BB_DIR = Tools/batariBASIC
+BB_MAIN = bin/2600basic
+BB_PREPROCESS = bin/preprocess
+BB_POSTPROCESS = bin/postprocess
+BB_OPTIMIZE = bin/optimize
+BB_FILTER = bin/bbfilter
+DASM = bin/dasm
 STELLA = stella
-WASMTIME = ~/.wasmtime/bin/wasmtime
 SOURCE_DIR = .
-BANKS_DIR = Source/Banks
-COMMON_DIR = Source/Common
 GENERATED_DIR = Source/Generated
 OBJECT_DIR = Object
 DIST_DIR = Dist
 
-# Source files
-MAIN_SOURCE = ChaosFight.bas
-BANK_SOURCES = $(BANKS_DIR)/Bank00.bas
-COMMON_SOURCES = $(COMMON_DIR)/Constants.bas $(COMMON_DIR)/Macros.bas
-
 # Output files
-BASENAME = ChaosFight
-NTSC_ROM = $(DIST_DIR)/$(BASENAME).NTSC.a26
-PAL_ROM = $(DIST_DIR)/$(BASENAME).PAL.a26
-SECAM_ROM = $(DIST_DIR)/$(BASENAME).SECAM.a26
+GAME = ChaosFight
+ROM = Dist/$(GAME).NTSC.a26
 
 # Assembly files
-ASM_FILE = $(GENERATED_DIR)/$(BASENAME).asm
-LIST_FILE = $(OBJECT_DIR)/$(BASENAME).lst
-SYMBOL_FILE = $(OBJECT_DIR)/$(BASENAME).sym
+ALL_SOURCES = $(shell find Source -name \*.bas)
 
 # Default target
-.PHONY: all clean emu game help
-all: game
+.PHONY: all clean emu game help doc
+all: game doc
 
-# Build all ROM variants
-game: $(NTSC_ROM) $(PAL_ROM) $(SECAM_ROM)
-	@echo "All ROM variants built successfully"
+# Build game
+game: \
+	Dist/$(GAME).NTSC.a26 \
+	Dist/$(GAME).PAL.a26 \
+	Dist/$(GAME).SECAM.a26 \
+	Dist/$(GAME).NTSC.sym \
+	Dist/$(GAME).PAL.sym \
+	Dist/$(GAME).SECAM.sym \
+	Dist/$(GAME).NTSC.lst \
+	Dist/$(GAME).PAL.lst \
+	Dist/$(GAME).SECAM.lst \
+	Dist/$(GAME).NTSC.pro \
+	Dist/$(GAME).PAL.pro \
+	Dist/$(GAME).SECAM.pro
 
-# Build NTSC version (default)
-$(NTSC_ROM): $(MAIN_SOURCE) $(BANK_SOURCES) $(COMMON_SOURCES) | $(DIST_DIR) $(OBJECT_DIR) $(GENERATED_DIR)
-	@echo "Building NTSC version..."
-	@sed 's/set tv .*/set tv ntsc/' $(MAIN_SOURCE) > $(GENERATED_DIR)/temp_ntsc.bas
-	@cp $(GENERATED_DIR)/temp_ntsc.bas $(GENERATED_DIR)/$(BASENAME).bas
-	@bB=Tools/batariBASIC $(BB) $(GENERATED_DIR)/$(BASENAME).bas -O
-	$(DASM) $(ASM_FILE) -f3 -o$(NTSC_ROM) -l$(LIST_FILE) -s$(SYMBOL_FILE) -M$(OBJECT_DIR)/$(BASENAME).map
-	@rm -f $(GENERATED_DIR)/temp_ntsc.bas $(GENERATED_DIR)/$(BASENAME).bas
-	@echo "NTSC ROM created: $(NTSC_ROM)"
+doc: Dist/$(GAME).pdf
 
-# Build PAL version
-$(PAL_ROM): $(MAIN_SOURCE) $(BANK_SOURCES) $(COMMON_SOURCES) | $(DIST_DIR) $(OBJECT_DIR) $(GENERATED_DIR)
-	@echo "Building PAL version..."
-	@sed 's/set tv .*/set tv pal/' $(MAIN_SOURCE) > $(GENERATED_DIR)/temp_pal.bas
-	@cp $(GENERATED_DIR)/temp_pal.bas $(GENERATED_DIR)/$(BASENAME).bas
-	@bB=Tools/batariBASIC $(BB) $(GENERATED_DIR)/$(BASENAME).bas -O
-	$(DASM) $(ASM_FILE) -f3 -o$(PAL_ROM) -l$(LIST_FILE) -s$(SYMBOL_FILE) -M$(OBJECT_DIR)/$(BASENAME).map
-	@rm -f $(GENERATED_DIR)/temp_pal.bas $(GENERATED_DIR)/$(BASENAME).bas
-	@echo "PAL ROM created: $(PAL_ROM)"
+# Build game
+Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: $(ALL_SOURCES)
+	mkdir -p Dist $(GENERATED_DIR)
+	cpp -P -I. Source/Platform/NTSC.bas > $(GENERATED_DIR)/$(GAME).NTSC.bas
+	bin/preprocess < $(GENERATED_DIR)/$(GAME).NTSC.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/bB.s
+	cp $(GENERATED_DIR)/bB.s bB.asm
+	bin/postprocess -i Tools/batariBASIC < bB.asm > $(GENERATED_DIR)/$(GAME).s
+	bin/dasm $(GENERATED_DIR)/$(GAME).s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
+	rm -f $(GENERATED_DIR)/bB.s bB.asm $(GENERATED_DIR)/$(GAME).s
 
-# Build SECAM version
-$(SECAM_ROM): $(MAIN_SOURCE) $(BANK_SOURCES) $(COMMON_SOURCES) | $(DIST_DIR) $(OBJECT_DIR) $(GENERATED_DIR)
-	@echo "Building SECAM version..."
-	@sed 's/set tv .*/set tv secam/' $(MAIN_SOURCE) > $(GENERATED_DIR)/temp_secam.bas
-	@cp $(GENERATED_DIR)/temp_secam.bas $(GENERATED_DIR)/$(BASENAME).bas
-	@bB=Tools/batariBASIC $(BB) $(GENERATED_DIR)/$(BASENAME).bas -O
-	$(DASM) $(ASM_FILE) -f3 -o$(SECAM_ROM) -l$(LIST_FILE) -s$(SYMBOL_FILE) -M$(OBJECT_DIR)/$(BASENAME).map
-	@rm -f $(GENERATED_DIR)/temp_secam.bas $(GENERATED_DIR)/$(BASENAME).bas
-	@echo "SECAM ROM created: $(SECAM_ROM)"
+Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: $(ALL_SOURCES)
+	mkdir -p Dist $(GENERATED_DIR)
+	cpp -P -I. Source/Platform/PAL.bas > $(GENERATED_DIR)/$(GAME).PAL.bas
+	bin/preprocess < $(GENERATED_DIR)/$(GAME).PAL.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/bB_PAL.s
+	cp $(GENERATED_DIR)/bB_PAL.s bB.asm
+	bin/postprocess -i Tools/batariBASIC < bB.asm > $(GENERATED_DIR)/$(GAME)_PAL.s
+	bin/dasm $(GENERATED_DIR)/$(GAME)_PAL.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
+	rm -f $(GENERATED_DIR)/bB_PAL.s bB.asm $(GENERATED_DIR)/$(GAME)_PAL.s
 
-# Run emulator with NTSC version
-emu: $(NTSC_ROM)
-	@echo "Running $(NTSC_ROM) in Stella emulator..."
-	$(STELLA) $(NTSC_ROM)
+Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: $(ALL_SOURCES)
+	mkdir -p Dist $(GENERATED_DIR)
+	cpp -P -I. Source/Platform/SECAM.bas > $(GENERATED_DIR)/$(GAME).SECAM.bas
+	bin/preprocess < $(GENERATED_DIR)/$(GAME).SECAM.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/bB_SECAM.s
+	cp $(GENERATED_DIR)/bB_SECAM.s bB.asm
+	bin/postprocess -i Tools/batariBASIC < bB.asm > $(GENERATED_DIR)/$(GAME)_SECAM.s
+	bin/dasm $(GENERATED_DIR)/$(GAME)_SECAM.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
+	rm -f $(GENERATED_DIR)/bB_SECAM.s bB.asm $(GENERATED_DIR)/$(GAME)_SECAM.s
+
+# Run emulator
+emu: $(ROM)
+	$(STELLA) $(ROM)
 
 # Clean all generated files
 clean:
-	@echo "Cleaning generated files..."
-	@rm -rf $(DIST_DIR)/*.a26
-	@rm -rf $(OBJECT_DIR)/*
-	@rm -rf $(GENERATED_DIR)/*
-	@rm -f bB.asm *.asm *.bin *.lst *.sym *.map
-	@echo "Clean complete"
-
-# Create necessary directories
-$(DIST_DIR):
-	@mkdir -p $(DIST_DIR)
-
-$(OBJECT_DIR):
-	@mkdir -p $(OBJECT_DIR)
-
-$(GENERATED_DIR):
-	@mkdir -p $(GENERATED_DIR)
+	rm -rf Dist/*.a26
+	rm -rf Object/*
+	rm -f $(GENERATED_DIR)/*.s
+	rm -f bB.s *.bin *.lst *.sym *.map
 
 # Help target
 help:
 	@echo "Available targets:"
-	@echo "  all     - Build all ROM variants (default)"
-	@echo "  game    - Build all ROM variants (NTSC, PAL, SECAM)"
+	@echo "  all     - Build game (default)"
+	@echo "  game    - Build game"
 	@echo "  clean   - Remove all generated files"
-	@echo "  emu     - Build NTSC version and run in Stella emulator"
+	@echo "  emu     - Build and run in Stella emulator"
 	@echo "  help    - Show this help message"
 	@echo ""
-	@echo "Output files:"
-	@echo "  $(NTSC_ROM)   - NTSC version"
-	@echo "  $(PAL_ROM)    - PAL version"
-	@echo "  $(SECAM_ROM)  - SECAM version"
-	@echo ""
-	@echo "Intermediate files:"
-	@echo "  $(ASM_FILE)      - Generated assembly code"
-	@echo "  $(LIST_FILE)     - Assembly listing"
-	@echo "  $(SYMBOL_FILE)   - Symbol table"
+	@echo "Distributable files in Dist/"
 
-# Show project status
-status:
-	@echo "ChaosFight Project Status:"
-	@echo "=========================="
-	@echo "Source files: $(MAIN_SOURCE), $(BANK_SOURCES), $(COMMON_SOURCES)"
-	@echo "Tools: batariBASIC ($(BB)), DASM ($(DASM)), Stella ($(STELLA))"
-	@echo "Output directory: $(DIST_DIR)"
-	@echo "Object directory: $(OBJECT_DIR)"
-	@echo "Generated directory: $(GENERATED_DIR)"
-	@ls -la $(DIST_DIR)/*.a26 2>/dev/null || echo "No ROM files built yet"
+# Generate Stella .pro files
+Dist/$(GAME).NTSC.pro: Source/$(GAME).pro Dist/$(GAME).NTSC.a26
+	sed $< -e s/@@TV@@/NTSC/g \
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).NTSC.a26 | cut -d\  -f1)/g > $@
 
-# ===========================================================================
-# End of Makefile
-# ===========================================================================
+Dist/$(GAME).PAL.pro: Source/$(GAME).pro Dist/$(GAME).PAL.a26
+	sed $< -e s/@@TV@@/PAL/g \
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).PAL.a26 | cut -d\  -f1)/g > $@
+
+Dist/$(GAME).SECAM.pro: Source/$(GAME).pro Dist/$(GAME).SECAM.a26
+	sed $< -e s/@@TV@@/SECAM/g \
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).SECAM.a26 | cut -d\  -f1)/g > $@
+

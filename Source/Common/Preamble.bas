@@ -3,7 +3,7 @@
 
           set kernel multisprite
           set kernel_options playercolors player1colors pfcolors
-          set romsize 64kSC
+          set romsize 4k
           set optimization size
           set smartbranching on
           set optimization noinlinedata

@@ -1,10 +1,8 @@
-2600basicheader.asm
+ multispriteheader.asm
+multisprite_kernel.asm
 startup.asm
-std_kernel.asm
-pf_drawing.asm
-pf_scrolling.asm
 std_routines.asm
-std_overscan.asm
+bankswitch.inc
 bB.asm
 score_graphics.asm
 2600basicfooter.asm

@@ -47,11 +47,14 @@ CHARACTER_NAMES = Bernie CurlingSweeper Dragonet EXOPilot FatTony GrizzardHandle
 # TV architectures
 TV_ARCHS = NTSC PAL SECAM
 
+# Screen names (32×32 playfield screens)
+SCREEN_NAMES = AtariAge Interworldly ChaosFight
+
 # Build character assets
 characters: $(GENERATED_DIR)/Characters.bas $(foreach char,$(CHARACTER_NAMES),$(foreach arch,$(TV_ARCHS),$(GENERATED_DIR)/Art.$(char).$(arch).bas))
 
-# Build playfield assets
-playfields: $(GENERATED_DIR)/Playfields.bas
+# Build playfield assets (game levels + title screens)
+playfields: $(GENERATED_DIR)/Playfields.bas $(foreach screen,$(SCREEN_NAMES),$(foreach arch,$(TV_ARCHS),$(GENERATED_DIR)/Playfield.$(screen).$(arch).bas))
 
 # Generate list of character sprite files
 CHARACTER_XCF = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).xcf)
@@ -137,6 +140,51 @@ $(GENERATED_DIR)/Characters.bas: $(CHARACTER_BAS)
 			echo "" >> $@; \
 		fi; \
 	done
+
+# Convert XCF to PNG for screens (32×32 playfields)
+Source/Art/%.png: Source/Art/%.xcf
+	@echo "Converting screen $< to $@..."
+	mkdir -p Source/Art
+	magick "$<" -background black -flatten -scale 32x32! "$@"
+
+# Convert PNG screen to batariBASIC playfield data for NTSC
+$(GENERATED_DIR)/Playfield.%.NTSC.bas: Source/Art/%.png
+	@echo "Converting playfield screen $< to $@ for NTSC..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-playfield \
+		:input "$<" \
+		:output "$@" \
+		:screen-name "$*" \
+		:architecture "NTSC" \
+		:width 32 \
+		:height 32 \
+		:pfres 32
+
+# Convert PNG screen to batariBASIC playfield data for PAL
+$(GENERATED_DIR)/Playfield.%.PAL.bas: Source/Art/%.png
+	@echo "Converting playfield screen $< to $@ for PAL..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-playfield \
+		:input "$<" \
+		:output "$@" \
+		:screen-name "$*" \
+		:architecture "PAL" \
+		:width 32 \
+		:height 32 \
+		:pfres 32
+
+# Convert PNG screen to batariBASIC playfield data for SECAM
+$(GENERATED_DIR)/Playfield.%.SECAM.bas: Source/Art/%.png
+	@echo "Converting playfield screen $< to $@ for SECAM..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-playfield \
+		:input "$<" \
+		:output "$@" \
+		:screen-name "$*" \
+		:architecture "SECAM" \
+		:width 32 \
+		:height 32 \
+		:pfres 32
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf

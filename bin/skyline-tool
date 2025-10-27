@@ -1,6 +1,11 @@
 #!/bin/bash
 echo "Mock SkylineTool called with: $@"
-# Extract output file from arguments
+
+# Extract command and arguments
+command="$1"
+shift
+
+# Extract output file and screen name from arguments
 for arg in "$@"; do
   if [[ "$arg" == ":output" ]]; then
     output_next=true
@@ -8,8 +13,37 @@ for arg in "$@"; do
     output_file="$arg"
     output_next=false
   fi
+  if [[ "$arg" == ":screen-name" ]]; then
+    screen_next=true
+  elif [[ "$screen_next" == "true" ]]; then
+    screen_name="$arg"
+    screen_next=false
+  fi
 done
+
+echo "Command: $command"
 echo "Output file: $output_file"
+echo "Screen name: $screen_name"
+
+# Handle different commands
+if [[ "$command" == "compile-2600-playfield" ]]; then
+  # Generate mock playfield data (32×32 = 32 rows × 4 bytes/row)
+  echo "rem Mock playfield data for $screen_name" > "$output_file"
+  echo "rem 32×32 playfield (pfres=32)" >> "$output_file"
+  echo "" >> "$output_file"
+  echo "rem Load playfield data for $screen_name" >> "$output_file"
+  echo "Load${screen_name}Playfield" >> "$output_file"
+  for row in {0..31}; do
+    echo "  pfpixel 0 $row %11110000" >> "$output_file"
+    echo "  pfpixel 1 $row %00001111" >> "$output_file"
+    echo "  pfpixel 2 $row %11110000" >> "$output_file"
+    echo "  pfpixel 3 $row %00001111" >> "$output_file"
+  done
+  echo "  return" >> "$output_file"
+  exit 0
+fi
+
+# Default: generate character data
 echo "rem Mock character data" > "$output_file"
 echo "data mock_bitmap" >> "$output_file"
 echo "  %00000000" >> "$output_file"

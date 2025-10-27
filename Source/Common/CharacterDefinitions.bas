@@ -107,12 +107,14 @@ rem =================================================================
 rem MISSILE INITIAL MOMENTUM Y (Vertical Velocity)
 rem =================================================================
 rem Initial vertical velocity of missile in pixels per frame
-rem Positive = down, Negative = up, 0 = horizontal only
+rem Positive = down, Negative = up, 0 = horizontal only (arrowshot)
+rem Negative = ballistic/parabolic arc
 rem Values: -127 to 127 (typically -8 to 0 for parabolic arcs)
 
 data CharacterMissileMomentumY
   0, 0, -4, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 0, -6, 0
 rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  N/A    arrowshot    ballistic arrowshot N/A       N/A              N/A      N/A        ballistic       N/A         arrowshot  N/A        N/A           N/A       ballistic  N/A
 end
 
 rem =================================================================

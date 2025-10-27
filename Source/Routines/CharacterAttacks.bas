@@ -16,14 +16,35 @@ rem   temp3 = attacker Y position
 rem   temp4 = attacker facing direction (0=left, 1=right)
 
 rem =================================================================
-rem BERNIE (Character 0) - Melee Attack
+rem BERNIE (Character 0) - Melee Attack (Both Directions)
 rem =================================================================
 BernieAttack
-  rem Bernie uses a melee attack
-  rem Set attack animation state (13 = attack windup, 14 = attack execution)
-  rem temp1 contains player index, set animation state directly
+  rem Bernie's special attack hits both left AND right simultaneously
+  rem This is unique - all other melee attacks only hit in facing direction
   PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
+  
+  rem Attack in facing direction
   gosub PerformMeleeAttack
+  
+  rem Also attack in opposite direction
+  rem Temporarily flip facing
+  temp5 = PlayerState[temp1] & 1  : rem Store original facing
+  if temp5 = 0 then
+    PlayerState[temp1] = PlayerState[temp1] | 1  : rem Face right
+  else
+    PlayerState[temp1] = PlayerState[temp1] & ~1  : rem Face left
+  endif
+  
+  rem Attack in opposite direction
+  gosub PerformMeleeAttack
+  
+  rem Restore original facing
+  if temp5 = 0 then
+    PlayerState[temp1] = PlayerState[temp1] & ~1
+  else
+    PlayerState[temp1] = PlayerState[temp1] | 1
+  endif
+  
   return
 
 rem =================================================================

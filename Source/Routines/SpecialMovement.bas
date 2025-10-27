@@ -1,6 +1,49 @@
           rem ChaosFight - Source/Routines/SpecialMovement.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem Special movement handlers for characters with unique physics
+          
+          rem =================================================================
+          rem SPECIAL MOVEMENT PHYSICS
+          rem =================================================================
+          rem Per-frame physics updates for characters with special movement.
+          rem This is called every frame after input handling to apply
+          rem character-specific physics (e.g., Bernie's screen wrap).
+          rem
+          rem INPUT VARIABLE:
+          rem   temp1 = player index (0-3)
+          rem
+          rem AVAILABLE VARIABLES:
+          rem   PlayerChar[temp1] - Character type
+          rem   PlayerX[temp1], PlayerY[temp1] - Position
+          rem   PlayerState[temp1] - State flags
+          rem
+          rem CHARACTER INDICES:
+          rem   0=Bernie, 1=Curling, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
+          rem   6=Harpy, 7=Knight, 8=Magical Faerie, 9=Mystery, 10=Ninjish,
+          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
+          rem =================================================================
+
+          rem Apply special movement physics to all players
+ApplySpecialMovement
+          temp1 = 0 : gosub ApplyPlayerSpecialMovement
+          temp1 = 1 : gosub ApplyPlayerSpecialMovement
+          if QuadtariDetected && SelectedChar3 != 0 then
+                    temp1 = 2 : gosub ApplyPlayerSpecialMovement
+          endif
+          if QuadtariDetected && SelectedChar4 != 0 then
+                    temp1 = 3 : gosub ApplyPlayerSpecialMovement
+          endif
+          return
+
+          rem Apply special movement for one player
+          rem INPUT: temp1 = player index
+ApplyPlayerSpecialMovement
+          temp4 = PlayerChar[temp1]
+          
+          rem Bernie - screen wrap
+          if temp4 = 0 then gosub BernieScreenWrap : return
+          
+          rem No special physics for other characters
+          return
 
           rem =================================================================
           rem ROBO TITO SPECIAL MOVEMENT

@@ -17,11 +17,11 @@ GAME = ChaosFight
 ROM = Dist/$(GAME).NTSC.a26
 
 # Assembly files
-ALL_SOURCES = $(shell find Source -name \*.bas)
+ALL_SOURCES = $(shell find Source -name \*.bas) $(GENERATED_DIR)/Characters.bas $(GENERATED_DIR)/Playfields.bas
 
 # Default target
-.PHONY: all clean emu game help doc
-all: game doc
+.PHONY: all clean emu game help doc characters playfields
+all: game doc characters playfields
 
 # Build game
 game: \
@@ -39,6 +39,30 @@ game: \
 	Dist/$(GAME).SECAM.pro
 
 doc: Dist/$(GAME).pdf
+
+# Build character assets
+characters: $(GENERATED_DIR)/Characters.bas
+
+# Build playfield assets
+playfields: $(GENERATED_DIR)/Playfields.bas
+
+# Convert XCF to PNG for characters
+Source/Art/Character-%.png: Source/Art/Character-%.xcf
+	gimp -i -b '(let* ((file (car (gimp-file-load RUN-NONINTERACTIVE "$<" "$<"))) (drawable (car (gimp-image-get-active-drawable file)))) (gimp-file-save RUN-NONINTERACTIVE file drawable "$@" "$@") (gimp-image-delete file))' -b '(gimp-quit 0)'
+
+# Convert XCF to PNG for maps
+Source/Art/Map-%.png: Source/Art/Map-%.xcf
+	gimp -i -b '(let* ((file (car (gimp-file-load RUN-NONINTERACTIVE "$<" "$<"))) (drawable (car (gimp-image-get-active-drawable file)))) (gimp-file-save RUN-NONINTERACTIVE file drawable "$@" "$@") (gimp-image-delete file))' -b '(gimp-quit 0)'
+
+# Convert PNG to batariBASIC character include
+$(GENERATED_DIR)/Characters.bas: $(wildcard Source/Art/Character-*.png)
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-characters $(GENERATED_DIR) $(wildcard Source/Art/Character-*.png)
+
+# Convert PNG to batariBASIC playfield include
+$(GENERATED_DIR)/Playfields.bas: $(wildcard Source/Art/Map-*.png)
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-playfields $(GENERATED_DIR) $(wildcard Source/Art/Map-*.png)
 
 # Build game
 Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: $(ALL_SOURCES)

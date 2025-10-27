@@ -2,8 +2,6 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           #define TV_PAL
-          #include "Source/Common/Colors.h"
-
           const TVStandard = PAL
           set tv pal
 

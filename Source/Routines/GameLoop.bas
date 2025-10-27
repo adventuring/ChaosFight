@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 GameLoop
+          const pfres = 8
+          rem SuperChip variables var0-var15 available in gameplay
+          
           rem Player state flags:
           rem Bit 0: Attacking (1 = attacking, 0 = not)
           rem Bit 1: Guarding (1 = guarding, 0 = not)

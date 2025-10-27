@@ -2,8 +2,6 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           #define TV_SECAM
-          #include "Source/Common/Colors.h"
-
           const TVStandard=3
           set tv secam
 

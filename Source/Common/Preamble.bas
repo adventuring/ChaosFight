@@ -6,9 +6,9 @@
           set romsize 64kSC
           set optimization size
           set smartbranching on
-          set optimization noinlinedata
-          set optimization inlinerand
+          const pfres = 12
 
+          #include "Source/Common/Colors.h"
           #include "Source/Common/Constants.bas"
           #include "Source/Common/Macros.bas"
           #include "Source/Common/Variables.bas"

@@ -21,8 +21,8 @@
           rem
           rem AVAILABLE VARIABLES:
           rem   frame - Frame counter
-          rem   gameState - 0=normal, 1=paused
-          rem   QtController - Quadtari multiplexing state
+          rem   GameState - 0=normal, 1=paused
+          rem   qtcontroller - Quadtari multiplexing state
           rem   All Player arrays (X, Y, State, Health, etc.)
           rem =================================================================
 

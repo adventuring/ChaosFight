@@ -8,8 +8,8 @@
           rem control logic dispatched to character-specific subroutines.
           rem
           rem QUADTARI MULTIPLEXING:
-          rem   Even frames (QtController=0): joy0=Player1, joy1=Player2
-          rem   Odd frames (QtController=1): joy0=Player3, joy1=Player4
+          rem   Even frames (qtcontroller=0): joy0=Player1, joy1=Player2
+          rem   Odd frames (qtcontroller=1): joy0=Player3, joy1=Player4
           rem
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   PlayerX[0-3] - X positions
@@ -18,7 +18,7 @@
           rem   PlayerChar[0-3] - Character type indices (0-15)
           rem   PlayerMomentumX[0-3] - Horizontal momentum
           rem   QuadtariDetected - Whether 4-player mode is active
-          rem   QtController - Multiplexing state (0=P1/P2, 1=P3/P4)
+          rem   qtcontroller - Multiplexing state (0=P1/P2, 1=P3/P4)
           rem
           rem STATE FLAGS (in PlayerState):
           rem   Bit 0: Facing (1 = right, 0 = left)
@@ -35,13 +35,13 @@
 
           rem Main input handler for all players
 HandleAllPlayerInput
-          if QtController then goto HandleQuadtariPlayers
+          if qtcontroller then goto HandleQuadtariPlayers
           
           rem Even frame: Handle Players 1 & 2
           if !IsPlayerRecovery(PlayerState[0]) then gosub HandlePlayer1Input
           if !IsPlayerRecovery(PlayerState[1]) then gosub HandlePlayer2Input
           
-          QtController = 1  : rem Switch to odd frame
+          qtcontroller = 1  : rem Switch to odd frame
           return
 
 HandleQuadtariPlayers
@@ -53,7 +53,7 @@ HandleQuadtariPlayers
                     if !IsPlayerRecovery(PlayerState[3]) then gosub HandlePlayer4Input
           endif
           
-          QtController = 0  : rem Switch back to even frame
+          qtcontroller = 0  : rem Switch back to even frame
           return
 
           rem =================================================================

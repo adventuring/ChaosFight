@@ -39,7 +39,7 @@ game: \
 	Dist/$(GAME).PAL.pro \
 	Dist/$(GAME).SECAM.pro
 
-doc: Dist/$(GAME).pdf
+doc: Manual/$(GAME).pdf Manual/$(GAME).html
 
 # Character sprite sheet names (16 characters)
 CHARACTER_NAMES = Bernie CurlingSweeper Dragonet EXOPilot FatTony GrizzardHandler Harpy KnightGuy MagicalFaerie MysteryMan NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog

@@ -16,8 +16,8 @@
           rem   6. Check if ready to proceed
           rem
           rem QUADTARI MULTIPLEXING:
-          rem   Even frames (QtController=0): joy0=P1, joy1=P2
-          rem   Odd frames (QtController=1): joy0=P3, joy1=P4
+          rem   Even frames (qtcontroller=0): joy0=P1, joy1=P2
+          rem   Odd frames (qtcontroller=1): joy0=P3, joy1=P4
           rem
           rem AVAILABLE VARIABLES:
           rem   PlayerChar(0-3) - Selected character indices (0-15)
@@ -51,7 +51,7 @@ CharacterSelect1
 
 CharacterSelect1Loop
           rem Quadtari controller multiplexing
-          if QtController then goto HandleQuadtariControllers
+          if qtcontroller then goto HandleQuadtariControllers
           
           rem Handle Player 1 input (joy0 on even frames)
           if joy0left then
@@ -81,7 +81,7 @@ CharacterSelect1Loop
           if joy1up || joy1down then PlayerLocked(1) = 0
           if joy1fire then PlayerLocked(1) = 1
           
-          QtController = 1
+          qtcontroller = 1
           goto HandleInputComplete
 
 HandleQuadtariControllers
@@ -117,7 +117,7 @@ HandleQuadtariControllers
                     if joy1fire then PlayerLocked(3) = 1
           endif
           
-          QtController = 0
+          qtcontroller = 0
 
 HandleInputComplete
           rem Update character select animations

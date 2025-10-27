@@ -176,8 +176,83 @@ CheckAllPlayerCollisions
                     endif
           endif
           
-          rem TODO: Check all other player combinations
-          rem (P1 vs P3, P1 vs P4, P2 vs P3, P2 vs P4, P3 vs P4)
+          rem Check other player combinations if Quadtari active
+          if !QuadtariDetected then return
+          
+          rem Check Player 1 vs Player 3
+          if SelectedChar3 != 0 then
+                    Distance = PlayerX[0] - PlayerX[2]
+                    if Distance < 0 then Distance = -Distance
+                    if Distance < 16 then
+                              if PlayerX[0] < PlayerX[2] then
+                                        PlayerX[0] = PlayerX[0] - 1
+                                        PlayerX[2] = PlayerX[2] + 1
+                              else
+                                        PlayerX[0] = PlayerX[0] + 1
+                                        PlayerX[2] = PlayerX[2] - 1
+                              endif
+                    endif
+          endif
+          
+          rem Check Player 1 vs Player 4
+          if SelectedChar4 != 0 then
+                    Distance = PlayerX[0] - PlayerX[3]
+                    if Distance < 0 then Distance = -Distance
+                    if Distance < 16 then
+                              if PlayerX[0] < PlayerX[3] then
+                                        PlayerX[0] = PlayerX[0] - 1
+                                        PlayerX[3] = PlayerX[3] + 1
+                              else
+                                        PlayerX[0] = PlayerX[0] + 1
+                                        PlayerX[3] = PlayerX[3] - 1
+                              endif
+                    endif
+          endif
+          
+          rem Check Player 2 vs Player 3
+          if SelectedChar3 != 0 then
+                    Distance = PlayerX[1] - PlayerX[2]
+                    if Distance < 0 then Distance = -Distance
+                    if Distance < 16 then
+                              if PlayerX[1] < PlayerX[2] then
+                                        PlayerX[1] = PlayerX[1] - 1
+                                        PlayerX[2] = PlayerX[2] + 1
+                              else
+                                        PlayerX[1] = PlayerX[1] + 1
+                                        PlayerX[2] = PlayerX[2] - 1
+                              endif
+                    endif
+          endif
+          
+          rem Check Player 2 vs Player 4
+          if SelectedChar4 != 0 then
+                    Distance = PlayerX[1] - PlayerX[3]
+                    if Distance < 0 then Distance = -Distance
+                    if Distance < 16 then
+                              if PlayerX[1] < PlayerX[3] then
+                                        PlayerX[1] = PlayerX[1] - 1
+                                        PlayerX[3] = PlayerX[3] + 1
+                              else
+                                        PlayerX[1] = PlayerX[1] + 1
+                                        PlayerX[3] = PlayerX[3] - 1
+                              endif
+                    endif
+          endif
+          
+          rem Check Player 3 vs Player 4
+          if SelectedChar3 != 0 && SelectedChar4 != 0 then
+                    Distance = PlayerX[2] - PlayerX[3]
+                    if Distance < 0 then Distance = -Distance
+                    if Distance < 16 then
+                              if PlayerX[2] < PlayerX[3] then
+                                        PlayerX[2] = PlayerX[2] - 1
+                                        PlayerX[3] = PlayerX[3] + 1
+                              else
+                                        PlayerX[2] = PlayerX[2] + 1
+                                        PlayerX[3] = PlayerX[3] - 1
+                              endif
+                    endif
+          endif
           
           return
 

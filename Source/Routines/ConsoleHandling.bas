@@ -12,7 +12,7 @@
           rem   switchbw - Color/B&W → handled in rendering
           rem
           rem AVAILABLE VARIABLES:
-          rem   gameState - 0=normal play, 1=paused
+          rem   GameState - 0=normal play, 1=paused
           rem =================================================================
 
           rem Main console switch handler
@@ -22,10 +22,10 @@ HandleConsoleSwitches
 
           rem Game Select switch - toggle pause mode
           if switchselect then
-                    if gameState = 0 then
-                              gameState = 1
+                    if GameState = 0 then
+                              GameState = 1
                     else
-                              gameState = 0
+                              GameState = 0
                     endif
           endif
 

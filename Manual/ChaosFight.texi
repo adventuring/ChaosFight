@@ -1,0 +1,2057 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename ChaosFight.info
+@settitle ChaosFight Game Manual
+@documentencoding UTF-8
+@c %**end of header
+
+@copying
+ChaosFight Game Manual
+
+Copyright @copyright{} 2025 Interworldly Adventuring, LLC.
+
+@quotation
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+@end quotation
+@end copying
+
+@titlepage
+@title ChaosFight
+@subtitle Atari 2600 Game Manual
+@author Interworldly Adventuring, LLC
+
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top ChaosFight
+
+This manual describes ChaosFight, a multiplayer fighting game for the Atari 2600
+Video Computer System.
+
+@insertcopying
+@end ifnottex
+
+@menu
+* Introduction::                What is ChaosFight?
+* Getting Started::             Setting up your game
+* Controller Configuration::    Supported controllers and setup
+* Character Selection::         Choosing your fighter
+* Game Controls::               How to play
+* Characters::                  The 16 fighters
+* Combat System::               Fighting mechanics
+* Game Modes::                  Different ways to play
+* Console Switches::            Using console controls
+* Tips and Strategies::         How to win
+* Technical Information::       Game specifications
+* Troubleshooting::             Common issues
+* Credits::                     Who made this game
+@end menu
+
+@c ============================================================
+@node Introduction
+@chapter Introduction
+
+@cindex introduction
+@cindex overview
+
+@center @strong{CHAOS FIGHT}
+@sp 1
+@center GAME PROGRAM™
+@sp 1
+@center INSTRUCTIONS
+@sp 2
+@center @image{atari-logo,2in,,Atari Logo}
+@sp 1
+@center A Warner Communications Company
+@sp 2
+@center INTERWORLDLY ADVENTURING, LLC
+@sp 1
+@center San Antonio, Texas
+@sp 2
+@center @copyright{} 2025 Interworldly Adventuring, LLC
+
+@page
+
+@strong{Welcome to ChaosFight!} Get ready for the most exciting fighting game
+adventure on the Atari 2600 Video Computer System!
+
+Have you ever dreamed of choosing your favourite fighter and battling it out with
+friends? Now you can! ChaosFight brings fast-paced, action-packed combat right
+to your living room TV, with 16 amazing characters to choose from - each with
+their own unique personality, fighting style, and special abilities!
+
+@strong{What's an Atari 2600?}
+
+The Atari 2600 (also called the Video Computer System, or VCS) is a classic video
+game console from 1977 that plugs into your television. It's like a time machine
+that lets you experience gaming the way it was in the golden age! You control
+the action with a joystick - a simple stick with a button that feels great in
+your hand and responds instantly to your every move.
+
+@strong{What Makes ChaosFight Special?}
+
+ChaosFight is designed to bring out the best in the Atari 2600, with features
+that make every match exciting:
+
+@itemize @bullet
+@item
+@strong{16 Unique Fighters!} From the screen-wrapping Bernie to the flying
+Magical Faerie, every character plays differently and has their own surprises!
+
+@item
+@strong{Play With Friends!} Challenge up to 3 friends at once for chaotic
+4-player battles@footnote{Four-player mode requires a Quadtari adapter - a
+special device that lets you plug in four controllers at once!}, or go
+head-to-head in classic 2-player duels.
+
+@item
+@strong{Real Physics!} Characters jump, fall, and get knocked back when hit -
+just like in real fighting! Heavy characters move slower but hit harder, while
+light characters zoom around the arena with speed and agility.
+
+@item
+@strong{Multiple Arenas!} Choose from 16 different battlegrounds, each with
+unique platforms, obstacles, and challenges. Will you fight on open ground,
+or leap between platforms?
+
+@item
+@strong{Easy to Learn!} The simple joystick controls (up, down, left, right,
+and one fire button) mean anyone can start playing in seconds - but mastering
+each character's special moves takes practice!
+
+@item
+@strong{Looks Great on Any TV!} Whether you have a modern colour TV or a
+classic black & white set, ChaosFight is designed to look fantastic.
+@end itemize
+
+So grab a joystick, pick your favourite fighter, and get ready to rumble! This
+manual will teach you everything you need to know to become a ChaosFight champion!
+
+@page
+
+@c ============================================================
+@node Getting Started
+@chapter Getting Started
+
+@cindex getting started
+@cindex setup
+@cindex multicart
+
+Let's get you set up and ready to play! Don't worry if this is your first time
+with an Atari 2600 - we'll walk you through every step.
+
+@section What You Need
+
+Before you start your fighting adventure, make sure you have:
+
+@enumerate
+@item
+@strong{An Atari 2600 Console} - This is the main game system. It's a small
+rectangular box with wood-grain trim (or black plastic on later models). On the
+front, you'll see a power switch, some other switches, and a slot for game
+cartridges. The back has connections for your TV and controllers.
+
+@item
+@strong{At least one Joystick Controller} - This is what you'll use to control
+your fighter! It looks like a black stick on a square base, with a red button
+on the side. You can play with just one joystick, but ChaosFight is way more
+fun with friends, so grab as many as you can (up to four)!
+
+@item
+@strong{The ChaosFight Game Cartridge} - That's what you're holding! The game
+is stored on this cartridge, which slides into the Atari 2600 console.
+
+@item
+@strong{A Television} - Any TV with a coaxial (screw-on) antenna connection will
+work great! If you have a modern flat-screen TV, you might need a special adapter
+box to connect the Atari 2600 (ask at your local electronics store for an
+"RF modulator" if you need help).
+@end enumerate
+
+@section Let's Get Playing!
+
+Follow these simple steps and you'll be fighting in no time:
+
+@enumerate
+@item
+@strong{First, make sure everything is OFF!} Turn off your Atari 2600 (if it's
+on) and your TV. Safety first!
+
+@item
+@strong{Connect your TV.} Attach the cable from your Atari 2600 to your TV's
+antenna input. This usually screws on. If you're not sure which connection to
+use, look for the one that says "ANT IN" or "RF IN" on your TV.
+
+@item
+@strong{Plug in the controllers.} On the back of the Atari 2600, you'll see
+two controller ports (they look like rectangular openings). Plug your joystick(s)
+into these ports:
+@itemize @bullet
+@item @strong{Player 1:} Use the @strong{LEFT} port (usually labeled "1")
+@item @strong{Player 2:} Use the @strong{RIGHT} port (usually labeled "2")
+@item @strong{Players 3 & 4:} If you have a special Quadtari adapter, see
+@ref{Controller Configuration} for details on setting up four players!
+@end itemize
+
+@item
+@strong{Insert the game cartridge.} Find the cartridge slot on top of the Atari
+2600 (it's the wide opening). Gently but firmly slide the ChaosFight cartridge
+into the slot until it's seated snugly. @emph{Remember: Always insert and remove
+cartridges while the power is OFF!}
+
+@item
+@strong{Turn on your TV} and select channel 3 or channel 4. (Most Atari 2600s
+use channel 3, but check the switch on the back of your console - it should say
+"CH 3" or "CH 4".) You might need to use your TV's "Antenna" or "TV" input mode
+rather than "Video" or "HDMI."
+
+@item
+@strong{Power up the Atari 2600!} Flip the power switch on the console. You
+should see the TV screen change - that means it's working!
+
+@item
+@strong{Watch the intro!} ChaosFight will show you two special screens:
+@itemize @bullet
+@item The @strong{Publisher Screen} (AtariAge) with a cool jingle
+@item The @strong{Author Screen} (Interworldly Adventuring) with theme music
+@item The @strong{Title Screen} with fighters running past
+@end itemize
+
+You can press the @strong{red fire button} on any joystick to skip ahead, or
+just sit back and enjoy the show!
+
+@item
+@strong{Start fighting!} Once you see the title screen, press the fire button
+to begin choosing your characters. See @ref{Character Selection} to learn how
+to pick your fighter!
+@end enumerate
+
+@strong{Troubleshooting Quick Tips:}
+
+@itemize @bullet
+@item
+@strong{Black screen?} Make sure your TV is on the right channel (3 or 4) and
+set to "Antenna" or "TV" mode.
+
+@item
+@strong{Snowy/fuzzy picture?} Try the other channel (3 or 4). Also check that
+the cable is screwed on tightly.
+
+@item
+@strong{Joystick not working?} Make sure it's plugged in firmly and try pressing
+the fire button at the title screen to "wake up" the controller detection.
+@end itemize
+
+@strong{Special Note for Multicart Users:}@footnote{Using a multicart device
+like a Harmony, Uno, or flash cartridge? These awesome devices let you store
+hundreds of games! After turning on your Atari 2600, you'll first see your
+multicart's menu. Use your joystick to navigate to the ChaosFight ROM file and
+press fire to load it. Check your multicart's instruction manual if you need
+help navigating the menu!}
+
+@page
+
+@c ============================================================
+@node Controller Configuration
+@chapter Controller Configuration
+
+@cindex controllers
+@cindex joystick
+@cindex Quadtari
+@cindex Genesis controller
+@cindex Joy2B+
+
+ChaosFight is designed to work with several different types of controllers, so
+you can use whatever you have available! The game is smart enough to automatically
+figure out which controllers you're using when you press a button at the Title
+screen or when you press the Game Select switch on the console.
+
+Let's look at each controller type and how to use it!
+
+@section The Classic CX-40 Joystick (Standard Atari Controller)
+
+@display
+@group
+                 ___
+                | • |  <--- Red Fire Button
+                |___|       (on upper left)
+                  |
+                  |
+             _____|_____
+            |           |
+            |     ↑     |
+            |   ← + →   |  <--- Control Stick
+            |     ↓     |       (moves in 8 directions)
+            |___________|
+                 | |
+                 | |
+              Cable to Console
+
+    Fig. A - CX-40 Atari Joystick Controller
+@end group
+@end display
+
+This is the classic Atari joystick that probably came with your system! It's a
+black stick on a square base with one red button on the upper left corner.
+
+@strong{How to Hold It:}
+
+Hold the controller with the red button in the @strong{upper left}, pointing
+toward the TV screen. Rest the base in your palm or on your lap, and use your
+thumb or fingers to move the stick.
+
+@strong{How to Use It in ChaosFight:}
+
+@table @strong
+@item Moving the Stick
+Push the stick in any direction to move your fighter:
+@itemize @bullet
+@item @strong{LEFT:} Walk/run left, turn to face left
+@item @strong{RIGHT:} Walk/run right, turn to face right
+@item @strong{UP:} Jump! (height depends on your character's weight)
+@item @strong{DOWN:} Guard stance (blocks all damage for up to 1 second)
+@item @strong{Diagonals:} UP+LEFT/RIGHT jumps while moving sideways
+@end itemize
+
+@item Red Fire Button
+Press the button to attack! Your character will perform their signature move:
+@itemize @bullet
+@item @strong{Melee characters:} Punch, kick, or slash in the direction you're facing
+@item @strong{Ranged characters:} Fire a projectile across the screen
+@end itemize
+@end table
+
+@strong{Two-Player Setup:}
+
+@display
+@group
+    BACK OF ATARI 2600:
+
+    [Port 1]      [Port 2]
+    LEFT PORT     RIGHT PORT
+    Player 1      Player 2
+        |             |
+        v             v
+    [Joystick]    [Joystick]
+@end group
+@end display
+
+Simply plug one joystick into each port on the back of your Atari 2600!
+
+@section Sega Genesis / Mega Drive Controllers
+
+@display
+@group
+              ╔═══════════════╗
+              ║   START       ║  <--- Start Button
+              ║               ║       (not used in ChaosFight)
+              ║   D-PAD   Ⓒ  ║
+              ║    ↑      Ⓑ  ║  <--- Buttons C, B, A
+              ║  ← + →    Ⓐ  ║       (any button = fire!)
+              ║    ↓          ║
+              ╚═══════════════╝
+                     |
+                   Cable
+
+    Fig. B - Genesis/Mega Drive 3-Button Controller
+@end group
+@end display
+
+Did you know you can use a Sega Genesis or Mega Drive controller with your
+Atari 2600? These controllers have a more modern feel and work great with
+ChaosFight!
+
+@strong{What You Need:}
+
+A standard 3-button Genesis/Mega Drive controller. These controllers use the
+same 9-pin connector as Atari joysticks, so they plug right in! (Note: 6-button
+Genesis controllers may not work reliably.)
+
+@strong{How to Use It in ChaosFight:}
+
+@table @strong
+@item D-Pad (Directional Pad)
+The cross-shaped button pad controls movement:
+@itemize @bullet
+@item @strong{LEFT/RIGHT:} Move and turn your fighter
+@item @strong{UP:} Jump
+@item @strong{DOWN:} Guard (block attacks)
+@item @strong{Diagonals:} Press two directions at once for diagonal movement
+@end itemize
+
+@item Buttons A, B, or C
+@strong{Any of these three buttons works as the Fire button!} Press whichever
+one feels most comfortable to you - they all do the same thing in ChaosFight.
+@itemize @bullet
+@item Attack with your character's weapon
+@item Lock in character selection
+@item Confirm menu choices
+@end itemize
+
+@item START Button
+The START button isn't used in ChaosFight (we use the console's Game Select
+switch instead for pausing).
+@end table
+
+@strong{Why Use a Genesis Controller?}
+
+@itemize @bullet
+@item @strong{More comfortable:} The ergonomic design fits nicely in your hands
+@item @strong{Precise D-pad:} Some players find it easier to hit exact directions
+@item @strong{Three buttons:} Even though ChaosFight only needs one button, having
+three means you can press whichever one is easiest!
+@item @strong{Great for long play sessions:} Less hand fatigue than the CX-40 stick
+@end itemize
+
+@strong{Important Note:}
+
+Genesis controllers and Quadtari adapters @strong{don't work together}. If
+ChaosFight detects a Genesis controller, it will automatically disable Quadtari
+mode. For 4-player games, stick with standard CX-40 joysticks and a Quadtari!
+
+@section Joy2B+ Enhanced Controllers
+
+@display
+@group
+              ╔═══════════════╗
+              ║               ║
+              ║   ↑       ②  ║  <--- Two fire buttons
+              ║ ← + →     ①  ║       (both work!)
+              ║   ↓           ║
+              ║               ║
+              ║  [Extra]      ║  <--- Additional buttons
+              ╚═══════════════╝       (not used in ChaosFight)
+                     |
+                   Cable
+
+    Fig. C - Joy2B+ Style Controller
+@end group
+@end display
+
+Joy2B+ controllers are modern enhanced joysticks designed for the Atari 2600.
+They add extra buttons and features while staying compatible with classic games!
+
+@strong{What Makes Joy2B+ Special:}
+
+Joy2B+ controllers feature:
+@itemize @bullet
+@item A classic joystick or modern D-pad design (depends on model)
+@item @strong{Two fire buttons} instead of one
+@item Additional buttons for special features (varies by model)
+@item Modern construction with better durability
+@item Often feature USB connectivity for multi-system use
+@end itemize
+
+@strong{How to Use It in ChaosFight:}
+
+The controls work just like a standard CX-40 joystick:
+
+@table @strong
+@item Directional Control
+Move the stick or D-pad to control your fighter:
+@itemize @bullet
+@item @strong{UP:} Jump
+@item @strong{DOWN:} Guard
+@item @strong{LEFT/RIGHT:} Move and turn
+@end itemize
+
+@item Fire Buttons
+Joy2B+ controllers have multiple fire buttons, but in ChaosFight:
+@itemize @bullet
+@item @strong{Button 1 (primary):} Attack - this is the main fire button
+@item @strong{Button 2 (secondary):} Also works for attacking!
+@item @strong{Extra buttons:} Not used in ChaosFight (but they won't hurt anything
+if you accidentally press them!)
+@end itemize
+@end table
+
+@strong{Why Choose Joy2B+?}
+
+@itemize @bullet
+@item @strong{Modern build quality:} New controllers, no wear and tear
+@item @strong{Two fire buttons:} Use whichever is more comfortable
+@item @strong{Comfortable design:} Ergonomic shapes for long gaming sessions
+@item @strong{Compatible everywhere:} Works with all Atari 2600 games
+@end itemize
+
+@strong{Important Note:}
+
+Like Genesis controllers, Joy2B+ controllers @strong{cannot be used with Quadtari}
+for 4-player mode. If you want to play with four players, use standard CX-40
+joysticks with a Quadtari adapter!
+
+@section Four-Player Mode with Quadtari
+
+@display
+@group
+    Quadtari Adapter
+
+    PORT 1 (Even Frame)      PORT 2 (Odd Frame)
+    Player 1 / Player 3      Player 2 / Player 4
+@end group
+@end display
+
+The Quadtari uses time-multiplexing to support four controllers on two ports:
+
+@itemize @bullet
+@item
+@strong{Even frames:} Reads Player 1 (left port) and Player 2 (right port)
+@item
+@strong{Odd frames:} Reads Player 3 (left port) and Player 4 (right port)
+@end itemize
+
+The game automatically detects Quadtari by checking the INPT4/INPT5 lines
+during the Title screen.
+
+@section Genesis Controller Mode
+
+Sega Genesis 3-button controllers are supported and provide the same
+functionality as standard joysticks:
+
+@table @strong
+@item D-Pad
+Movement (left, right, up for jump, down for guard)
+@item Button A, B, or C
+Attack (any button works)
+@end table
+
+@strong{Note:} Genesis controllers and Quadtari cannot be used together.
+The game will detect which type is connected.
+
+@section Joy2B+ Controller Mode
+
+Joy2B+ enhanced controllers are supported with the same button mapping as
+standard joysticks. The additional buttons are not used in ChaosFight.
+
+@strong{Note:} Joy2B+ and Quadtari cannot be used together.
+
+@section Controller Detection
+
+The game detects your controller configuration:
+
+@enumerate
+@item
+When you press Game Select on the console
+@item
+When returning to the Title screen from any game mode
+@item
+During the initial Title screen display
+@end enumerate
+
+The detection checks for:
+@enumerate
+@item
+Quadtari adapter (INPT4/INPT5 signature)
+@item
+Genesis controller (read mode register)
+@item
+Joy2B+ controller (extended INPT registers)
+@item
+Standard joysticks (default)
+@end enumerate
+
+@page
+
+@c ============================================================
+@node Character Selection
+@chapter Character Selection
+
+@cindex character selection
+@cindex fighters
+
+After the Title screen, you'll enter the Character Selection screen where each
+player chooses their fighter from a roster of 16 unique characters.
+
+@section The Character Selection Screen
+
+@display
+@group
+    ╔════════════════════════════════════════╗
+    ║  CHAOS FIGHT - CHARACTER SELECT        ║
+    ╠════════════════════════════════════════╣
+    ║                                        ║
+    ║   [Character Portrait]                 ║
+    ║      (Animating)                       ║
+    ║                                        ║
+    ║   < BERNIE >                           ║
+    ║                                        ║
+    ║   Player 1: [SELECT]  ▓▓▓▓▓▓▓▓        ║
+    ║   Player 2: [SELECT]  ░░░░░░░░        ║
+    ║   Player 3: [SELECT]  ░░░░░░░░        ║
+    ║   Player 4: [SELECT]  ░░░░░░░░        ║
+    ║                                        ║
+    ║   WEIGHT: ████████░░  (Heavy)          ║
+    ║   ATTACK: MELEE (Both Directions!)     ║
+    ║   SPECIAL: Screen Wrap, No Jump        ║
+    ║                                        ║
+    ╚════════════════════════════════════════╝
+
+    Fig. A - Character Selection Screen Layout
+@end group
+@end display
+
+The Character Selection screen displays:
+
+@itemize @bullet
+@item
+@strong{Character Portrait:} Large animated sprite showing the selected fighter
+performing random actions (idle, running, attacking)
+
+@item
+@strong{Character Name:} Current character name with LEFT/RIGHT arrows
+
+@item
+@strong{Player Status Bars:} Four rows showing each player's lock status
+@itemize @minus
+@item Solid colour = locked in
+@item Hollow = still selecting
+@item Color matches player (Blue, Red, Yellow, Green)
+@end itemize
+
+@item
+@strong{Character Statistics:}
+@itemize @minus
+@item @strong{Weight:} Visual bar showing relative weight (affects jump, speed, knockback)
+@item @strong{Attack Type:} MELEE or RANGED with special notes
+@item @strong{Special Abilities:} Unique character features
+@end itemize
+@end itemize
+
+@section Selection Process
+
+@enumerate
+@item
+@strong{Browse Characters:} Move your joystick @strong{LEFT} or @strong{RIGHT}
+to cycle through all 16 characters. The character preview updates immediately,
+showing animations and statistics.
+
+@item
+@strong{Lock Selection:} Press the @strong{FIRE BUTTON} to lock in your choice.
+Your status bar fills with your player colour:
+@itemize @bullet
+@item Player 1: @strong{Blue} border and status bar
+@item Player 2: @strong{Red} border and status bar
+@item Player 3: @strong{Yellow} border and status bar (Quadtari only)
+@item Player 4: @strong{Green} border and status bar (Quadtari only)
+@end itemize
+
+@item
+@strong{Change Selection:} Move the joystick again to unlock and browse different
+characters. Your status bar returns to hollow outline.
+
+@item
+@strong{Proceed to Level Select:} Once all active players have locked their
+selections (all status bars filled), the screen automatically advances after
+2 seconds, or any player can press @strong{FIRE} to proceed immediately.
+@end enumerate
+
+@section Character Preview Animations
+
+While browsing, each character performs randomized animations every 2-3 seconds:
+
+@table @strong
+@item Idle Stance (50% chance)
+Character breathes or sways gently in place
+
+@item Running Animation (30% chance)
+Character runs in place, showing movement frames
+
+@item Attack Animation (20% chance)
+Character performs their signature attack move
+@itemize @bullet
+@item Melee fighters: Punch, slash, or strike
+@item Ranged fighters: Fire projectile across screen
+@end itemize
+@end table
+
+These animations help you:
+@itemize @bullet
+@item Preview the character's visual style and personality
+@item See attack animations before choosing
+@item Understand movement style (fast vs. slow)
+@item Compare character sizes and proportions
+@end itemize
+
+@section Quick Selection Tips
+
+@display
+@group
+    BEGINNER FRIENDLY:        ADVANCED PLAY:
+    • Pork Chop              • Ninjish Guy
+    • Knight Guy             • Magical Faerie
+    • Grizzard Handler       • Harpy
+    • Fat Tony               • EXO Pilot
+
+    UNIQUE MECHANICS:         CROWD CONTROL:
+    • Bernie                 • Bernie
+    • Robo Tito              • Curling Sweeper
+    • Magical Faerie         • EXO Pilot
+    • Harpy                  • Knight Guy
+@end group
+@end display
+
+See @ref{Characters} for complete character descriptions and strategies.
+
+@section Handicapping for Advanced Players
+
+@display
+@group
+    ╔════════════════════════════════════════╗
+    ║                                        ║
+    ║   [Character Portrait]                 ║
+    ║      >>> FROZEN <<<                    ║
+    ║   (Recovery Pose - Not Animating)      ║
+    ║                                        ║
+    ║   < KNIGHT GUY >                       ║
+    ║                                        ║
+    ║   Player 1: ↓ + FIRE = HANDICAP!      ║
+    ║   Starting Health: 75 (instead of 100) ║
+    ║                                        ║
+    ╚════════════════════════════════════════╝
+
+    Fig. A-2 - Handicap Mode Active
+@end group
+@end display
+
+Are you a ChaosFight master looking for an extra challenge? Or maybe you want
+to even the odds when playing against less experienced friends? ChaosFight
+includes a built-in handicapping system!
+
+@strong{How to Activate Handicap Mode:}
+
+@enumerate
+@item
+Browse to your chosen character normally using LEFT/RIGHT on the joystick.
+
+@item
+@strong{Hold DOWN on the joystick} before pressing the fire button.
+
+@item
+While holding DOWN, @strong{press and hold the FIRE BUTTON} to lock in your
+selection.
+
+@item
+Your character preview will @strong{freeze in a "recovery" pose} - this is your
+visual confirmation that handicap mode is active! The character will no longer
+animate, staying in their "recovering from far fall" stance.
+
+@item
+Your status bar will still fill with your player colour, showing you're locked
+in.
+@end enumerate
+
+@strong{What Handicap Mode Does:}
+
+When you activate handicap mode during character selection:
+
+@itemize @bullet
+@item
+Your starting health is @strong{reduced to 75 points} (instead of the normal 100)
+
+@item
+This is a @strong{25% health reduction} - a significant disadvantage!
+
+@item
+All other game mechanics remain the same (movement, attacks, damage, etc.)
+
+@item
+There's no visual indicator during gameplay, but your health bar will start
+shorter than other players
+@end itemize
+
+@strong{Why Use Handicap Mode?}
+
+@itemize @bullet
+@item
+@strong{Challenge yourself!} Test your skills with less margin for error
+
+@item
+@strong{Balance skill gaps:} Let experienced players handicap themselves when
+playing with beginners
+
+@item
+@strong{Create tournaments:} Use handicaps to make competitions more interesting
+
+@item
+@strong{Learn characters:} Practise with handicaps to really master your fighter's
+abilities
+
+@item
+@strong{Show off:} Beat your friends with one hand tied behind your back (well,
+25% less health!)
+@end itemize
+
+@strong{Tips for Handicap Play:}
+
+@itemize @bullet
+@item
+Choose heavy characters like Ursulo or Knight Guy - they can take fewer hits,
+so their extra weight helps
+
+@item
+Perfect your guard timing - you can't afford to take unnecessary damage!
+
+@item
+Play defensively - let your opponents make mistakes
+
+@item
+Use ranged characters to keep distance and avoid risky close combat
+
+@item
+Learn the arenas well - use platforms and obstacles to your advantage
+@end itemize
+
+@strong{Visual Confirmation:}
+
+The frozen "recovery pose" during character selection is your guarantee that
+handicap mode is active. If the character is still animating normally, you
+didn't activate it - try again, making sure to hold DOWN @emph{before} pressing
+fire!
+
+@page
+
+@c ============================================================
+@node Game Controls
+@chapter Game Controls
+
+@cindex controls
+@cindex joystick controls
+@cindex movement
+
+@section Basic Movement
+
+Hold the Controller with the red button to your upper left towards the TV screen.
+
+@display
+@group
+              JUMP
+                ^
+                |
+    LEFT <----STAND----> RIGHT
+                |
+                v
+              GUARD
+
+    Fig. A - ChaosFight Controls
+@end group
+@end display
+
+@table @strong
+@item LEFT
+Move your character to the left. If facing right, character will turn around.
+
+@item RIGHT
+Move your character to the right. If facing left, character will turn around.
+
+@item UP (JUMP)
+Make your character jump. Jump height varies by character weight:
+@itemize @bullet
+@item Light characters (Ninjish Guy, Radish Goblin): High jumps
+@item Medium characters (Pork Chop, Grizzard Handler): Normal jumps
+@item Heavy characters (Ursulo, Fat Tony): Lower jumps
+@item Special: Some characters have unique jump abilities (see @ref{Characters})
+@end itemize
+
+@item DOWN (GUARD)
+Enter guard stance. While guarding:
+@itemize @bullet
+@item You take NO damage from attacks
+@item You cannot move or attack
+@item Guard lasts maximum 1 second (60 frames)
+@item Character flashes to indicate guard is active
+@end itemize
+
+@item FIRE BUTTON
+Perform your character's attack:
+@itemize @bullet
+@item @strong{Melee characters:} Close-range punch/slash in facing direction
+@item @strong{Ranged characters:} Fire projectile in facing direction
+@end itemize
+@end table
+
+@page
+
+@section Advanced Mechanics
+
+@subsection Momentum and Physics
+
+ChaosFight features realistic physics:
+
+@itemize @bullet
+@item
+@strong{Gravity:} Characters fall naturally when airborne
+
+@item
+@strong{Momentum:} Movement builds up and decays gradually
+@itemize @minus
+@item Lighter characters accelerate faster
+@item Heavier characters have more inertia
+@end itemize
+
+@item
+@strong{Knockback:} Getting hit pushes you back
+@itemize @minus
+@item Direction depends on attacker's facing
+@item Distance based on attack strength and your weight
+@item You enter "recovery" state and cannot act briefly
+@end itemize
+
+@item
+@strong{Wall Collision:} Characters bounce off walls
+@itemize @minus
+@item Bounce distance based on character weight
+@item Heavier characters bounce less
+@item Lighter characters bounce more
+@end itemize
+
+@item
+@strong{Player Collision:} Characters can walk through each other but are
+slightly pushed apart to prevent overlap
+@end itemize
+
+@subsection Attack System
+
+@display
+@group
+    MELEE ATTACK              RANGED ATTACK
+
+       [==]                      [o]-->
+      /    \                    /    \
+     PLAYER  -->  <HITBOX>     PLAYER   <MISSILE>
+@end group
+@end display
+
+@table @strong
+@item Melee Attacks
+@itemize @bullet
+@item Hit enemies directly in front of character
+@item Range: 16 pixels
+@item Instant hit detection
+@item Cannot be blocked by obstacles
+@item @strong{Special:} Bernie attacks both directions simultaneously!
+@end itemize
+
+@item Ranged Attacks
+@itemize @bullet
+@item Fire projectile across screen
+@item Two types: @strong{Arrowshot} (straight) or @strong{Ballistic} (parabolic arc)
+@item May disappear on impact or pass through
+@item Can be blocked by walls (character-dependent)
+@item Projectile size varies by character
+@end itemize
+@end table
+
+@subsection Recovery System
+
+After taking damage, characters enter @strong{recovery} (hitstun):
+
+@enumerate
+@item
+Character flashes rapidly
+@item
+Cannot attack or guard
+@item
+Cannot take additional damage (invulnerable)
+@item
+Slides backward from knockback momentum
+@item
+Lasts 15-30 frames depending on damage taken
+@end enumerate
+
+This prevents infinite combos and gives players a chance to recover position.
+
+@page
+
+@c ============================================================
+@node Characters
+@chapter The 16 Fighters
+
+@cindex characters
+@cindex fighters
+
+Each character has unique properties affecting gameplay:
+
+@table @strong
+@item Weight
+Affects jump height, movement speed, and knockback resistance
+@item Attack Type
+Melee (close range) or Ranged (projectile)
+@item Special Abilities
+Unique movement or attack properties
+@end table
+
+@section Character Roster
+
+@subsection Bernie
+@display
+@group
+    Weight: Heavy
+    Attack: Melee (BOTH DIRECTIONS!)
+    Special: No jumping; wraps from bottom to top of screen
+@end group
+@end display
+
+Bernie cannot jump, but he can fall off the bottom of the screen and reappear
+at the top! His melee attack hits both in front AND behind simultaneously,
+making him dangerous in crowds.
+
+@subsection Curling Sweeper
+@display
+@group
+    Weight: Medium
+    Attack: Ranged (from feet, 4×2 pixels, ballistic)
+    Special: Projectile comes from character's feet
+@end group
+@end display
+
+The Curling Sweeper fires a wide projectile (4 pixels wide, 2 pixels tall)
+from ground level, sliding across the floor. Great for hitting low targets!
+
+@subsection Dragonet
+@display
+@group
+    Weight: Medium-Light
+    Attack: Melee
+    Special: Standard fighter with dragon-themed appearance
+@end group
+@end display
+
+@subsection EXO Pilot
+@display
+@group
+    Weight: Light
+    Attack: Ranged (long/wide bullet, arrowshot)
+    Special: High jumps, fast horizontal projectile
+@end group
+@end display
+
+The EXO Pilot fires a long, thin missile that travels horizontally across
+the entire screen. Excellent for long-range combat!
+
+@subsection Fat Tony
+@display
+@group
+    Weight: Heavy
+    Attack: Melee
+    Special: Standard heavy fighter
+@end group
+@end display
+
+@subsection Grizzard Handler
+@display
+@group
+    Weight: Medium
+    Attack: Melee
+    Special: Standard medium fighter
+@end group
+@end display
+
+@subsection Harpy
+@display
+@group
+    Weight: Light
+    Attack: Melee (swoop attack)
+    Special: Can "fly" by repeatedly pressing UP
+@end group
+@end display
+
+The Harpy can maintain flight by repeatedly jumping! Her attack causes her
+to swoop down diagonally while performing a melee strike.
+
+@subsection Knight Guy
+@display
+@group
+    Weight: Heavy
+    Attack: Melee
+    Special: Armored fighter with standard melee
+@end group
+@end display
+
+@subsection Magical Faerie
+@display
+@group
+    Weight: Very Light
+    Attack: Ranged (small sparkle, ballistic)
+    Special: FREE FLIGHT - use UP/DOWN to move vertically, no guard action
+@end group
+@end display
+
+The Magical Faerie can fly freely up and down using the joystick! However,
+she cannot guard (pressing DOWN makes her fly down instead). Her ranged
+attack creates magical sparkles.
+
+@subsection Mystery Man
+@display
+@group
+    Weight: Medium
+    Attack: To Be Determined
+    Special: Reserved for future expansion
+@end group
+@end display
+
+@subsection Ninjish Guy
+@display
+@group
+    Weight: Light
+    Attack: Ranged (small shuriken, arrowshot)
+    Special: High jumps, fast movement
+@end group
+@end display
+
+The Ninjish Guy fires small, fast projectiles and can jump higher than
+most characters due to his light weight.
+
+@subsection Pork Chop
+@display
+@group
+    Weight: Heavy
+    Attack: Melee
+    Special: Standard heavy melee fighter
+@end group
+@end display
+
+@subsection Radish Goblin
+@display
+@group
+    Weight: Very Light
+    Attack: Melee
+    Special: Highest jumps, fastest movement, lowest health
+@end group
+@end display
+
+The Radish Goblin is the lightest character, giving him incredible mobility
+but making him more vulnerable to knockback.
+
+@subsection Robo Tito
+@display
+@group
+    Weight: Heavy
+    Attack: Ranged (medium bullet, arrowshot)
+    Special: No jumping! Moves vertically up to top of screen instead
+@end group
+@end display
+
+Robo Tito doesn't jump - instead, pressing UP makes him extend vertically
+upward, reaching all the way to the top of the screen! His sprite may remain
+visible even when not fully extended.
+
+@subsection Ursulo
+@display
+@group
+    Weight: Very Heavy
+    Attack: Melee
+    Special: Strongest knockback, hardest to knock back
+@end group
+@end display
+
+Ursulo is the heaviest character, making him extremely resistant to knockback
+but also giving him the lowest jump height.
+
+@subsection Veg Dog
+@display
+@group
+    Weight: Light
+    Attack: Melee
+    Special: Standard light melee fighter
+@end group
+@end display
+
+@page
+
+@c ============================================================
+@node Combat System
+@chapter Combat System
+
+@cindex combat
+@cindex fighting
+@cindex damage
+@cindex health
+
+@section Health and Damage
+
+@display
+@group
+    HEALTH BARS (Top of Screen)
+
+    ████████████████████  Player 1 (Blue)
+    ████████████████      Player 2 (Red)
+    ██████████████████    Player 3 (Yellow)
+    ████████████          Player 4 (Green)
+@end group
+@end display
+
+Each player's health is displayed as a coloured bar at the top of the screen:
+
+@itemize @bullet
+@item
+Starting health: 100 points
+@item
+Bar length scales to health (0-32 pixels)
+@item
+Colors match player colors
+@item
+Health bars update every 4 frames (1 player per frame for performance)
+@end itemize
+
+@section Damage System
+
+Damage varies by character and attack type:
+
+@table @strong
+@item Light Melee (10-15 damage)
+Radish Goblin, Veg Dog, Ninjish Guy
+
+@item Medium Melee (15-20 damage)
+Pork Chop, Dragonet, Grizzard Handler, Harpy
+
+@item Heavy Melee (20-25 damage)
+Knight Guy, Fat Tony, Ursulo, Bernie
+
+@item Small Ranged (8-12 damage)
+Ninjish Guy, Magical Faerie
+
+@item Medium Ranged (12-18 damage)
+Robo Tito, Curling Sweeper
+
+@item Large Ranged (15-22 damage)
+EXO Pilot
+@end table
+
+@section Victory Conditions
+
+@display
+@group
+                    PLAYER 2 WINS!
+
+                      [Winner]
+                     /        \
+                    VICTORY!
+@end group
+@end display
+
+The last player with health remaining wins!
+
+@itemize @bullet
+@item
+When your health reaches 0, you are eliminated
+@item
+Your sprite disappears from the playfield
+@item
+In 4-player mode, battle continues until only one remains
+@item
+Winner is displayed with their player number and character
+@end itemize
+
+@page
+
+@c ============================================================
+@node Game Modes
+@chapter Game Modes
+
+@cindex game modes
+@cindex difficulty
+
+ChaosFight offers multiple ways to play:
+
+@section Two-Player Battle
+
+@display
+@group
+    [Player 1]              [Player 2]
+       (Blue)                 (Red)
+@end group
+@end display
+
+Classic one-on-one combat. Each player selects a character and fights until
+one is victorious.
+
+@section Four-Player Chaos
+
+@display
+@group
+    [P1]    [P2]    [P3]    [P4]
+    Blue    Red    Yellow  Green
+@end group
+@end display
+
+Requires Quadtari adapter. All four players battle simultaneously in a
+free-for-all! Last player standing wins.
+
+@strong{Note:} Collision detection and health bar updates are spread across
+multiple frames in 4-player mode to maintain smooth performance:
+
+@itemize @bullet
+@item
+Health bars update 1 per frame (cycle: P1, P2, P3, P4)
+@item
+Collision checks spread across 3 frames:
+@itemize @minus
+@item Frame 0: P1 vs P2, P1 vs P3
+@item Frame 1: P1 vs P4, P2 vs P3
+@item Frame 2: P2 vs P4, P3 vs P4
+@end itemize
+@end itemize
+
+@section Battle Arenas
+
+Select from multiple arenas during Level Select:
+
+@subsection Arena 1: Open Ground
+@display
+@group
+###########################################
+#                                         #
+#                                         #
+#                                         #
+#     [P1]                        [P2]    #
+#                                         #
+#==========================================#
+
+    Fig. B - Open Ground Arena
+@end group
+@end display
+
+Simple flat ground. Pure fighting with no obstacles.
+
+@subsection Arena 2: Platforms
+@display
+@group
+###########################################
+#                                         #
+#        =======       =======            #
+#                                         #
+#   [P1]         =====         [P2]       #
+#                                         #
+#==========================================#
+
+    Fig. C - Platform Arena
+@end group
+@end display
+
+Multiple platforms for vertical combat. Jump to higher ground for advantage!
+
+@subsection Arena 3: Pit
+@display
+@group
+###########################################
+#                                         #
+# [P1]                              [P2]  #
+#                                         #
+#        ==================               #
+#                                         #
+#==========================================#
+
+    Fig. D - Pit Arena
+@end group
+@end display
+
+Central pit creates dangerous terrain. Don't fall in!
+
+@page
+
+@c ============================================================
+@node Console Switches
+@chapter Console Switches
+
+@cindex console switches
+@cindex reset
+@cindex select
+@cindex difficulty
+
+The console switches provide additional game control:
+
+@section GAME RESET Switch
+
+@display
+@group
+    RESET
+    =====
+@end group
+@end display
+
+Pressing the RESET switch:
+
+@enumerate
+@item
+Returns to Character Selection screen
+@item
+Clears all player selections
+@item
+Re-detects controllers
+@item
+Resets all game state
+@end enumerate
+
+Use this to start a new game or change characters between matches.
+
+@section GAME SELECT Switch
+
+@display
+@group
+    SELECT
+    ======
+@end group
+@end display
+
+Pressing the SELECT switch:
+
+@enumerate
+@item
+Cycles through available game modes (if multiple modes)
+@item
+Re-detects controller configuration
+@item
+Can be used to refresh controller detection if players aren't responding
+@end enumerate
+
+@section TV TYPE Switch (COLOR/B&W)
+
+@display
+@group
+    COLOR <---> B&W
+@end group
+@end display
+
+@table @strong
+@item COLOR position
+Full color graphics with character-specific colors
+
+@item B&W position
+Adjusted colors for black & white television sets. Character colors remain
+distinct through brightness differences.
+@end table
+
+@section DIFFICULTY Switches
+
+@display
+@group
+    LEFT DIFFICULTY    RIGHT DIFFICULTY
+    (Player 1/3)       (Player 2/4)
+@end group
+@end display
+
+The difficulty switches affect gameplay:
+
+@table @strong
+@item Position A (Advanced)
+@itemize @bullet
+@item Shorter attack range (12 pixels vs 16 pixels)
+@item Slower movement speed (80% normal)
+@item Longer attack cooldown (20 frames vs 15 frames)
+@end itemize
+
+@item Position B (Beginner)
+@itemize @bullet
+@item Normal attack range (16 pixels)
+@item Normal movement speed
+@item Normal attack cooldown (15 frames)
+@end itemize
+@end table
+
+@strong{Controller Port Mapping:}
+@itemize @bullet
+@item LEFT DIFFICULTY affects Players 1 and 3
+@item RIGHT DIFFICULTY affects Players 2 and 4
+@end itemize
+
+@page
+
+@c ============================================================
+@node Tips and Strategies
+@chapter Tips and Strategies
+
+@cindex tips
+@cindex strategies
+@cindex tactics
+
+Master these techniques to become a ChaosFight champion!
+
+@section Basic Techniques
+
+@subsection Timing Your Attacks
+
+@display
+@group
+    ATTACK -----> <----- COOLDOWN ----> ATTACK
+      [==]         (wait)  xxxxxx         [==]
+@end group
+@end display
+
+@itemize @bullet
+@item
+Each attack has a cooldown period (15-20 frames)
+@item
+You cannot attack again until cooldown expires
+@item
+Watch for your character's animation to return to idle
+@item
+Don't spam the fire button - time your strikes!
+@end itemize
+
+@subsection Effective Guarding
+
+@display
+@group
+    INCOMING!                    GUARD!
+       -->o-->  [YOU]    vs.    -->o-->  {[YOU]}
+                 |                        BLOCKED!
+@end group
+@end display
+
+@itemize @bullet
+@item
+Guard lasts maximum 1 second
+@item
+Use it to block predictable attacks
+@item
+You're vulnerable immediately after guard ends
+@item
+Don't hold guard too long - you can't counterattack!
+@end itemize
+
+@subsection Spacing Control
+
+@display
+@group
+    BAD:  [YOU][ENEMY]     Too close! Easy to hit.
+    GOOD: [YOU]     [ENEMY] Maintain safe distance.
+@end group
+@end display
+
+@itemize @bullet
+@item
+Keep distance from melee fighters
+@item
+Close the gap against ranged fighters
+@item
+Use platforms to control engagement distance
+@item
+Retreat when health is low
+@end itemize
+
+@section Advanced Tactics
+
+@subsection Character Matchups
+
+@strong{Playing Melee vs Ranged:}
+@itemize @bullet
+@item
+Stay mobile - don't be a stationary target
+@item
+Use platforms to block projectiles
+@item
+Time your jumps to avoid shots
+@item
+Rush in after opponent fires (during cooldown)
+@end itemize
+
+@strong{Playing Ranged vs Melee:}
+@itemize @bullet
+@item
+Maintain maximum distance
+@item
+Fire and retreat
+@item
+Use knockback to keep opponent away
+@item
+Jump to higher platforms for safety
+@end itemize
+
+@subsection Weight Class Tactics
+
+@strong{Light Characters (Ninjish, Radish, Faerie):}
+@itemize @bullet
+@item
+Use superior mobility for hit-and-run attacks
+@item
+Jump frequently to avoid attacks
+@item
+Be careful - you take more knockback!
+@item
+Don't trade blows with heavy characters
+@end itemize
+
+@strong{Heavy Characters (Ursulo, Bernie, Knight):}
+@itemize @bullet
+@item
+Stand your ground - you're hard to knock back
+@item
+Use your weight advantage in close combat
+@item
+Don't chase fast opponents - let them come to you
+@item
+Control center stage
+@end itemize
+
+@subsection Arena-Specific Tactics
+
+@strong{Open Ground:}
+@itemize @bullet
+@item
+No hiding - stay alert!
+@item
+Circular movement keeps you safe
+@item
+Ranged characters have advantage
+@end itemize
+
+@strong{Platforms:}
+@itemize @bullet
+@item
+High ground advantage for ranged attacks
+@item
+Jump between platforms to escape
+@item
+Melee fighters: attack from below/above
+@end itemize
+
+@strong{Pit:}
+@itemize @bullet
+@item
+Don't get cornered in the pit!
+@item
+Control the edges
+@item
+Knock opponents into the pit
+@end itemize
+
+@subsection Four-Player Strategies
+
+@display
+@group
+         [P1]
+              \
+    [P4] ----  ---- [P2]
+              /
+         [P3]
+
+    Stay unpredictable in FFA!
+@end group
+@end display
+
+@itemize @bullet
+@item
+@strong{Avoid the center} - you'll be surrounded!
+@item
+@strong{Let others fight} - third-party while they're distracted
+@item
+@strong{Target the leader} - whoever has most health is the threat
+@item
+@strong{Stay mobile} - standing still means getting hit from multiple angles
+@item
+@strong{Use revenge attacks} - immediately counterattack whoever hit you
+@end itemize
+
+@section Character-Specific Tips
+
+@table @strong
+@item Bernie
+Use your dual-direction attack when surrounded. Your screen wrap is great
+for surprise attacks from above!
+
+@item Robo Tito
+Your vertical extension reaches the entire screen height. Use it to avoid
+ground attacks!
+
+@item Harpy
+Maintain flight by rapidly tapping UP. Swoop down for devastating diving attacks!
+
+@item Magical Faerie
+Your free flight makes you incredibly mobile, but remember you can't guard!
+Stay out of melee range.
+
+@item Curling Sweeper
+Your low projectile is hard to jump over. Fire and immediately jump yourself
+to create a two-level attack!
+
+@item EXO Pilot
+Your long-range missiles are perfect for cross-screen combat. Keep maximum
+distance!
+@end table
+
+@page
+
+@c ============================================================
+@node Technical Information
+@chapter Technical Information
+
+@cindex technical information
+@cindex specifications
+
+@section System Requirements
+
+@table @strong
+@item Console
+Atari 2600 Video Computer System (NTSC, PAL, or SECAM)
+
+@item Cartridge Type
+64K bank-switched (F8SC or compatible)
+
+@item RAM
+Standard 128 bytes + SuperChip 128 bytes
+
+@item Controllers
+1-4 Joystick Controllers (see @ref{Controller Configuration})
+
+@item Display
+Color or Black & White television
+
+@item Optional
+Quadtari adapter for 4-player mode
+@end table
+
+@section Technical Specifications
+
+@subsection ROM Organization
+
+@display
+@group
+    Bank 1-16: Game code and data (16 × 4K banks)
+    Bank Layout:
+      1-3:   Title sequence, preambles, character select
+      4-8:   Gameplay routines (combat, physics, rendering)
+      9-12:  Character definitions and animation data
+      13-16: Level data, music data
+@end group
+@end display
+
+@subsection Memory Usage
+
+@display
+@group
+    STANDARD RAM (128 bytes):
+      a-z: 26 variables (general purpose)
+
+    SUPERCHIP RAM (128 bytes):
+      var0-var47: Available for variables
+      var48-var127: Playfield data (varies by pfres)
+
+    PLAYFIELD RESOLUTION:
+      Title/Preamble screens: pfres=32 (32×32 pixels)
+      Gameplay screens: pfres=8 (32×8 pixels)
+@end group
+@end display
+
+@subsection Graphics System
+
+@table @strong
+@item Player Sprites
+2 hardware sprites (8 pixels wide × 16 pixels tall)
+@itemize @bullet
+@item Player 1: Blue
+@item Player 2: Red
+@end itemize
+
+@item Missile Sprites
+2 hardware missile sprites (variable width)
+@itemize @bullet
+@item Used for Players 3 & 4 in Quadtari mode
+@item Used for ranged attack projectiles in 2-player mode
+@end itemize
+
+@item Ball Sprite
+1 hardware ball sprite (variable width)
+@itemize @bullet
+@item Used for Player 4 in Quadtari mode
+@item Used for additional projectiles
+@end itemize
+
+@item Playfield
+32 pixels wide × up to 192 scanlines
+@itemize @bullet
+@item Color-per-row support on title screens
+@item Standard two-color mode during gameplay
+@end itemize
+@end table
+
+@subsection Performance Optimizations
+
+ChaosFight uses frame budgeting to maintain consistent 60 FPS (NTSC) / 50 FPS (PAL):
+
+@enumerate
+@item
+@strong{Health Bar Updates:} 1 player per frame (4-frame cycle)
+
+@item
+@strong{Collision Detection:} Spread across 3 frames in 4-player mode
+@itemize @bullet
+@item Frame 0: Check 2 collision pairs
+@item Frame 1: Check 2 collision pairs
+@item Frame 2: Check 2 collision pairs
+@end itemize
+
+@item
+@strong{Missile Collisions:} Alternating frames check different missiles
+
+@item
+@strong{Animation Updates:} Characters update on staggered frames
+@end enumerate
+
+This ensures game logic never exceeds the overscan period (~1950 CPU cycles
+on NTSC, ~1630 cycles on PAL).
+
+@subsection Audio System
+
+@table @strong
+@item Sound Channels
+2 channels (TIA AUDC0/AUDC1)
+@itemize @bullet
+@item Channel 0: Music (title and preamble screens only)
+@item Channel 1: Sound effects (gameplay only)
+@end itemize
+
+@item Music Format
+@itemize @bullet
+@item Converted from MuseScore (MSCZ) to MIDI to TIA data
+@item Stored as data tables: instrument, frequency, duration
+@item Three songs: AtariToday, Interworldly, Chaotica
+@end itemize
+
+@item Sound Effects
+@itemize @bullet
+@item "Chirp" for character selection
+@item Attack sounds (melee and ranged)
+@item Impact sounds
+@item Victory fanfare
+@end itemize
+@end table
+
+@page
+
+@c ============================================================
+@node Troubleshooting
+@chapter Troubleshooting
+
+@cindex troubleshooting
+@cindex problems
+@cindex issues
+
+@section Common Issues
+
+@subsection Controllers Not Responding
+
+@strong{Problem:} Joystick inputs are not detected.
+
+@strong{Solutions:}
+@enumerate
+@item
+Press the GAME SELECT switch to re-detect controllers
+
+@item
+Check that controllers are firmly connected to the correct ports
+
+@item
+Try pressing a fire button at the Title screen to trigger detection
+
+@item
+If using Quadtari, ensure it's properly connected and powered
+@end enumerate
+
+@subsection Four Players Not Working
+
+@strong{Problem:} Only 2 players are active despite Quadtari being connected.
+
+@strong{Solutions:}
+@enumerate
+@item
+Verify your Quadtari adapter is compatible with Atari 2600
+
+@item
+Press GAME SELECT to re-detect the Quadtari
+
+@item
+Ensure all four controllers are connected to the Quadtari
+
+@item
+Note: Quadtari is detected during Title screen - don't skip it too quickly!
+@end enumerate
+
+@subsection Screen Flicker or Slowdown
+
+@strong{Problem:} Graphics appear choppy or unstable.
+
+@strong{Solutions:}
+@enumerate
+@item
+This is normal in 4-player mode due to hardware limitations
+
+@item
+Health bars and collision detection are intentionally spread across frames
+
+@item
+Ensure your console is properly ventilated
+
+@item
+Clean the cartridge contacts with isopropyl alcohol
+@end enumerate
+
+@subsection Characters Look Wrong
+
+@strong{Problem:} Character colors appear incorrect.
+
+@strong{Solutions:}
+@enumerate
+@item
+Check the COLOR/B&W switch - it may be set to B&W
+
+@item
+Adjust your TV's color/tint settings
+
+@item
+Verify you have the correct ROM version (NTSC/PAL/SECAM) for your console
+@end enumerate
+
+@subsection Game Won't Start from Multicart
+
+@strong{Problem:} ChaosFight doesn't launch from multicart menu.
+
+@strong{Solutions:}
+@enumerate
+@item
+Ensure you have the correct ROM version for your multicart
+
+@item
+Try loading a different ROM first, then load ChaosFight
+
+@item
+Some multicarts require specific bank-switching types - consult documentation
+
+@item
+Verify the ROM file is not corrupted (check MD5 checksum if available)
+@end enumerate
+
+@section Getting Help
+
+If you continue to experience issues:
+
+@enumerate
+@item
+Check for ROM updates at @url{https://interworldly.com}
+
+@item
+Consult the AtariAge forums at @url{https://atariage.com}
+
+@item
+Contact Interworldly Adventuring support
+@end enumerate
+
+@page
+
+@c ============================================================
+@node Credits
+@chapter Credits
+
+@cindex credits
+@cindex acknowledgments
+
+@section Development Team
+
+@strong{ChaosFight} was developed by:
+
+@table @strong
+@item Programming
+Bruce-Robert Pocock
+
+@item Graphics
+Bruce-Robert Pocock
+
+@item Music
+Bruce-Robert Pocock
+
+@item Game Design
+Bruce-Robert Pocock
+
+@item Testing
+[Playtesters TBD]
+@end table
+
+@section Special Thanks
+
+@itemize @bullet
+@item
+Fred @qq{batari} Quimby (batariBasic compiler)
+@item
+Albert Yarusso (AtariAge)
+@item
+Ryan Witmer
+@item
+Lewis @qq{Muddyfunster} Hill
+@item
+Blake @qq{SmittyB} Smith
+@item
+Zephyr Pocock
+@item
+Philip @qq{Splendidnut} Blackman
+@item
+Vladimir @qq{vhzc} Zúñiga
+@item
+AtariAge community
+@item
+Random Terrain (batariBasic documentation)
+@end itemize
+
+@section Tools Used
+
+ChaosFight was created with:
+
+@itemize @bullet
+@item
+@strong{batariBasic} - High-level BASIC compiler for Atari 2600
+@item
+@strong{DASM} - Macro assembler
+@item
+@strong{SkylineTool} - Asset conversion toolkit (Common Lisp)
+@item
+@strong{GIMP} - Graphics editing
+@item
+@strong{MuseScore} - Music composition
+@item
+@strong{Emacs} - Text editing
+@item
+@strong{Stella} - Atari 2600 emulator for testing
+@end itemize
+
+@section Copyright and License
+
+@display
+@group
+ChaosFight
+Copyright @copyright{} 2025 Interworldly Adventuring, LLC.
+All rights reserved.
+
+Published by AtariAge
+@url{https://atariage.com}
+@end group
+@end display
+
+This game is provided for personal entertainment use. Distribution of ROM
+images without permission is prohibited.
+
+@section Version Information
+
+@display
+@group
+    Version: 1.0
+    Build Date: 2025-10-27
+    ROM Size: 64K
+    Compatibility: NTSC/PAL/SECAM
+@end group
+@end display
+
+@page
+
+@node Index
+@unnumbered Index
+
+@printindex cp
+
+@bye

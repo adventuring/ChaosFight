@@ -26,26 +26,38 @@ CharacterSelect1
 
 CharacterSelect1Loop
           rem Quadtari controller multiplexing:
-          rem On even frames (QtController=0): handle controllers 0 and 1
-          rem On odd frames (QtController=1): handle controllers 2 and 3 (if Quadtari detected)
+          rem On even frames (qtcontroller=0): handle controllers 0 and 1
+          rem On odd frames (qtcontroller=1): handle controllers 2 and 3 (if Quadtari detected)
           
-          if QtController then goto HandleQuadtariControllers
+          if qtcontroller then goto HandleQuadtariControllers
           
           rem Handle Player 1 input (joy0 on even frames)
           if joy0left then PlayerChar(0) = PlayerChar(0) - 1 : if PlayerChar(0) < 0 then PlayerChar(0) = 15 : PlayerLocked(0) = 0
           if joy0right then PlayerChar(0) = PlayerChar(0) + 1 : if PlayerChar(0) > 15 then PlayerChar(0) = 0 : PlayerLocked(0) = 0
           if joy0up then PlayerLocked(0) = 0  : rem Unlock by moving up
-          if joy0down then PlayerLocked(0) = 0 : rem Unlock by moving down
-          if joy0fire then PlayerLocked(0) = 1
+          if joy0down && !joy0fire then PlayerLocked(0) = 0 : rem Unlock by moving down (without fire)
+          if joy0fire then
+                    if joy0down then
+                              PlayerLocked(0) = 2  : rem Locked with handicap (75% health)
+                    else
+                              PlayerLocked(0) = 1  : rem Locked normal (100% health)
+                    endif
+          endif
 
           rem Handle Player 2 input (joy1 on even frames)
           if joy1left then PlayerChar(1) = PlayerChar(1) - 1 : if PlayerChar(1) < 0 then PlayerChar(1) = 15 : PlayerLocked(1) = 0
           if joy1right then PlayerChar(1) = PlayerChar(1) + 1 : if PlayerChar(1) > 15 then PlayerChar(1) = 0 : PlayerLocked(1) = 0
           if joy1up then PlayerLocked(1) = 0  : rem Unlock by moving up
-          if joy1down then PlayerLocked(1) = 0 : rem Unlock by moving down
-          if joy1fire then PlayerLocked(1) = 1
+          if joy1down && !joy1fire then PlayerLocked(1) = 0 : rem Unlock by moving down (without fire)
+          if joy1fire then
+                    if joy1down then
+                              PlayerLocked(1) = 2  : rem Locked with handicap (75% health)
+                    else
+                              PlayerLocked(1) = 1  : rem Locked normal (100% health)
+                    endif
+          endif
           
-          QtController = 1  rem Switch to odd frame mode for next iteration
+          qtcontroller = 1  rem Switch to odd frame mode for next iteration
           goto HandleInputComplete
 
 HandleQuadtariControllers
@@ -54,18 +66,32 @@ HandleQuadtariControllers
                     if joy0left then PlayerChar(2) = PlayerChar(2) - 1 : if PlayerChar(2) < 0 then PlayerChar(2) = 15 : PlayerLocked(2) = 0
                     if joy0right then PlayerChar(2) = PlayerChar(2) + 1 : if PlayerChar(2) > 15 then PlayerChar(2) = 0 : PlayerLocked(2) = 0
                     if joy0up then PlayerLocked(2) = 0  : rem Unlock by moving up
-                    if joy0down then PlayerLocked(2) = 0 : rem Unlock by moving down
-                    if joy0fire then PlayerLocked(2) = 1
+                    if joy0down && !joy0fire then PlayerLocked(2) = 0 : rem Unlock by moving down (without fire)
+                    if joy0fire then
+                              if joy0down then
+                                        PlayerLocked(2) = 2  : rem Locked with handicap (75% health)
+                              else
+                                        PlayerLocked(2) = 1  : rem Locked normal (100% health)
+                              endif
+                    endif
+          endif
 
           rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
           if QuadtariDetected then
                     if joy1left then PlayerChar(3) = PlayerChar(3) - 1 : if PlayerChar(3) < 0 then PlayerChar(3) = 15 : PlayerLocked(3) = 0
                     if joy1right then PlayerChar(3) = PlayerChar(3) + 1 : if PlayerChar(3) > 15 then PlayerChar(3) = 0 : PlayerLocked(3) = 0
                     if joy1up then PlayerLocked(3) = 0  : rem Unlock by moving up
-                    if joy1down then PlayerLocked(3) = 0 : rem Unlock by moving down
-                    if joy1fire then PlayerLocked(3) = 1
+                    if joy1down && !joy1fire then PlayerLocked(3) = 0 : rem Unlock by moving down (without fire)
+                    if joy1fire then
+                              if joy1down then
+                                        PlayerLocked(3) = 2  : rem Locked with handicap (75% health)
+                              else
+                                        PlayerLocked(3) = 1  : rem Locked normal (100% health)
+                              endif
+                    endif
+          endif
           
-          QtController = 0  rem Switch back to even frame mode for next iteration
+          qtcontroller = 0  rem Switch back to even frame mode for next iteration
 
 HandleInputComplete
 
@@ -200,6 +226,32 @@ DrawPlayerNumber1
 
           rem Update character select animations
 UpdateCharacterSelectAnimations
+          rem Check if any player is holding DOWN (for handicap preview)
+          rem If so, freeze their character in "recovery from far fall" pose (animation state 9)
+          dim HandicapMode = temp1
+          HandicapMode = 0
+          
+          rem Check each player for DOWN held (even frame for P1/P2)
+          if !qtcontroller then
+                    if joy0down then HandicapMode = HandicapMode | 1  : rem P1 handicap flag
+                    if joy1down then HandicapMode = HandicapMode | 2  : rem P2 handicap flag
+          endif
+          
+          rem Check each player for DOWN held (odd frame for P3/P4)
+          if qtcontroller && QuadtariDetected then
+                    if joy0down then HandicapMode = HandicapMode | 4  : rem P3 handicap flag
+                    if joy1down then HandicapMode = HandicapMode | 8  : rem P4 handicap flag
+          endif
+          
+          rem If any player is holding down, set animation to "recovery" pose
+          if HandicapMode then
+                    CharSelectAnimState = 9  : rem Animation state 9 = "Recovering to standing"
+                    CharSelectAnimFrame = 0   : rem First frame of recovery animation
+                    rem Don't update timer or frame - freeze the animation
+                    return
+          endif
+          
+          rem Normal animation updates (only when no handicap mode active)
           rem Increment animation timer
           CharSelectAnimTimer = CharSelectAnimTimer + 1
           

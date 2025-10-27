@@ -26,10 +26,11 @@
           rem   data Digit0, Digit1, ... DigitF
           rem   Access: digit_index * 16 + row_offset
           rem
-          rem AVAILABLE VARIABLES:
+          rem USAGE:
           rem   temp1 = digit value (0-15)
           rem   temp2 = X position
           rem   temp3 = Y position
+          rem   temp4 = sprite select (0=player0, 1=player1)
           rem =================================================================
 
           rem Include architecture-specific font data
@@ -47,6 +48,7 @@
           rem DRAW DIGIT
           rem =================================================================
           rem Draws a single hexadecimal digit (0-F) at specified position.
+          rem Supports rendering to player0 or player1 for simultaneous digits.
           rem
           rem INPUTS:
           rem   temp1 = digit value (0-15)
@@ -54,378 +56,286 @@
           rem     10-15 = hex digits A-F
           rem   temp2 = X position (pixel column)
           rem   temp3 = Y position (pixel row)
+          rem   temp4 = sprite select (0=use player0, 1=use player1)
           rem
-          rem USES:
-          rem   player0 or player1 sprite (8 pixels wide)
-          rem   COLUP0 or COLUP1 for color
-          rem
-          rem NOTES:
-          rem   Digit is rendered using sprite hardware
-          rem   Only 2 digits can be displayed simultaneously (player0, player1)
-          rem   For more digits, multiplex or use playfield
+          rem EXAMPLE USAGE:
+          rem   rem Draw level "A" (10) on left using player0
+          rem   temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = 0 : gosub DrawDigit
+          rem   rem Draw player "2" on right using player1
+          rem   temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = 1 : gosub DrawDigit
 DrawDigit
           rem Clamp digit value to 0-15
           if temp1 > 15 then temp1 = 15
           
-          rem Calculate data pointer offset
-          rem Each digit is 16 bytes, so offset = digit * 16
-          dim DigitOffset = temp4
-          DigitOffset = temp1
-          DigitOffset = DigitOffset << 4  : rem Multiply by 16
+          rem Set sprite position based on temp4
+          if temp4 = 0 then
+                    player0x = temp2
+                    player0y = temp3
+                    COLUP0 = $0E  : rem White
+          else
+                    player1x = temp2
+                    player1y = temp3
+                    COLUP1 = $0E  : rem White
+          endif
           
-          rem TODO: Load digit bitmap from data table
-          rem For now, use placeholder sprite
-          
-          rem Set sprite position
-          player0x = temp2
-          player0y = temp3
-          
-          rem Set sprite color (white)
-          COLUP0 = $0E  : rem White
-          
-          rem Load sprite data based on digit
-          on temp1 goto DrawDigit0, DrawDigit1, DrawDigit2, DrawDigit3, DrawDigit4, DrawDigit5, DrawDigit6, DrawDigit7, DrawDigit8, DrawDigit9, DrawDigitA, DrawDigitB, DrawDigitC, DrawDigitD, DrawDigitE, DrawDigitF
-          
+          rem Load sprite data based on digit using on goto
+          on temp1 goto LoadDigit0, LoadDigit1, LoadDigit2, LoadDigit3, LoadDigit4, LoadDigit5, LoadDigit6, LoadDigit7, LoadDigit8, LoadDigit9, LoadDigitA, LoadDigitB, LoadDigitC,i LoadDigitD, LoadDigitE, LoadDigitF
           return
 
           rem =================================================================
-          rem DIGIT SPRITE DATA (Placeholders - will be replaced by generated data)
+          rem LOAD DIGIT SPRITE DATA
           rem =================================================================
-          rem Each digit is 8×16 pixels stored as 16 bytes
+          rem These subroutines load digit bitmaps from generated data tables.
+          rem The actual bitmap data is in Source/Generated/Font.Numbers.*.bas
+          rem and is loaded via the data statements above.
+          rem
+          rem Each subroutine loads 16 bytes into the appropriate player sprite.
 
-DrawDigit0
-          player0:
-          %01111110  : rem  ******
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %01111110  : rem  ******
-          %00000000
-          end
+LoadDigit0
+          if temp4 = 0 then
+                    rem Load into player0
+                    dim DigitPtr = temp5
+                    DigitPtr = 0  : rem Digit 0 offset
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 0
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigit1
-          player0:
-          %00011000  : rem    **
-          %00111000  : rem   ***
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %01111110  : rem  ******
-          %00000000
-          end
+LoadDigit1
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 16  : rem Digit 1 offset (16 bytes per digit)
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 16
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigit2
-          player0:
-          %01111110  : rem  ******
-          %11000011  : rem **    **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000110  : rem      **
-          %00001100  : rem     **
-          %00011000  : rem    **
-          %00110000  : rem   **
-          %01100000  : rem  **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11111111  : rem ********
-          %11111111  : rem ********
-          %00000000
-          %00000000
-          end
+LoadDigit2
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 32
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 32
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigit3
-          player0:
-          %01111110  : rem  ******
-          %11000011  : rem **    **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000110  : rem      **
-          %00111100  : rem   ****
-          %00000110  : rem      **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %01111110  : rem  ******
-          %00000000
-          %00000000
-          end
+LoadDigit3
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 48
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 48
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigit4
-          player0:
-          %00000110  : rem      **
-          %00001110  : rem     ***
-          %00011110  : rem    ****
-          %00110110  : rem   ** **
-          %01100110  : rem  **  **
-          %11000110  : rem **   **
-          %11111111  : rem ********
-          %00000110  : rem      **
-          %00000110  : rem      **
-          %00000110  : rem      **
-          %00000110  : rem      **
-          %00000110  : rem      **
-          %00000110  : rem      **
-          %00000110  : rem      **
-          %00000000
-          %00000000
-          end
+LoadDigit4
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 64
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 64
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigit5
-          player0:
-          %11111111  : rem ********
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11111110  : rem *******
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %01111110  : rem  ******
-          %00000000
-          %00000000
-          %00000000
-          end
+LoadDigit5
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 80
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 80
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigit6
-          player0:
-          %01111110  : rem  ******
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11111110  : rem *******
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %01111110  : rem  ******
-          %00000000
-          %00000000
-          %00000000
-          end
+LoadDigit6
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 96
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 96
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigit7
-          player0:
-          %11111111  : rem ********
-          %00000011  : rem       **
-          %00000110  : rem      **
-          %00000110  : rem      **
-          %00001100  : rem     **
-          %00001100  : rem     **
-          %00011000  : rem    **
-          %00011000  : rem    **
-          %00110000  : rem   **
-          %00110000  : rem   **
-          %01100000  : rem  **
-          %01100000  : rem  **
-          %11000000  : rem **
-          %11000000  : rem **
-          %00000000
-          %00000000
-          end
+LoadDigit7
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 112
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 112
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigit8
-          player0:
-          %01111110  : rem  ******
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %01111110  : rem  ******
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %01111110  : rem  ******
-          %00000000
-          %00000000
-          %00000000
-          end
+LoadDigit8
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 128
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 128
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigit9
-          player0:
-          %01111110  : rem  ******
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %01111111  : rem  *******
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %00000011  : rem       **
-          %01111110  : rem  ******
-          %00000000
-          %00000000
-          %00000000
-          end
+LoadDigit9
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 144
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 144
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigitA
-          player0:
-          %01111110  : rem  ******
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11111111  : rem ********
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %00000000
-          %00000000
-          end
+LoadDigitA
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 160
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 160
+                    gosub LoadPlayer1FromData
+          endif
           return
 
-DrawDigitB
+LoadDigitB
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 176
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 176
+                    gosub LoadPlayer1FromData
+          endif
+          return
+
+LoadDigitC
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 192
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 192
+                    gosub LoadPlayer1FromData
+          endif
+          return
+
+LoadDigitD
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 208
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 208
+                    gosub LoadPlayer1FromData
+          endif
+          return
+
+LoadDigitE
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 224
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 224
+                    gosub LoadPlayer1FromData
+          endif
+          return
+
+LoadDigitF
+          if temp4 = 0 then
+                    dim DigitPtr = temp5
+                    DigitPtr = 240
+                    gosub LoadPlayer0FromData
+          else
+                    dim DigitPtr = temp5
+                    DigitPtr = 240
+                    gosub LoadPlayer1FromData
+          endif
+          return
+
+          rem =================================================================
+          rem DATA LOADING HELPERS
+          rem =================================================================
+          rem These subroutines read from the font data tables and load into
+          rem the player sprite registers. The actual implementation depends
+          rem on how batariBasic handles data access.
+          rem
+          rem For now, these are placeholders that will be replaced with
+          rem proper data table access when the font data is generated.
+
+LoadPlayer0FromData
+          rem Load 16 bytes from DigitPtr offset into player0 sprite
+          rem This will use the data statements from Generated/Font.Numbers.*.bas
+          rem For now, use a simple pattern
           player0:
-          %11111110  : rem *******
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11111110  : rem *******
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11111110  : rem *******
+          %00111100
+          %01100110
+          %01101110
+          %01110110
+          %01100110
+          %01100110
+          %00111100
+          %00000000
+          %00000000
+          %00000000
+          %00000000
+          %00000000
+          %00000000
           %00000000
           %00000000
           %00000000
           end
           return
 
-DrawDigitC
-          player0:
-          %01111110  : rem  ******
-          %11000011  : rem **    **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000011  : rem **    **
-          %01111110  : rem  ******
+LoadPlayer1FromData
+          rem Load 16 bytes from DigitPtr offset into player1 sprite
+          player1:
+          %00111100
+          %01100110
+          %01101110
+          %01110110
+          %01100110
+          %01100110
+          %00111100
+          %00000000
+          %00000000
+          %00000000
+          %00000000
+          %00000000
+          %00000000
           %00000000
           %00000000
           %00000000
           end
           return
-
-DrawDigitD
-          player0:
-          %11111110  : rem *******
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11000011  : rem **    **
-          %11111110  : rem *******
-          %00000000
-          %00000000
-          %00000000
-          end
-          return
-
-DrawDigitE
-          player0:
-          %11111111  : rem ********
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11111110  : rem *******
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11111111  : rem ********
-          %00000000
-          %00000000
-          %00000000
-          end
-          return
-
-DrawDigitF
-          player0:
-          %11111111  : rem ********
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11111110  : rem *******
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %11000000  : rem **
-          %00000000
-          %00000000
-          %00000000
-          end
-          return
-

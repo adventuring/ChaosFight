@@ -44,11 +44,31 @@ GameLoop
           PlayerState[2] = 1 : rem Player 3 facing right
           PlayerState[3] = 0 : rem Player 4 facing left
           
-          rem Initialize player health
-          PlayerHealth[0] = 100
-          PlayerHealth[1] = 100
-          PlayerHealth[2] = 100
-          PlayerHealth[3] = 100
+          rem Initialize player health (apply handicap if selected)
+          rem PlayerLocked value: 0=unlocked, 1=normal (100% health), 2=handicap (75% health)
+          if PlayerLocked[0] = 2 then
+                    PlayerHealth[0] = 75  : rem 25% handicap
+          else
+                    PlayerHealth[0] = 100
+          endif
+          
+          if PlayerLocked[1] = 2 then
+                    PlayerHealth[1] = 75  : rem 25% handicap
+          else
+                    PlayerHealth[1] = 100
+          endif
+          
+          if PlayerLocked[2] = 2 then
+                    PlayerHealth[2] = 75  : rem 25% handicap
+          else
+                    PlayerHealth[2] = 100
+          endif
+          
+          if PlayerLocked[3] = 2 then
+                    PlayerHealth[3] = 75  : rem 25% handicap
+          else
+                    PlayerHealth[3] = 100
+          endif
           
           rem Initialize player timers
           PlayerTimers[0] = 0
@@ -82,7 +102,7 @@ GameLoop
           frame = 0
 
           rem Initialize game state
-          gameState = 0 : rem 0 = normal play, 1 = paused
+          GameState = 0 : rem 0 = normal play, 1 = paused
 
           rem Load level data
           gosub LoadLevel

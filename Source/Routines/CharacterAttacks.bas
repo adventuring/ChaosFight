@@ -11,9 +11,9 @@ rem   3. Handles any character-specific attack logic
 
 rem Input for all attack routines:
 rem   temp1 = attacker player index (0-3)
-rem   temp2 = attacker X position
-rem   temp3 = attacker Y position
-rem   temp4 = attacker facing direction (0=left, 1=right)
+rem
+rem All other needed data (X, Y, facing direction, etc.) is looked up
+rem from the player arrays using temp1 as the index
 
 rem =================================================================
 rem BERNIE (Character 0) - Melee Attack (Both Directions)
@@ -171,15 +171,17 @@ rem =================================================================
 rem CHARACTER ATTACK DISPATCHER
 rem =================================================================
 rem Routes to the appropriate character attack subroutine based on character type
-rem Input: temp1 = attacker player index (0-3)
-rem        temp2 = attacker X position
-rem        temp3 = attacker Y position
-rem        temp4 = attacker facing direction (0=left, 1=right)
+rem
+rem INPUT:
+rem   temp1 = attacker player index (0-3)
+rem
+rem All character attack routines will look up PlayerX[temp1], PlayerY[temp1],
+rem PlayerState[temp1], etc. as needed.
 
 DispatchCharacterAttack
   rem Get character type for this player using direct array access
   rem temp1 contains player index (0-3)
-  temp4 = PlayerChar[temp1]
-  on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, GrizzardHandlerAttack, HarpyAttack, KnightGuyAttack, MagicalFaerieAttack, MysteryManAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
+  temp2 = PlayerChar[temp1]
+  on temp2 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, GrizzardHandlerAttack, HarpyAttack, KnightGuyAttack, MagicalFaerieAttack, MysteryManAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
   rem Default to Bernie attack if invalid character
   goto BernieAttack

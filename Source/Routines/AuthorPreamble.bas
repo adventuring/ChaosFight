@@ -33,28 +33,30 @@ AuthorPreamble
           rem Load author artwork
           gosub LoadAuthorPlayfield
           
-          rem TODO: Start "Interworldly" music
+          rem Start "Interworldly" music (placeholder - will be implemented with music system)
           rem gosub PlayMusicInterworldly
+          MusicPlaying = 1
           
 AuthorPreambleLoop
-          rem Check for button press on any controller
+          rem Check for button press on any controller to skip
           if joy0fire || joy1fire then goto AuthorPreambleComplete
           if QuadtariDetected then
                     if joy2fire || joy3fire then goto AuthorPreambleComplete
           endif
           
-          rem TODO: Update music
+          rem Update music (placeholder - will be implemented with music system)
           rem gosub UpdateMusic
           
-          rem Check timing: music complete + 30 frames (0.5s)
-          rem TODO: Check if MusicPlaying = 0
-          rem if PreambleTimer > 30 && !MusicPlaying then goto AuthorPreambleComplete
+          rem Auto-advance after 5 seconds (300 frames)
+          rem This simulates: music complete + 30 frames (0.5s)
+          rem When music system is implemented, check: if PreambleTimer > 30 && !MusicPlaying
+          if PreambleTimer > 300 then
+                    MusicPlaying = 0
+                    goto AuthorPreambleComplete
+          endif
           
           rem Increment timer
           PreambleTimer = PreambleTimer + 1
-          
-          rem Temporary: auto-advance after 5 seconds (300 frames)
-          if PreambleTimer > 300 then goto AuthorPreambleComplete
           
           drawscreen
           goto AuthorPreambleLoop

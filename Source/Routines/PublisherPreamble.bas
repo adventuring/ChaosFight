@@ -33,28 +33,30 @@ PublisherPreamble
           rem Load publisher artwork
           gosub LoadPublisherPlayfield
           
-          rem TODO: Start "AtariToday" music
+          rem Start "AtariToday" music (placeholder - will be implemented with music system)
           rem gosub PlayMusicAtariToday
+          MusicPlaying = 1
           
 PublisherPreambleLoop
-          rem Check for button press on any controller
+          rem Check for button press on any controller to skip
           if joy0fire || joy1fire then goto PublisherPreambleComplete
           if QuadtariDetected then
                     if joy2fire || joy3fire then goto PublisherPreambleComplete
           endif
           
-          rem TODO: Update music
+          rem Update music (placeholder - will be implemented with music system)
           rem gosub UpdateMusic
           
-          rem Check timing: music complete + 30 frames (0.5s)
-          rem TODO: Check if MusicPlaying = 0
-          rem if PreambleTimer > 30 && !MusicPlaying then goto PublisherPreambleComplete
+          rem Auto-advance after 5 seconds (300 frames)
+          rem This simulates: music complete + 30 frames (0.5s)
+          rem When music system is implemented, check: if PreambleTimer > 30 && !MusicPlaying
+          if PreambleTimer > 300 then
+                    MusicPlaying = 0
+                    goto PublisherPreambleComplete
+          endif
           
           rem Increment timer
           PreambleTimer = PreambleTimer + 1
-          
-          rem Temporary: auto-advance after 5 seconds (300 frames)
-          if PreambleTimer > 300 then goto PublisherPreambleComplete
           
           drawscreen
           goto PublisherPreambleLoop

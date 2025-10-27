@@ -1,13 +1,13 @@
-          rem ChaosFight - Source/Routines/LevelSelect.bas
+          rem ChaosFight - Source/Routines/LevelSelect1.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-LevelSelect
+LevelSelect1
           dim SelectedLevel = a
           SelectedLevel = 0
           
           COLUBK = ColBlue(8)
           
-LevelSelectLoop
+LevelSelect1Loop
           if joy0left then SelectedLevel = SelectedLevel - 1 : if SelectedLevel < 0 then SelectedLevel = NumLevels
           if joy0right then SelectedLevel = SelectedLevel + 1 : if SelectedLevel > NumLevels then SelectedLevel = 0
           
@@ -58,10 +58,10 @@ LevelSelectLoop
                     %00000000
                     end
           
-          if joy0fire then goto StartGame
+          if joy0fire then goto StartGame1
           
           drawscreen
-          goto LevelSelectLoop
+          goto LevelSelect1Loop
 
-StartGame
+StartGame1
           return

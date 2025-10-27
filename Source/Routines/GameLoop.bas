@@ -2,57 +2,56 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 GameLoop
+          rem Player state flags:
+          rem Bit 0: Attacking (1 = attacking, 0 = not)
+          rem Bit 1: Guarding (1 = guarding, 0 = not)
+          rem Bit 2: Jumping (1 = jumping, 0 = not)
+          rem Bit 3: Recovery (1 = in recovery, 0 = normal)
+          rem Bits 4-7: Animation state (0-15 for different animation states)
+
+          rem Animation states enumeration:
+          rem 0 = Standing still facing right
+          rem 1 = Idle (resting)
+          rem 2 = Standing still guarding right
+          rem 3 = Walking/running right
+          rem 4 = Coming to stop from running right
+          rem 5 = Taking a hit (hurt)
+          rem 6 = Falling backwards (facing right while moving left)
+          rem 7 = Falling down
+          rem 8 = Fallen down
+          rem 9 = Recovering to standing from fallen
+          rem 10 = Jumping
+          rem 11 = Falling after jumping/walking off cliff
+          rem 12 = Landing from height and recovering
+          rem 13-15 = Reserved
+
           dim Player1X = a
           dim Player1Y = b
           dim Player1Facing = c
-          dim Player1Jumping = d
-          dim Player1Guarding = e
-          dim Player1Attacking = f
-          dim Player1Health = g
-          dim Player1AttackType = h
-          dim Player1Damage = i
-          dim Player1AttackCooldown = j
-          dim Player1RecoveryFrames = k
-          dim Player1MomentumX = l
+          dim Player1State = d  : rem Bit flags for Player 1 state
+          dim Player1Health = e
+          dim Player1AttackType = f
+          dim Player1Damage = g
+          dim Player1AttackCooldown = h
+          dim Player1RecoveryFrames = i
+          dim Player1MomentumX = j
+          dim Player1AnimState = k  : rem Current animation state (0-15)
+          dim Player1AnimFrame = l  : rem Current frame in animation (0-7)
+          dim Player1AnimTimer = m  : rem Timer for animation frame progression
 
-          dim Player2X = m
-          dim Player2Y = n
-          dim Player2Facing = o
-          dim Player2Jumping = p
-          dim Player2Guarding = q
-          dim Player2Attacking = r
-          dim Player2Health = s
-          dim Player2AttackType = t
-          dim Player2Damage = u
-          dim Player2AttackCooldown = v
-          dim Player2RecoveryFrames = w
-          dim Player2MomentumX = x
-
-          dim Player3X = y
-          dim Player3Y = z
-          dim Player3Facing = a
-          dim Player3Jumping = b
-          dim Player3Guarding = c
-          dim Player3Attacking = d
-          dim Player3Health = e
-          dim Player3AttackType = f
-          dim Player3Damage = g
-          dim Player3AttackCooldown = h
-          dim Player3RecoveryFrames = i
-          dim Player3MomentumX = j
-
-          dim Player4X = k
-          dim Player4Y = l
-          dim Player4Facing = m
-          dim Player4Jumping = n
-          dim Player4Guarding = o
-          dim Player4Attacking = p
-          dim Player4Health = q
-          dim Player4AttackType = r
-          dim Player4Damage = s
-          dim Player4AttackCooldown = t
-          dim Player4RecoveryFrames = u
-          dim Player4MomentumX = v
+          dim Player2X = n
+          dim Player2Y = o
+          dim Player2Facing = p
+          dim Player2State = q  : rem Bit flags for Player 2 state
+          dim Player2Health = r
+          dim Player2AttackType = s
+          dim Player2Damage = t
+          dim Player2AttackCooldown = u
+          dim Player2RecoveryFrames = v
+          dim Player2MomentumX = w
+          dim Player2AnimState = x  : rem Current animation state (0-15)
+          dim Player2AnimFrame = y  : rem Current frame in animation (0-7)
+          dim Player2AnimTimer = z  : rem Timer for animation frame progression
 
           rem Missile variables for ranged attacks
           dim Missile1X = o
@@ -130,15 +129,37 @@ GameLoop
           Missile2Active = 0
 
           rem Initialize frame counter
-          dim frame = a
+          dim frame = o
           frame = 0
 
           rem Initialize game state
-          dim gameState = b
+          dim gameState = p
           gameState = 0 : rem 0 = normal play, 1 = paused
 
           gosub LoadLevel
-          
+
+          rem Bit flag helper functions
+          rem Bit 0: Attacking, Bit 1: Guarding, Bit 2: Jumping, Bit 3: Recovery
+          rem Bits 4-7: Animation state (0-15)
+
+          def SetPlayerAttacking(playerState) = playerState | 1
+          def SetPlayerGuarding(playerState) = playerState | 2
+          def SetPlayerJumping(playerState) = playerState | 4
+          def SetPlayerRecovery(playerState) = playerState | 8
+
+          def ClearPlayerAttacking(playerState) = playerState & ~1
+          def ClearPlayerGuarding(playerState) = playerState & ~2
+          def ClearPlayerJumping(playerState) = playerState & ~4
+          def ClearPlayerRecovery(playerState) = playerState & ~8
+
+          def IsPlayerAttacking(playerState) = playerState & 1
+          def IsPlayerGuarding(playerState) = playerState & 2
+          def IsPlayerJumping(playerState) = playerState & 4
+          def IsPlayerRecovery(playerState) = playerState & 8
+
+          def GetPlayerAnimState(playerState) = (playerState >> 4) & 15
+          def SetPlayerAnimState(playerState, animState) = (playerState & ~240) | (animState << 4)
+
 GameMainLoop
           rem Handle console switches
           gosub HandleConsoleSwitches
@@ -177,12 +198,12 @@ GameMainLoop
           if QuadtariDetected && SelectedChar4 != 0 && joy3fire && !Player4AttackCooldown then gosub PerformPlayer4Attack
 
           rem Apply gravity and momentum to all jumping players
-          if Player1Jumping then Player1Y = Player1Y + 1 : if Player1Y >= 80 then Player1Y = 80 : Player1Jumping = 0
-          if Player2Jumping then Player2Y = Player2Y + 1 : if Player2Y >= 80 then Player2Y = 80 : Player2Jumping = 0
+          if IsPlayerJumping(Player1State) then Player1Y = Player1Y + 1 : if Player1Y >= 80 then Player1Y = 80 : Player1State = ClearPlayerJumping(Player1State)
+          if IsPlayerJumping(Player2State) then Player2Y = Player2Y + 1 : if Player2Y >= 80 then Player2Y = 80 : Player2State = ClearPlayerJumping(Player2State)
           if QuadtariDetected && SelectedChar3 != 0 then
-                    if Player3Jumping then Player3Y = Player3Y + 1 : if Player3Y >= 80 then Player3Y = 80 : Player3Jumping = 0
+                    if IsPlayerJumping(Player3State) then Player3Y = Player3Y + 1 : if Player3Y >= 80 then Player3Y = 80 : Player3State = ClearPlayerJumping(Player3State)
           if QuadtariDetected && SelectedChar4 != 0 then
-                    if Player4Jumping then Player4Y = Player4Y + 1 : if Player4Y >= 80 then Player4Y = 80 : Player4Jumping = 0
+                    if IsPlayerJumping(Player4State) then Player4Y = Player4Y + 1 : if Player4Y >= 80 then Player4Y = 80 : Player4State = ClearPlayerJumping(Player4State)
 
           rem Apply momentum and recovery effects
           gosub ApplyMomentumAndRecovery
@@ -297,51 +318,27 @@ CheckAllPlayerCollisions
           if Distance < 0 then Distance = -Distance
           if Distance < 16 then
                     if Player1X < Player2X then Player1X = Player1X - 1 : Player2X = Player2X + 1 else Player1X = Player1X + 1 : Player2X = Player2X - 1
-
-          rem Check Player 1 vs Player 3
-          if QuadtariDetected && SelectedChar3 != 0 then
-                    Distance = Player1X - Player3X
-                    if Distance < 0 then Distance = -Distance
-                    if Distance < 16 then
-                              if Player1X < Player3X then Player1X = Player1X - 1 : Player3X = Player3X + 1 else Player1X = Player1X + 1 : Player3X = Player3X - 1
-
-          rem Check Player 1 vs Player 4
-          if QuadtariDetected && SelectedChar4 != 0 then
-                    Distance = Player1X - Player4X
-                    if Distance < 0 then Distance = -Distance
-                    if Distance < 16 then
-                              if Player1X < Player4X then Player1X = Player1X - 1 : Player4X = Player4X + 1 else Player1X = Player1X + 1 : Player4X = Player4X - 1
-
-          rem Check Player 2 vs Player 3
-          if QuadtariDetected && SelectedChar3 != 0 then
-                    Distance = Player2X - Player3X
-                    if Distance < 0 then Distance = -Distance
-                    if Distance < 16 then
-                              if Player2X < Player3X then Player2X = Player2X - 1 : Player3X = Player3X + 1 else Player2X = Player2X + 1 : Player3X = Player3X - 1
-
-          rem Check Player 2 vs Player 4
-          if QuadtariDetected && SelectedChar4 != 0 then
-                    Distance = Player2X - Player4X
-                    if Distance < 0 then Distance = -Distance
-                    if Distance < 16 then
-                              if Player2X < Player4X then Player2X = Player2X - 1 : Player4X = Player4X + 1 else Player2X = Player2X + 1 : Player4X = Player4X - 1
-
-          rem Check Player 3 vs Player 4
-          if QuadtariDetected && SelectedChar3 != 0 && SelectedChar4 != 0 then
-                    Distance = Player3X - Player4X
-                    if Distance < 0 then Distance = -Distance
-                    if Distance < 16 then
-                              if Player3X < Player4X then Player3X = Player3X - 1 : Player4X = Player4X + 1 else Player3X = Player3X + 1 : Player4X = Player4X - 1
           return
 
           rem Set sprite graphics based on state
 SetPlayerSprites
           rem Set Player 1 color and sprite
-          COLUP0 = $80  : rem Default indigo for Player 1
-          if Player1RecoveryFrames > 0 then COLUP0 = $80  : rem Recovery color (Indigo)
-          if Player1Attacking then COLUP0 = $40  : rem Red for attacking
-          if Player1Guarding then COLUP0 = $20  : rem Orange for guarding
-          if Player1Jumping then COLUP0 = $D0  : rem Green for jumping
+          rem Normal state (not hurt): Use XCF artwork colors in color mode, player-based colors in B&W mode
+          rem Hurt state: Luminance $6 with player-based color
+          if Player1RecoveryFrames > 0 then
+                    rem Hurt state - use dark player-based color
+                    COLUP0 = ColIndigo(6)  : rem Dark indigo for hurt
+          else
+                    rem Normal state - use appropriate color mode
+                    if switchbw then
+                              rem B&W mode - bright player-based color
+                              COLUP0 = ColIndigo(12)  : rem Bright indigo
+                    else
+                              rem Color mode - use XCF artwork colors (would be loaded from art data)
+                              rem For now, use bright player-based color as placeholder
+                              COLUP0 = ColIndigo(12)
+                    endif
+          endif
 
           player0:
           %00011000
@@ -355,11 +352,20 @@ SetPlayerSprites
           end
 
           rem Set Player 2 color and sprite
-          COLUP1 = $40  : rem Default red for Player 2
-          if Player2RecoveryFrames > 0 then COLUP1 = $40  : rem Recovery color (Red)
-          if Player2Attacking then COLUP1 = $40  : rem Red for attacking
-          if Player2Guarding then COLUP1 = $20  : rem Orange for guarding
-          if Player2Jumping then COLUP1 = $D0  : rem Green for jumping
+          if Player2RecoveryFrames > 0 then
+                    rem Hurt state - use dark player-based color
+                    COLUP1 = ColRed(6)  : rem Dark red for hurt
+          else
+                    rem Normal state - use appropriate color mode
+                    if switchbw then
+                              rem B&W mode - bright player-based color
+                              COLUP1 = ColRed(12)  : rem Bright red
+                    else
+                              rem Color mode - use XCF artwork colors (would be loaded from art data)
+                              rem For now, use bright player-based color as placeholder
+                              COLUP1 = ColRed(12)
+                    endif
+          endif
 
           player1:
           %00011000
@@ -374,19 +380,37 @@ SetPlayerSprites
 
           rem Set colors for Players 3 & 4 (using ball and missile sprites)
           if QuadtariDetected && SelectedChar3 != 0 then
-                    COLUPF = $10  : rem Default yellow for Player 3
-                    if Player3RecoveryFrames > 0 then COLUPF = $10  : rem Yellow for recovery
-                    if Player3Attacking then COLUPF = $F0  : rem Gold for attacking
-                    if Player3Guarding then COLUPF = $20  : rem Orange for guarding
-                    if Player3Jumping then COLUPF = $D0  : rem Green for jumping
+                    if Player3RecoveryFrames > 0 then
+                              rem Hurt state - use dark player-based color
+                              COLUPF = ColYellow(6)  : rem Dark yellow for hurt
+                    else
+                              rem Normal state - use appropriate color mode
+                              if switchbw then
+                                        rem B&W mode - bright player-based color
+                                        COLUPF = ColYellow(12)  : rem Bright yellow
+                              else
+                                        rem Color mode - use XCF artwork colors (would be loaded from art data)
+                                        rem For now, use bright player-based color as placeholder
+                                        COLUPF = ColYellow(12)
+                              endif
+                    endif
           endif
 
           if QuadtariDetected && SelectedChar4 != 0 then
-                    COLUBK = $C0  : rem Default green for Player 4
-                    if Player4RecoveryFrames > 0 then COLUBK = $C0  : rem Green for recovery
-                    if Player4Attacking then COLUBK = $40  : rem Red for attacking
-                    if Player4Guarding then COLUBK = $20  : rem Orange for guarding
-                    if Player4Jumping then COLUBK = $80  : rem Blue for jumping
+                    if Player4RecoveryFrames > 0 then
+                              rem Hurt state - use dark player-based color
+                              COLUBK = ColGreen(6)  : rem Dark green for hurt
+                    else
+                              rem Normal state - use appropriate color mode
+                              if switchbw then
+                                        rem B&W mode - bright player-based color
+                                        COLUBK = ColGreen(12)  : rem Bright green
+                              else
+                                        rem Color mode - use XCF artwork colors (would be loaded from art data)
+                                        rem For now, use bright player-based color as placeholder
+                                        COLUBK = ColGreen(12)
+                              endif
+                    endif
           endif
           return
 
@@ -1046,35 +1070,10 @@ HandleConsoleSwitches
 
           return
 
-          rem Handle Color/B&W switch
+          rem Handle Color/B&W switch (this function is now handled in SetPlayerSprites)
 HandleColorSwitch
-          rem In Color/B&W mode, characters are always in solid colors but brighter when not hurt
-          rem Player 1: bright indigo normally, dark indigo when hurt
-          rem Player 2: bright red normally, dark red when hurt
-          rem Player 3: bright yellow normally, dark yellow when hurt
-          rem Player 4: bright green normally, dark green when hurt
-
-          if switchbw then
-                    rem B&W mode - use darker colors for hurt characters
-                    if Player1RecoveryFrames > 0 then COLUP0 = $60 : rem Dark indigo for hurt else COLUP0 = $80 : rem Bright indigo for normal
-                    if Player2RecoveryFrames > 0 then COLUP1 = $20 : rem Dark red for hurt else COLUP1 = $40 : rem Bright red for normal
-                    if QuadtariDetected && SelectedChar3 != 0 then
-                              if Player3RecoveryFrames > 0 then COLUPF = $08 : rem Dark yellow for hurt else COLUPF = $10 : rem Bright yellow for normal
-                    endif
-                    if QuadtariDetected && SelectedChar4 != 0 then
-                              if Player4RecoveryFrames > 0 then COLUBK = $80 : rem Dark green for hurt else COLUBK = $C0 : rem Bright green for normal
-                    endif
-          else
-                    rem Color mode - use normal recovery colors
-                    if Player1RecoveryFrames > 0 then COLUP0 = $80 : rem Indigo recovery else COLUP0 = $80 : rem Default indigo for Player 1
-                    if Player2RecoveryFrames > 0 then COLUP1 = $40 : rem Red recovery else COLUP1 = $40 : rem Default red for Player 2
-                    if QuadtariDetected && SelectedChar3 != 0 then
-                              if Player3RecoveryFrames > 0 then COLUPF = $10 : rem Yellow recovery else COLUPF = $10 : rem Default yellow for Player 3
-                    endif
-                    if QuadtariDetected && SelectedChar4 != 0 then
-                              if Player4RecoveryFrames > 0 then COLUBK = $C0 : rem Green recovery else COLUBK = $C0 : rem Default green for Player 4
-                    endif
-          endif
+          rem Color/B&W switch logic is now handled in SetPlayerSprites function
+          rem This ensures consistent color handling across all game states
           return
 
           rem Display paused screen

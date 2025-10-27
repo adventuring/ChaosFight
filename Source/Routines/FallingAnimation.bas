@@ -1,7 +1,7 @@
-          rem ChaosFight - Source/Routines/FallingAnimation.bas
+          rem ChaosFight - Source/Routines/FallingAnimation1.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-FallingAnimation
+FallingAnimation1
           dim FallFrame = a
           dim FallSpeed = b
           dim FallComplete = c
@@ -18,7 +18,7 @@ FallingAnimation
 
           COLUBK = ColBlue(8)
 
-FallingLoop
+FallingLoop1
           rem Animate all active players falling
           player0y = player0y - FallSpeed
           if player0y < 20 then player0y = 20 : FallComplete = FallComplete + 1
@@ -36,7 +36,7 @@ FallingLoop
                     if player1y < 20 then player1y = 20 : FallComplete = FallComplete + 1
           endif
 
-          if FallComplete >= ActivePlayers then goto FallingComplete
+          if FallComplete >= ActivePlayers then goto FallingComplete1
 
           FallFrame = FallFrame + 1
           if FallFrame > 3 then FallFrame = 0
@@ -65,7 +65,7 @@ FallingLoop
           end
 
           drawscreen
-          goto FallingLoop
+          goto FallingLoop1
 
-FallingComplete
+FallingComplete1
           return

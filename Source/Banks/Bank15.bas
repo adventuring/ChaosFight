@@ -1,7 +1,4 @@
           rem ChaosFight - Source/Banks/Bank15.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-
-
-          rem Bank 15 routines
-
+          bank 15

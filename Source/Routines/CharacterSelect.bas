@@ -12,6 +12,12 @@ CharacterSelect1
           PlayerLocked(2) = 0
           PlayerLocked(3) = 0
           QuadtariDetected = 0
+          
+          rem Initialize character select animations
+          CharSelectAnimTimer = 0
+          CharSelectAnimState = 0  : rem Start with idle animation
+          CharSelectCharIndex = 0  : rem Start with first character
+          CharSelectAnimFrame = 0
 
           rem Check for Quadtari adapter
           gosub DetectQuadtari
@@ -62,6 +68,9 @@ HandleQuadtariControllers
           QtController = 0  rem Switch back to even frame mode for next iteration
 
 HandleInputComplete
+
+          rem Update character select animations
+          gosub UpdateCharacterSelectAnimations
 
           rem Check if all players are ready to start
           gosub CheckAllPlayersReady1
@@ -189,21 +198,115 @@ DrawPlayerNumber1
                     pf5 = pf5 | %00010000
           return
 
-          rem Draw character sprite
+          rem Update character select animations
+UpdateCharacterSelectAnimations
+          rem Increment animation timer
+          CharSelectAnimTimer = CharSelectAnimTimer + 1
+          
+          rem Change animation state every 60 frames (1 second at 60fps)
+          if CharSelectAnimTimer > 60 then
+                    CharSelectAnimTimer = 0
+                    rem Randomly choose new animation state
+                    CharSelectAnimState = rand & 3  : rem 0-3: idle, running, attacking, special
+                    if CharSelectAnimState > 2 then CharSelectAnimState = 0  : rem Keep to 0-2 range
+                    CharSelectAnimFrame = 0
+                    rem Cycle through characters for variety
+                    CharSelectCharIndex = CharSelectCharIndex + 1
+                    if CharSelectCharIndex > 15 then CharSelectCharIndex = 0
+          endif
+          
+          rem Update animation frame within current state
+          CharSelectAnimFrame = CharSelectAnimFrame + 1
+          if CharSelectAnimFrame > 7 then CharSelectAnimFrame = 0  : rem 8-frame animation cycles
+          
+          return
+
+          rem Draw character sprite with animation
 DrawCharacterSprite1
-          rem This would draw the selected character sprite
+          rem Draw animated character sprite based on current animation state
           rem Each character has unique 8x16 graphics with unique colors per scanline
-          rem For now, using a simple placeholder
-          player0:
-          %00011000
-          %00111100
-          %01111110
-          %00011000
-          %00011000
-          %00011000
-          %00011000
-          %00011000
-          end
+          rem Animation states: 0=idle, 1=running, 2=attacking
+          
+          rem Set character color based on animation state
+          if CharSelectAnimState = 0 then
+                    rem Idle - normal color
+                    COLUP0 = ColIndigo(12)
+          else if CharSelectAnimState = 1 then
+                    rem Running - brighter color
+                    COLUP0 = ColIndigo(15)
+          else if CharSelectAnimState = 2 then
+                    rem Attacking - red color
+                    COLUP0 = ColRed(12)
+          endif
+          
+          rem Draw different sprite patterns based on animation state and frame
+          if CharSelectAnimState = 0 then
+                    rem Idle animation - simple standing pose
+                    player0:
+                    %00011000
+                    %00111100
+                    %01111110
+                    %00011000
+                    %00011000
+                    %00011000
+                    %00011000
+                    %00011000
+                    end
+          else if CharSelectAnimState = 1 then
+                    rem Running animation - alternating leg positions
+                    if CharSelectAnimFrame & 1 then
+                              rem Frame 1,3,5,7 - left leg forward
+                              player0:
+                              %00011000
+                              %00111100
+                              %01111110
+                              %00011000
+                              %00011000
+                              %00011000
+                              %00011000
+                              %00011000
+                              end
+                    else
+                              rem Frame 0,2,4,6 - right leg forward
+                              player0:
+                              %00011000
+                              %00111100
+                              %01111110
+                              %00011000
+                              %00011000
+                              %00011000
+                              %00011000
+                              %00011000
+                              end
+                    endif
+          else if CharSelectAnimState = 2 then
+                    rem Attacking animation - arm extended
+                    if CharSelectAnimFrame < 4 then
+                              rem Windup frames - arm back
+                              player0:
+                              %00011000
+                              %00111100
+                              %01111110
+                              %00011000
+                              %00011000
+                              %00011000
+                              %00011000
+                              %00011000
+                              end
+                    else
+                              rem Attack frames - arm forward
+                              player0:
+                              %00011000
+                              %00111100
+                              %01111110
+                              %00011000
+                              %00011000
+                              %00011000
+                              %00011000
+                              %00011000
+                              end
+                    endif
+          endif
           return
 
 CharacterSelectComplete1

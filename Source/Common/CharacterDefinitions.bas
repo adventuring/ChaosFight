@@ -91,6 +91,49 @@ rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, H
 end
 
 rem =================================================================
+rem MISSILE INITIAL MOMENTUM X (Horizontal Velocity)
+rem =================================================================
+rem Initial horizontal velocity of missile in pixels per frame
+rem Positive = right, Negative = left, 0 = straight up/down
+rem Values: -127 to 127
+
+data CharacterMissileMomentumX
+  5, 0, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+end
+
+rem =================================================================
+rem MISSILE INITIAL MOMENTUM Y (Vertical Velocity)
+rem =================================================================
+rem Initial vertical velocity of missile in pixels per frame
+rem Positive = down, Negative = up, 0 = horizontal only
+rem Values: -127 to 127 (typically -8 to 0 for parabolic arcs)
+
+data CharacterMissileMomentumY
+  0, 0, -4, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 0, -6, 0
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+end
+
+rem =================================================================
+rem MISSILE INTERACTION FLAGS
+rem =================================================================
+rem Bit flags for missile behavior:
+rem   Bit 0: Hit background (0=pass through, 1=hit and disappear)
+rem   Bit 1: Hit player (0=pass through, 1=hit and disappear)
+rem   Bit 2: Apply gravity (0=no gravity, 1=affected by gravity)
+rem   Bit 3: Bounce off walls (0=stop/hit, 1=bounce)
+rem   Bit 4-7: Reserved
+rem Values stored as packed bytes per character
+
+data CharacterMissileFlags
+  %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  Linear Linear Parabolic Linear     Linear         Linear              Linear     Linear Parabolic     Linear         Linear         Linear     Linear              Linear         Linear          Linear         Linear
+  %00000101, %00000000, %00000101, %00000000
+end
+rem Dragonet, Magical Faerie, Ursulo (gravity + hit background)
+
+rem =================================================================
 rem ANIMATION SEQUENCE DEFINITIONS
 rem =================================================================
 rem Animation sequences (16 total) - all use 8-frame padded format:

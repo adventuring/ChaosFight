@@ -47,15 +47,33 @@
           dim SelectedLevel = v
           
           rem =================================================================
-          rem GAMEPLAY VARIABLES (Standard RAM - All 26 vars used: a-z)
+          rem CHARACTER SELECT ANIMATION VARIABLES (Standard RAM - w through z)
+          rem =================================================================
+          
+          dim CharSelectAnimTimer = w  : rem Animation frame counter for character select
+          dim CharSelectAnimState = x  : rem Current animation state (0=idle, 1=running, 2=attacking)
+          dim CharSelectCharIndex = y  : rem Which character is currently animating
+          dim CharSelectAnimFrame = z  : rem Current frame within animation sequence
+          
+          rem =================================================================
+          rem TITLE SCREEN PARADE VARIABLES (SuperChip RAM - var28-var31)
+          rem =================================================================
+          
+          dim TitleParadeTimer = var28     : rem Timer for character parade timing
+          dim TitleParadeChar = var29      : rem Current character in parade
+          dim TitleParadeX = var30         : rem X position of parade character
+          dim TitleParadeActive = var31    : rem 1=parade active, 0=waiting
+          
+          rem =================================================================
+          rem GAMEPLAY VARIABLES (SuperChip RAM - var0-var23, Gameplay Only)
           rem =================================================================
 
-          rem Most frequently accessed gameplay data in RIOT RAM for speed
-          rem First 4 positions: w-z (from above section)
-          dim Player1X = w
-          dim Player1Y = x
-          dim Player2X = y
-          dim Player2Y = z
+          rem Most frequently accessed gameplay data in SuperChip RAM
+          rem Player positions (frequently accessed)
+          dim Player1X = var0
+          dim Player1Y = var1
+          dim Player2X = var2
+          dim Player2Y = var3
           
           rem Health and state for P1/P2 (frequently accessed in combat)
           rem Allocate remaining letters if needed - but note aa-z monthly assignments need different approach
@@ -65,40 +83,39 @@
           rem =================================================================
           
           rem Player 3 & 4 positions (when Quadtari detected)
-          dim Player3X = var0
-          dim Player3Y = var1
-          dim Player4X = var2
-          dim Player4Y = var3
+          dim Player3X = var4
+          dim Player3Y = var5
+          dim Player4X = var6
+          dim Player4Y = var7
           
           rem Packed player data: Facing (2 bits), State flags (4 bits), Attack type (2 bits)
           rem PlayerState byte format: [Facing:2][Attacking:1][Guarding:1][Jumping:1][Recovery:1][AttackType:2]
-          dim Player1State = var4  : rem State flags for Player 1
-          dim Player2State = var5  : rem State flags for Player 2
-          rem Player3State and Player4State need allocation
+          dim Player1State = var8  : rem State flags for Player 1
+          dim Player2State = var9  : rem State flags for Player 2
+          dim Player3State = var10 : rem State flags for Player 3
+          dim Player4State = var11 : rem State flags for Player 4
           
           rem Player health (8 bits each, 0-255)
-          dim Player1Health = var6
-          dim Player2Health = var7
-          dim Player3Health = var8
-          dim Player4Health = var9
+          dim Player1Health = var12
+          dim Player2Health = var13
+          dim Player3Health = var14
+          dim Player4Health = var15
           
           rem Packed timers/cooldowns: Low nibble = AttackCooldown (0-15), High nibble = RecoveryFrames (0-15)
-          dim Player1Timers = var10  : rem [AttackCooldown:4][RecoveryFrames:4]
-          dim Player2Timers = var11
-          dim Player3Timers = var12
-          dim Player4Timers = var13
+          dim Player1Timers = var16  : rem [AttackCooldown:4][RecoveryFrames:4]
+          dim Player2Timers = var17
+          dim Player3Timers = var18
+          dim Player4Timers = var19
           
           rem Additional player data (damage, momentum, animation)
-          dim Player1Damage = var14
-          dim Player2Damage = var15
-          dim Player3Damage = var16
-          dim Player4Damage = var17
-          dim Player1MomentumX = var18
-          dim Player2MomentumX = var19
-          dim Player3MomentumX = var20
-          dim Player3State = var21  : rem State flags for Player 3
-          dim Player4MomentumX = var22
-          dim Player4State = var23  : rem State flags for Player 4
+          dim Player1Damage = var20
+          dim Player2Damage = var21
+          dim Player3Damage = var22
+          dim Player4Damage = var23
+          dim Player1MomentumX = var24
+          dim Player2MomentumX = var25
+          dim Player3MomentumX = var26
+          dim Player4MomentumX = var27
           
           rem Additional gameplay variables needed
           rem NOTE: These will need to be allocated to available RAM slots

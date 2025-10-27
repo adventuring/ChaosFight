@@ -6,7 +6,7 @@ MainLoop
           gosub PublisherPrelude
           gosub AuthorsPrelude
           gosub TitleScreen
-          gosub CharacterSelect
+          gosub CharacterSelect1
           gosub FallingAnimation
           gosub LevelSelect
           gosub GameLoop

@@ -61,7 +61,7 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),$(foreach arch,$(TV_ARCHS),$(G
 Source/Art/%.png: Source/Art/%.xcf
 	@echo "Converting $< to $@..."
 	mkdir -p Source/Art
-	gimp -i -b "(load \"Tools/xcf-export.scm\")" -b "(xcf-export \"$<\" \"$@\")" -b "(gimp-quit 0)"
+	magick "$<" -background none -flatten "$@"
 
 # Convert PNG character sprite sheet to batariBASIC data for NTSC
 $(GENERATED_DIR)/Art.%.NTSC.bas: Source/Art/%.png
@@ -139,7 +139,7 @@ $(GENERATED_DIR)/Characters.bas: $(CHARACTER_BAS)
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf
-	gimp -i -b '(let* ((file (car (gimp-file-load RUN-NONINTERACTIVE "$<" "$<"))) (drawable (car (gimp-image-get-active-drawable file)))) (gimp-file-save RUN-NONINTERACTIVE file drawable "$@" "$@") (gimp-image-delete file))' -b '(gimp-quit 0)'
+	magick "$<" -background none -flatten "$@"
 
 # Convert PNG to batariBASIC playfield include
 $(GENERATED_DIR)/Playfields.bas: $(wildcard Source/Art/Map-*.png)
@@ -185,14 +185,24 @@ clean:
 	rm -f $(GENERATED_DIR)/*.s
 	rm -f bB.s *.bin *.lst *.sym *.map
 
+# Install GIMP export script
+gimp-export:
+	@for d in ~/.config/GIMP/*/scripts/; do \
+		if [ -d "$$d" ]; then \
+			echo "Installing xcf-export.scm to $$d"; \
+			cp -f Tools/xcf-export.scm "$$d"; \
+		fi; \
+	done
+
 # Help target
 help:
 	@echo "Available targets:"
-	@echo "  all     - Build game (default)"
-	@echo "  game    - Build game"
-	@echo "  clean   - Remove all generated files"
-	@echo "  emu     - Build and run in Stella emulator"
-	@echo "  help    - Show this help message"
+	@echo "  all         - Build game (default)"
+	@echo "  game        - Build game"
+	@echo "  clean       - Remove all generated files"
+	@echo "  emu         - Build and run in Stella emulator"
+	@echo "  gimp-export - Install GIMP export script"
+	@echo "  help        - Show this help message"
 	@echo ""
 	@echo "Distributable files in Dist/"
 

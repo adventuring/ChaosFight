@@ -27,11 +27,11 @@ BernieAttack
   return
 
 rem =================================================================
-rem CURLING SWEEPER (Character 1) - Melee Attack
+rem CURLING SWEEPER (Character 1) - Ranged Attack (ground-based)
 rem =================================================================
 CurlingSweeperAttack
   PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
-  gosub PerformMeleeAttack
+  gosub PerformRangedAttack
   return
 
 rem =================================================================
@@ -99,11 +99,11 @@ MysteryManAttack
   return
 
 rem =================================================================
-rem NINJISH GUY (Character 10) - Melee Attack
+rem NINJISH GUY (Character 10) - Ranged Attack (small bullet)
 rem =================================================================
 NinjishGuyAttack
   PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
-  gosub PerformMeleeAttack
+  gosub PerformRangedAttack
   return
 
 rem =================================================================

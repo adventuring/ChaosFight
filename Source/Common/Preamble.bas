@@ -6,7 +6,6 @@
           set romsize 64kSC
           set optimization size
           set smartbranching on
-          const pfres = 12
 
           #include "Source/Common/Colors.h"
           #include "Source/Common/Constants.bas"

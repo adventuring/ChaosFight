@@ -43,8 +43,9 @@ rem   - Melee force (higher weight = more damage/knockback to opponents)
 rem Values: 1-255 (lower = lighter/faster, higher = heavier/slower/stronger)
 
 data CharacterWeights
-  21, 25, 20, 23, 22, 20, 19, 12, 17, 18, 40, 15, 19, 18, 16, 17
+  35, 25, 20, 15, 30, 25, 15, 32, 15, 20, 10, 30, 10, 32, 30, 25
 rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  heavy,  medium,     medium,   light,   heavy,  medium,     light,  heavier, light,      medium,   very light, heavy,  very light, heavier, heavy,  medium
 end
 
 rem =================================================================
@@ -54,9 +55,9 @@ rem 0 = melee, 1 = ranged
 rem Stored as bit-per-character in packed bytes (2 bytes for 16 characters)
 
 data CharacterAttackTypes
-  %00000000, %00000000, %00000010, %00000010, %00000000, %00000000, %00000000, %00000010
+  %00000000, %00000001, %00000010, %00000010, %00000000, %00000000, %00000000, %00000010
 rem  Bernie    Curling    Dragonet  EXO Pilot Fat Tony  Grizzard   Harpy     Knight Guy
-rem  melee     melee      melee     ranged    melee     melee      melee     ranged
+rem  melee     ranged     melee     ranged    melee     melee      melee     ranged
   %00000010, %00000000, %00000000, %00000001, %00000000, %00000000, %00000010, %00000000
 rem  Magical   Mystery    Ninjish   Pork Chop Radish    Robo Tito  Ursulo    Veg Dog
 rem  ranged    melee      melee     melee     melee     melee      ranged    melee
@@ -70,12 +71,12 @@ rem Format: width, height
 rem Melee attacks can use 0x0 if no visible missile
 
 data CharacterMissileWidths
-  1, 0, 2, 2, 1, 2, 1, 3, 2, 0, 0, 0, 0, 0, 2, 0
+  1, 4, 2, 2, 1, 2, 1, 3, 2, 0, 0, 0, 0, 0, 2, 0
 rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
 end
 
 data CharacterMissileHeights
-  1, 0, 2, 2, 1, 2, 1, 3, 2, 0, 0, 0, 0, 0, 2, 0
+  1, 2, 2, 2, 1, 2, 1, 3, 2, 0, 0, 0, 0, 0, 2, 0
 rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
 end
 
@@ -86,7 +87,7 @@ rem Vertical offset on character sprite where missile is emitted
 rem Values: 0-7 (top to bottom of 8-pixel tall sprite)
 
 data CharacterMissileEmissionHeights
-  3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
+  3, 7, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
 rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
 end
 
@@ -98,7 +99,7 @@ rem Positive = right, Negative = left, 0 = straight up/down
 rem Values: -127 to 127
 
 data CharacterMissileMomentumX
-  5, 0, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
+  5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
 rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
 end
 
@@ -126,12 +127,10 @@ rem   Bit 4-7: Reserved
 rem Values stored as packed bytes per character
 
 data CharacterMissileFlags
-  %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
+  %00000000, %00000011, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
 rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
-rem  Linear Linear Parabolic Linear     Linear         Linear              Linear     Linear Parabolic     Linear         Linear         Linear     Linear              Linear         Linear          Linear         Linear
-  %00000101, %00000000, %00000101, %00000000
+rem  Note: Bit 0=hit bg, Bit 1=hit player, Bit 2=gravity, Bit 3=bounce
 end
-rem Dragonet, Magical Faerie, Ursulo (gravity + hit background)
 
 rem =================================================================
 rem ANIMATION SEQUENCE DEFINITIONS

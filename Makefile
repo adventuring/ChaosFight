@@ -62,7 +62,7 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),$(foreach arch,$(TV_ARCHS),$(G
 Source/Art/%.png: Source/Art/%.xcf
 	@echo "Converting $< to $@..."
 	mkdir -p Source/Art
-	$(GIMP) --batch-interpreter=plug-in-script-fu-eval -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	magick "$<" "$@"
 
 # Convert PNG character sprite sheet to batariBASIC data for NTSC
 $(GENERATED_DIR)/Art.%.NTSC.bas: Source/Art/%.png
@@ -151,29 +151,32 @@ $(GENERATED_DIR)/Playfields.bas: $(wildcard Source/Art/Map-*.png)
 Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: $(ALL_SOURCES)
 	mkdir -p Dist $(GENERATED_DIR)
 	cpp -P -I. Source/Platform/NTSC.bas > $(GENERATED_DIR)/$(GAME).NTSC.bas
-	bin/preprocess < $(GENERATED_DIR)/$(GAME).NTSC.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/$(GAME).NTSC.bB.s
+	bin/preprocess < $(GENERATED_DIR)/$(GAME).NTSC.bas > $(GENERATED_DIR)/$(GAME).NTSC.preprocessed.bas
+	bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h $(GENERATED_DIR)/$(GAME).NTSC.preprocessed.bas > $(GENERATED_DIR)/$(GAME).NTSC.bB.s
 	cp $(GENERATED_DIR)/$(GAME).NTSC.bB.s $(GENERATED_DIR)/$(GAME).NTSC.bB.asm
 	bin/postprocess -i Tools/batariBASIC < $(GENERATED_DIR)/$(GAME).NTSC.bB.asm > $(GENERATED_DIR)/$(GAME).NTSC.s
 	bin/dasm $(GENERATED_DIR)/$(GAME).NTSC.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
-	rm -f $(GENERATED_DIR)/$(GAME).NTSC.bB.s $(GENERATED_DIR)/$(GAME).NTSC.bB.asm $(GENERATED_DIR)/$(GAME).NTSC.s
+	rm -f $(GENERATED_DIR)/$(GAME).NTSC.bB.s $(GENERATED_DIR)/$(GAME).NTSC.bB.asm $(GENERATED_DIR)/$(GAME).NTSC.s $(GENERATED_DIR)/$(GAME).NTSC.preprocessed.bas
 
 Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: $(ALL_SOURCES)
 	mkdir -p Dist $(GENERATED_DIR)
 	cpp -P -I. Source/Platform/PAL.bas > $(GENERATED_DIR)/$(GAME).PAL.bas
-	bin/preprocess < $(GENERATED_DIR)/$(GAME).PAL.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/$(GAME).PAL.bB.s
+	bin/preprocess < $(GENERATED_DIR)/$(GAME).PAL.bas > $(GENERATED_DIR)/$(GAME).PAL.preprocessed.bas
+	bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h $(GENERATED_DIR)/$(GAME).PAL.preprocessed.bas > $(GENERATED_DIR)/$(GAME).PAL.bB.s
 	cp $(GENERATED_DIR)/$(GAME).PAL.bB.s $(GENERATED_DIR)/$(GAME).PAL.bB.asm
 	bin/postprocess -i Tools/batariBASIC < $(GENERATED_DIR)/$(GAME).PAL.bB.asm > $(GENERATED_DIR)/$(GAME).PAL.s
 	bin/dasm $(GENERATED_DIR)/$(GAME).PAL.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
-	rm -f $(GENERATED_DIR)/$(GAME).PAL.bB.s $(GENERATED_DIR)/$(GAME).PAL.bB.asm $(GENERATED_DIR)/$(GAME).PAL.s
+	rm -f $(GENERATED_DIR)/$(GAME).PAL.bB.s $(GENERATED_DIR)/$(GAME).PAL.bB.asm $(GENERATED_DIR)/$(GAME).PAL.s $(GENERATED_DIR)/$(GAME).PAL.preprocessed.bas
 
 Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: $(ALL_SOURCES)
 	mkdir -p Dist $(GENERATED_DIR)
 	cpp -P -I. Source/Platform/SECAM.bas > $(GENERATED_DIR)/$(GAME).SECAM.bas
-	bin/preprocess < $(GENERATED_DIR)/$(GAME).SECAM.bas | bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h > $(GENERATED_DIR)/$(GAME).SECAM.bB.s
+	bin/preprocess < $(GENERATED_DIR)/$(GAME).SECAM.bas > $(GENERATED_DIR)/$(GAME).SECAM.preprocessed.bas
+	bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h $(GENERATED_DIR)/$(GAME).SECAM.preprocessed.bas > $(GENERATED_DIR)/$(GAME).SECAM.bB.s
 	cp $(GENERATED_DIR)/$(GAME).SECAM.bB.s $(GENERATED_DIR)/$(GAME).SECAM.bB.asm
 	bin/postprocess -i Tools/batariBASIC < $(GENERATED_DIR)/$(GAME).SECAM.bB.asm > $(GENERATED_DIR)/$(GAME).SECAM.s
 	bin/dasm $(GENERATED_DIR)/$(GAME).SECAM.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
-	rm -f $(GENERATED_DIR)/$(GAME).SECAM.bB.s $(GENERATED_DIR)/$(GAME).SECAM.bB.asm $(GENERATED_DIR)/$(GAME).SECAM.s
+	rm -f $(GENERATED_DIR)/$(GAME).SECAM.bB.s $(GENERATED_DIR)/$(GAME).SECAM.bB.asm $(GENERATED_DIR)/$(GAME).SECAM.s $(GENERATED_DIR)/$(GAME).SECAM.preprocessed.bas
 
 # Run emulator
 emu: $(ROM)

@@ -21,8 +21,8 @@ ROM = Dist/$(GAME).NTSC.a26
 ALL_SOURCES = $(shell find Source -name \*.bas) $(GENERATED_DIR)/Characters.bas $(GENERATED_DIR)/Playfields.bas $(CHARACTER_BAS)
 
 # Default target
-.PHONY: all clean emu game help doc characters playfields
-all: game doc characters playfields
+.PHONY: all clean emu game help doc characters playfields fonts
+all: game doc characters playfields fonts
 
 # Build game
 game: \
@@ -50,11 +50,17 @@ TV_ARCHS = NTSC PAL SECAM
 # Screen names (32×32 playfield screens)
 SCREEN_NAMES = AtariAge Interworldly ChaosFight
 
+# Font names
+FONT_NAMES = Numbers
+
 # Build character assets
 characters: $(GENERATED_DIR)/Characters.bas $(foreach char,$(CHARACTER_NAMES),$(foreach arch,$(TV_ARCHS),$(GENERATED_DIR)/Art.$(char).$(arch).bas))
 
 # Build playfield assets (game levels + title screens)
 playfields: $(GENERATED_DIR)/Playfields.bas $(foreach screen,$(SCREEN_NAMES),$(foreach arch,$(TV_ARCHS),$(GENERATED_DIR)/Playfield.$(screen).$(arch).bas))
+
+# Build font assets
+fonts: $(foreach font,$(FONT_NAMES),$(foreach arch,$(TV_ARCHS),$(GENERATED_DIR)/Font.$(font).$(arch).bas))
 
 # Generate list of character sprite files
 CHARACTER_XCF = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).xcf)
@@ -142,10 +148,16 @@ $(GENERATED_DIR)/Characters.bas: $(CHARACTER_BAS)
 	done
 
 # Convert XCF to PNG for screens (32×32 playfields)
-Source/Art/%.png: Source/Art/%.xcf
+Source/Art/AtariAge.png Source/Art/Interworldly.png Source/Art/ChaosFight.png: Source/Art/%.png: Source/Art/%.xcf
 	@echo "Converting screen $< to $@..."
 	mkdir -p Source/Art
 	magick "$<" -background black -flatten -scale 32x32! "$@"
+
+# Convert XCF to PNG for fonts (special handling for font sheets)
+Source/Art/Numbers.png: Source/Art/Numbers.xcf
+	@echo "Converting font $< to $@..."
+	mkdir -p Source/Art
+	magick "$<" -background black -flatten "$@"
 
 # Convert PNG screen to batariBASIC playfield data for NTSC
 $(GENERATED_DIR)/Playfield.%.NTSC.bas: Source/Art/%.png
@@ -194,6 +206,48 @@ Source/Art/Map-%.png: Source/Art/Map-%.xcf
 $(GENERATED_DIR)/Playfields.bas: $(wildcard Source/Art/Map-*.png)
 	mkdir -p $(GENERATED_DIR)
 	bin/skyline-tool compile-playfields $(GENERATED_DIR) $(wildcard Source/Art/Map-*.png)
+
+# Convert PNG font to batariBASIC data for NTSC
+$(GENERATED_DIR)/Font.%.NTSC.bas: Source/Art/%.png
+	@echo "Converting font $< to $@ for NTSC..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-font \
+		:input "$<" \
+		:output "$@" \
+		:font-name "$*" \
+		:architecture "NTSC" \
+		:char-width 8 \
+		:char-height 16 \
+		:num-chars 16 \
+		:format "hex-digits"
+
+# Convert PNG font to batariBASIC data for PAL
+$(GENERATED_DIR)/Font.%.PAL.bas: Source/Art/%.png
+	@echo "Converting font $< to $@ for PAL..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-font \
+		:input "$<" \
+		:output "$@" \
+		:font-name "$*" \
+		:architecture "PAL" \
+		:char-width 8 \
+		:char-height 16 \
+		:num-chars 16 \
+		:format "hex-digits"
+
+# Convert PNG font to batariBASIC data for SECAM
+$(GENERATED_DIR)/Font.%.SECAM.bas: Source/Art/%.png
+	@echo "Converting font $< to $@ for SECAM..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-font \
+		:input "$<" \
+		:output "$@" \
+		:font-name "$*" \
+		:architecture "SECAM" \
+		:char-width 8 \
+		:char-height 16 \
+		:num-chars 16 \
+		:format "hex-digits"
 
 # Build game
 Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: $(ALL_SOURCES)

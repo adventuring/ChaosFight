@@ -26,6 +26,50 @@ echo "Output file: $output_file"
 echo "Screen name: $screen_name"
 
 # Handle different commands
+if [[ "$command" == "compile-2600-font" ]]; then
+  # Extract font name
+  for arg in "$@"; do
+    if [[ "$arg" == ":font-name" ]]; then
+      font_next=true
+    elif [[ "$font_next" == "true" ]]; then
+      font_name="$arg"
+      font_next=false
+    fi
+  done
+  
+  # Generate mock font data (16 hex digits, each 8×16 pixels = 16 bytes)
+  echo "rem Mock font data for $font_name" > "$output_file"
+  echo "rem 16 hex digits (0-F), each 8×16 pixels" >> "$output_file"
+  echo "rem White pixels on black/transparent background" >> "$output_file"
+  echo "" >> "$output_file"
+  
+  # Generate data statements for each digit
+  for digit in {0..15}; do
+    if [ $digit -lt 10 ]; then
+      digit_name="Digit$digit"
+    else
+      case $digit in
+        10) digit_name="DigitA" ;;
+        11) digit_name="DigitB" ;;
+        12) digit_name="DigitC" ;;
+        13) digit_name="DigitD" ;;
+        14) digit_name="DigitE" ;;
+        15) digit_name="DigitF" ;;
+      esac
+    fi
+    
+    echo "data $digit_name" >> "$output_file"
+    # Generate 16 bytes of mock bitmap data
+    for row in {0..15}; do
+      echo "  %$(printf '%08d' $(( (RANDOM % 256) | 0b00011000 )))" >> "$output_file"
+    done
+    echo "end" >> "$output_file"
+    echo "" >> "$output_file"
+  done
+  
+  exit 0
+fi
+
 if [[ "$command" == "compile-2600-playfield" ]]; then
   # Generate mock playfield data (32×32 = 32 rows × 4 bytes/row) with color-per-row
   echo "rem Mock playfield data for $screen_name" > "$output_file"

@@ -10,60 +10,41 @@ rem Input: player index (in temp1)
 rem Modifies: Player momentum based on character weight
 rem Weight affects: wall bounce coefficient (heavier = less bounce)
 HandleWallCollision
-  rem Get character type for this player
-  gosub GetPlayerCharacterSub
-  rem temp4 now contains character type
+  rem Get character type for this player using direct array access
+  rem temp1 contains player index (0-3)
+  temp4 = PlayerChar[temp1]
   
-  rem Get character weight
-  on temp4 goto GetChar0, GetChar1, GetChar2, GetChar3, GetChar4, GetChar5, GetChar6, GetChar7, GetChar8, GetChar9, GetChar10, GetChar11, GetChar12, GetChar13, GetChar14, GetChar15
-  GetChar0: temp3 = CharacterWeights(0) : goto DoneWeight
-  GetChar1: temp3 = CharacterWeights(1) : goto DoneWeight
-  GetChar2: temp3 = CharacterWeights(2) : goto DoneWeight
-  GetChar3: temp3 = CharacterWeights(3) : goto DoneWeight
-  GetChar4: temp3 = CharacterWeights(4) : goto DoneWeight
-  GetChar5: temp3 = CharacterWeights(5) : goto DoneWeight
-  GetChar6: temp3 = CharacterWeights(6) : goto DoneWeight
-  GetChar7: temp3 = CharacterWeights(7) : goto DoneWeight
-  GetChar8: temp3 = CharacterWeights(8) : goto DoneWeight
-  GetChar9: temp3 = CharacterWeights(9) : goto DoneWeight
-  GetChar10: temp3 = CharacterWeights(10) : goto DoneWeight
-  GetChar11: temp3 = CharacterWeights(11) : goto DoneWeight
-  GetChar12: temp3 = CharacterWeights(12) : goto DoneWeight
-  GetChar13: temp3 = CharacterWeights(13) : goto DoneWeight
-  GetChar14: temp3 = CharacterWeights(14) : goto DoneWeight
-  GetChar15: temp3 = CharacterWeights(15) : goto DoneWeight
+  rem Get character weight using direct array access
+  temp3 = CharacterWeights[temp4]
   
-DoneWeight:
   rem Weight is now in temp3 (0-40)
   rem Calculate bounce coefficient: higher weight = lower bounce
   rem Formula: bounce = 50 - weight / 2
   rem Lighter characters bounce more, heavier characters bounce less
   rem Example weights: 12 (light) = 44 bounce, 40 (heavy) = 30 bounce
   
-  rem Get player momentum
-  gosub GetPlayerMomentumSub
-  rem temp4 now contains momentum value
+  rem Get player momentum using direct array access
+  temp4 = PlayerMomentumX[temp1]
   
   rem Calculate bounced momentum: momentum = momentum * bounce / 50
   rem Using integer math: momentum = (momentum * bounce) / 50
   temp2 = temp4 * (50 - temp3 / 2) / 50
   if temp2 = 0 && temp4 != 0 then temp2 = 1 : rem Ensure at least 1 if was moving
-  gosub SetPlayerMomentumSub
+  PlayerMomentumX[temp1] = temp2
   return
 
 rem Check if player hit left wall and needs weight-based bounce
 rem Input: player index (in temp1)
 CheckLeftWallCollision
-  gosub GetPlayerXSub
+  temp4 = PlayerX[temp1]
   if temp4 < 10 then
     rem Hit left wall - reverse momentum with weight-based reduction
     rem Apply weighted bounce
     gosub HandleWallCollision
     rem Ensure position is corrected
-    gosub GetPlayerXSub
+    temp4 = PlayerX[temp1]
     if temp4 < 10 then
-      temp2 = 10
-      gosub SetPlayerXSub
+      PlayerX[temp1] = 10
     endif
   endif
   return
@@ -71,62 +52,21 @@ CheckLeftWallCollision
 rem Check if player hit right wall and needs weight-based bounce
 rem Input: player index (in temp1)
 CheckRightWallCollision
-  gosub GetPlayerXSub
+  temp4 = PlayerX[temp1]
   if temp4 > 150 then
     rem Hit right wall - reverse momentum with weight-based reduction
     rem Apply weighted bounce
     gosub HandleWallCollision
     rem Ensure position is corrected
-    gosub GetPlayerXSub
+    temp4 = PlayerX[temp1]
     if temp4 > 150 then
-      temp2 = 150
-      gosub SetPlayerXSub
+      PlayerX[temp1] = 150
     endif
   endif
   return
 
-rem Get player momentum for a given player index
-rem Input: index (in temp1)
-rem Output: momentum (in temp4)
-GetPlayerMomentumSub
-  on temp1 goto GetM0, GetM1, GetM2, GetM3
-  
-  GetM0:
-    temp4 = Player1MomentumX
-    return
-    
-  GetM1:
-    temp4 = Player2MomentumX
-    return
-    
-  GetM2:
-    temp4 = Player3MomentumX
-    return
-    
-  GetM3:
-    temp4 = Player4MomentumX
-    return
-
-rem Set player momentum for a given player index
-rem Input: index (in temp1), momentum (in temp2)
-SetPlayerMomentumSub
-  on temp1 goto SetM0, SetM1, SetM2, SetM3
-  
-  SetM0:
-    Player1MomentumX = temp2
-    return
-    
-  SetM1:
-    Player2MomentumX = temp2
-    return
-    
-  SetM2:
-    Player3MomentumX = temp2
-    return
-    
-  SetM3:
-    Player4MomentumX = temp2
-    return
+rem Note: GetPlayerMomentumSub and SetPlayerMomentumSub removed
+rem Now using direct array access: PlayerMomentumX[temp1]
 
 rem =================================================================
 rem CHARACTER WEIGHTS DATA

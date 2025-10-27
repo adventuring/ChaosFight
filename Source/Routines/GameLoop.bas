@@ -39,57 +39,47 @@ GameLoop
           rem Character 4: Tank (damage: 10-20, melee, high health)
           rem Characters 5-15: Various balanced characters
 
-          rem Initialize player positions and stats
-          Player1X = 40
-          Player1Y = 80
-          Player1Facing = 1
-          Player1Jumping = 0
-          Player1Guarding = 0
-          Player1Attacking = 0
-          Player1Health = 100
-          Player1AttackCooldown = 0
-          Player1RecoveryFrames = 0
-          Player1MomentumX = 0
-          gosub SetPlayer1Character
-
-          Player2X = 120
-          Player2Y = 80
-          Player2Facing = 0
-          Player2Jumping = 0
-          Player2Guarding = 0
-          Player2Attacking = 0
-          Player2Health = 100
-          Player2AttackCooldown = 0
-          Player2RecoveryFrames = 0
-          Player2MomentumX = 0
-          gosub SetPlayer2Character
-
-          rem Initialize players 3 & 4 if Quadtari detected and characters selected
-          if QuadtariDetected && SelectedChar3 != 0 then
-                    Player3X = 80
-                    Player3Y = 80
-                    Player3Facing = 1
-                    Player3Jumping = 0
-                    Player3Guarding = 0
-                    Player3Attacking = 0
-                    Player3Health = 100
-                    Player3AttackCooldown = 0
-                    Player3RecoveryFrames = 0
-                    Player3MomentumX = 0
-                    gosub SetPlayer3Character
-
-          if QuadtariDetected && SelectedChar4 != 0 then
-                    Player4X = 100
-                    Player4Y = 80
-                    Player4Facing = 0
-                    Player4Jumping = 0
-                    Player4Guarding = 0
-                    Player4Attacking = 0
-                    Player4Health = 100
-                    Player4AttackCooldown = 0
-                    Player4RecoveryFrames = 0
-                    Player4MomentumX = 0
-                    gosub SetPlayer4Character
+          rem Initialize player positions and stats using arrays
+          PlayerX[0] = 40 : PlayerY[0] = 80
+          PlayerX[1] = 120 : PlayerY[1] = 80
+          PlayerX[2] = 80 : PlayerY[2] = 80
+          PlayerX[3] = 100 : PlayerY[3] = 80
+          
+          rem Initialize player states (facing, jumping, guarding, attacking)
+          PlayerState[0] = 1 : rem Player 1 facing right
+          PlayerState[1] = 0 : rem Player 2 facing left
+          PlayerState[2] = 1 : rem Player 3 facing right
+          PlayerState[3] = 0 : rem Player 4 facing left
+          
+          rem Initialize player health
+          PlayerHealth[0] = 100
+          PlayerHealth[1] = 100
+          PlayerHealth[2] = 100
+          PlayerHealth[3] = 100
+          
+          rem Initialize player timers (attack cooldown and recovery frames)
+          PlayerTimers[0] = 0
+          PlayerTimers[1] = 0
+          PlayerTimers[2] = 0
+          PlayerTimers[3] = 0
+          
+          rem Initialize player momentum
+          PlayerMomentumX[0] = 0
+          PlayerMomentumX[1] = 0
+          PlayerMomentumX[2] = 0
+          PlayerMomentumX[3] = 0
+          
+          rem Initialize player damage
+          PlayerDamage[0] = 22
+          PlayerDamage[1] = 22
+          PlayerDamage[2] = 22
+          PlayerDamage[3] = 22
+          
+          rem Set character types
+          PlayerChar[0] = SelectedChar1
+          PlayerChar[1] = SelectedChar2
+          PlayerChar[2] = SelectedChar3
+          PlayerChar[3] = SelectedChar4
 
           rem Initialize missiles
           Missile1Active = 0
@@ -130,45 +120,48 @@ GameMainLoop
           gosub HandleConsoleSwitches
 
           rem Handle Player 1 input (disabled during recovery)
-          if !Player1RecoveryFrames then
-                    if joy0left then Player1X = Player1X - 1 : Player1Facing = 0 : Player1MomentumX = -1
-                    if joy0right then Player1X = Player1X + 1 : Player1Facing = 1 : Player1MomentumX = 1
-                    if joy0up && !Player1Jumping then Player1Jumping = 1 : Player1Y = Player1Y - 10
-                    if joy0down then Player1Guarding = 1 else Player1Guarding = 0
+          if !IsPlayerRecovery(PlayerState[0]) then
+                    if joy0left then PlayerX[0] = PlayerX[0] - 1 : PlayerState[0] = PlayerState[0] & ~1 : PlayerMomentumX[0] = -1
+                    if joy0right then PlayerX[0] = PlayerX[0] + 1 : PlayerState[0] = PlayerState[0] | 1 : PlayerMomentumX[0] = 1
+                    if joy0up && !IsPlayerJumping(PlayerState[0]) then PlayerState[0] = PlayerState[0] | 4 : PlayerY[0] = PlayerY[0] - 10
+                    if joy0down then PlayerState[0] = PlayerState[0] | 2 else PlayerState[0] = PlayerState[0] & ~2
           endif
-          if joy0fire && !Player1AttackCooldown then gosub PerformPlayer1Attack
+          if joy0fire && !IsPlayerAttacking(PlayerState[0]) then gosub PerformPlayer1Attack
 
           rem Handle Player 2 input (disabled during recovery)
-          if !Player2RecoveryFrames then
-                    if joy1left then Player2X = Player2X - 1 : Player2Facing = 0 : Player2MomentumX = -1
-                    if joy1right then Player2X = Player2X + 1 : Player2Facing = 1 : Player2MomentumX = 1
-                    if joy1up && !Player2Jumping then Player2Jumping = 1 : Player2Y = Player2Y - 10
-                    if joy1down then Player2Guarding = 1 else Player2Guarding = 0
-          if joy1fire && !Player2AttackCooldown then gosub PerformPlayer2Attack
+          if !IsPlayerRecovery(PlayerState[1]) then
+                    if joy1left then PlayerX[1] = PlayerX[1] - 1 : PlayerState[1] = PlayerState[1] & ~1 : PlayerMomentumX[1] = -1
+                    if joy1right then PlayerX[1] = PlayerX[1] + 1 : PlayerState[1] = PlayerState[1] | 1 : PlayerMomentumX[1] = 1
+                    if joy1up && !IsPlayerJumping(PlayerState[1]) then PlayerState[1] = PlayerState[1] | 4 : PlayerY[1] = PlayerY[1] - 10
+                    if joy1down then PlayerState[1] = PlayerState[1] | 2 else PlayerState[1] = PlayerState[1] & ~2
+          endif
+          if joy1fire && !IsPlayerAttacking(PlayerState[1]) then gosub PerformPlayer2Attack
 
           rem Handle Player 3 input (Quadtari only, disabled during recovery)
-          if QuadtariDetected && SelectedChar3 != 0 && !Player3RecoveryFrames then
-                    if joy2left then Player3X = Player3X - 1 : Player3Facing = 0 : Player3MomentumX = -1
-                    if joy2right then Player3X = Player3X + 1 : Player3Facing = 1 : Player3MomentumX = 1
-                    if joy2up && !Player3Jumping then Player3Jumping = 1 : Player3Y = Player3Y - 10
-                    if joy2down then Player3Guarding = 1 else Player3Guarding = 0
-          if QuadtariDetected && SelectedChar3 != 0 && joy2fire && !Player3AttackCooldown then gosub PerformPlayer3Attack
+          if QuadtariDetected && SelectedChar3 != 0 && !IsPlayerRecovery(PlayerState[2]) then
+                    if joy2left then PlayerX[2] = PlayerX[2] - 1 : PlayerState[2] = PlayerState[2] & ~1 : PlayerMomentumX[2] = -1
+                    if joy2right then PlayerX[2] = PlayerX[2] + 1 : PlayerState[2] = PlayerState[2] | 1 : PlayerMomentumX[2] = 1
+                    if joy2up && !IsPlayerJumping(PlayerState[2]) then PlayerState[2] = PlayerState[2] | 4 : PlayerY[2] = PlayerY[2] - 10
+                    if joy2down then PlayerState[2] = PlayerState[2] | 2 else PlayerState[2] = PlayerState[2] & ~2
+          endif
+          if QuadtariDetected && SelectedChar3 != 0 && joy2fire && !IsPlayerAttacking(PlayerState[2]) then gosub PerformPlayer3Attack
 
           rem Handle Player 4 input (Quadtari only, disabled during recovery)
-          if QuadtariDetected && SelectedChar4 != 0 && !Player4RecoveryFrames then
-                    if joy3left then Player4X = Player4X - 1 : Player4Facing = 0 : Player4MomentumX = -1
-                    if joy3right then Player4X = Player4X + 1 : Player4Facing = 1 : Player4MomentumX = 1
-                    if joy3up && !Player4Jumping then Player4Jumping = 1 : Player4Y = Player4Y - 10
-                    if joy3down then Player4Guarding = 1 else Player4Guarding = 0
-          if QuadtariDetected && SelectedChar4 != 0 && joy3fire && !Player4AttackCooldown then gosub PerformPlayer4Attack
+          if QuadtariDetected && SelectedChar4 != 0 && !IsPlayerRecovery(PlayerState[3]) then
+                    if joy3left then PlayerX[3] = PlayerX[3] - 1 : PlayerState[3] = PlayerState[3] & ~1 : PlayerMomentumX[3] = -1
+                    if joy3right then PlayerX[3] = PlayerX[3] + 1 : PlayerState[3] = PlayerState[3] | 1 : PlayerMomentumX[3] = 1
+                    if joy3up && !IsPlayerJumping(PlayerState[3]) then PlayerState[3] = PlayerState[3] | 4 : PlayerY[3] = PlayerY[3] - 10
+                    if joy3down then PlayerState[3] = PlayerState[3] | 2 else PlayerState[3] = PlayerState[3] & ~2
+          endif
+          if QuadtariDetected && SelectedChar4 != 0 && joy3fire && !IsPlayerAttacking(PlayerState[3]) then gosub PerformPlayer4Attack
 
           rem Apply gravity and momentum to all jumping players
-          if IsPlayerJumping(Player1State) then Player1Y = Player1Y + 1 : if Player1Y >= 80 then Player1Y = 80 : Player1State = ClearPlayerJumping(Player1State)
-          if IsPlayerJumping(Player2State) then Player2Y = Player2Y + 1 : if Player2Y >= 80 then Player2Y = 80 : Player2State = ClearPlayerJumping(Player2State)
+          if IsPlayerJumping(PlayerState[0]) then PlayerY[0] = PlayerY[0] + 1 : if PlayerY[0] >= 80 then PlayerY[0] = 80 : PlayerState[0] = ClearPlayerJumping(PlayerState[0])
+          if IsPlayerJumping(PlayerState[1]) then PlayerY[1] = PlayerY[1] + 1 : if PlayerY[1] >= 80 then PlayerY[1] = 80 : PlayerState[1] = ClearPlayerJumping(PlayerState[1])
           if QuadtariDetected && SelectedChar3 != 0 then
-                    if IsPlayerJumping(Player3State) then Player3Y = Player3Y + 1 : if Player3Y >= 80 then Player3Y = 80 : Player3State = ClearPlayerJumping(Player3State)
+                    if IsPlayerJumping(PlayerState[2]) then PlayerY[2] = PlayerY[2] + 1 : if PlayerY[2] >= 80 then PlayerY[2] = 80 : PlayerState[2] = ClearPlayerJumping(PlayerState[2])
           if QuadtariDetected && SelectedChar4 != 0 then
-                    if IsPlayerJumping(Player4State) then Player4Y = Player4Y + 1 : if Player4Y >= 80 then Player4Y = 80 : Player4State = ClearPlayerJumping(Player4State)
+                    if IsPlayerJumping(PlayerState[3]) then PlayerY[3] = PlayerY[3] + 1 : if PlayerY[3] >= 80 then PlayerY[3] = 80 : PlayerState[3] = ClearPlayerJumping(PlayerState[3])
 
           rem Apply momentum and recovery effects
           gosub ApplyMomentumAndRecovery
@@ -187,20 +180,20 @@ GameMainLoop
           rem In 4-player mode: player0 = Player1/Player3, player1 = Player2/Player4
           rem Players 3&4 use missile/ball sprites when active
 
-          player0x = Player1X
-          player0y = Player1Y
-          player1x = Player2X
-          player1y = Player2Y
+          player0x = PlayerX[0]
+          player0y = PlayerY[0]
+          player1x = PlayerX[1]
+          player1y = PlayerY[1]
 
           rem Set missile/ball positions for players 3 & 4 in 4-player mode
           if QuadtariDetected && SelectedChar3 != 0 then
-                    missile1x = Player3X : missile1y = Player3Y : ENAM1 = 1
+                    missile1x = PlayerX[2] : missile1y = PlayerY[2] : ENAM1 = 1
           else
                     ENAM1 = 0
           endif
 
           if QuadtariDetected && SelectedChar4 != 0 then
-                    ballx = Player4X : bally = Player4Y : ENABL = 1
+                    ballx = PlayerX[3] : bally = PlayerY[3] : ENABL = 1
           else
                     ENABL = 0
           endif
@@ -236,34 +229,34 @@ GameMainLoop
 
           rem Collision detection for Player 1
 CheckPlayer1Collisions
-          if Player1X < 10 then Player1X = 10
-          if Player1X > 150 then Player1X = 150
-          if Player1Y < 20 then Player1Y = 20
-          if Player1Y > 80 then Player1Y = 80
+          if PlayerX[0] < 10 then PlayerX[0] = 10
+          if PlayerX[0] > 150 then PlayerX[0] = 150
+          if PlayerY[0] < 20 then PlayerY[0] = 20
+          if PlayerY[0] > 80 then PlayerY[0] = 80
           return
 
           rem Collision detection for Player 2
 CheckPlayer2Collisions
-          if Player2X < 10 then Player2X = 10
-          if Player2X > 150 then Player2X = 150
-          if Player2Y < 20 then Player2Y = 20
-          if Player2Y > 80 then Player2Y = 80
+          if PlayerX[1] < 10 then PlayerX[1] = 10
+          if PlayerX[1] > 150 then PlayerX[1] = 150
+          if PlayerY[1] < 20 then PlayerY[1] = 20
+          if PlayerY[1] > 80 then PlayerY[1] = 80
           return
 
           rem Collision detection for Player 3
 CheckPlayer3Collisions
-          if Player3X < 10 then Player3X = 10
-          if Player3X > 150 then Player3X = 150
-          if Player3Y < 20 then Player3Y = 20
-          if Player3Y > 80 then Player3Y = 80
+          if PlayerX[2] < 10 then PlayerX[2] = 10
+          if PlayerX[2] > 150 then PlayerX[2] = 150
+          if PlayerY[2] < 20 then PlayerY[2] = 20
+          if PlayerY[2] > 80 then PlayerY[2] = 80
           return
 
           rem Collision detection for Player 4
 CheckPlayer4Collisions
-          if Player4X < 10 then Player4X = 10
-          if Player4X > 150 then Player4X = 150
-          if Player4Y < 20 then Player4Y = 20
-          if Player4Y > 80 then Player4Y = 80
+          if PlayerX[3] < 10 then PlayerX[3] = 10
+          if PlayerX[3] > 150 then PlayerX[3] = 150
+          if PlayerY[3] < 20 then PlayerY[3] = 20
+          if PlayerY[3] > 80 then PlayerY[3] = 80
           return
 
           rem Update attack cooldowns
@@ -279,10 +272,10 @@ CheckPlayer4Collisions
 CheckAllPlayerCollisions
           rem Check Player 1 vs Player 2
           dim Distance = a
-          Distance = Player1X - Player2X
+          Distance = PlayerX[0] - PlayerX[1]
           if Distance < 0 then Distance = -Distance
           if Distance < 16 then
-                    if Player1X < Player2X then Player1X = Player1X - 1 : Player2X = Player2X + 1 else Player1X = Player1X + 1 : Player2X = Player2X - 1
+                    if PlayerX[0] < PlayerX[1] then PlayerX[0] = PlayerX[0] - 1 : PlayerX[1] = PlayerX[1] + 1 else PlayerX[0] = PlayerX[0] + 1 : PlayerX[1] = PlayerX[1] - 1
           return
 
           rem Set sprite graphics based on state

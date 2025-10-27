@@ -7,6 +7,7 @@ BB_OPTIMIZE = bin/optimize
 BB_FILTER = bin/bbfilter
 DASM = bin/dasm
 STELLA = stella
+GIMP = gimp
 SOURCE_DIR = .
 GENERATED_DIR = Source/Generated
 OBJECT_DIR = Object
@@ -61,7 +62,7 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),$(foreach arch,$(TV_ARCHS),$(G
 Source/Art/%.png: Source/Art/%.xcf
 	@echo "Converting $< to $@..."
 	mkdir -p Source/Art
-	magick "$<" -background none -flatten "$@"
+	$(GIMP) --batch-interpreter=plug-in-script-fu-eval -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
 # Convert PNG character sprite sheet to batariBASIC data for NTSC
 $(GENERATED_DIR)/Art.%.NTSC.bas: Source/Art/%.png
@@ -118,21 +119,21 @@ $(GENERATED_DIR)/Art.%.SECAM.bas: Source/Art/%.png
 $(GENERATED_DIR)/Characters.bas: $(CHARACTER_BAS)
 	@echo "Consolidating character data..."
 	mkdir -p $(GENERATED_DIR)
-	@echo "rem ChaosFight - Generated Character Sprite Data" > $@
-	@echo "rem Copyright © 2025 Interworldly Adventuring, LLC." >> $@
+	@echo "          rem ChaosFight - Generated Character Sprite Data" > $@
+	@echo "          rem Copyright © 2025 Interworldly Adventuring, LLC." >> $@
 	@echo "" >> $@
-	@echo "rem =========================================================================" >> $@
-	@echo "rem CHARACTER SPRITE DATA" >> $@
-	@echo "rem =========================================================================" >> $@
-	@echo "rem This file includes all character sprite data compiled from XCF sources" >> $@
-	@echo "rem Each character is 64px wide (8 frames) × 256px tall (16 sequences)" >> $@
-	@echo "rem Facing right by default, use REFPn to reflect for face-left" >> $@
-	@echo "rem Duplicate frames are detected and re-used, blank frames are omitted" >> $@
+	@echo "          rem =========================================================================" >> $@
+	@echo "          rem CHARACTER SPRITE DATA" >> $@
+	@echo "          rem =========================================================================" >> $@
+	@echo "          rem This file includes all character sprite data compiled from XCF sources" >> $@
+	@echo "          rem Each character is 64px wide (8 frames) × 256px tall (16 sequences)" >> $@
+	@echo "          rem Facing right by default, use REFPn to reflect for face-left" >> $@
+	@echo "          rem Duplicate frames are detected and re-used, blank frames are omitted" >> $@
 	@echo "" >> $@
 	@for file in $(CHARACTER_BAS); do \
 		if [ -f $$file ]; then \
-			echo "rem Including $$(basename $$file)" >> $@; \
-			cat $$file >> $@; \
+			echo "          rem Including $$(basename $$file)" >> $@; \
+			sed 's/^/          /' $$file >> $@; \
 			echo "" >> $@; \
 		fi; \
 	done

@@ -21,8 +21,8 @@ rem =================================================================
 BernieAttack
   rem Bernie uses a melee attack
   rem Set attack animation state (13 = attack windup, 14 = attack execution)
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  rem temp1 contains player index, set animation state directly
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -30,8 +30,7 @@ rem =================================================================
 rem CURLING SWEEPER (Character 1) - Melee Attack
 rem =================================================================
 CurlingSweeperAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -39,8 +38,7 @@ rem =================================================================
 rem DRAGONET (Character 2) - Melee Attack
 rem =================================================================
 DragonetAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -48,8 +46,7 @@ rem =================================================================
 rem EXO PILOT (Character 3) - Ranged Attack
 rem =================================================================
 EXOPilotAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformRangedAttack
   return
 
@@ -57,8 +54,7 @@ rem =================================================================
 rem FAT TONY (Character 4) - Melee Attack
 rem =================================================================
 FatTonyAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -66,8 +62,7 @@ rem =================================================================
 rem GRIZZARD HANDLER (Character 5) - Melee Attack
 rem =================================================================
 GrizzardHandlerAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -75,8 +70,7 @@ rem =================================================================
 rem HARPY (Character 6) - Melee Attack
 rem =================================================================
 HarpyAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -84,8 +78,7 @@ rem =================================================================
 rem KNIGHT GUY (Character 7) - Ranged Attack
 rem =================================================================
 KnightGuyAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformRangedAttack
   return
 
@@ -93,8 +86,7 @@ rem =================================================================
 rem MAGICAL FAERIE (Character 8) - Ranged Attack
 rem =================================================================
 MagicalFaerieAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformRangedAttack
   return
 
@@ -102,8 +94,7 @@ rem =================================================================
 rem MYSTERY MAN (Character 9) - Melee Attack
 rem =================================================================
 MysteryManAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -111,8 +102,7 @@ rem =================================================================
 rem NINJISH GUY (Character 10) - Melee Attack
 rem =================================================================
 NinjishGuyAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -120,8 +110,7 @@ rem =================================================================
 rem PORK CHOP (Character 11) - Melee Attack
 rem =================================================================
 PorkChopAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -129,8 +118,7 @@ rem =================================================================
 rem RADISH GOBLIN (Character 12) - Melee Attack
 rem =================================================================
 RadishGoblinAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -138,8 +126,7 @@ rem =================================================================
 rem ROBO TITO (Character 13) - Melee Attack
 rem =================================================================
 RoboTitoAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -147,8 +134,7 @@ rem =================================================================
 rem URSULO (Character 14) - Ranged Attack
 rem =================================================================
 UrsuloAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformRangedAttack
   return
 
@@ -156,8 +142,7 @@ rem =================================================================
 rem VEG DOG (Character 15) - Melee Attack
 rem =================================================================
 VegDogAttack
-  temp3 = 14
-  gosub SetPlayerAnimStateSub
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   gosub PerformMeleeAttack
   return
 
@@ -171,11 +156,9 @@ rem        temp3 = attacker Y position
 rem        temp4 = attacker facing direction (0=left, 1=right)
 
 DispatchCharacterAttack
-  rem Get character type for this player (save player index first)
-  rem Store player index to temp1 backup
-  rem Use temp2-temp4 for routing
-  gosub GetPlayerCharacterSub
-  rem temp4 now contains character type
+  rem Get character type for this player using direct array access
+  rem temp1 contains player index (0-3)
+  temp4 = PlayerChar[temp1]
   on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, GrizzardHandlerAttack, HarpyAttack, KnightGuyAttack, MagicalFaerieAttack, MysteryManAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
   rem Default to Bernie attack if invalid character
   goto BernieAttack

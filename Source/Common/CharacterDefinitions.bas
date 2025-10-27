@@ -249,6 +249,41 @@ GetMissileDimsSub
   temp4 = CharacterMissileHeights(temp1)
   return
 
+rem Get missile emission height
+rem Input: character index (in temp1)
+rem Output: emission height (in temp4)
+rem Note: Uses array access since data is immutable
+GetMissileEmissionHeightSub
+  temp4 = CharacterMissileEmissionHeights(temp1)
+  return
+
+rem Get missile momentum X
+rem Input: character index (in temp1)
+rem Output: momentum X (in temp4)
+rem Note: Uses array access since data is immutable
+rem Values range from -127 to 127 (signed)
+GetMissileMomentumXSub
+  temp4 = CharacterMissileMomentumX(temp1)
+  return
+
+rem Get missile momentum Y
+rem Input: character index (in temp1)
+rem Output: momentum Y (in temp4)
+rem Note: Uses array access since data is immutable
+rem Values range from -127 to 127 (signed)
+GetMissileMomentumYSub
+  temp4 = CharacterMissileMomentumY(temp1)
+  return
+
+rem Get missile flags
+rem Input: character index (in temp1)
+rem Output: flags (in temp4)
+rem Note: Bit flags: 0=hit bg, 1=hit player, 2=gravity, 3=bounce
+rem Note: Uses array access since data is immutable
+GetMissileFlagsSub
+  temp4 = CharacterMissileFlags(temp1)
+  return
+
 rem =================================================================
 rem DATA FORMAT NOTES FOR SKYLINETOOL OUTPUT
 rem =================================================================

@@ -17,7 +17,7 @@ GAME = ChaosFight
 ROM = Dist/$(GAME).NTSC.a26
 
 # Assembly files
-ALL_SOURCES = $(shell find Source -name \*.bas) $(GENERATED_DIR)/Characters.bas $(GENERATED_DIR)/Playfields.bas
+ALL_SOURCES = $(shell find Source -name \*.bas) $(GENERATED_DIR)/Characters.bas $(GENERATED_DIR)/Playfields.bas $(CHARACTER_BAS)
 
 # Default target
 .PHONY: all clean emu game help doc characters playfields
@@ -40,24 +40,106 @@ game: \
 
 doc: Dist/$(GAME).pdf
 
+# Character sprite sheet names (16 characters)
+CHARACTER_NAMES = Bernie CurlingSweeper Dragonet EXOPilot FatTony GrizzardHandler Harpy KnightGuy MagicalFaerie MysteryMan NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog
+
+# TV architectures
+TV_ARCHS = NTSC PAL SECAM
+
 # Build character assets
-characters: $(GENERATED_DIR)/Characters.bas
+characters: $(GENERATED_DIR)/Characters.bas $(foreach char,$(CHARACTER_NAMES),$(foreach arch,$(TV_ARCHS),$(GENERATED_DIR)/Art.$(char).$(arch).bas))
 
 # Build playfield assets
 playfields: $(GENERATED_DIR)/Playfields.bas
 
-# Convert XCF to PNG for characters
-Source/Art/Character-%.png: Source/Art/Character-%.xcf
-	gimp -i -b '(let* ((file (car (gimp-file-load RUN-NONINTERACTIVE "$<" "$<"))) (drawable (car (gimp-image-get-active-drawable file)))) (gimp-file-save RUN-NONINTERACTIVE file drawable "$@" "$@") (gimp-image-delete file))' -b '(gimp-quit 0)'
+# Generate list of character sprite files
+CHARACTER_XCF = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).xcf)
+CHARACTER_PNG = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png)
+CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),$(foreach arch,$(TV_ARCHS),$(GENERATED_DIR)/Art.$(char).$(arch).bas))
+
+# Convert XCF to PNG for character sprites
+Source/Art/%.png: Source/Art/%.xcf
+	@echo "Converting $< to $@..."
+	mkdir -p Source/Art
+	gimp -i -b "(load \"Tools/xcf-export.scm\")" -b "(xcf-export \"$<\" \"$@\")" -b "(gimp-quit 0)"
+
+# Convert PNG character sprite sheet to batariBASIC data for NTSC
+$(GENERATED_DIR)/Art.%.NTSC.bas: Source/Art/%.png
+	@echo "Converting character sprite $< to $@ for NTSC..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-character \
+		:input "$<" \
+		:output "$@" \
+		:character-name "$*" \
+		:architecture "NTSC" \
+		:width 8 \
+		:height 16 \
+		:frames 8 \
+		:sequences 16 \
+		:detect-duplicates t \
+		:omit-blank-frames t \
+		:refpn-left-facing t
+
+# Convert PNG character sprite sheet to batariBASIC data for PAL
+$(GENERATED_DIR)/Art.%.PAL.bas: Source/Art/%.png
+	@echo "Converting character sprite $< to $@ for PAL..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-character \
+		:input "$<" \
+		:output "$@" \
+		:character-name "$*" \
+		:architecture "PAL" \
+		:width 8 \
+		:height 16 \
+		:frames 8 \
+		:sequences 16 \
+		:detect-duplicates t \
+		:omit-blank-frames t \
+		:refpn-left-facing t
+
+# Convert PNG character sprite sheet to batariBASIC data for SECAM
+$(GENERATED_DIR)/Art.%.SECAM.bas: Source/Art/%.png
+	@echo "Converting character sprite $< to $@ for SECAM..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-character \
+		:input "$<" \
+		:output "$@" \
+		:character-name "$*" \
+		:architecture "SECAM" \
+		:width 8 \
+		:height 16 \
+		:frames 8 \
+		:sequences 16 \
+		:detect-duplicates t \
+		:omit-blank-frames t \
+		:refpn-left-facing t
+
+# Consolidate all character sprite data (architecture-agnostic)
+$(GENERATED_DIR)/Characters.bas: $(CHARACTER_BAS)
+	@echo "Consolidating character data..."
+	mkdir -p $(GENERATED_DIR)
+	@echo "rem ChaosFight - Generated Character Sprite Data" > $@
+	@echo "rem Copyright © 2025 Interworldly Adventuring, LLC." >> $@
+	@echo "" >> $@
+	@echo "rem =========================================================================" >> $@
+	@echo "rem CHARACTER SPRITE DATA" >> $@
+	@echo "rem =========================================================================" >> $@
+	@echo "rem This file includes all character sprite data compiled from XCF sources" >> $@
+	@echo "rem Each character is 64px wide (8 frames) × 256px tall (16 sequences)" >> $@
+	@echo "rem Facing right by default, use REFPn to reflect for face-left" >> $@
+	@echo "rem Duplicate frames are detected and re-used, blank frames are omitted" >> $@
+	@echo "" >> $@
+	@for file in $(CHARACTER_BAS); do \
+		if [ -f $$file ]; then \
+			echo "rem Including $$(basename $$file)" >> $@; \
+			cat $$file >> $@; \
+			echo "" >> $@; \
+		fi; \
+	done
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf
 	gimp -i -b '(let* ((file (car (gimp-file-load RUN-NONINTERACTIVE "$<" "$<"))) (drawable (car (gimp-image-get-active-drawable file)))) (gimp-file-save RUN-NONINTERACTIVE file drawable "$@" "$@") (gimp-image-delete file))' -b '(gimp-quit 0)'
-
-# Convert PNG to batariBASIC character include
-$(GENERATED_DIR)/Characters.bas: $(wildcard Source/Art/Character-*.png)
-	mkdir -p $(GENERATED_DIR)
-	bin/skyline-tool compile-characters $(GENERATED_DIR) $(wildcard Source/Art/Character-*.png)
 
 # Convert PNG to batariBASIC playfield include
 $(GENERATED_DIR)/Playfields.bas: $(wildcard Source/Art/Map-*.png)

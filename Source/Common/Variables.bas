@@ -35,7 +35,7 @@
           dim ReadyCount = i
           
           rem =================================================================
-          rem CHARACTER SELECTION VARIABLES (Available in All Screens) - j through v
+          rem CHARACTER SELECTION VARIABLES (Available in All Screens) - j through s
           rem =================================================================
 
           dim PlayerChar = j, k, l, m  : rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 (4 vars)
@@ -47,14 +47,18 @@
           dim SelectedLevel = v
           
           rem =================================================================
-          rem GAMEPLAY VARIABLES (Standard RAM - Last 4 vars) - w through z
+          rem GAMEPLAY VARIABLES (Standard RAM - All 26 vars used: a-z)
           rem =================================================================
 
-          rem Using w-z for most frequently accessed gameplay data
+          rem Most frequently accessed gameplay data in RIOT RAM for speed
+          rem First 4 positions: w-z (from above section)
           dim Player1X = w
           dim Player1Y = x
           dim Player2X = y
           dim Player2Y = z
+          
+          rem Health and state for P1/P2 (frequently accessed in combat)
+          rem Allocate remaining letters if needed - but note aa-z monthly assignments need different approach
           
           rem =================================================================
           rem GAMEPLAY VARIABLES (SuperChip - var0-var23, Gameplay Only)
@@ -70,27 +74,32 @@
           rem PlayerState byte format: [Facing:2][Attacking:1][Guarding:1][Jumping:1][Recovery:1][AttackType:2]
           dim Player1State = var4  : rem State flags for Player 1
           dim Player2State = var5  : rem State flags for Player 2
-          dim Player3State = var6  : rem State flags for Player 3
-          dim Player4State = var7  : rem State flags for Player 4
+          rem Player3State and Player4State need allocation
           
           rem Player health (8 bits each, 0-255)
-          dim Player1Health = var8
-          dim Player2Health = var9
-          dim Player3Health = var10
-          dim Player4Health = var11
+          dim Player1Health = var6
+          dim Player2Health = var7
+          dim Player3Health = var8
+          dim Player4Health = var9
           
           rem Packed timers/cooldowns: Low nibble = AttackCooldown (0-15), High nibble = RecoveryFrames (0-15)
-          dim Player1Timers = var12  : rem [AttackCooldown:4][RecoveryFrames:4]
-          dim Player2Timers = var13
-          dim Player3Timers = var14
-          dim Player4Timers = var15
+          dim Player1Timers = var10  : rem [AttackCooldown:4][RecoveryFrames:4]
+          dim Player2Timers = var11
+          dim Player3Timers = var12
+          dim Player4Timers = var13
           
           rem Additional player data (damage, momentum, animation)
-          dim Player1Damage = var16
-          dim Player2Damage = var17
-          dim Player3Damage = var18
-          dim Player4Damage = var19
-          dim Player1MomentumX = var20
-          dim Player2MomentumX = var21
-          dim Player3MomentumX = var22
-          dim Player4MomentumX = var23
+          dim Player1Damage = var14
+          dim Player2Damage = var15
+          dim Player3Damage = var16
+          dim Player4Damage = var17
+          dim Player1MomentumX = var18
+          dim Player2MomentumX = var19
+          dim Player3MomentumX = var20
+          dim Player3State = var21  : rem State flags for Player 3
+          dim Player4MomentumX = var22
+          dim Player4State = var23  : rem State flags for Player 4
+          
+          rem Additional gameplay variables needed
+          rem NOTE: These will need to be allocated to available RAM slots
+          rem For now, GameLoop.bas needs to reference these even if some will be consolidated later

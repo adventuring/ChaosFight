@@ -1,9 +1,9 @@
 rem ChaosFight - Source/Routines/Combat.bas
 rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-rem =================================================================
+          rem =================================================================
 rem COMBAT SYSTEM - Generic subroutines using player arrays
-rem =================================================================
+          rem =================================================================
 
 rem Apply damage from attacker to defender
 rem Inputs: attacker_id, defender_id

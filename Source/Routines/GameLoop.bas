@@ -28,44 +28,8 @@ GameLoop
           rem 12 = Landing from height and recovering
           rem 13-15 = Reserved
 
-          dim Player1X = a
-          dim Player1Y = b
-          dim Player1Facing = c
-          dim Player1State = d  : rem Bit flags for Player 1 state
-          dim Player1Health = e
-          dim Player1AttackType = f
-          dim Player1Damage = g
-          dim Player1AttackCooldown = h
-          dim Player1RecoveryFrames = i
-          dim Player1MomentumX = j
-          dim Player1AnimState = k  : rem Current animation state (0-15)
-          dim Player1AnimFrame = l  : rem Current frame in animation (0-7)
-          dim Player1AnimTimer = m  : rem Timer for animation frame progression
-
-          dim Player2X = n
-          dim Player2Y = o
-          dim Player2Facing = p
-          dim Player2State = q  : rem Bit flags for Player 2 state
-          dim Player2Health = r
-          dim Player2AttackType = s
-          dim Player2Damage = t
-          dim Player2AttackCooldown = u
-          dim Player2RecoveryFrames = v
-          dim Player2MomentumX = w
-          dim Player2AnimState = x  : rem Current animation state (0-15)
-          dim Player2AnimFrame = y  : rem Current frame in animation (0-7)
-          dim Player2AnimTimer = z  : rem Timer for animation frame progression
-
-          rem Missile variables for ranged attacks
-          dim Missile1X = o
-          dim Missile1Y = p
-          dim Missile1Active = q
-          dim Missile1Target = r
-
-          dim Missile2X = s
-          dim Missile2Y = t
-          dim Missile2Active = u
-          dim Missile2Target = v
+          rem All variables declared in Variables.bas
+          rem Additional temporary variables may be needed locally
 
           rem Character attack types: 0 = melee, 1 = ranged
           rem Character 0: Basic melee fighter (damage: 15-25)
@@ -132,11 +96,9 @@ GameLoop
           Missile2Active = 0
 
           rem Initialize frame counter
-          dim frame = o
           frame = 0
 
           rem Initialize game state
-          dim gameState = p
           gameState = 0 : rem 0 = normal play, 1 = paused
 
           gosub LoadLevel
@@ -575,7 +537,7 @@ PerformPlayer4Attack
 
           rem Common attack subroutine
 PerformAttack
-          rem This subroutine performs the attack based on the attacking player's character
+          rem This subroutine performs the attack based on the attacking player character
           rem Uses Player1 variables as source for the attack logic
           dim AttackerX = a
           dim AttackerY = b

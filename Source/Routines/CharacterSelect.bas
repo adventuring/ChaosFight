@@ -74,7 +74,6 @@ HandleInputComplete
 
           rem Check if all players are ready
 CheckAllPlayersReady1
-          dim ReadyCount = a
           ReadyCount = 0
 
           rem Count locked players
@@ -210,11 +209,6 @@ DrawCharacterSprite1
 CharacterSelectComplete1
           rem Character selection complete
           rem Store selected characters for use in game
-          dim SelectedChar1 = a
-          dim SelectedChar2 = b
-          dim SelectedChar3 = c
-          dim SelectedChar4 = d
-
           SelectedChar1 = PlayerChar(0)
           SelectedChar2 = PlayerChar(1)
           SelectedChar3 = PlayerChar(2)

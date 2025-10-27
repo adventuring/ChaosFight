@@ -1,23 +1,23 @@
-rem ChaosFight - Source/Routines/ArrayAccessors.bas
-rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem ChaosFight - Source/Routines/ArrayAccessors.bas
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-rem =================================================================
-rem ARRAY ACCESSOR SUBROUTINES - Simulate arrays for player data
-rem =================================================================
+          rem =================================================================
+          rem ARRAY ACCESSOR SUBROUTINES - Simulate arrays for player data
+          rem =================================================================
 
-rem Input/Output Variable Usage:
-rem   temp1 = player index (0-3) for all accessors
-rem   temp2 = value to set for all Set* routines
-rem   temp3 = temporary calculations
-rem   temp4 = return value for all Get* routines
+          rem Input/Output Variable Usage:
+          rem   temp1 = player index (0-3) for all accessors
+          rem   temp2 = value to set for all Set* routines
+          rem   temp3 = temporary calculations
+          rem   temp4 = return value for all Get* routines
 
-rem =================================================================
-rem PLAYER X POSITION ACCESSORS
-rem =================================================================
+          rem =================================================================
+          rem PLAYER X POSITION ACCESSORS
+          rem =================================================================
 
-rem Get PlayerX for a given player index (0-3)
-rem Input: index (in temp1)
-rem Output: value (in temp4)
+          rem Get PlayerX for a given player index (0-3)
+          rem Input: index (in temp1)
+          rem Output: value (in temp4)
 GetPlayerXSub
   on temp1 goto GetP0X, GetP1X, GetP2X, GetP3X
   
@@ -37,7 +37,7 @@ GetPlayerXSub
     temp4 = Player4X
     return
 
-rem Set PlayerX for a given player index (0-3)
+          rem Set PlayerX for a given player index (0-3)
 rem Input: index (in temp1), value (in temp2)
 SetPlayerXSub
   on temp1 goto SetP0X, SetP1X, SetP2X, SetP3X
@@ -58,11 +58,11 @@ SetPlayerXSub
     Player4X = temp2
     return
 
-rem =================================================================
+          rem =================================================================
 rem PLAYER Y POSITION ACCESSORS
-rem =================================================================
+          rem =================================================================
 
-rem Get PlayerY for a given player index (0-3)
+          rem Get PlayerY for a given player index (0-3)
 rem Input: index (in temp1)
 rem Output: value (in temp4)
 GetPlayerYSub
@@ -84,7 +84,7 @@ GetPlayerYSub
     temp4 = Player4Y
     return
 
-rem Set PlayerY for a given player index (0-3)
+          rem Set PlayerY for a given player index (0-3)
 rem Input: index (in temp1), value (in temp2)
 SetPlayerYSub
   on temp1 goto SetP0Y, SetP1Y, SetP2Y, SetP3Y
@@ -105,11 +105,37 @@ SetPlayerYSub
     Player4Y = temp2
     return
 
+          rem =================================================================
+rem PLAYER CHARACTER TYPE ACCESSORS
+          rem =================================================================
+
+          rem Get PlayerChar for a given player index (0-3)
+rem Input: index (in temp1)
+rem Output: value (in temp4)
+GetPlayerCharacterSub
+  on temp1 goto GetP0Char, GetP1Char, GetP2Char, GetP3Char
+  
+  GetP0Char:
+    temp4 = PlayerChar(0)
+    return
+    
+  GetP1Char:
+    temp4 = PlayerChar(1)
+    return
+    
+  GetP2Char:
+    temp4 = PlayerChar(2)
+    return
+    
+  GetP3Char:
+    temp4 = PlayerChar(3)
+    return
+
 rem =================================================================
 rem PLAYER STATE ACCESSORS
-rem =================================================================
+          rem =================================================================
 
-rem Get PlayerState for a given player index (0-3)
+          rem Get PlayerState for a given player index (0-3)
 rem Input: index (in temp1)
 rem Output: value (in temp4)
 GetPlayerStateSub
@@ -131,7 +157,7 @@ GetPlayerStateSub
     temp4 = Player4State
     return
 
-rem Set PlayerState for a given player index (0-3)
+          rem Set PlayerState for a given player index (0-3)
 rem Input: index (in temp1), value (in temp2)
 SetPlayerStateSub
   on temp1 goto SetP0State, SetP1State, SetP2State, SetP3State
@@ -152,11 +178,24 @@ SetPlayerStateSub
     Player4State = temp2
     return
 
-rem =================================================================
-rem PLAYER HEALTH ACCESSORS
-rem =================================================================
+          rem Set player animation state (preserves other state flags)
+rem Input: index (in temp1), animation state (in animState variable)
+rem Note: Animation state is in bits 4-7 of PlayerState
+SetPlayerAnimStateSub
+  dim currentState = temp4
+  dim animState = temp3
+  gosub GetPlayerStateSub
+  currentState = temp4
+  rem Clear animation bits (4-7) and set new animation state
+  temp2 = (currentState & %00001111) | (animState << 4)
+  gosub SetPlayerStateSub
+  return
 
-rem Get PlayerHealth for a given player index (0-3)
+          rem =================================================================
+rem PLAYER HEALTH ACCESSORS
+          rem =================================================================
+
+          rem Get PlayerHealth for a given player index (0-3)
 rem Input: index (in temp1)
 rem Output: value (in temp4)
 GetPlayerHealthSub
@@ -178,7 +217,7 @@ GetPlayerHealthSub
     temp4 = Player4Health
     return
 
-rem Set PlayerHealth for a given player index (0-3)
+          rem Set PlayerHealth for a given player index (0-3)
 rem Input: index (in temp1), value (in temp2)
 SetPlayerHealthSub
   on temp1 goto SetP0Health, SetP1Health, SetP2Health, SetP3Health

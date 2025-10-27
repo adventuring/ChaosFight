@@ -27,17 +27,37 @@ echo "Screen name: $screen_name"
 
 # Handle different commands
 if [[ "$command" == "compile-2600-playfield" ]]; then
-  # Generate mock playfield data (32×32 = 32 rows × 4 bytes/row)
+  # Generate mock playfield data (32×32 = 32 rows × 4 bytes/row) with color-per-row
   echo "rem Mock playfield data for $screen_name" > "$output_file"
-  echo "rem 32×32 playfield (pfres=32)" >> "$output_file"
+  echo "rem 32×32 playfield (pfres=32) with color-per-row" >> "$output_file"
+  echo "rem Each row can have unique COLUPF and COLUBK values" >> "$output_file"
   echo "" >> "$output_file"
   echo "rem Load playfield data for $screen_name" >> "$output_file"
   echo "Load${screen_name}Playfield" >> "$output_file"
+  
+  # Generate gradient color effect (example)
   for row in {0..31}; do
-    echo "  pfpixel 0 $row %11110000" >> "$output_file"
-    echo "  pfpixel 1 $row %00001111" >> "$output_file"
-    echo "  pfpixel 2 $row %11110000" >> "$output_file"
-    echo "  pfpixel 3 $row %00001111" >> "$output_file"
+    # Calculate color values for gradient (0-14 luminance)
+    lum=$((row / 2))
+    if [ $lum -gt 14 ]; then lum=14; fi
+    
+    # Set colors for this row (create a nice gradient)
+    echo "  rem Row $row" >> "$output_file"
+    echo "  COLUPF = \$$(printf '%02X' $((0x30 + lum)))" >> "$output_file"
+    echo "  COLUBK = \$$(printf '%02X' $((0x00 + lum / 4)))" >> "$output_file"
+    
+    # Set playfield pixels for this row (checkerboard pattern)
+    if [ $((row % 2)) -eq 0 ]; then
+      echo "  pfpixel 0 $row %11110000" >> "$output_file"
+      echo "  pfpixel 1 $row %00001111" >> "$output_file"
+      echo "  pfpixel 2 $row %11110000" >> "$output_file"
+      echo "  pfpixel 3 $row %00001111" >> "$output_file"
+    else
+      echo "  pfpixel 0 $row %00001111" >> "$output_file"
+      echo "  pfpixel 1 $row %11110000" >> "$output_file"
+      echo "  pfpixel 2 $row %00001111" >> "$output_file"
+      echo "  pfpixel 3 $row %11110000" >> "$output_file"
+    fi
   done
   echo "  return" >> "$output_file"
   exit 0

@@ -46,21 +46,23 @@ DrawTitleScreen
           rem =================================================================
           rem Loads the title screen playfield image into SuperChip RAM.
           rem This is a 32×32 pixel playfield generated from Source/Art/ChaosFight.xcf
+          rem
           rem The generated files are architecture-specific:
           rem   - Source/Generated/Playfield.ChaosFight.NTSC.bas
           rem   - Source/Generated/Playfield.ChaosFight.PAL.bas
           rem   - Source/Generated/Playfield.ChaosFight.SECAM.bas
           rem
+          rem USES COLOR-PER-ROW:
+          rem   Each row can have different COLUPF and COLUBK values
+          rem   This allows for rich, colorful title screens
+          rem   Generated code sets pfpixel and color registers per row
+          rem
           rem USES:
           rem   pfpixel commands to set playfield pixels
-          rem   COLUPF - Playfield color
+          rem   COLUPF, COLUBK - Color registers (set per-row)
 LoadTitlePlayfield
-          rem Set playfield color
-          COLUPF = ColCyan(14)
-          
-          rem Load architecture-specific playfield data
-          rem This is included from Generated/Playfield.ChaosFight.*.bas
-          rem which is compiled via CPP preprocessing based on platform
+          rem Load architecture-specific playfield data with color-per-row
+          rem The generated file includes COLUPF/COLUBK changes per scanline
           #ifdef TV_NTSC
           #include "Source/Generated/Playfield.ChaosFight.NTSC.bas"
           #endif

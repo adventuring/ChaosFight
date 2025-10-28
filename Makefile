@@ -122,28 +122,31 @@ Source/Art/%.png: Source/Art/%.xcf
 Source/Generated/Art.%.NTSC.bas: Source/Art/%.png
 	@echo "Converting character sprite $< to $@ for NTSC..."
 	mkdir -p Source/Generated
-	python3 bin/sprite-converter.py compile-character-for-chaos \
-		--input "$<" \
-		--output "$@" \
-		--character-name "$*"
+	@echo "ERROR: Character sprite conversion requires working SkylineTool - see issue #1"
+	@echo "       Placeholder data will be generated until SkylineTool is fixed"
+	@echo "          rem Placeholder sprite data for $*" > "$@"
+	@echo "          rem TODO: Replace with actual conversion from $< via SkylineTool" >> "$@"
+	@echo "          rem See: https://github.com/adventuring/ChaosFight/issues/1" >> "$@"
 
-# Convert PNG character sprite sheet to batariBASIC data for PAL
+# Convert PNG character sprite sheet to batariBASIC data for PAL  
 Source/Generated/Art.%.PAL.bas: Source/Art/%.png
 	@echo "Converting character sprite $< to $@ for PAL..."
 	mkdir -p Source/Generated
-	python3 bin/sprite-converter.py compile-character-for-chaos \
-		--input "$<" \
-		--output "$@" \
-		--character-name "$*"
+	@echo "ERROR: Character sprite conversion requires working SkylineTool - see issue #1"
+	@echo "       Placeholder data will be generated until SkylineTool is fixed"
+	@echo "          rem Placeholder sprite data for $*" > "$@"
+	@echo "          rem TODO: Replace with actual conversion from $< via SkylineTool" >> "$@"
+	@echo "          rem See: https://github.com/adventuring/ChaosFight/issues/1" >> "$@"
 
 # Convert PNG character sprite sheet to batariBASIC data for SECAM
 Source/Generated/Art.%.SECAM.bas: Source/Art/%.png
 	@echo "Converting character sprite $< to $@ for SECAM..."
 	mkdir -p Source/Generated
-	python3 bin/sprite-converter.py compile-character-for-chaos \
-		--input "$<" \
-		--output "$@" \
-		--character-name "$*"
+	@echo "ERROR: Character sprite conversion requires working SkylineTool - see issue #1"
+	@echo "       Placeholder data will be generated until SkylineTool is fixed"
+	@echo "          rem Placeholder sprite data for $*" > "$@"
+	@echo "          rem TODO: Replace with actual conversion from $< via SkylineTool" >> "$@"
+	@echo "          rem See: https://github.com/adventuring/ChaosFight/issues/1" >> "$@"
 
 # Generate platform-specific character files
 Source/Generated/Characters.NTSC.bas:

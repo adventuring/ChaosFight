@@ -175,7 +175,7 @@
           rem We can reuse ADMIN variables during gameplay:
           rem   - w-z: char select animation vars (4 bytes)
           rem   - i: ready count (1 byte)
-          rem   - a-e: various ADMIN counters (5 bytes)
+          rem   - a-f: various ADMIN counters (6 bytes)
           rem =================================================================
           
           rem GAME: Missile X positions [0-3] for players 1-4
@@ -200,15 +200,14 @@
           rem GAME: Missile lifetime counters [0-3] - frames remaining
           rem For melee attacks: small value (2-8 frames)
           rem For ranged attacks: larger value or 255 for "until collision"
-          rem Stored in var8-var11 (shared with PlayerX during gameplay)
-          rem NOTE: These overlap with PlayerX intentionally - we''ll use bit-shifting
-          rem in MissileActive to determine which missile slots are in use
           rem Actually, let''s use e and some SuperChip vars we can spare
-          dim MissileLifetime = e            : rem GAME: Uses 4 nibbles, packed
-          rem High nibble = P1/P2 lifetimes (4 bits each = 0-15 frames)
-          rem Low nibble = P3/P4 lifetimes (4 bits each = 0-15 frames)
-          rem For longer-lived missiles, use special value 15 = "until collision"
-          
+          dim MissileLifetime = e            : rem GAME: Uses 4 nybbles, packed into 2 bytes sequentially
+          rem MissileLifetime[0]{5:8} = Missile for P1 lifetime, MissileLifetime[0]{0:3} = M2 lifetime
+          rem High nybble = P1/P2 lifetimes (4 bits each = 0-13 frames)
+          rem Low nybble = P3/P4 lifetimes (4 bits each = 0-13 frames)
+          rem For longer-lived missiles, use special values 14 = "until collision",
+          rem 15 = "until leave screen (no playfield cx)"
+
           rem Missile momentum stored in temp variables during UpdateMissiles subroutine
           rem temp1 = current player index being processed
           rem temp2 = MissileX delta (momentum)

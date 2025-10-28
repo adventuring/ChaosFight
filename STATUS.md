@@ -1,69 +1,246 @@
-# ChaosFight Development Status
+# ChaosFight - Development Status & Remaining Work
 
-## Code Organization - All Files <200 Lines ✓
+## 🚫 CRITICAL BLOCKERS (Preventing Playable Build)
 
-### Completed Refactoring:
-- **PlayerInput.bas** (213 lines) - Quadtari multiplexing, character-specific dispatch
-- **CharacterControls.bas** (219 lines) - All 16 character jump/down handlers
-- **SpecialMovement.bas** (67 lines) - Per-frame physics (Bernie screen wrap)
-- **TitleScreenMain.bas** (57 lines) - Title screen loop
-- **TitleCharacterParade.bas** (158 lines) - Animated character parade
-- **TitleScreenRender.bas** (78 lines) - 32×32 playfield with color-per-row
-- **PublisherPreamble.bas** (~90 lines) - AtariAge screen
-- **AuthorPreamble.bas** (~90 lines) - Interworldly screen
-- **GameLoopInit.bas** (111 lines) - Game initialization
-- **GameLoopMain.bas** (75 lines) - Main loop orchestration
-- **PlayerPhysics.bas** (183 lines) - Gravity, momentum, collisions
-- **PlayerRendering.bas** (185 lines) - Sprite positioning and display
-- **Combat.bas** (186 lines) - Combat system
-- **CharacterAttacks.bas** (185 lines) - Character-specific attacks
-- **Physics.bas** (86 lines) - Physics utilities
+### 1. Asset Compilation Pipeline 🔴 (20% Complete)
+**Status**: Broken - Cannot generate working ROM
 
-### Remaining Large Files:
-- **GameLoop.bas** (1052 lines) - Original file, being replaced by modular files
-- **FontRendering.bas** (431 lines) - Will be data-driven
-- **CharacterSelect.bas** (348 lines) - Needs breakdown
-- **CharacterDefinitions.bas** (318 lines) - Should be pure data
-- **TitleSequence.bas** (228 lines) - May integrate with preambles
+**Issues**:
+- ❌ **SkylineTool Binary Missing/Broken**
+  - Requires SBCL + Common Lisp + 20+ libraries
+  - `buildapp` exists (36MB) but compilation fails
+  - Functions return placeholder data only
+  
+**Files Affected**:
+- `bin/chaos-sprite-converter` - Argument parsing broken
+- `bin/sprite-converter.py` - Syntax errors fixed but limited functionality  
+- `SkylineTool/` - Complex Lisp compilation required
 
-## Major Features Implemented:
+**Fix Required**: 8-12 hours to repair asset pipeline
 
-### Character-Specific Controls:
-- 16 characters with unique behaviors
-- Weight-based jump heights (light/medium/heavy)
-- Special movement: Bernie (screen wrap), Robo Tito (vertical), Harpy (flight), Magical Faerie (fly up/down, no guard)
-- Quadtari multiplexing (frame-based joy0/joy1 switching)
-- `on PlayerChar[n] goto` dispatch pattern
+### 2. Character Graphics 🔴 (10% Complete)
+**Status**: No actual character sprites generated
 
-### 32×32 Playfield Screens (pfres=32):
-- Color-per-row support (COLUPF, COLUBK per scanline)
-- Three screens: AtariAge (publisher), Interworldly (author), ChaosFight (title)
-- Gradient and multi-color effects
-- Uses all 128 bytes SuperChip RAM
+**What Exists**:
+- ✅ 16 character XCF source files in `Source/Art/`
+- ✅ Special sprites working (QuestionMark, CPU, No)
+- ✅ Font system partially functional
 
-### Font System:
-- Hexadecimal digits 0-F (16 characters)
-- 8×16 pixels each, white-on-black
-- Source: Numbers.xcf (128×16 px)
-- For player numbers, level selection, scores
+**What's Missing**:
+- ❌ Zero generated sprite .bas files
+- ❌ `LoadBankNSprite` functions unimplemented (empty files)
+- ❌ Character rendering shows placeholders only
 
-### Build Infrastructure:
-- XCF → PNG → batariBASIC pipeline
-- Architecture-specific output (NTSC/PAL/SECAM)
-- Mock skyline-tool generates data
-- Makefile rules for characters, playfields, fonts
+**Files Affected**:
+- `Source/Generated/CharacterSpritesBank*.bas` - Empty files
+- `Source/Routines/SpriteLoader.bas` - Calls unimplemented functions
 
-## Documentation:
-- All files have comprehensive REM documentation
-- Available variables clearly listed
-- Input/output parameters documented
-- Character indices (0-15) documented
-- State flags explained
+**Fix Required**: 6-10 hours to generate character sprites
 
-## Next Steps:
-1. Complete GameLoop refactoring (attack/damage/missile systems)
-2. Break down CharacterSelect.bas
-3. Convert CharacterDefinitions.bas to pure data
-4. Optimize FontRendering.bas with data-driven approach
-5. Implement real SkylineTool functions (Lisp)
-6. Create actual artwork (XCF files)
+### 3. Level/Playfield Data 🔴 (30% Complete)  
+**Status**: All levels use placeholder ASCII patterns
+
+**What Exists**:
+- ✅ Level loading framework (LevelData.bas - 634 lines)
+- ✅ 16 level entries with proper dispatch
+- ✅ 3 title screen XCF files (AtariAge, Interworldly, ChaosFight)
+
+**What's Missing**:
+- ❌ All 16 levels use placeholder patterns like "XXXXXXXXXXXXXXXX"
+- ❌ No actual playfield graphics converted from XCF sources
+- ❌ Platform collision detection incomplete
+
+**Fix Required**: 4-6 hours to create basic level graphics
+
+### 4. System Integration 🔴 (40% Complete)
+**Status**: Systems implemented but not fully connected
+
+**What Works**:
+- ✅ Individual systems tested and functional
+- ✅ Game loop calls ReadEnhancedButtons
+- ✅ Physics integration started (ApplyGravity, ApplySpecialMovement)
+
+**What's Missing**:
+- ❌ Missile system not connected to player attacks
+- ❌ No end-to-end ROM compilation tested
+- ❌ Win/lose conditions not implemented
+
+**Fix Required**: 4-8 hours to wire systems together
+
+## ⚠️ PARTIALLY WORKING SYSTEMS
+
+### 5. Audio System 🟡 (75% Complete)
+**Status**: Sound effects implemented, music stubbed
+
+**Working**:
+- ✅ Sound effects system (SoundSystem.bas)
+- ✅ Audio channel management (AUDC0/AUDC1)  
+- ✅ Attack, hit, damage sound data tables
+
+**Missing**:
+- ❌ Music playback (placeholder calls only)
+- ❌ Music conversion from MuseScore files
+- ❌ Title/preamble music integration
+
+**Files**: `Source/Routines/MusicSystem.bas` - Stub functions only
+
+### 6. Visual Effects 🟡 (70% Complete)
+**Status**: Framework exists, integration untested
+
+**Working**:
+- ✅ Visual effects framework (VisualEffects.bas)
+- ✅ Color shift on damage system
+- ✅ Damage indicators and flash effects
+
+**Missing**:
+- ❌ Integration testing with game loop
+- ❌ Performance impact not measured
+
+### 7. Enhanced Controllers 🟡 (90% Complete)
+**Status**: Detection working, integration may need refinement
+
+**Working**:
+- ✅ Genesis controller detection and Button B/C reading
+- ✅ Joy2B+ controller detection and multi-button support
+- ✅ Enhanced button reading in game loop
+
+**Potential Issues**:
+- ⚠️ Enhanced button integration may need game-specific tuning
+- ⚠️ Joy2B+ pause functionality exists but not tested
+
+## 🛠️ TECHNICAL DEBT & BUGS
+
+### Code Organization Issues
+- **Large files**: Some routines >200 lines (target: <200 lines each)
+- **Font system**: Currently placeholder-based, needs actual PNG conversion  
+- **Memory layout**: Well-optimized but complex dual-context system
+
+### Build System Issues
+- **Documentation build**: PDF generation may fail (missing LaTeX dependencies)
+- **Asset dependencies**: Complex toolchain (GIMP, ImageMagick, SkylineTool)
+- **Cross-platform**: Makefile assumes Linux/Unix environment
+
+### Performance Concerns
+- **Frame budget**: System exists but not stress-tested under full load
+- **4-player collision**: May impact performance, needs profiling
+- **Bank switching**: Frequent switches could cause slowdowns
+
+## 📋 REMAINING DEVELOPMENT TASKS
+
+### Phase 1: Asset Generation (CRITICAL - 20-35 hours)
+1. **Fix SkylineTool compilation**
+   - Install Common Lisp dependencies (SBCL + Quicklisp + libraries)
+   - Repair asset conversion functions 
+   - Test sprite conversion pipeline
+
+2. **Generate character graphics**
+   - Convert 4-8 character XCF files to .bas data (minimum viable)
+   - Implement LoadBankNSprite functions
+   - Test character rendering with actual sprites
+
+3. **Create basic level graphics**
+   - Design 2-4 playfield layouts
+   - Convert from placeholder ASCII to actual graphics
+   - Implement platform collision detection
+
+### Phase 2: Integration & Testing (HIGH - 15-25 hours)  
+4. **System integration**
+   - Connect missile system to player attack buttons
+   - Wire physics integration fully
+   - Add win/lose conditions
+
+5. **End-to-end testing**
+   - Build working ROM for NTSC/PAL/SECAM
+   - Test on emulator and real hardware
+   - Fix integration bugs
+
+6. **Performance optimization**
+   - Profile 4-player collision detection
+   - Optimize frame budget usage
+   - Test bank switching performance
+
+### Phase 3: Content & Polish (MEDIUM - 15-30 hours)
+7. **Audio implementation**
+   - Convert MuseScore files to TIA format
+   - Implement music player
+   - Add title/preamble music
+
+8. **Balance and tuning**  
+   - Test all 16 character abilities
+   - Fine-tune physics parameters
+   - Balance character weights and damage
+
+9. **Additional content**
+   - Complete all 16 level designs
+   - Add visual polish and effects
+   - Create attract mode demo
+
+## 🎯 CRITICAL PATH TO PLAYABLE DEMO
+
+**Minimum Viable Product Requirements**:
+1. ✅ 4-8 characters with actual sprites (not placeholders)
+2. ✅ 2-4 functional levels with real graphics  
+3. ✅ Basic combat system working
+4. ✅ ROM builds and runs on emulator
+5. ✅ Controllers work (at least CX-40 + Quadtari)
+
+**Estimated Time**: 25-40 hours focused development
+
+**Current Blocking Priority**:
+1. SkylineTool asset compilation (12-20 hours)
+2. Character sprite generation (6-10 hours)  
+3. System integration testing (4-8 hours)
+4. Basic level graphics (4-6 hours)
+
+## 📊 REALISTIC COMPLETION ESTIMATES
+
+| Component | Current % | Blocking? | Hours to Fix |
+|-----------|-----------|-----------|--------------|
+| **Asset Pipeline** | 20% | YES | 12-20 |
+| **Character Graphics** | 10% | YES | 6-10 |  
+| **Level Graphics** | 30% | YES | 4-6 |
+| **System Integration** | 40% | YES | 4-8 |
+| **Audio System** | 75% | NO | 3-5 |
+| **Performance** | 60% | NO | 4-8 |
+| **Balance/Polish** | 20% | NO | 8-15 |
+
+**Total to Playable Demo**: 25-40 hours  
+**Total to Complete Game**: 50-75 hours
+
+## 🏗️ DEVELOPMENT ENVIRONMENT SETUP
+
+### Required Tools
+```bash
+# Core development
+sudo apt install build-essential imagemagick gimp
+
+# Common Lisp (for SkylineTool)  
+sudo apt install sbcl
+curl -O https://beta.quicklisp.org/quicklisp.lisp
+sbcl --load quicklisp.lisp
+
+# LaTeX (for documentation)
+sudo apt install texlive-full texinfo
+```
+
+### Asset Pipeline Dependencies
+- **GIMP** with batch processing capability
+- **ImageMagick** for XCF→PNG conversion
+- **SkylineTool** (Common Lisp + 20+ libraries)
+- **batariBASIC** compiler (included)
+
+## 📍 CURRENT PROJECT STATUS
+
+**Repository**: https://github.com/adventuring/ChaosFight  
+**Last Updated**: October 2025  
+**Status**: 🟡 **DEVELOPMENT ACTIVE - ASSET PIPELINE CRITICAL**
+
+**What's Ready**: Excellent game logic, physics, controls, documentation  
+**What's Blocking**: Asset compilation preventing playable builds  
+**Next Milestone**: First successful character sprite generation
+
+**Bottom Line**: This is ~80% of a sophisticated Atari 2600 game with professional foundations, but the missing 20% includes critical asset generation blockers that prevent any playable demonstration.
+
+---
+
+*For current build status and working features, see `README.md`*

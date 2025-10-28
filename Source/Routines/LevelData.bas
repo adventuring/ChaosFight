@@ -9,7 +9,7 @@
           rem 16 ARENAS inspired by classic fighting and platform games
           rem Playfields are 16 pixels wide (LEFT HALF ONLY - right mirrors)
           rem X = wall/platform, . = empty space
-          rem
+
           rem Inspirations:
           rem - Mario Bros (arcade): Multi-tier platforms
           rem - Joust: High platforms, open vertical space

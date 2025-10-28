@@ -6,21 +6,21 @@
           rem =================================================================
           rem Initializes all game state for the main gameplay loop.
           rem Called once when entering gameplay from character select.
-          rem
+
           rem INITIALIZES:
           rem   - Player positions, states, health, momentum
           rem   - Character types from selections
           rem   - Missiles and projectiles
           rem   - Frame counter and game state
           rem   - Level data
-          rem
+
           rem STATE FLAG DEFINITIONS (in PlayerState):
           rem   Bit 0: Facing (1 = right, 0 = left)
           rem   Bit 1: Guarding
           rem   Bit 2: Jumping
           rem   Bit 3: Recovery (hitstun)
           rem   Bits 4-7: Animation state (0-15)
-          rem
+
           rem ANIMATION STATES:
           rem   0=Standing right, 1=Idle, 2=Guarding, 3=Walking/running,
           rem   4=Coming to stop, 5=Taking hit, 6=Falling backwards,
@@ -29,7 +29,8 @@
           rem =================================================================
 
 GameLoop
-          const pfres = 8
+          rem Set screen layout for gameplay (32×8 game layout)
+          gosub SetGameScreenLayout
           rem SuperChip variables var0-var15 available in gameplay
           
           rem Initialize player positions
@@ -39,36 +40,32 @@ GameLoop
           PlayerX[3] = 100 : PlayerY[3] = 80
           
           rem Initialize player states (facing direction)
-          PlayerState[0] = 1 : rem Player 1 facing right
-          PlayerState[1] = 0 : rem Player 2 facing left
-          PlayerState[2] = 1 : rem Player 3 facing right
-          PlayerState[3] = 0 : rem Player 4 facing left
+          PlayerState[0] = 1
+          rem Player 1 facing right
+          PlayerState[1] = 0
+          rem Player 2 facing left
+          PlayerState[2] = 1
+          rem Player 3 facing right
+          PlayerState[3] = 0
+          rem Player 4 facing left
           
           rem Initialize player health (apply handicap if selected)
           rem PlayerLocked value: 0=unlocked, 1=normal (100% health), 2=handicap (75% health)
-          if PlayerLocked[0] = 2 then
-                    PlayerHealth[0] = 75  : rem 25% handicap
-          else
-                    PlayerHealth[0] = 100
-          endif
+          if PlayerLocked[0] = 2 then PlayerHealth[0] = 75 : goto Player0HealthSet
+          PlayerHealth[0] = 100
+Player0HealthSet
           
-          if PlayerLocked[1] = 2 then
-                    PlayerHealth[1] = 75  : rem 25% handicap
-          else
-                    PlayerHealth[1] = 100
-          endif
+          if PlayerLocked[1] = 2 then PlayerHealth[1] = 75 : goto Player1HealthSet
+          PlayerHealth[1] = 100
+Player1HealthSet
           
-          if PlayerLocked[2] = 2 then
-                    PlayerHealth[2] = 75  : rem 25% handicap
-          else
-                    PlayerHealth[2] = 100
-          endif
+          if PlayerLocked[2] = 2 then PlayerHealth[2] = 75 : goto Player2HealthSet
+          PlayerHealth[2] = 100
+Player2HealthSet
           
-          if PlayerLocked[3] = 2 then
-                    PlayerHealth[3] = 75  : rem 25% handicap
-          else
-                    PlayerHealth[3] = 100
-          endif
+          if PlayerLocked[3] = 2 then PlayerHealth[3] = 75 : goto Player3HealthSet
+          PlayerHealth[3] = 100
+Player3HealthSet
           
           rem Initialize player timers
           PlayerTimers[0] = 0
@@ -99,10 +96,14 @@ GameLoop
           Missile2Active = 0
 
           rem Initialize elimination system
-          PlayersEliminated = 0   : rem No players eliminated at start
-          PlayersRemaining = 0    : rem Will be calculated
-          GameEndTimer = 0        : rem No game end countdown
-          EliminationCounter = 0  : rem Reset elimination order counter
+          PlayersEliminated = 0  
+          rem No players eliminated at start
+          PlayersRemaining = 0   
+          rem Will be calculated
+          GameEndTimer = 0       
+          rem No game end countdown
+          EliminationCounter = 0 
+          rem Reset elimination order counter
           
           rem Initialize elimination order tracking
           EliminationOrder[0] = 0
@@ -111,43 +112,34 @@ GameLoop
           EliminationOrder[3] = 0
           
           rem Initialize win screen variables
-          WinnerPlayerIndex = 255  : rem No winner yet
-          DisplayRank = 0          : rem No rank being displayed  
-          WinScreenTimer = 0       : rem Reset win screen timer
+          WinnerPlayerIndex = 255 
+          rem No winner yet
+          DisplayRank = 0         
+          rem No rank being displayed  
+          WinScreenTimer = 0      
+          rem Reset win screen timer
 
           rem Count initial players
-          if SelectedChar1 != 0 then PlayersRemaining = PlayersRemaining + 1
-          if SelectedChar2 != 0 then PlayersRemaining = PlayersRemaining + 1  
-          if SelectedChar3 != 0 then PlayersRemaining = PlayersRemaining + 1
-          if SelectedChar4 != 0 then PlayersRemaining = PlayersRemaining + 1
+          if SelectedChar1 <> 255 then PlayersRemaining = PlayersRemaining + 1
+          if SelectedChar2 <> 255 then PlayersRemaining = PlayersRemaining + 1  
+          if SelectedChar3 <> 255 then PlayersRemaining = PlayersRemaining + 1
+          if SelectedChar4 <> 255 then PlayersRemaining = PlayersRemaining + 1
 
           rem Initialize frame counter
           frame = 0
 
           rem Initialize game state
-          GameState = 0 : rem 0 = normal play, 1 = paused, 2 = game ending
+          GameState = 0
+          rem 0 = normal play, 1 = paused, 2 = game ending
+          
+          rem Initialize health bars
+          gosub InitializeHealthBars
 
           rem Load level data
           gosub LoadLevel
 
-          rem Define bit flag helper functions
-          def SetPlayerAttacking(playerState) = playerState | 1
-          def SetPlayerGuarding(playerState) = playerState | 2
-          def SetPlayerJumping(playerState) = playerState | 4
-          def SetPlayerRecovery(playerState) = playerState | 8
-
-          def ClearPlayerAttacking(playerState) = playerState & ~1
-          def ClearPlayerGuarding(playerState) = playerState & ~2
-          def ClearPlayerJumping(playerState) = playerState & ~4
-          def ClearPlayerRecovery(playerState) = playerState & ~8
-
-          def IsPlayerAttacking(playerState) = playerState & 1
-          def IsPlayerGuarding(playerState) = playerState & 2
-          def IsPlayerJumping(playerState) = playerState & 4
-          def IsPlayerRecovery(playerState) = playerState & 8
-
-          def GetPlayerAnimState(playerState) = (playerState >> 4) & 15
-          def SetPlayerAnimState(playerState, animState) = (playerState & ~240) | (animState << 4)
+          rem TODO: Replace def statements with regular subroutines
+          rem batariBASIC may not support def statements with parameters
 
           rem Fall through to main loop
           goto GameMainLoop

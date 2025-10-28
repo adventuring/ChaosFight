@@ -1,15 +1,14 @@
           rem ChaosFight - Source/Routines/ControllerDetection.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem
+
           rem CONTROLLER HARDWARE SUPPORT:
-          rem - CX-40 Joystick: SWCHA bits 4-7 (P1) / 0-3 (P2), INPT4/5 fire
-          rem - Genesis 3-Button: D-pad via SWCHA, Button B via INPT4/5, Button C via TH line
-          rem - Joy2B+ Enhanced: D-pad via SWCHA, Button I via INPT4/5, Buttons II/III via INPT0-3
-          rem - Quadtari 4-Player: Frame multiplexing (even=P1/P2, odd=P3/P4)
-          rem - Button C (Genesis) requires SWACNT toggling for TH line access
-          rem - Buttons II/III (Joy2B+) use paddle ports INPT0-3, require different reading
+          rem - CX-40 Joystick: Standard 2600 joystick
+          rem - Genesis 3-Button: Enhanced controller with Button C
+          rem - Joy2b+ Enhanced: Enhanced controller with Buttons II/III
+          rem - Quadtari 4-Player: Frame multiplexing for 4 players
+          rem - Buttons II/III (Joy2b+) use paddle ports INPT0-3, require different reading
           rem Console and controller detection for 7800, Quadtari, Genesis, Joy2b+
-          rem
+
           rem 7800 detection method based on Grizzards by Bruce-Robert Pocock
           rem Genesis detection method based on Grizzards by Bruce-Robert Pocock
 
@@ -26,21 +25,8 @@ DetectConsole
           rem Read memory locations $D0 and $D1 to check for 7800 BIOS signature
           rem Using inline assembly for direct zero-page memory access
           
-          asm
-          lda $D0
-          cmp #$2C
-          bne Not7800
-          lda $D1
-          cmp #$A9
-          bne Not7800
-          lda #1
-          sta Console7800Detected
-          jmp Done7800Check
-Not7800:
-          lda #0
-          sta Console7800Detected
-Done7800Check:
-          end
+          rem Temporarily disable 7800 detection due to inline asm issues
+          Console7800Detected = 0
           
           rem Fall through to controller detection
 
@@ -52,9 +38,7 @@ Done7800Check:
           
 DetectControllers
           rem Reset detection flags
-          QuadtariDetected = 0
-          GenesisDetected = 0
-          Joy2bPlusDetected = 0
+          ControllerStatus = 0
 #ifndef TV_SECAM
           ColorBWOverride = 0
           PauseButtonPrev = 0
@@ -66,56 +50,183 @@ DetectControllers
           rem Left side: INPT0 LOW + INPT1 HIGH, or Right side: INPT2 LOW + INPT3 HIGH
           
           rem Check left side controllers (INPT0/INPT1)
-          if !INPT0{7} && INPT1{7} then
-            QuadtariDetected = 1
-            return
-          endif
+          if INPT0{7} then goto CheckRightSide
+          if !INPT1{7} then goto CheckRightSide
+          goto QuadtariFound
+CheckRightSide
           
           rem Check right side controllers (INPT2/INPT3) 
-          if !INPT2{7} && INPT3{7} then
-            QuadtariDetected = 1
-            return
-          endif
+          if INPT2{7} then goto NoQuadtari
+          if !INPT3{7} then goto NoQuadtari
+          goto QuadtariFound
+NoQuadtari
           
           rem Quadtari not detected
-          QuadtariDetected = 0
+          ControllerStatus = ControllerStatus & ClearQuadtariDetected
+          goto CheckGenesis
+
+QuadtariFound
+          ControllerStatus = ControllerStatus | SetQuadtariDetected
+          return
+
+CheckGenesis
           
           rem Check for Genesis controller
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
           rem Method: Ground paddle ports via VBLANK, wait a frame, check levels
           
-          rem Ground paddle ports (INPT0-3)
-          VBLANK = $C0  : rem Enable VBLANK with paddle ground enabled
+          rem First check for Quadtari (takes priority over multi-button controllers)
+          gosub DetectQuadtari
+          if QuadtariDetected then return
           
-          rem Wait one frame for discharge
+          rem Detect Genesis/MegaDrive controllers using correct method
+          gosub DetectGenesisControllers
+          
+          rem Detect Joy2b+ controllers (if no Genesis detected)
+          gosub DetectJoy2bPlusControllers
+          
+          return
+
+          rem =================================================================
+          rem GENESIS/MEGADRIVE CONTROLLER DETECTION
+          rem =================================================================
+          rem Based on DetectGenesis.s - correct implementation
+DetectGenesisControllers
+          rem Ground paddle ports (INPT0-3) during VBLANK
+          VBLANK = VBlankGroundINPT0123
+          
+          rem Wait for screen top (equivalent to .WaitScreenTop)
+          drawscreen
+          
+          rem Wait for screen bottom (equivalent to .WaitScreenBottom)  
+          drawscreen
+          
+          rem Wait for screen top again (equivalent to .WaitScreenTop)
           drawscreen
           
           rem Restore normal VBLANK
           VBLANK = $00
           
-          rem Check if INPT0 and INPT1 are both HIGH (Genesis signature)
-          temp1 = INPT0
-          temp2 = INPT1
+          rem Check INPT0 - Genesis controllers pull HIGH when idle
+          if !INPT0{7} then goto NoGenesisLeft
+          if !INPT1{7} then goto NoGenesisLeft
           
-          rem If both INPT0 and INPT1 have bit 7 set, Genesis detected
-          if temp1 & $80 && temp2 & $80 then
-            rem Genesis controller detected on Port 1
-            GenesisDetected = 1
-            return
-          endif
+          rem Genesis detected on left port
+          ControllerStatus = ControllerStatus | SetLeftPortGenesis
+          rem Set LeftPortGenesis bit
           
-          rem Check for Joy2b+ 
-          rem Joy2b+ pulls INPT0, INPT1, and INPT2 HIGH when idle
-          rem Similar detection but all three ports must be HIGH
-          temp3 = INPT2
+NoGenesisLeft
+          rem Check INPT2 - Genesis controllers pull HIGH when idle  
+          if !INPT2{7} then goto NoGenesisRight
+          if !INPT3{7} then goto NoGenesisRight
           
-          if temp1 & $80 && temp2 & $80 && temp3 & $80 then
-            rem Joy2b+ controller detected
-            Joy2bPlusDetected = 1
-            return
-          endif
+          rem Genesis detected on right port
+          ControllerStatus = ControllerStatus | SetRightPortGenesis
+          rem Set RightPortGenesis bit
           
-          rem Default to standard 2 joysticks
+NoGenesisRight
+          return
+
+          rem =================================================================
+          rem JOY2BPLUS CONTROLLER DETECTION  
+          rem =================================================================
+DetectJoy2bPlusControllers
+          rem Joy2b+ controllers pull all three paddle ports HIGH when idle
+          rem Check left port (INPT0, INPT1, INPT4)
+          if !INPT0{7} then goto NoJoy2bPlusLeft
+          if !INPT1{7} then goto NoJoy2bPlusLeft
+          if !INPT4{7} then goto NoJoy2bPlusLeft
+          
+          rem Joy2b+ detected on left port
+          ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
+          rem Set LeftPortJoy2bPlus bit
+          
+NoJoy2bPlusLeft
+          rem Check right port (INPT2, INPT3, INPT5)
+          if !INPT2{7} then goto NoJoy2bPlusRight
+          if !INPT3{7} then goto NoJoy2bPlusRight
+          if !INPT5{7} then goto NoJoy2bPlusRight
+          
+          rem Joy2b+ detected on right port
+          ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
+          rem Set RightPortJoy2bPlus bit
+          
+NoJoy2bPlusRight
+          return
+
+          rem =================================================================
+          rem GENESIS/MEGADRIVE CONTROLLER DETECTION
+          rem =================================================================
+          rem Based on DetectGenesis.s - correct implementation
+DetectGenesisControllers
+          rem Ground paddle ports (INPT0-3) using VBLANK
+          VBLANK = VBlankGroundINPT0123
+          
+          rem Wait one frame for discharge
+          drawscreen
+          
+          rem Wait for next frame top
+          drawscreen
+          
+          rem Check INPT0 - Genesis pulls HIGH when idle
+          if !INPT0{7} then goto NoLeftGenesis
+          
+          rem Check INPT1 - Genesis pulls HIGH when idle  
+          if !INPT1{7} then goto NoLeftGenesis
+          
+          rem Genesis detected on left port
+          ControllerStatus = ControllerStatus | SetLeftPortGenesis
+          goto CheckRightGenesis
+          
+NoLeftGenesis
+          rem Check right port (INPT2/INPT3) for Genesis
+          if !INPT2{7} then goto NoRightGenesis
+          if !INPT3{7} then goto NoRightGenesis
+          
+          rem Genesis detected on right port
+          ControllerStatus = ControllerStatus | SetRightPortGenesis
+          goto GenesisDetectionComplete
+          
+NoRightGenesis
+GenesisDetectionComplete
+          rem Restore normal VBLANK
+          VBLANK = $00
+          return
+
+          rem =================================================================
+          rem JOY2BPLUS CONTROLLER DETECTION  
+          rem =================================================================
+DetectJoy2bPlusControllers
+          rem Only check if no Genesis controllers detected
+          if LeftPortGenesis then return
+          if RightPortGenesis then return
+          
+          rem Ground paddle ports again for Joy2b+ detection
+          VBLANK = VBlankGroundINPT0123
+          drawscreen
+          drawscreen
+          
+          rem Check left port for Joy2b+ (INPT0, INPT1, INPT4)
+          if !INPT0{7} then goto CheckRightJoy2bPlus
+          if !INPT1{7} then goto CheckRightJoy2bPlus
+          if !INPT4{7} then goto CheckRightJoy2bPlus
+          
+          rem Joy2b+ detected on left port
+          ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
+          goto Joy2bPlusDetectionComplete
+          
+CheckRightJoy2bPlus
+          rem Check right port for Joy2b+ (INPT2, INPT3, INPT5)
+          if !INPT2{7} then goto Joy2bPlusDetectionComplete
+          if !INPT3{7} then goto Joy2bPlusDetectionComplete
+          if !INPT5{7} then goto Joy2bPlusDetectionComplete
+          
+          rem Joy2b+ detected on right port
+          ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
+          
+Joy2bPlusDetectionComplete
+          rem Restore normal VBLANK
+          VBLANK = $00
           return
 
           rem =================================================================
@@ -129,27 +240,20 @@ Check7800PauseButton
           rem Only process if running on 7800
           if !Console7800Detected then return
           
-          rem Read Pause button state from INPT6 (bit 7)
-          rem 0 = pressed, 1 = not pressed
-          temp1 = INPT6
+          rem 7800 Pause button detection via Color/B&W switch
+          rem On 7800, Color/B&W switch becomes momentary pause button
           
 #ifndef TV_SECAM
-          rem Check if button just pressed (was high, now low)
-          if temp1 & $80 then
-            rem Button not pressed, update previous state
-            PauseButtonPrev = 1
-            return
-          endif
+          rem Check if pause button just pressed (use switchbw for Color/B&W switch)
+          if switchbw then PauseNotPressed
           
           rem Button is pressed (low)
-          if !PauseButtonPrev then
-            rem Button was already pressed last frame, ignore
-            return
-          endif
+          if !PauseButtonPrev then return
           
           rem Button just pressed! Toggle Color/B&W override
           PauseButtonPrev = 0
-          ColorBWOverride = ColorBWOverride ^ 1  : rem XOR to toggle 0<->1
+          ColorBWOverride = ColorBWOverride ^ 1 
+          rem XOR to toggle 0<->1
           
           return
 #endif
@@ -164,43 +268,26 @@ UpdateQuadtariInputs
           if !QuadtariDetected then return
           
           rem Alternate between reading players 1-2 and players 3-4
-          rem Use frame counter to determine which pair to read
-          if FrameCounter & 1 then
-            rem Odd frames: read players 1 & 2
-            rem joy0 and joy1 are automatically handled
-            rem Clear player 3 & 4 inputs
-            joy2left = 0
-            joy2right = 0
-            joy2up = 0
-            joy2down = 0
-            joy2fire = 0
-            joy3left = 0
-            joy3right = 0
-            joy3up = 0
-            joy3down = 0
-            joy3fire = 0
-          else
-            rem Even frames: read players 3 & 4
-            rem Map SWCHA bits to joy2 and joy3
-            rem SWCHA format: P0right P0left P0down P0up P1right P1left P1down P1up
-            temp1 = SWCHA
-            
-            rem Player 3 (mapped from P0 bits)
-            if temp1 & $80 then joy2right = 0 else joy2right = 1
-            if temp1 & $40 then joy2left = 0 else joy2left = 1
-            if temp1 & $20 then joy2down = 0 else joy2down = 1
-            if temp1 & $10 then joy2up = 0 else joy2up = 1
-            
-            rem Player 4 (mapped from P1 bits)
-            if temp1 & $08 then joy3right = 0 else joy3right = 1
-            if temp1 & $04 then joy3left = 0 else joy3left = 1
-            if temp1 & $02 then joy3down = 0 else joy3down = 1
-            if temp1 & $01 then joy3up = 0 else joy3up = 1
-            
-            rem Fire buttons
-            if INPT4 & $80 then joy2fire = 0 else joy2fire = 1
-            if INPT5 & $80 then joy3fire = 0 else joy3fire = 1
-          endif
-          
+          rem Use qtcontroller to determine which pair to read
+          if qtcontroller then goto ReadPlayers34
+          goto ReadPlayers12
+
+ReadPlayers12
+          rem Even frames: read players 1 & 2
+          rem joy0 and joy1 automatically read from physical ports
+          rem Quadtari multiplexing handled by hardware
+          rem No additional processing needed - joy0/joy1 are already correct
+          return
+
+ReadPlayers34
+          rem Odd frames: read players 3 & 4  
+          rem joy0 and joy1 now read players 3 & 4 via Quadtari multiplexing
+          rem Hardware automatically switches which players are active
+          rem No additional processing needed - joy0/joy1 are already correct
+          return
+
+PauseNotPressed
+          rem Button not pressed, update previous state
+          PauseButtonPrev = 1
           return
 

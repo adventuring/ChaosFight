@@ -91,27 +91,20 @@
           rem Play attack sound effect
           rem Input: temp1 = sound type (1-6)
 PlaySoundEffect
-          if temp1 = SoundAttack then
-                    gosub PlayAttackSound
-          else if temp1 = SoundHit then
-                    gosub PlayHitSound
-          else if temp1 = SoundFall then
-                    gosub PlayFallSound
-          else if temp1 = SoundGuard then
-                    gosub PlayGuardSound
-          else if temp1 = SoundSelect then
-                    gosub PlaySelectSound
-          else if temp1 = SoundVictory then
-                    gosub PlayVictorySound
-          else if temp1 = SoundElimination then
-                    gosub PlayEliminationSound
-          endif
+          if temp1 = SoundAttack then gosub PlayAttackSound : return
+          if temp1 = SoundHit then gosub PlayHitSound : return
+          if temp1 = SoundFall then gosub PlayFallSound : return
+          if temp1 = SoundGuard then gosub PlayGuardSound : return
+          if temp1 = SoundSelect then gosub PlaySelectSound : return
+          if temp1 = SoundVictory then gosub PlayVictorySound : return
+          if temp1 = SoundElimination then gosub PlayEliminationSound : return
           return
 
           rem Play attack sound (melee swoosh)
 PlayAttackSound
           temp2 = 0
-          temp3 = 7  : rem 7 frames
+          temp3 = 7 
+          rem 7 frames
 AttackSoundLoop
           if temp2 >= temp3 then return
           
@@ -126,7 +119,8 @@ AttackSoundLoop
           rem Play hit sound (impact)
 PlayHitSound
           temp2 = 0
-          temp3 = 8  : rem 8 frames
+          temp3 = 8 
+          rem 8 frames
 HitSoundLoop
           if temp2 >= temp3 then return
           
@@ -141,7 +135,8 @@ HitSoundLoop
           rem Play fall damage sound
 PlayFallSound
           temp2 = 0
-          temp3 = 8  : rem 8 frames
+          temp3 = 8 
+          rem 8 frames
 FallSoundLoop
           if temp2 >= temp3 then return
           
@@ -156,7 +151,8 @@ FallSoundLoop
           rem Play guard activation sound
 PlayGuardSound
           temp2 = 0
-          temp3 = 5  : rem 5 frames
+          temp3 = 5 
+          rem 5 frames
 GuardSoundLoop
           if temp2 >= temp3 then return
           
@@ -171,7 +167,8 @@ GuardSoundLoop
           rem Play character selection sound
 PlaySelectSound
           temp2 = 0
-          temp3 = 4  : rem 4 frames
+          temp3 = 4 
+          rem 4 frames
 SelectSoundLoop
           if temp2 >= temp3 then return
           
@@ -186,7 +183,8 @@ SelectSoundLoop
           rem Play victory sound
 PlayVictorySound
           temp2 = 0
-          temp3 = 9  : rem 9 frames
+          temp3 = 9 
+          rem 9 frames
 VictorySoundLoop
           if temp2 >= temp3 then return
           
@@ -201,7 +199,8 @@ VictorySoundLoop
           rem Play elimination sound (dramatic death sound)
 PlayEliminationSound
           temp2 = 0
-          temp3 = 16  : rem 16 frames
+          temp3 = 16 
+          rem 16 frames
 EliminationSoundLoop
           if temp2 >= temp3 then return
           

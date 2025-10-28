@@ -15,12 +15,15 @@
           rem Input: temp1 = player index (0-3), temp2 = damage amount
 ShowDamageIndicator
           rem Set player to hurt state for visual feedback
-          temp3 = PlayerState[temp1] & %00011111  : rem Keep lower 5 bits
-          temp3 = temp3 | %10010000  : rem Set animation to 9 (hurt state)
+          temp3 = PlayerState[temp1] & %00011111 
+          rem Keep lower 5 bits
+          temp3 = temp3 | %10010000 
+          rem Set animation to 9 (hurt state)
           PlayerState[temp1] = temp3
           
           rem Set recovery frames for hurt visual duration
-          PlayerRecoveryFrames[temp1] = 15  : rem 15 frames of hurt visual
+          PlayerRecoveryFrames[temp1] = 15 
+          rem 15 frames of hurt visual
           
           return
 
@@ -38,13 +41,8 @@ FlashRecoveryEffect
           
           rem Flash every other frame
           temp3 = frame & 1
-          if temp3 = 0 then
-                    rem Flash on - use normal color
-                    gosub SetPlayerNormalColor
-          else
-                    rem Flash off - use dimmed color
-                    gosub SetPlayerDimmedColor
-          endif
+          if temp3 = 0 then gosub SetPlayerNormalColor : return
+          gosub SetPlayerDimmedColor
           
           return
 
@@ -82,7 +80,7 @@ UpdateHealthBar
 ScreenFlash
           rem Flash the background color
           temp2 = ColGrey(temp1)
-          COLUBK = temp2
+          COLUBK = ColBlack(0)
           return
 
           rem Particle effect for hits

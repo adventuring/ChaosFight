@@ -1,0 +1,27 @@
+@subsection Robo Tito
+@display
+@group
+    Weight: Very Heavy
+    Attack: Melée
+    Special: No jumping! Stretches vertically to ceiling; fall damage immunity
+    Original Game: "Tito el robotito contra los fantasmas" (jumpless platformer)
+    Programming Error: Allergic to scary things (zombies, ghosts, bats, skulls)
+@end group
+@end display
+
+Robo Tito (a.k.a "Tito el robotito") is a jumpless 
+platformer character, a robot that can't jump, but he 
+can stretch to reach platforms and hang from them.
+
+Due to a programming error in his system, he is allergic to scary things. To 
+his misfortune he is trapped in a place infested with scary things (zombies, 
+ghosts, bats, skulls), so he has to look for an exit, avoiding touching those 
+spooky items.
+
+Use your joystick controller to move Tito left and right along the floor. You 
+can press UP on your controller to stretch Tito up to the ceiling, which he 
+will then grab and hang on to. You can then move Tito left and right along 
+the ceiling. To get back down to the floor, press DOWN on your joystick until 
+Tito reaches the floor.
+
+In ChaosFight, he is vulnerable the entire length to collisions.

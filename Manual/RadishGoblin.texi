@@ -1,0 +1,19 @@
+@subsection Radish Goblin
+@display
+@group
+    Weight: Very Light
+    Attack: Melée (bouncing bite attacks)
+    Special: Highest jumps, fastest movement, lowest health, bounces when moving
+    Origins: Terrible pests from Syrex, ancient Rome (Karpoi), and Aclypt
+    Nature: Vegetable spirits known for their bouncing and biting
+@end group
+@end display
+
+Radish Goblins are terrible pests that appear in places like Syrex, ancient 
+Rome (where they are called vegetable spirits, Karpoi), and Aclypt. Watch out, 
+they bounce — and bite.
+
+The Radish Goblin is the lightest character, giving him incredible mobility
+but making him more vulnerable to knockback. Their bouncing nature and pest-like
+behaviour make them unpredictable opponents who can quickly close distance with
+their rapid, erratic movement patterns.

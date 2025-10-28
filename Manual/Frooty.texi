@@ -1,0 +1,22 @@
+@subsection Frooty
+@display
+@group
+    Age: 24
+    Weight: Very Light
+    Attack: Ranged (lollipop sparkle, ballistic)
+    Special: FREE FLIGHT - use UP/DOWN to move vertically, no guard action
+    Likes: Candy
+    Hates: Boredom
+@end group
+@end display
+
+Captain of Queen Sugar's royal guard, Frooty is loyal, powerful, hyper, and 
+ever so slightly insane. As the one charged with the defence of Fairy Land, 
+she carries an enormous responsibility as she leads the queen's armies into 
+battle. She also oversees a number of secret research projects in Fairy Land, 
+some of which are finally starting to produce results.
+
+Frooty can fly freely up and down using the joystick! However, she cannot 
+guard (pressing DOWN makes her fly down instead). Her ranged attack fires 
+magical sparkles from her lollipop weapon. This generic fairy archetype 
+represents the classic fairy fighter perfectly.

@@ -3,9 +3,13 @@
 "Cart.ModelNo" "Chaos.@@TV@@"
 "Cart.Name" "ChaosFight"
 "Cart.Rarity" "Homebrew"
-"Cart.Type" "DF"
+"Cart.Type" "EFSC"
 "Cart.Url" "https://interworldly.com/games/ChaosFight"
-"Controller.Left" "JOYSTICK"
-"Controller.Right" "JOYSTICK"
 "Display.Format" "@@TV@@"
 "Display.Phosphor" "YES"
+"Controller.Left": "QUADTARI",
+"Controller.Left1": "JOYSTICK",
+"Controller.Left2": "JOYSTICK",
+"Controller.Right": "QUADTARI",
+"Controller.Right1": "JOYSTICK",
+"Controller.Right2": "JOYSTICK"

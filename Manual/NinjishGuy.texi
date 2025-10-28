@@ -1,0 +1,12 @@
+@subsection Ninjish Guy
+@display
+@group
+    Weight: Very Light
+    Attack: Melée
+    Special: Highest jumps, fastest movement, 50% fall damage reduction
+@end group
+@end display
+
+The Ninjish Guy is one of the lightest characters, giving him incredible
+mobility and the highest jump in the game. His ninja training also grants
+him 50% reduction to fall damage, making him excellent at aerial combat!

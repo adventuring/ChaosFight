@@ -6,7 +6,7 @@
           rem =================================================================
           rem Main gameplay loop that orchestrates all game systems.
           rem Called every frame during active gameplay.
-          rem
+
           rem SEQUENCE PER FRAME:
           rem   1. Handle console switches (pause, reset, color)
           rem   2. Handle player input via PlayerInput.bas
@@ -18,7 +18,7 @@
           rem   8. Render sprites
           rem   9. Display health
           rem   10. Draw screen
-          rem
+
           rem AVAILABLE VARIABLES:
           rem   frame - Frame counter
           rem   GameState - 0=normal, 1=paused
@@ -35,6 +35,12 @@ GameMainLoop
 
           rem Handle all player input (with Quadtari multiplexing)
           gosub HandleAllPlayerInput
+
+          rem Update animation system (10fps character animation)
+          gosub UpdateCharacterAnimations
+          
+          rem Update movement system (full frame rate movement)
+          gosub UpdatePlayerMovement
 
           rem Apply gravity and physics
           gosub ApplyGravity
@@ -63,27 +69,30 @@ GameMainLoop
           rem Check missile collisions
           gosub CheckMissileCollisions
 
-          rem Set sprite positions
-          gosub SetSpritePositions
+          rem Set sprite positions (now handled by movement system)
+          rem gosub SetSpritePositions 
+          rem Replaced by UpdatePlayerMovement
 
           rem Set sprite graphics
           gosub SetPlayerSprites
 
           rem Display health information
           gosub DisplayHealth
+          
+          rem Update P1/P2 health bars using pfscore system
+          gosub UpdatePlayer12HealthBars
+          
+          rem Update P3/P4 health bars using playfield system
+          gosub UpdatePlayer34HealthBars
 
           rem Update frame counter
           frame = frame + 1
 
           rem Check game state for win screen
-          if GameState = 2 then
-                    rem Game ending - show win screen
-                    gosub DisplayWinScreen
-                    drawscreen
-                    return  : rem Exit to win screen handling
-          endif
-          
+          if GameState = 2 then gosub DisplayWinScreen : drawscreen : return
+
           rem Draw screen
           drawscreen
           goto GameMainLoop
+          return
 

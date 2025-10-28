@@ -1,0 +1,21 @@
+@subsection Pork Chop
+@display
+@group
+    Weight: Heavy
+    Attack: Melée
+    Special: Standard heavy melée fighter, diverse work experience
+    Career History: Fairy employee, bank guard, sewer cleaner, curling athlete
+    Former Team: Team Koe (Edmonton) member@footnote{Team Koe is a professional curling team based in Calgary/Edmonton, Alberta. Curling team names and trademarks are property of their respective organizations.}
+@end group
+@end display
+
+Pork Chop has had a few jobs. He's worked for fairies, guarded banks, cleaned 
+out sewers, and even did a stint on the Edmonton curling team. This diverse 
+work experience has given him a well-rounded skill set and the determination 
+to handle any situation thrown at him.
+
+From the delicate work with magical fairies to the rough-and-tumble world of 
+bank security, from the unpleasant but necessary sewer maintenance to the 
+precise sport of curling, Pork Chop has learned to adapt to any environment. 
+His heavy build and reliable melée attacks reflect the steady, dependable 
+nature that has served him well across all his various careers.

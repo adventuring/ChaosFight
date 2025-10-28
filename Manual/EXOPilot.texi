@@ -1,0 +1,11 @@
+@subsection EXO Pilot
+@display
+@group
+    Weight: Light
+    Attack: Ranged (long/wide bullet, arrowshot)
+    Special: High jumps, fast horizontal projectile
+@end group
+@end display
+
+The EXO Pilot fires a long, thin missile that travels horizontally across
+the entire screen. Excellent for long-range combat!

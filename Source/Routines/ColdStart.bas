@@ -10,6 +10,6 @@ ColdStart
           gosub DetectConsole
           
           rem Initialize game state
-          COLUBK = ColBlue(8)
+          COLUBK = ColBlack(0)
           
           return

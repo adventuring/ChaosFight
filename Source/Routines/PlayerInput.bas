@@ -6,30 +6,30 @@
           rem =================================================================
           rem All input handling for the four players, with character-specific
           rem control logic dispatched to character-specific subroutines.
-          rem
+
           rem QUADTARI MULTIPLEXING:
           rem   Even frames (qtcontroller=0): joy0=Player1, joy1=Player2
           rem   Odd frames (qtcontroller=1): joy0=Player3, joy1=Player4
-          rem
+
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   PlayerX[0-3] - X positions
           rem   PlayerY[0-3] - Y positions
           rem   PlayerState[0-3] - State flags (attacking, guarding, jumping, etc.)
           rem   PlayerChar[0-3] - Character type indices (0-15)
           rem   PlayerMomentumX[0-3] - Horizontal momentum
-          rem   QuadtariDetected - Whether 4-player mode is active
+          rem   ControllerStatus - Packed controller detection status
           rem   qtcontroller - Multiplexing state (0=P1/P2, 1=P3/P4)
-          rem
+
           rem STATE FLAGS (in PlayerState):
           rem   Bit 0: Facing (1 = right, 0 = left)
           rem   Bit 1: Guarding
           rem   Bit 2: Jumping
           rem   Bit 3: Recovery (disabled during hitstun)
           rem   Bits 4-7: Animation state
-          rem
+
           rem CHARACTER INDICES (0-15):
           rem   0=Bernie, 1=Curling, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
-          rem   6=Harpy, 7=Knight, 8=Magical Faerie, 9=Mystery, 10=Ninjish,
+          rem   6=Harpy, 7=Knight, 8=Frooty, 9=Nefertem, 10=Ninjish,
           rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
           rem =================================================================
 
@@ -39,184 +39,232 @@ HandleAllPlayerInput
           
           rem Even frame: Handle Players 1 & 2 - only if alive  
           temp1 = 0 : gosub IsPlayerAlive
-          if temp2 && !IsPlayerRecovery(PlayerState[0]) then gosub HandlePlayer1Input
-          temp1 = 1 : gosub IsPlayerAlive
-          if temp2 && !IsPlayerRecovery(PlayerState[1]) then gosub HandlePlayer2Input
+          if temp2 = 0 then goto SkipPlayer0Input
+          if (PlayerState[0] & 8) <> 0 then goto SkipPlayer0Input
+          temp1 = 0 : gosub HandleLeftPortPlayer
           
-          qtcontroller = 1  : rem Switch to odd frame
+SkipPlayer0Input
+          
+          temp1 = 1 : gosub IsPlayerAlive
+          if temp2 = 0 then goto SkipPlayer1Input
+          if (PlayerState[1] & 8) <> 0 then goto SkipPlayer1Input
+          goto HandlePlayer1Input
+          
+          goto SkipPlayer1Input
+          
+HandlePlayer1Input
+          temp1 = 1 : gosub HandleRightPortPlayer 
+          rem Player 1 uses Joy1
+SkipPlayer1Input
+          
+          qtcontroller = 1 
+          rem Switch to odd frame
           return
 
 HandleQuadtariPlayers
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and alive)
-          if QuadtariDetected && SelectedChar3 != 0 then
+          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Input
+          if SelectedChar3 = 0 then goto SkipPlayer3Input
                     temp1 = 2 : gosub IsPlayerAlive
-                    if temp2 && !IsPlayerRecovery(PlayerState[2]) then gosub HandlePlayer3Input
-          endif
-          if QuadtariDetected && SelectedChar4 != 0 then
+          if temp2 = 0 then goto SkipPlayer3Input
+          if (PlayerState[2] & 8) <> 0 then goto SkipPlayer3Input
+          temp1 = 2 : gosub HandleLeftPortPlayer
+          
+SkipPlayer3Input
+          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Input
+          if SelectedChar4 = 0 then goto SkipPlayer4Input
                     temp1 = 3 : gosub IsPlayerAlive
-                    if temp2 && !IsPlayerRecovery(PlayerState[3]) then gosub HandlePlayer4Input
-          endif
+          if temp2 = 0 then goto SkipPlayer4Input
+          if (PlayerState[3] & 8) <> 0 then goto SkipPlayer4Input
+          temp1 = 3 : gosub HandleRightPortPlayer
           
-          qtcontroller = 0  : rem Switch back to even frame
+SkipPlayer4Input
+          
+          
+          qtcontroller = 0 
+          rem Switch back to even frame
           return
 
           rem =================================================================
-          rem PLAYER 1 INPUT (joy0 on even frames)
+          rem LEFT PORT PLAYER INPUT HANDLER (Joy0 - Players 1 & 3)
           rem =================================================================
-          rem INPUTS: joy0left, joy0right, joy0up, joy0down, joy0fire
-          rem USES: PlayerX[0], PlayerY[0], PlayerState[0], PlayerChar[0]
-HandlePlayer1Input
-          if joy0left then
-                    PlayerX[0] = PlayerX[0] - 1
-                    PlayerState[0] = PlayerState[0] & ~1  : rem Face left
-                    PlayerMomentumX[0] = -1
-          endif
-          if joy0right then
-                    PlayerX[0] = PlayerX[0] + 1
-                    PlayerState[0] = PlayerState[0] | 1   : rem Face right
-                    PlayerMomentumX[0] = 1
-          endif
+          rem INPUT: temp1 = player index (0 or 2)
+          rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
+HandleLeftPortPlayer
+          rem Process left/right movement
+          if joy0left then PlayerX[temp1] = PlayerX[temp1] - 1 : PlayerState[temp1] = PlayerState[temp1] & NOT 1 : PlayerMomentumX[temp1] = 255
+          if joy0right then PlayerX[temp1] = PlayerX[temp1] + 1 : PlayerState[temp1] = PlayerState[temp1] | 1 : PlayerMomentumX[temp1] = 1
 
-          rem Jump - check traditional UP or enhanced Button C/II
-          temp2 = 0  : rem Player index for CheckEnhancedJump
-          gosub CheckEnhancedJump
-          if temp1 && !IsPlayerJumping(PlayerState[0]) then
-                    temp1 = 0  : rem Player index
-                    temp4 = PlayerChar[0]  : rem Character type
-                    on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, MagicalFaerieJump, MysteryJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
-          endif
-
-          rem Down - dispatch to character-specific handler
-          if joy0down then
-                    temp1 = 0
-                    temp4 = PlayerChar[0]
-                    on temp4 goto BernieDown, CurlingDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, MagicalFaerieDown, MysteryDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
-          else
-                    PlayerState[0] = PlayerState[0] & ~2  : rem Clear guard
-          endif
+          rem Process jump input (UP + enhanced buttons)
+          temp3 = 0 
+          rem Jump pressed flag
+          if joy0up then temp3 = 1
           
-          rem Fire - dispatch to character attack
-          if joy0fire && !IsPlayerAttacking(PlayerState[0]) then
-                    temp1 = 0
-                    temp4 = PlayerChar[0]
-                    on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, GrizzardHandlerAttack, HarpyAttack, KnightGuyAttack, MagicalFaerieAttack, MysteryManAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
-          endif
+          rem Check Genesis/Joy2b+ Button C/II (INPT0 for Player 1, INPT2 for Player 3)
+          if temp1 = 0 then goto CheckPlayer1Buttons
+          goto SkipPlayer1Buttons
+CheckPlayer1Buttons
+          if !ControllerStatus{0} then goto CheckPlayer1Joy2bPlus
+          if !INPT0{7} then temp3 = 1
+          goto SkipPlayer1Buttons
+CheckPlayer1Joy2bPlus
+          if !ControllerStatus{1} then goto SkipPlayer1Buttons
+          if !INPT0{7} then temp3 = 1
+SkipPlayer1Buttons
+          if temp1 = 2 then goto CheckPlayer3Buttons
+          goto SkipPlayer3Buttons
+CheckPlayer3Buttons
+          if !ControllerStatus{0} then goto CheckPlayer3Joy2bPlus
+          if !INPT0{7} then temp3 = 1
+          goto SkipPlayer3Buttons
+CheckPlayer3Joy2bPlus
+          if !ControllerStatus{1} then goto SkipPlayer3Buttons
+          if !INPT0{7} then temp3 = 1
+SkipPlayer3Buttons
+EnhancedJumpDone0
+          
+          rem Execute jump if pressed and not already jumping
+          if temp3 = 0 then SkipLeftPortJump
+          if (PlayerState[temp1] & 4) <> 0 then SkipLeftPortJump
+          temp4 = PlayerChar[temp1] 
+          rem Character type
+                    on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
+SkipLeftPortJump
+
+          
+
+          rem Process down/guard input
+          if joy0down then temp4 = PlayerChar[temp1] : on temp4 goto BernieDown, CurlingDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
+          if !joy0down then PlayerState[temp1] = PlayerState[temp1] & NOT 2
+          
+          
+          rem Process attack input
+          if !joy0fire then goto SkipLeftPortAttack
+          if (PlayerState[temp1] & 1) <> 0 then SkipLeftPortAttack
+          temp4 = PlayerChar[temp1] : on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
+SkipLeftPortAttack
+          
+          
           return
 
           rem =================================================================
-          rem PLAYER 2 INPUT (joy1 on even frames)
+          rem RIGHT PORT PLAYER INPUT HANDLER (Joy1 - Players 2 & 4)
           rem =================================================================
-          rem INPUTS: joy1left, joy1right, joy1up, joy1down, joy1fire
-          rem USES: PlayerX[1], PlayerY[1], PlayerState[1], PlayerChar[1]
-HandlePlayer2Input
-          if joy1left then
-                    PlayerX[1] = PlayerX[1] - 1
-                    PlayerState[1] = PlayerState[1] & ~1
-                    PlayerMomentumX[1] = -1
-          endif
-          if joy1right then
-                    PlayerX[1] = PlayerX[1] + 1
-                    PlayerState[1] = PlayerState[1] | 1
-                    PlayerMomentumX[1] = 1
-          endif
-
-          rem Jump - check traditional UP or enhanced Button C/II
-          temp2 = 1  : rem Player index for CheckEnhancedJump
-          gosub CheckEnhancedJump
-          if temp1 && !IsPlayerJumping(PlayerState[1]) then
-                    temp1 = 1  : rem Player index
-                    temp4 = PlayerChar[1]
-                    on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, MagicalFaerieJump, MysteryJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
-          endif
-
-          if joy1down then
-                    temp1 = 1
-                    temp4 = PlayerChar[1]
-                    on temp4 goto BernieDown, CurlingDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, MagicalFaerieDown, MysteryDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
-          else
-                    PlayerState[1] = PlayerState[1] & ~2
-          endif
+          rem INPUT: temp1 = player index (1 or 3)
+          rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
+HandleRightPortPlayer
+          rem Process left/right movement
+          if joy1left then 
+                    PlayerX[temp1] = PlayerX[temp1] - 1
+          PlayerState[temp1] = PlayerState[temp1] & NOT 1 
+          rem Face left
+                    PlayerMomentumX[temp1] = 255
           
-          if joy1fire && !IsPlayerAttacking(PlayerState[1]) then
-                    temp1 = 1
-                    temp4 = PlayerChar[1]
-                    on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, GrizzardHandlerAttack, HarpyAttack, KnightGuyAttack, MagicalFaerieAttack, MysteryManAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
-          endif
+          if joy1right then 
+                    PlayerX[temp1] = PlayerX[temp1] + 1
+          PlayerState[temp1] = PlayerState[temp1] | 1  
+          rem Face right
+                    PlayerMomentumX[temp1] = 1
+          
+
+          rem Process jump input (UP + enhanced buttons)
+          temp3 = 0 
+          rem Jump pressed flag
+          if joy1up then temp3 = 1
+          
+          rem Check Genesis/Joy2b+ Button C/II (INPT2 for Player 2, INPT2 for Player 4)
+          if temp1 = 1 then goto CheckPlayer2Buttons
+          goto SkipPlayer2Buttons
+CheckPlayer2Buttons
+          if !(ControllerStatus & $04) then goto CheckPlayer2Joy2bPlus
+          if !(INPT2 & $80) then temp3 = 1
+          goto SkipPlayer2Buttons
+CheckPlayer2Joy2bPlus
+          if !(ControllerStatus & $08) then goto SkipPlayer2Buttons
+          if !(INPT2 & $80) then temp3 = 1
+SkipPlayer2Buttons
+          if temp1 = 3 then goto CheckPlayer4Buttons
+          goto SkipPlayer4Buttons
+CheckPlayer4Buttons
+          if !RightPortGenesis then goto CheckPlayer4Joy2bPlus
+          if !INPT2{7} then temp3 = 1
+          goto SkipPlayer4Buttons
+CheckPlayer4Joy2bPlus
+          if !RightPortJoy2bPlus then goto SkipPlayer4Buttons
+          if !INPT2{7} then temp3 = 1
+SkipPlayer4Buttons
+EnhancedJumpDone1
+          
+          rem Execute jump if pressed and not already jumping
+          if temp3 = 0 then SkipRightPortJump
+          if (PlayerState[temp1] & 4) <> 0 then SkipRightPortJump
+          temp4 = PlayerChar[temp1] 
+          rem Character type
+                    on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
+SkipRightPortJump
+
+          
+
+          rem Process down/guard input
+          if joy1down then 
+          temp4 = PlayerChar[temp1] 
+          rem Character type
+                    on temp4 goto BernieDown, CurlingDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
+
+          PlayerState[temp1] = PlayerState[temp1] & NOT 2 
+          rem Clear guard bit
+          
+          
+          rem Process attack input
+          if !joy1fire then goto SkipRightPortAttack
+          if (PlayerState[temp1] & 1) <> 0 then SkipRightPortAttack
+          temp4 = PlayerChar[temp1] 
+          rem Character type
+                    on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
+SkipRightPortAttack
+          
+          
           return
 
           rem =================================================================
-          rem PLAYER 3 INPUT (joy0 on odd frames, Quadtari only)
+          rem PAUSE BUTTON HANDLING WITH DEBOUNCING
           rem =================================================================
-          rem INPUTS: joy0left, joy0right, joy0up, joy0down, joy0fire
-          rem USES: PlayerX[2], PlayerY[2], PlayerState[2], PlayerChar[2]
-HandlePlayer3Input
-          if joy0left then
-                    PlayerX[2] = PlayerX[2] - 1
-                    PlayerState[2] = PlayerState[2] & ~1
-                    PlayerMomentumX[2] = -1
-          endif
-          if joy0right then
-                    PlayerX[2] = PlayerX[2] + 1
-                    PlayerState[2] = PlayerState[2] | 1
-                    PlayerMomentumX[2] = 1
-          endif
-
-          if joy0up && !IsPlayerJumping(PlayerState[2]) then
-                    temp1 = 2
-                    temp4 = PlayerChar[2]
-                    on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, MagicalFaerieJump, MysteryJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
-          endif
-
-          if joy0down then
-                    temp1 = 2
-                    temp4 = PlayerChar[2]
-                    on temp4 goto BernieDown, CurlingDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, MagicalFaerieDown, MysteryDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
-          else
-                    PlayerState[2] = PlayerState[2] & ~2
-          endif
+          rem Handles SELECT switch and Joy2b+ Button III with proper debouncing
+          rem Uses PauseButtonPrev for debouncing state
           
-          if joy0fire && !IsPlayerAttacking(PlayerState[2]) then
-                    temp1 = 2
-                    temp4 = PlayerChar[2]
-                    on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, GrizzardHandlerAttack, HarpyAttack, KnightGuyAttack, MagicalFaerieAttack, MysteryManAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
-          endif
+HandlePauseInput
+          rem Check SELECT switch (always available)
+          temp1 = 0
+          if switchselect then temp1 = 1
+          
+          rem Check Joy2b+ Button III (INPT1 for Player 1, INPT3 for Player 2)
+          if LeftPortJoy2bPlus then goto CheckJoy2bButtons
+          if RightPortJoy2bPlus then goto CheckJoy2bButtons
+          goto Joy2bPauseDone
+CheckJoy2bButtons
+          if !INPT1{7} then temp1 = 1 
+          rem Player 1 Button III
+          if !INPT3{7} then temp1 = 1 
+          rem Player 2 Button III
+Joy2bPauseDone
+          
+          rem Debounce: only toggle if button just pressed (was 0, now 1)
+          if temp1 = 0 then goto SkipPauseToggle
+          if PauseButtonPrev then goto SkipPauseToggle
+          GameState = GameState ^ 1 
+          rem Toggle pause (0<->1)
+SkipPauseToggle
+          
+          
+          rem Update previous button state for next frame
+          PauseButtonPrev = temp1
+          
           return
 
           rem =================================================================
-          rem PLAYER 4 INPUT (joy1 on odd frames, Quadtari only)
+          rem OLD INDIVIDUAL PLAYER HANDLERS - REPLACED BY GENERIC ROUTINES
           rem =================================================================
-          rem INPUTS: joy1left, joy1right, joy1up, joy1down, joy1fire
-          rem USES: PlayerX[3], PlayerY[3], PlayerState[3], PlayerChar[3]
-HandlePlayer4Input
-          if joy1left then
-                    PlayerX[3] = PlayerX[3] - 1
-                    PlayerState[3] = PlayerState[3] & ~1
-                    PlayerMomentumX[3] = -1
-          endif
-          if joy1right then
-                    PlayerX[3] = PlayerX[3] + 1
-                    PlayerState[3] = PlayerState[3] | 1
-                    PlayerMomentumX[3] = 1
-          endif
-
-          if joy1up && !IsPlayerJumping(PlayerState[3]) then
-                    temp1 = 3
-                    temp4 = PlayerChar[3]
-                    on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, MagicalFaerieJump, MysteryJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
-          endif
-
-          if joy1down then
-                    temp1 = 3
-                    temp4 = PlayerChar[3]
-                    on temp4 goto BernieDown, CurlingDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, MagicalFaerieDown, MysteryDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
-          else
-                    PlayerState[3] = PlayerState[3] & ~2
-          endif
-          
-          if joy1fire && !IsPlayerAttacking(PlayerState[3]) then
-                    temp1 = 3
-                    temp4 = PlayerChar[3]
-                    on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, GrizzardHandlerAttack, HarpyAttack, KnightGuyAttack, MagicalFaerieAttack, MysteryManAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
-          endif
-          return
+          rem The original HandlePlayer1Input, HandlePlayer2Input, HandlePlayer3Input,
+          rem and HandlePlayer4Input have been consolidated into HandleGenericPlayerInput
+          rem to eliminate code duplication and improve maintainability.
 

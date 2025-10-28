@@ -1,0 +1,20 @@
+@subsection Ursulo
+@display
+@group
+    Weight: Heavy
+    Attack: Ranged (2×2 pixels, ballistic arc)
+    Special: Strongest throw, hardest to knock back
+    Species: Bear with unfortunate abduction problems
+    Nemeses: Wizards, robots, and penguins (who keep abducting him)
+@end group
+@end display
+
+Ursulo is a bear who has an unfortunate habit of being abducted by wizards, 
+robots, and penguins. Despite these constant kidnapping attempts, he's developed 
+into a formidable fighter with incredible strength and resilience.
+
+Ursulo is one of the heaviest characters, making him extremely resistant to 
+knockback but also giving him a lower jump height. His powerful ranged attack
+fires a 2×2 pixel projectile with the highest arc (velocity 7 horizontal, -6
+vertical), making it excellent for hitting enemies on platforms! His experience 
+dealing with various abductors has made him exceptionally tough and determined.

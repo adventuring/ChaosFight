@@ -1,0 +1,14 @@
+@subsection Bernie
+@display
+@group
+    Weight: Very Heavy
+    Attack: Ranged (1×1 pixel, arrowshot) + Melée (BOTH DIRECTIONS!)
+    Special: No jumping; wraps from bottom to top of screen; fall damage immunity
+@end group
+@end display
+
+Bernie cannot jump, but he can fall off the bottom of the screen and reappear
+at the top! His unique attack hits both in front AND behind simultaneously 
+(dual-direction AOE), making him dangerous in crowds. His small ranged projectile
+(1×1 pixel) travels horizontally. Bernie's tough constitution grants complete
+immunity to fall damage.

@@ -8,18 +8,18 @@
           rem   - Player numbers (1-4) in player colors
           rem   - Level selection (0-F) in white
           rem   - Scores and timers
-          rem
+
           rem FONT SOURCE:
           rem   Source/Art/Numbers.xcf (128 × 16 px)
           rem   16 digits × 8px wide = 128px total width
           rem   Each digit is 8×16 pixels
           rem   White pixels on black/transparent background
-          rem
+
           rem GENERATED FILES:
           rem   Source/Generated/Font.Numbers.NTSC.bas
           rem   Source/Generated/Font.Numbers.PAL.bas
           rem   Source/Generated/Font.Numbers.SECAM.bas
-          rem
+
           rem PLAYER COLORS (match character selection/health bars):
           rem   Player 1: Blue  ($96)
           rem   Player 2: Red   ($36)
@@ -30,34 +30,31 @@
           rem Include architecture-specific font data
           #ifdef TV_NTSC
           #include "Source/Generated/Font.Numbers.NTSC.bas"
-          #endif
           #ifdef TV_PAL
           #include "Source/Generated/Font.Numbers.PAL.bas"
-          #endif
           #ifdef TV_SECAM
           #include "Source/Generated/Font.Numbers.SECAM.bas"
-          #endif
 
           rem =================================================================
           rem DRAW DIGIT - DATA-DRIVEN VERSION
           rem =================================================================
           rem Draws a single hexadecimal digit (0-F) at specified position.
           rem Supports rendering to player0 or player1 for simultaneous digits.
-          rem
+
           rem INPUTS:
           rem   temp1 = digit value (0-15)
           rem   temp2 = X position (pixel column)
           rem   temp3 = Y position (pixel row)
           rem   temp4 = color ($00-$FF for specific color, $FF = use temp5)
           rem   temp5 = sprite select (0=player0, 1=player1) OR custom color if temp4=$FF
-          rem
+
           rem COLORS:
           rem   $0E = White (level select)
           rem   $96 = Blue (Player 1)
           rem   $36 = Red (Player 2)
           rem   $1E = Yellow (Player 3)
           rem   $C6 = Green (Player 4)
-          rem
+
           rem EXAMPLE USAGE:
           rem   rem Draw level "A" (10) in white on left using player0
           rem   temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = $0E : temp5 = 0 : gosub DrawDigit
@@ -72,25 +69,25 @@ DrawDigit
           DigitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
-          if temp5 = 0 then
-                    player0x = temp2
-                    player0y = temp3
-                    COLUP0 = temp4
-                    gosub LoadPlayer0Digit
-          else
-                    player1x = temp2
-                    player1y = temp3
-                    COLUP1 = temp4
-                    gosub LoadPlayer1Digit
-          endif
+if temp5 = 0 then 
+          player0x = temp2
+          player0y = temp3
+          COLUP0 = temp4
+          gosub LoadPlayer0Digit
+
+          player1x = temp2
+          player1y = temp3
+          COLUP1 = temp4
+          gosub LoadPlayer1Digit
+          
           return
 
           rem =================================================================
           rem LOAD DIGIT DATA INTO SPRITES
           rem =================================================================
           rem These routines load digit bitmaps from the generated data tables.
-          rem The data is accessed using batariBasic''''s data statement indexing.
-          rem
+          rem The data is accessed using batariBasic data statement indexing.
+
           rem INPUT:
           rem   DigitOffset (temp6) = byte offset into font data (digit * 16)
 
@@ -103,7 +100,8 @@ LoadPlayer0Digit
           DataIndex = DigitOffset
           player0:
           rem Row 0-15: Read from data tables
-          %00111100  : rem Will be replaced by actual data read
+          %00111100 
+          rem Will be replaced by actual data read
           %01000010
           %01000010
           %01000010
@@ -116,6 +114,7 @@ LoadPlayer0Digit
           %00000000
           %00000000
           %00000000
+end
           %00000000
           %00000000
           %00000000
@@ -130,7 +129,8 @@ LoadPlayer1Digit
           DataIndex = DigitOffset
           player1:
           rem Row 0-15: Read from data tables
-          %00111100  : rem Will be replaced by actual data read
+          %00111100 
+          rem Will be replaced by actual data read
           %01000010
           %01000010
           %01000010
@@ -143,6 +143,7 @@ LoadPlayer1Digit
           %00000000
           %00000000
           %00000000
+end
           %00000000
           %00000000
           %00000000
@@ -152,14 +153,14 @@ LoadPlayer1Digit
           rem =================================================================
           rem DRAW PLAYER NUMBER
           rem =================================================================
-          rem Convenience routine to draw a player''''s number in their color.
-          rem
+          rem Convenience routine to draw a player number in their color.
+
           rem INPUTS:
           rem   temp1 = player index (0-3)
           rem   temp2 = X position
           rem   temp3 = Y position
           rem   temp5 = sprite select (0=player0, 1=player1)
-          rem
+
           rem Player colors are looked up from a table.
 DrawPlayerNumber
           rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
@@ -171,19 +172,23 @@ DrawPlayerNumber
           on temp1 goto SetP1Color, SetP2Color, SetP3Color, SetP4Color
           
 SetP1Color
-          PlayerColor = $96  : rem Blue
+          PlayerColor = $96 
+          rem Blue
           goto DrawPlayerDigitNow
           
 SetP2Color
-          PlayerColor = $36  : rem Red
+          PlayerColor = $36 
+          rem Red
           goto DrawPlayerDigitNow
           
 SetP3Color
-          PlayerColor = $1E  : rem Yellow
+          PlayerColor = $1E 
+          rem Yellow
           goto DrawPlayerDigitNow
           
 SetP4Color
-          PlayerColor = $C6  : rem Green
+          PlayerColor = $C6 
+          rem Green
           goto DrawPlayerDigitNow
           
 DrawPlayerDigitNow
@@ -198,13 +203,14 @@ DrawPlayerDigitNow
           rem DRAW LEVEL NUMBER
           rem =================================================================
           rem Convenience routine to draw a level number in white.
-          rem
+
           rem INPUTS:
           rem   temp1 = level number (0-15)
           rem   temp2 = X position
           rem   temp3 = Y position
           rem   temp5 = sprite select (0=player0, 1=player1)
 DrawLevelNumber
-          temp4 = $0E  : rem White
+          temp4 = $0E 
+          rem White
           gosub DrawDigit
           return

@@ -1,0 +1,15 @@
+@subsection Grizzard Handler
+@display
+@group
+    Weight: Medium
+    Attack: Ranged (Grizzard eggs, ballistic arc)
+    Special: Monster trainer, lobs eggs through the air
+    Profession: Grizzard trainer and monster hunter
+@end group
+@end display
+
+A Grizzard Handler trains Grizzards to attack monsters. Our Grizzard Handler 
+will throw "Grizzard eggs" that are lobbed through the air in arcs and hurt 
+when they hit you. These skilled trainers understand the nature of both 
+Grizzards and the monsters they're trained to fight, making them formidable 
+opponents with their unique projectile attacks.

@@ -1,0 +1,13 @@
+@subsection Nefertem
+@display
+@group
+    Weight: Heavy
+    Attack: Melée
+    Special: Loyalist to the High Council
+@end group
+@end display
+
+Nefertem is a mysterious cat, as big as a man, with gray and black stripes, white paws, and a white chest. He hails from the ancient realm of Aclypt, where he serves as a steadfast loyalist to the High Council. A dear friend of Elder Tranh, Nefertem combines feline grace with formidable strength.
+
+As a heavy melée fighter, Nefertem relies on powerful close-combat attacks and his substantial weight to overwhelm opponents. His feline reflexes and council training make him a dangerous adversary in any arena.
+

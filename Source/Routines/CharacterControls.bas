@@ -6,18 +6,18 @@
           rem =================================================================
           rem Handles character-specific jump and down button behaviors.
           rem Called via "on PlayerChar[n] goto" dispatch from PlayerInput.bas
-          rem
+
           rem INPUT VARIABLE:
           rem   temp1 = player index (0-3)
-          rem
+
           rem AVAILABLE VARIABLES:
           rem   PlayerX[temp1], PlayerY[temp1] - Position
           rem   PlayerState[temp1] - State flags
           rem   PlayerMomentumX[temp1] - Horizontal momentum
-          rem
+
           rem CHARACTER INDICES:
           rem   0=Bernie, 1=Curling, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
-          rem   6=Harpy, 7=Knight, 8=Magical Faerie, 9=Mystery, 10=Ninjish,
+          rem   6=Harpy, 7=Knight, 8=Frooty, 9=Nefertem, 10=Ninjish,
           rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
           rem =================================================================
 
@@ -29,7 +29,8 @@
           rem Bernie cannot jump, but can fall off bottom and wrap to top
           rem INPUT: temp1 = player index
 BernieJump
-          return  : rem No jump action
+          return 
+          rem No jump action
 
           rem CURLING SWEEPER (1) - STANDARD JUMP
           rem INPUT: temp1 = player index
@@ -43,13 +44,15 @@ DragonetJump
 
           rem EXO PILOT (3) - STANDARD JUMP (light weight, high jump)
 EXOJump
-          PlayerY[temp1] = PlayerY[temp1] - 12  : rem Lighter character, higher jump
+          PlayerY[temp1] = PlayerY[temp1] - 12 
+          rem Lighter character, higher jump
           PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem FAT TONY (4) - STANDARD JUMP (heavy weight, lower jump)
 FatTonyJump
-          PlayerY[temp1] = PlayerY[temp1] - 8  : rem Heavier character, lower jump
+          PlayerY[temp1] = PlayerY[temp1] - 8 
+          rem Heavier character, lower jump
           PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
@@ -62,45 +65,50 @@ GrizzardJump
           rem INPUT: temp1 = player index
           rem USES: PlayerY[temp1], PlayerState[temp1]
 HarpyJump
-          if PlayerY[temp1] > 10 then
-                    PlayerY[temp1] = PlayerY[temp1] - 3
-                    PlayerState[temp1] = PlayerState[temp1] | 4  : rem Set jumping bit for animation
-          endif
+          if PlayerY[temp1] <= 10 then SkipJump
+          PlayerY[temp1] = PlayerY[temp1] - 3
+          PlayerState[temp1] = PlayerState[temp1] | 4 
+          rem Set jumping bit for animation
+SkipJump
           return
 
           rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
 KnightJump
-          PlayerY[temp1] = PlayerY[temp1] - 8  : rem Heavier character, lower jump
+          PlayerY[temp1] = PlayerY[temp1] - 8 
+          rem Heavier character, lower jump
           PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
-          rem MAGICAL FAERIE (8) - FREE FLIGHT (vertical movement)
-          rem Magical Faerie can fly up/down freely, no guard action
+          rem FROOTY (8) - FREE FLIGHT (vertical movement)
+          rem Frooty can fly up/down freely, no guard action
           rem INPUT: temp1 = player index
           rem USES: PlayerY[temp1]
-MagicalFaerieJump
+FrootyJump
           if PlayerY[temp1] > 10 then PlayerY[temp1] = PlayerY[temp1] - 2
           return
 
-          rem MYSTERY MAN (9) - STANDARD JUMP
-MysteryJump
+          rem NEFERTEM (9) - STANDARD JUMP
+NefertemJump
           gosub StandardJump : return
 
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
 NinjishJump
-          PlayerY[temp1] = PlayerY[temp1] - 13  : rem Very light character, highest jump
+          PlayerY[temp1] = PlayerY[temp1] - 13 
+          rem Very light character, highest jump
           PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem PORK CHOP (11) - STANDARD JUMP (heavy weight)
 PorkChopJump
-          PlayerY[temp1] = PlayerY[temp1] - 8  : rem Heavy character, lower jump
+          PlayerY[temp1] = PlayerY[temp1] - 8 
+          rem Heavy character, lower jump
           PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem RADISH GOBLIN (12) - STANDARD JUMP (very light, high jump)
 RadishJump
-          PlayerY[temp1] = PlayerY[temp1] - 13  : rem Very light character, highest jump
+          PlayerY[temp1] = PlayerY[temp1] - 13 
+          rem Very light character, highest jump
           PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
@@ -115,13 +123,15 @@ RoboTitoJump
 
           rem URSULO (14) - STANDARD JUMP (heavy weight)
 UrsuloJump
-          PlayerY[temp1] = PlayerY[temp1] - 8  : rem Heavy character, lower jump
+          PlayerY[temp1] = PlayerY[temp1] - 8 
+          rem Heavy character, lower jump
           PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem VEG DOG (15) - STANDARD JUMP (light weight)
 VegDogJump
-          PlayerY[temp1] = PlayerY[temp1] - 11  : rem Light character, good jump
+          PlayerY[temp1] = PlayerY[temp1] - 11 
+          rem Light character, good jump
           PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
@@ -161,17 +171,18 @@ HarpyDown
 KnightDown
           gosub StandardGuard : return
 
-          rem MAGICAL FAERIE (8) - FLY DOWN (no guard action)
-          rem Magical Faerie flies down instead of guarding
+          rem FROOTY (8) - FLY DOWN (no guard action)
+          rem Frooty flies down instead of guarding
           rem INPUT: temp1 = player index
           rem USES: PlayerY[temp1], PlayerState[temp1]
-MagicalFaerieDown
+FrootyDown
           if PlayerY[temp1] < 80 then PlayerY[temp1] = PlayerY[temp1] + 2
-          PlayerState[temp1] = PlayerState[temp1] & ~2  : rem Ensure guard bit clear
+          PlayerState[temp1] = PlayerState[temp1] & !2 
+          rem Ensure guard bit clear
           return
 
-          rem MYSTERY MAN (9) - GUARD
-MysteryDown
+          rem NEFERTEM (9) - GUARD
+NefertemDown
           gosub StandardGuard : return
 
           rem NINJISH GUY (10) - GUARD
@@ -207,13 +218,19 @@ VegDogDown
           rem USES: PlayerY[temp1], PlayerState[temp1]
 StandardJump
           PlayerY[temp1] = PlayerY[temp1] - 10
-          PlayerState[temp1] = PlayerState[temp1] | 4  : rem Set jumping bit
+          PlayerState[temp1] = PlayerState[temp1] | 4 
+          rem Set jumping bit
           return
 
           rem Standard guard behavior
           rem INPUT: temp1 = player index
           rem USES: PlayerState[temp1]
 StandardGuard
-          PlayerState[temp1] = PlayerState[temp1] | 2  : rem Set guarding bit
+          PlayerState[temp1] = PlayerState[temp1] | 2 
+          rem Set guarding bit
+          
+          rem Set guard visual effect (flashing cyan)
+          rem Character flashes light cyan ColCyan(12) in NTSC/PAL, Cyan in SECAM
+          rem This will be checked in sprite rendering routines
           return
 

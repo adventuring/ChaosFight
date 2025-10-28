@@ -1,0 +1,12 @@
+@subsection Knight Guy
+@display
+@group
+    Weight: Very Heavy
+    Attack: Ranged (3×3 pixels, arrowshot)
+    Special: Armored fighter with powerful projectile, longest melée duration (6 frames)
+@end group
+@end display
+
+Knight Guy combines heavy armor with a powerful ranged attack. His projectile
+is larger than most (3×3 pixels) and travels in a straight line, making him
+a formidable opponent at any range!

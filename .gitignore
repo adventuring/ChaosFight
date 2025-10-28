@@ -9,7 +9,6 @@ Source/Generated/
 *.sym
 *.map
 *.bin
-bB.asm
 
 # Test files
 simple_game.bas
@@ -34,3 +33,10 @@ Thumbs.db
 *.tmp
 *.temp
 *.log
+tmp*
+temp*
+.#*
+Source/Art/*.png
+include.bB
+bin/skyline-tool
+*.midi

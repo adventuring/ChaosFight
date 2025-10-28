@@ -6,14 +6,14 @@
           rem =================================================================
           rem Handles player elimination when health reaches 0, game end conditions,
           rem and removal of eliminated players from active gameplay systems.
-          rem
+
           rem ELIMINATION PROCESS:
           rem   1. Detect when player health reaches 0
           rem   2. Set elimination flag and play elimination effects
           rem   3. Remove player from active input/physics/collision systems
           rem   4. Hide player sprite and health bar
           rem   5. Check for game end conditions (1 player remaining)
-          rem
+
           rem VARIABLES:
           rem   PlayersEliminated - Bit flags for eliminated players
           rem   PlayersRemaining - Count of active players
@@ -45,30 +45,24 @@ CheckAllPlayerEliminations
           rem INPUT: temp1 = player index (0-3)
 CheckPlayerElimination
           rem Skip if already eliminated
-          temp6 = 1
-          if temp1 = 1 then temp6 = 2
-          if temp1 = 2 then temp6 = 4  
-          if temp1 = 3 then temp6 = 8
+          temp6 = 1 << temp1 
+          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           temp2 = PlayersEliminated & temp6
-          if temp2 then return  : rem Already eliminated
+          if temp2 then return 
+          rem Already eliminated
           
           rem Check if health has reached 0
-          if temp1 = 0 then temp2 = PlayerHealth[0]
-          if temp1 = 1 then temp2 = PlayerHealth[1] 
-          if temp1 = 2 then temp2 = PlayerHealth[2]
-          if temp1 = 3 then temp2 = PlayerHealth[3]
+          temp2 = PlayerHealth[temp1]
           
-          if temp2 > 0 then return  : rem Still alive
+          if temp2 > 0 then return 
+          rem Still alive
           
           rem Player health reached 0 - eliminate them
           PlayersEliminated = PlayersEliminated | temp6
           
           rem Record elimination order
           EliminationCounter = EliminationCounter + 1
-          if temp1 = 0 then EliminationOrder[0] = EliminationCounter
-          if temp1 = 1 then EliminationOrder[1] = EliminationCounter  
-          if temp1 = 2 then EliminationOrder[2] = EliminationCounter
-          if temp1 = 3 then EliminationOrder[3] = EliminationCounter
+          EliminationOrder[temp1] = EliminationCounter
           
           rem Trigger elimination effects
           gosub TriggerEliminationEffects
@@ -87,11 +81,9 @@ TriggerEliminationEffects
           
           rem Set elimination visual effect timer
           rem This could trigger screen flash, particle effects, etc.
-          temp2 = 30  : rem 30 frames of elimination effect
-          if temp1 = 0 then EliminationEffectTimer[0] = temp2
-          if temp1 = 1 then EliminationEffectTimer[1] = temp2
-          if temp1 = 2 then EliminationEffectTimer[2] = temp2
-          if temp1 = 3 then EliminationEffectTimer[3] = temp2
+          temp2 = 30 
+          rem 30 frames of elimination effect
+          EliminationEffectTimer[temp1] = temp2
           
           rem Hide player sprite immediately
           gosub HideEliminatedPlayerSprite
@@ -107,10 +99,13 @@ TriggerEliminationEffects
           rem Move eliminated player sprite off-screen.
           rem INPUT: temp1 = player index (0-3)
 HideEliminatedPlayerSprite
-          if temp1 = 0 then player0x = 200  : rem Off-screen
+          if temp1 = 0 then player0x = 200 
+          rem Off-screen
           if temp1 = 1 then player1x = 200
-          if temp1 = 2 then missile1x = 200  : rem Player 3 uses missile1
-          if temp1 = 3 then ballx = 200      : rem Player 4 uses ball
+          if temp1 = 2 then player2x = 200 
+          rem Player 3 uses player2 sprite (multisprite)
+          if temp1 = 3 then player3x = 200 
+          rem Player 4 uses player3 sprite (multisprite)
           
           return
 
@@ -121,11 +116,10 @@ HideEliminatedPlayerSprite
           rem INPUT: temp1 = player index (0-3)
 DeactivatePlayerMissiles
           rem Clear missile active bit for this player
-          temp6 = 1
-          if temp1 = 1 then temp6 = 2
-          if temp1 = 2 then temp6 = 4
-          if temp1 = 3 then temp6 = 8
-          temp6 = 255 - temp6  : rem Invert bits for AND mask
+          temp6 = 1 << temp1 
+          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          temp6 = 255 - temp6 
+          rem Invert bits for AND mask
           MissileActive = MissileActive & temp6
           
           return
@@ -136,13 +130,18 @@ DeactivatePlayerMissiles
           rem Count how many players are still alive.
           rem OUTPUT: temp1 = number of remaining players
 CountRemainingPlayers
-          temp1 = 0  : rem Counter
+          temp1 = 0 
+          rem Counter
           
           rem Check each player
-          if !(PlayersEliminated & 1) then temp1 = temp1 + 1  : rem Player 1
-          if !(PlayersEliminated & 2) then temp1 = temp1 + 1  : rem Player 2
-          if !(PlayersEliminated & 4) then temp1 = temp1 + 1  : rem Player 3  
-          if !(PlayersEliminated & 8) then temp1 = temp1 + 1  : rem Player 4
+          if !(PlayersEliminated & 1) then temp1 = temp1 + 1 
+          rem Player 1
+          if !(PlayersEliminated & 2) then temp1 = temp1 + 1 
+          rem Player 2
+          if !(PlayersEliminated & 4) then temp1 = temp1 + 1 
+          rem Player 3  
+          if !(PlayersEliminated & 8) then temp1 = temp1 + 1 
+          rem Player 4
           
           PlayersRemaining = temp1
           return
@@ -153,13 +152,15 @@ CountRemainingPlayers
           rem Check if game should end (1 or 0 players remaining).
 CheckGameEndCondition
           rem Game ends when 1 or fewer players remain
-          if PlayersRemaining <= 1 then
-                    rem Find winner (last remaining player)
-                    gosub FindWinner
-                    rem Start game end countdown  
-                    GameEndTimer = 180  : rem 3 seconds at 60 FPS
-                    GameState = 2      : rem Game ending state
-          endif
+if PlayersRemaining <= 1 then 
+          rem Find winner (last remaining player)
+          gosub FindWinner
+          rem Start game end countdown  
+          GameEndTimer = 180 
+          rem 3 seconds at 60 FPS
+          GameState = 2     
+          rem Game ending state
+          
           
           return
 
@@ -170,12 +171,12 @@ CheckGameEndCondition
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp2 = 1 if eliminated, 0 if alive
 IsPlayerEliminated
-          temp6 = 1
-          if temp1 = 1 then temp6 = 2
-          if temp1 = 2 then temp6 = 4
-          if temp1 = 3 then temp6 = 8
+          temp6 = 1 << temp1 
+          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           temp2 = PlayersEliminated & temp6
-          if temp2 then temp2 = 1 else temp2 = 0
+          if temp2 then temp2 = 1 : goto IsEliminatedDone
+          temp2 = 0
+IsEliminatedDone
           return
 
           rem =================================================================
@@ -187,15 +188,16 @@ IsPlayerEliminated
 IsPlayerAlive
           rem Check elimination flag first
           gosub IsPlayerEliminated
-          if temp2 then return  : rem Already eliminated
+          if temp2 then return 
+          rem Already eliminated
           
           rem Check health
-          if temp1 = 0 then temp3 = PlayerHealth[0]
-          if temp1 = 1 then temp3 = PlayerHealth[1]
-          if temp1 = 2 then temp3 = PlayerHealth[2] 
-          if temp1 = 3 then temp3 = PlayerHealth[3]
+          temp3 = PlayerHealth[temp1]
           
-          if temp3 > 0 then temp2 = 1 else temp2 = 0
+          temp2 = 0 
+          rem Default: not alive
+          if temp3 > 0 then temp2 = 1 
+          rem Alive if health > 0
           return
 
           rem =================================================================
@@ -204,7 +206,8 @@ IsPlayerAlive
           rem Identify the winning player (last one standing).
 FindWinner
           rem Find the player who is not eliminated
-          WinnerPlayerIndex = 255  : rem Invalid initially
+          WinnerPlayerIndex = 255 
+          rem Invalid initially
           
           temp1 = 0 : gosub IsPlayerEliminated
           if !temp2 then WinnerPlayerIndex = 0
@@ -216,9 +219,9 @@ FindWinner
           if !temp2 then WinnerPlayerIndex = 3
           
           rem If no winner found (all eliminated), pick last eliminated
-          if WinnerPlayerIndex = 255 then
-                    gosub FindLastEliminated
-          endif
+if WinnerPlayerIndex = 255 then 
+          gosub FindLastEliminated
+          
           
           return
 
@@ -227,25 +230,27 @@ FindWinner
           rem =================================================================
           rem Find player who was eliminated most recently (highest elimination order).
 FindLastEliminated
-          temp4 = 0     : rem Highest elimination order found
-          WinnerPlayerIndex = 0  : rem Default winner
+          temp4 = 0    
+          rem Highest elimination order found
+          WinnerPlayerIndex = 0 
+          rem Default winner
           
-          rem Check each player's elimination order
-          if EliminationOrder[0] > temp4 then
-                    temp4 = EliminationOrder[0]
-                    WinnerPlayerIndex = 0
-          endif
-          if EliminationOrder[1] > temp4 then
-                    temp4 = EliminationOrder[1] 
-                    WinnerPlayerIndex = 1
-          endif
-          if EliminationOrder[2] > temp4 then
-                    temp4 = EliminationOrder[2]
-                    WinnerPlayerIndex = 2
-          endif
-          if EliminationOrder[3] > temp4 then
-                    temp4 = EliminationOrder[3]
-                    WinnerPlayerIndex = 3
-          endif
+          rem Check each player elimination order
+if EliminationOrder[0] > temp4 then 
+          temp4 = EliminationOrder[0]
+          WinnerPlayerIndex = 0
+          
+if EliminationOrder[1] > temp4 then 
+          temp4 = EliminationOrder[1] 
+          WinnerPlayerIndex = 1
+          
+if EliminationOrder[2] > temp4 then 
+          temp4 = EliminationOrder[2]
+          WinnerPlayerIndex = 2
+          
+if EliminationOrder[3] > temp4 then 
+          temp4 = EliminationOrder[3]
+          WinnerPlayerIndex = 3
+          
           
           return

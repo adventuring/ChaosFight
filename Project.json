@@ -1,12 +1,8 @@
 {
-  "*game": "ChaosFight",
-  "*part-number": "CF-001",
-  "*studio": "Interworldly Adventuring, LLC",
-  "*publisher": "Interworldly Adventuring, LLC",
-  "*machine": 2600,
-  "*sound": "TIA",
-  "*common-palette": ["BLACK", "WHITE", "RED", "GREEN", "BLUE"],
-  "*default-skin-color": "PEACH",
-  "*default-hair-color": "BROWN",
-  "*default-clothes-color": "BLUE"
+  "Game": "ChaosFight",
+  "PartNumber": "CF-001",
+  "Studio": "Interworldly Adventuring, LLC",
+  "Publisher": "AtariAge",
+  "Machine": 2600,
+  "Sound": "TIA",
 }

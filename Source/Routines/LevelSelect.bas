@@ -6,62 +6,27 @@ LevelSelect1
           SelectedLevel = 0
           
           rem Set background color (B&W safe)
-          if switchbw then
-                    COLUBK = ColGrey(4)  : rem Dark grey (B&W)
-          else
-                    COLUBK = ColBlue(8)  : rem Dark blue (Color)
-          endif
+          COLUBK = ColBlack(0)
+BackgroundSet
           
 LevelSelect1Loop
-          if joy0left then SelectedLevel = SelectedLevel - 1 : if SelectedLevel < 0 then SelectedLevel = NumLevels
+          if joy0left then SelectedLevel = SelectedLevel - 1 : if SelectedLevel > NumLevels then SelectedLevel = NumLevels
           if joy0right then SelectedLevel = SelectedLevel + 1 : if SelectedLevel > NumLevels then SelectedLevel = 0
           
-          if SelectedLevel = 0 then
-                    player0x = 80 : player0y = 80
-                    player1x = 90 : player1y = 80
-                    player0:
-                    %00011000
-                    %00011000
-                    %00000000
-                    %00011000
-                    %00011000
-                    %00000000
-                    %00011000
-                    %00011000
-                    end
-                    player1:
-                    %00011000
-                    %00011000
-                    %00000000
-                    %00011000
-                    %00011000
-                    %00000000
-                    %00011000
-                    %00011000
-                    end
-          else
-                    player0x = 80 : player0y = 80
-                    player1x = 90 : player1y = 80
-                    player0:
-                    %00111100
-                    %01100110
-                    %01100110
-                    %01100110
-                    %01100110
-                    %01100110
-                    %00111100
-                    %00000000
-                    end
-                    player1:
-                    %00111100
-                    %01100110
-                    %01100110
-                    %01100110
-                    %01100110
-                    %01100110
-                    %00111100
-                    %00000000
-                    end
+          if SelectedLevel = 0 then goto Level0Sprites
+          goto Level1Sprites
+
+Level0Sprites
+          player0x = 80 : player0y = 80
+          player1x = 90 : player1y = 80
+          rem TODO: Use dynamic sprite setting for level 0 sprites
+          goto SpritesSet
+
+Level1Sprites
+          player0x = 80 : player0y = 80
+          player1x = 90 : player1y = 80
+
+SpritesSet
           
           if joy0fire then goto StartGame1
           

@@ -5,12 +5,7 @@
 
           #define TV_SECAM
           const TVStandard=3
-          set tv secam
+          set tv pal
 
-#include "Source/Common/Preamble.bas"
-#include "Source/Banks/Banks.bas"
-end
-          #include "Source/Common/Preamble.bas"
-          #include "Source/Banks/Banks.bas"
           #include "Source/Common/Preamble.bas"
           #include "Source/Banks/Banks.bas"

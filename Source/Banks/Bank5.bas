@@ -3,4 +3,3 @@
 
           bank 5
           #include "Source/Routines/CharacterSelect.bas"
-          end

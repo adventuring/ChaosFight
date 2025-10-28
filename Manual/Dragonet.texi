@@ -1,0 +1,11 @@
+@subsection Dragonet
+@display
+@group
+    Weight: Medium-Light
+    Attack: Ranged (2×2 pixels, ballistic arc)
+    Special: Fires projectiles in a parabolic arc
+@end group
+@end display
+
+Dragonet fires a small projectile (2×2 pixels) that travels in a ballistic arc,
+making it excellent for hitting enemies at different heights!

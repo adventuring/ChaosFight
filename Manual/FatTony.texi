@@ -1,0 +1,19 @@
+@subsection Fat Tony
+@display
+@group
+    Weight: Heavy
+    Attack: Ranged (magic ring lasers)
+    Special: Geography expert, magic ring wielder, former bar owner
+    Lives: Port Lion island
+    Background: Former proprietor of bars in mysterious "Greewich"
+@end group
+@end display
+
+Fat Tony used to own some bars in a strange land called "Greewich" but nobody's 
+sure where that is, except Fat Tony. He's great at geography and knows all about 
+the world of Syrex and Grizzard handlers. He lives on the island of Port Lion now 
+and has a magic ring that he uses to shoot lasers.
+
+His expertise in geography and mysterious past make him a formidable opponent who 
+knows the terrain better than anyone. The magic ring grants him ranged laser 
+attacks, making him dangerous at any distance despite his heavy build.

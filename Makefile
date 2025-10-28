@@ -1,16 +1,25 @@
+# Default target
+all: sprites game doc characters playfields fonts music
+
+# Precious intermediate files
+.PRECIOUS: %.s %.png %.midi
+
 # Tools and directories
 BB_DIR = Tools/batariBASIC
 BB_MAIN = bin/2600basic
 BB_PREPROCESS = bin/preprocess
 BB_POSTPROCESS = bin/postprocess
 BB_OPTIMIZE = bin/optimize
+DASM = bin/dasm
 BB_FILTER = bin/bbfilter
+POSTINC = $(abspath Tools/batariBASIC/includes)
 DASM = bin/dasm
 STELLA = stella
-GIMP = gimp
-SOURCE_DIR = .
-OBJECT_DIR = Object
-DIST_DIR = Dist
+GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c -i --no-shm
+
+# Ready system
+READYDATE = 20251028
+READYFILE = .#ready.$(READYDATE)
 
 # SkylineTool build rules
 SkylineTool/zx7mini/zx7mini.c:
@@ -44,11 +53,10 @@ GAME = ChaosFight
 ROM = Dist/$(GAME).NTSC.a26
 
 # Assembly files
-ALL_SOURCES = $(shell find Source -name \*.bas) Source/Generated/Playfields.bas
+ALL_SOURCES = $(shell find Source -name \*.bas)
 
-# Default target
-.PHONY: all clean emu game help doc characters playfields fonts sprites
-all: sprites game doc characters playfields fonts
+# Moved to top of file
+.PHONY: all clean emu game help doc characters playfields fonts sprites nowready ready
 
 # Build game
 game: \
@@ -66,24 +74,16 @@ game: \
 	Dist/$(GAME).SECAM.pro
 
 # Sprite conversion using skyline-tool
-sprites: bin/skyline-tool special-sprites
-	@echo "Converting PNG sprites to batariBASIC format..."
-	@mkdir -p Source/Generated
-	@for char in Bernie CurlingSweeper Dragonet EXOPilot FatTony GrizzardHandler Harpy KnightGuy MagicalFaerie MysteryMan NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog; do \
-		echo "Converting $$char..."; \
-		./bin/skyline-tool compile-2600-sprites :output Source/Generated/Art.$$char.bas :character-name $$char; \
-	done
-
-# Convert special sprites (QuestionMark, CPU, No) from XCF to binary data
-special-sprites: Source/Art/QuestionMark.png Source/Art/CPU.png Source/Art/No.png
-	@echo "Converting special sprites to binary data..."
-	@python3 bin/convert_special_sprites.py
+# Sprite generation (characters only - special sprites are in Source/Data/)
+sprites: characters
+	@echo "All sprite data generated."
 
 doc: Dist/$(GAME).pdf Dist/$(GAME).html
 
 # Character sprite sheet names (16 characters)
-CHARACTER_NAMES = Bernie CurlingSweeper Dragonet EXOPilot FatTony GrizzardHandler Harpy KnightGuy MagicalFaerie MysteryMan NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog
-SPECIAL_SPRITES = QuestionMark CPU No
+CHARACTER_NAMES = Bernie CurlingSweeper Dragonet EXOPilot FatTony Megax Harpy KnightGuy Frooty NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog
+# Special sprites are hard-coded in Source/Data/SpecialSprites.bas
+# SPECIAL_SPRITES = QuestionMark CPU No
 
 # TV architectures
 TV_ARCHS = NTSC PAL SECAM
@@ -94,299 +94,199 @@ SCREEN_NAMES = AtariAge Interworldly ChaosFight
 # Font names
 FONT_NAMES = Numbers
 
-# Build character assets
-characters: Source/Generated/Characters.NTSC.bas Source/Generated/Characters.PAL.bas Source/Generated/Characters.SECAM.bas
+# Music names (MuseScore files)
+MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
+
+# Build character assets  
+characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).s)
 
 # Build playfield assets (game levels + title screens)
-playfields: Source/Generated/Playfields.bas $(foreach screen,$(SCREEN_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Playfield.$(screen).$(arch).bas))
+playfields: $(foreach screen,$(SCREEN_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Playfield.$(screen).$(arch).bas))
 
 # Build font assets
 fonts: $(foreach font,$(FONT_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Font.$(font).$(arch).bas))
+
+# Build music assets
+music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
+
+# Convert MuseScore to MIDI
+%.midi: %.mscz
+	if [ -x ~/Software/MuseScore*.AppImage ]; then \
+		~/Software/MuseScore*.AppImage --export-to $@ $<; \
+	elif which mscore; then \
+		mscore --export-to $@ $<; \
+	else \
+		flatpak run org.musescore.MuseScore --export-to $@ $<; \
+	fi
+
+%.flac: %.mscz
+	if [ -x ~/Software/MuseScore*.AppImage ]; then \
+		~/Software/MuseScore*.AppImage --export-to $@ $<; \
+	elif which mscore; then \
+		mscore --export-to $@ $<; \
+	else \
+		flatpak run org.musescore.MuseScore --export-to $@ $<; \
+	fi
+
+%.ogg: %.mscz
+	if [ -x ~/Software/MuseScore*.AppImage ]; then \
+		~/Software/MuseScore*.AppImage --export-to $@ $<; \
+	elif which mscore; then \
+		mscore --export-to $@ $<; \
+	else \
+		flatpak run org.musescore.MuseScore --export-to $@ $<; \
+	fi
+
+%.pdf: %.mscz
+	if [ -x ~/Software/MuseScore*.AppImage ]; then \
+		~/Software/MuseScore*.AppImage --export-to $@ $<; \
+	elif which mscore; then \
+		mscore --export-to $@ $<; \
+	else \
+		flatpak run org.musescore.MuseScore --export-to $@ $<; \
+	fi
+
+# Convert MIDI to batariBASIC music data for NTSC (60Hz)
+Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi
+	@echo "Converting music $< to $@ for NTSC..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+
+# Convert MIDI to batariBASIC music data for PAL (50Hz)
+Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi
+	@echo "Converting music $< to $@ for PAL..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+
+# Convert MIDI to batariBASIC music data for SECAM (50Hz)
+Source/Generated/Song.%.SECAM.bas: Source/Songs/%.midi
+	@echo "Converting music $< to $@ for SECAM..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+
+
 
 # Generate list of character sprite files
 CHARACTER_XCF = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).xcf)
 CHARACTER_PNG = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png)
 CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).bas)
 
-# Convert XCF to PNG for character sprites  
+# Convert XCF to PNG for sprites (characters and special sprites)
 %.png: %.xcf $(READYFILE)
 	@echo "Converting $< to $@..."
 	mkdir -p Source/Art
-	xvfb-run -a $(GIMP) -b '(load "Tools/xcf-export.scm")' -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
-# Convert PNG character sprite sheet to batariBASIC data for NTSC
-Source/Generated/Art.%.NTSC.bas: Source/Art/%.png
-	@echo "Converting character sprite $< to $@ for NTSC..."
+# Character sprites are compiled using compile-chaos-character
+# Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
+
+# Generate character sprite files from PNG using chaos character compiler
+Source/Generated/%.s: Source/Art/%.png bin/skyline-tool
+	@echo "Generating character sprite data for $*..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-chaos-character "$@" "$<"
 
-# Convert PNG character sprite sheet to batariBASIC data for PAL  
-Source/Generated/Art.%.PAL.bas: Source/Art/%.png
-	@echo "Converting character sprite $< to $@ for PAL..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-chaos-character "$@" "$<"
-
-# Convert PNG character sprite sheet to batariBASIC data for SECAM
-Source/Generated/Art.%.SECAM.bas: Source/Art/%.png
-	@echo "Converting character sprite $< to $@ for SECAM..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-chaos-character "$@" "$<"
-
-# Generate platform-specific character files
-Source/Generated/Characters.NTSC.bas:
-	@echo "Generating NTSC character data..."
-	mkdir -p Source/Generated
-	@echo "          rem ChaosFight - Generated Character Sprite Data (NTSC)" > $@
-	@echo "          rem Copyright © 2025 Interworldly Adventuring, LLC." >> $@
-	@echo "" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          rem CHARACTER SPRITE DATA - NTSC" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          rem This file includes all character sprite data compiled from XCF sources" >> $@
-	@echo "          rem Each character is 64px wide (8 frames) × 256px tall (16 sequences)" >> $@
-	@echo "          rem Facing right by default, use REFPn to reflect for face-left" >> $@
-	@echo "          rem Duplicate frames are detected and re-used, blank frames are omitted" >> $@
-	@echo "" >> $@
-	@echo "          rem Character sprite data will be included from individual Art.*.bas files" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          rem CHARACTER COLORS - NTSC" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          data CharacterColors" >> $@
-	@echo "          \$$0E, \$$0E  rem Bernie - White" >> $@
-	@echo "          \$$0C, \$$0C  rem CurlingSweeper - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem Dragonet - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem EXOPilot - White" >> $@
-	@echo "          \$$0C, \$$0C  rem FatTony - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem GrizzardHandler - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem Harpy - White" >> $@
-	@echo "          \$$0C, \$$0C  rem KnightGuy - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem MagicalFaerie - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem MysteryMan - White" >> $@
-	@echo "          \$$0C, \$$0C  rem NinjishGuy - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem PorkChop - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem RadishGoblin - White" >> $@
-	@echo "          \$$0C, \$$0C  rem RoboTito - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem Ursulo - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem VegDog - White" >> $@
-	@echo "          end" >> $@
-
-Source/Generated/Characters.PAL.bas:
-	@echo "Generating PAL character data..."
-	mkdir -p Source/Generated
-	@echo "          rem ChaosFight - Generated Character Sprite Data (PAL)" > $@
-	@echo "          rem Copyright © 2025 Interworldly Adventuring, LLC." >> $@
-	@echo "" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          rem CHARACTER SPRITE DATA - PAL" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          rem This file includes all character sprite data compiled from XCF sources" >> $@
-	@echo "          rem Each character is 64px wide (8 frames) × 256px tall (16 sequences)" >> $@
-	@echo "          rem Facing right by default, use REFPn to reflect for face-left" >> $@
-	@echo "          rem Duplicate frames are detected and re-used, blank frames are omitted" >> $@
-	@echo "" >> $@
-	@echo "          rem Character sprite data will be included from individual Art.*.bas files" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          rem CHARACTER COLORS - PAL" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          data CharacterColors" >> $@
-	@echo "          \$$0E, \$$0E  rem Bernie - White" >> $@
-	@echo "          \$$0C, \$$0C  rem CurlingSweeper - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem Dragonet - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem EXOPilot - White" >> $@
-	@echo "          \$$0C, \$$0C  rem FatTony - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem GrizzardHandler - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem Harpy - White" >> $@
-	@echo "          \$$0C, \$$0C  rem KnightGuy - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem MagicalFaerie - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem MysteryMan - White" >> $@
-	@echo "          \$$0C, \$$0C  rem NinjishGuy - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem PorkChop - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem RadishGoblin - White" >> $@
-	@echo "          \$$0C, \$$0C  rem RoboTito - Yellow" >> $@
-	@echo "          \$$0A, \$$0A  rem Ursulo - Red" >> $@
-	@echo "          \$$0E, \$$0E  rem VegDog - White" >> $@
-	@echo "          end" >> $@
-
-Source/Generated/Characters.SECAM.bas:
-	@echo "Generating SECAM character data..."
-	mkdir -p Source/Generated
-	@echo "          rem ChaosFight - Generated Character Sprite Data (SECAM)" > $@
-	@echo "          rem Copyright © 2025 Interworldly Adventuring, LLC." >> $@
-	@echo "" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          rem CHARACTER SPRITE DATA - SECAM" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          rem This file includes all character sprite data compiled from XCF sources" >> $@
-	@echo "          rem Each character is 64px wide (8 frames) × 256px tall (16 sequences)" >> $@
-	@echo "          rem Facing right by default, use REFPn to reflect for face-left" >> $@
-	@echo "          rem Duplicate frames are detected and re-used, blank frames are omitted" >> $@
-	@echo "" >> $@
-	@echo "          rem Character sprite data will be included from individual Art.*.bas files" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "          rem CHARACTER COLORS - SECAM (Grayscale)" >> $@
-	@echo "          rem =========================================================================" >> $@
-	@echo "data CharacterColors" >> $@
-	@echo "          \$0E, \$0E  rem Bernie - White" >> $@
-	@echo "          \$0C, \$0C  rem CurlingSweeper - Light Gray" >> $@
-	@echo "          \$0A, \$0A  rem Dragonet - Medium Gray" >> $@
-	@echo "          \$0E, \$0E  rem EXOPilot - White" >> $@
-	@echo "          \$0C, \$0C  rem FatTony - Light Gray" >> $@
-	@echo "          \$0A, \$0A  rem GrizzardHandler - Medium Gray" >> $@
-	@echo "          \$0E, \$0E  rem Harpy - White" >> $@
-	@echo "          \$0C, \$0C  rem KnightGuy - Light Gray" >> $@
-	@echo "          \$0A, \$0A  rem MagicalFaerie - Medium Gray" >> $@
-	@echo "          \$0E, \$0E  rem MysteryMan - White" >> $@
-	@echo "          \$0C, \$0C  rem NinjishGuy - Light Gray" >> $@
-	@echo "          \$0A, \$0A  rem PorkChop - Medium Gray" >> $@
-	@echo "          \$0E, \$0E  rem RadishGoblin - White" >> $@
-	@echo "          \$0C, \$0C  rem RoboTito - Light Gray" >> $@
-	@echo "          \$0A, \$0A  rem Ursulo - Medium Gray" >> $@
-	@echo "          \$0E, \$0E  rem VegDog - White" >> $@
-	@echo "end" >> $@
 
 # Convert XCF to PNG for screens (32×32 playfields)
 Source/Art/AtariAge.png Source/Art/Interworldly.png Source/Art/ChaosFight.png: Source/Art/%.png: Source/Art/%.xcf
 	@echo "Converting screen $< to $@..."
 	mkdir -p Source/Art
-	gimp --batch-interpreter=plug-in-script-fu-eval --batch '(load "Tools/xcf-export.scm") (xcf-export "$<" "$@") (gimp-quit 1)'
+	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
 # Convert XCF to PNG for fonts (special handling for font sheets)
 Source/Art/Numbers.png: Source/Art/Numbers.xcf
 	@echo "Converting font $< to $@..."
 	mkdir -p Source/Art
-	magick "$<" -background black -flatten "$@"
+	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
-# Convert PNG font to batariBASIC data for NTSC
+# Convert Numbers PNG to batariBASIC data using SkylineTool
+Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
+	@echo "Converting Numbers font $< to $@..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
+
+# Convert PNG font to batariBASIC data using new 8×16 font compiler
 Source/Generated/Font.%.NTSC.bas: Source/Art/%.png
-	@echo "Converting font $< to $@ for NTSC..."
+	@echo "Converting 8×16 font $< to $@..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font \
-		:input "$<" \
-		:output "$@" \
-		:font-name "$*" \
-		:architecture "NTSC"
+	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
-# Convert PNG font to batariBASIC data for PAL
 Source/Generated/Font.%.PAL.bas: Source/Art/%.png
-	@echo "Converting font $< to $@ for PAL..."
+	@echo "Converting 8×16 font $< to $@..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font \
-		:input "$<" \
-		:output "$@" \
-		:font-name "$*" \
-		:architecture "PAL"
+	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
-# Convert PNG font to batariBASIC data for SECAM
 Source/Generated/Font.%.SECAM.bas: Source/Art/%.png
-	@echo "Converting font $< to $@ for SECAM..."
+	@echo "Converting 8×16 font $< to $@..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font \
-		:input "$<" \
-		:output "$@" \
-		:font-name "$*" \
-		:architecture "SECAM"
+	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
 # Convert PNG screen to batariBASIC playfield data for NTSC
 Source/Generated/Playfield.%.NTSC.bas: Source/Art/%.png
 	@echo "Converting playfield screen $< to $@ for NTSC..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-playfield \
-		:input "$<" \
-		:output "$@" \
-		:screen-name "$*" \
-		:architecture "NTSC" \
-		:width 32 \
-		:height 32 \
-		:pfres 32
+	bin/skyline-tool compile-2600-playfield "$@" "$<"
 
 # Convert PNG screen to batariBASIC playfield data for PAL
 Source/Generated/Playfield.%.PAL.bas: Source/Art/%.png
 	@echo "Converting playfield screen $< to $@ for PAL..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-playfield \
-		:input "$<" \
-		:output "$@" \
-		:screen-name "$*" \
-		:architecture "PAL" \
-		:width 32 \
-		:height 32 \
-		:pfres 32
+	bin/skyline-tool compile-2600-playfield "$@" "$<"
 
 # Convert PNG screen to batariBASIC playfield data for SECAM
 Source/Generated/Playfield.%.SECAM.bas: Source/Art/%.png
 	@echo "Converting playfield screen $< to $@ for SECAM..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-playfield \
-		:input "$<" \
-		:output "$@" \
-		:screen-name "$*" \
-		:architecture "SECAM" \
-		:width 32 \
-		:height 32 \
-		:pfres 32
+	bin/skyline-tool compile-2600-playfield "$@" "$<"
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf
-	gimp --batch-interpreter=plug-in-script-fu-eval --batch '(load "Tools/xcf-export.scm") (xcf-export "$<" "$@") (gimp-quit 1)'
+	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
 # Convert PNG to batariBASIC playfield include
-Source/Generated/Playfields.bas: $(wildcard Source/Art/Map-*.png)
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-playfields Source/Generated $(wildcard Source/Art/Map-*.png)
+# Commented out - no Map-*.png files exist, and command should be compile-2600-playfield (singular)
+# Source/Generated/Playfields.bas: $(wildcard Source/Art/Map-*.png)
+# 	mkdir -p Source/Generated
+# 	bin/skyline-tool compile-2600-playfield "Source/Generated/Playfields.bas" "Source/Art/Map-Arena1.png"
 
-# Convert PNG font to batariBASIC data for NTSC
-Source/Generated/Font.%.NTSC.bas: Source/Art/%.png
+# Convert PNG font to batariBASIC data
+Source/Generated/Font.bas: Source/Art/Font.png
 	@echo "Converting font $< to $@ for NTSC..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font \
-		:input "$<" \
-		:output "$@" \
-		:font-name "$*" \
-		:architecture "NTSC" \
-		:char-width 8 \
-		:char-height 16 \
-		:num-chars 16 \
-		:format "hex-digits"
+	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
-# Convert PNG font to batariBASIC data for PAL
-Source/Generated/Font.%.PAL.bas: Source/Art/%.png
-	@echo "Converting font $< to $@ for PAL..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font \
-		:input "$<" \
-		:output "$@" \
-		:font-name "$*" \
-		:architecture "PAL" \
-		:char-width 8 \
-		:char-height 16 \
-		:num-chars 16 \
-		:format "hex-digits"
-
-# Convert PNG font to batariBASIC data for SECAM
-Source/Generated/Font.%.SECAM.bas: Source/Art/%.png
-	@echo "Converting font $< to $@ for SECAM..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font \
-		:input "$<" \
-		:output "$@" \
-		:font-name "$*" \
-		:architecture "SECAM" \
-		:char-width 8 \
-		:char-height 16 \
-		:num-chars 16 \
-		:format "hex-digits"
-
-# Build game
-Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: $(ALL_SOURCES) Source/Generated/Characters.NTSC.bas
+# Build game - accurate dependencies based on actual includes
+Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
+	Source/Banks/Bank1.bas \
+	Source/Banks/Banks.bas \
+	Source/Common/Colors.h \
+	Source/Common/Constants.bas \
+	Source/Common/Macros.bas \
+	Source/Common/Preamble.bas \
+	Source/Common/Variables.bas \
+	Source/Data/SpecialSprites.bas \
+	Source/Routines/CharacterArt.s \
+	Source/Routines/ColdStart.bas \
+	Source/Routines/ControllerDetection.bas \
+	Source/Routines/FallingAnimation.bas \
+	Source/Routines/GameLoopInit.bas \
+	Source/Routines/GameLoopMain.bas \
+	Source/Routines/HealthBarSystem.bas \
+	Source/Routines/LevelSelect.bas \
+	Source/Routines/MainLoop.bas \
+	Source/Routines/MusicSystem.bas \
+	Source/Routines/ScreenLayout.bas \
+	Source/Routines/SoundSystem.bas \
+	Source/Routines/SpriteLoader.bas \
+	Source/Routines/VisualEffects.bas \
+	$(wildcard Source/Generated/*.bas) \
+	$(wildcard Source/Generated/*.s)
 	mkdir -p Dist Source/Generated
-	cpp -P -I. Source/Platform/NTSC.bas > Source/Generated/$(GAME).NTSC.bas
+	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/NTSC.bas > Source/Generated/$(GAME).NTSC.bas
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
-	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).NTSC.preprocessed.bas > Source/Generated/$(GAME).NTSC.bB.asm
-	@for f in multispriteheader.asm multisprite_kernel.asm startup.asm std_routines.asm score_graphics.asm banksw.asm 2600basicfooter.asm multisprite_bankswitch.inc; do \
-		ln -sf Tools/batariBASIC/includes/$$f $$f 2>/dev/null || true; \
-	done
+	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).NTSC.preprocessed.bas > Source/Generated/$(GAME).NTSC.bB.s
 	@cp Source/Common/includes.bB .
-	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).NTSC.bB.asm | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).NTSC.tmp.s
+	bin/postprocess -i $(POSTINC) < Source/Generated/$(GAME).NTSC.bB.s | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).NTSC.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).NTSC.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).NTSC.s
 	@echo "playercolors = 1" >> Source/Generated/$(GAME).NTSC.s
@@ -402,19 +302,40 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: $(ALL_SOURCES
 	@echo "bscode_length = 32" >> Source/Generated/$(GAME).NTSC.s
 	@cat Source/Generated/$(GAME).NTSC.tmp.s >> Source/Generated/$(GAME).NTSC.s
 	@rm -f Source/Generated/$(GAME).NTSC.tmp.s
-	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
-	rm -f Source/Generated/$(GAME).NTSC.bB.asm Source/Generated/$(GAME).NTSC.s Source/Generated/$(GAME).NTSC.preprocessed.bas
+	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
+	rm -f Source/Generated/$(GAME).NTSC.bB.s Source/Generated/$(GAME).NTSC.s Source/Generated/$(GAME).NTSC.preprocessed.bas
 
-Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: $(ALL_SOURCES) Source/Generated/Characters.PAL.bas
+Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
+	Source/Banks/Bank1.bas \
+	Source/Banks/Banks.bas \
+	Source/Common/Colors.h \
+	Source/Common/Constants.bas \
+	Source/Common/Macros.bas \
+	Source/Common/Preamble.bas \
+	Source/Common/Variables.bas \
+	Source/Data/SpecialSprites.bas \
+	Source/Routines/CharacterArt.s \
+	Source/Routines/ColdStart.bas \
+	Source/Routines/ControllerDetection.bas \
+	Source/Routines/FallingAnimation.bas \
+	Source/Routines/GameLoopInit.bas \
+	Source/Routines/GameLoopMain.bas \
+	Source/Routines/HealthBarSystem.bas \
+	Source/Routines/LevelSelect.bas \
+	Source/Routines/MainLoop.bas \
+	Source/Routines/MusicSystem.bas \
+	Source/Routines/ScreenLayout.bas \
+	Source/Routines/SoundSystem.bas \
+	Source/Routines/SpriteLoader.bas \
+	Source/Routines/VisualEffects.bas \
+	$(wildcard Source/Generated/*.bas) \
+	$(wildcard Source/Generated/*.s)
 	mkdir -p Dist Source/Generated
-	cpp -P -I. Source/Platform/PAL.bas > Source/Generated/$(GAME).PAL.bas
+	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/PAL.bas > Source/Generated/$(GAME).PAL.bas
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
-	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).PAL.preprocessed.bas > Source/Generated/$(GAME).PAL.bB.asm
-	@for f in multispriteheader.asm multisprite_kernel.asm startup.asm std_routines.asm score_graphics.asm banksw.asm 2600basicfooter.asm multisprite_bankswitch.inc; do \
-		ln -sf Tools/batariBASIC/includes/$$f $$f 2>/dev/null || true; \
-	done
+	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).PAL.preprocessed.bas > Source/Generated/$(GAME).PAL.bB.s
 	@cp Source/Common/includes.bB .
-	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).PAL.bB.asm | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).PAL.tmp.s
+	bin/postprocess -i $(POSTINC) < Source/Generated/$(GAME).PAL.bB.s | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).PAL.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).PAL.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).PAL.s
 	@echo "playercolors = 1" >> Source/Generated/$(GAME).PAL.s
@@ -433,16 +354,37 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: $(ALL_SOURCES) S
 	bin/dasm Source/Generated/$(GAME).PAL.s -ITools/batariBASIC/includes -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
 	rm -f Source/Generated/$(GAME).PAL.bB.asm Source/Generated/$(GAME).PAL.s Source/Generated/$(GAME).PAL.preprocessed.bas
 
-Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: $(ALL_SOURCES) Source/Generated/Characters.SECAM.bas
+Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
+	Source/Banks/Bank1.bas \
+	Source/Banks/Banks.bas \
+	Source/Common/Colors.h \
+	Source/Common/Constants.bas \
+	Source/Common/Macros.bas \
+	Source/Common/Preamble.bas \
+	Source/Common/Variables.bas \
+	Source/Data/SpecialSprites.bas \
+	Source/Routines/CharacterArt.s \
+	Source/Routines/ColdStart.bas \
+	Source/Routines/ControllerDetection.bas \
+	Source/Routines/FallingAnimation.bas \
+	Source/Routines/GameLoopInit.bas \
+	Source/Routines/GameLoopMain.bas \
+	Source/Routines/HealthBarSystem.bas \
+	Source/Routines/LevelSelect.bas \
+	Source/Routines/MainLoop.bas \
+	Source/Routines/MusicSystem.bas \
+	Source/Routines/ScreenLayout.bas \
+	Source/Routines/SoundSystem.bas \
+	Source/Routines/SpriteLoader.bas \
+	Source/Routines/VisualEffects.bas \
+	$(wildcard Source/Generated/*.bas) \
+	$(wildcard Source/Generated/*.s)
 	mkdir -p Dist Source/Generated
-	cpp -P -I. Source/Platform/SECAM.bas > Source/Generated/$(GAME).SECAM.bas
+	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/SECAM.bas > Source/Generated/$(GAME).SECAM.bas
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
 	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).SECAM.preprocessed.bas > Source/Generated/$(GAME).SECAM.bB.asm
-	@for f in multispriteheader.asm multisprite_kernel.asm startup.asm std_routines.asm score_graphics.asm banksw.asm 2600basicfooter.asm multisprite_bankswitch.inc; do \
-		ln -sf Tools/batariBASIC/includes/$$f $$f 2>/dev/null || true; \
-	done
 	@cp Source/Common/includes.bB .
-	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).SECAM.bB.asm | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).SECAM.tmp.s
+	bin/postprocess -i $(POSTINC) < Source/Generated/$(GAME).SECAM.bB.asm | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).SECAM.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).SECAM.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).SECAM.s
 	@echo "playercolors = 1" >> Source/Generated/$(GAME).SECAM.s
@@ -467,10 +409,14 @@ emu: $(ROM)
 
 # Clean all generated files
 clean:
-	rm -rf Dist/*.a26
+	rm -rf Dist/*
 	rm -rf Object/*
-	rm -f Source/Generated/*.s
-	rm -f bB.s *.bin *.lst *.sym *.map
+	rm -f Source/Generated/*
+	rm -f Source/Art/*.png
+	rm -f bB.s *.bin *.lst *.sym *.map *.pro
+	rm -f Source/Generated/$(GAME).*.bas Source/Generated/$(GAME).*.s
+	rm -f includes.bB
+	cd Tools/batariBASIC && git clean --force
 
 # Install GIMP export script
 gimp-export:
@@ -493,6 +439,8 @@ help:
 	@echo "  clean        - Remove generated ROM files"
 	@echo "  emu          - Build and run in Stella emulator"
 	@echo "  gimp-export  - Install GIMP export script"
+	@echo "  ready        - Setup development environment and dependencies"
+	@echo "  nowready     - Check if development environment is ready"
 	@echo "  help         - Show this help message"
 	@echo ""
 	@echo "Output files:"
@@ -528,3 +476,22 @@ Dist/$(GAME)-Manual.html: Manual/$(GAME).texi
 	mkdir -p Dist Object
 	cd Object && makeinfo --html --no-split --output=../Dist/$(GAME)-Manual.html ../Manual/$(GAME).texi
 
+# Ready system - setup development environment
+nowready: $(READYFILE)
+
+$(READYFILE):
+	$(MAKE) ready
+
+ready: gimp-export bin/skyline-tool
+	@echo "Setting up ChaosFight development environment..."
+	# Install required system packages (Fedora-based)
+	@echo "Checking system dependencies..."
+	@which sbcl > /dev/null || echo "MISSING: sbcl (install with: sudo dnf install sbcl)"
+	@which gimp > /dev/null || echo "MISSING: gimp (install with: sudo dnf install gimp)"
+	@which texi2pdf > /dev/null || echo "MISSING: texlive (install with: sudo dnf install texlive texinfo)"
+	@which makeinfo > /dev/null || echo "MISSING: texinfo (install with: sudo dnf install texinfo)"
+	# Initialize git submodules for SkylineTool
+	git submodule update --init --recursive
+	# Mark ready
+	@echo "Development environment ready for ChaosFight build"
+	touch $(READYFILE)

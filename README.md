@@ -10,13 +10,13 @@ A sophisticated 4-player fighting game for the Atari 2600, featuring 16 unique c
 - **Advanced Physics** - Gravity, momentum, fall damage with character-specific mechanics
 - **Enhanced Controller Support** - CX-40, Genesis 3-button, Joy2B+, Quadtari
 - **Collision Detection** - AABB missiles, AOE attacks, playfield boundaries
-- **Special Abilities** - Flight (Magical Faerie), immunity (Bernie/RoboTito), reduced gravity (Harpy/Dragonet)
+- **Special Abilities** - Flight (Frooty), immunity (Bernie/RoboTito), reduced gravity (Harpy/Dragonet)
 - **Memory Optimization** - SuperChip RAM with 96 variables during gameplay
 - **Professional Architecture** - Modular design, data-driven character system
 
 ### 🎮 Characters & Combat
-**Ranged Fighters** (projectile attacks): Bernie, CurlingSweeper, Dragonet, EXOPilot, MagicalFaerie, Ursulo  
-**Melee Fighters** (AOE attacks): FatTony, GrizzardHandler, Harpy, KnightGuy, MysteryMan, NinjishGuy, PorkChop, RadishGoblin, RoboTito, VegDog
+**Ranged Fighters** (projectile attacks): Bernie, CurlingSweeper, Dragonet, EXOPilot, FatTony, Frooty, Megax, Ursulo  
+**Melée Fighters** (AOE attacks): Harpy, KnightGuy, Nefertem, NinjishGuy, PorkChop, RadishGoblin, RoboTito, VegDog
 
 **Special Mechanics**:
 - **Weight Classes**: Light (10-15) to Heavy (30-35) affecting jump height and fall damage
@@ -131,7 +131,50 @@ ControllerDetection.bas - Multi-controller auto-detection
 ✅ **Complete**: Game logic, physics, controllers, documentation  
 ❌ **Blocking**: Character sprite generation, level graphics, SkylineTool compilation
 
-See `STATUS.md` for detailed implementation status and remaining work.
+### Development Environment Setup
+
+#### Required Tools
+```bash
+# Core development (Fedora/RHEL)
+sudo dnf install gcc make gimp sbcl texlive texinfo
+
+# Common Lisp (for SkylineTool)  
+curl -O https://beta.quicklisp.org/quicklisp.lisp
+sbcl --load quicklisp.lisp
+```
+
+#### Asset Pipeline Dependencies
+- **GIMP** with batch processing capability for XCF→PNG conversion
+- **SkylineTool** (Common Lisp)
+- **batariBASIC** compiler (included)
+
+### Current Issues
+See GitHub Issues for detailed tracking of remaining work:
+- **Critical**: Asset compilation pipeline (#26, #15)
+- **Missing Features**: Battle arenas (#31), character mechanics (#29)
+- **Enhancements**: Performance optimization (#40), cross-platform support (#39)
+
+---
+
+**ChaosFight** - Advanced 4-player combat for Atari 2600  
+© 2025 Interworldly Adventuring, LLC
+
+# Common Lisp (for SkylineTool)  
+```
+curl -O https://beta.quicklisp.org/quicklisp.lisp
+sbcl --load quicklisp.lisp
+```
+
+#### Asset Pipeline Dependencies
+- **GIMP** with batch processing capability for XCF→PNG conversion
+- **SkylineTool** (Common Lisp + 20+ libraries)
+- **batariBASIC** compiler (included)
+
+### Current Issues
+See GitHub Issues for detailed tracking of remaining work:
+- **Critical**: Asset compilation pipeline (#26, #15)
+- **Missing Features**: Battle arenas (#31), character mechanics (#29)
+- **Enhancements**: Performance optimization (#40), cross-platform support (#39)
 
 ---
 

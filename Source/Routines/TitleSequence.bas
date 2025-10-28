@@ -27,16 +27,12 @@ ColdStartSequence
           
           return
 
-rem =================================================================
-rem HELPER SUBROUTINES
-rem =================================================================
-
 LoadPublisherLogo
           rem Load publisher logo from generated playfield data
           gosub LoadPublisherPlayfield
           return
 
-StartMusic
+StartTitleMusic
           rem Initialize music system for title song
           temp1 = MusicTitle
           gosub StartMusic
@@ -49,8 +45,8 @@ StartMusic
           rem Wait for jingle + 0.5s or button press
 
 ShowPublisherPreamble
-          rem Set playfield resolution for preamble (high resolution)
-          pfres = 12
+          rem Set screen layout for preamble (32×32 admin layout)  
+          gosub SetAdminScreenLayout
           
           rem Clear screen
           pfclear
@@ -75,7 +71,10 @@ PublisherPreambleLoop
           
           rem Check for button press on any controller
           if joy0fire || joy1fire then goto ExitPublisherPreamble
-          if QuadtariDetected && (joy2fire || joy3fire) then goto ExitPublisherPreamble
+          if !(ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck1
+          if !INPT0{7} then goto ExitPublisherPreamble
+          if !INPT2{7} then goto ExitPublisherPreamble
+SkipQuadtariCheck1
           
           rem Wait for music + 30 frames (0.5s)
           if temp1 < 150 then goto PublisherPreambleLoop
@@ -87,16 +86,12 @@ ExitPublisherPreamble
           AUDV1 = 0
           return
 
-rem =================================================================
-rem HELPER SUBROUTINES
-rem =================================================================
-
 LoadPublisherLogo
           rem Load publisher logo from generated playfield data
           gosub LoadPublisherPlayfield
           return
 
-StartMusic
+StartTitleMusic
           rem Initialize music system for title song
           temp1 = MusicTitle
           gosub StartMusic
@@ -117,14 +112,14 @@ ShowAuthorPreamble
           
           rem Draw author logo
           rem Load character art from generated sprite data
-          pfpixel 45 20 on
-          pfpixel 46 20 on
-          pfpixel 47 20 on
-          pfpixel 45 21 on
-          pfpixel 47 21 on
-          pfpixel 45 22 on
-          pfpixel 46 22 on
-          pfpixel 47 22 on
+          rem pfpixel 45 20 on
+          rem pfpixel 46 20 on
+          rem pfpixel 47 20 on
+          rem pfpixel 45 21 on
+          rem pfpixel 47 21 on
+          rem pfpixel 45 22 on
+          rem pfpixel 46 22 on
+          rem pfpixel 47 22 on
           
           rem Start Interworldly music
           MusicPlaying = 1
@@ -139,7 +134,10 @@ AuthorPreambleLoop
           
           rem Check for button press
           if joy0fire || joy1fire then goto ExitAuthorPreamble
-          if QuadtariDetected && (joy2fire || joy3fire) then goto ExitAuthorPreamble
+          if !(ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck2
+          if !INPT0{7} then goto ExitAuthorPreamble
+          if !INPT2{7} then goto ExitAuthorPreamble
+SkipQuadtariCheck2
           
           if temp1 < 150 then goto AuthorPreambleLoop
           
@@ -149,16 +147,12 @@ ExitAuthorPreamble
           AUDV1 = 0
           return
 
-rem =================================================================
-rem HELPER SUBROUTINES
-rem =================================================================
-
 LoadPublisherLogo
           rem Load publisher logo from generated playfield data
           gosub LoadPublisherPlayfield
           return
 
-StartMusic
+StartTitleMusic
           rem Initialize music system for title song
           temp1 = MusicTitle
           gosub StartMusic
@@ -171,17 +165,17 @@ StartMusic
           rem Wait for button press, then re-detect controllers
 
 ShowTitleScreen
-          rem Set playfield resolution for title
-          pfres = 12
+          rem Set screen layout for title screen (32×32 admin layout)
+          gosub SetAdminScreenLayout
           
           rem Clear screen
           pfclear
           
           rem Draw title
           rem Load title art from generated playfield data
-          pfpixel 50 15 on
-          pfpixel 51 15 on
-          pfpixel 52 15 on
+          rem pfpixel 50 15 on
+          rem pfpixel 51 15 on
+          rem pfpixel 52 15 on
           
           rem Start Chaotica music (loops)
           MusicPlaying = 1
@@ -199,19 +193,24 @@ TitleScreenLoop
           TitleTimer = TitleTimer + 1
           
           rem Start character parade after 10 seconds (600 frames)
-          if TitleTimer > 600 && !ParadeActive then
+          if TitleTimer <= 600 then goto CheckParadeActive
+          if ParadeActive then goto CheckParadeActive
             ParadeActive = 1
             ParadeDelay = 0
+CheckParadeActive
           endif
           
           rem Handle character parade
-          if ParadeActive then
+          if !ParadeActive then goto SkipParade
             gosub HandleCharacterParade
-          endif
+SkipParade
           
           rem Check for button press on any controller
           if joy0fire || joy1fire then goto ExitTitleScreen
-          if QuadtariDetected && (joy2fire || joy3fire) then goto ExitTitleScreen
+          if !(ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck3
+          if !INPT0{7} then goto ExitTitleScreen
+          if !INPT2{7} then goto ExitTitleScreen
+SkipQuadtariCheck3
           
           goto TitleScreenLoop
           
@@ -235,7 +234,7 @@ LoadPublisherLogo
           gosub LoadPublisherPlayfield
           return
 
-StartMusic
+StartTitleMusic
           rem Initialize music system for title song
           temp1 = MusicTitle
           gosub StartMusic
@@ -249,28 +248,26 @@ StartMusic
 
 HandleCharacterParade
           rem Check if in delay between characters
-          if ParadeDelay > 0 then
+          if ParadeDelay = 0 then goto CheckParadeX
             ParadeDelay = ParadeDelay - 1
             return
+CheckParadeX
 
-rem =================================================================
-rem HELPER SUBROUTINES
-rem =================================================================
 
 LoadPublisherLogo
           rem Load publisher logo from generated playfield data
           gosub LoadPublisherPlayfield
           return
 
-StartMusic
+StartTitleMusic
           rem Initialize music system for title song
           temp1 = MusicTitle
           gosub StartMusic
           return
           endif
           
-          rem Move character across screen
-          if ParadeX < 160 then
+          rem Move character across screen (usable area is 16-144)
+          if ParadeX >= 144 then goto ParadeComplete
             ParadeX = ParadeX + 2
             
             rem Display character at bottom of screen
@@ -281,16 +278,13 @@ StartMusic
             
             return
 
-rem =================================================================
-rem HELPER SUBROUTINES
-rem =================================================================
 
 LoadPublisherLogo
           rem Load publisher logo from generated playfield data
           gosub LoadPublisherPlayfield
           return
 
-StartMusic
+StartTitleMusic
           rem Initialize music system for title song
           temp1 = MusicTitle
           gosub StartMusic
@@ -298,7 +292,8 @@ StartMusic
           endif
           
           rem Character has left screen, start delay
-          ParadeDelay = 60  : rem 1 second pause
+          ParadeDelay = 60 
+          rem 1 second pause
           ENAM0 = 0
           
           rem Select next random character

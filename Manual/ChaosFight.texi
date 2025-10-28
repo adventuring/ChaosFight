@@ -203,7 +203,7 @@ mappings vary by controller type.
 @end itemize
 
 @item Fire Button
-Attack with character's weapon (melee strike or ranged projectile)
+Attack with character's weapon (melée strike or ranged projectile)
 @end table
 
 Plug Player 1 into left port, Player 2 into right port.
@@ -274,7 +274,7 @@ Move the stick or D-pad:
 @item Button I (INPT4/5)
 @strong{Attack} - Standard fire button
 @itemize @bullet
-@item Melee characters: Close-range strike
+@item Melée characters: Close-range strike
 @item Ranged characters: Fire projectile
 @item Lock in character selection
 @end itemize
@@ -564,7 +564,7 @@ Move your character to the right. If facing left, character will turn around.
 Make your character jump. Jump height varies by character weight:
 @itemize @bullet
 @item Light characters (Ninjish Guy, Radish Goblin): High jumps
-@item Medium characters (Pork Chop, Grizzard Handler): Normal jumps
+@item Medium characters (Pork Chop, Megax): Normal jumps
 @item Heavy characters (Ursulo, Fat Tony): Lower jumps
 @item Special: Some characters have unique jump abilities (see @ref{Characters})
 @end itemize
@@ -574,14 +574,16 @@ Enter guard stance. While guarding:
 @itemize @bullet
 @item You take NO damage from attacks
 @item You cannot move or attack
-@item Guard lasts maximum 1 second (60 frames)
+@item Guard lasts maximum 1 second
+@item Guard cannot be used again for 1 second after previous use
+@item You can still be picked up, thrown, and knocked back while guarding
 @item Character flashes to indicate guard is active
 @end itemize
 
 @item FIRE BUTTON
 Perform your character's attack:
 @itemize @bullet
-@item @strong{Melee characters:} Close-range punch/slash in facing direction
+@item @strong{Melée characters:} Close-range punch/slash in facing direction
 @item @strong{Ranged characters:} Fire projectile in facing direction
 @end itemize
 @end table
@@ -622,29 +624,18 @@ ChaosFight features realistic physics:
 @end itemize
 
 @item
-@strong{Player Collision:} Characters can walk through each other but are
-slightly pushed apart to prevent overlap
+@strong{Player Collision:} Characters can walk through each other
 @end itemize
 
 @subsection Attack System
 
-@display
-@group
-    MELEE ATTACK              RANGED ATTACK
-
-       [==]                      [o]-->
-      /    \                    /    \
-     PLAYER  -->  <HITBOX>     PLAYER   <MISSILE>
-@end group
-@end display
-
 @table @strong
-@item Melee Attacks
+@item Melée Attacks
 @itemize @bullet
 @item Hit enemies directly in front of character
-@item Range: 16 pixels
+@item Range: varies by character
 @item Instant hit detection
-@item Cannot be blocked by obstacles
+@item Blocked by playfield objects (walls, platforms, etc.)
 @item @strong{Special:} Bernie attacks both directions simultaneously!
 @end itemize
 
@@ -652,8 +643,7 @@ slightly pushed apart to prevent overlap
 @itemize @bullet
 @item Fire projectile across screen
 @item Two types: @strong{Arrowshot} (straight) or @strong{Ballistic} (parabolic arc)
-@item May disappear on impact or pass through
-@item Can be blocked by walls (character-dependent)
+@item May disappear on impact or pass through playfield objects
 @item Projectile size varies by character
 @end itemize
 @end table
@@ -692,213 +682,44 @@ Each character has unique properties affecting gameplay:
 @item Weight
 Affects jump height, movement speed, and knockback resistance
 @item Attack Type
-Melee (close range) or Ranged (projectile)
+Melée (close range) or Ranged (projectile)
 @item Special Abilities
 Unique movement or attack properties
 @end table
 
 @section Character Roster
 
-@subsection Bernie
-@display
-@group
-    Weight: Very Heavy
-    Attack: Ranged (1×1 pixel, arrowshot) + Melee (BOTH DIRECTIONS!)
-    Special: No jumping; wraps from bottom to top of screen; fall damage immunity
-@end group
-@end display
+@include Bernie.texi
 
-Bernie cannot jump, but he can fall off the bottom of the screen and reappear
-at the top! His unique attack hits both in front AND behind simultaneously 
-(dual-direction AOE), making him dangerous in crowds. His small ranged projectile
-(1×1 pixel) travels horizontally. Bernie's tough constitution grants complete
-immunity to fall damage.
+@include CurlingSweeper.texi
 
-@subsection Curling Sweeper
-@display
-@group
-    Weight: Medium
-    Attack: Ranged (from feet, 4×2 pixels, ballistic)
-    Special: Projectile comes from character's feet
-@end group
-@end display
+@include Dragonet.texi
 
-The Curling Sweeper fires a wide projectile (4 pixels wide, 2 pixels tall)
-from ground level, sliding across the floor. Great for hitting low targets!
+@include EXOPilot.texi
 
-@subsection Dragonet
-@display
-@group
-    Weight: Medium-Light
-    Attack: Ranged (2×2 pixels, ballistic arc)
-    Special: Fires projectiles in a parabolic arc
-@end group
-@end display
+@include FatTony.texi
 
-Dragonet fires a small projectile (2×2 pixels) that travels in a ballistic arc,
-making it excellent for hitting enemies at different heights!
+@include Megax.texi
 
-@subsection EXO Pilot
-@display
-@group
-    Weight: Light
-    Attack: Ranged (long/wide bullet, arrowshot)
-    Special: High jumps, fast horizontal projectile
-@end group
-@end display
+@include Harpy.texi
 
-The EXO Pilot fires a long, thin missile that travels horizontally across
-the entire screen. Excellent for long-range combat!
+@include KnightGuy.texi
 
-@subsection Fat Tony
-@display
-@group
-    Weight: Heavy
-    Attack: Melee
-    Special: Standard heavy fighter
-@end group
-@end display
+@include Frooty.texi
 
-@subsection Grizzard Handler
-@display
-@group
-    Weight: Medium
-    Attack: Melee
-    Special: Standard medium fighter
-@end group
-@end display
+@include Nefertem.texi
 
-@subsection Harpy
-@display
-@group
-    Weight: Light
-    Attack: Melee (swoop attack)
-    Special: Can "fly" by repeatedly pressing UP
-@end group
-@end display
+@include NinjishGuy.texi
 
-The Harpy can maintain flight by repeatedly jumping! Her attack causes her
-to swoop down diagonally while performing a melee strike.
+@include PorkChop.texi
 
-@subsection Knight Guy
-@display
-@group
-    Weight: Very Heavy
-    Attack: Ranged (3×3 pixels, arrowshot)
-    Special: Armored fighter with powerful projectile, longest melee duration (6 frames)
-@end group
-@end display
+@include RadishGoblin.texi
 
-Knight Guy combines heavy armor with a powerful ranged attack. His projectile
-is larger than most (3×3 pixels) and travels in a straight line, making him
-a formidable opponent at any range!
+@include RoboTito.texi
 
-@subsection Magical Faerie
-@display
-@group
-    Weight: Very Light
-    Attack: Ranged (small sparkle, ballistic)
-    Special: FREE FLIGHT - use UP/DOWN to move vertically, no guard action
-@end group
-@end display
+@include Ursulo.texi
 
-The Magical Faerie can fly freely up and down using the joystick! However,
-she cannot guard (pressing DOWN makes her fly down instead). Her ranged
-attack creates magical sparkles.
-
-@subsection Mystery Man
-@display
-@group
-    Weight: Medium
-    Attack: To Be Determined
-    Special: Reserved for future expansion
-@end group
-@end display
-
-@subsection Ninjish Guy
-@display
-@group
-    Weight: Very Light
-    Attack: Melee
-    Special: Highest jumps, fastest movement, 50% fall damage reduction
-@end group
-@end display
-
-The Ninjish Guy is one of the lightest characters, giving him incredible
-mobility and the highest jump in the game. His ninja training also grants
-him 50% reduction to fall damage, making him excellent at aerial combat!
-
-@subsection Pork Chop
-@display
-@group
-    Weight: Heavy
-    Attack: Melee
-    Special: Standard heavy melee fighter
-@end group
-@end display
-
-@subsection Radish Goblin
-@display
-@group
-    Weight: Very Light
-    Attack: Melee
-    Special: Highest jumps, fastest movement, lowest health
-@end group
-@end display
-
-The Radish Goblin is the lightest character, giving him incredible mobility
-but making him more vulnerable to knockback.
-
-@subsection Robo Tito
-@display
-@group
-    Weight: Very Heavy
-    Attack: Melee
-    Special: No jumping! Stretches vertically to ceiling; fall damage immunity
-@end group
-@end display
-
-Due to a programming error in his system, Robo Tito is allergic to scary things.
-To his misfortune, he is trapped in a place infested with scary things (zombies,
-ghosts, bats, skulls), so he has to look for an exit, avoiding touching those
-spooky items.
-
-Robo Tito is a jumpless platformer character who can't jump, but he can stretch
-to reach platforms and hang from them. Use your joystick controller to move
-Tito left and right along the floor. You can press UP on your controller to
-stretch Tito up to the ceiling, which he will then grab and hang on to. You can
-then move Tito left and right along the ceiling. To get back down to the floor,
-press DOWN on your joystick until Tito reaches the floor.
-
-In ChaosFight, Robo Tito's stretching ability works the same way. His
-``stretched'' form consists of not clearing the Player graphics (sprite) so its
-last scanline repeats to the bottom of where the robot is ``really'' standing,
-and he is vulnerable the entire length to collisions. His robotic construction
-grants complete immunity to fall damage, making him dangerous when dropping
-from heights.
-
-@subsection Ursulo
-@display
-@group
-    Weight: Heavy
-    Attack: Ranged (2×2 pixels, ballistic arc)
-    Special: Strongest throw, hardest to knock back
-@end group
-@end display
-
-Ursulo is one of the heaviest characters, making him extremely resistant to 
-knockback but also giving him a lower jump height. His powerful ranged attack
-fires a 2×2 pixel projectile with the highest arc (velocity 7 horizontal, -6
-vertical), making it excellent for hitting enemies on platforms!
-
-@subsection Veg Dog
-@display
-@group
-    Weight: Light
-    Attack: Melee
-    Special: Standard light melee fighter
-@end group
-@end display
+@include VegDog.texi
 
 @page
 
@@ -915,16 +736,19 @@ vertical), making it excellent for hitting enemies on platforms!
 
 @display
 @group
-    HEALTH BARS (Top of Screen)
+    HEALTH BARS (Top and bottom of Screen)
 
-    ████████████████████  Player 1 (Blue)
-    ████████████████      Player 2 (Red)
-    ██████████████████    Player 3 (Yellow)
-    ████████████          Player 4 (Green)
+     Top of screen:
+    ████████████████████  Player 1 (Blue; left)
+    ████████████████      Player 2 (Red; right)
+
+     Bottom of screen:
+    ██████████████████    Player 3 (Yellow; left)
+    ████████████          Player 4 (Green; right)
 @end group
 @end display
 
-Each player's health is displayed as a coloured bar at the top of the screen:
+Each player's health is displayed as a coloured bar at the top or bottom of the screen:
 
 @itemize @bullet
 @item
@@ -942,23 +766,23 @@ Health bars update every 4 frames (1 player per frame for performance)
 Damage varies by character and attack type:
 
 @table @strong
-@item Light Melee (10-15 damage)
+@item Light Melée (10-15 damage)
 Radish Goblin, Veg Dog, Ninjish Guy
 
-@item Medium Melee (15-20 damage)
-Pork Chop, Dragonet, Grizzard Handler, Harpy
+@item Medium Melée (15-20 damage)
+Pork Chop, Dragonet, Harpy
 
-@item Heavy Melee (20-25 damage)
-Knight Guy, Fat Tony, Ursulo, Bernie
+@item Heavy Melée (20-25 damage)
+Knight Guy, Bernie
 
 @item Small Ranged (8-12 damage)
-Ninjish Guy, Magical Faerie
+Ninjish Guy, Frooty
 
 @item Medium Ranged (12-18 damage)
-Robo Tito, Curling Sweeper
+Robo Tito, Curling Sweeper, Fat Tony, Megax
 
 @item Large Ranged (15-22 damage)
-EXO Pilot
+EXO Pilot, Ursulo
 @end table
 
 @section Victory Conditions
@@ -981,7 +805,7 @@ When your health reaches 0, you are eliminated
 @item
 Your sprite disappears from the playfield
 @item
-In 4-player mode, battle continues until only one remains
+Battle continues until only one remains
 @item
 Winner is displayed with their player number and character
 @end itemize
@@ -1281,7 +1105,7 @@ Don't hold guard too long - you can't counterattack!
 
 @itemize @bullet
 @item
-Keep distance from melee fighters
+Keep distance from melée fighters
 @item
 Close the gap against ranged fighters
 @item
@@ -1294,7 +1118,7 @@ Retreat when health is low
 
 @subsection Character Matchups
 
-@strong{Playing Melee vs Ranged:}
+@strong{Playing Melée vs Ranged:}
 @itemize @bullet
 @item
 Stay mobile - don't be a stationary target
@@ -1306,7 +1130,7 @@ Time your jumps to avoid shots
 Rush in after opponent fires (during cooldown)
 @end itemize
 
-@strong{Playing Ranged vs Melee:}
+@strong{Playing Ranged vs Melée:}
 @itemize @bullet
 @item
 Maintain maximum distance
@@ -1363,7 +1187,7 @@ High ground advantage for ranged attacks
 @item
 Jump between platforms to escape
 @item
-Melee fighters: attack from below/above
+Melée fighters: attack from below/above
 @end itemize
 
 @strong{Pit:}
@@ -1416,10 +1240,12 @@ ground attacks!
 
 @item Harpy
 Maintain flight by rapidly tapping UP. Swoop down for devastating diving attacks!
+Your labyrinth-tested combat skills make you deadly in aerial manoeuvres.
 
-@item Magical Faerie
+@item Frooty
 Your free flight makes you incredibly mobile, but remember you can't guard!
-Stay out of melee range.
+Stay out of melée range. Use your lollipop weapon's magical sparkles for 
+ranged combat while maintaining aerial superiority!
 
 @item Curling Sweeper
 Your low projectile is hard to jump over. Fire and immediately jump yourself
@@ -1571,7 +1397,7 @@ on NTSC, ~1630 cycles on PAL).
 @item Sound Effects
 @itemize @bullet
 @item "Chirp" for character selection
-@item Attack sounds (melee and ranged)
+@item Attack sounds (melée and ranged)
 @item Impact sounds
 @item Victory fanfare
 @end itemize
@@ -1790,7 +1616,7 @@ Published by AtariAge
 @url{https://atariage.com}
 
 Developed by Interworldly Adventuring, LLC
-Portland, Oregon  
+Portland, Oregon
 @url{https://interworldly.com}
 @end group
 @end display

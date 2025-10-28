@@ -8,26 +8,26 @@
           rem   - Vertical velocity at landing
           rem   - Character weight (heavier = shorter safe fall distance)
           rem   - Character-specific immunities and reductions
-          rem
+
           rem FALL DAMAGE RULES:
           rem   - Safe fall distance inversely proportional to weight
           rem   - Average-weight character: ~64 pixels (1/3 of 192 screen height)
           rem   - Fall damage proportional to distance beyond safe threshold
           rem   - Triggers damage recovery animation and color shift (darker)
-          rem
+
           rem CHARACTER EXCEPTIONS:
           rem   - Bernie (0): NO fall damage (immune)
           rem   - Robo Tito (13): NO fall damage (immune)
-          rem   - Magical Faerie (8): NO gravity (no falling)
+          rem   - Frooty (8): NO gravity (no falling)
           rem   - Ninjish Guy (10): 1/2 fall damage (reduced)
           rem   - Harpy (6): Reduced gravity (1/2 rate) when falling
           rem   - Dragonet (2): Reduced gravity (1/2 rate) when falling
-          rem
+
           rem GRAVITY CONSTANTS:
           rem   - Normal gravity: 2 pixels/frame acceleration
           rem   - Reduced gravity (Harpy/Dragonet): 1 pixel/frame
           rem   - Terminal velocity: 8 pixels/frame (cap on fall speed)
-          rem
+
           rem VARIABLES USED:
           rem   - PlayerY[0-3]: Vertical position
           rem   - PlayerMomentumY (temporary): Vertical velocity
@@ -46,11 +46,11 @@
           rem =================================================================
           rem Called when a player lands on the ground or platform.
           rem Calculates fall damage based on downward velocity at impact.
-          rem
+
           rem INPUT:
           rem   temp1 = player index (0-3)
           rem   temp2 = vertical velocity at landing (positive = downward)
-          rem
+
           rem PROCESS:
           rem   1. Get character type and weight
           rem   2. Check for fall damage immunity
@@ -62,14 +62,19 @@ CheckFallDamage
           temp5 = PlayerChar[temp1]
           
           rem Check for fall damage immunity
-          if temp5 = 0 then return  : rem Bernie: immune
-          if temp5 = 13 then return : rem Robo Tito: immune
-          if temp5 = 8 then return  : rem Magical Faerie: no gravity, no falling
+          if temp5 = 0 then return 
+          rem Bernie: immune
+          if temp5 = 13 then return
+          rem Robo Tito: immune
+          if temp5 = 8 then return 
+          rem Frooty: no gravity, no falling
           
           rem Get character weight from data table
-          temp1 = temp5  : rem Character type as index
+          temp1 = temp5 
+          rem Character type as index
           gosub GetCharacterWeight
-          temp6 = temp2  : rem Store weight
+          temp6 = temp2 
+          rem Store weight
           
           rem Calculate safe fall velocity threshold
           rem Formula: safe_velocity = base_safe_velocity * (average_weight / character_weight)
@@ -79,10 +84,12 @@ CheckFallDamage
           rem Average (20): 120/20 = 6
           rem Light (10): 120/10 = 12 (can fall farther)
           rem Heavy (30): 120/30 = 4 (takes damage sooner)
-          temp3 = 120 / temp6  : rem Safe fall velocity threshold
+          temp3 = 120 / temp6 
+          rem Safe fall velocity threshold
           
           rem Check if fall velocity exceeds safe threshold
-          if temp2 <= temp3 then return  : rem Safe landing, no damage
+          if temp2 <= temp3 then return 
+          rem Safe landing, no damage
           
           rem Calculate fall damage
           rem Damage = (velocity - safe_velocity) * damage_multiplier
@@ -91,14 +98,16 @@ CheckFallDamage
           temp4 = temp4 * 2
           
           rem Apply damage reduction for Ninjish Guy
-          if temp5 = 10 then temp4 = temp4 / 2  : rem Ninjish Guy: 1/2 damage
+          if temp5 = 10 then temp4 = temp4 / 2 
+          rem Ninjish Guy: 1/2 damage
           
           rem Cap maximum fall damage at 50
           if temp4 > 50 then temp4 = 50
           
-          rem Apply fall damage
+          rem Apply fall damage (byte-safe clamp)
+          temp6 = PlayerHealth[temp1]
           PlayerHealth[temp1] = PlayerHealth[temp1] - temp4
-          if PlayerHealth[temp1] < 0 then PlayerHealth[temp1] = 0
+          if PlayerHealth[temp1] > temp6 then PlayerHealth[temp1] = 0
           
           rem Set recovery frames (proportional to damage, min 10, max 30)
           temp5 = temp4 / 2
@@ -110,8 +119,10 @@ CheckFallDamage
           rem This is animation state 9 in the character animation sequences
           rem PlayerState bits: [7:animation][4:attacking][2:jumping][1:guarding][0:facing]
           rem Set bits 7-5 to 9 (recovering animation)
-          temp6 = PlayerState[temp1] & %00011111  : rem Keep lower 5 bits
-          temp6 = temp6 | %10010000  : rem Set animation to 9 (1001 in bits 7-4)
+          temp6 = PlayerState[temp1] & %00011111 
+          rem Keep lower 5 bits
+          temp6 = temp6 | %10010000 
+          rem Set animation to 9 (1001 in bits 7-4)
           PlayerState[temp1] = temp6
           
           rem Play fall damage sound effect
@@ -128,11 +139,11 @@ CheckFallDamage
           rem =================================================================
           rem Applies gravity acceleration to a player each frame.
           rem Handles character-specific gravity rates and terminal velocity.
-          rem
+
           rem INPUT:
           rem   temp1 = player index (0-3)
           rem   temp2 = current vertical momentum (positive = down)
-          rem
+
           rem OUTPUT:
           rem   temp2 = updated vertical momentum
 ApplyGravity
@@ -140,13 +151,17 @@ ApplyGravity
           temp5 = PlayerChar[temp1]
           
           rem Check for no-gravity characters
-          if temp5 = 8 then return  : rem Magical Faerie: no gravity
+          if temp5 = 8 then return 
+          rem Frooty: no gravity
           
           rem Check for reduced gravity characters
           rem Harpy (6) and Dragonet (2): 1/2 gravity when falling
-          temp6 = 2  : rem Default gravity: 2 pixels/frame²
-          if temp5 = 6 then temp6 = 1  : rem Harpy: reduced gravity
-          if temp5 = 2 then temp6 = 1  : rem Dragonet: reduced gravity
+          temp6 = 2 
+          rem Default gravity: 2 pixels/frame²
+          if temp5 = 6 then temp6 = 1 
+          rem Harpy: reduced gravity
+          if temp5 = 2 then temp6 = 1 
+          rem Dragonet: reduced gravity
           
           rem Apply gravity acceleration
           temp2 = temp2 + temp6
@@ -161,11 +176,11 @@ ApplyGravity
           rem =================================================================
           rem Checks if player has landed on ground or platform.
           rem Calls CheckFallDamage if landing detected.
-          rem
+
           rem INPUT:
           rem   temp1 = player index (0-3)
           rem   temp2 = vertical momentum before position update
-          rem
+
           rem This routine should be called AFTER vertical position update
           rem but BEFORE momentum is cleared, so we can detect the landing
           rem velocity for fall damage calculation.
@@ -175,23 +190,23 @@ CheckGroundCollision
           
           rem Check if player is at or below ground level
           rem Ground level is at Y = 176 (bottom of playfield, leaving room for sprite)
-          if temp3 >= 176 then
-                    rem Player hit ground
-                    rem Clamp position to ground
-                    PlayerY[temp1] = 176
-                    
-                    rem Check fall damage if moving downward
-                    if temp2 > 0 then
-                              rem temp2 contains downward velocity
-                              gosub CheckFallDamage
-                    endif
-                    
-                    rem Stop vertical momentum
-                    rem Note: This assumes vertical momentum is being tracked
-                    rem In current implementation, this might need integration
-                    rem with PlayerPhysics.bas
-                    return
-          endif
+if temp3 >= 176 then 
+          rem Player hit ground
+          rem Clamp position to ground
+          PlayerY[temp1] = 176
+          
+          rem Check fall damage if moving downward
+if temp2 > 0 then 
+          rem temp2 contains downward velocity
+          gosub CheckFallDamage
+          
+          
+          rem Stop vertical momentum
+          rem Note: This assumes vertical momentum is being tracked
+          rem In current implementation, this might need integration
+          rem with PlayerPhysics.bas
+          return
+          
           
           rem Check collision with platforms/playfield
           rem This is handled by the main collision detection system
@@ -206,16 +221,17 @@ CheckGroundCollision
           rem =================================================================
           rem Magical Faerie has no gravity and can move up/down freely.
           rem Down button moves down (no guard action).
-          rem
+
           rem INPUT:
           rem   temp1 = player index (0-3, but should only be called for Magical Faerie)
-          rem
+
           rem This should be called from PlayerInput.bas when processing
-          rem joystick up/down for Magical Faerie.
-HandleMagicalFaerieVertical
+          rem joystick up/down for Frooty.
+HandleFrootyVertical
           rem Check character type to confirm
           temp5 = PlayerChar[temp1]
-          if temp5 <> 8 then return  : rem Not Magical Faerie
+          if temp5 <> 8 then return 
+          rem Not Frooty
           
           rem Get joystick state
           rem This needs to be integrated with PlayerInput.bas
@@ -228,7 +244,9 @@ HandleMagicalFaerieVertical
           rem PlayerY[temp1] = PlayerY[temp1] + 2
           
           rem Clamp to screen bounds
-          if PlayerY[temp1] < 0 then PlayerY[temp1] = 0
+          rem Byte-safe clamp: if wrapped below 0, the new value will exceed the old
+          temp7 = PlayerY[temp1]
+          if PlayerY[temp1] > temp7 then PlayerY[temp1] = 0
           if PlayerY[temp1] > 176 then PlayerY[temp1] = 176
           
           return
@@ -236,18 +254,19 @@ HandleMagicalFaerieVertical
           rem =================================================================
           rem HANDLE HARPY SWOOP ATTACK
           rem =================================================================
-          rem Harpy''''s attack causes an instant redirection into a rapid
+          rem Harpy attack causes an instant redirection into a rapid
           rem downward diagonal strike at ~45° to the facing direction.
-          rem
+
           rem INPUT:
           rem   temp1 = player index (0-3, but should only be called for Harpy)
-          rem
+
           rem OUTPUT:
           rem   Sets player momentum for diagonal downward swoop
 HandleHarpySwoopAttack
           rem Check character type to confirm
           temp5 = PlayerChar[temp1]
-          if temp5 <> 6 then return  : rem Not Harpy
+          if temp5 <> 6 then return 
+          rem Not Harpy
           
           rem Get facing direction from PlayerState bit 0
           temp6 = PlayerState[temp1] & 1
@@ -255,13 +274,11 @@ HandleHarpySwoopAttack
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
-          if temp6 = 0 then
-                    rem Facing left
-                    PlayerMomentumX[temp1] = -4
-          else
-                    rem Facing right
-                    PlayerMomentumX[temp1] = 4
-          endif
+          if temp6 = 0 then PlayerMomentumX[temp1] = 252 : goto SetVerticalMomentum
+          rem Facing right
+          PlayerMomentumX[temp1] = 4
+SetVerticalMomentum
+          
           
           rem Set downward momentum (using temp variable for now)
           rem Integrate with vertical momentum system
@@ -272,7 +289,8 @@ HandleHarpySwoopAttack
           rem Set animation state to "swooping attack"
           rem This could be animation state 10 or special attack animation
           temp6 = PlayerState[temp1] & %00011111
-          temp6 = temp6 | %10100000  : rem Animation state 10
+          temp6 = temp6 | %10100000 
+          rem Animation state 10
           PlayerState[temp1] = temp6
           
           rem Spawn melee attack missile for swoop hit detection
@@ -285,10 +303,10 @@ HandleHarpySwoopAttack
           rem =================================================================
           rem Utility routine to calculate safe fall distance for a character.
           rem Used for AI and display purposes.
-          rem
+
           rem INPUT:
           rem   temp1 = player index (0-3)
-          rem
+
           rem OUTPUT:
           rem   temp2 = safe fall distance in pixels
 CalculateSafeFallDistance
@@ -296,17 +314,23 @@ CalculateSafeFallDistance
           temp5 = PlayerChar[temp1]
           
           rem Check for fall damage immunity
-          if temp5 = 0 then temp2 = 255 : return  : rem Bernie: infinite
-          if temp5 = 13 then temp2 = 255 : return : rem Robo Tito: infinite
-          if temp5 = 8 then temp2 = 255 : return  : rem Magical Faerie: no falling
+          if temp5 = 0 then temp2 = 255 : return 
+          rem Bernie: infinite
+          if temp5 = 13 then temp2 = 255 : return
+          rem Robo Tito: infinite
+          if temp5 = 8 then temp2 = 255 : return 
+          rem Frooty: no falling
           
           rem Get character weight
-          temp1 = temp5  : rem Character type as index
+          temp1 = temp5 
+          rem Character type as index
           gosub GetCharacterWeight
-          temp6 = temp2  : rem Store weight
+          temp6 = temp2 
+          rem Store weight
           
           rem Calculate safe fall velocity (from CheckFallDamage logic)
-          temp3 = 120 / temp6  : rem Safe velocity threshold
+          temp3 = 120 / temp6 
+          rem Safe velocity threshold
           
           rem Convert velocity to distance
           rem Using kinematic equation: v² = 2 * g * d

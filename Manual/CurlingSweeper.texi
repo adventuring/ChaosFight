@@ -1,0 +1,11 @@
+@subsection Curling Sweeper
+@display
+@group
+    Weight: Medium
+    Attack: Ranged (from feet, 4×2 pixels, ballistic)
+    Special: Projectile comes from character's feet
+@end group
+@end display
+
+The Curling Sweeper fires a curling stone
+from ground level, sliding across the floor. Great for hitting low targets!

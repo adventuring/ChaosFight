@@ -5,12 +5,12 @@
           rem CONSOLE SWITCH HANDLING
           rem =================================================================
           rem Handles Atari 2600 console switches during gameplay.
-          rem
+
           rem SWITCHES:
           rem   switchreset - Game Reset → return to character select
           rem   switchselect - Game Select → toggle pause
           rem   switchbw - Color/B&W → handled in rendering
-          rem
+
           rem AVAILABLE VARIABLES:
           rem   GameState - 0=normal play, 1=paused
           rem =================================================================
@@ -21,35 +21,35 @@ HandleConsoleSwitches
           if switchreset then goto CharacterSelect
 
           rem Game Select switch or Joy2B+ Button III - toggle pause mode
-          temp2 = 0  : rem Check Player 1 buttons
+          temp2 = 0 
+          rem Check Player 1 buttons
           gosub CheckEnhancedPause
-          if temp1 then
-                    rem Re-detect controllers when Select is pressed
-                    gosub DetectControllers
-                    if GameState = 0 then
-                              GameState = 1
-                    else
-                              GameState = 0
-                    endif
-                    rem Debounce - wait for button release
-                    drawscreen
-                    return
-          endif
+          if !temp1 then goto SkipPlayer1Pause
+          rem Re-detect controllers when Select is pressed
+          gosub DetectControllers
+          if GameState = 0 then GameState = 1 : goto Player1PauseDone
+          GameState = 0
+Player1PauseDone
+          rem Debounce - wait for button release
+          drawscreen
+          return
+SkipPlayer1Pause
           
-          temp2 = 1  : rem Check Player 2 buttons
+          
+          temp2 = 1 
+          rem Check Player 2 buttons
           gosub CheckEnhancedPause
-          if temp1 then
-                    rem Re-detect controllers when Select is pressed
-                    gosub DetectControllers
-                    if GameState = 0 then
-                              GameState = 1
-                    else
-                              GameState = 0
-                    endif
-                    rem Debounce - wait for button release
-                    drawscreen
-                    return
-          endif
+          if !temp1 then goto SkipPlayer2Pause
+          rem Re-detect controllers when Select is pressed
+          gosub DetectControllers
+          if GameState = 0 then GameState = 1 : goto Player2PauseDone
+          GameState = 0
+Player2PauseDone
+          rem Debounce - wait for button release
+          drawscreen
+          return
+SkipPlayer2Pause
+          
 
           rem Color/B&W switch - re-detect controllers when toggled
           gosub CheckColorBWToggle
@@ -68,49 +68,55 @@ HandleConsoleSwitches
           
 CheckColorBWToggle
           rem Check if Color/B&W switch state has changed
-          if switchbw != ColorBWPrevious then
-                    rem Switch state changed - re-detect controllers
-                    gosub DetectControllers
-                    ColorBWPrevious = switchbw
-          endif
+          if switchbw <> ColorBWPrevious then gosub DetectControllers : ColorBWPrevious = switchbw
+          
           return
 
           rem Display paused screen
 DisplayPausedScreen
           rem Display "PAUSED" message using built-in font system
           rem Center the text on screen
-          temp1 = 40  : rem X position (centered)
-          temp2 = 45  : rem Y position (middle of screen)
-          temp3 = 14  : rem Color (white)
+          temp1 = 40 
+          rem X position (centered)
+          temp2 = 45 
+          rem Y position (middle of screen)
+          temp3 = 14 
+          rem Color (white)
           
           rem Draw each character of "PAUSED"
           rem P
-          temp4 = 25  : rem ASCII ''P''
+          temp4 = 25 
+          rem ASCII "P"
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem A
-          temp4 = 10  : rem ASCII ''A''
+          temp4 = 10 
+          rem ASCII "A"
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem U
-          temp4 = 30  : rem ASCII ''U''
+          temp4 = 30 
+          rem ASCII "U"
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem S
-          temp4 = 28  : rem ASCII ''S''
+          temp4 = 28 
+          rem ASCII "S"
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem E
-          temp4 = 14  : rem ASCII ''E''
+          temp4 = 14 
+          rem ASCII "E"
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem D
-          temp4 = 13  : rem ASCII ''D''
+          temp4 = 13 
+          rem ASCII "D"
           gosub DrawCharacter
           
           return

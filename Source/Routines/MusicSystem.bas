@@ -114,7 +114,8 @@
           rem Start playing a music track
           rem Input: temp1 = music track (0-4)
           StartMusic
-          if temp1 = 0 then return  : rem No music
+          if temp1 = 0 then return 
+          rem No music
           
           MusicPlaying = temp1
           MusicPosition = 0
@@ -134,26 +135,19 @@
           MusicTimer = 0
           
           rem Get current music data
-          if MusicPlaying = MusicTitle then
-                    gosub UpdateTitleMusic
-          else if MusicPlaying = MusicInterworldly then
-                    gosub UpdateInterworldlyMusic
-          else if MusicPlaying = MusicAtariToday then
-                    gosub UpdateAtariTodayMusic
-          else if MusicPlaying = MusicVictory then
-                    gosub UpdateVictoryMusic
-          else if MusicPlaying = MusicGameOver then
-                    gosub UpdateGameOverMusic
-          endif
+          if MusicPlaying = MusicTitle then gosub UpdateTitleMusic
+          if MusicPlaying = MusicInterworldly then gosub UpdateInterworldlyMusic
+          if MusicPlaying = MusicAtariToday then gosub UpdateAtariTodayMusic
+          if MusicPlaying = MusicVictory then gosub UpdateVictoryMusic
+          if MusicPlaying = MusicGameOver then gosub UpdateGameOverMusic
           
           rem Advance position
           MusicPosition = MusicPosition + 1
           
           rem Check for end of track
-          if MusicPosition >= 128 then
-                    MusicPlaying = 0
-                    MusicPosition = 0
-          endif
+          if MusicPosition < 128 then return
+          MusicPlaying = 0
+          MusicPosition = 0
           
           return
 

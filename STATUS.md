@@ -217,20 +217,19 @@
 ### Required Tools
 ```bash
 # Core development
-sudo apt install build-essential imagemagick gimp
+sudo dnf install gcc make gimp
 
 # Common Lisp (for SkylineTool)  
-sudo apt install sbcl
+sudo dnf install sbcl
 curl -O https://beta.quicklisp.org/quicklisp.lisp
 sbcl --load quicklisp.lisp
 
 # LaTeX (for documentation)
-sudo apt install texlive-full texinfo
+sudo dnf install texlive texinfo
 ```
 
 ### Asset Pipeline Dependencies
-- **GIMP** with batch processing capability
-- **ImageMagick** for XCF→PNG conversion
+- **GIMP** with batch processing capability for XCF→PNG conversion
 - **SkylineTool** (Common Lisp + 20+ libraries)
 - **batariBASIC** compiler (included)
 

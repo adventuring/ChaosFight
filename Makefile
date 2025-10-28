@@ -108,45 +108,29 @@ CHARACTER_XCF = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).xcf)
 CHARACTER_PNG = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png)
 CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).bas)
 
-# Convert XCF to PNG for character sprites
-Source/Art/%.png: Source/Art/%.xcf
+# Convert XCF to PNG for character sprites  
+Source/Art/%.png: Source/Art/%.xcf $(READYFILE)
 	@echo "Converting $< to $@..."
 	mkdir -p Source/Art
-	gimp --batch-interpreter=scheme-fu-eval --batch - << 'EOF' \
-	(load "Tools/xcf-export.scm") \
-	(xcf-export "$<" "$@") \
-	(gimp-quit 1) \
-	EOF
+	xvfb-run -a $(GIMP) -b '(load "Tools/xcf-export.scm")' -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
 # Convert PNG character sprite sheet to batariBASIC data for NTSC
 Source/Generated/Art.%.NTSC.bas: Source/Art/%.png
 	@echo "Converting character sprite $< to $@ for NTSC..."
 	mkdir -p Source/Generated
-	@echo "ERROR: Character sprite conversion requires working SkylineTool - see issue #1"
-	@echo "       Placeholder data will be generated until SkylineTool is fixed"
-	@echo "          rem Placeholder sprite data for $*" > "$@"
-	@echo "          rem TODO: Replace with actual conversion from $< via SkylineTool" >> "$@"
-	@echo "          rem See: https://github.com/adventuring/ChaosFight/issues/1" >> "$@"
+	bin/skyline-tool compile-art "$@" "$<"
 
 # Convert PNG character sprite sheet to batariBASIC data for PAL  
 Source/Generated/Art.%.PAL.bas: Source/Art/%.png
 	@echo "Converting character sprite $< to $@ for PAL..."
 	mkdir -p Source/Generated
-	@echo "ERROR: Character sprite conversion requires working SkylineTool - see issue #1"
-	@echo "       Placeholder data will be generated until SkylineTool is fixed"
-	@echo "          rem Placeholder sprite data for $*" > "$@"
-	@echo "          rem TODO: Replace with actual conversion from $< via SkylineTool" >> "$@"
-	@echo "          rem See: https://github.com/adventuring/ChaosFight/issues/1" >> "$@"
+	bin/skyline-tool compile-art "$@" "$<"
 
 # Convert PNG character sprite sheet to batariBASIC data for SECAM
 Source/Generated/Art.%.SECAM.bas: Source/Art/%.png
 	@echo "Converting character sprite $< to $@ for SECAM..."
 	mkdir -p Source/Generated
-	@echo "ERROR: Character sprite conversion requires working SkylineTool - see issue #1"
-	@echo "       Placeholder data will be generated until SkylineTool is fixed"
-	@echo "          rem Placeholder sprite data for $*" > "$@"
-	@echo "          rem TODO: Replace with actual conversion from $< via SkylineTool" >> "$@"
-	@echo "          rem See: https://github.com/adventuring/ChaosFight/issues/1" >> "$@"
+	bin/skyline-tool compile-art "$@" "$<"
 
 # Generate platform-specific character files
 Source/Generated/Characters.NTSC.bas:
@@ -264,11 +248,7 @@ Source/Generated/Characters.SECAM.bas:
 Source/Art/AtariAge.png Source/Art/Interworldly.png Source/Art/ChaosFight.png: Source/Art/%.png: Source/Art/%.xcf
 	@echo "Converting screen $< to $@..."
 	mkdir -p Source/Art
-	gimp --batch-interpreter=scheme-fu-eval --batch - << 'EOF' \
-	(load "Tools/xcf-export.scm") \
-	(xcf-export "$<" "$@") \
-	(gimp-quit 1) \
-	EOF
+	gimp --batch-interpreter=plug-in-script-fu-eval --batch '(load "Tools/xcf-export.scm") (xcf-export "$<" "$@") (gimp-quit 1)'
 
 # Convert XCF to PNG for fonts (special handling for font sheets)
 Source/Art/Numbers.png: Source/Art/Numbers.xcf
@@ -347,11 +327,7 @@ Source/Generated/Playfield.%.SECAM.bas: Source/Art/%.png
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf
-	gimp --batch-interpreter=scheme-fu-eval --batch - << 'EOF' \
-	(load "Tools/xcf-export.scm") \
-	(xcf-export "$<" "$@") \
-	(gimp-quit 1) \
-	EOF
+	gimp --batch-interpreter=plug-in-script-fu-eval --batch '(load "Tools/xcf-export.scm") (xcf-export "$<" "$@") (gimp-quit 1)'
 
 # Convert PNG to batariBASIC playfield include
 Source/Generated/Playfields.bas: $(wildcard Source/Art/Map-*.png)

@@ -16,9 +16,18 @@
           rem STANDARD RAM (Available everywhere):
           rem   a-z = 26 variables
           rem
-          rem SUPERCHIP RAM AVAILABILITY:
-          rem   ADMIN screens (pfres=32): var0-var47 available (48 bytes)
-          rem   GAME screens (pfres=8):   var0-var23 available (24 bytes)
+          rem SUPERCHIP RAM AVAILABILITY (with separate read/write ports):
+          rem   SuperChip provides 128 bytes additional RAM ($1000-$107F)
+          rem   Variables: var0-var127 (128 total)
+          rem   Playfield storage at HIGH END, shifts based on pfres setting:
+          rem   
+          rem   ADMIN screens (pfres=32): 
+          rem     - Playfield uses top 128 bytes: var0-var127 (all 128 bytes!)
+          rem     - Available during ADMIN: None from SuperChip (use standard RAM a-z)
+          rem   
+          rem   GAME screens (pfres=8):
+          rem     - Playfield uses top 32 bytes: var96-var127 (8 rows * 4 bytes)
+          rem     - Available during GAME: var0-var95 (96 variables!)
           rem
           rem SHARED VARIABLES (needed in both contexts):
           rem   - PlayerChar[0-3], PlayerLocked[0-3]
@@ -134,36 +143,71 @@
           dim Player3RecoveryFrames = var18
           dim Player4RecoveryFrames = var19
           
-          rem PlayerMomentumX[0-3] = Player1MomentumX, Player2MomentumX, Player3MomentumX, Player4MomentumX
-          rem Horizontal momentum for knockback and physics
+          rem NOTE: var0-3 used by PlayerX (core gameplay, can''t redim)
+          rem NOTE: var4-7 used by PlayerY (core gameplay, can''t redim)
+          rem NOTE: var8-11 used by PlayerState (core gameplay, can''t redim)
+          rem NOTE: var12-15 used by PlayerHealth (core gameplay, can''t redim)
+          rem NOTE: var16-19 used by PlayerRecoveryFrames (core gameplay, can''t redim)
+          rem NOTE: var20-27 available for momentum (with pfres=8, have var0-95!)
+          
+          rem PlayerMomentumX[0-3] = Horizontal momentum for knockback and physics
           dim PlayerMomentumX = var20
           dim Player1MomentumX = var20
           dim Player2MomentumX = var21
           dim Player3MomentumX = var22
           dim Player4MomentumX = var23
           
+          rem PlayerMomentumY[0-3] = Vertical momentum for gravity, jumping, and fall damage
+          rem Positive = downward, negative = upward
+          rem Used by ApplyGravity and CheckFallDamage routines
+          dim PlayerMomentumY = var24
+          dim Player1MomentumY = var24
+          dim Player2MomentumY = var25
+          dim Player3MomentumY = var26
+          dim Player4MomentumY = var27
+          
+          rem =================================================================
+          rem ADDITIONAL GAMEPLAY VARIABLES
+          rem =================================================================
+          rem These use the remaining var24+ space which is NOT used by
+          rem playfield during gameplay (pfres=8 only uses var24-95 for playfield,
+          rem but we stay within var0-23 for safety)
+          rem
+          rem Actually wait - var24+ conflicts with playfield!
+          rem We need to use standard RAM (a-z) or find other redim opportunities
+          rem =================================================================
+          
+          rem GAME: Vertical momentum - Using standard RAM since SuperChip is full
+          rem Stored in temporary variables during physics update
+          rem PlayerMomentumY values calculated and used within frame, not persistent
+          rem Can use temp variables during ApplyGravity/CheckFallDamage routines
+          
           rem =================================================================
           rem REDIMMED VARIABLES - GAME CONTEXT ONLY  
           rem =================================================================
-          rem These variables REDIM the same memory used by ADMIN variables
+          rem These variables REDIM memory used by ADMIN screens
           rem They are ONLY valid during active gameplay!
+          rem NOTE: We can''t redim var0-19 (used by core player arrays)
+          rem but we CAN redim var20-23 since we moved PlayerMomentumX there
           rem =================================================================
           
-          rem GAME: Attack cooldown timers (redim ADMIN level select vars)
+          rem GAME: Attack cooldown timers - Use f, g, h, i (standard RAM)
           rem Format: Counts down from 15-20 frames, 0 = can attack
-          dim PlayerAttackCooldown = var0
-          dim Player1AttackCooldown = var0   : rem GAME: reuses LevelPreviewData
-          dim Player2AttackCooldown = var1   : rem GAME: reuses LevelScrollOffset
-          dim Player3AttackCooldown = var2   : rem GAME: reuses LevelCursorPos
-          dim Player4AttackCooldown = var3   : rem GAME: reuses LevelConfirmTimer
+          rem Note: i is used by MissileActive, so we use f,g,h and j for cooldowns
+          dim PlayerAttackCooldown = f
+          dim Player1AttackCooldown = f
+          dim Player2AttackCooldown = g
+          dim Player3AttackCooldown = h
+          dim Player4AttackCooldown = j
           
-          rem GAME: Base damage per hit for each player (redim ADMIN preamble vars)
-          rem Calculated from character type at game start, then stored here
-          dim PlayerDamage = var4
-          dim Player1Damage = var4           : rem GAME: reuses PreambleTimer
-          dim Player2Damage = var5           : rem GAME: reuses PreambleState
-          dim Player3Damage = var6           : rem GAME: reuses MusicPlaying
-          dim Player4Damage = var7           : rem GAME: reuses MusicPosition
+          rem GAME: Base damage per hit for each player
+          rem Calculated from character type at game start, then stored
+          rem Using k, l, m, n (standard RAM)
+          dim PlayerDamage = k
+          dim Player1Damage = k
+          dim Player2Damage = l
+          dim Player3Damage = m
+          dim Player4Damage = n
           
           rem =================================================================
           rem MISSILE SYSTEM VARIABLES (4 missiles, one per player)

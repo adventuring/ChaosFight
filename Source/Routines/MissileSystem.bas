@@ -40,16 +40,14 @@
           rem   1. Look up character type for this player
           rem   2. Read missile properties from character data
           rem   3. Set missile X/Y based on player position, facing, and emission height
-          rem   4. Set active bit for this player''s missile
+          rem   4. Set active bit for this player''''s missile
           rem   5. Initialize lifetime counter from character data
 SpawnMissile
           rem Get character type for this player
           temp5 = PlayerChar[temp1]
           
-          rem Read missile emission height from character data
-          rem TODO: Implement data table read for CharacterMissileEmissionHeights
-          rem For now, use default emission height of 8 pixels (mid-sprite)
-          temp6 = 8
+          rem Read missile emission height from character data table
+          temp6 = CharacterMissileEmissionHeights[temp5]
           
           rem Calculate initial missile position based on player position and facing
           rem Facing is stored in PlayerState bit 0: 0=left, 1=right
@@ -83,7 +81,7 @@ SpawnMissile
                     if temp4 = 1 then MissileX[3] = MissileX[3] + 12
           endif
           
-          rem Set active bit for this player''s missile
+          rem Set active bit for this player''''s missile
           rem Bit 0 = P1, Bit 1 = P2, Bit 2 = P3, Bit 3 = P4
           temp6 = 1
           if temp1 = 1 then temp6 = 2
@@ -91,12 +89,15 @@ SpawnMissile
           if temp1 = 3 then temp6 = 8
           MissileActive = MissileActive | temp6
           
-          rem Initialize lifetime counter from character data
-          rem TODO: Read CharacterMissileLifetime[temp5] from data table
-          rem For now, use default: melee=5 frames, ranged=15 (until collision)
-          rem Store in packed nybbles: e{7:4}=P1, e{3:0}=P2, f{7:4}=P3, f{3:0}=P4
-          rem Simplified for now - just set to 15 (until collision)
-          rem TODO: Implement proper nybble packing/unpacking
+          rem Initialize lifetime counter from character data table
+          temp7 = CharacterMissileLifetime[temp5]
+          
+          rem Store lifetime in player-specific variable
+          rem Using individual variables for each player''s missile lifetime
+          if temp1 = 0 then MissileLifetime[0] = temp7
+          if temp1 = 1 then MissileLifetime[1] = temp7
+          if temp1 = 2 then MissileLifetime[2] = temp7
+          if temp1 = 3 then MissileLifetime[3] = temp7
           
           return
 
@@ -106,7 +107,7 @@ SpawnMissile
           rem Called once per frame to update all active missiles.
           rem Updates position, checks collisions, handles lifetime.
 UpdateAllMissiles
-          rem Check each player''s missile
+          rem Check each player''''s missile
           temp1 = 0
           gosub UpdateOneMissile
           temp1 = 1
@@ -120,7 +121,7 @@ UpdateAllMissiles
           rem =================================================================
           rem UPDATE ONE MISSILE
           rem =================================================================
-          rem Updates a single player''s missile.
+          rem Updates a single player''''s missile.
           rem Handles movement, gravity, collisions, and lifetime.
           rem
           rem INPUT:
@@ -185,11 +186,13 @@ UpdateOneMissile
           
           rem Check collision with playfield if flag is set
           if temp5 & 1 then
-                    gosub CheckMissilePlayfieldCollision
+                    gosub bank4 CheckMissilePlayfieldCollision
                     if temp4 then
                               rem Hit playfield
                               if temp5 & 8 then
-                                        rem Bounce off wall (TODO: implement bounce physics)
+                                        rem Bounce off wall - implement bounce physics
+                                        rem Reverse horizontal velocity and reduce by 50%
+                                        MissileVelX[temp1] = -MissileVelX[temp1] / 2
                                         gosub DeactivateMissile : return
                               else
                                         rem Stop on wall
@@ -200,15 +203,33 @@ UpdateOneMissile
           
           rem Check collision with players
           rem This handles both visible missiles and AOE attacks
-          gosub CheckAllMissileCollisions
+          gosub bank4 CheckAllMissileCollisions
           if temp4 <> 255 then
                     rem Hit a player (temp4 = target player index)
                     gosub HandleMissileHit
                     gosub DeactivateMissile : return
           endif
           
-          rem TODO: Decrement lifetime counter and check expiration
-          rem For now, missiles persist until collision or off-screen
+          rem Decrement lifetime counter and check expiration
+          rem Retrieve current lifetime for this missile
+          if temp1 = 0 then temp8 = MissileLifetime[0]
+          if temp1 = 1 then temp8 = MissileLifetime[1]
+          if temp1 = 2 then temp8 = MissileLifetime[2]
+          if temp1 = 3 then temp8 = MissileLifetime[3]
+          
+          rem Decrement if not set to 255 (infinite until collision)
+          if temp8 <> 255 then
+                    temp8 = temp8 - 1
+                    if temp8 = 0 then
+                              rem Lifetime expired
+                              gosub DeactivateMissile : return
+                    endif
+                    rem Store decremented value back
+                    if temp1 = 0 then MissileLifetime[0] = temp8
+                    if temp1 = 1 then MissileLifetime[1] = temp8
+                    if temp1 = 2 then MissileLifetime[2] = temp8
+                    if temp1 = 3 then MissileLifetime[3] = temp8
+          endif
           
           return
 
@@ -422,7 +443,9 @@ HandleMissileHit
           temp2 = PlayerState[temp4] & 2
           if temp2 then
                     rem Guarding - no damage
-                    rem TODO: Play guard sound effect
+                    rem Play guard sound effect
+                    temp1 = SoundGuard
+                    gosub PlaySoundEffect
                     return
           endif
           
@@ -448,8 +471,12 @@ HandleMissileHit
           rem Set recovery/hitstun frames
           PlayerRecoveryFrames[temp4] = 10  : rem 10 frames of hitstun
           
-          rem TODO: Play hit sound effect
-          rem TODO: Spawn damage indicator visual
+          rem Play hit sound effect
+          temp1 = SoundHit
+          gosub PlaySoundEffect
+          
+          rem Spawn damage indicator visual
+          gosub bank0 ShowDamageIndicator
           
           return
 
@@ -461,7 +488,7 @@ HandleMissileHit
           rem INPUT:
           rem   temp1 = player index (0-3)
 DeactivateMissile
-          rem Clear active bit for this player''s missile
+          rem Clear active bit for this player''''s missile
           temp6 = 1
           if temp1 = 1 then temp6 = 2
           if temp1 = 2 then temp6 = 4
@@ -478,7 +505,7 @@ DeactivateMissile
           rem With 4 logical missiles and 2 hardware missiles, we multiplex by:
           rem   - Even frames: P1→missile0, P2→missile1
           rem   - Odd frames:  P3→missile0, P4→missile1
-          rem This creates a 30Hz flicker that''s acceptable for fast-moving projectiles.
+          rem This creates a 30Hz flicker that''''s acceptable for fast-moving projectiles.
 RenderAllMissiles
           rem Determine which pair to render based on frame parity
           temp6 = frame & 1  : rem 0=even, 1=odd

@@ -26,7 +26,7 @@
           rem AVAILABLE VARIABLES:
           rem   frame - Global frame counter
           rem   FramePhase - Which phase of multi-frame operation (0-3)
-          rem   HealthBarUpdatePlayer - Which player''s health bar to update
+          rem   HealthBarUpdatePlayer - Which player''''s health bar to update
           rem   CollisionCheckPair - Which collision pair to check this frame
           rem =================================================================
 
@@ -43,7 +43,7 @@ UpdateFramePhase
           rem BUDGET HEALTH BAR RENDERING
           rem =================================================================
           rem Instead of drawing all 4 health bars every frame, draw only one
-          rem player''s health bar per frame. This reduces pfpixel operations
+          rem player''''s health bar per frame. This reduces pfpixel operations
           rem from 128 per frame to 32 per frame (4× reduction).
           rem
           rem USES: FramePhase (0-3) to determine which player to update
@@ -66,7 +66,7 @@ BudgetedHealthBarUpdate
           endif
           return
 
-          rem Update Player 1''s health bar
+          rem Update Player 1''''s health bar
 UpdateHealthBarPlayer0
           dim HealthBarLength = temp6
           HealthBarLength = PlayerHealth[0] / 3
@@ -75,7 +75,7 @@ UpdateHealthBarPlayer0
           gosub DrawHealthBarRow0
           return
 
-          rem Update Player 2''s health bar
+          rem Update Player 2''''s health bar
 UpdateHealthBarPlayer1
           dim HealthBarLength = temp6
           HealthBarLength = PlayerHealth[1] / 3
@@ -84,7 +84,7 @@ UpdateHealthBarPlayer1
           gosub DrawHealthBarRow1
           return
 
-          rem Update Player 3''s health bar
+          rem Update Player 3''''s health bar
 UpdateHealthBarPlayer2
           dim HealthBarLength = temp6
           HealthBarLength = PlayerHealth[2] / 3
@@ -93,7 +93,7 @@ UpdateHealthBarPlayer2
           gosub DrawHealthBarRow2
           return
 
-          rem Update Player 4''s health bar
+          rem Update Player 4''''s health bar
 UpdateHealthBarPlayer3
           dim HealthBarLength = temp6
           HealthBarLength = PlayerHealth[3] / 3

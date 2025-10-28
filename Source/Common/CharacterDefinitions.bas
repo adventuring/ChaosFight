@@ -43,9 +43,48 @@ rem   - Melee force (higher weight = more damage/knockback to opponents)
 rem Values: 1-255 (lower = lighter/faster, higher = heavier/slower/stronger)
 
 data CharacterWeights
-  35, 25, 20, 15, 30, 25, 15, 32, 15, 20, 10, 30, 10, 32, 30, 25
+  35, 25, 20, 15, 30, 25, 15, 32, 15, 20, 10, 30, 10, 32, 30, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25
 rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
 rem  heavy,  medium,     medium,   light,   heavy,  medium,     light,  heavier, light,      medium,   very light, heavy,  very light, heavier, heavy,  medium
+rem  Characters 16-31: placeholder medium weight (25)
+end
+
+data CharacterMissileWidths
+  1, 4, 2, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  Characters 16-31: placeholder melee (0)
+end
+
+data CharacterMissileHeights
+  1, 2, 2, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  Characters 16-31: placeholder melee (0)
+end
+
+data CharacterMissileMaxX
+  4, 8, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  Characters 16-31: placeholder melee (0)
+end
+
+data CharacterMissileMaxY
+  4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  Characters 16-31: placeholder melee (0)
+end
+
+data CharacterMissileForce
+  3, 5, 4, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  Characters 16-31: placeholder melee (0)
+end
+
+data CharacterMissileLifetime
+  4, 255, 255, 255, 4, 4, 5, 6, 255, 5, 4, 4, 3, 5, 255, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  melee  ranged         ranged    ranged    melee   melee           melee   melee      ranged          melee       melee      melee      melee         melee      ranged    melee
+rem  Characters 16-31: placeholder melee (4)
+rem  Note: Melee attacks show brief visual (sword, fist, etc.), ranged persist until hit
 end
 
 rem =================================================================
@@ -70,15 +109,6 @@ rem Missile dimensions (width x height) for each character
 rem Format: width, height
 rem Melee attacks can use 0x0 if no visible missile
 
-data CharacterMissileWidths
-  1, 4, 2, 2, 1, 2, 1, 3, 2, 0, 0, 0, 0, 0, 2, 0
-rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
-end
-
-data CharacterMissileHeights
-  1, 2, 2, 2, 1, 2, 1, 3, 2, 0, 0, 0, 0, 0, 2, 0
-rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
-end
 
 rem =================================================================
 rem MISSILE EMISSION HEIGHTS
@@ -149,6 +179,12 @@ rem  melee  ranged         ranged    ranged    melee   melee           melee   m
 rem  Note: Melee attacks show brief visual (sword, fist, etc.), ranged persist until hit
 end
 
+data CharacterAOEOffsets
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  AOE offset in pixels (0 = no AOE, positive = area of effect)
+end
+
 rem =================================================================
 rem ANIMATION SEQUENCE DEFINITIONS
 rem =================================================================
@@ -186,7 +222,7 @@ rem   4 frames: (1, 2, 3, 4, 1, 2, 3, 4)
 rem   8 frames: (1, 2, 3, 4, 5, 6, 7, 8)
 
 rem Animation frame reference tables (16 characters × 16 sequences × 8 bytes)
-rem Each character''s animation data is 128 bytes (16 sequences × 8 bytes)
+rem Each character''''s animation data is 128 bytes (16 sequences × 8 bytes)
 rem Total: 2048 bytes for all character animations
 
 data Character0Animations

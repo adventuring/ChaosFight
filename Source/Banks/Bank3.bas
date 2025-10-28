@@ -2,3 +2,5 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           bank 3
+          #include "Source/Routines/MissileSystem.bas"
+          end

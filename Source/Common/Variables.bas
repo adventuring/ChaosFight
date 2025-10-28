@@ -1,5 +1,12 @@
           rem ChaosFight - Source/Common/Variables.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem
+          rem MEMORY LAYOUT - CRITICAL FOR PLAYFIELD COMPATIBILITY:
+          rem - During gameplay (pfres=8): var24-var95 are used by playfield data
+          rem - Only var0-var23 are available for game variables during gameplay
+          rem - During title screens (pfres=12/32): var48+ used by playfield data
+          rem - Standard RAM (a-z): 26 bytes always available
+          rem - Variable reuse: w-z used for CharSelectAnim* during select, Missile* during gameplay
 
           rem =================================================================
           rem VARIABLE MEMORY LAYOUT - DUAL CONTEXT SYSTEM
@@ -10,7 +17,7 @@
           rem   2. GAME context: Active gameplay
           rem
           rem This allows us to REDIM the same memory locations for different
-          rem purposes depending on which screen we''re on, maximizing our limited RAM!
+          rem purposes depending on which screen we''''re on, maximizing our limited RAM!
           rem
           rem =================================================================
           rem STANDARD RAM (Available everywhere):
@@ -56,6 +63,15 @@
           dim GameState = g     : rem 0 = normal play, 1 = paused
           dim QuadtariDetected = h  : rem Set during ADMIN, read during GAME
           
+          rem Console and controller detection (set during ADMIN, read during GAME)
+          dim Console7800Detected = a  : rem 1 if running on Atari 7800
+          dim GenesisDetected = b      : rem 1 if Genesis controller detected
+          dim Joy2bPlusDetected = c    : rem 1 if Joy2B+ controller detected
+#ifndef TV_SECAM
+          dim ColorBWOverride = d      : rem 7800 only: manual Color/B&W override (not used in SECAM)
+#endif
+          dim PauseButtonPrev = e      : rem Previous frame pause button state
+          
           rem Character selection results (set during ADMIN, read during GAME)
           dim PlayerChar = j     : rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
           dim PlayerLocked = n   : rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using n,o,p,q
@@ -96,12 +112,13 @@
           dim PreambleState = var5          : rem ADMIN: Which preamble
           dim MusicPlaying = var6           : rem ADMIN: Music status
           dim MusicPosition = var7          : rem ADMIN: Current note
+          dim MusicTimer = var8             : rem ADMIN: Music frame counter
           
           rem =================================================================
           rem GAMEPLAY VARIABLES (SuperChip RAM - var0-var23 ONLY!)
           rem =================================================================
           rem CRITICAL: With pfres=8, playfield occupies var24-var95!
-          rem We MUST stay within var0-var23 during gameplay or we''ll corrupt
+          rem We MUST stay within var0-var23 during gameplay or we''''ll corrupt
           rem the playfield graphics!
           rem =================================================================
 
@@ -143,11 +160,11 @@
           dim Player3RecoveryFrames = var18
           dim Player4RecoveryFrames = var19
           
-          rem NOTE: var0-3 used by PlayerX (core gameplay, can''t redim)
-          rem NOTE: var4-7 used by PlayerY (core gameplay, can''t redim)
-          rem NOTE: var8-11 used by PlayerState (core gameplay, can''t redim)
-          rem NOTE: var12-15 used by PlayerHealth (core gameplay, can''t redim)
-          rem NOTE: var16-19 used by PlayerRecoveryFrames (core gameplay, can''t redim)
+          rem NOTE: var0-3 used by PlayerX (core gameplay, can''''t redim)
+          rem NOTE: var4-7 used by PlayerY (core gameplay, can''''t redim)
+          rem NOTE: var8-11 used by PlayerState (core gameplay, can''''t redim)
+          rem NOTE: var12-15 used by PlayerHealth (core gameplay, can''''t redim)
+          rem NOTE: var16-19 used by PlayerRecoveryFrames (core gameplay, can''''t redim)
           rem NOTE: var20-27 available for momentum (with pfres=8, have var0-95!)
           
           rem PlayerMomentumX[0-3] = Horizontal momentum for knockback and physics
@@ -187,7 +204,7 @@
           rem =================================================================
           rem These variables REDIM memory used by ADMIN screens
           rem They are ONLY valid during active gameplay!
-          rem NOTE: We can''t redim var0-19 (used by core player arrays)
+          rem NOTE: We can''''t redim var0-19 (used by core player arrays)
           rem but we CAN redim var20-23 since we moved PlayerMomentumX there
           rem =================================================================
           
@@ -224,17 +241,17 @@
           
           rem GAME: Missile X positions [0-3] for players 1-4
           dim MissileX = a                   : rem GAME: reuses temp ADMIN vars
-          dim Missile1X = a                  : rem Player 1''s missile X
-          dim Missile2X = b                  : rem Player 2''s missile X
-          dim Missile3X = c                  : rem Player 3''s missile X
-          dim Missile4X = d                  : rem Player 4''s missile X
+          dim Missile1X = a                  : rem Player 1 missile X
+          dim Missile2X = b                  : rem Player 2 missile X
+          dim Missile3X = c                  : rem Player 3 missile X
+          dim Missile4X = d                  : rem Player 4 missile X
           
           rem GAME: Missile Y positions [0-3] for players 1-4
           dim MissileY = w                   : rem GAME: reuses CharSelectAnimTimer
-          dim Missile1Y = w                  : rem Player 1''s missile Y
-          dim Missile2Y = x                  : rem Player 2''s missile Y (reuses CharSelectAnimState)
-          dim Missile3Y = y                  : rem Player 3''s missile Y (reuses CharSelectAnimIndex)
-          dim Missile4Y = z                  : rem Player 4''s missile Y (reuses CharSelectAnimFrame)
+          dim Missile1Y = w                  : rem Player 1 missile Y
+          dim Missile2Y = x                  : rem Player 2 missile Y (reuses CharSelectAnimState)
+          dim Missile3Y = y                  : rem Player 3 missile Y (reuses CharSelectAnimIndex)
+          dim Missile4Y = z                  : rem Player 4 missile Y (reuses CharSelectAnimFrame)
           
           rem GAME: Missile active flags - bit-packed into single byte
           rem Format: [M4Active:1][M3Active:1][M2Active:1][M1Active:1][unused:4]
@@ -244,7 +261,7 @@
           rem GAME: Missile lifetime counters [0-3] - frames remaining
           rem For melee attacks: small value (2-8 frames)
           rem For ranged attacks: larger value or 255 for "until collision"
-          rem Actually, let''s use e and some SuperChip vars we can spare
+          rem Actually, let''''s use e and some SuperChip vars we can spare
           dim MissileLifetime = e            : rem GAME: Uses 4 nybbles, packed into 2 bytes sequentially
           rem MissileLifetime[0]{5:8} = Missile for P1 lifetime, MissileLifetime[0]{0:3} = M2 lifetime
           rem High nybble = P1/P2 lifetimes (4 bits each = 0-13 frames)

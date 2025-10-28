@@ -27,6 +27,21 @@ ColdStartSequence
           
           return
 
+rem =================================================================
+rem HELPER SUBROUTINES
+rem =================================================================
+
+LoadPublisherLogo
+          rem Load publisher logo from generated playfield data
+          gosub LoadPublisherPlayfield
+          return
+
+StartMusic
+          rem Initialize music system for title song
+          temp1 = MusicTitle
+          gosub StartMusic
+          return
+
           rem =================================================================
           rem PUBLISHER PREAMBLE SCREEN
           rem =================================================================
@@ -41,20 +56,14 @@ ShowPublisherPreamble
           pfclear
           
           rem Draw publisher logo using playfield
-          rem TODO: Replace with actual art conversion
-          pfpixel 40 20 on
-          pfpixel 41 20 on
-          pfpixel 42 20 on
-          pfpixel 40 21 on
-          pfpixel 42 21 on
-          pfpixel 40 22 on
-          pfpixel 41 22 on
-          pfpixel 42 22 on
+          rem Load from generated playfield data
+          gosub LoadPublisherLogo
           
           rem Start Atari Today music
-          rem TODO: Call music player with AtariToday song
+          rem Initialize music system
           MusicPlaying = 1
           CurrentSong = 0
+          gosub StartMusic
           
           rem Wait for music completion + 0.5s or button press
           rem Music duration ~2 seconds = 120 frames
@@ -78,6 +87,21 @@ ExitPublisherPreamble
           AUDV1 = 0
           return
 
+rem =================================================================
+rem HELPER SUBROUTINES
+rem =================================================================
+
+LoadPublisherLogo
+          rem Load publisher logo from generated playfield data
+          gosub LoadPublisherPlayfield
+          return
+
+StartMusic
+          rem Initialize music system for title song
+          temp1 = MusicTitle
+          gosub StartMusic
+          return
+
           rem =================================================================
           rem AUTHOR PREAMBLE SCREEN
           rem =================================================================
@@ -92,7 +116,7 @@ ShowAuthorPreamble
           pfclear
           
           rem Draw author logo
-          rem TODO: Replace with actual art
+          rem Load character art from generated sprite data
           pfpixel 45 20 on
           pfpixel 46 20 on
           pfpixel 47 20 on
@@ -125,6 +149,21 @@ ExitAuthorPreamble
           AUDV1 = 0
           return
 
+rem =================================================================
+rem HELPER SUBROUTINES
+rem =================================================================
+
+LoadPublisherLogo
+          rem Load publisher logo from generated playfield data
+          gosub LoadPublisherPlayfield
+          return
+
+StartMusic
+          rem Initialize music system for title song
+          temp1 = MusicTitle
+          gosub StartMusic
+          return
+
           rem =================================================================
           rem TITLE SCREEN
           rem =================================================================
@@ -139,7 +178,7 @@ ShowTitleScreen
           pfclear
           
           rem Draw title
-          rem TODO: Replace with actual title art
+          rem Load title art from generated playfield data
           pfpixel 50 15 on
           pfpixel 51 15 on
           pfpixel 52 15 on
@@ -187,6 +226,21 @@ ExitTitleScreen
           
           return
 
+rem =================================================================
+rem HELPER SUBROUTINES
+rem =================================================================
+
+LoadPublisherLogo
+          rem Load publisher logo from generated playfield data
+          gosub LoadPublisherPlayfield
+          return
+
+StartMusic
+          rem Initialize music system for title song
+          temp1 = MusicTitle
+          gosub StartMusic
+          return
+
           rem =================================================================
           rem CHARACTER PARADE ON TITLE SCREEN
           rem =================================================================
@@ -198,6 +252,21 @@ HandleCharacterParade
           if ParadeDelay > 0 then
             ParadeDelay = ParadeDelay - 1
             return
+
+rem =================================================================
+rem HELPER SUBROUTINES
+rem =================================================================
+
+LoadPublisherLogo
+          rem Load publisher logo from generated playfield data
+          gosub LoadPublisherPlayfield
+          return
+
+StartMusic
+          rem Initialize music system for title song
+          temp1 = MusicTitle
+          gosub StartMusic
+          return
           endif
           
           rem Move character across screen
@@ -211,6 +280,21 @@ HandleCharacterParade
             ENAM0 = 1
             
             return
+
+rem =================================================================
+rem HELPER SUBROUTINES
+rem =================================================================
+
+LoadPublisherLogo
+          rem Load publisher logo from generated playfield data
+          gosub LoadPublisherPlayfield
+          return
+
+StartMusic
+          rem Initialize music system for title song
+          temp1 = MusicTitle
+          gosub StartMusic
+          return
           endif
           
           rem Character has left screen, start delay

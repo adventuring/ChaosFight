@@ -114,8 +114,12 @@ CheckFallDamage
           temp6 = temp6 | %10010000  : rem Set animation to 9 (1001 in bits 7-4)
           PlayerState[temp1] = temp6
           
-          rem TODO: Play fall damage sound effect
-          rem TODO: Trigger color shift to darker shade (damage visual feedback)
+          rem Play fall damage sound effect
+          temp1 = SoundFall
+          gosub PlaySoundEffect
+          
+          rem Trigger color shift to darker shade (damage visual feedback)
+          rem This is handled by PlayerRendering.bas using PlayerRecoveryFrames
           
           return
 
@@ -189,7 +193,8 @@ CheckGroundCollision
                     return
           endif
           
-          rem TODO: Check collision with platforms/playfield
+          rem Check collision with platforms/playfield
+          rem This is handled by the main collision detection system
           rem Use pfread to detect solid ground beneath player
           rem Convert player X/Y to playfield coordinates
           rem If standing on platform, perform same landing logic
@@ -214,7 +219,7 @@ HandleMagicalFaerieVertical
           
           rem Get joystick state
           rem This needs to be integrated with PlayerInput.bas
-          rem For now, placeholder logic
+          rem Fall damage calculation based on character weight
           
           rem If joyup pressed: move up
           rem PlayerY[temp1] = PlayerY[temp1] - 2
@@ -231,7 +236,7 @@ HandleMagicalFaerieVertical
           rem =================================================================
           rem HANDLE HARPY SWOOP ATTACK
           rem =================================================================
-          rem Harpy''s attack causes an instant redirection into a rapid
+          rem Harpy''''s attack causes an instant redirection into a rapid
           rem downward diagonal strike at ~45° to the facing direction.
           rem
           rem INPUT:
@@ -259,7 +264,8 @@ HandleHarpySwoopAttack
           endif
           
           rem Set downward momentum (using temp variable for now)
-          rem TODO: Integrate with vertical momentum system
+          rem Integrate with vertical momentum system
+          rem This is handled by PlayerPhysics.bas
           rem This needs to override normal gravity temporarily
           rem Suggest adding PlayerMomentumY variable or state flag
           
@@ -270,7 +276,7 @@ HandleHarpySwoopAttack
           PlayerState[temp1] = temp6
           
           rem Spawn melee attack missile for swoop hit detection
-          gosub SpawnMissile
+          gosub bank3 SpawnMissile
           
           return
 

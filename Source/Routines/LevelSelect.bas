@@ -5,7 +5,12 @@ LevelSelect1
           dim SelectedLevel = a
           SelectedLevel = 0
           
-          COLUBK = ColBlue(8)
+          rem Set background color (B&W safe)
+          if switchbw then
+                    COLUBK = ColGrey(4)  : rem Dark grey (B&W)
+          else
+                    COLUBK = ColBlue(8)  : rem Dark blue (Color)
+          endif
           
 LevelSelect1Loop
           if joy0left then SelectedLevel = SelectedLevel - 1 : if SelectedLevel < 0 then SelectedLevel = NumLevels

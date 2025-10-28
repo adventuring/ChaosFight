@@ -73,8 +73,10 @@ HandlePlayer1Input
                     PlayerMomentumX[0] = 1
           endif
 
-          rem Jump - dispatch to character-specific handler
-          if joy0up && !IsPlayerJumping(PlayerState[0]) then
+          rem Jump - check traditional UP or enhanced Button C/II
+          temp2 = 0  : rem Player index for CheckEnhancedJump
+          gosub CheckEnhancedJump
+          if temp1 && !IsPlayerJumping(PlayerState[0]) then
                     temp1 = 0  : rem Player index
                     temp4 = PlayerChar[0]  : rem Character type
                     on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, MagicalFaerieJump, MysteryJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
@@ -114,8 +116,11 @@ HandlePlayer2Input
                     PlayerMomentumX[1] = 1
           endif
 
-          if joy1up && !IsPlayerJumping(PlayerState[1]) then
-                    temp1 = 1
+          rem Jump - check traditional UP or enhanced Button C/II
+          temp2 = 1  : rem Player index for CheckEnhancedJump
+          gosub CheckEnhancedJump
+          if temp1 && !IsPlayerJumping(PlayerState[1]) then
+                    temp1 = 1  : rem Player index
                     temp4 = PlayerChar[1]
                     on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, MagicalFaerieJump, MysteryJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
           endif

@@ -34,7 +34,8 @@ SetSpritePositions
           player1y = PlayerY[1]
 
           rem Set missile/ball positions for players 3 & 4 in 4-player mode
-          if QuadtariDetected && SelectedChar3 != 0 then
+          rem Only enable if player is registered AND alive (health > 0)
+          if QuadtariDetected && SelectedChar3 != 0 && PlayerHealth[2] > 0 then
                     missile1x = PlayerX[2]
                     missile1y = PlayerY[2]
                     ENAM1 = 1
@@ -42,7 +43,7 @@ SetSpritePositions
                     ENAM1 = 0
           endif
 
-          if QuadtariDetected && SelectedChar4 != 0 then
+          if QuadtariDetected && SelectedChar4 != 0 && PlayerHealth[3] > 0 then
                     ballx = PlayerX[3]
                     bally = PlayerY[3]
                     ENABL = 1
@@ -75,78 +76,107 @@ SetSpritePositions
           rem =================================================================
           rem Sets colors and graphics for all player sprites.
           rem Colors change based on hurt state and color/B&W switch.
+          rem On 7800, Pause button can override Color/B&W setting.
 SetPlayerSprites
+          rem Determine effective B&W mode (switchbw XOR ColorBWOverride)
+          rem This allows 7800 Pause button to toggle between modes
+          rem On SECAM, always use colors (no luminance control available)
+#ifdef TV_SECAM
+          temp6 = 0  : rem SECAM: Always use color mode (no B&W support)
+#else
+          temp6 = switchbw ^ ColorBWOverride  : rem Effective B&W state
+#endif
+          
           rem Set Player 1 color and sprite
           if PlayerRecoveryFrames[0] > 0 then
-                    COLUP0 = ColIndigo(6)  : rem Dark indigo for hurt
-          else
-                    if switchbw then
-                              COLUP0 = ColIndigo(12)  : rem Bright indigo
+                    if temp6 then
+                              COLUP0 = ColGrey(6)  : rem Dark grey for hurt (B&W)
                     else
-                              rem TODO: Load from XCF artwork colors
-                              COLUP0 = ColIndigo(12)
+                              rem Load character color from XCF artwork (dimmer for hurt)
+                              temp1 = PlayerChar[0]  : rem Character index
+                              temp2 = 1  : rem Hurt state
+                              gosub LoadCharacterColors
+                    endif
+          else
+                    if temp6 then
+                              COLUP0 = ColGrey(14)  : rem Bright grey - Player 1 (B&W)
+                    else
+                              rem Load character color from XCF artwork
+                              temp1 = PlayerChar[0]  : rem Character index
+                              temp2 = 0  : rem Normal state
+                              gosub LoadCharacterColors
                     endif
           endif
 
-          rem TODO: Load sprite data from character definition
-          player0:
-          %00011000
-          %00111100
-          %01111110
-          %00011000
-          %00011000
-          %00011000
-          %00011000
-          %00011000
-          end
+          rem Load sprite data from character definition
+          temp1 = PlayerChar[0]  : rem Character index
+          temp2 = 0  : rem Animation frame (0=idle, 1=running)
+          gosub LoadCharacterSprite
 
           rem Set Player 2 color and sprite
           if PlayerRecoveryFrames[1] > 0 then
-                    COLUP1 = ColRed(6)  : rem Dark red for hurt
+                    if temp6 then
+                              COLUP1 = ColGrey(4)  : rem Medium grey for hurt (B&W)
+                    else
+                              rem Load character color from XCF artwork (dimmer for hurt)
+                              temp1 = PlayerChar[1]  : rem Character index
+                              temp2 = 1  : rem Hurt state
+                              gosub LoadCharacterColors
+                    endif
           else
-                    if switchbw then
-                              COLUP1 = ColRed(12)  : rem Bright red
+                    if temp6 then
+                              COLUP1 = ColGrey(10)  : rem Medium-bright grey - Player 2 (B&W)
                     else
-                              rem TODO: Load from XCF artwork colors
-                              COLUP1 = ColRed(12)
+                              rem Load character color from XCF artwork
+                              temp1 = PlayerChar[1]  : rem Character index
+                              temp2 = 0  : rem Normal state
+                              gosub LoadCharacterColors
                     endif
           endif
 
-          rem TODO: Load sprite data from character definition
-          player1:
-          %00011000
-          %00111100
-          %01111110
-          %00011000
-          %00011000
-          %00011000
-          %00011000
-          %00011000
-          end
+          rem Load sprite data from character definition
+          temp1 = PlayerChar[1]  : rem Character index
+          temp2 = 0  : rem Animation frame (0=idle, 1=running)
+          gosub LoadCharacterSprite
 
-          rem Set colors for Players 3 & 4
-          if QuadtariDetected && SelectedChar3 != 0 then
+          rem Set colors for Players 3 & 4 (missile1/ball sprites)
+          rem Only apply color if player is registered AND alive
+          if QuadtariDetected && SelectedChar3 != 0 && PlayerHealth[2] > 0 then
                     if PlayerRecoveryFrames[2] > 0 then
-                              COLUPF = ColYellow(6)  : rem Dark yellow for hurt
-                    else
-                              if switchbw then
-                                        COLUPF = ColYellow(12)
+                              if temp6 then
+                                        COLUPF = ColGrey(3)  : rem Dark grey for hurt (B&W)
                               else
-                                        COLUPF = ColYellow(12)
+                                        COLUPF = ColYellow(6)  : rem Dark yellow for hurt (Color)
+                              endif
+                    else
+                              if temp6 then
+                                        COLUPF = ColGrey(8)  : rem Medium grey - Player 3 (B&W)
+                              else
+                                        COLUPF = ColYellow(12)  : rem Bright yellow - Player 3 (Color)
                               endif
                     endif
+          else
+                    rem Set playfield to white when Player 3 not active
+                    COLUPF = ColGrey(14)  : rem White (always)
           endif
 
-          if QuadtariDetected && SelectedChar4 != 0 then
+          if QuadtariDetected && SelectedChar4 != 0 && PlayerHealth[3] > 0 then
                     if PlayerRecoveryFrames[3] > 0 then
-                              COLUBK = ColGreen(6)  : rem Dark green for hurt
-                    else
-                              if switchbw then
-                                        COLUBK = ColGreen(12)
+                              if temp6 then
+                                        COLUBK = ColGrey(2)  : rem Very dark grey for hurt (B&W)
                               else
-                                        COLUBK = ColGreen(12)
+                                        COLUBK = ColGreen(6)  : rem Dark green for hurt (Color)
+                              endif
+                    else
+                              if temp6 then
+                                        COLUBK = ColGrey(6)  : rem Dark-medium grey - Player 4 (B&W)
+                              else
+                                        COLUBK = ColGreen(12)  : rem Bright green - Player 4 (Color)
                               endif
                     endif
+          else
+                    rem Set background to black when Player 4 not active
+                    COLUBK = ColGrey(0)  : rem Black
           endif
           
           return
@@ -167,15 +197,15 @@ DisplayHealth
                     if frame & 8 then player1x = 200
           endif
 
-          rem Flash Player 3 sprite if health is low
-          if QuadtariDetected && SelectedChar3 != 0 then
+          rem Flash Player 3 sprite if health is low (but alive)
+          if QuadtariDetected && SelectedChar3 != 0 && PlayerHealth[2] > 0 then
                     if PlayerHealth[2] < 25 && PlayerRecoveryFrames[2] = 0 then
                               if frame & 8 then missile1x = 200
                     endif
           endif
 
-          rem Flash Player 4 sprite if health is low
-          if QuadtariDetected && SelectedChar4 != 0 then
+          rem Flash Player 4 sprite if health is low (but alive)
+          if QuadtariDetected && SelectedChar4 != 0 && PlayerHealth[3] > 0 then
                     if PlayerHealth[3] < 25 && PlayerRecoveryFrames[3] = 0 then
                               if frame & 8 then ballx = 200
                     endif
@@ -199,35 +229,58 @@ DisplayHealth
           rem Health bars are drawn using pfpixel and appropriate colors.
           rem Each bar is 32 pixels wide (max health = 100, scale to 32 pixels).
 DrawHealthBars
-          dim HealthBarLength = temp6
+          dim HealthBarLength = temp5
           
-          rem Draw Player 1 health bar (Blue, top-left)
+          rem Calculate effective B&W mode (accounts for 7800 Pause toggle)
+#ifdef TV_SECAM
+          temp6 = 0  : rem SECAM: Always use color mode
+#else
+          temp6 = switchbw ^ ColorBWOverride
+#endif
+          
+          rem Draw Player 1 health bar
           HealthBarLength = PlayerHealth[0] / 3  : rem Scale 0-100 to 0-32
           if HealthBarLength > 32 then HealthBarLength = 32
-          COLUPF = ColBlue(12)  : rem Bright blue
+          if temp6 then
+                    COLUPF = ColGrey(14)  : rem White (B&W)
+          else
+                    COLUPF = ColBlue(12)  : rem Bright blue (Color)
+          endif
           gosub DrawHealthBarRow0
           
-          rem Draw Player 2 health bar (Red, top-left+1 row)
+          rem Draw Player 2 health bar
           HealthBarLength = PlayerHealth[1] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
-          COLUPF = ColRed(12)  : rem Bright red
+          if temp6 then
+                    COLUPF = ColGrey(10)  : rem Medium-bright grey (B&W)
+          else
+                    COLUPF = ColRed(12)  : rem Bright red (Color)
+          endif
           gosub DrawHealthBarRow1
           
-          rem Draw Player 3 & 4 bars if Quadtari active
+          rem Draw Player 3 & 4 bars if Quadtari active and player alive
           if QuadtariDetected then
-                    if SelectedChar3 != 0 then
-                              rem Player 3 health bar (Yellow, top+2 rows)
+                    if SelectedChar3 != 0 && PlayerHealth[2] > 0 then
+                              rem Player 3 health bar
                               HealthBarLength = PlayerHealth[2] / 3
                               if HealthBarLength > 32 then HealthBarLength = 32
-                              COLUPF = ColYellow(12)  : rem Bright yellow
+                              if temp6 then
+                                        COLUPF = ColGrey(8)  : rem Medium grey (B&W)
+                              else
+                                        COLUPF = ColYellow(12)  : rem Bright yellow (Color)
+                              endif
                               gosub DrawHealthBarRow2
                     endif
                     
-                    if SelectedChar4 != 0 then
-                              rem Player 4 health bar (Green, top+3 rows)
+                    if SelectedChar4 != 0 && PlayerHealth[3] > 0 then
+                              rem Player 4 health bar
                               HealthBarLength = PlayerHealth[3] / 3
                               if HealthBarLength > 32 then HealthBarLength = 32
-                              COLUPF = ColGreen(12)  : rem Bright green
+                              if temp6 then
+                                        COLUPF = ColGrey(6)  : rem Dark-medium grey (B&W)
+                              else
+                                        COLUPF = ColGreen(12)  : rem Bright green (Color)
+                              endif
                               gosub DrawHealthBarRow3
                     endif
           endif

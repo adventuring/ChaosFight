@@ -1,6 +1,48 @@
           rem ChaosFight - Source/Routines/ControllerDetection.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem Controller detection for Quadtari, Genesis, Joy2b+
+          rem
+          rem CONTROLLER HARDWARE SUPPORT:
+          rem - CX-40 Joystick: SWCHA bits 4-7 (P1) / 0-3 (P2), INPT4/5 fire
+          rem - Genesis 3-Button: D-pad via SWCHA, Button B via INPT4/5, Button C via TH line
+          rem - Joy2B+ Enhanced: D-pad via SWCHA, Button I via INPT4/5, Buttons II/III via INPT0-3
+          rem - Quadtari 4-Player: Frame multiplexing (even=P1/P2, odd=P3/P4)
+          rem - Button C (Genesis) requires SWACNT toggling for TH line access
+          rem - Buttons II/III (Joy2B+) use paddle ports INPT0-3, require different reading
+          rem Console and controller detection for 7800, Quadtari, Genesis, Joy2b+
+          rem
+          rem 7800 detection method based on Grizzards by Bruce-Robert Pocock
+          rem Genesis detection method based on Grizzards by Bruce-Robert Pocock
+
+          rem =================================================================
+          rem CONSOLE DETECTION (7800 vs 2600)
+          rem =================================================================
+          rem Detect if running on Atari 7800 for enhanced features
+          rem Method: Check magic bytes in $D0/$D1 set by BIOS
+          
+DetectConsole
+          rem Atari 7800 BIOS sets $D0=$2C and $D1=$A9 when loading cartridge
+          rem Check these before any other detection to avoid corrupting values
+          
+          rem Read memory locations $D0 and $D1 to check for 7800 BIOS signature
+          rem Using inline assembly for direct zero-page memory access
+          
+          asm
+          lda $D0
+          cmp #$2C
+          bne Not7800
+          lda $D1
+          cmp #$A9
+          bne Not7800
+          lda #1
+          sta Console7800Detected
+          jmp Done7800Check
+Not7800:
+          lda #0
+          sta Console7800Detected
+Done7800Check:
+          end
+          
+          rem Fall through to controller detection
 
           rem =================================================================
           rem CONTROLLER DETECTION
@@ -13,6 +55,10 @@ DetectControllers
           QuadtariDetected = 0
           GenesisDetected = 0
           Joy2bPlusDetected = 0
+#ifndef TV_SECAM
+          ColorBWOverride = 0
+          PauseButtonPrev = 0
+#endif
           
           rem Check for Quadtari (4 joysticks via multiplexing)
           rem Read INPT4 and INPT5 multiple times across frames
@@ -32,27 +78,79 @@ DetectControllers
             return
           endif
           
-          rem Check for Genesis controller (6-button detection)
-          rem Genesis controllers have extra buttons on INPT1
-          temp1 = INPT1
-          if temp1 & $40 then
-            rem Genesis controller detected
+          rem Check for Genesis controller
+          rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
+          rem Method: Ground paddle ports via VBLANK, wait a frame, check levels
+          
+          rem Ground paddle ports (INPT0-3)
+          VBLANK = $C0  : rem Enable VBLANK with paddle ground enabled
+          
+          rem Wait one frame for discharge
+          drawscreen
+          
+          rem Restore normal VBLANK
+          VBLANK = $00
+          
+          rem Check if INPT0 and INPT1 are both HIGH (Genesis signature)
+          temp1 = INPT0
+          temp2 = INPT1
+          
+          rem If both INPT0 and INPT1 have bit 7 set, Genesis detected
+          if temp1 & $80 && temp2 & $80 then
+            rem Genesis controller detected on Port 1
             GenesisDetected = 1
             return
           endif
           
-          rem Check for Joy2b+ (Sega Master System style)
-          rem Joy2b+ uses both fire buttons
-          temp1 = INPT4
-          temp2 = SWCHA
-          if temp1 & $80 then
-            rem Could be Joy2b+
+          rem Check for Joy2b+ 
+          rem Joy2b+ pulls INPT0, INPT1, and INPT2 HIGH when idle
+          rem Similar detection but all three ports must be HIGH
+          temp3 = INPT2
+          
+          if temp1 & $80 && temp2 & $80 && temp3 & $80 then
+            rem Joy2b+ controller detected
             Joy2bPlusDetected = 1
             return
           endif
           
           rem Default to standard 2 joysticks
           return
+
+          rem =================================================================
+          rem 7800 PAUSE BUTTON HANDLER
+          rem =================================================================
+          rem On Atari 7800, Pause button toggles Color/B&W override
+          rem This allows players to switch between color and B&W without
+          rem flipping the physical switch on the console
+          
+Check7800PauseButton
+          rem Only process if running on 7800
+          if !Console7800Detected then return
+          
+          rem Read Pause button state from INPT6 (bit 7)
+          rem 0 = pressed, 1 = not pressed
+          temp1 = INPT6
+          
+#ifndef TV_SECAM
+          rem Check if button just pressed (was high, now low)
+          if temp1 & $80 then
+            rem Button not pressed, update previous state
+            PauseButtonPrev = 1
+            return
+          endif
+          
+          rem Button is pressed (low)
+          if !PauseButtonPrev then
+            rem Button was already pressed last frame, ignore
+            return
+          endif
+          
+          rem Button just pressed! Toggle Color/B&W override
+          PauseButtonPrev = 0
+          ColorBWOverride = ColorBWOverride ^ 1  : rem XOR to toggle 0<->1
+          
+          return
+#endif
 
           rem =================================================================
           rem QUADTARI MULTIPLEXING

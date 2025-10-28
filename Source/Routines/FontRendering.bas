@@ -89,7 +89,7 @@ DrawDigit
           rem LOAD DIGIT DATA INTO SPRITES
           rem =================================================================
           rem These routines load digit bitmaps from the generated data tables.
-          rem The data is accessed using batariBasic''s data statement indexing.
+          rem The data is accessed using batariBasic''''s data statement indexing.
           rem
           rem INPUT:
           rem   DigitOffset (temp6) = byte offset into font data (digit * 16)
@@ -152,7 +152,7 @@ LoadPlayer1Digit
           rem =================================================================
           rem DRAW PLAYER NUMBER
           rem =================================================================
-          rem Convenience routine to draw a player''s number in their color.
+          rem Convenience routine to draw a player''''s number in their color.
           rem
           rem INPUTS:
           rem   temp1 = player index (0-3)

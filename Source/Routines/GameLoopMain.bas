@@ -27,6 +27,9 @@
           rem =================================================================
 
 GameMainLoop
+          rem Read enhanced controller buttons (Genesis Button C, Joy2B+ II/III)
+          gosub ReadEnhancedButtons
+          
           rem Handle console switches
           gosub HandleConsoleSwitches
 

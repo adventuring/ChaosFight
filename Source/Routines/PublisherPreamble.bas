@@ -33,9 +33,9 @@ PublisherPreamble
           rem Load publisher artwork
           gosub LoadPublisherPlayfield
           
-          rem Start "AtariToday" music (placeholder - will be implemented with music system)
-          rem gosub PlayMusicAtariToday
-          MusicPlaying = 1
+          rem Start "AtariToday" music
+          temp1 = MusicAtariToday
+          gosub StartMusic
           
 PublisherPreambleLoop
           rem Check for button press on any controller to skip
@@ -44,14 +44,11 @@ PublisherPreambleLoop
                     if joy2fire || joy3fire then goto PublisherPreambleComplete
           endif
           
-          rem Update music (placeholder - will be implemented with music system)
-          rem gosub UpdateMusic
+          rem Update music
+          gosub UpdateMusic
           
-          rem Auto-advance after 5 seconds (300 frames)
-          rem This simulates: music complete + 30 frames (0.5s)
-          rem When music system is implemented, check: if PreambleTimer > 30 && !MusicPlaying
-          if PreambleTimer > 300 then
-                    MusicPlaying = 0
+          rem Auto-advance after music completes + 0.5s
+          if PreambleTimer > 30 && MusicPlaying = 0 then
                     goto PublisherPreambleComplete
           endif
           
@@ -62,6 +59,35 @@ PublisherPreambleLoop
           goto PublisherPreambleLoop
 
 PublisherPreambleComplete
+          return
+
+          rem =================================================================
+          rem LOAD PUBLISHER PLAYFIELD
+          rem =================================================================
+          rem Loads the AtariAge publisher artwork with color-per-row.
+          rem Generated from Source/Art/AtariAge.xcf → AtariAge.png
+          rem SkylineTool creates architecture-specific data files.
+          rem
+          rem USES COLOR-PER-ROW:
+          rem   Each row sets COLUPF and COLUBK individually
+          rem   Allows gradient effects, multi-color artwork
+          rem
+          rem GENERATED FILES:
+          rem   - Source/Generated/Playfield.AtariAge.NTSC.bas
+          rem   - Source/Generated/Playfield.AtariAge.PAL.bas
+          rem   - Source/Generated/Playfield.AtariAge.SECAM.bas
+LoadPublisherPlayfield
+          rem Load architecture-specific playfield data
+          #ifdef TV_NTSC
+          #include "Source/Generated/Playfield.AtariAge.NTSC.bas"
+          #endif
+          #ifdef TV_PAL
+          #include "Source/Generated/Playfield.AtariAge.PAL.bas"
+          #endif
+          #ifdef TV_SECAM
+          #include "Source/Generated/Playfield.AtariAge.SECAM.bas"
+          #endif
+          
           return
 
           rem =================================================================

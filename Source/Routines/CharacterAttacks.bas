@@ -19,7 +19,7 @@ rem =================================================================
 rem BERNIE (Character 0) - Melee Attack (Both Directions)
 rem =================================================================
 BernieAttack
-  rem Bernie''s special attack hits both left AND right simultaneously
+  rem Bernie''''s special attack hits both left AND right simultaneously
   rem This is unique - all other melee attacks only hit in facing direction
   PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
   

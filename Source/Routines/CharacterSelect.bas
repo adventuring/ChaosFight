@@ -22,7 +22,12 @@ CharacterSelect1
           rem Check for Quadtari adapter
           gosub DetectQuadtari
 
-          COLUBK = ColBlue(8)
+          rem Set background color (B&W safe)
+          if switchbw then
+                    COLUBK = ColGrey(4)  : rem Dark grey (B&W)
+          else
+                    COLUBK = ColBlue(8)  : rem Dark blue (Color)
+          endif
 
 CharacterSelect1Loop
           rem Quadtari controller multiplexing:
@@ -247,7 +252,7 @@ UpdateCharacterSelectAnimations
           if HandicapMode then
                     CharSelectAnimState = 9  : rem Animation state 9 = "Recovering to standing"
                     CharSelectAnimFrame = 0   : rem First frame of recovery animation
-                    rem Don''t update timer or frame - freeze the animation
+                    rem Don''''t update timer or frame - freeze the animation
                     return
           endif
           
@@ -277,18 +282,39 @@ UpdateCharacterSelectAnimations
 DrawCharacterSprite1
           rem Draw animated character sprite based on current animation state
           rem Each character has unique 8x16 graphics with unique colors per scanline
-          rem Animation states: 0=idle, 1=running, 2=attacking
+          rem Animation states: 0=idle, 1=running, 2=attacking (hurt simulation)
+          rem Colors are based on player number and hurt status, not animation state
           
-          rem Set character color based on animation state
-          if CharSelectAnimState = 0 then
-                    rem Idle - normal color
-                    COLUP0 = ColIndigo(12)
-          else if CharSelectAnimState = 1 then
-                    rem Running - brighter color
-                    COLUP0 = ColIndigo(15)
-          else if CharSelectAnimState = 2 then
-                    rem Attacking - red color
-                    COLUP0 = ColRed(12)
+          rem Set character color based on hurt status and color/B&W mode
+          rem Colors are based on player number (1=Blue, 2=Red, 3=Yellow, 4=Green)
+          rem Hurt state uses same color but dimmer luminance
+          
+          rem Check if character is in hurt/recovery state
+          rem For character select, we''ll use a simple hurt simulation
+          temp1 = CharSelectAnimState  : rem Use animation state as hurt simulation for demo
+          
+          if temp1 = 2 then
+                    rem Hurt state - dimmer colors
+                    if switchbw then
+                              COLUP0 = ColGrey(6)  : rem Dark grey for hurt (B&W)
+                    else
+                              rem Player color but dimmer
+                              if CharSelectPlayer = 1 then COLUP0 = ColBlue(6)  : rem Dark blue
+                              if CharSelectPlayer = 2 then COLUP0 = ColRed(6)   : rem Dark red  
+                              if CharSelectPlayer = 3 then COLUP0 = ColYellow(6) : rem Dark yellow
+                              if CharSelectPlayer = 4 then COLUP0 = ColGreen(6)  : rem Dark green
+                    endif
+          else
+                    rem Normal state - bright colors
+                    if switchbw then
+                              COLUP0 = ColGrey(14)  : rem Bright grey (B&W)
+                    else
+                              rem Player color - bright
+                              if CharSelectPlayer = 1 then COLUP0 = ColBlue(12)  : rem Bright blue
+                              if CharSelectPlayer = 2 then COLUP0 = ColRed(12)   : rem Bright red
+                              if CharSelectPlayer = 3 then COLUP0 = ColYellow(12) : rem Bright yellow
+                              if CharSelectPlayer = 4 then COLUP0 = ColGreen(12)  : rem Bright green
+                    endif
           endif
           
           rem Draw different sprite patterns based on animation state and frame

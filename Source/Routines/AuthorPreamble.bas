@@ -33,9 +33,9 @@ AuthorPreamble
           rem Load author artwork
           gosub LoadAuthorPlayfield
           
-          rem Start "Interworldly" music (placeholder - will be implemented with music system)
-          rem gosub PlayMusicInterworldly
-          MusicPlaying = 1
+          rem Start "Interworldly" music
+          temp1 = MusicInterworldly
+          gosub StartMusic
           
 AuthorPreambleLoop
           rem Check for button press on any controller to skip
@@ -44,14 +44,11 @@ AuthorPreambleLoop
                     if joy2fire || joy3fire then goto AuthorPreambleComplete
           endif
           
-          rem Update music (placeholder - will be implemented with music system)
-          rem gosub UpdateMusic
+          rem Update music
+          gosub UpdateMusic
           
-          rem Auto-advance after 5 seconds (300 frames)
-          rem This simulates: music complete + 30 frames (0.5s)
-          rem When music system is implemented, check: if PreambleTimer > 30 && !MusicPlaying
-          if PreambleTimer > 300 then
-                    MusicPlaying = 0
+          rem Auto-advance after music completes + 0.5s
+          if PreambleTimer > 30 && MusicPlaying = 0 then
                     goto AuthorPreambleComplete
           endif
           

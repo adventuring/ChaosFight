@@ -3,15 +3,15 @@
 
           rem Macros
 
-          rem =================================================================
+          rem 
           rem MACROS
-          rem =================================================================
+          rem 
 
           rem Note: Array accessor macros removed - use subroutines from ArrayAccessors.bas instead
           
-          rem =================================================================
+          rem 
           rem PACKED DATA ACCESSOR MACROS
-          rem =================================================================
+          rem 
 
           rem Get player facing direction from packed state (bits 0-1)
           rem Note: This macro removed - implement as subroutine if needed

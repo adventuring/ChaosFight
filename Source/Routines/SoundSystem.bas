@@ -16,6 +16,7 @@
           const SoundGuard = 4
           const SoundSelect = 5
           const SoundVictory = 6
+          const SoundElimination = 7
 
           rem =================================================================
           rem SOUND EFFECT DATA TABLES
@@ -74,6 +75,15 @@
           $1F, $1D, $1B, $19, $17, $15, $13, $11, $0F
           end
 
+          rem Elimination sound (dramatic death sound)
+          data EliminationSoundData
+          $0F, $0E, $0D, $0C, $0B, $0A, $09, $08, $07, $06, $05, $04, $03, $02, $01, $00
+          end
+
+          data EliminationSoundFreq
+          $18, $16, $14, $12, $10, $0E, $0C, $0A, $08, $06, $05, $04, $03, $02, $01, $00
+          end
+
           rem =================================================================
           rem SOUND PLAYBACK FUNCTIONS
           rem =================================================================
@@ -93,6 +103,8 @@ PlaySoundEffect
                     gosub PlaySelectSound
           else if temp1 = SoundVictory then
                     gosub PlayVictorySound
+          else if temp1 = SoundElimination then
+                    gosub PlayEliminationSound
           endif
           return
 
@@ -185,6 +197,21 @@ VictorySoundLoop
           
           temp2 = temp2 + 1
           goto VictorySoundLoop
+
+          rem Play elimination sound (dramatic death sound)
+PlayEliminationSound
+          temp2 = 0
+          temp3 = 16  : rem 16 frames
+EliminationSoundLoop
+          if temp2 >= temp3 then return
+          
+          temp4 = EliminationSoundData(temp2)
+          temp5 = EliminationSoundFreq(temp2)
+          AUDC1 = temp4
+          AUDF1 = temp5
+          
+          temp2 = temp2 + 1
+          goto EliminationSoundLoop
 
           rem Stop all sound effects
 StopSoundEffects

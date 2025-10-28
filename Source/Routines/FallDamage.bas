@@ -67,9 +67,9 @@ CheckFallDamage
           if temp5 = 8 then return  : rem Magical Faerie: no gravity, no falling
           
           rem Get character weight from data table
-          rem TODO: Read from CharacterWeights data table
-          rem For now, use placeholder weight (20 = average)
-          temp6 = 20
+          temp1 = temp5  : rem Character type as index
+          gosub GetCharacterWeight
+          temp6 = temp2  : rem Store weight
           
           rem Calculate safe fall velocity threshold
           rem Formula: safe_velocity = base_safe_velocity * (average_weight / character_weight)
@@ -295,8 +295,9 @@ CalculateSafeFallDistance
           if temp5 = 8 then temp2 = 255 : return  : rem Magical Faerie: no falling
           
           rem Get character weight
-          rem TODO: Read from CharacterWeights data table
-          temp6 = 20  : rem Placeholder average weight
+          temp1 = temp5  : rem Character type as index
+          gosub GetCharacterWeight
+          temp6 = temp2  : rem Store weight
           
           rem Calculate safe fall velocity (from CheckFallDamage logic)
           temp3 = 120 / temp6  : rem Safe velocity threshold

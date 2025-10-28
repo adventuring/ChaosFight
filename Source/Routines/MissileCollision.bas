@@ -45,10 +45,9 @@ CheckAllMissileCollisions
           
           rem Check if this is a visible missile or AOE attack
           rem Read missile width from character data
-          rem TODO: Implement data table access for CharacterMissileWidths
-          rem For now, check if width/height = 0 (means AOE attack)
-          rem Assume temp6 = missile width (0 = AOE, >0 = visible missile)
-          temp6 = 1  : rem Placeholder: assume visible missile
+          temp1 = temp5  : rem Character type as index
+          gosub GetMissileWidth
+          temp6 = temp2  : rem Missile width (0 = AOE, >0 = visible missile)
           
           if temp6 = 0 then
                     rem AOE attack (no visible missile)
@@ -91,11 +90,14 @@ CheckVisibleMissileCollision
           endif
           
           rem Get missile size from character data
-          rem TODO: Read CharacterMissileWidths and CharacterMissileHeights
-          rem For now, use default 4×4 pixels
-          rem temp6 = missile width, temp5 = missile height (reusing temp5)
-          temp6 = 4
-          temp5 = 4
+          rem Get character type from player
+          temp5 = PlayerChar[temp1]
+          temp1 = temp5  : rem Use as index
+          gosub GetMissileWidth
+          temp6 = temp2  : rem Missile width
+          temp1 = temp5  : rem Reload character index
+          gosub GetMissileHeight
+          temp5 = temp2  : rem Missile height (reusing temp5)
           
           rem Missile bounding box:
           rem   Left:   temp2

@@ -138,22 +138,25 @@ UpdateOneMissile
           temp5 = PlayerChar[temp1]
           
           rem Read missile momentum from character data
-          rem TODO: Implement data table read for CharacterMissileMomentumX/Y
-          rem For now, use placeholder momentum based on player facing
+          temp1 = temp5  : rem Character index for data lookup
+          gosub GetMissileMomentumX
+          temp6 = temp2  : rem Store base X momentum
+          temp1 = temp5  : rem Restore for Y lookup
+          gosub GetMissileMomentumY
+          temp3 = temp2  : rem Y momentum (already in correct form)
+          
+          rem Apply facing direction to X momentum
           temp4 = PlayerState[temp1] & 1  : rem Get facing direction
           if temp4 = 0 then
-                    temp2 = -3  : rem X velocity (negative = left)
+                    temp2 = 0 - temp6  : rem Facing left, negate X
           else
-                    temp2 = 3   : rem X velocity (positive = right)
+                    temp2 = temp6      : rem Facing right, use as-is
           endif
-          temp3 = 0  : rem Y velocity (0 = horizontal, negative = up, positive = down)
           
-          rem TODO: Read missile flags from character data
-          rem Bit 0: Hit background (playfield)
-          rem Bit 1: Hit player
-          rem Bit 2: Apply gravity
-          rem Bit 3: Bounce off walls
-          temp5 = %00000011  : rem Default: hit bg and players
+          rem Read missile flags from character data
+          temp1 = temp5
+          gosub GetMissileFlags
+          temp5 = temp2  : rem Store flags for later use
           
           rem Apply gravity if flag is set
           if temp5 & 4 then temp3 = temp3 + 1  : rem Add gravity (1 pixel/frame down)

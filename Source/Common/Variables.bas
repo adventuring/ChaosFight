@@ -161,6 +161,15 @@
           dim GameEndTimer = var29              : rem GAME: Countdown to game end screen
           dim EliminationEffectTimer = var30    : rem GAME: Visual effect timers [0-3]
           
+          rem Elimination order tracking (1=first eliminated, 2=second, etc.)
+          dim EliminationOrder = var31          : rem GAME: Order players were eliminated [0-3]
+          dim EliminationCounter = var32        : rem GAME: Counter for elimination sequence
+          
+          rem Win screen variables
+          dim WinnerPlayerIndex = var33         : rem GAME: Index of winning player (0-3)
+          dim DisplayRank = var34               : rem GAME: Current rank being displayed (1-4)
+          dim WinScreenTimer = var35            : rem GAME: Win screen display timer
+          
           rem PlayerRecoveryFrames[0-3] - Recovery/hitstun frame counters (was part of PlayerTimers)
           dim PlayerRecoveryFrames = var16
           dim Player1RecoveryFrames = var16

@@ -63,6 +63,13 @@ CheckPlayerElimination
           rem Player health reached 0 - eliminate them
           PlayersEliminated = PlayersEliminated | temp6
           
+          rem Record elimination order
+          EliminationCounter = EliminationCounter + 1
+          if temp1 = 0 then EliminationOrder[0] = EliminationCounter
+          if temp1 = 1 then EliminationOrder[1] = EliminationCounter  
+          if temp1 = 2 then EliminationOrder[2] = EliminationCounter
+          if temp1 = 3 then EliminationOrder[3] = EliminationCounter
+          
           rem Trigger elimination effects
           gosub TriggerEliminationEffects
           
@@ -147,7 +154,9 @@ CountRemainingPlayers
 CheckGameEndCondition
           rem Game ends when 1 or fewer players remain
           if PlayersRemaining <= 1 then
-                    rem Start game end countdown
+                    rem Find winner (last remaining player)
+                    gosub FindWinner
+                    rem Start game end countdown  
                     GameEndTimer = 180  : rem 3 seconds at 60 FPS
                     GameState = 2      : rem Game ending state
           endif
@@ -187,4 +196,56 @@ IsPlayerAlive
           if temp1 = 3 then temp3 = PlayerHealth[3]
           
           if temp3 > 0 then temp2 = 1 else temp2 = 0
+          return
+
+          rem =================================================================
+          rem FIND WINNER
+          rem =================================================================
+          rem Identify the winning player (last one standing).
+FindWinner
+          rem Find the player who is not eliminated
+          WinnerPlayerIndex = 255  : rem Invalid initially
+          
+          temp1 = 0 : gosub IsPlayerEliminated
+          if !temp2 then WinnerPlayerIndex = 0
+          temp1 = 1 : gosub IsPlayerEliminated  
+          if !temp2 then WinnerPlayerIndex = 1
+          temp1 = 2 : gosub IsPlayerEliminated
+          if !temp2 then WinnerPlayerIndex = 2
+          temp1 = 3 : gosub IsPlayerEliminated
+          if !temp2 then WinnerPlayerIndex = 3
+          
+          rem If no winner found (all eliminated), pick last eliminated
+          if WinnerPlayerIndex = 255 then
+                    gosub FindLastEliminated
+          endif
+          
+          return
+
+          rem =================================================================
+          rem FIND LAST ELIMINATED
+          rem =================================================================
+          rem Find player who was eliminated most recently (highest elimination order).
+FindLastEliminated
+          temp4 = 0     : rem Highest elimination order found
+          WinnerPlayerIndex = 0  : rem Default winner
+          
+          rem Check each player's elimination order
+          if EliminationOrder[0] > temp4 then
+                    temp4 = EliminationOrder[0]
+                    WinnerPlayerIndex = 0
+          endif
+          if EliminationOrder[1] > temp4 then
+                    temp4 = EliminationOrder[1] 
+                    WinnerPlayerIndex = 1
+          endif
+          if EliminationOrder[2] > temp4 then
+                    temp4 = EliminationOrder[2]
+                    WinnerPlayerIndex = 2
+          endif
+          if EliminationOrder[3] > temp4 then
+                    temp4 = EliminationOrder[3]
+                    WinnerPlayerIndex = 3
+          endif
+          
           return

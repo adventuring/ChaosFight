@@ -75,6 +75,14 @@ GameMainLoop
           rem Update frame counter
           frame = frame + 1
 
+          rem Check game state for win screen
+          if GameState = 2 then
+                    rem Game ending - show win screen
+                    gosub DisplayWinScreen
+                    drawscreen
+                    return  : rem Exit to win screen handling
+          endif
+          
           rem Draw screen
           drawscreen
           goto GameMainLoop

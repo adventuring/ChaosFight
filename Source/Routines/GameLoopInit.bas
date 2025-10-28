@@ -102,6 +102,18 @@ GameLoop
           PlayersEliminated = 0   : rem No players eliminated at start
           PlayersRemaining = 0    : rem Will be calculated
           GameEndTimer = 0        : rem No game end countdown
+          EliminationCounter = 0  : rem Reset elimination order counter
+          
+          rem Initialize elimination order tracking
+          EliminationOrder[0] = 0
+          EliminationOrder[1] = 0  
+          EliminationOrder[2] = 0
+          EliminationOrder[3] = 0
+          
+          rem Initialize win screen variables
+          WinnerPlayerIndex = 255  : rem No winner yet
+          DisplayRank = 0          : rem No rank being displayed  
+          WinScreenTimer = 0       : rem Reset win screen timer
 
           rem Count initial players
           if SelectedChar1 != 0 then PlayersRemaining = PlayersRemaining + 1

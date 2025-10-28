@@ -1,12 +1,12 @@
 \input texinfo   @c -*-texinfo-*-
 @c %**start of header
 @setfilename ChaosFight.info
-@settitle ChaosFight Game Manual
+@settitle Chaos Fight Game Manual
 @documentencoding UTF-8
 @c %**end of header
 
 @copying
-ChaosFight Game Manual
+Chaos Fight Game Manual
 
 Copyright @copyright{} 2025 Interworldly Adventuring, LLC.
 
@@ -28,8 +28,8 @@ No additional restrictions — You may not apply legal terms or technological me
 @end copying
 
 @titlepage
-@title ChaosFight
-@subtitle Atari 2600 Game Manual
+@title Chaos Fight
+@subtitle Atari Video Computer System Game Manual
 @author Interworldly Adventuring, LLC
 
 @page
@@ -74,7 +74,7 @@ Video Computer System.
 
 @center @strong{CHAOS FIGHT}
 @sp 1
-@center GAME PROGRAM™
+@center GAME PROGRAM
 @sp 1
 @center INSTRUCTIONS
 @sp 2
@@ -107,10 +107,19 @@ featuring 16 unique characters, each with distinct abilities and attack styles.
 Weight-based physics affecting jump height, speed, and knockback
 
 @item
-Compatible with colour or black & white television
+Compatible with Atari Video Computer System CX-2600@footnote{Atari Video Computer System and CX-2600 are trademarks of Atari Interactive, Inc.}, 
+Sears Tele-Games Video Arcade@footnote{Tele-Games Video Arcade is a trademark of Sears, Roebuck and Co.}, 
+Atari 7800 ProSystem@footnote{Atari 7800 ProSystem is a trademark of Atari Interactive, Inc.}, 
+Atari 2600+@footnote{Atari 2600+ is a trademark of Atari Interactive, Inc.}, 
+Atari 7800+@footnote{Atari 7800+ is a trademark of Atari Interactive, Inc.},
+Intellivision II System Changer@footnote{Intellivision and System Changer are trademarks of Atari Interactive, Inc.}, 
+ColecoVision Expansion Module #1@footnote{ColecoVision is a registered trademark.}, 
+Stella emulator@footnote{Stella is an open-source Atari VCS emulator developed by Bradford W. Mott and the Stella development team.}, 
+Gopher2600 emulator@footnote{Gopher2600 is an open-source Atari VCS emulator developed by JetSetIlly.}, 
+and any other Atari Video Computer System compatible console.
 
 @item
-Supports CX-40 joysticks, Genesis controllers, Joy2B+, and Quadtari adapters
+Supports Atari CX-40 joysticks@footnote{CX-40 is a trademark of Atari Interactive, Inc.}, Sega Genesis/Mega Drive 3-button controllers@footnote{Genesis and Mega Drive are trademarks of Sega Corporation.}, Joy2B+ enhanced controllers@footnote{Joy2B+ is a trademark of Classic Gaming Creations.}, and Quadtari 4-player adapters@footnote{Quadtari is a trademark of Retrohq Ltd.}
 @end itemize
 
 @page
@@ -139,7 +148,7 @@ Supports CX-40 joysticks, Genesis controllers, Joy2B+, and Quadtari adapters
 Turn off console and TV.
 
 @item
-Connect Atari 2600 to TV antenna input.
+Connect Atari Video Computer System to TV or monitor as appropriate for your system.
 
 @item
 Plug joystick(s) into controller ports (Player 1: left port, Player 2: right port).
@@ -149,10 +158,10 @@ Insert ChaosFight cartridge into console. @emph{Never insert or remove cartridge
 while power is on.}
 
 @item
-Turn on TV and select channel 3 or 4.
+Turn on TV to the correct input or channel.
 
 @item
-Turn on Atari 2600 console.
+Turn on Atari Video Computer System (or compatible) console.
 
 @item
 Press fire button to skip intro screens and begin character selection.
@@ -162,7 +171,7 @@ Press fire button to skip intro screens and begin character selection.
 
 @table @strong
 @item No picture
-Check TV channel (3 or 4) and antenna connection.
+Check TV channel or input and signal connection.
 
 @item Controllers unresponsive
 Verify connections and press fire button to activate controller detection.
@@ -246,7 +255,7 @@ joysticks for 4-player games.
 @end group
 @end display
 
-Joy2B+ controllers are modern enhanced joysticks designed for the Atari 2600,
+Joy2B+ controllers are modern enhanced joysticks designed for the Atari Video Computer System,
 featuring three fire buttons and improved build quality.
 
 @strong{How to Use It in ChaosFight:}
@@ -301,7 +310,7 @@ Extra buttons vary by Joy2B+ model and are not used by ChaosFight.
 buttons for ultimate control!
 @item @strong{Most advanced control:} The only controller with pause button support
 @item @strong{Comfortable design:} Ergonomic shapes for long gaming sessions
-@item @strong{Compatible everywhere:} Works with all Atari 2600 games
+@item @strong{Compatible everywhere:} Works with all Atari VCS games
 @item @strong{Best for competitive play:} Separate attack and jump buttons enable
 advanced techniques
 @end itemize
@@ -354,7 +363,7 @@ Attack (standard fire button - functions as joy0fire/joy1fire)
 Jump (via TH line - requires SELECT toggling and reading INPT0/2)
 
 @item Button A and START
-Cannot be reliably detected on Atari 2600 hardware
+Cannot be reliably detected on Atari VCS hardware
 
 @strong{Technical Note:} Button C requires toggling the TH (SELECT) line via SWACNT register and reading INPT0 (P1) or INPT2 (P2). This is more complex than standard button reading.
 @end table
@@ -442,7 +451,7 @@ Screen elements:
 @strong{Handicap Mode:} Character freezes in recovery pose when DOWN is held
 @end itemize
 
-@emph{Note:} The Atari 2600 cannot display text. Character names and statistics
+@emph{Note:} The Atari Video Computer System cannot display text. Character names and statistics
 are not shown on screen. Refer to this manual to identify characters.
 
 @section Selection Controls
@@ -1139,7 +1148,7 @@ ChaosFight automatically detects the TV TYPE switch and adjusts all colors accor
 
 @table @strong
 @item COLOR Position
-Full color display with distinct player colors:
+Full colour display with distinct player colors:
 @itemize @bullet
 @item Player 1: Blue
 @item Player 2: Red
@@ -1165,7 +1174,7 @@ Grayscale display with brightness differentiation:
 
 When characters take damage, colors darken in both modes:
 @itemize @bullet
-@item @strong{Color mode:} Hue remains same, luminance reduced by 50%
+@item @strong{Colour mode:} Hue remains same, luminance reduced by 50%
 @item @strong{B&W mode:} Grey darkens by 6-8 luminance levels
 @end itemize
 
@@ -1332,7 +1341,7 @@ Use your weight advantage in close combat
 @item
 Don't chase fast opponents - let them come to you
 @item
-Control center stage
+Control centre stage
 @end itemize
 
 @subsection Arena-Specific Tactics
@@ -1383,7 +1392,7 @@ Knock opponents into the pit
 
 @itemize @bullet
 @item
-@strong{Avoid the center} - you'll be surrounded!
+@strong{Avoid the centre} - you'll be surrounded!
 @item
 @strong{Let others fight} - third-party while they're distracted
 @item
@@ -1446,7 +1455,7 @@ Standard 128 bytes + SuperChip 128 bytes
 1-4 Joystick Controllers (see @ref{Controller Configuration})
 
 @item Display
-Color or Black & White television
+Colour or Black & White television
 
 @item Optional
 Quadtari adapter for 4-player mode
@@ -1511,8 +1520,8 @@ Quadtari adapter for 4-player mode
 @item Playfield
 32 pixels wide × up to 192 scanlines
 @itemize @bullet
-@item Color-per-row support on title screens
-@item Standard two-color mode during gameplay
+@item Colour-per-row support on title screens
+@item Standard two-colour mode during gameplay
 @end itemize
 @end table
 
@@ -1606,7 +1615,7 @@ If using Quadtari, ensure it's properly connected and powered
 @strong{Solutions:}
 @enumerate
 @item
-Verify your Quadtari adapter is compatible with Atari 2600
+Verify your Quadtari adapter is compatible with Atari VCS
 
 @item
 Press GAME SELECT to re-detect the Quadtari
@@ -1657,7 +1666,7 @@ For black & white TVs, set switch to B&W position for proper brightness levels
 Adjust your TV's brightness/contrast for better grey differentiation (B&W mode)
 
 @item
-Adjust your TV's color/tint settings (Color mode)
+Adjust your TV's colour/tint settings (Colour mode)
 
 @item
 Verify correct ROM version (NTSC/PAL/SECAM) for your console
@@ -1673,13 +1682,13 @@ Verify correct ROM version (NTSC/PAL/SECAM) for your console
 Ensure you have the correct ROM version for your multicart
 
 @item
-Try loading a different ROM first, then load ChaosFight
+Some multicarts may require the ".a26" extension to be renamed to ".EFSC"
+for proper detection.
 
 @item
-Some multicarts require specific bank-switching types - consult documentation
-
-@item
-Verify the ROM file is not corrupted (check MD5 checksum if available)
+When launching from a multicart on Atari 7800, your console may not be
+detected as a 7800, and "Black & White" mode will be only enabled while
+you hold down the "Pause" button. There is no workaround for this at present.
 @end enumerate
 
 @section Getting Help
@@ -1689,9 +1698,15 @@ If you continue to experience issues:
 @enumerate
 @item
 Check for ROM updates at @url{https://interworldly.com}
+or the AtariAge Homebrew forums.
 
 @item
-Consult homebrew Atari 2600 community forums for technical support
+Watch ZeroPage Homebrew on Twitch and YouTube for news and updates about 
+Atari VCS homebrew games including Chaos Fight.
+
+@item
+Consult AtariAge community forums for technical support
+(Homebrew Chat forum)
 
 @item
 Contact Interworldly Adventuring at @url{https://interworldly.com}
@@ -1713,18 +1728,6 @@ Contact Interworldly Adventuring at @url{https://interworldly.com}
 @table @strong
 @item Programming
 Bruce-Robert Pocock
-
-@item Graphics
-Bruce-Robert Pocock
-
-@item Music
-Bruce-Robert Pocock
-
-@item Game Design
-Bruce-Robert Pocock
-
-@item Testing
-[Playtesters TBD]
 @end table
 
 @section Special Thanks
@@ -1733,19 +1736,21 @@ Bruce-Robert Pocock
 @item
 Fred @dfn{batari} Quimby (batariBasic compiler)
 @item
-Ryan Witmer
+Ryan Witmer (Magical Fairy Force, Rob 'N' Banks, RealSports Curling)
 @item
-Lewis @dfn{Muddyfunster} Hill
+Lewis @dfn{Muddyfunster} Hill (EXO, Bernie and the Tower of Doom)
 @item
-Blake @dfn{SmittyB} Smith
+Blake @dfn{SmittyB} Smith (Ducks Away)
 @item
-Zephyr Pocock
+Zephyr Pocock (Grizzards) for additional art and music
 @item
-Philip @dfn{Splendidnut} Blackman
+Philip @dfn{Splendidnut} Blackman (batariBasic assistance)
 @item
-Vladimir @dfn{vhzc} Zúñiga
+Vladimir @dfn{vhzc} Zúñiga (Game of the Bear, Knight Guy, Ninjish Guy)
 @item
-Atari 2600 homebrew community
+James Earl O'Brian and Tanya O'Brian (ZeroPage Homebrew)
+@item
+AtariAge and Atari community
 @item
 Random Terrain (batariBasic documentation)
 @end itemize
@@ -1766,9 +1771,11 @@ ChaosFight was created with:
 @item
 @strong{MuseScore} - Music composition
 @item
-@strong{Emacs} - Text editing
+@strong{Emacs} - Integrated development environment
 @item
 @strong{Stella} - Atari 2600 emulator for testing
+@item
+@strong{Cursor} - AI assisted development
 @end itemize
 
 @section Copyright and License
@@ -1779,26 +1786,35 @@ ChaosFight
 Copyright @copyright{} 2025 Interworldly Adventuring, LLC.
 All rights reserved.
 
-An independent homebrew game for the Atari 2600
-Portland, Oregon
+Published by AtariAge
+@url{https://atariage.com}
+
+Developed by Interworldly Adventuring, LLC
+Portland, Oregon  
 @url{https://interworldly.com}
 @end group
 @end display
 
-This game is an independent homebrew production for the Atari 2600.
+This game is published by AtariAge for the Atari Video Computer System.
 Distribution is subject to terms established by Interworldly Adventuring, LLC.
 
-ATARI® is a registered trademark. This is an independent production and is
-not endorsed by or affiliated with Atari or any successor companies.
+ATARI® is a registered trademark of Atari Interactive, Inc. This game is
+officially licensed to and may be published by AtariAge,
+a subsidiary of Atari Interactive, Inc. Commercial distribution of
+cartridges requires a license from Interworldly Adventuring, LLC.
+
+Character names and likenesses are the intellectual property of their respective
+owners and are used with permission.
+
+Any resemblance to actual persons, living or dead, is purely coincidental.
 
 @section Version Information
 
 @display
 @group
-    Version: 1.0
-    Build Date: 2025-10-28
-    ROM Size: 64K
-    Compatibility: NTSC/PAL/SECAM
+    Version: 0.1
+    ROM Size: 64KiB
+    Versions: NTSC/PAL/SECAM
 @end group
 @end display
 

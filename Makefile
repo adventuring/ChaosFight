@@ -109,7 +109,7 @@ CHARACTER_PNG = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png)
 CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).bas)
 
 # Convert XCF to PNG for character sprites  
-Source/Art/%.png: Source/Art/%.xcf $(READYFILE)
+%.png: %.xcf $(READYFILE)
 	@echo "Converting $< to $@..."
 	mkdir -p Source/Art
 	xvfb-run -a $(GIMP) -b '(load "Tools/xcf-export.scm")' -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
@@ -118,19 +118,19 @@ Source/Art/%.png: Source/Art/%.xcf $(READYFILE)
 Source/Generated/Art.%.NTSC.bas: Source/Art/%.png
 	@echo "Converting character sprite $< to $@ for NTSC..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-art "$@" "$<"
+	bin/skyline-tool compile-chaos-character "$@" "$<"
 
 # Convert PNG character sprite sheet to batariBASIC data for PAL  
 Source/Generated/Art.%.PAL.bas: Source/Art/%.png
 	@echo "Converting character sprite $< to $@ for PAL..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-art "$@" "$<"
+	bin/skyline-tool compile-chaos-character "$@" "$<"
 
 # Convert PNG character sprite sheet to batariBASIC data for SECAM
 Source/Generated/Art.%.SECAM.bas: Source/Art/%.png
 	@echo "Converting character sprite $< to $@ for SECAM..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-art "$@" "$<"
+	bin/skyline-tool compile-chaos-character "$@" "$<"
 
 # Generate platform-specific character files
 Source/Generated/Characters.NTSC.bas:
@@ -386,7 +386,7 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: $(ALL_SOURCES
 		ln -sf Tools/batariBASIC/includes/$$f $$f 2>/dev/null || true; \
 	done
 	@cp Source/Common/includes.bB .
-	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).NTSC.bB.asm | grep -v "^User-defined.*found in current directory" > Source/Generated/$(GAME).NTSC.tmp.s
+	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).NTSC.bB.asm | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).NTSC.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).NTSC.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).NTSC.s
 	@echo "playercolors = 1" >> Source/Generated/$(GAME).NTSC.s
@@ -414,7 +414,7 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: $(ALL_SOURCES) S
 		ln -sf Tools/batariBASIC/includes/$$f $$f 2>/dev/null || true; \
 	done
 	@cp Source/Common/includes.bB .
-	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).PAL.bB.asm | grep -v "^User-defined.*found in current directory" > Source/Generated/$(GAME).PAL.tmp.s
+	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).PAL.bB.asm | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).PAL.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).PAL.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).PAL.s
 	@echo "playercolors = 1" >> Source/Generated/$(GAME).PAL.s
@@ -442,7 +442,7 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: $(ALL_SOUR
 		ln -sf Tools/batariBASIC/includes/$$f $$f 2>/dev/null || true; \
 	done
 	@cp Source/Common/includes.bB .
-	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).SECAM.bB.asm | grep -v "^User-defined.*found in current directory" > Source/Generated/$(GAME).SECAM.tmp.s
+	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).SECAM.bB.asm | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).SECAM.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).SECAM.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).SECAM.s
 	@echo "playercolors = 1" >> Source/Generated/$(GAME).SECAM.s
@@ -518,13 +518,13 @@ Dist/$(GAME).SECAM.pro: Source/$(GAME).pro Dist/$(GAME).SECAM.a26
 # Generate PDF manual from Texinfo source
 Dist/$(GAME)-Manual.pdf: Manual/$(GAME).texi
 	@echo "Building PDF manual..."
-	mkdir -p Dist
-	cd Manual && texi2pdf $(GAME).texi
-	cp Manual/$(GAME).pdf Dist/$(GAME)-Manual.pdf
+	mkdir -p Dist Object
+	cd Object && texi2pdf ../Manual/$(GAME).texi
+	cp Object/$(GAME).pdf Dist/$(GAME)-Manual.pdf
 
 # Generate HTML manual from Texinfo source
 Dist/$(GAME)-Manual.html: Manual/$(GAME).texi
 	@echo "Building HTML manual..."
-	mkdir -p Dist
-	makeinfo --html --no-split --output=Dist/$(GAME)-Manual.html Manual/$(GAME).texi
+	mkdir -p Dist Object
+	cd Object && makeinfo --html --no-split --output=../Dist/$(GAME)-Manual.html ../Manual/$(GAME).texi
 

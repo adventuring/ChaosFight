@@ -77,6 +77,22 @@ make emu
 **Detection Method**: Check paddle ports INPT0-3 for signature patterns - if INPT0 LOW + INPT1 HIGH (left side) OR INPT2 LOW + INPT3 HIGH (right side), Quadtari detected.  
 **Multiplexing**: Even frames read P1/P2, odd frames read P3/P4 (same physical ports). Players 3&4 use same controls as 1&2.
 
+## Enhanced Controller Support
+
+### Genesis 3-Button
+- **Button A**: Fire (INPT4/5)  
+- **Button B**: Secondary action (INPT4/5 alternate reading)
+- **Button C**: Special ability (INPT0/2 - reliable input method)
+- **D-Pad**: Standard joystick movement
+
+### Joy2B+ Enhanced  
+- **Button I**: Fire (INPT4/5)
+- **Button II**: Secondary action (INPT1/3 - reliable input method)  
+- **Button III**: Special ability / Pause toggle
+- **D-Pad**: Standard joystick movement
+
+**Note**: TH line toggling is not used. Buttons B/C are reliably read on INPT4/5 and INPT0/2 respectively.
+
 **Note**: Enhanced controllers (Genesis/Joy2B+) limited to 2-player mode.
 
 ## Coding Conventions

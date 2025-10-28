@@ -61,22 +61,24 @@ DetectControllers
 #endif
           
           rem Check for Quadtari (4 joysticks via multiplexing)
-          rem Read INPT4 and INPT5 multiple times across frames
-          rem If patterns indicate multiplexing, Quadtari is present
-          temp1 = INPT4
-          temp2 = INPT5
+          rem CANONICAL METHOD: Check INPT0-3 paddle ports for Quadtari signature
+          rem Quadtari presents specific button patterns on paddle ports
+          rem Left side: INPT0 LOW + INPT1 HIGH, or Right side: INPT2 LOW + INPT3 HIGH
           
-          rem Wait one frame
-          drawscreen
-          
-          temp3 = INPT4
-          temp4 = INPT5
-          
-          rem If values changed without button press, likely Quadtari
-          if temp1 != temp3 || temp2 != temp4 then
+          rem Check left side controllers (INPT0/INPT1)
+          if !INPT0{7} && INPT1{7} then
             QuadtariDetected = 1
             return
           endif
+          
+          rem Check right side controllers (INPT2/INPT3) 
+          if !INPT2{7} && INPT3{7} then
+            QuadtariDetected = 1
+            return
+          endif
+          
+          rem Quadtari not detected
+          QuadtariDetected = 0
           
           rem Check for Genesis controller
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle

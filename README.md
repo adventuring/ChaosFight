@@ -73,8 +73,9 @@ make emu
 - **Button II** (INPT0/2): Enhanced Jump
 - **Button III** (INPT1/3): Pause
 
-### Quadtari (4-Player)
-Automatically detected via frame multiplexing. Players 3&4 use same controls as 1&2.
+### Quadtari (4-Player)  
+**Detection Method**: Check paddle ports INPT0-3 for signature patterns - if INPT0 LOW + INPT1 HIGH (left side) OR INPT2 LOW + INPT3 HIGH (right side), Quadtari detected.  
+**Multiplexing**: Even frames read P1/P2, odd frames read P3/P4 (same physical ports). Players 3&4 use same controls as 1&2.
 
 **Note**: Enhanced controllers (Genesis/Joy2B+) limited to 2-player mode.
 

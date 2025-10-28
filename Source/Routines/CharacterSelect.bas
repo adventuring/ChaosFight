@@ -398,30 +398,20 @@ CharacterSelectComplete1
           rem Proceed to falling animation
           return
 
-          rem Detect Quadtari adapter
+          rem Detect Quadtari adapter  
 DetectQuadtari
-          rem Quadtari detection: check INPT port states
-          rem Left side: INPT0 and INPT1 should have opposite states when buttons are pressed
-          rem Right side: INPT2 and INPT3 should have opposite states when buttons are pressed
-          rem If both sides show this pattern, Quadtari is detected
+          rem CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
+          rem Left side: INPT0 LOW + INPT1 HIGH, or Right side: INPT2 LOW + INPT3 HIGH
           
-          rem Check left side (controllers 0 and 1)
-          if !INPT0{7} && INPT1{7} then qtLeftOk
-          if INPT0{7} && !INPT1{7} then qtLeftOk
-          goto qtNotDetected
+          if !INPT0{7} && INPT1{7} then ____skip_qt_not_detected
+          if !INPT2{7} && INPT3{7} then ____skip_qt_not_detected
           
-qtLeftOk
-          rem Check right side (controllers 2 and 3)
-          if !INPT2{7} && INPT3{7} then qtRightOk
-          if INPT2{7} && !INPT3{7} then qtRightOk
-          goto qtNotDetected
-          
-qtRightOk
-          rem Quadtari detected
-          QuadtariDetected = 1
+          rem Quadtari not detected - could set visual indicator
+          rem COLUBK = $40  ; red background if desired
+          QuadtariDetected = 0
           return
           
-qtNotDetected
-          rem Quadtari not detected
-          QuadtariDetected = 0
+____skip_qt_not_detected
+          rem Quadtari detected
+          QuadtariDetected = 1
           return

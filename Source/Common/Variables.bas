@@ -153,6 +153,14 @@
           dim Player3Health = var14
           dim Player4Health = var15
           
+          rem PlayerEliminated[0-3] - Bit flags for eliminated players
+          rem Bit 0 = Player 1, Bit 1 = Player 2, Bit 2 = Player 3, Bit 3 = Player 4
+          rem Set when player health reaches 0, prevents respawn/reentry
+          dim PlayersEliminated = f            : rem GAME: Eliminated player bit flags
+          dim PlayersRemaining = var28          : rem GAME: Count of active players  
+          dim GameEndTimer = var29              : rem GAME: Countdown to game end screen
+          dim EliminationEffectTimer = var30    : rem GAME: Visual effect timers [0-3]
+          
           rem PlayerRecoveryFrames[0-3] - Recovery/hitstun frame counters (was part of PlayerTimers)
           dim PlayerRecoveryFrames = var16
           dim Player1RecoveryFrames = var16

@@ -37,20 +37,24 @@
 HandleAllPlayerInput
           if qtcontroller then goto HandleQuadtariPlayers
           
-          rem Even frame: Handle Players 1 & 2
-          if !IsPlayerRecovery(PlayerState[0]) then gosub HandlePlayer1Input
-          if !IsPlayerRecovery(PlayerState[1]) then gosub HandlePlayer2Input
+          rem Even frame: Handle Players 1 & 2 - only if alive  
+          temp1 = 0 : gosub IsPlayerAlive
+          if temp2 && !IsPlayerRecovery(PlayerState[0]) then gosub HandlePlayer1Input
+          temp1 = 1 : gosub IsPlayerAlive
+          if temp2 && !IsPlayerRecovery(PlayerState[1]) then gosub HandlePlayer2Input
           
           qtcontroller = 1  : rem Switch to odd frame
           return
 
 HandleQuadtariPlayers
-          rem Odd frame: Handle Players 3 & 4 (if Quadtari detected)
+          rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and alive)
           if QuadtariDetected && SelectedChar3 != 0 then
-                    if !IsPlayerRecovery(PlayerState[2]) then gosub HandlePlayer3Input
+                    temp1 = 2 : gosub IsPlayerAlive
+                    if temp2 && !IsPlayerRecovery(PlayerState[2]) then gosub HandlePlayer3Input
           endif
           if QuadtariDetected && SelectedChar4 != 0 then
-                    if !IsPlayerRecovery(PlayerState[3]) then gosub HandlePlayer4Input
+                    temp1 = 3 : gosub IsPlayerAlive
+                    if temp2 && !IsPlayerRecovery(PlayerState[3]) then gosub HandlePlayer4Input
           endif
           
           qtcontroller = 0  : rem Switch back to even frame

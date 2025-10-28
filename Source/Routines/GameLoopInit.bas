@@ -98,11 +98,22 @@ GameLoop
           Missile1Active = 0
           Missile2Active = 0
 
+          rem Initialize elimination system
+          PlayersEliminated = 0   : rem No players eliminated at start
+          PlayersRemaining = 0    : rem Will be calculated
+          GameEndTimer = 0        : rem No game end countdown
+
+          rem Count initial players
+          if SelectedChar1 != 0 then PlayersRemaining = PlayersRemaining + 1
+          if SelectedChar2 != 0 then PlayersRemaining = PlayersRemaining + 1  
+          if SelectedChar3 != 0 then PlayersRemaining = PlayersRemaining + 1
+          if SelectedChar4 != 0 then PlayersRemaining = PlayersRemaining + 1
+
           rem Initialize frame counter
           frame = 0
 
           rem Initialize game state
-          GameState = 0 : rem 0 = normal play, 1 = paused
+          GameState = 0 : rem 0 = normal play, 1 = paused, 2 = game ending
 
           rem Load level data
           gosub LoadLevel

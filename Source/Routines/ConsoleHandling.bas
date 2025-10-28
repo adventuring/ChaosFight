@@ -24,6 +24,8 @@ HandleConsoleSwitches
           temp2 = 0  : rem Check Player 1 buttons
           gosub CheckEnhancedPause
           if temp1 then
+                    rem Re-detect controllers when Select is pressed
+                    gosub DetectControllers
                     if GameState = 0 then
                               GameState = 1
                     else
@@ -37,6 +39,8 @@ HandleConsoleSwitches
           temp2 = 1  : rem Check Player 2 buttons
           gosub CheckEnhancedPause
           if temp1 then
+                    rem Re-detect controllers when Select is pressed
+                    gosub DetectControllers
                     if GameState = 0 then
                               GameState = 1
                     else
@@ -47,14 +51,28 @@ HandleConsoleSwitches
                     return
           endif
 
-          rem Color/B&W switch is handled in PlayerRendering.bas
-          rem via switchbw checks in SetPlayerSprites (with 7800 override)
+          rem Color/B&W switch - re-detect controllers when toggled
+          gosub CheckColorBWToggle
           
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
           gosub Check7800PauseButton
 #endif
 
+          return
+
+          rem =================================================================
+          rem COLOR/B&W SWITCH CHANGE DETECTION
+          rem =================================================================
+          rem Re-detect controllers when Color/B&W switch is toggled
+          
+CheckColorBWToggle
+          rem Check if Color/B&W switch state has changed
+          if switchbw != ColorBWPrevious then
+                    rem Switch state changed - re-detect controllers
+                    gosub DetectControllers
+                    ColorBWPrevious = switchbw
+          endif
           return
 
           rem Display paused screen

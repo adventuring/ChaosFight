@@ -51,6 +51,9 @@ GameMainLoop
           rem Check multi-player collisions
           gosub CheckAllPlayerCollisions
 
+          rem Check for player eliminations
+          gosub CheckAllPlayerEliminations
+
           rem Update attack cooldowns
           gosub UpdateAttackCooldowns
 

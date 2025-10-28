@@ -402,11 +402,11 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: $(ALL_SOURCES
 	mkdir -p Dist Source/Generated
 	cpp -P -I. Source/Platform/NTSC.bas > Source/Generated/$(GAME).NTSC.bas
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
-	bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h < Source/Generated/$(GAME).NTSC.preprocessed.bas > Source/Generated/$(GAME).NTSC.bB.asm
+	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).NTSC.preprocessed.bas > Source/Generated/$(GAME).NTSC.bB.asm
 	@for f in multispriteheader.asm multisprite_kernel.asm startup.asm std_routines.asm score_graphics.asm banksw.asm 2600basicfooter.asm multisprite_bankswitch.inc; do \
 		ln -sf Tools/batariBASIC/includes/$$f $$f 2>/dev/null || true; \
 	done
-	@cp Source/Common/includes.bB includes.bB
+	@cp Source/Common/includes.bB .
 	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).NTSC.bB.asm | grep -v "^User-defined.*found in current directory" > Source/Generated/$(GAME).NTSC.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).NTSC.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).NTSC.s
@@ -430,11 +430,11 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: $(ALL_SOURCES) S
 	mkdir -p Dist Source/Generated
 	cpp -P -I. Source/Platform/PAL.bas > Source/Generated/$(GAME).PAL.bas
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
-	bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h < Source/Generated/$(GAME).PAL.preprocessed.bas > Source/Generated/$(GAME).PAL.bB.asm
+	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).PAL.preprocessed.bas > Source/Generated/$(GAME).PAL.bB.asm
 	@for f in multispriteheader.asm multisprite_kernel.asm startup.asm std_routines.asm score_graphics.asm banksw.asm 2600basicfooter.asm multisprite_bankswitch.inc; do \
 		ln -sf Tools/batariBASIC/includes/$$f $$f 2>/dev/null || true; \
 	done
-	@cp Source/Common/includes.bB includes.bB
+	@cp Source/Common/includes.bB .
 	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).PAL.bB.asm | grep -v "^User-defined.*found in current directory" > Source/Generated/$(GAME).PAL.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).PAL.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).PAL.s
@@ -458,11 +458,11 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: $(ALL_SOUR
 	mkdir -p Dist Source/Generated
 	cpp -P -I. Source/Platform/SECAM.bas > Source/Generated/$(GAME).SECAM.bas
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
-	bin/2600basic -i Tools/batariBASIC -r Tools/batariBASIC/includes/variable_redefs.h < Source/Generated/$(GAME).SECAM.preprocessed.bas > Source/Generated/$(GAME).SECAM.bB.asm
+	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).SECAM.preprocessed.bas > Source/Generated/$(GAME).SECAM.bB.asm
 	@for f in multispriteheader.asm multisprite_kernel.asm startup.asm std_routines.asm score_graphics.asm banksw.asm 2600basicfooter.asm multisprite_bankswitch.inc; do \
 		ln -sf Tools/batariBASIC/includes/$$f $$f 2>/dev/null || true; \
 	done
-	@cp Source/Common/includes.bB includes.bB
+	@cp Source/Common/includes.bB .
 	bin/postprocess -i Tools/batariBASIC/includes < Source/Generated/$(GAME).SECAM.bB.asm | grep -v "^User-defined.*found in current directory" > Source/Generated/$(GAME).SECAM.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).SECAM.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).SECAM.s

@@ -105,7 +105,7 @@ RadishJump
           return
 
           rem ROBO TITO (13) - VERTICAL MOVEMENT (no jump physics)
-          rem Robo Tito doesn't jump but moves vertically to screen top
+          rem Robo Tito doesn''t jump but moves vertically to screen top
           rem Special: sprite may not clear GRPn when done
           rem INPUT: temp1 = player index
           rem USES: PlayerY[temp1]

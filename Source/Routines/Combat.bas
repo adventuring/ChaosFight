@@ -48,7 +48,7 @@ CheckAttackHit
   
   return
 
-rem Calculate attack hitbox based on attacker's position and facing
+rem Calculate attack hitbox based on attacker''s position and facing
 rem Inputs: attacker_id
 rem Outputs: hitbox_left, hitbox_right, hitbox_top, hitbox_bottom
 CalculateAttackHitbox
@@ -153,6 +153,43 @@ ShowDamageIndicator
 rem Placeholder for damage sound
 PlayDamageSound
   rem Sound effect for damage (to be implemented)
+  return
+
+rem =================================================================
+rem PERFORM MELEE ATTACK
+rem =================================================================
+rem Executes a melee attack for the specified player.
+rem Spawns a brief missile visual (sword, fist, etc.) and checks for hits.
+rem
+rem INPUT:
+rem   temp1 = attacker player index (0-3)
+PerformMeleeAttack
+  rem Spawn missile visual for this attack
+  gosub SpawnMissile
+  
+  rem Set animation state to attacking
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
+  
+  rem TODO: Check immediate collision with other players in melee range
+  rem For now, collision will be handled in UpdateAllMissiles
+  
+  return
+
+rem =================================================================
+rem PERFORM RANGED ATTACK
+rem =================================================================
+rem Executes a ranged attack for the specified player.
+rem Spawns a projectile missile that travels across the screen.
+rem
+rem INPUT:
+rem   temp1 = attacker player index (0-3)
+PerformRangedAttack
+  rem Spawn projectile missile for this attack
+  gosub SpawnMissile
+  
+  rem Set animation state to attacking
+  PlayerState[temp1] = PlayerState[temp1] | 16  : rem Set attacking bit
+  
   return
 
 rem Process guard for a player

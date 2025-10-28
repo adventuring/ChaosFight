@@ -10,7 +10,7 @@
           rem   2. GAME context: Active gameplay
           rem
           rem This allows us to REDIM the same memory locations for different
-          rem purposes depending on which screen we're on, maximizing our limited RAM!
+          rem purposes depending on which screen we''re on, maximizing our limited RAM!
           rem
           rem =================================================================
           rem STANDARD RAM (Available everywhere):
@@ -92,7 +92,7 @@
           rem GAMEPLAY VARIABLES (SuperChip RAM - var0-var23 ONLY!)
           rem =================================================================
           rem CRITICAL: With pfres=8, playfield occupies var24-var95!
-          rem We MUST stay within var0-var23 during gameplay or we'll corrupt
+          rem We MUST stay within var0-var23 during gameplay or we''ll corrupt
           rem the playfield graphics!
           rem =================================================================
 
@@ -166,26 +166,52 @@
           dim Player4Damage = var7           : rem GAME: reuses MusicPosition
           
           rem =================================================================
-          rem MISSILE SYSTEM VARIABLES (Standard RAM - reusing char select vars)
+          rem MISSILE SYSTEM VARIABLES (4 missiles, one per player)
           rem =================================================================
-          rem During gameplay, we can reuse character select animation variables
-          rem (w-z) for the missile system since they're not needed during play
+          rem Each player can have one active missile/attack visual at a time.
+          rem This includes both ranged projectiles AND melee attack visuals
+          rem (e.g., sword sprite that appears briefly during attack).
+          rem
+          rem We can reuse ADMIN variables during gameplay:
+          rem   - w-z: char select animation vars (4 bytes)
+          rem   - i: ready count (1 byte)
+          rem   - a-e: various ADMIN counters (5 bytes)
           rem =================================================================
           
-          rem GAME: Missile 1 data (redim ADMIN char select anim vars)
-          dim Missile1X = w                  : rem GAME: reuses CharSelectAnimTimer
-          dim Missile1Y = x                  : rem GAME: reuses CharSelectAnimState
+          rem GAME: Missile X positions [0-3] for players 1-4
+          dim MissileX = a                   : rem GAME: reuses temp ADMIN vars
+          dim Missile1X = a                  : rem Player 1''s missile X
+          dim Missile2X = b                  : rem Player 2''s missile X
+          dim Missile3X = c                  : rem Player 3''s missile X
+          dim Missile4X = d                  : rem Player 4''s missile X
           
-          rem GAME: Missile 2 data (redim ADMIN char select anim vars)
-          dim Missile2X = y                  : rem GAME: reuses CharSelectAnimIndex
-          dim Missile2Y = z                  : rem GAME: reuses CharSelectAnimFrame
+          rem GAME: Missile Y positions [0-3] for players 1-4
+          dim MissileY = w                   : rem GAME: reuses CharSelectAnimTimer
+          dim Missile1Y = w                  : rem Player 1''s missile Y
+          dim Missile2Y = x                  : rem Player 2''s missile Y (reuses CharSelectAnimState)
+          dim Missile3Y = y                  : rem Player 3''s missile Y (reuses CharSelectAnimIndex)
+          dim Missile4Y = z                  : rem Player 4''s missile Y (reuses CharSelectAnimFrame)
           
-          rem GAME: Missile flags (redim ADMIN ready count)
-          rem Format: [M2Active:1][M1Active:1][M2Owner:2][M1Owner:2][unused:2]
-          rem Owner: 0-3 for which player fired the missile
-          dim MissilePackedData = i          : rem GAME: reuses ReadyCount
+          rem GAME: Missile active flags - bit-packed into single byte
+          rem Format: [M4Active:1][M3Active:1][M2Active:1][M1Active:1][unused:4]
+          rem Bit 0 = Missile1 active, Bit 1 = Missile2 active, etc.
+          dim MissileActive = i              : rem GAME: reuses ReadyCount
+          
+          rem GAME: Missile lifetime counters [0-3] - frames remaining
+          rem For melee attacks: small value (2-8 frames)
+          rem For ranged attacks: larger value or 255 for "until collision"
+          rem Stored in var8-var11 (shared with PlayerX during gameplay)
+          rem NOTE: These overlap with PlayerX intentionally - we''ll use bit-shifting
+          rem in MissileActive to determine which missile slots are in use
+          rem Actually, let''s use e and some SuperChip vars we can spare
+          dim MissileLifetime = e            : rem GAME: Uses 4 nibbles, packed
+          rem High nibble = P1/P2 lifetimes (4 bits each = 0-15 frames)
+          rem Low nibble = P3/P4 lifetimes (4 bits each = 0-15 frames)
+          rem For longer-lived missiles, use special value 15 = "until collision"
           
           rem Missile momentum stored in temp variables during UpdateMissiles subroutine
-          rem temp1 = Missile1MomentumX, temp2 = Missile1MomentumY
-          rem temp3 = Missile2MomentumX, temp4 = Missile2MomentumY
-          rem These are recalculated each frame from character data as needed
+          rem temp1 = current player index being processed
+          rem temp2 = MissileX delta (momentum)
+          rem temp3 = MissileY delta (momentum)
+          rem temp4 = scratch for collision checks
+          rem These are looked up from character data each frame as needed

@@ -247,7 +247,7 @@ UpdateCharacterSelectAnimations
           if HandicapMode then
                     CharSelectAnimState = 9  : rem Animation state 9 = "Recovering to standing"
                     CharSelectAnimFrame = 0   : rem First frame of recovery animation
-                    rem Don't update timer or frame - freeze the animation
+                    rem Don''t update timer or frame - freeze the animation
                     return
           endif
           

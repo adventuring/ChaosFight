@@ -59,9 +59,13 @@ if [[ "$command" == "compile-2600-font" ]]; then
     fi
     
     echo "data $digit_name" >> "$output_file"
-    # Generate 16 bytes of mock bitmap data
+    # Generate 16 bytes of mock bitmap data (simple pattern for visibility)
     for row in {0..15}; do
-      echo "  %$(printf '%08d' $(( (RANDOM % 256) | 0b00011000 )))" >> "$output_file"
+      # Generate a simple visible pattern with some randomness
+      byte=$((RANDOM % 256))
+      # Ensure at least a few bits are set for visibility
+      byte=$((byte | 24))  # Set bits 3 and 4
+      printf "  %%0%d\n" $byte >> "$output_file"
     done
     echo "end" >> "$output_file"
     echo "" >> "$output_file"

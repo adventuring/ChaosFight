@@ -135,6 +135,21 @@ rem  Note: Bit 0=hit bg, Bit 1=hit player, Bit 2=gravity, Bit 3=bounce
 end
 
 rem =================================================================
+rem MISSILE LIFETIME (DURATION)
+rem =================================================================
+rem How long the missile/attack visual stays active (in frames)
+rem For melee attacks: 3-8 frames (brief sword/punch visual)
+rem For ranged attacks: 255 = until collision or off-screen
+rem Values: 1-255 frames
+
+data CharacterMissileLifetime
+  4, 255, 255, 255, 4, 4, 5, 6, 255, 5, 4, 4, 3, 5, 255, 4
+rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Grizzard Handler, Harpy, Knight Guy, Magical Faerie, Mystery Man, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+rem  melee  ranged         ranged    ranged    melee   melee           melee   melee      ranged          melee       melee      melee      melee         melee      ranged    melee
+rem  Note: Melee attacks show brief visual (sword, fist, etc.), ranged persist until hit
+end
+
+rem =================================================================
 rem ANIMATION SEQUENCE DEFINITIONS
 rem =================================================================
 rem Animation sequences (16 total) - all use 8-frame padded format:
@@ -171,7 +186,7 @@ rem   4 frames: (1, 2, 3, 4, 1, 2, 3, 4)
 rem   8 frames: (1, 2, 3, 4, 5, 6, 7, 8)
 
 rem Animation frame reference tables (16 characters × 16 sequences × 8 bytes)
-rem Each character's animation data is 128 bytes (16 sequences × 8 bytes)
+rem Each character''s animation data is 128 bytes (16 sequences × 8 bytes)
 rem Total: 2048 bytes for all character animations
 
 data Character0Animations

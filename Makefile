@@ -159,6 +159,36 @@ Source/Art/Numbers.png: Source/Art/Numbers.xcf
 	mkdir -p Source/Art
 	magick "$<" -background black -flatten "$@"
 
+# Convert PNG font to batariBASIC data for NTSC
+$(GENERATED_DIR)/Font.%.NTSC.bas: Source/Art/%.png
+	@echo "Converting font $< to $@ for NTSC..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-font \
+		:input "$<" \
+		:output "$@" \
+		:font-name "$*" \
+		:architecture "NTSC"
+
+# Convert PNG font to batariBASIC data for PAL
+$(GENERATED_DIR)/Font.%.PAL.bas: Source/Art/%.png
+	@echo "Converting font $< to $@ for PAL..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-font \
+		:input "$<" \
+		:output "$@" \
+		:font-name "$*" \
+		:architecture "PAL"
+
+# Convert PNG font to batariBASIC data for SECAM
+$(GENERATED_DIR)/Font.%.SECAM.bas: Source/Art/%.png
+	@echo "Converting font $< to $@ for SECAM..."
+	mkdir -p $(GENERATED_DIR)
+	bin/skyline-tool compile-2600-font \
+		:input "$<" \
+		:output "$@" \
+		:font-name "$*" \
+		:architecture "SECAM"
+
 # Convert PNG screen to batariBASIC playfield data for NTSC
 $(GENERATED_DIR)/Playfield.%.NTSC.bas: Source/Art/%.png
 	@echo "Converting playfield screen $< to $@ for NTSC..."

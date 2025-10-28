@@ -6,7 +6,7 @@
           rem =================================================================
           rem Per-frame physics updates for characters with special movement.
           rem Called every frame after input handling to apply character-specific
-          rem physics that aren't handled by standard movement/gravity.
+          rem physics that aren''t handled by standard movement/gravity.
           rem
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   PlayerChar[0-3] - Character type indices

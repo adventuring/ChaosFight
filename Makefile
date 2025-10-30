@@ -174,7 +174,6 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 
 # Convert XCF to PNG for sprites (characters and special sprites)
 %.png: %.xcf $(READYFILE)
-	@echo "Converting $< to $@..."
 	mkdir -p Source/Art
 	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
@@ -287,6 +286,7 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
 	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).NTSC.preprocessed.bas > Source/Generated/$(GAME).NTSC.bB.s
 	@cp Source/Common/includes.bB .
+	@cp Tools/batariBASIC/includes/multispriteheader.asm . || true
 	bin/postprocess -i $(POSTINC) < Source/Generated/$(GAME).NTSC.bB.s | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).NTSC.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).NTSC.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).NTSC.s
@@ -336,6 +336,7 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
 	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).PAL.preprocessed.bas > Source/Generated/$(GAME).PAL.bB.s
 	@cp Source/Common/includes.bB .
+	@cp Tools/batariBASIC/includes/multispriteheader.asm . || true
 	bin/postprocess -i $(POSTINC) < Source/Generated/$(GAME).PAL.bB.s | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).PAL.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).PAL.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).PAL.s
@@ -385,6 +386,7 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
 	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).SECAM.preprocessed.bas > Source/Generated/$(GAME).SECAM.bB.asm
 	@cp Source/Common/includes.bB .
+	@cp Tools/batariBASIC/includes/multispriteheader.asm . || true
 	bin/postprocess -i $(POSTINC) < Source/Generated/$(GAME).SECAM.bB.asm | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).SECAM.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).SECAM.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).SECAM.s

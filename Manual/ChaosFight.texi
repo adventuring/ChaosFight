@@ -180,6 +180,12 @@ Verify connections and press fire button to activate controller detection.
 Navigate multicart menu to ChaosFight ROM before starting.
 @end table
 
+@subsection SECAM and Flashing Behaviour
+
+On SECAM consoles, luminance is not adjustable. ChaosFight uses distinct player index colors at all times (Player 1: Blue, Player 2: Red, Player 3: Yellow, Player 4: Green). When a character is hurt on SECAM, the sprite color becomes MAGENTA to clearly indicate the state.
+
+When flashing effects are enabled (e.g., invulnerability or selection emphasis), ChaosFight alternates between bright and dim variants of the player index colors based on time, ensuring visibility without compromising gameplay clarity. In B&W mode, flashing alternates greys of different brightness.
+
 @page
 
 @c ============================================================

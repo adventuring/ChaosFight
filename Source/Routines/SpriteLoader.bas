@@ -156,14 +156,14 @@ LoadCharacterColors
 
 NormalColor
 #ifdef TV_SECAM
-          rem SECAM and B&W use player index colors
+          rem SECAM: always use player index colors (no luminance control)
           goto PlayerIndexColors
 #else
-          rem Determine B&W override (effective mode handled by caller elsewhere too)
+          rem Determine effective B&W override locally; if enabled, use player colors
           if ColorBWOverride then goto PlayerIndexColors
 
-          rem NTSC/PAL character-specific colors (placeholder until tables are wired)
-          rem Fallback to player index colors if tables are not present
+          rem NTSC/PAL: Character-specific colors would be used here when tables exist
+          rem Placeholder: fall back to player index colors until character tables are wired
           goto PlayerIndexColors
 #endif
 
@@ -214,12 +214,4 @@ SetColor
           COLUP3 = temp6 : return
 
 
-          rem Player Colors - Light versions for normal state
-          data PlayerColorsLight
-              $1E, $3E, $1E, $CE
-end
-
-          rem Player Colors - Dark versions for hurt state  
-          data PlayerColorsDark
-              $18, $38, $18, $C8
-end
+          rem (Removed duplicate PlayerColors tables; defined at top of file)

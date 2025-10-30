@@ -80,7 +80,7 @@ UpdateHealthBar
 ScreenFlash
           rem Flash the background color
           temp2 = ColGrey(temp1)
-          COLUBK = ColBlack(0)
+          COLUBK = ColGray(0)
           return
 
           rem Particle effect for hits

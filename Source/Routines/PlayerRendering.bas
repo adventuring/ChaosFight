@@ -150,7 +150,7 @@ Player3Color
           
 Player4Color
           rem Set background color to constant black (COLUBK should not change)
-          COLUBK = ColBlack(0) 
+          COLUBK = ColGray(0) 
           rem Always black background
           
           rem TODO: Player 4 sprite mapping needs to be fixed (Issue #70, #72)

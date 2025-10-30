@@ -22,7 +22,7 @@
 
 TitleScreen
           rem Initialize title screen
-          COLUBK = ColBlack(0)
+          COLUBK = ColGray(0)
           
           rem Initialize character parade
           TitleParadeTimer = 0

@@ -11,14 +11,17 @@
           #ifdef TV_NTSC
           const AnimationFrameDelay = 6    ; 60fps / 10fps = 6 frames
           const MovementFrameRate = 60     ; 60fps movement updates
+          #endif
 
           #ifdef TV_PAL  
           const AnimationFrameDelay = 5    ; 50fps / 10fps = 5 frames
           const MovementFrameRate = 50     ; 50fps movement updates
+          #endif
 
           #ifdef TV_SECAM
           const AnimationFrameDelay = 5    ; Same as PAL (50fps / 10fps = 5 frames)
           const MovementFrameRate = 50     ; 50fps movement updates
+          #endif
 
           rem =================================================================
           rem ANIMATION SEQUENCE CONSTANTS
@@ -48,21 +51,24 @@
           rem =================================================================
           rem SUBPIXEL POSITION CONSTANTS
           rem =================================================================
-          rem 16-bit position system: 8.8 fixed point
-          rem Upper 8 bits = integer sprite position
-          rem Lower 8 bits = fractional subpixel position
-          const SubpixelBits = 8      ; 8 bits of subpixel precision
+          rem Fixed-point scheme: 8.8 (integer.fraction), implemented with 8-bit bB vars
+          rem NOTE: batariBASIC variables are 8-bit. Use two 8-bit arrays to represent
+          rem       a 16-bit fixed-point value: Hi = integer pixels, Lo = subpixel (0..255).
+          const SubpixelBits = 8      ; 8 bits of subpixel precision (0..255)
           const SubpixelScale = 256   ; 2^8 = 256 subpixel units per pixel
-          const MaxSubpixelPos = 65535; Maximum 16-bit position value
 
           rem =================================================================
-          rem ANIMATION STATE VARIABLES
+          rem ANIMATION STATE VARIABLE NOTES (documentation only)
           rem =================================================================
-          rem These will be defined in Variables.bas but referenced here for clarity
-          rem dim AnimationCounter[4]     ; Animation frame counter for each player (0 to AnimationFrameDelay-1)
-          rem dim CurrentAnimationFrame[4]; Current frame within animation sequence (0-7)
-          rem dim CurrentAnimationSeq[4]  ; Current animation sequence (0-15)
-          rem dim PlayerSubpixelX[4]      ; 16-bit subpixel X position for each player
-          rem dim PlayerSubpixelY[4]      ; 16-bit subpixel Y position for each player
-          rem dim PlayerVelocityX[4]      ; 16-bit subpixel X velocity for each player
-          rem dim PlayerVelocityY[4]      ; 16-bit subpixel Y velocity for each player
+          rem In Variables.bas, represent 8.8 fixed-point with two 8-bit arrays per axis:
+          rem   PosXHi[n] = integer X pixels,  PosXLo[n] = X subpixels (0..255)
+          rem   PosYHi[n] = integer Y pixels,  PosYLo[n] = Y subpixels (0..255)
+          rem   VelXHi[n], VelXLo[n] for velocity; similarly VelYHi/VelYLo.
+          rem Update pattern (addition):
+          rem   PosXLo += VelXLo : if PosXLo < VelXLo then PosXHi += 1  ; carry
+          rem   PosXHi += VelXHi
+          rem Update pattern (subtraction):
+          rem   borrow = (PosXLo < VelXLo)
+          rem   PosXLo -= VelXLo : if borrow then PosXHi -= 1
+          rem   PosXHi -= VelXHi
+          rem Repeat for Y.

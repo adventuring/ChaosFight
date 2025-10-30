@@ -84,15 +84,14 @@ end
           rem CHARACTER ATTACK TYPES
           rem =================================================================
           rem 0 = melee, 1 = ranged
-          rem Stored as bit-per-character in packed bytes (2 bytes for 16 characters)
+          rem Stored as bit-per-character in packed bytes (4 bytes for up to 32 characters)
 
           rem  Bernie    Curling    Dragonet  EXO Pilot Fat Tony  Grizzard   Harpy     Knight Guy
           rem  melee     ranged     melee     ranged    ranged    melee      melee     ranged
           rem  Magical   Mystery    Ninjish   Pork Chop Radish    Robo Tito  Ursulo    Veg Dog
           rem  ranged    melee      melee     melee     melee     melee      ranged    melee
           data CharacterAttackTypes
-              %00000000, %00000001, %00000010, %00000010, %00000000, %00000000, %00000000, %00000010
-              %00000010, %00000000, %00000000, %00000001, %00000000, %00000000, %00000010, %00000000
+              %00111111, %01000001, %00000000, %00000000
           end
 
           rem =================================================================

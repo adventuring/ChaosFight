@@ -6,7 +6,7 @@ LevelSelect1
           SelectedLevel = 0
           
           rem Set background color (B&W safe)
-          COLUBK = ColBlack(0)
+          COLUBK = ColGray(0)
 BackgroundSet
           
 LevelSelect1Loop

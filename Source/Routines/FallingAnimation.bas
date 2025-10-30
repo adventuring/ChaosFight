@@ -22,7 +22,7 @@ SkipPlayer3Count
           ActivePlayers = ActivePlayers + 1
 SkipPlayer4Count
 
-          COLUBK = ColBlack(0)
+          COLUBK = ColGray(0)
 
 FallingLoop1
           rem Animate all active players falling

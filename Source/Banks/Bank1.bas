@@ -4,6 +4,7 @@
           bank 1
           #include "Source/Routines/ColdStart.bas"
           #include "Source/Routines/MainLoop.bas"
+
           #include "Source/Routines/ConsoleDetection.bas"
           #include "Source/Routines/ControllerDetection.bas"
           #include "Source/Routines/SpriteLoader.bas"

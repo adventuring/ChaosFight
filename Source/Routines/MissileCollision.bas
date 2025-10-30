@@ -50,7 +50,7 @@ CheckAllMissileCollisions
           temp6 = temp2 
           rem Missile width (0 = AOE, >0 = visible missile)
           
-          if temp6 = 0 then gosub CheckAOECollision : return
+          if temp6 = 0 then goto CheckAOECollision
           gosub CheckVisibleMissileCollision
           
           return

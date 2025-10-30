@@ -36,11 +36,11 @@ BernieJump
           rem INPUT: temp1 = player index
           rem USES: PlayerY[temp1], PlayerState[temp1]
 CurlingJump
-          gosub StandardJump : return
+          goto StandardJump
 
           rem DRAGONET (2) - STANDARD JUMP
 DragonetJump
-          gosub StandardJump : return
+          goto StandardJump
 
           rem EXO PILOT (3) - STANDARD JUMP (light weight, high jump)
 EXOJump
@@ -58,7 +58,7 @@ FatTonyJump
 
           rem GRIZZARD HANDLER (5) - STANDARD JUMP
 GrizzardJump
-          gosub StandardJump : return
+          goto StandardJump
 
           rem HARPY (6) - FLIGHT (repeated jumping)
           rem Harpy can "fly" by repeated jumping (sustained flight)
@@ -89,7 +89,7 @@ FrootyJump
 
           rem NEFERTEM (9) - STANDARD JUMP
 NefertemJump
-          gosub StandardJump : return
+          goto StandardJump
 
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
 NinjishJump
@@ -141,35 +141,35 @@ VegDogJump
 
           rem BERNIE (0) - GUARD
 BernieDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem CURLING SWEEPER (1) - GUARD
 CurlingDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem DRAGONET (2) - GUARD
 DragonetDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem EXO PILOT (3) - GUARD
 EXODown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem FAT TONY (4) - GUARD
 FatTonyDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem GRIZZARD HANDLER (5) - GUARD
 GrizzardDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem HARPY (6) - GUARD
 HarpyDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem KNIGHT GUY (7) - GUARD
 KnightDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem FROOTY (8) - FLY DOWN (no guard action)
           rem Frooty flies down instead of guarding
@@ -183,31 +183,31 @@ FrootyDown
 
           rem NEFERTEM (9) - GUARD
 NefertemDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem NINJISH GUY (10) - GUARD
 NinjishDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem PORK CHOP (11) - GUARD
 PorkChopDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem RADISH GOBLIN (12) - GUARD
 RadishDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem ROBO TITO (13) - GUARD
 RoboTitoDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem URSULO (14) - GUARD
 UrsuloDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem VEG DOG (15) - GUARD
 VegDogDown
-          gosub StandardGuard : return
+          goto StandardGuard
 
           rem =================================================================
           rem STANDARD BEHAVIORS

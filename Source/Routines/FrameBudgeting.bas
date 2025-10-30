@@ -50,8 +50,8 @@ UpdateFramePhase
           rem USES: FramePhase (0-3) to determine which player to update
 BudgetedHealthBarUpdate
           rem Determine which player to update based on frame phase
-          if FramePhase = 0 then gosub UpdateHealthBarPlayer0 : return
-          if FramePhase = 1 then gosub UpdateHealthBarPlayer1 : return
+          if FramePhase = 0 then goto UpdateHealthBarPlayer0
+          if FramePhase = 1 then goto UpdateHealthBarPlayer1
           if FramePhase = 2 then goto CheckPlayer2HealthUpdate
           goto SkipPlayer2HealthUpdate
 CheckPlayer2HealthUpdate

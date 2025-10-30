@@ -42,7 +42,7 @@ end
 LoadCharacterSprite
           rem Validate character index
           gosub ValidateCharacterIndex
-          if temp5 = 0 then gosub LoadSpecialSprite : return
+          if temp5 = 0 then goto LoadSpecialSprite
           
           rem Check if character is special placeholder
           if temp1 = 255 then temp6 = SpriteNo : gosub LoadSpecialSprite : return 

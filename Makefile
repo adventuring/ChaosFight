@@ -147,19 +147,19 @@ music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated
 	fi
 
 # Convert MIDI to batariBASIC music data for NTSC (60Hz)
-Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi
+Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
 	@echo "Converting music $< to $@ for NTSC..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Convert MIDI to batariBASIC music data for PAL (50Hz)
-Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi
+Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
 	@echo "Converting music $< to $@ for PAL..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 # Convert MIDI to batariBASIC music data for SECAM (50Hz)
-Source/Generated/Song.%.SECAM.bas: Source/Songs/%.midi
+Source/Generated/Song.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
 	@echo "Converting music $< to $@ for SECAM..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
@@ -206,35 +206,35 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
 # Convert PNG font to batariBASIC data using new 8×16 font compiler
-Source/Generated/Font.%.NTSC.bas: Source/Art/%.png
+Source/Generated/Font.%.NTSC.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Converting 8×16 font $< to $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
-Source/Generated/Font.%.PAL.bas: Source/Art/%.png
+Source/Generated/Font.%.PAL.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Converting 8×16 font $< to $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
-Source/Generated/Font.%.SECAM.bas: Source/Art/%.png
+Source/Generated/Font.%.SECAM.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Converting 8×16 font $< to $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
 # Convert PNG screen to batariBASIC playfield data for NTSC
-Source/Generated/Playfield.%.NTSC.bas: Source/Art/%.png
+Source/Generated/Playfield.%.NTSC.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Converting playfield screen $< to $@ for NTSC..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-playfield "$@" "$<"
 
 # Convert PNG screen to batariBASIC playfield data for PAL
-Source/Generated/Playfield.%.PAL.bas: Source/Art/%.png
+Source/Generated/Playfield.%.PAL.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Converting playfield screen $< to $@ for PAL..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-playfield "$@" "$<"
 
 # Convert PNG screen to batariBASIC playfield data for SECAM
-Source/Generated/Playfield.%.SECAM.bas: Source/Art/%.png
+Source/Generated/Playfield.%.SECAM.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Converting playfield screen $< to $@ for SECAM..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-playfield "$@" "$<"

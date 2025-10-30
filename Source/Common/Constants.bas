@@ -122,5 +122,6 @@
           rem Bottom pixel threshold
           const ScreenTopWrapThreshold = 200
           rem Byte-safe top-wrap detection threshold
+
           
           rem Animation constants included separately

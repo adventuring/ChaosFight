@@ -45,7 +45,7 @@ CheckAllPlayerEliminations
           rem INPUT: temp1 = player index (0-3)
 CheckPlayerElimination
           rem Skip if already eliminated
-          temp6 = 1 << temp1 
+          temp6 = BitMask[temp1]
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           temp2 = PlayersEliminated & temp6
           if temp2 then return 

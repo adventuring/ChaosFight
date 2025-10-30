@@ -12,7 +12,7 @@ BB_POSTPROCESS = bin/postprocess
 BB_OPTIMIZE = bin/optimize
 DASM = bin/dasm
 BB_FILTER = bin/bbfilter
-POSTINC = $(abspath Tools/batariBASIC/includes)
+POSTINC = $(abspath Tools/batariBASIC)
 DASM = bin/dasm
 STELLA = stella
 GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c -i --no-shm
@@ -284,9 +284,8 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	mkdir -p Dist Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/NTSC.bas > Source/Generated/$(GAME).NTSC.bas
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
-	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).NTSC.preprocessed.bas > Source/Generated/$(GAME).NTSC.bB.s
-	@cp Source/Common/includes.bB .
-	bin/postprocess -i $(POSTINC) < Source/Generated/$(GAME).NTSC.bB.s | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).NTSC.tmp.s
+	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
+	bin/postprocess -i $(POSTINC) | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).NTSC.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).NTSC.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).NTSC.s
 	@echo "playercolors = 1" >> Source/Generated/$(GAME).NTSC.s
@@ -333,9 +332,8 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	mkdir -p Dist Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/PAL.bas > Source/Generated/$(GAME).PAL.bas
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
-	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).PAL.preprocessed.bas > Source/Generated/$(GAME).PAL.bB.s
-	@cp Source/Common/includes.bB .
-	bin/postprocess -i $(POSTINC) < Source/Generated/$(GAME).PAL.bB.s | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).PAL.tmp.s
+	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).PAL.preprocessed.bas > bB.asm
+	bin/postprocess -i $(POSTINC) | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).PAL.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).PAL.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).PAL.s
 	@echo "playercolors = 1" >> Source/Generated/$(GAME).PAL.s
@@ -382,9 +380,8 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	mkdir -p Dist Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/SECAM.bas > Source/Generated/$(GAME).SECAM.bas
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
-	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).SECAM.preprocessed.bas > Source/Generated/$(GAME).SECAM.bB.asm
-	@cp Source/Common/includes.bB .
-	bin/postprocess -i $(POSTINC) < Source/Generated/$(GAME).SECAM.bB.asm | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).SECAM.tmp.s
+	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.asm
+	bin/postprocess -i $(POSTINC) | grep -v "^User-defined.*found in current directory" | bin/optimize > Source/Generated/$(GAME).SECAM.tmp.s
 	@echo "; Configuration symbols for batariBasic" > Source/Generated/$(GAME).SECAM.s
 	@echo "multisprite = 1" >> Source/Generated/$(GAME).SECAM.s
 	@echo "playercolors = 1" >> Source/Generated/$(GAME).SECAM.s

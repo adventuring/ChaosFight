@@ -9,7 +9,7 @@
           rem - TIA registers: player0x, player0y, COLUP0, NUSIZ0, pf0-pf2, etc.
           rem - Our variables: GameState, QuadtariDetected, PlayerX, SelectedChar1, etc.
 
-          include "Source/Routines/CharacterArt.s"
+          include Source/Routines/CharacterArt.s
           includesfile multisprite_superchip.inc
 
           set kernel multisprite

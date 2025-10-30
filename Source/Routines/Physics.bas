@@ -62,8 +62,8 @@ CheckRightWallCollision
           rem   - Movement speed resistance
           rem   - Impact resistance
 
-          rem Weight values (from CharacterDefinitions.bas):
-          rem Bernie: 21, Curling: 25, Dragonet: 20, EXO Pilot: 23
-          rem Fat Tony: 22, Megax: 20, Harpy: 19, Knight Guy: 12
-          rem Magical Faerie: 17, Mystery Man: 18, Ninjish Guy: 40, Pork Chop: 15
-          rem Radish Goblin: 19, Robo Tito: 18, Ursulo: 16, Veg Dog: 17
+          rem Character order (IDs 0..15) must match CharacterDefinitions.bas:
+          rem 0 Bernie, 1 Curling Sweeper, 2 Dragonet, 3 EXO Pilot,
+          rem 4 Fat Tony, 5 Megax, 6 Harpy, 7 Knight Guy,
+          rem 8 Frooty, 9 Nefertem, 10 Ninjish Guy, 11 Pork Chop,
+          rem 12 Radish Goblin, 13 Robo Tito, 14 Ursulo, 15 Veg Dog

@@ -12,7 +12,7 @@ BB_POSTPROCESS = bin/postprocess
 BB_OPTIMIZE = bin/optimize
 DASM = bin/dasm
 BB_FILTER = bin/bbfilter
-POSTINC = $(abspath Tools/batariBASIC/includes)
+POSTINC = $(abspath Tools/batariBASIC)
 DASM = bin/dasm
 STELLA = stella
 # -i taken out for now from gimp
@@ -282,14 +282,127 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	Source/Routines/VisualEffects.bas \
 	$(wildcard Source/Generated/*.bas) \
 	$(wildcard Source/Generated/*.s)
-	mkdir -p Dist Source/Generated
+	mkdir -p Dist Source/Generated Object
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/NTSC.bas > Source/Generated/$(GAME).NTSC.bas
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
-	bin/2600basic -i Tools/batariBASIC -r Source/Common/variable_redefs.h < Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
-	bin/postprocess -i $(POSTINC) | bin/optimize \
-		> Source/Generated/$(GAME).NTSC.s
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
+	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize > ../Source/Generated/$(GAME).NTSC.body.s
+	printf "; Configuration symbols for batariBasic\n" > Source/Generated/$(GAME).NTSC.s
+	printf "multisprite = 1\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "playercolors = 1\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "player1colors = 1\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "pfcolors = 1\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "bankswitch = 64\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "bankswitch_hotspot = $$FFF8\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "superchip = 1\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "NO_ILLEGAL_OPCODES = 1\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "noscore = 0\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "qtcontroller = 0\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "pfres = 12\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "bscode_length = 32\n" >> Source/Generated/$(GAME).NTSC.s
+	cat Source/Generated/$(GAME).NTSC.body.s >> Source/Generated/$(GAME).NTSC.s
+	rm -f Source/Generated/$(GAME).NTSC.body.s
 	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
-	rm -f Source/Generated/$(GAME).NTSC.bB.s Source/Generated/$(GAME).NTSC.s Source/Generated/$(GAME).NTSC.preprocessed.bas
+	rm -f Source/Generated/$(GAME).NTSC.preprocessed.bas
+	rm -f Object/bB.asm Object/includes.bB
+
+Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
+	Source/Banks/Bank1.bas \
+	Source/Banks/Banks.bas \
+	Source/Common/Colors.h \
+	Source/Common/Constants.bas \
+	Source/Common/Macros.bas \
+	Source/Common/Preamble.bas \
+	Source/Common/Variables.bas \
+	Source/Data/SpecialSprites.bas \
+	Source/Routines/CharacterArt.s \
+	Source/Routines/ColdStart.bas \
+	Source/Routines/ControllerDetection.bas \
+	Source/Routines/FallingAnimation.bas \
+	Source/Routines/GameLoopInit.bas \
+	Source/Routines/GameLoopMain.bas \
+	Source/Routines/HealthBarSystem.bas \
+	Source/Routines/LevelSelect.bas \
+	Source/Routines/MainLoop.bas \
+	Source/Routines/MusicSystem.bas \
+	Source/Routines/ScreenLayout.bas \
+	Source/Routines/SoundSystem.bas \
+	Source/Routines/SpriteLoader.bas \
+	Source/Routines/VisualEffects.bas \
+	$(wildcard Source/Generated/*.bas) \
+	$(wildcard Source/Generated/*.s)
+	mkdir -p Dist Source/Generated Object
+	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/PAL.bas > Source/Generated/$(GAME).PAL.bas
+	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.asm
+	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize > ../Source/Generated/$(GAME).PAL.body.s
+	printf "; Configuration symbols for batariBasic\n" > Source/Generated/$(GAME).PAL.s
+	printf "multisprite = 1\n" >> Source/Generated/$(GAME).PAL.s
+	printf "playercolors = 1\n" >> Source/Generated/$(GAME).PAL.s
+	printf "player1colors = 1\n" >> Source/Generated/$(GAME).PAL.s
+	printf "pfcolors = 1\n" >> Source/Generated/$(GAME).PAL.s
+	printf "bankswitch = 32\n" >> Source/Generated/$(GAME).PAL.s
+	printf "bankswitch_hotspot = $$FFF8\n" >> Source/Generated/$(GAME).PAL.s
+	printf "superchip = 1\n" >> Source/Generated/$(GAME).PAL.s
+	printf "NO_ILLEGAL_OPCODES = 1\n" >> Source/Generated/$(GAME).PAL.s
+	printf "noscore = 0\n" >> Source/Generated/$(GAME).PAL.s
+	printf "qtcontroller = 0\n" >> Source/Generated/$(GAME).PAL.s
+	printf "pfres = 12\n" >> Source/Generated/$(GAME).PAL.s
+	printf "bscode_length = 32\n" >> Source/Generated/$(GAME).PAL.s
+	cat Source/Generated/$(GAME).PAL.body.s >> Source/Generated/$(GAME).PAL.s
+	rm -f Source/Generated/$(GAME).PAL.body.s
+	bin/dasm Source/Generated/$(GAME).PAL.s -ITools/batariBASIC/includes -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
+	rm -f Source/Generated/$(GAME).PAL.preprocessed.bas
+	rm -f Object/bB.asm Object/includes.bB
+
+Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
+	Source/Banks/Bank1.bas \
+	Source/Banks/Banks.bas \
+	Source/Common/Colors.h \
+	Source/Common/Constants.bas \
+	Source/Common/Macros.bas \
+	Source/Common/Preamble.bas \
+	Source/Common/Variables.bas \
+	Source/Data/SpecialSprites.bas \
+	Source/Routines/CharacterArt.s \
+	Source/Routines/ColdStart.bas \
+	Source/Routines/ControllerDetection.bas \
+	Source/Routines/FallingAnimation.bas \
+	Source/Routines/GameLoopInit.bas \
+	Source/Routines/GameLoopMain.bas \
+	Source/Routines/HealthBarSystem.bas \
+	Source/Routines/LevelSelect.bas \
+	Source/Routines/MainLoop.bas \
+	Source/Routines/MusicSystem.bas \
+	Source/Routines/ScreenLayout.bas \
+	Source/Routines/SoundSystem.bas \
+	Source/Routines/SpriteLoader.bas \
+	Source/Routines/VisualEffects.bas \
+	$(wildcard Source/Generated/*.bas) \
+	$(wildcard Source/Generated/*.s)
+	mkdir -p Dist Source/Generated Object
+	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/SECAM.bas > Source/Generated/$(GAME).SECAM.bas
+	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.asm
+	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize > ../Source/Generated/$(GAME).SECAM.body.s
+	printf "; Configuration symbols for batariBasic\n" > Source/Generated/$(GAME).SECAM.s
+	printf "multisprite = 1\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "playercolors = 1\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "player1colors = 1\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "pfcolors = 1\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "bankswitch = 32\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "bankswitch_hotspot = $$FFF8\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "superchip = 1\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "NO_ILLEGAL_OPCODES = 1\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "noscore = 0\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "qtcontroller = 0\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "pfres = 12\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "bscode_length = 32\n" >> Source/Generated/$(GAME).SECAM.s
+	cat Source/Generated/$(GAME).SECAM.body.s >> Source/Generated/$(GAME).SECAM.s
+	rm -f Source/Generated/$(GAME).SECAM.body.s
+	bin/dasm Source/Generated/$(GAME).SECAM.s -ITools/batariBASIC/includes -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
+	rm -f Source/Generated/$(GAME).SECAM.preprocessed.bas
+	rm -f Object/bB.asm Object/includes.bB
 
 # Run emulator
 emu: $(ROM)

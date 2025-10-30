@@ -974,10 +974,10 @@ Can be used to refresh controller detection if players aren't responding
 @end group
 @end display
 
-ChaosFight automatically detects the TV TYPE switch and adjusts all colors accordingly.
+ChaosFight automatically selects appropriate colors for your TV standard (NTSC, PAL, or SECAM).
 
 @table @strong
-@item COLOR Position
+@item Colour Display
 Full colour display with distinct player colors:
 @itemize @bullet
 @item Player 1: Blue
@@ -987,30 +987,18 @@ Full colour display with distinct player colors:
 @item Playfield: White
 @item Background: Black
 @end itemize
-
-@item B&W Position
-Grayscale display with brightness differentiation:
-@itemize @bullet
-@item Player 1: Very bright grey (luminance 14)
-@item Player 2: Medium-bright grey (luminance 10)
-@item Player 3: Medium grey (luminance 8)
-@item Player 4: Dark-medium grey (luminance 6)
-@item Playfield: White (luminance 14)
-@item Background: Black (luminance 0)
-@end itemize
 @end table
 
 @strong{Damage Indication:}
 
-When characters take damage, colors darken in both modes:
+When characters take damage, colors darken for clarity.
 @itemize @bullet
-@item @strong{Colour mode:} Hue remains same, luminance reduced by 50%
-@item @strong{B&W mode:} Grey darkens by 6-8 luminance levels
+@item Hue remains the same; luminance is reduced.
 @end itemize
 
 @strong{Health Bars:}
 
-Health bars maintain distinct brightness levels in B&W mode, matching sprite colors for easy player identification.
+Health bars mirror player colours for easy identification.
 
 @section DIFFICULTY Switches
 

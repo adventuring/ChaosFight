@@ -225,9 +225,9 @@ ExitTitleScreen
           
           return
 
-rem =================================================================
-rem HELPER SUBROUTINES
-rem =================================================================
+          rem =================================================================
+          rem HELPER SUBROUTINES
+          rem =================================================================
 
 LoadPublisherLogo
           rem Load publisher logo from generated playfield data

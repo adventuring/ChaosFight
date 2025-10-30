@@ -36,10 +36,12 @@ BernieJump
           rem INPUT: temp1 = player index
           rem USES: PlayerY[temp1], PlayerState[temp1]
 CurlingJump
+          rem tail call
           goto StandardJump
 
           rem DRAGONET (2) - STANDARD JUMP
 DragonetJump
+          rem tail call
           goto StandardJump
 
           rem EXO PILOT (3) - STANDARD JUMP (light weight, high jump)
@@ -58,6 +60,7 @@ FatTonyJump
 
           rem GRIZZARD HANDLER (5) - STANDARD JUMP
 GrizzardJump
+          rem tail call
           goto StandardJump
 
           rem HARPY (6) - FLIGHT (repeated jumping)
@@ -89,6 +92,7 @@ FrootyJump
 
           rem NEFERTEM (9) - STANDARD JUMP
 NefertemJump
+          rem tail call
           goto StandardJump
 
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
@@ -141,34 +145,42 @@ VegDogJump
 
           rem BERNIE (0) - GUARD
 BernieDown
+          rem tail call
           goto StandardGuard
 
           rem CURLING SWEEPER (1) - GUARD
 CurlingDown
+          rem tail call
           goto StandardGuard
 
           rem DRAGONET (2) - GUARD
 DragonetDown
+          rem tail call
           goto StandardGuard
 
           rem EXO PILOT (3) - GUARD
 EXODown
+          rem tail call
           goto StandardGuard
 
           rem FAT TONY (4) - GUARD
 FatTonyDown
+          rem tail call
           goto StandardGuard
 
           rem GRIZZARD HANDLER (5) - GUARD
 GrizzardDown
+          rem tail call
           goto StandardGuard
 
           rem HARPY (6) - GUARD
 HarpyDown
+          rem tail call
           goto StandardGuard
 
           rem KNIGHT GUY (7) - GUARD
 KnightDown
+          rem tail call
           goto StandardGuard
 
           rem FROOTY (8) - FLY DOWN (no guard action)
@@ -183,30 +195,37 @@ FrootyDown
 
           rem NEFERTEM (9) - GUARD
 NefertemDown
+          rem tail call
           goto StandardGuard
 
           rem NINJISH GUY (10) - GUARD
 NinjishDown
+          rem tail call
           goto StandardGuard
 
           rem PORK CHOP (11) - GUARD
 PorkChopDown
+          rem tail call
           goto StandardGuard
 
           rem RADISH GOBLIN (12) - GUARD
 RadishDown
+          rem tail call
           goto StandardGuard
 
           rem ROBO TITO (13) - GUARD
 RoboTitoDown
+          rem tail call
           goto StandardGuard
 
           rem URSULO (14) - GUARD
 UrsuloDown
+          rem tail call
           goto StandardGuard
 
           rem VEG DOG (15) - GUARD
 VegDogDown
+          rem tail call
           goto StandardGuard
 
           rem =================================================================

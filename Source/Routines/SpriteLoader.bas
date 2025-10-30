@@ -42,6 +42,7 @@ end
 LoadCharacterSprite
           rem Validate character index
           gosub ValidateCharacterIndex
+          rem tail call
           if temp5 = 0 then goto LoadSpecialSprite
           
           rem Check if character is special placeholder

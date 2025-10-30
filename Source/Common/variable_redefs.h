@@ -1,7 +1,7 @@
 ; This file contains variable mapping and other information for the current project.
 
 bscode_length = 36
-AttackSoundData_length = .skipL01165-AttackSoundData 
+AttackSoundData_length = .skipL01163-AttackSoundData 
  
 SoundElimination = 7
  
@@ -26,10 +26,6 @@ FallComplete = c
 FallSpeed = b
  
 FallFrame = a
- 
-PlayerColorsDark_length = .skipL0899-PlayerColorsDark 
- 
-PlayerColorsLight_length = .skipL0897-PlayerColorsLight 
  
 PlayerColorsLight_length = .skipL0773-PlayerColorsLight 
  
@@ -357,7 +353,7 @@ RandomLevel = 0
  
 NumLevels = 2
  
-BuildDate = 2025.302
+BuildDate = 2025.303
  
 GameVersionMinor = 1
  

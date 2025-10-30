@@ -40,6 +40,7 @@ ApplyPlayerSpecialMovement
           temp4 = PlayerChar[temp1]
           
           rem Bernie (0) - screen wrap top/bottom
+          rem tail call
           if temp4 = 0 then goto BernieScreenWrap
           
           rem All other characters use standard physics

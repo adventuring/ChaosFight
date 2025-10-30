@@ -41,6 +41,7 @@ FlashRecoveryEffect
           
           rem Flash every other frame
           temp3 = frame & 1
+          rem tail call
           if temp3 = 0 then goto SetPlayerNormalColor
           gosub SetPlayerDimmedColor
           

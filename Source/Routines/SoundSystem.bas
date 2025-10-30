@@ -91,13 +91,9 @@
           rem Play attack sound effect
           rem Input: temp1 = sound type (1-6)
 PlaySoundEffect
-          if temp1 = SoundAttack then goto PlayAttackSound
-          if temp1 = SoundHit then goto PlayHitSound
-          if temp1 = SoundFall then goto PlayFallSound
-          if temp1 = SoundGuard then goto PlayGuardSound
-          if temp1 = SoundSelect then goto PlaySelectSound
-          if temp1 = SoundVictory then goto PlayVictorySound
-          if temp1 = SoundElimination then goto PlayEliminationSound
+          rem Jump table for effects (1..7)
+          temp2 = temp1 - 1
+          on temp2 goto PlayAttackSound PlayHitSound PlayFallSound PlayGuardSound PlaySelectSound PlayVictorySound PlayEliminationSound
           return
 
           rem Play attack sound (melee swoosh)

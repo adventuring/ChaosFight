@@ -25,18 +25,6 @@
           rem =================================================================
 
 AuthorPreamble
-          rem Initialize preamble
-          const pfres = 32
-          PreambleTimer = 0
-          COLUBK = ColGray(0)
-          
-          rem Load author artwork
-          gosub LoadAuthorPlayfield
-          
-          rem Start "Interworldly" music
-          temp1 = MusicInterworldly
-          gosub StartMusic
-          
 AuthorPreambleLoop
           rem Check for button press on any controller to skip
           if joy0fire || joy1fire then goto AuthorPreambleComplete
@@ -60,6 +48,7 @@ SkipQuadtariInput
           goto AuthorPreambleLoop
 
 AuthorPreambleComplete
+          GameMode = ModeTitle : gosub ChangeGameMode
           return
 
           rem =================================================================

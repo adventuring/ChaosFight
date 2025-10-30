@@ -21,15 +21,6 @@
           rem =================================================================
 
 TitleScreen
-          rem Initialize title screen
-          COLUBK = ColGray(0)
-          
-          rem Initialize character parade
-          TitleParadeTimer = 0
-          TitleParadeChar = 0
-          TitleParadeX = 0
-          TitleParadeActive = 0
-          
           rem Title screen loop
 TitleScreenLoop
           rem Handle input - any button press goes to character select
@@ -51,5 +42,22 @@ SkipQuadtariCheck
 
 TitleScreenComplete
           rem Transition to character select
+          GameMode = ModeCharacterSelect : gosub ChangeGameMode
           return
 
+
+          rem =================================================================
+          rem BEGIN TITLE SCREEN (setup + enter loop)
+          rem =================================================================
+BeginTitleScreen
+          rem Initialize title screen
+          COLUBK = ColGray(0)
+          
+          rem Initialize character parade
+          TitleParadeTimer = 0
+          TitleParadeChar = 0
+          TitleParadeX = 0
+          TitleParadeActive = 0
+          
+          rem Enter the title screen main loop
+          goto TitleScreen

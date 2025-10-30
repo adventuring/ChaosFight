@@ -2,13 +2,6 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 LevelSelect1
-          dim SelectedLevel = a
-          SelectedLevel = 0
-          
-          rem Set background color (B&W safe)
-          COLUBK = ColGray(0)
-BackgroundSet
-          
 LevelSelect1Loop
           if joy0left then SelectedLevel = SelectedLevel - 1 : if SelectedLevel > NumLevels then SelectedLevel = NumLevels
           if joy0right then SelectedLevel = SelectedLevel + 1 : if SelectedLevel > NumLevels then SelectedLevel = 0
@@ -34,4 +27,5 @@ SpritesSet
           goto LevelSelect1Loop
 
 StartGame1
+          GameMode = ModeGame : gosub ChangeGameMode
           return

@@ -28,7 +28,7 @@
           rem   10=Jumping, 11=Falling, 12=Landing, 13-15=Reserved
           rem =================================================================
 
-GameLoop
+BeginGameLoop
           rem Set screen layout for gameplay (32×8 game layout)
           gosub SetGameScreenLayout
           rem SuperChip variables var0-var15 available in gameplay
@@ -141,6 +141,6 @@ Player3HealthSet
           rem TODO: Replace def statements with regular subroutines
           rem batariBASIC may not support def statements with parameters
 
-          rem Fall through to main loop
+          rem Enter main loop
           goto GameMainLoop
 

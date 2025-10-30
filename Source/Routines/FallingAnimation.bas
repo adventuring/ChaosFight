@@ -7,11 +7,6 @@ FallingAnimation1
           dim FallComplete = c
           dim ActivePlayers = d
 
-          FallFrame = 0
-          FallSpeed = 2
-          FallComplete = 0
-          ActivePlayers = 2
-
           rem Count active players for falling animation
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Count
           if SelectedChar3 = 255 then goto SkipPlayer3Count
@@ -22,7 +17,7 @@ SkipPlayer3Count
           ActivePlayers = ActivePlayers + 1
 SkipPlayer4Count
 
-          COLUBK = ColGray(0)
+          rem Background handled by setup
 
 FallingLoop1
           rem Animate all active players falling

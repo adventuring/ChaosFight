@@ -11,14 +11,17 @@
           #ifdef TV_NTSC
           const AnimationFrameDelay = 6    ; 60fps / 10fps = 6 frames
           const MovementFrameRate = 60     ; 60fps movement updates
+          #endif
 
           #ifdef TV_PAL  
           const AnimationFrameDelay = 5    ; 50fps / 10fps = 5 frames
           const MovementFrameRate = 50     ; 50fps movement updates
+          #endif
 
           #ifdef TV_SECAM
           const AnimationFrameDelay = 5    ; Same as PAL (50fps / 10fps = 5 frames)
           const MovementFrameRate = 50     ; 50fps movement updates
+          #endif
 
           rem =================================================================
           rem ANIMATION SEQUENCE CONSTANTS

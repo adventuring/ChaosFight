@@ -302,7 +302,7 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	printf "bscode_length = 32\n" >> Source/Generated/$(GAME).NTSC.s
 	cat Source/Generated/$(GAME).NTSC.body.s >> Source/Generated/$(GAME).NTSC.s
 	rm -f Source/Generated/$(GAME).NTSC.body.s
-	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
+	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
 	rm -f Source/Generated/$(GAME).NTSC.preprocessed.bas
 	rm -f Object/bB.asm Object/includes.bB
 
@@ -351,7 +351,7 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	printf "bscode_length = 32\n" >> Source/Generated/$(GAME).PAL.s
 	cat Source/Generated/$(GAME).PAL.body.s >> Source/Generated/$(GAME).PAL.s
 	rm -f Source/Generated/$(GAME).PAL.body.s
-	bin/dasm Source/Generated/$(GAME).PAL.s -ITools/batariBASIC/includes -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
+	bin/dasm Source/Generated/$(GAME).PAL.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
 	rm -f Source/Generated/$(GAME).PAL.preprocessed.bas
 	rm -f Object/bB.asm Object/includes.bB
 
@@ -400,7 +400,7 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	printf "bscode_length = 32\n" >> Source/Generated/$(GAME).SECAM.s
 	cat Source/Generated/$(GAME).SECAM.body.s >> Source/Generated/$(GAME).SECAM.s
 	rm -f Source/Generated/$(GAME).SECAM.body.s
-	bin/dasm Source/Generated/$(GAME).SECAM.s -ITools/batariBASIC/includes -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
+	bin/dasm Source/Generated/$(GAME).SECAM.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
 	rm -f Source/Generated/$(GAME).SECAM.preprocessed.bas
 	rm -f Object/bB.asm Object/includes.bB
 

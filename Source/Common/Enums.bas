@@ -4,3 +4,11 @@
           const NTSC = 1
           const PAL = 2
           const SECAM = 3
+
+          const ModePublisherPrelude = 0
+          const ModeAuthorPrelude = 1
+          const ModeTitle = 2
+          const ModeCharacterSelect = 3
+          const ModeFallingAnimation = 4
+          const ModeGame = 5
+          const ModeWinner = 6

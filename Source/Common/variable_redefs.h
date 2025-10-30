@@ -1,7 +1,7 @@
 ; This file contains variable mapping and other information for the current project.
 
 bscode_length = 36
-AttackSoundData_length = .skipL01163-AttackSoundData 
+AttackSoundData_length = .skipL01158-AttackSoundData 
  
 SoundElimination = 7
  
@@ -27,11 +27,7 @@ FallSpeed = b
  
 FallFrame = a
  
-PlayerColorsLight_length = .skipL0773-PlayerColorsLight 
- 
-vblank_time = 43
-overscan_time = 37
-TVStandard = NTSC
+PlayerColorsLight_length = .skipL0770-PlayerColorsLight 
  
 MissileLifetime = e
  
@@ -231,15 +227,29 @@ PlayerChar = j
  
 PauseButtonPrev = i
  
-ColorBWOverride = h
- 
 ControllerStatus = b
  
 SystemFlags = c
  
 Console7800Detected = a
  
+GameMode = p
+ 
 GameState = g
+ 
+ModeWinner = 6
+ 
+ModeGame = 5
+ 
+ModeFallingAnimation = 4
+ 
+ModeCharacterSelect = 3
+ 
+ModeTitle = 2
+ 
+ModeAuthorPrelude = 1
+ 
+ModePublisherPrelude = 0
  
 SECAM = 3
  
@@ -368,3 +378,7 @@ player1colors = 1
 player1colors = 1
 playercolors = 1
 multisprite = 1
+vblank_time = 58
+overscan_time = 82
+TVStandard = 3
+ 

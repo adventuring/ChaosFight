@@ -9,7 +9,19 @@ ColdStart
           rem Detect if running on 7800 or 2600
           gosub DetectConsole
           
-          rem Initialize game state
-          COLUBK = ColGray(0)
+          rem Initialize TIA colors to safe defaults
+          COLUBK = ColGrey(0)
+          COLUPF = ColGrey(14)
+          COLUP0 = ColBlue(14)
+          COLUP1 = ColRed(14)
+
+          AUDC0 = 0
+          AUDV0 = 0
+          AUDC1 = 0
+          AUDV1 = 0
           
-          return
+          rem Reset game state variables
+          GameMode = ModePublisherPrelude
+          
+          rem (fall through to MainLoop)
+

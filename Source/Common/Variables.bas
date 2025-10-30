@@ -60,7 +60,8 @@
           rem   frame - frame counter (increments every frame)
           
           rem Our variables (need dim):
-          dim GameState = g    
+          dim GameState = g
+          dim GameMode = p
           rem 0 = normal play, 1 = paused
           rem Console and controller detection (set during ADMIN, read during GAME)
           dim Console7800Detected = a 

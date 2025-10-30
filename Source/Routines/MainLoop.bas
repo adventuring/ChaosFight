@@ -2,13 +2,6 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 MainLoop
-          gosub ColdStart
-          gosub PublisherPrelude
-          gosub AuthorsPrelude
-          gosub TitleScreen
-          gosub CharacterSelect1
-          gosub FallingAnimation
-          gosub LevelSelect
-          gosub GameLoop
-          gosub WinnerAnnouncement
+          on GameMode gosub PublisherPrelude, AuthorsPrelude, TitleScreen, CharacterSelect1, FallingAnimation, LevelSelect, GameLoop, WinnerAnnouncement
+          drawscreen
           goto MainLoop

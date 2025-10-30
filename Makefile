@@ -464,17 +464,24 @@ Dist/$(GAME).SECAM.pro: Source/$(GAME).pro Dist/$(GAME).SECAM.a26
 		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).SECAM.a26 | cut -d\  -f1)/g > $@
 
 # Generate PDF manual from Texinfo source
-Dist/$(GAME)-Manual.pdf: Manual/$(GAME).texi
+Dist/$(GAME).pdf: Manual/$(GAME).texi
 	@echo "Building PDF manual..."
 	mkdir -p Dist Object
 	cd Object && texi2pdf ../Manual/$(GAME).texi
-	cp Object/$(GAME).pdf Dist/$(GAME)-Manual.pdf
+	cp Object/$(GAME).pdf Dist/$(GAME).pdf
 
 # Generate HTML manual from Texinfo source
-Dist/$(GAME)-Manual.html: Manual/$(GAME).texi
+Dist/$(GAME).html: Manual/$(GAME).texi
 	@echo "Building HTML manual..."
 	mkdir -p Dist Object
-	cd Object && makeinfo --html --no-split --output=../Dist/$(GAME)-Manual.html ../Manual/$(GAME).texi
+	cd Object && makeinfo --html --no-split --output=../Dist/$(GAME).html ../Manual/$(GAME).texi
+
+# Back-compatibility aliases (optional)
+Dist/$(GAME)-Manual.pdf: Dist/$(GAME).pdf
+	cp $< $@
+
+Dist/$(GAME)-Manual.html: Dist/$(GAME).html
+	cp $< $@
 
 # Ready system - setup development environment
 nowready: $(READYFILE)

@@ -15,7 +15,8 @@ BB_FILTER = bin/bbfilter
 POSTINC = $(abspath Tools/batariBASIC/includes)
 DASM = bin/dasm
 STELLA = stella
-GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c -i --no-shm
+# -i taken out for now from gimp
+GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm
 
 # Ready system
 READYDATE = 20251028

@@ -1,7 +1,7 @@
 ; This file contains variable mapping and other information for the current project.
 
 bscode_length = 36
-AttackSoundData_length = .skipL01173-AttackSoundData 
+AttackSoundData_length = .skipL01166-AttackSoundData 
  
 SoundElimination = 7
  
@@ -16,8 +16,6 @@ SoundFall = 3
 SoundHit = 2
  
 SoundAttack = 1
- 
-SelectedLevel = a
  
 ActivePlayers = d
  

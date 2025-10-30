@@ -22,6 +22,7 @@ ColdStart
           
           rem Reset game state variables
           GameMode = ModePublisherPrelude
+          gosub ChangeGameMode
           
           rem (fall through to MainLoop)
 

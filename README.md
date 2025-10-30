@@ -166,8 +166,9 @@ sbcl --load quicklisp.lisp
 ```
 
 #### Asset Pipeline Dependencies
-- **GIMP** with batch processing capability for XCF→PNG conversion
-- **SkylineTool** (Common Lisp + 20+ libraries)
+- **GIMP** for XCF→PNG conversion
+- **MuseScore** for MSCZ→MIDI conversion
+- **SkylineTool** (included)
 - **batariBASIC** compiler (included)
 
 ### Current Issues

@@ -25,7 +25,7 @@ CharacterSelect1
           gosub DetectQuadtari
 
           rem Set background color (B&W safe)
-          COLUBK = ColBlack(0) 
+          COLUBK = ColGray(0) 
           rem Always black background
 
 CharacterSelect1Loop

@@ -26,7 +26,7 @@
           rem Main win screen display routine called when GameState = 2.
 DisplayWinScreen
           rem Set background color for win screen
-          COLUBK = ColBlack(0) 
+          COLUBK = ColGray(0) 
           rem Dark blue background
           
           rem Display title

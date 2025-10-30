@@ -28,7 +28,7 @@ AuthorPreamble
           rem Initialize preamble
           const pfres = 32
           PreambleTimer = 0
-          COLUBK = ColBlack(0)
+          COLUBK = ColGray(0)
           
           rem Load author artwork
           gosub LoadAuthorPlayfield

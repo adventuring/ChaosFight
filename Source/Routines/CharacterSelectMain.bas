@@ -50,7 +50,7 @@ CharacterSelect1
           rem Check for Quadtari adapter
           gosub DetectQuadtari
 
-          COLUBK = ColBlack(0)
+          COLUBK = ColGray(0)
 
 CharacterSelect1Loop
           rem Quadtari controller multiplexing

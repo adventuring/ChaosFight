@@ -46,10 +46,10 @@ LoadCharacterSprite
           if ! temp5 then goto LoadSpecialSprite
           
           rem Check if character is special placeholder
-          if temp1 = 255 then LET temp6 = SpriteNo : gosub LoadSpecialSprite : return 
+          if temp1 = 255 then let temp6 = SpriteNo : gosub LoadSpecialSprite : return 
           rem NoCharacter = 255
           
-          if temp1 = 254 then LET temp6 = SpriteCPU : gosub LoadSpecialSprite : return 
+          if temp1 = 254 then let temp6 = SpriteCPU : gosub LoadSpecialSprite : return 
           rem CPUCharacter = 254
           
           rem Use character art location system for sprite loading
@@ -70,6 +70,45 @@ LoadCharacterSprite
           
           return
 
+          rem =================================================================
+          rem LOAD SPECIAL SPRITE
+          rem =================================================================
+          rem Loads special placeholder sprites (QuestionMark, CPU, No)
+          rem Input: temp6 = sprite index (SpriteQuestionMark=0, SpriteCPU=1, SpriteNo=2)
+          rem        temp3 = player number (0-3)
+          rem Output: Appropriate player sprite pointer set to special sprite data
+LoadSpecialSprite
+          rem Set sprite pointer based on sprite index
+          if ! temp6 then goto LoadQuestionMarkSprite
+          if temp6 = 1 then goto LoadCPUSprite
+          if temp6 = 2 then goto LoadNoSprite
+          rem Invalid sprite index, default to question mark
+          goto LoadQuestionMarkSprite
+          
+LoadQuestionMarkSprite
+          rem Set pointer to QuestionMarkSprite data
+          if ! temp3 then player0pointerlo = <QuestionMarkSprite : player0pointerhi = >QuestionMarkSprite : player0height = 16 : return
+          if temp3 = 1 then player1pointerlo = <QuestionMarkSprite : player1pointerhi = >QuestionMarkSprite : player1height = 16 : return
+          if temp3 = 2 then player2pointerlo = <QuestionMarkSprite : player2pointerhi = >QuestionMarkSprite : player2height = 16 : return
+          player3pointerlo = <QuestionMarkSprite : player3pointerhi = >QuestionMarkSprite : player3height = 16 : return
+          
+LoadCPUSprite
+          rem Set pointer to CPUSprite data
+          if ! temp3 then player0pointerlo = <CPUSprite : player0pointerhi = >CPUSprite : player0height = 16 : return
+          if temp3 = 1 then player1pointerlo = <CPUSprite : player1pointerhi = >CPUSprite : player1height = 16 : return
+          if temp3 = 2 then player2pointerlo = <CPUSprite : player2pointerhi = >CPUSprite : player2height = 16 : return
+          player3pointerlo = <CPUSprite : player3pointerhi = >CPUSprite : player3height = 16 : return
+          
+LoadNoSprite
+          rem Set pointer to NoSprite data
+          if ! temp3 then player0pointerlo = <NoSprite : player0pointerhi = >NoSprite : player0height = 16 : return
+          if temp3 = 1 then player1pointerlo = <NoSprite : player1pointerhi = >NoSprite : player1height = 16 : return
+          if temp3 = 2 then player2pointerlo = <NoSprite : player2pointerhi = >NoSprite : player2height = 16 : return
+          player3pointerlo = <NoSprite : player3pointerhi = >NoSprite : player3height = 16 : return
+
+          rem =================================================================
+          rem LOAD PLAYER SPRITES
+          rem =================================================================
           rem Load sprite data into specific player registers
           rem These functions contain the actual player graphics commands
           

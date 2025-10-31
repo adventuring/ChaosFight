@@ -20,13 +20,15 @@
           #include "Source/Routines/SpriteLoader.bas"
           #include "Source/Routines/GameLoopInit.bas"
           #include "Source/Routines/SoundSystem.bas"
-          #include "Source/Routines/VisualEffects.bas"
 
           #if 0
           rem Music system temporarily disabled pending proper implementation (#162, #243)
           #include "Source/Routines/MusicSystem.bas"
           #endif
           #include "Source/Routines/HealthBarSystem.bas"
-          #include "Source/Routines/ScreenLayout.bas"
           #include "Source/Data/SpecialSprites.bas"
+          
+          rem WinScreen moved to Bank 7 to free space
+          rem VisualEffects moved to Bank 8 to free space  
+          rem ScreenLayout moved to Bank 8 to free space
 

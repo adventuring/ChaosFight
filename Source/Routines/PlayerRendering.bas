@@ -45,16 +45,16 @@ SetSpritePositions
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Position
           if SelectedChar3 = 255 then goto SkipPlayer3Position
           if ! PlayerHealth[2] then goto SkipPlayer3Position
-          player2x = PlayerX[2]
-          player2y = PlayerY[2]
+                    player2x = PlayerX[2]
+                    player2y = PlayerY[2]
 SkipPlayer3Position
           
           rem Set Player 4 position (multisprite)
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Position
           if SelectedChar4 = 255 then goto SkipPlayer4Position
           if ! PlayerHealth[3] then goto SkipPlayer4Position
-          player3x = PlayerX[3]
-          player3y = PlayerY[3]
+                    player3x = PlayerX[3]
+                    player3y = PlayerY[3]
 SkipPlayer4Position
           
 
@@ -172,7 +172,7 @@ SkipPlayer0Flash
 
           rem Flash Player 2 sprite if health is low
           if PlayerHealth[1] >= 25 || PlayerRecoveryFrames[1] <> 0 then SkipPlayer1Flash
-          if frame & 8 then player1x = 200
+                    if frame & 8 then player1x = 200
 SkipPlayer1Flash
 
           rem Flash Player 3 sprite if health is low (but alive)
@@ -226,7 +226,7 @@ DrawHealthBars
           let HealthBarLength = PlayerHealth[0] / 3 
           rem Scale 0-100 to 0-32
           if HealthBarLength > 32 then LET HealthBarLength = 32
-if temp6 then 
+          if temp6 then
           COLUPF = ColGrey(14) 
           rem White (B&W)
 
@@ -238,7 +238,7 @@ if temp6 then
           rem Draw Player 2 health bar
           let HealthBarLength = PlayerHealth[1] / 3
           if HealthBarLength > 32 then LET HealthBarLength = 32
-if temp6 then 
+          if temp6 then
           COLUPF = ColGrey(10) 
           rem Medium-bright grey (B&W)
 
@@ -250,31 +250,31 @@ if temp6 then
           rem Draw Player 3 & 4 bars if Quadtari active and player alive
 if ControllerStatus & SetQuadtariDetected then 
 if SelectedChar3 <> 255 && PlayerHealth[2] > 0 then 
-          rem Player 3 health bar
+                              rem Player 3 health bar
           let HealthBarLength = PlayerHealth[2] / 3
           if HealthBarLength > 32 then LET HealthBarLength = 32
-if temp6 then 
+                              if temp6 then
           COLUPF = ColGrey(8) 
           rem Medium grey (B&W)
 
           COLUPF = ColYellow(12) 
           rem Bright yellow (Color)
           
-          gosub DrawHealthBarRow2
+                              gosub DrawHealthBarRow2
           
-          
+                    
 if SelectedChar4 <> 255 && PlayerHealth[3] > 0 then 
-          rem Player 4 health bar
+                              rem Player 4 health bar
           let HealthBarLength = PlayerHealth[3] / 3
           if HealthBarLength > 32 then LET HealthBarLength = 32
-if temp6 then 
+                              if temp6 then
           COLUPF = ColGrey(6) 
           rem Dark-medium grey (B&W)
 
           COLUPF = ColGreen(12) 
           rem Bright green (Color)
           
-          gosub DrawHealthBarRow3
+                              gosub DrawHealthBarRow3
           
           
           

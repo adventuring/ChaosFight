@@ -34,7 +34,7 @@ LoadPublisherLogo
 
 StartTitleMusic
           rem Initialize music system for title song
-          temp1 = MusicTitle
+          let temp1 = MusicTitle
           gosub StartMusic
           return
 
@@ -57,23 +57,23 @@ ShowPublisherPreamble
           
           rem Start Atari Today music
           rem Initialize music system
-          MusicPlaying = 1
-          CurrentSong = 0
+          let MusicPlaying = 1
+          let CurrentSong = 0
           gosub StartMusic
           
           rem Wait for music completion + 0.5s or button press
           rem Music duration ~2 seconds = 120 frames
-          temp1 = 0
+          let temp1 = 0
           
 PublisherPreambleLoop
           drawscreen
-          temp1 = temp1 + 1
+          let temp1 = temp1 + 1
           
           rem Check for button press on any controller
           if joy0fire || joy1fire then goto ExitPublisherPreamble
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck1
-          if 0 = INPT0{7} then goto ExitPublisherPreamble
-          if 0 = INPT2{7} then goto ExitPublisherPreamble
+          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck1
+          if ! INPT0{7} then goto ExitPublisherPreamble
+          if ! INPT2{7} then goto ExitPublisherPreamble
 SkipQuadtariCheck1
           
           rem Wait for music + 30 frames (0.5s)
@@ -81,12 +81,10 @@ SkipQuadtariCheck1
           
 ExitPublisherPreamble
           rem Stop music
-          MusicPlaying = 0
+          let MusicPlaying = 0
           AUDV0 = 0
           AUDV1 = 0
           return
-
-
 
           rem =================================================================
           rem AUTHOR PREAMBLE SCREEN
@@ -125,16 +123,16 @@ TitleSequenceAuthorLoop
           
           rem Check for button press
           if joy0fire || joy1fire then goto ExitAuthorPreamble
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck2
-          if 0 = INPT0{7} then goto ExitAuthorPreamble
-          if 0 = INPT2{7} then goto ExitAuthorPreamble
+          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck2
+          if ! INPT0{7} then goto ExitAuthorPreamble
+          if ! INPT2{7} then goto ExitAuthorPreamble
 SkipQuadtariCheck2
           
           if temp1 < 150 then goto TitleSequenceAuthorLoop
           
 ExitAuthorPreamble
           MusicPlaying = 0
-          AUDV0 = 0
+          AUDV! 0
           AUDV1 = 0
           return
 
@@ -189,17 +187,24 @@ SkipParade
           
           rem Check for button press on any controller
           if joy0fire || joy1fire then goto ExitTitleScreen
+<<<<<<< HEAD
           if 0 = (ControllerStatus & SetQuadtariDetected) then goto TitleSeqSkipQuad
           if 0 = INPT0{7} then goto ExitTitleScreen
           if 0 = INPT2{7} then goto ExitTitleScreen
 TitleSeqSkipQuad
+=======
+          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck3
+          if ! INPT0{7} then goto ExitTitleScreen
+          if ! INPT2{7} then goto ExitTitleScreen
+SkipQuadtariCheck3
+>>>>>>> a0b1e6c (Coding standards: Use lowercase 'let' for RAM variables, avoid '= 0' comparisons)
           
           goto TitleSequenceTitleScreenLoop
           
 ExitTitleScreen
           rem Stop music
           MusicPlaying = 0
-          AUDV0 = 0
+          AUDV! 0
           AUDV1 = 0
           
           rem Re-detect controllers before starting game
@@ -221,8 +226,8 @@ ExitTitleScreen
 
 HandleCharacterParade
           rem Check if in delay between characters
-          if ParadeDelay = 0 then goto CheckParadeX
-            ParadeDelay = ParadeDelay - 1
+          if ! ParadeDelay then goto CheckParadeX
+            let ParadeDelay = ParadeDelay - 1
             return
 CheckParadeX
 
@@ -238,7 +243,7 @@ CheckParadeX
             rem Use missile0 for simple display
             missile0x = ParadeX
             missile0y = 75
-            ENAM0 = 1
+            ENAM! 1
             
             return
 
@@ -249,7 +254,7 @@ CheckParadeX
           rem Character has left screen, start delay
           ParadeDelay = 60 
           rem 1 second pause
-          ENAM0 = 0
+          ENAM! 0
           
           rem Select next random character
           rem Use frame counter for randomness

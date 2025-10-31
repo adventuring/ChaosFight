@@ -29,7 +29,7 @@ BernieAttack
           
           rem Also attack in opposite direction
           rem Temporarily flip facing
-          temp5 = PlayerState[temp1] & 1 
+          let temp5 = PlayerState[temp1] & 1 
           rem Store original facing
           if temp5 <> 0 then FaceLeft1
           PlayerState[temp1] = PlayerState[temp1] | 1 
@@ -202,7 +202,7 @@ VegDogAttack
 DispatchCharacterAttack
           rem Get character type for this player using direct array access
           rem temp1 contains player index (0-3)
-          temp2 = PlayerChar[temp1]
+          let temp2 = PlayerChar[temp1]
           on temp2 goto BernieAttack, CurlerAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
           rem Default to Bernie attack if invalid character
           goto BernieAttack

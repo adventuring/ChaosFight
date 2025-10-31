@@ -44,7 +44,7 @@ SetSpritePositions
           rem Set Player 3 position (multisprite)
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Position
           if SelectedChar3 = 255 then goto SkipPlayer3Position
-          if PlayerHealth[2] = 0 then goto SkipPlayer3Position
+          if ! PlayerHealth[2] then goto SkipPlayer3Position
           player2x = PlayerX[2]
           player2y = PlayerY[2]
 SkipPlayer3Position
@@ -52,7 +52,7 @@ SkipPlayer3Position
           rem Set Player 4 position (multisprite)
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Position
           if SelectedChar4 = 255 then goto SkipPlayer4Position
-          if PlayerHealth[3] = 0 then goto SkipPlayer4Position
+          if ! PlayerHealth[3] then goto SkipPlayer4Position
           player3x = PlayerX[3]
           player3y = PlayerY[3]
 SkipPlayer4Position
@@ -82,10 +82,10 @@ SetPlayerSprites
           rem This allows 7800 Pause button to toggle between modes
           rem On SECAM, always use colors (no luminance control available)
 #ifdef TV_SECAM
-          temp6 = 0 
+          let temp6 = 0 
           rem SECAM: Always use color mode (no B&W support)
 #else
-          temp6 = switchbw ^ ColorBWOverride 
+          let temp6 = switchbw ^ ColorBWOverride 
           rem Effective B&W state
           
           rem Set Player 1 color and sprite
@@ -94,7 +94,7 @@ SetPlayerSprites
           rem Color mode: Use solid player color or dimmer when hurt
           if PlayerRecoveryFrames[0] > 0 then COLUP0 = ColIndigo(6) : goto Player1ColorDone 
           rem Hurt: dimmer indigo
-          temp1 = PlayerChar[0] : temp2 = 0 : gosub LoadCharacterColors : goto Player1ColorDone 
+          let temp1 = PlayerChar[0] : let temp2 = 0 : gosub LoadCharacterColors : goto Player1ColorDone 
           rem Normal: solid player color
           
 Player1BWMode
@@ -105,9 +105,9 @@ Player1BWMode
 Player1ColorDone
 
           rem Load sprite data from character definition
-          temp1 = PlayerChar[0] 
+          let temp1 = PlayerChar[0] 
           rem Character index
-          temp2 = 0 
+          let temp2 = 0 
           rem Animation frame (0=idle, 1=running)
           gosub LoadCharacterSprite
 
@@ -117,7 +117,7 @@ Player1ColorDone
           rem Color mode: Use solid player color or dimmer when hurt
           if PlayerRecoveryFrames[1] > 0 then COLUP1 = ColRed(6) : goto Player2ColorDone 
           rem Hurt: dimmer red
-          temp1 = PlayerChar[1] : temp2 = 0 : gosub LoadCharacterColors : goto Player2ColorDone 
+          let temp1 = PlayerChar[1] : let temp2 = 0 : gosub LoadCharacterColors : goto Player2ColorDone 
           rem Normal: solid player color
           
 Player2BWMode
@@ -128,9 +128,9 @@ Player2BWMode
 Player2ColorDone
 
           rem Load sprite data from character definition
-          temp1 = PlayerChar[1] 
+          let temp1 = PlayerChar[1] 
           rem Character index
-          temp2 = 0 
+          let temp2 = 0 
           rem Animation frame (0=idle, 1=running)
           gosub LoadCharacterSprite
 
@@ -178,7 +178,7 @@ SkipPlayer1Flash
           rem Flash Player 3 sprite if health is low (but alive)
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Flash
           if SelectedChar3 = 255 then goto SkipPlayer3Flash
-          if PlayerHealth[2] = 0 then goto SkipPlayer3Flash
+          if ! PlayerHealth[2] then goto SkipPlayer3Flash
           if PlayerHealth[2] >= 25 then goto SkipPlayer3Flash
           if PlayerRecoveryFrames[2] <> 0 then goto SkipPlayer3Flash
           if frame & 8 then player2x = 200 
@@ -188,7 +188,7 @@ SkipPlayer3Flash
           rem Flash Player 4 sprite if health is low (but alive)
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Flash
           if SelectedChar4 = 255 then goto SkipPlayer4Flash
-          if PlayerHealth[3] = 0 then goto SkipPlayer4Flash
+          if ! PlayerHealth[3] then goto SkipPlayer4Flash
           if PlayerHealth[3] >= 25 then goto SkipPlayer4Flash
           if PlayerRecoveryFrames[3] <> 0 then goto SkipPlayer4Flash
           if frame & 8 then player3x = 200 
@@ -217,15 +217,15 @@ DrawHealthBars
           
           rem Calculate effective B&W mode (accounts for 7800 Pause toggle)
 #ifdef TV_SECAM
-          temp6 = 0 
+          let temp6 = 0 
           rem SECAM: Always use color mode
 #else
-          temp6 = switchbw ^ ColorBWOverride
+          let temp6 = switchbw ^ ColorBWOverride
           
           rem Draw Player 1 health bar
-          HealthBarLength = PlayerHealth[0] / 3 
+          let HealthBarLength = PlayerHealth[0] / 3 
           rem Scale 0-100 to 0-32
-          if HealthBarLength > 32 then HealthBarLength = 32
+          if HealthBarLength > 32 then LET HealthBarLength = 32
 if temp6 then 
           COLUPF = ColGrey(14) 
           rem White (B&W)
@@ -236,8 +236,8 @@ if temp6 then
           gosub DrawHealthBarRow0
           
           rem Draw Player 2 health bar
-          HealthBarLength = PlayerHealth[1] / 3
-          if HealthBarLength > 32 then HealthBarLength = 32
+          let HealthBarLength = PlayerHealth[1] / 3
+          if HealthBarLength > 32 then LET HealthBarLength = 32
 if temp6 then 
           COLUPF = ColGrey(10) 
           rem Medium-bright grey (B&W)
@@ -251,8 +251,8 @@ if temp6 then
 if ControllerStatus & SetQuadtariDetected then 
 if SelectedChar3 <> 255 && PlayerHealth[2] > 0 then 
           rem Player 3 health bar
-          HealthBarLength = PlayerHealth[2] / 3
-          if HealthBarLength > 32 then HealthBarLength = 32
+          let HealthBarLength = PlayerHealth[2] / 3
+          if HealthBarLength > 32 then LET HealthBarLength = 32
 if temp6 then 
           COLUPF = ColGrey(8) 
           rem Medium grey (B&W)
@@ -265,8 +265,8 @@ if temp6 then
           
 if SelectedChar4 <> 255 && PlayerHealth[3] > 0 then 
           rem Player 4 health bar
-          HealthBarLength = PlayerHealth[3] / 3
-          if HealthBarLength > 32 then HealthBarLength = 32
+          let HealthBarLength = PlayerHealth[3] / 3
+          if HealthBarLength > 32 then LET HealthBarLength = 32
 if temp6 then 
           COLUPF = ColGrey(6) 
           rem Dark-medium grey (B&W)

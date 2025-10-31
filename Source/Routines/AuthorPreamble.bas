@@ -39,16 +39,16 @@ AutSkipQuad
           gosub UpdateMusic
           
           rem Auto-advance after music completes + 0.5s
-          if PreambleTimer > 30 && MusicPlaying = 0 then goto AuthorPreambleComplete
+          if PreambleTimer > 30 && ! MusicPlaying then goto AuthorPreambleComplete
           
           rem Increment timer
-          PreambleTimer = PreambleTimer + 1
+          let PreambleTimer = PreambleTimer + 1
           
           drawscreen
           goto AuthorMainLoop
 
 AuthorPreambleComplete
-          GameMode = ModeTitle : gosub ChangeGameMode
+          let GameMode = ModeTitle : gosub ChangeGameMode
           return
 
           rem =================================================================

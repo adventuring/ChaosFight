@@ -39,7 +39,7 @@ DisplayWinScreen
           gosub HandleWinScreenInput
           
           rem Update timers
-          WinScreenTimer = WinScreenTimer + 1
+          let WinScreenTimer = WinScreenTimer + 1
           
           return
 
@@ -49,32 +49,32 @@ DisplayWinScreen
           rem Show "GAME OVER" and "FINAL RESULTS" text.
 DisplayWinScreenTitle
           rem Display "GAME OVER" at top of screen
-          temp1 = 52 
+          let temp1 = 52 
           rem X position (centered)
-          temp2 = 20 
+          let temp2 = 20 
           rem Y position
-          temp3 = 14 
+          let temp3 = 14 
           rem Color (white)
-          temp4 = 0  
+          let temp4 = 0  
           rem Character data offset for "GAME"
           gosub DisplayText
           
-          temp1 = 88 
+          let temp1 = 88 
           rem X position
-          temp2 = 20 
+          let temp2 = 20 
           rem Y position  
-          temp4 = 4  
+          let temp4 = 4  
           rem Character data offset for "OVER"
           gosub DisplayText
           
           rem Display "FINAL RESULTS" 
-          temp1 = 40 
+          let temp1 = 40 
           rem X position (centered)
-          temp2 = 40 
+          let temp2 = 40 
           rem Y position
-          temp3 = 12 
+          let temp3 = 12 
           rem Color (light blue)
-          temp4 = 8  
+          let temp4 = 8  
           rem Character data offset for "FINAL RESULTS"
           gosub DisplayText
           
@@ -86,13 +86,13 @@ DisplayWinScreenTitle
           rem Show players in final ranking order with their placements.
 DisplayFinalRankings
           rem Display each rank position
-          DisplayRank = 1
+          let DisplayRank = 1
           gosub DisplayRankPosition
-          DisplayRank = 2  
+          let DisplayRank = 2  
           gosub DisplayRankPosition
-          DisplayRank = 3
+          let DisplayRank = 3
           gosub DisplayRankPosition  
-          DisplayRank = 4
+          let DisplayRank = 4
           gosub DisplayRankPosition
           
           return
@@ -109,7 +109,7 @@ DisplayRankPosition
           rem No player for this rank
           
           rem Skip if player did not join the game
-          if temp1 = 0 then goto CheckPlayer1Selected
+          if ! temp1 then goto CheckPlayer1Selected
           goto CheckPlayer1Done
 CheckPlayer1Selected
           if SelectedChar1 = 255 then return
@@ -131,16 +131,16 @@ CheckPlayer4Selected
 CheckPlayer4Done
           
           rem Calculate display position
-          temp2 = 50 + (DisplayRank * 25) 
+          let temp2 = 50 + (DisplayRank * 25) 
           rem Y position
-          temp3 = 30                      
+          let temp3 = 30                      
           rem X position
           
           rem Display rank number
           gosub DisplayRankNumber
           
           rem Display player character name
-          temp4 = temp1 
+          let temp4 = temp1 
           rem Player index
           gosub DisplayPlayerCharacterName
           
@@ -160,7 +160,7 @@ if DisplayRank = 1 then
 FindPlayerByRank
 if DisplayRank = 1 then 
           rem First place: Winner
-          temp1 = WinnerPlayerIndex
+          let temp1 = WinnerPlayerIndex
           return
           
           
@@ -169,22 +169,22 @@ if DisplayRank = 1 then
           rem Rank 3 = second-to-last eliminated  
           rem Rank 4 = first eliminated (lowest elimination order)
           
-          temp5 = 0    
+          let temp5 = 0    
           rem Best elimination order found
-          temp1 = 255  
+          let temp1 = 255  
           rem Player index result
           
           rem Search for player with appropriate elimination order
-          temp6 = 0 
+          let temp6 = 0 
           rem Check player 0
           gosub CheckPlayerForRank
-          temp6 = 1 
+          let temp6 = 1 
           rem Check player 1
           gosub CheckPlayerForRank
-          temp6 = 2 
+          let temp6 = 2 
           rem Check player 2  
           gosub CheckPlayerForRank
-          temp6 = 3 
+          let temp6 = 3 
           rem Check player 3
           gosub CheckPlayerForRank
           
@@ -198,7 +198,7 @@ if DisplayRank = 1 then
           rem MODIFIES: temp1, temp5 (best match so far)
 CheckPlayerForRank
           rem Skip if player did not join
-          if temp6 = 0 then goto CheckPlayer1Joined
+          if ! temp6 then goto CheckPlayer1Joined
           goto CheckPlayer1JoinedDone
 CheckPlayer1Joined
           if SelectedChar1 = 255 then return
@@ -223,30 +223,30 @@ CheckPlayer4JoinedDone
           if temp6 = WinnerPlayerIndex then return
           
           rem Get this player elimination order
-          if temp6 = 0 then temp4 = EliminationOrder[0]
-          if temp6 = 1 then temp4 = EliminationOrder[1]
-          if temp6 = 2 then temp4 = EliminationOrder[2] 
-          if temp6 = 3 then temp4 = EliminationOrder[3]
+          if ! temp6 then let temp4 = EliminationOrder[0]
+          if temp6 = 1 then let temp4 = EliminationOrder[1]
+          if temp6 = 2 then let temp4 = EliminationOrder[2] 
+          if temp6 = 3 then let temp4 = EliminationOrder[3]
           
           rem Skip if not eliminated
-          if temp4 = 0 then return
+          if ! temp4 then return
           
           rem Check if this matches target rank
 if DisplayRank = 2 then 
           rem Want highest elimination order
-          if temp4 > temp5 then temp5 = temp4 : temp1 = temp6
+          if temp4 > temp5 then let temp5 = temp4 : let temp1 = temp6
           
 if DisplayRank = 3 then 
           rem Want second highest (skip if matches rank 2 winner)
           gosub FindRank2EliminationOrder
           if temp4 >= temp3 then goto SkipRank2Check
           if temp4 <= temp5 then goto SkipRank2Check
-          temp5 = temp4 : temp1 = temp6
+          let temp5 = temp4 : let temp1 = temp6
 SkipRank2Check
           
 if DisplayRank = 4 then 
           rem Want lowest elimination order
-          if temp5 = 0 or temp4 < temp5 then temp5 = temp4 : temp1 = temp6
+          if ! temp5 || temp4 < temp5 then let temp5 = temp4 : let temp1 = temp6
           
           
           return
@@ -257,24 +257,24 @@ if DisplayRank = 4 then
           rem Helper to find the elimination order of rank 2 player.
           rem OUTPUT: temp3 = elimination order of rank 2 player
 FindRank2EliminationOrder
-          temp3 = 0 
+          let temp3 = 0 
           rem Highest elimination order
           
           if EliminationOrder[0] <= temp3 then goto SkipElim0
-          if 0 = WinnerPlayerIndex then goto SkipElim0
-          temp3 = EliminationOrder[0]
+          if ! WinnerPlayerIndex then goto SkipElim0
+          let temp3 = EliminationOrder[0]
 SkipElim0
           if EliminationOrder[1] <= temp3 then goto SkipElim1
           if 1 = WinnerPlayerIndex then goto SkipElim1
-          temp3 = EliminationOrder[1]
+          let temp3 = EliminationOrder[1]
 SkipElim1
           if EliminationOrder[2] <= temp3 then goto SkipElim2
           if 2 = WinnerPlayerIndex then goto SkipElim2
-          temp3 = EliminationOrder[2]
+          let temp3 = EliminationOrder[2]
 SkipElim2
           if EliminationOrder[3] <= temp3 then goto SkipElim3
           if 3 = WinnerPlayerIndex then goto SkipElim3
-          temp3 = EliminationOrder[3]
+          let temp3 = EliminationOrder[3]
 SkipElim3
           
           return
@@ -286,19 +286,19 @@ SkipElim3
           rem INPUT: DisplayRank = rank number, temp2 = Y pos, temp3 = X pos
 DisplayRankNumber
           rem Set color based on rank
-          if DisplayRank = 1 then temp4 = ColGold(14)    
+          if DisplayRank = 1 then let temp4 = ColGold(14)    
           rem Gold for winner
-          if DisplayRank = 2 then temp4 = ColGrey(12)    
+          if DisplayRank = 2 then let temp4 = ColGrey(12)    
           rem Silver for 2nd
-          if DisplayRank = 3 then temp4 = ColOrange(10)  
+          if DisplayRank = 3 then let temp4 = ColOrange(10)  
           rem Bronze for 3rd  
-          if DisplayRank = 4 then temp4 = ColGrey(8)     
+          if DisplayRank = 4 then let temp4 = ColGrey(8)     
           rem Grey for 4th
           
           rem Display rank text (simplified number display)
-          temp5 = temp3 
+          let temp5 = temp3 
           rem X position
-          temp6 = temp2 
+          let temp6 = temp2 
           rem Y position
           
           if DisplayRank = 1 then gosub Display1stPlace
@@ -315,13 +315,13 @@ DisplayRankNumber
           rem INPUT: temp4 = player index, temp2 = Y pos
 DisplayPlayerCharacterName
           rem Get character type for this player
-          if temp4 = 0 then temp5 = SelectedChar1
-          if temp4 = 1 then temp5 = SelectedChar2
-          if temp4 = 2 then temp5 = SelectedChar3
-          if temp4 = 3 then temp5 = SelectedChar4
+          if ! temp4 then let temp5 = SelectedChar1
+          if temp4 = 1 then let temp5 = SelectedChar2
+          if temp4 = 2 then let temp5 = SelectedChar3
+          if temp4 = 3 then let temp5 = SelectedChar4
           
           rem Display character name based on character type
-          temp6 = temp3 + 40 
+          let temp6 = temp3 + 40 
           rem X offset for name
           gosub DisplayCharacterName
           
@@ -410,7 +410,7 @@ end
 Display3rdPlace
           rem Display "3RD" using simple sprite pattern
           rem Set bronze color for third place
-          COLUP0 = ColOrange(10)
+          COLUP! ColOrange(10)
           
           player0:
           %01111100 
@@ -438,7 +438,7 @@ end
 Display4thPlace
           rem Display "4TH" using simple sprite pattern  
           rem Set grey color for fourth place
-          COLUP0 = ColGrey(8)
+          COLUP! ColGrey(8)
           
           player0:
           %11000110 
@@ -579,9 +579,9 @@ DisplayText
           
           rem Draw simple text pattern in playfield
           rem Position based on temp1, temp2 coordinates
-          temp5 = temp1 / 8 
+          let temp5 = temp1 / 8 
           rem Convert X to playfield column
-          temp6 = temp2 / 8 
+          let temp6 = temp2 / 8 
           rem Convert Y to playfield row
           
           rem Set a few playfield pixels for basic text effect

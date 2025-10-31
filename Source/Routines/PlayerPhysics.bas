@@ -38,7 +38,7 @@ Player1GravityDone
 Player2GravityDone
           
           rem Player 3 (Quadtari only)
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Jump
+          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Jump
           if SelectedChar3 = 255 then goto SkipPlayer3Jump
           if (PlayerState[2] & 4) <> 0 then goto SkipPlayer3Jump
           PlayerY[2] = PlayerY[2] + 1
@@ -47,7 +47,7 @@ Player2GravityDone
 SkipPlayer3Jump
           
           rem Player 4 (Quadtari only)
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Jump
+          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Jump
           if SelectedChar4 = 255 then goto SkipPlayer4Jump
           if (PlayerState[3] & 4) <> 0 then goto SkipPlayer4Jump
           PlayerY[3] = PlayerY[3] + 1
@@ -64,51 +64,51 @@ SkipPlayer4Jump
           rem Momentum gradually decays over time.
 ApplyMomentumAndRecovery
           rem Player 1
-          if PlayerRecoveryFrames[0] > 0 then PlayerRecoveryFrames[0] = PlayerRecoveryFrames[0] - 1 : PlayerX[0] = PlayerX[0] + PlayerMomentumX[0]
-          if PlayerRecoveryFrames[0] = 0 then goto SkipPlayer0Momentum
+          if PlayerRecoveryFrames[0] > 0 then let PlayerRecoveryFrames[0] = PlayerRecoveryFrames[0] - 1 : let PlayerX[0] = PlayerX[0] + PlayerMomentumX[0]
+          if ! PlayerRecoveryFrames[0] then goto SkipPlayer0Momentum
           if PlayerMomentumX[0] <= 0 then goto CheckPlayer0NegativeMomentum
-          PlayerMomentumX[0] = PlayerMomentumX[0] - 1
+          let PlayerMomentumX[0] = PlayerMomentumX[0] - 1
           goto SkipPlayer0Momentum
 CheckPlayer0NegativeMomentum
           if PlayerMomentumX[0] >= 0 then goto SkipPlayer0Momentum
-          PlayerMomentumX[0] = PlayerMomentumX[0] + 1
+          let PlayerMomentumX[0] = PlayerMomentumX[0] + 1
 SkipPlayer0Momentum
 
           rem Player 2
-          if PlayerRecoveryFrames[1] > 0 then PlayerRecoveryFrames[1] = PlayerRecoveryFrames[1] - 1 : PlayerX[1] = PlayerX[1] + PlayerMomentumX[1]
-          if PlayerRecoveryFrames[1] = 0 then goto SkipPlayer1Momentum
+          if PlayerRecoveryFrames[1] > 0 then let PlayerRecoveryFrames[1] = PlayerRecoveryFrames[1] - 1 : let PlayerX[1] = PlayerX[1] + PlayerMomentumX[1]
+          if ! PlayerRecoveryFrames[1] then goto SkipPlayer1Momentum
           if PlayerMomentumX[1] <= 0 then goto CheckPlayer1NegativeMomentum
-          PlayerMomentumX[1] = PlayerMomentumX[1] - 1
+          let PlayerMomentumX[1] = PlayerMomentumX[1] - 1
           goto SkipPlayer1Momentum
 CheckPlayer1NegativeMomentum
           if PlayerMomentumX[1] >= 0 then goto SkipPlayer1Momentum
-          PlayerMomentumX[1] = PlayerMomentumX[1] + 1
+          let PlayerMomentumX[1] = PlayerMomentumX[1] + 1
 SkipPlayer1Momentum
 
           rem Player 3 (Quadtari only)
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Recovery
+          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Recovery
           if SelectedChar3 = 255 then goto SkipPlayer3Recovery
-          if PlayerRecoveryFrames[2] = 0 then goto SkipPlayer3Recovery
-          PlayerRecoveryFrames[2] = PlayerRecoveryFrames[2] - 1 : PlayerX[2] = PlayerX[2] + PlayerMomentumX[2]
+          if ! PlayerRecoveryFrames[2] then goto SkipPlayer3Recovery
+          let PlayerRecoveryFrames[2] = PlayerRecoveryFrames[2] - 1 : let PlayerX[2] = PlayerX[2] + PlayerMomentumX[2]
           if PlayerMomentumX[2] <= 0 then goto CheckPlayer3NegativeMomentum
-          PlayerMomentumX[2] = PlayerMomentumX[2] - 1
+          let PlayerMomentumX[2] = PlayerMomentumX[2] - 1
           goto SkipPlayer3Recovery
 CheckPlayer3NegativeMomentum
           if PlayerMomentumX[2] >= 0 then goto SkipPlayer3Recovery
-          PlayerMomentumX[2] = PlayerMomentumX[2] + 1
+          let PlayerMomentumX[2] = PlayerMomentumX[2] + 1
 SkipPlayer3Recovery
 
           rem Player 4 (Quadtari only)
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Recovery
+          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Recovery
           if SelectedChar4 = 255 then goto SkipPlayer4Recovery
-          if PlayerRecoveryFrames[3] = 0 then goto SkipPlayer4Recovery
-          PlayerRecoveryFrames[3] = PlayerRecoveryFrames[3] - 1 : PlayerX[3] = PlayerX[3] + PlayerMomentumX[3]
+          if ! PlayerRecoveryFrames[3] then goto SkipPlayer4Recovery
+          let PlayerRecoveryFrames[3] = PlayerRecoveryFrames[3] - 1 : let PlayerX[3] = PlayerX[3] + PlayerMomentumX[3]
           if PlayerMomentumX[3] <= 0 then goto CheckPlayer4NegativeMomentum
-          PlayerMomentumX[3] = PlayerMomentumX[3] - 1
+          let PlayerMomentumX[3] = PlayerMomentumX[3] - 1
           goto SkipPlayer4Recovery
 CheckPlayer4NegativeMomentum
           if PlayerMomentumX[3] >= 0 then goto SkipPlayer4Recovery
-          PlayerMomentumX[3] = PlayerMomentumX[3] + 1
+          let PlayerMomentumX[3] = PlayerMomentumX[3] + 1
 SkipPlayer4Recovery
           
           return
@@ -131,7 +131,7 @@ CheckBoundaryCollisions
           if PlayerY[1] > 80 then PlayerY[1] = 80
 
           rem Player 3 (Quadtari only)
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Bounds
+          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Bounds
           if SelectedChar3 = 255 then goto SkipPlayer3Bounds
           goto ApplyPlayer3Bounds
           goto SkipPlayer3Bounds
@@ -143,7 +143,7 @@ ApplyPlayer3Bounds
 SkipPlayer3Bounds
 
           rem Player 4 (Quadtari only)
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Bounds
+          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Bounds
           if SelectedChar4 = 255 then goto SkipPlayer4Bounds
           goto ApplyPlayer4Bounds
           goto SkipPlayer4Bounds
@@ -177,7 +177,7 @@ if PlayerX[0] < PlayerX[1] then
           
           
           rem Check other player combinations if Quadtari active
-          if 0 = (ControllerStatus & SetQuadtariDetected) then return
+          if ! (ControllerStatus & SetQuadtariDetected) then return
           
           rem Check Player 1 vs Player 3
 if SelectedChar3 <> 255 then 

@@ -1,6 +1,10 @@
 ; This file contains variable mapping and other information for the current project.
 
 bscode_length = 36
+vblank_time = 43
+overscan_time = 37
+TVStandard = NTSC
+ 
 MissileLifetime = e
  
 MissileActive = i
@@ -354,7 +358,3 @@ player1colors = 1
 player1colors = 1
 playercolors = 1
 multisprite = 1
-vblank_time = 58
-overscan_time = 82
-TVStandard = PAL
- 

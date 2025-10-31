@@ -104,8 +104,8 @@ characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
 # Build playfield assets (game levels + title screens)
 playfields: $(foreach screen,$(SCREEN_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Playfield.$(screen).$(arch).bas))
 
-# Build font assets
-fonts: $(foreach font,$(FONT_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Font.$(font).$(arch).bas))
+# Build font assets (fonts are universal, not region-specific)
+fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 
 # Build music assets
 music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
@@ -188,44 +188,9 @@ $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generate
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-chaos-character "$@" "$<"
 
-# Pattern rule for other Generated .bas files (fallback)
-Source/Generated/%.bas: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool
-	@echo "Generating sprite data for $*..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-chaos-character "$@" "$<"
-
-
-# Convert XCF to PNG for screens (32×32 playfields)
-Source/Art/AtariAge.png Source/Art/Interworldly.png Source/Art/ChaosFight.png: Source/Art/%.png: Source/Art/%.xcf
-	@echo "Converting screen $< to $@..."
-	mkdir -p Source/Art
-	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-
-# Convert XCF to PNG for fonts (special handling for font sheets)
-Source/Art/Numbers.png: Source/Art/Numbers.xcf
-	@echo "Converting font $< to $@..."
-	mkdir -p Source/Art
-	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-
 # Convert Numbers PNG to batariBASIC data using SkylineTool
 Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
 	@echo "Converting Numbers font $< to $@..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
-
-# Convert PNG font to batariBASIC data using new 8×16 font compiler
-Source/Generated/Font.%.NTSC.bas: Source/Art/%.png bin/skyline-tool
-	@echo "Converting 8×16 font $< to $@..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
-
-Source/Generated/Font.%.PAL.bas: Source/Art/%.png bin/skyline-tool
-	@echo "Converting 8×16 font $< to $@..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
-
-Source/Generated/Font.%.SECAM.bas: Source/Art/%.png bin/skyline-tool
-	@echo "Converting 8×16 font $< to $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
@@ -233,19 +198,19 @@ Source/Generated/Font.%.SECAM.bas: Source/Art/%.png bin/skyline-tool
 Source/Generated/Playfield.%.NTSC.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Converting playfield screen $< to $@ for NTSC..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-playfield "$@" "$<"
+	bin/skyline-tool compile-2600-playfield "$@" "$<" "NTSC"
 
 # Convert PNG screen to batariBASIC playfield data for PAL
 Source/Generated/Playfield.%.PAL.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Converting playfield screen $< to $@ for PAL..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-playfield "$@" "$<"
+	bin/skyline-tool compile-2600-playfield "$@" "$<" "PAL"
 
 # Convert PNG screen to batariBASIC playfield data for SECAM
 Source/Generated/Playfield.%.SECAM.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Converting playfield screen $< to $@ for SECAM..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-playfield "$@" "$<"
+	bin/skyline-tool compile-2600-playfield "$@" "$<" "SECAM"
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf
@@ -278,6 +243,7 @@ Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas $(foreach char,$(C
 
 Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
     Source/Generated/$(GAME).NTSC.bas \
+	$(ALL_SOURCES) \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas \
 	Source/Banks/Banks.bas \
@@ -301,7 +267,8 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
-	$(wildcard Source/Generated/*.bas)
+	$(foreach screen,$(SCREEN_NAMES),Source/Generated/Playfield.$(screen).NTSC.bas) \
+	Source/Generated/Numbers.bas
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
@@ -313,6 +280,7 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 
 Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
     Source/Generated/$(GAME).PAL.bas \
+	$(ALL_SOURCES) \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas \
 	Source/Banks/Banks.bas \
@@ -336,7 +304,8 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
-	$(wildcard Source/Generated/*.bas)
+	$(foreach screen,$(SCREEN_NAMES),Source/Generated/Playfield.$(screen).PAL.bas) \
+	Source/Generated/Numbers.bas
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.asm
@@ -348,6 +317,7 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 
 Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
     Source/Generated/$(GAME).SECAM.bas \
+	$(ALL_SOURCES) \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach screen,$(SCREEN_NAMES),Source/Generated/Playfield.$(screen).SECAM.bas) \
 	Source/Banks/Bank1.bas \
@@ -376,7 +346,8 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
-	$(wildcard Source/Generated/*.bas)
+	$(foreach screen,$(SCREEN_NAMES),Source/Generated/Playfield.$(screen).SECAM.bas) \
+	Source/Generated/Numbers.bas
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.asm

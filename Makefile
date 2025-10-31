@@ -1,6 +1,11 @@
 # Default target
 all: sprites game doc characters playfields fonts music
 
+# Test target
+test: SkylineTool/skyline-tool.asd
+	@echo "Running SkylineTool fiveam tests..."
+	cd SkylineTool && sbcl --script tests/run-tests.lisp || (echo "Tests failed!" && exit 1)
+
 # Precious intermediate files
 .PRECIOUS: %.s %.png %.midi
 
@@ -74,17 +79,10 @@ game: \
 	Dist/$(GAME).PAL.pro \
 	Dist/$(GAME).SECAM.pro
 
-# Sprite conversion using skyline-tool
-# Sprite generation (characters only - special sprites are in Source/Data/)
-sprites: characters
-	@echo "All sprite data generated."
-
 doc: Dist/$(GAME).pdf Dist/$(GAME).html
 
 # Character sprite sheet names (16 characters)
 CHARACTER_NAMES = Bernie Curler Dragonet EXOPilot FatTony Megax Harpy KnightGuy Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog
-# Special sprites are hard-coded in Source/Data/SpecialSprites.bas
-# SPECIAL_SPRITES = QuestionMark CPU No
 
 # TV architectures
 TV_ARCHS = NTSC PAL SECAM

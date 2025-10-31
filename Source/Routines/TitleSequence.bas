@@ -71,9 +71,9 @@ PublisherPreambleLoop
           
           rem Check for button press on any controller
           if joy0fire || joy1fire then goto ExitPublisherPreamble
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck1
-          if !INPT0{7} then goto ExitPublisherPreamble
-          if !INPT2{7} then goto ExitPublisherPreamble
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck1
+          if 0 = INPT0{7} then goto ExitPublisherPreamble
+          if 0 = INPT2{7} then goto ExitPublisherPreamble
 SkipQuadtariCheck1
           
           rem Wait for music + 30 frames (0.5s)
@@ -134,9 +134,9 @@ AuthorPreambleLoop
           
           rem Check for button press
           if joy0fire || joy1fire then goto ExitAuthorPreamble
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck2
-          if !INPT0{7} then goto ExitAuthorPreamble
-          if !INPT2{7} then goto ExitAuthorPreamble
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck2
+          if 0 = INPT0{7} then goto ExitAuthorPreamble
+          if 0 = INPT2{7} then goto ExitAuthorPreamble
 SkipQuadtariCheck2
           
           if temp1 < 150 then goto AuthorPreambleLoop
@@ -207,9 +207,9 @@ SkipParade
           
           rem Check for button press on any controller
           if joy0fire || joy1fire then goto ExitTitleScreen
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck3
-          if !INPT0{7} then goto ExitTitleScreen
-          if !INPT2{7} then goto ExitTitleScreen
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck3
+          if 0 = INPT0{7} then goto ExitTitleScreen
+          if 0 = INPT2{7} then goto ExitTitleScreen
 SkipQuadtariCheck3
           
           goto TitleScreenLoop

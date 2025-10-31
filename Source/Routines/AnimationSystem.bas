@@ -11,19 +11,19 @@
 UpdateCharacterAnimations
           rem Update animation for each active player
           temp1 = 0  : rem Player index (0-3)
-          gosub UpdatePlayerAnimation 
+          gosub UpdatePlayerAnimation
           rem Player 1
           temp1 = 1  : rem Player index (0-3)
-          gosub UpdatePlayerAnimation 
+          gosub UpdatePlayerAnimation
           rem Player 2
           if ControllerStatus & SetQuadtariDetected then goto UpdatePlayer3
           goto SkipPlayer3
 UpdatePlayer3
           temp1 = 2  : rem Player index (0-3)
-          gosub UpdatePlayerAnimation 
+          gosub UpdatePlayerAnimation
           rem Player 3
           temp1 = 3  : rem Player index (0-3)
-          gosub UpdatePlayerAnimation 
+          gosub UpdatePlayerAnimation
           rem Player 4
 SkipPlayer3
           return
@@ -32,6 +32,10 @@ SkipPlayer3
           rem Input: temp1 = player index (0-3)
 UpdatePlayerAnimation
           rem Skip if player is eliminated
+          if temp1 = 0 && PlayersEliminated & 1 then return
+          if temp1 = 1 && PlayersEliminated & 2 then return
+          if temp1 = 2 && PlayersEliminated & 4 then return
+          if temp1 = 3 && PlayersEliminated & 8 then return
           if PlayerHealth[temp1] = 0 then return
           
           rem Increment animation counter

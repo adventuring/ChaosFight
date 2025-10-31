@@ -28,9 +28,9 @@ TitleScreenLoop
           if joy0fire or joy1fire then goto TitleScreenComplete
           
           rem Check Quadtari controllers (Players 3 & 4 if active)
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck
-          if !INPT0{7} then goto TitleScreenComplete
-          if !INPT2{7} then goto TitleScreenComplete
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck
+          if 0 = INPT0{7} then goto TitleScreenComplete
+          if 0 = INPT2{7} then goto TitleScreenComplete
 SkipQuadtariCheck
           
           gosub UpdateCharacterParade

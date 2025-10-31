@@ -38,7 +38,7 @@ Player1GravityDone
 Player2GravityDone
           
           rem Player 3 (Quadtari only)
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Jump
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Jump
           if SelectedChar3 = 255 then goto SkipPlayer3Jump
           if (PlayerState[2] & 4) <> 0 then goto SkipPlayer3Jump
           PlayerY[2] = PlayerY[2] + 1
@@ -47,7 +47,7 @@ Player2GravityDone
 SkipPlayer3Jump
           
           rem Player 4 (Quadtari only)
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Jump
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Jump
           if SelectedChar4 = 255 then goto SkipPlayer4Jump
           if (PlayerState[3] & 4) <> 0 then goto SkipPlayer4Jump
           PlayerY[3] = PlayerY[3] + 1
@@ -86,7 +86,7 @@ CheckPlayer1NegativeMomentum
 SkipPlayer1Momentum
 
           rem Player 3 (Quadtari only)
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Recovery
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Recovery
           if SelectedChar3 = 255 then goto SkipPlayer3Recovery
           if PlayerRecoveryFrames[2] = 0 then goto SkipPlayer3Recovery
           PlayerRecoveryFrames[2] = PlayerRecoveryFrames[2] - 1 : PlayerX[2] = PlayerX[2] + PlayerMomentumX[2]
@@ -99,7 +99,7 @@ CheckPlayer3NegativeMomentum
 SkipPlayer3Recovery
 
           rem Player 4 (Quadtari only)
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Recovery
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Recovery
           if SelectedChar4 = 255 then goto SkipPlayer4Recovery
           if PlayerRecoveryFrames[3] = 0 then goto SkipPlayer4Recovery
           PlayerRecoveryFrames[3] = PlayerRecoveryFrames[3] - 1 : PlayerX[3] = PlayerX[3] + PlayerMomentumX[3]
@@ -131,7 +131,7 @@ CheckBoundaryCollisions
           if PlayerY[1] > 80 then PlayerY[1] = 80
 
           rem Player 3 (Quadtari only)
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Bounds
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Bounds
           if SelectedChar3 = 255 then goto SkipPlayer3Bounds
           goto ApplyPlayer3Bounds
           goto SkipPlayer3Bounds
@@ -143,7 +143,7 @@ ApplyPlayer3Bounds
 SkipPlayer3Bounds
 
           rem Player 4 (Quadtari only)
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Bounds
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Bounds
           if SelectedChar4 = 255 then goto SkipPlayer4Bounds
           goto ApplyPlayer4Bounds
           goto SkipPlayer4Bounds
@@ -177,7 +177,7 @@ if PlayerX[0] < PlayerX[1] then
           
           
           rem Check other player combinations if Quadtari active
-          if !(ControllerStatus & SetQuadtariDetected) then return
+          if 0 = (ControllerStatus & SetQuadtariDetected) then return
           
           rem Check Player 1 vs Player 3
 if SelectedChar3 <> 255 then 

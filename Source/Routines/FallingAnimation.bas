@@ -8,11 +8,11 @@ FallingAnimation1
           dim ActivePlayers = d
 
           rem Count active players for falling animation
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Count
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Count
           if SelectedChar3 = 255 then goto SkipPlayer3Count
           ActivePlayers = ActivePlayers + 1
 SkipPlayer3Count
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Count
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Count
           if SelectedChar4 = 255 then goto SkipPlayer4Count
           ActivePlayers = ActivePlayers + 1
 SkipPlayer4Count
@@ -27,13 +27,13 @@ FallingLoop1
           player1y = player1y - FallSpeed
           if player1y < 20 then player1y = 20 : FallComplete = FallComplete + 1
 
-          if !(ControllerStatus & SetQuadtariDetected) then Player3FallDone
+          if 0 = (ControllerStatus & SetQuadtariDetected) then Player3FallDone
           if SelectedChar3 = 255 then Player3FallDone
           player0y = player0y - FallSpeed
           if player0y < 20 then player0y = 20 : FallComplete = FallComplete + 1
 Player3FallDone
 
-          if !(ControllerStatus & SetQuadtariDetected) then Player4FallDone
+          if 0 = (ControllerStatus & SetQuadtariDetected) then Player4FallDone
           if SelectedChar4 = 255 then Player4FallDone
           player1y = player1y - FallSpeed
           if player1y < 20 then player1y = 20 : FallComplete = FallComplete + 1

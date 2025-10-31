@@ -4,6 +4,12 @@
           bank 1
           #include "Source/Routines/ColdStart.bas"
           #include "Source/Routines/MainLoop.bas"
+          
+          rem Game mode main loop routines
+          #include "Source/Routines/PublisherPreamble.bas"
+          #include "Source/Routines/AuthorPreamble.bas"
+          #include "Source/Routines/TitleScreenMain.bas"
+          #include "Source/Routines/WinnerAnnouncement.bas"
 
           #include "Source/Routines/ConsoleDetection.bas"
           #include "Source/Routines/ControllerDetection.bas"

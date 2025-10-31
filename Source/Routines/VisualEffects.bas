@@ -13,7 +13,7 @@
 
           rem Show damage indicator for a player
           rem Input: temp1 = player index (0-3), temp2 = damage amount
-ShowDamageIndicator
+VisualShowDamageIndicator
           rem Set player to hurt state for visual feedback
           temp3 = PlayerState[temp1] & %00011111 
           rem Keep lower 5 bits

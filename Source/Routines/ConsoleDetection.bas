@@ -19,7 +19,7 @@
           rem =================================================================
           
           rem Main console detection routine
-DetectConsole
+ConsoleDetHW
           rem Assume 2600 console initially
           SystemFlags = SystemFlags & ClearSystemFlag7800
           Console7800Detected = 0

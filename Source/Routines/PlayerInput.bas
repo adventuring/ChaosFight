@@ -34,51 +34,51 @@
           rem =================================================================
 
           rem Main input handler for all players
-HandleAllPlayerInput
-          if qtcontroller then goto HandleQuadtariPlayers
+InputHandleAllPlayers
+          if qtcontroller then goto InputHandleQuadtariPlayers
           
           rem Even frame: Handle Players 1 & 2 - only if alive  
           temp1 = 0 : gosub IsPlayerAlive
-          if temp2 = 0 then goto SkipPlayer0Input
-          if (PlayerState[0] & 8) <> 0 then goto SkipPlayer0Input
-          temp1 = 0 : gosub HandleLeftPortPlayer
+          if temp2 = 0 then goto InputSkipPlayer0Input
+          if (PlayerState[0] & 8) <> 0 then goto InputSkipPlayer0Input
+          temp1 = 0 : gosub InputHandleLeftPortPlayer
           
-SkipPlayer0Input
+InputSkipPlayer0Input
           
           temp1 = 1 : gosub IsPlayerAlive
-          if temp2 = 0 then goto SkipPlayer1Input
-          if (PlayerState[1] & 8) <> 0 then goto SkipPlayer1Input
-          goto HandlePlayer1Input
+          if temp2 = 0 then goto InputSkipPlayer1Input
+          if (PlayerState[1] & 8) <> 0 then goto InputSkipPlayer1Input
+          goto InputHandlePlayer1
           
-          goto SkipPlayer1Input
+          goto InputSkipPlayer1Input
           
-HandlePlayer1Input
-          temp1 = 1 : gosub HandleRightPortPlayer 
+InputHandlePlayer1
+          temp1 = 1 : gosub InputHandleRightPortPlayer 
           rem Player 1 uses Joy1
-SkipPlayer1Input
+InputSkipPlayer1Input
           
           qtcontroller = 1 
           rem Switch to odd frame
           return
 
-HandleQuadtariPlayers
+InputHandleQuadtariPlayers
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and alive)
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Input
-          if SelectedChar3 = 0 then goto SkipPlayer3Input
+          if !(ControllerStatus & SetQuadtariDetected) then goto InputSkipPlayer3Input
+          if SelectedChar3 = 0 then goto InputSkipPlayer3Input
                     temp1 = 2 : gosub IsPlayerAlive
-          if temp2 = 0 then goto SkipPlayer3Input
-          if (PlayerState[2] & 8) <> 0 then goto SkipPlayer3Input
-          temp1 = 2 : gosub HandleLeftPortPlayer
+          if temp2 = 0 then goto InputSkipPlayer3Input
+          if (PlayerState[2] & 8) <> 0 then goto InputSkipPlayer3Input
+          temp1 = 2 : gosub InputHandleLeftPortPlayer
           
-SkipPlayer3Input
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Input
-          if SelectedChar4 = 0 then goto SkipPlayer4Input
+InputSkipPlayer3Input
+          if !(ControllerStatus & SetQuadtariDetected) then goto InputSkipPlayer4Input
+          if SelectedChar4 = 0 then goto InputSkipPlayer4Input
                     temp1 = 3 : gosub IsPlayerAlive
-          if temp2 = 0 then goto SkipPlayer4Input
-          if (PlayerState[3] & 8) <> 0 then goto SkipPlayer4Input
-          temp1 = 3 : gosub HandleRightPortPlayer
+          if temp2 = 0 then goto InputSkipPlayer4Input
+          if (PlayerState[3] & 8) <> 0 then goto InputSkipPlayer4Input
+          temp1 = 3 : gosub InputHandleRightPortPlayer
           
-SkipPlayer4Input
+InputSkipPlayer4Input
           
           
           qtcontroller = 0 
@@ -90,7 +90,7 @@ SkipPlayer4Input
           rem =================================================================
           rem INPUT: temp1 = player index (0 or 2)
           rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
-HandleLeftPortPlayer
+InputHandleLeftPortPlayer
           rem Process left/right movement
           if joy0left then PlayerX[temp1] = PlayerX[temp1] - 1 : PlayerState[temp1] = PlayerState[temp1] & NOT 1 : PlayerMomentumX[temp1] = 255
           if joy0right then PlayerX[temp1] = PlayerX[temp1] + 1 : PlayerState[temp1] = PlayerState[temp1] | 1 : PlayerMomentumX[temp1] = 1
@@ -102,34 +102,34 @@ HandleLeftPortPlayer
           
           rem Check Genesis/Joy2b+ Button C/II (INPT0 for Player 1, INPT2 for Player 3)
           if temp1 = 0 then goto CheckPlayer1Buttons
-          goto SkipPlayer1Buttons
+          goto InputSkipPlayer1Buttons
 CheckPlayer1Buttons
           if !ControllerStatus{0} then goto CheckPlayer1Joy2bPlus
           if !INPT0{7} then temp3 = 1
-          goto SkipPlayer1Buttons
+          goto InputSkipPlayer1Buttons
 CheckPlayer1Joy2bPlus
-          if !ControllerStatus{1} then goto SkipPlayer1Buttons
+          if !ControllerStatus{1} then goto InputSkipPlayer1Buttons
           if !INPT0{7} then temp3 = 1
-SkipPlayer1Buttons
+InputSkipPlayer1Buttons
           if temp1 = 2 then goto CheckPlayer3Buttons
-          goto SkipPlayer3Buttons
+          goto InputSkipPlayer3Buttons
 CheckPlayer3Buttons
           if !ControllerStatus{0} then goto CheckPlayer3Joy2bPlus
           if !INPT0{7} then temp3 = 1
-          goto SkipPlayer3Buttons
+          goto InputSkipPlayer3Buttons
 CheckPlayer3Joy2bPlus
-          if !ControllerStatus{1} then goto SkipPlayer3Buttons
+          if !ControllerStatus{1} then goto InputSkipPlayer3Buttons
           if !INPT0{7} then temp3 = 1
-SkipPlayer3Buttons
+InputSkipPlayer3Buttons
 EnhancedJumpDone0
           
           rem Execute jump if pressed and not already jumping
-          if temp3 = 0 then SkipLeftPortJump
-          if (PlayerState[temp1] & 4) <> 0 then SkipLeftPortJump
+          if temp3 = 0 then InputSkipLeftPortJump
+          if (PlayerState[temp1] & 4) <> 0 then InputSkipLeftPortJump
           temp4 = PlayerChar[temp1] 
           rem Character type
                     on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
-SkipLeftPortJump
+InputSkipLeftPortJump
 
           
 
@@ -139,10 +139,10 @@ SkipLeftPortJump
           
           
           rem Process attack input
-          if !joy0fire then goto SkipLeftPortAttack
-          if (PlayerState[temp1] & 1) <> 0 then SkipLeftPortAttack
+          if !joy0fire then goto InputSkipLeftPortAttack
+          if (PlayerState[temp1] & 1) <> 0 then InputSkipLeftPortAttack
           temp4 = PlayerChar[temp1] : on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
-SkipLeftPortAttack
+InputSkipLeftPortAttack
           
           
           return
@@ -152,7 +152,7 @@ SkipLeftPortAttack
           rem =================================================================
           rem INPUT: temp1 = player index (1 or 3)
           rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
-HandleRightPortPlayer
+InputHandleRightPortPlayer
           rem Process left/right movement
           if joy1left then
                     PlayerX[temp1] = PlayerX[temp1] - 1
@@ -196,12 +196,12 @@ SkipPlayer4Buttons
 EnhancedJumpDone1
           
           rem Execute jump if pressed and not already jumping
-          if temp3 = 0 then SkipRightPortJump
-          if (PlayerState[temp1] & 4) <> 0 then SkipRightPortJump
+          if temp3 = 0 then InputSkipRightPortJump
+          if (PlayerState[temp1] & 4) <> 0 then InputSkipRightPortJump
           temp4 = PlayerChar[temp1] 
           rem Character type
                     on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
-SkipRightPortJump
+InputSkipRightPortJump
 
           
 
@@ -216,12 +216,12 @@ SkipRightPortJump
           
           
           rem Process attack input
-          if !joy1fire then goto SkipRightPortAttack
-          if (PlayerState[temp1] & 1) <> 0 then SkipRightPortAttack
+          if !joy1fire then goto InputSkipRightPortAttack
+          if (PlayerState[temp1] & 1) <> 0 then InputSkipRightPortAttack
           temp4 = PlayerChar[temp1] 
           rem Character type
                     on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
-SkipRightPortAttack
+InputSkipRightPortAttack
           
           
           return
@@ -264,7 +264,7 @@ SkipPauseToggle
           rem =================================================================
           rem OLD INDIVIDUAL PLAYER HANDLERS - REPLACED BY GENERIC ROUTINES
           rem =================================================================
-          rem The original HandlePlayer1Input, HandlePlayer2Input, HandlePlayer3Input,
+          rem The original InputHandlePlayer1, HandlePlayer2Input, HandlePlayer3Input,
           rem and HandlePlayer4Input have been consolidated into HandleGenericPlayerInput
           rem to eliminate code duplication and improve maintainability.
 

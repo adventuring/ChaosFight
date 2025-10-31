@@ -1,6 +1,121 @@
 ; This file contains variable mapping and other information for the current project.
 
-bscode_length = 36
+HandicapMode = temp1
+ 
+VegDogFrameMap_length = .skipL02035-VegDogFrameMap 
+ 
+VegDogFrames_length = .skipL02034-VegDogFrames 
+ 
+UrsuloFrameMap_length = .skipL02029-UrsuloFrameMap 
+ 
+UrsuloFrames_length = .skipL02028-UrsuloFrames 
+ 
+RoboTitoFrameMap_length = .skipL02023-RoboTitoFrameMap 
+ 
+RoboTitoFrames_length = .skipL02022-RoboTitoFrames 
+ 
+RadishGoblinFrameMap_length = .skipL02017-RadishGoblinFrameMap 
+ 
+RadishGoblinFrames_length = .skipL02016-RadishGoblinFrames 
+ 
+PorkChopFrameMap_length = .skipL02011-PorkChopFrameMap 
+ 
+PorkChopFrames_length = .skipL02010-PorkChopFrames 
+ 
+NinjishGuyFrameMap_length = .skipL02005-NinjishGuyFrameMap 
+ 
+NinjishGuyFrames_length = .skipL02004-NinjishGuyFrames 
+ 
+NefertemFrameMap_length = .skipL01999-NefertemFrameMap 
+ 
+NefertemFrames_length = .skipL01998-NefertemFrames 
+ 
+FrootyFrameMap_length = .skipL01993-FrootyFrameMap 
+ 
+KnightGuyFrameMap_length = .skipL01788-KnightGuyFrameMap 
+ 
+KnightGuyFrames_length = .skipL01787-KnightGuyFrames 
+ 
+HarpyFrameMap_length = .skipL01782-HarpyFrameMap 
+ 
+HarpyFrames_length = .skipL01781-HarpyFrames 
+ 
+MegaxFrameMap_length = .skipL01776-MegaxFrameMap 
+ 
+MegaxFrames_length = .skipL01775-MegaxFrames 
+ 
+FatTonyFrameMap_length = .skipL01770-FatTonyFrameMap 
+ 
+FatTonyFrames_length = .skipL01769-FatTonyFrames 
+ 
+ExoPilotFrameMap_length = .skipL01764-ExoPilotFrameMap 
+ 
+ExoPilotFrames_length = .skipL01763-ExoPilotFrames 
+ 
+DragonetFrameMap_length = .skipL01758-DragonetFrameMap 
+ 
+DragonetFrames_length = .skipL01757-DragonetFrames 
+ 
+CurlerFrameMap_length = .skipL01752-CurlerFrameMap 
+ 
+CurlerFrames_length = .skipL01751-CurlerFrames 
+ 
+BernieFrameMap_length = .skipL01746-BernieFrameMap 
+ 
+QuestionMarkSprite_length = .skipL01745-QuestionMarkSprite 
+ 
+EliminationSoundFreq_length = .skipL01434-EliminationSoundFreq 
+ 
+EliminationSoundData_length = .skipL01433-EliminationSoundData 
+ 
+VictorySoundFreq_length = .skipL01431-VictorySoundFreq 
+ 
+VictorySoundData_length = .skipL01430-VictorySoundData 
+ 
+SelectSoundFreq_length = .skipL01428-SelectSoundFreq 
+ 
+SelectSoundData_length = .skipL01427-SelectSoundData 
+ 
+GuardSoundFreq_length = .skipL01425-GuardSoundFreq 
+ 
+GuardSoundData_length = .skipL01424-GuardSoundData 
+ 
+FallSoundFreq_length = .skipL01422-FallSoundFreq 
+ 
+FallSoundData_length = .skipL01421-FallSoundData 
+ 
+HitSoundFreq_length = .skipL01419-HitSoundFreq 
+ 
+HitSoundData_length = .skipL01418-HitSoundData 
+ 
+AttackSoundFreq_length = .skipL01416-AttackSoundFreq 
+ 
+AttackSoundData_length = .skipL01415-AttackSoundData 
+ 
+SoundElimination = 7
+ 
+SoundVictory = 6
+ 
+SoundSelect = 5
+ 
+SoundGuard = 4
+ 
+SoundFall = 3
+ 
+SoundHit = 2
+ 
+SoundAttack = 1
+ 
+PlayerColorsLight_length = .skipL01155-PlayerColorsLight 
+ 
+ActivePlayers = d
+ 
+FallComplete = c
+ 
+FallSpeed = b
+ 
+FallFrame = a
+ 
 vblank_time = 43
 overscan_time = 37
 TVStandard = NTSC
@@ -343,7 +458,7 @@ RandomLevel = 0
  
 NumLevels = 2
  
-BuildDate = 2025.303
+BuildDate = 2025.304
  
 GameVersionMinor = 1
  

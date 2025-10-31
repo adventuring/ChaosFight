@@ -146,7 +146,7 @@ CheckFallDamage
 
           rem OUTPUT:
           rem   temp2 = updated vertical momentum
-ApplyGravity
+FallDamageApplyGravity
           rem Get character type
           temp5 = PlayerChar[temp1]
           

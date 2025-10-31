@@ -6,14 +6,14 @@
           rem =================================================================
           rem Renders 8×16 pixel hexadecimal digits (0-9, A-F) for:
           rem   - Player numbers (1-4) in player colors
-          rem   - Level selection (0-F) in white
+          rem   - Level selection (0-9) in white
           rem   - Scores and timers
 
           rem FONT SOURCE:
           rem   Source/Art/Numbers.xcf (128 × 16 px)
           rem   16 digits × 8px wide = 128px total width
           rem   Each digit is 8×16 pixels
-          rem   White pixels on black/transparent background
+          rem   Solid pixels on transparent background
 
           rem GENERATED FILES:
           rem   Source/Generated/Font.Numbers.NTSC.bas

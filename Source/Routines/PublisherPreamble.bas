@@ -28,14 +28,14 @@ PublisherPreamble
           rem Check for button press on any controller to skip
           if joy0fire || joy1fire then goto PublisherPreambleComplete
           
-          if ControllerStatus & SetQuadtariDetected then goto CheckQuadtariInput
+          if ControllerStatus & SetQuadtariDetected then goto PubCheckQuad
 
-          goto SkipQuadtariInput
+          goto PubSkipQuad
 
-CheckQuadtariInput
+PubCheckQuad
           if !INPT0{7} then goto PublisherPreambleComplete
           if !INPT2{7} then goto PublisherPreambleComplete
-SkipQuadtariInput
+PubSkipQuad
           gosub UpdateMusic
 
           rem Auto-advance after music completes + 0.5s

@@ -86,16 +86,7 @@ ExitPublisherPreamble
           AUDV1 = 0
           return
 
-LoadPublisherLogo
-          rem Load publisher logo from generated playfield data
-          gosub LoadPublisherPlayfield
-          return
 
-StartTitleMusic
-          rem Initialize music system for title song
-          temp1 = MusicTitle
-          gosub StartMusic
-          return
 
           rem =================================================================
           rem AUTHOR PREAMBLE SCREEN
@@ -128,7 +119,7 @@ ShowAuthorPreamble
           rem Wait for music + 0.5s or button press
           temp1 = 0
           
-AuthorPreambleLoop
+TitleSequenceAuthorLoop
           drawscreen
           temp1 = temp1 + 1
           
@@ -139,7 +130,7 @@ AuthorPreambleLoop
           if 0 = INPT2{7} then goto ExitAuthorPreamble
 SkipQuadtariCheck2
           
-          if temp1 < 150 then goto AuthorPreambleLoop
+          if temp1 < 150 then goto TitleSequenceAuthorLoop
           
 ExitAuthorPreamble
           MusicPlaying = 0
@@ -147,16 +138,7 @@ ExitAuthorPreamble
           AUDV1 = 0
           return
 
-LoadPublisherLogo
-          rem Load publisher logo from generated playfield data
-          gosub LoadPublisherPlayfield
-          return
 
-StartTitleMusic
-          rem Initialize music system for title song
-          temp1 = MusicTitle
-          gosub StartMusic
-          return
 
           rem =================================================================
           rem TITLE SCREEN
@@ -188,7 +170,7 @@ ShowTitleScreen
           ParadeX = 0
           ParadeDelay = 0
           
-TitleScreenLoop
+TitleSequenceTitleScreenLoop
           drawscreen
           TitleTimer = TitleTimer + 1
           
@@ -207,12 +189,12 @@ SkipParade
           
           rem Check for button press on any controller
           if joy0fire || joy1fire then goto ExitTitleScreen
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck3
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto TitleSeqSkipQuad
           if 0 = INPT0{7} then goto ExitTitleScreen
           if 0 = INPT2{7} then goto ExitTitleScreen
-SkipQuadtariCheck3
+TitleSeqSkipQuad
           
-          goto TitleScreenLoop
+          goto TitleSequenceTitleScreenLoop
           
 ExitTitleScreen
           rem Stop music
@@ -229,16 +211,7 @@ ExitTitleScreen
           rem HELPER SUBROUTINES
           rem =================================================================
 
-LoadPublisherLogo
-          rem Load publisher logo from generated playfield data
-          gosub LoadPublisherPlayfield
-          return
 
-StartTitleMusic
-          rem Initialize music system for title song
-          temp1 = MusicTitle
-          gosub StartMusic
-          return
 
           rem =================================================================
           rem CHARACTER PARADE ON TITLE SCREEN
@@ -254,16 +227,7 @@ HandleCharacterParade
 CheckParadeX
 
 
-LoadPublisherLogo
-          rem Load publisher logo from generated playfield data
-          gosub LoadPublisherPlayfield
-          return
 
-StartTitleMusic
-          rem Initialize music system for title song
-          temp1 = MusicTitle
-          gosub StartMusic
-          return
           endif
           
           rem Move character across screen (usable area is 16-144)
@@ -279,16 +243,7 @@ StartTitleMusic
             return
 
 
-LoadPublisherLogo
-          rem Load publisher logo from generated playfield data
-          gosub LoadPublisherPlayfield
-          return
 
-StartTitleMusic
-          rem Initialize music system for title song
-          temp1 = MusicTitle
-          gosub StartMusic
-          return
           endif
           
           rem Character has left screen, start delay

@@ -16,16 +16,16 @@ UpdateCharacterAnimations
           temp1 = 1  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 2
-          if ControllerStatus & SetQuadtariDetected then goto UpdatePlayer3
-          goto SkipPlayer3
-UpdatePlayer3
+          if ControllerStatus & SetQuadtariDetected then goto AnimationUpdatePlayer3
+          goto AnimationSkipPlayer3
+AnimationUpdatePlayer3
           temp1 = 2  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 3
           temp1 = 3  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 4
-SkipPlayer3
+AnimationSkipPlayer3
           return
 
           rem Update animation for a specific player

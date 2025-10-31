@@ -34,7 +34,7 @@ GameMainLoop
           gosub HandleConsoleSwitches
 
           rem Handle all player input (with Quadtari multiplexing)
-          gosub HandleAllPlayerInput
+          gosub InputHandleAllPlayers
 
           rem Update animation system (10fps character animation)
           gosub UpdateCharacterAnimations
@@ -43,7 +43,7 @@ GameMainLoop
           gosub UpdatePlayerMovement
 
           rem Apply gravity and physics
-          gosub ApplyGravity
+          gosub PhysicsApplyGravity
           
           rem Apply momentum and recovery effects
           gosub ApplyMomentumAndRecovery

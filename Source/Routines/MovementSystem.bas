@@ -90,7 +90,7 @@ GetPlayerVelocity
 
           rem Apply gravity to player
           rem Input: temp1 = player index (0-3), temp2 = gravity strength
-ApplyGravity
+MovementApplyGravity
           rem Add gravity to Y velocity
           PlayerVelocityY[temp1] = PlayerVelocityY[temp1] + temp2
           return

@@ -18,7 +18,7 @@
           rem Detect if running on Atari 7800 for enhanced features
           rem Method: Check magic bytes in $D0/$D1 set by BIOS
           
-DetectConsole
+CtrlDetConsole
           rem Atari 7800 BIOS sets $D0=$2C and $D1=$A9 when loading cartridge
           rem Check these before any other detection to avoid corrupting values
           
@@ -36,7 +36,7 @@ DetectConsole
           rem Re-detect controllers each time Game Select pressed or title reached
           rem Note: Genesis/Joy2b+ detection is contrary to Quadtari
           
-DetectControllers
+CtrlDetPads
           rem Reset detection flags
           ControllerStatus = 0
 #ifndef TV_SECAM
@@ -80,10 +80,10 @@ CheckGenesis
           if QuadtariDetected then return
           
           rem Detect Genesis/MegaDrive controllers using correct method
-          gosub DetectGenesisControllers
+          gosub CtrlGenesisA
           
           rem Detect Joy2b+ controllers (if no Genesis detected)
-          gosub DetectJoy2bPlusControllers
+          gosub ControllerDetectJoy2bPlusPrimary
           
           return
 
@@ -91,7 +91,7 @@ CheckGenesis
           rem GENESIS/MEGADRIVE CONTROLLER DETECTION
           rem =================================================================
           rem Based on DetectGenesis.s - correct implementation
-DetectGenesisControllers
+CtrlGenesisA
           rem Ground paddle ports (INPT0-3) during VBLANK
           VBLANK = VBlankGroundINPT0123
           
@@ -130,35 +130,35 @@ NoGenesisRight
           rem =================================================================
           rem JOY2BPLUS CONTROLLER DETECTION  
           rem =================================================================
-DetectJoy2bPlusControllers
+CtrlJoy2A
           rem Joy2b+ controllers pull all three paddle ports HIGH when idle
           rem Check left port (INPT0, INPT1, INPT4)
-          if !INPT0{7} then goto NoJoy2bPlusLeft
-          if !INPT1{7} then goto NoJoy2bPlusLeft
-          if !INPT4{7} then goto NoJoy2bPlusLeft
+          if !INPT0{7} then goto NoJoy2Left
+          if !INPT1{7} then goto NoJoy2Left
+          if !INPT4{7} then goto NoJoy2Left
           
           rem Joy2b+ detected on left port
           ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
           rem Set LeftPortJoy2bPlus bit
           
-NoJoy2bPlusLeft
+NoJoy2Left
           rem Check right port (INPT2, INPT3, INPT5)
-          if !INPT2{7} then goto NoJoy2bPlusRight
-          if !INPT3{7} then goto NoJoy2bPlusRight
-          if !INPT5{7} then goto NoJoy2bPlusRight
+          if !INPT2{7} then goto NoJoy2Right
+          if !INPT3{7} then goto NoJoy2Right
+          if !INPT5{7} then goto NoJoy2Right
           
           rem Joy2b+ detected on right port
           ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
           rem Set RightPortJoy2bPlus bit
           
-NoJoy2bPlusRight
+NoJoy2Right
           return
 
           rem =================================================================
           rem GENESIS/MEGADRIVE CONTROLLER DETECTION
           rem =================================================================
           rem Based on DetectGenesis.s - correct implementation
-DetectGenesisControllers
+CtrlGenesisB
           rem Ground paddle ports (INPT0-3) using VBLANK
           VBLANK = VBlankGroundINPT0123
           
@@ -185,10 +185,10 @@ NoLeftGenesis
           
           rem Genesis detected on right port
           ControllerStatus = ControllerStatus | SetRightPortGenesis
-          goto GenesisDetectionComplete
+          goto GenesisDetDone
           
 NoRightGenesis
-GenesisDetectionComplete
+GenesisDetDone
           rem Restore normal VBLANK
           VBLANK = $00
           return
@@ -196,7 +196,7 @@ GenesisDetectionComplete
           rem =================================================================
           rem JOY2BPLUS CONTROLLER DETECTION  
           rem =================================================================
-DetectJoy2bPlusControllers
+CtrlJoy2B
           rem Only check if no Genesis controllers detected
           if LeftPortGenesis then return
           if RightPortGenesis then return
@@ -207,24 +207,24 @@ DetectJoy2bPlusControllers
           drawscreen
           
           rem Check left port for Joy2b+ (INPT0, INPT1, INPT4)
-          if !INPT0{7} then goto CheckRightJoy2bPlus
-          if !INPT1{7} then goto CheckRightJoy2bPlus
-          if !INPT4{7} then goto CheckRightJoy2bPlus
+          if !INPT0{7} then goto CheckRightJoy2
+          if !INPT1{7} then goto CheckRightJoy2
+          if !INPT4{7} then goto CheckRightJoy2
           
           rem Joy2b+ detected on left port
           ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
-          goto Joy2bPlusDetectionComplete
+          goto Joy2PlusDone
           
-CheckRightJoy2bPlus
+CheckRightJoy2
           rem Check right port for Joy2b+ (INPT2, INPT3, INPT5)
-          if !INPT2{7} then goto Joy2bPlusDetectionComplete
-          if !INPT3{7} then goto Joy2bPlusDetectionComplete
-          if !INPT5{7} then goto Joy2bPlusDetectionComplete
+          if !INPT2{7} then goto Joy2PlusDone
+          if !INPT3{7} then goto Joy2PlusDone
+          if !INPT5{7} then goto Joy2PlusDone
           
           rem Joy2b+ detected on right port
           ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
           
-Joy2bPlusDetectionComplete
+Joy2PlusDone
           rem Restore normal VBLANK
           VBLANK = $00
           return
@@ -236,7 +236,7 @@ Joy2bPlusDetectionComplete
           rem This allows players to switch between color and B&W without
           rem flipping the physical switch on the console
           
-Check7800PauseButton
+Check7800Pause
           rem Only process if running on 7800
           if !Console7800Detected then return
           
@@ -263,7 +263,7 @@ Check7800PauseButton
           rem =================================================================
           rem Handle frame-based controller multiplexing for 4 players
           
-UpdateQuadtariInputs
+UpdateQuadIn
           rem Only run if Quadtari detected
           if !QuadtariDetected then return
           

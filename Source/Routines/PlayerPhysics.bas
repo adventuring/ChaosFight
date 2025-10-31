@@ -20,7 +20,7 @@
           rem =================================================================
           rem Applies gravity to all jumping players, landing them when they
           rem reach the ground level (Y=80).
-ApplyGravity
+PhysicsApplyGravity
           rem Player 1
           if (PlayerState[0] & 4) <> 0 then Player1GravityDone
           PlayerY[0] = PlayerY[0] + 1

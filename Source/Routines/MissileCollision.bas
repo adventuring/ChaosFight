@@ -341,7 +341,7 @@ SkipThirdPlayer3
 
           rem OUTPUT:
           rem   temp4 = 1 if hit playfield, 0 if clear
-CheckMissilePlayfieldCollision
+MissileCollPF
           rem Get missile X/Y position
           temp2 = MissileX[temp1]
           temp3 = MissileY[temp1]

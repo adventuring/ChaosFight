@@ -155,7 +155,7 @@ FacingSet
           
           rem Check collision with playfield if flag is set
           if !(temp5 & 1) then PlayfieldCollisionDone
-          gosub bank4 CheckMissilePlayfieldCollision
+          gosub bank4 MissCollPF
           if !temp4 then PlayfieldCollisionDone
           if temp5 & 8 then temp7 = MissileVelX[temp1] : temp7 = $FF - temp7 + 1 : gosub HalfTemp7 : MissileVelX[temp1] = temp7 : gosub DeactivateMissile : return
           gosub DeactivateMissile : return
@@ -221,7 +221,7 @@ CheckMissileBounds
 
           rem OUTPUT:
           rem   temp4 = 1 if hit playfield, 0 if clear
-CheckMissilePlayfieldCollision
+MissileSysPF
           rem Get missile X/Y position
           temp2 = MissileX[temp1]
           temp3 = MissileY[temp1]
@@ -287,48 +287,48 @@ CheckMissilePlayerCollision
           rem Default: no hit
           
           rem Check Player 1 (index 0)
-          if temp1 = 0 then goto SkipPlayer0
-          if PlayerHealth[0] = 0 then goto SkipPlayer0
-          if temp2 >= PlayerX[0] + PlayerSpriteHalfWidth then goto SkipPlayer0
-          if temp2 + MissileAABBSize <= PlayerX[0] then goto SkipPlayer0
-          if temp3 >= PlayerY[0] + PlayerSpriteHeight then goto SkipPlayer0
-          if temp3 + MissileAABBSize <= PlayerY[0] then goto SkipPlayer0
+          if temp1 = 0 then goto MissileSkipPlayer0
+          if PlayerHealth[0] = 0 then goto MissileSkipPlayer0
+          if temp2 >= PlayerX[0] + PlayerSpriteHalfWidth then goto MissileSkipPlayer0
+          if temp2 + MissileAABBSize <= PlayerX[0] then goto MissileSkipPlayer0
+          if temp3 >= PlayerY[0] + PlayerSpriteHeight then goto MissileSkipPlayer0
+          if temp3 + MissileAABBSize <= PlayerY[0] then goto MissileSkipPlayer0
           temp4 = 0 : return 
           rem Hit Player 1
-SkipPlayer0
+MissileSkipPlayer0
           
           rem Check Player 2 (index 1)
-          if temp1 = 1 then goto SkipPlayer1
-          if PlayerHealth[1] = 0 then goto SkipPlayer1
-          if temp2 >= PlayerX[1] + PlayerSpriteHalfWidth then goto SkipPlayer1
-          if temp2 + MissileAABBSize <= PlayerX[1] then goto SkipPlayer1
-          if temp3 >= PlayerY[1] + PlayerSpriteHeight then goto SkipPlayer1
-          if temp3 + MissileAABBSize <= PlayerY[1] then goto SkipPlayer1
+          if temp1 = 1 then goto MissileSkipPlayer1
+          if PlayerHealth[1] = 0 then goto MissileSkipPlayer1
+          if temp2 >= PlayerX[1] + PlayerSpriteHalfWidth then goto MissileSkipPlayer1
+          if temp2 + MissileAABBSize <= PlayerX[1] then goto MissileSkipPlayer1
+          if temp3 >= PlayerY[1] + PlayerSpriteHeight then goto MissileSkipPlayer1
+          if temp3 + MissileAABBSize <= PlayerY[1] then goto MissileSkipPlayer1
           temp4 = 1 : return 
           rem Hit Player 2
-SkipPlayer1
+MissileSkipPlayer1
           
           rem Check Player 3 (index 2)
-          if temp1 = 2 then goto SkipPlayer2
-          if PlayerHealth[2] = 0 then goto SkipPlayer2
-          if temp2 >= PlayerX[2] + PlayerSpriteHalfWidth then goto SkipPlayer2
-          if temp2 + MissileAABBSize <= PlayerX[2] then goto SkipPlayer2
-          if temp3 >= PlayerY[2] + PlayerSpriteHeight then goto SkipPlayer2
-          if temp3 + MissileAABBSize <= PlayerY[2] then goto SkipPlayer2
+          if temp1 = 2 then goto MissileSkipPlayer2
+          if PlayerHealth[2] = 0 then goto MissileSkipPlayer2
+          if temp2 >= PlayerX[2] + PlayerSpriteHalfWidth then goto MissileSkipPlayer2
+          if temp2 + MissileAABBSize <= PlayerX[2] then goto MissileSkipPlayer2
+          if temp3 >= PlayerY[2] + PlayerSpriteHeight then goto MissileSkipPlayer2
+          if temp3 + MissileAABBSize <= PlayerY[2] then goto MissileSkipPlayer2
           temp4 = 2 : return 
           rem Hit Player 3
-SkipPlayer2
+MissileSkipPlayer2
           
           rem Check Player 4 (index 3)
-          if temp1 = 3 then goto SkipPlayer3
-          if PlayerHealth[3] = 0 then goto SkipPlayer3
-          if temp2 >= PlayerX[3] + PlayerSpriteHalfWidth then goto SkipPlayer3
-          if temp2 + MissileAABBSize <= PlayerX[3] then goto SkipPlayer3
-          if temp3 >= PlayerY[3] + PlayerSpriteHeight then goto SkipPlayer3
-          if temp3 + MissileAABBSize <= PlayerY[3] then goto SkipPlayer3
+          if temp1 = 3 then goto MissileSkipPlayer3
+          if PlayerHealth[3] = 0 then goto MissileSkipPlayer3
+          if temp2 >= PlayerX[3] + PlayerSpriteHalfWidth then goto MissileSkipPlayer3
+          if temp2 + MissileAABBSize <= PlayerX[3] then goto MissileSkipPlayer3
+          if temp3 >= PlayerY[3] + PlayerSpriteHeight then goto MissileSkipPlayer3
+          if temp3 + MissileAABBSize <= PlayerY[3] then goto MissileSkipPlayer3
           temp4 = 3 : return 
           rem Hit Player 4
-SkipPlayer3
+MissileSkipPlayer3
           
           return
 
@@ -378,7 +378,7 @@ KnockbackDone
           gosub PlaySoundEffect
           
           rem Spawn damage indicator visual
-          gosub bank0 ShowDamageIndicator
+          gosub bank0 VisualShowDamageIndicator
           
           return
 

@@ -24,65 +24,65 @@
           rem Attack sound (melee swoosh)
           data AttackSoundData
           $0C, $0A, $08, $06, $04, $02, $00
-          end
+end
 
           data AttackSoundFreq
           $1F, $1C, $19, $16, $13, $10, $0D
-          end
+end
 
           rem Hit sound (impact)
           data HitSoundData
           $0F, $0D, $0B, $09, $07, $05, $03, $01
-          end
+end
 
           data HitSoundFreq
           $1A, $18, $16, $14, $12, $10, $0E, $0C
-          end
+end
 
           rem Fall damage sound
           data FallSoundData
           $0E, $0C, $0A, $08, $06, $04, $02, $00
-          end
+end
 
           data FallSoundFreq
           $15, $13, $11, $0F, $0D, $0B, $09, $07
-          end
+end
 
           rem Guard activation sound
           data GuardSoundData
           $0A, $08, $06, $04, $02
-          end
+end
 
           data GuardSoundFreq
           $1C, $1A, $18, $16, $14
-          end
+end
 
           rem Character selection sound
           data SelectSoundData
           $0C, $0A, $08, $06
-          end
+end
 
           data SelectSoundFreq
           $1E, $1C, $1A, $18
-          end
+end
 
           rem Victory sound
           data VictorySoundData
           $0F, $0D, $0B, $09, $07, $05, $03, $01, $00
-          end
+end
 
           data VictorySoundFreq
           $1F, $1D, $1B, $19, $17, $15, $13, $11, $0F
-          end
+end
 
           rem Elimination sound (dramatic death sound)
           data EliminationSoundData
           $0F, $0E, $0D, $0C, $0B, $0A, $09, $08, $07, $06, $05, $04, $03, $02, $01, $00
-          end
+end
 
           data EliminationSoundFreq
           $18, $16, $14, $12, $10, $0E, $0C, $0A, $08, $06, $05, $04, $03, $02, $01, $00
-          end
+end
 
           rem =================================================================
           rem SOUND PLAYBACK FUNCTIONS

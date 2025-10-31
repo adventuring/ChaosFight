@@ -60,7 +60,7 @@
           rem   frame - frame counter (increments every frame)
           
           rem Our variables (need dim):
-          dim GameState = g
+          dim GameState = g    
           dim GameMode = p
           rem 0 = normal play, 1 = paused
           rem Console and controller detection (set during ADMIN, read during GAME)
@@ -252,7 +252,7 @@
           
           rem PlayerMomentumY[0-3] = Vertical momentum for gravity, jumping, and fall damage
           rem Positive = downward, negative = upward
-          rem Used by ApplyGravity and CheckFallDamage routines
+          rem Used by PhysicsApplyGravity and CheckFallDamage routines
           dim PlayerMomentumY = var24
           dim Player1MomentumY = var24
           dim Player2MomentumY = var25
@@ -273,7 +273,7 @@
           rem GAME: Vertical momentum - Using standard RAM since SuperChip is full
           rem Stored in temporary variables during physics update
           rem PlayerMomentumY values calculated and used within frame, not persistent
-          rem Can use temp variables during ApplyGravity/CheckFallDamage routines
+          rem Can use temp variables during PhysicsApplyGravity/CheckFallDamage routines
           
           rem =================================================================
           rem REDIMMED VARIABLES - GAME CONTEXT ONLY  

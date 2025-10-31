@@ -22,23 +22,23 @@
 
 TitleScreen
           rem Title screen loop
-TitleScreenLoop
+TitleMainLoop
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
           if joy0fire || joy1fire then goto TitleScreenComplete
           
           rem Check Quadtari controllers (Players 3 & 4 if active)
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck
+          if 0 = (ControllerStatus & SetQuadtariDetected) then goto TitleSkipQuad
           if 0 = INPT0{7} then goto TitleScreenComplete
           if 0 = INPT2{7} then goto TitleScreenComplete
-SkipQuadtariCheck
+TitleSkipQuad
           
           gosub UpdateCharacterParade
           
           gosub DrawTitleScreen
           
           drawscreen
-          goto TitleScreenLoop
+          goto TitleMainLoop
 
 TitleScreenComplete
           rem Transition to character select

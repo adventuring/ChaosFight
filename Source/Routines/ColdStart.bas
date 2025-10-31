@@ -7,7 +7,7 @@
 
 ColdStart
           rem Detect if running on 7800 or 2600
-          gosub DetectConsole
+          gosub ConsoleDetHW
           
           rem Initialize TIA colors to safe defaults
           COLUBK = ColGrey(0)

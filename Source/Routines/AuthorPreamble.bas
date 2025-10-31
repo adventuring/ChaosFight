@@ -15,7 +15,7 @@
 
           rem PLAYFIELD CONFIGURATION:
           rem   - Size: 32×32 (pfres=32)
-          rem   - Color-per-row for COLUPF and COLUBK
+          rem   - Color-per-row for COLUPF
           rem   - Uses all 128 bytes SuperChip RAM
 
           rem AVAILABLE VARIABLES:
@@ -25,15 +25,15 @@
           rem =================================================================
 
 AuthorPreamble
-AuthorPreambleLoop
+AuthorMainLoop
           rem Check for button press on any controller to skip
           if joy0fire || joy1fire then goto AuthorPreambleComplete
-          if ControllerStatus & SetQuadtariDetected then goto CheckQuadtariInput
-          goto SkipQuadtariInput
-CheckQuadtariInput
+          if ControllerStatus & SetQuadtariDetected then goto AutCheckQuad
+          goto AutSkipQuad
+AutCheckQuad
           if !INPT0{7} then goto AuthorPreambleComplete
           if !INPT2{7} then goto AuthorPreambleComplete
-SkipQuadtariInput
+AutSkipQuad
           
           rem Update music
           gosub UpdateMusic
@@ -45,7 +45,7 @@ SkipQuadtariInput
           PreambleTimer = PreambleTimer + 1
           
           drawscreen
-          goto AuthorPreambleLoop
+          goto AuthorMainLoop
 
 AuthorPreambleComplete
           GameMode = ModeTitle : gosub ChangeGameMode
@@ -58,9 +58,7 @@ AuthorPreambleComplete
           rem Generated from Source/Art/Interworldly.xcf → Interworldly.png
           rem SkylineTool creates architecture-specific data files.
 
-          rem USES COLOR-PER-ROW:
-          rem   Each row sets COLUPF and COLUBK individually
-          rem   Allows gradient effects, multi-color artwork
+          rem uses pfcolors
 
           rem GENERATED FILES:
           rem   - Source/Generated/Playfield.Interworldly.NTSC.bas

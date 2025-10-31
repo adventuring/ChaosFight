@@ -1,67 +1,6 @@
 ; This file contains variable mapping and other information for the current project.
 
-FrootySpriteFrameMap_length = .skipL01386-FrootySpriteFrameMap 
- 
-KnightguySpriteFrameMap_length = .skipL01181-KnightguySpriteFrameMap 
- 
-KnightguySprite_length = .skipL01180-KnightguySprite 
- 
-HarpySpriteFrameMap_length = .skipL01179-HarpySpriteFrameMap 
- 
-HarpySprite_length = .skipL01178-HarpySprite 
- 
-MegaxSpriteFrameMap_length = .skipL01177-MegaxSpriteFrameMap 
- 
-MegaxSprite_length = .skipL01176-MegaxSprite 
- 
-FattonySpriteFrameMap_length = .skipL01175-FattonySpriteFrameMap 
- 
-FattonySprite_length = .skipL01174-FattonySprite 
- 
-ExopilotSpriteFrameMap_length = .skipL01173-ExopilotSpriteFrameMap 
- 
-ExopilotSprite_length = .skipL01172-ExopilotSprite 
- 
-DragonetSpriteFrameMap_length = .skipL01171-DragonetSpriteFrameMap 
- 
-DragonetSprite_length = .skipL01170-DragonetSprite 
- 
-CurlerSpriteFrameMap_length = .skipL01169-CurlerSpriteFrameMap 
- 
-CurlerSprite_length = .skipL01168-CurlerSprite 
- 
-BernieSpriteFrameMap_length = .skipL01167-BernieSpriteFrameMap 
- 
-AttackSoundData_length = .skipL01166-AttackSoundData 
- 
-SoundElimination = 7
- 
-SoundVictory = 6
- 
-SoundSelect = 5
- 
-SoundGuard = 4
- 
-SoundFall = 3
- 
-SoundHit = 2
- 
-SoundAttack = 1
- 
-ActivePlayers = d
- 
-FallComplete = c
- 
-FallSpeed = b
- 
-FallFrame = a
- 
-PlayerColorsLight_length = .skipL0783-PlayerColorsLight 
- 
-vblank_time = 43
-overscan_time = 37
-TVStandard = NTSC
- 
+bscode_length = 36
 MissileLifetime = e
  
 MissileActive = i
@@ -272,9 +211,11 @@ GameMode = p
  
 GameState = g
  
-ModeWinner = 6
+ModeWinner = 7
  
-ModeGame = 5
+ModeGame = 6
+ 
+ModeLevelSelect = 5
  
 ModeFallingAnimation = 4
  
@@ -413,3 +354,7 @@ player1colors = 1
 player1colors = 1
 playercolors = 1
 multisprite = 1
+vblank_time = 58
+overscan_time = 82
+TVStandard = PAL
+ 

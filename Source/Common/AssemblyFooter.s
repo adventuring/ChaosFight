@@ -3,5 +3,5 @@
 ; Footer includes for generated assembly Bücher
 
 ; Character artwork location system
-include "Source/Routines/CharacterArt.s"
+.include "Source/Routines/CharacterArt.s"
 

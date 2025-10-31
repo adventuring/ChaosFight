@@ -2,95 +2,95 @@
 
 HandicapMode = temp1
  
-VegDogFrameMap_length = .skipL02035-VegDogFrameMap 
+VegDogFrameMap_length = .skipL02030-VegDogFrameMap 
  
-VegDogFrames_length = .skipL02034-VegDogFrames 
+VegDogFrames_length = .skipL02029-VegDogFrames 
  
-UrsuloFrameMap_length = .skipL02029-UrsuloFrameMap 
+UrsuloFrameMap_length = .skipL02024-UrsuloFrameMap 
  
-UrsuloFrames_length = .skipL02028-UrsuloFrames 
+UrsuloFrames_length = .skipL02023-UrsuloFrames 
  
-RoboTitoFrameMap_length = .skipL02023-RoboTitoFrameMap 
+RoboTitoFrameMap_length = .skipL02018-RoboTitoFrameMap 
  
-RoboTitoFrames_length = .skipL02022-RoboTitoFrames 
+RoboTitoFrames_length = .skipL02017-RoboTitoFrames 
  
-RadishGoblinFrameMap_length = .skipL02017-RadishGoblinFrameMap 
+RadishGoblinFrameMap_length = .skipL02012-RadishGoblinFrameMap 
  
-RadishGoblinFrames_length = .skipL02016-RadishGoblinFrames 
+RadishGoblinFrames_length = .skipL02011-RadishGoblinFrames 
  
-PorkChopFrameMap_length = .skipL02011-PorkChopFrameMap 
+PorkChopFrameMap_length = .skipL02006-PorkChopFrameMap 
  
-PorkChopFrames_length = .skipL02010-PorkChopFrames 
+PorkChopFrames_length = .skipL02005-PorkChopFrames 
  
-NinjishGuyFrameMap_length = .skipL02005-NinjishGuyFrameMap 
+NinjishGuyFrameMap_length = .skipL02000-NinjishGuyFrameMap 
  
-NinjishGuyFrames_length = .skipL02004-NinjishGuyFrames 
+NinjishGuyFrames_length = .skipL01999-NinjishGuyFrames 
  
-NefertemFrameMap_length = .skipL01999-NefertemFrameMap 
+NefertemFrameMap_length = .skipL01994-NefertemFrameMap 
  
-NefertemFrames_length = .skipL01998-NefertemFrames 
+NefertemFrames_length = .skipL01993-NefertemFrames 
  
-FrootyFrameMap_length = .skipL01993-FrootyFrameMap 
+FrootyFrameMap_length = .skipL01988-FrootyFrameMap 
  
-KnightGuyFrameMap_length = .skipL01788-KnightGuyFrameMap 
+KnightGuyFrameMap_length = .skipL01783-KnightGuyFrameMap 
  
-KnightGuyFrames_length = .skipL01787-KnightGuyFrames 
+KnightGuyFrames_length = .skipL01782-KnightGuyFrames 
  
-HarpyFrameMap_length = .skipL01782-HarpyFrameMap 
+HarpyFrameMap_length = .skipL01777-HarpyFrameMap 
  
-HarpyFrames_length = .skipL01781-HarpyFrames 
+HarpyFrames_length = .skipL01776-HarpyFrames 
  
-MegaxFrameMap_length = .skipL01776-MegaxFrameMap 
+MegaxFrameMap_length = .skipL01771-MegaxFrameMap 
  
-MegaxFrames_length = .skipL01775-MegaxFrames 
+MegaxFrames_length = .skipL01770-MegaxFrames 
  
-FatTonyFrameMap_length = .skipL01770-FatTonyFrameMap 
+FatTonyFrameMap_length = .skipL01765-FatTonyFrameMap 
  
-FatTonyFrames_length = .skipL01769-FatTonyFrames 
+FatTonyFrames_length = .skipL01764-FatTonyFrames 
  
-ExoPilotFrameMap_length = .skipL01764-ExoPilotFrameMap 
+ExoPilotFrameMap_length = .skipL01759-ExoPilotFrameMap 
  
-ExoPilotFrames_length = .skipL01763-ExoPilotFrames 
+ExoPilotFrames_length = .skipL01758-ExoPilotFrames 
  
-DragonetFrameMap_length = .skipL01758-DragonetFrameMap 
+DragonetFrameMap_length = .skipL01753-DragonetFrameMap 
  
-DragonetFrames_length = .skipL01757-DragonetFrames 
+DragonetFrames_length = .skipL01752-DragonetFrames 
  
-CurlerFrameMap_length = .skipL01752-CurlerFrameMap 
+CurlerFrameMap_length = .skipL01747-CurlerFrameMap 
  
-CurlerFrames_length = .skipL01751-CurlerFrames 
+CurlerFrames_length = .skipL01746-CurlerFrames 
  
-BernieFrameMap_length = .skipL01746-BernieFrameMap 
+BernieFrameMap_length = .skipL01741-BernieFrameMap 
  
-QuestionMarkSprite_length = .skipL01745-QuestionMarkSprite 
+QuestionMarkSprite_length = .skipL01740-QuestionMarkSprite 
  
-EliminationSoundFreq_length = .skipL01434-EliminationSoundFreq 
+EliminationSoundFreq_length = .skipL01429-EliminationSoundFreq 
  
-EliminationSoundData_length = .skipL01433-EliminationSoundData 
+EliminationSoundData_length = .skipL01428-EliminationSoundData 
  
-VictorySoundFreq_length = .skipL01431-VictorySoundFreq 
+VictorySoundFreq_length = .skipL01426-VictorySoundFreq 
  
-VictorySoundData_length = .skipL01430-VictorySoundData 
+VictorySoundData_length = .skipL01425-VictorySoundData 
  
-SelectSoundFreq_length = .skipL01428-SelectSoundFreq 
+SelectSoundFreq_length = .skipL01423-SelectSoundFreq 
  
-SelectSoundData_length = .skipL01427-SelectSoundData 
+SelectSoundData_length = .skipL01422-SelectSoundData 
  
-GuardSoundFreq_length = .skipL01425-GuardSoundFreq 
+GuardSoundFreq_length = .skipL01420-GuardSoundFreq 
  
-GuardSoundData_length = .skipL01424-GuardSoundData 
+GuardSoundData_length = .skipL01419-GuardSoundData 
  
-FallSoundFreq_length = .skipL01422-FallSoundFreq 
+FallSoundFreq_length = .skipL01417-FallSoundFreq 
  
-FallSoundData_length = .skipL01421-FallSoundData 
+FallSoundData_length = .skipL01416-FallSoundData 
  
-HitSoundFreq_length = .skipL01419-HitSoundFreq 
+HitSoundFreq_length = .skipL01414-HitSoundFreq 
  
-HitSoundData_length = .skipL01418-HitSoundData 
+HitSoundData_length = .skipL01413-HitSoundData 
  
-AttackSoundFreq_length = .skipL01416-AttackSoundFreq 
+AttackSoundFreq_length = .skipL01411-AttackSoundFreq 
  
-AttackSoundData_length = .skipL01415-AttackSoundData 
+AttackSoundData_length = .skipL01410-AttackSoundData 
  
 SoundElimination = 7
  
@@ -106,15 +106,7 @@ SoundHit = 2
  
 SoundAttack = 1
  
-PlayerColorsLight_length = .skipL01155-PlayerColorsLight 
- 
-ActivePlayers = d
- 
-FallComplete = c
- 
-FallSpeed = b
- 
-FallFrame = a
+PlayerColorsLight_length = .skipL01151-PlayerColorsLight 
  
 vblank_time = 43
 overscan_time = 37

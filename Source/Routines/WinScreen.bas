@@ -48,36 +48,9 @@ DisplayWinScreen
           rem =================================================================
           rem Show "GAME OVER" and "FINAL RESULTS" text.
 DisplayWinScreenTitle
-          rem Display "GAME OVER" at top of screen
-          let temp1 = 52 
-          rem X position (centered)
-          let temp2 = 20 
-          rem Y position
-          let temp3 = 14 
-          rem Color (white)
-          let temp4 = 0  
-          rem Character data offset for "GAME"
-          gosub DisplayText
-          
-          let temp1 = 88 
-          rem X position
-          let temp2 = 20 
-          rem Y position  
-          let temp4 = 4  
-          rem Character data offset for "OVER"
-          gosub DisplayText
-          
-          rem Display "FINAL RESULTS" 
-          let temp1 = 40 
-          rem X position (centered)
-          let temp2 = 40 
-          rem Y position
-          let temp3 = 12 
-          rem Color (light blue)
-          let temp4 = 8  
-          rem Character data offset for "FINAL RESULTS"
-          gosub DisplayText
-          
+          rem Display "GAME OVER" and "FINAL RESULTS" text
+          rem TODO: Implement proper text rendering using FontRendering.bas functions
+          rem Text rendering will be added when font system is integrated
           return
 
           rem =================================================================
@@ -561,38 +534,3 @@ DisplayCharacterName
           missile0y = temp2
           return
 
-          rem =================================================================
-          rem DISPLAY TEXT
-          rem =================================================================
-          rem Generic text display routine.
-          rem INPUT: temp1 = X, temp2 = Y, temp3 = color, temp4 = text data offset
-DisplayText
-          rem Generic text display using playfield
-          rem INPUT: temp1 = X, temp2 = Y, temp3 = color, temp4 = text data offset
-          
-          rem Set playfield color for text
-          COLUPF = temp3
-          
-          rem Simple text rendering using playfield pixels
-          rem This is a basic implementation for essential text display
-          rem Full font system would provide better text rendering
-          
-          rem Draw simple text pattern in playfield
-          rem Position based on temp1, temp2 coordinates
-          let temp5 = temp1 / 8 
-          rem Convert X to playfield column
-          let temp6 = temp2 / 8 
-          rem Convert Y to playfield row
-          
-          rem Set a few playfield pixels for basic text effect
-if temp5 >= 32 then goto SkipTextEffect
-if temp6 >= 12 then goto SkipTextEffect 
-          rem Use pfpixel to draw simple text pattern
-          rem pfpixel temp5 temp6 on
-          rem pfpixel temp5+1 temp6 on
-          rem pfpixel temp5 temp6+1 on
-          rem pfpixel temp5+1 temp6+1 on
-SkipTextEffect
-          
-          
-          return

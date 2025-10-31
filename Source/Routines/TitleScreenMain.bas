@@ -25,7 +25,7 @@ TitleScreen
 TitleScreenLoop
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
-          if joy0fire or joy1fire then goto TitleScreenComplete
+          if joy0fire || joy1fire then goto TitleScreenComplete
           
           rem Check Quadtari controllers (Players 3 & 4 if active)
           if 0 = (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck

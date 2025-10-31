@@ -56,7 +56,7 @@ InitializeHealthBars
           rem Set initial health bars to full (100%)
           temp1 = 100
           gosub UpdatePlayer1HealthBar
-          temp1 = 100  
+          temp1 = 100
           gosub UpdatePlayer2HealthBar
           return
           

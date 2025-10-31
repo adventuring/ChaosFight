@@ -10,5 +10,6 @@
           const ModeTitle = 2
           const ModeCharacterSelect = 3
           const ModeFallingAnimation = 4
-          const ModeGame = 5
-          const ModeWinner = 6
+          const ModeLevelSelect = 5
+          const ModeGame = 6
+          const ModeWinner = 7

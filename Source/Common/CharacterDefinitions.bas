@@ -15,7 +15,7 @@
           rem CHARACTER NAMES (Internal Documentation Only)
           rem =================================================================
           rem Character 0:  Bernie
-          rem Character 1:  Curling (sport) sweeper (athlete)
+          rem Character 1:  Curler
           rem Character 2:  Dragonet
           rem Character 3:  EXO Pilot
           rem Character 4:  Fat Tony
@@ -42,38 +42,38 @@
           rem   - Melee force (higher weight = more damage/knockback to opponents)
           rem Values: 1-255 (lower = lighter/faster, higher = heavier/slower/stronger)
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           rem  heavy,  medium,     medium,   light,   heavy,  medium,     light,  heavier, light,   heavy,   very light, heavy,  very light, heavier, heavy,  medium
           data CharacterWeights
           35, 25, 20, 15, 30, 25, 15, 32, 15, 30, 10, 30, 10, 32, 30, 25
 end
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileWidths
              1, 4, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0
 end
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileHeights
              1, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0
 end
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileMaxX
              4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 6, 0
 end
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileMaxY
              4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 6, 0
 end
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileForce
              3, 5, 4, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0
           end
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           rem  melee  ranged         ranged    ranged    melee   melee           melee   melee      ranged          melee       melee      melee      melee         melee      ranged    melee
           rem  Note: Melee attacks show brief visual (sword, fist, etc.), ranged persist until hit
           data CharacterMissileLifetime
@@ -86,7 +86,7 @@ end
           rem 0 = melee, 1 = ranged
           rem Stored as bit-per-character in packed bytes (4 bytes for up to 32 characters)
 
-          rem  Bernie    Curling    Dragonet  EXO Pilot Fat Tony  Grizzard   Harpy     Knight Guy
+          rem  Bernie    Curler     Dragonet  EXO Pilot Fat Tony  Grizzard   Harpy     Knight Guy
           rem  melee     ranged     melee     ranged    ranged    melee      melee     ranged
           rem  Magical   Mystery    Ninjish   Pork Chop Radish    Robo Tito  Ursulo    Veg Dog
           rem  ranged    melee      melee     melee     melee     melee      ranged    melee
@@ -108,7 +108,7 @@ end
           rem Vertical offset on character sprite where missile is emitted
           rem Values: 0-7 (top to bottom of 8-pixel tall sprite)
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileEmissionHeights
              3, 7, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
           end
@@ -120,7 +120,7 @@ end
           rem Positive = right, Negative = left, 0 = straight up/down
           rem Values: -127 to 127
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileMomentumX
              5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
           end
@@ -133,7 +133,7 @@ end
           rem Negative = ballistic/parabolic arc
           rem Values: -127 to 127 (typically -8 to 0 for parabolic arcs)
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           rem  N/A    arrowshot    ballistic arrowshot N/A       N/A              N/A      N/A        ballistic       N/A         arrowshot  N/A        N/A           N/A       ballistic  N/A
           data CharacterMissileMomentumY
              0, 0, -4, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 0, -6, 0
@@ -150,7 +150,7 @@ end
           rem   Bit 4-7: Reserved
           rem Values stored as packed bytes per character
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           rem  Note: Bit 0=hit bg, Bit 1=hit player, Bit 2=gravity, Bit 3=bounce
           data CharacterMissileFlags
               %00000000, %00000011, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
@@ -165,7 +165,7 @@ end
           rem Values: 1-255 frames
           rem Note: CharacterMissileLifetime is defined above at line 76
 
-          rem  Bernie, Curling sweeper, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           rem  AOE offset in pixels (0 = no AOE, positive = area of effect)
           data CharacterAOEOffsets
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0

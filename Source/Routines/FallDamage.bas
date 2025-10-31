@@ -190,22 +190,22 @@ CheckGroundCollision
           
           rem Check if player is at or below ground level
           rem Ground level is at Y = 176 (bottom of playfield, leaving room for sprite)
-if temp3 >= 176 then 
-          rem Player hit ground
-          rem Clamp position to ground
-          PlayerY[temp1] = 176
+          if temp3 >= 176 then
+                    rem Player hit ground
+                    rem Clamp position to ground
+                    PlayerY[temp1] = 176
+                    
+                    rem Check fall damage if moving downward
+                    if temp2 > 0 then
+                              rem temp2 contains downward velocity
+                              gosub CheckFallDamage
           
-          rem Check fall damage if moving downward
-if temp2 > 0 then 
-          rem temp2 contains downward velocity
-          gosub CheckFallDamage
-          
-          
-          rem Stop vertical momentum
-          rem Note: This assumes vertical momentum is being tracked
-          rem In current implementation, this might need integration
-          rem with PlayerPhysics.bas
-          return
+                    
+                    rem Stop vertical momentum
+                    rem Note: This assumes vertical momentum is being tracked
+                    rem In current implementation, this might need integration
+                    rem with PlayerPhysics.bas
+                    return
           
           
           rem Check collision with platforms/playfield
@@ -275,8 +275,8 @@ HandleHarpySwoopAttack
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
           if temp6 = 0 then PlayerMomentumX[temp1] = 252 : goto SetVerticalMomentum
-          rem Facing right
-          PlayerMomentumX[temp1] = 4
+                    rem Facing right
+                    PlayerMomentumX[temp1] = 4
 SetVerticalMomentum
           
           

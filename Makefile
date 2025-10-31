@@ -82,7 +82,7 @@ sprites: characters
 doc: Dist/$(GAME).pdf Dist/$(GAME).html
 
 # Character sprite sheet names (16 characters)
-CHARACTER_NAMES = Bernie CurlingSweeper Dragonet EXOPilot FatTony Megax Harpy KnightGuy Frooty NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog
+CHARACTER_NAMES = Bernie Curler Dragonet EXOPilot FatTony Megax Harpy KnightGuy Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog
 # Special sprites are hard-coded in Source/Data/SpecialSprites.bas
 # SPECIAL_SPRITES = QuestionMark CPU No
 
@@ -99,7 +99,7 @@ FONT_NAMES = Numbers
 MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
 
 # Build character assets  
-characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).s)
+characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
 
 # Build playfield assets (game levels + title screens)
 playfields: $(foreach screen,$(SCREEN_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Playfield.$(screen).$(arch).bas))
@@ -182,7 +182,8 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
 
 # Generate character sprite files from PNG using chaos character compiler
-Source/Generated/%.s: Source/Art/%.png bin/skyline-tool
+# Depend on XCF to ensure PNG is generated first via XCF->PNG rule
+Source/Generated/%.bas: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool
 	@echo "Generating character sprite data for $*..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-chaos-character "$@" "$<"
@@ -257,7 +258,21 @@ Source/Generated/Font.bas: Source/Art/Font.png
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
+Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
+	mkdir -p Source/Generated
+	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
+
+Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
+	mkdir -p Source/Generated
+	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
+
+Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
+	mkdir -p Source/Generated
+	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
+
 Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
+    Source/Generated/$(GAME).NTSC.bas \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas \
 	Source/Banks/Banks.bas \
 	Source/Common/Colors.h \
@@ -280,10 +295,8 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
-	$(wildcard Source/Generated/*.bas) \
-	$(wildcard Source/Generated/*.s)
+	$(wildcard Source/Generated/*.bas)
 	mkdir -p Dist Source/Generated Object
-	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/NTSC.bas > Source/Generated/$(GAME).NTSC.bas
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
 	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize > ../Source/Generated/$(GAME).NTSC.body.s
@@ -301,12 +314,16 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	printf "pfres = 12\n" >> Source/Generated/$(GAME).NTSC.s
 	printf "bscode_length = 32\n" >> Source/Generated/$(GAME).NTSC.s
 	cat Source/Generated/$(GAME).NTSC.body.s >> Source/Generated/$(GAME).NTSC.s
+	printf "\n; Character artwork location system\n" >> Source/Generated/$(GAME).NTSC.s
+	printf "include \"Source/Routines/CharacterArt.s\"\n" >> Source/Generated/$(GAME).NTSC.s
 	rm -f Source/Generated/$(GAME).NTSC.body.s
 	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
 	rm -f Source/Generated/$(GAME).NTSC.preprocessed.bas
 	rm -f Object/bB.asm Object/includes.bB
 
 Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
+    Source/Generated/$(GAME).PAL.bas \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas \
 	Source/Banks/Banks.bas \
 	Source/Common/Colors.h \
@@ -329,10 +346,8 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
-	$(wildcard Source/Generated/*.bas) \
-	$(wildcard Source/Generated/*.s)
+	$(wildcard Source/Generated/*.bas)
 	mkdir -p Dist Source/Generated Object
-	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/PAL.bas > Source/Generated/$(GAME).PAL.bas
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.asm
 	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize > ../Source/Generated/$(GAME).PAL.body.s
@@ -350,12 +365,16 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	printf "pfres = 12\n" >> Source/Generated/$(GAME).PAL.s
 	printf "bscode_length = 32\n" >> Source/Generated/$(GAME).PAL.s
 	cat Source/Generated/$(GAME).PAL.body.s >> Source/Generated/$(GAME).PAL.s
+	printf "\n; Character artwork location system\n" >> Source/Generated/$(GAME).PAL.s
+	printf "include \"Source/Routines/CharacterArt.s\"\n" >> Source/Generated/$(GAME).PAL.s
 	rm -f Source/Generated/$(GAME).PAL.body.s
 	bin/dasm Source/Generated/$(GAME).PAL.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
 	rm -f Source/Generated/$(GAME).PAL.preprocessed.bas
 	rm -f Object/bB.asm Object/includes.bB
 
 Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
+    Source/Generated/$(GAME).SECAM.bas \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas \
 	Source/Banks/Banks.bas \
 	Source/Common/Colors.h \
@@ -378,10 +397,8 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
-	$(wildcard Source/Generated/*.bas) \
-	$(wildcard Source/Generated/*.s)
+	$(wildcard Source/Generated/*.bas)
 	mkdir -p Dist Source/Generated Object
-	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) Source/Platform/SECAM.bas > Source/Generated/$(GAME).SECAM.bas
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.asm
 	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize > ../Source/Generated/$(GAME).SECAM.body.s
@@ -399,6 +416,8 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	printf "pfres = 12\n" >> Source/Generated/$(GAME).SECAM.s
 	printf "bscode_length = 32\n" >> Source/Generated/$(GAME).SECAM.s
 	cat Source/Generated/$(GAME).SECAM.body.s >> Source/Generated/$(GAME).SECAM.s
+	printf "\n; Character artwork location system\n" >> Source/Generated/$(GAME).SECAM.s
+	printf "include \"Source/Routines/CharacterArt.s\"\n" >> Source/Generated/$(GAME).SECAM.s
 	rm -f Source/Generated/$(GAME).SECAM.body.s
 	bin/dasm Source/Generated/$(GAME).SECAM.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
 	rm -f Source/Generated/$(GAME).SECAM.preprocessed.bas

@@ -28,7 +28,7 @@
           rem   Bits 4-7: Animation state
 
           rem CHARACTER INDICES (0-15):
-          rem   0=Bernie, 1=Curling, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
+          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
           rem   6=Harpy, 7=Knight, 8=Frooty, 9=Nefertem, 10=Ninjish,
           rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
           rem =================================================================
@@ -128,20 +128,20 @@ EnhancedJumpDone0
           if (PlayerState[temp1] & 4) <> 0 then SkipLeftPortJump
           temp4 = PlayerChar[temp1] 
           rem Character type
-                    on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
+                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
 SkipLeftPortJump
 
           
 
           rem Process down/guard input
-          if joy0down then temp4 = PlayerChar[temp1] : on temp4 goto BernieDown, CurlingDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
+          if joy0down then temp4 = PlayerChar[temp1] : on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
           if !joy0down then PlayerState[temp1] = PlayerState[temp1] & NOT 2
           
           
           rem Process attack input
           if !joy0fire then goto SkipLeftPortAttack
           if (PlayerState[temp1] & 1) <> 0 then SkipLeftPortAttack
-          temp4 = PlayerChar[temp1] : on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
+          temp4 = PlayerChar[temp1] : on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
 SkipLeftPortAttack
           
           
@@ -154,13 +154,13 @@ SkipLeftPortAttack
           rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
 HandleRightPortPlayer
           rem Process left/right movement
-          if joy1left then 
+          if joy1left then
                     PlayerX[temp1] = PlayerX[temp1] - 1
           PlayerState[temp1] = PlayerState[temp1] & NOT 1 
           rem Face left
                     PlayerMomentumX[temp1] = 255
           
-          if joy1right then 
+          if joy1right then
                     PlayerX[temp1] = PlayerX[temp1] + 1
           PlayerState[temp1] = PlayerState[temp1] | 1  
           rem Face right
@@ -200,16 +200,16 @@ EnhancedJumpDone1
           if (PlayerState[temp1] & 4) <> 0 then SkipRightPortJump
           temp4 = PlayerChar[temp1] 
           rem Character type
-                    on temp4 goto BernieJump, CurlingJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
+                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
 SkipRightPortJump
 
           
 
           rem Process down/guard input
-          if joy1down then 
+          if joy1down then
           temp4 = PlayerChar[temp1] 
           rem Character type
-                    on temp4 goto BernieDown, CurlingDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
+                    on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
 
           PlayerState[temp1] = PlayerState[temp1] & NOT 2 
           rem Clear guard bit
@@ -220,7 +220,7 @@ SkipRightPortJump
           if (PlayerState[temp1] & 1) <> 0 then SkipRightPortAttack
           temp4 = PlayerChar[temp1] 
           rem Character type
-                    on temp4 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
+                    on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
 SkipRightPortAttack
           
           

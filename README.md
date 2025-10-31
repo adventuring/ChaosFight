@@ -15,7 +15,7 @@ A sophisticated 4-player fighting game for the Atari 2600, featuring 16 unique c
 - **Professional Architecture** - Modular design, data-driven character system
 
 ### 🎮 Characters & Combat
-**Ranged Fighters** (projectile attacks): Bernie, CurlingSweeper, Dragonet, EXOPilot, FatTony, Frooty, Megax, Ursulo  
+**Ranged Fighters** (projectile attacks): Bernie, Curler, Dragonet, EXOPilot, FatTony, Frooty, Megax, Ursulo  
 **Melée Fighters** (AOE attacks): Harpy, KnightGuy, Nefertem, NinjishGuy, PorkChop, RadishGoblin, RoboTito, VegDog
 
 **Special Mechanics**:

@@ -1,6 +1,37 @@
 ; This file contains variable mapping and other information for the current project.
 
-bscode_length = 36
+FrootySpriteFrameMap_length = .skipL01386-FrootySpriteFrameMap 
+ 
+KnightguySpriteFrameMap_length = .skipL01181-KnightguySpriteFrameMap 
+ 
+KnightguySprite_length = .skipL01180-KnightguySprite 
+ 
+HarpySpriteFrameMap_length = .skipL01179-HarpySpriteFrameMap 
+ 
+HarpySprite_length = .skipL01178-HarpySprite 
+ 
+MegaxSpriteFrameMap_length = .skipL01177-MegaxSpriteFrameMap 
+ 
+MegaxSprite_length = .skipL01176-MegaxSprite 
+ 
+FattonySpriteFrameMap_length = .skipL01175-FattonySpriteFrameMap 
+ 
+FattonySprite_length = .skipL01174-FattonySprite 
+ 
+ExopilotSpriteFrameMap_length = .skipL01173-ExopilotSpriteFrameMap 
+ 
+ExopilotSprite_length = .skipL01172-ExopilotSprite 
+ 
+DragonetSpriteFrameMap_length = .skipL01171-DragonetSpriteFrameMap 
+ 
+DragonetSprite_length = .skipL01170-DragonetSprite 
+ 
+CurlerSpriteFrameMap_length = .skipL01169-CurlerSpriteFrameMap 
+ 
+CurlerSprite_length = .skipL01168-CurlerSprite 
+ 
+BernieSpriteFrameMap_length = .skipL01167-BernieSpriteFrameMap 
+ 
 AttackSoundData_length = .skipL01166-AttackSoundData 
  
 SoundElimination = 7

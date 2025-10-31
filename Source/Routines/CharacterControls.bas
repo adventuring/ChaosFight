@@ -16,7 +16,7 @@
           rem   PlayerMomentumX[temp1] - Horizontal momentum
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curling, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
+          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
           rem   6=Harpy, 7=Knight, 8=Frooty, 9=Nefertem, 10=Ninjish,
           rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
           rem =================================================================
@@ -32,10 +32,10 @@ BernieJump
           return 
           rem No jump action
 
-          rem CURLING SWEEPER (1) - STANDARD JUMP
+          rem CURLER (1) - STANDARD JUMP
           rem INPUT: temp1 = player index
           rem USES: PlayerY[temp1], PlayerState[temp1]
-CurlingJump
+CurlerJump
           rem tail call
           goto StandardJump
 
@@ -148,8 +148,8 @@ BernieDown
           rem tail call
           goto StandardGuard
 
-          rem CURLING SWEEPER (1) - GUARD
-CurlingDown
+          rem CURLER (1) - GUARD
+CurlerDown
           rem tail call
           goto StandardGuard
 

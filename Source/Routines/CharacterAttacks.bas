@@ -54,9 +54,9 @@ RestoreFacingDone1
           return
 
           rem =================================================================
-          rem CURLING SWEEPER (Character 1) - Ranged Attack (ground-based)
+          rem CURLER (Character 1) - Ranged Attack (ground-based)
           rem =================================================================
-CurlingSweeperAttack
+CurlerAttack
           PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
@@ -203,6 +203,6 @@ DispatchCharacterAttack
           rem Get character type for this player using direct array access
           rem temp1 contains player index (0-3)
           temp2 = PlayerChar[temp1]
-          on temp2 goto BernieAttack, CurlingSweeperAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
+          on temp2 goto BernieAttack, CurlerAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
           rem Default to Bernie attack if invalid character
           goto BernieAttack

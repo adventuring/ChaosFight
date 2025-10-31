@@ -12,7 +12,7 @@
 ; Character sprite organization: 8 frames × 16 sequences per character
 ; Character bank mapping - which bank contains each character's base data
 CharacterBankTable:
-    .byte 2, 2, 2, 2    ; Characters 0-3: Bernie, CurlingSweeper, Dragonet, EXOPilot
+    .byte 2, 2, 2, 2    ; Characters 0-3: Bernie, Curler, Dragonet, EXOPilot
     .byte 2, 2, 2, 2    ; Characters 4-7: FatTony, Megax, Harpy, KnightGuy  
     .byte 3, 3, 3, 3    ; Characters 8-11: Frooty, Nefertem, NinjishGuy, PorkChop
     .byte 3, 3, 3, 3    ; Characters 12-15: RadishGoblin, RoboTito, Ursulo, VegDog
@@ -22,16 +22,16 @@ AnimationFrameBankOffsets:
     .byte 0, 0, 0, 0, 0, 0, 0, 0    ; Frames 0-7: all in base bank for now
 
 ; Character sprite pointer tables
-; Low byte pointers for each character's base sprite data
+; Low byte pointers for each character base sprite data
 CharacterSpritePtrLo:
-    .byte <BernieSprite, <CurlingSweeper, <DragonetSprite, <EXOPilotSprite
+    .byte <BernieSprite, <CurlerSprite, <DragonetSprite, <EXOPilotSprite
     .byte <FatTonySprite, <MegaxSprite, <HarpySprite, <KnightGuySprite
     .byte <FrootySprite, <NefertemSprite, <NinjishGuySprite, <PorkChopSprite
     .byte <RadishGoblinSprite, <RoboTitoSprite, <UrsuloSprite, <VegDogSprite
 
-; High byte pointers for each character's base sprite data  
+; High byte pointers for each character base sprite data  
 CharacterSpritePtrHi:
-    .byte >BernieSprite, >CurlingSweeper, >DragonetSprite, >EXOPilotSprite
+    .byte >BernieSprite, >CurlerSprite, >DragonetSprite, >EXOPilotSprite
     .byte >FatTonySprite, >MegaxSprite, >HarpySprite, >KnightGuySprite
     .byte >FrootySprite, >NefertemSprite, >NinjishGuySprite, >PorkChopSprite
     .byte >RadishGoblinSprite, >RoboTitoSprite, >UrsuloSprite, >VegDogSprite
@@ -39,7 +39,7 @@ CharacterSpritePtrHi:
 ; =================================================================
 ; ANIMATION FRAME OFFSET TABLES
 ; =================================================================
-; Byte offsets for each animation frame within a character's sprite data
+; Byte offsets for each animation frame within character sprite data
 ; Each frame is 16 bytes (16 rows × 1 byte per row)
 AnimationFrameOffsets:
     .byte 0, 16, 32, 48, 64, 80, 96, 112    ; Frames 0-7

@@ -14,7 +14,7 @@
           rem   PlayerState[0-3] - State flags
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curling, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
+          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
           rem   6=Harpy, 7=Knight, 8=Frooty, 9=Mystery, 10=Ninjish,
           rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
           rem =================================================================

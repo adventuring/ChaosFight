@@ -528,7 +528,7 @@ DisplayCharacterName
           end
           
           if temp5 = 1 then 
-          rem CurlingSweeper -> C
+          rem Curler -> C
           missile0:
           %01111110 
           rem C

@@ -8,9 +8,14 @@
           #include "Source/Routines/TitleSequence.bas"
           #include "Source/Routines/PublisherPreamble.bas"
           #include "Source/Routines/AuthorPreamble.bas"
+          #include "Source/Routines/TitleScreenMain.bas"
           
           rem Sound system (moved from Bank 1 to reduce overflow)
           #include "Source/Routines/SoundSystem.bas"
+          
+          rem Special sprites data (moved from Bank 1)
+          rem Grouped with sprite-related code
+          #include "Source/Data/SpecialSprites.bas"
           
           rem Character artwork location system (assembly)
           rem Note: This is included via .include in assembly, not #include

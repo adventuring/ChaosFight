@@ -3,8 +3,11 @@
 
           bank 9
           
-          rem Title sequence (moved from Bank 1 to reduce overflow)
+          rem Title sequence and preambles (moved from Bank 1)
+          rem Grouped together - title screen flow
           #include "Source/Routines/TitleSequence.bas"
+          #include "Source/Routines/PublisherPreamble.bas"
+          #include "Source/Routines/AuthorPreamble.bas"
           
           rem Sound system (moved from Bank 1 to reduce overflow)
           #include "Source/Routines/SoundSystem.bas"

@@ -6,12 +6,7 @@
           #include "Source/Routines/MainLoop.bas"
           
           rem Game mode main loop routines
-          #include "Source/Routines/PublisherPreamble.bas"
-          #include "Source/Routines/AuthorPreamble.bas"
           #include "Source/Routines/TitleScreenMain.bas"
-          #include "Source/Routines/FallingAnimation.bas"
-          #include "Source/Routines/LevelSelect.bas"
-          #include "Source/Routines/WinnerAnnouncement.bas"
 
           #if 0
           rem Music system temporarily disabled pending proper implementation (#162, #243)

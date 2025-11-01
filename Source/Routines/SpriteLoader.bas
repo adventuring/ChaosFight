@@ -107,7 +107,33 @@ LoadNoSprite
           player3pointerlo = <NoSprite : player3pointerhi = >NoSprite : player3height = 16 : return
 
           rem =================================================================
-          rem LOAD PLAYER SPRITES
+          rem LOAD PLAYER SPRITE (generic dispatcher)
+          rem =================================================================
+          rem Load sprite data for any player using character art system
+          rem Input: temp1 = character index (from PlayerChar array) - may be unset, will get from player
+          rem        temp2 = animation frame (0-7) from sprite's 10fps counter
+          rem        temp3 = animation action (0-15) from CurrentAnimationSeq
+          rem        temp4 = player number (0-3)
+          rem Note: Frame is relative to sprite's own 10fps counter, NOT global frame counter
+LoadPlayerSprite
+          rem Get character index for this player from PlayerChar array
+          if ! temp4 then let temp1 = PlayerChar[0] : goto LoadPlayerSpriteDispatch
+          if temp4 = 1 then let temp1 = PlayerChar[1] : goto LoadPlayerSpriteDispatch
+          if temp4 = 2 then let temp1 = PlayerChar[2] : goto LoadPlayerSpriteDispatch
+          if temp4 = 3 then let temp1 = PlayerChar[3] : goto LoadPlayerSpriteDispatch
+          return
+          
+LoadPlayerSpriteDispatch
+          rem temp1 = character index, temp2 = frame (10fps counter), temp3 = action, temp4 = player
+          rem temp7 will be player number for character art system
+          let temp7 = temp4
+          rem Call character art location system (in bank10)
+          rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp7=player
+          gosub bank10 LocateCharacterArt
+          return
+
+          rem =================================================================
+          rem LOAD PLAYER SPRITES (legacy player-specific functions)
           rem =================================================================
           rem Load sprite data into specific player registers
           rem These functions contain the actual player graphics commands

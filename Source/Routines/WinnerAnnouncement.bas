@@ -3,7 +3,7 @@
 
 WinnerAnnouncement
 WinnerAnnouncementLoop
-          gosub DisplayWinScreen
+          gosub bank7 DisplayWinScreen
           drawscreen
           goto WinnerAnnouncementLoop
 

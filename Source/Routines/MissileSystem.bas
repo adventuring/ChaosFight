@@ -378,7 +378,7 @@ KnockbackDone
           gosub PlaySoundEffect
           
           rem Spawn damage indicator visual
-          gosub bank0 VisualShowDamageIndicator
+          gosub bank8 VisualShowDamageIndicator
           
           return
 

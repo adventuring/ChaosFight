@@ -46,7 +46,7 @@ StartTitleMusic
 
 ShowPublisherPreamble
           rem Set screen layout for preamble (32×32 admin layout)  
-          gosub SetAdminScreenLayout
+          gosub bank8 SetAdminScreenLayout
           
           rem Clear screen
           pfclear
@@ -146,7 +146,7 @@ ExitAuthorPreamble
 
 ShowTitleScreen
           rem Set screen layout for title screen (32×32 admin layout)
-          gosub SetAdminScreenLayout
+          gosub bank8 SetAdminScreenLayout
           
           rem Clear screen
           pfclear

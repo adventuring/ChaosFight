@@ -149,7 +149,7 @@ NextAttacker
 
 rem Damage indicator system
 CombatShowDamageIndicator
-  gosub bank0 VisualShowDamageIndicator
+  gosub bank8 VisualShowDamageIndicator
   return
 
 rem Damage sound system

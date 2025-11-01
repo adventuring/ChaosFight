@@ -30,7 +30,7 @@
 
 BeginGameLoop
           rem Set screen layout for gameplay (32×8 game layout)
-          gosub SetGameScreenLayout
+          gosub bank8 SetGameScreenLayout
           rem SuperChip variables var0-var15 available in gameplay
           
           rem Initialize player positions

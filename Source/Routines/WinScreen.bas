@@ -305,14 +305,14 @@ DisplayPlayerCharacterName
           rem Handle input to advance from win screen back to character select.
 HandleWinScreenInput
           rem Any fire button or select advances to character select
-if joy0fire then goto CheckAutoAdvance
-if joy1fire then goto CheckAutoAdvance
-if switchselect then goto CheckAutoAdvance
+          if joy0fire then goto CheckAutoAdvance
+          if joy1fire then goto CheckAutoAdvance
+          if switchselect then goto CheckAutoAdvance
           goto CharacterSelect
 CheckAutoAdvance
           
           rem Auto-advance after 10 seconds
-if WinScreenTimer <= 600 then goto WinScreenLoop 
+          if WinScreenTimer <= 600 then goto WinScreenLoop 
           goto CharacterSelect
           
           

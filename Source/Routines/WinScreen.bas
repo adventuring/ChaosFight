@@ -343,9 +343,7 @@ Display1stPlace
           rem   ##
           %01111110 
           rem ######
-          %00000000  : rem
-end
-          end
+          %00000000
           
           player0x = temp5
           player0y = temp6
@@ -371,9 +369,7 @@ Display2ndPlace
           rem ##
           %11111110 
           rem ######
-          %00000000  : rem
-end
-          end
+          %00000000
           
           player0x = temp5
           player0y = temp6
@@ -399,9 +395,7 @@ Display3rdPlace
           rem ##  ##
           %01111100 
           rem #####
-          %00000000  : rem
-end
-          end
+          %00000000
           
           player0x = temp5
           player0y = temp6
@@ -427,9 +421,7 @@ Display4thPlace
           rem    ##
           %00000110 
           rem    ##
-          %00000000  : rem
-end
-          end
+          %00000000
           
           player0x = temp5
           player0y = temp6
@@ -459,9 +451,7 @@ DisplayWinnerCrown
           rem # #### #
           %11111111 
           rem ########
-          %00000000  : rem
-end
-          end
+          %00000000
           
           player1x = temp3 - 20 
           rem Position left of rank number
@@ -497,7 +487,6 @@ DisplayCharacterName
           %00000000
           %00000000
           %00000000
-          end
           
           if temp5 = 1 then 
           rem Curler -> C
@@ -511,7 +500,6 @@ DisplayCharacterName
           %00000000
           %00000000
           %00000000
-          end
           
           if temp5 = 2 then 
           rem Dragonet -> D
@@ -525,7 +513,6 @@ DisplayCharacterName
           %00000000
           %00000000
           %00000000
-          end
           
           rem Add more character name patterns as needed
           

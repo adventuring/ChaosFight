@@ -9,3 +9,9 @@
           #include "Source/Routines/LevelSelect.bas"
           #include "Source/Routines/WinnerAnnouncement.bas"
 
+
+          rem Grouped together - game flow transitions
+          #include "Source/Routines/FallingAnimation.bas"
+          #include "Source/Routines/LevelSelect.bas"
+          #include "Source/Routines/WinnerAnnouncement.bas"
+

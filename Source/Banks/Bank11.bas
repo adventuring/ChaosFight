@@ -8,3 +8,8 @@
           #include "Source/Routines/GameLoopInit.bas"
           #include "Source/Routines/GameLoopMain.bas"
 
+
+          rem Grouped together to minimize bank switches during gameplay
+          #include "Source/Routines/GameLoopInit.bas"
+          #include "Source/Routines/GameLoopMain.bas"
+

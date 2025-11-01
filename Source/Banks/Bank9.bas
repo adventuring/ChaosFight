@@ -16,8 +16,4 @@
           rem Special sprites data (moved from Bank 1)
           rem Grouped with sprite-related code
           #include "Source/Data/SpecialSprites.bas"
-          
-          rem Character artwork location system (assembly)
-          rem Note: This is included via .include in assembly, not #include
-          rem The actual include is in Source/Common/AssemblyFooter.s
 

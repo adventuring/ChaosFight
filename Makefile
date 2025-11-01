@@ -266,12 +266,12 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
 	$(foreach screen,$(SCREEN_NAMES),Source/Generated/Playfield.$(screen).NTSC.bas) \
-	Source/Generated/Numbers.bas
+	Source/Generated/Numbers.bas \
+	playfields
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
-	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).NTSC.body.s
-	cpp -P -DTV_STANDARD=NTSC Source/Common/AssemblyWrapper.template.s > Source/Generated/$(GAME).NTSC.s
+	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).NTSC.s
 	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
 	rm -f Source/Generated/$(GAME).NTSC.preprocessed.bas
 	rm -f Object/bB.asm Object/includes.bB
@@ -307,8 +307,7 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.asm
-	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).PAL.body.s
-	cpp -P -DTV_STANDARD=PAL Source/Common/AssemblyWrapper.template.s > Source/Generated/$(GAME).PAL.s
+	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).PAL.s
 	bin/dasm Source/Generated/$(GAME).PAL.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
 	rm -f Source/Generated/$(GAME).PAL.preprocessed.bas
 	rm -f Object/bB.asm Object/includes.bB
@@ -322,8 +321,6 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	Source/Banks/Banks.bas \
 	Source/Common/AssemblyConfig.s \
 	Source/Common/AssemblyConfig.SECAM.s \
-	Source/Common/AssemblyFooter.s \
-	Source/Common/AssemblyWrapper.template.s \
 	Source/Common/Colors.h \
 	Source/Common/Constants.bas \
 	Source/Common/Macros.bas \
@@ -349,8 +346,7 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.asm
-	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).SECAM.body.s
-	cpp -P -DTV_STANDARD=SECAM Source/Common/AssemblyWrapper.template.s > Source/Generated/$(GAME).SECAM.s
+	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).SECAM.s
 	bin/dasm Source/Generated/$(GAME).SECAM.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
 	rm -f Source/Generated/$(GAME).SECAM.preprocessed.bas
 	rm -f Object/bB.asm Object/includes.bB

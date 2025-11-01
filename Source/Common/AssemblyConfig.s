@@ -15,7 +15,6 @@ pfcolors = 1
 superchip = 1
 
 ; Code generation options
-NO_ILLEGAL_OPCODES = 1
 noscore = 0
 qtcontroller = 0
 pfres = 12

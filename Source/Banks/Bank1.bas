@@ -7,12 +7,3 @@
           rem ColdStart falls through to MainLoop in same bank
           goto bank13 ColdStart
           
-          #if 0
-          rem Music system temporarily disabled pending proper implementation (#162, #243)
-          #include "Source/Routines/MusicSystem.bas"
-          #endif
-          
-          rem WinScreen moved to Bank 7 to free space
-          rem VisualEffects moved to Bank 8 to free space  
-          rem ScreenLayout moved to Bank 8 to free space
-

@@ -30,6 +30,7 @@ AnimationSkipPlayer3
 
           rem Update animation for a specific player
           rem Input: temp1 = player index (0-3)
+          rem Uses per-sprite 10fps counter (AnimationCounter), NOT global frame counter
 UpdatePlayerAnimation
           rem Skip if player is eliminated
           if temp1 = 0 && PlayersEliminated & 1 then return
@@ -38,10 +39,10 @@ UpdatePlayerAnimation
           if temp1 = 3 && PlayersEliminated & 8 then return
           if PlayerHealth[temp1] = 0 then return
           
-          rem Increment animation counter
+          rem Increment this sprite's 10fps animation counter (NOT global frame counter)
           AnimationCounter[temp1] = AnimationCounter[temp1] + 1
           
-          rem Check if time to advance animation frame
+          rem Check if time to advance animation frame (every AnimationFrameDelay frames)
           if AnimationCounter[temp1] >= AnimationFrameDelay then goto AdvanceFrame
           goto SkipAdvance
 AdvanceFrame
@@ -50,45 +51,55 @@ AdvanceFrame
 SkipAdvance
         return
 
-          rem Advance to next frame in current animation sequence
+          rem Advance to next frame in current animation action
           rem Input: temp1 = player index (0-3)
+          rem Frame counter is per-sprite 10fps counter, NOT global frame counter
 AdvanceAnimationFrame
-          rem Advance to next frame in current animation sequence
+          rem Advance to next frame in current animation action
+          rem Frame is from sprite's 10fps counter (CurrentAnimationFrame), not global frame
           CurrentAnimationFrame[temp1] = CurrentAnimationFrame[temp1] + 1
           
-          rem Check if we have completed the current sequence
+          rem Check if we have completed the current action (8 frames per action)
           if CurrentAnimationFrame[temp1] >= FramesPerSequence then goto LoopAnimation
           goto UpdateSprite
 LoopAnimation
           CurrentAnimationFrame[temp1] = 0 
-          rem Loop back to start of sequence
+          rem Loop back to start of action
 UpdateSprite
           rem Update character sprite with new animation frame
+          rem Frame is from this sprite's 10fps counter (CurrentAnimationFrame), not global frame counter
           temp2 = CurrentAnimationFrame[temp1] 
-          rem temp2 = Animation frame (0-7)
-          temp3 = temp1 
-          rem temp3 = Player number (0-3)
+          rem temp2 = Animation frame (0-7) from sprite's 10fps counter
+          temp3 = CurrentAnimationSeq[temp1]
+          rem temp3 = Animation action (0-15)
+          temp4 = temp1
+          rem temp4 = Player number (0-3)
           gosub bank10 LoadPlayerSprite
           
           return
 
-          rem Set animation sequence for a player
-          rem Input: temp1 = player index (0-3), temp2 = animation sequence (0-15)
+          rem Set animation action for a player
+          rem Input: temp1 = player index (0-3), temp2 = animation action (0-15)
 SetPlayerAnimation
-          rem Validate animation sequence (byte-safe)
+          rem Validate animation action (byte-safe)
           if temp2 >= AnimationSequenceCount then return
           
-          rem Set new animation sequence
+          rem Set new animation action
           CurrentAnimationSeq[temp1] = temp2
-          rem temp1 = Player index (0-3), temp2 = Animation sequence (0-15)
+          rem temp1 = Player index (0-3), temp2 = Animation action (0-15)
           CurrentAnimationFrame[temp1] = 0 
           rem Start at first frame
           AnimationCounter[temp1] = 0      
           rem Reset animation counter
           
           rem Update character sprite immediately
-          temp3 = temp1 
-          rem temp3 = Player number (0-3)
+          rem Frame is from this sprite's 10fps counter, action from CurrentAnimationSeq
+          temp2 = CurrentAnimationFrame[temp1]
+          rem temp2 = Animation frame (0-7) from sprite's 10fps counter
+          temp3 = CurrentAnimationSeq[temp1]
+          rem temp3 = Animation action (0-15)
+          temp4 = temp1
+          rem temp4 = Player number (0-3)
           gosub bank10 LoadPlayerSprite
           
           return
@@ -101,12 +112,12 @@ GetCurrentAnimationFrame
           rem temp1 = Player index (0-3), temp2 = Current animation frame (0-7)
           return
 
-          rem Get current animation sequence for a player
+          rem Get current animation action for a player
           rem Input: temp1 = player index (0-3)
-          rem Output: temp2 = current animation sequence (0-15)
-GetCurrentAnimationSequence
+          rem Output: temp2 = current animation action (0-15)
+GetCurrentAnimationAction
           temp2 = CurrentAnimationSeq[temp1]
-          rem temp1 = Player index (0-3), temp2 = Current animation sequence (0-15)
+          rem temp1 = Player index (0-3), temp2 = Current animation action (0-15)
           return
 
           rem Initialize animation system for all players

@@ -7,10 +7,11 @@
           rem =================================================================
           rem Wrapper that determines correct bank and switches to it
           rem Input: temp1 = character index (0-31)
-          rem        temp2 = animation frame (0-7)
+          rem        temp2 = animation frame (0-7) from sprite's 10fps counter, NOT global frame
           rem        temp3 = action (0-15)
           rem        temp7 = player number (0-3)
           rem Output: Player sprite pointer set to character artwork
+          rem Note: Frame is relative to sprite's own 10fps counter, NOT global frame counter
           
 LocateCharacterArt
           rem Determine which bank contains this character

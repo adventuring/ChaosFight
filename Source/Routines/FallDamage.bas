@@ -127,7 +127,7 @@ CheckFallDamage
           
           rem Play fall damage sound effect
           temp1 = SoundFall
-          gosub bank9 PlaySoundEffect
+          gosub bank15 PlaySoundEffect
           
           rem Trigger color shift to darker shade (damage visual feedback)
           rem This is handled by PlayerRendering.bas using PlayerRecoveryFrames

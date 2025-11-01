@@ -359,7 +359,7 @@ HandleMissileHit
           
           rem Check if defender is guarding (bit 1 of PlayerState)
           temp2 = PlayerState[temp4] & 2
-          if temp2 then temp1 = SoundGuard : gosub bank9 PlaySoundEffect : return 
+          if temp2 then temp1 = SoundGuard : gosub bank15 PlaySoundEffect : return 
           rem Guarding - no damage, play guard sound
           
           rem Apply damage
@@ -383,7 +383,7 @@ KnockbackDone
           
           rem Play hit sound effect
           temp1 = SoundHit
-          gosub bank9 PlaySoundEffect
+          gosub bank15 PlaySoundEffect
           
           rem Spawn damage indicator visual
           gosub bank8 VisualShowDamageIndicator

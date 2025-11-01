@@ -84,7 +84,7 @@ UpdatePlayers34Done
 TriggerEliminationEffects
           rem Play elimination sound effect
           temp5 = SoundElimination
-          gosub bank9 PlaySoundEffect
+          gosub bank15 PlaySoundEffect
           
           rem Set elimination visual effect timer
           rem This could trigger screen flash, particle effects, etc.

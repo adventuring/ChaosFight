@@ -9,8 +9,8 @@
 ; All sprite data referenced must be in Bank 2
 
 ; Character sprite organization: 8 frames × 16 sequences per character
-; Bank 2 character mapping (local index 0-7, global 0-8-15 and 24-31)
-; Characters 8-15: Frooty, Curler, Dragonet, EXOPilot, FatTony, Megax, Harpy, KnightGuy
+; Bank 3 character mapping (local index 0-7, global 8-15 and 24-31)
+; Characters 8-15: Frooty, Nefertem, NinjishGuy, PorkChop, RadishGoblin, RoboTito, Ursulo, VegDog
 ; Characters 24-31: Copies of 8-15 (mapped to local indices 0-7)
 
 ; Character sprite pointer tables (Bank 3 only)
@@ -65,7 +65,7 @@ LocateCharacterArt_Bank3:
     and #$07            ; Mask to 0-7 range (works for both 8-15 and 24-31)
     sta temp1           ; Store local index
     
-    ; Set bank to 2
+    ; Set bank to 3
     lda #3
     sta temp6
     

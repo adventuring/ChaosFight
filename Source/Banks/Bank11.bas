@@ -3,7 +3,8 @@
 
           bank 11
           
-          rem Game loop initialization (moved from Bank 1 to reduce overflow)
-          rem Grouped with game loop main to minimize bank switches
+          rem Game loop initialization and main loop (moved from Bank 1)
+          rem Grouped together to minimize bank switches during gameplay
           #include "Source/Routines/GameLoopInit.bas"
+          #include "Source/Routines/GameLoopMain.bas"
 

@@ -8,7 +8,7 @@ MainLoop
           if GameMode = 3 then gosub bank10 SelInEntry : goto MainLoopContinue
           if GameMode = 4 then gosub FallingAnimation1 : goto MainLoopContinue
           if GameMode = 5 then gosub LevelSelect1 : goto MainLoopContinue
-          if GameMode = 6 then gosub GameMainLoop : goto MainLoopContinue
+          if GameMode = 6 then gosub bank11 GameMainLoop : goto MainLoopContinue
           gosub WinnerAnnouncement
 MainLoopContinue
           drawscreen

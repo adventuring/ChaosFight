@@ -2,208 +2,35 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem =================================================================
-          rem SOUND EFFECTS SYSTEM
+          rem SOUND SUBSYSTEM - STUB PLACEHOLDER
           rem =================================================================
-          rem Provides sound effects for various game events
-          rem Uses AUDC1 for sound effects (AUDC0 reserved for music)
-
-          rem =================================================================
-          rem SOUND EFFECT CONSTANTS
-          rem =================================================================
-          rem Constants defined in Source/Common/Constants.bas
-
-          rem =================================================================
-          rem SOUND EFFECT DATA TABLES
-          rem =================================================================
-          rem Attack sound (melee swoosh)
-          data AttackSoundData
-          $0C, $0A, $08, $06, $04, $02, $00
-end
-
-          data AttackSoundFreq
-          $1F, $1C, $19, $16, $13, $10, $0D
-end
-
-          rem Hit sound (impact)
-          data HitSoundData
-          $0F, $0D, $0B, $09, $07, $05, $03, $01
-end
-
-          data HitSoundFreq
-          $1A, $18, $16, $14, $12, $10, $0E, $0C
-end
-
-          rem Fall damage sound
-          data FallSoundData
-          $0E, $0C, $0A, $08, $06, $04, $02, $00
-end
-
-          data FallSoundFreq
-          $15, $13, $11, $0F, $0D, $0B, $09, $07
-end
-
-          rem Guard activation sound
-          data GuardSoundData
-          $0A, $08, $06, $04, $02
-end
-
-          data GuardSoundFreq
-          $1C, $1A, $18, $16, $14
-end
-
-          rem Character selection sound
-          data SelectSoundData
-          $0C, $0A, $08, $06
-end
-
-          data SelectSoundFreq
-          $1E, $1C, $1A, $18
-end
-
-          rem Victory sound
-          data VictorySoundData
-          $0F, $0D, $0B, $09, $07, $05, $03, $01, $00
-end
-
-          data VictorySoundFreq
-          $1F, $1D, $1B, $19, $17, $15, $13, $11, $0F
-end
-
-          rem Elimination sound (dramatic death sound)
-          data EliminationSoundData
-          $0F, $0E, $0D, $0C, $0B, $0A, $09, $08, $07, $06, $05, $04, $03, $02, $01, $00
-end
-
-          data EliminationSoundFreq
-          $18, $16, $14, $12, $10, $0E, $0C, $0A, $08, $06, $05, $04, $03, $02, $01, $00
-end
+          rem NOTE: Complete sound/music subsystem implementation pending.
+          rem      This is a temporary placeholder that delays and returns.
+          rem      See GitHub issues #162, #243, #306 for requirements.
+          rem
+          rem TODO: Implement full polyphony 2 music + polyphony 1 sound effects
+          rem      - Music must come from assets, not hard-coded
+          rem      - Proper TIA audio channel sharing
+          rem      - Sound effects first-come, first-served
 
           rem =================================================================
-          rem SOUND PLAYBACK FUNCTIONS
+          rem SOUND SUBSYSTEM STUB
           rem =================================================================
-
-          rem Play attack sound effect
-          rem Input: temp1 = sound type (1-6)
-PlaySoundEffect
-          rem Jump table for effects (1..7)
-          temp2 = temp1 - 1
-          on temp2 goto PlayAttackSound PlayHitSound PlayFallSound PlayGuardSound PlaySelectSound PlayVictorySound PlayEliminationSound
+          rem Simple countdown loop that waits 256 iterations and returns
+SoundSubsystem
+          temp1 = 0
+SoundSubsystemLoop
+          temp1 = temp1 + 1
+          if temp1 > 0 then goto SoundSubsystemLoop
           return
 
-          rem Play attack sound (melee swoosh)
-PlayAttackSound
-          temp2 = 0
-          temp3 = 7 
-          rem 7 frames
-AttackSoundLoop
-          if temp2 >= temp3 then return
-          
-          temp4 = AttackSoundData(temp2)
-          temp5 = AttackSoundFreq(temp2)
-          AUDC1 = temp4
-          AUDF1 = temp5
-          
-          temp2 = temp2 + 1
-          goto AttackSoundLoop
+          rem =================================================================
+          rem COMPATIBILITY STUBS
+          rem =================================================================
+          rem These are called from various game routines
 
-          rem Play hit sound (impact)
-PlayHitSound
-          temp2 = 0
-          temp3 = 8 
-          rem 8 frames
-HitSoundLoop
-          if temp2 >= temp3 then return
-          
-          temp4 = HitSoundData(temp2)
-          temp5 = HitSoundFreq(temp2)
-          AUDC1 = temp4
-          AUDF1 = temp5
-          
-          temp2 = temp2 + 1
-          goto HitSoundLoop
+PlaySoundEffect
+          return
 
-          rem Play fall damage sound
-PlayFallSound
-          temp2 = 0
-          temp3 = 8 
-          rem 8 frames
-FallSoundLoop
-          if temp2 >= temp3 then return
-          
-          temp4 = FallSoundData(temp2)
-          temp5 = FallSoundFreq(temp2)
-          AUDC1 = temp4
-          AUDF1 = temp5
-          
-          temp2 = temp2 + 1
-          goto FallSoundLoop
-
-          rem Play guard activation sound
-PlayGuardSound
-          temp2 = 0
-          temp3 = 5 
-          rem 5 frames
-GuardSoundLoop
-          if temp2 >= temp3 then return
-          
-          temp4 = GuardSoundData(temp2)
-          temp5 = GuardSoundFreq(temp2)
-          AUDC1 = temp4
-          AUDF1 = temp5
-          
-          temp2 = temp2 + 1
-          goto GuardSoundLoop
-
-          rem Play character selection sound
-PlaySelectSound
-          temp2 = 0
-          temp3 = 4 
-          rem 4 frames
-SelectSoundLoop
-          if temp2 >= temp3 then return
-          
-          temp4 = SelectSoundData(temp2)
-          temp5 = SelectSoundFreq(temp2)
-          AUDC1 = temp4
-          AUDF1 = temp5
-          
-          temp2 = temp2 + 1
-          goto SelectSoundLoop
-
-          rem Play victory sound
-PlayVictorySound
-          temp2 = 0
-          temp3 = 9 
-          rem 9 frames
-VictorySoundLoop
-          if temp2 >= temp3 then return
-          
-          temp4 = VictorySoundData(temp2)
-          temp5 = VictorySoundFreq(temp2)
-          AUDC1 = temp4
-          AUDF1 = temp5
-          
-          temp2 = temp2 + 1
-          goto VictorySoundLoop
-
-          rem Play elimination sound (dramatic death sound)
-PlayEliminationSound
-          temp2 = 0
-          temp3 = 16 
-          rem 16 frames
-EliminationSoundLoop
-          if temp2 >= temp3 then return
-          
-          temp4 = EliminationSoundData(temp2)
-          temp5 = EliminationSoundFreq(temp2)
-          AUDC1 = temp4
-          AUDF1 = temp5
-          
-          temp2 = temp2 + 1
-          goto EliminationSoundLoop
-
-          rem Stop all sound effects
 StopSoundEffects
-          AUDC1 = 0
-          AUDF1 = 0
           return

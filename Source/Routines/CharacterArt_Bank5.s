@@ -13,7 +13,7 @@
 ; Characters 24-31: Copies (same as 8-15), Curler, Dragonet, EXOPilot, FatTony, Megax, Harpy, KnightGuy
 ; Characters 24-31: Copies of 8-15 (mapped to local indices 0-7)
 
-; Character sprite pointer tables (Bank 2 only)
+; Character sprite pointer tables (Bank 5 - replicas from Bank 3)
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLo_Bank5:
     .byte <FrootySprite, <NefertemSprite, <NinjishGuySprite, <PorkChopSprite
@@ -57,13 +57,15 @@ LocateCharacterArt_Bank5:
     sty temp3           ; Animation sequence
     
     ; Map character index to local 0-7 range
-    ; Characters 24-31 map to 0-7
-    ; Characters 24-31 map to 0-7 (use same data)
+    ; Characters 24-31 map to 0-7 (replicas of characters 8-15)
+    ; Character 24 = Character 8 (Frooty), Character 25 = Character 9 (Nefertem), etc.
     lda temp1
-    and #$07 : clc : sbc #8 : and #$07 (works for both 0-8-15 and 24-31)
+    sec
+    sbc #24             ; Subtract 24 to map 24-31 to 0-7
+    and #$07            ; Mask to 0-7 range
     sta temp1           ; Store local index
     
-    ; Set bank to 2
+    ; Set bank to 5
     lda #5
     sta temp6
     

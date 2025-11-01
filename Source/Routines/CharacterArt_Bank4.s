@@ -13,7 +13,7 @@
 ; Characters 16-23: Copies (same as 0-7), Curler, Dragonet, EXOPilot, FatTony, Megax, Harpy, KnightGuy
 ; Characters 16-23: Copies of 0-7 (mapped to local indices 0-7)
 
-; Character sprite pointer tables (Bank 2 only)
+; Character sprite pointer tables (Bank 4 - replicas from Bank 2)
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLo_Bank4:
     .byte <BernieSprite, <CurlerSprite, <DragonetSprite, <EXOPilotSprite
@@ -57,13 +57,15 @@ LocateCharacterArt_Bank4:
     sty temp3           ; Animation sequence
     
     ; Map character index to local 0-7 range
-    ; Characters 16-23 map to 0-7
-    ; Characters 16-23 map to 0-7 (use same data)
+    ; Characters 16-23 map to 0-7 (replicas of characters 0-7)
+    ; Character 16 = Character 0 (Bernie), Character 17 = Character 1 (Curler), etc.
     lda temp1
-    and #$07            ; Mask to 0-7 range (works for both 0-7 and 16-23)
+    sec
+    sbc #16             ; Subtract 16 to map 16-23 to 0-7
+    and #$07            ; Mask to 0-7 range
     sta temp1           ; Store local index
     
-    ; Set bank to 2
+    ; Set bank to 4
     lda #4
     sta temp6
     

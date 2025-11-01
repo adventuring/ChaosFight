@@ -11,7 +11,7 @@
 
 ColdStartSequence
           rem Detect controllers at startup
-          gosub bank2 DetectControllers
+          gosub bank14 DetectControllers
           
           rem Display Publisher Preamble (Atari Today jingle)
           gosub ShowPublisherPreamble
@@ -23,7 +23,7 @@ ColdStartSequence
           gosub bank9 ShowTitleScreen
           
           rem Re-detect controllers before game starts
-          gosub bank2 DetectControllers
+          gosub bank14 DetectControllers
           
           return
 
@@ -208,7 +208,7 @@ ExitTitleScreen
           AUDV1 = 0
           
           rem Re-detect controllers before starting game
-          gosub bank2 DetectControllers
+          gosub bank14 DetectControllers
           
           return
 

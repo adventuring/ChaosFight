@@ -294,7 +294,7 @@ SetVerticalMomentum
           PlayerState[temp1] = temp6
           
           rem Spawn melee attack missile for swoop hit detection
-          gosub bank3 SpawnMissile
+          gosub bank15 SpawnMissile
           
           return
 

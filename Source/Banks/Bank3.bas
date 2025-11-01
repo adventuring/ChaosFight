@@ -2,7 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           bank 3
-          #include "Source/Routines/MissileSystem.bas"
+          
+          rem Character sprite data for characters 8-15
+          rem Bank 3 dedicated to character art only - leave room for animation frames
           #include "Source/Generated/Frooty.bas"
           #include "Source/Generated/Nefertem.bas"
           #include "Source/Generated/NinjishGuy.bas"
@@ -12,4 +14,5 @@
           #include "Source/Generated/Ursulo.bas"
           #include "Source/Generated/VegDog.bas"
 
+          rem Character art lookup routines for Bank 3 (characters 8-15 and 24-31)
           include "Source/Routines/CharacterArt_Bank3.s"

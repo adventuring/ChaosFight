@@ -1,17 +1,17 @@
 ; ChaosFight - Source/Routines/CharacterArt_Bank5.s
 ; Copyright © 2025 Interworldly Adventuring, LLC.
-; Character artwork location system for Bank 2 (Characters 24-31 (copies of 8-15))
+; Character artwork location system for Bank 5 (Characters 24-31)
 
 ; =================================================================
-; CHARACTER ARTWORK LOCATION SYSTEM - BANK 2
+; CHARACTER ARTWORK LOCATION SYSTEM - BANK 5
 ; =================================================================
-; Operates on characters 0-7 (and 16-23 as copies)
-; All sprite data referenced must be in Bank 2
+; Operates on characters 24-31 (replicas of 8-15)
+; All sprite data referenced must be in Bank 5
+; Character 24 = Character 8 (Frooty), Character 25 = Character 9 (Nefertem), etc.
 
 ; Character sprite organization: 8 frames × 16 sequences per character
-; Bank 2 character mapping (local index 0-7, global 0-8-15 and 24-31)
-; Characters 24-31: Copies (same as 8-15), Curler, Dragonet, EXOPilot, FatTony, Megax, Harpy, KnightGuy
-; Characters 24-31: Copies of 8-15 (mapped to local indices 0-7)
+; Bank 5 character mapping (local index 0-7, global 24-31)
+; Characters 24-31: Replicas of 8-15 (mapped to local indices 0-7)
 
 ; Character sprite pointer tables (Bank 5 - replicas from Bank 3)
 ; Low byte pointers for each character base sprite data

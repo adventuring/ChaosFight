@@ -2,4 +2,12 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           bank 10
+          
+          rem Character selection (moved from Bank 1 to reduce overflow)
+          rem Grouped with sprite loading to minimize bank switches
+          #include "Source/Routines/CharacterSelectMain.bas"
+          
+          rem Sprite loading system (moved from Bank 1 to reduce overflow)
+          rem Grouped with character selection since they work together
+          #include "Source/Routines/SpriteLoader.bas"
 

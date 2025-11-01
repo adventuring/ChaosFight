@@ -68,7 +68,7 @@ UpdateSprite
           rem temp2 = Animation frame (0-7)
           temp3 = temp1 
           rem temp3 = Player number (0-3)
-          gosub LoadPlayerSprite
+          gosub bank10 LoadPlayerSprite
           
           return
 
@@ -89,7 +89,7 @@ SetPlayerAnimation
           rem Update character sprite immediately
           temp3 = temp1 
           rem temp3 = Player number (0-3)
-          gosub LoadPlayerSprite
+          gosub bank10 LoadPlayerSprite
           
           return
 

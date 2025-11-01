@@ -109,7 +109,7 @@ Player1ColorDone
           rem Character index
           let temp2 = 0 
           rem Animation frame (0=idle, 1=running)
-          gosub LoadCharacterSprite
+          gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
           if temp6 then goto Player2BWMode
@@ -132,7 +132,7 @@ Player2ColorDone
           rem Character index
           let temp2 = 0 
           rem Animation frame (0=idle, 1=running)
-          gosub LoadCharacterSprite
+          gosub bank10 LoadCharacterSprite
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
           rem Players 3 & 4 have independent COLUP2/COLUP3 registers

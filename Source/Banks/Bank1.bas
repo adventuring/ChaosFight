@@ -9,13 +9,11 @@
           #include "Source/Routines/PublisherPreamble.bas"
           #include "Source/Routines/AuthorPreamble.bas"
           #include "Source/Routines/TitleScreenMain.bas"
-          #include "Source/Routines/CharacterSelectMain.bas"
           #include "Source/Routines/FallingAnimation.bas"
           #include "Source/Routines/LevelSelect.bas"
           #include "Source/Routines/GameLoopMain.bas"
           #include "Source/Routines/WinnerAnnouncement.bas"
 
-          #include "Source/Routines/SpriteLoader.bas"
           #include "Source/Routines/GameLoopInit.bas"
 
           #if 0

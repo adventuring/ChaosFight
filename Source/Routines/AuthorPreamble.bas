@@ -30,15 +30,15 @@ AuthorMainLoop
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then goto AuthorPreambleComplete
           if joy1fire then goto AuthorPreambleComplete
-          if ControllerStatus & SetQuadtariDetected then goto AutCheckQuad
-          goto AutSkipQuad
-AutCheckQuad
+          if ControllerStatus & SetQuadtariDetected then goto AuthorCheckQuadtari
+          goto AuthorSkipQuadtari
+AuthorCheckQuadtari
           if !INPT0{7} then goto AuthorPreambleComplete
           if !INPT2{7} then goto AuthorPreambleComplete
-AutSkipQuad
+AuthorSkipQuadtari
           
           rem Update music
-          gosub UpdateMusic
+          gosub bank16 UpdateMusic
           
           rem Auto-advance after music completes + 0.5s
           if PreambleTimer > 30 && ! MusicPlaying then goto AuthorPreambleComplete

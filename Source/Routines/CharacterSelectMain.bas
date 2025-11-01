@@ -26,152 +26,152 @@
           rem   ReadyCount - Number of locked players
           rem =================================================================
 
-SelInEntry
+CharacterSelectInputEntry
           
 
-SelInLoop
+CharacterSelectInputLoop
           rem Quadtari controller multiplexing
-          if qtcontroller then goto SelInHandleQuad
+          if qtcontroller then goto CharacterSelectHandleQuadtari
           
           rem Handle Player 1 input (joy0 on even frames)
-          if joy0left then goto SelInP0Left
-          goto SelInSkipP0Left
-SelInP0Left
+          if joy0left then goto CharacterSelectPlayer0Left
+          goto CharacterSelectSkipPlayer0Left
+CharacterSelectPlayer0Left
           PlayerChar[0] = PlayerChar[0] - 1
           if PlayerChar[0] > MaxCharacter then PlayerChar[0] = MaxCharacter
           PlayerLocked[0] = 0
-SelInSkipP0Left
-          if joy0right then goto SelInP0Right
-          goto SelInSkipP0Right
-SelInP0Right
+CharacterSelectSkipPlayer0Left
+          if joy0right then goto CharacterSelectPlayer0Right
+          goto CharacterSelectSkipPlayer0Right
+CharacterSelectPlayer0Right
           PlayerChar[0] = PlayerChar[0] + 1
           if PlayerChar[0] > MaxCharacter then PlayerChar[0] = 0
           PlayerLocked[0] = 0
-SelInSkipP0Right
+CharacterSelectSkipPlayer0Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy0up then PlayerLocked[0] = 0 : goto Player0LockClearDone
+          if joy0up then PlayerLocked[0] = 0 : goto CharacterSelectPlayer0LockClearDone
           if joy0down then PlayerLocked[0] = 0
-Player0LockClearDone
+CharacterSelectPlayer0LockClearDone
           if joy0fire then PlayerLocked[0] = 1
 
           rem Handle Player 2 input (joy1 on even frames)
-          if joy1left then goto SelInP1Left
-          goto SelInSkipP1Left
-SelInP1Left
+          if joy1left then goto CharacterSelectPlayer1Left
+          goto CharacterSelectSkipPlayer1Left
+CharacterSelectPlayer1Left
           PlayerChar[1] = PlayerChar[1] - 1
           if PlayerChar[1] > MaxCharacter then PlayerChar[1] = MaxCharacter
           PlayerLocked[1] = 0
-SelInSkipP1Left
-          if joy1right then goto SelInP1Right
-          goto SelInSkipP1Right
-SelInP1Right
+CharacterSelectSkipPlayer1Left
+          if joy1right then goto CharacterSelectPlayer1Right
+          goto CharacterSelectSkipPlayer1Right
+CharacterSelectPlayer1Right
           PlayerChar[1] = PlayerChar[1] + 1
           if PlayerChar[1] > MaxCharacter then PlayerChar[1] = 0
           PlayerLocked[1] = 0
-SelInSkipP1Right
+CharacterSelectSkipPlayer1Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy1up then PlayerLocked[1] = 0 : goto Player1LockClearDone
+          if joy1up then PlayerLocked[1] = 0 : goto CharacterSelectPlayer1LockClearDone
           if joy1down then PlayerLocked[1] = 0
-Player1LockClearDone
+CharacterSelectPlayer1LockClearDone
           if joy1fire then PlayerLocked[1] = 1
           
           qtcontroller = 1
-          goto SelInComplete
+          goto CharacterSelectInputComplete
 
-SelInHandleQuad
+CharacterSelectHandleQuadtari
           rem Handle Player 3 input (joy0 on odd frames)
-          if ControllerStatus & SetQuadtariDetected then goto SelInHandleP3
-          goto SelInSkipP3
-SelInHandleP3
-          if joy0left then goto SelInP3Left
-          goto SelInSkipP3Left
-SelInP3Left
+          if ControllerStatus & SetQuadtariDetected then goto CharacterSelectHandlePlayer3
+          goto CharacterSelectSkipPlayer3
+CharacterSelectHandlePlayer3
+          if joy0left then goto CharacterSelectPlayer3Left
+          goto CharacterSelectSkipPlayer3Left
+CharacterSelectPlayer3Left
           PlayerChar[2] = PlayerChar[2] - 1
           if PlayerChar[2] > MaxCharacter then PlayerChar[2] = MaxCharacter
           PlayerLocked[2] = 0
-SelInSkipP3Left
-          if joy0right then goto SelInP3Right
-          goto SelInSkipP3Right
-SelInP3Right
+CharacterSelectSkipPlayer3Left
+          if joy0right then goto CharacterSelectPlayer3Right
+          goto CharacterSelectSkipPlayer3Right
+CharacterSelectPlayer3Right
           PlayerChar[2] = PlayerChar[2] + 1
           if PlayerChar[2] > MaxCharacter then PlayerChar[2] = 0
           PlayerLocked[2] = 0
-SelInSkipP3Right
+CharacterSelectSkipPlayer3Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy0up then PlayerLocked[2] = 0 : goto Player2LockClearDone
+          if joy0up then PlayerLocked[2] = 0 : goto CharacterSelectPlayer2LockClearDone
           if joy0down then PlayerLocked[2] = 0
-Player2LockClearDone
+CharacterSelectPlayer2LockClearDone
           if joy0fire then PlayerLocked[2] = 1
-SelInSkipP3
+CharacterSelectSkipPlayer3
 
           rem Handle Player 4 input (joy1 on odd frames)
-          if ControllerStatus & SetQuadtariDetected then goto SelInHandleP4
-          goto SelInSkipP4
-SelInHandleP4
-          if joy1left then goto SelInP4Left
-          goto SelInSkipP4Left
-SelInP4Left
+          if ControllerStatus & SetQuadtariDetected then goto CharacterSelectHandlePlayer4
+          goto CharacterSelectSkipPlayer4
+CharacterSelectHandlePlayer4
+          if joy1left then goto CharacterSelectPlayer4Left
+          goto CharacterSelectSkipPlayer4Left
+CharacterSelectPlayer4Left
           PlayerChar[3] = PlayerChar[3] - 1
           if PlayerChar[3] > MaxCharacter then PlayerChar[3] = MaxCharacter
           PlayerLocked[3] = 0
-SelInSkipP4Left
-          if joy1right then goto SelInP4Right
-          goto SelInSkipP4Right
-SelInP4Right
+CharacterSelectSkipPlayer4Left
+          if joy1right then goto CharacterSelectPlayer4Right
+          goto CharacterSelectSkipPlayer4Right
+CharacterSelectPlayer4Right
           PlayerChar[3] = PlayerChar[3] + 1
           if PlayerChar[3] > MaxCharacter then PlayerChar[3] = 0
           PlayerLocked[3] = 0
-SelInSkipP4Right
+CharacterSelectSkipPlayer4Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy1up then PlayerLocked[3] = 0 : goto Player3LockClearDone
+          if joy1up then PlayerLocked[3] = 0 : goto CharacterSelectPlayer3LockClearDone
           if joy1down then PlayerLocked[3] = 0
-Player3LockClearDone
+CharacterSelectPlayer3LockClearDone
           if joy1fire then PlayerLocked[3] = 1
-SelInSkipP4
+CharacterSelectSkipPlayer4
           
           
           qtcontroller = 0
 
-SelInComplete
+CharacterSelectInputComplete
           rem Update character select animations
           gosub SelectUpdateAnimations
 
           rem Check if all players are ready to start
-          gosub SelInCheckReady
+          gosub CharacterSelectCheckReady
 
           rem Draw character selection screen
           gosub SelectDrawScreen
 
           drawscreen
-          goto SelInLoop
+          goto CharacterSelectInputLoop
 
           rem =================================================================
           rem CHECK IF READY TO PROCEED
           rem =================================================================
-SelInCheckReady
+CharacterSelectCheckReady
           ReadyCount = 0
 
           rem Count locked players
           if PlayerLocked[0] then ReadyCount = ReadyCount + 1
           if PlayerLocked[1] then ReadyCount = ReadyCount + 1
-          if ControllerStatus & SetQuadtariDetected then goto SelInCountQuad
-          goto SelInSkipQuad
-SelInCountQuad
+          if ControllerStatus & SetQuadtariDetected then goto CharacterSelectCountQuadtari
+          goto CharacterSelectSkipQuadtari
+CharacterSelectCountQuadtari
           if PlayerLocked[2] then ReadyCount = ReadyCount + 1
           if PlayerLocked[3] then ReadyCount = ReadyCount + 1
-SelInSkipQuad
+CharacterSelectSkipQuadtari
 
           rem Check if enough players are ready
-          if ControllerStatus & SetQuadtariDetected then goto SelInQuadReady
-          if PlayerLocked[0] then goto SelInFinish
-          goto SelInReadyDone
-SelInQuadReady
-          if ReadyCount >= 2 then goto SelInFinish
-SelInReadyDone
+          if ControllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
+          if PlayerLocked[0] then goto CharacterSelectFinish
+          goto CharacterSelectReadyDone
+CharacterSelectQuadtariReady
+          if ReadyCount >= 2 then goto CharacterSelectFinish
+CharacterSelectReadyDone
           
           return
 
-SelInFinish
+CharacterSelectFinish
           rem Store final selections
           SelectedChar1 = PlayerChar[0]
           SelectedChar2 = PlayerChar[1]

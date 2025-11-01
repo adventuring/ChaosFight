@@ -20,7 +20,7 @@ ColdStartSequence
           gosub ShowAuthorPreamble
           
           rem Display Title Screen (Chaotica music loops)
-          gosub ShowTitleScreen
+          gosub bank9 ShowTitleScreen
           
           rem Re-detect controllers before game starts
           gosub bank2 DetectControllers

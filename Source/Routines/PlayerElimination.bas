@@ -60,6 +60,10 @@ CheckPlayerElimination
           rem Player health reached 0 - eliminate them
           PlayersEliminated = PlayersEliminated | temp6
           
+          rem Update Players34Active flag if Player 3 or 4 was eliminated
+          rem Only clear flag if both players 3 and 4 are eliminated or not selected
+          if temp1 = 2 || temp1 = 3 then gosub UpdatePlayers34ActiveFlag
+          
           rem Record elimination order
           EliminationCounter = EliminationCounter + 1
           EliminationOrder[temp1] = EliminationCounter
@@ -252,5 +256,27 @@ if EliminationOrder[3] > temp4 then
           temp4 = EliminationOrder[3]
           WinnerPlayerIndex = 3
           
+          rem =================================================================
+          rem UPDATE PLAYERS 3/4 ACTIVE FLAG
+          rem =================================================================
+          rem Updates the Players34Active flag based on whether players 3 or 4
+          rem are selected and not eliminated. Used for missile multiplexing.
+UpdatePlayers34ActiveFlag
+          rem Clear flag first
+          ControllerStatus = ControllerStatus & ClearPlayers34Active
           
+          rem Check if Player 3 is active (selected and not eliminated)
+          if SelectedChar3 = 255 then goto CheckPlayer4ActiveFlag
+          if PlayersEliminated & 4 then goto CheckPlayer4ActiveFlag
+          rem Player 3 is active
+          ControllerStatus = ControllerStatus | SetPlayers34Active
+          
+CheckPlayer4ActiveFlag
+          rem Check if Player 4 is active (selected and not eliminated)
+          if SelectedChar4 = 255 then goto UpdatePlayers34ActiveDone
+          if PlayersEliminated & 8 then goto UpdatePlayers34ActiveDone
+          rem Player 4 is active
+          ControllerStatus = ControllerStatus | SetPlayers34Active
+          
+UpdatePlayers34ActiveDone
           return

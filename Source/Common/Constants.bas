@@ -51,6 +51,8 @@
           rem Controller status bit constants (packed into single byte)
           const QuadtariDetected = 7
           rem Bit 7: Quadtari adapter detected
+          const Players34Active = 6
+          rem Bit 6: Players 3 or 4 are active (selected and not eliminated) - used for missile multiplexing
           const LeftPortGenesis = 0
           rem Bit 0: Genesis or Joy2b+ on left port
           const LeftPortJoy2bPlus = 1
@@ -74,11 +76,15 @@
           rem Bit mask constants for clearing bits
           const ClearQuadtariDetected = $7F
           rem $FF - $80: Clear bit 7 (QuadtariDetected)
+          const ClearPlayers34Active = $BF
+          rem $FF - $40: Clear bit 6 (Players34Active)
           const ClearSystemFlag7800 = $7F
           rem $FF - $80: Clear bit 7 (SystemFlag7800)
           rem Bit mask constants for setting bits
           const SetQuadtariDetected = $80
           rem Set bit 7 (QuadtariDetected)
+          const SetPlayers34Active = $40
+          rem Set bit 6 (Players34Active)
           rem Bit mask constants for controller port detections
           const SetLeftPortGenesis = $01
           const SetLeftPortJoy2bPlus = $02
@@ -122,4 +128,24 @@
           rem Bottom pixel threshold
           const ScreenTopWrapThreshold = 200
           rem Byte-safe top-wrap detection threshold
+
+          rem =================================================================
+          rem MUSIC CONSTANTS
+          rem =================================================================
+          const MusicTitle = 0
+          const MusicInterworldly = 1
+          const MusicAtariToday = 2
+          const MusicVictory = 3
+          const MusicGameOver = 4
+
+          rem =================================================================
+          rem SOUND EFFECT CONSTANTS
+          rem =================================================================
+          const SoundAttack = 1
+          const SoundHit = 2
+          const SoundFall = 3
+          const SoundGuard = 4
+          const SoundSelect = 5
+          const SoundVictory = 6
+          const SoundElimination = 7
 

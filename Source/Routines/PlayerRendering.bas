@@ -13,16 +13,15 @@
           rem   Player 4: player3 sprite (COLUP3)
 
           rem MISSILE SPRITES:
-          rem   missile0: Player 1 projectiles
-          rem   missile1: Player 2 projectiles
-          rem   (Players 3&4 projectiles use additional missile channels)
+          rem   2-player mode: missile0 = Player 0, missile1 = Player 1 (no multiplexing)
+          rem   4-player mode: missile0 and missile1 multiplexed between all 4 players (even/odd frames)
 
           rem AVAILABLE VARIABLES:
           rem   PlayerX[0-3], PlayerY[0-3] - Positions
           rem   PlayerState[0-3] - State flags
           rem   PlayerRecoveryFrames[0-3] - Hitstun frames
-          rem   Missile1Active, Missile2Active - Projectile states
-          rem   Missile1X, Missile1Y, Missile2X, Missile2Y - Projectile positions
+          rem   MissileActive (bit flags) - Projectile states (bit 0=P0, bit 1=P1, bit 2=P2, bit 3=P3)
+          rem   MissileX[0-3], MissileY[0-3] - Projectile positions
           rem   QuadtariDetected, SelectedChar3, SelectedChar4
           rem =================================================================
 
@@ -58,16 +57,61 @@ SkipPlayer3Position
 SkipPlayer4Position
           
 
-          rem Set missile positions for projectiles (missiles always available with multisprite)
-          rem missile0: Player 1 projectiles
-          ENAM0 = 0 
-          rem Default: disabled
-          if Missile1Active then missile0x = Missile1X : missile0y = Missile1Y : ENAM0 = 1
+          rem Set missile positions for projectiles
+          rem Hardware missiles: missile0 and missile1 (only 2 physical missiles available on TIA)
+          rem In 2-player mode: missile0 = Player 0, missile1 = Player 1 (no multiplexing needed)
+          rem In 4-player mode: Use frame multiplexing to support 4 logical missiles with 2 hardware missiles:
+          rem   Even frames: missile0 = Player 0, missile1 = Player 1
+          rem   Odd frames:  missile0 = Player 2, missile1 = Player 3
+          rem Use MissileActive bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
           
-          rem missile1: Player 2 projectiles
+          rem Check if players 3 or 4 are active (selected and not eliminated)
+          rem Use this flag instead of QuadtariDetected for missile multiplexing
+          rem because we only need to multiplex when players 3 or 4 are actually in the game
+          if !(ControllerStatus & SetPlayers34Active) then goto RenderMissiles2Player
+          
+          rem 4-player mode: Use frame multiplexing
+          temp6 = frame & 1
+          rem 0 = even frame (Players 0-1), 1 = odd frame (Players 2-3)
+          
+          if temp6 = 0 then goto RenderMissilesEvenFrame
+          
+          rem Odd frame: Render Players 2-3 missiles
+          rem Game Player 2 missile (missile0)
+          ENAM0 = 0
+          temp4 = MissileActive & 4
+          if temp4 then missile0x = MissileX[2] : missile0y = MissileY[2] : ENAM0 = 1
+          
+          rem Game Player 3 missile (missile1)
+          ENAM1 = 0
+          temp4 = MissileActive & 8
+          if temp4 then missile1x = MissileX[3] : missile1y = MissileY[3] : ENAM1 = 1
+          return
+          
+RenderMissilesEvenFrame
+          rem Even frame: Render Players 0-1 missiles
+          rem Game Player 0 missile (missile0)
+          ENAM0 = 0 
+          temp4 = MissileActive & 1
+          if temp4 then missile0x = MissileX[0] : missile0y = MissileY[0] : ENAM0 = 1
+          
+          rem Game Player 1 missile (missile1)
           ENAM1 = 0 
-          rem Default: disabled
-          if Missile2Active then missile1x = Missile2X : missile1y = Missile2Y : ENAM1 = 1
+          temp4 = MissileActive & 2
+          if temp4 then missile1x = MissileX[1] : missile1y = MissileY[1] : ENAM1 = 1
+          return
+          
+RenderMissiles2Player
+          rem 2-player mode: No multiplexing needed, assign missiles directly
+          rem Game Player 0 missile (missile0)
+          ENAM0 = 0 
+          temp4 = MissileActive & 1
+          if temp4 then missile0x = MissileX[0] : missile0y = MissileY[0] : ENAM0 = 1
+          
+          rem Game Player 1 missile (missile1)
+          ENAM1 = 0 
+          temp4 = MissileActive & 2
+          if temp4 then missile1x = MissileX[1] : missile1y = MissileY[1] : ENAM1 = 1
           
           return
 

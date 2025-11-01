@@ -22,11 +22,9 @@ CtrlDetConsole
           rem Atari 7800 BIOS sets $D0=$2C and $D1=$A9 when loading cartridge
           rem Check these before any other detection to avoid corrupting values
           
-          rem Read memory locations $D0 and $D1 to check for 7800 BIOS signature
-          rem Using inline assembly for direct zero-page memory access
-          
-          rem Temporarily disable 7800 detection due to inline asm issues
-          Console7800Detected = 0
+          rem Call proper console detection routine
+          rem ConsoleDetection.bas is included in same bank, so direct call
+          gosub ConsoleDetHW
           
           rem Fall through to controller detection
 

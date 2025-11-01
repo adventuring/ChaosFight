@@ -3,17 +3,17 @@
 
           bank 9
           
-          rem Title sequence and preambles (moved from Bank 1)
+          rem Title sequence and preambles
           rem Grouped together - title screen flow
           #include "Source/Routines/TitleSequence.bas"
           #include "Source/Routines/PublisherPreamble.bas"
           #include "Source/Routines/AuthorPreamble.bas"
           #include "Source/Routines/TitleScreenMain.bas"
           
-          rem Sound system (moved from Bank 1 to reduce overflow)
+          rem Sound system
           #include "Source/Routines/SoundSystem.bas"
           
-          rem Special sprites data (moved from Bank 1)
+          rem Special sprites data
           rem Grouped with sprite-related code
           #include "Source/Data/SpecialSprites.bas"
 

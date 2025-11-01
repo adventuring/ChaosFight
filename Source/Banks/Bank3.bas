@@ -16,12 +16,3 @@
 
           rem Character art lookup routines for Bank 3 (characters 8-15 and 24-31)
           include "Source/Routines/CharacterArtBank3.s"
-
-          rem Character art lookup routines for Bank 3 (characters 8-15 and 24-31)
-          include "Source/Routines/CharacterArtBank3.s"
-
-          rem Character art lookup routines for Bank 3 (characters 8-15 and 24-31)
-          include "Source/Routines/CharacterArtBank3.s"
-
-          rem Character art lookup routines for Bank 3 (characters 8-15 and 24-31)
-          include "Source/Routines/CharacterArtBank3.s"

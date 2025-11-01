@@ -4,6 +4,14 @@
           rem =================================================================
           rem MUSIC SYSTEM
           rem =================================================================
+          rem NOTE: This implementation is FUBAR and needs to be rebuilt from
+          rem      scratch based on requirements in GitHub issues (#162, #243, #306).
+          rem      Requirements:
+          rem      - Music must come from assets, not hard-coded in sources
+          rem      - Music is polyphony 2, sound effects polyphony 1
+          rem      - Sound effects use first-come, first-served voices
+          rem      - Music and sound effects must properly share TIA audio channels
+          rem
           rem Provides music playback using TIA audio channels
           rem Maps one "channel" to 2 voices (AUDC0 + AUDC1)
           rem No backlog/queue - lower priority sounds not considered
@@ -12,11 +20,7 @@
           rem =================================================================
           rem MUSIC CONSTANTS
           rem =================================================================
-          const MusicTitle = 0
-          const MusicInterworldly = 1
-          const MusicAtariToday = 2
-          const MusicVictory = 3
-          const MusicGameOver = 4
+          rem Constants defined in Source/Common/Constants.bas
 
           rem =================================================================
           rem MUSIC STATE VARIABLES
@@ -48,7 +52,7 @@
           $0E, $0C, $0A, $08, $06, $04, $02, $00, $0E, $0C, $0A, $08, $06, $04, $02, $00
           $0E, $0C, $0A, $08, $06, $04, $02, $00, $0E, $0C, $0A, $08, $06, $04, $02, $00
           $0E, $0C, $0A, $08, $06, $04, $02, $00, $0E, $0C, $0A, $08, $06, $04, $02, $00
-          end
+end
 
           data TitleMusicChannel1
           $0C, $0A, $08, $06, $04, $02, $00, $0C, $0A, $08, $06, $04, $02, $00, $0C, $0A
@@ -67,7 +71,7 @@
           $0C, $0A, $08, $06, $04, $02, $00, $0C, $0A, $08, $06, $04, $02, $00, $0C, $0A
           $0C, $0A, $08, $06, $04, $02, $00, $0C, $0A, $08, $06, $04, $02, $00, $0C, $0A
           $0C, $0A, $08, $06, $04, $02, $00, $0C, $0A, $08, $06, $04, $02, $00, $0C, $0A
-          end
+end
 
           rem Interworldly music (author preamble)
           data InterworldlyMusicChannel0
@@ -79,7 +83,7 @@
           $0E, $0C, $0A, $08, $06, $04, $02, $00, $0E, $0C, $0A, $08, $06, $04, $02, $00
           $0E, $0C, $0A, $08, $06, $04, $02, $00, $0E, $0C, $0A, $08, $06, $04, $02, $00
           $0E, $0C, $0A, $08, $06, $04, $02, $00, $0E, $0C, $0A, $08, $06, $04, $02, $00
-          end
+end
 
           data InterworldlyMusicChannel1
           $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04
@@ -90,7 +94,7 @@
           $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04
           $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04
           $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04
-          end
+end
 
           rem AtariToday music (publisher preamble)
           data AtariTodayMusicChannel0
@@ -98,14 +102,14 @@
           $0E, $0C, $0A, $08, $06, $04, $02, $00, $0E, $0C, $0A, $08, $06, $04, $02, $00
           $0E, $0C, $0A, $08, $06, $04, $02, $00, $0E, $0C, $0A, $08, $06, $04, $02, $00
           $0E, $0C, $0A, $08, $06, $04, $02, $00, $0E, $0C, $0A, $08, $06, $04, $02, $00
-          end
+end
 
           data AtariTodayMusicChannel1
           $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04
           $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04
           $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04
           $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04, $02, $00, $0A, $08, $06, $04
-          end
+end
 
           rem =================================================================
           rem MUSIC PLAYBACK FUNCTIONS
@@ -113,7 +117,7 @@
 
           rem Start playing a music track
           rem Input: temp1 = music track (0-4)
-          StartMusic
+StartMusic
           if temp1 = 0 then return 
           rem No music
           
@@ -124,7 +128,7 @@
           return
 
           rem Update music playback (call each frame)
-          UpdateMusic
+UpdateMusic
           if MusicPlaying = 0 then return
           
           rem Update timer
@@ -152,7 +156,7 @@
           return
 
           rem Stop music
-          StopMusic
+StopMusic
           MusicPlaying = 0
           MusicPosition = 0
           MusicTimer = 0
@@ -166,7 +170,7 @@
           rem =================================================================
 
           rem Update title music
-          UpdateTitleMusic
+UpdateTitleMusic
           temp2 = TitleMusicChannel0[MusicPosition]
           temp3 = TitleMusicChannel1[MusicPosition]
           
@@ -181,7 +185,7 @@
           return
 
           rem Update Interworldly music
-          UpdateInterworldlyMusic
+UpdateInterworldlyMusic
           temp2 = InterworldlyMusicChannel0[MusicPosition]
           temp3 = InterworldlyMusicChannel1[MusicPosition]
           
@@ -196,7 +200,7 @@
           return
 
           rem Update AtariToday music
-          UpdateAtariTodayMusic
+UpdateAtariTodayMusic
           temp2 = AtariTodayMusicChannel0[MusicPosition]
           temp3 = AtariTodayMusicChannel1[MusicPosition]
           
@@ -211,7 +215,7 @@
           return
 
           rem Update victory music
-          UpdateVictoryMusic
+UpdateVictoryMusic
           rem Simple victory fanfare
           temp2 = 15 - (MusicPosition & 15)
           temp3 = 7 - (MusicPosition & 7)
@@ -227,7 +231,7 @@
           return
 
           rem Update game over music
-          UpdateGameOverMusic
+UpdateGameOverMusic
           rem Simple game over theme
           temp2 = MusicPosition & 15
           temp3 = (MusicPosition & 7) + 8

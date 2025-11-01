@@ -3,16 +3,7 @@
 
           bank 6
           
-          rem Character selection routines (moved from Bank 5 to free space for character art)
-          #include "Source/Routines/CharacterSelect.bas"
-          #include "Source/Routines/CharacterData.bas"
-          
-          #include "Source/Routines/CharacterSelect.bas"
-          #include "Source/Routines/CharacterData.bas"
-          
-          #include "Source/Routines/CharacterSelect.bas"
-          #include "Source/Routines/CharacterData.bas"
-          
+          rem Character selection routines
           #include "Source/Routines/CharacterSelect.bas"
           #include "Source/Routines/CharacterData.bas"
           

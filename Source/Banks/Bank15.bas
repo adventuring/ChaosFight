@@ -3,27 +3,9 @@
 
           bank 15
           
-          rem Missile system (moved from Bank 3 to free space for character art)
+          rem Missile system
           #include "Source/Routines/MissileSystem.bas"
           
-          rem Missile collision (moved from Bank 4 to free space for character art)
-          #include "Source/Routines/MissileCollision.bas"
-
-
-          #include "Source/Routines/MissileSystem.bas"
-          
-          rem Missile collision (moved from Bank 4 to free space for character art)
-          #include "Source/Routines/MissileCollision.bas"
-
-
-          #include "Source/Routines/MissileSystem.bas"
-          
-          rem Missile collision (moved from Bank 4 to free space for character art)
-          #include "Source/Routines/MissileCollision.bas"
-
-
-          #include "Source/Routines/MissileSystem.bas"
-          
-          rem Missile collision (moved from Bank 4 to free space for character art)
+          rem Missile collision
           #include "Source/Routines/MissileCollision.bas"
 

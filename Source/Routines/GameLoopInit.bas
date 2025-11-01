@@ -91,9 +91,18 @@ Player3HealthSet
           PlayerChar[2] = SelectedChar3
           PlayerChar[3] = SelectedChar4
 
+          rem Update Players34Active flag based on character selections
+          rem Flag is used for missile multiplexing (only multiplex when players 3 or 4 are active)
+          ControllerStatus = ControllerStatus & ClearPlayers34Active
+          rem Clear flag first
+          if SelectedChar3 <> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
+          rem Set if Player 3 selected
+          if SelectedChar4 <> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
+          rem Set if Player 4 selected
+
           rem Initialize missiles
-          Missile1Active = 0
-          Missile2Active = 0
+          rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
+          MissileActive = 0
 
           rem Initialize elimination system
           PlayersEliminated = 0  

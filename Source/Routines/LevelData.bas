@@ -18,78 +18,10 @@
           rem =================================================================
 
           rem =================================================================
-          rem LEVEL LOADING DISPATCH
+          rem LEVEL DATA
           rem =================================================================
 
 Level1Data
-          gosub LoadLevelFromFile1
-          return
-
-Level2Data
-          gosub LoadLevelFromFile2
-          return
-
-Level3Data
-          gosub LoadLevelFromFile3
-          return
-
-Level4Data
-          gosub LoadLevelFromFile4
-          return
-
-Level5Data
-          gosub LoadLevelFromFile5
-          return
-
-Level6Data
-          gosub LoadLevelFromFile6
-          return
-
-Level7Data
-          gosub LoadLevelFromFile7
-          return
-
-Level8Data
-          gosub LoadLevelFromFile8
-          return
-
-Level9Data
-          gosub LoadLevelFromFile9
-          return
-
-Level10Data
-          gosub LoadLevelFromFile10
-          return
-
-Level11Data
-          gosub LoadLevelFromFile11
-          return
-
-Level12Data
-          gosub LoadLevelFromFile12
-          return
-
-Level13Data
-          gosub LoadLevelFromFile13
-          return
-
-Level14Data
-          gosub LoadLevelFromFile14
-          return
-
-Level15Data
-          gosub LoadLevelFromFile15
-          return
-
-Level16Data
-          gosub LoadLevelFromFile16
-          return
-
-          rem =================================================================
-          rem INDIVIDUAL LEVEL LOADERS
-          rem =================================================================
-
-LoadLevelFromFile1
           rem Arena 1: THE PIT (Mortal Kombat - flat arena with walls)
           rem Result: Walls on sides, open flat floor
           playfield:
@@ -105,7 +37,7 @@ LoadLevelFromFile1
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColGrey(6)
@@ -120,10 +52,10 @@ LoadLevelFromFile1
           ColGrey(2)
           ColGrey(4)
           ColGrey(6)
-          end
+end
           return
 
-LoadLevelFromFile2
+Level2Data
           rem Arena 2: BATTLEFIELD (Smash Bros - centered main platform)
           rem Result: High centered platform
           playfield:
@@ -139,7 +71,7 @@ LoadLevelFromFile2
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColBlue(14)
@@ -154,10 +86,10 @@ LoadLevelFromFile2
           ColBlue(12)
           ColBlue(12)
           ColBlue(14)
-          end
+end
           return
 
-LoadLevelFromFile3
+Level3Data
           rem Arena 3: MARIO SEWERS (Mario Bros - three tier platforms)
           rem Result: Three descending centered platforms
           playfield:
@@ -173,7 +105,7 @@ LoadLevelFromFile3
           X........XXXXXXX
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColBrown(6)
@@ -188,10 +120,10 @@ LoadLevelFromFile3
           ColSeafoam(4)
           ColSeafoam(2)
           ColBrown(6)
-          end
+end
           return
 
-LoadLevelFromFile4
+Level4Data
           rem Arena 4: JOUST PEAKS (Joust - high side platforms)
           rem Result: Tall platforms on left and right edges
           playfield:
@@ -207,7 +139,7 @@ LoadLevelFromFile4
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColOrange(8)
@@ -222,10 +154,10 @@ LoadLevelFromFile4
           ColOrange(2)
           ColOrange(4)
           ColOrange(6)
-          end
+end
           return
 
-LoadLevelFromFile5
+Level5Data
           rem Arena 5: FINAL DESTINATION (Smash Bros - wide centered platform)
           rem Result: Single wide high platform
           playfield:
@@ -241,7 +173,7 @@ LoadLevelFromFile5
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColPurple(6)
@@ -256,10 +188,10 @@ LoadLevelFromFile5
           ColPurple(4)
           ColPurple(6)
           ColPurple(8)
-          end
+end
           return
 
-LoadLevelFromFile6
+Level6Data
           rem Arena 6: PIPELINE (Mario Bros - left side ledges)
           rem Result: Left and right ledges at different heights
           playfield:
@@ -275,7 +207,7 @@ LoadLevelFromFile6
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColBrown(8)
@@ -290,10 +222,10 @@ LoadLevelFromFile6
           ColBrown(4)
           ColBrown(6)
           ColBrown(8)
-          end
+end
           return
 
-LoadLevelFromFile7
+Level7Data
           rem Arena 7: DRAGON TOWER (Joust - asymmetric staggered platforms)
           rem Result: Small platforms scattered at different heights
           playfield:
@@ -309,7 +241,7 @@ LoadLevelFromFile7
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColRed(6)
@@ -324,10 +256,10 @@ LoadLevelFromFile7
           ColRed(2)
           ColRed(4)
           ColRed(6)
-          end
+end
           return
 
-LoadLevelFromFile8
+Level8Data
           rem Arena 8: FOUNTAIN (Mortal Kombat - center obstacle)
           rem Result: Centered raised block
           playfield:
@@ -343,7 +275,7 @@ LoadLevelFromFile8
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColCyan(8)
@@ -358,10 +290,10 @@ LoadLevelFromFile8
           ColCyan(6)
           ColCyan(4)
           ColCyan(6)
-          end
+end
           return
 
-LoadLevelFromFile9
+Level9Data
           rem Arena 9: RAINBOW ROAD (Smash Bros - scattered platforms)
           rem Result: Multiple small platforms at various heights
           playfield:
@@ -377,7 +309,7 @@ LoadLevelFromFile9
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColRed(8)
@@ -392,10 +324,10 @@ LoadLevelFromFile9
           ColBlue(6)
           ColGreen(6)
           ColRed(8)
-          end
+end
           return
 
-LoadLevelFromFile10
+Level10Data
           rem Arena 10: STAIRWAY (Mario Bros - ascending stairs)
           rem Result: Diagonal staircase from bottom-left to top-right
           playfield:
@@ -411,7 +343,7 @@ LoadLevelFromFile10
           X......XX.......
           X.......XXXXXXXX
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColGrey(8)
@@ -426,10 +358,10 @@ LoadLevelFromFile10
           ColGrey(4)
           ColGrey(6)
           ColGrey(8)
-          end
+end
           return
 
-LoadLevelFromFile11
+Level11Data
           rem Arena 11: BRIDGE GAP (Mortal Kombat - broken floor with pit)
           rem Result: Floor only on outer edges, pit in center
           playfield:
@@ -445,7 +377,7 @@ LoadLevelFromFile11
           X...............
           X...............
           XXXXX...........
-          end
+end
           
           pfcolors:
           ColGrey(6)
@@ -460,10 +392,10 @@ LoadLevelFromFile11
           ColRed(4)
           ColRed(4)
           ColRed(6)
-          end
+end
           return
 
-LoadLevelFromFile12
+Level12Data
           rem Arena 12: TEMPLE (Smash Bros - multiple small platforms)
           rem Result: Grid of small platforms
           playfield:
@@ -479,7 +411,7 @@ LoadLevelFromFile12
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColGold(8)
@@ -494,10 +426,10 @@ LoadLevelFromFile12
           ColGold(4)
           ColGold(6)
           ColGold(8)
-          end
+end
           return
 
-LoadLevelFromFile13
+Level13Data
           rem Arena 13: CASTLE WALLS (Elevated corner platforms)
           rem Result: Raised platforms in corners
           playfield:
@@ -513,7 +445,7 @@ LoadLevelFromFile13
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColGrey(10)
@@ -528,10 +460,10 @@ LoadLevelFromFile13
           ColGrey(8)
           ColGrey(8)
           ColGrey(10)
-          end
+end
           return
 
-LoadLevelFromFile14
+Level14Data
           rem Arena 14: SUMMIT (Joust - pyramid mountain)
           rem Result: Centered pyramid shape
           playfield:
@@ -547,7 +479,7 @@ LoadLevelFromFile14
           X...XXXXXXXX....
           X..XXXXXXXXX....
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColGrey(14)
@@ -562,10 +494,10 @@ LoadLevelFromFile14
           ColGrey(6)
           ColGrey(4)
           ColGrey(14)
-          end
+end
           return
 
-LoadLevelFromFile15
+Level15Data
           rem Arena 15: HAZARD ZONE (Split level with ledge)
           rem Result: High ledge on left side
           playfield:
@@ -581,7 +513,7 @@ LoadLevelFromFile15
           X...............
           X...............
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColOrange(8)
@@ -596,10 +528,10 @@ LoadLevelFromFile15
           ColOrange(12)
           ColOrange(14)
           ColOrange(8)
-          end
+end
           return
 
-LoadLevelFromFile16
+Level16Data
           rem Arena 16: CHAOS ARENA (Complex multi-level asymmetric)
           rem Result: Scattered platforms at multiple heights
           playfield:
@@ -615,7 +547,7 @@ LoadLevelFromFile16
           X...............
           X.XXX...........
           XXXXXXXXXXXXXXXX
-          end
+end
           
           pfcolors:
           ColRed(6)
@@ -630,5 +562,5 @@ LoadLevelFromFile16
           ColOrange(6)
           ColRed(4)
           ColRed(6)
-          end
+end
           return

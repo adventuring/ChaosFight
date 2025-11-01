@@ -81,8 +81,8 @@ game: \
 
 doc: Dist/$(GAME).pdf Dist/$(GAME).html
 
-# Character sprite sheet names (16 characters)
-CHARACTER_NAMES = Bernie Curler Dragonet EXOPilot FatTony Megax Harpy KnightGuy Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog
+# Character sprite sheet names (32 characters: 16 main + 16 future)
+CHARACTER_NAMES = Bernie Curler Dragonet EXOPilot FatTony Megax Harpy KnightGuy Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog Character16 Character17 Character18 Character19 Character20 Character21 Character22 Character23 Character24 Character25 Character26 Character27 Character28 Character29 Character30 Character31
 
 # TV architectures
 TV_ARCHS = NTSC PAL SECAM
@@ -96,7 +96,7 @@ FONT_NAMES = Numbers
 # Music names (MuseScore files)
 MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
 
-# Build character assets  
+# Build character assets
 characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
 
 # Build playfield assets (game levels + title screens)
@@ -227,15 +227,15 @@ Source/Generated/Font.bas: Source/Art/Font.png
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
-Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas characters
+Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas characters playfields
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
-Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas characters
+Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas characters playfields
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
-Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas characters
+Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas characters playfields
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 

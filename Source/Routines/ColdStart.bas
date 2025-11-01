@@ -7,7 +7,8 @@
 
 ColdStart
           rem Detect if running on 7800 or 2600
-          gosub ConsoleDetHW
+          rem Must be called before any code modifies $D0/$D1
+          gosub bank14 ConsoleDetHW
           
           rem Initialize TIA colors to safe defaults
           COLUBK = ColGrey(0)

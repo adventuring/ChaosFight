@@ -249,7 +249,7 @@ MissileSysPF
 HalfTemp7
           asm
           lsr temp7
-          end
+end
           return
 
           rem Div5Compute: compute floor(temp2/5) into temp6 via repeated subtraction
@@ -403,110 +403,15 @@ DeactivateMissile
           rem =================================================================
           rem RENDER ALL MISSILES
           rem =================================================================
-          rem Draws all active missiles to the screen.
-          rem Uses missile0 and missile1 TIA hardware.
-          rem With 4 logical missiles and 2 hardware missiles, we multiplex by:
-          rem   - Even frames: P1→missile0, P2→missile1
-          rem   - Odd frames:  P3→missile0, P4→missile1
-          rem This creates a 30Hz flicker that is acceptable for fast-moving projectiles.
+          rem NOTE: Missile rendering is now handled in SetSpritePositions (PlayerRendering.bas)
+          rem This function is kept for compatibility but does nothing
+          rem The multisprite kernel only provides 2 hardware missiles (missile0, missile1)
+          rem In 2-player mode: missile0 = Player 0, missile1 = Player 1 (no multiplexing)
+          rem In 4-player mode: Frame multiplexing handles 4 logical missiles:
+          rem   Even frames: missile0 = Player 0, missile1 = Player 1
+          rem   Odd frames:  missile0 = Player 2, missile1 = Player 3
 RenderAllMissiles
-          rem Determine which pair to render based on frame parity
-          temp6 = frame & 1 
-          rem 0=even, 1=odd
-          
-          if temp6 = 0 then gosub RenderMissile_P1P2 : return
-          rem Odd frame: Render P3/P4 missiles
-          gosub RenderMissile_P3P4
-          
-          
-          return
-
-          rem =================================================================
-          rem RENDER MISSILES FOR PLAYERS 1 AND 2
-          rem =================================================================
-RenderMissile_P1P2
-          rem Check if P1 missile is active
-          temp4 = MissileActive & 1
-          if !temp4 then missile0height = 0 : goto P1MissileDone 
-          rem No P1 missile, disable missile0
-          
-          rem Render P1 missile to missile0
-          missile0x = MissileX[0]
-          missile0y = MissileY[0]
-          
-          rem Get missile size for proper height
-          temp1 = PlayerChar[0]
-          gosub GetMissileHeight
-          if temp2 = 0 then temp2 = MissileDefaultHeight 
-          rem Default to 1 if AOE
-          if temp2 > MissileMaxHeight then temp2 = MissileMaxHeight 
-          rem Cap at 8 (TIA max)
-          missile0height = temp2
-          
-          rem Color handled by player rendering system
-P1MissileDone
-          
-          rem Check if P2 missile is active
-          temp4 = MissileActive & 2
-          if !temp4 then missile1height = 0 : goto P2MissileDone 
-          rem No P2 missile, disable missile1
-          
-          rem Render P2 missile to missile1
-          missile1x = MissileX[1]
-          missile1y = MissileY[1]
-          
-          rem Get missile size for proper height
-          temp1 = PlayerChar[1]
-          gosub GetMissileHeight
-          if temp2 = 0 then temp2 = MissileDefaultHeight
-          if temp2 > MissileMaxHeight then temp2 = MissileMaxHeight
-          missile1height = temp2
-          
-          rem Color handled by player rendering system
-P2MissileDone
-          
-          return
-
-          rem =================================================================
-          rem RENDER MISSILES FOR PLAYERS 3 AND 4
-          rem =================================================================
-RenderMissile_P3P4
-          rem Check if P3 missile is active
-          temp4 = MissileActive & 4
-          if !temp4 then missile0height = 0 : goto P3MissileDone 
-          rem No P3 missile, disable missile0
-          
-          rem Render P3 missile to missile0
-          missile0x = MissileX[2]
-          missile0y = MissileY[2]
-          
-          rem Get missile size for proper height
-          temp1 = PlayerChar[2]
-          gosub GetMissileHeight
-          if temp2 = 0 then temp2 = MissileDefaultHeight
-          if temp2 > MissileMaxHeight then temp2 = MissileMaxHeight
-          missile0height = temp2
-          
-          rem Color handled by player rendering system
-P3MissileDone
-          
-          rem Check if P4 missile is active
-          temp4 = MissileActive & 8
-          if !temp4 then missile1height = 0 : goto P4MissileDone 
-          rem No P4 missile, disable missile1
-          
-          rem Render P4 missile to missile1
-          missile1x = MissileX[3]
-          missile1y = MissileY[3]
-          
-          rem Get missile size for proper height
-          temp1 = PlayerChar[3]
-          gosub GetMissileHeight
-          if temp2 = 0 then temp2 = 1
-          if temp2 > 8 then temp2 = 8
-          missile1height = temp2
-          
-          rem Color handled by player rendering system
-P4MissileDone
-          
+          rem Missile positions are set in SetSpritePositions (PlayerRendering.bas)
+          rem which handles 2-player vs 4-player mode automatically
+          rem No additional rendering needed here
           return

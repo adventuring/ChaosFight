@@ -1,13 +1,12 @@
 ; ChaosFight - Source/Routines/CharacterArtBank4.s
 ; Copyright © 2025 Interworldly Adventuring, LLC.
-; Character artwork location system for Bank 4 (Characters 0-7 and 16-23)
+; Character artwork location system for Bank 4 (Characters 16-23)
 
 ; =================================================================
-; CHARACTER ARTWORK LOCATION SYSTEM - BANK 2
+; CHARACTER ARTWORK LOCATION SYSTEM - BANK 4
 ; =================================================================
-; Operates on characters 0-7 (and 16-23 as replicas)
+; Operates on characters 16-23
 ; All sprite data referenced must be in Bank 4
-; Character 16 = Character 0 (Bernie), Character 17 = Character 1 (Curler), etc.
 
 ; Character sprite organization: 
 ; - 16 actions (0-15), each with 8 frames (0-7)
@@ -20,16 +19,16 @@
 ; Character sprite pointer tables (Bank 4 only)
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLoBank4:
-    .byte <BernieSprite, <CurlerSprite, <DragonetSprite, <EXOPilotSprite
-    .byte <FatTonySprite, <MegaxSprite, <HarpySprite, <KnightGuySprite
+    .byte <Character16Sprite, <Character17Sprite, <Character18Sprite, <Character19Sprite
+    .byte <Character20Sprite, <Character21Sprite, <Character22Sprite, <Character23Sprite
 
 ; High byte pointers for each character base sprite data  
 CharacterSpritePtrHiBank4:
-    .byte >BernieSprite, >CurlerSprite, >DragonetSprite, >EXOPilotSprite
-    .byte >FatTonySprite, >MegaxSprite, >HarpySprite, >KnightGuySprite
+    .byte >Character16Sprite, >Character17Sprite, >Character18Sprite, >Character19Sprite
+    .byte >Character20Sprite, >Character21Sprite, >Character22Sprite, >Character23Sprite
 
 ; =================================================================
-; CHARACTER ARTWORK LOCATION FUNCTION - BANK 2
+; CHARACTER ARTWORK LOCATION FUNCTION - BANK 4
 ; =================================================================
 ; Locates character sprite data for specific action and frame
 ; Input: A = character index (16-23, mapped to 0-7)
@@ -38,7 +37,7 @@ CharacterSpritePtrHiBank4:
 ; Note: Frame is relative to sprite's own 10fps counter, NOT global frame counter
 ; Output: temp4 = sprite data pointer low byte
 ;         temp5 = sprite data pointer high byte
-;         temp6 = bank number (always 2)
+;         temp6 = bank number (always 4)
 ; Modifies: A, X, Y, temp1, temp2, temp3
 
 LocateCharacterArtBank4:
@@ -48,14 +47,14 @@ LocateCharacterArtBank4:
     sty temp3           ; Action (0-15)
     
     ; Map character index to local 0-7 range
-    ; Characters 16-23 map to 0-7 (replicas of characters 0-7)
+    ; Characters 16-23 map to 0-7
     lda temp1
     sec
     sbc #16             ; Subtract 16 to map 16-23 to 0-7
     and #$07            ; Mask to 0-7 range
     sta temp1           ; Store local index
     
-    ; Set bank to 2
+    ; Set bank to 4
     lda #4
     sta temp6
     
@@ -107,7 +106,7 @@ LocateCharacterArtBank4:
     rts
 
 ; =================================================================
-; SET PLAYER CHARACTER ART - BANK 2
+; SET PLAYER CHARACTER ART - BANK 4
 ; =================================================================
 ; Set player sprite to character artwork
 ; Input: temp1 = character index, temp2 = animation frame (0-7), temp3 = action (0-15)
@@ -118,11 +117,16 @@ SetPlayerCharacterArtBank4:
     ldy temp3
     jsr LocateCharacterArtBank4
     
-    ; Set appropriate player pointer based on player number
+    ; Set appropriate sprite pointer based on game player number (0-3)
+    ; Game player assignments to multisprite kernel sprites:
+    ;   Game Player 0 -> P0 (hardware sprite)
+    ;   Game Player 1 -> P1 (_P1 virtual sprite)
+    ;   Game Player 2 -> P2 (virtual sprite)
+    ;   Game Player 3 -> P3 (virtual sprite)
     lda temp7
     cmp #0
     bne .check_player1
-    ; Player 0
+    ; Game Player 0 -> P0 sprite
     lda temp4
     sta player0pointerlo
     lda temp5  
@@ -134,7 +138,7 @@ SetPlayerCharacterArtBank4:
 .check_player1:
     cmp #1
     bne .check_player2
-    ; Player 1
+    ; Game Player 1 -> P1 (_P1 virtual sprite)
     lda temp4
     sta player1pointerlo
     lda temp5
@@ -144,23 +148,23 @@ SetPlayerCharacterArtBank4:
     rts
     
 .check_player2:
-    cmp #4
+    cmp #2
     bne .player3
-    ; Player 2 (uses missile0 for 4-player mode)
+    ; Game Player 2 -> P2 virtual sprite
     lda temp4
-    sta missile0pointerlo
+    sta player2pointerlo
     lda temp5
-    sta missile0pointerhi
+    sta player2pointerhi
     lda #16
-    sta missile0height
+    sta player2height
     rts
     
 .player3:
-    ; Player 3 (uses missile1 for 4-player mode)
+    ; Game Player 3 -> P3 virtual sprite
     lda temp4
-    sta missile1pointerlo
+    sta player3pointerlo
     lda temp5
-    sta missile1pointerhi
+    sta player3pointerhi
     lda #16
-    sta missile1height
+    sta player3height
     rts

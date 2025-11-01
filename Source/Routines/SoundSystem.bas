@@ -10,13 +10,7 @@
           rem =================================================================
           rem SOUND EFFECT CONSTANTS
           rem =================================================================
-          const SoundAttack = 1
-          const SoundHit = 2
-          const SoundFall = 3
-          const SoundGuard = 4
-          const SoundSelect = 5
-          const SoundVictory = 6
-          const SoundElimination = 7
+          rem Constants defined in Source/Common/Constants.bas
 
           rem =================================================================
           rem SOUND EFFECT DATA TABLES

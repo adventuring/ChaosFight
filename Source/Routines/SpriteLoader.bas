@@ -25,7 +25,7 @@
           rem Player Colors - Light versions for normal state
           data PlayerColorsLight
               ColIndigo(14), ColRed(14), ColYellow(14), ColGreen(14)
-          end
+end
 
           rem Player Colors - Dark versions for hurt state  
           data PlayerColorsDark
@@ -111,10 +111,10 @@ LoadNoSprite
           rem =================================================================
           rem Load sprite data for any player using character art system
           rem Input: temp1 = character index (from PlayerChar array) - may be unset, will get from player
-          rem        temp2 = animation frame (0-7) from sprite's 10fps counter
+          rem        temp2 = animation frame (0-7) from sprite 10fps counter
           rem        temp3 = animation action (0-15) from CurrentAnimationSeq
           rem        temp4 = player number (0-3)
-          rem Note: Frame is relative to sprite's own 10fps counter, NOT global frame counter
+          rem Note: Frame is relative to sprite own 10fps counter, NOT global frame counter
 LoadPlayerSprite
           rem Get character index for this player from PlayerChar array
           if ! temp4 then let temp1 = PlayerChar[0] : goto LoadPlayerSpriteDispatch

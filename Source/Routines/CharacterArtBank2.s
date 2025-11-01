@@ -117,11 +117,16 @@ SetPlayerCharacterArtBank2:
     ldy temp3
     jsr LocateCharacterArtBank2
     
-    ; Set appropriate player pointer based on player number
+    ; Set appropriate sprite pointer based on game player number (0-3)
+    ; Game player assignments to multisprite kernel sprites:
+    ;   Game Player 0 -> P0 (hardware sprite)
+    ;   Game Player 1 -> P1 (_P1 virtual sprite)
+    ;   Game Player 2 -> P2 (virtual sprite)
+    ;   Game Player 3 -> P3 (virtual sprite)
     lda temp7
     cmp #0
     bne .check_player1
-    ; Player 0
+    ; Game Player 0 -> P0 sprite
     lda temp4
     sta player0pointerlo
     lda temp5  
@@ -133,7 +138,7 @@ SetPlayerCharacterArtBank2:
 .check_player1:
     cmp #1
     bne .check_player2
-    ; Player 1
+    ; Game Player 1 -> P1 (_P1 virtual sprite)
     lda temp4
     sta player1pointerlo
     lda temp5
@@ -145,21 +150,21 @@ SetPlayerCharacterArtBank2:
 .check_player2:
     cmp #2
     bne .player3
-    ; Player 2 (uses missile0 for 4-player mode)
+    ; Game Player 2 -> P2 virtual sprite
     lda temp4
-    sta missile0pointerlo
+    sta player2pointerlo
     lda temp5
-    sta missile0pointerhi
+    sta player2pointerhi
     lda #16
-    sta missile0height
+    sta player2height
     rts
     
 .player3:
-    ; Player 3 (uses missile1 for 4-player mode)
+    ; Game Player 3 -> P3 virtual sprite
     lda temp4
-    sta missile1pointerlo
+    sta player3pointerlo
     lda temp5
-    sta missile1pointerhi
+    sta player3pointerhi
     lda #16
-    sta missile1height
+    sta player3height
     rts

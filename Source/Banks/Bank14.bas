@@ -3,13 +3,16 @@
 
           bank 14
           
-          rem Level data (moved from Bank 2 to free space for character art)
+          rem Level data
           #include "Source/Routines/LevelData.bas"
           
-          rem Controller detection (moved from Bank 2 to free space for character art)
+          rem Console detection (must be before controller detection)
+          #include "Source/Routines/ConsoleDetection.bas"
+          
+          rem Controller detection
           #include "Source/Routines/ControllerDetection.bas"
 
           #if 0
-          rem Music system temporarily disabled pending proper implementation (#162, #243)
+          rem Music system disabled pending proper implementation (#162, #243)
           #include "Source/Routines/MusicSystem.bas"
           #endif

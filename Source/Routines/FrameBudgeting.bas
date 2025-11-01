@@ -230,63 +230,30 @@ if PlayerX[2] < PlayerX[3] then
           rem Check missile collisions for at most 2 missiles per frame.
 
           rem SCHEDULE (2-player mode):
-          rem   Even frames: Check Missile1 collisions
-          rem   Odd frames: Check Missile2 collisions
+          rem   Even frames: Check Game Player 0 missile collisions
+          rem   Odd frames: Check Game Player 1 missile collisions
 
           rem SCHEDULE (4-player mode):
-          rem   Frame 0: Check Missile1 vs P1, P2
-          rem   Frame 1: Check Missile1 vs P3, P4
-          rem   Frame 2: Check Missile2 vs P1, P2
-          rem   Frame 3: Check Missile2 vs P3, P4
+          rem   Frame 0: Check Game Player 0 missile vs all players
+          rem   Frame 1: Check Game Player 1 missile vs all players
+          rem   Frame 2: Check Game Player 2 missile vs all players
+          rem   Frame 3: Check Game Player 3 missile vs all players
 BudgetedMissileCollisionCheck
+          rem Use MissileActive bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
+          rem Use CheckAllMissileCollisions from MissileCollision.bas which checks one player's missile
+          
 if !(ControllerStatus & SetQuadtariDetected) then 
           rem Simple 2-player mode: alternate missiles
-if frame & 1 then 
-          if Missile2Active then gosub CheckMissile2Collisions
-
-          if Missile1Active then gosub CheckMissile1Collisions
-          
+          temp1 = frame & 1
+          rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
+          temp4 = MissileActive & (1 << temp1)
+          if temp4 then gosub bank15 CheckAllMissileCollisions
           return
           
-          
-          rem 4-player mode: spread across 4 frames
-if FramePhase = 0 then 
-          if Missile1Active then gosub CheckMissile1vsP1P2
-
-if FramePhase = 1 then 
-          if Missile1Active then gosub CheckMissile1vsP3P4
-
-if FramePhase = 2 then 
-          if Missile2Active then gosub CheckMissile2vsP1P2
-
-          if Missile2Active then gosub CheckMissile2vsP3P4
-          
-          
-          
-          return
-
-          rem Missile collision check routines (to be implemented in Combat.bas)
-CheckMissile1Collisions
-          rem Check Missile1 vs all active players
-          return
-
-CheckMissile2Collisions
-          rem Check Missile2 vs all active players
-          return
-
-CheckMissile1vsP1P2
-          rem Check Missile1 vs Players 1 and 2 only
-          return
-
-CheckMissile1vsP3P4
-          rem Check Missile1 vs Players 3 and 4 only
-          return
-
-CheckMissile2vsP1P2
-          rem Check Missile2 vs Players 1 and 2 only
-          return
-
-CheckMissile2vsP3P4
-          rem Check Missile2 vs Players 3 and 4 only
+          rem 4-player mode: check one missile per frame
+          temp1 = FramePhase
+          rem FramePhase 0-3 maps to Game Players 0-3
+          temp4 = MissileActive & (1 << temp1)
+          if temp4 then gosub bank15 CheckAllMissileCollisions
           return
 

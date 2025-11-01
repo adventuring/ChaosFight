@@ -15,3 +15,15 @@
           #include "Source/Routines/ColdStart.bas"
           #include "Source/Routines/MainLoop.bas"
 
+
+          rem Placed here to free space in Bank 1
+          rem ColdStart falls through to MainLoop
+          #include "Source/Routines/ColdStart.bas"
+          #include "Source/Routines/MainLoop.bas"
+
+
+          rem Placed here to free space in Bank 1
+          rem ColdStart falls through to MainLoop
+          #include "Source/Routines/ColdStart.bas"
+          #include "Source/Routines/MainLoop.bas"
+

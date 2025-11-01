@@ -10,3 +10,9 @@
           #include "Source/Routines/CharacterSelect.bas"
           #include "Source/Routines/CharacterData.bas"
           
+          #include "Source/Routines/CharacterSelect.bas"
+          #include "Source/Routines/CharacterData.bas"
+          
+          #include "Source/Routines/CharacterSelect.bas"
+          #include "Source/Routines/CharacterData.bas"
+          

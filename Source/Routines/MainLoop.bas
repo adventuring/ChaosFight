@@ -21,3 +21,19 @@ MainLoopContinue
 MainLoopContinue
           drawscreen
           goto MainLoop
+
+          if GameMode = 4 then gosub bank12 FallingAnimation1 : goto MainLoopContinue
+          if GameMode = 5 then gosub bank12 LevelSelect1 : goto MainLoopContinue
+          if GameMode = 6 then gosub bank11 GameMainLoop : goto MainLoopContinue
+          gosub bank12 WinnerAnnouncement
+MainLoopContinue
+          drawscreen
+          goto MainLoop
+
+          if GameMode = 4 then gosub bank12 FallingAnimation1 : goto MainLoopContinue
+          if GameMode = 5 then gosub bank12 LevelSelect1 : goto MainLoopContinue
+          if GameMode = 6 then gosub bank11 GameMainLoop : goto MainLoopContinue
+          gosub bank12 WinnerAnnouncement
+MainLoopContinue
+          drawscreen
+          goto MainLoop

@@ -7,42 +7,14 @@
    SECAM: 8 colors (3-bit hue only, no luminance) */
 
 #ifdef TV_NTSC
-/* NTSC color macro functions - expand to hex values that dasm can evaluate */
-#define ColGrey(lum) ($00 | (lum))
-#define ColYellow(lum) ($10 | (lum))
-#define ColBrown(lum) ($20 | (lum))
-#define ColOrange(lum) ($30 | (lum))
-#define ColRed(lum) ($40 | (lum))
-#define ColMagenta(lum) ($50 | (lum))
-#define ColPurple(lum) ($60 | (lum))
-#define ColIndigo(lum) ($70 | (lum))
-#define ColBlue(lum) ($80 | (lum))
-#define ColTurquoise(lum) ($90 | (lum))
-#define ColCyan(lum) ($a0 | (lum))
-#define ColTeal(lum) ($b0 | (lum))
-#define ColSeafoam(lum) ($c0 | (lum))
-#define ColGreen(lum) ($d0 | (lum))
-#define ColSpringGreen(lum) ($e0 | (lum))
-#define ColGold(lum) ($f0 | (lum))
+/* NTSC color macro functions - pre-calculated hex values using token pasting */
+/* Color definitions embedded in platform-specific file */
+#include "Source/Platform/ColorsNTSC.h"
 
 #elif defined(TV_PAL)
-/* PAL color macro functions - same as NTSC for now */
-#define ColGrey(lum) ($00 | (lum))
-#define ColYellow(lum) ($10 | (lum))
-#define ColBrown(lum) ($20 | (lum))
-#define ColOrange(lum) ($30 | (lum))
-#define ColRed(lum) ($40 | (lum))
-#define ColMagenta(lum) ($50 | (lum))
-#define ColPurple(lum) ($60 | (lum))
-#define ColIndigo(lum) ($70 | (lum))
-#define ColBlue(lum) ($80 | (lum))
-#define ColTurquoise(lum) ($90 | (lum))
-#define ColCyan(lum) ($a0 | (lum))
-#define ColTeal(lum) ($b0 | (lum))
-#define ColSeafoam(lum) ($c0 | (lum))
-#define ColGreen(lum) ($d0 | (lum))
-#define ColSpringGreen(lum) ($e0 | (lum))
-#define ColGold(lum) ($f0 | (lum))
+/* PAL color macro functions - platform-specific palette */
+/* Color definitions embedded in platform-specific file */
+#include "Source/Platform/ColorsPAL.h"
 
 #elif defined(TV_SECAM)
 /* SECAM color macro functions - 8 colors: RGB, CMY, KW
@@ -66,22 +38,7 @@
 
 #else
 /* Default to NTSC */
-#define ColGrey(lum) ($00 | (lum))
-#define ColYellow(lum) ($10 | (lum))
-#define ColBrown(lum) ($20 | (lum))
-#define ColOrange(lum) ($30 | (lum))
-#define ColRed(lum) ($40 | (lum))
-#define ColMagenta(lum) ($50 | (lum))
-#define ColPurple(lum) ($60 | (lum))
-#define ColIndigo(lum) ($70 | (lum))
-#define ColBlue(lum) ($80 | (lum))
-#define ColTurquoise(lum) ($90 | (lum))
-#define ColCyan(lum) ($a0 | (lum))
-#define ColTeal(lum) ($b0 | (lum))
-#define ColSeafoam(lum) ($c0 | (lum))
-#define ColGreen(lum) ($d0 | (lum))
-#define ColSpringGreen(lum) ($e0 | (lum))
-#define ColGold(lum) ($f0 | (lum))
+#include "Source/Platform/ColorsNTSC.h"
 #endif
 
 #endif

@@ -33,8 +33,11 @@
           rem   temp4 = 0 if no hit, or player index (0-3) if hit
 CheckAllMissileCollisions
           rem First, check if this player has an active missile
-          temp6 = 1 << temp1 
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp1 = 0 then temp6 = 1
+          if temp1 = 1 then temp6 = 2
+          if temp1 = 2 then temp6 = 4
+          if temp1 = 3 then temp6 = 8
           temp4 = MissileActive & temp6
           if temp4 = 0 then return 
           rem No active missile

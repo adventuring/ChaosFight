@@ -29,8 +29,8 @@ TitleMainLoop
           
           rem Check Quadtari controllers (Players 3 & 4 if active)
           if 0 = (ControllerStatus & SetQuadtariDetected) then goto TitleSkipQuad
-          if 0 = INPT0{7} then goto TitleScreenComplete
-          if 0 = INPT2{7} then goto TitleScreenComplete
+          if !INPT0{7} then goto TitleScreenComplete
+          if !INPT2{7} then goto TitleScreenComplete
 TitleSkipQuad
           
           gosub UpdateCharacterParade

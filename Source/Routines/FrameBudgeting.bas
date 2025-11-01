@@ -246,14 +246,24 @@ if !(ControllerStatus & SetQuadtariDetected) then
           rem Simple 2-player mode: alternate missiles
           temp1 = frame & 1
           rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
-          temp4 = MissileActive & (1 << temp1)
+          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp1 = 0 then temp6 = 1
+          if temp1 = 1 then temp6 = 2
+          if temp1 = 2 then temp6 = 4
+          if temp1 = 3 then temp6 = 8
+          temp4 = MissileActive & temp6
           if temp4 then gosub bank15 CheckAllMissileCollisions
           return
           
           rem 4-player mode: check one missile per frame
           temp1 = FramePhase
           rem FramePhase 0-3 maps to Game Players 0-3
-          temp4 = MissileActive & (1 << temp1)
+          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp1 = 0 then temp6 = 1
+          if temp1 = 1 then temp6 = 2
+          if temp1 = 2 then temp6 = 4
+          if temp1 = 3 then temp6 = 8
+          temp4 = MissileActive & temp6
           if temp4 then gosub bank15 CheckAllMissileCollisions
           return
 

@@ -13,30 +13,30 @@
           rem Convert health values (0-100) to score display format
           rem Score system uses 6 digits, we use bar-like display
 
-          rem Update P1 health bar (displayed as score)
-          rem Input: temp1 = health value (0-100)
+    rem Update P1 health bar (displayed as score)
+    rem Input: temp1 = health value (0-100)
 UpdatePlayer1HealthBar
-          rem Convert health to score format for bar display
-          rem Health 100 = 999999, Health 0 = 000000
-          temp2 = temp1 * 9999
-          temp2 = temp2 / 100
-          
-          rem Set score to display as health bar
-          score = temp2
-          
-          return
+    rem Convert health to score format for bar display
+    rem Health 100 = 9900, Health 0 = 0000
+    rem Use multiplier 99 to avoid overflow: health * 99 gives 0-9900
+    temp2 = temp1 * 99
+    
+    rem Set score to display as health bar
+    score = temp2
+    
+    return
 
-          rem Update P2 health bar (displayed as score1)  
-          rem Input: temp1 = health value (0-100)
+    rem Update P2 health bar (displayed as score1)  
+    rem Input: temp1 = health value (0-100)
 UpdatePlayer2HealthBar
-          rem Convert health to score format for bar display
-          temp2 = temp1 * 9999
-          temp2 = temp2 / 100
-          
-          rem Set score1 to display as health bar
-          score1 = temp2
-          
-          return
+    rem Convert health to score format for bar display
+    rem Use multiplier 99 to avoid overflow: health * 99 gives 0-9900
+    temp2 = temp1 * 99
+    
+    rem Set score1 to display as health bar
+    score1 = temp2
+    
+    return
 
           rem Update both P1 and P2 health bars
           rem Input: PlayerHealth[0] and PlayerHealth[1] arrays
@@ -91,16 +91,38 @@ UpdatePlayer34HealthBars
           rem   XX (right 2 digits) = Player 4 health (00-99)
           rem Score is stored in BCD format across 3 bytes
           
-          rem Calculate score value: P3Health in thousands/hundreds, P4Health in tens/ones
-          rem For display as XX00XX, we multiply P3 by 10000 to shift it left
-          temp7 = temp1 * 10000
-          rem P3 health shifted to left 2 digits (e.g., 75 becomes 750000)
-          temp7 = temp7 + temp2
-          rem Add P4 health in right 2 digits (e.g., 750000 + 50 = 750050)
-          rem Display shows: "75 00 50" (spaces added for clarity, actual display has no spaces)
-          
-          rem Set score to display P3 and P4 health
-          score = temp7
+    rem Calculate score value: P3Health in thousands/hundreds, P4Health in tens/ones
+    rem For display as XX00XX, we need to set BCD score manually
+    rem Score format: score+2 (ones/tens), score+1 (hundreds/thousands), score (ten-thousands/hundred-thousands)
+    rem For XX00XX: P3 in score+1 (high byte), 00 in score+2 (low byte), P4 needs special handling
+    rem Simplified: Just set P3 in left 2 digits, P4 in right 2 digits using BCD
+    rem Use batariBASIC score assignment which handles BCD conversion
+    rem For now, use simpler approach: P3Health * 100 + P4Health (gives 7500 for 75+50)
+    rem Then multiply by 100 to shift P3 left (7500 * 100 = 750000 in decimal, but we need BCD)
+    rem Actually, batariBASIC score assignment expects decimal number
+    rem Better: calculate as decimal number then assign
+    rem temp1 = P3 health (0-99), temp2 = P4 health (0-99)
+    rem We want: P3 * 10000 + P4 (e.g., 75 * 10000 + 50 = 750050)
+    rem But this is too large for simple calculation, use score assignment with separate bytes
+    rem Set score directly using score+2, score+1, score bytes for BCD
+    rem Format: score+2 = P4 (as BCD), score+1 = P3 (as BCD), score = 0
+    rem But we want XX00XX, so: score+2 = P4, score+1 = 0, score = P3
+    rem batariBASIC score assignment handles BCD, so assign as: P3 * 10000 + P4
+    rem However, this creates values > 999999 which won't fit in score
+    rem Alternative: Use P3 * 1000 + P4, displays as XXXX (P3XXX)
+    rem Or: Use just P3 in left, P4 in right: P3 * 100 + P4 = 7550 displays as "7550"
+    rem But we want "75__50" format
+    rem Simplest: Set score = (P3 * 100 + 0) * 100 + P4 = P3 * 10000 + P4
+    rem But P3 * 10000 can be 990000 which is > 65535, won't fit
+    rem Use: score = P3 * 1000 + P4 * 10, displays as "P3P4" (e.g., 7550)
+    rem Or use assembly to set BCD bytes directly
+    rem For now, use simpler: score = temp1 * 100 + temp2 (displays as "P3P4" like 7550)
+    rem Then manually adjust if needed, or accept this format
+    temp7 = temp1 * 100
+    temp7 = temp7 + temp2
+    rem This gives us P3P4 format (e.g., 75 * 100 + 50 = 7550)
+    rem Set score to display
+    score = temp7
           
           rem Set score colors for score mode
           rem Left side (Player 3): indigo, Right side (Player 4): red

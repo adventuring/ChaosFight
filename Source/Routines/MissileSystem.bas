@@ -64,8 +64,11 @@ SpawnMissile
           
           rem Set active bit for this player missile
           rem Bit 0 = P1, Bit 1 = P2, Bit 2 = P3, Bit 3 = P4
-          temp6 = 1 << temp1 
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp1 = 0 then temp6 = 1
+          if temp1 = 1 then temp6 = 2
+          if temp1 = 2 then temp6 = 4
+          if temp1 = 3 then temp6 = 8
           MissileActive = MissileActive | temp6
           
           rem Initialize lifetime counter from character data table

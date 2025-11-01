@@ -1,36 +1,42 @@
 ; This file contains variable mapping and other information for the current project.
 
-PlayerColorsDark_length = .skipL01715-PlayerColorsDark 
+PlayerColorsDark_length = .skipL01879-PlayerColorsDark 
  
-QuestionMarkSprite_length = .skipL01713-QuestionMarkSprite 
+PlayerColorsLight_length = .skipL01877-PlayerColorsLight 
  
-EliminationSoundFreq_length = .skipL01612-EliminationSoundFreq 
+NoSprite_length = .skipL01738-NoSprite 
  
-EliminationSoundData_length = .skipL01611-EliminationSoundData 
+CPUSprite_length = .skipL01737-CPUSprite 
  
-VictorySoundFreq_length = .skipL01609-VictorySoundFreq 
+QuestionMarkSprite_length = .skipL01736-QuestionMarkSprite 
  
-VictorySoundData_length = .skipL01608-VictorySoundData 
+EliminationSoundFreq_length = .skipL01635-EliminationSoundFreq 
  
-SelectSoundFreq_length = .skipL01606-SelectSoundFreq 
+EliminationSoundData_length = .skipL01634-EliminationSoundData 
  
-SelectSoundData_length = .skipL01605-SelectSoundData 
+VictorySoundFreq_length = .skipL01632-VictorySoundFreq 
  
-GuardSoundFreq_length = .skipL01603-GuardSoundFreq 
+VictorySoundData_length = .skipL01631-VictorySoundData 
  
-GuardSoundData_length = .skipL01602-GuardSoundData 
+SelectSoundFreq_length = .skipL01629-SelectSoundFreq 
  
-FallSoundFreq_length = .skipL01600-FallSoundFreq 
+SelectSoundData_length = .skipL01628-SelectSoundData 
  
-FallSoundData_length = .skipL01599-FallSoundData 
+GuardSoundFreq_length = .skipL01626-GuardSoundFreq 
  
-HitSoundFreq_length = .skipL01597-HitSoundFreq 
+GuardSoundData_length = .skipL01625-GuardSoundData 
  
-HitSoundData_length = .skipL01596-HitSoundData 
+FallSoundFreq_length = .skipL01623-FallSoundFreq 
  
-AttackSoundFreq_length = .skipL01594-AttackSoundFreq 
+FallSoundData_length = .skipL01622-FallSoundData 
  
-AttackSoundData_length = .skipL01593-AttackSoundData 
+HitSoundFreq_length = .skipL01620-HitSoundFreq 
+ 
+HitSoundData_length = .skipL01619-HitSoundData 
+ 
+AttackSoundFreq_length = .skipL01617-AttackSoundFreq 
+ 
+AttackSoundData_length = .skipL01616-AttackSoundData 
  
 HandicapMode = temp1
  

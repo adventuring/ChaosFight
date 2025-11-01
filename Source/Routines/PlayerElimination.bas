@@ -120,8 +120,11 @@ HideEliminatedPlayerSprite
           rem INPUT: temp1 = player index (0-3)
 DeactivatePlayerMissiles
           rem Clear missile active bit for this player
-          temp6 = 1 << temp1 
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp1 = 0 then temp6 = 1
+          if temp1 = 1 then temp6 = 2
+          if temp1 = 2 then temp6 = 4
+          if temp1 = 3 then temp6 = 8
           temp6 = 255 - temp6 
           rem Invert bits for AND mask
           MissileActive = MissileActive & temp6
@@ -175,8 +178,11 @@ if PlayersRemaining <= 1 then
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp2 = 1 if eliminated, 0 if alive
 IsPlayerEliminated
-          temp6 = 1 << temp1 
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp1 = 0 then temp6 = 1
+          if temp1 = 1 then temp6 = 2
+          if temp1 = 2 then temp6 = 4
+          if temp1 = 3 then temp6 = 8
           temp2 = PlayersEliminated & temp6
           if temp2 then temp2 = 1 : goto IsEliminatedDone
           temp2 = 0

@@ -3,9 +3,9 @@
 
           bank 1
           
-          rem Entry point - far goto to ColdStart in Bank 0
+          rem Entry point - far goto to ColdStart in Bank 13
           rem ColdStart falls through to MainLoop in same bank
-          goto bank0 ColdStart
+          goto bank13 ColdStart
           
           #if 0
           rem Music system temporarily disabled pending proper implementation (#162, #243)

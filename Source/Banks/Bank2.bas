@@ -15,4 +15,4 @@
           #include "Source/Generated/KnightGuy.bas"
 
           rem Character art lookup routines for Bank 2 (characters 0-7 and 16-23)
-          include "Source/Routines/CharacterArt_Bank2.s"
+          include "Source/Routines/CharacterArtBank2.s"

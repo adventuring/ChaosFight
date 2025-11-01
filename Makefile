@@ -270,7 +270,7 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	playfields
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
 	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).NTSC.s
 	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
 	rm -f Source/Generated/$(GAME).NTSC.preprocessed.bas
@@ -306,7 +306,7 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	Source/Generated/Numbers.bas
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.asm
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.asm
 	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).PAL.s
 	bin/dasm Source/Generated/$(GAME).PAL.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
 	rm -f Source/Generated/$(GAME).PAL.preprocessed.bas
@@ -345,7 +345,7 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	Source/Generated/Numbers.bas
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.asm
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.asm
 	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).SECAM.s
 	bin/dasm Source/Generated/$(GAME).SECAM.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
 	rm -f Source/Generated/$(GAME).SECAM.preprocessed.bas

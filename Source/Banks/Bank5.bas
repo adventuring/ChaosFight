@@ -16,4 +16,4 @@
           #include "Source/Generated/VegDog.bas"
           
           rem Character art lookup routines for Bank 5 (characters 24-31)
-          include "Source/Routines/CharacterArt_Bank5.s"
+          include "Source/Routines/CharacterArtBank5.s"

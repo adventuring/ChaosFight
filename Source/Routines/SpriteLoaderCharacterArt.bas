@@ -1,4 +1,4 @@
-          rem ChaosFight - Source/Routines/SpriteLoader_CharacterArt.bas
+          rem ChaosFight - Source/Routines/SpriteLoaderCharacterArt.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem batariBASIC wrapper for character art location with bank switching
           
@@ -33,52 +33,52 @@ LocateCharacterArt
 LoadFromBank2
           rem Switch to Bank 2 and call its character art routine
           rem temp1, temp2, temp3, temp7 already set
-          gosub bank2 SetPlayerCharacterArt_Bank2
+          gosub bank2 SetPlayerCharacterArtBank2
           return
           
 LoadFromBank3
           rem Switch to Bank 3 and call its character art routine
           rem temp1, temp2, temp3, temp7 already set
-          gosub bank3 SetPlayerCharacterArt_Bank3
+          gosub bank3 SetPlayerCharacterArtBank3
           return
           
 LoadFromBank4
           rem Switch to Bank 4 and call its character art routine
           rem temp1, temp2, temp3, temp7 already set
           rem Characters 16-23 (replicas of 0-7)
-          gosub bank4 SetPlayerCharacterArt_Bank4
+          gosub bank4 SetPlayerCharacterArtBank4
           return
           
 LoadFromBank5
           rem Switch to Bank 5 and call its character art routine
           rem temp1, temp2, temp3, temp7 already set
           rem Characters 24-31 (replicas of 8-15)
-          gosub bank5 SetPlayerCharacterArt_Bank5
+          gosub bank5 SetPlayerCharacterArtBank5
           return
           
-SetPlayerCharacterArt_Bank4
+SetPlayerCharacterArtBank4
           rem Called when in Bank 4 context
           rem temp1, temp2, temp3, temp7 already set
           asm
           lda temp1
           ldx temp2
           ldy temp3
-          jsr LocateCharacterArt_Bank4
+          jsr LocateCharacterArtBank4
           lda temp7
-          jsr SetPlayerCharacterArt_Bank4
+          jsr SetPlayerCharacterArtBank4
           end
           return
           
-SetPlayerCharacterArt_Bank5
+SetPlayerCharacterArtBank5
           rem Called when in Bank 5 context
           rem temp1, temp2, temp3, temp7 already set
           asm
           lda temp1
           ldx temp2
           ldy temp3
-          jsr LocateCharacterArt_Bank5
+          jsr LocateCharacterArtBank5
           lda temp7
-          jsr SetPlayerCharacterArt_Bank5
+          jsr SetPlayerCharacterArtBank5
           end
           return
           

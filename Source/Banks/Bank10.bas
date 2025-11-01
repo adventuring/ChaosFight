@@ -12,7 +12,7 @@
           #include "Source/Routines/SpriteLoader.bas"
           
           rem Character art location wrapper with bank switching
-          #include "Source/Routines/SpriteLoader_CharacterArt.bas"
+          #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 
 
           rem Grouped with sprite loading to minimize bank switches
@@ -23,5 +23,5 @@
           #include "Source/Routines/SpriteLoader.bas"
           
           rem Character art location wrapper with bank switching
-          #include "Source/Routines/SpriteLoader_CharacterArt.bas"
+          #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 

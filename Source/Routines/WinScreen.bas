@@ -199,10 +199,14 @@ CheckPlayer4JoinedDone
           if ! temp4 then return
           
           rem Check if this matches target rank
-          if DisplayRank = 2 then if temp4 > temp5 then let temp5 = temp4 : let temp1 = temp6 : return
-          
+          if DisplayRank = 2 then goto HandleRank2
           if DisplayRank = 3 then goto HandleRank3
           if DisplayRank = 4 then goto HandleRank4
+          return
+          
+HandleRank2
+          rem Want highest elimination order
+          if temp4 > temp5 then let temp5 = temp4 : let temp1 = temp6
           return
           
 HandleRank3

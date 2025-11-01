@@ -2,8 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           bank 1
-          #include "Source/Routines/ColdStart.bas"
-          #include "Source/Routines/MainLoop.bas"
+          
+          rem Entry point - far goto to ColdStart in Bank 0
+          rem ColdStart falls through to MainLoop in same bank
+          goto bank0 ColdStart
           
           #if 0
           rem Music system temporarily disabled pending proper implementation (#162, #243)

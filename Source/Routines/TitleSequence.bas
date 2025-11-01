@@ -132,7 +132,7 @@ SkipQuadtariCheck2
           
 ExitAuthorPreamble
           MusicPlaying = 0
-          AUDV! 0
+          AUDV0 = 0
           AUDV1 = 0
           return
 
@@ -175,10 +175,9 @@ TitleSequenceTitleScreenLoop
           rem Start character parade after 10 seconds (600 frames)
           if TitleTimer <= 600 then goto CheckParadeActive
           if ParadeActive then goto CheckParadeActive
-            ParadeActive = 1
-            ParadeDelay = 0
+          ParadeActive = 1
+          ParadeDelay = 0
 CheckParadeActive
-          endif
           
           rem Handle character parade
           if !ParadeActive then goto SkipParade
@@ -197,7 +196,7 @@ SkipQuadtariCheck3
 ExitTitleScreen
           rem Stop music
           MusicPlaying = 0
-          AUDV! 0
+          AUDV0 = 0
           AUDV1 = 0
           
           rem Re-detect controllers before starting game

@@ -118,9 +118,7 @@ CheckPlayer4Done
           gosub DisplayPlayerCharacterName
           
           rem Display winner crown for 1st place
-if DisplayRank = 1 then 
-          gosub DisplayWinnerCrown
-          
+          if DisplayRank = 1 then gosub DisplayWinnerCrown
           
           return
 
@@ -131,11 +129,7 @@ if DisplayRank = 1 then
           rem INPUT: DisplayRank = rank position (1-4)
           rem OUTPUT: temp1 = player index (0-3) or 255 if none
 FindPlayerByRank
-if DisplayRank = 1 then 
-          rem First place: Winner
-          let temp1 = WinnerPlayerIndex
-          return
-          
+          if DisplayRank = 1 then let temp1 = WinnerPlayerIndex : return
           
           rem For places 2-4, find by elimination order
           rem Rank 2 = last eliminated (highest elimination order)
@@ -205,23 +199,23 @@ CheckPlayer4JoinedDone
           if ! temp4 then return
           
           rem Check if this matches target rank
-if DisplayRank = 2 then 
-          rem Want highest elimination order
-          if temp4 > temp5 then let temp5 = temp4 : let temp1 = temp6
+          if DisplayRank = 2 then if temp4 > temp5 then let temp5 = temp4 : let temp1 = temp6 : return
           
-if DisplayRank = 3 then 
+          if DisplayRank = 3 then goto HandleRank3
+          if DisplayRank = 4 then goto HandleRank4
+          return
+          
+HandleRank3
           rem Want second highest (skip if matches rank 2 winner)
           gosub FindRank2EliminationOrder
-          if temp4 >= temp3 then goto SkipRank2Check
-          if temp4 <= temp5 then goto SkipRank2Check
+          if temp4 >= temp3 then return
+          if temp4 <= temp5 then return
           let temp5 = temp4 : let temp1 = temp6
-SkipRank2Check
+          return
           
-if DisplayRank = 4 then 
+HandleRank4
           rem Want lowest elimination order
           if ! temp5 || temp4 < temp5 then let temp5 = temp4 : let temp1 = temp6
-          
-          
           return
 
           rem =================================================================

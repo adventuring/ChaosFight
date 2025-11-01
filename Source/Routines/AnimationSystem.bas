@@ -119,6 +119,11 @@ GetCurrentAnimationAction
           temp2 = CurrentAnimationSeq[temp1]
           rem temp1 = Player index (0-3), temp2 = Current animation action (0-15)
           return
+          
+          rem Legacy alias for backward compatibility
+GetCurrentAnimationSequence
+          gosub GetCurrentAnimationAction
+          return
 
           rem Initialize animation system for all players
           rem Called at game start to set up initial animation states

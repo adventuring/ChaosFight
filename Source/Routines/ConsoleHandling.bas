@@ -26,7 +26,7 @@ HandleConsoleSwitches
           gosub CheckEnhancedPause
           if !temp1 then goto SkipPlayer1Pause
           rem Re-detect controllers when Select is pressed
-          gosub DetectControllers
+          gosub bank2 DetectControllers
           if GameState = 0 then GameState = 1 : goto Player1PauseDone
           GameState = 0
 Player1PauseDone
@@ -41,7 +41,7 @@ SkipPlayer1Pause
           gosub CheckEnhancedPause
           if !temp1 then goto SkipPlayer2Pause
           rem Re-detect controllers when Select is pressed
-          gosub DetectControllers
+          gosub bank2 DetectControllers
           if GameState = 0 then GameState = 1 : goto Player2PauseDone
           GameState = 0
 Player2PauseDone
@@ -68,7 +68,7 @@ SkipPlayer2Pause
           
 CheckColorBWToggle
           rem Check if Color/B&W switch state has changed
-          if switchbw <> ColorBWPrevious then gosub DetectControllers : ColorBWPrevious = switchbw
+          if switchbw <> ColorBWPrevious then gosub bank2 DetectControllers : ColorBWPrevious = switchbw
           
           return
 

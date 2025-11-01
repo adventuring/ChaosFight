@@ -16,7 +16,6 @@
           #include "Source/Routines/WinnerAnnouncement.bas"
 
           #include "Source/Routines/ConsoleDetection.bas"
-          #include "Source/Routines/ControllerDetection.bas"
           #include "Source/Routines/SpriteLoader.bas"
           #include "Source/Routines/GameLoopInit.bas"
           #include "Source/Routines/SoundSystem.bas"

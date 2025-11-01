@@ -4,6 +4,9 @@
           bank 2
           #include "Source/Routines/LevelData.bas"
           
+          rem Controller detection (moved from Bank 1 to reduce overflow)
+          #include "Source/Routines/ControllerDetection.bas"
+          
           rem Character sprite data for characters 0-7 (Bank 2)
           #include "Source/Generated/Bernie.bas"
           #include "Source/Generated/Curler.bas"

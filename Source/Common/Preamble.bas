@@ -17,8 +17,10 @@
           set optimization size
           set smartbranching on
 
+          rem Minimal includes needed before kernel (Bank 1)
+          rem Colors.h is needed early for kernel options
           #include "Source/Common/Colors.h"
-          #include "Source/Common/Constants.bas"
-          #include "Source/Common/Enums.bas"
-          #include "Source/Common/Macros.bas"
-          #include "Source/Common/Variables.bas"
+          
+          rem Large includes (Constants, Enums, Macros, Variables, CharacterDefinitions)
+          rem are moved to Bank 1 after the kernel setup
+          rem They will be included in Bank1.bas after the bank 1 statement

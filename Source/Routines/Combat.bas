@@ -155,7 +155,7 @@ CombatShowDamageIndicator
 rem Damage sound system
 PlayDamageSound
   temp1 = SoundHit
-  gosub PlaySoundEffect
+  gosub bank9 PlaySoundEffect
   return
 
 rem =================================================================

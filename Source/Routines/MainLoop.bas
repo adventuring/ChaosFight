@@ -2,6 +2,14 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 MainLoop
-          on GameMode gosub PublisherPreamble, AuthorPreamble, TitleScreen, SelInEntry, FallingAnimation1, LevelSelect1, GameMainLoop, WinnerAnnouncement
+          if GameMode = 0 then gosub bank9 PublisherPreamble : goto MainLoopContinue
+          if GameMode = 1 then gosub bank9 AuthorPreamble : goto MainLoopContinue
+          if GameMode = 2 then gosub bank9 TitleScreen : goto MainLoopContinue
+          if GameMode = 3 then gosub SelInEntry : goto MainLoopContinue
+          if GameMode = 4 then gosub FallingAnimation1 : goto MainLoopContinue
+          if GameMode = 5 then gosub LevelSelect1 : goto MainLoopContinue
+          if GameMode = 6 then gosub GameMainLoop : goto MainLoopContinue
+          gosub WinnerAnnouncement
+MainLoopContinue
           drawscreen
           goto MainLoop

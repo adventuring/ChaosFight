@@ -375,7 +375,7 @@ KnockbackDone
           
           rem Play hit sound effect
           temp1 = SoundHit
-          gosub PlaySoundEffect
+          gosub bank9 PlaySoundEffect
           
           rem Spawn damage indicator visual
           gosub bank8 VisualShowDamageIndicator

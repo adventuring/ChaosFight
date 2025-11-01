@@ -1,17 +1,17 @@
 ; ChaosFight - Source/Routines/CharacterArt_Bank4.s
 ; Copyright © 2025 Interworldly Adventuring, LLC.
-; Character artwork location system for Bank 2 (Characters 16-23 (copies of 0-7))
+; Character artwork location system for Bank 4 (Characters 16-23)
 
 ; =================================================================
-; CHARACTER ARTWORK LOCATION SYSTEM - BANK 2
+; CHARACTER ARTWORK LOCATION SYSTEM - BANK 4
 ; =================================================================
-; Operates on characters 0-7 (and 16-23 as copies)
-; All sprite data referenced must be in Bank 2
+; Operates on characters 16-23 (replicas of 0-7)
+; All sprite data referenced must be in Bank 4
+; Character 16 = Character 0 (Bernie), Character 17 = Character 1 (Curler), etc.
 
 ; Character sprite organization: 8 frames × 16 sequences per character
-; Bank 2 character mapping (local index 0-7, global 0-7 and 16-23)
-; Characters 16-23: Copies (same as 0-7), Curler, Dragonet, EXOPilot, FatTony, Megax, Harpy, KnightGuy
-; Characters 16-23: Copies of 0-7 (mapped to local indices 0-7)
+; Bank 4 character mapping (local index 0-7, global 16-23)
+; Characters 16-23: Replicas of 0-7 (mapped to local indices 0-7)
 
 ; Character sprite pointer tables (Bank 4 - replicas from Bank 2)
 ; Low byte pointers for each character base sprite data

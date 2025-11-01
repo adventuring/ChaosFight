@@ -133,7 +133,7 @@ Player3HealthSet
           rem 0 = normal play, 1 = paused, 2 = game ending
           
           rem Initialize health bars
-          gosub InitializeHealthBars
+          gosub bank8 InitializeHealthBars
 
           rem Load level data
           gosub LoadLevel

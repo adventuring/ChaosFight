@@ -196,7 +196,7 @@ SkipPlayer3Flash
 SkipPlayer4Flash
           
           rem Draw health bars in playfield
-          gosub DrawHealthBars
+          gosub bank8 DrawHealthBars
           
           return
 
@@ -233,7 +233,7 @@ DrawHealthBars
           COLUPF = ColBlue(12) 
           rem Bright blue (Color)
           
-          gosub DrawHealthBarRow0
+          gosub bank8 DrawHealthBarRow0
           
           rem Draw Player 2 health bar
           let HealthBarLength = PlayerHealth[1] / 3
@@ -245,7 +245,7 @@ DrawHealthBars
           COLUPF = ColRed(12) 
           rem Bright red (Color)
           
-          gosub DrawHealthBarRow1
+          gosub bank8 DrawHealthBarRow1
           
           rem Draw Player 3 & 4 bars if Quadtari active and player alive
 if ControllerStatus & SetQuadtariDetected then 
@@ -260,7 +260,7 @@ if SelectedChar3 <> 255 && PlayerHealth[2] > 0 then
           COLUPF = ColYellow(12) 
           rem Bright yellow (Color)
           
-                              gosub DrawHealthBarRow2
+                              gosub bank8 DrawHealthBarRow2
           
                     
 if SelectedChar4 <> 255 && PlayerHealth[3] > 0 then 
@@ -274,7 +274,7 @@ if SelectedChar4 <> 255 && PlayerHealth[3] > 0 then
           COLUPF = ColGreen(12) 
           rem Bright green (Color)
           
-                              gosub DrawHealthBarRow3
+                              gosub bank8 DrawHealthBarRow3
           
           
           

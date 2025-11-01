@@ -80,10 +80,10 @@ GameMainLoop
           gosub DisplayHealth
           
           rem Update P1/P2 health bars using pfscore system
-          gosub UpdatePlayer12HealthBars
+          gosub bank8 UpdatePlayer12HealthBars
           
           rem Update P3/P4 health bars using playfield system
-          gosub UpdatePlayer34HealthBars
+          gosub bank8 UpdatePlayer34HealthBars
 
           rem Update frame counter
           frame = frame + 1

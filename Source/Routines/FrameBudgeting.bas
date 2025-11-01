@@ -59,7 +59,7 @@ BudgetedHealthBarUpdate
 CheckPlayer2HealthUpdate
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer2HealthUpdate
           if SelectedChar3 = 255 then goto SkipPlayer2HealthUpdate
-          gosub UpdateHealthBarPlayer2
+          gosub bank8 UpdateHealthBarPlayer2
           return
 SkipPlayer2HealthUpdate
           if FramePhase = 3 then goto CheckPlayer3HealthUpdate
@@ -67,7 +67,7 @@ SkipPlayer2HealthUpdate
 CheckPlayer3HealthUpdate
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3HealthUpdate
           if SelectedChar4 = 255 then goto SkipPlayer3HealthUpdate
-          gosub UpdateHealthBarPlayer3
+          gosub bank8 UpdateHealthBarPlayer3
           return
 SkipPlayer3HealthUpdate
           return
@@ -78,7 +78,7 @@ UpdateHealthBarPlayer0
           HealthBarLength = PlayerHealth[0] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColBlue(12)
-          gosub DrawHealthBarRow0
+          gosub bank8 DrawHealthBarRow0
           return
 
           rem Update Player 2 health bar
@@ -87,7 +87,7 @@ UpdateHealthBarPlayer1
           HealthBarLength = PlayerHealth[1] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColRed(12)
-          gosub DrawHealthBarRow1
+          gosub bank8 DrawHealthBarRow1
           return
 
           rem Update Player 3 health bar
@@ -96,7 +96,7 @@ UpdateHealthBarPlayer2
           HealthBarLength = PlayerHealth[2] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColYellow(12)
-          gosub DrawHealthBarRow2
+          gosub bank8 DrawHealthBarRow2
           return
 
           rem Update Player 4 health bar
@@ -105,7 +105,7 @@ UpdateHealthBarPlayer3
           HealthBarLength = PlayerHealth[3] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColGreen(12)
-          gosub DrawHealthBarRow3
+          gosub bank8 DrawHealthBarRow3
           return
 
           rem =================================================================

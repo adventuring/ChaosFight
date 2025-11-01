@@ -85,7 +85,7 @@ UpdateP3HealthBar
           rem Player 3 index for color
           rem Bottom row of screen (Y=184 pixels)
           rem Start from left edge (X=0)
-          gosub DrawPlayfieldHealthBar
+          gosub bank8 DrawPlayfieldHealthBar
 SkipP3HealthBar
           
           rem Update P4 health bar (bottom-right, left-growing)
@@ -96,7 +96,7 @@ UpdateP4HealthBar
           rem Player 4 index for color
           rem Bottom row of screen (Y=184 pixels)
           rem Start from right edge (X=248 pixels)
-          gosub DrawPlayfieldHealthBar
+          gosub bank8 DrawPlayfieldHealthBar
 SkipP4HealthBar
           
           return

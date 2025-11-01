@@ -23,7 +23,6 @@
           rem Music system temporarily disabled pending proper implementation (#162, #243)
           #include "Source/Routines/MusicSystem.bas"
           #endif
-          #include "Source/Routines/HealthBarSystem.bas"
           #include "Source/Data/SpecialSprites.bas"
           
           rem WinScreen moved to Bank 7 to free space

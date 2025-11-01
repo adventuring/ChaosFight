@@ -1,7 +1,6 @@
           rem ChaosFight - Source/Banks/Banks.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          #include "Source/Banks/Bank0.bas"
           #include "Source/Banks/Bank1.bas"
           #include "Source/Banks/Bank2.bas"
           #include "Source/Banks/Bank3.bas"

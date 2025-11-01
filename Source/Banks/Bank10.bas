@@ -10,4 +10,7 @@
           rem Sprite loading system (moved from Bank 1 to reduce overflow)
           rem Grouped with character selection since they work together
           #include "Source/Routines/SpriteLoader.bas"
+          
+          rem Character art location wrapper with bank switching
+          #include "Source/Routines/SpriteLoader_CharacterArt.bas"
 

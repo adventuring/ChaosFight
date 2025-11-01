@@ -3,3 +3,7 @@
 
           bank 14
 
+          #if 0
+          rem Music system temporarily disabled pending proper implementation (#162, #243)
+          #include "Source/Routines/MusicSystem.bas"
+          #endif

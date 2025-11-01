@@ -2,24 +2,6 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           bank 11
-          
-          rem Game loop initialization and main loop
-          rem Grouped together to minimize bank switches during gameplay
+
           #include "Source/Routines/GameLoopInit.bas"
           #include "Source/Routines/GameLoopMain.bas"
-
-
-          rem Grouped together to minimize bank switches during gameplay
-          #include "Source/Routines/GameLoopInit.bas"
-          #include "Source/Routines/GameLoopMain.bas"
-
-
-          rem Grouped together to minimize bank switches during gameplay
-          #include "Source/Routines/GameLoopInit.bas"
-          #include "Source/Routines/GameLoopMain.bas"
-
-
-          rem Grouped together to minimize bank switches during gameplay
-          #include "Source/Routines/GameLoopInit.bas"
-          #include "Source/Routines/GameLoopMain.bas"
-

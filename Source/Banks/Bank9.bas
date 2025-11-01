@@ -9,11 +9,6 @@
           #include "Source/Routines/PublisherPreamble.bas"
           #include "Source/Routines/AuthorPreamble.bas"
           #include "Source/Routines/TitleScreenMain.bas"
-          
-          rem Sound system
-          #include "Source/Routines/SoundSystem.bas"
-          
-          rem Special sprites data
-          rem Grouped with sprite-related code
+
           #include "Source/Data/SpecialSprites.bas"
 

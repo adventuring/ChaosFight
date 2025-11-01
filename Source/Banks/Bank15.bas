@@ -3,9 +3,6 @@
 
           bank 15
           
-          rem Missile system
-          #include "Source/Routines/MissileSystem.bas"
-          
-          rem Missile collision
-          #include "Source/Routines/MissileCollision.bas"
+          rem Sound effects system - dedicated 3.5kiB bank for compiled samples
+          #include "Source/Routines/SoundSystem.bas"
 

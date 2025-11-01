@@ -3,6 +3,7 @@
 
           bank 7
           
-          rem Win screen display and ranking
           #include "Source/Routines/WinScreen.bas"
+          #include "Source/Routines/MissileSystem.bas"
+          #include "Source/Routines/MissileCollision.bas"
 

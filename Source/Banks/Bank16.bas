@@ -3,5 +3,5 @@
 
           bank 16
           
-          rem Bank 16 is reserved for future expansion
-
+          rem Music system - dedicated 3.5kiB bank for compiled samples
+          #include "Source/Routines/MusicSystem.bas"

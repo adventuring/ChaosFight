@@ -38,6 +38,46 @@ LoadFromBank3
           gosub bank3 SetPlayerCharacterArt_Bank3
           return
           
+LoadFromBank4
+          rem Switch to Bank 4 and call its character art routine
+          rem temp1, temp2, temp3, temp7 already set
+          rem Characters 16-23 (replicas of 0-7)
+          gosub bank4 SetPlayerCharacterArt_Bank4
+          return
+          
+LoadFromBank5
+          rem Switch to Bank 5 and call its character art routine
+          rem temp1, temp2, temp3, temp7 already set
+          rem Characters 24-31 (replicas of 8-15)
+          gosub bank5 SetPlayerCharacterArt_Bank5
+          return
+          
+SetPlayerCharacterArt_Bank4
+          rem Called when in Bank 4 context
+          rem temp1, temp2, temp3, temp7 already set
+          asm
+          lda temp1
+          ldx temp2
+          ldy temp3
+          jsr LocateCharacterArt_Bank4
+          lda temp7
+          jsr SetPlayerCharacterArt_Bank4
+          end
+          return
+          
+SetPlayerCharacterArt_Bank5
+          rem Called when in Bank 5 context
+          rem temp1, temp2, temp3, temp7 already set
+          asm
+          lda temp1
+          ldx temp2
+          ldy temp3
+          jsr LocateCharacterArt_Bank5
+          lda temp7
+          jsr SetPlayerCharacterArt_Bank5
+          end
+          return
+          
           rem =================================================================
           rem SET PLAYER CHARACTER ART (batariBASIC interface)
           rem =================================================================

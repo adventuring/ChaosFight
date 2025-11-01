@@ -187,17 +187,10 @@ SkipParade
           
           rem Check for button press on any controller
           if joy0fire || joy1fire then goto ExitTitleScreen
-<<<<<<< HEAD
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto TitleSeqSkipQuad
-          if 0 = INPT0{7} then goto ExitTitleScreen
-          if 0 = INPT2{7} then goto ExitTitleScreen
-TitleSeqSkipQuad
-=======
           if ! (ControllerStatus & SetQuadtariDetected) then goto SkipQuadtariCheck3
           if ! INPT0{7} then goto ExitTitleScreen
           if ! INPT2{7} then goto ExitTitleScreen
 SkipQuadtariCheck3
->>>>>>> a0b1e6c (Coding standards: Use lowercase 'let' for RAM variables, avoid '= 0' comparisons)
           
           goto TitleSequenceTitleScreenLoop
           

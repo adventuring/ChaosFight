@@ -227,15 +227,15 @@ Source/Generated/Font.bas: Source/Art/Font.png
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
-Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
+Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas characters
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
-Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
+Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas characters
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
-Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
+Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas characters
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 

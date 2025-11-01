@@ -48,7 +48,10 @@ SelInP0Right
           if PlayerChar[0] > MaxCharacter then PlayerChar[0] = 0
           PlayerLocked[0] = 0
 SelInSkipP0Right
-          if joy0up || joy0down then PlayerLocked[0] = 0
+          rem Use skip-over pattern to avoid complex || operator
+          if joy0up then PlayerLocked[0] = 0 : goto Player0LockClearDone
+          if joy0down then PlayerLocked[0] = 0
+Player0LockClearDone
           if joy0fire then PlayerLocked[0] = 1
 
           rem Handle Player 2 input (joy1 on even frames)
@@ -66,7 +69,10 @@ SelInP1Right
           if PlayerChar[1] > MaxCharacter then PlayerChar[1] = 0
           PlayerLocked[1] = 0
 SelInSkipP1Right
-          if joy1up || joy1down then PlayerLocked[1] = 0
+          rem Use skip-over pattern to avoid complex || operator
+          if joy1up then PlayerLocked[1] = 0 : goto Player1LockClearDone
+          if joy1down then PlayerLocked[1] = 0
+Player1LockClearDone
           if joy1fire then PlayerLocked[1] = 1
           
           qtcontroller = 1
@@ -91,7 +97,10 @@ SelInP3Right
           if PlayerChar[2] > MaxCharacter then PlayerChar[2] = 0
           PlayerLocked[2] = 0
 SelInSkipP3Right
-          if joy0up || joy0down then PlayerLocked[2] = 0
+          rem Use skip-over pattern to avoid complex || operator
+          if joy0up then PlayerLocked[2] = 0 : goto Player2LockClearDone
+          if joy0down then PlayerLocked[2] = 0
+Player2LockClearDone
           if joy0fire then PlayerLocked[2] = 1
 SelInSkipP3
 
@@ -113,7 +122,10 @@ SelInP4Right
           if PlayerChar[3] > MaxCharacter then PlayerChar[3] = 0
           PlayerLocked[3] = 0
 SelInSkipP4Right
-          if joy1up || joy1down then PlayerLocked[3] = 0
+          rem Use skip-over pattern to avoid complex || operator
+          if joy1up then PlayerLocked[3] = 0 : goto Player3LockClearDone
+          if joy1down then PlayerLocked[3] = 0
+Player3LockClearDone
           if joy1fire then PlayerLocked[3] = 1
 SelInSkipP4
           

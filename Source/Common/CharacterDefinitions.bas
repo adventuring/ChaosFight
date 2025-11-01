@@ -227,33 +227,14 @@ end
           rem Attack windup (2 frames)
           rem Attack execution (1 frame)
           rem Attack recovery (1 frame)
-          data Character0Animations
-              1, 1, 1, 1, 1, 1, 1, 1
-              1, 2, 1, 2, 1, 2, 1, 2
-              3, 3, 3, 3, 3, 3, 3, 3
-              4, 5, 6, 7, 4, 5, 6, 7
-              8, 9, 8, 9, 8, 9, 8, 9
-              10, 11, 10, 11, 10, 11, 10, 11
-              12, 13, 12, 13, 12, 13, 12, 13
-              14, 15, 16, 14, 15, 16, 14, 15
-              17, 17, 17, 17, 17, 17, 17, 17
-              18, 19, 18, 19, 18, 19, 18, 19
-              20, 21, 20, 21, 20, 21, 20, 21
-              22, 23, 22, 23, 22, 23, 22, 23
-              24, 25, 24, 25, 24, 25, 24, 25
-              26, 27, 26, 27, 26, 27, 26, 27
-              28, 28, 28, 28, 28, 28, 28, 28
-              29, 29, 29, 29, 29, 29, 29, 29
-          end
 
           rem =================================================================
           rem GRAPHICS DATA STRUCTURE
           rem =================================================================
           rem Each character has:
           rem   - 8px × 16px bitmap data (16 bytes per frame)
-          rem   - Color data (16 bytes per frame, using ColBlue(4) macros)
           rem   - Frame references point to these 16-byte blocks
-          rem   - Graphics data will be loaded from ROM at compile time
+          rem   - Graphics data will be loaded from ROM
           rem   - Duplicate frames are compacted, gaps removed, empty frames padded
 
           rem =================================================================

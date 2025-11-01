@@ -27,7 +27,9 @@
 AuthorPreamble
 AuthorMainLoop
           rem Check for button press on any controller to skip
-          if joy0fire || joy1fire then goto AuthorPreambleComplete
+          rem Use skip-over pattern to avoid complex || operator issues
+          if joy0fire then goto AuthorPreambleComplete
+          if joy1fire then goto AuthorPreambleComplete
           if ControllerStatus & SetQuadtariDetected then goto AutCheckQuad
           goto AutSkipQuad
 AutCheckQuad

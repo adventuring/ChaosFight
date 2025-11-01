@@ -167,7 +167,12 @@ PlayfieldCollisionDone
           rem Check collision with players
           rem This handles both visible missiles and AOE attacks
           gosub bank15 CheckAllMissileCollisions
-          if temp4 <> 255 then gosub HandleMissileHit : gosub DeactivateMissile : return
+          rem Check if hit was found (temp4 != 255)
+          if temp4 = 255 then goto MissileSystemNoHit
+          gosub HandleMissileHit
+          gosub DeactivateMissile
+          return
+MissileSystemNoHit
           
           rem Decrement lifetime counter and check expiration
           rem Retrieve current lifetime for this missile

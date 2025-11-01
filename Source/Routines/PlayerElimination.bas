@@ -62,7 +62,10 @@ CheckPlayerElimination
           
           rem Update Players34Active flag if Player 3 or 4 was eliminated
           rem Only clear flag if both players 3 and 4 are eliminated or not selected
-          if temp1 = 2 || temp1 = 3 then gosub UpdatePlayers34ActiveFlag
+          rem Use skip-over pattern to avoid complex || operator
+          if temp1 = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
+          if temp1 = 3 then gosub UpdatePlayers34ActiveFlag
+UpdatePlayers34Done
           
           rem Record elimination order
           EliminationCounter = EliminationCounter + 1

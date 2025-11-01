@@ -26,7 +26,9 @@
 
 PublisherPreamble
           rem Check for button press on any controller to skip
-          if joy0fire || joy1fire then goto PublisherPreambleComplete
+          rem Use skip-over pattern to avoid complex || operator issues
+          if joy0fire then goto PublisherPreambleComplete
+          if joy1fire then goto PublisherPreambleComplete
           
           if ControllerStatus & SetQuadtariDetected then goto PubCheckQuad
 

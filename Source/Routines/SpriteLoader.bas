@@ -87,24 +87,147 @@ LoadSpecialSprite
           
 LoadQuestionMarkSprite
           rem Set pointer to QuestionMarkSprite data
-          if ! temp3 then player0pointerlo = <QuestionMarkSprite : player0pointerhi = >QuestionMarkSprite : player0height = 16 : return
-          if temp3 = 1 then player1pointerlo = <QuestionMarkSprite : player1pointerhi = >QuestionMarkSprite : player1height = 16 : return
-          if temp3 = 2 then player2pointerlo = <QuestionMarkSprite : player2pointerhi = >QuestionMarkSprite : player2height = 16 : return
-          player3pointerlo = <QuestionMarkSprite : player3pointerhi = >QuestionMarkSprite : player3height = 16 : return
+          rem Use skip-over pattern to avoid complex compound statements
+          if ! temp3 then goto LoadQuestionMarkSpriteP0
+          if temp3 = 1 then goto LoadQuestionMarkSpriteP1
+          if temp3 = 2 then goto LoadQuestionMarkSpriteP2
+          goto LoadQuestionMarkSpriteP3
+          
+LoadQuestionMarkSpriteP0
+          asm
+          lda #< QuestionMarkSprite
+          sta player0pointerlo
+          lda #> QuestionMarkSprite
+          sta player0pointerhi
+          end
+          player0height = 16
+          return
+          
+LoadQuestionMarkSpriteP1
+          asm
+          lda #< QuestionMarkSprite
+          sta player1pointerlo
+          lda #> QuestionMarkSprite
+          sta player1pointerhi
+          end
+          player1height = 16
+          return
+          
+LoadQuestionMarkSpriteP2
+          asm
+          lda #< QuestionMarkSprite
+          sta player2pointerlo
+          lda #> QuestionMarkSprite
+          sta player2pointerhi
+          end
+          player2height = 16
+          return
+          
+LoadQuestionMarkSpriteP3
+          asm
+          lda #< QuestionMarkSprite
+          sta player3pointerlo
+          lda #> QuestionMarkSprite
+          sta player3pointerhi
+          end
+          player3height = 16
+          return
           
 LoadCPUSprite
           rem Set pointer to CPUSprite data
-          if ! temp3 then player0pointerlo = <CPUSprite : player0pointerhi = >CPUSprite : player0height = 16 : return
-          if temp3 = 1 then player1pointerlo = <CPUSprite : player1pointerhi = >CPUSprite : player1height = 16 : return
-          if temp3 = 2 then player2pointerlo = <CPUSprite : player2pointerhi = >CPUSprite : player2height = 16 : return
-          player3pointerlo = <CPUSprite : player3pointerhi = >CPUSprite : player3height = 16 : return
+          rem Use skip-over pattern to avoid complex compound statements
+          if ! temp3 then goto LoadCPUSpriteP0
+          if temp3 = 1 then goto LoadCPUSpriteP1
+          if temp3 = 2 then goto LoadCPUSpriteP2
+          goto LoadCPUSpriteP3
+          
+LoadCPUSpriteP0
+          asm
+          lda #< CPUSprite
+          sta player0pointerlo
+          lda #> CPUSprite
+          sta player0pointerhi
+          end
+          player0height = 16
+          return
+          
+LoadCPUSpriteP1
+          asm
+          lda #< CPUSprite
+          sta player1pointerlo
+          lda #> CPUSprite
+          sta player1pointerhi
+          end
+          player1height = 16
+          return
+          
+LoadCPUSpriteP2
+          asm
+          lda #< CPUSprite
+          sta player2pointerlo
+          lda #> CPUSprite
+          sta player2pointerhi
+          end
+          player2height = 16
+          return
+          
+LoadCPUSpriteP3
+          asm
+          lda #< CPUSprite
+          sta player3pointerlo
+          lda #> CPUSprite
+          sta player3pointerhi
+          end
+          player3height = 16
+          return
           
 LoadNoSprite
           rem Set pointer to NoSprite data
-          if ! temp3 then player0pointerlo = <NoSprite : player0pointerhi = >NoSprite : player0height = 16 : return
-          if temp3 = 1 then player1pointerlo = <NoSprite : player1pointerhi = >NoSprite : player1height = 16 : return
-          if temp3 = 2 then player2pointerlo = <NoSprite : player2pointerhi = >NoSprite : player2height = 16 : return
-          player3pointerlo = <NoSprite : player3pointerhi = >NoSprite : player3height = 16 : return
+          rem Use skip-over pattern to avoid complex compound statements
+          if ! temp3 then goto LoadNoSpriteP0
+          if temp3 = 1 then goto LoadNoSpriteP1
+          if temp3 = 2 then goto LoadNoSpriteP2
+          goto LoadNoSpriteP3
+          
+LoadNoSpriteP0
+          asm
+          lda #< NoSprite
+          sta player0pointerlo
+          lda #> NoSprite
+          sta player0pointerhi
+          end
+          player0height = 16
+          return
+          
+LoadNoSpriteP1
+          asm
+          lda #< NoSprite
+          sta player1pointerlo
+          lda #> NoSprite
+          sta player1pointerhi
+          end
+          player1height = 16
+          return
+          
+LoadNoSpriteP2
+          asm
+          lda #< NoSprite
+          sta player2pointerlo
+          lda #> NoSprite
+          sta player2pointerhi
+          end
+          player2height = 16
+          return
+          
+LoadNoSpriteP3
+          asm
+          lda #< NoSprite
+          sta player3pointerlo
+          lda #> NoSprite
+          sta player3pointerhi
+          end
+          player3height = 16
+          return
 
           rem =================================================================
           rem LOAD PLAYER SPRITE (generic dispatcher)
@@ -117,11 +240,28 @@ LoadNoSprite
           rem Note: Frame is relative to sprite own 10fps counter, NOT global frame counter
 LoadPlayerSprite
           rem Get character index for this player from PlayerChar array
-          if ! temp4 then let temp1 = PlayerChar[0] : goto LoadPlayerSpriteDispatch
-          if temp4 = 1 then let temp1 = PlayerChar[1] : goto LoadPlayerSpriteDispatch
-          if temp4 = 2 then let temp1 = PlayerChar[2] : goto LoadPlayerSpriteDispatch
-          if temp4 = 3 then let temp1 = PlayerChar[3] : goto LoadPlayerSpriteDispatch
+          rem Use skip-over pattern to avoid complex compound statements
+          if ! temp4 then goto LoadPlayerSpriteP0
+          if temp4 = 1 then goto LoadPlayerSpriteP1
+          if temp4 = 2 then goto LoadPlayerSpriteP2
+          if temp4 = 3 then goto LoadPlayerSpriteP3
           return
+          
+LoadPlayerSpriteP0
+          temp1 = PlayerChar[0]
+          goto LoadPlayerSpriteDispatch
+          
+LoadPlayerSpriteP1
+          temp1 = PlayerChar[1]
+          goto LoadPlayerSpriteDispatch
+          
+LoadPlayerSpriteP2
+          temp1 = PlayerChar[2]
+          goto LoadPlayerSpriteDispatch
+          
+LoadPlayerSpriteP3
+          temp1 = PlayerChar[3]
+          goto LoadPlayerSpriteDispatch
           
 LoadPlayerSpriteDispatch
           rem temp1 = character index, temp2 = frame (10fps counter), temp3 = action, temp4 = player

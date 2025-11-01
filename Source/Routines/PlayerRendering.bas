@@ -209,13 +209,17 @@ Player4Color
           rem Flashes sprites when health is critically low.
 DisplayHealth
           rem Flash Player 1 sprite if health is low (but not during recovery)
-          if PlayerHealth[0] >= 25 || PlayerRecoveryFrames[0] <> 0 then SkipPlayer0Flash
+          rem Use skip-over pattern to avoid complex || operator
+          if PlayerHealth[0] >= 25 then goto SkipPlayer0Flash
+          if PlayerRecoveryFrames[0] <> 0 then goto SkipPlayer0Flash
           if frame & 8 then player0x = 200 
           rem Hide sprite
 SkipPlayer0Flash
 
           rem Flash Player 2 sprite if health is low
-          if PlayerHealth[1] >= 25 || PlayerRecoveryFrames[1] <> 0 then SkipPlayer1Flash
+          rem Use skip-over pattern to avoid complex || operator
+          if PlayerHealth[1] >= 25 then goto SkipPlayer1Flash
+          if PlayerRecoveryFrames[1] <> 0 then goto SkipPlayer1Flash
                     if frame & 8 then player1x = 200
 SkipPlayer1Flash
 

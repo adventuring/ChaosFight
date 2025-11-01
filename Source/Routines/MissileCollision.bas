@@ -158,12 +158,27 @@ CheckAOECollision
           temp5 = PlayerChar[temp1]
           
           rem Check if this is Bernie (character 0)
-          if temp5 = 0 then gosub CheckAOEDirection_Right : if temp4 <> 255 then return : gosub CheckAOEDirection_Left : return
+          rem Bernie attacks both left AND right, so check both directions
+          if temp5 = 0 then goto CheckBernieAOE
           
           rem Normal character: Check only facing direction
           temp6 = PlayerState[temp1] & 1
           if temp6 = 0 then gosub CheckAOEDirection_Left : return
           gosub CheckAOEDirection_Right
+          return
+          
+CheckBernieAOE
+          rem Bernie: Check right direction first
+          gosub CheckAOEDirection_Right
+          rem If hit found (temp4 != 255), return early
+          rem Use skip-over pattern: if temp4 = 255, skip to left check
+          if temp4 = 255 then goto CheckBernieAOELeft
+          return
+          
+CheckBernieAOELeft
+          rem Check left direction
+          gosub CheckAOEDirection_Left
+          return
 
           rem =================================================================
           rem CHECK AOE DIRECTION - RIGHT

@@ -17,20 +17,8 @@
           set optimization size
           set smartbranching on
 
-          rem Minimal includes needed before kernel (Bank 1)
-          rem Colors.h is needed early for kernel options
           #include "Source/Common/Colors.h"
-          
-          rem CRITICAL: Switch to Bank 2 early to move large includes out of Bank 1
-          rem Bank 1 contains: header, bB.asm (code before first bank>1), kernel, routines
-          rem By switching to bank 2 here, Constants/Variables/etc. go to Bank 2 instead
-          bank 2
-          
-          rem Large includes moved to Bank 2 to reduce Bank 1 size
           #include "Source/Common/Constants.bas"
           #include "Source/Common/Enums.bas"
           #include "Source/Common/Macros.bas"
           #include "Source/Common/Variables.bas"
-          
-          rem Switch back to Bank 1 for kernel and main code
-          bank 1

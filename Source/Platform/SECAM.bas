@@ -4,8 +4,8 @@
           rem See LICENSE file for full terms
 
           #define TV_SECAM
-          const TVStandard=3
-          set tv pal
+          const TVStandard = SECAM
+          set tv secam
 
           #include "Source/Common/Preamble.bas"
           #include "Source/Banks/Banks.bas"

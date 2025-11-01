@@ -16,13 +16,13 @@
 ; Character sprite pointer tables (Bank 2 only)
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLo_Bank3:
-    .byte <<FrootySprite, <<NefertemSprite, <<NinjishGuySprite, <<PorkChopSprite
-    .byte <<RadishGoblinSprite, <<RoboTitoSprite, <<UrsuloSprite, <<VegDogSprite
+    .byte <FrootySprite, <NefertemSprite, <NinjishGuySprite, <PorkChopSprite
+    .byte <RadishGoblinSprite, <RoboTitoSprite, <UrsuloSprite, <VegDogSprite
 
 ; High byte pointers for each character base sprite data  
 CharacterSpritePtrHi_Bank3:
-    .byte ><FrootySprite, ><NefertemSprite, ><NinjishGuySprite, ><PorkChopSprite
-    .byte ><RadishGoblinSprite, ><RoboTitoSprite, ><UrsuloSprite, ><VegDogSprite
+    .byte >FrootySprite, >NefertemSprite, >NinjishGuySprite, >PorkChopSprite
+    .byte >RadishGoblinSprite, >RoboTitoSprite, >UrsuloSprite, >VegDogSprite
 
 ; =================================================================
 ; ANIMATION FRAME OFFSET TABLES

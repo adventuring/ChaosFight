@@ -14,8 +14,6 @@
           #include "Source/Routines/GameLoopMain.bas"
           #include "Source/Routines/WinnerAnnouncement.bas"
 
-          #include "Source/Routines/GameLoopInit.bas"
-
           #if 0
           rem Music system temporarily disabled pending proper implementation (#162, #243)
           #include "Source/Routines/MusicSystem.bas"

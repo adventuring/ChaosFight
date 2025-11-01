@@ -94,7 +94,7 @@ SetPlayerSprites
           rem Color mode: Use solid player color or dimmer when hurt
           if PlayerRecoveryFrames[0] > 0 then COLUP0 = ColIndigo(6) : goto Player1ColorDone 
           rem Hurt: dimmer indigo
-          let temp1 = PlayerChar[0] : let temp2 = 0 : gosub LoadCharacterColors : goto Player1ColorDone 
+          let temp1 = PlayerChar[0] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player1ColorDone 
           rem Normal: solid player color
           
 Player1BWMode
@@ -117,7 +117,7 @@ Player1ColorDone
           rem Color mode: Use solid player color or dimmer when hurt
           if PlayerRecoveryFrames[1] > 0 then COLUP1 = ColRed(6) : goto Player2ColorDone 
           rem Hurt: dimmer red
-          let temp1 = PlayerChar[1] : let temp2 = 0 : gosub LoadCharacterColors : goto Player2ColorDone 
+          let temp1 = PlayerChar[1] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player2ColorDone 
           rem Normal: solid player color
           
 Player2BWMode

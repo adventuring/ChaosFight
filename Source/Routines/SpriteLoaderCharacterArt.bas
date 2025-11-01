@@ -8,7 +8,7 @@
           rem Wrapper that determines correct bank and switches to it
           rem Input: temp1 = character index (0-31)
           rem        temp2 = animation frame (0-7)
-          rem        temp3 = animation sequence (0-15)
+          rem        temp3 = action (0-15)
           rem        temp7 = player number (0-3)
           rem Output: Player sprite pointer set to character artwork
           
@@ -87,7 +87,7 @@ SetPlayerCharacterArtBank5
           rem =================================================================
           rem Convenience function that calls LocateCharacterArt
           rem Input: temp1 = character index, temp2 = animation frame
-          rem        temp3 = animation sequence, temp7 = player number
+          rem        temp3 = action, temp7 = player number
 SetPlayerCharacterArt
           gosub LocateCharacterArt
           return

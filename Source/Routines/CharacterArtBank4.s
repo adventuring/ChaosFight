@@ -47,10 +47,11 @@ LocateCharacterArtBank4:
     sty temp3           ; Action (0-15)
     
     ; Map character index to local 0-7 range
-    ; Characters 0-7 map to 0-7
-    ; Characters 16-23 also map to 0-7 (replicas, use same sprite data)
+    ; Characters 16-23 map to 0-7 (replicas of characters 0-7)
     lda temp1
-    and #$07            ; Mask to 0-7 range (works for both 0-7 and 16-23)
+    sec
+    sbc #16             ; Subtract 16 to map 16-23 to 0-7
+    and #$07            ; Mask to 0-7 range
     sta temp1           ; Store local index
     
     ; Set bank to 2

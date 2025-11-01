@@ -219,7 +219,8 @@ HandleRank3
           
 HandleRank4
           rem Want lowest elimination order
-          if ! temp5 || temp4 < temp5 then let temp5 = temp4 : let temp1 = temp6
+          if temp5 = 0 then let temp5 = temp4 : let temp1 = temp6 : return
+          if temp4 < temp5 then let temp5 = temp4 : let temp1 = temp6
           return
 
           rem =================================================================

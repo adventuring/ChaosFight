@@ -180,10 +180,12 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 
 # Convert XCF to PNG for sprites (characters and special sprites)
 # Make will only regenerate if XCF is newer than PNG (based on file timestamps)
+# Touch PNG after generation to ensure it's newer than XCF (handles filesystem precision issues)
 %.png: %.xcf
 	@echo "Converting $< to $@..."
 	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@touch "$@"
 
 # Character sprites are compiled using compile-chaos-character
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas

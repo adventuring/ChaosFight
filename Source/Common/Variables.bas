@@ -138,6 +138,10 @@
           dim CharSelectAnimFrame = z      
           rem ADMIN: Current frame in sequence (REDIM - available in ADMIN)
           
+          rem ADMIN: Console handling variables (Standard RAM)
+          dim ColorBWPrevious = i
+          rem ADMIN: Previous state of Color/B&W switch (for detecting changes) - REDIM from GAME use of i
+          
           rem ADMIN: Character selection state (standard RAM)
           dim CharSelectCharIndex = var37   
           rem ADMIN: Currently selected character index (0-15) for preview

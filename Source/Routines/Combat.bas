@@ -8,20 +8,18 @@ rem COMBAT SYSTEM - Generic subroutines using player arrays
 rem Apply damage from attacker to defender
 rem Inputs: attacker_id, defender_id
 ApplyDamage
-  dim damage = a
-  
   rem Calculate damage (considering defender state)
-  damage = playerDamage(attacker_id) - playerDamage(defender_id)
-  if damage < 1 then damage = 1  rem Minimum damage
+  let temp1 = playerDamage(attacker_id) - playerDamage(defender_id)
+  if temp1 < 1 then let temp1 = 1  rem Minimum damage
   
   rem Apply damage
-  playerHealth[defender_id) = playerHealth[defender_id] - damage
+  playerHealth[defender_id] = playerHealth[defender_id] - temp1
   
   rem Visual feedback (to be implemented)
-  gosub ShowDamageIndicator defender_id, damage
+  gosub ShowDamageIndicator defender_id, temp1
   
   rem Sound effect (to be implemented)
-  gosub PlayDamageSound damage
+  gosub PlayDamageSound temp1
   
   return
 
@@ -29,12 +27,6 @@ rem Check if attack hits defender
 rem Inputs: attacker_id, defender_id
 rem Returns: hit (1 = hit, 0 = miss)
 CheckAttackHit
-  dim hit = a
-  dim hitbox_left = b
-  dim hitbox_right = c
-  dim hitbox_top = d
-  dim hitbox_bottom = e
-  
   rem Calculate attack hitbox based on attacker facing and attack type
   gosub CalculateAttackHitbox attacker_id
   
@@ -43,11 +35,11 @@ CheckAttackHit
           if playerX[defender_id] > hitbox_right then goto HitboxCheckDone
           if playerY[defender_id] < hitbox_top then goto HitboxCheckDone
           if playerY[defender_id] > hitbox_bottom then goto HitboxCheckDone
-    hit = 1
+    let hit = 1
           goto HitboxCheckDone
 HitboxCheckDone
           let if hit  = 0 then goto NoHit
-    hit = 0
+    let hit = 0
 NoHit
   
   return
@@ -110,8 +102,6 @@ AreaHitbox
 rem Process attack for one attacker against all defenders
 rem Input: attacker_id
 ProcessAttackerAttacks
-  dim defender = a
-  
   rem Check if attacker is attacking
   if (playerState[attacker_id) & %00000001] = 0 then return
   
@@ -134,8 +124,6 @@ NextDefender
 
 rem Process all attacks for all players
 ProcessAllAttacks
-  dim attacker = a
-  
   for attacker = 0 to 3
     rem Skip if attacker is dead
     if playerHealth[attacker] <= 0 then goto NextAttacker
@@ -215,11 +203,9 @@ ProcessPlayerGuard
 rem Update player guard state
 rem Input: player_id
 UpdatePlayerGuard
-  dim guard_timer = a
-  
   rem Decrement guard timer if active (1 second maximum = 60 frames)
           if (playerState[player_id] & %00000010) = 0 then goto SkipGuardUpdate
-    guard_timer = guard_timer - 1
+    let guard_timer = guard_timer - 1
           let if guard_timer <= 0 then playerState[player_id] = playerState[player_id] & %11111101
     rem Guard visual effect: flashing light cyan ColCyan(12) NTSC/PAL, Cyan SECAM
     rem Player color alternates between normal and cyan every few frames

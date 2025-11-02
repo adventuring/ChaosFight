@@ -164,13 +164,9 @@ SkipPlayer4Bounds
 CheckAllPlayerCollisions
           rem Check Player 1 vs Player 2
           if PlayerX[0] >= PlayerX[1] then temp2 = PlayerX[0] - PlayerX[1] else temp2 = PlayerX[1] - PlayerX[0]
-if temp2 < 16 then 
-if PlayerX[0] < PlayerX[1] then 
-          PlayerX[0] = PlayerX[0] - 1
-          PlayerX[1] = PlayerX[1] + 1
-
-          PlayerX[0] = PlayerX[0] + 1
-          PlayerX[1] = PlayerX[1] - 1
+          if temp2 < 16 then if PlayerX[0] < PlayerX[1] then PlayerX[0] = PlayerX[0] - 1 : PlayerX[1] = PlayerX[1] + 1 : goto SkipP1P2Sep
+          if temp2 < 16 then PlayerX[0] = PlayerX[0] + 1 : PlayerX[1] = PlayerX[1] - 1
+SkipP1P2Sep
           
           
           
@@ -180,13 +176,9 @@ if PlayerX[0] < PlayerX[1] then
           rem Check Player 1 vs Player 3
 if SelectedChar3 <> 255 then 
           if PlayerX[0] >= PlayerX[2] then temp2 = PlayerX[0] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[0]
-if temp2 < 16 then 
-if PlayerX[0] < PlayerX[2] then 
-          PlayerX[0] = PlayerX[0] - 1
-          PlayerX[2] = PlayerX[2] + 1
-
-          PlayerX[0] = PlayerX[0] + 1
-          PlayerX[2] = PlayerX[2] - 1
+          if temp2 < 16 then if PlayerX[0] < PlayerX[2] then PlayerX[0] = PlayerX[0] - 1 : PlayerX[2] = PlayerX[2] + 1 : goto SkipP1P3Sep
+          if temp2 < 16 then PlayerX[0] = PlayerX[0] + 1 : PlayerX[2] = PlayerX[2] - 1
+SkipP1P3Sep
           
           
           
@@ -194,13 +186,9 @@ if PlayerX[0] < PlayerX[2] then
           rem Check Player 1 vs Player 4
 if SelectedChar4 <> 255 then 
           if PlayerX[0] >= PlayerX[3] then temp2 = PlayerX[0] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[0]
-if temp2 < 16 then 
-if PlayerX[0] < PlayerX[3] then 
-          PlayerX[0] = PlayerX[0] - 1
-          PlayerX[3] = PlayerX[3] + 1
-
-          PlayerX[0] = PlayerX[0] + 1
-          PlayerX[3] = PlayerX[3] - 1
+          if temp2 < 16 then if PlayerX[0] < PlayerX[3] then PlayerX[0] = PlayerX[0] - 1 : PlayerX[3] = PlayerX[3] + 1 : goto SkipP1P4Sep
+          if temp2 < 16 then PlayerX[0] = PlayerX[0] + 1 : PlayerX[3] = PlayerX[3] - 1
+SkipP1P4Sep
           
           
           
@@ -208,13 +196,9 @@ if PlayerX[0] < PlayerX[3] then
           rem Check Player 2 vs Player 3
 if SelectedChar3 <> 255 then 
           if PlayerX[1] >= PlayerX[2] then temp2 = PlayerX[1] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[1]
-if temp2 < 16 then 
-if PlayerX[1] < PlayerX[2] then 
-          PlayerX[1] = PlayerX[1] - 1
-          PlayerX[2] = PlayerX[2] + 1
-
-          PlayerX[1] = PlayerX[1] + 1
-          PlayerX[2] = PlayerX[2] - 1
+          if temp2 < 16 then if PlayerX[1] < PlayerX[2] then PlayerX[1] = PlayerX[1] - 1 : PlayerX[2] = PlayerX[2] + 1 : goto SkipP2P3Sep
+          if temp2 < 16 then PlayerX[1] = PlayerX[1] + 1 : PlayerX[2] = PlayerX[2] - 1
+SkipP2P3Sep
           
           
           
@@ -222,13 +206,9 @@ if PlayerX[1] < PlayerX[2] then
           rem Check Player 2 vs Player 4
 if SelectedChar4 <> 255 then 
           if PlayerX[1] >= PlayerX[3] then temp2 = PlayerX[1] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[1]
-if temp2 < 16 then 
-if PlayerX[1] < PlayerX[3] then 
-          PlayerX[1] = PlayerX[1] - 1
-          PlayerX[3] = PlayerX[3] + 1
-
-          PlayerX[1] = PlayerX[1] + 1
-          PlayerX[3] = PlayerX[3] - 1
+          if temp2 < 16 then if PlayerX[1] < PlayerX[3] then PlayerX[1] = PlayerX[1] - 1 : PlayerX[3] = PlayerX[3] + 1 : goto SkipP2P4Sep
+          if temp2 < 16 then PlayerX[1] = PlayerX[1] + 1 : PlayerX[3] = PlayerX[3] - 1
+SkipP2P4Sep
           
           
           
@@ -237,13 +217,9 @@ if PlayerX[1] < PlayerX[3] then
 if SelectedChar3 = 255 then goto SkipP3vsP4
 if SelectedChar4 = 255 then goto SkipP3vsP4 
           if PlayerX[2] >= PlayerX[3] then temp2 = PlayerX[2] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[2]
-if temp2 < 16 then 
-if PlayerX[2] < PlayerX[3] then 
-          PlayerX[2] = PlayerX[2] - 1
-          PlayerX[3] = PlayerX[3] + 1
-
-          PlayerX[2] = PlayerX[2] + 1
-          PlayerX[3] = PlayerX[3] - 1
+          if temp2 < 16 then if PlayerX[2] < PlayerX[3] then PlayerX[2] = PlayerX[2] - 1 : PlayerX[3] = PlayerX[3] + 1 : goto SkipP3P4Sep
+          if temp2 < 16 then PlayerX[2] = PlayerX[2] + 1 : PlayerX[3] = PlayerX[3] - 1
+SkipP3P4Sep
           
           
           

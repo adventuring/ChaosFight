@@ -43,9 +43,9 @@
           rem Values: 1-255 (lower = lighter/faster, higher = heavier/slower/stronger)
 
           rem  Bernie, Curler, Dragonet, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
-          rem  heavy,  medium,     medium,   light,   heavy,  medium,     light,  heavier, light,   heavy,   very light, heavy,  very light, heavier, heavy,  medium
+          rem  heavy,  medium,     medium,   light,   heavy,  heavy,     light,  heavier, light,   heavy,   very light, heavy,  very light, heavier, heavy,  medium
           data CharacterWeights
-          35, 25, 20, 15, 30, 25, 15, 32, 15, 30, 10, 30, 10, 32, 30, 25
+          35, 25, 20, 15, 30, 30, 15, 32, 15, 30, 10, 30, 10, 32, 30, 25
 end
 
           rem  Bernie, Curler, Dragonet, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog

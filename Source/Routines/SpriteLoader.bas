@@ -329,8 +329,9 @@ InvalidCharacter
 
           rem Load character/player color based on TV standard, B&W, hurt, and flashing states
           rem Input: temp1 = character index, temp2 = hurt (0/1), temp3 = player (0-3)
-          rem        temp4 = flashing (0/1), temp5 = flashing mode (0=per-line, 1=player-index)
+          rem        temp4 = flashing (0/1), temp5 = flashing mode (0=frame-based, 1=player-index)
           rem Output: Appropriate COLUPx updated
+          rem Note: Players use solid colors only (no per-line coloring)
 LoadCharacterColors
           rem Highest priority: hurt state
           if temp2 then goto HurtColor
@@ -357,7 +358,7 @@ FlashingColor
           goto PlayerIndexColors
 
 PerLineFlashing
-          rem Simple time/row-based flashing placeholder
+          rem Frame-based flashing (not per-line - players use solid colors)
           rem Use alternating bright/dim player index colors by frame bit
           if frame & 8 then PlayerIndexColorsDim
           goto PlayerIndexColors

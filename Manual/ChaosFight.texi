@@ -375,6 +375,8 @@ Enter guard stance. While guarding:
 
 Each character has unique properties affecting gameplay:
 
+@section Character Descriptions
+
 @include Bernie.texi
 
 @include CurlingSweeper.texi

@@ -188,7 +188,7 @@ SetFallingAnimation
           rem Check if player is in walking animation
           rem Input: temp1 = player index (0-3)
           rem Output: temp2 = 1 if walking, 0 if not
-          IsPlayerWalking
+IsPlayerWalking
           temp2 = 0
           if CurrentAnimationSeq[temp1] = AnimWalking then temp2 = 1
           return
@@ -207,7 +207,7 @@ NotAttacking
           rem Check if player is in hit animation
           rem Input: temp1 = player index (0-3)
           rem Output: temp2 = 1 if hit, 0 if not
-          IsPlayerHit
+IsPlayerHit
           temp2 = 0
           if CurrentAnimationSeq[temp1] = AnimHit then temp2 = 1
           return

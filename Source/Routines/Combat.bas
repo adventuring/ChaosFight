@@ -46,7 +46,7 @@ CheckAttackHit
     hit = 1
           goto HitboxCheckDone
 HitboxCheckDone
-          if hit = 0 then goto NoHit
+          let if hit  = 0 then goto NoHit
     hit = 0
 NoHit
   
@@ -171,7 +171,7 @@ PerformMeleeAttack
   gosub bank15 SpawnMissile
   
   rem Set animation state to attacking
-          playerState[temp1] = (playerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
   
   rem Check immediate collision with other players in melee range
@@ -193,7 +193,7 @@ PerformRangedAttack
   gosub bank15 SpawnMissile
   
   rem Set animation state to attacking
-          playerState[temp1] = (playerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
   
   return
@@ -220,7 +220,7 @@ UpdatePlayerGuard
   rem Decrement guard timer if active (1 second maximum = 60 frames)
           if (playerState[player_id] & %00000010) = 0 then goto SkipGuardUpdate
     guard_timer = guard_timer - 1
-          if guard_timer <= 0 then playerState[player_id] = playerState[player_id] & %11111101
+          let if guard_timer <= 0 then playerState[player_id] = playerState[player_id] & %11111101
     rem Guard visual effect: flashing light cyan ColCyan(12) NTSC/PAL, Cyan SECAM
     rem Player color alternates between normal and cyan every few frames
     rem This matches manual specification: "Character flashes to indicate guard is active"

@@ -7,7 +7,7 @@ test: SkylineTool/skyline-tool.asd
 	cd SkylineTool && sbcl --script tests/run-tests.lisp || (echo "Tests failed!" && exit 1)
 
 # Precious intermediate files
-.PRECIOUS: %.s %.png %.midi Object/bB.%.s
+.PRECIOUS: %.s %.png %.midi Object/bB.%.s Source/Generated/$(GAME).%.preprocessed.bas
 
 # Tools and directories
 BB_DIR = Tools/batariBASIC
@@ -336,6 +336,7 @@ clean:
 	rm -f Source/Art/*.png
 	rm -f bB.*.s *.bin *.lst *.sym *.map *.pro
 	rm -f Source/Generated/$(GAME).*.bas Source/Generated/$(GAME).*.s
+	rm -f Source/Generated/$(GAME).*.preprocessed.bas
 	rm -f Object/bB.*.s Object/includes.bB
 	cd Tools/batariBASIC && git clean --force
 

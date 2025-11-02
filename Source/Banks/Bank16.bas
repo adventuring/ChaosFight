@@ -78,8 +78,8 @@
           rem Output: SongPointerL, SongPointerH = pointer to Song_Voice0 stream
 LoadSongPointer
           rem Use array access to lookup pointer
-          LET SongPointerL = SongPointersL[temp1]
-          LET SongPointerH = SongPointersH[temp1]
+          SongPointerL = SongPointersL[temp1]
+          SongPointerH = SongPointersH[temp1]
           return
           
           rem Calculate Voice 1 pointer from Voice 0 pointer + offset
@@ -87,12 +87,12 @@ LoadSongPointer
           rem Output: SongPointerL/H = Voice 1 pointer
 LoadSongVoice1Pointer
           rem Get Voice 1 offset from table (temp1 still contains song ID from LoadSongPointer)
-          LET temp2 = SongVoice1Offsets[temp1]
+          temp2 = SongVoice1Offsets[temp1]
           rem Add offset to Voice 0 pointer (16-bit addition)
-          LET temp3 = SongPointerL
-          LET SongPointerL = temp3 + temp2
+          temp3 = SongPointerL
+          SongPointerL = temp3 + temp2
           rem Handle carry
-          if SongPointerL < temp3 then LET SongPointerH = SongPointerH + 1
+          if SongPointerL < temp3 then SongPointerH = SongPointerH + 1
           rem Note: For songs with Voice1 stream longer than 255 bytes, need high byte offset too
           rem TODO: Add high byte offset table if needed for songs > 255 bytes per voice
           return
@@ -121,9 +121,9 @@ LoadMusicNote0
           if temp4 = 0 then MusicVoice0PointerH = 0 : AUDV0 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
-          LET temp6 = temp2 & %11110000
-          LET temp6 = temp6 / 16
-          LET temp7 = temp2 & %00001111
+          temp6 = temp2 & %11110000
+          temp6 = temp6 / 16
+          temp7 = temp2 & %00001111
           
           rem Write to TIA registers
           AUDC0 = temp6
@@ -131,12 +131,12 @@ LoadMusicNote0
           AUDV0 = temp7
           
           rem Set frame counter = Duration + Delay
-          LET MusicVoice0Frame = temp4 + temp5
+          MusicVoice0Frame = temp4 + temp5
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          LET temp2 = MusicVoice0PointerL
-          LET MusicVoice0PointerL = temp2 + 4
-          if MusicVoice0PointerL < temp2 then LET MusicVoice0PointerH = MusicVoice0PointerH + 1
+          temp2 = MusicVoice0PointerL
+          MusicVoice0PointerL = temp2 + 4
+          if MusicVoice0PointerL < temp2 then MusicVoice0PointerH = MusicVoice0PointerH + 1
           
           return
           
@@ -162,9 +162,9 @@ LoadMusicNote1
           if temp4 = 0 then MusicVoice1PointerH = 0 : AUDV1 = 0 : return
           
           rem Extract AUDC and AUDV
-          LET temp6 = temp2 & %11110000
-          LET temp6 = temp6 / 16
-          LET temp7 = temp2 & %00001111
+          temp6 = temp2 & %11110000
+          temp6 = temp6 / 16
+          temp7 = temp2 & %00001111
           
           rem Write to TIA registers (Voice 1)
           AUDC1 = temp6
@@ -172,11 +172,11 @@ LoadMusicNote1
           AUDV1 = temp7
           
           rem Set frame counter = Duration + Delay
-          LET MusicVoice1Frame = temp4 + temp5
+          MusicVoice1Frame = temp4 + temp5
           
           rem Advance pointer by 4 bytes
-          LET temp2 = MusicVoice1PointerL
-          LET MusicVoice1PointerL = temp2 + 4
-          if MusicVoice1PointerL < temp2 then LET MusicVoice1PointerH = MusicVoice1PointerH + 1
+          temp2 = MusicVoice1PointerL
+          MusicVoice1PointerL = temp2 + 4
+          if MusicVoice1PointerL < temp2 then MusicVoice1PointerH = MusicVoice1PointerH + 1
           
           return

@@ -23,7 +23,29 @@
 PhysicsApplyGravity
           rem Player 1
           if (playerState[0] & 4) <> 0 then Player1GravityDone
+          rem Skip gravity for Frooty (8) and DragonOfStorms (2)
+          let if playerChar[0] = 2 then Player1GravityDone
+          let if playerChar[0] = 8 then Player1GravityDone
+          rem Skip gravity for RoboTito when latched to ceiling
+          let if playerChar[0] = 13 then RoboTitoGravity1
+          goto RoboTitoGravityDone1
+RoboTitoGravity1
+          let if (characterStateFlags[0] & 1) <> 0 then Player1GravityDone
+          rem Latched to ceiling, skip gravity
+RoboTitoGravityDone1
+          rem Apply slow gravity for Harpy in flight mode but not diving
+          let if playerChar[0] = 6 then Player1HarpyGravity
           let playerY[0] = playerY[0] + 1
+          goto Player1GravityCheck
+Player1HarpyGravity
+          rem Harpy slow gravity: 50% speed unless diving
+          let if (characterStateFlags[0] & 4) <> 0 then Player1NormalGravity
+          rem Diving: normal gravity
+          let playerY[0] = playerY[0] + 1
+          goto Player1GravityCheck
+Player1NormalGravity
+          let playerY[0] = playerY[0] + 1
+Player1GravityCheck
           if playerY[0] < 80 then Player1GravityDone
           let playerY[0] = 80
           let playerState[0] = playerState[0] & 251
@@ -31,7 +53,29 @@ Player1GravityDone
           
           rem Player 2
           if (playerState[1] & 4) <> 0 then Player2GravityDone
+          rem Skip gravity for Frooty (8) and DragonOfStorms (2)
+          let if playerChar[1] = 2 then Player2GravityDone
+          let if playerChar[1] = 8 then Player2GravityDone
+          rem Skip gravity for RoboTito when latched to ceiling
+          let if playerChar[1] = 13 then RoboTitoGravity2
+          goto RoboTitoGravityDone2
+RoboTitoGravity2
+          let if (characterStateFlags[1] & 1) <> 0 then Player2GravityDone
+          rem Latched to ceiling, skip gravity
+RoboTitoGravityDone2
+          rem Apply slow gravity for Harpy in flight mode but not diving
+          let if playerChar[1] = 6 then Player2HarpyGravity
           let playerY[1] = playerY[1] + 1
+          goto Player2GravityCheck
+Player2HarpyGravity
+          rem Harpy slow gravity: 50% speed unless diving
+          let if (characterStateFlags[1] & 4) <> 0 then Player2NormalGravity
+          rem Diving: normal gravity
+          let playerY[1] = playerY[1] + 1
+          goto Player2GravityCheck
+Player2NormalGravity
+          let playerY[1] = playerY[1] + 1
+Player2GravityCheck
           if playerY[1] < 80 then Player2GravityDone
           let playerY[1] = 80
           let playerState[1] = playerState[1] & 251
@@ -41,7 +85,29 @@ Player2GravityDone
           if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer3Jump
           let if selectedChar3  = 255 then SkipPlayer3Jump
           if (playerState[2] & 4) <> 0 then SkipPlayer3Jump
+          rem Skip gravity for Frooty (8) and DragonOfStorms (2)
+          let if playerChar[2] = 2 then SkipPlayer3Jump
+          let if playerChar[2] = 8 then SkipPlayer3Jump
+          rem Skip gravity for RoboTito when latched to ceiling
+          let if playerChar[2] = 13 then RoboTitoGravity3
+          goto RoboTitoGravityDone3
+RoboTitoGravity3
+          let if (characterStateFlags[2] & 1) <> 0 then SkipPlayer3Jump
+          rem Latched to ceiling, skip gravity
+RoboTitoGravityDone3
+          rem Apply slow gravity for Harpy in flight mode but not diving
+          let if playerChar[2] = 6 then Player3HarpyGravity
           let playerY[2] = playerY[2] + 1
+          goto Player3GravityCheck
+Player3HarpyGravity
+          rem Harpy slow gravity: 50% speed unless diving
+          let if (characterStateFlags[2] & 4) <> 0 then Player3NormalGravity
+          rem Diving: normal gravity
+          let playerY[2] = playerY[2] + 1
+          goto Player3GravityCheck
+Player3NormalGravity
+          let playerY[2] = playerY[2] + 1
+Player3GravityCheck
           if playerY[2] < 80 then SkipPlayer3Jump
           let playerY[2] = 80 : playerState[2] = playerState[2] & 251
 SkipPlayer3Jump
@@ -50,7 +116,29 @@ SkipPlayer3Jump
           if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer4Jump
           let if selectedChar4  = 255 then SkipPlayer4Jump
           if (playerState[3] & 4) <> 0 then SkipPlayer4Jump
+          rem Skip gravity for Frooty (8) and DragonOfStorms (2)
+          let if playerChar[3] = 2 then SkipPlayer4Jump
+          let if playerChar[3] = 8 then SkipPlayer4Jump
+          rem Skip gravity for RoboTito when latched to ceiling
+          let if playerChar[3] = 13 then RoboTitoGravity4
+          goto RoboTitoGravityDone4
+RoboTitoGravity4
+          let if (characterStateFlags[3] & 1) <> 0 then SkipPlayer4Jump
+          rem Latched to ceiling, skip gravity
+RoboTitoGravityDone4
+          rem Apply slow gravity for Harpy in flight mode but not diving
+          let if playerChar[3] = 6 then Player4HarpyGravity
           let playerY[3] = playerY[3] + 1
+          goto Player4GravityCheck
+Player4HarpyGravity
+          rem Harpy slow gravity: 50% speed unless diving
+          let if (characterStateFlags[3] & 4) <> 0 then Player4NormalGravity
+          rem Diving: normal gravity
+          let playerY[3] = playerY[3] + 1
+          goto Player4GravityCheck
+Player4NormalGravity
+          let playerY[3] = playerY[3] + 1
+Player4GravityCheck
           if playerY[3] < 80 then SkipPlayer4Jump
           let playerY[3] = 80 : playerState[3] = playerState[3] & 251
 SkipPlayer4Jump

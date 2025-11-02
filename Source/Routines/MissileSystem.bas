@@ -78,6 +78,17 @@ SpawnMissile
           rem Using individual variables for each player missile lifetime
           let missileLifetime[temp1] = temp7
           
+          rem Initialize velocity from character data for friction physics
+          let temp6  = CharacterMissileMomentumX[temp5]
+          rem Get base X velocity
+          let if temp4 = 0 then temp6  = 0 - temp6
+          rem Apply facing direction (left = negative)
+          let missileVelX[temp1] = temp6
+          
+          let temp6  = CharacterMissileMomentumY[temp5]
+          rem Get Y velocity
+          let missileVelY[temp1] = temp6
+          
           return
 
           rem =================================================================
@@ -115,37 +126,51 @@ UpdateOneMissile
           let if temp4  = 0 then return
           rem Not active, skip
           
-          rem Get character type to look up missile properties
-          let temp5  = playerChar[temp1]
+          rem Preserve player index since GetMissileFlags uses temp1
+          let temp7  = temp1
+          rem Save player index
           
-          rem Read missile momentum from character data (in Bank 6)
-          let temp1  = temp5
-          rem Character index for data lookup
-          gosub bank6 GetMissileMomentumX
-          let temp6  = temp2
-          rem Store base X momentum
-          let temp1  = temp5
-          rem Restore for Y lookup
-          gosub bank6 GetMissileMomentumY
-          let temp3  = temp2
-          rem Y momentum (already in correct form)
+          rem Get current velocities from stored arrays
+          let temp2  = missileVelX[temp7]
+          rem X velocity (already facing-adjusted from spawn)
+          let temp3  = missileVelY[temp7]
+          rem Y velocity
           
-          rem Apply facing direction to X momentum
-          let temp4  = playerState[temp1] & 1
-          rem Get facing direction
-          let if temp4 = 0 then temp2  = 0 - temp6 : goto FacingSet
-          let temp2  = temp6
-FacingSet
-          
-          rem Read missile flags from character data (in Bank 6)
+          rem Read missile flags from character data
+          let temp5  = playerChar[temp7]
+          rem Get character index
           let temp1  = temp5
+          rem Use temp1 for flags lookup (temp1 will be overwritten)
           gosub bank6 GetMissileFlags
-          let temp5  = temp2
-          rem Store flags for later use
+          let temp4  = temp2
+          rem Store flags in temp4
+          
+          rem Restore player index and get flags back
+          let temp1  = temp7
+          rem Restore player index
+          let temp5  = temp4
+          rem Restore flags to temp5
           
           rem Apply gravity if flag is set
-          let if temp5 & MissileFlagGravity then temp3 = temp3 + GravityPerFrame
+          if !(temp5 & MissileFlagGravity) then GravityDone
+          let temp3 = temp3 + GravityPerFrame
           rem Add gravity (1 pixel/frame down)
+          let missileVelY[temp1] = temp3
+          rem Update stored Y velocity
+GravityDone
+          
+          rem Apply friction if flag is set (curling stone deceleration)
+          if !(temp5 & MissileFlagFriction) then FrictionDone
+          let temp8  = missileVelX[temp1]
+          rem Get current X velocity
+          if temp8 > 0 then temp8 = temp8 - 1
+          if temp8 < 0 then temp8 = temp8 + 1
+          let missileVelX[temp1] = temp8
+          let temp2  = temp8
+          rem Update temp2 for position calculation
+          rem Check if velocity dropped below threshold
+          if temp8 < MinimumVelocityThreshold && temp8 > -MinimumVelocityThreshold then gosub DeactivateMissile : return
+FrictionDone
           
           rem Update missile position
           let missileX[temp1] = missileX[temp1] + temp2
@@ -160,12 +185,7 @@ FacingSet
           if !(temp5 & MissileFlagHitBackground) then PlayfieldCollisionDone
           gosub bank7 MissileCollPF
           if !temp4 then PlayfieldCollisionDone
-          let if temp5 & MissileFlagBounce then temp7 = missileVelX[temp1]
-          let if temp5 & MissileFlagBounce then temp7 = $FF - temp7 + 1
-          let if temp5 & MissileFlagBounce then gosub HalfTemp7
-          let if temp5 & MissileFlagBounce then missileVelX[temp1] = temp7
-          let if temp5 & MissileFlagBounce then gosub DeactivateMissile
-          let if temp5 & MissileFlagBounce then return
+          let if temp5 & MissileFlagBounce then gosub HandleMissileBounce
           gosub DeactivateMissile : return
 PlayfieldCollisionDone
           
@@ -363,6 +383,17 @@ HandleMissileHit
           rem Use playerDamage array for base damage amount
           let temp6  = playerDamage[temp1]
           
+          rem Apply dive damage bonus for Harpy
+          let if temp5 = 6 then HarpyCheckDive
+          goto DiveCheckDone
+HarpyCheckDive
+          rem Check if Harpy is in dive mode
+          let if (characterStateFlags[temp1] & 4) = 0 then DiveCheckDone
+          rem Not diving, skip bonus
+          rem Apply 1.5x damage for diving attacks
+          let temp6 = temp6 + (temp6 / 2)
+DiveCheckDone
+          
           rem Check if defender is guarding (bit 1 of playerState)
           let temp2  = playerState[temp4] & 2
           let if temp2 then temp1  = SoundGuard : gosub bank15 PlaySoundEffect : return
@@ -394,6 +425,34 @@ KnockbackDone
           rem Spawn damage indicator visual
           gosub bank8 VisualShowDamageIndicator
           
+          return
+
+          rem =================================================================
+          rem HANDLE MISSILE BOUNCE
+          rem =================================================================
+          rem Handles wall bounce for missiles with bounce flag set.
+
+          rem INPUT:
+          rem   temp1 = player index (0-3)
+          rem   temp5 = missile flags
+HandleMissileBounce
+          let temp7 = missileVelX[temp1]
+          rem Get current X velocity
+          let temp7 = $FF - temp7 + 1
+          rem Invert velocity (bounce back)
+          
+          rem Apply friction damping if friction flag is set
+          if !(temp5 & MissileFlagFriction) then BounceDone
+          rem Multiply by bounce multiplier for friction missiles
+          if temp7 > 0 then BounceMultiply
+          let temp7 = temp7 + (temp7 / BounceDampenDivisor)
+          goto BounceDone
+BounceMultiply
+          let temp7 = temp7 - (temp7 / BounceDampenDivisor)
+BounceDone
+          let missileVelX[temp1] = temp7
+          
+          rem Continue bouncing (don't deactivate)
           return
 
           rem =================================================================

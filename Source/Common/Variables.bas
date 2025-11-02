@@ -403,6 +403,18 @@
           dim playersEliminated = w012
           rem GAME: Eliminated player bit flags (SCRAM - low frequency access)
 
+          rem Character-specific state flags for special mechanics (SCRAM)
+          dim characterStateFlags = w013
+          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 character state bits (4 bytes)
+          rem Bit 0: RoboTito ceiling latched
+          rem Bit 1: Harpy in flight mode
+          rem Bit 2: Harpy in dive mode
+          rem Bit 3-7: Reserved for future character mechanics
+
+          rem Missile angular velocity for curling stone rotation (SCRAM)
+          dim missileAngularVel = w017
+          rem [0-3] angular velocity for rotation effects (4 bytes, reserved for future)
+
           rem =================================================================
           rem TODO / FUTURE EXPANSION
           rem =================================================================

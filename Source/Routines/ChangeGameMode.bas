@@ -16,7 +16,7 @@ ChangeGameMode
           
 SetupPublisherPreamble
           rem Publisher preamble (gameMode 0) - AtariToday.mscz
-          LET temp1 = SongPublisher
+          temp1 = SongPublisher
           gosub bank16 StartMusic
           rem Initialize preamble timer
           preambleTimer = 0
@@ -24,7 +24,7 @@ SetupPublisherPreamble
           
 SetupAuthorPreamble
           rem Author preamble (gameMode 1) - Interworldly.mscz
-          LET temp1 = SongAuthor
+          temp1 = SongAuthor
           gosub bank16 StartMusic
           rem Initialize preamble timer
           preambleTimer = 0
@@ -32,7 +32,7 @@ SetupAuthorPreamble
           
 SetupTitle
           rem Title screen (gameMode 2) - ChaosFight.mscz
-          LET temp1 = SongTitle
+          temp1 = SongTitle
           gosub bank16 StartMusic
           
           rem Initialize title screen state
@@ -99,7 +99,7 @@ SetupWinner
           rem Determine win/lose based on winnerPlayerIndex and play appropriate music
           rem TODO: Determine win vs lose state and set temp1 accordingly
           rem For now, default to Victory
-          LET temp1 = SongVictory
+          temp1 = SongVictory
           gosub bank16 StartMusic
           return
           

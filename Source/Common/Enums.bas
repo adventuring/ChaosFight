@@ -71,6 +71,11 @@
           const AnimAttackRecovery = 15
           rem Attack recovery
 
+          rem NOTE: RoboTito repurposes existing animation states:
+          rem AnimJumping (10) = Stretching upward
+          rem AnimFalling (11) = Latched to ceiling  
+          rem AnimLanding (12) = Retracting trunk
+
           rem =================================================================
           rem MISSILE FLAGS BITFIELD ENCODING
           rem =================================================================
@@ -88,6 +93,9 @@
           
           const MissileFlagBounce = 8
           rem Bit 3: Bounce off walls (1=bounce, 0=stop/hit)
+          
+          const MissileFlagFriction = 16
+          rem Bit 4: Apply friction physics (curling stone deceleration)
           
           rem Combined flags for common combinations
           const MissileFlagHitBoth = 3

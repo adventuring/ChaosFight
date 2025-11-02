@@ -243,7 +243,51 @@ RadishGoblinJump
           rem INPUT: temp1 = player index
           rem USES: playerY[temp1]
 RoboTitoJump
-          if playerY[temp1] > 10 then playerY[temp1] = playerY[temp1] - 3
+          rem RoboTito ceiling-stretch mechanic
+          rem Check if already latched to ceiling
+          let if (characterStateFlags[temp1] & 1) <> 0 then return
+          rem Already latched, ignore UP input
+          
+          rem Check if grounded (not jumping)
+          let if (playerState[temp1] & 4) <> 0 then RoboTitoStretching
+          rem Not grounded, stretching upward
+          goto RoboTitoStretching
+          
+RoboTitoStretching
+          rem Set stretching animation (repurposed AnimJumping = 10)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimJumping << ShiftAnimationState)
+          
+          rem Move upward 3 pixels per frame
+          if playerY[temp1] <= 5 then RoboTitoCheckCeiling
+          let playerY[temp1] = playerY[temp1] - 3
+          return
+          
+RoboTitoCheckCeiling
+          rem Check if ceiling contact using playfield collision
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          let temp2 = temp2 / 4
+          let if temp2 > 31 then temp2 = 31
+          let if temp2 < 0 then temp2 = 0
+          
+          rem Check row above player for ceiling
+          let temp3 = playerY[temp1]
+          let if temp3 <= 0 then RoboTitoLatch
+          let temp4 = temp3 / pfrowheight
+          let if temp4 <= 0 then RoboTitoLatch
+          let temp4 = temp4 - 1
+          if pfread(temp2, temp4) then RoboTitoLatch
+          
+          rem No ceiling contact, continue stretching
+          let playerY[temp1] = playerY[temp1] - 3
+          return
+          
+RoboTitoLatch
+          rem Ceiling contact detected - latch to ceiling
+          let characterStateFlags[temp1] = characterStateFlags[temp1] | 1
+          rem Set latched bit
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimFalling << ShiftAnimationState)
+          rem Set latched animation (repurposed AnimFalling = 11)
           return
 
           rem URSULO (14) - STANDARD JUMP (heavy weight)
@@ -415,7 +459,22 @@ RadishGoblinDown
 
           rem ROBO TITO (13) - GUARD
 RoboTitoDown
-          rem tail call
+          rem RoboTito voluntary drop from ceiling
+          rem Check if latched to ceiling
+          let if (characterStateFlags[temp1] & 1) = 0 then RoboTitoNotLatched
+          rem Not latched, proceed to guard
+          goto RoboTitoNotLatched
+          
+RoboTitoVoluntaryDrop
+          rem Release from ceiling on DOWN press
+          let characterStateFlags[temp1] = characterStateFlags[temp1] & 254
+          rem Clear latched bit (bit 0)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimFalling << ShiftAnimationState)
+          rem Set falling animation
+          return
+          
+RoboTitoNotLatched
+          rem Not latched, use standard guard
           goto StandardGuard
 
           rem URSULO (14) - GUARD

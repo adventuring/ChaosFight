@@ -105,6 +105,21 @@ MegaxAttack
 HarpyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
+          
+          rem Check if Harpy is airborne for diving attack
+          rem If jumping bit is set or Y position is above ground, Harpy is airborne
+          if (playerState[temp1] & 4) <> 0 then HarpyDive
+          rem Jumping bit set, airborne
+          let temp5 = playerY[temp1]
+          if temp5 < 60 then HarpyDive
+          rem Above ground level, airborne
+          goto HarpyNotDiving
+HarpyDive
+          rem Set dive mode flag for increased damage and normal gravity
+          let characterStateFlags[temp1] = characterStateFlags[temp1] | 4
+          rem Set bit 2 (dive mode)
+HarpyNotDiving
+          
           gosub PerformRangedAttack
           rem Spawns diagonal downward missile (velocity set in character data)
           return

@@ -120,8 +120,9 @@ end
           rem Values: 0-7 (top to bottom of 8-pixel tall sprite)
 
           rem  Bernie, Curler, Dragonet, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Note: Curler uses 15 for low-trajectory stone near ground
           data CharacterMissileEmissionHeights
-             3, 7, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
+             3, 15, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
           end
 
           rem =================================================================
@@ -133,7 +134,7 @@ end
 
           rem  Bernie, Curler, Dragonet, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileMomentumX
-             5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
+             5, 8, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
           end
 
           rem =================================================================
@@ -159,16 +160,18 @@ end
           rem   Bit 1: Hit player (0=pass through, 1=hit and disappear)
           rem   Bit 2: Apply gravity (0=no gravity, 1=affected by gravity)
           rem   Bit 3: Bounce off walls (0=stop/hit, 1=bounce)
-          rem   Bit 4-7: Reserved
+          rem   Bit 4: Apply friction (0=constant velocity, 1=decelerates)
+          rem   Bit 5-7: Reserved
           rem Values stored as packed bytes per character
 
           rem  Bernie, Curler, Dragonet, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           rem  Note: Bit 0=hit bg (MissileFlagHitBackground), Bit 1=hit player (MissileFlagHitPlayer), 
-          rem       Bit 2=gravity (MissileFlagGravity), Bit 3=bounce (MissileFlagBounce)
+          rem       Bit 2=gravity (MissileFlagGravity), Bit 3=bounce (MissileFlagBounce), Bit 4=friction (MissileFlagFriction)
           rem  Values use enum constants for bitfield encoding (see Enums.bas)
+          rem  Curler = MissileFlagHitPlayer|MissileFlagGravity|MissileFlagBounce|MissileFlagFriction = 2+4+8+16 = 30
           data CharacterMissileFlags
-              %00000000, %00000011, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
-          rem  0,      MissileFlagHitBoth, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0
+              %00000000, %00011110, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
+          rem  0,      Curler(30), MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0
           end
 
           rem =================================================================

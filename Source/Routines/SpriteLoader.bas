@@ -365,26 +365,26 @@ PerLineFlashing
 
 PlayerIndexColors
           rem Solid player index colors (bright)
-          if ! temp3 then LET temp6 = ColIndigo(14) : goto SetColor
-          if temp3 = 1 then LET temp6 = ColRed(14) : goto SetColor
-          if temp3 = 2 then LET temp6 = ColYellow(14) : goto SetColor
-          let temp6 = ColGreen(14)
+          if ! temp3 then temp6 = ColIndigo(14) : goto SetColor
+          if temp3 = 1 then temp6 = ColRed(14) : goto SetColor
+          if temp3 = 2 then temp6 = ColYellow(14) : goto SetColor
+          temp6 = ColGreen(14)
 
           goto SetColor
 
 PlayerIndexColorsDim
           rem Dimmed player index colors
-          if ! temp3 then LET temp6 = ColIndigo(6) : goto SetColor
-          if temp3 = 1 then LET temp6 = ColRed(6) : goto SetColor
-          if temp3 = 2 then LET temp6 = ColYellow(6) : goto SetColor
-          let temp6 = ColGreen(6)
+          if ! temp3 then temp6 = ColIndigo(6) : goto SetColor
+          if temp3 = 1 then temp6 = ColRed(6) : goto SetColor
+          if temp3 = 2 then temp6 = ColYellow(6) : goto SetColor
+          temp6 = ColGreen(6)
 
           goto SetColor
 
 HurtColor
 #ifdef TV_SECAM
           rem SECAM hurt is always magenta
-          let temp6 = ColMagenta(10)
+          temp6 = ColMagenta(10)
           goto SetColor
 #else
           rem Dimmed version of normal color: use dim player index color as fallback

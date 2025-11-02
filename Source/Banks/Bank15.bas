@@ -57,8 +57,8 @@
           rem Output: SoundPointerL, SoundPointerH = pointer to Sound_Voice0 stream
 LoadSoundPointer
           rem Use array access to lookup pointer
-          LET SoundPointerL = SoundPointersL[temp1]
-          LET SoundPointerH = SoundPointersH[temp1]
+          SoundPointerL = SoundPointersL[temp1]
+          SoundPointerH = SoundPointersH[temp1]
           return
           
           rem Load next note from sound effect stream using assembly for pointer access
@@ -85,9 +85,9 @@ LoadSoundNote
           if temp4 = 0 then SoundEffectPointerH = 0 : AUDV0 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
-          LET temp6 = temp2 & %11110000
-          LET temp6 = temp6 / 16
-          LET temp7 = temp2 & %00001111
+          temp6 = temp2 & %11110000
+          temp6 = temp6 / 16
+          temp7 = temp2 & %00001111
           
           rem Write to TIA registers (use Voice 0 for sound effects)
           AUDC0 = temp6
@@ -95,12 +95,12 @@ LoadSoundNote
           AUDV0 = temp7
           
           rem Set frame counter = Duration + Delay
-          LET SoundEffectFrame = temp4 + temp5
+          SoundEffectFrame = temp4 + temp5
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          LET temp2 = SoundEffectPointerL
-          LET SoundEffectPointerL = temp2 + 4
-          if SoundEffectPointerL < temp2 then LET SoundEffectPointerH = SoundEffectPointerH + 1
+          temp2 = SoundEffectPointerL
+          SoundEffectPointerL = temp2 + 4
+          if SoundEffectPointerL < temp2 then SoundEffectPointerH = SoundEffectPointerH + 1
           
           return
 

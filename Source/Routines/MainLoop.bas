@@ -14,7 +14,8 @@ MainLoopContinue
           rem Call music handler for preambles and title screen, sound handler for game modes
           if gameMode < 3 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
           if gameMode = 7 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
-          gosub bank15 PlaySoundEffect
+          rem Game mode (6) - update sound effects in game loop
+          gosub bank15 UpdateSoundEffect
 MainLoopDrawScreen
           drawscreen
           goto MainLoop

@@ -258,7 +258,7 @@ SkipPlayer4Flash
           rem FIXME: This code may not implement the requirements at all.
           
 DrawHealthBars
-          dim HealthBarLength = temp5
+          dim PR_healthBarLength = temp5
           
           rem Calculate effective B&W mode (accounts for 7800 Pause toggle)
 #ifdef TV_SECAM
@@ -268,9 +268,9 @@ DrawHealthBars
           let temp6 = switchbw ^ colorBWOverride
           
           rem Draw Player 1 health bar
-          let HealthBarLength = playerHealth[0] / 3 
+          let PR_healthBarLength = playerHealth[0] / 3 
           rem Scale 0-100 to 0-32
-          if HealthBarLength > 32 then LET HealthBarLength = 32
+          if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
           if temp6 then
           COLUPF = ColGrey(14) 
           rem White (B&W)
@@ -281,8 +281,8 @@ DrawHealthBars
           gosub bank8 DrawHealthBarRow0
           
           rem Draw Player 2 health bar
-          let HealthBarLength = playerHealth[1] / 3
-          if HealthBarLength > 32 then LET HealthBarLength = 32
+          let PR_healthBarLength = playerHealth[1] / 3
+          if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
           if temp6 then
           COLUPF = ColGrey(10) 
           rem Medium-bright grey (B&W)
@@ -298,8 +298,8 @@ DrawP3P4Health
           if selectedChar3 <> 255 && playerHealth[2] > 0 then goto DrawP3Health else goto SkipP3Health
 DrawP3Health
           rem Player 3 health bar
-          let HealthBarLength = playerHealth[2] / 3
-          if HealthBarLength > 32 then LET HealthBarLength = 32
+          let PR_healthBarLength = playerHealth[2] / 3
+          if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
           if temp6 then COLUPF = ColGrey(8) else COLUPF = ColYellow(12)
           rem Medium grey (B&W) or Bright yellow (Color)
           gosub bank8 DrawHealthBarRow2
@@ -308,8 +308,8 @@ SkipP3Health
           if selectedChar4 <> 255 && playerHealth[3] > 0 then goto DrawP4Health else goto SkipP4Health
 DrawP4Health
           rem Player 4 health bar
-          let HealthBarLength = playerHealth[3] / 3
-          if HealthBarLength > 32 then LET HealthBarLength = 32
+          let PR_healthBarLength = playerHealth[3] / 3
+          if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
           if temp6 then COLUPF = ColGrey(6) else COLUPF = ColGreen(12)
           rem Dark-medium grey (B&W) or Bright green (Color)
           gosub bank8 DrawHealthBarRow3
@@ -324,7 +324,7 @@ SkipP3P4Health
           rem HEALTH BAR ROW DRAWING HELPERS
           rem =================================================================
           rem These subroutines draw a single row of health bar at different
-          rem Y positions. They use HealthBarLength (temp6) to determine width.
+          rem Y positions. They use PR_healthBarLength (temp6) to determine width.
 
 DrawHealthBarRow0
           rem Draw health bar at row 0 (top of screen)
@@ -339,9 +339,9 @@ DrawHealthBarRow0
           rem pfpixel 28 0 off : pfpixel 29 0 off : pfpixel 30 0 off : pfpixel 31 0 off
           
           rem Draw filled portion
-          dim PixelIndex = temp7
-          for PixelIndex = 0 to HealthBarLength
-          rem pfpixel PixelIndex 0 on
+          dim PR_pixelIndex = temp7
+          for PR_pixelIndex = 0 to PR_healthBarLength
+          rem pfpixel PR_pixelIndex 0 on
           next
           return
 
@@ -356,9 +356,9 @@ DrawHealthBarRow1
           rem pfpixel 24 1 off : pfpixel 25 1 off : pfpixel 26 1 off : pfpixel 27 1 off
           rem pfpixel 28 1 off : pfpixel 29 1 off : pfpixel 30 1 off : pfpixel 31 1 off
           
-          dim PixelIndex = temp7
-          for PixelIndex = 0 to HealthBarLength
-          rem pfpixel PixelIndex 1 on
+          dim PR_pixelIndex = temp7
+          for PR_pixelIndex = 0 to PR_healthBarLength
+          rem pfpixel PR_pixelIndex 1 on
           next
           return
 
@@ -373,9 +373,9 @@ DrawHealthBarRow2
           rem pfpixel 24 2 off : pfpixel 25 2 off : pfpixel 26 2 off : pfpixel 27 2 off
           rem pfpixel 28 2 off : pfpixel 29 2 off : pfpixel 30 2 off : pfpixel 31 2 off
           
-          dim PixelIndex = temp7
-          for PixelIndex = 0 to HealthBarLength
-          rem pfpixel PixelIndex 2 on
+          dim PR_pixelIndex = temp7
+          for PR_pixelIndex = 0 to PR_healthBarLength
+          rem pfpixel PR_pixelIndex 2 on
           next
           return
 
@@ -390,9 +390,9 @@ DrawHealthBarRow3
           rem pfpixel 24 3 off : pfpixel 25 3 off : pfpixel 26 3 off : pfpixel 27 3 off
           rem pfpixel 28 3 off : pfpixel 29 3 off : pfpixel 30 3 off : pfpixel 31 3 off
           
-          dim PixelIndex = temp7
-          for PixelIndex = 0 to HealthBarLength
-          rem pfpixel PixelIndex 3 on
+          dim PR_pixelIndex = temp7
+          for PR_pixelIndex = 0 to PR_healthBarLength
+          rem pfpixel PR_pixelIndex 3 on
           next
           return
 

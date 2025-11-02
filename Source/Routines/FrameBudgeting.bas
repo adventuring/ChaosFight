@@ -74,36 +74,36 @@ SkipPlayer3HealthUpdate
 
           rem Update Player 1 health bar
 UpdateHealthBarPlayer0
-          dim HealthBarLength = temp6
-          HealthBarLength = playerHealth[0] / 3
-          if HealthBarLength > 32 then HealthBarLength = 32
+          dim FB_healthBarLength = temp6
+          FB_healthBarLength = playerHealth[0] / 3
+          if FB_healthBarLength > 32 then FB_healthBarLength = 32
           COLUPF = ColBlue(12)
           gosub bank8 DrawHealthBarRow0
           return
 
           rem Update Player 2 health bar
 UpdateHealthBarPlayer1
-          dim HealthBarLength = temp6
-          HealthBarLength = playerHealth[1] / 3
-          if HealthBarLength > 32 then HealthBarLength = 32
+          dim FB_healthBarLength = temp6
+          FB_healthBarLength = playerHealth[1] / 3
+          if FB_healthBarLength > 32 then FB_healthBarLength = 32
           COLUPF = ColRed(12)
           gosub bank8 DrawHealthBarRow1
           return
 
           rem Update Player 3 health bar
 UpdateHealthBarPlayer2
-          dim HealthBarLength = temp6
-          HealthBarLength = playerHealth[2] / 3
-          if HealthBarLength > 32 then HealthBarLength = 32
+          dim FB_healthBarLength = temp6
+          FB_healthBarLength = playerHealth[2] / 3
+          if FB_healthBarLength > 32 then FB_healthBarLength = 32
           COLUPF = ColYellow(12)
           gosub bank8 DrawHealthBarRow2
           return
 
           rem Update Player 4 health bar
 UpdateHealthBarPlayer3
-          dim HealthBarLength = temp6
-          HealthBarLength = playerHealth[3] / 3
-          if HealthBarLength > 32 then HealthBarLength = 32
+          dim FB_healthBarLength = temp6
+          FB_healthBarLength = playerHealth[3] / 3
+          if FB_healthBarLength > 32 then FB_healthBarLength = 32
           COLUPF = ColGreen(12)
           gosub bank8 DrawHealthBarRow3
           return

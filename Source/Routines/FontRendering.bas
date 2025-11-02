@@ -65,8 +65,8 @@ DrawDigit
           if temp1 > 15 then temp1 = 15
           
           rem Calculate data offset: digit * 16 (16 bytes per digit)
-          dim DigitOffset = temp6
-          DigitOffset = temp1 * 16
+          dim FR_digitOffset = temp6
+          FR_digitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
 if temp5 = 0 then 
@@ -156,38 +156,38 @@ end
           rem Player colors are looked up from a table.
 DrawPlayerNumber
           rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
-          dim PlayerDigit = temp1
-          PlayerDigit = temp1 + 1
+          dim FR_playerDigit = temp1
+          FR_playerDigit = temp1 + 1
           
           rem Look up player color
-          dim PlayerColor = temp4
+          dim FR_playerColor = temp4
           on temp1 goto SetP1Color, SetP2Color, SetP3Color, SetP4Color
           
 SetP1Color
-          PlayerColor = $96 
+          FR_playerColor = $96 
           rem Blue
           goto DrawPlayerDigitNow
           
 SetP2Color
-          PlayerColor = $36 
+          FR_playerColor = $36 
           rem Red
           goto DrawPlayerDigitNow
           
 SetP3Color
-          PlayerColor = $1E 
+          FR_playerColor = $1E 
           rem Yellow
           goto DrawPlayerDigitNow
           
 SetP4Color
-          PlayerColor = $C6 
+          FR_playerColor = $C6 
           rem Green
           goto DrawPlayerDigitNow
           
 DrawPlayerDigitNow
           rem Set up parameters for DrawDigit
-          temp1 = PlayerDigit
+          temp1 = FR_playerDigit
           rem temp2, temp3, temp5 already set by caller
-          temp4 = PlayerColor
+          temp4 = FR_playerColor
           gosub DrawDigit
           return
 

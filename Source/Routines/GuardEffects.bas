@@ -25,29 +25,30 @@ ApplyGuardFlashing
           
           rem Flash every 4 frames for visible effect
           let temp3  = frame & 3
-if temp3 < 2 then 
+          if temp3 >= 2 then goto GuardNormalPhase
           rem Flash phase - set light cyan color
 #ifdef TV_SECAM
           rem SECAM uses player-based colors (always cyan for guard)
-          let if temp1 = 0 then COLUP0  = $C0
+          if temp1 = 0 then COLUP0 = $C0
           rem Player 1 - Cyan
-          let if temp1 = 1 then COLUP1  = $C0
+          if temp1 = 1 then COLUP1 = $C0
           rem Player 2 - Cyan
           rem Players 3 & 4: Missiles inherit colors from COLUP0/COLUP1
           rem Cannot set missile colors independently - see Issue #73
 #else
           rem NTSC/PAL - light cyan ColCyan(12)
-          let if temp1 = 0 then COLUP0  = ColCyan(12)
+          if temp1 = 0 then COLUP0 = ColCyan(12)
           rem Player 1
-          let if temp1 = 1 then COLUP1  = ColCyan(12)
+          if temp1 = 1 then COLUP1 = ColCyan(12)
           rem Player 2
           rem Players 3 & 4: Missiles inherit colors from COLUP0/COLUP1
           rem Cannot set missile colors independently - see Issue #73
+#endif
+          return
 
+GuardNormalPhase
           rem Normal phase - restore normal player colors
           gosub RestoreNormalPlayerColor
-          
-          
           return
 
           rem =================================================================
@@ -60,13 +61,12 @@ RestoreNormalPlayerColor
           let temp4  = playerChar[temp1]
           
           rem Restore normal player colors based on player index
-          let if temp1 = 0 then COLUP0  = $0E
+          if temp1 = 0 then COLUP0 = $0E
           rem Player 1 - Blue
-          let if temp1 = 1 then COLUP1  = $32
+          if temp1 = 1 then COLUP1 = $32
           rem Player 2 - Red  
           rem Players 3 & 4: Missiles inherit colors from COLUP0/COLUP1
           rem Cannot restore missile colors independently - see Issue #73
-          
           return
 
           rem =================================================================
@@ -77,25 +77,22 @@ RestoreNormalPlayerColor
           rem OUTPUT: temp2 = 1 if guard allowed, 0 if in cooldown
 CheckGuardCooldown
           rem Check if player is currently guarding
-          let temp3  = playerState[temp1] & 2
-if temp3 then 
-          rem Currently guarding - not allowed to start new guard
-          let temp2  = 0
-          return
-          
+          let temp3 = playerState[temp1] & 2
+          if temp3 then goto GuardCooldownBlocked
           
           rem Check cooldown timer (stored in playerTimers array)
           rem playerTimers[temp1] stores frames remaining in cooldown
-          let temp3  = playerTimers[temp1]
+          let temp3 = playerTimers[temp1]
           
-if temp3 > 0 then 
-          rem Still in cooldown
-          let temp2  = 0
-
+          if temp3 > 0 then goto GuardCooldownBlocked
+          
           rem Cooldown expired, guard allowed
-          let temp2  = 1
-          
-          
+          let temp2 = 1
+          return
+
+GuardCooldownBlocked
+          rem Currently guarding or in cooldown - not allowed to start new guard
+          let temp2 = 0
           return
 
           rem =================================================================
@@ -134,57 +131,38 @@ UpdateGuardTimers
 
 UpdateSingleGuardTimer
           rem Check if player is guarding
-          let temp2  = playerState[temp1] & 2
-if temp2 then 
+          let temp2 = playerState[temp1] & 2
+          if temp2 then goto UpdateGuardTimerActive
+          
+          rem Player not guarding - decrement cooldown timer
+          let temp3 = playerTimers[temp1]
+          if temp3 > 0 then goto DecrementCooldown
+          return
+
+DecrementCooldown
+          let temp3 = temp3 - 1
+          let playerTimers[temp1] = temp3
+          return
+
+UpdateGuardTimerActive
           rem Player is guarding - decrement guard duration
-          let temp3  = playerState[temp1] & %11100000
+          let temp3 = playerState[temp1] & %11100000
           rem Get timer bits
-          let temp3  = temp3 - %00100000
+          let temp3 = temp3 - %00100000
           rem Decrement by 8 frames
-if temp3 <= 0 then 
+          if temp3 > 0 then goto UpdateGuardTimerContinue
+          
           rem Guard duration expired
           let playerState[temp1] = playerState[temp1] & %11111101
           rem Clear guard bit
           rem Start cooldown timer (60 frames)
           let playerTimers[temp1] = 60
+          return
 
+UpdateGuardTimerContinue
           rem Update guard timer
-          let temp4  = playerState[temp1] & %00011111
+          let temp4 = playerState[temp1] & %00011111
           rem Keep lower bits
           let playerState[temp1] = temp4 | temp3
           rem Combine with new timer
-          
-
-          rem Player not guarding - decrement cooldown timer
-          let temp3  = playerTimers[temp1]
-          
-if temp3 > 0 then 
-          let temp3  = temp3 - 1
-          let playerTimers[temp1] = temp3
-          
-          
-          
           return
-
-          return
-          
-          
-          rem Check cooldown timer (stored in playerTimers array)
-          rem playerTimers[temp1] stores frames remaining in cooldown
-          let temp3  = playerTimers[temp1]
-          
-if temp3 > 0 then 
-          rem Still in cooldown
-          let temp2  = 0
-
-          rem Cooldown expired, guard allowed
-          let temp2  = 1
-          
-          
-          return
-
-          rem =================================================================
-          rem START GUARD
-          rem =================================================================
-          rem Activates guard state with proper timing
-          rem INPUT: temp1 = player index (0-3)

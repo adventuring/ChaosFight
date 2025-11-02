@@ -321,12 +321,10 @@
           rem Using alias: playerTimers = playerAttackCooldown (same 4 bytes)
           rem Actually, playerTimers needs its own space - using remaining standard RAM
           rem But we're at var44-var47 already used... need to check what's available
-          rem SOLUTION: playerTimers[0-3] uses SCRAM (r004-r007, w004-w007)
+          rem SOLUTION: playerTimers[0-3] uses SCRAM w004-w007
           dim playerTimers = w004
-          dim playerTimers_R = r004
-          rem Game Mode: Player timers array [0]=P1, [1]=P2, [2]=P3, [3]=P4 (SCRAM w004-w007 / r004-r007)
+          rem Game Mode: Player timers array [0]=P1, [1]=P2, [2]=P3, [3]=P4 (SCRAM w004-w007)
           rem NOTE: batariBASIC uses array syntax - playerTimers[0] = w004, playerTimers[1] = w005, etc.
-          rem NOTE: SCRAM variables must use w004-w007 for writes, r004-r007 for reads
           
           rem Game Mode: Base damage per hit - calculated from character data, stored temporarily
           rem NOTE: Can be looked up from character data tables rather than stored persistently

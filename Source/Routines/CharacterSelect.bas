@@ -563,6 +563,9 @@ SelDetectQuad
           rem Check right side: if INPT3 is LOW then not detected
           if !INPT3{7} then goto SelQuadAbsent
           
+          rem All checks passed - Quadtari detected
+          goto SelSkipQuadAbs
+
 SelQuadAbsent
           rem Quadtari not detected - could set visual indicator
           rem COLUBK = $40  ; red background if desired

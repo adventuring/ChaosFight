@@ -311,3 +311,99 @@ OVERSCAN
 	endif ;mk_player_on
 
 
+
+ #ifconst mk_48x1_1_on
+	include "titlescreen/48x1_1_image.s"
+ #endif
+ #ifconst mk_48x1_2_on
+	include "titlescreen/48x1_2_image.s"
+ #endif
+ #ifconst mk_48x1_3_on
+	include "titlescreen/48x1_3_image.s"
+ #endif
+ #ifconst mk_48x1_4_on
+	include "titlescreen/48x1_4_image.s"
+ #endif
+ #ifconst mk_48x1_5_on
+	include "titlescreen/48x1_5_image.s"
+ #endif
+ #ifconst mk_48x1_6_on
+	include "titlescreen/48x1_6_image.s"
+ #endif
+ #ifconst mk_48x1_7_on
+	include "titlescreen/48x1_7_image.s"
+ #endif
+ #ifconst mk_48x1_8_on
+	include "titlescreen/48x1_8_image.s"
+ #endif
+
+
+ #ifconst mk_48x2_1_on
+	include "titlescreen/48x2_1_image.s"
+ #endif
+ #ifconst mk_48x2_2_on
+	include "titlescreen/48x2_2_image.s"
+ #endif
+ #ifconst mk_48x2_3_on
+	include "titlescreen/48x2_3_image.s"
+ #endif
+ #ifconst mk_48x2_4_on
+	include "titlescreen/48x2_4_image.s"
+ #endif
+ #ifconst mk_48x2_5_on
+	include "titlescreen/48x2_5_image.s"
+ #endif
+ #ifconst mk_48x2_6_on
+	include "titlescreen/48x2_6_image.s"
+ #endif
+ #ifconst mk_48x2_7_on
+	include "titlescreen/48x2_7_image.s"
+ #endif
+
+ #ifconst mk_48x2_8_on
+	include "titlescreen/48x2_8_image.s"
+ #endif
+
+
+ #ifconst mk_96x2_1_on
+	include "titlescreen/96x2_1_image.s"
+ #endif
+ #ifconst mk_96x2_2_on
+	include "titlescreen/96x2_2_image.s"
+ #endif
+ #ifconst mk_96x2_3_on
+	include "titlescreen/96x2_3_image.s"
+ #endif
+ #ifconst mk_96x2_4_on
+	include "titlescreen/96x2_4_image.s"
+ #endif
+ #ifconst mk_96x2_5_on
+	include "titlescreen/96x2_5_image.s"
+ #endif
+ #ifconst mk_96x2_6_on
+	include "titlescreen/96x2_6_image.s"
+ #endif
+ #ifconst mk_96x2_7_on
+	include "titlescreen/96x2_7_image.s"
+ #endif
+ #ifconst mk_96x2_8_on
+	include "titlescreen/96x2_8_image.s"
+ #endif
+
+ #ifconst mk_player_on
+	include "titlescreen/player_image.s"
+ #endif
+
+ #ifconst mk_score_on
+	include "titlescreen/score_image.s"
+ #endif
+
+ #ifconst mk_gameselect_on
+	include "titlescreen/gameselect_image.s"
+ #endif
+
+ #ifconst mk_player_on
+	include "titlescreen/asm/player_kernel.s"
+ #endif ;mk_player_on
+
+

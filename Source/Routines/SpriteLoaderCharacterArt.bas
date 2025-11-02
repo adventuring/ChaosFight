@@ -88,3 +88,22 @@ SetPlayerCharacterArt
           gosub LocateCharacterArt
           return
 
+
+          rem temp9 = bank-relative index (0-7)
+          rem temp2 = animation frame, temp3 = action
+          rem Copy player number to temp8 for bank routine
+          let temp8 = temp7
+          rem Bank routine expects: temp9=char, temp2=frame, temp3=action, temp8=player
+          gosub bank5 SetPlayerCharacterArtBank5
+          return
+          
+          rem =================================================================
+          rem SET PLAYER CHARACTER ART (batariBASIC interface)
+          rem =================================================================
+          rem Convenience function that calls LocateCharacterArt
+          rem Input: temp1 = character index, temp2 = animation frame
+          rem        temp3 = action, temp7 = player number
+SetPlayerCharacterArt
+          gosub LocateCharacterArt
+          return
+

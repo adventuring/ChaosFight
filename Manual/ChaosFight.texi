@@ -198,7 +198,7 @@ Jump
 Guard
 @item Fire Button
 Attack. Also used for character and level selection.
-@end table
+@end itemize
 
 Plug Player 1 into left port, Player 2 into right port.
 
@@ -658,7 +658,7 @@ Zephyr Pocock (Grizzards, Phantasia; for additional art and music)
 @item
 Philip ``Splendidnut'' Blackman (batariBasic assistance)
 @item
-James Earl O'Brian and Tanya O'Brian (and Darcy and Aerlan) (ZeroPage Homebrew)
+James Earl O'Brian and Tanya O'Brian, and Darcy and Aerlan (ZeroPage Homebrew)
 @item
 AtariAge and Atari community
 @item

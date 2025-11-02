@@ -33,11 +33,11 @@ AnimationSkipPlayer3
           rem Uses per-sprite 10fps counter (AnimationCounter), NOT global frame counter
 UpdatePlayerAnimation
           rem Skip if player is eliminated
+          rem PlayersEliminated is authoritative - set when health reaches 0
           if temp1 = 0 && PlayersEliminated & 1 then return
           if temp1 = 1 && PlayersEliminated & 2 then return
           if temp1 = 2 && PlayersEliminated & 4 then return
           if temp1 = 3 && PlayersEliminated & 8 then return
-          if PlayerHealth[temp1] = 0 then return
           
           rem Increment this sprite 10fps animation counter (NOT global frame counter)
           let AnimationCounter[temp1] = AnimationCounter[temp1] + 1

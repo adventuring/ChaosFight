@@ -181,8 +181,8 @@ if PlayerX[0] < PlayerX[1] then
           
           rem Check Player 1 vs Player 3
 if SelectedChar3 <> 255 then 
-          if PlayerX[0] >= PlayerX[2] then Distance = PlayerX[0] - PlayerX[2] else Distance = PlayerX[2] - PlayerX[0]
-if Distance < 16 then 
+          if PlayerX[0] >= PlayerX[2] then temp2 = PlayerX[0] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[0]
+if temp2 < 16 then 
 if PlayerX[0] < PlayerX[2] then 
           PlayerX[0] = PlayerX[0] - 1
           PlayerX[2] = PlayerX[2] + 1
@@ -195,8 +195,8 @@ if PlayerX[0] < PlayerX[2] then
           
           rem Check Player 1 vs Player 4
 if SelectedChar4 <> 255 then 
-          if PlayerX[0] >= PlayerX[3] then Distance = PlayerX[0] - PlayerX[3] else Distance = PlayerX[3] - PlayerX[0]
-if Distance < 16 then 
+          if PlayerX[0] >= PlayerX[3] then temp2 = PlayerX[0] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[0]
+if temp2 < 16 then 
 if PlayerX[0] < PlayerX[3] then 
           PlayerX[0] = PlayerX[0] - 1
           PlayerX[3] = PlayerX[3] + 1
@@ -209,8 +209,8 @@ if PlayerX[0] < PlayerX[3] then
           
           rem Check Player 2 vs Player 3
 if SelectedChar3 <> 255 then 
-          if PlayerX[1] >= PlayerX[2] then Distance = PlayerX[1] - PlayerX[2] else Distance = PlayerX[2] - PlayerX[1]
-if Distance < 16 then 
+          if PlayerX[1] >= PlayerX[2] then temp2 = PlayerX[1] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[1]
+if temp2 < 16 then 
 if PlayerX[1] < PlayerX[2] then 
           PlayerX[1] = PlayerX[1] - 1
           PlayerX[2] = PlayerX[2] + 1
@@ -223,8 +223,8 @@ if PlayerX[1] < PlayerX[2] then
           
           rem Check Player 2 vs Player 4
 if SelectedChar4 <> 255 then 
-          if PlayerX[1] >= PlayerX[3] then Distance = PlayerX[1] - PlayerX[3] else Distance = PlayerX[3] - PlayerX[1]
-if Distance < 16 then 
+          if PlayerX[1] >= PlayerX[3] then temp2 = PlayerX[1] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[1]
+if temp2 < 16 then 
 if PlayerX[1] < PlayerX[3] then 
           PlayerX[1] = PlayerX[1] - 1
           PlayerX[3] = PlayerX[3] + 1
@@ -238,8 +238,8 @@ if PlayerX[1] < PlayerX[3] then
           rem Check Player 3 vs Player 4
 if SelectedChar3 = 255 then goto SkipP3vsP4
 if SelectedChar4 = 255 then goto SkipP3vsP4 
-          if PlayerX[2] >= PlayerX[3] then Distance = PlayerX[2] - PlayerX[3] else Distance = PlayerX[3] - PlayerX[2]
-if Distance < 16 then 
+          if PlayerX[2] >= PlayerX[3] then temp2 = PlayerX[2] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[2]
+if temp2 < 16 then 
 if PlayerX[2] < PlayerX[3] then 
           PlayerX[2] = PlayerX[2] - 1
           PlayerX[3] = PlayerX[3] + 1

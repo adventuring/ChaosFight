@@ -147,8 +147,20 @@ SkipFramePhaseChecks
           rem Individual collision check routines
 CheckCollisionP1vsP2
           if playerX[0] >= playerX[1] then temp2 = playerX[0] - playerX[1] else temp2 = playerX[1] - playerX[0]
-          if temp2 < 16 then if playerX[0] < playerX[1] then playerX[0] = playerX[0] - 1 : playerX[1] = playerX[1] + 1 : goto SkipPlayerSeparation
-          if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[1] = playerX[1] - 1
+          if temp2 >= 16 then goto SkipPlayerSeparation
+          
+          rem Separate players based on their relative positions
+          rem If P0 is left of P1, move P0 left and P1 right
+          if playerX[0] < playerX[1] then goto SeparateP0Left
+          
+          rem Else P0 is right of P1, move P0 right and P1 left
+          playerX[0] = playerX[0] + 1
+          playerX[1] = playerX[1] - 1
+          goto SkipPlayerSeparation
+
+SeparateP0Left
+          playerX[0] = playerX[0] - 1
+          playerX[1] = playerX[1] + 1
 SkipPlayerSeparation
           
           return

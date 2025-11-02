@@ -135,7 +135,7 @@ DragonetJump
           rem Set jumping flag for animation
           return
 
-          rem EXO PILOT (3) - STANDARD JUMP (light weight, high jump)
+          rem ZOE RYEN (3) - STANDARD JUMP (light weight, high jump)
 EXOJump
           let playerY[temp1] = playerY[temp1] - 12
           rem Lighter character, higher jump
@@ -276,7 +276,7 @@ DragonetDown
           rem tail call
           goto StandardGuard
 
-          rem EXO PILOT (3) - GUARD
+          rem ZOE RYEN (3) - GUARD
 EXODown
           rem tail call
           goto StandardGuard

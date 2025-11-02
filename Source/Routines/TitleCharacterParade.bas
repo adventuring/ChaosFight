@@ -21,7 +21,7 @@
 
           rem CHARACTER INDICES:
           rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
-          rem   6=Harpy, 7=Knight, 8=Magical Faerie, 9=Mystery, 10=Ninjish,
+          rem   6=Harpy, 7=Knight Guy, 8=Frooty, 9=Nefertem, 10=Ninjish Guy,
           rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
           rem =================================================================
 
@@ -102,7 +102,7 @@ SetChar2
           rem Dragonet
 SetChar3
           COLUP0 = ColGreen(12) : return   
-          rem EXO Pilot
+          rem Zoe Ryen
 SetChar4
           COLUP0 = ColOrange(12) : return  
           rem Fat Tony
@@ -117,10 +117,10 @@ SetChar7
           rem Knight Guy
 SetChar8
           COLUP0 = ColMagenta(12) : return 
-          rem Magical Faerie
+          rem Frooty
 SetChar9
           COLUP0 = ColLime(12) : return    
-          rem Mystery Man
+          rem Nefertem
 SetChar10
           COLUP0 = ColNavy(12) : return    
           rem Ninjish Guy

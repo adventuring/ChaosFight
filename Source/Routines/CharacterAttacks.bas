@@ -72,7 +72,7 @@ DragonetAttack
           return
 
           rem =================================================================
-          rem EXO PILOT (Character 3) - Ranged Attack
+          rem ZOE RYEN (Character 3) - Ranged Attack
           rem =================================================================
 ZoeRyenAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << ShiftAnimationState) 
@@ -119,7 +119,7 @@ KnightGuyAttack
           return
 
           rem =================================================================
-          rem MAGICAL FAERIE (Character 8) - Ranged Attack
+          rem FROOTY (Character 8) - Ranged Attack
           rem =================================================================
 FrootyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << ShiftAnimationState) 

@@ -107,8 +107,7 @@ GetCharacterDamage
           temp2 = 22 
           rem Heavy characters
 GetCharacterDamageEnd
-          return
-          
+          return          
           rem =================================================================
           rem GET MISSILE WIDTH
           rem =================================================================

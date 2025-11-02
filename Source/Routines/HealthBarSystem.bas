@@ -73,13 +73,23 @@ UpdatePlayer34HealthBars
           if !(controllerStatus & SetPlayers34Active) then return
           
           rem Get Player 3 health (0-100), clamp to 99
+          rem Hide if inactive (selectedChar = 255) or eliminated
           temp1 = playerHealth[2]
           if selectedChar3 = 255 then temp1 = 0
+          rem Check if Player 3 is eliminated (bit 2 of playersEliminated = 4)
+          temp3 = playersEliminated & 4
+          if temp3 then temp1 = 0
+          rem Hide digits if eliminated or inactive
           if temp1 > PlayerHealthMax - 1 then temp1 = PlayerHealthMax - 1
           
           rem Get Player 4 health (0-100), clamp to 99
+          rem Hide if inactive (selectedChar = 255) or eliminated
           temp2 = playerHealth[3]
           if selectedChar4 = 255 then temp2 = 0
+          rem Check if Player 4 is eliminated (bit 3 of playersEliminated = 8)
+          temp3 = playersEliminated & 8
+          if temp3 then temp2 = 0
+          rem Hide digits if eliminated or inactive
           if temp2 > 99 then temp2 = 99
           
           rem Format score as: P3Health * 10000 + P4Health
@@ -113,13 +123,15 @@ UpdatePlayer34HealthBars
           rem temp6 now contains P4 health as BCD (e.g., $50 for 50)
           
           rem Set score for XX00XX format using assembly to directly set BCD bytes
-          rem score (high byte, digits 0-1) = P3 BCD (temp5)
-          rem score+1 (middle byte, digits 2-3) = $00 (zeros)
-          rem score+2 (low byte, digits 4-5) = P4 BCD (temp6)
+          rem score (high byte, digits 0-1) = P3 BCD (temp5) or $00 if inactive/eliminated
+          rem score+1 (middle byte, digits 2-3) = $00 (always hidden - separator)
+          rem score+2 (low byte, digits 4-5) = P4 BCD (temp6) or $00 if inactive/eliminated
+          rem Digits are hidden by setting to $00 (displays as "00" - visible but indicates inactive/eliminated)
           asm
           SED
           LDA temp5
           STA score
+          rem Middle 2 digits always hidden (separator between P3 and P4)
           LDA #$00
           STA score+1
           LDA temp6

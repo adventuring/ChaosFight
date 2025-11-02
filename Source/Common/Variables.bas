@@ -309,10 +309,7 @@
           
           rem Game Mode: Attack cooldown timers (standard RAM var44-var47 = 4 bytes)
           dim playerAttackCooldown = var44
-          dim player1AttackCooldown = var44
-          dim player2AttackCooldown = var45
-          dim player3AttackCooldown = var46
-          dim player4AttackCooldown = var47
+          rem Array accessible as playerAttackCooldown[0] through playerAttackCooldown[3]
           
           
           rem Game Mode: Player timers array [0-3] - used for guard cooldowns and other timers
@@ -340,11 +337,7 @@
           rem Game Mode: Missile X positions [0-3] for players 1-4 (standard RAM - REDIMMED from Admin Mode)
           rem Using standard RAM variables that are REDIMMED from Admin Mode use
           dim missileX = a                  
-          dim missile1X = a                 
-          dim missile2X = b                 
-          dim missile3X = c                 
-          dim missile4X = d                 
-          rem Game Mode: REDIM - reuses fallFrame, fallSpeed, fallComplete, activePlayers
+          rem Array accessible as missileX[0] through missileX[3] - reuses fallFrame, fallSpeed, fallComplete, activePlayers
           
           rem Game Mode: Missile Y positions [0-3] - using SCRAM (SuperChip RAM)
           rem Stored in w000-w003 (r000-r003 read ports) for players 1-4

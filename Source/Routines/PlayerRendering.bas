@@ -271,24 +271,16 @@ DrawHealthBars
           let PR_healthBarLength = playerHealth[0] / 3 
           rem Scale 0-100 to 0-32
           if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
-          if temp6 then
-          COLUPF = ColGrey(14) 
-          rem White (B&W)
-
-          COLUPF = ColBlue(12) 
-          rem Bright blue (Color)
+          if temp6 then COLUPF = ColBlue(14) else COLUPF = ColBlue(12)
+          rem Bright blue (B&W) or Medium blue (Color)
           
           gosub bank8 DrawHealthBarRow0
           
           rem Draw Player 2 health bar
           let PR_healthBarLength = playerHealth[1] / 3
           if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
-          if temp6 then
-          COLUPF = ColGrey(10) 
-          rem Medium-bright grey (B&W)
-
-          COLUPF = ColRed(12) 
-          rem Bright red (Color)
+          if temp6 then COLUPF = ColRed(14) else COLUPF = ColRed(12)
+          rem Bright red (B&W) or Medium red (Color)
           
           gosub bank8 DrawHealthBarRow1
           

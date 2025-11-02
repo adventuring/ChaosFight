@@ -17,4 +17,4 @@
           rem Character art lookup routines for Bank 4 (characters 16-23)
           asm
           #include "Source/Routines/CharacterArtBank4.s"
-          end
+end

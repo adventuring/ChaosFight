@@ -99,7 +99,7 @@ LoadQuestionMarkSpriteP0
           sta player0pointerlo
           lda #> QuestionMarkSprite
           sta player0pointerhi
-          end
+end
           player0height = 16
           return
           
@@ -109,7 +109,7 @@ LoadQuestionMarkSpriteP1
           sta player1pointerlo
           lda #> QuestionMarkSprite
           sta player1pointerhi
-          end
+end
           player1height = 16
           return
           
@@ -119,7 +119,7 @@ LoadQuestionMarkSpriteP2
           sta player2pointerlo
           lda #> QuestionMarkSprite
           sta player2pointerhi
-          end
+end
           player2height = 16
           return
           
@@ -129,7 +129,7 @@ LoadQuestionMarkSpriteP3
           sta player3pointerlo
           lda #> QuestionMarkSprite
           sta player3pointerhi
-          end
+end
           player3height = 16
           return
           
@@ -147,7 +147,7 @@ LoadCPUSpriteP0
           sta player0pointerlo
           lda #> CPUSprite
           sta player0pointerhi
-          end
+end
           player0height = 16
           return
           
@@ -157,7 +157,7 @@ LoadCPUSpriteP1
           sta player1pointerlo
           lda #> CPUSprite
           sta player1pointerhi
-          end
+end
           player1height = 16
           return
           
@@ -167,7 +167,7 @@ LoadCPUSpriteP2
           sta player2pointerlo
           lda #> CPUSprite
           sta player2pointerhi
-          end
+end
           player2height = 16
           return
           
@@ -177,7 +177,7 @@ LoadCPUSpriteP3
           sta player3pointerlo
           lda #> CPUSprite
           sta player3pointerhi
-          end
+end
           player3height = 16
           return
           
@@ -195,7 +195,7 @@ LoadNoSpriteP0
           sta player0pointerlo
           lda #> NoSprite
           sta player0pointerhi
-          end
+end
           player0height = 16
           return
           
@@ -205,7 +205,7 @@ LoadNoSpriteP1
           sta player1pointerlo
           lda #> NoSprite
           sta player1pointerhi
-          end
+end
           player1height = 16
           return
           
@@ -215,7 +215,7 @@ LoadNoSpriteP2
           sta player2pointerlo
           lda #> NoSprite
           sta player2pointerhi
-          end
+end
           player2height = 16
           return
           
@@ -225,7 +225,7 @@ LoadNoSpriteP3
           sta player3pointerlo
           lda #> NoSprite
           sta player3pointerhi
-          end
+end
           player3height = 16
           return
 

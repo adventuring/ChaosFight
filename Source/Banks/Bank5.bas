@@ -17,4 +17,4 @@
           rem Character art lookup routines for Bank 5 (characters 24-31)
           asm
           #include "Source/Routines/CharacterArtBank5.s"
-          end
+end

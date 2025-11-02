@@ -64,10 +64,10 @@ GameMainLoop
           gosub UpdateAttackCooldowns
 
           rem Update missiles (in Bank 7)
-          gosub bank7 UpdateMissiles
+          gosub bank7 UpdateAllMissiles
 
-          rem Check missile collisions (in Bank 7)
-          gosub bank7 CheckMissileCollisions
+          rem Check missile collisions (in Bank 7) - handled internally by UpdateAllMissiles
+          rem No separate CheckMissileCollisions call needed
 
           rem Set sprite positions (now handled by movement system)
           rem gosub SetSpritePositions 

@@ -15,3 +15,4 @@
           #include "Source/Routines/SpecialMovement.bas"
           #include "Source/Routines/PlayerRendering.bas"
           #include "Source/Routines/ConsoleHandling.bas"
+          #include "Source/Routines/UpdateAttackCooldowns.bas"

@@ -322,17 +322,11 @@
           rem Actually, playerTimers needs its own space - using remaining standard RAM
           rem But we're at var44-var47 already used... need to check what's available
           rem SOLUTION: playerTimers[0-3] uses SCRAM (r004-r007, w004-w007)
-          dim playerTimers_W = w004
+          dim playerTimers = w004
           dim playerTimers_R = r004
-          dim player1Timer_W = w004
-          dim player1Timer_R = r004
-          dim player2Timer_W = w005
-          dim player2Timer_R = r005
-          dim player3Timer_W = w006
-          dim player3Timer_R = r006
-          dim player4Timer_W = w007
-          dim player4Timer_R = r007
           rem Game Mode: Player timers array [0]=P1, [1]=P2, [2]=P3, [3]=P4 (SCRAM w004-w007 / r004-r007)
+          rem NOTE: batariBASIC uses array syntax - playerTimers[0] = w004, playerTimers[1] = w005, etc.
+          rem NOTE: SCRAM variables must use w004-w007 for writes, r004-r007 for reads
           
           rem Game Mode: Base damage per hit - calculated from character data, stored temporarily
           rem NOTE: Can be looked up from character data tables rather than stored persistently
@@ -357,17 +351,9 @@
           rem Game Mode: Missile Y positions [0-3] - using SCRAM (SuperChip RAM)
           rem Stored in w000-w003 (r000-r003 read ports) for players 1-4
           rem Using SCRAM allows all 4 missile Y positions
-          dim missileY_W = w000
-          dim missileY_R = r000
-          dim missile1Y_W = w000
-          dim missile1Y_R = r000
-          dim missile2Y_W = w001
-          dim missile2Y_R = r001
-          dim missile3Y_W = w002
-          dim missile3Y_R = r002
-          dim missile4Y_W = w003
-          dim missile4Y_R = r003
-          rem Game Mode: Missile Y position array (4 bytes) - SCRAM w000-w003 (r000-r003)
+          dim missileY = w000
+          rem Game Mode: Missile Y position array (4 bytes) - SCRAM w000-w003 / r000-r003
+          rem NOTE: batariBASIC uses array syntax - missileY[0] = w000, missileY[1] = w001, etc.
           
           rem Game Mode: Missile active flags - bit-packed into single byte (standard RAM)
           rem Format: [M4Active:1][M3Active:1][M2Active:1][M1Active:1][unused:4]

@@ -23,12 +23,8 @@
 ApplySpecialMovement
           temp1 = 0 : gosub ApplyPlayerSpecialMovement
           temp1 = 1 : gosub ApplyPlayerSpecialMovement
-if QuadtariDetected && SelectedChar3 <> 255 then 
-          temp1 = 2 : gosub ApplyPlayerSpecialMovement
-          
-if QuadtariDetected && SelectedChar4 <> 255 then 
-          temp1 = 3 : gosub ApplyPlayerSpecialMovement
-          
+          if ControllerStatus & SetQuadtariDetected then if SelectedChar3 <> 255 then temp1 = 2 : gosub ApplyPlayerSpecialMovement
+          if ControllerStatus & SetQuadtariDetected then if SelectedChar4 <> 255 then temp1 = 3 : gosub ApplyPlayerSpecialMovement
           return
 
           rem =================================================================
@@ -61,15 +57,11 @@ ApplyPlayerSpecialMovement
           rem USES: PlayerY[temp1]
 BernieScreenWrap
           rem Check if fallen off bottom edge
-if PlayerY[temp1] > 90 then 
-          PlayerY[temp1] = 10 
+          if PlayerY[temp1] > 90 then PlayerY[temp1] = 10
           rem Reappear at top
           
-          
           rem Check if somehow went above top edge
-if PlayerY[temp1] < 5 then 
-          PlayerY[temp1] = 80 
+          if PlayerY[temp1] < 5 then PlayerY[temp1] = 80
           rem Reappear at bottom
-          
           
           return

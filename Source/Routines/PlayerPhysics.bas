@@ -162,11 +162,9 @@ SkipPlayer4Bounds
           rem Checks collisions between players (for pushing, not damage).
           rem Players can walk through each other but are slightly pushed apart.
 CheckAllPlayerCollisions
-          dim Distance = temp2
-          
           rem Check Player 1 vs Player 2
-          if PlayerX[0] >= PlayerX[1] then Distance = PlayerX[0] - PlayerX[1] else Distance = PlayerX[1] - PlayerX[0]
-if Distance < 16 then 
+          if PlayerX[0] >= PlayerX[1] then temp2 = PlayerX[0] - PlayerX[1] else temp2 = PlayerX[1] - PlayerX[0]
+if temp2 < 16 then 
 if PlayerX[0] < PlayerX[1] then 
           PlayerX[0] = PlayerX[0] - 1
           PlayerX[1] = PlayerX[1] + 1

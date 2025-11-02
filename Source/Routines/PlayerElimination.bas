@@ -162,17 +162,7 @@ CountRemainingPlayers
           rem Check if game should end (1 or 0 players remaining).
 CheckGameEndCondition
           rem Game ends when 1 or fewer players remain
-if playersRemaining <= 1 then 
-          rem Find winner (last remaining player)
-          gosub FindWinner
-          rem Start game end countdown  
-          gameEndTimer = 180 
-          rem 3 seconds at 60 FPS
-          gameState = 2     
-          rem Game ending state
-          
-          
-          return
+          if playersRemaining <= 1 then gosub FindWinner : gameEndTimer = 180 : gameState = 2 : return
 
           rem =================================================================  
           rem IS PLAYER ELIMINATED
@@ -232,11 +222,7 @@ FindWinner
           if !temp2 then winnerPlayerIndex = 3
           
           rem If no winner found (all eliminated), pick last eliminated
-if winnerPlayerIndex = 255 then 
-          gosub FindLastEliminated
-          
-          
-          return
+          if winnerPlayerIndex = 255 then gosub FindLastEliminated : return
 
           rem =================================================================
           rem FIND LAST ELIMINATED
@@ -249,21 +235,10 @@ FindLastEliminated
           rem Default winner
           
           rem Check each player elimination order
-if eliminationOrder[0] > temp4 then 
-          temp4 = eliminationOrder[0]
-          winnerPlayerIndex = 0
-          
-if eliminationOrder[1] > temp4 then 
-          temp4 = eliminationOrder[1] 
-          winnerPlayerIndex = 1
-          
-if eliminationOrder[2] > temp4 then 
-          temp4 = eliminationOrder[2]
-          winnerPlayerIndex = 2
-          
-if eliminationOrder[3] > temp4 then 
-          temp4 = eliminationOrder[3]
-          winnerPlayerIndex = 3
+          if eliminationOrder[0] > temp4 then temp4 = eliminationOrder[0] : winnerPlayerIndex = 0
+          if eliminationOrder[1] > temp4 then temp4 = eliminationOrder[1] : winnerPlayerIndex = 1
+          if eliminationOrder[2] > temp4 then temp4 = eliminationOrder[2] : winnerPlayerIndex = 2
+          if eliminationOrder[3] > temp4 then temp4 = eliminationOrder[3] : winnerPlayerIndex = 3
           
           rem =================================================================
           rem UPDATE PLAYERS 3/4 ACTIVE FLAG

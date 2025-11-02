@@ -69,17 +69,15 @@ DrawDigit
           FR_digitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
-if temp5 = 0 then 
+          if temp5 = 0 then
           player0x = temp2
           player0y = temp3
           COLUP0 = temp4
           gosub LoadPlayer0Digit
-
           player1x = temp2
           player1y = temp3
           COLUP1 = temp4
           gosub LoadPlayer1Digit
-          
           return
 
           rem =================================================================

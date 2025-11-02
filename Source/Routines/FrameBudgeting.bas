@@ -155,67 +155,52 @@ SkipPlayerSeparation
 
 CheckCollisionP1vsP3
           if playerX[0] >= playerX[2] then temp2 = playerX[0] - playerX[2] else temp2 = playerX[2] - playerX[0]
-if temp2 < 16 then 
-if playerX[0] < playerX[2] then 
-          playerX[0] = playerX[0] - 1
-          playerX[2] = playerX[2] + 1
-
+          if temp2 < 16 then gosub CheckCollisionP1vsP3Aux : return
+          
+CheckCollisionP1vsP3Aux
+          if playerX[0] < playerX[2] then playerX[0] = playerX[0] - 1 : playerX[2] = playerX[2] + 1 : return
           playerX[0] = playerX[0] + 1
           playerX[2] = playerX[2] - 1
-          
-          
           return
 
 CheckCollisionP1vsP4
           if playerX[0] >= playerX[3] then temp2 = playerX[0] - playerX[3] else temp2 = playerX[3] - playerX[0]
-if temp2 < 16 then 
-if playerX[0] < playerX[3] then 
-          playerX[0] = playerX[0] - 1
-          playerX[3] = playerX[3] + 1
-
+          if temp2 < 16 then gosub CheckCollisionP1vsP4Aux : return
+          
+CheckCollisionP1vsP4Aux
+          if playerX[0] < playerX[3] then playerX[0] = playerX[0] - 1 : playerX[3] = playerX[3] + 1 : return
           playerX[0] = playerX[0] + 1
           playerX[3] = playerX[3] - 1
-          
-          
           return
 
 CheckCollisionP2vsP3
           if playerX[1] >= playerX[2] then temp2 = playerX[1] - playerX[2] else temp2 = playerX[2] - playerX[1]
-if temp2 < 16 then 
-if playerX[1] < playerX[2] then 
-          playerX[1] = playerX[1] - 1
-          playerX[2] = playerX[2] + 1
-
+          if temp2 < 16 then gosub CheckCollisionP2vsP3Aux : return
+          
+CheckCollisionP2vsP3Aux
+          if playerX[1] < playerX[2] then playerX[1] = playerX[1] - 1 : playerX[2] = playerX[2] + 1 : return
           playerX[1] = playerX[1] + 1
           playerX[2] = playerX[2] - 1
-          
-          
           return
 
 CheckCollisionP2vsP4
           if playerX[1] >= playerX[3] then temp2 = playerX[1] - playerX[3] else temp2 = playerX[3] - playerX[1]
-if temp2 < 16 then 
-if playerX[1] < playerX[3] then 
-          playerX[1] = playerX[1] - 1
-          playerX[3] = playerX[3] + 1
-
+          if temp2 < 16 then gosub CheckCollisionP2vsP4Aux : return
+          
+CheckCollisionP2vsP4Aux
+          if playerX[1] < playerX[3] then playerX[1] = playerX[1] - 1 : playerX[3] = playerX[3] + 1 : return
           playerX[1] = playerX[1] + 1
           playerX[3] = playerX[3] - 1
-          
-          
           return
 
 CheckCollisionP3vsP4
           if playerX[2] >= playerX[3] then temp2 = playerX[2] - playerX[3] else temp2 = playerX[3] - playerX[2]
-if temp2 < 16 then 
-if playerX[2] < playerX[3] then 
-          playerX[2] = playerX[2] - 1
-          playerX[3] = playerX[3] + 1
-
+          if temp2 < 16 then gosub CheckCollisionP3vsP4Aux : return
+          
+CheckCollisionP3vsP4Aux
+          if playerX[2] < playerX[3] then playerX[2] = playerX[2] - 1 : playerX[3] = playerX[3] + 1 : return
           playerX[2] = playerX[2] + 1
           playerX[3] = playerX[3] - 1
-          
-          
           return
 
           rem =================================================================
@@ -236,10 +221,11 @@ BudgetedMissileCollisionCheck
           rem Use missileActive bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
           rem Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
           
-if !(controllerStatus & SetQuadtariDetected) then 
-          rem Simple 2-player mode: alternate missiles
-          temp1 = frame & 1
-          rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
+          if !(controllerStatus & SetQuadtariDetected) then goto BudgetedMissileCollisionCheck2P
+          
+          rem 4-player mode: check one missile per frame
+          temp1 = FramePhase
+          rem FramePhase 0-3 maps to Game Players 0-3
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           if temp1 = 0 then temp6 = 1
           if temp1 = 1 then temp6 = 2
@@ -249,9 +235,10 @@ if !(controllerStatus & SetQuadtariDetected) then
           if temp4 then gosub bank15 CheckAllMissileCollisions
           return
           
-          rem 4-player mode: check one missile per frame
-          temp1 = FramePhase
-          rem FramePhase 0-3 maps to Game Players 0-3
+BudgetedMissileCollisionCheck2P
+          rem Simple 2-player mode: alternate missiles
+          temp1 = frame & 1
+          rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           if temp1 = 0 then temp6 = 1
           if temp1 = 1 then temp6 = 2

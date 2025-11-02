@@ -32,10 +32,7 @@ DrawTitleScreen
           gosub LoadTitleBitmap
           
           rem Draw character parade if active
-if titleParadeActive then 
-          gosub DrawParadeCharacter
-          
-          
+          if titleParadeActive then gosub DrawParadeCharacter
           return
 
           rem =================================================================

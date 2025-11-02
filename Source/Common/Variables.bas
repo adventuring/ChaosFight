@@ -138,11 +138,6 @@
           dim CharSelectAnimFrame = z      
           rem ADMIN: Current frame in sequence (REDIM - available in ADMIN)
           
-          rem GAME: Console handling variables (Standard RAM)
-          rem NOTE: HandleConsoleSwitches is called from game loop, so this is GAME context
-          dim ColorBWPrevious = var39
-          rem GAME: Previous state of Color/B&W switch (for detecting changes)
-          
           rem ADMIN: Character selection state (standard RAM)
           dim CharSelectCharIndex = var37   
           rem ADMIN: Currently selected character index (0-15) for preview
@@ -308,6 +303,11 @@
           dim Player2AttackCooldown = var45
           dim Player3AttackCooldown = var46
           dim Player4AttackCooldown = var47
+          
+          rem GAME: Console handling variables (Standard RAM)
+          rem NOTE: HandleConsoleSwitches is called from game loop, so this is GAME context
+          dim ColorBWPrevious = var39
+          rem GAME: Previous state of Color/B&W switch (for detecting changes)
           
           rem GAME: Player timers array [0-3] - used for guard cooldowns and other timers
           rem NOTE: Must be declared after PlayerAttackCooldown if we want to use array syntax

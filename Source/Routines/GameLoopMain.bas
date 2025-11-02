@@ -36,6 +36,9 @@ GameMainLoop
           rem Handle all player input (with Quadtari multiplexing)
           gosub InputHandleAllPlayers
 
+          rem Update guard timers (duration and cooldown)
+          gosub UpdateGuardTimers
+
           rem Update animation system (10fps character animation)
           gosub UpdateCharacterAnimations
           

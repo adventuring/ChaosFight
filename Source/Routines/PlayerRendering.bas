@@ -153,6 +153,10 @@ Player1BWMode
           
 Player1ColorDone
 
+          rem Apply guard flashing visual effect (if guarding)
+          let temp1 = 0
+          gosub ApplyGuardFlashing
+          
           rem Load sprite data from character definition
           let temp1 = playerChar[0] 
           rem Character index
@@ -181,6 +185,10 @@ Player2BWMode
           
 Player2ColorDone
 
+          rem Apply guard flashing visual effect (if guarding)
+          let temp1 = 1
+          gosub ApplyGuardFlashing
+          
           rem Load sprite data from character definition
           let temp1 = playerChar[1] 
           rem Character index
@@ -285,7 +293,7 @@ DrawHealthBars
           rem Draw Player 1 health bar
           let PR_healthBarLength = playerHealth[0] / 3 
           rem Scale 0-100 to 0-32
-          if PR_healthBarLength > HealthBarMaxLength then LET PR_healthBarLength = HealthBarMaxLength
+          if PR_healthBarLength > HealthBarMaxLength then PR_healthBarLength = HealthBarMaxLength
           if temp6 then COLUPF = ColBlue(14) else COLUPF = ColBlue(12)
           rem Bright blue (B&W) or Medium blue (Color)
           
@@ -293,7 +301,7 @@ DrawHealthBars
           
           rem Draw Player 2 health bar
           let PR_healthBarLength = playerHealth[1] / 3
-          if PR_healthBarLength > HealthBarMaxLength then LET PR_healthBarLength = HealthBarMaxLength
+          if PR_healthBarLength > HealthBarMaxLength then PR_healthBarLength = HealthBarMaxLength
           if temp6 then COLUPF = ColRed(14) else COLUPF = ColRed(12)
           rem Bright red (B&W) or Medium red (Color)
           
@@ -306,7 +314,7 @@ DrawP3P4Health
 DrawP3Health
           rem Player 3 health bar
           let PR_healthBarLength = playerHealth[2] / 3
-          if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
+          if PR_healthBarLength > 32 then PR_healthBarLength = 32
           if temp6 then COLUPF = ColGrey(8) else COLUPF = ColYellow(12)
           rem Medium grey (B&W) or Bright yellow (Color)
           gosub bank8 DrawHealthBarRow2
@@ -316,7 +324,7 @@ SkipP3Health
 DrawP4Health
           rem Player 4 health bar
           let PR_healthBarLength = playerHealth[3] / 3
-          if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
+          if PR_healthBarLength > 32 then PR_healthBarLength = 32
           if temp6 then COLUPF = ColGrey(6) else COLUPF = ColGreen(12)
           rem Dark-medium grey (B&W) or Bright green (Color)
           gosub bank8 DrawHealthBarRow3

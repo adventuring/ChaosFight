@@ -31,18 +31,22 @@ ApplyGuardFlashing
           rem SECAM uses player-based colors (always cyan for guard)
           if temp1 = 0 then COLUP0 = $C0
           rem Player 1 - Cyan
-          if temp1 = 1 then _COLUP1 = $C0
+          if temp1 = 1 then COLUP1 = $C0
           rem Player 2 - Cyan
-          rem Players 3 & 4: Missiles inherit colors from COLUP0/COLUP1
-          rem Cannot set missile colors independently - see Issue #73
+          if temp1 = 2 then COLUP2 = $C0
+          rem Player 3 - Cyan (multisprite kernel)
+          if temp1 = 3 then COLUP3 = $C0
+          rem Player 4 - Cyan (multisprite kernel)
 #else
           rem NTSC/PAL - light cyan ColCyan(12)
           if temp1 = 0 then COLUP0 = ColCyan(12)
           rem Player 1
-          if temp1 = 1 then _COLUP1 = ColCyan(12)
+          if temp1 = 1 then COLUP1 = ColCyan(12)
           rem Player 2
-          rem Players 3 & 4: Missiles inherit colors from COLUP0/COLUP1
-          rem Cannot set missile colors independently - see Issue #73
+          if temp1 = 2 then COLUP2 = ColCyan(12)
+          rem Player 3 (multisprite kernel)
+          if temp1 = 3 then COLUP3 = ColCyan(12)
+          rem Player 4 (multisprite kernel)
 #endif
           return
 
@@ -61,12 +65,10 @@ RestoreNormalPlayerColor
           let temp4  = playerChar[temp1]
           
           rem Restore normal player colors based on player index
-          if temp1 = 0 then COLUP0 = $0E
-          rem Player 1 - Blue
-          if temp1 = 1 then _COLUP1 = $32
-          rem Player 2 - Red  
-          rem Players 3 & 4: Missiles inherit colors from COLUP0/COLUP1
-          rem Cannot restore missile colors independently - see Issue #73
+          rem Colors are restored by LoadCharacterColors in PlayerRendering.bas
+          rem This function is called after LoadCharacterColors, so colors are already set
+          rem Guard flashing will override these colors during flash phase
+          rem Normal phase colors are already handled by LoadCharacterColors
           return
 
           rem =================================================================
@@ -104,16 +106,10 @@ StartGuard
           rem Set guard bit in playerState
           let playerState[temp1] = playerState[temp1] | 2
           
-          rem Set guard duration timer (60 frames = 1 second)
-          rem Use upper bits of playerState for guard timer
-          rem Bits 5-7 can store timer (0-7 * 8 frames = 0-56 frames)
-          rem We will use a separate guard timer approach
-          let temp2  = playerState[temp1] & %11100000
-          rem Clear timer bits
-          let temp2  = temp2 | %01110000
-          rem Set 7*8 = 56 frames (~1 second)
-          let playerState[temp1] = temp2 | 2
-          rem Restore guard bit
+          rem Set guard duration timer (platform-specific: 60 frames NTSC, 50 frames PAL/SECAM)
+          rem Store guard duration timer in playerTimers array
+          rem This timer will be decremented each frame until it reaches 0
+          let playerTimers[temp1] = GuardTimerMaxFrames
           
           return
 
@@ -136,33 +132,28 @@ UpdateSingleGuardTimer
           
           rem Player not guarding - decrement cooldown timer
           let temp3 = playerTimers[temp1]
-          if temp3 > 0 then DecrementCooldown
-          return
-
-DecrementCooldown
+          if temp3 = 0 then return
+          rem No cooldown active
           let temp3 = temp3 - 1
           let playerTimers[temp1] = temp3
           return
 
 UpdateGuardTimerActive
-          rem Player is guarding - decrement guard duration
-          let temp3 = playerState[temp1] & %11100000
-          rem Get timer bits
-          let temp3 = temp3 - %00100000
-          rem Decrement by 8 frames
-          if temp3 > 0 then UpdateGuardTimerContinue
+          rem Player is guarding - decrement guard duration timer
+          let temp3 = playerTimers[temp1]
+          if temp3 = 0 then GuardTimerExpired
+          rem Guard timer already expired (shouldn't happen, but safety check)
           
-          rem Guard duration expired
-          let playerState[temp1] = playerState[temp1] & %11111101
-          rem Clear guard bit
-          rem Start cooldown timer (60 frames)
-          let playerTimers[temp1] = GuardTimerMaxFrames
+          rem Decrement guard duration timer
+          let temp3 = temp3 - 1
+          let playerTimers[temp1] = temp3
+          if temp3 = 0 then GuardTimerExpired
           return
 
-UpdateGuardTimerContinue
-          rem Update guard timer
-          let temp4 = playerState[temp1] & %00011111
-          rem Keep lower bits
-          let playerState[temp1] = temp4 | temp3
-          rem Combine with new timer
+GuardTimerExpired
+          rem Guard duration expired - clear guard bit and start cooldown
+          let playerState[temp1] = playerState[temp1] & %11111101
+          rem Clear guard bit (bit 1)
+          rem Start cooldown timer (same duration as guard)
+          let playerTimers[temp1] = GuardTimerMaxFrames
           return

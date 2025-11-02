@@ -187,29 +187,20 @@ PerformRangedAttack
   return
 
 rem Process guard for a player
+rem DEPRECATED: This function has syntax errors and conflicts with GuardEffects.bas
+rem Guard restrictions are now handled in PlayerInput.bas (movement/attack blocking)
+rem Guard timer updates are handled by UpdateGuardTimers in GuardEffects.bas
 rem Input: player_id
 ProcessPlayerGuard
-  rem Check if player is guarding
-  if (playerState[player_id) & %00000010] = 0 then return
-  
-  rem Guard prevents movement
-  playerMomentumX[player_id] = 0
-  
-  rem Guard prevents attacks
-  playerState[player_id) = playerState[player_id] & %11111110
-  
+  rem This function is deprecated - guard restrictions are handled elsewhere
+  rem Guard prevents movement - handled in PlayerInput.bas
+  rem Guard prevents attacks - handled in PlayerInput.bas
   return
 
 rem Update player guard state
+rem DEPRECATED: This function uses undefined guard_timer variable and conflicts with GuardEffects.bas
+rem Guard timer updates are handled by UpdateGuardTimers in GuardEffects.bas
 rem Input: player_id
 UpdatePlayerGuard
-  rem Decrement guard timer if active (1 second maximum = 60 frames)
-          if (playerState[player_id] & %00000010) = 0 then SkipGuardUpdate
-    let guard_timer = guard_timer - 1
-          let if guard_timer <= 0 then playerState[player_id] = playerState[player_id] & %11111101
-    rem Guard visual effect: flashing light cyan ColCyan(12) NTSC/PAL, Cyan SECAM
-    rem Player color alternates between normal and cyan every few frames
-    rem This matches manual specification: "Character flashes to indicate guard is active"
-SkipGuardUpdate
-  
+  rem This function is deprecated - use UpdateGuardTimers in GuardEffects.bas instead
   return

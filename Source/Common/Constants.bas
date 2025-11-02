@@ -116,6 +116,14 @@
           rem Pixels/frame added to vertical velocity when gravity applies
           const BounceDampenDivisor = 2
           rem Divisor applied to velocity on bounce reflect
+          const CurlingFrictionCoefficient = 32
+          rem Coefficient of friction for curling stone (Q8 fixed-point: 32/256 = 0.125)
+          const MinimumVelocityThreshold = 2
+          rem Minimum velocity before missile stops (pixels/frame)
+          const WallBounceVelocityMultiplier = 192
+          rem Velocity multiplier on wall bounce (Q8 fixed-point: 192/256 = 0.75)
+          const HarpyFallMultiplier = 128
+          rem Harpy fall speed multiplier (Q8 fixed-point: 128/256 = 0.5x normal gravity)
           const KnockbackImpulse = 4
           rem Pixels/frame impulse applied on hit knockback
           const HitstunFrames = 10
@@ -174,8 +182,13 @@
           rem Auto-advance win screen after 10 seconds (60fps * 10)
           const TitleParadeDelayFrames = 600
           rem Title parade starts after 10 seconds (60fps * 10)
+#ifdef TV_NTSC
           const GuardTimerMaxFrames = 60
-          rem Maximum guard timer (1 second at 60fps)
+          rem Maximum guard timer (1 second at 60fps NTSC)
+#else
+          const GuardTimerMaxFrames = 50
+          rem Maximum guard timer (1 second at 50fps PAL/SECAM)
+#endif
 
           rem =================================================================
           rem SIZE AND DIMENSION CONSTANTS

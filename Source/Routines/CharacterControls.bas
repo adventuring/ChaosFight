@@ -167,6 +167,9 @@ HarpyJump
           let playerY[temp1] = playerY[temp1] - 3
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping/flying bit for animation
+          rem Set flight mode flag for slow gravity
+          let characterStateFlags[temp1] = characterStateFlags[temp1] | 2
+          rem Set bit 1 (flight mode)
           return
 
           rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
@@ -271,10 +274,38 @@ CurlerDown
           rem tail call
           goto StandardGuard
 
-          rem DRAGONET (2) - GUARD
+          rem DRAGONET (2) - FLY DOWN (no guard action)
+          rem Dragon of Storms flies down instead of guarding
+          rem INPUT: temp1 = player index
+          rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
 DragonetDown
-          rem tail call
-          goto StandardGuard
+          rem Fly down with playfield collision check
+          rem Check collision before moving
+          let temp2  = playerX[temp1]
+          let temp2  = temp2 - ScreenInsetX
+          let temp2  = temp2 / 4
+          rem temp2 = playfield column (0-31)
+          let if temp2 > 31 then temp2  = 31
+          let if temp2 < 0 then temp2  = 0
+          
+          rem Check row below player (feet at bottom of sprite)
+          let temp3  = playerY[temp1]
+          let temp3  = temp3 + 16
+          rem temp3 = feet Y position
+          let temp4  = temp3 / pfrowheight
+          rem temp4 = row below feet
+          rem Check if at or beyond bottom row
+          let if temp4 > = pfrows then return
+            rem At bottom, cannot move down
+          rem Check if playfield pixel is clear
+          if pfread(temp2, temp4) then return
+            rem Blocked, cannot move down
+          
+          rem Clear below - move down
+          let playerY[temp1] = playerY[temp1] + 2
+          let playerState[temp1] = playerState[temp1] & !2
+          rem Ensure guard bit clear
+          return
 
           rem ZOE RYEN (3) - GUARD
 ZoeRyenDown
@@ -291,10 +322,38 @@ MegaxDown
           rem tail call
           goto StandardGuard
 
-          rem HARPY (6) - GUARD
+          rem HARPY (6) - FLY DOWN (no guard action)
+          rem Harpy flies down instead of guarding
+          rem INPUT: temp1 = player index
+          rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
 HarpyDown
-          rem tail call
-          goto StandardGuard
+          rem Fly down with playfield collision check
+          rem Check collision before moving
+          let temp2  = playerX[temp1]
+          let temp2  = temp2 - ScreenInsetX
+          let temp2  = temp2 / 4
+          rem temp2 = playfield column (0-31)
+          let if temp2 > 31 then temp2  = 31
+          let if temp2 < 0 then temp2  = 0
+          
+          rem Check row below player (feet at bottom of sprite)
+          let temp3  = playerY[temp1]
+          let temp3  = temp3 + 16
+          rem temp3 = feet Y position
+          let temp4  = temp3 / pfrowheight
+          rem temp4 = row below feet
+          rem Check if at or beyond bottom row
+          let if temp4 > = pfrows then return
+            rem At bottom, cannot move down
+          rem Check if playfield pixel is clear
+          if pfread(temp2, temp4) then return
+            rem Blocked, cannot move down
+          
+          rem Clear below - move down
+          let playerY[temp1] = playerY[temp1] + 2
+          let playerState[temp1] = playerState[temp1] & !2
+          rem Ensure guard bit clear
+          return
 
           rem KNIGHT GUY (7) - GUARD
 KnightGuyDown
@@ -384,10 +443,29 @@ StandardJump
 
           rem Standard guard behavior
           rem INPUT: temp1 = player index
-          rem USES: playerState[temp1]
+          rem USES: playerState[temp1], playerTimers[temp1]
+          rem NOTE: Flying characters (Frooty, Dragon of Storms, Harpy) cannot guard
 StandardGuard
-          let playerState[temp1] = playerState[temp1] | 2
-          rem Set guarding bit
+          rem Flying characters cannot guard - DOWN is used for vertical movement
+          rem Frooty (8): DOWN = fly down (no gravity)
+          rem Dragon of Storms/Dragonet (2): DOWN = fly down (no gravity)
+          rem Harpy (6): DOWN = fly down (reduced gravity)
+          let temp4 = playerChar[temp1]
+          if temp4 = 8 then return
+          rem Frooty cannot guard
+          if temp4 = 2 then return
+          rem Dragon of Storms cannot guard
+          if temp4 = 6 then return
+          rem Harpy cannot guard
+          
+          rem Check if guard is allowed (not in cooldown)
+          gosub CheckGuardCooldown
+          if temp2 = 0 then return
+          rem Guard blocked by cooldown
+          
+          rem Start guard with proper timing
+          gosub StartGuard
+          rem StartGuard sets guard bit and duration timer
           
           rem Set guard visual effect (flashing cyan)
           rem Character flashes light cyan ColCyan(12) in NTSC/PAL, Cyan in SECAM

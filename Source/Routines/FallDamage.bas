@@ -91,6 +91,10 @@ CheckFallDamage
           if temp2 <= temp3 then return 
           rem Safe landing, no damage
           
+          rem Check if player is guarding - guard does NOT block fall damage
+          rem Guard only blocks attack damage (missiles, AOE), not environmental damage
+          rem Fall damage is environmental, so guard does not protect
+          
           rem Calculate fall damage
           rem Damage = (velocity - safe_velocity) * damage_multiplier
           rem Damage multiplier: 2 (so 1 extra velocity = 2 damage)

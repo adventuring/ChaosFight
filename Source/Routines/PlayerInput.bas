@@ -269,11 +269,30 @@ InputSkipLeftPortJump
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
             on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown, FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
-          if !joy0down then PlayerState[temp1] = PlayerState[temp1] & 253
+            goto GuardInputDoneLeft
+          
+          rem DOWN released - check for early guard release
+          let temp2 = PlayerState[temp1] & 2
+          if temp2 then StopGuardEarlyLeft
+          rem Not guarding, nothing to do
+          goto GuardInputDoneLeft
+          
+StopGuardEarlyLeft
+          rem Stop guard early and start cooldown
+          PlayerState[temp1] = PlayerState[temp1] & 253
+          rem Clear guard bit
+          let playerTimers[temp1] = GuardTimerMaxFrames
+          rem Start cooldown timer
+          
+GuardInputDoneLeft
           
           
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
+          rem Check if player is guarding - guard blocks attacks
+          let temp2 = PlayerState[temp1] & 2
+          if temp2 then InputSkipLeftPortAttack
+          rem Guarding - block attack input
           if !joy0fire then InputSkipLeftPortAttack
           if (PlayerState[temp1] & 1) <> 0 then InputSkipLeftPortAttack
           let temp4 = PlayerChar[temp1]
@@ -292,6 +311,11 @@ InputSkipLeftPortAttack
           rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
 InputHandleRightPortPlayer
           rem Process left/right movement (with playfield collision for flying characters)
+          rem Check if player is guarding - guard blocks movement
+          let temp6 = PlayerState[temp1] & 2
+          if temp6 then SkipRightPortMovement
+          rem Guarding - block movement
+          
           rem Frooty (8) and Dragonet (2) need collision checks for horizontal movement
           let temp5 = PlayerChar[temp1]
           if temp5 = 8 then FrootyDragonetLeftRightMovementRight
@@ -310,6 +334,8 @@ InputHandleRightPortPlayer
           rem Face right
                     let PlayerMomentumX[temp1] = 1
           goto SkipFlyingLeftRightRight
+          
+SkipRightPortMovement
           
 FrootyDragonetLeftRightMovementRight
           rem Flying characters: check playfield collision before horizontal movement
@@ -479,13 +505,30 @@ InputSkipRightPortJump
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
                     on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown, FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
-
-          let PlayerState[temp1] = PlayerState[temp1] & 253
+            goto GuardInputDoneRight
+          
+          rem DOWN released - check for early guard release
+          let temp2 = PlayerState[temp1] & 2
+          if temp2 then StopGuardEarlyRight
+          rem Not guarding, nothing to do
+          goto GuardInputDoneRight
+          
+StopGuardEarlyRight
+          rem Stop guard early and start cooldown
+          PlayerState[temp1] = PlayerState[temp1] & 253
           rem Clear guard bit
+          let playerTimers[temp1] = GuardTimerMaxFrames
+          rem Start cooldown timer
+          
+GuardInputDoneRight
           
           
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
+          rem Check if player is guarding - guard blocks attacks
+          let temp2 = PlayerState[temp1] & 2
+          if temp2 then InputSkipRightPortAttack
+          rem Guarding - block attack input
           if !joy1fire then InputSkipRightPortAttack
           if (PlayerState[temp1] & 1) <> 0 then InputSkipRightPortAttack
           let temp4 = PlayerChar[temp1] 

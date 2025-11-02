@@ -387,9 +387,9 @@ FramesPerSequence = 8
  
 AnimationSequenceCount = 16
  
-MovementFrameRate = 60
+MovementFrameRate = 50
  
-AnimationFrameDelay = 6
+AnimationFrameDelay = 5
  
 SoundElimination = 7
  
@@ -542,7 +542,7 @@ player1colors = 1
 player1colors = 1
 playercolors = 1
 multisprite = 1
-vblank_time = 43
-overscan_time = 37
-TVStandard = NTSC
+vblank_time = 58
+overscan_time = 82
+TVStandard = PAL
  

@@ -239,15 +239,21 @@ Source/Generated/Font.bas: Source/Art/Font.png
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
-Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas characters bitmaps
+Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
-Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas characters bitmaps
+Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
-Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas characters bitmaps
+Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
@@ -295,15 +301,15 @@ Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.
 # Step 2: Compile .preprocessed.bas → bB.ARCH.s
 Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Source/Common/variableRedefs.h
 	mkdir -p Object
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../$< > $@
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.NTSC.s
 
 Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Source/Common/variableRedefs.h
 	mkdir -p Object
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../$< > $@
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.PAL.s
 
 Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Source/Common/variableRedefs.h
 	mkdir -p Object
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../$< > $@
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
 
 # Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
 Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s

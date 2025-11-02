@@ -31,35 +31,27 @@ CharacterSpritePtrHiBank5:
 ; CHARACTER ARTWORK LOCATION FUNCTION - BANK 5
 ; =================================================================
 ; Locates character sprite data for specific action and frame
-; Input: A = character index (24-31, mapped to 0-7)
-;        X = animation frame (0-7) from sprite 10fps counter, NOT global frame
-;        Y = action (0-15)
+; Input: temp9 = bank-relative character index (0-7)
+;        temp2 = animation frame (0-7) from sprite 10fps counter, NOT global frame
+;        temp3 = action (0-15)
 ; Note: Frame is relative to sprite own 10fps counter, NOT global frame counter
 ; Output: temp4 = sprite data pointer low byte
 ;         temp5 = sprite data pointer high byte
 ;         temp6 = bank number (always 5)
-; Modifies: A, X, Y, temp1, temp2, temp3
+; Modifies: A, X, Y, temp1
 
 LocateCharacterArtBank5:
-    ; Save input parameters
-    sta temp1           ; Character index
-    stx temp2           ; Animation frame (0-7)
-    sty temp3           ; Action (0-15)
-    
-    ; Map character index to local 0-7 range
-    ; Characters 24-31 map to 0-7
-    lda temp1
-    sec
-    sbc #24             ; Subtract 24 to map 24-31 to 0-7
-    and #$07            ; Mask to 0-7 range
-    sta temp1           ; Store local index
+    ; Input: temp9 = bank-relative character index (0-7) - already set by dispatcher
+    ;        temp2 = animation frame (0-7) - already set by caller
+    ;        temp3 = action (0-15) - already set by caller
+    ; Note: temp9 is passed from dispatcher, already 0-7 for Bank 5
     
     ; Set bank to 5
     lda #5
     sta temp6
     
-    ; Get base sprite pointer for character (using local index)
-    ldy temp1           ; Local character index as Y
+    ; Get base sprite pointer for character (using bank-relative index from temp9)
+    ldy temp9           ; Bank-relative character index (0-7) as Y
     lda CharacterSpritePtrLoBank5,y
     sta temp4           ; Store low byte
     lda CharacterSpritePtrHiBank5,y  
@@ -112,9 +104,10 @@ LocateCharacterArtBank5:
 ; Input: temp1 = character index, temp2 = animation frame (0-7), temp3 = action (0-15)
 ;        temp7 = player number (0-3)
 SetPlayerCharacterArtBank5:
-    lda temp1
-    ldx temp2
-    ldy temp3
+    ; Input: temp9 = bank-relative character index (0-7) - already set by dispatcher
+    ;        temp2 = animation frame (0-7) - already set by caller
+    ;        temp3 = action (0-15) - already set by caller
+    ;        temp8 = player number (0-3) - already set by caller
     jsr LocateCharacterArtBank5
     
     ; Set appropriate sprite pointer based on game player number (0-3)
@@ -123,7 +116,8 @@ SetPlayerCharacterArtBank5:
     ;   Game Player 1 -> P1 (_P1 virtual sprite)
     ;   Game Player 2 -> P2 (virtual sprite)
     ;   Game Player 3 -> P3 (virtual sprite)
-    lda temp7
+    ; Note: temp8 = player number (set by dispatcher from temp7)
+    lda temp8
     cmp #0
     bne .check_player1
     ; Game Player 0 -> P0 sprite

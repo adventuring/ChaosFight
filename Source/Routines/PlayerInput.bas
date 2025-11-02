@@ -28,9 +28,9 @@
           rem   Bits 4-7: Animation state
 
           rem CHARACTER INDICES (0-15):
-          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
-          rem   6=Harpy, 7=Knight, 8=Frooty, 9=Nefertem, 10=Ninjish,
-          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
+          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=ZoeRyen, 4=FatTony, 5=Megax,
+          rem   6=Harpy, 7=KnightGuy, 8=Frooty, 9=Nefertem, 10=NinjishGuy,
+          rem   11=PorkChop, 12=RadishGoblin, 13=RoboTito, 14=Ursulo, 15=Shamone
           rem =================================================================
 
           rem Main input handler for all players
@@ -257,7 +257,7 @@ EnhancedJumpDone0
           rem Map MethHound (31) to ShamoneJump handler
           if temp4 = 31 then temp4 = 15
           rem Use Shamone jump for MethHound
-                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, ShamoneJump
+                    on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump, FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipLeftPortJump
 
           
@@ -268,7 +268,7 @@ InputSkipLeftPortJump
             temp4 = PlayerChar[temp1]
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
-            on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
+            on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown, FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
           if !joy0down then PlayerState[temp1] = PlayerState[temp1] & 253
           
           
@@ -467,7 +467,7 @@ EnhancedJumpDone1
           rem Map MethHound (31) to ShamoneJump handler
           if temp4 = 31 then temp4 = 15
           rem Use Shamone jump for MethHound
-                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, ShamoneJump
+                    on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump, FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipRightPortJump
 
           
@@ -478,7 +478,7 @@ InputSkipRightPortJump
           let temp4 = PlayerChar[temp1] 
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
-                    on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
+                    on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown, FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
 
           let PlayerState[temp1] = PlayerState[temp1] & 253
           rem Clear guard bit

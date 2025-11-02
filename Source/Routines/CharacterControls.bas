@@ -16,9 +16,9 @@
           rem   playerMomentumX[temp1] - Horizontal momentum
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
-          rem   6=Harpy, 7=Knight, 8=Frooty, 9=Nefertem, 10=Ninjish,
-          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
+          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=ZoeRyen, 4=FatTony, 5=Megax,
+          rem   6=Harpy, 7=KnightGuy, 8=Frooty, 9=Nefertem, 10=NinjishGuy,
+          rem   11=PorkChop, 12=RadishGoblin, 13=RoboTito, 14=Ursulo, 15=Shamone
           rem =================================================================
 
           rem =================================================================
@@ -136,7 +136,7 @@ DragonetJump
           return
 
           rem ZOE RYEN (3) - STANDARD JUMP (light weight, high jump)
-EXOJump
+ZoeRyenJump
           let playerY[temp1] = playerY[temp1] - 12
           rem Lighter character, higher jump
           let playerState[temp1] = playerState[temp1] | 4
@@ -149,8 +149,8 @@ FatTonyJump
           let playerState[temp1] = playerState[temp1] | 4
           return
 
-          rem GRIZZARD HANDLER (5) - STANDARD JUMP
-GrizzardJump
+          rem MEGAX (5) - STANDARD JUMP
+MegaxJump
           rem tail call
           goto StandardJump
 
@@ -170,7 +170,7 @@ HarpyJump
           return
 
           rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
-KnightJump
+KnightGuyJump
           let playerY[temp1] = playerY[temp1] - 8
           rem Heavier character, lower jump
           let playerState[temp1] = playerState[temp1] | 4
@@ -214,7 +214,7 @@ NefertemJump
           goto StandardJump
 
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
-NinjishJump
+NinjishGuyJump
           let playerY[temp1] = playerY[temp1] - 13
           rem Very light character, highest jump
           let playerState[temp1] = playerState[temp1] | 4
@@ -228,7 +228,7 @@ PorkChopJump
           return
 
           rem RADISH GOBLIN (12) - STANDARD JUMP (very light, high jump)
-RadishJump
+RadishGoblinJump
           let playerY[temp1] = playerY[temp1] - 13
           rem Very light character, highest jump
           let playerState[temp1] = playerState[temp1] | 4
@@ -277,7 +277,7 @@ DragonetDown
           goto StandardGuard
 
           rem ZOE RYEN (3) - GUARD
-EXODown
+ZoeRyenDown
           rem tail call
           goto StandardGuard
 
@@ -286,8 +286,8 @@ FatTonyDown
           rem tail call
           goto StandardGuard
 
-          rem GRIZZARD HANDLER (5) - GUARD
-GrizzardDown
+          rem MEGAX (5) - GUARD
+MegaxDown
           rem tail call
           goto StandardGuard
 
@@ -297,7 +297,7 @@ HarpyDown
           goto StandardGuard
 
           rem KNIGHT GUY (7) - GUARD
-KnightDown
+KnightGuyDown
           rem tail call
           goto StandardGuard
 
@@ -340,7 +340,7 @@ NefertemDown
           goto StandardGuard
 
           rem NINJISH GUY (10) - GUARD
-NinjishDown
+NinjishGuyDown
           rem tail call
           goto StandardGuard
 
@@ -350,7 +350,7 @@ PorkChopDown
           goto StandardGuard
 
           rem RADISH GOBLIN (12) - GUARD
-RadishDown
+RadishGoblinDown
           rem tail call
           goto StandardGuard
 

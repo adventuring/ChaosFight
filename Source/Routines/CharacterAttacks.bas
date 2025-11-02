@@ -90,7 +90,7 @@ FatTonyAttack
           return
 
           rem =================================================================
-          rem GRIZZARD HANDLER (Character 5) - Ranged Attack (Grizzard Eggs)
+          rem MEGAX (Character 5) - Ranged Attack
           rem =================================================================
 MegaxAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << ShiftAnimationState) 

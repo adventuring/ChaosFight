@@ -58,9 +58,10 @@
           rem   - temp1-4, qtcontroller, frame (built-ins)
           
           rem REDIMMED VARIABLES (different meaning per context):
-          rem   - var0-var23: Different in Admin Mode vs Game Mode
-          rem   - w-z: Animation vars (Admin Mode) or Missile positions (Game Mode)
-          rem   - i: readyCount (Admin Mode) or MissilePackedData (Game Mode)
+          rem   - var24-var36: Shared between Admin Mode and Game Mode (intentional redim)
+          rem   - a,b,c,d: Fall animation vars (Admin Mode) or MissileX (Game Mode)
+          rem   - w-z: Animation vars (Admin Mode) or Missile velocities (Game Mode)
+          rem   - e: console7800Detected (COMMON) or missileLifetime (Game Mode)
           rem =================================================================
           
           rem =================================================================
@@ -236,8 +237,8 @@
           rem PlayerEliminated[0-3] - Bit flags for eliminated players
           rem Bit 0 = Player 1, Bit 1 = Player 2, Bit 2 = Player 3, Bit 3 = Player 4
           rem Set when player health reaches 0, prevents respawn/reentry
-          dim playersEliminated = i           
-          rem GAME: Eliminated player bit flags (standard RAM, REDIM from pauseButtonPrev)
+          dim playersEliminated = w012
+          rem GAME: Eliminated player bit flags (SCRAM - low frequency access)
           
           rem playerRecoveryFrames[0-3] - Recovery/hitstun frame counters
           dim playerRecoveryFrames = var16
@@ -345,8 +346,8 @@
           rem Game Mode: Missile active flags - bit-packed into single byte (standard RAM)
           rem Format: [M4Active:1][M3Active:1][M2Active:1][M1Active:1][unused:4]
           rem Bit 0 = Missile1 active, Bit 1 = Missile2 active, etc.
-          dim missileActive = i             
-          rem Game Mode: REDIM - reuses pauseButtonPrev (standard RAM)
+          dim missileActive = i
+          rem Game Mode: Missile active flags (standard RAM)
           
           rem Game Mode: Missile lifetime counters [0-3] - frames remaining (standard RAM - REDIMMED)
           rem For melee attacks: small value (2-8 frames)

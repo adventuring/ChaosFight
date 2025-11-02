@@ -118,15 +118,15 @@ UpdateOneMissile
           rem Get character type to look up missile properties
           temp5 = PlayerChar[temp1]
           
-          rem Read missile momentum from character data
+          rem Read missile momentum from character data (in Bank 6)
           temp1 = temp5 
           rem Character index for data lookup
-          gosub GetMissileMomentumX
+          gosub bank6 GetMissileMomentumX
           temp6 = temp2 
           rem Store base X momentum
           temp1 = temp5 
           rem Restore for Y lookup
-          gosub GetMissileMomentumY
+          gosub bank6 GetMissileMomentumY
           temp3 = temp2 
           rem Y momentum (already in correct form)
           
@@ -137,9 +137,9 @@ UpdateOneMissile
           temp2 = temp6
 FacingSet
           
-          rem Read missile flags from character data
+          rem Read missile flags from character data (in Bank 6)
           temp1 = temp5
-          gosub GetMissileFlags
+          gosub bank6 GetMissileFlags
           temp5 = temp2 
           rem Store flags for later use
           

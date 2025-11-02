@@ -199,6 +199,7 @@ Player4Color
           
           rem TODO: Player 4 sprite mapping needs to be fixed (Issue #70, #72)
           rem Player 4 should not use COLUBK register - needs proper sprite register
+#endif
           
           return
 
@@ -320,7 +321,7 @@ if SelectedChar4 <> 255 && PlayerHealth[3] > 0 then
           
                               gosub bank8 DrawHealthBarRow3
           
-          
+#endif
           
           return
 

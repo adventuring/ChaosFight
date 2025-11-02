@@ -1,7 +1,7 @@
 
- include "titlescreen/asm/layoutmacros.s"
- include "titlescreen/asm/dpcfix.s"
- include "titlescreen/titlescreen_layout.s"
+ include "Titlescreen/asm/layoutmacros.s"
+ include "Titlescreen/asm/dpcfix.s"
+ include "Titlescreen/titlescreen_layout.s"
 
 .titledrawscreen
 title_eat_overscan
@@ -68,120 +68,120 @@ title_playfield
 
 	jmp PFWAIT ; kernel is done. Finish off the screen
 
- include "titlescreen/asm/position48.s"
- include "titlescreen/titlescreen_color.s"
+ include "Titlescreen/asm/position48.s"
+ include "Titlescreen/titlescreen_color.s"
 
 	ifconst mk_48x1_1_on
-		include "titlescreen/asm/48x1_1_kernel.s"
+		include "Titlescreen/asm/48x1_1_kernel.s"
 	endif ;mk_48x1_1_on
 
 	ifconst mk_48x1_2_on
-		include "titlescreen/asm/48x1_2_kernel.s"
+		include "Titlescreen/asm/48x1_2_kernel.s"
 	endif ;mk_48x1_2_on
 
 	ifconst mk_48x1_3_on
-		include "titlescreen/asm/48x1_3_kernel.s"
+		include "Titlescreen/asm/48x1_3_kernel.s"
 	endif ;mk_48x1_3_on
 
 	ifconst mk_48x1_4_on
-		include "titlescreen/asm/48x1_4_kernel.s"
+		include "Titlescreen/asm/48x1_4_kernel.s"
 	endif ;mk_48x1_4_on
 
 	ifconst mk_48x1_5_on
-		include "titlescreen/asm/48x1_5_kernel.s"
+		include "Titlescreen/asm/48x1_5_kernel.s"
 	endif ;mk_48x1_5_on
 
 	ifconst mk_48x1_6_on
-		include "titlescreen/asm/48x1_6_kernel.s"
+		include "Titlescreen/asm/48x1_6_kernel.s"
 	endif ;mk_48x1_6_on
 
 	ifconst mk_48x1_7_on
-		include "titlescreen/asm/48x1_7_kernel.s"
+		include "Titlescreen/asm/48x1_7_kernel.s"
 	endif ;mk_48x1_7_on
 
 	ifconst mk_48x1_8_on
-		include "titlescreen/asm/48x1_8_kernel.s"
+		include "Titlescreen/asm/48x1_8_kernel.s"
 	endif ;mk_48x1_8_on
 
 	ifconst mk_48x2_1_on
-		include "titlescreen/asm/48x2_1_kernel.s"
+		include "Titlescreen/asm/48x2_1_kernel.s"
 	endif ;mk_48x2_1_on
 
 	ifconst mk_48x2_2_on
-		include "titlescreen/asm/48x2_2_kernel.s"
+		include "Titlescreen/asm/48x2_2_kernel.s"
 	endif ;mk_48x2_2_on
 
 	ifconst mk_48x2_3_on
-		include "titlescreen/asm/48x2_3_kernel.s"
+		include "Titlescreen/asm/48x2_3_kernel.s"
 	endif ;mk_48x2_3_on
 
 	ifconst mk_48x2_4_on
-		include "titlescreen/asm/48x2_4_kernel.s"
+		include "Titlescreen/asm/48x2_4_kernel.s"
 	endif ;mk_48x2_4_on
 
 	ifconst mk_48x2_5_on
-		include "titlescreen/asm/48x2_5_kernel.s"
+		include "Titlescreen/asm/48x2_5_kernel.s"
 	endif ;mk_48x2_5_on
 
 	ifconst mk_48x2_6_on
-		include "titlescreen/asm/48x2_6_kernel.s"
+		include "Titlescreen/asm/48x2_6_kernel.s"
 	endif ;mk_48x2_6_on
 
 	ifconst mk_48x2_7_on
-		include "titlescreen/asm/48x2_7_kernel.s"
+		include "Titlescreen/asm/48x2_7_kernel.s"
 	endif ;mk_48x2_7_on
 
 	ifconst mk_48x2_8_on
-		include "titlescreen/asm/48x2_8_kernel.s"
+		include "Titlescreen/asm/48x2_8_kernel.s"
 	endif ;mk_48x2_8_on
 
 	ifconst mk_48x1_X_on
-		include "titlescreen/asm/48x1_X_kernel.s"
+		include "Titlescreen/asm/48x1_X_kernel.s"
 	endif ;mk_48x1_X_on
 
 	ifconst mk_48x2_X_on
-		include "titlescreen/asm/48x2_X_kernel.s"
+		include "Titlescreen/asm/48x2_X_kernel.s"
 	endif ;mk_48x2_X_on
 
 
 	ifconst mk_96x2_1_on
-		include "titlescreen/asm/96x2_1_kernel.s"
+		include "Titlescreen/asm/96x2_1_kernel.s"
 	endif ;mk_96x2_1_on
 
 	ifconst mk_96x2_2_on
-		include "titlescreen/asm/96x2_2_kernel.s"
+		include "Titlescreen/asm/96x2_2_kernel.s"
 	endif ;mk_96x2_2_on
 
 	ifconst mk_96x2_3_on
-		include "titlescreen/asm/96x2_3_kernel.s"
+		include "Titlescreen/asm/96x2_3_kernel.s"
 	endif ;mk_96x2_3_on
 
 	ifconst mk_96x2_4_on
-		include "titlescreen/asm/96x2_4_kernel.s"
+		include "Titlescreen/asm/96x2_4_kernel.s"
 	endif ;mk_96x2_4_on
 
 	ifconst mk_96x2_5_on
-		include "titlescreen/asm/96x2_5_kernel.s"
+		include "Titlescreen/asm/96x2_5_kernel.s"
 	endif ;mk_96x2_5_on
 
 	ifconst mk_96x2_6_on
-		include "titlescreen/asm/96x2_6_kernel.s"
+		include "Titlescreen/asm/96x2_6_kernel.s"
 	endif ;mk_96x2_6_on
 
 	ifconst mk_96x2_7_on
-		include "titlescreen/asm/96x2_7_kernel.s"
+		include "Titlescreen/asm/96x2_7_kernel.s"
 	endif ;mk_96x2_7_on
 
 	ifconst mk_96x2_8_on
-		include "titlescreen/asm/96x2_8_kernel.s"
+		include "Titlescreen/asm/96x2_8_kernel.s"
 	endif ;mk_96x2_8_on
 
 	ifconst mk_score_on
-		include "titlescreen/asm/score_kernel.s"
+		include "Titlescreen/asm/score_kernel.s"
 	endif ;mk_score_on
 
 	ifconst mk_gameselect_on
-		include "titlescreen/asm/gameselect_kernel.s"
+		include "Titlescreen/asm/gameselect_kernel.s"
 	endif ;mk_gameselect_on
 
 PFWAIT
@@ -217,97 +217,97 @@ OVERSCAN
 	RETURN
 
 	ifconst mk_48x1_1_on
-		include "titlescreen/48x1_1_image.s"
+		include "Titlescreen/48x1_1_image.s"
 	endif
 	ifconst mk_48x1_2_on
-		include "titlescreen/48x1_2_image.s"
+		include "Titlescreen/48x1_2_image.s"
 	endif
 	ifconst mk_48x1_3_on
-		include "titlescreen/48x1_3_image.s"
+		include "Titlescreen/48x1_3_image.s"
 	endif
 	ifconst mk_48x1_4_on
-		include "titlescreen/48x1_4_image.s"
+		include "Titlescreen/48x1_4_image.s"
 	endif
 	ifconst mk_48x1_5_on
-		include "titlescreen/48x1_5_image.s"
+		include "Titlescreen/48x1_5_image.s"
 	endif
 	ifconst mk_48x1_6_on
-		include "titlescreen/48x1_6_image.s"
+		include "Titlescreen/48x1_6_image.s"
 	endif
 	ifconst mk_48x1_7_on
-		include "titlescreen/48x1_7_image.s"
+		include "Titlescreen/48x1_7_image.s"
 	endif
 	ifconst mk_48x1_8_on
-		include "titlescreen/48x1_8_image.s"
+		include "Titlescreen/48x1_8_image.s"
 	endif
 
 
 	ifconst mk_48x2_1_on
-		include "titlescreen/48x2_1_image.s"
+		include "Titlescreen/48x2_1_image.s"
 	endif
 	ifconst mk_48x2_2_on
-		include "titlescreen/48x2_2_image.s"
+		include "Titlescreen/48x2_2_image.s"
 	endif
 	ifconst mk_48x2_3_on
-		include "titlescreen/48x2_3_image.s"
+		include "Titlescreen/48x2_3_image.s"
 	endif
 	ifconst mk_48x2_4_on
-		include "titlescreen/48x2_4_image.s"
+		include "Titlescreen/48x2_4_image.s"
 	endif
 	ifconst mk_48x2_5_on
-		include "titlescreen/48x2_5_image.s"
+		include "Titlescreen/48x2_5_image.s"
 	endif
 	ifconst mk_48x2_6_on
-		include "titlescreen/48x2_6_image.s"
+		include "Titlescreen/48x2_6_image.s"
 	endif
 	ifconst mk_48x2_7_on
-		include "titlescreen/48x2_7_image.s"
+		include "Titlescreen/48x2_7_image.s"
 	endif
 
 	ifconst mk_48x2_8_on
-		include "titlescreen/48x2_8_image.s"
+		include "Titlescreen/48x2_8_image.s"
 	endif
 
 
 	ifconst mk_96x2_1_on
-		include "titlescreen/96x2_1_image.s"
+		include "Titlescreen/96x2_1_image.s"
 	endif
 	ifconst mk_96x2_2_on
-		include "titlescreen/96x2_2_image.s"
+		include "Titlescreen/96x2_2_image.s"
 	endif
 	ifconst mk_96x2_3_on
-		include "titlescreen/96x2_3_image.s"
+		include "Titlescreen/96x2_3_image.s"
 	endif
 	ifconst mk_96x2_4_on
-		include "titlescreen/96x2_4_image.s"
+		include "Titlescreen/96x2_4_image.s"
 	endif
 	ifconst mk_96x2_5_on
-		include "titlescreen/96x2_5_image.s"
+		include "Titlescreen/96x2_5_image.s"
 	endif
 	ifconst mk_96x2_6_on
-		include "titlescreen/96x2_6_image.s"
+		include "Titlescreen/96x2_6_image.s"
 	endif
 	ifconst mk_96x2_7_on
-		include "titlescreen/96x2_7_image.s"
+		include "Titlescreen/96x2_7_image.s"
 	endif
 	ifconst mk_96x2_8_on
-		include "titlescreen/96x2_8_image.s"
+		include "Titlescreen/96x2_8_image.s"
 	endif
 
 	ifconst mk_player_on
-		include "titlescreen/player_image.s"
+		include "Titlescreen/player_image.s"
 	endif
 
 	ifconst mk_score_on
-		include "titlescreen/score_image.s"
+		include "Titlescreen/score_image.s"
 	endif
 
 	ifconst mk_gameselect_on
-		include "titlescreen/gameselect_image.s"
+		include "Titlescreen/gameselect_image.s"
 	endif
 
 	ifconst mk_player_on
-		include "titlescreen/asm/player_kernel.s"
+		include "Titlescreen/asm/player_kernel.s"
 	endif ;mk_player_on
 
 

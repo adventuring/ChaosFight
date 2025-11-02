@@ -63,7 +63,7 @@ CurlerAttack
           return
 
           rem =================================================================
-          rem DRAGONET (Character 2) - Melee Attack
+          rem DRAGON OF STORMS (Character 2) - Melee Attack
           rem =================================================================
 DragonetAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << ShiftAnimationState) 
@@ -134,12 +134,19 @@ KnightGuyAttack
           return
 
           rem =================================================================
-          rem FROOTY (Character 8) - Ranged Attack
+          rem FROOTY (Character 8) - Ranged Attack with Magical Sparkles
           rem =================================================================
+          rem Frooty fires magical sparkles from her lollipop weapon
+          rem Sparkles are implemented via missile sprite graphics
+          rem Multi-hit or spread patterns can use multiple sparkle sprites
+          rem Sprite data should show sparkle particle effects
 FrootyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
+          rem Magical sparkles: Visual effect handled by missile sprite graphics
+          rem The missile sprite for Frooty (character 8) should display sparkle particles
+          rem Sprite generation via SkylineTool should create sparkle graphics
           return
 
           rem =================================================================

@@ -20,7 +20,7 @@
           rem   - Characters chosen randomly from 16 available
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
+          rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=EXO, 4=FatTony, 5=Grizzard,
           rem   6=Harpy, 7=Knight Guy, 8=Frooty, 9=Nefertem, 10=Ninjish Guy,
           rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
           rem =================================================================
@@ -99,7 +99,7 @@ SetChar1
           rem Curler
 SetChar2
           COLUP0 = ColYellow(12) : return  
-          rem Dragonet
+          rem Dragon of Storms
 SetChar3
           COLUP0 = ColGreen(12) : return   
           rem Zoe Ryen

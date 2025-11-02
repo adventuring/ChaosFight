@@ -28,7 +28,7 @@
           rem   Bits 4-7: Animation state
 
           rem CHARACTER INDICES (0-15):
-          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=ZoeRyen, 4=FatTony, 5=Megax,
+          rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=ZoeRyen, 4=FatTony, 5=Megax,
           rem   6=Harpy, 7=KnightGuy, 8=Frooty, 9=Nefertem, 10=NinjishGuy,
           rem   11=PorkChop, 12=RadishGoblin, 13=RoboTito, 14=Ursulo, 15=Shamone
           rem =================================================================
@@ -92,7 +92,7 @@ InputSkipPlayer4Input
           rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
 InputHandleLeftPortPlayer
           rem Process left/right movement (with playfield collision for flying characters)
-          rem Frooty (8) and Dragonet (2) need collision checks for horizontal movement
+          rem Frooty (8) and Dragon of Storms (2) need collision checks for horizontal movement
           let temp5 = PlayerChar[temp1]
           if temp5 = 8 then FrootyDragonetLeftRightMovement
           if temp5 = 2 then FrootyDragonetLeftRightMovement
@@ -316,7 +316,7 @@ InputHandleRightPortPlayer
           if temp6 then SkipRightPortMovement
           rem Guarding - block movement
           
-          rem Frooty (8) and Dragonet (2) need collision checks for horizontal movement
+          rem Frooty (8) and Dragon of Storms (2) need collision checks for horizontal movement
           let temp5 = PlayerChar[temp1]
           if temp5 = 8 then FrootyDragonetLeftRightMovementRight
           if temp5 = 2 then FrootyDragonetLeftRightMovementRight

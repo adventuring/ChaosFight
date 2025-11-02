@@ -16,7 +16,7 @@
           rem   playerMomentumX[temp1] - Horizontal momentum
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=ZoeRyen, 4=FatTony, 5=Megax,
+          rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=ZoeRyen, 4=FatTony, 5=Megax,
           rem   6=Harpy, 7=KnightGuy, 8=Frooty, 9=Nefertem, 10=NinjishGuy,
           rem   11=PorkChop, 12=RadishGoblin, 13=RoboTito, 14=Ursulo, 15=Shamone
           rem =================================================================
@@ -103,8 +103,8 @@ CurlerJump
           rem tail call
           goto StandardJump
 
-          rem DRAGONET (2) - FREE FLIGHT (vertical movement)
-          rem Dragonet can fly up/down freely
+          rem DRAGON OF STORMS (2) - FREE FLIGHT (vertical movement)
+          rem Dragon of Storms can fly up/down freely
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
 DragonetJump
@@ -179,8 +179,10 @@ KnightGuyJump
           let playerState[temp1] = playerState[temp1] | 4
           return
 
-          rem FROOTY (8) - FREE FLIGHT (vertical movement)
-          rem Frooty can fly up/down freely, no guard action
+          rem FROOTY (8) - PERMANENT FREE FLIGHT (vertical movement)
+          rem Frooty has permanent flight ability - no UP tapping required
+          rem Complete control over vertical position, gravity always overridden
+          rem Can move up/down freely at all times, no guard action
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
 FrootyJump
@@ -318,7 +320,7 @@ CurlerDown
           rem tail call
           goto StandardGuard
 
-          rem DRAGONET (2) - FLY DOWN (no guard action)
+          rem DRAGON OF STORMS (2) - FLY DOWN (no guard action)
           rem Dragon of Storms flies down instead of guarding
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
@@ -507,7 +509,7 @@ StandardJump
 StandardGuard
           rem Flying characters cannot guard - DOWN is used for vertical movement
           rem Frooty (8): DOWN = fly down (no gravity)
-          rem Dragon of Storms/Dragonet (2): DOWN = fly down (no gravity)
+          rem Dragon of Storms (2): DOWN = fly down (no gravity)
           rem Harpy (6): DOWN = fly down (reduced gravity)
           let temp4 = playerChar[temp1]
           if temp4 = 8 then return

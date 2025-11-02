@@ -31,7 +31,7 @@ UpdateCharacterParade
           titleParadeTimer = titleParadeTimer + 1
           
           rem Start parade after 10 seconds (600 frames at 60fps)
-          if titleParadeTimer < 600 then return
+          if titleParadeTimer < TitleParadeDelayFrames then return
           
           rem Check if we need to start a new character
           if !titleParadeActive then

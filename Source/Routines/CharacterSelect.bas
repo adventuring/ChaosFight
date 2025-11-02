@@ -463,7 +463,7 @@ SelAnimNormal
           let charSelectAnimTimer  = charSelectAnimTimer + 1
           
           rem Change animation state every 60 frames (1 second at 60fps)
-          if charSelectAnimTimer > 60 then 
+          if charSelectAnimTimer > FramesPerSecond then 
           let charSelectAnimTimer  = 0
           rem Randomly choose new animation state
           let charSelectAnimState  = rand & 3

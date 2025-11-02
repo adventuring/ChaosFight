@@ -122,6 +122,30 @@
           dim colorBWPrevious_W = w008
           dim colorBWPrevious_R = r008
           rem Previous state of Color/B&W switch (for detecting changes) - SCRAM since low frequency use
+          
+          rem Music System Variables (SCRAM - used in Admin Mode for publisher/author/title/winner screens)
+          dim SongPointerL = w020
+          dim SongPointerH = w021
+          rem Song data pointer low/high bytes (in Songs bank)
+          dim MusicVoice0PointerL = w022
+          dim MusicVoice0PointerH = w023
+          rem Voice 0 stream position low/high bytes (high byte = 0 means inactive)
+          dim MusicVoice1PointerL = w024
+          dim MusicVoice1PointerH = w025
+          rem Voice 1 stream position low/high bytes (high byte = 0 means inactive)
+          dim MusicVoice0Frame = w026
+          dim MusicVoice1Frame = w027
+          rem Frame counters for current notes on each voice
+          
+          rem Sound Effect System Variables (SCRAM - used in Game Mode)
+          dim SoundPointerL = w028
+          dim SoundPointerH = w029
+          rem Sound data pointer low/high bytes (in Sounds bank)
+          dim SoundEffectPointerL = w030
+          dim SoundEffectPointerH = w031
+          rem Sound effect stream position low/high bytes (high byte = 0 means inactive)
+          dim SoundEffectFrame = w032
+          rem Frame counter for current sound effect note
 
           rem =================================================================
           rem ADMIN MODE VARIABLES (may be re-used in Game Mode for other purposes)

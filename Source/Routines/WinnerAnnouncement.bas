@@ -10,7 +10,7 @@ WinnerAnnouncementLoop
           
           rem Auto-advance after 10 seconds (600 frames at 60fps)
           let WinScreenTimer = WinScreenTimer + 1
-          if WinScreenTimer > 600 then goto WinnerAdvanceToCharacterSelect
+          if WinScreenTimer > WinScreenAutoAdvanceFrames then goto WinnerAdvanceToCharacterSelect
           
           rem Display win screen and continue loop
           rem gosub bank7 DisplayWinScreen

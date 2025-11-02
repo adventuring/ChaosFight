@@ -52,7 +52,7 @@ CalculateAttackHitbox
   on PlayerAttackType(attacker_id) goto MeleeHitbox, ProjectileHitbox, AreaHitbox
   
 MeleeHitbox
-    rem Melee hitbox extends 16 pixels in facing direction
+    rem Melee hitbox extends PlayerSpriteWidth pixels in facing direction
     on PlayerFacing(attacker_id) goto FacingRight, FacingLeft, FacingUp, FacingDown
     
 FacingRight

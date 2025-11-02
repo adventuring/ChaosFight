@@ -101,9 +101,9 @@ CheckVisibleMissileCollision
           rem Check Player 1 (index 0)
           if temp1 = 0 then goto SkipSecondPlayer0
           if playerHealth[0] = 0 then goto SkipSecondPlayer0
-          if temp2 >= playerX[0] + 8 then goto SkipSecondPlayer0
+          if temp2 >= playerX[0] + PlayerSpriteHalfWidth then goto SkipSecondPlayer0
           if temp2 + temp6 <= playerX[0] then goto SkipSecondPlayer0
-          if temp3 >= playerY[0] + 16 then goto SkipSecondPlayer0
+          if temp3 >= playerY[0] + PlayerSpriteHeight then goto SkipSecondPlayer0
           if temp3 + temp5 <= playerY[0] then goto SkipSecondPlayer0
           temp4 = 0 : return
 SkipSecondPlayer0
@@ -111,9 +111,9 @@ SkipSecondPlayer0
           rem Check Player 2 (index 1)
           if temp1 = 1 then goto SkipSecondPlayer1
           if playerHealth[1] = 0 then goto SkipSecondPlayer1
-          if temp2 >= playerX[1] + 8 then goto SkipSecondPlayer1
+          if temp2 >= playerX[1] + PlayerSpriteHalfWidth then goto SkipSecondPlayer1
           if temp2 + temp6 <= playerX[1] then goto SkipSecondPlayer1
-          if temp3 >= playerY[1] + 16 then goto SkipSecondPlayer1
+          if temp3 >= playerY[1] + PlayerSpriteHeight then goto SkipSecondPlayer1
           if temp3 + temp5 <= playerY[1] then goto SkipSecondPlayer1
           temp4 = 1 : return
 SkipSecondPlayer1
@@ -121,9 +121,9 @@ SkipSecondPlayer1
           rem Check Player 3 (index 2)
           if temp1 = 2 then goto SkipSecondPlayer2
           if playerHealth[2] = 0 then goto SkipSecondPlayer2
-          if temp2 >= playerX[2] + 8 then goto SkipSecondPlayer2
+          if temp2 >= playerX[2] + PlayerSpriteHalfWidth then goto SkipSecondPlayer2
           if temp2 + temp6 <= playerX[2] then goto SkipSecondPlayer2
-          if temp3 >= playerY[2] + 16 then goto SkipSecondPlayer2
+          if temp3 >= playerY[2] + PlayerSpriteHeight then goto SkipSecondPlayer2
           if temp3 + temp5 <= playerY[2] then goto SkipSecondPlayer2
           temp4 = 2 : return
 SkipSecondPlayer2
@@ -131,9 +131,9 @@ SkipSecondPlayer2
           rem Check Player 4 (index 3)
           if temp1 = 3 then goto SkipSecondPlayer3
           if playerHealth[3] = 0 then goto SkipSecondPlayer3
-          if temp2 >= playerX[3] + 8 then goto SkipSecondPlayer3
+          if temp2 >= playerX[3] + PlayerSpriteHalfWidth then goto SkipSecondPlayer3
           if temp2 + temp6 <= playerX[3] then goto SkipSecondPlayer3
-          if temp3 >= playerY[3] + 16 then goto SkipSecondPlayer3
+          if temp3 >= playerY[3] + PlayerSpriteHeight then goto SkipSecondPlayer3
           if temp3 + temp5 <= playerY[3] then goto SkipSecondPlayer3
           temp4 = 3 : return
 SkipSecondPlayer3

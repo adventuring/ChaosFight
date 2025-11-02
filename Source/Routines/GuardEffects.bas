@@ -156,7 +156,7 @@ UpdateGuardTimerActive
           let playerState[temp1] = playerState[temp1] & %11111101
           rem Clear guard bit
           rem Start cooldown timer (60 frames)
-          let playerTimers[temp1] = 60
+          let playerTimers[temp1] = GuardTimerMaxFrames
           return
 
 UpdateGuardTimerContinue

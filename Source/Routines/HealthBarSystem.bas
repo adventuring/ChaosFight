@@ -19,7 +19,7 @@ UpdatePlayer1HealthBar
     rem Convert health to score format for bar display
     rem Simple approach: display health as 2-digit number (00-99)
     rem Limit to 99 max
-    if temp1 > 99 then temp1 = 99
+    if temp1 > PlayerHealthMax - 1 then temp1 = PlayerHealthMax - 1
     rem Temporarily disable score update to fix build errors
     rem TODO: Implement proper binary-to-BCD conversion for score display
     rem score assignment causes immediate value errors when using variables
@@ -52,9 +52,9 @@ UpdatePlayer12HealthBars
           rem Initialize health bars at game start
 InitializeHealthBars
           rem Set initial health bars to full (100%)
-          temp1 = 100
+          temp1 = PlayerHealthMax
           gosub UpdatePlayer1HealthBar
-          temp1 = 100
+          temp1 = PlayerHealthMax
           gosub UpdatePlayer2HealthBar
           return
 
@@ -75,7 +75,7 @@ UpdatePlayer34HealthBars
           rem Get Player 3 health (0-100), clamp to 99
           temp1 = playerHealth[2]
           if selectedChar3 = 255 then temp1 = 0
-          if temp1 > 99 then temp1 = 99
+          if temp1 > PlayerHealthMax - 1 then temp1 = PlayerHealthMax - 1
           
           rem Get Player 4 health (0-100), clamp to 99
           temp2 = playerHealth[3]

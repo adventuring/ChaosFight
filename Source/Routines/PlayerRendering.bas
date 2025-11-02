@@ -211,7 +211,7 @@ Player4Color
 DisplayHealth
           rem Flash Player 1 sprite if health is low (but not during recovery)
           rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[0] >= 25 then goto SkipPlayer0Flash
+          if playerHealth[0] >= PlayerHealthLowThreshold then goto SkipPlayer0Flash
           if playerRecoveryFrames[0] <> 0 then goto SkipPlayer0Flash
           if frame & 8 then player0x = 200 
           rem Hide sprite
@@ -219,7 +219,7 @@ SkipPlayer0Flash
 
           rem Flash Player 2 sprite if health is low
           rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[1] >= 25 then goto SkipPlayer1Flash
+          if playerHealth[1] >= PlayerHealthLowThreshold then goto SkipPlayer1Flash
           if playerRecoveryFrames[1] <> 0 then goto SkipPlayer1Flash
                     if frame & 8 then player1x = 200
 SkipPlayer1Flash
@@ -228,7 +228,7 @@ SkipPlayer1Flash
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Flash
           if selectedChar3 = 255 then goto SkipPlayer3Flash
           if ! playerHealth[2] then goto SkipPlayer3Flash
-          if playerHealth[2] >= 25 then goto SkipPlayer3Flash
+          if playerHealth[2] >= PlayerHealthLowThreshold then goto SkipPlayer3Flash
           if playerRecoveryFrames[2] <> 0 then goto SkipPlayer3Flash
           if frame & 8 then player2x = 200 
           rem Player 3 uses player2 sprite
@@ -238,7 +238,7 @@ SkipPlayer3Flash
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Flash
           if selectedChar4 = 255 then goto SkipPlayer4Flash
           if ! playerHealth[3] then goto SkipPlayer4Flash
-          if playerHealth[3] >= 25 then goto SkipPlayer4Flash
+          if playerHealth[3] >= PlayerHealthLowThreshold then goto SkipPlayer4Flash
           if playerRecoveryFrames[3] <> 0 then goto SkipPlayer4Flash
           if frame & 8 then player3x = 200 
           rem Player 4 uses player3 sprite
@@ -270,7 +270,7 @@ DrawHealthBars
           rem Draw Player 1 health bar
           let PR_healthBarLength = playerHealth[0] / 3 
           rem Scale 0-100 to 0-32
-          if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
+          if PR_healthBarLength > HealthBarMaxLength then LET PR_healthBarLength = HealthBarMaxLength
           if temp6 then COLUPF = ColBlue(14) else COLUPF = ColBlue(12)
           rem Bright blue (B&W) or Medium blue (Color)
           
@@ -278,7 +278,7 @@ DrawHealthBars
           
           rem Draw Player 2 health bar
           let PR_healthBarLength = playerHealth[1] / 3
-          if PR_healthBarLength > 32 then LET PR_healthBarLength = 32
+          if PR_healthBarLength > HealthBarMaxLength then LET PR_healthBarLength = HealthBarMaxLength
           if temp6 then COLUPF = ColRed(14) else COLUPF = ColRed(12)
           rem Bright red (B&W) or Medium red (Color)
           

@@ -76,7 +76,7 @@ SkipPlayer3HealthUpdate
 UpdateHealthBarPlayer0
           dim FB_healthBarLength = temp6
           FB_healthBarLength = playerHealth[0] / 3
-          if FB_healthBarLength > 32 then FB_healthBarLength = 32
+          if FB_healthBarLength > HealthBarMaxLength then FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColBlue(12)
           gosub bank8 DrawHealthBarRow0
           return
@@ -85,7 +85,7 @@ UpdateHealthBarPlayer0
 UpdateHealthBarPlayer1
           dim FB_healthBarLength = temp6
           FB_healthBarLength = playerHealth[1] / 3
-          if FB_healthBarLength > 32 then FB_healthBarLength = 32
+          if FB_healthBarLength > HealthBarMaxLength then FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColRed(12)
           gosub bank8 DrawHealthBarRow1
           return
@@ -94,7 +94,7 @@ UpdateHealthBarPlayer1
 UpdateHealthBarPlayer2
           dim FB_healthBarLength = temp6
           FB_healthBarLength = playerHealth[2] / 3
-          if FB_healthBarLength > 32 then FB_healthBarLength = 32
+          if FB_healthBarLength > HealthBarMaxLength then FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColYellow(12)
           gosub bank8 DrawHealthBarRow2
           return
@@ -103,7 +103,7 @@ UpdateHealthBarPlayer2
 UpdateHealthBarPlayer3
           dim FB_healthBarLength = temp6
           FB_healthBarLength = playerHealth[3] / 3
-          if FB_healthBarLength > 32 then FB_healthBarLength = 32
+          if FB_healthBarLength > HealthBarMaxLength then FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColGreen(12)
           gosub bank8 DrawHealthBarRow3
           return
@@ -147,7 +147,7 @@ SkipFramePhaseChecks
           rem Individual collision check routines
 CheckCollisionP1vsP2
           if playerX[0] >= playerX[1] then temp2 = playerX[0] - playerX[1] else temp2 = playerX[1] - playerX[0]
-          if temp2 >= 16 then goto SkipPlayerSeparation
+          if temp2 >= CollisionSeparationDistance then goto SkipPlayerSeparation
           
           rem Separate players based on their relative positions
           rem If P0 is left of P1, move P0 left and P1 right

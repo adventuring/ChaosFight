@@ -144,24 +144,80 @@
           rem Byte-safe top-wrap detection threshold
 
           rem =================================================================
-          rem MUSIC CONSTANTS
+          rem HEALTH CONSTANTS
           rem =================================================================
-          const MusicTitle = 0
-          const MusicInterworldly = 1
-          const MusicAtariToday = 2
-          const MusicVictory = 3
-          const MusicGameOver = 4
+          const PlayerHealthMax = 100
+          rem Maximum player health (full health)
+          const PlayerHealthHandicap = 75
+          rem Handicap mode health (75% of max)
+          const PlayerHealthLowThreshold = 25
+          rem Low health threshold for visual effects (flashing)
 
           rem =================================================================
-          rem SOUND EFFECT CONSTANTS
+          rem TIMING CONSTANTS
           rem =================================================================
-          const SoundAttack = 1
-          const SoundHit = 2
-          const SoundFall = 3
-          const SoundGuard = 4
-          const SoundSelect = 5
-          const SoundVictory = 6
-          const SoundElimination = 7
+          const FramesPerSecond = 60
+          rem NTSC frame rate (frames per second)
+          const FramesPerSecondPAL = 50
+          rem PAL frame rate (frames per second)
+          const FramesPerDecisecond = 6
+          rem NTSC frames per decisecond (60/10)
+          const FramesPerDecisecondPAL = 5
+          rem PAL frames per decisecond (50/10)
+          const SecondsPerMinute = 60
+          rem Seconds in a minute (used for frame count calculations)
+          const FramesPerMinute = 3600
+          rem NTSC frames per minute (60 * 60)
+          const FramesPerMinutePAL = 3000
+          rem PAL frames per minute (50 * 60)
+          const WinScreenAutoAdvanceFrames = 600
+          rem Auto-advance win screen after 10 seconds (60fps * 10)
+          const TitleParadeDelayFrames = 600
+          rem Title parade starts after 10 seconds (60fps * 10)
+          const GuardTimerMaxFrames = 60
+          rem Maximum guard timer (1 second at 60fps)
+
+          rem =================================================================
+          rem SIZE AND DIMENSION CONSTANTS
+          rem =================================================================
+          const HealthBarMaxLength = 32
+          rem Maximum health bar length in playfield pixels
+          const CollisionSeparationDistance = 16
+          rem Minimum distance between players before separation (pixels)
+          const PlayerSpriteWidth = 16
+          rem Player sprite width in pixels
+          const PlayerSpriteHalfWidth = 8
+          rem Already defined above, but keeping for consistency
+          rem Player sprite half-width (8 pixels, used in collision checks)
+
+          rem =================================================================
+          rem MUSIC CONSTANTS (Song IDs: 0-255)
+          rem =================================================================
+          const SongPublisher = 0
+          rem Publisher preamble (AtariToday.mscz) - gameMode 0
+          const SongAuthor = 1
+          rem Author preamble (Interworldly.mscz) - gameMode 1
+          const SongTitle = 2
+          rem Title screen (ChaosFight.mscz) - gameMode 2
+          const SongGameOver = 3
+          rem GameOver screen (GameOver.mscz) - gameMode 7, defeat
+          const SongVictory = 4
+          rem Victory screen (Victory.mscz) - gameMode 7, win
+
+          rem =================================================================
+          rem SOUND EFFECT CONSTANTS (Sound IDs: 0-255, separate namespace from songs)
+          rem =================================================================
+          const SoundAttackHit = 0
+          const SoundGuardBlock = 1
+          const SoundJump = 2
+          const SoundPlayerEliminated = 3
+          const SoundMenuNavigate = 4
+          const SoundMenuSelect = 5
+          const SoundSpecialMove = 6
+          const SoundPowerup = 7
+          const SoundLandingSafe = 8
+          const SoundLandingDamage = 9
+          rem Reserve 10-255 for future sounds
 
           rem =================================================================
           rem ANIMATION SYSTEM CONSTANTS

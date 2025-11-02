@@ -34,10 +34,52 @@ SetupTitle
           rem Title screen (gameMode 2) - ChaosFight.mscz
           LET temp1 = SongTitle
           gosub bank16 StartMusic
+          
+          rem Initialize title screen state
+          COLUBK = ColGray(0)
+          
+          rem Initialize character parade
+          titleParadeTimer = 0
+          titleParadeChar = 0
+          titleParadeX = 0
+          titleParadeActive = 0
+          
           return
           
 SetupCharacterSelect
           rem Character select (gameMode 3) - no music
+          
+          rem Initialize character selections
+          let playerChar[0] = 0
+          let playerChar[1] = 0
+          let playerChar[2] = 0
+          let playerChar[3] = 0
+          let playerLocked[0] = 0
+          let playerLocked[1] = 0
+          let playerLocked[2] = 0
+          let playerLocked[3] = 0
+          
+          rem Clear Quadtari detection (will be re-detected)
+          let controllerStatus = controllerStatus & ClearQuadtariDetected
+          
+          rem Initialize character select animations
+          let charSelectAnimTimer = 0
+          let charSelectAnimState = 0
+          rem Start with idle animation
+          let charSelectCharIndex = 0
+          rem Start with first character
+          let charSelectAnimFrame = 0
+          
+          rem Check for Quadtari adapter
+          gosub bank6 SelDetectQuad
+          
+          rem Set background color (B&W safe)
+          let COLUBK = ColGray(0)
+          rem Always black background
+          
+          rem Initialize Quadtari controller multiplexing
+          let qtcontroller = 0
+          
           return
           
 SetupFallingAnimation

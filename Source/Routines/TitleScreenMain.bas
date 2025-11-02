@@ -2,10 +2,14 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem =================================================================
-          rem TITLE SCREEN - MAIN LOOP
+          rem TITLE SCREEN - PER-FRAME LOOP
           rem =================================================================
-          rem Main title screen display and input handling.
+          rem Per-frame title screen display and input handling.
+          rem Called from MainLoop each frame (gameMode 2).
           rem Dispatches to other modules for character parade and rendering.
+          rem
+          rem Setup is handled by SetupTitle in ChangeGameMode.bas
+          rem This function processes one frame and returns.
 
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   titleParadeTimer - Frame counter for parade timing
@@ -14,15 +18,14 @@
           rem   titleParadeActive - Whether parade is currently running
           rem   QuadtariDetected - Whether 4-player mode is active
 
-          rem FLOW:
-          rem   1. Initialize title screen state
-          rem   2. Loop: handle input, update parade, draw screen
-          rem   3. On button press, transition to character select
+          rem FLOW PER FRAME:
+          rem   1. Handle input - any button press goes to character select
+          rem   2. Update character parade
+          rem   3. Draw screen
+          rem   4. Return to MainLoop
           rem =================================================================
 
-TitleScreen
-          rem Title screen loop
-TitleMainLoop
+TitleScreenMain
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
           rem Use skip-over pattern to avoid complex || operator issues
@@ -35,32 +38,19 @@ TitleMainLoop
           if !INPT2{7} then TitleScreenComplete
 TitleSkipQuad
           
+          rem Update character parade animation
           gosub UpdateCharacterParade
           
+          rem Draw title screen
           gosub DrawTitleScreen
           
           rem Draw screen with titlescreen kernel minikernel
           gosub titledrawscreen bank1
-          goto TitleMainLoop
+          
+          return
 
 TitleScreenComplete
           rem Transition to character select
-          gameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
+          gameMode = ModeCharacterSelect
+          gosub bank13 ChangeGameMode
           return
-
-
-          rem =================================================================
-          rem BEGIN TITLE SCREEN (setup + enter loop)
-          rem =================================================================
-BeginTitleScreen
-          rem Initialize title screen
-          COLUBK = ColGray(0)
-          
-          rem Initialize character parade
-          titleParadeTimer = 0
-          titleParadeChar = 0
-          titleParadeX = 0
-          titleParadeActive = 0
-          
-          rem Enter the title screen main loop
-          goto TitleScreen

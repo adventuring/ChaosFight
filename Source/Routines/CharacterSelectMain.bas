@@ -2,18 +2,21 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem =================================================================
-          rem CHARACTER SELECT - MAIN LOOP
+          rem CHARACTER SELECT - PER-FRAME LOOP
           rem =================================================================
-          rem Main character selection screen with Quadtari support.
+          rem Per-frame character selection screen with Quadtari support.
+          rem Called from MainLoop each frame (gameMode 3).
           rem Players cycle through 16 characters and lock in their choice.
+          rem
+          rem Setup is handled by SetupCharacterSelect in ChangeGameMode.bas
+          rem This function processes one frame and returns.
 
-          rem FLOW:
-          rem   1. Detect Quadtari adapter
-          rem   2. Initialize selections (all unlocked)
-          rem   3. Loop: handle input with multiplexing
-          rem   4. Update animations
-          rem   5. Draw screen
-          rem   6. Check if ready to proceed
+          rem FLOW PER FRAME:
+          rem   1. Handle input with Quadtari multiplexing
+          rem   2. Update animations
+          rem   3. Check if ready to proceed
+          rem   4. Draw screen
+          rem   5. Return to MainLoop
 
           rem QUADTARI MULTIPLEXING:
           rem   Even frames (qtcontroller=0): joy0=P1, joy1=P2
@@ -27,11 +30,8 @@
           rem =================================================================
 
 CharacterSelectInputEntry
-          
-
-CharacterSelectInputLoop
           rem Quadtari controller multiplexing
-          if qtcontroller then goto CharacterSelectHandleQuadtari
+          if qtcontroller then CharacterSelectHandleQuadtari
           
           rem Handle Player 1 input (joy0 on even frames)
           if joy0left then CharacterSelectPlayer0Left
@@ -75,7 +75,7 @@ CharacterSelectSkipPlayer1Right
 CharacterSelectPlayer1LockClearDone
           let if joy1fire then playerLocked[1] = 1
           
-          let qtcontroller  = 1
+          let qtcontroller = 1
           goto CharacterSelectInputComplete
 
 CharacterSelectHandleQuadtari
@@ -130,20 +130,20 @@ CharacterSelectPlayer3LockClearDone
 CharacterSelectSkipPlayer4
           
           
-          let qtcontroller  = 0
+          let qtcontroller = 0
 
 CharacterSelectInputComplete
           rem Update character select animations
           gosub SelectUpdateAnimations
 
-          rem Check if all players are ready to start
+          rem Check if all players are ready to start (may transition to next mode)
           gosub CharacterSelectCheckReady
 
           rem Draw character selection screen
           gosub SelectDrawScreen
 
           drawscreen
-          goto CharacterSelectInputLoop
+          return
 
           rem =================================================================
           rem CHECK IF READY TO PROCEED
@@ -173,9 +173,13 @@ CharacterSelectReadyDone
 
 CharacterSelectFinish
           rem Store final selections
-          let selectedChar1  = playerChar[0]
-          let selectedChar2  = playerChar[1]
-          let selectedChar3  = playerChar[2]
-          let selectedChar4  = playerChar[3]
+          let selectedChar1 = playerChar[0]
+          let selectedChar2 = playerChar[1]
+          let selectedChar3 = playerChar[2]
+          let selectedChar4 = playerChar[3]
+          
+          rem Transition to falling animation
+          gameMode = ModeFallingAnimation
+          gosub bank13 ChangeGameMode
           return
 

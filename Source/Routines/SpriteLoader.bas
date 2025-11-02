@@ -393,6 +393,6 @@ HurtColor
 SetColor
           rem Set color based on player index (multisprite kernel supports COLUP2/COLUP3)
           if ! temp3 then COLUP0 = temp6 : return
-          if temp3 = 1 then COLUP1 = temp6 : return
+          if temp3 = 1 then _COLUP1 = temp6 : return
           if temp3 = 2 then COLUP2 = temp6 : return
           COLUP3 = temp6 : return

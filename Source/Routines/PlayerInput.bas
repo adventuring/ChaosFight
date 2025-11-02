@@ -98,7 +98,7 @@ InputHandleLeftPortPlayer
           if temp5 = 2 then FrootyDragonetLeftRightMovement
           
           rem Standard horizontal movement (no collision check)
-          if joy0left then PlayerX[temp1] = PlayerX[temp1] - 1 : PlayerState[temp1] = PlayerState[temp1] & NOT 1 : PlayerMomentumX[temp1] = 255
+          if joy0left then PlayerX[temp1] = PlayerX[temp1] - 1 : PlayerState[temp1] = PlayerState[temp1] & 254 : PlayerMomentumX[temp1] = 255
           if joy0right then PlayerX[temp1] = PlayerX[temp1] + 1 : PlayerState[temp1] = PlayerState[temp1] | 1 : PlayerMomentumX[temp1] = 1
           goto SkipFlyingLeftRight
           
@@ -136,7 +136,7 @@ CheckLeftCollision
           rem Blocked at bottom too
 MoveLeftOK
           let PlayerX[temp1] = PlayerX[temp1] - 1
-          let PlayerState[temp1] = PlayerState[temp1] & NOT 1
+          let PlayerState[temp1] = PlayerState[temp1] & 254
           let PlayerMomentumX[temp1] = 255
 CheckRightMovement
           rem Check right movement
@@ -269,7 +269,7 @@ InputSkipLeftPortJump
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
             on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
-          if !joy0down then PlayerState[temp1] = PlayerState[temp1] & NOT 2
+          if !joy0down then PlayerState[temp1] = PlayerState[temp1] & 253
           
           
           rem Process attack input
@@ -300,7 +300,7 @@ InputHandleRightPortPlayer
           rem Standard horizontal movement (no collision check)
           if joy1left then
                     let PlayerX[temp1] = PlayerX[temp1] - 1
-          let PlayerState[temp1] = PlayerState[temp1] & NOT 1
+          let PlayerState[temp1] = PlayerState[temp1] & 254
           rem Face left
                     let PlayerMomentumX[temp1] = 255
           
@@ -345,7 +345,7 @@ CheckLeftCollisionRight
           rem Blocked at bottom too
 MoveLeftOKRight
           let PlayerX[temp1] = PlayerX[temp1] - 1
-          let PlayerState[temp1] = PlayerState[temp1] & NOT 1
+          let PlayerState[temp1] = PlayerState[temp1] & 254
           let PlayerMomentumX[temp1] = 255
 CheckRightMovementRight
           rem Check right movement
@@ -480,7 +480,7 @@ InputSkipRightPortJump
             rem Use Shamone guard for MethHound
                     on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
 
-          let PlayerState[temp1] = PlayerState[temp1] & NOT 2
+          let PlayerState[temp1] = PlayerState[temp1] & 253
           rem Clear guard bit
           
           

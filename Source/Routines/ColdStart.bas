@@ -14,7 +14,7 @@ ColdStart
           COLUBK = ColGrey(0)
           COLUPF = ColGrey(14)
           COLUP0 = ColBlue(14)
-          COLUP1 = ColRed(14)
+          _COLUP1 = ColRed(14)
 
           AUDC0 = 0
           AUDV0 = 0

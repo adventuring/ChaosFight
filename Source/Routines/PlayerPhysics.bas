@@ -26,7 +26,7 @@ PhysicsApplyGravity
           let playerY[0] = playerY[0] + 1
           if playerY[0] < 80 then Player1GravityDone
           let playerY[0] = 80
-          let playerState[0] = playerState[0] & NOT 4
+          let playerState[0] = playerState[0] & 251
 Player1GravityDone
           
           rem Player 2
@@ -34,7 +34,7 @@ Player1GravityDone
           let playerY[1] = playerY[1] + 1
           if playerY[1] < 80 then Player2GravityDone
           let playerY[1] = 80
-          let playerState[1] = playerState[1] & NOT 4
+          let playerState[1] = playerState[1] & 251
 Player2GravityDone
           
           rem Player 3 (Quadtari only)
@@ -43,7 +43,7 @@ Player2GravityDone
           if (playerState[2] & 4) <> 0 then SkipPlayer3Jump
           let playerY[2] = playerY[2] + 1
           if playerY[2] < 80 then SkipPlayer3Jump
-          let playerY[2] = 80 : playerState[2] = playerState[2] & NOT 4
+          let playerY[2] = 80 : playerState[2] = playerState[2] & 251
 SkipPlayer3Jump
           
           rem Player 4 (Quadtari only)
@@ -52,7 +52,7 @@ SkipPlayer3Jump
           if (playerState[3] & 4) <> 0 then SkipPlayer4Jump
           let playerY[3] = playerY[3] + 1
           if playerY[3] < 80 then SkipPlayer4Jump
-          let playerY[3] = 80 : playerState[3] = playerState[3] & NOT 4
+          let playerY[3] = 80 : playerState[3] = playerState[3] & 251
 SkipPlayer4Jump
           
           return

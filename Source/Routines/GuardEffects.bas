@@ -31,7 +31,7 @@ ApplyGuardFlashing
           rem SECAM uses player-based colors (always cyan for guard)
           if temp1 = 0 then COLUP0 = $C0
           rem Player 1 - Cyan
-          if temp1 = 1 then COLUP1 = $C0
+          if temp1 = 1 then _COLUP1 = $C0
           rem Player 2 - Cyan
           rem Players 3 & 4: Missiles inherit colors from COLUP0/COLUP1
           rem Cannot set missile colors independently - see Issue #73
@@ -39,7 +39,7 @@ ApplyGuardFlashing
           rem NTSC/PAL - light cyan ColCyan(12)
           if temp1 = 0 then COLUP0 = ColCyan(12)
           rem Player 1
-          if temp1 = 1 then COLUP1 = ColCyan(12)
+          if temp1 = 1 then _COLUP1 = ColCyan(12)
           rem Player 2
           rem Players 3 & 4: Missiles inherit colors from COLUP0/COLUP1
           rem Cannot set missile colors independently - see Issue #73
@@ -63,7 +63,7 @@ RestoreNormalPlayerColor
           rem Restore normal player colors based on player index
           if temp1 = 0 then COLUP0 = $0E
           rem Player 1 - Blue
-          if temp1 = 1 then COLUP1 = $32
+          if temp1 = 1 then _COLUP1 = $32
           rem Player 2 - Red  
           rem Players 3 & 4: Missiles inherit colors from COLUP0/COLUP1
           rem Cannot restore missile colors independently - see Issue #73

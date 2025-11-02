@@ -172,11 +172,11 @@ Player1ColorDone
           goto Player2ColorDone
 Player2HurtColor
           rem Hurt: dimmer red
-          COLUP1 = ColRed(6)
+          _COLUP1 = ColRed(6)
           
 Player2BWMode
           rem B&W mode: Always use bright red (Player 2 color), hurt state looks the same
-          COLUP1 = ColRed(14) 
+          _COLUP1 = ColRed(14) 
           rem Bright red for Player 2
           
 Player2ColorDone

@@ -248,9 +248,10 @@ MissileSysPF
           
           rem Check if playfield pixel is set
           rem pfread(column, row) returns 0 if clear, non-zero if set
-          let temp4  = 0
+          rem pfread can only be used in if/then conditionals
+          let temp4 = 0
           rem Default: clear
-          let if pfread(temp6, temp3) then temp4  = 1
+          if pfread(temp6, temp3) then temp4 = 1
           rem Hit playfield
           
           return

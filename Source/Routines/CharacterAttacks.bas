@@ -36,7 +36,7 @@ BernieAttack
           rem Face right
           goto FacingDone1
 FaceLeft1
-          let playerState[temp1] = playerState[temp1] & NOT 1 
+          let playerState[temp1] = playerState[temp1] & 254 
           rem Face left
 FacingDone1
           
@@ -45,7 +45,7 @@ FacingDone1
           
           rem Restore original facing
           if temp5 <> 0 then RestoreFaceRight1
-          let playerState[temp1] = playerState[temp1] & NOT 1
+          let playerState[temp1] = playerState[temp1] & 254
           goto RestoreFacingDone1
 RestoreFaceRight1
           let playerState[temp1] = playerState[temp1] | 1

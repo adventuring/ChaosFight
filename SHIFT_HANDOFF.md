@@ -26,9 +26,9 @@ Completed critical rewrite of CharacterArt system to fix bank-switching architec
 
 ## Critical Issue Requiring Attention
 
-### ⚠️ TEMP VARIABLE DECLARATION NEEDED
+### ⚠️ TEMP VARIABLE HALLUCINATION (Issue #338)
 
-**Problem**: Code uses `temp7`, `temp8`, `temp9` but batariBASIC only provides `temp1-temp6` as built-in variables.
+**Problem**: Code uses `temp7`, `temp8`, `temp9` but batariBASIC only provides `temp1-temp6` as built-in variables. These variables do not exist and were mistakenly introduced.
 
 **Files affected**:
 - `Source/Routines/SpriteLoaderCharacterArt.bas` - uses temp7, temp8, temp9
@@ -60,10 +60,11 @@ Completed critical rewrite of CharacterArt system to fix bank-switching architec
 
 - **#302**: Bank switching address calculation errors - IN PROGRESS (architecture fixed, needs temp variable resolution)
 - **#320**: Integrate titlescreen kernel for 48×42 admin screen bitmaps - IN PROGRESS
+- **#338**: Fix hallucinated temp7/temp8/temp9 variables in CharacterArt system - **CRITICAL** (blocks compilation)
 
 ## Next Steps
 
-1. **URGENT**: Resolve temp7/temp8/temp9 variable declaration issue
+1. **URGENT**: Fix temp7/temp8/temp9 hallucination (#338) - replace with actual variables
 2. Test build with new CharacterArt architecture
 3. Verify sprite loading works correctly in-game
 4. Continue with titlescreen kernel integration (#320)

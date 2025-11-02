@@ -2,6 +2,17 @@
 /* Each hue supports 8 luminance levels: 0, 2, 4, 6, 8, 10, 12, 14 */
 /* Note: PAL colors may appear different due to TV standard differences */
 /* Some hues produce different colors on PAL vs NTSC */
+/* 
+ * TODO: Verify PAL color values match SkylineTool graphics.lisp +vcs-pal-palette+
+ * Currently ColorsPAL.h uses same values as ColorsNTSC.h, but PAL colors should differ.
+ * Reference: SkylineTool/src/graphics.lisp line 297 (+vcs-pal-palette+ - TODO #1225)
+ * Issue: #313 - Fix PAL color definitions using SkylineTool graphics.lisp palette
+ * 
+ * PAL color differences from NTSC:
+ * - Different hue rotation/phases due to PAL TV standard
+ * - Some colors may appear shifted or tinted differently
+ * - Should match +vcs-pal-palette+ once implemented in graphics.lisp
+ */
 #define _COL_Grey_L0 $00
 #define _COL_Grey_L2 $02
 #define _COL_Grey_L4 $04

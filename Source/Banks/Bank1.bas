@@ -11,11 +11,11 @@
           include "Source/Generated/Art.AtariAge.s"
           include "Source/Generated/Art.Interworldly.s"
           include "Source/Generated/Art.ChaosFight.s"
-          end
+end
           
           rem Include titlescreen kernel assembly (minikernel for multisprite)
           rem Use include (not #include) so DASM preprocessor handles it, not C preprocessor
           asm
           include "Source/Titlescreen/asm/titlescreen.s"
-          end
+end
 

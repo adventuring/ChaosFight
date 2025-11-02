@@ -160,7 +160,7 @@ DrawParadeCharacterSprite
                     %00011000
                     %00011000
                     %00011000
-                    end
+end
           return
 DrawParadeFrame1
           rem Frame 1 - left leg forward
@@ -173,6 +173,6 @@ DrawParadeFrame1
                     %00011000
                     %00011000
                     %00011000
-                    end
+end
           return
 

@@ -15,8 +15,8 @@
           rem =================================================================
           
           rem ChaosFight uses TWO memory contexts that never overlap:
-          rem   1. Admin Mode: Title, preambles, level select (GameModes 0,1,2,5)
-          rem   2. Game Mode: Character select, falling animation, gameplay, winner (GameModes 3,4,6,7)
+          rem   1. Admin Mode: Title, preambles, character select, falling in, level select, winner (GameModes 0,1,2,3,4,5,7)
+          rem   2. Game Mode: Gameplay only (GameMode 6)
           rem
           rem CRITICAL KERNEL LIMITATION:
           rem   batariBASIC sets kernel at COMPILE TIME - cannot switch at runtime!
@@ -78,12 +78,6 @@
           rem COMMON VARS - Standard RAM (a-z)
           rem =================================================================
           
-          rem Fall animation variables (used during falling animation screen)
-          dim fallFrame = a
-          dim fallSpeed = b
-          dim fallComplete = c
-          dim activePlayers = d
-
           rem Game state variables
           dim gameState = g
           dim gameMode = p
@@ -180,6 +174,13 @@
           rem ADMIN: Parade X position (standard RAM var35)
           dim titleParadeActive = var36    
           rem ADMIN: Parade active flag (standard RAM var36)
+          
+          rem ADMIN: Falling animation variables (standard RAM a,b,c,d)
+          dim fallFrame = a
+          dim fallSpeed = b
+          dim fallComplete = c
+          dim activePlayers = d
+          rem ADMIN: Falling animation screen (Mode 4) variables
           
           rem =================================================================
           rem GAME MODE VARIABLES (Standard RAM + ALL SCRAM)

@@ -10,19 +10,27 @@
           rem Called every frame to manage 10fps animation timing
 UpdateCharacterAnimations
           rem Update animation for each active player
+          rem Skip eliminated players to avoid unnecessary processing
           let temp1 = 0  : rem Player index (0-3)
+          if PlayersEliminated & 1 then goto AnimationSkipPlayer0
           gosub UpdatePlayerAnimation
           rem Player 1
+AnimationSkipPlayer0
           let temp1 = 1  : rem Player index (0-3)
+          if PlayersEliminated & 2 then goto AnimationSkipPlayer1
           gosub UpdatePlayerAnimation
           rem Player 2
+AnimationSkipPlayer1
           if ControllerStatus & SetQuadtariDetected then goto AnimationUpdatePlayer3
           goto AnimationSkipPlayer3
 AnimationUpdatePlayer3
           let temp1 = 2  : rem Player index (0-3)
+          if PlayersEliminated & 4 then goto AnimationSkipPlayer2
           gosub UpdatePlayerAnimation
           rem Player 3
+AnimationSkipPlayer2
           let temp1 = 3  : rem Player index (0-3)
+          if PlayersEliminated & 8 then goto AnimationSkipPlayer3
           gosub UpdatePlayerAnimation
           rem Player 4
 AnimationSkipPlayer3

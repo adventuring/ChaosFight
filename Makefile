@@ -60,7 +60,8 @@ bin/buildapp:
 
 # Output files
 GAME = ChaosFight
-ROM = Dist/$(GAME).NTSC.a26
+GAMEYEAR = 25
+ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
 # Assembly files
 ALL_SOURCES = $(shell find Source -name \*.bas)
@@ -70,20 +71,20 @@ ALL_SOURCES = $(shell find Source -name \*.bas)
 
 # Build game
 game: \
-	Dist/$(GAME).NTSC.a26 \
-	Dist/$(GAME).PAL.a26 \
-	Dist/$(GAME).SECAM.a26 \
-	Dist/$(GAME).NTSC.sym \
-	Dist/$(GAME).PAL.sym \
-	Dist/$(GAME).SECAM.sym \
-	Dist/$(GAME).NTSC.lst \
-	Dist/$(GAME).PAL.lst \
-	Dist/$(GAME).SECAM.lst \
-	Dist/$(GAME).NTSC.pro \
-	Dist/$(GAME).PAL.pro \
-	Dist/$(GAME).SECAM.pro
+	Dist/$(GAME)$(GAMEYEAR).NTSC.a26 \
+	Dist/$(GAME)$(GAMEYEAR).PAL.a26 \
+	Dist/$(GAME)$(GAMEYEAR).SECAM.a26 \
+	Dist/$(GAME)$(GAMEYEAR).NTSC.sym \
+	Dist/$(GAME)$(GAMEYEAR).PAL.sym \
+	Dist/$(GAME)$(GAMEYEAR).SECAM.sym \
+	Dist/$(GAME)$(GAMEYEAR).NTSC.lst \
+	Dist/$(GAME)$(GAMEYEAR).PAL.lst \
+	Dist/$(GAME)$(GAMEYEAR).SECAM.lst \
+	Dist/$(GAME)$(GAMEYEAR).NTSC.pro \
+	Dist/$(GAME)$(GAMEYEAR).PAL.pro \
+	Dist/$(GAME)$(GAMEYEAR).SECAM.pro
 
-doc: Dist/$(GAME).pdf Dist/$(GAME).html
+doc: Dist/$(GAME)$(GAMEYEAR).pdf Dist/$(GAME)$(GAMEYEAR).html
 
 # Character sprite sheet names (32 characters: 16 main + 16 future)
 CHARACTER_NAMES = \
@@ -243,19 +244,19 @@ Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
+	cpp -P -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
+	cpp -P -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) $< > $@
 
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
+	cpp -P -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) $< > $@
 
 # Shared dependencies for all TV standards
 BUILD_DEPS = $(ALL_SOURCES) \
@@ -329,17 +330,17 @@ Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
 	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
-Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: Source/Generated/$(GAME).NTSC.s
+Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME).NTSC.s
 	mkdir -p Dist
-	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
+	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).NTSC.lst -sDist/$(GAME)$(GAMEYEAR).NTSC.sym -oDist/$(GAME)$(GAMEYEAR).NTSC.a26
 
-Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: Source/Generated/$(GAME).PAL.s
+Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME).PAL.s
 	mkdir -p Dist
-	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
+	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).PAL.lst -sDist/$(GAME)$(GAMEYEAR).PAL.sym -oDist/$(GAME)$(GAMEYEAR).PAL.a26
 
-Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: Source/Generated/$(GAME).SECAM.s
+Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME).SECAM.s
 	mkdir -p Dist
-	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
+	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).SECAM.lst -sDist/$(GAME)$(GAMEYEAR).SECAM.sym -oDist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator
 emu: $(ROM)
@@ -383,30 +384,32 @@ help:
 	@echo "  help         - Show this help message"
 	@echo ""
 	@echo "Output files:"
-	@echo "  Dist/ChaosFight-Manual.pdf  - Game manual (PDF)"
-	@echo "  Dist/ChaosFight-Manual.html - Game manual (HTML)"
-	@echo "  Dist/ChaosFight.NTSC.a26    - NTSC ROM"
-	@echo "  Dist/ChaosFight.PAL.a26     - PAL ROM"
-	@echo "  Dist/ChaosFight.SECAM.a26   - SECAM ROM"
+	@echo "  Dist/ChaosFight25.pdf       - Game manual (PDF)"
+	@echo "  Dist/ChaosFight25.html      - Game manual (HTML)"
+	@echo "  Dist/ChaosFight25.NTSC.a26  - NTSC ROM"
+	@echo "  Dist/ChaosFight25.PAL.a26   - PAL ROM"
+	@echo "  Dist/ChaosFight25.SECAM.a26 - SECAM ROM"
 
 # Generate Stella .pro files
-Dist/$(GAME).NTSC.pro: Source/$(GAME).pro Dist/$(GAME).NTSC.a26
+Dist/$(GAME)$(GAMEYEAR).NTSC.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 	sed $< -e s/@@TV@@/NTSC/g \
-		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).NTSC.a26 | cut -d\  -f1)/g > $@
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).NTSC.a26 | cut -d\  -f1)/g > $@
 
-Dist/$(GAME).PAL.pro: Source/$(GAME).pro Dist/$(GAME).PAL.a26
+Dist/$(GAME)$(GAMEYEAR).PAL.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).PAL.a26
 	sed $< -e s/@@TV@@/PAL/g \
-		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).PAL.a26 | cut -d\  -f1)/g > $@
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).PAL.a26 | cut -d\  -f1)/g > $@
 
-Dist/$(GAME).SECAM.pro: Source/$(GAME).pro Dist/$(GAME).SECAM.a26
+Dist/$(GAME)$(GAMEYEAR).SECAM.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 	sed $< -e s/@@TV@@/SECAM/g \
-		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).SECAM.a26 | cut -d\  -f1)/g > $@
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).SECAM.a26 | cut -d\  -f1)/g > $@
 
 # Documentation generation
-Dist/$(GAME).pdf: Manual/ChaosFight.texi
+Dist/$(GAME)$(GAMEYEAR).pdf: Manual/ChaosFight.texi
+	mkdir -p Dist
 	makeinfo --pdf --output=$@ $<
 
-Dist/$(GAME).html: Manual/ChaosFight.texi
+Dist/$(GAME)$(GAMEYEAR).html: Manual/ChaosFight.texi
+	mkdir -p Dist
 	makeinfo --html --output=$@ $<
 
 nowready: $(READYFILE)

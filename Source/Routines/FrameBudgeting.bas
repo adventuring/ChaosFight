@@ -240,7 +240,7 @@ if PlayerX[2] < PlayerX[3] then
           rem   Frame 3: Check Game Player 3 missile vs all players
 BudgetedMissileCollisionCheck
           rem Use MissileActive bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
-          rem Use CheckAllMissileCollisions from MissileCollision.bas which checks one player's missile
+          rem Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
           
 if !(ControllerStatus & SetQuadtariDetected) then 
           rem Simple 2-player mode: alternate missiles

@@ -91,14 +91,139 @@ InputSkipPlayer4Input
           rem INPUT: temp1 = player index (0 or 2)
           rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
 InputHandleLeftPortPlayer
-          rem Process left/right movement
+          rem Process left/right movement (with playfield collision for flying characters)
+          rem Frooty (8) and Dragonet (2) need collision checks for horizontal movement
+          temp5 = PlayerChar[temp1]
+          if temp5 = 8 then goto FrootyDragonetLeftRightMovement
+          if temp5 = 2 then goto FrootyDragonetLeftRightMovement
+          
+          rem Standard horizontal movement (no collision check)
           if joy0left then PlayerX[temp1] = PlayerX[temp1] - 1 : PlayerState[temp1] = PlayerState[temp1] & NOT 1 : PlayerMomentumX[temp1] = 255
           if joy0right then PlayerX[temp1] = PlayerX[temp1] + 1 : PlayerState[temp1] = PlayerState[temp1] | 1 : PlayerMomentumX[temp1] = 1
+          goto SkipFlyingLeftRight
+          
+FrootyDragonetLeftRightMovement
+          rem Flying characters: check playfield collision before horizontal movement
+          rem Check left movement
+          if joy0left then goto CheckLeftCollision
+          goto CheckRightMovement
+CheckLeftCollision
+          rem Convert player position to playfield coordinates
+          temp2 = PlayerX[temp1]
+          temp2 = temp2 - ScreenInsetX
+          temp2 = temp2 / 4
+          rem temp2 = playfield column
+          if temp2 > 31 then temp2 = 31
+          if temp2 < 0 then temp2 = 0
+          rem Check column to the left
+          if temp2 <= 0 then goto CheckRightMovement
+          rem Already at left edge
+          temp3 = temp2 - 1
+          rem temp3 = column to the left
+          rem Check player current row (check both top and bottom of sprite)
+          temp4 = PlayerY[temp1]
+          temp6 = temp4 / pfrowheight
+          rem temp6 = top row
+          rem Check if blocked in current row
+          if pfread(temp3, temp6) then goto CheckRightMovement
+          rem Blocked, cannot move left
+          rem Also check bottom row (feet)
+          temp4 = temp4 + 16
+          temp6 = temp4 / pfrowheight
+          if temp6 >= pfrows then goto MoveLeftOK
+          rem Do not check if beyond screen
+          if pfread(temp3, temp6) then goto CheckRightMovement
+          rem Blocked at bottom too
+MoveLeftOK
+          PlayerX[temp1] = PlayerX[temp1] - 1
+          PlayerState[temp1] = PlayerState[temp1] & NOT 1
+          PlayerMomentumX[temp1] = 255
+CheckRightMovement
+          rem Check right movement
+          if !joy0right then goto SkipFlyingLeftRight
+          rem Convert player position to playfield coordinates
+          temp2 = PlayerX[temp1]
+          temp2 = temp2 - ScreenInsetX
+          temp2 = temp2 / 4
+          rem temp2 = playfield column
+          if temp2 > 31 then temp2 = 31
+          if temp2 < 0 then temp2 = 0
+          rem Check column to the right
+          if temp2 >= 31 then goto SkipFlyingLeftRight
+          rem Already at right edge
+          temp3 = temp2 + 1
+          rem temp3 = column to the right
+          rem Check player current row (check both top and bottom of sprite)
+          temp4 = PlayerY[temp1]
+          temp6 = temp4 / pfrowheight
+          rem temp6 = top row
+          rem Check if blocked in current row
+          if pfread(temp3, temp6) then goto SkipFlyingLeftRight
+          rem Blocked, cannot move right
+          rem Also check bottom row (feet)
+          temp4 = temp4 + 16
+          temp6 = temp4 / pfrowheight
+          if temp6 >= pfrows then goto MoveRightOK
+          rem Do not check if beyond screen
+          if pfread(temp3, temp6) then goto SkipFlyingLeftRight
+          rem Blocked at bottom too
+MoveRightOK
+          PlayerX[temp1] = PlayerX[temp1] + 1
+          PlayerState[temp1] = PlayerState[temp1] | 1
+          PlayerMomentumX[temp1] = 1
+SkipFlyingLeftRight
 
+          rem Process UP input for character-specific behaviors
+          rem - Shamone/MethHound: form switching (15 <-> 31)
+          rem - Bernie: fall through 1-row floors
+          rem - Harpy: flap to fly (Character 6)
+          if !joy0up then goto SkipUpInputHandling
+          
+          rem Check Shamone form switching first (Character 15 <-> 31)
+          if PlayerChar[temp1] = 15 then PlayerChar[temp1] = 31 : goto SkipJumpInput
+          rem Switch Shamone -> MethHound
+          if PlayerChar[temp1] = 31 then PlayerChar[temp1] = 15 : goto SkipJumpInput
+          rem Switch MethHound -> Shamone
+          
+          rem Check Bernie fall-through (Character 0)
+          if PlayerChar[temp1] = 0 then goto BernieFallThrough
+          
+          rem Check Harpy flap (Character 6)
+          if PlayerChar[temp1] = 6 then goto HarpyFlap
+          
+          rem For all other characters, UP is jump
+          goto NormalJumpInput
+          
+BernieFallThrough
+          rem Bernie UP input handled in BernieJump routine (fall through 1-row floors)
+          gosub BernieJump
+          goto SkipJumpInput
+          
+HarpyFlap
+          rem Harpy UP input handled in HarpyJump routine (flap to fly)
+          gosub HarpyJump
+          goto SkipJumpInput
+          
+NormalJumpInput
           rem Process jump input (UP + enhanced buttons)
+          temp3 = 1
+          rem Jump pressed flag (UP pressed)
+          goto SkipUpInputHandling
+          
+SkipJumpInput
           temp3 = 0 
-          rem Jump pressed flag
-          if joy0up then temp3 = 1
+          rem No jump (UP used for special ability)
+          
+SkipUpInputHandling
+          rem Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
+          rem Note: For Shamone/MethHound, UP is form switch, so jump via enhanced buttons only
+          rem Note: For Bernie, UP is fall-through, so jump via enhanced buttons only
+          rem Note: For Harpy, UP is flap, so jump via enhanced buttons only
+          if PlayerChar[temp1] = 15 then goto ShamoneJumpCheckEnhanced
+          if PlayerChar[temp1] = 31 then goto ShamoneJumpCheckEnhanced
+          if PlayerChar[temp1] = 0 then goto ShamoneJumpCheckEnhanced
+          if PlayerChar[temp1] = 6 then goto ShamoneJumpCheckEnhanced
+          rem Bernie and Harpy also use enhanced buttons for jump
           
           rem Check Genesis/Joy2b+ Button C/II (INPT0 for Player 1, INPT2 for Player 3)
           if temp1 = 0 then goto CheckPlayer1Buttons
@@ -124,24 +249,37 @@ InputSkipPlayer3Buttons
 EnhancedJumpDone0
           
           rem Execute jump if pressed and not already jumping
+          rem Handle MethHound jump (character 31 uses same jump as Shamone)
           if temp3 = 0 then InputSkipLeftPortJump
           if (PlayerState[temp1] & 4) <> 0 then InputSkipLeftPortJump
           temp4 = PlayerChar[temp1] 
           rem Character type
-                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
+          rem Map MethHound (31) to ShamoneJump handler
+          if temp4 = 31 then temp4 = 15
+          rem Use Shamone jump for MethHound
+                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipLeftPortJump
 
           
 
           rem Process down/guard input
-          if joy0down then temp4 = PlayerChar[temp1] : on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
+          rem Map MethHound (31) to ShamoneDown handler
+          if joy0down then 
+            temp4 = PlayerChar[temp1]
+            if temp4 = 31 then temp4 = 15
+            rem Use Shamone guard for MethHound
+            on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
           if !joy0down then PlayerState[temp1] = PlayerState[temp1] & NOT 2
           
           
           rem Process attack input
+          rem Map MethHound (31) to ShamoneAttack handler
           if !joy0fire then goto InputSkipLeftPortAttack
           if (PlayerState[temp1] & 1) <> 0 then InputSkipLeftPortAttack
-          temp4 = PlayerChar[temp1] : on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
+          temp4 = PlayerChar[temp1]
+          if temp4 = 31 then temp4 = 15
+          rem Use Shamone attack for MethHound
+          on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
 InputSkipLeftPortAttack
           
           
@@ -153,7 +291,13 @@ InputSkipLeftPortAttack
           rem INPUT: temp1 = player index (1 or 3)
           rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
 InputHandleRightPortPlayer
-          rem Process left/right movement
+          rem Process left/right movement (with playfield collision for flying characters)
+          rem Frooty (8) and Dragonet (2) need collision checks for horizontal movement
+          temp5 = PlayerChar[temp1]
+          if temp5 = 8 then goto FrootyDragonetLeftRightMovementRight
+          if temp5 = 2 then goto FrootyDragonetLeftRightMovementRight
+          
+          rem Standard horizontal movement (no collision check)
           if joy1left then
                     PlayerX[temp1] = PlayerX[temp1] - 1
           PlayerState[temp1] = PlayerState[temp1] & NOT 1 
@@ -165,12 +309,131 @@ InputHandleRightPortPlayer
           PlayerState[temp1] = PlayerState[temp1] | 1  
           rem Face right
                     PlayerMomentumX[temp1] = 1
+          goto SkipFlyingLeftRightRight
+          
+FrootyDragonetLeftRightMovementRight
+          rem Flying characters: check playfield collision before horizontal movement
+          rem Check left movement
+          if joy1left then goto CheckLeftCollisionRight
+          goto CheckRightMovementRight
+CheckLeftCollisionRight
+          rem Convert player position to playfield coordinates
+          temp2 = PlayerX[temp1]
+          temp2 = temp2 - ScreenInsetX
+          temp2 = temp2 / 4
+          rem temp2 = playfield column
+          if temp2 > 31 then temp2 = 31
+          if temp2 < 0 then temp2 = 0
+          rem Check column to the left
+          if temp2 <= 0 then goto CheckRightMovementRight
+          rem Already at left edge
+          temp3 = temp2 - 1
+          rem temp3 = column to the left
+          rem Check player current row (check both top and bottom of sprite)
+          temp4 = PlayerY[temp1]
+          temp6 = temp4 / pfrowheight
+          rem temp6 = top row
+          rem Check if blocked in current row
+          if pfread(temp3, temp6) then goto CheckRightMovementRight
+          rem Blocked, cannot move left
+          rem Also check bottom row (feet)
+          temp4 = temp4 + 16
+          temp6 = temp4 / pfrowheight
+          if temp6 >= pfrows then goto MoveLeftOKRight
+          rem Do not check if beyond screen
+          if pfread(temp3, temp6) then goto CheckRightMovementRight
+          rem Blocked at bottom too
+MoveLeftOKRight
+          PlayerX[temp1] = PlayerX[temp1] - 1
+          PlayerState[temp1] = PlayerState[temp1] & NOT 1
+          PlayerMomentumX[temp1] = 255
+CheckRightMovementRight
+          rem Check right movement
+          if !joy1right then goto SkipFlyingLeftRightRight
+          rem Convert player position to playfield coordinates
+          temp2 = PlayerX[temp1]
+          temp2 = temp2 - ScreenInsetX
+          temp2 = temp2 / 4
+          rem temp2 = playfield column
+          if temp2 > 31 then temp2 = 31
+          if temp2 < 0 then temp2 = 0
+          rem Check column to the right
+          if temp2 >= 31 then goto SkipFlyingLeftRightRight
+          rem Already at right edge
+          temp3 = temp2 + 1
+          rem temp3 = column to the right
+          rem Check player current row (check both top and bottom of sprite)
+          temp4 = PlayerY[temp1]
+          temp6 = temp4 / pfrowheight
+          rem temp6 = top row
+          rem Check if blocked in current row
+          if pfread(temp3, temp6) then goto SkipFlyingLeftRightRight
+          rem Blocked, cannot move right
+          rem Also check bottom row (feet)
+          temp4 = temp4 + 16
+          temp6 = temp4 / pfrowheight
+          if temp6 >= pfrows then goto MoveRightOKRight
+          rem Do not check if beyond screen
+          if pfread(temp3, temp6) then goto SkipFlyingLeftRightRight
+          rem Blocked at bottom too
+MoveRightOKRight
+          PlayerX[temp1] = PlayerX[temp1] + 1
+          PlayerState[temp1] = PlayerState[temp1] | 1
+          PlayerMomentumX[temp1] = 1
+SkipFlyingLeftRightRight
           
 
+          rem Process UP input for character-specific behaviors (right port)
+          rem - Shamone/MethHound: form switching (15 <-> 31)
+          rem - Bernie: fall through 1-row floors
+          rem - Harpy: flap to fly (Character 6)
+          if !joy1up then goto SkipUpInputHandlingRight
+          
+          rem Check Shamone form switching first (Character 15 <-> 31)
+          if PlayerChar[temp1] = 15 then PlayerChar[temp1] = 31 : goto SkipJumpInputRight
+          rem Switch Shamone -> MethHound
+          if PlayerChar[temp1] = 31 then PlayerChar[temp1] = 15 : goto SkipJumpInputRight
+          rem Switch MethHound -> Shamone
+          
+          rem Check Bernie fall-through (Character 0)
+          if PlayerChar[temp1] = 0 then goto BernieFallThroughRight
+          
+          rem Check Harpy flap (Character 6)
+          if PlayerChar[temp1] = 6 then goto HarpyFlapRight
+          
+          rem For all other characters, UP is jump
+          goto NormalJumpInputRight
+          
+BernieFallThroughRight
+          rem Bernie UP input handled in BernieJump routine (fall through 1-row floors)
+          gosub BernieJump
+          goto SkipJumpInputRight
+          
+HarpyFlapRight
+          rem Harpy UP input handled in HarpyJump routine (flap to fly)
+          gosub HarpyJump
+          goto SkipJumpInputRight
+          
+NormalJumpInputRight
           rem Process jump input (UP + enhanced buttons)
+          temp3 = 1
+          rem Jump pressed flag (UP pressed)
+          goto SkipUpInputHandlingRight
+          
+SkipJumpInputRight
           temp3 = 0 
-          rem Jump pressed flag
-          if joy1up then temp3 = 1
+          rem No jump (UP used for special ability)
+          
+SkipUpInputHandlingRight
+          rem Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
+          rem Note: For Shamone/MethHound, UP is form switch, so jump via enhanced buttons only
+          rem Note: For Bernie, UP is fall-through, so jump via enhanced buttons only
+          rem Note: For Harpy, UP is flap, so jump via enhanced buttons only
+          if PlayerChar[temp1] = 15 then goto ShamoneJumpCheckEnhancedRight
+          if PlayerChar[temp1] = 31 then goto ShamoneJumpCheckEnhancedRight
+          if PlayerChar[temp1] = 0 then goto ShamoneJumpCheckEnhancedRight
+          if PlayerChar[temp1] = 6 then goto ShamoneJumpCheckEnhancedRight
+          rem Bernie and Harpy also use enhanced buttons for jump
           
           rem Check Genesis/Joy2b+ Button C/II (INPT2 for Player 2, INPT2 for Player 4)
           if temp1 = 1 then goto CheckPlayer2Buttons
@@ -196,31 +459,39 @@ SkipPlayer4Buttons
 EnhancedJumpDone1
           
           rem Execute jump if pressed and not already jumping
+          rem Handle MethHound jump (character 31 uses same jump as Shamone)
           if temp3 = 0 then InputSkipRightPortJump
           if (PlayerState[temp1] & 4) <> 0 then InputSkipRightPortJump
           temp4 = PlayerChar[temp1] 
           rem Character type
-                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, VegDogJump
+          rem Map MethHound (31) to ShamoneJump handler
+          if temp4 = 31 then temp4 = 15
+          rem Use Shamone jump for MethHound
+                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipRightPortJump
 
           
 
           rem Process down/guard input
+          rem Map MethHound (31) to ShamoneDown handler
           if joy1down then
           temp4 = PlayerChar[temp1] 
-          rem Character type
-                    on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, VegDogDown
+            if temp4 = 31 then temp4 = 15
+            rem Use Shamone guard for MethHound
+                    on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
 
           PlayerState[temp1] = PlayerState[temp1] & NOT 2 
           rem Clear guard bit
           
           
           rem Process attack input
+          rem Map MethHound (31) to ShamoneAttack handler
           if !joy1fire then goto InputSkipRightPortAttack
           if (PlayerState[temp1] & 1) <> 0 then InputSkipRightPortAttack
           temp4 = PlayerChar[temp1] 
-          rem Character type
-                    on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
+          if temp4 = 31 then temp4 = 15
+          rem Use Shamone attack for MethHound
+                    on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
 InputSkipRightPortAttack
           
           

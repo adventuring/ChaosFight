@@ -398,7 +398,7 @@ SelDrawP1Bot
 SelUpdateAnim
           rem Check if any player is holding DOWN (for handicap preview)
           rem If so, freeze their character in "recovery from far fall" pose (animation state 9)
-          dim HandicapMode = temp1
+          rem HandicapMode is defined in Variables.bas as variable i
           HandicapMode = 0
           
           rem Check each player for DOWN held (even frame for P1/P2)

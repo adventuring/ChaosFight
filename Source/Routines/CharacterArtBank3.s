@@ -21,21 +21,21 @@
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLoBank3:
     .byte <FrootySprite, <NefertemSprite, <NinjishGuySprite, <PorkChopSprite
-    .byte <RadishGoblinSprite, <RoboTitoSprite, <UrsuloSprite, <VegDogSprite
+    .byte <RadishGoblinSprite, <RoboTitoSprite, <UrsuloSprite, <ShamoneSprite
 
 ; High byte pointers for each character base sprite data  
 CharacterSpritePtrHiBank3:
     .byte >FrootySprite, >NefertemSprite, >NinjishGuySprite, >PorkChopSprite
-    .byte >RadishGoblinSprite, >RoboTitoSprite, >UrsuloSprite, >VegDogSprite
+    .byte >RadishGoblinSprite, >RoboTitoSprite, >UrsuloSprite, >ShamoneSprite
 
 ; =================================================================
 ; CHARACTER ARTWORK LOCATION FUNCTION - BANK 3
 ; =================================================================
 ; Locates character sprite data for specific action and frame
 ; Input: A = character index (8-15 or 24-31, mapped to 0-7)
-;        X = animation frame (0-7) from sprite's 10fps counter, NOT global frame
+;        X = animation frame (0-7) from sprite 10fps counter, NOT global frame
 ;        Y = action (0-15)
-; Note: Frame is relative to sprite's own 10fps counter, NOT global frame counter
+; Note: Frame is relative to sprite own 10fps counter, NOT global frame counter
 ; Output: temp4 = sprite data pointer low byte
 ;         temp5 = sprite data pointer high byte
 ;         temp6 = bank number (always 3)

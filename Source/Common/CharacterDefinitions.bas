@@ -81,17 +81,28 @@ end
           end
 
           rem =================================================================
+          rem BIT MASK TABLE FOR PLAYER INDEX
+          rem =================================================================
+          rem Bit mask values for player indices (0-3)
+          rem Used for bit-flag operations on PlayersEliminated and MissileActive
+          rem Values: 1, 2, 4, 8 for players 0, 1, 2, 3 respectively
+          data BitMask
+             1, 2, 4, 8
+          end
+
+          rem =================================================================
           rem CHARACTER ATTACK TYPES
           rem =================================================================
           rem 0 = melee, 1 = ranged
           rem Stored as bit-per-character in packed bytes (4 bytes for up to 32 characters)
 
           rem  Bernie    Curler     Dragonet  EXO Pilot Fat Tony  Grizzard   Harpy     Knight Guy
-          rem  melee     ranged     melee     ranged    ranged    melee      melee     ranged
+          rem  melee     ranged     melee     ranged    ranged    melee      ranged    ranged
           rem  Magical   Mystery    Ninjish   Pork Chop Radish    Robo Tito  Ursulo    Veg Dog
           rem  ranged    melee      melee     melee     melee     melee      ranged    melee
+          rem  Harpy changed from melee to ranged (diagonal downward attack)
           data CharacterAttackTypes
-              %00111111, %01000001, %00000000, %00000000
+              %01111111, %01000001, %00000000, %00000000
           end
 
           rem =================================================================
@@ -134,9 +145,10 @@ end
           rem Values: -127 to 127 (typically -8 to 0 for parabolic arcs)
 
           rem  Bernie, Curler, Dragonet, EXO Pilot, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
-          rem  N/A    arrowshot    ballistic arrowshot N/A       N/A              N/A      N/A        ballistic       N/A         arrowshot  N/A        N/A           N/A       ballistic  N/A
+          rem  N/A    arrowshot    ballistic arrowshot N/A       N/A              N/A      diagonal   ballistic       N/A         arrowshot  N/A        N/A           N/A       ballistic  N/A
+          rem  Harpy: diagonal downward attack (positive = down)
           data CharacterMissileMomentumY
-             0, 0, -4, 0, 0, 0, -3, 0, -5, 0, 0, 0, 0, 0, -6, 0
+             0, 0, -4, 0, 0, 0, 4, 0, -5, 0, 0, 0, 0, 0, -6, 0
           end
 
           rem =================================================================

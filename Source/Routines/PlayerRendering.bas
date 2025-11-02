@@ -251,15 +251,11 @@ SkipPlayer4Flash
           rem =================================================================
           rem DRAW HEALTH BARS
           rem =================================================================
-          rem Renders health bars at top of screen using playfield pixels.
-          rem Each player gets a color-coded bar:
-          rem   Player 1: Blue (top-left)
-          rem   Player 2: Red (top-right)
-          rem   Player 3: Yellow (bottom-left, if Quadtari active)
-          rem   Player 4: Green (bottom-right, if Quadtari active)
-
-          rem Health bars are drawn using pfpixel and appropriate colors.
-          rem Each bar is 32 pixels wide (max health = 100, scale to 32 pixels).
+          rem Correctly used: Player 1 is pfscore bar 1. Player 2 is pfscore bar 2.
+          rem Player 3 is left 2 digits of score, 4 is right two.
+          
+          rem FIXME: This code may not implement the requirements at all.
+          
 DrawHealthBars
           dim HealthBarLength = temp5
           

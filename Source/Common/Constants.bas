@@ -16,8 +16,8 @@
           rem Maximum character ID (0-15 = 16 characters)
           const NoCharacter = 255
           rem No character selected ($FF)
-          const CPUCharacter = 255
-          rem CPU player character ($FF)
+          const CPUCharacter = 254
+          rem CPU player character ($FE)
 
           rem Special sprite constants for SpecialSpritePointers table
           const SpriteQuestionMark = 0
@@ -148,4 +148,58 @@
           const SoundSelect = 5
           const SoundVictory = 6
           const SoundElimination = 7
+
+          rem =================================================================
+          rem ANIMATION SYSTEM CONSTANTS
+          rem =================================================================
+          rem Character frame animation runs at 10fps regardless of TV standard
+          rem Movement updates run at full frame rate (60fps NTSC, 50fps PAL)
+
+          #ifdef TV_NTSC
+          const AnimationFrameDelay = 6
+          rem 60fps / 10fps = 6 frames
+          const MovementFrameRate = 60
+          rem 60fps movement updates
+          #endif
+
+          #ifdef TV_PAL  
+          const AnimationFrameDelay = 5
+          rem 50fps / 10fps = 5 frames
+          const MovementFrameRate = 50
+          rem 50fps movement updates
+          #endif
+
+          #ifdef TV_SECAM
+          const AnimationFrameDelay = 5
+          rem Same as PAL (50fps / 10fps = 5 frames)
+          const MovementFrameRate = 50
+          rem 50fps movement updates
+          #endif
+
+          rem Animation sequence structure constants
+          const AnimationSequenceCount = 16
+          rem 16 animation sequences (0-15)
+          const FramesPerSequence = 8
+          rem 8 frames per sequence
+
+          rem =================================================================
+          rem SUBPIXEL POSITION CONSTANTS
+          rem =================================================================
+          rem Fixed-point scheme: 8.8 (integer.fraction), implemented with 8-bit bB vars
+          rem NOTE: batariBASIC variables are 8-bit. Use two 8-bit arrays to represent
+          rem       a 16-bit fixed-point value: Hi = integer pixels, Lo = subpixel (0..255).
+          const SubpixelBits = 8
+          rem 8 bits of subpixel precision (0..255)
+          const SubpixelScale = 256
+          rem 2^8 = 256 subpixel units per pixel
+
+          rem =================================================================
+          rem PLAYFIELD CONSTANTS (runtime variables, not compile-time)
+          rem =================================================================
+          rem NOTE: pfrowheight and pfrows are set at runtime by ScreenLayout.bas
+          rem These are NOT constants - they are runtime variables
+          rem pfrowheight: pixels per row (8 for admin, 16 for game)
+          rem pfrows: number of rows (32 for admin, 8 for game)
+          rem pfread: built-in batariBASIC function to read playfield pixel
+          rem These are documented here for reference but cannot be consted
 

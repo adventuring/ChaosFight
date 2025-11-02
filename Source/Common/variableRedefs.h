@@ -1,159 +1,147 @@
 ; This file contains variable mapping and other information for the current project.
 
-PlayerColorsDark_length = .skipL02396-PlayerColorsDark 
+PlayerColorsDark_length = .skipL01776-PlayerColorsDark 
  
-PlayerColorsLight_length = .skipL02394-PlayerColorsLight 
+PlayerColorsLight_length = .skipL01774-PlayerColorsLight 
  
-NoSprite_length = .skipL02251-NoSprite 
+NoSprite_length = .skipL01629-NoSprite 
  
-CPUSprite_length = .skipL02250-CPUSprite 
+CPUSprite_length = .skipL01628-CPUSprite 
  
-QuestionMarkSprite_length = .skipL02249-QuestionMarkSprite 
+QuestionMarkSprite_length = .skipL01627-QuestionMarkSprite 
  
-HandicapMode = temp1
+MethHoundFrameMap_length = .skipL0767-MethHoundFrameMap 
  
-Character31FrameMap_length = .skipL0729-Character31FrameMap 
+MethHoundFrames_length = .skipL0766-MethHoundFrames 
  
-Character31Frames_length = .skipL0728-Character31Frames 
+Character30FrameMap_length = .skipL0761-Character30FrameMap 
  
-Character30FrameMap_length = .skipL0723-Character30FrameMap 
+Character30Frames_length = .skipL0760-Character30Frames 
  
-Character30Frames_length = .skipL0722-Character30Frames 
+Character29FrameMap_length = .skipL0755-Character29FrameMap 
  
-Character29FrameMap_length = .skipL0717-Character29FrameMap 
+Character29Frames_length = .skipL0754-Character29Frames 
  
-Character29Frames_length = .skipL0716-Character29Frames 
+Character28FrameMap_length = .skipL0749-Character28FrameMap 
  
-Character28FrameMap_length = .skipL0711-Character28FrameMap 
+Character28Frames_length = .skipL0748-Character28Frames 
  
-Character28Frames_length = .skipL0710-Character28Frames 
+Character27FrameMap_length = .skipL0743-Character27FrameMap 
  
-Character27FrameMap_length = .skipL0705-Character27FrameMap 
+Character27Frames_length = .skipL0742-Character27Frames 
  
-Character27Frames_length = .skipL0704-Character27Frames 
+Character26FrameMap_length = .skipL0737-Character26FrameMap 
  
-Character26FrameMap_length = .skipL0699-Character26FrameMap 
+Character26Frames_length = .skipL0736-Character26Frames 
  
-Character26Frames_length = .skipL0698-Character26Frames 
+Character25FrameMap_length = .skipL0731-Character25FrameMap 
  
-Character25FrameMap_length = .skipL0693-Character25FrameMap 
+Character25Frames_length = .skipL0730-Character25Frames 
  
-Character25Frames_length = .skipL0692-Character25Frames 
+Character24FrameMap_length = .skipL0725-Character24FrameMap 
  
-Character24FrameMap_length = .skipL0687-Character24FrameMap 
+Character23FrameMap_length = .skipL0722-Character23FrameMap 
  
-Character24Frames_length = .skipL0686-Character24Frames 
+Character23Frames_length = .skipL0721-Character23Frames 
  
-Character23FrameMap_length = .skipL0674-Character23FrameMap 
+Character22FrameMap_length = .skipL0716-Character22FrameMap 
  
-Character23Frames_length = .skipL0673-Character23Frames 
+Character22Frames_length = .skipL0715-Character22Frames 
  
-Character22FrameMap_length = .skipL0668-Character22FrameMap 
+Character21FrameMap_length = .skipL0710-Character21FrameMap 
  
-Character22Frames_length = .skipL0667-Character22Frames 
+Character21Frames_length = .skipL0709-Character21Frames 
  
-Character21FrameMap_length = .skipL0662-Character21FrameMap 
+Character20FrameMap_length = .skipL0704-Character20FrameMap 
  
-Character21Frames_length = .skipL0661-Character21Frames 
+Character20Frames_length = .skipL0703-Character20Frames 
  
-Character20FrameMap_length = .skipL0656-Character20FrameMap 
+Character19FrameMap_length = .skipL0698-Character19FrameMap 
  
-Character20Frames_length = .skipL0655-Character20Frames 
+Character19Frames_length = .skipL0697-Character19Frames 
  
-Character19FrameMap_length = .skipL0650-Character19FrameMap 
+Character18FrameMap_length = .skipL0692-Character18FrameMap 
  
-Character19Frames_length = .skipL0649-Character19Frames 
+Character18Frames_length = .skipL0691-Character18Frames 
  
-Character18FrameMap_length = .skipL0644-Character18FrameMap 
+Character17FrameMap_length = .skipL0686-Character17FrameMap 
  
-Character18Frames_length = .skipL0643-Character18Frames 
+Character17Frames_length = .skipL0685-Character17Frames 
  
-Character17FrameMap_length = .skipL0638-Character17FrameMap 
+Character16FrameMap_length = .skipL0680-Character16FrameMap 
  
-Character17Frames_length = .skipL0637-Character17Frames 
+ShamoneFrameMap_length = .skipL0677-ShamoneFrameMap 
  
-Character16FrameMap_length = .skipL0632-Character16FrameMap 
+ShamoneFrames_length = .skipL0676-ShamoneFrames 
  
-Character16Frames_length = .skipL0631-Character16Frames 
+UrsuloFrameMap_length = .skipL0671-UrsuloFrameMap 
  
-VegDogFrameMap_length = .skipL0619-VegDogFrameMap 
+UrsuloFrames_length = .skipL0670-UrsuloFrames 
  
-VegDogFrames_length = .skipL0618-VegDogFrames 
+RoboTitoFrameMap_length = .skipL0665-RoboTitoFrameMap 
  
-UrsuloFrameMap_length = .skipL0613-UrsuloFrameMap 
+RoboTitoFrames_length = .skipL0664-RoboTitoFrames 
  
-UrsuloFrames_length = .skipL0612-UrsuloFrames 
+RadishGoblinFrameMap_length = .skipL0659-RadishGoblinFrameMap 
  
-RoboTitoFrameMap_length = .skipL0607-RoboTitoFrameMap 
+RadishGoblinFrames_length = .skipL0658-RadishGoblinFrames 
  
-RoboTitoFrames_length = .skipL0606-RoboTitoFrames 
+PorkChopFrameMap_length = .skipL0653-PorkChopFrameMap 
  
-RadishGoblinFrameMap_length = .skipL0601-RadishGoblinFrameMap 
+PorkChopFrames_length = .skipL0652-PorkChopFrames 
  
-RadishGoblinFrames_length = .skipL0600-RadishGoblinFrames 
+NinjishGuyFrameMap_length = .skipL0647-NinjishGuyFrameMap 
  
-PorkChopFrameMap_length = .skipL0595-PorkChopFrameMap 
+NinjishGuyFrames_length = .skipL0646-NinjishGuyFrames 
  
-PorkChopFrames_length = .skipL0594-PorkChopFrames 
+NefertemFrameMap_length = .skipL0641-NefertemFrameMap 
  
-NinjishGuyFrameMap_length = .skipL0589-NinjishGuyFrameMap 
+NefertemFrames_length = .skipL0640-NefertemFrames 
  
-NinjishGuyFrames_length = .skipL0588-NinjishGuyFrames 
+FrootyFrameMap_length = .skipL0635-FrootyFrameMap 
  
-NefertemFrameMap_length = .skipL0583-NefertemFrameMap 
+KnightGuyFrameMap_length = .skipL0632-KnightGuyFrameMap 
  
-NefertemFrames_length = .skipL0582-NefertemFrames 
+KnightGuyFrames_length = .skipL0631-KnightGuyFrames 
  
-FrootyFrameMap_length = .skipL0577-FrootyFrameMap 
+HarpyFrameMap_length = .skipL0626-HarpyFrameMap 
  
-FrootyFrames_length = .skipL0576-FrootyFrames 
+HarpyFrames_length = .skipL0625-HarpyFrames 
  
-KnightGuyFrameMap_length = .skipL0564-KnightGuyFrameMap 
+MegaxFrameMap_length = .skipL0620-MegaxFrameMap 
  
-KnightGuyFrames_length = .skipL0563-KnightGuyFrames 
+MegaxFrames_length = .skipL0619-MegaxFrames 
  
-HarpyFrameMap_length = .skipL0558-HarpyFrameMap 
+FatTonyFrameMap_length = .skipL0614-FatTonyFrameMap 
  
-HarpyFrames_length = .skipL0557-HarpyFrames 
+FatTonyFrames_length = .skipL0613-FatTonyFrames 
  
-MegaxFrameMap_length = .skipL0552-MegaxFrameMap 
+ZoeRyenFrameMap_length = .skipL0608-ZoeRyenFrameMap 
  
-MegaxFrames_length = .skipL0551-MegaxFrames 
+ZoeRyenFrames_length = .skipL0607-ZoeRyenFrames 
  
-FatTonyFrameMap_length = .skipL0546-FatTonyFrameMap 
+DragonetFrameMap_length = .skipL0602-DragonetFrameMap 
  
-FatTonyFrames_length = .skipL0545-FatTonyFrames 
+DragonetFrames_length = .skipL0601-DragonetFrames 
  
-ExoPilotFrameMap_length = .skipL0540-ExoPilotFrameMap 
+CurlerFrameMap_length = .skipL0596-CurlerFrameMap 
  
-ExoPilotFrames_length = .skipL0539-ExoPilotFrames 
+CurlerFrames_length = .skipL0595-CurlerFrames 
  
-DragonetFrameMap_length = .skipL0534-DragonetFrameMap 
+BernieFrameMap_length = .skipL0590-BernieFrameMap 
  
-DragonetFrames_length = .skipL0533-DragonetFrames 
- 
-CurlerFrameMap_length = .skipL0528-CurlerFrameMap 
- 
-CurlerFrames_length = .skipL0527-CurlerFrames 
- 
-BernieFrameMap_length = .skipL0522-BernieFrameMap 
- 
-BernieFrames_length = .skipL0521-BernieFrames 
+BernieFrames_length = .skipL0589-BernieFrames 
  
 bscode_length = 36
+MissileVelY = x
+ 
+MissileVelX = w
+ 
 MissileLifetime = e
  
 MissileActive = i
  
-Missile4Y = var3
- 
-Missile3Y = var2
- 
-Missile2Y = var1
- 
-Missile1Y = var0
- 
-MissileY = var0
+MissileY = w000
  
 Missile4X = d
  
@@ -165,35 +153,37 @@ Missile1X = a
  
 MissileX = a
  
-Player4Damage = n
+Player4AttackCooldown = var47
  
-Player3Damage = m
+Player3AttackCooldown = var46
  
-Player2Damage = l
+Player2AttackCooldown = var45
  
-Player1Damage = k
+Player1AttackCooldown = var44
  
-PlayerDamage = k
+PlayerAttackCooldown = var44
  
-Player4AttackCooldown = j
+CurrentAnimationSeq = var40
  
-Player3AttackCooldown = h
+CurrentAnimationFrame = var36
  
-Player2AttackCooldown = g
+AnimationCounter = var32
  
-Player1AttackCooldown = f
+WinScreenTimer = var31
  
-PlayerAttackCooldown = f
+DisplayRank = var30
  
-Player4MomentumY = var27
+WinnerPlayerIndex = var29
  
-Player3MomentumY = var26
+EliminationCounter = var28
  
-Player2MomentumY = var25
+EliminationOrder = var27
  
-Player1MomentumY = var24
+EliminationEffectTimer = var26
  
-PlayerMomentumY = var24
+GameEndTimer = var25
+ 
+PlayersRemaining = var24
  
 Player4MomentumX = var23
  
@@ -215,23 +205,7 @@ Player1RecoveryFrames = var16
  
 PlayerRecoveryFrames = var16
  
-WinScreenTimer = var35
- 
-DisplayRank = var34
- 
-WinnerPlayerIndex = var33
- 
-EliminationCounter = var32
- 
-EliminationOrder = var31
- 
-EliminationEffectTimer = var30
- 
-GameEndTimer = var29
- 
-PlayersRemaining = var28
- 
-PlayersEliminated = f
+PlayersEliminated = i
  
 Player4Health = var15
  
@@ -273,31 +247,35 @@ Player1X = var0
  
 PlayerX = var0
  
-MusicTimer = var8
+TitleParadeActive = var36
  
-MusicPosition = var7
+TitleParadeX = var35
  
-MusicPlaying = var6
+TitleParadeChar = var34
  
-PreambleState = var5
+TitleParadeTimer = var33
  
-PreambleTimer = var4
+MusicTimer = var32
  
-LevelConfirmTimer = var3
+MusicPosition = var31
  
-LevelCursorPos = var2
+MusicPlaying = var30
  
-LevelScrollOffset = var1
+PreambleState = var29
  
-LevelPreviewData = var0
+PreambleTimer = var28
  
-TitleParadeActive = var31
+LevelConfirmTimer = var27
  
-TitleParadeX = var30
+LevelCursorPos = var26
  
-TitleParadeChar = var29
+LevelScrollOffset = var25
  
-TitleParadeTimer = var28
+LevelPreviewData = var24
+ 
+CharSelectPlayer = var38
+ 
+CharSelectCharIndex = var37
  
 CharSelectAnimFrame = z
  
@@ -307,45 +285,33 @@ CharSelectAnimState = x
  
 CharSelectAnimTimer = w
  
-ReadyCount = i
+ReadyCount = x
  
-SelectedLevel = v
+SelectedLevel = w
  
-SelectedChar4 = u
+SelectedChar4 = v
  
-SelectedChar3 = t
+SelectedChar3 = u
  
-PlayerVelocityY = z
+SelectedChar2 = t
  
-PlayerVelocityX = y
- 
-PlayerSubpixelY = x
- 
-PlayerSubpixelX = w
- 
-CurrentAnimationSeq = v
- 
-CurrentAnimationFrame = u
- 
-AnimationCounter = t
- 
-SelectedChar2 = s
- 
-SelectedChar1 = r
+SelectedChar1 = s
  
 PlayerLocked = n
  
+PlayerDamage = k
+ 
 PlayerChar = j
  
-PauseButtonPrev = i
+PauseButtonPrev = r
  
-ColorBWOverride = h
+ColorBWOverride = q
  
-ControllerStatus = b
+ControllerStatus = h
  
-SystemFlags = c
+SystemFlags = f
  
-Console7800Detected = a
+Console7800Detected = e
  
 GameMode = p
  
@@ -358,6 +324,38 @@ FallComplete = c
 FallSpeed = b
  
 FallFrame = a
+ 
+AnimAttackRecovery = 15
+ 
+AnimAttackExecute = 14
+ 
+AnimAttackWindup = 13
+ 
+AnimLanding = 12
+ 
+AnimFalling = 11
+ 
+AnimJumping = 10
+ 
+AnimRecovering = 9
+ 
+AnimFallen = 8
+ 
+AnimFallDown = 7
+ 
+AnimFallBack = 6
+ 
+AnimHit = 5
+ 
+AnimStopping = 4
+ 
+AnimWalking = 3
+ 
+AnimGuarding = 2
+ 
+AnimIdle = 1
+ 
+AnimStanding = 0
  
 ModeWinner = 7
  
@@ -380,6 +378,18 @@ SECAM = 3
 PAL = 2
  
 NTSC = 1
+ 
+SubpixelScale = 256
+ 
+SubpixelBits = 8
+ 
+FramesPerSequence = 8
+ 
+AnimationSequenceCount = 16
+ 
+MovementFrameRate = 60
+ 
+AnimationFrameDelay = 6
  
 SoundElimination = 7
  
@@ -503,7 +513,7 @@ SpriteCPU = 1
  
 SpriteQuestionMark = 0
  
-CPUCharacter = 255
+CPUCharacter = 254
  
 NoCharacter = 255
  

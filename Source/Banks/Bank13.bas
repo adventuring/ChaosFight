@@ -5,4 +5,5 @@
 
           rem ColdStart falls through to MainLoop
           #include "Source/Routines/ColdStart.bas"
+          #include "Source/Routines/ChangeGameMode.bas"
           #include "Source/Routines/MainLoop.bas"

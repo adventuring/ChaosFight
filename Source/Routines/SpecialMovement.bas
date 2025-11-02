@@ -40,8 +40,14 @@ ApplyPlayerSpecialMovement
           temp4 = PlayerChar[temp1]
           
           rem Bernie (0) - screen wrap top/bottom
-          rem tail call
           if temp4 = 0 then goto BernieScreenWrap
+          
+          rem Frooty (8) and Dragonet (2) - free flight (no gravity)
+          rem These characters skip gravity entirely
+          if temp4 = 8 then return
+          rem Frooty: no gravity
+          if temp4 = 2 then return
+          rem Dragonet: no gravity (free flight)
           
           rem All other characters use standard physics
           return

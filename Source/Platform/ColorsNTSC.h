@@ -131,6 +131,7 @@
 
 /* Color function macros using token pasting */
 #define ColGrey(lum) _COL_Grey_L##lum
+#define ColGray(lum) _COL_Grey_L##lum  /* ColGray and ColGrey are synonyms */
 #define ColYellow(lum) _COL_Yellow_L##lum
 #define ColBrown(lum) _COL_Brown_L##lum
 #define ColOrange(lum) _COL_Orange_L##lum

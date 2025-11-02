@@ -12,7 +12,9 @@
           #include "Source/Generated/RadishGoblin.bas"
           #include "Source/Generated/RoboTito.bas"
           #include "Source/Generated/Ursulo.bas"
-          #include "Source/Generated/VegDog.bas"
+          #include "Source/Generated/Shamone.bas"
 
           rem Character art lookup routines for Bank 3 (characters 8-15 and 24-31)
-          include "Source/Routines/CharacterArtBank3.s"
+          asm
+          #include "Source/Routines/CharacterArtBank3.s"
+          end

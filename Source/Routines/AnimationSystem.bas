@@ -39,7 +39,7 @@ UpdatePlayerAnimation
           if temp1 = 3 && PlayersEliminated & 8 then return
           if PlayerHealth[temp1] = 0 then return
           
-          rem Increment this sprite's 10fps animation counter (NOT global frame counter)
+          rem Increment this sprite 10fps animation counter (NOT global frame counter)
           AnimationCounter[temp1] = AnimationCounter[temp1] + 1
           
           rem Check if time to advance animation frame (every AnimationFrameDelay frames)
@@ -56,7 +56,7 @@ SkipAdvance
           rem Frame counter is per-sprite 10fps counter, NOT global frame counter
 AdvanceAnimationFrame
           rem Advance to next frame in current animation action
-          rem Frame is from sprite's 10fps counter (CurrentAnimationFrame), not global frame
+          rem Frame is from sprite 10fps counter (CurrentAnimationFrame), not global frame
           CurrentAnimationFrame[temp1] = CurrentAnimationFrame[temp1] + 1
           
           rem Check if we have completed the current action (8 frames per action)
@@ -67,9 +67,9 @@ LoopAnimation
           rem Loop back to start of action
 UpdateSprite
           rem Update character sprite with new animation frame
-          rem Frame is from this sprite's 10fps counter (CurrentAnimationFrame), not global frame counter
+          rem Frame is from this sprite 10fps counter (CurrentAnimationFrame), not global frame counter
           temp2 = CurrentAnimationFrame[temp1] 
-          rem temp2 = Animation frame (0-7) from sprite's 10fps counter
+          rem temp2 = Animation frame (0-7) from sprite 10fps counter
           temp3 = CurrentAnimationSeq[temp1]
           rem temp3 = Animation action (0-15)
           temp4 = temp1
@@ -93,9 +93,9 @@ SetPlayerAnimation
           rem Reset animation counter
           
           rem Update character sprite immediately
-          rem Frame is from this sprite's 10fps counter, action from CurrentAnimationSeq
+          rem Frame is from this sprite 10fps counter, action from CurrentAnimationSeq
           temp2 = CurrentAnimationFrame[temp1]
-          rem temp2 = Animation frame (0-7) from sprite's 10fps counter
+          rem temp2 = Animation frame (0-7) from sprite 10fps counter
           temp3 = CurrentAnimationSeq[temp1]
           rem temp3 = Animation action (0-15)
           temp4 = temp1

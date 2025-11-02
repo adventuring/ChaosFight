@@ -8,15 +8,16 @@
           rem This is the second screen shown at cold start.
 
           rem FLOW:
-          rem   1. Load 32×32 playfield from Source/Art/Interworldly.xcf
+          rem   1. Display 48×42 bitmap from Source/Art/Interworldly.xcf (via titlescreen kernel)
           rem   2. Play "Interworldly" music
           rem   3. Wait for music completion + 0.5s OR button press
           rem   4. Transition to title screen
 
-          rem PLAYFIELD CONFIGURATION:
-          rem   - Size: 32×32 (pfres=32)
-          rem   - Color-per-row for COLUPF
-          rem   - Uses all 128 bytes SuperChip RAM
+          rem BITMAP CONFIGURATION:
+          rem   - Size: 48×42 pixels (displayed as 48×84 scanlines in double-height mode)
+          rem   - Uses titlescreen kernel minikernel for display
+          rem   - Color-per-line support (84 color values, 42 × 2 for double-height)
+          rem   - Bitmap data stored in ROM: Source/Generated/Art.Interworldly.s
 
           rem AVAILABLE VARIABLES:
           rem   PreambleTimer - Frame counter for timing
@@ -26,6 +27,9 @@
 
 AuthorPreamble
 AuthorMainLoop
+          rem Load bitmap data for titlescreen kernel
+          gosub LoadAuthorBitmap
+          
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then goto AuthorPreambleComplete
@@ -46,37 +50,32 @@ AuthorSkipQuadtari
           rem Increment timer
           let PreambleTimer = PreambleTimer + 1
           
-          drawscreen
+          rem Draw screen with titlescreen kernel minikernel
+          gosub titledrawscreen bank1
           goto AuthorMainLoop
 
 AuthorPreambleComplete
-          let GameMode = ModeTitle : gosub ChangeGameMode
-          return
+              let GameMode = ModeTitle : gosub bank13 ChangeGameMode
+              return
 
           rem =================================================================
-          rem LOAD AUTHOR PLAYFIELD
+          rem LOAD AUTHOR BITMAP
           rem =================================================================
-          rem Loads the Interworldly author artwork with color-per-row.
+          rem Loads the Interworldly author bitmap data for titlescreen kernel.
           rem Generated from Source/Art/Interworldly.xcf → Interworldly.png
-          rem SkylineTool creates architecture-specific data files.
+          rem SkylineTool creates: Source/Generated/Art.Interworldly.s
+          rem   - BitmapInterworldly: 6 columns × 42 bytes (inverted-y)
+          rem   - BitmapInterworldlyColors: 84 color values (double-height)
 
-          rem uses pfcolors
-
-          rem GENERATED FILES:
-          rem   - Source/Generated/Playfield.Interworldly.NTSC.bas
-          rem   - Source/Generated/Playfield.Interworldly.PAL.bas
-          rem   - Source/Generated/Playfield.Interworldly.SECAM.bas
-LoadAuthorPlayfield
-          rem Load architecture-specific playfield data
-          #ifdef TV_NTSC
-          #include "Source/Generated/Playfield.Interworldly.NTSC.bas"
-          #endif
-          #ifdef TV_PAL
-          #include "Source/Generated/Playfield.Interworldly.PAL.bas"
-          #endif
-          #ifdef TV_SECAM
-          #include "Source/Generated/Playfield.Interworldly.SECAM.bas"
-          #endif
+LoadAuthorBitmap
+          rem Configure titlescreen kernel to show Author (Interworldly) bitmap
+          rem Uses 48x2_2 minikernel - set window/height via assembly constants
+              rem Bitmap data in: Source/Generated/Art.Interworldly.s
+          rem Other screens minikernels should have window=0 in their image files
+          
+          rem The titlescreen kernel uses fixed labels (bmp_48x2_2_window, etc.)
+              rem These are set as constants in the .s image files
+          rem Author screen: bmp_48x2_2_window = 42, others = 0
           
           return
 

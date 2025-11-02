@@ -39,12 +39,13 @@ TitleSkipQuad
           
           gosub DrawTitleScreen
           
-          drawscreen
+          rem Draw screen with titlescreen kernel minikernel
+          gosub titledrawscreen bank1
           goto TitleMainLoop
 
 TitleScreenComplete
           rem Transition to character select
-          GameMode = ModeCharacterSelect : gosub ChangeGameMode
+          GameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
           return
 
 

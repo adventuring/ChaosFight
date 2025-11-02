@@ -10,12 +10,12 @@
 ; Each character can have sprites distributed across banks
 
 ; Character sprite organization: 8 frames × 16 sequences per character
-; Character bank mapping - which bank contains each character's base data
+; Character bank mapping - which bank contains each character base data
 CharacterBankTable:
-    .byte 2, 2, 2, 2    ; Characters 0-3: Bernie, Curler, Dragonet, EXOPilot
+    .byte 2, 2, 2, 2    ; Characters 0-3: Bernie, Curler, Dragonet, ZoeRyen
     .byte 2, 2, 2, 2    ; Characters 4-7: FatTony, Megax, Harpy, KnightGuy  
     .byte 3, 3, 3, 3    ; Characters 8-11: Frooty, Nefertem, NinjishGuy, PorkChop
-    .byte 3, 3, 3, 3    ; Characters 12-15: RadishGoblin, RoboTito, Ursulo, VegDog
+    .byte 3, 3, 3, 3    ; Characters 12-15: RadishGoblin, RoboTito, Ursulo, Shamone
 
 ; Animation frame bank offsets (0 = same bank as character)
 AnimationFrameBankOffsets:
@@ -24,17 +24,17 @@ AnimationFrameBankOffsets:
 ; Character sprite pointer tables
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLo:
-    .byte <BernieSprite, <CurlerSprite, <DragonetSprite, <EXOPilotSprite
+    .byte <BernieSprite, <CurlerSprite, <DragonetSprite, <ZoeRyenSprite
     .byte <FatTonySprite, <MegaxSprite, <HarpySprite, <KnightGuySprite
     .byte <FrootySprite, <NefertemSprite, <NinjishGuySprite, <PorkChopSprite
-    .byte <RadishGoblinSprite, <RoboTitoSprite, <UrsuloSprite, <VegDogSprite
+    .byte <RadishGoblinSprite, <RoboTitoSprite, <UrsuloSprite, <ShamoneSprite
 
 ; High byte pointers for each character base sprite data  
 CharacterSpritePtrHi:
-    .byte >BernieSprite, >CurlerSprite, >DragonetSprite, >EXOPilotSprite
+    .byte >BernieSprite, >CurlerSprite, >DragonetSprite, >ZoeRyenSprite
     .byte >FatTonySprite, >MegaxSprite, >HarpySprite, >KnightGuySprite
     .byte >FrootySprite, >NefertemSprite, >NinjishGuySprite, >PorkChopSprite
-    .byte >RadishGoblinSprite, >RoboTitoSprite, >UrsuloSprite, >VegDogSprite
+    .byte >RadishGoblinSprite, >RoboTitoSprite, >UrsuloSprite, >ShamoneSprite
 
 ; =================================================================
 ; ANIMATION FRAME OFFSET TABLES

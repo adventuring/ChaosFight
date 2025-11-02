@@ -15,4 +15,6 @@
           #include "Source/Generated/Character23.bas"
           
           rem Character art lookup routines for Bank 4 (characters 16-23)
-          include "Source/Routines/CharacterArtBank4.s"
+          asm
+          #include "Source/Routines/CharacterArtBank4.s"
+          end

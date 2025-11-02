@@ -2,8 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           bank 7
-          
-          #include "Source/Routines/WinScreen.bas"
+
           #include "Source/Routines/MissileSystem.bas"
           #include "Source/Routines/MissileCollision.bas"
 

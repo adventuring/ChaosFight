@@ -74,7 +74,7 @@ DragonetAttack
           rem =================================================================
           rem EXO PILOT (Character 3) - Ranged Attack
           rem =================================================================
-EXOPilotAttack
+ZoeRyenAttack
           PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
@@ -99,12 +99,14 @@ MegaxAttack
           return
 
           rem =================================================================
-          rem HARPY (Character 6) - Melee Attack
+          rem HARPY (Character 6) - Diagonal Downward Attack
           rem =================================================================
+          rem Harpy attack is a downward diagonal projectile in facing direction
 HarpyAttack
           PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
-          gosub PerformMeleeAttack
+          gosub PerformRangedAttack
+          rem Spawns diagonal downward missile (velocity set in character data)
           return
 
           rem =================================================================
@@ -180,9 +182,17 @@ UrsuloAttack
           return
 
           rem =================================================================
-          rem VEG DOG (Character 15) - Melee Attack
+          rem SHAMONE (Character 15) - Jump + Attack (Special)
           rem =================================================================
-VegDogAttack
+          rem Shamone special attack: jumps while attacking simultaneously
+ShamoneAttack
+          rem First, execute the jump
+          PlayerY[temp1] = PlayerY[temp1] - 11 
+          rem Light character, good jump
+          PlayerState[temp1] = PlayerState[temp1] | 4
+          rem Set jumping flag
+          
+          rem Then execute the attack
           PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
@@ -203,6 +213,9 @@ DispatchCharacterAttack
           rem Get character type for this player using direct array access
           rem temp1 contains player index (0-3)
           let temp2 = PlayerChar[temp1]
-          on temp2 goto BernieAttack, CurlerAttack, DragonetAttack, EXOPilotAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, VegDogAttack
+          rem Map MethHound (31) to ShamoneAttack handler
+          if temp2 = 31 then temp2 = 15
+          rem Use Shamone attack for MethHound
+          on temp2 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
           rem Default to Bernie attack if invalid character
           goto BernieAttack

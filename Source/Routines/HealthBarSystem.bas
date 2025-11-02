@@ -106,12 +106,12 @@ UpdatePlayer34HealthBars
     rem Format: score+2 = P4 (as BCD), score+1 = P3 (as BCD), score = 0
     rem But we want XX00XX, so: score+2 = P4, score+1 = 0, score = P3
     rem batariBASIC score assignment handles BCD, so assign as: P3 * 10000 + P4
-    rem However, this creates values > 999999 which won't fit in score
+    rem However, this creates values greater than 999999 which will not fit in score
     rem Alternative: Use P3 * 1000 + P4, displays as XXXX (P3XXX)
     rem Or: Use just P3 in left, P4 in right: P3 * 100 + P4 = 7550 displays as "7550"
     rem But we want "75__50" format
     rem Simplest: Set score = (P3 * 100 + 0) * 100 + P4 = P3 * 10000 + P4
-    rem But P3 * 10000 can be 990000 which is > 65535, won't fit
+    rem But P3 * 10000 can be 990000 which is greater than 65535, will not fit
     rem Use: score = P3 * 1000 + P4 * 10, displays as "P3P4" (e.g., 7550)
     rem Or use assembly to set BCD bytes directly
     rem Format score display for P3 and P4 health

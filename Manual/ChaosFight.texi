@@ -381,7 +381,7 @@ Each character has unique properties affecting gameplay:
 
 @include Dragonet.texi
 
-@include EXOPilot.texi
+@include ZoeRyen.texi
 
 @include FatTony.texi
 
@@ -405,7 +405,7 @@ Each character has unique properties affecting gameplay:
 
 @include Ursulo.texi
 
-@include VegDog.texi
+@include Shamone.texi
 
 @page
 
@@ -637,8 +637,6 @@ games, for which we want to give thanks:
 
 @itemize
 @item
-Todd ``Revontulli'' (Dragon's Cache, Harpy'd Curse)
-@item
 Ryan Witmer (Magical Fairy Force, Rob 'N' Banks, RealSports Curling)
 @item
 Lewis ``Muddyfunster'' Hill (EXO, Bernie and the Tower of Doom)
@@ -646,17 +644,21 @@ Lewis ``Muddyfunster'' Hill (EXO, Bernie and the Tower of Doom)
 Blake ``SmittyB'' Smith (Ducks Away)
 @item
 Vladimir ``vhzc'' Zúñiga (Game of the Bear, Knight Guy, Ninjish Guy)
+@item
+Todd ``Revontulli'' Furmanski (Dragon's Cache, Harpy's Curse)
 @end itemize
 
 @itemize @bullet
 @item
 Fred @dfn{batari} Quimby (batariBasic compiler)
 @item
+Mike Saarna (aka @dfn{RevEng}) (Titlescreen Kernel for batariBasic)
+@item
 Zephyr Pocock (Grizzards, Phantasia; for additional art and music)
 @item
 Philip ``Splendidnut'' Blackman (batariBasic assistance)
 @item
-James Earl O'Brian and Tanya O'Brian (ZeroPage Homebrew)
+James Earl O'Brian and Tanya O'Brian (and Darcy and Aerlan) (ZeroPage Homebrew)
 @item
 AtariAge and Atari community
 @item

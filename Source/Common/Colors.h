@@ -21,6 +21,7 @@
    0=Black, 1=Red, 2=Green, 3=Blue, 4=Cyan, 5=Magenta, 6=Yellow, 7=White */
 /* SECAM luminance mapping: lum=0 -> black (0) for ALL colors, lum>0 -> respective color, ColGrey(2+) -> white (7) */
 #define ColGrey(lum) ((lum) == 0 ? 0 : ((lum) >= 2 ? 7 : 0))  /* lum=0 -> black, lum>=2 -> white */
+#define ColGray(lum) ColGrey(lum)  /* ColGray and ColGrey are synonyms */
 #define ColYellow(lum) ((lum) == 0 ? 0 : 6)  /* lum=0 -> black, lum>0 -> yellow */
 #define ColBrown(lum) ((lum) == 0 ? 0 : 6)  /* lum=0 -> black, lum>0 -> yellow */
 #define ColOrange(lum) ((lum) == 0 ? 0 : 6)  /* lum=0 -> black, lum>0 -> yellow */

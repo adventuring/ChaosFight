@@ -4,15 +4,15 @@
           rem =================================================================
           rem TITLE SCREEN RENDERING
           rem =================================================================
-          rem Renders the title screen using a 32×32 playfield image.
-          rem The playfield data is generated from Source/Art/TitleScreen.png
-          rem by SkylineTool and included as Source/Generated/Playfield.TitleScreen.bas
+          rem Renders the title screen using a 48×42 bitmap image.
+          rem The bitmap data is generated from Source/Art/ChaosFight.xcf
+          rem by SkylineTool and included as Source/Generated/Art.ChaosFight.s
 
-          rem PLAYFIELD CONFIGURATION:
-          rem   - Size: 32 pixels wide × 32 rows high
-          rem   - Uses pfres=32 (maximum height with SuperChip)
-          rem   - Consumes all 128 bytes of SuperChip RAM (32 rows × 4 bytes/row)
-          rem   - Mirrored display (32px playfield → 160px visible width)
+          rem BITMAP CONFIGURATION:
+          rem   - Size: 48×42 pixels (displayed as 48×84 scanlines in double-height mode)
+          rem   - Uses titlescreen kernel minikernel for display
+          rem   - Color-per-line support (84 color values, 42 × 2 for double-height)
+          rem   - Bitmap data stored in ROM: Source/Generated/Art.ChaosFight.s
 
           rem AVAILABLE VARIABLES:
           rem   TitleParadeActive - Whether to draw parade character
@@ -22,17 +22,14 @@
 
           rem Main draw routine for title screen
 DrawTitleScreen
-          rem Set playfield resolution for title screen
-          const pfres = 32
-          
           rem Clear sprites first
           player0x = 0
           player0y = 0
           player1x = 0
           player1y = 0
           
-          rem Load title screen playfield data
-          gosub LoadTitlePlayfield
+          rem Load title screen bitmap data
+          gosub LoadTitleBitmap
           
           rem Draw character parade if active
 if TitleParadeActive then 
@@ -42,33 +39,23 @@ if TitleParadeActive then
           return
 
           rem =================================================================
-          rem LOAD TITLE PLAYFIELD
+          rem LOAD TITLE BITMAP
           rem =================================================================
-          rem Loads the title screen playfield image into SuperChip RAM.
-          rem This is a 32×32 pixel playfield generated from Source/Art/ChaosFight.xcf
+          rem Loads the ChaosFight title bitmap data for titlescreen kernel.
+          rem Generated from Source/Art/ChaosFight.xcf → ChaosFight.png
+          rem SkylineTool creates: Source/Generated/Art.ChaosFight.s
+          rem   - BitmapChaosFight: 6 columns × 42 bytes (inverted-y)
+          rem   - BitmapChaosFightColors: 84 color values (double-height)
 
-          rem The generated files are architecture-specific:
-          rem   - Source/Generated/Playfield.ChaosFight.NTSC.bas
-          rem   - Source/Generated/Playfield.ChaosFight.PAL.bas
-          rem   - Source/Generated/Playfield.ChaosFight.SECAM.bas
-
-          rem USES COLOR-PER-ROW:
-          rem   Each row can have different COLUPF and COLUBK values
-          rem   This allows for rich, colorful title screens
-          rem   Generated code sets pfpixel and color registers per row
-
-          rem USES:
-          rem   pfpixel commands to set playfield pixels
-          rem   COLUPF, COLUBK - Color registers (set per-row)
-LoadTitlePlayfield
-          rem Load architecture-specific playfield data with color-per-row
-          rem The generated file includes COLUPF/COLUBK changes per scanline
-          #ifdef TV_NTSC
-          #include "Source/Generated/Playfield.ChaosFight.NTSC.bas"
-          #ifdef TV_PAL
-          #include "Source/Generated/Playfield.ChaosFight.PAL.bas"
-          #ifdef TV_SECAM
-          #include "Source/Generated/Playfield.ChaosFight.SECAM.bas"
+LoadTitleBitmap
+          rem Configure titlescreen kernel to show Title (ChaosFight) bitmap
+          rem Uses 48x2_3 minikernel - set window/height via assembly constants
+              rem Bitmap data in: Source/Generated/Art.ChaosFight.s
+          rem Other screens’ minikernels should have window=0 in their image files
+          
+          rem The titlescreen kernel uses fixed labels (bmp_48x2_3_window, etc.)
+              rem These are set as constants in the .s image files
+          rem Title screen: bmp_48x2_3_window = 42, others = 0
           
           return
 

@@ -1,5 +1,5 @@
 # Default target
-all: sprites game doc characters playfields fonts music
+all: sprites game doc characters fonts music bitmaps
 
 # Test target
 test: SkylineTool/skyline-tool.asd
@@ -62,7 +62,7 @@ ROM = Dist/$(GAME).NTSC.a26
 ALL_SOURCES = $(shell find Source -name \*.bas)
 
 # Moved to top of file
-.PHONY: all clean emu game help doc characters playfields fonts sprites nowready ready
+.PHONY: all clean emu game help doc characters fonts sprites nowready ready bitmaps
 
 # Build game
 game: \
@@ -82,13 +82,13 @@ game: \
 doc: Dist/$(GAME).pdf Dist/$(GAME).html
 
 # Character sprite sheet names (32 characters: 16 main + 16 future)
-CHARACTER_NAMES = Bernie Curler Dragonet EXOPilot FatTony Megax Harpy KnightGuy Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo VegDog Character16 Character17 Character18 Character19 Character20 Character21 Character22 Character23 Character24 Character25 Character26 Character27 Character28 Character29 Character30 Character31
+CHARACTER_NAMES = Bernie Curler Dragonet ZoeRyen FatTony Megax Harpy KnightGuy Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo Shamone Character16 Character17 Character18 Character19 Character20 Character21 Character22 Character23 Character24 Character25 Character26 Character27 Character28 Character29 Character30 MethHound
 
 # TV architectures
 TV_ARCHS = NTSC PAL SECAM
 
-# Screen names (32×32 playfield screens)
-SCREEN_NAMES = AtariAge Interworldly ChaosFight
+# Bitmap names (48×42 bitmaps for titlescreen kernel)
+BITMAP_NAMES = AtariAge Interworldly ChaosFight
 
 # Font names
 FONT_NAMES = Numbers
@@ -99,8 +99,8 @@ MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
 # Build character assets
 characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
 
-# Build playfield assets (game levels + title screens)
-playfields: $(foreach screen,$(SCREEN_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Playfield.$(screen).$(arch).bas))
+# Build bitmap assets (48×42 for titlescreen kernel on admin screens)
+bitmaps: $(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 
 # Build font assets (fonts are universal, not region-specific)
 fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
@@ -192,33 +192,34 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
-# Convert PNG screen to batariBASIC playfield data for NTSC
-Source/Generated/Playfield.%.NTSC.bas: Source/Art/%.png bin/skyline-tool
-	@echo "Converting playfield screen $< to $@ for NTSC..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-playfield "$@" "$<" "NTSC"
+# Convert 48×42 PNG to titlescreen kernel assembly format
+# Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height
+# These are bitmaps for the titlescreen kernel minikernels, not playfield data
+# PNG files are built from XCF via the %.png: %.xcf pattern rule (line 180)
+# Explicit PNG→XCF dependencies ensure XCF→PNG conversion happens first
+Source/Art/AtariAge.png: Source/Art/AtariAge.xcf
+Source/Art/Interworldly.png: Source/Art/Interworldly.xcf
+Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
 
-# Convert PNG screen to batariBASIC playfield data for PAL
-Source/Generated/Playfield.%.PAL.bas: Source/Art/%.png bin/skyline-tool
-	@echo "Converting playfield screen $< to $@ for PAL..."
+# Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
+Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png bin/skyline-tool
+	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-playfield "$@" "$<" "PAL"
+	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
-# Convert PNG screen to batariBASIC playfield data for SECAM
-Source/Generated/Playfield.%.SECAM.bas: Source/Art/%.png bin/skyline-tool
-	@echo "Converting playfield screen $< to $@ for SECAM..."
+Source/Generated/Art.Interworldly.s: Source/Art/Interworldly.png bin/skyline-tool
+	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-playfield "$@" "$<" "SECAM"
+	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+
+Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png bin/skyline-tool
+	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf
 	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-
-# Convert PNG to batariBASIC playfield include
-# Commented out - no Map-*.png files exist, and command should be compile-2600-playfield (singular)
-# Source/Generated/Playfields.bas: $(wildcard Source/Art/Map-*.png)
-# 	mkdir -p Source/Generated
-# 	bin/skyline-tool compile-2600-playfield "Source/Generated/Playfields.bas" "Source/Art/Map-Arena1.png"
 
 # Convert PNG font to batariBASIC data
 Source/Generated/Font.bas: Source/Art/Font.png
@@ -227,15 +228,15 @@ Source/Generated/Font.bas: Source/Art/Font.png
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
-Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas characters playfields
+Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas characters bitmaps
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
-Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas characters playfields
+Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas characters bitmaps
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
-Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas characters playfields
+Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas characters bitmaps
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
@@ -265,11 +266,14 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
-	$(foreach screen,$(SCREEN_NAMES),Source/Generated/Playfield.$(screen).NTSC.bas) \
 	Source/Generated/Numbers.bas \
-	playfields
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
+
+Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas bin/preprocess
+	bin/preprocess < $< > $@
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
 	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).NTSC.s
 	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
@@ -302,8 +306,9 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
-	$(foreach screen,$(SCREEN_NAMES),Source/Generated/Playfield.$(screen).PAL.bas) \
-	Source/Generated/Numbers.bas
+	Source/Generated/Numbers.bas \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.asm
@@ -316,7 +321,6 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
     Source/Generated/$(GAME).SECAM.bas \
 	$(ALL_SOURCES) \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach screen,$(SCREEN_NAMES),Source/Generated/Playfield.$(screen).SECAM.bas) \
 	Source/Banks/Bank1.bas \
 	Source/Banks/Banks.bas \
 	Source/Common/AssemblyConfig.s \
@@ -341,8 +345,9 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
-	$(foreach screen,$(SCREEN_NAMES),Source/Generated/Playfield.$(screen).SECAM.bas) \
-	Source/Generated/Numbers.bas
+	Source/Generated/Numbers.bas \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.asm

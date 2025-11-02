@@ -12,7 +12,9 @@
           #include "Source/Generated/Character28.bas"
           #include "Source/Generated/Character29.bas"
           #include "Source/Generated/Character30.bas"
-          #include "Source/Generated/Character31.bas"
+          #include "Source/Generated/MethHound.bas"
           
           rem Character art lookup routines for Bank 5 (characters 24-31)
-          include "Source/Routines/CharacterArtBank5.s"
+          asm
+          #include "Source/Routines/CharacterArtBank5.s"
+          end

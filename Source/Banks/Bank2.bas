@@ -8,11 +8,13 @@
           #include "Source/Generated/Bernie.bas"
           #include "Source/Generated/Curler.bas"
           #include "Source/Generated/Dragonet.bas"
-          #include "Source/Generated/EXOPilot.bas"
+          #include "Source/Generated/ZoeRyen.bas"
           #include "Source/Generated/FatTony.bas"
           #include "Source/Generated/Megax.bas"
           #include "Source/Generated/Harpy.bas"
           #include "Source/Generated/KnightGuy.bas"
 
           rem Character art lookup routines for Bank 2 (characters 0-7 and 16-23)
-          include "Source/Routines/CharacterArtBank2.s"
+          asm
+          #include "Source/Routines/CharacterArtBank2.s"
+          end

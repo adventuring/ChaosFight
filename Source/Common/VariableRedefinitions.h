@@ -375,9 +375,9 @@ ModeCharacterSelect = 3
  
 ModeTitle = 2
  
-ModeAuthorPrelude = 1
+ModeAuthorPreamble = 1
  
-ModePublisherPrelude = 0
+ModePublisherPreamble = 0
  
 SECAM = 3
  

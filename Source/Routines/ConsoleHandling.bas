@@ -68,8 +68,10 @@ SkipPlayer2Pause
           
 CheckColorBWToggle
           rem Check if Color/B&W switch state has changed
-          if switchbw <> ColorBWPrevious then gosub bank14 DetectControllers : ColorBWPrevious = switchbw
-          
+          if switchbw = ColorBWPrevious then goto SkipColorBWChange
+          gosub bank14 DetectControllers
+          ColorBWPrevious = switchbw
+SkipColorBWChange
           return
 
           rem Display paused screen

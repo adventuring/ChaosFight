@@ -171,7 +171,7 @@ CHARACTER_PNG = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png)
 CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).bas)
 
 # Convert XCF to PNG for sprites (characters and special sprites)
-%.png: %.xcf $(READYFILE)
+%.png: %.xcf
 	@echo "Converting $< to $@..."
 	mkdir -p Source/Art
 	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'

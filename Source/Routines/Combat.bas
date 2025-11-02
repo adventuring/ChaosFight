@@ -159,7 +159,7 @@ PerformMeleeAttack
   gosub bank15 SpawnMissile
   
   rem Set animation state to attacking
-          let playerState[temp1] = (playerState[temp1] & %00001111) | (14 << 4)
+          let playerState[temp1] = (playerState[temp1] & %00001111) | (AnimAttackExecute << 4)
           rem Set animation state 14 (attack execution)
   
   rem Check immediate collision with other players in melee range
@@ -181,7 +181,7 @@ PerformRangedAttack
   gosub bank15 SpawnMissile
   
   rem Set animation state to attacking
-          let playerState[temp1] = (playerState[temp1] & %00001111) | (14 << 4)
+          let playerState[temp1] = (playerState[temp1] & %00001111) | (AnimAttackExecute << 4)
           rem Set animation state 14 (attack execution)
   
   return

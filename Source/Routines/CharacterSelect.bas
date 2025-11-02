@@ -450,7 +450,7 @@ SelOddFrame
           if HandicapMode then goto SelHandleHandi
           goto SelAnimNormal
 SelHandleHandi
-          let charSelectAnimState  = 9
+          let charSelectAnimState = AnimRecovering
           rem Animation state 9 = "Recovering to standing"
           let charSelectAnimFrame  = 0
           rem First frame of recovery animation
@@ -487,7 +487,7 @@ SelAnimNormal
 SelDrawSprite
           rem Draw animated character sprite based on current animation state
           rem Each character has unique 8x16 graphics with unique colors per scanline
-          rem Animation states: 0=idle, 1=running, 2=attacking (hurt simulation)
+          rem Animation states: AnimStanding=idle, AnimWalking=running, AnimAttackWindup=attacking (hurt simulation)
           rem Colors are based on player number and hurt status, not animation state
           
           rem Set character color based on hurt status and color/B&W mode
@@ -535,9 +535,9 @@ SelColorBW
 SelColorDone
           
           rem Draw different sprite patterns based on animation state and frame
-          let if charSelectAnimState  = 0 then goto SelAnimIdle
-          let if charSelectAnimState  = 1 then goto SelAnimRun
-          let if charSelectAnimState  = 2 then goto SelAnimAttack
+          let if charSelectAnimState = AnimStanding then goto SelAnimIdle
+          let if charSelectAnimState = AnimWalking then goto SelAnimRun
+          let if charSelectAnimState = AnimAttackWindup then goto SelAnimAttack
           goto SelAnimDone
 SelAnimIdle
           rem Idle animation - simple standing pose

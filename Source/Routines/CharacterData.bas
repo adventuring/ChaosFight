@@ -108,3 +108,53 @@ GetCharacterDamage
           rem Heavy characters
 GetCharacterDamageEnd
           return
+          
+          rem =================================================================
+          rem GET MISSILE WIDTH
+          rem =================================================================
+          rem Fast lookup of character missile width.
+          rem INPUT: temp1 = character index (0-15)
+          rem OUTPUT: temp2 = missile width
+GetMissileWidth
+          temp2 = CharacterMissileWidths[temp1]
+          return
+          
+          rem =================================================================
+          rem GET MISSILE HEIGHT
+          rem =================================================================
+          rem Fast lookup of character missile height.
+          rem INPUT: temp1 = character index (0-15)
+          rem OUTPUT: temp2 = missile height
+GetMissileHeight
+          temp2 = CharacterMissileHeights[temp1]
+          return
+          
+          rem =================================================================
+          rem GET MISSILE FLAGS
+          rem =================================================================
+          rem Fast lookup of character missile flags.
+          rem INPUT: temp1 = character index (0-15)
+          rem OUTPUT: temp2 = missile flags
+GetMissileFlags
+          temp2 = CharacterMissileFlags[temp1]
+          return
+          
+          rem =================================================================
+          rem GET MISSILE MOMENTUM X
+          rem =================================================================
+          rem Fast lookup of character missile horizontal momentum.
+          rem INPUT: temp1 = character index (0-15)
+          rem OUTPUT: temp2 = missile momentum X
+GetMissileMomentumX
+          temp2 = CharacterMissileMomentumX[temp1]
+          return
+          
+          rem =================================================================
+          rem GET MISSILE MOMENTUM Y
+          rem =================================================================
+          rem Fast lookup of character missile vertical momentum.
+          rem INPUT: temp1 = character index (0-15)
+          rem OUTPUT: temp2 = missile momentum Y
+GetMissileMomentumY
+          temp2 = CharacterMissileMomentumY[temp1]
+          return

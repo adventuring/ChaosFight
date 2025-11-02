@@ -158,7 +158,7 @@ FacingSet
           
           rem Check collision with playfield if flag is set
           if !(temp5 & 1) then PlayfieldCollisionDone
-          gosub bank15 MissCollPF
+          gosub bank7 MissileCollPF
           if !temp4 then PlayfieldCollisionDone
           if temp5 & 8 then temp7 = MissileVelX[temp1] : temp7 = $FF - temp7 + 1 : gosub HalfTemp7 : MissileVelX[temp1] = temp7 : gosub DeactivateMissile : return
           gosub DeactivateMissile : return
@@ -166,7 +166,7 @@ PlayfieldCollisionDone
           
           rem Check collision with players
           rem This handles both visible missiles and AOE attacks
-          gosub bank15 CheckAllMissileCollisions
+          gosub bank7 CheckAllMissileCollisions
           rem Check if hit was found (temp4 != 255)
           if temp4 = 255 then goto MissileSystemNoHit
           gosub HandleMissileHit

@@ -174,41 +174,49 @@ SkipP1P2Sep
           if ! (ControllerStatus & SetQuadtariDetected) then return
           
           rem Check Player 1 vs Player 3
-          if SelectedChar3 <> 255 then 
+          if SelectedChar3 <> 255 then goto DoP1P3Check else goto SkipP1P3Check
+DoP1P3Check
           if PlayerX[0] >= PlayerX[2] then temp2 = PlayerX[0] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[0]
           if temp2 < 16 then if PlayerX[0] < PlayerX[2] then PlayerX[0] = PlayerX[0] - 1 : PlayerX[2] = PlayerX[2] + 1 : goto SkipP1P3Sep
           if temp2 < 16 then PlayerX[0] = PlayerX[0] + 1 : PlayerX[2] = PlayerX[2] - 1
 SkipP1P3Sep
+SkipP1P3Check
           
           
           
           
           rem Check Player 1 vs Player 4
-          if SelectedChar4 <> 255 then 
+          if SelectedChar4 <> 255 then goto DoP1P4Check else goto SkipP1P4Check
+DoP1P4Check
           if PlayerX[0] >= PlayerX[3] then temp2 = PlayerX[0] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[0]
           if temp2 < 16 then if PlayerX[0] < PlayerX[3] then PlayerX[0] = PlayerX[0] - 1 : PlayerX[3] = PlayerX[3] + 1 : goto SkipP1P4Sep
           if temp2 < 16 then PlayerX[0] = PlayerX[0] + 1 : PlayerX[3] = PlayerX[3] - 1
 SkipP1P4Sep
+SkipP1P4Check
           
           
           
           
           rem Check Player 2 vs Player 3
-          if SelectedChar3 <> 255 then 
+          if SelectedChar3 <> 255 then goto DoP2P3Check else goto SkipP2P3Check
+DoP2P3Check
           if PlayerX[1] >= PlayerX[2] then temp2 = PlayerX[1] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[1]
           if temp2 < 16 then if PlayerX[1] < PlayerX[2] then PlayerX[1] = PlayerX[1] - 1 : PlayerX[2] = PlayerX[2] + 1 : goto SkipP2P3Sep
           if temp2 < 16 then PlayerX[1] = PlayerX[1] + 1 : PlayerX[2] = PlayerX[2] - 1
 SkipP2P3Sep
+SkipP2P3Check
           
           
           
           
           rem Check Player 2 vs Player 4
-          if SelectedChar4 <> 255 then 
+          if SelectedChar4 <> 255 then goto DoP2P4Check else goto SkipP2P4Check
+DoP2P4Check
           if PlayerX[1] >= PlayerX[3] then temp2 = PlayerX[1] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[1]
           if temp2 < 16 then if PlayerX[1] < PlayerX[3] then PlayerX[1] = PlayerX[1] - 1 : PlayerX[3] = PlayerX[3] + 1 : goto SkipP2P4Sep
           if temp2 < 16 then PlayerX[1] = PlayerX[1] + 1 : PlayerX[3] = PlayerX[3] - 1
 SkipP2P4Sep
+SkipP2P4Check
           
           
           

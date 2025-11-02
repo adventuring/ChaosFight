@@ -34,66 +34,66 @@ BeginGameLoop
           rem SuperChip variables var0-var15 available in gameplay
           
           rem Initialize player positions
-          PlayerX[0] = 40 : PlayerY[0] = 80
-          PlayerX[1] = 120 : PlayerY[1] = 80
-          PlayerX[2] = 80 : PlayerY[2] = 80
-          PlayerX[3] = 100 : PlayerY[3] = 80
+          let PlayerX[0] = 40 : PlayerY[0] = 80
+          let PlayerX[1] = 120 : PlayerY[1] = 80
+          let PlayerX[2] = 80 : PlayerY[2] = 80
+          let PlayerX[3] = 100 : PlayerY[3] = 80
           
           rem Initialize player states (facing direction)
-          PlayerState[0] = 1
+          let PlayerState[0] = 1
           rem Player 1 facing right
-          PlayerState[1] = 0
+          let PlayerState[1] = 0
           rem Player 2 facing left
-          PlayerState[2] = 1
+          let PlayerState[2] = 1
           rem Player 3 facing right
-          PlayerState[3] = 0
+          let PlayerState[3] = 0
           rem Player 4 facing left
           
           rem Initialize player health (apply handicap if selected)
           rem PlayerLocked value: 0=unlocked, 1=normal (100% health), 2=handicap (75% health)
           if PlayerLocked[0] = 2 then PlayerHealth[0] = 75 : goto Player0HealthSet
-          PlayerHealth[0] = 100
+          let PlayerHealth[0] = 100
 Player0HealthSet
           
           if PlayerLocked[1] = 2 then PlayerHealth[1] = 75 : goto Player1HealthSet
-          PlayerHealth[1] = 100
+          let PlayerHealth[1] = 100
 Player1HealthSet
           
           if PlayerLocked[2] = 2 then PlayerHealth[2] = 75 : goto Player2HealthSet
-          PlayerHealth[2] = 100
+          let PlayerHealth[2] = 100
 Player2HealthSet
           
           if PlayerLocked[3] = 2 then PlayerHealth[3] = 75 : goto Player3HealthSet
-          PlayerHealth[3] = 100
+          let PlayerHealth[3] = 100
 Player3HealthSet
           
           rem Initialize player timers
-          PlayerTimers[0] = 0
-          PlayerTimers[1] = 0
-          PlayerTimers[2] = 0
-          PlayerTimers[3] = 0
+          let PlayerTimers[0] = 0
+          let PlayerTimers[1] = 0
+          let PlayerTimers[2] = 0
+          let PlayerTimers[3] = 0
           
           rem Initialize player momentum
-          PlayerMomentumX[0] = 0
-          PlayerMomentumX[1] = 0
-          PlayerMomentumX[2] = 0
-          PlayerMomentumX[3] = 0
+          let PlayerMomentumX[0] = 0
+          let PlayerMomentumX[1] = 0
+          let PlayerMomentumX[2] = 0
+          let PlayerMomentumX[3] = 0
           
           rem Initialize player damage values
-          PlayerDamage[0] = 22
-          PlayerDamage[1] = 22
-          PlayerDamage[2] = 22
-          PlayerDamage[3] = 22
+          let PlayerDamage[0] = 22
+          let PlayerDamage[1] = 22
+          let PlayerDamage[2] = 22
+          let PlayerDamage[3] = 22
           
           rem Set character types from character select
-          PlayerChar[0] = SelectedChar1
-          PlayerChar[1] = SelectedChar2
-          PlayerChar[2] = SelectedChar3
-          PlayerChar[3] = SelectedChar4
+          let PlayerChar[0] = SelectedChar1
+          let PlayerChar[1] = SelectedChar2
+          let PlayerChar[2] = SelectedChar3
+          let PlayerChar[3] = SelectedChar4
 
           rem Update Players34Active flag based on character selections
           rem Flag is used for missile multiplexing (only multiplex when players 3 or 4 are active)
-          ControllerStatus = ControllerStatus & ClearPlayers34Active
+          let ControllerStatus  = ControllerStatus & ClearPlayers34Active
           rem Clear flag first
           if SelectedChar3 <> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
           rem Set if Player 3 selected
@@ -102,30 +102,30 @@ Player3HealthSet
 
           rem Initialize missiles
           rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
-          MissileActive = 0
+          let MissileActive  = 0
 
           rem Initialize elimination system
-          PlayersEliminated = 0  
+          let PlayersEliminated  = 0
           rem No players eliminated at start
-          PlayersRemaining = 0   
+          let PlayersRemaining  = 0
           rem Will be calculated
-          GameEndTimer = 0       
+          let GameEndTimer  = 0
           rem No game end countdown
-          EliminationCounter = 0 
+          let EliminationCounter  = 0
           rem Reset elimination order counter
           
           rem Initialize elimination order tracking
-          EliminationOrder[0] = 0
-          EliminationOrder[1] = 0  
-          EliminationOrder[2] = 0
-          EliminationOrder[3] = 0
+          let EliminationOrder[0] = 0
+          let EliminationOrder[1] = 0
+          let EliminationOrder[2] = 0
+          let EliminationOrder[3] = 0
           
           rem Initialize win screen variables
-          WinnerPlayerIndex = 255 
+          let WinnerPlayerIndex  = 255
           rem No winner yet
-          DisplayRank = 0         
+          let DisplayRank  = 0
           rem No rank being displayed  
-          WinScreenTimer = 0      
+          let WinScreenTimer  = 0
           rem Reset win screen timer
 
           rem Count initial players
@@ -138,7 +138,7 @@ Player3HealthSet
           frame = 0
 
           rem Initialize game state
-          GameState = 0
+          let GameState  = 0
           rem 0 = normal play, 1 = paused, 2 = game ending
           
           rem Initialize health bars

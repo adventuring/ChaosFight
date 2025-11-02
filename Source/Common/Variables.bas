@@ -304,6 +304,16 @@
           dim Player3AttackCooldown = var46
           dim Player4AttackCooldown = var47
           
+          rem GAME: Player timers array [0-3] - used for guard cooldowns and other timers
+          rem NOTE: Must be declared after PlayerAttackCooldown if we want to use array syntax
+          rem Currently PlayerAttackCooldown uses individual vars, so PlayerTimers can reuse them
+          rem Using alias: PlayerTimers = PlayerAttackCooldown (same 4 bytes)
+          rem Actually, PlayerTimers needs its own space - using remaining standard RAM
+          rem But we're at var44-var47 already used... need to check what's available
+          rem SOLUTION: PlayerTimers[0-3] uses SCRAM (r004-r007, w004-w007)
+          dim PlayerTimers = w004
+          rem GAME: Player timers array [0]=P1, [1]=P2, [2]=P3, [3]=P4 (SCRAM w004-w007)
+          
           rem GAME: Base damage per hit - calculated from character data, stored temporarily
           rem NOTE: Can be looked up from character data tables rather than stored persistently
           rem Using temp variables during damage calculation if needed

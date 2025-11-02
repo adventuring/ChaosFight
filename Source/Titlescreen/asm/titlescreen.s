@@ -71,37 +71,7 @@ title_playfield
  include "Titlescreen/asm/position48.s"
  include "Titlescreen/titlescreen_color.s"
 
-	ifconst mk_48x1_1_on
-		include "Titlescreen/asm/48x1_1_kernel.s"
-	endif ;mk_48x1_1_on
-
-	ifconst mk_48x1_2_on
-		include "Titlescreen/asm/48x1_2_kernel.s"
-	endif ;mk_48x1_2_on
-
-	ifconst mk_48x1_3_on
-		include "Titlescreen/asm/48x1_3_kernel.s"
-	endif ;mk_48x1_3_on
-
-	ifconst mk_48x1_4_on
-		include "Titlescreen/asm/48x1_4_kernel.s"
-	endif ;mk_48x1_4_on
-
-	ifconst mk_48x1_5_on
-		include "Titlescreen/asm/48x1_5_kernel.s"
-	endif ;mk_48x1_5_on
-
-	ifconst mk_48x1_6_on
-		include "Titlescreen/asm/48x1_6_kernel.s"
-	endif ;mk_48x1_6_on
-
-	ifconst mk_48x1_7_on
-		include "Titlescreen/asm/48x1_7_kernel.s"
-	endif ;mk_48x1_7_on
-
-	ifconst mk_48x1_8_on
-		include "Titlescreen/asm/48x1_8_kernel.s"
-	endif ;mk_48x1_8_on
+	rem Unused 48x1 kernels removed - only 48x2_1, 48x2_2, 48x2_3 are used
 
 	ifconst mk_48x2_1_on
 		include "Titlescreen/asm/48x2_1_kernel.s"
@@ -115,66 +85,7 @@ title_playfield
 		include "Titlescreen/asm/48x2_3_kernel.s"
 	endif ;mk_48x2_3_on
 
-	ifconst mk_48x2_4_on
-		include "Titlescreen/asm/48x2_4_kernel.s"
-	endif ;mk_48x2_4_on
-
-	ifconst mk_48x2_5_on
-		include "Titlescreen/asm/48x2_5_kernel.s"
-	endif ;mk_48x2_5_on
-
-	ifconst mk_48x2_6_on
-		include "Titlescreen/asm/48x2_6_kernel.s"
-	endif ;mk_48x2_6_on
-
-	ifconst mk_48x2_7_on
-		include "Titlescreen/asm/48x2_7_kernel.s"
-	endif ;mk_48x2_7_on
-
-	ifconst mk_48x2_8_on
-		include "Titlescreen/asm/48x2_8_kernel.s"
-	endif ;mk_48x2_8_on
-
-	ifconst mk_48x1_X_on
-		include "Titlescreen/asm/48x1_X_kernel.s"
-	endif ;mk_48x1_X_on
-
-	ifconst mk_48x2_X_on
-		include "Titlescreen/asm/48x2_X_kernel.s"
-	endif ;mk_48x2_X_on
-
-
-	ifconst mk_96x2_1_on
-		include "Titlescreen/asm/96x2_1_kernel.s"
-	endif ;mk_96x2_1_on
-
-	ifconst mk_96x2_2_on
-		include "Titlescreen/asm/96x2_2_kernel.s"
-	endif ;mk_96x2_2_on
-
-	ifconst mk_96x2_3_on
-		include "Titlescreen/asm/96x2_3_kernel.s"
-	endif ;mk_96x2_3_on
-
-	ifconst mk_96x2_4_on
-		include "Titlescreen/asm/96x2_4_kernel.s"
-	endif ;mk_96x2_4_on
-
-	ifconst mk_96x2_5_on
-		include "Titlescreen/asm/96x2_5_kernel.s"
-	endif ;mk_96x2_5_on
-
-	ifconst mk_96x2_6_on
-		include "Titlescreen/asm/96x2_6_kernel.s"
-	endif ;mk_96x2_6_on
-
-	ifconst mk_96x2_7_on
-		include "Titlescreen/asm/96x2_7_kernel.s"
-	endif ;mk_96x2_7_on
-
-	ifconst mk_96x2_8_on
-		include "Titlescreen/asm/96x2_8_kernel.s"
-	endif ;mk_96x2_8_on
+	rem Unused minikernels removed: 48x2_4-8, 48x1_*, 96x2_* - only 48x2_1, 48x2_2, 48x2_3 are used
 
 	ifconst mk_score_on
 		include "Titlescreen/asm/score_kernel.s"
@@ -216,32 +127,7 @@ OVERSCAN
 	sta VBLANK
 	RETURN
 
-	ifconst mk_48x1_1_on
-		include "Titlescreen/48x1_1_image.s"
-	endif
-	ifconst mk_48x1_2_on
-		include "Titlescreen/48x1_2_image.s"
-	endif
-	ifconst mk_48x1_3_on
-		include "Titlescreen/48x1_3_image.s"
-	endif
-	ifconst mk_48x1_4_on
-		include "Titlescreen/48x1_4_image.s"
-	endif
-	ifconst mk_48x1_5_on
-		include "Titlescreen/48x1_5_image.s"
-	endif
-	ifconst mk_48x1_6_on
-		include "Titlescreen/48x1_6_image.s"
-	endif
-	ifconst mk_48x1_7_on
-		include "Titlescreen/48x1_7_image.s"
-	endif
-	ifconst mk_48x1_8_on
-		include "Titlescreen/48x1_8_image.s"
-	endif
-
-
+	rem Unused image files removed: 48x1_*, 48x2_4-8, 96x2_* - only 48x2_1, 48x2_2, 48x2_3 are used
 	ifconst mk_48x2_1_on
 		include "Titlescreen/48x2_1_image.s"
 	endif
@@ -250,48 +136,6 @@ OVERSCAN
 	endif
 	ifconst mk_48x2_3_on
 		include "Titlescreen/48x2_3_image.s"
-	endif
-	ifconst mk_48x2_4_on
-		include "Titlescreen/48x2_4_image.s"
-	endif
-	ifconst mk_48x2_5_on
-		include "Titlescreen/48x2_5_image.s"
-	endif
-	ifconst mk_48x2_6_on
-		include "Titlescreen/48x2_6_image.s"
-	endif
-	ifconst mk_48x2_7_on
-		include "Titlescreen/48x2_7_image.s"
-	endif
-
-	ifconst mk_48x2_8_on
-		include "Titlescreen/48x2_8_image.s"
-	endif
-
-
-	ifconst mk_96x2_1_on
-		include "Titlescreen/96x2_1_image.s"
-	endif
-	ifconst mk_96x2_2_on
-		include "Titlescreen/96x2_2_image.s"
-	endif
-	ifconst mk_96x2_3_on
-		include "Titlescreen/96x2_3_image.s"
-	endif
-	ifconst mk_96x2_4_on
-		include "Titlescreen/96x2_4_image.s"
-	endif
-	ifconst mk_96x2_5_on
-		include "Titlescreen/96x2_5_image.s"
-	endif
-	ifconst mk_96x2_6_on
-		include "Titlescreen/96x2_6_image.s"
-	endif
-	ifconst mk_96x2_7_on
-		include "Titlescreen/96x2_7_image.s"
-	endif
-	ifconst mk_96x2_8_on
-		include "Titlescreen/96x2_8_image.s"
 	endif
 
 	ifconst mk_player_on
@@ -312,32 +156,7 @@ OVERSCAN
 
 
 
- #ifconst mk_48x1_1_on
-	include "titlescreen/48x1_1_image.s"
- #endif
- #ifconst mk_48x1_2_on
-	include "titlescreen/48x1_2_image.s"
- #endif
- #ifconst mk_48x1_3_on
-	include "titlescreen/48x1_3_image.s"
- #endif
- #ifconst mk_48x1_4_on
-	include "titlescreen/48x1_4_image.s"
- #endif
- #ifconst mk_48x1_5_on
-	include "titlescreen/48x1_5_image.s"
- #endif
- #ifconst mk_48x1_6_on
-	include "titlescreen/48x1_6_image.s"
- #endif
- #ifconst mk_48x1_7_on
-	include "titlescreen/48x1_7_image.s"
- #endif
- #ifconst mk_48x1_8_on
-	include "titlescreen/48x1_8_image.s"
- #endif
-
-
+ rem Unused image files removed: 48x1_*, 48x2_4-8, 96x2_* - only 48x2_1, 48x2_2, 48x2_3 are used
  #ifconst mk_48x2_1_on
 	include "titlescreen/48x2_1_image.s"
  #endif
@@ -346,48 +165,6 @@ OVERSCAN
  #endif
  #ifconst mk_48x2_3_on
 	include "titlescreen/48x2_3_image.s"
- #endif
- #ifconst mk_48x2_4_on
-	include "titlescreen/48x2_4_image.s"
- #endif
- #ifconst mk_48x2_5_on
-	include "titlescreen/48x2_5_image.s"
- #endif
- #ifconst mk_48x2_6_on
-	include "titlescreen/48x2_6_image.s"
- #endif
- #ifconst mk_48x2_7_on
-	include "titlescreen/48x2_7_image.s"
- #endif
-
- #ifconst mk_48x2_8_on
-	include "titlescreen/48x2_8_image.s"
- #endif
-
-
- #ifconst mk_96x2_1_on
-	include "titlescreen/96x2_1_image.s"
- #endif
- #ifconst mk_96x2_2_on
-	include "titlescreen/96x2_2_image.s"
- #endif
- #ifconst mk_96x2_3_on
-	include "titlescreen/96x2_3_image.s"
- #endif
- #ifconst mk_96x2_4_on
-	include "titlescreen/96x2_4_image.s"
- #endif
- #ifconst mk_96x2_5_on
-	include "titlescreen/96x2_5_image.s"
- #endif
- #ifconst mk_96x2_6_on
-	include "titlescreen/96x2_6_image.s"
- #endif
- #ifconst mk_96x2_7_on
-	include "titlescreen/96x2_7_image.s"
- #endif
- #ifconst mk_96x2_8_on
-	include "titlescreen/96x2_8_image.s"
  #endif
 
  #ifconst mk_player_on

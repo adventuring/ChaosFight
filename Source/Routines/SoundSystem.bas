@@ -25,9 +25,9 @@ PlaySoundEffect
           if MusicVoice0PointerH != 0 then return
           if MusicVoice1PointerH != 0 then return
           
-          rem Lookup sound pointer from Sounds bank
+          rem Lookup sound pointer from Sounds bank (Bank15)
           rem Note: SoundPointerL/H tables are in Sounds bank
-          gosub bankY LoadSoundPointer
+          gosub bank15 LoadSoundPointer
           rem LoadSoundPointer will set SoundPointerL and SoundPointerH from temp1
           
           rem Set sound effect pointer
@@ -55,14 +55,13 @@ UpdateSoundEffect
           SoundEffectFrame = SoundEffectFrame - 1
           if SoundEffectFrame != 0 then return
           
-          rem Frame counter reached 0 - load next note
-          rem Switch to Sounds bank to access data stream
-          gosub bankY LoadSoundNote
+          rem Frame counter reached 0 - load next note from Sounds bank
+          gosub bank15 LoadSoundNote
           rem LoadSoundNote will:
-          rem   - Load 4-byte note from stream[pointer]: AUDCV, AUDF, Duration, Delay
+          rem   - Load 4-byte note from Sound_Voice0[pointer]: AUDCV, AUDF, Duration, Delay
           rem   - Extract AUDC (upper 4 bits) and AUDV (lower 4 bits)
           rem   - Write to TIA: AUDC0, AUDF0, AUDV0 (use Voice 0)
-          rem   - Set SoundEffectFrame = Duration
+          rem   - Set SoundEffectFrame = Duration + Delay
           rem   - Advance SoundEffectPointer by 4 bytes
           rem   - Handle end-of-sound: set SoundEffectPointerH = 0, AUDV0 = 0, free voice
           return

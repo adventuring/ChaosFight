@@ -55,7 +55,8 @@ PublisherSkipQuadtari
           return
 
 PublisherPreambleComplete
-          gameMode = ModeAuthorPreamble : gosub bank13 ChangeGameMode
+          gameMode = ModeAuthorPreamble
+          gosub bank13 ChangeGameMode
           return
 
           rem =================================================================

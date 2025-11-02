@@ -25,20 +25,19 @@ StartMusic
           MusicVoice0PointerH = 0
           MusicVoice1PointerH = 0
           
-          rem Lookup song pointer from Songs bank
+          rem Lookup song pointer from Songs bank (Bank16)
           rem Note: SongPointerL/H tables are in Songs bank
-          rem For now, assume Songs bank provides helper function
-          gosub bankX LoadSongPointer
+          gosub bank16 LoadSongPointer
           rem LoadSongPointer will set SongPointerL and SongPointerH from temp1
           
-          rem Set Voice 0 pointer to song start
+          rem Set Voice 0 pointer to song start (Song_Voice0 stream)
           MusicVoice0PointerL = SongPointerL
           MusicVoice0PointerH = SongPointerH
           
-          rem Calculate Voice 1 pointer offset (Voice 0 stream length calculated separately)
-          rem For now, assume helper function calculates Voice 1 offset
-          gosub bankX LoadSongVoice1Pointer
-          rem LoadSongVoice1Pointer will set Voice 1 pointer based on Voice 0 + offset
+          rem Calculate Voice 1 pointer offset (find end of Voice0 stream)
+          rem Voice1 stream starts after Voice0 stream
+          gosub bank16 LoadSongVoice1Pointer
+          rem LoadSongVoice1Pointer will calculate and set Voice 1 pointer
           MusicVoice1PointerL = SongPointerL
           MusicVoice1PointerH = SongPointerH
           
@@ -74,14 +73,13 @@ UpdateMusicVoice0
           MusicVoice0Frame = MusicVoice0Frame - 1
           if MusicVoice0Frame != 0 then return
           
-          rem Frame counter reached 0 - load next note
-          rem Switch to Songs bank to access data stream
-          gosub bankX LoadMusicNote0
+          rem Frame counter reached 0 - load next note from Songs bank
+          gosub bank16 LoadMusicNote0
           rem LoadMusicNote0 will:
-          rem   - Load 4-byte note from stream[pointer]: AUDCV, AUDF, Duration, Delay
+          rem   - Load 4-byte note from Song_Voice0[pointer]: AUDCV, AUDF, Duration, Delay
           rem   - Extract AUDC (upper 4 bits) and AUDV (lower 4 bits)
           rem   - Write to TIA: AUDC0, AUDF0, AUDV0
-          rem   - Set MusicVoice0Frame = Duration
+          rem   - Set MusicVoice0Frame = Duration + Delay
           rem   - Advance MusicVoice0Pointer by 4 bytes
           rem   - Handle end-of-track: set MusicVoice0PointerH = 0, AUDV0 = 0
           return
@@ -94,9 +92,9 @@ UpdateMusicVoice1
           MusicVoice1Frame = MusicVoice1Frame - 1
           if MusicVoice1Frame != 0 then return
           
-          rem Frame counter reached 0 - load next note
-          gosub bankX LoadMusicNote1
-          rem LoadMusicNote1 does same as LoadMusicNote0 but for Voice 1
+          rem Frame counter reached 0 - load next note from Songs bank
+          gosub bank16 LoadMusicNote1
+          rem LoadMusicNote1 does same as LoadMusicNote0 but for Voice 1 (Song_Voice1)
           return
 
           rem =================================================================

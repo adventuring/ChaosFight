@@ -137,10 +137,18 @@ GetCurrentAnimationSequence
           rem Called at game start to set up initial animation states
 InitializeAnimationSystem
           rem Initialize all players to idle animation
-          let temp1 = 0  : temp2 = AnimIdle  : gosub SetPlayerAnimation
-          let temp1 = 1  : temp2 = AnimIdle  : gosub SetPlayerAnimation
-          let temp1 = 2  : temp2 = AnimIdle  : gosub SetPlayerAnimation
-          let temp1 = 3  : temp2 = AnimIdle  : gosub SetPlayerAnimation
+          let temp1 = 0
+          let temp2 = AnimIdle
+          gosub SetPlayerAnimation
+          let temp1 = 1
+          let temp2 = AnimIdle
+          gosub SetPlayerAnimation
+          let temp1 = 2
+          let temp2 = AnimIdle
+          gosub SetPlayerAnimation
+          let temp1 = 3
+          let temp2 = AnimIdle
+          gosub SetPlayerAnimation
           return
 
           rem =================================================================

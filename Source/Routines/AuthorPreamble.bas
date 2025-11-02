@@ -55,7 +55,8 @@ AuthorSkipQuadtari
           goto AuthorMainLoop
 
 AuthorPreambleComplete
-              let gameMode = ModeTitle : gosub bank13 ChangeGameMode
+              let gameMode = ModeTitle
+              gosub bank13 ChangeGameMode
               return
 
           rem =================================================================

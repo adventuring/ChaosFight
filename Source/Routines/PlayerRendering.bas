@@ -136,10 +136,15 @@ SetPlayerSprites
           if temp6 then goto Player1BWMode
           
           rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[0] > 0 then COLUP0 = ColIndigo(6) : goto Player1ColorDone 
-          rem Hurt: dimmer indigo
-          let temp1 = playerChar[0] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player1ColorDone 
+          if playerRecoveryFrames[0] > 0 then goto Player1HurtColor
           rem Normal: solid player color
+          let temp1 = playerChar[0]
+          let temp2 = 0
+          gosub bank10 LoadCharacterColors
+          goto Player1ColorDone
+Player1HurtColor
+          rem Hurt: dimmer indigo
+          COLUP0 = ColIndigo(6)
           
 Player1BWMode
           rem B&W mode: Always use bright indigo (Player 1 color), hurt state looks the same
@@ -159,10 +164,15 @@ Player1ColorDone
           if temp6 then goto Player2BWMode
           
           rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[1] > 0 then COLUP1 = ColRed(6) : goto Player2ColorDone 
-          rem Hurt: dimmer red
-          let temp1 = playerChar[1] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player2ColorDone 
+          if playerRecoveryFrames[1] > 0 then goto Player2HurtColor
           rem Normal: solid player color
+          let temp1 = playerChar[1]
+          let temp2 = 0
+          gosub bank10 LoadCharacterColors
+          goto Player2ColorDone
+Player2HurtColor
+          rem Hurt: dimmer red
+          COLUP1 = ColRed(6)
           
 Player2BWMode
           rem B&W mode: Always use bright red (Player 2 color), hurt state looks the same
@@ -183,7 +193,12 @@ Player2ColorDone
           rem No color inheritance issues with proper multisprite implementation
           
           rem Set playfield color based on B&W mode
-          if temp6 then COLUPF = ColGrey(14) : goto Player3Color 
+          if temp6 then goto Player3BWColor
+          goto Player3ColorMode
+Player3BWColor
+          COLUPF = ColGrey(14)
+          goto Player3ColorDone
+Player3ColorMode 
           rem B&W mode: playfield is white
           rem Color mode: playfield has color-per-row (handled elsewhere)
           

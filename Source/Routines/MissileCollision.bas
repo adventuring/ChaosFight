@@ -105,7 +105,8 @@ CheckVisibleMissileCollision
           if temp2 + temp6 <= playerX[0] then goto SkipSecondPlayer0
           if temp3 >= playerY[0] + PlayerSpriteHeight then goto SkipSecondPlayer0
           if temp3 + temp5 <= playerY[0] then goto SkipSecondPlayer0
-          temp4 = 0 : return
+          temp4 = 0
+          return
 SkipSecondPlayer0
           
           rem Check Player 2 (index 1)
@@ -115,7 +116,8 @@ SkipSecondPlayer0
           if temp2 + temp6 <= playerX[1] then goto SkipSecondPlayer1
           if temp3 >= playerY[1] + PlayerSpriteHeight then goto SkipSecondPlayer1
           if temp3 + temp5 <= playerY[1] then goto SkipSecondPlayer1
-          temp4 = 1 : return
+          temp4 = 1
+          return
 SkipSecondPlayer1
           
           rem Check Player 3 (index 2)
@@ -125,7 +127,8 @@ SkipSecondPlayer1
           if temp2 + temp6 <= playerX[2] then goto SkipSecondPlayer2
           if temp3 >= playerY[2] + PlayerSpriteHeight then goto SkipSecondPlayer2
           if temp3 + temp5 <= playerY[2] then goto SkipSecondPlayer2
-          temp4 = 2 : return
+          temp4 = 2
+          return
 SkipSecondPlayer2
           
           rem Check Player 4 (index 3)
@@ -135,7 +138,8 @@ SkipSecondPlayer2
           if temp2 + temp6 <= playerX[3] then goto SkipSecondPlayer3
           if temp3 >= playerY[3] + PlayerSpriteHeight then goto SkipSecondPlayer3
           if temp3 + temp5 <= playerY[3] then goto SkipSecondPlayer3
-          temp4 = 3 : return
+          temp4 = 3
+          return
 SkipSecondPlayer3
           
           return
@@ -163,8 +167,11 @@ CheckAOECollision
           
           rem Normal character: Check only facing direction
           temp6 = playerState[temp1] & 1
-          if temp6 = 0 then gosub CheckAOEDirection_Left : return
+          if temp6 = 0 then goto CheckAOELeftDirection
           gosub CheckAOEDirection_Right
+          return
+CheckAOELeftDirection
+          gosub CheckAOEDirection_Left
           return
           
 CheckBernieAOE
@@ -224,7 +231,8 @@ CheckAOEDirection_Right
           if temp2 + temp6 <= playerX[0] then goto SkipAOEPlayer0
           if temp3 >= playerY[0] + 16 then goto SkipAOEPlayer0
           if temp3 + temp5 <= playerY[0] then goto SkipAOEPlayer0
-          temp4 = 0 : return
+          temp4 = 0
+          return
 SkipAOEPlayer0
           
           rem Check Player 2
@@ -234,7 +242,8 @@ SkipAOEPlayer0
           if temp2 + temp6 <= playerX[1] then goto SkipAOEPlayer1
           if temp3 >= playerY[1] + 16 then goto SkipAOEPlayer1
           if temp3 + temp5 <= playerY[1] then goto SkipAOEPlayer1
-          temp4 = 1 : return
+          temp4 = 1
+          return
 SkipAOEPlayer1
           
           rem Check Player 3
@@ -244,7 +253,8 @@ SkipAOEPlayer1
           if temp2 + temp6 <= playerX[2] then goto SkipAOEPlayer2
           if temp3 >= playerY[2] + 16 then goto SkipAOEPlayer2
           if temp3 + temp5 <= playerY[2] then goto SkipAOEPlayer2
-          temp4 = 2 : return
+          temp4 = 2
+          return
 SkipAOEPlayer2
           
           rem Check Player 4
@@ -254,7 +264,8 @@ SkipAOEPlayer2
           if temp2 + temp6 <= playerX[3] then goto SkipAOEPlayer3
           if temp3 >= playerY[3] + 16 then goto SkipAOEPlayer3
           if temp3 + temp5 <= playerY[3] then goto SkipAOEPlayer3
-          temp4 = 3 : return
+          temp4 = 3
+          return
 SkipAOEPlayer3
           
           return
@@ -323,7 +334,8 @@ CheckPlayer2
           if temp2 + temp6 <= playerX[1] then goto SkipThirdPlayer1
           if temp3 >= playerY[1] + 16 then goto SkipThirdPlayer1
           if temp3 + temp5 <= playerY[1] then goto SkipThirdPlayer1
-          temp4 = 1 : return
+          temp4 = 1
+          return
 SkipThirdPlayer1
           
           rem Check Player 3
@@ -333,7 +345,8 @@ SkipThirdPlayer1
           if temp2 + temp6 <= playerX[2] then goto SkipThirdPlayer2
           if temp3 >= playerY[2] + 16 then goto SkipThirdPlayer2
           if temp3 + temp5 <= playerY[2] then goto SkipThirdPlayer2
-          temp4 = 2 : return
+          temp4 = 2
+          return
 SkipThirdPlayer2
           
           rem Check Player 4

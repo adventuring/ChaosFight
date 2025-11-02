@@ -274,9 +274,13 @@ HandleHarpySwoopAttack
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
-          if temp6 = 0 then playerMomentumX[temp1] = 252 : goto SetVerticalMomentum
-                    rem Facing right
-                    playerMomentumX[temp1] = 4
+          if temp6 = 0 then goto SetHorizontalMomentumRight
+          rem Facing left: set negative momentum (252 = -4 in signed 8-bit)
+          playerMomentumX[temp1] = 252
+          goto SetVerticalMomentum
+SetHorizontalMomentumRight
+          rem Facing right: set positive momentum
+          playerMomentumX[temp1] = 4
 SetVerticalMomentum
           
           
@@ -294,7 +298,7 @@ SetVerticalMomentum
           playerState[temp1] = temp6
           
           rem Spawn melee attack missile for swoop hit detection
-          gosub bank15 SpawnMissile
+          gosub bank7 SpawnMissile
           
           return
 
@@ -314,12 +318,17 @@ CalculateSafeFallDistance
           temp5 = playerChar[temp1]
           
           rem Check for fall damage immunity
-          if temp5 = 0 then temp2 = 255 : return 
+          if temp5 = 0 then goto SetInfiniteFallDistance
           rem Bernie: infinite
-          if temp5 = 13 then temp2 = 255 : return
+          if temp5 = 13 then goto SetInfiniteFallDistance
           rem Robo Tito: infinite
-          if temp5 = 8 then temp2 = 255 : return 
+          if temp5 = 8 then goto SetInfiniteFallDistance 
           rem Frooty: no falling
+          goto CalculateFallDistanceNormal
+SetInfiniteFallDistance
+          temp2 = 255
+          return
+CalculateFallDistanceNormal
           
           rem Get character weight
           temp1 = temp5 

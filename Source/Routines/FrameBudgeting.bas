@@ -135,8 +135,21 @@ BudgetedCollisionCheck
           if !(controllerStatus & SetQuadtariDetected) then return
           
           rem Check additional pairs based on frame phase
-          if FramePhase = 0 then if selectedChar3 <> 255 then gosub CheckCollisionP1vsP3 : goto SkipFramePhaseChecks
-          if FramePhase = 1 then if selectedChar4 <> 255 then gosub CheckCollisionP1vsP4 : if selectedChar3 <> 255 then gosub CheckCollisionP2vsP3 : goto SkipFramePhaseChecks
+          if FramePhase = 0 then goto CheckPhase0Collisions
+          if FramePhase = 1 then goto CheckPhase1Collisions
+          goto SkipPhase0And1Collisions
+CheckPhase0Collisions
+          if selectedChar3 = 255 then goto SkipFramePhaseChecks
+          gosub CheckCollisionP1vsP3
+          goto SkipFramePhaseChecks
+CheckPhase1Collisions
+          if selectedChar4 = 255 then goto CheckPhase1P3
+          gosub CheckCollisionP1vsP4
+CheckPhase1P3
+          if selectedChar3 = 255 then goto SkipFramePhaseChecks
+          gosub CheckCollisionP2vsP3
+          goto SkipFramePhaseChecks
+SkipPhase0And1Collisions
           if FramePhase <> 2 then goto SkipPhase2Collisions
           if selectedChar4 <> 255 then gosub CheckCollisionP2vsP4
           if selectedChar3 <> 255 && selectedChar4 <> 255 then gosub CheckCollisionP3vsP4
@@ -167,8 +180,9 @@ SkipPlayerSeparation
 
 CheckCollisionP1vsP3
           if playerX[0] >= playerX[2] then temp2 = playerX[0] - playerX[2] else temp2 = playerX[2] - playerX[0]
-          if temp2 < 16 then gosub CheckCollisionP1vsP3Aux : return
-          
+          if temp2 < 16 then goto CheckCollisionP1vsP3Aux
+          return
+
 CheckCollisionP1vsP3Aux
           if playerX[0] < playerX[2] then playerX[0] = playerX[0] - 1
           if playerX[0] < playerX[2] then playerX[2] = playerX[2] + 1
@@ -179,8 +193,9 @@ CheckCollisionP1vsP3Aux
 
 CheckCollisionP1vsP4
           if playerX[0] >= playerX[3] then temp2 = playerX[0] - playerX[3] else temp2 = playerX[3] - playerX[0]
-          if temp2 < 16 then gosub CheckCollisionP1vsP4Aux : return
-          
+          if temp2 < 16 then goto CheckCollisionP1vsP4Aux
+          return
+
 CheckCollisionP1vsP4Aux
           if playerX[0] < playerX[3] then playerX[0] = playerX[0] - 1
           if playerX[0] < playerX[3] then playerX[3] = playerX[3] + 1
@@ -191,8 +206,9 @@ CheckCollisionP1vsP4Aux
 
 CheckCollisionP2vsP3
           if playerX[1] >= playerX[2] then temp2 = playerX[1] - playerX[2] else temp2 = playerX[2] - playerX[1]
-          if temp2 < 16 then gosub CheckCollisionP2vsP3Aux : return
-          
+          if temp2 < 16 then goto CheckCollisionP2vsP3Aux
+          return
+
 CheckCollisionP2vsP3Aux
           if playerX[1] < playerX[2] then playerX[1] = playerX[1] - 1
           if playerX[1] < playerX[2] then playerX[2] = playerX[2] + 1
@@ -203,8 +219,9 @@ CheckCollisionP2vsP3Aux
 
 CheckCollisionP2vsP4
           if playerX[1] >= playerX[3] then temp2 = playerX[1] - playerX[3] else temp2 = playerX[3] - playerX[1]
-          if temp2 < 16 then gosub CheckCollisionP2vsP4Aux : return
-          
+          if temp2 < 16 then goto CheckCollisionP2vsP4Aux
+          return
+
 CheckCollisionP2vsP4Aux
           if playerX[1] < playerX[3] then playerX[1] = playerX[1] - 1
           if playerX[1] < playerX[3] then playerX[3] = playerX[3] + 1
@@ -215,8 +232,9 @@ CheckCollisionP2vsP4Aux
 
 CheckCollisionP3vsP4
           if playerX[2] >= playerX[3] then temp2 = playerX[2] - playerX[3] else temp2 = playerX[3] - playerX[2]
-          if temp2 < 16 then gosub CheckCollisionP3vsP4Aux : return
-          
+          if temp2 < 16 then goto CheckCollisionP3vsP4Aux
+          return
+
 CheckCollisionP3vsP4Aux
           if playerX[2] < playerX[3] then playerX[2] = playerX[2] - 1
           if playerX[2] < playerX[3] then playerX[3] = playerX[3] + 1
@@ -254,7 +272,7 @@ BudgetedMissileCollisionCheck
           if temp1 = 2 then temp6 = 4
           if temp1 = 3 then temp6 = 8
           temp4 = missileActive & temp6
-          if temp4 then gosub bank15 CheckAllMissileCollisions
+          if temp4 then gosub bank7 CheckAllMissileCollisions
           return
           
 BudgetedMissileCollisionCheck2P
@@ -267,6 +285,6 @@ BudgetedMissileCollisionCheck2P
           if temp1 = 2 then temp6 = 4
           if temp1 = 3 then temp6 = 8
           temp4 = missileActive & temp6
-          if temp4 then gosub bank15 CheckAllMissileCollisions
+          if temp4 then gosub bank7 CheckAllMissileCollisions
           return
 

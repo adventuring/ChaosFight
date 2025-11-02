@@ -123,29 +123,50 @@
           dim colorBWPrevious_R = r008
           rem Previous state of Color/B&W switch (for detecting changes) - SCRAM since low frequency use
           
-          rem Music System Variables (SCRAM - used in Admin Mode for publisher/author/title/winner screens)
-          dim SongPointerL = w020
-          dim SongPointerH = w021
-          rem Song data pointer low/high bytes (in Songs bank)
-          dim MusicVoice0PointerL = w022
-          dim MusicVoice0PointerH = w023
-          rem Voice 0 stream position low/high bytes (high byte = 0 means inactive)
-          dim MusicVoice1PointerL = w024
-          dim MusicVoice1PointerH = w025
-          rem Voice 1 stream position low/high bytes (high byte = 0 means inactive)
-          dim MusicVoice0Frame = w026
-          dim MusicVoice1Frame = w027
-          rem Frame counters for current notes on each voice
+          rem =================================================================
+          rem MUSIC/SOUND POINTERS - Zero Page Memory (standard RAM)
+          rem =================================================================
+          rem CRITICAL: 16-bit pointers MUST be in zero page for indirect addressing
+          rem Music and Sound never run simultaneously, so pointers can be shared
+          rem Used in Admin Mode (music) and Game Mode (sound effects)
+          rem =================================================================
           
-          rem Sound Effect System Variables (SCRAM - used in Game Mode)
-          dim SoundPointerL = w028
-          dim SoundPointerH = w029
-          rem Sound data pointer low/high bytes (in Sounds bank)
-          dim SoundEffectPointerL = w030
-          dim SoundEffectPointerH = w031
-          rem Sound effect stream position low/high bytes (high byte = 0 means inactive)
-          dim SoundEffectFrame = w032
-          rem Frame counter for current sound effect note
+          rem Music System Pointers (Admin Mode: gameMode 0-2, 7)
+          rem NOTE: Music only runs in Admin Mode, so safe to use var39-var44
+          dim SongPointerL = var39
+          dim SongPointerH = var40
+          rem Song data pointer low/high bytes (in Songs bank) - zero page
+          dim MusicVoice0PointerL = var41
+          dim MusicVoice0PointerH = var42
+          rem Voice 0 stream position low/high bytes (high byte = 0 means inactive) - zero page
+          dim MusicVoice1PointerL = var43
+          dim MusicVoice1PointerH = var44
+          rem Voice 1 stream position low/high bytes (high byte = 0 means inactive) - zero page
+          
+          rem Sound Effect System Pointers (Game Mode: gameMode 6)
+          rem NOTE: Must avoid var40 (currentAnimationSeq) and var44 (playerAttackCooldown[0])
+          rem Uses var39, var41 (shared with Music), y and z (letter vars - redimmed, available in Game Mode)
+          dim SoundPointerL = var39
+          dim SoundPointerH = y
+          rem Sound data pointer low/high bytes (in Sounds bank) - zero page (y is available in Game Mode)
+          dim SoundEffectPointerL = var41
+          dim SoundEffectPointerH = z
+          rem Sound effect stream position low/high bytes (high byte = 0 means inactive) - zero page (z is available in Game Mode)
+          
+          rem =================================================================
+          rem MUSIC/SOUND FRAME COUNTERS - SCRAM (not pointers, can be in SCRAM)
+          rem =================================================================
+          rem Frame counters are simple counters, not pointers, so SCRAM is acceptable
+          rem =================================================================
+          
+          rem Music System Frame Counters (SCRAM - used in Admin Mode)
+          dim MusicVoice0Frame = w020
+          dim MusicVoice1Frame = w021
+          rem Frame counters for current notes on each voice (SCRAM acceptable)
+          
+          rem Sound Effect System Frame Counter (SCRAM - used in Game Mode)
+          dim SoundEffectFrame = w022
+          rem Frame counter for current sound effect note (SCRAM acceptable)
 
           rem =================================================================
           rem ADMIN MODE VARIABLES (may be re-used in Game Mode for other purposes)

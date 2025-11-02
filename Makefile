@@ -81,7 +81,7 @@ game: \
 
 doc: Dist/$(GAME).pdf Dist/$(GAME).html
 
-# Character sprite sheet names (32 characters: 16 main + 15 future + Meth Hound)
+# Character sprite sheet names (32 characters: 16 main + 16 future)
 CHARACTER_NAMES = \
 	Bernie Curler Dragonet ZoeRyen FatTony Megax Harpy KnightGuy \
 	Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo Shamone \
@@ -124,7 +124,7 @@ music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated
 
 %.flac: %.mscz
 	if [ -x ~/Software/MuseScore*.AppImage ]; then \
-		~/Software/MuseScore*.AppImage --export-to $@ $<; \
+		
 	elif which mscore; then \
 		mscore --export-to $@ $<; \
 	else \
@@ -244,9 +244,8 @@ Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas characters bitmaps
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
 
-Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
-    Source/Generated/$(GAME).NTSC.bas \
-	$(ALL_SOURCES) \
+# Shared dependencies for all TV standards
+BUILD_DEPS = $(ALL_SOURCES) \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas \
 	Source/Banks/Banks.bas \
@@ -272,83 +271,58 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	Source/Routines/VisualEffects.bas \
 	Source/Generated/Numbers.bas \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
-	mkdir -p Dist Source/Generated Object
-	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.s
-	cd Object && ../bin/postprocess -i $(POSTINC) < bB.s | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).NTSC.s
-	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
 
-Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
-    Source/Generated/$(GAME).PAL.bas \
-	$(ALL_SOURCES) \
-	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	Source/Banks/Bank1.bas \
-	Source/Banks/Banks.bas \
-	Source/Common/Colors.h \
-	Source/Common/Constants.bas \
-	Source/Common/Macros.bas \
-	Source/Common/Preamble.bas \
-	Source/Common/Variables.bas \
-	Source/Data/SpecialSprites.bas \
-	Source/Routines/CharacterArt.s \
-	Source/Routines/ColdStart.bas \
-	Source/Routines/ControllerDetection.bas \
-	Source/Routines/FallingAnimation.bas \
-	Source/Routines/GameLoopInit.bas \
-	Source/Routines/GameLoopMain.bas \
-	Source/Routines/HealthBarSystem.bas \
-	Source/Routines/LevelSelect.bas \
-	Source/Routines/MainLoop.bas \
-	Source/Routines/MusicSystem.bas \
-	Source/Routines/ScreenLayout.bas \
-	Source/Routines/SoundSystem.bas \
-	Source/Routines/SpriteLoader.bas \
-	Source/Routines/VisualEffects.bas \
-	Source/Generated/Numbers.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
-	mkdir -p Dist Source/Generated Object
-	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.asm
-	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).PAL.s
-	bin/dasm Source/Generated/$(GAME).PAL.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
-	rm -f Source/Generated/$(GAME).PAL.preprocessed.bas
-	rm -f Object/bB.asm Object/includes.bB
+# Step 1: Preprocess .bas → .preprocessed.bas
+Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)
+	mkdir -p Source/Generated
+	bin/preprocess < $< > $@
 
-Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
-    Source/Generated/$(GAME).SECAM.bas \
-	$(ALL_SOURCES) \
-	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	Source/Banks/Bank1.bas \
-	Source/Banks/Banks.bas \
-	Source/Common/AssemblyConfig.s \
-	Source/Common/AssemblyConfig.SECAM.s \
-	Source/Common/Colors.h \
-	Source/Common/Constants.bas \
-	Source/Common/Macros.bas \
-	Source/Common/Preamble.bas \
-	Source/Common/Variables.bas \
-	Source/Data/SpecialSprites.bas \
-	Source/Routines/CharacterArt.s \
-	Source/Routines/ColdStart.bas \
-	Source/Routines/ControllerDetection.bas \
-	Source/Routines/FallingAnimation.bas \
-	Source/Routines/GameLoopInit.bas \
-	Source/Routines/GameLoopMain.bas \
-	Source/Routines/HealthBarSystem.bas \
-	Source/Routines/LevelSelect.bas \
-	Source/Routines/MainLoop.bas \
-	Source/Routines/MusicSystem.bas \
-	Source/Routines/ScreenLayout.bas \
-	Source/Routines/SoundSystem.bas \
-	Source/Routines/SpriteLoader.bas \
-	Source/Routines/VisualEffects.bas \
-	Source/Generated/Numbers.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
-	mkdir -p Dist Source/Generated Object
-	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
-	cd Object && ../bin/postprocess -i $(POSTINC) < bB.SECAM.s | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).SECAM.s
-	bin/dasm Source/Generated/$(GAME).SECAM.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
+Source/Generated/$(GAME).PAL.preprocessed.bas: Source/Generated/$(GAME).PAL.bas $(BUILD_DEPS)
+	mkdir -p Source/Generated
+	bin/preprocess < $< > $@
+
+Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.bas $(BUILD_DEPS) Source/Common/AssemblyConfig.SECAM.s
+	mkdir -p Source/Generated
+	bin/preprocess < $< > $@
+
+# Step 2: Compile .preprocessed.bas → bB.ARCH.s
+Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Source/Common/variableRedefs.h
+	mkdir -p Object
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../$< > $@
+
+Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Source/Common/variableRedefs.h
+	mkdir -p Object
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../$< > $@
+
+Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Source/Common/variableRedefs.h
+	mkdir -p Object
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../$< > $@
+
+# Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
+Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s
+	mkdir -p Source/Generated
+	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
+
+Source/Generated/$(GAME).PAL.s: Object/bB.PAL.s
+	mkdir -p Source/Generated
+	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
+
+Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
+	mkdir -p Source/Generated
+	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
+
+# Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
+Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: Source/Generated/$(GAME).NTSC.s
+	mkdir -p Dist
+	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
+
+Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: Source/Generated/$(GAME).PAL.s
+	mkdir -p Dist
+	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
+
+Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: Source/Generated/$(GAME).SECAM.s
+	mkdir -p Dist
+	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
 
 # Run emulator
 emu: $(ROM)
@@ -369,9 +343,9 @@ clean:
 gimp-export:
 	@for d in ~/.config/GIMP/*/scripts/; do \
 		if [ -d "$$d" ]; then \
-			echo "Installing xcf-export.scm to $$d"; \
-			cp -f Tools/xcf-export.scm "$$d"; \
-		fi; \
+			cp Tools/xcf-export.scm "$$d"; \
+			echo "Installed xcf-export.scm to $$d"; \
+		fi \
 	done
 
 # Help target
@@ -410,42 +384,19 @@ Dist/$(GAME).SECAM.pro: Source/$(GAME).pro Dist/$(GAME).SECAM.a26
 	sed $< -e s/@@TV@@/SECAM/g \
 		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).SECAM.a26 | cut -d\  -f1)/g > $@
 
-# Generate PDF manual from Texinfo source
-Dist/$(GAME).pdf: Manual/$(GAME).texi
-	@echo "Building PDF manual..."
-	mkdir -p Dist Object
-	cd Object && texi2pdf ../Manual/$(GAME).texi
-	cp Object/$(GAME).pdf Dist/$(GAME).pdf
+# Documentation generation
+Dist/$(GAME).pdf: Manual/ChaosFight.texi
+	makeinfo --pdf --output=$@ $<
 
-# Generate HTML manual from Texinfo source
-Dist/$(GAME).html: Manual/$(GAME).texi
-	@echo "Building HTML manual..."
-	mkdir -p Dist Object
-	cd Object && makeinfo --html --no-split --output=../Dist/$(GAME).html ../Manual/$(GAME).texi
+Dist/$(GAME).html: Manual/ChaosFight.texi
+	makeinfo --html --output=$@ $<
 
-# Back-compatibility aliases (optional)
-Dist/$(GAME)-Manual.pdf: Dist/$(GAME).pdf
-	cp $< $@
-
-Dist/$(GAME)-Manual.html: Dist/$(GAME).html
-	cp $< $@
-
-# Ready system - setup development environment
 nowready: $(READYFILE)
 
 $(READYFILE):
 	$(MAKE) ready
 
 ready: gimp-export bin/skyline-tool
-	@echo "Setting up ChaosFight development environment..."
-	# Install required system packages (Fedora-based)
-	@echo "Checking system dependencies..."
-	@which sbcl > /dev/null || echo "MISSING: sbcl (install with: sudo dnf install sbcl)"
-	@which gimp > /dev/null || echo "MISSING: gimp (install with: sudo dnf install gimp)"
-	@which texi2pdf > /dev/null || echo "MISSING: texlive (install with: sudo dnf install texlive texinfo)"
-	@which makeinfo > /dev/null || echo "MISSING: texinfo (install with: sudo dnf install texinfo)"
-	# Initialize git submodules for SkylineTool
-	git submodule update --init --recursive
 	# Mark ready
 	@echo "Development environment ready for ChaosFight build"
 	touch $(READYFILE)

@@ -350,7 +350,7 @@
           rem Stored in w000-w003 (r000-r003 read ports) for players 1-4
           rem Using SCRAM allows all 4 missile Y positions
           dim missileY = w000
-          rem Game Mode: Missile Y position array (4 bytes) - SCRAM w000-w003 / r000-r003
+          rem Game Mode: Missile Y position array (4 bytes) - SCRAM w000-w003
           rem NOTE: batariBASIC uses array syntax - missileY[0] = w000, missileY[1] = w001, etc.
           
           rem Game Mode: Missile active flags - bit-packed into single byte (standard RAM)

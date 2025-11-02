@@ -349,7 +349,7 @@ Starting health: 75% instead of 100%
 
 @page
 
-@section{Guarding}
+@section Guarding
 
 Enter guard stance. While guarding:
 @itemize @bullet
@@ -381,7 +381,7 @@ Each character has unique properties affecting gameplay:
 
 @include Dragonet.texi
 
-@include ZoeRyen.texi
+@include EXOPilot.texi
 
 @include FatTony.texi
 
@@ -405,7 +405,7 @@ Each character has unique properties affecting gameplay:
 
 @include Ursulo.texi
 
-@include Shamone.texi
+@include VegDog.texi
 
 @page
 

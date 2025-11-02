@@ -181,12 +181,17 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 
 # Convert XCF to PNG for sprites (characters and special sprites)
 # Make will only regenerate if XCF is newer than PNG (based on file timestamps)
+# Explicit dependency ensures proper timestamp comparison
 # Touch PNG after generation to ensure it's newer than XCF (handles filesystem precision issues)
-%.png: %.xcf
-	@echo "Converting $< to $@..."
-	@mkdir -p Source/Art
-	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@touch "$@"
+Source/Art/%.png: Source/Art/%.xcf
+	@if [ ! -f "$@" ] || [ "$<" -nt "$@" ]; then \
+		echo "Converting $< to $@..."; \
+		mkdir -p Source/Art; \
+		$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'; \
+		touch "$@"; \
+	else \
+		echo "$@ is up-to-date, skipping conversion."; \
+	fi
 
 # Character sprites are compiled using compile-chaos-character
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
@@ -229,9 +234,8 @@ Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png bin/skyline-tool
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
-# Convert XCF to PNG for maps
-Source/Art/Map-%.png: Source/Art/Map-%.xcf
-	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+# Maps are now defined as playfield literals in code, not PNG files
+# Removed Map-%.png conversion rule - maps no longer use XCF→PNG conversion
 
 # Convert PNG font to batariBASIC data
 Source/Generated/Font.bas: Source/Art/Font.png

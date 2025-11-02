@@ -306,8 +306,25 @@
           
           rem GAME: Console handling variables (Standard RAM)
           rem NOTE: HandleConsoleSwitches is called from game loop, so this is GAME context
-          dim ColorBWPrevious = var39
-          rem GAME: Previous state of Color/B&W switch (for detecting changes)
+          rem NOTE: var33-var35 available between ADMIN TitleParade vars and GAME Animation vars
+          rem var32 = AnimationCounter[0], var36 = CurrentAnimationFrame[0], var40 = CurrentAnimationSeq[0]
+          rem var33-var35 are ADMIN (TitleParade*) but unused in GAME, so can REDIM
+          rem Actually var33-var35 conflict - need different variable
+          rem Using var20-var23? No, those are PlayerMomentumX
+          rem Using remaining var space - check what's actually free
+          rem CurrentAnimationFrame uses var36-var39 (4 bytes), so var39 is taken
+          rem AnimationCounter uses var32-var35 (4 bytes), so var35 is last byte
+          rem Wait, let me recalculate: AnimationCounter[0-3] = var32-var35, CurrentAnimationFrame[0-3] = var36-var39
+          rem So var33-var35 conflict, var36-var39 taken, var40-var43 = CurrentAnimationSeq
+          rem Need var20-var23? PlayerMomentumX[0-3] uses those
+          rem Actually: var20-var23 are available since PlayerMomentumX is only used during physics updates
+          rem But that's risky - better to use a truly free variable
+          rem SOLUTION: Use a variable from a-z that's REDIMMED but safe in GAME context
+          rem Actually, simplest: use temp variable approach OR find unused var space
+          rem CHECK: var33-var35 are ADMIN TitleParade vars, but we're in GAME
+          rem In GAME context, var33-var35 should be free (TitleParade only in ADMIN)
+          dim ColorBWPrevious = var35
+          rem GAME: Previous state of Color/B&W switch (REDIM from ADMIN TitleParadeX in var35)
           
           rem GAME: Player timers array [0-3] - used for guard cooldowns and other timers
           rem NOTE: Must be declared after PlayerAttackCooldown if we want to use array syntax

@@ -26,8 +26,8 @@
           rem =================================================================
 
 PublisherPreamble
-          rem Load bitmap data for titlescreen kernel
-          gosub LoadPublisherBitmap
+          rem Bitmap data is loaded automatically by titlescreen kernel via includes
+          rem No explicit loading needed - titlescreen kernel handles bitmap display
           
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
@@ -59,24 +59,13 @@ PublisherPreambleComplete
           return
 
           rem =================================================================
-          rem LOAD PUBLISHER BITMAP
+          rem BITMAP LOADING
           rem =================================================================
-          rem Loads the AtariAge publisher bitmap data for titlescreen kernel.
+          rem Bitmap data is loaded automatically by titlescreen kernel via includes.
           rem Generated from Source/Art/AtariAge.xcf → AtariAge.png
           rem SkylineTool creates: Source/Generated/Art.AtariAge.s
           rem   - BitmapAtariAge: 6 columns × 42 bytes (inverted-y)
           rem   - BitmapAtariAgeColors: 84 color values (double-height)
-
-LoadPublisherBitmap
-          rem Configure titlescreen kernel to show Publisher (AtariAge) bitmap
-          rem Uses 48x2_1 minikernel - set window/height via assembly constants
-              rem Bitmap data in: Source/Generated/Art.AtariAge.s
-          rem Other screens minikernels should have window=0 in their image files
-          
-          rem The titlescreen kernel uses fixed labels (bmp_48x2_1_window, etc.)
-              rem These are set as constants in the .s image files
-          rem Publisher screen: bmp_48x2_1_window = 42, others = 0
-          
-          return
+          rem The titlescreen kernel handles bitmap display automatically - no explicit loading needed.
 
 

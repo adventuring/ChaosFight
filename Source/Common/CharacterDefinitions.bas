@@ -163,9 +163,12 @@ end
           rem Values stored as packed bytes per character
 
           rem  Bernie, Curler, Dragonet, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
-          rem  Note: Bit 0=hit bg, Bit 1=hit player, Bit 2=gravity, Bit 3=bounce
+          rem  Note: Bit 0=hit bg (MissileFlagHitBackground), Bit 1=hit player (MissileFlagHitPlayer), 
+          rem       Bit 2=gravity (MissileFlagGravity), Bit 3=bounce (MissileFlagBounce)
+          rem  Values use enum constants for bitfield encoding (see Enums.bas)
           data CharacterMissileFlags
               %00000000, %00000011, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
+          rem  0,      MissileFlagHitBoth, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0
           end
 
           rem =================================================================
@@ -311,8 +314,10 @@ end
           rem Get missile flags
           rem Input: character index (in temp1)
           rem Output: flags (in temp4)
-          rem Note: Bit flags: 0=hit bg, 1=hit player, 2=gravity, 3=bounce
+          rem Note: Bit flags: MissileFlagHitBackground (bit 0), MissileFlagHitPlayer (bit 1),
+          rem       MissileFlagGravity (bit 2), MissileFlagBounce (bit 3)
           rem Note: Uses array access since data is immutable
+          rem Use constants from Enums.bas for bitfield checking: temp5 & MissileFlagGravity
           GetMissileFlagsSub
               temp4 = CharacterMissileFlags(temp1)
               return

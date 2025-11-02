@@ -144,7 +144,7 @@ FacingSet
           rem Store flags for later use
           
           rem Apply gravity if flag is set
-          let if temp5 & 4 then temp3  = temp3 + GravityPerFrame
+          let if temp5 & MissileFlagGravity then temp3 = temp3 + GravityPerFrame
           rem Add gravity (1 pixel/frame down)
           
           rem Update missile position
@@ -157,10 +157,15 @@ FacingSet
           rem Off-screen, deactivate
           
           rem Check collision with playfield if flag is set
-          if !(temp5 & 1) then PlayfieldCollisionDone
+          if !(temp5 & MissileFlagHitBackground) then PlayfieldCollisionDone
           gosub bank7 MissileCollPF
           if !temp4 then PlayfieldCollisionDone
-          let if temp5 & 8 then temp7  = missileVelX[temp1] : temp7 = $FF - temp7 + 1 : gosub HalfTemp7 : missileVelX[temp1] = temp7 : gosub DeactivateMissile : return
+          let if temp5 & MissileFlagBounce then temp7 = missileVelX[temp1]
+          let if temp5 & MissileFlagBounce then temp7 = $FF - temp7 + 1
+          let if temp5 & MissileFlagBounce then gosub HalfTemp7
+          let if temp5 & MissileFlagBounce then missileVelX[temp1] = temp7
+          let if temp5 & MissileFlagBounce then gosub DeactivateMissile
+          let if temp5 & MissileFlagBounce then return
           gosub DeactivateMissile : return
 PlayfieldCollisionDone
           

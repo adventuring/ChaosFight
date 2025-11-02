@@ -70,3 +70,25 @@
           
           const AnimAttackRecovery = 15
           rem Attack recovery
+
+          rem =================================================================
+          rem MISSILE FLAGS BITFIELD ENCODING
+          rem =================================================================
+          rem Bit flags for missile behavior (CharacterMissileFlags)
+          rem Used for checking missile interaction properties
+          
+          const MissileFlagHitBackground = 1
+          rem Bit 0: Hit background (1=hit and disappear, 0=pass through)
+          
+          const MissileFlagHitPlayer = 2
+          rem Bit 1: Hit player (1=hit and disappear, 0=pass through)
+          
+          const MissileFlagGravity = 4
+          rem Bit 2: Apply gravity (1=affected by gravity, 0=no gravity)
+          
+          const MissileFlagBounce = 8
+          rem Bit 3: Bounce off walls (1=bounce, 0=stop/hit)
+          
+          rem Combined flags for common combinations
+          const MissileFlagHitBoth = 3
+          rem Bits 0-1: Hit both background and players (%00000011)

@@ -271,9 +271,6 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
-
-Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas bin/preprocess
-	bin/preprocess < $< > $@
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
 	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).NTSC.s
 	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26

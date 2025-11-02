@@ -3,11 +3,11 @@
 
 BeginFallingAnimation
           let fallFrame = 0
-          fallSpeed = 2
-          fallComplete = 0
-          activePlayers = 2
+          let fallSpeed  = 2
+          let fallComplete  = 0
+          let activePlayers  = 2
 
-          COLUBK = ColGray(0)
+          let COLUBK  = ColGray(0)
 
           return
 

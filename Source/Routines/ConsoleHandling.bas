@@ -27,7 +27,8 @@ HandleConsoleSwitches
           if !temp1 then goto SkipPlayer1Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if gameState = 0 then gameState = 1 : goto Player1PauseDone
+          if gameState = 0 then gameState = 1
+          if gameState = 0 then goto Player1PauseDone
           gameState = 0
 Player1PauseDone
           rem Debounce - wait for button release
@@ -42,7 +43,8 @@ SkipPlayer1Pause
           if !temp1 then goto SkipPlayer2Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if gameState = 0 then gameState = 1 : goto Player2PauseDone
+          if gameState = 0 then gameState = 1
+          if gameState = 0 then goto Player2PauseDone
           gameState = 0
 Player2PauseDone
           rem Debounce - wait for button release

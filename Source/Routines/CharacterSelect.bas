@@ -40,14 +40,16 @@ SelScreenLoop
           goto SelSkipP0Left
 
 SelChkP0Left
-          if playerChar[0] > MaxCharacter then playerChar[0] = MaxCharacter : playerLocked[0] = 0
+          if playerChar[0] > MaxCharacter then playerChar[0] = MaxCharacter
+          if playerChar[0] > MaxCharacter then playerLocked[0] = 0
           
 SelSkipP0Left
           let if joy0right then playerChar[0] = playerChar[0] + 1 : goto SelChkP0Right
           goto SelSkipP0Right
 
 SelChkP0Right
-          if playerChar[0] > MaxCharacter then playerChar[0] = 0 : playerLocked[0] = 0
+          if playerChar[0] > MaxCharacter then playerChar[0] = 0
+          if playerChar[0] > MaxCharacter then playerLocked[0] = 0
           
 SelSkipP0Right
           let if joy0up then playerLocked[0] = 0
@@ -80,13 +82,15 @@ SelP0Done
           goto SelSkipP1Left
 
 SelChkP1Left
-          if playerChar[1] > MaxCharacter then playerChar[1] = MaxCharacter : playerLocked[1] = 0
+          if playerChar[1] > MaxCharacter then playerChar[1] = MaxCharacter
+          if playerChar[1] > MaxCharacter then playerLocked[1] = 0
 SelSkipP1Left
           let if joy1right then playerChar[1] = playerChar[1] + 1 : goto SelChkP1Right
           goto SelSkipP1Right
 
 SelChkP1Right
-          if playerChar[1] > MaxCharacter then playerChar[1] = 0 : playerLocked[1] = 0
+          if playerChar[1] > MaxCharacter then playerChar[1] = 0
+          if playerChar[1] > MaxCharacter then playerLocked[1] = 0
 SelSkipP1Right
           let if joy1up then playerLocked[1] = 0
           rem Unlock by moving up
@@ -128,14 +132,16 @@ SelHandleP2
           goto SelSkipP2Left
 
 SelChkP2Left
-          if playerChar[2] > MaxCharacter then playerChar[2] = MaxCharacter : playerLocked[2] = 0
+          if playerChar[2] > MaxCharacter then playerChar[2] = MaxCharacter
+          if playerChar[2] > MaxCharacter then playerLocked[2] = 0
 SelSkipP2Left
           let if joy0right then playerChar[2] = playerChar[2] + 1 : goto SelChkP2Right
 
           goto SelSkipP2Right
 
 SelChkP2Right
-          if playerChar[2] > MaxCharacter then playerChar[2] = 0 : playerLocked[2] = 0
+          if playerChar[2] > MaxCharacter then playerChar[2] = 0
+          if playerChar[2] > MaxCharacter then playerLocked[2] = 0
 SelSkipP2Right
           let if joy0up then playerLocked[2] = 0
           rem Unlock by moving up
@@ -170,8 +176,18 @@ SelJoy0Done2
           goto SelSkipP3Alt
 
 SelHandleP3
-          let if joy1left then playerChar[3] = playerChar[3] - 1 : if playerChar[3] > MaxCharacter then playerChar[3] = MaxCharacter : playerLocked[3] = 0
-          let if joy1right then playerChar[3] = playerChar[3] + 1 : if playerChar[3] > MaxCharacter then playerChar[3] = 0 : playerLocked[3] = 0
+          let if joy1left then playerChar[3] = playerChar[3] - 1 : goto SelCheckP3Left
+          goto SelSkipP3Left
+SelCheckP3Left
+          if playerChar[3] > MaxCharacter then playerChar[3] = MaxCharacter
+          if playerChar[3] > MaxCharacter then playerLocked[3] = 0
+SelSkipP3Left
+          let if joy1right then playerChar[3] = playerChar[3] + 1 : goto SelCheckP3Right
+          goto SelSkipP3Right
+SelCheckP3Right
+          if playerChar[3] > MaxCharacter then playerChar[3] = 0
+          if playerChar[3] > MaxCharacter then playerLocked[3] = 0
+SelSkipP3Right
           let if joy1up then playerLocked[3] = 0
           rem Unlock by moving up
           if joy1down then goto SelChkJoy1Fire3
@@ -253,11 +269,16 @@ SelSkipQuadChk
           rem Draw character selection screen
 SelDrawScreen
           rem Clear playfield
-          pf0 = 0 : pf1 = 0 : pf2 = 0
-          pf3 = 0 : pf4 = 0 : pf5 = 0
+          pf0 = 0
+          pf1 = 0
+          pf2 = 0
+          pf3 = 0
+          pf4 = 0
+          pf5 = 0
 
           rem Draw Player 1 selection (top left) with number
-          player0x = 56 : player0y = 40 
+          player0x = 56
+          player0y = 40 
           rem Adjusted for 16px left margin (40+16)
           gosub SelDrawSprite
 
@@ -265,7 +286,8 @@ SelDrawScreen
           gosub SelDrawNumber
 
           rem Draw Player 2 selection (top right) with number
-          let player1x = 104 : player1y  = 40
+          let player1x = 104
+          let player1y = 40
           rem Adjusted for 16px margins (120-16)
           gosub SelDrawSprite
 
@@ -276,7 +298,8 @@ SelDrawScreen
           if controllerStatus & SetQuadtariDetected then goto SelDrawP3
           goto SelSkipP3
 SelDrawP3
-          player0x = 56 : player0y = 80 
+          player0x = 56
+          player0y = 80 
           rem Adjusted for 16px left margin
           gosub SelDrawSprite
 
@@ -287,7 +310,8 @@ SelDrawP3
           if controllerStatus & SetQuadtariDetected then goto SelDrawP4
           goto SelSkipP4
 SelDrawP4
-          let player1x = 104 : player1y  = 80
+          let player1x = 104
+          let player1y = 80
           rem Adjusted for 16px margins
           gosub SelDrawSprite
 

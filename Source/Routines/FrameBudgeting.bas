@@ -170,7 +170,9 @@ CheckCollisionP1vsP3
           if temp2 < 16 then gosub CheckCollisionP1vsP3Aux : return
           
 CheckCollisionP1vsP3Aux
-          if playerX[0] < playerX[2] then playerX[0] = playerX[0] - 1 : playerX[2] = playerX[2] + 1 : return
+          if playerX[0] < playerX[2] then playerX[0] = playerX[0] - 1
+          if playerX[0] < playerX[2] then playerX[2] = playerX[2] + 1
+          if playerX[0] < playerX[2] then return
           playerX[0] = playerX[0] + 1
           playerX[2] = playerX[2] - 1
           return
@@ -180,7 +182,9 @@ CheckCollisionP1vsP4
           if temp2 < 16 then gosub CheckCollisionP1vsP4Aux : return
           
 CheckCollisionP1vsP4Aux
-          if playerX[0] < playerX[3] then playerX[0] = playerX[0] - 1 : playerX[3] = playerX[3] + 1 : return
+          if playerX[0] < playerX[3] then playerX[0] = playerX[0] - 1
+          if playerX[0] < playerX[3] then playerX[3] = playerX[3] + 1
+          if playerX[0] < playerX[3] then return
           playerX[0] = playerX[0] + 1
           playerX[3] = playerX[3] - 1
           return
@@ -190,7 +194,9 @@ CheckCollisionP2vsP3
           if temp2 < 16 then gosub CheckCollisionP2vsP3Aux : return
           
 CheckCollisionP2vsP3Aux
-          if playerX[1] < playerX[2] then playerX[1] = playerX[1] - 1 : playerX[2] = playerX[2] + 1 : return
+          if playerX[1] < playerX[2] then playerX[1] = playerX[1] - 1
+          if playerX[1] < playerX[2] then playerX[2] = playerX[2] + 1
+          if playerX[1] < playerX[2] then return
           playerX[1] = playerX[1] + 1
           playerX[2] = playerX[2] - 1
           return
@@ -200,7 +206,9 @@ CheckCollisionP2vsP4
           if temp2 < 16 then gosub CheckCollisionP2vsP4Aux : return
           
 CheckCollisionP2vsP4Aux
-          if playerX[1] < playerX[3] then playerX[1] = playerX[1] - 1 : playerX[3] = playerX[3] + 1 : return
+          if playerX[1] < playerX[3] then playerX[1] = playerX[1] - 1
+          if playerX[1] < playerX[3] then playerX[3] = playerX[3] + 1
+          if playerX[1] < playerX[3] then return
           playerX[1] = playerX[1] + 1
           playerX[3] = playerX[3] - 1
           return
@@ -210,7 +218,9 @@ CheckCollisionP3vsP4
           if temp2 < 16 then gosub CheckCollisionP3vsP4Aux : return
           
 CheckCollisionP3vsP4Aux
-          if playerX[2] < playerX[3] then playerX[2] = playerX[2] - 1 : playerX[3] = playerX[3] + 1 : return
+          if playerX[2] < playerX[3] then playerX[2] = playerX[2] - 1
+          if playerX[2] < playerX[3] then playerX[3] = playerX[3] + 1
+          if playerX[2] < playerX[3] then return
           playerX[2] = playerX[2] + 1
           playerX[3] = playerX[3] - 1
           return

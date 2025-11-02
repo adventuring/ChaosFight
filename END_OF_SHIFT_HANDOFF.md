@@ -86,6 +86,8 @@ Manual HTML generation still fails. Attempted @subsubsection fix creates hierarc
 
 ## GitHub Issues Status
 
+- #341: 🔄 OPEN (NEW: Make Makefile game name use $(GAME)$(GAMEYEAR) with GAMEYEAR=25 - enhancement)
+- #340: 🔄 OPEN (NEW: Rename final output files to include '25' in all names - enhancement)
 - #339: 🔄 OPEN (NEW: Split BuildDate into BuildYear and BuildDay - enhancement)
 - #338: ✅ CLOSED (temp7/8/9 hallucinated variables fixed)
 - #337: 🔄 OPEN (manual HTML generation - fix attempted, needs work)

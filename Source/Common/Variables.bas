@@ -13,10 +13,10 @@
           rem =================================================================
           rem VARIABLE MEMORY LAYOUT - DUAL CONTEXT SYSTEM
           rem =================================================================
-
+          
           rem ChaosFight uses TWO memory contexts that never overlap:
-          rem   1. ADMIN context: Title, preambles, level select (GameModes 0,1,2,5)
-          rem   2. GAME context: Character select, falling animation, gameplay, winner (GameModes 3,4,6,7)
+          rem   1. Admin Mode: Title, preambles, level select (GameModes 0,1,2,5)
+          rem   2. Game Mode: Character select, falling animation, gameplay, winner (GameModes 3,4,6,7)
           rem
           rem CRITICAL KERNEL LIMITATION:
           rem   batariBASIC sets kernel at COMPILE TIME - cannot switch at runtime!
@@ -27,11 +27,11 @@
 
           rem This allows us to REDIM the same memory locations for different
           rem purposes depending on which screen we are on, maximizing our limited RAM!
-
+          
           rem =================================================================
           rem STANDARD RAM (Available everywhere):
           rem   a-z = 26 variables
-
+          
           rem SUPERCHIP RAM AVAILABILITY (SCRAM - accessed via separate read/write ports):
           rem   Standard RAM: var0-var47 ($A4-$D3) = 48 bytes, a-z ($d4-$ed) = 26 bytes = 74 bytes always available
           rem   SuperChip RAM (SCRAM): r000-r127/w000-w127 ($1000-$107F physical RAM) = 128 bytes
@@ -44,27 +44,27 @@
           rem     - Playfield data is stored in ROM (ROMpf=1), NOT in RAM
           rem     - Playfield uses ZERO bytes of SCRAM - ALL 128 bytes are available!
           rem     - Playfield is symmetrical (repeated/reflected), not asymmetrical like standard kernel
-          rem     - This applies to ALL screens (ADMIN and GAME)
+          rem     - This applies to ALL screens (Admin Mode and Game Mode)
           rem
           rem   TOTAL AVAILABLE RAM:
           rem     - Standard RAM: 74 bytes (var0-var47, a-z)
           rem     - SCRAM: 128 bytes (r000-r127/w000-w127) - ALL available!
           rem     - TOTAL: 202 bytes available at all times!
-
-          rem SHARED VARIABLES (needed in both contexts):
+          
+          rem Common Vars (needed in both contexts):
           rem   - PlayerChar[0-3], PlayerLocked[0-3]
           rem   - SelectedChar1-4, SelectedLevel
           rem   - QuadtariDetected
           rem   - temp1-4, qtcontroller, frame (built-ins)
-
+          
           rem REDIMMED VARIABLES (different meaning per context):
-          rem   - var0-var23: Different in ADMIN vs GAME
-          rem   - w-z: Animation vars (ADMIN) or Missile positions (GAME)
-          rem   - i: ReadyCount (ADMIN) or MissilePackedData (GAME)
+          rem   - var0-var23: Different in Admin Mode vs Game Mode
+          rem   - w-z: Animation vars (Admin Mode) or Missile positions (Game Mode)
+          rem   - i: ReadyCount (Admin Mode) or MissilePackedData (Game Mode)
           rem =================================================================
-
+          
           rem =================================================================
-          rem SHARED VARIABLES (Used in BOTH ADMIN and GAME contexts)
+          rem COMMON VARS (Used in BOTH Admin Mode and Game Mode)
           rem =================================================================
           rem These variables maintain their values across context switches
           rem =================================================================
@@ -75,7 +75,7 @@
           rem   frame - frame counter (increments every frame)
           
           rem =================================================================
-          rem SHARED VARIABLES - Standard RAM (a-z)
+          rem COMMON VARS - Standard RAM (a-z)
           rem =================================================================
           
           rem Fall animation variables (used during falling animation screen)
@@ -104,6 +104,10 @@
           dim PauseButtonPrev = r
           rem Previous frame pause button state
           
+          rem Console switch handling (used in both Admin Mode and Game Mode)
+          dim ColorBWPrevious = w001
+          rem Previous state of Color/B&W switch (for detecting changes) - SCRAM since low frequency use
+          
           rem Character selection results (set during ADMIN, read during GAME)
           dim PlayerChar = j    
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
@@ -119,13 +123,13 @@
           dim SelectedLevel = w
           
           rem =================================================================
-          rem REDIMMED VARIABLES - ADMIN CONTEXT ONLY
+          rem REDIMMED VARIABLES - ADMIN MODE ONLY
           rem =================================================================
           rem These variables are ONLY valid on title/preamble/select screens!
           rem They get REDIMMED for different purposes during gameplay.
           rem =================================================================
           
-          rem ADMIN: Character select and title screen animation (Standard RAM)
+          rem Admin Mode: Character select and title screen animation (Standard RAM)
           rem REDIM variables w,x,y,z for character select animation
           dim ReadyCount = x               
           rem ADMIN: Count of locked players
@@ -177,7 +181,7 @@
           rem ADMIN: Parade active flag (standard RAM var36)
           
           rem =================================================================
-          rem GAMEPLAY VARIABLES (Standard RAM + ALL SCRAM)
+          rem GAME MODE VARIABLES (Standard RAM + ALL SCRAM)
           rem =================================================================
           rem Available during gameplay (and all screens):
           rem   - Standard RAM: var0-var47, a-z (74 bytes) - always available
@@ -255,40 +259,40 @@
           rem Values calculated and used within frame, not stored persistently
           
           rem =================================================================
-          rem GAME-ONLY VARIABLES - Standard RAM (var24-var47 and REDIMMED a-z)
+          rem GAME MODE VARIABLES - Standard RAM (var24-var47 and REDIMMED a-z)
           rem =================================================================
-          rem All GAME variables must use standard RAM only!
+          rem All Game Mode variables must use standard RAM only!
           rem var0-var23 used by core player arrays (cannot redim)
           rem var24-var47 available for additional gameplay variables
-          rem a-z can be REDIMMED from ADMIN use
+          rem a-z can be REDIMMED from Admin Mode use
           rem =================================================================
           
-          rem GAME: Additional game state variables (standard RAM var24-var31)
+          rem Game Mode: Additional game state variables (standard RAM var24-var31)
           dim PlayersRemaining = var24
-          rem GAME: Count of active players
+          rem Game Mode: Count of active players
           dim GameEndTimer = var25
-          rem GAME: Countdown to game end screen
+          rem Game Mode: Countdown to game end screen
           dim EliminationEffectTimer = var26
-          rem GAME: Visual effect timers (single byte, bits for each player)
+          rem Game Mode: Visual effect timers (single byte, bits for each player)
           dim EliminationOrder = var27
-          rem GAME: Order players were eliminated [0-3] (packed into 4 bits)
+          rem Game Mode: Order players were eliminated [0-3] (packed into 4 bits)
           dim EliminationCounter = var28
-          rem GAME: Counter for elimination sequence
+          rem Game Mode: Counter for elimination sequence
           dim WinnerPlayerIndex = var29
-          rem GAME: Index of winning player (0-3)
+          rem Game Mode: Index of winning player (0-3)
           dim DisplayRank = var30
-          rem GAME: Current rank being displayed (1-4)
+          rem Game Mode: Current rank being displayed (1-4)
           dim WinScreenTimer = var31
-          rem GAME: Win screen display timer
+          rem Game Mode: Win screen display timer
           
-          rem GAME: Animation system variables (standard RAM var32-var43 = 12 bytes)
+          rem Game Mode: Animation system variables (standard RAM var32-var43 = 12 bytes)
           rem 10fps character animation with platform-specific timing
           dim AnimationCounter = var32
-          rem GAME: [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame counter (4 bytes)
+          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame counter (4 bytes)
           dim CurrentAnimationFrame = var36
-          rem GAME: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current frame in sequence (4 bytes)
+          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current frame in sequence (4 bytes)
           dim CurrentAnimationSeq = var40
-          rem GAME: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current animation sequence (4 bytes)
+          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current animation sequence (4 bytes)
           
           rem GAME: Subpixel position system - TOO LARGE for standard RAM (32 bytes needed)
           rem NOTE: PlayerSubpixelX, PlayerSubpixelY, PlayerVelocityX, PlayerVelocityY
@@ -297,33 +301,15 @@
           rem OR: Store only high bytes in var44-var47 and calculate low bytes on-the-fly
           rem Current implementation uses temp variables during movement calculations
           
-          rem GAME: Attack cooldown timers (standard RAM var44-var47 = 4 bytes)
+          rem Game Mode: Attack cooldown timers (standard RAM var44-var47 = 4 bytes)
           dim PlayerAttackCooldown = var44
           dim Player1AttackCooldown = var44
           dim Player2AttackCooldown = var45
           dim Player3AttackCooldown = var46
           dim Player4AttackCooldown = var47
           
-          rem GAME: Console handling variables (Standard RAM)
-          rem NOTE: HandleConsoleSwitches is called from game loop, so this is GAME context
-          rem AnimationCounter[0-3] uses var32-var35, CurrentAnimationFrame[0-3] uses var36-var39
-          rem CurrentAnimationSeq[0-3] uses var40-var43
-          rem var20-var23 used by PlayerMomentumX, var24-var31 by game state, var44-var47 by cooldowns
-          rem Solution: Use a variable from a-z REDIMMED for GAME context
-          rem In GAME, variable 'c' (FallComplete) is REDIMMED to Missile3X
-          rem But MissileX uses a-d for all 4 missiles, so 'c' is used
-          rem Check: FallComplete uses 'c' in SHARED, but REDIMMED to Missile3X in GAME
-          rem Actually safer: Use one of the variables that's truly unused in GAME
-          rem Variable 'i' is PlayersEliminated/MissileActive in GAME (already used)
-          rem Simplest: Use variable 'c' but only after checking it's safe
-          rem Actually: Use a temporary variable approach or find truly unused space
-          rem CHECK: Can we use one byte from AnimationCounter array? No, it's all used
-          rem Solution: Use variable that's REDIMMED and not used during HandleConsoleSwitches
-          rem Variable 'c' (Missile3X) should be safe since HandleConsoleSwitches doesn't touch missiles
-          dim ColorBWPrevious = c
-          rem GAME: Previous state of Color/B&W switch (REDIM from ADMIN FallComplete/Missile3X)
           
-          rem GAME: Player timers array [0-3] - used for guard cooldowns and other timers
+          rem Game Mode: Player timers array [0-3] - used for guard cooldowns and other timers
           rem NOTE: Must be declared after PlayerAttackCooldown if we want to use array syntax
           rem Currently PlayerAttackCooldown uses individual vars, so PlayerTimers can reuse them
           rem Using alias: PlayerTimers = PlayerAttackCooldown (same 4 bytes)
@@ -331,9 +317,9 @@
           rem But we're at var44-var47 already used... need to check what's available
           rem SOLUTION: PlayerTimers[0-3] uses SCRAM (r004-r007, w004-w007)
           dim PlayerTimers = w004
-          rem GAME: Player timers array [0]=P1, [1]=P2, [2]=P3, [3]=P4 (SCRAM w004-w007)
+          rem Game Mode: Player timers array [0]=P1, [1]=P2, [2]=P3, [3]=P4 (SCRAM w004-w007)
           
-          rem GAME: Base damage per hit - calculated from character data, stored temporarily
+          rem Game Mode: Base damage per hit - calculated from character data, stored temporarily
           rem NOTE: Can be looked up from character data tables rather than stored persistently
           rem Using temp variables during damage calculation if needed
           
@@ -344,42 +330,42 @@
           rem This includes both ranged projectiles AND melee attack visuals
           rem (e.g., sword sprite that appears briefly during attack).
 
-          rem GAME: Missile X positions [0-3] for players 1-4 (standard RAM - REDIMMED from ADMIN)
-          rem Using standard RAM variables that are REDIMMED from ADMIN use
+          rem Game Mode: Missile X positions [0-3] for players 1-4 (standard RAM - REDIMMED from Admin Mode)
+          rem Using standard RAM variables that are REDIMMED from Admin Mode use
           dim MissileX = a                  
           dim Missile1X = a                 
           dim Missile2X = b                 
           dim Missile3X = c                 
           dim Missile4X = d                 
-          rem GAME: REDIM - reuses FallFrame, FallSpeed, FallComplete, ActivePlayers
+          rem Game Mode: REDIM - reuses FallFrame, FallSpeed, FallComplete, ActivePlayers
           
-          rem GAME: Missile Y positions [0-3] - using SCRAM (SuperChip RAM)
+          rem Game Mode: Missile Y positions [0-3] - using SCRAM (SuperChip RAM)
           rem Stored in w000-w003 (r000-r003 read ports) for players 1-4
           rem Using SCRAM allows all 4 missile Y positions
           dim MissileY = w000
-          rem GAME: Missile Y position array (4 bytes) - SCRAM w000-w003 (r000-r003)
+          rem Game Mode: Missile Y position array (4 bytes) - SCRAM w000-w003 (r000-r003)
           
-          rem GAME: Missile active flags - bit-packed into single byte (standard RAM)
+          rem Game Mode: Missile active flags - bit-packed into single byte (standard RAM)
           rem Format: [M4Active:1][M3Active:1][M2Active:1][M1Active:1][unused:4]
           rem Bit 0 = Missile1 active, Bit 1 = Missile2 active, etc.
           dim MissileActive = i             
-          rem GAME: REDIM - reuses PauseButtonPrev (standard RAM)
+          rem Game Mode: REDIM - reuses PauseButtonPrev (standard RAM)
           
-          rem GAME: Missile lifetime counters [0-3] - frames remaining (standard RAM - REDIMMED)
+          rem Game Mode: Missile lifetime counters [0-3] - frames remaining (standard RAM - REDIMMED)
           rem For melee attacks: small value (2-8 frames)
           rem For ranged attacks: larger value or 255 for "until collision"
           rem Packed into 2 bytes: high nybble = P1/P2, low nybble = P3/P4
           dim MissileLifetime = e           
-          rem GAME: REDIM - reuses Console7800Detected (standard RAM)
+          rem Game Mode: REDIM - reuses Console7800Detected (standard RAM)
           rem Using nybble packing: MissileLifetime[0] = P1/P2, MissileLifetime[1] = P3/P4
           
-          rem GAME: Missile velocities [0-3] for X and Y axes (standard RAM - REDIMMED)
+          rem Game Mode: Missile velocities [0-3] for X and Y axes (standard RAM - REDIMMED)
           rem Stored velocities for bounce calculations and physics updates
           rem Using remaining standard RAM variables
           dim MissileVelX = w
-          rem GAME: Missile X velocity array (4 bytes) - REDIM from CharSelectAnimTimer
+          rem Game Mode: Missile X velocity array (4 bytes) - REDIM from CharSelectAnimTimer
           dim MissileVelY = x
-          rem GAME: Missile Y velocity array (4 bytes) - REDIM from CharSelectAnimState
+          rem Game Mode: Missile Y velocity array (4 bytes) - REDIM from CharSelectAnimState
 
           rem Missile momentum stored in temp variables during UpdateMissiles subroutine
           rem temp1 = current player index being processed

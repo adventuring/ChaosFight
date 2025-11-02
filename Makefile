@@ -82,7 +82,11 @@ game: \
 doc: Dist/$(GAME).pdf Dist/$(GAME).html
 
 # Character sprite sheet names (32 characters: 16 main + 16 future)
-CHARACTER_NAMES = Bernie Curler Dragonet ZoeRyen FatTony Megax Harpy KnightGuy Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo Shamone Character16 Character17 Character18 Character19 Character20 Character21 Character22 Character23 Character24 Character25 Character26 Character27 Character28 Character29 Character30 MethHound
+CHARACTER_NAMES = \
+	Bernie Curler Dragonet ZoeRyen FatTony Megax Harpy KnightGuy \
+	Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo Shamone \
+	Character16 Character17 Character18 Character19 Character20 Character21 Character22 Character23 \
+	Character24 Character25 Character26 Character27 Character28 Character29 Character30 MethHound
 
 # TV architectures
 TV_ARCHS = NTSC PAL SECAM

@@ -7,7 +7,7 @@ test: SkylineTool/skyline-tool.asd
 	cd SkylineTool && sbcl --script tests/run-tests.lisp || (echo "Tests failed!" && exit 1)
 
 # Precious intermediate files
-.PRECIOUS: %.s %.png %.midi
+.PRECIOUS: %.s %.png %.midi Object/bB.%.s
 
 # Tools and directories
 BB_DIR = Tools/batariBASIC
@@ -81,7 +81,7 @@ game: \
 
 doc: Dist/$(GAME).pdf Dist/$(GAME).html
 
-# Character sprite sheet names (32 characters: 16 main + 16 future)
+# Character sprite sheet names (32 characters: 16 main + 15 future + Meth Hound)
 CHARACTER_NAMES = \
 	Bernie Curler Dragonet ZoeRyen FatTony Megax Harpy KnightGuy \
 	Frooty Nefertem NinjishGuy PorkChop RadishGoblin RoboTito Ursulo Shamone \
@@ -271,15 +271,12 @@ Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
 	Source/Generated/Numbers.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).NTSC.bas > Source/Generated/$(GAME).NTSC.preprocessed.bas
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.asm
-	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).NTSC.s
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.s
+	cd Object && ../bin/postprocess -i $(POSTINC) < bB.s | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).NTSC.s
 	bin/dasm Source/Generated/$(GAME).NTSC.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
-	rm -f Source/Generated/$(GAME).NTSC.preprocessed.bas
-	rm -f Object/bB.asm Object/includes.bB
 
 Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
     Source/Generated/$(GAME).PAL.bas \
@@ -308,7 +305,6 @@ Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
 	Source/Generated/Numbers.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).PAL.bas > Source/Generated/$(GAME).PAL.preprocessed.bas
@@ -347,15 +343,12 @@ Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
 	Source/Generated/Numbers.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Dist Source/Generated Object
 	bin/preprocess < Source/Generated/$(GAME).SECAM.bas > Source/Generated/$(GAME).SECAM.preprocessed.bas
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.asm
-	cd Object && ../bin/postprocess -i $(POSTINC) < bB.asm | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).SECAM.s
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
+	cd Object && ../bin/postprocess -i $(POSTINC) < bB.SECAM.s | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../Source/Generated/$(GAME).SECAM.s
 	bin/dasm Source/Generated/$(GAME).SECAM.s -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
-	rm -f Source/Generated/$(GAME).SECAM.preprocessed.bas
-	rm -f Object/bB.asm Object/includes.bB
 
 # Run emulator
 emu: $(ROM)
@@ -367,9 +360,9 @@ clean:
 	rm -rf Object/*
 	rm -f Source/Generated/*
 	rm -f Source/Art/*.png
-	rm -f bB.s *.bin *.lst *.sym *.map *.pro
+	rm -f bB.*.s *.bin *.lst *.sym *.map *.pro
 	rm -f Source/Generated/$(GAME).*.bas Source/Generated/$(GAME).*.s
-	rm -f includes.bB
+	rm -f Object/bB.*.s Object/includes.bB
 	cd Tools/batariBASIC && git clean --force
 
 # Install GIMP export script

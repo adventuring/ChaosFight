@@ -3,5 +3,15 @@
 
           bank 11
 
+          rem Game loop main routines
           #include "Source/Routines/GameLoopInit.bas"
           #include "Source/Routines/GameLoopMain.bas"
+          
+          rem Gameplay subsystems called from GameLoopMain
+          #include "Source/Routines/PlayerInput.bas"
+          #include "Source/Routines/AnimationSystem.bas"
+          #include "Source/Routines/MovementSystem.bas"
+          #include "Source/Routines/PlayerPhysics.bas"
+          #include "Source/Routines/SpecialMovement.bas"
+          #include "Source/Routines/PlayerRendering.bas"
+          #include "Source/Routines/ConsoleHandling.bas"

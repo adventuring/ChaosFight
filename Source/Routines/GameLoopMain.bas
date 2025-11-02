@@ -63,11 +63,11 @@ GameMainLoop
           rem Update attack cooldowns
           gosub UpdateAttackCooldowns
 
-          rem Update missiles
-          gosub UpdateMissiles
+          rem Update missiles (in Bank 7)
+          gosub bank7 UpdateMissiles
 
-          rem Check missile collisions
-          gosub CheckMissileCollisions
+          rem Check missile collisions (in Bank 7)
+          gosub bank7 CheckMissileCollisions
 
           rem Set sprite positions (now handled by movement system)
           rem gosub SetSpritePositions 

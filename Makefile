@@ -9,6 +9,10 @@ test: SkylineTool/skyline-tool.asd
 # Precious intermediate files
 .PRECIOUS: %.s %.png %.midi Object/bB.%.s Source/Generated/$(GAME).%.preprocessed.bas
 
+# Don't delete PNG files automatically - they are intermediate but should be preserved
+# between builds if XCF hasn't changed
+.SECONDARY: $(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
+
 # Tools and directories
 BB_DIR = Tools/batariBASIC
 BB_MAIN = bin/2600basic
@@ -175,10 +179,11 @@ CHARACTER_PNG = $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png)
 CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).bas)
 
 # Convert XCF to PNG for sprites (characters and special sprites)
+# Make will only regenerate if XCF is newer than PNG (based on file timestamps)
 %.png: %.xcf
 	@echo "Converting $< to $@..."
-	mkdir -p Source/Art
-	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@mkdir -p Source/Art
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
 # Character sprites are compiled using compile-chaos-character
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas

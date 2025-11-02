@@ -34,10 +34,32 @@ BeginGameLoop
           rem SuperChip variables var0-var15 available in gameplay
           
           rem Initialize player positions
-          let PlayerX[0] = 40 : PlayerY[0] = 80
-          let PlayerX[1] = 120 : PlayerY[1] = 80
-          let PlayerX[2] = 80 : PlayerY[2] = 80
-          let PlayerX[3] = 100 : PlayerY[3] = 80
+          rem 2-Player Game: P1 at 1/3 width (53), P2 at 2/3 width (107)
+          rem 4-Player Game: P1 at 1/5 (32), P3 at 2/5 (64), P4 at 3/5 (96), P2 at 4/5 (128)
+          rem All players start at second row from top (Y=24, center of row 1)
+          rem Check if 4-player mode (Quadtari detected)
+          if ControllerStatus & SetQuadtariDetected then Init4PlayerPositions
+          
+          rem 2-player mode positions
+          let PlayerX[0] = 53 : PlayerY[0] = 24
+          let PlayerX[1] = 107 : PlayerY[1] = 24
+          let PlayerX[2] = 53 : PlayerY[2] = 24
+          rem Players 3 & 4 use same as P1/P2 if not in 4-player mode
+          let PlayerX[3] = 107 : PlayerY[3] = 24
+          goto InitPositionsDone
+          
+Init4PlayerPositions
+          rem 4-player mode positions
+          let PlayerX[0] = 32 : PlayerY[0] = 24
+          rem Player 1: 1/5 width
+          let PlayerX[2] = 64 : PlayerY[2] = 24
+          rem Player 3: 2/5 width
+          let PlayerX[3] = 96 : PlayerY[3] = 24
+          rem Player 4: 3/5 width
+          let PlayerX[1] = 128 : PlayerY[1] = 24
+          rem Player 2: 4/5 width
+          
+InitPositionsDone
           
           rem Initialize player states (facing direction)
           let PlayerState[0] = 1

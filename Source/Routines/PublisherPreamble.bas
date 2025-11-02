@@ -20,8 +20,8 @@
           rem   - Bitmap data stored in ROM: Source/Generated/Art.AtariAge.s
 
           rem AVAILABLE VARIABLES:
-          rem   PreambleTimer - Frame counter for timing
-          rem   MusicPlaying - Music state flag
+          rem   preambleTimer - Frame counter for timing
+          rem   musicPlaying - Music state flag
           rem   QuadtariDetected - For checking all controllers
           rem =================================================================
 
@@ -34,7 +34,7 @@ PublisherPreamble
           if joy0fire then goto PublisherPreambleComplete
           if joy1fire then goto PublisherPreambleComplete
           
-          if ControllerStatus & SetQuadtariDetected then goto PublisherCheckQuadtari
+          if controllerStatus & SetQuadtariDetected then goto PublisherCheckQuadtari
 
           goto PublisherSkipQuadtari
 
@@ -45,9 +45,9 @@ PublisherSkipQuadtari
           gosub bank16 UpdateMusic
 
           rem Auto-advance after music completes + 0.5s
-         if PreambleTimer > 30 && MusicPlaying = 0 then goto PublisherPreambleComplete
+         if preambleTimer > 30 && musicPlaying = 0 then goto PublisherPreambleComplete
 
-          PreambleTimer = PreambleTimer + 1
+          preambleTimer = preambleTimer + 1
           
           rem Draw screen with titlescreen kernel minikernel
           gosub titledrawscreen bank1
@@ -55,7 +55,7 @@ PublisherSkipQuadtari
           return
 
 PublisherPreambleComplete
-          GameMode = ModeAuthorPrelude : gosub bank13 ChangeGameMode
+          gameMode = ModeAuthorPrelude : gosub bank13 ChangeGameMode
           return
 
           rem =================================================================

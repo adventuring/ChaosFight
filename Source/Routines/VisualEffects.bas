@@ -15,14 +15,14 @@
           rem Input: temp1 = player index (0-3), temp2 = damage amount
 VisualShowDamageIndicator
           rem Set player to hurt state for visual feedback
-          temp3 = PlayerState[temp1] & %00011111 
+          temp3 = playerState[temp1] & %00011111 
           rem Keep lower 5 bits
           temp3 = temp3 | %10010000 
           rem Set animation to 9 (hurt state)
-          PlayerState[temp1] = temp3
+          playerState[temp1] = temp3
           
           rem Set recovery frames for hurt visual duration
-          PlayerRecoveryFrames[temp1] = 15 
+          playerRecoveryFrames[temp1] = 15 
           rem 15 frames of hurt visual
           
           return
@@ -36,7 +36,7 @@ VisualShowDamageIndicator
           rem Input: temp1 = player index (0-3)
 FlashRecoveryEffect
           rem Check if player is in recovery
-          temp2 = PlayerRecoveryFrames[temp1]
+          temp2 = playerRecoveryFrames[temp1]
           if temp2 = 0 then return
           
           rem Flash every other frame

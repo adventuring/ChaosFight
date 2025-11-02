@@ -15,9 +15,9 @@
           rem   5. Check for game end conditions (1 player remaining)
 
           rem VARIABLES:
-          rem   PlayersEliminated - Bit flags for eliminated players
-          rem   PlayersRemaining - Count of active players
-          rem   GameEndTimer - Countdown to game end screen
+          rem   playersEliminated - Bit flags for eliminated players
+          rem   playersRemaining - Count of active players
+          rem   gameEndTimer - Countdown to game end screen
           rem =================================================================
 
           rem =================================================================
@@ -47,18 +47,18 @@ CheckPlayerElimination
           rem Skip if already eliminated
           temp6 = BitMask[temp1]
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          temp2 = PlayersEliminated & temp6
+          temp2 = playersEliminated & temp6
           if temp2 then return 
           rem Already eliminated
           
           rem Check if health has reached 0
-          temp2 = PlayerHealth[temp1]
+          temp2 = playerHealth[temp1]
           
           if temp2 > 0 then return 
           rem Still alive
           
           rem Player health reached 0 - eliminate them
-          PlayersEliminated = PlayersEliminated | temp6
+          playersEliminated = playersEliminated | temp6
           
           rem Update Players34Active flag if Player 3 or 4 was eliminated
           rem Only clear flag if both players 3 and 4 are eliminated or not selected
@@ -68,8 +68,8 @@ CheckPlayerElimination
 UpdatePlayers34Done
           
           rem Record elimination order
-          EliminationCounter = EliminationCounter + 1
-          EliminationOrder[temp1] = EliminationCounter
+          eliminationCounter = eliminationCounter + 1
+          eliminationOrder[temp1] = eliminationCounter
           
           rem Trigger elimination effects
           gosub TriggerEliminationEffects
@@ -90,7 +90,7 @@ TriggerEliminationEffects
           rem This could trigger screen flash, particle effects, etc.
           temp2 = 30 
           rem 30 frames of elimination effect
-          EliminationEffectTimer[temp1] = temp2
+          eliminationEffectTimer[temp1] = temp2
           
           rem Hide player sprite immediately
           gosub HideEliminatedPlayerSprite
@@ -130,7 +130,7 @@ DeactivatePlayerMissiles
           if temp1 = 3 then temp6 = 8
           temp6 = 255 - temp6 
           rem Invert bits for AND mask
-          MissileActive = MissileActive & temp6
+          missileActive = missileActive & temp6
           
           return
 
@@ -144,16 +144,16 @@ CountRemainingPlayers
           rem Counter
           
           rem Check each player
-          if !(PlayersEliminated & 1) then temp1 = temp1 + 1 
+          if !(playersEliminated & 1) then temp1 = temp1 + 1 
           rem Player 1
-          if !(PlayersEliminated & 2) then temp1 = temp1 + 1 
+          if !(playersEliminated & 2) then temp1 = temp1 + 1 
           rem Player 2
-          if !(PlayersEliminated & 4) then temp1 = temp1 + 1 
+          if !(playersEliminated & 4) then temp1 = temp1 + 1 
           rem Player 3  
-          if !(PlayersEliminated & 8) then temp1 = temp1 + 1 
+          if !(playersEliminated & 8) then temp1 = temp1 + 1 
           rem Player 4
           
-          PlayersRemaining = temp1
+          playersRemaining = temp1
           return
 
           rem =================================================================
@@ -162,13 +162,13 @@ CountRemainingPlayers
           rem Check if game should end (1 or 0 players remaining).
 CheckGameEndCondition
           rem Game ends when 1 or fewer players remain
-if PlayersRemaining <= 1 then 
+if playersRemaining <= 1 then 
           rem Find winner (last remaining player)
           gosub FindWinner
           rem Start game end countdown  
-          GameEndTimer = 180 
+          gameEndTimer = 180 
           rem 3 seconds at 60 FPS
-          GameState = 2     
+          gameState = 2     
           rem Game ending state
           
           
@@ -186,7 +186,7 @@ IsPlayerEliminated
           if temp1 = 1 then temp6 = 2
           if temp1 = 2 then temp6 = 4
           if temp1 = 3 then temp6 = 8
-          temp2 = PlayersEliminated & temp6
+          temp2 = playersEliminated & temp6
           if temp2 then temp2 = 1 : goto IsEliminatedDone
           temp2 = 0
 IsEliminatedDone
@@ -205,7 +205,7 @@ IsPlayerAlive
           rem Already eliminated
           
           rem Check health
-          temp3 = PlayerHealth[temp1]
+          temp3 = playerHealth[temp1]
           
           temp2 = 0 
           rem Default: not alive
@@ -219,20 +219,20 @@ IsPlayerAlive
           rem Identify the winning player (last one standing).
 FindWinner
           rem Find the player who is not eliminated
-          WinnerPlayerIndex = 255 
+          winnerPlayerIndex = 255 
           rem Invalid initially
           
           temp1 = 0 : gosub IsPlayerEliminated
-          if !temp2 then WinnerPlayerIndex = 0
+          if !temp2 then winnerPlayerIndex = 0
           temp1 = 1 : gosub IsPlayerEliminated  
-          if !temp2 then WinnerPlayerIndex = 1
+          if !temp2 then winnerPlayerIndex = 1
           temp1 = 2 : gosub IsPlayerEliminated
-          if !temp2 then WinnerPlayerIndex = 2
+          if !temp2 then winnerPlayerIndex = 2
           temp1 = 3 : gosub IsPlayerEliminated
-          if !temp2 then WinnerPlayerIndex = 3
+          if !temp2 then winnerPlayerIndex = 3
           
           rem If no winner found (all eliminated), pick last eliminated
-if WinnerPlayerIndex = 255 then 
+if winnerPlayerIndex = 255 then 
           gosub FindLastEliminated
           
           
@@ -245,25 +245,25 @@ if WinnerPlayerIndex = 255 then
 FindLastEliminated
           temp4 = 0    
           rem Highest elimination order found
-          WinnerPlayerIndex = 0 
+          winnerPlayerIndex = 0 
           rem Default winner
           
           rem Check each player elimination order
-if EliminationOrder[0] > temp4 then 
-          temp4 = EliminationOrder[0]
-          WinnerPlayerIndex = 0
+if eliminationOrder[0] > temp4 then 
+          temp4 = eliminationOrder[0]
+          winnerPlayerIndex = 0
           
-if EliminationOrder[1] > temp4 then 
-          temp4 = EliminationOrder[1] 
-          WinnerPlayerIndex = 1
+if eliminationOrder[1] > temp4 then 
+          temp4 = eliminationOrder[1] 
+          winnerPlayerIndex = 1
           
-if EliminationOrder[2] > temp4 then 
-          temp4 = EliminationOrder[2]
-          WinnerPlayerIndex = 2
+if eliminationOrder[2] > temp4 then 
+          temp4 = eliminationOrder[2]
+          winnerPlayerIndex = 2
           
-if EliminationOrder[3] > temp4 then 
-          temp4 = EliminationOrder[3]
-          WinnerPlayerIndex = 3
+if eliminationOrder[3] > temp4 then 
+          temp4 = eliminationOrder[3]
+          winnerPlayerIndex = 3
           
           rem =================================================================
           rem UPDATE PLAYERS 3/4 ACTIVE FLAG
@@ -272,20 +272,20 @@ if EliminationOrder[3] > temp4 then
           rem are selected and not eliminated. Used for missile multiplexing.
 UpdatePlayers34ActiveFlag
           rem Clear flag first
-          ControllerStatus = ControllerStatus & ClearPlayers34Active
+          controllerStatus = controllerStatus & ClearPlayers34Active
           
           rem Check if Player 3 is active (selected and not eliminated)
-          if SelectedChar3 = 255 then goto CheckPlayer4ActiveFlag
-          if PlayersEliminated & 4 then goto CheckPlayer4ActiveFlag
+          if selectedChar3 = 255 then goto CheckPlayer4ActiveFlag
+          if playersEliminated & 4 then goto CheckPlayer4ActiveFlag
           rem Player 3 is active
-          ControllerStatus = ControllerStatus | SetPlayers34Active
+          controllerStatus = controllerStatus | SetPlayers34Active
           
 CheckPlayer4ActiveFlag
           rem Check if Player 4 is active (selected and not eliminated)
-          if SelectedChar4 = 255 then goto UpdatePlayers34ActiveDone
-          if PlayersEliminated & 8 then goto UpdatePlayers34ActiveDone
+          if selectedChar4 = 255 then goto UpdatePlayers34ActiveDone
+          if playersEliminated & 8 then goto UpdatePlayers34ActiveDone
           rem Player 4 is active
-          ControllerStatus = ControllerStatus | SetPlayers34Active
+          controllerStatus = controllerStatus | SetPlayers34Active
           
 UpdatePlayers34ActiveDone
           return

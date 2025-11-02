@@ -2,8 +2,7 @@
           rem Setup routine for Level Select. Sets initial state only.
 
 BeginLevelSelect
-          dim SelectedLevel = a
-          SelectedLevel = 0
+          let selectedLevel = 0
           
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)

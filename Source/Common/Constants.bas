@@ -24,17 +24,29 @@
           const SpriteCPU = 1
           const SpriteNo = 2
           
-          rem PlayerState bit constants
+          rem playerState bit position constants
           const PlayerStateFacing = 0
           rem Bit 0: 0=left, 1=right
           const PlayerStateGuarding = 1
           rem Bit 1: 1=guarding
           const PlayerStateJumping = 2
           rem Bit 2: 1=jumping
+          const PlayerStateRecovery = 3
+          rem Bit 3: 1=recovery (hitstun)
           const PlayerStateAttacking = 4
           rem Bit 4: 1=attacking
           const PlayerStateAnimation = 7
-          rem Bits 7-5: animation state (3 bits)
+          rem Bit position for animation state (bits 7-4, 4 bits)
+          
+          rem playerState bitmask constants  
+          const MaskPlayerStateFlags = %00001111
+          rem Bits 0-3: clear animation state, keep flags (lower 4 bits)
+          const MaskPlayerStateLower = %00011111
+          rem Bits 0-4: lower 5 bits (alternative mask for some operations)
+          const MaskPlayerStateAnimation = %11110000
+          rem Bits 4-7: animation state only (upper 4 bits)
+          const ShiftAnimationState = 4
+          rem Shift count for animation state (<< 4)
           
           rem High bit constants for input testing
           const HighBit = $80
@@ -62,7 +74,7 @@
           const RightPortJoy2bPlus = 3
           rem Bit 3: Joy2b+ on right port (subset of RightPortGenesis)
           
-          rem Bit accessor aliases for ControllerStatus
+          rem Bit accessor aliases for controllerStatus
           rem Bit accessor aliases removed to avoid compiler issues; use bit masks directly
           
           rem Console detection constants

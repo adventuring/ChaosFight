@@ -21,8 +21,8 @@
           rem Main console detection routine
 ConsoleDetHW
           rem Assume 2600 console initially
-          SystemFlags = SystemFlags & ClearSystemFlag7800
-          Console7800Detected = 0
+          systemFlags = systemFlags & ClearSystemFlag7800
+          console7800Detected = 0
           
           rem Check $D0 value
           temp1 = $D0
@@ -52,14 +52,14 @@ CheckFlashed
           
 Is7800
           rem 7800 console detected
-          SystemFlags = SystemFlags | SystemFlag7800
-          Console7800Detected = 1
+          systemFlags = systemFlags | SystemFlag7800
+          console7800Detected = 1
           return
           
 Is2600
           rem 2600 console detected
-          SystemFlags = SystemFlags & ClearSystemFlag7800
-          Console7800Detected = 0
+          systemFlags = systemFlags & ClearSystemFlag7800
+          console7800Detected = 0
           return
           
           rem =================================================================
@@ -69,7 +69,7 @@ Is2600
           
 CheckConsoleFeatures
           rem Check if running on 7800
-          if !Console7800Detected then goto Skip7800Features
+          if !console7800Detected then goto Skip7800Features
           
           rem 7800-specific features
           rem TODO: Implement 7800-specific pause button handling

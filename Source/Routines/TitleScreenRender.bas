@@ -15,7 +15,7 @@
           rem   - Bitmap data stored in ROM: Source/Generated/Art.ChaosFight.s
 
           rem AVAILABLE VARIABLES:
-          rem   TitleParadeActive - Whether to draw parade character
+          rem   titleParadeActive - Whether to draw parade character
           rem   COLUBK - Background color
           rem   COLUPF - Playfield color
           rem =================================================================
@@ -32,7 +32,7 @@ DrawTitleScreen
           gosub LoadTitleBitmap
           
           rem Draw character parade if active
-if TitleParadeActive then 
+if titleParadeActive then 
           gosub DrawParadeCharacter
           
           

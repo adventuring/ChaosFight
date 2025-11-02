@@ -11,11 +11,11 @@ ApplyDamage
   dim damage = a
   
   rem Calculate damage (considering defender state)
-  damage = PlayerDamage(attacker_id) - PlayerDamage(defender_id)
+  damage = playerDamage(attacker_id) - playerDamage(defender_id)
   if damage < 1 then damage = 1  rem Minimum damage
   
   rem Apply damage
-  PlayerHealth[defender_id) = PlayerHealth[defender_id] - damage
+  playerHealth[defender_id) = playerHealth[defender_id] - damage
   
   rem Visual feedback (to be implemented)
   gosub ShowDamageIndicator defender_id, damage
@@ -39,10 +39,10 @@ CheckAttackHit
   gosub CalculateAttackHitbox attacker_id
   
   rem Check if defender is in hitbox
-          if PlayerX[defender_id] < hitbox_left then goto HitboxCheckDone
-          if PlayerX[defender_id] > hitbox_right then goto HitboxCheckDone
-          if PlayerY[defender_id] < hitbox_top then goto HitboxCheckDone
-          if PlayerY[defender_id] > hitbox_bottom then goto HitboxCheckDone
+          if playerX[defender_id] < hitbox_left then goto HitboxCheckDone
+          if playerX[defender_id] > hitbox_right then goto HitboxCheckDone
+          if playerY[defender_id] < hitbox_top then goto HitboxCheckDone
+          if playerY[defender_id] > hitbox_bottom then goto HitboxCheckDone
     hit = 1
           goto HitboxCheckDone
 HitboxCheckDone
@@ -64,31 +64,31 @@ MeleeHitbox
     on PlayerFacing(attacker_id) goto FacingRight, FacingLeft, FacingUp, FacingDown
     
 FacingRight
-      hitbox_left = PlayerX[attacker_id] + 8
-      hitbox_right = PlayerX[attacker_id] + 24
-      hitbox_top = PlayerY[attacker_id] - 8
-      hitbox_bottom = PlayerY[attacker_id] + 8
+      hitbox_left = playerX[attacker_id] + 8
+      hitbox_right = playerX[attacker_id] + 24
+      hitbox_top = playerY[attacker_id] - 8
+      hitbox_bottom = playerY[attacker_id] + 8
       return
       
 FacingLeft
-      hitbox_left = PlayerX[attacker_id] - 24
-      hitbox_right = PlayerX[attacker_id] - 8
-      hitbox_top = PlayerY[attacker_id] - 8
-      hitbox_bottom = PlayerY[attacker_id] + 8
+      hitbox_left = playerX[attacker_id] - 24
+      hitbox_right = playerX[attacker_id] - 8
+      hitbox_top = playerY[attacker_id] - 8
+      hitbox_bottom = playerY[attacker_id] + 8
       return
       
 FacingUp
-      hitbox_left = PlayerX[attacker_id] - 8
-      hitbox_right = PlayerX[attacker_id] + 8
-      hitbox_top = PlayerY[attacker_id] - 24
-      hitbox_bottom = PlayerY[attacker_id] - 8
+      hitbox_left = playerX[attacker_id] - 8
+      hitbox_right = playerX[attacker_id] + 8
+      hitbox_top = playerY[attacker_id] - 24
+      hitbox_bottom = playerY[attacker_id] - 8
       return
       
 FacingDown
-      hitbox_left = PlayerX[attacker_id] - 8
-      hitbox_right = PlayerX[attacker_id] + 8
-      hitbox_top = PlayerY[attacker_id] + 8
-      hitbox_bottom = PlayerY[attacker_id] + 24
+      hitbox_left = playerX[attacker_id] - 8
+      hitbox_right = playerX[attacker_id] + 8
+      hitbox_top = playerY[attacker_id] + 8
+      hitbox_bottom = playerY[attacker_id] + 24
       return
   
 ProjectileHitbox
@@ -113,7 +113,7 @@ ProcessAttackerAttacks
   dim defender = a
   
   rem Check if attacker is attacking
-  if (PlayerState[attacker_id) & %00000001] = 0 then return
+  if (playerState[attacker_id) & %00000001] = 0 then return
   
   rem Attack each defender
   for defender = 0 to 3
@@ -121,7 +121,7 @@ ProcessAttackerAttacks
     if defender = attacker_id then goto NextDefender
     
     rem Skip if defender is dead
-    if PlayerHealth[defender] <= 0 then goto NextDefender
+    if playerHealth[defender] <= 0 then goto NextDefender
     
     rem Check if attack hits
     gosub CheckAttackHit attacker_id, defender
@@ -138,7 +138,7 @@ ProcessAllAttacks
   
   for attacker = 0 to 3
     rem Skip if attacker is dead
-    if PlayerHealth[attacker] <= 0 then goto NextAttacker
+    if playerHealth[attacker] <= 0 then goto NextAttacker
     
     gosub ProcessAttackerAttacks attacker
     
@@ -171,7 +171,7 @@ PerformMeleeAttack
   gosub bank15 SpawnMissile
   
   rem Set animation state to attacking
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          playerState[temp1] = (playerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
   
   rem Check immediate collision with other players in melee range
@@ -193,7 +193,7 @@ PerformRangedAttack
   gosub bank15 SpawnMissile
   
   rem Set animation state to attacking
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          playerState[temp1] = (playerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
   
   return
@@ -202,13 +202,13 @@ rem Process guard for a player
 rem Input: player_id
 ProcessPlayerGuard
   rem Check if player is guarding
-  if (PlayerState[player_id) & %00000010] = 0 then return
+  if (playerState[player_id) & %00000010] = 0 then return
   
   rem Guard prevents movement
-  PlayerMomentumX[player_id] = 0
+  playerMomentumX[player_id] = 0
   
   rem Guard prevents attacks
-  PlayerState[player_id) = PlayerState[player_id] & %11111110
+  playerState[player_id) = playerState[player_id] & %11111110
   
   return
 
@@ -218,9 +218,9 @@ UpdatePlayerGuard
   dim guard_timer = a
   
   rem Decrement guard timer if active (1 second maximum = 60 frames)
-          if (PlayerState[player_id] & %00000010) = 0 then goto SkipGuardUpdate
+          if (playerState[player_id] & %00000010) = 0 then goto SkipGuardUpdate
     guard_timer = guard_timer - 1
-          if guard_timer <= 0 then PlayerState[player_id] = PlayerState[player_id] & %11111101
+          if guard_timer <= 0 then playerState[player_id] = playerState[player_id] & %11111101
     rem Guard visual effect: flashing light cyan ColCyan(12) NTSC/PAL, Cyan SECAM
     rem Player color alternates between normal and cyan every few frames
     rem This matches manual specification: "Character flashes to indicate guard is active"

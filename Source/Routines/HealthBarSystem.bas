@@ -37,14 +37,14 @@ UpdatePlayer2HealthBar
     return
 
           rem Update both P1 and P2 health bars
-          rem Input: PlayerHealth[0] and PlayerHealth[1] arrays
+          rem Input: playerHealth[0] and playerHealth[1] arrays
 UpdatePlayer12HealthBars
           rem Update P1 health bar
-          temp1 = PlayerHealth[0]
+          temp1 = playerHealth[0]
           gosub UpdatePlayer1HealthBar
           
           rem Update P2 health bar  
-          temp1 = PlayerHealth[1]
+          temp1 = playerHealth[1]
           gosub UpdatePlayer2HealthBar
           
           return
@@ -70,16 +70,16 @@ InitializeHealthBars
 
 UpdatePlayer34HealthBars
           rem Only update if players 3 or 4 are active
-          if !(ControllerStatus & SetPlayers34Active) then return
+          if !(controllerStatus & SetPlayers34Active) then return
           
           rem Get Player 3 health (0-100), clamp to 99
-          temp1 = PlayerHealth[2]
-          if SelectedChar3 = 255 then temp1 = 0
+          temp1 = playerHealth[2]
+          if selectedChar3 = 255 then temp1 = 0
           if temp1 > 99 then temp1 = 99
           
           rem Get Player 4 health (0-100), clamp to 99
-          temp2 = PlayerHealth[3]
-          if SelectedChar4 = 255 then temp2 = 0
+          temp2 = playerHealth[3]
+          if selectedChar4 = 255 then temp2 = 0
           if temp2 > 99 then temp2 = 99
           
           rem Format score as: P3Health * 10000 + P4Health

@@ -4,7 +4,7 @@
 BeginPublisherPrelude
           rem Initialize preamble
           const pfres = 32
-          PreambleTimer = 0
+          preambleTimer = 0
           COLUBK = ColGray(0)
           
           rem Load publisher artwork

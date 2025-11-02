@@ -99,7 +99,10 @@ make emu
 
 ### Variable Naming
 - **Built-ins**: `lowercase` (`temp1`, `joy0fire`, `player0x`) 
-- **User code**: `PascalCase` (`PlayerX`, `GameState`, `MissileActive`)
+- **User variables**: `camelCase` (`playerX`, `gameState`, `missileActive`)
+- **Constants**: `PascalCase` (`MaxCharacter`, `KnockbackDistance`)
+- **Enums**: `PascalCase` (`AnimStanding`, `ModeGame`)
+- **Labels/Routines**: `PascalCase` (`LoadCharacterSprite`, `HandleInput`)
 
 ### Memory Layout
 - **Standard RAM**: `a`-`z` (26 bytes)

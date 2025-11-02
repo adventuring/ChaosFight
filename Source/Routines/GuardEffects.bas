@@ -16,10 +16,10 @@
           rem =================================================================
           rem Applies guard flashing effect to a guarding player
           rem INPUT: temp1 = player index (0-3)
-          rem USES: PlayerState[temp1], frame counter for flashing
+          rem USES: playerState[temp1], frame counter for flashing
 ApplyGuardFlashing
           rem Check if player is guarding
-          temp2 = PlayerState[temp1] & 2
+          temp2 = playerState[temp1] & 2
           if !temp2 then return 
           rem Not guarding
           
@@ -57,7 +57,7 @@ if temp3 < 2 then
           rem INPUT: temp1 = player index (0-3)
 RestoreNormalPlayerColor
           rem Get character type for this player
-          temp4 = PlayerChar[temp1]
+          temp4 = playerChar[temp1]
           
           rem Restore normal player colors based on player index
           if temp1 = 0 then COLUP0 = $0E 
@@ -77,16 +77,16 @@ RestoreNormalPlayerColor
           rem OUTPUT: temp2 = 1 if guard allowed, 0 if in cooldown
 CheckGuardCooldown
           rem Check if player is currently guarding
-          temp3 = PlayerState[temp1] & 2
+          temp3 = playerState[temp1] & 2
 if temp3 then 
           rem Currently guarding - not allowed to start new guard
           temp2 = 0
           return
           
           
-          rem Check cooldown timer (stored in PlayerTimers array)
-          rem PlayerTimers[temp1] stores frames remaining in cooldown
-          temp3 = PlayerTimers[temp1]
+          rem Check cooldown timer (stored in playerTimers array)
+          rem playerTimers[temp1] stores frames remaining in cooldown
+          temp3 = playerTimers[temp1]
           
 if temp3 > 0 then 
           rem Still in cooldown
@@ -104,18 +104,18 @@ if temp3 > 0 then
           rem Activates guard state with proper timing
           rem INPUT: temp1 = player index (0-3)
 StartGuard
-          rem Set guard bit in PlayerState
-          PlayerState[temp1] = PlayerState[temp1] | 2
+          rem Set guard bit in playerState
+          playerState[temp1] = playerState[temp1] | 2
           
           rem Set guard duration timer (60 frames = 1 second)
-          rem Use upper bits of PlayerState for guard timer
+          rem Use upper bits of playerState for guard timer
           rem Bits 5-7 can store timer (0-7 * 8 frames = 0-56 frames)
           rem We will use a separate guard timer approach
-          temp2 = PlayerState[temp1] & %11100000 
+          temp2 = playerState[temp1] & %11100000 
           rem Clear timer bits
           temp2 = temp2 | %01110000 
           rem Set 7*8 = 56 frames (~1 second)
-          PlayerState[temp1] = temp2 | 2 
+          playerState[temp1] = temp2 | 2 
           rem Restore guard bit
           
           return
@@ -134,33 +134,33 @@ UpdateGuardTimers
 
 UpdateSingleGuardTimer
           rem Check if player is guarding
-          temp2 = PlayerState[temp1] & 2
+          temp2 = playerState[temp1] & 2
 if temp2 then 
           rem Player is guarding - decrement guard duration
-          temp3 = PlayerState[temp1] & %11100000 
+          temp3 = playerState[temp1] & %11100000 
           rem Get timer bits
           temp3 = temp3 - %00100000 
           rem Decrement by 8 frames
 if temp3 <= 0 then 
           rem Guard duration expired
-          PlayerState[temp1] = PlayerState[temp1] & %11111101 
+          playerState[temp1] = playerState[temp1] & %11111101 
           rem Clear guard bit
           rem Start cooldown timer (60 frames)
-          PlayerTimers[temp1] = 60
+          playerTimers[temp1] = 60
 
           rem Update guard timer
-          temp4 = PlayerState[temp1] & %00011111 
+          temp4 = playerState[temp1] & %00011111 
           rem Keep lower bits
-          PlayerState[temp1] = temp4 | temp3 
+          playerState[temp1] = temp4 | temp3 
           rem Combine with new timer
           
 
           rem Player not guarding - decrement cooldown timer
-          temp3 = PlayerTimers[temp1]
+          temp3 = playerTimers[temp1]
           
 if temp3 > 0 then 
           temp3 = temp3 - 1
-          PlayerTimers[temp1] = temp3
+          playerTimers[temp1] = temp3
           
           
           
@@ -169,9 +169,9 @@ if temp3 > 0 then
           return
           
           
-          rem Check cooldown timer (stored in PlayerTimers array)
-          rem PlayerTimers[temp1] stores frames remaining in cooldown
-          temp3 = PlayerTimers[temp1]
+          rem Check cooldown timer (stored in playerTimers array)
+          rem playerTimers[temp1] stores frames remaining in cooldown
+          temp3 = playerTimers[temp1]
           
 if temp3 > 0 then 
           rem Still in cooldown

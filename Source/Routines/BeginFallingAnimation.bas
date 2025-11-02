@@ -2,15 +2,10 @@
           rem Setup routine for Falling Animation. Sets initial state only.
 
 BeginFallingAnimation
-          dim FallFrame = a
-          dim FallSpeed = b
-          dim FallComplete = c
-          dim ActivePlayers = d
-
-          FallFrame = 0
-          FallSpeed = 2
-          FallComplete = 0
-          ActivePlayers = 2
+          let fallFrame = 0
+          fallSpeed = 2
+          fallComplete = 0
+          activePlayers = 2
 
           COLUBK = ColGray(0)
 

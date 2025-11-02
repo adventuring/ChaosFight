@@ -21,7 +21,7 @@ UpdatePlayerMovement
           rem Input: temp1 = player index (0-3)
 UpdatePlayerMovementSingle
           rem Skip if player is eliminated
-          if PlayerHealth[temp1] = 0 then return
+          if playerHealth[temp1] = 0 then return
           
           rem Update subpixel positions with velocity
           PlayerSubpixelX[temp1] = PlayerSubpixelX[temp1] + PlayerVelocityX[temp1]

@@ -20,8 +20,8 @@
           rem   - Bitmap data stored in ROM: Source/Generated/Art.Interworldly.s
 
           rem AVAILABLE VARIABLES:
-          rem   PreambleTimer - Frame counter for timing
-          rem   MusicPlaying - Music state flag
+          rem   preambleTimer - Frame counter for timing
+          rem   musicPlaying - Music state flag
           rem   QuadtariDetected - For checking all controllers
           rem =================================================================
 
@@ -34,7 +34,7 @@ AuthorMainLoop
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then goto AuthorPreambleComplete
           if joy1fire then goto AuthorPreambleComplete
-          if ControllerStatus & SetQuadtariDetected then goto AuthorCheckQuadtari
+          if controllerStatus & SetQuadtariDetected then goto AuthorCheckQuadtari
           goto AuthorSkipQuadtari
 AuthorCheckQuadtari
           if !INPT0{7} then goto AuthorPreambleComplete
@@ -45,17 +45,17 @@ AuthorSkipQuadtari
           gosub bank16 UpdateMusic
           
           rem Auto-advance after music completes + 0.5s
-          if PreambleTimer > 30 && ! MusicPlaying then goto AuthorPreambleComplete
+          if preambleTimer > 30 && ! musicPlaying then goto AuthorPreambleComplete
           
           rem Increment timer
-          let PreambleTimer = PreambleTimer + 1
+          let preambleTimer = preambleTimer + 1
           
           rem Draw screen with titlescreen kernel minikernel
           gosub titledrawscreen bank1
           goto AuthorMainLoop
 
 AuthorPreambleComplete
-              let GameMode = ModeTitle : gosub bank13 ChangeGameMode
+              let gameMode = ModeTitle : gosub bank13 ChangeGameMode
               return
 
           rem =================================================================

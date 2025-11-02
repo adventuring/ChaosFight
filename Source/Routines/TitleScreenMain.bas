@@ -8,10 +8,10 @@
           rem Dispatches to other modules for character parade and rendering.
 
           rem AVAILABLE VARIABLES (from Variables.bas):
-          rem   TitleParadeTimer - Frame counter for parade timing
-          rem   TitleParadeChar - Current parade character (0-15)
-          rem   TitleParadeX - X position of parade character
-          rem   TitleParadeActive - Whether parade is currently running
+          rem   titleParadeTimer - Frame counter for parade timing
+          rem   titleParadeChar - Current parade character (0-15)
+          rem   titleParadeX - X position of parade character
+          rem   titleParadeActive - Whether parade is currently running
           rem   QuadtariDetected - Whether 4-player mode is active
 
           rem FLOW:
@@ -30,7 +30,7 @@ TitleMainLoop
           if joy1fire then goto TitleScreenComplete
           
           rem Check Quadtari controllers (Players 3 & 4 if active)
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto TitleSkipQuad
+          if 0 = (controllerStatus & SetQuadtariDetected) then goto TitleSkipQuad
           if !INPT0{7} then goto TitleScreenComplete
           if !INPT2{7} then goto TitleScreenComplete
 TitleSkipQuad
@@ -45,7 +45,7 @@ TitleSkipQuad
 
 TitleScreenComplete
           rem Transition to character select
-          GameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
+          gameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
           return
 
 
@@ -57,10 +57,10 @@ BeginTitleScreen
           COLUBK = ColGray(0)
           
           rem Initialize character parade
-          TitleParadeTimer = 0
-          TitleParadeChar = 0
-          TitleParadeX = 0
-          TitleParadeActive = 0
+          titleParadeTimer = 0
+          titleParadeChar = 0
+          titleParadeX = 0
+          titleParadeActive = 0
           
           rem Enter the title screen main loop
           goto TitleScreen

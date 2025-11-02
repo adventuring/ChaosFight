@@ -29,10 +29,10 @@
           rem   - Terminal velocity: 8 pixels/frame (cap on fall speed)
 
           rem VARIABLES USED:
-          rem   - PlayerY[0-3]: Vertical position
+          rem   - playerY[0-3]: Vertical position
           rem   - PlayerMomentumY (temporary): Vertical velocity
-          rem   - PlayerRecoveryFrames[0-3]: Hitstun/recovery timer
-          rem   - PlayerHealth[0-3]: Health to reduce
+          rem   - playerRecoveryFrames[0-3]: Hitstun/recovery timer
+          rem   - playerHealth[0-3]: Health to reduce
           rem   - temp1: Player index
           rem   - temp2: Fall velocity at impact
           rem   - temp3: Safe fall distance threshold
@@ -59,7 +59,7 @@
           rem   5. Apply damage, recovery frames, and color shift
 CheckFallDamage
           rem Get character type for this player
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Check for fall damage immunity
           if temp5 = 0 then return 
@@ -105,32 +105,32 @@ CheckFallDamage
           if temp4 > 50 then temp4 = 50
           
           rem Apply fall damage (byte-safe clamp)
-          temp6 = PlayerHealth[temp1]
-          PlayerHealth[temp1] = PlayerHealth[temp1] - temp4
-          if PlayerHealth[temp1] > temp6 then PlayerHealth[temp1] = 0
+          temp6 = playerHealth[temp1]
+          playerHealth[temp1] = playerHealth[temp1] - temp4
+          if playerHealth[temp1] > temp6 then playerHealth[temp1] = 0
           
           rem Set recovery frames (proportional to damage, min 10, max 30)
           temp5 = temp4 / 2
           if temp5 < 10 then temp5 = 10
           if temp5 > 30 then temp5 = 30
-          PlayerRecoveryFrames[temp1] = temp5
+          playerRecoveryFrames[temp1] = temp5
           
           rem Set animation state to "recovering from fall"
           rem This is animation state 9 in the character animation sequences
-          rem PlayerState bits: [7:animation][4:attacking][2:jumping][1:guarding][0:facing]
+          rem playerState bits: [7:animation][4:attacking][2:jumping][1:guarding][0:facing]
           rem Set bits 7-5 to 9 (recovering animation)
-          temp6 = PlayerState[temp1] & %00011111 
+          temp6 = playerState[temp1] & %00011111 
           rem Keep lower 5 bits
           temp6 = temp6 | %10010000 
           rem Set animation to 9 (1001 in bits 7-4)
-          PlayerState[temp1] = temp6
+          playerState[temp1] = temp6
           
           rem Play fall damage sound effect
           temp1 = SoundFall
           gosub bank15 PlaySoundEffect
           
           rem Trigger color shift to darker shade (damage visual feedback)
-          rem This is handled by PlayerRendering.bas using PlayerRecoveryFrames
+          rem This is handled by PlayerRendering.bas using playerRecoveryFrames
           
           return
 
@@ -148,7 +148,7 @@ CheckFallDamage
           rem   temp2 = updated vertical momentum
 FallDamageApplyGravity
           rem Get character type
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Check for no-gravity characters
           if temp5 = 8 then return 
@@ -186,14 +186,14 @@ FallDamageApplyGravity
           rem velocity for fall damage calculation.
 CheckGroundCollision
           rem Get player Y position
-          temp3 = PlayerY[temp1]
+          temp3 = playerY[temp1]
           
           rem Check if player is at or below ground level
           rem Ground level is at Y = 176 (bottom of playfield, leaving room for sprite)
           if temp3 >= 176 then
                     rem Player hit ground
                     rem Clamp position to ground
-                    PlayerY[temp1] = 176
+                    playerY[temp1] = 176
                     
                     rem Check fall damage if moving downward
                     if temp2 > 0 then
@@ -229,7 +229,7 @@ CheckGroundCollision
           rem joystick up/down for Frooty.
 HandleFrootyVertical
           rem Check character type to confirm
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           if temp5 <> 8 then return 
           rem Not Frooty
           
@@ -238,16 +238,16 @@ HandleFrootyVertical
           rem Fall damage calculation based on character weight
           
           rem If joyup pressed: move up
-          rem PlayerY[temp1] = PlayerY[temp1] - 2
+          rem playerY[temp1] = playerY[temp1] - 2
           
           rem If joydown pressed: move down (replaces guard action)
-          rem PlayerY[temp1] = PlayerY[temp1] + 2
+          rem playerY[temp1] = playerY[temp1] + 2
           
           rem Clamp to screen bounds
           rem Byte-safe clamp: if wrapped below 0, the new value will exceed the old
-          temp7 = PlayerY[temp1]
-          if PlayerY[temp1] > temp7 then PlayerY[temp1] = 0
-          if PlayerY[temp1] > 176 then PlayerY[temp1] = 176
+          temp7 = playerY[temp1]
+          if playerY[temp1] > temp7 then playerY[temp1] = 0
+          if playerY[temp1] > 176 then playerY[temp1] = 176
           
           return
 
@@ -264,19 +264,19 @@ HandleFrootyVertical
           rem   Sets player momentum for diagonal downward swoop
 HandleHarpySwoopAttack
           rem Check character type to confirm
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           if temp5 <> 6 then return 
           rem Not Harpy
           
-          rem Get facing direction from PlayerState bit 0
-          temp6 = PlayerState[temp1] & 1
+          rem Get facing direction from playerState bit 0
+          temp6 = playerState[temp1] & 1
           
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
-          if temp6 = 0 then PlayerMomentumX[temp1] = 252 : goto SetVerticalMomentum
+          if temp6 = 0 then playerMomentumX[temp1] = 252 : goto SetVerticalMomentum
                     rem Facing right
-                    PlayerMomentumX[temp1] = 4
+                    playerMomentumX[temp1] = 4
 SetVerticalMomentum
           
           
@@ -288,10 +288,10 @@ SetVerticalMomentum
           
           rem Set animation state to "swooping attack"
           rem This could be animation state 10 or special attack animation
-          temp6 = PlayerState[temp1] & %00011111
+          temp6 = playerState[temp1] & %00011111
           temp6 = temp6 | %10100000 
           rem Animation state 10
-          PlayerState[temp1] = temp6
+          playerState[temp1] = temp6
           
           rem Spawn melee attack missile for swoop hit detection
           gosub bank15 SpawnMissile
@@ -311,7 +311,7 @@ SetVerticalMomentum
           rem   temp2 = safe fall distance in pixels
 CalculateSafeFallDistance
           rem Get character type and weight
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Check for fall damage immunity
           if temp5 = 0 then temp2 = 255 : return 

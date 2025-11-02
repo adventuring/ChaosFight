@@ -238,8 +238,6 @@ if PlayerX[1] < PlayerX[3] then
           rem Check Player 3 vs Player 4
 if SelectedChar3 = 255 then goto SkipP3vsP4
 if SelectedChar4 = 255 then goto SkipP3vsP4 
-          Distance = 0
-SkipP3vsP4
           if PlayerX[2] >= PlayerX[3] then Distance = PlayerX[2] - PlayerX[3] else Distance = PlayerX[3] - PlayerX[2]
 if Distance < 16 then 
 if PlayerX[2] < PlayerX[3] then 

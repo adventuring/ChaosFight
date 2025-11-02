@@ -293,33 +293,28 @@ DrawHealthBars
           gosub bank8 DrawHealthBarRow1
           
           rem Draw Player 3 & 4 bars if Quadtari active and player alive
-if ControllerStatus & SetQuadtariDetected then 
-if SelectedChar3 <> 255 && PlayerHealth[2] > 0 then 
-                              rem Player 3 health bar
+          if ControllerStatus & SetQuadtariDetected then goto DrawP3P4Health else goto SkipP3P4Health
+DrawP3P4Health
+          if SelectedChar3 <> 255 && PlayerHealth[2] > 0 then goto DrawP3Health else goto SkipP3Health
+DrawP3Health
+          rem Player 3 health bar
           let HealthBarLength = PlayerHealth[2] / 3
           if HealthBarLength > 32 then LET HealthBarLength = 32
-                              if temp6 then
-          COLUPF = ColGrey(8) 
-          rem Medium grey (B&W)
-
-          COLUPF = ColYellow(12) 
-          rem Bright yellow (Color)
+          if temp6 then COLUPF = ColGrey(8) else COLUPF = ColYellow(12)
+          rem Medium grey (B&W) or Bright yellow (Color)
+          gosub bank8 DrawHealthBarRow2
+SkipP3Health
           
-                              gosub bank8 DrawHealthBarRow2
-          
-                    
-if SelectedChar4 <> 255 && PlayerHealth[3] > 0 then 
-                              rem Player 4 health bar
+          if SelectedChar4 <> 255 && PlayerHealth[3] > 0 then goto DrawP4Health else goto SkipP4Health
+DrawP4Health
+          rem Player 4 health bar
           let HealthBarLength = PlayerHealth[3] / 3
           if HealthBarLength > 32 then LET HealthBarLength = 32
-                              if temp6 then
-          COLUPF = ColGrey(6) 
-          rem Dark-medium grey (B&W)
-
-          COLUPF = ColGreen(12) 
-          rem Bright green (Color)
-          
-                              gosub bank8 DrawHealthBarRow3
+          if temp6 then COLUPF = ColGrey(6) else COLUPF = ColGreen(12)
+          rem Dark-medium grey (B&W) or Bright green (Color)
+          gosub bank8 DrawHealthBarRow3
+SkipP4Health
+SkipP3P4Health
           
 #endif
           

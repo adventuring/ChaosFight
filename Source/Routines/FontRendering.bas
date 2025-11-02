@@ -94,10 +94,6 @@ if temp5 = 0 then
 LoadPlayer0Digit
           rem Load 16 bytes from font data into player0 sprite
           rem Using batariBasic data access pattern
-          dim Row = a
-          dim DataIndex = b
-          
-          DataIndex = DigitOffset
           player0:
           rem Row 0-15: Read from data tables
           %00111100 
@@ -123,10 +119,6 @@ end
 
 LoadPlayer1Digit
           rem Load 16 bytes from font data into player1 sprite
-          dim Row = a
-          dim DataIndex = b
-          
-          DataIndex = DigitOffset
           player1:
           rem Row 0-15: Read from data tables
           %00111100 

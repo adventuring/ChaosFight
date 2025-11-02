@@ -34,14 +34,14 @@ CharacterSelectInputLoop
           if qtcontroller then goto CharacterSelectHandleQuadtari
           
           rem Handle Player 1 input (joy0 on even frames)
-          if joy0left then goto CharacterSelectPlayer0Left
+          if joy0left then CharacterSelectPlayer0Left
           goto CharacterSelectSkipPlayer0Left
 CharacterSelectPlayer0Left
           let playerChar[0] = playerChar[0] - 1
           if playerChar[0] > MaxCharacter then playerChar[0] = MaxCharacter
           let playerLocked[0] = 0
 CharacterSelectSkipPlayer0Left
-          if joy0right then goto CharacterSelectPlayer0Right
+          if joy0right then CharacterSelectPlayer0Right
           goto CharacterSelectSkipPlayer0Right
 CharacterSelectPlayer0Right
           let playerChar[0] = playerChar[0] + 1
@@ -55,14 +55,14 @@ CharacterSelectPlayer0LockClearDone
           let if joy0fire then playerLocked[0] = 1
 
           rem Handle Player 2 input (joy1 on even frames)
-          if joy1left then goto CharacterSelectPlayer1Left
+          if joy1left then CharacterSelectPlayer1Left
           goto CharacterSelectSkipPlayer1Left
 CharacterSelectPlayer1Left
           let playerChar[1] = playerChar[1] - 1
           if playerChar[1] > MaxCharacter then playerChar[1] = MaxCharacter
           let playerLocked[1] = 0
 CharacterSelectSkipPlayer1Left
-          if joy1right then goto CharacterSelectPlayer1Right
+          if joy1right then CharacterSelectPlayer1Right
           goto CharacterSelectSkipPlayer1Right
 CharacterSelectPlayer1Right
           let playerChar[1] = playerChar[1] + 1
@@ -80,17 +80,17 @@ CharacterSelectPlayer1LockClearDone
 
 CharacterSelectHandleQuadtari
           rem Handle Player 3 input (joy0 on odd frames)
-          if controllerStatus & SetQuadtariDetected then goto CharacterSelectHandlePlayer3
+          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer3
           goto CharacterSelectSkipPlayer3
 CharacterSelectHandlePlayer3
-          if joy0left then goto CharacterSelectPlayer3Left
+          if joy0left then CharacterSelectPlayer3Left
           goto CharacterSelectSkipPlayer3Left
 CharacterSelectPlayer3Left
           let playerChar[2] = playerChar[2] - 1
           if playerChar[2] > MaxCharacter then playerChar[2] = MaxCharacter
           let playerLocked[2] = 0
 CharacterSelectSkipPlayer3Left
-          if joy0right then goto CharacterSelectPlayer3Right
+          if joy0right then CharacterSelectPlayer3Right
           goto CharacterSelectSkipPlayer3Right
 CharacterSelectPlayer3Right
           let playerChar[2] = playerChar[2] + 1
@@ -105,17 +105,17 @@ CharacterSelectPlayer2LockClearDone
 CharacterSelectSkipPlayer3
 
           rem Handle Player 4 input (joy1 on odd frames)
-          if controllerStatus & SetQuadtariDetected then goto CharacterSelectHandlePlayer4
+          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer4
           goto CharacterSelectSkipPlayer4
 CharacterSelectHandlePlayer4
-          if joy1left then goto CharacterSelectPlayer4Left
+          if joy1left then CharacterSelectPlayer4Left
           goto CharacterSelectSkipPlayer4Left
 CharacterSelectPlayer4Left
           let playerChar[3] = playerChar[3] - 1
           if playerChar[3] > MaxCharacter then playerChar[3] = MaxCharacter
           let playerLocked[3] = 0
 CharacterSelectSkipPlayer4Left
-          if joy1right then goto CharacterSelectPlayer4Right
+          if joy1right then CharacterSelectPlayer4Right
           goto CharacterSelectSkipPlayer4Right
 CharacterSelectPlayer4Right
           let playerChar[3] = playerChar[3] + 1
@@ -154,7 +154,7 @@ CharacterSelectCheckReady
           rem Count locked players
           if playerLocked[0] then readyCount = readyCount + 1
           if playerLocked[1] then readyCount = readyCount + 1
-          if controllerStatus & SetQuadtariDetected then goto CharacterSelectCountQuadtari
+          if controllerStatus & SetQuadtariDetected then CharacterSelectCountQuadtari
           goto CharacterSelectSkipQuadtari
 CharacterSelectCountQuadtari
           if playerLocked[2] then readyCount = readyCount + 1
@@ -162,11 +162,11 @@ CharacterSelectCountQuadtari
 CharacterSelectSkipQuadtari
 
           rem Check if enough players are ready
-          if controllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
-          if playerLocked[0] then goto CharacterSelectFinish
+          if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReady
+          if playerLocked[0] then CharacterSelectFinish
           goto CharacterSelectReadyDone
 CharacterSelectQuadtariReady
-          let if readyCount > = 2 then goto CharacterSelectFinish
+          let if readyCount > = 2 then CharacterSelectFinish
 CharacterSelectReadyDone
           
           return

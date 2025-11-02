@@ -24,11 +24,11 @@ HandleConsoleSwitches
           temp2 = 0 
           rem Check Player 1 buttons
           gosub CheckEnhancedPause
-          if !temp1 then goto SkipPlayer1Pause
+          if !temp1 then SkipPlayer1Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
           if gameState = 0 then gameState = 1
-          if gameState = 0 then goto Player1PauseDone
+          if gameState = 0 then Player1PauseDone
           gameState = 0
 Player1PauseDone
           rem Debounce - wait for button release
@@ -40,11 +40,11 @@ SkipPlayer1Pause
           temp2 = 1 
           rem Check Player 2 buttons
           gosub CheckEnhancedPause
-          if !temp1 then goto SkipPlayer2Pause
+          if !temp1 then SkipPlayer2Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
           if gameState = 0 then gameState = 1
-          if gameState = 0 then goto Player2PauseDone
+          if gameState = 0 then Player2PauseDone
           gameState = 0
 Player2PauseDone
           rem Debounce - wait for button release
@@ -71,7 +71,7 @@ SkipPlayer2Pause
 CheckColorBWToggle
           rem Check if Color/B&W switch state has changed
           temp6 = switchbw
-          if temp6 = colorBWPrevious then goto SkipColorBWChange
+          if temp6 = colorBWPrevious then SkipColorBWChange
           gosub bank14 DetectControllers
           colorBWPrevious = switchbw
 SkipColorBWChange

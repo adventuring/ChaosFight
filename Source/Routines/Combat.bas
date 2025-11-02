@@ -31,14 +31,14 @@ CheckAttackHit
   gosub CalculateAttackHitbox attacker_id
   
   rem Check if defender is in hitbox
-          if playerX[defender_id] < hitbox_left then goto HitboxCheckDone
-          if playerX[defender_id] > hitbox_right then goto HitboxCheckDone
-          if playerY[defender_id] < hitbox_top then goto HitboxCheckDone
-          if playerY[defender_id] > hitbox_bottom then goto HitboxCheckDone
+          if playerX[defender_id] < hitbox_left then HitboxCheckDone
+          if playerX[defender_id] > hitbox_right then HitboxCheckDone
+          if playerY[defender_id] < hitbox_top then HitboxCheckDone
+          if playerY[defender_id] > hitbox_bottom then HitboxCheckDone
     let hit = 1
           goto HitboxCheckDone
 HitboxCheckDone
-          let if hit  = 0 then goto NoHit
+          let if hit  = 0 then NoHit
     let hit = 0
 NoHit
   
@@ -108,10 +108,10 @@ ProcessAttackerAttacks
   rem Attack each defender
   for defender = 0 to 3
     rem Skip if defender is attacker
-    if defender = attacker_id then goto NextDefender
+    if defender = attacker_id then NextDefender
     
     rem Skip if defender is dead
-    if playerHealth[defender] <= 0 then goto NextDefender
+    if playerHealth[defender] <= 0 then NextDefender
     
     rem Check if attack hits
     gosub CheckAttackHit attacker_id, defender
@@ -126,7 +126,7 @@ rem Process all attacks for all players
 ProcessAllAttacks
   for attacker = 0 to 3
     rem Skip if attacker is dead
-    if playerHealth[attacker] <= 0 then goto NextAttacker
+    if playerHealth[attacker] <= 0 then NextAttacker
     
     gosub ProcessAttackerAttacks attacker
     
@@ -204,7 +204,7 @@ rem Update player guard state
 rem Input: player_id
 UpdatePlayerGuard
   rem Decrement guard timer if active (1 second maximum = 60 frames)
-          if (playerState[player_id] & %00000010) = 0 then goto SkipGuardUpdate
+          if (playerState[player_id] & %00000010) = 0 then SkipGuardUpdate
     let guard_timer = guard_timer - 1
           let if guard_timer <= 0 then playerState[player_id] = playerState[player_id] & %11111101
     rem Guard visual effect: flashing light cyan ColCyan(12) NTSC/PAL, Cyan SECAM

@@ -34,18 +34,18 @@ AuthorMainLoop
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then goto AuthorPreambleComplete
           if joy1fire then goto AuthorPreambleComplete
-          if controllerStatus & SetQuadtariDetected then goto AuthorCheckQuadtari
+          if controllerStatus & SetQuadtariDetected then AuthorCheckQuadtari
           goto AuthorSkipQuadtari
 AuthorCheckQuadtari
-          if !INPT0{7} then goto AuthorPreambleComplete
-          if !INPT2{7} then goto AuthorPreambleComplete
+          if !INPT0{7} then AuthorPreambleComplete
+          if !INPT2{7} then AuthorPreambleComplete
 AuthorSkipQuadtari
           
           rem Update music
           gosub bank16 UpdateMusic
           
           rem Auto-advance after music completes + 0.5s
-          if preambleTimer > 30 && ! musicPlaying then goto AuthorPreambleComplete
+          if preambleTimer > 30 && ! musicPlaying then AuthorPreambleComplete
           
           rem Increment timer
           let preambleTimer = preambleTimer + 1

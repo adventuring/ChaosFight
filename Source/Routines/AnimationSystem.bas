@@ -12,25 +12,25 @@ UpdateCharacterAnimations
           rem Update animation for each active player
           rem Skip eliminated players to avoid unnecessary processing
           let temp1 = 0  : rem Player index (0-3)
-          if PlayersEliminated & 1 then goto AnimationSkipPlayer0
+          if PlayersEliminated & 1 then AnimationSkipPlayer0
           gosub UpdatePlayerAnimation
           rem Player 1
 AnimationSkipPlayer0
           let temp1 = 1  : rem Player index (0-3)
-          if PlayersEliminated & 2 then goto AnimationSkipPlayer1
+          if PlayersEliminated & 2 then AnimationSkipPlayer1
           gosub UpdatePlayerAnimation
           rem Player 2
 AnimationSkipPlayer1
-          if ControllerStatus & SetQuadtariDetected then goto AnimationUpdatePlayer3
+          if ControllerStatus & SetQuadtariDetected then AnimationUpdatePlayer3
           goto AnimationSkipPlayer3
 AnimationUpdatePlayer3
           let temp1 = 2  : rem Player index (0-3)
-          if PlayersEliminated & 4 then goto AnimationSkipPlayer2
+          if PlayersEliminated & 4 then AnimationSkipPlayer2
           gosub UpdatePlayerAnimation
           rem Player 3
 AnimationSkipPlayer2
           let temp1 = 3  : rem Player index (0-3)
-          if PlayersEliminated & 8 then goto AnimationSkipPlayer3
+          if PlayersEliminated & 8 then AnimationSkipPlayer3
           gosub UpdatePlayerAnimation
           rem Player 4
 AnimationSkipPlayer3
@@ -51,7 +51,7 @@ UpdatePlayerAnimation
           let AnimationCounter[temp1] = AnimationCounter[temp1] + 1
           
           rem Check if time to advance animation frame (every AnimationFrameDelay frames)
-          if AnimationCounter[temp1] >= AnimationFrameDelay then goto AdvanceFrame
+          if AnimationCounter[temp1] >= AnimationFrameDelay then AdvanceFrame
           goto SkipAdvance
 AdvanceFrame
           let AnimationCounter[temp1] = 0
@@ -68,7 +68,7 @@ AdvanceAnimationFrame
           let CurrentAnimationFrame[temp1] = CurrentAnimationFrame[temp1] + 1
           
           rem Check if we have completed the current action (8 frames per action)
-          if CurrentAnimationFrame[temp1] >= FramesPerSequence then goto LoopAnimation
+          if CurrentAnimationFrame[temp1] >= FramesPerSequence then LoopAnimation
           goto UpdateSprite
 LoopAnimation
           let CurrentAnimationFrame[temp1] = 0
@@ -214,8 +214,8 @@ IsPlayerWalking
           rem Output: temp2 = 1 if attacking, 0 if not
 IsPlayerAttacking
           let temp2 = 0
-          if CurrentAnimationSeq[temp1] < AnimAttackWindup then goto NotAttacking
-          if CurrentAnimationSeq[temp1] > AnimAttackRecovery then goto NotAttacking
+          if CurrentAnimationSeq[temp1] < AnimAttackWindup then NotAttacking
+          if CurrentAnimationSeq[temp1] > AnimAttackRecovery then NotAttacking
           let temp2 = 1
 NotAttacking
           return
@@ -233,8 +233,8 @@ IsPlayerHit
           rem Output: temp2 = 1 if jumping, 0 if not
 IsPlayerJumping
           let temp2 = 0
-          if CurrentAnimationSeq[temp1] = AnimJumping then goto IsJumping
-          if CurrentAnimationSeq[temp1] = AnimFalling then goto IsJumping
+          if CurrentAnimationSeq[temp1] = AnimJumping then IsJumping
+          if CurrentAnimationSeq[temp1] = AnimFalling then IsJumping
           goto NotJumping
 IsJumping
           let temp2 = 1

@@ -6,7 +6,7 @@ LevelSelect1Loop
           if joy0left then selectedLevel = selectedLevel - 1 : if selectedLevel > NumLevels then selectedLevel = NumLevels
           if joy0right then selectedLevel = selectedLevel + 1 : if selectedLevel > NumLevels then selectedLevel = 0
           
-          if selectedLevel = 0 then goto Level0Sprites
+          if selectedLevel = 0 then Level0Sprites
           goto Level1Sprites
 
 Level0Sprites
@@ -21,7 +21,7 @@ Level1Sprites
 
 SpritesSet
           
-          if joy0fire then goto StartGame1
+          if joy0fire then StartGame1
           
           drawscreen
           goto LevelSelect1Loop

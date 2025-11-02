@@ -149,7 +149,7 @@ SetChar15
 DrawParadeCharacterSprite
           rem Draw running animation sprite for parade character
           rem Simple running animation with alternating leg positions
-          if (titleParadeTimer & 8) then goto DrawParadeFrame1
+          if (titleParadeTimer & 8) then DrawParadeFrame1
           rem Frame 2 - right leg forward
                     player0:
                     %00011000

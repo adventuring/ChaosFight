@@ -123,12 +123,12 @@ CheckPlayerCollision
           rem temp2=player2 X, temp3=player2 Y
           
           rem Check X collision (8 pixel width)
-          let if temp2 + 8 < = temp5 then goto NoCollision
-          let if temp2 > = temp5 + 8 then goto NoCollision
+          let if temp2 + 8 < = temp5 then NoCollision
+          let if temp2 > = temp5 + 8 then NoCollision
           
           rem Check Y collision (16 pixel height)
-          let if temp3 + 16 < = temp6 then goto NoCollision
-          let if temp3 > = temp6 + 16 then goto NoCollision
+          let if temp3 + 16 < = temp6 then NoCollision
+          let if temp3 > = temp6 + 16 then NoCollision
           
           rem Collision detected
           let temp3  = 1
@@ -149,8 +149,8 @@ CheckWallCollision
           rem temp2=X, temp3=Y
           
           rem Check X collision with wall
-          let if temp2 + 8 < = temp2 then goto NoWallCollision
-          let if temp2 > = temp2 + 8 then goto NoWallCollision
+          let if temp2 + 8 < = temp2 then NoWallCollision
+          let if temp2 > = temp2 + 8 then NoWallCollision
           
           rem Wall collision detected
           let temp3  = 1

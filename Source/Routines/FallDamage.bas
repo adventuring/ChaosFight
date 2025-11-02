@@ -274,7 +274,7 @@ HandleHarpySwoopAttack
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
-          if temp6 = 0 then goto SetHorizontalMomentumRight
+          if temp6 = 0 then SetHorizontalMomentumRight
           rem Facing left: set negative momentum (252 = -4 in signed 8-bit)
           playerMomentumX[temp1] = 252
           goto SetVerticalMomentum
@@ -318,11 +318,11 @@ CalculateSafeFallDistance
           temp5 = playerChar[temp1]
           
           rem Check for fall damage immunity
-          if temp5 = 0 then goto SetInfiniteFallDistance
+          if temp5 = 0 then SetInfiniteFallDistance
           rem Bernie: infinite
-          if temp5 = 13 then goto SetInfiniteFallDistance
+          if temp5 = 13 then SetInfiniteFallDistance
           rem Robo Tito: infinite
-          if temp5 = 8 then goto SetInfiniteFallDistance 
+          if temp5 = 8 then SetInfiniteFallDistance 
           rem Frooty: no falling
           goto CalculateFallDistanceNormal
 SetInfiniteFallDistance

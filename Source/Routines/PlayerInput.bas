@@ -39,15 +39,15 @@ InputHandleAllPlayers
           
           rem Even frame: Handle Players 1 & 2 - only if alive  
           let temp1 = 0 : gosub IsPlayerAlive
-          if temp2 = 0 then goto InputSkipPlayer0Input
-          if (PlayerState[0] & 8) <> 0 then goto InputSkipPlayer0Input
+          if temp2 = 0 then InputSkipPlayer0Input
+          if (PlayerState[0] & 8) <> 0 then InputSkipPlayer0Input
           let temp1 = 0 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer0Input
           
           let temp1 = 1 : gosub IsPlayerAlive
-          if temp2 = 0 then goto InputSkipPlayer1Input
-          if (PlayerState[1] & 8) <> 0 then goto InputSkipPlayer1Input
+          if temp2 = 0 then InputSkipPlayer1Input
+          if (PlayerState[1] & 8) <> 0 then InputSkipPlayer1Input
           goto InputHandlePlayer1
           
           goto InputSkipPlayer1Input
@@ -63,19 +63,19 @@ InputSkipPlayer1Input
 
 InputHandleQuadtariPlayers
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and alive)
-          if !(ControllerStatus & SetQuadtariDetected) then goto InputSkipPlayer3Input
-          if SelectedChar3 = 0 then goto InputSkipPlayer3Input
+          if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input
+          if SelectedChar3 = 0 then InputSkipPlayer3Input
                     temp1 = 2 : gosub IsPlayerAlive
-          if temp2 = 0 then goto InputSkipPlayer3Input
-          if (PlayerState[2] & 8) <> 0 then goto InputSkipPlayer3Input
+          if temp2 = 0 then InputSkipPlayer3Input
+          if (PlayerState[2] & 8) <> 0 then InputSkipPlayer3Input
           let temp1 = 2 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer3Input
-          if !(ControllerStatus & SetQuadtariDetected) then goto InputSkipPlayer4Input
-          if SelectedChar4 = 0 then goto InputSkipPlayer4Input
+          if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input
+          if SelectedChar4 = 0 then InputSkipPlayer4Input
                     temp1 = 3 : gosub IsPlayerAlive
-          if temp2 = 0 then goto InputSkipPlayer4Input
-          if (PlayerState[3] & 8) <> 0 then goto InputSkipPlayer4Input
+          if temp2 = 0 then InputSkipPlayer4Input
+          if (PlayerState[3] & 8) <> 0 then InputSkipPlayer4Input
           let temp1 = 3 : gosub InputHandleRightPortPlayer
           
 InputSkipPlayer4Input
@@ -94,8 +94,8 @@ InputHandleLeftPortPlayer
           rem Process left/right movement (with playfield collision for flying characters)
           rem Frooty (8) and Dragonet (2) need collision checks for horizontal movement
           let temp5 = PlayerChar[temp1]
-          if temp5 = 8 then goto FrootyDragonetLeftRightMovement
-          if temp5 = 2 then goto FrootyDragonetLeftRightMovement
+          if temp5 = 8 then FrootyDragonetLeftRightMovement
+          if temp5 = 2 then FrootyDragonetLeftRightMovement
           
           rem Standard horizontal movement (no collision check)
           if joy0left then PlayerX[temp1] = PlayerX[temp1] - 1 : PlayerState[temp1] = PlayerState[temp1] & NOT 1 : PlayerMomentumX[temp1] = 255
@@ -105,7 +105,7 @@ InputHandleLeftPortPlayer
 FrootyDragonetLeftRightMovement
           rem Flying characters: check playfield collision before horizontal movement
           rem Check left movement
-          if joy0left then goto CheckLeftCollision
+          if joy0left then CheckLeftCollision
           goto CheckRightMovement
 CheckLeftCollision
           rem Convert player position to playfield coordinates
@@ -125,14 +125,14 @@ CheckLeftCollision
           let temp6 = temp4 / pfrowheight
           rem temp6 = top row
           rem Check if blocked in current row
-          if pfread(temp3, temp6) then goto CheckRightMovement
+          if pfread(temp3, temp6) then CheckRightMovement
           rem Blocked, cannot move left
           rem Also check bottom row (feet)
           let temp4 = temp4 + 16
           let temp6 = temp4 / pfrowheight
-          if temp6 >= pfrows then goto MoveLeftOK
+          if temp6 >= pfrows then MoveLeftOK
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then goto CheckRightMovement
+          if pfread(temp3, temp6) then CheckRightMovement
           rem Blocked at bottom too
 MoveLeftOK
           let PlayerX[temp1] = PlayerX[temp1] - 1
@@ -158,14 +158,14 @@ CheckRightMovement
           let temp6 = temp4 / pfrowheight
           rem temp6 = top row
           rem Check if blocked in current row
-          if pfread(temp3, temp6) then goto SkipFlyingLeftRight
+          if pfread(temp3, temp6) then SkipFlyingLeftRight
           rem Blocked, cannot move right
           rem Also check bottom row (feet)
           let temp4 = temp4 + 16
           let temp6 = temp4 / pfrowheight
-          if temp6 >= pfrows then goto MoveRightOK
+          if temp6 >= pfrows then MoveRightOK
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then goto SkipFlyingLeftRight
+          if pfread(temp3, temp6) then SkipFlyingLeftRight
           rem Blocked at bottom too
 MoveRightOK
           let PlayerX[temp1] = PlayerX[temp1] + 1
@@ -186,10 +186,10 @@ SkipFlyingLeftRight
           rem Switch MethHound -> Shamone
           
           rem Check Bernie fall-through (Character 0)
-          if PlayerChar[temp1] = 0 then goto BernieFallThrough
+          if PlayerChar[temp1] = 0 then BernieFallThrough
           
           rem Check Harpy flap (Character 6)
-          if PlayerChar[temp1] = 6 then goto HarpyFlap
+          if PlayerChar[temp1] = 6 then HarpyFlap
           
           rem For all other characters, UP is jump
           goto NormalJumpInput
@@ -226,24 +226,24 @@ SkipUpInputHandling
           rem Bernie and Harpy also use enhanced buttons for jump
           
           rem Check Genesis/Joy2b+ Button C/II (INPT0 for Player 1, INPT2 for Player 3)
-          if temp1 = 0 then goto CheckPlayer1Buttons
+          if temp1 = 0 then CheckPlayer1Buttons
           goto InputSkipPlayer1Buttons
 CheckPlayer1Buttons
-          if !ControllerStatus{0} then goto CheckPlayer1Joy2bPlus
+          if !ControllerStatus{0} then CheckPlayer1Joy2bPlus
           if !INPT0{7} then temp3 = 1
           goto InputSkipPlayer1Buttons
 CheckPlayer1Joy2bPlus
-          if !ControllerStatus{1} then goto InputSkipPlayer1Buttons
+          if !ControllerStatus{1} then InputSkipPlayer1Buttons
           if !INPT0{7} then temp3 = 1
 InputSkipPlayer1Buttons
-          if temp1 = 2 then goto CheckPlayer3Buttons
+          if temp1 = 2 then CheckPlayer3Buttons
           goto InputSkipPlayer3Buttons
 CheckPlayer3Buttons
-          if !ControllerStatus{0} then goto CheckPlayer3Joy2bPlus
+          if !ControllerStatus{0} then CheckPlayer3Joy2bPlus
           if !INPT0{7} then temp3 = 1
           goto InputSkipPlayer3Buttons
 CheckPlayer3Joy2bPlus
-          if !ControllerStatus{1} then goto InputSkipPlayer3Buttons
+          if !ControllerStatus{1} then InputSkipPlayer3Buttons
           if !INPT0{7} then temp3 = 1
 InputSkipPlayer3Buttons
 EnhancedJumpDone0
@@ -274,7 +274,7 @@ InputSkipLeftPortJump
           
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
-          if !joy0fire then goto InputSkipLeftPortAttack
+          if !joy0fire then InputSkipLeftPortAttack
           if (PlayerState[temp1] & 1) <> 0 then InputSkipLeftPortAttack
           let temp4 = PlayerChar[temp1]
           if temp4 = 31 then temp4 = 15
@@ -294,8 +294,8 @@ InputHandleRightPortPlayer
           rem Process left/right movement (with playfield collision for flying characters)
           rem Frooty (8) and Dragonet (2) need collision checks for horizontal movement
           let temp5 = PlayerChar[temp1]
-          if temp5 = 8 then goto FrootyDragonetLeftRightMovementRight
-          if temp5 = 2 then goto FrootyDragonetLeftRightMovementRight
+          if temp5 = 8 then FrootyDragonetLeftRightMovementRight
+          if temp5 = 2 then FrootyDragonetLeftRightMovementRight
           
           rem Standard horizontal movement (no collision check)
           if joy1left then
@@ -314,7 +314,7 @@ InputHandleRightPortPlayer
 FrootyDragonetLeftRightMovementRight
           rem Flying characters: check playfield collision before horizontal movement
           rem Check left movement
-          if joy1left then goto CheckLeftCollisionRight
+          if joy1left then CheckLeftCollisionRight
           goto CheckRightMovementRight
 CheckLeftCollisionRight
           rem Convert player position to playfield coordinates
@@ -334,14 +334,14 @@ CheckLeftCollisionRight
           let temp6 = temp4 / pfrowheight
           rem temp6 = top row
           rem Check if blocked in current row
-          if pfread(temp3, temp6) then goto CheckRightMovementRight
+          if pfread(temp3, temp6) then CheckRightMovementRight
           rem Blocked, cannot move left
           rem Also check bottom row (feet)
           let temp4 = temp4 + 16
           let temp6 = temp4 / pfrowheight
-          if temp6 >= pfrows then goto MoveLeftOKRight
+          if temp6 >= pfrows then MoveLeftOKRight
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then goto CheckRightMovementRight
+          if pfread(temp3, temp6) then CheckRightMovementRight
           rem Blocked at bottom too
 MoveLeftOKRight
           let PlayerX[temp1] = PlayerX[temp1] - 1
@@ -367,14 +367,14 @@ CheckRightMovementRight
           let temp6 = temp4 / pfrowheight
           rem temp6 = top row
           rem Check if blocked in current row
-          if pfread(temp3, temp6) then goto SkipFlyingLeftRightRight
+          if pfread(temp3, temp6) then SkipFlyingLeftRightRight
           rem Blocked, cannot move right
           rem Also check bottom row (feet)
           let temp4 = temp4 + 16
           let temp6 = temp4 / pfrowheight
-          if temp6 >= pfrows then goto MoveRightOKRight
+          if temp6 >= pfrows then MoveRightOKRight
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then goto SkipFlyingLeftRightRight
+          if pfread(temp3, temp6) then SkipFlyingLeftRightRight
           rem Blocked at bottom too
 MoveRightOKRight
           let PlayerX[temp1] = PlayerX[temp1] + 1
@@ -396,10 +396,10 @@ SkipFlyingLeftRightRight
           rem Switch MethHound -> Shamone
           
           rem Check Bernie fall-through (Character 0)
-          if PlayerChar[temp1] = 0 then goto BernieFallThroughRight
+          if PlayerChar[temp1] = 0 then BernieFallThroughRight
           
           rem Check Harpy flap (Character 6)
-          if PlayerChar[temp1] = 6 then goto HarpyFlapRight
+          if PlayerChar[temp1] = 6 then HarpyFlapRight
           
           rem For all other characters, UP is jump
           goto NormalJumpInputRight
@@ -436,24 +436,24 @@ SkipUpInputHandlingRight
           rem Bernie and Harpy also use enhanced buttons for jump
           
           rem Check Genesis/Joy2b+ Button C/II (INPT2 for Player 2, INPT2 for Player 4)
-          if temp1 = 1 then goto CheckPlayer2Buttons
+          if temp1 = 1 then CheckPlayer2Buttons
           goto SkipPlayer2Buttons
 CheckPlayer2Buttons
-          if !(ControllerStatus & $04) then goto CheckPlayer2Joy2bPlus
+          if !(ControllerStatus & $04) then CheckPlayer2Joy2bPlus
           if !(INPT2 & $80) then temp3 = 1
           goto SkipPlayer2Buttons
 CheckPlayer2Joy2bPlus
-          if !(ControllerStatus & $08) then goto SkipPlayer2Buttons
+          if !(ControllerStatus & $08) then SkipPlayer2Buttons
           if !(INPT2 & $80) then temp3 = 1
 SkipPlayer2Buttons
-          if temp1 = 3 then goto CheckPlayer4Buttons
+          if temp1 = 3 then CheckPlayer4Buttons
           goto SkipPlayer4Buttons
 CheckPlayer4Buttons
-          if !RightPortGenesis then goto CheckPlayer4Joy2bPlus
+          if !RightPortGenesis then CheckPlayer4Joy2bPlus
           if !INPT2{7} then temp3 = 1
           goto SkipPlayer4Buttons
 CheckPlayer4Joy2bPlus
-          if !RightPortJoy2bPlus then goto SkipPlayer4Buttons
+          if !RightPortJoy2bPlus then SkipPlayer4Buttons
           if !INPT2{7} then temp3 = 1
 SkipPlayer4Buttons
 EnhancedJumpDone1
@@ -486,7 +486,7 @@ InputSkipRightPortJump
           
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
-          if !joy1fire then goto InputSkipRightPortAttack
+          if !joy1fire then InputSkipRightPortAttack
           if (PlayerState[temp1] & 1) <> 0 then InputSkipRightPortAttack
           let temp4 = PlayerChar[temp1] 
           if temp4 = 31 then temp4 = 15
@@ -509,8 +509,8 @@ HandlePauseInput
           if switchselect then temp1 = 1
           
           rem Check Joy2b+ Button III (INPT1 for Player 1, INPT3 for Player 2)
-          if LeftPortJoy2bPlus then goto CheckJoy2bButtons
-          if RightPortJoy2bPlus then goto CheckJoy2bButtons
+          if LeftPortJoy2bPlus then CheckJoy2bButtons
+          if RightPortJoy2bPlus then CheckJoy2bButtons
           goto Joy2bPauseDone
 CheckJoy2bButtons
           if !INPT1{7} then temp1 = 1 
@@ -520,8 +520,8 @@ CheckJoy2bButtons
 Joy2bPauseDone
           
           rem Debounce: only toggle if button just pressed (was 0, now 1)
-          if temp1 = 0 then goto SkipPauseToggle
-          if PauseButtonPrev then goto SkipPauseToggle
+          if temp1 = 0 then SkipPauseToggle
+          if PauseButtonPrev then SkipPauseToggle
           let GameState  = GameState ^ 1
           rem Toggle pause (0<->1)
 SkipPauseToggle

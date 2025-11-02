@@ -66,7 +66,7 @@ BernieJump
             rem Floor exists directly below feet, check if it is only 1 row deep
           rem Special case: if at bottom row (pfrows - 1), check top row (0) for wrap
           rem For pfres=8: pfrows = 8, so bottom row is 7
-          let if temp6 > = pfrows - 1 then goto BernieCheckBottomWrap
+          let if temp6 > = pfrows - 1 then BernieCheckBottomWrap
           rem At or beyond bottom row, check wrap
           
           rem Normal case: Check row below that (temp6 + 1)

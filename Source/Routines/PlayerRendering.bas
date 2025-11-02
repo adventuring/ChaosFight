@@ -41,17 +41,17 @@ SetSpritePositions
           rem Missiles are available for projectiles since players use proper sprites
           
           rem Set Player 3 position (multisprite)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Position
-          if selectedChar3 = 255 then goto SkipPlayer3Position
-          if ! playerHealth[2] then goto SkipPlayer3Position
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3Position
+          if selectedChar3 = 255 then SkipPlayer3Position
+          if ! playerHealth[2] then SkipPlayer3Position
                     player2x = playerX[2]
                     player2y = playerY[2]
 SkipPlayer3Position
           
           rem Set Player 4 position (multisprite)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Position
-          if selectedChar4 = 255 then goto SkipPlayer4Position
-          if ! playerHealth[3] then goto SkipPlayer4Position
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer4Position
+          if selectedChar4 = 255 then SkipPlayer4Position
+          if ! playerHealth[3] then SkipPlayer4Position
                     player3x = playerX[3]
                     player3y = playerY[3]
 SkipPlayer4Position
@@ -74,7 +74,7 @@ SkipPlayer4Position
           temp6 = frame & 1
           rem 0 = even frame (Players 0-1), 1 = odd frame (Players 2-3)
           
-          if temp6 = 0 then goto RenderMissilesEvenFrame
+          if temp6 = 0 then RenderMissilesEvenFrame
           
           rem Odd frame: Render Players 2-3 missiles
           rem Game Player 2 missile (missile0)
@@ -133,10 +133,10 @@ SetPlayerSprites
           rem Effective B&W state
           
           rem Set Player 1 color and sprite
-          if temp6 then goto Player1BWMode
+          if temp6 then Player1BWMode
           
           rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[0] > 0 then goto Player1HurtColor
+          if playerRecoveryFrames[0] > 0 then Player1HurtColor
           rem Normal: solid player color
           let temp1 = playerChar[0]
           let temp2 = 0
@@ -161,10 +161,10 @@ Player1ColorDone
           gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
-          if temp6 then goto Player2BWMode
+          if temp6 then Player2BWMode
           
           rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[1] > 0 then goto Player2HurtColor
+          if playerRecoveryFrames[1] > 0 then Player2HurtColor
           rem Normal: solid player color
           let temp1 = playerChar[1]
           let temp2 = 0
@@ -193,7 +193,7 @@ Player2ColorDone
           rem No color inheritance issues with proper multisprite implementation
           
           rem Set playfield color based on B&W mode
-          if temp6 then goto Player3BWColor
+          if temp6 then Player3BWColor
           goto Player3ColorMode
 Player3BWColor
           COLUPF = ColGrey(14)
@@ -226,35 +226,35 @@ Player4Color
 DisplayHealth
           rem Flash Player 1 sprite if health is low (but not during recovery)
           rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[0] >= PlayerHealthLowThreshold then goto SkipPlayer0Flash
-          if playerRecoveryFrames[0] <> 0 then goto SkipPlayer0Flash
+          if playerHealth[0] >= PlayerHealthLowThreshold then SkipPlayer0Flash
+          if playerRecoveryFrames[0] <> 0 then SkipPlayer0Flash
           if frame & 8 then player0x = 200 
           rem Hide sprite
 SkipPlayer0Flash
 
           rem Flash Player 2 sprite if health is low
           rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[1] >= PlayerHealthLowThreshold then goto SkipPlayer1Flash
-          if playerRecoveryFrames[1] <> 0 then goto SkipPlayer1Flash
+          if playerHealth[1] >= PlayerHealthLowThreshold then SkipPlayer1Flash
+          if playerRecoveryFrames[1] <> 0 then SkipPlayer1Flash
                     if frame & 8 then player1x = 200
 SkipPlayer1Flash
 
           rem Flash Player 3 sprite if health is low (but alive)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Flash
-          if selectedChar3 = 255 then goto SkipPlayer3Flash
-          if ! playerHealth[2] then goto SkipPlayer3Flash
-          if playerHealth[2] >= PlayerHealthLowThreshold then goto SkipPlayer3Flash
-          if playerRecoveryFrames[2] <> 0 then goto SkipPlayer3Flash
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3Flash
+          if selectedChar3 = 255 then SkipPlayer3Flash
+          if ! playerHealth[2] then SkipPlayer3Flash
+          if playerHealth[2] >= PlayerHealthLowThreshold then SkipPlayer3Flash
+          if playerRecoveryFrames[2] <> 0 then SkipPlayer3Flash
           if frame & 8 then player2x = 200 
           rem Player 3 uses player2 sprite
 SkipPlayer3Flash
 
           rem Flash Player 4 sprite if health is low (but alive)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Flash
-          if selectedChar4 = 255 then goto SkipPlayer4Flash
-          if ! playerHealth[3] then goto SkipPlayer4Flash
-          if playerHealth[3] >= PlayerHealthLowThreshold then goto SkipPlayer4Flash
-          if playerRecoveryFrames[3] <> 0 then goto SkipPlayer4Flash
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer4Flash
+          if selectedChar4 = 255 then SkipPlayer4Flash
+          if ! playerHealth[3] then SkipPlayer4Flash
+          if playerHealth[3] >= PlayerHealthLowThreshold then SkipPlayer4Flash
+          if playerRecoveryFrames[3] <> 0 then SkipPlayer4Flash
           if frame & 8 then player3x = 200 
           rem Player 4 uses player3 sprite
 SkipPlayer4Flash
@@ -300,9 +300,9 @@ DrawHealthBars
           gosub bank8 DrawHealthBarRow1
           
           rem Draw Player 3 & 4 bars if Quadtari active and player alive
-          if controllerStatus & SetQuadtariDetected then goto DrawP3P4Health else goto SkipP3P4Health
+          if controllerStatus & SetQuadtariDetected then DrawP3P4Health else goto SkipP3P4Health
 DrawP3P4Health
-          if selectedChar3 <> 255 && playerHealth[2] > 0 then goto DrawP3Health else goto SkipP3Health
+          if selectedChar3 <> 255 && playerHealth[2] > 0 then DrawP3Health else goto SkipP3Health
 DrawP3Health
           rem Player 3 health bar
           let PR_healthBarLength = playerHealth[2] / 3
@@ -312,7 +312,7 @@ DrawP3Health
           gosub bank8 DrawHealthBarRow2
 SkipP3Health
           
-          if selectedChar4 <> 255 && playerHealth[3] > 0 then goto DrawP4Health else goto SkipP4Health
+          if selectedChar4 <> 255 && playerHealth[3] > 0 then DrawP4Health else goto SkipP4Health
 DrawP4Health
           rem Player 4 health bar
           let PR_healthBarLength = playerHealth[3] / 3

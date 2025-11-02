@@ -54,20 +54,20 @@ SelChkP0Right
 SelSkipP0Right
           let if joy0up then playerLocked[0] = 0
           rem Unlock by moving up
-          if joy0down then goto SelChkJoy0Fire
+          if joy0down then SelChkJoy0Fire
           goto SelJoy0Down
 
 SelChkJoy0Fire
-          if joy0fire then goto SelJoy0Down
+          if joy0fire then SelJoy0Down
           let playerLocked[0] = 0
           
 SelJoy0Down
           rem Unlock by moving down (without fire)
-          if joy0fire then goto SelP0Lock
+          if joy0fire then SelP0Lock
           goto SelP0Done
 
 SelP0Lock
-          if joy0down then goto SelP0Handi
+          if joy0down then SelP0Handi
           let playerLocked[0] = 1
           rem Locked normal (100% health)
           goto SelP0Done
@@ -94,17 +94,17 @@ SelChkP1Right
 SelSkipP1Right
           let if joy1up then playerLocked[1] = 0
           rem Unlock by moving up
-          if joy1down then goto SelChkJoy1Fire
+          if joy1down then SelChkJoy1Fire
 
           goto SelJoy1Down
 
 SelChkJoy1Fire
-          if joy1fire then goto SelJoy1Down
+          if joy1fire then SelJoy1Down
 
           let playerLocked[1] = 0
 SelJoy1Down
           rem Unlock by moving down (without fire)
-          if joy1fire then goto SelJoy1Chk
+          if joy1fire then SelJoy1Chk
 
           goto SelSkipJoy1Even
 
@@ -122,7 +122,7 @@ SelSkipJoy1Even
 
 SelHandleQuad
           rem Handle Player 3 input (joy0 on odd frames, Quadtari only)
-          if controllerStatus & SetQuadtariDetected then goto SelHandleP2
+          if controllerStatus & SetQuadtariDetected then SelHandleP2
 
           goto SelSkipP2
 
@@ -145,21 +145,21 @@ SelChkP2Right
 SelSkipP2Right
           let if joy0up then playerLocked[2] = 0
           rem Unlock by moving up
-          if joy0down then goto SelChkJoy0Fire2
+          if joy0down then SelChkJoy0Fire2
 
           goto SelJoy0Down2
 
 SelChkJoy0Fire2
-          if joy0fire then goto SelJoy0Down2
+          if joy0fire then SelJoy0Down2
           let playerLocked[2] = 0
 SelJoy0Down2
           rem Unlock by moving down (without fire)
-          if joy0fire then goto SelChkJoy0Down2
+          if joy0fire then SelChkJoy0Down2
 
           goto SelJoy0Done2
 
 SelChkJoy0Down2
-          if joy0down then goto SelSetHand2
+          if joy0down then SelSetHand2
 
           let playerLocked[2] = 1
           rem Locked normal (100% health)
@@ -171,7 +171,7 @@ SelSetHand2
 SelJoy0Done2
 
           rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
-          if controllerStatus & SetQuadtariDetected then goto SelHandleP3
+          if controllerStatus & SetQuadtariDetected then SelHandleP3
 
           goto SelSkipP3Alt
 
@@ -190,22 +190,22 @@ SelCheckP3Right
 SelSkipP3Right
           let if joy1up then playerLocked[3] = 0
           rem Unlock by moving up
-          if joy1down then goto SelChkJoy1Fire3
+          if joy1down then SelChkJoy1Fire3
 
           goto SelJoy1Down3
 
 SelChkJoy1Fire3
-          if joy1fire then goto SelJoy1Down3
+          if joy1fire then SelJoy1Down3
 
           let playerLocked[3] = 0
 SelJoy1Down3
           rem Unlock by moving down (without fire)
-          if joy1fire then goto SelJoy1Chk3
+          if joy1fire then SelJoy1Chk3
 
           goto SelSkipJoy1Odd
 
 SelJoy1Chk3
-          if joy1down then goto SelSetHand3
+          if joy1down then SelSetHand3
 
           let playerLocked[3] = 1
           rem Locked normal (100% health)
@@ -242,7 +242,7 @@ SelAllReady
           rem Count locked players
           if playerLocked[0] then readyCount = readyCount + 1
           if playerLocked[1] then readyCount = readyCount + 1
-          if controllerStatus & SetQuadtariDetected then goto SelQuadPlayers
+          if controllerStatus & SetQuadtariDetected then SelQuadPlayers
 
           goto SelSkipQuadPly
           
@@ -251,7 +251,7 @@ SelQuadPlayers
           if playerLocked[3] then readyCount = readyCount + 1
 SelSkipQuadPly
           rem Check if enough players are ready
-          if controllerStatus & SetQuadtariDetected then goto SelQuadReady
+          if controllerStatus & SetQuadtariDetected then SelQuadReady
 
           rem Need at least 1 player ready for 2-player mode
           if playerLocked[0] then goto SelScreenDone
@@ -295,7 +295,7 @@ SelDrawScreen
           gosub SelDrawNumber
 
           rem Draw Player 3 selection (bottom left) if Quadtari detected
-          if controllerStatus & SetQuadtariDetected then goto SelDrawP3
+          if controllerStatus & SetQuadtariDetected then SelDrawP3
           goto SelSkipP3
 SelDrawP3
           player0x = 56
@@ -307,7 +307,7 @@ SelDrawP3
           gosub SelDrawNumber
 
           rem Draw Player 4 selection (bottom right) if Quadtari detected
-          if controllerStatus & SetQuadtariDetected then goto SelDrawP4
+          if controllerStatus & SetQuadtariDetected then SelDrawP4
           goto SelSkipP4
 SelDrawP4
           let player1x = 104
@@ -328,7 +328,7 @@ SelSkipP4
           rem Draw locked status indicators
 SelDrawLocks
           rem Draw playfield blocks around locked characters
-          if playerLocked[0] then goto SelDrawP0Border
+          if playerLocked[0] then SelDrawP0Border
           goto SelSkipP0Border
 SelDrawP0Border
           rem Draw border around Player 1
@@ -336,7 +336,7 @@ SelDrawP0Border
           pf1 = pf1 | %00000001
 SelSkipP0Border
 
-          if playerLocked[1] then goto SelDrawP1Border
+          if playerLocked[1] then SelDrawP1Border
           goto SelSkipP1Border
 SelDrawP1Border
           rem Draw border around Player 2
@@ -344,20 +344,20 @@ SelDrawP1Border
           pf1 = pf1 | %00010000
 SelSkipP1Border
 
-          if controllerStatus & SetQuadtariDetected then goto SelChkP2Lock
+          if controllerStatus & SetQuadtariDetected then SelChkP2Lock
           goto SkipPlayer2Locked
 SelChkP2Lock
-          if playerLocked[2] then goto SelDrawP2Border
+          if playerLocked[2] then SelDrawP2Border
           goto SkipPlayer2Locked
 SelDrawP2Border 
           rem Draw border around Player 3
           pf0 = pf0 | %10000000
           pf1 = pf1 | %00000001
 
-          if controllerStatus & SetQuadtariDetected then goto SelChkP3Lock
+          if controllerStatus & SetQuadtariDetected then SelChkP3Lock
           goto SelSkipP3Locked
 SelChkP3Lock
-          if playerLocked[3] then goto SelDrawP3Border
+          if playerLocked[3] then SelDrawP3Border
           goto SelSkipP3Locked
 SelDrawP3Border 
           rem Draw border around Player 4
@@ -372,10 +372,10 @@ SelDrawNumber
           rem Player numbers are determined by position in the grid
 
           rem Player 1 (top left) - draw "1"
-          let if player0x  = 56 then goto SelChkP0Y1
+          let if player0x  = 56 then SelChkP0Y1
           goto SkipPlayer0Check1
 SelChkP0Y1
-          let if player0y  = 40 then goto SelDrawP0Top
+          let if player0y  = 40 then SelDrawP0Top
           goto SkipPlayer0Check1
 SelDrawP0Top 
           pf0 = pf0 | %00001000
@@ -384,10 +384,10 @@ SelDrawP0Top
           pf3 = pf3 | %00001000
 
           rem Player 2 (top right) - draw "2"
-          let if player1x  = 104 then goto SelChkP1Y1
+          let if player1x  = 104 then SelChkP1Y1
           goto SkipPlayer1Check1
 SelChkP1Y1
-          let if player1y  = 40 then goto SelDrawP1Top
+          let if player1y  = 40 then SelDrawP1Top
           goto SkipPlayer1Check1
 SelDrawP1Top 
           pf3 = pf3 | %00010000
@@ -395,10 +395,10 @@ SelDrawP1Top
           pf5 = pf5 | %00010000
 
           rem Player 3 (bottom left) - draw "3"
-          let if player0x  = 56 then goto SelChkP0Y2
+          let if player0x  = 56 then SelChkP0Y2
           goto SkipPlayer0Check2
 SelChkP0Y2
-          let if player0y  = 80 then goto SelDrawP0Bot
+          let if player0y  = 80 then SelDrawP0Bot
           goto SkipPlayer0Check2
 SelDrawP0Bot 
           pf0 = pf0 | %00001000
@@ -407,10 +407,10 @@ SelDrawP0Bot
           pf3 = pf3 | %00001000
 
           rem Player 4 (bottom right) - draw "4"
-          let if player1x  = 104 then goto SelChkP1Y2
+          let if player1x  = 104 then SelChkP1Y2
           goto SkipPlayer1Check2
 SelChkP1Y2
-          let if player1y  = 80 then goto SelDrawP1Bot
+          let if player1y  = 80 then SelDrawP1Bot
           goto SkipPlayer1Check2
 SelDrawP1Bot 
           pf3 = pf3 | %00010000
@@ -434,10 +434,10 @@ SelUpdateAnim
           
           
           rem Check each player for DOWN held (odd frame for P3/P4)
-          if qtcontroller then goto SelQuadHandi
+          if qtcontroller then SelQuadHandi
           goto SkipOddFrameCheck
 SelQuadHandi
-          if controllerStatus & SetQuadtariDetected then goto SelOddFrame
+          if controllerStatus & SetQuadtariDetected then SelOddFrame
           goto SkipOddFrameCheck
 SelOddFrame 
                     let if joy0down then HandicapMode  = HandicapMode | 4
@@ -447,7 +447,7 @@ SelOddFrame
           
           
           rem If any player is holding down, set animation to "recovery" pose
-          if HandicapMode then goto SelHandleHandi
+          if HandicapMode then SelHandleHandi
           goto SelAnimNormal
 SelHandleHandi
           let charSelectAnimState = AnimRecovering
@@ -499,9 +499,9 @@ SelDrawSprite
           let temp1  = charSelectAnimState
           rem Use animation state as hurt simulation for demo
           
-          if temp1 <> 2 then goto SelColorNormal
+          if temp1 <> 2 then SelColorNormal
           rem Hurt state - dimmer colors
-          if switchbw then goto SelHurtBW
+          if switchbw then SelHurtBW
           rem Player color but dimmer
           let if charSelectPlayer = 1 then COLUP0  = ColBlue(6)
           rem Dark blue
@@ -518,7 +518,7 @@ SelHurtBW
           goto SelColorDone
 SelColorNormal
           rem Normal state - bright colors
-          if switchbw then goto SelColorBW
+          if switchbw then SelColorBW
           rem Player color - bright
           let if charSelectPlayer = 1 then COLUP0  = ColBlue(12)
           rem Bright blue
@@ -535,16 +535,16 @@ SelColorBW
 SelColorDone
           
           rem Draw different sprite patterns based on animation state and frame
-          let if charSelectAnimState = AnimStanding then goto SelAnimIdle
-          let if charSelectAnimState = AnimWalking then goto SelAnimRun
-          let if charSelectAnimState = AnimAttackWindup then goto SelAnimAttack
+          let if charSelectAnimState = AnimStanding then SelAnimIdle
+          let if charSelectAnimState = AnimWalking then SelAnimRun
+          let if charSelectAnimState = AnimAttackWindup then SelAnimAttack
           goto SelAnimDone
 SelAnimIdle
           rem Idle animation - simple standing pose
           goto SelAnimDone
 SelAnimRun
           rem Running animation - alternating leg positions
-          if charSelectAnimFrame & 1 then goto SelLeftLeg
+          if charSelectAnimFrame & 1 then SelLeftLeg
           rem Frame 0,2,4,6 - right leg forward
           goto SelAnimDone
 SelLeftLeg
@@ -552,7 +552,7 @@ SelLeftLeg
           goto SelAnimDone
 SelAnimAttack
           rem Attacking animation - arm extended
-          if charSelectAnimFrame < 4 then goto SelWindup
+          if charSelectAnimFrame < 4 then SelWindup
           rem Attack frames - arm forward
           goto SelAnimDone
 SelWindup
@@ -578,14 +578,14 @@ SelDetectQuad
           rem Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) AND Right (INPT2 LOW, INPT3 HIGH)
           
           rem Check left side: if INPT0 is HIGH then not detected
-          if INPT0{7} then goto SelQuadAbsent
+          if INPT0{7} then SelQuadAbsent
           rem Check left side: if INPT1 is LOW then not detected
-          if !INPT1{7} then goto SelQuadAbsent
+          if !INPT1{7} then SelQuadAbsent
           
           rem Check right side: if INPT2 is HIGH then not detected
-          if INPT2{7} then goto SelQuadAbsent
+          if INPT2{7} then SelQuadAbsent
           rem Check right side: if INPT3 is LOW then not detected
-          if !INPT3{7} then goto SelQuadAbsent
+          if !INPT3{7} then SelQuadAbsent
           
           rem All checks passed - Quadtari detected
           goto SelSkipQuadAbs

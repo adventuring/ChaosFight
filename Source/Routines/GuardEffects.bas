@@ -78,13 +78,13 @@ RestoreNormalPlayerColor
 CheckGuardCooldown
           rem Check if player is currently guarding
           let temp3 = playerState[temp1] & 2
-          if temp3 then goto GuardCooldownBlocked
+          if temp3 then GuardCooldownBlocked
           
           rem Check cooldown timer (stored in playerTimers array)
           rem playerTimers[temp1] stores frames remaining in cooldown
           let temp3 = playerTimers[temp1]
           
-          if temp3 > 0 then goto GuardCooldownBlocked
+          if temp3 > 0 then GuardCooldownBlocked
           
           rem Cooldown expired, guard allowed
           let temp2 = 1
@@ -132,11 +132,11 @@ UpdateGuardTimers
 UpdateSingleGuardTimer
           rem Check if player is guarding
           let temp2 = playerState[temp1] & 2
-          if temp2 then goto UpdateGuardTimerActive
+          if temp2 then UpdateGuardTimerActive
           
           rem Player not guarding - decrement cooldown timer
           let temp3 = playerTimers[temp1]
-          if temp3 > 0 then goto DecrementCooldown
+          if temp3 > 0 then DecrementCooldown
           return
 
 DecrementCooldown
@@ -150,7 +150,7 @@ UpdateGuardTimerActive
           rem Get timer bits
           let temp3 = temp3 - %00100000
           rem Decrement by 8 frames
-          if temp3 > 0 then goto UpdateGuardTimerContinue
+          if temp3 > 0 then UpdateGuardTimerContinue
           
           rem Guard duration expired
           let playerState[temp1] = playerState[temp1] & %11111101

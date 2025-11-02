@@ -52,22 +52,22 @@ BeginGameLoop
           rem Initialize player health (apply handicap if selected)
           rem PlayerLocked value: 0=unlocked, 1=normal (100% health), 2=handicap (75% health)
           if PlayerLocked[0] = 2 then PlayerHealth[0] = PlayerHealthHandicap
-          if PlayerLocked[0] = 2 then goto Player0HealthSet
+          if PlayerLocked[0] = 2 then Player0HealthSet
           let PlayerHealth[0] = PlayerHealthMax
 Player0HealthSet
           
           if PlayerLocked[1] = 2 then PlayerHealth[1] = PlayerHealthHandicap
-          if PlayerLocked[1] = 2 then goto Player1HealthSet
+          if PlayerLocked[1] = 2 then Player1HealthSet
           let PlayerHealth[1] = PlayerHealthMax
 Player1HealthSet
           
           if PlayerLocked[2] = 2 then PlayerHealth[2] = PlayerHealthHandicap
-          if PlayerLocked[2] = 2 then goto Player2HealthSet
+          if PlayerLocked[2] = 2 then Player2HealthSet
           let PlayerHealth[2] = PlayerHealthMax
 Player2HealthSet
           
           if PlayerLocked[3] = 2 then PlayerHealth[3] = PlayerHealthHandicap
-          if PlayerLocked[3] = 2 then goto Player3HealthSet
+          if PlayerLocked[3] = 2 then Player3HealthSet
           let PlayerHealth[3] = PlayerHealthMax
 Player3HealthSet
           

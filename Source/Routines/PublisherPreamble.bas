@@ -34,18 +34,18 @@ PublisherPreamble
           if joy0fire then goto PublisherPreambleComplete
           if joy1fire then goto PublisherPreambleComplete
           
-          if controllerStatus & SetQuadtariDetected then goto PublisherCheckQuadtari
+          if controllerStatus & SetQuadtariDetected then PublisherCheckQuadtari
 
           goto PublisherSkipQuadtari
 
 PublisherCheckQuadtari
-          if !INPT0{7} then goto PublisherPreambleComplete
-          if !INPT2{7} then goto PublisherPreambleComplete
+          if !INPT0{7} then PublisherPreambleComplete
+          if !INPT2{7} then PublisherPreambleComplete
 PublisherSkipQuadtari
           gosub bank16 UpdateMusic
 
           rem Auto-advance after music completes + 0.5s
-         if preambleTimer > 30 && musicPlaying = 0 then goto PublisherPreambleComplete
+         if preambleTimer > 30 && musicPlaying = 0 then PublisherPreambleComplete
 
           preambleTimer = preambleTimer + 1
           

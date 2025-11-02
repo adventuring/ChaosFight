@@ -5,12 +5,12 @@ FallingAnimation1
 
 
           rem Count active players for falling animation
-          if ! (controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Count
-          if selectedChar3 = 255 then goto SkipPlayer3Count
+          if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer3Count
+          if selectedChar3 = 255 then SkipPlayer3Count
           let activePlayers = activePlayers + 1
 SkipPlayer3Count
-          if ! (controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Count
-          if selectedChar4 = 255 then goto SkipPlayer4Count
+          if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer4Count
+          if selectedChar4 = 255 then SkipPlayer4Count
           let activePlayers = activePlayers + 1
 SkipPlayer4Count
 
@@ -40,7 +40,7 @@ Player3FallDone
           if player1y < 20 then let fallComplete = fallComplete + 1
 Player4FallDone
 
-          if fallComplete >= activePlayers then goto FallingComplete1
+          if fallComplete >= activePlayers then FallingComplete1
 
           let fallFrame = fallFrame + 1
           if fallFrame > 3 then let fallFrame = 0

@@ -75,7 +75,7 @@ LoadCharacterSprite
           rem Output: Appropriate player sprite pointer set to special sprite data
 LoadSpecialSprite
           rem Set sprite pointer based on sprite index
-          if ! temp6 then goto LoadQuestionMarkSprite
+          if ! temp6 then LoadQuestionMarkSprite
           if temp6 = 1 then goto LoadCPUSprite
           if temp6 = 2 then goto LoadNoSprite
           rem Invalid sprite index, default to question mark
@@ -84,8 +84,8 @@ LoadSpecialSprite
 LoadQuestionMarkSprite
           rem Set pointer to QuestionMarkSprite data
           rem Use skip-over pattern to avoid complex compound statements
-          if ! temp3 then goto LoadQuestionMarkSpriteP0
-          if temp3 = 1 then goto LoadQuestionMarkSpriteP1
+          if ! temp3 then LoadQuestionMarkSpriteP0
+          if temp3 = 1 then LoadQuestionMarkSpriteP1
           if temp3 = 2 then goto LoadQuestionMarkSpriteP2
           goto LoadQuestionMarkSpriteP3
           
@@ -132,8 +132,8 @@ end
 LoadCPUSprite
           rem Set pointer to CPUSprite data
           rem Use skip-over pattern to avoid complex compound statements
-          if ! temp3 then goto LoadCPUSpriteP0
-          if temp3 = 1 then goto LoadCPUSpriteP1
+          if ! temp3 then LoadCPUSpriteP0
+          if temp3 = 1 then LoadCPUSpriteP1
           if temp3 = 2 then goto LoadCPUSpriteP2
           goto LoadCPUSpriteP3
           
@@ -180,8 +180,8 @@ end
 LoadNoSprite
           rem Set pointer to NoSprite data
           rem Use skip-over pattern to avoid complex compound statements
-          if ! temp3 then goto LoadNoSpriteP0
-          if temp3 = 1 then goto LoadNoSpriteP1
+          if ! temp3 then LoadNoSpriteP0
+          if temp3 = 1 then LoadNoSpriteP1
           if temp3 = 2 then goto LoadNoSpriteP2
           goto LoadNoSpriteP3
           
@@ -237,10 +237,10 @@ end
 LoadPlayerSprite
           rem Get character index for this player from playerChar array
           rem Use skip-over pattern to avoid complex compound statements
-          if ! temp4 then goto LoadPlayerSpriteP0
-          if temp4 = 1 then goto LoadPlayerSpriteP1
-          if temp4 = 2 then goto LoadPlayerSpriteP2
-          if temp4 = 3 then goto LoadPlayerSpriteP3
+          if ! temp4 then LoadPlayerSpriteP0
+          if temp4 = 1 then LoadPlayerSpriteP1
+          if temp4 = 2 then LoadPlayerSpriteP2
+          if temp4 = 3 then LoadPlayerSpriteP3
           return
           
 LoadPlayerSpriteP0
@@ -318,7 +318,7 @@ LoadPlayer3Sprite
           rem Output: temp5 = validation result (0=invalid, 1=valid)
 ValidateCharacterIndex
           rem Check if character index is within valid range (0-15 for current implementation)
-          if temp1 > 15 then goto InvalidCharacter
+          if temp1 > 15 then InvalidCharacter
           let temp5 = 1 : return
 InvalidCharacter
           
@@ -336,7 +336,7 @@ LoadCharacterColors
           if temp2 then goto HurtColor
 
           rem Next priority: flashing state
-          if temp4 then goto FlashingColor
+          if temp4 then FlashingColor
 
 NormalColor
 #ifdef TV_SECAM
@@ -344,7 +344,7 @@ NormalColor
           goto PlayerIndexColors
 #else
           rem Determine effective B&W override locally; if enabled, use player colors
-          if colorBWOverride then goto PlayerIndexColors
+          if colorBWOverride then PlayerIndexColors
 
           rem NTSC/PAL: Character-specific colors would be used here when tables exist
           rem Placeholder: fall back to player index colors until character tables are wired
@@ -353,13 +353,13 @@ NormalColor
 
 FlashingColor
           rem Flashing mode selection
-          if ! temp5 then goto PerLineFlashing
+          if ! temp5 then PerLineFlashing
           goto PlayerIndexColors
 
 PerLineFlashing
           rem Simple time/row-based flashing placeholder
           rem Use alternating bright/dim player index colors by frame bit
-          if frame & 8 then goto PlayerIndexColorsDim
+          if frame & 8 then PlayerIndexColorsDim
           goto PlayerIndexColors
 
 PlayerIndexColors

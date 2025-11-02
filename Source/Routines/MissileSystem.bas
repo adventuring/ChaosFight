@@ -173,7 +173,7 @@ PlayfieldCollisionDone
           rem This handles both visible missiles and AOE attacks
           gosub bank7 CheckAllMissileCollisions
           rem Check if hit was found (temp4 != 255)
-          let if temp4  = 255 then goto MissileSystemNoHit
+          let if temp4  = 255 then MissileSystemNoHit
           gosub HandleMissileHit
           gosub DeactivateMissile
           return
@@ -272,7 +272,7 @@ Div5Compute
 Div5Loop
           let temp2  = temp2 - 5
           let temp6  = temp6 + 1
-          let if temp2 > = 5 then goto Div5Loop
+          let if temp2 > = 5 then Div5Loop
           return
 
           rem =================================================================
@@ -300,45 +300,45 @@ CheckMissilePlayerCollision
           rem Default: no hit
           
           rem Check Player 1 (index 0)
-          let if temp1  = 0 then goto MissileSkipPlayer0
-          let if playerHealth[0] = 0 then goto MissileSkipPlayer0
-          let if temp2 > = playerX[0] + PlayerSpriteHalfWidth then goto MissileSkipPlayer0
-          let if temp2 + MissileAABBSize < = playerX[0] then goto MissileSkipPlayer0
-          let if temp3 > = playerY[0] + PlayerSpriteHeight then goto MissileSkipPlayer0
-          let if temp3 + MissileAABBSize < = playerY[0] then goto MissileSkipPlayer0
+          let if temp1  = 0 then MissileSkipPlayer0
+          let if playerHealth[0] = 0 then MissileSkipPlayer0
+          let if temp2 > = playerX[0] + PlayerSpriteHalfWidth then MissileSkipPlayer0
+          let if temp2 + MissileAABBSize < = playerX[0] then MissileSkipPlayer0
+          let if temp3 > = playerY[0] + PlayerSpriteHeight then MissileSkipPlayer0
+          let if temp3 + MissileAABBSize < = playerY[0] then MissileSkipPlayer0
           let temp4  = 0 : return
           rem Hit Player 1
 MissileSkipPlayer0
           
           rem Check Player 2 (index 1)
-          let if temp1  = 1 then goto MissileSkipPlayer1
-          let if playerHealth[1] = 0 then goto MissileSkipPlayer1
-          let if temp2 > = playerX[1] + PlayerSpriteHalfWidth then goto MissileSkipPlayer1
-          let if temp2 + MissileAABBSize < = playerX[1] then goto MissileSkipPlayer1
-          let if temp3 > = playerY[1] + PlayerSpriteHeight then goto MissileSkipPlayer1
-          let if temp3 + MissileAABBSize < = playerY[1] then goto MissileSkipPlayer1
+          let if temp1  = 1 then MissileSkipPlayer1
+          let if playerHealth[1] = 0 then MissileSkipPlayer1
+          let if temp2 > = playerX[1] + PlayerSpriteHalfWidth then MissileSkipPlayer1
+          let if temp2 + MissileAABBSize < = playerX[1] then MissileSkipPlayer1
+          let if temp3 > = playerY[1] + PlayerSpriteHeight then MissileSkipPlayer1
+          let if temp3 + MissileAABBSize < = playerY[1] then MissileSkipPlayer1
           let temp4  = 1 : return
           rem Hit Player 2
 MissileSkipPlayer1
           
           rem Check Player 3 (index 2)
-          let if temp1  = 2 then goto MissileSkipPlayer2
-          let if playerHealth[2] = 0 then goto MissileSkipPlayer2
-          let if temp2 > = playerX[2] + PlayerSpriteHalfWidth then goto MissileSkipPlayer2
-          let if temp2 + MissileAABBSize < = playerX[2] then goto MissileSkipPlayer2
-          let if temp3 > = playerY[2] + PlayerSpriteHeight then goto MissileSkipPlayer2
-          let if temp3 + MissileAABBSize < = playerY[2] then goto MissileSkipPlayer2
+          let if temp1  = 2 then MissileSkipPlayer2
+          let if playerHealth[2] = 0 then MissileSkipPlayer2
+          let if temp2 > = playerX[2] + PlayerSpriteHalfWidth then MissileSkipPlayer2
+          let if temp2 + MissileAABBSize < = playerX[2] then MissileSkipPlayer2
+          let if temp3 > = playerY[2] + PlayerSpriteHeight then MissileSkipPlayer2
+          let if temp3 + MissileAABBSize < = playerY[2] then MissileSkipPlayer2
           let temp4  = 2 : return
           rem Hit Player 3
 MissileSkipPlayer2
           
           rem Check Player 4 (index 3)
-          let if temp1  = 3 then goto MissileSkipPlayer3
-          let if playerHealth[3] = 0 then goto MissileSkipPlayer3
-          let if temp2 > = playerX[3] + PlayerSpriteHalfWidth then goto MissileSkipPlayer3
-          let if temp2 + MissileAABBSize < = playerX[3] then goto MissileSkipPlayer3
-          let if temp3 > = playerY[3] + PlayerSpriteHeight then goto MissileSkipPlayer3
-          let if temp3 + MissileAABBSize < = playerY[3] then goto MissileSkipPlayer3
+          let if temp1  = 3 then MissileSkipPlayer3
+          let if playerHealth[3] = 0 then MissileSkipPlayer3
+          let if temp2 > = playerX[3] + PlayerSpriteHalfWidth then MissileSkipPlayer3
+          let if temp2 + MissileAABBSize < = playerX[3] then MissileSkipPlayer3
+          let if temp3 > = playerY[3] + PlayerSpriteHeight then MissileSkipPlayer3
+          let if temp3 + MissileAABBSize < = playerY[3] then MissileSkipPlayer3
           let temp4  = 3 : return
           rem Hit Player 4
 MissileSkipPlayer3

@@ -51,22 +51,22 @@ UpdateFramePhase
 BudgetedHealthBarUpdate
           rem Determine which player to update based on frame phase
           rem tail call
-          if FramePhase = 0 then goto UpdateHealthBarPlayer0
+          if FramePhase = 0 then UpdateHealthBarPlayer0
           rem tail call
-          if FramePhase = 1 then goto UpdateHealthBarPlayer1
-          if FramePhase = 2 then goto CheckPlayer2HealthUpdate
+          if FramePhase = 1 then UpdateHealthBarPlayer1
+          if FramePhase = 2 then CheckPlayer2HealthUpdate
           goto SkipPlayer2HealthUpdate
 CheckPlayer2HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer2HealthUpdate
-          if selectedChar3 = 255 then goto SkipPlayer2HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer2HealthUpdate
+          if selectedChar3 = 255 then SkipPlayer2HealthUpdate
           gosub bank8 UpdateHealthBarPlayer2
           return
 SkipPlayer2HealthUpdate
-          if FramePhase = 3 then goto CheckPlayer3HealthUpdate
+          if FramePhase = 3 then CheckPlayer3HealthUpdate
           goto SkipPlayer3HealthUpdate
 CheckPlayer3HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3HealthUpdate
-          if selectedChar4 = 255 then goto SkipPlayer3HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3HealthUpdate
+          if selectedChar4 = 255 then SkipPlayer3HealthUpdate
           gosub bank8 UpdateHealthBarPlayer3
           return
 SkipPlayer3HealthUpdate
@@ -135,22 +135,22 @@ BudgetedCollisionCheck
           if !(controllerStatus & SetQuadtariDetected) then return
           
           rem Check additional pairs based on frame phase
-          if FramePhase = 0 then goto CheckPhase0Collisions
-          if FramePhase = 1 then goto CheckPhase1Collisions
+          if FramePhase = 0 then CheckPhase0Collisions
+          if FramePhase = 1 then CheckPhase1Collisions
           goto SkipPhase0And1Collisions
 CheckPhase0Collisions
-          if selectedChar3 = 255 then goto SkipFramePhaseChecks
+          if selectedChar3 = 255 then SkipFramePhaseChecks
           gosub CheckCollisionP1vsP3
           goto SkipFramePhaseChecks
 CheckPhase1Collisions
-          if selectedChar4 = 255 then goto CheckPhase1P3
+          if selectedChar4 = 255 then CheckPhase1P3
           gosub CheckCollisionP1vsP4
 CheckPhase1P3
-          if selectedChar3 = 255 then goto SkipFramePhaseChecks
+          if selectedChar3 = 255 then SkipFramePhaseChecks
           gosub CheckCollisionP2vsP3
           goto SkipFramePhaseChecks
 SkipPhase0And1Collisions
-          if FramePhase <> 2 then goto SkipPhase2Collisions
+          if FramePhase <> 2 then SkipPhase2Collisions
           if selectedChar4 <> 255 then gosub CheckCollisionP2vsP4
           if selectedChar3 <> 255 && selectedChar4 <> 255 then gosub CheckCollisionP3vsP4
 SkipPhase2Collisions
@@ -160,11 +160,11 @@ SkipFramePhaseChecks
           rem Individual collision check routines
 CheckCollisionP1vsP2
           if playerX[0] >= playerX[1] then temp2 = playerX[0] - playerX[1] else temp2 = playerX[1] - playerX[0]
-          if temp2 >= CollisionSeparationDistance then goto SkipPlayerSeparation
+          if temp2 >= CollisionSeparationDistance then SkipPlayerSeparation
           
           rem Separate players based on their relative positions
           rem If P0 is left of P1, move P0 left and P1 right
-          if playerX[0] < playerX[1] then goto SeparateP0Left
+          if playerX[0] < playerX[1] then SeparateP0Left
           
           rem Else P0 is right of P1, move P0 right and P1 left
           playerX[0] = playerX[0] + 1
@@ -180,7 +180,7 @@ SkipPlayerSeparation
 
 CheckCollisionP1vsP3
           if playerX[0] >= playerX[2] then temp2 = playerX[0] - playerX[2] else temp2 = playerX[2] - playerX[0]
-          if temp2 < 16 then goto CheckCollisionP1vsP3Aux
+          if temp2 < 16 then CheckCollisionP1vsP3Aux
           return
 
 CheckCollisionP1vsP3Aux
@@ -193,7 +193,7 @@ CheckCollisionP1vsP3Aux
 
 CheckCollisionP1vsP4
           if playerX[0] >= playerX[3] then temp2 = playerX[0] - playerX[3] else temp2 = playerX[3] - playerX[0]
-          if temp2 < 16 then goto CheckCollisionP1vsP4Aux
+          if temp2 < 16 then CheckCollisionP1vsP4Aux
           return
 
 CheckCollisionP1vsP4Aux
@@ -206,7 +206,7 @@ CheckCollisionP1vsP4Aux
 
 CheckCollisionP2vsP3
           if playerX[1] >= playerX[2] then temp2 = playerX[1] - playerX[2] else temp2 = playerX[2] - playerX[1]
-          if temp2 < 16 then goto CheckCollisionP2vsP3Aux
+          if temp2 < 16 then CheckCollisionP2vsP3Aux
           return
 
 CheckCollisionP2vsP3Aux
@@ -219,7 +219,7 @@ CheckCollisionP2vsP3Aux
 
 CheckCollisionP2vsP4
           if playerX[1] >= playerX[3] then temp2 = playerX[1] - playerX[3] else temp2 = playerX[3] - playerX[1]
-          if temp2 < 16 then goto CheckCollisionP2vsP4Aux
+          if temp2 < 16 then CheckCollisionP2vsP4Aux
           return
 
 CheckCollisionP2vsP4Aux
@@ -232,7 +232,7 @@ CheckCollisionP2vsP4Aux
 
 CheckCollisionP3vsP4
           if playerX[2] >= playerX[3] then temp2 = playerX[2] - playerX[3] else temp2 = playerX[3] - playerX[2]
-          if temp2 < 16 then goto CheckCollisionP3vsP4Aux
+          if temp2 < 16 then CheckCollisionP3vsP4Aux
           return
 
 CheckCollisionP3vsP4Aux
@@ -261,7 +261,7 @@ BudgetedMissileCollisionCheck
           rem Use missileActive bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
           rem Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
           
-          if !(controllerStatus & SetQuadtariDetected) then goto BudgetedMissileCollisionCheck2P
+          if !(controllerStatus & SetQuadtariDetected) then BudgetedMissileCollisionCheck2P
           
           rem 4-player mode: check one missile per frame
           temp1 = FramePhase

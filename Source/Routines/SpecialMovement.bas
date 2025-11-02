@@ -36,7 +36,7 @@ ApplyPlayerSpecialMovement
           temp4 = playerChar[temp1]
           
           rem Bernie (0) - screen wrap top/bottom
-          if temp4 = 0 then goto BernieScreenWrap
+          if temp4 = 0 then BernieScreenWrap
           
           rem Frooty (8) and Dragonet (2) - free flight (no gravity)
           rem These characters skip gravity entirely

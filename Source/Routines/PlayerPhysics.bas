@@ -38,20 +38,20 @@ Player1GravityDone
 Player2GravityDone
           
           rem Player 3 (Quadtari only)
-          if ! (controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Jump
-          let if selectedChar3  = 255 then goto SkipPlayer3Jump
-          if (playerState[2] & 4) <> 0 then goto SkipPlayer3Jump
+          if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer3Jump
+          let if selectedChar3  = 255 then SkipPlayer3Jump
+          if (playerState[2] & 4) <> 0 then SkipPlayer3Jump
           let playerY[2] = playerY[2] + 1
-          if playerY[2] < 80 then goto SkipPlayer3Jump
+          if playerY[2] < 80 then SkipPlayer3Jump
           let playerY[2] = 80 : playerState[2] = playerState[2] & NOT 4
 SkipPlayer3Jump
           
           rem Player 4 (Quadtari only)
-          if ! (controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Jump
-          let if selectedChar4  = 255 then goto SkipPlayer4Jump
-          if (playerState[3] & 4) <> 0 then goto SkipPlayer4Jump
+          if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer4Jump
+          let if selectedChar4  = 255 then SkipPlayer4Jump
+          if (playerState[3] & 4) <> 0 then SkipPlayer4Jump
           let playerY[3] = playerY[3] + 1
-          if playerY[3] < 80 then goto SkipPlayer4Jump
+          if playerY[3] < 80 then SkipPlayer4Jump
           let playerY[3] = 80 : playerState[3] = playerState[3] & NOT 4
 SkipPlayer4Jump
           
@@ -65,49 +65,49 @@ SkipPlayer4Jump
 ApplyMomentumAndRecovery
           rem Player 1
           if playerRecoveryFrames[0] > 0 then let playerRecoveryFrames[0] = playerRecoveryFrames[0] - 1 : let playerX[0] = playerX[0] + playerMomentumX[0]
-          if ! playerRecoveryFrames[0] then goto SkipPlayer0Momentum
-          if playerMomentumX[0] <= 0 then goto CheckPlayer0NegativeMomentum
+          if ! playerRecoveryFrames[0] then SkipPlayer0Momentum
+          if playerMomentumX[0] <= 0 then CheckPlayer0NegativeMomentum
           let playerMomentumX[0] = playerMomentumX[0] - 1
           goto SkipPlayer0Momentum
 CheckPlayer0NegativeMomentum
-          if playerMomentumX[0] >= 0 then goto SkipPlayer0Momentum
+          if playerMomentumX[0] >= 0 then SkipPlayer0Momentum
           let playerMomentumX[0] = playerMomentumX[0] + 1
 SkipPlayer0Momentum
 
           rem Player 2
           if playerRecoveryFrames[1] > 0 then let playerRecoveryFrames[1] = playerRecoveryFrames[1] - 1 : let playerX[1] = playerX[1] + playerMomentumX[1]
-          if ! playerRecoveryFrames[1] then goto SkipPlayer1Momentum
-          if playerMomentumX[1] <= 0 then goto CheckPlayer1NegativeMomentum
+          if ! playerRecoveryFrames[1] then SkipPlayer1Momentum
+          if playerMomentumX[1] <= 0 then CheckPlayer1NegativeMomentum
           let playerMomentumX[1] = playerMomentumX[1] - 1
           goto SkipPlayer1Momentum
 CheckPlayer1NegativeMomentum
-          if playerMomentumX[1] >= 0 then goto SkipPlayer1Momentum
+          if playerMomentumX[1] >= 0 then SkipPlayer1Momentum
           let playerMomentumX[1] = playerMomentumX[1] + 1
 SkipPlayer1Momentum
 
           rem Player 3 (Quadtari only)
-          if ! (controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Recovery
-          let if selectedChar3  = 255 then goto SkipPlayer3Recovery
-          if ! playerRecoveryFrames[2] then goto SkipPlayer3Recovery
+          if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer3Recovery
+          let if selectedChar3  = 255 then SkipPlayer3Recovery
+          if ! playerRecoveryFrames[2] then SkipPlayer3Recovery
           let playerRecoveryFrames[2] = playerRecoveryFrames[2] - 1 : let playerX[2] = playerX[2] + playerMomentumX[2]
-          if playerMomentumX[2] <= 0 then goto CheckPlayer3NegativeMomentum
+          if playerMomentumX[2] <= 0 then CheckPlayer3NegativeMomentum
           let playerMomentumX[2] = playerMomentumX[2] - 1
           goto SkipPlayer3Recovery
 CheckPlayer3NegativeMomentum
-          if playerMomentumX[2] >= 0 then goto SkipPlayer3Recovery
+          if playerMomentumX[2] >= 0 then SkipPlayer3Recovery
           let playerMomentumX[2] = playerMomentumX[2] + 1
 SkipPlayer3Recovery
 
           rem Player 4 (Quadtari only)
-          if ! (controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Recovery
-          let if selectedChar4  = 255 then goto SkipPlayer4Recovery
-          if ! playerRecoveryFrames[3] then goto SkipPlayer4Recovery
+          if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer4Recovery
+          let if selectedChar4  = 255 then SkipPlayer4Recovery
+          if ! playerRecoveryFrames[3] then SkipPlayer4Recovery
           let playerRecoveryFrames[3] = playerRecoveryFrames[3] - 1 : let playerX[3] = playerX[3] + playerMomentumX[3]
-          if playerMomentumX[3] <= 0 then goto CheckPlayer4NegativeMomentum
+          if playerMomentumX[3] <= 0 then CheckPlayer4NegativeMomentum
           let playerMomentumX[3] = playerMomentumX[3] - 1
           goto SkipPlayer4Recovery
 CheckPlayer4NegativeMomentum
-          if playerMomentumX[3] >= 0 then goto SkipPlayer4Recovery
+          if playerMomentumX[3] >= 0 then SkipPlayer4Recovery
           let playerMomentumX[3] = playerMomentumX[3] + 1
 SkipPlayer4Recovery
           
@@ -131,8 +131,8 @@ CheckBoundaryCollisions
           if playerY[1] > 80 then playerY[1] = 80
 
           rem Player 3 (Quadtari only)
-          if ! (controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Bounds
-          let if selectedChar3  = 255 then goto SkipPlayer3Bounds
+          if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer3Bounds
+          let if selectedChar3  = 255 then SkipPlayer3Bounds
           goto ApplyPlayer3Bounds
           goto SkipPlayer3Bounds
 ApplyPlayer3Bounds
@@ -143,8 +143,8 @@ ApplyPlayer3Bounds
 SkipPlayer3Bounds
 
           rem Player 4 (Quadtari only)
-          if ! (controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Bounds
-          let if selectedChar4  = 255 then goto SkipPlayer4Bounds
+          if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer4Bounds
+          let if selectedChar4  = 255 then SkipPlayer4Bounds
           goto ApplyPlayer4Bounds
           goto SkipPlayer4Bounds
 ApplyPlayer4Bounds
@@ -174,7 +174,7 @@ SkipP1P2Sep
           if ! (controllerStatus & SetQuadtariDetected) then return
           
           rem Check Player 1 vs Player 3
-          if selectedChar3 <> 255 then goto DoP1P3Check else goto SkipP1P3Check
+          if selectedChar3 <> 255 then DoP1P3Check else goto SkipP1P3Check
 DoP1P3Check
           if playerX[0] >= playerX[2] then temp2 = playerX[0] - playerX[2] else temp2 = playerX[2] - playerX[0]
           if temp2 < 16 then if playerX[0] < playerX[2] then playerX[0] = playerX[0] - 1 : playerX[2] = playerX[2] + 1 : goto SkipP1P3Sep
@@ -186,7 +186,7 @@ SkipP1P3Check
           
           
           rem Check Player 1 vs Player 4
-          if selectedChar4 <> 255 then goto DoP1P4Check else goto SkipP1P4Check
+          if selectedChar4 <> 255 then DoP1P4Check else goto SkipP1P4Check
 DoP1P4Check
           if playerX[0] >= playerX[3] then temp2 = playerX[0] - playerX[3] else temp2 = playerX[3] - playerX[0]
           if temp2 < 16 then if playerX[0] < playerX[3] then playerX[0] = playerX[0] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP1P4Sep
@@ -198,7 +198,7 @@ SkipP1P4Check
           
           
           rem Check Player 2 vs Player 3
-          if selectedChar3 <> 255 then goto DoP2P3Check else goto SkipP2P3Check
+          if selectedChar3 <> 255 then DoP2P3Check else goto SkipP2P3Check
 DoP2P3Check
           if playerX[1] >= playerX[2] then temp2 = playerX[1] - playerX[2] else temp2 = playerX[2] - playerX[1]
           if temp2 < 16 then if playerX[1] < playerX[2] then playerX[1] = playerX[1] - 1 : playerX[2] = playerX[2] + 1 : goto SkipP2P3Sep
@@ -210,7 +210,7 @@ SkipP2P3Check
           
           
           rem Check Player 2 vs Player 4
-          if selectedChar4 <> 255 then goto DoP2P4Check else goto SkipP2P4Check
+          if selectedChar4 <> 255 then DoP2P4Check else goto SkipP2P4Check
 DoP2P4Check
           if playerX[1] >= playerX[3] then temp2 = playerX[1] - playerX[3] else temp2 = playerX[3] - playerX[1]
           if temp2 < 16 then if playerX[1] < playerX[3] then playerX[1] = playerX[1] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP2P4Sep

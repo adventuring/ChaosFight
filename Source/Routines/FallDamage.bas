@@ -217,13 +217,13 @@ CheckGroundCollision
           return
 
           rem =================================================================
-          rem HANDLE MAGICAL FAERIE VERTICAL CONTROL
+          rem HANDLE FROOTY VERTICAL CONTROL
           rem =================================================================
-          rem Magical Faerie has no gravity and can move up/down freely.
+          rem Frooty has no gravity and can move up/down freely.
           rem Down button moves down (no guard action).
 
           rem INPUT:
-          rem   temp1 = player index (0-3, but should only be called for Magical Faerie)
+          rem   temp1 = player index (0-3, but should only be called for Frooty)
 
           rem This should be called from PlayerInput.bas when processing
           rem joystick up/down for Frooty.

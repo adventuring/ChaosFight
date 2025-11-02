@@ -96,6 +96,8 @@
           rem System flags: $80=7800 console, other bits reserved
           dim ControllerStatus = h
           rem Packed controller status bits: $80=Quadtari, $01=LeftGenesis, $02=LeftJoy2b+, $04=RightGenesis, $08=RightJoy2b+
+          dim ColorBWPrevious = i
+          rem Previous state of Color/B&W switch (for detecting changes)
           rem HandicapMode - defined locally in CharacterSelect.bas as temp1 (local scope only)
 #ifndef TV_SECAM
           dim ColorBWOverride = q     

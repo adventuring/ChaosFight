@@ -4,7 +4,7 @@
           const GameVersionMajor=0
           const GameVersionMinor=1
           const BuildDate=BUILD_DATE
-          rem Build date in year.julian format (set by Makefile)
+          rem Build date in julian day format (1-366, set by Makefile)
           rem Game URL: https://interworldly.com/games/ChaosFight
           rem URL stored as comment for attribution
           const NumLevels=2

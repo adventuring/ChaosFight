@@ -1,4 +1,4 @@
-@subsection EXO Pilot
+@subsubsection EXO Pilot
 @display
 @group
     Weight: Light

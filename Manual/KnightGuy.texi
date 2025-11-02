@@ -1,4 +1,4 @@
-@subsection Knight Guy
+@subsubsection Knight Guy
 @display
 @group
     Weight: Very Heavy

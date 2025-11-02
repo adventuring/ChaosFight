@@ -1,4 +1,4 @@
-@subsection Veg Dog
+@subsubsection Veg Dog
 @display
 @group
     Weight: Light

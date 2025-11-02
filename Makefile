@@ -243,19 +243,19 @@ Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
+	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
+	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
 
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%Y.%j) $< > $@
+	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
 
 # Shared dependencies for all TV standards
 BUILD_DEPS = $(ALL_SOURCES) \
@@ -268,7 +268,6 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Common/Preamble.bas \
 	Source/Common/Variables.bas \
 	Source/Data/SpecialSprites.bas \
-	Source/Routines/CharacterArt.s \
 	Source/Routines/ColdStart.bas \
 	Source/Routines/ControllerDetection.bas \
 	Source/Routines/FallingAnimation.bas \
@@ -298,18 +297,23 @@ Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
+# Create empty variable redefs file if it doesn't exist (will be populated by batariBASIC)
+Source/Common/VariableRedefinitions.h:
+	@mkdir -p Source/Common
+	@touch $@
+
 # Step 2: Compile .preprocessed.bas → bB.ARCH.s
-Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Source/Common/variableRedefs.h
+Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Source/Common/VariableRedefinitions.h
 	mkdir -p Object
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.NTSC.s
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/VariableRedefinitions.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.NTSC.s
 
-Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Source/Common/variableRedefs.h
+Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Source/Common/VariableRedefinitions.h
 	mkdir -p Object
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.PAL.s
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/VariableRedefinitions.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.PAL.s
 
-Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Source/Common/variableRedefs.h
+Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Source/Common/VariableRedefinitions.h
 	mkdir -p Object
-	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/variableRedefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
+	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
 
 # Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
 Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s

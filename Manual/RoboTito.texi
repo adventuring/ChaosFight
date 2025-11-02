@@ -1,4 +1,4 @@
-@subsection Robo Tito
+@subsubsection Robo Tito
 @display
 @group
     Weight: Very Heavy

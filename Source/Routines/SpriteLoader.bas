@@ -57,16 +57,12 @@ LoadCharacterSprite
           rem Default to animation sequence 0 and frame 0 for basic loading
           let temp2 = 0 
           rem Animation frame (0=idle)
-          let temp8 = 0 
-          rem Animation sequence (0=default)
-          let temp7 = temp3 
+          let temp4 = temp3 
           rem Player number for art system
           
           rem Use assembly routine to locate and set character art
           rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayerCharacterArt are implemented
           rem For now, use placeholder sprite data
-          let temp4 = temp1
-          rem Store character index for later use
           
           return
 
@@ -265,10 +261,8 @@ LoadPlayerSpriteP3
           
 LoadPlayerSpriteDispatch
           rem temp1 = character index, temp2 = frame (10fps counter), temp3 = action, temp4 = player
-          rem temp7 will be player number for character art system
-          let temp7 = temp4
           rem Call character art location system (in bank10)
-          rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp7=player
+          rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp4=player
           gosub bank10 LocateCharacterArt
           return
 
@@ -281,57 +275,41 @@ LoadPlayerSpriteDispatch
 LoadPlayer0Sprite
           rem Use art location system for player 0 sprite loading
           rem temp1 = character index, temp2 = animation frame already set
-          let temp3 = 0 
+          let temp4 = 0 
           rem Player 0
-          let temp7 = temp3 
-          rem Player number for art system
           
           rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayer0CharacterArt are implemented
           rem For now, use placeholder sprite data
-          let temp4 = temp1
-          rem Store character index for later use
           return
           
 LoadPlayer1Sprite
           rem Use art location system for player 1 sprite loading
           rem temp1 = character index, temp2 = animation frame already set
-          let temp3 = 1 
+          let temp4 = 1 
           rem Player 1
-          let temp7 = temp3 
-          rem Player number for art system
           
           rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayer1CharacterArt are implemented
           rem For now, use placeholder sprite data
-          let temp4 = temp1
-          rem Store character index for later use
           return
           
 LoadPlayer2Sprite
           rem Use art location system for player 2 sprite loading
           rem temp1 = character index, temp2 = animation frame already set
-          let temp3 = 2 
+          let temp4 = 2 
           rem Player 2
-          let temp7 = temp3 
-          rem Player number for art system
           
           rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayer2CharacterArt are implemented
           rem For now, use placeholder sprite data
-          let temp4 = temp1
-          rem Store character index for later use
           return
           
 LoadPlayer3Sprite
           rem Use art location system for player 3 sprite loading
           rem temp1 = character index, temp2 = animation frame already set
-          let temp3 = 3 
+          let temp4 = 3 
           rem Player 3
-          let temp7 = temp3 
-          rem Player number for art system
           
           rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayer3CharacterArt are implemented
           rem For now, use placeholder sprite data
-          let temp4 = temp1
-          rem Store character index for later use
           return
 
 

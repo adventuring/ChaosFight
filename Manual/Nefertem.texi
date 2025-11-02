@@ -1,4 +1,4 @@
-@subsection Nefertem
+@subsubsection Nefertem
 @display
 @group
     Weight: Heavy

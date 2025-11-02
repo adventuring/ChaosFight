@@ -1,4 +1,4 @@
-@subsection Radish Goblin
+@subsubsection Radish Goblin
 @display
 @group
     Weight: Very Light

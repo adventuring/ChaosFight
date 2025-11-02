@@ -1,4 +1,4 @@
-@subsection Ninjish Guy
+@subsubsection Ninjish Guy
 @display
 @group
     Weight: Very Light

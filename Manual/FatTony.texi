@@ -1,4 +1,4 @@
-@subsection Fat Tony
+@subsubsection Fat Tony
 @display
 @group
     Weight: Heavy

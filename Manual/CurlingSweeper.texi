@@ -1,4 +1,4 @@
-@subsection Curling Sweeper
+@subsubsection Curling Sweeper
 @display
 @group
     Weight: Medium

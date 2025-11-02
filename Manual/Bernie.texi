@@ -1,4 +1,4 @@
-@subsection Bernie
+@subsubsection Bernie
 @display
 @group
     Weight: Very Heavy

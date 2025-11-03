@@ -8,33 +8,115 @@
           rem P3/P4 health will be implemented separately
 
           rem =================================================================
-          rem HEALTH TO SCORE MAPPING
+          rem HEALTH BAR THRESHOLDS AND PATTERNS
           rem =================================================================
-          rem Convert health values (0-100) to score display format
-          rem Score system uses 6 digits, we use bar-like display
+          rem Health thresholds split on 12s: 12, 24, 36, 48, 60, 72, 84
+          rem Compare health starting from 84 downward to find pixel count
+          rem Bit patterns: 0-8 pixels filled from right to left
+          rem =================================================================
 
-    rem Update P1 health bar (displayed as score)
-    rem Input: temp1 = health value (0-100)
+          rem Health threshold table (split on 12s)
+          data HealthThresholds
+              84, 72, 60, 48, 36, 24, 12
+          end
+
+          rem Bit pattern table for 0-8 pixels (right-aligned fill)
+          rem 0 pixels = %00000000, 1 pixel = %00000001, ..., 8 pixels = %11111111
+          data HealthBarPatterns
+              %00000000
+              %00000001
+              %00000011
+              %00000111
+              %00001111
+              %00011111
+              %00111111
+              %01111111
+              %11111111
+          end
+
+          rem =================================================================
+          rem UPDATE PLAYER 1 HEALTH BAR
+          rem =================================================================
+          rem Input: temp1 = health value (0-100)
+          rem Output: pfscore1 = health bar pattern (8 pixels, bit pattern)
+          rem Uses simple comparisons against threshold table, looks up bit pattern
 UpdatePlayer1HealthBar
-    rem Convert health to score format for bar display
-    rem Simple approach: display health as 2-digit number (00-99)
-    rem Limit to 99 max
-    if temp1 > PlayerHealthMax - 1 then temp1 = PlayerHealthMax - 1
-    rem Temporarily disable score update to fix build errors
-    rem TODO: Implement proper binary-to-BCD conversion for score display
-    rem score assignment causes immediate value errors when using variables
-    
-    return
+          rem Clamp health to valid range
+          if temp1 > PlayerHealthMax then LET temp1 = PlayerHealthMax
+          if temp1 < 0 then LET temp1 = 0
+          
+          rem Compare health against thresholds starting from 83 downward
+          rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2 pixels, 0-11 = 0 pixels
+          rem temp2 will hold the pattern index (0-8)
+          LET temp2 = 0
+          
+          rem Check thresholds from highest (83) to lowest (11)
+          rem 84-100 = 8 pixels
+          if temp1 > 83 then LET temp2 = 8 : goto P1SetPattern
+          rem 72-83 = 7 pixels
+          if temp1 > 71 then LET temp2 = 7 : goto P1SetPattern
+          rem 60-71 = 6 pixels
+          if temp1 > 59 then LET temp2 = 6 : goto P1SetPattern
+          rem 48-59 = 5 pixels
+          if temp1 > 47 then LET temp2 = 5 : goto P1SetPattern
+          rem 36-47 = 4 pixels
+          if temp1 > 35 then LET temp2 = 4 : goto P1SetPattern
+          rem 24-35 = 3 pixels
+          if temp1 > 23 then LET temp2 = 3 : goto P1SetPattern
+          rem 12-23 = 2 pixels
+          if temp1 > 11 then LET temp2 = 2 : goto P1SetPattern
+          rem 0-11 = 0 pixels (temp2 already 0)
+          
+P1SetPattern
+          rem Look up bit pattern from table using temp2 as index
+          LET temp3 = HealthBarPatterns[temp2]
+          
+          rem Set pfscore1 to health bar pattern
+          pfscore1 = temp3
+          
+          return
 
-    rem Update P2 health bar (displayed as score1)  
-    rem Input: temp1 = health value (0-100)
+          rem =================================================================
+          rem UPDATE PLAYER 2 HEALTH BAR
+          rem =================================================================
+          rem Input: temp1 = health value (0-100)
+          rem Output: pfscore2 = health bar pattern (8 pixels, bit pattern)
+          rem Uses simple comparisons against threshold table, looks up bit pattern
 UpdatePlayer2HealthBar
-    rem Convert health to score format for bar display
-    rem Temporarily disable score update to fix build errors
-    rem TODO: Implement proper binary-to-BCD conversion for score1 display
-    rem score1 assignment causes immediate value errors when using variables
-    
-    return
+          rem Clamp health to valid range
+          if temp1 > PlayerHealthMax then LET temp1 = PlayerHealthMax
+          if temp1 < 0 then LET temp1 = 0
+          
+          rem Compare health against thresholds starting from 83 downward
+          rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2 pixels, 0-11 = 0 pixels
+          rem temp2 will hold the pattern index (0-8)
+          LET temp2 = 0
+          
+          rem Check thresholds from highest (83) to lowest (11)
+          rem 84-100 = 8 pixels
+          if temp1 > 83 then LET temp2 = 8 : goto P2SetPattern
+          rem 72-83 = 7 pixels
+          if temp1 > 71 then LET temp2 = 7 : goto P2SetPattern
+          rem 60-71 = 6 pixels
+          if temp1 > 59 then LET temp2 = 6 : goto P2SetPattern
+          rem 48-59 = 5 pixels
+          if temp1 > 47 then LET temp2 = 5 : goto P2SetPattern
+          rem 36-47 = 4 pixels
+          if temp1 > 35 then LET temp2 = 4 : goto P2SetPattern
+          rem 24-35 = 3 pixels
+          if temp1 > 23 then LET temp2 = 3 : goto P2SetPattern
+          rem 12-23 = 2 pixels
+          if temp1 > 11 then LET temp2 = 2 : goto P2SetPattern
+          rem 0-11 = 0 pixels (temp2 already 0)
+          
+P2SetPattern
+          rem Look up bit pattern from table using temp2 as index
+          LET temp3 = HealthBarPatterns[temp2]
+          
+          rem Set pfscore2 to health bar pattern
+          pfscore2 = temp3
+          
+          return
 
           rem Update both P1 and P2 health bars
           rem Input: playerHealth[0] and playerHealth[1] arrays
@@ -143,61 +225,8 @@ UpdatePlayer34HealthBars
           rem Left side (Player 3): indigo, Right side (Player 4): red
           rem In multisprite kernel, scorecolor applies to the score area
           rem Note: Per-side colors may require additional kernel support
-          rem For now, set to indigo (Player 3 color)
+          rem For now, set to white (Neutral color)
           rem TODO: Investigate if multisprite kernel supports separate left/right score colors
-          let scorecolor = ColIndigo(14)
-          
-          return
-
-          rem =================================================================
-          rem DRAW PLAYFIELD HEALTH BAR
-          rem =================================================================
-          rem Displays a health bar using playfield pixels
-          rem INPUT: temp1 = health (0-100), temp2 = player index (2-3)
-          rem        temp3 = Y row (23 for bottom), temp4 = starting X position
-DrawPlayfieldHealthBar
-          rem Calculate bar length (0-15 pixels)
-          temp5 = temp1 * 15
-          temp5 = temp5 / 100
-          if temp5 > 15 then temp5 = 15
-          
-          rem Set health bar color based on player
-          if temp2 = 2 then COLUPF = ColYellow(12) 
-          rem P3 Yellow
-          if temp2 = 3 then COLUPF = ColGreen(12)  
-          rem P4 Green
-          
-          rem Clear the health bar area first
-          temp6 = temp4 
-          rem Starting X position
-          rem Clear 15 pixels worth of health bar
-          for temp7 = 0 to 15
-          rem pfpixel temp6 temp3 off
-          temp6 = temp6 + 1
-          if temp6 > 31 then temp6 = 31 
-          rem Clamp to playfield width
-          next
-          
-          rem Draw the health bar
-          temp6 = temp4 
-          rem Reset to starting X position
-          if temp2 = 2 then 
-          rem P3: left-to-right
-          for temp7 = 0 to temp5
-          rem pfpixel temp6 temp3 on
-          temp6 = temp6 + 1
-          if temp6 > 31 then temp6 = 31
-          next
-          
-          
-          if temp2 = 3 then 
-          rem P4: right-to-left
-          for temp7 = 0 to temp5
-          rem pfpixel temp6 temp3 on
-          temp7 = temp6
-          temp6 = temp6 - 1
-          if temp6 > temp7 then temp6 = 0
-          next
-          
+          let scorecolor = ColGrey(14)
           
           return

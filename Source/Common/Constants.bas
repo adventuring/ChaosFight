@@ -14,8 +14,10 @@
           const RecoveryFrameCount=8
           const KnockbackDistance=12          
           rem Character system constants
+          const NumCharacters = 16
+          rem Total number of characters (0-15)
           const MaxCharacter = 15
-          rem Maximum character ID (0-15 = 16 characters)
+          rem Maximum character ID (NumCharacters - 1)
           const NoCharacter = 255
           rem No character selected ($FF)
           const CPUCharacter = 254
@@ -50,6 +52,18 @@
           const ShiftAnimationState = 4
           rem Shift count for animation state (<< 4)
           
+          rem playerState bitmask constants for clearing individual flags
+          const MaskClearGuard = %11111101
+          rem Clear bit 1 (PlayerStateGuarding)
+          const MaskClearFacing = %11111110
+          rem Clear bit 0 (PlayerStateFacing)
+          
+          rem playerState animation state masks
+          const MaskAnimationRecovering = %10010000
+          rem Animation state 9: Recovering (1001 in bits 7-4)
+          const MaskAnimationFalling = %10100000
+          rem Animation state 10: Falling after jump (1010 in bits 7-4)
+          
           rem High bit constants for input testing
           const HighBit = $80
           rem Bit 7: high bit for testing input states
@@ -61,6 +75,14 @@
           rem VBLANK constants for controller detection
           const VBlankGroundINPT0123 = $C0
           rem VBLANK with paddle ground enabled for controller detection
+          
+          rem Color mask constants
+          const MaskDimColor = $F6
+          rem Color dimming mask for hurt flashing (NTSC/PAL): clears bits 2-3 to dim color
+          
+          rem SECAM color constants (SECAM uses fixed color values, no luminance)
+          const ColorSECAMCyan = $C0
+          rem SECAM cyan color value (used for guard flashing and special effects)
           
           rem Controller status bit constants (packed into single byte)
           const QuadtariDetected = 7
@@ -114,8 +136,8 @@
           rem =================================================================
           const GravityPerFrame = 1
           rem Pixels/frame added to vertical velocity when gravity applies
-          const BounceDampenDivisor = 2
-          rem Divisor applied to velocity on bounce reflect
+          const BounceDampenDivisor = 4
+          rem Divisor applied to velocity on bounce reflect (4 = 25% reduction)
           const CurlingFrictionCoefficient = 32
           rem Coefficient of friction for curling stone (Q8 fixed-point: 32/256 = 0.125)
           const MinimumVelocityThreshold = 2
@@ -231,6 +253,15 @@
           const SoundLandingSafe = 8
           const SoundLandingDamage = 9
           rem Reserve 10-255 for future sounds
+          
+          rem Legacy sound constant aliases for backward compatibility
+          const SoundAttack = SoundAttackHit
+          const SoundHit = SoundAttackHit
+          const SoundGuard = SoundGuardBlock
+          const SoundFall = SoundLandingDamage
+          const SoundElimination = SoundPlayerEliminated
+          const SoundSelect = SoundMenuSelect
+          const SoundVictory = SoundSpecialMove
 
           rem =================================================================
           rem ANIMATION SYSTEM CONSTANTS
@@ -243,6 +274,8 @@
           rem 60fps / 10fps = 6 frames
           const MovementFrameRate = 60
           rem 60fps movement updates
+          const HarpyFlapCooldownFrames = 15
+          rem Harpy flap cooldown: ¼ second at 60fps (60/4 = 15 frames)
           #endif
 
           #ifdef TV_PAL  
@@ -250,6 +283,8 @@
           rem 50fps / 10fps = 5 frames
           const MovementFrameRate = 50
           rem 50fps movement updates
+          const HarpyFlapCooldownFrames = 13
+          rem Harpy flap cooldown: ¼ second at 50fps (50/4 = 12.5, rounded to 13 frames)
           #endif
 
           #ifdef TV_SECAM
@@ -257,6 +292,8 @@
           rem Same as PAL (50fps / 10fps = 5 frames)
           const MovementFrameRate = 50
           rem 50fps movement updates
+          const HarpyFlapCooldownFrames = 13
+          rem Harpy flap cooldown: ¼ second at 50fps (50/4 = 12.5, rounded to 13 frames)
           #endif
 
           rem Animation sequence structure constants

@@ -15,9 +15,9 @@
           rem Input: temp1 = player index (0-3), temp2 = damage amount
 VisualShowDamageIndicator
           rem Set player to hurt state for visual feedback
-          temp3 = playerState[temp1] & %00011111 
+          temp3 = playerState[temp1] & MaskPlayerStateLower 
           rem Keep lower 5 bits
-          temp3 = temp3 | %10010000 
+          temp3 = temp3 | MaskAnimationRecovering 
           rem Set animation to 9 (hurt state)
           playerState[temp1] = temp3
           

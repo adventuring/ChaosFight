@@ -123,9 +123,9 @@ CheckFallDamage
           rem This is animation state 9 in the character animation sequences
           rem playerState bits: [7:animation][4:attacking][2:jumping][1:guarding][0:facing]
           rem Set bits 7-5 to 9 (recovering animation)
-          temp6 = playerState[temp1] & %00011111 
+          temp6 = playerState[temp1] & MaskPlayerStateLower 
           rem Keep lower 5 bits
-          temp6 = temp6 | %10010000 
+          temp6 = temp6 | MaskAnimationRecovering 
           rem Set animation to 9 (1001 in bits 7-4)
           playerState[temp1] = temp6
           
@@ -234,7 +234,7 @@ CheckGroundCollision
 HandleFrootyVertical
           rem Check character type to confirm
           temp5 = playerChar[temp1]
-          if temp5 <> 8 then return 
+          if temp5<> 8 then return 
           rem Not Frooty
           
           rem Get joystick state
@@ -269,7 +269,7 @@ HandleFrootyVertical
 HandleHarpySwoopAttack
           rem Check character type to confirm
           temp5 = playerChar[temp1]
-          if temp5 <> 6 then return 
+          if temp5<> 6 then return 
           rem Not Harpy
           
           rem Get facing direction from playerState bit 0
@@ -296,8 +296,8 @@ SetVerticalMomentum
           
           rem Set animation state to "swooping attack"
           rem This could be animation state 10 or special attack animation
-          temp6 = playerState[temp1] & %00011111
-          temp6 = temp6 | %10100000 
+          temp6 = playerState[temp1] & MaskPlayerStateLower
+          temp6 = temp6 | MaskAnimationFalling 
           rem Animation state 10
           playerState[temp1] = temp6
           

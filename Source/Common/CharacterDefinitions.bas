@@ -225,7 +225,7 @@ end
           rem   4 frames: (1, 2, 3, 4, 1, 2, 3, 4)
           rem   8 frames: (1, 2, 3, 4, 5, 6, 7, 8)
 
-          rem Animation frame reference tables (16 characters × 16 sequences × 8 bytes)
+          rem Animation frame reference tables (NumCharacters characters × 16 sequences × 8 bytes)
           rem Each character animation data is 128 bytes (16 sequences × 8 bytes)
           rem Total: 2048 bytes for all character animations
 

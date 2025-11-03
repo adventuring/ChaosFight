@@ -26,24 +26,24 @@ PhysicsApplyGravity
           goto Player1GravityDone
 ApplyPlayer1Gravity
           rem Skip gravity for Frooty (8) and DragonOfStorms (2)
-          let if playerChar[0] = 2 then Player1GravityDone
-          let if playerChar[0] = 8 then Player1GravityDone
+          if playerChar[0] = 2 then Player1GravityDone
+          if playerChar[0] = 8 then Player1GravityDone
           rem Skip gravity for RoboTito when latched to ceiling
-          let if playerChar[0] = 13 then RoboTitoGravity1
+          if playerChar[0] = 13 then RoboTitoGravity1
           goto RoboTitoGravityDone1
 RoboTitoGravity1
-          let if (characterStateFlags[0] & 1) = 0 then ApplyPlayer1GravityAfterCheck
+          if (characterStateFlags[0] & 1) = 0 then ApplyPlayer1GravityAfterCheck
           goto Player1GravityDone
 ApplyPlayer1GravityAfterCheck
           rem Not latched to ceiling, apply gravity
 RoboTitoGravityDone1
           rem Apply slow gravity for Harpy in flight mode but not diving
-          let if playerChar[0] = 6 then Player1HarpyGravity
+          if playerChar[0] = 6 then Player1HarpyGravity
           let playerY[0] = playerY[0] + 1
           goto Player1GravityCheck
 Player1HarpyGravity
           rem Harpy slow gravity: 50% speed unless diving
-          let if (characterStateFlags[0] & 4) = 0 then Player1SlowGravity
+          if (characterStateFlags[0] & 4) = 0 then Player1SlowGravity
           goto Player1NormalGravity
 Player1SlowGravity
           rem Not diving: slow gravity
@@ -55,6 +55,11 @@ Player1GravityCheck
           if playerY[0] < 80 then Player1GravityDone
           let playerY[0] = 80
           let playerState[0] = playerState[0] & 251
+          rem Reset Harpy flight energy and clear dive flag on landing
+          if playerChar[0] = 6 then harpyFlightEnergy[0] = 60
+          rem Reset to full energy (60 frames = 1 second at 60fps)
+          if playerChar[0] = 6 then characterStateFlags[0] = characterStateFlags[0] & 251
+          rem Clear dive mode flag (bit 2)
 Player1GravityDone
           
           rem Player 2
@@ -62,24 +67,24 @@ Player1GravityDone
           goto Player2GravityDone
 ApplyPlayer2Gravity
           rem Skip gravity for Frooty (8) and DragonOfStorms (2)
-          let if playerChar[1] = 2 then Player2GravityDone
-          let if playerChar[1] = 8 then Player2GravityDone
+          if playerChar[1] = 2 then Player2GravityDone
+          if playerChar[1] = 8 then Player2GravityDone
           rem Skip gravity for RoboTito when latched to ceiling
-          let if playerChar[1] = 13 then RoboTitoGravity2
+          if playerChar[1] = 13 then RoboTitoGravity2
           goto RoboTitoGravityDone2
 RoboTitoGravity2
-          let if (characterStateFlags[1] & 1) = 0 then ApplyPlayer2GravityAfterCheck
+          if (characterStateFlags[1] & 1) = 0 then ApplyPlayer2GravityAfterCheck
           goto Player2GravityDone
 ApplyPlayer2GravityAfterCheck
           rem Not latched to ceiling, apply gravity
 RoboTitoGravityDone2
           rem Apply slow gravity for Harpy in flight mode but not diving
-          let if playerChar[1] = 6 then Player2HarpyGravity
+          if playerChar[1] = 6 then Player2HarpyGravity
           let playerY[1] = playerY[1] + 1
           goto Player2GravityCheck
 Player2HarpyGravity
           rem Harpy slow gravity: 50% speed unless diving
-          let if (characterStateFlags[1] & 4) = 0 then Player2SlowGravity
+          if (characterStateFlags[1] & 4) = 0 then Player2SlowGravity
           goto Player2NormalGravity
 Player2SlowGravity
           rem Not diving: slow gravity
@@ -91,33 +96,38 @@ Player2GravityCheck
           if playerY[1] < 80 then Player2GravityDone
           let playerY[1] = 80
           let playerState[1] = playerState[1] & 251
+          rem Reset Harpy flight energy and clear dive flag on landing
+          if playerChar[1] = 6 then harpyFlightEnergy[1] = 60
+          rem Reset to full energy (60 frames = 1 second at 60fps)
+          if playerChar[1] = 6 then characterStateFlags[1] = characterStateFlags[1] & 251
+          rem Clear dive mode flag (bit 2)
 Player2GravityDone
           
           rem Player 3 (Quadtari only)
           if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer3Jump
-          let if selectedChar3  = 255 then SkipPlayer3Jump
+          if selectedChar3  = 255 then SkipPlayer3Jump
           if (playerState[2] & 4) = 0 then ApplyPlayer3Gravity
           goto SkipPlayer3Jump
 ApplyPlayer3Gravity
           rem Skip gravity for Frooty (8) and DragonOfStorms (2)
-          let if playerChar[2] = 2 then SkipPlayer3Jump
-          let if playerChar[2] = 8 then SkipPlayer3Jump
+          if playerChar[2] = 2 then SkipPlayer3Jump
+          if playerChar[2] = 8 then SkipPlayer3Jump
           rem Skip gravity for RoboTito when latched to ceiling
-          let if playerChar[2] = 13 then RoboTitoGravity3
+          if playerChar[2] = 13 then RoboTitoGravity3
           goto RoboTitoGravityDone3
 RoboTitoGravity3
-          let if (characterStateFlags[2] & 1) = 0 then ApplyPlayer3GravityAfterCheck
+          if (characterStateFlags[2] & 1) = 0 then ApplyPlayer3GravityAfterCheck
           goto SkipPlayer3Jump
 ApplyPlayer3GravityAfterCheck
           rem Not latched to ceiling, apply gravity
 RoboTitoGravityDone3
           rem Apply slow gravity for Harpy in flight mode but not diving
-          let if playerChar[2] = 6 then Player3HarpyGravity
+          if playerChar[2] = 6 then Player3HarpyGravity
           let playerY[2] = playerY[2] + 1
           goto Player3GravityCheck
 Player3HarpyGravity
           rem Harpy slow gravity: 50% speed unless diving
-          let if (characterStateFlags[2] & 4) = 0 then Player3SlowGravity
+          if (characterStateFlags[2] & 4) = 0 then Player3SlowGravity
           goto Player3NormalGravity
 Player3SlowGravity
           rem Not diving: slow gravity
@@ -128,33 +138,38 @@ Player3NormalGravity
 Player3GravityCheck
           if playerY[2] < 80 then SkipPlayer3Jump
           let playerY[2] = 80 : playerState[2] = playerState[2] & 251
+          rem Reset Harpy flight energy and clear dive flag on landing
+          if playerChar[2] = 6 then harpyFlightEnergy[2] = 60
+          rem Reset to full energy (60 frames = 1 second at 60fps)
+          if playerChar[2] = 6 then characterStateFlags[2] = characterStateFlags[2] & 251
+          rem Clear dive mode flag (bit 2)
 SkipPlayer3Jump
           
           rem Player 4 (Quadtari only)
           if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer4Jump
-          let if selectedChar4  = 255 then SkipPlayer4Jump
+          if selectedChar4  = 255 then SkipPlayer4Jump
           if (playerState[3] & 4) = 0 then ApplyPlayer4Gravity
           goto SkipPlayer4Jump
 ApplyPlayer4Gravity
           rem Skip gravity for Frooty (8) and DragonOfStorms (2)
-          let if playerChar[3] = 2 then SkipPlayer4Jump
-          let if playerChar[3] = 8 then SkipPlayer4Jump
+          if playerChar[3] = 2 then SkipPlayer4Jump
+          if playerChar[3] = 8 then SkipPlayer4Jump
           rem Skip gravity for RoboTito when latched to ceiling
-          let if playerChar[3] = 13 then RoboTitoGravity4
+          if playerChar[3] = 13 then RoboTitoGravity4
           goto RoboTitoGravityDone4
 RoboTitoGravity4
-          let if (characterStateFlags[3] & 1) = 0 then ApplyPlayer4GravityAfterCheck
+          if (characterStateFlags[3] & 1) = 0 then ApplyPlayer4GravityAfterCheck
           goto SkipPlayer4Jump
 ApplyPlayer4GravityAfterCheck
           rem Not latched to ceiling, apply gravity
 RoboTitoGravityDone4
           rem Apply slow gravity for Harpy in flight mode but not diving
-          let if playerChar[3] = 6 then Player4HarpyGravity
+          if playerChar[3] = 6 then Player4HarpyGravity
           let playerY[3] = playerY[3] + 1
           goto Player4GravityCheck
 Player4HarpyGravity
           rem Harpy slow gravity: 50% speed unless diving
-          let if (characterStateFlags[3] & 4) = 0 then Player4SlowGravity
+          if (characterStateFlags[3] & 4) = 0 then Player4SlowGravity
           goto Player4NormalGravity
 Player4SlowGravity
           rem Not diving: slow gravity
@@ -165,6 +180,11 @@ Player4NormalGravity
 Player4GravityCheck
           if playerY[3] < 80 then SkipPlayer4Jump
           let playerY[3] = 80 : playerState[3] = playerState[3] & 251
+          rem Reset Harpy flight energy and clear dive flag on landing
+          if playerChar[3] = 6 then harpyFlightEnergy[3] = 60
+          rem Reset to full energy (60 frames = 1 second at 60fps)
+          if playerChar[3] = 6 then characterStateFlags[3] = characterStateFlags[3] & 251
+          rem Clear dive mode flag (bit 2)
 SkipPlayer4Jump
           
           return
@@ -199,7 +219,7 @@ SkipPlayer1Momentum
 
           rem Player 3 (Quadtari only)
           if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer3Recovery
-          let if selectedChar3  = 255 then SkipPlayer3Recovery
+          if selectedChar3  = 255 then SkipPlayer3Recovery
           if ! playerRecoveryFrames[2] then SkipPlayer3Recovery
           let playerRecoveryFrames[2] = playerRecoveryFrames[2] - 1 : let playerX[2] = playerX[2] + playerMomentumX[2]
           if playerMomentumX[2] <= 0 then CheckPlayer3NegativeMomentum
@@ -212,7 +232,7 @@ SkipPlayer3Recovery
 
           rem Player 4 (Quadtari only)
           if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer4Recovery
-          let if selectedChar4  = 255 then SkipPlayer4Recovery
+          if selectedChar4  = 255 then SkipPlayer4Recovery
           if ! playerRecoveryFrames[3] then SkipPlayer4Recovery
           let playerRecoveryFrames[3] = playerRecoveryFrames[3] - 1 : let playerX[3] = playerX[3] + playerMomentumX[3]
           if playerMomentumX[3] <= 0 then CheckPlayer4NegativeMomentum
@@ -267,7 +287,7 @@ SkipPlayer1Falling
 
           rem Player 3 (Quadtari only)
           if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer3Bounds
-          let if selectedChar3  = 255 then SkipPlayer3Bounds
+          if selectedChar3  = 255 then SkipPlayer3Bounds
           goto ApplyPlayer3Bounds
           goto SkipPlayer3Bounds
 ApplyPlayer3Bounds
@@ -290,7 +310,7 @@ SkipPlayer3Bounds
 
           rem Player 4 (Quadtari only)
           if ! (controllerStatus & SetQuadtariDetected) then SkipPlayer4Bounds
-          let if selectedChar4  = 255 then SkipPlayer4Bounds
+          if selectedChar4  = 255 then SkipPlayer4Bounds
           goto ApplyPlayer4Bounds
           goto SkipPlayer4Bounds
 ApplyPlayer4Bounds
@@ -327,7 +347,7 @@ CalcP1vsP2AbsDiffP
           temp2 = playerX[0] - playerX[1]
 SkipCalcP1vsP2DiffP
           if temp2 < 16 then if playerX[0] < playerX[1] then playerX[0] = playerX[0] - 1 : playerX[1] = playerX[1] + 1 : goto SkipP1P2Sep
-          let if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[1] = playerX[1] - 1
+          if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[1] = playerX[1] - 1
 SkipP1P2Sep
           
           
@@ -346,7 +366,7 @@ CalcP1vsP3AbsDiffP
           temp2 = playerX[0] - playerX[2]
 SkipCalcP1vsP3DiffP
           if temp2 < 16 then if playerX[0] < playerX[2] then playerX[0] = playerX[0] - 1 : playerX[2] = playerX[2] + 1 : goto SkipP1P3Sep
-          let if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[2] = playerX[2] - 1
+          if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[2] = playerX[2] - 1
 SkipP1P3Sep
 SkipP1P3Check
           
@@ -364,7 +384,7 @@ CalcP1vsP4AbsDiffP
           temp2 = playerX[0] - playerX[3]
 SkipCalcP1vsP4DiffP
           if temp2 < 16 then if playerX[0] < playerX[3] then playerX[0] = playerX[0] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP1P4Sep
-          let if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[3] = playerX[3] - 1
+          if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[3] = playerX[3] - 1
 SkipP1P4Sep
 SkipP1P4Check
           
@@ -382,7 +402,7 @@ CalcP2vsP3AbsDiffP
           temp2 = playerX[1] - playerX[2]
 SkipCalcP2vsP3DiffP
           if temp2 < 16 then if playerX[1] < playerX[2] then playerX[1] = playerX[1] - 1 : playerX[2] = playerX[2] + 1 : goto SkipP2P3Sep
-          let if temp2 < 16 then playerX[1] = playerX[1] + 1 : playerX[2] = playerX[2] - 1
+          if temp2 < 16 then playerX[1] = playerX[1] + 1 : playerX[2] = playerX[2] - 1
 SkipP2P3Sep
 SkipP2P3Check
           
@@ -400,7 +420,7 @@ CalcP2vsP4AbsDiffP
           temp2 = playerX[1] - playerX[3]
 SkipCalcP2vsP4DiffP
           if temp2 < 16 then if playerX[1] < playerX[3] then playerX[1] = playerX[1] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP2P4Sep
-          let if temp2 < 16 then playerX[1] = playerX[1] + 1 : playerX[3] = playerX[3] - 1
+          if temp2 < 16 then playerX[1] = playerX[1] + 1 : playerX[3] = playerX[3] - 1
 SkipP2P4Sep
 SkipP2P4Check
           
@@ -408,8 +428,8 @@ SkipP2P4Check
           
           
           rem Check Player 3 vs Player 4
-          let if selectedChar3  = 255 then goto SkipP3vsP4
-          let if selectedChar4  = 255 then goto SkipP3vsP4
+          if selectedChar3  = 255 then goto SkipP3vsP4
+          if selectedChar4  = 255 then goto SkipP3vsP4
           if playerX[2] >= playerX[3] then CalcP3vsP4AbsDiffP
           temp2 = playerX[3] - playerX[2]
           goto SkipCalcP3vsP4DiffP
@@ -417,7 +437,7 @@ CalcP3vsP4AbsDiffP
           temp2 = playerX[2] - playerX[3]
 SkipCalcP3vsP4DiffP
           if temp2 < 16 then if playerX[2] < playerX[3] then playerX[2] = playerX[2] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP3P4Sep
-          let if temp2 < 16 then playerX[2] = playerX[2] + 1 : playerX[3] = playerX[3] - 1
+          if temp2 < 16 then playerX[2] = playerX[2] + 1 : playerX[3] = playerX[3] - 1
 SkipP3P4Sep
           
           

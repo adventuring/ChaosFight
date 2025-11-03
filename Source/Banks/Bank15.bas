@@ -5,7 +5,7 @@
           
           rem Sound effects system - dedicated 3.5kiB bank for compiled samples
           #include "Source/Routines/SoundSystem.bas"
-          
+
           rem =================================================================
           rem SOUNDS BANK HELPER FUNCTIONS
           rem =================================================================

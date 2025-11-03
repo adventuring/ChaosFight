@@ -121,9 +121,9 @@ Player3HealthSet
           rem Flag is used for missile multiplexing (only multiplex when players 3 or 4 are active)
           let ControllerStatus  = ControllerStatus & ClearPlayers34Active
           rem Clear flag first
-          if SelectedChar3 <> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
+          if SelectedChar3<> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
           rem Set if Player 3 selected
-          if SelectedChar4 <> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
+          if SelectedChar4<> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
           rem Set if Player 4 selected
 
           rem Initialize missiles
@@ -155,10 +155,10 @@ Player3HealthSet
           rem Reset win screen timer
 
           rem Count initial players
-          if SelectedChar1 <> 255 then PlayersRemaining = PlayersRemaining + 1
-          if SelectedChar2 <> 255 then PlayersRemaining = PlayersRemaining + 1  
-          if SelectedChar3 <> 255 then PlayersRemaining = PlayersRemaining + 1
-          if SelectedChar4 <> 255 then PlayersRemaining = PlayersRemaining + 1
+          if SelectedChar1<> 255 then PlayersRemaining = PlayersRemaining + 1
+          if SelectedChar2<> 255 then PlayersRemaining = PlayersRemaining + 1  
+          if SelectedChar3<> 255 then PlayersRemaining = PlayersRemaining + 1
+          if SelectedChar4<> 255 then PlayersRemaining = PlayersRemaining + 1
 
           rem Initialize frame counter
           frame = 0
@@ -167,6 +167,17 @@ Player3HealthSet
           let GameState  = 0
           rem 0 = normal play, 1 = paused, 2 = game ending
           
+          rem Initialize player sprite NUSIZ registers (double width)
+          rem NUSIZ = 5: double width, single copy
+          NUSIZ0 = 5
+          rem Player 0 (Player 1)
+          _NUSIZ1 = 5
+          rem Player 1 (Player 2) - multisprite kernel uses _NUSIZ1
+          NUSIZ2 = 5
+          rem Player 2 (Player 3) - multisprite kernel
+          NUSIZ3 = 5
+          rem Player 3 (Player 4) - multisprite kernel
+
           rem Initialize health bars
           gosub bank8 InitializeHealthBars
 

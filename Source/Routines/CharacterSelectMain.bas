@@ -6,7 +6,7 @@
           rem =================================================================
           rem Per-frame character selection screen with Quadtari support.
           rem Called from MainLoop each frame (gameMode 3).
-          rem Players cycle through 16 characters and lock in their choice.
+          rem Players cycle through NumCharacters characters and lock in their choice.
           rem
           rem Setup is handled by SetupCharacterSelect in ChangeGameMode.bas
           rem This function processes one frame and returns.
@@ -49,10 +49,10 @@ CharacterSelectPlayer0Right
           let playerLocked[0] = 0
 CharacterSelectSkipPlayer0Right
           rem Use skip-over pattern to avoid complex || operator
-          let if joy0up then playerLocked[0] = 0 : goto CharacterSelectPlayer0LockClearDone
-          let if joy0down then playerLocked[0] = 0
+          if joy0up then playerLocked[0] = 0 : goto CharacterSelectPlayer0LockClearDone
+          if joy0down then playerLocked[0] = 0
 CharacterSelectPlayer0LockClearDone
-          let if joy0fire then playerLocked[0] = 1
+          if joy0fire then playerLocked[0] = 1
 
           rem Handle Player 2 input (joy1 on even frames)
           if joy1left then CharacterSelectPlayer1Left
@@ -70,10 +70,10 @@ CharacterSelectPlayer1Right
           let playerLocked[1] = 0
 CharacterSelectSkipPlayer1Right
           rem Use skip-over pattern to avoid complex || operator
-          let if joy1up then playerLocked[1] = 0 : goto CharacterSelectPlayer1LockClearDone
-          let if joy1down then playerLocked[1] = 0
+          if joy1up then playerLocked[1] = 0 : goto CharacterSelectPlayer1LockClearDone
+          if joy1down then playerLocked[1] = 0
 CharacterSelectPlayer1LockClearDone
-          let if joy1fire then playerLocked[1] = 1
+          if joy1fire then playerLocked[1] = 1
           
           let qtcontroller = 1
           goto CharacterSelectInputComplete
@@ -98,10 +98,10 @@ CharacterSelectPlayer3Right
           let playerLocked[2] = 0
 CharacterSelectSkipPlayer3Right
           rem Use skip-over pattern to avoid complex || operator
-          let if joy0up then playerLocked[2] = 0 : goto CharacterSelectPlayer2LockClearDone
-          let if joy0down then playerLocked[2] = 0
+          if joy0up then playerLocked[2] = 0 : goto CharacterSelectPlayer2LockClearDone
+          if joy0down then playerLocked[2] = 0
 CharacterSelectPlayer2LockClearDone
-          let if joy0fire then playerLocked[2] = 1
+          if joy0fire then playerLocked[2] = 1
 CharacterSelectSkipPlayer3
 
           rem Handle Player 4 input (joy1 on odd frames)
@@ -123,10 +123,10 @@ CharacterSelectPlayer4Right
           let playerLocked[3] = 0
 CharacterSelectSkipPlayer4Right
           rem Use skip-over pattern to avoid complex || operator
-          let if joy1up then playerLocked[3] = 0 : goto CharacterSelectPlayer3LockClearDone
-          let if joy1down then playerLocked[3] = 0
+          if joy1up then playerLocked[3] = 0 : goto CharacterSelectPlayer3LockClearDone
+          if joy1down then playerLocked[3] = 0
 CharacterSelectPlayer3LockClearDone
-          let if joy1fire then playerLocked[3] = 1
+          if joy1fire then playerLocked[3] = 1
 CharacterSelectSkipPlayer4
           
           
@@ -166,7 +166,7 @@ CharacterSelectSkipQuadtari
           if playerLocked[0] then CharacterSelectFinish
           goto CharacterSelectReadyDone
 CharacterSelectQuadtariReady
-          let if readyCount > = 2 then CharacterSelectFinish
+          if readyCount>= 2 then CharacterSelectFinish
 CharacterSelectReadyDone
           
           return

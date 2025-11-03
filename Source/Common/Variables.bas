@@ -415,6 +415,22 @@
           dim missileAngularVel = w017
           rem [0-3] angular velocity for rotation effects (4 bytes, reserved for future)
 
+          rem Harpy flight energy/duration counters (SCRAM)
+          dim harpyFlightEnergy_W = w009
+          dim harpyFlightEnergy_R = r009
+          dim harpyFlightEnergy = w009
+          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 flight energy remaining (4 bytes: w009-w012)
+          rem Decrements on each flap, resets on landing, maximum value 60 (1 second at 60fps)
+          rem Array accessible as harpyFlightEnergy[0] through harpyFlightEnergy[3]
+          
+          rem Last flap frame tracker for rapid tap detection (SCRAM)
+          dim harpyLastFlapFrame_W = w023
+          dim harpyLastFlapFrame_R = r023
+          dim harpyLastFlapFrame = w023
+          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 last flap frame counter (4 bytes: w023-w026)
+          rem Used to detect rapid UP tapping
+          rem Array accessible as harpyLastFlapFrame[0] through harpyLastFlapFrame[3]
+
           rem =================================================================
           rem TODO / FUTURE EXPANSION
           rem =================================================================

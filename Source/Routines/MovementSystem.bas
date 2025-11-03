@@ -14,14 +14,14 @@ UpdatePlayerMovement
           rem Player 1
           let temp1  = 1  : gosub UpdatePlayerMovementSingle
           rem Player 2
-          let if QuadtariDetected then temp1 = 2  : gosub UpdatePlayerMovementSingle  : temp1  = 3  : gosub UpdatePlayerMovementSingle
+          if QuadtariDetected then temp1 = 2  : gosub UpdatePlayerMovementSingle  : temp1  = 3  : gosub UpdatePlayerMovementSingle
           return
 
           rem Update movement for a specific player
           rem Input: temp1 = player index (0-3)
 UpdatePlayerMovementSingle
           rem Skip if player is eliminated
-          let if playerHealth[temp1] = 0 then return
+          if playerHealth[temp1] = 0 then return
           
           rem Update subpixel positions with velocity
           let PlayerSubpixelX[temp1] = PlayerSubpixelX[temp1] + PlayerVelocityX[temp1]
@@ -42,10 +42,10 @@ UpdateSpritePositions
           rem Upper 8 bits (integer part)
           
           rem Set sprite positions based on player index
-          let if temp1 = 0 then player0x = temp2 : player0y  = temp3
-          let if temp1 = 1 then player1x = temp2 : player1y  = temp3
-          let if temp1 = 2 then player2x = temp2 : player2y  = temp3
-          let if temp1 = 3 then player3x = temp2 : player3y  = temp3
+          if temp1 = 0 then player0x = temp2 : player0y  = temp3
+          if temp1 = 1 then player1x = temp2 : player1y  = temp3
+          if temp1 = 2 then player2x = temp2 : player2y  = temp3
+          if temp1 = 3 then player3x = temp2 : player3y  = temp3
           
           return
 
@@ -123,12 +123,12 @@ CheckPlayerCollision
           rem temp2=player2 X, temp3=player2 Y
           
           rem Check X collision (8 pixel width)
-          let if temp2 + 8 < = temp5 then NoCollision
-          let if temp2 > = temp5 + 8 then NoCollision
+          if temp2 + 8<= temp5 then NoCollision
+          if temp2>= temp5 + 8 then NoCollision
           
           rem Check Y collision (16 pixel height)
-          let if temp3 + 16 < = temp6 then NoCollision
-          let if temp3 > = temp6 + 16 then NoCollision
+          if temp3 + 16<= temp6 then NoCollision
+          if temp3>= temp6 + 16 then NoCollision
           
           rem Collision detected
           let temp3  = 1
@@ -149,8 +149,8 @@ CheckWallCollision
           rem temp2=X, temp3=Y
           
           rem Check X collision with wall
-          let if temp2 + 8 < = temp2 then NoWallCollision
-          let if temp2 > = temp2 + 8 then NoWallCollision
+          if temp2 + 8<= temp2 then NoWallCollision
+          if temp2>= temp2 + 8 then NoWallCollision
           
           rem Wall collision detected
           let temp3  = 1
@@ -173,11 +173,11 @@ ConstrainToScreen
           
           rem Constrain X position (0 to 152 for 8-pixel wide sprite)
           if temp2 > PlayerSubpixelX[temp1] then temp2 = 0 : PlayerSubpixelX[temp1] = 0
-          let if temp2 > 152 then temp2 = 152 : PlayerSubpixelX[temp1] = 152 << 8
+          if temp2 > 152 then temp2 = 152 : PlayerSubpixelX[temp1] = 152 << 8
           
           rem Constrain Y position (0 to 184 for 16-pixel tall sprite)
           if temp3 > PlayerSubpixelY[temp1] then temp3 = 0 : PlayerSubpixelY[temp1] = 0
-          let if temp3 > 184 then temp3 = 184 : PlayerSubpixelY[temp1] = 184 << 8
+          if temp3 > 184 then temp3 = 184 : PlayerSubpixelY[temp1] = 184 << 8
           
           rem Update sprite positions
           gosub UpdateSpritePositions

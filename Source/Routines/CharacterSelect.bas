@@ -36,7 +36,7 @@ SelScreenLoop
           if qtcontroller then goto SelHandleQuad
           
           rem Handle Player 1 input (joy0 on even frames)
-          let if joy0left then playerChar[0] = playerChar[0] - 1 : goto SelChkP0Left
+          if joy0left then playerChar[0] = playerChar[0] - 1 : goto SelChkP0Left
           goto SelSkipP0Left
 
 SelChkP0Left
@@ -44,7 +44,7 @@ SelChkP0Left
           if playerChar[0] > MaxCharacter then playerLocked[0] = 0
           
 SelSkipP0Left
-          let if joy0right then playerChar[0] = playerChar[0] + 1 : goto SelChkP0Right
+          if joy0right then playerChar[0] = playerChar[0] + 1 : goto SelChkP0Right
           goto SelSkipP0Right
 
 SelChkP0Right
@@ -52,7 +52,7 @@ SelChkP0Right
           if playerChar[0] > MaxCharacter then playerLocked[0] = 0
           
 SelSkipP0Right
-          let if joy0up then playerLocked[0] = 0
+          if joy0up then playerLocked[0] = 0
           rem Unlock by moving up
           if joy0down then SelChkJoy0Fire
           goto SelJoy0Down
@@ -78,21 +78,21 @@ SelP0Handi
 SelP0Done
 
           rem Handle Player 2 input (joy1 on even frames)
-          let if joy1left then playerChar[1] = playerChar[1] - 1 : goto SelChkP1Left
+          if joy1left then playerChar[1] = playerChar[1] - 1 : goto SelChkP1Left
           goto SelSkipP1Left
 
 SelChkP1Left
           if playerChar[1] > MaxCharacter then playerChar[1] = MaxCharacter
           if playerChar[1] > MaxCharacter then playerLocked[1] = 0
 SelSkipP1Left
-          let if joy1right then playerChar[1] = playerChar[1] + 1 : goto SelChkP1Right
+          if joy1right then playerChar[1] = playerChar[1] + 1 : goto SelChkP1Right
           goto SelSkipP1Right
 
 SelChkP1Right
           if playerChar[1] > MaxCharacter then playerChar[1] = 0
           if playerChar[1] > MaxCharacter then playerLocked[1] = 0
 SelSkipP1Right
-          let if joy1up then playerLocked[1] = 0
+          if joy1up then playerLocked[1] = 0
           rem Unlock by moving up
           if joy1down then SelChkJoy1Fire
 
@@ -109,7 +109,7 @@ SelJoy1Down
           goto SelSkipJoy1Even
 
 SelJoy1Chk
-          let if joy1down then playerLocked[1] = 2 : goto SelJoy1Done
+          if joy1down then playerLocked[1] = 2 : goto SelJoy1Done
 
           rem Locked with handicap (75% health)
           let playerLocked[1] = 1
@@ -127,7 +127,7 @@ SelHandleQuad
           goto SelSkipP2
 
 SelHandleP2
-          let if joy0left then playerChar[2] = playerChar[2] - 1 : goto SelChkP2Left
+          if joy0left then playerChar[2] = playerChar[2] - 1 : goto SelChkP2Left
 
           goto SelSkipP2Left
 
@@ -135,7 +135,7 @@ SelChkP2Left
           if playerChar[2] > MaxCharacter then playerChar[2] = MaxCharacter
           if playerChar[2] > MaxCharacter then playerLocked[2] = 0
 SelSkipP2Left
-          let if joy0right then playerChar[2] = playerChar[2] + 1 : goto SelChkP2Right
+          if joy0right then playerChar[2] = playerChar[2] + 1 : goto SelChkP2Right
 
           goto SelSkipP2Right
 
@@ -143,7 +143,7 @@ SelChkP2Right
           if playerChar[2] > MaxCharacter then playerChar[2] = 0
           if playerChar[2] > MaxCharacter then playerLocked[2] = 0
 SelSkipP2Right
-          let if joy0up then playerLocked[2] = 0
+          if joy0up then playerLocked[2] = 0
           rem Unlock by moving up
           if joy0down then SelChkJoy0Fire2
 
@@ -176,19 +176,19 @@ SelJoy0Done2
           goto SelSkipP3Alt
 
 SelHandleP3
-          let if joy1left then playerChar[3] = playerChar[3] - 1 : goto SelCheckP3Left
+          if joy1left then playerChar[3] = playerChar[3] - 1 : goto SelCheckP3Left
           goto SelSkipP3Left
 SelCheckP3Left
           if playerChar[3] > MaxCharacter then playerChar[3] = MaxCharacter
           if playerChar[3] > MaxCharacter then playerLocked[3] = 0
 SelSkipP3Left
-          let if joy1right then playerChar[3] = playerChar[3] + 1 : goto SelCheckP3Right
+          if joy1right then playerChar[3] = playerChar[3] + 1 : goto SelCheckP3Right
           goto SelSkipP3Right
 SelCheckP3Right
           if playerChar[3] > MaxCharacter then playerChar[3] = 0
           if playerChar[3] > MaxCharacter then playerLocked[3] = 0
 SelSkipP3Right
-          let if joy1up then playerLocked[3] = 0
+          if joy1up then playerLocked[3] = 0
           rem Unlock by moving up
           if joy1down then SelChkJoy1Fire3
 
@@ -262,7 +262,7 @@ SelSkipQuadPly
           
 SelQuadReady
           rem Need at least 2 players ready for 4-player mode
-          let if readyCount > = 2 then goto SelScreenDone
+          if readyCount>= 2 then goto SelScreenDone
 SelSkipQuadChk
           return
 
@@ -372,10 +372,10 @@ SelDrawNumber
           rem Player numbers are determined by position in the grid
 
           rem Player 1 (top left) - draw "1"
-          let if player0x  = 56 then SelChkP0Y1
+          if player0x  = 56 then SelChkP0Y1
           goto SkipPlayer0Check1
 SelChkP0Y1
-          let if player0y  = 40 then SelDrawP0Top
+          if player0y  = 40 then SelDrawP0Top
           goto SkipPlayer0Check1
 SelDrawP0Top 
           pf0 = pf0 | %00001000
@@ -384,10 +384,10 @@ SelDrawP0Top
           pf3 = pf3 | %00001000
 
           rem Player 2 (top right) - draw "2"
-          let if player1x  = 104 then SelChkP1Y1
+          if player1x  = 104 then SelChkP1Y1
           goto SkipPlayer1Check1
 SelChkP1Y1
-          let if player1y  = 40 then SelDrawP1Top
+          if player1y  = 40 then SelDrawP1Top
           goto SkipPlayer1Check1
 SelDrawP1Top 
           pf3 = pf3 | %00010000
@@ -395,10 +395,10 @@ SelDrawP1Top
           pf5 = pf5 | %00010000
 
           rem Player 3 (bottom left) - draw "3"
-          let if player0x  = 56 then SelChkP0Y2
+          if player0x  = 56 then SelChkP0Y2
           goto SkipPlayer0Check2
 SelChkP0Y2
-          let if player0y  = 80 then SelDrawP0Bot
+          if player0y  = 80 then SelDrawP0Bot
           goto SkipPlayer0Check2
 SelDrawP0Bot 
           pf0 = pf0 | %00001000
@@ -407,10 +407,10 @@ SelDrawP0Bot
           pf3 = pf3 | %00001000
 
           rem Player 4 (bottom right) - draw "4"
-          let if player1x  = 104 then SelChkP1Y2
+          if player1x  = 104 then SelChkP1Y2
           goto SkipPlayer1Check2
 SelChkP1Y2
-          let if player1y  = 80 then SelDrawP1Bot
+          if player1y  = 80 then SelDrawP1Bot
           goto SkipPlayer1Check2
 SelDrawP1Bot 
           pf3 = pf3 | %00010000
@@ -427,9 +427,9 @@ SelUpdateAnim
           
           rem Check each player for DOWN held (even frame for P1/P2)
           if qtcontroller then goto SkipEvenFrameCheck 
-                    let if joy0down then HandicapMode  = HandicapMode | 1
+                    if joy0down then HandicapMode  = HandicapMode | 1
           rem P1 handicap flag
-          let if joy1down then HandicapMode  = HandicapMode | 2
+          if joy1down then HandicapMode  = HandicapMode | 2
           rem P2 handicap flag
           
           
@@ -440,9 +440,9 @@ SelQuadHandi
           if controllerStatus & SetQuadtariDetected then SelOddFrame
           goto SkipOddFrameCheck
 SelOddFrame 
-                    let if joy0down then HandicapMode  = HandicapMode | 4
+                    if joy0down then HandicapMode  = HandicapMode | 4
           rem P3 handicap flag
-          let if joy1down then HandicapMode  = HandicapMode | 8
+          if joy1down then HandicapMode  = HandicapMode | 8
           rem P4 handicap flag
           
           
@@ -468,17 +468,17 @@ SelAnimNormal
           rem Randomly choose new animation state
           let charSelectAnimState  = rand & 3
           rem 0-3: idle, running, attacking, special
-          let if charSelectAnimState > 2 then charSelectAnimState  = 0
+          if charSelectAnimState > 2 then charSelectAnimState  = 0
           rem Keep to 0-2 range
           let charSelectAnimFrame  = 0
           rem Cycle through characters for variety
           let charSelectCharIndex  = charSelectCharIndex + 1
-          let if charSelectCharIndex > MaxCharacter then charSelectCharIndex  = 0
+          if charSelectCharIndex > MaxCharacter then charSelectCharIndex  = 0
           
           
           rem Update animation frame within current state
           let charSelectAnimFrame  = charSelectAnimFrame + 1
-          let if charSelectAnimFrame > 7 then charSelectAnimFrame  = 0
+          if charSelectAnimFrame > 7 then charSelectAnimFrame  = 0
           rem 8-frame animation cycles
           
           return
@@ -499,17 +499,17 @@ SelDrawSprite
           let temp1  = charSelectAnimState
           rem Use animation state as hurt simulation for demo
           
-          if temp1 <> 2 then SelColorNormal
+          if temp1<> 2 then SelColorNormal
           rem Hurt state - dimmer colors
           if switchbw then SelHurtBW
           rem Player color but dimmer
-          let if charSelectPlayer = 1 then COLUP0  = ColBlue(6)
+          if charSelectPlayer = 1 then COLUP0  = ColBlue(6)
           rem Dark blue
-          let if charSelectPlayer = 2 then COLUP0  = ColRed(6)
+          if charSelectPlayer = 2 then COLUP0  = ColRed(6)
           rem Dark red  
-          let if charSelectPlayer = 3 then COLUP0  = ColYellow(6)
+          if charSelectPlayer = 3 then COLUP0  = ColYellow(6)
           rem Dark yellow
-          let if charSelectPlayer = 4 then COLUP0  = ColGreen(6)
+          if charSelectPlayer = 4 then COLUP0  = ColGreen(6)
           rem Dark green
           goto SelColorDone
 SelHurtBW
@@ -520,13 +520,13 @@ SelColorNormal
           rem Normal state - bright colors
           if switchbw then SelColorBW
           rem Player color - bright
-          let if charSelectPlayer = 1 then COLUP0  = ColBlue(12)
+          if charSelectPlayer = 1 then COLUP0  = ColBlue(12)
           rem Bright blue
-          let if charSelectPlayer = 2 then COLUP0  = ColRed(12)
+          if charSelectPlayer = 2 then COLUP0  = ColRed(12)
           rem Bright red
-          let if charSelectPlayer = 3 then COLUP0  = ColYellow(12)
+          if charSelectPlayer = 3 then COLUP0  = ColYellow(12)
           rem Bright yellow
-          let if charSelectPlayer = 4 then COLUP0  = ColGreen(12)
+          if charSelectPlayer = 4 then COLUP0  = ColGreen(12)
           rem Bright green
           goto SelColorDone
 SelColorBW
@@ -535,9 +535,9 @@ SelColorBW
 SelColorDone
           
           rem Draw different sprite patterns based on animation state and frame
-          let if charSelectAnimState = AnimStanding then SelAnimIdle
-          let if charSelectAnimState = AnimWalking then SelAnimRun
-          let if charSelectAnimState = AnimAttackWindup then SelAnimAttack
+          if charSelectAnimState = AnimStanding then SelAnimIdle
+          if charSelectAnimState = AnimWalking then SelAnimRun
+          if charSelectAnimState = AnimAttackWindup then SelAnimAttack
           goto SelAnimDone
 SelAnimIdle
           rem Idle animation - simple standing pose

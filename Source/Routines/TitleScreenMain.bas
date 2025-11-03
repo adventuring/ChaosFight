@@ -13,7 +13,7 @@
 
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   titleParadeTimer - Frame counter for parade timing
-          rem   titleParadeChar - Current parade character (0-15)
+          rem   titleParadeChar - Current parade character (0-MaxCharacter)
           rem   titleParadeX - X position of parade character
           rem   titleParadeActive - Whether parade is currently running
           rem   QuadtariDetected - Whether 4-player mode is active

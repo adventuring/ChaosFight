@@ -23,8 +23,8 @@
 ApplySpecialMovement
           temp1 = 0 : gosub ApplyPlayerSpecialMovement
           temp1 = 1 : gosub ApplyPlayerSpecialMovement
-          if controllerStatus & SetQuadtariDetected then if selectedChar3 <> 255 then temp1 = 2 : gosub ApplyPlayerSpecialMovement
-          if controllerStatus & SetQuadtariDetected then if selectedChar4 <> 255 then temp1 = 3 : gosub ApplyPlayerSpecialMovement
+          if controllerStatus & SetQuadtariDetected then if selectedChar3<> 255 then temp1 = 2 : gosub ApplyPlayerSpecialMovement
+          if controllerStatus & SetQuadtariDetected then if selectedChar4<> 255 then temp1 = 3 : gosub ApplyPlayerSpecialMovement
           return
 
           rem =================================================================
@@ -35,8 +35,8 @@ ApplySpecialMovement
 ApplyPlayerSpecialMovement
           temp4 = playerChar[temp1]
           
-          rem Bernie (0) - screen wrap top/bottom
-          if temp4 = 0 then BernieScreenWrap
+          rem Bernie (0) - screen wrap handled in CheckBoundaryCollisions
+          rem Falling off bottom respawns at top, handled in PlayerPhysics.bas
           
           rem Frooty (8) and Dragon of Storms (2) - free flight (no gravity)
           rem These characters skip gravity entirely
@@ -46,22 +46,4 @@ ApplyPlayerSpecialMovement
           rem Dragon of Storms: no gravity (free flight)
           
           rem All other characters use standard physics
-          return
-
-          rem =================================================================
-          rem BERNIE SCREEN WRAP
-          rem =================================================================
-          rem Bernie cannot jump, but can fall off bottom and reappear at top.
-          rem This provides a unique movement advantage.
-          rem INPUT: temp1 = player index
-          rem USES: playerY[temp1]
-BernieScreenWrap
-          rem Check if fallen off bottom edge
-          if playerY[temp1] > 90 then playerY[temp1] = 10
-          rem Reappear at top
-          
-          rem Check if somehow went above top edge
-          if playerY[temp1] < 5 then playerY[temp1] = 80
-          rem Reappear at bottom
-          
           return

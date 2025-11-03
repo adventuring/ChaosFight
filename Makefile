@@ -1,5 +1,5 @@
 # Default target
-all: sprites game doc characters fonts music bitmaps
+all: sprites game doc characters fonts music sounds bitmaps
 
 # Test target
 test: SkylineTool/skyline-tool.asd
@@ -105,6 +105,9 @@ FONT_NAMES = Numbers
 # Music names (MuseScore files)
 MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
 
+# Sound effect names (MuseScore files)
+SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated SoundMenuNavigate SoundMenuSelect SoundSpecialMove SoundPowerup SoundLandingSafe SoundLandingDamage
+
 # Build character assets
 characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
 
@@ -116,6 +119,9 @@ fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 
 # Build music assets
 music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
+
+# Build sound effect assets
+sounds: $(foreach sound,$(SOUND_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Sound.$(sound).$(arch).bas))
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz
@@ -158,19 +164,37 @@ music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated
 Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
 	@echo "Converting music $< to $@ for NTSC..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+	DISPLAY='' bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Convert MIDI to batariBASIC music data for PAL (50Hz)
 Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
 	@echo "Converting music $< to $@ for PAL..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+	DISPLAY='' bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 # Convert MIDI to batariBASIC music data for SECAM (50Hz)
 Source/Generated/Song.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
 	@echo "Converting music $< to $@ for SECAM..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+	DISPLAY='' bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+
+# Convert MIDI to batariBASIC sound effect data for NTSC (60Hz)
+Source/Generated/Sound.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
+	@echo "Converting sound effect $< to $@ for NTSC..."
+	mkdir -p Source/Generated
+	DISPLAY='' bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+
+# Convert MIDI to batariBASIC sound effect data for PAL (50Hz)
+Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
+	@echo "Converting sound effect $< to $@ for PAL..."
+	mkdir -p Source/Generated
+	DISPLAY='' bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+
+# Convert MIDI to batariBASIC sound effect data for SECAM (50Hz)
+Source/Generated/Sound.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
+	@echo "Converting sound effect $< to $@ for SECAM..."
+	mkdir -p Source/Generated
+	DISPLAY='' bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 
 
@@ -201,13 +225,13 @@ Source/Art/%.png: Source/Art/%.xcf
 $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Generating character sprite data for $*..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-chaos-character "$@" "$<"
+	DISPLAY='' bin/skyline-tool compile-chaos-character "$@" "$<"
 
 # Convert Numbers PNG to batariBASIC data using SkylineTool
 Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
 	@echo "Converting Numbers font $< to $@..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
+	DISPLAY='' bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
 # Convert 48×42 PNG to titlescreen kernel assembly format
 # Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height
@@ -222,17 +246,17 @@ Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
 Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png bin/skyline-tool
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	DISPLAY='' bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 Source/Generated/Art.Interworldly.s: Source/Art/Interworldly.png bin/skyline-tool
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	DISPLAY='' bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png bin/skyline-tool
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	DISPLAY='' bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 # Maps are now defined as playfield literals in code, not PNG files
 # Removed Map-%.png conversion rule - maps no longer use XCF→PNG conversion
@@ -241,7 +265,7 @@ Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png bin/skyline-tool
 Source/Generated/Font.bas: Source/Art/Font.png
 	@echo "Converting font $< to $@ for NTSC..."
 	mkdir -p Source/Generated
-	bin/skyline-tool compile-8x16-font "$<" > "$@" 
+	DISPLAY='' bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \

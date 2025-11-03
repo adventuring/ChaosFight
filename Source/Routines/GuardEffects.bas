@@ -29,19 +29,19 @@ ApplyGuardFlashing
           rem Flash phase - set light cyan color
 #ifdef TV_SECAM
           rem SECAM uses player-based colors (always cyan for guard)
-          if temp1 = 0 then COLUP0 = $C0
+          if temp1 = 0 then COLUP0 = ColorSECAMCyan
           rem Player 1 - Cyan
-          if temp1 = 1 then COLUP1 = $C0
+          if temp1 = 1 then _COLUP1 = ColorSECAMCyan
           rem Player 2 - Cyan
-          if temp1 = 2 then COLUP2 = $C0
+          if temp1 = 2 then COLUP2 = ColorSECAMCyan
           rem Player 3 - Cyan (multisprite kernel)
-          if temp1 = 3 then COLUP3 = $C0
+          if temp1 = 3 then COLUP3 = ColorSECAMCyan
           rem Player 4 - Cyan (multisprite kernel)
 #else
           rem NTSC/PAL - light cyan ColCyan(12)
           if temp1 = 0 then COLUP0 = ColCyan(12)
           rem Player 1
-          if temp1 = 1 then COLUP1 = ColCyan(12)
+          if temp1 = 1 then _COLUP1 = ColCyan(12)
           rem Player 2
           if temp1 = 2 then COLUP2 = ColCyan(12)
           rem Player 3 (multisprite kernel)
@@ -152,7 +152,7 @@ UpdateGuardTimerActive
 
 GuardTimerExpired
           rem Guard duration expired - clear guard bit and start cooldown
-          let playerState[temp1] = playerState[temp1] & %11111101
+          let playerState[temp1] = playerState[temp1] & MaskClearGuard
           rem Clear guard bit (bit 1)
           rem Start cooldown timer (same duration as guard)
           let playerTimers[temp1] = GuardTimerMaxFrames

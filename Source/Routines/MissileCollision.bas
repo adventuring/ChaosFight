@@ -47,7 +47,8 @@ CheckAllMissileCollisions
           
           rem Check if this is a visible missile or AOE attack
           rem Read missile width from character data (in Bank 6)
-          temp1 = temp5 
+          rem temp1 needs to be preserved for attacker index, use temp7 for function call
+          temp7 = temp5 
           rem Character type as index
           gosub bank6 GetMissileWidth
           temp6 = temp2 
@@ -77,13 +78,13 @@ CheckVisibleMissileCollision
           rem Get missile size from character data (in Bank 6)
           rem Get character type from player
           temp5 = playerChar[temp1]
-          temp1 = temp5 
-          rem Use as index
+          rem Use temp5 as index (preserve temp1 for attacker index)
+          temp7 = temp5
           gosub bank6 GetMissileWidth
           temp6 = temp2 
           rem Missile width
-          temp1 = temp5 
           rem Reload character index
+          temp7 = temp5
           gosub bank6 GetMissileHeight
           temp5 = temp2 
           rem Missile height (reusing temp5)

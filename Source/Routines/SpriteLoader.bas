@@ -6,7 +6,7 @@
 
           rem Loads character sprite data and colors from multiple banks
           rem Supports up to 32 characters (0-31) across 4 banks
-          rem Current implementation: 16 characters (0-15) in 2 banks
+          rem Current implementation: NumCharacters characters (0-MaxCharacter) in 2 banks
           rem Special sprites: QuestionMark, CPU, No for special selections.
 
 
@@ -91,40 +91,40 @@ LoadQuestionMarkSprite
           
 LoadQuestionMarkSpriteP0
           asm
-          lda #< QuestionMarkSprite
-          sta player0pointerlo
-          lda #> QuestionMarkSprite
-          sta player0pointerhi
+            lda # <QuestionMarkSprite
+            sta player0pointerlo
+            lda # >QuestionMarkSprite
+            sta player0pointerhi
 end
           player0height = 16
           return
           
 LoadQuestionMarkSpriteP1
           asm
-          lda #< QuestionMarkSprite
-          sta player1pointerlo
-          lda #> QuestionMarkSprite
-          sta player1pointerhi
+            lda # <QuestionMarkSprite
+            sta player1pointerlo
+            lda # >QuestionMarkSprite
+            sta player1pointerhi
 end
           player1height = 16
           return
           
 LoadQuestionMarkSpriteP2
           asm
-          lda #< QuestionMarkSprite
-          sta player2pointerlo
-          lda #> QuestionMarkSprite
-          sta player2pointerhi
+            lda # <QuestionMarkSprite
+            sta player2pointerlo
+            lda # >QuestionMarkSprite
+            sta player2pointerhi
 end
           player2height = 16
           return
           
 LoadQuestionMarkSpriteP3
           asm
-          lda #< QuestionMarkSprite
-          sta player3pointerlo
-          lda #> QuestionMarkSprite
-          sta player3pointerhi
+            lda # <QuestionMarkSprite
+            sta player3pointerlo
+            lda # >QuestionMarkSprite
+            sta player3pointerhi
 end
           player3height = 16
           return
@@ -139,40 +139,40 @@ LoadCPUSprite
           
 LoadCPUSpriteP0
           asm
-          lda #< CPUSprite
-          sta player0pointerlo
-          lda #> CPUSprite
-          sta player0pointerhi
+            lda # <CPUSprite
+            sta player0pointerlo
+            lda # >CPUSprite
+            sta player0pointerhi
 end
           player0height = 16
           return
           
 LoadCPUSpriteP1
           asm
-          lda #< CPUSprite
-          sta player1pointerlo
-          lda #> CPUSprite
-          sta player1pointerhi
+            lda # <CPUSprite
+            sta player1pointerlo
+            lda # >CPUSprite
+            sta player1pointerhi
 end
           player1height = 16
           return
           
 LoadCPUSpriteP2
           asm
-          lda #< CPUSprite
-          sta player2pointerlo
-          lda #> CPUSprite
-          sta player2pointerhi
+            lda # <CPUSprite
+            sta player2pointerlo
+            lda # >CPUSprite
+            sta player2pointerhi
 end
           player2height = 16
           return
           
 LoadCPUSpriteP3
           asm
-          lda #< CPUSprite
-          sta player3pointerlo
-          lda #> CPUSprite
-          sta player3pointerhi
+            lda # <CPUSprite
+            sta player3pointerlo
+            lda # >CPUSprite
+            sta player3pointerhi
 end
           player3height = 16
           return
@@ -187,40 +187,40 @@ LoadNoSprite
           
 LoadNoSpriteP0
           asm
-          lda #< NoSprite
-          sta player0pointerlo
-          lda #> NoSprite
-          sta player0pointerhi
+            lda # <NoSprite
+            sta player0pointerlo
+            lda # >NoSprite
+            sta player0pointerhi
 end
           player0height = 16
           return
           
 LoadNoSpriteP1
           asm
-          lda #< NoSprite
-          sta player1pointerlo
-          lda #> NoSprite
-          sta player1pointerhi
+            lda # <NoSprite
+            sta player1pointerlo
+            lda # >NoSprite
+            sta player1pointerhi
 end
           player1height = 16
           return
           
 LoadNoSpriteP2
           asm
-          lda #< NoSprite
-          sta player2pointerlo
-          lda #> NoSprite
-          sta player2pointerhi
+            lda # <NoSprite
+            sta player2pointerlo
+            lda # >NoSprite
+            sta player2pointerhi
 end
           player2height = 16
           return
           
 LoadNoSpriteP3
           asm
-          lda #< NoSprite
-          sta player3pointerlo
-          lda #> NoSprite
-          sta player3pointerhi
+            lda # <NoSprite
+            sta player3pointerlo
+            lda # >NoSprite
+            sta player3pointerhi
 end
           player3height = 16
           return
@@ -317,8 +317,8 @@ LoadPlayer3Sprite
           rem Input: temp1 = character index to validate
           rem Output: temp5 = validation result (0=invalid, 1=valid)
 ValidateCharacterIndex
-          rem Check if character index is within valid range (0-15 for current implementation)
-          if temp1 > 15 then InvalidCharacter
+          rem Check if character index is within valid range (0-MaxCharacter for current implementation)
+          if temp1 > MaxCharacter then InvalidCharacter
           let temp5 = 1 : return
 InvalidCharacter
           

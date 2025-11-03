@@ -8,7 +8,7 @@
 
           rem SPRITE ASSIGNMENTS (MULTISPRITE KERNEL):
           rem   Player 1: player0 sprite (COLUP0)
-          rem   Player 2: player1 sprite (COLUP1)
+          rem   Player 2: player1 sprite (_COLUP1)
           rem   Player 3: player2 sprite (COLUP2)
           rem   Player 4: player3 sprite (COLUP3)
 
@@ -133,23 +133,25 @@ SetPlayerSprites
           rem Effective B&W state
           
           rem Set Player 1 color and sprite
-          if temp6 then Player1BWMode
-          
-          rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[0] > 0 then Player1HurtColor
-          rem Normal: solid player color
+          rem Load normal player color first
           let temp1 = playerChar[0]
           let temp2 = 0
+          let temp3 = 0
+          let temp4 = 0
           gosub bank10 LoadCharacterColors
-          goto Player1ColorDone
-Player1HurtColor
-          rem Hurt: dimmer indigo
-          COLUP0 = ColIndigo(6)
           
-Player1BWMode
-          rem B&W mode: Always use bright indigo (Player 1 color), hurt state looks the same
-          COLUP0 = ColIndigo(14) 
-          rem Bright indigo for Player 1
+          rem Apply hurt flashing if in recovery
+          if playerRecoveryFrames[0] = 0 then Player1ColorDone
+          rem Check frame for flashing alternation
+          if !(frame & 8) then Player1ColorDone
+          rem Flash hurt color based on TV standard
+#ifdef TV_SECAM
+          rem SECAM: Flash to magenta
+          COLUP0 = ColMagenta(10)
+#else
+          rem NTSC/PAL: Flash to normal color & MaskDimColor
+          COLUP0 = COLUP0 & MaskDimColor
+#endif
           
 Player1ColorDone
 
@@ -165,23 +167,25 @@ Player1ColorDone
           gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
-          if temp6 then Player2BWMode
-          
-          rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[1] > 0 then Player2HurtColor
-          rem Normal: solid player color
+          rem Load normal player color first
           let temp1 = playerChar[1]
           let temp2 = 0
+          let temp3 = 1
+          let temp4 = 0
           gosub bank10 LoadCharacterColors
-          goto Player2ColorDone
-Player2HurtColor
-          rem Hurt: dimmer red
-          _COLUP1 = ColRed(6)
           
-Player2BWMode
-          rem B&W mode: Always use bright red (Player 2 color), hurt state looks the same
-          _COLUP1 = ColRed(14) 
-          rem Bright red for Player 2
+          rem Apply hurt flashing if in recovery
+          if playerRecoveryFrames[1] = 0 then Player2ColorDone
+          rem Check frame for flashing alternation
+          if !(frame & 8) then Player2ColorDone
+          rem Flash hurt color based on TV standard
+#ifdef TV_SECAM
+          rem SECAM: Flash to magenta
+          _COLUP1 = ColMagenta(10)
+#else
+          rem NTSC/PAL: Flash to normal color & MaskDimColor
+          _COLUP1 = _COLUP1 & MaskDimColor
+#endif
           
 Player2ColorDone
 
@@ -201,14 +205,9 @@ Player2ColorDone
           rem No color inheritance issues with proper multisprite implementation
           
           rem Set playfield color based on B&W mode
-          if temp6 then Player3BWColor
-          goto Player3ColorMode
-Player3BWColor
-          COLUPF = ColGrey(14)
-          goto Player3ColorDone
-Player3ColorMode 
+          rem COLUPF is set by pfcolors system, not here
           rem B&W mode: playfield is white
-          rem Color mode: playfield has color-per-row (handled elsewhere)
+          rem Color mode: playfield has color-per-row (handled by pfcolors)
           
 Player3Color
           rem Player 3 sprite mapping (multisprite kernel)
@@ -235,7 +234,9 @@ DisplayHealth
           rem Flash Player 1 sprite if health is low (but not during recovery)
           rem Use skip-over pattern to avoid complex || operator
           if playerHealth[0] >= PlayerHealthLowThreshold then SkipPlayer0Flash
-          if playerRecoveryFrames[0] <> 0 then SkipPlayer0Flash
+          if playerRecoveryFrames[0] = 0 then FlashPlayer0Sprite
+          goto SkipPlayer0Flash
+FlashPlayer0Sprite
           if frame & 8 then player0x = 200 
           rem Hide sprite
 SkipPlayer0Flash
@@ -243,7 +244,9 @@ SkipPlayer0Flash
           rem Flash Player 2 sprite if health is low
           rem Use skip-over pattern to avoid complex || operator
           if playerHealth[1] >= PlayerHealthLowThreshold then SkipPlayer1Flash
-          if playerRecoveryFrames[1] <> 0 then SkipPlayer1Flash
+          if playerRecoveryFrames[1] = 0 then FlashPlayer1Sprite
+          goto SkipPlayer1Flash
+FlashPlayer1Sprite
                     if frame & 8 then player1x = 200
 SkipPlayer1Flash
 
@@ -252,7 +255,9 @@ SkipPlayer1Flash
           if selectedChar3 = 255 then SkipPlayer3Flash
           if ! playerHealth[2] then SkipPlayer3Flash
           if playerHealth[2] >= PlayerHealthLowThreshold then SkipPlayer3Flash
-          if playerRecoveryFrames[2] <> 0 then SkipPlayer3Flash
+          if playerRecoveryFrames[2] = 0 then FlashPlayer3Sprite
+          goto SkipPlayer3Flash
+FlashPlayer3Sprite
           if frame & 8 then player2x = 200 
           rem Player 3 uses player2 sprite
 SkipPlayer3Flash
@@ -262,7 +267,9 @@ SkipPlayer3Flash
           if selectedChar4 = 255 then SkipPlayer4Flash
           if ! playerHealth[3] then SkipPlayer4Flash
           if playerHealth[3] >= PlayerHealthLowThreshold then SkipPlayer4Flash
-          if playerRecoveryFrames[3] <> 0 then SkipPlayer4Flash
+          if playerRecoveryFrames[3] = 0 then FlashPlayer4Sprite
+          goto SkipPlayer4Flash
+FlashPlayer4Sprite
           if frame & 8 then player3x = 200 
           rem Player 4 uses player3 sprite
 SkipPlayer4Flash
@@ -294,40 +301,42 @@ DrawHealthBars
           let PR_healthBarLength = playerHealth[0] / 3 
           rem Scale 0-100 to 0-32
           if PR_healthBarLength > HealthBarMaxLength then PR_healthBarLength = HealthBarMaxLength
-          if temp6 then COLUPF = ColBlue(14) else COLUPF = ColBlue(12)
-          rem Bright blue (B&W) or Medium blue (Color)
-          
+          rem COLUPF is set by pfcolors system, not here
           gosub bank8 DrawHealthBarRow0
           
           rem Draw Player 2 health bar
           let PR_healthBarLength = playerHealth[1] / 3
           if PR_healthBarLength > HealthBarMaxLength then PR_healthBarLength = HealthBarMaxLength
-          if temp6 then COLUPF = ColRed(14) else COLUPF = ColRed(12)
-          rem Bright red (B&W) or Medium red (Color)
-          
+          rem COLUPF is set by pfcolors system, not here
           gosub bank8 DrawHealthBarRow1
           
           rem Draw Player 3 & 4 bars if Quadtari active and player alive
-          if controllerStatus & SetQuadtariDetected then DrawP3P4Health else goto SkipP3P4Health
+          if controllerStatus & SetQuadtariDetected then DrawP3P4Health
+          goto SkipP3P4Health
 DrawP3P4Health
-          if selectedChar3 <> 255 && playerHealth[2] > 0 then DrawP3Health else goto SkipP3Health
+          if selectedChar3 = 255 then SkipP3Health
+          if playerHealth[2] = 0 then SkipP3Health
+          goto DrawP3Health
+SkipP3Health
+          if selectedChar4 = 255 then SkipP4Health
+          if playerHealth[3] = 0 then SkipP4Health
+          goto DrawP4Health
+          goto SkipP4Health
 DrawP3Health
           rem Player 3 health bar
           let PR_healthBarLength = playerHealth[2] / 3
           if PR_healthBarLength > 32 then PR_healthBarLength = 32
-          if temp6 then COLUPF = ColGrey(8) else COLUPF = ColYellow(12)
-          rem Medium grey (B&W) or Bright yellow (Color)
+          rem COLUPF is set by pfcolors system, not here
           gosub bank8 DrawHealthBarRow2
-SkipP3Health
+          goto SkipP4HealthCheck
           
-          if selectedChar4 <> 255 && playerHealth[3] > 0 then DrawP4Health else goto SkipP4Health
 DrawP4Health
           rem Player 4 health bar
           let PR_healthBarLength = playerHealth[3] / 3
           if PR_healthBarLength > 32 then PR_healthBarLength = 32
-          if temp6 then COLUPF = ColGrey(6) else COLUPF = ColGreen(12)
-          rem Dark-medium grey (B&W) or Bright green (Color)
+          rem COLUPF is set by pfcolors system, not here
           gosub bank8 DrawHealthBarRow3
+SkipP4HealthCheck
 SkipP4Health
 SkipP3P4Health
           

@@ -5,7 +5,7 @@
           
           rem Title sequence and preambles
           rem Grouped together - title screen flow
-          #include "Source/Routines/TitleSequence.bas"
+          rem TitleSequence.bas has been split into separate files below
           #include "Source/Routines/PublisherPreamble.bas"
           #include "Source/Routines/AuthorPreamble.bas"
           #include "Source/Routines/TitleScreenMain.bas"

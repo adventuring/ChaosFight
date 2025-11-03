@@ -38,7 +38,7 @@ CheckAttackHit
     let hit = 1
           goto HitboxCheckDone
 HitboxCheckDone
-          let if hit  = 0 then NoHit
+          if hit  = 0 then NoHit
     let hit = 0
 NoHit
   
@@ -102,8 +102,9 @@ AreaHitbox
 rem Process attack for one attacker against all defenders
 rem Input: attacker_id
 ProcessAttackerAttacks
-  rem Check if attacker is attacking
-  if (playerState[attacker_id) & %00000001] = 0 then return
+  rem Check if attacker is facing right (PlayerStateFacing = bit 0)
+  temp1 = playerState[attacker_id]
+  if temp1{0} = 0 then return
   
   rem Attack each defender
   for defender = 0 to 3
@@ -159,7 +160,7 @@ PerformMeleeAttack
   gosub bank7 SpawnMissile
   
   rem Set animation state to attacking
-          let playerState[temp1] = (playerState[temp1] & %00001111) | (AnimAttackExecute << 4)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << 4)
           rem Set animation state 14 (attack execution)
   
   rem Check immediate collision with other players in melee range
@@ -181,7 +182,7 @@ PerformRangedAttack
   gosub bank7 SpawnMissile
   
   rem Set animation state to attacking
-          let playerState[temp1] = (playerState[temp1] & %00001111) | (AnimAttackExecute << 4)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << 4)
           rem Set animation state 14 (attack execution)
   
   return

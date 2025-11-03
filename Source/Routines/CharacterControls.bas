@@ -40,8 +40,8 @@ BernieJump
           rem Now in range 0-128
           let temp2  = temp2 / 4
           rem Now in range 0-32 (playfield column, clamp to 0-31)
-          let if temp2 > 31 then temp2  = 31
-          let if temp2 < 0 then temp2  = 0
+          if temp2 > 31 then temp2  = 31
+          if temp2 < 0 then temp2  = 0
           
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
@@ -66,7 +66,7 @@ BernieJump
             rem Floor exists directly below feet, check if it is only 1 row deep
           rem Special case: if at bottom row (pfrows - 1), check top row (0) for wrap
           rem For pfres=8: pfrows = 8, so bottom row is 7
-          let if temp6 > = pfrows - 1 then BernieCheckBottomWrap
+          if temp6>= pfrows - 1 then BernieCheckBottomWrap
           rem At or beyond bottom row, check wrap
           
           rem Normal case: Check row below that (temp6 + 1)
@@ -114,15 +114,15 @@ DragonetJump
           let temp2  = temp2 - ScreenInsetX
           let temp2  = temp2 / 4
           rem temp2 = playfield column (0-31)
-          let if temp2 > 31 then temp2  = 31
-          let if temp2 < 0 then temp2  = 0
+          if temp2 > 31 then temp2  = 31
+          if temp2 < 0 then temp2  = 0
           
           rem Check row above player (top of sprite)
           let temp3  = playerY[temp1]
           let temp4  = temp3 / pfrowheight
           rem temp4 = current row
           rem Check row above (temp4 - 1), but only if not at top
-          let if temp4 < = 0 then return
+          if temp4<= 0 then return
           rem Already at top row
           let temp4  = temp4 - 1
           rem Check if playfield pixel is clear
@@ -158,18 +158,39 @@ MegaxJump
           rem Harpy can fly by flapping (pressing UP repeatedly)
           rem Each flap provides upward thrust
           rem INPUT: temp1 = player index
-          rem USES: playerY[temp1], playerState[temp1]
+          rem USES: playerY[temp1], playerState[temp1], harpyFlightEnergy[temp1], harpyLastFlapFrame[temp1]
 HarpyJump
+          rem Check if flight energy depleted
+          if harpyFlightEnergy[temp1] = 0 then return
+          rem No energy remaining, cannot flap
+          
+          rem Check flap cooldown: must wait ¼ second between flaps
+          let temp2 = frame - harpyLastFlapFrame[temp1]
+          rem Calculate frames since last flap
+          if temp2 > 127 then temp2 = 127
+          rem Clamp to prevent underflow (max safe value for 8-bit)
+          if temp2 < HarpyFlapCooldownFrames then return
+          rem Cooldown not expired, cannot flap yet
+          
+          rem Check screen bounds - do not go above top
+          if playerY[temp1] <= 5 then HarpyFlapRecord
+          rem Already at top, cannot flap higher but still record
+          
           rem Flap upward - move up by 3 pixels
-            rem Check screen bounds - do not go above top
-          if playerY[temp1] <= 5 then return
-            rem Already at top, cannot flap higher
           let playerY[temp1] = playerY[temp1] - 3
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping/flying bit for animation
           rem Set flight mode flag for slow gravity
           let characterStateFlags[temp1] = characterStateFlags[temp1] | 2
           rem Set bit 1 (flight mode)
+          
+HarpyFlapRecord
+          rem Decrement flight energy on each flap
+          if harpyFlightEnergy[temp1] > 0 then harpyFlightEnergy[temp1] = harpyFlightEnergy[temp1] - 1
+          
+          rem Record current frame as last flap time
+          let harpyLastFlapFrame[temp1] = frame
+          
           return
 
           rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
@@ -192,15 +213,15 @@ FrootyJump
           let temp2  = temp2 - ScreenInsetX
           let temp2  = temp2 / 4
           rem temp2 = playfield column (0-31)
-          let if temp2 > 31 then temp2  = 31
-          let if temp2 < 0 then temp2  = 0
+          if temp2 > 31 then temp2  = 31
+          if temp2 < 0 then temp2  = 0
           
           rem Check row above player (top of sprite)
           let temp3  = playerY[temp1]
           let temp4  = temp3 / pfrowheight
           rem temp4 = current row
           rem Check row above (temp4 - 1), but only if not at top
-          let if temp4 < = 0 then return
+          if temp4<= 0 then return
           rem Already at top row
           let temp4  = temp4 - 1
           rem Check if playfield pixel is clear
@@ -247,11 +268,11 @@ RadishGoblinJump
 RoboTitoJump
           rem RoboTito ceiling-stretch mechanic
           rem Check if already latched to ceiling
-          let if (characterStateFlags[temp1] & 1) <> 0 then return
+          if (characterStateFlags[temp1] & 1)<> 0 then return
           rem Already latched, ignore UP input
           
           rem Check if grounded (not jumping)
-          let if (playerState[temp1] & 4) <> 0 then RoboTitoStretching
+          if (playerState[temp1] & 4)<> 0 then RoboTitoStretching
           rem Not grounded, stretching upward
           goto RoboTitoStretching
           
@@ -269,14 +290,14 @@ RoboTitoCheckCeiling
           let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
-          let if temp2 > 31 then temp2 = 31
-          let if temp2 < 0 then temp2 = 0
+          if temp2 > 31 then temp2 = 31
+          if temp2 < 0 then temp2 = 0
           
           rem Check row above player for ceiling
           let temp3 = playerY[temp1]
-          let if temp3 <= 0 then RoboTitoLatch
+          if temp3 <= 0 then RoboTitoLatch
           let temp4 = temp3 / pfrowheight
-          let if temp4 <= 0 then RoboTitoLatch
+          if temp4 <= 0 then RoboTitoLatch
           let temp4 = temp4 - 1
           if pfread(temp2, temp4) then RoboTitoLatch
           
@@ -331,8 +352,8 @@ DragonetDown
           let temp2  = temp2 - ScreenInsetX
           let temp2  = temp2 / 4
           rem temp2 = playfield column (0-31)
-          let if temp2 > 31 then temp2  = 31
-          let if temp2 < 0 then temp2  = 0
+          if temp2 > 31 then temp2  = 31
+          if temp2 < 0 then temp2  = 0
           
           rem Check row below player (feet at bottom of sprite)
           let temp3  = playerY[temp1]
@@ -341,7 +362,7 @@ DragonetDown
           let temp4  = temp3 / pfrowheight
           rem temp4 = row below feet
           rem Check if at or beyond bottom row
-          let if temp4 > = pfrows then return
+          if temp4>= pfrows then return
             rem At bottom, cannot move down
           rem Check if playfield pixel is clear
           if pfread(temp2, temp4) then return
@@ -373,14 +394,26 @@ MegaxDown
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
 HarpyDown
+          rem Check if Harpy is airborne and set dive mode
+          if (playerState[temp1] & 4) then HarpySetDive
+          rem Jumping bit set, airborne
+          let temp2 = playerY[temp1]
+          if temp2 < 60 then HarpySetDive
+          rem Above ground level, airborne
+          goto HarpyNormalDown
+HarpySetDive
+          rem Set dive mode flag for increased damage and normal gravity
+          let characterStateFlags[temp1] = characterStateFlags[temp1] | 4
+          rem Set bit 2 (dive mode)
+HarpyNormalDown
           rem Fly down with playfield collision check
           rem Check collision before moving
           let temp2  = playerX[temp1]
           let temp2  = temp2 - ScreenInsetX
           let temp2  = temp2 / 4
           rem temp2 = playfield column (0-31)
-          let if temp2 > 31 then temp2  = 31
-          let if temp2 < 0 then temp2  = 0
+          if temp2 > 31 then temp2  = 31
+          if temp2 < 0 then temp2  = 0
           
           rem Check row below player (feet at bottom of sprite)
           let temp3  = playerY[temp1]
@@ -389,7 +422,7 @@ HarpyDown
           let temp4  = temp3 / pfrowheight
           rem temp4 = row below feet
           rem Check if at or beyond bottom row
-          let if temp4 > = pfrows then return
+          if temp4>= pfrows then return
             rem At bottom, cannot move down
           rem Check if playfield pixel is clear
           if pfread(temp2, temp4) then return
@@ -417,8 +450,8 @@ FrootyDown
           let temp2  = temp2 - ScreenInsetX
           let temp2  = temp2 / 4
           rem temp2 = playfield column (0-31)
-          let if temp2 > 31 then temp2  = 31
-          let if temp2 < 0 then temp2  = 0
+          if temp2 > 31 then temp2  = 31
+          if temp2 < 0 then temp2  = 0
           
           rem Check row below player (feet at bottom of sprite)
           let temp3  = playerY[temp1]
@@ -427,7 +460,7 @@ FrootyDown
           let temp4  = temp3 / pfrowheight
           rem temp4 = row below feet
           rem Check if at or beyond bottom row
-          let if temp4 > = pfrows then return
+          if temp4>= pfrows then return
             rem At bottom, cannot move down
           rem Check if playfield pixel is clear
           if pfread(temp2, temp4) then return
@@ -463,7 +496,7 @@ RadishGoblinDown
 RoboTitoDown
           rem RoboTito voluntary drop from ceiling
           rem Check if latched to ceiling
-          let if (characterStateFlags[temp1] & 1) = 0 then RoboTitoNotLatched
+          if (characterStateFlags[temp1] & 1) = 0 then RoboTitoNotLatched
           rem Not latched, proceed to guard
           goto RoboTitoNotLatched
           

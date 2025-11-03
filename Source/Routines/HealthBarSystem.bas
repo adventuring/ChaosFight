@@ -128,15 +128,15 @@ UpdatePlayer34HealthBars
           rem score+2 (low byte, digits 4-5) = P4 BCD (temp6) or $00 if inactive/eliminated
           rem Digits are hidden by setting to $00 (displays as "00" - visible but indicates inactive/eliminated)
           asm
-          SED
-          LDA temp5
-          STA score
-          rem Middle 2 digits always hidden (separator between P3 and P4)
-          LDA #$00
-          STA score+1
-          LDA temp6
-          STA score+2
-          CLD
+            SED
+            LDA temp5
+            STA score
+            rem Middle 2 digits always hidden (separator between P3 and P4)
+            LDA # 0
+            STA score+1
+            LDA temp6
+            STA score+2
+            CLD
           end
           
           rem Set score colors for score mode

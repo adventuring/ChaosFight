@@ -150,16 +150,28 @@ CheckPhase1P3
           gosub CheckCollisionP2vsP3
           goto SkipFramePhaseChecks
 SkipPhase0And1Collisions
-          if FramePhase <> 2 then SkipPhase2Collisions
-          if selectedChar4 <> 255 then gosub CheckCollisionP2vsP4
-          if selectedChar3 <> 255 && selectedChar4 <> 255 then gosub CheckCollisionP3vsP4
+          if FramePhase = 2 then CheckPhase2Collisions
+          goto SkipPhase2Collisions
+CheckPhase2Collisions
+          if selectedChar4 = 255 then SkipCheckP2vsP4
+          gosub CheckCollisionP2vsP4
+SkipCheckP2vsP4
+          if selectedChar3 = 255 then SkipCheckP3vsP4
+          if selectedChar4 = 255 then SkipCheckP3vsP4
+          gosub CheckCollisionP3vsP4
+SkipCheckP3vsP4
 SkipPhase2Collisions
 SkipFramePhaseChecks
           return
 
           rem Individual collision check routines
 CheckCollisionP1vsP2
-          if playerX[0] >= playerX[1] then temp2 = playerX[0] - playerX[1] else temp2 = playerX[1] - playerX[0]
+          if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
+          temp2 = playerX[1] - playerX[0]
+          goto SkipCalcP1vsP2Diff
+CalcP1vsP2AbsDiff
+          temp2 = playerX[0] - playerX[1]
+SkipCalcP1vsP2Diff
           if temp2 >= CollisionSeparationDistance then SkipPlayerSeparation
           
           rem Separate players based on their relative positions
@@ -179,7 +191,12 @@ SkipPlayerSeparation
           return
 
 CheckCollisionP1vsP3
-          if playerX[0] >= playerX[2] then temp2 = playerX[0] - playerX[2] else temp2 = playerX[2] - playerX[0]
+          if playerX[0] >= playerX[2] then CalcP1vsP3AbsDiff
+          temp2 = playerX[2] - playerX[0]
+          goto SkipCalcP1vsP3Diff
+CalcP1vsP3AbsDiff
+          temp2 = playerX[0] - playerX[2]
+SkipCalcP1vsP3Diff
           if temp2 < 16 then CheckCollisionP1vsP3Aux
           return
 
@@ -192,7 +209,12 @@ CheckCollisionP1vsP3Aux
           return
 
 CheckCollisionP1vsP4
-          if playerX[0] >= playerX[3] then temp2 = playerX[0] - playerX[3] else temp2 = playerX[3] - playerX[0]
+          if playerX[0] >= playerX[3] then CalcP1vsP4AbsDiff
+          temp2 = playerX[3] - playerX[0]
+          goto SkipCalcP1vsP4Diff
+CalcP1vsP4AbsDiff
+          temp2 = playerX[0] - playerX[3]
+SkipCalcP1vsP4Diff
           if temp2 < 16 then CheckCollisionP1vsP4Aux
           return
 
@@ -205,7 +227,12 @@ CheckCollisionP1vsP4Aux
           return
 
 CheckCollisionP2vsP3
-          if playerX[1] >= playerX[2] then temp2 = playerX[1] - playerX[2] else temp2 = playerX[2] - playerX[1]
+          if playerX[1] >= playerX[2] then CalcP2vsP3AbsDiff
+          temp2 = playerX[2] - playerX[1]
+          goto SkipCalcP2vsP3Diff
+CalcP2vsP3AbsDiff
+          temp2 = playerX[1] - playerX[2]
+SkipCalcP2vsP3Diff
           if temp2 < 16 then CheckCollisionP2vsP3Aux
           return
 
@@ -218,7 +245,12 @@ CheckCollisionP2vsP3Aux
           return
 
 CheckCollisionP2vsP4
-          if playerX[1] >= playerX[3] then temp2 = playerX[1] - playerX[3] else temp2 = playerX[3] - playerX[1]
+          if playerX[1] >= playerX[3] then CalcP2vsP4AbsDiff
+          temp2 = playerX[3] - playerX[1]
+          goto SkipCalcP2vsP4Diff
+CalcP2vsP4AbsDiff
+          temp2 = playerX[1] - playerX[3]
+SkipCalcP2vsP4Diff
           if temp2 < 16 then CheckCollisionP2vsP4Aux
           return
 
@@ -231,7 +263,12 @@ CheckCollisionP2vsP4Aux
           return
 
 CheckCollisionP3vsP4
-          if playerX[2] >= playerX[3] then temp2 = playerX[2] - playerX[3] else temp2 = playerX[3] - playerX[2]
+          if playerX[2] >= playerX[3] then CalcP3vsP4AbsDiff
+          temp2 = playerX[3] - playerX[2]
+          goto SkipCalcP3vsP4Diff
+CalcP3vsP4AbsDiff
+          temp2 = playerX[2] - playerX[3]
+SkipCalcP3vsP4Diff
           if temp2 < 16 then CheckCollisionP3vsP4Aux
           return
 

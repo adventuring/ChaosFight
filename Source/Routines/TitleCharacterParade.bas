@@ -9,7 +9,7 @@
 
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   titleParadeTimer - Frame counter (increments each frame)
-          rem   titleParadeChar - Current character index (0-15)
+          rem   titleParadeChar - Current character index (0-MaxCharacter)
           rem   titleParadeX - X position of parade character
           rem   titleParadeActive - Boolean: parade currently running
 
@@ -17,7 +17,7 @@
           rem   - Parade starts after 10 seconds (600 frames at 60fps)
           rem   - Each character moves at 2 pixels/frame (left to right)
           rem   - 1 second pause (60 frames) between characters
-          rem   - Characters chosen randomly from 16 available
+          rem   - Characters chosen randomly from NumCharacters available
 
           rem CHARACTER INDICES:
           rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=EXO, 4=FatTony, 5=Grizzard,
@@ -36,8 +36,8 @@ UpdateCharacterParade
           rem Check if we need to start a new character
           if !titleParadeActive then
                     rem Start new character parade
-          titleParadeChar = rand & 15 
-          rem Random character 0-15
+          titleParadeChar = rand & MaxCharacter 
+          rem Random character 0-MaxCharacter
           titleParadeX = 246
           rem Start off-screen left
                     titleParadeActive = 1
@@ -62,7 +62,7 @@ end
           rem =================================================================
           rem Renders the current parade character at bottom of screen
           rem INPUT VARIABLES:
-          rem   titleParadeChar - Character index (0-15)
+          rem   titleParadeChar - Character index (0-MaxCharacter)
           rem   titleParadeX - X position on screen
           rem USES:
           rem   player0x, player0y - Sprite position
@@ -85,60 +85,28 @@ DrawParadeCharacter
           rem SET PARADE CHARACTER COLOR
           rem =================================================================
           rem Sets player0 color based on character type for visual variety
-          rem INPUT: titleParadeChar (0-15)
+          rem INPUT: titleParadeChar (0-MaxCharacter)
           rem USES: COLUP0
 SetParadeCharacterColor
-          rem Set color based on character type for variety
-          on titleParadeChar goto SetChar0, SetChar1, SetChar2, SetChar3, SetChar4, SetChar5, SetChar6, SetChar7, SetChar8, SetChar9, SetChar10, SetChar11, SetChar12, SetChar13, SetChar14, SetChar15
+          rem Randomize color for visual variety
+          rem Without Quadtari: Randomly alternate indigo/red (lum=12)
+          rem With Quadtari: Randomly select from indigo, red, yellow, green (lum=12)
+          if controllerStatus & SetQuadtariDetected then SetParadeColor4Player
           
-SetChar0
-          COLUP0 = ColIndigo(12) : return  
-          rem Bernie
-SetChar1
-          COLUP0 = ColRed(12) : return     
-          rem Curler
-SetChar2
-          COLUP0 = ColYellow(12) : return  
-          rem Dragon of Storms
-SetChar3
-          COLUP0 = ColGreen(12) : return   
-          rem Zoe Ryen
-SetChar4
-          COLUP0 = ColOrange(12) : return  
-          rem Fat Tony
-SetChar5
-          COLUP0 = ColPurple(12) : return  
-          rem Megax
-SetChar6
-          COLUP0 = ColPink(12) : return    
-          rem Harpy
-SetChar7
-          COLUP0 = ColCyan(12) : return    
-          rem Knight Guy
-SetChar8
-          COLUP0 = ColMagenta(12) : return 
-          rem Frooty
-SetChar9
-          COLUP0 = ColLime(12) : return    
-          rem Nefertem
-SetChar10
-          COLUP0 = ColNavy(12) : return    
-          rem Ninjish Guy
-SetChar11
-          COLUP0 = ColTeal(12) : return    
-          rem Pork Chop
-SetChar12
-          COLUP0 = ColMaroon(12) : return  
-          rem Radish Goblin
-SetChar13
-          COLUP0 = ColOlive(12) : return   
-          rem Robo Tito
-SetChar14
-          COLUP0 = ColSilver(12) : return  
-          rem Ursulo
-SetChar15
-          COLUP0 = ColGold(12) : return    
-          rem Veg Dog
+          rem 2-player mode: Randomly choose indigo or red
+          temp1 = rand & 1
+          if temp1 then SetParadeRed
+          COLUP0 = ColIndigo(12) : return
+SetParadeRed
+          COLUP0 = ColRed(12) : return
+          
+SetParadeColor4Player
+          rem 4-player mode: Randomly choose from all 4 player colors
+          temp1 = rand & 3
+          if temp1 = 0 then COLUP0 = ColIndigo(12) : return
+          if temp1 = 1 then COLUP0 = ColRed(12) : return
+          if temp1 = 2 then COLUP0 = ColYellow(12) : return
+          COLUP0 = ColGreen(12) : return
 
           rem =================================================================
           rem DRAW PARADE CHARACTER SPRITE

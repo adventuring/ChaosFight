@@ -67,7 +67,8 @@ DisplayArenaNumber
           temp6 = selectedArena + 1
           
           rem Calculate tens digit using cascading > comparisons
-          rem Current max is 16 (arenas 0-15), but support up to 39 for future expansion
+          rem Current max is 16 (arenas 0-15), future expansion limit is 32 (arenas 0-31, displayed as 01-32)
+          rem Support up to 32: if > 30 then tens = 3, if > 20 then tens = 2, if > 10 then tens = 1
           if temp6 > 30 then goto DisplayArenaTens3
           if temp6 > 20 then goto DisplayArenaTens2
           if temp6 > 10 then goto DisplayArenaTens1

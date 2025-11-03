@@ -59,7 +59,7 @@
           rem   5. Apply damage, recovery frames, and color shift
 CheckFallDamage
           rem Get character type for this player
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Check for fall damage immunity
           if temp5 = 0 then return 
@@ -148,7 +148,7 @@ CheckFallDamage
           rem   temp2 = updated vertical momentum
 FallDamageApplyGravity
           rem Get character type
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Check for no-gravity characters
           if temp5 = 8 then return 
@@ -229,7 +229,7 @@ CheckGroundCollision
           rem joystick up/down for Frooty.
 HandleFrootyVertical
           rem Check character type to confirm
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           if temp5 <> 8 then return 
           rem Not Frooty
           
@@ -264,7 +264,7 @@ HandleFrootyVertical
           rem   Sets player momentum for diagonal downward swoop
 HandleHarpySwoopAttack
           rem Check character type to confirm
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           if temp5 <> 6 then return 
           rem Not Harpy
           
@@ -311,7 +311,7 @@ SetVerticalMomentum
           rem   temp2 = safe fall distance in pixels
 CalculateSafeFallDistance
           rem Get character type and weight
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Check for fall damage immunity
           if temp5 = 0 then temp2 = 255 : return 

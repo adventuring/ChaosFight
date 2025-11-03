@@ -65,7 +65,6 @@ DrawDigit
           if temp1 > 15 then temp1 = 15
           
           rem Calculate data offset: digit * 16 (16 bytes per digit)
-          dim DigitOffset = temp6
           DigitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
@@ -94,10 +93,7 @@ if temp5 = 0 then
 LoadPlayer0Digit
           rem Load 16 bytes from font data into player0 sprite
           rem Using batariBasic data access pattern
-          dim Row = a
-          dim DataIndex = b
-          
-          DataIndex = DigitOffset
+          fontDataIndex = DigitOffset
           player0:
           rem Row 0-15: Read from data tables
           %00111100 
@@ -123,10 +119,7 @@ end
 
 LoadPlayer1Digit
           rem Load 16 bytes from font data into player1 sprite
-          dim Row = a
-          dim DataIndex = b
-          
-          DataIndex = DigitOffset
+          fontDataIndex = DigitOffset
           player1:
           rem Row 0-15: Read from data tables
           %00111100 
@@ -164,11 +157,9 @@ end
           rem Player colors are looked up from a table.
 DrawPlayerNumber
           rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
-          dim PlayerDigit = temp1
-          PlayerDigit = temp1 + 1
-          
+          rem PlayerDigit uses temp1 (lambda-list variable)
           rem Look up player color
-          dim PlayerColor = temp4
+          rem PlayerColor uses temp4 (lambda-list variable)
           on temp1 goto SetP1Color, SetP2Color, SetP3Color, SetP4Color
           
 SetP1Color

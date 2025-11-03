@@ -127,6 +127,15 @@
           rem ADMIN/GAME: Player 4 character selection (SCRAM w009, read via r009)
           dim selectedLevel = w010
           rem ADMIN/GAME: Selected level/arena (SCRAM w010, read via r010)
+
+          rem Font rendering temporary variables (Common - used in Admin and Game mode)
+          rem NOTE: These reuse temp variables where possible, separate vars when needed
+          dim DigitOffset = temp6
+          rem Font: Byte offset into font data (digit * 16) - uses temp6
+          dim fontRow = var47
+          rem Font: Current row being rendered (0-15) - using var47 as scratch
+          dim fontDataIndex = var46
+          rem Font: Current data index into font table - using var46 as scratch
           
           rem =================================================================
           rem REDIMMED VARIABLES - ADMIN MODE ONLY

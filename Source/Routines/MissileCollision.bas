@@ -198,7 +198,7 @@ CheckBernieAOELeft
 
           rem OUTPUT:
           rem   temp4 = hit participant array index (0-3 maps to participants 1-4), or 255 if no hit
-CheckAOEDirection_Right
+CheckAOEDirectionRight
           rem Get attacker position
           temp2 = PlayerX[temp1]
           temp3 = PlayerY[temp1]

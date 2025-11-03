@@ -608,22 +608,19 @@ SelectLoadSprite
           if charSelectPlayerAnimSeq[temp3_player_save] then SelectLoadWalkingSprite
           
           rem Idle animation
-          rem LoadCharacterSprite expects temp1=char, temp2=frame, temp3=player, temp4=player
-          rem But it uses temp3 internally as action, so we need to call LocateCharacterArt directly
           temp2 = charSelectPlayerAnimFrame[temp3_player_save]  : rem frame
-          temp3_seq = 1  : rem AnimIdle = 1
-          rem LoadCharacterSprite will call LocateCharacterArt
+          rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp4=player
+          temp3 = 1  : rem AnimIdle = 1
           temp4 = temp3_player_save
-          rem Temp3 will be overwritten, so we need to reconstruct parameters
-          gosub SelectLoadSpriteHelper
+          gosub bank10 LocateCharacterArt
           goto SelectLoadSpriteColor
           
 SelectLoadWalkingSprite
           rem Walking animation
           temp2 = charSelectPlayerAnimSeq[temp3_player_save]  : rem Use sequence counter as frame (0-3 for 4-frame walk)
-          temp3_seq = 3  : rem AnimWalking = 3
+          temp3 = 3  : rem AnimWalking = 3
           temp4 = temp3_player_save
-          gosub SelectLoadSpriteHelper
+          gosub bank10 LocateCharacterArt
           
 SelectLoadSpriteColor
           rem Now set player color
@@ -636,20 +633,6 @@ SelectLoadSpriteColor
           let temp3 = temp3_player_save  : rem Restore temp3 for possible future use
           
 SelectDrawSpriteDone
-          return
-          
-SelectLoadSpriteHelper
-          rem Helper to call LocateCharacterArt with proper parameters
-          rem temp1=char, temp2=frame, temp3_seq=action, temp4=player
-          rem Save temp3_seq in temp6 since temp3 will be used
-          dim temp3_seq_save = temp6
-          let temp3_seq_save = temp3_seq
-          rem Copy to temp3 for LocateCharacterArt call
-          let temp3 = temp3_seq_save
-          rem Now temp1=char, temp2=frame, temp3=action, temp4=player
-          rem LoadCharacterSprite expects these parameters and will call LocateCharacterArt
-          rem Actually LoadCharacterSprite hardcodes action to 0, so call LocateCharacterArt directly
-          gosub bank10 LocateCharacterArt
           return
           
 SelectDrawNumber

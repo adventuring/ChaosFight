@@ -153,13 +153,13 @@ rem Executes a melee attack for the specified player.
 rem Spawns a brief missile visual (sword, fist, etc.) and checks for hits.
 
 rem INPUT:
-rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
+rem currentPlayer = attacker participant array index (0-3 maps to participants 1-4)
 PerformMeleeAttack
           rem Spawn missile visual for this attack
           gosub bank7 SpawnMissile
           
           rem Set animation state to attacking
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
+          let PlayerState[currentPlayer] = (PlayerState[currentPlayer] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
           
           rem Check immediate collision with other players in melee range
@@ -175,13 +175,13 @@ rem Executes a ranged attack for the specified player.
 rem Spawns a projectile missile that travels across the screen.
 
 rem INPUT:
-rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
+rem currentPlayer = attacker participant array index (0-3 maps to participants 1-4)
 PerformRangedAttack
           rem Spawn projectile missile for this attack
           gosub bank7 SpawnMissile
           
           rem Set animation state to attacking
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
+          let PlayerState[currentPlayer] = (PlayerState[currentPlayer] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
           
           return

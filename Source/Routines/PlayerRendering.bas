@@ -213,7 +213,7 @@ DisplayHealth
           rem Flash Participant 1 sprite (array [0], P0) if health is low (but not during recovery)
           rem Use skip-over pattern to avoid complex || operator
           if PlayerHealth[0] >= 25 then goto SkipParticipant1Flash
-          if PlayerRecoveryFrames[0] <> 0 then goto SkipParticipant1Flash
+          if PlayerRecoveryFrames[0] then goto SkipParticipant1Flash
           if frame & 8 then player0x = 200 
           rem Hide P0 sprite
 SkipParticipant1Flash
@@ -221,7 +221,7 @@ SkipParticipant1Flash
           rem Flash Participant 2 sprite (array [1], P1) if health is low
           rem Use skip-over pattern to avoid complex || operator
           if PlayerHealth[1] >= 25 then goto SkipParticipant2Flash
-          if PlayerRecoveryFrames[1] <> 0 then goto SkipParticipant2Flash
+          if PlayerRecoveryFrames[1] then goto SkipParticipant2Flash
                     if frame & 8 then player1x = 200
 SkipPlayer1Flash
 
@@ -230,7 +230,7 @@ SkipPlayer1Flash
           if selectedChar3 = 255 then goto SkipPlayer3Flash
           if ! PlayerHealth[2] then goto SkipPlayer3Flash
           if PlayerHealth[2] >= 25 then goto SkipPlayer3Flash
-          if PlayerRecoveryFrames[2] <> 0 then goto SkipPlayer3Flash
+          if PlayerRecoveryFrames[2] then goto SkipPlayer3Flash
           if frame & 8 then player2x = 200 
           rem Player 3 uses player2 sprite
 SkipPlayer3Flash
@@ -240,7 +240,7 @@ SkipPlayer3Flash
           if selectedChar4 = 255 then goto SkipPlayer4Flash
           if ! PlayerHealth[3] then goto SkipPlayer4Flash
           if PlayerHealth[3] >= 25 then goto SkipPlayer4Flash
-          if PlayerRecoveryFrames[3] <> 0 then goto SkipPlayer4Flash
+          if PlayerRecoveryFrames[3] then goto SkipPlayer4Flash
           if frame & 8 then player3x = 200 
           rem Player 4 uses player3 sprite
 SkipPlayer4Flash
@@ -296,8 +296,8 @@ DrawHealthBars
           rem Draw Player 3 & 4 bars if Quadtari active and player alive
           if ControllerStatus & SetQuadtariDetected then goto DrawP3P4Health else goto SkipP3P4Health
 DrawP3P4Health
-          if selectedChar3 <> 255 && PlayerHealth[2] > 0 then goto DrawP3Health else goto SkipP3Health
-DrawP3Health
+          if selectedChar3 = 255 then goto SkipP3Health
+          if ! PlayerHealth[2] then goto SkipP3Health
           rem Player 3 health bar
           let HealthBarLength = PlayerHealth[2] / 3
           if HealthBarLength > 32 then LET HealthBarLength = 32
@@ -306,8 +306,8 @@ DrawP3Health
           gosub bank8 DrawHealthBarRow2
 SkipP3Health
           
-          if selectedChar4 <> 255 && PlayerHealth[3] > 0 then goto DrawP4Health else goto SkipP4Health
-DrawP4Health
+          if selectedChar4 = 255 then goto SkipP4Health
+          if ! PlayerHealth[3] then goto SkipP4Health
           rem Player 4 health bar
           let HealthBarLength = PlayerHealth[3] / 3
           if HealthBarLength > 32 then LET HealthBarLength = 32

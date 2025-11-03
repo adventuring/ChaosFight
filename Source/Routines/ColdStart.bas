@@ -8,7 +8,7 @@
           rem Called from Bank1 via "goto bank13 ColdStart" - this is the
           rem correct stanza format (Bank1 jumps to ColdStart in Bank13).
           rem
-          rem batariBASIC's startup.asm include handles:
+          rem batariBASIC’s startup.asm include handles:
           rem   - RAM clearing (all RAM set to 0)
           rem   - Stack initialization (SP = $FF)
           rem   - Register initialization (A = X = Y = 0)

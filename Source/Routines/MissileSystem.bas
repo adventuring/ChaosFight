@@ -511,7 +511,7 @@ BounceMultiply
 BounceDone
           let missileVelX[temp1] = temp7
           
-          rem Continue bouncing (don't deactivate)
+          rem Continue bouncing (don’t deactivate)
           return
 
           rem =================================================================

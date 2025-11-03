@@ -14,7 +14,7 @@ MainLoopContinue
           rem Call music handler for preambles, title screen, and winner screen
           if gameMode < 3 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
           if gameMode = 7 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
-          rem Other modes (3-6) don't need audio updates here - handled in their subroutines
+          rem Other modes (3-6) don’t need audio updates here - handled in their subroutines
 MainLoopDrawScreen
           drawscreen
           goto MainLoop

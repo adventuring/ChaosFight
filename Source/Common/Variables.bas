@@ -57,10 +57,14 @@
           rem   - temp1-4, qtcontroller, frame (built-ins)
           
           rem REDIMMED VARIABLES (different meaning per context):
-          rem   - var24-var36: Shared between Admin Mode and Game Mode (intentional redim)
+          rem   - var24-var40: Shared between Admin Mode and Game Mode (intentional redim)
+          rem     - var24-var27: Level select (Admin) or animationCounter (Game) - ZPRAM for performance
+          rem     - var28-var32: Preamble/music (Admin) or currentAnimationFrame (Game) - ZPRAM for performance
+          rem     - var33-var36: Title parade (Admin) or currentAnimationSeq (Game) - ZPRAM
+          rem     - var37-var40: Character select (Admin) or playerAttackCooldown (Game) - ZPRAM
           rem   - a,b,c,d: Fall animation vars (Admin Mode) or MissileX (Game Mode)
           rem   - w-z: Animation vars (Admin Mode) or Missile velocities (Game Mode)
-          rem   - e: console7800Detected (COMMON) or missileLifetime (Game Mode)
+          rem   - e: console7800Detected (COMMON) - missileLifetime moved to SCRAM w045 to avoid conflict
           rem   - selectedArena: Moved from w to w014 (SCRAM) to avoid redim conflict
           rem =================================================================
           
@@ -235,46 +239,47 @@
           rem ADMIN MODE - Standard RAM (var0-var47) - sorted numerically
           rem =================================================================
           
-          rem ADMIN: Character selection state
+          rem ADMIN: Character selection state (var37-var38)
+          rem NOTE: These are REDIMMED in Game Mode for playerAttackCooldown
           dim charSelectCharIndex = var37   
-          rem ADMIN: Currently selected character index (0-15) for preview
+          rem ADMIN: Currently selected character index (0-15) for preview (REDIMMED - Game Mode uses var37 for playerAttackCooldown[0])
           dim charSelectPlayer = var38      
-          rem ADMIN: Which player is currently selecting (1-4)
+          rem ADMIN: Which player is currently selecting (1-4) (REDIMMED - Game Mode uses var38 for playerAttackCooldown[1])
           
           rem ADMIN: Level select variables (var24-var27)
-          rem NOTE: These are REDIMMED in Game Mode for game state variables
+          rem NOTE: These are REDIMMED in Game Mode for animationCounter (var24-var27)
           dim levelPreviewData = var24      
-          rem ADMIN: Level preview state
+          rem ADMIN: Level preview state (REDIMMED - Game Mode uses var24 for animationCounter[0])
           dim levelScrollOffset = var25     
-          rem ADMIN: Scroll position
+          rem ADMIN: Scroll position (REDIMMED - Game Mode uses var25 for animationCounter[1])
           dim levelCursorPos = var26        
-          rem ADMIN: Cursor position
+          rem ADMIN: Cursor position (REDIMMED - Game Mode uses var26 for animationCounter[2])
           dim levelConfirmTimer = var27     
-          rem ADMIN: Confirmation timer
+          rem ADMIN: Confirmation timer (REDIMMED - Game Mode uses var27 for animationCounter[3])
 
           rem ADMIN: Preamble screen variables (var28-var32)
-          rem NOTE: These are REDIMMED in Game Mode for game state variables
+          rem NOTE: These are REDIMMED in Game Mode for currentAnimationFrame
           dim preambleTimer = var28         
-          rem ADMIN: Screen timer
+          rem ADMIN: Screen timer (REDIMMED - Game Mode uses var28 for currentAnimationFrame[0])
           dim preambleState = var29         
-          rem ADMIN: Which preamble
+          rem ADMIN: Which preamble (REDIMMED - Game Mode uses var29 for currentAnimationFrame[1])
           dim musicPlaying = var30          
-          rem ADMIN: Music status
+          rem ADMIN: Music status (REDIMMED - Game Mode uses var30 for currentAnimationFrame[2])
           dim musicPosition = var31         
-          rem ADMIN: Current note
+          rem ADMIN: Current note (REDIMMED - Game Mode uses var31 for currentAnimationFrame[3])
           dim musicTimer = var32            
-          rem ADMIN: Music frame counter
+          rem ADMIN: Music frame counter (REDIMMED - Game Mode uses var33 for currentAnimationSeq[0])
 
           rem ADMIN: Title screen parade (var33-var36)
-          rem NOTE: These are REDIMMED in Game Mode for animation variables
+          rem NOTE: These are REDIMMED in Game Mode for currentAnimationSeq (var33-var36, but var37-var40 for playerAttackCooldown)
           dim titleParadeTimer = var33     
-          rem ADMIN: Parade timing
+          rem ADMIN: Parade timing (REDIMMED - Game Mode uses var33 for currentAnimationSeq[0])
           dim titleParadeChar = var34      
-          rem ADMIN: Current parade character
+          rem ADMIN: Current parade character (REDIMMED - Game Mode uses var34 for currentAnimationSeq[1])
           dim titleParadeX = var35         
-          rem ADMIN: Parade X position
+          rem ADMIN: Parade X position (REDIMMED - Game Mode uses var35 for currentAnimationSeq[2])
           dim titleParadeActive = var36    
-          rem ADMIN: Parade active flag
+          rem ADMIN: Parade active flag (REDIMMED - Game Mode uses var36 for currentAnimationSeq[3])
 
           rem =================================================================
           rem GAME MODE VARIABLES (may be re-used in Admin Mode for other purposes)
@@ -341,38 +346,60 @@
           rem GAME MODE - Standard RAM (var24-var47) - sorted numerically
           rem =================================================================
           
-          rem Game Mode: Additional game state variables (var24-var31)
-          rem NOTE: These are REDIMMED in Admin Mode for level select, preamble, music
-          dim playersRemaining = var24
-          rem Game Mode: Count of active players
-          dim gameEndTimer = var25
-          rem Game Mode: Countdown to game end screen
-          dim eliminationEffectTimer = var26
-          rem Game Mode: Visual effect timers (single byte, bits for each player)
-          dim eliminationOrder = var27
-          rem Game Mode: Order players were eliminated [0-3] (packed into 4 bits)
-          dim eliminationCounter = var28
-          rem Game Mode: Counter for elimination sequence
-          dim winnerPlayerIndex = var29
-          rem Game Mode: Index of winning player (0-3)
-          dim displayRank = var30
-          rem Game Mode: Current rank being displayed (1-4)
-          dim winScreenTimer = var31
-          rem Game Mode: Win screen display timer
-          
-          rem Game Mode: Animation system variables (var32, var36, var40)
-          rem NOTE: These are REDIMMED in Admin Mode for music timer and parade
+          rem Game Mode: Animation system variables (var24-var27, var28-var31, var33-var36)
+          rem PERFORMANCE CRITICAL: Accessed every frame in UpdateCharacterAnimations
+          rem These must be in ZPRAM (var0-var47) for fastest access, NOT redimmed
+          rem NOTE: var24-var36 are redimmed in Admin Mode, but we use var24-var31, var33-var36 for animation here
+          rem       This is safe because Admin and Game modes never overlap
           rem 10fps character animation with platform-specific timing
-          dim animationCounter = var32
-          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame counter (4 bytes)
-          dim currentAnimationFrame = var36
-          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current frame in sequence (4 bytes)
-          dim currentAnimationSeq = var40
-          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current animation sequence (4 bytes)
+          dim animationCounter = var24
+          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame counter (4 bytes) - ZPRAM for performance
+          dim currentAnimationFrame = var28
+          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current frame in sequence (4 bytes) - ZPRAM for performance
+          dim currentAnimationSeq = var33
+          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current animation sequence (4 bytes) - ZPRAM for performance
           
-          rem Game Mode: Attack cooldown timers (var44-var47 = 4 bytes)
-          dim playerAttackCooldown = var44
-          rem Array accessible as playerAttackCooldown[0] through playerAttackCooldown[3]
+          rem Game Mode: Attack cooldown timers (var37-var40 = 4 bytes)
+          rem PERFORMANCE CRITICAL: Checked every frame for attack availability
+          dim playerAttackCooldown = var37
+          rem Array accessible as playerAttackCooldown[0] through playerAttackCooldown[3] - ZPRAM for performance
+          rem NOTE: var37-var40 used for playerAttackCooldown (Game Mode), var37-var38 used for charSelect (Admin Mode)
+          
+          rem Game Mode: Additional game state variables (moved to SCRAM - less performance critical)
+          rem NOTE: These are accessed infrequently (elimination/win screen only), safe in SCRAM
+          rem Moved from var24-var31 to SCRAM to free ZPRAM for animation vars
+          dim playersRemaining_W = w016
+          dim playersRemaining_R = r016
+          dim playersRemaining = w016
+          rem Game Mode: Count of active players (SCRAM - low frequency access)
+          dim gameEndTimer_W = w018
+          dim gameEndTimer_R = r018
+          dim gameEndTimer = w018
+          rem Game Mode: Countdown to game end screen (SCRAM)
+          dim eliminationEffectTimer_W = w019
+          dim eliminationEffectTimer_R = r019
+          dim eliminationEffectTimer = w019
+          rem Game Mode: Visual effect timers (single byte, bits for each player) (SCRAM)
+          dim eliminationOrder_W = w040
+          dim eliminationOrder_R = r040
+          dim eliminationOrder = w040
+          rem Game Mode: Order players were eliminated [0-3] (packed into 4 bits) (SCRAM)
+          dim eliminationCounter_W = w041
+          dim eliminationCounter_R = r041
+          dim eliminationCounter = w041
+          rem Game Mode: Counter for elimination sequence (SCRAM)
+          dim winnerPlayerIndex_W = w042
+          dim winnerPlayerIndex_R = r042
+          dim winnerPlayerIndex = w042
+          rem Game Mode: Index of winning player (0-3) (SCRAM)
+          dim displayRank_W = w043
+          dim displayRank_R = r043
+          dim displayRank = w043
+          rem Game Mode: Current rank being displayed (1-4) (SCRAM)
+          dim winScreenTimer_W = w044
+          dim winScreenTimer_R = r044
+          dim winScreenTimer = w044
+          rem Game Mode: Win screen display timer (SCRAM)
           
           rem =================================================================
           rem GAME MODE - Standard RAM (a-z) - sorted alphabetically
@@ -389,13 +416,16 @@
           dim missileX = a                  
           rem Array accessible as missileX[0] through missileX[3]
 
-          rem Game Mode: Missile lifetime counters [0-3] - frames remaining (standard RAM e)
+          rem Game Mode: Missile lifetime counters [0-3] - frames remaining
           rem For melee attacks: small value (2-8 frames)
           rem For ranged attacks: larger value or 255 for "until collision"
-          rem Packed into 2 bytes: high nybble = P1/P2, low nybble = P3/P4
-          dim missileLifetime = e           
-          rem Game Mode: REDIM - reuses console7800Detected (COMMON)
-          rem Using nybble packing: missileLifetime[0] = P1/P2, missileLifetime[1] = P3/P4
+          rem PERFORMANCE: Moved to SCRAM since accessed less frequently than other missile vars
+          rem NOTE: console7800Detected (COMMON) uses 'e' in standard RAM, missileLifetime moved to SCRAM to avoid conflict
+          dim missileLifetime_W = w045
+          dim missileLifetime_R = r045
+          dim missileLifetime = w045
+          rem Game Mode: Missile lifetime array (4 bytes) - SCRAM w045-w048 for performance
+          rem Array accessible as missileLifetime[0] through missileLifetime[3]
 
           rem Game Mode: Missile velocities [0-3] for X and Y axes (standard RAM w,x)
           rem NOTE: These are REDIMMED in Admin Mode for character select animation

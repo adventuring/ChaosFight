@@ -10,15 +10,13 @@ PixelIndex = temp7
  
 HealthBarLength = temp5
  
-PlayerColorsDark_length = .skipL02637-PlayerColorsDark 
+PlayerColorsDark_length = .skipL02385-PlayerColorsDark 
  
-PlayerColorsLight_length = .skipL02635-PlayerColorsLight 
+PlayerColorsLight_length = .skipL02383-PlayerColorsLight 
  
-NoSprite_length = .skipL02470-NoSprite 
+NoSprite_length = .skipL02218-NoSprite 
  
-CPUSprite_length = .skipL02469-CPUSprite 
- 
-QuestionMarkSprite_length = .skipL02468-QuestionMarkSprite 
+CPUSprite_length = .skipL02217-CPUSprite 
  
 MethHoundFrameMap_length = .skipL0853-MethHoundFrameMap 
  

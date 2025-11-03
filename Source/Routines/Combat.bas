@@ -135,9 +135,30 @@ NextAttacker
           
           return
 
-rem Damage indicator system
+rem =================================================================
+rem DAMAGE INDICATOR SYSTEM
+rem =================================================================
+rem Shows visual feedback when players take damage
+
+rem Show damage indicator for a player
+rem Input: currentPlayer = player index (0-3), temp2 = damage amount
+VisualShowDamageIndicator
+          rem Set player to hurt state for visual feedback
+          temp3 = playerState[currentPlayer] & %00011111 
+          rem Keep lower 5 bits
+          temp3 = temp3 | %10010000 
+          rem Set animation to 9 (hurt state)
+          let playerState[currentPlayer] = temp3
+          
+          rem Set recovery frames for hurt visual duration
+          let playerRecoveryFrames[currentPlayer] = 15 
+          rem 15 frames of hurt visual
+          
+          return
+
+rem Damage indicator system (wrapper for compatibility)
 CombatShowDamageIndicator
-          gosub bank8 VisualShowDamageIndicator
+          gosub VisualShowDamageIndicator
           return
 
 rem Damage sound system

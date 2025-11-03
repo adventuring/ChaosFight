@@ -8,6 +8,7 @@
           #include "Source/Routines/GameLoopMain.bas"
           
           rem Gameplay subsystems called from GameLoopMain
+          #include "Source/Routines/Combat.bas"
           #include "Source/Routines/PlayerInput.bas"
           #include "Source/Routines/AnimationSystem.bas"
           #include "Source/Routines/MovementSystem.bas"

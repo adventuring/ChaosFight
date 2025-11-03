@@ -66,27 +66,44 @@ DisplayArenaNumber
           rem Calculate display value: selectedArena + 1
           temp6 = selectedArena + 1
           
-          rem Calculate tens digit (0 or 1)
-          rem Using division: tens = value / 10
-          temp1 = temp6 / 10
+          rem Calculate tens digit using cascading > comparisons
+          rem Current max is 16 (arenas 0-15), but support up to 39 for future expansion
+          if temp6 > 30 then goto DisplayArenaTens3
+          if temp6 > 20 then goto DisplayArenaTens2
+          if temp6 > 10 then goto DisplayArenaTens1
           
-          rem Calculate ones digit (0-9)
-          rem Using modulo: ones = value - (tens * 10)
-          temp2 = temp1 * 10
-          temp3 = temp6 - temp2
+          rem Single-digit number (1-9): tens = 0
+          temp1 = 0
+          temp3 = temp6
+          goto DisplayArenaDrawTens
           
+DisplayArenaTens3
+          temp1 = 3
+          temp3 = temp6 - 30
+          goto DisplayArenaDrawTens
+          
+DisplayArenaTens2
+          temp1 = 2
+          temp3 = temp6 - 20
+          goto DisplayArenaDrawTens
+          
+DisplayArenaTens1
+          temp1 = 1
+          temp3 = temp6 - 10
+          
+DisplayArenaDrawTens
           rem Draw tens digit using player0 sprite
           rem Position at X=60, Y=40 (center-left of screen)
-          rem Save original values
-          temp4 = temp2
-          temp5 = temp3
-          rem Set up DrawDigit call
-          rem temp1 = digit value, temp2 = X pos, temp3 = Y pos, temp4 = color, temp5 = sprite select
+          rem temp1 = tens digit (0 or 1), temp2 = X pos, temp3 = Y pos, temp4 = color, temp5 = sprite select
+          rem Save ones digit (in temp3) to temp6 before overwriting temp3
+          temp6 = temp3
           temp2 = 60 : temp3 = 40 : temp4 = $0E : temp5 = 0
           gosub DrawDigit
           
-          rem Restore ones digit to temp1 for second DrawDigit call
-          temp1 = temp5 : temp2 = 68 : temp3 = 40 : temp4 = $0E : temp5 = 1
+          rem Draw ones digit using player1 sprite
+          rem Position at X=68, Y=40 (8 pixels to right of tens digit)
+          rem temp1 = ones digit, temp2 = X pos, temp3 = Y pos, temp4 = color, temp5 = sprite select
+          temp1 = temp6 : temp2 = 68 : temp3 = 40 : temp4 = $0E : temp5 = 1
           gosub DrawDigit
           
           return

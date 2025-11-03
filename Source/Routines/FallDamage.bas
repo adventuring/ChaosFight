@@ -230,7 +230,7 @@ CheckGroundCollision
 HandleFrootyVertical
           rem Check character type to confirm
           temp5 = PlayerChar[temp1]
-          if temp5 <> 8 then return 
+          if !(temp5 = 8) then return 
           rem Not Frooty
           
           rem Get joystick state
@@ -265,7 +265,7 @@ HandleFrootyVertical
 HandleHarpySwoopAttack
           rem Check character type to confirm
           temp5 = PlayerChar[temp1]
-          if temp5 <> 6 then return 
+          if !(temp5 = 6) then return 
           rem Not Harpy
           
           rem Get facing direction from PlayerState bit 0

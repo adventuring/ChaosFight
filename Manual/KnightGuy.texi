@@ -5,6 +5,10 @@
     Attack: Ranged (3×3 pixels, arrowshot)
     Special: Armored fighter with powerful projectile, longest melée duration (6 frames)
     Original Game: Knight Guy: In Another Castle and other vhzc games
+    Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.itch.io,VHZC Games}
+    Purchase: @url{https://store.atariage.com/products/knight-guy-in-another-castle-atari-2600,Knight Guy: In Another Castle at AtariAge Store}
+    Download: @url{https://vhzc.itch.io/knight-guy-in-another-castle,Knight Guy free download}
+    Forum: @url{https://forums.atariage.com/topic/,Knight Guy release thread}
 @end group
 @end display
 

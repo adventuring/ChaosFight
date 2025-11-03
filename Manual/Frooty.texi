@@ -7,7 +7,10 @@
     Special: FREE FLIGHT - use UP/DOWN to move vertically, no guard action
     Likes: Candy
     Hates: Boredom
-    Original Game: Magical Fairy Force
+    Original Game: Magical Fairy Force, Championship, and Drop
+    Author: Ryan Witmer @url{https://phasercat.com,Phaser Cat Games}
+    Purchase: @url{https://store.atariage.com/products/magical-fairy-force-atari-2600,Magical Fairy Force at AtariAge Store}; @url{https://store.steampowered.com/app/,"Magical Fairy Force Championship Adventure on Steam"}; @url{https://store.atariage.com/store_search?q=fairy+drop,Fairy Drop at AtariAge Store}
+    Forum: @url{https://forums.atariage.com/topic/,Magical Fairy Force release thread}; @url{https://forums.atariage.com/topic/,Fairy Drop release thread}
 @end group
 @end display
 

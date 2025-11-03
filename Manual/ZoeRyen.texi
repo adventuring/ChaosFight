@@ -5,7 +5,10 @@
     Attack: Ranged (long/wide bullet, arrowshot)
     Special: High jumps, fast horizontal projectile
     Original Game: EXO
-    Author: Lewis "Muddyfunster" Hill of Muddyvision
+    Author: Lewis "Muddyfunster" Hill of Muddyvision @url{https://muddyvision.com,Muddyvision}
+    Purchase: @url{https://store.atariage.com/products/exo-atari-2600,EXO at AtariAge Store}
+    Download: @url{https://muddyvision.com,EXO free download}
+    Forum: @url{https://forums.atariage.com/topic/,EXO release thread}
 @end group
 @end display
 

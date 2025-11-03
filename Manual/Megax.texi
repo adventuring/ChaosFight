@@ -5,8 +5,11 @@
     Attack: Ranged (fire breath)
     Special: Giant monster-eating powerhouse, biggest and most powerful Grizzard known
     Original Game: Grizzards
-    Author: Interworldly Adventuring, LLC (Bruce-Robert & Zephyr Pocock)
+    Author: Zephyr & Bruce-Robert Pocock (Interworldly Adventuring, LLC) @url{https://interworldly.com,Interworldly.com}
     Species: Grizzard (giant monster-eating powerhouse)
+    Purchase: @url{https://store.atariage.com/products/grizzards-atari-2600,Grizzards at AtariAge Store}; @url{https://grizzards.com,Grizzards Official Website}
+    Download: @url{https://grizzards.com,Grizzards free download}
+    Forum: @url{https://forums.atariage.com/topic/,Grizzards release thread}
 @end group
 @end display
 

@@ -14,13 +14,18 @@
 @end group
 @end display
 
-You are a harpy - swift of wing and vicious in nature. Once banished to a 
-deadly labyrinth, you defeated the four keepers of the maze and faced the 
-Great Sphinx who exiled you there. The labyrinth contained legendary artifacts 
-- feathers of legendary birds and beasts that aided your escape.
+You are a harpy - swift of wing and vicious in nature. Once exiled to a 
+perilous labyrinth by the Great Sphinx, you were forced to navigate through 
+corridors of rock, brick, and bone. Your mission was to locate and defeat four 
+guardians before confronting the Great Sphinx herself to secure your freedom. 
+Throughout your journey, you uncovered hidden secrets, evaded deadly traps, 
+and battled various denizens of the maze. The labyrinth contained legendary 
+artifacts - feathers of legendary birds and beasts that aided your escape and 
+enhanced your powers.
 
 Now free of the maze, you bring that hard-won combat experience to ChaosFight. 
 Your time battling through the labyrinth's dangers has honed your aerial combat 
 skills to perfection. The Harpy can maintain flight by repeatedly jumping, and 
 her attack causes her to swoop down diagonally while performing a devastating 
-melée strike - techniques perfected during your trials against the maze keepers.
+melée strike - techniques perfected during your trials against the four guardians 
+and the Great Sphinx.

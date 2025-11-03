@@ -159,18 +159,21 @@ MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
 	fi
 
 # Convert MIDI to batariBASIC music data for NTSC (60Hz)
+# BAS depends on MIDI (which depends on MSCZ via pattern rule)
 Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
 	@echo "Converting music $< to $@ for NTSC..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Convert MIDI to batariBASIC music data for PAL (50Hz)
+# BAS depends on MIDI (which depends on MSCZ via pattern rule)
 Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
 	@echo "Converting music $< to $@ for PAL..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 # Convert MIDI to batariBASIC music data for SECAM (50Hz)
+# BAS depends on MIDI (which depends on MSCZ via pattern rule)
 Source/Generated/Song.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
 	@echo "Converting music $< to $@ for SECAM..."
 	mkdir -p Source/Generated
@@ -196,7 +199,7 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
 
 # Generate character sprite files from PNG using chaos character compiler
-# Explicit rules for each character ensure proper PNG dependency tracking
+# BAS depends on PNG (which depends on XCF via pattern rule)
 $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Generating character sprite data for $*..."
 	mkdir -p Source/Generated
@@ -244,21 +247,28 @@ Source/Generated/Font.bas: Source/Art/Font.png
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
+# Preprocessor inputs depend on all sources and generated assets
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
+	$(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
+	$(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
 
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
+	$(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
 
@@ -384,15 +394,17 @@ help:
 	@echo "  all          - Build game and documentation (default)"
 	@echo "  game         - Build game ROMs for all TV systems"
 	@echo "  doc          - Build PDF and HTML manuals"
-	@echo "  characters   - Generate character sprite data"
-	@echo "  playfields   - Generate playfield/screen data"
-	@echo "  fonts        - Generate font data"
 	@echo "  clean        - Remove generated ROM files"
 	@echo "  emu          - Build and run in Stella emulator"
 	@echo "  gimp-export  - Install GIMP export script"
 	@echo "  ready        - Setup development environment and dependencies"
 	@echo "  nowready     - Check if development environment is ready"
 	@echo "  help         - Show this help message"
+	@echo ""
+	@echo "Dependency chain:"
+	@echo "  XCF → PNG → BAS/S (characters, bitmaps, fonts)"
+	@echo "  MSCZ → MIDI → BAS (music)"
+	@echo "  Sources + Generated assets → Preprocessed → Compiled → ROMs"
 	@echo ""
 	@echo "Output files:"
 	@echo "  Dist/ChaosFight-Manual.pdf  - Game manual (PDF)"

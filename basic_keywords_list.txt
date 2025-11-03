@@ -1,0 +1,89 @@
+batariBASIC Keywords and System Variables
+==================================================
+
+KEYWORDS:
+--------------------------------------------------
+Control Flow:
+  if, then, else, goto, gosub, return, for, next, on
+
+Declarations:
+  dim, const, set, autodim
+
+Code Blocks:
+  asm, end, rem, def, function
+
+Bank Switching:
+  bank
+
+Data:
+  data, sdata
+
+Includes:
+  includesfile, include, inline
+
+Playfield:
+  playfield, pfpixel, pfhline, pfclear, pfvline, pfscroll
+
+Colors:
+  pfcolors, pfheights, bkcolors, scorecolors
+
+Drawing/Display:
+  drawscreen, lives, vblank, reboot
+
+Operators:
+  dec, let
+
+Macros:
+  macro, callmacro, extra, push, pull, pop, stack
+
+System:
+  rerand
+
+SYSTEM VARIABLES:
+--------------------------------------------------
+Player/Missile Positions:
+  player0x, player0y, player1x, player1y
+  missile0x, missile0y, missile1x, missile1y
+  ballx, bally, objecty
+
+Player Pointers:
+  player0pointer, player0pointerlo, player0pointerhi
+  player1pointer, player1pointerlo, player1pointerhi
+
+Heights:
+  player0height, player1height, missile0height, missile1height, ballheight
+
+Colors:
+  player0color, player1color, player0colorstore
+
+Paddle:
+  currentpaddle, paddle
+
+Score:
+  score, scorecolor, scorepointers
+
+Built-in Temporaries:
+  temp1, temp2, temp3, temp4, temp5, temp6
+
+System:
+  rand, frame, qtcontroller
+
+Standard Variables:
+  var0-var95 (48 bytes)
+  a-z, A-Z (single letters, 26 bytes)
+
+TIA Registers (all caps patterns):
+  COLUP[0-9A-F], COLUPF, COLUBK, NUSIZ[0-9A-F], NUSIZF, RESP[0-9A-F], RESMP[0-9A-F], HMOVE, HMM[0-9A-F], VDEL[0-9A-F]
+  (and more... see includes/2600basic.h)
+
+Player Declarations:
+  player0: through player16:
+  player0color: through player16color:
+
+SUMMARY:
+--------------------------------------------------
+Total Keywords: 48
+Total System Variables (explicit): 39
+
+These keywords and system variables should be preserved
+when converting labels to PascalCase (lowercase preserved).

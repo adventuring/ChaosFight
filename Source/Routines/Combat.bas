@@ -199,28 +199,28 @@ PerformRangedAttack
   return
 
 rem Process guard for a player
-rem Input: player_id
+rem Input: playerId
 ProcessPlayerGuard
   rem Check if player is guarding
-  if (PlayerState[player_id] & %00000010) = 0 then return
+  if (PlayerState[playerId] & %00000010) = 0 then return
   
   rem Guard prevents movement
-  PlayerMomentumX[player_id] = 0
+  PlayerMomentumX[playerId] = 0
   
   rem Guard prevents attacks
-  PlayerState[player_id] = PlayerState[player_id] & %11111110
+  PlayerState[playerId] = PlayerState[playerId] & %11111110
   
   return
 
 rem Update player guard state
-rem Input: player_id
+rem Input: playerId
 UpdatePlayerGuard
-  dim guard_timer = a
+  dim guardTimer = a
   
   rem Decrement guard timer if active (1 second maximum = 60 frames)
-          if (PlayerState[player_id] & %00000010) = 0 then goto SkipGuardUpdate
-          guard_timer = guard_timer - 1
-          if guard_timer <= 0 then PlayerState[player_id] = PlayerState[player_id] & %11111101
+          if (PlayerState[playerId] & %00000010) = 0 then goto SkipGuardUpdate
+          guardTimer = guardTimer - 1
+          if guardTimer <= 0 then PlayerState[playerId] = PlayerState[playerId] & %11111101
     rem Guard visual effect: flashing light cyan ColCyan(12) NTSC/PAL, Cyan SECAM
     rem Player color alternates between normal and cyan every few frames
     rem This matches manual specification: "Character flashes to indicate guard is active"

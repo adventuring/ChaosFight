@@ -22,17 +22,17 @@
           rem reach the ground level (Y=80).
 PhysicsApplyGravity
           rem Player 1
-          if (PlayerState[0] & 4) <> 0 then goto Player1GravityDone
+          if (PlayerState[0] & 4) then Player1GravityDone
           let PlayerY[0] = PlayerY[0] + 1
-          if PlayerY[0] < 80 then goto Player1GravityDone
+          if PlayerY[0] < 80 then Player1GravityDone
           let PlayerY[0] = 80
           let PlayerState[0] = PlayerState[0] & NOT 4
 Player1GravityDone
           
           rem Player 2
-          if (PlayerState[1] & 4) <> 0 then goto Player2GravityDone
+          if (PlayerState[1] & 4) then Player2GravityDone
           let PlayerY[1] = PlayerY[1] + 1
-          if PlayerY[1] < 80 then goto Player2GravityDone
+          if PlayerY[1] < 80 then Player2GravityDone
           let PlayerY[1] = 80
           let PlayerState[1] = PlayerState[1] & NOT 4
 Player2GravityDone
@@ -40,7 +40,7 @@ Player2GravityDone
           rem Player 3 (Quadtari only)
           if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Jump
           if selectedChar3 = 255 then goto SkipPlayer3Jump
-          if (PlayerState[2] & 4) <> 0 then goto SkipPlayer3Jump
+          if (PlayerState[2] & 4) then goto SkipPlayer3Jump
           let PlayerY[2] = PlayerY[2] + 1
           if PlayerY[2] < 80 then goto SkipPlayer3Jump
           let PlayerY[2] = 80 : PlayerState[2] = PlayerState[2] & NOT 4
@@ -49,7 +49,7 @@ SkipPlayer3Jump
           rem Player 4 (Quadtari only)
           if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Jump
           if selectedChar4 = 255 then goto SkipPlayer4Jump
-          if (PlayerState[3] & 4) <> 0 then goto SkipPlayer4Jump
+          if (PlayerState[3] & 4) then goto SkipPlayer4Jump
           let PlayerY[3] = PlayerY[3] + 1
           if PlayerY[3] < 80 then goto SkipPlayer4Jump
           let PlayerY[3] = 80 : PlayerState[3] = PlayerState[3] & NOT 4
@@ -174,7 +174,7 @@ SkipP1P2Sep
           if ! (ControllerStatus & SetQuadtariDetected) then return
           
           rem Check Player 1 vs Player 3
-          if selectedChar3 <> 255 then goto DoP1P3Check else goto SkipP1P3Check
+          if !(selectedChar3 = 255) then goto DoP1P3Check else goto SkipP1P3Check
 DoP1P3Check
           if PlayerX[0] >= PlayerX[2] then temp2 = PlayerX[0] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[0]
           if temp2 < 16 then if PlayerX[0] < PlayerX[2] then PlayerX[0] = PlayerX[0] - 1 : PlayerX[2] = PlayerX[2] + 1 : goto SkipP1P3Sep
@@ -186,7 +186,7 @@ SkipP1P3Check
           
           
           rem Check Player 1 vs Player 4
-          if selectedChar4 <> 255 then goto DoP1P4Check else goto SkipP1P4Check
+          if !(selectedChar4 = 255) then goto DoP1P4Check else goto SkipP1P4Check
 DoP1P4Check
           if PlayerX[0] >= PlayerX[3] then temp2 = PlayerX[0] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[0]
           if temp2 < 16 then if PlayerX[0] < PlayerX[3] then PlayerX[0] = PlayerX[0] - 1 : PlayerX[3] = PlayerX[3] + 1 : goto SkipP1P4Sep
@@ -198,7 +198,7 @@ SkipP1P4Check
           
           
           rem Check Player 2 vs Player 3
-          if selectedChar3 <> 255 then goto DoP2P3Check else goto SkipP2P3Check
+          if !(selectedChar3 = 255) then goto DoP2P3Check else goto SkipP2P3Check
 DoP2P3Check
           if PlayerX[1] >= PlayerX[2] then temp2 = PlayerX[1] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[1]
           if temp2 < 16 then if PlayerX[1] < PlayerX[2] then PlayerX[1] = PlayerX[1] - 1 : PlayerX[2] = PlayerX[2] + 1 : goto SkipP2P3Sep
@@ -210,7 +210,7 @@ SkipP2P3Check
           
           
           rem Check Player 2 vs Player 4
-          if selectedChar4 <> 255 then goto DoP2P4Check else goto SkipP2P4Check
+          if !(selectedChar4 = 255) then goto DoP2P4Check else goto SkipP2P4Check
 DoP2P4Check
           if PlayerX[1] >= PlayerX[3] then temp2 = PlayerX[1] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[1]
           if temp2 < 16 then if PlayerX[1] < PlayerX[3] then PlayerX[1] = PlayerX[1] - 1 : PlayerX[3] = PlayerX[3] + 1 : goto SkipP2P4Sep

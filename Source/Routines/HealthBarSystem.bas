@@ -123,11 +123,12 @@ P4HealthConvertDone
           
           rem Set score bytes in BCD format using assembly
           rem score (digits 5-4): P3 tens (high nibble) and ones (low nibble)
-          rem score+1 (digits 3-2): 00 (blank separator)
+          rem score+1 (digits 3-2): CF (separator)
           rem score+2 (digits 1-0): P4 tens (high nibble) and ones (low nibble)
           rem BCD format: high nibble = tens digit, low nibble = ones digit
           rem Example: 75 = $75 (BCD), 50 = $50 (BCD)
           rem Build BCD byte: (tens << 4) | ones
+          rem Note: CF ($CF) is stored directly as hex value for separator
           
           asm
           lda temp3
@@ -137,7 +138,7 @@ P4HealthConvertDone
           asl
           ora temp4
           sta score
-          lda #0
+          lda #$CF
           sta score+1
           lda temp5
           asl

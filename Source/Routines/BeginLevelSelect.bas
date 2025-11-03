@@ -2,7 +2,7 @@
           rem Setup routine for Level Select. Sets initial state only.
 
 BeginLevelSelect
-          selectedLevel = 0
+          selectedArena = 0
           
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)

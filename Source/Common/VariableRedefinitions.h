@@ -305,7 +305,7 @@ CharSelectAnimTimer = w
  
 ReadyCount = x
  
-selectedLevel = w010
+selectedArena = w010
 
 selectedChar4 = w009
 

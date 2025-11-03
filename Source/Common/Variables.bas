@@ -53,7 +53,7 @@
           
           rem Common Vars (needed in both contexts):
           rem   - PlayerChar[0-3], PlayerLocked[0-3]
-          rem   - selectedChar1-4, selectedLevel
+          rem   - selectedChar1-4, selectedArena
           rem   - QuadtariDetected
           rem   - temp1-4, qtcontroller, frame (built-ins)
           
@@ -125,8 +125,8 @@
           rem ADMIN/GAME: Player 3 character selection (SCRAM w008, read via r008)
           dim selectedChar4 = w009
           rem ADMIN/GAME: Player 4 character selection (SCRAM w009, read via r009)
-          dim selectedLevel = w010
-          rem ADMIN/GAME: Selected level/arena (SCRAM w010, read via r010)
+          dim selectedArena = w010
+          rem ADMIN/GAME: Selected arena (SCRAM w010, read via r010)
 
           rem Font rendering temporary variables (Common - used in Admin and Game mode)
           rem NOTE: These reuse temp variables where possible, separate vars when needed
@@ -149,7 +149,7 @@
           dim ReadyCount = x               
           rem ADMIN: Count of locked players
           dim CharSelectAnimTimer = w      
-          rem ADMIN: Animation frame counter (REDIM - conflicts with selectedLevel in SHARED)
+          rem ADMIN: Animation frame counter (REDIM - conflicts with selectedArena in SHARED)
           dim CharSelectAnimState = x      
           rem ADMIN: Current animation state (REDIM - conflicts with ReadyCount, but ReadyCount only used in character select)
           dim CharSelectAnimIndex = y      

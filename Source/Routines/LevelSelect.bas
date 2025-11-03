@@ -10,17 +10,18 @@
 
 LevelSelect1
           rem Handle input for arena selection
-          rem Note: Uses selectedLevel variable (to be renamed to selectedArena per #390)
-          if joy0left then selectedLevel = selectedLevel - 1 : if selectedLevel > MaxArenaID then selectedLevel = MaxArenaID
-          if joy0right then selectedLevel = selectedLevel + 1 : if selectedLevel > MaxArenaID then selectedLevel = 0
+          if joy0left then selectedArena = selectedArena - 1 : if selectedArena > MaxArenaID then selectedArena = MaxArenaID
+          if joy0right then selectedArena = selectedArena + 1 : if selectedArena > MaxArenaID then selectedArena = 0
           
-          rem TODO: Implement arena number display (#391, #408, #409, #410)
+          rem Display arena number (01-16) or '??' for random
+          gosub DisplayArenaNumber
+          
           rem TODO: Load player character sprites (#414, #415)
           rem TODO: Handle Game Select switch (#393)
           rem TODO: Handle 1-second Fire button hold (#392)
           
           rem Placeholder sprite positioning (to be replaced with player sprites)
-          if selectedLevel = 0 then goto Level0Sprites
+          if selectedArena = 0 then goto Level0Sprites
           goto Level1Sprites
 
 Level0Sprites

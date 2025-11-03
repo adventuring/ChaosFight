@@ -21,10 +21,10 @@
           rem   Source/Generated/Font.Numbers.SECAM.bas
 
           rem PLAYER COLORS (match character selection/health bars):
-          rem   Player 1: Blue  ($96)
-          rem   Player 2: Red   ($36)
-          rem   Player 3: Yellow ($1E)
-          rem   Player 4: Green ($C6)
+          rem   Player 1: Indigo (ColIndigo(14))
+          rem   Player 2: Red   (ColRed(14))
+          rem   Player 3: Yellow (ColYellow(14))
+          rem   Player 4: Green (ColGreen(14))
           rem =================================================================
 
           rem Include architecture-specific font data
@@ -49,17 +49,17 @@
           rem   temp5 = sprite select (0=player0, 1=player1) OR custom color if temp4=$FF
 
           rem COLORS:
-          rem   $0E = White (level select)
-          rem   $96 = Blue (Player 1)
-          rem   $36 = Red (Player 2)
-          rem   $1E = Yellow (Player 3)
-          rem   $C6 = Green (Player 4)
+          rem   ColGrey(14) = White (level select)
+          rem   ColIndigo(14) = Indigo (Player 1)
+          rem   ColRed(14) = Red (Player 2)
+          rem   ColYellow(14) = Yellow (Player 3)
+          rem   ColGreen(14) = Green (Player 4)
 
           rem EXAMPLE USAGE:
           rem   rem Draw level "A" (10) in white on left using player0
-          rem   temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = $0E : temp5 = 0 : gosub DrawDigit
+          rem   temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = ColGrey(14) : temp5 = 0 : gosub DrawDigit
           rem   rem Draw player "2" in red on right using player1
-          rem   temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = $36 : temp5 = 1 : gosub DrawDigit
+          rem   temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = ColRed(14) : temp5 = 1 : gosub DrawDigit
 DrawDigit
           rem Clamp digit value to 0-15
           if temp1 > 15 then temp1 = 15
@@ -69,15 +69,15 @@ DrawDigit
           FR_digitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
-          if temp5 = 1 then goto SkipPlayer0Sprite
-          
+          if temp5 then SkipPlayer0Sprite
+
           rem Use player0 sprite
-          player0x = temp2
-          player0y = temp3
+          let player0x = temp2
+          let player0y = temp3
           COLUP0 = temp4
-          gosub LoadPlayer0Digit
-          return
-          
+          rem tail call
+          goto LoadPlayer0Digit
+
 SkipPlayer0Sprite
           rem Use player1 sprite
           player1x = temp2
@@ -97,46 +97,11 @@ SkipPlayer0Sprite
 
 LoadPlayer0Digit
           rem Load 16 bytes from font data into player0 sprite
-          player0:
-          %00111100
-          %01000010
-          %01000010
-          %01000010
-          %01000010
-          %01000010
-          %00111100
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-end
+ 
           return
 
 LoadPlayer1Digit
-          rem Load 16 bytes from font data into player1 sprite
-          player1:
-          %00111100
-          %01000010
-          %01000010
-          %01000010
-          %01000010
-          %01000010
-          %00111100
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-end
+
           return
 
           rem =================================================================
@@ -154,29 +119,29 @@ end
 DrawPlayerNumber
           rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
           dim FR_playerDigit = temp1
-          FR_playerDigit = temp1 + 1
+          let FR_playerDigit = temp1 + 1
           
           rem Look up player color
           dim FR_playerColor = temp4
           on temp1 goto SetP1Color, SetP2Color, SetP3Color, SetP4Color
           
 SetP1Color
-          FR_playerColor = $96 
-          rem Blue
+          let FR_playerColor = ColIndigo(14)
+          rem Indigo
           goto DrawPlayerDigitNow
           
 SetP2Color
-          FR_playerColor = $36 
+          let FR_playerColor = ColRed(14)
           rem Red
           goto DrawPlayerDigitNow
           
 SetP3Color
-          FR_playerColor = $1E 
+          FR_playerColor = ColYellow(14)
           rem Yellow
           goto DrawPlayerDigitNow
           
 SetP4Color
-          FR_playerColor = $C6 
+          FR_playerColor = ColGreen(14)
           rem Green
           goto DrawPlayerDigitNow
           
@@ -199,7 +164,7 @@ DrawPlayerDigitNow
           rem   temp3 = Y position
           rem   temp5 = sprite select (0=player0, 1=player1)
 DrawLevelNumber
-          temp4 = $0E 
+          temp4 = ColGrey(14)
           rem White
           gosub DrawDigit
           return

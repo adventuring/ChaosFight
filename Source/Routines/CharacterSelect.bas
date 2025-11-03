@@ -592,7 +592,7 @@ SelDetectQuad
 
 SelQuadAbsent
           rem Quadtari not detected - could set visual indicator
-          rem COLUBK = $40  ; red background if desired
+          rem COLUBK = ColRed(2)  ; red background if desired
           let controllerStatus  = controllerStatus & ClearQuadtariDetected
           return
           

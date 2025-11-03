@@ -29,13 +29,13 @@ ApplyGuardFlashing
           rem Flash phase - set light cyan color
 #ifdef TV_SECAM
           rem SECAM uses player-based colors (always cyan for guard)
-          if temp1 = 0 then COLUP0 = ColorSECAMCyan
+          if temp1 = 0 then COLUP0 = ColCyan(6)
           rem Player 1 - Cyan
-          if temp1 = 1 then _COLUP1 = ColorSECAMCyan
+          if temp1 = 1 then _COLUP1 = ColCyan(6)
           rem Player 2 - Cyan
-          if temp1 = 2 then COLUP2 = ColorSECAMCyan
+          if temp1 = 2 then COLUP2 = ColCyan(6)
           rem Player 3 - Cyan (multisprite kernel)
-          if temp1 = 3 then COLUP3 = ColorSECAMCyan
+          if temp1 = 3 then COLUP3 = ColCyan(6)
           rem Player 4 - Cyan (multisprite kernel)
 #else
           rem NTSC/PAL - light cyan ColCyan(12)

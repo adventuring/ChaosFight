@@ -81,8 +81,8 @@
           rem Color dimming mask for hurt flashing (NTSC/PAL): clears bits 2-3 to dim color
           
           rem SECAM color constants (SECAM uses fixed color values, no luminance)
-          const ColorSECAMCyan = $C0
-          rem SECAM cyan color value (used for guard flashing and special effects)
+          rem Note: Use ColCyan() macro instead of ColorSECAMCyan constant
+          rem ColCyan(6) provides SECAM cyan color for guard flashing and special effects
           
           rem Controller status bit constants (packed into single byte)
           const QuadtariDetected = 7

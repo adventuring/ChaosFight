@@ -176,7 +176,7 @@ CheckAOECollision
           
 CheckBernieAOE
           rem Bernie: Check right direction first
-          gosub CheckAOEDirection_Right
+          gosub CheckAOEDirectionRight
           rem If hit found (temp4 != 255), return early
           rem Use skip-over pattern: if temp4 = 255, skip to left check
           if temp4 = 255 then goto CheckBernieAOELeft
@@ -383,7 +383,5 @@ MissileCollPF
 
           temp4 = 0 
           rem Clear
-          
-          
           return
 

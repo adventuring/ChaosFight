@@ -164,7 +164,7 @@ FacingSet
           if !(temp5 & 1) then PlayfieldCollisionDone
           gosub bank7 MissileCollPF
           if !temp4 then PlayfieldCollisionDone
-          if temp5 & 8 then temp7 = missileVelX[currentPlayer] : temp7 = $FF - temp7 + 1 : gosub HalfTemp7 : missileVelX[currentPlayer] = temp7 : gosub DeactivateMissile : return
+          if temp5 & 8 then temp7 = missileVelX[currentPlayer] : temp7 = $FF - temp7 + 1 : asm lsr temp7 end : missileVelX[currentPlayer] = temp7 : gosub DeactivateMissile : return
           gosub DeactivateMissile : return
 PlayfieldCollisionDone
           
@@ -219,128 +219,6 @@ CheckMissileBounds
           rem Assuming prior update may have subtracted from temp3 earlier in loop
           if temp3 > ScreenTopWrapThreshold then temp4 = 1
           rem Off top
-          
-          return
-
-          rem =================================================================
-          rem CHECK MISSILE-PLAYFIELD COLLISION
-          rem =================================================================
-          rem Checks if missile hit the playfield (walls, obstacles).
-          rem Uses pfread to check playfield pixel at missile position.
-
-          rem INPUT:
-          rem   currentPlayer = participant array index (0-3 maps to participants 1-4)
-
-          rem OUTPUT:
-          rem   temp4 = 1 if hit playfield, 0 if clear
-MissileSysPF
-          rem Get missile X/Y position
-          temp2 = missileX[currentPlayer]
-          temp3 = missileY[currentPlayer]
-          
-          rem Convert X/Y to playfield coordinates
-          rem Playfield is 32 pixels wide (doubled to 160), 192 pixels tall
-          rem pfread uses playfield coordinates: column (0-31), row (0-11 or 0-31 depending on pfres)
-          gosub Div5Compute 
-          rem Convert X pixel to playfield column (160/32 = 5)
-          rem temp3 is already in pixel coordinates, pfread will handle it
-          
-          rem Check if playfield pixel is set
-          rem pfread(column, row) returns 0 if clear, non-zero if set
-          temp4 = 0 
-          rem Default: clear
-          if pfread(temp6, temp3) then temp4 = 1 
-          rem Hit playfield
-          
-          return
-
-          rem =================================================================
-          rem DIVIDE HELPERS (NO MUL/DIV SUPPORT)
-          rem =================================================================
-          rem HalfTemp7: integer divide temp7 by 2 using bit shift
-HalfTemp7
-          asm
-          lsr temp7
-end
-          return
-
-          rem Div5Compute: compute floor(temp2/5) into temp6 via repeated subtraction
-Div5Compute
-          temp6 = 0
-          if temp2 < 5 then return
-Div5Loop
-          temp2 = temp2 - 5
-          temp6 = temp6 + 1
-          if temp2 >= 5 then goto Div5Loop
-          return
-
-          rem =================================================================
-          rem CHECK MISSILE-PLAYER COLLISION
-          rem =================================================================
-          rem Checks if a missile hit any player (except the owner).
-          rem Uses axis-aligned bounding box (AABB) collision detection.
-
-          rem INPUT:
-          rem   currentPlayer = missile owner player index (0-3)
-
-          rem OUTPUT:
-          rem   temp4 = hit player index (0-3), or 255 if no hit
-CheckMissilePlayerCollision
-          rem Get missile X/Y position
-          temp2 = missileX[currentPlayer]
-          temp3 = missileY[currentPlayer]
-          
-          rem Missile bounding box
-          rem temp2 = missile left, temp2+MissileAABBSize = missile right
-          rem temp3 = missile top, temp3+MissileAABBSize = missile bottom
-          
-          rem Check collision with each player (except owner)
-          temp4 = 255 
-          rem Default: no hit
-          
-          rem Check Participant 1 (array [0])
-          if currentPlayer = 0 then goto MissileSkipParticipant1
-          if playerHealth[0] = 0 then goto MissileSkipParticipant1
-          if temp2 >= playerX[0] + PlayerSpriteHalfWidth then goto MissileSkipParticipant1
-          if temp2 + MissileAABBSize <= playerX[0] then goto MissileSkipParticipant1
-          if temp3 >= playerY[0] + PlayerSpriteHeight then goto MissileSkipParticipant1
-          if temp3 + MissileAABBSize <= playerY[0] then goto MissileSkipParticipant1
-          temp4 = 0 : return 
-          rem Hit Participant 1 (array [0])
-MissileSkipParticipant1
-          
-          rem Check Participant 2 (array [1])
-          if currentPlayer = 1 then goto MissileSkipParticipant2
-          if playerHealth[1] = 0 then goto MissileSkipParticipant2
-          if temp2 >= playerX[1] + PlayerSpriteHalfWidth then goto MissileSkipParticipant2
-          if temp2 + MissileAABBSize <= playerX[1] then goto MissileSkipParticipant2
-          if temp3 >= playerY[1] + PlayerSpriteHeight then goto MissileSkipParticipant2
-          if temp3 + MissileAABBSize <= playerY[1] then goto MissileSkipParticipant2
-          temp4 = 1 : return 
-          rem Hit Player 2
-MissileSkipPlayer1
-          
-          rem Check Player 3 (index 2)
-          if currentPlayer = 2 then goto MissileSkipPlayer2
-          if playerHealth[2] = 0 then goto MissileSkipPlayer2
-          if temp2 >= playerX[2] + PlayerSpriteHalfWidth then goto MissileSkipPlayer2
-          if temp2 + MissileAABBSize <= playerX[2] then goto MissileSkipPlayer2
-          if temp3 >= playerY[2] + PlayerSpriteHeight then goto MissileSkipPlayer2
-          if temp3 + MissileAABBSize <= playerY[2] then goto MissileSkipPlayer2
-          temp4 = 2 : return 
-          rem Hit Player 3
-MissileSkipPlayer2
-          
-          rem Check Player 4 (index 3)
-          if currentPlayer = 3 then goto MissileSkipPlayer3
-          if playerHealth[3] = 0 then goto MissileSkipPlayer3
-          if temp2 >= playerX[3] + PlayerSpriteHalfWidth then goto MissileSkipPlayer3
-          if temp2 + MissileAABBSize <= playerX[3] then goto MissileSkipPlayer3
-          if temp3 >= playerY[3] + PlayerSpriteHeight then goto MissileSkipPlayer3
-          if temp3 + MissileAABBSize <= playerY[3] then goto MissileSkipPlayer3
-          temp4 = 3 : return 
-          rem Hit Player 4
-MissileSkipPlayer3
           
           return
 
@@ -412,18 +290,3 @@ DeactivateMissile
           let missileActive = missileActive & temp6
           return
 
-          rem =================================================================
-          rem RENDER ALL MISSILES
-          rem =================================================================
-          rem NOTE: Missile rendering is now handled in SetSpritePositions (PlayerRendering.bas)
-          rem This function is kept for compatibility but does nothing
-          rem The multisprite kernel only provides 2 hardware missiles (missile0, missile1)
-          rem In 2-player mode: missile0 = Participant 1 (array [0]), missile1 = Participant 2 (array [1]) (no multiplexing)
-          rem In 4-player mode: Frame multiplexing handles 4 logical missiles:
-          rem   Even frames: missile0 = Participant 1 (array [0]), missile1 = Participant 2 (array [1])
-          rem   Odd frames:  missile0 = Participant 3 (array [2]), missile1 = Participant 4 (array [3])
-RenderAllMissiles
-          rem Missile positions are set in SetSpritePositions (PlayerRendering.bas)
-          rem which handles 2-player vs 4-player mode automatically
-          rem No additional rendering needed here
-          return

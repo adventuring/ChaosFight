@@ -9,7 +9,7 @@
           rem physics that are not handled by standard movement/gravity.
 
           rem AVAILABLE VARIABLES (from Variables.bas):
-          rem   PlayerChar[0-3] - Character type indices
+          rem   playerChar[0-3] - Character type indices
           rem   PlayerX[0-3], PlayerY[0-3] - Position
           rem   PlayerState[0-3] - State flags
 
@@ -33,7 +33,7 @@ ApplySpecialMovement
           rem INPUT: temp1 = player index (0-3)
           rem USES: temp4 = character type
 ApplyPlayerSpecialMovement
-          temp4 = PlayerChar[temp1]
+          temp4 = playerChar[temp1]
           
           rem Bernie (0) - screen wrap top/bottom
           if temp4 = 0 then goto BernieScreenWrap

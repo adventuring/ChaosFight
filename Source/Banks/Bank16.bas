@@ -118,7 +118,7 @@ LoadMusicNote0
           end
           
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then MusicVoice0PointerH = 0 : AUDV0 = 0 : return
+          if temp4 = 0 then let MusicVoice0PointerH = 0 : AUDV0 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
           temp6 = temp2 & %11110000
@@ -159,7 +159,7 @@ LoadMusicNote1
           end
           
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then MusicVoice1PointerH = 0 : AUDV1 = 0 : return
+          if temp4 = 0 then let MusicVoice1PointerH = 0 : AUDV1 = 0 : return
           
           rem Extract AUDC and AUDV
           temp6 = temp2 & %11110000
@@ -172,11 +172,11 @@ LoadMusicNote1
           AUDV1 = temp7
           
           rem Set frame counter = Duration + Delay
-          MusicVoice1Frame = temp4 + temp5
+          let MusicVoice1Frame = temp4 + temp5
           
           rem Advance pointer by 4 bytes
           temp2 = MusicVoice1PointerL
-          MusicVoice1PointerL = temp2 + 4
-          if MusicVoice1PointerL < temp2 then MusicVoice1PointerH = MusicVoice1PointerH + 1
+          let MusicVoice1PointerL = temp2 + 4
+          if MusicVoice1PointerL < temp2 then let MusicVoice1PointerH = MusicVoice1PointerH + 1
           
           return

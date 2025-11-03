@@ -22,6 +22,8 @@
           rem No character selected ($FF)
           const CPUCharacter = 254
           rem CPU player character ($FE)
+          const RandomCharacter = 253
+          rem Random character selection ($FD)
 
           rem Special sprite constants for SpecialSpritePointers table
           const SpriteQuestionMark = 0

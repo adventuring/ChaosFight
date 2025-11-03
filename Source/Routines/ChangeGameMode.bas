@@ -51,18 +51,34 @@ SetupCharacterSelect
           
           rem Initialize character selections
           let playerChar[0] = 0
-          let playerChar[1] = 0
-          let playerChar[2] = 0
-          let playerChar[3] = 0
+          let playerChar[1] = CPUCharacter
+          let playerChar[2] = NoCharacter
+          let playerChar[3] = NoCharacter
           let playerLocked[0] = 0
           let playerLocked[1] = 0
           let playerLocked[2] = 0
           let playerLocked[3] = 0
           
+          rem Initialize random selection flags
+          let randomSelectFlags[0] = 0
+          let randomSelectFlags[1] = 0
+          let randomSelectFlags[2] = 0
+          let randomSelectFlags[3] = 0
+          
+          rem Initialize character select animation states
+          let charSelectPlayerAnimFrame[0] = 0
+          let charSelectPlayerAnimFrame[1] = 0
+          let charSelectPlayerAnimFrame[2] = 0
+          let charSelectPlayerAnimFrame[3] = 0
+          let charSelectPlayerAnimSeq[0] = 0
+          let charSelectPlayerAnimSeq[1] = 0
+          let charSelectPlayerAnimSeq[2] = 0
+          let charSelectPlayerAnimSeq[3] = 0
+          
           rem Clear Quadtari detection (will be re-detected)
           let controllerStatus = controllerStatus & ClearQuadtariDetected
           
-          rem Initialize character select animations
+          rem Initialize legacy character select animations (for backwards compat)
           let charSelectAnimTimer = 0
           let charSelectAnimState = 0
           rem Start with idle animation
@@ -72,6 +88,12 @@ SetupCharacterSelect
           
           rem Check for Quadtari adapter
           gosub bank6 SelDetectQuad
+          
+          rem Special rule: If Quadtari detected, P2 defaults to NO instead of CPU
+          rem (because in 4-player mode, P2 is treated like P3/P4, not 2-player mode)
+          rem Actually, re-reading requirement: "NO" is option for P2 if either P3 or P4 are NOT NO
+          rem This is more complex - P2 can be CPU OR NO depending on P3/P4 state
+          rem For now, just keep P2 as CPU in all cases - this will be handled by cycling logic
           
           rem Set background color (B&W safe)
           let COLUBK = ColGray(0)

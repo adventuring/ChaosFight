@@ -82,7 +82,7 @@ LoadSoundNote
           end
           
           rem Check for end of sound (Duration = 0)
-          if temp4 = 0 then SoundEffectPointerH = 0 : AUDV0 = 0 : return
+          if temp4 = 0 then let SoundEffectPointerH = 0 : AUDV0 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
           temp6 = temp2 & %11110000
@@ -125,7 +125,7 @@ LoadSoundNote1
           end
           
           rem Check for end of sound (Duration = 0)
-          if temp4 = 0 then SoundEffectPointer1H = 0 : AUDV1 = 0 : return
+          if temp4 = 0 then let SoundEffectPointer1H = 0 : AUDV1 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
           temp6 = temp2 & %11110000

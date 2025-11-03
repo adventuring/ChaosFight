@@ -33,8 +33,8 @@ PlaySoundEffect
           let SoundEffectPointerL = SoundPointerL
           let SoundEffectPointerH = SoundPointerH
           let SoundEffectFrame = 1
-          gosub UpdateSoundEffectVoice0
-          return
+          rem tail call
+          goto UpdateSoundEffectVoice0
           
 TryVoice1
           rem Try Voice 1
@@ -44,8 +44,8 @@ TryVoice1
           let SoundEffectPointer1L = SoundPointerL
           let SoundEffectPointer1H = SoundPointerH
           let SoundEffectFrame1 = 1
-          gosub UpdateSoundEffectVoice1
-          return
+          rem tail call
+          goto UpdateSoundEffectVoice1
 
           rem =================================================================
           rem UpdateSoundEffect - Update sound effect playback each frame

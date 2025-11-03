@@ -63,8 +63,8 @@ GAME = ChaosFight
 GAMEYEAR = 25
 ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
-# Assembly files
-ALL_SOURCES = $(shell find Source -name \*.bas)
+# Assembly files (exclude preprocessed and generated files)
+ALL_SOURCES = $(shell find Source -name \*.bas -not -name \*.preprocessed.bas -not -path "Source/Generated/*")
 
 # Moved to top of file
 .PHONY: all clean emu game help doc characters fonts sprites nowready ready bitmaps

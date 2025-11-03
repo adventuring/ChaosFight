@@ -52,18 +52,23 @@ LoadCharacterSprite
           if temp1 = 254 then let temp6 = SpriteCPU : gosub LoadSpecialSprite : return 
           rem CPUCharacter = 254
           
+          if temp1 = 253 then let temp6 = SpriteQuestionMark : gosub LoadSpecialSprite : return 
+          rem RandomCharacter = 253
+          
           rem Use character art location system for sprite loading
-          rem Input: temp1 = character index, temp2 = animation frame, temp3 = player number
-          rem Default to animation sequence 0 and frame 0 for basic loading
-          let temp2 = 0 
-          rem Animation frame (0=idle)
-          let temp4 = temp3 
-          rem Player number for art system
+          rem Input: temp1 = character index, temp2 = animation frame
+          rem        temp3 = player number OR temp4 = player number (caller provides)
+          rem Default to animation sequence 0 (idle) for character select
+          rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp4=player
           
-          rem Use assembly routine to locate and set character art
-          rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayerCharacterArt are implemented
-          rem For now, use placeholder sprite data
+          rem Check if player number in temp3 or temp4
+          rem If temp4 is not set (0 and caller might have used temp3), copy from temp3
+          if !temp4 then let temp4 = temp3
           
+          rem Move player number to temp4 and set temp3 to animation action (0=idle)
+          let temp3 = 0  : rem animation action/sequence 0 = idle
+          rem temp4 already has player number from caller
+          gosub bank10 LocateCharacterArt
           return
 
           rem =================================================================

@@ -56,7 +56,7 @@ Player1GravityCheck
           let playerY[0] = 80
           let playerState[0] = playerState[0] & 251
           rem Reset Harpy flight energy and clear dive flag on landing
-          if playerChar[0] = 6 then harpyFlightEnergy[0] = 60
+          if playerChar[0] = 6 then let harpyFlightEnergy_W[0] = 60
           rem Reset to full energy (60 frames = 1 second at 60fps)
           if playerChar[0] = 6 then characterStateFlags[0] = characterStateFlags[0] & 251
           rem Clear dive mode flag (bit 2)
@@ -97,7 +97,7 @@ Player2GravityCheck
           let playerY[1] = 80
           let playerState[1] = playerState[1] & 251
           rem Reset Harpy flight energy and clear dive flag on landing
-          if playerChar[1] = 6 then harpyFlightEnergy[1] = 60
+          if playerChar[1] = 6 then let harpyFlightEnergy_W[1] = 60
           rem Reset to full energy (60 frames = 1 second at 60fps)
           if playerChar[1] = 6 then characterStateFlags[1] = characterStateFlags[1] & 251
           rem Clear dive mode flag (bit 2)
@@ -139,7 +139,7 @@ Player3GravityCheck
           if playerY[2] < 80 then SkipPlayer3Jump
           let playerY[2] = 80 : playerState[2] = playerState[2] & 251
           rem Reset Harpy flight energy and clear dive flag on landing
-          if playerChar[2] = 6 then harpyFlightEnergy[2] = 60
+          if playerChar[2] = 6 then let harpyFlightEnergy_W[2] = 60
           rem Reset to full energy (60 frames = 1 second at 60fps)
           if playerChar[2] = 6 then characterStateFlags[2] = characterStateFlags[2] & 251
           rem Clear dive mode flag (bit 2)
@@ -181,7 +181,7 @@ Player4GravityCheck
           if playerY[3] < 80 then SkipPlayer4Jump
           let playerY[3] = 80 : playerState[3] = playerState[3] & 251
           rem Reset Harpy flight energy and clear dive flag on landing
-          if playerChar[3] = 6 then harpyFlightEnergy[3] = 60
+          if playerChar[3] = 6 then let harpyFlightEnergy_W[3] = 60
           rem Reset to full energy (60 frames = 1 second at 60fps)
           if playerChar[3] = 6 then characterStateFlags[3] = characterStateFlags[3] & 251
           rem Clear dive mode flag (bit 2)

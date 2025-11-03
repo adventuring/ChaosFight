@@ -145,8 +145,8 @@ InitializeAnimationSystem
           gosub SetPlayerAnimation
           let temp1 = 3
           let temp2 = AnimIdle
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem =================================================================
           rem ANIMATION SEQUENCE MANAGEMENT

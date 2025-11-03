@@ -161,11 +161,11 @@ MegaxJump
           rem USES: playerY[temp1], playerState[temp1], harpyFlightEnergy[temp1], harpyLastFlapFrame[temp1]
 HarpyJump
           rem Check if flight energy depleted
-          if harpyFlightEnergy[temp1] = 0 then return
+          if harpyFlightEnergy_R[temp1] = 0 then return
           rem No energy remaining, cannot flap
           
           rem Check flap cooldown: must wait ¼ second between flaps
-          let temp2 = frame - harpyLastFlapFrame[temp1]
+          let temp2 = frame - harpyLastFlapFrame_R[temp1]
           rem Calculate frames since last flap
           if temp2 > 127 then temp2 = 127
           rem Clamp to prevent underflow (max safe value for 8-bit)
@@ -186,10 +186,10 @@ HarpyJump
           
 HarpyFlapRecord
           rem Decrement flight energy on each flap
-          if harpyFlightEnergy[temp1] > 0 then harpyFlightEnergy[temp1] = harpyFlightEnergy[temp1] - 1
+          if harpyFlightEnergy_R[temp1] > 0 then let harpyFlightEnergy_W[temp1] = harpyFlightEnergy_R[temp1] - 1
           
           rem Record current frame as last flap time
-          let harpyLastFlapFrame[temp1] = frame
+          let harpyLastFlapFrame_W[temp1] = frame
           
           return
 

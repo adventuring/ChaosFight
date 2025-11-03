@@ -17,8 +17,8 @@
 
           rem Main console switch handler
 HandleConsoleSwitches
-          rem Game Reset switch - return to character selection
-          if switchreset then goto CharacterSelect
+          rem Game Reset switch - return to publisher preamble
+          if switchreset then gameMode = ModePublisherPreamble : gosub bank13 ChangeGameMode : return
 
           rem Game Select switch or Joy2B+ Button III - toggle pause mode
           temp2 = 0 
@@ -70,9 +70,9 @@ SkipPlayer2Pause
 CheckColorBWToggle
           rem Check if Color/B&W switch state has changed
           temp6 = switchbw
-          if temp6 = colorBWPrevious then SkipColorBWChange
+          if temp6 = colorBWPrevious_R then SkipColorBWChange
           gosub bank14 DetectControllers
-          let colorBWPrevious = switchbw
+          let colorBWPrevious_W = switchbw
 SkipColorBWChange
           return
 

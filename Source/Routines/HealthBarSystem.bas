@@ -145,7 +145,7 @@ UpdatePlayer34HealthBars
           rem Note: Per-side colors may require additional kernel support
           rem For now, set to indigo (Player 3 color)
           rem TODO: Investigate if multisprite kernel supports separate left/right score colors
-          scorecolor = ColIndigo(14)
+          let scorecolor = ColIndigo(14)
           
           return
 

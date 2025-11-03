@@ -123,6 +123,8 @@ UpdateGuardTimers
           let temp1  = 1 : gosub UpdateSingleGuardTimer
           let temp1  = 2 : gosub UpdateSingleGuardTimer
           let temp1  = 3 : gosub UpdateSingleGuardTimer
+          rem tail call - last gosub before return, but previous gosubs make this less beneficial
+          rem Keeping as gosub+return for clarity since multiple calls precede it
           return
 
 UpdateSingleGuardTimer

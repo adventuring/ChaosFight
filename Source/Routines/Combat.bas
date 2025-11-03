@@ -8,9 +8,17 @@ rem COMBAT SYSTEM - Generic subroutines using player arrays
 rem Apply damage from attacker to defender
 rem Inputs: attackerId, defenderId
 ApplyDamage
-  dim damage = a
-  
   rem Calculate damage (considering defender state)
+<<<<<<< HEAD
+  let temp1 = playerDamage(attacker_id) - playerDamage(defender_id)
+  if temp1 < 1 then let temp1 = 1  rem Minimum damage
+  
+  rem Apply damage
+  playerHealth[defender_id] = playerHealth[defender_id] - temp1
+  
+  rem Visual feedback (to be implemented)
+  gosub ShowDamageIndicator defender_id, temp1
+=======
   damage = PlayerDamage(attackerId) - PlayerDamage(defenderId)
   if damage < 1 then damage = 1  rem Minimum damage
   
@@ -19,9 +27,10 @@ ApplyDamage
   
   rem Visual feedback (to be implemented)
   gosub ShowDamageIndicator defenderId, damage
+>>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
   
   rem Sound effect (to be implemented)
-  gosub PlayDamageSound damage
+  gosub PlayDamageSound temp1
   
   return
 
@@ -29,16 +38,30 @@ rem Check if attack hits defender
 rem Inputs: attackerId, defenderId
 rem Returns: hit (1 = hit, 0 = miss)
 CheckAttackHit
+<<<<<<< HEAD
+=======
   dim hit = a
   dim hitboxLeft = b
   dim hitboxRight = c
   dim hitboxTop = d
   dim hitboxBottom = e
   
+>>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
   rem Calculate attack hitbox based on attacker facing and attack type
   gosub CalculateAttackHitbox attackerId
   
   rem Check if defender is in hitbox
+<<<<<<< HEAD
+          if playerX[defender_id] < hitbox_left then HitboxCheckDone
+          if playerX[defender_id] > hitbox_right then HitboxCheckDone
+          if playerY[defender_id] < hitbox_top then HitboxCheckDone
+          if playerY[defender_id] > hitbox_bottom then HitboxCheckDone
+    let hit = 1
+          goto HitboxCheckDone
+HitboxCheckDone
+          if hit  = 0 then NoHit
+    let hit = 0
+=======
   rem Initialize hit to 0 (miss)
           hit = 0
           if PlayerX[defenderId] < hitboxLeft then goto NoHit
@@ -48,6 +71,7 @@ CheckAttackHit
           rem All bounds checks passed - hit detected
           hit = 1
           return
+>>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
 NoHit
   rem No hit - hit is already 0
   return
@@ -110,18 +134,28 @@ AreaHitbox
 rem Process attack for one attacker against all defenders
 rem Input: attackerId
 ProcessAttackerAttacks
+<<<<<<< HEAD
+  rem Check if attacker is facing right (PlayerStateFacing = bit 0)
+  temp1 = playerState[attacker_id]
+  if temp1{0} = 0 then return
+=======
   dim defender = a
   
   rem Check if attacker is attacking
   if (PlayerState[attackerId] & %00000001) = 0 then return
+>>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
   
   rem Attack each defender
   for defender = 0 to 3
     rem Skip if defender is attacker
+<<<<<<< HEAD
+    if defender = attacker_id then NextDefender
+=======
     if defender = attackerId then goto NextDefender
+>>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
     
     rem Skip if defender is dead
-    if PlayerHealth[defender] <= 0 then goto NextDefender
+    if playerHealth[defender] <= 0 then NextDefender
     
     rem Check if attack hits
     gosub CheckAttackHit attackerId, defender
@@ -134,11 +168,9 @@ NextDefender
 
 rem Process all attacks for all players
 ProcessAllAttacks
-  dim attacker = a
-  
   for attacker = 0 to 3
     rem Skip if attacker is dead
-    if PlayerHealth[attacker] <= 0 then goto NextAttacker
+    if playerHealth[attacker] <= 0 then NextAttacker
     
     gosub ProcessAttackerAttacks attacker
     
@@ -168,10 +200,14 @@ rem INPUT:
 rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
 PerformMeleeAttack
   rem Spawn missile visual for this attack
-  gosub bank15 SpawnMissile
+  gosub bank7 SpawnMissile
   
   rem Set animation state to attacking
+<<<<<<< HEAD
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << 4)
+=======
           PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
+>>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
           rem Set animation state 14 (attack execution)
   
   rem Check immediate collision with other players in melee range
@@ -190,40 +226,59 @@ rem INPUT:
 rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
 PerformRangedAttack
   rem Spawn projectile missile for this attack
-  gosub bank15 SpawnMissile
+  gosub bank7 SpawnMissile
   
   rem Set animation state to attacking
+<<<<<<< HEAD
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << 4)
+=======
           PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
+>>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
           rem Set animation state 14 (attack execution)
   
   return
 
 rem Process guard for a player
-rem Input: playerId
+rem DEPRECATED: This function has syntax errors and conflicts with GuardEffects.bas
+rem Guard restrictions are now handled in PlayerInput.bas (movement/attack blocking)
+rem Guard timer updates are handled by UpdateGuardTimers in GuardEffects.bas
+rem Input: player_id
 ProcessPlayerGuard
+<<<<<<< HEAD
+  rem This function is deprecated - guard restrictions are handled elsewhere
+  rem Guard prevents movement - handled in PlayerInput.bas
+  rem Guard prevents attacks - handled in PlayerInput.bas
+=======
   rem Check if player is guarding
-  if (PlayerState[playerId] & %00000010) = 0 then return
+  if (PlayerState[player_id] & %00000010) = 0 then return
   
   rem Guard prevents movement
-  PlayerMomentumX[playerId] = 0
+  PlayerMomentumX[player_id] = 0
   
   rem Guard prevents attacks
-  PlayerState[playerId] = PlayerState[playerId] & %11111110
+  PlayerState[player_id] = PlayerState[player_id] & %11111110
   
+>>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
   return
 
 rem Update player guard state
-rem Input: playerId
+rem DEPRECATED: This function uses undefined guard_timer variable and conflicts with GuardEffects.bas
+rem Guard timer updates are handled by UpdateGuardTimers in GuardEffects.bas
+rem Input: player_id
 UpdatePlayerGuard
-  dim guardTimer = a
+<<<<<<< HEAD
+  rem This function is deprecated - use UpdateGuardTimers in GuardEffects.bas instead
+=======
+  dim guard_timer = a
   
   rem Decrement guard timer if active (1 second maximum = 60 frames)
-          if (PlayerState[playerId] & %00000010) = 0 then goto SkipGuardUpdate
-          guardTimer = guardTimer - 1
-          if guardTimer <= 0 then PlayerState[playerId] = PlayerState[playerId] & %11111101
+          if (PlayerState[player_id] & %00000010) = 0 then goto SkipGuardUpdate
+          guard_timer = guard_timer - 1
+          if guard_timer <= 0 then PlayerState[player_id] = PlayerState[player_id] & %11111101
     rem Guard visual effect: flashing light cyan ColCyan(12) NTSC/PAL, Cyan SECAM
     rem Player color alternates between normal and cyan every few frames
     rem This matches manual specification: "Character flashes to indicate guard is active"
 SkipGuardUpdate
   
+>>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
   return

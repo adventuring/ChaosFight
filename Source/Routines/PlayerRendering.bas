@@ -7,14 +7,14 @@
           rem Handles sprite positioning, colors, and graphics for all players.
 
           rem SPRITE ASSIGNMENTS (MULTISPRITE KERNEL):
-          rem   Participant 1 (array [0]): P0 sprite (player0x/player0y, COLUP0)
-          rem   Participant 2 (array [1]): P1 sprite (player1x/player1y, COLUP1, virtual _P1)
-          rem   Participant 3 (array [2]): P2 sprite (player2x/player2y, COLUP2)
-          rem   Participant 4 (array [3]): P3 sprite (player3x/player3y, COLUP3)
+          rem   Player 1: player0 sprite (COLUP0)
+          rem   Player 2: player1 sprite (_COLUP1)
+          rem   Player 3: player2 sprite (COLUP2)
+          rem   Player 4: player3 sprite (COLUP3)
 
           rem MISSILE SPRITES:
-          rem   2-player mode: missile0 = Participant 1, missile1 = Participant 2 (no multiplexing)
-          rem   4-player mode: missile0 and missile1 multiplexed between all 4 participants (even/odd frames)
+          rem   2-player mode: missile0 = Player 0, missile1 = Player 1 (no multiplexing)
+          rem   4-player mode: missile0 and missile1 multiplexed between all 4 players (even/odd frames)
 
           rem AVAILABLE VARIABLES:
           rem   playerX[0-3], playerY[0-3] - Positions
@@ -36,67 +36,66 @@ SetSpritePositions
           player1x = playerX[1]
           player1y = playerY[1]
 
-          rem Set positions for participants 3 & 4 in 4-player mode (multisprite kernel)
-          rem Participant 3 (array [2]): P2 sprite (player2x/player2y, COLUP2)
-          rem Participant 4 (array [3]): P3 sprite (player3x/player3y, COLUP3)
-          rem Missiles are available for projectiles since participants use proper sprites
+          rem Set player positions for players 3 & 4 in 4-player mode (multisprite kernel)
+          rem Player 3: player2 sprite (COLUP2), Player 4: player3 sprite (COLUP3)
+          rem Missiles are available for projectiles since players use proper sprites
           
-          rem Set Participant 3 position (array [2] → P2 sprite)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Position
-          if selectedChar3 = 255 then goto SkipPlayer3Position
-          if ! playerHealth[2] then goto SkipPlayer3Position
-                    let player2x = playerX[2]
-                    let player2y = playerY[2]
+          rem Set Player 3 position (multisprite)
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3Position
+          if selectedChar3 = 255 then SkipPlayer3Position
+          if ! playerHealth[2] then SkipPlayer3Position
+                    player2x = playerX[2]
+                    player2y = playerY[2]
 SkipPlayer3Position
           
-          rem Set Participant 4 position (array [3] → P3 sprite)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Position
-          if selectedChar4 = 255 then goto SkipPlayer4Position
-          if ! playerHealth[3] then goto SkipPlayer4Position
-                    let player3x = playerX[3]
-                    let player3y = playerY[3]
+          rem Set Player 4 position (multisprite)
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer4Position
+          if selectedChar4 = 255 then SkipPlayer4Position
+          if ! playerHealth[3] then SkipPlayer4Position
+                    player3x = playerX[3]
+                    player3y = playerY[3]
 SkipPlayer4Position
           
 
           rem Set missile positions for projectiles
           rem Hardware missiles: missile0 and missile1 (only 2 physical missiles available on TIA)
-          rem In 2-player mode: missile0 = Participant 1, missile1 = Participant 2 (no multiplexing needed)
+          rem In 2-player mode: missile0 = Player 0, missile1 = Player 1 (no multiplexing needed)
           rem In 4-player mode: Use frame multiplexing to support 4 logical missiles with 2 hardware missiles:
-          rem   Even frames: missile0 = Participant 1 (array [0]), missile1 = Participant 2 (array [1])
-          rem   Odd frames:  missile0 = Participant 3 (array [2]), missile1 = Participant 4 (array [3])
-          rem Use missileActive bit flags: bit 0 = Participant 1, bit 1 = Participant 2, bit 2 = Participant 3, bit 3 = Participant 4
+          rem   Even frames: missile0 = Player 0, missile1 = Player 1
+          rem   Odd frames:  missile0 = Player 2, missile1 = Player 3
+          rem Use missileActive bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
           
-          rem Check if participants 3 or 4 are active (selected and not eliminated)
+          rem Check if players 3 or 4 are active (selected and not eliminated)
           rem Use this flag instead of QuadtariDetected for missile multiplexing
-          rem because we only need to multiplex when participants 3 or 4 are actually in the game
+          rem because we only need to multiplex when players 3 or 4 are actually in the game
           if !(controllerStatus & SetPlayers34Active) then goto RenderMissiles2Player
           
           rem 4-player mode: Use frame multiplexing
           temp6 = frame & 1
-          rem 0 = even frame (Participants 1-2), 1 = odd frame (Participants 3-4)
+          rem 0 = even frame (Players 0-1), 1 = odd frame (Players 2-3)
           
-          if temp6 = 0 then goto RenderMissilesEvenFrame
+          if temp6 = 0 then RenderMissilesEvenFrame
           
-          rem Odd frame: Render Participants 3-4 missiles
-          rem Participant 3 missile (array [2], bit 2) → missile0
+          rem Odd frame: Render Players 2-3 missiles
+          rem Game Player 2 missile (missile0)
           ENAM0 = 0
           temp4 = missileActive & 4
           if temp4 then missile0x = missileX[2] : missile0y = missileY[2] : ENAM0 = 1
           
-          rem Participant 4 missile (array [3], bit 3) → missile1
+          rem Game Player 3 missile (missile1)
           ENAM1 = 0
           temp4 = missileActive & 8
           if temp4 then missile1x = missileX[3] : missile1y = missileY[3] : ENAM1 = 1
           return
           
 RenderMissilesEvenFrame
-          rem Even frame: Render Participants 1-2 missiles
-          rem Participant 1 missile (array [0], bit 0) → missile0
+          rem Even frame: Render Players 0-1 missiles
+          rem Game Player 0 missile (missile0)
           ENAM0 = 0 
           temp4 = missileActive & 1
           if temp4 then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1
           
-          rem Participant 2 missile (array [1], bit 1) → missile1
+          rem Game Player 1 missile (missile1)
           ENAM1 = 0 
           temp4 = missileActive & 2
           if temp4 then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1
@@ -104,12 +103,12 @@ RenderMissilesEvenFrame
           
 RenderMissiles2Player
           rem 2-player mode: No multiplexing needed, assign missiles directly
-          rem Participant 1 (array [0]) missile (missile0, P0 sprite)
+          rem Game Player 0 missile (missile0)
           ENAM0 = 0 
           temp4 = missileActive & 1
           if temp4 then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1
           
-          rem Participant 2 (array [1]) missile (missile1, P1 sprite)
+          rem Game Player 1 missile (missile1)
           ENAM1 = 0 
           temp4 = missileActive & 2
           if temp4 then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1
@@ -123,93 +122,106 @@ RenderMissiles2Player
           rem Colors change based on hurt state and color/B&W switch.
           rem On 7800, Pause button can override Color/B&W setting.
 SetPlayerSprites
+          rem Determine effective B&W mode (switchbw XOR colorBWOverride)
+          rem This allows 7800 Pause button to toggle between modes
+          rem On SECAM, always use colors (no luminance control available)
+#ifdef TV_SECAM
+          let temp6 = 0 
+          rem SECAM: Always use color mode (no B&W support)
+#else
+          let temp6 = switchbw ^ colorBWOverride 
+          rem Effective B&W state
+          
           rem Set Player 1 color and sprite
-          rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[0] > 0 then COLUP0 = ColIndigo(6) : goto Player1ColorDone 
-          rem Hurt: dimmer indigo
-          let temp1 = playerChar[0] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player1ColorDone 
-          rem Normal: solid player color
+          rem Load normal player color first
+          let temp1 = playerChar[0]
+          let temp2 = 0
+          let temp3 = 0
+          let temp4 = 0
+          gosub bank10 LoadCharacterColors
+          
+          rem Apply hurt flashing if in recovery
+          if playerRecoveryFrames[0] = 0 then Player1ColorDone
+          rem Check frame for flashing alternation
+          if !(frame & 8) then Player1ColorDone
+          rem Flash hurt color based on TV standard
+#ifdef TV_SECAM
+          rem SECAM: Flash to magenta
+          COLUP0 = ColMagenta(10)
+#else
+          rem NTSC/PAL: Flash to normal color & MaskDimColor
+          COLUP0 = COLUP0 & MaskDimColor
+#endif
           
 Player1ColorDone
 
+          rem Apply guard flashing visual effect (if guarding)
+          let temp1 = 0
+          gosub ApplyGuardFlashing
+          
           rem Load sprite data from character definition
           let temp1 = playerChar[0] 
           rem Character index
           let temp2 = 0 
           rem Animation frame (0=idle, 1=running)
-          let temp3 = 0 
-          rem Player number (0=Player 1)
           gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
-          rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[1] > 0 then COLUP1 = ColRed(6) : goto Player2ColorDone 
-          rem Hurt: dimmer red
-          let temp1 = playerChar[1] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player2ColorDone 
-          rem Normal: solid player color
+          rem Load normal player color first
+          let temp1 = playerChar[1]
+          let temp2 = 0
+          let temp3 = 1
+          let temp4 = 0
+          gosub bank10 LoadCharacterColors
+          
+          rem Apply hurt flashing if in recovery
+          if playerRecoveryFrames[1] = 0 then Player2ColorDone
+          rem Check frame for flashing alternation
+          if !(frame & 8) then Player2ColorDone
+          rem Flash hurt color based on TV standard
+#ifdef TV_SECAM
+          rem SECAM: Flash to magenta
+          _COLUP1 = ColMagenta(10)
+#else
+          rem NTSC/PAL: Flash to normal color & MaskDimColor
+          _COLUP1 = _COLUP1 & MaskDimColor
+#endif
           
 Player2ColorDone
 
+          rem Apply guard flashing visual effect (if guarding)
+          let temp1 = 1
+          gosub ApplyGuardFlashing
+          
           rem Load sprite data from character definition
           let temp1 = playerChar[1] 
           rem Character index
           let temp2 = 0 
           rem Animation frame (0=idle, 1=running)
-          let temp3 = 1 
-          rem Player number (1=Player 2)
           gosub bank10 LoadCharacterSprite
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
           rem Players 3 & 4 have independent COLUP2/COLUP3 registers
           rem No color inheritance issues with proper multisprite implementation
           
-          rem Set Player 3 color and sprite (if active)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Sprite
-          if selectedChar3 = 255 then goto SkipPlayer3Sprite
-          if ! playerHealth[2] then goto SkipPlayer3Sprite
+          rem Set playfield color based on B&W mode
+          rem COLUPF is set by pfcolors system, not here
+          rem B&W mode: playfield is white
+          rem Color mode: playfield has color-per-row (handled by pfcolors)
           
-          rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[2] > 0 then COLUP2 = ColYellow(6) : goto Player3ColorDone
-          rem Hurt: dimmer yellow
-          let temp1 = playerChar[2] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player3ColorDone
-          rem Normal: solid player color
+Player3Color
+          rem Player 3 sprite mapping (multisprite kernel)
+          rem Correct mapping: Player 3 -> player2 -> COLUP2 (independent color)
+          rem No color conflicts with multisprite kernel
           
-Player3ColorDone
-
-          rem Load sprite data from character definition
-          let temp1 = playerChar[2]
-          rem Character index
-          let temp2 = 0
-          rem Animation frame (0=idle, 1=running)
-          let temp3 = 2 
-          rem Player number (2=Player 3)
-          gosub bank10 LoadCharacterSprite
+Player4Color
+          rem Set background color to constant black (COLUBK should not change)
+          COLUBK = ColGray(0) 
+          rem Always black background
           
-SkipPlayer3Sprite
-
-          rem Set Player 4 color and sprite (if active)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Sprite
-          if selectedChar4 = 255 then goto SkipPlayer4Sprite
-          if ! playerHealth[3] then goto SkipPlayer4Sprite
-          
-          rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[3] > 0 then COLUP3 = ColGreen(6) : goto Player4ColorDone
-          rem Hurt: dimmer green
-          let temp1 = playerChar[3] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player4ColorDone
-          rem Normal: solid player color
-          
-Player4ColorDone
-
-          rem Load sprite data from character definition
-          let temp1 = playerChar[3]
-          rem Character index
-          let temp2 = 0
-          rem Animation frame (0=idle, 1=running)
-          let temp3 = 3 
-          rem Player number (3=Player 4)
-          gosub bank10 LoadCharacterSprite
-          
-SkipPlayer4Sprite
+          rem TODO: Player 4 sprite mapping needs to be fixed (Issue #70, #72)
+          rem Player 4 should not use COLUBK register - needs proper sprite register
+#endif
           
           return
 
@@ -219,40 +231,192 @@ SkipPlayer4Sprite
           rem Shows health status for all active players.
           rem Flashes sprites when health is critically low.
 DisplayHealth
-          rem Flash Participant 1 sprite (array [0], P0) if health is low (but not during recovery)
+          rem Flash Player 1 sprite if health is low (but not during recovery)
           rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[0] >= 25 then goto SkipParticipant1Flash
-          if playerRecoveryFrames[0] <> 0 then goto SkipParticipant1Flash
+          if playerHealth[0] >= PlayerHealthLowThreshold then SkipPlayer0Flash
+          if playerRecoveryFrames[0] = 0 then FlashPlayer0Sprite
+          goto SkipPlayer0Flash
+FlashPlayer0Sprite
           if frame & 8 then player0x = 200 
-          rem Hide P0 sprite
-SkipParticipant1Flash
+          rem Hide sprite
+SkipPlayer0Flash
 
-          rem Flash Participant 2 sprite (array [1], P1) if health is low
+          rem Flash Player 2 sprite if health is low
           rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[1] >= 25 then goto SkipParticipant2Flash
-          if playerRecoveryFrames[1] <> 0 then goto SkipParticipant2Flash
+          if playerHealth[1] >= PlayerHealthLowThreshold then SkipPlayer1Flash
+          if playerRecoveryFrames[1] = 0 then FlashPlayer1Sprite
+          goto SkipPlayer1Flash
+FlashPlayer1Sprite
                     if frame & 8 then player1x = 200
 SkipPlayer1Flash
 
           rem Flash Player 3 sprite if health is low (but alive)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Flash
-          if selectedChar3 = 255 then goto SkipPlayer3Flash
-          if ! playerHealth[2] then goto SkipPlayer3Flash
-          if playerHealth[2] >= 25 then goto SkipPlayer3Flash
-          if playerRecoveryFrames[2] <> 0 then goto SkipPlayer3Flash
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3Flash
+          if selectedChar3 = 255 then SkipPlayer3Flash
+          if ! playerHealth[2] then SkipPlayer3Flash
+          if playerHealth[2] >= PlayerHealthLowThreshold then SkipPlayer3Flash
+          if playerRecoveryFrames[2] = 0 then FlashPlayer3Sprite
+          goto SkipPlayer3Flash
+FlashPlayer3Sprite
           if frame & 8 then player2x = 200 
           rem Player 3 uses player2 sprite
 SkipPlayer3Flash
 
           rem Flash Player 4 sprite if health is low (but alive)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Flash
-          if selectedChar4 = 255 then goto SkipPlayer4Flash
-          if ! playerHealth[3] then goto SkipPlayer4Flash
-          if playerHealth[3] >= 25 then goto SkipPlayer4Flash
-          if playerRecoveryFrames[3] <> 0 then goto SkipPlayer4Flash
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer4Flash
+          if selectedChar4 = 255 then SkipPlayer4Flash
+          if ! playerHealth[3] then SkipPlayer4Flash
+          if playerHealth[3] >= PlayerHealthLowThreshold then SkipPlayer4Flash
+          if playerRecoveryFrames[3] = 0 then FlashPlayer4Sprite
+          goto SkipPlayer4Flash
+FlashPlayer4Sprite
           if frame & 8 then player3x = 200 
           rem Player 4 uses player3 sprite
 SkipPlayer4Flash
           
+          rem Draw health bars in playfield
+          gosub bank8 DrawHealthBars
+          
+          return
+
+          rem =================================================================
+          rem DRAW HEALTH BARS
+          rem =================================================================
+          rem Correctly used: Player 1 is pfscore bar 1. Player 2 is pfscore bar 2.
+          rem Player 3 is left 2 digits of score, 4 is right two.
+          
+          rem FIXME: This code may not implement the requirements at all.
+          
+DrawHealthBars
+          dim PR_healthBarLength = temp5
+          
+          rem Calculate effective B&W mode (accounts for 7800 Pause toggle)
+#ifdef TV_SECAM
+          let temp6 = 0 
+          rem SECAM: Always use color mode
+#else
+          let temp6 = switchbw ^ colorBWOverride
+          
+          rem Draw Player 1 health bar
+          let PR_healthBarLength = playerHealth[0] / 3 
+          rem Scale 0-100 to 0-32
+          if PR_healthBarLength > HealthBarMaxLength then PR_healthBarLength = HealthBarMaxLength
+          rem COLUPF is set by pfcolors system, not here
+          gosub bank8 DrawHealthBarRow0
+          
+          rem Draw Player 2 health bar
+          let PR_healthBarLength = playerHealth[1] / 3
+          if PR_healthBarLength > HealthBarMaxLength then PR_healthBarLength = HealthBarMaxLength
+          rem COLUPF is set by pfcolors system, not here
+          gosub bank8 DrawHealthBarRow1
+          
+          rem Draw Player 3 & 4 bars if Quadtari active and player alive
+          if controllerStatus & SetQuadtariDetected then DrawP3P4Health
+          goto SkipP3P4Health
+DrawP3P4Health
+          if selectedChar3 = 255 then SkipP3Health
+          if playerHealth[2] = 0 then SkipP3Health
+          goto DrawP3Health
+SkipP3Health
+          if selectedChar4 = 255 then SkipP4Health
+          if playerHealth[3] = 0 then SkipP4Health
+          goto DrawP4Health
+          goto SkipP4Health
+DrawP3Health
+          rem Player 3 health bar
+          let PR_healthBarLength = playerHealth[2] / 3
+          if PR_healthBarLength > 32 then PR_healthBarLength = 32
+          rem COLUPF is set by pfcolors system, not here
+          gosub bank8 DrawHealthBarRow2
+          goto SkipP4HealthCheck
+          
+DrawP4Health
+          rem Player 4 health bar
+          let PR_healthBarLength = playerHealth[3] / 3
+          if PR_healthBarLength > 32 then PR_healthBarLength = 32
+          rem COLUPF is set by pfcolors system, not here
+          gosub bank8 DrawHealthBarRow3
+SkipP4HealthCheck
+SkipP4Health
+SkipP3P4Health
+          
+#endif
+          
+          return
+
+          rem =================================================================
+          rem HEALTH BAR ROW DRAWING HELPERS
+          rem =================================================================
+          rem These subroutines draw a single row of health bar at different
+          rem Y positions. They use PR_healthBarLength (temp6) to determine width.
+
+DrawHealthBarRow0
+          rem Draw health bar at row 0 (top of screen)
+          rem Clear the row first
+          rem pfpixel 0 0 off : pfpixel 1 0 off : pfpixel 2 0 off : pfpixel 3 0 off
+          rem pfpixel 4 0 off : pfpixel 5 0 off : pfpixel 6 0 off : pfpixel 7 0 off
+          rem pfpixel 8 0 off : pfpixel 9 0 off : pfpixel 10 0 off : pfpixel 11 0 off
+          rem pfpixel 12 0 off : pfpixel 13 0 off : pfpixel 14 0 off : pfpixel 15 0 off
+          rem pfpixel 16 0 off : pfpixel 17 0 off : pfpixel 18 0 off : pfpixel 19 0 off
+          rem pfpixel 20 0 off : pfpixel 21 0 off : pfpixel 22 0 off : pfpixel 23 0 off
+          rem pfpixel 24 0 off : pfpixel 25 0 off : pfpixel 26 0 off : pfpixel 27 0 off
+          rem pfpixel 28 0 off : pfpixel 29 0 off : pfpixel 30 0 off : pfpixel 31 0 off
+          
+          rem Draw filled portion
+          dim PR_pixelIndex = temp7
+          for PR_pixelIndex = 0 to PR_healthBarLength
+          rem pfpixel PR_pixelIndex 0 on
+          next
+          return
+
+DrawHealthBarRow1
+          rem Draw health bar at row 1
+          rem pfpixel 0 1 off : pfpixel 1 1 off : pfpixel 2 1 off : pfpixel 3 1 off
+          rem pfpixel 4 1 off : pfpixel 5 1 off : pfpixel 6 1 off : pfpixel 7 1 off
+          rem pfpixel 8 1 off : pfpixel 9 1 off : pfpixel 10 1 off : pfpixel 11 1 off
+          rem pfpixel 12 1 off : pfpixel 13 1 off : pfpixel 14 1 off : pfpixel 15 1 off
+          rem pfpixel 16 1 off : pfpixel 17 1 off : pfpixel 18 1 off : pfpixel 19 1 off
+          rem pfpixel 20 1 off : pfpixel 21 1 off : pfpixel 22 1 off : pfpixel 23 1 off
+          rem pfpixel 24 1 off : pfpixel 25 1 off : pfpixel 26 1 off : pfpixel 27 1 off
+          rem pfpixel 28 1 off : pfpixel 29 1 off : pfpixel 30 1 off : pfpixel 31 1 off
+          
+          dim PR_pixelIndex = temp7
+          for PR_pixelIndex = 0 to PR_healthBarLength
+          rem pfpixel PR_pixelIndex 1 on
+          next
+          return
+
+DrawHealthBarRow2
+          rem Draw health bar at row 2
+          rem pfpixel 0 2 off : pfpixel 1 2 off : pfpixel 2 2 off : pfpixel 3 2 off
+          rem pfpixel 4 2 off : pfpixel 5 2 off : pfpixel 6 2 off : pfpixel 7 2 off
+          rem pfpixel 8 2 off : pfpixel 9 2 off : pfpixel 10 2 off : pfpixel 11 2 off
+          rem pfpixel 12 2 off : pfpixel 13 2 off : pfpixel 14 2 off : pfpixel 15 2 off
+          rem pfpixel 16 2 off : pfpixel 17 2 off : pfpixel 18 2 off : pfpixel 19 2 off
+          rem pfpixel 20 2 off : pfpixel 21 2 off : pfpixel 22 2 off : pfpixel 23 2 off
+          rem pfpixel 24 2 off : pfpixel 25 2 off : pfpixel 26 2 off : pfpixel 27 2 off
+          rem pfpixel 28 2 off : pfpixel 29 2 off : pfpixel 30 2 off : pfpixel 31 2 off
+          
+          dim PR_pixelIndex = temp7
+          for PR_pixelIndex = 0 to PR_healthBarLength
+          rem pfpixel PR_pixelIndex 2 on
+          next
+          return
+
+DrawHealthBarRow3
+          rem Draw health bar at row 3
+          rem pfpixel 0 3 off : pfpixel 1 3 off : pfpixel 2 3 off : pfpixel 3 3 off
+          rem pfpixel 4 3 off : pfpixel 5 3 off : pfpixel 6 3 off : pfpixel 7 3 off
+          rem pfpixel 8 3 off : pfpixel 9 3 off : pfpixel 10 3 off : pfpixel 11 3 off
+          rem pfpixel 12 3 off : pfpixel 13 3 off : pfpixel 14 3 off : pfpixel 15 3 off
+          rem pfpixel 16 3 off : pfpixel 17 3 off : pfpixel 18 3 off : pfpixel 19 3 off
+          rem pfpixel 20 3 off : pfpixel 21 3 off : pfpixel 22 3 off : pfpixel 23 3 off
+          rem pfpixel 24 3 off : pfpixel 25 3 off : pfpixel 26 3 off : pfpixel 27 3 off
+          rem pfpixel 28 3 off : pfpixel 29 3 off : pfpixel 30 3 off : pfpixel 31 3 off
+          
+          dim PR_pixelIndex = temp7
+          for PR_pixelIndex = 0 to PR_healthBarLength
+          rem pfpixel PR_pixelIndex 3 on
+          next
           return
 

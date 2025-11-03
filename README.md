@@ -29,8 +29,9 @@ A sophisticated 4-player fighting game for the Atari 2600, featuring 16 unique c
 ### Requirements
 - **batariBASIC** compiler (included in Tools/)
 - **DASM** assembler (included)
-- **SBCL** + Common Lisp libraries (for asset generation)
-- **ImageMagick** (for XCF→PNG conversion)
+- **SBCL** + Common Lisp libraries (for asset generation via SkylineTool)
+- **GIMP** (for XCF→PNG conversion)
+- **MuseScore** (for MSCZ→MIDI conversion, optional)
 - **Linux/Unix** environment
 
 ### Quick Build
@@ -49,10 +50,11 @@ make emu
 ```
 
 ### Generated Files
-- `Dist/ChaosFight.NTSC.a26` - NTSC ROM (64KB)
-- `Dist/ChaosFight.PAL.a26` - PAL ROM  
-- `Dist/ChaosFight.SECAM.a26` - SECAM ROM
-- `Dist/ChaosFight-Manual.pdf` - Game manual
+- `Dist/ChaosFight25.NTSC.a26` - NTSC ROM (64KB)
+- `Dist/ChaosFight25.PAL.a26` - PAL ROM  
+- `Dist/ChaosFight25.SECAM.a26` - SECAM ROM
+- `Dist/ChaosFight25.pdf` - Game manual (PDF)
+- `Dist/ChaosFight25.html` - Game manual (HTML)
 
 ## Controller Setup
 
@@ -74,7 +76,7 @@ make emu
 - **Button III** (INPT1/3): Pause
 
 ### Quadtari (4-Player)  
-**Detection Method**: Check paddle ports INPT0-3 for signature patterns - if INPT0 LOW + INPT1 HIGH (left side) OR INPT2 LOW + INPT3 HIGH (right side), Quadtari detected.  
+**Detection Method**: Check paddle ports INPT0-3 for signature patterns - if INPT0 LOW + INPT1 HIGH (left side) AND INPT2 LOW + INPT3 HIGH (right side), Quadtari detected.  
 **Multiplexing**: Even frames read P1/P2, odd frames read P3/P4 (same physical ports). Players 3&4 use same controls as 1&2.
 
 ## Enhanced Controller Support
@@ -99,14 +101,10 @@ make emu
 
 ### Variable Naming
 - **Built-ins**: `lowercase` (`temp1`, `joy0fire`, `player0x`) 
-- **User code**: `PascalCase` (`PlayerX`, `GameState`, `MissileActive`)
-- **Local temp aliases**: Use function initials prefix for clarity
-  - Example: `dim HWC_playerID = temp1` in `HandleWallCollision`
-  - Prefer recipient parameter names when marshalling arguments
-  - Example: `let HWC_playerID = CLWC_playerID : gosub HandleWallCollision`
-
-### Keywords
-- All keywords should be **lowercase** (`let`, `if`, `gosub`, `return`, etc.)
+- **User variables**: `camelCase` (`playerX`, `gameState`, `missileActive`)
+- **Constants**: `PascalCase` (`MaxCharacter`, `KnockbackDistance`)
+- **Enums**: `PascalCase` (`AnimStanding`, `ModeGame`)
+- **Labels/Routines**: `PascalCase` (`LoadCharacterSprite`, `HandleInput`)
 
 ### Memory Layout
 - **Standard RAM**: `a`-`z` (26 bytes)
@@ -116,31 +114,30 @@ make emu
 
 ## Architecture
 
+### Mode Organization
+The game uses two main execution contexts:
+- **Admin Mode** - Title screen, preambles (publisher/author), level select screens
+- **Game Mode** - Character select, falling animation, gameplay, winner announcement
+- **Common Vars** - Variables shared between Admin Mode and Game Mode
+
 ### Bank Organization (64KB Cartridge)
-- **Bank 1**: Core systems, controller detection, main loop
+- **Bank 1**: Core systems, controller detection, main loop, titlescreen kernel
 - **Bank 2**: Level data, character graphics (TV-specific)
 - **Bank 5**: Character selection system
-- **Banks 6-16**: Game systems (missiles, physics, combat)
+- **Banks 6-16**: Game systems (missiles, physics, combat, rendering)
 
 ### Key Systems
 ```
 MissileSystem.bas      - Projectile lifecycle management
 MissileCollision.bas   - AABB and AOE collision detection  
 FallDamage.bas         - Weight-based physics and damage
-CharacterData.bas      - Property lookups (O(1) via on-goto)
+CharacterDefinitions.bas - Property lookups (O(1) via on-goto)
 ControllerDetection.bas - Multi-controller auto-detection
 ```
 
-## Project Status
+## Development Environment Setup
 
-**Current State**: ~80% complete with solid foundations but **asset compilation blocking playable builds**.
-
-✅ **Complete**: Game logic, physics, controllers, documentation  
-❌ **Blocking**: Character sprite generation, level graphics, SkylineTool compilation
-
-### Development Environment Setup
-
-#### Required Tools
+### Required Tools
 ```bash
 # Core development (Fedora/RHEL)
 sudo dnf install gcc make gimp sbcl texlive texinfo
@@ -148,41 +145,34 @@ sudo dnf install gcc make gimp sbcl texlive texinfo
 # Common Lisp (for SkylineTool)  
 curl -O https://beta.quicklisp.org/quicklisp.lisp
 sbcl --load quicklisp.lisp
+
+# Install GIMP export script
+make gimp-export
 ```
 
-#### Asset Pipeline Dependencies
+### Asset Pipeline Dependencies
 - **GIMP** with batch processing capability for XCF→PNG conversion
-- **SkylineTool** (Common Lisp)
+- **MuseScore** (optional) for MSCZ→MIDI conversion
+- **SkylineTool** (included) for asset compilation (sprites, fonts, music, bitmaps)
 - **batariBASIC** compiler (included)
 
-### Current Issues
-See GitHub Issues for detailed tracking of remaining work:
-- **Critical**: Asset compilation pipeline (#26, #15)
-- **Missing Features**: Battle arenas (#31), character mechanics (#29)
-- **Enhancements**: Performance optimization (#40), cross-platform support (#39)
+## Project Status
 
----
+**Current State**: Actively in development with core systems implemented.
 
-**ChaosFight** - Advanced 4-player combat for Atari 2600  
-© 2025 Interworldly Adventuring, LLC
+✅ **Complete**: Game logic, physics, controllers, character system, collision detection  
+🔨 **In Progress**: Asset pipeline, level design, character animations  
+📋 **Planned**: Additional arenas, character mechanics, performance optimizations
 
-# Common Lisp (for SkylineTool)  
-```
-curl -O https://beta.quicklisp.org/quicklisp.lisp
-sbcl --load quicklisp.lisp
-```
+### Recent Improvements
+- Fixed syntax errors and code quality issues (#352, #305, #325)
+- Standardized naming conventions (Preamble vs Prelude, character names)
+- Replaced magic numbers with symbolic constants (#292, #314)
+- Improved collision detection and player separation (#255)
+- Fixed health bar rendering for B&W and color modes (#250)
+- Cleaned up unused Titlescreen files (#333)
 
-#### Asset Pipeline Dependencies
-- **GIMP** for XCF→PNG conversion
-- **MuseScore** for MSCZ→MIDI conversion
-- **SkylineTool** (included)
-- **batariBASIC** compiler (included)
-
-### Current Issues
-See GitHub Issues for detailed tracking of remaining work:
-- **Critical**: Asset compilation pipeline (#26, #15)
-- **Missing Features**: Battle arenas (#31), character mechanics (#29)
-- **Enhancements**: Performance optimization (#40), cross-platform support (#39)
+See GitHub Issues for detailed tracking of remaining work.
 
 ---
 

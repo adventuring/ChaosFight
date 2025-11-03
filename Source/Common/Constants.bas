@@ -3,8 +3,10 @@
 
           const GameVersionMajor=0
           const GameVersionMinor=1
-          const BuildDate=BUILD_DATE
-          rem Build date in julian day format (1-366, set by Makefile)
+          const BuildYear=BUILD_YEAR
+          rem Build year (4 digits, e.g. 2025, set by Makefile)
+          const BuildDay=BUILD_DAY
+          rem Build day in julian day format (1-366, set by Makefile)
           rem Game URL: https://interworldly.com/games/ChaosFight
           rem URL stored as comment for attribution
           const NumArenas=16
@@ -14,9 +16,7 @@
           const KnockbackDistance=12          
           rem Character system constants
           const MaxCharacter = 15
-          rem Maximum selectable character ID (0-15 = 16 selectable characters)
-          rem Note: Current total = 17 characters (16 selectable 0-15 + Meth Hound 31)
-          rem Future expansion limit = 32 characters total
+          rem Maximum character ID (NumCharacters - 1)
           const NoCharacter = 255
           rem No character selected ($FF)
           const CPUCharacter = 254
@@ -27,7 +27,7 @@
           const SpriteCPU = 1
           const SpriteNo = 2
           
-          rem playerState bit constants
+          rem playerState bit position constants
           const PlayerStateFacing = 0
           rem Bit 0: 0=left, 1=right
           const PlayerStateGuarding = 1

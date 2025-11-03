@@ -6,4 +6,5 @@
 
           #include "Source/Routines/SpriteLoader.bas"
           #include "Source/Routines/SpriteLoaderCharacterArt.bas"
+          #include "Source/Routines/FontRendering.bas"
 

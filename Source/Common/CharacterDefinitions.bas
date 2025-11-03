@@ -8,7 +8,7 @@
           rem   - Weight (affects jump height, movement speed, momentum, impact resistance/force)
           rem   - Animation graphics tables and frame counts
           rem   - Attack type (melee or ranged)
-          rem   - Missile size (width x height)
+          rem   - Missile size (width × height)
           rem   - Missile emission height (on character sprite)
 
           rem =================================================================
@@ -29,7 +29,7 @@
           rem Character 12: Radish Goblin
           rem Character 13: Robo Tito
           rem Character 14: Ursulo
-          rem Character 15: Shamone (can switch to Meth Hound, character 31)
+          rem Character 15: Veg Dog
 
           rem =================================================================
           rem CHARACTER WEIGHTS
@@ -42,38 +42,38 @@
           rem   - Melee force (higher weight = more damage/knockback to opponents)
           rem Values: 1-255 (lower = lighter/faster, higher = heavier/slower/stronger)
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          rem  heavy,  medium,     medium,   light,   heavy,  medium,     light,  heavier, light,   heavy,   very light, heavy,  very light, heavier, heavy,  medium
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  heavy,  medium,     medium,   light,   heavy,  heavy,     light,  heavier, light,   heavy,   very light, heavy,  very light, heavier, heavy,  medium
           data CharacterWeights
-          35, 25, 20, 15, 30, 25, 15, 32, 15, 30, 10, 30, 10, 32, 30, 25
+          35, 25, 20, 15, 30, 30, 15, 32, 15, 30, 10, 30, 10, 32, 30, 25
 end
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileWidths
              1, 4, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0
 end
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileHeights
              1, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0
 end
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileMaxX
              4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 6, 0
 end
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileMaxY
              4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 6, 0
 end
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileForce
              3, 5, 4, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0
           end
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           rem  melee  ranged         ranged    ranged    melee   melee           melee   melee      ranged          melee       melee      melee      melee         melee      ranged    melee
           rem  Note: Melee attacks show brief visual (sword, fist, etc.), ranged persist until hit
           data CharacterMissileLifetime
@@ -96,9 +96,9 @@ end
           rem 0 = melee, 1 = ranged
           rem Stored as bit-per-character in packed bytes (4 bytes for up to 32 characters)
 
-          rem  Bernie    Curler     Dragon of Storms  Zoe Ryen Fat Tony  Megax      Harpy     Knight Guy
+          rem  Bernie    Curler     Dragon of Storms  Zoe Ryen Fat Tony  Grizzard   Harpy     Knight Guy
           rem  melee     ranged     melee     ranged    ranged    melee      ranged    ranged
-          rem  Magical   Mystery    Ninjish   Pork Chop Radish    Robo Tito  Ursulo    Shamone
+          rem  Frooty    Nefertem   Ninjish   Pork Chop Radish    Robo Tito  Ursulo    Veg Dog
           rem  ranged    melee      melee     melee     melee     melee      ranged    melee
           rem  Harpy changed from melee to ranged (diagonal downward attack)
           data CharacterAttackTypes
@@ -108,7 +108,7 @@ end
           rem =================================================================
           rem MISSILE SIZE DEFINITIONS
           rem =================================================================
-          rem Missile dimensions (width x height) for each character
+          rem Missile dimensions (width × height) for each character
           rem Format: width, height
           rem Melee attacks can use 0x0 if no visible missile
 
@@ -119,9 +119,10 @@ end
           rem Vertical offset on character sprite where missile is emitted
           rem Values: 0-7 (top to bottom of 8-pixel tall sprite)
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Note: Curler uses 15 for low-trajectory stone near ground
           data CharacterMissileEmissionHeights
-             3, 7, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
+             3, 15, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
           end
 
           rem =================================================================
@@ -131,9 +132,9 @@ end
           rem Positive = right, Negative = left, 0 = straight up/down
           rem Values: -127 to 127
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileMomentumX
-             5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
+             5, 8, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
           end
 
           rem =================================================================
@@ -144,7 +145,7 @@ end
           rem Negative = ballistic/parabolic arc
           rem Values: -127 to 127 (typically -8 to 0 for parabolic arcs)
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           rem  N/A    arrowshot    ballistic arrowshot N/A       N/A              N/A      diagonal   ballistic       N/A         arrowshot  N/A        N/A           N/A       ballistic  N/A
           rem  Harpy: diagonal downward attack (positive = down)
           data CharacterMissileMomentumY
@@ -159,13 +160,18 @@ end
           rem   Bit 1: Hit player (0=pass through, 1=hit and disappear)
           rem   Bit 2: Apply gravity (0=no gravity, 1=affected by gravity)
           rem   Bit 3: Bounce off walls (0=stop/hit, 1=bounce)
-          rem   Bit 4-7: Reserved
+          rem   Bit 4: Apply friction (0=constant velocity, 1=decelerates)
+          rem   Bit 5-7: Reserved
           rem Values stored as packed bytes per character
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          rem  Note: Bit 0=hit bg, Bit 1=hit player, Bit 2=gravity, Bit 3=bounce
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          rem  Note: Bit 0=hit bg (MissileFlagHitBackground), Bit 1=hit player (MissileFlagHitPlayer), 
+          rem       Bit 2=gravity (MissileFlagGravity), Bit 3=bounce (MissileFlagBounce), Bit 4=friction (MissileFlagFriction)
+          rem  Values use enum constants for bitfield encoding (see Enums.bas)
+          rem  Curler = MissileFlagHitPlayer|MissileFlagGravity|MissileFlagBounce|MissileFlagFriction = 2+4+8+16 = 30
           data CharacterMissileFlags
-              %00000000, %00000011, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
+              %00000000, %00011110, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
+          rem  0,      Curler(30), MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0
           end
 
           rem =================================================================
@@ -177,7 +183,7 @@ end
           rem Values: 1-255 frames
           rem Note: CharacterMissileLifetime is defined above at line 76
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           rem  AOE offset in pixels (0 = no AOE, positive = area of effect)
           data CharacterAOEOffsets
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -219,7 +225,7 @@ end
           rem   4 frames: (1, 2, 3, 4, 1, 2, 3, 4)
           rem   8 frames: (1, 2, 3, 4, 5, 6, 7, 8)
 
-          rem Animation frame reference tables (16 characters × 16 sequences × 8 bytes)
+          rem Animation frame reference tables (NumCharacters characters × 16 sequences × 8 bytes)
           rem Each character animation data is 128 bytes (16 sequences × 8 bytes)
           rem Total: 2048 bytes for all character animations
 
@@ -266,6 +272,8 @@ end
           rem Output: attack type 0=melee, 1=ranged (in temp4)
           rem Note: Attack types are bit-packed, so we need to extract the bit
           GetCharAttackTypeSub
+              rem Division by 8 should compile to LSR x3 (bit shift right 3 times)
+              rem batariBASIC optimizes division by powers of 2 to bit shifts
               temp3 = temp1 / 8
               temp2 = temp1 & 7
               temp4 = (CharacterAttackTypes(temp3) & (1 << temp2)) >> temp2
@@ -309,8 +317,10 @@ end
           rem Get missile flags
           rem Input: character index (in temp1)
           rem Output: flags (in temp4)
-          rem Note: Bit flags: 0=hit bg, 1=hit player, 2=gravity, 3=bounce
+          rem Note: Bit flags: MissileFlagHitBackground (bit 0), MissileFlagHitPlayer (bit 1),
+          rem       MissileFlagGravity (bit 2), MissileFlagBounce (bit 3)
           rem Note: Uses array access since data is immutable
+          rem Use constants from Enums.bas for bitfield checking: temp5 & MissileFlagGravity
           GetMissileFlagsSub
               temp4 = CharacterMissileFlags(temp1)
               return

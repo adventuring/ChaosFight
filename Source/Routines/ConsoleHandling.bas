@@ -7,7 +7,7 @@
           rem Handles Atari 2600 console switches during gameplay.
 
           rem SWITCHES:
-          rem   switchreset - Game Reset → instant hard reboot (calls ColdStart)
+          rem   switchreset - Game Reset → return to character select
           rem   switchselect - Game Select → toggle pause
           rem   switchbw - Color/B&W → handled in rendering
 
@@ -17,17 +17,17 @@
 
           rem Main console switch handler
 HandleConsoleSwitches
-          rem Game Reset switch - instant hard reboot (clears vars, reinitializes hardware)
-          if switchreset then goto ColdStart
+          rem Game Reset switch - return to publisher preamble
+          if switchreset then gameMode = ModePublisherPreamble : gosub bank13 ChangeGameMode : return
 
           rem Game Select switch or Joy2B+ Button III - toggle pause mode
           temp2 = 0 
           rem Check Player 1 buttons
           gosub CheckEnhancedPause
-          if !temp1 then goto SkipPlayer1Pause
+          if !temp1 then SkipPlayer1Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if gameState = 0 then gameState = 1 : goto Player1PauseDone
+          if gameState = 0 then let gameState = 1:goto Player1PauseDone
           let gameState = 0
 Player1PauseDone
           rem Debounce - wait for button release
@@ -39,10 +39,11 @@ SkipPlayer1Pause
           temp2 = 1 
           rem Check Player 2 buttons
           gosub CheckEnhancedPause
-          if !temp1 then goto SkipPlayer2Pause
+          if !temp1 then SkipPlayer2Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if gameState = 0 then gameState = 1 : goto Player2PauseDone
+          if gameState = 0 then let gameState = 1
+          if gameState = 0 then Player2PauseDone
           let gameState = 0
 Player2PauseDone
           rem Debounce - wait for button release
@@ -56,7 +57,7 @@ SkipPlayer2Pause
           
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
-          gosub Check7800Pause
+          gosub Check7800PauseButton
 #endif
 
           return
@@ -69,9 +70,58 @@ SkipPlayer2Pause
 CheckColorBWToggle
           rem Check if Color/B&W switch state has changed
           temp6 = switchbw
-          if temp6 = colorBWPrevious then goto SkipColorBWChange
+          if temp6 = colorBWPrevious_R then SkipColorBWChange
           gosub bank14 DetectControllers
-          let colorBWPrevious = switchbw
+          let colorBWPrevious_W = switchbw
 SkipColorBWChange
+          return
+
+          rem Display paused screen
+DisplayPausedScreen
+          rem Display "PAUSED" message using built-in font system
+          rem Center the text on screen
+          temp1 = 40 
+          rem X position (centered)
+          temp2 = 45 
+          rem Y position (middle of screen)
+          temp3 = 14 
+          rem Color (white)
+          
+          rem Draw each character of "PAUSED"
+          rem P
+          temp4 = 25 
+          rem ASCII "P"
+          gosub DrawCharacter
+          temp1 = temp1 + 6
+          
+          rem A
+          temp4 = 10 
+          rem ASCII "A"
+          gosub DrawCharacter
+          temp1 = temp1 + 6
+          
+          rem U
+          temp4 = 30 
+          rem ASCII "U"
+          gosub DrawCharacter
+          temp1 = temp1 + 6
+          
+          rem S
+          temp4 = 28 
+          rem ASCII "S"
+          gosub DrawCharacter
+          temp1 = temp1 + 6
+          
+          rem E
+          temp4 = 14 
+          rem ASCII "E"
+          gosub DrawCharacter
+          temp1 = temp1 + 6
+          
+          rem D
+          temp4 = 13 
+          rem ASCII "D"
+          gosub DrawCharacter
+          
           return
 

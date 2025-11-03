@@ -1,37 +1,27 @@
           rem ChaosFight - Source/Routines/WinnerAnnouncement.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
-          rem =================================================================
-          rem WINNER ANNOUNCEMENT LOOP - Called from MainLoop each frame
-          rem =================================================================
-          rem This is the main loop that runs each frame during Winner Announcement mode.
-          rem Called repeatedly from MainLoop dispatcher.
-          rem Setup is handled by BeginWinnerAnnouncement (called from ChangeGameMode).
+          rem Winner announcement mode main loop wrapper
 
 WinnerAnnouncement
-          rem Display winner screen
-          gosub bank7 DisplayWinScreen
+WinnerAnnouncementLoop
+          rem Check for button press to advance immediately
+          if joy0fire then WinnerAdvanceToCharacterSelect
+          if joy1fire then WinnerAdvanceToCharacterSelect
+          if switchselect then WinnerAdvanceToCharacterSelect
           
-          rem Check for button press to return to title screen
-          rem Check standard controllers (Player 1 & 2)
-          if joy0fire then goto WinnerReturnToTitle
-          if joy1fire then goto WinnerReturnToTitle
+          rem Auto-advance after 10 seconds (600 frames at 60fps)
+          let WinScreenTimer = WinScreenTimer + 1
+          if WinScreenTimer > WinScreenAutoAdvanceFrames then WinnerAdvanceToCharacterSelect
           
-          rem Check Quadtari controllers (Players 3 & 4 if active)
-          if controllerStatus & SetQuadtariDetected then goto WinnerCheckQuadtari
-          goto WinnerSkipQuadtari
-WinnerCheckQuadtari
-          if !INPT0{7} then goto WinnerReturnToTitle
-          if !INPT2{7} then goto WinnerReturnToTitle
-WinnerSkipQuadtari
-          
-          rem Return to MainLoop for next frame
-          rem MainLoop will call drawscreen after this returns
-          return
+          rem Display win screen and continue loop
+          rem gosub bank7 DisplayWinScreen
+          rem TODO: Implement DisplayWinScreen function when ready
+          drawscreen
+          goto WinnerAnnouncementLoop
 
-WinnerReturnToTitle
-          rem Transition to title screen
-          let gameMode = ModeTitle : gosub bank13 ChangeGameMode
+WinnerAdvanceToCharacterSelect
+          rem Transition to character select screen
+          let gameMode = ModeCharacterSelect
+          gosub bank13 ChangeGameMode
           return
 
 

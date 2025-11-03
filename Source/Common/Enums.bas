@@ -7,8 +7,8 @@
           const SECAM = 3
 
           rem Game Modes
-          const ModePublisherPrelude = 0
-          const ModeAuthorPrelude = 1
+          const ModePublisherPreamble = 0
+          const ModeAuthorPreamble = 1
           const ModeTitle = 2
           const ModeCharacterSelect = 3
           const ModeFallingAnimation = 4
@@ -71,3 +71,33 @@
           
           const AnimAttackRecovery = 15
           rem Attack recovery
+
+          rem NOTE: RoboTito repurposes existing animation states:
+          rem AnimJumping (10) = Stretching upward
+          rem AnimFalling (11) = Latched to ceiling  
+          rem AnimLanding (12) = Retracting trunk
+
+          rem =================================================================
+          rem MISSILE FLAGS BITFIELD ENCODING
+          rem =================================================================
+          rem Bit flags for missile behavior (CharacterMissileFlags)
+          rem Used for checking missile interaction properties
+          
+          const MissileFlagHitBackground = 1
+          rem Bit 0: Hit background (1=hit and disappear, 0=pass through)
+          
+          const MissileFlagHitPlayer = 2
+          rem Bit 1: Hit player (1=hit and disappear, 0=pass through)
+          
+          const MissileFlagGravity = 4
+          rem Bit 2: Apply gravity (1=affected by gravity, 0=no gravity)
+          
+          const MissileFlagBounce = 8
+          rem Bit 3: Bounce off walls (1=bounce, 0=stop/hit)
+          
+          const MissileFlagFriction = 16
+          rem Bit 4: Apply friction physics (curling stone deceleration)
+          
+          rem Combined flags for common combinations
+          const MissileFlagHitBoth = 3
+          rem Bits 0-1: Hit both background and players (%00000011)

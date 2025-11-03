@@ -21,10 +21,10 @@
           rem   Source/Generated/Font.Numbers.SECAM.bas
 
           rem PLAYER COLORS (match character selection/health bars):
-          rem   Player 1: Blue  ($96)
-          rem   Player 2: Red   ($36)
-          rem   Player 3: Yellow ($1E)
-          rem   Player 4: Green ($C6)
+          rem   Player 1: Indigo (ColIndigo(14))
+          rem   Player 2: Red   (ColRed(14))
+          rem   Player 3: Yellow (ColYellow(14))
+          rem   Player 4: Green (ColGreen(14))
           rem =================================================================
 
           rem Include architecture-specific font data
@@ -49,36 +49,41 @@
           rem   temp5 = sprite select (0=player0, 1=player1) OR custom color if temp4=$FF
 
           rem COLORS:
-          rem   $0E = White (level select)
-          rem   $96 = Blue (Player 1)
-          rem   $36 = Red (Player 2)
-          rem   $1E = Yellow (Player 3)
-          rem   $C6 = Green (Player 4)
+          rem   ColGrey(14) = White (level select)
+          rem   ColIndigo(14) = Indigo (Player 1)
+          rem   ColRed(14) = Red (Player 2)
+          rem   ColYellow(14) = Yellow (Player 3)
+          rem   ColGreen(14) = Green (Player 4)
 
           rem EXAMPLE USAGE:
           rem   rem Draw level "A" (10) in white on left using player0
-          rem   temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = $0E : temp5 = 0 : gosub DrawDigit
+          rem   temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = ColGrey(14) : temp5 = 0 : gosub DrawDigit
           rem   rem Draw player "2" in red on right using player1
-          rem   temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = $36 : temp5 = 1 : gosub DrawDigit
+          rem   temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = ColRed(14) : temp5 = 1 : gosub DrawDigit
 DrawDigit
           rem Clamp digit value to 0-15
           if temp1 > 15 then temp1 = 15
           
           rem Calculate data offset: digit * 16 (16 bytes per digit)
-          let digitOffset = temp1 * 16
+          dim FR_digitOffset = temp6
+          let FR_digitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
-if temp5 = 0 then 
-          player0x = temp2
-          player0y = temp3
-          COLUP0 = temp4
-          gosub LoadPlayer0Digit
+          if temp5 then SkipPlayer0Sprite
 
+          rem Use player0 sprite
+          let player0x = temp2
+          let player0y = temp3
+          COLUP0 = temp4
+          rem tail call
+          goto LoadPlayer0Digit
+
+SkipPlayer0Sprite
+          rem Use player1 sprite
           player1x = temp2
           player1y = temp3
-          COLUP1 = temp4
+          _COLUP1 = temp4
           gosub LoadPlayer1Digit
-          
           return
 
           rem =================================================================
@@ -88,59 +93,54 @@ if temp5 = 0 then
           rem The data is accessed using batariBasic data statement indexing.
 
           rem INPUT:
-          rem   digitOffset (temp6) = byte offset into font data (digit * 16)
+          rem   DigitOffset (temp6) = byte offset into font data (digit * 16)
 
 LoadPlayer0Digit
-          rem Load 16 bytes from font data into player0 sprite
-          rem Using batariBasic data access pattern
-          let fontDataIndex = digitOffset
-          player0:
-          rem Row 0-15: Read from data tables
-          %00111100 
-          rem Will be replaced by actual data read
-          %01000010
-          %01000010
-          %01000010
-          %01000010
-          %01000010
-          %00111100
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-end
-          %00000000
-          %00000000
-          %00000000
-end
+          rem Load digit graphics from Numbers font data into player0 sprite
+          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
+          rem Clamp digit offset to valid range (0-144 for digits 0-9)
+          if temp6 > 144 then LET temp6 = 144
+          
+          rem Calculate sprite pointer = FontData + offset using assembly
+          asm
+            rem Load low byte of FontData base address
+            lda # <FontData
+            clc
+            adc temp6
+            sta player0pointerlo
+            
+            rem Load high byte of FontData base address and add carry
+            lda # >FontData
+            adc #0
+            sta player0pointerhi
+          end
+          
+          rem Set sprite height (16 pixels tall)
+          player0height = 16
           return
 
 LoadPlayer1Digit
-          rem Load 16 bytes from font data into player1 sprite
-          let fontDataIndex = digitOffset
-          player1:
-          rem Row 0-15: Read from data tables
-          %00111100 
-          rem Will be replaced by actual data read
-          %01000010
-          %01000010
-          %01000010
-          %01000010
-          %01000010
-          %00111100
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-          %00000000
-end
-          %00000000
-          %00000000
-          %00000000
-end
+          rem Load digit graphics from Numbers font data into player1 sprite
+          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
+          rem Clamp digit offset to valid range (0-144 for digits 0-9)
+          if temp6 > 144 then LET temp6 = 144
+          
+          rem Calculate sprite pointer = FontData + offset using assembly
+          asm
+            rem Load low byte of FontData base address
+            lda # <FontData
+            clc
+            adc temp6
+            sta player1pointerlo
+            
+            rem Load high byte of FontData base address and add carry
+            lda # >FontData
+            adc #0
+            sta player1pointerhi
+          end
+          
+          rem Set sprite height (16 pixels tall)
+          player1height = 16
           return
 
           rem =================================================================
@@ -157,38 +157,40 @@ end
           rem Player colors are looked up from a table.
 DrawPlayerNumber
           rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
-          rem PlayerDigit uses temp1 (lambda-list variable)
+          dim FR_playerDigit = temp1
+          let FR_playerDigit = temp1 + 1
+          
           rem Look up player color
-          rem PlayerColor uses temp4 (lambda-list variable)
+          dim FR_playerColor = temp4
           on temp1 goto SetP1Color, SetP2Color, SetP3Color, SetP4Color
           
 SetP1Color
-          let PlayerColor = $96 
-          rem Blue
+          let FR_playerColor = ColIndigo(14)
+          rem Indigo
           goto DrawPlayerDigitNow
           
 SetP2Color
-          let PlayerColor = $36 
+          let FR_playerColor = ColRed(14)
           rem Red
           goto DrawPlayerDigitNow
           
 SetP3Color
-          let PlayerColor = $1E 
+          FR_playerColor = ColYellow(14)
           rem Yellow
           goto DrawPlayerDigitNow
           
 SetP4Color
-          let PlayerColor = $C6 
+          FR_playerColor = ColGreen(14)
           rem Green
           goto DrawPlayerDigitNow
           
 DrawPlayerDigitNow
           rem Set up parameters for DrawDigit
-          temp1 = PlayerDigit
+          temp1 = FR_playerDigit
           rem temp2, temp3, temp5 already set by caller
-          temp4 = PlayerColor
-          gosub DrawDigit
-          return
+          temp4 = FR_playerColor
+          rem tail call
+          goto DrawDigit
 
           rem =================================================================
           rem DRAW LEVEL NUMBER
@@ -201,7 +203,7 @@ DrawPlayerDigitNow
           rem   temp3 = Y position
           rem   temp5 = sprite select (0=player0, 1=player1)
 DrawLevelNumber
-          temp4 = $0E 
+          temp4 = ColGrey(14)
           rem White
-          gosub DrawDigit
-          return
+          rem tail call
+          goto DrawDigit

@@ -36,6 +36,9 @@ GameMainLoop
           rem Handle all player input (with Quadtari multiplexing)
           gosub InputHandleAllPlayers
 
+          rem Update guard timers (duration and cooldown)
+          gosub UpdateGuardTimers
+
           rem Update animation system (10fps character animation)
           gosub UpdateCharacterAnimations
           
@@ -84,9 +87,12 @@ GameMainLoop
           
           rem Update P3/P4 health bars using playfield system
           gosub bank8 UpdatePlayer34HealthBars
-
+          
+          rem Update sound effects (game mode 6 only)
+          gosub bank15 UpdateSoundEffect
+          
           rem Update frame counter
           frame = frame + 1
-
+          
           return
 

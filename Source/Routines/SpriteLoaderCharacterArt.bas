@@ -25,8 +25,8 @@ LocateCharacterArt
           rem temp6 = bank-relative character index (0-7) - will be calculated per bank
           
           rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4, 24-31=Bank5
-          if temp1 < 8 then goto LoadFromBank2
-          if temp1 < 16 then goto LoadFromBank3
+          if temp1 < 8 then LoadFromBank2
+          if temp1 < 16 then LoadFromBank3
           if temp1 < 24 then goto LoadFromBank4
           goto LoadFromBank5
           

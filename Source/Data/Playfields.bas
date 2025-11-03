@@ -97,7 +97,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena3ColorsColor
+          if !colorBWOverride then Pf3UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf3ColorsDone
+Pf3UseColorMode
+          pfcolors Arena3ColorsColor
+Pf3ColorsDone
           ColSeafoam(2)
           ColSeafoam(2)
           ColSeafoam(4)
@@ -128,7 +133,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena4ColorsColor
+          if !colorBWOverride then Pf4UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf4ColorsDone
+Pf4UseColorMode
+          pfcolors Arena4ColorsColor
+Pf4ColorsDone
           ColYellow(12)
           ColYellow(12)
           ColYellow(12)
@@ -159,7 +169,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena5ColorsColor
+          if !colorBWOverride then Pf5UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf5ColorsDone
+Pf5UseColorMode
+          pfcolors Arena5ColorsColor
+Pf5ColorsDone
           ColBlue(4)
           ColBlue(4)
           ColBlue(4)
@@ -190,7 +205,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena6ColorsColor
+          if !colorBWOverride then Pf6UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf6ColorsDone
+Pf6UseColorMode
+          pfcolors Arena6ColorsColor
+Pf6ColorsDone
           ColRed(2)
           ColRed(4)
           ColRed(2)
@@ -221,7 +241,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena7ColorsColor
+          if !colorBWOverride then Pf7UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf7ColorsDone
+Pf7UseColorMode
+          pfcolors Arena7ColorsColor
+Pf7ColorsDone
           ColGold(2)
           ColGold(2)
           ColGold(2)
@@ -252,7 +277,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena8ColorsColor
+          if !colorBWOverride then Pf8UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf8ColorsDone
+Pf8UseColorMode
+          pfcolors Arena8ColorsColor
+Pf8ColorsDone
           ColPurple(2)
           ColPurple(4)
           ColPurple(4)
@@ -283,7 +313,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena9ColorsColor
+          if !colorBWOverride then Pf9UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf9ColorsDone
+Pf9UseColorMode
+          pfcolors Arena9ColorsColor
+Pf9ColorsDone
           ColRed(2)
           ColRed(4)
           ColRed(4)
@@ -314,7 +349,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena10ColorsColor
+          if !colorBWOverride then Pf10UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf10ColorsDone
+Pf10UseColorMode
+          pfcolors Arena10ColorsColor
+Pf10ColorsDone
           ColCyan(4)
           ColCyan(2)
           ColCyan(6)
@@ -345,7 +385,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena11ColorsColor
+          if !colorBWOverride then Pf11UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf11ColorsDone
+Pf11UseColorMode
+          pfcolors Arena11ColorsColor
+Pf11ColorsDone
           ColGreen(2)
           ColGreen(4)
           ColGreen(4)
@@ -376,7 +421,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena12ColorsColor
+          if !colorBWOverride then Pf12UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf12ColorsDone
+Pf12UseColorMode
+          pfcolors Arena12ColorsColor
+Pf12ColorsDone
           ColBrown(12)
           ColBrown(12)
           ColBrown(14)
@@ -407,7 +457,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena13ColorsColor
+          if !colorBWOverride then Pf13UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf13ColorsDone
+Pf13UseColorMode
+          pfcolors Arena13ColorsColor
+Pf13ColorsDone
           ColTurquoise(4)
           ColTurquoise(4)
           ColTurquoise(6)
@@ -438,7 +493,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena14ColorsColor
+          if !colorBWOverride then Pf14UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf14ColorsDone
+Pf14UseColorMode
+          pfcolors Arena14ColorsColor
+Pf14ColorsDone
           ColMagenta(2)
           ColMagenta(0)
           ColMagenta(4)
@@ -469,7 +529,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena15ColorsColor
+          if !colorBWOverride then Pf15UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf15ColorsDone
+Pf15UseColorMode
+          pfcolors Arena15ColorsColor
+Pf15ColorsDone
           ColSpringGreen(2)
           ColSpringGreen(2)
           ColSpringGreen(4)
@@ -500,7 +565,12 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena16ColorsColor
+          if !colorBWOverride then Pf16UseColorMode
+          pfcolors SharedPfColorsBW
+          goto Pf16ColorsDone
+Pf16UseColorMode
+          pfcolors Arena16ColorsColor
+Pf16ColorsDone
           ColIndigo(2)
           ColIndigo(4)
           ColIndigo(6)

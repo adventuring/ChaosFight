@@ -47,3 +47,57 @@ StartGame1
           rem Transition to Game mode after arena selection
           let GameMode = ModeGame : gosub bank13 ChangeGameMode
           return
+
+          rem =================================================================
+          rem DISPLAY ARENA NUMBER
+          rem =================================================================
+          rem Displays arena number as two digits (01-16) or '??' for random.
+          rem Uses DrawDigit function to render digits side-by-side.
+          rem
+          rem INPUT: selectedArena (0-15 for arenas, 255 for random)
+          rem OUTPUT: Renders digits using player0 and player1 sprites
+          
+DisplayArenaNumber
+          rem Check for random arena (255)
+          if selectedArena = RandomArena then goto DisplayRandomArena
+          
+          rem Format arena number as two-digit decimal (01-16)
+          rem Arena 0 = "01", Arena 1 = "02", ..., Arena 15 = "16"
+          rem Calculate display value: selectedArena + 1
+          temp1 = selectedArena + 1
+          
+          rem Calculate tens digit (0 or 1)
+          temp2 = temp1 / 10
+          
+          rem Calculate ones digit (0-9)
+          temp3 = temp1 - (temp2 * 10)
+          
+          rem Draw tens digit using player0 sprite
+          rem Position at X=60, Y=40 (center-left of screen)
+          temp1 = temp2 : temp2 = 60 : temp3 = 40 : temp4 = $0E : temp5 = 0
+          gosub DrawDigit
+          
+          rem Draw ones digit using player1 sprite  
+          rem Position at X=68, Y=40 (8 pixels to right of tens digit)
+          temp1 = temp3 : temp2 = 68 : temp3 = 40 : temp4 = $0E : temp5 = 1
+          gosub DrawDigit
+          
+          return
+
+DisplayRandomArena
+          rem Display '??' for random arena selection
+          rem TODO: Add question mark character to font system
+          rem For now, use placeholder values (15 = F) to indicate random
+          rem Position player0 and player1 side-by-side
+          
+          rem Draw first '?' placeholder (using F as temporary)
+          temp1 = 15 : temp2 = 60 : temp3 = 40 : temp4 = $0E : temp5 = 0
+          gosub DrawDigit
+          
+          rem Draw second '?' placeholder (using F as temporary)
+          temp1 = 15 : temp2 = 68 : temp3 = 40 : temp4 = $0E : temp5 = 1
+          gosub DrawDigit
+          
+          rem Note: This displays "FF" temporarily until question mark is added to font
+          
+          return

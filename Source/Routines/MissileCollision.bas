@@ -47,7 +47,7 @@ CheckAllMissileCollisions
           rem No active missile
           
           rem Get character type to determine missile properties
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Check if this is a visible missile or AOE attack
           rem Read missile width from character data (in Bank 6)
@@ -80,7 +80,7 @@ CheckVisibleMissileCollision
           
           rem Get missile size from character data (in Bank 6)
           rem Get character type from player
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           temp1 = temp5 
           rem Use as index
           gosub bank6 GetMissileWidth
@@ -162,7 +162,7 @@ SkipSecondParticipant4
           rem   temp4 = hit participant array index (0-3 maps to participants 1-4), or 255 if no hit
 CheckAOECollision
           rem Get attacker character type
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Check if this is Bernie (character 0)
           rem Bernie attacks both left AND right, so check both directions

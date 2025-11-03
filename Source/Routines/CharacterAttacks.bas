@@ -187,7 +187,7 @@ UrsuloAttack
           rem Shamone special attack: jumps while attacking simultaneously
 ShamoneAttack
           rem First, execute the jump
-          let playerY[currentPlayer] = playerY[currentPlayer] - 11 
+          let PlayerY[currentPlayer] = PlayerY[currentPlayer] - 11 
           rem Light character, good jump
           let playerState[currentPlayer] = playerState[currentPlayer] | 4
           rem Set jumping flag
@@ -206,7 +206,7 @@ ShamoneAttack
           rem INPUT:
           rem   currentPlayer = attacker participant array index (0-3 maps to participants 1-4)
 
-          rem All character attack routines will look up playerX[currentPlayer], playerY[currentPlayer],
+          rem All character attack routines will look up playerX[currentPlayer], PlayerY[currentPlayer],
           rem playerState[currentPlayer], etc. as needed.
 
 DispatchCharacterAttack

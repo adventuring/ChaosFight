@@ -438,6 +438,34 @@
           rem Array accessible as harpyLastFlapFrame[0] through harpyLastFlapFrame[3]
 
           rem =================================================================
+          rem ADMIN MODE - SCRAM (r000-r127/w000-w127) - sorted numerically
+          rem =================================================================
+          
+          rem ADMIN: Random character selection flags (SCRAM - used in character select)
+          dim randomSelectFlags_W = w027
+          dim randomSelectFlags_R = r027
+          dim randomSelectFlags = w027
+          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 random selection in progress flags (4 bytes: w027-w030)
+          rem Bit 7 = handicap flag (1 if down+fire was held), bits 0-6 unused
+          rem Array accessible as randomSelectFlags[0] through randomSelectFlags[3]
+          
+          rem ADMIN: Character select animation frame counters (SCRAM - used in character select)
+          dim charSelectPlayerAnimFrame_W = w028
+          dim charSelectPlayerAnimFrame_R = r028
+          dim charSelectPlayerAnimFrame = w028
+          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame counters (4 bytes: w028-w031)
+          rem Frame counters for idle/walk animation cycles in character select
+          rem Array accessible as charSelectPlayerAnimFrame[0] through charSelectPlayerAnimFrame[3]
+          
+          rem ADMIN: Character select animation sequence flags (SCRAM - used in character select)
+          dim charSelectPlayerAnimSeq_W = w032
+          dim charSelectPlayerAnimSeq_R = r032
+          dim charSelectPlayerAnimSeq = w032
+          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation sequence flags (4 bytes: w032-w035)
+          rem Bit 0: 0=idle, 1=walk. Toggles every 60 frames
+          rem Array accessible as charSelectPlayerAnimSeq[0] through charSelectPlayerAnimSeq[3]
+
+          rem =================================================================
           rem TODO / FUTURE EXPANSION
           rem =================================================================
           

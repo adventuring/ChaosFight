@@ -4,11 +4,11 @@
     Weight: Medium-Light
     Attack: Ranged (2×2 pixels, ballistic arc)
     Special: Fires projectiles in a parabolic arc
-    Original Game: Dragon's Cache (from the Dragon's Trilogy)
+    Original Game: Dragon's Descent, Dragon's Cache, and Dragon's Havoc (Dragon's Trilogy)
     Author: Todd "Revontulli" Furmanski
     Character: Dragon of Storms
-    Purchase: @url{https://store.atariage.com/products/dragons-cache-atari-2600,Dragon's Cache at AtariAge Store}
-    Forum: @url{https://forums.atariage.com/topic/,Dragon's Cache release thread}
+    Purchase: @url{https://store.atariage.com/products/dragons-descent-atari-2600,Dragon's Descent at AtariAge Store}; @url{https://store.atariage.com/products/dragons-cache-atari-7800,Dragon's Cache at AtariAge Store}; @url{https://store.atariage.com/products/dragons-havoc-atari-7800,Dragon's Havoc at AtariAge Store}; @url{https://atari.com/pages/atari-vcs-store,Dragon's Havoc on Atari VCS eShop}
+    Forum: @url{https://forums.atariage.com/topic/301656-dragons-cache-descent/,Dragon's Cache & Descent release thread}; @url{https://forums.atariage.com/topic/331490-dragons-havoc-homebrew-side-scrolling-shooter/,Dragon's Havoc release thread}
 @end group
 @end display
 

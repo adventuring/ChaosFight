@@ -7,7 +7,7 @@
     Origins: Terrible pests from Syrex, ancient Rome (Karpoi), and Aclypt
     Nature: Vegetable spirits known for their bouncing and biting
     Original Game: Little Cupid Tales, Grizzards, Phantasia, &c.
-    Purchase: @url{https://store.atariage.com/products/grizzards-atari-2600,Grizzards at AtariAge Store}; @url{https://grizzards.com,Grizzards Official Website}; @url{https://store.atariage.com/store_search?q=phantasia,Phantasia at AtariAge Store}; @url{https://phantasiagame.com,Phantasia Official Website}; @url{https://store.atariage.com/store_search?q=little+cupid+tales,Little Cupid Tales at AtariAge Store}
+    Purchase: @url{https://store.atariage.com/products/grizzards-atari-2600,Grizzards at AtariAge Store}; @url{https://grizzards.com,Grizzards Official Website}; @url{https://atari.com/pages/atari-vcs-store,Grizzards on Atari VCS eShop}; @url{https://store.atariage.com/store_search?q=phantasia,Phantasia at AtariAge Store}; @url{https://phantasiagame.com,Phantasia Official Website}; @url{https://atari.com/pages/atari-vcs-store,Phantasia on Atari VCS eShop}; @url{https://store.atariage.com/store_search?q=little+cupid+tales,Little Cupid Tales at AtariAge Store}
     Download: @url{https://grizzards.com,Grizzards free download}; @url{https://phantasiagame.com,Phantasia free download}
     Forum: @url{https://forums.atariage.com/topic/,Grizzards release thread}; @url{https://forums.atariage.com/topic/,Phantasia release thread}
 @end group

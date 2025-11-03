@@ -9,7 +9,7 @@
     Experience: Veteran of maze battles, collector of legendary artifacts
     Original Game: Harpy's Curse
     Author: Todd "Revontulli" Furmanski
-    Purchase: @url{https://store.atariage.com/products/harpys-curse-atari-2600,Harpy's Curse at AtariAge Store}
+    Purchase: @url{https://store.atariage.com/products/harpys-curse-atari-2600,Harpy's Curse at AtariAge Store}; @url{https://atari.com/pages/atari-vcs-store,Harpy's Curse on Atari VCS eShop}
     Forum: @url{https://forums.atariage.com/topic/,Harpy's Curse release thread}
 @end group
 @end display

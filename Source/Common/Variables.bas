@@ -194,6 +194,8 @@
           rem ADMIN: Parade X position (standard RAM var35)
           dim TitleParadeActive = var36    
           rem ADMIN: Parade active flag (standard RAM var36)
+          dim TitleCopyrightTimer = w013   
+          rem ADMIN: Copyright display timer (SCRAM w013, read via r013) - disappears at 5 seconds (300 frames)
           
           rem =================================================================
           rem GAME MODE VARIABLES (Standard RAM + ALL SCRAM)

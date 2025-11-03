@@ -14,7 +14,7 @@
           rem   TitleParadeActive - Boolean: parade currently running
 
           rem TIMING:
-          rem   - Parade starts after 10 seconds (600 frames at 60fps)
+          rem   - Parade starts after 5 seconds (300 frames at 60fps) when copyright disappears
           rem   - Each character moves at 2 pixels/frame (left to right)
           rem   - 1 second pause (60 frames) between characters
           rem   - Characters chosen randomly from 16 available
@@ -30,8 +30,8 @@ UpdateCharacterParade
           rem Increment parade timer
           TitleParadeTimer = TitleParadeTimer + 1
           
-          rem Start parade after 10 seconds (600 frames at 60fps)
-          if TitleParadeTimer < 600 then return
+          rem Start parade after copyright disappears (5 seconds = 300 frames at 60fps)
+          if TitleCopyrightTimer < 300 then return
           
           rem Check if we need to start a new character
           if !TitleParadeActive then

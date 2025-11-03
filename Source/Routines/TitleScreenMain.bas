@@ -9,6 +9,7 @@
 
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   TitleParadeTimer - Frame counter for parade timing
+          rem   TitleCopyrightTimer - Frame counter for copyright display (disappears at 5 seconds)
           rem   TitleParadeChar - Current parade character (0-15)
           rem   TitleParadeX - X position of parade character
           rem   TitleParadeActive - Whether parade is currently running
@@ -23,6 +24,9 @@
 TitleScreen
           rem Title screen loop
 TitleMainLoop
+          rem Increment copyright timer (separate from parade timer)
+          TitleCopyrightTimer = TitleCopyrightTimer + 1
+          
           rem Check for 3-minute timeout (10800 frames at 60fps) - transition to Attract mode
           rem TitleParadeTimer increments each frame in UpdateCharacterParade
           if TitleParadeTimer >= 10800 then goto TitleScreenAttract
@@ -64,6 +68,9 @@ TitleScreenComplete
 BeginTitleScreen
           rem Initialize title screen
           COLUBK = ColGray(0)
+          
+          rem Initialize copyright timer (disappears at 5 seconds = 300 frames)
+          TitleCopyrightTimer = 0
           
           rem Initialize character parade
           TitleParadeTimer = 0

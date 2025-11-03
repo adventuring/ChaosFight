@@ -3,5 +3,5 @@
 ; PAL-specific assembly configuration symbols
 
 bankswitch = 32
-bankswitch_hotspot = $FFF8
+bankswitch_hotspot = $1FE0
 

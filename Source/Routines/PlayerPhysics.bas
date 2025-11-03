@@ -22,17 +22,17 @@
           rem reach the ground level (Y=80).
 PhysicsApplyGravity
           rem Player 1
-          if (PlayerState[0] & 4) <> 0 then Player1GravityDone
+          if (PlayerState[0] & 4) <> 0 then goto Player1GravityDone
           let PlayerY[0] = PlayerY[0] + 1
-          if PlayerY[0] < 80 then Player1GravityDone
+          if PlayerY[0] < 80 then goto Player1GravityDone
           let PlayerY[0] = 80
           let PlayerState[0] = PlayerState[0] & NOT 4
 Player1GravityDone
           
           rem Player 2
-          if (PlayerState[1] & 4) <> 0 then Player2GravityDone
+          if (PlayerState[1] & 4) <> 0 then goto Player2GravityDone
           let PlayerY[1] = PlayerY[1] + 1
-          if PlayerY[1] < 80 then Player2GravityDone
+          if PlayerY[1] < 80 then goto Player2GravityDone
           let PlayerY[1] = 80
           let PlayerState[1] = PlayerState[1] & NOT 4
 Player2GravityDone

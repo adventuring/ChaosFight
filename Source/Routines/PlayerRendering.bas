@@ -104,12 +104,12 @@ RenderMissilesEvenFrame
           
 RenderMissiles2Player
           rem 2-player mode: No multiplexing needed, assign missiles directly
-          rem Game Player 0 missile (missile0)
+          rem Participant 1 (array [0]) missile (missile0, P0 sprite)
           ENAM0 = 0 
           temp4 = MissileActive & 1
           if temp4 then missile0x = MissileX[0] : missile0y = MissileY[0] : ENAM0 = 1
           
-          rem Game Player 1 missile (missile1)
+          rem Participant 2 (array [1]) missile (missile1, P1 sprite)
           ENAM1 = 0 
           temp4 = MissileActive & 2
           if temp4 then missile1x = MissileX[1] : missile1y = MissileY[1] : ENAM1 = 1

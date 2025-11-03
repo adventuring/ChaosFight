@@ -101,7 +101,7 @@ Player3HealthSet
           rem Set if Player 4 selected
 
           rem Initialize missiles
-          rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
+          rem MissileActive uses bit flags: bit 0 = Participant 1 (array [0]), bit 1 = Participant 2 (array [1]), bit 2 = Participant 3 (array [2]), bit 3 = Participant 4 (array [3])
           MissileActive = 0
 
           rem Initialize elimination system

@@ -224,22 +224,22 @@ if PlayerX[2] < PlayerX[3] then
           rem Check missile collisions for at most 2 missiles per frame.
 
           rem SCHEDULE (2-player mode):
-          rem   Even frames: Check Game Player 0 missile collisions
-          rem   Odd frames: Check Game Player 1 missile collisions
+          rem   Even frames: Check Participant 1 (array [0]) missile collisions
+          rem   Odd frames: Check Participant 2 (array [1]) missile collisions
 
           rem SCHEDULE (4-player mode):
-          rem   Frame 0: Check Game Player 0 missile vs all players
-          rem   Frame 1: Check Game Player 1 missile vs all players
-          rem   Frame 2: Check Game Player 2 missile vs all players
-          rem   Frame 3: Check Game Player 3 missile vs all players
+          rem   Frame 0: Check Participant 1 (array [0]) missile vs all players
+          rem   Frame 1: Check Participant 2 (array [1]) missile vs all players
+          rem   Frame 2: Check Participant 3 (array [2]) missile vs all players
+          rem   Frame 3: Check Participant 4 (array [3]) missile vs all players
 BudgetedMissileCollisionCheck
-          rem Use MissileActive bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
+          rem Use MissileActive bit flags: bit 0 = Participant 1 (array [0]), bit 1 = Participant 2 (array [1]), bit 2 = Participant 3 (array [2]), bit 3 = Participant 4 (array [3])
           rem Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
           
 if !(ControllerStatus & SetQuadtariDetected) then 
           rem Simple 2-player mode: alternate missiles
           temp1 = frame & 1
-          rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
+          rem Use frame bit to alternate: 0 = Participant 1 (array [0]), 1 = Participant 2 (array [1])
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           if temp1 = 0 then temp6 = 1
           if temp1 = 1 then temp6 = 2

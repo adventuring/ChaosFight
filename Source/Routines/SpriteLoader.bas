@@ -229,13 +229,13 @@ end
           rem LOAD PLAYER SPRITE (generic dispatcher)
           rem =================================================================
           rem Load sprite data for any player using character art system
-          rem Input: temp1 = character index (from PlayerChar array) - may be unset, will get from player
+          rem Input: temp1 = character index (from playerChar array) - may be unset, will get from player
           rem        temp2 = animation frame (0-7) from sprite 10fps counter
           rem        temp3 = animation action (0-15) from CurrentAnimationSeq
           rem        temp4 = player number (0-3)
           rem Note: Frame is relative to sprite own 10fps counter, NOT global frame counter
 LoadPlayerSprite
-          rem Get character index for this player from PlayerChar array
+          rem Get character index for this player from playerChar array
           rem Use skip-over pattern to avoid complex compound statements
           if ! temp4 then goto LoadPlayerSpriteP0
           if temp4 = 1 then goto LoadPlayerSpriteP1
@@ -244,19 +244,19 @@ LoadPlayerSprite
           return
           
 LoadPlayerSpriteP0
-          temp1 = PlayerChar[0]
+          temp1 = playerChar[0]
           goto LoadPlayerSpriteDispatch
           
 LoadPlayerSpriteP1
-          temp1 = PlayerChar[1]
+          temp1 = playerChar[1]
           goto LoadPlayerSpriteDispatch
           
 LoadPlayerSpriteP2
-          temp1 = PlayerChar[2]
+          temp1 = playerChar[2]
           goto LoadPlayerSpriteDispatch
           
 LoadPlayerSpriteP3
-          temp1 = PlayerChar[3]
+          temp1 = playerChar[3]
           goto LoadPlayerSpriteDispatch
           
 LoadPlayerSpriteDispatch

@@ -5,7 +5,7 @@
           rem CHARACTER-SPECIFIC CONTROL LOGIC
           rem =================================================================
           rem Handles character-specific jump and down button behaviors.
-          rem Called via "on PlayerChar[n] goto" dispatch from PlayerInput.bas
+          rem Called via "on playerChar[n] goto" dispatch from PlayerInput.bas
 
           rem INPUT VARIABLE:
           rem   temp1 = participant array index (0-3 maps to participants 1-4)

@@ -5,7 +5,10 @@
     Attack: Melée (BOTH DIRECTIONS!)
     Special: No jumping; wraps from bottom to top of screen; fall damage immunity
     Original Game: Bernie and the Towers of Doom (Atari 7800)
-    Author: Lewis "Muddyfunster" Hill of Muddyvision
+    Author: Lewis "Muddyfunster" Hill of Muddyvision @url{https://muddyvision.com,Muddyvision}
+    Purchase: @url{https://store.atariage.com/products/bernie-and-the-tower-of-doom-atari-7800,Bernie and the Tower of Doom at AtariAge Store}
+    Download: @url{https://muddyvision.com,Bernie and the Tower of Doom free download}
+    Forum: @url{https://forums.atariage.com/topic/345295-bernie-the-tower-of-doom-done/,Bernie and the Tower of Doom release thread}
 @end group
 @end display
 

@@ -7,6 +7,9 @@
     Career History: Fairy employee, bank guard, sewer cleaner, curling athlete
     Former Team: Team Koe (Edmonton) member@footnote{Team Koe is a professional curling team based in Calgary/Edmonton, Alberta. Curling team names and trademarks are property of their respective organizations.}
     Original Game: Ratcatcher, Magical Fairy Force, and Rob 'N' Banks
+    Author: Ryan Witmer @url{https://phasercat.com,Phaser Cat Games}
+    Purchase: @url{https://store.atariage.com/products/rob-n-banks-atari-2600,Rob 'N' Banks at AtariAge Store}; @url{https://store.atariage.com/products/magical-fairy-force-atari-2600,Magical Fairy Force at AtariAge Store}; @url{https://store.atariage.com/products/ratcatcher-atari-2600,Ratcatcher at AtariAge Store}; @url{https://store.steampowered.com/app/,Magical Fairy Force Championship Adventure on Steam}
+    Forum: @url{https://forums.atariage.com/topic/,Rob 'N' Banks release thread}; @url{https://forums.atariage.com/topic/,Magical Fairy Force release thread}; @url{https://forums.atariage.com/topic/,Ratcatcher release thread}; @url{https://forums.atariage.com/topic/,Fairy Drop release thread}
 @end group
 @end display
 

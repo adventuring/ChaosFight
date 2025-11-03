@@ -24,52 +24,52 @@
           rem Used for character animation sequences
           rem Each action has up to 8 frames (0-7)
           
-          const AnimStanding = 0
+          const ActionStanding = 0
           rem Standing still (facing right)
           
-          const AnimIdle = 1
+          const ActionIdle = 1
           rem Idle (resting)
           
-          const AnimGuarding = 2
+          const ActionGuarding = 2
           rem Standing still guarding
           
-          const AnimWalking = 3
+          const ActionWalking = 3
           rem Walking/running
           
-          const AnimStopping = 4
+          const ActionStopping = 4
           rem Coming to stop
           
-          const AnimHit = 5
+          const ActionHit = 5
           rem Taking a hit
           
-          const AnimFallBack = 6
+          const ActionFallBack = 6
           rem Falling backwards
           
-          const AnimFallDown = 7
+          const ActionFallDown = 7
           rem Falling down
           
-          const AnimFallen = 8
+          const ActionFallen = 8
           rem Fallen down
           
-          const AnimRecovering = 9
+          const ActionRecovering = 9
           rem Recovering to standing
           
-          const AnimJumping = 10
+          const ActionJumping = 10
           rem Jumping
           
-          const AnimFalling = 11
+          const ActionFalling = 11
           rem Falling after jump
           
-          const AnimLanding = 12
+          const ActionLanding = 12
           rem Landing
           
-          const AnimAttackWindup = 13
+          const ActionAttackWindup = 13
           rem Attack windup
           
-          const AnimAttackExecute = 14
+          const ActionAttackExecute = 14
           rem Attack execution
           
-          const AnimAttackRecovery = 15
+          const ActionAttackRecovery = 15
           rem Attack recovery
 
           rem NOTE: RoboTito repurposes existing animation states:

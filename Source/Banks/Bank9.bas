@@ -7,7 +7,9 @@
           rem Grouped together - title screen flow
           rem TitleSequence.bas has been split into separate files below
           #include "Source/Routines/PublisherPreamble.bas"
+          #include "Source/Routines/BeginAuthorPrelude.bas"
           #include "Source/Routines/AuthorPreamble.bas"
+          #include "Source/Routines/BeginAttractMode.bas"
           #include "Source/Routines/TitleScreenMain.bas"
 
           #include "Source/Data/SpecialSprites.bas"

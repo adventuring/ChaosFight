@@ -3,10 +3,10 @@
 
 SelScreenEntry
           rem Initialize character selections
-          let PlayerChar[0] = 0
-          let PlayerChar[1] = 0
-          let PlayerChar[2] = 0
-          let PlayerChar[3] = 0
+          let playerChar[0] = 0
+          let playerChar[1] = 0
+          let playerChar[2] = 0
+          let playerChar[3] = 0
           let PlayerLocked[0] = 0
           let PlayerLocked[1] = 0
           let PlayerLocked[2] = 0
@@ -36,18 +36,18 @@ SelScreenLoop
           if qtcontroller then goto SelHandleQuad
           
           rem Handle Player 1 input (joy0 on even frames)
-          if joy0left then PlayerChar[0] = PlayerChar[0] - 1 : goto SelChkP0Left
+          if joy0left then playerChar[0] = playerChar[0] - 1 : goto SelChkP0Left
           goto SelSkipP0Left
 
 SelChkP0Left
-          if PlayerChar[0] > MaxCharacter then PlayerChar[0] = MaxCharacter : PlayerLocked[0] = 0
+          if playerChar[0] > MaxCharacter then playerChar[0] = MaxCharacter : PlayerLocked[0] = 0
           
 SelSkipP0Left
-          if joy0right then PlayerChar[0] = PlayerChar[0] + 1 : goto SelChkP0Right
+          if joy0right then playerChar[0] = playerChar[0] + 1 : goto SelChkP0Right
           goto SelSkipP0Right
 
 SelChkP0Right
-          if PlayerChar[0] > MaxCharacter then PlayerChar[0] = 0 : PlayerLocked[0] = 0
+          if playerChar[0] > MaxCharacter then playerChar[0] = 0 : PlayerLocked[0] = 0
           
 SelSkipP0Right
           if joy0up then PlayerLocked[0] = 0 
@@ -76,17 +76,17 @@ SelP0Handi
 SelP0Done
 
           rem Handle Player 2 input (joy1 on even frames)
-          if joy1left then PlayerChar[1] = PlayerChar[1] - 1 : goto SelChkP1Left
+          if joy1left then playerChar[1] = playerChar[1] - 1 : goto SelChkP1Left
           goto SelSkipP1Left
 
 SelChkP1Left
-          if PlayerChar[1] > MaxCharacter then PlayerChar[1] = MaxCharacter : PlayerLocked[1] = 0
+          if playerChar[1] > MaxCharacter then playerChar[1] = MaxCharacter : PlayerLocked[1] = 0
 SelSkipP1Left
-          if joy1right then PlayerChar[1] = PlayerChar[1] + 1 : goto SelChkP1Right
+          if joy1right then playerChar[1] = playerChar[1] + 1 : goto SelChkP1Right
           goto SelSkipP1Right
 
 SelChkP1Right
-          if PlayerChar[1] > MaxCharacter then PlayerChar[1] = 0 : PlayerLocked[1] = 0
+          if playerChar[1] > MaxCharacter then playerChar[1] = 0 : PlayerLocked[1] = 0
 SelSkipP1Right
           if joy1up then PlayerLocked[1] = 0 
           rem Unlock by moving up
@@ -123,19 +123,19 @@ SelHandleQuad
           goto SelSkipP2
 
 SelHandleP2
-          if joy0left then PlayerChar[2] = PlayerChar[2] - 1 : goto SelChkP2Left
+          if joy0left then playerChar[2] = playerChar[2] - 1 : goto SelChkP2Left
 
           goto SelSkipP2Left
 
 SelChkP2Left
-          if PlayerChar[2] > MaxCharacter then PlayerChar[2] = MaxCharacter : PlayerLocked[2] = 0
+          if playerChar[2] > MaxCharacter then playerChar[2] = MaxCharacter : PlayerLocked[2] = 0
 SelSkipP2Left
-          if joy0right then PlayerChar[2] = PlayerChar[2] + 1 : goto SelChkP2Right
+          if joy0right then playerChar[2] = playerChar[2] + 1 : goto SelChkP2Right
 
           goto SelSkipP2Right
 
 SelChkP2Right
-          if PlayerChar[2] > MaxCharacter then PlayerChar[2] = 0 : PlayerLocked[2] = 0
+          if playerChar[2] > MaxCharacter then playerChar[2] = 0 : PlayerLocked[2] = 0
 SelSkipP2Right
           if joy0up then PlayerLocked[2] = 0 
           rem Unlock by moving up
@@ -170,8 +170,8 @@ SelJoy0Done2
           goto SelSkipP3Alt
 
 SelHandleP3
-          if joy1left then PlayerChar[3] = PlayerChar[3] - 1 : if PlayerChar[3] > MaxCharacter then PlayerChar[3] = MaxCharacter : PlayerLocked[3] = 0
-          if joy1right then PlayerChar[3] = PlayerChar[3] + 1 : if PlayerChar[3] > MaxCharacter then PlayerChar[3] = 0 : PlayerLocked[3] = 0
+          if joy1left then playerChar[3] = playerChar[3] - 1 : if playerChar[3] > MaxCharacter then playerChar[3] = MaxCharacter : PlayerLocked[3] = 0
+          if joy1right then playerChar[3] = playerChar[3] + 1 : if playerChar[3] > MaxCharacter then playerChar[3] = 0 : PlayerLocked[3] = 0
           if joy1up then PlayerLocked[3] = 0 
           rem Unlock by moving up
           if joy1down then goto SelChkJoy1Fire3
@@ -540,10 +540,10 @@ SelAnimDone
 SelScreenDone
           rem Character selection complete
           rem Store selected characters for use in game
-          let selectedChar1 = PlayerChar[0]
-          let selectedChar2 = PlayerChar[1]
-          let selectedChar3 = PlayerChar[2]
-          let selectedChar4 = PlayerChar[3]
+          let selectedChar1 = playerChar[0]
+          let selectedChar2 = playerChar[1]
+          let selectedChar3 = playerChar[2]
+          let selectedChar4 = playerChar[3]
 
           rem Proceed to falling animation
           return

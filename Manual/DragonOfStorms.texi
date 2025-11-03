@@ -4,11 +4,11 @@
     Weight: Medium-Light
     Attack: Ranged (2×2 pixels, ballistic arc)
     Special: Fires projectiles in a parabolic arc
-    Original Game: Dragon's Havoc (from the Dragon's Trilogy)
+    Original Game: Dragon's Cache (from the Dragon's Trilogy)
     Author: Todd "Revontulli" Furmanski
     Character: Dragon of Storms
-    Purchase: @url{https://store.atariage.com/products/dragons-havoc-atari-2600,Dragon's Havoc at AtariAge Store}
-    Forum: @url{https://forums.atariage.com/topic/,Dragon's Havoc release thread}
+    Purchase: @url{https://store.atariage.com/products/dragons-cache-atari-2600,Dragon's Cache at AtariAge Store}
+    Forum: @url{https://forums.atariage.com/topic/,Dragon's Cache release thread}
 @end group
 @end display
 

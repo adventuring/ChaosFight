@@ -1,154 +1,104 @@
 ; This file contains variable mapping and other information for the current project.
 
-PixelIndex = temp7
+ShamoneFrameMap_length = .skipL0923-ShamoneFrameMap 
  
-PixelIndex = temp7
+ShamoneFrames_length = .skipL0922-ShamoneFrames 
  
-PixelIndex = temp7
+UrsuloFrameMap_length = .skipL0917-UrsuloFrameMap 
  
-PixelIndex = temp7
+UrsuloFrames_length = .skipL0916-UrsuloFrames 
  
-HealthBarLength = temp5
+RoboTitoFrameMap_length = .skipL0911-RoboTitoFrameMap 
  
-PlayerColorsDark_length = .skipL02560-PlayerColorsDark 
+RoboTitoFrames_length = .skipL0910-RoboTitoFrames 
  
-PlayerColorsLight_length = .skipL02558-PlayerColorsLight 
+RadishGoblinFrameMap_length = .skipL0905-RadishGoblinFrameMap 
  
-NoSprite_length = .skipL02413-NoSprite 
+RadishGoblinFrames_length = .skipL0904-RadishGoblinFrames 
  
-CPUSprite_length = .skipL02412-CPUSprite 
+PorkChopFrameMap_length = .skipL0899-PorkChopFrameMap 
  
-QuestionMarkSprite_length = .skipL02411-QuestionMarkSprite 
+PorkChopFrames_length = .skipL0898-PorkChopFrames 
  
-MethHoundFrameMap_length = .skipL0825-MethHoundFrameMap 
+NinjishGuyFrameMap_length = .skipL0893-NinjishGuyFrameMap 
  
-MethHoundFrames_length = .skipL0824-MethHoundFrames 
+NinjishGuyFrames_length = .skipL0892-NinjishGuyFrames 
  
-Character30FrameMap_length = .skipL0819-Character30FrameMap 
+NefertemFrameMap_length = .skipL0887-NefertemFrameMap 
  
-Character30Frames_length = .skipL0818-Character30Frames 
+NefertemFrames_length = .skipL0886-NefertemFrames 
  
-Character29FrameMap_length = .skipL0813-Character29FrameMap 
+FrootyFrameMap_length = .skipL0881-FrootyFrameMap 
  
-Character29Frames_length = .skipL0812-Character29Frames 
+FrootyFrames_length = .skipL0880-FrootyFrames 
  
-Character28FrameMap_length = .skipL0807-Character28FrameMap 
+KnightGuyFrameMap_length = .skipL0868-KnightGuyFrameMap 
  
-Character28Frames_length = .skipL0806-Character28Frames 
+KnightGuyFrames_length = .skipL0867-KnightGuyFrames 
  
-Character27FrameMap_length = .skipL0801-Character27FrameMap 
+HarpyFrameMap_length = .skipL0862-HarpyFrameMap 
  
-Character27Frames_length = .skipL0800-Character27Frames 
+HarpyFrames_length = .skipL0861-HarpyFrames 
  
-Character26FrameMap_length = .skipL0795-Character26FrameMap 
+MegaxFrameMap_length = .skipL0856-MegaxFrameMap 
  
-Character26Frames_length = .skipL0794-Character26Frames 
+MegaxFrames_length = .skipL0855-MegaxFrames 
  
-Character25FrameMap_length = .skipL0789-Character25FrameMap 
+FatTonyFrameMap_length = .skipL0850-FatTonyFrameMap 
  
-Character25Frames_length = .skipL0788-Character25Frames 
+FatTonyFrames_length = .skipL0849-FatTonyFrames 
  
-Character24FrameMap_length = .skipL0783-Character24FrameMap 
+ZoeRyenFrameMap_length = .skipL0844-ZoeRyenFrameMap 
  
-Character24Frames_length = .skipL0782-Character24Frames 
+ZoeRyenFrames_length = .skipL0843-ZoeRyenFrames 
  
-Character23FrameMap_length = .skipL0770-Character23FrameMap 
+DragonetFrameMap_length = .skipL0838-DragonetFrameMap 
  
-Character23Frames_length = .skipL0769-Character23Frames 
+DragonetFrames_length = .skipL0837-DragonetFrames 
  
-Character22FrameMap_length = .skipL0764-Character22FrameMap 
+CurlerFrameMap_length = .skipL0832-CurlerFrameMap 
  
-Character22Frames_length = .skipL0763-Character22Frames 
+CurlerFrames_length = .skipL0831-CurlerFrames 
  
-Character21FrameMap_length = .skipL0758-Character21FrameMap 
+BernieFrameMap_length = .skipL0826-BernieFrameMap 
  
-Character21Frames_length = .skipL0757-Character21Frames 
- 
-Character20FrameMap_length = .skipL0752-Character20FrameMap 
- 
-Character20Frames_length = .skipL0751-Character20Frames 
- 
-Character19FrameMap_length = .skipL0746-Character19FrameMap 
- 
-Character19Frames_length = .skipL0745-Character19Frames 
- 
-Character18FrameMap_length = .skipL0740-Character18FrameMap 
- 
-Character18Frames_length = .skipL0739-Character18Frames 
- 
-Character17FrameMap_length = .skipL0734-Character17FrameMap 
- 
-Character17Frames_length = .skipL0733-Character17Frames 
- 
-Character16FrameMap_length = .skipL0728-Character16FrameMap 
- 
-Character16Frames_length = .skipL0727-Character16Frames 
- 
-ShamoneFrameMap_length = .skipL0715-ShamoneFrameMap 
- 
-ShamoneFrames_length = .skipL0714-ShamoneFrames 
- 
-UrsuloFrameMap_length = .skipL0709-UrsuloFrameMap 
- 
-UrsuloFrames_length = .skipL0708-UrsuloFrames 
- 
-RoboTitoFrameMap_length = .skipL0703-RoboTitoFrameMap 
- 
-RoboTitoFrames_length = .skipL0702-RoboTitoFrames 
- 
-RadishGoblinFrameMap_length = .skipL0697-RadishGoblinFrameMap 
- 
-RadishGoblinFrames_length = .skipL0696-RadishGoblinFrames 
- 
-PorkChopFrameMap_length = .skipL0691-PorkChopFrameMap 
- 
-PorkChopFrames_length = .skipL0690-PorkChopFrames 
- 
-NinjishGuyFrameMap_length = .skipL0685-NinjishGuyFrameMap 
- 
-NinjishGuyFrames_length = .skipL0684-NinjishGuyFrames 
- 
-NefertemFrameMap_length = .skipL0679-NefertemFrameMap 
- 
-NefertemFrames_length = .skipL0678-NefertemFrames 
- 
-FrootyFrameMap_length = .skipL0673-FrootyFrameMap 
- 
-FrootyFrames_length = .skipL0672-FrootyFrames 
- 
-KnightGuyFrameMap_length = .skipL0660-KnightGuyFrameMap 
- 
-KnightGuyFrames_length = .skipL0659-KnightGuyFrames 
- 
-HarpyFrameMap_length = .skipL0654-HarpyFrameMap 
- 
-HarpyFrames_length = .skipL0653-HarpyFrames 
- 
-MegaxFrameMap_length = .skipL0648-MegaxFrameMap 
- 
-MegaxFrames_length = .skipL0647-MegaxFrames 
- 
-FatTonyFrameMap_length = .skipL0642-FatTonyFrameMap 
- 
-FatTonyFrames_length = .skipL0641-FatTonyFrames 
- 
-ZoeRyenFrameMap_length = .skipL0636-ZoeRyenFrameMap 
- 
-ZoeRyenFrames_length = .skipL0635-ZoeRyenFrames 
- 
-DragonetFrameMap_length = .skipL0630-DragonetFrameMap 
- 
-DragonetFrames_length = .skipL0629-DragonetFrames 
- 
-CurlerFrameMap_length = .skipL0624-CurlerFrameMap 
- 
-CurlerFrames_length = .skipL0623-CurlerFrames 
- 
-BernieFrameMap_length = .skipL0618-BernieFrameMap 
- 
-BernieFrames_length = .skipL0617-BernieFrames 
+BernieFrames_length = .skipL0825-BernieFrames 
  
 bscode_length = 36
+charSelectPlayerAnimSeq = w032
+ 
+charSelectPlayerAnimSeq_R = r032
+ 
+charSelectPlayerAnimSeq_W = w032
+ 
+charSelectPlayerAnimFrame = w028
+ 
+charSelectPlayerAnimFrame_R = r028
+ 
+charSelectPlayerAnimFrame_W = w028
+ 
+randomSelectFlags = w027
+ 
+randomSelectFlags_R = r027
+ 
+randomSelectFlags_W = w027
+ 
+harpyLastFlapFrame = w023
+ 
+harpyLastFlapFrame_R = r023
+ 
+harpyLastFlapFrame_W = w023
+ 
+harpyFlightEnergy = w009
+ 
+harpyFlightEnergy_R = r009
+ 
+harpyFlightEnergy_W = w009
+ 
+missileAngularVel = w017
+ 
+characterStateFlags = w013
+ 
 playersEliminated = w012
  
 playerTimers = w004
@@ -297,6 +247,38 @@ fallSpeed = b
  
 fallFrame = a
  
+SoundEffectFrame1 = w024
+ 
+SoundEffectFrame = w022
+ 
+MusicVoice1Frame = w021
+ 
+MusicVoice0Frame = w020
+ 
+SoundEffectPointer1H = var46
+ 
+SoundEffectPointer1L = var45
+ 
+SoundEffectPointerH = z
+ 
+SoundEffectPointerL = var41
+ 
+SoundPointerH = y
+ 
+SoundPointerL = var39
+ 
+MusicVoice1PointerH = var44
+ 
+MusicVoice1PointerL = var43
+ 
+MusicVoice0PointerH = var42
+ 
+MusicVoice0PointerL = var41
+ 
+SongPointerH = var40
+ 
+SongPointerL = var39
+ 
 colorBWPrevious_R = r008
  
 colorBWPrevious_W = w008
@@ -330,6 +312,18 @@ console7800Detected = e
 gameMode = p
  
 gameState = g
+ 
+MissileFlagHitBoth = 3
+ 
+MissileFlagFriction = 16
+ 
+MissileFlagBounce = 8
+ 
+MissileFlagGravity = 4
+ 
+MissileFlagHitPlayer = 2
+ 
+MissileFlagHitBackground = 1
  
 AnimAttackRecovery = 15
  
@@ -393,33 +387,89 @@ FramesPerSequence = 8
  
 AnimationSequenceCount = 16
  
-MovementFrameRate = 50
+HarpyFlapCooldownFrames = 15
  
-AnimationFrameDelay = 5
+MovementFrameRate = 60
  
-SoundElimination = 7
+AnimationFrameDelay = 6
  
-SoundVictory = 6
+SoundVictory = SoundSpecialMove
  
-SoundSelect = 5
+SoundSelect = SoundMenuSelect
  
-SoundGuard = 4
+SoundElimination = SoundPlayerEliminated
  
-SoundFall = 3
+SoundFall = SoundLandingDamage
  
-SoundHit = 2
+SoundGuard = SoundGuardBlock
  
-SoundAttack = 1
+SoundHit = SoundAttackHit
  
-MusicGameOver = 4
+SoundAttack = SoundAttackHit
  
-MusicVictory = 3
+SoundLandingDamage = 9
  
-MusicAtariToday = 2
+SoundLandingSafe = 8
  
-MusicInterworldly = 1
+SoundPowerup = 7
  
-MusicTitle = 0
+SoundSpecialMove = 6
+ 
+SoundMenuSelect = 5
+ 
+SoundMenuNavigate = 4
+ 
+SoundPlayerEliminated = 3
+ 
+SoundJump = 2
+ 
+SoundGuardBlock = 1
+ 
+SoundAttackHit = 0
+ 
+SongVictory = 4
+ 
+SongGameOver = 3
+ 
+SongTitle = 2
+ 
+SongAuthor = 1
+ 
+SongPublisher = 0
+ 
+PlayerSpriteHalfWidth = 8
+ 
+PlayerSpriteWidth = 16
+ 
+CollisionSeparationDistance = 16
+ 
+HealthBarMaxLength = 32
+ 
+GuardTimerMaxFrames = 60
+ 
+TitleParadeDelayFrames = 600
+ 
+WinScreenAutoAdvanceFrames = 600
+ 
+FramesPerMinutePAL = 3000
+ 
+FramesPerMinute = 3600
+ 
+SecondsPerMinute = 60
+ 
+FramesPerDecisecondPAL = 5
+ 
+FramesPerDecisecond = 6
+ 
+FramesPerSecondPAL = 50
+ 
+FramesPerSecond = 60
+ 
+PlayerHealthLowThreshold = 25
+ 
+PlayerHealthHandicap = 75
+ 
+PlayerHealthMax = 100
  
 ScreenTopWrapThreshold = 200
  
@@ -447,7 +497,15 @@ HitstunFrames = 10
  
 KnockbackImpulse = 4
  
-BounceDampenDivisor = 2
+HarpyFallMultiplier = 128
+ 
+WallBounceVelocityMultiplier = 192
+ 
+MinimumVelocityThreshold = 2
+ 
+CurlingFrictionCoefficient = 32
+ 
+BounceDampenDivisor = 4
  
 GravityPerFrame = 1
  
@@ -495,6 +553,8 @@ Players34Active = 6
  
 QuadtariDetected = 7
  
+MaskDimColor = $F6
+ 
 VBlankGroundINPT0123 = $C0
  
 PaddleRightButton = 2
@@ -502,6 +562,14 @@ PaddleRightButton = 2
 PaddleLeftButton = 0
  
 HighBit = $80
+ 
+MaskAnimationFalling = %10100000
+ 
+MaskAnimationRecovering = %10010000
+ 
+MaskClearFacing = %11111110
+ 
+MaskClearGuard = %11111101
  
 ShiftAnimationState = 4
  
@@ -529,11 +597,15 @@ SpriteCPU = 1
  
 SpriteQuestionMark = 0
  
+RandomCharacter = 253
+ 
 CPUCharacter = 254
  
 NoCharacter = 255
  
 MaxCharacter = 15
+ 
+NumCharacters = 16
  
 KnockbackDistance = 12
  
@@ -543,7 +615,9 @@ RandomLevel = 0
  
 NumLevels = 2
  
-BuildDate = 306
+BuildDay = 306
+ 
+BuildYear = 2025
  
 GameVersionMinor = 1
  
@@ -558,7 +632,7 @@ player1colors = 1
 player1colors = 1
 playercolors = 1
 multisprite = 1
-vblank_time = 58
-overscan_time = 82
-TVStandard = PAL
+vblank_time = 43
+overscan_time = 37
+TVStandard = NTSC
  

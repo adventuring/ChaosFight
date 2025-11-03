@@ -87,10 +87,10 @@ Player3HealthSet
           let PlayerDamage[3] = 22
           
           rem Set character types from character select
-          let PlayerChar[0] = selectedChar1
-          let PlayerChar[1] = selectedChar2
-          let PlayerChar[2] = selectedChar3
-          let PlayerChar[3] = selectedChar4
+          let playerChar[0] = selectedChar1
+          let playerChar[1] = selectedChar2
+          let playerChar[2] = selectedChar3
+          let playerChar[3] = selectedChar4
 
           rem Update Players34Active flag based on character selections
           rem Flag is used for missile multiplexing (only multiplex when players 3 or 4 are active)

@@ -170,8 +170,8 @@ CheckAOECollision
           
           rem Normal character: Check only facing direction
           temp6 = PlayerState[temp1] & 1
-          if temp6 = 0 then gosub CheckAOEDirection_Left : return
-          gosub CheckAOEDirection_Right
+          if temp6 = 0 then gosub CheckAOEDirectionLeft : return
+          gosub CheckAOEDirectionRight
           return
           
 CheckBernieAOE
@@ -184,7 +184,7 @@ CheckBernieAOE
           
 CheckBernieAOELeft
           rem Check left direction
-          gosub CheckAOEDirection_Left
+          gosub CheckAOEDirectionLeft
           return
 
           rem =================================================================
@@ -277,7 +277,7 @@ SkipAOEPlayer3
 
           rem OUTPUT:
           rem   temp4 = hit participant array index (0-3 maps to participants 1-4), or 255 if no hit
-CheckAOEDirection_Left
+CheckAOEDirectionLeft
           rem Get attacker position
           temp2 = PlayerX[temp1]
           temp3 = PlayerY[temp1]

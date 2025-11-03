@@ -169,6 +169,24 @@
           dim MusicVoice1Frame = w021
           rem Frame counters for current notes on each voice (SCRAM acceptable)
           
+          rem Music System Envelope State (SCRAM - used in Admin Mode)
+          dim MusicVoice0TargetAUDV_W = w036
+          dim MusicVoice0TargetAUDV_R = r036
+          dim MusicVoice0TargetAUDV = w036
+          rem Target AUDV value from note data (for envelope calculation)
+          dim MusicVoice1TargetAUDV_W = w037
+          dim MusicVoice1TargetAUDV_R = r037
+          dim MusicVoice1TargetAUDV = w037
+          rem Target AUDV value from note data (for envelope calculation)
+          dim MusicVoice0TotalFrames_W = w038
+          dim MusicVoice0TotalFrames_R = r038
+          dim MusicVoice0TotalFrames = w038
+          rem Total frames (Duration + Delay) when note was loaded (for envelope calculation)
+          dim MusicVoice1TotalFrames_W = w039
+          dim MusicVoice1TotalFrames_R = r039
+          dim MusicVoice1TotalFrames = w039
+          rem Total frames (Duration + Delay) when note was loaded (for envelope calculation)
+          
           rem Sound Effect System Frame Counters (SCRAM - used in Game Mode)
           dim SoundEffectFrame = w022
           dim SoundEffectFrame1 = w024

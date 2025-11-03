@@ -125,7 +125,11 @@ LoadMusicNote0
           temp6 = temp6 / 16
           temp7 = temp2 & %00001111
           
-          rem Write to TIA registers
+          rem Store target AUDV and total frames for envelope calculation
+          let MusicVoice0TargetAUDV = temp7
+          let MusicVoice0TotalFrames = temp4 + temp5
+          
+          rem Write to TIA registers (will be adjusted by envelope in UpdateMusicVoice0)
           AUDC0 = temp6
           AUDF0 = temp3
           AUDV0 = temp7
@@ -166,7 +170,11 @@ LoadMusicNote1
           temp6 = temp6 / 16
           temp7 = temp2 & %00001111
           
-          rem Write to TIA registers (Voice 1)
+          rem Store target AUDV and total frames for envelope calculation
+          let MusicVoice1TargetAUDV = temp7
+          let MusicVoice1TotalFrames = temp4 + temp5
+          
+          rem Write to TIA registers (will be adjusted by envelope in UpdateMusicVoice1)
           AUDC1 = temp6
           AUDF1 = temp3
           AUDV1 = temp7

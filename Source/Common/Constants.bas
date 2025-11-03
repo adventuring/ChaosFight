@@ -206,6 +206,14 @@
           rem Auto-advance win screen after 10 seconds (60fps * 10)
           const TitleParadeDelayFrames = 600
           rem Title parade starts after 10 seconds (60fps * 10)
+          
+          rem =================================================================
+          rem MUSIC ENVELOPE CONSTANTS
+          rem =================================================================
+          const NoteAttackFrames = 4
+          rem Number of frames to gradually increase AUDV at note start
+          const NoteDecayFrames = 3
+          rem Number of frames to gradually decrease AUDV at note end
 #ifdef TV_NTSC
           const GuardTimerMaxFrames = 60
           rem Maximum guard timer (1 second at 60fps NTSC)

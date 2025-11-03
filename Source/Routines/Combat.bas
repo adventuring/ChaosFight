@@ -9,11 +9,11 @@ rem Apply damage from attacker to defender
 rem Inputs: attackerId, defenderId
 ApplyDamage
           rem Calculate damage (considering defender state)
-          let damage = PlayerDamage(attackerId) - PlayerDamage(defenderId)
+          let damage = playerDamage(attackerId) - playerDamage(defenderId)
           if damage < 1 then let damage = 1  rem Minimum damage
           
           rem Apply damage
-          let PlayerHealth[defenderId] = PlayerHealth[defenderId] - damage
+          let playerHealth[defenderId] = playerHealth[defenderId] - damage
           
           rem Visual feedback (to be implemented)
           gosub ShowDamageIndicator defenderId, damage
@@ -33,10 +33,10 @@ CheckAttackHit
           rem Check if defender is in hitbox
           rem Initialize hit to 0 (miss)
           let hit = 0
-          if PlayerX[defenderId] < hitboxLeft then goto NoHit
-          if PlayerX[defenderId] > hitboxRight then goto NoHit
-          if PlayerY[defenderId] < hitboxTop then goto NoHit
-          if PlayerY[defenderId] > hitboxBottom then goto NoHit
+          if playerX[defenderId] < hitboxLeft then goto NoHit
+          if playerX[defenderId] > hitboxRight then goto NoHit
+          if playerY[defenderId] < hitboxTop then goto NoHit
+          if playerY[defenderId] > hitboxBottom then goto NoHit
           rem All bounds checks passed - hit detected
           let hit = 1
           return
@@ -56,31 +56,31 @@ MeleeHitbox
           on PlayerFacing(attackerId) goto FacingRight, FacingLeft, FacingUp, FacingDown
           
 FacingRight
-          let hitboxLeft = PlayerX[attackerId] + 8
-          let hitboxRight = PlayerX[attackerId] + 24
-          let hitboxTop = PlayerY[attackerId] - 8
-          let hitboxBottom = PlayerY[attackerId] + 8
+          let hitboxLeft = playerX[attackerId] + 8
+          let hitboxRight = playerX[attackerId] + 24
+          let hitboxTop = playerY[attackerId] - 8
+          let hitboxBottom = playerY[attackerId] + 8
           return
           
 FacingLeft
-          let hitboxLeft = PlayerX[attackerId] - 24
-          let hitboxRight = PlayerX[attackerId] - 8
-          let hitboxTop = PlayerY[attackerId] - 8
-          let hitboxBottom = PlayerY[attackerId] + 8
+          let hitboxLeft = playerX[attackerId] - 24
+          let hitboxRight = playerX[attackerId] - 8
+          let hitboxTop = playerY[attackerId] - 8
+          let hitboxBottom = playerY[attackerId] + 8
           return
           
 FacingUp
-          let hitboxLeft = PlayerX[attackerId] - 8
-          let hitboxRight = PlayerX[attackerId] + 8
-          let hitboxTop = PlayerY[attackerId] - 24
-          let hitboxBottom = PlayerY[attackerId] - 8
+          let hitboxLeft = playerX[attackerId] - 8
+          let hitboxRight = playerX[attackerId] + 8
+          let hitboxTop = playerY[attackerId] - 24
+          let hitboxBottom = playerY[attackerId] - 8
           return
           
 FacingDown
-          let hitboxLeft = PlayerX[attackerId] - 8
-          let hitboxRight = PlayerX[attackerId] + 8
-          let hitboxTop = PlayerY[attackerId] + 8
-          let hitboxBottom = PlayerY[attackerId] + 24
+          let hitboxLeft = playerX[attackerId] - 8
+          let hitboxRight = playerX[attackerId] + 8
+          let hitboxTop = playerY[attackerId] + 8
+          let hitboxBottom = playerY[attackerId] + 24
           return
           
 ProjectileHitbox
@@ -103,7 +103,7 @@ rem Process attack for one attacker against all defenders
 rem Input: attackerId
 ProcessAttackerAttacks
           rem Check if attacker is attacking
-          if (PlayerState[attackerId] & %00000001) = 0 then return
+          if (playerState[attackerId] & %00000001) = 0 then return
           
           rem Attack each defender
           for defender = 0 to 3
@@ -111,7 +111,7 @@ ProcessAttackerAttacks
                     if defender = attackerId then goto NextDefender
                     
                     rem Skip if defender is dead
-                    if PlayerHealth[defender] <= 0 then goto NextDefender
+                    if playerHealth[defender] <= 0 then goto NextDefender
                     
                     rem Check if attack hits
                     gosub CheckAttackHit attackerId, defender
@@ -126,7 +126,7 @@ rem Process all attacks for all players
 ProcessAllAttacks
           for attacker = 0 to 3
                     rem Skip if attacker is dead
-                    if PlayerHealth[attacker] <= 0 then goto NextAttacker
+                    if playerHealth[attacker] <= 0 then goto NextAttacker
                     
                     gosub ProcessAttackerAttacks attacker
                     
@@ -180,7 +180,7 @@ PerformMeleeAttack
           gosub bank7 SpawnMissile
           
           rem Set animation state to attacking
-          let PlayerState[currentPlayer] = (PlayerState[currentPlayer] & %00001111) | (14 << 4)
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
           
           rem Check immediate collision with other players in melee range
@@ -202,7 +202,7 @@ PerformRangedAttack
           gosub bank7 SpawnMissile
           
           rem Set animation state to attacking
-          let PlayerState[currentPlayer] = (PlayerState[currentPlayer] & %00001111) | (14 << 4)
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
           
           return

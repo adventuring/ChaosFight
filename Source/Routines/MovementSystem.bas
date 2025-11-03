@@ -24,8 +24,8 @@ UpdatePlayerMovementSingle
           if playerHealth[currentPlayer] = 0 then return
           
           rem Update subpixel positions with velocity
-          let PlayerSubpixelX[currentPlayer] = PlayerSubpixelX[currentPlayer] + PlayerVelocityX[currentPlayer]
-          let PlayerSubpixelY[currentPlayer] = PlayerSubpixelY[currentPlayer] + PlayerVelocityY[currentPlayer]
+          let playerSubpixelX[currentPlayer] = playerSubpixelX[currentPlayer] + playerVelocityX[currentPlayer]
+          let playerSubpixelY[currentPlayer] = playerSubpixelY[currentPlayer] + playerVelocityY[currentPlayer]
           
           rem Convert subpixel positions to sprite positions
           gosub UpdateSpritePositions
@@ -36,9 +36,9 @@ UpdatePlayerMovementSingle
           rem Input: currentPlayer = player index (0-3)
 UpdateSpritePositions
           rem Convert 8.8 fixed-point to 8-bit sprite X
-          temp2 = PlayerSubpixelX[currentPlayer] >> 8 
+          temp2 = playerSubpixelX[currentPlayer] >> 8 
           rem Upper 8 bits (integer part)
-          temp3 = PlayerSubpixelY[currentPlayer] >> 8 
+          temp3 = playerSubpixelY[currentPlayer] >> 8 
           rem Upper 8 bits (integer part)
           
           rem Set sprite positions based on player index
@@ -53,16 +53,16 @@ UpdateSpritePositions
           rem Input: currentPlayer = player index (0-3), temp2 = X velocity, temp3 = Y velocity
 SetPlayerVelocity
           rem Set 8.8 fixed-point velocities (input already in 8.8 format)
-          let PlayerVelocityX[currentPlayer] = temp2
-          let PlayerVelocityY[currentPlayer] = temp3
+          let playerVelocityX[currentPlayer] = temp2
+          let playerVelocityY[currentPlayer] = temp3
           return
 
           rem Set player position
           rem Input: currentPlayer = player index (0-3), temp2 = X position, temp3 = Y position
 SetPlayerPosition
           rem Set 8.8 fixed-point positions (input already in 8.8 format)
-          let PlayerSubpixelX[currentPlayer] = temp2
-          let PlayerSubpixelY[currentPlayer] = temp3
+          let playerSubpixelX[currentPlayer] = temp2
+          let playerSubpixelY[currentPlayer] = temp3
           
           rem Update sprite positions immediately
           gosub UpdateSpritePositions
@@ -72,9 +72,9 @@ SetPlayerPosition
           rem Input: currentPlayer = player index (0-3)
           rem Output: temp2 = X position, temp3 = Y position
 GetPlayerPosition
-          temp2 = PlayerSubpixelX[currentPlayer] >> 8 
+          temp2 = playerSubpixelX[currentPlayer] >> 8 
           rem Upper 8 bits (integer part)
-          temp3 = PlayerSubpixelY[currentPlayer] >> 8 
+          temp3 = playerSubpixelY[currentPlayer] >> 8 
           rem Upper 8 bits (integer part)
           return
 
@@ -82,9 +82,9 @@ GetPlayerPosition
           rem Input: currentPlayer = player index (0-3)
           rem Output: temp2 = X velocity, temp3 = Y velocity
 GetPlayerVelocity
-          temp2 = PlayerVelocityX[currentPlayer] >> 8 
+          temp2 = playerVelocityX[currentPlayer] >> 8 
           rem Upper 8 bits (integer part)
-          temp3 = PlayerVelocityY[currentPlayer] >> 8 
+          temp3 = playerVelocityY[currentPlayer] >> 8 
           rem Upper 8 bits (integer part)
           return
 
@@ -92,16 +92,16 @@ GetPlayerVelocity
           rem Input: currentPlayer = player index (0-3), temp2 = gravity strength
 MovementApplyGravity
           rem Add gravity to Y velocity
-          let PlayerVelocityY[currentPlayer] = PlayerVelocityY[currentPlayer] + temp2
+          let playerVelocityY[currentPlayer] = playerVelocityY[currentPlayer] + temp2
           return
 
           rem Apply friction to player
           rem Input: currentPlayer = player index (0-3), temp2 = friction strength (0-255)
 ApplyFriction
           rem Apply friction to X velocity
-          temp3 = PlayerVelocityX[currentPlayer] * temp2 / 256 
+          temp3 = playerVelocityX[currentPlayer] * temp2 / 256 
           rem Scale by friction
-          let PlayerVelocityX[currentPlayer] = temp3
+          let playerVelocityX[currentPlayer] = temp3
           return
 
           rem =================================================================
@@ -172,12 +172,12 @@ ConstrainToScreen
           rem temp2=X, temp3=Y
           
           rem Constrain X position (0 to 152 for 8-pixel wide sprite)
-          if temp2 > PlayerSubpixelX[currentPlayer] then temp2 = 0 : PlayerSubpixelX[currentPlayer] = 0
-          if temp2 > 152 then temp2 = 152 : PlayerSubpixelX[currentPlayer] = 152 << 8
+          if temp2 > playerSubpixelX[currentPlayer] then temp2 = 0 : playerSubpixelX[currentPlayer] = 0
+          if temp2 > 152 then temp2 = 152 : playerSubpixelX[currentPlayer] = 152 << 8
           
           rem Constrain Y position (0 to 184 for 16-pixel tall sprite)
-          if temp3 > PlayerSubpixelY[currentPlayer] then temp3 = 0 : PlayerSubpixelY[currentPlayer] = 0
-          if temp3 > 184 then temp3 = 184 : PlayerSubpixelY[currentPlayer] = 184 << 8
+          if temp3 > playerSubpixelY[currentPlayer] then temp3 = 0 : playerSubpixelY[currentPlayer] = 0
+          if temp3 > 184 then temp3 = 184 : playerSubpixelY[currentPlayer] = 184 << 8
           
           rem Update sprite positions
           gosub UpdateSpritePositions

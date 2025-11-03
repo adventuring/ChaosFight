@@ -14,7 +14,7 @@
           rem   - Frame counter and game state
           rem   - Level data
 
-          rem STATE FLAG DEFINITIONS (in PlayerState):
+          rem STATE FLAG DEFINITIONS (in playerState):
           rem   Bit 0: Facing (1 = right, 0 = left)
           rem   Bit 1: Guarding
           rem   Bit 2: Jumping
@@ -41,50 +41,50 @@ BeginGameLoop
           rem Game mode gravity will handle falling from this position
           
           rem Initialize player states (facing direction)
-          let PlayerState[0] = 1
+          let playerState[0] = 1
           rem Player 1 facing right
-          let PlayerState[1] = 0
+          let playerState[1] = 0
           rem Player 2 facing left
-          let PlayerState[2] = 1
+          let playerState[2] = 1
           rem Player 3 facing right
-          let PlayerState[3] = 0
+          let playerState[3] = 0
           rem Player 4 facing left
           
           rem Initialize player health (apply handicap if selected)
-          rem PlayerLocked value: 0=unlocked, 1=normal (100% health), 2=handicap (75% health)
-          if PlayerLocked[0] = 2 then PlayerHealth[0] = 75 : goto Player0HealthSet
-          let PlayerHealth[0] = 100
+          rem playerLocked value: 0=unlocked, 1=normal (100% health), 2=handicap (75% health)
+          if playerLocked[0] = 2 then playerHealth[0] = 75 : goto Player0HealthSet
+          let playerHealth[0] = 100
 Player0HealthSet
           
-          if PlayerLocked[1] = 2 then PlayerHealth[1] = 75 : goto Player1HealthSet
-          let PlayerHealth[1] = 100
+          if playerLocked[1] = 2 then playerHealth[1] = 75 : goto Player1HealthSet
+          let playerHealth[1] = 100
 Player1HealthSet
           
-          if PlayerLocked[2] = 2 then PlayerHealth[2] = 75 : goto Player2HealthSet
-          let PlayerHealth[2] = 100
+          if playerLocked[2] = 2 then playerHealth[2] = 75 : goto Player2HealthSet
+          let playerHealth[2] = 100
 Player2HealthSet
           
-          if PlayerLocked[3] = 2 then PlayerHealth[3] = 75 : goto Player3HealthSet
-          let PlayerHealth[3] = 100
+          if playerLocked[3] = 2 then playerHealth[3] = 75 : goto Player3HealthSet
+          let playerHealth[3] = 100
 Player3HealthSet
           
           rem Initialize player timers
-          let PlayerTimers[0] = 0
-          let PlayerTimers[1] = 0
-          let PlayerTimers[2] = 0
-          let PlayerTimers[3] = 0
+          let playerTimers[0] = 0
+          let playerTimers[1] = 0
+          let playerTimers[2] = 0
+          let playerTimers[3] = 0
           
           rem Initialize player momentum
-          let PlayerMomentumX[0] = 0
-          let PlayerMomentumX[1] = 0
-          let PlayerMomentumX[2] = 0
-          let PlayerMomentumX[3] = 0
+          let playerMomentumX[0] = 0
+          let playerMomentumX[1] = 0
+          let playerMomentumX[2] = 0
+          let playerMomentumX[3] = 0
           
           rem Initialize player damage values
-          let PlayerDamage[0] = 22
-          let PlayerDamage[1] = 22
-          let PlayerDamage[2] = 22
-          let PlayerDamage[3] = 22
+          let playerDamage[0] = 22
+          let playerDamage[1] = 22
+          let playerDamage[2] = 22
+          let playerDamage[3] = 22
           
           rem Set character types from character select
           let playerChar[0] = selectedChar1
@@ -94,52 +94,52 @@ Player3HealthSet
 
           rem Update Players34Active flag based on character selections
           rem Flag is used for missile multiplexing (only multiplex when players 3 or 4 are active)
-          let ControllerStatus = ControllerStatus & ClearPlayers34Active
+          let controllerStatus = controllerStatus & ClearPlayers34Active
           rem Clear flag first
-          if selectedChar3 <> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
+          if selectedChar3 <> 255 then controllerStatus = controllerStatus | SetPlayers34Active
           rem Set if Player 3 selected
-          if selectedChar4 <> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
+          if selectedChar4 <> 255 then controllerStatus = controllerStatus | SetPlayers34Active
           rem Set if Player 4 selected
 
           rem Initialize missiles
-          rem MissileActive uses bit flags: bit 0 = Participant 1 (array [0]), bit 1 = Participant 2 (array [1]), bit 2 = Participant 3 (array [2]), bit 3 = Participant 4 (array [3])
-          let MissileActive = 0
+          rem missileActive uses bit flags: bit 0 = Participant 1 (array [0]), bit 1 = Participant 2 (array [1]), bit 2 = Participant 3 (array [2]), bit 3 = Participant 4 (array [3])
+          let missileActive = 0
 
           rem Initialize elimination system
-          let PlayersEliminated = 0  
+          let playersEliminated = 0  
           rem No players eliminated at start
-          let PlayersRemaining = 0   
+          let playersRemaining = 0   
           rem Will be calculated
-          let GameEndTimer = 0       
+          let gameEndTimer = 0       
           rem No game end countdown
-          let EliminationCounter = 0 
+          let eliminationCounter = 0 
           rem Reset elimination order counter
           
           rem Initialize elimination order tracking
-          let EliminationOrder[0] = 0
-          let EliminationOrder[1] = 0  
-          let EliminationOrder[2] = 0
-          let EliminationOrder[3] = 0
+          let eliminationOrder[0] = 0
+          let eliminationOrder[1] = 0  
+          let eliminationOrder[2] = 0
+          let eliminationOrder[3] = 0
           
           rem Initialize win screen variables
-          let WinnerPlayerIndex = 255 
+          let winnerPlayerIndex = 255 
           rem No winner yet
-          let DisplayRank = 0         
+          let displayRank = 0         
           rem No rank being displayed  
-          let WinScreenTimer = 0      
+          let winScreenTimer = 0      
           rem Reset win screen timer
 
           rem Count initial players
-          if selectedChar1 <> 255 then PlayersRemaining = PlayersRemaining + 1
-          if selectedChar2 <> 255 then PlayersRemaining = PlayersRemaining + 1  
-          if selectedChar3 <> 255 then PlayersRemaining = PlayersRemaining + 1
-          if selectedChar4 <> 255 then PlayersRemaining = PlayersRemaining + 1
+          if selectedChar1 <> 255 then playersRemaining = playersRemaining + 1
+          if selectedChar2 <> 255 then playersRemaining = playersRemaining + 1  
+          if selectedChar3 <> 255 then playersRemaining = playersRemaining + 1
+          if selectedChar4 <> 255 then playersRemaining = playersRemaining + 1
 
           rem Initialize frame counter
           frame = 0
 
           rem Initialize game state
-          let GameState = 0
+          let gameState = 0
           rem 0 = normal play, 1 = paused, 2 = game ending
           
           rem Initialize health bars

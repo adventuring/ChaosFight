@@ -20,7 +20,7 @@
           rem =================================================================
           rem ANIMATION ACTION ENUMS
           rem =================================================================
-          rem 16 animation actions (0-15) stored in PlayerState bits 4-7
+          rem 16 animation actions (0-15) stored in playerState bits 4-7
           rem Used for character animation sequences
           rem Each action has up to 8 frames (0-7)
           

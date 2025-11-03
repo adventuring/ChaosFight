@@ -3,7 +3,7 @@
 
 BeginLevelSelect
           let selectedArena = 0
-          let LevelSelectHoldTimer = 0
+          let levelSelectHoldTimer = 0
           
           rem Set background color (B&W safe)
           let COLUBK = ColGray(0)

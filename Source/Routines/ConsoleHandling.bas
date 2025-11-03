@@ -12,7 +12,7 @@
           rem   switchbw - Color/B&W → handled in rendering
 
           rem AVAILABLE VARIABLES:
-          rem   GameState - 0=normal play, 1=paused
+          rem   gameState - 0=normal play, 1=paused
           rem =================================================================
 
           rem Main console switch handler
@@ -27,8 +27,8 @@ HandleConsoleSwitches
           if !temp1 then goto SkipPlayer1Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if GameState = 0 then GameState = 1 : goto Player1PauseDone
-          let GameState = 0
+          if gameState = 0 then gameState = 1 : goto Player1PauseDone
+          let gameState = 0
 Player1PauseDone
           rem Debounce - wait for button release
           drawscreen
@@ -42,8 +42,8 @@ SkipPlayer1Pause
           if !temp1 then goto SkipPlayer2Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if GameState = 0 then GameState = 1 : goto Player2PauseDone
-          let GameState = 0
+          if gameState = 0 then gameState = 1 : goto Player2PauseDone
+          let gameState = 0
 Player2PauseDone
           rem Debounce - wait for button release
           drawscreen
@@ -69,9 +69,9 @@ SkipPlayer2Pause
 CheckColorBWToggle
           rem Check if Color/B&W switch state has changed
           temp6 = switchbw
-          if temp6 = ColorBWPrevious then goto SkipColorBWChange
+          if temp6 = colorBWPrevious then goto SkipColorBWChange
           gosub bank14 DetectControllers
-          let ColorBWPrevious = switchbw
+          let colorBWPrevious = switchbw
 SkipColorBWChange
           return
 

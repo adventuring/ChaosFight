@@ -5,11 +5,11 @@
           rem CHANGE GAME MODE
           rem =================================================================
           rem Centralized game mode switching dispatcher.
-          rem Calls appropriate Begin* setup routine for the new GameMode.
+          rem Calls appropriate Begin* setup routine for the new gameMode.
           rem After setup completes, MainLoop dispatches to the appropriate loop.
 
 ChangeGameMode
-          on GameMode goto SetupPublisherPrelude, SetupAuthorPrelude, SetupTitle, SetupCharacterSelect, SetupFallingAnimation, SetupLevelSelect, SetupGame, SetupWinner, SetupAttract
+          on gameMode goto SetupPublisherPrelude, SetupAuthorPrelude, SetupTitle, SetupCharacterSelect, SetupFallingAnimation, SetupLevelSelect, SetupGame, SetupWinner, SetupAttract
           return
           
 SetupPublisherPrelude

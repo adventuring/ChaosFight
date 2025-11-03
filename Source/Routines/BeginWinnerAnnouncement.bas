@@ -9,15 +9,15 @@
 
 BeginWinnerAnnouncement
           rem Initialize Winner Announcement mode
-          rem WinnerPlayerIndex should already be set by game end logic
+          rem winnerPlayerIndex should already be set by game end logic
           
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)
           
           rem Initialize display state
-          rem DisplayRank and WinScreenTimer are managed by DisplayWinScreen
+          rem displayRank and winScreenTimer are managed by DisplayWinScreen
           
-          rem Note: WinnerPlayerIndex, DisplayRank, WinScreenTimer should be
+          rem Note: winnerPlayerIndex, displayRank, winScreenTimer should be
           rem initialized by game end logic in PlayerElimination.bas
           
           return

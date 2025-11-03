@@ -65,7 +65,7 @@ DrawDigit
           if temp1 > 15 then temp1 = 15
           
           rem Calculate data offset: digit * 16 (16 bytes per digit)
-          let DigitOffset = temp1 * 16
+          let digitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
 if temp5 = 0 then 
@@ -88,12 +88,12 @@ if temp5 = 0 then
           rem The data is accessed using batariBasic data statement indexing.
 
           rem INPUT:
-          rem   DigitOffset (temp6) = byte offset into font data (digit * 16)
+          rem   digitOffset (temp6) = byte offset into font data (digit * 16)
 
 LoadPlayer0Digit
           rem Load 16 bytes from font data into player0 sprite
           rem Using batariBasic data access pattern
-          let fontDataIndex = DigitOffset
+          let fontDataIndex = digitOffset
           player0:
           rem Row 0-15: Read from data tables
           %00111100 
@@ -119,7 +119,7 @@ end
 
 LoadPlayer1Digit
           rem Load 16 bytes from font data into player1 sprite
-          let fontDataIndex = DigitOffset
+          let fontDataIndex = digitOffset
           player1:
           rem Row 0-15: Read from data tables
           %00111100 

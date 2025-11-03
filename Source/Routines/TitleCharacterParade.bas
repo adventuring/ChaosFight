@@ -8,10 +8,10 @@
           rem bottom of the title screen after 10 seconds.
 
           rem AVAILABLE VARIABLES (from Variables.bas):
-          rem   TitleParadeTimer - Frame counter (increments each frame)
-          rem   TitleParadeChar - Current character index (0-15)
-          rem   TitleParadeX - X position of parade character
-          rem   TitleParadeActive - Boolean: parade currently running
+          rem   titleParadeTimer - Frame counter (increments each frame)
+          rem   titleParadeChar - Current character index (0-15)
+          rem   titleParadeX - X position of parade character
+          rem   titleParadeActive - Boolean: parade currently running
 
           rem TIMING:
           rem   - Parade starts after 5 seconds (300 frames at 60fps) when copyright disappears
@@ -28,29 +28,29 @@
           rem Update parade state (called every frame)
 UpdateCharacterParade
           rem Increment parade timer
-          let TitleParadeTimer = TitleParadeTimer + 1
+          let titleParadeTimer = titleParadeTimer + 1
           
           rem Start parade after copyright disappears (5 seconds = 300 frames at 60fps)
-          if TitleCopyrightTimer < 300 then return
+          if titleCopyrightTimer < 300 then return
           
           rem Check if we need to start a new character
-          if !TitleParadeActive then
+          if !titleParadeActive then
                     rem Start new character parade
-          let TitleParadeChar = rand & 15 
+          let titleParadeChar = rand & 15 
           rem Random character 0-15
-          let TitleParadeX = 246
+          let titleParadeX = 246
           rem Start off-screen left
-                    let TitleParadeActive = 1
+                    let titleParadeActive = 1
 
                     rem Move character across screen
-          let TitleParadeX = TitleParadeX + 2 
+          let titleParadeX = titleParadeX + 2 
           rem Move 2 pixels per frame
                     
                     rem Check if character has left screen
-                    if TitleParadeX > 170 then
+                    if titleParadeX > 170 then
                               rem Character has left - wait 1 second (60 frames) before next
-                              let TitleParadeActive = 0
-          let TitleParadeTimer = TitleParadeTimer - 60 
+                              let titleParadeActive = 0
+          let titleParadeTimer = titleParadeTimer - 60 
           rem Reset timer for next character
 end
 end
@@ -62,15 +62,15 @@ end
           rem =================================================================
           rem Renders the current parade character at bottom of screen
           rem INPUT VARIABLES:
-          rem   TitleParadeChar - Character index (0-15)
-          rem   TitleParadeX - X position on screen
+          rem   titleParadeChar - Character index (0-15)
+          rem   titleParadeX - X position on screen
           rem USES:
           rem   player0x, player0y - Sprite position
           rem   COLUP0 - Sprite color
 DrawParadeCharacter
           rem Draw the current parade character at the bottom of the screen
           rem Position character at bottom (y=80) and current X position
-          player0x = TitleParadeX
+          player0x = titleParadeX
           player0y = 80
           
           rem Set character color based on character type
@@ -85,11 +85,11 @@ DrawParadeCharacter
           rem SET PARADE CHARACTER COLOR
           rem =================================================================
           rem Sets player0 color based on character type for visual variety
-          rem INPUT: TitleParadeChar (0-15)
+          rem INPUT: titleParadeChar (0-15)
           rem USES: COLUP0
 SetParadeCharacterColor
           rem Set color based on character type for variety
-          on TitleParadeChar goto SetChar0, SetChar1, SetChar2, SetChar3, SetChar4, SetChar5, SetChar6, SetChar7, SetChar8, SetChar9, SetChar10, SetChar11, SetChar12, SetChar13, SetChar14, SetChar15
+          on titleParadeChar goto SetChar0, SetChar1, SetChar2, SetChar3, SetChar4, SetChar5, SetChar6, SetChar7, SetChar8, SetChar9, SetChar10, SetChar11, SetChar12, SetChar13, SetChar14, SetChar15
           
 SetChar0
           COLUP0 = ColIndigo(12) : return  
@@ -144,12 +144,12 @@ SetChar15
           rem DRAW PARADE CHARACTER SPRITE
           rem =================================================================
           rem Renders running animation sprite with alternating leg positions
-          rem INPUT: TitleParadeTimer (for animation frame selection)
+          rem INPUT: titleParadeTimer (for animation frame selection)
           rem USES: player0 sprite data
 DrawParadeCharacterSprite
           rem Draw running animation sprite for parade character
           rem Simple running animation with alternating leg positions
-          if (TitleParadeTimer & 8) then goto DrawParadeFrame1
+          if (titleParadeTimer & 8) then goto DrawParadeFrame1
           rem Frame 2 - right leg forward
                     player0:
                     %00011000

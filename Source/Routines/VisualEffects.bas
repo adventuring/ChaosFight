@@ -12,17 +12,17 @@
           rem Shows visual feedback when players take damage
 
           rem Show damage indicator for a player
-          rem Input: temp1 = player index (0-3), temp2 = damage amount
+          rem Input: currentPlayer = player index (0-3), temp2 = damage amount
 VisualShowDamageIndicator
           rem Set player to hurt state for visual feedback
-          temp3 = PlayerState[temp1] & %00011111 
+          temp3 = playerState[currentPlayer] & %00011111 
           rem Keep lower 5 bits
           temp3 = temp3 | %10010000 
           rem Set animation to 9 (hurt state)
-          let PlayerState[temp1] = temp3
+          let playerState[currentPlayer] = temp3
           
           rem Set recovery frames for hurt visual duration
-          let PlayerRecoveryFrames[temp1] = 15 
+          let playerRecoveryFrames[currentPlayer] = 15 
           rem 15 frames of hurt visual
           
           return
@@ -33,10 +33,10 @@ VisualShowDamageIndicator
           rem Provides flashing effects during recovery/invulnerability
 
           rem Flash effect for recovery frames
-          rem Input: temp1 = player index (0-3)
+          rem Input: currentPlayer = player index (0-3)
 FlashRecoveryEffect
           rem Check if player is in recovery
-          temp2 = PlayerRecoveryFrames[temp1]
+          temp2 = playerRecoveryFrames[currentPlayer]
           if temp2 = 0 then return
           
           rem Flash every other frame
@@ -65,7 +65,7 @@ SetPlayerDimmedColor
           rem Updates health bar display based on current health
 
           rem Update health bar for a player
-          rem Input: temp1 = player index (0-3)
+          rem Input: currentPlayer = player index (0-3)
 UpdateHealthBar
           rem Health bar is handled by PlayerRendering.bas
           rem Visual effects are integrated into the damage system
@@ -77,18 +77,18 @@ UpdateHealthBar
           rem Various special visual effects
 
           rem Screen flash effect
-          rem Input: temp1 = intensity (0-15)
+          rem Input: currentPlayer = intensity (0-15)
 ScreenFlash
           rem Flash the background color
-          temp2 = ColGrey(temp1)
+          temp2 = ColGrey(currentPlayer)
           COLUBK = ColGray(0)
           return
 
           rem Particle effect for hits
-          rem Input: temp1 = player index (0-3)
+          rem Input: currentPlayer = player index (0-3)
 HitParticleEffect
           rem This would show particle effects around the hit player
           rem For now, just a screen flash
-          temp1 = 12
+          currentPlayer = 12
           gosub ScreenFlash
           return

@@ -12,15 +12,15 @@
           rem   Odd frames (qtcontroller=1): joy0=Player3, joy1=Player4
 
           rem AVAILABLE VARIABLES (from Variables.bas):
-          rem   PlayerX[0-3] - X positions
-          rem   PlayerY[0-3] - Y positions
-          rem   PlayerState[0-3] - State flags (attacking, guarding, jumping, etc.)
+          rem   playerX[0-3] - X positions
+          rem   playerY[0-3] - Y positions
+          rem   playerState[0-3] - State flags (attacking, guarding, jumping, etc.)
           rem   playerChar[0-3] - Character type indices (0-15)
-          rem   PlayerMomentumX[0-3] - Horizontal momentum
-          rem   ControllerStatus - Packed controller detection status
+          rem   playerMomentumX[0-3] - Horizontal momentum
+          rem   controllerStatus - Packed controller detection status
           rem   qtcontroller - Multiplexing state (0=P1/P2, 1=P3/P4)
 
-          rem STATE FLAGS (in PlayerState):
+          rem STATE FLAGS (in playerState):
           rem   Bit 0: Facing (1 = right, 0 = left)
           rem   Bit 1: Guarding
           rem   Bit 2: Jumping
@@ -40,14 +40,14 @@ InputHandleAllPlayers
           rem Even frame: Handle Players 1 & 2 - only if alive  
           currentPlayer = 0 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer0Input
-          if (PlayerState[0] & 8) <> 0 then goto InputSkipPlayer0Input
+          if (playerState[0] & 8) <> 0 then goto InputSkipPlayer0Input
           currentPlayer = 0 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer0Input
           
           currentPlayer = 1 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer1Input
-          if (PlayerState[1] & 8) <> 0 then goto InputSkipPlayer1Input
+          if (playerState[1] & 8) <> 0 then goto InputSkipPlayer1Input
           goto InputHandlePlayer1
           
           goto InputSkipPlayer1Input
@@ -63,19 +63,19 @@ InputSkipPlayer1Input
 
 InputHandleQuadtariPlayers
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and alive)
-          if !(ControllerStatus & SetQuadtariDetected) then goto InputSkipPlayer3Input
+          if !(controllerStatus & SetQuadtariDetected) then goto InputSkipPlayer3Input
           if selectedChar3 = 0 then goto InputSkipPlayer3Input
                     currentPlayer = 2 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer3Input
-          if (PlayerState[2] & 8) <> 0 then goto InputSkipPlayer3Input
+          if (playerState[2] & 8) <> 0 then goto InputSkipPlayer3Input
           currentPlayer = 2 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer3Input
-          if !(ControllerStatus & SetQuadtariDetected) then goto InputSkipPlayer4Input
+          if !(controllerStatus & SetQuadtariDetected) then goto InputSkipPlayer4Input
           if selectedChar4 = 0 then goto InputSkipPlayer4Input
                     currentPlayer = 3 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer4Input
-          if (PlayerState[3] & 8) <> 0 then goto InputSkipPlayer4Input
+          if (playerState[3] & 8) <> 0 then goto InputSkipPlayer4Input
           currentPlayer = 3 : gosub InputHandleRightPortPlayer
           
 InputSkipPlayer4Input
@@ -98,8 +98,8 @@ InputHandleLeftPortPlayer
           if temp5 = 2 then goto FrootyDragonOfStormsLeftRightMovement
           
           rem Standard horizontal movement (no collision check)
-          if joy0left then PlayerX[currentPlayer] = PlayerX[currentPlayer] - 1 : PlayerState[currentPlayer] = PlayerState[currentPlayer] & NOT 1 : PlayerMomentumX[currentPlayer] = 255
-          if joy0right then PlayerX[currentPlayer] = PlayerX[currentPlayer] + 1 : PlayerState[currentPlayer] = PlayerState[currentPlayer] | 1 : PlayerMomentumX[currentPlayer] = 1
+          if joy0left then playerX[currentPlayer] = playerX[currentPlayer] - 1 : playerState[currentPlayer] = playerState[currentPlayer] & NOT 1 : playerMomentumX[currentPlayer] = 255
+          if joy0right then playerX[currentPlayer] = playerX[currentPlayer] + 1 : playerState[currentPlayer] = playerState[currentPlayer] | 1 : playerMomentumX[currentPlayer] = 1
           goto SkipFlyingLeftRight
           
 FrootyDragonOfStormsLeftRightMovement
@@ -109,7 +109,7 @@ FrootyDragonOfStormsLeftRightMovement
           goto CheckRightMovement
 CheckLeftCollision
           rem Convert player position to playfield coordinates
-          temp2 = PlayerX[currentPlayer]
+          temp2 = playerX[currentPlayer]
           temp2 = temp2 - ScreenInsetX
           temp2 = temp2 / 4
           rem temp2 = playfield column
@@ -121,7 +121,7 @@ CheckLeftCollision
           temp3 = temp2 - 1
           rem temp3 = column to the left
           rem Check player current row (check both top and bottom of sprite)
-          temp4 = PlayerY[currentPlayer]
+          temp4 = playerY[currentPlayer]
           temp6 = temp4 / pfrowheight
           rem temp6 = top row
           rem Check if blocked in current row
@@ -135,14 +135,14 @@ CheckLeftCollision
           if pfread(temp3, temp6) then goto CheckRightMovement
           rem Blocked at bottom too
 MoveLeftOK
-          let PlayerX[currentPlayer] = PlayerX[currentPlayer] - 1
-          let PlayerState[currentPlayer] = PlayerState[currentPlayer] & NOT 1
-          let PlayerMomentumX[currentPlayer] = 255
+          let playerX[currentPlayer] = playerX[currentPlayer] - 1
+          let playerState[currentPlayer] = playerState[currentPlayer] & NOT 1
+          let playerMomentumX[currentPlayer] = 255
 CheckRightMovement
           rem Check right movement
           if !joy0right then goto SkipFlyingLeftRight
           rem Convert player position to playfield coordinates
-          temp2 = PlayerX[currentPlayer]
+          temp2 = playerX[currentPlayer]
           temp2 = temp2 - ScreenInsetX
           temp2 = temp2 / 4
           rem temp2 = playfield column
@@ -154,7 +154,7 @@ CheckRightMovement
           temp3 = temp2 + 1
           rem temp3 = column to the right
           rem Check player current row (check both top and bottom of sprite)
-          temp4 = PlayerY[currentPlayer]
+          temp4 = playerY[currentPlayer]
           temp6 = temp4 / pfrowheight
           rem temp6 = top row
           rem Check if blocked in current row
@@ -168,9 +168,9 @@ CheckRightMovement
           if pfread(temp3, temp6) then goto SkipFlyingLeftRight
           rem Blocked at bottom too
 MoveRightOK
-          let PlayerX[currentPlayer] = PlayerX[currentPlayer] + 1
-          let PlayerState[currentPlayer] = PlayerState[currentPlayer] | 1
-          let PlayerMomentumX[currentPlayer] = 1
+          let playerX[currentPlayer] = playerX[currentPlayer] + 1
+          let playerState[currentPlayer] = playerState[currentPlayer] | 1
+          let playerMomentumX[currentPlayer] = 1
 SkipFlyingLeftRight
 
           rem Process UP input for character-specific behaviors
@@ -229,21 +229,21 @@ SkipUpInputHandling
           if currentPlayer = 0 then goto CheckPlayer1Buttons
           goto InputSkipPlayer1Buttons
 CheckPlayer1Buttons
-          if !ControllerStatus{0} then goto CheckPlayer1Joy2bPlus
+          if !controllerStatus{0} then goto CheckPlayer1Joy2bPlus
           if !INPT0{7} then temp3 = 1
           goto InputSkipPlayer1Buttons
 CheckPlayer1Joy2bPlus
-          if !ControllerStatus{1} then goto InputSkipPlayer1Buttons
+          if !controllerStatus{1} then goto InputSkipPlayer1Buttons
           if !INPT0{7} then temp3 = 1
 InputSkipPlayer1Buttons
           if currentPlayer = 2 then goto CheckPlayer3Buttons
           goto InputSkipPlayer3Buttons
 CheckPlayer3Buttons
-          if !ControllerStatus{0} then goto CheckPlayer3Joy2bPlus
+          if !controllerStatus{0} then goto CheckPlayer3Joy2bPlus
           if !INPT0{7} then temp3 = 1
           goto InputSkipPlayer3Buttons
 CheckPlayer3Joy2bPlus
-          if !ControllerStatus{1} then goto InputSkipPlayer3Buttons
+          if !controllerStatus{1} then goto InputSkipPlayer3Buttons
           if !INPT0{7} then temp3 = 1
 InputSkipPlayer3Buttons
 EnhancedJumpDone0
@@ -251,7 +251,7 @@ EnhancedJumpDone0
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as Shamone)
           if temp3 = 0 then InputSkipLeftPortJump
-          if (PlayerState[currentPlayer] & 4) <> 0 then InputSkipLeftPortJump
+          if (playerState[currentPlayer] & 4) <> 0 then InputSkipLeftPortJump
           temp4 = playerChar[currentPlayer] 
           rem Character type
           rem Map MethHound (31) to ShamoneJump handler
@@ -269,13 +269,13 @@ InputSkipLeftPortJump
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
             on temp4 goto BernieDown, CurlerDown, DragonOfStormsDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
-          if !joy0down then PlayerState[currentPlayer] = PlayerState[currentPlayer] & NOT 2
+          if !joy0down then playerState[currentPlayer] = playerState[currentPlayer] & NOT 2
           
           
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
           if !joy0fire then goto InputSkipLeftPortAttack
-          if (PlayerState[currentPlayer] & 1) <> 0 then InputSkipLeftPortAttack
+          if (playerState[currentPlayer] & 1) <> 0 then InputSkipLeftPortAttack
           temp4 = playerChar[currentPlayer]
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound
@@ -299,16 +299,16 @@ InputHandleRightPortPlayer
           
           rem Standard horizontal movement (no collision check)
           if joy1left then
-                    let PlayerX[currentPlayer] = PlayerX[currentPlayer] - 1
-          let PlayerState[currentPlayer] = PlayerState[currentPlayer] & NOT 1 
+                    let playerX[currentPlayer] = playerX[currentPlayer] - 1
+          let playerState[currentPlayer] = playerState[currentPlayer] & NOT 1 
           rem Face left
-                    let PlayerMomentumX[currentPlayer] = 255
+                    let playerMomentumX[currentPlayer] = 255
           
           if joy1right then
-                    let PlayerX[currentPlayer] = PlayerX[currentPlayer] + 1
-          let PlayerState[currentPlayer] = PlayerState[currentPlayer] | 1  
+                    let playerX[currentPlayer] = playerX[currentPlayer] + 1
+          let playerState[currentPlayer] = playerState[currentPlayer] | 1  
           rem Face right
-                    let PlayerMomentumX[currentPlayer] = 1
+                    let playerMomentumX[currentPlayer] = 1
           goto SkipFlyingLeftRightRight
           
 FrootyDragonOfStormsLeftRightMovementRight
@@ -318,7 +318,7 @@ FrootyDragonOfStormsLeftRightMovementRight
           goto CheckRightMovementRight
 CheckLeftCollisionRight
           rem Convert player position to playfield coordinates
-          temp2 = PlayerX[currentPlayer]
+          temp2 = playerX[currentPlayer]
           temp2 = temp2 - ScreenInsetX
           temp2 = temp2 / 4
           rem temp2 = playfield column
@@ -330,7 +330,7 @@ CheckLeftCollisionRight
           temp3 = temp2 - 1
           rem temp3 = column to the left
           rem Check player current row (check both top and bottom of sprite)
-          temp4 = PlayerY[currentPlayer]
+          temp4 = playerY[currentPlayer]
           temp6 = temp4 / pfrowheight
           rem temp6 = top row
           rem Check if blocked in current row
@@ -344,14 +344,14 @@ CheckLeftCollisionRight
           if pfread(temp3, temp6) then goto CheckRightMovementRight
           rem Blocked at bottom too
 MoveLeftOKRight
-          let PlayerX[currentPlayer] = PlayerX[currentPlayer] - 1
-          let PlayerState[currentPlayer] = PlayerState[currentPlayer] & NOT 1
-          let PlayerMomentumX[currentPlayer] = 255
+          let playerX[currentPlayer] = playerX[currentPlayer] - 1
+          let playerState[currentPlayer] = playerState[currentPlayer] & NOT 1
+          let playerMomentumX[currentPlayer] = 255
 CheckRightMovementRight
           rem Check right movement
           if !joy1right then goto SkipFlyingLeftRightRight
           rem Convert player position to playfield coordinates
-          temp2 = PlayerX[currentPlayer]
+          temp2 = playerX[currentPlayer]
           temp2 = temp2 - ScreenInsetX
           temp2 = temp2 / 4
           rem temp2 = playfield column
@@ -363,7 +363,7 @@ CheckRightMovementRight
           temp3 = temp2 + 1
           rem temp3 = column to the right
           rem Check player current row (check both top and bottom of sprite)
-          temp4 = PlayerY[currentPlayer]
+          temp4 = playerY[currentPlayer]
           temp6 = temp4 / pfrowheight
           rem temp6 = top row
           rem Check if blocked in current row
@@ -377,9 +377,9 @@ CheckRightMovementRight
           if pfread(temp3, temp6) then goto SkipFlyingLeftRightRight
           rem Blocked at bottom too
 MoveRightOKRight
-          let PlayerX[currentPlayer] = PlayerX[currentPlayer] + 1
-          let PlayerState[currentPlayer] = PlayerState[currentPlayer] | 1
-          let PlayerMomentumX[currentPlayer] = 1
+          let playerX[currentPlayer] = playerX[currentPlayer] + 1
+          let playerState[currentPlayer] = playerState[currentPlayer] | 1
+          let playerMomentumX[currentPlayer] = 1
 SkipFlyingLeftRightRight
           
 
@@ -439,11 +439,11 @@ SkipUpInputHandlingRight
           if currentPlayer = 1 then goto CheckPlayer2Buttons
           goto SkipPlayer2Buttons
 CheckPlayer2Buttons
-          if !(ControllerStatus & $04) then goto CheckPlayer2Joy2bPlus
+          if !(controllerStatus & $04) then goto CheckPlayer2Joy2bPlus
           if !(INPT2 & $80) then temp3 = 1
           goto SkipPlayer2Buttons
 CheckPlayer2Joy2bPlus
-          if !(ControllerStatus & $08) then goto SkipPlayer2Buttons
+          if !(controllerStatus & $08) then goto SkipPlayer2Buttons
           if !(INPT2 & $80) then temp3 = 1
 SkipPlayer2Buttons
           if currentPlayer = 3 then goto CheckPlayer4Buttons
@@ -461,7 +461,7 @@ EnhancedJumpDone1
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as Shamone)
           if temp3 = 0 then InputSkipRightPortJump
-          if (PlayerState[currentPlayer] & 4) <> 0 then InputSkipRightPortJump
+          if (playerState[currentPlayer] & 4) <> 0 then InputSkipRightPortJump
           temp4 = playerChar[currentPlayer] 
           rem Character type
           rem Map MethHound (31) to ShamoneJump handler
@@ -480,14 +480,14 @@ InputSkipRightPortJump
             rem Use Shamone guard for MethHound
                     on temp4 goto BernieDown, CurlerDown, DragonOfStormsDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
 
-          let PlayerState[currentPlayer] = PlayerState[currentPlayer] & NOT 2 
+          let playerState[currentPlayer] = playerState[currentPlayer] & NOT 2 
           rem Clear guard bit
           
           
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
           if !joy1fire then goto InputSkipRightPortAttack
-          if (PlayerState[currentPlayer] & 1) <> 0 then InputSkipRightPortAttack
+          if (playerState[currentPlayer] & 1) <> 0 then InputSkipRightPortAttack
           temp4 = playerChar[currentPlayer] 
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound
@@ -501,7 +501,7 @@ InputSkipRightPortAttack
           rem PAUSE BUTTON HANDLING WITH DEBOUNCING
           rem =================================================================
           rem Handles SELECT switch and Joy2b+ Button III with proper debouncing
-          rem Uses PauseButtonPrev for debouncing state
+          rem Uses pauseButtonPrev for debouncing state
           
 HandlePauseInput
           rem Check SELECT switch (always available)
@@ -521,14 +521,14 @@ Joy2bPauseDone
           
           rem Debounce: only toggle if button just pressed (was 0, now 1)
           if temp1 = 0 then goto SkipPauseToggle
-          if PauseButtonPrev then goto SkipPauseToggle
-          let GameState = GameState ^ 1 
+          if pauseButtonPrev then goto SkipPauseToggle
+          let gameState = gameState ^ 1 
           rem Toggle pause (0<->1)
 SkipPauseToggle
           
           
           rem Update previous button state for next frame
-          let PauseButtonPrev = temp1
+          let pauseButtonPrev = temp1
           
           return
 

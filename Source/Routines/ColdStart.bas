@@ -22,7 +22,7 @@ ColdStart
           AUDV1 = 0
           
           rem Reset game state variables
-          let GameMode = ModePublisherPrelude
+          let gameMode = ModePublisherPrelude
           gosub bank13 ChangeGameMode
           
           rem (fall through to MainLoop)

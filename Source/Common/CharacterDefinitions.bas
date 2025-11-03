@@ -84,7 +84,7 @@ end
           rem BIT MASK TABLE FOR PLAYER INDEX
           rem =================================================================
           rem Bit mask values for player indices (0-3)
-          rem Used for bit-flag operations on PlayersEliminated and MissileActive
+          rem Used for bit-flag operations on playersEliminated and missileActive
           rem Values: 1, 2, 4, 8 for players 0, 1, 2, 3 respectively
           data BitMask
              1, 2, 4, 8

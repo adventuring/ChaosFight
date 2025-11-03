@@ -231,7 +231,7 @@ end
           rem Load sprite data for any player using character art system
           rem Input: temp1 = character index (from playerChar array) - may be unset, will get from player
           rem        temp2 = animation frame (0-7) from sprite 10fps counter
-          rem        temp3 = animation action (0-15) from CurrentAnimationSeq
+          rem        temp3 = animation action (0-15) from currentAnimationSeq
           rem        temp4 = player number (0-3)
           rem Note: Frame is relative to sprite own 10fps counter, NOT global frame counter
 LoadPlayerSprite
@@ -344,7 +344,7 @@ NormalColor
           goto PlayerIndexColors
 #else
           rem Determine effective B&W override locally; if enabled, use player colors
-          if ColorBWOverride then goto PlayerIndexColors
+          if colorBWOverride then goto PlayerIndexColors
 
           rem NTSC/PAL: Character-specific colors would be used here when tables exist
           rem Placeholder: fall back to player index colors until character tables are wired
@@ -359,123 +359,6 @@ FlashingColor
 PerLineFlashing
           rem Simple time/row-based flashing placeholder
           rem Use alternating bright/dim player index colors by frame bit
-          if frame & 8 then goto PlayerIndexColorsDim
-          goto PlayerIndexColors
-
-PlayerIndexColors
-          rem Solid player index colors (bright)
-          if ! temp3 then LET temp6 = ColIndigo(14) : goto SetColor
-          if temp3 = 1 then LET temp6 = ColRed(14) : goto SetColor
-          if temp3 = 2 then LET temp6 = ColYellow(14) : goto SetColor
-          let temp6 = ColGreen(14)
-
-          goto SetColor
-
-PlayerIndexColorsDim
-          rem Dimmed player index colors
-          if ! temp3 then LET temp6 = ColIndigo(6) : goto SetColor
-          if temp3 = 1 then LET temp6 = ColRed(6) : goto SetColor
-          if temp3 = 2 then LET temp6 = ColYellow(6) : goto SetColor
-          let temp6 = ColGreen(6)
-
-          goto SetColor
-
-HurtColor
-#ifdef TV_SECAM
-          rem SECAM hurt is always magenta
-          let temp6 = ColMagenta(10)
-          goto SetColor
-#else
-          rem Dimmed version of normal color: use dim player index color as fallback
-          goto PlayerIndexColorsDim
-#endif
-
-SetColor
-          rem Set color based on player index (multisprite kernel supports COLUP2/COLUP3)
-          if ! temp3 then COLUP0 = temp6 : return
-          if temp3 = 1 then COLUP1 = temp6 : return
-          if temp3 = 2 then COLUP2 = temp6 : return
-          COLUP3 = temp6 : return
-
-
-          if frame & 8 then goto PlayerIndexColorsDim
-          goto PlayerIndexColors
-
-PlayerIndexColors
-          rem Solid player index colors (bright)
-          if ! temp3 then LET temp6 = ColIndigo(14) : goto SetColor
-          if temp3 = 1 then LET temp6 = ColRed(14) : goto SetColor
-          if temp3 = 2 then LET temp6 = ColYellow(14) : goto SetColor
-          let temp6 = ColGreen(14)
-
-          goto SetColor
-
-PlayerIndexColorsDim
-          rem Dimmed player index colors
-          if ! temp3 then LET temp6 = ColIndigo(6) : goto SetColor
-          if temp3 = 1 then LET temp6 = ColRed(6) : goto SetColor
-          if temp3 = 2 then LET temp6 = ColYellow(6) : goto SetColor
-          let temp6 = ColGreen(6)
-
-          goto SetColor
-
-HurtColor
-#ifdef TV_SECAM
-          rem SECAM hurt is always magenta
-          let temp6 = ColMagenta(10)
-          goto SetColor
-#else
-          rem Dimmed version of normal color: use dim player index color as fallback
-          goto PlayerIndexColorsDim
-#endif
-
-SetColor
-          rem Set color based on player index (multisprite kernel supports COLUP2/COLUP3)
-          if ! temp3 then COLUP0 = temp6 : return
-          if temp3 = 1 then COLUP1 = temp6 : return
-          if temp3 = 2 then COLUP2 = temp6 : return
-          COLUP3 = temp6 : return
-
-
-          if frame & 8 then goto PlayerIndexColorsDim
-          goto PlayerIndexColors
-
-PlayerIndexColors
-          rem Solid player index colors (bright)
-          if ! temp3 then LET temp6 = ColIndigo(14) : goto SetColor
-          if temp3 = 1 then LET temp6 = ColRed(14) : goto SetColor
-          if temp3 = 2 then LET temp6 = ColYellow(14) : goto SetColor
-          let temp6 = ColGreen(14)
-
-          goto SetColor
-
-PlayerIndexColorsDim
-          rem Dimmed player index colors
-          if ! temp3 then LET temp6 = ColIndigo(6) : goto SetColor
-          if temp3 = 1 then LET temp6 = ColRed(6) : goto SetColor
-          if temp3 = 2 then LET temp6 = ColYellow(6) : goto SetColor
-          let temp6 = ColGreen(6)
-
-          goto SetColor
-
-HurtColor
-#ifdef TV_SECAM
-          rem SECAM hurt is always magenta
-          let temp6 = ColMagenta(10)
-          goto SetColor
-#else
-          rem Dimmed version of normal color: use dim player index color as fallback
-          goto PlayerIndexColorsDim
-#endif
-
-SetColor
-          rem Set color based on player index (multisprite kernel supports COLUP2/COLUP3)
-          if ! temp3 then COLUP0 = temp6 : return
-          if temp3 = 1 then COLUP1 = temp6 : return
-          if temp3 = 2 then COLUP2 = temp6 : return
-          COLUP3 = temp6 : return
-
-
           if frame & 8 then goto PlayerIndexColorsDim
           goto PlayerIndexColors
 

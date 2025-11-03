@@ -27,7 +27,7 @@
           const SpriteCPU = 1
           const SpriteNo = 2
           
-          rem PlayerState bit constants
+          rem playerState bit constants
           const PlayerStateFacing = 0
           rem Bit 0: 0=left, 1=right
           const PlayerStateGuarding = 1
@@ -65,7 +65,7 @@
           const RightPortJoy2bPlus = 3
           rem Bit 3: Joy2b+ on right port (subset of RightPortGenesis)
           
-          rem Bit accessor aliases for ControllerStatus
+          rem Bit accessor aliases for controllerStatus
           rem Bit accessor aliases removed to avoid compiler issues; use bit masks directly
           
           rem Console detection constants

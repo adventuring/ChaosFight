@@ -8,12 +8,12 @@
           rem Called via "on playerChar[n] goto" dispatch from PlayerInput.bas
 
           rem INPUT VARIABLE:
-          rem   temp1 = participant array index (0-3 maps to participants 1-4)
+          rem   currentPlayer = participant array index (0-3 maps to participants 1-4)
 
           rem AVAILABLE VARIABLES:
-          rem   PlayerX[temp1], PlayerY[temp1] - Position
-          rem   PlayerState[temp1] - State flags
-          rem   PlayerMomentumX[temp1] - Horizontal momentum
+          rem   playerX[currentPlayer], playerY[currentPlayer] - Position
+          rem   playerState[currentPlayer] - State flags
+          rem   playerMomentumX[currentPlayer] - Horizontal momentum
 
           rem CHARACTER INDICES:
           rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=Zoe Ryen, 4=FatTony, 5=Megax,
@@ -29,13 +29,13 @@
           rem Bernie cannot jump, but pressing UP allows him to fall through
           rem floors that are only 1 playfield row deep (platforms).
           rem This is called when UP is pressed to handle fall-through logic.
-          rem INPUT: temp1 = player index
-          rem USES: PlayerX[temp1], PlayerY[temp1], temp2, temp3, temp4, temp5, temp6
+          rem INPUT: currentPlayer = player index
+          rem USES: playerX[currentPlayer], playerY[currentPlayer], temp2, temp3, temp4, temp5, temp6
 BernieJump
           rem Convert player X position to playfield column (0-31)
           rem Player X is in pixels (16-144), playfield is 32 columns, 4 pixels per column
-          rem Column = (PlayerX[temp1] - ScreenInsetX) / 4
-          temp2 = PlayerX[temp1]
+          rem Column = (playerX[currentPlayer] - ScreenInsetX) / 4
+          temp2 = playerX[currentPlayer]
           temp2 = temp2 - ScreenInsetX
           rem Now in range 0-128
           temp2 = temp2 / 4
@@ -46,14 +46,14 @@ BernieJump
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
           rem For pfres=8: pfrowheight = 16 pixels per row
-          rem Row = PlayerY[temp1] / pfrowheight
-          temp3 = PlayerY[temp1]
+          rem Row = playerY[currentPlayer] / pfrowheight
+          temp3 = playerY[currentPlayer]
           temp4 = temp3 / pfrowheight
           rem temp4 = row player sprite bottom is in (0-7 for pfres=8)
           
           rem Check if Bernie is standing ON a floor (row below feet is solid)
             rem Bernie feet are visually at bottom of 16px sprite, so check row below
-          rem Feet are at PlayerY + 16, so row = (PlayerY + 16) / pfrowheight
+          rem Feet are at playerY + 16, so row = (playerY + 16) / pfrowheight
           temp5 = temp3 + 16
           rem temp5 = feet Y position in pixels
           temp6 = temp5 / pfrowheight
@@ -78,7 +78,7 @@ BernieJump
           rem Floor is only 1 row deep - allow fall through
           rem Move Bernie down by 1 pixel per frame while UP is held
           rem This allows him to pass through the 1-row platform
-          let PlayerY[temp1] = PlayerY[temp1] + 1
+          let playerY[currentPlayer] = playerY[currentPlayer] + 1
           return 
           
 BernieCheckBottomWrap
@@ -92,25 +92,25 @@ BernieCheckBottomWrap
           
           rem Top row is clear - wrap to top
             rem Set Bernie Y position to top of screen (row 0)
-          rem PlayerY at top row = 0 * pfrowheight = 0
-          let PlayerY[temp1] = 0
+          rem playerY at top row = 0 * pfrowheight = 0
+          let playerY[currentPlayer] = 0
           return
 
           rem CURLER (1) - STANDARD JUMP
-          rem INPUT: temp1 = player index
-          rem USES: PlayerY[temp1], PlayerState[temp1]
+          rem INPUT: currentPlayer = player index
+          rem USES: playerY[currentPlayer], playerState[currentPlayer]
 CurlerJump
           rem tail call
           goto StandardJump
 
           rem DRAGON OF STORMS (2) - FREE FLIGHT (vertical movement)
           rem Dragon of Storms can fly up/down freely
-          rem INPUT: temp1 = player index
-          rem USES: PlayerX[temp1], PlayerY[temp1], temp2, temp3, temp4
+          rem INPUT: currentPlayer = player index
+          rem USES: playerX[currentPlayer], playerY[currentPlayer], temp2, temp3, temp4
 DragonOfStormsJump
           rem Fly up with playfield collision check
           rem Check collision before moving
-          temp2 = PlayerX[temp1]
+          temp2 = playerX[currentPlayer]
           temp2 = temp2 - ScreenInsetX
           temp2 = temp2 / 4
           rem temp2 = playfield column (0-31)
@@ -118,7 +118,7 @@ DragonOfStormsJump
           if temp2 < 0 then temp2 = 0
           
           rem Check row above player (top of sprite)
-          temp3 = PlayerY[temp1]
+          temp3 = playerY[currentPlayer]
           temp4 = temp3 / pfrowheight
           rem temp4 = current row
           rem Check row above (temp4 - 1), but only if not at top
@@ -130,23 +130,23 @@ DragonOfStormsJump
             rem Blocked, cannot move up
           
           rem Clear above - move up
-          let PlayerY[temp1] = PlayerY[temp1] - 2
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerY[currentPlayer] = playerY[currentPlayer] - 2
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           rem Set jumping flag for animation
           return
 
           rem Zoe Ryen (3) - STANDARD JUMP (light weight, high jump)
 ZoeRyenJump
-          let PlayerY[temp1] = PlayerY[temp1] - 12 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 12 
           rem Lighter character, higher jump
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           return
 
           rem FAT TONY (4) - STANDARD JUMP (heavy weight, lower jump)
 FatTonyJump
-          let PlayerY[temp1] = PlayerY[temp1] - 8 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 8 
           rem Heavier character, lower jump
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           return
 
           rem MEGAX (5) - STANDARD JUMP
@@ -157,33 +157,33 @@ MegaxJump
           rem HARPY (6) - FLAP TO FLY (UP input to flap)
           rem Harpy can fly by flapping (pressing UP repeatedly)
           rem Each flap provides upward thrust
-          rem INPUT: temp1 = player index
-          rem USES: PlayerY[temp1], PlayerState[temp1]
+          rem INPUT: currentPlayer = player index
+          rem USES: playerY[currentPlayer], playerState[currentPlayer]
 HarpyJump
           rem Flap upward - move up by 3 pixels
             rem Check screen bounds - do not go above top
-          if PlayerY[temp1] <= 5 then return
+          if playerY[currentPlayer] <= 5 then return
             rem Already at top, cannot flap higher
-          let PlayerY[temp1] = PlayerY[temp1] - 3
-          let PlayerState[temp1] = PlayerState[temp1] | 4 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 3
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4 
           rem Set jumping/flying bit for animation
           return
 
           rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
 KnightJump
-          let PlayerY[temp1] = PlayerY[temp1] - 8 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 8 
           rem Heavier character, lower jump
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           return
 
           rem FROOTY (8) - FREE FLIGHT (vertical movement)
           rem Frooty can fly up/down freely, no guard action
-          rem INPUT: temp1 = player index
-          rem USES: PlayerX[temp1], PlayerY[temp1], temp2, temp3, temp4
+          rem INPUT: currentPlayer = player index
+          rem USES: playerX[currentPlayer], playerY[currentPlayer], temp2, temp3, temp4
 FrootyJump
           rem Fly up with playfield collision check
           rem Check collision before moving
-          temp2 = PlayerX[temp1]
+          temp2 = playerX[currentPlayer]
           temp2 = temp2 - ScreenInsetX
           temp2 = temp2 / 4
           rem temp2 = playfield column (0-31)
@@ -191,7 +191,7 @@ FrootyJump
           if temp2 < 0 then temp2 = 0
           
           rem Check row above player (top of sprite)
-          temp3 = PlayerY[temp1]
+          temp3 = playerY[currentPlayer]
           temp4 = temp3 / pfrowheight
           rem temp4 = current row
           rem Check row above (temp4 - 1), but only if not at top
@@ -203,8 +203,8 @@ FrootyJump
             rem Blocked, cannot move up
           
           rem Clear above - move up
-          let PlayerY[temp1] = PlayerY[temp1] - 2
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerY[currentPlayer] = playerY[currentPlayer] - 2
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           rem Set jumping flag for animation
           return
 
@@ -215,46 +215,46 @@ NefertemJump
 
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
 NinjishJump
-          let PlayerY[temp1] = PlayerY[temp1] - 13 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 13 
           rem Very light character, highest jump
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           return
 
           rem PORK CHOP (11) - STANDARD JUMP (heavy weight)
 PorkChopJump
-          let PlayerY[temp1] = PlayerY[temp1] - 8 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 8 
           rem Heavy character, lower jump
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           return
 
           rem RADISH GOBLIN (12) - STANDARD JUMP (very light, high jump)
 RadishJump
-          let PlayerY[temp1] = PlayerY[temp1] - 13 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 13 
           rem Very light character, highest jump
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           return
 
           rem ROBO TITO (13) - VERTICAL MOVEMENT (no jump physics)
           rem Robo Tito does not jump but moves vertically to screen top
           rem Special: sprite may not clear GRPn when done
-          rem INPUT: temp1 = player index
-          rem USES: PlayerY[temp1]
+          rem INPUT: currentPlayer = player index
+          rem USES: playerY[currentPlayer]
 RoboTitoJump
-          if PlayerY[temp1] > 10 then PlayerY[temp1] = PlayerY[temp1] - 3
+          if playerY[currentPlayer] > 10 then playerY[currentPlayer] = playerY[currentPlayer] - 3
           return
 
           rem URSULO (14) - STANDARD JUMP (heavy weight)
 UrsuloJump
-          let PlayerY[temp1] = PlayerY[temp1] - 8 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 8 
           rem Heavy character, lower jump
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           return
 
           rem SHAMONE (15) - STANDARD JUMP (light weight)
 ShamoneJump
-          let PlayerY[temp1] = PlayerY[temp1] - 11 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 11 
           rem Light character, good jump
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           return
 
           rem =================================================================
@@ -303,12 +303,12 @@ KnightDown
 
           rem FROOTY (8) - FLY DOWN (no guard action)
           rem Frooty flies down instead of guarding
-          rem INPUT: temp1 = player index
-          rem USES: PlayerX[temp1], PlayerY[temp1], temp2, temp3, temp4
+          rem INPUT: currentPlayer = player index
+          rem USES: playerX[currentPlayer], playerY[currentPlayer], temp2, temp3, temp4
 FrootyDown
           rem Fly down with playfield collision check
           rem Check collision before moving
-          temp2 = PlayerX[temp1]
+          temp2 = playerX[currentPlayer]
           temp2 = temp2 - ScreenInsetX
           temp2 = temp2 / 4
           rem temp2 = playfield column (0-31)
@@ -316,7 +316,7 @@ FrootyDown
           if temp2 < 0 then temp2 = 0
           
           rem Check row below player (feet at bottom of sprite)
-          temp3 = PlayerY[temp1]
+          temp3 = playerY[currentPlayer]
           temp3 = temp3 + 16
           rem temp3 = feet Y position
           temp4 = temp3 / pfrowheight
@@ -329,8 +329,8 @@ FrootyDown
             rem Blocked, cannot move down
           
           rem Clear below - move down
-          let PlayerY[temp1] = PlayerY[temp1] + 2
-          let PlayerState[temp1] = PlayerState[temp1] & !2 
+          let playerY[currentPlayer] = playerY[currentPlayer] + 2
+          let playerState[currentPlayer] = playerState[currentPlayer] & !2 
           rem Ensure guard bit clear
           return
 
@@ -374,19 +374,19 @@ ShamoneDown
           rem =================================================================
 
           rem Standard jump behavior for most characters
-          rem INPUT: temp1 = player index
-          rem USES: PlayerY[temp1], PlayerState[temp1]
+          rem INPUT: currentPlayer = player index
+          rem USES: playerY[currentPlayer], playerState[currentPlayer]
 StandardJump
-          let PlayerY[temp1] = PlayerY[temp1] - 10
-          let PlayerState[temp1] = PlayerState[temp1] | 4 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 10
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4 
           rem Set jumping bit
           return
 
           rem Standard guard behavior
-          rem INPUT: temp1 = player index
-          rem USES: PlayerState[temp1]
+          rem INPUT: currentPlayer = player index
+          rem USES: playerState[currentPlayer]
 StandardGuard
-          let PlayerState[temp1] = PlayerState[temp1] | 2 
+          let playerState[currentPlayer] = playerState[currentPlayer] | 2 
           rem Set guarding bit
           
           rem Set guard visual effect (flashing cyan)

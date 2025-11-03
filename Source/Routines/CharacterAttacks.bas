@@ -10,10 +10,10 @@
           rem   3. Handles any character-specific attack logic
 
           rem Input for all attack routines:
-          rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
+          rem   currentPlayer = attacker participant array index (0-3 maps to participants 1-4)
 
           rem All other needed data (X, Y, facing direction, etc.) is looked up
-          rem from the player arrays using temp1 as the index
+          rem from the player arrays using currentPlayer as the index
 
           rem =================================================================
           rem BERNIE (Character 0) - Melee Attack (Both Directions)
@@ -21,7 +21,7 @@
 BernieAttack
           rem Bernie special attack hits both left AND right simultaneously
           rem This is unique - all other melee attacks only hit in facing direction
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           
           rem Attack in facing direction
@@ -29,14 +29,14 @@ BernieAttack
           
           rem Also attack in opposite direction
           rem Temporarily flip facing
-          let temp5 = PlayerState[temp1] & 1 
+          let temp5 = playerState[currentPlayer] & 1 
           rem Store original facing
           if temp5 <> 0 then FaceLeft1
-          let PlayerState[temp1] = PlayerState[temp1] | 1 
+          let playerState[currentPlayer] = playerState[currentPlayer] | 1 
           rem Face right
           goto FacingDone1
 FaceLeft1
-          let PlayerState[temp1] = PlayerState[temp1] & ~ !1 
+          let playerState[currentPlayer] = playerState[currentPlayer] & ~ !1 
           rem Face left
 FacingDone1
           
@@ -45,10 +45,10 @@ FacingDone1
           
           rem Restore original facing
           if temp5 <> 0 then RestoreFaceRight1
-          let PlayerState[temp1] = PlayerState[temp1] & ~ !1
+          let playerState[currentPlayer] = playerState[currentPlayer] & ~ !1
           goto RestoreFacingDone1
 RestoreFaceRight1
-          let PlayerState[temp1] = PlayerState[temp1] | 1
+          let playerState[currentPlayer] = playerState[currentPlayer] | 1
 RestoreFacingDone1
           
           return
@@ -57,7 +57,7 @@ RestoreFacingDone1
           rem CURLER (Character 1) - Ranged Attack (ground-based)
           rem =================================================================
 CurlerAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -66,7 +66,7 @@ CurlerAttack
           rem DRAGON OF STORMS (Character 2) - Melee Attack
           rem =================================================================
 DragonOfStormsAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -75,7 +75,7 @@ DragonOfStormsAttack
           rem Zoe Ryen (Character 3) - Ranged Attack
           rem =================================================================
 ZoeRyenAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -84,7 +84,7 @@ ZoeRyenAttack
           rem FAT TONY (Character 4) - Melee Attack
           rem =================================================================
 FatTonyAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -93,7 +93,7 @@ FatTonyAttack
           rem MEGAX (Character 5) - Ranged Attack
           rem =================================================================
 MegaxAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -103,7 +103,7 @@ MegaxAttack
           rem =================================================================
           rem Harpy attack is a downward diagonal projectile in facing direction
 HarpyAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           rem Spawns diagonal downward missile (velocity set in character data)
@@ -113,7 +113,7 @@ HarpyAttack
           rem KNIGHT GUY (Character 7) - Ranged Attack
           rem =================================================================
 KnightGuyAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -122,7 +122,7 @@ KnightGuyAttack
           rem FROOTY (Character 8) - Ranged Attack
           rem =================================================================
 FrootyAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -131,7 +131,7 @@ FrootyAttack
           rem NEFERTEM (Character 9) - Melee Attack
           rem =================================================================
 NefertemAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -140,7 +140,7 @@ NefertemAttack
           rem NINJISH GUY (Character 10) - Ranged Attack (small bullet)
           rem =================================================================
 NinjishGuyAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -149,7 +149,7 @@ NinjishGuyAttack
           rem PORK CHOP (Character 11) - Melee Attack
           rem =================================================================
 PorkChopAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -158,7 +158,7 @@ PorkChopAttack
           rem RADISH GOBLIN (Character 12) - Melee Attack
           rem =================================================================
 RadishGoblinAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -167,7 +167,7 @@ RadishGoblinAttack
           rem ROBO TITO (Character 13) - Melee Attack
           rem =================================================================
 RoboTitoAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -176,7 +176,7 @@ RoboTitoAttack
           rem URSULO (Character 14) - Ranged Attack
           rem =================================================================
 UrsuloAttack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -187,13 +187,13 @@ UrsuloAttack
           rem Shamone special attack: jumps while attacking simultaneously
 ShamoneAttack
           rem First, execute the jump
-          let PlayerY[temp1] = PlayerY[temp1] - 11 
+          let playerY[currentPlayer] = playerY[currentPlayer] - 11 
           rem Light character, good jump
-          let PlayerState[temp1] = PlayerState[temp1] | 4
+          let playerState[currentPlayer] = playerState[currentPlayer] | 4
           rem Set jumping flag
           
           rem Then execute the attack
-          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -204,15 +204,15 @@ ShamoneAttack
           rem Routes to the appropriate character attack subroutine based on character type
 
           rem INPUT:
-          rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
+          rem   currentPlayer = attacker participant array index (0-3 maps to participants 1-4)
 
-          rem All character attack routines will look up PlayerX[temp1], PlayerY[temp1],
-          rem PlayerState[temp1], etc. as needed.
+          rem All character attack routines will look up playerX[currentPlayer], playerY[currentPlayer],
+          rem playerState[currentPlayer], etc. as needed.
 
 DispatchCharacterAttack
           rem Get character type for this player using direct array access
-          rem temp1 contains player index (0-3)
-          let temp2 = playerChar[temp1]
+          rem currentPlayer contains player index (0-3)
+          let temp2 = playerChar[currentPlayer]
           rem Map MethHound (31) to ShamoneAttack handler
           if temp2 = 31 then temp2 = 15
           rem Use Shamone attack for MethHound

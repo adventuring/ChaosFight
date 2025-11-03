@@ -29,8 +29,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW : goto Arena1ColorsDone
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena1ColorsDone
           pfcolors Arena1ColorsColor
           ColOrange(2)
           ColOrange(4)
@@ -64,8 +64,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW : goto Arena2ColorsDone
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena2ColorsDone
           pfcolors Arena2ColorsColor
           ColTurquoise(4)
           ColTurquoise(4)
@@ -96,8 +96,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena3ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena3ColorsColor
           ColSeafoam(2)
           ColSeafoam(2)
           ColSeafoam(4)
@@ -127,8 +127,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena4ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena4ColorsColor
           ColYellow(12)
           ColYellow(12)
           ColYellow(12)
@@ -158,8 +158,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena5ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena5ColorsColor
           ColBlue(4)
           ColBlue(4)
           ColBlue(4)
@@ -189,8 +189,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena6ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena6ColorsColor
           ColRed(2)
           ColRed(4)
           ColRed(2)
@@ -220,8 +220,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena7ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena7ColorsColor
           ColGold(2)
           ColGold(2)
           ColGold(2)
@@ -251,8 +251,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena8ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena8ColorsColor
           ColPurple(2)
           ColPurple(4)
           ColPurple(4)
@@ -282,8 +282,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena9ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena9ColorsColor
           ColRed(2)
           ColRed(4)
           ColRed(4)
@@ -313,8 +313,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena10ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena10ColorsColor
           ColCyan(4)
           ColCyan(2)
           ColCyan(6)
@@ -344,8 +344,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena11ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena11ColorsColor
           ColGreen(2)
           ColGreen(4)
           ColGreen(4)
@@ -375,8 +375,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena12ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena12ColorsColor
           ColBrown(12)
           ColBrown(12)
           ColBrown(14)
@@ -406,8 +406,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena13ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena13ColorsColor
           ColTurquoise(4)
           ColTurquoise(4)
           ColTurquoise(6)
@@ -437,8 +437,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena14ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena14ColorsColor
           ColMagenta(2)
           ColMagenta(0)
           ColMagenta(4)
@@ -468,8 +468,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena15ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena15ColorsColor
           ColSpringGreen(2)
           ColSpringGreen(2)
           ColSpringGreen(4)
@@ -499,8 +499,8 @@ end
           rem SECAM: Always B&W mode - white on black
           pfcolors SharedPfColorsBW
 #else
-          rem NTSC/PAL: Check ColorBWOverride for B&W vs Color mode
-          if ColorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena16ColorsColor
+          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
+          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena16ColorsColor
           ColIndigo(2)
           ColIndigo(4)
           ColIndigo(6)

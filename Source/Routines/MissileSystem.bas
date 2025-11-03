@@ -10,18 +10,18 @@
           rem   - Melee attack visual (sword, fist, kick sprite)
 
           rem MISSILE VARIABLES (from Variables.bas):
-          rem   MissileX[0-3] (a-d) - X positions
-          rem   MissileY[0-3] (w-z) - Y positions
-          rem   MissileActive (i) - Bit flags for which missiles are active
-          rem   MissileLifetime (e,f) - Packed nybble counters
+          rem   missileX[0-3] (a-d) - X positions
+          rem   missileY[0-3] (w-z) - Y positions
+          rem   missileActive (i) - Bit flags for which missiles are active
+          rem   missileLifetime (e,f) - Packed nybble counters
           rem     e{7:4} = Player 1 lifetime, e{3:0} = Player 2 lifetime
           rem     f{7:4} = Player 3 lifetime, f{3:0} = Player 4 lifetime
           rem     Values: 0-13 = frame count, 14 = until collision, 15 = until off-screen
 
           rem TEMP VARIABLE USAGE:
-          rem   temp1 = player index (0-3) being processed
-          rem   temp2 = MissileX delta (momentum/velocity)
-          rem   temp3 = MissileY delta (momentum/velocity)
+          rem   currentPlayer = player index (0-3) being processed
+          rem   temp2 = missileX delta (momentum/velocity)
+          rem   temp3 = missileY delta (momentum/velocity)
           rem   temp4 = scratch for collision checks / flags / target player
           rem   temp5 = scratch for character data lookups / missile flags
           rem   temp6 = scratch for bit manipulation / collision bounds
@@ -34,7 +34,7 @@
           rem Called when player presses attack button.
 
           rem INPUT:
-          rem   temp1 = participant array index (0-3 maps to participants 1-4)
+          rem   currentPlayer = participant array index (0-3 maps to participants 1-4)
 
           rem PROCESS:
           rem   1. Look up character type for this player
@@ -44,43 +44,43 @@
           rem   5. Initialize lifetime counter from character data
 SpawnMissile
           rem Get character type for this player
-          temp5 = playerChar[temp1]
+          temp5 = playerChar[currentPlayer]
           
           rem Read missile emission height from character data table
           temp6 = CharacterMissileEmissionHeights[temp5]
           
           rem Calculate initial missile position based on player position and facing
-          rem Facing is stored in PlayerState bit 0: 0=left, 1=right
-          temp4 = PlayerState[temp1] & 1 
+          rem Facing is stored in playerState bit 0: 0=left, 1=right
+          temp4 = playerState[currentPlayer] & 1 
           rem Get facing direction
           
           rem Set missile position using array access
-          let MissileX[temp1] = PlayerX[temp1]
-          let MissileY[temp1] = PlayerY[temp1] + temp6
-          if temp4 = 0 then MissileX[temp1] = MissileX[temp1] - MissileSpawnOffsetLeft 
+          let missileX[currentPlayer] = playerX[currentPlayer]
+          let missileY[currentPlayer] = playerY[currentPlayer] + temp6
+          if temp4 = 0 then missileX[currentPlayer] = missileX[currentPlayer] - MissileSpawnOffsetLeft 
           rem Facing left, spawn left
-          if temp4 = 1 then MissileX[temp1] = MissileX[temp1] + MissileSpawnOffsetRight 
+          if temp4 = 1 then missileX[currentPlayer] = missileX[currentPlayer] + MissileSpawnOffsetRight 
           rem Facing right, spawn right
           
           rem Set active bit for this participant's missile
           rem Bit 0 = Participant 1 (array [0]), Bit 1 = Participant 2 (array [1]), Bit 2 = Participant 3 (array [2]), Bit 3 = Participant 4 (array [3])
           rem Calculate bit flag: 1, 2, 4, 8 for array indices 0, 1, 2, 3 (mapping to participants 1, 2, 3, 4)
-          if temp1 = 0 then temp6 = 1
+          if currentPlayer = 0 then temp6 = 1
           rem Array [0] = Participant 1 → bit 0
-          if temp1 = 1 then temp6 = 2
+          if currentPlayer = 1 then temp6 = 2
           rem Array [1] = Participant 2 → bit 1
-          if temp1 = 2 then temp6 = 4
+          if currentPlayer = 2 then temp6 = 4
           rem Array [2] = Participant 3 → bit 2
-          if temp1 = 3 then temp6 = 8
+          if currentPlayer = 3 then temp6 = 8
           rem Array [3] = Participant 4 → bit 3
-          let MissileActive = MissileActive | temp6
+          let missileActive = missileActive | temp6
           
           rem Initialize lifetime counter from character data table
           let temp7 = CharacterMissileLifetime[temp5]
           
           rem Store lifetime in player-specific variable
           rem Using individual variables for each player missile lifetime
-          let MissileLifetime[temp1] = temp7
+          let missileLifetime[currentPlayer] = temp7
           
           return
 
@@ -91,13 +91,13 @@ SpawnMissile
           rem Updates position, checks collisions, handles lifetime.
 UpdateAllMissiles
           rem Check each player missile
-          temp1 = 0
+          currentPlayer = 0
           gosub UpdateOneMissile
-          temp1 = 1
+          currentPlayer = 1
           gosub UpdateOneMissile
-          temp1 = 2
+          currentPlayer = 2
           gosub UpdateOneMissile
-          temp1 = 3
+          currentPlayer = 3
           gosub UpdateOneMissile
           return
 
@@ -108,41 +108,41 @@ UpdateAllMissiles
           rem Handles movement, gravity, collisions, and lifetime.
 
           rem INPUT:
-          rem   temp1 = participant array index (0-3 maps to participants 1-4)
+          rem   currentPlayer = participant array index (0-3 maps to participants 1-4)
 UpdateOneMissile
           rem Check if this missile is active
           temp6 = 1
-          if temp1 = 1 then temp6 = 2
-          if temp1 = 2 then temp6 = 4
-          if temp1 = 3 then temp6 = 8
-          temp4 = MissileActive & temp6
+          if currentPlayer = 1 then temp6 = 2
+          if currentPlayer = 2 then temp6 = 4
+          if currentPlayer = 3 then temp6 = 8
+          temp4 = missileActive & temp6
           if temp4 = 0 then return 
           rem Not active, skip
           
           rem Get character type to look up missile properties
-          temp5 = playerChar[temp1]
+          temp5 = playerChar[currentPlayer]
           
           rem Read missile momentum from character data (in Bank 6)
-          temp1 = temp5 
+          currentPlayer = temp5 
           rem Character index for data lookup
           gosub bank6 GetMissileMomentumX
           temp6 = temp2 
           rem Store base X momentum
-          temp1 = temp5 
+          currentPlayer = temp5 
           rem Restore for Y lookup
           gosub bank6 GetMissileMomentumY
           temp3 = temp2 
           rem Y momentum (already in correct form)
           
           rem Apply facing direction to X momentum
-          temp4 = PlayerState[temp1] & 1 
+          temp4 = playerState[currentPlayer] & 1 
           rem Get facing direction
           if temp4 = 0 then temp2 = 0 - temp6 : goto FacingSet
           temp2 = temp6
 FacingSet
           
           rem Read missile flags from character data (in Bank 6)
-          temp1 = temp5
+          currentPlayer = temp5
           gosub bank6 GetMissileFlags
           temp5 = temp2 
           rem Store flags for later use
@@ -152,8 +152,8 @@ FacingSet
           rem Add gravity (1 pixel/frame down)
           
           rem Update missile position
-          let MissileX[temp1] = MissileX[temp1] + temp2
-          let MissileY[temp1] = MissileY[temp1] + temp3
+          let missileX[currentPlayer] = missileX[currentPlayer] + temp2
+          let missileY[currentPlayer] = missileY[currentPlayer] + temp3
           
           rem Check screen bounds
           gosub CheckMissileBounds
@@ -164,7 +164,7 @@ FacingSet
           if !(temp5 & 1) then PlayfieldCollisionDone
           gosub bank7 MissileCollPF
           if !temp4 then PlayfieldCollisionDone
-          if temp5 & 8 then temp7 = MissileVelX[temp1] : temp7 = $FF - temp7 + 1 : gosub HalfTemp7 : MissileVelX[temp1] = temp7 : gosub DeactivateMissile : return
+          if temp5 & 8 then temp7 = missileVelX[currentPlayer] : temp7 = $FF - temp7 + 1 : gosub HalfTemp7 : missileVelX[currentPlayer] = temp7 : gosub DeactivateMissile : return
           gosub DeactivateMissile : return
 PlayfieldCollisionDone
           
@@ -180,13 +180,13 @@ MissileSystemNoHit
           
           rem Decrement lifetime counter and check expiration
           rem Retrieve current lifetime for this missile
-          let temp8 = MissileLifetime[temp1]
+          let temp8 = missileLifetime[currentPlayer]
           
           rem Decrement if not set to 255 (infinite until collision)
           if temp8 = 255 then MissileUpdateComplete
           let temp8 = temp8 - 1
           if temp8 = 0 then gosub DeactivateMissile : return
-          let MissileLifetime[temp1] = temp8
+          let missileLifetime[currentPlayer] = temp8
 MissileUpdateComplete
           
           return
@@ -197,14 +197,14 @@ MissileUpdateComplete
           rem Checks if missile is off-screen.
 
           rem INPUT:
-          rem   temp1 = participant array index (0-3 maps to participants 1-4)
+          rem   currentPlayer = participant array index (0-3 maps to participants 1-4)
 
           rem OUTPUT:
           rem   temp4 = 1 if off-screen, 0 if on-screen
 CheckMissileBounds
           rem Get missile X/Y position
-          temp2 = MissileX[temp1]
-          temp3 = MissileY[temp1]
+          temp2 = missileX[currentPlayer]
+          temp3 = missileY[currentPlayer]
           
           rem Check bounds (usable sprite area is 128px wide, 16px inset from each side)
           temp4 = 0
@@ -229,14 +229,14 @@ CheckMissileBounds
           rem Uses pfread to check playfield pixel at missile position.
 
           rem INPUT:
-          rem   temp1 = participant array index (0-3 maps to participants 1-4)
+          rem   currentPlayer = participant array index (0-3 maps to participants 1-4)
 
           rem OUTPUT:
           rem   temp4 = 1 if hit playfield, 0 if clear
 MissileSysPF
           rem Get missile X/Y position
-          temp2 = MissileX[temp1]
-          temp3 = MissileY[temp1]
+          temp2 = missileX[currentPlayer]
+          temp3 = missileY[currentPlayer]
           
           rem Convert X/Y to playfield coordinates
           rem Playfield is 32 pixels wide (doubled to 160), 192 pixels tall
@@ -281,14 +281,14 @@ Div5Loop
           rem Uses axis-aligned bounding box (AABB) collision detection.
 
           rem INPUT:
-          rem   temp1 = missile owner player index (0-3)
+          rem   currentPlayer = missile owner player index (0-3)
 
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
 CheckMissilePlayerCollision
           rem Get missile X/Y position
-          temp2 = MissileX[temp1]
-          temp3 = MissileY[temp1]
+          temp2 = missileX[currentPlayer]
+          temp3 = missileY[currentPlayer]
           
           rem Missile bounding box
           rem temp2 = missile left, temp2+MissileAABBSize = missile right
@@ -299,45 +299,45 @@ CheckMissilePlayerCollision
           rem Default: no hit
           
           rem Check Participant 1 (array [0])
-          if temp1 = 0 then goto MissileSkipParticipant1
-          if PlayerHealth[0] = 0 then goto MissileSkipParticipant1
-          if temp2 >= PlayerX[0] + PlayerSpriteHalfWidth then goto MissileSkipParticipant1
-          if temp2 + MissileAABBSize <= PlayerX[0] then goto MissileSkipParticipant1
-          if temp3 >= PlayerY[0] + PlayerSpriteHeight then goto MissileSkipParticipant1
-          if temp3 + MissileAABBSize <= PlayerY[0] then goto MissileSkipParticipant1
+          if currentPlayer = 0 then goto MissileSkipParticipant1
+          if playerHealth[0] = 0 then goto MissileSkipParticipant1
+          if temp2 >= playerX[0] + PlayerSpriteHalfWidth then goto MissileSkipParticipant1
+          if temp2 + MissileAABBSize <= playerX[0] then goto MissileSkipParticipant1
+          if temp3 >= playerY[0] + PlayerSpriteHeight then goto MissileSkipParticipant1
+          if temp3 + MissileAABBSize <= playerY[0] then goto MissileSkipParticipant1
           temp4 = 0 : return 
           rem Hit Participant 1 (array [0])
 MissileSkipParticipant1
           
           rem Check Participant 2 (array [1])
-          if temp1 = 1 then goto MissileSkipParticipant2
-          if PlayerHealth[1] = 0 then goto MissileSkipParticipant2
-          if temp2 >= PlayerX[1] + PlayerSpriteHalfWidth then goto MissileSkipParticipant2
-          if temp2 + MissileAABBSize <= PlayerX[1] then goto MissileSkipParticipant2
-          if temp3 >= PlayerY[1] + PlayerSpriteHeight then goto MissileSkipParticipant2
-          if temp3 + MissileAABBSize <= PlayerY[1] then goto MissileSkipParticipant2
+          if currentPlayer = 1 then goto MissileSkipParticipant2
+          if playerHealth[1] = 0 then goto MissileSkipParticipant2
+          if temp2 >= playerX[1] + PlayerSpriteHalfWidth then goto MissileSkipParticipant2
+          if temp2 + MissileAABBSize <= playerX[1] then goto MissileSkipParticipant2
+          if temp3 >= playerY[1] + PlayerSpriteHeight then goto MissileSkipParticipant2
+          if temp3 + MissileAABBSize <= playerY[1] then goto MissileSkipParticipant2
           temp4 = 1 : return 
           rem Hit Player 2
 MissileSkipPlayer1
           
           rem Check Player 3 (index 2)
-          if temp1 = 2 then goto MissileSkipPlayer2
-          if PlayerHealth[2] = 0 then goto MissileSkipPlayer2
-          if temp2 >= PlayerX[2] + PlayerSpriteHalfWidth then goto MissileSkipPlayer2
-          if temp2 + MissileAABBSize <= PlayerX[2] then goto MissileSkipPlayer2
-          if temp3 >= PlayerY[2] + PlayerSpriteHeight then goto MissileSkipPlayer2
-          if temp3 + MissileAABBSize <= PlayerY[2] then goto MissileSkipPlayer2
+          if currentPlayer = 2 then goto MissileSkipPlayer2
+          if playerHealth[2] = 0 then goto MissileSkipPlayer2
+          if temp2 >= playerX[2] + PlayerSpriteHalfWidth then goto MissileSkipPlayer2
+          if temp2 + MissileAABBSize <= playerX[2] then goto MissileSkipPlayer2
+          if temp3 >= playerY[2] + PlayerSpriteHeight then goto MissileSkipPlayer2
+          if temp3 + MissileAABBSize <= playerY[2] then goto MissileSkipPlayer2
           temp4 = 2 : return 
           rem Hit Player 3
 MissileSkipPlayer2
           
           rem Check Player 4 (index 3)
-          if temp1 = 3 then goto MissileSkipPlayer3
-          if PlayerHealth[3] = 0 then goto MissileSkipPlayer3
-          if temp2 >= PlayerX[3] + PlayerSpriteHalfWidth then goto MissileSkipPlayer3
-          if temp2 + MissileAABBSize <= PlayerX[3] then goto MissileSkipPlayer3
-          if temp3 >= PlayerY[3] + PlayerSpriteHeight then goto MissileSkipPlayer3
-          if temp3 + MissileAABBSize <= PlayerY[3] then goto MissileSkipPlayer3
+          if currentPlayer = 3 then goto MissileSkipPlayer3
+          if playerHealth[3] = 0 then goto MissileSkipPlayer3
+          if temp2 >= playerX[3] + PlayerSpriteHalfWidth then goto MissileSkipPlayer3
+          if temp2 + MissileAABBSize <= playerX[3] then goto MissileSkipPlayer3
+          if temp3 >= playerY[3] + PlayerSpriteHeight then goto MissileSkipPlayer3
+          if temp3 + MissileAABBSize <= playerY[3] then goto MissileSkipPlayer3
           temp4 = 3 : return 
           rem Hit Player 4
 MissileSkipPlayer3
@@ -351,42 +351,42 @@ MissileSkipPlayer3
           rem Applies damage, knockback, and visual/audio feedback.
 
           rem INPUT:
-          rem   temp1 = attacker player index (0-3, missile owner)
+          rem   currentPlayer = attacker player index (0-3, missile owner)
           rem   temp4 = defender player index (0-3, hit player)
 HandleMissileHit
           rem Get character type for damage calculation
-          temp5 = playerChar[temp1]
+          temp5 = playerChar[currentPlayer]
           
           rem Apply damage from attacker to defender
-          rem Use PlayerDamage array for base damage amount
-          temp6 = PlayerDamage[temp1]
+          rem Use playerDamage array for base damage amount
+          temp6 = playerDamage[currentPlayer]
           
-          rem Check if defender is guarding (bit 1 of PlayerState)
-          temp2 = PlayerState[temp4] & 2
-          if temp2 then temp1 = SoundGuard : gosub bank15 PlaySoundEffect : return 
+          rem Check if defender is guarding (bit 1 of playerState)
+          temp2 = playerState[temp4] & 2
+          if temp2 then currentPlayer = SoundGuard : gosub bank15 PlaySoundEffect : return 
           rem Guarding - no damage, play guard sound
           
           rem Apply damage
-          let temp7 = PlayerHealth[temp4]
-          let PlayerHealth[temp4] = PlayerHealth[temp4] - temp6
-          if PlayerHealth[temp4] > temp7 then PlayerHealth[temp4] = 0
+          let temp7 = playerHealth[temp4]
+          let playerHealth[temp4] = playerHealth[temp4] - temp6
+          if playerHealth[temp4] > temp7 then playerHealth[temp4] = 0
           
           rem Apply knockback (simple version - push defender away from attacker)
           rem Calculate direction: if missile moving right, push defender right
-          temp2 = MissileX[temp1]
+          temp2 = missileX[currentPlayer]
           
-          if temp2 < PlayerX[temp4] then PlayerMomentumX[temp4] = PlayerMomentumX[temp4] + KnockbackImpulse : goto KnockbackDone 
+          if temp2 < playerX[temp4] then playerMomentumX[temp4] = playerMomentumX[temp4] + KnockbackImpulse : goto KnockbackDone 
           rem Missile from left, push right
-          let PlayerMomentumX[temp4] = PlayerMomentumX[temp4] - KnockbackImpulse 
+          let playerMomentumX[temp4] = playerMomentumX[temp4] - KnockbackImpulse 
           rem Missile from right, push left
 KnockbackDone
           
           rem Set recovery/hitstun frames
-          let PlayerRecoveryFrames[temp4] = HitstunFrames 
+          let playerRecoveryFrames[temp4] = HitstunFrames 
           rem 10 frames of hitstun
           
           rem Play hit sound effect
-          temp1 = SoundHit
+          currentPlayer = SoundHit
           gosub bank15 PlaySoundEffect
           
           rem Spawn damage indicator visual
@@ -400,16 +400,16 @@ KnockbackDone
           rem Removes a missile from active status.
 
           rem INPUT:
-          rem   temp1 = participant array index (0-3 maps to participants 1-4)
+          rem   currentPlayer = participant array index (0-3 maps to participants 1-4)
 DeactivateMissile
           rem Clear active bit for this player missile
           temp6 = 1
-          if temp1 = 1 then temp6 = 2
-          if temp1 = 2 then temp6 = 4
-          if temp1 = 3 then temp6 = 8
+          if currentPlayer = 1 then temp6 = 2
+          if currentPlayer = 2 then temp6 = 4
+          if currentPlayer = 3 then temp6 = 8
           temp6 = 255 - temp6 
           rem Invert bits
-          let MissileActive = MissileActive & temp6
+          let missileActive = missileActive & temp6
           return
 
           rem =================================================================

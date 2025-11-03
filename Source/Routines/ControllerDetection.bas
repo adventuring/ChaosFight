@@ -36,10 +36,10 @@ CtrlDetConsole
           
 CtrlDetPads
           rem Reset detection flags
-          let ControllerStatus = 0
+          let controllerStatus = 0
 #ifndef TV_SECAM
-          let ColorBWOverride = 0
-          let PauseButtonPrev = 0
+          let colorBWOverride = 0
+          let pauseButtonPrev = 0
 #endif
           
           rem Check for Quadtari (4 joysticks via multiplexing)
@@ -60,11 +60,11 @@ CheckRightSide
 NoQuadtari
           
           rem Quadtari not detected
-          let ControllerStatus = ControllerStatus & ClearQuadtariDetected
+          let controllerStatus = controllerStatus & ClearQuadtariDetected
           goto CheckGenesis
 
 QuadtariFound
-          let ControllerStatus = ControllerStatus | SetQuadtariDetected
+          let controllerStatus = controllerStatus | SetQuadtariDetected
           return
 
 CheckGenesis
@@ -110,7 +110,7 @@ CtrlGenesisA
           if !INPT1{7} then goto NoGenesisLeft
           
           rem Genesis detected on left port
-          let ControllerStatus = ControllerStatus | SetLeftPortGenesis
+          let controllerStatus = controllerStatus | SetLeftPortGenesis
           rem Set LeftPortGenesis bit
           
 NoGenesisLeft
@@ -119,7 +119,7 @@ NoGenesisLeft
           if !INPT3{7} then goto NoGenesisRight
           
           rem Genesis detected on right port
-          let ControllerStatus = ControllerStatus | SetRightPortGenesis
+          let controllerStatus = controllerStatus | SetRightPortGenesis
           rem Set RightPortGenesis bit
           
 NoGenesisRight
@@ -136,7 +136,7 @@ CtrlJoy2A
           if !INPT4{7} then goto NoJoy2Left
           
           rem Joy2b+ detected on left port
-          let ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
           rem Set LeftPortJoy2bPlus bit
           
 NoJoy2Left
@@ -146,7 +146,7 @@ NoJoy2Left
           if !INPT5{7} then goto NoJoy2Right
           
           rem Joy2b+ detected on right port
-          let ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
           rem Set RightPortJoy2bPlus bit
           
 NoJoy2Right
@@ -173,7 +173,7 @@ CtrlGenesisB
           if !INPT1{7} then goto NoLeftGenesis
           
           rem Genesis detected on left port
-          let ControllerStatus = ControllerStatus | SetLeftPortGenesis
+          let controllerStatus = controllerStatus | SetLeftPortGenesis
           goto CheckRightGenesis
           
 NoLeftGenesis
@@ -182,7 +182,7 @@ NoLeftGenesis
           if !INPT3{7} then goto NoRightGenesis
           
           rem Genesis detected on right port
-          let ControllerStatus = ControllerStatus | SetRightPortGenesis
+          let controllerStatus = controllerStatus | SetRightPortGenesis
           goto GenesisDetDone
           
 NoRightGenesis
@@ -210,7 +210,7 @@ CtrlJoy2B
           if !INPT4{7} then goto CheckRightJoy2
           
           rem Joy2b+ detected on left port
-          let ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
           goto Joy2PlusDone
           
 CheckRightJoy2
@@ -220,7 +220,7 @@ CheckRightJoy2
           if !INPT5{7} then goto Joy2PlusDone
           
           rem Joy2b+ detected on right port
-          let ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
           
 Joy2PlusDone
           rem Restore normal VBLANK
@@ -236,7 +236,7 @@ Joy2PlusDone
           
 Check7800Pause
           rem Only process if running on 7800
-          if !Console7800Detected then return
+          if !console7800Detected then return
           
           rem 7800 Pause button detection via Color/B&W switch
           rem On 7800, Color/B&W switch becomes momentary pause button
@@ -246,11 +246,11 @@ Check7800Pause
           if switchbw then PauseNotPressed
           
           rem Button is pressed (low)
-          if !PauseButtonPrev then return
+          if !pauseButtonPrev then return
           
           rem Button just pressed! Toggle Color/B&W override
-          let PauseButtonPrev = 0
-          let ColorBWOverride = ColorBWOverride ^ 1 
+          let pauseButtonPrev = 0
+          let colorBWOverride = colorBWOverride ^ 1 
           rem XOR to toggle 0<->1
           
           return
@@ -286,6 +286,6 @@ ReadPlayers34
 
 PauseNotPressed
           rem Button not pressed, update previous state
-          let PauseButtonPrev = 1
+          let pauseButtonPrev = 1
           return
 

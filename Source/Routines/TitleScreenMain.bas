@@ -8,11 +8,11 @@
           rem Dispatches to other modules for character parade and rendering.
 
           rem AVAILABLE VARIABLES (from Variables.bas):
-          rem   TitleParadeTimer - Frame counter for parade timing
-          rem   TitleCopyrightTimer - Frame counter for copyright display (disappears at 5 seconds)
-          rem   TitleParadeChar - Current parade character (0-15)
-          rem   TitleParadeX - X position of parade character
-          rem   TitleParadeActive - Whether parade is currently running
+          rem   titleParadeTimer - Frame counter for parade timing
+          rem   titleCopyrightTimer - Frame counter for copyright display (disappears at 5 seconds)
+          rem   titleParadeChar - Current parade character (0-15)
+          rem   titleParadeX - X position of parade character
+          rem   titleParadeActive - Whether parade is currently running
           rem   QuadtariDetected - Whether 4-player mode is active
 
           rem FLOW:
@@ -25,11 +25,11 @@ TitleScreen
           rem Title screen loop
 TitleMainLoop
           rem Increment copyright timer (separate from parade timer)
-          let TitleCopyrightTimer = TitleCopyrightTimer + 1
+          let titleCopyrightTimer = titleCopyrightTimer + 1
           
           rem Check for 3-minute timeout (10800 frames at 60fps) - transition to Attract mode
-          rem TitleParadeTimer increments each frame in UpdateCharacterParade
-          if TitleParadeTimer >= 10800 then goto TitleScreenAttract
+          rem titleParadeTimer increments each frame in UpdateCharacterParade
+          if titleParadeTimer >= 10800 then goto TitleScreenAttract
           
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
@@ -38,7 +38,7 @@ TitleMainLoop
           if joy1fire then goto TitleScreenComplete
           
           rem Check Quadtari controllers (Players 3 & 4 if active)
-          if 0 = (ControllerStatus & SetQuadtariDetected) then goto TitleSkipQuad
+          if 0 = (controllerStatus & SetQuadtariDetected) then goto TitleSkipQuad
           if !INPT0{7} then goto TitleScreenComplete
           if !INPT2{7} then goto TitleScreenComplete
 TitleSkipQuad
@@ -53,12 +53,12 @@ TitleSkipQuad
 
 TitleScreenAttract
           rem Transition to Attract mode after 3 minutes
-          let GameMode = ModeAttract : gosub bank13 ChangeGameMode
+          let gameMode = ModeAttract : gosub bank13 ChangeGameMode
           return
 
 TitleScreenComplete
           rem Transition to character select
-          let GameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
+          let gameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
           return
 
 
@@ -70,13 +70,13 @@ BeginTitleScreen
           COLUBK = ColGray(0)
           
           rem Initialize copyright timer (disappears at 5 seconds = 300 frames)
-          let TitleCopyrightTimer = 0
+          let titleCopyrightTimer = 0
           
           rem Initialize character parade
-          let TitleParadeTimer = 0
-          let TitleParadeChar = 0
-          let TitleParadeX = 0
-          let TitleParadeActive = 0
+          let titleParadeTimer = 0
+          let titleParadeChar = 0
+          let titleParadeX = 0
+          let titleParadeActive = 0
           
           rem Enter the title screen main loop
           goto TitleScreen

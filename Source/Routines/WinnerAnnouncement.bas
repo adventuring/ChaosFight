@@ -18,7 +18,7 @@ WinnerAnnouncement
           if joy1fire then goto WinnerReturnToTitle
           
           rem Check Quadtari controllers (Players 3 & 4 if active)
-          if ControllerStatus & SetQuadtariDetected then goto WinnerCheckQuadtari
+          if controllerStatus & SetQuadtariDetected then goto WinnerCheckQuadtari
           goto WinnerSkipQuadtari
 WinnerCheckQuadtari
           if !INPT0{7} then goto WinnerReturnToTitle
@@ -31,7 +31,7 @@ WinnerSkipQuadtari
 
 WinnerReturnToTitle
           rem Transition to title screen
-          let GameMode = ModeTitle : gosub bank13 ChangeGameMode
+          let gameMode = ModeTitle : gosub bank13 ChangeGameMode
           return
 
 

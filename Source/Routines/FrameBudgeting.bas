@@ -57,7 +57,7 @@ BudgetedHealthBarUpdate
           if FramePhase = 2 then goto CheckPlayer2HealthUpdate
           goto SkipPlayer2HealthUpdate
 CheckPlayer2HealthUpdate
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer2HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer2HealthUpdate
           if selectedChar3 = 255 then goto SkipPlayer2HealthUpdate
           gosub bank8 UpdateHealthBarPlayer2
           return
@@ -65,7 +65,7 @@ SkipPlayer2HealthUpdate
           if FramePhase = 3 then goto CheckPlayer3HealthUpdate
           goto SkipPlayer3HealthUpdate
 CheckPlayer3HealthUpdate
-          if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3HealthUpdate
           if selectedChar4 = 255 then goto SkipPlayer3HealthUpdate
           gosub bank8 UpdateHealthBarPlayer3
           return
@@ -75,7 +75,7 @@ SkipPlayer3HealthUpdate
           rem Update Player 1 health bar
 UpdateHealthBarPlayer0
           dim HealthBarLength = temp6
-          let HealthBarLength = PlayerHealth[0] / 3
+          let HealthBarLength = playerHealth[0] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColBlue(12)
           gosub bank8 DrawHealthBarRow0
@@ -84,7 +84,7 @@ UpdateHealthBarPlayer0
           rem Update Player 2 health bar
 UpdateHealthBarPlayer1
           dim HealthBarLength = temp6
-          let HealthBarLength = PlayerHealth[1] / 3
+          let HealthBarLength = playerHealth[1] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColRed(12)
           gosub bank8 DrawHealthBarRow1
@@ -93,7 +93,7 @@ UpdateHealthBarPlayer1
           rem Update Player 3 health bar
 UpdateHealthBarPlayer2
           dim HealthBarLength = temp6
-          let HealthBarLength = PlayerHealth[2] / 3
+          let HealthBarLength = playerHealth[2] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColYellow(12)
           gosub bank8 DrawHealthBarRow2
@@ -102,7 +102,7 @@ UpdateHealthBarPlayer2
           rem Update Player 4 health bar
 UpdateHealthBarPlayer3
           dim HealthBarLength = temp6
-          let HealthBarLength = PlayerHealth[3] / 3
+          let HealthBarLength = playerHealth[3] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColGreen(12)
           gosub bank8 DrawHealthBarRow3
@@ -132,7 +132,7 @@ BudgetedCollisionCheck
           gosub CheckCollisionP1vsP2
           
           rem Skip other checks if not Quadtari
-          if !(ControllerStatus & SetQuadtariDetected) then return
+          if !(controllerStatus & SetQuadtariDetected) then return
           
           rem Check additional pairs based on frame phase
           if FramePhase = 0 then if selectedChar3 <> 255 then gosub CheckCollisionP1vsP3 : goto SkipFramePhaseChecks
@@ -146,74 +146,74 @@ SkipFramePhaseChecks
 
           rem Individual collision check routines
 CheckCollisionP1vsP2
-          if PlayerX[0] >= PlayerX[1] then temp2 = PlayerX[0] - PlayerX[1] else temp2 = PlayerX[1] - PlayerX[0]
-          if temp2 < 16 then if PlayerX[0] < PlayerX[1] then PlayerX[0] = PlayerX[0] - 1 : PlayerX[1] = PlayerX[1] + 1 : goto SkipPlayerSeparation
-          if temp2 < 16 then PlayerX[0] = PlayerX[0] + 1 : PlayerX[1] = PlayerX[1] - 1
+          if playerX[0] >= playerX[1] then temp2 = playerX[0] - playerX[1] else temp2 = playerX[1] - playerX[0]
+          if temp2 < 16 then if playerX[0] < playerX[1] then playerX[0] = playerX[0] - 1 : playerX[1] = playerX[1] + 1 : goto SkipPlayerSeparation
+          if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[1] = playerX[1] - 1
 SkipPlayerSeparation
           
           return
 
 CheckCollisionP1vsP3
-          if PlayerX[0] >= PlayerX[2] then temp2 = PlayerX[0] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[0]
+          if playerX[0] >= playerX[2] then temp2 = playerX[0] - playerX[2] else temp2 = playerX[2] - playerX[0]
 if temp2 < 16 then 
-if PlayerX[0] < PlayerX[2] then 
-          let PlayerX[0] = PlayerX[0] - 1
-          let PlayerX[2] = PlayerX[2] + 1
+if playerX[0] < playerX[2] then 
+          let playerX[0] = playerX[0] - 1
+          let playerX[2] = playerX[2] + 1
 
-          let PlayerX[0] = PlayerX[0] + 1
-          let PlayerX[2] = PlayerX[2] - 1
+          let playerX[0] = playerX[0] + 1
+          let playerX[2] = playerX[2] - 1
           
           
           return
 
 CheckCollisionP1vsP4
-          if PlayerX[0] >= PlayerX[3] then temp2 = PlayerX[0] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[0]
+          if playerX[0] >= playerX[3] then temp2 = playerX[0] - playerX[3] else temp2 = playerX[3] - playerX[0]
 if temp2 < 16 then 
-if PlayerX[0] < PlayerX[3] then 
-          let PlayerX[0] = PlayerX[0] - 1
-          let PlayerX[3] = PlayerX[3] + 1
+if playerX[0] < playerX[3] then 
+          let playerX[0] = playerX[0] - 1
+          let playerX[3] = playerX[3] + 1
 
-          let PlayerX[0] = PlayerX[0] + 1
-          let PlayerX[3] = PlayerX[3] - 1
+          let playerX[0] = playerX[0] + 1
+          let playerX[3] = playerX[3] - 1
           
           
           return
 
 CheckCollisionP2vsP3
-          if PlayerX[1] >= PlayerX[2] then temp2 = PlayerX[1] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[1]
+          if playerX[1] >= playerX[2] then temp2 = playerX[1] - playerX[2] else temp2 = playerX[2] - playerX[1]
 if temp2 < 16 then 
-if PlayerX[1] < PlayerX[2] then 
-          let PlayerX[1] = PlayerX[1] - 1
-          let PlayerX[2] = PlayerX[2] + 1
+if playerX[1] < playerX[2] then 
+          let playerX[1] = playerX[1] - 1
+          let playerX[2] = playerX[2] + 1
 
-          let PlayerX[1] = PlayerX[1] + 1
-          let PlayerX[2] = PlayerX[2] - 1
+          let playerX[1] = playerX[1] + 1
+          let playerX[2] = playerX[2] - 1
           
           
           return
 
 CheckCollisionP2vsP4
-          if PlayerX[1] >= PlayerX[3] then temp2 = PlayerX[1] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[1]
+          if playerX[1] >= playerX[3] then temp2 = playerX[1] - playerX[3] else temp2 = playerX[3] - playerX[1]
 if temp2 < 16 then 
-if PlayerX[1] < PlayerX[3] then 
-          let PlayerX[1] = PlayerX[1] - 1
-          let PlayerX[3] = PlayerX[3] + 1
+if playerX[1] < playerX[3] then 
+          let playerX[1] = playerX[1] - 1
+          let playerX[3] = playerX[3] + 1
 
-          let PlayerX[1] = PlayerX[1] + 1
-          let PlayerX[3] = PlayerX[3] - 1
+          let playerX[1] = playerX[1] + 1
+          let playerX[3] = playerX[3] - 1
           
           
           return
 
 CheckCollisionP3vsP4
-          if PlayerX[2] >= PlayerX[3] then temp2 = PlayerX[2] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[2]
+          if playerX[2] >= playerX[3] then temp2 = playerX[2] - playerX[3] else temp2 = playerX[3] - playerX[2]
 if temp2 < 16 then 
-if PlayerX[2] < PlayerX[3] then 
-          let PlayerX[2] = PlayerX[2] - 1
-          let PlayerX[3] = PlayerX[3] + 1
+if playerX[2] < playerX[3] then 
+          let playerX[2] = playerX[2] - 1
+          let playerX[3] = playerX[3] + 1
 
-          let PlayerX[2] = PlayerX[2] + 1
-          let PlayerX[3] = PlayerX[3] - 1
+          let playerX[2] = playerX[2] + 1
+          let playerX[3] = playerX[3] - 1
           
           
           return
@@ -233,10 +233,10 @@ if PlayerX[2] < PlayerX[3] then
           rem   Frame 2: Check Participant 3 (array [2]) missile vs all players
           rem   Frame 3: Check Participant 4 (array [3]) missile vs all players
 BudgetedMissileCollisionCheck
-          rem Use MissileActive bit flags: bit 0 = Participant 1 (array [0]), bit 1 = Participant 2 (array [1]), bit 2 = Participant 3 (array [2]), bit 3 = Participant 4 (array [3])
+          rem Use missileActive bit flags: bit 0 = Participant 1 (array [0]), bit 1 = Participant 2 (array [1]), bit 2 = Participant 3 (array [2]), bit 3 = Participant 4 (array [3])
           rem Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
           
-if !(ControllerStatus & SetQuadtariDetected) then 
+if !(controllerStatus & SetQuadtariDetected) then 
           rem Simple 2-player mode: alternate missiles
           temp1 = frame & 1
           rem Use frame bit to alternate: 0 = Participant 1 (array [0]), 1 = Participant 2 (array [1])
@@ -245,7 +245,7 @@ if !(ControllerStatus & SetQuadtariDetected) then
           if temp1 = 1 then temp6 = 2
           if temp1 = 2 then temp6 = 4
           if temp1 = 3 then temp6 = 8
-          temp4 = MissileActive & temp6
+          temp4 = missileActive & temp6
           if temp4 then gosub bank15 CheckAllMissileCollisions
           return
           
@@ -257,7 +257,7 @@ if !(ControllerStatus & SetQuadtariDetected) then
           if temp1 = 1 then temp6 = 2
           if temp1 = 2 then temp6 = 4
           if temp1 = 3 then temp6 = 8
-          temp4 = MissileActive & temp6
+          temp4 = missileActive & temp6
           if temp4 then gosub bank15 CheckAllMissileCollisions
           return
 

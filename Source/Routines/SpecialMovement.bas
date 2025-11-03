@@ -10,8 +10,8 @@
 
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   playerChar[0-3] - Character type indices
-          rem   PlayerX[0-3], PlayerY[0-3] - Position
-          rem   PlayerState[0-3] - State flags
+          rem   playerX[0-3], playerY[0-3] - Position
+          rem   playerState[0-3] - State flags
 
           rem CHARACTER INDICES:
           rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=Zoe Ryen, 4=FatTony, 5=Megax,
@@ -21,19 +21,19 @@
 
           rem Apply special movement physics to all active players
 ApplySpecialMovement
-          temp1 = 0 : gosub ApplyPlayerSpecialMovement
-          temp1 = 1 : gosub ApplyPlayerSpecialMovement
-          if ControllerStatus & SetQuadtariDetected then if selectedChar3 <> 255 then temp1 = 2 : gosub ApplyPlayerSpecialMovement
-          if ControllerStatus & SetQuadtariDetected then if selectedChar4 <> 255 then temp1 = 3 : gosub ApplyPlayerSpecialMovement
+          currentPlayer = 0 : gosub ApplyPlayerSpecialMovement
+          currentPlayer = 1 : gosub ApplyPlayerSpecialMovement
+          if controllerStatus & SetQuadtariDetected then if selectedChar3 <> 255 then currentPlayer = 2 : gosub ApplyPlayerSpecialMovement
+          if controllerStatus & SetQuadtariDetected then if selectedChar4 <> 255 then currentPlayer = 3 : gosub ApplyPlayerSpecialMovement
           return
 
           rem =================================================================
           rem APPLY SPECIAL PHYSICS TO ONE PLAYER
           rem =================================================================
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
           rem USES: temp4 = character type
 ApplyPlayerSpecialMovement
-          temp4 = playerChar[temp1]
+          temp4 = playerChar[currentPlayer]
           
           rem Bernie (0) - screen wrap top/bottom
           if temp4 = 0 then goto BernieScreenWrap
@@ -53,15 +53,15 @@ ApplyPlayerSpecialMovement
           rem =================================================================
           rem Bernie cannot jump, but can fall off bottom and reappear at top.
           rem This provides a unique movement advantage.
-          rem INPUT: temp1 = player index
-          rem USES: PlayerY[temp1]
+          rem INPUT: currentPlayer = player index
+          rem USES: playerY[currentPlayer]
 BernieScreenWrap
           rem Check if fallen off bottom edge
-          if PlayerY[temp1] > 90 then PlayerY[temp1] = 10
+          if playerY[currentPlayer] > 90 then playerY[currentPlayer] = 10
           rem Reappear at top
           
           rem Check if somehow went above top edge
-          if PlayerY[temp1] < 5 then PlayerY[temp1] = 80
+          if playerY[currentPlayer] < 5 then playerY[currentPlayer] = 80
           rem Reappear at bottom
           
           return

@@ -15,6 +15,6 @@ AttractMode
           rem Attract mode automatically loops back to Publisher Prelude
           rem No user interaction - just transition immediately
           rem This creates a continuous attract loop: Publisher → Author → Title → Attract → (repeat)
-          let GameMode = ModePublisherPrelude : gosub bank13 ChangeGameMode
+          let gameMode = ModePublisherPrelude : gosub bank13 ChangeGameMode
           return
 

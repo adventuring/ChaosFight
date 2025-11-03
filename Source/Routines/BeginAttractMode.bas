@@ -16,7 +16,7 @@ BeginAttractMode
           COLUBK = ColGray(0)
           
           rem Reset title screen timers for next cycle
-          rem TitleParadeTimer will be reset when we return to title screen
+          rem titleParadeTimer will be reset when we return to title screen
           
           rem Note: Attract mode immediately transitions to Publisher Prelude
           rem This is handled in the AttractMode loop

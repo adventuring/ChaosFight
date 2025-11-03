@@ -6,13 +6,13 @@
           rem =================================================================
 
           rem Handle weight-based wall collision for a player
-          rem Input: participant array index (0-3 maps to participants 1-4, in temp1)
+          rem Input: participant array index (0-3 maps to participants 1-4, in currentPlayer)
           rem Modifies: Player momentum based on character weight
           rem Weight affects: wall bounce coefficient (heavier = less bounce)
 HandleWallCollision
           rem Get character type for this player using direct array access
-          rem temp1 contains player index (0-3)
-          temp4 = playerChar[temp1]
+          rem currentPlayer contains player index (0-3)
+          temp4 = playerChar[currentPlayer]
           
           rem Get character weight using direct array access
           temp3 = CharacterWeights[temp4]
@@ -24,32 +24,32 @@ HandleWallCollision
           rem Example weights: 12 (light) = 44 bounce, 40 (heavy) = 30 bounce
           
           rem Get player momentum using direct array access
-          temp4 = PlayerMomentumX[temp1]
+          temp4 = playerMomentumX[currentPlayer]
           
           rem Calculate bounced momentum: momentum = momentum * bounce / 50
           rem Using integer math: momentum = (momentum * bounce) / 50
           temp2 = temp4 * (50 - temp3 / 2) / 50
           if temp2 = 0 && temp4 <> 0 then temp2 = 1
           rem Ensure at least 1 if was moving
-          let PlayerMomentumX[temp1] = temp2
+          let playerMomentumX[currentPlayer] = temp2
           return
 
           rem Check if player hit left wall and needs weight-based bounce
-          rem Input: participant array index (0-3 maps to participants 1-4, in temp1)
+          rem Input: participant array index (0-3 maps to participants 1-4, in currentPlayer)
 CheckLeftWallCollision
-          temp4 = PlayerX[temp1]
-          if temp4 < 10 then gosub HandleWallCollision : temp4 = PlayerX[temp1] : if temp4 < 10 then PlayerX[temp1] = 10
+          temp4 = playerX[currentPlayer]
+          if temp4 < 10 then gosub HandleWallCollision : temp4 = playerX[currentPlayer] : if temp4 < 10 then playerX[currentPlayer] = 10
           return
 
           rem Check if player hit right wall and needs weight-based bounce
-          rem Input: participant array index (0-3 maps to participants 1-4, in temp1)
+          rem Input: participant array index (0-3 maps to participants 1-4, in currentPlayer)
 CheckRightWallCollision
-          temp4 = PlayerX[temp1]
-          if temp4 > 150 then gosub HandleWallCollision : temp4 = PlayerX[temp1] : if temp4 > 150 then PlayerX[temp1] = 150
+          temp4 = playerX[currentPlayer]
+          if temp4 > 150 then gosub HandleWallCollision : temp4 = playerX[currentPlayer] : if temp4 > 150 then playerX[currentPlayer] = 150
           return
 
           rem Note: GetPlayerMomentumSub and SetPlayerMomentumSub removed
-          rem Now using direct array access: PlayerMomentumX[temp1]
+          rem Now using direct array access: playerMomentumX[currentPlayer]
 
           rem =================================================================
           rem CHARACTER WEIGHTS DATA

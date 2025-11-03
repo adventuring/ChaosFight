@@ -18,11 +18,11 @@ LevelSelect1
           
           rem Handle 1-second Fire button hold - return to character select
           if joy0fire then goto LevelSelectCheckHoldTimer
-          let LevelSelectHoldTimer = 0
+          let levelSelectHoldTimer = 0
           goto LevelSelectHoldTimerDone
 LevelSelectCheckHoldTimer
-          let LevelSelectHoldTimer = LevelSelectHoldTimer + 1
-          if LevelSelectHoldTimer >= 60 then goto LevelSelectReturnToCharacterSelect
+          let levelSelectHoldTimer = levelSelectHoldTimer + 1
+          if levelSelectHoldTimer >= 60 then goto LevelSelectReturnToCharacterSelect
 LevelSelectHoldTimerDone
           
           rem Display arena number (01-16) or '??' for random
@@ -37,7 +37,7 @@ LevelSelectHoldTimerDone
           goto LevelSelectSkipFirePress
 LevelSelectCheckQuickPress
           rem Only start game if hold timer hasn't reached 60 (not a hold)
-          if LevelSelectHoldTimer < 60 then goto StartGame1
+          if levelSelectHoldTimer < 60 then goto StartGame1
 LevelSelectSkipFirePress
           
           rem Return to MainLoop for next frame
@@ -46,12 +46,12 @@ LevelSelectSkipFirePress
 
 StartGame1
           rem Transition to Game mode after arena selection
-          let GameMode = ModeGame : gosub bank13 ChangeGameMode
+          let gameMode = ModeGame : gosub bank13 ChangeGameMode
           return
 
 LevelSelectReturnToCharacterSelect
           rem Return to character select (Game Select switch or 1-second Fire hold)
-          let GameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
+          let gameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
           return
 
           rem =================================================================
@@ -172,7 +172,7 @@ LoadLevelSelectSkipPlayer2
 LoadLevelSelectPlayer2Done
           
           rem Load Player 3 sprite (bottom-left quadrant) - 4-player mode only
-          if !(ControllerStatus & SetQuadtariDetected) then goto LoadLevelSelectSkipPlayer3
+          if !(controllerStatus & SetQuadtariDetected) then goto LoadLevelSelectSkipPlayer3
           if selectedChar3 = 255 then goto LoadLevelSelectSkipPlayer3
           temp1 = selectedChar3 : temp2 = 0 : temp3 = 2
           gosub bank10 LoadCharacterSprite
@@ -185,7 +185,7 @@ LoadLevelSelectSkipPlayer3
 LoadLevelSelectPlayer3Done
           
           rem Load Player 4 sprite (bottom-right quadrant) - 4-player mode only
-          if !(ControllerStatus & SetQuadtariDetected) then goto LoadLevelSelectSkipPlayer4
+          if !(controllerStatus & SetQuadtariDetected) then goto LoadLevelSelectSkipPlayer4
           if selectedChar4 = 255 then goto LoadLevelSelectSkipPlayer4
           temp1 = selectedChar4 : temp2 = 0 : temp3 = 3
           gosub bank10 LoadCharacterSprite

@@ -34,10 +34,11 @@ BeginGameLoop
           rem SuperChip variables var0-var15 available in gameplay
           
           rem Initialize player positions
-          PlayerX[0] = 40 : PlayerY[0] = 80
-          PlayerX[1] = 120 : PlayerY[1] = 80
-          PlayerX[2] = 80 : PlayerY[2] = 80
-          PlayerX[3] = 100 : PlayerY[3] = 80
+          rem Note: If coming from Falling Animation, positions are already set at top of screen
+          rem Only set default positions if not already initialized (check if Y is 0, which shouldn't happen)
+          rem For now, preserve existing positions set by falling animation
+          rem Falling animation sets players at Y=10 at quadrant X positions (40 or 120)
+          rem Game mode gravity will handle falling from this position
           
           rem Initialize player states (facing direction)
           PlayerState[0] = 1

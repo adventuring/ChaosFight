@@ -3,8 +3,22 @@
 
 LevelSelect1
 LevelSelect1Loop
-          if joy0left then selectedLevel = selectedLevel - 1 : if selectedLevel > NumLevels then selectedLevel = NumLevels
-          if joy0right then selectedLevel = selectedLevel + 1 : if selectedLevel > NumLevels then selectedLevel = 0
+          if joy0left then LevelSelectLeft
+          goto LevelSelectSkipLeft
+LevelSelectLeft
+          selectedLevel = selectedLevel - 1 : if selectedLevel > NumLevels then selectedLevel = NumLevels
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
+LevelSelectSkipLeft
+          if joy0right then LevelSelectRight
+          goto LevelSelectSkipRight
+LevelSelectRight
+          selectedLevel = selectedLevel + 1 : if selectedLevel > NumLevels then selectedLevel = 0
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
+LevelSelectSkipRight
           
           if selectedLevel = 0 then Level0Sprites
           goto Level1Sprites
@@ -21,8 +35,15 @@ Level1Sprites
 
 SpritesSet
           
-          if joy0fire then StartGame1
-          
+          if joy0fire then LevelSelectConfirm
+          goto LevelSelectSkipConfirm
+LevelSelectConfirm
+          rem Play selection sound
+          temp1 = SoundMenuSelect
+          gosub bank15 PlaySoundEffect
+          gosub StartGame1
+          return
+LevelSelectSkipConfirm
           drawscreen
           goto LevelSelect1Loop
 

@@ -12,7 +12,7 @@
 HandleWallCollision
           rem Get character type for this player using direct array access
           rem temp1 contains player index (0-3)
-          temp4 = PlayerChar[temp1]
+          temp4 = playerChar[temp1]
           
           rem Get character weight using direct array access
           temp3 = CharacterWeights[temp4]

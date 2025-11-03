@@ -50,3 +50,62 @@ LoadPlayer3Sprite
           rem For now, use placeholder sprite data
           return
 
+          rem =================================================================
+          rem HEALTHBAR SYSTEM UNUSED FUNCTION
+          rem =================================================================
+          rem MOVED FROM: Source/Routines/HealthBarSystem.bas
+          rem DATE: 2025-01-XX
+          rem REASON: P3/P4 health uses score digits, not playfield pixels
+
+DrawPlayfieldHealthBar
+          rem Displays a health bar using playfield pixels
+          rem INPUT: temp1 = health (0-100), temp2 = player index (2-3)
+          rem        temp3 = Y row (23 for bottom), temp4 = starting X position
+          rem NOTE: Replaced by UpdatePlayer34HealthBars which uses score digits
+          
+          rem Calculate bar length (0-15 pixels)
+          temp5 = temp1 * 15
+          temp5 = temp5 / 100
+          if temp5 > 15 then temp5 = 15
+          
+          rem Set health bar color based on player
+          if temp2 = 2 then COLUPF = ColYellow(12) 
+          rem P3 Yellow
+          if temp2 = 3 then COLUPF = ColGreen(12)  
+          rem P4 Green
+          
+          rem Clear the health bar area first
+          temp6 = temp4 
+          rem Starting X position
+          rem Clear 15 pixels worth of health bar
+          for temp7 = 0 to 15
+          rem pfpixel temp6 temp3 off
+          temp6 = temp6 + 1
+          if temp6 > 31 then temp6 = 31 
+          rem Clamp to playfield width
+          next
+          
+          rem Draw the health bar
+          temp6 = temp4 
+          rem Reset to starting X position
+          if temp2 = 2 then 
+          rem P3: left-to-right
+          for temp7 = 0 to temp5
+          rem pfpixel temp6 temp3 on
+          temp6 = temp6 + 1
+          if temp6 > 31 then temp6 = 31
+          next
+          
+          
+          if temp2 = 3 then 
+          rem P4: right-to-left
+          for temp7 = 0 to temp5
+          rem pfpixel temp6 temp3 on
+          let temp7 = temp6
+          temp6 = temp6 - 1
+          if temp6 > temp7 then temp6 = 0
+          next
+          
+          
+          return
+

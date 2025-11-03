@@ -68,7 +68,7 @@ InitializeHealthBars
           rem   Right 2 digits (XX): Player 4 health (00-100) - red color
           rem Score display uses 6 digits total (3 bytes BCD)
           rem Score format: score (digits 5-4), score+1 (digits 3-2), score+2 (digits 1-0)
-          rem Each byte stores 2 BCD digits (high nibble = tens, low nibble = ones)
+          rem Each byte stores 2 BCD digits (high nybble = tens, low nybble = ones)
 
 UpdatePlayer34HealthBars
           rem Only update if players 3 or 4 are active
@@ -122,10 +122,10 @@ P4Health100
 P4HealthConvertDone
           
           rem Set score bytes in BCD format using assembly
-          rem score (digits 5-4): P3 tens (high nibble) and ones (low nibble)
+          rem score (digits 5-4): P3 tens (high nybble) and ones (low nybble)
           rem score+1 (digits 3-2): CF (separator)
-          rem score+2 (digits 1-0): P4 tens (high nibble) and ones (low nibble)
-          rem BCD format: high nibble = tens digit, low nibble = ones digit
+          rem score+2 (digits 1-0): P4 tens (high nybble) and ones (low nybble)
+          rem BCD format: high nybble = tens digit, low nybble = ones digit
           rem Example: 75 = $75 (BCD), 50 = $50 (BCD)
           rem Build BCD byte: (tens << 4) | ones
           rem Note: CF ($CF) is stored directly as hex value for separator

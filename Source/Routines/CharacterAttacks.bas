@@ -63,9 +63,9 @@ CurlerAttack
           return
 
           rem =================================================================
-          rem DRAGONET (Character 2) - Melee Attack
+          rem DRAGON OF STORMS (Character 2) - Melee Attack
           rem =================================================================
-DragonetAttack
+DragonOfStormsAttack
           let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
@@ -90,7 +90,7 @@ FatTonyAttack
           return
 
           rem =================================================================
-          rem GRIZZARD HANDLER (Character 5) - Ranged Attack (Grizzard Eggs)
+          rem MEGAX (Character 5) - Ranged Attack
           rem =================================================================
 MegaxAttack
           let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
@@ -119,7 +119,7 @@ KnightGuyAttack
           return
 
           rem =================================================================
-          rem MAGICAL FAERIE (Character 8) - Ranged Attack
+          rem FROOTY (Character 8) - Ranged Attack
           rem =================================================================
 FrootyAttack
           let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
@@ -216,6 +216,6 @@ DispatchCharacterAttack
           rem Map MethHound (31) to ShamoneAttack handler
           if temp2 = 31 then temp2 = 15
           rem Use Shamone attack for MethHound
-          on temp2 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          on temp2 goto BernieAttack, CurlerAttack, DragonOfStormsAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
           rem Default to Bernie attack if invalid character
           goto BernieAttack

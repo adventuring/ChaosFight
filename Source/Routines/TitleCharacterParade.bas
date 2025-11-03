@@ -20,9 +20,9 @@
           rem   - Characters chosen randomly from 16 available
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
-          rem   6=Harpy, 7=Knight, 8=Magical Faerie, 9=Mystery, 10=Ninjish,
-          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
+          rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=Zoe Ryen, 4=FatTony, 5=Megax,
+          rem   6=Harpy, 7=Knight, 8=Frooty, 9=Mystery, 10=Ninjish,
+          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Shamone
           rem =================================================================
 
           rem Update parade state (called every frame)
@@ -99,7 +99,7 @@ SetChar1
           rem Curler
 SetChar2
           COLUP0 = ColYellow(12) : return  
-          rem Dragonet
+          rem Dragon of Storms
 SetChar3
           COLUP0 = ColGreen(12) : return   
           rem Zoe Ryen
@@ -117,7 +117,7 @@ SetChar7
           rem Knight Guy
 SetChar8
           COLUP0 = ColMagenta(12) : return 
-          rem Magical Faerie
+          rem Frooty
 SetChar9
           COLUP0 = ColLime(12) : return    
           rem Mystery Man
@@ -138,7 +138,7 @@ SetChar14
           rem Ursulo
 SetChar15
           COLUP0 = ColGold(12) : return    
-          rem Veg Dog
+          rem Shamone
 
           rem =================================================================
           rem DRAW PARADE CHARACTER SPRITE

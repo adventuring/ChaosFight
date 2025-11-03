@@ -136,9 +136,9 @@ ZoeRyenFrameMap_length = .skipL0664-ZoeRyenFrameMap
  
 ZoeRyenFrames_length = .skipL0663-ZoeRyenFrames 
  
-DragonetFrameMap_length = .skipL0658-DragonetFrameMap 
+DragonOfStormsFrameMap_length = .skipL0658-DragonOfStormsFrameMap 
  
-DragonetFrames_length = .skipL0657-DragonetFrames 
+DragonOfStormsFrames_length = .skipL0657-DragonOfStormsFrames 
  
 CurlerFrameMap_length = .skipL0652-CurlerFrameMap 
  

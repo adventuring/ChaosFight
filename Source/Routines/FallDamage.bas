@@ -21,11 +21,11 @@
           rem   - Frooty (8): NO gravity (no falling)
           rem   - Ninjish Guy (10): 1/2 fall damage (reduced)
           rem   - Harpy (6): Reduced gravity (1/2 rate) when falling
-          rem   - Dragonet (2): Reduced gravity (1/2 rate) when falling
+          rem   - Dragon of Storms (2): Reduced gravity (1/2 rate) when falling
 
           rem GRAVITY CONSTANTS:
           rem   - Normal gravity: 2 pixels/frame acceleration
-          rem   - Reduced gravity (Harpy/Dragonet): 1 pixel/frame
+          rem   - Reduced gravity (Harpy/Dragon of Storms): 1 pixel/frame
           rem   - Terminal velocity: 8 pixels/frame (cap on fall speed)
 
           rem VARIABLES USED:
@@ -155,13 +155,13 @@ FallDamageApplyGravity
           rem Frooty: no gravity
           
           rem Check for reduced gravity characters
-          rem Harpy (6) and Dragonet (2): 1/2 gravity when falling
+          rem Harpy (6) and Dragon of Storms (2): 1/2 gravity when falling
           temp6 = 2 
           rem Default gravity: 2 pixels/frame²
           if temp5 = 6 then temp6 = 1 
           rem Harpy: reduced gravity
           if temp5 = 2 then temp6 = 1 
-          rem Dragonet: reduced gravity
+          rem Dragon of Storms: reduced gravity
           
           rem Apply gravity acceleration
           temp2 = temp2 + temp6
@@ -217,13 +217,13 @@ CheckGroundCollision
           return
 
           rem =================================================================
-          rem HANDLE MAGICAL FAERIE VERTICAL CONTROL
+          rem HANDLE FROOTY VERTICAL CONTROL
           rem =================================================================
-          rem Magical Faerie has no gravity and can move up/down freely.
+          rem Frooty has no gravity and can move up/down freely.
           rem Down button moves down (no guard action).
 
           rem INPUT:
-          rem   temp1 = player index (0-3, but should only be called for Magical Faerie)
+          rem   temp1 = player index (0-3, but should only be called for Frooty)
 
           rem This should be called from PlayerInput.bas when processing
           rem joystick up/down for Frooty.

@@ -14,9 +14,9 @@
           rem   PlayerState[0-3] - State flags
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
+          rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=Zoe Ryen, 4=FatTony, 5=Megax,
           rem   6=Harpy, 7=Knight, 8=Frooty, 9=Mystery, 10=Ninjish,
-          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
+          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Shamone
           rem =================================================================
 
           rem Apply special movement physics to all active players
@@ -38,12 +38,12 @@ ApplyPlayerSpecialMovement
           rem Bernie (0) - screen wrap top/bottom
           if temp4 = 0 then goto BernieScreenWrap
           
-          rem Frooty (8) and Dragonet (2) - free flight (no gravity)
+          rem Frooty (8) and Dragon of Storms (2) - free flight (no gravity)
           rem These characters skip gravity entirely
           if temp4 = 8 then return
           rem Frooty: no gravity
           if temp4 = 2 then return
-          rem Dragonet: no gravity (free flight)
+          rem Dragon of Storms: no gravity (free flight)
           
           rem All other characters use standard physics
           return

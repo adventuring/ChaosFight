@@ -32,7 +32,13 @@ LevelSelectHoldTimerDone
           gosub LoadLevelSelectPlayerSprites
           
           rem Check for Fire button to start game (quick press, not hold)
-          if joy0fire && LevelSelectHoldTimer < 60 then goto StartGame1
+          rem Use skip-over pattern to avoid complex && operator
+          if joy0fire then goto LevelSelectCheckQuickPress
+          goto LevelSelectSkipFirePress
+LevelSelectCheckQuickPress
+          rem Only start game if hold timer hasn't reached 60 (not a hold)
+          if LevelSelectHoldTimer < 60 then goto StartGame1
+LevelSelectSkipFirePress
           
           rem Return to MainLoop for next frame
           rem MainLoop will call drawscreen after this returns

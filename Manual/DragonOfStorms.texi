@@ -1,4 +1,4 @@
-@subsubsection Dragonet
+@subsubsection DragonOfStorms
 @display
 @group
     Weight: Medium-Light
@@ -10,5 +10,5 @@
 @end group
 @end display
 
-Dragonet fires a small projectile (2×2 pixels) that travels in a ballistic arc,
+Dragon of Storms fires a small projectile (2×2 pixels) that travels in a ballistic arc,
 making it excellent for hitting enemies at different heights!

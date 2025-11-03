@@ -204,7 +204,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - **Special Moves**: Character-specific abilities (see Character Behaviors section)
 
 ### Physics Systems
-- **Gravity**: Affects most characters (Frooty and Dragonet ignore gravity - can fly)
+- **Gravity**: Affects most characters (Frooty and Dragon of Storms ignore gravity - can fly)
 - **Weight Effects**:
   - Heavier characters: Lower jumps, slower movement, more knockback resistance
   - Lighter characters: Higher jumps, faster movement, less knockback resistance
@@ -279,7 +279,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
   - Great for hitting low targets
   - Projectile spawns at character's feet and slides horizontally across floor
 
-### Character 2: Dragonet (Dragon of Storms)
+### Character 2: Dragon of Storms
 - **Weight**: Medium-Light (20)
 - **Attack Type**: Ranged
 - **Missile**: 2×2 pixels, ballistic arc (parabolic trajectory)
@@ -310,7 +310,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - **Weight**: Medium (25)
 - **Attack Type**: Ranged
 - **Missile**: Fire breath (ballistic arc)
-- **Special Moves**: Giant monster-eating powerhouse, biggest and most powerful Grizzard known, breathes fire
+- **Special Moves**: Giant monster-eating powerhouse, biggest and most powerful known, breathes fire
 
 ### Character 6: Harpy
 - **Weight**: Light (15)
@@ -331,7 +331,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
   - Armored fighter with powerful sword attacks
   - Longest melee attack duration (6 frames)
 
-### Character 8: Frooty (Magical Faerie)
+### Character 8: Frooty
 - **Weight**: Very Light (15)
 - **Attack Type**: Ranged
 - **Missile**: 2×2 pixels, ballistic arc (lollipop sparkle)

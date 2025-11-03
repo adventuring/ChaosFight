@@ -7,7 +7,7 @@
           rem Bank 2 dedicated to character art only - leave room for animation frames
           #include "Source/Generated/Bernie.bas"
           #include "Source/Generated/Curler.bas"
-          #include "Source/Generated/Dragonet.bas"
+          #include "Source/Generated/DragonOfStorms.bas"
           #include "Source/Generated/ZoeRyen.bas"
           #include "Source/Generated/FatTony.bas"
           #include "Source/Generated/Megax.bas"

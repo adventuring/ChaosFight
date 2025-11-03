@@ -381,7 +381,7 @@ Each character has unique properties affecting gameplay:
 
 @include CurlingSweeper.texi
 
-@include Dragonet.texi
+@include DragonOfStorms.texi
 
 @include ZoeRyen.texi
 

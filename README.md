@@ -10,12 +10,12 @@ A sophisticated 4-player fighting game for the Atari 2600, featuring 16 unique c
 - **Advanced Physics** - Gravity, momentum, fall damage with character-specific mechanics
 - **Enhanced Controller Support** - CX-40, Genesis 3-button, Joy2B+, Quadtari
 - **Collision Detection** - AABB missiles, AOE attacks, playfield boundaries
-- **Special Abilities** - Flight (Frooty), immunity (Bernie/RoboTito), reduced gravity (Harpy/Dragonet)
+- **Special Abilities** - Flight (Frooty), immunity (Bernie/RoboTito), reduced gravity (Harpy/Dragon of Storms)
 - **Memory Optimization** - SuperChip RAM with 96 variables during gameplay
 - **Professional Architecture** - Modular design, data-driven character system
 
 ### 🎮 Characters & Combat
-**Ranged Fighters** (projectile attacks): Bernie, Curler, Dragonet, ZoeRyen, FatTony, Frooty, Megax, Ursulo  
+**Ranged Fighters** (projectile attacks): Bernie, Curler, Dragon of Storms, ZoeRyen, FatTony, Frooty, Megax, Ursulo  
 **Melée Fighters** (AOE attacks): Harpy, KnightGuy, Nefertem, NinjishGuy, PorkChop, RadishGoblin, RoboTito, Shamone
 
 **Special Mechanics**:

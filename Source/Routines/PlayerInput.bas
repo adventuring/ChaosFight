@@ -28,9 +28,9 @@
           rem   Bits 4-7: Animation state
 
           rem CHARACTER INDICES (0-15):
-          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
+          rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=Zoe Ryen, 4=FatTony, 5=Megax,
           rem   6=Harpy, 7=Knight, 8=Frooty, 9=Nefertem, 10=Ninjish,
-          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
+          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Shamone
           rem =================================================================
 
           rem Main input handler for all players
@@ -92,17 +92,17 @@ InputSkipPlayer4Input
           rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
 InputHandleLeftPortPlayer
           rem Process left/right movement (with playfield collision for flying characters)
-          rem Frooty (8) and Dragonet (2) need collision checks for horizontal movement
+          rem Frooty (8) and Dragon of Storms (2) need collision checks for horizontal movement
           temp5 = PlayerChar[temp1]
-          if temp5 = 8 then goto FrootyDragonetLeftRightMovement
-          if temp5 = 2 then goto FrootyDragonetLeftRightMovement
+          if temp5 = 8 then goto FrootyDragonOfStormsLeftRightMovement
+          if temp5 = 2 then goto FrootyDragonOfStormsLeftRightMovement
           
           rem Standard horizontal movement (no collision check)
           if joy0left then PlayerX[temp1] = PlayerX[temp1] - 1 : PlayerState[temp1] = PlayerState[temp1] & NOT 1 : PlayerMomentumX[temp1] = 255
           if joy0right then PlayerX[temp1] = PlayerX[temp1] + 1 : PlayerState[temp1] = PlayerState[temp1] | 1 : PlayerMomentumX[temp1] = 1
           goto SkipFlyingLeftRight
           
-FrootyDragonetLeftRightMovement
+FrootyDragonOfStormsLeftRightMovement
           rem Flying characters: check playfield collision before horizontal movement
           rem Check left movement
           if joy0left then goto CheckLeftCollision
@@ -257,7 +257,7 @@ EnhancedJumpDone0
           rem Map MethHound (31) to ShamoneJump handler
           if temp4 = 31 then temp4 = 15
           rem Use Shamone jump for MethHound
-                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, ShamoneJump
+                    on temp4 goto BernieJump, CurlerJump, DragonOfStormsJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipLeftPortJump
 
           
@@ -268,7 +268,7 @@ InputSkipLeftPortJump
             temp4 = PlayerChar[temp1]
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
-            on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
+            on temp4 goto BernieDown, CurlerDown, DragonOfStormsDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
           if !joy0down then PlayerState[temp1] = PlayerState[temp1] & NOT 2
           
           
@@ -279,7 +279,7 @@ InputSkipLeftPortJump
           temp4 = PlayerChar[temp1]
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound
-          on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          on temp4 goto BernieAttack, CurlerAttack, DragonOfStormsAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
 InputSkipLeftPortAttack
           
           
@@ -292,10 +292,10 @@ InputSkipLeftPortAttack
           rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
 InputHandleRightPortPlayer
           rem Process left/right movement (with playfield collision for flying characters)
-          rem Frooty (8) and Dragonet (2) need collision checks for horizontal movement
+          rem Frooty (8) and Dragon of Storms (2) need collision checks for horizontal movement
           temp5 = PlayerChar[temp1]
-          if temp5 = 8 then goto FrootyDragonetLeftRightMovementRight
-          if temp5 = 2 then goto FrootyDragonetLeftRightMovementRight
+          if temp5 = 8 then goto FrootyDragonOfStormsLeftRightMovementRight
+          if temp5 = 2 then goto FrootyDragonOfStormsLeftRightMovementRight
           
           rem Standard horizontal movement (no collision check)
           if joy1left then
@@ -311,7 +311,7 @@ InputHandleRightPortPlayer
                     let PlayerMomentumX[temp1] = 1
           goto SkipFlyingLeftRightRight
           
-FrootyDragonetLeftRightMovementRight
+FrootyDragonOfStormsLeftRightMovementRight
           rem Flying characters: check playfield collision before horizontal movement
           rem Check left movement
           if joy1left then goto CheckLeftCollisionRight
@@ -467,7 +467,7 @@ EnhancedJumpDone1
           rem Map MethHound (31) to ShamoneJump handler
           if temp4 = 31 then temp4 = 15
           rem Use Shamone jump for MethHound
-                    on temp4 goto BernieJump, CurlerJump, DragonetJump, EXOJump, FatTonyJump, GrizzardJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, ShamoneJump
+                    on temp4 goto BernieJump, CurlerJump, DragonOfStormsJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipRightPortJump
 
           
@@ -478,7 +478,7 @@ InputSkipRightPortJump
           temp4 = PlayerChar[temp1] 
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
-                    on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
+                    on temp4 goto BernieDown, CurlerDown, DragonOfStormsDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
 
           let PlayerState[temp1] = PlayerState[temp1] & NOT 2 
           rem Clear guard bit
@@ -491,7 +491,7 @@ InputSkipRightPortJump
           temp4 = PlayerChar[temp1] 
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound
-                    on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+                    on temp4 goto BernieAttack, CurlerAttack, DragonOfStormsAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
 InputSkipRightPortAttack
           
           

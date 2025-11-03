@@ -16,9 +16,9 @@
           rem   PlayerMomentumX[temp1] - Horizontal momentum
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curler, 2=Dragonet, 3=EXO, 4=FatTony, 5=Grizzard,
+          rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=Zoe Ryen, 4=FatTony, 5=Megax,
           rem   6=Harpy, 7=Knight, 8=Frooty, 9=Nefertem, 10=Ninjish,
-          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
+          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Shamone
           rem =================================================================
 
           rem =================================================================
@@ -103,11 +103,11 @@ CurlerJump
           rem tail call
           goto StandardJump
 
-          rem DRAGONET (2) - FREE FLIGHT (vertical movement)
-          rem Dragonet can fly up/down freely
+          rem DRAGON OF STORMS (2) - FREE FLIGHT (vertical movement)
+          rem Dragon of Storms can fly up/down freely
           rem INPUT: temp1 = player index
           rem USES: PlayerX[temp1], PlayerY[temp1], temp2, temp3, temp4
-DragonetJump
+DragonOfStormsJump
           rem Fly up with playfield collision check
           rem Check collision before moving
           temp2 = PlayerX[temp1]
@@ -136,7 +136,7 @@ DragonetJump
           return
 
           rem Zoe Ryen (3) - STANDARD JUMP (light weight, high jump)
-EXOJump
+ZoeRyenJump
           let PlayerY[temp1] = PlayerY[temp1] - 12 
           rem Lighter character, higher jump
           let PlayerState[temp1] = PlayerState[temp1] | 4
@@ -149,8 +149,8 @@ FatTonyJump
           let PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
-          rem GRIZZARD HANDLER (5) - STANDARD JUMP
-GrizzardJump
+          rem MEGAX (5) - STANDARD JUMP
+MegaxJump
           rem tail call
           goto StandardJump
 
@@ -271,13 +271,13 @@ CurlerDown
           rem tail call
           goto StandardGuard
 
-          rem DRAGONET (2) - GUARD
-DragonetDown
+          rem DRAGON OF STORMS (2) - GUARD
+DragonOfStormsDown
           rem tail call
           goto StandardGuard
 
           rem Zoe Ryen (3) - GUARD
-EXODown
+ZoeRyenDown
           rem tail call
           goto StandardGuard
 
@@ -286,8 +286,8 @@ FatTonyDown
           rem tail call
           goto StandardGuard
 
-          rem GRIZZARD HANDLER (5) - GUARD
-GrizzardDown
+          rem MEGAX (5) - GUARD
+MegaxDown
           rem tail call
           goto StandardGuard
 

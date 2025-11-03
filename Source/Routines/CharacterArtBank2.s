@@ -20,12 +20,12 @@
 ; Character sprite pointer tables (Bank 2 only)
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLoBank2:
-    .byte <BernieSprite, <CurlerSprite, <DragonetSprite, <ZoeRyenSprite
+    .byte <BernieSprite, <CurlerSprite, <DragonOfStormsSprite, <ZoeRyenSprite
     .byte <FatTonySprite, <MegaxSprite, <HarpySprite, <KnightGuySprite
 
 ; High byte pointers for each character base sprite data  
 CharacterSpritePtrHiBank2:
-    .byte >BernieSprite, >CurlerSprite, >DragonetSprite, >ZoeRyenSprite
+    .byte >BernieSprite, >CurlerSprite, >DragonOfStormsSprite, >ZoeRyenSprite
     .byte >FatTonySprite, >MegaxSprite, >HarpySprite, >KnightGuySprite
 
 ; =================================================================

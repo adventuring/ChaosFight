@@ -28,23 +28,8 @@ LevelSelectHoldTimerDone
           rem Display arena number (01-16) or '??' for random
           gosub DisplayArenaNumber
           
-          rem TODO: Load player character sprites (#414, #415)
-          
-          rem Placeholder sprite positioning (to be replaced with player sprites)
-          if selectedArena = 0 then goto Level0Sprites
-          goto Level1Sprites
-
-Level0Sprites
-          player0x = 80 : player0y = 80
-          player1x = 90 : player1y = 80
-          rem TODO: Use dynamic sprite setting for level 0 sprites
-          goto SpritesSet
-
-Level1Sprites
-          player0x = 80 : player0y = 80
-          player1x = 90 : player1y = 80
-
-SpritesSet
+          rem Load and position player character sprites in quadrants
+          gosub LoadLevelSelectPlayerSprites
           
           rem Check for Fire button to start game (quick press, not hold)
           if joy0fire && LevelSelectHoldTimer < 60 then goto StartGame1
@@ -120,5 +105,79 @@ DisplayRandomArena
           gosub DrawDigit
           
           rem Note: Displays "FF" as placeholder until question mark added to font system
+          
+          return
+
+          rem =================================================================
+          rem LOAD LEVEL SELECT PLAYER SPRITES
+          rem =================================================================
+          rem Loads player character sprites from SelectedChar variables and
+          rem positions them in screen quadrants for visual confirmation.
+          rem
+          rem Quadrant layout:
+          rem   Top-left (Player 1): player0 sprite at (40, 30)
+          rem   Top-right (Player 2): player1 sprite at (120, 30)
+          rem   Bottom-left (Player 3): player2 sprite at (40, 100) - 4-player only
+          rem   Bottom-right (Player 4): player3 sprite at (120, 100) - 4-player only
+          
+LoadLevelSelectPlayerSprites
+          rem Load Player 1 sprite (top-left quadrant)
+          rem Check if player 1 has selected character
+          if selectedChar1 = 255 then goto LoadLevelSelectSkipPlayer1
+          rem Load sprite: temp1 = character index, temp2 = animation frame, temp3 = player number
+          temp1 = selectedChar1 : temp2 = 0 : temp3 = 0
+          gosub bank10 LoadCharacterSprite
+          rem Position in top-left quadrant
+          player0x = 40 : player0y = 30
+          goto LoadLevelSelectPlayer1Done
+LoadLevelSelectSkipPlayer1
+          rem Hide sprite if no character selected
+          player0x = 200 : player0y = 200
+LoadLevelSelectPlayer1Done
+          
+          rem Load Player 2 sprite (top-right quadrant)
+          if selectedChar2 = 255 then goto LoadLevelSelectSkipPlayer2
+          temp1 = selectedChar2 : temp2 = 0 : temp3 = 1
+          gosub bank10 LoadCharacterSprite
+          rem Position in top-right quadrant
+          player1x = 120 : player1y = 30
+          goto LoadLevelSelectPlayer2Done
+LoadLevelSelectSkipPlayer2
+          rem Hide sprite if no character selected
+          player1x = 200 : player1y = 200
+LoadLevelSelectPlayer2Done
+          
+          rem Load Player 3 sprite (bottom-left quadrant) - 4-player mode only
+          if !(ControllerStatus & SetQuadtariDetected) then goto LoadLevelSelectSkipPlayer3
+          if selectedChar3 = 255 then goto LoadLevelSelectSkipPlayer3
+          temp1 = selectedChar3 : temp2 = 0 : temp3 = 2
+          gosub bank10 LoadCharacterSprite
+          rem Position in bottom-left quadrant
+          player2x = 40 : player2y = 100
+          goto LoadLevelSelectPlayer3Done
+LoadLevelSelectSkipPlayer3
+          rem Hide sprite if not 4-player mode or no character selected
+          player2x = 200 : player2y = 200
+LoadLevelSelectPlayer3Done
+          
+          rem Load Player 4 sprite (bottom-right quadrant) - 4-player mode only
+          if !(ControllerStatus & SetQuadtariDetected) then goto LoadLevelSelectSkipPlayer4
+          if selectedChar4 = 255 then goto LoadLevelSelectSkipPlayer4
+          temp1 = selectedChar4 : temp2 = 0 : temp3 = 3
+          gosub bank10 LoadCharacterSprite
+          rem Position in bottom-right quadrant
+          player3x = 120 : player3y = 100
+          goto LoadLevelSelectPlayer4Done
+LoadLevelSelectSkipPlayer4
+          rem Hide sprite if not 4-player mode or no character selected
+          player3x = 200 : player3y = 200
+LoadLevelSelectPlayer4Done
+          
+          rem Set sprite colors for all players
+          rem Use player index colors for visibility
+          COLUP0 = ColIndigo(14)  : rem Player 1 - Indigo
+          COLUP1 = ColRed(14)      : rem Player 2 - Red
+          COLUP2 = ColYellow(14)   : rem Player 3 - Yellow
+          COLUP3 = ColGreen(14)    : rem Player 4 - Green
           
           return

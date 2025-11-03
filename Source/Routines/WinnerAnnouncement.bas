@@ -12,10 +12,26 @@ WinnerAnnouncement
           rem Display winner screen
           gosub bank7 DisplayWinScreen
           
-          rem TODO: Add button press detection for return to title (#402)
+          rem Check for button press to return to title screen
+          rem Check standard controllers (Player 1 & 2)
+          if joy0fire then goto WinnerReturnToTitle
+          if joy1fire then goto WinnerReturnToTitle
+          
+          rem Check Quadtari controllers (Players 3 & 4 if active)
+          if ControllerStatus & SetQuadtariDetected then goto WinnerCheckQuadtari
+          goto WinnerSkipQuadtari
+WinnerCheckQuadtari
+          if !INPT0{7} then goto WinnerReturnToTitle
+          if !INPT2{7} then goto WinnerReturnToTitle
+WinnerSkipQuadtari
           
           rem Return to MainLoop for next frame
           rem MainLoop will call drawscreen after this returns
+          return
+
+WinnerReturnToTitle
+          rem Transition to title screen
+          GameMode = ModeTitle : gosub bank13 ChangeGameMode
           return
 
 

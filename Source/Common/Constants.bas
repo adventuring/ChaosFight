@@ -14,7 +14,9 @@
           const KnockbackDistance=12          
           rem Character system constants
           const MaxCharacter = 15
-          rem Maximum character ID (0-15 = 16 characters)
+          rem Maximum selectable character ID (0-15 = 16 selectable characters)
+          rem Note: Current total = 17 characters (16 selectable 0-15 + Meth Hound 31)
+          rem Future expansion limit = 32 characters total
           const NoCharacter = 255
           rem No character selected ($FF)
           const CPUCharacter = 254

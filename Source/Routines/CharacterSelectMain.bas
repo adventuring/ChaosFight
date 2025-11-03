@@ -5,7 +5,9 @@
           rem CHARACTER SELECT - MAIN LOOP
           rem =================================================================
           rem Main character selection screen with Quadtari support.
-          rem Players cycle through 16 characters and lock in their choice.
+          rem Players cycle through 16 selectable characters (0-15) and lock in their choice.
+          rem Note: 17 characters total currently exist (16 selectable + Meth Hound 31)
+          rem Future expansion limit = 32 characters total
 
           rem FLOW:
           rem   1. Detect Quadtari adapter

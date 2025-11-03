@@ -379,3 +379,26 @@
           rem temp3 = MissileY delta (momentum)
           rem temp4 = scratch for collision checks
           rem These are looked up from character data each frame and stored in MissileVelX/Y
+
+          rem Combat system temporary variables (Game Mode only - separate from missile variables)
+          rem NOTE: These use dedicated variables l,m,o,y,z,var47 to avoid conflicts with missile system
+          dim damage = l
+          rem Combat: Damage value
+          dim hit = m
+          rem Combat: Hit result (1 = hit, 0 = miss)
+          dim hitboxLeft = o
+          rem Combat: Hitbox left edge
+          dim hitboxRight = y
+          rem Combat: Hitbox right edge
+          dim hitboxTop = z
+          rem Combat: Hitbox top edge
+          dim hitboxBottom = var47
+          rem Combat: Hitbox bottom edge (using var47 as scratch)
+          dim defender = l
+          rem Combat: Defender player index (reuses l)
+          dim attacker = l
+          rem Combat: Attacker player index (reuses l)
+          dim guardTimer = l
+          rem Combat: Guard timer value (reuses l)
+          rem NOTE: defender, attacker, guardTimer, and damage all reuse variable 'l'
+          rem This is safe because they are used sequentially in different subroutines

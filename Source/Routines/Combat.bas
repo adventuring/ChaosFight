@@ -9,11 +9,11 @@ rem Apply damage from attacker to defender
 rem Inputs: attackerId, defenderId
 ApplyDamage
           rem Calculate damage (considering defender state)
-          damage = PlayerDamage(attackerId) - PlayerDamage(defenderId)
-          if damage < 1 then damage = 1  rem Minimum damage
+          let damage = PlayerDamage(attackerId) - PlayerDamage(defenderId)
+          if damage < 1 then let damage = 1  rem Minimum damage
           
           rem Apply damage
-          PlayerHealth[defenderId] = PlayerHealth[defenderId] - damage
+          let PlayerHealth[defenderId] = PlayerHealth[defenderId] - damage
           
           rem Visual feedback (to be implemented)
           gosub ShowDamageIndicator defenderId, damage
@@ -32,13 +32,13 @@ CheckAttackHit
           
           rem Check if defender is in hitbox
           rem Initialize hit to 0 (miss)
-          hit = 0
+          let hit = 0
           if PlayerX[defenderId] < hitboxLeft then goto NoHit
           if PlayerX[defenderId] > hitboxRight then goto NoHit
           if PlayerY[defenderId] < hitboxTop then goto NoHit
           if PlayerY[defenderId] > hitboxBottom then goto NoHit
           rem All bounds checks passed - hit detected
-          hit = 1
+          let hit = 1
           return
 NoHit
           rem No hit - hit is already 0
@@ -56,47 +56,47 @@ MeleeHitbox
           on PlayerFacing(attackerId) goto FacingRight, FacingLeft, FacingUp, FacingDown
           
 FacingRight
-          hitboxLeft = PlayerX[attackerId] + 8
-          hitboxRight = PlayerX[attackerId] + 24
-          hitboxTop = PlayerY[attackerId] - 8
-          hitboxBottom = PlayerY[attackerId] + 8
+          let hitboxLeft = PlayerX[attackerId] + 8
+          let hitboxRight = PlayerX[attackerId] + 24
+          let hitboxTop = PlayerY[attackerId] - 8
+          let hitboxBottom = PlayerY[attackerId] + 8
           return
           
 FacingLeft
-          hitboxLeft = PlayerX[attackerId] - 24
-          hitboxRight = PlayerX[attackerId] - 8
-          hitboxTop = PlayerY[attackerId] - 8
-          hitboxBottom = PlayerY[attackerId] + 8
+          let hitboxLeft = PlayerX[attackerId] - 24
+          let hitboxRight = PlayerX[attackerId] - 8
+          let hitboxTop = PlayerY[attackerId] - 8
+          let hitboxBottom = PlayerY[attackerId] + 8
           return
           
 FacingUp
-          hitboxLeft = PlayerX[attackerId] - 8
-          hitboxRight = PlayerX[attackerId] + 8
-          hitboxTop = PlayerY[attackerId] - 24
-          hitboxBottom = PlayerY[attackerId] - 8
+          let hitboxLeft = PlayerX[attackerId] - 8
+          let hitboxRight = PlayerX[attackerId] + 8
+          let hitboxTop = PlayerY[attackerId] - 24
+          let hitboxBottom = PlayerY[attackerId] - 8
           return
           
 FacingDown
-          hitboxLeft = PlayerX[attackerId] - 8
-          hitboxRight = PlayerX[attackerId] + 8
-          hitboxTop = PlayerY[attackerId] + 8
-          hitboxBottom = PlayerY[attackerId] + 24
+          let hitboxLeft = PlayerX[attackerId] - 8
+          let hitboxRight = PlayerX[attackerId] + 8
+          let hitboxTop = PlayerY[attackerId] + 8
+          let hitboxBottom = PlayerY[attackerId] + 24
           return
           
 ProjectileHitbox
           rem Projectile hitbox is at current missile position (to be implemented)
-          hitboxLeft = 0
-          hitboxRight = 0
-          hitboxTop = 0
-          hitboxBottom = 0
+          let hitboxLeft = 0
+          let hitboxRight = 0
+          let hitboxTop = 0
+          let hitboxBottom = 0
           return
           
 AreaHitbox
           rem Area hitbox covers radius around attacker (to be implemented)
-          hitboxLeft = 0
-          hitboxRight = 0
-          hitboxTop = 0
-          hitboxBottom = 0
+          let hitboxLeft = 0
+          let hitboxRight = 0
+          let hitboxTop = 0
+          let hitboxBottom = 0
           return
 
 rem Process attack for one attacker against all defenders
@@ -142,7 +142,7 @@ CombatShowDamageIndicator
 
 rem Damage sound system
 PlayDamageSound
-          temp1 = SoundHit
+          let temp1 = SoundHit
           gosub bank15 PlaySoundEffect
           return
 
@@ -159,7 +159,7 @@ PerformMeleeAttack
           gosub bank7 SpawnMissile
           
           rem Set animation state to attacking
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
           
           rem Check immediate collision with other players in melee range
@@ -181,7 +181,7 @@ PerformRangedAttack
           gosub bank7 SpawnMissile
           
           rem Set animation state to attacking
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
           
           return

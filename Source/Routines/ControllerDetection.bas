@@ -320,8 +320,3 @@ ReadPlayers34
           rem No additional processing needed - joy0/joy1 are already correct
           return
 
-PauseNotPressed
-          rem Button not pressed, update previous state
-          let pauseButtonPrev = 1
-          return
-

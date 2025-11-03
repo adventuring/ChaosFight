@@ -52,7 +52,7 @@
           rem     - TOTAL: 202 bytes available at all times!
           
           rem Common Vars (needed in both contexts):
-          rem   - PlayerChar[0-3], PlayerLocked[0-3]
+          rem   - playerChar[0-3], PlayerLocked[0-3]
           rem   - selectedChar1-4, selectedArena
           rem   - QuadtariDetected
           rem   - temp1-4, qtcontroller, frame (built-ins)
@@ -104,16 +104,20 @@
           dim PauseButtonPrev = r
           rem Previous frame pause button state
           
+          rem Current player being processed (replaces temp1/temp3/temp4 for player IDs)
+          dim currentPlayer = s
+          rem Game Mode: Player index (0-3) currently being processed in game loops
+          
           rem Console switch handling (used in both Admin Mode and Game Mode)
           dim ColorBWPrevious = w001
           rem Previous state of Color/B&W switch (for detecting changes) - SCRAM since low frequency use
           
           rem Character selection results (set during ADMIN, read during GAME)
-          dim PlayerChar = j    
+          dim playerChar = j    
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
           dim PlayerDamage = k   
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using k,l,m (base damage per player)
-          rem NOTE: Shares k,l,m with PlayerChar[1-3] - must be recalculated when needed
+          rem NOTE: Shares k,l,m with playerChar[1-3] - must be recalculated when needed
           dim PlayerLocked = n  
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using n,o,p,q (p,q may be used by ColorBWOverride)
           rem selectedChar1-4/Level all in SCRAM - infrequently accessed (only during mode transitions)
@@ -241,7 +245,7 @@
           
           rem PlayerDamage[0-3] = Player1Damage, Player2Damage, Player3Damage, Player4Damage
           rem Base damage per player (used in combat calculations)
-          rem NOTE: Need to find available space - currently using k,l,m,n which conflict with PlayerChar
+          rem NOTE: Need to find available space - currently using k,l,m,n which conflict with playerChar
           rem Temporary solution: Use temp variables during combat calculations
           rem TODO: Allocate proper array space for PlayerDamage
           
@@ -393,6 +397,12 @@
           rem temp4 = scratch for collision checks
           rem These are looked up from character data each frame and stored in MissileVelX/Y
 
+          rem Current player context preservation for nested function calls
+          dim savedPlayerForCombat = w015
+          rem Combat: Saved currentPlayer when processing attacker/defender relationships (SCRAM w015)
+          dim savedPlayerForCollision = w016
+          rem Missile: Saved currentPlayer when processing collision checks (SCRAM w016)
+          
           rem Combat system temporary variables (Game Mode only - separate from missile variables)
           rem NOTE: These use dedicated variables l,m,o,y,z,var47 to avoid conflicts with missile system
           dim damage = l

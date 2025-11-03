@@ -7,7 +7,7 @@
     Original Game: Grizzards
     Author: Zephyr & Bruce-Robert Pocock (Interworldly Adventuring, LLC) @url{https://interworldly.com,Interworldly.com}
     Species: Grizzard (giant monster-eating powerhouse)
-    Purchase: @url{https://store.atariage.com/products/grizzards-atari-2600,Grizzards at AtariAge Store}; @url{https://grizzards.com,Grizzards Official Website}
+    Purchase: @url{https://store.atariage.com/products/grizzards-atari-2600,Grizzards at AtariAge Store}; @url{https://grizzards.com,Grizzards Official Website}; @url{https://atari.com/pages/atari-vcs-store,Grizzards on Atari VCS eShop}
     Download: @url{https://grizzards.com,Grizzards free download}
     Forum: @url{https://forums.atariage.com/topic/,Grizzards release thread}
 @end group

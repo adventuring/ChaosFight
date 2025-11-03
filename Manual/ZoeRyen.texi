@@ -6,7 +6,7 @@
     Special: High jumps, fast horizontal projectile
     Original Game: E.X.O.
     Author: Lewis "Muddyfunster" Hill of Muddyvision @url{https://muddyvision.com,Muddyvision}
-    Purchase: @url{https://store.atariage.com/products/e-x-o-atari-2600,E.X.O. at AtariAge Store}
+    Purchase: @url{https://store.atariage.com/products/e-x-o-atari-2600,E.X.O. at AtariAge Store}; @url{https://atari.com/pages/atari-vcs-store,E.X.O. on Atari VCS eShop}
     Download: @url{https://muddyvision.com,E.X.O. free download}
     Forum: @url{https://forums.atariage.com/topic/,E.X.O. release thread}
 @end group

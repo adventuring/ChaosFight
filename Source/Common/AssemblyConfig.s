@@ -10,9 +10,20 @@ player1colors = 1
 pfcolors = 1
 
 ; Bank switching configuration
-; Note: bankswitch and bankswitch_hotspot values are set per-TV-standard
-; in TV-specific files: AssemblyConfig.NTSC.s, AssemblyConfig.PAL.s, AssemblyConfig.SECAM.s
+; TV-standard-specific bankswitch values are set conditionally below
 superchip = 1
+bankswitch_hotspot = $1FE0
+
+; Bank switching value per TV standard
+; NTSC uses 64K bankswitching (64), PAL/SECAM use 32K (32)
+; Only set if not already defined by batariBASIC or other includes
+        IFNCONST bankswitch
+        IFCONST TV_NTSC
+bankswitch = 64
+        ELSE
+bankswitch = 32
+        ENDIF
+        ENDIF
 
 ; Code generation options
 noscore = 0

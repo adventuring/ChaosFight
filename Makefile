@@ -293,7 +293,7 @@ Source/Generated/$(GAME).PAL.preprocessed.bas: Source/Generated/$(GAME).PAL.bas 
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
-Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.bas $(BUILD_DEPS) Source/Common/AssemblyConfig.SECAM.s
+Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.bas $(BUILD_DEPS)
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 

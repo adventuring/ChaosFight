@@ -179,3 +179,25 @@ CharacterSelectFinish
           selectedChar4 = PlayerChar[3]
           return
 
+          rem =================================================================
+          rem UPDATE CHARACTER SELECT ANIMATIONS
+          rem =================================================================
+          rem Simple animation updates for character select screen.
+          rem Note: DOWN button only unlocks selection, does NOT trigger animations.
+SelectUpdateAnimations
+          rem Basic animation timer increment (no gameplay input handling)
+          CharSelectAnimTimer = CharSelectAnimTimer + 1
+          if CharSelectAnimTimer > 60 then CharSelectAnimTimer = 0 : CharSelectAnimState = rand & 3
+          if CharSelectAnimState > 2 then CharSelectAnimState = 0
+          CharSelectAnimFrame = CharSelectAnimFrame + 1
+          if CharSelectAnimFrame > 7 then CharSelectAnimFrame = 0
+          return
+
+          rem =================================================================
+          rem DRAW CHARACTER SELECT SCREEN
+          rem =================================================================
+          rem Placeholder for screen drawing function
+SelectDrawScreen
+          rem Screen drawing handled elsewhere
+          return
+

@@ -10,141 +10,141 @@ PixelIndex = temp7
  
 HealthBarLength = temp5
  
-PlayerColorsDark_length = .skipL02385-PlayerColorsDark 
+PlayerColorsDark_length = .skipL02393-PlayerColorsDark 
  
-PlayerColorsLight_length = .skipL02383-PlayerColorsLight 
+PlayerColorsLight_length = .skipL02391-PlayerColorsLight 
  
-NoSprite_length = .skipL02218-NoSprite 
+NoSprite_length = .skipL02226-NoSprite 
  
-CPUSprite_length = .skipL02217-CPUSprite 
+CPUSprite_length = .skipL02225-CPUSprite 
  
-MethHoundFrameMap_length = .skipL0853-MethHoundFrameMap 
+MethHoundFrameMap_length = .skipL0861-MethHoundFrameMap 
  
-MethHoundFrames_length = .skipL0852-MethHoundFrames 
+MethHoundFrames_length = .skipL0860-MethHoundFrames 
  
-Character30FrameMap_length = .skipL0847-Character30FrameMap 
+Character30FrameMap_length = .skipL0855-Character30FrameMap 
  
-Character30Frames_length = .skipL0846-Character30Frames 
+Character30Frames_length = .skipL0854-Character30Frames 
  
-Character29FrameMap_length = .skipL0841-Character29FrameMap 
+Character29FrameMap_length = .skipL0849-Character29FrameMap 
  
-Character29Frames_length = .skipL0840-Character29Frames 
+Character29Frames_length = .skipL0848-Character29Frames 
  
-Character28FrameMap_length = .skipL0835-Character28FrameMap 
+Character28FrameMap_length = .skipL0843-Character28FrameMap 
  
-Character28Frames_length = .skipL0834-Character28Frames 
+Character28Frames_length = .skipL0842-Character28Frames 
  
-Character27FrameMap_length = .skipL0829-Character27FrameMap 
+Character27FrameMap_length = .skipL0837-Character27FrameMap 
  
-Character27Frames_length = .skipL0828-Character27Frames 
+Character27Frames_length = .skipL0836-Character27Frames 
  
-Character26FrameMap_length = .skipL0823-Character26FrameMap 
+Character26FrameMap_length = .skipL0831-Character26FrameMap 
  
-Character26Frames_length = .skipL0822-Character26Frames 
+Character26Frames_length = .skipL0830-Character26Frames 
  
-Character25FrameMap_length = .skipL0817-Character25FrameMap 
+Character25FrameMap_length = .skipL0825-Character25FrameMap 
  
-Character25Frames_length = .skipL0816-Character25Frames 
+Character25Frames_length = .skipL0824-Character25Frames 
  
-Character24FrameMap_length = .skipL0811-Character24FrameMap 
+Character24FrameMap_length = .skipL0819-Character24FrameMap 
  
-Character24Frames_length = .skipL0810-Character24Frames 
+Character24Frames_length = .skipL0818-Character24Frames 
  
-Character23FrameMap_length = .skipL0798-Character23FrameMap 
+Character23FrameMap_length = .skipL0806-Character23FrameMap 
  
-Character23Frames_length = .skipL0797-Character23Frames 
+Character23Frames_length = .skipL0805-Character23Frames 
  
-Character22FrameMap_length = .skipL0792-Character22FrameMap 
+Character22FrameMap_length = .skipL0800-Character22FrameMap 
  
-Character22Frames_length = .skipL0791-Character22Frames 
+Character22Frames_length = .skipL0799-Character22Frames 
  
-Character21FrameMap_length = .skipL0786-Character21FrameMap 
+Character21FrameMap_length = .skipL0794-Character21FrameMap 
  
-Character21Frames_length = .skipL0785-Character21Frames 
+Character21Frames_length = .skipL0793-Character21Frames 
  
-Character20FrameMap_length = .skipL0780-Character20FrameMap 
+Character20FrameMap_length = .skipL0788-Character20FrameMap 
  
-Character20Frames_length = .skipL0779-Character20Frames 
+Character20Frames_length = .skipL0787-Character20Frames 
  
-Character19FrameMap_length = .skipL0774-Character19FrameMap 
+Character19FrameMap_length = .skipL0782-Character19FrameMap 
  
-Character19Frames_length = .skipL0773-Character19Frames 
+Character19Frames_length = .skipL0781-Character19Frames 
  
-Character18FrameMap_length = .skipL0768-Character18FrameMap 
+Character18FrameMap_length = .skipL0776-Character18FrameMap 
  
-Character18Frames_length = .skipL0767-Character18Frames 
+Character18Frames_length = .skipL0775-Character18Frames 
  
-Character17FrameMap_length = .skipL0762-Character17FrameMap 
+Character17FrameMap_length = .skipL0770-Character17FrameMap 
  
-Character17Frames_length = .skipL0761-Character17Frames 
+Character17Frames_length = .skipL0769-Character17Frames 
  
-Character16FrameMap_length = .skipL0756-Character16FrameMap 
+Character16FrameMap_length = .skipL0764-Character16FrameMap 
  
-Character16Frames_length = .skipL0755-Character16Frames 
+Character16Frames_length = .skipL0763-Character16Frames 
  
-ShamoneFrameMap_length = .skipL0743-ShamoneFrameMap 
+ShamoneFrameMap_length = .skipL0751-ShamoneFrameMap 
  
-ShamoneFrames_length = .skipL0742-ShamoneFrames 
+ShamoneFrames_length = .skipL0750-ShamoneFrames 
  
-UrsuloFrameMap_length = .skipL0737-UrsuloFrameMap 
+UrsuloFrameMap_length = .skipL0745-UrsuloFrameMap 
  
-UrsuloFrames_length = .skipL0736-UrsuloFrames 
+UrsuloFrames_length = .skipL0744-UrsuloFrames 
  
-RoboTitoFrameMap_length = .skipL0731-RoboTitoFrameMap 
+RoboTitoFrameMap_length = .skipL0739-RoboTitoFrameMap 
  
-RoboTitoFrames_length = .skipL0730-RoboTitoFrames 
+RoboTitoFrames_length = .skipL0738-RoboTitoFrames 
  
-RadishGoblinFrameMap_length = .skipL0725-RadishGoblinFrameMap 
+RadishGoblinFrameMap_length = .skipL0733-RadishGoblinFrameMap 
  
-RadishGoblinFrames_length = .skipL0724-RadishGoblinFrames 
+RadishGoblinFrames_length = .skipL0732-RadishGoblinFrames 
  
-PorkChopFrameMap_length = .skipL0719-PorkChopFrameMap 
+PorkChopFrameMap_length = .skipL0727-PorkChopFrameMap 
  
-PorkChopFrames_length = .skipL0718-PorkChopFrames 
+PorkChopFrames_length = .skipL0726-PorkChopFrames 
  
-NinjishGuyFrameMap_length = .skipL0713-NinjishGuyFrameMap 
+NinjishGuyFrameMap_length = .skipL0721-NinjishGuyFrameMap 
  
-NinjishGuyFrames_length = .skipL0712-NinjishGuyFrames 
+NinjishGuyFrames_length = .skipL0720-NinjishGuyFrames 
  
-NefertemFrameMap_length = .skipL0707-NefertemFrameMap 
+NefertemFrameMap_length = .skipL0715-NefertemFrameMap 
  
-NefertemFrames_length = .skipL0706-NefertemFrames 
+NefertemFrames_length = .skipL0714-NefertemFrames 
  
-FrootyFrameMap_length = .skipL0701-FrootyFrameMap 
+FrootyFrameMap_length = .skipL0709-FrootyFrameMap 
  
-FrootyFrames_length = .skipL0700-FrootyFrames 
+FrootyFrames_length = .skipL0708-FrootyFrames 
  
-KnightGuyFrameMap_length = .skipL0688-KnightGuyFrameMap 
+KnightGuyFrameMap_length = .skipL0696-KnightGuyFrameMap 
  
-KnightGuyFrames_length = .skipL0687-KnightGuyFrames 
+KnightGuyFrames_length = .skipL0695-KnightGuyFrames 
  
-HarpyFrameMap_length = .skipL0682-HarpyFrameMap 
+HarpyFrameMap_length = .skipL0690-HarpyFrameMap 
  
-HarpyFrames_length = .skipL0681-HarpyFrames 
+HarpyFrames_length = .skipL0689-HarpyFrames 
  
-MegaxFrameMap_length = .skipL0676-MegaxFrameMap 
+MegaxFrameMap_length = .skipL0684-MegaxFrameMap 
  
-MegaxFrames_length = .skipL0675-MegaxFrames 
+MegaxFrames_length = .skipL0683-MegaxFrames 
  
-FatTonyFrameMap_length = .skipL0670-FatTonyFrameMap 
+FatTonyFrameMap_length = .skipL0678-FatTonyFrameMap 
  
-FatTonyFrames_length = .skipL0669-FatTonyFrames 
+FatTonyFrames_length = .skipL0677-FatTonyFrames 
  
-ZoeRyenFrameMap_length = .skipL0664-ZoeRyenFrameMap 
+ZoeRyenFrameMap_length = .skipL0672-ZoeRyenFrameMap 
  
-ZoeRyenFrames_length = .skipL0663-ZoeRyenFrames 
+ZoeRyenFrames_length = .skipL0671-ZoeRyenFrames 
  
-DragonOfStormsFrameMap_length = .skipL0658-DragonOfStormsFrameMap 
+DragonOfStormsFrameMap_length = .skipL0666-DragonOfStormsFrameMap 
  
-DragonOfStormsFrames_length = .skipL0657-DragonOfStormsFrames 
+DragonOfStormsFrames_length = .skipL0665-DragonOfStormsFrames 
  
-CurlerFrameMap_length = .skipL0652-CurlerFrameMap 
+CurlerFrameMap_length = .skipL0660-CurlerFrameMap 
  
-CurlerFrames_length = .skipL0651-CurlerFrames 
+CurlerFrames_length = .skipL0659-CurlerFrames 
  
-BernieFrameMap_length = .skipL0646-BernieFrameMap 
+BernieFrameMap_length = .skipL0654-BernieFrameMap 
  
-BernieFrames_length = .skipL0645-BernieFrames 
+BernieFrames_length = .skipL0653-BernieFrames 
  
 bscode_length = 36
 guardTimer = l
@@ -164,6 +164,10 @@ hitboxLeft = o
 hit = m
  
 damage = l
+ 
+savedPlayerForCollision = w016
+ 
+savedPlayerForCombat = w015
  
 MissileVelY = x
  
@@ -345,9 +349,11 @@ PlayerLocked = n
  
 PlayerDamage = k
  
-PlayerChar = j
+playerChar = j
  
 ColorBWPrevious = w001
+ 
+currentPlayer = s
  
 PauseButtonPrev = r
  

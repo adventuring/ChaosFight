@@ -150,6 +150,7 @@ Player3HealthSet
           rem TODO: Replace def statements with regular subroutines
           rem batariBASIC may not support def statements with parameters
 
-          rem Enter main loop
-          goto GameMainLoop
+          rem Setup complete - return to ChangeGameMode
+          rem MainLoop will dispatch to GameMainLoop each frame
+          return
 

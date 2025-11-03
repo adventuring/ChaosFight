@@ -22,8 +22,8 @@ StartMusic
           AUDV1 = 0
           
           rem Clear voice pointers (high byte = 0 means inactive)
-          MusicVoice0PointerH = 0
-          MusicVoice1PointerH = 0
+          let MusicVoice0PointerH = 0
+          let MusicVoice1PointerH = 0
           
           rem Lookup song pointer from Songs bank (Bank16)
           rem Note: SongPointerL/H tables are in Songs bank
@@ -31,36 +31,36 @@ StartMusic
           rem LoadSongPointer will set SongPointerL and SongPointerH from temp1
           
           rem Set Voice 0 pointer to song start (Song_Voice0 stream)
-          MusicVoice0PointerL = SongPointerL
-          MusicVoice0PointerH = SongPointerH
+          let MusicVoice0PointerL = SongPointerL
+          let MusicVoice0PointerH = SongPointerH
           
           rem Calculate Voice 1 pointer offset (find end of Voice0 stream)
           rem Voice1 stream starts after Voice0 stream
           gosub bank16 LoadSongVoice1Pointer
           rem LoadSongVoice1Pointer will calculate and set Voice 1 pointer
-          MusicVoice1PointerL = SongPointerL
-          MusicVoice1PointerH = SongPointerH
+          let MusicVoice1PointerL = SongPointerL
+          let MusicVoice1PointerH = SongPointerH
           
           rem Initialize frame counters to trigger first note load
-          MusicVoice0Frame = 1
-          MusicVoice1Frame = 1
+          let MusicVoice0Frame = 1
+          let MusicVoice1Frame = 1
           
           rem Start first notes
-          gosub UpdateMusic
-          return
+          rem tail call
+          goto UpdateMusic
 
           rem =================================================================
           rem UpdateMusic - Update music playback each frame
           rem =================================================================
           rem Called every frame from MainLoop for gameMode 0-2, 7
-          rem Updates both voices if active (high byte != 0)
+          rem Updates both voices if active (high byte ≠ 0)
           rem =================================================================
 UpdateMusic
           rem Update Voice 0 if active
-          if MusicVoice0PointerH != 0 then gosub UpdateMusicVoice0
+          if MusicVoice0PointerH then gosub UpdateMusicVoice0
           
           rem Update Voice 1 if active
-          if MusicVoice1PointerH != 0 then gosub UpdateMusicVoice1
+          if MusicVoice1PointerH then gosub UpdateMusicVoice1
           return
 
           rem =================================================================
@@ -70,8 +70,8 @@ UpdateMusic
           rem =================================================================
 UpdateMusicVoice0
           rem Decrement frame counter
-          MusicVoice0Frame = MusicVoice0Frame - 1
-          if MusicVoice0Frame != 0 then return
+          let MusicVoice0Frame = MusicVoice0Frame - 1
+          if MusicVoice0Frame then return
           
           rem Frame counter reached 0 - load next note from Songs bank
           gosub bank16 LoadMusicNote0
@@ -89,8 +89,8 @@ UpdateMusicVoice0
           rem =================================================================
 UpdateMusicVoice1
           rem Decrement frame counter
-          MusicVoice1Frame = MusicVoice1Frame - 1
-          if MusicVoice1Frame != 0 then return
+          let MusicVoice1Frame = MusicVoice1Frame - 1
+          if MusicVoice1Frame then return
           
           rem Frame counter reached 0 - load next note from Songs bank
           gosub bank16 LoadMusicNote1
@@ -106,10 +106,10 @@ StopMusic
           AUDV1 = 0
           
           rem Clear voice pointers (high byte = 0 means inactive)
-          MusicVoice0PointerH = 0
-          MusicVoice1PointerH = 0
+          let MusicVoice0PointerH = 0
+          let MusicVoice1PointerH = 0
           
           rem Reset frame counters
-          MusicVoice0Frame = 0
-          MusicVoice1Frame = 0
+          let MusicVoice0Frame = 0
+          let MusicVoice1Frame = 0
           return

@@ -52,8 +52,8 @@ ApplyGuardFlashing
 
 GuardNormalPhase
           rem Normal phase - restore normal player colors
-          gosub RestoreNormalPlayerColor
-          return
+          rem tail call
+          goto RestoreNormalPlayerColor
 
           rem =================================================================
           rem RESTORE NORMAL PLAYER COLOR

@@ -57,8 +57,8 @@
           rem Output: SoundPointerL, SoundPointerH = pointer to Sound_Voice0 stream
 LoadSoundPointer
           rem Use array access to lookup pointer
-          SoundPointerL = SoundPointersL[temp1]
-          SoundPointerH = SoundPointersH[temp1]
+          let SoundPointerL = SoundPointersL[temp1]
+          let SoundPointerH = SoundPointersH[temp1]
           return
           
           rem Load next note from sound effect stream using assembly for pointer access
@@ -95,12 +95,12 @@ LoadSoundNote
           AUDV0 = temp7
           
           rem Set frame counter = Duration + Delay
-          SoundEffectFrame = temp4 + temp5
+          let SoundEffectFrame = temp4 + temp5
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          temp2 = SoundEffectPointerL
-          SoundEffectPointerL = temp2 + 4
-          if SoundEffectPointerL < temp2 then SoundEffectPointerH = SoundEffectPointerH + 1
+          let temp2 = SoundEffectPointerL
+          let SoundEffectPointerL = temp2 + 4
+          if SoundEffectPointerL < temp2 then let SoundEffectPointerH = SoundEffectPointerH + 1
           
           return
 

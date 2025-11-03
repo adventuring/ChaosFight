@@ -121,9 +121,9 @@ Player3HealthSet
           rem Flag is used for missile multiplexing (only multiplex when players 3 or 4 are active)
           let ControllerStatus  = ControllerStatus & ClearPlayers34Active
           rem Clear flag first
-          if SelectedChar3<> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
+          if !(SelectedChar3 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active
           rem Set if Player 3 selected
-          if SelectedChar4<> 255 then ControllerStatus = ControllerStatus | SetPlayers34Active
+          if !(SelectedChar4 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active
           rem Set if Player 4 selected
 
           rem Initialize missiles
@@ -155,10 +155,10 @@ Player3HealthSet
           rem Reset win screen timer
 
           rem Count initial players
-          if SelectedChar1<> 255 then PlayersRemaining = PlayersRemaining + 1
-          if SelectedChar2<> 255 then PlayersRemaining = PlayersRemaining + 1  
-          if SelectedChar3<> 255 then PlayersRemaining = PlayersRemaining + 1
-          if SelectedChar4<> 255 then PlayersRemaining = PlayersRemaining + 1
+          if !(SelectedChar1 = 255) then let PlayersRemaining = PlayersRemaining + 1
+          if !(SelectedChar2 = 255) then let PlayersRemaining = PlayersRemaining + 1  
+          if !(SelectedChar3 = 255) then let PlayersRemaining = PlayersRemaining + 1
+          if !(SelectedChar4 = 255) then let PlayersRemaining = PlayersRemaining + 1
 
           rem Initialize frame counter
           frame = 0

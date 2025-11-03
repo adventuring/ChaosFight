@@ -20,7 +20,7 @@ WinnerAnnouncementLoop
 
 WinnerAdvanceToCharacterSelect
           rem Transition to character select screen
-          gameMode = ModeCharacterSelect
+          let gameMode = ModeCharacterSelect
           gosub bank13 ChangeGameMode
           return
 

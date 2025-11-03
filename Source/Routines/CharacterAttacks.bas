@@ -31,7 +31,7 @@ BernieAttack
           rem Temporarily flip facing
           let temp5 = playerState[temp1] & 1 
           rem Store original facing
-          if temp5<> 0 then FaceLeft1
+          if temp5 then FaceLeft1
           let playerState[temp1] = playerState[temp1] | 1 
           rem Face right
           goto FacingDone1
@@ -44,7 +44,7 @@ FacingDone1
           gosub PerformMeleeAttack
           
           rem Restore original facing
-          if temp5<> 0 then RestoreFaceRight1
+          if temp5 then RestoreFaceRight1
           let playerState[temp1] = playerState[temp1] & 254
           goto RestoreFacingDone1
 RestoreFaceRight1

@@ -78,8 +78,8 @@
           rem Output: SongPointerL, SongPointerH = pointer to Song_Voice0 stream
 LoadSongPointer
           rem Use array access to lookup pointer
-          SongPointerL = SongPointersL[temp1]
-          SongPointerH = SongPointersH[temp1]
+          let SongPointerL = SongPointersL[temp1]
+          let SongPointerH = SongPointersH[temp1]
           return
           
           rem Calculate Voice 1 pointer from Voice 0 pointer + offset
@@ -87,12 +87,12 @@ LoadSongPointer
           rem Output: SongPointerL/H = Voice 1 pointer
 LoadSongVoice1Pointer
           rem Get Voice 1 offset from table (temp1 still contains song ID from LoadSongPointer)
-          temp2 = SongVoice1Offsets[temp1]
+          let temp2 = SongVoice1Offsets[temp1]
           rem Add offset to Voice 0 pointer (16-bit addition)
-          temp3 = SongPointerL
-          SongPointerL = temp3 + temp2
+          let temp3 = SongPointerL
+          let SongPointerL = temp3 + temp2
           rem Handle carry
-          if SongPointerL < temp3 then SongPointerH = SongPointerH + 1
+          if SongPointerL < temp3 then let SongPointerH = SongPointerH + 1
           rem Note: For songs with Voice1 stream longer than 255 bytes, need high byte offset too
           rem TODO: Add high byte offset table if needed for songs > 255 bytes per voice
           return
@@ -131,12 +131,12 @@ LoadMusicNote0
           AUDV0 = temp7
           
           rem Set frame counter = Duration + Delay
-          MusicVoice0Frame = temp4 + temp5
+          let MusicVoice0Frame = temp4 + temp5
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          temp2 = MusicVoice0PointerL
-          MusicVoice0PointerL = temp2 + 4
-          if MusicVoice0PointerL < temp2 then MusicVoice0PointerH = MusicVoice0PointerH + 1
+          let temp2 = MusicVoice0PointerL
+          let MusicVoice0PointerL = temp2 + 4
+          if MusicVoice0PointerL < temp2 then let MusicVoice0PointerH = MusicVoice0PointerH + 1
           
           return
           

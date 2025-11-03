@@ -127,8 +127,8 @@ GetCurrentAnimationAction
           
           rem Legacy alias for backward compatibility
 GetCurrentAnimationSequence
-          gosub GetCurrentAnimationAction
-          return
+          rem tail call
+          goto GetCurrentAnimationAction
 
           rem Initialize animation system for all players
           rem Called at game start to set up initial animation states
@@ -156,43 +156,43 @@ InitializeAnimationSystem
           rem Input: temp1 = player index (0-3)
 SetWalkingAnimation
           let temp2 = AnimWalking
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set idle animation for a player
           rem Input: temp1 = player index (0-3)
 SetIdleAnimation
           let temp2 = AnimIdle
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set attack animation for a player
           rem Input: temp1 = player index (0-3)
 SetAttackAnimation
           let temp2 = AnimAttackWindup
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set hit animation for a player
           rem Input: temp1 = player index (0-3)
 SetHitAnimation
           let temp2 = AnimHit
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set jumping animation for a player
           rem Input: temp1 = player index (0-3)
 SetJumpingAnimation
           let temp2 = AnimJumping
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set falling animation for a player
           rem Input: temp1 = player index (0-3)
 SetFallingAnimation
           let temp2 = AnimFalling
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem =================================================================
           rem ANIMATION STATE QUERIES

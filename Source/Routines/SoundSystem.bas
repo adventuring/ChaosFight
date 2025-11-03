@@ -19,11 +19,11 @@
           rem =================================================================
 PlaySoundEffect
           rem Check if already playing (forget if busy)
-          if SoundEffectPointerH != 0 then return
+          if SoundEffectPointerH then return
           
           rem Check if music is active (music takes priority)
-          if MusicVoice0PointerH != 0 then return
-          if MusicVoice1PointerH != 0 then return
+          if MusicVoice0PointerH then return
+          if MusicVoice1PointerH then return
           
           rem Lookup sound pointer from Sounds bank (Bank15)
           rem Note: SoundPointerL/H tables are in Sounds bank
@@ -31,11 +31,11 @@ PlaySoundEffect
           rem LoadSoundPointer will set SoundPointerL and SoundPointerH from temp1
           
           rem Set sound effect pointer
-          SoundEffectPointerL = SoundPointerL
-          SoundEffectPointerH = SoundPointerH
+          let SoundEffectPointerL = SoundPointerL
+          let SoundEffectPointerH = SoundPointerH
           
           rem Initialize frame counter to trigger first note load
-          SoundEffectFrame = 1
+          let SoundEffectFrame = 1
           
           rem Start first note
           gosub UpdateSoundEffect
@@ -52,8 +52,8 @@ UpdateSoundEffect
           if SoundEffectPointerH = 0 then return
           
           rem Decrement frame counter
-          SoundEffectFrame = SoundEffectFrame - 1
-          if SoundEffectFrame != 0 then return
+          let SoundEffectFrame = SoundEffectFrame - 1
+          if SoundEffectFrame then return
           
           rem Frame counter reached 0 - load next note from Sounds bank
           gosub bank15 LoadSoundNote
@@ -74,10 +74,10 @@ StopSoundEffects
           AUDV0 = 0
           
           rem Clear sound pointer (high byte = 0 means inactive)
-          SoundEffectPointerH = 0
+          let SoundEffectPointerH = 0
           
           rem Reset frame counter
-          SoundEffectFrame = 0
+          let SoundEffectFrame = 0
           return
 
           rem =================================================================
@@ -85,5 +85,5 @@ StopSoundEffects
           rem =================================================================
 SoundSubsystem
           rem Legacy function - redirects to UpdateSoundEffect
-          gosub UpdateSoundEffect
-          return
+          rem tail call
+          goto UpdateSoundEffect

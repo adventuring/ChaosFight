@@ -29,7 +29,7 @@ HandleWallCollision
           rem Calculate bounced momentum: momentum = momentum * bounce / 50
           rem Using integer math: momentum = (momentum * bounce) / 50
           temp2 = temp4 * (50 - temp3 / 2) / 50
-          if temp2 = 0 && temp4<> 0 then temp2 = 1
+          if temp2 = 0 && temp4 then temp2 = 1
           rem Ensure at least 1 if was moving
           playerMomentumX[temp1] = temp2
           return

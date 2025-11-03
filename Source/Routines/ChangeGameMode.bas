@@ -19,7 +19,7 @@ SetupPublisherPreamble
           temp1 = SongPublisher
           gosub bank16 StartMusic
           rem Initialize preamble timer
-          preambleTimer = 0
+          let preambleTimer = 0
           return
           
 SetupAuthorPreamble
@@ -27,7 +27,7 @@ SetupAuthorPreamble
           temp1 = SongAuthor
           gosub bank16 StartMusic
           rem Initialize preamble timer
-          preambleTimer = 0
+          let preambleTimer = 0
           return
           
 SetupTitle
@@ -39,10 +39,10 @@ SetupTitle
           COLUBK = ColGray(0)
           
           rem Initialize character parade
-          titleParadeTimer = 0
-          titleParadeChar = 0
-          titleParadeX = 0
-          titleParadeActive = 0
+          let titleParadeTimer = 0
+          let titleParadeChar = 0
+          let titleParadeX = 0
+          let titleParadeActive = 0
           
           return
           

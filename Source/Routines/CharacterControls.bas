@@ -268,11 +268,11 @@ RadishGoblinJump
 RoboTitoJump
           rem RoboTito ceiling-stretch mechanic
           rem Check if already latched to ceiling
-          if (characterStateFlags[temp1] & 1)<> 0 then return
+          if (characterStateFlags[temp1] & 1) then return
           rem Already latched, ignore UP input
           
           rem Check if grounded (not jumping)
-          if (playerState[temp1] & 4)<> 0 then RoboTitoStretching
+          if (playerState[temp1] & 4) then RoboTitoStretching
           rem Not grounded, stretching upward
           goto RoboTitoStretching
           

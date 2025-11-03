@@ -499,7 +499,7 @@ SelDrawSprite
           let temp1  = charSelectAnimState
           rem Use animation state as hurt simulation for demo
           
-          if temp1<> 2 then SelColorNormal
+          if !(temp1 = 2) then SelColorNormal
           rem Hurt state - dimmer colors
           if switchbw then SelHurtBW
           rem Player color but dimmer

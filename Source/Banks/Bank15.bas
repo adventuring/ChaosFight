@@ -103,4 +103,47 @@ LoadSoundNote
           if SoundEffectPointerL < temp2 then let SoundEffectPointerH = SoundEffectPointerH + 1
           
           return
+          
+          rem Load next note from sound effect stream for Voice 1
+          rem Input: SoundEffectPointer1L/H points to current note in Sound_Voice0 stream
+          rem Output: Updates TIA registers, advances pointer, sets SoundEffectFrame1
+LoadSoundNote1
+          asm
+          ; Load 4 bytes from stream[pointer]
+          ldy #0
+          lda (SoundEffectPointer1L),y  ; Load AUDCV
+          sta temp2
+          iny
+          lda (SoundEffectPointer1L),y  ; Load AUDF
+          sta temp3
+          iny
+          lda (SoundEffectPointer1L),y  ; Load Duration
+          sta temp4
+          iny
+          lda (SoundEffectPointer1L),y  ; Load Delay
+          sta temp5
+          end
+          
+          rem Check for end of sound (Duration = 0)
+          if temp4 = 0 then SoundEffectPointer1H = 0 : AUDV1 = 0 : return
+          
+          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
+          temp6 = temp2 & %11110000
+          temp6 = temp6 / 16
+          temp7 = temp2 & %00001111
+          
+          rem Write to TIA registers (use Voice 1 for sound effects)
+          AUDC1 = temp6
+          AUDF1 = temp3
+          AUDV1 = temp7
+          
+          rem Set frame counter = Duration + Delay
+          let SoundEffectFrame1 = temp4 + temp5
+          
+          rem Advance pointer by 4 bytes (16-bit addition)
+          let temp2 = SoundEffectPointer1L
+          let SoundEffectPointer1L = temp2 + 4
+          if SoundEffectPointer1L < temp2 then let SoundEffectPointer1H = SoundEffectPointer1H + 1
+          
+          return
 

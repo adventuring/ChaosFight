@@ -261,11 +261,11 @@ CheckPlayer0Falling
           rem Check if Bernie (character 0) - respawn at top
           if playerChar[0] = 0 then RespawnBernie0
           rem All other characters: instant kill
-          playerHealth[0] = 0
+          let playerHealth[0] = 0
           goto SkipPlayer0Falling
 RespawnBernie0
           rem Bernie respawns at top of screen at same X position
-          playerY[0] = 20
+          let playerY[0] = 20
 SkipPlayer0Falling
 
           rem Player 2
@@ -278,11 +278,11 @@ CheckPlayer1Falling
           rem Check if Bernie (character 0) - respawn at top
           if playerChar[1] = 0 then RespawnBernie1
           rem All other characters: instant kill
-          playerHealth[1] = 0
+          let playerHealth[1] = 0
           goto SkipPlayer1Falling
 RespawnBernie1
           rem Bernie respawns at top of screen at same X position
-          playerY[1] = 20
+          let playerY[1] = 20
 SkipPlayer1Falling
 
           rem Player 3 (Quadtari only)
@@ -300,11 +300,11 @@ CheckPlayer2Falling
           rem Check if Bernie (character 0) - respawn at top
           if playerChar[2] = 0 then RespawnBernie2
           rem All other characters: instant kill
-          playerHealth[2] = 0
+          let playerHealth[2] = 0
           goto SkipPlayer2Falling
 RespawnBernie2
           rem Bernie respawns at top of screen at same X position
-          playerY[2] = 20
+          let playerY[2] = 20
 SkipPlayer2Falling
 SkipPlayer3Bounds
 
@@ -323,11 +323,11 @@ CheckPlayer3Falling
           rem Check if Bernie (character 0) - respawn at top
           if playerChar[3] = 0 then RespawnBernie3
           rem All other characters: instant kill
-          playerHealth[3] = 0
+          let playerHealth[3] = 0
           goto SkipPlayer3Falling
 RespawnBernie3
           rem Bernie respawns at top of screen at same X position
-          playerY[3] = 20
+          let playerY[3] = 20
 SkipPlayer3Falling
 SkipPlayer4Bounds
           

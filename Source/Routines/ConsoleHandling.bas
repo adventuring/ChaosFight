@@ -27,7 +27,7 @@ HandleConsoleSwitches
           if !temp1 then SkipPlayer1Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if gameState = 0 then gameState = 1:goto Player1PauseDone
+          if gameState = 0 then let gameState = 1:goto Player1PauseDone
           let gameState = 0
 Player1PauseDone
           rem Debounce - wait for button release
@@ -42,9 +42,9 @@ SkipPlayer1Pause
           if !temp1 then SkipPlayer2Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if gameState = 0 then gameState = 1
+          if gameState = 0 then let gameState = 1
           if gameState = 0 then Player2PauseDone
-          gameState = 0
+          let gameState = 0
 Player2PauseDone
           rem Debounce - wait for button release
           drawscreen
@@ -72,7 +72,7 @@ CheckColorBWToggle
           temp6 = switchbw
           if temp6 = colorBWPrevious then SkipColorBWChange
           gosub bank14 DetectControllers
-          colorBWPrevious = switchbw
+          let colorBWPrevious = switchbw
 SkipColorBWChange
           return
 

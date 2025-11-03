@@ -36,10 +36,10 @@ CtrlDetConsole
           
 CtrlDetPads
           rem Reset detection flags
-          controllerStatus = 0
+          let controllerStatus = 0
 #ifndef TV_SECAM
-          colorBWOverride = 0
-          pauseButtonPrev = 0
+          let colorBWOverride = 0
+          let pauseButtonPrev = 0
 #endif
           
           rem Check for Quadtari (4 joysticks via multiplexing)
@@ -60,11 +60,11 @@ CheckRightSide
 NoQuadtari
           
           rem Quadtari not detected
-          controllerStatus = controllerStatus & ClearQuadtariDetected
+          let controllerStatus = controllerStatus & ClearQuadtariDetected
           goto CheckGenesis
 
 QuadtariFound
-          controllerStatus = controllerStatus | SetQuadtariDetected
+          let controllerStatus = controllerStatus | SetQuadtariDetected
           return
 
 CheckGenesis
@@ -110,7 +110,7 @@ CtrlGenesisA
           if !INPT1{7} then NoGenesisLeft
           
           rem Genesis detected on left port
-          controllerStatus = controllerStatus | SetLeftPortGenesis
+          let controllerStatus = controllerStatus | SetLeftPortGenesis
           rem Set LeftPortGenesis bit
           
 NoGenesisLeft
@@ -119,7 +119,7 @@ NoGenesisLeft
           if !INPT3{7} then NoGenesisRight
           
           rem Genesis detected on right port
-          controllerStatus = controllerStatus | SetRightPortGenesis
+          let controllerStatus = controllerStatus | SetRightPortGenesis
           rem Set RightPortGenesis bit
           
 NoGenesisRight
@@ -136,7 +136,7 @@ CtrlJoy2A
           if !INPT4{7} then NoJoy2Left
           
           rem Joy2b+ detected on left port
-          controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
           rem Set LeftPortJoy2bPlus bit
           
 NoJoy2Left
@@ -146,7 +146,7 @@ NoJoy2Left
           if !INPT5{7} then NoJoy2Right
           
           rem Joy2b+ detected on right port
-          controllerStatus = controllerStatus | SetRightPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
           rem Set RightPortJoy2bPlus bit
           
 NoJoy2Right
@@ -173,7 +173,7 @@ CtrlGenesisB
           if !INPT1{7} then NoLeftGenesis
           
           rem Genesis detected on left port
-          controllerStatus = controllerStatus | SetLeftPortGenesis
+          let controllerStatus = controllerStatus | SetLeftPortGenesis
           goto CheckRightGenesis
           
 NoLeftGenesis
@@ -182,7 +182,7 @@ NoLeftGenesis
           if !INPT3{7} then NoRightGenesis
           
           rem Genesis detected on right port
-          controllerStatus = controllerStatus | SetRightPortGenesis
+          let controllerStatus = controllerStatus | SetRightPortGenesis
           goto GenesisDetDone
           
 NoRightGenesis
@@ -210,7 +210,7 @@ CtrlJoy2B
           if !INPT4{7} then CheckRightJoy2
           
           rem Joy2b+ detected on left port
-          controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
           goto Joy2PlusDone
           
 CheckRightJoy2
@@ -220,7 +220,7 @@ CheckRightJoy2
           if !INPT5{7} then Joy2PlusDone
           
           rem Joy2b+ detected on right port
-          controllerStatus = controllerStatus | SetRightPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
           
 Joy2PlusDone
           rem Restore normal VBLANK

@@ -27,5 +27,5 @@ SpritesSet
           goto LevelSelect1Loop
 
 StartGame1
-          gameMode = ModeGame : gosub bank13 ChangeGameMode
+          let gameMode = ModeGame : gosub bank13 ChangeGameMode
           return

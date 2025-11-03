@@ -56,47 +56,47 @@ MeleeHitbox
     on PlayerFacing(attacker_id) goto FacingRight, FacingLeft, FacingUp, FacingDown
     
 FacingRight
-      hitbox_left = playerX[attacker_id] + 8
-      hitbox_right = playerX[attacker_id] + 24
-      hitbox_top = playerY[attacker_id] - 8
-      hitbox_bottom = playerY[attacker_id] + 8
+      let hitbox_left = playerX[attacker_id] + 8
+      let hitbox_right = playerX[attacker_id] + 24
+      let hitbox_top = playerY[attacker_id] - 8
+      let hitbox_bottom = playerY[attacker_id] + 8
       return
       
 FacingLeft
-      hitbox_left = playerX[attacker_id] - 24
-      hitbox_right = playerX[attacker_id] - 8
-      hitbox_top = playerY[attacker_id] - 8
-      hitbox_bottom = playerY[attacker_id] + 8
+      let hitbox_left = playerX[attacker_id] - 24
+      let hitbox_right = playerX[attacker_id] - 8
+      let hitbox_top = playerY[attacker_id] - 8
+      let hitbox_bottom = playerY[attacker_id] + 8
       return
       
 FacingUp
-      hitbox_left = playerX[attacker_id] - 8
-      hitbox_right = playerX[attacker_id] + 8
-      hitbox_top = playerY[attacker_id] - 24
-      hitbox_bottom = playerY[attacker_id] - 8
+      let hitbox_left = playerX[attacker_id] - 8
+      let hitbox_right = playerX[attacker_id] + 8
+      let hitbox_top = playerY[attacker_id] - 24
+      let hitbox_bottom = playerY[attacker_id] - 8
       return
       
 FacingDown
-      hitbox_left = playerX[attacker_id] - 8
-      hitbox_right = playerX[attacker_id] + 8
-      hitbox_top = playerY[attacker_id] + 8
-      hitbox_bottom = playerY[attacker_id] + 24
+      let hitbox_left = playerX[attacker_id] - 8
+      let hitbox_right = playerX[attacker_id] + 8
+      let hitbox_top = playerY[attacker_id] + 8
+      let hitbox_bottom = playerY[attacker_id] + 24
       return
   
 ProjectileHitbox
     rem Projectile hitbox is at current missile position (to be implemented)
-    hitbox_left = 0
-    hitbox_right = 0
-    hitbox_top = 0
-    hitbox_bottom = 0
+    let hitbox_left = 0
+    let hitbox_right = 0
+    let hitbox_top = 0
+    let hitbox_bottom = 0
     return
     
 AreaHitbox
     rem Area hitbox covers radius around attacker (to be implemented)
-    hitbox_left = 0
-    hitbox_right = 0
-    hitbox_top = 0
-    hitbox_bottom = 0
+    let hitbox_left = 0
+    let hitbox_right = 0
+    let hitbox_top = 0
+    let hitbox_bottom = 0
     return
 
 rem Process attack for one attacker against all defenders

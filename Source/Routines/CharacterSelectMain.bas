@@ -40,6 +40,9 @@ CharacterSelectPlayer0Left
           let playerChar[0] = playerChar[0] - 1
           if playerChar[0] > MaxCharacter then playerChar[0] = MaxCharacter
           let playerLocked[0] = 0
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer0Left
           if joy0right then CharacterSelectPlayer0Right
           goto CharacterSelectSkipPlayer0Right
@@ -47,12 +50,22 @@ CharacterSelectPlayer0Right
           let playerChar[0] = playerChar[0] + 1
           if playerChar[0] > MaxCharacter then playerChar[0] = 0
           let playerLocked[0] = 0
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer0Right
           rem Use skip-over pattern to avoid complex || operator
           if joy0up then playerLocked[0] = 0 : goto CharacterSelectPlayer0LockClearDone
           if joy0down then playerLocked[0] = 0
 CharacterSelectPlayer0LockClearDone
-          if joy0fire then playerLocked[0] = 1
+          if joy0fire then CharacterSelectPlayer0Fire
+          goto CharacterSelectSkipPlayer0Fire
+CharacterSelectPlayer0Fire
+          let playerLocked[0] = 1
+          rem Play selection sound
+          temp1 = SoundMenuSelect
+          gosub bank15 PlaySoundEffect
+CharacterSelectSkipPlayer0Fire
 
           rem Handle Player 2 input (joy1 on even frames)
           if joy1left then CharacterSelectPlayer1Left
@@ -61,6 +74,9 @@ CharacterSelectPlayer1Left
           let playerChar[1] = playerChar[1] - 1
           if playerChar[1] > MaxCharacter then playerChar[1] = MaxCharacter
           let playerLocked[1] = 0
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer1Left
           if joy1right then CharacterSelectPlayer1Right
           goto CharacterSelectSkipPlayer1Right
@@ -68,12 +84,22 @@ CharacterSelectPlayer1Right
           let playerChar[1] = playerChar[1] + 1
           if playerChar[1] > MaxCharacter then playerChar[1] = 0
           let playerLocked[1] = 0
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer1Right
           rem Use skip-over pattern to avoid complex || operator
           if joy1up then playerLocked[1] = 0 : goto CharacterSelectPlayer1LockClearDone
           if joy1down then playerLocked[1] = 0
 CharacterSelectPlayer1LockClearDone
-          if joy1fire then playerLocked[1] = 1
+          if joy1fire then CharacterSelectPlayer1Fire
+          goto CharacterSelectSkipPlayer1Fire
+CharacterSelectPlayer1Fire
+          let playerLocked[1] = 1
+          rem Play selection sound
+          temp1 = SoundMenuSelect
+          gosub bank15 PlaySoundEffect
+CharacterSelectSkipPlayer1Fire
           
           let qtcontroller = 1
           goto CharacterSelectInputComplete
@@ -89,6 +115,9 @@ CharacterSelectPlayer3Left
           let playerChar[2] = playerChar[2] - 1
           if playerChar[2] > MaxCharacter then playerChar[2] = MaxCharacter
           let playerLocked[2] = 0
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer3Left
           if joy0right then CharacterSelectPlayer3Right
           goto CharacterSelectSkipPlayer3Right
@@ -96,12 +125,22 @@ CharacterSelectPlayer3Right
           let playerChar[2] = playerChar[2] + 1
           if playerChar[2] > MaxCharacter then playerChar[2] = 0
           let playerLocked[2] = 0
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer3Right
           rem Use skip-over pattern to avoid complex || operator
           if joy0up then playerLocked[2] = 0 : goto CharacterSelectPlayer2LockClearDone
           if joy0down then playerLocked[2] = 0
 CharacterSelectPlayer2LockClearDone
-          if joy0fire then playerLocked[2] = 1
+          if joy0fire then CharacterSelectPlayer3Fire
+          goto CharacterSelectSkipPlayer3Fire
+CharacterSelectPlayer3Fire
+          let playerLocked[2] = 1
+          rem Play selection sound
+          temp1 = SoundMenuSelect
+          gosub bank15 PlaySoundEffect
+CharacterSelectSkipPlayer3Fire
 CharacterSelectSkipPlayer3
 
           rem Handle Player 4 input (joy1 on odd frames)
@@ -114,6 +153,9 @@ CharacterSelectPlayer4Left
           let playerChar[3] = playerChar[3] - 1
           if playerChar[3] > MaxCharacter then playerChar[3] = MaxCharacter
           let playerLocked[3] = 0
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer4Left
           if joy1right then CharacterSelectPlayer4Right
           goto CharacterSelectSkipPlayer4Right
@@ -121,12 +163,22 @@ CharacterSelectPlayer4Right
           let playerChar[3] = playerChar[3] + 1
           if playerChar[3] > MaxCharacter then playerChar[3] = 0
           let playerLocked[3] = 0
+          rem Play navigation sound
+          temp1 = SoundMenuNavigate
+          gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer4Right
           rem Use skip-over pattern to avoid complex || operator
           if joy1up then playerLocked[3] = 0 : goto CharacterSelectPlayer3LockClearDone
           if joy1down then playerLocked[3] = 0
 CharacterSelectPlayer3LockClearDone
-          if joy1fire then playerLocked[3] = 1
+          if joy1fire then CharacterSelectPlayer4Fire
+          goto CharacterSelectSkipPlayer4Fire
+CharacterSelectPlayer4Fire
+          let playerLocked[3] = 1
+          rem Play selection sound
+          temp1 = SoundMenuSelect
+          gosub bank15 PlaySoundEffect
+CharacterSelectSkipPlayer4Fire
 CharacterSelectSkipPlayer4
           
           
@@ -179,7 +231,7 @@ CharacterSelectFinish
           let selectedChar4 = playerChar[3]
           
           rem Transition to falling animation
-          gameMode = ModeFallingAnimation
+          let gameMode = ModeFallingAnimation
           gosub bank13 ChangeGameMode
           return
 

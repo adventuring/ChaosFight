@@ -47,7 +47,7 @@ PublisherSkipQuadtari
           rem Auto-advance after music completes + 0.5s
          if preambleTimer > 30 && musicPlaying = 0 then PublisherPreambleComplete
 
-          preambleTimer = preambleTimer + 1
+          let preambleTimer = preambleTimer + 1
           
           rem Draw screen with titlescreen kernel minikernel
           gosub titledrawscreen bank1
@@ -55,7 +55,7 @@ PublisherSkipQuadtari
           return
 
 PublisherPreambleComplete
-          gameMode = ModeAuthorPreamble
+          let gameMode = ModeAuthorPreamble
           gosub bank13 ChangeGameMode
           return
 

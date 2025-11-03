@@ -2,13 +2,14 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem =================================================================
-          rem SOUND EFFECT SUBSYSTEM - Polyphony 1 Implementation
+          rem SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
           rem =================================================================
           rem Sound effects for gameplay (gameMode 6)
           rem Uses interleaved 4-byte streams: AUDCV, AUDF, Duration, Delay
           rem AUDCV = (AUDC << 4) | AUDV (packed into single byte)
           rem High byte of pointer = 0 indicates sound inactive
-          rem Sound effects only play if music is not active
+          rem Supports 2 simultaneous sound effects (one per voice)
+          rem Music takes priority (no sounds if music active)
           rem =================================================================
 
           rem =================================================================
@@ -18,39 +19,53 @@
           rem Plays sound effect if voice is free, else forgets it (no queuing)
           rem =================================================================
 PlaySoundEffect
-          rem Check if already playing (forget if busy)
-          if SoundEffectPointerH then return
-          
           rem Check if music is active (music takes priority)
           if MusicVoice0PointerH then return
           if MusicVoice1PointerH then return
           
           rem Lookup sound pointer from Sounds bank (Bank15)
-          rem Note: SoundPointerL/H tables are in Sounds bank
           gosub bank15 LoadSoundPointer
-          rem LoadSoundPointer will set SoundPointerL and SoundPointerH from temp1
           
-          rem Set sound effect pointer
+          rem Try Voice 0 first
+          if SoundEffectPointerH then TryVoice1
+          
+          rem Voice 0 is free - use it
           let SoundEffectPointerL = SoundPointerL
           let SoundEffectPointerH = SoundPointerH
-          
-          rem Initialize frame counter to trigger first note load
           let SoundEffectFrame = 1
+          gosub UpdateSoundEffectVoice0
+          return
           
-          rem Start first note
-          gosub UpdateSoundEffect
+TryVoice1
+          rem Try Voice 1
+          if SoundEffectPointer1H then return
+          
+          rem Voice 1 is free - use it
+          let SoundEffectPointer1L = SoundPointerL
+          let SoundEffectPointer1H = SoundPointerH
+          let SoundEffectFrame1 = 1
+          gosub UpdateSoundEffectVoice1
           return
 
           rem =================================================================
           rem UpdateSoundEffect - Update sound effect playback each frame
           rem =================================================================
           rem Called every frame from MainLoop for gameMode 6
-          rem Updates sound if active (high byte != 0)
+          rem Updates both voices if active (high byte != 0)
           rem =================================================================
 UpdateSoundEffect
-          rem Check if sound active
-          if SoundEffectPointerH = 0 then return
+          rem Update Voice 0
+          if SoundEffectPointerH then gosub UpdateSoundEffectVoice0
           
+          rem Update Voice 1
+          if SoundEffectPointer1H then gosub UpdateSoundEffectVoice1
+          
+          return
+          
+          rem =================================================================
+          rem UpdateSoundEffectVoice0 - Update Voice 0 sound effect
+          rem =================================================================
+UpdateSoundEffectVoice0
           rem Decrement frame counter
           let SoundEffectFrame = SoundEffectFrame - 1
           if SoundEffectFrame then return
@@ -65,19 +80,41 @@ UpdateSoundEffect
           rem   - Advance SoundEffectPointer by 4 bytes
           rem   - Handle end-of-sound: set SoundEffectPointerH = 0, AUDV0 = 0, free voice
           return
+          
+          rem =================================================================
+          rem UpdateSoundEffectVoice1 - Update Voice 1 sound effect
+          rem =================================================================
+UpdateSoundEffectVoice1
+          rem Decrement frame counter
+          let SoundEffectFrame1 = SoundEffectFrame1 - 1
+          if SoundEffectFrame1 then return
+          
+          rem Frame counter reached 0 - load next note from Sounds bank
+          gosub bank15 LoadSoundNote1
+          rem LoadSoundNote1 will:
+          rem   - Load 4-byte note from Sound_Voice0[pointer]: AUDCV, AUDF, Duration, Delay
+          rem   - Extract AUDC (upper 4 bits) and AUDV (lower 4 bits)
+          rem   - Write to TIA: AUDC1, AUDF1, AUDV1 (use Voice 1)
+          rem   - Set SoundEffectFrame1 = Duration + Delay
+          rem   - Advance SoundEffectPointer1 by 4 bytes
+          rem   - Handle end-of-sound: set SoundEffectPointer1H = 0, AUDV1 = 0, free voice
+          return
 
           rem =================================================================
           rem StopSoundEffects - Stop all sound effects
           rem =================================================================
 StopSoundEffects
-          rem Zero TIA volume
+          rem Zero TIA volumes
           AUDV0 = 0
+          AUDV1 = 0
           
-          rem Clear sound pointer (high byte = 0 means inactive)
+          rem Clear sound pointers (high byte = 0 means inactive)
           let SoundEffectPointerH = 0
+          let SoundEffectPointer1H = 0
           
-          rem Reset frame counter
+          rem Reset frame counters
           let SoundEffectFrame = 0
+          let SoundEffectFrame1 = 0
           return
 
           rem =================================================================

@@ -179,13 +179,13 @@ SkipCalcP1vsP2Diff
           if playerX[0] < playerX[1] then SeparateP0Left
           
           rem Else P0 is right of P1, move P0 right and P1 left
-          playerX[0] = playerX[0] + 1
-          playerX[1] = playerX[1] - 1
+          let playerX[0] = playerX[0] + 1
+          let playerX[1] = playerX[1] - 1
           goto SkipPlayerSeparation
 
 SeparateP0Left
-          playerX[0] = playerX[0] - 1
-          playerX[1] = playerX[1] + 1
+          let playerX[0] = playerX[0] - 1
+          let playerX[1] = playerX[1] + 1
 SkipPlayerSeparation
           
           return
@@ -201,11 +201,11 @@ SkipCalcP1vsP3Diff
           return
 
 CheckCollisionP1vsP3Aux
-          if playerX[0] < playerX[2] then playerX[0] = playerX[0] - 1
-          if playerX[0] < playerX[2] then playerX[2] = playerX[2] + 1
+          if playerX[0] < playerX[2] then let playerX[0] = playerX[0] - 1
+          if playerX[0] < playerX[2] then let playerX[2] = playerX[2] + 1
           if playerX[0] < playerX[2] then return
-          playerX[0] = playerX[0] + 1
-          playerX[2] = playerX[2] - 1
+          let playerX[0] = playerX[0] + 1
+          let playerX[2] = playerX[2] - 1
           return
 
 CheckCollisionP1vsP4
@@ -219,11 +219,11 @@ SkipCalcP1vsP4Diff
           return
 
 CheckCollisionP1vsP4Aux
-          if playerX[0] < playerX[3] then playerX[0] = playerX[0] - 1
-          if playerX[0] < playerX[3] then playerX[3] = playerX[3] + 1
+          if playerX[0] < playerX[3] then let playerX[0] = playerX[0] - 1
+          if playerX[0] < playerX[3] then let playerX[3] = playerX[3] + 1
           if playerX[0] < playerX[3] then return
-          playerX[0] = playerX[0] + 1
-          playerX[3] = playerX[3] - 1
+          let playerX[0] = playerX[0] + 1
+          let playerX[3] = playerX[3] - 1
           return
 
 CheckCollisionP2vsP3
@@ -237,11 +237,11 @@ SkipCalcP2vsP3Diff
           return
 
 CheckCollisionP2vsP3Aux
-          if playerX[1] < playerX[2] then playerX[1] = playerX[1] - 1
-          if playerX[1] < playerX[2] then playerX[2] = playerX[2] + 1
+          if playerX[1] < playerX[2] then let playerX[1] = playerX[1] - 1
+          if playerX[1] < playerX[2] then let playerX[2] = playerX[2] + 1
           if playerX[1] < playerX[2] then return
-          playerX[1] = playerX[1] + 1
-          playerX[2] = playerX[2] - 1
+          let playerX[1] = playerX[1] + 1
+          let playerX[2] = playerX[2] - 1
           return
 
 CheckCollisionP2vsP4
@@ -255,11 +255,11 @@ SkipCalcP2vsP4Diff
           return
 
 CheckCollisionP2vsP4Aux
-          if playerX[1] < playerX[3] then playerX[1] = playerX[1] - 1
-          if playerX[1] < playerX[3] then playerX[3] = playerX[3] + 1
+          if playerX[1] < playerX[3] then let playerX[1] = playerX[1] - 1
+          if playerX[1] < playerX[3] then let playerX[3] = playerX[3] + 1
           if playerX[1] < playerX[3] then return
-          playerX[1] = playerX[1] + 1
-          playerX[3] = playerX[3] - 1
+          let playerX[1] = playerX[1] + 1
+          let playerX[3] = playerX[3] - 1
           return
 
 CheckCollisionP3vsP4
@@ -273,11 +273,11 @@ SkipCalcP3vsP4Diff
           return
 
 CheckCollisionP3vsP4Aux
-          if playerX[2] < playerX[3] then playerX[2] = playerX[2] - 1
-          if playerX[2] < playerX[3] then playerX[3] = playerX[3] + 1
+          if playerX[2] < playerX[3] then let playerX[2] = playerX[2] - 1
+          if playerX[2] < playerX[3] then let playerX[3] = playerX[3] + 1
           if playerX[2] < playerX[3] then return
-          playerX[2] = playerX[2] + 1
-          playerX[3] = playerX[3] - 1
+          let playerX[2] = playerX[2] + 1
+          let playerX[3] = playerX[3] - 1
           return
 
           rem =================================================================

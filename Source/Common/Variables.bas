@@ -145,13 +145,18 @@
           
           rem Sound Effect System Pointers (Game Mode: gameMode 6)
           rem NOTE: Must avoid var40 (currentAnimationSeq) and var44 (playerAttackCooldown[0])
-          rem Uses var39, var41 (shared with Music), y and z (letter vars - redimmed, available in Game Mode)
+          rem Uses var39, var41 (shared with Music), y,z,var45,var46
+          rem Voice 0: var39+var41 (shared), y+z for pointers
+          rem Voice 1: var45+var46 for pointers (zero page)
           dim SoundPointerL = var39
           dim SoundPointerH = y
           rem Sound data pointer low/high bytes (in Sounds bank) - zero page (y is available in Game Mode)
           dim SoundEffectPointerL = var41
           dim SoundEffectPointerH = z
-          rem Sound effect stream position low/high bytes (high byte = 0 means inactive) - zero page (z is available in Game Mode)
+          rem Sound effect Voice 0 stream position low/high bytes (high byte = 0 means inactive) - zero page (z is available in Game Mode)
+          dim SoundEffectPointer1L = var45
+          dim SoundEffectPointer1H = var46
+          rem Sound effect Voice 1 stream position low/high bytes (high byte = 0 means inactive) - zero page
           
           rem =================================================================
           rem MUSIC/SOUND FRAME COUNTERS - SCRAM (not pointers, can be in SCRAM)
@@ -164,9 +169,10 @@
           dim MusicVoice1Frame = w021
           rem Frame counters for current notes on each voice (SCRAM acceptable)
           
-          rem Sound Effect System Frame Counter (SCRAM - used in Game Mode)
+          rem Sound Effect System Frame Counters (SCRAM - used in Game Mode)
           dim SoundEffectFrame = w022
-          rem Frame counter for current sound effect note (SCRAM acceptable)
+          dim SoundEffectFrame1 = w024
+          rem Frame counters for current sound effect notes on each voice (SCRAM acceptable)
 
           rem =================================================================
           rem ADMIN MODE VARIABLES (may be re-used in Game Mode for other purposes)

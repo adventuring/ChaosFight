@@ -58,7 +58,7 @@ CheckPlayerElimination
           rem Still alive
           
           rem Player health reached 0 - eliminate them
-          playersEliminated = playersEliminated | temp6
+          let playersEliminated = playersEliminated | temp6
           
           rem Update Players34Active flag if Player 3 or 4 was eliminated
           rem Only clear flag if both players 3 and 4 are eliminated or not selected
@@ -68,7 +68,7 @@ CheckPlayerElimination
 UpdatePlayers34Done
           
           rem Record elimination order
-          eliminationCounter = eliminationCounter + 1
+          let eliminationCounter = eliminationCounter + 1
           eliminationOrder[temp1] = eliminationCounter
           
           rem Trigger elimination effects
@@ -130,7 +130,7 @@ DeactivatePlayerMissiles
           if temp1 = 3 then temp6 = 8
           temp6 = 255 - temp6 
           rem Invert bits for AND mask
-          missileActive = missileActive & temp6
+          let missileActive = missileActive & temp6
           
           return
 
@@ -153,7 +153,7 @@ CountRemainingPlayers
           if !(playersEliminated & 8) then temp1 = temp1 + 1 
           rem Player 4
           
-          playersRemaining = temp1
+          let playersRemaining = temp1
           return
 
           rem =================================================================
@@ -209,17 +209,17 @@ IsPlayerAlive
           rem Identify the winning player (last one standing).
 FindWinner
           rem Find the player who is not eliminated
-          winnerPlayerIndex = 255 
+          let winnerPlayerIndex = 255 
           rem Invalid initially
           
           temp1 = 0 : gosub IsPlayerEliminated
-          if !temp2 then winnerPlayerIndex = 0
+          if !temp2 then let winnerPlayerIndex = 0
           temp1 = 1 : gosub IsPlayerEliminated  
-          if !temp2 then winnerPlayerIndex = 1
+          if !temp2 then let winnerPlayerIndex = 1
           temp1 = 2 : gosub IsPlayerEliminated
-          if !temp2 then winnerPlayerIndex = 2
+          if !temp2 then let winnerPlayerIndex = 2
           temp1 = 3 : gosub IsPlayerEliminated
-          if !temp2 then winnerPlayerIndex = 3
+          if !temp2 then let winnerPlayerIndex = 3
           
           rem If no winner found (all eliminated), pick last eliminated
           if winnerPlayerIndex = 255 then gosub FindLastEliminated : return
@@ -231,14 +231,14 @@ FindWinner
 FindLastEliminated
           temp4 = 0    
           rem Highest elimination order found
-          winnerPlayerIndex = 0 
+          let winnerPlayerIndex = 0 
           rem Default winner
           
           rem Check each player elimination order
-          if eliminationOrder[0] > temp4 then temp4 = eliminationOrder[0] : winnerPlayerIndex = 0
-          if eliminationOrder[1] > temp4 then temp4 = eliminationOrder[1] : winnerPlayerIndex = 1
-          if eliminationOrder[2] > temp4 then temp4 = eliminationOrder[2] : winnerPlayerIndex = 2
-          if eliminationOrder[3] > temp4 then temp4 = eliminationOrder[3] : winnerPlayerIndex = 3
+          if eliminationOrder[0] > temp4 then let temp4 = eliminationOrder[0] : let winnerPlayerIndex = 0
+          if eliminationOrder[1] > temp4 then let temp4 = eliminationOrder[1] : let winnerPlayerIndex = 1
+          if eliminationOrder[2] > temp4 then let temp4 = eliminationOrder[2] : let winnerPlayerIndex = 2
+          if eliminationOrder[3] > temp4 then let temp4 = eliminationOrder[3] : let winnerPlayerIndex = 3
           
           rem =================================================================
           rem UPDATE PLAYERS 3/4 ACTIVE FLAG
@@ -247,20 +247,20 @@ FindLastEliminated
           rem are selected and not eliminated. Used for missile multiplexing.
 UpdatePlayers34ActiveFlag
           rem Clear flag first
-          controllerStatus = controllerStatus & ClearPlayers34Active
+          let controllerStatus = controllerStatus & ClearPlayers34Active
           
           rem Check if Player 3 is active (selected and not eliminated)
           if selectedChar3 = 255 then CheckPlayer4ActiveFlag
           if playersEliminated & 4 then CheckPlayer4ActiveFlag
           rem Player 3 is active
-          controllerStatus = controllerStatus | SetPlayers34Active
+          let controllerStatus = controllerStatus | SetPlayers34Active
           
 CheckPlayer4ActiveFlag
           rem Check if Player 4 is active (selected and not eliminated)
           if selectedChar4 = 255 then UpdatePlayers34ActiveDone
           if playersEliminated & 8 then UpdatePlayers34ActiveDone
           rem Player 4 is active
-          controllerStatus = controllerStatus | SetPlayers34Active
+          let controllerStatus = controllerStatus | SetPlayers34Active
           
 UpdatePlayers34ActiveDone
           return

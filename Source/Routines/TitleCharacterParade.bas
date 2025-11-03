@@ -28,7 +28,7 @@
           rem Update parade state (called every frame)
 UpdateCharacterParade
           rem Increment parade timer
-          titleParadeTimer = titleParadeTimer + 1
+          let titleParadeTimer = titleParadeTimer + 1
           
           rem Start parade after 10 seconds (600 frames at 60fps)
           if titleParadeTimer < TitleParadeDelayFrames then return
@@ -36,21 +36,21 @@ UpdateCharacterParade
           rem Check if we need to start a new character
           if !titleParadeActive then
                     rem Start new character parade
-          titleParadeChar = rand & MaxCharacter 
+          let titleParadeChar = rand & MaxCharacter 
           rem Random character 0-MaxCharacter
-          titleParadeX = 246
+          let titleParadeX = 246
           rem Start off-screen left
-                    titleParadeActive = 1
+                    let titleParadeActive = 1
 
                     rem Move character across screen
-          titleParadeX = titleParadeX + 2 
+          let titleParadeX = titleParadeX + 2 
           rem Move 2 pixels per frame
                     
                     rem Check if character has left screen
                     if titleParadeX > 170 then
                               rem Character has left - wait 1 second (60 frames) before next
-                              titleParadeActive = 0
-          titleParadeTimer = titleParadeTimer - 60 
+                              let titleParadeActive = 0
+          let titleParadeTimer = titleParadeTimer - 60 
           rem Reset timer for next character
 end
 end

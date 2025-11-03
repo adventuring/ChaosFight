@@ -66,7 +66,7 @@ DrawDigit
           
           rem Calculate data offset: digit * 16 (16 bytes per digit)
           dim FR_digitOffset = temp6
-          FR_digitOffset = temp1 * 16
+          let FR_digitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
           if temp5 then SkipPlayer0Sprite
@@ -96,12 +96,51 @@ SkipPlayer0Sprite
           rem   DigitOffset (temp6) = byte offset into font data (digit * 16)
 
 LoadPlayer0Digit
-          rem Load 16 bytes from font data into player0 sprite
- 
+          rem Load digit graphics from Numbers font data into player0 sprite
+          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
+          rem Clamp digit offset to valid range (0-144 for digits 0-9)
+          if temp6 > 144 then LET temp6 = 144
+          
+          rem Calculate sprite pointer = FontData + offset using assembly
+          asm
+            rem Load low byte of FontData base address
+            lda # <FontData
+            clc
+            adc temp6
+            sta player0pointerlo
+            
+            rem Load high byte of FontData base address and add carry
+            lda # >FontData
+            adc #0
+            sta player0pointerhi
+          end
+          
+          rem Set sprite height (16 pixels tall)
+          player0height = 16
           return
 
 LoadPlayer1Digit
-
+          rem Load digit graphics from Numbers font data into player1 sprite
+          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
+          rem Clamp digit offset to valid range (0-144 for digits 0-9)
+          if temp6 > 144 then LET temp6 = 144
+          
+          rem Calculate sprite pointer = FontData + offset using assembly
+          asm
+            rem Load low byte of FontData base address
+            lda # <FontData
+            clc
+            adc temp6
+            sta player1pointerlo
+            
+            rem Load high byte of FontData base address and add carry
+            lda # >FontData
+            adc #0
+            sta player1pointerhi
+          end
+          
+          rem Set sprite height (16 pixels tall)
+          player1height = 16
           return
 
           rem =================================================================
@@ -150,8 +189,8 @@ DrawPlayerDigitNow
           temp1 = FR_playerDigit
           rem temp2, temp3, temp5 already set by caller
           temp4 = FR_playerColor
-          gosub DrawDigit
-          return
+          rem tail call
+          goto DrawDigit
 
           rem =================================================================
           rem DRAW LEVEL NUMBER
@@ -166,5 +205,5 @@ DrawPlayerDigitNow
 DrawLevelNumber
           temp4 = ColGrey(14)
           rem White
-          gosub DrawDigit
-          return
+          rem tail call
+          goto DrawDigit

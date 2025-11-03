@@ -212,7 +212,7 @@ ShamoneAttack
 DispatchCharacterAttack
           rem Get character type for this player using direct array access
           rem temp1 contains player index (0-3)
-          let temp2 = PlayerChar[temp1]
+          let temp2 = playerChar[temp1]
           rem Map MethHound (31) to ShamoneAttack handler
           if temp2 = 31 then temp2 = 15
           rem Use Shamone attack for MethHound

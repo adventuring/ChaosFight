@@ -172,6 +172,8 @@
           rem ADMIN: Cursor position (standard RAM var26)
           dim LevelConfirmTimer = var27     
           rem ADMIN: Confirmation timer (standard RAM var27)
+          dim LevelSelectHoldTimer = w014   
+          rem ADMIN: Fire button hold timer for return to character select (SCRAM w014, read via r014)
           
           rem ADMIN: Preamble screen variables (standard RAM var28-var31)
           dim PreambleTimer = var28         

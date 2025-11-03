@@ -3,6 +3,7 @@
 
 BeginLevelSelect
           selectedArena = 0
+          LevelSelectHoldTimer = 0
           
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)

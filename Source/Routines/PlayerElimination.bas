@@ -27,10 +27,10 @@
           rem Sets elimination flags and triggers elimination effects.
 CheckAllPlayerEliminations
           rem Check each player for elimination
-          temp1 = 0 : gosub CheckPlayerElimination
-          temp1 = 1 : gosub CheckPlayerElimination  
-          temp1 = 2 : gosub CheckPlayerElimination
-          temp1 = 3 : gosub CheckPlayerElimination
+          currentPlayer = 0 : gosub CheckPlayerElimination
+          currentPlayer = 1 : gosub CheckPlayerElimination  
+          currentPlayer = 2 : gosub CheckPlayerElimination
+          currentPlayer = 3 : gosub CheckPlayerElimination
           
           rem Count remaining players and check game end
           gosub CountRemainingPlayers
@@ -42,17 +42,17 @@ CheckAllPlayerEliminations
           rem CHECK SINGLE PLAYER ELIMINATION
           rem =================================================================
           rem Check if specified player should be eliminated.
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
 CheckPlayerElimination
           rem Skip if already eliminated
-          temp6 = BitMask[temp1]
+          temp6 = BitMask[currentPlayer]
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           temp2 = PlayersEliminated & temp6
           if temp2 then return 
           rem Already eliminated
           
           rem Check if health has reached 0
-          temp2 = PlayerHealth[temp1]
+          temp2 = PlayerHealth[currentPlayer]
           
           if temp2 > 0 then return 
           rem Still alive
@@ -63,13 +63,13 @@ CheckPlayerElimination
           rem Update Players34Active flag if Player 3 or 4 was eliminated
           rem Only clear flag if both players 3 and 4 are eliminated or not selected
           rem Use skip-over pattern to avoid complex || operator
-          if temp1 = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
-          if temp1 = 3 then gosub UpdatePlayers34ActiveFlag
+          if currentPlayer = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
+          if currentPlayer = 3 then gosub UpdatePlayers34ActiveFlag
 UpdatePlayers34Done
           
           rem Record elimination order
           let EliminationCounter = EliminationCounter + 1
-          let EliminationOrder[temp1] = EliminationCounter
+          let EliminationOrder[currentPlayer] = EliminationCounter
           
           rem Trigger elimination effects
           gosub TriggerEliminationEffects
@@ -80,7 +80,7 @@ UpdatePlayers34Done
           rem TRIGGER ELIMINATION EFFECTS
           rem =================================================================
           rem Visual and audio effects when player is eliminated.
-          rem INPUT: temp1 = eliminated player index (0-3)
+          rem INPUT: currentPlayer = eliminated player index (0-3)
 TriggerEliminationEffects
           rem Play elimination sound effect
           temp5 = SoundElimination
@@ -90,7 +90,7 @@ TriggerEliminationEffects
           rem This could trigger screen flash, particle effects, etc.
           temp2 = 30 
           rem 30 frames of elimination effect
-          let EliminationEffectTimer[temp1] = temp2
+          let EliminationEffectTimer[currentPlayer] = temp2
           
           rem Hide player sprite immediately
           gosub HideEliminatedPlayerSprite
@@ -104,14 +104,14 @@ TriggerEliminationEffects
           rem HIDE ELIMINATED PLAYER SPRITE
           rem =================================================================
           rem Move eliminated player sprite off-screen.
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
 HideEliminatedPlayerSprite
-          if temp1 = 0 then player0x = 200 
+          if currentPlayer = 0 then player0x = 200 
           rem Off-screen
-          if temp1 = 1 then player1x = 200
-          if temp1 = 2 then player2x = 200 
+          if currentPlayer = 1 then player1x = 200
+          if currentPlayer = 2 then player2x = 200 
           rem Player 3 uses player2 sprite (multisprite)
-          if temp1 = 3 then player3x = 200 
+          if currentPlayer = 3 then player3x = 200 
           rem Player 4 uses player3 sprite (multisprite)
           
           return
@@ -120,14 +120,14 @@ HideEliminatedPlayerSprite
           rem DEACTIVATE PLAYER MISSILES
           rem =================================================================
           rem Remove any active missiles belonging to eliminated player.
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
 DeactivatePlayerMissiles
           rem Clear missile active bit for this player
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp1 = 0 then temp6 = 1
-          if temp1 = 1 then temp6 = 2
-          if temp1 = 2 then temp6 = 4
-          if temp1 = 3 then temp6 = 8
+          if currentPlayer = 0 then temp6 = 1
+          if currentPlayer = 1 then temp6 = 2
+          if currentPlayer = 2 then temp6 = 4
+          if currentPlayer = 3 then temp6 = 8
           temp6 = 255 - temp6 
           rem Invert bits for AND mask
           let MissileActive = MissileActive & temp6
@@ -178,14 +178,14 @@ if PlayersRemaining <= 1 then
           rem IS PLAYER ELIMINATED
           rem =================================================================
           rem Check if specified player is eliminated.
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
           rem OUTPUT: temp2 = 1 if eliminated, 0 if alive
 IsPlayerEliminated
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp1 = 0 then temp6 = 1
-          if temp1 = 1 then temp6 = 2
-          if temp1 = 2 then temp6 = 4
-          if temp1 = 3 then temp6 = 8
+          if currentPlayer = 0 then temp6 = 1
+          if currentPlayer = 1 then temp6 = 2
+          if currentPlayer = 2 then temp6 = 4
+          if currentPlayer = 3 then temp6 = 8
           temp2 = PlayersEliminated & temp6
           if temp2 then temp2 = 1 : goto IsEliminatedDone
           temp2 = 0
@@ -196,7 +196,7 @@ IsEliminatedDone
           rem IS PLAYER ALIVE  
           rem =================================================================
           rem Check if specified player is alive (not eliminated AND health > 0).
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
           rem OUTPUT: temp2 = 1 if alive, 0 if eliminated/dead
 IsPlayerAlive
           rem Check elimination flag first
@@ -205,7 +205,7 @@ IsPlayerAlive
           rem Already eliminated
           
           rem Check health
-          temp3 = PlayerHealth[temp1]
+          temp3 = PlayerHealth[currentPlayer]
           
           temp2 = 0 
           rem Default: not alive
@@ -222,13 +222,13 @@ FindWinner
           let WinnerPlayerIndex = 255 
           rem Invalid initially
           
-          temp1 = 0 : gosub IsPlayerEliminated
+          currentPlayer = 0 : gosub IsPlayerEliminated
           if !temp2 then WinnerPlayerIndex = 0
-          temp1 = 1 : gosub IsPlayerEliminated  
+          currentPlayer = 1 : gosub IsPlayerEliminated  
           if !temp2 then WinnerPlayerIndex = 1
-          temp1 = 2 : gosub IsPlayerEliminated
+          currentPlayer = 2 : gosub IsPlayerEliminated
           if !temp2 then WinnerPlayerIndex = 2
-          temp1 = 3 : gosub IsPlayerEliminated
+          currentPlayer = 3 : gosub IsPlayerEliminated
           if !temp2 then WinnerPlayerIndex = 3
           
           rem If no winner found (all eliminated), pick last eliminated

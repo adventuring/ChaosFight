@@ -18,7 +18,7 @@ FallingAnimation1
           rem Use PlayerY[] array and map to correct sprite registers
           
           rem Participant 1 (array [0]) → P0 sprite (player0x/player0y)
-          if PlayerChar[0] = 255 then goto SkipPlayer1Fall
+          if playerChar[0] = 255 then goto SkipPlayer1Fall
           
           rem Move from quadrant position toward top of screen
           rem Target: Y = 10 (top of screen), X stays at quadrant position
@@ -34,7 +34,7 @@ FallingAnimation1
 SkipPlayer1Fall
 
           rem Participant 2 (array [1]) → P1 sprite (player1x/player1y, virtual _P1)
-          if PlayerChar[1] = 255 then goto SkipPlayer2Fall
+          if playerChar[1] = 255 then goto SkipPlayer2Fall
           
           rem Move from quadrant position toward top of screen
           rem Target: Y = 10 (top of screen), X stays at quadrant position
@@ -50,7 +50,7 @@ SkipPlayer2Fall
           rem Participant 3 (array [2]) → P2 sprite (player2x/player2y) - 4-player mode only
           if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Fall
           if selectedChar3 = 255 then goto SkipPlayer3Fall
-          if PlayerChar[2] = 255 then goto SkipPlayer3Fall
+          if playerChar[2] = 255 then goto SkipPlayer3Fall
           
           rem Move from quadrant position toward top of screen
           rem Target: Y = 10 (top of screen), X stays at quadrant position
@@ -66,7 +66,7 @@ SkipPlayer3Fall
           rem Participant 4 (array [3]) → P3 sprite (player3x/player3y) - 4-player mode only
           if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Fall
           if selectedChar4 = 255 then goto SkipPlayer4Fall
-          if PlayerChar[3] = 255 then goto SkipPlayer4Fall
+          if playerChar[3] = 255 then goto SkipPlayer4Fall
           
           rem Move from quadrant position toward top of screen
           rem Target: Y = 10 (top of screen), X stays at quadrant position

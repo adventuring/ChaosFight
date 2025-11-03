@@ -9,7 +9,7 @@
     Hates: Boredom
     Original Game: Magical Fairy Force, Championship, and Drop
     Author: Ryan Witmer @url{https://phasercat.com,Phaser Cat Games}
-    Purchase: @url{https://store.atariage.com/products/magical-fairy-force-atari-2600,Magical Fairy Force at AtariAge Store}; @url{https://store.steampowered.com/app/,"Magical Fairy Force Championship Adventure on Steam"}; @url{https://atari.com/pages/atari-vcs-store,Magical Fairy Force on Atari VCS eShop}; @url{https://store.atariage.com/store_search?q=fairy+drop,Fairy Drop at AtariAge Store}
+    Purchase: @url{https://store.atariage.com/products/magical-fairy-force-atari-2600,Magical Fairy Force at AtariAge Store}; @url{https://store.steampowered.com/app/,"Magical Fairy Force Championship Adventure on Steam"}; @url{https://store.atariage.com/store_search?q=fairy+drop,Fairy Drop at AtariAge Store}
     Forum: @url{https://forums.atariage.com/topic/,Magical Fairy Force release thread}; @url{https://forums.atariage.com/topic/,Fairy Drop release thread}
 @end group
 @end display
@@ -17,10 +17,18 @@
 Captain of Queen Sugar's royal guard, Frooty is loyal, powerful, hyper, and 
 ever so slightly insane. As the one charged with the defence of Fairy Land, 
 she carries an enormous responsibility as she leads the queen's armies into 
-battle. She also oversees a number of secret research projects in Fairy Land, 
-some of which are finally starting to produce results.
+battle in Magical Fairy Force. Her role expanded in the Championship and 
+Drop games, where she continued to serve as a key protector of the magical 
+realm.
+
+Frooty also oversees a number of secret research projects in Fairy Land, some 
+of which are finally starting to produce results. Her dedication to both 
+military strategy and magical research makes her a formidable leader, even if 
+her hyperactive personality and love of candy sometimes mask her serious 
+responsibilities.
 
 Frooty can fly freely up and down using the joystick! However, she cannot 
 guard (pressing DOWN makes her fly down instead). Her ranged attack fires 
 magical sparkles from her lollipop weapon. This generic fairy archetype 
-represents the classic fairy fighter perfectly.
+represents the classic fairy fighter perfectly, combining whimsical charm with 
+deadly combat prowess.

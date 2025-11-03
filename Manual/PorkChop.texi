@@ -8,18 +8,24 @@
     Former Team: Team Koe (Edmonton) member@footnote{Team Koe is a professional curling team based in Calgary/Edmonton, Alberta. Curling team names and trademarks are property of their respective organizations.}
     Original Game: Ratcatcher, Magical Fairy Force, and Rob 'N' Banks
     Author: Ryan Witmer @url{https://phasercat.com,Phaser Cat Games}
-    Purchase: @url{https://store.atariage.com/products/rob-n-banks-atari-2600,Rob 'N' Banks at AtariAge Store}; @url{https://atari.com/pages/atari-vcs-store,Rob 'N' Banks on Atari VCS eShop}; @url{https://store.atariage.com/products/magical-fairy-force-atari-2600,Magical Fairy Force at AtariAge Store}; @url{https://atari.com/pages/atari-vcs-store,Magical Fairy Force on Atari VCS eShop}; @url{https://store.atariage.com/products/ratcatcher-atari-2600,Ratcatcher at AtariAge Store}; @url{https://atari.com/pages/atari-vcs-store,Ratcatcher on Atari VCS eShop}; @url{https://store.steampowered.com/app/,Magical Fairy Force Championship Adventure on Steam}
+    Purchase: @url{https://store.atariage.com/products/rob-n-banks-atari-2600,Rob 'N' Banks at AtariAge Store}; @url{https://store.atariage.com/products/magical-fairy-force-atari-2600,Magical Fairy Force at AtariAge Store}; @url{https://store.atariage.com/products/ratcatcher-atari-2600,Ratcatcher at AtariAge Store}; @url{https://store.steampowered.com/app/,Magical Fairy Force Championship Adventure on Steam}
     Forum: @url{https://forums.atariage.com/topic/,Rob 'N' Banks release thread}; @url{https://forums.atariage.com/topic/,Magical Fairy Force release thread}; @url{https://forums.atariage.com/topic/,Ratcatcher release thread}; @url{https://forums.atariage.com/topic/,Fairy Drop release thread}
 @end group
 @end display
 
-Pork Chop has had a few jobs. He's worked for fairies, guarded banks, cleaned 
-out sewers, and even did a stint on the Edmonton curling team. This diverse 
-work experience has given him a well-rounded skill set and the determination 
-to handle any situation thrown at him.
+Pork Chop has had a diverse career across multiple games. In Magical Fairy Force, 
+he worked as an employee for the fairies of Fairy Land, serving alongside Queen 
+Sugar's royal guard and learning the ways of magical combat. His time in the 
+sewers as a ratcatcher gave him experience in close-quarters combat against 
+dangerous infestations, honing his skills in Ratcatcher. As a bank guard in 
+Rob 'N' Banks, he protected financial institutions from robbers, developing 
+defensive tactics and situational awareness. His brief stint on the Edmonton 
+curling team (Team Koe) taught him precision and teamwork.
 
 From the delicate work with magical fairies to the rough-and-tumble world of 
 bank security, from the unpleasant but necessary sewer maintenance to the 
 precise sport of curling, Pork Chop has learned to adapt to any environment. 
 His heavy build and reliable melée attacks reflect the steady, dependable 
-nature that has served him well across all his various careers.
+nature that has served him well across all his various careers. His diverse 
+work experience has given him a well-rounded skill set and the determination 
+to handle any situation thrown at him.

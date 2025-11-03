@@ -135,11 +135,11 @@ BudgetedCollisionCheck
           if !(controllerStatus & SetQuadtariDetected) then return
           
           rem Check additional pairs based on frame phase
-          if FramePhase = 0 then if selectedChar3 <> 255 then gosub CheckCollisionP1vsP3 : goto SkipFramePhaseChecks
-          if FramePhase = 1 then if selectedChar4 <> 255 then gosub CheckCollisionP1vsP4 : if selectedChar3 <> 255 then gosub CheckCollisionP2vsP3 : goto SkipFramePhaseChecks
-          if FramePhase <> 2 then goto SkipPhase2Collisions
-          if selectedChar4 <> 255 then gosub CheckCollisionP2vsP4
-          if selectedChar3 <> 255 && selectedChar4 <> 255 then gosub CheckCollisionP3vsP4
+          if FramePhase = 0 then if !(selectedChar3 = 255) then gosub CheckCollisionP1vsP3 : goto SkipFramePhaseChecks
+          if FramePhase = 1 then if !(selectedChar4 = 255) then gosub CheckCollisionP1vsP4 : if !(selectedChar3 = 255) then gosub CheckCollisionP2vsP3 : goto SkipFramePhaseChecks
+          if !(FramePhase = 2) then goto SkipPhase2Collisions
+          if !(selectedChar4 = 255) then gosub CheckCollisionP2vsP4
+          if !(selectedChar3 = 255) && !(selectedChar4 = 255) then gosub CheckCollisionP3vsP4
 SkipPhase2Collisions
 SkipFramePhaseChecks
           return

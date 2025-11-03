@@ -8,17 +8,9 @@ rem COMBAT SYSTEM - Generic subroutines using player arrays
 rem Apply damage from attacker to defender
 rem Inputs: attackerId, defenderId
 ApplyDamage
+  dim damage = a
+  
   rem Calculate damage (considering defender state)
-<<<<<<< HEAD
-  let temp1 = playerDamage(attacker_id) - playerDamage(defender_id)
-  if temp1 < 1 then let temp1 = 1  rem Minimum damage
-  
-  rem Apply damage
-  playerHealth[defender_id] = playerHealth[defender_id] - temp1
-  
-  rem Visual feedback (to be implemented)
-  gosub ShowDamageIndicator defender_id, temp1
-=======
   damage = PlayerDamage(attackerId) - PlayerDamage(defenderId)
   if damage < 1 then damage = 1  rem Minimum damage
   
@@ -27,10 +19,9 @@ ApplyDamage
   
   rem Visual feedback (to be implemented)
   gosub ShowDamageIndicator defenderId, damage
->>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
   
   rem Sound effect (to be implemented)
-  gosub PlayDamageSound temp1
+  gosub PlayDamageSound damage
   
   return
 
@@ -38,30 +29,16 @@ rem Check if attack hits defender
 rem Inputs: attackerId, defenderId
 rem Returns: hit (1 = hit, 0 = miss)
 CheckAttackHit
-<<<<<<< HEAD
-=======
   dim hit = a
   dim hitboxLeft = b
   dim hitboxRight = c
   dim hitboxTop = d
   dim hitboxBottom = e
   
->>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
   rem Calculate attack hitbox based on attacker facing and attack type
   gosub CalculateAttackHitbox attackerId
   
   rem Check if defender is in hitbox
-<<<<<<< HEAD
-          if playerX[defender_id] < hitbox_left then HitboxCheckDone
-          if playerX[defender_id] > hitbox_right then HitboxCheckDone
-          if playerY[defender_id] < hitbox_top then HitboxCheckDone
-          if playerY[defender_id] > hitbox_bottom then HitboxCheckDone
-    let hit = 1
-          goto HitboxCheckDone
-HitboxCheckDone
-          if hit  = 0 then NoHit
-    let hit = 0
-=======
   rem Initialize hit to 0 (miss)
           hit = 0
           if PlayerX[defenderId] < hitboxLeft then goto NoHit
@@ -71,7 +48,6 @@ HitboxCheckDone
           rem All bounds checks passed - hit detected
           hit = 1
           return
->>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
 NoHit
   rem No hit - hit is already 0
   return
@@ -134,28 +110,18 @@ AreaHitbox
 rem Process attack for one attacker against all defenders
 rem Input: attackerId
 ProcessAttackerAttacks
-<<<<<<< HEAD
-  rem Check if attacker is facing right (PlayerStateFacing = bit 0)
-  temp1 = playerState[attacker_id]
-  if temp1{0} = 0 then return
-=======
   dim defender = a
   
   rem Check if attacker is attacking
   if (PlayerState[attackerId] & %00000001) = 0 then return
->>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
   
   rem Attack each defender
   for defender = 0 to 3
     rem Skip if defender is attacker
-<<<<<<< HEAD
-    if defender = attacker_id then NextDefender
-=======
     if defender = attackerId then goto NextDefender
->>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
     
     rem Skip if defender is dead
-    if playerHealth[defender] <= 0 then NextDefender
+    if PlayerHealth[defender] <= 0 then goto NextDefender
     
     rem Check if attack hits
     gosub CheckAttackHit attackerId, defender
@@ -168,9 +134,11 @@ NextDefender
 
 rem Process all attacks for all players
 ProcessAllAttacks
+  dim attacker = a
+  
   for attacker = 0 to 3
     rem Skip if attacker is dead
-    if playerHealth[attacker] <= 0 then NextAttacker
+    if PlayerHealth[attacker] <= 0 then goto NextAttacker
     
     gosub ProcessAttackerAttacks attacker
     
@@ -203,11 +171,7 @@ PerformMeleeAttack
   gosub bank7 SpawnMissile
   
   rem Set animation state to attacking
-<<<<<<< HEAD
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << 4)
-=======
           PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
->>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
           rem Set animation state 14 (attack execution)
   
   rem Check immediate collision with other players in melee range
@@ -229,11 +193,7 @@ PerformRangedAttack
   gosub bank7 SpawnMissile
   
   rem Set animation state to attacking
-<<<<<<< HEAD
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimAttackExecute << 4)
-=======
           PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
->>>>>>> 32165c2 (Fix terminology: Clarify participant numbers (1-4) vs sprite indices (P0-P3))
           rem Set animation state 14 (attack execution)
   
   return

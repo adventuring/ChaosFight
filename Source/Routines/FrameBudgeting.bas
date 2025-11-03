@@ -36,7 +36,7 @@
           rem Updates the frame phase counter (0-3) used to schedule operations.
           rem Called once per frame at the start of game loop.
 UpdateFramePhase
-          FramePhase = frame & 3 
+          let FramePhase = frame & 3 
           rem Cycle 0, 1, 2, 3, 0, 1, 2, 3...
           return
 
@@ -75,7 +75,7 @@ SkipPlayer3HealthUpdate
           rem Update Player 1 health bar
 UpdateHealthBarPlayer0
           dim HealthBarLength = temp6
-          HealthBarLength = PlayerHealth[0] / 3
+          let HealthBarLength = PlayerHealth[0] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColBlue(12)
           gosub bank8 DrawHealthBarRow0
@@ -84,7 +84,7 @@ UpdateHealthBarPlayer0
           rem Update Player 2 health bar
 UpdateHealthBarPlayer1
           dim HealthBarLength = temp6
-          HealthBarLength = PlayerHealth[1] / 3
+          let HealthBarLength = PlayerHealth[1] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColRed(12)
           gosub bank8 DrawHealthBarRow1
@@ -93,7 +93,7 @@ UpdateHealthBarPlayer1
           rem Update Player 3 health bar
 UpdateHealthBarPlayer2
           dim HealthBarLength = temp6
-          HealthBarLength = PlayerHealth[2] / 3
+          let HealthBarLength = PlayerHealth[2] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColYellow(12)
           gosub bank8 DrawHealthBarRow2
@@ -102,7 +102,7 @@ UpdateHealthBarPlayer2
           rem Update Player 4 health bar
 UpdateHealthBarPlayer3
           dim HealthBarLength = temp6
-          HealthBarLength = PlayerHealth[3] / 3
+          let HealthBarLength = PlayerHealth[3] / 3
           if HealthBarLength > 32 then HealthBarLength = 32
           COLUPF = ColGreen(12)
           gosub bank8 DrawHealthBarRow3
@@ -157,11 +157,11 @@ CheckCollisionP1vsP3
           if PlayerX[0] >= PlayerX[2] then temp2 = PlayerX[0] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[0]
 if temp2 < 16 then 
 if PlayerX[0] < PlayerX[2] then 
-          PlayerX[0] = PlayerX[0] - 1
-          PlayerX[2] = PlayerX[2] + 1
+          let PlayerX[0] = PlayerX[0] - 1
+          let PlayerX[2] = PlayerX[2] + 1
 
-          PlayerX[0] = PlayerX[0] + 1
-          PlayerX[2] = PlayerX[2] - 1
+          let PlayerX[0] = PlayerX[0] + 1
+          let PlayerX[2] = PlayerX[2] - 1
           
           
           return
@@ -170,11 +170,11 @@ CheckCollisionP1vsP4
           if PlayerX[0] >= PlayerX[3] then temp2 = PlayerX[0] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[0]
 if temp2 < 16 then 
 if PlayerX[0] < PlayerX[3] then 
-          PlayerX[0] = PlayerX[0] - 1
-          PlayerX[3] = PlayerX[3] + 1
+          let PlayerX[0] = PlayerX[0] - 1
+          let PlayerX[3] = PlayerX[3] + 1
 
-          PlayerX[0] = PlayerX[0] + 1
-          PlayerX[3] = PlayerX[3] - 1
+          let PlayerX[0] = PlayerX[0] + 1
+          let PlayerX[3] = PlayerX[3] - 1
           
           
           return
@@ -183,11 +183,11 @@ CheckCollisionP2vsP3
           if PlayerX[1] >= PlayerX[2] then temp2 = PlayerX[1] - PlayerX[2] else temp2 = PlayerX[2] - PlayerX[1]
 if temp2 < 16 then 
 if PlayerX[1] < PlayerX[2] then 
-          PlayerX[1] = PlayerX[1] - 1
-          PlayerX[2] = PlayerX[2] + 1
+          let PlayerX[1] = PlayerX[1] - 1
+          let PlayerX[2] = PlayerX[2] + 1
 
-          PlayerX[1] = PlayerX[1] + 1
-          PlayerX[2] = PlayerX[2] - 1
+          let PlayerX[1] = PlayerX[1] + 1
+          let PlayerX[2] = PlayerX[2] - 1
           
           
           return
@@ -196,11 +196,11 @@ CheckCollisionP2vsP4
           if PlayerX[1] >= PlayerX[3] then temp2 = PlayerX[1] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[1]
 if temp2 < 16 then 
 if PlayerX[1] < PlayerX[3] then 
-          PlayerX[1] = PlayerX[1] - 1
-          PlayerX[3] = PlayerX[3] + 1
+          let PlayerX[1] = PlayerX[1] - 1
+          let PlayerX[3] = PlayerX[3] + 1
 
-          PlayerX[1] = PlayerX[1] + 1
-          PlayerX[3] = PlayerX[3] - 1
+          let PlayerX[1] = PlayerX[1] + 1
+          let PlayerX[3] = PlayerX[3] - 1
           
           
           return
@@ -209,11 +209,11 @@ CheckCollisionP3vsP4
           if PlayerX[2] >= PlayerX[3] then temp2 = PlayerX[2] - PlayerX[3] else temp2 = PlayerX[3] - PlayerX[2]
 if temp2 < 16 then 
 if PlayerX[2] < PlayerX[3] then 
-          PlayerX[2] = PlayerX[2] - 1
-          PlayerX[3] = PlayerX[3] + 1
+          let PlayerX[2] = PlayerX[2] - 1
+          let PlayerX[3] = PlayerX[3] + 1
 
-          PlayerX[2] = PlayerX[2] + 1
-          PlayerX[3] = PlayerX[3] - 1
+          let PlayerX[2] = PlayerX[2] + 1
+          let PlayerX[3] = PlayerX[3] - 1
           
           
           return

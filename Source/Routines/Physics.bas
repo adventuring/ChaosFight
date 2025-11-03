@@ -31,7 +31,7 @@ HandleWallCollision
           temp2 = temp4 * (50 - temp3 / 2) / 50
           if temp2 = 0 && temp4 <> 0 then temp2 = 1
           rem Ensure at least 1 if was moving
-          PlayerMomentumX[temp1] = temp2
+          let PlayerMomentumX[temp1] = temp2
           return
 
           rem Check if player hit left wall and needs weight-based bounce

@@ -135,9 +135,9 @@ CheckLeftCollision
           if pfread(temp3, temp6) then goto CheckRightMovement
           rem Blocked at bottom too
 MoveLeftOK
-          PlayerX[temp1] = PlayerX[temp1] - 1
-          PlayerState[temp1] = PlayerState[temp1] & NOT 1
-          PlayerMomentumX[temp1] = 255
+          let PlayerX[temp1] = PlayerX[temp1] - 1
+          let PlayerState[temp1] = PlayerState[temp1] & NOT 1
+          let PlayerMomentumX[temp1] = 255
 CheckRightMovement
           rem Check right movement
           if !joy0right then goto SkipFlyingLeftRight
@@ -168,9 +168,9 @@ CheckRightMovement
           if pfread(temp3, temp6) then goto SkipFlyingLeftRight
           rem Blocked at bottom too
 MoveRightOK
-          PlayerX[temp1] = PlayerX[temp1] + 1
-          PlayerState[temp1] = PlayerState[temp1] | 1
-          PlayerMomentumX[temp1] = 1
+          let PlayerX[temp1] = PlayerX[temp1] + 1
+          let PlayerState[temp1] = PlayerState[temp1] | 1
+          let PlayerMomentumX[temp1] = 1
 SkipFlyingLeftRight
 
           rem Process UP input for character-specific behaviors
@@ -299,16 +299,16 @@ InputHandleRightPortPlayer
           
           rem Standard horizontal movement (no collision check)
           if joy1left then
-                    PlayerX[temp1] = PlayerX[temp1] - 1
-          PlayerState[temp1] = PlayerState[temp1] & NOT 1 
+                    let PlayerX[temp1] = PlayerX[temp1] - 1
+          let PlayerState[temp1] = PlayerState[temp1] & NOT 1 
           rem Face left
-                    PlayerMomentumX[temp1] = 255
+                    let PlayerMomentumX[temp1] = 255
           
           if joy1right then
-                    PlayerX[temp1] = PlayerX[temp1] + 1
-          PlayerState[temp1] = PlayerState[temp1] | 1  
+                    let PlayerX[temp1] = PlayerX[temp1] + 1
+          let PlayerState[temp1] = PlayerState[temp1] | 1  
           rem Face right
-                    PlayerMomentumX[temp1] = 1
+                    let PlayerMomentumX[temp1] = 1
           goto SkipFlyingLeftRightRight
           
 FrootyDragonetLeftRightMovementRight
@@ -344,9 +344,9 @@ CheckLeftCollisionRight
           if pfread(temp3, temp6) then goto CheckRightMovementRight
           rem Blocked at bottom too
 MoveLeftOKRight
-          PlayerX[temp1] = PlayerX[temp1] - 1
-          PlayerState[temp1] = PlayerState[temp1] & NOT 1
-          PlayerMomentumX[temp1] = 255
+          let PlayerX[temp1] = PlayerX[temp1] - 1
+          let PlayerState[temp1] = PlayerState[temp1] & NOT 1
+          let PlayerMomentumX[temp1] = 255
 CheckRightMovementRight
           rem Check right movement
           if !joy1right then goto SkipFlyingLeftRightRight
@@ -377,9 +377,9 @@ CheckRightMovementRight
           if pfread(temp3, temp6) then goto SkipFlyingLeftRightRight
           rem Blocked at bottom too
 MoveRightOKRight
-          PlayerX[temp1] = PlayerX[temp1] + 1
-          PlayerState[temp1] = PlayerState[temp1] | 1
-          PlayerMomentumX[temp1] = 1
+          let PlayerX[temp1] = PlayerX[temp1] + 1
+          let PlayerState[temp1] = PlayerState[temp1] | 1
+          let PlayerMomentumX[temp1] = 1
 SkipFlyingLeftRightRight
           
 
@@ -480,7 +480,7 @@ InputSkipRightPortJump
             rem Use Shamone guard for MethHound
                     on temp4 goto BernieDown, CurlerDown, DragonetDown, EXODown, FatTonyDown, GrizzardDown, HarpyDown, KnightDown, FrootyDown, NefertemDown, NinjishDown, PorkChopDown, RadishDown, RoboTitoDown, UrsuloDown, ShamoneDown
 
-          PlayerState[temp1] = PlayerState[temp1] & NOT 2 
+          let PlayerState[temp1] = PlayerState[temp1] & NOT 2 
           rem Clear guard bit
           
           
@@ -522,13 +522,13 @@ Joy2bPauseDone
           rem Debounce: only toggle if button just pressed (was 0, now 1)
           if temp1 = 0 then goto SkipPauseToggle
           if PauseButtonPrev then goto SkipPauseToggle
-          GameState = GameState ^ 1 
+          let GameState = GameState ^ 1 
           rem Toggle pause (0<->1)
 SkipPauseToggle
           
           
           rem Update previous button state for next frame
-          PauseButtonPrev = temp1
+          let PauseButtonPrev = temp1
           
           return
 

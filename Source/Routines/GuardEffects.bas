@@ -105,7 +105,7 @@ if temp3 > 0 then
           rem INPUT: temp1 = player index (0-3)
 StartGuard
           rem Set guard bit in PlayerState
-          PlayerState[temp1] = PlayerState[temp1] | 2
+          let PlayerState[temp1] = PlayerState[temp1] | 2
           
           rem Set guard duration timer (60 frames = 1 second)
           rem Use upper bits of PlayerState for guard timer
@@ -115,7 +115,7 @@ StartGuard
           rem Clear timer bits
           temp2 = temp2 | %01110000 
           rem Set 7*8 = 56 frames (~1 second)
-          PlayerState[temp1] = temp2 | 2 
+          let PlayerState[temp1] = temp2 | 2 
           rem Restore guard bit
           
           return
@@ -143,15 +143,15 @@ if temp2 then
           rem Decrement by 8 frames
 if temp3 <= 0 then 
           rem Guard duration expired
-          PlayerState[temp1] = PlayerState[temp1] & %11111101 
+          let PlayerState[temp1] = PlayerState[temp1] & %11111101 
           rem Clear guard bit
           rem Start cooldown timer (60 frames)
-          PlayerTimers[temp1] = 60
+          let PlayerTimers[temp1] = 60
 
           rem Update guard timer
           temp4 = PlayerState[temp1] & %00011111 
           rem Keep lower bits
-          PlayerState[temp1] = temp4 | temp3 
+          let PlayerState[temp1] = temp4 | temp3 
           rem Combine with new timer
           
 
@@ -160,7 +160,7 @@ if temp3 <= 0 then
           
 if temp3 > 0 then 
           temp3 = temp3 - 1
-          PlayerTimers[temp1] = temp3
+          let PlayerTimers[temp1] = temp3
           
           
           

@@ -1,5 +1,5 @@
 # Default target
-all: sprites game doc characters fonts music bitmaps
+all: game doc
 
 # Test target
 test: SkylineTool/skyline-tool.asd
@@ -65,8 +65,8 @@ ROM = Dist/$(GAME).NTSC.a26
 # Assembly files
 ALL_SOURCES = $(shell find Source -name \*.bas)
 
-# Moved to top of file
-.PHONY: all clean emu game help doc characters fonts sprites nowready ready bitmaps
+# Phony targets
+.PHONY: all clean emu game help doc nowready ready
 
 # Build game
 game: \
@@ -104,17 +104,22 @@ FONT_NAMES = Numbers
 # Music names (MuseScore files)
 MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
 
-# Build character assets
-characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
+# Character sprite dependencies: BAS depends on PNG, PNG depends on XCF
+# These dependencies are declared in the pattern rules below, but we list them here
+# to ensure proper dependency tracking. The actual rules are:
+# - Source/Generated/$(char).bas depends on Source/Art/$(char).png
+# - Source/Art/$(char).png depends on Source/Art/$(char).xcf
 
-# Build bitmap assets (48×42 for titlescreen kernel on admin screens)
-bitmaps: $(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+# Bitmap dependencies: .s depends on PNG, PNG depends on XCF
+# - Source/Generated/Art.$(bitmap).s depends on Source/Art/$(bitmap).png
+# - Source/Art/$(bitmap).png depends on Source/Art/$(bitmap).xcf
 
-# Build font assets (fonts are universal, not region-specific)
-fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
+# Font dependencies: BAS depends on PNG, PNG depends on XCF (if XCF exists)
+# - Source/Generated/$(font).bas depends on Source/Art/$(font).png
 
-# Build music assets
-music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
+# Music dependencies: BAS depends on MIDI, MIDI depends on MSCZ
+# - Source/Generated/Song.$(song).$(arch).bas depends on Source/Songs/$(song).midi
+# - Source/Songs/$(song).midi depends on Source/Songs/$(song).mscz
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz

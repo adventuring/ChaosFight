@@ -39,16 +39,16 @@ CharacterSelectInputLoop
           if joy0left then goto CharacterSelectPlayer0Left
           goto CharacterSelectSkipPlayer0Left
 CharacterSelectPlayer0Left
-          PlayerChar[0] = PlayerChar[0] - 1
+          let PlayerChar[0] = PlayerChar[0] - 1
           if PlayerChar[0] > MaxCharacter then PlayerChar[0] = MaxCharacter
-          PlayerLocked[0] = 0
+          let PlayerLocked[0] = 0
 CharacterSelectSkipPlayer0Left
           if joy0right then goto CharacterSelectPlayer0Right
           goto CharacterSelectSkipPlayer0Right
 CharacterSelectPlayer0Right
-          PlayerChar[0] = PlayerChar[0] + 1
+          let PlayerChar[0] = PlayerChar[0] + 1
           if PlayerChar[0] > MaxCharacter then PlayerChar[0] = 0
-          PlayerLocked[0] = 0
+          let PlayerLocked[0] = 0
 CharacterSelectSkipPlayer0Right
           rem Use skip-over pattern to avoid complex || operator
           if joy0up then PlayerLocked[0] = 0 : goto CharacterSelectPlayer0LockClearDone
@@ -60,16 +60,16 @@ CharacterSelectPlayer0LockClearDone
           if joy1left then goto CharacterSelectPlayer1Left
           goto CharacterSelectSkipPlayer1Left
 CharacterSelectPlayer1Left
-          PlayerChar[1] = PlayerChar[1] - 1
+          let PlayerChar[1] = PlayerChar[1] - 1
           if PlayerChar[1] > MaxCharacter then PlayerChar[1] = MaxCharacter
-          PlayerLocked[1] = 0
+          let PlayerLocked[1] = 0
 CharacterSelectSkipPlayer1Left
           if joy1right then goto CharacterSelectPlayer1Right
           goto CharacterSelectSkipPlayer1Right
 CharacterSelectPlayer1Right
-          PlayerChar[1] = PlayerChar[1] + 1
+          let PlayerChar[1] = PlayerChar[1] + 1
           if PlayerChar[1] > MaxCharacter then PlayerChar[1] = 0
-          PlayerLocked[1] = 0
+          let PlayerLocked[1] = 0
 CharacterSelectSkipPlayer1Right
           rem Use skip-over pattern to avoid complex || operator
           if joy1up then PlayerLocked[1] = 0 : goto CharacterSelectPlayer1LockClearDone
@@ -88,16 +88,16 @@ CharacterSelectHandlePlayer3
           if joy0left then goto CharacterSelectPlayer3Left
           goto CharacterSelectSkipPlayer3Left
 CharacterSelectPlayer3Left
-          PlayerChar[2] = PlayerChar[2] - 1
+          let PlayerChar[2] = PlayerChar[2] - 1
           if PlayerChar[2] > MaxCharacter then PlayerChar[2] = MaxCharacter
-          PlayerLocked[2] = 0
+          let PlayerLocked[2] = 0
 CharacterSelectSkipPlayer3Left
           if joy0right then goto CharacterSelectPlayer3Right
           goto CharacterSelectSkipPlayer3Right
 CharacterSelectPlayer3Right
-          PlayerChar[2] = PlayerChar[2] + 1
+          let PlayerChar[2] = PlayerChar[2] + 1
           if PlayerChar[2] > MaxCharacter then PlayerChar[2] = 0
-          PlayerLocked[2] = 0
+          let PlayerLocked[2] = 0
 CharacterSelectSkipPlayer3Right
           rem Use skip-over pattern to avoid complex || operator
           if joy0up then PlayerLocked[2] = 0 : goto CharacterSelectPlayer2LockClearDone
@@ -113,16 +113,16 @@ CharacterSelectHandlePlayer4
           if joy1left then goto CharacterSelectPlayer4Left
           goto CharacterSelectSkipPlayer4Left
 CharacterSelectPlayer4Left
-          PlayerChar[3] = PlayerChar[3] - 1
+          let PlayerChar[3] = PlayerChar[3] - 1
           if PlayerChar[3] > MaxCharacter then PlayerChar[3] = MaxCharacter
-          PlayerLocked[3] = 0
+          let PlayerLocked[3] = 0
 CharacterSelectSkipPlayer4Left
           if joy1right then goto CharacterSelectPlayer4Right
           goto CharacterSelectSkipPlayer4Right
 CharacterSelectPlayer4Right
-          PlayerChar[3] = PlayerChar[3] + 1
+          let PlayerChar[3] = PlayerChar[3] + 1
           if PlayerChar[3] > MaxCharacter then PlayerChar[3] = 0
-          PlayerLocked[3] = 0
+          let PlayerLocked[3] = 0
 CharacterSelectSkipPlayer4Right
           rem Use skip-over pattern to avoid complex || operator
           if joy1up then PlayerLocked[3] = 0 : goto CharacterSelectPlayer3LockClearDone
@@ -151,7 +151,7 @@ CharacterSelectInputComplete
           rem CHECK IF READY TO PROCEED
           rem =================================================================
 CharacterSelectCheckReady
-          ReadyCount = 0
+          let ReadyCount = 0
 
           rem Count locked players
           if PlayerLocked[0] then ReadyCount = ReadyCount + 1
@@ -175,10 +175,10 @@ CharacterSelectReadyDone
 
 CharacterSelectFinish
           rem Store final selections
-          selectedChar1 = PlayerChar[0]
-          selectedChar2 = PlayerChar[1]
-          selectedChar3 = PlayerChar[2]
-          selectedChar4 = PlayerChar[3]
+          let selectedChar1 = PlayerChar[0]
+          let selectedChar2 = PlayerChar[1]
+          let selectedChar3 = PlayerChar[2]
+          let selectedChar4 = PlayerChar[3]
           return
 
           rem =================================================================
@@ -188,10 +188,10 @@ CharacterSelectFinish
           rem Note: DOWN button only unlocks selection, does NOT trigger animations.
 SelectUpdateAnimations
           rem Basic animation timer increment (no gameplay input handling)
-          CharSelectAnimTimer = CharSelectAnimTimer + 1
+          let CharSelectAnimTimer = CharSelectAnimTimer + 1
           if CharSelectAnimTimer > 60 then CharSelectAnimTimer = 0 : CharSelectAnimState = rand & 3
           if CharSelectAnimState > 2 then CharSelectAnimState = 0
-          CharSelectAnimFrame = CharSelectAnimFrame + 1
+          let CharSelectAnimFrame = CharSelectAnimFrame + 1
           if CharSelectAnimFrame > 7 then CharSelectAnimFrame = 0
           return
 

@@ -31,7 +31,7 @@ WinnerSkipQuadtari
 
 WinnerReturnToTitle
           rem Transition to title screen
-          GameMode = ModeTitle : gosub bank13 ChangeGameMode
+          let GameMode = ModeTitle : gosub bank13 ChangeGameMode
           return
 
 

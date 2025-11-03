@@ -69,6 +69,8 @@ Attract mode forms an endless wait loop. For now, Attract mode handler simply ju
 ### Overview
 Players select their fighters from 16 available characters (0-15). Supports 2-player (standard ports) and 4-player (Quadtari adapter) modes. Once all active players have locked in their selections, proceed to Level Select.
 
+Players 2 (and if present) 3 & 4 start "locked in" to "CPU" and "NO" and "NO" and unlock on any action.
+
 ### Controller Support
 - **2-player mode**: Left port (Player 1), Right port (Player 2)
 - **4-player mode (Quadtari detected)**: 
@@ -85,6 +87,15 @@ Players select their fighters from 16 available characters (0-15). Supports 2-pl
 
 ### Character Selection States
 - **PlayerChar[0-3]**: Current character index being browsed (0-15, or 255 for "NO")
+
+Player 1 options: ? or 0 ↔ MaxCharacterID
+
+Player 3/4 options: NO or ? or 0 ↔ MaxCharacterID
+
+Player 2: ? or 0 ↔ MaxCharacterID and
+- if either of Player 3 or Player 4 is not "NO" then "NO" is an option
+- otherwise (no player 3/4) then "CPU" is the other option
+
 - **PlayerLocked[0-3]**: Lock state:
   - 0 = Unlocked (still browsing)
   - 1 = Locked (normal health, 100%)
@@ -96,11 +107,14 @@ Players select their fighters from 16 available characters (0-15). Supports 2-pl
 - Display "NO" sprite for unselected players (participants 3-4 in 2-player mode)
 - Display character sprites in screen quadrants
 
+If no Quadtari, do not show players 3/4 at all.
+
 ### Progression Logic
 - **2-player mode**: At least Player 1 must lock in selection to proceed
 - **4-player mode**: At least 2 players must lock in to proceed
-- CPU and "?" characters auto-select random character (do not require input)
-- Once minimum players locked in, transition to Level Select
+- "?" characters auto-select random character (once locked in)
+- "CPU" selects a random character (when everyone else is locked in)
+- Once all players locked in, transition to Level Select
 
 ### Sound Effects
 - Menu navigation sound (SoundMenuNavigate) on left/right movement

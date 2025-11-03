@@ -24,8 +24,8 @@ UpdatePlayerMovementSingle
           if PlayerHealth[temp1] = 0 then return
           
           rem Update subpixel positions with velocity
-          PlayerSubpixelX[temp1] = PlayerSubpixelX[temp1] + PlayerVelocityX[temp1]
-          PlayerSubpixelY[temp1] = PlayerSubpixelY[temp1] + PlayerVelocityY[temp1]
+          let PlayerSubpixelX[temp1] = PlayerSubpixelX[temp1] + PlayerVelocityX[temp1]
+          let PlayerSubpixelY[temp1] = PlayerSubpixelY[temp1] + PlayerVelocityY[temp1]
           
           rem Convert subpixel positions to sprite positions
           gosub UpdateSpritePositions
@@ -53,16 +53,16 @@ UpdateSpritePositions
           rem Input: temp1 = player index (0-3), temp2 = X velocity, temp3 = Y velocity
 SetPlayerVelocity
           rem Set 8.8 fixed-point velocities (input already in 8.8 format)
-          PlayerVelocityX[temp1] = temp2
-          PlayerVelocityY[temp1] = temp3
+          let PlayerVelocityX[temp1] = temp2
+          let PlayerVelocityY[temp1] = temp3
           return
 
           rem Set player position
           rem Input: temp1 = player index (0-3), temp2 = X position, temp3 = Y position
 SetPlayerPosition
           rem Set 8.8 fixed-point positions (input already in 8.8 format)
-          PlayerSubpixelX[temp1] = temp2
-          PlayerSubpixelY[temp1] = temp3
+          let PlayerSubpixelX[temp1] = temp2
+          let PlayerSubpixelY[temp1] = temp3
           
           rem Update sprite positions immediately
           gosub UpdateSpritePositions
@@ -92,7 +92,7 @@ GetPlayerVelocity
           rem Input: temp1 = player index (0-3), temp2 = gravity strength
 MovementApplyGravity
           rem Add gravity to Y velocity
-          PlayerVelocityY[temp1] = PlayerVelocityY[temp1] + temp2
+          let PlayerVelocityY[temp1] = PlayerVelocityY[temp1] + temp2
           return
 
           rem Apply friction to player
@@ -101,7 +101,7 @@ ApplyFriction
           rem Apply friction to X velocity
           temp3 = PlayerVelocityX[temp1] * temp2 / 256 
           rem Scale by friction
-          PlayerVelocityX[temp1] = temp3
+          let PlayerVelocityX[temp1] = temp3
           return
 
           rem =================================================================

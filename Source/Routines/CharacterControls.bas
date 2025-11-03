@@ -78,7 +78,7 @@ BernieJump
           rem Floor is only 1 row deep - allow fall through
           rem Move Bernie down by 1 pixel per frame while UP is held
           rem This allows him to pass through the 1-row platform
-          PlayerY[temp1] = PlayerY[temp1] + 1
+          let PlayerY[temp1] = PlayerY[temp1] + 1
           return 
           
 BernieCheckBottomWrap
@@ -93,7 +93,7 @@ BernieCheckBottomWrap
           rem Top row is clear - wrap to top
             rem Set Bernie Y position to top of screen (row 0)
           rem PlayerY at top row = 0 * pfrowheight = 0
-          PlayerY[temp1] = 0
+          let PlayerY[temp1] = 0
           return
 
           rem CURLER (1) - STANDARD JUMP
@@ -130,23 +130,23 @@ DragonetJump
             rem Blocked, cannot move up
           
           rem Clear above - move up
-          PlayerY[temp1] = PlayerY[temp1] - 2
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerY[temp1] = PlayerY[temp1] - 2
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           rem Set jumping flag for animation
           return
 
           rem Zoe Ryen (3) - STANDARD JUMP (light weight, high jump)
 EXOJump
-          PlayerY[temp1] = PlayerY[temp1] - 12 
+          let PlayerY[temp1] = PlayerY[temp1] - 12 
           rem Lighter character, higher jump
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem FAT TONY (4) - STANDARD JUMP (heavy weight, lower jump)
 FatTonyJump
-          PlayerY[temp1] = PlayerY[temp1] - 8 
+          let PlayerY[temp1] = PlayerY[temp1] - 8 
           rem Heavier character, lower jump
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem GRIZZARD HANDLER (5) - STANDARD JUMP
@@ -164,16 +164,16 @@ HarpyJump
             rem Check screen bounds - do not go above top
           if PlayerY[temp1] <= 5 then return
             rem Already at top, cannot flap higher
-          PlayerY[temp1] = PlayerY[temp1] - 3
-          PlayerState[temp1] = PlayerState[temp1] | 4 
+          let PlayerY[temp1] = PlayerY[temp1] - 3
+          let PlayerState[temp1] = PlayerState[temp1] | 4 
           rem Set jumping/flying bit for animation
           return
 
           rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
 KnightJump
-          PlayerY[temp1] = PlayerY[temp1] - 8 
+          let PlayerY[temp1] = PlayerY[temp1] - 8 
           rem Heavier character, lower jump
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem FROOTY (8) - FREE FLIGHT (vertical movement)
@@ -203,8 +203,8 @@ FrootyJump
             rem Blocked, cannot move up
           
           rem Clear above - move up
-          PlayerY[temp1] = PlayerY[temp1] - 2
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerY[temp1] = PlayerY[temp1] - 2
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           rem Set jumping flag for animation
           return
 
@@ -215,23 +215,23 @@ NefertemJump
 
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
 NinjishJump
-          PlayerY[temp1] = PlayerY[temp1] - 13 
+          let PlayerY[temp1] = PlayerY[temp1] - 13 
           rem Very light character, highest jump
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem PORK CHOP (11) - STANDARD JUMP (heavy weight)
 PorkChopJump
-          PlayerY[temp1] = PlayerY[temp1] - 8 
+          let PlayerY[temp1] = PlayerY[temp1] - 8 
           rem Heavy character, lower jump
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem RADISH GOBLIN (12) - STANDARD JUMP (very light, high jump)
 RadishJump
-          PlayerY[temp1] = PlayerY[temp1] - 13 
+          let PlayerY[temp1] = PlayerY[temp1] - 13 
           rem Very light character, highest jump
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem ROBO TITO (13) - VERTICAL MOVEMENT (no jump physics)
@@ -245,16 +245,16 @@ RoboTitoJump
 
           rem URSULO (14) - STANDARD JUMP (heavy weight)
 UrsuloJump
-          PlayerY[temp1] = PlayerY[temp1] - 8 
+          let PlayerY[temp1] = PlayerY[temp1] - 8 
           rem Heavy character, lower jump
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem SHAMONE (15) - STANDARD JUMP (light weight)
 ShamoneJump
-          PlayerY[temp1] = PlayerY[temp1] - 11 
+          let PlayerY[temp1] = PlayerY[temp1] - 11 
           rem Light character, good jump
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           return
 
           rem =================================================================
@@ -329,8 +329,8 @@ FrootyDown
             rem Blocked, cannot move down
           
           rem Clear below - move down
-          PlayerY[temp1] = PlayerY[temp1] + 2
-          PlayerState[temp1] = PlayerState[temp1] & !2 
+          let PlayerY[temp1] = PlayerY[temp1] + 2
+          let PlayerState[temp1] = PlayerState[temp1] & !2 
           rem Ensure guard bit clear
           return
 
@@ -377,8 +377,8 @@ ShamoneDown
           rem INPUT: temp1 = player index
           rem USES: PlayerY[temp1], PlayerState[temp1]
 StandardJump
-          PlayerY[temp1] = PlayerY[temp1] - 10
-          PlayerState[temp1] = PlayerState[temp1] | 4 
+          let PlayerY[temp1] = PlayerY[temp1] - 10
+          let PlayerState[temp1] = PlayerState[temp1] | 4 
           rem Set jumping bit
           return
 
@@ -386,7 +386,7 @@ StandardJump
           rem INPUT: temp1 = player index
           rem USES: PlayerState[temp1]
 StandardGuard
-          PlayerState[temp1] = PlayerState[temp1] | 2 
+          let PlayerState[temp1] = PlayerState[temp1] | 2 
           rem Set guarding bit
           
           rem Set guard visual effect (flashing cyan)

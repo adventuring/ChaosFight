@@ -36,10 +36,10 @@ CtrlDetConsole
           
 CtrlDetPads
           rem Reset detection flags
-          ControllerStatus = 0
+          let ControllerStatus = 0
 #ifndef TV_SECAM
-          ColorBWOverride = 0
-          PauseButtonPrev = 0
+          let ColorBWOverride = 0
+          let PauseButtonPrev = 0
 #endif
           
           rem Check for Quadtari (4 joysticks via multiplexing)
@@ -60,11 +60,11 @@ CheckRightSide
 NoQuadtari
           
           rem Quadtari not detected
-          ControllerStatus = ControllerStatus & ClearQuadtariDetected
+          let ControllerStatus = ControllerStatus & ClearQuadtariDetected
           goto CheckGenesis
 
 QuadtariFound
-          ControllerStatus = ControllerStatus | SetQuadtariDetected
+          let ControllerStatus = ControllerStatus | SetQuadtariDetected
           return
 
 CheckGenesis
@@ -110,7 +110,7 @@ CtrlGenesisA
           if !INPT1{7} then goto NoGenesisLeft
           
           rem Genesis detected on left port
-          ControllerStatus = ControllerStatus | SetLeftPortGenesis
+          let ControllerStatus = ControllerStatus | SetLeftPortGenesis
           rem Set LeftPortGenesis bit
           
 NoGenesisLeft
@@ -119,7 +119,7 @@ NoGenesisLeft
           if !INPT3{7} then goto NoGenesisRight
           
           rem Genesis detected on right port
-          ControllerStatus = ControllerStatus | SetRightPortGenesis
+          let ControllerStatus = ControllerStatus | SetRightPortGenesis
           rem Set RightPortGenesis bit
           
 NoGenesisRight
@@ -136,7 +136,7 @@ CtrlJoy2A
           if !INPT4{7} then goto NoJoy2Left
           
           rem Joy2b+ detected on left port
-          ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
+          let ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
           rem Set LeftPortJoy2bPlus bit
           
 NoJoy2Left
@@ -146,7 +146,7 @@ NoJoy2Left
           if !INPT5{7} then goto NoJoy2Right
           
           rem Joy2b+ detected on right port
-          ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
+          let ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
           rem Set RightPortJoy2bPlus bit
           
 NoJoy2Right
@@ -173,7 +173,7 @@ CtrlGenesisB
           if !INPT1{7} then goto NoLeftGenesis
           
           rem Genesis detected on left port
-          ControllerStatus = ControllerStatus | SetLeftPortGenesis
+          let ControllerStatus = ControllerStatus | SetLeftPortGenesis
           goto CheckRightGenesis
           
 NoLeftGenesis
@@ -182,7 +182,7 @@ NoLeftGenesis
           if !INPT3{7} then goto NoRightGenesis
           
           rem Genesis detected on right port
-          ControllerStatus = ControllerStatus | SetRightPortGenesis
+          let ControllerStatus = ControllerStatus | SetRightPortGenesis
           goto GenesisDetDone
           
 NoRightGenesis
@@ -210,7 +210,7 @@ CtrlJoy2B
           if !INPT4{7} then goto CheckRightJoy2
           
           rem Joy2b+ detected on left port
-          ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
+          let ControllerStatus = ControllerStatus | SetLeftPortJoy2bPlus
           goto Joy2PlusDone
           
 CheckRightJoy2
@@ -220,7 +220,7 @@ CheckRightJoy2
           if !INPT5{7} then goto Joy2PlusDone
           
           rem Joy2b+ detected on right port
-          ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
+          let ControllerStatus = ControllerStatus | SetRightPortJoy2bPlus
           
 Joy2PlusDone
           rem Restore normal VBLANK
@@ -249,8 +249,8 @@ Check7800Pause
           if !PauseButtonPrev then return
           
           rem Button just pressed! Toggle Color/B&W override
-          PauseButtonPrev = 0
-          ColorBWOverride = ColorBWOverride ^ 1 
+          let PauseButtonPrev = 0
+          let ColorBWOverride = ColorBWOverride ^ 1 
           rem XOR to toggle 0<->1
           
           return
@@ -286,6 +286,6 @@ ReadPlayers34
 
 PauseNotPressed
           rem Button not pressed, update previous state
-          PauseButtonPrev = 1
+          let PauseButtonPrev = 1
           return
 

@@ -7,7 +7,7 @@ BeginAuthorPrelude
           const pfres = 32
           
           rem Initialize timer
-          PreambleTimer = 0
+          let PreambleTimer = 0
           
           rem Set background color
           COLUBK = ColGray(0)

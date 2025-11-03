@@ -19,10 +19,10 @@ VisualShowDamageIndicator
           rem Keep lower 5 bits
           temp3 = temp3 | %10010000 
           rem Set animation to 9 (hurt state)
-          PlayerState[temp1] = temp3
+          let PlayerState[temp1] = temp3
           
           rem Set recovery frames for hurt visual duration
-          PlayerRecoveryFrames[temp1] = 15 
+          let PlayerRecoveryFrames[temp1] = 15 
           rem 15 frames of hurt visual
           
           return

@@ -23,36 +23,36 @@
 PhysicsApplyGravity
           rem Player 1
           if (PlayerState[0] & 4) <> 0 then Player1GravityDone
-          PlayerY[0] = PlayerY[0] + 1
+          let PlayerY[0] = PlayerY[0] + 1
           if PlayerY[0] < 80 then Player1GravityDone
-          PlayerY[0] = 80
-          PlayerState[0] = PlayerState[0] & NOT 4
+          let PlayerY[0] = 80
+          let PlayerState[0] = PlayerState[0] & NOT 4
 Player1GravityDone
           
           rem Player 2
           if (PlayerState[1] & 4) <> 0 then Player2GravityDone
-          PlayerY[1] = PlayerY[1] + 1
+          let PlayerY[1] = PlayerY[1] + 1
           if PlayerY[1] < 80 then Player2GravityDone
-          PlayerY[1] = 80
-          PlayerState[1] = PlayerState[1] & NOT 4
+          let PlayerY[1] = 80
+          let PlayerState[1] = PlayerState[1] & NOT 4
 Player2GravityDone
           
           rem Player 3 (Quadtari only)
           if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Jump
           if selectedChar3 = 255 then goto SkipPlayer3Jump
           if (PlayerState[2] & 4) <> 0 then goto SkipPlayer3Jump
-          PlayerY[2] = PlayerY[2] + 1
+          let PlayerY[2] = PlayerY[2] + 1
           if PlayerY[2] < 80 then goto SkipPlayer3Jump
-          PlayerY[2] = 80 : PlayerState[2] = PlayerState[2] & NOT 4
+          let PlayerY[2] = 80 : PlayerState[2] = PlayerState[2] & NOT 4
 SkipPlayer3Jump
           
           rem Player 4 (Quadtari only)
           if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Jump
           if selectedChar4 = 255 then goto SkipPlayer4Jump
           if (PlayerState[3] & 4) <> 0 then goto SkipPlayer4Jump
-          PlayerY[3] = PlayerY[3] + 1
+          let PlayerY[3] = PlayerY[3] + 1
           if PlayerY[3] < 80 then goto SkipPlayer4Jump
-          PlayerY[3] = 80 : PlayerState[3] = PlayerState[3] & NOT 4
+          let PlayerY[3] = 80 : PlayerState[3] = PlayerState[3] & NOT 4
 SkipPlayer4Jump
           
           return

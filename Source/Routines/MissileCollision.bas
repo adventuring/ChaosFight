@@ -206,7 +206,7 @@ CheckAOEDirectionRight
           rem Calculate AOE bounds
           rem Read AOE offset from character data
           rem Get character-specific AOE offset
-          temp7 = CharacterAOEOffsets[temp5]
+          let temp7 = CharacterAOEOffsets[temp5]
           rem For now, use default: 8 pixels forward, 8 pixels wide, 16 pixels tall
           rem AOE_X = temp2 + 8 (facing right formula)
           temp2 = temp2 + 8
@@ -285,7 +285,7 @@ CheckAOEDirectionLeft
           rem Calculate AOE bounds for facing left
           rem Read AOE offset from character data
           rem Get character-specific AOE offset
-          temp7 = CharacterAOEOffsets[temp5]
+          let temp7 = CharacterAOEOffsets[temp5]
           rem For now, use default offset of 8 pixels
           rem AOE_X = temp2 + 7 - 8 = temp2 - 1 (facing left formula)
           temp2 = temp2 - 1

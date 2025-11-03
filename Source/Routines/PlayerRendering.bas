@@ -45,16 +45,16 @@ SetSpritePositions
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Position
           if selectedChar3 = 255 then goto SkipPlayer3Position
           if ! PlayerHealth[2] then goto SkipPlayer3Position
-                    player2x = PlayerX[2]
-                    player2y = PlayerY[2]
+                    let player2x = PlayerX[2]
+                    let player2y = PlayerY[2]
 SkipPlayer3Position
           
           rem Set Participant 4 position (array [3] → P3 sprite)
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Position
           if selectedChar4 = 255 then goto SkipPlayer4Position
           if ! PlayerHealth[3] then goto SkipPlayer4Position
-                    player3x = PlayerX[3]
-                    player3y = PlayerY[3]
+                    let player3x = PlayerX[3]
+                    let player3y = PlayerY[3]
 SkipPlayer4Position
           
 

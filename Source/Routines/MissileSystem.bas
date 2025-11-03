@@ -55,8 +55,8 @@ SpawnMissile
           rem Get facing direction
           
           rem Set missile position using array access
-          MissileX[temp1] = PlayerX[temp1]
-          MissileY[temp1] = PlayerY[temp1] + temp6
+          let MissileX[temp1] = PlayerX[temp1]
+          let MissileY[temp1] = PlayerY[temp1] + temp6
           if temp4 = 0 then MissileX[temp1] = MissileX[temp1] - MissileSpawnOffsetLeft 
           rem Facing left, spawn left
           if temp4 = 1 then MissileX[temp1] = MissileX[temp1] + MissileSpawnOffsetRight 
@@ -73,14 +73,14 @@ SpawnMissile
           rem Array [2] = Participant 3 → bit 2
           if temp1 = 3 then temp6 = 8
           rem Array [3] = Participant 4 → bit 3
-          MissileActive = MissileActive | temp6
+          let MissileActive = MissileActive | temp6
           
           rem Initialize lifetime counter from character data table
-          temp7 = CharacterMissileLifetime[temp5]
+          let temp7 = CharacterMissileLifetime[temp5]
           
           rem Store lifetime in player-specific variable
           rem Using individual variables for each player missile lifetime
-          MissileLifetime[temp1] = temp7
+          let MissileLifetime[temp1] = temp7
           
           return
 
@@ -152,8 +152,8 @@ FacingSet
           rem Add gravity (1 pixel/frame down)
           
           rem Update missile position
-          MissileX[temp1] = MissileX[temp1] + temp2
-          MissileY[temp1] = MissileY[temp1] + temp3
+          let MissileX[temp1] = MissileX[temp1] + temp2
+          let MissileY[temp1] = MissileY[temp1] + temp3
           
           rem Check screen bounds
           gosub CheckMissileBounds
@@ -180,13 +180,13 @@ MissileSystemNoHit
           
           rem Decrement lifetime counter and check expiration
           rem Retrieve current lifetime for this missile
-          temp8 = MissileLifetime[temp1]
+          let temp8 = MissileLifetime[temp1]
           
           rem Decrement if not set to 255 (infinite until collision)
           if temp8 = 255 then MissileUpdateComplete
-          temp8 = temp8 - 1
+          let temp8 = temp8 - 1
           if temp8 = 0 then gosub DeactivateMissile : return
-          MissileLifetime[temp1] = temp8
+          let MissileLifetime[temp1] = temp8
 MissileUpdateComplete
           
           return
@@ -367,8 +367,8 @@ HandleMissileHit
           rem Guarding - no damage, play guard sound
           
           rem Apply damage
-          temp7 = PlayerHealth[temp4]
-          PlayerHealth[temp4] = PlayerHealth[temp4] - temp6
+          let temp7 = PlayerHealth[temp4]
+          let PlayerHealth[temp4] = PlayerHealth[temp4] - temp6
           if PlayerHealth[temp4] > temp7 then PlayerHealth[temp4] = 0
           
           rem Apply knockback (simple version - push defender away from attacker)
@@ -377,12 +377,12 @@ HandleMissileHit
           
           if temp2 < PlayerX[temp4] then PlayerMomentumX[temp4] = PlayerMomentumX[temp4] + KnockbackImpulse : goto KnockbackDone 
           rem Missile from left, push right
-          PlayerMomentumX[temp4] = PlayerMomentumX[temp4] - KnockbackImpulse 
+          let PlayerMomentumX[temp4] = PlayerMomentumX[temp4] - KnockbackImpulse 
           rem Missile from right, push left
 KnockbackDone
           
           rem Set recovery/hitstun frames
-          PlayerRecoveryFrames[temp4] = HitstunFrames 
+          let PlayerRecoveryFrames[temp4] = HitstunFrames 
           rem 10 frames of hitstun
           
           rem Play hit sound effect
@@ -409,7 +409,7 @@ DeactivateMissile
           if temp1 = 3 then temp6 = 8
           temp6 = 255 - temp6 
           rem Invert bits
-          MissileActive = MissileActive & temp6
+          let MissileActive = MissileActive & temp6
           return
 
           rem =================================================================

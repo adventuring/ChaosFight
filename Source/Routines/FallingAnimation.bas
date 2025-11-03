@@ -59,8 +59,8 @@ SkipPlayer2Fall
           
           if PlayerY[2] = 10 then let FallComplete = FallComplete + 1
           
-          player2y = PlayerY[2]
-          player2x = PlayerX[2]
+          let player2y = PlayerY[2]
+          let player2x = PlayerX[2]
 SkipPlayer3Fall
 
           rem Participant 4 (array [3]) → P3 sprite (player3x/player3y) - 4-player mode only
@@ -75,8 +75,8 @@ SkipPlayer3Fall
           
           if PlayerY[3] = 10 then let FallComplete = FallComplete + 1
           
-          player3y = PlayerY[3]
-          player3x = PlayerX[3]
+          let player3y = PlayerY[3]
+          let player3x = PlayerX[3]
 SkipPlayer4Fall
 
           rem Check if all players have finished falling

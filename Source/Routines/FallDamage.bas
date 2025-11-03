@@ -106,14 +106,14 @@ CheckFallDamage
           
           rem Apply fall damage (byte-safe clamp)
           temp6 = PlayerHealth[temp1]
-          PlayerHealth[temp1] = PlayerHealth[temp1] - temp4
+          let PlayerHealth[temp1] = PlayerHealth[temp1] - temp4
           if PlayerHealth[temp1] > temp6 then PlayerHealth[temp1] = 0
           
           rem Set recovery frames (proportional to damage, min 10, max 30)
           temp5 = temp4 / 2
           if temp5 < 10 then temp5 = 10
           if temp5 > 30 then temp5 = 30
-          PlayerRecoveryFrames[temp1] = temp5
+          let PlayerRecoveryFrames[temp1] = temp5
           
           rem Set animation state to "recovering from fall"
           rem This is animation state 9 in the character animation sequences
@@ -123,7 +123,7 @@ CheckFallDamage
           rem Keep lower 5 bits
           temp6 = temp6 | %10010000 
           rem Set animation to 9 (1001 in bits 7-4)
-          PlayerState[temp1] = temp6
+          let PlayerState[temp1] = temp6
           
           rem Play fall damage sound effect
           temp1 = SoundFall
@@ -193,7 +193,7 @@ CheckGroundCollision
           if temp3 >= 176 then
                     rem Player hit ground
                     rem Clamp position to ground
-                    PlayerY[temp1] = 176
+                    let PlayerY[temp1] = 176
                     
                     rem Check fall damage if moving downward
                     if temp2 > 0 then
@@ -245,7 +245,7 @@ HandleFrootyVertical
           
           rem Clamp to screen bounds
           rem Byte-safe clamp: if wrapped below 0, the new value will exceed the old
-          temp7 = PlayerY[temp1]
+          let temp7 = PlayerY[temp1]
           if PlayerY[temp1] > temp7 then PlayerY[temp1] = 0
           if PlayerY[temp1] > 176 then PlayerY[temp1] = 176
           
@@ -276,7 +276,7 @@ HandleHarpySwoopAttack
           rem Vertical: 4 pixels/frame (downward)
           if temp6 = 0 then PlayerMomentumX[temp1] = 252 : goto SetVerticalMomentum
                     rem Facing right
-                    PlayerMomentumX[temp1] = 4
+                    let PlayerMomentumX[temp1] = 4
 SetVerticalMomentum
           
           
@@ -291,7 +291,7 @@ SetVerticalMomentum
           temp6 = PlayerState[temp1] & %00011111
           temp6 = temp6 | %10100000 
           rem Animation state 10
-          PlayerState[temp1] = temp6
+          let PlayerState[temp1] = temp6
           
           rem Spawn melee attack missile for swoop hit detection
           gosub bank15 SpawnMissile

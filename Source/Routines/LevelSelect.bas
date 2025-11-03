@@ -18,10 +18,10 @@ LevelSelect1
           
           rem Handle 1-second Fire button hold - return to character select
           if joy0fire then goto LevelSelectCheckHoldTimer
-          LevelSelectHoldTimer = 0
+          let LevelSelectHoldTimer = 0
           goto LevelSelectHoldTimerDone
 LevelSelectCheckHoldTimer
-          LevelSelectHoldTimer = LevelSelectHoldTimer + 1
+          let LevelSelectHoldTimer = LevelSelectHoldTimer + 1
           if LevelSelectHoldTimer >= 60 then goto LevelSelectReturnToCharacterSelect
 LevelSelectHoldTimerDone
           
@@ -45,7 +45,7 @@ StartGame1
 
 LevelSelectReturnToCharacterSelect
           rem Return to character select (Game Select switch or 1-second Fire hold)
-          GameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
+          let GameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
           return
 
           rem =================================================================
@@ -171,11 +171,11 @@ LoadLevelSelectPlayer2Done
           temp1 = selectedChar3 : temp2 = 0 : temp3 = 2
           gosub bank10 LoadCharacterSprite
           rem Position in bottom-left quadrant
-          player2x = 40 : player2y = 100
+          let player2x = 40 : player2y = 100
           goto LoadLevelSelectPlayer3Done
 LoadLevelSelectSkipPlayer3
           rem Hide sprite if not 4-player mode or no character selected
-          player2x = 200 : player2y = 200
+          let player2x = 200 : player2y = 200
 LoadLevelSelectPlayer3Done
           
           rem Load Player 4 sprite (bottom-right quadrant) - 4-player mode only
@@ -184,11 +184,11 @@ LoadLevelSelectPlayer3Done
           temp1 = selectedChar4 : temp2 = 0 : temp3 = 3
           gosub bank10 LoadCharacterSprite
           rem Position in bottom-right quadrant
-          player3x = 120 : player3y = 100
+          let player3x = 120 : player3y = 100
           goto LoadLevelSelectPlayer4Done
 LoadLevelSelectSkipPlayer4
           rem Hide sprite if not 4-player mode or no character selected
-          player3x = 200 : player3y = 200
+          let player3x = 200 : player3y = 200
 LoadLevelSelectPlayer4Done
           
           rem Set sprite colors for all players

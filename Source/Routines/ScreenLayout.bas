@@ -10,14 +10,14 @@
 
 SetAdminScreenLayout
           rem Set screen layout for title screen and character select (32×32)
-          pfrowheight = 8
-          pfrows = 32
+          let pfrowheight = 8
+          let pfrows = 32
           return
 
 SetGameScreenLayout
           rem Set screen layout for gameplay (32×8) with health bar space
-          pfrowheight = 16
-          pfrows = 8
+          let pfrowheight = 16
+          let pfrows = 8
           return
 
 GetScreenLayoutInfo

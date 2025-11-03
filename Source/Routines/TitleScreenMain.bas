@@ -25,7 +25,7 @@ TitleScreen
           rem Title screen loop
 TitleMainLoop
           rem Increment copyright timer (separate from parade timer)
-          TitleCopyrightTimer = TitleCopyrightTimer + 1
+          let TitleCopyrightTimer = TitleCopyrightTimer + 1
           
           rem Check for 3-minute timeout (10800 frames at 60fps) - transition to Attract mode
           rem TitleParadeTimer increments each frame in UpdateCharacterParade
@@ -58,7 +58,7 @@ TitleScreenAttract
 
 TitleScreenComplete
           rem Transition to character select
-          GameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
+          let GameMode = ModeCharacterSelect : gosub bank13 ChangeGameMode
           return
 
 
@@ -70,13 +70,13 @@ BeginTitleScreen
           COLUBK = ColGray(0)
           
           rem Initialize copyright timer (disappears at 5 seconds = 300 frames)
-          TitleCopyrightTimer = 0
+          let TitleCopyrightTimer = 0
           
           rem Initialize character parade
-          TitleParadeTimer = 0
-          TitleParadeChar = 0
-          TitleParadeX = 0
-          TitleParadeActive = 0
+          let TitleParadeTimer = 0
+          let TitleParadeChar = 0
+          let TitleParadeX = 0
+          let TitleParadeActive = 0
           
           rem Enter the title screen main loop
           goto TitleScreen

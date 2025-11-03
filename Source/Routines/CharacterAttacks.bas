@@ -21,7 +21,7 @@
 BernieAttack
           rem Bernie special attack hits both left AND right simultaneously
           rem This is unique - all other melee attacks only hit in facing direction
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           
           rem Attack in facing direction
@@ -32,11 +32,11 @@ BernieAttack
           let temp5 = PlayerState[temp1] & 1 
           rem Store original facing
           if temp5 <> 0 then FaceLeft1
-          PlayerState[temp1] = PlayerState[temp1] | 1 
+          let PlayerState[temp1] = PlayerState[temp1] | 1 
           rem Face right
           goto FacingDone1
 FaceLeft1
-          PlayerState[temp1] = PlayerState[temp1] & ~ !1 
+          let PlayerState[temp1] = PlayerState[temp1] & ~ !1 
           rem Face left
 FacingDone1
           
@@ -45,10 +45,10 @@ FacingDone1
           
           rem Restore original facing
           if temp5 <> 0 then RestoreFaceRight1
-          PlayerState[temp1] = PlayerState[temp1] & ~ !1
+          let PlayerState[temp1] = PlayerState[temp1] & ~ !1
           goto RestoreFacingDone1
 RestoreFaceRight1
-          PlayerState[temp1] = PlayerState[temp1] | 1
+          let PlayerState[temp1] = PlayerState[temp1] | 1
 RestoreFacingDone1
           
           return
@@ -57,7 +57,7 @@ RestoreFacingDone1
           rem CURLER (Character 1) - Ranged Attack (ground-based)
           rem =================================================================
 CurlerAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -66,7 +66,7 @@ CurlerAttack
           rem DRAGONET (Character 2) - Melee Attack
           rem =================================================================
 DragonetAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -75,7 +75,7 @@ DragonetAttack
           rem Zoe Ryen (Character 3) - Ranged Attack
           rem =================================================================
 ZoeRyenAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -84,7 +84,7 @@ ZoeRyenAttack
           rem FAT TONY (Character 4) - Melee Attack
           rem =================================================================
 FatTonyAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -93,7 +93,7 @@ FatTonyAttack
           rem GRIZZARD HANDLER (Character 5) - Ranged Attack (Grizzard Eggs)
           rem =================================================================
 MegaxAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -103,7 +103,7 @@ MegaxAttack
           rem =================================================================
           rem Harpy attack is a downward diagonal projectile in facing direction
 HarpyAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           rem Spawns diagonal downward missile (velocity set in character data)
@@ -113,7 +113,7 @@ HarpyAttack
           rem KNIGHT GUY (Character 7) - Ranged Attack
           rem =================================================================
 KnightGuyAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -122,7 +122,7 @@ KnightGuyAttack
           rem MAGICAL FAERIE (Character 8) - Ranged Attack
           rem =================================================================
 FrootyAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -131,7 +131,7 @@ FrootyAttack
           rem NEFERTEM (Character 9) - Melee Attack
           rem =================================================================
 NefertemAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -140,7 +140,7 @@ NefertemAttack
           rem NINJISH GUY (Character 10) - Ranged Attack (small bullet)
           rem =================================================================
 NinjishGuyAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -149,7 +149,7 @@ NinjishGuyAttack
           rem PORK CHOP (Character 11) - Melee Attack
           rem =================================================================
 PorkChopAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -158,7 +158,7 @@ PorkChopAttack
           rem RADISH GOBLIN (Character 12) - Melee Attack
           rem =================================================================
 RadishGoblinAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -167,7 +167,7 @@ RadishGoblinAttack
           rem ROBO TITO (Character 13) - Melee Attack
           rem =================================================================
 RoboTitoAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -176,7 +176,7 @@ RoboTitoAttack
           rem URSULO (Character 14) - Ranged Attack
           rem =================================================================
 UrsuloAttack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -187,13 +187,13 @@ UrsuloAttack
           rem Shamone special attack: jumps while attacking simultaneously
 ShamoneAttack
           rem First, execute the jump
-          PlayerY[temp1] = PlayerY[temp1] - 11 
+          let PlayerY[temp1] = PlayerY[temp1] - 11 
           rem Light character, good jump
-          PlayerState[temp1] = PlayerState[temp1] | 4
+          let PlayerState[temp1] = PlayerState[temp1] | 4
           rem Set jumping flag
           
           rem Then execute the attack
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          let PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return

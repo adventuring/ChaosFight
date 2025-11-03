@@ -116,7 +116,7 @@ LoadQuestionMarkSpriteP2
           lda #> QuestionMarkSprite
           sta player2pointerhi
 end
-          player2height = 16
+          let player2height = 16
           return
           
 LoadQuestionMarkSpriteP3
@@ -126,7 +126,7 @@ LoadQuestionMarkSpriteP3
           lda #> QuestionMarkSprite
           sta player3pointerhi
 end
-          player3height = 16
+          let player3height = 16
           return
           
 LoadCPUSprite
@@ -164,7 +164,7 @@ LoadCPUSpriteP2
           lda #> CPUSprite
           sta player2pointerhi
 end
-          player2height = 16
+          let player2height = 16
           return
           
 LoadCPUSpriteP3
@@ -174,7 +174,7 @@ LoadCPUSpriteP3
           lda #> CPUSprite
           sta player3pointerhi
 end
-          player3height = 16
+          let player3height = 16
           return
           
 LoadNoSprite
@@ -212,7 +212,7 @@ LoadNoSpriteP2
           lda #> NoSprite
           sta player2pointerhi
 end
-          player2height = 16
+          let player2height = 16
           return
           
 LoadNoSpriteP3
@@ -222,7 +222,7 @@ LoadNoSpriteP3
           lda #> NoSprite
           sta player3pointerhi
 end
-          player3height = 16
+          let player3height = 16
           return
 
           rem =================================================================

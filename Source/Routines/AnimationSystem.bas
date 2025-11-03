@@ -40,13 +40,13 @@ UpdatePlayerAnimation
           if PlayerHealth[temp1] = 0 then return
           
           rem Increment this sprite 10fps animation counter (NOT global frame counter)
-          AnimationCounter[temp1] = AnimationCounter[temp1] + 1
+          let AnimationCounter[temp1] = AnimationCounter[temp1] + 1
           
           rem Check if time to advance animation frame (every AnimationFrameDelay frames)
           if AnimationCounter[temp1] >= AnimationFrameDelay then goto AdvanceFrame
           goto SkipAdvance
 AdvanceFrame
-          AnimationCounter[temp1] = 0
+          let AnimationCounter[temp1] = 0
           gosub AdvanceAnimationFrame
 SkipAdvance
         return
@@ -57,13 +57,13 @@ SkipAdvance
 AdvanceAnimationFrame
           rem Advance to next frame in current animation action
           rem Frame is from sprite 10fps counter (CurrentAnimationFrame), not global frame
-          CurrentAnimationFrame[temp1] = CurrentAnimationFrame[temp1] + 1
+          let CurrentAnimationFrame[temp1] = CurrentAnimationFrame[temp1] + 1
           
           rem Check if we have completed the current action (8 frames per action)
           if CurrentAnimationFrame[temp1] >= FramesPerSequence then goto LoopAnimation
           goto UpdateSprite
 LoopAnimation
-          CurrentAnimationFrame[temp1] = 0 
+          let CurrentAnimationFrame[temp1] = 0 
           rem Loop back to start of action
 UpdateSprite
           rem Update character sprite with new animation frame
@@ -85,11 +85,11 @@ SetPlayerAnimation
           if temp2 >= AnimationSequenceCount then return
           
           rem Set new animation action
-          CurrentAnimationSeq[temp1] = temp2
+          let CurrentAnimationSeq[temp1] = temp2
           rem temp1 = Player index (0-3), temp2 = Animation action (0-15)
-          CurrentAnimationFrame[temp1] = 0 
+          let CurrentAnimationFrame[temp1] = 0 
           rem Start at first frame
-          AnimationCounter[temp1] = 0      
+          let AnimationCounter[temp1] = 0      
           rem Reset animation counter
           
           rem Update character sprite immediately

@@ -65,7 +65,7 @@ DrawDigit
           if temp1 > 15 then temp1 = 15
           
           rem Calculate data offset: digit * 16 (16 bytes per digit)
-          DigitOffset = temp1 * 16
+          let DigitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
 if temp5 = 0 then 
@@ -93,7 +93,7 @@ if temp5 = 0 then
 LoadPlayer0Digit
           rem Load 16 bytes from font data into player0 sprite
           rem Using batariBasic data access pattern
-          fontDataIndex = DigitOffset
+          let fontDataIndex = DigitOffset
           player0:
           rem Row 0-15: Read from data tables
           %00111100 
@@ -119,7 +119,7 @@ end
 
 LoadPlayer1Digit
           rem Load 16 bytes from font data into player1 sprite
-          fontDataIndex = DigitOffset
+          let fontDataIndex = DigitOffset
           player1:
           rem Row 0-15: Read from data tables
           %00111100 
@@ -163,22 +163,22 @@ DrawPlayerNumber
           on temp1 goto SetP1Color, SetP2Color, SetP3Color, SetP4Color
           
 SetP1Color
-          PlayerColor = $96 
+          let PlayerColor = $96 
           rem Blue
           goto DrawPlayerDigitNow
           
 SetP2Color
-          PlayerColor = $36 
+          let PlayerColor = $36 
           rem Red
           goto DrawPlayerDigitNow
           
 SetP3Color
-          PlayerColor = $1E 
+          let PlayerColor = $1E 
           rem Yellow
           goto DrawPlayerDigitNow
           
 SetP4Color
-          PlayerColor = $C6 
+          let PlayerColor = $C6 
           rem Green
           goto DrawPlayerDigitNow
           

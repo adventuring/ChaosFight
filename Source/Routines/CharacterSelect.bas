@@ -3,23 +3,23 @@
 
 SelScreenEntry
           rem Initialize character selections
-          PlayerChar[0] = 0
-          PlayerChar[1] = 0
-          PlayerChar[2] = 0
-          PlayerChar[3] = 0
-          PlayerLocked[0] = 0
-          PlayerLocked[1] = 0
-          PlayerLocked[2] = 0
-          PlayerLocked[3] = 0
-          ControllerStatus = ControllerStatus & ClearQuadtariDetected
+          let PlayerChar[0] = 0
+          let PlayerChar[1] = 0
+          let PlayerChar[2] = 0
+          let PlayerChar[3] = 0
+          let PlayerLocked[0] = 0
+          let PlayerLocked[1] = 0
+          let PlayerLocked[2] = 0
+          let PlayerLocked[3] = 0
+          let ControllerStatus = ControllerStatus & ClearQuadtariDetected
           
           rem Initialize character select animations
-          CharSelectAnimTimer = 0
-          CharSelectAnimState = 0 
+          let CharSelectAnimTimer = 0
+          let CharSelectAnimState = 0 
           rem Start with idle animation
-          CharSelectCharIndex = 0 
+          let CharSelectCharIndex = 0 
           rem Start with first character
-          CharSelectAnimFrame = 0
+          let CharSelectAnimFrame = 0
 
           rem Check for Quadtari adapter
           gosub SelDetectQuad
@@ -57,7 +57,7 @@ SelSkipP0Right
 
 SelChkJoy0Fire
           if joy0fire then goto SelJoy0Down
-          PlayerLocked[0] = 0
+          let PlayerLocked[0] = 0
           
 SelJoy0Down
           rem Unlock by moving down (without fire)
@@ -66,12 +66,12 @@ SelJoy0Down
 
 SelP0Lock
           if joy0down then goto SelP0Handi
-          PlayerLocked[0] = 1 
+          let PlayerLocked[0] = 1 
           rem Locked normal (100% health)
           goto SelP0Done
 
 SelP0Handi
-          PlayerLocked[0] = 2 
+          let PlayerLocked[0] = 2 
           rem Locked with handicap (75% health)
 SelP0Done
 
@@ -97,7 +97,7 @@ SelSkipP1Right
 SelChkJoy1Fire
           if joy1fire then goto SelJoy1Down
 
-          PlayerLocked[1] = 0
+          let PlayerLocked[1] = 0
 SelJoy1Down
           rem Unlock by moving down (without fire)
           if joy1fire then goto SelJoy1Chk
@@ -108,7 +108,7 @@ SelJoy1Chk
           if joy1down then PlayerLocked[1] = 2 : goto SelJoy1Done
 
           rem Locked with handicap (75% health)
-          PlayerLocked[1] = 1
+          let PlayerLocked[1] = 1
 SelJoy1Done 
           rem Locked normal (100% health)
 
@@ -145,7 +145,7 @@ SelSkipP2Right
 
 SelChkJoy0Fire2
           if joy0fire then goto SelJoy0Down2
-          PlayerLocked[2] = 0
+          let PlayerLocked[2] = 0
 SelJoy0Down2
           rem Unlock by moving down (without fire)
           if joy0fire then goto SelChkJoy0Down2
@@ -155,12 +155,12 @@ SelJoy0Down2
 SelChkJoy0Down2
           if joy0down then goto SelSetHand2
 
-          PlayerLocked[2] = 1 
+          let PlayerLocked[2] = 1 
           rem Locked normal (100% health)
           goto SelJoy0Done2
 
 SelSetHand2
-          PlayerLocked[2] = 2 
+          let PlayerLocked[2] = 2 
           rem Locked with handicap (75% health)
 SelJoy0Done2
 
@@ -181,7 +181,7 @@ SelHandleP3
 SelChkJoy1Fire3
           if joy1fire then goto SelJoy1Down3
 
-          PlayerLocked[3] = 0
+          let PlayerLocked[3] = 0
 SelJoy1Down3
           rem Unlock by moving down (without fire)
           if joy1fire then goto SelJoy1Chk3
@@ -191,12 +191,12 @@ SelJoy1Down3
 SelJoy1Chk3
           if joy1down then goto SelSetHand3
 
-          PlayerLocked[3] = 1
+          let PlayerLocked[3] = 1
           rem Locked normal (100% health)
           goto SelJoy1Done3
 
 SelSetHand3
-          PlayerLocked[3] = 2
+          let PlayerLocked[3] = 2
           rem Locked with handicap (75% health)
 SelJoy1Done3
           
@@ -221,7 +221,7 @@ SelHandleDone
 
           rem Check if all players are ready
 SelAllReady
-          ReadyCount = 0
+          let ReadyCount = 0
 
           rem Count locked players
           if PlayerLocked[0] then ReadyCount = ReadyCount + 1
@@ -253,8 +253,8 @@ SelSkipQuadChk
           rem Draw character selection screen
 SelDrawScreen
           rem Clear playfield
-          pf0 = 0 : pf1 = 0 : pf2 = 0
-          pf3 = 0 : pf4 = 0 : pf5 = 0
+          let pf0 = 0 : pf1 = 0 : pf2 = 0
+          let pf3 = 0 : pf4 = 0 : pf5 = 0
 
           rem Draw Player 1 selection (top left) with number
           player0x = 56 : player0y = 40 
@@ -308,16 +308,16 @@ SelDrawLocks
           goto SelSkipP0Border
 SelDrawP0Border
           rem Draw border around Player 1
-          pf0 = pf0 | %10000000
-          pf1 = pf1 | %00000001
+          let pf0 = pf0 | %10000000
+          let pf1 = pf1 | %00000001
 SelSkipP0Border
 
           if PlayerLocked[1] then goto SelDrawP1Border
           goto SelSkipP1Border
 SelDrawP1Border
           rem Draw border around Player 2
-          pf0 = pf0 | %00001000
-          pf1 = pf1 | %00010000
+          let pf0 = pf0 | %00001000
+          let pf1 = pf1 | %00010000
 SelSkipP1Border
 
           if ControllerStatus & SetQuadtariDetected then goto SelChkP2Lock
@@ -327,8 +327,8 @@ SelChkP2Lock
           goto SkipPlayer2Locked
 SelDrawP2Border 
           rem Draw border around Player 3
-          pf0 = pf0 | %10000000
-          pf1 = pf1 | %00000001
+          let pf0 = pf0 | %10000000
+          let pf1 = pf1 | %00000001
 
           if ControllerStatus & SetQuadtariDetected then goto SelChkP3Lock
           goto SelSkipP3Locked
@@ -337,8 +337,8 @@ SelChkP3Lock
           goto SelSkipP3Locked
 SelDrawP3Border 
           rem Draw border around Player 4
-          pf0 = pf0 | %00001000
-          pf1 = pf1 | %00010000
+          let pf0 = pf0 | %00001000
+          let pf1 = pf1 | %00010000
           return
 
           rem Draw player number indicator
@@ -354,10 +354,10 @@ SelChkP0Y1
           if player0y = 40 then goto SelDrawP0Top
           goto SkipPlayer0Check1
 SelDrawP0Top 
-          pf0 = pf0 | %00001000
-          pf1 = pf1 | %00011000
-          pf2 = pf2 | %00001000
-          pf3 = pf3 | %00001000
+          let pf0 = pf0 | %00001000
+          let pf1 = pf1 | %00011000
+          let pf2 = pf2 | %00001000
+          let pf3 = pf3 | %00001000
 
           rem Player 2 (top right) - draw "2"
           if player1x = 104 then goto SelChkP1Y1
@@ -366,9 +366,9 @@ SelChkP1Y1
           if player1y = 40 then goto SelDrawP1Top
           goto SkipPlayer1Check1
 SelDrawP1Top 
-          pf3 = pf3 | %00010000
-          pf4 = pf4 | %00001000
-          pf5 = pf5 | %00010000
+          let pf3 = pf3 | %00010000
+          let pf4 = pf4 | %00001000
+          let pf5 = pf5 | %00010000
 
           rem Player 3 (bottom left) - draw "3"
           if player0x = 56 then goto SelChkP0Y2
@@ -377,10 +377,10 @@ SelChkP0Y2
           if player0y = 80 then goto SelDrawP0Bot
           goto SkipPlayer0Check2
 SelDrawP0Bot 
-          pf0 = pf0 | %00001000
-          pf1 = pf1 | %00001000
-          pf2 = pf2 | %00001000
-          pf3 = pf3 | %00001000
+          let pf0 = pf0 | %00001000
+          let pf1 = pf1 | %00001000
+          let pf2 = pf2 | %00001000
+          let pf3 = pf3 | %00001000
 
           rem Player 4 (bottom right) - draw "4"
           if player1x = 104 then goto SelChkP1Y2
@@ -389,9 +389,9 @@ SelChkP1Y2
           if player1y = 80 then goto SelDrawP1Bot
           goto SkipPlayer1Check2
 SelDrawP1Bot 
-          pf3 = pf3 | %00010000
-          pf4 = pf4 | %00010000
-          pf5 = pf5 | %00010000
+          let pf3 = pf3 | %00010000
+          let pf4 = pf4 | %00010000
+          let pf5 = pf5 | %00010000
           return
 
           rem Update character select animations
@@ -399,7 +399,7 @@ SelUpdateAnim
           rem Check if any player is holding DOWN (for handicap preview)
           rem If so, freeze their character in "recovery from far fall" pose (animation state 9)
           rem HandicapMode is defined in Variables.bas as variable i
-          HandicapMode = 0
+          let HandicapMode = 0
           
           rem Check each player for DOWN held (even frame for P1/P2)
           if qtcontroller then goto SkipEvenFrameCheck 
@@ -426,9 +426,9 @@ SelOddFrame
           if HandicapMode then goto SelHandleHandi
           goto SelAnimNormal
 SelHandleHandi
-          CharSelectAnimState = 9 
+          let CharSelectAnimState = 9 
           rem Animation state 9 = "Recovering to standing"
-          CharSelectAnimFrame = 0  
+          let CharSelectAnimFrame = 0  
           rem First frame of recovery animation
           rem Do not update timer or frame - freeze the animation
           return
@@ -436,24 +436,24 @@ SelAnimNormal
           
           rem Normal animation updates (only when no handicap mode active)
           rem Increment animation timer
-          CharSelectAnimTimer = CharSelectAnimTimer + 1
+          let CharSelectAnimTimer = CharSelectAnimTimer + 1
           
           rem Change animation state every 60 frames (1 second at 60fps)
           if CharSelectAnimTimer > 60 then 
-          CharSelectAnimTimer = 0
+          let CharSelectAnimTimer = 0
           rem Randomly choose new animation state
-          CharSelectAnimState = rand & 3 
+          let CharSelectAnimState = rand & 3 
           rem 0-3: idle, running, attacking, special
           if CharSelectAnimState > 2 then CharSelectAnimState = 0 
           rem Keep to 0-2 range
-          CharSelectAnimFrame = 0
+          let CharSelectAnimFrame = 0
           rem Cycle through characters for variety
-          CharSelectCharIndex = CharSelectCharIndex + 1
+          let CharSelectCharIndex = CharSelectCharIndex + 1
           if CharSelectCharIndex > MaxCharacter then CharSelectCharIndex = 0
           
           
           rem Update animation frame within current state
-          CharSelectAnimFrame = CharSelectAnimFrame + 1
+          let CharSelectAnimFrame = CharSelectAnimFrame + 1
           if CharSelectAnimFrame > 7 then CharSelectAnimFrame = 0 
           rem 8-frame animation cycles
           
@@ -540,10 +540,10 @@ SelAnimDone
 SelScreenDone
           rem Character selection complete
           rem Store selected characters for use in game
-          selectedChar1 = PlayerChar[0]
-          selectedChar2 = PlayerChar[1]
-          selectedChar3 = PlayerChar[2]
-          selectedChar4 = PlayerChar[3]
+          let selectedChar1 = PlayerChar[0]
+          let selectedChar2 = PlayerChar[1]
+          let selectedChar3 = PlayerChar[2]
+          let selectedChar4 = PlayerChar[3]
 
           rem Proceed to falling animation
           return
@@ -566,10 +566,10 @@ SelDetectQuad
 SelQuadAbsent
           rem Quadtari not detected - could set visual indicator
           rem COLUBK = $40  ; red background if desired
-          ControllerStatus = ControllerStatus & ClearQuadtariDetected
+          let ControllerStatus = ControllerStatus & ClearQuadtariDetected
           return
           
 SelSkipQuadAbs
           rem Quadtari detected
-          ControllerStatus = ControllerStatus | SetQuadtariDetected
+          let ControllerStatus = ControllerStatus | SetQuadtariDetected
           return

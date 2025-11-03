@@ -203,7 +203,7 @@ DrawPlayfieldHealthBar
           rem P4: right-to-left
           for temp7 = 0 to temp5
           rem pfpixel temp6 temp3 on
-          temp7 = temp6
+          let temp7 = temp6
           temp6 = temp6 - 1
           if temp6 > temp7 then temp6 = 0
           next

@@ -62,72 +62,91 @@ InitializeHealthBars
           rem P3/P4 HEALTH DISPLAY (SCORE MODE)
           rem =================================================================
           rem Display players 3 and 4 health as 2-digit numbers in score area
-          rem Format: XX__XX where:
-          rem   Left 2 digits (XX): Player 3 health (00-99) - indigo color
-          rem   Middle 2 digits (__): blank (00)
-          rem   Right 2 digits (XX): Player 4 health (00-99) - red color
+          rem Format: XX00XX where:
+          rem   Left 2 digits (XX): Player 3 health (00-100) - indigo color
+          rem   Middle 2 digits (00): blank separator
+          rem   Right 2 digits (XX): Player 4 health (00-100) - red color
           rem Score display uses 6 digits total (3 bytes BCD)
+          rem Score format: score (digits 5-4), score+1 (digits 3-2), score+2 (digits 1-0)
+          rem Each byte stores 2 BCD digits (high nibble = tens, low nibble = ones)
 
 UpdatePlayer34HealthBars
           rem Only update if players 3 or 4 are active
           if !(ControllerStatus & SetPlayers34Active) then return
           
-          rem Get Player 3 health (0-100), clamp to 99
+          rem Get Player 3 health (0-100), support full range
           temp1 = PlayerHealth[2]
           if selectedChar3 = 255 then temp1 = 0
-          if temp1 > 99 then temp1 = 99
+          rem Clamp to 0-100 for display (100 will show as "00" in 2-digit display)
+          if temp1 > 100 then temp1 = 100
           
-          rem Get Player 4 health (0-100), clamp to 99
+          rem Get Player 4 health (0-100), support full range
           temp2 = PlayerHealth[3]
           if selectedChar4 = 255 then temp2 = 0
-          if temp2 > 99 then temp2 = 99
+          rem Clamp to 0-100 for display
+          if temp2 > 100 then temp2 = 100
           
-          rem Format score as: P3Health * 10000 + P4Health
-          rem This displays as XX00XX where:
-          rem   XX (left 2 digits) = Player 3 health (00-99)
-          rem   00 (middle 2 digits) = blank separator
-          rem   XX (right 2 digits) = Player 4 health (00-99)
-          rem Score is stored in BCD format across 3 bytes
+          rem Convert binary health values (0-100) to BCD and set score bytes
+          rem For XX00XX format:
+          rem   score (digits 5-4): P3 health tens and ones as BCD
+          rem   score+1 (digits 3-2): 00 (blank separator)
+          rem   score+2 (digits 1-0): P4 health tens and ones as BCD
           
-    rem Calculate score value: P3Health in thousands/hundreds, P4Health in tens/ones
-    rem For display as XX00XX, we need to set BCD score manually
-    rem Score format: score+2 (ones/tens), score+1 (hundreds/thousands), score (ten-thousands/hundred-thousands)
-    rem For XX00XX: P3 in score+1 (high byte), 00 in score+2 (low byte), P4 needs special handling
-    rem Simplified: Just set P3 in left 2 digits, P4 in right 2 digits using BCD
-    rem Use batariBASIC score assignment which handles BCD conversion
-    rem For now, use simpler approach: P3Health * 100 + P4Health (gives 7500 for 75+50)
-    rem Then multiply by 100 to shift P3 left (7500 * 100 = 750000 in decimal, but we need BCD)
-    rem Actually, batariBASIC score assignment expects decimal number
-    rem Better: calculate as decimal number then assign
-    rem temp1 = P3 health (0-99), temp2 = P4 health (0-99)
-    rem We want: P3 * 10000 + P4 (e.g., 75 * 10000 + 50 = 750050)
-    rem But this is too large for simple calculation, use score assignment with separate bytes
-    rem Set score directly using score+2, score+1, score bytes for BCD
-    rem Format: score+2 = P4 (as BCD), score+1 = P3 (as BCD), score = 0
-    rem But we want XX00XX, so: score+2 = P4, score+1 = 0, score = P3
-    rem batariBASIC score assignment handles BCD, so assign as: P3 * 10000 + P4
-    rem However, this creates values greater than 999999 which will not fit in score
-    rem Alternative: Use P3 * 1000 + P4, displays as XXXX (P3XXX)
-    rem Or: Use just P3 in left, P4 in right: P3 * 100 + P4 = 7550 displays as "7550"
-    rem But we want "75__50" format
-    rem Simplest: Set score = (P3 * 100 + 0) * 100 + P4 = P3 * 10000 + P4
-    rem But P3 * 10000 can be 990000 which is greater than 65535, will not fit
-    rem Use: score = P3 * 1000 + P4 * 10, displays as "P3P4" (e.g., 7550)
-    rem Or use assembly to set BCD bytes directly
-    rem Format score display for P3 and P4 health
-    rem Use simpler approach: P3 * 100 + P4 gives 4-digit number (e.g., 7550 for 75 and 50)
-    rem This avoids overflow issues and displays correctly
-    rem Note: This displays as "P3P4" format, not "P3__P4" - acceptable for now
-    rem temp1 and temp2 are both 0-99, so max value is 99*100+99 = 9999
-    rem Use assembly to set score in BCD to avoid immediate value errors
-    temp7 = temp1 * 100
-    temp7 = temp7 + temp2
-    rem Simple approach: display P3 and P4 health as separate 2-digit numbers
-    rem For now, just display P3 health (temp1) in score
-    rem TODO: Implement proper P3/P4 combined display format
-    rem Temporarily skip score update for P3/P4 health to avoid build errors
-    rem TODO: Implement proper binary-to-BCD conversion for score display
-    rem score = 0
+          rem Convert P3 health (temp1, 0-100) to BCD
+          rem Extract tens and ones digits
+          rem For values 0-99: tens = temp1/10, ones = temp1 - (tens*10)
+          rem For value 100: display as "00" (wrap to 2-digit display)
+          if temp1 = 100 then goto P3Health100
+          rem Calculate tens digit (0-9)
+          temp3 = temp1 / 10
+          rem Calculate ones digit (0-9)
+          temp4 = temp1 - (temp3 * 10)
+          goto P3HealthConvertDone
+P3Health100
+          rem Display 100 as "00" for 2-digit display
+          temp3 = 0
+          temp4 = 0
+P3HealthConvertDone
+          
+          rem Convert P4 health (temp2, 0-100) to BCD
+          if temp2 = 100 then goto P4Health100
+          rem Calculate tens digit (0-9)
+          temp5 = temp2 / 10
+          rem Calculate ones digit (0-9)
+          temp6 = temp2 - (temp5 * 10)
+          goto P4HealthConvertDone
+P4Health100
+          rem Display 100 as "00" for 2-digit display
+          temp5 = 0
+          temp6 = 0
+P4HealthConvertDone
+          
+          rem Set score bytes in BCD format using assembly
+          rem score (digits 5-4): P3 tens (high nibble) and ones (low nibble)
+          rem score+1 (digits 3-2): 00 (blank separator)
+          rem score+2 (digits 1-0): P4 tens (high nibble) and ones (low nibble)
+          rem BCD format: high nibble = tens digit, low nibble = ones digit
+          rem Example: 75 = $75 (BCD), 50 = $50 (BCD)
+          rem Build BCD byte: (tens << 4) | ones
+          
+          asm
+          lda temp3
+          asl
+          asl
+          asl
+          asl
+          ora temp4
+          sta score
+          lda #0
+          sta score+1
+          lda temp5
+          asl
+          asl
+          asl
+          asl
+          ora temp6
+          sta score+2
+          end
           
           rem Set score colors for score mode
           rem Left side (Player 3): indigo, Right side (Player 4): red

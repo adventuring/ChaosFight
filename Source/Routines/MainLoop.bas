@@ -9,11 +9,14 @@ MainLoop
           if GameMode = 4 then gosub bank12 FallingAnimation1 : goto MainLoopContinue
           if GameMode = 5 then gosub bank12 LevelSelect1 : goto MainLoopContinue
           if GameMode = 6 then gosub bank11 GameMainLoop : goto MainLoopContinue
-          gosub bank12 WinnerAnnouncement
+          if GameMode = 7 then gosub bank12 WinnerAnnouncement : goto MainLoopContinue
+          if GameMode = 8 then gosub bank12 AttractMode : goto MainLoopContinue
 MainLoopContinue
-          rem Call music handler for preambles and title screen, sound handler for game modes
+          rem Call music handler for preambles, title screen, winner, and attract mode
+          rem Sound handler for game modes
           if GameMode < 3 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
           if GameMode = 7 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
+          if GameMode = 8 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
           gosub bank15 PlaySoundEffect
 MainLoopDrawScreen
           drawscreen

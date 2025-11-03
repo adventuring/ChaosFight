@@ -9,7 +9,7 @@
           rem After setup completes, MainLoop dispatches to the appropriate loop.
 
 ChangeGameMode
-          on GameMode goto SetupPublisherPrelude, SetupAuthorPrelude, SetupTitle, SetupCharacterSelect, SetupFallingAnimation, SetupLevelSelect, SetupGame, SetupWinner
+          on GameMode goto SetupPublisherPrelude, SetupAuthorPrelude, SetupTitle, SetupCharacterSelect, SetupFallingAnimation, SetupLevelSelect, SetupGame, SetupWinner, SetupAttract
           return
           
 SetupPublisherPrelude
@@ -46,4 +46,8 @@ SetupGame
 
 SetupWinner
           gosub BeginWinnerAnnouncement
+          return
+
+SetupAttract
+          gosub BeginAttractMode
           return

@@ -23,6 +23,10 @@
 TitleScreen
           rem Title screen loop
 TitleMainLoop
+          rem Check for 3-minute timeout (10800 frames at 60fps) - transition to Attract mode
+          rem TitleParadeTimer increments each frame in UpdateCharacterParade
+          if TitleParadeTimer >= 10800 then goto TitleScreenAttract
+          
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
           rem Use skip-over pattern to avoid complex || operator issues
@@ -42,6 +46,11 @@ TitleSkipQuad
           rem Draw screen with titlescreen kernel minikernel
           gosub titledrawscreen bank1
           goto TitleMainLoop
+
+TitleScreenAttract
+          rem Transition to Attract mode after 3 minutes
+          let GameMode = ModeAttract : gosub bank13 ChangeGameMode
+          return
 
 TitleScreenComplete
           rem Transition to character select

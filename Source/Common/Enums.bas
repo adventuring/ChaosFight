@@ -15,6 +15,7 @@
           const ModeLevelSelect = 5
           const ModeGame = 6
           const ModeWinner = 7
+          const ModeAttract = 8
 
           rem =================================================================
           rem ANIMATION ACTION ENUMS

@@ -132,6 +132,20 @@ SetPlayerSprites
           
 Player1ColorDone
 
+          rem Set sprite reflection based on facing direction (bit 0: 0=left, 1=right)
+          asm
+          lda playerState
+          and #1
+          beq .Player1FacingLeft
+          lda #0
+          sta REFP0
+          jmp .Player1ReflectionDone
+.Player1FacingLeft
+          lda #8
+          sta REFP0
+.Player1ReflectionDone
+          end
+
           rem Load sprite data from character definition
           let temp1 = playerChar[0] 
           rem Character index
@@ -149,6 +163,20 @@ Player1ColorDone
           rem Normal: solid player color
           
 Player2ColorDone
+
+          rem Set sprite reflection based on facing direction
+          asm
+          lda playerState+1
+          and #1
+          beq .Player2FacingLeft
+          lda #0
+          sta NewNUSIZ+1
+          jmp .Player2ReflectionDone
+.Player2FacingLeft
+          lda #64
+          sta NewNUSIZ+1
+.Player2ReflectionDone
+          end
 
           rem Load sprite data from character definition
           let temp1 = playerChar[1] 
@@ -176,6 +204,20 @@ Player2ColorDone
           
 Player3ColorDone
 
+          rem Set sprite reflection based on facing direction
+          asm
+          lda playerState+2
+          and #1
+          beq .Player3FacingLeft
+          lda #0
+          sta NewNUSIZ+2
+          jmp .Player3ReflectionDone
+.Player3FacingLeft
+          lda #64
+          sta NewNUSIZ+2
+.Player3ReflectionDone
+          end
+
           rem Load sprite data from character definition
           let temp1 = playerChar[2]
           rem Character index
@@ -199,6 +241,20 @@ SkipPlayer3Sprite
           rem Normal: solid player color
           
 Player4ColorDone
+
+          rem Set sprite reflection based on facing direction
+          asm
+          lda playerState+3
+          and #1
+          beq .Player4FacingLeft
+          lda #0
+          sta NewNUSIZ+3
+          jmp .Player4ReflectionDone
+.Player4FacingLeft
+          lda #64
+          sta NewNUSIZ+3
+.Player4ReflectionDone
+          end
 
           rem Load sprite data from character definition
           let temp1 = playerChar[3]

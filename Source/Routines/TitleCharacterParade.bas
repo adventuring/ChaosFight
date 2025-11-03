@@ -5,7 +5,7 @@
           rem TITLE SCREEN CHARACTER PARADE
           rem =================================================================
           rem Manages the animated character parade that runs across the
-          rem bottom of the title screen after 10 seconds.
+          rem bottom of the title screen after 5 seconds (when copyright disappears).
 
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   titleParadeTimer - Frame counter (increments each frame)

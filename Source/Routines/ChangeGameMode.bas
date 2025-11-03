@@ -18,7 +18,7 @@ SetupPublisherPrelude
           return
 
 SetupAuthorPrelude
-          gosub BeginAuthorPrelude
+          gosub bank9 BeginAuthorPrelude
           return
 
 SetupTitle
@@ -32,22 +32,22 @@ SetupCharacterSelect
           return
 
 SetupFallingAnimation
-          gosub BeginFallingAnimation
+          gosub bank12 BeginFallingAnimation
           return
 
 SetupLevelSelect
-          gosub BeginLevelSelect
+          gosub bank12 BeginLevelSelect
           return
 
 SetupGame
-          gosub BeginGameLoop
+          gosub bank11 BeginGameLoop
           rem BeginGameLoop handles transition internally
           return
 
 SetupWinner
-          gosub BeginWinnerAnnouncement
+          gosub bank12 BeginWinnerAnnouncement
           return
 
 SetupAttract
-          gosub BeginAttractMode
+          gosub bank9 BeginAttractMode
           return

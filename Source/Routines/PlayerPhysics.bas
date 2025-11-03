@@ -163,7 +163,12 @@ SkipPlayer4Bounds
           rem Players can walk through each other but are slightly pushed apart.
 CheckAllPlayerCollisions
           rem Check Player 1 vs Player 2
-          if playerX[0] >= playerX[1] then temp2 = playerX[0] - playerX[1] else temp2 = playerX[1] - playerX[0]
+          if playerX[0] >= playerX[1] then goto CalcP1P2DistanceRight
+          temp2 = playerX[1] - playerX[0]
+          goto P1P2DistanceDone
+CalcP1P2DistanceRight
+          temp2 = playerX[0] - playerX[1]
+P1P2DistanceDone
           if temp2 < 16 then if playerX[0] < playerX[1] then playerX[0] = playerX[0] - 1 : playerX[1] = playerX[1] + 1 : goto SkipP1P2Sep
           if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[1] = playerX[1] - 1
 SkipP1P2Sep
@@ -174,9 +179,14 @@ SkipP1P2Sep
           if ! (controllerStatus & SetQuadtariDetected) then return
           
           rem Check Player 1 vs Player 3
-          if !(selectedChar3 = 255) then goto DoP1P3Check else goto SkipP1P3Check
+          if selectedChar3 = 255 then goto SkipP1P3Check
 DoP1P3Check
-          if playerX[0] >= playerX[2] then temp2 = playerX[0] - playerX[2] else temp2 = playerX[2] - playerX[0]
+          if playerX[0] >= playerX[2] then goto CalcP1P3DistanceRight
+          temp2 = playerX[2] - playerX[0]
+          goto P1P3DistanceDone
+CalcP1P3DistanceRight
+          temp2 = playerX[0] - playerX[2]
+P1P3DistanceDone
           if temp2 < 16 then if playerX[0] < playerX[2] then playerX[0] = playerX[0] - 1 : playerX[2] = playerX[2] + 1 : goto SkipP1P3Sep
           if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[2] = playerX[2] - 1
 SkipP1P3Sep
@@ -186,9 +196,14 @@ SkipP1P3Check
           
           
           rem Check Player 1 vs Player 4
-          if !(selectedChar4 = 255) then goto DoP1P4Check else goto SkipP1P4Check
+          if selectedChar4 = 255 then goto SkipP1P4Check
 DoP1P4Check
-          if playerX[0] >= playerX[3] then temp2 = playerX[0] - playerX[3] else temp2 = playerX[3] - playerX[0]
+          if playerX[0] >= playerX[3] then goto CalcP1P4DistanceRight
+          temp2 = playerX[3] - playerX[0]
+          goto P1P4DistanceDone
+CalcP1P4DistanceRight
+          temp2 = playerX[0] - playerX[3]
+P1P4DistanceDone
           if temp2 < 16 then if playerX[0] < playerX[3] then playerX[0] = playerX[0] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP1P4Sep
           if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[3] = playerX[3] - 1
 SkipP1P4Sep
@@ -198,9 +213,14 @@ SkipP1P4Check
           
           
           rem Check Player 2 vs Player 3
-          if !(selectedChar3 = 255) then goto DoP2P3Check else goto SkipP2P3Check
+          if selectedChar3 = 255 then goto SkipP2P3Check
 DoP2P3Check
-          if playerX[1] >= playerX[2] then temp2 = playerX[1] - playerX[2] else temp2 = playerX[2] - playerX[1]
+          if playerX[1] >= playerX[2] then goto CalcP2P3DistanceRight
+          temp2 = playerX[2] - playerX[1]
+          goto P2P3DistanceDone
+CalcP2P3DistanceRight
+          temp2 = playerX[1] - playerX[2]
+P2P3DistanceDone
           if temp2 < 16 then if playerX[1] < playerX[2] then playerX[1] = playerX[1] - 1 : playerX[2] = playerX[2] + 1 : goto SkipP2P3Sep
           if temp2 < 16 then playerX[1] = playerX[1] + 1 : playerX[2] = playerX[2] - 1
 SkipP2P3Sep
@@ -210,9 +230,14 @@ SkipP2P3Check
           
           
           rem Check Player 2 vs Player 4
-          if !(selectedChar4 = 255) then goto DoP2P4Check else goto SkipP2P4Check
+          if selectedChar4 = 255 then goto SkipP2P4Check
 DoP2P4Check
-          if playerX[1] >= playerX[3] then temp2 = playerX[1] - playerX[3] else temp2 = playerX[3] - playerX[1]
+          if playerX[1] >= playerX[3] then goto CalcP2P4DistanceRight
+          temp2 = playerX[3] - playerX[1]
+          goto P2P4DistanceDone
+CalcP2P4DistanceRight
+          temp2 = playerX[1] - playerX[3]
+P2P4DistanceDone
           if temp2 < 16 then if playerX[1] < playerX[3] then playerX[1] = playerX[1] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP2P4Sep
           if temp2 < 16 then playerX[1] = playerX[1] + 1 : playerX[3] = playerX[3] - 1
 SkipP2P4Sep
@@ -223,8 +248,13 @@ SkipP2P4Check
           
           rem Check Player 3 vs Player 4
           if selectedChar3 = 255 then goto SkipP3vsP4
-          if selectedChar4 = 255 then goto SkipP3vsP4 
-          if playerX[2] >= playerX[3] then temp2 = playerX[2] - playerX[3] else temp2 = playerX[3] - playerX[2]
+          if selectedChar4 = 255 then goto SkipP3vsP4
+          if playerX[2] >= playerX[3] then goto CalcP3P4DistanceRight
+          temp2 = playerX[3] - playerX[2]
+          goto P3P4DistanceDone
+CalcP3P4DistanceRight
+          temp2 = playerX[2] - playerX[3]
+P3P4DistanceDone
           if temp2 < 16 then if playerX[2] < playerX[3] then playerX[2] = playerX[2] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP3P4Sep
           if temp2 < 16 then playerX[2] = playerX[2] + 1 : playerX[3] = playerX[3] - 1
 SkipP3P4Sep

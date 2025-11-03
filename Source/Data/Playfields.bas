@@ -97,7 +97,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena3ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena3ColorsDone
+          pfcolors Arena3ColorsColor
           ColSeafoam(2)
           ColSeafoam(2)
           ColSeafoam(4)
@@ -107,6 +108,8 @@ end
           ColSeafoam(2)
           ColSeafoam(6)
 end
+          return
+Arena3ColorsDone
           return
 
           rem Arena 4: The Bridge (narrow bridge over pit)
@@ -128,7 +131,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena4ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena4ColorsDone
+          pfcolors Arena4ColorsColor
           ColYellow(12)
           ColYellow(12)
           ColYellow(12)
@@ -138,6 +142,8 @@ end
           ColYellow(12)
           ColYellow(12)
 end
+          return
+Arena4ColorsDone
           return
 
           rem Arena 5: Corner Trap (walls in corners)
@@ -159,7 +165,7 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena5ColorsColor
+          pfcolors Arena5ColorsColor
           ColBlue(4)
           ColBlue(4)
           ColBlue(4)
@@ -169,6 +175,8 @@ end
           ColBlue(4)
           ColBlue(4)
 end
+          return
+Arena5ColorsDone
           return
 
           rem Arena 6: Multi-Platform (multiple small platforms)
@@ -190,7 +198,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena6ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena6ColorsDone
+          pfcolors Arena6ColorsColor
           ColRed(2)
           ColRed(4)
           ColRed(2)
@@ -200,6 +209,8 @@ end
           ColRed(2)
           ColRed(8)
 end
+          return
+Arena6ColorsDone
           return
 
           rem Arena 7: The Gauntlet (maze-like walls)
@@ -221,7 +232,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena7ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena7ColorsDone
+          pfcolors Arena7ColorsColor
           ColGold(2)
           ColGold(2)
           ColGold(2)
@@ -231,6 +243,8 @@ end
           ColGold(2)
           ColGold(6)
 end
+          return
+Arena7ColorsDone
           return
 
           rem Arena 8: Scattered Blocks (alternating block pattern)
@@ -252,7 +266,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena8ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena8ColorsDone
+          pfcolors Arena8ColorsColor
           ColPurple(2)
           ColPurple(4)
           ColPurple(4)
@@ -262,6 +277,8 @@ end
           ColPurple(4)
           ColPurple(2)
 end
+          return
+Arena8ColorsDone
           return
 
           rem Arena 9: The Deep Pit (variant of Arena 1 with deeper walls)
@@ -283,7 +300,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena9ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena9ColorsDone
+          pfcolors Arena9ColorsColor
           ColRed(2)
           ColRed(4)
           ColRed(4)
@@ -293,6 +311,8 @@ end
           ColRed(4)
           ColRed(2)
 end
+          return
+Arena9ColorsDone
           return
 
           rem Arena 10: Sky Battlefield (variant of Arena 2 with elevated platforms)
@@ -314,7 +334,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena10ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena10ColorsDone
+          pfcolors Arena10ColorsColor
           ColCyan(4)
           ColCyan(2)
           ColCyan(6)
@@ -324,6 +345,8 @@ end
           ColCyan(2)
           ColCyan(8)
 end
+          return
+Arena10ColorsDone
           return
 
           rem Arena 11: Floating Platforms (variant of Arena 3 with four floating blocks when mirrored)
@@ -345,7 +368,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena11ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena11ColorsDone
+          pfcolors Arena11ColorsColor
           ColGreen(2)
           ColGreen(4)
           ColGreen(4)
@@ -355,6 +379,8 @@ end
           ColGreen(2)
           ColGreen(8)
 end
+          return
+Arena11ColorsDone
           return
 
           rem Arena 12: The Chasm (variant of Arena 4 with wider bridge)
@@ -376,7 +402,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena12ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena12ColorsDone
+          pfcolors Arena12ColorsColor
           ColBrown(12)
           ColBrown(12)
           ColBrown(14)
@@ -386,6 +413,8 @@ end
           ColBrown(12)
           ColBrown(12)
 end
+          return
+Arena12ColorsDone
           return
 
           rem Arena 13: Fortress Walls (variant of Arena 5 with symmetrical corners)
@@ -407,7 +436,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena13ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena13ColorsDone
+          pfcolors Arena13ColorsColor
           ColTurquoise(4)
           ColTurquoise(4)
           ColTurquoise(6)
@@ -417,6 +447,8 @@ end
           ColTurquoise(4)
           ColTurquoise(4)
 end
+          return
+Arena13ColorsDone
           return
 
           rem Arena 14: Floating Islands (variant of Arena 6 with more platforms)
@@ -438,7 +470,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena14ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena14ColorsDone
+          pfcolors Arena14ColorsColor
           ColMagenta(2)
           ColMagenta(0)
           ColMagenta(4)
@@ -448,6 +481,8 @@ end
           ColMagenta(4)
           ColMagenta(8)
 end
+          return
+Arena14ColorsDone
           return
 
           rem Arena 15: The Labyrinth (variant of Arena 7 with more complex maze)
@@ -469,7 +504,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena15ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena15ColorsDone
+          pfcolors Arena15ColorsColor
           ColSpringGreen(2)
           ColSpringGreen(2)
           ColSpringGreen(4)
@@ -479,6 +515,8 @@ end
           ColSpringGreen(2)
           ColSpringGreen(8)
 end
+          return
+Arena15ColorsDone
           return
 
           rem Arena 16: Danger Zone (variant of Arena 8 with alternating obstacles)
@@ -500,7 +538,8 @@ end
           pfcolors SharedPfColorsBW
 #else
           rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW else pfcolors Arena16ColorsColor
+          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena16ColorsDone
+          pfcolors Arena16ColorsColor
           ColIndigo(2)
           ColIndigo(4)
           ColIndigo(6)
@@ -510,6 +549,8 @@ end
           ColIndigo(6)
           ColIndigo(8)
 end
+          return
+Arena16ColorsDone
           return
 
           rem =================================================================

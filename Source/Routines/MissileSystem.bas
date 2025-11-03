@@ -44,7 +44,7 @@
           rem   5. Initialize lifetime counter from character data
 SpawnMissile
           rem Get character type for this player
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Read missile emission height from character data table
           temp6 = CharacterMissileEmissionHeights[temp5]
@@ -120,7 +120,7 @@ UpdateOneMissile
           rem Not active, skip
           
           rem Get character type to look up missile properties
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Read missile momentum from character data (in Bank 6)
           temp1 = temp5 
@@ -355,7 +355,7 @@ MissileSkipPlayer3
           rem   temp4 = defender player index (0-3, hit player)
 HandleMissileHit
           rem Get character type for damage calculation
-          temp5 = PlayerChar[temp1]
+          temp5 = playerChar[temp1]
           
           rem Apply damage from attacker to defender
           rem Use PlayerDamage array for base damage amount

@@ -22,7 +22,7 @@
           rem   Odd frames (qtcontroller=1): joy0=P3, joy1=P4
 
           rem AVAILABLE VARIABLES:
-          rem   PlayerChar[0-3] - Selected character indices (0-15)
+          rem   playerChar[0-3] - Selected character indices (0-15)
           rem   PlayerLocked[0-3] - Lock state (0=unlocked, 1=locked)
           rem   QuadtariDetected - Whether 4-player mode is active
           rem   ReadyCount - Number of locked players
@@ -39,15 +39,15 @@ CharacterSelectInputLoop
           if joy0left then goto CharacterSelectPlayer0Left
           goto CharacterSelectSkipPlayer0Left
 CharacterSelectPlayer0Left
-          let PlayerChar[0] = PlayerChar[0] - 1
-          if PlayerChar[0] > MaxCharacter then PlayerChar[0] = MaxCharacter
+          let playerChar[0] = playerChar[0] - 1
+          if playerChar[0] > MaxCharacter then playerChar[0] = MaxCharacter
           let PlayerLocked[0] = 0
 CharacterSelectSkipPlayer0Left
           if joy0right then goto CharacterSelectPlayer0Right
           goto CharacterSelectSkipPlayer0Right
 CharacterSelectPlayer0Right
-          let PlayerChar[0] = PlayerChar[0] + 1
-          if PlayerChar[0] > MaxCharacter then PlayerChar[0] = 0
+          let playerChar[0] = playerChar[0] + 1
+          if playerChar[0] > MaxCharacter then playerChar[0] = 0
           let PlayerLocked[0] = 0
 CharacterSelectSkipPlayer0Right
           rem Use skip-over pattern to avoid complex || operator
@@ -60,15 +60,15 @@ CharacterSelectPlayer0LockClearDone
           if joy1left then goto CharacterSelectPlayer1Left
           goto CharacterSelectSkipPlayer1Left
 CharacterSelectPlayer1Left
-          let PlayerChar[1] = PlayerChar[1] - 1
-          if PlayerChar[1] > MaxCharacter then PlayerChar[1] = MaxCharacter
+          let playerChar[1] = playerChar[1] - 1
+          if playerChar[1] > MaxCharacter then playerChar[1] = MaxCharacter
           let PlayerLocked[1] = 0
 CharacterSelectSkipPlayer1Left
           if joy1right then goto CharacterSelectPlayer1Right
           goto CharacterSelectSkipPlayer1Right
 CharacterSelectPlayer1Right
-          let PlayerChar[1] = PlayerChar[1] + 1
-          if PlayerChar[1] > MaxCharacter then PlayerChar[1] = 0
+          let playerChar[1] = playerChar[1] + 1
+          if playerChar[1] > MaxCharacter then playerChar[1] = 0
           let PlayerLocked[1] = 0
 CharacterSelectSkipPlayer1Right
           rem Use skip-over pattern to avoid complex || operator
@@ -88,15 +88,15 @@ CharacterSelectHandlePlayer3
           if joy0left then goto CharacterSelectPlayer3Left
           goto CharacterSelectSkipPlayer3Left
 CharacterSelectPlayer3Left
-          let PlayerChar[2] = PlayerChar[2] - 1
-          if PlayerChar[2] > MaxCharacter then PlayerChar[2] = MaxCharacter
+          let playerChar[2] = playerChar[2] - 1
+          if playerChar[2] > MaxCharacter then playerChar[2] = MaxCharacter
           let PlayerLocked[2] = 0
 CharacterSelectSkipPlayer3Left
           if joy0right then goto CharacterSelectPlayer3Right
           goto CharacterSelectSkipPlayer3Right
 CharacterSelectPlayer3Right
-          let PlayerChar[2] = PlayerChar[2] + 1
-          if PlayerChar[2] > MaxCharacter then PlayerChar[2] = 0
+          let playerChar[2] = playerChar[2] + 1
+          if playerChar[2] > MaxCharacter then playerChar[2] = 0
           let PlayerLocked[2] = 0
 CharacterSelectSkipPlayer3Right
           rem Use skip-over pattern to avoid complex || operator
@@ -113,15 +113,15 @@ CharacterSelectHandlePlayer4
           if joy1left then goto CharacterSelectPlayer4Left
           goto CharacterSelectSkipPlayer4Left
 CharacterSelectPlayer4Left
-          let PlayerChar[3] = PlayerChar[3] - 1
-          if PlayerChar[3] > MaxCharacter then PlayerChar[3] = MaxCharacter
+          let playerChar[3] = playerChar[3] - 1
+          if playerChar[3] > MaxCharacter then playerChar[3] = MaxCharacter
           let PlayerLocked[3] = 0
 CharacterSelectSkipPlayer4Left
           if joy1right then goto CharacterSelectPlayer4Right
           goto CharacterSelectSkipPlayer4Right
 CharacterSelectPlayer4Right
-          let PlayerChar[3] = PlayerChar[3] + 1
-          if PlayerChar[3] > MaxCharacter then PlayerChar[3] = 0
+          let playerChar[3] = playerChar[3] + 1
+          if playerChar[3] > MaxCharacter then playerChar[3] = 0
           let PlayerLocked[3] = 0
 CharacterSelectSkipPlayer4Right
           rem Use skip-over pattern to avoid complex || operator
@@ -175,10 +175,10 @@ CharacterSelectReadyDone
 
 CharacterSelectFinish
           rem Store final selections
-          let selectedChar1 = PlayerChar[0]
-          let selectedChar2 = PlayerChar[1]
-          let selectedChar3 = PlayerChar[2]
-          let selectedChar4 = PlayerChar[3]
+          let selectedChar1 = playerChar[0]
+          let selectedChar2 = playerChar[1]
+          let selectedChar3 = playerChar[2]
+          let selectedChar4 = playerChar[3]
           return
 
           rem =================================================================

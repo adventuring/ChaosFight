@@ -25,8 +25,14 @@
           rem   QuadtariDetected - For checking all controllers
           rem =================================================================
 
+          rem =================================================================
+          rem AUTHOR PREAMBLE LOOP - Called from MainLoop each frame
+          rem =================================================================
+          rem This is the main loop that runs each frame during Author Preamble mode.
+          rem Called repeatedly from MainLoop dispatcher.
+          rem Setup is handled by BeginAuthorPrelude (called from ChangeGameMode).
+
 AuthorPreamble
-AuthorMainLoop
           rem Load bitmap data for titlescreen kernel
           gosub LoadAuthorBitmap
           
@@ -52,11 +58,13 @@ AuthorSkipQuadtari
           
           rem Draw screen with titlescreen kernel minikernel
           gosub titledrawscreen bank1
-          goto AuthorMainLoop
+          
+          rem Return to MainLoop for next frame
+          return
 
 AuthorPreambleComplete
-              let GameMode = ModeTitle : gosub bank13 ChangeGameMode
-              return
+          let GameMode = ModeTitle : gosub bank13 ChangeGameMode
+          return
 
           rem =================================================================
           rem LOAD AUTHOR BITMAP

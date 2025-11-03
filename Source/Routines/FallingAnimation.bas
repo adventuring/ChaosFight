@@ -139,6 +139,83 @@ SkipPlayer4Fall
           return
 
 FallingComplete1
+          rem All players have reached center - now position at row 2 using playfield collision
+          rem Scan playfield to find first clear row and position players there
+          rem For each active player, find suitable row 2 position
+          
+          rem Participant 1: Find row 2 position
+          if PlayerChar[0] <> 255 then
+                    temp1 = 0
+                    gosub FindRow2Position
+                    PlayerY[0] = temp3
+                    PlayerX[0] = temp2
+          end
+          
+          rem Participant 2: Find row 2 position
+          if PlayerChar[1] <> 255 then
+                    temp1 = 1
+                    gosub FindRow2Position
+                    PlayerY[1] = temp3
+                    PlayerX[1] = temp2
+          end
+          
+          rem Participant 3: Find row 2 position (4-player mode only)
+          if ControllerStatus & SetQuadtariDetected then goto FallingCompletePlayer3
+          goto FallingCompletePlayer3Done
+FallingCompletePlayer3
+          if selectedChar3 <> 255 && PlayerChar[2] <> 255 then
+                    temp1 = 2
+                    gosub FindRow2Position
+                    PlayerY[2] = temp3
+                    PlayerX[2] = temp2
+          end
+FallingCompletePlayer3Done
+          
+          rem Participant 4: Find row 2 position (4-player mode only)
+          if ControllerStatus & SetQuadtariDetected then goto FallingCompletePlayer4
+          goto FallingCompletePlayer4Done
+FallingCompletePlayer4
+          if selectedChar4 <> 255 && PlayerChar[3] <> 255 then
+                    temp1 = 3
+                    gosub FindRow2Position
+                    PlayerY[3] = temp3
+                    PlayerX[3] = temp2
+          end
+FallingCompletePlayer4Done
+          
+          rem After positioning, check for collisions and nudge if needed
+          rem Participant 1 nudging
+          if PlayerChar[0] <> 255 then
+                    temp1 = 0
+                    gosub NudgeIfCollision
+          end
+          
+          rem Participant 2 nudging
+          if PlayerChar[1] <> 255 then
+                    temp1 = 1
+                    gosub NudgeIfCollision
+          end
+          
+          rem Participant 3 nudging
+          if ControllerStatus & SetQuadtariDetected then goto FallingNudgePlayer3
+          goto FallingNudgePlayer3Done
+FallingNudgePlayer3
+          if selectedChar3 <> 255 && PlayerChar[2] <> 255 then
+                    temp1 = 2
+                    gosub NudgeIfCollision
+          end
+FallingNudgePlayer3Done
+          
+          rem Participant 4 nudging
+          if ControllerStatus & SetQuadtariDetected then goto FallingNudgePlayer4
+          goto FallingNudgePlayer4Done
+FallingNudgePlayer4
+          if selectedChar4 <> 255 && PlayerChar[3] <> 255 then
+                    temp1 = 3
+                    gosub NudgeIfCollision
+          end
+FallingNudgePlayer4Done
+          
           rem Initialize game state before transitioning to Game mode
           rem BeginGameLoop sets up player positions, health, missiles, etc.
           gosub BeginGameLoop
@@ -147,4 +224,169 @@ FallingComplete1
           rem Note: BeginGameLoop returns here, then we change mode
           rem MainLoop will dispatch to GameMainLoop each frame
           let GameMode = ModeGame : gosub bank13 ChangeGameMode
+          return
+
+          rem =================================================================
+          rem PLAYFIELD COLLISION DETECTION HELPERS
+          rem =================================================================
+          
+          rem =================================================================
+          rem CHECK PLAYFIELD COLLISION
+          rem =================================================================
+          rem Checks if playfield pixel is set at specified position.
+          rem
+          rem INPUT:
+          rem   temp2 = X position (screen pixel, 0-159)
+          rem   temp3 = Y position (screen pixel, 0-191)
+          rem
+          rem OUTPUT:
+          rem   temp4 = 1 if collision (playfield pixel set), 0 if clear
+          
+CheckPlayfieldCollision
+          rem INPUT: temp2 = X position, temp3 = Y position
+          rem OUTPUT: temp4 = collision result (1=collision, 0=clear)
+          rem NOTE: temp2 and temp3 are preserved, temp5 and temp6 used as scratch
+          
+          rem Convert X pixel to playfield column (0-31)
+          rem Playfield is 160 pixels wide, divided into 32 columns (160/32 = 5 pixels per column)
+          rem Use division by 5 to get column
+          temp6 = temp2
+          rem Save X in temp6 for division
+          gosub FallingDiv5Compute
+          rem temp6 now contains playfield column (0-31)
+          
+          rem Convert Y pixel to playfield row
+          rem pfread uses row directly, but we need to account for playfield resolution
+          rem For multisprite kernel with pfres=8, rows are 0-7 (each row is 24 pixels tall)
+          rem Convert Y to row: Y / 24 (simplified - using division)
+          temp5 = temp3 / 24
+          rem temp5 = playfield row (0-7 for pfres=8)
+          
+          rem Check if playfield pixel is set at this position
+          rem pfread(column, row) returns 0 if clear, non-zero if set
+          temp4 = 0
+          rem Default: clear
+          if pfread(temp6, temp5) then temp4 = 1
+          rem Collision if pixel is set
+          
+          rem Note: temp2 and temp3 are preserved for caller
+          return
+          
+          rem =================================================================
+          rem DIVIDE BY 5 HELPER
+          rem =================================================================
+          rem Computes floor(temp6/5) into temp6 via repeated subtraction.
+          rem Used for converting X pixel to playfield column.
+          
+FallingDiv5Compute
+          temp7 = temp6
+          rem Save original
+          temp6 = 0
+          if temp7 < 5 then return
+FallingDiv5Loop
+          temp7 = temp7 - 5
+          temp6 = temp6 + 1
+          if temp7 >= 5 then goto FallingDiv5Loop
+          return
+          
+          rem =================================================================
+          rem FIND ROW 2 POSITION
+          rem =================================================================
+          rem Scans playfield from top to find first clear row with 16-pixel clear width.
+          rem Implements row-by-row scanning (rows 0-64, increment by 8).
+          rem
+          rem INPUT:
+          rem   temp1 = player index (0-3)
+          rem
+          rem OUTPUT:
+          rem   temp2 = X position (center X, typically 80)
+          rem   temp3 = Y position of first clear row (row 2 equivalent)
+          
+FindRow2Position
+          rem Start with player's current X position (should be center = 80)
+          temp2 = PlayerX[temp1]
+          
+          rem Scan rows from top (Y=0) to Y=64, increment by 8
+          rem Each row check verifies 16-pixel clear width (center, left-8, right+8)
+          temp3 = 0
+          rem Start at top of screen
+          
+FindRow2ScanLoop
+          rem Check if current row has 16-pixel clear width
+          rem Check center, left, and right positions for 16-pixel clear width
+          rem temp2 = center X (constant), temp3 = scan Y (changes)
+          rem temp4 used for collision result, temp5/temp6 used as scratch
+          
+          rem Check center position (temp2, temp3)
+          rem CheckPlayfieldCollision uses temp2/temp3 as input, preserves them
+          gosub CheckPlayfieldCollision
+          if temp4 then goto FindRow2NextRow
+          rem Center blocked, try next row
+          
+          rem Check left position (temp2 - 8, temp3)
+          rem Save temp2 temporarily in temp5
+          temp5 = temp2
+          temp2 = temp2 - 8
+          if temp2 < 0 then temp2 = 0
+          rem Clamp to screen
+          gosub CheckPlayfieldCollision
+          rem Restore temp2
+          temp2 = temp5
+          if temp4 then goto FindRow2NextRow
+          rem Left blocked, try next row
+          
+          rem Check right position (temp2 + 8, temp3)
+          rem Save temp2 temporarily in temp5
+          temp5 = temp2
+          temp2 = temp2 + 8
+          if temp2 > 159 then temp2 = 159
+          rem Clamp to screen
+          gosub CheckPlayfieldCollision
+          rem Restore temp2
+          temp2 = temp5
+          if temp4 then goto FindRow2NextRow
+          rem Right blocked, try next row
+          
+          rem Found clear row with 16-pixel width - this is row 2 position
+          return
+          
+FindRow2NextRow
+          rem Move to next row (increment by 8 pixels)
+          temp3 = temp3 + 8
+          
+          rem Check if we've scanned all rows (0-64)
+          if temp3 <= 64 then goto FindRow2ScanLoop
+          
+          rem No clear row found - use default position (bottom of scan range)
+          temp3 = 64
+          return
+          
+          rem =================================================================
+          rem NUDGE IF COLLISION
+          rem =================================================================
+          rem Nudges player down if playfield collision detected at starting position.
+          rem Called after row 2 positioning to ensure player isn't embedded in playfield.
+          rem
+          rem INPUT:
+          rem   temp1 = player index (0-3)
+          rem
+          rem OUTPUT:
+          rem   PlayerY[temp1] updated if nudge needed
+          
+NudgeIfCollision
+          rem Check if playfield pixel exists at player's current position
+          temp2 = PlayerX[temp1]
+          temp3 = PlayerY[temp1]
+          gosub CheckPlayfieldCollision
+          
+          rem If collision detected, nudge player down by 8 pixels
+          if !temp4 then return
+          rem No collision, return
+          
+          rem Collision detected - nudge down
+          PlayerY[temp1] = PlayerY[temp1] + 8
+          
+          rem Clamp to screen bounds
+          if PlayerY[temp1] > 184 then PlayerY[temp1] = 184
+          
           return

@@ -100,6 +100,13 @@ make emu
 ### Variable Naming
 - **Built-ins**: `lowercase` (`temp1`, `joy0fire`, `player0x`) 
 - **User code**: `PascalCase` (`PlayerX`, `GameState`, `MissileActive`)
+- **Local temp aliases**: Use function initials prefix for clarity
+  - Example: `dim HWC_playerID = temp1` in `HandleWallCollision`
+  - Prefer recipient parameter names when marshalling arguments
+  - Example: `let HWC_playerID = CLWC_playerID : gosub HandleWallCollision`
+
+### Keywords
+- All keywords should be **lowercase** (`let`, `if`, `gosub`, `return`, etc.)
 
 ### Memory Layout
 - **Standard RAM**: `a`-`z` (26 bytes)

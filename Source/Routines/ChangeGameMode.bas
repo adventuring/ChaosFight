@@ -45,6 +45,5 @@ SetupGame
           return
 
 SetupWinner
-          rem Winner announcement setup will be implemented
-          rem Currently uses inline setup
+          gosub BeginWinnerAnnouncement
           return

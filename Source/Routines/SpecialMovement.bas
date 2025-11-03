@@ -23,8 +23,14 @@
 ApplySpecialMovement
           temp1 = 0 : gosub ApplyPlayerSpecialMovement
           temp1 = 1 : gosub ApplyPlayerSpecialMovement
-          if ControllerStatus & SetQuadtariDetected then if selectedChar3 <> 255 then temp1 = 2 : gosub ApplyPlayerSpecialMovement
-          if ControllerStatus & SetQuadtariDetected then if selectedChar4 <> 255 then temp1 = 3 : gosub ApplyPlayerSpecialMovement
+          if !(ControllerStatus & SetQuadtariDetected) then goto SkipSpecialMovement34
+          if selectedChar3 = 255 then goto SkipPlayer3Special
+          temp1 = 2 : gosub ApplyPlayerSpecialMovement
+SkipPlayer3Special
+          if selectedChar4 = 255 then goto SkipPlayer4Special
+          temp1 = 3 : gosub ApplyPlayerSpecialMovement
+SkipPlayer4Special
+SkipSpecialMovement34
           return
 
           rem =================================================================

@@ -243,7 +243,16 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - **Game Reset**: Instant hard reboot (calls ColdStart)
 - **Game Select**: No effect (only active in admin modes)
 - **Color/B&W Switch**: No effect (only active in admin modes)
-- **Pause Button (7800)**: Pauses/unpauses game
+- **Pause Input**: Toggle pause state
+  - **Select Switch**: Pressing Select toggles pause on/off
+  - **Joy2b+ Button III**: Pressing Button III on Joy2b+ controllers (left or right port) toggles pause on/off
+  - **7800 Pause Button**: On Atari 7800, this is a momentary contact switch that affects playfield color mode
+- **7800 Pause Button Behavior**: 
+  - On 7800, the pause button is a momentary contact switch that occupies the same hardware pin as the 2600 Color/B&W switch
+  - On 2600: Color/B&W switch is binary (color position vs B&W position) - determines if playfield uses color-per-row or single-white color
+  - On 7800: Pause button is momentary toggle - each press toggles between White-only mode and Color-Per-Row (pfcolor) mode
+  - This affects ONLY the playfield color rendering, not pause state
+  - Uses colorBWOverride variable to track toggle state
 
 ---
 

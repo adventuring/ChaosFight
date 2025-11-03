@@ -53,7 +53,6 @@ end
           ColGrey(4)
           ColGrey(6)
 end
-          return
 
 Level2Data
           rem Arena 2: BATTLEFIELD (Smash Bros - centered main platform)
@@ -87,7 +86,6 @@ end
           ColBlue(12)
           ColBlue(14)
 end
-          return
 
 Level3Data
           rem Arena 3: MARIO SEWERS (Mario Bros - three tier platforms)
@@ -121,7 +119,6 @@ end
           ColSeafoam(2)
           ColBrown(6)
 end
-          return
 
 Level4Data
           rem Arena 4: JOUST PEAKS (Joust - high side platforms)
@@ -155,7 +152,6 @@ end
           ColOrange(4)
           ColOrange(6)
 end
-          return
 
 Level5Data
           rem Arena 5: FINAL DESTINATION (Smash Bros - wide centered platform)
@@ -189,7 +185,6 @@ end
           ColPurple(6)
           ColPurple(8)
 end
-          return
 
 Level6Data
           rem Arena 6: PIPELINE (Mario Bros - left side ledges)
@@ -223,7 +218,6 @@ end
           ColBrown(6)
           ColBrown(8)
 end
-          return
 
 Level7Data
           rem Arena 7: DRAGON TOWER (Joust - asymmetric staggered platforms)
@@ -257,7 +251,6 @@ end
           ColRed(4)
           ColRed(6)
 end
-          return
 
 Level8Data
           rem Arena 8: FOUNTAIN (Mortal Kombat - center obstacle)
@@ -291,7 +284,6 @@ end
           ColCyan(4)
           ColCyan(6)
 end
-          return
 
 Level9Data
           rem Arena 9: RAINBOW ROAD (Smash Bros - scattered platforms)
@@ -325,7 +317,6 @@ end
           ColGreen(6)
           ColRed(8)
 end
-          return
 
 Level10Data
           rem Arena 10: STAIRWAY (Mario Bros - ascending stairs)
@@ -359,7 +350,6 @@ end
           ColGrey(6)
           ColGrey(8)
 end
-          return
 
 Level11Data
           rem Arena 11: BRIDGE GAP (Mortal Kombat - broken floor with pit)
@@ -393,7 +383,6 @@ end
           ColRed(4)
           ColRed(6)
 end
-          return
 
 Level12Data
           rem Arena 12: TEMPLE (Smash Bros - multiple small platforms)
@@ -427,7 +416,6 @@ end
           ColGold(6)
           ColGold(8)
 end
-          return
 
 Level13Data
           rem Arena 13: CASTLE WALLS (Elevated corner platforms)
@@ -461,7 +449,6 @@ end
           ColGrey(8)
           ColGrey(10)
 end
-          return
 
 Level14Data
           rem Arena 14: SUMMIT (Joust - pyramid mountain)
@@ -495,7 +482,6 @@ end
           ColGrey(4)
           ColGrey(14)
 end
-          return
 
 Level15Data
           rem Arena 15: HAZARD ZONE (Split level with ledge)
@@ -529,7 +515,6 @@ end
           ColOrange(14)
           ColOrange(8)
 end
-          return
 
 Level16Data
           rem Arena 16: CHAOS ARENA (Complex multi-level asymmetric)
@@ -563,4 +548,3 @@ end
           ColRed(4)
           ColRed(6)
 end
-          return

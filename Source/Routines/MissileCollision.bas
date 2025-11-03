@@ -317,12 +317,6 @@ CheckAOEDirectionLeft
           return
 CheckPlayer2
           
-          
-          
-          
-          
-          
-          
           rem Check Player 2
           if currentPlayer = 1 then goto SkipThirdPlayer1
           if playerHealth[1] = 0 then goto SkipThirdPlayer1

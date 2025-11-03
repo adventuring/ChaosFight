@@ -53,16 +53,27 @@ LoadCharacterSprite
           rem CPUCharacter = 254
           
           rem Use character art location system for sprite loading
-          rem Input: temp1 = character index, temp2 = animation frame, temp3 = player number
-          rem Default to animation sequence 0 and frame 0 for basic loading
-          let temp2 = 0 
-          rem Animation frame (0=idle)
-          let temp4 = temp3 
-          rem Player number for art system
+          rem Input to this function: temp1 = character index, temp2 = animation frame, temp3 = player number
+          rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp4=player
           
-          rem Use assembly routine to locate and set character art
-          rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayerCharacterArt are implemented
-          rem For now, use placeholder sprite data
+          rem Save player number from temp3 to temp4 before overwriting temp3
+          let temp4 = temp3 
+          rem temp4 = player number (preserved from original temp3)
+          
+          rem Save animation frame from temp2 (if not already 0, caller may have set it)
+          rem temp2 is already set by caller, preserve it
+          rem temp2 = animation frame (preserved from caller)
+          
+          rem Set action to 0 (idle) in temp3
+          let temp3 = 0 
+          rem temp3 = action (0=idle)
+          
+          rem Call LocateCharacterArt with:
+          rem temp1 = character index (preserved from caller)
+          rem temp2 = animation frame (preserved from caller)
+          rem temp3 = action (0=idle)
+          rem temp4 = player number (preserved from original temp3)
+          gosub LocateCharacterArt
           
           return
 

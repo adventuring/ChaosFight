@@ -256,6 +256,42 @@ Check7800Pause
           return
 #endif
 
+PauseNotPressed
+          let pauseButtonPrev = 1
+          return
+
+          rem =================================================================
+          rem ENHANCED PAUSE BUTTON CHECK
+          rem =================================================================
+          rem Checks for pause button press via Game Select switch or Joy2B+ Button III
+          rem Input: temp2 = player number (0=Player 1, 1=Player 2)
+          rem Output: temp1 = 1 if pause pressed, 0 if not pressed
+CheckEnhancedPause
+          rem Check Game Select switch first (works for both players)
+          if switchselect then temp1 = 1 : return
+          
+          rem Check Joy2B+ Button III for specified player
+          rem Player 1 (temp2=0): Check left port Joy2B+ Button III (INPT1)
+          rem Player 2 (temp2=1): Check right port Joy2B+ Button III (INPT3)
+          
+          if temp2 = 0 then goto CheckPlayer1EnhancedPause
+          rem Player 2: Check right port
+          if !(controllerStatus & SetRightPortJoy2bPlus) then temp1 = 0 : return
+          rem Right port has Joy2B+, check Button III (INPT3)
+          if !INPT3{7} then temp1 = 1 : return
+          rem Button III pressed
+          temp1 = 0
+          return
+          
+CheckPlayer1EnhancedPause
+          rem Player 1: Check left port
+          if !(controllerStatus & SetLeftPortJoy2bPlus) then temp1 = 0 : return
+          rem Left port has Joy2B+, check Button III (INPT1)
+          if !INPT1{7} then temp1 = 1 : return
+          rem Button III pressed
+          temp1 = 0
+          return
+
           rem =================================================================
           rem QUADTARI MULTIPLEXING
           rem =================================================================

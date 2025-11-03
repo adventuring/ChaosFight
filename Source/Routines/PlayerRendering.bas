@@ -137,6 +137,8 @@ Player1ColorDone
           rem Character index
           let temp2 = 0 
           rem Animation frame (0=idle, 1=running)
+          let temp3 = 0 
+          rem Player number (0=Player 1)
           gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
@@ -153,6 +155,8 @@ Player2ColorDone
           rem Character index
           let temp2 = 0 
           rem Animation frame (0=idle, 1=running)
+          let temp3 = 1 
+          rem Player number (1=Player 2)
           gosub bank10 LoadCharacterSprite
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
@@ -177,6 +181,8 @@ Player3ColorDone
           rem Character index
           let temp2 = 0
           rem Animation frame (0=idle, 1=running)
+          let temp3 = 2 
+          rem Player number (2=Player 3)
           gosub bank10 LoadCharacterSprite
           
 SkipPlayer3Sprite
@@ -199,6 +205,8 @@ Player4ColorDone
           rem Character index
           let temp2 = 0
           rem Animation frame (0=idle, 1=running)
+          let temp3 = 3 
+          rem Player number (3=Player 4)
           gosub bank10 LoadCharacterSprite
           
 SkipPlayer4Sprite

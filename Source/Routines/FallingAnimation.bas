@@ -1,22 +1,19 @@
-          rem ChaosFight - Source/Routines/FallingAnimation1.bas
+          rem ChaosFight - Source/Routines/FallingAnimation.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+          
+          rem =================================================================
+          rem FALLING ANIMATION LOOP - Called from MainLoop each frame
+          rem =================================================================
+          rem This is the main loop that runs each frame during Falling Animation mode.
+          rem Called repeatedly from MainLoop dispatcher.
+          rem Setup is handled by BeginFallingAnimation (called from ChangeGameMode).
 
 FallingAnimation1
-
-
-          rem Count active players for falling animation
-          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3Count
-          if selectedChar3 = 255 then goto SkipPlayer3Count
-          let ActivePlayers = ActivePlayers + 1
-SkipPlayer3Count
-          if ! (ControllerStatus & SetQuadtariDetected) then goto SkipPlayer4Count
-          if selectedChar4 = 255 then goto SkipPlayer4Count
-          let ActivePlayers = ActivePlayers + 1
-SkipPlayer4Count
-
-          rem Background handled by setup
-
-FallingLoop1
+          rem Count active players for falling animation (only on first frame)
+          rem This check happens each frame but ActivePlayers is set in BeginFallingAnimation
+          rem We recalculate here in case players change (shouldn't happen, but safety check)
+          rem Note: ActivePlayers counting is now handled in BeginFallingAnimation
+          
           rem Animate all active players falling using dynamic sprite setting
           rem Use PlayerY[] array and map to correct sprite registers
           
@@ -56,16 +53,20 @@ SkipPlayer3Fall
           player3x = PlayerX[3]
 SkipPlayer4Fall
 
+          rem Check if all players have finished falling
           if FallComplete >= ActivePlayers then goto FallingComplete1
 
+          rem Update animation frame
           let FallFrame = FallFrame + 1
           if FallFrame > 3 then let FallFrame = 0
 
           rem Set falling sprites for all active players using dynamic sprite setting
           rem Sprites are now set above using PlayerX[]/PlayerY[] arrays mapped to correct registers
 
-          drawscreen
-          goto FallingLoop1
+          rem Return to MainLoop for next frame
+          return
 
 FallingComplete1
+          rem Transition to Level Select mode after falling animation completes
+          let GameMode = ModeLevelSelect : gosub bank13 ChangeGameMode
           return

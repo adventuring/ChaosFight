@@ -67,6 +67,12 @@ SkipPlayer4Fall
           return
 
 FallingComplete1
-          rem Transition to Level Select mode after falling animation completes
-          let GameMode = ModeLevelSelect : gosub bank13 ChangeGameMode
+          rem Initialize game state before transitioning to Game mode
+          rem BeginGameLoop sets up player positions, health, missiles, etc.
+          gosub BeginGameLoop
+          
+          rem Transition to Game mode after initialization
+          rem Note: BeginGameLoop returns here, then we change mode
+          rem MainLoop will dispatch to GameMainLoop each frame
+          let GameMode = ModeGame : gosub bank13 ChangeGameMode
           return

@@ -40,14 +40,14 @@ InputHandleAllPlayers
           rem Even frame: Handle Players 1 & 2 - only if alive  
           temp1 = 0 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer0Input
-          if (PlayerState[0] & 8) <> 0 then goto InputSkipPlayer0Input
+          if (PlayerState[0] & 8) then goto InputSkipPlayer0Input
           temp1 = 0 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer0Input
           
           temp1 = 1 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer1Input
-          if (PlayerState[1] & 8) <> 0 then goto InputSkipPlayer1Input
+          if (PlayerState[1] & 8) then goto InputSkipPlayer1Input
           goto InputHandlePlayer1
           
           goto InputSkipPlayer1Input
@@ -67,7 +67,7 @@ InputHandleQuadtariPlayers
           if selectedChar3 = 0 then goto InputSkipPlayer3Input
                     temp1 = 2 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer3Input
-          if (PlayerState[2] & 8) <> 0 then goto InputSkipPlayer3Input
+          if (PlayerState[2] & 8) then goto InputSkipPlayer3Input
           temp1 = 2 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer3Input
@@ -75,7 +75,7 @@ InputSkipPlayer3Input
           if selectedChar4 = 0 then goto InputSkipPlayer4Input
                     temp1 = 3 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer4Input
-          if (PlayerState[3] & 8) <> 0 then goto InputSkipPlayer4Input
+          if (PlayerState[3] & 8) then goto InputSkipPlayer4Input
           temp1 = 3 : gosub InputHandleRightPortPlayer
           
 InputSkipPlayer4Input
@@ -251,7 +251,7 @@ EnhancedJumpDone0
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as Shamone)
           if temp3 = 0 then InputSkipLeftPortJump
-          if (PlayerState[temp1] & 4) <> 0 then InputSkipLeftPortJump
+          if (PlayerState[temp1] & 4) then InputSkipLeftPortJump
           temp4 = PlayerChar[temp1] 
           rem Character type
           rem Map MethHound (31) to ShamoneJump handler
@@ -275,7 +275,7 @@ InputSkipLeftPortJump
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
           if !joy0fire then goto InputSkipLeftPortAttack
-          if (PlayerState[temp1] & 1) <> 0 then InputSkipLeftPortAttack
+          if (PlayerState[temp1] & 1) then InputSkipLeftPortAttack
           temp4 = PlayerChar[temp1]
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound
@@ -461,7 +461,7 @@ EnhancedJumpDone1
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as Shamone)
           if temp3 = 0 then InputSkipRightPortJump
-          if (PlayerState[temp1] & 4) <> 0 then InputSkipRightPortJump
+          if (PlayerState[temp1] & 4) then InputSkipRightPortJump
           temp4 = PlayerChar[temp1] 
           rem Character type
           rem Map MethHound (31) to ShamoneJump handler
@@ -469,7 +469,7 @@ EnhancedJumpDone1
           rem Use Shamone jump for MethHound
                     on temp4 goto BernieJump, CurlerJump, DragonOfStormsJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightJump, FrootyJump, NefertemJump, NinjishJump, PorkChopJump, RadishJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipRightPortJump
-
+          
           
 
           rem Process down/guard input
@@ -487,7 +487,7 @@ InputSkipRightPortJump
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
           if !joy1fire then goto InputSkipRightPortAttack
-          if (PlayerState[temp1] & 1) <> 0 then InputSkipRightPortAttack
+          if (PlayerState[temp1] & 1) then InputSkipRightPortAttack
           temp4 = PlayerChar[temp1] 
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound

@@ -235,7 +235,7 @@
           const SongAuthor = 1
           rem Author preamble (Interworldly.mscz) - gameMode 1
           const SongTitle = 2
-          rem Title screen (Title.mscz) - gameMode 2
+          rem Title screen (Chaotica.mscz) - gameMode 2
           const SongGameOver = 3
           rem GameOver screen (GameOver.mscz) - gameMode 7, defeat
           const SongVictory = 4

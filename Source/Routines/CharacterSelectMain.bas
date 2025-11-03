@@ -412,9 +412,9 @@ CycleCharacterLeft
           if temp1 = NoCharacter then CycleFromNO : return
           
           rem Normal character (0-15): decrement
+          rem Check if we're at 0 before decrementing (need to wrap to special)
+          if !temp1 then CharacterSelectLeftWrapCheck
           temp1 = temp1 - 1
-          rem Check if we went below 0 (wrap to player-specific special)
-          if temp1 > MaxCharacter then CharacterSelectLeftWrapCheck
           return
           
 CharacterSelectLeftWrapCheck
@@ -517,10 +517,7 @@ CycleRightFromCPU
           rem P2: CPU → NO (if available) → Random → ... OR CPU → Random
           rem P3/P4: Should not reach CPU, but handle gracefully
           if temp3 = 1 then SelectP2RightFromCPU
-          rem Default for P1 or other players
-          temp1 = RandomCharacter
-          return
-          
+          goto CycleRightFromCPUDone
 SelectP2RightFromCPU
           rem P2 from CPU: Check if NO is available
           if !(controllerStatus & SetQuadtariDetected) then temp1 = RandomCharacter : return
@@ -528,6 +525,10 @@ SelectP2RightFromCPU
           if playerChar[2] != NoCharacter then temp1 = NoCharacter : return
           if playerChar[3] != NoCharacter then temp1 = NoCharacter : return
           rem Both P3 and P4 are NO, so skip NO and go to Random
+          temp1 = RandomCharacter
+          return
+CycleRightFromCPUDone
+          rem Default for P1 or other players (not P2)
           temp1 = RandomCharacter
           return
           

@@ -3,10 +3,10 @@
 
 LevelSelect1
 LevelSelect1Loop
-          if joy0left then SelectedLevel = SelectedLevel - 1 : if SelectedLevel > NumLevels then SelectedLevel = NumLevels
-          if joy0right then SelectedLevel = SelectedLevel + 1 : if SelectedLevel > NumLevels then SelectedLevel = 0
+          if joy0left then selectedLevel = selectedLevel - 1 : if selectedLevel > NumLevels then selectedLevel = NumLevels
+          if joy0right then selectedLevel = selectedLevel + 1 : if selectedLevel > NumLevels then selectedLevel = 0
           
-          if SelectedLevel = 0 then goto Level0Sprites
+          if selectedLevel = 0 then goto Level0Sprites
           goto Level1Sprites
 
 Level0Sprites

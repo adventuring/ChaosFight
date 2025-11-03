@@ -6,6 +6,7 @@
     Special: Standard heavy melée fighter, diverse work experience
     Career History: Fairy employee, bank guard, sewer cleaner, curling athlete
     Former Team: Team Koe (Edmonton) member@footnote{Team Koe is a professional curling team based in Calgary/Edmonton, Alberta. Curling team names and trademarks are property of their respective organizations.}
+    Original Game: Ratcatcher, Magical Fairy Force, and Rob 'N' Banks
 @end group
 @end display
 

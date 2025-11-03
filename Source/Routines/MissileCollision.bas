@@ -33,11 +33,15 @@
           rem   temp4 = 0 if no hit, or player index (0-3) if hit
 CheckAllMissileCollisions
           rem First, check if this player has an active missile
-          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          rem Calculate bit flag: 1, 2, 4, 8 for array indices 0, 1, 2, 3 (participants 1, 2, 3, 4)
           if temp1 = 0 then temp6 = 1
+          rem Array [0] = Participant 1 → bit 0
           if temp1 = 1 then temp6 = 2
+          rem Array [1] = Participant 2 → bit 1
           if temp1 = 2 then temp6 = 4
+          rem Array [2] = Participant 3 → bit 2
           if temp1 = 3 then temp6 = 8
+          rem Array [3] = Participant 4 → bit 3
           temp4 = MissileActive & temp6
           if temp4 = 0 then return 
           rem No active missile
@@ -65,7 +69,7 @@ CheckAllMissileCollisions
           rem Uses axis-aligned bounding box (AABB) collision detection.
 
           rem INPUT:
-          rem   temp1 = attacker player index (0-3, missile owner)
+          rem   temp1 = attacker participant array index (0-3 maps to participants 1-4, missile owner)
 
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
@@ -98,18 +102,19 @@ CheckVisibleMissileCollision
           temp4 = 255 
           rem Default: no hit
           
-          rem Check Player 1 (index 0)
-          if temp1 = 0 then goto SkipSecondPlayer0
-          if PlayerHealth[0] = 0 then goto SkipSecondPlayer0
-          if temp2 >= PlayerX[0] + 8 then goto SkipSecondPlayer0
-          if temp2 + temp6 <= PlayerX[0] then goto SkipSecondPlayer0
-          if temp3 >= PlayerY[0] + 16 then goto SkipSecondPlayer0
-          if temp3 + temp5 <= PlayerY[0] then goto SkipSecondPlayer0
+          rem Check Participant 1 (array [0])
+          if temp1 = 0 then goto SkipSecondParticipant1
+          if PlayerHealth[0] = 0 then goto SkipSecondParticipant1
+          if temp2 >= PlayerX[0] + 8 then goto SkipSecondParticipant1
+          if temp2 + temp6 <= PlayerX[0] then goto SkipSecondParticipant1
+          if temp3 >= PlayerY[0] + 16 then goto SkipSecondParticipant1
+          if temp3 + temp5 <= PlayerY[0] then goto SkipSecondParticipant1
           temp4 = 0 : return
-SkipSecondPlayer0
+          rem Hit Participant 1 (array [0])
+SkipSecondParticipant1
           
-          rem Check Player 2 (index 1)
-          if temp1 = 1 then goto SkipSecondPlayer1
+          rem Check Participant 2 (array [1])
+          if temp1 = 1 then goto SkipSecondParticipant2
           if PlayerHealth[1] = 0 then goto SkipSecondPlayer1
           if temp2 >= PlayerX[1] + 8 then goto SkipSecondPlayer1
           if temp2 + temp6 <= PlayerX[1] then goto SkipSecondPlayer1
@@ -118,25 +123,27 @@ SkipSecondPlayer0
           temp4 = 1 : return
 SkipSecondPlayer1
           
-          rem Check Player 3 (index 2)
-          if temp1 = 2 then goto SkipSecondPlayer2
-          if PlayerHealth[2] = 0 then goto SkipSecondPlayer2
-          if temp2 >= PlayerX[2] + 8 then goto SkipSecondPlayer2
-          if temp2 + temp6 <= PlayerX[2] then goto SkipSecondPlayer2
-          if temp3 >= PlayerY[2] + 16 then goto SkipSecondPlayer2
-          if temp3 + temp5 <= PlayerY[2] then goto SkipSecondPlayer2
+          rem Check Participant 3 (array [2])
+          if temp1 = 2 then goto SkipSecondParticipant3
+          if PlayerHealth[2] = 0 then goto SkipSecondParticipant3
+          if temp2 >= PlayerX[2] + 8 then goto SkipSecondParticipant3
+          if temp2 + temp6 <= PlayerX[2] then goto SkipSecondParticipant3
+          if temp3 >= PlayerY[2] + 16 then goto SkipSecondParticipant3
+          if temp3 + temp5 <= PlayerY[2] then goto SkipSecondParticipant3
           temp4 = 2 : return
-SkipSecondPlayer2
+          rem Hit Participant 3 (array [2])
+SkipSecondParticipant3
           
-          rem Check Player 4 (index 3)
-          if temp1 = 3 then goto SkipSecondPlayer3
-          if PlayerHealth[3] = 0 then goto SkipSecondPlayer3
-          if temp2 >= PlayerX[3] + 8 then goto SkipSecondPlayer3
-          if temp2 + temp6 <= PlayerX[3] then goto SkipSecondPlayer3
-          if temp3 >= PlayerY[3] + 16 then goto SkipSecondPlayer3
-          if temp3 + temp5 <= PlayerY[3] then goto SkipSecondPlayer3
+          rem Check Participant 4 (array [3])
+          if temp1 = 3 then goto SkipSecondParticipant4
+          if PlayerHealth[3] = 0 then goto SkipSecondParticipant4
+          if temp2 >= PlayerX[3] + 8 then goto SkipSecondParticipant4
+          if temp2 + temp6 <= PlayerX[3] then goto SkipSecondParticipant4
+          if temp3 >= PlayerY[3] + 16 then goto SkipSecondParticipant4
+          if temp3 + temp5 <= PlayerY[3] then goto SkipSecondParticipant4
           temp4 = 3 : return
-SkipSecondPlayer3
+          rem Hit Participant 4 (array [3])
+SkipSecondParticipant4
           
           return
 
@@ -149,10 +156,10 @@ SkipSecondPlayer3
           rem SPECIAL CASE: Bernie (character 0) attacks both left AND right.
 
           rem INPUT:
-          rem   temp1 = attacker player index (0-3)
+          rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
 
           rem OUTPUT:
-          rem   temp4 = hit player index (0-3), or 255 if no hit
+          rem   temp4 = hit participant array index (0-3 maps to participants 1-4), or 255 if no hit
 CheckAOECollision
           rem Get attacker character type
           temp5 = PlayerChar[temp1]
@@ -187,10 +194,10 @@ CheckBernieAOELeft
           rem Formula: AOE_X = PlayerX + offset
 
           rem INPUT:
-          rem   temp1 = attacker player index (0-3)
+          rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
 
           rem OUTPUT:
-          rem   temp4 = hit player index (0-3), or 255 if no hit
+          rem   temp4 = hit participant array index (0-3 maps to participants 1-4), or 255 if no hit
 CheckAOEDirection_Right
           rem Get attacker position
           temp2 = PlayerX[temp1]
@@ -266,10 +273,10 @@ SkipAOEPlayer3
           rem Formula: AOE_X = PlayerX + 7 - offset
 
           rem INPUT:
-          rem   temp1 = attacker player index (0-3)
+          rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
 
           rem OUTPUT:
-          rem   temp4 = hit player index (0-3), or 255 if no hit
+          rem   temp4 = hit participant array index (0-3 maps to participants 1-4), or 255 if no hit
 CheckAOEDirection_Left
           rem Get attacker position
           temp2 = PlayerX[temp1]

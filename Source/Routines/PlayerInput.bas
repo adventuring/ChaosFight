@@ -64,7 +64,7 @@ InputSkipPlayer1Input
 InputHandleQuadtariPlayers
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and alive)
           if !(ControllerStatus & SetQuadtariDetected) then goto InputSkipPlayer3Input
-          if SelectedChar3 = 0 then goto InputSkipPlayer3Input
+          if selectedChar3 = 0 then goto InputSkipPlayer3Input
                     temp1 = 2 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer3Input
           if (PlayerState[2] & 8) <> 0 then goto InputSkipPlayer3Input
@@ -72,7 +72,7 @@ InputHandleQuadtariPlayers
           
 InputSkipPlayer3Input
           if !(ControllerStatus & SetQuadtariDetected) then goto InputSkipPlayer4Input
-          if SelectedChar4 = 0 then goto InputSkipPlayer4Input
+          if selectedChar4 = 0 then goto InputSkipPlayer4Input
                     temp1 = 3 : gosub IsPlayerAlive
           if temp2 = 0 then goto InputSkipPlayer4Input
           if (PlayerState[3] & 8) <> 0 then goto InputSkipPlayer4Input

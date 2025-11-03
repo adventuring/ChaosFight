@@ -7,6 +7,7 @@
     Special: FREE FLIGHT - use UP/DOWN to move vertically, no guard action
     Likes: Candy
     Hates: Boredom
+    Original Game: Magical Fairy Force
 @end group
 @end display
 

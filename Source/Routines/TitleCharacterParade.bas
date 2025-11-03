@@ -102,7 +102,7 @@ SetChar2
           rem Dragonet
 SetChar3
           COLUP0 = ColGreen(12) : return   
-          rem EXO Pilot
+          rem Zoe Ryen
 SetChar4
           COLUP0 = ColOrange(12) : return  
           rem Fat Tony

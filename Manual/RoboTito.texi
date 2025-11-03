@@ -4,7 +4,7 @@
     Weight: Very Heavy
     Attack: Melée
     Special: No jumping! Stretches vertically to ceiling; fall damage immunity
-    Original Game: "Tito el robotito contra los fantasmas" (jumpless platformer)
+    Original Game: Tito el robotito contra los fantasmas (jumpless platformer)
     Programming Error: Allergic to scary things (zombies, ghosts, bats, skulls)
 @end group
 @end display

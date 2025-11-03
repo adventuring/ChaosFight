@@ -4,6 +4,8 @@
     Weight: Heavy
     Attack: Melée
     Special: Loyalist to the High Council
+    Original Game: Phantasia
+    Author: Interworldly Adventuring, LLC
 @end group
 @end display
 

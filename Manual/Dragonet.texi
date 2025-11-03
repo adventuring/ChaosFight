@@ -4,6 +4,9 @@
     Weight: Medium-Light
     Attack: Ranged (2×2 pixels, ballistic arc)
     Special: Fires projectiles in a parabolic arc
+    Original Game: Dragon's Havoc (from the Dragon's Trilogy)
+    Author: Todd Furmanski
+    Character: Dragon of Storms
 @end group
 @end display
 

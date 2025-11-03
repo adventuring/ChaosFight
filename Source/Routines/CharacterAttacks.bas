@@ -10,7 +10,7 @@
           rem   3. Handles any character-specific attack logic
 
           rem Input for all attack routines:
-          rem   temp1 = attacker player index (0-3)
+          rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
 
           rem All other needed data (X, Y, facing direction, etc.) is looked up
           rem from the player arrays using temp1 as the index
@@ -72,7 +72,7 @@ DragonetAttack
           return
 
           rem =================================================================
-          rem EXO PILOT (Character 3) - Ranged Attack
+          rem Zoe Ryen (Character 3) - Ranged Attack
           rem =================================================================
 ZoeRyenAttack
           PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
@@ -204,7 +204,7 @@ ShamoneAttack
           rem Routes to the appropriate character attack subroutine based on character type
 
           rem INPUT:
-          rem   temp1 = attacker player index (0-3)
+          rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
 
           rem All character attack routines will look up PlayerX[temp1], PlayerY[temp1],
           rem PlayerState[temp1], etc. as needed.

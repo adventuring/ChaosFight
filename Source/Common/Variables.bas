@@ -53,7 +53,7 @@
           
           rem Common Vars (needed in both contexts):
           rem   - PlayerChar[0-3], PlayerLocked[0-3]
-          rem   - SelectedChar1-4, SelectedLevel
+          rem   - selectedChar1-4, selectedLevel
           rem   - QuadtariDetected
           rem   - temp1-4, qtcontroller, frame (built-ins)
           
@@ -116,11 +116,17 @@
           rem NOTE: Shares k,l,m with PlayerChar[1-3] - must be recalculated when needed
           dim PlayerLocked = n  
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using n,o,p,q (p,q may be used by ColorBWOverride)
-          dim SelectedChar1 = s
-          dim SelectedChar2 = t
-          dim SelectedChar3 = u
-          dim SelectedChar4 = v
-          dim SelectedLevel = w
+          rem selectedChar1-4/Level all in SCRAM - infrequently accessed (only during mode transitions)
+          dim selectedChar1 = w011
+          rem ADMIN/GAME: Player 1 character selection (SCRAM w011, read via r011)
+          dim selectedChar2 = w012
+          rem ADMIN/GAME: Player 2 character selection (SCRAM w012, read via r012)
+          dim selectedChar3 = w008
+          rem ADMIN/GAME: Player 3 character selection (SCRAM w008, read via r008)
+          dim selectedChar4 = w009
+          rem ADMIN/GAME: Player 4 character selection (SCRAM w009, read via r009)
+          dim selectedLevel = w010
+          rem ADMIN/GAME: Selected level/arena (SCRAM w010, read via r010)
           
           rem =================================================================
           rem REDIMMED VARIABLES - ADMIN MODE ONLY
@@ -134,7 +140,7 @@
           dim ReadyCount = x               
           rem ADMIN: Count of locked players
           dim CharSelectAnimTimer = w      
-          rem ADMIN: Animation frame counter (REDIM - conflicts with SelectedLevel in SHARED)
+          rem ADMIN: Animation frame counter (REDIM - conflicts with selectedLevel in SHARED)
           dim CharSelectAnimState = x      
           rem ADMIN: Current animation state (REDIM - conflicts with ReadyCount, but ReadyCount only used in character select)
           dim CharSelectAnimIndex = y      

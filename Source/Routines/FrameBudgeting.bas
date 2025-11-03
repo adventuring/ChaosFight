@@ -58,7 +58,7 @@ BudgetedHealthBarUpdate
           goto SkipPlayer2HealthUpdate
 CheckPlayer2HealthUpdate
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer2HealthUpdate
-          if SelectedChar3 = 255 then goto SkipPlayer2HealthUpdate
+          if selectedChar3 = 255 then goto SkipPlayer2HealthUpdate
           gosub bank8 UpdateHealthBarPlayer2
           return
 SkipPlayer2HealthUpdate
@@ -66,7 +66,7 @@ SkipPlayer2HealthUpdate
           goto SkipPlayer3HealthUpdate
 CheckPlayer3HealthUpdate
           if !(ControllerStatus & SetQuadtariDetected) then goto SkipPlayer3HealthUpdate
-          if SelectedChar4 = 255 then goto SkipPlayer3HealthUpdate
+          if selectedChar4 = 255 then goto SkipPlayer3HealthUpdate
           gosub bank8 UpdateHealthBarPlayer3
           return
 SkipPlayer3HealthUpdate
@@ -135,11 +135,11 @@ BudgetedCollisionCheck
           if !(ControllerStatus & SetQuadtariDetected) then return
           
           rem Check additional pairs based on frame phase
-          if FramePhase = 0 then if SelectedChar3 <> 255 then gosub CheckCollisionP1vsP3 : goto SkipFramePhaseChecks
-          if FramePhase = 1 then if SelectedChar4 <> 255 then gosub CheckCollisionP1vsP4 : if SelectedChar3 <> 255 then gosub CheckCollisionP2vsP3 : goto SkipFramePhaseChecks
+          if FramePhase = 0 then if selectedChar3 <> 255 then gosub CheckCollisionP1vsP3 : goto SkipFramePhaseChecks
+          if FramePhase = 1 then if selectedChar4 <> 255 then gosub CheckCollisionP1vsP4 : if selectedChar3 <> 255 then gosub CheckCollisionP2vsP3 : goto SkipFramePhaseChecks
           if FramePhase <> 2 then goto SkipPhase2Collisions
-          if SelectedChar4 <> 255 then gosub CheckCollisionP2vsP4
-          if SelectedChar3 <> 255 && SelectedChar4 <> 255 then gosub CheckCollisionP3vsP4
+          if selectedChar4 <> 255 then gosub CheckCollisionP2vsP4
+          if selectedChar3 <> 255 && selectedChar4 <> 255 then gosub CheckCollisionP3vsP4
 SkipPhase2Collisions
 SkipFramePhaseChecks
           return

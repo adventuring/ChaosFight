@@ -275,14 +275,14 @@ UpdatePlayers34ActiveFlag
           ControllerStatus = ControllerStatus & ClearPlayers34Active
           
           rem Check if Player 3 is active (selected and not eliminated)
-          if SelectedChar3 = 255 then goto CheckPlayer4ActiveFlag
+          if selectedChar3 = 255 then goto CheckPlayer4ActiveFlag
           if PlayersEliminated & 4 then goto CheckPlayer4ActiveFlag
           rem Player 3 is active
           ControllerStatus = ControllerStatus | SetPlayers34Active
           
 CheckPlayer4ActiveFlag
           rem Check if Player 4 is active (selected and not eliminated)
-          if SelectedChar4 = 255 then goto UpdatePlayers34ActiveDone
+          if selectedChar4 = 255 then goto UpdatePlayers34ActiveDone
           if PlayersEliminated & 8 then goto UpdatePlayers34ActiveDone
           rem Player 4 is active
           ControllerStatus = ControllerStatus | SetPlayers34Active

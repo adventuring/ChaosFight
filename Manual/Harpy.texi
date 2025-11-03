@@ -7,6 +7,8 @@
     Background: Former prisoner of the deadly labyrinth, defeated the Great Sphinx
     Nature: Swift of wing and vicious in combat
     Experience: Veteran of maze battles, collector of legendary artifacts
+    Original Game: Harpy's Curse
+    Author: Todd Furmanski
 @end group
 @end display
 

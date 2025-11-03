@@ -6,7 +6,7 @@
           rem =================================================================
 
           rem Handle weight-based wall collision for a player
-          rem Input: player index (in temp1)
+          rem Input: participant array index (0-3 maps to participants 1-4, in temp1)
           rem Modifies: Player momentum based on character weight
           rem Weight affects: wall bounce coefficient (heavier = less bounce)
 HandleWallCollision
@@ -35,14 +35,14 @@ HandleWallCollision
           return
 
           rem Check if player hit left wall and needs weight-based bounce
-          rem Input: player index (in temp1)
+          rem Input: participant array index (0-3 maps to participants 1-4, in temp1)
 CheckLeftWallCollision
           temp4 = PlayerX[temp1]
           if temp4 < 10 then gosub HandleWallCollision : temp4 = PlayerX[temp1] : if temp4 < 10 then PlayerX[temp1] = 10
           return
 
           rem Check if player hit right wall and needs weight-based bounce
-          rem Input: player index (in temp1)
+          rem Input: participant array index (0-3 maps to participants 1-4, in temp1)
 CheckRightWallCollision
           temp4 = PlayerX[temp1]
           if temp4 > 150 then gosub HandleWallCollision : temp4 = PlayerX[temp1] : if temp4 > 150 then PlayerX[temp1] = 150
@@ -63,7 +63,7 @@ CheckRightWallCollision
           rem   - Impact resistance
 
           rem Character order (IDs 0..15) must match CharacterDefinitions.bas:
-          rem 0 Bernie, 1 Curler, 2 Dragonet, 3 EXO Pilot,
+          rem 0 Bernie, 1 Curler, 2 Dragonet, 3 Zoe Ryen,
           rem 4 Fat Tony, 5 Megax, 6 Harpy, 7 Knight Guy,
           rem 8 Frooty, 9 Nefertem, 10 Ninjish Guy, 11 Pork Chop,
           rem 12 Radish Goblin, 13 Robo Tito, 14 Ursulo, 15 Veg Dog

@@ -8,7 +8,7 @@
           rem Called via "on PlayerChar[n] goto" dispatch from PlayerInput.bas
 
           rem INPUT VARIABLE:
-          rem   temp1 = player index (0-3)
+          rem   temp1 = participant array index (0-3 maps to participants 1-4)
 
           rem AVAILABLE VARIABLES:
           rem   PlayerX[temp1], PlayerY[temp1] - Position
@@ -135,7 +135,7 @@ DragonetJump
           rem Set jumping flag for animation
           return
 
-          rem EXO PILOT (3) - STANDARD JUMP (light weight, high jump)
+          rem Zoe Ryen (3) - STANDARD JUMP (light weight, high jump)
 EXOJump
           PlayerY[temp1] = PlayerY[temp1] - 12 
           rem Lighter character, higher jump
@@ -276,7 +276,7 @@ DragonetDown
           rem tail call
           goto StandardGuard
 
-          rem EXO PILOT (3) - GUARD
+          rem Zoe Ryen (3) - GUARD
 EXODown
           rem tail call
           goto StandardGuard

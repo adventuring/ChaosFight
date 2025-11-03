@@ -4,6 +4,8 @@
     Weight: Very Heavy
     Attack: Melée (BOTH DIRECTIONS!)
     Special: No jumping; wraps from bottom to top of screen; fall damage immunity
+    Original Game: Bernie and the Towers of Doom (Atari 7800)
+    Author: Lewis "Muddyfunster" Hill of Muddyvision
 @end group
 @end display
 

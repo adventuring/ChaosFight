@@ -1,4 +1,4 @@
-@subsubsection Veg Dog
+@subsubsection Shamone
 @display
 @group
     Weight: Light
@@ -6,14 +6,16 @@
     Special: Standard light melée fighter, garden protector
     Mission: Protect vegetable gardens from nasty ducks
     Motivation: Dedicated guardian against persistent duck attacks
+    Original Game: Ducks Away
+    Author: SmittyB
 @end group
 @end display
 
-The Veg Dog just wants to protect your vegetable garden from these nasty ducks, 
+Shamone just wants to protect your vegetable garden from these nasty ducks, 
 but they won't stop attacking. This loyal guardian has developed fierce fighting 
 skills through constant battles to defend precious vegetables from relentless 
 waterfowl invaders.
 
-Despite being a light melée fighter, Veg Dog's dedication to garden protection 
+Despite being a light melée fighter, Shamone's dedication to garden protection 
 has made them surprisingly tenacious in combat, never backing down from a fight 
 when there are vegetables to defend.

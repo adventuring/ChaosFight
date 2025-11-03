@@ -540,10 +540,10 @@ SelAnimDone
 SelScreenDone
           rem Character selection complete
           rem Store selected characters for use in game
-          SelectedChar1 = PlayerChar[0]
-          SelectedChar2 = PlayerChar[1]
-          SelectedChar3 = PlayerChar[2]
-          SelectedChar4 = PlayerChar[3]
+          selectedChar1 = PlayerChar[0]
+          selectedChar2 = PlayerChar[1]
+          selectedChar3 = PlayerChar[2]
+          selectedChar4 = PlayerChar[3]
 
           rem Proceed to falling animation
           return

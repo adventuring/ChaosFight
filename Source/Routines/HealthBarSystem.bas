@@ -74,12 +74,12 @@ UpdatePlayer34HealthBars
           
           rem Get Player 3 health (0-100), clamp to 99
           temp1 = PlayerHealth[2]
-          if SelectedChar3 = 255 then temp1 = 0
+          if selectedChar3 = 255 then temp1 = 0
           if temp1 > 99 then temp1 = 99
           
           rem Get Player 4 health (0-100), clamp to 99
           temp2 = PlayerHealth[3]
-          if SelectedChar4 = 255 then temp2 = 0
+          if selectedChar4 = 255 then temp2 = 0
           if temp2 > 99 then temp2 = 99
           
           rem Format score as: P3Health * 10000 + P4Health

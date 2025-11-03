@@ -7,8 +7,9 @@
           rem Build date in julian day format (1-366, set by Makefile)
           rem Game URL: https://interworldly.com/games/ChaosFight
           rem URL stored as comment for attribution
-          const NumLevels=2
-          const RandomLevel=0
+          const NumArenas=16
+          const MaxArenaID=15
+          const RandomArena=255
           const RecoveryFrameCount=8
           const KnockbackDistance=12          
           rem Character system constants

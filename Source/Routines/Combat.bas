@@ -6,19 +6,19 @@ rem COMBAT SYSTEM - Generic subroutines using player arrays
           rem =================================================================
 
 rem Apply damage from attacker to defender
-rem Inputs: attacker_id, defender_id
+rem Inputs: attackerId, defenderId
 ApplyDamage
   dim damage = a
   
   rem Calculate damage (considering defender state)
-  damage = PlayerDamage(attacker_id) - PlayerDamage(defender_id)
+  damage = PlayerDamage(attackerId) - PlayerDamage(defenderId)
   if damage < 1 then damage = 1  rem Minimum damage
   
   rem Apply damage
-  PlayerHealth[defender_id) = PlayerHealth[defender_id] - damage
+  PlayerHealth[defenderId] = PlayerHealth[defenderId] - damage
   
   rem Visual feedback (to be implemented)
-  gosub ShowDamageIndicator defender_id, damage
+  gosub ShowDamageIndicator defenderId, damage
   
   rem Sound effect (to be implemented)
   gosub PlayDamageSound damage
@@ -26,106 +26,106 @@ ApplyDamage
   return
 
 rem Check if attack hits defender
-rem Inputs: attacker_id, defender_id
+rem Inputs: attackerId, defenderId
 rem Returns: hit (1 = hit, 0 = miss)
 CheckAttackHit
   dim hit = a
-  dim hitbox_left = b
-  dim hitbox_right = c
-  dim hitbox_top = d
-  dim hitbox_bottom = e
+  dim hitboxLeft = b
+  dim hitboxRight = c
+  dim hitboxTop = d
+  dim hitboxBottom = e
   
   rem Calculate attack hitbox based on attacker facing and attack type
-  gosub CalculateAttackHitbox attacker_id
+  gosub CalculateAttackHitbox attackerId
   
   rem Check if defender is in hitbox
-          if PlayerX[defender_id] < hitbox_left then goto HitboxCheckDone
-          if PlayerX[defender_id] > hitbox_right then goto HitboxCheckDone
-          if PlayerY[defender_id] < hitbox_top then goto HitboxCheckDone
-          if PlayerY[defender_id] > hitbox_bottom then goto HitboxCheckDone
-    hit = 1
-          goto HitboxCheckDone
-HitboxCheckDone
-          if hit = 0 then goto NoHit
-    hit = 0
+  rem Initialize hit to 0 (miss)
+          hit = 0
+          if PlayerX[defenderId] < hitboxLeft then goto NoHit
+          if PlayerX[defenderId] > hitboxRight then goto NoHit
+          if PlayerY[defenderId] < hitboxTop then goto NoHit
+          if PlayerY[defenderId] > hitboxBottom then goto NoHit
+          rem All bounds checks passed - hit detected
+          hit = 1
+          return
 NoHit
-  
+  rem No hit - hit is already 0
   return
 
           rem Calculate attack hitbox based on attacker position and facing
-rem Inputs: attacker_id
-rem Outputs: hitbox_left, hitbox_right, hitbox_top, hitbox_bottom
+rem Inputs: attackerId
+rem Outputs: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
 CalculateAttackHitbox
   rem Set hitbox based on attack type and direction
-  on PlayerAttackType(attacker_id) goto MeleeHitbox, ProjectileHitbox, AreaHitbox
+  on PlayerAttackType(attackerId) goto MeleeHitbox, ProjectileHitbox, AreaHitbox
   
 MeleeHitbox
     rem Melee hitbox extends 16 pixels in facing direction
-    on PlayerFacing(attacker_id) goto FacingRight, FacingLeft, FacingUp, FacingDown
+    on PlayerFacing(attackerId) goto FacingRight, FacingLeft, FacingUp, FacingDown
     
 FacingRight
-      hitbox_left = PlayerX[attacker_id] + 8
-      hitbox_right = PlayerX[attacker_id] + 24
-      hitbox_top = PlayerY[attacker_id] - 8
-      hitbox_bottom = PlayerY[attacker_id] + 8
+      hitboxLeft = PlayerX[attackerId] + 8
+      hitboxRight = PlayerX[attackerId] + 24
+      hitboxTop = PlayerY[attackerId] - 8
+      hitboxBottom = PlayerY[attackerId] + 8
       return
       
 FacingLeft
-      hitbox_left = PlayerX[attacker_id] - 24
-      hitbox_right = PlayerX[attacker_id] - 8
-      hitbox_top = PlayerY[attacker_id] - 8
-      hitbox_bottom = PlayerY[attacker_id] + 8
+      hitboxLeft = PlayerX[attackerId] - 24
+      hitboxRight = PlayerX[attackerId] - 8
+      hitboxTop = PlayerY[attackerId] - 8
+      hitboxBottom = PlayerY[attackerId] + 8
       return
       
 FacingUp
-      hitbox_left = PlayerX[attacker_id] - 8
-      hitbox_right = PlayerX[attacker_id] + 8
-      hitbox_top = PlayerY[attacker_id] - 24
-      hitbox_bottom = PlayerY[attacker_id] - 8
+      hitboxLeft = PlayerX[attackerId] - 8
+      hitboxRight = PlayerX[attackerId] + 8
+      hitboxTop = PlayerY[attackerId] - 24
+      hitboxBottom = PlayerY[attackerId] - 8
       return
       
 FacingDown
-      hitbox_left = PlayerX[attacker_id] - 8
-      hitbox_right = PlayerX[attacker_id] + 8
-      hitbox_top = PlayerY[attacker_id] + 8
-      hitbox_bottom = PlayerY[attacker_id] + 24
+      hitboxLeft = PlayerX[attackerId] - 8
+      hitboxRight = PlayerX[attackerId] + 8
+      hitboxTop = PlayerY[attackerId] + 8
+      hitboxBottom = PlayerY[attackerId] + 24
       return
   
 ProjectileHitbox
     rem Projectile hitbox is at current missile position (to be implemented)
-    hitbox_left = 0
-    hitbox_right = 0
-    hitbox_top = 0
-    hitbox_bottom = 0
+    hitboxLeft = 0
+    hitboxRight = 0
+    hitboxTop = 0
+    hitboxBottom = 0
     return
     
 AreaHitbox
     rem Area hitbox covers radius around attacker (to be implemented)
-    hitbox_left = 0
-    hitbox_right = 0
-    hitbox_top = 0
-    hitbox_bottom = 0
+    hitboxLeft = 0
+    hitboxRight = 0
+    hitboxTop = 0
+    hitboxBottom = 0
     return
 
 rem Process attack for one attacker against all defenders
-rem Input: attacker_id
+rem Input: attackerId
 ProcessAttackerAttacks
   dim defender = a
   
   rem Check if attacker is attacking
-  if (PlayerState[attacker_id) & %00000001] = 0 then return
+  if (PlayerState[attackerId] & %00000001) = 0 then return
   
   rem Attack each defender
   for defender = 0 to 3
     rem Skip if defender is attacker
-    if defender = attacker_id then goto NextDefender
+    if defender = attackerId then goto NextDefender
     
     rem Skip if defender is dead
     if PlayerHealth[defender] <= 0 then goto NextDefender
     
     rem Check if attack hits
-    gosub CheckAttackHit attacker_id, defender
-          if hit then gosub ApplyDamage attacker_id, defender
+    gosub CheckAttackHit attackerId, defender
+    if hit then gosub ApplyDamage attackerId, defender
     
 NextDefender
   next
@@ -165,13 +165,13 @@ rem Executes a melee attack for the specified player.
 rem Spawns a brief missile visual (sword, fist, etc.) and checks for hits.
 
 rem INPUT:
-rem   temp1 = attacker player index (0-3)
+rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
 PerformMeleeAttack
   rem Spawn missile visual for this attack
   gosub bank15 SpawnMissile
   
   rem Set animation state to attacking
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
   
   rem Check immediate collision with other players in melee range
@@ -187,13 +187,13 @@ rem Executes a ranged attack for the specified player.
 rem Spawns a projectile missile that travels across the screen.
 
 rem INPUT:
-rem   temp1 = attacker player index (0-3)
+rem   temp1 = attacker participant array index (0-3 maps to participants 1-4)
 PerformRangedAttack
   rem Spawn projectile missile for this attack
   gosub bank15 SpawnMissile
   
   rem Set animation state to attacking
-          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4) 
+          PlayerState[temp1] = (PlayerState[temp1] & %00001111) | (14 << 4)
           rem Set animation state 14 (attack execution)
   
   return
@@ -202,13 +202,13 @@ rem Process guard for a player
 rem Input: player_id
 ProcessPlayerGuard
   rem Check if player is guarding
-  if (PlayerState[player_id) & %00000010] = 0 then return
+  if (PlayerState[player_id] & %00000010) = 0 then return
   
   rem Guard prevents movement
   PlayerMomentumX[player_id] = 0
   
   rem Guard prevents attacks
-  PlayerState[player_id) = PlayerState[player_id] & %11111110
+  PlayerState[player_id] = PlayerState[player_id] & %11111110
   
   return
 
@@ -219,7 +219,7 @@ UpdatePlayerGuard
   
   rem Decrement guard timer if active (1 second maximum = 60 frames)
           if (PlayerState[player_id] & %00000010) = 0 then goto SkipGuardUpdate
-    guard_timer = guard_timer - 1
+          guard_timer = guard_timer - 1
           if guard_timer <= 0 then PlayerState[player_id] = PlayerState[player_id] & %11111101
     rem Guard visual effect: flashing light cyan ColCyan(12) NTSC/PAL, Cyan SECAM
     rem Player color alternates between normal and cyan every few frames

@@ -316,16 +316,23 @@ Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Source/Common
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
 
 # Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
-Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s
+# Copy our custom .asm files to current directory so postprocess uses them instead of batariBASIC defaults
+Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s Object/includes.bB
 	mkdir -p Source/Generated
+	cp Object/includes.bB . || true
+	cp Source/Common/*.asm . 2>/dev/null || true
 	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
 
-Source/Generated/$(GAME).PAL.s: Object/bB.PAL.s
+Source/Generated/$(GAME).PAL.s: Object/bB.PAL.s Object/includes.bB
 	mkdir -p Source/Generated
+	cp Object/includes.bB . || true
+	cp Source/Common/*.asm . 2>/dev/null || true
 	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
 
-Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
+Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s Object/includes.bB
 	mkdir -p Source/Generated
+	cp Object/includes.bB . || true
+	cp Source/Common/*.asm . 2>/dev/null || true
 	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym

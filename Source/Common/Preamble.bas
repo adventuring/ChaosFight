@@ -7,7 +7,7 @@
           rem - Do NOT use "dim" for built-in variables - they already exist!
           rem - Built-in variables: temp1-temp6, qtcontroller, joy0up/down/left/right/fire, frame
           rem - TIA registers: player0x, player0y, COLUP0, NUSIZ0, pf0-pf2, etc.
-          rem - Our variables: GameState, QuadtariDetected, PlayerX, SelectedChar1, etc.
+          rem - Our variables: GameState, QuadtariDetected, PlayerX, selectedChar1, etc.
 
           includesfile multisprite_superchip.inc
 

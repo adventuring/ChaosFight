@@ -6,6 +6,7 @@
     Special: Strongest throw, hardest to knock back
     Species: Bear with unfortunate abduction problems
     Nemeses: Wizards, robots, and penguins (who keep abducting him)
+    Original Game: Game of the Bear, Game of the Bear 2: 2 Much 2 Bear, and Game of the Bear 3: Polar Opposites (all vhzc)
 @end group
 @end display
 

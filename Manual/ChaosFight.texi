@@ -383,7 +383,7 @@ Each character has unique properties affecting gameplay:
 
 @include Dragonet.texi
 
-@include EXOPilot.texi
+@include ZoeRyen.texi
 
 @include FatTony.texi
 

@@ -4,6 +4,8 @@
     Weight: Light
     Attack: Ranged (long/wide bullet, arrowshot)
     Special: High jumps, fast horizontal projectile
+    Original Game: EXO
+    Author: Lewis "Muddyfunster" Hill of Muddyvision
 @end group
 @end display
 

@@ -34,7 +34,7 @@
           rem Called when player presses attack button.
 
           rem INPUT:
-          rem   temp1 = player index (0-3)
+          rem   temp1 = participant array index (0-3 maps to participants 1-4)
 
           rem PROCESS:
           rem   1. Look up character type for this player
@@ -62,13 +62,17 @@ SpawnMissile
           if temp4 = 1 then MissileX[temp1] = MissileX[temp1] + MissileSpawnOffsetRight 
           rem Facing right, spawn right
           
-          rem Set active bit for this player missile
-          rem Bit 0 = P1, Bit 1 = P2, Bit 2 = P3, Bit 3 = P4
-          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          rem Set active bit for this participant's missile
+          rem Bit 0 = Participant 1 (array [0]), Bit 1 = Participant 2 (array [1]), Bit 2 = Participant 3 (array [2]), Bit 3 = Participant 4 (array [3])
+          rem Calculate bit flag: 1, 2, 4, 8 for array indices 0, 1, 2, 3 (mapping to participants 1, 2, 3, 4)
           if temp1 = 0 then temp6 = 1
+          rem Array [0] = Participant 1 → bit 0
           if temp1 = 1 then temp6 = 2
+          rem Array [1] = Participant 2 → bit 1
           if temp1 = 2 then temp6 = 4
+          rem Array [2] = Participant 3 → bit 2
           if temp1 = 3 then temp6 = 8
+          rem Array [3] = Participant 4 → bit 3
           MissileActive = MissileActive | temp6
           
           rem Initialize lifetime counter from character data table
@@ -104,7 +108,7 @@ UpdateAllMissiles
           rem Handles movement, gravity, collisions, and lifetime.
 
           rem INPUT:
-          rem   temp1 = player index (0-3)
+          rem   temp1 = participant array index (0-3 maps to participants 1-4)
 UpdateOneMissile
           rem Check if this missile is active
           temp6 = 1
@@ -193,7 +197,7 @@ MissileUpdateComplete
           rem Checks if missile is off-screen.
 
           rem INPUT:
-          rem   temp1 = player index (0-3)
+          rem   temp1 = participant array index (0-3 maps to participants 1-4)
 
           rem OUTPUT:
           rem   temp4 = 1 if off-screen, 0 if on-screen
@@ -225,7 +229,7 @@ CheckMissileBounds
           rem Uses pfread to check playfield pixel at missile position.
 
           rem INPUT:
-          rem   temp1 = player index (0-3)
+          rem   temp1 = participant array index (0-3 maps to participants 1-4)
 
           rem OUTPUT:
           rem   temp4 = 1 if hit playfield, 0 if clear
@@ -294,24 +298,24 @@ CheckMissilePlayerCollision
           temp4 = 255 
           rem Default: no hit
           
-          rem Check Player 1 (index 0)
-          if temp1 = 0 then goto MissileSkipPlayer0
-          if PlayerHealth[0] = 0 then goto MissileSkipPlayer0
-          if temp2 >= PlayerX[0] + PlayerSpriteHalfWidth then goto MissileSkipPlayer0
-          if temp2 + MissileAABBSize <= PlayerX[0] then goto MissileSkipPlayer0
-          if temp3 >= PlayerY[0] + PlayerSpriteHeight then goto MissileSkipPlayer0
-          if temp3 + MissileAABBSize <= PlayerY[0] then goto MissileSkipPlayer0
+          rem Check Participant 1 (array [0])
+          if temp1 = 0 then goto MissileSkipParticipant1
+          if PlayerHealth[0] = 0 then goto MissileSkipParticipant1
+          if temp2 >= PlayerX[0] + PlayerSpriteHalfWidth then goto MissileSkipParticipant1
+          if temp2 + MissileAABBSize <= PlayerX[0] then goto MissileSkipParticipant1
+          if temp3 >= PlayerY[0] + PlayerSpriteHeight then goto MissileSkipParticipant1
+          if temp3 + MissileAABBSize <= PlayerY[0] then goto MissileSkipParticipant1
           temp4 = 0 : return 
-          rem Hit Player 1
-MissileSkipPlayer0
+          rem Hit Participant 1 (array [0])
+MissileSkipParticipant1
           
-          rem Check Player 2 (index 1)
-          if temp1 = 1 then goto MissileSkipPlayer1
-          if PlayerHealth[1] = 0 then goto MissileSkipPlayer1
-          if temp2 >= PlayerX[1] + PlayerSpriteHalfWidth then goto MissileSkipPlayer1
-          if temp2 + MissileAABBSize <= PlayerX[1] then goto MissileSkipPlayer1
-          if temp3 >= PlayerY[1] + PlayerSpriteHeight then goto MissileSkipPlayer1
-          if temp3 + MissileAABBSize <= PlayerY[1] then goto MissileSkipPlayer1
+          rem Check Participant 2 (array [1])
+          if temp1 = 1 then goto MissileSkipParticipant2
+          if PlayerHealth[1] = 0 then goto MissileSkipParticipant2
+          if temp2 >= PlayerX[1] + PlayerSpriteHalfWidth then goto MissileSkipParticipant2
+          if temp2 + MissileAABBSize <= PlayerX[1] then goto MissileSkipParticipant2
+          if temp3 >= PlayerY[1] + PlayerSpriteHeight then goto MissileSkipParticipant2
+          if temp3 + MissileAABBSize <= PlayerY[1] then goto MissileSkipParticipant2
           temp4 = 1 : return 
           rem Hit Player 2
 MissileSkipPlayer1
@@ -396,7 +400,7 @@ KnockbackDone
           rem Removes a missile from active status.
 
           rem INPUT:
-          rem   temp1 = player index (0-3)
+          rem   temp1 = participant array index (0-3 maps to participants 1-4)
 DeactivateMissile
           rem Clear active bit for this player missile
           temp6 = 1
@@ -414,10 +418,10 @@ DeactivateMissile
           rem NOTE: Missile rendering is now handled in SetSpritePositions (PlayerRendering.bas)
           rem This function is kept for compatibility but does nothing
           rem The multisprite kernel only provides 2 hardware missiles (missile0, missile1)
-          rem In 2-player mode: missile0 = Player 0, missile1 = Player 1 (no multiplexing)
+          rem In 2-player mode: missile0 = Participant 1 (array [0]), missile1 = Participant 2 (array [1]) (no multiplexing)
           rem In 4-player mode: Frame multiplexing handles 4 logical missiles:
-          rem   Even frames: missile0 = Player 0, missile1 = Player 1
-          rem   Odd frames:  missile0 = Player 2, missile1 = Player 3
+          rem   Even frames: missile0 = Participant 1 (array [0]), missile1 = Participant 2 (array [1])
+          rem   Odd frames:  missile0 = Participant 3 (array [2]), missile1 = Participant 4 (array [3])
 RenderAllMissiles
           rem Missile positions are set in SetSpritePositions (PlayerRendering.bas)
           rem which handles 2-player vs 4-player mode automatically

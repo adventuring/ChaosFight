@@ -4,6 +4,8 @@
     Weight: Medium
     Attack: Ranged (from feet, 4×2 pixels, ballistic)
     Special: Projectile comes from character's feet
+    Original Game: Real Sports Curling
+    Background: Proud Cascadian and Canadian, very sportif
 @end group
 @end display
 

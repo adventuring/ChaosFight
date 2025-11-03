@@ -4,6 +4,7 @@
     Weight: Very Light
     Attack: Melée
     Special: Highest jumps, fastest movement, 50% fall damage reduction
+    Original Game: Ninjish Guy in Low-Res World and other vhzc games
 @end group
 @end display
 

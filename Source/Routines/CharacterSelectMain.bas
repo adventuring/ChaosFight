@@ -20,8 +20,8 @@
           rem   Odd frames (qtcontroller=1): joy0=P3, joy1=P4
 
           rem AVAILABLE VARIABLES:
-          rem   PlayerChar[0-3) - Selected character indices (0-15)
-          rem   PlayerLocked[0-3) - Lock state (0=unlocked, 1=locked)
+          rem   PlayerChar[0-3] - Selected character indices (0-15)
+          rem   PlayerLocked[0-3] - Lock state (0=unlocked, 1=locked)
           rem   QuadtariDetected - Whether 4-player mode is active
           rem   ReadyCount - Number of locked players
           rem =================================================================
@@ -173,9 +173,9 @@ CharacterSelectReadyDone
 
 CharacterSelectFinish
           rem Store final selections
-          SelectedChar1 = PlayerChar[0]
-          SelectedChar2 = PlayerChar[1]
-          SelectedChar3 = PlayerChar[2]
-          SelectedChar4 = PlayerChar[3]
+          selectedChar1 = PlayerChar[0]
+          selectedChar2 = PlayerChar[1]
+          selectedChar3 = PlayerChar[2]
+          selectedChar4 = PlayerChar[3]
           return
 

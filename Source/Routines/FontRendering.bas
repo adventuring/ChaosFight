@@ -69,7 +69,22 @@ DrawDigit
           FR_digitOffset = temp1 * 16
           
           rem Set sprite position and color based on temp5
-          if temp5 = 0 then player0x = temp2 : player0y = temp3 : COLUP0 = temp4 : gosub LoadPlayer0Digit : player1x = temp2 : player1y = temp3 : _COLUP1 = temp4 : gosub LoadPlayer1Digit : return
+          if temp5 = 1 then goto SkipPlayer0Sprite
+          
+          rem Use player0 sprite
+          player0x = temp2
+          player0y = temp3
+          COLUP0 = temp4
+          gosub LoadPlayer0Digit
+          return
+          
+SkipPlayer0Sprite
+          rem Use player1 sprite
+          player1x = temp2
+          player1y = temp3
+          _COLUP1 = temp4
+          gosub LoadPlayer1Digit
+          return
 
           rem =================================================================
           rem LOAD DIGIT DATA INTO SPRITES
@@ -82,11 +97,8 @@ DrawDigit
 
 LoadPlayer0Digit
           rem Load 16 bytes from font data into player0 sprite
-          rem Using batariBasic data access pattern
           player0:
-          rem Row 0-15: Read from data tables
-          %00111100 
-          rem Will be replaced by actual data read
+          %00111100
           %01000010
           %01000010
           %01000010
@@ -99,7 +111,6 @@ LoadPlayer0Digit
           %00000000
           %00000000
           %00000000
-end
           %00000000
           %00000000
           %00000000
@@ -109,9 +120,7 @@ end
 LoadPlayer1Digit
           rem Load 16 bytes from font data into player1 sprite
           player1:
-          rem Row 0-15: Read from data tables
-          %00111100 
-          rem Will be replaced by actual data read
+          %00111100
           %01000010
           %01000010
           %01000010
@@ -124,7 +133,6 @@ LoadPlayer1Digit
           %00000000
           %00000000
           %00000000
-end
           %00000000
           %00000000
           %00000000

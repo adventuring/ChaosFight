@@ -57,7 +57,7 @@ if temp3 < 2 then
           rem INPUT: temp1 = player index (0-3)
 RestoreNormalPlayerColor
           rem Get character type for this player
-          temp4 = PlayerChar[temp1]
+          temp4 = playerChar[temp1]
           
           rem Restore normal player colors based on player index
           if temp1 = 0 then COLUP0 = $0E 

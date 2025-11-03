@@ -2,11 +2,11 @@
           rem Setup routine for Level Select. Sets initial state only.
 
 BeginLevelSelect
-          selectedArena = 0
-          LevelSelectHoldTimer = 0
+          let selectedArena = 0
+          let LevelSelectHoldTimer = 0
           
           rem Set background color (B&W safe)
-          COLUBK = ColGray(0)
+          let COLUBK = ColGray(0)
           
           return
 

@@ -46,8 +46,9 @@ PublisherCheckQuadtari
           if !INPT0{7} then PublisherPreambleComplete
           if !INPT2{7} then PublisherPreambleComplete
 PublisherSkipQuadtari
-          gosub bank16 UpdateMusic
-
+          
+          rem Music update handled by MainLoop after per-frame logic
+          
           rem Auto-advance after music completes + 0.5s
           if preambleTimer > 30 && musicPlaying = 0 then PublisherPreambleComplete
 

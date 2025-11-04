@@ -2,7 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 MainLoop
-          if gameMode = 0 then gosub bank9 PublisherPreamble : goto MainLoopContinue
+          if gameMode = 0 then gosub bank9 PublisherPreambleMain : goto MainLoopContinue
           if gameMode = 1 then gosub bank9 AuthorPreamble : goto MainLoopContinue
           if gameMode = 2 then gosub bank9 TitleScreenMain : goto MainLoopContinue
           if gameMode = 3 then gosub bank10 CharacterSelectInputEntry : goto MainLoopContinue
@@ -14,7 +14,8 @@ MainLoopContinue
           rem Call music handler for preambles, title screen, and winner screen
           if gameMode < 3 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
           if gameMode = 7 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
-          rem Other modes (3-6) don’t need audio updates here - handled in their subroutines
+          rem Other modes (3-6) don't need audio updates here - handled in their subroutines
 MainLoopDrawScreen
-          drawscreen
+          rem Admin screens (0-2) use titlescreen kernel, others use standard drawscreen
+          if gameMode < 3 then gosub titledrawscreen bank1 else drawscreen
           goto MainLoop

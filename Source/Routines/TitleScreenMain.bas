@@ -44,9 +44,6 @@ TitleSkipQuad
           rem Draw title screen
           gosub DrawTitleScreen
           
-          rem Set window values for Title screen (ChaosFight only)
-          gosub bank12 SetTitleWindowValues
-          
           rem Draw screen with titlescreen kernel minikernel
           gosub titledrawscreen bank1
           

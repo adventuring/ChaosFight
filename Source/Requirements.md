@@ -475,14 +475,13 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
 
 ### Character 10: Ninjish Guy
 - **Weight**: 130 lbs (59.0 kg) - Game Unit: 47
-- **Attack Type**: Melee (code shows melee, not ranged)
+- **Attack Type**: Melee
 - **Missile**: None (melee only, 4-frame lifetime)
 - **Special Moves**: 
-  - **Shuriken**: Throws shuriken projectiles as ranged attack
   - Highest jumps
   - Fastest movement
   - 50% fall damage reduction
-  - Ninja mobility and shuriken throwing
+  - Ninja mobility with melee attacks
 
 ### Character 11: Pork Chop
 - **Weight**: 250 lbs (113.4 kg) - Game Unit: 57

@@ -463,14 +463,42 @@ DiveCheckDone
           let playerHealth[temp4] = playerHealth[temp4] - temp6
           if playerHealth[temp4] > temp7 then playerHealth[temp4] = 0
           
-          rem Apply knockback (simple version - push defender away from attacker)
+          rem Apply knockback (weight-based scaling - heavier characters resist more)
           rem Calculate direction: if missile moving right, push defender right
           let temp2  = missileX[temp1]
           
-          rem Apply knockback impulse to velocity (not momentum)
-          if temp2 < playerX[temp4] then let playerVelocityX[temp4] = playerVelocityX[temp4] + KnockbackImpulse : let playerVelocityX_lo[temp4] = 0 : goto KnockbackDone 
+          rem Calculate weight-based knockback scaling
+          rem Heavier characters resist knockback more (max weight = 100)
+          let temp7 = playerChar[temp4]
+          rem Get character index
+          let temp8 = CharacterWeights[temp7]
+          rem Get character weight (5-100)
+          let temp9 = 100
+          rem Max weight (Dragon/Megax = 100)
+          rem Calculate scaled knockback: KnockbackImpulse * (100 - weight) / 100
+          rem Approximate: (KnockbackImpulse * (100 - weight)) / 100
+          rem For KnockbackImpulse = 4: scaled = (4 * (100 - weight)) / 100
+          rem Simplify to avoid division: if weight < 50, use full knockback; else scale down
+          if temp8 >= 50 then WeightBasedKnockbackScale
+          rem Light characters (weight < 50): full knockback
+          let temp8 = KnockbackImpulse
+          goto WeightBasedKnockbackApply
+WeightBasedKnockbackScale
+          rem Heavy characters (weight >= 50): reduced knockback
+          rem Calculate: KnockbackImpulse * (100 - weight) / 100
+          rem Approximate as: (KnockbackImpulse * (100 - weight)) / 100
+          rem For simplification: use linear scaling with integer math
+          let temp9 = 100 - temp8
+          rem Resistance factor (0-50 for weights 50-100)
+          let temp8 = (KnockbackImpulse * temp9) / 100
+          rem Scaled knockback (integer division)
+          if temp8 = 0 then temp8 = 1
+          rem Minimum 1 pixel knockback even for heaviest characters
+WeightBasedKnockbackApply
+          rem Apply scaled knockback impulse to velocity (not momentum)
+          if temp2 < playerX[temp4] then let playerVelocityX[temp4] = playerVelocityX[temp4] + temp8 : let playerVelocityX_lo[temp4] = 0 : goto KnockbackDone 
           rem Missile from left, push right (positive velocity)
-          let playerVelocityX[temp4] = playerVelocityX[temp4] - KnockbackImpulse
+          let playerVelocityX[temp4] = playerVelocityX[temp4] - temp8
           rem Missile from right, push left (negative velocity)
           let playerVelocityX_lo[temp4] = 0
           rem Zero subpixel when applying knockback impulse
@@ -479,6 +507,10 @@ KnockbackDone
           rem Set recovery/hitstun frames
           let playerRecoveryFrames[temp4] = HitstunFrames
           rem 10 frames of hitstun
+          
+          rem Synchronize playerState bit 3 with recovery frames
+          let playerState[temp4] = playerState[temp4] | 8
+          rem Set bit 3 (recovery flag) when recovery frames are set
           
           rem Play hit sound effect
           let temp1  = SoundHit

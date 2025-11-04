@@ -29,14 +29,24 @@ CtrlDetConsole
           rem Fall through to controller detection
 
           rem =================================================================
-          rem CONTROLLER DETECTION
+          rem CONTROLLER DETECTION (MONOTONIC - UPGRADES ONLY)
           rem =================================================================
           rem Re-detect controllers each time Game Select pressed or title reached
+          rem MONOTONIC STATE MACHINE: Only allows upgrades, never downgrades
+          rem - Once Quadtari is detected, it can never be downgraded
+          rem - Once Genesis/Joy2B+ is detected, it can only be upgraded to Quadtari
+          rem - Standard joysticks can be upgraded to Genesis/Joy2B+ or Quadtari
           rem Note: Genesis/Joy2b+ detection is contrary to Quadtari
           
 CtrlDetPads
-          rem Reset detection flags
-          let controllerStatus = 0
+          dim CDP_existingStatus = temp1
+          dim CDP_newStatus = temp2
+          
+          rem Save existing controller capabilities (monotonic - never downgrade)
+          let CDP_existingStatus = controllerStatus
+          
+          rem Perform fresh detection into temporary variable
+          let CDP_newStatus = 0
 #ifndef TV_SECAM
           let colorBWOverride = 0
           let pauseButtonPrev = 0
@@ -48,41 +58,124 @@ CtrlDetPads
           rem Left side: INPT0 LOW + INPT1 HIGH, or Right side: INPT2 LOW + INPT3 HIGH
           
           rem Check left side controllers (INPT0/INPT1)
-          if INPT0{7} then CheckRightSide
-          if !INPT1{7} then CheckRightSide
-          goto QuadtariFound
-CheckRightSide
+          if INPT0{7} then CDP_CheckRightSide
+          if !INPT1{7} then CDP_CheckRightSide
+          goto CDP_QuadtariFound
+CDP_CheckRightSide
           
           rem Check right side controllers (INPT2/INPT3) 
-          if INPT2{7} then NoQuadtari
-          if !INPT3{7} then NoQuadtari
-          goto QuadtariFound
-NoQuadtari
+          if INPT2{7} then CDP_NoQuadtari
+          if !INPT3{7} then CDP_NoQuadtari
+          goto CDP_QuadtariFound
+CDP_NoQuadtari
           
-          rem Quadtari not detected
-          let controllerStatus = controllerStatus & ClearQuadtariDetected
-          goto CheckGenesis
+          rem Quadtari not detected in this detection cycle
+          rem (Don't clear existing Quadtari - monotonic upgrade only)
+          goto CDP_CheckGenesis
 
-QuadtariFound
-          let controllerStatus = controllerStatus | SetQuadtariDetected
-          return
+CDP_QuadtariFound
+          rem Quadtari detected - set flag in new status
+          let CDP_newStatus = CDP_newStatus | SetQuadtariDetected
+          rem Quadtari takes priority - skip Genesis/Joy2B+ detection
+          goto CDP_MergeStatus
 
-CheckGenesis
+CDP_CheckGenesis
+          rem Check for Genesis controller (only if Quadtari not already detected)
+          rem If Quadtari was previously detected, skip all other detection
+          if CDP_existingStatus & SetQuadtariDetected then CDP_MergeStatus
           
-          rem Check for Genesis controller
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
           rem Method: Ground paddle ports via VBLANK, wait a frame, check levels
-          
-          rem First check for Quadtari (takes priority over multi-button controllers)
-          gosub DetectQuadtari
-          if QuadtariDetected then return
-          
           rem Detect Genesis/MegaDrive controllers using correct method
-          gosub CtrlGenesisA
+          gosub CDP_DetectGenesis
           
           rem Detect Joy2b+ controllers (if no Genesis detected)
-          rem tail call
-          goto ControllerDetectJoy2bPlusPrimary
+          rem Skip Joy2B+ detection if Genesis already exists (existing or newly detected)
+          if CDP_existingStatus & SetLeftPortGenesis then CDP_MergeStatus
+          if CDP_existingStatus & SetRightPortGenesis then CDP_MergeStatus
+          if CDP_newStatus & SetLeftPortGenesis then CDP_MergeStatus
+          if CDP_newStatus & SetRightPortGenesis then CDP_MergeStatus
+          gosub CDP_DetectJoy2bPlus
+
+CDP_MergeStatus
+          rem Merge new detections with existing capabilities (monotonic upgrade)
+          rem OR new status with existing - this ensures upgrades only, never downgrades
+          let controllerStatus = CDP_existingStatus | CDP_newStatus
+          
+          return
+          
+          rem =================================================================
+          rem GENESIS DETECTION SUBROUTINE
+          rem =================================================================
+CDP_DetectGenesis
+          rem Ground paddle ports (INPT0-3) during VBLANK
+          VBLANK = VBlankGroundINPT0123
+          
+          rem Wait for screen top (equivalent to .WaitScreenTop)
+          drawscreen
+          
+          rem Wait for screen bottom (equivalent to .WaitScreenBottom)  
+          drawscreen
+          
+          rem Wait for screen top again (equivalent to .WaitScreenTop)
+          drawscreen
+          
+          rem Restore normal VBLANK
+          VBLANK = $00
+          
+          rem Check INPT0 - Genesis controllers pull HIGH when idle
+          if !INPT0{7} then CDP_NoGenesisLeft
+          if !INPT1{7} then CDP_NoGenesisLeft
+          
+          rem Genesis detected on left port
+          let CDP_newStatus = CDP_newStatus | SetLeftPortGenesis
+          rem Set LeftPortGenesis bit
+          
+CDP_NoGenesisLeft
+          rem Check INPT2 - Genesis controllers pull HIGH when idle  
+          if !INPT2{7} then CDP_NoGenesisRight
+          if !INPT3{7} then CDP_NoGenesisRight
+          
+          rem Genesis detected on right port
+          let CDP_newStatus = CDP_newStatus | SetRightPortGenesis
+          rem Set RightPortGenesis bit
+          
+CDP_NoGenesisRight
+          return
+          
+          rem =================================================================
+          rem JOY2BPLUS DETECTION SUBROUTINE
+          rem =================================================================
+CDP_DetectJoy2bPlus
+          rem Only check if no Genesis controllers detected (existing or newly detected)
+          rem This check is redundant since caller already checks, but kept for safety
+          if CDP_existingStatus & SetLeftPortGenesis then return
+          if CDP_existingStatus & SetRightPortGenesis then return
+          if CDP_newStatus & SetLeftPortGenesis then return
+          if CDP_newStatus & SetRightPortGenesis then return
+          
+          rem Joy2b+ controllers pull all three paddle ports HIGH when idle
+          rem Check left port (INPT0, INPT1, INPT4)
+          if !INPT0{7} then CDP_NoJoy2Left
+          if !INPT1{7} then CDP_NoJoy2Left
+          if !INPT4{7} then CDP_NoJoy2Left
+          
+          rem Joy2b+ detected on left port
+          let CDP_newStatus = CDP_newStatus | SetLeftPortJoy2bPlus
+          rem Set LeftPortJoy2bPlus bit
+          
+CDP_NoJoy2Left
+          rem Check right port (INPT2, INPT3, INPT5)
+          if !INPT2{7} then CDP_NoJoy2Right
+          if !INPT3{7} then CDP_NoJoy2Right
+          if !INPT5{7} then CDP_NoJoy2Right
+          
+          rem Joy2b+ detected on right port
+          let CDP_newStatus = CDP_newStatus | SetRightPortJoy2bPlus
+          rem Set RightPortJoy2bPlus bit
+          
+CDP_NoJoy2Right
+          return
           
 
           rem =================================================================
@@ -291,4 +384,14 @@ PauseNotPressed
           rem Button not pressed, update previous state
           let pauseButtonPrev = 1
           return
+
+          rem =================================================================
+          rem DETECT CONTROLLERS (PUBLIC WRAPPER)
+          rem =================================================================
+          rem Public wrapper for controller detection called from ConsoleHandling
+          rem Gates detection behind SELECT button or menu flow
+          rem Uses monotonic detection (upgrades only, never downgrades)
+DetectControllers
+          rem tail call
+          goto CtrlDetPads
 

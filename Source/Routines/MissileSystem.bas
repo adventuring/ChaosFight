@@ -43,68 +43,77 @@
           rem   4. Set active bit for this player missile
           rem   5. Initialize lifetime counter from character data
 SpawnMissile
+          dim SM_playerIndex = temp1
+          dim SM_facing = temp4
+          dim SM_characterType = temp5
+          dim SM_bitFlag = temp6
+          dim SM_velocityCalc = temp6
           rem Get character type for this player
-          let temp5  = playerChar[temp1]
+          let SM_characterType  = playerChar[SM_playerIndex]
           
           rem Read missile emission height from character data table
-          let temp6  = CharacterMissileEmissionHeights[temp5]
+          let SM_bitFlag  = CharacterMissileEmissionHeights[SM_characterType]
           
           rem Calculate initial missile position based on player position and facing
           rem Facing is stored in playerState bit 0: 0=left, 1=right
-          let temp4  = playerState[temp1] & 1
+          let SM_facing  = playerState[SM_playerIndex] & 1
           rem Get facing direction
           
           rem Set missile position using array access
-          let missileX[temp1] = playerX[temp1]
-          let missileY[temp1] = playerY[temp1] + temp6
-          if temp4 = 0 then missileX[temp1] = missileX[temp1] - MissileSpawnOffsetLeft
+          let missileX[SM_playerIndex] = playerX[SM_playerIndex]
+          let missileY[SM_playerIndex] = playerY[SM_playerIndex] + SM_bitFlag
+          if SM_facing = 0 then missileX[SM_playerIndex] = missileX[SM_playerIndex] - MissileSpawnOffsetLeft
           rem Facing left, spawn left
-          if temp4 = 1 then missileX[temp1] = missileX[temp1] + MissileSpawnOffsetRight
+          if SM_facing = 1 then missileX[SM_playerIndex] = missileX[SM_playerIndex] + MissileSpawnOffsetRight
           rem Facing right, spawn right
           
           rem Set active bit for this player missile
           rem Bit 0 = P1, Bit 1 = P2, Bit 2 = P3, Bit 3 = P4
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp1 = 0 then temp6  = 1
-          if temp1 = 1 then temp6  = 2
-          if temp1 = 2 then temp6  = 4
-          if temp1 = 3 then temp6  = 8
-          let missileActive  = missileActive | temp6
+          if SM_playerIndex = 0 then SM_bitFlag  = 1
+          if SM_playerIndex = 1 then SM_bitFlag  = 2
+          if SM_playerIndex = 2 then SM_bitFlag  = 4
+          if SM_playerIndex = 3 then SM_bitFlag  = 8
+          let missileActive  = missileActive | SM_bitFlag
           
           rem Initialize lifetime counter from character data table
-          let missileLifetimeValue = CharacterMissileLifetime[temp5]
+          let missileLifetimeValue = CharacterMissileLifetime[SM_characterType]
           
           rem Store lifetime in player-specific variable
           rem Using individual variables for each player missile lifetime
-          let missileLifetime[temp1] = missileLifetimeValue
+          let missileLifetime[SM_playerIndex] = missileLifetimeValue
           
           rem Initialize velocity from character data for friction physics
-          let temp6  = CharacterMissileMomentumX[temp5]
+          let SM_velocityCalc  = CharacterMissileMomentumX[SM_characterType]
           rem Get base X velocity
-          if temp4 = 0 then temp6  = 0 - temp6
+          if SM_facing = 0 then SM_velocityCalc  = 0 - SM_velocityCalc
           rem Apply facing direction (left = negative)
-          let missileVelX[temp1] = temp6
+          let missileVelX[SM_playerIndex] = SM_velocityCalc
           
-          let temp6  = CharacterMissileMomentumY[temp5]
+          let SM_velocityCalc  = CharacterMissileMomentumY[SM_characterType]
           rem Get Y velocity
           
           rem Apply Harpy dive velocity bonus if in dive mode
-          if temp5 = 6 then HarpyCheckDiveVelocity
+          if SM_characterType = 6 then HarpyCheckDiveVelocity
           goto VelocityDone
 HarpyCheckDiveVelocity
-          if (characterStateFlags[temp1] & 4) then HarpyBoostDiveVelocity
+          dim HCDV_velocityCalc = temp6
+          let HCDV_velocityCalc = SM_velocityCalc
+          if (characterStateFlags[SM_playerIndex] & 4) then HarpyBoostDiveVelocity
           goto VelocityDone
 HarpyBoostDiveVelocity
+          dim HBDV_halfVelocity = velocityCalculation
           rem Increase downward velocity by 50% for dive attacks
           rem Divide by 2 using bit shift
           asm
-            lda temp6
+            lda HCDV_velocityCalc
             lsr a
-            sta velocityCalculation
+            sta HBDV_halfVelocity
           end
-          let temp6 = temp6 + velocityCalculation
+          let HCDV_velocityCalc = HCDV_velocityCalc + HBDV_halfVelocity
+          let SM_velocityCalc = HCDV_velocityCalc
 VelocityDone
-          let missileVelY[temp1] = temp6
+          let missileVelY[SM_playerIndex] = SM_velocityCalc
           
           return
 
@@ -135,46 +144,51 @@ UpdateAllMissiles
           rem   temp1 = player index (0-3)
 UpdateOneMissile
           dim UOM_playerIndex = temp1
+          dim UOM_bitFlag = temp6
+          dim UOM_isActive = temp4
+          dim UOM_savedIndex = temp6
+          dim UOM_velX = temp2
+          dim UOM_velY = temp3
+          dim UOM_characterType = temp5
+          dim UOM_missileFlags = temp5
           rem Check if this missile is active
-          let temp6  = 1
-          if UOM_playerIndex = 1 then temp6  = 2
-          if UOM_playerIndex = 2 then temp6  = 4
-          if UOM_playerIndex = 3 then temp6  = 8
-          let temp4  = missileActive & temp6
-          if temp4  = 0 then return
+          let UOM_bitFlag  = 1
+          if UOM_playerIndex = 1 then UOM_bitFlag  = 2
+          if UOM_playerIndex = 2 then UOM_bitFlag  = 4
+          if UOM_playerIndex = 3 then UOM_bitFlag  = 8
+          let UOM_isActive  = missileActive & UOM_bitFlag
+          if UOM_isActive  = 0 then return
           rem Not active, skip
           
           rem Preserve player index since GetMissileFlags uses temp1
           rem Use temp6 temporarily to save player index (temp6 is used for bit flags)
-          let temp6  = UOM_playerIndex
-          rem Save player index temporarily in temp6
+          let UOM_savedIndex  = UOM_playerIndex
+          rem Save player index temporarily
           
           rem Get current velocities from stored arrays
-          let temp2  = missileVelX[UOM_playerIndex]
+          let UOM_velX  = missileVelX[UOM_playerIndex]
           rem X velocity (already facing-adjusted from spawn)
-          let temp3  = missileVelY[UOM_playerIndex]
+          let UOM_velY  = missileVelY[UOM_playerIndex]
           rem Y velocity
           
           rem Read missile flags from character data
-          let temp5  = playerChar[UOM_playerIndex]
+          let UOM_characterType  = playerChar[UOM_playerIndex]
           rem Get character index
-          let temp1  = temp5
+          let temp1  = UOM_characterType
           rem Use temp1 for flags lookup (temp1 will be overwritten)
           gosub bank6 GetMissileFlags
-          let temp4  = temp2
-          rem Store flags in temp4
+          let UOM_missileFlags  = temp2
+          rem Store flags
           
           rem Restore player index and get flags back
-          let temp1  = temp6
-          rem Restore player index from temp6
-          let temp5  = temp4
-          rem Restore flags to temp5
+          let UOM_playerIndex  = UOM_savedIndex
+          rem Restore player index
           
           rem Apply gravity if flag is set
-          if !(temp5 & MissileFlagGravity) then GravityDone
-          let temp3 = temp3 + GravityPerFrame
+          if !(UOM_missileFlags & MissileFlagGravity) then GravityDone
+          let UOM_velY = UOM_velY + GravityPerFrame
           rem Add gravity (1 pixel/frame down)
-          let missileVelY[UOM_playerIndex] = temp3
+          let missileVelY[UOM_playerIndex] = UOM_velY
           rem Update stored Y velocity
 GravityDone
           

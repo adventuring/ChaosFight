@@ -382,7 +382,7 @@ CheckMissilePlayerCollision
           rem temp3 = missile top, temp3+MissileAABBSize = missile bottom
           
           rem Check collision with each player (except owner)
-          let temp4  = 255
+          let temp4 = MissileHitNotFound
           rem Default: no hit
           
           rem Check Player 1 (index 0)
@@ -463,9 +463,9 @@ DiveCheckDone
           rem This function only handles damage application
           
           rem Apply damage
-          let temp7  = playerHealth[temp4]
+          let oldHealthValue = playerHealth[temp4]
           let playerHealth[temp4] = playerHealth[temp4] - temp6
-          if playerHealth[temp4] > temp7 then playerHealth[temp4] = 0
+          if playerHealth[temp4] > oldHealthValue then playerHealth[temp4] = 0
           
           rem Apply knockback (weight-based scaling - heavier characters resist more)
           rem Calculate direction: if missile moving right, push defender right
@@ -473,36 +473,34 @@ DiveCheckDone
           
           rem Calculate weight-based knockback scaling
           rem Heavier characters resist knockback more (max weight = 100)
-          let temp7 = playerChar[temp4]
+          let characterWeight = playerChar[temp4]
           rem Get character index
-          let temp8 = CharacterWeights[temp7]
-          rem Get character weight (5-100)
-          let temp9 = 100
-          rem Max weight (Dragon/Megax = 100)
+          let characterWeight = CharacterWeights[characterWeight]
+          rem Get character weight (5-100) - overwrite with weight value
           rem Calculate scaled knockback: KnockbackImpulse * (100 - weight) / 100
           rem Approximate: (KnockbackImpulse * (100 - weight)) / 100
           rem For KnockbackImpulse = 4: scaled = (4 * (100 - weight)) / 100
           rem Simplify to avoid division: if weight < 50, use full knockback; else scale down
-          if temp8 >= 50 then WeightBasedKnockbackScale
+          if characterWeight >= 50 then WeightBasedKnockbackScale
           rem Light characters (weight < 50): full knockback
-          let temp8 = KnockbackImpulse
+          let impulseStrength = KnockbackImpulse
           goto WeightBasedKnockbackApply
 WeightBasedKnockbackScale
           rem Heavy characters (weight >= 50): reduced knockback
           rem Calculate: KnockbackImpulse * (100 - weight) / 100
           rem Approximate as: (KnockbackImpulse * (100 - weight)) / 100
           rem For simplification: use linear scaling with integer math
-          let temp9 = 100 - temp8
+          let velocityCalculation = 100 - characterWeight
           rem Resistance factor (0-50 for weights 50-100)
-          let temp8 = (KnockbackImpulse * temp9) / 100
+          let impulseStrength = (KnockbackImpulse * velocityCalculation) / 100
           rem Scaled knockback (integer division)
-          if temp8 = 0 then temp8 = 1
+          if impulseStrength = 0 then impulseStrength = 1
           rem Minimum 1 pixel knockback even for heaviest characters
 WeightBasedKnockbackApply
           rem Apply scaled knockback impulse to velocity (not momentum)
-          if temp2 < playerX[temp4] then let playerVelocityX[temp4] = playerVelocityX[temp4] + temp8 : let playerVelocityX_lo[temp4] = 0 : goto KnockbackDone 
+          if temp2 < playerX[temp4] then let playerVelocityX[temp4] = playerVelocityX[temp4] + impulseStrength : let playerVelocityX_lo[temp4] = 0 : goto KnockbackDone 
           rem Missile from left, push right (positive velocity)
-          let playerVelocityX[temp4] = playerVelocityX[temp4] - temp8
+          let playerVelocityX[temp4] = playerVelocityX[temp4] - impulseStrength
           rem Missile from right, push left (negative velocity)
           let playerVelocityX_lo[temp4] = 0
           rem Zero subpixel when applying knockback impulse
@@ -566,7 +564,7 @@ DeactivateMissile
           if temp1 = 1 then temp6  = 2
           if temp1 = 2 then temp6  = 4
           if temp1 = 3 then temp6  = 8
-          let temp6  = 255 - temp6
+          let temp6 = MaxByteValue - temp6
           rem Invert bits
           let missileActive  = missileActive & temp6
           return

@@ -294,6 +294,8 @@
           rem ADMIN: Runtime window value for bmp_48x2_2 (Interworldly) - 0=hidden, 42=visible
           dim titlescreenWindow3 = var22
           rem ADMIN: Runtime window value for bmp_48x2_3 (ChaosFight) - 0=hidden, 42=visible
+          dim titlescreenWindow4 = var23
+          rem ADMIN: Runtime window value for bmp_48x2_4 (Interworldly) - 0=hidden, 42=visible
           
           rem =================================================================
           rem GAME MODE VARIABLES (may be re-used in Admin Mode for other purposes)
@@ -365,14 +367,24 @@
           
           rem playerSubpixelX[0-3] = 8.8 fixed-point X position
           rem Updated every frame but accessed less frequently than velocity, so SCRAM is acceptable
-          dim playerSubpixelX = w049.8.8
-          rem Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM w049-w056
-          rem Array accessible as playerSubpixelX[0-3] and playerSubpixelX_lo[0-3]
+          dim playerSubpixelX_W = w049.8.8
+          dim playerSubpixelX_R = r049.8.8
+          rem Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM w049-w056 (write), r049-r056 (read)
+          rem Array accessible as playerSubpixelX_W[0-3] and playerSubpixelX_W_lo[0-3] (write ports)
+          rem Array accessible as playerSubpixelX_R[0-3] and playerSubpixelX_R_lo[0-3] (read ports)
+          rem Alias for backward compatibility (defaults to write port)
+          dim playerSubpixelX = playerSubpixelX_W
+          dim playerSubpixelX_lo = playerSubpixelX_W_lo
           
           rem playerSubpixelY[0-3] = 8.8 fixed-point Y position
-          dim playerSubpixelY = w057.8.8
-          rem Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM w057-w064
-          rem Array accessible as playerSubpixelY[0-3] and playerSubpixelY_lo[0-3]
+          dim playerSubpixelY_W = w057.8.8
+          dim playerSubpixelY_R = r057.8.8
+          rem Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM w057-w064 (write), r057-r064 (read)
+          rem Array accessible as playerSubpixelY_W[0-3] and playerSubpixelY_W_lo[0-3] (write ports)
+          rem Array accessible as playerSubpixelY_R[0-3] and playerSubpixelY_R_lo[0-3] (read ports)
+          rem Alias for backward compatibility (defaults to write port)
+          dim playerSubpixelY = playerSubpixelY_W
+          dim playerSubpixelY_lo = playerSubpixelY_W_lo
           
           rem =================================================================
           rem GAME MODE - Standard RAM (var24-var47) - sorted numerically

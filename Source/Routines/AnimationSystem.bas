@@ -45,20 +45,29 @@ UpdatePlayerAnimation
           if playerHealth[currentPlayer] = 0 then return
           
           rem Increment this sprite 10fps animation counter (NOT global frame counter)
-          let animationCounter[currentPlayer] = animationCounter[currentPlayer] + 1
+          rem SCRAM read-modify-write: Read from r077, modify, write to w077
+          dim UAS_animCounterRead = temp4
+          let UAS_animCounterRead = animationCounter_R[currentPlayer]
+          let UAS_animCounterRead = UAS_animCounterRead + 1
+          let animationCounter_W[currentPlayer] = UAS_animCounterRead
           
           rem Check if time to advance animation frame (every AnimationFrameDelay frames)
-          if animationCounter[currentPlayer] >= AnimationFrameDelay then goto AdvanceFrame
+          if UAS_animCounterRead >= AnimationFrameDelay then goto AdvanceFrame
           goto SkipAdvance
 AdvanceFrame
-          let animationCounter[currentPlayer] = 0
+          let animationCounter_W[currentPlayer] = 0
           rem Inline AdvanceAnimationFrame
           rem Advance to next frame in current animation action
           rem Frame is from sprite 10fps counter (currentAnimationFrame), not global frame
-          let currentAnimationFrame[currentPlayer] = currentAnimationFrame[currentPlayer] + 1
+          rem SCRAM read-modify-write: Read from r081, modify, write to w081
+          dim UAS_animFrameRead = temp4
+          let UAS_animFrameRead = currentAnimationFrame_R[currentPlayer]
+          let UAS_animFrameRead = UAS_animFrameRead + 1
+          let currentAnimationFrame_W[currentPlayer] = UAS_animFrameRead
           
           rem Check if we have completed the current action (8 frames per action)
-          if currentAnimationFrame[currentPlayer] >= FramesPerSequence then goto HandleFrame7Transition
+          rem Use temp variable from previous increment (UAS_animFrameRead)
+          if UAS_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
 SkipAdvance
           return
@@ -74,10 +83,15 @@ SkipAdvance
 AdvanceAnimationFrame
           rem Advance to next frame in current animation action
           rem Frame is from sprite 10fps counter (currentAnimationFrame), not global frame
-          let currentAnimationFrame[currentPlayer] = currentAnimationFrame[currentPlayer] + 1
+          rem SCRAM read-modify-write: Read from r081, modify, write to w081
+          dim AAF_animFrameRead = temp4
+          let AAF_animFrameRead = currentAnimationFrame_R[currentPlayer]
+          let AAF_animFrameRead = AAF_animFrameRead + 1
+          let currentAnimationFrame_W[currentPlayer] = AAF_animFrameRead
           
           rem Check if we have completed the current action (8 frames per action)
-          if currentAnimationFrame[currentPlayer] >= FramesPerSequence then goto HandleFrame7Transition
+          rem Use temp variable from increment (AAF_animFrameRead)
+          if AAF_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
           
 HandleFrame7Transition
@@ -96,7 +110,8 @@ UpdateSprite
           rem OUTPUT: None
           rem EFFECTS: Loads sprite graphics for current player with current animation frame and action sequence
           rem Frame is from this sprite 10fps counter (currentAnimationFrame), not global frame counter
-          let US_animationFrame = currentAnimationFrame[currentPlayer] 
+          rem SCRAM read: Read from r081
+          let US_animationFrame = currentAnimationFrame_R[currentPlayer] 
           let US_animationAction = currentAnimationSeq[currentPlayer]
           let US_playerNumber = currentPlayer
           gosub bank10 LoadPlayerSprite
@@ -116,15 +131,18 @@ SetPlayerAnimation
           if SPA_animationAction >= AnimationSequenceCount then return
           
           let currentAnimationSeq[currentPlayer] = SPA_animationAction
-          let currentAnimationFrame[currentPlayer] = 0 
+          rem SCRAM write: Write to w081
+          let currentAnimationFrame_W[currentPlayer] = 0 
           rem Start at first frame
-          let animationCounter[currentPlayer] = 0      
+          rem SCRAM write: Write to w077
+          let animationCounter_W[currentPlayer] = 0      
           rem Reset animation counter
           
           rem Update character sprite immediately
           rem Frame is from this sprite 10fps counter, action from currentAnimationSeq
           rem Set up parameters for LoadPlayerSprite
-          let SPA_animationFrame = currentAnimationFrame[currentPlayer]
+          rem SCRAM read: Read from r081 (we just wrote 0, so this is 0)
+          let SPA_animationFrame = 0
           let SPA_animationSeq = currentAnimationSeq[currentPlayer]
           let SPA_playerNumber = currentPlayer
           let temp2 = SPA_animationFrame
@@ -140,7 +158,8 @@ SetPlayerAnimation
           rem EFFECTS: None (read-only query)
 GetCurrentAnimationFrame
           dim GCAF_currentFrame = temp2
-          let GCAF_currentFrame = currentAnimationFrame[currentPlayer]
+          rem SCRAM read: Read from r081
+          let GCAF_currentFrame = currentAnimationFrame_R[currentPlayer]
           let temp2 = GCAF_currentFrame
           return
 
@@ -349,7 +368,8 @@ HandleAnimationTransition
           goto TransitionLoopAnimation
 
 TransitionLoopAnimation
-          let currentAnimationFrame[currentPlayer] = 0
+          rem SCRAM write: Write to w081
+          let currentAnimationFrame_W[currentPlayer] = 0
           return
 
 TransitionToIdle

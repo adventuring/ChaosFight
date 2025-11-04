@@ -84,8 +84,11 @@ title_playfield
 	ifconst mk_48x2_3_on
 		include "Titlescreen/asm/48x2_3_kernel.s"
 	endif ;mk_48x2_3_on
+	ifconst mk_48x2_4_on
+		include "Titlescreen/asm/48x2_4_kernel.s"
+	endif ;mk_48x2_4_on
 
-	rem Unused minikernels removed: 48x2_4-8, 48x1_*, 96x2_* - only 48x2_1, 48x2_2, 48x2_3 are used
+	rem Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 
 	ifconst mk_score_on
 		include "Titlescreen/asm/score_kernel.s"
@@ -137,6 +140,9 @@ OVERSCAN
 	ifconst mk_48x2_3_on
 		include "Titlescreen/48x2_3_image.s"
 	endif
+	ifconst mk_48x2_4_on
+		include "Titlescreen/48x2_4_image.s"
+	endif
 
 	ifconst mk_player_on
 		include "Titlescreen/player_image.s"
@@ -163,8 +169,11 @@ OVERSCAN
  #ifconst mk_48x2_2_on
 	include "titlescreen/48x2_2_image.s"
  #endif
- #ifconst mk_48x2_3_on
+#ifconst mk_48x2_3_on
 	include "titlescreen/48x2_3_image.s"
+ #endif
+ #ifconst mk_48x2_4_on
+	include "titlescreen/48x2_4_image.s"
  #endif
 
  #ifconst mk_player_on

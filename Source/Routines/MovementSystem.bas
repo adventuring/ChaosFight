@@ -53,18 +53,26 @@ UpdatePlayerMovementSingle
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem For playerVelocityX (declared separately), add high and low bytes manually
           rem batariBASIC will handle carry from low byte to high byte automatically
-          let UPS_subpixelSum = playerSubpixelX_lo[UPS_playerIndex] + playerVelocityX_lo[UPS_playerIndex]
+          let UPS_subpixelSum = playerSubpixelX_W_lo[UPS_playerIndex] + playerVelocityX_lo[UPS_playerIndex]
           if UPS_subpixelSum > 255 then XCarry
-          let playerSubpixelX_lo[UPS_playerIndex] = UPS_subpixelSum
+          let playerSubpixelX_W_lo[UPS_playerIndex] = UPS_subpixelSum
           goto XNoCarry
 XCarry
-          let playerSubpixelX_lo[UPS_playerIndex] = UPS_subpixelSum - 256
-          let playerSubpixelX[UPS_playerIndex] = playerSubpixelX[UPS_playerIndex] + 1
+          let playerSubpixelX_W_lo[UPS_playerIndex] = UPS_subpixelSum - 256
+          rem SCRAM read-modify-write: Read from r049, modify, write to w049
+          dim UPS_subpixelXRead = temp4
+          let UPS_subpixelXRead = playerSubpixelX_R[UPS_playerIndex]
+          let UPS_subpixelXRead = UPS_subpixelXRead + 1
+          let playerSubpixelX_W[UPS_playerIndex] = UPS_subpixelXRead
 XNoCarry
-          let playerSubpixelX[UPS_playerIndex] = playerSubpixelX[UPS_playerIndex] + playerVelocityX[UPS_playerIndex]
+          rem SCRAM read-modify-write: Read from r049, modify, write to w049
+          dim UPS_subpixelXRead = temp4
+          let UPS_subpixelXRead = playerSubpixelX_R[UPS_playerIndex]
+          let UPS_subpixelXRead = UPS_subpixelXRead + playerVelocityX[UPS_playerIndex]
+          let playerSubpixelX_W[UPS_playerIndex] = UPS_subpixelXRead
           
           rem Sync integer position for rendering (high byte is the integer part)
-          let playerX[UPS_playerIndex] = playerSubpixelX[UPS_playerIndex]
+          let playerX[UPS_playerIndex] = playerSubpixelX_R[UPS_playerIndex]
           
           rem =================================================================
           rem APPLY Y VELOCITY TO Y POSITION
@@ -72,18 +80,26 @@ XNoCarry
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem playerVelocityY is declared as .8.8 so batariBASIC handles arithmetic automatically
           rem But we still need to do it manually since both parts are separate arrays
-          let UPS_subpixelSum = playerSubpixelY_lo[UPS_playerIndex] + playerVelocityY_lo[UPS_playerIndex]
+          let UPS_subpixelSum = playerSubpixelY_W_lo[UPS_playerIndex] + playerVelocityY_lo[UPS_playerIndex]
           if UPS_subpixelSum > 255 then YCarry
-          let playerSubpixelY_lo[UPS_playerIndex] = UPS_subpixelSum
+          let playerSubpixelY_W_lo[UPS_playerIndex] = UPS_subpixelSum
           goto YNoCarry
 YCarry
-          let playerSubpixelY_lo[UPS_playerIndex] = UPS_subpixelSum - 256
-          let playerSubpixelY[UPS_playerIndex] = playerSubpixelY[UPS_playerIndex] + 1
+          let playerSubpixelY_W_lo[UPS_playerIndex] = UPS_subpixelSum - 256
+          rem SCRAM read-modify-write: Read from r057, modify, write to w057
+          dim UPS_subpixelYRead = temp4
+          let UPS_subpixelYRead = playerSubpixelY_R[UPS_playerIndex]
+          let UPS_subpixelYRead = UPS_subpixelYRead + 1
+          let playerSubpixelY_W[UPS_playerIndex] = UPS_subpixelYRead
 YNoCarry
-          let playerSubpixelY[UPS_playerIndex] = playerSubpixelY[UPS_playerIndex] + playerVelocityY[UPS_playerIndex]
+          rem SCRAM read-modify-write: Read from r057, modify, write to w057
+          dim UPS_subpixelYRead = temp4
+          let UPS_subpixelYRead = playerSubpixelY_R[UPS_playerIndex]
+          let UPS_subpixelYRead = UPS_subpixelYRead + playerVelocityY[UPS_playerIndex]
+          let playerSubpixelY_W[UPS_playerIndex] = UPS_subpixelYRead
           
           rem Sync integer position for rendering (high byte is the integer part)
-          let playerY[UPS_playerIndex] = playerSubpixelY[UPS_playerIndex]
+          let playerY[UPS_playerIndex] = playerSubpixelY_R[UPS_playerIndex]
           
           return
 
@@ -106,11 +122,13 @@ SetPlayerPosition
           dim SPP_positionX = temp2
           dim SPP_positionY = temp3
           let playerX[SPP_playerIndex] = SPP_positionX
-          let playerSubpixelX[SPP_playerIndex] = SPP_positionX
-          let playerSubpixelX_lo[SPP_playerIndex] = 0
+          rem SCRAM write: Write to w049
+          let playerSubpixelX_W[SPP_playerIndex] = SPP_positionX
+          let playerSubpixelX_W_lo[SPP_playerIndex] = 0
           let playerY[SPP_playerIndex] = SPP_positionY
-          let playerSubpixelY[SPP_playerIndex] = SPP_positionY
-          let playerSubpixelY_lo[SPP_playerIndex] = 0
+          rem SCRAM write: Write to w057
+          let playerSubpixelY_W[SPP_playerIndex] = SPP_positionY
+          let playerSubpixelY_W_lo[SPP_playerIndex] = 0
           return
 
           rem Get player position (integer parts only)
@@ -266,12 +284,14 @@ NoCollision
 ConstrainToScreen
           dim CTS_playerIndex = temp1
           rem Constrain X position (10 to 150 for screen bounds)
-          if playerX[CTS_playerIndex] < 10 then let playerX[CTS_playerIndex] = 10 : let playerSubpixelX[CTS_playerIndex] = 10 : let playerSubpixelX_lo[CTS_playerIndex] = 0
-          if playerX[CTS_playerIndex] > 150 then let playerX[CTS_playerIndex] = 150 : let playerSubpixelX[CTS_playerIndex] = 150 : let playerSubpixelX_lo[CTS_playerIndex] = 0
+          rem SCRAM write: Write to w049
+          if playerX[CTS_playerIndex] < 10 then let playerX[CTS_playerIndex] = 10 : let playerSubpixelX_W[CTS_playerIndex] = 10 : let playerSubpixelX_W_lo[CTS_playerIndex] = 0
+          if playerX[CTS_playerIndex] > 150 then let playerX[CTS_playerIndex] = 150 : let playerSubpixelX_W[CTS_playerIndex] = 150 : let playerSubpixelX_W_lo[CTS_playerIndex] = 0
           
           rem Constrain Y position (20 to 80 for screen bounds)
-          if playerY[CTS_playerIndex] < 20 then let playerY[CTS_playerIndex] = 20 : let playerSubpixelY[CTS_playerIndex] = 20 : let playerSubpixelY_lo[CTS_playerIndex] = 0
-          if playerY[CTS_playerIndex] > 80 then let playerY[CTS_playerIndex] = 80 : let playerSubpixelY[CTS_playerIndex] = 80 : let playerSubpixelY_lo[CTS_playerIndex] = 0
+          rem SCRAM write: Write to w057
+          if playerY[CTS_playerIndex] < 20 then let playerY[CTS_playerIndex] = 20 : let playerSubpixelY_W[CTS_playerIndex] = 20 : let playerSubpixelY_W_lo[CTS_playerIndex] = 0
+          if playerY[CTS_playerIndex] > 80 then let playerY[CTS_playerIndex] = 80 : let playerSubpixelY_W[CTS_playerIndex] = 80 : let playerSubpixelY_W_lo[CTS_playerIndex] = 0
           
           return
 

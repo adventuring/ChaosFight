@@ -259,7 +259,7 @@ CheckGroundCollision
 HandleFrootyVertical
           rem Check character type to confirm
           temp5 = playerChar[temp1]
-          if !(temp5 = 8) then return 
+          if !(temp5 = CharFrooty) then return 
           rem Not Frooty
           
           rem Get joystick state

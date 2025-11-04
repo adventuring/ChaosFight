@@ -2,6 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           bank 10
+
           #include "Source/Routines/CharacterSelectMain.bas"
 
           #include "Source/Routines/SpriteLoader.bas"

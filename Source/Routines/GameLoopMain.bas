@@ -36,6 +36,9 @@ GameMainLoop
           rem Handle all player input (with Quadtari multiplexing)
           gosub InputHandleAllPlayers
 
+          rem Update guard timers (duration and cooldown)
+          gosub UpdateGuardTimers
+
           rem Update animation system (10fps character animation)
           gosub UpdateCharacterAnimations
           
@@ -54,11 +57,33 @@ GameMainLoop
           rem Check boundary collisions
           gosub CheckBoundaryCollisions
 
+          rem Check playfield collisions (walls, ceilings, ground) for all players
+          let temp1 = 0 : gosub CheckPlayfieldCollisionAllDirections
+          let temp1 = 1 : gosub CheckPlayfieldCollisionAllDirections
+          if controllerStatus & SetQuadtariDetected then let temp1 = 2 : gosub CheckPlayfieldCollisionAllDirections : let temp1 = 3 : gosub CheckPlayfieldCollisionAllDirections
+
           rem Check multi-player collisions
           gosub CheckAllPlayerCollisions
 
           rem Check for player eliminations
           gosub CheckAllPlayerEliminations
+          
+          rem Check if game should end and transition to winner screen
+          rem gameState = 2 means game is ending, gameEndTimer counts down
+          if gameState = 2 then CheckGameEndTransition
+          goto GameEndCheckDone
+CheckGameEndTransition
+          rem Decrement game end timer
+          if gameEndTimer > 0 then let gameEndTimer = gameEndTimer - 1
+          rem When timer reaches 0, transition to winner announcement
+          if gameEndTimer = 0 then TransitionToWinner
+          goto GameEndCheckDone
+TransitionToWinner
+          rem Transition to winner announcement mode
+          let gameMode = ModeWinner
+          gosub bank13 ChangeGameMode
+          return
+GameEndCheckDone
 
           rem Update attack cooldowns
           gosub UpdateAttackCooldowns
@@ -84,9 +109,12 @@ GameMainLoop
           
           rem Update P3/P4 health bars using playfield system
           gosub bank8 UpdatePlayer34HealthBars
-
+          
+          rem Update sound effects (game mode 6 only)
+          gosub bank15 UpdateSoundEffect
+          
           rem Update frame counter
           frame = frame + 1
-
+          
           return
 

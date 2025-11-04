@@ -3,9 +3,10 @@
 ## Cold Start Initialization
 
 Upon cold start:
+- Console detection (2600 vs 7800) runs first, before any code modifies $D0/$D1
+Then continues into warm start:
 - Common and admin vars are cleared
 - Hardware registers are set up (TIA colors, audio)
-- Console detection (2600 vs 7800) runs first, before any code modifies $D0/$D1
 - Controller detection (Mega Drive/Genesis, Joy2b+, or Quadtari) is performed
 - COLUBK is set to black and remains black throughout
 
@@ -14,14 +15,14 @@ Upon cold start:
 ## Game Reset Behavior
 
 In any mode, pressing Game Reset causes an instant hard reboot:
-- Calls ColdStart to clear all vars and reinitialize hardware registers
+- Calls WarmStart to clear all vars and reinitialize hardware registers
 - System state is completely reset
 
 ---
 
 ## Admin Mode Controller Redetection
 
-In any admin modes (title, preambles, level select):
+In any admin modes (title, preambles, arena select):
 - Pressing Game Select causes controller redetection
 - Toggling Color/B&W switch causes controller redetection  
 - Pause button (on 7800) causes controller redetection
@@ -41,21 +42,22 @@ Plays "Atari Today" song once. Upon song completion OR any player button press (
 
 ## Author Prelude (formerly Author Preamble)
 
-Displays Interworldly graphic. Plays "Interworldly" jingle once. Upon jingle completion OR any player button press, advance to Title Screen.
+Displays "BRP Signature" graphic ("Interworldly.xcf" currently).
+Plays "Interworldly" jingle once. Upon jingle completion OR any player button press, advance to Title Screen.
 
 ---
 
 ## Title Screen
 
 - Chaos Fight 25 logo appears near top 1/3 of screen, centered horizontally
-- Copyright graphic appears below logo after a moment
+- Copyright graphic appears below logo after 2 seconds.
 - After 5 seconds, copyright graphic vanishes and "parade" begins
 - Character Parade:
   - Without Quadtari: 2 characters at a time (alternating as one exits, another enters)
   - With Quadtari: 4 characters (generally 3, sometimes 4 on screen)
   - Characters walk from left edge to center, perform attack animation once, walk off right edge
 - Title song "Chaotica" repeats
-- After 3 minutes (10800 frames at 60fps), jump to Attract mode
+- After 3 minutes, jump to Attract mode
 - Any player button press transitions to Character Select
 
 ### Attract Mode
@@ -67,7 +69,9 @@ Attract mode forms an endless wait loop. For now, Attract mode handler simply ju
 ## Character Select
 
 ### Overview
-Players select their fighters from 16 available characters (0-15). Supports 2-player (standard ports) and 4-player (Quadtari adapter) modes. Once all active players have locked in their selections, proceed to Level Select.
+Players select their fighters from 16 available characters (0-15).
+Supports 2-player (standard ports) and 4-player (Quadtari adapter) modes.
+Once all active players have locked in their selections, proceed to Arena Select.
 
 Players 2 (and if present) 3 & 4 start "locked in" to "CPU" and "NO" and "NO" and unlock on any action.
 
@@ -80,13 +84,18 @@ Players 2 (and if present) 3 & 4 start "locked in" to "CPU" and "NO" and "NO" an
 
 ### Input Handling
 - **Left/Right**: Cycle through 16 characters (0-15), wraps from 15→0 or 0→15
+  (but when wrapping, presents "?" (Random) and either "CPU" or "NO" (Player
+  2, depending on player 3/4 state) or "NO" (player 3 or 4). Player 1 has
+  only "?" and the 16 characters (NumCharacters)
 - **Fire/B/I button**: Lock in current character selection
-- **UP button**: Unlock current selection (returns to browsing)
-- **DOWN button**: Unlock current selection (returns to browsing)
-- **DOWN + Fire/B/I button**: Lock in with handicap (75% health instead of 100%)
+- **Up**: Unlock current selection (returns to browsing)
+- **Down**: Hold to prepare for handicapping. Character shows "recovering
+  from a hard fall" animation while held.
+- **Down + Fire/B/I button**: Lock in with handicap (75% health instead of
+  100%; character remains in "recovering from a hard fall" state visually
 
 ### Character Selection States
-- **PlayerChar[0-3]**: Current character index being browsed (0-15, or 255 for "NO")
+- **playerCharacter[0-3]**: Current character index being browsed (0-15, or 255 for "NO")
 
 Player 1 options: ? or 0 ↔ MaxCharacterID
 
@@ -96,50 +105,53 @@ Player 2: ? or 0 ↔ MaxCharacterID and
 - if either of Player 3 or Player 4 is not "NO" then "NO" is an option
 - otherwise (no player 3/4) then "CPU" is the other option
 
-- **PlayerLocked[0-3]**: Lock state:
-  - 0 = Unlocked (still browsing)
-  - 1 = Locked (normal health, 100%)
-  - 2 = Locked (handicap mode, 75% health)
+- **playerLocked[0-3]**: Lock state:
+  - Must use enumerated constants
+  - 0 = Unlocked (still browsing) = PlayerCharacterUnlocked
+  - 1 = Locked (normal health, 100%) = PlayerCharacterLocked
+  - 2 = handicap mode, 75% health = PlayerCharacterHandicapped
+  - 3 = Locked in handicap mode = PlayerCharacterLocked | PlayerCharacterHandicapped
 
 ### Visual Display
-- Display character preview with animations
-- Show lock status for each player
-- Display "NO" sprite for unselected players (participants 3-4 in 2-player mode)
+- Display character preview with idle animation
+- Show lock status for each player --- if locked, character color is player
+  color; if unlocked, character color is white.
+- Display no sprite (blank) for players 3/4 if no Quadtari detected
 - Display character sprites in screen quadrants
 
-If no Quadtari, do not show players 3/4 at all.
-
 ### Progression Logic
-- **2-player mode**: At least Player 1 must lock in selection to proceed
-- **4-player mode**: At least 2 players must lock in to proceed
+- All players must lock in some selection to proceed, but player 2 (and 3/4,
+  when present) start locked, so player must take some action to switch
+  their characters from "CPU" or "NO" setting.
 - "?" characters auto-select random character (once locked in)
 - "CPU" selects a random character (when everyone else is locked in)
-- Once all players locked in, transition to Level Select
+- Once all players locked in, transition to Arena Select
 
 ### Sound Effects
 - Menu navigation sound (SoundMenuNavigate) on left/right movement
 - Menu selection sound (SoundMenuSelect) on lock/unlock
-- No background music (admin screens use music, but Character Select may have SFX)
+- No background music (some admin screens may use music, but Character Select
+  uses sound effects instead)
 
 ### Special Cases
-- DOWN button should NOT trigger hurt animations or hurt sounds (Issue #362)
 - All navigation should use menu sound effects, not gameplay sounds
 
 ---
 
-## Level Select
+## Arena Select
 
 - Player 1 only can use left/right to cycle through:
-  - Decimal numbers 01 up to MaxArenaID + 1 (currently 15, so 15+1=16, displayed as "01" through "16")
-  - Then '??' (two question marks) for random arena
-  - Then back to 01 (wraps)
-  - Can go in reverse (01 down to ?? down to 16)
+  - Decimal numbers " 1" up to MaxArenaID + 1 (currently 15, so 15+1=16, displayed as " 1" through "16")
+  - Then "??" (two question marks) for random arena
+  - Then back to " 1" (wraps)
+  - Can go in reverse (" 1" down to "??" down to "16")
 - Player 1 locks in selection by pressing Fire/B/I button
 - Special case: If any player holds Fire/B/I for one full second, return to Character Select
 - Game Select switch pressed: return to Character Select
-- Four locked-in player graphics remain on screen (NO sprites not shown)
+- Up to four locked-in player graphics remain on screen (blank if no player
+  or locked in at "NO")
 - "CPU" or "?" already have random character selected
-- Digits appear in center, white-on-black
+- Digits appear in center, white-on-black, use virtual sprites 5-6
 
 ---
 
@@ -163,23 +175,26 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - Call BeginGameLoop before entering Game Mode:
   - Initialize player positions from Falling In animation final positions
   - Set player facing directions (alternating: P1 right, P2 left, P3 right, P4 left)
-  - Apply handicap if selected (PlayerLocked[0-3] = 2 → 75% health, else 100%)
+  - Apply handicap if selected (playerLocked[0-3] & PlayerCharacterHandicapped → 75% health, else 100%)
   - Initialize player states, timers, momentum
-  - Load character types from SelectedChar1-4 variables
+  - Load character types from selectedChar[0-3] variables
   - Initialize missiles and projectiles
   - Set frame counter and game state
-  - Load arena/level data
+  - Load arena data
 
 ### Playfield and Colors
 - Set Playfield and pfcolors:
   - **Color mode + NTSC/PAL**: color-per-row (different colors for each playfield row)
   - **B&W or SECAM**: white COLUPF (single color for entire playfield)
-- Playfield layout: 32×8 pixel data
-- Color data defined per arena in level data files
+- Playfield layout: 32×8 pixel data (mirrored 16×8)
+- Color data defined per arena in area data files (pfcolors)
 
 ### Game Cycle (Per Frame)
-1. **Console Switch Handling**: Check pause, reset, color/B&W toggle
+1. **Console Switch Handling**: Check select, reset, color/B&W/pause, right
+   difficulty (if CPU running player 2)
 2. **Player Input**: Handle all player inputs (with Quadtari multiplexing if 4-player)
+   **CPU Input**: Allow CPU players to contribute by controlling their own
+   sprite
 3. **Animation System**: Update character animations (10fps animation rate, 8-frame sequences)
 4. **Movement System**: Update player movement (full 60fps movement rate)
 5. **Physics**: Apply gravity (character-specific, some characters ignore gravity)
@@ -199,9 +214,11 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 ### Player Actions
 - **Walk Left/Right**: Horizontal movement based on character weight
 - **Jump**: Vertical movement, character-specific jump heights based on weight
-- **Guard**: Block incoming attacks, reduces damage (DOWN button or Guard button)
-- **Attack**: Melee or ranged attacks based on character type
+- **Guard**: Block incoming attacks, reduces damage (stick Down)
+- **Attack**: Melee or ranged attacks based on character type (Fire/B/I button)
 - **Special Moves**: Character-specific abilities (see Character Behaviors section)
+- Button C/II is Jump, so is stick Up.
+- Button III toggles game paused state, so does Game Select.
 
 ### Physics Systems
 - **Gravity**: Affects most characters (Frooty and Dragon of Storms ignore gravity - can fly)
@@ -228,7 +245,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 
 ### Game End Condition
 - Game ends when only one player remains (all others eliminated)
-- Eliminated players: Health reached 0, marked in PlayersEliminated bit flags
+- Eliminated players: Health reached 0, marked in playersEliminated bit flags
 - Transition to Winner Screen after last elimination
 
 ### Sound Effects (During Gameplay)
@@ -240,16 +257,18 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - No background music (gameplay uses SFX only)
 
 ### Console Switches (During Game Mode)
-- **Game Reset**: Instant hard reboot (calls ColdStart)
-- **Game Select**: No effect (only active in admin modes)
-- **Color/B&W Switch**: No effect (only active in admin modes)
+- **Game Reset**: Instant hard reboot (calls WarmStart)
+- **Game Select**: toggles pause
+- **Color/B&W Switch**: in "Color" position (PAL/NTSC only) pfcolors are
+  per-row, in "B&W" position the arena is white-on-black. Does not affect
+  players' colors.
 - **Pause Input**: Toggle pause state
   - **Select Switch**: Pressing Select toggles pause on/off
   - **Joy2b+ Button III**: Pressing Button III on Joy2b+ controllers (left or right port) toggles pause on/off
-  - **7800 Pause Button**: On Atari 7800, this is a momentary contact switch that affects playfield color mode
 - **7800 Pause Button Behavior**: 
   - On 7800, the pause button is a momentary contact switch that occupies the same hardware pin as the 2600 Color/B&W switch
-  - On 2600: Color/B&W switch is binary (color position vs B&W position) - determines if playfield uses color-per-row or single-white color
+  - On 2600: Color/B&W switch is binary (color position vs B&W position) - determines if playfield uses color-per-row 
+    or single-white color
   - On 7800: Pause button is momentary toggle - each press toggles between White-only mode and Color-Per-Row (pfcolor) mode
   - This affects ONLY the playfield color rendering, not pause state
   - Uses colorBWOverride variable to track toggle state
@@ -262,9 +281,25 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - Winner acknowledges victory by pressing a button
 - Return to title screen after acknowledgment
 
+- If a two-player game, only the winner appears.
+- For a human winner, music is Victory.
+- For a CPU winner, music is Game Over.
+
+- If a 3- or 4-player game, all but the last player
+  appear. The winner (last man standing) appears in the top-center.
+  The runner-up (last eliminated) appears at the mid-left.
+  The second runner-up (next-to-last eliminated) appears at the 
+  mid-right.
+  The last place (if 4 players) appears at the bottom-left.
+
+- Playfield pattern represents "steps" upon which the
+  characters are "standing"
+
 ---
 
 ## Character Behaviors
+
+- FIXME: Update character weights here from manual TeXinfo.
 
 ### Character 0: Bernie
 - **Weight**: Very Heavy (35)
@@ -399,18 +434,17 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 ### Character 14: Ursulo
 - **Weight**: Heavy (30)
 - **Attack Type**: Ranged
-- **Missile**: 2×2 pixels, ballistic arc (strongest throw)
+- **Missile**: no
 - **Special Moves**: 
   - Strongest throw
-  - Hardest to knock back
-  - Lower jump height due to weight
 
 ### Character 15: Shamone
 - **Weight**: Light (15)
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 4-frame lifetime)
 - **Special Moves**: 
-  - Special upward attack/jump: When attacking, simultaneously jumps upward (11 pixels) while performing melee attack
+  - Special upward attack/jump: When attacking, simultaneously jumps upward while performing
+    mel\e'e attack
   - Form switching: Pressing UP switches between Shamone (character 15) and Meth Hound (character 31)
   - Garden protector from Ducks Away
 - **Form Switching Details**:
@@ -418,7 +452,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
   - UP button toggles between forms
   - Both forms use same attacks, jumps, and guards
   - Meth Hound shares all gameplay mechanics with Shamone
-  - Jumping must be done via enhanced buttons (Genesis/Joy2b+ Button C/II) when playing as Shamone/MethHound
+  - Jumping must be done via attack buttons (Fire/B/I) when playing as Shamone/MethHound
 
 ---
 
@@ -428,3 +462,23 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
 - MaxArenaID = 15 (supporting 16 arenas, displayed as "01" through "16")
 - Use "Arena Select" not "Level Select"
 - Use "SelectedArena" not "SelectedLevel"
+
+## Memory
+
+- Reserve 1 full bank for sound effects
+- Reserve 1 full bank for music
+- Reserve 4 banks for character art
+- Reserve slots for 32 characters and 32 arenas
+
+## SCRAM Variable Access Rules
+
+SuperChip RAM (SCRAM) variables have separate read (`r000`-`r127`) and write (`w000`-`w127`) ports that map to the same physical 128-byte RAM. To ensure correct operation and code clarity:
+
+- **MUST use `_R` suffix for all read operations** (e.g., `selectedArena_R`)
+- **MUST use `_W` suffix for all write operations** (e.g., `selectedArena_W`)
+- **Convenience aliases are NOT permitted** - do not declare `dim selectedArena = w014` without `_R`/`_W` suffix
+- All SCRAM variable declarations must include both `_R` and `_W` variants
+- Code must explicitly use the appropriate port for each operation
+
+**Rationale**: SCRAM has separate read/write ports. Using convenience aliases makes it unclear which port is accessed, which can lead to bugs where writes are attempted via read ports or reads via write ports. Explicit `_R`/`_W` usage makes the code intent clear and prevents errors.
+

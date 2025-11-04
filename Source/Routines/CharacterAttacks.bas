@@ -10,10 +10,10 @@
           rem   3. Handles any character-specific attack logic
 
           rem Input for all attack routines:
-          rem   currentPlayer = attacker participant array index (0-3 maps to participants 1-4)
+          rem   temp1 = attacker player index (0-3)
 
           rem All other needed data (X, Y, facing direction, etc.) is looked up
-          rem from the player arrays using currentPlayer as the index
+          rem from the player arrays using temp1 as the index
 
           rem =================================================================
           rem BERNIE (Character 0) - Melee Attack (Both Directions)
@@ -21,7 +21,7 @@
 BernieAttack
           rem Bernie special attack hits both left AND right simultaneously
           rem This is unique - all other melee attacks only hit in facing direction
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           
           rem Attack in facing direction
@@ -29,14 +29,14 @@ BernieAttack
           
           rem Also attack in opposite direction
           rem Temporarily flip facing
-          let temp5 = playerState[currentPlayer] & 1 
+          let temp5 = playerState[temp1] & 1 
           rem Store original facing
-          if temp5 <> 0 then FaceLeft1
-          let playerState[currentPlayer] = playerState[currentPlayer] | 1 
+          if temp5 then FaceLeft1
+          let playerState[temp1] = playerState[temp1] | 1 
           rem Face right
           goto FacingDone1
 FaceLeft1
-          let playerState[currentPlayer] = playerState[currentPlayer] & ~ !1 
+          let playerState[temp1] = playerState[temp1] & 254 
           rem Face left
 FacingDone1
           
@@ -44,11 +44,11 @@ FacingDone1
           gosub PerformMeleeAttack
           
           rem Restore original facing
-          if temp5 <> 0 then RestoreFaceRight1
-          let playerState[currentPlayer] = playerState[currentPlayer] & ~ !1
+          if temp5 then RestoreFaceRight1
+          let playerState[temp1] = playerState[temp1] & 254
           goto RestoreFacingDone1
 RestoreFaceRight1
-          let playerState[currentPlayer] = playerState[currentPlayer] | 1
+          let playerState[temp1] = playerState[temp1] | 1
 RestoreFacingDone1
           
           return
@@ -57,7 +57,7 @@ RestoreFacingDone1
           rem CURLER (Character 1) - Ranged Attack (ground-based)
           rem =================================================================
 CurlerAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -65,17 +65,17 @@ CurlerAttack
           rem =================================================================
           rem DRAGON OF STORMS (Character 2) - Melee Attack
           rem =================================================================
-DragonOfStormsAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+DragonetAttack
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
 
           rem =================================================================
-          rem Zoe Ryen (Character 3) - Ranged Attack
+          rem ZOE RYEN (Character 3) - Ranged Attack
           rem =================================================================
 ZoeRyenAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -84,7 +84,7 @@ ZoeRyenAttack
           rem FAT TONY (Character 4) - Melee Attack
           rem =================================================================
 FatTonyAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -93,7 +93,7 @@ FatTonyAttack
           rem MEGAX (Character 5) - Ranged Attack
           rem =================================================================
 MegaxAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -103,8 +103,23 @@ MegaxAttack
           rem =================================================================
           rem Harpy attack is a downward diagonal projectile in facing direction
 HarpyAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
+          
+          rem Check if Harpy is airborne for diving attack
+          rem If jumping bit is set or Y position is above ground, Harpy is airborne
+          if (playerState[temp1] & 4) then HarpyDive
+          rem Jumping bit set, airborne
+          let temp5 = playerY[temp1]
+          if temp5 < 60 then HarpyDive
+          rem Above ground level, airborne
+          goto HarpyNotDiving
+HarpyDive
+          rem Set dive mode flag for increased damage and normal gravity
+          let characterStateFlags[temp1] = characterStateFlags[temp1] | 4
+          rem Set bit 2 (dive mode)
+HarpyNotDiving
+          
           gosub PerformRangedAttack
           rem Spawns diagonal downward missile (velocity set in character data)
           return
@@ -113,25 +128,32 @@ HarpyAttack
           rem KNIGHT GUY (Character 7) - Ranged Attack
           rem =================================================================
 KnightGuyAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
 
           rem =================================================================
-          rem FROOTY (Character 8) - Ranged Attack
+          rem FROOTY (Character 8) - Ranged Attack with Magical Sparkles
           rem =================================================================
+          rem Frooty fires magical sparkles from her lollipop weapon
+          rem Sparkles are implemented via missile sprite graphics
+          rem Multi-hit or spread patterns can use multiple sparkle sprites
+          rem Sprite data should show sparkle particle effects
 FrootyAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
+          rem Magical sparkles: Visual effect handled by missile sprite graphics
+          rem The missile sprite for Frooty (character 8) should display sparkle particles
+          rem Sprite generation via SkylineTool should create sparkle graphics
           return
 
           rem =================================================================
           rem NEFERTEM (Character 9) - Melee Attack
           rem =================================================================
 NefertemAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -140,7 +162,7 @@ NefertemAttack
           rem NINJISH GUY (Character 10) - Ranged Attack (small bullet)
           rem =================================================================
 NinjishGuyAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -149,7 +171,7 @@ NinjishGuyAttack
           rem PORK CHOP (Character 11) - Melee Attack
           rem =================================================================
 PorkChopAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -158,7 +180,7 @@ PorkChopAttack
           rem RADISH GOBLIN (Character 12) - Melee Attack
           rem =================================================================
 RadishGoblinAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -167,7 +189,7 @@ RadishGoblinAttack
           rem ROBO TITO (Character 13) - Melee Attack
           rem =================================================================
 RoboTitoAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -176,7 +198,7 @@ RoboTitoAttack
           rem URSULO (Character 14) - Ranged Attack
           rem =================================================================
 UrsuloAttack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformRangedAttack
           return
@@ -187,13 +209,13 @@ UrsuloAttack
           rem Shamone special attack: jumps while attacking simultaneously
 ShamoneAttack
           rem First, execute the jump
-          let playerY[currentPlayer] = playerY[currentPlayer] - 11 
+          let playerY[temp1] = playerY[temp1] - 11 
           rem Light character, good jump
-          let playerState[currentPlayer] = playerState[currentPlayer] | 4
+          let playerState[temp1] = playerState[temp1] | (1 << PlayerStateJumping)
           rem Set jumping flag
           
           rem Then execute the attack
-          let playerState[currentPlayer] = (playerState[currentPlayer] & %00001111) | (14 << 4) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           gosub PerformMeleeAttack
           return
@@ -204,18 +226,18 @@ ShamoneAttack
           rem Routes to the appropriate character attack subroutine based on character type
 
           rem INPUT:
-          rem   currentPlayer = attacker participant array index (0-3 maps to participants 1-4)
+          rem   temp1 = attacker player index (0-3)
 
-          rem All character attack routines will look up playerX[currentPlayer], playerY[currentPlayer],
-          rem playerState[currentPlayer], etc. as needed.
+          rem All character attack routines will look up playerX[temp1], playerY[temp1],
+          rem playerState[temp1], etc. as needed.
 
 DispatchCharacterAttack
           rem Get character type for this player using direct array access
-          rem currentPlayer contains player index (0-3)
-          let temp2 = playerChar[currentPlayer]
+          rem temp1 contains player index (0-3)
+          let temp2 = playerChar[temp1]
           rem Map MethHound (31) to ShamoneAttack handler
-          if temp2 = 31 then temp2 = 15
+          if temp2 = 31 then temp2 = ActionAttackRecovery
           rem Use Shamone attack for MethHound
-          on temp2 goto BernieAttack, CurlerAttack, DragonOfStormsAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          on temp2 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
           rem Default to Bernie attack if invalid character
           goto BernieAttack

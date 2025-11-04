@@ -14,7 +14,7 @@
           rem   - Frame counter and game state
           rem   - Level data
 
-          rem STATE FLAG DEFINITIONS (in playerState):
+          rem STATE FLAG DEFINITIONS (in PlayerState):
           rem   Bit 0: Facing (1 = right, 0 = left)
           rem   Bit 1: Guarding
           rem   Bit 2: Jumping
@@ -34,114 +34,160 @@ BeginGameLoop
           rem SuperChip variables var0-var15 available in gameplay
           
           rem Initialize player positions
-          rem Note: If coming from Falling Animation, positions are already set at top of screen
-          rem Only set default positions if not already initialized (check if Y is 0, which shouldn't happen)
-          rem For now, preserve existing positions set by falling animation
-          rem Falling animation sets players at Y=10 at quadrant X positions (40 or 120)
-          rem Game mode gravity will handle falling from this position
+          rem 2-Player Game: P1 at 1/3 width (53), P2 at 2/3 width (107)
+          rem 4-Player Game: P1 at 1/5 (32), P3 at 2/5 (64), P4 at 3/5 (96), P2 at 4/5 (128)
+          rem All players start at second row from top (Y=24, center of row 1)
+          rem Check if 4-player mode (Quadtari detected)
+          if ControllerStatus & SetQuadtariDetected then Init4PlayerPositions
+          
+          rem 2-player mode positions
+          let PlayerX[0] = 53 : PlayerY[0] = 24
+          let PlayerX[1] = 107 : PlayerY[1] = 24
+          let PlayerX[2] = 53 : PlayerY[2] = 24
+          rem Players 3 & 4 use same as P1/P2 if not in 4-player mode
+          let PlayerX[3] = 107 : PlayerY[3] = 24
+          goto InitPositionsDone
+          
+Init4PlayerPositions
+          rem 4-player mode positions
+          let PlayerX[0] = 32 : PlayerY[0] = 24
+          rem Player 1: 1/5 width
+          let PlayerX[2] = 64 : PlayerY[2] = 24
+          rem Player 3: 2/5 width
+          let PlayerX[3] = 96 : PlayerY[3] = 24
+          rem Player 4: 3/5 width
+          let PlayerX[1] = 128 : PlayerY[1] = 24
+          rem Player 2: 4/5 width
+          
+InitPositionsDone
           
           rem Initialize player states (facing direction)
-          let playerState[0] = 1
+          let PlayerState[0] = 1
           rem Player 1 facing right
-          let playerState[1] = 0
+          let PlayerState[1] = 0
           rem Player 2 facing left
-          let playerState[2] = 1
+          let PlayerState[2] = 1
           rem Player 3 facing right
-          let playerState[3] = 0
+          let PlayerState[3] = 0
           rem Player 4 facing left
           
           rem Initialize player health (apply handicap if selected)
-          rem playerLocked value: 0=unlocked, 1=normal (100% health), 2=handicap (75% health)
-          if playerLocked[0] = 2 then playerHealth[0] = 75 : goto Player0HealthSet
-          let playerHealth[0] = 100
+          rem PlayerLocked value: 0=unlocked, 1=normal (100% health), 2=handicap (75% health)
+          if PlayerLocked[0] = 2 then PlayerHealth[0] = PlayerHealthHandicap
+          if PlayerLocked[0] = 2 then Player0HealthSet
+          let PlayerHealth[0] = PlayerHealthMax
 Player0HealthSet
           
-          if playerLocked[1] = 2 then playerHealth[1] = 75 : goto Player1HealthSet
-          let playerHealth[1] = 100
+          if PlayerLocked[1] = 2 then PlayerHealth[1] = PlayerHealthHandicap
+          if PlayerLocked[1] = 2 then Player1HealthSet
+          let PlayerHealth[1] = PlayerHealthMax
 Player1HealthSet
           
-          if playerLocked[2] = 2 then playerHealth[2] = 75 : goto Player2HealthSet
-          let playerHealth[2] = 100
+          if PlayerLocked[2] = 2 then PlayerHealth[2] = PlayerHealthHandicap
+          if PlayerLocked[2] = 2 then Player2HealthSet
+          let PlayerHealth[2] = PlayerHealthMax
 Player2HealthSet
           
-          if playerLocked[3] = 2 then playerHealth[3] = 75 : goto Player3HealthSet
-          let playerHealth[3] = 100
+          if PlayerLocked[3] = 2 then PlayerHealth[3] = PlayerHealthHandicap
+          if PlayerLocked[3] = 2 then Player3HealthSet
+          let PlayerHealth[3] = PlayerHealthMax
 Player3HealthSet
           
           rem Initialize player timers
-          let playerTimers[0] = 0
-          let playerTimers[1] = 0
-          let playerTimers[2] = 0
-          let playerTimers[3] = 0
+          let PlayerTimers[0] = 0
+          let PlayerTimers[1] = 0
+          let PlayerTimers[2] = 0
+          let PlayerTimers[3] = 0
           
-          rem Initialize player momentum
-          let playerMomentumX[0] = 0
-          let playerMomentumX[1] = 0
-          let playerMomentumX[2] = 0
-          let playerMomentumX[3] = 0
+          rem Initialize player velocity
+          let playerVelocityX[0] = 0
+          let playerVelocityX[1] = 0
+          let playerVelocityX[2] = 0
+          let playerVelocityX[3] = 0
+          rem Initialize subpixel velocities to zero
+          let playerVelocitySubpixelX[0] = 0 : let playerVelocitySubpixelY[0] = 0
+          let playerVelocitySubpixelX[1] = 0 : let playerVelocitySubpixelY[1] = 0
+          let playerVelocitySubpixelX[2] = 0 : let playerVelocitySubpixelY[2] = 0
+          let playerVelocitySubpixelX[3] = 0 : let playerVelocitySubpixelY[3] = 0
+          rem Initialize subpixel positions to zero
+          let playerSubpixelX[0] = 0 : let playerSubpixelY[0] = 0
+          let playerSubpixelX[1] = 0 : let playerSubpixelY[1] = 0
+          let playerSubpixelX[2] = 0 : let playerSubpixelY[2] = 0
+          let playerSubpixelX[3] = 0 : let playerSubpixelY[3] = 0
           
           rem Initialize player damage values
-          let playerDamage[0] = 22
-          let playerDamage[1] = 22
-          let playerDamage[2] = 22
-          let playerDamage[3] = 22
+          let PlayerDamage[0] = 22
+          let PlayerDamage[1] = 22
+          let PlayerDamage[2] = 22
+          let PlayerDamage[3] = 22
           
           rem Set character types from character select
-          let playerChar[0] = selectedChar1
-          let playerChar[1] = selectedChar2
-          let playerChar[2] = selectedChar3
-          let playerChar[3] = selectedChar4
+          let PlayerChar[0] = SelectedChar1
+          let PlayerChar[1] = SelectedChar2
+          let PlayerChar[2] = selectedChar3
+          let PlayerChar[3] = selectedChar4
 
           rem Update Players34Active flag based on character selections
           rem Flag is used for missile multiplexing (only multiplex when players 3 or 4 are active)
-          let controllerStatus = controllerStatus & ClearPlayers34Active
+          let ControllerStatus  = ControllerStatus & ClearPlayers34Active
           rem Clear flag first
-          if selectedChar3 <> 255 then controllerStatus = controllerStatus | SetPlayers34Active
+          if !(SelectedChar3 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active
           rem Set if Player 3 selected
-          if selectedChar4 <> 255 then controllerStatus = controllerStatus | SetPlayers34Active
+          if !(SelectedChar4 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active
           rem Set if Player 4 selected
 
           rem Initialize missiles
-          rem missileActive uses bit flags: bit 0 = Participant 1 (array [0]), bit 1 = Participant 2 (array [1]), bit 2 = Participant 3 (array [2]), bit 3 = Participant 4 (array [3])
-          let missileActive = 0
+          rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
+          let MissileActive  = 0
 
           rem Initialize elimination system
-          let playersEliminated = 0  
+          let PlayersEliminated  = 0
           rem No players eliminated at start
-          let playersRemaining = 0   
+          let PlayersRemaining  = 0
           rem Will be calculated
-          let gameEndTimer = 0       
+          let GameEndTimer  = 0
           rem No game end countdown
-          let eliminationCounter = 0 
+          let EliminationCounter  = 0
           rem Reset elimination order counter
           
           rem Initialize elimination order tracking
-          let eliminationOrder[0] = 0
-          let eliminationOrder[1] = 0  
-          let eliminationOrder[2] = 0
-          let eliminationOrder[3] = 0
+          let EliminationOrder[0] = 0
+          let EliminationOrder[1] = 0
+          let EliminationOrder[2] = 0
+          let EliminationOrder[3] = 0
           
           rem Initialize win screen variables
-          let winnerPlayerIndex = 255 
+          let WinnerPlayerIndex  = 255
           rem No winner yet
-          let displayRank = 0         
+          let DisplayRank  = 0
           rem No rank being displayed  
-          let winScreenTimer = 0      
+          let WinScreenTimer  = 0
           rem Reset win screen timer
 
           rem Count initial players
-          if selectedChar1 <> 255 then playersRemaining = playersRemaining + 1
-          if selectedChar2 <> 255 then playersRemaining = playersRemaining + 1  
-          if selectedChar3 <> 255 then playersRemaining = playersRemaining + 1
-          if selectedChar4 <> 255 then playersRemaining = playersRemaining + 1
+          if !(SelectedChar1 = 255) then let PlayersRemaining = PlayersRemaining + 1
+          if !(SelectedChar2 = 255) then let PlayersRemaining = PlayersRemaining + 1  
+          if !(selectedChar3 = 255) then let PlayersRemaining = PlayersRemaining + 1
+          if !(selectedChar4 = 255) then let PlayersRemaining = PlayersRemaining + 1
 
           rem Initialize frame counter
           frame = 0
 
           rem Initialize game state
-          let gameState = 0
+          let GameState  = 0
           rem 0 = normal play, 1 = paused, 2 = game ending
           
+          rem Initialize player sprite NUSIZ registers (double width)
+          rem NUSIZ = 5: double width, single copy
+          NUSIZ0 = 5
+          rem Player 0 (Player 1)
+          _NUSIZ1 = 5
+          rem Player 1 (Player 2) - multisprite kernel uses _NUSIZ1
+          NUSIZ2 = 5
+          rem Player 2 (Player 3) - multisprite kernel
+          NUSIZ3 = 5
+          rem Player 3 (Player 4) - multisprite kernel
+
           rem Initialize health bars
           gosub bank8 InitializeHealthBars
 
@@ -151,7 +197,6 @@ Player3HealthSet
           rem TODO: Replace def statements with regular subroutines
           rem batariBASIC may not support def statements with parameters
 
-          rem Setup complete - return to ChangeGameMode
-          rem MainLoop will dispatch to GameMainLoop each frame
-          return
+          rem Enter main loop
+          goto GameMainLoop
 

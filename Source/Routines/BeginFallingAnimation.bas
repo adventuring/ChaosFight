@@ -1,73 +1,74 @@
           rem ChaosFight - Source/Routines/BeginFallingAnimation.bas
-          rem Setup routine for Falling Animation. Sets initial state only.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          
+          rem =================================================================
+          rem BEGIN FALLING ANIMATION
+          rem =================================================================
+          rem Setup routine for Falling In animation.
+          rem Sets players in quadrant starting positions and initializes state.
+          rem
+          rem Quadrant positions:
+          rem   - Top-left: Player 1 (selectedChar1)
+          rem   - Top-right: Player 2 (selectedChar2)
+          rem   - Bottom-left: Player 3 (selectedChar3, if active)
+          rem   - Bottom-right: Player 4 (selectedChar4, if active)
+          rem
+          rem After animation completes, players will be at row 2 positions
+          rem and transition to Game Mode.
+          rem =================================================================
 
 BeginFallingAnimation
-          rem Initialize Falling Animation mode
-          rem Set animation state
+          rem Initialize animation state
           let fallFrame = 0
           let fallSpeed = 2
           let fallComplete = 0
-          
-          rem Count active players for falling animation
-          rem Start with Players 1 and 2 (always active if characters selected)
           let activePlayers = 0
-          if selectedChar1 <> 255 then let activePlayers = activePlayers + 1
-          if selectedChar2 <> 255 then let activePlayers = activePlayers + 1
           
-          rem Count Players 3 and 4 if Quadtari detected and characters selected
-          if controllerStatus & SetQuadtariDetected then goto BeginFallingCountQuadtari
-          goto BeginFallingCountDone
-BeginFallingCountQuadtari
-          if selectedChar3 <> 255 then let activePlayers = activePlayers + 1
-          if selectedChar4 <> 255 then let activePlayers = activePlayers + 1
-BeginFallingCountDone
+          rem Set game screen layout (32×8 for playfield scanning)
+          gosub bank8 SetGameScreenLayout
           
           rem Set background color
           let COLUBK = ColGray(0)
           
-          rem Define quadrant starting positions for all players
-          rem Quadrants: Top-left, Top-right, Bottom-left, Bottom-right
-          rem Players start at their quadrant positions, then move to top of screen
-          rem Participant 1 (array [0]) → Top-left quadrant
-          if selectedChar1 <> 255 then
-                    let playerX[0] = 40
-          rem Top-left X (centered in left half)
-                    let playerY[0] = 100
-          rem Start at quadrant Y position (will move to top)
-          end
+          rem Initialize player positions in quadrants
+          rem Player 1: Top-left quadrant (unless "NO")
+          if selectedChar1 = NoCharacter then SkipPlayer1Init
+          let playerX[0] = 16
+          rem Top-left X position
+          let playerY[0] = 8
+          rem Top-left Y position (near top)
+          let activePlayers = activePlayers + 1
+SkipPlayer1Init
           
-          rem Participant 2 (array [1]) → Top-right quadrant
-          if selectedChar2 <> 255 then
-                    let playerX[1] = 120
-          rem Top-right X (centered in right half)
-                    let playerY[1] = 100
-          rem Start at quadrant Y position (will move to top)
-          end
+          rem Player 2: Top-right quadrant (unless "NO")
+          if selectedChar2 = NoCharacter then SkipPlayer2Init
+          let playerX[1] = 144
+          rem Top-right X position
+          let playerY[1] = 8
+          rem Top-right Y position (near top)
+          let activePlayers = activePlayers + 1
+SkipPlayer2Init
           
-          rem Participant 3 (array [2]) → Bottom-left quadrant (4-player mode only)
-          if controllerStatus & SetQuadtariDetected then goto BeginFallingSetPlayer3
-          goto BeginFallingSetPlayer3Done
-BeginFallingSetPlayer3
-          if selectedChar3 <> 255 then
-                    let playerX[2] = 40
-          rem Bottom-left X (centered in left half)
-                    let playerY[2] = 150
-          rem Start at quadrant Y position (will move to top)
-          end
-BeginFallingSetPlayer3Done
+          rem Player 3: Bottom-left quadrant (if Quadtari and not "NO")
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3Init
+          if selectedChar3 = NoCharacter then SkipPlayer3Init
+          let playerX[2] = 16
+          rem Bottom-left X position
+          let playerY[2] = 80
+          rem Bottom-left Y position (near bottom)
+          let activePlayers = activePlayers + 1
+SkipPlayer3Init
           
-          rem Participant 4 (array [3]) → Bottom-right quadrant (4-player mode only)
-          if controllerStatus & SetQuadtariDetected then goto BeginFallingSetPlayer4
-          goto BeginFallingSetPlayer4Done
-BeginFallingSetPlayer4
-          if selectedChar4 <> 255 then
-                    let playerX[3] = 120
-          rem Bottom-right X (centered in right half)
-                    let playerY[3] = 150
-          rem Start at quadrant Y position (will move to top)
-          end
-BeginFallingSetPlayer4Done
-
+          rem Player 4: Bottom-right quadrant (if Quadtari and not "NO")
+          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer4Init
+          if selectedChar4 = NoCharacter then SkipPlayer4Init
+          let playerX[3] = 144
+          rem Bottom-right X position
+          let playerY[3] = 80
+          rem Bottom-right Y position (near bottom)
+          let activePlayers = activePlayers + 1
+SkipPlayer4Init
+          
           return
 
 

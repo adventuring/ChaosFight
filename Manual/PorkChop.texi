@@ -1,7 +1,7 @@
 @subsubsection Pork Chop
 @display
 @group
-    Weight: Heavy
+    Weight: 113.40 kg (250.0 lbs)
     Attack: Melée
     Special: Standard heavy melée fighter, diverse work experience
     Career History: Fairy employee, bank guard, sewer cleaner, curling athlete

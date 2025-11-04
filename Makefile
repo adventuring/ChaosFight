@@ -28,7 +28,7 @@ STELLA = stella
 GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm
 
 # Ready system
-READYDATE = 20251028
+READYDATE = 20251104
 READYFILE = .#ready.$(READYDATE)
 
 # SkylineTool build rules
@@ -60,30 +60,30 @@ bin/buildapp:
 
 # Output files
 GAME = ChaosFight
-ROM = Dist/$(GAME).NTSC.a26
+GAMEYEAR = 25
+ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
-# Assembly files
-ALL_SOURCES = $(shell find Source -name \*.bas)
+# Assembly files (exclude preprocessed and generated files)
+ALL_SOURCES = $(shell find Source -name \*.bas -not -path "Source/Generated/*")
 
-# Phony targets
-.PHONY: all clean emu game help doc nowready ready
+.PHONY: all clean emu game help doc characters fonts sprites nowready ready bitmaps
 
 # Build game
 game: \
-	Dist/$(GAME).NTSC.a26 \
-	Dist/$(GAME).PAL.a26 \
-	Dist/$(GAME).SECAM.a26 \
-	Dist/$(GAME).NTSC.sym \
-	Dist/$(GAME).PAL.sym \
-	Dist/$(GAME).SECAM.sym \
-	Dist/$(GAME).NTSC.lst \
-	Dist/$(GAME).PAL.lst \
-	Dist/$(GAME).SECAM.lst \
-	Dist/$(GAME).NTSC.pro \
-	Dist/$(GAME).PAL.pro \
-	Dist/$(GAME).SECAM.pro
+	Dist/$(GAME)$(GAMEYEAR).NTSC.a26 \
+	Dist/$(GAME)$(GAMEYEAR).PAL.a26 \
+	Dist/$(GAME)$(GAMEYEAR).SECAM.a26 \
+	Dist/$(GAME)$(GAMEYEAR).NTSC.sym \
+	Dist/$(GAME)$(GAMEYEAR).PAL.sym \
+	Dist/$(GAME)$(GAMEYEAR).SECAM.sym \
+	Dist/$(GAME)$(GAMEYEAR).NTSC.lst \
+	Dist/$(GAME)$(GAMEYEAR).PAL.lst \
+	Dist/$(GAME)$(GAMEYEAR).SECAM.lst \
+	Dist/$(GAME)$(GAMEYEAR).NTSC.pro \
+	Dist/$(GAME)$(GAMEYEAR).PAL.pro \
+	Dist/$(GAME)$(GAMEYEAR).SECAM.pro
 
-doc: Dist/$(GAME).pdf Dist/$(GAME).html
+doc: Dist/$(GAME)$(GAMEYEAR).pdf Dist/$(GAME)$(GAMEYEAR).html
 
 # Character sprite sheet names (32 characters: 16 main + 16 future)
 CHARACTER_NAMES = \
@@ -104,22 +104,26 @@ FONT_NAMES = Numbers
 # Music names (MuseScore files)
 MUSIC_NAMES = AtariToday Interworldly Victory GameOver
 
-# Character sprite dependencies: BAS depends on PNG, PNG depends on XCF
-# These dependencies are declared in the pattern rules below, but we list them here
-# to ensure proper dependency tracking. The actual rules are:
-# - Source/Generated/$(char).bas depends on Source/Art/$(char).png
-# - Source/Art/$(char).png depends on Source/Art/$(char).xcf
+# Game-based character theme songs
+GAME_THEME_SONGS = Grizzards Phantasia EXO OCascadia MagicalFairyForce Bernie Havoc Harpy LowRes Bolero RoboTito DucksAway SongOfTheBear
 
-# Bitmap dependencies: .s depends on PNG, PNG depends on XCF
-# - Source/Generated/Art.$(bitmap).s depends on Source/Art/$(bitmap).png
-# - Source/Art/$(bitmap).png depends on Source/Art/$(bitmap).xcf
+# Sound effect names (MIDI files)
+SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
+	SoundMenuNavigate SoundMenuSelect SoundSpecialMove SoundPowerup \
+	SoundLandingSafe SoundLandingDamage
 
-# Font dependencies: BAS depends on PNG, PNG depends on XCF (if XCF exists)
-# - Source/Generated/$(font).bas depends on Source/Art/$(font).png
+# Build character assets
+characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
 
-# Music dependencies: BAS depends on MIDI, MIDI depends on MSCZ
-# - Source/Generated/Song.$(song).$(arch).bas depends on Source/Songs/$(song).midi
-# - Source/Songs/$(song).midi depends on Source/Songs/$(song).mscz
+# Build bitmap assets (48×42 for titlescreen kernel on admin screens)
+bitmaps: $(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+
+# Build font assets (fonts are universal, not region-specific)
+fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
+
+# Build music assets
+music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas)) \
+       $(foreach song,$(GAME_THEME_SONGS),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz
@@ -159,25 +163,42 @@ MUSIC_NAMES = AtariToday Interworldly Victory GameOver
 	fi
 
 # Convert MIDI to batariBASIC music data for NTSC (60Hz)
-# BAS depends on MIDI (which depends on MSCZ via pattern rule)
+# MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
-	@echo "Converting music $< to $@ for NTSC..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+        @echo "Converting music $< to $@ for NTSC..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Convert MIDI to batariBASIC music data for PAL (50Hz)
-# BAS depends on MIDI (which depends on MSCZ via pattern rule)
+# MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
-	@echo "Converting music $< to $@ for PAL..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+        @echo "Converting music $< to $@ for PAL..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 # Convert MIDI to batariBASIC music data for SECAM (50Hz)
-# BAS depends on MIDI (which depends on MSCZ via pattern rule)
+# MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 Source/Generated/Song.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
-	@echo "Converting music $< to $@ for SECAM..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+        @echo "Converting music $< to $@ for SECAM..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+
+# Sound effect files use Sound. prefix instead of Song. prefix
+# Convert MIDI to batariBASIC sound data for NTSC (60Hz)
+# MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
+Source/Generated/Sound.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
+        @echo "Converting sound $< to $@ for NTSC..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+
+# Convert MIDI to batariBASIC sound data for PAL (50Hz)
+# MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
+Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
+        @echo "Converting sound $< to $@ for PAL..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+
+# SECAM uses PAL sound files (not generated separately)
 
 
 
@@ -199,17 +220,21 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
 
 # Generate character sprite files from PNG using chaos character compiler
-# BAS depends on PNG (which depends on XCF via pattern rule)
-$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool
-	@echo "Generating character sprite data for $*..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-chaos-character "$@" "$<"
+# PNG files are generated from XCF via %.png: %.xcf pattern rule
+$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool                                      
+        @echo "Generating character sprite data for $*..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-chaos-character "$@" "$<"
 
 # Convert Numbers PNG to batariBASIC data using SkylineTool
+# PNG files are generated from XCF via %.png: %.xcf pattern rule
 Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
-	@echo "Converting Numbers font $< to $@..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
+        @echo "Converting Numbers font $< to $@..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
+
+# Fonts are universal (not TV-specific)
+# Source/Generated/Numbers.bas is used directly by FontRendering.bas
 
 # Convert 48×42 PNG to titlescreen kernel assembly format
 # Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height
@@ -221,20 +246,21 @@ Source/Art/Interworldly.png: Source/Art/Interworldly.xcf
 Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
+# PNG files are generated from XCF via %.png: %.xcf pattern rule
 Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png bin/skyline-tool
-	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+        @echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 Source/Generated/Art.Interworldly.s: Source/Art/Interworldly.png bin/skyline-tool
-	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+        @echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png bin/skyline-tool
-	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+        @echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
+        mkdir -p Source/Generated
+        bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf
@@ -247,28 +273,21 @@ Source/Generated/Font.bas: Source/Art/Font.png
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
-# Preprocessor inputs depend on all sources and generated assets
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
-	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
-	$(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
-	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
-	$(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
 
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
-	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
-	$(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
 
@@ -296,7 +315,13 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Generated/Numbers.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
 
 # Step 1: Preprocess .bas → .preprocessed.bas
 Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)
@@ -307,7 +332,7 @@ Source/Generated/$(GAME).PAL.preprocessed.bas: Source/Generated/$(GAME).PAL.bas 
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
-Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.bas $(BUILD_DEPS) Source/Common/AssemblyConfig.SECAM.s
+Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.bas $(BUILD_DEPS)
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
@@ -330,37 +355,30 @@ Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Source/Common
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
 
 # Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
-# Copy our custom .asm files to current directory so postprocess uses them instead of batariBASIC defaults
-Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s Object/includes.bB
+Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s
 	mkdir -p Source/Generated
-	cp Object/includes.bB . || true
-	cp Source/Common/*.asm . 2>/dev/null || true
 	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
 
-Source/Generated/$(GAME).PAL.s: Object/bB.PAL.s Object/includes.bB
+Source/Generated/$(GAME).PAL.s: Object/bB.PAL.s
 	mkdir -p Source/Generated
-	cp Object/includes.bB . || true
-	cp Source/Common/*.asm . 2>/dev/null || true
 	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
 
-Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s Object/includes.bB
+Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
 	mkdir -p Source/Generated
-	cp Object/includes.bB . || true
-	cp Source/Common/*.asm . 2>/dev/null || true
 	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
-Dist/$(GAME).NTSC.a26 Dist/$(GAME).NTSC.sym Dist/$(GAME).NTSC.lst: Source/Generated/$(GAME).NTSC.s
+Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME).NTSC.s
 	mkdir -p Dist
-	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).NTSC.lst -sDist/$(GAME).NTSC.sym -oDist/$(GAME).NTSC.a26
+	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).NTSC.lst -sDist/$(GAME)$(GAMEYEAR).NTSC.sym -oDist/$(GAME)$(GAMEYEAR).NTSC.a26
 
-Dist/$(GAME).PAL.a26 Dist/$(GAME).PAL.sym Dist/$(GAME).PAL.lst: Source/Generated/$(GAME).PAL.s
+Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME).PAL.s
 	mkdir -p Dist
-	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).PAL.lst -sDist/$(GAME).PAL.sym -oDist/$(GAME).PAL.a26
+	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).PAL.lst -sDist/$(GAME)$(GAMEYEAR).PAL.sym -oDist/$(GAME)$(GAMEYEAR).PAL.a26
 
-Dist/$(GAME).SECAM.a26 Dist/$(GAME).SECAM.sym Dist/$(GAME).SECAM.lst: Source/Generated/$(GAME).SECAM.s
+Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME).SECAM.s
 	mkdir -p Dist
-	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME).SECAM.lst -sDist/$(GAME).SECAM.sym -oDist/$(GAME).SECAM.a26
+	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).SECAM.lst -sDist/$(GAME)$(GAMEYEAR).SECAM.sym -oDist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator
 emu: $(ROM)
@@ -393,6 +411,9 @@ help:
 	@echo "  all          - Build game and documentation (default)"
 	@echo "  game         - Build game ROMs for all TV systems"
 	@echo "  doc          - Build PDF and HTML manuals"
+	@echo "  characters   - Generate character sprite data"
+	@echo "  playfields   - Generate playfield/screen data"
+	@echo "  fonts        - Generate font data"
 	@echo "  clean        - Remove generated ROM files"
 	@echo "  emu          - Build and run in Stella emulator"
 	@echo "  gimp-export  - Install GIMP export script"
@@ -400,36 +421,31 @@ help:
 	@echo "  nowready     - Check if development environment is ready"
 	@echo "  help         - Show this help message"
 	@echo ""
-	@echo "Dependency chain:"
-	@echo "  XCF → PNG → BAS/S (characters, bitmaps, fonts)"
-	@echo "  MSCZ → MIDI → BAS (music)"
-	@echo "  Sources + Generated assets → Preprocessed → Compiled → ROMs"
-	@echo ""
 	@echo "Output files:"
-	@echo "  Dist/ChaosFight-Manual.pdf  - Game manual (PDF)"
-	@echo "  Dist/ChaosFight-Manual.html - Game manual (HTML)"
-	@echo "  Dist/ChaosFight.NTSC.a26    - NTSC ROM"
-	@echo "  Dist/ChaosFight.PAL.a26     - PAL ROM"
-	@echo "  Dist/ChaosFight.SECAM.a26   - SECAM ROM"
+	@echo "  Dist/ChaosFight25.pdf        - Game manual (PDF)"
+	@echo "  Dist/ChaosFight25.html       - Game manual (HTML)"
+	@echo "  Dist/ChaosFight25.NTSC.a26   - NTSC ROM"
+	@echo "  Dist/ChaosFight25.PAL.a26    - PAL ROM"
+	@echo "  Dist/ChaosFight25.SECAM.a26  - SECAM ROM"
 
 # Generate Stella .pro files
-Dist/$(GAME).NTSC.pro: Source/$(GAME).pro Dist/$(GAME).NTSC.a26
+Dist/$(GAME)$(GAMEYEAR).NTSC.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 	sed $< -e s/@@TV@@/NTSC/g \
-		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).NTSC.a26 | cut -d\  -f1)/g > $@
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).NTSC.a26 | cut -d\  -f1)/g > $@
 
-Dist/$(GAME).PAL.pro: Source/$(GAME).pro Dist/$(GAME).PAL.a26
+Dist/$(GAME)$(GAMEYEAR).PAL.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).PAL.a26
 	sed $< -e s/@@TV@@/PAL/g \
-		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).PAL.a26 | cut -d\  -f1)/g > $@
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).PAL.a26 | cut -d\  -f1)/g > $@
 
-Dist/$(GAME).SECAM.pro: Source/$(GAME).pro Dist/$(GAME).SECAM.a26
+Dist/$(GAME)$(GAMEYEAR).SECAM.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 	sed $< -e s/@@TV@@/SECAM/g \
-		-e s/@@MD5@@/$$(md5sum Dist/$(GAME).SECAM.a26 | cut -d\  -f1)/g > $@
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).SECAM.a26 | cut -d\  -f1)/g > $@
 
 # Documentation generation
-Dist/$(GAME).pdf: Manual/ChaosFight.texi
+Dist/$(GAME)$(GAMEYEAR).pdf: Manual/ChaosFight.texi
 	makeinfo --pdf --output=$@ $<
 
-Dist/$(GAME).html: Manual/ChaosFight.texi
+Dist/$(GAME)$(GAMEYEAR).html: Manual/ChaosFight.texi
 	makeinfo --html --output=$@ $<
 
 nowready: $(READYFILE)

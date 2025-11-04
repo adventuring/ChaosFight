@@ -1,163 +1,109 @@
 ; This file contains variable mapping and other information for the current project.
 
-PlayerColorsDark_length = .skipL01689-PlayerColorsDark 
+ShamoneFrameMap_length = .skipL0923-ShamoneFrameMap 
  
-PlayerColorsLight_length = .skipL01687-PlayerColorsLight 
+ShamoneFrames_length = .skipL0922-ShamoneFrames 
  
-NoSprite_length = .skipL01522-NoSprite 
+UrsuloFrameMap_length = .skipL0917-UrsuloFrameMap 
  
-CPUSprite_length = .skipL01521-CPUSprite 
+UrsuloFrames_length = .skipL0916-UrsuloFrames 
  
-MethHoundFrameMap_length = .skipL0861-MethHoundFrameMap 
+RoboTitoFrameMap_length = .skipL0911-RoboTitoFrameMap 
  
-MethHoundFrames_length = .skipL0860-MethHoundFrames 
+RoboTitoFrames_length = .skipL0910-RoboTitoFrames 
  
-Character30FrameMap_length = .skipL0855-Character30FrameMap 
+RadishGoblinFrameMap_length = .skipL0905-RadishGoblinFrameMap 
  
-Character30Frames_length = .skipL0854-Character30Frames 
+RadishGoblinFrames_length = .skipL0904-RadishGoblinFrames 
  
-Character29FrameMap_length = .skipL0849-Character29FrameMap 
+PorkChopFrameMap_length = .skipL0899-PorkChopFrameMap 
  
-Character29Frames_length = .skipL0848-Character29Frames 
+PorkChopFrames_length = .skipL0898-PorkChopFrames 
  
-Character28FrameMap_length = .skipL0843-Character28FrameMap 
+NinjishGuyFrameMap_length = .skipL0893-NinjishGuyFrameMap 
  
-Character28Frames_length = .skipL0842-Character28Frames 
+NinjishGuyFrames_length = .skipL0892-NinjishGuyFrames 
  
-Character27FrameMap_length = .skipL0837-Character27FrameMap 
+NefertemFrameMap_length = .skipL0887-NefertemFrameMap 
  
-Character27Frames_length = .skipL0836-Character27Frames 
+NefertemFrames_length = .skipL0886-NefertemFrames 
  
-Character26FrameMap_length = .skipL0831-Character26FrameMap 
+FrootyFrameMap_length = .skipL0881-FrootyFrameMap 
  
-Character26Frames_length = .skipL0830-Character26Frames 
+FrootyFrames_length = .skipL0880-FrootyFrames 
  
-Character25FrameMap_length = .skipL0825-Character25FrameMap 
+KnightGuyFrameMap_length = .skipL0868-KnightGuyFrameMap 
  
-Character25Frames_length = .skipL0824-Character25Frames 
+KnightGuyFrames_length = .skipL0867-KnightGuyFrames 
  
-Character24FrameMap_length = .skipL0819-Character24FrameMap 
+HarpyFrameMap_length = .skipL0862-HarpyFrameMap 
  
-Character24Frames_length = .skipL0818-Character24Frames 
+HarpyFrames_length = .skipL0861-HarpyFrames 
  
-Character23FrameMap_length = .skipL0806-Character23FrameMap 
+MegaxFrameMap_length = .skipL0856-MegaxFrameMap 
  
-Character23Frames_length = .skipL0805-Character23Frames 
+MegaxFrames_length = .skipL0855-MegaxFrames 
  
-Character22FrameMap_length = .skipL0800-Character22FrameMap 
+FatTonyFrameMap_length = .skipL0850-FatTonyFrameMap 
  
-Character22Frames_length = .skipL0799-Character22Frames 
+FatTonyFrames_length = .skipL0849-FatTonyFrames 
  
-Character21FrameMap_length = .skipL0794-Character21FrameMap 
+ZoeRyenFrameMap_length = .skipL0844-ZoeRyenFrameMap 
  
-Character21Frames_length = .skipL0793-Character21Frames 
+ZoeRyenFrames_length = .skipL0843-ZoeRyenFrames 
  
-Character20FrameMap_length = .skipL0788-Character20FrameMap 
+DragonetFrameMap_length = .skipL0838-DragonetFrameMap 
  
-Character20Frames_length = .skipL0787-Character20Frames 
+DragonetFrames_length = .skipL0837-DragonetFrames 
  
-Character19FrameMap_length = .skipL0782-Character19FrameMap 
+CurlerFrameMap_length = .skipL0832-CurlerFrameMap 
  
-Character19Frames_length = .skipL0781-Character19Frames 
+CurlerFrames_length = .skipL0831-CurlerFrames 
  
-Character18FrameMap_length = .skipL0776-Character18FrameMap 
+BernieFrameMap_length = .skipL0826-BernieFrameMap 
  
-Character18Frames_length = .skipL0775-Character18Frames 
- 
-Character17FrameMap_length = .skipL0770-Character17FrameMap 
- 
-Character17Frames_length = .skipL0769-Character17Frames 
- 
-Character16FrameMap_length = .skipL0764-Character16FrameMap 
- 
-Character16Frames_length = .skipL0763-Character16Frames 
- 
-ShamoneFrameMap_length = .skipL0751-ShamoneFrameMap 
- 
-ShamoneFrames_length = .skipL0750-ShamoneFrames 
- 
-UrsuloFrameMap_length = .skipL0745-UrsuloFrameMap 
- 
-UrsuloFrames_length = .skipL0744-UrsuloFrames 
- 
-RoboTitoFrameMap_length = .skipL0739-RoboTitoFrameMap 
- 
-RoboTitoFrames_length = .skipL0738-RoboTitoFrames 
- 
-RadishGoblinFrameMap_length = .skipL0733-RadishGoblinFrameMap 
- 
-RadishGoblinFrames_length = .skipL0732-RadishGoblinFrames 
- 
-PorkChopFrameMap_length = .skipL0727-PorkChopFrameMap 
- 
-PorkChopFrames_length = .skipL0726-PorkChopFrames 
- 
-NinjishGuyFrameMap_length = .skipL0721-NinjishGuyFrameMap 
- 
-NinjishGuyFrames_length = .skipL0720-NinjishGuyFrames 
- 
-NefertemFrameMap_length = .skipL0715-NefertemFrameMap 
- 
-NefertemFrames_length = .skipL0714-NefertemFrames 
- 
-FrootyFrameMap_length = .skipL0709-FrootyFrameMap 
- 
-FrootyFrames_length = .skipL0708-FrootyFrames 
- 
-KnightGuyFrameMap_length = .skipL0696-KnightGuyFrameMap 
- 
-KnightGuyFrames_length = .skipL0695-KnightGuyFrames 
- 
-HarpyFrameMap_length = .skipL0690-HarpyFrameMap 
- 
-HarpyFrames_length = .skipL0689-HarpyFrames 
- 
-MegaxFrameMap_length = .skipL0684-MegaxFrameMap 
- 
-MegaxFrames_length = .skipL0683-MegaxFrames 
- 
-FatTonyFrameMap_length = .skipL0678-FatTonyFrameMap 
- 
-FatTonyFrames_length = .skipL0677-FatTonyFrames 
- 
-ZoeRyenFrameMap_length = .skipL0672-ZoeRyenFrameMap 
- 
-ZoeRyenFrames_length = .skipL0671-ZoeRyenFrames 
- 
-DragonOfStormsFrameMap_length = .skipL0666-DragonOfStormsFrameMap 
- 
-DragonOfStormsFrames_length = .skipL0665-DragonOfStormsFrames 
- 
-CurlerFrameMap_length = .skipL0660-CurlerFrameMap 
- 
-CurlerFrames_length = .skipL0659-CurlerFrames 
- 
-BernieFrameMap_length = .skipL0654-BernieFrameMap 
- 
-BernieFrames_length = .skipL0653-BernieFrames 
+BernieFrames_length = .skipL0825-BernieFrames 
  
 bscode_length = 36
-guardTimer = l
+charSelectPlayerAnimSeq = w032
  
-attacker = l
+charSelectPlayerAnimSeq_R = r032
  
-defender = l
+charSelectPlayerAnimSeq_W = w032
  
-hitboxBottom = var47
+charSelectPlayerAnimFrame = w028
  
-hitboxTop = z
+charSelectPlayerAnimFrame_R = r028
  
-hitboxRight = y
+charSelectPlayerAnimFrame_W = w028
  
-hitboxLeft = o
+randomSelectFlags = w027
  
-hit = m
+randomSelectFlags_R = r027
  
-damage = l
+randomSelectFlags_W = w027
  
-savedPlayerForCollision = w016
+harpyLastFlapFrame = w023
  
-savedPlayerForCombat = w015
+harpyLastFlapFrame_R = r023
+ 
+harpyLastFlapFrame_W = w023
+ 
+harpyFlightEnergy = w009
+ 
+harpyFlightEnergy_R = r009
+ 
+harpyFlightEnergy_W = w009
+ 
+missileAngularVel = w017
+ 
+characterStateFlags = w013
+ 
+playersEliminated = w012
+ 
+playerTimers = w004
+ 
+missileY = w000
  
 missileVelY = x
  
@@ -165,29 +111,9 @@ missileVelX = w
  
 missileLifetime = e
  
-missileActive = i
- 
-missileY = w000
- 
-missile4X = d
- 
-missile3X = c
- 
-missile2X = b
- 
-missile1X = a
- 
 missileX = a
  
-playerTimers = w004
- 
-player4AttackCooldown = var47
- 
-player3AttackCooldown = var46
- 
-player2AttackCooldown = var45
- 
-player1AttackCooldown = var44
+missileActive = i
  
 playerAttackCooldown = var44
  
@@ -233,8 +159,6 @@ player1RecoveryFrames = var16
  
 playerRecoveryFrames = var16
  
-playersEliminated = i
- 
 player4Health = var15
  
 player3Health = var14
@@ -275,8 +199,6 @@ player1X = var0
  
 playerX = var0
  
-titleCopyrightTimer = w013
- 
 titleParadeActive = var36
  
 titleParadeX = var35
@@ -294,8 +216,6 @@ musicPlaying = var30
 preambleState = var29
  
 preambleTimer = var28
- 
-levelSelectHoldTimer = w014
  
 levelConfirmTimer = var27
  
@@ -319,21 +239,59 @@ charSelectAnimTimer = w
  
 readyCount = x
  
-fontDataIndex = var46
+activePlayers = d
  
-fontRow = var47
+fallComplete = c
  
-digitOffset = temp6
+fallSpeed = b
  
-selectedArena = w010
+fallFrame = a
  
-selectedChar4 = w009
+SoundEffectFrame1 = w024
  
-selectedChar3 = w008
+SoundEffectFrame = w022
  
-selectedChar2 = w012
+MusicVoice1Frame = w021
  
-selectedChar1 = w011
+MusicVoice0Frame = w020
+ 
+SoundEffectPointer1H = var46
+ 
+SoundEffectPointer1L = var45
+ 
+SoundEffectPointerH = z
+ 
+SoundEffectPointerL = var41
+ 
+SoundPointerH = y
+ 
+SoundPointerL = var39
+ 
+MusicVoice1PointerH = var44
+ 
+MusicVoice1PointerL = var43
+ 
+MusicVoice0PointerH = var42
+ 
+MusicVoice0PointerL = var41
+ 
+SongPointerH = var40
+ 
+SongPointerL = var39
+ 
+colorBWPrevious_R = r008
+ 
+colorBWPrevious_W = w008
+ 
+selectedLevel = w
+ 
+selectedChar4 = v
+ 
+selectedChar3 = u
+ 
+selectedChar2 = t
+ 
+selectedChar1 = s
  
 playerLocked = n
  
@@ -341,13 +299,9 @@ playerDamage = k
  
 playerChar = j
  
-colorBWPrevious = w001
- 
-currentPlayer = s
+colorBWOverride = q
  
 pauseButtonPrev = r
- 
-colorBWOverride = q
  
 controllerStatus = h
  
@@ -359,47 +313,49 @@ gameMode = p
  
 gameState = g
  
-activePlayers = d
+MissileFlagHitBoth = 3
  
-fallComplete = c
+MissileFlagFriction = 16
  
-fallSpeed = b
+MissileFlagBounce = 8
  
-fallFrame = a
+MissileFlagGravity = 4
  
-ActionAttackRecovery = 15
+MissileFlagHitPlayer = 2
  
-ActionAttackExecute = 14
+MissileFlagHitBackground = 1
  
-ActionAttackWindup = 13
+AnimAttackRecovery = 15
  
-ActionLanding = 12
+AnimAttackExecute = 14
  
-ActionFalling = 11
+AnimAttackWindup = 13
  
-ActionJumping = 10
+AnimLanding = 12
  
-ActionRecovering = 9
+AnimFalling = 11
  
-ActionFallen = 8
+AnimJumping = 10
  
-ActionFallDown = 7
+AnimRecovering = 9
  
-ActionFallBack = 6
+AnimFallen = 8
  
-ActionHit = 5
+AnimFallDown = 7
  
-ActionStopping = 4
+AnimFallBack = 6
  
-ActionWalking = 3
+AnimHit = 5
  
-ActionGuarding = 2
+AnimStopping = 4
  
-ActionIdle = 1
+AnimWalking = 3
  
-ActionStanding = 0
+AnimGuarding = 2
  
-ModeAttract = 8
+AnimIdle = 1
+ 
+AnimStanding = 0
  
 ModeWinner = 7
  
@@ -413,9 +369,9 @@ ModeCharacterSelect = 3
  
 ModeTitle = 2
  
-ModeAuthorPrelude = 1
+ModeAuthorPreamble = 1
  
-ModePublisherPrelude = 0
+ModePublisherPreamble = 0
  
 SECAM = 3
  
@@ -431,33 +387,90 @@ FramesPerSequence = 8
  
 AnimationSequenceCount = 16
  
+HarpyFlapCooldownFrames = 40
+rem 1.5 flaps/second = 1 flap every 0.666 seconds = 40 frames at 60fps NTSC
+ 
 MovementFrameRate = 60
  
 AnimationFrameDelay = 6
  
-SoundElimination = 7
+SoundVictory = SoundSpecialMove
  
-SoundVictory = 6
+SoundSelect = SoundMenuSelect
  
-SoundSelect = 5
+SoundElimination = SoundPlayerEliminated
  
-SoundGuard = 4
+SoundFall = SoundLandingDamage
  
-SoundFall = 3
+SoundGuard = SoundGuardBlock
  
-SoundHit = 2
+SoundHit = SoundAttackHit
  
-SoundAttack = 1
+SoundAttack = SoundAttackHit
  
-MusicGameOver = 4
+SoundLandingDamage = 9
  
-MusicVictory = 3
+SoundLandingSafe = 8
  
-MusicAtariToday = 2
+SoundPowerup = 7
  
-MusicInterworldly = 1
+SoundSpecialMove = 6
  
-MusicTitle = 0
+SoundMenuSelect = 5
+ 
+SoundMenuNavigate = 4
+ 
+SoundPlayerEliminated = 3
+ 
+SoundJump = 2
+ 
+SoundGuardBlock = 1
+ 
+SoundAttackHit = 0
+ 
+SongVictory = 4
+ 
+SongGameOver = 3
+ 
+SongTitle = 2
+ 
+SongAuthor = 1
+ 
+SongPublisher = 0
+ 
+PlayerSpriteHalfWidth = 8
+ 
+PlayerSpriteWidth = 16
+ 
+CollisionSeparationDistance = 16
+ 
+HealthBarMaxLength = 32
+ 
+GuardTimerMaxFrames = 60
+ 
+TitleParadeDelayFrames = 300
+ 
+WinScreenAutoAdvanceFrames = 600
+ 
+FramesPerMinutePAL = 3000
+ 
+FramesPerMinute = 3600
+ 
+SecondsPerMinute = 60
+ 
+FramesPerDecisecondPAL = 5
+ 
+FramesPerDecisecond = 6
+ 
+FramesPerSecondPAL = 50
+ 
+FramesPerSecond = 60
+ 
+PlayerHealthLowThreshold = 25
+ 
+PlayerHealthHandicap = 75
+ 
+PlayerHealthMax = 100
  
 ScreenTopWrapThreshold = 200
  
@@ -485,7 +498,15 @@ HitstunFrames = 10
  
 KnockbackImpulse = 4
  
-BounceDampenDivisor = 2
+HarpyFallMultiplier = 128
+ 
+WallBounceVelocityMultiplier = 192
+ 
+MinimumVelocityThreshold = 2
+ 
+CurlingFrictionCoefficient = 32
+ 
+BounceDampenDivisor = 4
  
 GravityPerFrame = 1
  
@@ -533,6 +554,8 @@ Players34Active = 6
  
 QuadtariDetected = 7
  
+MaskDimColor = $F6
+ 
 VBlankGroundINPT0123 = $C0
  
 PaddleRightButton = 2
@@ -541,9 +564,27 @@ PaddleLeftButton = 0
  
 HighBit = $80
  
+MaskAnimationFalling = %10100000
+ 
+MaskAnimationRecovering = %10010000
+ 
+MaskClearFacing = %11111110
+ 
+MaskClearGuard = %11111101
+ 
+ShiftAnimationState = 4
+ 
+MaskPlayerStateAnimation = %11110000
+ 
+MaskPlayerStateLower = %00011111
+ 
+MaskPlayerStateFlags = %00001111
+ 
 PlayerStateAnimation = 7
  
 PlayerStateAttacking = 4
+ 
+PlayerStateRecovery = 3
  
 PlayerStateJumping = 2
  
@@ -557,23 +598,27 @@ SpriteCPU = 1
  
 SpriteQuestionMark = 0
  
+RandomCharacter = 253
+ 
 CPUCharacter = 254
  
 NoCharacter = 255
  
 MaxCharacter = 15
  
+NumCharacters = 16
+ 
 KnockbackDistance = 12
  
 RecoveryFrameCount = 8
  
-RandomArena = 255
+RandomLevel = 0
  
-MaxArenaID = 15
+NumLevels = 2
  
-NumArenas = 16
+BuildDay = 306
  
-BuildDate = 307
+BuildYear = 2025
  
 GameVersionMinor = 1
  

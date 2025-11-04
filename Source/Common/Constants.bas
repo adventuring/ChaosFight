@@ -3,8 +3,10 @@
 
           const GameVersionMajor=0
           const GameVersionMinor=1
-          const BuildDate=BUILD_DATE
-          rem Build date in julian day format (1-366, set by Makefile)
+          const BuildYear=BUILD_YEAR
+          rem Build year (4 digits, e.g. 2025, set by Makefile)
+          const BuildDay=BUILD_DAY
+          rem Build day in julian day format (1-366, set by Makefile)
           rem Game URL: https://interworldly.com/games/ChaosFight
           rem URL stored as comment for attribution
           const NumArenas=16
@@ -12,22 +14,68 @@
           const RandomArena=255
           const RecoveryFrameCount=8
           const KnockbackDistance=12          
+          
+          rem =================================================================
+          rem PHYSICS CONSTANTS - Gravity and Terminal Velocity
+          rem =================================================================
+          rem Scale: 16px = 2m (character height), so 1px = 0.125m = 12.5cm
+          rem Gravity values are in 8.8 fixed-point subpixel units (low byte)
+          rem Realistic Earth gravity would be 4410 px/frame² (too high for gameplay!)
+          rem 
+          rem Normal gravity acceleration (0.1 px/frame²)
+          rem Value: 0.1 * 256 = 25.6 ≈ 26 (in low byte of 8.8 fixed-point)
+          const GravityNormal = 26
+          
+          rem Reduced gravity acceleration (0.05 px/frame²) for Harpy
+          rem Value: 0.05 * 256 = 12.8 ≈ 13 (in low byte of 8.8 fixed-point)
+          const GravityReduced = 13
+          
+          rem Terminal velocity cap (maximum downward fall speed in px/frame)
+          rem Prevents infinite acceleration from gravity
+          const TerminalVelocity = 8
+          
           rem Character system constants
           const MaxCharacter = 15
-          rem Maximum selectable character ID (0-15 = 16 selectable characters)
-          rem Note: Current total = 17 characters (16 selectable 0-15 + Meth Hound 31)
-          rem Future expansion limit = 32 characters total
+          rem Maximum character ID (NumCharacters - 1)
           const NoCharacter = 255
           rem No character selected ($FF)
           const CPUCharacter = 254
           rem CPU player character ($FE)
+          
+          rem Sentinel and special value constants
+          const MissileLifetimeInfinite = 255
+          rem Missile lifetime value for infinite (until collision, no decrement)
+          const MissileHitNotFound = 255
+          rem Sentinel value indicating no hit found in collision checks
+          const MaxByteValue = 255
+          rem Maximum 8-bit value ($FF), used for two's complement operations
+          const InfiniteFallDistance = 255
+          rem Fall distance value for infinite (characters immune to fall damage)
+          
+          rem Character ID constants
+          const CharBernie = 0
+          const CharCurler = 1
+          const CharDragonOfStorms = 2
+          const CharZoeRyen = 3
+          const CharFatTony = 4
+          const CharMegax = 5
+          const CharHarpy = 6
+          const CharKnightGuy = 7
+          const CharFrooty = 8
+          const CharNefertem = 9
+          const CharNinjishGuy = 10
+          const CharPorkChop = 11
+          const CharRadishGoblin = 12
+          const CharRoboTito = 13
+          const CharUrsulo = 14
+          const CharShamone = 15
 
           rem Special sprite constants for SpecialSpritePointers table
           const SpriteQuestionMark = 0
           const SpriteCPU = 1
           const SpriteNo = 2
           
-          rem playerState bit constants
+          rem playerState bit position constants
           const PlayerStateFacing = 0
           rem Bit 0: 0=left, 1=right
           const PlayerStateGuarding = 1

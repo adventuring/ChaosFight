@@ -1,7 +1,7 @@
 @subsubsection Harpy
 @display
 @group
-    Weight: Light
+    Weight: 13.61 kg (30.0 lbs)
     Attack: Melée (swoop attack)
     Special: Can "fly" by repeatedly pressing UP
     Background: Former prisoner of the deadly labyrinth, defeated the Great Sphinx

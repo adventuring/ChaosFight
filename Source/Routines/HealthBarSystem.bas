@@ -8,53 +8,146 @@
           rem P3/P4 health will be implemented separately
 
           rem =================================================================
-          rem HEALTH TO SCORE MAPPING
+          rem HEALTH BAR THRESHOLDS AND PATTERNS
           rem =================================================================
-          rem Convert health values (0-100) to score display format
-          rem Score system uses 6 digits, we use bar-like display
+          rem Health thresholds split on 12s: 12, 24, 36, 48, 60, 72, 84
+          rem Compare health starting from 84 downward to find pixel count
+          rem Bit patterns: 0-8 pixels filled from right to left
+          rem =================================================================
 
-    rem Update P1 health bar (displayed as score)
-    rem Input: temp1 = health value (0-100)
+          rem Health threshold table (split on 12s)
+          data HealthThresholds
+              84, 72, 60, 48, 36, 24, 12
+          end
+
+          rem Bit pattern table for 0-8 pixels (right-aligned fill)
+          rem 0 pixels = %00000000, 1 pixel = %00000001, ..., 8 pixels = %11111111
+          data HealthBarPatterns
+              %00000000
+              %00000001
+              %00000011
+              %00000111
+              %00001111
+              %00011111
+              %00111111
+              %01111111
+              %11111111
+          end
+
+          rem =================================================================
+          rem UPDATE PLAYER 1 HEALTH BAR
+          rem =================================================================
+          rem Input: temp1 = health value (0-100)
+          rem Output: pfscore1 = health bar pattern (8 pixels, bit pattern)
+          rem Uses simple comparisons against threshold table, looks up bit pattern
 UpdatePlayer1HealthBar
-    rem Convert health to score format for bar display
-    rem Simple approach: display health as 2-digit number (00-99)
-    rem Limit to 99 max
-    if temp1 > 99 then temp1 = 99
-    rem Temporarily disable score update to fix build errors
-    rem TODO: Implement proper binary-to-BCD conversion for score display
-    rem score assignment causes immediate value errors when using variables
-    
-    return
+          dim UP1HB_health = temp1
+          dim UP1HB_patternIndex = temp2
+          dim UP1HB_pattern = temp3
+          rem Clamp health to valid range
+          if UP1HB_health > PlayerHealthMax then let UP1HB_health = PlayerHealthMax
+          if UP1HB_health < 0 then let UP1HB_health = 0
+          
+          rem Compare health against thresholds starting from 83 downward
+          rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2 pixels, 0-11 = 0 pixels
+          rem patternIndex will hold the pattern index (0-8)
+          let UP1HB_patternIndex = 0
+          
+          rem Check thresholds from highest (83) to lowest (11)
+          rem 84-100 = 8 pixels
+          if UP1HB_health > 83 then let UP1HB_patternIndex = 8 : goto P1SetPattern
+          rem 72-83 = 7 pixels
+          if UP1HB_health > 71 then let UP1HB_patternIndex = 7 : goto P1SetPattern
+          rem 60-71 = 6 pixels
+          if UP1HB_health > 59 then let UP1HB_patternIndex = 6 : goto P1SetPattern
+          rem 48-59 = 5 pixels
+          if UP1HB_health > 47 then let UP1HB_patternIndex = 5 : goto P1SetPattern
+          rem 36-47 = 4 pixels
+          if UP1HB_health > 35 then let UP1HB_patternIndex = 4 : goto P1SetPattern
+          rem 24-35 = 3 pixels
+          if UP1HB_health > 23 then let UP1HB_patternIndex = 3 : goto P1SetPattern
+          rem 12-23 = 2 pixels
+          if UP1HB_health > 11 then let UP1HB_patternIndex = 2 : goto P1SetPattern
+          rem 0-11 = 0 pixels (patternIndex already 0)
+          
+P1SetPattern
+          rem Look up bit pattern from table using patternIndex as index
+          let UP1HB_pattern = HealthBarPatterns[UP1HB_patternIndex]
+          
+          rem Set pfscore1 to health bar pattern
+          let pfscore1 = UP1HB_pattern
+          
+          return
 
-    rem Update P2 health bar (displayed as score1)  
-    rem Input: temp1 = health value (0-100)
+          rem =================================================================
+          rem UPDATE PLAYER 2 HEALTH BAR
+          rem =================================================================
+          rem Input: temp1 = health value (0-100)
+          rem Output: pfscore2 = health bar pattern (8 pixels, bit pattern)
+          rem Uses simple comparisons against threshold table, looks up bit pattern
 UpdatePlayer2HealthBar
-    rem Convert health to score format for bar display
-    rem Temporarily disable score update to fix build errors
-    rem TODO: Implement proper binary-to-BCD conversion for score1 display
-    rem score1 assignment causes immediate value errors when using variables
-    
-    return
+          dim UP2HB_health = temp1
+          dim UP2HB_patternIndex = temp2
+          dim UP2HB_pattern = temp3
+          rem Clamp health to valid range
+          if UP2HB_health > PlayerHealthMax then let UP2HB_health = PlayerHealthMax
+          if UP2HB_health < 0 then let UP2HB_health = 0
+          
+          rem Compare health against thresholds starting from 83 downward
+          rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2 pixels, 0-11 = 0 pixels
+          rem patternIndex will hold the pattern index (0-8)
+          let UP2HB_patternIndex = 0
+          
+          rem Check thresholds from highest (83) to lowest (11)
+          rem 84-100 = 8 pixels
+          if UP2HB_health > 83 then let UP2HB_patternIndex = 8 : goto P2SetPattern
+          rem 72-83 = 7 pixels
+          if UP2HB_health > 71 then let UP2HB_patternIndex = 7 : goto P2SetPattern
+          rem 60-71 = 6 pixels
+          if UP2HB_health > 59 then let UP2HB_patternIndex = 6 : goto P2SetPattern
+          rem 48-59 = 5 pixels
+          if UP2HB_health > 47 then let UP2HB_patternIndex = 5 : goto P2SetPattern
+          rem 36-47 = 4 pixels
+          if UP2HB_health > 35 then let UP2HB_patternIndex = 4 : goto P2SetPattern
+          rem 24-35 = 3 pixels
+          if UP2HB_health > 23 then let UP2HB_patternIndex = 3 : goto P2SetPattern
+          rem 12-23 = 2 pixels
+          if UP2HB_health > 11 then let UP2HB_patternIndex = 2 : goto P2SetPattern
+          rem 0-11 = 0 pixels (patternIndex already 0)
+          
+P2SetPattern
+          rem Look up bit pattern from table using patternIndex as index
+          let UP2HB_pattern = HealthBarPatterns[UP2HB_patternIndex]
+          
+          rem Set pfscore2 to health bar pattern
+          let pfscore2 = UP2HB_pattern
+          
+          return
 
           rem Update both P1 and P2 health bars
           rem Input: playerHealth[0] and playerHealth[1] arrays
 UpdatePlayer12HealthBars
+          dim UP12HB_health = temp1
           rem Update P1 health bar
-          temp1 = playerHealth[0]
+          let UP12HB_health = playerHealth[0]
+          let temp1 = UP12HB_health
           gosub UpdatePlayer1HealthBar
           
           rem Update P2 health bar  
-          temp1 = playerHealth[1]
+          let UP12HB_health = playerHealth[1]
+          let temp1 = UP12HB_health
           gosub UpdatePlayer2HealthBar
           
           return
 
           rem Initialize health bars at game start
 InitializeHealthBars
+          dim IHB_health = temp1
           rem Set initial health bars to full (100%)
-          temp1 = 100
+          let IHB_health = PlayerHealthMax
+          let temp1 = IHB_health
           gosub UpdatePlayer1HealthBar
-          temp1 = 100
+          let temp1 = IHB_health
           gosub UpdatePlayer2HealthBar
           return
 
@@ -62,100 +155,125 @@ InitializeHealthBars
           rem P3/P4 HEALTH DISPLAY (SCORE MODE)
           rem =================================================================
           rem Display players 3 and 4 health as 2-digit numbers in score area
-          rem Format: XX00XX where:
-          rem   Left 2 digits (XX): Player 3 health (00-100) - indigo color
-          rem   Middle 2 digits (00): blank separator
-          rem   Right 2 digits (XX): Player 4 health (00-100) - red color
+          rem Format: XX__XX where:
+          rem   Left 2 digits (XX): Player 3 health (00-99) - indigo color
+          rem   Middle 2 digits (__): blank (00)
+          rem   Right 2 digits (XX): Player 4 health (00-99) - red color
           rem Score display uses 6 digits total (3 bytes BCD)
-          rem Score format: score (digits 5-4), score+1 (digits 3-2), score+2 (digits 1-0)
-          rem Each byte stores 2 BCD digits (high nybble = tens, low nybble = ones)
 
 UpdatePlayer34HealthBars
+          dim UP34HB_p3Health = temp1
+          dim UP34HB_p4Health = temp2
+          dim UP34HB_isEliminated = temp3
+          dim UP34HB_p3Tens = temp3
+          dim UP34HB_p3Ones = temp4
+          dim UP34HB_p3BCD = temp5
+          dim UP34HB_p4Tens = temp6
+          dim UP34HB_p4Ones = temp7
           rem Only update if players 3 or 4 are active
           if !(controllerStatus & SetPlayers34Active) then return
           
-          rem Get Player 3 health (0-100), support full range
-          temp1 = playerHealth[2]
-          if selectedChar3 = 255 then temp1 = 0
-          rem Clamp to 0-100 for display (100 will show as "00" in 2-digit display)
-          if temp1 > 100 then temp1 = 100
+          rem Get Player 3 health (0-100), clamp to 99
+          rem Hide if inactive (selectedChar = 255) or eliminated
+          let UP34HB_p3Health = playerHealth[2]
+          if selectedChar3 = 255 then let UP34HB_p3Health = 0
+          rem Check if Player 3 is eliminated (bit 2 of playersEliminated = 4)
+          let UP34HB_isEliminated = playersEliminated & 4
+          if UP34HB_isEliminated then let UP34HB_p3Health = 0
+          rem Hide digits if eliminated or inactive
+          if UP34HB_p3Health > PlayerHealthMax - 1 then let UP34HB_p3Health = PlayerHealthMax - 1
           
-          rem Get Player 4 health (0-100), support full range
-          temp2 = playerHealth[3]
-          if selectedChar4 = 255 then temp2 = 0
-          rem Clamp to 0-100 for display
-          if temp2 > 100 then temp2 = 100
+          rem Get Player 4 health (0-100), clamp to 99
+          rem Hide if inactive (selectedChar = 255) or eliminated
+          let UP34HB_p4Health = playerHealth[3]
+          if selectedChar4 = 255 then let UP34HB_p4Health = 0
+          rem Check if Player 4 is eliminated (bit 3 of playersEliminated = 8)
+          let UP34HB_isEliminated = playersEliminated & 8
+          if UP34HB_isEliminated then let UP34HB_p4Health = 0
+          rem Hide digits if eliminated or inactive
+          if UP34HB_p4Health > 99 then let UP34HB_p4Health = 99
           
-          rem Convert binary health values (0-100) to BCD and set score bytes
-          rem For XX00XX format:
-          rem   score (digits 5-4): P3 health tens and ones as BCD
-          rem   score+1 (digits 3-2): 00 (blank separator)
-          rem   score+2 (digits 1-0): P4 health tens and ones as BCD
+          rem Format score as: P3Health * 10000 + P4Health
+          rem This displays as XX00XX where:
+          rem   XX (left 2 digits) = Player 3 health (00-99)
+          rem   00 (middle 2 digits) = blank separator
+          rem   XX (right 2 digits) = Player 4 health (00-99)
+          rem Score is stored in BCD format across 3 bytes
+          rem Format: score (digits 0-1), score+1 (digits 2-3), score+2 (digits 4-5)
           
-          rem Convert P3 health (temp1, 0-100) to BCD
-          rem Extract tens and ones digits
-          rem For values 0-99: tens = temp1/10, ones = temp1 - (tens*10)
-          rem For value 100: display as "00" (wrap to 2-digit display)
-          if temp1 = 100 then goto P3Health100
-          rem Calculate tens digit (0-9)
-          temp3 = temp1 / 10
-          rem Calculate ones digit (0-9)
-          temp4 = temp1 - (temp3 * 10)
-          goto P3HealthConvertDone
-P3Health100
-          rem Display 100 as "00" for 2-digit display
-          temp3 = 0
-          temp4 = 0
-P3HealthConvertDone
-          
-          rem Convert P4 health (temp2, 0-100) to BCD
-          if temp2 = 100 then goto P4Health100
-          rem Calculate tens digit (0-9)
-          temp5 = temp2 / 10
-          rem Calculate ones digit (0-9)
-          temp6 = temp2 - (temp5 * 10)
-          goto P4HealthConvertDone
-P4Health100
-          rem Display 100 as "00" for 2-digit display
-          temp5 = 0
-          temp6 = 0
-P4HealthConvertDone
-          
-          rem Set score bytes in BCD format using assembly
-          rem score (digits 5-4): P3 tens (high nybble) and ones (low nybble)
-          rem score+1 (digits 3-2): CF (separator)
-          rem score+2 (digits 1-0): P4 tens (high nybble) and ones (low nybble)
-          rem BCD format: high nybble = tens digit, low nybble = ones digit
-          rem Example: 75 = $75 (BCD), 50 = $50 (BCD)
-          rem Build BCD byte: (tens << 4) | ones
-          rem Note: CF ($CF) is stored directly as hex value for separator
-          
+          rem Convert binary health values to BCD and set score
+          rem Use binary-to-decimal conversion: divide by 10 to extract tens and ones
+          rem Calculate P3 health in BCD format (tens and ones digits)
+          let UP34HB_p3Tens = UP34HB_p3Health / 10
+          rem Tens digit (0-9)
+          rem Calculate ones digit: p3Health - (p3Tens * 10)
+          rem Multiply p3Tens by 10 using assembly: 10 = 8 + 2
           asm
-          lda temp3
-          asl
-          asl
-          asl
-          asl
-          ora temp4
-          sta score
-          lda #$CF
-          sta score+1
-          lda temp5
-          asl
-          asl
-          asl
-          asl
-          ora temp6
-          sta score+2
+            lda UP34HB_p3Tens
+            sta temp8
+            asl a
+            asl a
+            asl a
+            clc
+            adc temp8
+            asl a
+            sta temp8
+          end
+          rem temp8 = p3Tens * 10
+          let UP34HB_p3Ones = UP34HB_p3Health - temp8
+          rem Ones digit (0-9)
+          rem Combine into BCD: tens * 16 + ones (BCD format)
+          let UP34HB_p3BCD = UP34HB_p3Tens * 16
+          let UP34HB_p3BCD = UP34HB_p3BCD + UP34HB_p3Ones
+          rem p3BCD now contains P3 health as BCD (e.g., $75 for 75)
+          
+          rem Calculate P4 health in BCD format
+          let UP34HB_p4Tens = UP34HB_p4Health / 10
+          rem Tens digit (0-9)
+          rem Calculate ones digit: p4Health - (p4Tens * 10)
+          rem Multiply p4Tens by 10 using assembly: 10 = 8 + 2
+          asm
+            lda UP34HB_p4Tens
+            sta temp8
+            asl a
+            asl a
+            asl a
+            clc
+            adc temp8
+            asl a
+            sta temp8
+          end
+          rem temp8 = p4Tens * 10
+          let UP34HB_p4Ones = UP34HB_p4Health - temp8
+          rem Ones digit (0-9)
+          rem Combine into BCD: tens * 16 + ones
+          let UP34HB_p4Tens = UP34HB_p4Tens * 16
+          let UP34HB_p4Tens = UP34HB_p4Tens + UP34HB_p4Ones
+          rem p4Tens now contains P4 health as BCD (e.g., $50 for 50)
+          
+          rem Set score for XX00XX format using assembly to directly set BCD bytes
+          rem score (high byte, digits 0-1) = P3 BCD (p3BCD) or $00 if inactive/eliminated
+          rem score+1 (middle byte, digits 2-3) = $00 (always hidden - separator)
+          rem score+2 (low byte, digits 4-5) = P4 BCD (p4Tens) or $00 if inactive/eliminated
+          rem Digits are hidden by setting to $00 (displays as "00" - visible but indicates inactive/eliminated)
+          asm
+            SED
+            LDA UP34HB_p3BCD
+            STA score
+            rem Middle 2 digits always hidden (separator between P3 and P4)
+            LDA # 0
+            STA score+1
+            LDA UP34HB_p4Tens
+            STA score+2
+            CLD
           end
           
           rem Set score colors for score mode
           rem Left side (Player 3): indigo, Right side (Player 4): red
           rem In multisprite kernel, scorecolor applies to the score area
           rem Note: Per-side colors may require additional kernel support
-          rem For now, set to indigo (Player 3 color)
+          rem For now, set to white (Neutral color)
           rem TODO: Investigate if multisprite kernel supports separate left/right score colors
-          scorecolor = ColIndigo(14)
+          let scorecolor = ColGrey(14)
           
           return
-

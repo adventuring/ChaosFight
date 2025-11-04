@@ -48,14 +48,14 @@ CtrlDetPads
           rem Left side: INPT0 LOW + INPT1 HIGH, or Right side: INPT2 LOW + INPT3 HIGH
           
           rem Check left side controllers (INPT0/INPT1)
-          if INPT0{7} then goto CheckRightSide
-          if !INPT1{7} then goto CheckRightSide
+          if INPT0{7} then CheckRightSide
+          if !INPT1{7} then CheckRightSide
           goto QuadtariFound
 CheckRightSide
           
           rem Check right side controllers (INPT2/INPT3) 
-          if INPT2{7} then goto NoQuadtari
-          if !INPT3{7} then goto NoQuadtari
+          if INPT2{7} then NoQuadtari
+          if !INPT3{7} then NoQuadtari
           goto QuadtariFound
 NoQuadtari
           
@@ -106,8 +106,8 @@ CtrlGenesisA
           VBLANK = $00
           
           rem Check INPT0 - Genesis controllers pull HIGH when idle
-          if !INPT0{7} then goto NoGenesisLeft
-          if !INPT1{7} then goto NoGenesisLeft
+          if !INPT0{7} then NoGenesisLeft
+          if !INPT1{7} then NoGenesisLeft
           
           rem Genesis detected on left port
           let controllerStatus = controllerStatus | SetLeftPortGenesis
@@ -115,8 +115,8 @@ CtrlGenesisA
           
 NoGenesisLeft
           rem Check INPT2 - Genesis controllers pull HIGH when idle  
-          if !INPT2{7} then goto NoGenesisRight
-          if !INPT3{7} then goto NoGenesisRight
+          if !INPT2{7} then NoGenesisRight
+          if !INPT3{7} then NoGenesisRight
           
           rem Genesis detected on right port
           let controllerStatus = controllerStatus | SetRightPortGenesis
@@ -131,9 +131,9 @@ NoGenesisRight
 CtrlJoy2A
           rem Joy2b+ controllers pull all three paddle ports HIGH when idle
           rem Check left port (INPT0, INPT1, INPT4)
-          if !INPT0{7} then goto NoJoy2Left
-          if !INPT1{7} then goto NoJoy2Left
-          if !INPT4{7} then goto NoJoy2Left
+          if !INPT0{7} then NoJoy2Left
+          if !INPT1{7} then NoJoy2Left
+          if !INPT4{7} then NoJoy2Left
           
           rem Joy2b+ detected on left port
           let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
@@ -141,9 +141,9 @@ CtrlJoy2A
           
 NoJoy2Left
           rem Check right port (INPT2, INPT3, INPT5)
-          if !INPT2{7} then goto NoJoy2Right
-          if !INPT3{7} then goto NoJoy2Right
-          if !INPT5{7} then goto NoJoy2Right
+          if !INPT2{7} then NoJoy2Right
+          if !INPT3{7} then NoJoy2Right
+          if !INPT5{7} then NoJoy2Right
           
           rem Joy2b+ detected on right port
           let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
@@ -167,10 +167,10 @@ CtrlGenesisB
           drawscreen
           
           rem Check INPT0 - Genesis pulls HIGH when idle
-          if !INPT0{7} then goto NoLeftGenesis
+          if !INPT0{7} then NoLeftGenesis
           
           rem Check INPT1 - Genesis pulls HIGH when idle  
-          if !INPT1{7} then goto NoLeftGenesis
+          if !INPT1{7} then NoLeftGenesis
           
           rem Genesis detected on left port
           let controllerStatus = controllerStatus | SetLeftPortGenesis
@@ -178,8 +178,8 @@ CtrlGenesisB
           
 NoLeftGenesis
           rem Check right port (INPT2/INPT3) for Genesis
-          if !INPT2{7} then goto NoRightGenesis
-          if !INPT3{7} then goto NoRightGenesis
+          if !INPT2{7} then NoRightGenesis
+          if !INPT3{7} then NoRightGenesis
           
           rem Genesis detected on right port
           let controllerStatus = controllerStatus | SetRightPortGenesis
@@ -205,9 +205,9 @@ CtrlJoy2B
           drawscreen
           
           rem Check left port for Joy2b+ (INPT0, INPT1, INPT4)
-          if !INPT0{7} then goto CheckRightJoy2
-          if !INPT1{7} then goto CheckRightJoy2
-          if !INPT4{7} then goto CheckRightJoy2
+          if !INPT0{7} then CheckRightJoy2
+          if !INPT1{7} then CheckRightJoy2
+          if !INPT4{7} then CheckRightJoy2
           
           rem Joy2b+ detected on left port
           let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
@@ -215,9 +215,9 @@ CtrlJoy2B
           
 CheckRightJoy2
           rem Check right port for Joy2b+ (INPT2, INPT3, INPT5)
-          if !INPT2{7} then goto Joy2PlusDone
-          if !INPT3{7} then goto Joy2PlusDone
-          if !INPT5{7} then goto Joy2PlusDone
+          if !INPT2{7} then Joy2PlusDone
+          if !INPT3{7} then Joy2PlusDone
+          if !INPT5{7} then Joy2PlusDone
           
           rem Joy2b+ detected on right port
           let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
@@ -249,48 +249,12 @@ Check7800Pause
           if !pauseButtonPrev then return
           
           rem Button just pressed! Toggle Color/B&W override
-          let pauseButtonPrev = 0
-          let colorBWOverride = colorBWOverride ^ 1 
+          pauseButtonPrev = 0
+          colorBWOverride = colorBWOverride ^ 1 
           rem XOR to toggle 0<->1
           
           return
 #endif
-
-PauseNotPressed
-          let pauseButtonPrev = 1
-          return
-
-          rem =================================================================
-          rem ENHANCED PAUSE BUTTON CHECK
-          rem =================================================================
-          rem Checks for pause button press via Game Select switch or Joy2B+ Button III
-          rem Input: temp2 = player number (0=Player 1, 1=Player 2)
-          rem Output: temp1 = 1 if pause pressed, 0 if not pressed
-CheckEnhancedPause
-          rem Check Game Select switch first (works for both players)
-          if switchselect then temp1 = 1 : return
-          
-          rem Check Joy2B+ Button III for specified player
-          rem Player 1 (temp2=0): Check left port Joy2B+ Button III (INPT1)
-          rem Player 2 (temp2=1): Check right port Joy2B+ Button III (INPT3)
-          
-          if temp2 = 0 then goto CheckPlayer1EnhancedPause
-          rem Player 2: Check right port
-          if !(controllerStatus & SetRightPortJoy2bPlus) then temp1 = 0 : return
-          rem Right port has Joy2B+, check Button III (INPT3)
-          if !INPT3{7} then temp1 = 1 : return
-          rem Button III pressed
-          temp1 = 0
-          return
-          
-CheckPlayer1EnhancedPause
-          rem Player 1: Check left port
-          if !(controllerStatus & SetLeftPortJoy2bPlus) then temp1 = 0 : return
-          rem Left port has Joy2B+, check Button III (INPT1)
-          if !INPT1{7} then temp1 = 1 : return
-          rem Button III pressed
-          temp1 = 0
-          return
 
           rem =================================================================
           rem QUADTARI MULTIPLEXING
@@ -303,7 +267,7 @@ UpdateQuadIn
           
           rem Alternate between reading players 1-2 and players 3-4
           rem Use qtcontroller to determine which pair to read
-          if qtcontroller then goto ReadPlayers34
+          if qtcontroller then ReadPlayers34
           goto ReadPlayers12
 
 ReadPlayers12
@@ -318,5 +282,10 @@ ReadPlayers34
           rem joy0 and joy1 now read players 3 & 4 via Quadtari multiplexing
           rem Hardware automatically switches which players are active
           rem No additional processing needed - joy0/joy1 are already correct
+          return
+
+PauseNotPressed
+          rem Button not pressed, update previous state
+          pauseButtonPrev = 1
           return
 

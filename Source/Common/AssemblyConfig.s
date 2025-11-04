@@ -4,18 +4,18 @@
 ; These are included at the top of the generated assembly file
 
 ; Kernel configuration
-multisprite = 1
-playercolors = 1
-player1colors = 1
-pfcolors = 1
+const multisprite = 1
+const playercolors = 1
+const player1colors = 1
+const pfcolors = 1
 
 ; Bank switching configuration
-; Note: bankswitch and bankswitch_hotspot values are set per-TV-standard
-; in TV-specific files: AssemblyConfig.NTSC.s, AssemblyConfig.PAL.s, AssemblyConfig.SECAM.s
-superchip = 1
+const superchip = 1
+const bankswitch_hotspot = $1FE0
+const bankswitch = 64
 
 ; Code generation options
-noscore = 0
-qtcontroller = 0
-pfres = 12
-bscode_length = 32
+const noscore = 0
+const qtcontroller = 0
+const pfres = 8
+

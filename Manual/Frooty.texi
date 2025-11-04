@@ -2,7 +2,7 @@
 @display
 @group
     Age: 24
-    Weight: Very Light
+    Weight: 54.43 kg (120.0 lbs)
     Attack: Ranged (lollipop sparkle, ballistic)
     Special: FREE FLIGHT - use UP/DOWN to move vertically, no guard action
     Likes: Candy

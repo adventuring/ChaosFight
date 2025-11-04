@@ -9,3 +9,5 @@
           #include "Source/Routines/LevelSelect.bas"
           #include "Source/Routines/BeginWinnerAnnouncement.bas"
           #include "Source/Routines/WinnerAnnouncement.bas"
+          #include "Source/Routines/FontRendering.bas"
+          rem Font rendering for arena number display (01-16/??)

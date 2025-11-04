@@ -1,7 +1,7 @@
 @subsubsection Fat Tony
 @display
 @group
-    Weight: Heavy
+    Weight: 108.86 kg (240.0 lbs)
     Attack: Ranged (magic ring lasers)
     Special: Geography expert, magic ring wielder, former bar owner
     Lives: Port Lion island

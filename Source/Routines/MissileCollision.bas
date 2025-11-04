@@ -447,15 +447,15 @@ MissileCollPF
           
           rem Convert X to playfield coordinates
           rem Playfield is 32 pixels wide (doubled to 160 screen pixels)
-          temp6 = temp2 / 5 
+          let temp6 = temp2 / 5 
           rem Convert X pixel to playfield column (160/32 ≈ 5)
           
           rem Check if playfield pixel is set at missile position
           rem pfread(column, row) returns 0 if clear, non-zero if set
-          if pfread(temp6, temp3) then temp4 = 1 : return
+          if pfread(temp6, temp3) then let temp4 = 1 : return
           rem Hit playfield
 
-          temp4 = 0 
+          let temp4 = 0 
           rem Clear
           
           

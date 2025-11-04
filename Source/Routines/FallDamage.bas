@@ -129,6 +129,10 @@ CheckFallDamage
           if temp5 > 30 then temp5 = 30
           playerRecoveryFrames[temp1] = temp5
           
+          rem Synchronize playerState bit 3 with recovery frames
+          playerState[temp1] = playerState[temp1] | 8
+          rem Set bit 3 (recovery flag) when recovery frames are set
+          
           rem Set animation state to "recovering from fall"
           rem This is animation state 9 in the character animation sequences
           rem playerState bits: [7:animation][4:attacking][2:jumping][1:guarding][0:facing]

@@ -8,7 +8,7 @@
 
           rem SPRITE ASSIGNMENTS (MULTISPRITE KERNEL):
           rem   Participant 1 (array [0]): P0 sprite (player0x/player0y, COLUP0)
-          rem   Participant 2 (array [1]): P1 sprite (player1x/player1y, COLUP1, virtual _P1)
+          rem   Participant 2 (array [1]): P1 sprite (player1x/player1y, _COLUP1 - virtual sprite)
           rem   Participant 3 (array [2]): P2 sprite (player2x/player2y, COLUP2)
           rem   Participant 4 (array [3]): P3 sprite (player3x/player3y, COLUP3)
 
@@ -172,7 +172,8 @@ Player1ColorDone
 
           rem Set Player 2 color and sprite
           rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[1] > 0 then COLUP1 = ColRed(6) : goto Player2ColorDone 
+          rem NOTE: Multisprite kernel requires _COLUP1 (with underscore) for Player 2 virtual sprite
+          if playerRecoveryFrames[1] > 0 then _COLUP1 = ColRed(6) : goto Player2ColorDone 
           rem Hurt: dimmer red
           let SPS_charIndex = playerChar[1]
           let SPS_animFrame = 0

@@ -280,41 +280,37 @@ LoadPlayerSpriteDispatch
 LoadPlayer0Sprite
           rem Use art location system for player 0 sprite loading
           rem temp1 = character index, temp2 = animation frame already set
-          let temp4 = 0 
-          rem Player 0
-          
-          rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayer0CharacterArt are implemented
-          rem For now, use placeholder sprite data
+          rem temp3 = player number (0)
+          let temp3 = 0
+          rem Use LoadCharacterSprite which handles LocateCharacterArt
+          gosub LoadCharacterSprite
           return
           
 LoadPlayer1Sprite
           rem Use art location system for player 1 sprite loading
           rem temp1 = character index, temp2 = animation frame already set
-          let temp4 = 1 
-          rem Player 1
-          
-          rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayer1CharacterArt are implemented
-          rem For now, use placeholder sprite data
+          rem temp3 = player number (1)
+          let temp3 = 1
+          rem Use LoadCharacterSprite which handles LocateCharacterArt
+          gosub LoadCharacterSprite
           return
           
 LoadPlayer2Sprite
           rem Use art location system for player 2 sprite loading
           rem temp1 = character index, temp2 = animation frame already set
-          let temp4 = 2 
-          rem Player 2
-          
-          rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayer2CharacterArt are implemented
-          rem For now, use placeholder sprite data
+          rem temp3 = player number (2)
+          let temp3 = 2
+          rem Use LoadCharacterSprite which handles LocateCharacterArt
+          gosub LoadCharacterSprite
           return
           
 LoadPlayer3Sprite
           rem Use art location system for player 3 sprite loading
           rem temp1 = character index, temp2 = animation frame already set
-          let temp4 = 3 
-          rem Player 3
-          
-          rem TODO: Replace with actual assembly when LocateCharacterArt and SetPlayer3CharacterArt are implemented
-          rem For now, use placeholder sprite data
+          rem temp3 = player number (3)
+          let temp3 = 3
+          rem Use LoadCharacterSprite which handles LocateCharacterArt
+          gosub LoadCharacterSprite
           return
 
 

@@ -52,18 +52,21 @@ GetPlayerAnimationState
 
           rem Main input handler for all players
 InputHandleAllPlayers
+          dim IHAP_isAlive = temp2
           if qtcontroller then goto InputHandleQuadtariPlayers
           
           rem Even frame: Handle Players 1 & 2 - only if alive  
           let temp1 = 0 : gosub IsPlayerAlive
-          if temp2 = 0 then InputSkipPlayer0Input
+          let IHAP_isAlive = temp2
+          if IHAP_isAlive = 0 then InputSkipPlayer0Input
           if (PlayerState[0] & 8) then InputSkipPlayer0Input
           let temp1 = 0 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer0Input
           
           let temp1 = 1 : gosub IsPlayerAlive
-          if temp2 = 0 then InputSkipPlayer1Input
+          let IHAP_isAlive = temp2
+          if IHAP_isAlive = 0 then InputSkipPlayer1Input
           if (PlayerState[1] & 8) then InputSkipPlayer1Input
           goto InputHandlePlayer1
           
@@ -79,11 +82,13 @@ InputSkipPlayer1Input
           return
 
 InputHandleQuadtariPlayers
+          dim IHQP_isAlive = temp2
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and alive)
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input
           if selectedChar3 = 0 then InputSkipPlayer3Input
                     temp1 = 2 : gosub IsPlayerAlive
-          if temp2 = 0 then InputSkipPlayer3Input
+          let IHQP_isAlive = temp2
+          if IHQP_isAlive = 0 then InputSkipPlayer3Input
           if (PlayerState[2] & 8) then InputSkipPlayer3Input
           let temp1 = 2 : gosub InputHandleLeftPortPlayer
           
@@ -91,7 +96,8 @@ InputSkipPlayer3Input
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input
           if selectedChar4 = 0 then InputSkipPlayer4Input
                     temp1 = 3 : gosub IsPlayerAlive
-          if temp2 = 0 then InputSkipPlayer4Input
+          let IHQP_isAlive = temp2
+          if IHQP_isAlive = 0 then InputSkipPlayer4Input
           if (PlayerState[3] & 8) then InputSkipPlayer4Input
           let temp1 = 3 : gosub InputHandleRightPortPlayer
           
@@ -108,100 +114,123 @@ InputSkipPlayer4Input
           rem INPUT: temp1 = player index (0 or 2)
           rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
 InputHandleLeftPortPlayer
+          dim IHLP_playerIndex = temp1
+          dim IHLP_animationState = temp2
+          dim IHLP_characterType = temp5
           rem Check animation state - block movement during attack animations (states 13-15)
           gosub GetPlayerAnimationState
           rem Get animation state in temp2
-          if temp2 >= 13 then SkipLeftPortMovement
+          let IHLP_animationState = temp2
+          if IHLP_animationState >= 13 then SkipLeftPortMovement
           rem Block movement during attack windup/execute/recovery
           
           rem Process left/right movement (with playfield collision for flying characters)
           rem Frooty (8) and Dragon of Storms (2) need collision checks for horizontal movement
-          let temp5 = PlayerChar[temp1]
-          if temp5 = 8 then FrootyDragonetLeftRightMovement
-          if temp5 = 2 then FrootyDragonetLeftRightMovement
+          let IHLP_characterType = PlayerChar[IHLP_playerIndex]
+          if IHLP_characterType = 8 then FrootyDragonetLeftRightMovement
+          if IHLP_characterType = 2 then FrootyDragonetLeftRightMovement
           
           rem Standard horizontal movement (modifies velocity, not position)
-          rem Left movement: set negative velocity (255 in 8-bit two’s complement = -1)
-          if joy0left then let playerVelocityX[temp1] = 255 : let playerVelocityX_lo[temp1] = 0 : let PlayerState[temp1] = PlayerState[temp1] & 254
+          rem Left movement: set negative velocity (255 in 8-bit two's complement = -1)
+          if joy0left then let playerVelocityX[IHLP_playerIndex] = 255 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
           rem Right movement: set positive velocity
-          if joy0right then let playerVelocityX[temp1] = 1 : let playerVelocityX_lo[temp1] = 0 : let PlayerState[temp1] = PlayerState[temp1] | 1
+          if joy0right then let playerVelocityX[IHLP_playerIndex] = 1 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
           goto SkipFlyingLeftRight
 SkipLeftPortMovement
           
 FrootyDragonetLeftRightMovement
+          dim FDLRM_pfColumn = temp2
+          dim FDLRM_leftColumn = temp3
+          dim FDLRM_playerY = temp4
+          dim FDLRM_pfRow = temp6
           rem Flying characters: check playfield collision before horizontal movement
           rem Check left movement
           if joy0left then CheckLeftCollision
           goto CheckRightMovement
 CheckLeftCollision
           rem Convert player position to playfield coordinates
-          let temp2 = PlayerX[temp1]
-          let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 / 4
-          rem temp2 = playfield column
-          if temp2 > 31 then temp2 = 31
-          if temp2 < 0 then temp2 = 0
+          let FDLRM_pfColumn = PlayerX[IHLP_playerIndex]
+          let FDLRM_pfColumn = FDLRM_pfColumn - ScreenInsetX
+          let FDLRM_pfColumn = FDLRM_pfColumn / 4
+          rem pfColumn = playfield column
+          if FDLRM_pfColumn > 31 then FDLRM_pfColumn = 31
+          if FDLRM_pfColumn < 0 then FDLRM_pfColumn = 0
           rem Check column to the left
-          if temp2 <= 0 then goto CheckRightMovement
+          if FDLRM_pfColumn <= 0 then goto CheckRightMovement
           rem Already at left edge
-          let temp3 = temp2 - 1
-          rem temp3 = column to the left
+          let FDLRM_leftColumn = FDLRM_pfColumn - 1
+          rem leftColumn = column to the left
           rem Check player current row (check both top and bottom of sprite)
-          let temp4 = PlayerY[temp1]
-          let temp6 = temp4 / pfrowheight
-          rem temp6 = top row
+          let FDLRM_playerY = PlayerY[IHLP_playerIndex]
+          let temp2 = FDLRM_playerY
+          gosub DivideByPfrowheight
+          let FDLRM_pfRow = temp2
+          rem pfRow = top row
           rem Check if blocked in current row
-          if pfread(temp3, temp6) then CheckRightMovement
+          if pfread(FDLRM_leftColumn, FDLRM_pfRow) then CheckRightMovement
           rem Blocked, cannot move left
           rem Also check bottom row (feet)
-          let temp4 = temp4 + 16
-          let temp6 = temp4 / pfrowheight
-          if temp6 >= pfrows then MoveLeftOK
+          let FDLRM_playerY = FDLRM_playerY + 16
+          let temp2 = FDLRM_playerY
+          gosub DivideByPfrowheight
+          let FDLRM_pfRow = temp2
+          if FDLRM_pfRow >= pfrows then MoveLeftOK
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then CheckRightMovement
+          if pfread(FDLRM_leftColumn, FDLRM_pfRow) then CheckRightMovement
           rem Blocked at bottom too
 MoveLeftOK
           rem Apply leftward velocity impulse (double-width sprite: 16px width)
-          let playerVelocityX[temp1] = 255
-          rem -1 in 8-bit two’s complement: 256 - 1 = 255
-          let playerVelocityX_lo[temp1] = 0
-          let PlayerState[temp1] = PlayerState[temp1] & 254
+          let playerVelocityX[IHLP_playerIndex] = 255
+          rem -1 in 8-bit two's complement: 256 - 1 = 255
+          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
 CheckRightMovement
+          dim CRM_pfColumn = temp2
+          dim CRM_rightColumn = temp3
+          dim CRM_playerY = temp4
+          dim CRM_pfRow = temp6
           rem Check right movement
           if !joy0right then goto SkipFlyingLeftRight
           rem Convert player position to playfield coordinates
-          let temp2 = PlayerX[temp1]
-          let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 / 4
-          rem temp2 = playfield column
-          if temp2 > 31 then temp2 = 31
-          if temp2 < 0 then temp2 = 0
+          let CRM_pfColumn = PlayerX[IHLP_playerIndex]
+          let CRM_pfColumn = CRM_pfColumn - ScreenInsetX
+          let CRM_pfColumn = CRM_pfColumn / 4
+          rem pfColumn = playfield column
+          if CRM_pfColumn > 31 then CRM_pfColumn = 31
+          if CRM_pfColumn < 0 then CRM_pfColumn = 0
           rem Check column to the right
-          if temp2 >= 31 then goto SkipFlyingLeftRight
+          if CRM_pfColumn >= 31 then goto SkipFlyingLeftRight
           rem Already at right edge
-          let temp3 = temp2 + 1
-          rem temp3 = column to the right
+          let CRM_rightColumn = CRM_pfColumn + 1
+          rem rightColumn = column to the right
           rem Check player current row (check both top and bottom of sprite)
-          let temp4 = PlayerY[temp1]
-          let temp6 = temp4 / pfrowheight
-          rem temp6 = top row
+          let CRM_playerY = PlayerY[IHLP_playerIndex]
+          let temp2 = CRM_playerY
+          gosub DivideByPfrowheight
+          let CRM_pfRow = temp2
+          rem pfRow = top row
           rem Check if blocked in current row
-          if pfread(temp3, temp6) then SkipFlyingLeftRight
+          if pfread(CRM_rightColumn, CRM_pfRow) then SkipFlyingLeftRight
           rem Blocked, cannot move right
           rem Also check bottom row (feet)
-          let temp4 = temp4 + 16
-          let temp6 = temp4 / pfrowheight
-          if temp6 >= pfrows then MoveRightOK
+          let CRM_playerY = CRM_playerY + 16
+          let temp2 = CRM_playerY
+          gosub DivideByPfrowheight
+          let CRM_pfRow = temp2
+          if CRM_pfRow >= pfrows then MoveRightOK
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then SkipFlyingLeftRight
+          if pfread(CRM_rightColumn, CRM_pfRow) then SkipFlyingLeftRight
           rem Blocked at bottom too
 MoveRightOK
           rem Apply rightward velocity impulse
-          let playerVelocityX[temp1] = 1
-          let playerVelocityX_lo[temp1] = 0
-          let PlayerState[temp1] = PlayerState[temp1] | 1
+          let playerVelocityX[IHLP_playerIndex] = 1
+          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
 SkipFlyingLeftRight
 
+          dim SUIH_jumpPressed = temp3
+          dim EJ_jumpPressed = temp3
+          dim EJ_characterType = temp4
           rem Process UP input for character-specific behaviors
           rem - Shamone/MethHound: form switching (15 <-> 31)
           rem - Bernie: fall through 1-row floors
@@ -209,16 +238,16 @@ SkipFlyingLeftRight
           if !joy0up then goto SkipUpInputHandling
           
           rem Check Shamone form switching first (Character 15 <-> 31)
-          if PlayerChar[temp1] = 15 then PlayerChar[temp1] = 31 : goto SkipJumpInput
+          if PlayerChar[IHLP_playerIndex] = 15 then PlayerChar[IHLP_playerIndex] = 31 : goto SkipJumpInput
           rem Switch Shamone -> MethHound
-          if PlayerChar[temp1] = 31 then PlayerChar[temp1] = 15 : goto SkipJumpInput
+          if PlayerChar[IHLP_playerIndex] = 31 then PlayerChar[IHLP_playerIndex] = 15 : goto SkipJumpInput
           rem Switch MethHound -> Shamone
           
           rem Check Bernie fall-through (Character 0)
-          if PlayerChar[temp1] = 0 then BernieFallThrough
+          if PlayerChar[IHLP_playerIndex] = 0 then BernieFallThrough
           
           rem Check Harpy flap (Character 6)
-          if PlayerChar[temp1] = 6 then HarpyFlap
+          if PlayerChar[IHLP_playerIndex] = 6 then HarpyFlap
           
           rem For all other characters, UP is jump
           goto NormalJumpInput
@@ -235,12 +264,12 @@ HarpyFlap
           
 NormalJumpInput
           rem Process jump input (UP + enhanced buttons)
-          let temp3 = 1
+          let SUIH_jumpPressed = 1
           rem Jump pressed flag (UP pressed)
           goto SkipUpInputHandling
           
 SkipJumpInput
-          let temp3 = 0 
+          let SUIH_jumpPressed = 0 
           rem No jump (UP used for special ability)
           
 SkipUpInputHandling
@@ -248,66 +277,72 @@ SkipUpInputHandling
           rem Note: For Shamone/MethHound, UP is form switch, so jump via enhanced buttons only
           rem Note: For Bernie, UP is fall-through, so jump via enhanced buttons only
           rem Note: For Harpy, UP is flap, so jump via enhanced buttons only
-          if PlayerChar[temp1] = 15 then goto ShamoneJumpCheckEnhanced
-          if PlayerChar[temp1] = 31 then goto ShamoneJumpCheckEnhanced
-          if PlayerChar[temp1] = 0 then goto ShamoneJumpCheckEnhanced
-          if PlayerChar[temp1] = 6 then goto ShamoneJumpCheckEnhanced
+          if PlayerChar[IHLP_playerIndex] = 15 then goto ShamoneJumpCheckEnhanced
+          if PlayerChar[IHLP_playerIndex] = 31 then goto ShamoneJumpCheckEnhanced
+          if PlayerChar[IHLP_playerIndex] = 0 then goto ShamoneJumpCheckEnhanced
+          if PlayerChar[IHLP_playerIndex] = 6 then goto ShamoneJumpCheckEnhanced
           rem Bernie and Harpy also use enhanced buttons for jump
           
           rem Check Genesis/Joy2b+ Button C/II (INPT0 for Player 1, INPT2 for Player 3)
-          if temp1 = 0 then CheckPlayer1Buttons
+          if IHLP_playerIndex = 0 then CheckPlayer1Buttons
           goto InputSkipPlayer1Buttons
 CheckPlayer1Buttons
           if !ControllerStatus{0} then CheckPlayer1Joy2bPlus
-          if !INPT0{7} then temp3 = 1
+          if !INPT0{7} then SUIH_jumpPressed = 1
           goto InputSkipPlayer1Buttons
 CheckPlayer1Joy2bPlus
           if !ControllerStatus{1} then InputSkipPlayer1Buttons
-          if !INPT0{7} then temp3 = 1
+          if !INPT0{7} then SUIH_jumpPressed = 1
 InputSkipPlayer1Buttons
-          if temp1 = 2 then CheckPlayer3Buttons
+          if IHLP_playerIndex = 2 then CheckPlayer3Buttons
           goto InputSkipPlayer3Buttons
 CheckPlayer3Buttons
           if !ControllerStatus{0} then CheckPlayer3Joy2bPlus
-          if !INPT0{7} then temp3 = 1
+          if !INPT0{7} then SUIH_jumpPressed = 1
           goto InputSkipPlayer3Buttons
 CheckPlayer3Joy2bPlus
           if !ControllerStatus{1} then InputSkipPlayer3Buttons
-          if !INPT0{7} then temp3 = 1
+          if !INPT0{7} then SUIH_jumpPressed = 1
 InputSkipPlayer3Buttons
 EnhancedJumpDone0
           
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as Shamone)
-          if temp3 = 0 then InputSkipLeftPortJump
-          if (PlayerState[temp1] & 4) then InputSkipLeftPortJump
+          let EJ_jumpPressed = SUIH_jumpPressed
+          if EJ_jumpPressed = 0 then InputSkipLeftPortJump
+          if (PlayerState[IHLP_playerIndex] & 4) then InputSkipLeftPortJump
           rem Check animation state - block jump during attack animations (states 13-15)
           gosub GetPlayerAnimationState
           rem Get animation state in temp2
-          if temp2 >= 13 then InputSkipLeftPortJump
+          let IHLP_animationState = temp2
+          if IHLP_animationState >= 13 then InputSkipLeftPortJump
           rem Block jump during attack windup/execute/recovery
-          let temp4 = PlayerChar[temp1] 
+          let EJ_characterType = PlayerChar[IHLP_playerIndex] 
           rem Character type
           rem Map MethHound (31) to ShamoneJump handler
-          if temp4 = 31 then temp4 = 15
+          if EJ_characterType = 31 then EJ_characterType = 15
           rem Use Shamone jump for MethHound
+          let temp4 = EJ_characterType
                     on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump, FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipLeftPortJump
 
           
 
+          dim GDIL_characterType = temp4
+          dim GDIL_guardState = temp2
           rem Process down/guard input
           rem Map MethHound (31) to ShamoneDown handler
           if joy0down then 
-            temp4 = PlayerChar[temp1]
-            if temp4 = 31 then temp4 = 15
+            let GDIL_characterType = PlayerChar[IHLP_playerIndex]
+            if GDIL_characterType = 31 then GDIL_characterType = 15
             rem Use Shamone guard for MethHound
+            let temp4 = GDIL_characterType
             on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown, FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
             goto GuardInputDoneLeft
           
           rem DOWN released - check for early guard release
-          let temp2 = PlayerState[temp1] & 2
-          if temp2 then StopGuardEarlyLeft
+          let GDIL_guardState = PlayerState[IHLP_playerIndex] & 2
+          if GDIL_guardState then StopGuardEarlyLeft
           rem Not guarding, nothing to do
           goto GuardInputDoneLeft
           

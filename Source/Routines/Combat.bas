@@ -30,12 +30,20 @@ CheckAttackHit
   rem Calculate attack hitbox based on attacker facing and attack type
   gosub CalculateAttackHitbox
   
-  rem Check if defender is in hitbox bounds
-  rem If defender is outside any bound, no hit
-          if playerX[defender_id] < hitbox_left then NoHit
-          if playerX[defender_id] > hitbox_right then NoHit
-          if playerY[defender_id] < hitbox_top then NoHit
-          if playerY[defender_id] > hitbox_bottom then NoHit
+  rem Check if defender bounding box overlaps hitbox (AABB collision detection)
+  rem playerX/playerY represent sprite top-left corner, sprite is 16x16 pixels
+  rem Defender bounding box: [playerX, playerX+16] x [playerY, playerY+16]
+  rem Hitbox: [hitbox_left, hitbox_right] x [hitbox_top, hitbox_bottom]
+  rem Overlap occurs when: defender_right > hitbox_left AND defender_left < hitbox_right
+  rem                      AND defender_bottom > hitbox_top AND defender_top < hitbox_bottom
+          if playerX[defender_id] + PlayerSpriteWidth <= hitbox_left then NoHit
+          rem Defender right edge <= hitbox left edge (no overlap)
+          if playerX[defender_id] >= hitbox_right then NoHit
+          rem Defender left edge >= hitbox right edge (no overlap)
+          if playerY[defender_id] + PlayerSpriteHeight <= hitbox_top then NoHit
+          rem Defender bottom edge <= hitbox top edge (no overlap)
+          if playerY[defender_id] >= hitbox_bottom then NoHit
+          rem Defender top edge >= hitbox bottom edge (no overlap)
   
   rem All bounds checked - defender is inside hitbox
           let hit = 1
@@ -58,31 +66,43 @@ MeleeHitbox
     on PlayerFacing[attacker_id] goto FacingRight, FacingLeft, FacingUp, FacingDown
     
 FacingRight
-      let hitbox_left = playerX[attacker_id] + 8
-      let hitbox_right = playerX[attacker_id] + 24
-      let hitbox_top = playerY[attacker_id] - 8
-      let hitbox_bottom = playerY[attacker_id] + 8
+      rem Hitbox extends 16 pixels forward from sprite right edge
+      rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
+      rem Hitbox: [playerX+16, playerX+32] x [playerY, playerY+16]
+      let hitbox_left = playerX[attacker_id] + PlayerSpriteWidth
+      let hitbox_right = playerX[attacker_id] + PlayerSpriteWidth + PlayerSpriteWidth
+      let hitbox_top = playerY[attacker_id]
+      let hitbox_bottom = playerY[attacker_id] + PlayerSpriteHeight
       return
       
 FacingLeft
-      let hitbox_left = playerX[attacker_id] - 24
-      let hitbox_right = playerX[attacker_id] - 8
-      let hitbox_top = playerY[attacker_id] - 8
-      let hitbox_bottom = playerY[attacker_id] + 8
+      rem Hitbox extends 16 pixels forward from sprite left edge
+      rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
+      rem Hitbox: [playerX-16, playerX] x [playerY, playerY+16]
+      let hitbox_left = playerX[attacker_id] - PlayerSpriteWidth
+      let hitbox_right = playerX[attacker_id]
+      let hitbox_top = playerY[attacker_id]
+      let hitbox_bottom = playerY[attacker_id] + PlayerSpriteHeight
       return
       
 FacingUp
-      let hitbox_left = playerX[attacker_id] - 8
-      let hitbox_right = playerX[attacker_id] + 8
-      let hitbox_top = playerY[attacker_id] - 24
-      let hitbox_bottom = playerY[attacker_id] - 8
+      rem Hitbox extends 16 pixels upward from sprite top edge
+      rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
+      rem Hitbox: [playerX, playerX+16] x [playerY-16, playerY]
+      let hitbox_left = playerX[attacker_id]
+      let hitbox_right = playerX[attacker_id] + PlayerSpriteWidth
+      let hitbox_top = playerY[attacker_id] - PlayerSpriteHeight
+      let hitbox_bottom = playerY[attacker_id]
       return
       
 FacingDown
-      let hitbox_left = playerX[attacker_id] - 8
-      let hitbox_right = playerX[attacker_id] + 8
-      let hitbox_top = playerY[attacker_id] + 8
-      let hitbox_bottom = playerY[attacker_id] + 24
+      rem Hitbox extends 16 pixels downward from sprite bottom edge
+      rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
+      rem Hitbox: [playerX, playerX+16] x [playerY+16, playerY+32]
+      let hitbox_left = playerX[attacker_id]
+      let hitbox_right = playerX[attacker_id] + PlayerSpriteWidth
+      let hitbox_top = playerY[attacker_id] + PlayerSpriteHeight
+      let hitbox_bottom = playerY[attacker_id] + PlayerSpriteHeight + PlayerSpriteHeight
       return
   
 ProjectileHitbox

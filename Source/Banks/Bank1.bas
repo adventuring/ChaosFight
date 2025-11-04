@@ -33,19 +33,21 @@
           rem we need screen-specific window overrides via conditional compilation or
           rem separate builds. For now, we set to Publisher defaults and document limitation.
           
-          rem Set window values for Publisher screen (default)
-          rem These values apply to ALL screens - compile-time constant limitation
-          bmp_48x2_1_window = 42  ; AtariAge: visible on Publisher
-          bmp_48x2_2_window = 42  ; Interworldly: visible on Publisher + Author
-          bmp_48x2_3_window = 0   ; ChaosFight: hidden on Publisher/Author, visible on Title
+          rem Set window values - these apply to ALL screens (compile-time constant limitation)
+          rem Publisher screen: AtariAge=42, Interworldly=42, ChaosFight=0 ✓ (2 bitmaps)
+          rem Author screen: AtariAge=42 (unwanted), Interworldly=42 ✓, ChaosFight=0 ✓ (shows 2, want 1)
+          rem Title screen: AtariAge=42 (unwanted), Interworldly=42 (unwanted), ChaosFight=0 ✗ (shows 2, want 1)
           
-          rem NOTE: These window values are compile-time constants and apply to ALL screens.
-          rem Author screen will also show AtariAge (can't hide without conditional compilation).
-          rem Title screen won't show ChaosFight (file default is 0, we need 42 but can't set per-screen).
-          rem For proper per-screen control, would need:
-          rem   1. Conditional compilation with screen-specific constants
-          rem   2. Separate builds for each screen
-          rem   3. Kernel modification to use variables instead of constants
+          rem Override window values for Publisher screen defaults
+          bmp_48x2_1_window = 42  ; AtariAge: visible on Publisher (also Author, unwanted on Title)
+          bmp_48x2_2_window = 42  ; Interworldly: visible on Publisher + Author (unwanted on Title)
+          bmp_48x2_3_window = 42  ; ChaosFight: override from 0 to 42 for Title screen
+          
+          rem CRITICAL LIMITATION: Window values are compile-time constants used in assembly
+          rem address calculations. They cannot be changed at runtime. All screens use same values.
+          rem Author screen will show AtariAge (unwanted - can't hide without conditional compilation).
+          rem Title screen will show AtariAge + Interworldly (unwanted - can't hide without conditional compilation).
+          rem For proper per-screen control, would need conditional compilation or kernel modification.
           
           include "Source/Titlescreen/asm/titlescreen.s"
 end

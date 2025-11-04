@@ -29,7 +29,14 @@ DrawTitleScreen
           player1y = 0
           
           rem Load title screen bitmap data
-          gosub LoadTitleBitmap
+          rem Inline LoadTitleBitmap (configure titlescreen kernel bitmap)
+          rem Configure titlescreen kernel to show Title (ChaosFight) bitmap
+          rem Uses 48x2_3 minikernel - set window/height via assembly constants
+          rem Bitmap data in: Source/Generated/Art.ChaosFight.s
+          rem Other screens' minikernels should have window=0 in their image files
+          rem The titlescreen kernel uses fixed labels (bmp_48x2_3_window, etc.)
+          rem These are set as constants in the .s image files
+          rem Title screen: bmp_48x2_3_window = 42, others = 0
           
           rem Draw character parade if active
           if titleParadeActive then gosub DrawParadeCharacter

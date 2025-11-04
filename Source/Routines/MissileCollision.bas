@@ -338,85 +338,93 @@ SkipAOEPlayer3
           rem   temp4 = hit player index (0-3), or 255 if no hit
 CheckAOEDirection_Left
           dim CAOEL_attackerIndex = temp1
+          dim CAOEL_playerX = temp2
+          dim CAOEL_playerY = temp3
+          dim CAOEL_characterType = temp5
+          dim CAOEL_aoeOffset = temp7
+          dim CAOEL_aoeX = temp2
+          dim CAOEL_aoeWidth = temp6
+          dim CAOEL_aoeHeight = temp3
+          dim CAOEL_hitPlayer = temp4
           rem Get attacker position
-          temp2 = playerX[CAOEL_attackerIndex]
-          temp3 = playerY[CAOEL_attackerIndex]
+          let CAOEL_playerX = playerX[CAOEL_attackerIndex]
+          let CAOEL_playerY = playerY[CAOEL_attackerIndex]
           
           rem Calculate AOE bounds for facing left
           rem Read AOE offset from character data
           rem Get character-specific AOE offset
-          temp7 = CharacterAOEOffsets[temp5]
+          let CAOEL_characterType = playerChar[CAOEL_attackerIndex]
+          let CAOEL_aoeOffset = CharacterAOEOffsets[CAOEL_characterType]
           rem For now, use default offset of 8 pixels
-          rem AOE_X = temp2 + 7 - 8 = temp2 - 1 (facing left formula)
-          temp2 = temp2 - 1
-          temp6 = 8 
+          rem AOE_X = playerX + 7 - 8 = playerX - 1 (facing left formula)
+          let CAOEL_aoeX = CAOEL_playerX - 1
+          let CAOEL_aoeWidth = 8 
           rem AOE width
-          temp5 = 16
+          let CAOEL_aoeHeight = 16
           rem AOE height
           
-          rem AOE extends to the left, so AOE goes from (temp2 - temp6) to temp2
-          temp2 = temp2 - temp6
+          rem AOE extends to the left, so AOE goes from (aoeX - aoeWidth) to aoeX
+          let CAOEL_aoeX = CAOEL_aoeX - CAOEL_aoeWidth
           
           rem AOE bounding box:
-          rem   Left:   temp2
-          rem   Right:  temp2 + temp6
-          rem   Top:    temp3
-          rem   Bottom: temp3 + temp5
+          rem   Left:   aoeX
+          rem   Right:  aoeX + aoeWidth
+          rem   Top:    playerY
+          rem   Bottom: playerY + aoeHeight
           
           rem Check each player (except attacker)
-          temp4 = 255
+          let CAOEL_hitPlayer = 255
           
           rem Check Player 1 (players are 16px wide - double-width NUSIZ)
           if CAOEL_attackerIndex = 0 then CheckPlayer2
           if playerHealth[0] = 0 then CheckPlayer2
-          if temp2 >= playerX[0] + 16 then CheckPlayer2
+          if CAOEL_aoeX >= playerX[0] + 16 then CheckPlayer2
           rem AOE left edge past player right edge
-          if temp2 + temp6 <= playerX[0] then CheckPlayer2
+          if CAOEL_aoeX + CAOEL_aoeWidth <= playerX[0] then CheckPlayer2
           rem AOE right edge before player left edge
-          if temp3 >= playerY[0] + 16 then CheckPlayer2
+          if CAOEL_playerY >= playerY[0] + 16 then CheckPlayer2
           rem AOE top edge past player bottom edge
-          if temp3 + temp5 <= playerY[0] then CheckPlayer2
+          if CAOEL_playerY + CAOEL_aoeHeight <= playerY[0] then CheckPlayer2
           rem AOE bottom edge before player top edge
-          temp4 = 0
+          let CAOEL_hitPlayer = 0
+          let temp4 = CAOEL_hitPlayer
           return
 CheckPlayer2
-          
-          
-          
-          
-          
-          
           
           rem Check Player 2
           if CAOEL_attackerIndex = 1 then SkipThirdPlayer1
           if playerHealth[1] = 0 then SkipThirdPlayer1
-          if temp2 >= playerX[1] + 16 then SkipThirdPlayer1
-          if temp2 + temp6 <= playerX[1] then SkipThirdPlayer1
-          if temp3 >= playerY[1] + 16 then SkipThirdPlayer1
-          if temp3 + temp5 <= playerY[1] then SkipThirdPlayer1
-          temp4 = 1
+          if CAOEL_aoeX >= playerX[1] + 16 then SkipThirdPlayer1
+          if CAOEL_aoeX + CAOEL_aoeWidth <= playerX[1] then SkipThirdPlayer1
+          if CAOEL_playerY >= playerY[1] + 16 then SkipThirdPlayer1
+          if CAOEL_playerY + CAOEL_aoeHeight <= playerY[1] then SkipThirdPlayer1
+          let CAOEL_hitPlayer = 1
+          let temp4 = CAOEL_hitPlayer
           return
 SkipThirdPlayer1
           
           rem Check Player 3
           if CAOEL_attackerIndex = 2 then SkipThirdPlayer2
           if playerHealth[2] = 0 then SkipThirdPlayer2
-          if temp2 >= playerX[2] + 16 then SkipThirdPlayer2
-          if temp2 + temp6 <= playerX[2] then SkipThirdPlayer2
-          if temp3 >= playerY[2] + 16 then SkipThirdPlayer2
-          if temp3 + temp5 <= playerY[2] then SkipThirdPlayer2
-          temp4 = 2
+          if CAOEL_aoeX >= playerX[2] + 16 then SkipThirdPlayer2
+          if CAOEL_aoeX + CAOEL_aoeWidth <= playerX[2] then SkipThirdPlayer2
+          if CAOEL_playerY >= playerY[2] + 16 then SkipThirdPlayer2
+          if CAOEL_playerY + CAOEL_aoeHeight <= playerY[2] then SkipThirdPlayer2
+          let CAOEL_hitPlayer = 2
+          let temp4 = CAOEL_hitPlayer
           return
 SkipThirdPlayer2
           
           rem Check Player 4
           if CAOEL_attackerIndex = 3 then SkipThirdPlayer3
           if playerHealth[3] = 0 then SkipThirdPlayer3
-          if temp2 >= playerX[3] + 16 then SkipThirdPlayer3
-          if temp2 + temp6 <= playerX[3] then SkipThirdPlayer3
-          if temp3 >= playerY[3] + 16 then SkipThirdPlayer3
-          if temp3 + temp5 <= playerY[3] then SkipThirdPlayer3
-          temp4 = 3 : return
+          if CAOEL_aoeX >= playerX[3] + 16 then SkipThirdPlayer3
+          if CAOEL_aoeX + CAOEL_aoeWidth <= playerX[3] then SkipThirdPlayer3
+          if CAOEL_playerY >= playerY[3] + 16 then SkipThirdPlayer3
+          if CAOEL_playerY + CAOEL_aoeHeight <= playerY[3] then SkipThirdPlayer3
+          let CAOEL_hitPlayer = 3
+          let temp4 = CAOEL_hitPlayer
+          return
 SkipThirdPlayer3
           
           return

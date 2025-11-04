@@ -339,7 +339,7 @@ CheckPlayer2
           rem Check Player 2
           if temp1 = 1 then SkipThirdPlayer1
           if playerHealth[1] = 0 then SkipThirdPlayer1
-          if temp2 >= playerX[1] + 8 then SkipThirdPlayer1
+          if temp2 >= playerX[1] + 16 then SkipThirdPlayer1
           if temp2 + temp6 <= playerX[1] then SkipThirdPlayer1
           if temp3 >= playerY[1] + 16 then SkipThirdPlayer1
           if temp3 + temp5 <= playerY[1] then SkipThirdPlayer1
@@ -350,7 +350,7 @@ SkipThirdPlayer1
           rem Check Player 3
           if temp1 = 2 then SkipThirdPlayer2
           if playerHealth[2] = 0 then SkipThirdPlayer2
-          if temp2 >= playerX[2] + 8 then SkipThirdPlayer2
+          if temp2 >= playerX[2] + 16 then SkipThirdPlayer2
           if temp2 + temp6 <= playerX[2] then SkipThirdPlayer2
           if temp3 >= playerY[2] + 16 then SkipThirdPlayer2
           if temp3 + temp5 <= playerY[2] then SkipThirdPlayer2
@@ -361,7 +361,7 @@ SkipThirdPlayer2
           rem Check Player 4
           if temp1 = 3 then SkipThirdPlayer3
           if playerHealth[3] = 0 then SkipThirdPlayer3
-          if temp2 >= playerX[3] + 8 then SkipThirdPlayer3
+          if temp2 >= playerX[3] + 16 then SkipThirdPlayer3
           if temp2 + temp6 <= playerX[3] then SkipThirdPlayer3
           if temp3 >= playerY[3] + 16 then SkipThirdPlayer3
           if temp3 + temp5 <= playerY[3] then SkipThirdPlayer3

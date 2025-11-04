@@ -21,8 +21,7 @@ SetupAuthorPrelude
           return
           
 SetupTitle
-          rem Title screen uses its own internal flow
-          rem No separate Begin function needed - setup is handled inline
+          gosub bank9 BeginTitleScreen
           return
           
 SetupCharacterSelect

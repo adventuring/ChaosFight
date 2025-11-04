@@ -8,7 +8,7 @@
           rem Called from MainLoop each frame (gameMode 2).
           rem Dispatches to other modules for character parade and rendering.
           rem
-          rem Setup is handled by SetupTitle in ChangeGameMode.bas
+          rem Setup is handled by BeginTitleScreen (called from ChangeGameMode)
           rem This function processes one frame and returns.
 
           rem AVAILABLE VARIABLES (from Variables.bas):

@@ -79,44 +79,44 @@ SkipPlayer4Position
           
           if SSP_frameParity = 0 then goto RenderMissilesEvenFrame
           
-          rem Odd frame: Render Participants 3-4 missiles
+                    rem Odd frame: Render Participants 3-4 missiles
           rem Participant 3 missile (array [2], bit 2) → missile0
           ENAM0 = 0
           let SSP_missileActive = missileActive & 4
-          if SSP_missileActive then missile0x = missileX[2] : missile0y = missileY[2] : ENAM0 = 1
+          if SSP_missileActive then missile0x = missileX[2] : missile0y = missileY[2] : ENAM0 = 1 : NUSIZ0 = missileNUSIZ[2]                                                               
           
           rem Participant 4 missile (array [3], bit 3) → missile1
           ENAM1 = 0
           let SSP_missileActive = missileActive & 8
-          if SSP_missileActive then missile1x = missileX[3] : missile1y = missileY[3] : ENAM1 = 1
+          if SSP_missileActive then missile1x = missileX[3] : missile1y = missileY[3] : ENAM1 = 1 : NUSIZ1 = missileNUSIZ[3]                                                               
           return
           
 RenderMissilesEvenFrame
           dim RMEF_missileActive = temp4
-          rem Even frame: Render Participants 1-2 missiles
+                    rem Even frame: Render Participants 1-2 missiles
           rem Participant 1 missile (array [0], bit 0) → missile0
           ENAM0 = 0 
           let RMEF_missileActive = missileActive & 1
-          if RMEF_missileActive then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1
+          if RMEF_missileActive then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1 : NUSIZ0 = missileNUSIZ[0]                                                              
           
           rem Participant 2 missile (array [1], bit 1) → missile1
           ENAM1 = 0 
           let RMEF_missileActive = missileActive & 2
-          if RMEF_missileActive then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1
+          if RMEF_missileActive then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1 : NUSIZ1 = missileNUSIZ[1]                                                              
           return
           
 RenderMissiles2Player
           dim RM2P_missileActive = temp4
-          rem 2-player mode: No multiplexing needed, assign missiles directly
+                    rem 2-player mode: No multiplexing needed, assign missiles directly
           rem Participant 1 (array [0]) missile (missile0, P0 sprite)
           ENAM0 = 0 
           let RM2P_missileActive = missileActive & 1
-          if RM2P_missileActive then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1
+          if RM2P_missileActive then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1 : NUSIZ0 = missileNUSIZ[0]                                                              
           
           rem Participant 2 (array [1]) missile (missile1, P1 sprite)
           ENAM1 = 0 
           let RM2P_missileActive = missileActive & 2
-          if RM2P_missileActive then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1
+          if RM2P_missileActive then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1 : NUSIZ1 = missileNUSIZ[1]                                                              
           
           return
 

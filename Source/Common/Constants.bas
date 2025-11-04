@@ -184,11 +184,15 @@
           rem MUSIC CONSTANTS
           rem =================================================================
           rem Main game songs (0-4)
-          const MusicTitle = 0
+          rem Song indices match SongPointers.bas: 0=AtariToday, 1=Interworldly, 2=Chaotica (Title), 3=GameOver, 4=Victory
+          const MusicAtariToday = 0
           const MusicInterworldly = 1
-          const MusicAtariToday = 2
-          const MusicVictory = 3
-          const MusicGameOver = 4
+          const MusicTitle = 2
+          rem Title song "Chaotica" (index 2 in SongPointers)
+          const MusicChaotica = 2
+          rem Title song "Chaotica" (alias for MusicTitle)
+          const MusicGameOver = 3
+          const MusicVictory = 4
           rem Character theme songs (5-30)
           const SongBernie = 5
           const SongOCascadia = 6

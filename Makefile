@@ -28,7 +28,7 @@ STELLA = stella
 GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm
 
 # Ready system
-READYDATE = 20251104
+READYDATE = 20250108
 READYFILE = .#ready.$(READYDATE)
 
 # SkylineTool build rules

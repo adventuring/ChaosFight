@@ -19,6 +19,7 @@
           rem Plays sound effect if voice is free, else forgets it (no queuing)
           rem =================================================================
 PlaySoundEffect
+          dim PSE_soundID = temp1
           rem Check if music is active (music takes priority)
           if MusicVoice0PointerH then return
           if MusicVoice1PointerH then return

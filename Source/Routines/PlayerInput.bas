@@ -121,7 +121,7 @@ InputHandleLeftPortPlayer
           if temp5 = 2 then FrootyDragonetLeftRightMovement
           
           rem Standard horizontal movement (modifies velocity, not position)
-          rem Left movement: set negative velocity (255 in 8-bit two's complement = -1)
+          rem Left movement: set negative velocity (255 in 8-bit two’s complement = -1)
           if joy0left then let playerVelocityX[temp1] = 255 : let playerVelocityX_lo[temp1] = 0 : let PlayerState[temp1] = PlayerState[temp1] & 254
           rem Right movement: set positive velocity
           if joy0right then let playerVelocityX[temp1] = 1 : let playerVelocityX_lo[temp1] = 0 : let PlayerState[temp1] = PlayerState[temp1] | 1
@@ -163,7 +163,7 @@ CheckLeftCollision
 MoveLeftOK
           rem Apply leftward velocity impulse (double-width sprite: 16px width)
           let playerVelocityX[temp1] = 255
-          rem -1 in 8-bit two's complement: 256 - 1 = 255
+          rem -1 in 8-bit two’s complement: 256 - 1 = 255
           let playerVelocityX_lo[temp1] = 0
           let PlayerState[temp1] = PlayerState[temp1] & 254
 CheckRightMovement
@@ -370,7 +370,7 @@ InputHandleRightPortPlayer
           if joy1left then
                     rem Apply leftward velocity impulse
                     let playerVelocityX[temp1] = 255
-                    rem -1 in 8-bit two's complement: 256 - 1 = 255
+                    rem -1 in 8-bit two’s complement: 256 - 1 = 255
                     let playerVelocityX_lo[temp1] = 0
                     let PlayerState[temp1] = PlayerState[temp1] & 254
                     rem Face left
@@ -420,7 +420,7 @@ CheckLeftCollisionRight
 MoveLeftOKRight
           rem Apply leftward velocity impulse (double-width sprite: 16px width)
           let playerVelocityX[temp1] = 255
-          rem -1 in 8-bit two's complement: 256 - 1 = 255
+          rem -1 in 8-bit two’s complement: 256 - 1 = 255
           let playerVelocityX_lo[temp1] = 0
           let PlayerState[temp1] = PlayerState[temp1] & 254
 CheckRightMovementRight

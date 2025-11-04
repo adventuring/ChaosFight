@@ -442,7 +442,7 @@
           rem For melee attacks: small value (2-8 frames)
           rem For ranged attacks: larger value or 255 for "until collision"
           rem PERFORMANCE: Moved to SCRAM since accessed less frequently than other missile vars
-          rem NOTE: console7800Detected (COMMON) uses 'e' in standard RAM, missileLifetime moved to SCRAM to avoid conflict
+          rem NOTE: console7800Detected (COMMON) uses ’e’ in standard RAM, missileLifetime moved to SCRAM to avoid conflict
           dim missileLifetime_W = w045
           dim missileLifetime_R = r045
           dim missileLifetime = w045

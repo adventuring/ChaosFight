@@ -406,13 +406,13 @@ CycleCharacterLeft
           rem P2: CPUCharacter(254) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔ CPUCharacter
           rem P3/P4: NoCharacter(255) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔ NoCharacter
           
-          rem Check if we're at a special value
+          rem Check if we’re at a special value
           if temp1 = RandomCharacter then CycleFromRandom : return
           if temp1 = CPUCharacter then CycleFromCPU : return
           if temp1 = NoCharacter then CycleFromNO : return
           
           rem Normal character (0-15): decrement
-          rem Check if we're at 0 before decrementing (need to wrap to special)
+          rem Check if we’re at 0 before decrementing (need to wrap to special)
           if !temp1 then CharacterSelectLeftWrapCheck
           temp1 = temp1 - 1
           return
@@ -461,7 +461,7 @@ CycleFromCPU
           rem CPUCharacter(254) left cycle: goes to RandomCharacter(253) for all players
           rem For P2, this is the left direction from CPU
           rem P2 left from CPU: if NO available, NO → Random, else Random
-          rem Actually, left from CPU means we're decrementing, so CPU is after Random
+          rem Actually, left from CPU means we’re decrementing, so CPU is after Random
           rem The cycle is: ... Random → CPU → Random ...
           rem So left from CPU should go to Random (we already have this)
           temp1 = RandomCharacter
@@ -738,10 +738,10 @@ SelectUpdateAnimations
           rem Each player updates independently with staggered timing
           
           rem Update Player 1 animations (characters)
-          if playerLocked[0] then SelectSkipPlayer0Anim  : rem Locked players don't animate
-          if playerChar[0] = CPUCharacter then SelectSkipPlayer0Anim  : rem CPU doesn't animate
-          if playerChar[0] = NoCharacter then SelectSkipPlayer0Anim  : rem NO doesn't animate
-          if playerChar[0] = RandomCharacter then SelectSkipPlayer0Anim  : rem Random doesn't animate
+          if playerLocked[0] then SelectSkipPlayer0Anim  : rem Locked players don’t animate
+          if playerChar[0] = CPUCharacter then SelectSkipPlayer0Anim  : rem CPU doesn’t animate
+          if playerChar[0] = NoCharacter then SelectSkipPlayer0Anim  : rem NO doesn’t animate
+          if playerChar[0] = RandomCharacter then SelectSkipPlayer0Anim  : rem Random doesn’t animate
           let temp1 = 0
           gosub SelectUpdatePlayerAnim
           
@@ -785,7 +785,7 @@ SelectUpdatePlayerAnim
           rem Increment frame counter
           let charSelectPlayerAnimFrame[temp1] = charSelectPlayerAnimFrame[temp1] + 1
           
-          rem Check if it's time to advance frame (every 6 frames for 10fps at 60fps)
+          rem Check if it’s time to advance frame (every 6 frames for 10fps at 60fps)
           if charSelectPlayerAnimFrame[temp1] >= AnimationFrameDelay then SelectAdvanceAnimFrame
           return
           

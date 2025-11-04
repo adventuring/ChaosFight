@@ -131,7 +131,7 @@ DragonetJump
           
           rem Clear above - apply upward velocity impulse
           let playerVelocityY[temp1] = 254
-          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping flag for animation
@@ -141,7 +141,7 @@ DragonetJump
 ZoeRyenJump
           rem Apply upward velocity impulse (lighter character, higher jump)
           let playerVelocityY[temp1] = 244
-          rem -12 in 8-bit two's complement: 256 - 12 = 244
+          rem -12 in 8-bit two’s complement: 256 - 12 = 244
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -150,7 +150,7 @@ ZoeRyenJump
 FatTonyJump
           rem Apply upward velocity impulse (heavier character, lower jump)
           let playerVelocityY[temp1] = 248
-          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -186,9 +186,9 @@ HarpyJump
           rem Gravity is 0.05 px/frame² for Harpy (reduced). Over 40 frames, gravity accumulates:
           rem   velocity_change = 0.05 * 40 = 2.0 px/frame (downward)
           rem To maintain height, flap impulse must counteract: -2.0 px/frame (upward)
-          rem Using -2 px/frame (254 in two's complement) for stable hover with 1.5 flaps/second
+          rem Using -2 px/frame (254 in two’s complement) for stable hover with 1.5 flaps/second
           let playerVelocityY[temp1] = 254
-          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping/flying bit for animation
@@ -209,7 +209,7 @@ HarpyFlapRecord
 KnightGuyJump
           rem Apply upward velocity impulse (heavier character, lower jump)
           let playerVelocityY[temp1] = 248
-          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -244,7 +244,7 @@ FrootyJump
           
           rem Clear above - apply upward velocity impulse
           let playerVelocityY[temp1] = 254
-          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping flag for animation
@@ -259,7 +259,7 @@ NefertemJump
 NinjishGuyJump
           rem Apply upward velocity impulse (very light character, highest jump)
           let playerVelocityY[temp1] = 243
-          rem -13 in 8-bit two's complement: 256 - 13 = 243
+          rem -13 in 8-bit two’s complement: 256 - 13 = 243
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -268,7 +268,7 @@ NinjishGuyJump
 PorkChopJump
           rem Apply upward velocity impulse (heavy character, lower jump)
           let playerVelocityY[temp1] = 248
-          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -277,7 +277,7 @@ PorkChopJump
 RadishGoblinJump
           rem Apply upward velocity impulse (very light character, highest jump)
           let playerVelocityY[temp1] = 243
-          rem -13 in 8-bit two's complement: 256 - 13 = 243
+          rem -13 in 8-bit two’s complement: 256 - 13 = 243
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -339,7 +339,7 @@ RoboTitoLatch
 UrsuloJump
           rem Apply upward velocity impulse (heavy character, lower jump)
           let playerVelocityY[temp1] = 248
-          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -348,7 +348,7 @@ UrsuloJump
 ShamoneJump
           rem Apply upward velocity impulse (light character, good jump)
           let playerVelocityY[temp1] = 245
-          rem -11 in 8-bit two's complement: 256 - 11 = 245
+          rem -11 in 8-bit two’s complement: 256 - 11 = 245
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -564,7 +564,7 @@ ShamoneDown
 StandardJump
           rem Apply upward velocity impulse (input applies impulse to rigid body)
           let playerVelocityY[temp1] = 246
-          rem -10 in 8-bit two's complement: 256 - 10 = 246
+          rem -10 in 8-bit two’s complement: 256 - 10 = 246
           let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping bit

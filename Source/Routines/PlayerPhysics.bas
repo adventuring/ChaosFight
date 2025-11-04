@@ -40,7 +40,7 @@ GravityCheckCharacter
           rem Get character type
           let temp6 = playerChar[temp1]
           
-          rem Skip gravity for characters that don't have it
+          rem Skip gravity for characters that don’t have it
           rem Frooty (8): Permanent flight, no gravity
           if temp6 = 8 then goto GravityNextPlayer
           rem Dragon of Storms (2): Permanent flight, no gravity (handled below)
@@ -50,8 +50,8 @@ GravityCheckCharacter
           if !(playerState[temp1] & 4) then goto GravityNextPlayer
           
           rem Initialize or get vertical velocity (using temp variable)
-          rem Note: Vertical velocity is not persistent - we'll track it per-frame
-          rem For now, we'll apply gravity acceleration directly to position
+          rem Note: Vertical velocity is not persistent - we’ll track it per-frame
+          rem For now, we’ll apply gravity acceleration directly to position
           rem TODO: Consider implementing persistent vertical velocity tracking
           
           rem Skip gravity for Dragon of Storms (2): Permanent flight, no gravity
@@ -81,13 +81,13 @@ GravityCheckCharacter
           if temp2 > 31 then let temp2 = 31
           if temp2 < 0 then let temp2 = 0
           
-          rem Calculate row where player's feet are (bottom of sprite)
+          rem Calculate row where player’s feet are (bottom of sprite)
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
           let temp3 = playerY[temp1] + PlayerSpriteHeight
           let temp4 = temp3 / pfrowheight
           rem temp4 = row where feet are
           
-          rem Check if there's a playfield pixel in the row below the feet
+          rem Check if there’s a playfield pixel in the row below the feet
           rem If feet are in row N, check row N+1 for ground
           if temp4 >= pfrows then goto GravityNextPlayer
           rem Feet are at or below bottom of playfield, continue falling
@@ -293,8 +293,8 @@ CheckPlayfieldCollisionAllDirections
           rem =================================================================
           rem CHECK LEFT COLLISION
           rem =================================================================
-          rem Check if player's left edge (temp6 column) has a playfield pixel
-          rem Check at player's head, middle, and feet positions
+          rem Check if player’s left edge (temp6 column) has a playfield pixel
+          rem Check at player’s head, middle, and feet positions
           if temp6 <= 0 then PFCheckRight
           rem At left edge of screen, skip check
           
@@ -327,13 +327,13 @@ PFBlockLeft
           rem CHECK RIGHT COLLISION
           rem =================================================================
 PFCheckRight
-          rem Check if player's right edge has a playfield pixel
+          rem Check if player’s right edge has a playfield pixel
           rem Player width is 16 pixels (double-width NUSIZ), so right edge is at temp6 + 4 columns (16px / 4px per column = 4)
           if temp6 >= 31 then PFCheckUp
           rem At right edge of screen, skip check
           
           let temp8 = temp6 + 4
-          rem Column to the right of player's right edge (temp8)
+          rem Column to the right of player’s right edge (temp8)
           if temp8 > 31 then PFCheckUp
           rem Out of bounds, skip
           
@@ -359,12 +359,12 @@ PFBlockRight
           rem CHECK UP COLLISION
           rem =================================================================
 PFCheckUp
-          rem Check if player's head has a playfield pixel above
+          rem Check if player’s head has a playfield pixel above
           if temp7 <= 0 then PFCheckDown
           rem At top of screen, skip check
           
           let temp8 = temp7 - 1
-          rem Row above player's head (temp8)
+          rem Row above player’s head (temp8)
           if temp8 < 0 then PFCheckDown
           
           rem Check center column (temp6)
@@ -387,10 +387,10 @@ PFBlockUp
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity, but verify)
           rem =================================================================
 PFCheckDown
-          rem Check if player's feet have a playfield pixel below
+          rem Check if player’s feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we verify here
           let temp8 = temp7 + temp5 / pfrowheight
-          rem Row at player's feet (temp8)
+          rem Row at player’s feet (temp8)
           if temp8 >= pfrows then PFCheckDone
           
           let temp9 = temp8 + 1

@@ -301,24 +301,36 @@ Source/Generated/Font.bas: Source/Art/Font.png
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
+# CRITICAL: cpp preprocessor processes includes immediately, so all generated files
+# that are included via #include directives MUST exist before cpp runs.
+# Bank15.bas includes Sound.*.bas files, so they must be dependencies here.
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
-	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
-	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
-	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
 

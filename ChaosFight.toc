@@ -1,0 +1,58 @@
+@numchapentry{Introduction}{1}{Introduction}{1}
+@numchapentry{Getting Started}{2}{Getting Started}{3}
+@numsecentry{Equipment Required}{2.1}{}{3}
+@numsecentry{Setup Instructions}{2.2}{}{3}
+@numchapentry{Controller Configuration}{3}{Controller Configuration}{4}
+@numsecentry{Standard joystick controllers}{3.1}{}{4}
+@numsecentry{Genesis/Mega Drive Controllers}{3.2}{}{4}
+@numsecentry{Joy2b+ Enhanced Controllers}{3.3}{}{4}
+@numsecentry{Four-Player Mode with Quadtari}{3.4}{}{4}
+@numchapentry{Character Selection}{4}{Character Selection}{5}
+@numsecentry{The Character Selection Screen}{4.1}{}{5}
+@numsecentry{Selection Controls}{4.2}{}{5}
+@numsecentry{Starting the Game}{4.3}{}{5}
+@numsecentry{Handicapping for Advanced Players}{4.4}{}{5}
+@numsecentry{Guarding}{4.5}{}{7}
+@numchapentry{Character Roster}{5}{Characters}{8}
+@numsecentry{Character Descriptions}{5.1}{}{8}
+@numsubsubsecentry{Bernie}{5.1.0.1}{}{8}
+@numsubsubsecentry{Curling Sweeper}{5.1.0.2}{}{8}
+@numsubsubsecentry{DragonOfStorms}{5.1.0.3}{}{9}
+@numsubsubsecentry{Zoe Ryen}{5.1.0.4}{}{9}
+@numsubsubsecentry{Fat Tony}{5.1.0.5}{}{10}
+@numsubsubsecentry{Megax}{5.1.0.6}{}{10}
+@numsubsubsecentry{Harpy}{5.1.0.7}{}{11}
+@numsubsubsecentry{Knight Guy}{5.1.0.8}{}{11}
+@numsubsubsecentry{Frooty}{5.1.0.9}{}{12}
+@numsubsubsecentry{Nefertem}{5.1.0.10}{}{12}
+@numsubsubsecentry{Ninjish Guy}{5.1.0.11}{}{13}
+@numsubsubsecentry{Pork Chop}{5.1.0.12}{}{13}
+@numsubsubsecentry{Radish Goblin}{5.1.0.13}{}{14}
+@numsubsubsecentry{Robo Tito}{5.1.0.14}{}{14}
+@numsubsubsecentry{Ursulo}{5.1.0.15}{}{15}
+@numsubsubsecentry{Shamone}{5.1.0.16}{}{16}
+@numchapentry{Combat System}{6}{Combat System}{17}
+@numsecentry{Health and Damage}{6.1}{}{17}
+@numsecentry{Victory Conditions}{6.2}{}{17}
+@numchapentry{Game Modes}{7}{Game Modes}{18}
+@numsecentry{Two-Player Battle}{7.1}{}{18}
+@numsecentry{Four-Player Chaos}{7.2}{}{18}
+@numsecentry{Battle Arenas}{7.3}{}{18}
+@numchapentry{Console Switches}{8}{Console Switches}{19}
+@numsecentry{GAME RESET Switch}{8.1}{}{19}
+@numsecentry{GAME SELECT Switch}{8.2}{}{19}
+@numsecentry{TV TYPE Switch (COLOR/B&W)}{8.3}{}{19}
+@numsecentry{DIFFICULTY Switches}{8.4}{}{19}
+@numchapentry{Troubleshooting}{9}{Troubleshooting}{20}
+@numsecentry{Common Issues}{9.1}{}{20}
+@numsubsecentry{Controllers Not Responding}{9.1.1}{}{20}
+@numsubsecentry{Four Players Not Working}{9.1.2}{}{20}
+@numsubsecentry{Game Won't Start from Multicart}{9.1.3}{}{20}
+@numsecentry{Getting Help}{9.2}{}{20}
+@numchapentry{Credits}{10}{Credits}{21}
+@numsecentry{Development Team}{10.1}{}{21}
+@numsecentry{Special Thanks}{10.2}{}{21}
+@numsecentry{Tools Used}{10.3}{}{21}
+@numsecentry{Copyright and License}{10.4}{}{22}
+@numsecentry{Version Information}{10.5}{}{22}
+@unnchapentry{Index}{10001}{Index}{23}

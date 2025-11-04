@@ -72,14 +72,10 @@ UpdateSprite
           dim US_animationFrame = temp2
           dim US_animationAction = temp3
           dim US_playerNumber = temp4
-          rem Update character sprite with new animation frame
           rem Frame is from this sprite 10fps counter (currentAnimationFrame), not global frame counter
           let US_animationFrame = currentAnimationFrame[currentPlayer] 
-          rem US_animationFrame = Animation frame (0-7) from sprite 10fps counter
           let US_animationAction = currentAnimationSeq[currentPlayer]
-          rem US_animationAction = Animation action (0-15)
           let US_playerNumber = currentPlayer
-          rem US_playerNumber = Player number (0-3)
           gosub bank10 LoadPlayerSprite
           
           return
@@ -88,12 +84,9 @@ UpdateSprite
           rem Input: currentPlayer = player index (0-3), temp2 = animation action (0-15)
 SetPlayerAnimation
           dim SPA_animationAction = temp2
-          rem Validate animation action (byte-safe)
           if SPA_animationAction >= AnimationSequenceCount then return
           
-          rem Set new animation action
           let currentAnimationSeq[currentPlayer] = SPA_animationAction
-          rem currentPlayer = Player index (0-3), SPA_animationAction = Animation action (0-15)
           let currentAnimationFrame[currentPlayer] = 0 
           rem Start at first frame
           let animationCounter[currentPlayer] = 0      
@@ -103,11 +96,8 @@ SetPlayerAnimation
           rem Frame is from this sprite 10fps counter, action from currentAnimationSeq
           rem Set up parameters for LoadPlayerSprite (reuse temp2/temp3/temp4 since SPA_animationAction already consumed)
           temp2 = currentAnimationFrame[currentPlayer]
-          rem temp2 = Animation frame (0-7) from sprite 10fps counter
           temp3 = currentAnimationSeq[currentPlayer]
-          rem temp3 = Animation action (0-15)
           temp4 = currentPlayer
-          rem temp4 = Player number (0-3)
           gosub bank10 LoadPlayerSprite
           
           return
@@ -118,7 +108,6 @@ SetPlayerAnimation
 GetCurrentAnimationFrame
           dim GCAF_currentFrame = temp2
           let GCAF_currentFrame = currentAnimationFrame[currentPlayer]
-          rem currentPlayer = Player index (0-3), GCAF_currentFrame = Current animation frame (0-7)
           return
 
           rem Get current animation action for a player
@@ -127,7 +116,6 @@ GetCurrentAnimationFrame
 GetCurrentAnimationAction
           dim GCAA_currentAction = temp2
           let GCAA_currentAction = currentAnimationSeq[currentPlayer]
-          rem currentPlayer = Player index (0-3), GCAA_currentAction = Current animation action (0-15)
           return
           
           rem Legacy alias for backward compatibility

@@ -29,8 +29,13 @@ AnimationSkipPlayer3
           return
 
           rem Update animation for a specific player
-          rem Input: currentPlayer = player index (0-3)
           rem Uses per-sprite 10fps counter (animationCounter), NOT global frame counter
+          rem INPUT: currentPlayer = player index (0-3)
+          rem        animationCounter[currentPlayer] = current frame timer (per-sprite 10fps counter)
+          rem        currentAnimationSeq[currentPlayer] = current animation action/sequence (0-15)
+          rem OUTPUT: None
+          rem EFFECTS: Increments per-sprite animation counter, advances animation frame when counter reaches threshold,
+          rem           updates sprite graphics via LoadPlayerSprite, handles frame 7 transition logic
 UpdatePlayerAnimation
           rem Skip if player is eliminated
           if currentPlayer = 0 && playersEliminated & 1 then return
@@ -52,8 +57,13 @@ SkipAdvance
         return
 
           rem Advance to next frame in current animation action
-          rem Input: currentPlayer = player index (0-3)
           rem Frame counter is per-sprite 10fps counter, NOT global frame counter
+          rem INPUT: currentPlayer = player index (0-3)
+          rem        currentAnimationSeq[currentPlayer] = current animation action/sequence (0-15)
+          rem        currentAnimationFrame[currentPlayer] = current frame within sequence (0-7)
+          rem OUTPUT: None
+          rem EFFECTS: Increments currentAnimationFrame[currentPlayer], checks for frame 7 completion,
+          rem           triggers HandleAnimationTransition when 8 frames completed
 AdvanceAnimationFrame
           rem Advance to next frame in current animation action
           rem Frame is from sprite 10fps counter (currentAnimationFrame), not global frame
@@ -72,6 +82,12 @@ UpdateSprite
           dim US_animationFrame = temp2
           dim US_animationAction = temp3
           dim US_playerNumber = temp4
+          rem Update character sprite with current animation frame and action
+          rem INPUT: currentPlayer = player index (0-3) (uses global variable)
+          rem        currentAnimationFrame[currentPlayer] = current frame within sequence (0-7)
+          rem        currentAnimationSeq[currentPlayer] = current animation action/sequence (0-15)
+          rem OUTPUT: None
+          rem EFFECTS: Loads sprite graphics for current player with current animation frame and action sequence
           rem Frame is from this sprite 10fps counter (currentAnimationFrame), not global frame counter
           let US_animationFrame = currentAnimationFrame[currentPlayer] 
           let US_animationAction = currentAnimationSeq[currentPlayer]

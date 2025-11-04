@@ -120,10 +120,6 @@ FallingComplete1
           rem Note: BeginGameLoop will use final positions from falling animation
           gosub bank11 BeginGameLoop
           rem Transition to Game Mode
-          rem Initialize game state before entering Game Mode
-          gosub BeginGameLoop
-          
-          rem Transition to Game Mode
           let gameMode = ModeGame
           gosub bank13 ChangeGameMode
           return

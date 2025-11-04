@@ -19,70 +19,90 @@
           rem =================================================================
 
 FallingAnimation1
+          dim FA1_playerIndex = temp1
+          dim FA1_targetX = temp2
+          dim FA1_targetY = temp3
+          dim FA1_reached = temp4
           rem Update animation frame
           let fallFrame = fallFrame + 1
           if fallFrame > 3 then let fallFrame = 0
           
           rem Move Player 1 from quadrant to target (if active)
           if selectedChar1 = NoCharacter then SkipPlayer1Move
-          rem temp1 = 0 (player index), temp2 = target X, temp3 = target Y (24)
-          let temp1 = 0
+          rem playerIndex = 0 (player index), targetX = target X, targetY = target Y (24)
+          let FA1_playerIndex = 0
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player1Target4P
           rem 2-player mode: target X = 53
-          let temp2 = 53
+          let FA1_targetX = 53
           goto Player1TargetDone
 Player1Target4P
           rem 4-player mode: target X = 32
-          let temp2 = 32
+          let FA1_targetX = 32
 Player1TargetDone
-          let temp3 = 24
+          let FA1_targetY = 24
           rem Target Y (row 2)
+          let temp1 = FA1_playerIndex
+          let temp2 = FA1_targetX
+          let temp3 = FA1_targetY
           gosub MovePlayerToTarget
-          if temp4 then let fallComplete = fallComplete + 1
-          rem temp4 = 1 if reached target
+          let FA1_reached = temp4
+          if FA1_reached then let fallComplete = fallComplete + 1
+          rem reached = 1 if reached target
 SkipPlayer1Move
           
           rem Move Player 2 from quadrant to target (if active)
           if selectedChar2 = NoCharacter then SkipPlayer2Move
-          let temp1 = 1
+          let FA1_playerIndex = 1
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player2Target4P
           rem 2-player mode: target X = 107
-          let temp2 = 107
+          let FA1_targetX = 107
           goto Player2TargetDone
 Player2Target4P
           rem 4-player mode: target X = 128
-          let temp2 = 128
+          let FA1_targetX = 128
 Player2TargetDone
-          let temp3 = 24
+          let FA1_targetY = 24
           rem Target Y (row 2)
+          let temp1 = FA1_playerIndex
+          let temp2 = FA1_targetX
+          let temp3 = FA1_targetY
           gosub MovePlayerToTarget
-          if temp4 then let fallComplete = fallComplete + 1
+          let FA1_reached = temp4
+          if FA1_reached then let fallComplete = fallComplete + 1
 SkipPlayer2Move
           
           rem Move Player 3 from quadrant to target (if active)
           if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3Move
           if selectedChar3 = NoCharacter then SkipPlayer3Move
-          let temp1 = 2
+          let FA1_playerIndex = 2
           rem 4-player mode: target X = 64
-          let temp2 = 64
-          let temp3 = 24
+          let FA1_targetX = 64
+          let FA1_targetY = 24
           rem Target Y (row 2)
+          let temp1 = FA1_playerIndex
+          let temp2 = FA1_targetX
+          let temp3 = FA1_targetY
           gosub MovePlayerToTarget
-          if temp4 then let fallComplete = fallComplete + 1
+          let FA1_reached = temp4
+          if FA1_reached then let fallComplete = fallComplete + 1
 SkipPlayer3Move
           
           rem Move Player 4 from quadrant to target (if active)
           if !(controllerStatus & SetQuadtariDetected) then SkipPlayer4Move
           if selectedChar4 = NoCharacter then SkipPlayer4Move
-          let temp1 = 3
+          let FA1_playerIndex = 3
           rem 4-player mode: target X = 96
-          let temp2 = 96
-          let temp3 = 24
+          let FA1_targetX = 96
+          let FA1_targetY = 24
           rem Target Y (row 2)
+          let temp1 = FA1_playerIndex
+          let temp2 = FA1_targetX
+          let temp3 = FA1_targetY
           gosub MovePlayerToTarget
-          if temp4 then let fallComplete = fallComplete + 1
+          let FA1_reached = temp4
+          if FA1_reached then let fallComplete = fallComplete + 1
 SkipPlayer4Move
           
           rem Check if all players have reached their targets
@@ -170,7 +190,7 @@ MoveLeft
           if playerX[MPTT_playerIndex] < MPTT_targetX then let playerX[MPTT_playerIndex] = MPTT_targetX
 HorizontalDone
           
-                    rem Move vertically if not at target Y
+          rem Move vertically if not at target Y
           if MPTT_currentY < MPTT_targetY then MoveDown
           if MPTT_currentY > MPTT_targetY then MoveUp
           goto VerticalDone
@@ -200,7 +220,7 @@ AtTarget
           let MPTT_reached = 1
           return
           
-                    rem =================================================================
+          rem =================================================================
           rem NUDGE PLAYER FROM PLAYFIELD COLLISION
           rem =================================================================
           rem Checks if player collides with playfield and nudges them away.
@@ -216,11 +236,13 @@ AtTarget
           rem EFFECTS:
           rem   If playfield collision detected, nudges player 1 pixel away from obstacle
 NudgePlayerFromPlayfield
-          dim NPF_playerIndex = MPTT_playerIndex
+          dim NPF_playerIndex = temp1
           dim NPF_playerX = temp7
           dim NPF_playerY = temp8
           dim NPF_pfColumn = temp9
           dim NPF_pfRow = tempA
+          dim NPF_targetX = temp2
+          dim NPF_targetY = temp3
           
           rem Get current position
           let NPF_playerX = playerX[NPF_playerIndex]
@@ -261,8 +283,11 @@ NudgePlayerFromPlayfield
 NudgeFromPF
           rem Collision detected - nudge player 1 pixel in direction toward target
           rem Nudge horizontally toward target first
-          if NPF_playerX < MPTT_targetX then NudgeRight
-          if NPF_playerX > MPTT_targetX then NudgeLeft
+          rem Get targetX from parent function (preserved in temp2)
+          let NPF_targetX = temp2
+          let NPF_targetY = temp3
+          if NPF_playerX < NPF_targetX then NudgeRight
+          if NPF_playerX > NPF_targetX then NudgeLeft
           goto NudgeHorizontalDone
 NudgeRight
           let playerX[NPF_playerIndex] = playerX[NPF_playerIndex] + 1
@@ -287,8 +312,8 @@ NudgeHorizontalDone
           
 NudgeVertical
           rem Still colliding, nudge vertically
-          if NPF_playerY < MPTT_targetY then NudgeDown
-          if NPF_playerY > MPTT_targetY then NudgeUp
+          if NPF_playerY < NPF_targetY then NudgeDown
+          if NPF_playerY > NPF_targetY then NudgeUp
           return
 NudgeDown
           let playerY[NPF_playerIndex] = playerY[NPF_playerIndex] + 1

@@ -502,9 +502,17 @@
           rem Bit 2: Harpy in dive mode
           rem Bit 3-7: Reserved for future character mechanics
 
-          rem Missile angular velocity for curling stone rotation (SCRAM)
+                    rem Missile angular velocity for curling stone rotation (SCRAM)
           dim missileAngularVel = w017
-          rem [0-3] angular velocity for rotation effects (4 bytes, reserved for future)
+          rem [0-3] angular velocity for rotation effects (4 bytes, reserved for future)                                                                        
+
+          rem Missile NUSIZ tracking (SCRAM)
+          rem Tracks NUSIZ register values for each missile (0-3) to ensure proper sizing
+          dim missileNUSIZ_W = w114
+          dim missileNUSIZ_R = r114
+          dim missileNUSIZ = w114
+          rem [0-3] NUSIZ values for missiles M0-M3 (4 bytes: w114-w117)
+          rem Array accessible as missileNUSIZ[0] through missileNUSIZ[3]
 
           rem Harpy flight energy/duration counters (SCRAM)
           dim harpyFlightEnergy_W = w009

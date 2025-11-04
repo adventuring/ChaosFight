@@ -49,7 +49,18 @@ LoadCharacterSprite
           dim LCS_spriteIndex = temp6
           rem Validate character index
           let temp1 = LCS_characterIndex
-          gosub ValidateCharacterIndex
+          rem Inline ValidateCharacterIndex
+          dim VCI_characterIndex = temp1
+          dim VCI_isValid = temp5
+          rem Check if character index is within valid range (0-MaxCharacter for current implementation)
+          if VCI_characterIndex > MaxCharacter then ValidateInvalidCharacterInline
+          let VCI_isValid = 1
+          let temp5 = VCI_isValid
+          goto ValidateCharacterDoneInline
+ValidateInvalidCharacterInline
+          let VCI_isValid = 0
+          let temp5 = VCI_isValid
+ValidateCharacterDoneInline
           let LCS_isValid = temp5
           rem tail call
           if !LCS_isValid then goto LoadSpecialSprite
@@ -353,23 +364,7 @@ LoadPlayer3Sprite
           goto LoadCharacterSprite
 
 
-          rem Validate character index range
-          rem Input: temp1 = character index to validate
-          rem Output: temp5 = validation result (0=invalid, 1=valid)
-ValidateCharacterIndex
-          dim VCI_characterIndex = temp1
-          dim VCI_isValid = temp5
-          rem Check if character index is within valid range (0-MaxCharacter for current implementation)
-          if VCI_characterIndex > MaxCharacter then InvalidCharacter
-          let VCI_isValid = 1
-          let temp5 = VCI_isValid
-          return
-InvalidCharacter
-          
-          rem Invalid character index
-          let VCI_isValid = 0
-          let temp5 = VCI_isValid
-          return
+
 
 
           rem Load character/player color based on TV standard, B&W, hurt, and flashing states

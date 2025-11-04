@@ -7,7 +7,7 @@ MainLoop
           if gameMode = 2 then gosub bank9 TitleScreenMain : goto MainLoopContinue
           if gameMode = 3 then gosub bank10 CharacterSelectInputEntry : goto MainLoopContinue
           if gameMode = 4 then gosub bank12 FallingAnimation1 : goto MainLoopContinue
-          if gameMode = 5 then gosub bank12 LevelSelect1 : goto MainLoopContinue
+          if gameMode = 5 then gosub bank12 ArenaSelect1 : goto MainLoopContinue
           if gameMode = 6 then gosub bank11 GameMainLoop : goto MainLoopContinue
           gosub bank12 WinnerAnnouncement
 MainLoopContinue

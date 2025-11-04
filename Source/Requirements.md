@@ -235,6 +235,16 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - **Knockback**: Pushes players based on attack force and weight difference
 - **Damage**: Character-specific base damage modified by weight, attack type
 
+#### Damage Application Process
+When a player takes damage from any source:
+1. **Hurt Animation**: Player begins "hurt" animation (ActionHit = 5)
+2. **Recovery Frames**: Player enters recovery frames count (damage / 2, clamped 10-30 frames)
+3. **Color Dimming**: Player color dims during recovery (or magenta on SECAM TV standard)
+4. **Health Check**: 
+   - If player health ≥ damage amount: Decrement health by damage amount
+   - If player health < damage amount: Player dies (instantly vanishes)
+5. **Death Handling**: Dead players instantly vanish (sprite hidden, elimination effects triggered)
+
 ### Missile System
 - **Missile Types**: Character-specific projectiles (size, trajectory, lifetime)
 - **Movement**: Horizontal, vertical, or ballistic arcs

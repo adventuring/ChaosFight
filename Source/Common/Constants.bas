@@ -48,7 +48,7 @@
           const MissileHitNotFound = 255
           rem Sentinel value indicating no hit found in collision checks
           const MaxByteValue = 255
-          rem Maximum 8-bit value ($FF), used for two's complement operations
+          rem Maximum 8-bit value ($FF), used for two’s complement operations
           const InfiniteFallDistance = 255
           rem Fall distance value for infinite (characters immune to fall damage)
           

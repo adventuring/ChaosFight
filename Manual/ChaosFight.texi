@@ -197,7 +197,7 @@ Jump
 @item DOWN
 Guard
 @item Fire Button
-Attack. Also used for character and level selection.
+Attack. Also used for character and arena selection.
 @end itemize
 
 Plug Player 1 into left port, Player 2 into right port.
@@ -208,7 +208,7 @@ Genesis/Mega Drive controllers supported with automatic detection.
 
 @itemize @bullet
 @item Button B (Middle)
-Attack. Also used for character and level selection.
+Attack. Also used for character and arena selection.
 @item Button C (Right)
 Jump (alternative to UP)
 @item Buttons A and START
@@ -231,7 +231,7 @@ Guard
 @item @strong{UP:}
 Jump
 @item Button I
-@strong{Attack}. Also used for character and level selection.
+@strong{Attack}. Also used for character and arena selection.
 
 @item Button II
 @strong{Jump} - Alternative to UP
@@ -471,7 +471,7 @@ free-for-all! Last player standing wins.
 
 @section Battle Arenas
 
-Select from 16 different arenas during Level Select! Each arena offers unique
+Select from 16 different arenas during Arena Select! Each arena offers unique
 tactical opportunities.
 
 @page

@@ -283,7 +283,7 @@ colorBWPrevious_R = r008
  
 colorBWPrevious_W = w008
  
-selectedLevel = w
+rem selectedLevel = w  rem Legacy - removed, use selectedArena instead
  
 selectedChar4 = v
  
@@ -361,7 +361,7 @@ ModeWinner = 7
  
 ModeGame = 6
  
-ModeLevelSelect = 5
+ModeArenaSelect = 5
  
 ModeFallingAnimation = 4
  

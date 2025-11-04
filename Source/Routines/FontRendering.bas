@@ -32,14 +32,14 @@
           rem DRAW DIGIT - DATA-DRIVEN VERSION
           rem =================================================================
           rem Draws a single hexadecimal digit (0-F) at specified position.
-          rem Supports rendering to player0 or player1 for simultaneous digits.
+          rem Supports rendering to player0, player1, player2, player3, player4, or player5 for simultaneous digits.
 
           rem INPUTS:
           rem   temp1 = digit value (0-15)
           rem   temp2 = X position (pixel column)
           rem   temp3 = Y position (pixel row)
           rem   temp4 = color ($00-$FF for specific color, $FF = use temp5)
-          rem   temp5 = sprite select (0=player0, 1=player1) OR custom color if temp4=$FF
+          rem   temp5 = sprite select (0=player0, 1=player1, 2=player2, 3=player3, 4=player4, 5=player5) OR custom color if temp4=$FF
 
           rem COLORS:
           rem   ColGrey(14) = White (arena select)
@@ -67,8 +67,16 @@ DrawDigit
           let DD_digitOffset = DD_digit * 16
           
           rem Set sprite position and color based on spriteSelect
-          if DD_spriteSelect then SkipPlayer0Sprite
+          if DD_spriteSelect = 0 then DrawPlayer0Digit
+          if DD_spriteSelect = 1 then DrawPlayer1Digit
+          if DD_spriteSelect = 2 then DrawPlayer2Digit
+          if DD_spriteSelect = 3 then DrawPlayer3Digit
+          if DD_spriteSelect = 4 then DrawPlayer4Digit
+          if DD_spriteSelect = 5 then DrawPlayer5Digit
+          rem Default to player0 if invalid spriteSelect
+          goto DrawPlayer0Digit
 
+DrawPlayer0Digit
           rem Use player0 sprite
           let player0x = DD_xPos
           let player0y = DD_yPos
@@ -77,13 +85,49 @@ DrawDigit
           let temp6 = DD_digitOffset
           goto LoadPlayer0Digit
 
-SkipPlayer0Sprite
+DrawPlayer1Digit
           rem Use player1 sprite
           let player1x = DD_xPos
           let player1y = DD_yPos
           let _COLUP1 = DD_color
           let temp6 = DD_digitOffset
           gosub LoadPlayer1Digit
+          return
+
+DrawPlayer2Digit
+          rem Use player2 sprite
+          let player2x = DD_xPos
+          let player2y = DD_yPos
+          let COLUP2 = DD_color
+          let temp6 = DD_digitOffset
+          gosub LoadPlayer2Digit
+          return
+
+DrawPlayer3Digit
+          rem Use player3 sprite
+          let player3x = DD_xPos
+          let player3y = DD_yPos
+          let COLUP3 = DD_color
+          let temp6 = DD_digitOffset
+          gosub LoadPlayer3Digit
+          return
+
+DrawPlayer4Digit
+          rem Use player4 sprite
+          let player4x = DD_xPos
+          let player4y = DD_yPos
+          let COLUP4 = DD_color
+          let temp6 = DD_digitOffset
+          gosub LoadPlayer4Digit
+          return
+
+DrawPlayer5Digit
+          rem Use player5 sprite
+          let player5x = DD_xPos
+          let player5y = DD_yPos
+          let COLUP5 = DD_color
+          let temp6 = DD_digitOffset
+          gosub LoadPlayer5Digit
           return
 
           rem =================================================================
@@ -99,8 +143,8 @@ LoadPlayer0Digit
           dim LP0D_digitOffset = temp6
           rem Load digit graphics from Numbers font data into player0 sprite
           rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
-          rem Clamp digit offset to valid range (0-144 for digits 0-9)
-          if LP0D_digitOffset > 144 then let LP0D_digitOffset = 144
+          rem Clamp digit offset to valid range (0-240 for digits 0-15)
+          if LP0D_digitOffset > 240 then let LP0D_digitOffset = 240
           
           rem Calculate sprite pointer = FontData + offset using assembly
           asm
@@ -124,8 +168,8 @@ LoadPlayer1Digit
           dim LP1D_digitOffset = temp6
           rem Load digit graphics from Numbers font data into player1 sprite
           rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
-          rem Clamp digit offset to valid range (0-144 for digits 0-9)
-          if LP1D_digitOffset > 144 then let LP1D_digitOffset = 144
+          rem Clamp digit offset to valid range (0-240 for digits 0-15)
+          if LP1D_digitOffset > 240 then let LP1D_digitOffset = 240
           
           rem Calculate sprite pointer = FontData + offset using assembly
           asm
@@ -143,6 +187,106 @@ LoadPlayer1Digit
           
           rem Set sprite height (16 pixels tall)
           let player1height = 16
+          return
+
+LoadPlayer2Digit
+          dim LP2D_digitOffset = temp6
+          rem Load digit graphics from Numbers font data into player2 sprite
+          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-15)
+          rem Clamp digit offset to valid range (0-240 for digits 0-15)
+          if LP2D_digitOffset > 240 then let LP2D_digitOffset = 240
+          
+          rem Calculate sprite pointer = FontData + offset using assembly
+          asm
+            rem Load low byte of FontData base address
+            lda # <FontData
+            clc
+            adc LP2D_digitOffset
+            sta player2pointerlo
+            
+            rem Load high byte of FontData base address and add carry
+            lda # >FontData
+            adc #0
+            sta player2pointerhi
+          end
+          
+          rem Set sprite height (16 pixels tall)
+          let player2height = 16
+          return
+
+LoadPlayer3Digit
+          dim LP3D_digitOffset = temp6
+          rem Load digit graphics from Numbers font data into player3 sprite
+          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-15)
+          rem Clamp digit offset to valid range (0-240 for digits 0-15)
+          if LP3D_digitOffset > 240 then let LP3D_digitOffset = 240
+          
+          rem Calculate sprite pointer = FontData + offset using assembly
+          asm
+            rem Load low byte of FontData base address
+            lda # <FontData
+            clc
+            adc LP3D_digitOffset
+            sta player3pointerlo
+            
+            rem Load high byte of FontData base address and add carry
+            lda # >FontData
+            adc #0
+            sta player3pointerhi
+          end
+          
+          rem Set sprite height (16 pixels tall)
+          let player3height = 16
+          return
+
+LoadPlayer4Digit
+          dim LP4D_digitOffset = temp6
+          rem Load digit graphics from Numbers font data into player4 sprite
+          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-15)
+          rem Clamp digit offset to valid range (0-240 for digits 0-15)
+          if LP4D_digitOffset > 240 then let LP4D_digitOffset = 240
+          
+          rem Calculate sprite pointer = FontData + offset using assembly
+          asm
+            rem Load low byte of FontData base address
+            lda # <FontData
+            clc
+            adc LP4D_digitOffset
+            sta player4pointerlo
+            
+            rem Load high byte of FontData base address and add carry
+            lda # >FontData
+            adc #0
+            sta player4pointerhi
+          end
+          
+          rem Set sprite height (16 pixels tall)
+          let player4height = 16
+          return
+
+LoadPlayer5Digit
+          dim LP5D_digitOffset = temp6
+          rem Load digit graphics from Numbers font data into player5 sprite
+          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-15)
+          rem Clamp digit offset to valid range (0-240 for digits 0-15)
+          if LP5D_digitOffset > 240 then let LP5D_digitOffset = 240
+          
+          rem Calculate sprite pointer = FontData + offset using assembly
+          asm
+            rem Load low byte of FontData base address
+            lda # <FontData
+            clc
+            adc LP5D_digitOffset
+            sta player5pointerlo
+            
+            rem Load high byte of FontData base address and add carry
+            lda # >FontData
+            adc #0
+            sta player5pointerhi
+          end
+          
+          rem Set sprite height (16 pixels tall)
+          let player5height = 16
           return
 
           rem =================================================================
@@ -202,24 +346,24 @@ DrawPlayerDigitNow
           goto DrawDigit
 
           rem =================================================================
-          rem DRAW LEVEL NUMBER
+          rem DRAW ARENA NUMBER
           rem =================================================================
-          rem Convenience routine to draw a level number in white.
+          rem Convenience routine to draw an arena number in white.
 
           rem INPUTS:
-          rem   temp1 = level number (0-15)
+          rem   temp1 = arena number (0-31, displays as 1-32)
           rem   temp2 = X position
           rem   temp3 = Y position
-          rem   temp5 = sprite select (0=player0, 1=player1)
-DrawLevelNumber
-          dim DLN_levelNumber = temp1
+          rem   temp5 = sprite select (0=player0, 1=player1, 2=player2, 3=player3, 4=player4, 5=player5)
+DrawArenaNumber
+          dim DLN_arenaNumber = temp1
           dim DLN_xPos = temp2
           dim DLN_yPos = temp3
           dim DLN_color = temp4
           dim DLN_spriteSelect = temp5
           let DLN_color = ColGrey(14)
           rem White
-          let temp1 = DLN_levelNumber
+          let temp1 = DLN_arenaNumber
           let temp2 = DLN_xPos
           let temp3 = DLN_yPos
           let temp4 = DLN_color

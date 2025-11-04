@@ -249,9 +249,12 @@ Check7800Pause
           if !pauseButtonPrev then return
           
           rem Button just pressed! Toggle Color/B&W override
-          pauseButtonPrev = 0
-          colorBWOverride = colorBWOverride ^ 1 
+          let pauseButtonPrev = 0
+          let colorBWOverride = colorBWOverride ^ 1 
           rem XOR to toggle 0<->1
+          
+          rem Reload arena colors with new override state
+          gosub bank14 ReloadArenaColors
           
           return
 #endif
@@ -286,6 +289,6 @@ ReadPlayers34
 
 PauseNotPressed
           rem Button not pressed, update previous state
-          pauseButtonPrev = 1
+          let pauseButtonPrev = 1
           return
 

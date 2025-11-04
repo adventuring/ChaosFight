@@ -12,7 +12,7 @@
           rem   - Character types from selections
           rem   - Missiles and projectiles
           rem   - Frame counter and game state
-          rem   - Level data
+          rem   - Arena data
 
           rem STATE FLAG DEFINITIONS (in PlayerState):
           rem   Bit 0: Facing (1 = right, 0 = left)
@@ -191,8 +191,8 @@ Player3HealthSet
           rem Initialize health bars
           gosub bank8 InitializeHealthBars
 
-          rem Load level data
-          gosub LoadLevel
+          rem Load arena data
+          gosub bank14 LoadArena
 
           rem TODO: Replace def statements with regular subroutines
           rem batariBASIC may not support def statements with parameters

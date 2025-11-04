@@ -105,7 +105,10 @@ FONT_NAMES = Numbers
 MUSIC_NAMES = AtariToday Interworldly Victory GameOver
 
 # Game-based character theme songs
-GAME_THEME_SONGS = Grizzards Phantasia EXO OCascadia MagicalFairyForce Bernie Havoc Harpy LowRes Bolero RoboTito DucksAway SongOfTheBear
+# Note: Must have 32 songs (one per character) - use placeholder for missing characters
+GAME_THEME_SONGS = Grizzards Phantasia EXO OCascadia MagicalFairyForce Bernie Havoc Harpy LowRes Bolero RoboTito DucksAway SongOfTheBear \
+	Character16Theme Character17Theme Character18Theme Character19Theme Character20Theme Character21Theme Character22Theme Character23Theme \
+	Character24Theme Character25Theme Character26Theme Character27Theme Character28Theme Character29Theme Character30Theme MethHoundTheme
 
 # Sound effect names (MIDI files)
 SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
@@ -165,40 +168,45 @@ music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated
 # Convert MIDI to batariBASIC music data for NTSC (60Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
-        @echo "Converting music $< to $@ for NTSC..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+	@echo "Converting music $< to $@ for NTSC..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Convert MIDI to batariBASIC music data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
-        @echo "Converting music $< to $@ for PAL..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+	@echo "Converting music $< to $@ for PAL..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 # Convert MIDI to batariBASIC music data for SECAM (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
-Source/Generated/Song.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
-        @echo "Converting music $< to $@ for SECAM..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+Source/Generated/Song.%.SECAM.bas: Source/Generated/Song.%.PAL.bas
+	@echo "SECAM uses PAL music files (same frame rate)"
+	cp "$<" "$@"
 
 # Sound effect files use Sound. prefix instead of Song. prefix
 # Convert MIDI to batariBASIC sound data for NTSC (60Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 Source/Generated/Sound.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
-        @echo "Converting sound $< to $@ for NTSC..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+	@echo "Converting sound $< to $@ for NTSC..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Convert MIDI to batariBASIC sound data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
-        @echo "Converting sound $< to $@ for PAL..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+	@echo "Converting sound $< to $@ for PAL..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
-# SECAM uses PAL sound files (not generated separately)
+# Convert MIDI to batariBASIC sound data for SECAM (50Hz)
+# MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
+# SECAM uses same frame rate as PAL but may have different timing requirements
+Source/Generated/Sound.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
+	@echo "Converting sound $< to $@ for SECAM..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 
 
@@ -219,19 +227,22 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 # Character sprites are compiled using compile-chaos-character
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
 
+# Explicit PNG dependencies for character sprites (ensures PNG generation from XCF)
+$(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Source/Art/%.xcf
+
 # Generate character sprite files from PNG using chaos character compiler
-# PNG files are generated from XCF via %.png: %.xcf pattern rule
+# PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
 $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool                                      
-        @echo "Generating character sprite data for $*..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-chaos-character "$@" "$<"
+	@echo "Generating character sprite data for $*..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-chaos-character "$@" "$<"
 
 # Convert Numbers PNG to batariBASIC data using SkylineTool
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
 Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
-        @echo "Converting Numbers font $< to $@..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
+	@echo "Converting Numbers font $< to $@..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
 # Fonts are universal (not TV-specific)
 # Source/Generated/Numbers.bas is used directly by FontRendering.bas
@@ -248,19 +259,19 @@ Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
 Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png bin/skyline-tool
-        @echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 Source/Generated/Art.Interworldly.s: Source/Art/Interworldly.png bin/skyline-tool
-        @echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png bin/skyline-tool
-        @echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-        mkdir -p Source/Generated
-        bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf
@@ -275,21 +286,24 @@ Source/Generated/Font.bas: Source/Art/Font.png
 # Build game - accurate dependencies based on actual includes
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
+	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
+	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%j) $< > $@
+	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
 
 # Shared dependencies for all TV standards
 BUILD_DEPS = $(ALL_SOURCES) \
@@ -314,15 +328,17 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Routines/ScreenLayout.bas \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
-	Source/Routines/VisualEffects.bas \
 	Source/Generated/Numbers.bas \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).SECAM.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).SECAM.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).SECAM.bas)
 
 # Step 1: Preprocess .bas → .preprocessed.bas
 Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)

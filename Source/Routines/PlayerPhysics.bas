@@ -45,7 +45,7 @@ GravityCheckCharacter
           rem Get character type
           let PAG_characterType = playerChar[PAG_playerIndex]
           
-          rem Skip gravity for characters that don't have it
+          rem Skip gravity for characters that don’t have it
           rem Frooty (8): Permanent flight, no gravity
           if PAG_characterType = CharFrooty then goto GravityNextPlayer
           rem Dragon of Storms (2): Permanent flight, no gravity (hovering/flying like Frooty)
@@ -56,8 +56,8 @@ GravityCheckCharacter
           if !(playerState[PAG_playerIndex] & 4) then goto GravityNextPlayer
           
           rem Initialize or get vertical velocity (using temp variable)
-          rem Note: Vertical velocity is not persistent - we'll track it per-frame
-          rem For now, we'll apply gravity acceleration directly to position
+          rem Note: Vertical velocity is not persistent - we’ll track it per-frame
+          rem For now, we’ll apply gravity acceleration directly to position
           rem TODO: Consider implementing persistent vertical velocity tracking
           
           rem Determine gravity acceleration rate based on character (8.8 fixed-point subpixel)
@@ -94,7 +94,7 @@ GravityCheckCharacter
           if PAG_playfieldColumn > 31 then let PAG_playfieldColumn = 31
           if PAG_playfieldColumn < 0 then let PAG_playfieldColumn = 0
           
-          rem Calculate row where player's feet are (bottom of sprite)
+          rem Calculate row where player’s feet are (bottom of sprite)
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
           let PAG_feetY = playerY[PAG_playerIndex] + PlayerSpriteHeight
           rem Divide by pfrowheight using helper
@@ -104,7 +104,7 @@ GravityCheckCharacter
           rem feetRow = row where feet are
           
           dim PAG_rowBelow = temp5
-          rem Check if there's a playfield pixel in the row below the feet
+          rem Check if there’s a playfield pixel in the row below the feet
           rem If feet are in row N, check row N+1 for ground
           if PAG_feetRow >= pfrows then goto GravityNextPlayer
           rem Feet are at or below bottom of playfield, continue falling
@@ -382,7 +382,7 @@ PFCheckRight
           rem At right edge of screen, skip check
           
           let playfieldColumn = temp6 + 4
-          rem Column to the right of player's right edge (playfieldColumn)
+          rem Column to the right of player’s right edge (playfieldColumn)
           if playfieldColumn > 31 then PFCheckUp
           rem Out of bounds, skip
           
@@ -430,12 +430,12 @@ PFBlockRight
           rem CHECK UP COLLISION
           rem =================================================================
 PFCheckUp
-          rem Check if player's head has a playfield pixel above
+          rem Check if player’s head has a playfield pixel above
           if playfieldRow <= 0 then PFCheckDown
           rem At top of screen, skip check
           
           let rowCounter = playfieldRow - 1
-          rem Row above player's head (rowCounter)
+          rem Row above player’s head (rowCounter)
           if rowCounter < 0 then PFCheckDown
           
           rem Check center column (temp6)
@@ -481,12 +481,12 @@ DBPF_MultiplyDone
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity, but verify)
           rem =================================================================
 PFCheckDown
-          rem Check if player's feet have a playfield pixel below
+          rem Check if player’s feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we verify here
           let temp2 = temp5
           gosub DivideByPfrowheight
           let rowCounter = playfieldRow + temp2
-          rem Row at player's feet (rowCounter)
+          rem Row at player’s feet (rowCounter)
           if rowCounter >= pfrows then PFCheckDone
           
           let playfieldRow = rowCounter + 1

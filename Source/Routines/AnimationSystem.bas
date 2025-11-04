@@ -13,7 +13,7 @@ UpdateCharacterAnimations
           let currentPlayer = 0  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 1
-          currentPlayer = 1  : rem Player index (0-3)
+          let currentPlayer = 1  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 2
           if controllerStatus & SetQuadtariDetected then goto AnimationUpdatePlayer3
@@ -22,7 +22,7 @@ AnimationUpdatePlayer3
           let currentPlayer = 2  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 3
-          currentPlayer = 3  : rem Player index (0-3)
+          let currentPlayer = 3  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 4
 AnimationSkipPlayer3
@@ -54,7 +54,7 @@ AdvanceFrame
           let animationCounter[currentPlayer] = 0
           gosub AdvanceAnimationFrame
 SkipAdvance
-        return
+          return
 
           rem Advance to next frame in current animation action
           rem Frame counter is per-sprite 10fps counter, NOT global frame counter

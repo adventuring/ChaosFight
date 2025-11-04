@@ -45,7 +45,7 @@ PublisherSkipQuadtari
           gosub bank16 UpdateMusic
 
           rem Auto-advance after music completes + 0.5s
-         if preambleTimer > 30 && musicPlaying = 0 then PublisherPreambleComplete
+          if preambleTimer > 30 && musicPlaying = 0 then PublisherPreambleComplete
 
           let preambleTimer = preambleTimer + 1
           

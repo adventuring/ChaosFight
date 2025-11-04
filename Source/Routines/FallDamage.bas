@@ -64,7 +64,7 @@ CheckFallDamage
           dim CFD_damage = temp4
           dim CFD_characterType = temp5
           dim CFD_characterWeight = temp6
-          rem temp7+ don't exist - using tempWork1 for temporary calculations
+          rem temp7+ don’t exist - using tempWork1 for temporary calculations
 
           rem Get character type for this player
           let CFD_characterType = playerChar[CFD_playerIndex]
@@ -405,7 +405,7 @@ SetVerticalMomentum
           rem DIVISION/MULTIPLICATION HELPERS (NO MUL/DIV SUPPORT)
           rem =================================================================
           rem Helper routines using optimized assembly for fast division/multiplication
-          rem Based on Omegamatrix's optimized 6502 routines from AtariAge forums
+          rem Based on Omegamatrix’s optimized 6502 routines from AtariAge forums
           rem These routines use bit manipulation and carry-based arithmetic for speed
           rem Thanks to Omegamatrix and AtariAge forum contributors for these routines
           

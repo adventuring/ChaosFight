@@ -66,7 +66,7 @@ end
           rem Lookup table for safe fall velocity threshold calculation
           rem Formula: safe_velocity = 120 / weight
           rem Pre-computed for all 16 characters to avoid variable division
-          rem Values: integer division of 120 by each character's weight
+          rem Values: integer division of 120 by each character’s weight
           data SafeFallVelocityThresholds
           24, 2, 1, 2,
           rem Bernie(24), Curler(2), Dragon(1), Zoe(2)

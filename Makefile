@@ -66,7 +66,7 @@ ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 # Assembly files (exclude preprocessed and generated files)
 ALL_SOURCES = $(shell find Source -name \*.bas -not -path "Source/Generated/*")
 
-.PHONY: all clean emu game help doc characters fonts sprites nowready ready bitmaps
+.PHONY: all clean emu game help doc characters fonts sprites nowready ready bitmaps music sounds
 
 # Build game
 game: \
@@ -128,6 +128,9 @@ fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas)) \
        $(foreach song,$(GAME_THEME_SONGS),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
 
+# Build sound effect assets
+sounds: $(foreach sound,$(SOUND_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Sound.$(sound).$(arch).bas))
+
 # Convert MuseScore to MIDI
 %.midi: %.mscz
 	if [ -x ~/Software/MuseScore*.AppImage ]; then \
@@ -167,35 +170,40 @@ music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated
 
 # Convert MIDI to batariBASIC music data for NTSC (60Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
-Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
+# Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
+Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
 	@echo "Converting music $< to $@ for NTSC..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Convert MIDI to batariBASIC music data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
-Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
+# Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
+Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
 	@echo "Converting music $< to $@ for PAL..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 # Convert MIDI to batariBASIC music data for SECAM (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
-Source/Generated/Song.%.SECAM.bas: Source/Generated/Song.%.PAL.bas
+# Explicitly depend on MSCZ (via PAL .bas which depends on .midi/.mscz) to ensure proper build ordering
+Source/Generated/Song.%.SECAM.bas: Source/Generated/Song.%.PAL.bas Source/Songs/%.mscz
 	@echo "SECAM uses PAL music files (same frame rate)"
 	cp "$<" "$@"
 
 # Sound effect files use Sound. prefix instead of Song. prefix
 # Convert MIDI to batariBASIC sound data for NTSC (60Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
-Source/Generated/Sound.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
+# Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
+Source/Generated/Sound.%.NTSC.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
 	@echo "Converting sound $< to $@ for NTSC..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Convert MIDI to batariBASIC sound data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
-Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
+# Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
+Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
 	@echo "Converting sound $< to $@ for PAL..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
@@ -203,7 +211,8 @@ Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
 # Convert MIDI to batariBASIC sound data for SECAM (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # SECAM uses same frame rate as PAL but may have different timing requirements
-Source/Generated/Sound.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
+# Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
+Source/Generated/Sound.%.SECAM.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
 	@echo "Converting sound $< to $@ for SECAM..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
@@ -232,14 +241,16 @@ $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Sou
 
 # Generate character sprite files from PNG using chaos character compiler
 # PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
-$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool                                      
+# Explicitly depend on XCF to ensure proper build ordering in parallel builds
+$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool                                      
 	@echo "Generating character sprite data for $*..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-chaos-character "$@" "$<"
 
 # Convert Numbers PNG to batariBASIC data using SkylineTool
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
-Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
+# Explicitly depend on XCF to ensure proper build ordering in parallel builds
+Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/skyline-tool
 	@echo "Converting Numbers font $< to $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
@@ -258,22 +269,23 @@ Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
-Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png bin/skyline-tool
+# Explicitly depend on XCF to ensure proper build ordering in parallel builds
+Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png Source/Art/AtariAge.xcf bin/skyline-tool
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
-Source/Generated/Art.AtariAgeText.s: Source/Art/AtariAgeText.png bin/skyline-tool
+Source/Generated/Art.AtariAgeText.s: Source/Art/AtariAgeText.png Source/Art/AtariAgeText.xcf bin/skyline-tool
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
-Source/Generated/Art.Interworldly.s: Source/Art/Interworldly.png bin/skyline-tool
+Source/Generated/Art.Interworldly.s: Source/Art/Interworldly.png Source/Art/Interworldly.xcf bin/skyline-tool
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
-Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png bin/skyline-tool
+Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png Source/Art/ChaosFight.xcf bin/skyline-tool
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
@@ -390,6 +402,8 @@ Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
 	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
+# ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS
+# The .s file is the final assembly output that includes all generated assets
 Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME).NTSC.s
 	mkdir -p Dist
 	bin/dasm $< -ITools/batariBASIC/includes -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).NTSC.lst -sDist/$(GAME)$(GAMEYEAR).NTSC.sym -oDist/$(GAME)$(GAMEYEAR).NTSC.a26

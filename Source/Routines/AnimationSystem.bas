@@ -555,8 +555,8 @@ Char6_Execute
           rem Clear dive flag and stop diagonal movement when attack completes
           let C6E_playerIndex = currentPlayer
           rem Clear dive flag (bit 4 in characterStateFlags)
-          let characterStateFlags[C6E_playerIndex] = characterStateFlags[C6E_playerIndex] & 247
-          rem Clear bit 4 (247 = 0xF7 = ~0x08)
+          let characterStateFlags[C6E_playerIndex] = characterStateFlags[C6E_playerIndex] & 239
+          rem Clear bit 4 (239 = 0xEF = ~0x10)
           rem Stop diagonal velocity (zero X and Y velocity)
           let playerVelocityX[C6E_playerIndex] = 0
           let playerVelocityX_lo[C6E_playerIndex] = 0

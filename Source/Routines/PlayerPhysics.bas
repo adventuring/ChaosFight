@@ -409,107 +409,217 @@ PFCheckDone
           rem CHECK MULTI-PLAYER COLLISIONS
           rem =================================================================
           rem Checks collisions between players (for pushing, not damage).
-          rem Players can walk through each other but are slightly pushed apart.
+          rem Uses weight-based momentum transfer: heavier characters push lighter ones.
+          rem Applies impulses to velocity instead of directly modifying position.
 CheckAllPlayerCollisions
-          rem Check Player 1 vs Player 2
-          if playerX[0] >= playerX[1] then goto CalcP1P2DistanceRight
-          temp2 = playerX[1] - playerX[0]
-          goto P1P2DistanceDone
-CalcP1P2DistanceRight
-          temp2 = playerX[0] - playerX[1]
-P1P2DistanceDone
-          if temp2 < 16 then if playerX[0] < playerX[1] then playerX[0] = playerX[0] - 1 : playerX[1] = playerX[1] + 1 : goto SkipP1P2Sep
-          if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[1] = playerX[1] - 1
-SkipP1P2Sep
+          rem Loop through all player pairs to check collisions
+          rem Pair (i, j) where i < j to avoid checking same pair twice
+          let temp1 = 0
+          rem Player 1 index
           
+CollisionOuterLoop
+          rem Check if player 1 is active
+          if temp1 >= 2 then CollisionCheckP1Active
+          rem Players 0-1 always active
+          goto CollisionInnerLoop
           
+CollisionCheckP1Active
+          if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextOuter
+          if temp1 = 2 && selectedChar3 = 255 then goto CollisionNextOuter
+          if temp1 = 3 && selectedChar4 = 255 then goto CollisionNextOuter
           
-          rem Check other player combinations if Quadtari active
-          if ! (controllerStatus & SetQuadtariDetected) then return
+CollisionInnerLoop
+          let temp2 = temp1 + 1
+          rem Player 2 index (always greater than player 1)
           
-          rem Check Player 1 vs Player 3
-          if selectedChar3 = 255 then goto SkipP1P3Check
-DoP1P3Check
-          if playerX[0] >= playerX[2] then goto CalcP1P3DistanceRight
-          temp2 = playerX[2] - playerX[0]
-          goto P1P3DistanceDone
-CalcP1P3DistanceRight
-          temp2 = playerX[0] - playerX[2]
-P1P3DistanceDone
-          if temp2 < 16 then if playerX[0] < playerX[2] then playerX[0] = playerX[0] - 1 : playerX[2] = playerX[2] + 1 : goto SkipP1P3Sep
-          if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[2] = playerX[2] - 1
-SkipP1P3Sep
-SkipP1P3Check
+CollisionCheckPair
+          if temp2 >= 4 then goto CollisionNextOuter
           
+          rem Check if player 2 is active
+          if temp2 >= 2 then CollisionCheckP2Active
+          rem Players 0-1 always active
+          goto CollisionCheckDistance
           
+CollisionCheckP2Active
+          if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextInner
+          if temp2 = 2 && selectedChar3 = 255 then goto CollisionNextInner
+          if temp2 = 3 && selectedChar4 = 255 then goto CollisionNextInner
           
+CollisionCheckDistance
+          rem Skip if either player is eliminated
+          if playerHealth[temp1] = 0 then goto CollisionNextInner
+          if playerHealth[temp2] = 0 then goto CollisionNextInner
           
-          rem Check Player 1 vs Player 4
-          if selectedChar4 = 255 then goto SkipP1P4Check
-DoP1P4Check
-          if playerX[0] >= playerX[3] then goto CalcP1P4DistanceRight
-          temp2 = playerX[3] - playerX[0]
-          goto P1P4DistanceDone
-CalcP1P4DistanceRight
-          temp2 = playerX[0] - playerX[3]
-P1P4DistanceDone
-          if temp2 < 16 then if playerX[0] < playerX[3] then playerX[0] = playerX[0] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP1P4Sep
-          if temp2 < 16 then playerX[0] = playerX[0] + 1 : playerX[3] = playerX[3] - 1
-SkipP1P4Sep
-SkipP1P4Check
+          rem Calculate X distance between players
+          if playerX[temp1] >= playerX[temp2] then CalcCollisionDistanceRight
+          let temp3 = playerX[temp2] - playerX[temp1]
+          goto CollisionDistanceDone
           
+CalcCollisionDistanceRight
+          let temp3 = playerX[temp1] - playerX[temp2]
           
+CollisionDistanceDone
+          rem Check if players are within collision distance (16 pixels = double-width sprite)
+          if temp3 >= 16 then goto CollisionNextInner
           
+          rem Calculate Y distance using CharacterHeights table
+          let temp4 = playerChar[temp1]
+          let temp5 = playerChar[temp2]
+          let temp6 = CharacterHeights[temp4]
+          rem Player1 height
+          let temp7 = CharacterHeights[temp5]
+          rem Player2 height
           
-          rem Check Player 2 vs Player 3
-          if selectedChar3 = 255 then goto SkipP2P3Check
-DoP2P3Check
-          if playerX[1] >= playerX[2] then goto CalcP2P3DistanceRight
-          temp2 = playerX[2] - playerX[1]
-          goto P2P3DistanceDone
-CalcP2P3DistanceRight
-          temp2 = playerX[1] - playerX[2]
-P2P3DistanceDone
-          if temp2 < 16 then if playerX[1] < playerX[2] then playerX[1] = playerX[1] - 1 : playerX[2] = playerX[2] + 1 : goto SkipP2P3Sep
-          if temp2 < 16 then playerX[1] = playerX[1] + 1 : playerX[2] = playerX[2] - 1
-SkipP2P3Sep
-SkipP2P3Check
+          rem Calculate Y distance
+          if playerY[temp1] >= playerY[temp2] then CalcCollisionYDistanceDown
+          let temp8 = playerY[temp2] - playerY[temp1]
+          goto CollisionYDistanceDone
           
+CalcCollisionYDistanceDown
+          let temp8 = playerY[temp1] - playerY[temp2]
           
+CollisionYDistanceDone
+          rem Check if Y overlap (sum of half-heights)
+          let temp9 = temp6 / 2
+          let temp10 = temp7 / 2
+          let temp11 = temp9 + temp10
+          if temp8 >= temp11 then goto CollisionNextInner
           
+          rem =================================================================
+          rem MOMENTUM TRANSFER BASED ON WEIGHT
+          rem =================================================================
+          rem Get character weights from CharacterWeights table
+          let temp6 = CharacterWeights[temp4]
+          rem Player1 weight
+          let temp7 = CharacterWeights[temp5]
+          rem Player2 weight
           
-          rem Check Player 2 vs Player 4
-          if selectedChar4 = 255 then goto SkipP2P4Check
-DoP2P4Check
-          if playerX[1] >= playerX[3] then goto CalcP2P4DistanceRight
-          temp2 = playerX[3] - playerX[1]
-          goto P2P4DistanceDone
-CalcP2P4DistanceRight
-          temp2 = playerX[1] - playerX[3]
-P2P4DistanceDone
-          if temp2 < 16 then if playerX[1] < playerX[3] then playerX[1] = playerX[1] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP2P4Sep
-          if temp2 < 16 then playerX[1] = playerX[1] + 1 : playerX[3] = playerX[3] - 1
-SkipP2P4Sep
-SkipP2P4Check
+          rem Calculate separation direction (left/right)
+          if playerX[temp1] < playerX[temp2] then CollisionSepLeft
           
+          rem Player1 is right of Player2 - push Player1 right, Player2 left
+          rem Apply impulse based on weight difference
+          rem Heavier character pushes lighter one more
+          rem Formula: impulse = (weight_difference / total_weight) * separation_speed
+          let temp8 = temp6 + temp7
+          rem Total weight
+          if temp8 = 0 then goto CollisionNextInner
+          rem Avoid division by zero
           
+          rem Calculate weight difference
+          if temp6 >= temp7 then CalcWeightDiff1Heavier
+          let temp9 = temp7 - temp6
+          rem Player2 is heavier
+          let temp10 = temp9
+          rem Impulse strength (proportional to weight difference)
+          goto ApplyImpulseRight
           
+CalcWeightDiff1Heavier
+          let temp9 = temp6 - temp7
+          rem Player1 is heavier
+          let temp10 = temp9
+          rem Impulse strength
           
-          rem Check Player 3 vs Player 4
-          if selectedChar3 = 255 then goto SkipP3vsP4
-          if selectedChar4 = 255 then goto SkipP3vsP4
-          if playerX[2] >= playerX[3] then goto CalcP3P4DistanceRight
-          temp2 = playerX[3] - playerX[2]
-          goto P3P4DistanceDone
-CalcP3P4DistanceRight
-          temp2 = playerX[2] - playerX[3]
-P3P4DistanceDone
-          if temp2 < 16 then if playerX[2] < playerX[3] then playerX[2] = playerX[2] - 1 : playerX[3] = playerX[3] + 1 : goto SkipP3P4Sep
-          if temp2 < 16 then playerX[2] = playerX[2] + 1 : playerX[3] = playerX[3] - 1
-SkipP3P4Sep
+ApplyImpulseRight
+          rem Apply impulses: heavier player pushes lighter one
+          rem Separation speed: 1 pixel/frame minimum
+          if temp6 >= temp7 then ApplyImpulse1Heavier
           
+          rem Player2 is heavier - push Player1 left (negative X), Player2 right (positive X)
+          rem Impulse proportional to weight difference
+          let temp11 = temp10 * 2 / temp8
+          rem Scale impulse by weight ratio (0-2 pixels/frame)
+          if temp11 = 0 then let temp11 = 1
+          rem Minimum 1 pixel/frame
           
+          rem Apply to Player1 velocity (push left)
+          if playerVelocityX[temp1] > -4 then let playerVelocityX[temp1] = playerVelocityX[temp1] - temp11
+          rem Cap at -4 pixels/frame
+          if playerVelocityX[temp1] < -4 then let playerVelocityX[temp1] = -4
           
+          rem Apply to Player2 velocity (push right)
+          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + temp11
+          rem Cap at 4 pixels/frame
+          if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
+          
+          rem Also zero subpixel velocities when applying impulse
+          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityX_lo[temp2] = 0
+          
+          goto CollisionNextInner
+          
+ApplyImpulse1Heavier
+          rem Player1 is heavier - push Player1 right (positive X), Player2 left (negative X)
+          let temp11 = temp10 * 2 / temp8
+          rem Scale impulse by weight ratio
+          if temp11 = 0 then let temp11 = 1
+          
+          rem Apply to Player1 velocity (push right)
+          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + temp11
+          if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
+          
+          rem Apply to Player2 velocity (push left)
+          if playerVelocityX[temp2] > -4 then let playerVelocityX[temp2] = playerVelocityX[temp2] - temp11
+          if playerVelocityX[temp2] < -4 then let playerVelocityX[temp2] = -4
+          
+          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityX_lo[temp2] = 0
+          
+          goto CollisionNextInner
+          
+CollisionSepLeft
+          rem Player1 is left of Player2 - push Player1 left, Player2 right
+          rem Same logic but reversed directions
+          let temp8 = temp6 + temp7
+          if temp8 = 0 then goto CollisionNextInner
+          
+          if temp6 >= temp7 then CalcWeightDiff1HeavierLeft
+          let temp9 = temp7 - temp6
+          let temp10 = temp9
+          goto ApplyImpulseLeft
+          
+CalcWeightDiff1HeavierLeft
+          let temp9 = temp6 - temp7
+          let temp10 = temp9
+          
+ApplyImpulseLeft
+          if temp6 >= temp7 then ApplyImpulse1HeavierLeft
+          
+          rem Player2 is heavier - push Player1 left, Player2 right
+          let temp11 = temp10 * 2 / temp8
+          if temp11 = 0 then let temp11 = 1
+          
+          if playerVelocityX[temp1] > -4 then let playerVelocityX[temp1] = playerVelocityX[temp1] - temp11
+          if playerVelocityX[temp1] < -4 then let playerVelocityX[temp1] = -4
+          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + temp11
+          if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
+          
+          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityX_lo[temp2] = 0
+          
+          goto CollisionNextInner
+          
+ApplyImpulse1HeavierLeft
+          rem Player1 is heavier - push Player1 right, Player2 left
+          let temp11 = temp10 * 2 / temp8
+          if temp11 = 0 then let temp11 = 1
+          
+          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + temp11
+          if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
+          if playerVelocityX[temp2] > -4 then let playerVelocityX[temp2] = playerVelocityX[temp2] - temp11
+          if playerVelocityX[temp2] < -4 then let playerVelocityX[temp2] = -4
+          
+          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityX_lo[temp2] = 0
+          
+CollisionNextInner
+          let temp2 = temp2 + 1
+          goto CollisionCheckPair
+          
+CollisionNextOuter
+          let temp1 = temp1 + 1
+          if temp1 < 3 then goto CollisionOuterLoop
+          rem Only check pairs where i < j, so i only goes up to 2 (to check pair with j=3)
           
           return
 

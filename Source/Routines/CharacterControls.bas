@@ -394,8 +394,10 @@ DragonetDown
           if pfread(temp2, temp4) then return
             rem Blocked, cannot move down
           
-          rem Clear below - move down
-          let playerY[temp1] = playerY[temp1] + 2
+          rem Clear below - apply downward velocity impulse
+          let playerVelocityY[temp1] = 2
+          rem +2 pixels/frame downward
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
           return
@@ -454,8 +456,10 @@ HarpyNormalDown
           if pfread(temp2, temp4) then return
             rem Blocked, cannot move down
           
-          rem Clear below - move down
-          let playerY[temp1] = playerY[temp1] + 2
+          rem Clear below - apply downward velocity impulse
+          let playerVelocityY[temp1] = 2
+          rem +2 pixels/frame downward
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
           return
@@ -492,8 +496,10 @@ FrootyDown
           if pfread(temp2, temp4) then return
             rem Blocked, cannot move down
           
-          rem Clear below - move down
-          let playerY[temp1] = playerY[temp1] + 2
+          rem Clear below - apply downward velocity impulse
+          let playerVelocityY[temp1] = 2
+          rem +2 pixels/frame downward
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
           return

@@ -189,8 +189,33 @@
           const MusicAtariToday = 2
           const MusicVictory = 3
           const MusicGameOver = 4
-          rem Character theme songs start at index 5 (after main songs)
-          const MusicCharacterThemeBase = 5
+          rem Character theme songs (5-30)
+          const SongBernie = 5
+          const SongOCascadia = 6
+          const SongRevontuli = 7
+          const SongEXO = 8
+          const SongGrizzards = 9
+          const SongMagicalFairyForce = 10
+          const SongBolero = 11
+          const SongLowRes = 12
+          const SongRoboTito = 13
+          const SongSongOfTheBear = 14
+          const SongDucksAway = 15
+          const SongCharacter16Theme = 16
+          const SongCharacter17Theme = 17
+          const SongCharacter18Theme = 18
+          const SongCharacter19Theme = 19
+          const SongCharacter20Theme = 20
+          const SongCharacter21Theme = 21
+          const SongCharacter22Theme = 22
+          const SongCharacter23Theme = 23
+          const SongCharacter24Theme = 24
+          const SongCharacter25Theme = 25
+          const SongCharacter26Theme = 26
+          const SongCharacter27Theme = 27
+          const SongCharacter28Theme = 28
+          const SongCharacter29Theme = 29
+          const SongCharacter30Theme = 30
 
           rem =================================================================
           rem SOUND EFFECT CONSTANTS

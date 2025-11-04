@@ -150,8 +150,8 @@ UpdateGuardTimers
           gosub UpdateSingleGuardTimer
           let UGT_playerIndex = 3
           let temp1 = UGT_playerIndex
-          gosub UpdateSingleGuardTimer
-          return
+          rem tail call
+          goto UpdateSingleGuardTimer
 
 UpdateSingleGuardTimer
           dim USGT_playerIndex = temp1

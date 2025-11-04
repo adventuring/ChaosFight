@@ -57,7 +57,8 @@ SkipPlayer2Pause
           
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
-          gosub Check7800PauseButton
+          rem tail call
+          goto Check7800PauseButton
 #endif
 
           return

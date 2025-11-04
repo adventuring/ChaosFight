@@ -61,7 +61,7 @@ UpdateMusic
           if MusicVoice0PointerH then gosub UpdateMusicVoice0
           
           rem Update Voice 1 if active
-          if MusicVoice1PointerH then gosub UpdateMusicVoice1
+          if MusicVoice1PointerH then rem tail call : goto UpdateMusicVoice1
           return
 
           rem =================================================================

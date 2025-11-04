@@ -166,12 +166,8 @@ AreaHitbox
 
           rem Process attack for one attacker against all defenders
           rem Input: attackerID
+          rem Processes attacks in all directions (facing handled by CalculateAttackHitbox)
 ProcessAttackerAttacks
-          dim PAA_playerState = temp1
-          rem Check if attacker is facing right (PlayerStateFacing = bit 0)
-          let PAA_playerState = playerState[attackerID]
-          if PAA_playerState{0} = 0 then return
-          
           rem Attack each defender
           for defender = 0 to 3
           rem Skip if defender is attacker

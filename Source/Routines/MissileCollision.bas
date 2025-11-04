@@ -442,8 +442,8 @@ SkipThirdPlayer3
           rem   temp4 = 1 if hit playfield, 0 if clear
 MissileCollPF
           rem Get missile X/Y position
-          temp2 = missileX[temp1]
-          temp3 = missileY_R[temp1]
+          let temp2 = missileX[temp1]
+          let temp3 = missileY_R[temp1]
           
           rem Convert X to playfield coordinates
           rem Playfield is 32 pixels wide (doubled to 160 screen pixels)

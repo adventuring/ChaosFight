@@ -20,13 +20,13 @@
 ; Character sprite pointer tables (Bank 3 only)
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLoBank3:
-    .byte <FrootySprite, <NefertemSprite, <NinjishGuySprite, <PorkChopSprite
-    .byte <RadishGoblinSprite, <RoboTitoSprite, <UrsuloSprite, <ShamoneSprite
+    .byte <FrootyFrames, <NefertemFrames, <NinjishGuyFrames, <PorkChopFrames
+    .byte <RadishGoblinFrames, <RoboTitoFrames, <UrsuloFrames, <ShamoneFrames
 
 ; High byte pointers for each character base sprite data  
 CharacterSpritePtrHiBank3:
-    .byte >FrootySprite, >NefertemSprite, >NinjishGuySprite, >PorkChopSprite
-    .byte >RadishGoblinSprite, >RoboTitoSprite, >UrsuloSprite, >ShamoneSprite
+    .byte >FrootyFrames, >NefertemFrames, >NinjishGuyFrames, >PorkChopFrames
+    .byte >RadishGoblinFrames, >RoboTitoFrames, >UrsuloFrames, >ShamoneFrames
 
 ; =================================================================
 ; CHARACTER ARTWORK LOCATION FUNCTION - BANK 3

@@ -19,13 +19,13 @@
 ; Character sprite pointer tables (Bank 5 only)
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLoBank5:
-    .byte <Character24Sprite, <Character25Sprite, <Character26Sprite, <Character27Sprite
-    .byte <Character28Sprite, <Character29Sprite, <Character30Sprite, <MethHoundSprite
+    .byte <Character24Frames, <Character25Frames, <Character26Frames, <Character27Frames
+    .byte <Character28Frames, <Character29Frames, <Character30Frames, <MethHoundFrames
 
 ; High byte pointers for each character base sprite data  
 CharacterSpritePtrHiBank5:
-    .byte >Character24Sprite, >Character25Sprite, >Character26Sprite, >Character27Sprite
-    .byte >Character28Sprite, >Character29Sprite, >Character30Sprite, >MethHoundSprite
+    .byte >Character24Frames, >Character25Frames, >Character26Frames, >Character27Frames
+    .byte >Character28Frames, >Character29Frames, >Character30Frames, >MethHoundFrames
 
 ; =================================================================
 ; CHARACTER ARTWORK LOCATION FUNCTION - BANK 5

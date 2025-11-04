@@ -20,13 +20,13 @@
 ; Character sprite pointer tables (Bank 2 only)
 ; Low byte pointers for each character base sprite data
 CharacterSpritePtrLoBank2:
-    .byte <BernieSprite, <CurlerSprite, <DragonOfStormsSprite, <ZoeRyenSprite
-    .byte <FatTonySprite, <MegaxSprite, <HarpySprite, <KnightGuySprite
+    .byte <BernieFrames, <CurlerFrames, <DragonOfStormsFrames, <ZoeRyenFrames
+    .byte <FatTonyFrames, <MegaxFrames, <HarpyFrames, <KnightGuyFrames
 
 ; High byte pointers for each character base sprite data  
 CharacterSpritePtrHiBank2:
-    .byte >BernieSprite, >CurlerSprite, >DragonOfStormsSprite, >ZoeRyenSprite
-    .byte >FatTonySprite, >MegaxSprite, >HarpySprite, >KnightGuySprite
+    .byte >BernieFrames, >CurlerFrames, >DragonOfStormsFrames, >ZoeRyenFrames
+    .byte >FatTonyFrames, >MegaxFrames, >HarpyFrames, >KnightGuyFrames
 
 ; =================================================================
 ; CHARACTER ARTWORK LOCATION FUNCTION - BANK 2

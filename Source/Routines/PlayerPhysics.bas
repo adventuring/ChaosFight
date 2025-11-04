@@ -478,34 +478,37 @@ CollisionDistanceDone
           rem Calculate Y distance using CharacterHeights table
           let temp4 = playerChar[temp1]
           let temp5 = playerChar[temp2]
-          let temp6 = CharacterHeights[temp4]
-          rem Player1 height
-          let temp7 = CharacterHeights[temp5]
-          rem Player2 height
+          let characterHeight = CharacterHeights[temp4]
+          rem Player1 height (temporarily store in characterHeight, will be overwritten)
+          let halfHeight1 = CharacterHeights[temp5]
+          rem Player2 height (temporarily store, will calculate half)
           
           rem Calculate Y distance
           if playerY[temp1] >= playerY[temp2] then CalcCollisionYDistanceDown
-          let temp8 = playerY[temp2] - playerY[temp1]
+          let yDistance = playerY[temp2] - playerY[temp1]
           goto CollisionYDistanceDone
           
 CalcCollisionYDistanceDown
-          let temp8 = playerY[temp1] - playerY[temp2]
+          let yDistance = playerY[temp1] - playerY[temp2]
           
 CollisionYDistanceDone
           rem Check if Y overlap (sum of half-heights)
-          let temp9 = temp6 / 2
-          let temp10 = temp7 / 2
-          let temp11 = temp9 + temp10
-          if temp8 >= temp11 then goto CollisionNextInner
+          rem Calculate half-heights
+          let halfHeight1 = characterHeight / 2
+          rem Player1 half height
+          let halfHeight2 = CharacterHeights[temp5] / 2
+          rem Player2 half height (re-read from table)
+          let totalHeight = halfHeight1 + halfHeight2
+          if yDistance >= totalHeight then goto CollisionNextInner
           
           rem =================================================================
           rem MOMENTUM TRANSFER BASED ON WEIGHT
           rem =================================================================
           rem Get character weights from CharacterWeights table
-          let temp6 = CharacterWeights[temp4]
-          rem Player1 weight
-          let temp7 = CharacterWeights[temp5]
-          rem Player2 weight
+          let characterWeight = CharacterWeights[temp4]
+          rem Player1 weight (temporarily store, will be overwritten)
+          let halfHeight2 = CharacterWeights[temp5]
+          rem Player2 weight (temporarily store)
           
           rem Calculate separation direction (left/right)
           if playerX[temp1] < playerX[temp2] then CollisionSepLeft
@@ -514,44 +517,44 @@ CollisionYDistanceDone
           rem Apply impulse based on weight difference
           rem Heavier character pushes lighter one more
           rem Formula: impulse = (weight_difference / total_weight) * separation_speed
-          let temp8 = temp6 + temp7
-          rem Total weight
-          if temp8 = 0 then goto CollisionNextInner
+          let totalWeight = characterWeight + halfHeight2
+          rem Total weight (halfHeight2 contains Player2 weight here)
+          if totalWeight = 0 then goto CollisionNextInner
           rem Avoid division by zero
           
           rem Calculate weight difference
-          if temp6 >= temp7 then CalcWeightDiff1Heavier
-          let temp9 = temp7 - temp6
+          if characterWeight >= halfHeight2 then CalcWeightDiff1Heavier
+          let weightDifference = halfHeight2 - characterWeight
           rem Player2 is heavier
-          let temp10 = temp9
+          let impulseStrength = weightDifference
           rem Impulse strength (proportional to weight difference)
           goto ApplyImpulseRight
           
 CalcWeightDiff1Heavier
-          let temp9 = temp6 - temp7
+          let weightDifference = characterWeight - halfHeight2
           rem Player1 is heavier
-          let temp10 = temp9
+          let impulseStrength = weightDifference
           rem Impulse strength
           
 ApplyImpulseRight
           rem Apply impulses: heavier player pushes lighter one
           rem Separation speed: 1 pixel/frame minimum
-          if temp6 >= temp7 then ApplyImpulse1Heavier
+          if characterWeight >= halfHeight2 then ApplyImpulse1Heavier
           
           rem Player2 is heavier - push Player1 left (negative X), Player2 right (positive X)
           rem Impulse proportional to weight difference
-          let temp11 = temp10 * 2 / temp8
+          let impulseStrength = impulseStrength * 2 / totalWeight
           rem Scale impulse by weight ratio (0-2 pixels/frame)
-          if temp11 = 0 then let temp11 = 1
+          if impulseStrength = 0 then impulseStrength = 1
           rem Minimum 1 pixel/frame
           
           rem Apply to Player1 velocity (push left)
-          if playerVelocityX[temp1] > -4 then let playerVelocityX[temp1] = playerVelocityX[temp1] - temp11
+          if playerVelocityX[temp1] > -4 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
           rem Cap at -4 pixels/frame
           if playerVelocityX[temp1] < -4 then let playerVelocityX[temp1] = -4
           
           rem Apply to Player2 velocity (push right)
-          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + temp11
+          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
           rem Cap at 4 pixels/frame
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           
@@ -563,16 +566,16 @@ ApplyImpulseRight
           
 ApplyImpulse1Heavier
           rem Player1 is heavier - push Player1 right (positive X), Player2 left (negative X)
-          let temp11 = temp10 * 2 / temp8
+          let impulseStrength = impulseStrength * 2 / totalWeight
           rem Scale impulse by weight ratio
-          if temp11 = 0 then let temp11 = 1
+          if impulseStrength = 0 then impulseStrength = 1
           
           rem Apply to Player1 velocity (push right)
-          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + temp11
+          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
           
           rem Apply to Player2 velocity (push left)
-          if playerVelocityX[temp2] > -4 then let playerVelocityX[temp2] = playerVelocityX[temp2] - temp11
+          if playerVelocityX[temp2] > -4 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
           if playerVelocityX[temp2] < -4 then let playerVelocityX[temp2] = -4
           
           let playerVelocityX_lo[temp1] = 0
@@ -583,28 +586,33 @@ ApplyImpulse1Heavier
 CollisionSepLeft
           rem Player1 is left of Player2 - push Player1 left, Player2 right
           rem Same logic but reversed directions
-          let temp8 = temp6 + temp7
-          if temp8 = 0 then goto CollisionNextInner
+          rem Re-read weights (characterWeight and halfHeight2 were used for heights)
+          let characterWeight = CharacterWeights[temp4]
+          rem Player1 weight
+          let halfHeight2 = CharacterWeights[temp5]
+          rem Player2 weight
+          let totalWeight = characterWeight + halfHeight2
+          if totalWeight = 0 then goto CollisionNextInner
           
-          if temp6 >= temp7 then CalcWeightDiff1HeavierLeft
-          let temp9 = temp7 - temp6
-          let temp10 = temp9
+          if characterWeight >= halfHeight2 then CalcWeightDiff1HeavierLeft
+          let weightDifference = halfHeight2 - characterWeight
+          let impulseStrength = weightDifference
           goto ApplyImpulseLeft
           
 CalcWeightDiff1HeavierLeft
-          let temp9 = temp6 - temp7
-          let temp10 = temp9
+          let weightDifference = characterWeight - halfHeight2
+          let impulseStrength = weightDifference
           
 ApplyImpulseLeft
-          if temp6 >= temp7 then ApplyImpulse1HeavierLeft
+          if characterWeight >= halfHeight2 then ApplyImpulse1HeavierLeft
           
           rem Player2 is heavier - push Player1 left, Player2 right
-          let temp11 = temp10 * 2 / temp8
-          if temp11 = 0 then let temp11 = 1
+          let impulseStrength = impulseStrength * 2 / totalWeight
+          if impulseStrength = 0 then impulseStrength = 1
           
-          if playerVelocityX[temp1] > -4 then let playerVelocityX[temp1] = playerVelocityX[temp1] - temp11
+          if playerVelocityX[temp1] > -4 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
           if playerVelocityX[temp1] < -4 then let playerVelocityX[temp1] = -4
-          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + temp11
+          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           
           let playerVelocityX_lo[temp1] = 0
@@ -614,8 +622,8 @@ ApplyImpulseLeft
           
 ApplyImpulse1HeavierLeft
           rem Player1 is heavier - push Player1 right, Player2 left
-          let temp11 = temp10 * 2 / temp8
-          if temp11 = 0 then let temp11 = 1
+          let impulseStrength = impulseStrength * 2 / totalWeight
+          if impulseStrength = 0 then impulseStrength = 1
           
           if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + temp11
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4

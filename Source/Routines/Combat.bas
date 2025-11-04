@@ -28,21 +28,23 @@ rem Inputs: attacker_id, defender_id
 rem Returns: hit (1 = hit, 0 = miss)
 CheckAttackHit
   rem Calculate attack hitbox based on attacker facing and attack type
-  gosub CalculateAttackHitbox attacker_id
+  gosub CalculateAttackHitbox
   
-  rem Check if defender is in hitbox
-          if playerX[defender_id] < hitbox_left then HitboxCheckDone
-          if playerX[defender_id] > hitbox_right then HitboxCheckDone
-          if playerY[defender_id] < hitbox_top then HitboxCheckDone
-          if playerY[defender_id] > hitbox_bottom then HitboxCheckDone
-    let hit = 1
-          goto HitboxCheckDone
-HitboxCheckDone
-          if hit  = 0 then NoHit
-    let hit = 0
+  rem Check if defender is in hitbox bounds
+  rem If defender is outside any bound, no hit
+          if playerX[defender_id] < hitbox_left then NoHit
+          if playerX[defender_id] > hitbox_right then NoHit
+          if playerY[defender_id] < hitbox_top then NoHit
+          if playerY[defender_id] > hitbox_bottom then NoHit
+  
+  rem All bounds checked - defender is inside hitbox
+          let hit = 1
+          return
+  
 NoHit
-  
-  return
+  rem Defender is outside hitbox bounds
+          let hit = 0
+          return
 
           rem Calculate attack hitbox based on attacker position and facing
 rem Inputs: attacker_id

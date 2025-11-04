@@ -17,6 +17,7 @@
           rem Stops any current music and starts the specified song
           rem =================================================================
 StartMusic
+          dim SM_songID = temp1
           rem Stop any current music
           AUDV0 = 0
           AUDV1 = 0

@@ -42,9 +42,11 @@
           rem OUTPUT: temp2 = animation state (0-15)
           rem Uses: ActionAttackWindup=13, ActionAttackExecute=14, ActionAttackRecovery=15
 GetPlayerAnimationState
-          let temp2 = playerState[temp1] & 240
+          dim GPAS_playerIndex = temp1
+          dim GPAS_animationState = temp2
+          let GPAS_animationState = playerState[GPAS_playerIndex] & 240
           rem Mask bits 4-7 (value 240 = %11110000)
-          let temp2 = temp2 / 16
+          let GPAS_animationState = GPAS_animationState / 16
           rem Shift right by 4 (divide by 16) to get animation state (0-15)
           return
 

@@ -377,22 +377,6 @@ MissileUpdateComplete
           rem   temp4 = 1 if off-screen, 0 if on-screen
 CheckMissileBounds
           rem Get missile X/Y position (read from _R port)
-          let temp2  = missileX[temp1]
-          let temp3  = missileY_R[temp1]
-          
-          rem Check bounds (usable sprite area is 128px wide, 16px inset from each side)
-          let temp4  = 0
-          if temp2 > ScreenInsetX + ScreenUsableWidth then temp4  = 1
-          rem Off right edge (16 + 128)
-          if temp2 < ScreenInsetX then temp4  = 1
-          rem Off left edge
-          if temp3 > ScreenBottom then temp4  = 1
-          rem Off bottom
-          rem Byte-safe top bound: if wrapped past 0 due to subtract, temp3 will be > original
-          let temp5  = temp3
-          rem Assuming prior update may have subtracted from temp3 earlier in loop
-          if temp3 > ScreenTopWrapThreshold then temp4  = 1
-          rem Off top
           
           return
 

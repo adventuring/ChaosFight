@@ -45,8 +45,8 @@ UpdatePlayer1HealthBar
           dim UP1HB_patternIndex = temp2
           dim UP1HB_pattern = temp3
           rem Clamp health to valid range
+          rem Note: < 0 check removed - unsigned bytes cannot be negative
           if UP1HB_health > PlayerHealthMax then let UP1HB_health = PlayerHealthMax
-          if UP1HB_health < 0 then let UP1HB_health = 0
           
           rem Compare health against thresholds starting from 83 downward
           rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2 pixels, 0-11 = 0 pixels
@@ -90,8 +90,8 @@ UpdatePlayer2HealthBar
           dim UP2HB_patternIndex = temp2
           dim UP2HB_pattern = temp3
           rem Clamp health to valid range
+          rem Note: < 0 check removed - unsigned bytes cannot be negative
           if UP2HB_health > PlayerHealthMax then let UP2HB_health = PlayerHealthMax
-          if UP2HB_health < 0 then let UP2HB_health = 0
           
           rem Compare health against thresholds starting from 83 downward
           rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2 pixels, 0-11 = 0 pixels

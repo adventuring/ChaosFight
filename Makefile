@@ -106,7 +106,7 @@ MUSIC_NAMES = AtariToday Interworldly Victory GameOver
 
 # Game-based character theme songs
 # Note: Must have 32 songs (one per character) - use placeholder for missing characters
-GAME_THEME_SONGS = Grizzards Phantasia EXO OCascadia MagicalFairyForce Bernie Havoc Harpy LowRes Bolero RoboTito DucksAway SongOfTheBear \
+GAME_THEME_SONGS = Grizzards Phantasia Revontuli EXO MagicalFairyForce Bernie Revontuli Harpy LowRes Bolero RoboTito DucksAway SongOfTheBear \
 	Character16Theme Character17Theme Character18Theme Character19Theme Character20Theme Character21Theme Character22Theme Character23Theme \
 	Character24Theme Character25Theme Character26Theme Character27Theme Character28Theme Character29Theme Character30Theme MethHoundTheme
 

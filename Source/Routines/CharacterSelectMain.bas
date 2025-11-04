@@ -40,12 +40,12 @@ CharacterSelectInputEntry
           if joy0left then CharacterSelectPlayer0Left
           goto CharacterSelectSkipPlayer0Left
 CharacterSelectPlayer0Left
-          temp1 = playerChar[0] : temp3 = 0
+          let temp1 = playerChar[0] : let temp3 = 0
           gosub CycleCharacterLeft
           let playerChar[0] = temp1
           let playerLocked[0] = 0
           rem Play navigation sound
-          temp1 = SoundMenuNavigate
+          let temp1 = SoundMenuNavigate
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer0Left
           if joy0right then CharacterSelectPlayer0Right

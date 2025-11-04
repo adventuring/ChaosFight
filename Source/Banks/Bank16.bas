@@ -45,3 +45,24 @@
           rem PAL or SECAM: Use PAL version for both
           #include "Source/Generated/Song.Chaotica.PAL.bas"
           #endif
+          
+          rem =================================================================
+          rem BUILD INFO - Version Tracking and Attribution
+          rem =================================================================
+          rem Build date in year.julian format (e.g., 2025.256)
+          rem Game URL: https://interworldly.com/games/ChaosFight
+          rem These strings are embedded in the ROM after the end of real code
+          rem =================================================================
+          
+          asm
+          rem Build date string in year.julian format (YYYY.JJJ)
+          rem Format: ASCII bytes, null-terminated
+          rem Generated at compile time via preprocessor defines BUILD_YEAR and BUILD_DAY
+          BuildDateString:
+          .byte "BUILD_DATE_STRING",0
+          
+          rem Game URL string for attribution
+          rem Format: ASCII bytes, null-terminated
+          GameURLString:
+          .byte "https://interworldly.com/games/ChaosFight",0
+          end

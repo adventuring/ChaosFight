@@ -334,7 +334,7 @@ Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
+	cpp -P -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
@@ -344,7 +344,7 @@ Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
+	cpp -P -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
@@ -354,7 +354,7 @@ Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
 	mkdir -p Source/Generated
-	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
+	cpp -P -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 # Shared dependencies for all TV standards
 BUILD_DEPS = $(ALL_SOURCES) \

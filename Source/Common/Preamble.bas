@@ -24,4 +24,3 @@
           #include "Source/Common/Enums.bas"
           #include "Source/Common/Macros.bas"
           #include "Source/Common/Variables.bas"
-          #include "Source/Data/BuildInfo.bas"

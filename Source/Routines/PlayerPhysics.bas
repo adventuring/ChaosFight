@@ -174,6 +174,12 @@ MomentumRecoveryProcess
           rem Decrement recovery frames (velocity is applied by UpdatePlayerMovement)
           if playerRecoveryFrames[temp1] > 0 then let playerRecoveryFrames[temp1] = playerRecoveryFrames[temp1] - 1
           
+          rem Synchronize playerState bit 3 with recovery frames
+          if playerRecoveryFrames[temp1] > 0 then let playerState[temp1] = playerState[temp1] | 8
+          rem Set bit 3 (recovery flag) when recovery frames > 0
+          if ! playerRecoveryFrames[temp1] then let playerState[temp1] = playerState[temp1] & 247
+          rem Clear bit 3 (recovery flag) when recovery frames = 0
+          
           rem Decay velocity if recovery frames active
           if ! playerRecoveryFrames[temp1] then goto MomentumRecoveryNext
           rem Velocity decay during recovery (knockback slows down over time)

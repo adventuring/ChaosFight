@@ -361,7 +361,7 @@ CalculateSafeFallDistance
           rem Dragon of Storms: no falling (hovering/flying like Frooty)
           goto CalculateFallDistanceNormal
 SetInfiniteFallDistance
-          temp2 = 255
+          temp2 = InfiniteFallDistance
           return
 CalculateFallDistanceNormal
           

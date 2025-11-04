@@ -72,11 +72,11 @@ SpawnMissile
           let missileActive  = missileActive | temp6
           
           rem Initialize lifetime counter from character data table
-          let temp7  = CharacterMissileLifetime[temp5]
+          let missileLifetimeValue = CharacterMissileLifetime[temp5]
           
           rem Store lifetime in player-specific variable
           rem Using individual variables for each player missile lifetime
-          let missileLifetime[temp1] = temp7
+          let missileLifetime[temp1] = missileLifetimeValue
           
           rem Initialize velocity from character data for friction physics
           let temp6  = CharacterMissileMomentumX[temp5]
@@ -96,8 +96,8 @@ HarpyCheckDiveVelocity
           goto VelocityDone
 HarpyBoostDiveVelocity
           rem Increase downward velocity by 50% for dive attacks
-          let temp7 = temp6 / 2
-          let temp6 = temp6 + temp7
+          let velocityCalculation = temp6 / 2
+          let temp6 = temp6 + velocityCalculation
 VelocityDone
           let missileVelY[temp1] = temp6
           
@@ -140,8 +140,9 @@ UpdateOneMissile
           rem Not active, skip
           
           rem Preserve player index since GetMissileFlags uses temp1
-          let temp7  = UOM_playerIndex
-          rem Save player index
+          rem Use temp6 temporarily to save player index (temp6 is used for bit flags)
+          let temp6  = UOM_playerIndex
+          rem Save player index temporarily in temp6
           
           rem Get current velocities from stored arrays
           let temp2  = missileVelX[UOM_playerIndex]
@@ -159,8 +160,8 @@ UpdateOneMissile
           rem Store flags in temp4
           
           rem Restore player index and get flags back
-          let temp1  = temp7
-          rem Restore player index
+          let temp1  = temp6
+          rem Restore player index from temp6
           let temp5  = temp4
           rem Restore flags to temp5
           
@@ -174,37 +175,37 @@ GravityDone
           
           rem Apply friction if flag is set (curling stone deceleration with coefficient)
           if !(temp5 & MissileFlagFriction) then FrictionDone
-          let temp8  = missileVelX[UOM_playerIndex]
+          let missileVelocityX = missileVelX[UOM_playerIndex]
           rem Get current X velocity
           
           rem Apply coefficient-based friction: reduce by 12.5% per frame (32/256 = 1/8)
           rem CurlingFrictionCoefficient = 32 (Q8 fixed-point: 32/256 = 0.125 = 1/8)
-          if temp8 = 0 then FrictionDone
+          if missileVelocityX = 0 then FrictionDone
           rem Zero velocity, no friction to apply
           
           rem Calculate friction reduction (velocity / 8, approximates 12.5% reduction)
-          let temp6 = temp8
-          if temp6 < 0 then FrictionNegative
+          let velocityCalculation = missileVelocityX
+          if velocityCalculation < 0 then FrictionNegative
           rem Positive velocity
-          let temp6 = temp6 / 8
+          let velocityCalculation = velocityCalculation / 8
           rem Reduce by 1/8 (12.5%)
-          let temp8 = temp8 - temp6
+          let missileVelocityX = missileVelocityX - velocityCalculation
           goto FrictionApply
 FrictionNegative
           rem Negative velocity - convert to positive for division
-          let temp6 = 0 - temp6
-          let temp6 = temp6 / 8
+          let velocityCalculation = 0 - velocityCalculation
+          let velocityCalculation = velocityCalculation / 8
           rem Reduce by 1/8 (12.5%)
-          let temp8 = temp8 + temp6
-          rem Add back (since temp8 was negative)
+          let missileVelocityX = missileVelocityX + velocityCalculation
+          rem Add back (since missileVelocityX was negative)
 FrictionApply
-          let missileVelX[UOM_playerIndex] = temp8
-          let temp2  = temp8
+          let missileVelX[UOM_playerIndex] = missileVelocityX
+          let temp2  = missileVelocityX
           rem Update temp2 for position calculation
           rem Check if velocity dropped below threshold
-          if temp8 < MinimumVelocityThreshold && temp8 > -MinimumVelocityThreshold then gosub DeactivateMissile : return
+          if missileVelocityX < MinimumVelocityThreshold && missileVelocityX > -MinimumVelocityThreshold then gosub DeactivateMissile : return
           rem Update stored X velocity with friction applied
-          let missileVelX[UOM_playerIndex] = temp8
+          let missileVelX[UOM_playerIndex] = missileVelocityX
 FrictionDone
           
           rem Update missile position
@@ -227,8 +228,8 @@ PlayfieldCollisionDone
           rem Check collision with players
           rem This handles both visible missiles and AOE attacks
           gosub bank7 CheckAllMissileCollisions
-          rem Check if hit was found (temp4 != 255)
-          if temp4  = 255 then MissileSystemNoHit
+          rem Check if hit was found (temp4 != MissileHitNotFound)
+          if temp4 = MissileHitNotFound then MissileSystemNoHit
           
           rem Check if hit player is guarding before handling hit
           rem temp4 contains hit player index
@@ -239,7 +240,7 @@ PlayfieldCollisionDone
 GuardBounceFromCollision
           rem Guarding player - bounce the curling stone
           rem Play guard sound
-          let temp7  = SoundGuard
+          let soundEffectID = SoundGuard
           gosub bank15 PlaySoundEffect
           
           rem Bounce the missile: invert X velocity and apply friction damping
@@ -247,8 +248,8 @@ GuardBounceFromCollision
           let temp6  = 0 - temp6
           rem Invert X velocity (bounce back)
           rem Apply friction damping on bounce (reduce by 25% for guard bounce)
-          let temp7  = temp6 / 4
-          let temp6  = temp6 - temp7
+          let velocityCalculation = temp6 / 4
+          let temp6  = temp6 - velocityCalculation
           rem Reduce bounce velocity by 25%
           let missileVelX[UOM_playerIndex] = temp6
           
@@ -265,13 +266,13 @@ MissileSystemNoHit
           
           rem Decrement lifetime counter and check expiration
           rem Retrieve current lifetime for this missile
-          let temp8  = missileLifetime[UOM_playerIndex]
+          let missileLifetimeValue = missileLifetime[UOM_playerIndex]
           
-          rem Decrement if not set to 255 (infinite until collision)
-          if temp8  = 255 then MissileUpdateComplete
-          let temp8  = temp8 - 1
-          if temp8  = 0 then gosub DeactivateMissile : return
-          let missileLifetime[UOM_playerIndex] = temp8
+          rem Decrement if not set to infinite (infinite until collision)
+          if missileLifetimeValue = MissileLifetimeInfinite then MissileUpdateComplete
+          let missileLifetimeValue = missileLifetimeValue - 1
+          if missileLifetimeValue = 0 then gosub DeactivateMissile : return
+          let missileLifetime[UOM_playerIndex] = missileLifetimeValue
 MissileUpdateComplete
           
           return
@@ -533,21 +534,21 @@ KnockbackDone
           rem   temp1 = player index (0-3)
           rem   temp5 = missile flags
 HandleMissileBounce
-          let temp7 = missileVelX[temp1]
+          let missileVelocityX = missileVelX[temp1]
           rem Get current X velocity
-          let temp7 = $FF - temp7 + 1
-          rem Invert velocity (bounce back)
+          let missileVelocityX = MaxByteValue - missileVelocityX + 1
+          rem Invert velocity (bounce back) using two's complement
           
           rem Apply friction damping if friction flag is set
           if !(temp5 & MissileFlagFriction) then BounceDone
           rem Multiply by bounce multiplier for friction missiles
-          if temp7 > 0 then BounceMultiply
-          let temp7 = temp7 + (temp7 / BounceDampenDivisor)
+          if missileVelocityX > 0 then BounceMultiply
+          let missileVelocityX = missileVelocityX + (missileVelocityX / BounceDampenDivisor)
           goto BounceDone
 BounceMultiply
-          let temp7 = temp7 - (temp7 / BounceDampenDivisor)
+          let missileVelocityX = missileVelocityX - (missileVelocityX / BounceDampenDivisor)
 BounceDone
-          let missileVelX[temp1] = temp7
+          let missileVelX[temp1] = missileVelocityX
           
           rem Continue bouncing (don’t deactivate)
           return

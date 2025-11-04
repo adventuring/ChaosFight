@@ -42,6 +42,16 @@
           const CPUCharacter = 254
           rem CPU player character ($FE)
           
+          rem Sentinel and special value constants
+          const MissileLifetimeInfinite = 255
+          rem Missile lifetime value for infinite (until collision, no decrement)
+          const MissileHitNotFound = 255
+          rem Sentinel value indicating no hit found in collision checks
+          const MaxByteValue = 255
+          rem Maximum 8-bit value ($FF), used for two's complement operations
+          const InfiniteFallDistance = 255
+          rem Fall distance value for infinite (characters immune to fall damage)
+          
           rem Character ID constants
           const CharBernie = 0
           const CharCurler = 1

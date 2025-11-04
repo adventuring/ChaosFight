@@ -36,7 +36,7 @@
           rem Updates the frame phase counter (0-3) used to schedule operations.
           rem Called once per frame at the start of game loop.
 UpdateFramePhase
-          FramePhase = frame & 3 
+          let FramePhase = frame & 3 
           rem Cycle 0, 1, 2, 3, 0, 1, 2, 3...
           return
 
@@ -75,8 +75,8 @@ SkipPlayer3HealthUpdate
           rem Update Player 1 health bar
 UpdateHealthBarPlayer0
           dim FB_healthBarLength = temp6
-          FB_healthBarLength = playerHealth[0] / 3
-          if FB_healthBarLength > HealthBarMaxLength then FB_healthBarLength = HealthBarMaxLength
+          let FB_healthBarLength = playerHealth[0] / 3
+          if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColBlue(12)
           gosub bank8 DrawHealthBarRow0
           return
@@ -84,8 +84,8 @@ UpdateHealthBarPlayer0
           rem Update Player 2 health bar
 UpdateHealthBarPlayer1
           dim FB_healthBarLength = temp6
-          FB_healthBarLength = playerHealth[1] / 3
-          if FB_healthBarLength > HealthBarMaxLength then FB_healthBarLength = HealthBarMaxLength
+          let FB_healthBarLength = playerHealth[1] / 3
+          if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColRed(12)
           gosub bank8 DrawHealthBarRow1
           return
@@ -93,8 +93,8 @@ UpdateHealthBarPlayer1
           rem Update Player 3 health bar
 UpdateHealthBarPlayer2
           dim FB_healthBarLength = temp6
-          FB_healthBarLength = playerHealth[2] / 3
-          if FB_healthBarLength > HealthBarMaxLength then FB_healthBarLength = HealthBarMaxLength
+          let FB_healthBarLength = playerHealth[2] / 3
+          if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColYellow(12)
           gosub bank8 DrawHealthBarRow2
           return
@@ -102,8 +102,8 @@ UpdateHealthBarPlayer2
           rem Update Player 4 health bar
 UpdateHealthBarPlayer3
           dim FB_healthBarLength = temp6
-          FB_healthBarLength = playerHealth[3] / 3
-          if FB_healthBarLength > HealthBarMaxLength then FB_healthBarLength = HealthBarMaxLength
+          let FB_healthBarLength = playerHealth[3] / 3
+          if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColGreen(12)
           gosub bank8 DrawHealthBarRow3
           return
@@ -167,10 +167,10 @@ SkipFramePhaseChecks
           rem Individual collision check routines
 CheckCollisionP1vsP2
           if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
-          temp2 = playerX[1] - playerX[0]
+          let temp2 = playerX[1] - playerX[0]
           goto SkipCalcP1vsP2Diff
 CalcP1vsP2AbsDiff
-          temp2 = playerX[0] - playerX[1]
+          let temp2 = playerX[0] - playerX[1]
 SkipCalcP1vsP2Diff
           if temp2 >= CollisionSeparationDistance then SkipPlayerSeparation
           
@@ -192,10 +192,10 @@ SkipPlayerSeparation
 
 CheckCollisionP1vsP3
           if playerX[0] >= playerX[2] then CalcP1vsP3AbsDiff
-          temp2 = playerX[2] - playerX[0]
+          let temp2 = playerX[2] - playerX[0]
           goto SkipCalcP1vsP3Diff
 CalcP1vsP3AbsDiff
-          temp2 = playerX[0] - playerX[2]
+          let temp2 = playerX[0] - playerX[2]
 SkipCalcP1vsP3Diff
           if temp2 < 16 then CheckCollisionP1vsP3Aux
           return
@@ -210,10 +210,10 @@ CheckCollisionP1vsP3Aux
 
 CheckCollisionP1vsP4
           if playerX[0] >= playerX[3] then CalcP1vsP4AbsDiff
-          temp2 = playerX[3] - playerX[0]
+          let temp2 = playerX[3] - playerX[0]
           goto SkipCalcP1vsP4Diff
 CalcP1vsP4AbsDiff
-          temp2 = playerX[0] - playerX[3]
+          let temp2 = playerX[0] - playerX[3]
 SkipCalcP1vsP4Diff
           if temp2 < 16 then CheckCollisionP1vsP4Aux
           return
@@ -228,10 +228,10 @@ CheckCollisionP1vsP4Aux
 
 CheckCollisionP2vsP3
           if playerX[1] >= playerX[2] then CalcP2vsP3AbsDiff
-          temp2 = playerX[2] - playerX[1]
+          let temp2 = playerX[2] - playerX[1]
           goto SkipCalcP2vsP3Diff
 CalcP2vsP3AbsDiff
-          temp2 = playerX[1] - playerX[2]
+          let temp2 = playerX[1] - playerX[2]
 SkipCalcP2vsP3Diff
           if temp2 < 16 then CheckCollisionP2vsP3Aux
           return
@@ -246,10 +246,10 @@ CheckCollisionP2vsP3Aux
 
 CheckCollisionP2vsP4
           if playerX[1] >= playerX[3] then CalcP2vsP4AbsDiff
-          temp2 = playerX[3] - playerX[1]
+          let temp2 = playerX[3] - playerX[1]
           goto SkipCalcP2vsP4Diff
 CalcP2vsP4AbsDiff
-          temp2 = playerX[1] - playerX[3]
+          let temp2 = playerX[1] - playerX[3]
 SkipCalcP2vsP4Diff
           if temp2 < 16 then CheckCollisionP2vsP4Aux
           return
@@ -264,10 +264,10 @@ CheckCollisionP2vsP4Aux
 
 CheckCollisionP3vsP4
           if playerX[2] >= playerX[3] then CalcP3vsP4AbsDiff
-          temp2 = playerX[3] - playerX[2]
+          let temp2 = playerX[3] - playerX[2]
           goto SkipCalcP3vsP4Diff
 CalcP3vsP4AbsDiff
-          temp2 = playerX[2] - playerX[3]
+          let temp2 = playerX[2] - playerX[3]
 SkipCalcP3vsP4Diff
           if temp2 < 16 then CheckCollisionP3vsP4Aux
           return
@@ -301,27 +301,27 @@ BudgetedMissileCollisionCheck
           if !(controllerStatus & SetQuadtariDetected) then BudgetedMissileCollisionCheck2P
           
           rem 4-player mode: check one missile per frame
-          temp1 = FramePhase
+          let temp1 = FramePhase
           rem FramePhase 0-3 maps to Game Players 0-3
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp1 = 0 then temp6 = 1
-          if temp1 = 1 then temp6 = 2
-          if temp1 = 2 then temp6 = 4
-          if temp1 = 3 then temp6 = 8
-          temp4 = missileActive & temp6
+          if temp1 = 0 then let temp6 = 1
+          if temp1 = 1 then let temp6 = 2
+          if temp1 = 2 then let temp6 = 4
+          if temp1 = 3 then let temp6 = 8
+          let temp4 = missileActive & temp6
           if temp4 then gosub bank7 CheckAllMissileCollisions
           return
           
 BudgetedMissileCollisionCheck2P
           rem Simple 2-player mode: alternate missiles
-          temp1 = frame & 1
+          let temp1 = frame & 1
           rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp1 = 0 then temp6 = 1
-          if temp1 = 1 then temp6 = 2
-          if temp1 = 2 then temp6 = 4
-          if temp1 = 3 then temp6 = 8
-          temp4 = missileActive & temp6
+          if temp1 = 0 then let temp6 = 1
+          if temp1 = 1 then let temp6 = 2
+          if temp1 = 2 then let temp6 = 4
+          if temp1 = 3 then let temp6 = 8
+          let temp4 = missileActive & temp6
           if temp4 then gosub bank7 CheckAllMissileCollisions
           return
 

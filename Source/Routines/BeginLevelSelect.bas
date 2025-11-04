@@ -3,6 +3,8 @@
 
 BeginLevelSelect
           let selectedArena = 0
+          let fireHoldTimer = 0
+          rem Initialize fire hold timer
           
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)

@@ -136,6 +136,12 @@
           dim selectedArena = w014
           rem Selected arena (SCRAM w014, read via r014) - COMMON variable, cannot be in redimmed location
           
+          rem Level Select fire button hold timer (COMMON - used in Admin Mode)
+          dim fireHoldTimer_W = w015
+          dim fireHoldTimer_R = r015
+          dim fireHoldTimer = w015
+          rem Fire button hold timer for returning to Character Select (0-60 frames)
+          
           rem =================================================================
           rem MUSIC/SOUND POINTERS - Zero Page Memory (standard RAM)
           rem =================================================================

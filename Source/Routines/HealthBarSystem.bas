@@ -176,7 +176,7 @@ UpdatePlayer34HealthBars
           rem Get Player 3 health (0-100), clamp to 99
           rem Hide if inactive (selectedChar = 255) or eliminated
           let UP34HB_p3Health = playerHealth[2]
-          if selectedChar3 = 255 then let UP34HB_p3Health = 0
+          if selectedChar3_R = 255 then let UP34HB_p3Health = 0
           rem Check if Player 3 is eliminated (bit 2 of playersEliminated = 4)
           let UP34HB_isEliminated = playersEliminated & 4
           if UP34HB_isEliminated then let UP34HB_p3Health = 0
@@ -186,7 +186,7 @@ UpdatePlayer34HealthBars
           rem Get Player 4 health (0-100), clamp to 99
           rem Hide if inactive (selectedChar = 255) or eliminated
           let UP34HB_p4Health = playerHealth[3]
-          if selectedChar4 = 255 then let UP34HB_p4Health = 0
+          if selectedChar4_R = 255 then let UP34HB_p4Health = 0
           rem Check if Player 4 is eliminated (bit 3 of playersEliminated = 8)
           let UP34HB_isEliminated = playersEliminated & 8
           if UP34HB_isEliminated then let UP34HB_p4Health = 0

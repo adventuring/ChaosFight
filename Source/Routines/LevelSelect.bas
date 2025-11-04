@@ -263,18 +263,18 @@ ArenaSelectSkipPlayer0Anim
 ArenaSelectSkipPlayer1Anim
           rem Update Player 3 animation (if Quadtari and character selected)
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim
-          if selectedChar3 = 255 then ArenaSelectSkipPlayer2Anim
-          if selectedChar3 = 254 then ArenaSelectSkipPlayer2Anim
-          if selectedChar3 = 253 then ArenaSelectSkipPlayer2Anim
+          if selectedChar3_R = 255 then ArenaSelectSkipPlayer2Anim
+          if selectedChar3_R = 254 then ArenaSelectSkipPlayer2Anim
+          if selectedChar3_R = 253 then ArenaSelectSkipPlayer2Anim
           let ASUA_playerIndex = 2
           gosub ArenaSelectUpdatePlayerAnim
           
 ArenaSelectSkipPlayer2Anim
           rem Update Player 4 animation (if Quadtari and character selected)
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim
-          if selectedChar4 = 255 then ArenaSelectSkipPlayer23Anim
-          if selectedChar4 = 254 then ArenaSelectSkipPlayer23Anim
-          if selectedChar4 = 253 then ArenaSelectSkipPlayer23Anim
+          if selectedChar4_R = 255 then ArenaSelectSkipPlayer23Anim
+          if selectedChar4_R = 254 then ArenaSelectSkipPlayer23Anim
+          if selectedChar4_R = 253 then ArenaSelectSkipPlayer23Anim
           let ASUA_playerIndex = 3
           gosub ArenaSelectUpdatePlayerAnim
           
@@ -328,9 +328,9 @@ ArenaSelectSkipDrawP0
 ArenaSelectSkipDrawP1
           rem Draw Player 3 character (bottom left) if Quadtari and selected
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23
-          if selectedChar3 = 255 then ArenaSelectSkipDrawP2
-          if selectedChar3 = 254 then ArenaSelectSkipDrawP2
-          if selectedChar3 = 253 then ArenaSelectSkipDrawP2
+          if selectedChar3_R = 255 then ArenaSelectSkipDrawP2
+          if selectedChar3_R = 254 then ArenaSelectSkipDrawP2
+          if selectedChar3_R = 253 then ArenaSelectSkipDrawP2
           player2x = 56 : player2y = 80
           let ASDC_playerIndex = 2
           gosub ArenaSelectDrawPlayerSprite
@@ -338,9 +338,9 @@ ArenaSelectSkipDrawP1
 ArenaSelectSkipDrawP2
           rem Draw Player 4 character (bottom right) if Quadtari and selected
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23
-          if selectedChar4 = 255 then ArenaSelectSkipDrawP23
-          if selectedChar4 = 254 then ArenaSelectSkipDrawP23
-          if selectedChar4 = 253 then ArenaSelectSkipDrawP23
+          if selectedChar4_R = 255 then ArenaSelectSkipDrawP23
+          if selectedChar4_R = 254 then ArenaSelectSkipDrawP23
+          if selectedChar4_R = 253 then ArenaSelectSkipDrawP23
           player3x = 104 : player3y = 80
           let ASDC_playerIndex = 3
           gosub ArenaSelectDrawPlayerSprite
@@ -361,8 +361,8 @@ ArenaSelectDrawPlayerSprite
           rem Get character index based on player
           if ASDPS_playerIndex = 0 then let ASDPS_characterIndex = selectedChar1
           if ASDPS_playerIndex = 1 then let ASDPS_characterIndex = selectedChar2_R
-          if ASDPS_playerIndex = 2 then let ASDPS_characterIndex = selectedChar3
-          if ASDPS_playerIndex = 3 then let ASDPS_characterIndex = selectedChar4
+          if ASDPS_playerIndex = 2 then let ASDPS_characterIndex = selectedChar3_R
+          if ASDPS_playerIndex = 3 then let ASDPS_characterIndex = selectedChar4_R
           
           rem Use idle animation (action 1 = AnimIdle)
           let ASDPS_animationAction = 1

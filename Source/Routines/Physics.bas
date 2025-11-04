@@ -12,10 +12,10 @@
 HandleWallCollision
           rem Get character type for this player using direct array access
           rem temp1 contains player index (0-3)
-          temp4 = playerChar[temp1]
+          let temp4 = playerChar[temp1]
           
           rem Get character weight using direct array access
-          temp3 = CharacterWeights[temp4]
+          let temp3 = CharacterWeights[temp4]
           
           rem Weight is now in temp3 (0-40)
           rem Calculate bounce coefficient: higher weight = lower bounce
@@ -24,28 +24,28 @@ HandleWallCollision
           rem Example weights: 12 (light) = 44 bounce, 40 (heavy) = 30 bounce
           
           rem Get player velocity using direct array access
-          temp4 = playerVelocityX[temp1]
+          let temp4 = playerVelocityX[temp1]
           
           rem Calculate bounced velocity: velocity = velocity * bounce / 50
           rem Using integer math: velocity = (velocity * bounce) / 50
-          temp2 = temp4 * (50 - temp3 / 2) / 50
-          if temp2 = 0 && temp4 then temp2 = 1
+          let temp2 = temp4 * (50 - temp3 / 2) / 50
+          if temp2 = 0 && temp4 then let temp2 = 1
           rem Ensure at least 1 if was moving
-          playerVelocityX[temp1] = temp2
+          let playerVelocityX[temp1] = temp2
           return
 
           rem Check if player hit left wall and needs weight-based bounce
           rem Input: player index (in temp1)
 CheckLeftWallCollision
-          temp4 = playerX[temp1]
-          if temp4 < 10 then gosub HandleWallCollision : temp4 = playerX[temp1] : if temp4 < 10 then playerX[temp1] = 10
+          let temp4 = playerX[temp1]
+          if temp4 < 10 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 < 10 then let playerX[temp1] = 10
           return
 
           rem Check if player hit right wall and needs weight-based bounce
           rem Input: player index (in temp1)
 CheckRightWallCollision
-          temp4 = playerX[temp1]
-          if temp4 > 150 then gosub HandleWallCollision : temp4 = playerX[temp1] : if temp4 > 150 then playerX[temp1] = 150
+          let temp4 = playerX[temp1]
+          if temp4 > 150 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 > 150 then let playerX[temp1] = 150
           return
 
           rem Note: GetPlayerVelocitySub and SetPlayerVelocitySub removed

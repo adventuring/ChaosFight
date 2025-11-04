@@ -570,76 +570,94 @@
           rem Each variable has a semantically meaningful name based on its usage context
           rem =================================================================
           
-          dim oldHealthValue = w089
+          dim oldHealthValue_W = w089
           dim oldHealthValue_R = r089
+          dim oldHealthValue = w089
           rem Old health value for byte-safe clamp checks (used in damage calculations)
           
-          dim recoveryFramesCalc = w090
+          dim recoveryFramesCalc_W = w090
           dim recoveryFramesCalc_R = r090
+          dim recoveryFramesCalc = w090
           rem Recovery frames calculation value (used in fall damage and hit processing)
           
-          dim playerStateTemp = w091
+          dim playerStateTemp_W = w091
           dim playerStateTemp_R = r091
+          dim playerStateTemp = w091
           rem Temporary player state value for bit manipulation operations
           
-          dim playfieldRow = w092
+          dim playfieldRow_W = w092
           dim playfieldRow_R = r092
+          dim playfieldRow = w092
           rem Playfield row index for collision calculations
           
-          dim playfieldCol = w093
+          dim playfieldCol_W = w093
           dim playfieldCol_R = r093
+          dim playfieldCol = w093
           rem Playfield column index for collision calculations
           
-          dim rowYPosition = w094
+          dim rowYPosition_W = w094
           dim rowYPosition_R = r094
+          dim rowYPosition = w094
           rem Y position of playfield row (used in gravity calculations)
           
-          dim rowCounter = w095
+          dim rowCounter_W = w095
           dim rowCounter_R = r095
+          dim rowCounter = w095
           rem Loop counter for row calculations
           
-          dim characterHeight = w096
+          dim characterHeight_W = w096
           dim characterHeight_R = r096
+          dim characterHeight = w096
           rem Character height value from CharacterHeights table
           
-          dim characterWeight = w097
+          dim characterWeight_W = w097
           dim characterWeight_R = r097
+          dim characterWeight = w097
           rem Character weight value from CharacterWeights table
           
-          dim yDistance = w098
+          dim yDistance_W = w098
           dim yDistance_R = r098
+          dim yDistance = w098
           rem Y distance between players for collision calculations
           
-          dim halfHeight1 = w099
+          dim halfHeight1_W = w099
           dim halfHeight1_R = r099
+          dim halfHeight1 = w099
           rem Half height of first player for collision overlap calculation
           
-          dim halfHeight2 = w100
+          dim halfHeight2_W = w100
           dim halfHeight2_R = r100
+          dim halfHeight2 = w100
           rem Half height of second player for collision overlap calculation
           
-          dim totalHeight = w101
+          dim totalHeight_W = w101
           dim totalHeight_R = r101
+          dim totalHeight = w101
           rem Total height for collision overlap check (halfHeight1 + halfHeight2)
           
-          dim totalWeight = w102
+          dim totalWeight_W = w102
           dim totalWeight_R = r102
+          dim totalWeight = w102
           rem Total weight of both players for momentum calculations
           
-          dim weightDifference = w103
+          dim weightDifference_W = w103
           dim weightDifference_R = r103
+          dim weightDifference = w103
           rem Weight difference between players for impulse calculation
           
-          dim impulseStrength = w104
+          dim impulseStrength_W = w104
           dim impulseStrength_R = r104
+          dim impulseStrength = w104
           rem Calculated impulse strength for momentum transfer
           
-          dim gravityRate = w105
+          dim gravityRate_W = w105
           dim gravityRate_R = r105
+          dim gravityRate = w105
           rem Gravity acceleration rate (normal or reduced)
           
-          dim damageWeightProduct = w106
+          dim damageWeightProduct_W = w106
           dim damageWeightProduct_R = r106
+          dim damageWeightProduct = w106
           rem Intermediate value: damage * weight (used in fall damage calculations)
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM to free zero-page space

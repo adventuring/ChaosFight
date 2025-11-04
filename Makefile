@@ -119,7 +119,8 @@ bitmaps: $(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 
 # Build music assets
-music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
+music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas)) \
+       $(foreach arch,$(TV_ARCHS),Source/Generated/Song.EXO.$(arch).bas)
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz
@@ -316,7 +317,9 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas)
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
+	Source/Generated/Song.EXO.NTSC.bas \
+	Source/Generated/Song.EXO.PAL.bas
 
 # Step 1: Preprocess .bas → .preprocessed.bas
 Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)

@@ -34,6 +34,20 @@
           rem   11=PorkChop, 12=RadishGoblin, 13=RoboTito, 14=Ursulo, 15=Shamone
           rem =================================================================
 
+          rem =================================================================
+          rem ANIMATION STATE HELPER
+          rem =================================================================
+          rem Extracts animation state (bits 4-7) from playerState
+          rem INPUT: temp1 = player index (0-3)
+          rem OUTPUT: temp2 = animation state (0-15)
+          rem Uses: ActionAttackWindup=13, ActionAttackExecute=14, ActionAttackRecovery=15
+GetPlayerAnimationState
+          let temp2 = playerState[temp1] & 240
+          rem Mask bits 4-7 (value 240 = %11110000)
+          let temp2 = temp2 / 16
+          rem Shift right by 4 (divide by 16) to get animation state (0-15)
+          return
+
           rem Main input handler for all players
 InputHandleAllPlayers
           if qtcontroller then goto InputHandleQuadtariPlayers
@@ -92,6 +106,12 @@ InputSkipPlayer4Input
           rem INPUT: temp1 = player index (0 or 2)
           rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
 InputHandleLeftPortPlayer
+          rem Check animation state - block movement during attack animations (states 13-15)
+          gosub GetPlayerAnimationState
+          rem Get animation state in temp2
+          if temp2 >= 13 then SkipLeftPortMovement
+          rem Block movement during attack windup/execute/recovery
+          
           rem Process left/right movement (with playfield collision for flying characters)
           rem Frooty (8) and Dragon of Storms (2) need collision checks for horizontal movement
           let temp5 = PlayerChar[temp1]
@@ -104,6 +124,7 @@ InputHandleLeftPortPlayer
           rem Right movement: set positive velocity
           if joy0right then let playerVelocityX[temp1] = 1 : let playerVelocityX_lo[temp1] = 0 : let PlayerState[temp1] = PlayerState[temp1] | 1
           goto SkipFlyingLeftRight
+SkipLeftPortMovement
           
 FrootyDragonetLeftRightMovement
           rem Flying characters: check playfield collision before horizontal movement
@@ -258,6 +279,11 @@ EnhancedJumpDone0
           rem Handle MethHound jump (character 31 uses same jump as Shamone)
           if temp3 = 0 then InputSkipLeftPortJump
           if (PlayerState[temp1] & 4) then InputSkipLeftPortJump
+          rem Check animation state - block jump during attack animations (states 13-15)
+          gosub GetPlayerAnimationState
+          rem Get animation state in temp2
+          if temp2 >= 13 then InputSkipLeftPortJump
+          rem Block jump during attack windup/execute/recovery
           let temp4 = PlayerChar[temp1] 
           rem Character type
           rem Map MethHound (31) to ShamoneJump handler
@@ -295,6 +321,11 @@ GuardInputDoneLeft
           
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
+          rem Check animation state - block attack input during attack animations (states 13-15)
+          gosub GetPlayerAnimationState
+          rem Get animation state in temp2
+          if temp2 >= 13 then InputSkipLeftPortAttack
+          rem Block attack input during attack windup/execute/recovery
           rem Check if player is guarding - guard blocks attacks
           let temp2 = PlayerState[temp1] & 2
           if temp2 then InputSkipLeftPortAttack
@@ -316,6 +347,12 @@ InputSkipLeftPortAttack
           rem INPUT: temp1 = player index (1 or 3)
           rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
 InputHandleRightPortPlayer
+          rem Check animation state - block movement during attack animations (states 13-15)
+          gosub GetPlayerAnimationState
+          rem Get animation state in temp2
+          if temp2 >= 13 then SkipRightPortMovement
+          rem Block movement during attack windup/execute/recovery
+          
           rem Process left/right movement (with playfield collision for flying characters)
           rem Check if player is guarding - guard blocks movement
           let temp6 = PlayerState[temp1] & 2
@@ -500,6 +537,11 @@ EnhancedJumpDone1
           rem Handle MethHound jump (character 31 uses same jump as Shamone)
           if temp3 = 0 then InputSkipRightPortJump
           if (PlayerState[temp1] & 4) then InputSkipRightPortJump
+          rem Check animation state - block jump during attack animations (states 13-15)
+          gosub GetPlayerAnimationState
+          rem Get animation state in temp2
+          if temp2 >= 13 then InputSkipRightPortJump
+          rem Block jump during attack windup/execute/recovery
           let temp4 = PlayerChar[temp1] 
           rem Character type
           rem Map MethHound (31) to ShamoneJump handler
@@ -537,6 +579,11 @@ GuardInputDoneRight
           
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
+          rem Check animation state - block attack input during attack animations (states 13-15)
+          gosub GetPlayerAnimationState
+          rem Get animation state in temp2
+          if temp2 >= 13 then InputSkipRightPortAttack
+          rem Block attack input during attack windup/execute/recovery
           rem Check if player is guarding - guard blocks attacks
           let temp2 = PlayerState[temp1] & 2
           if temp2 then InputSkipRightPortAttack

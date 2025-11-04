@@ -28,7 +28,7 @@ STELLA = stella
 GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm
 
 # Ready system
-READYDATE = 20251028
+READYDATE = 20251104
 READYFILE = .#ready.$(READYDATE)
 
 # SkylineTool build rules
@@ -225,6 +225,9 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
 
 # Fonts are universal (not TV-specific)
 # Source/Generated/Numbers.bas is used directly by FontRendering.bas
+
+# Explicit dependency: Numbers.png depends on Numbers.xcf
+Source/Art/Numbers.png: Source/Art/Numbers.xcf
 
 # Convert 48×42 PNG to titlescreen kernel assembly format
 # Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height

@@ -102,7 +102,10 @@ BITMAP_NAMES = AtariAge Interworldly ChaosFight
 FONT_NAMES = Numbers
 
 # Music names (MuseScore files)
-MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
+MUSIC_NAMES = AtariToday Interworldly Victory GameOver
+
+# Game-based character theme songs
+GAME_THEME_SONGS = Grizzards Phantasia EXO OCascadia MagicalFairyForce Bernie Havoc Harpy LowRes Bolero RoboTito DucksAway SongOfTheBear
 
 # Sound effect names (MIDI files)
 SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
@@ -120,7 +123,7 @@ fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 
 # Build music assets
 music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas)) \
-       $(foreach arch,$(TV_ARCHS),Source/Generated/Song.EXO.$(arch).bas)
+       $(foreach song,$(GAME_THEME_SONGS),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz
@@ -318,8 +321,8 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
-	Source/Generated/Song.EXO.NTSC.bas \
-	Source/Generated/Song.EXO.PAL.bas
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
 
 # Step 1: Preprocess .bas → .preprocessed.bas
 Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)

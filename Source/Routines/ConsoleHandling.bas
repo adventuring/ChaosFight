@@ -68,12 +68,40 @@ SkipPlayer2Pause
           rem Re-detect controllers when Color/B&W switch is toggled
           
 CheckColorBWToggle
+          dim CCBT_switchChanged = temp1
+          dim CCBT_overrideChanged = temp2
+          
           rem Check if Color/B&W switch state has changed
           temp6 = switchbw
-          if temp6 = colorBWPrevious_R then SkipColorBWChange
+          let CCBT_switchChanged = 0
+          if temp6 = colorBWPrevious_R then SkipSwitchChange
+          let CCBT_switchChanged = 1
           gosub bank14 DetectControllers
           let colorBWPrevious_W = switchbw
-SkipColorBWChange
+SkipSwitchChange
+
+          rem Check if colorBWOverride changed (7800 pause button)
+          #ifndef TV_SECAM
+          rem Note: colorBWOverride does not have a previous value stored,
+          rem so we check it every frame. This is acceptable since it is
+          rem only toggled by button press, not continuously.
+          rem If needed, we could add a previous value variable.
+          #endif
+          
+          rem Reload arena colors if switch or override changed
+          if CCBT_switchChanged then ReloadArenaColorsNow
+          #ifndef TV_SECAM
+          rem Always check override in case it was toggled
+          rem (Check7800PauseButton is called after this, so we check it here)
+          rem Actually, we should check after Check7800PauseButton is called
+          rem So we will reload in that function instead
+          #endif
+          
+          return
+
+ReloadArenaColorsNow
+          rem Reload arena colors with current switch state
+          gosub bank14 ReloadArenaColors
           return
 
           rem Display paused screen

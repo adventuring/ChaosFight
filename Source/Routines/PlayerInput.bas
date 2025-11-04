@@ -50,6 +50,45 @@ GetPlayerAnimationState
           rem Shift right by 4 (divide by 16) to get animation state (0-15)
           return
 
+          rem =================================================================
+          rem CHECK IF FACING SHOULD BE PRESERVED
+          rem =================================================================
+          rem Returns 1 if facing should be preserved (during hurt/recovery states),
+          rem 0 if facing can be updated normally.
+          rem Preserves facing during: recovery/hitstun (bit 3) OR hurt animation states (5-9)
+          rem INPUT: temp1 = player index (0-3)
+          rem OUTPUT: temp3 = 1 if facing should be preserved, 0 if can update
+          rem EFFECTS: Uses temp2 for animation state check
+ShouldPreserveFacing
+          dim SPF_playerIndex = temp1
+          dim SPF_animationState = temp2
+          dim SPF_preserveFlag = temp3
+          rem Check recovery/hitstun flag (bit 3)
+          if (playerState[SPF_playerIndex] & 8) then SPF_PreserveYes
+          rem Bit 3 set = in recovery, preserve facing
+          
+          rem Check animation state for hurt states (5-9)
+          rem ActionHit=5, ActionFallBack=6, ActionFallDown=7, ActionFallen=8, ActionRecovering=9
+          gosub GetPlayerAnimationState
+          rem Get animation state in temp2
+          let SPF_animationState = temp2
+          if SPF_animationState < 5 then SPF_PreserveNo
+          rem Animation state < 5, allow facing update
+          if SPF_animationState > 9 then SPF_PreserveNo
+          rem Animation state > 9, allow facing update
+          
+SPF_PreserveYes
+          rem In hurt/recovery state, preserve facing
+          let SPF_preserveFlag = 1
+          let temp3 = SPF_preserveFlag
+          return
+          
+SPF_PreserveNo
+          rem Not in hurt/recovery state, allow facing update
+          let SPF_preserveFlag = 0
+          let temp3 = SPF_preserveFlag
+          return
+
           rem Main input handler for all players
 InputHandleAllPlayers
           dim IHAP_isAlive = temp2
@@ -132,9 +171,9 @@ InputHandleLeftPortPlayer
           
           rem Standard horizontal movement (modifies velocity, not position)
           rem Left movement: set negative velocity (255 in 8-bit two’s complement = -1)
-          if joy0left then let playerVelocityX[IHLP_playerIndex] = 255 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
+          if joy0left then let playerVelocityX[IHLP_playerIndex] = 255 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : gosub ShouldPreserveFacing : if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
           rem Right movement: set positive velocity
-          if joy0right then let playerVelocityX[IHLP_playerIndex] = 1 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
+          if joy0right then let playerVelocityX[IHLP_playerIndex] = 1 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : gosub ShouldPreserveFacing : if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
           goto SkipFlyingLeftRight
 SkipLeftPortMovement
           
@@ -183,7 +222,9 @@ MoveLeftOK
           let playerVelocityX[IHLP_playerIndex] = 255
           rem -1 in 8-bit two’s complement: 256 - 1 = 255
           let playerVelocityX_lo[IHLP_playerIndex] = 0
-          let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
+          rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
+          gosub ShouldPreserveFacing
+          if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
 CheckRightMovement
           dim CRM_pfColumn = temp2
           dim CRM_rightColumn = temp3
@@ -225,7 +266,9 @@ MoveRightOK
           rem Apply rightward velocity impulse
           let playerVelocityX[IHLP_playerIndex] = 1
           let playerVelocityX_lo[IHLP_playerIndex] = 0
-          let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
+          rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
+          gosub ShouldPreserveFacing
+          if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
 SkipFlyingLeftRight
 
           dim SUIH_jumpPressed = temp3
@@ -407,14 +450,18 @@ InputHandleRightPortPlayer
                     let playerVelocityX[temp1] = 255
                     rem -1 in 8-bit two’s complement: 256 - 1 = 255
                     let playerVelocityX_lo[temp1] = 0
-                    let PlayerState[temp1] = PlayerState[temp1] & 254
+                    rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
+                    gosub ShouldPreserveFacing
+                    if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & 254
                     rem Face left
           
           if joy1right then
                     rem Apply rightward velocity impulse
                     let playerVelocityX[temp1] = 1
                     let playerVelocityX_lo[temp1] = 0
-                    let PlayerState[temp1] = PlayerState[temp1] | 1
+                    rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
+                    gosub ShouldPreserveFacing
+                    if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
                     rem Face right
           goto SkipFlyingLeftRightRight
           
@@ -457,7 +504,9 @@ MoveLeftOKRight
           let playerVelocityX[temp1] = 255
           rem -1 in 8-bit two’s complement: 256 - 1 = 255
           let playerVelocityX_lo[temp1] = 0
-          let PlayerState[temp1] = PlayerState[temp1] & 254
+          rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
+          gosub ShouldPreserveFacing
+          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & 254
 CheckRightMovementRight
           rem Check right movement
           if !joy1right then goto SkipFlyingLeftRightRight
@@ -491,7 +540,9 @@ MoveRightOKRight
           rem Apply rightward velocity impulse (double-width sprite: 16px width)
           let playerVelocityX[temp1] = 1
           let playerVelocityX_lo[temp1] = 0
-          let PlayerState[temp1] = PlayerState[temp1] | 1
+          rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
+          gosub ShouldPreserveFacing
+          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
 SkipFlyingLeftRightRight
           
 

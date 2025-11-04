@@ -90,6 +90,30 @@ SpawnMissile
           rem Apply facing direction (left = negative)
           let missileVelocityX[SM_playerIndex] = SM_velocityCalc
           
+          rem Initialize NUSIZ tracking from missile width
+          rem NUSIZ bits 4-6: 00=1x, 01=2x, 10=4x (multiplied by 16: 0x00, 0x10, 0x20)
+          dim SM_missileWidth = temp2
+          let SM_missileWidth = CharacterMissileWidths[SM_characterType]
+          rem Convert width to NUSIZ value (width 1=0x00, 2=0x10, 4=0x20)
+          if SM_missileWidth = 1 then SM_NUSIZValue
+          if SM_missileWidth = 2 then SM_NUSIZValue2
+          if SM_missileWidth = 4 then SM_NUSIZValue4
+          rem Default to 1x if width not recognized
+          let missileNUSIZ[SM_playerIndex] = 0
+          goto SM_NUSIZDone
+SM_NUSIZValue
+          let missileNUSIZ[SM_playerIndex] = 0
+          rem 1x size (NUSIZ bits 4-6 = 00)
+          goto SM_NUSIZDone
+SM_NUSIZValue2
+          let missileNUSIZ[SM_playerIndex] = 16
+          rem 2x size (NUSIZ bits 4-6 = 01, value = 0x10 = 16)
+          goto SM_NUSIZDone
+SM_NUSIZValue4
+          let missileNUSIZ[SM_playerIndex] = 32
+          rem 4x size (NUSIZ bits 4-6 = 10, value = 0x20 = 32)
+SM_NUSIZDone
+          
           let SM_velocityCalc  = CharacterMissileMomentumY[SM_characterType]
           rem Get Y velocity
           

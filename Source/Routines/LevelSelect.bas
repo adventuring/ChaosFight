@@ -2,9 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem =================================================================
-          rem LEVEL SELECT - PER-FRAME LOOP
+          rem ARENA SELECT - PER-FRAME LOOP
           rem =================================================================
-          rem Per-frame level select screen with arena cycling (01-16/??)
+          rem Per-frame arena select screen with arena cycling (01-16/??)
           rem Called from MainLoop each frame (gameMode 5).
           rem Players can cycle through arenas 01-16 or select random (??).
           rem

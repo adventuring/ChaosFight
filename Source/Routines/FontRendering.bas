@@ -6,7 +6,7 @@
           rem =================================================================
           rem Renders 8×16 pixel hexadecimal digits (0-9, A-F) for:
           rem   - Player numbers (1-4) in player colors
-          rem   - Level selection (0-9) in white
+          rem   - Arena selection (0-9) in white
           rem   - Scores and timers
 
           rem FONT SOURCE:
@@ -42,7 +42,7 @@
           rem   temp5 = sprite select (0=player0, 1=player1) OR custom color if temp4=$FF
 
           rem COLORS:
-          rem   ColGrey(14) = White (level select)
+          rem   ColGrey(14) = White (arena select)
           rem   ColIndigo(14) = Indigo (Player 1)
           rem   ColRed(14) = Red (Player 2)
           rem   ColYellow(14) = Yellow (Player 3)

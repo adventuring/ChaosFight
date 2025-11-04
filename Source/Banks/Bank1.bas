@@ -6,55 +6,33 @@
           rem Titlescreen kernel for 48×42 bitmaps on admin screens (×2 drawing style)
           rem Include generated bitmap art files (assembly format - wrap in asm blocks)
           rem Window values control which bitmaps display on each screen:
-          rem   - Publisher (gameMode 0): AtariAge + Interworldly (2 bitmaps)
-          rem   - Author (gameMode 1): Interworldly (1 bitmap)
+          rem   - Publisher (gameMode 0): AtariAge logo (48x2_1) + AtariAge text (48x2_2) (2 bitmaps)
+          rem   - Author (gameMode 1): Interworldly (1 bitmap) - needs different slot
           rem   - Title (gameMode 2): ChaosFight (1 bitmap)
           rem Window values are compile-time constants set in bitmap .s files.
-          rem Default values:
-          rem   - Art.AtariAge.s: bmp_48x2_1_window = 42 (Publisher screen)
-          rem   - Art.Interworldly.s: bmp_48x2_2_window = 42 (Publisher + Author screens)
-          rem   - Art.ChaosFight.s: bmp_48x2_3_window = 0 (hidden by default, overridden per screen)
+          rem Bitmap slot assignments:
+          rem   - 48x2_1: AtariAge logo (Publisher)
+          rem   - 48x2_2: AtariAgeText text (Publisher) - replaces Interworldly on Publisher
+          rem   - 48x2_3: ChaosFight logo (Title)
+          rem   - Interworldly: Currently unused (was 48x2_2, now repurposed for AtariAgeText)
           asm
           include "Source/Generated/Art.AtariAge.s"
-          include "Source/Generated/Art.Interworldly.s"
+          include "Source/Generated/Art.AtariAgeText.s"
           include "Source/Generated/Art.ChaosFight.s"
           
           rem Override window values AFTER includes for correct per-screen display
           rem Window values: 42 = visible, 0 = hidden
-          rem CRITICAL: These are compile-time constants - cannot change at runtime
           rem Requirements per screen:
-          rem   Publisher (gameMode 0): AtariAge=42, Interworldly=42, ChaosFight=0 (2 bitmaps)
-          rem   Author (gameMode 1): AtariAge=0, Interworldly=42, ChaosFight=0 (1 bitmap)
-          rem   Title (gameMode 2): AtariAge=0, Interworldly=0, ChaosFight=42 (1 bitmap)
-          rem
-          rem SOLUTION: Since window values are compile-time constants used in assembly
-          rem calculations, we cannot change them at runtime. We set defaults that work
-          rem for Publisher screen. For Author/Title screens to show only one bitmap,
-          rem we need screen-specific window overrides via conditional compilation or
-          rem separate builds. For now, we set to Publisher defaults and document limitation.
-          
-          rem Override window values for correct per-screen display
-          rem Requirements:
-          rem   Publisher (gameMode 0): AtariAge=42, Interworldly=42, ChaosFight=0 (2 bitmaps)
-          rem   Author (gameMode 1): AtariAge=0, Interworldly=42, ChaosFight=0 (1 bitmap)
-          rem   Title (gameMode 2): AtariAge=0, Interworldly=0, ChaosFight=42 (1 bitmap)
-          rem
-          rem CRITICAL: Window values are compile-time constants used in assembly address
-          rem calculations. They cannot be changed at runtime. All screens use the same values.
-          rem
-          rem SOLUTION: Set window values to work for Publisher screen (default).
-          rem For Author/Title screens to show only one bitmap, we need runtime control
-          rem which requires modifying the titlescreen kernel to use variables instead of constants.
-          rem
-          rem Current workaround: Set defaults for Publisher screen. Author screen will show
-          rem AtariAge too (unwanted). Title screen won't show ChaosFight (file default 0).
+          rem   Publisher (gameMode 0): AtariAge logo (48x2_1)=42, AtariAgeText (48x2_2)=42, ChaosFight=0 (2 bitmaps)
+          rem   Author (gameMode 1): Interworldly (needs different slot) - currently not supported
+          rem   Title (gameMode 2): ChaosFight (48x2_3)=42, others=0 (1 bitmap)
           rem
           rem Set compile-time window values to 42 (maximum) for all bitmaps
           rem This ensures address calculations are always correct regardless of runtime window values
           rem Runtime window control is handled via titlescreenWindow1/2/3 variables set per screen
           rem If runtime window = 0, minikernel won't draw (Y register will be -1)
-          bmp_48x2_1_window = 42  ; AtariAge: compile-time default (runtime controls visibility)
-          bmp_48x2_2_window = 42  ; Interworldly: compile-time default (runtime controls visibility)
+          bmp_48x2_1_window = 42  ; AtariAge logo: compile-time default (runtime controls visibility)
+          bmp_48x2_2_window = 42  ; AtariAgeText: compile-time default (runtime controls visibility)
           bmp_48x2_3_window = 42  ; ChaosFight: compile-time default (runtime controls visibility)
           
           rem NOTE: Runtime window control implemented via titlescreenWindow1/2/3 variables

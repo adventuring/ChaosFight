@@ -2,16 +2,20 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem =================================================================
-          rem PUBLISHER PREAMBLE SCREEN
+          rem PUBLISHER PREAMBLE SCREEN - PER-FRAME LOOP
           rem =================================================================
-          rem Displays the AtariAge publisher logo/artwork with music.
-          rem This is the first screen shown at cold start.
-
-          rem FLOW:
-          rem   1. Display 48×42 bitmap from Source/Art/AtariAge.xcf (via titlescreen kernel)
-          rem   2. Play "AtariToday" jingle
-          rem   3. Wait for jingle completion + 0.5s OR button press
-          rem   4. Transition to author preamble
+          rem Per-frame publisher preamble display and input handling.
+          rem Called from MainLoop each frame (gameMode 0).
+          rem
+          rem Setup is handled by BeginPublisherPrelude in ChangeGameMode.bas.
+          rem This function processes one frame and returns.
+          rem
+          rem FLOW PER FRAME:
+          rem   1. Handle input - any button press skips to author preamble
+          rem   2. Update music playback
+          rem   3. Check auto-advance timer (music completion + 0.5s)
+          rem   4. Set window values for Publisher screen
+          rem   5. Return to MainLoop (drawing handled by MainLoop)
 
           rem BITMAP CONFIGURATION:
           rem   - Size: 48×42 pixels (displayed as 48×84 scanlines in double-height mode)
@@ -25,7 +29,7 @@
           rem   QuadtariDetected - For checking all controllers
           rem =================================================================
 
-PublisherPreamble
+PublisherPreambleMain
           rem Bitmap data is loaded automatically by titlescreen kernel via includes
           rem No explicit loading needed - titlescreen kernel handles bitmap display
           
@@ -49,12 +53,10 @@ PublisherSkipQuadtari
 
           let preambleTimer = preambleTimer + 1
           
-          rem Set window values for Publisher screen (AtariAge + Interworldly)
+          rem Set window values for Publisher screen (AtariAge logo + AtariAge text)
           gosub bank12 SetPublisherWindowValues
           
-          rem Draw screen with titlescreen kernel minikernel
-          gosub titledrawscreen bank1
-
+          rem Drawing handled by MainLoop (titledrawscreen for admin screens)
           return
 
 PublisherPreambleComplete

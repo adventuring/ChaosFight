@@ -48,9 +48,6 @@ AuthorSkipQuadtari
           if preambleTimer > 30 && musicPlaying = 0 then AuthorPreambleComplete
 
           let preambleTimer = preambleTimer + 1
-          
-          rem Draw screen with titlescreen kernel minikernel
-          gosub titledrawscreen bank1
 
           return
 

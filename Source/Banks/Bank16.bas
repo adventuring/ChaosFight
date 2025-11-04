@@ -139,16 +139,41 @@ LoadMusicNote1
           rem Songs are indexed: 0=AtariToday, 1=Interworldly, 2=Title, 3=GameOver, 4=Victory
           
           rem Song 0: AtariToday (Publisher preamble)
+          #ifdef TV_NTSC
           #include "Source/Generated/Song.AtariToday.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Song.AtariToday.PAL.bas"
+          #endif
           
           rem Song 1: Interworldly (Author preamble)
+          #ifdef TV_NTSC
           #include "Source/Generated/Song.Interworldly.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Song.Interworldly.PAL.bas"
+          #endif
           
           rem Song 2: Title (Title screen)
+          #ifdef TV_NTSC
           #include "Source/Generated/Song.Title.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Song.Title.PAL.bas"
+          #endif
           
           rem Song 3: GameOver (Defeat screen)
+          #ifdef TV_NTSC
           #include "Source/Generated/Song.GameOver.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Song.GameOver.PAL.bas"
+          #endif
           
           rem Song 4: Victory (Win screen)
+          #ifdef TV_NTSC
           #include "Source/Generated/Song.Victory.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Song.Victory.PAL.bas"
+          #endif

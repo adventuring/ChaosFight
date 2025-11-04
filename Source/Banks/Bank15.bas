@@ -131,32 +131,82 @@ LoadSoundNote1
           rem   6=SoundSpecialMove, 7=SoundPowerup, 8=SoundLandingSafe, 9=SoundLandingDamage
           
           rem Sound 0: Attack Hit
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundAttackHit.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundAttackHit.PAL.bas"
+          #endif
           
           rem Sound 1: Guard Block
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundGuardBlock.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundGuardBlock.PAL.bas"
+          #endif
           
           rem Sound 2: Jump
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundJump.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundJump.PAL.bas"
+          #endif
           
           rem Sound 3: Player Eliminated
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundPlayerEliminated.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundPlayerEliminated.PAL.bas"
+          #endif
           
           rem Sound 4: Menu Navigate
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundMenuNavigate.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundMenuNavigate.PAL.bas"
+          #endif
           
           rem Sound 5: Menu Select
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundMenuSelect.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundMenuSelect.PAL.bas"
+          #endif
           
           rem Sound 6: Special Move
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundSpecialMove.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundSpecialMove.PAL.bas"
+          #endif
           
           rem Sound 7: Powerup
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundPowerup.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundPowerup.PAL.bas"
+          #endif
           
           rem Sound 8: Landing Safe
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundLandingSafe.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundLandingSafe.PAL.bas"
+          #endif
           
           rem Sound 9: Landing Damage
+          #ifdef TV_NTSC
           #include "Source/Generated/Sound.SoundLandingDamage.NTSC.bas"
+          #else
+          rem PAL or SECAM: Use PAL version for both
+          #include "Source/Generated/Sound.SoundLandingDamage.PAL.bas"
+          #endif
 

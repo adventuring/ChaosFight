@@ -189,11 +189,7 @@ Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
-# Convert MIDI to batariBASIC sound data for SECAM (50Hz)
-Source/Generated/Sound.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
-	@echo "Converting sound $< to $@ for SECAM..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+# SECAM uses PAL sound files (not generated separately)
 
 
 
@@ -322,7 +318,8 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
-	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).SECAM.bas)
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas)
 
 # Step 1: Preprocess .bas → .preprocessed.bas
 Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)

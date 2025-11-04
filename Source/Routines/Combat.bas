@@ -9,7 +9,7 @@ rem Apply damage from attacker to defender
 rem Inputs: attacker_id, defender_id
 ApplyDamage
   rem Calculate damage (considering defender state)
-  let temp1 = playerDamage(attacker_id) - playerDamage(defender_id)
+  let temp1 = playerDamage[attacker_id] - playerDamage[defender_id]
   if temp1 < 1 then let temp1 = 1  rem Minimum damage
   
   rem Apply damage
@@ -51,11 +51,11 @@ rem Inputs: attacker_id
 rem Outputs: hitbox_left, hitbox_right, hitbox_top, hitbox_bottom
 CalculateAttackHitbox
   rem Set hitbox based on attack type and direction
-  on PlayerAttackType(attacker_id) goto MeleeHitbox, ProjectileHitbox, AreaHitbox
+  on PlayerAttackType[attacker_id] goto MeleeHitbox, ProjectileHitbox, AreaHitbox
   
 MeleeHitbox
     rem Melee hitbox extends PlayerSpriteWidth pixels in facing direction
-    on PlayerFacing(attacker_id) goto FacingRight, FacingLeft, FacingUp, FacingDown
+    on PlayerFacing[attacker_id] goto FacingRight, FacingLeft, FacingUp, FacingDown
     
 FacingRight
       let hitbox_left = playerX[attacker_id] + 8

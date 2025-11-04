@@ -200,9 +200,10 @@ CheckBernieAOELeft
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
 CheckAOEDirection_Right
+          dim CAOER_attackerIndex = temp1
           rem Get attacker position
-          temp2 = playerX[temp1]
-          temp3 = playerY[temp1]
+          temp2 = playerX[CAOER_attackerIndex]
+          temp3 = playerY[CAOER_attackerIndex]
           
           rem Calculate AOE bounds
           rem Read AOE offset from character data
@@ -226,7 +227,7 @@ CheckAOEDirection_Right
           temp4 = 255
           
           rem Check Player 1 (players are 16px wide - double-width NUSIZ)
-          if temp1 = 0 then SkipAOEPlayer0
+          if CAOER_attackerIndex = 0 then SkipAOEPlayer0
           if playerHealth[0] = 0 then SkipAOEPlayer0
           if temp2 >= playerX[0] + 16 then SkipAOEPlayer0
           rem AOE left edge past player right edge
@@ -241,7 +242,7 @@ CheckAOEDirection_Right
 SkipAOEPlayer0
           
           rem Check Player 2
-          if temp1 = 1 then SkipAOEPlayer1
+          if CAOER_attackerIndex = 1 then SkipAOEPlayer1
           if playerHealth[1] = 0 then SkipAOEPlayer1
           if temp2 >= playerX[1] + 16 then SkipAOEPlayer1
           if temp2 + temp6 <= playerX[1] then SkipAOEPlayer1
@@ -252,7 +253,7 @@ SkipAOEPlayer0
 SkipAOEPlayer1
           
           rem Check Player 3
-          if temp1 = 2 then SkipAOEPlayer2
+          if CAOER_attackerIndex = 2 then SkipAOEPlayer2
           if playerHealth[2] = 0 then SkipAOEPlayer2
           if temp2 >= playerX[2] + 16 then SkipAOEPlayer2
           if temp2 + temp6 <= playerX[2] then SkipAOEPlayer2
@@ -263,7 +264,7 @@ SkipAOEPlayer1
 SkipAOEPlayer2
           
           rem Check Player 4
-          if temp1 = 3 then SkipAOEPlayer3
+          if CAOER_attackerIndex = 3 then SkipAOEPlayer3
           if playerHealth[3] = 0 then SkipAOEPlayer3
           if temp2 >= playerX[3] + 16 then SkipAOEPlayer3
           if temp2 + temp6 <= playerX[3] then SkipAOEPlayer3
@@ -287,9 +288,10 @@ SkipAOEPlayer3
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
 CheckAOEDirection_Left
+          dim CAOEL_attackerIndex = temp1
           rem Get attacker position
-          temp2 = playerX[temp1]
-          temp3 = playerY[temp1]
+          temp2 = playerX[CAOEL_attackerIndex]
+          temp3 = playerY[CAOEL_attackerIndex]
           
           rem Calculate AOE bounds for facing left
           rem Read AOE offset from character data
@@ -316,7 +318,7 @@ CheckAOEDirection_Left
           temp4 = 255
           
           rem Check Player 1 (players are 16px wide - double-width NUSIZ)
-          if temp1 = 0 then CheckPlayer2
+          if CAOEL_attackerIndex = 0 then CheckPlayer2
           if playerHealth[0] = 0 then CheckPlayer2
           if temp2 >= playerX[0] + 16 then CheckPlayer2
           rem AOE left edge past player right edge
@@ -337,7 +339,7 @@ CheckPlayer2
           
           
           rem Check Player 2
-          if temp1 = 1 then SkipThirdPlayer1
+          if CAOEL_attackerIndex = 1 then SkipThirdPlayer1
           if playerHealth[1] = 0 then SkipThirdPlayer1
           if temp2 >= playerX[1] + 16 then SkipThirdPlayer1
           if temp2 + temp6 <= playerX[1] then SkipThirdPlayer1
@@ -348,7 +350,7 @@ CheckPlayer2
 SkipThirdPlayer1
           
           rem Check Player 3
-          if temp1 = 2 then SkipThirdPlayer2
+          if CAOEL_attackerIndex = 2 then SkipThirdPlayer2
           if playerHealth[2] = 0 then SkipThirdPlayer2
           if temp2 >= playerX[2] + 16 then SkipThirdPlayer2
           if temp2 + temp6 <= playerX[2] then SkipThirdPlayer2
@@ -359,7 +361,7 @@ SkipThirdPlayer1
 SkipThirdPlayer2
           
           rem Check Player 4
-          if temp1 = 3 then SkipThirdPlayer3
+          if CAOEL_attackerIndex = 3 then SkipThirdPlayer3
           if playerHealth[3] = 0 then SkipThirdPlayer3
           if temp2 >= playerX[3] + 16 then SkipThirdPlayer3
           if temp2 + temp6 <= playerX[3] then SkipThirdPlayer3

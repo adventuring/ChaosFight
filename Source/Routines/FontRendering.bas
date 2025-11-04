@@ -16,9 +16,7 @@
           rem   Solid pixels on transparent background
 
           rem GENERATED FILES:
-          rem   Source/Generated/Font.Numbers.NTSC.bas
-          rem   Source/Generated/Font.Numbers.PAL.bas
-          rem   Source/Generated/Font.Numbers.SECAM.bas
+          rem   Source/Generated/Numbers.bas (universal, not TV-specific)
 
           rem PLAYER COLORS (match character selection/health bars):
           rem   Player 1: Indigo (ColIndigo(14))
@@ -27,16 +25,8 @@
           rem   Player 4: Green (ColGreen(14))
           rem =================================================================
 
-          rem Include architecture-specific font data
-          #ifdef TV_NTSC
-          #include "Source/Generated/Font.Numbers.NTSC.bas"
-          #endif
-          #ifdef TV_PAL
-          #include "Source/Generated/Font.Numbers.PAL.bas"
-          #endif
-          #ifdef TV_SECAM
-          #include "Source/Generated/Font.Numbers.SECAM.bas"
-          #endif
+          rem Include font data (universal for all TV standards)
+          #include "Source/Generated/Numbers.bas"
 
           rem =================================================================
           rem DRAW DIGIT - DATA-DRIVEN VERSION

@@ -223,15 +223,8 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png bin/skyline-tool
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
-# Generate TV-specific font files (fonts are universal, but includes are TV-specific)
-Source/Generated/Font.Numbers.NTSC.bas: Source/Generated/Numbers.bas
-	@cp "$<" "$@"
-
-Source/Generated/Font.Numbers.PAL.bas: Source/Generated/Numbers.bas
-	@cp "$<" "$@"
-
-Source/Generated/Font.Numbers.SECAM.bas: Source/Generated/Numbers.bas
-	@cp "$<" "$@"
+# Fonts are universal (not TV-specific)
+# Source/Generated/Numbers.bas is used directly by FontRendering.bas
 
 # Convert 48×42 PNG to titlescreen kernel assembly format
 # Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height
@@ -312,9 +305,6 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/VisualEffects.bas \
 	Source/Generated/Numbers.bas \
-	Source/Generated/Font.Numbers.NTSC.bas \
-	Source/Generated/Font.Numbers.PAL.bas \
-	Source/Generated/Font.Numbers.SECAM.bas \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \

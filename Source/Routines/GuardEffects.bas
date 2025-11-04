@@ -128,34 +128,35 @@ UpdateGuardTimers
           return
 
 UpdateSingleGuardTimer
+          dim USGT_playerIndex = temp1
           rem Check if player is guarding
-          let temp2 = playerState[temp1] & 2
+          let temp2 = playerState[USGT_playerIndex] & 2
           if temp2 then UpdateGuardTimerActive
           
           rem Player not guarding - decrement cooldown timer
-          let temp3 = playerTimers[temp1]
+          let temp3 = playerTimers[USGT_playerIndex]
           if temp3 = 0 then return
           rem No cooldown active
           let temp3 = temp3 - 1
-          let playerTimers[temp1] = temp3
+          let playerTimers[USGT_playerIndex] = temp3
           return
 
 UpdateGuardTimerActive
           rem Player is guarding - decrement guard duration timer
-          let temp3 = playerTimers[temp1]
+          let temp3 = playerTimers[USGT_playerIndex]
           if temp3 = 0 then GuardTimerExpired
-          rem Guard timer already expired (shouldn’t happen, but safety check)
+          rem Guard timer already expired (shouldn't happen, but safety check)
           
           rem Decrement guard duration timer
           let temp3 = temp3 - 1
-          let playerTimers[temp1] = temp3
+          let playerTimers[USGT_playerIndex] = temp3
           if temp3 = 0 then GuardTimerExpired
           return
 
 GuardTimerExpired
           rem Guard duration expired - clear guard bit and start cooldown
-          let playerState[temp1] = playerState[temp1] & MaskClearGuard
+          let playerState[USGT_playerIndex] = playerState[USGT_playerIndex] & MaskClearGuard
           rem Clear guard bit (bit 1)
           rem Start cooldown timer (same duration as guard)
-          let playerTimers[temp1] = GuardTimerMaxFrames
+          let playerTimers[USGT_playerIndex] = GuardTimerMaxFrames
           return

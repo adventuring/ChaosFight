@@ -58,22 +58,29 @@
           rem   4. Calculate fall damage if exceeded
           rem   5. Apply damage, recovery frames, and color shift
 CheckFallDamage
+          dim CFD_playerIndex = temp1
+          dim CFD_fallVelocity = temp2
+          dim CFD_safeThreshold = temp3
+          dim CFD_damage = temp4
+          dim CFD_characterType = temp5
+          dim CFD_characterWeight = temp6
+          dim CFD_damageCalc = temp7
           rem Get character type for this player
-          temp5 = playerChar[temp1]
+          let CFD_characterType = playerChar[CFD_playerIndex]
           
           rem Check for fall damage immunity
-          if temp5 = 0 then return 
+          if CFD_characterType = 0 then return 
           rem Bernie: immune
-          if temp5 = 13 then return
+          if CFD_characterType = 13 then return
           rem Robo Tito: immune
-          if temp5 = 8 then return 
+          if CFD_characterType = 8 then return 
           rem Frooty: no gravity, no falling
           
           rem Get character weight from data table
-          temp1 = temp5 
+          temp1 = CFD_characterType 
           rem Character type as index
           gosub GetCharacterWeight
-          temp6 = temp2 
+          let CFD_characterWeight = temp2 
           rem Store weight
           
           rem Calculate safe fall velocity threshold
@@ -84,11 +91,11 @@ CheckFallDamage
           rem Average (20): 120/20 = 6
           rem Light (10): 120/10 = 12 (can fall farther)
           rem Heavy (30): 120/30 = 4 (takes damage sooner)
-          temp3 = 120 / temp6 
+          let CFD_safeThreshold = 120 / CFD_characterWeight 
           rem Safe fall velocity threshold
           
           rem Check if fall velocity exceeds safe threshold
-          if temp2 <= temp3 then return 
+          if CFD_fallVelocity <= CFD_safeThreshold then return 
           rem Safe landing, no damage
           
           rem Check if player is guarding - guard does NOT block fall damage
@@ -98,25 +105,25 @@ CheckFallDamage
           rem Calculate fall damage
           rem Base damage = (velocity - safe_velocity) * base_damage_multiplier
           rem Base damage multiplier: 2 (so 1 extra velocity = 2 base damage)
-          temp4 = temp2 - temp3
-          temp4 = temp4 * 2
+          let CFD_damage = CFD_fallVelocity - CFD_safeThreshold
+          let CFD_damage = CFD_damage * 2
           
           rem Apply weight-based damage multiplier: "the bigger they are, the harder they fall"
           rem Heavy characters take more damage for the same impact velocity
           rem Formula: damage_multiplier = weight / 20 (average weight)
           rem Light (10): 10/20 = 0.5x damage, Average (20): 20/20 = 1.0x, Heavy (30): 30/20 = 1.5x
           rem Using integer math: damage = damage * weight / 20
-          temp7 = temp4 * temp6
-          rem temp7 = damage * weight
-          temp4 = temp7 / 20
-          rem temp4 = damage * weight / 20 (weight-based multiplier applied)
+          let CFD_damageCalc = CFD_damage * CFD_characterWeight
+          rem CFD_damageCalc = damage * weight
+          let CFD_damage = CFD_damageCalc / 20
+          rem CFD_damage = damage * weight / 20 (weight-based multiplier applied)
           
           rem Apply damage reduction for Ninjish Guy (after weight multiplier)
-          if temp5 = 10 then temp4 = temp4 / 2 
+          if CFD_characterType = 10 then let CFD_damage = CFD_damage / 2 
           rem Ninjish Guy: 1/2 damage
           
           rem Cap maximum fall damage at 50
-          if temp4 > 50 then temp4 = 50
+          if CFD_damage > 50 then let CFD_damage = 50
           
           rem Apply fall damage (byte-safe clamp)
           temp6 = playerHealth[temp1]

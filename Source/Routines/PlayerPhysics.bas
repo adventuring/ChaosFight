@@ -263,12 +263,13 @@ BoundaryNextPlayer
           rem INPUT: temp1 = player index (0-3)
           rem MODIFIES: playerVelocityX/Y and playerSubpixelX/Y when collisions detected
 CheckPlayfieldCollisionAllDirections
+          dim CPF_playerIndex = temp1
           rem Get player position and character info
-          let temp2 = playerX[temp1]
+          let temp2 = playerX[CPF_playerIndex]
           rem X position (save original)
-          let temp3 = playerY[temp1]
+          let temp3 = playerY[CPF_playerIndex]
           rem Y position
-          let temp4 = playerChar[temp1]
+          let temp4 = playerChar[CPF_playerIndex]
           rem Character index
           let temp5 = CharacterHeights[temp4]
           rem Character height
@@ -317,10 +318,10 @@ CheckPlayfieldCollisionAllDirections
           
 PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
-          if playerVelocityX[temp1] < 0 then let playerVelocityX[temp1] = 0 : let playerVelocityX_lo[temp1] = 0
+          if playerVelocityX[CPF_playerIndex] < 0 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
           let temp8 = (temp6 + 1) * 4 + ScreenInsetX
-          if playerX[temp1] < temp8 then let playerX[temp1] = temp8 : let playerSubpixelX[temp1] = temp8 : let playerSubpixelX_lo[temp1] = 0
+          if playerX[CPF_playerIndex] < temp8 then let playerX[CPF_playerIndex] = temp8 : let playerSubpixelX[CPF_playerIndex] = temp8 : let playerSubpixelX_lo[CPF_playerIndex] = 0
           
           rem =================================================================
           rem CHECK RIGHT COLLISION
@@ -349,10 +350,10 @@ PFCheckRight
           
 PFBlockRight
           rem Block rightward movement: zero X velocity if positive
-          if playerVelocityX[temp1] > 0 then let playerVelocityX[temp1] = 0 : let playerVelocityX_lo[temp1] = 0
+          if playerVelocityX[CPF_playerIndex] > 0 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
           let temp8 = (temp6 - 1) * 4 + ScreenInsetX
-          if playerX[temp1] > temp8 then let playerX[temp1] = temp8 : let playerSubpixelX[temp1] = temp8 : let playerSubpixelX_lo[temp1] = 0
+          if playerX[CPF_playerIndex] > temp8 then let playerX[CPF_playerIndex] = temp8 : let playerSubpixelX[CPF_playerIndex] = temp8 : let playerSubpixelX_lo[CPF_playerIndex] = 0
           
           rem =================================================================
           rem CHECK UP COLLISION
@@ -377,10 +378,10 @@ PFCheckUp
           
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
-          if playerVelocityY[temp1] < 0 then let playerVelocityY[temp1] = 0 : let playerVelocityY_lo[temp1] = 0
+          if playerVelocityY[CPF_playerIndex] < 0 then let playerVelocityY[CPF_playerIndex] = 0 : let playerVelocityY_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
           let temp8 = (temp7 + 1) * pfrowheight
-          if playerY[temp1] < temp8 then let playerY[temp1] = temp8 : let playerSubpixelY[temp1] = temp8 : let playerSubpixelY_lo[temp1] = 0
+          if playerY[CPF_playerIndex] < temp8 then let playerY[CPF_playerIndex] = temp8 : let playerSubpixelY[CPF_playerIndex] = temp8 : let playerSubpixelY_lo[CPF_playerIndex] = 0
           
           rem =================================================================
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity, but verify)
@@ -406,7 +407,7 @@ PFCheckDown
 PFBlockDown
           rem Block downward movement: zero Y velocity if positive
           rem This should already be handled in PhysicsApplyGravity, but enforce here too
-          if playerVelocityY[temp1] > 0 then let playerVelocityY[temp1] = 0 : let playerVelocityY_lo[temp1] = 0
+          if playerVelocityY[CPF_playerIndex] > 0 then let playerVelocityY[CPF_playerIndex] = 0 : let playerVelocityY_lo[CPF_playerIndex] = 0
           
 PFCheckDone
           return

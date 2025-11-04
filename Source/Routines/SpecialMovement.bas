@@ -33,7 +33,8 @@ ApplySpecialMovement
           rem INPUT: temp1 = player index (0-3)
           rem USES: temp4 = character type
 ApplyPlayerSpecialMovement
-          temp4 = playerChar[temp1]
+          dim APSM_playerIndex = temp1
+          temp4 = playerChar[APSM_playerIndex]
           
           rem Bernie (0) - screen wrap handled in CheckBoundaryCollisions
           rem Falling off bottom respawns at top, handled in PlayerPhysics.bas

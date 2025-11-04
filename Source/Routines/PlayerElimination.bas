@@ -44,15 +44,16 @@ CheckAllPlayerEliminations
           rem Check if specified player should be eliminated.
           rem INPUT: temp1 = player index (0-3)
 CheckPlayerElimination
+          dim CPE_playerIndex = temp1
           rem Skip if already eliminated
-          temp6 = BitMask[temp1]
+          temp6 = BitMask[CPE_playerIndex]
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           temp2 = playersEliminated & temp6
           if temp2 then return 
           rem Already eliminated
           
           rem Check if health has reached 0
-          temp2 = playerHealth[temp1]
+          temp2 = playerHealth[CPE_playerIndex]
           
           if temp2 > 0 then return 
           rem Still alive
@@ -63,13 +64,13 @@ CheckPlayerElimination
           rem Update Players34Active flag if Player 3 or 4 was eliminated
           rem Only clear flag if both players 3 and 4 are eliminated or not selected
           rem Use skip-over pattern to avoid complex || operator
-          if temp1 = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
-          if temp1 = 3 then gosub UpdatePlayers34ActiveFlag
+          if CPE_playerIndex = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
+          if CPE_playerIndex = 3 then gosub UpdatePlayers34ActiveFlag
 UpdatePlayers34Done
           
           rem Record elimination order
           let eliminationCounter = eliminationCounter + 1
-          eliminationOrder[temp1] = eliminationCounter
+          eliminationOrder[CPE_playerIndex] = eliminationCounter
           
           rem Trigger elimination effects
           gosub TriggerEliminationEffects

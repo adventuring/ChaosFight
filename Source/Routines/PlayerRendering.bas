@@ -186,16 +186,17 @@ Player1ColorDone
 Player2ColorDone
 
           rem Set sprite reflection based on facing direction
+          rem NOTE: Multisprite kernel requires _NUSIZ1 (not NewNUSIZ+1) for Player 2 virtual sprite
           asm
           lda playerState+1
           and #1
           beq .Player2FacingLeft
           lda #0
-          sta NewNUSIZ+1
+          sta _NUSIZ1
           jmp .Player2ReflectionDone
 .Player2FacingLeft
           lda #64
-          sta NewNUSIZ+1
+          sta _NUSIZ1
 .Player2ReflectionDone
           end
 

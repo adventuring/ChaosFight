@@ -550,7 +550,19 @@ Char5_Execute
           goto SetPlayerAnimation
 Char6_Execute
           dim C6E_animationAction = temp2
+          dim C6E_playerIndex = temp1
           rem Harpy: Execute → Idle
+          rem Clear dive flag and stop diagonal movement when attack completes
+          let C6E_playerIndex = currentPlayer
+          rem Clear dive flag (bit 4 in characterStateFlags)
+          let characterStateFlags[C6E_playerIndex] = characterStateFlags[C6E_playerIndex] & 247
+          rem Clear bit 4 (247 = 0xF7 = ~0x08)
+          rem Stop diagonal velocity (zero X and Y velocity)
+          let playerVelocityX[C6E_playerIndex] = 0
+          let playerVelocityX_lo[C6E_playerIndex] = 0
+          let playerVelocityY[C6E_playerIndex] = 0
+          let playerVelocityY_lo[C6E_playerIndex] = 0
+          rem Transition to Idle
           let C6E_animationAction = ActionIdle
           let temp2 = C6E_animationAction
           rem tail call

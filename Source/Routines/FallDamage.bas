@@ -209,7 +209,7 @@ MultiplyDone
           playerState[CFD_playerIndex] = playerStateTemp
           
           rem Play fall damage sound effect
-          temp1 = SoundFall
+          let temp1 = SoundFall
           gosub bank15 PlaySoundEffect
           
           rem Trigger color shift to darker shade (damage visual feedback)
@@ -230,27 +230,32 @@ MultiplyDone
           rem OUTPUT:
           rem   temp2 = updated vertical momentum
 FallDamageApplyGravity
+          dim FDAG_playerIndex = temp1
+          dim FDAG_momentum = temp2
+          dim FDAG_characterType = temp5
+          dim FDAG_gravityRate = temp6
           rem Get character type
-          temp5 = playerChar[temp1]
+          let FDAG_characterType = playerChar[FDAG_playerIndex]
           
           rem Check for no-gravity characters
-          if temp5 = CharFrooty then return 
+          if FDAG_characterType = CharFrooty then return 
           rem Frooty: no gravity
-          if temp5 = CharDragonOfStorms then return
+          if FDAG_characterType = CharDragonOfStorms then return
           rem Dragon of Storms: no gravity (hovering/flying like Frooty)
           
           rem Check for reduced gravity characters
           rem Harpy (6): 1/2 gravity when falling
-          temp6 = 2 
+          let FDAG_gravityRate = 2 
           rem Default gravity: 2 pixels/frame²
-          if temp5 = CharHarpy then temp6 = 1 
+          if FDAG_characterType = CharHarpy then let FDAG_gravityRate = 1 
           rem Harpy: reduced gravity
           
           rem Apply gravity acceleration
-          temp2 = temp2 + temp6
+          let FDAG_momentum = FDAG_momentum + FDAG_gravityRate
           
           rem Cap at terminal velocity (uses tunable constant from Constants.bas)
-          if temp2 > TerminalVelocity then temp2 = TerminalVelocity
+          if FDAG_momentum > TerminalVelocity then let FDAG_momentum = TerminalVelocity
+          let temp2 = FDAG_momentum
           
           return
 
@@ -268,28 +273,31 @@ FallDamageApplyGravity
           rem but BEFORE momentum is cleared, so we can detect the landing
           rem velocity for fall damage calculation.
 CheckGroundCollision
+          dim CGC_playerIndex = temp1
+          dim CGC_momentum = temp2
+          dim CGC_playerY = temp3
           rem Get player Y position
-          temp3 = playerY[temp1]
+          let CGC_playerY = playerY[CGC_playerIndex]
           
           rem Check if player is at or below ground level
           rem Ground level is at Y = 176 (bottom of playfield, leaving room for sprite)
-          if temp3 >= 176 then
-                    rem Player hit ground
-                    rem Clamp position to ground
-                    playerY[temp1] = 176
-                    
-                    rem Check fall damage if moving downward
-                    if temp2 > 0 then
-                              rem temp2 contains downward velocity
-                              gosub CheckFallDamage
+          if CGC_playerY >= 176 then
+          rem Player hit ground
+          rem Clamp position to ground
+          let playerY[CGC_playerIndex] = 176
           
-                    
-                    rem Stop vertical momentum
-                    rem Note: This assumes vertical momentum is being tracked
-                    rem In current implementation, this might need integration
-                    rem with PlayerPhysics.bas
-                    return
+          rem Check fall damage if moving downward
+          if CGC_momentum > 0 then
+          rem momentum contains downward velocity
+          let temp1 = CGC_playerIndex
+          let temp2 = CGC_momentum
+          gosub CheckFallDamage
           
+          rem Stop vertical momentum
+          rem Note: This assumes vertical momentum is being tracked
+          rem In current implementation, this might need integration
+          rem with PlayerPhysics.bas
+          return
           
           rem Check collision with platforms/playfield
           rem This is handled by the main collision detection system
@@ -311,9 +319,12 @@ CheckGroundCollision
           rem This should be called from PlayerInput.bas when processing
           rem joystick up/down for Frooty.
 HandleFrootyVertical
+          dim HFV_playerIndex = temp1
+          dim HFV_characterType = temp5
+          dim HFV_playerY = temp1
           rem Check character type to confirm
-          temp5 = playerChar[temp1]
-          if !(temp5 = CharFrooty) then return 
+          let HFV_characterType = playerChar[HFV_playerIndex]
+          if !(HFV_characterType = CharFrooty) then return 
           rem Not Frooty
           
           rem Get joystick state
@@ -321,17 +332,17 @@ HandleFrootyVertical
           rem Fall damage calculation based on character weight
           
           rem If joyup pressed: move up
-          rem playerY[temp1] = playerY[temp1] - 2
+          rem playerY[HFV_playerIndex] = playerY[HFV_playerIndex] - 2
           
           rem If joydown pressed: move down (replaces guard action)
-          rem playerY[temp1] = playerY[temp1] + 2
+          rem playerY[HFV_playerIndex] = playerY[HFV_playerIndex] + 2
           
           rem Clamp to screen bounds
           rem Byte-safe clamp: if wrapped below 0, the new value will exceed the old
-          oldHealthValue = playerY[temp1]
+          let oldHealthValue = playerY[HFV_playerIndex]
           rem Reuse oldHealthValue for byte-safe clamp check (not actually health, but same pattern)
-          if playerY[temp1] > oldHealthValue then playerY[temp1] = 0
-          if playerY[temp1] > 176 then playerY[temp1] = 176
+          if playerY[HFV_playerIndex] > oldHealthValue then let playerY[HFV_playerIndex] = 0
+          if playerY[HFV_playerIndex] > 176 then let playerY[HFV_playerIndex] = 176
           
           return
 
@@ -347,26 +358,29 @@ HandleFrootyVertical
           rem OUTPUT:
           rem   Sets player momentum for diagonal downward swoop
 HandleHarpySwoopAttack
+          dim HHSA_playerIndex = temp1
+          dim HHSA_characterType = temp5
+          dim HHSA_facing = temp6
+          dim HHSA_playerState = temp6
           rem Check character type to confirm
-          temp5 = playerChar[temp1]
-          if !(temp5 = CharHarpy) then return 
+          let HHSA_characterType = playerChar[HHSA_playerIndex]
+          if !(HHSA_characterType = CharHarpy) then return 
           rem Not Harpy
           
           rem Get facing direction from playerState bit 0
-          temp6 = playerState[temp1] & 1
+          let HHSA_facing = playerState[HHSA_playerIndex] & 1
           
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
-          if temp6 = 0 then SetHorizontalMomentumRight
+          if HHSA_facing = 0 then SetHorizontalMomentumRight
           rem Facing left: set negative momentum (252 = -4 in signed 8-bit)
-          playerVelocityX[temp1] = 252
+          let playerVelocityX[HHSA_playerIndex] = 252
           goto SetVerticalMomentum
 SetHorizontalMomentumRight
           rem Facing right: set positive momentum
-          playerVelocityX[temp1] = 4
+          let playerVelocityX[HHSA_playerIndex] = 4
 SetVerticalMomentum
-          
           
           rem Set downward momentum (using temp variable for now)
           rem Integrate with vertical momentum system
@@ -376,12 +390,13 @@ SetVerticalMomentum
           
           rem Set animation state to "swooping attack"
           rem This could be animation state 10 or special attack animation
-          temp6 = playerState[temp1] & MaskPlayerStateLower
-          temp6 = temp6 | MaskAnimationFalling 
+          let HHSA_playerState = playerState[HHSA_playerIndex] & MaskPlayerStateLower
+          let HHSA_playerState = HHSA_playerState | MaskAnimationFalling 
           rem Animation state 10
-          playerState[temp1] = temp6
+          let playerState[HHSA_playerIndex] = HHSA_playerState
           
           rem Spawn melee attack missile for swoop hit detection
+          let temp1 = HHSA_playerIndex
           gosub bank7 SpawnMissile
           
           return

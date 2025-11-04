@@ -61,6 +61,57 @@
 end
 
           rem =================================================================
+          rem SAFE FALL VELOCITY THRESHOLDS (120 / weight)
+          rem =================================================================
+          rem Lookup table for safe fall velocity threshold calculation
+          rem Formula: safe_velocity = 120 / weight
+          rem Pre-computed for all 16 characters to avoid variable division
+          rem Values: integer division of 120 by each character's weight
+          data SafeFallVelocityThresholds
+          24, 2, 1, 2,
+          rem Bernie(24), Curler(2), Dragon(1), Zoe(2)
+          2, 1, 5, 2,
+          rem Fat Tony(2), Megax(1), Harpy(5), Knight Guy(2)
+          2, 1, 2, 2,
+          rem Frooty(2), Nefertem(1), Ninjish Guy(2), Pork Chop(2)
+          3, 2, 1, 3
+          rem Radish Goblin(3), Robo Tito(2), Ursulo(1), Shamone(3)
+end
+
+          rem =================================================================
+          rem WEIGHT DIVIDED BY 20 (for damage multiplier)
+          rem =================================================================
+          rem Lookup table for weight / 20 calculation
+          rem Used for damage multiplier: damage = damage * (weight / 20)
+          rem Pre-computed to avoid variable division
+          data WeightDividedBy20
+          0, 2, 5, 2,
+          rem Bernie(0), Curler(2), Dragon(5), Zoe(2)
+          2, 5, 1, 2,
+          rem Fat Tony(2), Megax(5), Harpy(1), Knight Guy(2)
+          2, 3, 2, 2,
+          rem Frooty(2), Nefertem(3), Ninjish Guy(2), Pork Chop(2)
+          1, 3, 4, 1
+          rem Radish Goblin(1), Robo Tito(3), Ursulo(4), Shamone(1)
+end
+
+          rem =================================================================
+          rem SQUARE LOOKUP TABLE (for velocity² calculations)
+          rem =================================================================
+          rem Lookup table for squaring values 1-24
+          rem Used for kinematic calculations: d = v² / 4
+          rem Pre-computed to avoid variable multiplication
+          rem Index is value (1-24), result is value²
+          data SquareTable
+          1, 4, 9, 16, 25, 36, 49, 64,
+          rem 1², 2², 3², 4², 5², 6², 7², 8²
+          81, 100, 121, 144, 169, 196, 225, 256,
+          rem 9², 10², 11², 12², 13², 14², 15², 16²
+          289, 324, 361, 400, 441, 484, 529, 576
+          rem 17², 18², 19², 20², 21², 22², 23², 24²
+end
+
+          rem =================================================================
           rem CHARACTER HEIGHTS
           rem =================================================================
           rem Character heights for hitbox collision detection (in pixels)

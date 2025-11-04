@@ -87,18 +87,10 @@ CheckFallDamage
           rem Store weight
           
           rem Calculate safe fall velocity threshold
-          rem Formula: safe_velocity = base_safe_velocity * (average_weight / character_weight)
-          rem Base safe velocity for average weight (20): ~6 pixels/frame
-          rem This corresponds to falling ~1/3 screen height (64 pixels)
-          rem Using simplified calculation: safe_velocity = 120 / weight
-          rem Average (20): 120/20 = 6
-          rem Light (10): 120/10 = 12 (can fall farther)
-          rem Heavy (30): 120/30 = 4 (takes damage sooner)
-          rem Divide 120 by character weight using repeated subtraction
-          let temp2 = 120
-          let temp3 = CFD_characterWeight
-          gosub DivideByVariable
-          let CFD_safeThreshold = temp2 
+          rem Formula: safe_velocity = 120 / weight
+          rem Use lookup table to avoid variable division
+          rem Pre-computed values in SafeFallVelocityThresholds table
+          let CFD_safeThreshold = SafeFallVelocityThresholds[CFD_characterType] 
           rem Safe fall velocity threshold
           
           rem Check if fall velocity exceeds safe threshold
@@ -120,20 +112,64 @@ CheckFallDamage
           rem Apply weight-based damage multiplier: "the bigger they are, the harder they fall"
           rem Heavy characters take more damage for the same impact velocity
           rem Formula: damage_multiplier = weight / 20 (average weight)
-          rem Light (10): 10/20 = 0.5x damage, Average (20): 20/20 = 1.0x, Heavy (30): 30/20 = 1.5x
-          rem Using integer math: damage = damage * weight / 20
-          rem Use damageWeightProduct for intermediate calculation
-          rem Multiply damage by weight using repeated addition
-          let temp2 = CFD_damage
-          let temp3 = CFD_characterWeight
-          gosub MultiplyByVariable
-          let damageWeightProduct = temp2
-          rem damageWeightProduct = damage * weight
-          rem Divide by 20 using helper
-          let temp2 = damageWeightProduct
-          gosub DivideBy20
-          let CFD_damage = temp2
-          rem CFD_damage = damage * weight / 20 (weight-based multiplier applied)
+          rem Using integer math: damage = damage * (weight / 20)
+          rem Use lookup table for weight/20, then multiply by damage
+          rem temp2 = weight / 20 from lookup table
+          let temp2 = WeightDividedBy20[CFD_characterType]
+          rem Multiply damage by (weight / 20) using assembly
+          rem Use Mul macro pattern: if multiplier is 0-15, use optimized assembly
+          rem For small multipliers (0-15), use lookup table or bit shifts
+          rem For larger multipliers, use assembly multiplication routine
+          asm
+            lda temp2
+            beq MultiplyDone
+            rem Multiplier is non-zero, multiply CFD_damage by temp2
+            rem Use optimized multiplication based on multiplier value
+            rem For multiplier = 1: no change
+            rem For multiplier = 2: asl once
+            rem For multiplier = 3: asl + add original
+            rem For multiplier = 4: asl twice
+            rem For multiplier = 5: asl twice + add original
+            rem For now, use simple approach: multiply using repeated addition
+            rem But wait - user said no repeated addition! Use lookup table instead
+            rem Actually, we can use a lookup table for common damage values
+            rem Or use assembly with optimized multiplication
+            rem Check multiplier value and use appropriate method
+            cmp #1
+            beq MultiplyDone
+            cmp #2
+            bne CheckMult3
+            rem Multiply by 2: shift left once
+            asl CFD_damage
+            jmp MultiplyDone
+CheckMult3
+            cmp #3
+            bne CheckMult4
+            rem Multiply by 3: damage * 2 + damage
+            lda CFD_damage
+            asl a
+            clc
+            adc CFD_damage
+            sta CFD_damage
+            jmp MultiplyDone
+CheckMult4
+            cmp #4
+            bne CheckMult5
+            rem Multiply by 4: shift left twice
+            asl CFD_damage
+            asl CFD_damage
+            jmp MultiplyDone
+CheckMult5
+            rem For 5: multiply by 4 + add original
+            lda CFD_damage
+            asl a
+            asl a
+            clc
+            adc CFD_damage
+            sta CFD_damage
+MultiplyDone
+          end
+          rem CFD_damage = damage * (weight / 20) (weight-based multiplier applied)
           
           rem Apply damage reduction for Ninjish Guy (after weight multiplier)
           if CFD_characterType = CharNinjishGuy then lsr CFD_damage
@@ -438,25 +474,25 @@ CalculateFallDistanceNormal
           rem Store weight
           
           rem Calculate safe fall velocity (from CheckFallDamage logic)
-          rem Divide 120 by weight using repeated subtraction
-          let temp2 = 120
-          let temp3 = temp6
-          gosub DivideByVariable
-          let temp3 = temp2
+          rem Use lookup table to avoid variable division
+          let temp3 = SafeFallVelocityThresholds[temp5]
           rem temp3 = Safe velocity threshold
           
           rem Convert velocity to distance
           rem Using kinematic equation: v² = 2 * g * d
           rem Rearranged: d = v² / (2 * g)
           rem With g = 2: d = v² / 4
-          rem Multiply temp3 by temp3 (square) using repeated addition
-          let temp2 = temp3
-          let temp4 = temp3
-          gosub MultiplyByVariable
+          rem Square temp3 using lookup table (temp3 is 1-24)
+          rem SquareTable is 0-indexed, so index = temp3 - 1
+          let temp4 = temp3 - 1
+          rem temp4 = index into SquareTable (0-23)
+          let temp2 = SquareTable[temp4]
           rem temp2 = temp3 * temp3 (v²)
           rem Divide by 4 using bit shift right twice
-          lsr temp2
-          lsr temp2
+          asm
+            lsr temp2
+            lsr temp2
+          end
           rem temp2 = v² / 4
           
           rem Apply Ninjish Guy bonus (can fall farther)

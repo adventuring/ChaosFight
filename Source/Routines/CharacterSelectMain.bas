@@ -314,7 +314,12 @@ CharacterSelectRollPlayer0
           if temp2 > MaxCharacter then CharacterSelectRollsDone
           rem Valid! Set character and lock with normal or handicap
           playerChar[0] = temp2
-          if randomSelectFlags[0] then playerLocked[0] = 2 else playerLocked[0] = 1
+          if randomSelectFlags[0] then goto CharacterSelectLockPlayer0Handicap
+          let playerLocked[0] = 1
+          goto CharacterSelectLockPlayer0Done
+CharacterSelectLockPlayer0Handicap
+          let playerLocked[0] = 2
+CharacterSelectLockPlayer0Done
           randomSelectFlags[0] = 0
           goto CharacterSelectRollsDone
           
@@ -322,7 +327,12 @@ CharacterSelectRollPlayer1
           temp2 = rand & 31
           if temp2 > MaxCharacter then CharacterSelectRollsDone
           playerChar[1] = temp2
-          if randomSelectFlags[1] then playerLocked[1] = 2 else playerLocked[1] = 1
+          if randomSelectFlags[1] then goto CharacterSelectLockPlayer1Handicap
+          let playerLocked[1] = 1
+          goto CharacterSelectLockPlayer1Done
+CharacterSelectLockPlayer1Handicap
+          let playerLocked[1] = 2
+CharacterSelectLockPlayer1Done
           randomSelectFlags[1] = 0
           goto CharacterSelectRollsDone
           
@@ -330,7 +340,12 @@ CharacterSelectRollPlayer2
           temp2 = rand & 31
           if temp2 > MaxCharacter then CharacterSelectRollsDone
           playerChar[2] = temp2
-          if randomSelectFlags[2] then playerLocked[2] = 2 else playerLocked[2] = 1
+          if randomSelectFlags[2] then goto CharacterSelectLockPlayer2Handicap
+          let playerLocked[2] = 1
+          goto CharacterSelectLockPlayer2Done
+CharacterSelectLockPlayer2Handicap
+          let playerLocked[2] = 2
+CharacterSelectLockPlayer2Done
           randomSelectFlags[2] = 0
           goto CharacterSelectRollsDone
           
@@ -338,7 +353,12 @@ CharacterSelectRollPlayer3
           temp2 = rand & 31
           if temp2 > MaxCharacter then CharacterSelectRollsDone
           playerChar[3] = temp2
-          if randomSelectFlags[3] then playerLocked[3] = 2 else playerLocked[3] = 1
+          if randomSelectFlags[3] then goto CharacterSelectLockPlayer3Handicap
+          let playerLocked[3] = 1
+          goto CharacterSelectLockPlayer3Done
+CharacterSelectLockPlayer3Handicap
+          let playerLocked[3] = 2
+CharacterSelectLockPlayer3Done
           randomSelectFlags[3] = 0
           
 CharacterSelectRollsDone

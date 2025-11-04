@@ -108,8 +108,10 @@ SkipPlayer4Move
           rem Check if all players have reached their targets
           if fallComplete >= activePlayers then FallingComplete1
           
-          rem Draw falling sprites for all active players
-          rem TODO: Use dynamic sprite setting instead of player declarations
+          rem Set sprite positions and load character sprites dynamically
+          rem Use dynamic sprite setting instead of relying on player declarations
+          gosub bank11 SetSpritePositions
+          gosub bank11 SetPlayerSprites
           
           drawscreen
           goto FallingAnimation1

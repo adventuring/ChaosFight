@@ -65,6 +65,7 @@ CheckFallDamage
           dim CFD_characterType = temp5
           dim CFD_characterWeight = temp6
           dim CFD_damageCalc = temp7
+
           rem Get character type for this player
           let CFD_characterType = playerChar[CFD_playerIndex]
           
@@ -77,7 +78,7 @@ CheckFallDamage
           rem Frooty: no gravity, no falling
           
           rem Get character weight from data table
-          temp1 = CFD_characterType 
+          let temp1 = CFD_characterType 
           rem Character type as index
           gosub GetCharacterWeight
           let CFD_characterWeight = temp2 
@@ -127,13 +128,13 @@ CheckFallDamage
           
           rem Apply fall damage (byte-safe clamp)
           rem Use temp7 temporarily for old health (CFD_damageCalc is no longer needed)
-          temp7 = playerHealth[CFD_playerIndex]
-          playerHealth[CFD_playerIndex] = playerHealth[CFD_playerIndex] - CFD_damage
+          let temp7 = playerHealth[CFD_playerIndex]
+          let playerHealth[CFD_playerIndex] = playerHealth[CFD_playerIndex] - CFD_damage
           if playerHealth[CFD_playerIndex] > temp7 then playerHealth[CFD_playerIndex] = 0
           
           rem Set recovery frames (proportional to damage, min 10, max 30)
           rem Use temp7 temporarily for recovery frames calculation
-          temp7 = CFD_damage / 2
+          let temp7 = CFD_damage / 2
           if temp7 < 10 then temp7 = 10
           if temp7 > 30 then temp7 = 30
           playerRecoveryFrames[CFD_playerIndex] = temp7

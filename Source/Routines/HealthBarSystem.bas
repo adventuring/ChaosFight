@@ -37,106 +37,117 @@
           rem =================================================================
           rem UPDATE PLAYER 1 HEALTH BAR
           rem =================================================================
-    rem Input: temp1 = health value (0-100)
+          rem Input: temp1 = health value (0-100)
           rem Output: pfscore1 = health bar pattern (8 pixels, bit pattern)
           rem Uses simple comparisons against threshold table, looks up bit pattern
 UpdatePlayer1HealthBar
+          dim UP1HB_health = temp1
+          dim UP1HB_patternIndex = temp2
+          dim UP1HB_pattern = temp3
           rem Clamp health to valid range
-          if temp1 > PlayerHealthMax then LET temp1 = PlayerHealthMax
-          if temp1 < 0 then LET temp1 = 0
+          if UP1HB_health > PlayerHealthMax then let UP1HB_health = PlayerHealthMax
+          if UP1HB_health < 0 then let UP1HB_health = 0
           
           rem Compare health against thresholds starting from 83 downward
           rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2 pixels, 0-11 = 0 pixels
-          rem temp2 will hold the pattern index (0-8)
-          LET temp2 = 0
+          rem patternIndex will hold the pattern index (0-8)
+          let UP1HB_patternIndex = 0
           
           rem Check thresholds from highest (83) to lowest (11)
           rem 84-100 = 8 pixels
-          if temp1 > 83 then LET temp2 = 8 : goto P1SetPattern
+          if UP1HB_health > 83 then let UP1HB_patternIndex = 8 : goto P1SetPattern
           rem 72-83 = 7 pixels
-          if temp1 > 71 then LET temp2 = 7 : goto P1SetPattern
+          if UP1HB_health > 71 then let UP1HB_patternIndex = 7 : goto P1SetPattern
           rem 60-71 = 6 pixels
-          if temp1 > 59 then LET temp2 = 6 : goto P1SetPattern
+          if UP1HB_health > 59 then let UP1HB_patternIndex = 6 : goto P1SetPattern
           rem 48-59 = 5 pixels
-          if temp1 > 47 then LET temp2 = 5 : goto P1SetPattern
+          if UP1HB_health > 47 then let UP1HB_patternIndex = 5 : goto P1SetPattern
           rem 36-47 = 4 pixels
-          if temp1 > 35 then LET temp2 = 4 : goto P1SetPattern
+          if UP1HB_health > 35 then let UP1HB_patternIndex = 4 : goto P1SetPattern
           rem 24-35 = 3 pixels
-          if temp1 > 23 then LET temp2 = 3 : goto P1SetPattern
+          if UP1HB_health > 23 then let UP1HB_patternIndex = 3 : goto P1SetPattern
           rem 12-23 = 2 pixels
-          if temp1 > 11 then LET temp2 = 2 : goto P1SetPattern
-          rem 0-11 = 0 pixels (temp2 already 0)
+          if UP1HB_health > 11 then let UP1HB_patternIndex = 2 : goto P1SetPattern
+          rem 0-11 = 0 pixels (patternIndex already 0)
           
 P1SetPattern
-          rem Look up bit pattern from table using temp2 as index
-          LET temp3 = HealthBarPatterns[temp2]
+          rem Look up bit pattern from table using patternIndex as index
+          let UP1HB_pattern = HealthBarPatterns[UP1HB_patternIndex]
           
           rem Set pfscore1 to health bar pattern
-          pfscore1 = temp3
-    
-    return
+          let pfscore1 = UP1HB_pattern
+          
+          return
 
           rem =================================================================
           rem UPDATE PLAYER 2 HEALTH BAR
           rem =================================================================
-    rem Input: temp1 = health value (0-100)
+          rem Input: temp1 = health value (0-100)
           rem Output: pfscore2 = health bar pattern (8 pixels, bit pattern)
           rem Uses simple comparisons against threshold table, looks up bit pattern
 UpdatePlayer2HealthBar
+          dim UP2HB_health = temp1
+          dim UP2HB_patternIndex = temp2
+          dim UP2HB_pattern = temp3
           rem Clamp health to valid range
-          if temp1 > PlayerHealthMax then LET temp1 = PlayerHealthMax
-          if temp1 < 0 then LET temp1 = 0
+          if UP2HB_health > PlayerHealthMax then let UP2HB_health = PlayerHealthMax
+          if UP2HB_health < 0 then let UP2HB_health = 0
           
           rem Compare health against thresholds starting from 83 downward
           rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2 pixels, 0-11 = 0 pixels
-          rem temp2 will hold the pattern index (0-8)
-          LET temp2 = 0
+          rem patternIndex will hold the pattern index (0-8)
+          let UP2HB_patternIndex = 0
           
           rem Check thresholds from highest (83) to lowest (11)
           rem 84-100 = 8 pixels
-          if temp1 > 83 then LET temp2 = 8 : goto P2SetPattern
+          if UP2HB_health > 83 then let UP2HB_patternIndex = 8 : goto P2SetPattern
           rem 72-83 = 7 pixels
-          if temp1 > 71 then LET temp2 = 7 : goto P2SetPattern
+          if UP2HB_health > 71 then let UP2HB_patternIndex = 7 : goto P2SetPattern
           rem 60-71 = 6 pixels
-          if temp1 > 59 then LET temp2 = 6 : goto P2SetPattern
+          if UP2HB_health > 59 then let UP2HB_patternIndex = 6 : goto P2SetPattern
           rem 48-59 = 5 pixels
-          if temp1 > 47 then LET temp2 = 5 : goto P2SetPattern
+          if UP2HB_health > 47 then let UP2HB_patternIndex = 5 : goto P2SetPattern
           rem 36-47 = 4 pixels
-          if temp1 > 35 then LET temp2 = 4 : goto P2SetPattern
+          if UP2HB_health > 35 then let UP2HB_patternIndex = 4 : goto P2SetPattern
           rem 24-35 = 3 pixels
-          if temp1 > 23 then LET temp2 = 3 : goto P2SetPattern
+          if UP2HB_health > 23 then let UP2HB_patternIndex = 3 : goto P2SetPattern
           rem 12-23 = 2 pixels
-          if temp1 > 11 then LET temp2 = 2 : goto P2SetPattern
-          rem 0-11 = 0 pixels (temp2 already 0)
+          if UP2HB_health > 11 then let UP2HB_patternIndex = 2 : goto P2SetPattern
+          rem 0-11 = 0 pixels (patternIndex already 0)
           
 P2SetPattern
-          rem Look up bit pattern from table using temp2 as index
-          LET temp3 = HealthBarPatterns[temp2]
+          rem Look up bit pattern from table using patternIndex as index
+          let UP2HB_pattern = HealthBarPatterns[UP2HB_patternIndex]
           
           rem Set pfscore2 to health bar pattern
-          pfscore2 = temp3
-    
-    return
+          let pfscore2 = UP2HB_pattern
+          
+          return
 
           rem Update both P1 and P2 health bars
           rem Input: playerHealth[0] and playerHealth[1] arrays
 UpdatePlayer12HealthBars
+          dim UP12HB_health = temp1
           rem Update P1 health bar
-          temp1 = playerHealth[0]
+          let UP12HB_health = playerHealth[0]
+          let temp1 = UP12HB_health
           gosub UpdatePlayer1HealthBar
           
           rem Update P2 health bar  
-          temp1 = playerHealth[1]
+          let UP12HB_health = playerHealth[1]
+          let temp1 = UP12HB_health
           gosub UpdatePlayer2HealthBar
           
           return
 
           rem Initialize health bars at game start
 InitializeHealthBars
+          dim IHB_health = temp1
           rem Set initial health bars to full (100%)
-          temp1 = PlayerHealthMax
+          let IHB_health = PlayerHealthMax
+          let temp1 = IHB_health
           gosub UpdatePlayer1HealthBar
-          temp1 = PlayerHealthMax
+          let temp1 = IHB_health
           gosub UpdatePlayer2HealthBar
           return
 
@@ -151,28 +162,36 @@ InitializeHealthBars
           rem Score display uses 6 digits total (3 bytes BCD)
 
 UpdatePlayer34HealthBars
+          dim UP34HB_p3Health = temp1
+          dim UP34HB_p4Health = temp2
+          dim UP34HB_isEliminated = temp3
+          dim UP34HB_p3Tens = temp3
+          dim UP34HB_p3Ones = temp4
+          dim UP34HB_p3BCD = temp5
+          dim UP34HB_p4Tens = temp6
+          dim UP34HB_p4Ones = temp7
           rem Only update if players 3 or 4 are active
           if !(controllerStatus & SetPlayers34Active) then return
           
           rem Get Player 3 health (0-100), clamp to 99
           rem Hide if inactive (selectedChar = 255) or eliminated
-          temp1 = playerHealth[2]
-          if selectedChar3 = 255 then temp1 = 0
+          let UP34HB_p3Health = playerHealth[2]
+          if selectedChar3 = 255 then let UP34HB_p3Health = 0
           rem Check if Player 3 is eliminated (bit 2 of playersEliminated = 4)
-          temp3 = playersEliminated & 4
-          if temp3 then temp1 = 0
+          let UP34HB_isEliminated = playersEliminated & 4
+          if UP34HB_isEliminated then let UP34HB_p3Health = 0
           rem Hide digits if eliminated or inactive
-          if temp1 > PlayerHealthMax - 1 then temp1 = PlayerHealthMax - 1
+          if UP34HB_p3Health > PlayerHealthMax - 1 then let UP34HB_p3Health = PlayerHealthMax - 1
           
           rem Get Player 4 health (0-100), clamp to 99
           rem Hide if inactive (selectedChar = 255) or eliminated
-          temp2 = playerHealth[3]
-          if selectedChar4 = 255 then temp2 = 0
+          let UP34HB_p4Health = playerHealth[3]
+          if selectedChar4 = 255 then let UP34HB_p4Health = 0
           rem Check if Player 4 is eliminated (bit 3 of playersEliminated = 8)
-          temp3 = playersEliminated & 8
-          if temp3 then temp2 = 0
+          let UP34HB_isEliminated = playersEliminated & 8
+          if UP34HB_isEliminated then let UP34HB_p4Health = 0
           rem Hide digits if eliminated or inactive
-          if temp2 > 99 then temp2 = 99
+          if UP34HB_p4Health > 99 then let UP34HB_p4Health = 99
           
           rem Format score as: P3Health * 10000 + P4Health
           rem This displays as XX00XX where:
@@ -185,12 +204,12 @@ UpdatePlayer34HealthBars
           rem Convert binary health values to BCD and set score
           rem Use binary-to-decimal conversion: divide by 10 to extract tens and ones
           rem Calculate P3 health in BCD format (tens and ones digits)
-          temp3 = temp1 / 10
+          let UP34HB_p3Tens = UP34HB_p3Health / 10
           rem Tens digit (0-9)
-          rem Calculate ones digit: temp1 - (temp3 * 10)
-          rem Multiply temp3 by 10 using assembly: 10 = 8 + 2
+          rem Calculate ones digit: p3Health - (p3Tens * 10)
+          rem Multiply p3Tens by 10 using assembly: 10 = 8 + 2
           asm
-            lda temp3
+            lda UP34HB_p3Tens
             sta temp8
             asl a
             asl a
@@ -200,21 +219,21 @@ UpdatePlayer34HealthBars
             asl a
             sta temp8
           end
-          rem temp8 = temp3 * 10
-          temp4 = temp1 - temp8
+          rem temp8 = p3Tens * 10
+          let UP34HB_p3Ones = UP34HB_p3Health - temp8
           rem Ones digit (0-9)
           rem Combine into BCD: tens * 16 + ones (BCD format)
-          temp5 = temp3 * 16
-          temp5 = temp5 + temp4
-          rem temp5 now contains P3 health as BCD (e.g., $75 for 75)
+          let UP34HB_p3BCD = UP34HB_p3Tens * 16
+          let UP34HB_p3BCD = UP34HB_p3BCD + UP34HB_p3Ones
+          rem p3BCD now contains P3 health as BCD (e.g., $75 for 75)
           
           rem Calculate P4 health in BCD format
-          temp6 = temp2 / 10
+          let UP34HB_p4Tens = UP34HB_p4Health / 10
           rem Tens digit (0-9)
-          rem Calculate ones digit: temp2 - (temp6 * 10)
-          rem Multiply temp6 by 10 using assembly: 10 = 8 + 2
+          rem Calculate ones digit: p4Health - (p4Tens * 10)
+          rem Multiply p4Tens by 10 using assembly: 10 = 8 + 2
           asm
-            lda temp6
+            lda UP34HB_p4Tens
             sta temp8
             asl a
             asl a
@@ -224,27 +243,27 @@ UpdatePlayer34HealthBars
             asl a
             sta temp8
           end
-          rem temp8 = temp6 * 10
-          temp7 = temp2 - temp8
+          rem temp8 = p4Tens * 10
+          let UP34HB_p4Ones = UP34HB_p4Health - temp8
           rem Ones digit (0-9)
           rem Combine into BCD: tens * 16 + ones
-          temp6 = temp6 * 16
-          temp6 = temp6 + temp7
-          rem temp6 now contains P4 health as BCD (e.g., $50 for 50)
+          let UP34HB_p4Tens = UP34HB_p4Tens * 16
+          let UP34HB_p4Tens = UP34HB_p4Tens + UP34HB_p4Ones
+          rem p4Tens now contains P4 health as BCD (e.g., $50 for 50)
           
           rem Set score for XX00XX format using assembly to directly set BCD bytes
-          rem score (high byte, digits 0-1) = P3 BCD (temp5) or $00 if inactive/eliminated
+          rem score (high byte, digits 0-1) = P3 BCD (p3BCD) or $00 if inactive/eliminated
           rem score+1 (middle byte, digits 2-3) = $00 (always hidden - separator)
-          rem score+2 (low byte, digits 4-5) = P4 BCD (temp6) or $00 if inactive/eliminated
+          rem score+2 (low byte, digits 4-5) = P4 BCD (p4Tens) or $00 if inactive/eliminated
           rem Digits are hidden by setting to $00 (displays as "00" - visible but indicates inactive/eliminated)
           asm
             SED
-            LDA temp5
+            LDA UP34HB_p3BCD
             STA score
             rem Middle 2 digits always hidden (separator between P3 and P4)
             LDA # 0
             STA score+1
-            LDA temp6
+            LDA UP34HB_p4Tens
             STA score+2
             CLD
           end

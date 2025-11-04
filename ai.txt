@@ -1,0 +1,17 @@
+I will refer you to GitHub issues for this project (use the "gh" command to read them)
+
+Review the source code including Source/Requirements.md and Source/StyleGuide.md
+
+Study the history and comments on each ticket. Then
+
+1. Determine if it can be trivially implemented with no further work. If it can, do so: implement
+   the feature or bug fix. Commit with a detailed commit message, comment on and close the issue.
+
+2. If it cannot be trivially implemented in its current form, determine if it can be broken down
+   into subtasks which (some or all) can be trivially implemented. Push these as GitHub issues and
+   link them to the main task. Then, review these subtasks and implement as per (1.) any which can be
+   done, sequentially. If all are implemented successfully, close the main issue as well.
+
+Interview me if you encounter contradictory or confusing information before you begin work.
+
+We will continue in this way with several ticket numbers.

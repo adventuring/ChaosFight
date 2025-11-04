@@ -70,11 +70,11 @@ CheckFallDamage
           let CFD_characterType = playerChar[CFD_playerIndex]
           
           rem Check for fall damage immunity
-          if CFD_characterType = 0 then return 
+          if CFD_characterType = CharBernie then return 
           rem Bernie: immune
-          if CFD_characterType = 13 then return
+          if CFD_characterType = CharRoboTito then return
           rem Robo Tito: immune
-          if CFD_characterType = 8 then return 
+          if CFD_characterType = CharFrooty then return 
           rem Frooty: no gravity, no falling
           
           rem Get character weight from data table
@@ -120,7 +120,7 @@ CheckFallDamage
           rem CFD_damage = damage * weight / 20 (weight-based multiplier applied)
           
           rem Apply damage reduction for Ninjish Guy (after weight multiplier)
-          if CFD_characterType = 10 then let CFD_damage = CFD_damage / 2 
+          if CFD_characterType = CharNinjishGuy then let CFD_damage = CFD_damage / 2 
           rem Ninjish Guy: 1/2 damage
           
           rem Cap maximum fall damage at 50
@@ -180,16 +180,16 @@ FallDamageApplyGravity
           temp5 = playerChar[temp1]
           
           rem Check for no-gravity characters
-          if temp5 = 8 then return 
+          if temp5 = CharFrooty then return 
           rem Frooty: no gravity
           
           rem Check for reduced gravity characters
           rem Harpy (6) and Dragon of Storms (2): 1/2 gravity when falling
           temp6 = 2 
           rem Default gravity: 2 pixels/frame²
-          if temp5 = 6 then temp6 = 1 
+          if temp5 = CharHarpy then temp6 = 1 
           rem Harpy: reduced gravity
-          if temp5 = 2 then temp6 = 1 
+          if temp5 = CharDragonOfStorms then temp6 = 1 
           rem Dragon of Storms: reduced gravity
           
           rem Apply gravity acceleration
@@ -294,7 +294,7 @@ HandleFrootyVertical
 HandleHarpySwoopAttack
           rem Check character type to confirm
           temp5 = playerChar[temp1]
-          if !(temp5 = 6) then return 
+          if !(temp5 = CharHarpy) then return 
           rem Not Harpy
           
           rem Get facing direction from playerState bit 0
@@ -347,11 +347,11 @@ CalculateSafeFallDistance
           temp5 = playerChar[temp1]
           
           rem Check for fall damage immunity
-          if temp5 = 0 then SetInfiniteFallDistance
+          if temp5 = CharBernie then SetInfiniteFallDistance
           rem Bernie: infinite
-          if temp5 = 13 then SetInfiniteFallDistance
+          if temp5 = CharRoboTito then SetInfiniteFallDistance
           rem Robo Tito: infinite
-          if temp5 = 8 then SetInfiniteFallDistance 
+          if temp5 = CharFrooty then SetInfiniteFallDistance 
           rem Frooty: no falling
           goto CalculateFallDistanceNormal
 SetInfiniteFallDistance
@@ -378,7 +378,7 @@ CalculateFallDistanceNormal
           temp2 = temp2 / 4
           
           rem Apply Ninjish Guy bonus (can fall farther)
-          if temp5 = 10 then temp2 = temp2 * 2
+          if temp5 = CharNinjishGuy then temp2 = temp2 * 2
           
           return
 

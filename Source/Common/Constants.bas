@@ -41,6 +41,24 @@
           rem No character selected ($FF)
           const CPUCharacter = 254
           rem CPU player character ($FE)
+          
+          rem Character ID constants
+          const CharBernie = 0
+          const CharCurler = 1
+          const CharDragonOfStorms = 2
+          const CharZoeRyen = 3
+          const CharFatTony = 4
+          const CharMegax = 5
+          const CharHarpy = 6
+          const CharKnightGuy = 7
+          const CharFrooty = 8
+          const CharNefertem = 9
+          const CharNinjishGuy = 10
+          const CharPorkChop = 11
+          const CharRadishGoblin = 12
+          const CharRoboTito = 13
+          const CharUrsulo = 14
+          const CharShamone = 15
 
           rem Special sprite constants for SpecialSpritePointers table
           const SpriteQuestionMark = 0

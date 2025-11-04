@@ -1,23 +1,23 @@
-rem ChaosFight - Source/Routines/Combat.bas
-rem Copyright © 2025 Interworldly Adventuring, LLC.
+         rem ChaosFight - Source/Routines/Combat.bas
+         rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem =================================================================
-rem COMBAT SYSTEM - Generic subroutines using player arrays
+          rem COMBAT SYSTEM - Generic subroutines using player arrays
           rem =================================================================
 
           rem Apply damage from attacker to defender
-          rem Inputs: attacker_id, defender_id
+          rem Inputs: attackerID, defenderID
 ApplyDamage
           dim AD_damage = temp1
           rem Calculate damage (considering defender state)
-          let AD_damage = playerDamage[attacker_id] - playerDamage[defender_id]
+          let AD_damage = playerDamage[attackerID] - playerDamage[defenderID]
           if AD_damage < 1 then let AD_damage = 1  rem Minimum damage
 
           rem Apply damage
-          let playerHealth[defender_id] = playerHealth[defender_id] - AD_damage
+          let playerHealth[defenderID] = playerHealth[defenderID] - AD_damage
           
           rem Visual feedback (to be implemented)
-          gosub ShowDamageIndicator defender_id, AD_damage
+          gosub ShowDamageIndicator defenderID, AD_damage
           
           rem Sound effect (to be implemented)
           gosub PlayDamageSound AD_damage
@@ -25,10 +25,10 @@ ApplyDamage
           return
 
           rem Check if attack hits defender
-          rem Inputs: attacker_id, defender_id
+          rem Inputs: attackerID, defenderID
           rem Returns: hit (1 = hit, 0 = miss)
 CheckAttackHit
-          dim CAH_defenderId = defender_id
+          dim CAH_defenderId = defenderID
           rem Calculate attack hitbox based on attacker facing and attack type
           gosub CalculateAttackHitbox
           
@@ -57,10 +57,10 @@ NoHit
           return
 
           rem Calculate attack hitbox based on attacker position and facing
-          rem Inputs: attacker_id
+          rem Inputs: attackerID
           rem Outputs: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
 CalculateAttackHitbox
-          dim CAH_attackerId = attacker_id
+          dim CAH_attackerId = attackerID
           rem Set hitbox based on attack type and direction
           on PlayerAttackType[CAH_attackerId] goto MeleeHitbox, ProjectileHitbox, AreaHitbox
           
@@ -125,9 +125,9 @@ AreaHitbox
           return
 
           rem Process attack for one attacker against all defenders
-          rem Input: attacker_id
+          rem Input: attackerID
 ProcessAttackerAttacks
-          dim PAA_attackerId = attacker_id
+          dim PAA_attackerId = attackerID
           dim PAA_playerState = temp1
           rem Check if attacker is facing right (PlayerStateFacing = bit 0)
           let PAA_playerState = playerState[PAA_attackerId]
@@ -220,7 +220,7 @@ PerformRangedAttack
           rem DEPRECATED: This function has syntax errors and conflicts with GuardEffects.bas
           rem Guard restrictions are now handled in PlayerInput.bas (movement/attack blocking)
           rem Guard timer updates are handled by UpdateGuardTimers in GuardEffects.bas
-          rem Input: player_id
+          rem Input: playerID
 ProcessPlayerGuard
           rem This function is deprecated - guard restrictions are handled elsewhere
           rem Guard prevents movement - handled in PlayerInput.bas

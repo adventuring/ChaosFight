@@ -42,3 +42,12 @@ bin/skyline-tool
 *.midi
 !Source/Reference/**
 bin/buildapp
+
+# TeX/LaTeX auxiliary files (should be in Object/ but ignore if in root)
+*.aux
+*.cp
+*.cps
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz

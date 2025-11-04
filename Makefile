@@ -459,10 +459,14 @@ Dist/$(GAME)$(GAMEYEAR).SECAM.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).SE
 		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).SECAM.a26 | cut -d\  -f1)/g > $@
 
 # Documentation generation
+# Build PDF in Object/ to contain auxiliary files (.aux, .cp, .cps, .toc)
 Dist/$(GAME)$(GAMEYEAR).pdf: Manual/ChaosFight.texi
-	makeinfo --pdf --output=$@ $<
+	mkdir -p Object Dist
+	makeinfo --pdf --output=Object/$(GAME)$(GAMEYEAR).pdf $<
+	cp Object/$(GAME)$(GAMEYEAR).pdf $@
 
 Dist/$(GAME)$(GAMEYEAR).html: Manual/ChaosFight.texi
+	mkdir -p Dist
 	makeinfo --html --output=$@ $<
 
 nowready: $(READYFILE)

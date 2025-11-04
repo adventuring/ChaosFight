@@ -40,28 +40,26 @@ GravityCheckCharacter
           rem Get character type
           let temp6 = playerChar[temp1]
           
-          rem Skip gravity for characters that don’t have it
+          rem Skip gravity for characters that don't have it
           rem Frooty (8): Permanent flight, no gravity
-          if temp6 = 8 then goto GravityNextPlayer
-          rem Dragon of Storms (2): Permanent flight, no gravity (handled below)
+          if temp6 = CharFrooty then goto GravityNextPlayer
+          rem Dragon of Storms (2): Permanent flight, no gravity (hovering/flying like Frooty)
+          if temp6 = CharDragonOfStorms then goto GravityNextPlayer
           
           rem Check if player is in jumping state (bit 2 set means jumping, skip gravity)
           rem If NOT jumping, skip gravity (player is on ground)
           if !(playerState[temp1] & 4) then goto GravityNextPlayer
           
           rem Initialize or get vertical velocity (using temp variable)
-          rem Note: Vertical velocity is not persistent - we’ll track it per-frame
-          rem For now, we’ll apply gravity acceleration directly to position
+          rem Note: Vertical velocity is not persistent - we'll track it per-frame
+          rem For now, we'll apply gravity acceleration directly to position
           rem TODO: Consider implementing persistent vertical velocity tracking
-          
-          rem Skip gravity for Dragon of Storms (2): Permanent flight, no gravity
-          if temp6 = 2 then goto GravityNextPlayer
           
           rem Determine gravity acceleration rate based on character (8.8 fixed-point subpixel)
           rem Uses tunable constants from Constants.bas for easy adjustment
           let temp7 = GravityNormal
           rem Default gravity acceleration (normal rate)
-          if temp6 = 6 then let temp7 = GravityReduced
+          if temp6 = CharHarpy then let temp7 = GravityReduced
           rem Harpy: reduced gravity rate
           
           rem Apply gravity acceleration to velocity subpixel part (adds to Y velocity, positive = downward)

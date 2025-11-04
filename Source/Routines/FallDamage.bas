@@ -19,9 +19,9 @@
           rem   - Bernie (0): NO fall damage (immune)
           rem   - Robo Tito (13): NO fall damage (immune)
           rem   - Frooty (8): NO gravity (no falling)
+          rem   - Dragon of Storms (2): NO gravity (no falling, hovering/flying like Frooty)
           rem   - Ninjish Guy (10): 1/2 fall damage (reduced)
           rem   - Harpy (6): Reduced gravity (1/2 rate) when falling
-          rem   - Dragon of Storms (2): Reduced gravity (1/2 rate) when falling
 
           rem GRAVITY CONSTANTS:
           rem   - Defined in Constants.bas as tunable constants:
@@ -76,6 +76,8 @@ CheckFallDamage
           rem Robo Tito: immune
           if CFD_characterType = CharFrooty then return 
           rem Frooty: no gravity, no falling
+          if CFD_characterType = CharDragonOfStorms then return
+          rem Dragon of Storms: no gravity, no falling (hovering/flying like Frooty)
           
           rem Get character weight from data table
           let temp1 = CFD_characterType 
@@ -182,15 +184,15 @@ FallDamageApplyGravity
           rem Check for no-gravity characters
           if temp5 = CharFrooty then return 
           rem Frooty: no gravity
+          if temp5 = CharDragonOfStorms then return
+          rem Dragon of Storms: no gravity (hovering/flying like Frooty)
           
           rem Check for reduced gravity characters
-          rem Harpy (6) and Dragon of Storms (2): 1/2 gravity when falling
+          rem Harpy (6): 1/2 gravity when falling
           temp6 = 2 
           rem Default gravity: 2 pixels/frame²
           if temp5 = CharHarpy then temp6 = 1 
           rem Harpy: reduced gravity
-          if temp5 = CharDragonOfStorms then temp6 = 1 
-          rem Dragon of Storms: reduced gravity
           
           rem Apply gravity acceleration
           temp2 = temp2 + temp6
@@ -353,6 +355,8 @@ CalculateSafeFallDistance
           rem Robo Tito: infinite
           if temp5 = CharFrooty then SetInfiniteFallDistance 
           rem Frooty: no falling
+          if temp5 = CharDragonOfStorms then SetInfiniteFallDistance
+          rem Dragon of Storms: no falling (hovering/flying like Frooty)
           goto CalculateFallDistanceNormal
 SetInfiniteFallDistance
           temp2 = 255

@@ -299,8 +299,8 @@ RoboTitoJump
           goto RoboTitoStretching
           
 RoboTitoStretching
-          rem Set stretching animation (repurposed AnimJumping = 10)
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimJumping << ShiftAnimationState)
+          rem Set stretching animation (repurposed ActionJumping = 10)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionJumping << ShiftAnimationState)
           
           rem Move upward 3 pixels per frame
           if playerY[temp1] <= 5 then RoboTitoCheckCeiling
@@ -331,8 +331,8 @@ RoboTitoLatch
           rem Ceiling contact detected - latch to ceiling
           let characterStateFlags[temp1] = characterStateFlags[temp1] | 1
           rem Set latched bit
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimFalling << ShiftAnimationState)
-          rem Set latched animation (repurposed AnimFalling = 11)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
+          rem Set latched animation (repurposed ActionFalling = 11)
           return
 
           rem URSULO (14) - STANDARD JUMP (heavy weight)
@@ -536,7 +536,7 @@ RoboTitoVoluntaryDrop
           rem Release from ceiling on DOWN press
           let characterStateFlags[temp1] = characterStateFlags[temp1] & 254
           rem Clear latched bit (bit 0)
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (AnimFalling << ShiftAnimationState)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
           rem Set falling animation
           return
           

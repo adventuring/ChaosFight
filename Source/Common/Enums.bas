@@ -73,9 +73,9 @@
           rem Attack recovery
 
           rem NOTE: RoboTito repurposes existing animation states:
-          rem AnimJumping (10) = Stretching upward
-          rem AnimFalling (11) = Latched to ceiling  
-          rem AnimLanding (12) = Retracting trunk
+          rem ActionJumping (10) = Stretching upward
+          rem ActionFalling (11) = Latched to ceiling  
+          rem ActionLanding (12) = Retracting trunk
 
           rem =================================================================
           rem MISSILE FLAGS BITFIELD ENCODING

@@ -126,7 +126,8 @@ end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileWidths
-             1, 4, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0
+             1, 4, 2, 2, 2, 4, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0
+          rem Megax uses maximum missile width (4) for fire breath
 end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
@@ -197,8 +198,9 @@ end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           rem  Note: Curler uses 15 for low-trajectory stone near ground
+          rem  Note: Megax uses 4 for mouth height (fire breath emission point)
           data CharacterMissileEmissionHeights
-             3, 15, 4, 4, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
+             3, 15, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
           end
 
           rem =================================================================

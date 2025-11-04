@@ -616,7 +616,7 @@ HandleMissileBounce
           let missileVelocityXCalc = missileVelocityX[temp1]
           rem Get current X velocity
           let missileVelocityXCalc = MaxByteValue - missileVelocityXCalc + 1
-          rem Invert velocity (bounce back) using two's complement
+          rem Invert velocity (bounce back) using two’s complement
           
           rem Apply friction damping if friction flag is set
           if !(temp5 & MissileFlagFriction) then BounceDone

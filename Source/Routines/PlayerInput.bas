@@ -131,7 +131,7 @@ InputHandleLeftPortPlayer
           if IHLP_characterType = 2 then FrootyDragonetLeftRightMovement
           
           rem Standard horizontal movement (modifies velocity, not position)
-          rem Left movement: set negative velocity (255 in 8-bit two's complement = -1)
+          rem Left movement: set negative velocity (255 in 8-bit two’s complement = -1)
           if joy0left then let playerVelocityX[IHLP_playerIndex] = 255 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
           rem Right movement: set positive velocity
           if joy0right then let playerVelocityX[IHLP_playerIndex] = 1 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
@@ -181,7 +181,7 @@ CheckLeftCollision
 MoveLeftOK
           rem Apply leftward velocity impulse (double-width sprite: 16px width)
           let playerVelocityX[IHLP_playerIndex] = 255
-          rem -1 in 8-bit two's complement: 256 - 1 = 255
+          rem -1 in 8-bit two’s complement: 256 - 1 = 255
           let playerVelocityX_lo[IHLP_playerIndex] = 0
           let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
 CheckRightMovement

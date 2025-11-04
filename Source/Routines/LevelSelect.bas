@@ -82,15 +82,17 @@ LevelSelectRightSound
           gosub bank15 PlaySoundEffect
 LevelSelectSkipRight
           
-          rem Display arena number (01-16) or ?? (random)
-          rem Display using player0 (tens digit) and player1 (ones digit)
+          rem Display arena number ( 1-32) or ?? (random)
+          rem Display using player4 (tens digit) and player5 (ones digit)
           rem Position: center of screen (X=80 for tens, X=88 for ones, Y=20)
+          rem Note: Tens digit only shown for arenas 10-32 (tensDigit > 0)
           if selectedArena = RandomArena then DisplayRandomArena
           
-          rem Display arena number (selectedArena + 1 = 1-16)
+          rem Display arena number (selectedArena + 1 = 1-32)
           rem Convert to two-digit display: tens and ones
+          rem Supports up to 32 arenas (tens digit: blank for 1-9, 1 for 10-19, 2 for 20-29, 3 for 30-32)
           let LS1_arenaNumber = selectedArena + 1
-          rem arenaNumber = arena number (1-16)
+          rem arenaNumber = arena number (1-32)
           rem Calculate tens digit
           let LS1_tensDigit = LS1_arenaNumber / 10
           rem Calculate ones digit using optimized assembly
@@ -109,24 +111,34 @@ LevelSelectSkipRight
           let LS1_onesDigit = LS1_arenaNumber - LS1_multiplier
           rem onesDigit = ones digit (0-9)
           
-          rem Draw tens digit (player0) - may be 0 for 01-09
+          rem Draw tens digit (player4) - only if tensDigit > 0 (for arenas 10-32)
+          if LS1_tensDigit > 0 then DrawTensDigit
+          goto SkipTensDigit
+DrawTensDigit
           let LS1_digit = LS1_tensDigit
           let LS1_xPos = 80
           let LS1_yPos = 20
           let LS1_color = ColGrey(14)
-          let LS1_spriteSelect = 0
+          let LS1_spriteSelect = 4
+          rem Use player4 for tens digit
           let temp1 = LS1_digit
           let temp2 = LS1_xPos
           let temp3 = LS1_yPos
           let temp4 = LS1_color
           let temp5 = LS1_spriteSelect
           gosub DrawDigit
+SkipTensDigit
           
-          rem Draw ones digit (player1)
+          rem Draw ones digit (player5)
           let LS1_digit = LS1_onesDigit
           let LS1_xPos = 88
+          let LS1_spriteSelect = 5
+          rem Use player5 for ones digit
           let temp1 = LS1_digit
           let temp2 = LS1_xPos
+          let temp3 = LS1_yPos
+          let temp4 = LS1_color
+          let temp5 = LS1_spriteSelect
           gosub DrawDigit
           
           goto DisplayDone

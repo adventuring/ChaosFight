@@ -183,7 +183,7 @@ UpdateGuardTimerActive
           rem Player is guarding - decrement guard duration timer
           let UGTA_timer = playerTimers[USGT_playerIndex]
           if UGTA_timer = 0 then GuardTimerExpired
-          rem Guard timer already expired (shouldn't happen, but safety check)
+          rem Guard timer already expired (shouldn’t happen, but safety check)
           
           rem Decrement guard duration timer
           let UGTA_timer = UGTA_timer - 1

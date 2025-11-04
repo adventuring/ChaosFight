@@ -146,7 +146,7 @@ DragonetJump
           
           rem Clear above - apply upward velocity impulse
           let playerVelocityY[DJ_playerIndex] = 254
-          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityY_lo[DJ_playerIndex] = 0
           let playerState[DJ_playerIndex] = playerState[DJ_playerIndex] | 4
           rem Set jumping flag for animation
@@ -203,9 +203,9 @@ HarpyJump
           rem Gravity is 0.05 px/frame² for Harpy (reduced). Over 40 frames, gravity accumulates:
           rem   velocity_change = 0.05 * 40 = 2.0 px/frame (downward)
           rem To maintain height, flap impulse must counteract: -2.0 px/frame (upward)
-          rem Using -2 px/frame (254 in two's complement) for stable hover with 1.5 flaps/second
+          rem Using -2 px/frame (254 in two’s complement) for stable hover with 1.5 flaps/second
           let playerVelocityY[HJ_playerIndex] = 254
-          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityY_lo[HJ_playerIndex] = 0
           let playerState[HJ_playerIndex] = playerState[HJ_playerIndex] | 4
           rem Set jumping/flying bit for animation
@@ -267,7 +267,7 @@ FrootyJump
           
           rem Clear above - apply upward velocity impulse
           let playerVelocityY[FJ_playerIndex] = 254
-          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityY_lo[FJ_playerIndex] = 0
           let playerState[FJ_playerIndex] = playerState[FJ_playerIndex] | 4
           rem Set jumping flag for animation

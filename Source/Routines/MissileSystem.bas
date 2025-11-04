@@ -480,8 +480,14 @@ HarpyCheckDive
           rem Check if Harpy is in dive mode
           if (characterStateFlags[temp1] & 4) = 0 then DiveCheckDone
           rem Not diving, skip bonus
-          rem Apply 1.5x damage for diving attacks
-          let temp6 = temp6 + (temp6 / 2)
+          rem Apply 1.5x damage for diving attacks (temp6 + temp6/2 = 1.5 * temp6)
+          rem Divide by 2 using bit shift right 1 bit
+          dim HMS_temp6Half = temp7
+          let HMS_temp6Half = temp6
+          asm
+            lsr HMS_temp6Half
+          end
+          let temp6 = temp6 + HMS_temp6Half
 DiveCheckDone
           
           rem Guard check is now handled before HandleMissileHit is called
@@ -513,12 +519,21 @@ DiveCheckDone
 WeightBasedKnockbackScale
           rem Heavy characters (weight >= 50): reduced knockback
           rem Calculate: KnockbackImpulse * (100 - weight) / 100
-          rem Approximate as: (KnockbackImpulse * (100 - weight)) / 100
-          rem For simplification: use linear scaling with integer math
+          rem KnockbackImpulse = 4, so: 4 * (100 - weight) / 100
+          rem Multiply first: 4 * velocityCalculation using bit shift (ASL 2)
           let velocityCalculation = 100 - characterWeight
           rem Resistance factor (0-50 for weights 50-100)
-          let impulseStrength = (KnockbackImpulse * velocityCalculation) / 100
-          rem Scaled knockback (integer division)
+          let impulseStrength = velocityCalculation
+          rem Multiply by 4 (KnockbackImpulse = 4) using left shift 2 bits
+          asm
+            asl impulseStrength
+            asl impulseStrength
+          end
+          rem Divide by 100 using DivideBy100 helper
+          let temp2 = impulseStrength
+          gosub DivideBy100
+          let impulseStrength = temp2
+          rem Scaled knockback (0, 1, or 2)
           if impulseStrength = 0 then impulseStrength = 1
           rem Minimum 1 pixel knockback even for heaviest characters
 WeightBasedKnockbackApply

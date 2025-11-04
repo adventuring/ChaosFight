@@ -474,7 +474,9 @@ DBPF_MultiplyDone
 PFCheckDown
           rem Check if player's feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we verify here
-          let rowCounter = playfieldRow + temp5 / pfrowheight
+          let temp2 = temp5
+          gosub DivideByPfrowheight
+          let rowCounter = playfieldRow + temp2
           rem Row at player's feet (rowCounter)
           if rowCounter >= pfrows then PFCheckDone
           
@@ -854,7 +856,63 @@ ApproxDivDone_3
           
 ApplyImpulse1HeavierLeft
           rem Player1 is heavier - push Player1 right, Player2 left
-          let impulseStrength = impulseStrength * 2 / totalWeight
+          rem Multiply by 2 using bit shift, then approximate division by totalWeight
+          asm
+            asl impulseStrength
+          end
+          rem Approximate division by totalWeight using bit-shift approximation
+          rem totalWeight ranges 10-200, use closest power-of-2 approximation
+          if totalWeight >= 128 then goto ApproxDivBy128_1Heavier
+          if totalWeight >= 64 then goto ApproxDivBy64_1Heavier
+          if totalWeight >= 32 then goto ApproxDivBy32_1Heavier
+          if totalWeight >= 16 then goto ApproxDivBy16_1Heavier
+          if totalWeight >= 8 then goto ApproxDivBy8_1Heavier
+          goto ApproxDivDone_1Heavier
+ApproxDivBy128_1Heavier
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_1Heavier
+ApproxDivBy64_1Heavier
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_1Heavier
+ApproxDivBy32_1Heavier
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_1Heavier
+ApproxDivBy16_1Heavier
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_1Heavier
+ApproxDivBy8_1Heavier
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+ApproxDivDone_1Heavier
           if impulseStrength = 0 then impulseStrength = 1
           
           if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength

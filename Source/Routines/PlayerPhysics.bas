@@ -26,29 +26,34 @@
           rem Gravity accelerates downward using tunable constants (Constants.bas):
           rem   GravityNormal (0.1px/frame²), GravityReduced (0.05px/frame²), TerminalVelocity (8px/frame)
 PhysicsApplyGravity
+          dim PAG_playerIndex = temp1
+          dim PAG_playfieldColumn = temp2
+          dim PAG_feetY = temp3
+          dim PAG_feetRow = temp4
+          dim PAG_characterType = temp6
           rem Loop through all players (0-3)
-          let temp1 = 0
+          let PAG_playerIndex = 0
 GravityLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need Quadtari)
-          if temp1 < 2 then GravityCheckCharacter
+          if PAG_playerIndex < 2 then GravityCheckCharacter
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto GravityNextPlayer
-          if temp1 = 2 && selectedChar3 = 255 then goto GravityNextPlayer
-          if temp1 = 3 && selectedChar4 = 255 then goto GravityNextPlayer
+          if PAG_playerIndex = 2 && selectedChar3 = 255 then goto GravityNextPlayer
+          if PAG_playerIndex = 3 && selectedChar4 = 255 then goto GravityNextPlayer
           
 GravityCheckCharacter
           rem Get character type
-          let temp6 = playerChar[temp1]
+          let PAG_characterType = playerChar[PAG_playerIndex]
           
           rem Skip gravity for characters that don't have it
           rem Frooty (8): Permanent flight, no gravity
-          if temp6 = CharFrooty then goto GravityNextPlayer
+          if PAG_characterType = CharFrooty then goto GravityNextPlayer
           rem Dragon of Storms (2): Permanent flight, no gravity (hovering/flying like Frooty)
-          if temp6 = CharDragonOfStorms then goto GravityNextPlayer
+          if PAG_characterType = CharDragonOfStorms then goto GravityNextPlayer
           
           rem Check if player is in jumping state (bit 2 set means jumping, skip gravity)
           rem If NOT jumping, skip gravity (player is on ground)
-          if !(playerState[temp1] & 4) then goto GravityNextPlayer
+          if !(playerState[PAG_playerIndex] & 4) then goto GravityNextPlayer
           
           rem Initialize or get vertical velocity (using temp variable)
           rem Note: Vertical velocity is not persistent - we'll track it per-frame
@@ -59,89 +64,90 @@ GravityCheckCharacter
           rem Uses tunable constants from Constants.bas for easy adjustment
           let gravityRate = GravityNormal
           rem Default gravity acceleration (normal rate)
-          if temp6 = CharHarpy then let gravityRate = GravityReduced
+          if PAG_characterType = CharHarpy then let gravityRate = GravityReduced
           rem Harpy: reduced gravity rate
           
           rem Apply gravity acceleration to velocity subpixel part (adds to Y velocity, positive = downward)
-          rem temp1 already set (player index), gravityRate is gravity strength in subpixel (low byte)
+          rem playerIndex already set, gravityRate is gravity strength in subpixel (low byte)
           rem AddVelocitySubpixelY expects temp2, so save temp2 and use it for gravityRate
-          let playfieldColumn = temp2
-          rem Save temp2 temporarily
+          let playfieldColumn = PAG_playfieldColumn
+          rem Save playfieldColumn temporarily
           let temp2 = gravityRate
           gosub AddVelocitySubpixelY
-          let temp2 = playfieldColumn
-          rem Restore temp2
+          let PAG_playfieldColumn = temp2
+          rem Restore playfieldColumn
           
           rem Apply terminal velocity cap (prevents infinite acceleration)
           rem Check if velocity exceeds terminal velocity (positive = downward)
-          if playerVelocityY[temp1] > TerminalVelocity then let playerVelocityY[temp1] = TerminalVelocity : let playerVelocityY_lo[temp1] = 0
+          if playerVelocityY[PAG_playerIndex] > TerminalVelocity then let playerVelocityY[PAG_playerIndex] = TerminalVelocity : let playerVelocityY_lo[PAG_playerIndex] = 0
           
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
-          let temp2 = playerX[temp1]
-          let temp2 = temp2 - ScreenInsetX
+          let PAG_playfieldColumn = playerX[PAG_playerIndex]
+          let PAG_playfieldColumn = PAG_playfieldColumn - ScreenInsetX
           rem Divide by 4 using bit shift (2 right shifts)
           asm
-            lsr temp2
-            lsr temp2
+            lsr PAG_playfieldColumn
+            lsr PAG_playfieldColumn
           end
           rem Clamp column to valid range
-          if temp2 > 31 then let temp2 = 31
-          if temp2 < 0 then let temp2 = 0
+          if PAG_playfieldColumn > 31 then let PAG_playfieldColumn = 31
+          if PAG_playfieldColumn < 0 then let PAG_playfieldColumn = 0
           
           rem Calculate row where player's feet are (bottom of sprite)
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
-          let temp3 = playerY[temp1] + PlayerSpriteHeight
+          let PAG_feetY = playerY[PAG_playerIndex] + PlayerSpriteHeight
           rem Divide by pfrowheight using helper
-          let temp2 = temp3
+          let temp2 = PAG_feetY
           gosub DivideByPfrowheight
-          let temp4 = temp2
-          rem temp4 = row where feet are
+          let PAG_feetRow = temp2
+          rem feetRow = row where feet are
           
-          rem Check if there’s a playfield pixel in the row below the feet
+          dim PAG_rowBelow = temp5
+          rem Check if there's a playfield pixel in the row below the feet
           rem If feet are in row N, check row N+1 for ground
-          if temp4 >= pfrows then goto GravityNextPlayer
+          if PAG_feetRow >= pfrows then goto GravityNextPlayer
           rem Feet are at or below bottom of playfield, continue falling
           
-          let temp5 = temp4 + 1
-          rem temp5 = row below feet
-          if temp5 >= pfrows then goto GravityCheckBottom
+          let PAG_rowBelow = PAG_feetRow + 1
+          rem rowBelow = row below feet
+          if PAG_rowBelow >= pfrows then goto GravityCheckBottom
           rem Beyond playfield bounds, check if at bottom
           
           rem Check if playfield pixel exists in row below feet
-          if !pfread(temp2, temp5) then goto GravityNextPlayer
+          if !pfread(PAG_playfieldColumn, PAG_rowBelow) then goto GravityNextPlayer
           rem No ground pixel found, continue falling
           
           rem Ground detected! Stop falling and clamp position to ground
           rem Zero Y velocity (stop falling)
-          let playerVelocityY[temp1] = 0
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityY[PAG_playerIndex] = 0
+          let playerVelocityY_lo[PAG_playerIndex] = 0
           
           rem Calculate Y position for top of ground row using repeated addition
-          rem Loop to add pfrowheight to rowYPosition, temp5 times
+          rem Loop to add pfrowheight to rowYPosition, rowBelow times
           let rowYPosition = 0
-          let rowCounter = temp5
+          let rowCounter = PAG_rowBelow
           if rowCounter = 0 then goto GravityRowCalcDone
 GravityRowCalcLoop
           let rowYPosition = rowYPosition + pfrowheight
           let rowCounter = rowCounter - 1
           if rowCounter > 0 then goto GravityRowCalcLoop
 GravityRowCalcDone
-          rem rowYPosition now contains temp5 * pfrowheight (Y position of top of ground row)
+          rem rowYPosition now contains rowBelow * pfrowheight (Y position of top of ground row)
           rem Clamp playerY so feet are at top of ground row
-          let playerY[temp1] = rowYPosition - PlayerSpriteHeight
+          let playerY[PAG_playerIndex] = rowYPosition - PlayerSpriteHeight
           rem Also sync subpixel position
-          let playerSubpixelY[temp1] = playerY[temp1]
-          let playerSubpixelY_lo[temp1] = 0
+          let playerSubpixelY[PAG_playerIndex] = playerY[PAG_playerIndex]
+          let playerSubpixelY_lo[PAG_playerIndex] = 0
           
           rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
-          let playerState[temp1] = playerState[temp1] & 251
+          let playerState[PAG_playerIndex] = playerState[PAG_playerIndex] & 251
           rem Clear bit 2 (jumping flag)
           goto GravityNextPlayer
           
 GravityCheckBottom
           rem At bottom of playfield - treat as ground if feet are at bottom row
-          if temp4 < pfrows - 1 then goto GravityNextPlayer
+          if PAG_feetRow < pfrows - 1 then goto GravityNextPlayer
           rem Not at bottom row yet
           
           rem Bottom row is always ground - clamp to bottom

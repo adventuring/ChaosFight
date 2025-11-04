@@ -170,20 +170,23 @@ MoveLeft
           if playerX[MPTT_playerIndex] < MPTT_targetX then let playerX[MPTT_playerIndex] = MPTT_targetX
 HorizontalDone
           
-          rem Move vertically if not at target Y
+                    rem Move vertically if not at target Y
           if MPTT_currentY < MPTT_targetY then MoveDown
           if MPTT_currentY > MPTT_targetY then MoveUp
           goto VerticalDone
 MoveDown
           let playerY[MPTT_playerIndex] = playerY[MPTT_playerIndex] + fallSpeed
           rem Clamp to target if overshot
-          if playerY[MPTT_playerIndex] > MPTT_targetY then let playerY[MPTT_playerIndex] = MPTT_targetY
+          if playerY[MPTT_playerIndex] > MPTT_targetY then let playerY[MPTT_playerIndex] = MPTT_targetY                                                         
           goto VerticalDone
 MoveUp
           let playerY[MPTT_playerIndex] = playerY[MPTT_playerIndex] - fallSpeed
           rem Clamp to target if overshot
-          if playerY[MPTT_playerIndex] < MPTT_targetY then let playerY[MPTT_playerIndex] = MPTT_targetY
+          if playerY[MPTT_playerIndex] < MPTT_targetY then let playerY[MPTT_playerIndex] = MPTT_targetY                                                         
 VerticalDone
+          
+          rem Check playfield collision and nudge if needed
+          gosub NudgePlayerFromPlayfield
           
           rem Check if reached target after movement
           let MPTT_currentX = playerX[MPTT_playerIndex]
@@ -197,10 +200,107 @@ AtTarget
           let MPTT_reached = 1
           return
           
+                    rem =================================================================
+          rem NUDGE PLAYER FROM PLAYFIELD COLLISION
           rem =================================================================
-          rem MOVE PLAYER TO ROW 2 (legacy function name, now calls MovePlayerToTarget)
+          rem Checks if player collides with playfield and nudges them away.
+          rem Prevents players from getting stuck in playfield obstacles during animation.
+          rem
+          rem INPUT:
+          rem   MPTT_playerIndex (temp1) = player index (0-3)
+          rem   playerX[MPTT_playerIndex], playerY[MPTT_playerIndex] = current position
+          rem
+          rem MODIFIES:
+          rem   playerX[MPTT_playerIndex], playerY[MPTT_playerIndex] = nudged position if collision
+          rem
+          rem EFFECTS:
+          rem   If playfield collision detected, nudges player 1 pixel away from obstacle
+NudgePlayerFromPlayfield
+          dim NPF_playerIndex = MPTT_playerIndex
+          dim NPF_playerX = temp7
+          dim NPF_playerY = temp8
+          dim NPF_pfColumn = temp9
+          dim NPF_pfRow = tempA
+          
+          rem Get current position
+          let NPF_playerX = playerX[NPF_playerIndex]
+          let NPF_playerY = playerY[NPF_playerIndex]
+          
+          rem Convert X position to playfield column (0-31)
+          let NPF_pfColumn = NPF_playerX
+          let NPF_pfColumn = NPF_pfColumn - ScreenInsetX
+          asm
+            lsr NPF_pfColumn
+            lsr NPF_pfColumn
+          end
+          rem Clamp column to valid range
+          if NPF_pfColumn > 31 then let NPF_pfColumn = 31
+          if NPF_pfColumn < 0 then let NPF_pfColumn = 0
+          
+          rem Convert Y position to playfield row (divide by pfrowheight)
+          rem pfrowheight is typically 8 or 16 (powers of 2), so use bit shifts
+          rem If pfrowheight = 8: divide by 8 = 3 right shifts
+          rem If pfrowheight = 16: divide by 16 = 4 right shifts
+          rem Use 4 shifts for safety (works for both 8 and 16, may be off by 1 for 8 but acceptable for simple nudge)
+          let NPF_pfRow = NPF_playerY
+          asm
+            lsr NPF_pfRow
+            lsr NPF_pfRow
+            lsr NPF_pfRow
+            lsr NPF_pfRow
+          end
+          if NPF_pfRow >= pfrows then let NPF_pfRow = pfrows - 1
+          if NPF_pfRow < 0 then let NPF_pfRow = 0
+          
+          rem Check collision at player position (simple single-point check)
+          if pfread(NPF_pfColumn, NPF_pfRow) then NudgeFromPF
+          
+          rem No collision, return
+          return
+          
+NudgeFromPF
+          rem Collision detected - nudge player 1 pixel in direction toward target
+          rem Nudge horizontally toward target first
+          if NPF_playerX < MPTT_targetX then NudgeRight
+          if NPF_playerX > MPTT_targetX then NudgeLeft
+          goto NudgeHorizontalDone
+NudgeRight
+          let playerX[NPF_playerIndex] = playerX[NPF_playerIndex] + 1
+          goto NudgeHorizontalDone
+NudgeLeft
+          let playerX[NPF_playerIndex] = playerX[NPF_playerIndex] - 1
+NudgeHorizontalDone
+          
+          rem If still colliding, nudge vertically toward target
+          let NPF_playerX = playerX[NPF_playerIndex]
+          let NPF_pfColumn = NPF_playerX
+          let NPF_pfColumn = NPF_pfColumn - ScreenInsetX
+          asm
+            lsr NPF_pfColumn
+            lsr NPF_pfColumn
+          end
+          if NPF_pfColumn > 31 then let NPF_pfColumn = 31
+          if NPF_pfColumn < 0 then let NPF_pfColumn = 0
+          
+          if pfread(NPF_pfColumn, NPF_pfRow) then NudgeVertical
+          return
+          
+NudgeVertical
+          rem Still colliding, nudge vertically
+          if NPF_playerY < MPTT_targetY then NudgeDown
+          if NPF_playerY > MPTT_targetY then NudgeUp
+          return
+NudgeDown
+          let playerY[NPF_playerIndex] = playerY[NPF_playerIndex] + 1
+          return
+NudgeUp
+          let playerY[NPF_playerIndex] = playerY[NPF_playerIndex] - 1
+          return
+          
+          rem =================================================================
+          rem MOVE PLAYER TO ROW 2 (legacy function name, now calls MovePlayerToTarget)                                                                         
           rem =================================================================
 MovePlayerToRow2
-          rem This is a placeholder - actual movement handled by MovePlayerToTarget
+          rem This is a placeholder - actual movement handled by MovePlayerToTarget                                                                             
           rem Kept for compatibility if referenced elsewhere
           return

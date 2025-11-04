@@ -13,8 +13,7 @@ ChangeGameMode
           return
           
 SetupPublisherPrelude
-          rem Publisher Preamble uses its own internal flow
-          rem No separate Begin function needed - setup is handled inline
+          gosub bank9 BeginPublisherPrelude
           return
           
 SetupAuthorPrelude

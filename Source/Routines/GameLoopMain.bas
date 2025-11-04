@@ -66,26 +66,7 @@ GameMainLoop
           gosub CheckAllPlayerCollisions
 
           rem Check for player eliminations
-          rem Inline CheckAllPlayerEliminations
-          dim CAPE_playerIndex = temp1
-          rem Check each player for elimination
-          let CAPE_playerIndex = 0
-          let temp1 = CAPE_playerIndex
-          gosub CheckPlayerElimination
-          let CAPE_playerIndex = 1
-          let temp1 = CAPE_playerIndex
-          gosub CheckPlayerElimination  
-          let CAPE_playerIndex = 2
-          let temp1 = CAPE_playerIndex
-          gosub CheckPlayerElimination
-          let CAPE_playerIndex = 3
-          let temp1 = CAPE_playerIndex
-          gosub CheckPlayerElimination
-          
-          rem Count remaining players and check game end (inline CheckGameEndCondition)
-          gosub CountRemainingPlayers
-          rem Game ends when 1 or fewer players remain
-          if playersRemaining <= 1 then gosub FindWinner : let gameEndTimer = 180 : let gameState = 2
+          gosub CheckAllPlayerEliminations
           
           rem Check if game should end and transition to winner screen
           rem gameState = 2 means game is ending, gameEndTimer counts down

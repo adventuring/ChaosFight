@@ -226,8 +226,34 @@ SelHandleDone
           rem Update character select animations
           gosub SelUpdateAnim
 
-          rem Check if all players are ready to start
-          gosub SelAllReady
+          rem Check if all players are ready to start (inline SelAllReady)
+          let readyCount  = 0
+
+          rem Count locked players
+          if playerLocked[0] then readyCount = readyCount + 1
+          if playerLocked[1] then readyCount = readyCount + 1
+          if controllerStatus & SetQuadtariDetected then SelQuadPlayersInline
+
+          goto SelSkipQuadPlyInline
+          
+SelQuadPlayersInline
+          if playerLocked[2] then readyCount = readyCount + 1
+          if playerLocked[3] then readyCount = readyCount + 1
+SelSkipQuadPlyInline
+          rem Check if enough players are ready
+          if controllerStatus & SetQuadtariDetected then SelQuadReadyInline
+
+          rem Need at least 1 player ready for 2-player mode
+          if playerLocked[0] then goto SelScreenDone
+
+          if playerLocked[1] then goto SelScreenDone
+
+          goto SelSkipQuadChkInline
+          
+SelQuadReadyInline
+          rem Need at least 2 players ready for 4-player mode
+          if readyCount>= 2 then goto SelScreenDone
+SelSkipQuadChkInline
 
           rem Draw character selection screen
           gosub SelDrawScreen
@@ -235,36 +261,7 @@ SelHandleDone
           drawscreen
           goto SelScreenLoop
 
-          rem Check if all players are ready
-SelAllReady
-          let readyCount  = 0
 
-          rem Count locked players
-          if playerLocked[0] then readyCount = readyCount + 1
-          if playerLocked[1] then readyCount = readyCount + 1
-          if controllerStatus & SetQuadtariDetected then SelQuadPlayers
-
-          goto SelSkipQuadPly
-          
-SelQuadPlayers
-          if playerLocked[2] then readyCount = readyCount + 1
-          if playerLocked[3] then readyCount = readyCount + 1
-SelSkipQuadPly
-          rem Check if enough players are ready
-          if controllerStatus & SetQuadtariDetected then SelQuadReady
-
-          rem Need at least 1 player ready for 2-player mode
-          if playerLocked[0] then goto SelScreenDone
-
-          if playerLocked[1] then goto SelScreenDone
-
-          goto SelSkipQuadChk
-          
-SelQuadReady
-          rem Need at least 2 players ready for 4-player mode
-          if readyCount>= 2 then goto SelScreenDone
-SelSkipQuadChk
-          return
 
           rem Draw character selection screen
 SelDrawScreen

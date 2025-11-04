@@ -104,18 +104,18 @@ FONT_NAMES = Numbers
 # Music names (MuseScore files)
 MUSIC_NAMES = AtariToday Interworldly Victory GameOver
 
-# Game-based character theme songs
-# Note: Must have 32 songs (one per character) - use placeholder for missing characters
+# Game-based character theme songs (unique songs only - no duplicates)
+# Character-to-song mapping is defined in Source/Data/CharacterThemeSongIndices.bas
 # Character 0-15 mappings: Bernie→Bernie, Curler→OCascadia, DragonOfStorms→Revontuli, ZoeRyen→EXO,
-#   FatTony→Grizzards, Megax→MegaxTheme, Harpy→HarpyTheme, KnightGuy→MagicalFairyForce,
-#   Frooty→FrootyTheme, Nefertem→Bolero, NinjishGuy→LowRes, PorkChop→PorkChopTheme,
-#   RadishGoblin→RadishGoblinTheme, RoboTito→RoboTito, Ursulo→SongOfTheBear, Shamone→DucksAway
+#   FatTony→Grizzards, Megax→Grizzards, Harpy→Revontuli, KnightGuy→MagicalFairyForce,
+#   Frooty→MagicalFairyForce, Nefertem→Bolero, NinjishGuy→LowRes, PorkChop→MagicalFairyForce,
+#   RadishGoblin→Bolero, RoboTito→RoboTito, Ursulo→SongOfTheBear, Shamone→DucksAway
 # Character 16: Character16Theme (placeholder)
 # Characters 17-30: Character*Theme (placeholders for future characters)
-# Character 31 (MethHound): MethHoundTheme
-GAME_THEME_SONGS = Bernie OCascadia Revontuli EXO Grizzards MegaxTheme HarpyTheme MagicalFairyForce FrootyTheme Bolero LowRes PorkChopTheme RadishGoblinTheme RoboTito SongOfTheBear DucksAway \
+# Character 31 (MethHound): DucksAway (reuses DucksAway from character 15)
+GAME_THEME_SONGS = Bernie OCascadia Revontuli EXO Grizzards MagicalFairyForce Bolero LowRes RoboTito SongOfTheBear DucksAway \
 	Character16Theme Character17Theme Character18Theme Character19Theme Character20Theme Character21Theme Character22Theme Character23Theme \
-	Character24Theme Character25Theme Character26Theme Character27Theme Character28Theme Character29Theme Character30Theme MethHoundTheme
+	Character24Theme Character25Theme Character26Theme Character27Theme Character28Theme Character29Theme Character30Theme
 
 # Sound effect names (MIDI files)
 SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \

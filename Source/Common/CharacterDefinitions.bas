@@ -258,9 +258,10 @@ end
           rem       Bit 2=gravity (MissileFlagGravity), Bit 3=bounce (MissileFlagBounce), Bit 4=friction (MissileFlagFriction)
           rem  Values use enum constants for bitfield encoding (see Enums.bas)
           rem  Curler = HitBackground|HitPlayer|Gravity|Bounce|Friction = 1+2+4+8+16 = 31 (%00011111)
+          rem  Dragon of Storms = HitBackground|Gravity = 1+4 = 5 (%00000101) for ballistic arc
           data CharacterMissileFlags
-              %00000000, %00011111, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
-          rem  0,      Curler(31), MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, 0, 0
+              %00000000, %00011111, %00000101, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
+          rem  0,      Curler(31), HitBackground|Gravity(5), 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, 0, 0
           rem  Ursulo changed from MissileFlagHitBackground (%00000001) to 0 (melee)
           end
 

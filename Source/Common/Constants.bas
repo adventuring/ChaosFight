@@ -152,7 +152,11 @@
           const GravityPerFrame = 1
           rem Pixels/frame added to vertical velocity when gravity applies
           const BounceDampenDivisor = 2
-          rem Divisor applied to velocity on bounce reflect
+          rem Divisor applied to velocity on bounce reflect (for minimal velocity reduction)
+          const CurlingFrictionCoefficient = 4
+          rem Ice-like friction coefficient (Q8 fixed-point: 4/256 = 1.56% per frame reduction)
+          rem Used for curling stone near-perfect momentum (very low friction, similar to ice)
+          rem Previous value: 32 (12.5% per frame) - too high for ice-like sliding
           const KnockbackImpulse = 4
           rem Pixels/frame impulse applied on hit knockback
           const HitstunFrames = 10

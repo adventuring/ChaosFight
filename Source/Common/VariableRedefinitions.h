@@ -504,9 +504,9 @@ WallBounceVelocityMultiplier = 192
  
 MinimumVelocityThreshold = 2
  
-CurlingFrictionCoefficient = 32
+rem CurlingFrictionCoefficient moved to Constants.bas (value: 4 for ice-like friction)
  
-BounceDampenDivisor = 4
+rem BounceDampenDivisor moved to Constants.bas (value: 2 for minimal velocity reduction)
  
 GravityPerFrame = 1
  

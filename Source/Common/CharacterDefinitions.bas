@@ -246,10 +246,10 @@ end
           rem  Note: Bit 0=hit bg (MissileFlagHitBackground), Bit 1=hit player (MissileFlagHitPlayer), 
           rem       Bit 2=gravity (MissileFlagGravity), Bit 3=bounce (MissileFlagBounce), Bit 4=friction (MissileFlagFriction)
           rem  Values use enum constants for bitfield encoding (see Enums.bas)
-          rem  Curler = MissileFlagHitPlayer|MissileFlagGravity|MissileFlagBounce|MissileFlagFriction = 2+4+8+16 = 30
+          rem  Curler = HitBackground|HitPlayer|Gravity|Bounce|Friction = 1+2+4+8+16 = 31 (%00011111)
           data CharacterMissileFlags
-              %00000000, %00011110, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
-          rem  0,      Curler(30), MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0
+              %00000000, %00011111, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
+          rem  0,      Curler(31), MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0
           end
 
           rem =================================================================

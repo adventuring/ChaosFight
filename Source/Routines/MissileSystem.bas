@@ -221,40 +221,47 @@ GravityDone
           let missileVelocityXCalc = missileVelocityX[UOM_playerIndex]
           rem Get current X velocity
           
-          rem Apply coefficient-based friction: reduce by 12.5% per frame (32/256 = 1/8)
-          rem CurlingFrictionCoefficient = 32 (Q8 fixed-point: 32/256 = 0.125 = 1/8)
+          rem Apply ice-like friction: reduce by CurlingFrictionCoefficient/256 per frame
+          rem CurlingFrictionCoefficient = 4 (Q8 fixed-point: 4/256 = 1.56% per frame)
+          rem Derived from constant: reduction = velocity / (256 / CurlingFrictionCoefficient) = velocity / 64
           if missileVelocityXCalc = 0 then FrictionDone
           rem Zero velocity, no friction to apply
           
-          rem Calculate friction reduction (velocity / 8, approximates 12.5% reduction)
+          rem Calculate friction reduction (velocity / 64, approximates 1.56% reduction)
           let velocityCalculation = missileVelocityXCalc
           rem Check if velocity is negative (two's complement: values > 127 are negative)
           rem For unsigned bytes, negative values in two's complement are 128-255
           if velocityCalculation > 127 then FrictionNegative
           rem Positive velocity
-          rem Divide by 8 using bit shift (3 right shifts)
+          rem Divide by 64 using bit shift (6 right shifts) - derived from CurlingFrictionCoefficient
           asm
             lda velocityCalculation
             lsr a
             lsr a
             lsr a
+            lsr a
+            lsr a
+            lsr a
             sta velocityCalculation
           end
-          rem Reduce by 1/8 (12.5%)
+          rem Reduce by 1/64 (1.56% - ice-like friction)
           let missileVelocityXCalc = missileVelocityXCalc - velocityCalculation
           goto FrictionApply
 FrictionNegative
           rem Negative velocity - convert to positive for division
           let velocityCalculation = 0 - velocityCalculation
-          rem Divide by 8 using bit shift (3 right shifts)
+          rem Divide by 64 using bit shift (6 right shifts) - derived from CurlingFrictionCoefficient
           asm
             lda velocityCalculation
             lsr a
             lsr a
             lsr a
+            lsr a
+            lsr a
+            lsr a
             sta velocityCalculation
           end
-          rem Reduce by 1/8 (12.5%)
+          rem Reduce by 1/64 (1.56% - ice-like friction)
           let missileVelocityXCalc = missileVelocityXCalc + velocityCalculation
           rem Add back (since missileVelocityXCalc was negative)
 FrictionApply

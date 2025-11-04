@@ -62,18 +62,18 @@ SpawnMissile
           rem Set missile position using array access (write to _W port)
           let missileX[SM_playerIndex] = playerX[SM_playerIndex]
           let missileY_W[SM_playerIndex] = playerY[SM_playerIndex] + SM_bitFlag
-          if SM_facing = 0 then missileX[SM_playerIndex] = missileX[SM_playerIndex] - MissileSpawnOffsetLeft
+          if SM_facing = 0 then let missileX[SM_playerIndex] = missileX[SM_playerIndex] - MissileSpawnOffsetLeft
           rem Facing left, spawn left
-          if SM_facing = 1 then missileX[SM_playerIndex] = missileX[SM_playerIndex] + MissileSpawnOffsetRight
+          if SM_facing = 1 then let missileX[SM_playerIndex] = missileX[SM_playerIndex] + MissileSpawnOffsetRight
           rem Facing right, spawn right
           
           rem Set active bit for this player missile
           rem Bit 0 = P1, Bit 1 = P2, Bit 2 = P3, Bit 3 = P4
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if SM_playerIndex = 0 then SM_bitFlag  = 1
-          if SM_playerIndex = 1 then SM_bitFlag  = 2
-          if SM_playerIndex = 2 then SM_bitFlag  = 4
-          if SM_playerIndex = 3 then SM_bitFlag  = 8
+          if SM_playerIndex = 0 then let SM_bitFlag  = 1
+          if SM_playerIndex = 1 then let SM_bitFlag  = 2
+          if SM_playerIndex = 2 then let SM_bitFlag  = 4
+          if SM_playerIndex = 3 then let SM_bitFlag  = 8
           let missileActive  = missileActive | SM_bitFlag
           
           rem Initialize lifetime counter from character data table
@@ -86,7 +86,7 @@ SpawnMissile
           rem Initialize velocity from character data for friction physics
           let SM_velocityCalc  = CharacterMissileMomentumX[SM_characterType]
           rem Get base X velocity
-          if SM_facing = 0 then SM_velocityCalc  = 0 - SM_velocityCalc
+          if SM_facing = 0 then let SM_velocityCalc  = 0 - SM_velocityCalc
           rem Apply facing direction (left = negative)
           let missileVelocityX[SM_playerIndex] = SM_velocityCalc
           
@@ -177,9 +177,9 @@ UpdateOneMissile
           dim UOM_missileFlags = temp5
           rem Check if this missile is active
           let UOM_bitFlag  = 1
-          if UOM_playerIndex = 1 then UOM_bitFlag  = 2
-          if UOM_playerIndex = 2 then UOM_bitFlag  = 4
-          if UOM_playerIndex = 3 then UOM_bitFlag  = 8
+          if UOM_playerIndex = 1 then let UOM_bitFlag  = 2
+          if UOM_playerIndex = 2 then let UOM_bitFlag  = 4
+          if UOM_playerIndex = 3 then let UOM_bitFlag  = 8
           let UOM_isActive  = missileActive & UOM_bitFlag
           if UOM_isActive  = 0 then return
           rem Not active, skip
@@ -408,7 +408,7 @@ MissileSysPF
           rem pfread can only be used in if/then conditionals
           let temp4 = 0
           rem Default: clear
-          if pfread(temp6, temp3) then temp4 = 1
+          if pfread(temp6, temp3) then let temp4 = 1
           rem Hit playfield
           
           return
@@ -543,7 +543,7 @@ DiveCheckDone
           rem Apply damage
           let oldHealthValue = playerHealth[temp4]
           let playerHealth[temp4] = playerHealth[temp4] - temp6
-          if playerHealth[temp4] > oldHealthValue then playerHealth[temp4] = 0
+          if playerHealth[temp4] > oldHealthValue then let playerHealth[temp4] = 0
           
           rem Apply knockback (weight-based scaling - heavier characters resist more)
           rem Calculate direction: if missile moving right, push defender right
@@ -648,9 +648,9 @@ BounceDone
 DeactivateMissile
           rem Clear active bit for this player missile
           let temp6  = 1
-          if temp1 = 1 then temp6  = 2
-          if temp1 = 2 then temp6  = 4
-          if temp1 = 3 then temp6  = 8
+          if temp1 = 1 then let temp6  = 2
+          if temp1 = 2 then let temp6  = 4
+          if temp1 = 3 then let temp6  = 8
           let temp6 = MaxByteValue - temp6
           rem Invert bits
           let missileActive  = missileActive & temp6

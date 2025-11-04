@@ -8,18 +8,19 @@ rem COMBAT SYSTEM - Generic subroutines using player arrays
 rem Apply damage from attacker to defender
 rem Inputs: attacker_id, defender_id
 ApplyDamage
+  dim AD_damage = temp1
   rem Calculate damage (considering defender state)
-  let temp1 = playerDamage[attacker_id] - playerDamage[defender_id]
-  if temp1 < 1 then let temp1 = 1  rem Minimum damage
+  let AD_damage = playerDamage[attacker_id] - playerDamage[defender_id]
+  if AD_damage < 1 then let AD_damage = 1  rem Minimum damage
   
   rem Apply damage
-  playerHealth[defender_id] = playerHealth[defender_id] - temp1
+  playerHealth[defender_id] = playerHealth[defender_id] - AD_damage
   
   rem Visual feedback (to be implemented)
-  gosub ShowDamageIndicator defender_id, temp1
+  gosub ShowDamageIndicator defender_id, AD_damage
   
   rem Sound effect (to be implemented)
-  gosub PlayDamageSound temp1
+  gosub PlayDamageSound AD_damage
   
   return
 
@@ -27,6 +28,7 @@ rem Check if attack hits defender
 rem Inputs: attacker_id, defender_id
 rem Returns: hit (1 = hit, 0 = miss)
 CheckAttackHit
+  dim CAH_defenderId = defender_id
   rem Calculate attack hitbox based on attacker facing and attack type
   gosub CalculateAttackHitbox
   
@@ -36,19 +38,19 @@ CheckAttackHit
   rem Hitbox: [hitbox_left, hitbox_right] x [hitbox_top, hitbox_bottom]
   rem Overlap occurs when: defender_right > hitbox_left AND defender_left < hitbox_right
   rem                      AND defender_bottom > hitbox_top AND defender_top < hitbox_bottom
-          if playerX[defender_id] + PlayerSpriteWidth <= hitbox_left then NoHit
+          if playerX[CAH_defenderId] + PlayerSpriteWidth <= hitbox_left then NoHit
           rem Defender right edge <= hitbox left edge (no overlap)
-          if playerX[defender_id] >= hitbox_right then NoHit
+          if playerX[CAH_defenderId] >= hitbox_right then NoHit
           rem Defender left edge >= hitbox right edge (no overlap)
-          if playerY[defender_id] + PlayerSpriteHeight <= hitbox_top then NoHit
+          if playerY[CAH_defenderId] + PlayerSpriteHeight <= hitbox_top then NoHit
           rem Defender bottom edge <= hitbox top edge (no overlap)
-          if playerY[defender_id] >= hitbox_bottom then NoHit
+          if playerY[CAH_defenderId] >= hitbox_bottom then NoHit
           rem Defender top edge >= hitbox bottom edge (no overlap)
   
   rem All bounds checked - defender is inside hitbox
           let hit = 1
           return
-  
+   
 NoHit
   rem Defender is outside hitbox bounds
           let hit = 0
@@ -58,51 +60,52 @@ NoHit
 rem Inputs: attacker_id
 rem Outputs: hitbox_left, hitbox_right, hitbox_top, hitbox_bottom
 CalculateAttackHitbox
+  dim CAH_attackerId = attacker_id
   rem Set hitbox based on attack type and direction
-  on PlayerAttackType[attacker_id] goto MeleeHitbox, ProjectileHitbox, AreaHitbox
+  on PlayerAttackType[CAH_attackerId] goto MeleeHitbox, ProjectileHitbox, AreaHitbox
   
 MeleeHitbox
     rem Melee hitbox extends PlayerSpriteWidth pixels in facing direction
-    on PlayerFacing[attacker_id] goto FacingRight, FacingLeft, FacingUp, FacingDown
+    on PlayerFacing[CAH_attackerId] goto FacingRight, FacingLeft, FacingUp, FacingDown
     
 FacingRight
       rem Hitbox extends 16 pixels forward from sprite right edge
       rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
       rem Hitbox: [playerX+16, playerX+32] x [playerY, playerY+16]
-      let hitbox_left = playerX[attacker_id] + PlayerSpriteWidth
-      let hitbox_right = playerX[attacker_id] + PlayerSpriteWidth + PlayerSpriteWidth
-      let hitbox_top = playerY[attacker_id]
-      let hitbox_bottom = playerY[attacker_id] + PlayerSpriteHeight
+      let hitbox_left = playerX[CAH_attackerId] + PlayerSpriteWidth
+      let hitbox_right = playerX[CAH_attackerId] + PlayerSpriteWidth + PlayerSpriteWidth
+      let hitbox_top = playerY[CAH_attackerId]
+      let hitbox_bottom = playerY[CAH_attackerId] + PlayerSpriteHeight
       return
       
 FacingLeft
       rem Hitbox extends 16 pixels forward from sprite left edge
       rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
       rem Hitbox: [playerX-16, playerX] x [playerY, playerY+16]
-      let hitbox_left = playerX[attacker_id] - PlayerSpriteWidth
-      let hitbox_right = playerX[attacker_id]
-      let hitbox_top = playerY[attacker_id]
-      let hitbox_bottom = playerY[attacker_id] + PlayerSpriteHeight
+      let hitbox_left = playerX[CAH_attackerId] - PlayerSpriteWidth
+      let hitbox_right = playerX[CAH_attackerId]
+      let hitbox_top = playerY[CAH_attackerId]
+      let hitbox_bottom = playerY[CAH_attackerId] + PlayerSpriteHeight
       return
       
 FacingUp
       rem Hitbox extends 16 pixels upward from sprite top edge
       rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
       rem Hitbox: [playerX, playerX+16] x [playerY-16, playerY]
-      let hitbox_left = playerX[attacker_id]
-      let hitbox_right = playerX[attacker_id] + PlayerSpriteWidth
-      let hitbox_top = playerY[attacker_id] - PlayerSpriteHeight
-      let hitbox_bottom = playerY[attacker_id]
+      let hitbox_left = playerX[CAH_attackerId]
+      let hitbox_right = playerX[CAH_attackerId] + PlayerSpriteWidth
+      let hitbox_top = playerY[CAH_attackerId] - PlayerSpriteHeight
+      let hitbox_bottom = playerY[CAH_attackerId]
       return
       
 FacingDown
       rem Hitbox extends 16 pixels downward from sprite bottom edge
       rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
       rem Hitbox: [playerX, playerX+16] x [playerY+16, playerY+32]
-      let hitbox_left = playerX[attacker_id]
-      let hitbox_right = playerX[attacker_id] + PlayerSpriteWidth
-      let hitbox_top = playerY[attacker_id] + PlayerSpriteHeight
-      let hitbox_bottom = playerY[attacker_id] + PlayerSpriteHeight + PlayerSpriteHeight
+      let hitbox_left = playerX[CAH_attackerId]
+      let hitbox_right = playerX[CAH_attackerId] + PlayerSpriteWidth
+      let hitbox_top = playerY[CAH_attackerId] + PlayerSpriteHeight
+      let hitbox_bottom = playerY[CAH_attackerId] + PlayerSpriteHeight + PlayerSpriteHeight
       return
   
 ProjectileHitbox
@@ -124,21 +127,23 @@ AreaHitbox
 rem Process attack for one attacker against all defenders
 rem Input: attacker_id
 ProcessAttackerAttacks
+  dim PAA_attackerId = attacker_id
+  dim PAA_playerState = temp1
   rem Check if attacker is facing right (PlayerStateFacing = bit 0)
-  temp1 = playerState[attacker_id]
-  if temp1{0} = 0 then return
+  let PAA_playerState = playerState[PAA_attackerId]
+  if PAA_playerState{0} = 0 then return
   
   rem Attack each defender
   for defender = 0 to 3
     rem Skip if defender is attacker
-    if defender = attacker_id then NextDefender
+    if defender = PAA_attackerId then NextDefender
     
     rem Skip if defender is dead
     if playerHealth[defender] <= 0 then NextDefender
     
     rem Check if attack hits
-    gosub CheckAttackHit attacker_id, defender
-          if hit then gosub ApplyDamage attacker_id, defender
+    gosub CheckAttackHit PAA_attackerId, defender
+          if hit then gosub ApplyDamage PAA_attackerId, defender
     
 NextDefender
   next
@@ -166,7 +171,8 @@ CombatShowDamageIndicator
 
 rem Damage sound system
 PlayDamageSound
-  temp1 = SoundHit
+  dim PDS_soundId = temp1
+  let PDS_soundId = SoundHit
   gosub bank15 PlaySoundEffect
   return
 

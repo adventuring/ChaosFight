@@ -470,3 +470,15 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
 - Reserve 4 banks for character art
 - Reserve slots for 32 characters and 32 arenas
 
+## SCRAM Variable Access Rules
+
+SuperChip RAM (SCRAM) variables have separate read (`r000`-`r127`) and write (`w000`-`w127`) ports that map to the same physical 128-byte RAM. To ensure correct operation and code clarity:
+
+- **MUST use `_R` suffix for all read operations** (e.g., `selectedArena_R`)
+- **MUST use `_W` suffix for all write operations** (e.g., `selectedArena_W`)
+- **Convenience aliases are NOT permitted** - do not declare `dim selectedArena = w014` without `_R`/`_W` suffix
+- All SCRAM variable declarations must include both `_R` and `_W` variants
+- Code must explicitly use the appropriate port for each operation
+
+**Rationale**: SCRAM has separate read/write ports. Using convenience aliases makes it unclear which port is accessed, which can lead to bugs where writes are attempted via read ports or reads via write ports. Explicit `_R`/`_W` usage makes the code intent clear and prevents errors.
+

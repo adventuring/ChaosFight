@@ -188,9 +188,19 @@ UpdatePlayer34HealthBars
           temp3 = temp1 / 10
           rem Tens digit (0-9)
           rem Calculate ones digit: temp1 - (temp3 * 10)
-          rem Since batariBASIC only supports * by powers of 2, compute 10 as 8 + 2
-          temp8 = temp3 * 8
-          temp8 = temp8 + temp3 * 2
+          rem Multiply temp3 by 10 using assembly: 10 = 8 + 2
+          asm
+            lda temp3
+            sta temp8
+            asl a
+            asl a
+            asl a
+            clc
+            adc temp8
+            asl a
+            sta temp8
+          end
+          rem temp8 = temp3 * 10
           temp4 = temp1 - temp8
           rem Ones digit (0-9)
           rem Combine into BCD: tens * 16 + ones (BCD format)
@@ -202,9 +212,19 @@ UpdatePlayer34HealthBars
           temp6 = temp2 / 10
           rem Tens digit (0-9)
           rem Calculate ones digit: temp2 - (temp6 * 10)
-          rem Since batariBASIC only supports * by powers of 2, compute 10 as 8 + 2
-          temp8 = temp6 * 8
-          temp8 = temp8 + temp6 * 2
+          rem Multiply temp6 by 10 using assembly: 10 = 8 + 2
+          asm
+            lda temp6
+            sta temp8
+            asl a
+            asl a
+            asl a
+            clc
+            adc temp8
+            asl a
+            sta temp8
+          end
+          rem temp8 = temp6 * 10
           temp7 = temp2 - temp8
           rem Ones digit (0-9)
           rem Combine into BCD: tens * 16 + ones

@@ -102,10 +102,10 @@ LoadMusicNote0
           let MusicVoice0Frame = LMN0_duration + LMN0_delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          dim LMN0_pointerL_old = temp2
-          let LMN0_pointerL_old = MusicVoice0PointerL
-          let MusicVoice0PointerL = LMN0_pointerL_old + 4
-          if MusicVoice0PointerL < LMN0_pointerL_old then let MusicVoice0PointerH = MusicVoice0PointerH + 1
+          rem Reuse temp2 (LMN0_audcv no longer needed) for pointer calculation
+          let temp2 = MusicVoice0PointerL
+          let MusicVoice0PointerL = temp2 + 4
+          if MusicVoice0PointerL < temp2 then let MusicVoice0PointerH = MusicVoice0PointerH + 1
           
           return
           
@@ -154,10 +154,10 @@ LoadMusicNote1
           let MusicVoice1Frame = LMN1_duration + LMN1_delay
           
           rem Advance pointer by 4 bytes
-          dim LMN1_pointerL_old = temp2
-          let LMN1_pointerL_old = MusicVoice1PointerL
-          let MusicVoice1PointerL = LMN1_pointerL_old + 4
-          if MusicVoice1PointerL < LMN1_pointerL_old then let MusicVoice1PointerH = MusicVoice1PointerH + 1
+          rem Reuse temp2 (LMN1_audcv no longer needed) for pointer calculation
+          let temp2 = MusicVoice1PointerL
+          let MusicVoice1PointerL = temp2 + 4
+          if MusicVoice1PointerL < temp2 then let MusicVoice1PointerH = MusicVoice1PointerH + 1
           
           return
           

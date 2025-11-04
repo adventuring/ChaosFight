@@ -7,20 +7,62 @@
 
           rem Apply damage from attacker to defender
           rem Inputs: attackerID, defenderID
+          rem Process:
+          rem   1. Player begins "hurt" animation (ActionHit = 5)
+          rem   2. Player enters recovery frames count and color dims (or magenta on SECAM)
+          rem   3. If player health >= damage amount, decrement health
+          rem   4. If player health < damage amount, player dies (instantly vanishes)
 ApplyDamage
           dim AD_damage = temp1
+          dim AD_currentHealth = temp2
+          dim AD_willDie = temp3
+          dim AD_recoveryFrames = temp4
+          
           rem Calculate damage (considering defender state)
           let AD_damage = playerDamage[attackerID] - playerDamage[defenderID]
-          if AD_damage < 1 then let AD_damage = 1  rem Minimum damage
+          if AD_damage < 1 then let AD_damage = 1 : rem Minimum damage
 
-          rem Apply damage
-          let playerHealth[defenderID] = playerHealth[defenderID] - AD_damage
+          rem Check if player will die from this damage
+          let AD_currentHealth = playerHealth[defenderID]
+          let AD_willDie = 0
+          if AD_currentHealth < AD_damage then let AD_willDie = 1 : rem Will die
           
-          rem Visual feedback (to be implemented)
-          gosub ShowDamageIndicator defenderID, AD_damage
+          rem If player will die, instantly vanish (eliminate)
+          if AD_willDie then goto PlayerDies
           
-          rem Sound effect (to be implemented)
-          gosub PlayDamageSound AD_damage
+          rem Player survives - apply damage and enter hurt state
+          let playerHealth[defenderID] = AD_currentHealth - AD_damage
+          
+          rem Set hurt animation (ActionHit = 5)
+          let currentPlayer = defenderID
+          let temp2 = ActionHit
+          gosub SetPlayerAnimation
+          
+          rem Calculate recovery frames (damage / 2, clamped 10-30)
+          let AD_recoveryFrames = AD_damage / 2
+          if AD_recoveryFrames < 10 then let AD_recoveryFrames = 10
+          if AD_recoveryFrames > 30 then let AD_recoveryFrames = 30
+          let playerRecoveryFrames[defenderID] = AD_recoveryFrames
+          
+          rem Set playerState bit 3 (recovery flag) when recovery frames are set
+          let playerState[defenderID] = playerState[defenderID] | 8
+          
+          rem Sound effect
+          gosub PlayDamageSound
+          
+          return
+
+PlayerDies
+          rem Player dies - instantly vanish
+          let playerHealth[defenderID] = 0
+          
+          rem Trigger elimination immediately (instantly vanish)
+          rem CheckPlayerElimination will hide sprite and handle elimination effects
+          let temp1 = defenderID
+          gosub CheckPlayerElimination
+          
+          rem Sound effect
+          gosub PlayDamageSound
           
           return
 

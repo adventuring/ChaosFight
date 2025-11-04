@@ -11,7 +11,8 @@ SelScreenEntry
           let playerLocked[1] = 0
           let playerLocked[2] = 0
           let playerLocked[3] = 0
-          let controllerStatus  = controllerStatus & ClearQuadtariDetected
+          rem NOTE: Do NOT clear controllerStatus flags here - monotonic detection (upgrades only)
+          rem Controller detection is handled by DetectControllers with monotonic state machine
           
           rem Initialize character select animations
           let charSelectAnimTimer  = 0
@@ -594,12 +595,14 @@ SelDetectQuad
           goto SelSkipQuadAbs
 
 SelQuadAbsent
-          rem Quadtari not detected - could set visual indicator
-          rem COLUBK = ColRed(2)  ; red background if desired
-          let controllerStatus  = controllerStatus & ClearQuadtariDetected
+          rem Quadtari not detected in this detection cycle
+          rem NOTE: Do NOT clear controllerStatus - monotonic detection (upgrades only)
+          rem If Quadtari was previously detected, it remains detected (monotonic state machine)
+          rem Only DetectControllers (called via SELECT) can update controller status
           return
           
 SelSkipQuadAbs
-          rem Quadtari detected
+          rem Quadtari detected - use monotonic merge to preserve existing capabilities
+          rem OR merge ensures upgrades only, never downgrades
           let controllerStatus  = controllerStatus | SetQuadtariDetected
           return

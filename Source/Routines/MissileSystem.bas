@@ -236,7 +236,8 @@ FrictionApply
           let temp2  = missileVelocityX
           rem Update temp2 for position calculation
           rem Check if velocity dropped below threshold
-          if missileVelocityX < MinimumVelocityThreshold && missileVelocityX > -MinimumVelocityThreshold then gosub DeactivateMissile : return
+          rem tail call
+          if missileVelocityX < MinimumVelocityThreshold && missileVelocityX > -MinimumVelocityThreshold then goto DeactivateMissile
           rem Update stored X velocity with friction applied
           let missileVelX[UOM_playerIndex] = missileVelocityX
 FrictionDone
@@ -247,7 +248,8 @@ FrictionDone
           
           rem Check screen bounds
           gosub CheckMissileBounds
-          if temp4 then gosub DeactivateMissile : return 
+          rem tail call
+          if temp4 then goto DeactivateMissile 
           rem Off-screen, deactivate
           
           rem Check collision with playfield if flag is set
@@ -298,9 +300,9 @@ GuardBounceFromCollision
 HandleMissileDamage
           gosub HandleMissileHit
           rem HandleMissileHit applies damage and effects
-          gosub DeactivateMissile
+          rem tail call
+          goto DeactivateMissile
           rem Missile disappears after hitting player
-          return
 MissileSystemNoHit
           
           rem Decrement lifetime counter and check expiration
@@ -310,7 +312,8 @@ MissileSystemNoHit
           rem Decrement if not set to infinite (infinite until collision)
           if missileLifetimeValue = MissileLifetimeInfinite then MissileUpdateComplete
           let missileLifetimeValue = missileLifetimeValue - 1
-          if missileLifetimeValue = 0 then gosub DeactivateMissile : return
+          rem tail call
+          if missileLifetimeValue = 0 then goto DeactivateMissile
           let missileLifetime[UOM_playerIndex] = missileLifetimeValue
 MissileUpdateComplete
           

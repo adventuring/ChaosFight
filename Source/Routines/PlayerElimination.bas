@@ -223,7 +223,8 @@ FindWinner
           if !temp2 then let winnerPlayerIndex = 3
           
           rem If no winner found (all eliminated), pick last eliminated
-          if winnerPlayerIndex = 255 then gosub FindLastEliminated : return
+          rem tail call
+          if winnerPlayerIndex = 255 then goto FindLastEliminated
 
           rem =================================================================
           rem FIND LAST ELIMINATED

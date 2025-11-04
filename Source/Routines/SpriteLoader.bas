@@ -45,14 +45,17 @@ LoadCharacterSprite
           rem tail call
           if ! temp5 then goto LoadSpecialSprite
           
-          rem Check if character is special placeholder
-          if temp1 = 255 then let temp6 = SpriteNo : gosub LoadSpecialSprite : return 
+                    rem Check if character is special placeholder
+          rem tail call
+          if temp1 = 255 then let temp6 = SpriteNo : goto LoadSpecialSprite                                                                           
           rem NoCharacter = 255
           
-          if temp1 = 254 then let temp6 = SpriteCPU : gosub LoadSpecialSprite : return 
+          rem tail call
+          if temp1 = 254 then let temp6 = SpriteCPU : goto LoadSpecialSprite                                                                          
           rem CPUCharacter = 254
           
-          if temp1 = 253 then let temp6 = SpriteQuestionMark : gosub LoadSpecialSprite : return 
+          rem tail call
+          if temp1 = 253 then let temp6 = SpriteQuestionMark : goto LoadSpecialSprite                                                                 
           rem RandomCharacter = 253
           
           rem Use character art location system for sprite loading

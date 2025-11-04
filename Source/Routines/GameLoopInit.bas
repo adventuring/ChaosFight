@@ -197,6 +197,7 @@ Player3HealthSet
           rem TODO: Replace def statements with regular subroutines
           rem batariBASIC may not support def statements with parameters
 
-          rem Enter main loop
-          goto GameMainLoop
+          rem Gameplay state initialized - return to ChangeGameMode
+          rem MainLoop will dispatch to GameMainLoop based on gameMode = ModeGame
+          return
 

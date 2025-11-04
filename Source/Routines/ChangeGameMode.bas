@@ -39,7 +39,8 @@ SetupArenaSelect
 
 SetupGame
           gosub bank11 BeginGameLoop
-          rem BeginGameLoop handles transition internally
+          rem BeginGameLoop resets gameplay state and returns
+          rem MainLoop will dispatch to GameMainLoop based on gameMode = ModeGame
           return
 
 SetupWinner

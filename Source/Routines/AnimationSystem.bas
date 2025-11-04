@@ -81,7 +81,10 @@ UpdateSprite
           return
 
           rem Set animation action for a player
-          rem Input: currentPlayer = player index (0-3), temp2 = animation action (0-15)
+          rem INPUT: currentPlayer = player index (0-3), temp2 = animation action (0-15)
+          rem OUTPUT: None
+          rem EFFECTS: Sets new animation sequence, resets animation frame to 0, resets animation counter,
+          rem           immediately updates sprite graphics to show first frame of new animation
 SetPlayerAnimation
           dim SPA_animationAction = temp2
           if SPA_animationAction >= AnimationSequenceCount then return
@@ -103,16 +106,18 @@ SetPlayerAnimation
           return
 
           rem Get current animation frame for a player
-          rem Input: currentPlayer = player index (0-3)
-          rem Output: temp2 = current animation frame (0-7)
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: temp2 = current animation frame (0-7)
+          rem EFFECTS: None (read-only query)
 GetCurrentAnimationFrame
           dim GCAF_currentFrame = temp2
           let GCAF_currentFrame = currentAnimationFrame[currentPlayer]
           return
 
           rem Get current animation action for a player
-          rem Input: currentPlayer = player index (0-3)
-          rem Output: temp2 = current animation action (0-15)
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: temp2 = current animation action (0-15)
+          rem EFFECTS: None (read-only query)
 GetCurrentAnimationAction
           dim GCAA_currentAction = temp2
           let GCAA_currentAction = currentAnimationSeq[currentPlayer]
@@ -125,6 +130,9 @@ GetCurrentAnimationSequence
 
           rem Initialize animation system for all players
           rem Called at game start to set up initial animation states
+          rem INPUT: None
+          rem OUTPUT: None
+          rem EFFECTS: Sets all players (0-3) to idle animation state (ActionIdle)
 InitializeAnimationSystem
           rem Initialize all players to idle animation
           currentPlayer = 0  : temp2 = ActionIdle  : gosub SetPlayerAnimation
@@ -138,42 +146,54 @@ InitializeAnimationSystem
           rem =================================================================
 
           rem Set walking animation for a player
-          rem Input: currentPlayer = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: None
+          rem EFFECTS: Changes player animation to ActionWalking state
 SetWalkingAnimation
           temp2 = ActionWalking
           gosub SetPlayerAnimation
           return
 
           rem Set idle animation for a player
-          rem Input: currentPlayer = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: None
+          rem EFFECTS: Changes player animation to ActionIdle state
 SetIdleAnimation
           temp2 = ActionIdle
           gosub SetPlayerAnimation
           return
 
           rem Set attack animation for a player
-          rem Input: currentPlayer = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: None
+          rem EFFECTS: Changes player animation to ActionAttackWindup state
 SetAttackAnimation
           temp2 = ActionAttackWindup
           gosub SetPlayerAnimation
           return
 
           rem Set hit animation for a player
-          rem Input: currentPlayer = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: None
+          rem EFFECTS: Changes player animation to ActionHit state
 SetHitAnimation
           temp2 = ActionHit
           gosub SetPlayerAnimation
           return
 
           rem Set jumping animation for a player
-          rem Input: currentPlayer = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: None
+          rem EFFECTS: Changes player animation to ActionJumping state
 SetJumpingAnimation
           temp2 = ActionJumping
           gosub SetPlayerAnimation
           return
 
           rem Set falling animation for a player
-          rem Input: currentPlayer = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: None
+          rem EFFECTS: Changes player animation to ActionFalling state
 SetFallingAnimation
           temp2 = ActionFalling
           gosub SetPlayerAnimation
@@ -184,8 +204,9 @@ SetFallingAnimation
           rem =================================================================
 
           rem Check if player is in walking animation
-          rem Input: currentPlayer = player index (0-3)
-          rem Output: temp2 = 1 if walking, 0 if not
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: temp2 = 1 if walking, 0 if not
+          rem EFFECTS: None (read-only query)
 IsPlayerWalking
           dim IPW_isWalking = temp2
           let IPW_isWalking = 0
@@ -193,8 +214,9 @@ IsPlayerWalking
           return
 
           rem Check if player is in attack animation
-          rem Input: currentPlayer = player index (0-3)
-          rem Output: temp2 = 1 if attacking, 0 if not
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: temp2 = 1 if attacking, 0 if not
+          rem EFFECTS: None (read-only query)
 IsPlayerAttacking
           temp2 = 0
           if currentAnimationSeq[currentPlayer] < ActionAttackWindup then goto NotAttacking
@@ -204,16 +226,18 @@ NotAttacking
           return
 
           rem Check if player is in hit animation
-          rem Input: currentPlayer = player index (0-3)
-          rem Output: temp2 = 1 if hit, 0 if not
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: temp2 = 1 if hit, 0 if not
+          rem EFFECTS: None (read-only query)
 IsPlayerHit
           temp2 = 0
           if currentAnimationSeq[currentPlayer] = ActionHit then temp2 = 1
           return
 
           rem Check if player is in jumping animation
-          rem Input: currentPlayer = player index (0-3)
-          rem Output: temp2 = 1 if jumping, 0 if not
+          rem INPUT: currentPlayer = player index (0-3)
+          rem OUTPUT: temp2 = 1 if jumping, 0 if not
+          rem EFFECTS: None (read-only query)
 IsPlayerJumping
           temp2 = 0
           if currentAnimationSeq[currentPlayer] = ActionJumping then goto IsJumping

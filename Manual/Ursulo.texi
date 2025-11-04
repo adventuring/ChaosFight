@@ -2,8 +2,8 @@
 @display
 @group
     Weight: 544.31 kg (1200.0 lbs)
-    Attack: Ranged (2×2 pixels, ballistic arc)
-    Special: Strongest throw, hardest to knock back
+    Attack: Melee (claw swipe)
+    Special: Powerful melee attack, hardest to knock back
     Species: Bear with unfortunate abduction problems
     Nemeses: Wizards, robots, and penguins (who keep abducting him)
     Original Game: Game of the Bear, Game of the Bear 2: 2 Much 2 Bear, and Game of the Bear 3: Polar Opposites (all vhzc)

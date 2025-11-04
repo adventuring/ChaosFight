@@ -313,7 +313,7 @@ CharacterSelectRollPlayer0
           rem If > 15, stay as RandomCharacter and retry next frame
           if temp2 > MaxCharacter then CharacterSelectRollsDone
           rem Valid! Set character and lock with normal or handicap
-          playerChar[0] = temp2
+          let playerChar[0] = temp2
           if randomSelectFlags[0] then goto CharacterSelectLockPlayer0Handicap
           let playerLocked[0] = 1
           goto CharacterSelectLockPlayer0Done

@@ -659,6 +659,41 @@
           dim damageWeightProduct_R = r106
           dim damageWeightProduct = w106
           rem Intermediate value: damage * weight (used in fall damage calculations)
+          
+          dim missileLifetimeValue_W = w107
+          dim missileLifetimeValue_R = r107
+          dim missileLifetimeValue = w107
+          rem Missile lifetime value from CharacterMissileLifetime table
+          
+          dim velocityCalculation_W = w108
+          dim velocityCalculation_R = r108
+          dim velocityCalculation = w108
+          rem Intermediate velocity calculation (e.g., velocity / 2, velocity / 4)
+          
+          dim missileVelocityX_W = w109
+          dim missileVelocityX_R = r109
+          dim missileVelocityX = w109
+          rem Missile X velocity for friction calculations
+          
+          dim soundEffectID_W = w110
+          dim soundEffectID_R = r110
+          dim soundEffectID = w110
+          rem Sound effect ID for playback
+          
+          dim characterIndex_W = w111
+          dim characterIndex_R = r111
+          dim characterIndex = w111
+          rem Character index for table lookups
+          
+          dim aoeOffset_W = w112
+          dim aoeOffset_R = r112
+          dim aoeOffset = w112
+          rem AOE offset value from CharacterAOEOffsets table
+          
+          dim healthBarRemainder_W = w113
+          dim healthBarRemainder_R = r113
+          dim healthBarRemainder = w113
+          rem Health bar remainder calculation (for displaying partial bars)
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM to free zero-page space
           rem batariBASIC automatically handles carry operations for 8.8 fixed-point arithmetic

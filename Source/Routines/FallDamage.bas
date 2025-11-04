@@ -109,7 +109,9 @@ CheckFallDamage
           rem Base damage = (velocity - safe_velocity) * base_damage_multiplier
           rem Base damage multiplier: 2 (so 1 extra velocity = 2 base damage)
           let CFD_damage = CFD_fallVelocity - CFD_safeThreshold
-          let CFD_damage = CFD_damage * 2
+          rem Multiply by 2 using bit shift left
+          asl CFD_damage
+          rem CFD_damage = CFD_damage * 2
           
           rem Apply weight-based damage multiplier: "the bigger they are, the harder they fall"
           rem Heavy characters take more damage for the same impact velocity
@@ -123,8 +125,8 @@ CheckFallDamage
           rem CFD_damage = damage * weight / 20 (weight-based multiplier applied)
           
           rem Apply damage reduction for Ninjish Guy (after weight multiplier)
-          if CFD_characterType = CharNinjishGuy then let CFD_damage = CFD_damage / 2 
-          rem Ninjish Guy: 1/2 damage
+          if CFD_characterType = CharNinjishGuy then lsr CFD_damage
+          rem Ninjish Guy: 1/2 damage (divide by 2 using bit shift right)
           
           rem Cap maximum fall damage at 50
           if CFD_damage > 50 then let CFD_damage = 50
@@ -137,7 +139,9 @@ CheckFallDamage
           
           rem Set recovery frames (proportional to damage, min 10, max 30)
           rem Use recoveryFramesCalc for recovery frames calculation
-          let recoveryFramesCalc = CFD_damage / 2
+          let recoveryFramesCalc = CFD_damage
+          lsr recoveryFramesCalc
+          rem Divide by 2 using bit shift right
           if recoveryFramesCalc < 10 then recoveryFramesCalc = 10
           if recoveryFramesCalc > 30 then recoveryFramesCalc = 30
           playerRecoveryFrames[CFD_playerIndex] = recoveryFramesCalc

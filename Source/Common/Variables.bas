@@ -84,7 +84,7 @@
           rem =================================================================
           rem COMMON VARS - Standard RAM (a-z) - sorted alphabetically
           rem =================================================================
-          
+
           rem Game state variables
           dim gameState = g
           dim gameMode = p
@@ -241,7 +241,7 @@
           rem ADMIN: Which character animating (REDIM - available in ADMIN)
           dim charSelectAnimFrame = z      
           rem ADMIN: Current frame in sequence (REDIM - available in ADMIN)
-
+          
           rem =================================================================
           rem ADMIN MODE - Standard RAM (var0-var47) - sorted numerically
           rem =================================================================
@@ -287,13 +287,13 @@
           rem ADMIN: Parade X position (REDIMMED - Game Mode uses var35 for currentAnimationSeq[2])
           dim titleParadeActive = var36    
           rem ADMIN: Parade active flag (REDIMMED - Game Mode uses var36 for currentAnimationSeq[3])
-
+          
           rem =================================================================
           rem GAME MODE VARIABLES (may be re-used in Admin Mode for other purposes)
           rem =================================================================
           rem These variables are ONLY valid on Game Mode screens (GameMode 6)
           rem =================================================================
-          
+
           rem Player data arrays using batariBasic array syntax
           rem playerX[0-3] = player1X, player2X, player3X, player4X
           dim playerX = var0
@@ -458,9 +458,9 @@
           rem Game Mode: Missile velocities [0-3] for X and Y axes (standard RAM w,x)
           rem NOTE: These are REDIMMED in Admin Mode for character select animation
           rem Stored velocities for bounce calculations and physics updates
-          dim missileVelX = w
+          dim missileVelocityX = w
           rem Game Mode: Missile X velocity array (4 bytes) - REDIM from charSelectAnimTimer
-          dim missileVelY = x
+          dim missileVelocityY = x
           rem Game Mode: Missile Y velocity array (4 bytes) - REDIM from charSelectAnimState
 
           rem Missile momentum stored in temp variables during UpdateMissiles subroutine
@@ -676,10 +676,10 @@
           dim velocityCalculation = w108
           rem Intermediate velocity calculation (e.g., velocity / 2, velocity / 4)
           
-          dim missileVelocityX_W = w109
-          dim missileVelocityX_R = r109
-          dim missileVelocityX = w109
-          rem Missile X velocity for friction calculations
+          dim missileVelocityXCalc_W = w109
+          dim missileVelocityXCalc_R = r109
+          dim missileVelocityXCalc = w109
+          rem Missile X velocity for friction calculations (temporary calculation variable)
           
           dim soundEffectID_W = w110
           dim soundEffectID_R = r110

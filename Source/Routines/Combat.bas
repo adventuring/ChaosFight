@@ -35,16 +35,16 @@ CheckAttackHit
   rem Check if defender bounding box overlaps hitbox (AABB collision detection)
   rem playerX/playerY represent sprite top-left corner, sprite is 16x16 pixels
   rem Defender bounding box: [playerX, playerX+16] x [playerY, playerY+16]
-  rem Hitbox: [hitbox_left, hitbox_right] x [hitbox_top, hitbox_bottom]
-  rem Overlap occurs when: defender_right > hitbox_left AND defender_left < hitbox_right
-  rem                      AND defender_bottom > hitbox_top AND defender_top < hitbox_bottom
-          if playerX[CAH_defenderId] + PlayerSpriteWidth <= hitbox_left then NoHit
+  rem Hitbox: [hitboxLeft, hitboxRight] x [hitboxTop, hitboxBottom]
+  rem Overlap occurs when: defender_right > hitboxLeft AND defender_left < hitboxRight
+  rem                      AND defender_bottom > hitboxTop AND defender_top < hitboxBottom
+          if playerX[CAH_defenderId] + PlayerSpriteWidth <= hitboxLeft then NoHit
           rem Defender right edge <= hitbox left edge (no overlap)
-          if playerX[CAH_defenderId] >= hitbox_right then NoHit
+          if playerX[CAH_defenderId] >= hitboxRight then NoHit
           rem Defender left edge >= hitbox right edge (no overlap)
-          if playerY[CAH_defenderId] + PlayerSpriteHeight <= hitbox_top then NoHit
+          if playerY[CAH_defenderId] + PlayerSpriteHeight <= hitboxTop then NoHit
           rem Defender bottom edge <= hitbox top edge (no overlap)
-          if playerY[CAH_defenderId] >= hitbox_bottom then NoHit
+          if playerY[CAH_defenderId] >= hitboxBottom then NoHit
           rem Defender top edge >= hitbox bottom edge (no overlap)
   
   rem All bounds checked - defender is inside hitbox
@@ -58,7 +58,7 @@ NoHit
 
           rem Calculate attack hitbox based on attacker position and facing
 rem Inputs: attacker_id
-rem Outputs: hitbox_left, hitbox_right, hitbox_top, hitbox_bottom
+rem Outputs: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
 CalculateAttackHitbox
   dim CAH_attackerId = attacker_id
   rem Set hitbox based on attack type and direction
@@ -72,56 +72,56 @@ FacingRight
       rem Hitbox extends 16 pixels forward from sprite right edge
       rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
       rem Hitbox: [playerX+16, playerX+32] x [playerY, playerY+16]
-      let hitbox_left = playerX[CAH_attackerId] + PlayerSpriteWidth
-      let hitbox_right = playerX[CAH_attackerId] + PlayerSpriteWidth + PlayerSpriteWidth
-      let hitbox_top = playerY[CAH_attackerId]
-      let hitbox_bottom = playerY[CAH_attackerId] + PlayerSpriteHeight
+      let hitboxLeft = playerX[CAH_attackerId] + PlayerSpriteWidth
+      let hitboxRight = playerX[CAH_attackerId] + PlayerSpriteWidth + PlayerSpriteWidth
+      let hitboxTop = playerY[CAH_attackerId]
+      let hitboxBottom = playerY[CAH_attackerId] + PlayerSpriteHeight
       return
       
 FacingLeft
       rem Hitbox extends 16 pixels forward from sprite left edge
       rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
       rem Hitbox: [playerX-16, playerX] x [playerY, playerY+16]
-      let hitbox_left = playerX[CAH_attackerId] - PlayerSpriteWidth
-      let hitbox_right = playerX[CAH_attackerId]
-      let hitbox_top = playerY[CAH_attackerId]
-      let hitbox_bottom = playerY[CAH_attackerId] + PlayerSpriteHeight
+      let hitboxLeft = playerX[CAH_attackerId] - PlayerSpriteWidth
+      let hitboxRight = playerX[CAH_attackerId]
+      let hitboxTop = playerY[CAH_attackerId]
+      let hitboxBottom = playerY[CAH_attackerId] + PlayerSpriteHeight
       return
       
 FacingUp
       rem Hitbox extends 16 pixels upward from sprite top edge
       rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
       rem Hitbox: [playerX, playerX+16] x [playerY-16, playerY]
-      let hitbox_left = playerX[CAH_attackerId]
-      let hitbox_right = playerX[CAH_attackerId] + PlayerSpriteWidth
-      let hitbox_top = playerY[CAH_attackerId] - PlayerSpriteHeight
-      let hitbox_bottom = playerY[CAH_attackerId]
+      let hitboxLeft = playerX[CAH_attackerId]
+      let hitboxRight = playerX[CAH_attackerId] + PlayerSpriteWidth
+      let hitboxTop = playerY[CAH_attackerId] - PlayerSpriteHeight
+      let hitboxBottom = playerY[CAH_attackerId]
       return
       
 FacingDown
       rem Hitbox extends 16 pixels downward from sprite bottom edge
       rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
       rem Hitbox: [playerX, playerX+16] x [playerY+16, playerY+32]
-      let hitbox_left = playerX[CAH_attackerId]
-      let hitbox_right = playerX[CAH_attackerId] + PlayerSpriteWidth
-      let hitbox_top = playerY[CAH_attackerId] + PlayerSpriteHeight
-      let hitbox_bottom = playerY[CAH_attackerId] + PlayerSpriteHeight + PlayerSpriteHeight
+      let hitboxLeft = playerX[CAH_attackerId]
+      let hitboxRight = playerX[CAH_attackerId] + PlayerSpriteWidth
+      let hitboxTop = playerY[CAH_attackerId] + PlayerSpriteHeight
+      let hitboxBottom = playerY[CAH_attackerId] + PlayerSpriteHeight + PlayerSpriteHeight
       return
   
 ProjectileHitbox
     rem Projectile hitbox is at current missile position (to be implemented)
-    let hitbox_left = 0
-    let hitbox_right = 0
-    let hitbox_top = 0
-    let hitbox_bottom = 0
+    let hitboxLeft = 0
+    let hitboxRight = 0
+    let hitboxTop = 0
+    let hitboxBottom = 0
     return
     
 AreaHitbox
     rem Area hitbox covers radius around attacker (to be implemented)
-    let hitbox_left = 0
-    let hitbox_right = 0
-    let hitbox_top = 0
-    let hitbox_bottom = 0
+    let hitboxLeft = 0
+    let hitboxRight = 0
+    let hitboxTop = 0
+    let hitboxBottom = 0
     return
 
 rem Process attack for one attacker against all defenders

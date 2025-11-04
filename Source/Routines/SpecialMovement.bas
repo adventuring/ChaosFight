@@ -23,7 +23,7 @@
 ApplySpecialMovement
           temp1 = 0 : gosub ApplyPlayerSpecialMovement
           temp1 = 1 : gosub ApplyPlayerSpecialMovement
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar3 = 255) then temp1 = 2 : gosub ApplyPlayerSpecialMovement
+          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then temp1 = 2 : gosub ApplyPlayerSpecialMovement
           rem tail call
           goto ApplyPlayerSpecialMovement
 

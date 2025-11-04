@@ -44,13 +44,16 @@ ArenaSelect1Loop
           rem If fire button held, increment timer
           if LS1_firePressed then goto IncrementFireHold
           rem Fire released, reset timer
-          let fireHoldTimer = 0
+          let fireHoldTimer_W = 0
           goto FireHoldCheckDone
           
 IncrementFireHold
-          let fireHoldTimer = fireHoldTimer + 1
+          dim LS_timer = temp2
+          let LS_timer = fireHoldTimer_R
+          let LS_timer = LS_timer + 1
+          let fireHoldTimer_W = LS_timer
           rem 60 frames = 1 second @ 60fps
-          if fireHoldTimer >= 60 then goto ReturnToCharacterSelect
+          if LS_timer >= 60 then goto ReturnToCharacterSelect
 FireHoldCheckDone
           
           rem Handle LEFT/RIGHT navigation for arena selection
@@ -59,9 +62,12 @@ FireHoldCheckDone
 ArenaSelectLeft
           dim ASL_soundId = temp1
           rem Decrement arena, wrap from 0 to RandomArena (255)
-          if selectedArena = 0 then let selectedArena = RandomArena : goto ArenaSelectLeftSound
-          if selectedArena = RandomArena then let selectedArena = MaxArenaID : goto ArenaSelectLeftSound
-          let selectedArena = selectedArena - 1
+          if selectedArena_R = 0 then let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
+          if selectedArena_R = RandomArena then let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
+          dim ASL_arena = temp2
+          let ASL_arena = selectedArena_R
+          let ASL_arena = ASL_arena - 1
+          let selectedArena_W = ASL_arena
 ArenaSelectLeftSound
           rem Play navigation sound
           let ASL_soundId = SoundSelect
@@ -74,11 +80,14 @@ ArenaSelectSkipLeft
 ArenaSelectRight
           dim ASR_soundId = temp1
           rem Increment arena, wrap from MaxArenaID to 0, then to RandomArena
-          if selectedArena = MaxArenaID then let selectedArena = RandomArena : goto ArenaSelectRightSound
-          if selectedArena = RandomArena then let selectedArena = 0 : goto ArenaSelectRightSound
-          let selectedArena = selectedArena + 1
+          if selectedArena_R = MaxArenaID then let selectedArena_W = RandomArena : goto ArenaSelectRightSound
+          if selectedArena_R = RandomArena then let selectedArena_W = 0 : goto ArenaSelectRightSound
+          dim ASR_arena = temp2
+          let ASR_arena = selectedArena_R
+          let ASR_arena = ASR_arena + 1
+          let selectedArena_W = ASR_arena
           rem Wrap from 255 to 0 if needed
-          if selectedArena > MaxArenaID && selectedArena < RandomArena then let selectedArena = 0
+          if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
 ArenaSelectRightSound
           rem Play navigation sound
           let ASR_soundId = SoundSelect
@@ -90,12 +99,12 @@ ArenaSelectSkipRight
           rem Display using player4 (tens digit) and player5 (ones digit)
           rem Position: center of screen (X=80 for tens, X=88 for ones, Y=20)
           rem Note: Tens digit only shown for arenas 10-32 (tensDigit > 0)
-          if selectedArena = RandomArena then DisplayRandomArena
+          if selectedArena_R = RandomArena then DisplayRandomArena
           
           rem Display arena number (selectedArena + 1 = 1-32)
           rem Convert to two-digit display: tens and ones
           rem Supports up to 32 arenas (tens digit: blank for 1-9, 1 for 10-19, 2 for 20-29, 3 for 30-32)
-          let LS1_arenaNumber = selectedArena + 1
+          let LS1_arenaNumber = selectedArena_R + 1
           rem arenaNumber = arena number (1-32)
           rem Calculate tens digit
           let LS1_tensDigit = LS1_arenaNumber / 10
@@ -212,7 +221,7 @@ CheckQuadtariFireHold
 
 ReturnToCharacterSelect
           rem Return to Character Select screen
-          let fireHoldTimer = 0
+          let fireHoldTimer_W = 0
           let gameMode = ModeCharacterSelect
           gosub bank13 ChangeGameMode
           return
@@ -245,9 +254,9 @@ ArenaSelectUpdateAnimations
           
 ArenaSelectSkipPlayer0Anim
           rem Update Player 2 animation (if character selected)
-          if selectedChar2 = 255 then ArenaSelectSkipPlayer1Anim
-          if selectedChar2 = 254 then ArenaSelectSkipPlayer1Anim
-          if selectedChar2 = 253 then ArenaSelectSkipPlayer1Anim
+          if selectedChar2_R = 255 then ArenaSelectSkipPlayer1Anim
+          if selectedChar2_R = 254 then ArenaSelectSkipPlayer1Anim
+          if selectedChar2_R = 253 then ArenaSelectSkipPlayer1Anim
           let ASUA_playerIndex = 1
           gosub ArenaSelectUpdatePlayerAnim
           
@@ -309,9 +318,9 @@ ArenaSelectDrawCharacters
           
 ArenaSelectSkipDrawP0
           rem Draw Player 2 character (top right) if selected
-          if selectedChar2 = 255 then ArenaSelectSkipDrawP1
-          if selectedChar2 = 254 then ArenaSelectSkipDrawP1
-          if selectedChar2 = 253 then ArenaSelectSkipDrawP1
+          if selectedChar2_R = 255 then ArenaSelectSkipDrawP1
+          if selectedChar2_R = 254 then ArenaSelectSkipDrawP1
+          if selectedChar2_R = 253 then ArenaSelectSkipDrawP1
           player1x = 104 : player1y = 40
           let ASDC_playerIndex = 1
           gosub ArenaSelectDrawPlayerSprite
@@ -351,7 +360,7 @@ ArenaSelectDrawPlayerSprite
           
           rem Get character index based on player
           if ASDPS_playerIndex = 0 then let ASDPS_characterIndex = selectedChar1
-          if ASDPS_playerIndex = 1 then let ASDPS_characterIndex = selectedChar2
+          if ASDPS_playerIndex = 1 then let ASDPS_characterIndex = selectedChar2_R
           if ASDPS_playerIndex = 2 then let ASDPS_characterIndex = selectedChar3
           if ASDPS_playerIndex = 3 then let ASDPS_characterIndex = selectedChar4
           

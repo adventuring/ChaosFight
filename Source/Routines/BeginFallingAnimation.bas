@@ -9,9 +9,9 @@
           rem
           rem Quadrant positions:
           rem   - Top-left: Player 1 (selectedChar1)
-          rem   - Top-right: Player 2 (selectedChar2)
-          rem   - Bottom-left: Player 3 (selectedChar3, if active)
-          rem   - Bottom-right: Player 4 (selectedChar4, if active)
+          rem   - Top-right: Player 2 (selectedChar2_R)
+          rem   - Bottom-left: Player 3 (selectedChar3_R, if active)
+          rem   - Bottom-right: Player 4 (selectedChar4_R, if active)
           rem
           rem After animation completes, players will be at row 2 positions
           rem and transition to Game Mode.
@@ -41,7 +41,7 @@ BeginFallingAnimation
 SkipPlayer1Init
           
           rem Player 2: Top-right quadrant (unless "NO")
-          if selectedChar2 = NoCharacter then SkipPlayer2Init
+          if selectedChar2_R = NoCharacter then SkipPlayer2Init
           let playerX[1] = 144
           rem Top-right X position
           let playerY[1] = 8
@@ -51,7 +51,7 @@ SkipPlayer2Init
           
           rem Player 3: Bottom-left quadrant (if Quadtari and not "NO")
           if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3Init
-          if selectedChar3 = NoCharacter then SkipPlayer3Init
+          if selectedChar3_R = NoCharacter then SkipPlayer3Init
           let playerX[2] = 16
           rem Bottom-left X position
           let playerY[2] = 80
@@ -61,7 +61,7 @@ SkipPlayer3Init
           
           rem Player 4: Bottom-right quadrant (if Quadtari and not "NO")
           if !(controllerStatus & SetQuadtariDetected) then SkipPlayer4Init
-          if selectedChar4 = NoCharacter then SkipPlayer4Init
+          if selectedChar4_R = NoCharacter then SkipPlayer4Init
           let playerX[3] = 144
           rem Bottom-right X position
           let playerY[3] = 80

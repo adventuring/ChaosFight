@@ -13,7 +13,7 @@
           rem   playerVelocityY[0-3] - Vertical velocity (8.8 fixed-point)
           rem   playerRecoveryFrames[0-3] - Recovery (hitstun) frames remaining
           rem   QuadtariDetected - Whether 4-player mode active
-          rem   selectedChar3, selectedChar4 - Player 3/4 selections
+          rem   selectedChar3_R, selectedChar4_R - Player 3/4 selections
           rem   playerChar[0-3] - Character type indices
           rem =================================================================
 
@@ -38,8 +38,8 @@ GravityLoop
           if PAG_playerIndex < 2 then GravityCheckCharacter
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto GravityNextPlayer
-          if PAG_playerIndex = 2 && selectedChar3 = 255 then goto GravityNextPlayer
-          if PAG_playerIndex = 3 && selectedChar4 = 255 then goto GravityNextPlayer
+          if PAG_playerIndex = 2 && selectedChar3_R = 255 then goto GravityNextPlayer
+          if PAG_playerIndex = 3 && selectedChar4_R = 255 then goto GravityNextPlayer
           
 GravityCheckCharacter
           rem Get character type
@@ -185,8 +185,8 @@ MomentumRecoveryLoop
           if AMAR_playerIndex < 2 then MomentumRecoveryProcess
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto MomentumRecoveryNext
-          if AMAR_playerIndex = 2 && selectedChar3 = 255 then goto MomentumRecoveryNext
-          if AMAR_playerIndex = 3 && selectedChar4 = 255 then goto MomentumRecoveryNext
+          if AMAR_playerIndex = 2 && selectedChar3_R = 255 then goto MomentumRecoveryNext
+          if AMAR_playerIndex = 3 && selectedChar4_R = 255 then goto MomentumRecoveryNext
           
 MomentumRecoveryProcess
           rem Decrement recovery frames (velocity is applied by UpdatePlayerMovement)
@@ -235,8 +235,8 @@ BoundaryLoop
           if CBC_playerIndex < 2 then BoundaryCheckBounds
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto BoundaryNextPlayer
-          if CBC_playerIndex = 2 && selectedChar3 = 255 then goto BoundaryNextPlayer
-          if CBC_playerIndex = 3 && selectedChar4 = 255 then goto BoundaryNextPlayer
+          if CBC_playerIndex = 2 && selectedChar3_R = 255 then goto BoundaryNextPlayer
+          if CBC_playerIndex = 3 && selectedChar4_R = 255 then goto BoundaryNextPlayer
           
 BoundaryCheckBounds
           rem Bernie (0) - screen wrap: falling off bottom respawns at top
@@ -528,8 +528,8 @@ CollisionOuterLoop
           
 CollisionCheckP1Active
           if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextOuter
-          if temp1 = 2 && selectedChar3 = 255 then goto CollisionNextOuter
-          if temp1 = 3 && selectedChar4 = 255 then goto CollisionNextOuter
+          if temp1 = 2 && selectedChar3_R = 255 then goto CollisionNextOuter
+          if temp1 = 3 && selectedChar4_R = 255 then goto CollisionNextOuter
           
 CollisionInnerLoop
           let temp2 = temp1 + 1
@@ -545,8 +545,8 @@ CollisionCheckPair
           
 CollisionCheckP2Active
           if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextInner
-          if temp2 = 2 && selectedChar3 = 255 then goto CollisionNextInner
-          if temp2 = 3 && selectedChar4 = 255 then goto CollisionNextInner
+          if temp2 = 2 && selectedChar3_R = 255 then goto CollisionNextInner
+          if temp2 = 3 && selectedChar4_R = 255 then goto CollisionNextInner
           
 CollisionCheckDistance
           rem Skip if either player is eliminated

@@ -496,15 +496,15 @@ CharacterSelectReadyDone
 CharacterSelectFinish
           rem Store final selections
           let selectedChar1 = playerChar[0]
-          let selectedChar2 = playerChar[1]
-          let selectedChar3 = playerChar[2]
-          let selectedChar4 = playerChar[3]
+          let selectedChar2_W = playerChar[1]
+          let selectedChar3_W = playerChar[2]
+          let selectedChar4_W = playerChar[3]
           
           rem Initialize facing bit (bit 0) for all selected players (default: face right = 1)
           if selectedChar1 <> NoCharacter then playerState[0] = playerState[0] | 1
-          if selectedChar2 <> NoCharacter then playerState[1] = playerState[1] | 1
-          if selectedChar3 <> NoCharacter then playerState[2] = playerState[2] | 1
-          if selectedChar4 <> NoCharacter then playerState[3] = playerState[3] | 1
+          if selectedChar2_R <> NoCharacter then playerState[1] = playerState[1] | 1
+          if selectedChar3_R <> NoCharacter then playerState[2] = playerState[2] | 1
+          if selectedChar4_R <> NoCharacter then playerState[3] = playerState[3] | 1
           
           rem Transition to falling animation
           let gameMode = ModeFallingAnimation

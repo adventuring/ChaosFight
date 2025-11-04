@@ -52,7 +52,7 @@ Player1TargetDone
 SkipPlayer1Move
           
           rem Move Player 2 from quadrant to target (if active)
-          if selectedChar2 = NoCharacter then SkipPlayer2Move
+          if selectedChar2_R = NoCharacter then SkipPlayer2Move
           let FA1_playerIndex = 1
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player2Target4P
@@ -75,7 +75,7 @@ SkipPlayer2Move
           
           rem Move Player 3 from quadrant to target (if active)
           if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3Move
-          if selectedChar3 = NoCharacter then SkipPlayer3Move
+          if selectedChar3_R = NoCharacter then SkipPlayer3Move
           let FA1_playerIndex = 2
           rem 4-player mode: target X = 64
           let FA1_targetX = 64
@@ -91,7 +91,7 @@ SkipPlayer3Move
           
           rem Move Player 4 from quadrant to target (if active)
           if !(controllerStatus & SetQuadtariDetected) then SkipPlayer4Move
-          if selectedChar4 = NoCharacter then SkipPlayer4Move
+          if selectedChar4_R = NoCharacter then SkipPlayer4Move
           let FA1_playerIndex = 3
           rem 4-player mode: target X = 96
           let FA1_targetX = 96

@@ -15,9 +15,9 @@
 
 BeginArenaSelect
           rem Initialize arena selection state
-          let selectedArena = 0
+          let selectedArena_W = 0
           rem Start at arena 1 (0-indexed, displays as 1)
-          let fireHoldTimer = 0
+          let fireHoldTimer_W = 0
           rem Initialize fire hold timer (for returning to Character Select)
           
           rem Set admin screen layout (32×32 for character display)

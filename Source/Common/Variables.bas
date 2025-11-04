@@ -120,14 +120,10 @@
           rem Using w003 is safe since missileY[3] (w003) is only used in Game Mode
           dim selectedChar2_W = w003
           dim selectedChar2_R = r003
-          dim selectedChar2 = w003
           dim selectedChar3_W = w001
           dim selectedChar3_R = r001
-          dim selectedChar3 = w001
           dim selectedChar4_W = w002
           dim selectedChar4_R = r002
-          dim selectedChar4 = w002
-          
           rem =================================================================
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted numerically
           rem =================================================================
@@ -135,21 +131,16 @@
           rem Console switch handling (used in both Admin Mode and Game Mode)
           dim colorBWPrevious_W = w008
           dim colorBWPrevious_R = r008
-          rem Previous state of Color/B&W switch (for detecting changes) - SCRAM since low frequency use
           
           rem Arena selection (COMMON - used in both Admin and Game Mode)
           rem NOTE: Must be in SCRAM since w is REDIMMED between Admin/Game modes
           rem NOTE: w010 is used by harpyFlightEnergy array, so using w014 instead
           dim selectedArena_W = w014
           dim selectedArena_R = r014
-          dim selectedArena = w014
-          rem Selected arena (SCRAM w014, read via r014) - COMMON variable, cannot be in redimmed location
           
           rem Arena Select fire button hold timer (COMMON - used in Admin Mode)
           dim fireHoldTimer_W = w015
           dim fireHoldTimer_R = r015
-          dim fireHoldTimer = w015
-          rem Fire button hold timer for returning to Character Select (0-60 frames)
           
           rem =================================================================
           rem MUSIC/SOUND POINTERS - Zero Page Memory (standard RAM)
@@ -200,19 +191,15 @@
           rem Music System Envelope State (SCRAM - used in Admin Mode)
           dim MusicVoice0TargetAUDV_W = w036
           dim MusicVoice0TargetAUDV_R = r036
-          dim MusicVoice0TargetAUDV = w036
           rem Target AUDV value from note data (for envelope calculation)
           dim MusicVoice1TargetAUDV_W = w037
           dim MusicVoice1TargetAUDV_R = r037
-          dim MusicVoice1TargetAUDV = w037
           rem Target AUDV value from note data (for envelope calculation)
           dim MusicVoice0TotalFrames_W = w038
           dim MusicVoice0TotalFrames_R = r038
-          dim MusicVoice0TotalFrames = w038
           rem Total frames (Duration + Delay) when note was loaded (for envelope calculation)
           dim MusicVoice1TotalFrames_W = w039
           dim MusicVoice1TotalFrames_R = r039
-          dim MusicVoice1TotalFrames = w039
           rem Total frames (Duration + Delay) when note was loaded (for envelope calculation)
           
           rem Sound Effect System Frame Counters (SCRAM - used in Game Mode)
@@ -385,15 +372,12 @@
           rem Freed var24-var31 and var33-var36 (12 bytes) for physics variables that update every frame
           dim animationCounter_W = w077
           dim animationCounter_R = r077
-          dim animationCounter = w077
           rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame counter (4 bytes) - SCRAM w077-w080
           dim currentAnimationFrame_W = w081
           dim currentAnimationFrame_R = r081
-          dim currentAnimationFrame = w081
           rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current frame in sequence (4 bytes) - SCRAM w081-w084
           dim currentAnimationSeq_W = w085
           dim currentAnimationSeq_R = r085
-          dim currentAnimationSeq = w085
           rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current animation sequence (4 bytes) - SCRAM w085-w088
           
           rem Game Mode: Attack cooldown timers (var37-var40 = 4 bytes)
@@ -407,35 +391,27 @@
           rem Moved from var24-var31 to SCRAM to free ZPRAM for animation vars
           dim playersRemaining_W = w016
           dim playersRemaining_R = r016
-          dim playersRemaining = w016
           rem Game Mode: Count of active players (SCRAM - low frequency access)
           dim gameEndTimer_W = w018
           dim gameEndTimer_R = r018
-          dim gameEndTimer = w018
           rem Game Mode: Countdown to game end screen (SCRAM)
           dim eliminationEffectTimer_W = w019
           dim eliminationEffectTimer_R = r019
-          dim eliminationEffectTimer = w019
           rem Game Mode: Visual effect timers (single byte, bits for each player) (SCRAM)
           dim eliminationOrder_W = w040
           dim eliminationOrder_R = r040
-          dim eliminationOrder = w040
           rem Game Mode: Order players were eliminated [0-3] (packed into 4 bits) (SCRAM)
           dim eliminationCounter_W = w041
           dim eliminationCounter_R = r041
-          dim eliminationCounter = w041
           rem Game Mode: Counter for elimination sequence (SCRAM)
           dim winnerPlayerIndex_W = w042
           dim winnerPlayerIndex_R = r042
-          dim winnerPlayerIndex = w042
           rem Game Mode: Index of winning player (0-3) (SCRAM)
           dim displayRank_W = w043
           dim displayRank_R = r043
-          dim displayRank = w043
           rem Game Mode: Current rank being displayed (1-4) (SCRAM)
           dim winScreenTimer_W = w044
           dim winScreenTimer_R = r044
-          dim winScreenTimer = w044
           rem Game Mode: Win screen display timer (SCRAM)
           
           rem =================================================================
@@ -460,7 +436,6 @@
           rem NOTE: console7800Detected (COMMON) uses ’e’ in standard RAM, missileLifetime moved to SCRAM to avoid conflict
           dim missileLifetime_W = w045
           dim missileLifetime_R = r045
-          dim missileLifetime = w045
           rem Game Mode: Missile lifetime array (4 bytes) - SCRAM w045-w048 for performance
           rem Array accessible as missileLifetime[0] through missileLifetime[3]
 
@@ -488,8 +463,6 @@
           rem Using SCRAM allows all 4 missile Y positions
           dim missileY_W = w000
           dim missileY_R = r000
-          dim missileY = w000
-          rem Game Mode: Missile Y position array (4 bytes) - SCRAM w000-w003 (read via r000-r003, write via w000-w003)
           rem NOTE: batariBASIC uses array syntax - missileY[0] = w000/r000, missileY[1] = w001/r001, etc.
           rem NOTE: Must use missileY_R for reads and missileY_W for writes to avoid RMW issues
 
@@ -522,14 +495,12 @@
           rem Tracks NUSIZ register values for each missile (0-3) to ensure proper sizing
           dim missileNUSIZ_W = w114
           dim missileNUSIZ_R = r114
-          dim missileNUSIZ = w114
           rem [0-3] NUSIZ values for missiles M0-M3 (4 bytes: w114-w117)
           rem Array accessible as missileNUSIZ[0] through missileNUSIZ[3]
 
           rem Harpy flight energy/duration counters (SCRAM)
           dim harpyFlightEnergy_W = w009
           dim harpyFlightEnergy_R = r009
-          dim harpyFlightEnergy = w009
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 flight energy remaining (4 bytes: w009-w012)
           rem Decrements on each flap, resets on landing, maximum value 60 (1 second at 60fps)
           rem Array accessible as harpyFlightEnergy[0] through harpyFlightEnergy[3]
@@ -537,7 +508,6 @@
           rem Last flap frame tracker for rapid tap detection (SCRAM)
           dim harpyLastFlapFrame_W = w023
           dim harpyLastFlapFrame_R = r023
-          dim harpyLastFlapFrame = w023
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 last flap frame counter (4 bytes: w023-w026)
           rem Used to detect rapid UP tapping
           rem Array accessible as harpyLastFlapFrame[0] through harpyLastFlapFrame[3]
@@ -549,21 +519,18 @@
           rem ADMIN: Random character selection flags (SCRAM - used in character select)
           dim randomSelectFlags_W = w027
           dim randomSelectFlags_R = r027
-          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 random selection in progress flags (4 bytes: w027-w030)
           rem Bit 7 = handicap flag (1 if down+fire was held), bits 0-6 unused
           rem Array accessible as randomSelectFlags[0] through randomSelectFlags[3]
           
           rem ADMIN: Character select animation frame counters (SCRAM - used in character select)
           dim charSelectPlayerAnimFrame_W = w028
           dim charSelectPlayerAnimFrame_R = r028
-          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame counters (4 bytes: w028-w031)
           rem Frame counters for idle/walk animation cycles in character select
           rem Array accessible as charSelectPlayerAnimFrame[0] through charSelectPlayerAnimFrame[3]
           
           rem ADMIN: Character select animation sequence flags (SCRAM - used in character select)
           dim charSelectPlayerAnimSeq_W = w032
           dim charSelectPlayerAnimSeq_R = r032
-          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation sequence flags (4 bytes: w032-w035)
           rem Bit 0: 0=idle, 1=walk. Toggles every 60 frames
           rem Array accessible as charSelectPlayerAnimSeq[0] through charSelectPlayerAnimSeq[3]
 
@@ -598,127 +565,102 @@
           
           dim oldHealthValue_W = w089
           dim oldHealthValue_R = r089
-          dim oldHealthValue = w089
           rem Old health value for byte-safe clamp checks (used in damage calculations)
           
           dim recoveryFramesCalc_W = w090
           dim recoveryFramesCalc_R = r090
-          dim recoveryFramesCalc = w090
           rem Recovery frames calculation value (used in fall damage and hit processing)
           
           dim playerStateTemp_W = w091
           dim playerStateTemp_R = r091
-          dim playerStateTemp = w091
           rem Temporary player state value for bit manipulation operations
           
           dim playfieldRow_W = w092
           dim playfieldRow_R = r092
-          dim playfieldRow = w092
           rem Playfield row index for collision calculations
           
           dim playfieldColumn_W = w093
           dim playfieldColumn_R = r093
-          dim playfieldColumn = w093
           rem Playfield column index for collision calculations
           
           dim rowYPosition_W = w094
           dim rowYPosition_R = r094
-          dim rowYPosition = w094
           rem Y position of playfield row (used in gravity calculations)
           
           dim rowCounter_W = w095
           dim rowCounter_R = r095
-          dim rowCounter = w095
           rem Loop counter for row calculations
           
           dim characterHeight_W = w096
           dim characterHeight_R = r096
-          dim characterHeight = w096
           rem Character height value from CharacterHeights table
           
           dim characterWeight_W = w097
           dim characterWeight_R = r097
-          dim characterWeight = w097
           rem Character weight value from CharacterWeights table
           
           dim yDistance_W = w098
           dim yDistance_R = r098
-          dim yDistance = w098
           rem Y distance between players for collision calculations
           
           dim halfHeight1_W = w099
           dim halfHeight1_R = r099
-          dim halfHeight1 = w099
           rem Half height of first player for collision overlap calculation
           
           dim halfHeight2_W = w100
           dim halfHeight2_R = r100
-          dim halfHeight2 = w100
           rem Half height of second player for collision overlap calculation
           
           dim totalHeight_W = w101
           dim totalHeight_R = r101
-          dim totalHeight = w101
           rem Total height for collision overlap check (halfHeight1 + halfHeight2)
           
           dim totalWeight_W = w102
           dim totalWeight_R = r102
-          dim totalWeight = w102
           rem Total weight of both players for momentum calculations
           
           dim weightDifference_W = w103
           dim weightDifference_R = r103
-          dim weightDifference = w103
           rem Weight difference between players for impulse calculation
           
           dim impulseStrength_W = w104
           dim impulseStrength_R = r104
-          dim impulseStrength = w104
           rem Calculated impulse strength for momentum transfer
           
           dim gravityRate_W = w105
           dim gravityRate_R = r105
-          dim gravityRate = w105
           rem Gravity acceleration rate (normal or reduced)
           
           dim damageWeightProduct_W = w106
           dim damageWeightProduct_R = r106
-          dim damageWeightProduct = w106
           rem Intermediate value: damage * weight (used in fall damage calculations)
           
           dim missileLifetimeValue_W = w107
           dim missileLifetimeValue_R = r107
-          dim missileLifetimeValue = w107
           rem Missile lifetime value from CharacterMissileLifetime table
           
           dim velocityCalculation_W = w108
           dim velocityCalculation_R = r108
-          dim velocityCalculation = w108
           rem Intermediate velocity calculation (e.g., velocity / 2, velocity / 4)
           
           dim missileVelocityXCalc_W = w109
           dim missileVelocityXCalc_R = r109
-          dim missileVelocityXCalc = w109
           rem Missile X velocity for friction calculations (temporary calculation variable)
           
           dim soundEffectID_W = w110
           dim soundEffectID_R = r110
-          dim soundEffectID = w110
           rem Sound effect ID for playback
           
           dim characterIndex_W = w111
           dim characterIndex_R = r111
-          dim characterIndex = w111
           rem Character index for table lookups
           
           dim aoeOffset_W = w112
           dim aoeOffset_R = r112
-          dim aoeOffset = w112
           rem AOE offset value from CharacterAOEOffsets table
           
           dim healthBarRemainder_W = w113
           dim healthBarRemainder_R = r113
-          dim healthBarRemainder = w113
           rem Health bar remainder calculation (for displaying partial bars)
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM to free zero-page space

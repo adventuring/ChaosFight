@@ -17,10 +17,10 @@ LoadArena
           dim LA_bwMode = temp2
           
           rem Handle random arena selection
-          if selectedArena = RandomArena then LoadRandomArena
+          if selectedArena_R = RandomArena then LoadRandomArena
           
           rem Get arena index (0-15)
-          let LA_arenaIndex = selectedArena
+          let LA_arenaIndex = selectedArena_R
           
           rem Load playfield and colors
           gosub GetBWMode
@@ -371,7 +371,7 @@ ReloadArenaColors
           dim RAC_bwMode = temp2
           
           rem Get current arena index
-          let RAC_arenaIndex = selectedArena
+          let RAC_arenaIndex = selectedArena_R
           rem Handle random arena (use stored random selection)
           if RAC_arenaIndex = RandomArena then let RAC_arenaIndex = frame & 15
           

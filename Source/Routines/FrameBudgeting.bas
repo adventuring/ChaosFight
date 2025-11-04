@@ -58,7 +58,7 @@ BudgetedHealthBarUpdate
           goto SkipPlayer2HealthUpdate
 CheckPlayer2HealthUpdate
           if !(controllerStatus & SetQuadtariDetected) then SkipPlayer2HealthUpdate
-          if selectedChar3 = 255 then SkipPlayer2HealthUpdate
+          if selectedChar3_R = 255 then SkipPlayer2HealthUpdate
           gosub bank8 UpdateHealthBarPlayer2
           return
 SkipPlayer2HealthUpdate
@@ -66,7 +66,7 @@ SkipPlayer2HealthUpdate
           goto SkipPlayer3HealthUpdate
 CheckPlayer3HealthUpdate
           if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3HealthUpdate
-          if selectedChar4 = 255 then SkipPlayer3HealthUpdate
+          if selectedChar4_R = 255 then SkipPlayer3HealthUpdate
           gosub bank8 UpdateHealthBarPlayer3
           return
 SkipPlayer3HealthUpdate
@@ -139,25 +139,25 @@ BudgetedCollisionCheck
           if FramePhase = 1 then CheckPhase1Collisions
           goto SkipPhase0And1Collisions
 CheckPhase0Collisions
-          if selectedChar3 = 255 then SkipFramePhaseChecks
+          if selectedChar3_R = 255 then SkipFramePhaseChecks
           gosub CheckCollisionP1vsP3
           goto SkipFramePhaseChecks
 CheckPhase1Collisions
-          if selectedChar4 = 255 then CheckPhase1P3
+          if selectedChar4_R = 255 then CheckPhase1P3
           gosub CheckCollisionP1vsP4
 CheckPhase1P3
-          if selectedChar3 = 255 then SkipFramePhaseChecks
+          if selectedChar3_R = 255 then SkipFramePhaseChecks
           gosub CheckCollisionP2vsP3
           goto SkipFramePhaseChecks
 SkipPhase0And1Collisions
           if FramePhase = 2 then CheckPhase2Collisions
           goto SkipPhase2Collisions
 CheckPhase2Collisions
-          if selectedChar4 = 255 then SkipCheckP2vsP4
+          if selectedChar4_R = 255 then SkipCheckP2vsP4
           gosub CheckCollisionP2vsP4
 SkipCheckP2vsP4
-          if selectedChar3 = 255 then SkipCheckP3vsP4
-          if selectedChar4 = 255 then SkipCheckP3vsP4
+          if selectedChar3_R = 255 then SkipCheckP3vsP4
+          if selectedChar4_R = 255 then SkipCheckP3vsP4
           gosub CheckCollisionP3vsP4
 SkipCheckP3vsP4
 SkipPhase2Collisions

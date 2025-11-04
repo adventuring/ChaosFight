@@ -22,7 +22,7 @@
           rem   playerRecoveryFrames[0-3] - Hitstun frames
           rem   missileActive (bit flags) - Projectile states (bit 0=P0, bit 1=P1, bit 2=P2, bit 3=P3)
           rem   missileX[0-3], missileY[0-3] - Projectile positions
-          rem   QuadtariDetected, selectedChar3, selectedChar4
+          rem   QuadtariDetected, selectedChar3_R, selectedChar4_R
           rem =================================================================
 
           rem =================================================================
@@ -43,7 +43,7 @@ SetSpritePositions
           
           rem Set Participant 3 position (array [2] → P2 sprite)
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Position
-          if selectedChar3 = 255 then goto SkipPlayer3Position
+          if selectedChar3_R = 255 then goto SkipPlayer3Position
           if ! playerHealth[2] then goto SkipPlayer3Position
           let player2x = playerX[2]
           let player2y = playerY[2]
@@ -51,7 +51,7 @@ SkipPlayer3Position
           
           rem Set Participant 4 position (array [3] → P3 sprite)
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Position
-          if selectedChar4 = 255 then goto SkipPlayer4Position
+          if selectedChar4_R = 255 then goto SkipPlayer4Position
           if ! playerHealth[3] then goto SkipPlayer4Position
           let player3x = playerX[3]
           let player3y = playerY[3]
@@ -218,7 +218,7 @@ Player2ColorDone
           
           rem Set Player 3 color and sprite (if active)
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Sprite
-          if selectedChar3 = 255 then goto SkipPlayer3Sprite
+          if selectedChar3_R = 255 then goto SkipPlayer3Sprite
           if ! playerHealth[2] then goto SkipPlayer3Sprite
           
           rem Color mode: Use solid player color or dimmer when hurt
@@ -264,7 +264,7 @@ SkipPlayer3Sprite
 
           rem Set Player 4 color and sprite (if active)
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Sprite
-          if selectedChar4 = 255 then goto SkipPlayer4Sprite
+          if selectedChar4_R = 255 then goto SkipPlayer4Sprite
           if ! playerHealth[3] then goto SkipPlayer4Sprite
           
           rem Color mode: Use solid player color or dimmer when hurt
@@ -333,7 +333,7 @@ SkipParticipant2Flash
 
           rem Flash Player 3 sprite if health is low (but alive)
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Flash
-          if selectedChar3 = 255 then goto SkipPlayer3Flash
+          if selectedChar3_R = 255 then goto SkipPlayer3Flash
           if ! playerHealth[2] then goto SkipPlayer3Flash
           if playerHealth[2] >= 25 then goto SkipPlayer3Flash
           if playerRecoveryFrames[2] <> 0 then goto SkipPlayer3Flash
@@ -343,7 +343,7 @@ SkipPlayer3Flash
 
           rem Flash Player 4 sprite if health is low (but alive)
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Flash
-          if selectedChar4 = 255 then goto SkipPlayer4Flash
+          if selectedChar4_R = 255 then goto SkipPlayer4Flash
           if ! playerHealth[3] then goto SkipPlayer4Flash
           if playerHealth[3] >= 25 then goto SkipPlayer4Flash
           if playerRecoveryFrames[3] <> 0 then goto SkipPlayer4Flash

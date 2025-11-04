@@ -124,7 +124,7 @@ InputHandleQuadtariPlayers
           dim IHQP_isAlive = temp2
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and alive)
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input
-          if selectedChar3 = 0 then InputSkipPlayer3Input
+          if selectedChar3_R = 0 then InputSkipPlayer3Input
                     temp1 = 2 : gosub IsPlayerAlive
           let IHQP_isAlive = temp2
           if IHQP_isAlive = 0 then InputSkipPlayer3Input
@@ -133,7 +133,7 @@ InputHandleQuadtariPlayers
           
 InputSkipPlayer3Input
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input
-          if selectedChar4 = 0 then InputSkipPlayer4Input
+          if selectedChar4_R = 0 then InputSkipPlayer4Input
                     temp1 = 3 : gosub IsPlayerAlive
           let IHQP_isAlive = temp2
           if IHQP_isAlive = 0 then InputSkipPlayer4Input

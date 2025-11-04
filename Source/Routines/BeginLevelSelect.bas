@@ -1,13 +1,38 @@
           rem ChaosFight - Source/Routines/BeginArenaSelect.bas
-          rem Setup routine for Arena Select. Sets initial state only.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          
+          rem =================================================================
+          rem BEGIN ARENA SELECT
+          rem =================================================================
+          rem Setup routine for Arena Select screen.
+          rem Initializes arena selection state and screen layout.
+          rem Called from ChangeGameMode when entering arena select mode (gameMode 5).
+          rem
+          rem NOTE: File is named BeginLevelSelect.bas for historical reasons,
+          rem but function name is BeginArenaSelect (Arena Select is preferred
+          rem terminology in codebase per Requirements.md).
+          rem =================================================================
 
 BeginArenaSelect
+          rem Initialize arena selection state
           let selectedArena = 0
+          rem Start at arena 1 (0-indexed, displays as 1)
           let fireHoldTimer = 0
-          rem Initialize fire hold timer
+          rem Initialize fire hold timer (for returning to Character Select)
+          
+          rem Set admin screen layout (32×32 for character display)
+          gosub bank8 SetAdminScreenLayout
           
           rem Set background color (B&W safe)
-          COLUBK = ColGray(0)
+          let COLUBK = ColGray(0)
+          
+          rem Clear playfield (will be drawn by ArenaSelect1 loop)
+          pf0 = 0
+          pf1 = 0
+          pf2 = 0
+          pf3 = 0
+          pf4 = 0
+          pf5 = 0
           
           return
 

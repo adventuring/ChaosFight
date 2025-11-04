@@ -486,9 +486,12 @@
           rem Game Mode: Missile Y positions [0-3] - using SCRAM (SuperChip RAM)
           rem Stored in w000-w003 for players 1-4
           rem Using SCRAM allows all 4 missile Y positions
+          dim missileY_W = w000
+          dim missileY_R = r000
           dim missileY = w000
-          rem Game Mode: Missile Y position array (4 bytes) - SCRAM w000-w003
-          rem NOTE: batariBASIC uses array syntax - missileY[0] = w000, missileY[1] = w001, etc.
+          rem Game Mode: Missile Y position array (4 bytes) - SCRAM w000-w003 (read via r000-r003, write via w000-w003)
+          rem NOTE: batariBASIC uses array syntax - missileY[0] = w000/r000, missileY[1] = w001/r001, etc.
+          rem NOTE: Must use missileY_R for reads and missileY_W for writes to avoid RMW issues
 
           rem Game Mode: Player timers array [0-3] - used for guard cooldowns and other timers
           rem SCRAM allocated since var44-var47 already used by playerAttackCooldown

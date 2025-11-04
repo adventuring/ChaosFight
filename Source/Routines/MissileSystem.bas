@@ -59,9 +59,9 @@ SpawnMissile
           let SM_facing  = playerState[SM_playerIndex] & 1
           rem Get facing direction
           
-          rem Set missile position using array access
+          rem Set missile position using array access (write to _W port)
           let missileX[SM_playerIndex] = playerX[SM_playerIndex]
-          let missileY[SM_playerIndex] = playerY[SM_playerIndex] + SM_bitFlag
+          let missileY_W[SM_playerIndex] = playerY[SM_playerIndex] + SM_bitFlag
           if SM_facing = 0 then missileX[SM_playerIndex] = missileX[SM_playerIndex] - MissileSpawnOffsetLeft
           rem Facing left, spawn left
           if SM_facing = 1 then missileX[SM_playerIndex] = missileX[SM_playerIndex] + MissileSpawnOffsetRight
@@ -267,8 +267,12 @@ FrictionApply
 FrictionDone
           
           rem Update missile position
+          rem Read-Modify-Write: Read from _R, modify, write to _W
           let missileX[UOM_playerIndex] = missileX[UOM_playerIndex] + temp2
-          let missileY[UOM_playerIndex] = missileY[UOM_playerIndex] + temp3
+          dim UOM_missileY = temp4
+          let UOM_missileY = missileY_R[UOM_playerIndex]
+          let UOM_missileY = UOM_missileY + temp3
+          let missileY_W[UOM_playerIndex] = UOM_missileY
           
           rem Check screen bounds
           gosub CheckMissileBounds
@@ -354,9 +358,9 @@ MissileUpdateComplete
           rem OUTPUT:
           rem   temp4 = 1 if off-screen, 0 if on-screen
 CheckMissileBounds
-          rem Get missile X/Y position
+          rem Get missile X/Y position (read from _R port)
           let temp2  = missileX[temp1]
-          let temp3  = missileY[temp1]
+          let temp3  = missileY_R[temp1]
           
           rem Check bounds (usable sprite area is 128px wide, 16px inset from each side)
           let temp4  = 0
@@ -386,9 +390,9 @@ CheckMissileBounds
           rem OUTPUT:
           rem   temp4 = 1 if hit playfield, 0 if clear
 MissileSysPF
-          rem Get missile X/Y position
+          rem Get missile X/Y position (read from _R port)
           let temp2  = missileX[temp1]
-          let temp3  = missileY[temp1]
+          let temp3  = missileY_R[temp1]
           
           rem Convert X/Y to playfield coordinates
           rem Playfield is 32 pixels wide (doubled to 160), 192 pixels tall
@@ -439,9 +443,9 @@ Div5Loop
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
 CheckMissilePlayerCollision
-          rem Get missile X/Y position
+          rem Get missile X/Y position (read from _R port)
           let temp2  = missileX[temp1]
-          let temp3  = missileY[temp1]
+          let temp3  = missileY_R[temp1]
           
           rem Missile bounding box
           rem temp2 = missile left, temp2+MissileAABBSize = missile right

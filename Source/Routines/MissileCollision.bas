@@ -88,7 +88,7 @@ CheckVisibleMissileCollision
           dim CVMC_missileHeight = temp3
           rem Get missile X/Y position
           let CVMC_missileX = missileX[CVMC_attackerIndex]
-          let CVMC_missileY = missileY[CVMC_attackerIndex]
+          let CVMC_missileY = missileY_R[CVMC_attackerIndex]
           
           rem Get missile size from character data (in Bank 6)
           rem Get character type from player
@@ -443,7 +443,7 @@ SkipThirdPlayer3
 MissileCollPF
           rem Get missile X/Y position
           temp2 = missileX[temp1]
-          temp3 = missileY[temp1]
+          temp3 = missileY_R[temp1]
           
           rem Convert X to playfield coordinates
           rem Playfield is 32 pixels wide (doubled to 160 screen pixels)

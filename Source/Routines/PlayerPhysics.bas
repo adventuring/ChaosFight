@@ -57,14 +57,20 @@ GravityCheckCharacter
           
           rem Determine gravity acceleration rate based on character (8.8 fixed-point subpixel)
           rem Uses tunable constants from Constants.bas for easy adjustment
-          let temp7 = GravityNormal
+          let gravityRate = GravityNormal
           rem Default gravity acceleration (normal rate)
-          if temp6 = CharHarpy then let temp7 = GravityReduced
+          if temp6 = CharHarpy then let gravityRate = GravityReduced
           rem Harpy: reduced gravity rate
           
           rem Apply gravity acceleration to velocity subpixel part (adds to Y velocity, positive = downward)
-          rem temp1 already set (player index), temp7 is gravity strength in subpixel (low byte)
+          rem temp1 already set (player index), gravityRate is gravity strength in subpixel (low byte)
+          rem AddVelocitySubpixelY expects temp2, so save temp2 and use it for gravityRate
+          let playfieldCol = temp2
+          rem Save temp2 temporarily
+          let temp2 = gravityRate
           gosub AddVelocitySubpixelY
+          let temp2 = playfieldCol
+          rem Restore temp2
           
           rem Apply terminal velocity cap (prevents infinite acceleration)
           rem Check if velocity exceeds terminal velocity (positive = downward)
@@ -105,18 +111,18 @@ GravityCheckCharacter
           let playerVelocityY_lo[temp1] = 0
           
           rem Calculate Y position for top of ground row using repeated addition
-          rem Loop to add pfrowheight to temp8, temp5 times
-          let temp8 = 0
-          let temp9 = temp5
-          if temp9 = 0 then goto GravityRowCalcDone
+          rem Loop to add pfrowheight to rowYPosition, temp5 times
+          let rowYPosition = 0
+          let rowCounter = temp5
+          if rowCounter = 0 then goto GravityRowCalcDone
 GravityRowCalcLoop
-          let temp8 = temp8 + pfrowheight
-          let temp9 = temp9 - 1
-          if temp9 > 0 then goto GravityRowCalcLoop
+          let rowYPosition = rowYPosition + pfrowheight
+          let rowCounter = rowCounter - 1
+          if rowCounter > 0 then goto GravityRowCalcLoop
 GravityRowCalcDone
-          rem temp8 now contains temp5 * pfrowheight (Y position of top of ground row)
+          rem rowYPosition now contains temp5 * pfrowheight (Y position of top of ground row)
           rem Clamp playerY so feet are at top of ground row
-          let playerY[temp1] = temp8 - PlayerSpriteHeight
+          let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           rem Also sync subpixel position
           let playerSubpixelY[temp1] = playerY[temp1]
           let playerSubpixelY_lo[temp1] = 0
@@ -133,15 +139,15 @@ GravityCheckBottom
           
           rem Bottom row is always ground - clamp to bottom
           rem Calculate (pfrows - 1) * pfrowheight using repeated addition
-          let temp8 = 0
-          let temp9 = pfrows - 1
-          if temp9 = 0 then goto GravityBottomCalcDone
+          let rowYPosition = 0
+          let rowCounter = pfrows - 1
+          if rowCounter = 0 then goto GravityBottomCalcDone
 GravityBottomCalcLoop
-          let temp8 = temp8 + pfrowheight
-          let temp9 = temp9 - 1
-          if temp9 > 0 then goto GravityBottomCalcLoop
+          let rowYPosition = rowYPosition + pfrowheight
+          let rowCounter = rowCounter - 1
+          if rowCounter > 0 then goto GravityBottomCalcLoop
 GravityBottomCalcDone
-          let playerY[temp1] = temp8 - PlayerSpriteHeight
+          let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           let playerState[temp1] = playerState[temp1] & NOT 4
           
 GravityNextPlayer
@@ -283,10 +289,10 @@ CheckPlayfieldCollisionAllDirections
           if temp6 < 0 then let temp6 = 0
           
           rem Convert Y position to playfield row (0-pfrows-1)
-          let temp7 = temp3 / pfrowheight
-          rem temp7 = playfield row
-          if temp7 >= pfrows then let temp7 = pfrows - 1
-          if temp7 < 0 then let temp7 = 0
+          let playfieldRow = temp3 / pfrowheight
+          rem playfieldRow = playfield row
+          if playfieldRow >= pfrows then let playfieldRow = pfrows - 1
+          if playfieldRow < 0 then let playfieldRow = 0
           
           rem =================================================================
           rem CHECK LEFT COLLISION
@@ -296,21 +302,21 @@ CheckPlayfieldCollisionAllDirections
           if temp6 <= 0 then PFCheckRight
           rem At left edge of screen, skip check
           
-          let temp8 = temp6 - 1
-          rem Column to the left (temp8)
-          if temp8 < 0 then PFCheckRight
+          let playfieldCol = temp6 - 1
+          rem Column to the left (playfieldCol)
+          if playfieldCol < 0 then PFCheckRight
           rem Out of bounds, skip
           
           rem Check head position (top of sprite)
-          if pfread(temp8, temp7) then PFBlockLeft
+          if pfread(playfieldCol, playfieldRow) then PFBlockLeft
           rem Check middle position
-          let temp9 = temp7 + (temp5 / 2) / pfrowheight
-          if temp9 >= pfrows then PFCheckRight
-          if pfread(temp8, temp9) then PFBlockLeft
+          let rowCounter = playfieldRow + (temp5 / 2) / pfrowheight
+          if rowCounter >= pfrows then PFCheckRight
+          if pfread(playfieldCol, rowCounter) then PFBlockLeft
           rem Check feet position (bottom of sprite)
-          let temp9 = temp7 + temp5 / pfrowheight
-          if temp9 >= pfrows then PFCheckRight
-          if pfread(temp8, temp9) then PFBlockLeft
+          let rowCounter = playfieldRow + temp5 / pfrowheight
+          if rowCounter >= pfrows then PFCheckRight
+          if pfread(playfieldCol, rowCounter) then PFBlockLeft
           
           goto PFCheckRight
           
@@ -318,8 +324,9 @@ PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
           if playerVelocityX[CPF_playerIndex] < 0 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
-          let temp8 = (temp6 + 1) * 4 + ScreenInsetX
-          if playerX[CPF_playerIndex] < temp8 then let playerX[CPF_playerIndex] = temp8 : let playerSubpixelX[CPF_playerIndex] = temp8 : let playerSubpixelX_lo[CPF_playerIndex] = 0
+          let rowYPosition = (temp6 + 1) * 4 + ScreenInsetX
+          rem Reuse rowYPosition for X position clamp (not actually Y, but same pattern)
+          if playerX[CPF_playerIndex] < rowYPosition then let playerX[CPF_playerIndex] = rowYPosition : let playerSubpixelX[CPF_playerIndex] = rowYPosition : let playerSubpixelX_lo[CPF_playerIndex] = 0
           
           rem =================================================================
           rem CHECK RIGHT COLLISION
@@ -330,19 +337,19 @@ PFCheckRight
           if temp6 >= 31 then PFCheckUp
           rem At right edge of screen, skip check
           
-          let temp8 = temp6 + 4
-          rem Column to the right of player’s right edge (temp8)
-          if temp8 > 31 then PFCheckUp
+          let playfieldCol = temp6 + 4
+          rem Column to the right of player's right edge (playfieldCol)
+          if playfieldCol > 31 then PFCheckUp
           rem Out of bounds, skip
           
           rem Check head, middle, and feet positions
-          if pfread(temp8, temp7) then PFBlockRight
-          let temp9 = temp7 + (temp5 / 2) / pfrowheight
-          if temp9 >= pfrows then PFCheckUp
-          if pfread(temp8, temp9) then PFBlockRight
-          let temp9 = temp7 + temp5 / pfrowheight
-          if temp9 >= pfrows then PFCheckUp
-          if pfread(temp8, temp9) then PFBlockRight
+          if pfread(playfieldCol, playfieldRow) then PFBlockRight
+          let rowCounter = playfieldRow + (temp5 / 2) / pfrowheight
+          if rowCounter >= pfrows then PFCheckUp
+          if pfread(playfieldCol, rowCounter) then PFBlockRight
+          let rowCounter = playfieldRow + temp5 / pfrowheight
+          if rowCounter >= pfrows then PFCheckUp
+          if pfread(playfieldCol, rowCounter) then PFBlockRight
           
           goto PFCheckUp
           
@@ -350,27 +357,28 @@ PFBlockRight
           rem Block rightward movement: zero X velocity if positive
           if playerVelocityX[CPF_playerIndex] > 0 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
-          let temp8 = (temp6 - 1) * 4 + ScreenInsetX
-          if playerX[CPF_playerIndex] > temp8 then let playerX[CPF_playerIndex] = temp8 : let playerSubpixelX[CPF_playerIndex] = temp8 : let playerSubpixelX_lo[CPF_playerIndex] = 0
+          let rowYPosition = (temp6 - 1) * 4 + ScreenInsetX
+          rem Reuse rowYPosition for X position clamp (not actually Y, but same pattern)
+          if playerX[CPF_playerIndex] > rowYPosition then let playerX[CPF_playerIndex] = rowYPosition : let playerSubpixelX[CPF_playerIndex] = rowYPosition : let playerSubpixelX_lo[CPF_playerIndex] = 0
           
           rem =================================================================
           rem CHECK UP COLLISION
           rem =================================================================
 PFCheckUp
-          rem Check if player’s head has a playfield pixel above
-          if temp7 <= 0 then PFCheckDown
+          rem Check if player's head has a playfield pixel above
+          if playfieldRow <= 0 then PFCheckDown
           rem At top of screen, skip check
           
-          let temp8 = temp7 - 1
-          rem Row above player’s head (temp8)
-          if temp8 < 0 then PFCheckDown
+          let rowCounter = playfieldRow - 1
+          rem Row above player's head (rowCounter)
+          if rowCounter < 0 then PFCheckDown
           
           rem Check center column (temp6)
-          if pfread(temp6, temp8) then PFBlockUp
+          if pfread(temp6, rowCounter) then PFBlockUp
           rem Check left edge column
-          if temp6 > 0 then if pfread(temp6 - 1, temp8) then PFBlockUp
+          if temp6 > 0 then if pfread(temp6 - 1, rowCounter) then PFBlockUp
           rem Check right edge column
-          if temp6 < 31 then if pfread(temp6 + 1, temp8) then PFBlockUp
+          if temp6 < 31 then if pfread(temp6 + 1, rowCounter) then PFBlockUp
           
           goto PFCheckDown
           
@@ -378,27 +386,27 @@ PFBlockUp
           rem Block upward movement: zero Y velocity if negative
           if playerVelocityY[CPF_playerIndex] < 0 then let playerVelocityY[CPF_playerIndex] = 0 : let playerVelocityY_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
-          let temp8 = (temp7 + 1) * pfrowheight
-          if playerY[CPF_playerIndex] < temp8 then let playerY[CPF_playerIndex] = temp8 : let playerSubpixelY[CPF_playerIndex] = temp8 : let playerSubpixelY_lo[CPF_playerIndex] = 0
+          let rowYPosition = (playfieldRow + 1) * pfrowheight
+          if playerY[CPF_playerIndex] < rowYPosition then let playerY[CPF_playerIndex] = rowYPosition : let playerSubpixelY[CPF_playerIndex] = rowYPosition : let playerSubpixelY_lo[CPF_playerIndex] = 0
           
           rem =================================================================
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity, but verify)
           rem =================================================================
 PFCheckDown
-          rem Check if player’s feet have a playfield pixel below
+          rem Check if player's feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we verify here
-          let temp8 = temp7 + temp5 / pfrowheight
-          rem Row at player’s feet (temp8)
-          if temp8 >= pfrows then PFCheckDone
+          let rowCounter = playfieldRow + temp5 / pfrowheight
+          rem Row at player's feet (rowCounter)
+          if rowCounter >= pfrows then PFCheckDone
           
-          let temp9 = temp8 + 1
-          rem Row below feet (temp9)
-          if temp9 >= pfrows then PFCheckDone
+          let playfieldRow = rowCounter + 1
+          rem Row below feet (playfieldRow - temporarily reuse for this check)
+          if playfieldRow >= pfrows then PFCheckDone
           
           rem Check center, left, and right columns below feet
-          if pfread(temp6, temp9) then PFBlockDown
-          if temp6 > 0 then if pfread(temp6 - 1, temp9) then PFBlockDown
-          if temp6 < 31 then if pfread(temp6 + 1, temp9) then PFBlockDown
+          if pfread(temp6, playfieldRow) then PFBlockDown
+          if temp6 > 0 then if pfread(temp6 - 1, playfieldRow) then PFBlockDown
+          if temp6 < 31 then if pfread(temp6 + 1, playfieldRow) then PFBlockDown
           
           goto PFCheckDone
           

@@ -435,6 +435,32 @@ DivideBy100One
 DivideBy100Two
           let DB100_dividend = 2
           return
+
+          rem DivideByPfrowheight: compute value / pfrowheight using bit shifts
+          rem INPUT: temp2 = dividend (Y position value)
+          rem OUTPUT: temp2 = quotient (row index)
+          rem pfrowheight is either 8 (admin) or 16 (game), both powers of 2
+          rem Uses conditional bit shifts based on runtime value
+DivideByPfrowheight
+          dim DBPF_value = temp2
+          rem Check if pfrowheight is 8 or 16
+          if pfrowheight = 8 then DBPF_DivideBy8
+          rem pfrowheight is 16, divide by 16 (4 right shifts)
+          asm
+            lsr DBPF_value
+            lsr DBPF_value
+            lsr DBPF_value
+            lsr DBPF_value
+          end
+          return
+DBPF_DivideBy8
+          rem pfrowheight is 8, divide by 8 (3 right shifts)
+          asm
+            lsr DBPF_value
+            lsr DBPF_value
+            lsr DBPF_value
+          end
+          return
           
           rem =================================================================
           rem CALCULATE SAFE FALL DISTANCE

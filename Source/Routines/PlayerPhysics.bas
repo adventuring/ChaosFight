@@ -89,10 +89,13 @@ GravityCheckCharacter
           if temp2 > 31 then let temp2 = 31
           if temp2 < 0 then let temp2 = 0
           
-          rem Calculate row where player’s feet are (bottom of sprite)
+          rem Calculate row where player's feet are (bottom of sprite)
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
           let temp3 = playerY[temp1] + PlayerSpriteHeight
-          let temp4 = temp3 / pfrowheight
+          rem Divide by pfrowheight using helper
+          let temp2 = temp3
+          gosub DivideByPfrowheight
+          let temp4 = temp2
           rem temp4 = row where feet are
           
           rem Check if there’s a playfield pixel in the row below the feet
@@ -297,7 +300,10 @@ CheckPlayfieldCollisionAllDirections
           if temp6 < 0 then let temp6 = 0
           
           rem Convert Y position to playfield row (0-pfrows-1)
-          let playfieldRow = temp3 / pfrowheight
+          rem Divide by pfrowheight using helper
+          let temp2 = temp3
+          gosub DivideByPfrowheight
+          let playfieldRow = temp2
           rem playfieldRow = playfield row
           if playfieldRow >= pfrows then let playfieldRow = pfrows - 1
           if playfieldRow < 0 then let playfieldRow = 0
@@ -318,11 +324,23 @@ CheckPlayfieldCollisionAllDirections
           rem Check head position (top of sprite)
           if pfread(playfieldColumn, playfieldRow) then PFBlockLeft
           rem Check middle position
-          let rowCounter = playfieldRow + (temp5 / 2) / pfrowheight
+          rem Calculate (temp5 / 2) / pfrowheight
+          asm
+            lda temp5
+            lsr a
+            sta temp2
+          end
+          rem temp2 = temp5 / 2
+          gosub DivideByPfrowheight
+          rem temp2 = (temp5 / 2) / pfrowheight
+          let rowCounter = playfieldRow + temp2
           if rowCounter >= pfrows then PFCheckRight
           if pfread(playfieldColumn, rowCounter) then PFBlockLeft
           rem Check feet position (bottom of sprite)
-          let rowCounter = playfieldRow + temp5 / pfrowheight
+          let temp2 = temp5
+          gosub DivideByPfrowheight
+          rem temp2 = temp5 / pfrowheight
+          let rowCounter = playfieldRow + temp2
           if rowCounter >= pfrows then PFCheckRight
           if pfread(playfieldColumn, rowCounter) then PFBlockLeft
           
@@ -361,10 +379,22 @@ PFCheckRight
           
           rem Check head, middle, and feet positions
           if pfread(playfieldColumn, playfieldRow) then PFBlockRight
-          let rowCounter = playfieldRow + (temp5 / 2) / pfrowheight
+          rem Calculate (temp5 / 2) / pfrowheight
+          asm
+            lda temp5
+            lsr a
+            sta temp2
+          end
+          rem temp2 = temp5 / 2
+          gosub DivideByPfrowheight
+          rem temp2 = (temp5 / 2) / pfrowheight
+          let rowCounter = playfieldRow + temp2
           if rowCounter >= pfrows then PFCheckUp
           if pfread(playfieldColumn, rowCounter) then PFBlockRight
-          let rowCounter = playfieldRow + temp5 / pfrowheight
+          let temp2 = temp5
+          gosub DivideByPfrowheight
+          rem temp2 = temp5 / pfrowheight
+          let rowCounter = playfieldRow + temp2
           if rowCounter >= pfrows then PFCheckUp
           if pfread(playfieldColumn, rowCounter) then PFBlockRight
           
@@ -412,7 +442,30 @@ PFBlockUp
           rem Block upward movement: zero Y velocity if negative
           if playerVelocityY[CPF_playerIndex] < 0 then let playerVelocityY[CPF_playerIndex] = 0 : let playerVelocityY_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
-          let rowYPosition = (playfieldRow + 1) * pfrowheight
+          rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
+          let rowYPosition = playfieldRow + 1
+          rem Check if pfrowheight is 8 or 16
+          if pfrowheight = 8 then DBPF_MultiplyBy8
+          rem pfrowheight is 16, multiply by 16 (4 left shifts)
+          asm
+            lda rowYPosition
+            asl a
+            asl a
+            asl a
+            asl a
+            sta rowYPosition
+          end
+          goto DBPF_MultiplyDone
+DBPF_MultiplyBy8
+          rem pfrowheight is 8, multiply by 8 (3 left shifts)
+          asm
+            lda rowYPosition
+            asl a
+            asl a
+            asl a
+            sta rowYPosition
+          end
+DBPF_MultiplyDone
           if playerY[CPF_playerIndex] < rowYPosition then let playerY[CPF_playerIndex] = rowYPosition : let playerSubpixelY[CPF_playerIndex] = rowYPosition : let playerSubpixelY_lo[CPF_playerIndex] = 0
           
           rem =================================================================
@@ -586,10 +639,49 @@ ApplyImpulseRight
             asl a
             sta impulseStrength
           end
-          rem TODO: Approximate division by totalWeight (variable, use lookup table or approximation)
-          rem For now, use simple scaling: impulseStrength / totalWeight ≈ impulseStrength / 16 (if totalWeight ≈ 16)
-          rem This is a placeholder - needs proper variable division routine
-          let impulseStrength = impulseStrength / totalWeight
+          rem Approximate division by totalWeight using bit-shift approximation
+          rem totalWeight ranges 10-200, use closest power-of-2 approximation
+          if totalWeight >= 128 then goto ApproxDivBy128_1
+          if totalWeight >= 64 then goto ApproxDivBy64_1
+          if totalWeight >= 32 then goto ApproxDivBy32_1
+          rem Default: divide by 16 (approximation for 10-31)
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_1
+ApproxDivBy32_1
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_1
+ApproxDivBy64_1
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_1
+ApproxDivBy128_1
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+ApproxDivDone_1
           rem Scale impulse by weight ratio (0-2 pixels/frame)
           if impulseStrength = 0 then impulseStrength = 1
           rem Minimum 1 pixel/frame
@@ -618,8 +710,48 @@ ApplyImpulse1Heavier
             asl a
             sta impulseStrength
           end
-          rem TODO: Approximate division by totalWeight (variable, use lookup table or approximation)
-          let impulseStrength = impulseStrength / totalWeight
+          rem Approximate division by totalWeight using bit-shift approximation
+          if totalWeight >= 128 then goto ApproxDivBy128_2
+          if totalWeight >= 64 then goto ApproxDivBy64_2
+          if totalWeight >= 32 then goto ApproxDivBy32_2
+          rem Default: divide by 16
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_2
+ApproxDivBy32_2
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_2
+ApproxDivBy64_2
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_2
+ApproxDivBy128_2
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+ApproxDivDone_2
           rem Scale impulse by weight ratio
           if impulseStrength = 0 then impulseStrength = 1
           
@@ -666,8 +798,48 @@ ApplyImpulseLeft
             asl a
             sta impulseStrength
           end
-          rem TODO: Approximate division by totalWeight (variable, use lookup table or approximation)
-          let impulseStrength = impulseStrength / totalWeight
+          rem Approximate division by totalWeight using bit-shift approximation
+          if totalWeight >= 128 then goto ApproxDivBy128_3
+          if totalWeight >= 64 then goto ApproxDivBy64_3
+          if totalWeight >= 32 then goto ApproxDivBy32_3
+          rem Default: divide by 16
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_3
+ApproxDivBy32_3
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_3
+ApproxDivBy64_3
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+          goto ApproxDivDone_3
+ApproxDivBy128_3
+          asm
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+            lsr impulseStrength
+          end
+ApproxDivDone_3
           if impulseStrength = 0 then impulseStrength = 1
           
           if playerVelocityX[temp1] > -4 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength

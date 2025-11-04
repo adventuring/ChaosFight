@@ -467,10 +467,13 @@ DiveCheckDone
           rem Calculate direction: if missile moving right, push defender right
           let temp2  = missileX[temp1]
           
-          if temp2 < playerX[temp4] then playerMomentumX[temp4] = playerMomentumX[temp4] + KnockbackImpulse : goto KnockbackDone 
-          rem Missile from left, push right
-          let playerMomentumX[temp4] = playerMomentumX[temp4] - KnockbackImpulse
-          rem Missile from right, push left
+          rem Apply knockback impulse to velocity (not momentum)
+          if temp2 < playerX[temp4] then let playerVelocityX[temp4] = playerVelocityX[temp4] + KnockbackImpulse : let playerVelocityX_lo[temp4] = 0 : goto KnockbackDone 
+          rem Missile from left, push right (positive velocity)
+          let playerVelocityX[temp4] = playerVelocityX[temp4] - KnockbackImpulse
+          rem Missile from right, push left (negative velocity)
+          let playerVelocityX_lo[temp4] = 0
+          rem Zero subpixel when applying knockback impulse
 KnockbackDone
           
           rem Set recovery/hitstun frames

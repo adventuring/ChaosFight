@@ -16,7 +16,8 @@
           rem   PlayerY[0-3] - Y positions
           rem   PlayerState[0-3] - State flags (attacking, guarding, jumping, etc.)
           rem   PlayerChar[0-3] - Character type indices (0-MaxCharacter)
-          rem   PlayerMomentumX[0-3] - Horizontal momentum
+          rem   playerVelocityX[0-3] - Horizontal velocity (8.8 fixed-point)
+          rem   playerVelocityX_lo[0-3] - Horizontal velocity fractional part
           rem   ControllerStatus - Packed controller detection status
           rem   qtcontroller - Multiplexing state (0=P1/P2, 1=P3/P4)
 
@@ -378,9 +379,11 @@ CheckLeftCollisionRight
           if pfread(temp3, temp6) then CheckRightMovementRight
           rem Blocked at bottom too
 MoveLeftOKRight
-          let PlayerX[temp1] = PlayerX[temp1] - 1
+          rem Apply leftward velocity impulse (double-width sprite: 16px width)
+          let playerVelocityX[temp1] = 255
+          rem -1 in 8-bit two's complement: 256 - 1 = 255
+          let playerVelocityX_lo[temp1] = 0
           let PlayerState[temp1] = PlayerState[temp1] & 254
-          let PlayerMomentumX[temp1] = 255
 CheckRightMovementRight
           rem Check right movement
           if !joy1right then goto SkipFlyingLeftRightRight
@@ -411,9 +414,10 @@ CheckRightMovementRight
           if pfread(temp3, temp6) then SkipFlyingLeftRightRight
           rem Blocked at bottom too
 MoveRightOKRight
-          let PlayerX[temp1] = PlayerX[temp1] + 1
+          rem Apply rightward velocity impulse (double-width sprite: 16px width)
+          let playerVelocityX[temp1] = 1
+          let playerVelocityX_lo[temp1] = 0
           let PlayerState[temp1] = PlayerState[temp1] | 1
-          let PlayerMomentumX[temp1] = 1
 SkipFlyingLeftRightRight
           
 

@@ -206,7 +206,7 @@ MultiplyDone
           rem Keep lower 5 bits
           let playerStateTemp = playerStateTemp | MaskAnimationRecovering 
           rem Set animation to 9 (1001 in bits 7-4)
-          playerState[CFD_playerIndex] = playerStateTemp
+          let playerState[CFD_playerIndex] = playerStateTemp
           
           rem Play fall damage sound effect
           let temp1 = SoundFall

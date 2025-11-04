@@ -158,7 +158,8 @@ end
           rem  melee  ranged         ranged    ranged    melee   melee           melee   melee      ranged          melee       melee      melee      melee         melee      ranged    melee
           rem  Note: Melee attacks show brief visual (sword, fist, etc.), ranged persist until hit
           data CharacterMissileLifetime
-             4, 255, 255, 255, 4, 4, 5, 6, 255, 5, 4, 4, 3, 5, 255, 4
+             4, 255, 255, 255, 4, 4, 5, 6, 255, 5, 4, 4, 3, 5, 5, 4
+          rem Ursulo changed from 255 (ranged) to 5 (melee claw swipe)
           end
 
           rem =================================================================
@@ -217,7 +218,8 @@ end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileMomentumX
-             5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
+             5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 0, 0
+          rem Ursulo changed from 7 to 0 (melee, no missile momentum)
           end
 
           rem =================================================================
@@ -229,10 +231,12 @@ end
           rem Values: -127 to 127 (typically -8 to 0 for parabolic arcs)
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          rem  N/A    arrowshot    ballistic arrowshot N/A       N/A              N/A      diagonal   ballistic       N/A         arrowshot  N/A        N/A           N/A       ballistic  N/A
+          rem  N/A    arrowshot    ballistic arrowshot N/A       N/A              N/A      diagonal   ballistic       N/A         arrowshot  N/A        N/A           N/A       melee  N/A
           rem  Harpy: diagonal downward attack (positive = down)
+          rem  Ursulo: melee claw swipe (no missile momentum)
           data CharacterMissileMomentumY
-             0, 0, -4, 0, 0, 0, 4, 0, -5, 0, 0, 0, 0, 0, -6, 0
+             0, 0, -4, 0, 0, 0, 4, 0, -5, 0, 0, 0, 0, 0, 0, 0
+          rem Ursulo changed from -6 to 0 (melee, no missile momentum)
           end
 
           rem =================================================================
@@ -253,8 +257,9 @@ end
           rem  Values use enum constants for bitfield encoding (see Enums.bas)
           rem  Curler = HitBackground|HitPlayer|Gravity|Bounce|Friction = 1+2+4+8+16 = 31 (%00011111)
           data CharacterMissileFlags
-              %00000000, %00011111, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000
-          rem  0,      Curler(31), MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0
+              %00000000, %00011111, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
+          rem  0,      Curler(31), MissileFlagHitBackground, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, 0, 0
+          rem  Ursulo changed from MissileFlagHitBackground (%00000001) to 0 (melee)
           end
 
           rem =================================================================

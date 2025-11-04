@@ -20,16 +20,16 @@
           rem SOLID PLAYER COLOR TABLES
           rem =================================================================
           rem Solid color tables for P1-P4 normal and hurt states
-          rem P1=Indigo, P2=Red, P3=Yellow, P4=Green
+          rem P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise (SECAM maps to Green)
 
           rem Player Colors - Light versions for normal state
           data PlayerColorsLight
-              ColIndigo(14), ColRed(14), ColYellow(14), ColGreen(14)
+              ColIndigo(14), ColRed(14), ColYellow(14), ColTurquoise(14)
 end
 
           rem Player Colors - Dark versions for hurt state  
           data PlayerColorsDark
-              ColIndigo(6), ColRed(6), ColYellow(6), ColGreen(6)
+              ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
 end
 
           rem SPRITE LOADING FUNCTIONS
@@ -417,22 +417,62 @@ PerLineFlashing
 PlayerIndexColors
           dim PIC_color = temp6
           rem Solid player index colors (bright)
+          rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player 4=Turquoise (SECAM maps to Green)
+#ifdef TV_SECAM
+          rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise maps to Cyan on SECAM)
           if !LCC_playerNumber then let PIC_color = ColIndigo(14) : let temp6 = PIC_color : goto SetColor
+          rem Player 1: Indigo -> Blue on SECAM
           if LCC_playerNumber = 1 then let PIC_color = ColRed(14) : let temp6 = PIC_color : goto SetColor
+          rem Player 2: Red
           if LCC_playerNumber = 2 then let PIC_color = ColYellow(14) : let temp6 = PIC_color : goto SetColor
+          rem Player 3: Yellow
           let PIC_color = ColGreen(14)
+          rem Player 4: Green (SECAM-specific, Turquoise would be Cyan)
           let temp6 = PIC_color
           goto SetColor
+#else
+          rem NTSC/PAL: Use Turquoise for Player 4
+          if !LCC_playerNumber then let PIC_color = ColIndigo(14) : let temp6 = PIC_color : goto SetColor
+          rem Player 1: Indigo
+          if LCC_playerNumber = 1 then let PIC_color = ColRed(14) : let temp6 = PIC_color : goto SetColor
+          rem Player 2: Red
+          if LCC_playerNumber = 2 then let PIC_color = ColYellow(14) : let temp6 = PIC_color : goto SetColor
+          rem Player 3: Yellow
+          let PIC_color = ColTurquoise(14)
+          rem Player 4: Turquoise
+          let temp6 = PIC_color
+          goto SetColor
+#endif
 
 PlayerIndexColorsDim
           dim PICD_color = temp6
           rem Dimmed player index colors
+          rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player 4=Turquoise (SECAM maps to Green)
+#ifdef TV_SECAM
+          rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise maps to Cyan on SECAM)
           if !LCC_playerNumber then let PICD_color = ColIndigo(6) : let temp6 = PICD_color : goto SetColor
+          rem Player 1: Indigo -> Blue on SECAM (dimmed)
           if LCC_playerNumber = 1 then let PICD_color = ColRed(6) : let temp6 = PICD_color : goto SetColor
+          rem Player 2: Red (dimmed)
           if LCC_playerNumber = 2 then let PICD_color = ColYellow(6) : let temp6 = PICD_color : goto SetColor
+          rem Player 3: Yellow (dimmed)
           let PICD_color = ColGreen(6)
+          rem Player 4: Green (SECAM-specific, Turquoise would be Cyan)
           let temp6 = PICD_color
           goto SetColor
+#else
+          rem NTSC/PAL: Use Turquoise for Player 4
+          if !LCC_playerNumber then let PICD_color = ColIndigo(6) : let temp6 = PICD_color : goto SetColor
+          rem Player 1: Indigo (dimmed)
+          if LCC_playerNumber = 1 then let PICD_color = ColRed(6) : let temp6 = PICD_color : goto SetColor
+          rem Player 2: Red (dimmed)
+          if LCC_playerNumber = 2 then let PICD_color = ColYellow(6) : let temp6 = PICD_color : goto SetColor
+          rem Player 3: Yellow (dimmed)
+          let PICD_color = ColTurquoise(6)
+          rem Player 4: Turquoise (dimmed)
+          let temp6 = PICD_color
+          goto SetColor
+#endif
 
 HurtColor
           dim HC_color = temp6

@@ -501,12 +501,12 @@ SelDrawSprite
           rem Hurt state - dimmer colors
           if switchbw then SelHurtBW
           rem Player color but dimmer
-          if charSelectPlayer = 1 then COLUP0  = ColBlue(6)
-          rem Dark blue
+          if charSelectPlayer = 1 then COLUP0  = ColIndigo(6)
+          rem Dark indigo (Player 1)
           if charSelectPlayer = 2 then COLUP0  = ColRed(6)
-          rem Dark red  
+          rem Dark red (Player 2)
           if charSelectPlayer = 3 then COLUP0  = ColYellow(6)
-          rem Dark yellow
+          rem Dark yellow (Player 3)
           if charSelectPlayer = 4 then COLUP0  = ColGreen(6)
           rem Dark green
           goto SelColorDone
@@ -518,12 +518,12 @@ SelColorNormal
           rem Normal state - bright colors
           if switchbw then SelColorBW
           rem Player color - bright
-          if charSelectPlayer = 1 then COLUP0  = ColBlue(12)
-          rem Bright blue
+          if charSelectPlayer = 1 then COLUP0  = ColIndigo(12)
+          rem Bright indigo (Player 1)
           if charSelectPlayer = 2 then COLUP0  = ColRed(12)
-          rem Bright red
+          rem Bright red (Player 2)
           if charSelectPlayer = 3 then COLUP0  = ColYellow(12)
-          rem Bright yellow
+          rem Bright yellow (Player 3)
           if charSelectPlayer = 4 then COLUP0  = ColGreen(12)
           rem Bright green
           goto SelColorDone

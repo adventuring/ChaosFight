@@ -90,9 +90,18 @@ SetParadeColor4Player
           rem 4-player mode: Randomly choose from all 4 player colors
           temp1 = rand & 3
           if temp1 = 0 then COLUP0 = ColIndigo(12) : goto SetParadeColorDone
+          rem Player 1: Indigo
           if temp1 = 1 then COLUP0 = ColRed(12) : goto SetParadeColorDone
+          rem Player 2: Red
           if temp1 = 2 then COLUP0 = ColYellow(12) : goto SetParadeColorDone
+          rem Player 3: Yellow
+#ifdef TV_SECAM
           COLUP0 = ColGreen(12)
+          rem Player 4: Green (SECAM-specific, Turquoise maps to Cyan on SECAM)
+#else
+          COLUP0 = ColTurquoise(12)
+          rem Player 4: Turquoise (NTSC/PAL)
+#endif
 SetParadeColorDone
           
           rem Draw running animation for parade character

@@ -22,7 +22,7 @@
           rem   Player 1: Indigo (ColIndigo(14))
           rem   Player 2: Red   (ColRed(14))
           rem   Player 3: Yellow (ColYellow(14))
-          rem   Player 4: Green (ColGreen(14))
+          rem   Player 4: Turquoise (ColTurquoise(14), SECAM maps to Green)
           rem =================================================================
 
           rem Include font data (universal for all TV standards)
@@ -46,7 +46,7 @@
           rem   ColIndigo(14) = Indigo (Player 1)
           rem   ColRed(14) = Red (Player 2)
           rem   ColYellow(14) = Yellow (Player 3)
-          rem   ColGreen(14) = Green (Player 4)
+          rem   ColTurquoise(14) = Turquoise (Player 4, SECAM maps to Green)
 
           rem EXAMPLE USAGE:
           rem   rem Draw level "A" (10) in white on left using player0
@@ -331,8 +331,13 @@ SetP3Color
           goto DrawPlayerDigitNow
           
 SetP4Color
+#ifdef TV_SECAM
           let DPN_playerColor = ColGreen(14)
-          rem Green
+          rem Green (SECAM-specific, Turquoise maps to Cyan on SECAM)
+#else
+          let DPN_playerColor = ColTurquoise(14)
+          rem Turquoise (NTSC/PAL)
+#endif
           goto DrawPlayerDigitNow
           
 DrawPlayerDigitNow

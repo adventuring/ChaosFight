@@ -130,17 +130,23 @@ SetPlayerSprites
           dim SPS_charIndex = temp1
           dim SPS_animFrame = temp2
           dim SPS_playerNum = temp3
+          dim SPS_isHurt = temp4
           rem Set Player 1 color and sprite
-          rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[0] > 0 then COLUP0 = ColIndigo(6) : goto Player1ColorDone 
-          rem Hurt: dimmer indigo
+          rem Use LoadCharacterColors for consistent color handling across TV modes
           let SPS_charIndex = playerChar[0]
           let SPS_animFrame = 0
+          let SPS_isHurt = playerRecoveryFrames[0] > 0
           let temp1 = SPS_charIndex
-          let temp2 = SPS_animFrame
+          let temp2 = SPS_isHurt
+          rem temp2 = hurt state (0=normal, non-zero=hurt)
+          let temp3 = 0
+          rem temp3 = player number (0=Player 1)
+          let temp4 = 0
+          rem temp4 = flashing state (0=not flashing)
+          let temp5 = 0
+          rem temp5 = flashing mode (not used when not flashing)
           gosub bank10 LoadCharacterColors
-          goto Player1ColorDone 
-          rem Normal: solid player color
+          goto Player1ColorDone
           
 Player1ColorDone
 
@@ -171,17 +177,22 @@ Player1ColorDone
           gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
-          rem Color mode: Use solid player color or dimmer when hurt
+          rem Use LoadCharacterColors for consistent color handling across TV modes
           rem NOTE: Multisprite kernel requires _COLUP1 (with underscore) for Player 2 virtual sprite
-          if playerRecoveryFrames[1] > 0 then _COLUP1 = ColRed(6) : goto Player2ColorDone 
-          rem Hurt: dimmer red
           let SPS_charIndex = playerChar[1]
           let SPS_animFrame = 0
+          let SPS_isHurt = playerRecoveryFrames[1] > 0
           let temp1 = SPS_charIndex
-          let temp2 = SPS_animFrame
+          let temp2 = SPS_isHurt
+          rem temp2 = hurt state (0=normal, non-zero=hurt)
+          let temp3 = 1
+          rem temp3 = player number (1=Player 2)
+          let temp4 = 0
+          rem temp4 = flashing state (0=not flashing)
+          let temp5 = 0
+          rem temp5 = flashing mode (not used when not flashing)
           gosub bank10 LoadCharacterColors
-          goto Player2ColorDone 
-          rem Normal: solid player color
+          goto Player2ColorDone
           
 Player2ColorDone
 
@@ -216,21 +227,26 @@ Player2ColorDone
           rem Players 3 & 4 have independent COLUP2/COLUP3 registers
           rem No color inheritance issues with proper multisprite implementation
           
-          rem Set Player 3 color and sprite (if active)
+                    rem Set Player 3 color and sprite (if active)
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Sprite
           if selectedChar3_R = 255 then goto SkipPlayer3Sprite
           if ! playerHealth[2] then goto SkipPlayer3Sprite
           
-          rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[2] > 0 then COLUP2 = ColYellow(6) : goto Player3ColorDone
-          rem Hurt: dimmer yellow
+          rem Use LoadCharacterColors for consistent color handling across TV modes
           let SPS_charIndex = playerChar[2]
           let SPS_animFrame = 0
+          let SPS_isHurt = playerRecoveryFrames[2] > 0
           let temp1 = SPS_charIndex
-          let temp2 = SPS_animFrame
+          let temp2 = SPS_isHurt
+          rem temp2 = hurt state (0=normal, non-zero=hurt)
+          let temp3 = 2
+          rem temp3 = player number (2=Player 3)
+          let temp4 = 0
+          rem temp4 = flashing state (0=not flashing)
+          let temp5 = 0
+          rem temp5 = flashing mode (not used when not flashing)
           gosub bank10 LoadCharacterColors
           goto Player3ColorDone
-          rem Normal: solid player color
           
 Player3ColorDone
 
@@ -267,16 +283,22 @@ SkipPlayer3Sprite
           if selectedChar4_R = 255 then goto SkipPlayer4Sprite
           if ! playerHealth[3] then goto SkipPlayer4Sprite
           
-          rem Color mode: Use solid player color or dimmer when hurt
-          if playerRecoveryFrames[3] > 0 then COLUP3 = ColGreen(6) : goto Player4ColorDone
-          rem Hurt: dimmer green
+          rem Use LoadCharacterColors for consistent color handling across TV modes
+          rem Player 4: Turquoise (SECAM maps to Green), hurt handled by LoadCharacterColors
           let SPS_charIndex = playerChar[3]
           let SPS_animFrame = 0
+          let SPS_isHurt = playerRecoveryFrames[3] > 0
           let temp1 = SPS_charIndex
-          let temp2 = SPS_animFrame
+          let temp2 = SPS_isHurt
+          rem temp2 = hurt state (0=normal, non-zero=hurt)
+          let temp3 = 3
+          rem temp3 = player number (3=Player 4)
+          let temp4 = 0
+          rem temp4 = flashing state (0=not flashing)
+          let temp5 = 0
+          rem temp5 = flashing mode (not used when not flashing)
           gosub bank10 LoadCharacterColors
           goto Player4ColorDone
-          rem Normal: solid player color
           
 Player4ColorDone
 

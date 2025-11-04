@@ -11,3 +11,5 @@
           #include "Source/Routines/WinnerAnnouncement.bas"
           #include "Source/Routines/FontRendering.bas"
           rem Font rendering for arena number display ( 1-32/??)
+          #include "Source/Routines/TitlescreenWindowControl.bas"
+          rem Titlescreen kernel window control for per-screen bitmap display

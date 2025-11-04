@@ -50,9 +50,7 @@ PublisherSkipQuadtari
           let preambleTimer = preambleTimer + 1
           
           rem Set window values for Publisher screen (AtariAge + Interworldly)
-          rem NOTE: Window values are compile-time constants, so this is a no-op
-          rem but documents the intended window configuration
-          rem Window values are set in Bank1.bas: bmp_48x2_1_window=42, bmp_48x2_2_window=42, bmp_48x2_3_window=0
+          gosub bank12 SetPublisherWindowValues
           
           rem Draw screen with titlescreen kernel minikernel
           gosub titledrawscreen bank1

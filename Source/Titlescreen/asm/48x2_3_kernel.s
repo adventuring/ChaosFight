@@ -25,7 +25,13 @@ bmp_48x2_3_pointersetup
         bpl bmp_48x2_3_pointersetup
 
 
+	rem Use runtime window variable if available, otherwise fallback to compile-time constant
+	ifnconst titlescreenWindow3
 	ldy #(bmp_48x2_3_window-1)
+	else
+	ldy titlescreenWindow3
+	dey
+	endif
 	sty aux2
 
 	iny

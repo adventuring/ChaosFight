@@ -96,7 +96,7 @@ CHARACTER_NAMES = \
 TV_ARCHS = NTSC PAL SECAM
 
 # Bitmap names (48×42 bitmaps for titlescreen kernel)
-BITMAP_NAMES = AtariAge Interworldly ChaosFight
+BITMAP_NAMES = AtariAge AtariAgeText Interworldly ChaosFight
 
 # Font names
 FONT_NAMES = Numbers
@@ -259,6 +259,11 @@ Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
 Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png bin/skyline-tool
+	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
+
+Source/Generated/Art.AtariAgeText.s: Source/Art/AtariAgeText.png bin/skyline-tool
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"

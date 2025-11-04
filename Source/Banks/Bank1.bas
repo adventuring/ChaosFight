@@ -49,17 +49,18 @@
           rem Current workaround: Set defaults for Publisher screen. Author screen will show
           rem AtariAge too (unwanted). Title screen won't show ChaosFight (file default 0).
           rem
-          rem Set window values for Publisher screen (default - applies to ALL screens)
-          bmp_48x2_1_window = 42  ; AtariAge: visible on Publisher (also Author, unwanted on Title)
-          bmp_48x2_2_window = 42  ; Interworldly: visible on Publisher + Author (unwanted on Title)
-          bmp_48x2_3_window = 0   ; ChaosFight: hidden on Publisher/Author (need 42 for Title)
+          rem Set compile-time window values to 42 (maximum) for all bitmaps
+          rem This ensures address calculations are always correct regardless of runtime window values
+          rem Runtime window control is handled via titlescreenWindow1/2/3 variables set per screen
+          rem If runtime window = 0, minikernel won't draw (Y register will be -1)
+          bmp_48x2_1_window = 42  ; AtariAge: compile-time default (runtime controls visibility)
+          bmp_48x2_2_window = 42  ; Interworldly: compile-time default (runtime controls visibility)
+          bmp_48x2_3_window = 42  ; ChaosFight: compile-time default (runtime controls visibility)
           
-          rem NOTE: Title screen needs ChaosFight visible (window = 42), but we can't set it
-          rem per-screen since it's a compile-time constant. Title screen will show AtariAge +
-          rem Interworldly (unwanted) and won't show ChaosFight (file default 0).
-          rem
-          rem For proper per-screen control, would need to modify titlescreen kernel to use
-          rem runtime variables instead of compile-time constants for window values.
+          rem NOTE: Runtime window control implemented via titlescreenWindow1/2/3 variables
+          rem Screen routines call SetPublisherWindowValues/SetAuthorWindowValues/SetTitleWindowValues
+          rem to set runtime window values before drawing. Kernel checks runtime variables first,
+          rem falling back to compile-time constants if runtime variables not defined.
           
           include "Source/Titlescreen/asm/titlescreen.s"
 end

@@ -284,6 +284,17 @@
           dim titleParadeActive = var36    
           rem ADMIN: Parade active flag (REDIMMED - Game Mode uses var36 for currentAnimationSeq[3])
           
+          rem ADMIN: Titlescreen kernel window values (runtime control)
+          rem Runtime window values for titlescreen kernel minikernels (0=hidden, 42=visible)
+          rem These override compile-time constants if kernel supports runtime variables
+          rem var20-var23 unused in Admin Mode - used for titlescreen window control
+          dim titlescreenWindow1 = var20
+          rem ADMIN: Runtime window value for bmp_48x2_1 (AtariAge) - 0=hidden, 42=visible
+          dim titlescreenWindow2 = var21
+          rem ADMIN: Runtime window value for bmp_48x2_2 (Interworldly) - 0=hidden, 42=visible
+          dim titlescreenWindow3 = var22
+          rem ADMIN: Runtime window value for bmp_48x2_3 (ChaosFight) - 0=hidden, 42=visible
+          
           rem =================================================================
           rem GAME MODE VARIABLES (may be re-used in Admin Mode for other purposes)
           rem =================================================================

@@ -14,7 +14,7 @@
           rem   titleParadeActive - Boolean: parade currently running
 
           rem TIMING:
-          rem   - Parade starts after 10 seconds (600 frames at 60fps)
+          rem   - Parade starts after 5 seconds (300 frames at 60fps)
           rem   - Each character moves at 2 pixels/frame (left to right)
           rem   - 1 second pause (60 frames) between characters
           rem   - Characters chosen randomly from NumCharacters available
@@ -30,7 +30,7 @@ UpdateCharacterParade
           rem Increment parade timer
           let titleParadeTimer = titleParadeTimer + 1
           
-          rem Start parade after 10 seconds (600 frames at 60fps)
+          rem Start parade after 5 seconds (300 frames at 60fps)
           if titleParadeTimer < TitleParadeDelayFrames then return
           
           rem Check if we need to start a new character

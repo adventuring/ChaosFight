@@ -448,7 +448,7 @@ HealthBarMaxLength = 32
  
 GuardTimerMaxFrames = 60
  
-TitleParadeDelayFrames = 600
+TitleParadeDelayFrames = 300
  
 WinScreenAutoAdvanceFrames = 600
  

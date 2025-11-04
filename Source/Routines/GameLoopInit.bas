@@ -124,8 +124,8 @@ Player3HealthSet
           rem Set character types from character select
           let PlayerChar[0] = SelectedChar1
           let PlayerChar[1] = SelectedChar2
-          let PlayerChar[2] = SelectedChar3
-          let PlayerChar[3] = SelectedChar4
+          let PlayerChar[2] = selectedChar3
+          let PlayerChar[3] = selectedChar4
 
           rem Update Players34Active flag based on character selections
           rem Flag is used for missile multiplexing (only multiplex when players 3 or 4 are active)
@@ -167,8 +167,8 @@ Player3HealthSet
           rem Count initial players
           if !(SelectedChar1 = 255) then let PlayersRemaining = PlayersRemaining + 1
           if !(SelectedChar2 = 255) then let PlayersRemaining = PlayersRemaining + 1  
-          if !(SelectedChar3 = 255) then let PlayersRemaining = PlayersRemaining + 1
-          if !(SelectedChar4 = 255) then let PlayersRemaining = PlayersRemaining + 1
+          if !(selectedChar3 = 255) then let PlayersRemaining = PlayersRemaining + 1
+          if !(selectedChar4 = 255) then let PlayersRemaining = PlayersRemaining + 1
 
           rem Initialize frame counter
           frame = 0

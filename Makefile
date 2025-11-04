@@ -171,6 +171,25 @@ Source/Generated/Song.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
+# Sound effect files use Sound. prefix instead of Song. prefix
+# Convert MIDI to batariBASIC sound data for NTSC (60Hz)
+Source/Generated/Sound.%.NTSC.bas: Source/Songs/%.midi bin/skyline-tool
+	@echo "Converting sound $< to $@ for NTSC..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+
+# Convert MIDI to batariBASIC sound data for PAL (50Hz)
+Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
+	@echo "Converting sound $< to $@ for PAL..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+
+# Convert MIDI to batariBASIC sound data for SECAM (50Hz)
+Source/Generated/Sound.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
+	@echo "Converting sound $< to $@ for SECAM..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+
 
 
 # Generate list of character sprite files

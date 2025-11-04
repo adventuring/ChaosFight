@@ -30,10 +30,13 @@
           rem Include architecture-specific font data
           #ifdef TV_NTSC
           #include "Source/Generated/Font.Numbers.NTSC.bas"
+          #endif
           #ifdef TV_PAL
           #include "Source/Generated/Font.Numbers.PAL.bas"
+          #endif
           #ifdef TV_SECAM
           #include "Source/Generated/Font.Numbers.SECAM.bas"
+          #endif
 
           rem =================================================================
           rem DRAW DIGIT - DATA-DRIVEN VERSION

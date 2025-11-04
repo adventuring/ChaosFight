@@ -590,9 +590,9 @@
           dim playfieldRow = w092
           rem Playfield row index for collision calculations
           
-          dim playfieldCol_W = w093
-          dim playfieldCol_R = r093
-          dim playfieldCol = w093
+          dim playfieldColumn_W = w093
+          dim playfieldColumn_R = r093
+          dim playfieldColumn = w093
           rem Playfield column index for collision calculations
           
           dim rowYPosition_W = w094

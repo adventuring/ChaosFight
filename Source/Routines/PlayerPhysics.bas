@@ -65,11 +65,11 @@ GravityCheckCharacter
           rem Apply gravity acceleration to velocity subpixel part (adds to Y velocity, positive = downward)
           rem temp1 already set (player index), gravityRate is gravity strength in subpixel (low byte)
           rem AddVelocitySubpixelY expects temp2, so save temp2 and use it for gravityRate
-          let playfieldCol = temp2
+          let playfieldColumn = temp2
           rem Save temp2 temporarily
           let temp2 = gravityRate
           gosub AddVelocitySubpixelY
-          let temp2 = playfieldCol
+          let temp2 = playfieldColumn
           rem Restore temp2
           
           rem Apply terminal velocity cap (prevents infinite acceleration)
@@ -302,21 +302,21 @@ CheckPlayfieldCollisionAllDirections
           if temp6 <= 0 then PFCheckRight
           rem At left edge of screen, skip check
           
-          let playfieldCol = temp6 - 1
-          rem Column to the left (playfieldCol)
-          if playfieldCol < 0 then PFCheckRight
+          let playfieldColumn = temp6 - 1
+          rem Column to the left (playfieldColumn)
+          if playfieldColumn < 0 then PFCheckRight
           rem Out of bounds, skip
           
           rem Check head position (top of sprite)
-          if pfread(playfieldCol, playfieldRow) then PFBlockLeft
+          if pfread(playfieldColumn, playfieldRow) then PFBlockLeft
           rem Check middle position
           let rowCounter = playfieldRow + (temp5 / 2) / pfrowheight
           if rowCounter >= pfrows then PFCheckRight
-          if pfread(playfieldCol, rowCounter) then PFBlockLeft
+          if pfread(playfieldColumn, rowCounter) then PFBlockLeft
           rem Check feet position (bottom of sprite)
           let rowCounter = playfieldRow + temp5 / pfrowheight
           if rowCounter >= pfrows then PFCheckRight
-          if pfread(playfieldCol, rowCounter) then PFBlockLeft
+          if pfread(playfieldColumn, rowCounter) then PFBlockLeft
           
           goto PFCheckRight
           
@@ -337,19 +337,19 @@ PFCheckRight
           if temp6 >= 31 then PFCheckUp
           rem At right edge of screen, skip check
           
-          let playfieldCol = temp6 + 4
-          rem Column to the right of player's right edge (playfieldCol)
-          if playfieldCol > 31 then PFCheckUp
+          let playfieldColumn = temp6 + 4
+          rem Column to the right of player's right edge (playfieldColumn)
+          if playfieldColumn > 31 then PFCheckUp
           rem Out of bounds, skip
           
           rem Check head, middle, and feet positions
-          if pfread(playfieldCol, playfieldRow) then PFBlockRight
+          if pfread(playfieldColumn, playfieldRow) then PFBlockRight
           let rowCounter = playfieldRow + (temp5 / 2) / pfrowheight
           if rowCounter >= pfrows then PFCheckUp
-          if pfread(playfieldCol, rowCounter) then PFBlockRight
+          if pfread(playfieldColumn, rowCounter) then PFBlockRight
           let rowCounter = playfieldRow + temp5 / pfrowheight
           if rowCounter >= pfrows then PFCheckUp
-          if pfread(playfieldCol, rowCounter) then PFBlockRight
+          if pfread(playfieldColumn, rowCounter) then PFBlockRight
           
           goto PFCheckUp
           

@@ -64,7 +64,7 @@ CheckFallDamage
           dim CFD_damage = temp4
           dim CFD_characterType = temp5
           dim CFD_characterWeight = temp6
-          dim CFD_damageCalc = temp7
+          rem temp7+ don't exist - using tempWork1 for temporary calculations
 
           rem Get character type for this player
           let CFD_characterType = playerChar[CFD_playerIndex]
@@ -116,9 +116,10 @@ CheckFallDamage
           rem Formula: damage_multiplier = weight / 20 (average weight)
           rem Light (10): 10/20 = 0.5x damage, Average (20): 20/20 = 1.0x, Heavy (30): 30/20 = 1.5x
           rem Using integer math: damage = damage * weight / 20
-          let CFD_damageCalc = CFD_damage * CFD_characterWeight
-          rem CFD_damageCalc = damage * weight
-          let CFD_damage = CFD_damageCalc / 20
+          rem Use damageWeightProduct for intermediate calculation
+          let damageWeightProduct = CFD_damage * CFD_characterWeight
+          rem damageWeightProduct = damage * weight
+          let CFD_damage = damageWeightProduct / 20
           rem CFD_damage = damage * weight / 20 (weight-based multiplier applied)
           
           rem Apply damage reduction for Ninjish Guy (after weight multiplier)
@@ -129,17 +130,17 @@ CheckFallDamage
           if CFD_damage > 50 then let CFD_damage = 50
           
           rem Apply fall damage (byte-safe clamp)
-          rem Use temp7 temporarily for old health (CFD_damageCalc is no longer needed)
-          let temp7 = playerHealth[CFD_playerIndex]
+          rem Use oldHealthValue for byte-safe clamp check
+          let oldHealthValue = playerHealth[CFD_playerIndex]
           let playerHealth[CFD_playerIndex] = playerHealth[CFD_playerIndex] - CFD_damage
-          if playerHealth[CFD_playerIndex] > temp7 then playerHealth[CFD_playerIndex] = 0
+          if playerHealth[CFD_playerIndex] > oldHealthValue then playerHealth[CFD_playerIndex] = 0
           
           rem Set recovery frames (proportional to damage, min 10, max 30)
-          rem Use temp7 temporarily for recovery frames calculation
-          let temp7 = CFD_damage / 2
-          if temp7 < 10 then temp7 = 10
-          if temp7 > 30 then temp7 = 30
-          playerRecoveryFrames[CFD_playerIndex] = temp7
+          rem Use recoveryFramesCalc for recovery frames calculation
+          let recoveryFramesCalc = CFD_damage / 2
+          if recoveryFramesCalc < 10 then recoveryFramesCalc = 10
+          if recoveryFramesCalc > 30 then recoveryFramesCalc = 30
+          playerRecoveryFrames[CFD_playerIndex] = recoveryFramesCalc
           
           rem Synchronize playerState bit 3 with recovery frames
           playerState[CFD_playerIndex] = playerState[CFD_playerIndex] | 8
@@ -149,12 +150,12 @@ CheckFallDamage
           rem This is animation state 9 in the character animation sequences
           rem playerState bits: [7:animation][4:attacking][2:jumping][1:guarding][0:facing]
           rem Set bits 7-5 to 9 (recovering animation)
-          rem Use temp7 temporarily for state manipulation
-          temp7 = playerState[CFD_playerIndex] & MaskPlayerStateLower 
+          rem Use playerStateTemp for state manipulation
+          let playerStateTemp = playerState[CFD_playerIndex] & MaskPlayerStateLower 
           rem Keep lower 5 bits
-          temp7 = temp7 | MaskAnimationRecovering 
+          let playerStateTemp = playerStateTemp | MaskAnimationRecovering 
           rem Set animation to 9 (1001 in bits 7-4)
-          playerState[CFD_playerIndex] = temp7
+          playerState[CFD_playerIndex] = playerStateTemp
           
           rem Play fall damage sound effect
           temp1 = SoundFall
@@ -276,8 +277,9 @@ HandleFrootyVertical
           
           rem Clamp to screen bounds
           rem Byte-safe clamp: if wrapped below 0, the new value will exceed the old
-          temp7 = playerY[temp1]
-          if playerY[temp1] > temp7 then playerY[temp1] = 0
+          oldHealthValue = playerY[temp1]
+          rem Reuse oldHealthValue for byte-safe clamp check (not actually health, but same pattern)
+          if playerY[temp1] > oldHealthValue then playerY[temp1] = 0
           if playerY[temp1] > 176 then playerY[temp1] = 176
           
           return

@@ -562,6 +562,85 @@
           rem       playerVelocityX: high bytes in ZPRAM (var20-var23), low bytes in ZPRAM (var24-var27)
           rem       playerVelocityY: both high and low bytes in ZPRAM (var28-var35)
           rem       playerSubpixelX/Y: in SCRAM (w049-w064, 16 bytes) - less frequently accessed
+          
+          rem =================================================================
+          rem TEMPORARY WORKING VARIABLES - SCRAM (for temp7+ replacements)
+          rem =================================================================
+          rem These replace invalid temp7+ variables (only temp1-temp6 exist)
+          rem Each variable has a semantically meaningful name based on its usage context
+          rem =================================================================
+          
+          dim oldHealthValue = w089
+          dim oldHealthValue_R = r089
+          rem Old health value for byte-safe clamp checks (used in damage calculations)
+          
+          dim recoveryFramesCalc = w090
+          dim recoveryFramesCalc_R = r090
+          rem Recovery frames calculation value (used in fall damage and hit processing)
+          
+          dim playerStateTemp = w091
+          dim playerStateTemp_R = r091
+          rem Temporary player state value for bit manipulation operations
+          
+          dim playfieldRow = w092
+          dim playfieldRow_R = r092
+          rem Playfield row index for collision calculations
+          
+          dim playfieldCol = w093
+          dim playfieldCol_R = r093
+          rem Playfield column index for collision calculations
+          
+          dim rowYPosition = w094
+          dim rowYPosition_R = r094
+          rem Y position of playfield row (used in gravity calculations)
+          
+          dim rowCounter = w095
+          dim rowCounter_R = r095
+          rem Loop counter for row calculations
+          
+          dim characterHeight = w096
+          dim characterHeight_R = r096
+          rem Character height value from CharacterHeights table
+          
+          dim characterWeight = w097
+          dim characterWeight_R = r097
+          rem Character weight value from CharacterWeights table
+          
+          dim yDistance = w098
+          dim yDistance_R = r098
+          rem Y distance between players for collision calculations
+          
+          dim halfHeight1 = w099
+          dim halfHeight1_R = r099
+          rem Half height of first player for collision overlap calculation
+          
+          dim halfHeight2 = w100
+          dim halfHeight2_R = r100
+          rem Half height of second player for collision overlap calculation
+          
+          dim totalHeight = w101
+          dim totalHeight_R = r101
+          rem Total height for collision overlap check (halfHeight1 + halfHeight2)
+          
+          dim totalWeight = w102
+          dim totalWeight_R = r102
+          rem Total weight of both players for momentum calculations
+          
+          dim weightDifference = w103
+          dim weightDifference_R = r103
+          rem Weight difference between players for impulse calculation
+          
+          dim impulseStrength = w104
+          dim impulseStrength_R = r104
+          rem Calculated impulse strength for momentum transfer
+          
+          dim gravityRate = w105
+          dim gravityRate_R = r105
+          rem Gravity acceleration rate (normal or reduced)
+          
+          dim damageWeightProduct = w106
+          dim damageWeightProduct_R = r106
+          rem Intermediate value: damage * weight (used in fall damage calculations)
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM to free zero-page space
           rem batariBASIC automatically handles carry operations for 8.8 fixed-point arithmetic

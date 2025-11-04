@@ -151,15 +151,17 @@ end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileForce
-             3, 5, 4, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0
+             3, 5, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0
+          rem Fat Tony changed from 0 to 4 (ranged magic ring lasers need force)
           end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          rem  melee  ranged         ranged    ranged    melee   melee           melee   melee      ranged          melee       melee      melee      melee         melee      ranged    melee
+          rem  melee  ranged         ranged    ranged    ranged   melee           melee   melee      ranged          melee       melee      melee      melee         melee      ranged    melee
           rem  Note: Melee attacks show brief visual (sword, fist, etc.), ranged persist until hit
           data CharacterMissileLifetime
-             4, 255, 255, 255, 4, 4, 5, 6, 255, 5, 4, 4, 3, 5, 5, 4
+             4, 255, 255, 255, 255, 4, 5, 6, 255, 5, 4, 4, 3, 5, 5, 4
           rem Ursulo changed from 255 (ranged) to 5 (melee claw swipe)
+          rem Fat Tony changed from 4 (melee) to 255 (ranged magic ring lasers)
           end
 
           rem =================================================================

@@ -14,20 +14,31 @@
 
 LevelSelect1
 LevelSelect1Loop
+          dim LS1_firePressed = temp1
+          dim LS1_arenaNumber = temp1
+          dim LS1_tensDigit = temp2
+          dim LS1_multiplier = temp3
+          dim LS1_onesDigit = temp4
+          dim LS1_digit = temp1
+          dim LS1_xPos = temp2
+          dim LS1_yPos = temp3
+          dim LS1_color = temp4
+          dim LS1_spriteSelect = temp5
+          dim LS1_soundId = temp1
           rem Check Game Select switch - return to Character Select
           if switchselect then ReturnToCharacterSelect
           
           rem Check fire button hold detection (1 second to return to Character Select)
-          temp1 = 0
+          let LS1_firePressed = 0
           rem Check Player 1 fire button
-          if joy0fire then temp1 = 1
+          if joy0fire then let LS1_firePressed = 1
           rem Check Player 2 fire button
-          if joy1fire then temp1 = 1
+          if joy1fire then let LS1_firePressed = 1
           rem Check Quadtari players (3 & 4) if active
           if controllerStatus & SetQuadtariDetected then CheckQuadtariFireHold
           
           rem If fire button held, increment timer
-          if temp1 then goto IncrementFireHold
+          if LS1_firePressed then goto IncrementFireHold
           rem Fire released, reset timer
           let fireHoldTimer = 0
           goto FireHoldCheckDone
@@ -42,19 +53,22 @@ FireHoldCheckDone
           if joy0left then LevelSelectLeft
           goto LevelSelectSkipLeft
 LevelSelectLeft
+          dim LSL_soundId = temp1
           rem Decrement arena, wrap from 0 to RandomArena (255)
           if selectedArena = 0 then selectedArena = RandomArena : goto LevelSelectLeftSound
           if selectedArena = RandomArena then selectedArena = MaxArenaID : goto LevelSelectLeftSound
           selectedArena = selectedArena - 1
 LevelSelectLeftSound
           rem Play navigation sound
-          temp1 = SoundSelect
+          let LSL_soundId = SoundSelect
+          let temp1 = LSL_soundId
           gosub bank15 PlaySoundEffect
 LevelSelectSkipLeft
           
           if joy0right then LevelSelectRight
           goto LevelSelectSkipRight
 LevelSelectRight
+          dim LSR_soundId = temp1
           rem Increment arena, wrap from MaxArenaID to 0, then to RandomArena
           if selectedArena = MaxArenaID then selectedArena = RandomArena : goto LevelSelectRightSound
           if selectedArena = RandomArena then selectedArena = 0 : goto LevelSelectRightSound
@@ -63,7 +77,8 @@ LevelSelectRight
           if selectedArena > MaxArenaID && selectedArena < RandomArena then selectedArena = 0
 LevelSelectRightSound
           rem Play navigation sound
-          temp1 = SoundSelect
+          let LSR_soundId = SoundSelect
+          let temp1 = LSR_soundId
           gosub bank15 PlaySoundEffect
 LevelSelectSkipRight
           
@@ -74,65 +89,81 @@ LevelSelectSkipRight
           
           rem Display arena number (selectedArena + 1 = 1-16)
           rem Convert to two-digit display: tens and ones
-          temp1 = selectedArena + 1
-          rem temp1 = arena number (1-16)
+          let LS1_arenaNumber = selectedArena + 1
+          rem arenaNumber = arena number (1-16)
           rem Calculate tens digit
-          temp2 = temp1 / 10
+          let LS1_tensDigit = LS1_arenaNumber / 10
           rem Calculate ones digit using optimized assembly
           asm
-            lda temp2
-            sta temp3
+            lda LS1_tensDigit
+            sta LS1_multiplier
             asl a
             asl a
             asl a
             clc
-            adc temp3
+            adc LS1_multiplier
             asl a
-            sta temp3
+            sta LS1_multiplier
           end
-          rem temp3 = temp2 * 10
-          temp4 = temp1 - temp3
-          rem temp4 = ones digit (0-9)
+          rem multiplier = tensDigit * 10
+          let LS1_onesDigit = LS1_arenaNumber - LS1_multiplier
+          rem onesDigit = ones digit (0-9)
           
           rem Draw tens digit (player0) - may be 0 for 01-09
-          temp1 = temp2
-          temp2 = 80
-          temp3 = 20
-          temp4 = ColGrey(14)
-          temp5 = 0
+          let LS1_digit = LS1_tensDigit
+          let LS1_xPos = 80
+          let LS1_yPos = 20
+          let LS1_color = ColGrey(14)
+          let LS1_spriteSelect = 0
+          let temp1 = LS1_digit
+          let temp2 = LS1_xPos
+          let temp3 = LS1_yPos
+          let temp4 = LS1_color
+          let temp5 = LS1_spriteSelect
           gosub DrawDigit
           
           rem Draw ones digit (player1)
-          temp1 = temp4
-          temp2 = 88
-          temp3 = 20
-          temp4 = ColGrey(14)
-          temp5 = 1
+          let LS1_digit = LS1_onesDigit
+          let LS1_xPos = 88
+          let temp1 = LS1_digit
+          let temp2 = LS1_xPos
           gosub DrawDigit
           
           goto DisplayDone
           
 DisplayRandomArena
+          dim DRA_digit = temp1
+          dim DRA_xPos = temp2
+          dim DRA_yPos = temp3
+          dim DRA_color = temp4
+          dim DRA_spriteSelect = temp5
           rem Display "??" for random arena
           rem Use player0 and player1 for two question marks
           rem Question mark is digit 10 (hex A) in font
-          temp1 = 10
+          let DRA_digit = 10
           rem Question mark digit
-          temp2 = 80
+          let DRA_xPos = 80
           rem X position for first ?
-          temp3 = 20
+          let DRA_yPos = 20
           rem Y position
-          temp4 = ColGrey(14)
+          let DRA_color = ColGrey(14)
           rem White
-          temp5 = 0
+          let DRA_spriteSelect = 0
           rem Use player0
+          let temp1 = DRA_digit
+          let temp2 = DRA_xPos
+          let temp3 = DRA_yPos
+          let temp4 = DRA_color
+          let temp5 = DRA_spriteSelect
           gosub DrawDigit
           
           rem Second question mark
-          temp2 = 88
+          let DRA_xPos = 88
           rem X position for second ?
-          temp5 = 1
+          let DRA_spriteSelect = 1
           rem Use player1
+          let temp2 = DRA_xPos
+          let temp5 = DRA_spriteSelect
           gosub DrawDigit
           
 DisplayDone
@@ -141,8 +172,10 @@ DisplayDone
           if joy0fire then LevelSelectConfirm
           goto LevelSelectSkipConfirm
 LevelSelectConfirm
+          dim LSC_soundId = temp1
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let LSC_soundId = SoundMenuSelect
+          let temp1 = LSC_soundId
           gosub bank15 PlaySoundEffect
           gosub StartGame1
           return
@@ -152,11 +185,13 @@ LevelSelectSkipConfirm
           goto LevelSelect1Loop
 
 CheckQuadtariFireHold
+          dim CQFH_firePressed = temp1
           rem Check Player 3 and 4 fire buttons (Quadtari)
-          if !INPT0{7} then temp1 = 1
+          if !INPT0{7} then let CQFH_firePressed = 1
           rem Player 3 fire button (left port, odd frame)
-          if !INPT2{7} then temp1 = 1
+          if !INPT2{7} then let CQFH_firePressed = 1
           rem Player 4 fire button (right port, odd frame)
+          let temp1 = CQFH_firePressed
           return
 
 ReturnToCharacterSelect

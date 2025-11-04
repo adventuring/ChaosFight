@@ -225,13 +225,17 @@ CheckAOEDirection_Right
           rem Check each player (except attacker)
           temp4 = 255
           
-          rem Check Player 1
+          rem Check Player 1 (players are 16px wide - double-width NUSIZ)
           if temp1 = 0 then SkipAOEPlayer0
           if playerHealth[0] = 0 then SkipAOEPlayer0
-          if temp2 >= playerX[0] + 8 then SkipAOEPlayer0
+          if temp2 >= playerX[0] + 16 then SkipAOEPlayer0
+          rem AOE left edge past player right edge
           if temp2 + temp6 <= playerX[0] then SkipAOEPlayer0
+          rem AOE right edge before player left edge
           if temp3 >= playerY[0] + 16 then SkipAOEPlayer0
+          rem AOE top edge past player bottom edge
           if temp3 + temp5 <= playerY[0] then SkipAOEPlayer0
+          rem AOE bottom edge before player top edge
           temp4 = 0
           return
 SkipAOEPlayer0
@@ -239,7 +243,7 @@ SkipAOEPlayer0
           rem Check Player 2
           if temp1 = 1 then SkipAOEPlayer1
           if playerHealth[1] = 0 then SkipAOEPlayer1
-          if temp2 >= playerX[1] + 8 then SkipAOEPlayer1
+          if temp2 >= playerX[1] + 16 then SkipAOEPlayer1
           if temp2 + temp6 <= playerX[1] then SkipAOEPlayer1
           if temp3 >= playerY[1] + 16 then SkipAOEPlayer1
           if temp3 + temp5 <= playerY[1] then SkipAOEPlayer1
@@ -250,7 +254,7 @@ SkipAOEPlayer1
           rem Check Player 3
           if temp1 = 2 then SkipAOEPlayer2
           if playerHealth[2] = 0 then SkipAOEPlayer2
-          if temp2 >= playerX[2] + 8 then SkipAOEPlayer2
+          if temp2 >= playerX[2] + 16 then SkipAOEPlayer2
           if temp2 + temp6 <= playerX[2] then SkipAOEPlayer2
           if temp3 >= playerY[2] + 16 then SkipAOEPlayer2
           if temp3 + temp5 <= playerY[2] then SkipAOEPlayer2
@@ -261,7 +265,7 @@ SkipAOEPlayer2
           rem Check Player 4
           if temp1 = 3 then SkipAOEPlayer3
           if playerHealth[3] = 0 then SkipAOEPlayer3
-          if temp2 >= playerX[3] + 8 then SkipAOEPlayer3
+          if temp2 >= playerX[3] + 16 then SkipAOEPlayer3
           if temp2 + temp6 <= playerX[3] then SkipAOEPlayer3
           if temp3 >= playerY[3] + 16 then SkipAOEPlayer3
           if temp3 + temp5 <= playerY[3] then SkipAOEPlayer3
@@ -311,13 +315,17 @@ CheckAOEDirection_Left
           rem Check each player (except attacker)
           temp4 = 255
           
-          rem Check Player 1
+          rem Check Player 1 (players are 16px wide - double-width NUSIZ)
           if temp1 = 0 then CheckPlayer2
           if playerHealth[0] = 0 then CheckPlayer2
-          if temp2 >= playerX[0] + 8 then CheckPlayer2
+          if temp2 >= playerX[0] + 16 then CheckPlayer2
+          rem AOE left edge past player right edge
           if temp2 + temp6 <= playerX[0] then CheckPlayer2
+          rem AOE right edge before player left edge
           if temp3 >= playerY[0] + 16 then CheckPlayer2
+          rem AOE top edge past player bottom edge
           if temp3 + temp5 <= playerY[0] then CheckPlayer2
+          rem AOE bottom edge before player top edge
           temp4 = 0
           return
 CheckPlayer2

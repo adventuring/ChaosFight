@@ -171,19 +171,24 @@ MomentumRecoveryLoop
           if temp1 = 3 && selectedChar4 = 255 then goto MomentumRecoveryNext
           
 MomentumRecoveryProcess
-          rem Apply velocity to position during recovery frames
-          if playerRecoveryFrames[temp1] > 0 then let playerRecoveryFrames[temp1] = playerRecoveryFrames[temp1] - 1 : let playerX[temp1] = playerX[temp1] + playerVelocityX[temp1]
+          rem Decrement recovery frames (velocity is applied by UpdatePlayerMovement)
+          if playerRecoveryFrames[temp1] > 0 then let playerRecoveryFrames[temp1] = playerRecoveryFrames[temp1] - 1
           
           rem Decay velocity if recovery frames active
           if ! playerRecoveryFrames[temp1] then goto MomentumRecoveryNext
+          rem Velocity decay during recovery (knockback slows down over time)
           if playerVelocityX[temp1] <= 0 then MomentumRecoveryDecayNegative
           rem Positive velocity: decay by 1
           let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
+          rem Also decay subpixel if integer velocity is zero
+          if playerVelocityX[temp1] = 0 then let playerVelocityX_lo[temp1] = 0
           goto MomentumRecoveryNext
 MomentumRecoveryDecayNegative
           if playerVelocityX[temp1] >= 0 then goto MomentumRecoveryNext
           rem Negative velocity: decay by 1 (add 1 to make less negative)
           let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
+          rem Also decay subpixel if integer velocity is zero
+          if playerVelocityX[temp1] = 0 then let playerVelocityX_lo[temp1] = 0
           
 MomentumRecoveryNext
           rem Next player
@@ -316,11 +321,11 @@ PFBlockLeft
           rem =================================================================
 PFCheckRight
           rem Check if player's right edge has a playfield pixel
-          rem Player width is 8 pixels, so right edge is at temp6 + 2 columns (8px / 4px per column = 2)
+          rem Player width is 16 pixels (double-width NUSIZ), so right edge is at temp6 + 4 columns (16px / 4px per column = 4)
           if temp6 >= 31 then PFCheckUp
           rem At right edge of screen, skip check
           
-          let temp8 = temp6 + 2
+          let temp8 = temp6 + 4
           rem Column to the right of player's right edge (temp8)
           if temp8 > 31 then PFCheckUp
           rem Out of bounds, skip

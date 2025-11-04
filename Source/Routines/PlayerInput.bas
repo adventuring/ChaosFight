@@ -97,9 +97,11 @@ InputHandleLeftPortPlayer
           if temp5 = 8 then FrootyDragonetLeftRightMovement
           if temp5 = 2 then FrootyDragonetLeftRightMovement
           
-          rem Standard horizontal movement (no collision check)
-          if joy0left then PlayerX[temp1] = PlayerX[temp1] - 1 : PlayerState[temp1] = PlayerState[temp1] & 254 : PlayerMomentumX[temp1] = 255
-          if joy0right then PlayerX[temp1] = PlayerX[temp1] + 1 : PlayerState[temp1] = PlayerState[temp1] | 1 : PlayerMomentumX[temp1] = 1
+          rem Standard horizontal movement (modifies velocity, not position)
+          rem Left movement: set negative velocity (255 in 8-bit two's complement = -1)
+          if joy0left then let playerVelocityX[temp1] = 255 : let playerVelocityX_lo[temp1] = 0 : let PlayerState[temp1] = PlayerState[temp1] & 254
+          rem Right movement: set positive velocity
+          if joy0right then let playerVelocityX[temp1] = 1 : let playerVelocityX_lo[temp1] = 0 : let PlayerState[temp1] = PlayerState[temp1] | 1
           goto SkipFlyingLeftRight
           
 FrootyDragonetLeftRightMovement
@@ -135,9 +137,11 @@ CheckLeftCollision
           if pfread(temp3, temp6) then CheckRightMovement
           rem Blocked at bottom too
 MoveLeftOK
-          let PlayerX[temp1] = PlayerX[temp1] - 1
+          rem Apply leftward velocity impulse (double-width sprite: 16px width)
+          let playerVelocityX[temp1] = 255
+          rem -1 in 8-bit two's complement: 256 - 1 = 255
+          let playerVelocityX_lo[temp1] = 0
           let PlayerState[temp1] = PlayerState[temp1] & 254
-          let PlayerMomentumX[temp1] = 255
 CheckRightMovement
           rem Check right movement
           if !joy0right then goto SkipFlyingLeftRight
@@ -168,9 +172,10 @@ CheckRightMovement
           if pfread(temp3, temp6) then SkipFlyingLeftRight
           rem Blocked at bottom too
 MoveRightOK
-          let PlayerX[temp1] = PlayerX[temp1] + 1
+          rem Apply rightward velocity impulse
+          let playerVelocityX[temp1] = 1
+          let playerVelocityX_lo[temp1] = 0
           let PlayerState[temp1] = PlayerState[temp1] | 1
-          let PlayerMomentumX[temp1] = 1
 SkipFlyingLeftRight
 
           rem Process UP input for character-specific behaviors
@@ -323,16 +328,19 @@ InputHandleRightPortPlayer
           
           rem Standard horizontal movement (no collision check)
           if joy1left then
-                    let PlayerX[temp1] = PlayerX[temp1] - 1
-          let PlayerState[temp1] = PlayerState[temp1] & 254
-          rem Face left
-                    let PlayerMomentumX[temp1] = 255
+                    rem Apply leftward velocity impulse
+                    let playerVelocityX[temp1] = 255
+                    rem -1 in 8-bit two's complement: 256 - 1 = 255
+                    let playerVelocityX_lo[temp1] = 0
+                    let PlayerState[temp1] = PlayerState[temp1] & 254
+                    rem Face left
           
           if joy1right then
-                    let PlayerX[temp1] = PlayerX[temp1] + 1
-          let PlayerState[temp1] = PlayerState[temp1] | 1
-          rem Face right
-                    let PlayerMomentumX[temp1] = 1
+                    rem Apply rightward velocity impulse
+                    let playerVelocityX[temp1] = 1
+                    let playerVelocityX_lo[temp1] = 0
+                    let PlayerState[temp1] = PlayerState[temp1] | 1
+                    rem Face right
           goto SkipFlyingLeftRightRight
           
 SkipRightPortMovement

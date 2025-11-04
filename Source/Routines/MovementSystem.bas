@@ -161,7 +161,7 @@ CheckPlayerCollision
           let temp6 = playerX[temp2] : rem Player2 X
           let temp7 = playerY[temp2] : rem Player2 Y
           
-          rem Check X collision (8 pixel width)
+          rem Check X collision (16 pixel width - double-width NUSIZ sprites)
           rem Calculate distance
           if temp4 >= temp6 then CalcXDistanceRight
           let temp8 = temp6 - temp4
@@ -169,7 +169,7 @@ CheckPlayerCollision
 CalcXDistanceRight
           let temp8 = temp4 - temp6
 XDistanceDone
-          if temp8 >= 8 then NoCollision
+          if temp8 >= 16 then NoCollision
           
           rem Check Y collision using CharacterHeights table
           rem Get character types for height lookup

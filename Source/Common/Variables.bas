@@ -234,7 +234,7 @@
           dim readyCount = x               
           rem ADMIN: Count of locked players
           dim charSelectAnimTimer = w      
-          rem ADMIN: Animation frame counter (REDIM - conflicts with missileVelX in Game Mode)
+          rem ADMIN: Animation frame counter (REDIM - conflicts with missileVelocityX in Game Mode)
           dim charSelectAnimState = x      
           rem ADMIN: Current animation state (REDIM - conflicts with readyCount, but readyCount only used in character select)
           dim charSelectAnimIndex = y      
@@ -468,7 +468,7 @@
           rem temp2 = missileX delta (momentum)
           rem temp3 = missileY delta (momentum)
           rem temp4 = scratch for collision checks
-          rem These are looked up from character data each frame and stored in missileVelX/Y
+          rem These are looked up from character data each frame and stored in missileVelocityX/Y
 
           rem =================================================================
           rem GAME MODE - SCRAM (r000-r127/w000-w127) - sorted numerically

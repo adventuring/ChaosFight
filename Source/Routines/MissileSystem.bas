@@ -279,7 +279,7 @@ GuardBounceFromCollision
           gosub bank15 PlaySoundEffect
           
           rem Bounce the missile: invert X velocity and apply friction damping
-          let temp6  = missileVelX[UOM_playerIndex]
+          let temp6  = missileVelocityX[UOM_playerIndex]
           let temp6  = 0 - temp6
           rem Invert X velocity (bounce back)
           rem Apply friction damping on bounce (reduce by 25% for guard bounce)

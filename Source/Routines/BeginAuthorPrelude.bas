@@ -13,14 +13,10 @@ BeginAuthorPrelude
           COLUBK = ColGray(0)
           
           rem Start "Interworldly" music
-          rem MusicInterworldly constant should be defined in MusicSystem
-          temp1 = 0
-          rem TODO: Define MusicInterworldly constant
-          rem temp1 = MusicInterworldly
+          temp1 = MusicInterworldly
           gosub bank16 StartMusic
           
-          rem Note: Bitmap loading happens each frame in AuthorPreamble loop
-          rem via LoadAuthorBitmap subroutine
+          rem Note: Bitmap data is loaded automatically by titlescreen kernel via includes
           
           return
 

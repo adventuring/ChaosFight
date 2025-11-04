@@ -26,7 +26,6 @@
           rem =================================================================
 
 AuthorPreamble
-AuthorMainLoop
           rem Bitmap data is loaded automatically by titlescreen kernel via includes
           rem No explicit loading needed - titlescreen kernel handles bitmap display
           
@@ -34,30 +33,31 @@ AuthorMainLoop
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then goto AuthorPreambleComplete
           if joy1fire then goto AuthorPreambleComplete
+          
           if controllerStatus & SetQuadtariDetected then AuthorCheckQuadtari
           goto AuthorSkipQuadtari
+
 AuthorCheckQuadtari
           if !INPT0{7} then AuthorPreambleComplete
           if !INPT2{7} then AuthorPreambleComplete
 AuthorSkipQuadtari
           
-          rem Update music
           gosub bank16 UpdateMusic
-          
+
           rem Auto-advance after music completes + 0.5s
-          if preambleTimer > 30 && ! musicPlaying then AuthorPreambleComplete
-          
-          rem Increment timer
+          if preambleTimer > 30 && musicPlaying = 0 then AuthorPreambleComplete
+
           let preambleTimer = preambleTimer + 1
           
           rem Draw screen with titlescreen kernel minikernel
           gosub titledrawscreen bank1
-          goto AuthorMainLoop
+
+          return
 
 AuthorPreambleComplete
-              let gameMode = ModeTitle
-              gosub bank13 ChangeGameMode
-              return
+          let gameMode = ModeTitle
+          gosub bank13 ChangeGameMode
+          return
 
           rem =================================================================
           rem BITMAP LOADING

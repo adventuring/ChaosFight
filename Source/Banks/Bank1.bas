@@ -33,21 +33,33 @@
           rem we need screen-specific window overrides via conditional compilation or
           rem separate builds. For now, we set to Publisher defaults and document limitation.
           
-          rem Set window values - these apply to ALL screens (compile-time constant limitation)
-          rem Publisher screen: AtariAge=42, Interworldly=42, ChaosFight=0 ✓ (2 bitmaps)
-          rem Author screen: AtariAge=42 (unwanted), Interworldly=42 ✓, ChaosFight=0 ✓ (shows 2, want 1)
-          rem Title screen: AtariAge=42 (unwanted), Interworldly=42 (unwanted), ChaosFight=0 ✗ (shows 2, want 1)
-          
-          rem Override window values for Publisher screen defaults
+          rem Override window values for correct per-screen display
+          rem Requirements:
+          rem   Publisher (gameMode 0): AtariAge=42, Interworldly=42, ChaosFight=0 (2 bitmaps)
+          rem   Author (gameMode 1): AtariAge=0, Interworldly=42, ChaosFight=0 (1 bitmap)
+          rem   Title (gameMode 2): AtariAge=0, Interworldly=0, ChaosFight=42 (1 bitmap)
+          rem
+          rem CRITICAL: Window values are compile-time constants used in assembly address
+          rem calculations. They cannot be changed at runtime. All screens use the same values.
+          rem
+          rem SOLUTION: Set window values to work for Publisher screen (default).
+          rem For Author/Title screens to show only one bitmap, we need runtime control
+          rem which requires modifying the titlescreen kernel to use variables instead of constants.
+          rem
+          rem Current workaround: Set defaults for Publisher screen. Author screen will show
+          rem AtariAge too (unwanted). Title screen won't show ChaosFight (file default 0).
+          rem
+          rem Set window values for Publisher screen (default - applies to ALL screens)
           bmp_48x2_1_window = 42  ; AtariAge: visible on Publisher (also Author, unwanted on Title)
           bmp_48x2_2_window = 42  ; Interworldly: visible on Publisher + Author (unwanted on Title)
-          bmp_48x2_3_window = 42  ; ChaosFight: override from 0 to 42 for Title screen
+          bmp_48x2_3_window = 0   ; ChaosFight: hidden on Publisher/Author (need 42 for Title)
           
-          rem CRITICAL LIMITATION: Window values are compile-time constants used in assembly
-          rem address calculations. They cannot be changed at runtime. All screens use same values.
-          rem Author screen will show AtariAge (unwanted - can't hide without conditional compilation).
-          rem Title screen will show AtariAge + Interworldly (unwanted - can't hide without conditional compilation).
-          rem For proper per-screen control, would need conditional compilation or kernel modification.
+          rem NOTE: Title screen needs ChaosFight visible (window = 42), but we can't set it
+          rem per-screen since it's a compile-time constant. Title screen will show AtariAge +
+          rem Interworldly (unwanted) and won't show ChaosFight (file default 0).
+          rem
+          rem For proper per-screen control, would need to modify titlescreen kernel to use
+          rem runtime variables instead of compile-time constants for window values.
           
           include "Source/Titlescreen/asm/titlescreen.s"
 end

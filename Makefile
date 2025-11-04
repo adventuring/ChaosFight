@@ -106,7 +106,14 @@ MUSIC_NAMES = AtariToday Interworldly Victory GameOver
 
 # Game-based character theme songs
 # Note: Must have 32 songs (one per character) - use placeholder for missing characters
-GAME_THEME_SONGS = Grizzards Phantasia Revontuli EXO MagicalFairyForce Bernie Revontuli Harpy LowRes Bolero RoboTito DucksAway SongOfTheBear \
+# Character 0-15 mappings: Bernie→Bernie, Curler→OCascadia, DragonOfStorms→Revontuli, ZoeRyen→EXO,
+#   FatTony→Grizzards, Megax→MegaxTheme, Harpy→HarpyTheme, KnightGuy→MagicalFairyForce,
+#   Frooty→FrootyTheme, Nefertem→Bolero, NinjishGuy→LowRes, PorkChop→PorkChopTheme,
+#   RadishGoblin→RadishGoblinTheme, RoboTito→RoboTito, Ursulo→SongOfTheBear, Shamone→DucksAway
+# Character 16: Character16Theme (placeholder)
+# Characters 17-30: Character*Theme (placeholders for future characters)
+# Character 31 (MethHound): MethHoundTheme
+GAME_THEME_SONGS = Bernie OCascadia Revontuli EXO Grizzards MegaxTheme HarpyTheme MagicalFairyForce FrootyTheme Bolero LowRes PorkChopTheme RadishGoblinTheme RoboTito SongOfTheBear DucksAway \
 	Character16Theme Character17Theme Character18Theme Character19Theme Character20Theme Character21Theme Character22Theme Character23Theme \
 	Character24Theme Character25Theme Character26Theme Character27Theme Character28Theme Character29Theme Character30Theme MethHoundTheme
 

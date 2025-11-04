@@ -41,10 +41,10 @@ CheckAllPlayerEliminations
           let temp1 = CAPE_playerIndex
           gosub CheckPlayerElimination
           
-          rem Count remaining players and check game end
+          rem Count remaining players and check game end (inline CheckGameEndCondition)
           gosub CountRemainingPlayers
-          rem tail call
-          goto CheckGameEndCondition
+          rem Game ends when 1 or fewer players remain
+          if playersRemaining <= 1 then gosub FindWinner : let gameEndTimer = 180 : let gameState = 2 : return
           
 
           rem =================================================================
@@ -184,10 +184,6 @@ CountRemainingPlayers
           rem CHECK GAME END CONDITION
           rem =================================================================
           rem Check if game should end (1 or 0 players remaining).
-CheckGameEndCondition
-          rem Game ends when 1 or fewer players remain
-          if playersRemaining <= 1 then gosub FindWinner : let gameEndTimer = 180 : let gameState = 2 : return
-
           rem =================================================================  
           rem IS PLAYER ELIMINATED
           rem =================================================================

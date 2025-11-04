@@ -117,7 +117,7 @@ SelJoy1Done
           rem Locked normal (100% health)
 
 SelSkipJoy1Even
-          let qtcontroller  = 1  rem Switch to odd frame mode for next iteration
+          let qtcontroller  = 1 : rem Switch to odd frame mode for next iteration
           goto SelHandleDone
 
 SelHandleQuad
@@ -216,7 +216,7 @@ SelSetHand3
           rem Locked with handicap (75% health)
 SelJoy1Done3
           
-          let qtcontroller  = 0  rem Switch back to even frame mode for next iteration
+          let qtcontroller  = 0 : rem Switch back to even frame mode for next iteration
 SelSkipP2
 SelSkipP3Alt
 SelSkipJoy1Odd

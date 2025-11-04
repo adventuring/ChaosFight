@@ -96,8 +96,10 @@ SkipPlayer4Move
           
 FallingComplete1
           rem All players have reached row 2 positions
-          rem Transition to Game Mode (BeginGameLoop will be called by ChangeGameMode)
+          rem Call BeginGameLoop to initialize game state before switching modes
           rem Note: BeginGameLoop will use final positions from falling animation
+          gosub bank11 BeginGameLoop
+          rem Transition to Game Mode
           let gameMode = ModeGame
           gosub bank13 ChangeGameMode
           return

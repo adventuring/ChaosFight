@@ -119,6 +119,12 @@ StartGuard
           rem Updates guard duration and cooldown timers each frame
           rem Should be called from main game loop
 UpdateGuardTimers
+          rem Update guard timers for all players
+          rem INPUT: None
+          rem OUTPUT: None
+          rem EFFECTS: Decrements guard duration timers for guarding players,
+          rem           decrements cooldown timers for non-guarding players,
+          rem           clears guard state and starts cooldown when guard expires
           let temp1  = 0 : gosub UpdateSingleGuardTimer
           let temp1  = 1 : gosub UpdateSingleGuardTimer
           let temp1  = 2 : gosub UpdateSingleGuardTimer
@@ -129,6 +135,13 @@ UpdateGuardTimers
 
 UpdateSingleGuardTimer
           dim USGT_playerIndex = temp1
+          rem Update guard timer or cooldown for a single player
+          rem INPUT: temp1 = player index (0-3)
+          rem        playerState[temp1] = player state flags (bit 1 = guarding)
+          rem        playerTimers[temp1] = guard duration or cooldown timer
+          rem OUTPUT: None
+          rem EFFECTS: If guarding: decrements guard duration timer, clears guard and starts cooldown when expired
+          rem           If not guarding: decrements cooldown timer (if active)
           rem Check if player is guarding
           let temp2 = playerState[USGT_playerIndex] & 2
           if temp2 then UpdateGuardTimerActive

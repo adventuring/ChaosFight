@@ -104,6 +104,11 @@ FONT_NAMES = Numbers
 # Music names (MuseScore files)
 MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
 
+# Sound effect names (MIDI files)
+SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
+	SoundMenuNavigate SoundMenuSelect SoundSpecialMove SoundPowerup \
+	SoundLandingSafe SoundLandingDamage
+
 # Build character assets
 characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
 
@@ -314,7 +319,10 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Generated/Font.Numbers.NTSC.bas \
 	Source/Generated/Font.Numbers.PAL.bas \
 	Source/Generated/Font.Numbers.SECAM.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).SECAM.bas)
 
 # Step 1: Preprocess .bas → .preprocessed.bas
 Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)

@@ -625,9 +625,9 @@ ApplyImpulse1HeavierLeft
           let impulseStrength = impulseStrength * 2 / totalWeight
           if impulseStrength = 0 then impulseStrength = 1
           
-          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + temp11
+          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
-          if playerVelocityX[temp2] > -4 then let playerVelocityX[temp2] = playerVelocityX[temp2] - temp11
+          if playerVelocityX[temp2] > -4 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
           if playerVelocityX[temp2] < -4 then let playerVelocityX[temp2] = -4
           
           let playerVelocityX_lo[temp1] = 0

@@ -105,7 +105,10 @@ FONT_NAMES = Numbers
 MUSIC_NAMES = AtariToday Interworldly Victory GameOver
 
 # Game-based character theme songs
-GAME_THEME_SONGS = Grizzards Phantasia EXO OCascadia MagicalFairyForce Bernie Havoc Harpy LowRes Bolero RoboTito DucksAway SongOfTheBear
+# Note: Must have 32 songs (one per character) - use placeholder for missing characters
+GAME_THEME_SONGS = Grizzards Phantasia EXO OCascadia MagicalFairyForce Bernie Havoc Harpy LowRes Bolero RoboTito DucksAway SongOfTheBear \
+	Character16Theme Character17Theme Character18Theme Character19Theme Character20Theme Character21Theme Character22Theme Character23Theme \
+	Character24Theme Character25Theme Character26Theme Character27Theme Character28Theme Character29Theme Character30Theme MethHoundTheme
 
 # Sound effect names (MIDI files)
 SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
@@ -178,10 +181,9 @@ Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
 
 # Convert MIDI to batariBASIC music data for SECAM (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
-Source/Generated/Song.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
-	@echo "Converting music $< to $@ for SECAM..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+Source/Generated/Song.%.SECAM.bas: Source/Generated/Song.%.PAL.bas
+	@echo "SECAM uses PAL music files (same frame rate)"
+	cp "$<" "$@"
 
 # Sound effect files use Sound. prefix instead of Song. prefix
 # Convert MIDI to batariBASIC sound data for NTSC (60Hz)
@@ -198,7 +200,13 @@ Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi bin/skyline-tool
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
-# SECAM uses PAL sound files (not generated separately)
+# Convert MIDI to batariBASIC sound data for SECAM (50Hz)
+# MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
+# SECAM uses same frame rate as PAL but may have different timing requirements
+Source/Generated/Sound.%.SECAM.bas: Source/Songs/%.midi bin/skyline-tool
+	@echo "Converting sound $< to $@ for SECAM..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 
 
@@ -324,10 +332,13 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
+	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).SECAM.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).SECAM.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).SECAM.bas)
 
 # Step 1: Preprocess .bas → .preprocessed.bas
 Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)

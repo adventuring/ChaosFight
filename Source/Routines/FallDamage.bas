@@ -291,13 +291,13 @@ CheckGroundCollision
           rem momentum contains downward velocity
           let temp1 = CGC_playerIndex
           let temp2 = CGC_momentum
-          gosub CheckFallDamage
+          rem tail call
+          goto CheckFallDamage
           
           rem Stop vertical momentum
           rem Note: This assumes vertical momentum is being tracked
           rem In current implementation, this might need integration
           rem with PlayerPhysics.bas
-          return
           
           rem Check collision with platforms/playfield
           rem This is handled by the main collision detection system

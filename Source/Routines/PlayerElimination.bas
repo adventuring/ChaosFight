@@ -43,9 +43,9 @@ CheckAllPlayerEliminations
           
           rem Count remaining players and check game end
           gosub CountRemainingPlayers
-          gosub CheckGameEndCondition
+          rem tail call
+          goto CheckGameEndCondition
           
-          return
 
           rem =================================================================
           rem CHECK SINGLE PLAYER ELIMINATION
@@ -85,9 +85,9 @@ UpdatePlayers34Done
           eliminationOrder[CPE_playerIndex] = eliminationCounter
           
           rem Trigger elimination effects
-          gosub TriggerEliminationEffects
+          rem tail call
+          goto TriggerEliminationEffects
           
-          return
 
           rem =================================================================
           rem TRIGGER ELIMINATION EFFECTS
@@ -115,9 +115,9 @@ TriggerEliminationEffects
           
           rem Stop any active missiles for this player
           let temp1 = TEE_playerIndex
-          gosub DeactivatePlayerMissiles
+          rem tail call
+          goto DeactivatePlayerMissiles
           
-          return
 
           rem =================================================================
           rem HIDE ELIMINATED PLAYER SPRITE

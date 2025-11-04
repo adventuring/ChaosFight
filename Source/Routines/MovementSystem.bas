@@ -321,6 +321,6 @@ InitializeMovementSystem
           gosub SetPlayerVelocity
           let IMS_playerIndex = 3
           let temp1 = IMS_playerIndex
-          gosub SetPlayerVelocity
+          rem tail call
+          goto SetPlayerVelocity
           
-          return

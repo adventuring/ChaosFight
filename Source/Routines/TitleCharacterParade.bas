@@ -77,9 +77,9 @@ DrawParadeCharacter
           gosub SetParadeCharacterColor
           
           rem Draw running animation for parade character
-          gosub DrawParadeCharacterSprite
+          rem tail call
+          goto DrawParadeCharacterSprite
           
-          return
 
           rem =================================================================
           rem SET PARADE CHARACTER COLOR

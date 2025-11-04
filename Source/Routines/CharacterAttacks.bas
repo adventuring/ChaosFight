@@ -59,8 +59,8 @@ RestoreFacingDone1
 CurlerAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformRangedAttack
-          return
+          rem tail call
+          goto PerformRangedAttack
 
           rem =================================================================
           rem DRAGON OF STORMS (Character 2) - Melee Attack
@@ -68,8 +68,8 @@ CurlerAttack
 DragonetAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformMeleeAttack
-          return
+          rem tail call
+          goto PerformMeleeAttack
 
           rem =================================================================
           rem ZOE RYEN (Character 3) - Ranged Attack
@@ -77,8 +77,8 @@ DragonetAttack
 ZoeRyenAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformRangedAttack
-          return
+          rem tail call
+          goto PerformRangedAttack
 
           rem =================================================================
           rem FAT TONY (Character 4) - Melee Attack
@@ -86,8 +86,8 @@ ZoeRyenAttack
 FatTonyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformRangedAttack
-          return
+          rem tail call
+          goto PerformRangedAttack
 
           rem =================================================================
           rem MEGAX (Character 5) - Ranged Attack
@@ -95,8 +95,8 @@ FatTonyAttack
 MegaxAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformRangedAttack
-          return
+          rem tail call
+          goto PerformRangedAttack
 
           rem =================================================================
           rem HARPY (Character 6) - Diagonal Downward Attack
@@ -120,9 +120,9 @@ HarpyDive
           rem Set bit 2 (dive mode)
 HarpyNotDiving
           
-          gosub PerformRangedAttack
+          rem tail call
+          goto PerformRangedAttack
           rem Spawns diagonal downward missile (velocity set in character data)
-          return
 
           rem =================================================================
           rem KNIGHT GUY (Character 7) - Ranged Attack
@@ -130,8 +130,8 @@ HarpyNotDiving
 KnightGuyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformRangedAttack
-          return
+          rem tail call
+          goto PerformRangedAttack
 
           rem =================================================================
           rem FROOTY (Character 8) - Ranged Attack with Magical Sparkles
@@ -143,11 +143,11 @@ KnightGuyAttack
 FrootyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformRangedAttack
+          rem tail call
+          goto PerformRangedAttack
           rem Magical sparkles: Visual effect handled by missile sprite graphics
           rem The missile sprite for Frooty (character 8) should display sparkle particles
           rem Sprite generation via SkylineTool should create sparkle graphics
-          return
 
           rem =================================================================
           rem NEFERTEM (Character 9) - Melee Attack
@@ -155,8 +155,8 @@ FrootyAttack
 NefertemAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformMeleeAttack
-          return
+          rem tail call
+          goto PerformMeleeAttack
 
           rem =================================================================
           rem NINJISH GUY (Character 10) - Ranged Attack (small bullet)
@@ -164,8 +164,8 @@ NefertemAttack
 NinjishGuyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformRangedAttack
-          return
+          rem tail call
+          goto PerformRangedAttack
 
           rem =================================================================
           rem PORK CHOP (Character 11) - Melee Attack
@@ -173,8 +173,8 @@ NinjishGuyAttack
 PorkChopAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformMeleeAttack
-          return
+          rem tail call
+          goto PerformMeleeAttack
 
           rem =================================================================
           rem RADISH GOBLIN (Character 12) - Melee Attack
@@ -182,8 +182,8 @@ PorkChopAttack
 RadishGoblinAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformMeleeAttack
-          return
+          rem tail call
+          goto PerformMeleeAttack
 
           rem =================================================================
           rem ROBO TITO (Character 13) - Melee Attack
@@ -191,8 +191,8 @@ RadishGoblinAttack
 RoboTitoAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformMeleeAttack
-          return
+          rem tail call
+          goto PerformMeleeAttack
 
           rem =================================================================
           rem URSULO (Character 14) - Ranged Attack
@@ -200,8 +200,8 @@ RoboTitoAttack
 UrsuloAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformRangedAttack
-          return
+          rem tail call
+          goto PerformRangedAttack
 
           rem =================================================================
           rem SHAMONE (Character 15) - Jump + Attack (Special)
@@ -217,8 +217,8 @@ ShamoneAttack
           rem Then execute the attack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
-          gosub PerformMeleeAttack
-          return
+          rem tail call
+          goto PerformMeleeAttack
 
           rem =================================================================
           rem CHARACTER ATTACK DISPATCHER

@@ -321,9 +321,9 @@ SelSkipP3
 SelSkipP4
 
           rem Draw locked status indicators (playfield blocks framing characters)
-          gosub SelDrawLocks
+          rem tail call
+          goto SelDrawLocks
 
-          return
 
           rem Draw locked status indicators
 SelDrawLocks

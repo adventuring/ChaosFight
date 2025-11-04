@@ -60,8 +60,8 @@ UpdateSoundEffect
           
           rem Update Voice 1
           if SoundEffectPointer1H then gosub UpdateSoundEffectVoice1
-          
           return
+          
           
           rem =================================================================
           rem UpdateSoundEffectVoice0 - Update Voice 0 sound effect

@@ -91,8 +91,8 @@ DrawPlayer1Digit
           let player1y = DD_yPos
           let _COLUP1 = DD_color
           let temp6 = DD_digitOffset
-          gosub LoadPlayer1Digit
-          return
+          rem tail call
+          goto LoadPlayer1Digit
 
 DrawPlayer2Digit
           rem Use player2 sprite
@@ -100,8 +100,8 @@ DrawPlayer2Digit
           let player2y = DD_yPos
           let COLUP2 = DD_color
           let temp6 = DD_digitOffset
-          gosub LoadPlayer2Digit
-          return
+          rem tail call
+          goto LoadPlayer2Digit
 
 DrawPlayer3Digit
           rem Use player3 sprite
@@ -109,8 +109,8 @@ DrawPlayer3Digit
           let player3y = DD_yPos
           let COLUP3 = DD_color
           let temp6 = DD_digitOffset
-          gosub LoadPlayer3Digit
-          return
+          rem tail call
+          goto LoadPlayer3Digit
 
 DrawPlayer4Digit
           rem Use player4 sprite
@@ -118,8 +118,8 @@ DrawPlayer4Digit
           let player4y = DD_yPos
           let COLUP4 = DD_color
           let temp6 = DD_digitOffset
-          gosub LoadPlayer4Digit
-          return
+          rem tail call
+          goto LoadPlayer4Digit
 
 DrawPlayer5Digit
           rem Use player5 sprite
@@ -127,8 +127,8 @@ DrawPlayer5Digit
           let player5y = DD_yPos
           let COLUP5 = DD_color
           let temp6 = DD_digitOffset
-          gosub LoadPlayer5Digit
-          return
+          rem tail call
+          goto LoadPlayer5Digit
 
           rem =================================================================
           rem LOAD DIGIT DATA INTO SPRITES

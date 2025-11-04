@@ -316,8 +316,8 @@ LoadPlayer0Sprite
           let LP0S_playerNumber = 0
           let temp3 = LP0S_playerNumber
           rem Use LoadCharacterSprite which handles LocateCharacterArt
-          gosub LoadCharacterSprite
-          return
+          rem tail call
+          goto LoadCharacterSprite
           
 LoadPlayer1Sprite
           dim LP1S_playerNumber = temp3
@@ -327,8 +327,8 @@ LoadPlayer1Sprite
           let LP1S_playerNumber = 1
           let temp3 = LP1S_playerNumber
           rem Use LoadCharacterSprite which handles LocateCharacterArt
-          gosub LoadCharacterSprite
-          return
+          rem tail call
+          goto LoadCharacterSprite
           
 LoadPlayer2Sprite
           dim LP2S_playerNumber = temp3
@@ -338,8 +338,8 @@ LoadPlayer2Sprite
           let LP2S_playerNumber = 2
           let temp3 = LP2S_playerNumber
           rem Use LoadCharacterSprite which handles LocateCharacterArt
-          gosub LoadCharacterSprite
-          return
+          rem tail call
+          goto LoadCharacterSprite
           
 LoadPlayer3Sprite
           dim LP3S_playerNumber = temp3
@@ -349,8 +349,8 @@ LoadPlayer3Sprite
           let LP3S_playerNumber = 3
           let temp3 = LP3S_playerNumber
           rem Use LoadCharacterSprite which handles LocateCharacterArt
-          gosub LoadCharacterSprite
-          return
+          rem tail call
+          goto LoadCharacterSprite
 
 
           rem Validate character index range

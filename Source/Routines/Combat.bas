@@ -50,9 +50,9 @@ ApplyDamage
           let playerState[AD_defenderID] = playerState[AD_defenderID] | 8
           
           rem Sound effect
-          gosub PlayDamageSound
+          rem tail call
+          goto PlayDamageSound
           
-          return
 
 PlayerDies
           rem Player dies - instantly vanish
@@ -64,9 +64,9 @@ PlayerDies
           gosub CheckPlayerElimination
           
           rem Sound effect
-          gosub PlayDamageSound
+          rem tail call
+          goto PlayDamageSound
           
-          return
 
           rem Check if attack hits defender
           rem Inputs: attackerID, defenderID (must be set before calling)

@@ -155,8 +155,8 @@ UpdateAllMissiles
           let temp1  = 2
           gosub UpdateOneMissile
           let temp1  = 3
-          gosub UpdateOneMissile
-          return
+          rem tail call
+          goto UpdateOneMissile
 
           rem =================================================================
           rem UPDATE ONE MISSILE

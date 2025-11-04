@@ -85,6 +85,6 @@ LoadFromBank5
           rem Input: temp1 = character index, temp2 = animation frame
           rem        temp3 = action, temp4 = player number
 SetPlayerCharacterArt
-          gosub LocateCharacterArt
-          return
+          rem tail call
+          goto LocateCharacterArt
 

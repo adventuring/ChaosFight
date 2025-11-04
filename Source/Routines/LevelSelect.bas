@@ -193,8 +193,8 @@ ArenaSelectConfirm
           let ASC_soundId = SoundMenuSelect
           let temp1 = ASC_soundId
           gosub bank15 PlaySoundEffect
-          gosub StartGame1
-          return
+          rem tail call
+          goto StartGame1
 ArenaSelectSkipConfirm
           
           drawscreen

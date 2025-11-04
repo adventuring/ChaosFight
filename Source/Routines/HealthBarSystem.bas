@@ -136,9 +136,9 @@ UpdatePlayer12HealthBars
           rem Update P2 health bar  
           let UP12HB_health = playerHealth[1]
           let temp1 = UP12HB_health
-          gosub UpdatePlayer2HealthBar
+          rem tail call
+          goto UpdatePlayer2HealthBar
           
-          return
 
           rem Initialize health bars at game start
 InitializeHealthBars
@@ -148,8 +148,8 @@ InitializeHealthBars
           let temp1 = IHB_health
           gosub UpdatePlayer1HealthBar
           let temp1 = IHB_health
-          gosub UpdatePlayer2HealthBar
-          return
+          rem tail call
+          goto UpdatePlayer2HealthBar
 
           rem =================================================================
           rem P3/P4 HEALTH DISPLAY (SCORE MODE)

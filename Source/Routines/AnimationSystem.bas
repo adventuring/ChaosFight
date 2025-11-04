@@ -150,8 +150,8 @@ GetCurrentAnimationAction
           
           rem Legacy alias for backward compatibility
 GetCurrentAnimationSequence
-          gosub GetCurrentAnimationAction
-          return
+          rem tail call
+          goto GetCurrentAnimationAction
 
           rem Initialize animation system for all players
           rem Called at game start to set up initial animation states
@@ -173,8 +173,8 @@ InitializeAnimationSystem
           gosub SetPlayerAnimation
           let currentPlayer = 3
           let temp2 = IAS_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem =================================================================
           rem ANIMATION SEQUENCE MANAGEMENT
@@ -188,8 +188,8 @@ SetWalkingAnimation
           dim SWA_animationAction = temp2
           let SWA_animationAction = ActionWalking
           let temp2 = SWA_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set idle animation for a player
           rem INPUT: currentPlayer = player index (0-3)
@@ -199,8 +199,8 @@ SetIdleAnimation
           dim SIA_animationAction = temp2
           let SIA_animationAction = ActionIdle
           let temp2 = SIA_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set attack animation for a player
           rem INPUT: currentPlayer = player index (0-3)
@@ -210,8 +210,8 @@ SetAttackAnimation
           dim SAA_animationAction = temp2
           let SAA_animationAction = ActionAttackWindup
           let temp2 = SAA_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set hit animation for a player
           rem INPUT: currentPlayer = player index (0-3)
@@ -221,8 +221,8 @@ SetHitAnimation
           dim SHA_animationAction = temp2
           let SHA_animationAction = ActionHit
           let temp2 = SHA_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set jumping animation for a player
           rem INPUT: currentPlayer = player index (0-3)
@@ -232,8 +232,8 @@ SetJumpingAnimation
           dim SJA_animationAction = temp2
           let SJA_animationAction = ActionJumping
           let temp2 = SJA_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem Set falling animation for a player
           rem INPUT: currentPlayer = player index (0-3)
@@ -243,8 +243,8 @@ SetFallingAnimation
           dim SFA_animationAction = temp2
           let SFA_animationAction = ActionFalling
           let temp2 = SFA_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem =================================================================
           rem ANIMATION STATE QUERIES
@@ -349,15 +349,15 @@ TransitionToIdle
           dim TTI_animationAction = temp2
           let TTI_animationAction = ActionIdle
           let temp2 = TTI_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
 TransitionToFallen
           dim TTF_animationAction = temp2
           let TTF_animationAction = ActionFallen
           let temp2 = TTF_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
 TransitionHandleJump
           dim THJ_animationAction = temp2
@@ -366,8 +366,8 @@ TransitionHandleJump
           rem For now, simple fallback to falling after delay
           let THJ_animationAction = ActionFalling
           let temp2 = THJ_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
 TransitionHandleFallBack
           dim THFB_animationAction = temp2
@@ -376,8 +376,8 @@ TransitionHandleFallBack
           rem TODO: implement wall collision check
           let THFB_animationAction = ActionFallen
           let temp2 = THFB_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
           rem =================================================================
           rem ATTACK TRANSITION HANDLING
@@ -412,9 +412,9 @@ Char1_Windup
           rem Curler: Windup → Recovery
           let C1W_animationAction = ActionAttackRecovery
           let temp2 = C1W_animationAction
-          gosub SetPlayerAnimation
+          rem tail call
+          goto SetPlayerAnimation
           rem TODO: Spawn curling stone missile at foot level
-          return
 Char2_Windup
           rem Dragon of Storms: Execute only
           return
@@ -426,15 +426,15 @@ Char4_Windup
           rem Fat Tony: Windup → Execute
           let C4W_animationAction = ActionAttackExecute
           let temp2 = C4W_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char5_Windup
           dim C5W_animationAction = temp2
           rem Megax: Windup → Execute
           let C5W_animationAction = ActionAttackExecute
           let temp2 = C5W_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char6_Windup
           rem Harpy: Execute only
           return
@@ -449,8 +449,8 @@ Char9_Windup
           rem Nefertem: Windup → Execute
           let C9W_animationAction = ActionAttackExecute
           let temp2 = C9W_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char10_Windup
           rem Ninjish Guy: Execute only
           return
@@ -459,8 +459,8 @@ Char11_Windup
           rem Pork Chop: Windup → Execute
           let C11W_animationAction = ActionAttackExecute
           let temp2 = C11W_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char12_Windup
           rem Radish Goblin: Execute only
           return
@@ -487,8 +487,8 @@ Char0_Execute
           rem Bernie: Execute → Idle
           let C0E_animationAction = ActionIdle
           let temp2 = C0E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char1_Execute
           rem Curler: no Execute used
           return
@@ -497,105 +497,105 @@ Char2_Execute
           rem Dragon of Storms: Execute → Idle
           let C2E_animationAction = ActionIdle
           let temp2 = C2E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char3_Execute
           dim C3E_animationAction = temp2
           rem Zoe Ryen: Execute → Idle
           let C3E_animationAction = ActionIdle
           let temp2 = C3E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char4_Execute
           dim C4E_animationAction = temp2
           rem Fat Tony: Execute → Recovery
           let C4E_animationAction = ActionAttackRecovery
           let temp2 = C4E_animationAction
-          gosub SetPlayerAnimation
+          rem tail call
+          goto SetPlayerAnimation
           rem TODO: Spawn laser bullet missile
-          return
 Char5_Execute
           dim C5E_animationAction = temp2
           rem Megax: Execute → Idle (fire breath during Execute)
           let C5E_animationAction = ActionIdle
           let temp2 = C5E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char6_Execute
           dim C6E_animationAction = temp2
           rem Harpy: Execute → Idle
           let C6E_animationAction = ActionIdle
           let temp2 = C6E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char7_Execute
           dim C7E_animationAction = temp2
           rem Knight Guy: Execute → Idle (sword during Execute)
           let C7E_animationAction = ActionIdle
           let temp2 = C7E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char8_Execute
           dim C8E_animationAction = temp2
           rem Frooty: Execute → Idle
           let C8E_animationAction = ActionIdle
           let temp2 = C8E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char9_Execute
           dim C9E_animationAction = temp2
           rem Nefertem: Execute → Idle
           let C9E_animationAction = ActionIdle
           let temp2 = C9E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char10_Execute
           dim C10E_animationAction = temp2
           rem Ninjish Guy: Execute → Idle
           let C10E_animationAction = ActionIdle
           let temp2 = C10E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char11_Execute
           dim C11E_animationAction = temp2
           rem Pork Chop: Execute → Recovery
           let C11E_animationAction = ActionAttackRecovery
           let temp2 = C11E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char12_Execute
           dim C12E_animationAction = temp2
           rem Radish Goblin: Execute → Idle
           let C12E_animationAction = ActionIdle
           let temp2 = C12E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char13_Execute
           dim C13E_animationAction = temp2
           rem Robo Tito: Execute → Idle
           let C13E_animationAction = ActionIdle
           let temp2 = C13E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char14_Execute
           dim C14E_animationAction = temp2
           rem Ursulo: Execute → Idle
           let C14E_animationAction = ActionIdle
           let temp2 = C14E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 Char15_Execute
           dim C15E_animationAction = temp2
           rem Shamone: Execute → Idle
           let C15E_animationAction = ActionIdle
           let temp2 = C15E_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation
 
 HandleRecoveryEnd
           dim HRE_animationAction = temp2
           rem All characters: Recovery → Idle
           let HRE_animationAction = ActionIdle
           let temp2 = HRE_animationAction
-          gosub SetPlayerAnimation
-          return
+          rem tail call
+          goto SetPlayerAnimation

@@ -651,11 +651,11 @@ StandardGuard
           
           rem Start guard with proper timing
           let temp1 = SG_playerIndex
-          gosub StartGuard
+          rem tail call
+          goto StartGuard
           rem StartGuard sets guard bit and duration timer
           
           rem Set guard visual effect (flashing cyan)
           rem Character flashes light cyan ColCyan(12) in NTSC/PAL, Cyan in SECAM
           rem This will be checked in sprite rendering routines
-          return
 

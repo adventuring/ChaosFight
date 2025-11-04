@@ -62,9 +62,9 @@ CheckAllMissileCollisions
           
           if CAMC_missileWidth = 0 then goto CheckAOECollision
           let temp1 = CAMC_attackerIndex
-          gosub CheckVisibleMissileCollision
+          rem tail call
+          goto CheckVisibleMissileCollision
           
-          return
 
           rem =================================================================
           rem CHECK VISIBLE MISSILE COLLISION

@@ -12,9 +12,9 @@ BeginPublisherPrelude
           
           rem Start "AtariToday" music
           temp1 = MusicAtariToday
-          gosub StartMusic
+          rem tail call
+          goto StartMusic
           
-          return
 
           rem =================================================================
           rem LOAD PUBLISHER PLAYFIELD

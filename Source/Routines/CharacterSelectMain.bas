@@ -730,8 +730,8 @@ SelectSkipP3
 SelectSkipP4
           
           rem Draw locked status indicators
-          gosub SelectDrawLocks
-          return
+          rem tail call
+          goto SelectDrawLocks
           
 SelectDrawSprite
           dim SDS_playerNumber = temp3

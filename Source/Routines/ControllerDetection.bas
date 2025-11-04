@@ -81,9 +81,9 @@ CheckGenesis
           gosub CtrlGenesisA
           
           rem Detect Joy2b+ controllers (if no Genesis detected)
-          gosub ControllerDetectJoy2bPlusPrimary
+          rem tail call
+          goto ControllerDetectJoy2bPlusPrimary
           
-          return
 
           rem =================================================================
           rem GENESIS/MEGADRIVE CONTROLLER DETECTION

@@ -149,7 +149,7 @@ DisplayPausedScreen
           rem D
           temp4 = 13 
           rem ASCII "D"
-          gosub DrawCharacter
+          rem tail call
+          goto DrawCharacter
           
-          return
 

@@ -130,7 +130,7 @@ OVERSCAN
 	sta VBLANK
 	RETURN
 
-	rem Unused image files removed: 48x1_*, 48x2_4-8, 96x2_* - only 48x2_1, 48x2_2, 48x2_3 are used
+	rem Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 	ifconst mk_48x2_1_on
 		include "Titlescreen/48x2_1_image.s"
 	endif
@@ -162,14 +162,14 @@ OVERSCAN
 
 
 
- rem Unused image files removed: 48x1_*, 48x2_4-8, 96x2_* - only 48x2_1, 48x2_2, 48x2_3 are used
+  rem Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
  #ifconst mk_48x2_1_on
 	include "titlescreen/48x2_1_image.s"
  #endif
  #ifconst mk_48x2_2_on
 	include "titlescreen/48x2_2_image.s"
  #endif
-#ifconst mk_48x2_3_on
+ #ifconst mk_48x2_3_on
 	include "titlescreen/48x2_3_image.s"
  #endif
  #ifconst mk_48x2_4_on

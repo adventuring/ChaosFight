@@ -15,6 +15,9 @@ BeginWinnerAnnouncement
           rem Initialize Winner Announcement mode
           rem winnerPlayerIndex should already be set by game end logic (FindWinner in PlayerElimination.bas)
           
+          rem Set admin screen layout (32×32 for character display)
+          gosub bank8 SetAdminScreenLayout
+          
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)
           

@@ -15,6 +15,124 @@
           rem   - ArenaXColorsBW: row colors for B&W mode (switchbw=1) - all white
           rem =================================================================
 
+          rem Winner Screen: Podium/Platform pattern
+          rem 32×32 admin screen layout (pfres=32)
+          rem Design: Central high podium for winner, side platforms for 2nd/3rd
+          rem Row 16: Central high platform (winner podium)
+          rem Row 24: Left and right platforms (2nd/3rd place)
+WinnerScreenPlayfield
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X......XXXXXXXXX
+          rem Row 16: Central high podium (left half - mirrors to full width)
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X......XXXXXXXXX
+          rem Row 24: Bottom platforms (left half - mirrors to full width)
+          X...............
+          X...............
+          X...............
+          X...............
+          XXXXXXXXXXXXXXXX
+end
+
+WinnerScreenColorsColor
+          pfcolors:
+          ColGold(14)
+          ColGold(12)
+          ColGold(10)
+          ColGold(8)
+          ColGold(6)
+          ColGold(4)
+          ColGold(2)
+          ColGold(0)
+          ColGold(2)
+          ColGold(4)
+          ColGold(6)
+          ColGold(8)
+          ColGold(10)
+          ColGold(12)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+          ColGold(14)
+end
+
+WinnerScreenColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
+
           rem Arena 1: The Pit (classic fighting pit with walls)
 Arena1Playfield
           playfield:

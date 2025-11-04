@@ -3,6 +3,9 @@
 
           bank 12
 
+          rem Include Arenas.bas for WinnerScreenPlayfield data
+          #include "Source/Data/Arenas.bas"
+
           #include "Source/Routines/BeginFallingAnimation.bas"
           #include "Source/Routines/FallingAnimation.bas"
           #include "Source/Routines/BeginLevelSelect.bas"
@@ -11,6 +14,8 @@
           rem Character-to-theme-song mapping table for winner announcements
           #include "Source/Routines/BeginWinnerAnnouncement.bas"
           #include "Source/Routines/WinnerAnnouncement.bas"
+          #include "Source/Routines/DisplayWinScreen.bas"
+          rem DisplayWinScreen function for winner screen with fixed playfield and 1-3 characters
           #include "Source/Routines/FontRendering.bas"
           rem Font rendering for arena number display ( 1-32/??)
           #include "Source/Routines/TitlescreenWindowControl.bas"

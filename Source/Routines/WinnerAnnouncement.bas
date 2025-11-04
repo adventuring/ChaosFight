@@ -13,8 +13,7 @@ WinnerAnnouncementLoop
           if WinScreenTimer > WinScreenAutoAdvanceFrames then WinnerAdvanceToCharacterSelect
           
           rem Display win screen and continue loop
-          rem gosub bank7 DisplayWinScreen
-          rem TODO: Implement DisplayWinScreen function when ready
+          gosub bank12 DisplayWinScreen
           drawscreen
           goto WinnerAnnouncementLoop
 

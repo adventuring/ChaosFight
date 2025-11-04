@@ -52,7 +52,14 @@ UpdatePlayerAnimation
           goto SkipAdvance
 AdvanceFrame
           let animationCounter[currentPlayer] = 0
-          gosub AdvanceAnimationFrame
+          rem Inline AdvanceAnimationFrame
+          rem Advance to next frame in current animation action
+          rem Frame is from sprite 10fps counter (currentAnimationFrame), not global frame
+          let currentAnimationFrame[currentPlayer] = currentAnimationFrame[currentPlayer] + 1
+          
+          rem Check if we have completed the current action (8 frames per action)
+          if currentAnimationFrame[currentPlayer] >= FramesPerSequence then goto HandleFrame7Transition
+          goto UpdateSprite
 SkipAdvance
           return
 

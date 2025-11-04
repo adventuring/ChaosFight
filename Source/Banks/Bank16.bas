@@ -35,28 +35,36 @@
           rem Input: temp1 = song ID (0-4)
           rem Output: SongPointerL, SongPointerH = pointer to Song_Voice0 stream
 LoadSongPointer
+          dim LSP_songID = temp1
           rem Bounds check: only 5 songs (0-4)
-          if temp1 > 4 then let SongPointerH = 0 : return
+          if LSP_songID > 4 then let SongPointerH = 0 : return
           rem Use array access to lookup pointer
-          let SongPointerL = SongPointersL[temp1]
-          let SongPointerH = SongPointersH[temp1]
+          let SongPointerL = SongPointersL[LSP_songID]
+          let SongPointerH = SongPointersH[LSP_songID]
           return
           
           rem Lookup Voice 1 song pointer from tables
           rem Input: temp1 = song ID (0-4)
           rem Output: SongPointerL, SongPointerH = pointer to Song_Voice1 stream
 LoadSongVoice1Pointer
+          dim LSV1P_songID = temp1
           rem Bounds check: only 5 songs (0-4)
-          if temp1 > 4 then let SongPointerH = 0 : return
+          if LSV1P_songID > 4 then let SongPointerH = 0 : return
           rem Use array access to lookup Voice 1 pointer directly
-          let SongPointerL = SongPointersSecondL[temp1]
-          let SongPointerH = SongPointersSecondH[temp1]
+          let SongPointerL = SongPointersSecondL[LSV1P_songID]
+          let SongPointerH = SongPointersSecondH[LSV1P_songID]
           return
           
           rem Load next note from Voice 0 stream using assembly for pointer access
           rem Input: MusicVoice0PointerL/H points to current note in Song_Voice0 stream
           rem Output: Updates TIA registers, advances pointer, sets MusicVoice0Frame
 LoadMusicNote0
+          dim LMN0_audcv = temp2
+          dim LMN0_audf = temp3
+          dim LMN0_duration = temp4
+          dim LMN0_delay = temp5
+          dim LMN0_audc = temp6
+          dim LMN0_audv = temp7
           asm
           ; Load 4 bytes from stream[pointer]
           ldy #0
@@ -74,34 +82,41 @@ LoadMusicNote0
           end
           
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then let MusicVoice0PointerH = 0 : AUDV0 = 0 : return
+          if LMN0_duration = 0 then let MusicVoice0PointerH = 0 : AUDV0 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
-          temp6 = temp2 & %11110000
-          temp6 = temp6 / 16
-          temp7 = temp2 & %00001111
+          LMN0_audc = LMN0_audcv & %11110000
+          LMN0_audc = LMN0_audc / 16
+          LMN0_audv = LMN0_audcv & %00001111
           
           rem Store target AUDV and total frames for envelope calculation
-          let MusicVoice0TargetAUDV = temp7
-          let MusicVoice0TotalFrames = temp4 + temp5
+          let MusicVoice0TargetAUDV = LMN0_audv
+          let MusicVoice0TotalFrames = LMN0_duration + LMN0_delay
           
           rem Write to TIA registers (will be adjusted by envelope in UpdateMusicVoice0)
-          AUDC0 = temp6
-          AUDF0 = temp3
-          AUDV0 = temp7
+          AUDC0 = LMN0_audc
+          AUDF0 = LMN0_audf
+          AUDV0 = LMN0_audv
           
           rem Set frame counter = Duration + Delay
-          let MusicVoice0Frame = temp4 + temp5
+          let MusicVoice0Frame = LMN0_duration + LMN0_delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          let temp2 = MusicVoice0PointerL
-          let MusicVoice0PointerL = temp2 + 4
-          if MusicVoice0PointerL < temp2 then let MusicVoice0PointerH = MusicVoice0PointerH + 1
+          dim LMN0_pointerL_old = temp2
+          let LMN0_pointerL_old = MusicVoice0PointerL
+          let MusicVoice0PointerL = LMN0_pointerL_old + 4
+          if MusicVoice0PointerL < LMN0_pointerL_old then let MusicVoice0PointerH = MusicVoice0PointerH + 1
           
           return
           
           rem Load next note from Voice 1 stream
 LoadMusicNote1
+          dim LMN1_audcv = temp2
+          dim LMN1_audf = temp3
+          dim LMN1_duration = temp4
+          dim LMN1_delay = temp5
+          dim LMN1_audc = temp6
+          dim LMN1_audv = temp7
           asm
           ; Load 4 bytes from stream[pointer]
           ldy #0
@@ -119,29 +134,30 @@ LoadMusicNote1
           end
           
           rem Check for end of track (Duration = 0)
-          if temp4 = 0 then let MusicVoice1PointerH = 0 : AUDV1 = 0 : return
+          if LMN1_duration = 0 then let MusicVoice1PointerH = 0 : AUDV1 = 0 : return
           
           rem Extract AUDC and AUDV
-          temp6 = temp2 & %11110000
-          temp6 = temp6 / 16
-          temp7 = temp2 & %00001111
+          LMN1_audc = LMN1_audcv & %11110000
+          LMN1_audc = LMN1_audc / 16
+          LMN1_audv = LMN1_audcv & %00001111
           
           rem Store target AUDV and total frames for envelope calculation
-          let MusicVoice1TargetAUDV = temp7
-          let MusicVoice1TotalFrames = temp4 + temp5
+          let MusicVoice1TargetAUDV = LMN1_audv
+          let MusicVoice1TotalFrames = LMN1_duration + LMN1_delay
           
           rem Write to TIA registers (will be adjusted by envelope in UpdateMusicVoice1)
-          AUDC1 = temp6
-          AUDF1 = temp3
-          AUDV1 = temp7
+          AUDC1 = LMN1_audc
+          AUDF1 = LMN1_audf
+          AUDV1 = LMN1_audv
           
           rem Set frame counter = Duration + Delay
-          let MusicVoice1Frame = temp4 + temp5
+          let MusicVoice1Frame = LMN1_duration + LMN1_delay
           
           rem Advance pointer by 4 bytes
-          temp2 = MusicVoice1PointerL
-          let MusicVoice1PointerL = temp2 + 4
-          if MusicVoice1PointerL < temp2 then let MusicVoice1PointerH = MusicVoice1PointerH + 1
+          dim LMN1_pointerL_old = temp2
+          let LMN1_pointerL_old = MusicVoice1PointerL
+          let MusicVoice1PointerL = LMN1_pointerL_old + 4
+          if MusicVoice1PointerL < LMN1_pointerL_old then let MusicVoice1PointerH = MusicVoice1PointerH + 1
           
           return
           

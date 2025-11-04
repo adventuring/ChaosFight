@@ -15,8 +15,8 @@ BeginTitleScreen
           rem Set background color
           COLUBK = ColGray(0)
           
-          rem Start "Title" music
-          let temp1 = MusicTitle
+          rem Start "Chaotica" title music
+          let temp1 = MusicChaotica
           gosub bank16 StartMusic
           
           rem Set window values for Title screen (ChaosFight only)

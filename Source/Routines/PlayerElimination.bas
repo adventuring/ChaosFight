@@ -82,7 +82,7 @@ UpdatePlayers34Done
           
           rem Record elimination order
           let eliminationCounter = eliminationCounter + 1
-          eliminationOrder[CPE_playerIndex] = eliminationCounter
+          let eliminationOrder[CPE_playerIndex] = eliminationCounter
           
           rem Trigger elimination effects
           rem tail call

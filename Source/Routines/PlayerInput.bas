@@ -391,7 +391,7 @@ InputSkipLeftPortJump
           
 StopGuardEarlyLeft
           rem Stop guard early and start cooldown
-          PlayerState[temp1] = PlayerState[temp1] & 253
+          let PlayerState[temp1] = PlayerState[temp1] & 253
           rem Clear guard bit
           let playerTimers[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer
@@ -657,7 +657,7 @@ InputSkipRightPortJump
           
 StopGuardEarlyRight
           rem Stop guard early and start cooldown
-          PlayerState[temp1] = PlayerState[temp1] & 253
+          let PlayerState[temp1] = PlayerState[temp1] & 253
           rem Clear guard bit
           let playerTimers[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer

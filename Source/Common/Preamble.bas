@@ -4,7 +4,7 @@
           rem NAMING CONVENTIONS:
           rem - Built-in batariBasic identifiers (temp1-temp6, joy0up, frame, etc.) are lowercase
           rem - User-defined variables: camelCase (gameState, playerX, etc.)
-          rem - Constants and Enums: PascalCase (MaxCharacter, AnimStanding, etc.)
+          rem - Constants and Enums: PascalCase (MaxCharacter, ActionStanding, etc.)
           rem - Labels/Routines: PascalCase (LoadCharacterSprite, etc.)
           rem - Do NOT use "dim" for built-in variables - they already exist!
           rem - Built-in variables: temp1-temp6, qtcontroller, joy0up/down/left/right/fire, frame

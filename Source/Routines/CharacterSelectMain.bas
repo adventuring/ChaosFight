@@ -778,7 +778,7 @@ SelectLoadSprite
           rem Use character select animation state
           rem charSelectPlayerAnimSeq has animation sequence (bit 0: 0=idle, 1=walk)
           rem charSelectPlayerAnimFrame has animation frame counter (0-7)
-          rem Map to proper animation action: 0=idle (AnimIdle=1), 1=walk (AnimWalking=3)
+          rem Map to proper animation action: 0=idle (ActionIdle=1), 1=walk (ActionWalking=3)
           if charSelectPlayerAnimSeq[SLS_playerNumberSaved] then SelectLoadWalkingSprite
           
           rem Idle animation
@@ -786,7 +786,7 @@ SelectLoadSprite
           rem frame
           rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp4=player
           let SLS_animationAction = 1
-          rem AnimIdle = 1
+          rem ActionIdle = 1
           let SLS_playerNumberForArt = SLS_playerNumberSaved
           let temp1 = SLS_characterIndex
           let temp2 = SLS_animationFrame
@@ -807,7 +807,7 @@ SelectLoadWalkingSprite
           let SLWS_animationFrame = charSelectPlayerAnimSeq[SLS_playerNumberSaved]
           rem Use sequence counter as frame (0-3 for 4-frame walk)
           let SLWS_animationAction = 3
-          rem AnimWalking = 3
+          rem ActionWalking = 3
           let SLWS_playerNumberForArt = SLS_playerNumberSaved
           let temp1 = SLS_characterIndex
           let temp2 = SLWS_animationFrame

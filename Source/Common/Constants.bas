@@ -183,11 +183,14 @@
           rem =================================================================
           rem MUSIC CONSTANTS
           rem =================================================================
+          rem Main game songs (0-4)
           const MusicTitle = 0
           const MusicInterworldly = 1
           const MusicAtariToday = 2
           const MusicVictory = 3
           const MusicGameOver = 4
+          rem Character theme songs start at index 5 (after main songs)
+          const MusicCharacterThemeBase = 5
 
           rem =================================================================
           rem SOUND EFFECT CONSTANTS

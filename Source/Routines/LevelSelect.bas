@@ -364,7 +364,7 @@ ArenaSelectDrawPlayerSprite
           if ASDPS_playerIndex = 2 then let ASDPS_characterIndex = selectedChar3_R
           if ASDPS_playerIndex = 3 then let ASDPS_characterIndex = selectedChar4_R
           
-          rem Use idle animation (action 1 = AnimIdle)
+          rem Use idle animation (action 1 = ActionIdle)
           let ASDPS_animationAction = 1
           rem Simple frame counter cycles 0-7
           let ASDPS_animationFrame = frame & 7

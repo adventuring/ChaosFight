@@ -30,7 +30,7 @@ This document defines the coding standards for the ChaosFight project. All code 
 Use **PascalCase** for:
 - **Labels/Routines**: `LoadCharacterSprite`, `ApplyDamage`, `CheckPlayerElimination`
 - **Constants**: `MaxCharacter`, `RandomArena`, `ColIndigo(14)`
-- **Enums**: `AnimStanding`, `AnimWalking`, `ModeGame`, `ModeCharacterSelect`
+- **Enums**: `ActionStanding`, `ActionWalking`, `ModeGame`, `ModeCharacterSelect`
 
 **Examples:**
 ```basic

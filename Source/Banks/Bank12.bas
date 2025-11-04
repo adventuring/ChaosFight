@@ -7,6 +7,8 @@
           #include "Source/Routines/FallingAnimation.bas"
           #include "Source/Routines/BeginLevelSelect.bas"
           #include "Source/Routines/LevelSelect.bas"
+          #include "Source/Data/CharacterThemeSongIndices.bas"
+          rem Character-to-theme-song mapping table for winner announcements
           #include "Source/Routines/BeginWinnerAnnouncement.bas"
           #include "Source/Routines/WinnerAnnouncement.bas"
           #include "Source/Routines/FontRendering.bas"

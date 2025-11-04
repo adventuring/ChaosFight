@@ -325,37 +325,37 @@ MissileFlagHitPlayer = 2
  
 MissileFlagHitBackground = 1
  
-AnimAttackRecovery = 15
+ActionAttackRecovery = 15
  
-AnimAttackExecute = 14
+ActionAttackExecute = 14
  
-AnimAttackWindup = 13
+ActionAttackWindup = 13
  
-AnimLanding = 12
+ActionLanding = 12
  
-AnimFalling = 11
+ActionFalling = 11
  
-AnimJumping = 10
+ActionJumping = 10
  
-AnimRecovering = 9
+ActionRecovering = 9
  
-AnimFallen = 8
+ActionFallen = 8
  
-AnimFallDown = 7
+ActionFallDown = 7
  
-AnimFallBack = 6
+ActionFallBack = 6
  
-AnimHit = 5
+ActionHit = 5
  
-AnimStopping = 4
+ActionStopping = 4
  
-AnimWalking = 3
+ActionWalking = 3
  
-AnimGuarding = 2
+ActionGuarding = 2
  
-AnimIdle = 1
+ActionIdle = 1
  
-AnimStanding = 0
+ActionStanding = 0
  
 ModeWinner = 7
  

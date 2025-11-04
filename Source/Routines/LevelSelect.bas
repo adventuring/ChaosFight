@@ -59,9 +59,9 @@ FireHoldCheckDone
 ArenaSelectLeft
           dim ASL_soundId = temp1
           rem Decrement arena, wrap from 0 to RandomArena (255)
-          if selectedArena = 0 then selectedArena = RandomArena : goto ArenaSelectLeftSound
-          if selectedArena = RandomArena then selectedArena = MaxArenaID : goto ArenaSelectLeftSound
-          selectedArena = selectedArena - 1
+          if selectedArena = 0 then let selectedArena = RandomArena : goto ArenaSelectLeftSound
+          if selectedArena = RandomArena then let selectedArena = MaxArenaID : goto ArenaSelectLeftSound
+          let selectedArena = selectedArena - 1
 ArenaSelectLeftSound
           rem Play navigation sound
           let ASL_soundId = SoundSelect
@@ -74,11 +74,11 @@ ArenaSelectSkipLeft
 ArenaSelectRight
           dim ASR_soundId = temp1
           rem Increment arena, wrap from MaxArenaID to 0, then to RandomArena
-          if selectedArena = MaxArenaID then selectedArena = RandomArena : goto ArenaSelectRightSound
-          if selectedArena = RandomArena then selectedArena = 0 : goto ArenaSelectRightSound
-          selectedArena = selectedArena + 1
+          if selectedArena = MaxArenaID then let selectedArena = RandomArena : goto ArenaSelectRightSound
+          if selectedArena = RandomArena then let selectedArena = 0 : goto ArenaSelectRightSound
+          let selectedArena = selectedArena + 1
           rem Wrap from 255 to 0 if needed
-          if selectedArena > MaxArenaID && selectedArena < RandomArena then selectedArena = 0
+          if selectedArena > MaxArenaID && selectedArena < RandomArena then let selectedArena = 0
 ArenaSelectRightSound
           rem Play navigation sound
           let ASR_soundId = SoundSelect

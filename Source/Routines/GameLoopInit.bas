@@ -191,8 +191,8 @@ Player3HealthSet
           rem Initialize health bars
           gosub bank8 InitializeHealthBars
 
-          rem Load level data
-          gosub LoadLevel
+          rem Load arena data
+          gosub bank14 LoadArena
 
           rem TODO: Replace def statements with regular subroutines
           rem batariBASIC may not support def statements with parameters

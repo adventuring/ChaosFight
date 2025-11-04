@@ -275,19 +275,22 @@ Source/Generated/Font.bas: Source/Art/Font.png
 # Build game - accurate dependencies based on actual includes
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
+	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
 	mkdir -p Source/Generated
 	cpp -P -I. -DBUILD_DATE=$(shell date +%j) -Wno-trigraphs -Wno-format $< > $@
 

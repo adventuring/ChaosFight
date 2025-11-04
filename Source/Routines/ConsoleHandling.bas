@@ -18,7 +18,7 @@
           rem Main console switch handler
 HandleConsoleSwitches
           rem Game Reset switch - return to publisher preamble
-          if switchreset then gameMode = ModePublisherPreamble : gosub bank13 ChangeGameMode : return
+          if switchreset then let gameMode = ModePublisherPreamble : gosub bank13 ChangeGameMode : return
 
           rem Game Select switch or Joy2B+ Button III - toggle pause mode
           temp2 = 0 

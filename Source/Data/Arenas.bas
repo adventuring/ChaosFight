@@ -1,15 +1,19 @@
-          rem ChaosFight - Source/Data/Playfields.bas
+          rem ChaosFight - Source/Data/Arenas.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Arena playfield data (not generated - edit manually)
 
-
-          rem PLAYFIELD DATA
-
+          rem =================================================================
+          rem ARENA DATA - PURE DATA FORMAT
+          rem =================================================================
           rem Game arenas: 16 pixels wide (left half) mirrored, 8 rows high (pfres=8)
           rem   Memory constraint: 8 rows × 4 bytes = 32 bytes (var96-var127)
-          rem Admin screens: 32 pixels wide (asymmetrical), 32 rows high (pfres=32)
-          rem   Memory constraint: 32 rows × 4 bytes = 128 bytes (var0-var127)
-          rem Use X for solid, . for empty
+          rem Use X for solid, . = empty
+          rem
+          rem Each arena has:
+          rem   - ArenaXPlayfield: playfield pixel data
+          rem   - ArenaXColorsColor: row colors for Color mode (switchbw=0)
+          rem   - ArenaXColorsBW: row colors for B&W mode (switchbw=1) - all white
+          rem =================================================================
 
           rem Arena 1: The Pit (classic fighting pit with walls)
 Arena1Playfield
@@ -23,15 +27,9 @@ Arena1Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena1ColorsDone
-          pfcolors Arena1ColorsColor
+
+Arena1ColorsColor
+          pfcolors:
           ColOrange(2)
           ColOrange(4)
           ColOrange(6)
@@ -41,32 +39,34 @@ end
           ColOrange(14)
           ColOrange(0)
 end
-          return
-Arena1ColorsDone
-          return
-          return
+
+Arena1ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 2: Battlefield (platform fighter style)
 Arena2Playfield
           playfield:
-          ................
-          ................
-          ........XXXXXXXX
-          ................
-          ....XXXX........
-          ................
-          ................
+          X...............
+          X...............
+          X.......XXXXXXXX
+          X...............
+          X...XXXX........
+          X...............
+          X...............
           XXXXXXXXXXXXXXXX
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena2ColorsDone
-          pfcolors Arena2ColorsColor
+
+Arena2ColorsColor
+          pfcolors:
           ColTurquoise(4)
           ColTurquoise(4)
           ColTurquoise(6)
@@ -76,29 +76,34 @@ end
           ColTurquoise(4)
           ColTurquoise(2)
 end
-          return
+
+Arena2ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 3: King of the Hill (elevated center platform)
 Arena3Playfield
           playfield:
-          ................
-          ................
-          ............XXXX
-          ............XXXX
-          ............XXXX
-          ................
-          ................
+          X...............
+          X...............
+          X...........XXXX
+          X...........XXXX
+          X...........XXXX
+          X...............
+          X...............
           XXXXXXXXXXXXXXXX
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena3ColorsDone
-          pfcolors Arena3ColorsColor
+
+Arena3ColorsColor
+          pfcolors:
           ColSeafoam(2)
           ColSeafoam(2)
           ColSeafoam(4)
@@ -108,9 +113,18 @@ end
           ColSeafoam(2)
           ColSeafoam(6)
 end
-          return
-Arena3ColorsDone
-          return
+
+Arena3ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 4: The Bridge (narrow bridge over pit)
 Arena4Playfield
@@ -124,15 +138,9 @@ Arena4Playfield
           ................
           ................
 end
-          return
 
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena4ColorsDone
-          pfcolors Arena4ColorsColor
+Arena4ColorsColor
+          pfcolors:
           ColYellow(12)
           ColYellow(12)
           ColYellow(12)
@@ -142,9 +150,18 @@ end
           ColYellow(12)
           ColYellow(12)
 end
-          return
-Arena4ColorsDone
-          return
+
+Arena4ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 5: Corner Trap (walls in corners)
 Arena5Playfield
@@ -158,14 +175,9 @@ Arena5Playfield
           XXXX............
           XXXXXXXXXXXXXXXX
 end
-          return
 
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          pfcolors Arena5ColorsColor
+Arena5ColorsColor
+          pfcolors:
           ColBlue(4)
           ColBlue(4)
           ColBlue(4)
@@ -175,9 +187,18 @@ end
           ColBlue(4)
           ColBlue(4)
 end
-          return
-Arena5ColorsDone
-          return
+
+Arena5ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 6: Multi-Platform (multiple small platforms)
 Arena6Playfield
@@ -191,15 +212,9 @@ Arena6Playfield
           ................
           XXXXXXXXXXXXXXXX
 end
-          return
 
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena6ColorsDone
-          pfcolors Arena6ColorsColor
+Arena6ColorsColor
+          pfcolors:
           ColRed(2)
           ColRed(4)
           ColRed(2)
@@ -209,9 +224,18 @@ end
           ColRed(2)
           ColRed(8)
 end
-          return
-Arena6ColorsDone
-          return
+
+Arena6ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 7: The Gauntlet (maze-like walls)
 Arena7Playfield
@@ -225,15 +249,9 @@ Arena7Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
-          return
 
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena7ColorsDone
-          pfcolors Arena7ColorsColor
+Arena7ColorsColor
+          pfcolors:
           ColGold(2)
           ColGold(2)
           ColGold(2)
@@ -243,9 +261,18 @@ end
           ColGold(2)
           ColGold(6)
 end
-          return
-Arena7ColorsDone
-          return
+
+Arena7ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 8: Scattered Blocks (alternating block pattern)
 Arena8Playfield
@@ -259,15 +286,9 @@ Arena8Playfield
           ................
           X.X.X.X.X.X.X.X.
 end
-          return
 
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena8ColorsDone
-          pfcolors Arena8ColorsColor
+Arena8ColorsColor
+          pfcolors:
           ColPurple(2)
           ColPurple(4)
           ColPurple(4)
@@ -277,9 +298,18 @@ end
           ColPurple(4)
           ColPurple(2)
 end
-          return
-Arena8ColorsDone
-          return
+
+Arena8ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 9: The Deep Pit (variant of Arena 1 with deeper walls)
 Arena9Playfield
@@ -293,15 +323,9 @@ Arena9Playfield
           XXX.............
           XXXXXXXXXXXXXXXX
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena9ColorsDone
-          pfcolors Arena9ColorsColor
+
+Arena9ColorsColor
+          pfcolors:
           ColRed(2)
           ColRed(4)
           ColRed(4)
@@ -311,9 +335,18 @@ end
           ColRed(4)
           ColRed(2)
 end
-          return
-Arena9ColorsDone
-          return
+
+Arena9ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 10: Sky Battlefield (variant of Arena 2 with elevated platforms)
 Arena10Playfield
@@ -327,15 +360,9 @@ Arena10Playfield
           ................
           XXXXXXXXXXXXXXXX
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena10ColorsDone
-          pfcolors Arena10ColorsColor
+
+Arena10ColorsColor
+          pfcolors:
           ColCyan(4)
           ColCyan(2)
           ColCyan(6)
@@ -345,9 +372,18 @@ end
           ColCyan(2)
           ColCyan(8)
 end
-          return
-Arena10ColorsDone
-          return
+
+Arena10ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 11: Floating Platforms (variant of Arena 3 with four floating blocks when mirrored)
 Arena11Playfield
@@ -361,15 +397,9 @@ Arena11Playfield
           ................
           XXXXXXXXXXXXXXXX
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena11ColorsDone
-          pfcolors Arena11ColorsColor
+
+Arena11ColorsColor
+          pfcolors:
           ColGreen(2)
           ColGreen(4)
           ColGreen(4)
@@ -379,9 +409,18 @@ end
           ColGreen(2)
           ColGreen(8)
 end
-          return
-Arena11ColorsDone
-          return
+
+Arena11ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 12: The Chasm (variant of Arena 4 with wider bridge)
 Arena12Playfield
@@ -395,15 +434,9 @@ Arena12Playfield
           ................
           ................
 end
-          return
 
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena12ColorsDone
-          pfcolors Arena12ColorsColor
+Arena12ColorsColor
+          pfcolors:
           ColBrown(12)
           ColBrown(12)
           ColBrown(14)
@@ -413,9 +446,18 @@ end
           ColBrown(12)
           ColBrown(12)
 end
-          return
-Arena12ColorsDone
-          return
+
+Arena12ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 13: Fortress Walls (variant of Arena 5 with symmetrical corners)
 Arena13Playfield
@@ -429,15 +471,9 @@ Arena13Playfield
           XX....XXXX....XX
           XXX..XXXXXXX..XX
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena13ColorsDone
-          pfcolors Arena13ColorsColor
+
+Arena13ColorsColor
+          pfcolors:
           ColTurquoise(4)
           ColTurquoise(4)
           ColTurquoise(6)
@@ -447,9 +483,18 @@ end
           ColTurquoise(4)
           ColTurquoise(4)
 end
-          return
-Arena13ColorsDone
-          return
+
+Arena13ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 14: Floating Islands (variant of Arena 6 with more platforms)
 Arena14Playfield
@@ -463,15 +508,9 @@ Arena14Playfield
           ..XXXX....XXXX..
           XXXXXXXXXXXXXXXX
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena14ColorsDone
-          pfcolors Arena14ColorsColor
+
+Arena14ColorsColor
+          pfcolors:
           ColMagenta(2)
           ColMagenta(0)
           ColMagenta(4)
@@ -481,9 +520,18 @@ end
           ColMagenta(4)
           ColMagenta(8)
 end
-          return
-Arena14ColorsDone
-          return
+
+Arena14ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 15: The Labyrinth (variant of Arena 7 with more complex maze)
 Arena15Playfield
@@ -497,15 +545,9 @@ Arena15Playfield
           ......XX....XX..
           XXXX..XXXX..XXXX
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena15ColorsDone
-          pfcolors Arena15ColorsColor
+
+Arena15ColorsColor
+          pfcolors:
           ColSpringGreen(2)
           ColSpringGreen(2)
           ColSpringGreen(4)
@@ -515,9 +557,18 @@ end
           ColSpringGreen(2)
           ColSpringGreen(8)
 end
-          return
-Arena15ColorsDone
-          return
+
+Arena15ColorsBW
+          pfcolors:
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+end
 
           rem Arena 16: Danger Zone (variant of Arena 8 with alternating obstacles)
 Arena16Playfield
@@ -531,15 +582,9 @@ Arena16Playfield
           X.X.X.X.X.X.X.X.
           .X.X.X.X.X.X.X.X
 end
-          return
-          
-#ifdef TV_SECAM
-          rem SECAM: Always B&W mode - white on black
-          pfcolors SharedPfColorsBW
-#else
-          rem NTSC/PAL: Check colorBWOverride for B&W vs Color mode
-          if colorBWOverride then pfcolors SharedPfColorsBW : goto Arena16ColorsDone
-          pfcolors Arena16ColorsColor
+
+Arena16ColorsColor
+          pfcolors:
           ColIndigo(2)
           ColIndigo(4)
           ColIndigo(6)
@@ -549,17 +594,9 @@ end
           ColIndigo(6)
           ColIndigo(8)
 end
-          return
-Arena16ColorsDone
-          return
 
-          rem =================================================================
-          rem SHARED PFCOLORS SECTIONS
-          rem =================================================================
-          rem All B&W pfcolors reference this single shared section
-          rem to avoid code duplication and save memory
-
-SharedPfColorsBW:
+Arena16ColorsBW
+          pfcolors:
           ColGrey(14)
           ColGrey(14)
           ColGrey(14)
@@ -569,8 +606,4 @@ SharedPfColorsBW:
           ColGrey(14)
           ColGrey(14)
 end
-          return
-          ColGrey(14)
-          ColGrey(14)
-end
-          return
+

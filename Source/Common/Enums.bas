@@ -12,7 +12,7 @@
           const ModeTitle = 2
           const ModeCharacterSelect = 3
           const ModeFallingAnimation = 4
-          const ModeLevelSelect = 5
+          const ModeArenaSelect = 5
           const ModeGame = 6
           const ModeWinner = 7
           const ModeAttract = 8

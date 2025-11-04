@@ -346,24 +346,24 @@ DrawPlayerDigitNow
           goto DrawDigit
 
           rem =================================================================
-          rem DRAW LEVEL NUMBER
+          rem DRAW ARENA NUMBER
           rem =================================================================
-          rem Convenience routine to draw a level number in white.
+          rem Convenience routine to draw an arena number in white.
 
           rem INPUTS:
-          rem   temp1 = level number (0-15)
+          rem   temp1 = arena number (0-31, displays as 1-32)
           rem   temp2 = X position
           rem   temp3 = Y position
-          rem   temp5 = sprite select (0=player0, 1=player1)
-DrawLevelNumber
-          dim DLN_levelNumber = temp1
+          rem   temp5 = sprite select (0=player0, 1=player1, 2=player2, 3=player3, 4=player4, 5=player5)
+DrawArenaNumber
+          dim DLN_arenaNumber = temp1
           dim DLN_xPos = temp2
           dim DLN_yPos = temp3
           dim DLN_color = temp4
           dim DLN_spriteSelect = temp5
           let DLN_color = ColGrey(14)
           rem White
-          let temp1 = DLN_levelNumber
+          let temp1 = DLN_arenaNumber
           let temp2 = DLN_xPos
           let temp3 = DLN_yPos
           let temp4 = DLN_color

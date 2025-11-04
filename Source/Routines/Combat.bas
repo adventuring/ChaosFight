@@ -1,5 +1,5 @@
-         rem ChaosFight - Source/Routines/Combat.bas
-         rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem ChaosFight - Source/Routines/Combat.bas
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem =================================================================
           rem COMBAT SYSTEM - Generic subroutines using player arrays

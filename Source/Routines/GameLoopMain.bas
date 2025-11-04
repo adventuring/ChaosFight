@@ -67,6 +67,23 @@ GameMainLoop
 
           rem Check for player eliminations
           gosub CheckAllPlayerEliminations
+          
+          rem Check if game should end and transition to winner screen
+          rem gameState = 2 means game is ending, gameEndTimer counts down
+          if gameState = 2 then CheckGameEndTransition
+          goto GameEndCheckDone
+CheckGameEndTransition
+          rem Decrement game end timer
+          if gameEndTimer > 0 then let gameEndTimer = gameEndTimer - 1
+          rem When timer reaches 0, transition to winner announcement
+          if gameEndTimer = 0 then TransitionToWinner
+          goto GameEndCheckDone
+TransitionToWinner
+          rem Transition to winner announcement mode
+          let gameMode = ModeWinner
+          gosub bank13 ChangeGameMode
+          return
+GameEndCheckDone
 
           rem Update attack cooldowns
           gosub UpdateAttackCooldowns

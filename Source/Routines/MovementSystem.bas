@@ -24,10 +24,17 @@
           rem Update player movement for all active players
           rem Called every frame to update subpixel positions
 UpdatePlayerMovement
+          dim UPM_playerIndex = temp1
           rem Update movement for each active player
-          let temp1 = 0 : gosub UpdatePlayerMovementSingle : rem Player 1
-          let temp1 = 1 : gosub UpdatePlayerMovementSingle : rem Player 2
-          if QuadtariDetected then temp1 = 2 : gosub UpdatePlayerMovementSingle : temp1 = 3 : gosub UpdatePlayerMovementSingle
+          let UPM_playerIndex = 0
+          let temp1 = UPM_playerIndex
+          gosub UpdatePlayerMovementSingle
+          rem Player 1
+          let UPM_playerIndex = 1
+          let temp1 = UPM_playerIndex
+          gosub UpdatePlayerMovementSingle
+          rem Player 2
+          if QuadtariDetected then let UPM_playerIndex = 2 : let temp1 = UPM_playerIndex : gosub UpdatePlayerMovementSingle : let UPM_playerIndex = 3 : let temp1 = UPM_playerIndex : gosub UpdatePlayerMovementSingle
           return
 
           rem Update movement for a specific player
@@ -115,6 +122,8 @@ GetPlayerPosition
           dim GPP_positionY = temp3
           let GPP_positionX = playerX[GPP_playerIndex]
           let GPP_positionY = playerY[GPP_playerIndex]
+          let temp2 = GPP_positionX
+          let temp3 = GPP_positionY
           return
 
           rem Get player velocity (integer parts only)
@@ -126,6 +135,8 @@ GetPlayerVelocity
           dim GPV_velocityY = temp3
           let GPV_velocityX = playerVelocityX[GPV_playerIndex]
           let GPV_velocityY = playerVelocityY[GPV_playerIndex]
+          let temp2 = GPV_velocityX
+          let temp3 = GPV_velocityY
           return
 
           rem Apply gravity to player velocity (adds to Y velocity)
@@ -176,57 +187,73 @@ CheckPlayerCollision
           dim CPC_player1Index = temp1
           dim CPC_player2Index = temp2
           dim CPC_collisionResult = temp3
+          dim CPC_player1X = temp4
+          dim CPC_player1Y = temp5
+          dim CPC_player2X = temp6
+          dim CPC_player2Y = temp7
+          dim CPC_distance = temp8
+          dim CPC_char1Type = temp9
+          dim CPC_char2Type = temp10
+          dim CPC_char1Height = temp11
+          dim CPC_char2Height = temp12
+          dim CPC_halfHeightSum = temp13
           
           rem Get positions
-          let temp4 = playerX[CPC_player1Index] : rem Player1 X
-          let temp5 = playerY[CPC_player1Index] : rem Player1 Y
-          let temp6 = playerX[CPC_player2Index] : rem Player2 X
-          let temp7 = playerY[CPC_player2Index] : rem Player2 Y
+          let CPC_player1X = playerX[CPC_player1Index]
+          rem Player1 X
+          let CPC_player1Y = playerY[CPC_player1Index]
+          rem Player1 Y
+          let CPC_player2X = playerX[CPC_player2Index]
+          rem Player2 X
+          let CPC_player2Y = playerY[CPC_player2Index]
+          rem Player2 Y
           
           rem Check X collision (16 pixel width - double-width NUSIZ sprites)
           rem Calculate distance
-          if temp4 >= temp6 then CalcXDistanceRight
-          let temp8 = temp6 - temp4
+          if CPC_player1X >= CPC_player2X then CalcXDistanceRight
+          let CPC_distance = CPC_player2X - CPC_player1X
           goto XDistanceDone
 CalcXDistanceRight
-          let temp8 = temp4 - temp6
+          let CPC_distance = CPC_player1X - CPC_player2X
 XDistanceDone
-          if temp8 >= 16 then NoCollision
+          if CPC_distance >= 16 then NoCollision
           
           rem Check Y collision using CharacterHeights table
           rem Get character types for height lookup
-          temp9 = playerChar[CPC_player1Index]
+          let CPC_char1Type = playerChar[CPC_player1Index]
           rem Player1 character type
-          temp10 = playerChar[CPC_player2Index]
+          let CPC_char2Type = playerChar[CPC_player2Index]
           rem Player2 character type
           rem Get heights from table
-          temp11 = CharacterHeights[temp9]
+          let CPC_char1Height = CharacterHeights[CPC_char1Type]
           rem Player1 height
-          temp12 = CharacterHeights[temp10]
+          let CPC_char2Height = CharacterHeights[CPC_char2Type]
           rem Player2 height
           rem Calculate Y distance using center points
-          rem Player centers: temp5 + temp11/2 and temp7 + temp12/2
+          rem Player centers: player1Y + char1Height/2 and player2Y + char2Height/2
           rem For collision check, use half-height sum
-          temp11 = temp11 / 2
+          let CPC_char1Height = CPC_char1Height / 2
           rem Player1 half-height
-          temp12 = temp12 / 2
+          let CPC_char2Height = CPC_char2Height / 2
           rem Player2 half-height
-          if temp5 >= temp7 then CalcYDistanceDown
-          let temp8 = temp7 - temp5
+          if CPC_player1Y >= CPC_player2Y then CalcYDistanceDown
+          let CPC_distance = CPC_player2Y - CPC_player1Y
           goto YDistanceDone
 CalcYDistanceDown
-          let temp8 = temp5 - temp7
+          let CPC_distance = CPC_player1Y - CPC_player2Y
 YDistanceDone
           rem Check if Y distance is less than sum of half-heights
-          temp13 = temp11 + temp12
-          if temp8 >= temp13 then NoCollision
+          let CPC_halfHeightSum = CPC_char1Height + CPC_char2Height
+          if CPC_distance >= CPC_halfHeightSum then NoCollision
           
           rem Collision detected
-          let temp3  = 1
+          let CPC_collisionResult = 1
+          let temp3 = CPC_collisionResult
           return
           
 NoCollision
-          let temp3  = 0
+          let CPC_collisionResult = 0
+          let temp3 = CPC_collisionResult
           return
 
           rem =================================================================
@@ -237,13 +264,14 @@ NoCollision
           rem Input: temp1 = player index (0-3)
           rem Clamps integer positions and zeros subpixel parts at boundaries
 ConstrainToScreen
+          dim CTS_playerIndex = temp1
           rem Constrain X position (10 to 150 for screen bounds)
-          if playerX[temp1] < 10 then let playerX[temp1] = 10 : let playerSubpixelX[temp1] = 10 : let playerSubpixelX_lo[temp1] = 0
-          if playerX[temp1] > 150 then let playerX[temp1] = 150 : let playerSubpixelX[temp1] = 150 : let playerSubpixelX_lo[temp1] = 0
+          if playerX[CTS_playerIndex] < 10 then let playerX[CTS_playerIndex] = 10 : let playerSubpixelX[CTS_playerIndex] = 10 : let playerSubpixelX_lo[CTS_playerIndex] = 0
+          if playerX[CTS_playerIndex] > 150 then let playerX[CTS_playerIndex] = 150 : let playerSubpixelX[CTS_playerIndex] = 150 : let playerSubpixelX_lo[CTS_playerIndex] = 0
           
           rem Constrain Y position (20 to 80 for screen bounds)
-          if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY[temp1] = 20 : let playerSubpixelY_lo[temp1] = 0
-          if playerY[temp1] > 80 then let playerY[temp1] = 80 : let playerSubpixelY[temp1] = 80 : let playerSubpixelY_lo[temp1] = 0
+          if playerY[CTS_playerIndex] < 20 then let playerY[CTS_playerIndex] = 20 : let playerSubpixelY[CTS_playerIndex] = 20 : let playerSubpixelY_lo[CTS_playerIndex] = 0
+          if playerY[CTS_playerIndex] > 80 then let playerY[CTS_playerIndex] = 80 : let playerSubpixelY[CTS_playerIndex] = 80 : let playerSubpixelY_lo[CTS_playerIndex] = 0
           
           return
 
@@ -254,16 +282,45 @@ ConstrainToScreen
           rem Initialize movement system for all players
           rem Called at game start to set up initial positions and velocities
 InitializeMovementSystem
+          dim IMS_playerIndex = temp1
+          dim IMS_positionX = temp2
+          dim IMS_positionY = temp3
+          dim IMS_velocityX = temp2
+          dim IMS_velocityY = temp3
           rem Initialize all players to center of screen
-          let temp1 = 0 : temp2 = 80 : temp3 = 100 : gosub SetPlayerPosition
-          let temp1 = 1 : temp2 = 80 : temp3 = 100 : gosub SetPlayerPosition
-          let temp1 = 2 : temp2 = 80 : temp3 = 100 : gosub SetPlayerPosition
-          let temp1 = 3 : temp2 = 80 : temp3 = 100 : gosub SetPlayerPosition
+          let IMS_playerIndex = 0
+          let IMS_positionX = 80
+          let IMS_positionY = 100
+          let temp1 = IMS_playerIndex
+          let temp2 = IMS_positionX
+          let temp3 = IMS_positionY
+          gosub SetPlayerPosition
+          let IMS_playerIndex = 1
+          let temp1 = IMS_playerIndex
+          gosub SetPlayerPosition
+          let IMS_playerIndex = 2
+          let temp1 = IMS_playerIndex
+          gosub SetPlayerPosition
+          let IMS_playerIndex = 3
+          let temp1 = IMS_playerIndex
+          gosub SetPlayerPosition
           
           rem Initialize velocities to zero
-          let temp1 = 0 : temp2 = 0 : temp3 = 0 : gosub SetPlayerVelocity
-          let temp1 = 1 : temp2 = 0 : temp3 = 0 : gosub SetPlayerVelocity
-          let temp1 = 2 : temp2 = 0 : temp3 = 0 : gosub SetPlayerVelocity
-          let temp1 = 3 : temp2 = 0 : temp3 = 0 : gosub SetPlayerVelocity
+          let IMS_playerIndex = 0
+          let IMS_velocityX = 0
+          let IMS_velocityY = 0
+          let temp1 = IMS_playerIndex
+          let temp2 = IMS_velocityX
+          let temp3 = IMS_velocityY
+          gosub SetPlayerVelocity
+          let IMS_playerIndex = 1
+          let temp1 = IMS_playerIndex
+          gosub SetPlayerVelocity
+          let IMS_playerIndex = 2
+          let temp1 = IMS_playerIndex
+          gosub SetPlayerVelocity
+          let IMS_playerIndex = 3
+          let temp1 = IMS_playerIndex
+          gosub SetPlayerVelocity
           
           return

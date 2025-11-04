@@ -16,7 +16,7 @@ BeginTitleScreen
           COLUBK = ColGray(0)
           
           rem Start "Title" music
-          temp1 = MusicTitle
+          let temp1 = MusicTitle
           gosub bank16 StartMusic
           
           rem Set window values for Title screen (ChaosFight only)

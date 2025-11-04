@@ -188,42 +188,46 @@
           rem MUSIC CONSTANTS
           rem =================================================================
           rem Main game songs (0-4)
-          rem Song indices match SongPointers.bas: 0=AtariToday, 1=Interworldly, 2=Chaotica (Title), 3=GameOver, 4=Victory
-          const MusicAtariToday = 0
-          const MusicInterworldly = 1
-          const MusicTitle = 2
-          rem Title song "Chaotica" (index 2 in SongPointers)
-          const MusicChaotica = 2
-          rem Title song "Chaotica" (alias for MusicTitle)
-          const MusicGameOver = 3
-          const MusicVictory = 4
-          rem Character theme songs (5-30)
-          const SongBernie = 5
-          const SongOCascadia = 6
-          const SongRevontuli = 7
-          const SongEXO = 8
-          const SongGrizzards = 9
-          const SongMagicalFairyForce = 10
-          const SongBolero = 11
-          const SongLowRes = 12
-          const SongRoboTito = 13
-          const SongSongOfTheBear = 14
-          const SongDucksAway = 15
-          const SongCharacter16Theme = 16
-          const SongCharacter17Theme = 17
-          const SongCharacter18Theme = 18
-          const SongCharacter19Theme = 19
-          const SongCharacter20Theme = 20
-          const SongCharacter21Theme = 21
-          const SongCharacter22Theme = 22
-          const SongCharacter23Theme = 23
-          const SongCharacter24Theme = 24
-          const SongCharacter25Theme = 25
-          const SongCharacter26Theme = 26
-          const SongCharacter27Theme = 27
-          const SongCharacter28Theme = 28
-          const SongCharacter29Theme = 29
-          const SongCharacter30Theme = 30
+          rem Song indices match SongPointers.bas (29 songs total: 0-28)
+          rem Songs 0-25: Character theme songs in character ID order (skipping duplicates)
+          rem   Character order: 0=Bernie, 1=OCascadia, 2=Revontuli, 3=EXO, 4=Grizzards,
+          rem   7=MagicalFairyForce, 9=Bolero, 10=LowRes, 13=RoboTito, 14=SongOfTheBear,
+          rem   15=DucksAway, 16-30=Character16Theme-Character30Theme
+          rem Song 26: Chaotica (Title screen - loops)
+          rem Song 27: AtariToday (Publisher preamble - plays once)
+          rem Song 28: Interworldly (Author preamble - plays once)
+          rem NOTE: Only Chaotica (26) loops; all others play once
+          const SongBernie = 0
+          const SongOCascadia = 1
+          const SongRevontuli = 2
+          const SongEXO = 3
+          const SongGrizzards = 4
+          const SongMagicalFairyForce = 5
+          const SongBolero = 6
+          const SongLowRes = 7
+          const SongRoboTito = 8
+          const SongSongOfTheBear = 9
+          const SongDucksAway = 10
+          const SongCharacter16Theme = 11
+          const SongCharacter17Theme = 12
+          const SongCharacter18Theme = 13
+          const SongCharacter19Theme = 14
+          const SongCharacter20Theme = 15
+          const SongCharacter21Theme = 16
+          const SongCharacter22Theme = 17
+          const SongCharacter23Theme = 18
+          const SongCharacter24Theme = 19
+          const SongCharacter25Theme = 20
+          const SongCharacter26Theme = 21
+          const SongCharacter27Theme = 22
+          const SongCharacter28Theme = 23
+          const SongCharacter29Theme = 24
+          const SongCharacter30Theme = 25
+          const MusicChaotica = 26
+          const MusicTitle = 26
+          rem Title song "Chaotica" (index 26, loops)
+          const MusicAtariToday = 27
+          const MusicInterworldly = 28
 
           rem =================================================================
           rem SOUND EFFECT CONSTANTS

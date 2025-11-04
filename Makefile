@@ -102,7 +102,7 @@ BITMAP_NAMES = AtariAge AtariAgeText Interworldly ChaosFight
 FONT_NAMES = Numbers
 
 # Music names (MuseScore files)
-MUSIC_NAMES = AtariToday Interworldly Victory GameOver
+MUSIC_NAMES = AtariToday Interworldly Chaotica
 
 # Game-based character theme songs (unique songs only - no duplicates)
 # Character-to-song mapping is defined in Source/Data/CharacterThemeSongIndices.bas
@@ -182,6 +182,21 @@ Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/sk
 	@echo "Converting music $< to $@ for NTSC..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+
+# Special rule: Title song is generated from Chaotica source files
+Source/Generated/Song.Title.NTSC.bas: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool
+	@echo "Converting Chaotica music $< to Song.Title $@ for NTSC..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
+
+Source/Generated/Song.Title.PAL.bas: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool
+	@echo "Converting Chaotica music $< to Song.Title $@ for PAL..."
+	mkdir -p Source/Generated
+	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+
+Source/Generated/Song.Title.SECAM.bas: Source/Generated/Song.Title.PAL.bas Source/Songs/Chaotica.mscz
+	@echo "SECAM uses PAL music files (same frame rate) for Title"
+	cp "$<" "$@"
 
 # Convert MIDI to batariBASIC music data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule

@@ -188,6 +188,17 @@
           dim MusicVoice1Frame = w021
           rem Frame counters for current notes on each voice (SCRAM acceptable)
           
+          rem Music System Current Song ID and Loop Pointers (SCRAM - used in Admin Mode)
+          dim CurrentSongID_W = w022
+          dim CurrentSongID_R = r022
+          rem Current playing song ID (used to check if Chaotica for looping)
+          dim MusicVoice0StartPointerL = w023
+          dim MusicVoice0StartPointerH = w024
+          rem Initial Voice 0 pointer for looping (Chaotica only)
+          dim MusicVoice1StartPointerL = w025
+          dim MusicVoice1StartPointerH = w026
+          rem Initial Voice 1 pointer for looping (Chaotica only)
+          
           rem Music System Envelope State (SCRAM - used in Admin Mode)
           dim MusicVoice0TargetAUDV_W = w036
           dim MusicVoice0TargetAUDV_R = r036

@@ -35,12 +35,23 @@ StartMusic
           let MusicVoice0PointerL = SongPointerL
           let MusicVoice0PointerH = SongPointerH
           
+          rem Store initial pointers for looping (Chaotica only)
+          let MusicVoice0StartPointerL = SongPointerL
+          let MusicVoice0StartPointerH = SongPointerH
+          
           rem Calculate Voice 1 pointer offset (find end of Voice0 stream)
           rem Voice1 stream starts after Voice0 stream
           gosub bank16 LoadSongVoice1Pointer
           rem LoadSongVoice1Pointer will calculate and set Voice 1 pointer
           let MusicVoice1PointerL = SongPointerL
           let MusicVoice1PointerH = SongPointerH
+          
+          rem Store initial Voice 1 pointer for looping (Chaotica only)
+          let MusicVoice1StartPointerL = SongPointerL
+          let MusicVoice1StartPointerH = SongPointerH
+          
+          rem Store current song ID for looping check
+          let CurrentSongID_W = SM_songID
           
           rem Initialize frame counters to trigger first note load
           let MusicVoice0Frame = 1

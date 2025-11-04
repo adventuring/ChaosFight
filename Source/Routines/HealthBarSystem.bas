@@ -187,7 +187,11 @@ UpdatePlayer34HealthBars
           rem Calculate P3 health in BCD format (tens and ones digits)
           temp3 = temp1 / 10
           rem Tens digit (0-9)
-          temp4 = temp1 - (temp3 * 10)
+          rem Calculate ones digit: temp1 - (temp3 * 10)
+          rem Since batariBASIC only supports * by powers of 2, compute 10 as 8 + 2
+          temp8 = temp3 * 8
+          temp8 = temp8 + temp3 * 2
+          temp4 = temp1 - temp8
           rem Ones digit (0-9)
           rem Combine into BCD: tens * 16 + ones (BCD format)
           temp5 = temp3 * 16
@@ -197,7 +201,11 @@ UpdatePlayer34HealthBars
           rem Calculate P4 health in BCD format
           temp6 = temp2 / 10
           rem Tens digit (0-9)
-          temp7 = temp2 - (temp6 * 10)
+          rem Calculate ones digit: temp2 - (temp6 * 10)
+          rem Since batariBASIC only supports * by powers of 2, compute 10 as 8 + 2
+          temp8 = temp6 * 8
+          temp8 = temp8 + temp6 * 2
+          temp7 = temp2 - temp8
           rem Ones digit (0-9)
           rem Combine into BCD: tens * 16 + ones
           temp6 = temp6 * 16

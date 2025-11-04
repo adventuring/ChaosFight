@@ -80,7 +80,11 @@ GravityCheckCharacter
           rem Convert player X position to playfield column (0-31)
           let temp2 = playerX[temp1]
           let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 / 4
+          rem Divide by 4 using bit shift (2 right shifts)
+          asm
+            lsr temp2
+            lsr temp2
+          end
           rem Clamp column to valid range
           if temp2 > 31 then let temp2 = 31
           if temp2 < 0 then let temp2 = 0
@@ -282,7 +286,11 @@ CheckPlayfieldCollisionAllDirections
           let temp6 = temp2
           rem Save original X in temp6
           let temp6 = temp6 - ScreenInsetX
-          let temp6 = temp6 / 4
+          rem Divide by 4 using bit shift (2 right shifts)
+          asm
+            lsr temp6
+            lsr temp6
+          end
           rem temp6 = playfield column (0-31)
           rem Clamp column to valid range
           if temp6 > 31 then let temp6 = 31
@@ -324,7 +332,16 @@ PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
           if playerVelocityX[CPF_playerIndex] < 0 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
-          let rowYPosition = (temp6 + 1) * 4 + ScreenInsetX
+          rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
+          let rowYPosition = temp6 + 1
+          asm
+            lda rowYPosition
+            asl a
+            asl a
+            clc
+            adc #ScreenInsetX
+            sta rowYPosition
+          end
           rem Reuse rowYPosition for X position clamp (not actually Y, but same pattern)
           if playerX[CPF_playerIndex] < rowYPosition then let playerX[CPF_playerIndex] = rowYPosition : let playerSubpixelX[CPF_playerIndex] = rowYPosition : let playerSubpixelX_lo[CPF_playerIndex] = 0
           
@@ -357,7 +374,16 @@ PFBlockRight
           rem Block rightward movement: zero X velocity if positive
           if playerVelocityX[CPF_playerIndex] > 0 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
-          let rowYPosition = (temp6 - 1) * 4 + ScreenInsetX
+          rem Multiply (temp6 - 1) by 4 using bit shift (2 left shifts)
+          let rowYPosition = temp6 - 1
+          asm
+            lda rowYPosition
+            asl a
+            asl a
+            clc
+            adc #ScreenInsetX
+            sta rowYPosition
+          end
           rem Reuse rowYPosition for X position clamp (not actually Y, but same pattern)
           if playerX[CPF_playerIndex] > rowYPosition then let playerX[CPF_playerIndex] = rowYPosition : let playerSubpixelX[CPF_playerIndex] = rowYPosition : let playerSubpixelX_lo[CPF_playerIndex] = 0
           
@@ -494,9 +520,20 @@ CalcCollisionYDistanceDown
 CollisionYDistanceDone
           rem Check if Y overlap (sum of half-heights)
           rem Calculate half-heights
-          let halfHeight1 = characterHeight / 2
+          rem Divide by 2 using bit shift
+          asm
+            lda characterHeight
+            lsr a
+            sta halfHeight1
+            lda CharacterHeights
+            clc
+            adc temp5
+            tax
+            lda CharacterHeights,x
+            lsr a
+            sta halfHeight2
+          end
           rem Player1 half height
-          let halfHeight2 = CharacterHeights[temp5] / 2
           rem Player2 half height (re-read from table)
           let totalHeight = halfHeight1 + halfHeight2
           if yDistance >= totalHeight then goto CollisionNextInner
@@ -543,7 +580,16 @@ ApplyImpulseRight
           
           rem Player2 is heavier - push Player1 left (negative X), Player2 right (positive X)
           rem Impulse proportional to weight difference
-          let impulseStrength = impulseStrength * 2 / totalWeight
+          rem Multiply by 2 using bit shift, then approximate division by totalWeight
+          asm
+            lda impulseStrength
+            asl a
+            sta impulseStrength
+          end
+          rem TODO: Approximate division by totalWeight (variable, use lookup table or approximation)
+          rem For now, use simple scaling: impulseStrength / totalWeight ≈ impulseStrength / 16 (if totalWeight ≈ 16)
+          rem This is a placeholder - needs proper variable division routine
+          let impulseStrength = impulseStrength / totalWeight
           rem Scale impulse by weight ratio (0-2 pixels/frame)
           if impulseStrength = 0 then impulseStrength = 1
           rem Minimum 1 pixel/frame
@@ -566,7 +612,14 @@ ApplyImpulseRight
           
 ApplyImpulse1Heavier
           rem Player1 is heavier - push Player1 right (positive X), Player2 left (negative X)
-          let impulseStrength = impulseStrength * 2 / totalWeight
+          rem Multiply by 2 using bit shift, then approximate division by totalWeight
+          asm
+            lda impulseStrength
+            asl a
+            sta impulseStrength
+          end
+          rem TODO: Approximate division by totalWeight (variable, use lookup table or approximation)
+          let impulseStrength = impulseStrength / totalWeight
           rem Scale impulse by weight ratio
           if impulseStrength = 0 then impulseStrength = 1
           
@@ -607,7 +660,14 @@ ApplyImpulseLeft
           if characterWeight >= halfHeight2 then ApplyImpulse1HeavierLeft
           
           rem Player2 is heavier - push Player1 left, Player2 right
-          let impulseStrength = impulseStrength * 2 / totalWeight
+          rem Multiply by 2 using bit shift, then approximate division by totalWeight
+          asm
+            lda impulseStrength
+            asl a
+            sta impulseStrength
+          end
+          rem TODO: Approximate division by totalWeight (variable, use lookup table or approximation)
+          let impulseStrength = impulseStrength / totalWeight
           if impulseStrength = 0 then impulseStrength = 1
           
           if playerVelocityX[temp1] > -4 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength

@@ -665,6 +665,8 @@ James Earl O'Brian and Tanya O'Brian, and Darcy and Aerlan (ZeroPage Homebrew)
 AtariAge and Atari community
 @item
 Random Terrain (batariBasic documentation)
+@item
+@dfn{Omegamatrix} and AtariAge forum contributors (optimized multiplication and division routines for 6502)
 @end itemize
 
 @section Tools Used

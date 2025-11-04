@@ -353,81 +353,51 @@ SetVerticalMomentum
           rem =================================================================
           rem DIVISION/MULTIPLICATION HELPERS (NO MUL/DIV SUPPORT)
           rem =================================================================
-          rem Helper routines for division and multiplication using repeated
-          rem operations (since batariBASIC does not support * or / operations)
+          rem Helper routines using optimized assembly for fast division/multiplication
+          rem Based on Omegamatrix's optimized 6502 routines from AtariAge forums
+          rem These routines use bit manipulation and carry-based arithmetic for speed
+          rem Thanks to Omegamatrix and AtariAge forum contributors for these routines
           
-          rem DivideBy20: compute floor(temp2 / 20) into temp2 via repeated subtraction
-          rem INPUT: temp2 = dividend
-          rem OUTPUT: temp2 = quotient (floor of division)
+          rem DivideBy20: compute floor(A / 20) using optimized assembly
+          rem INPUT: A register = dividend (temp2)
+          rem OUTPUT: A register = quotient (result in temp2)
+          rem Uses 18 bytes, 32 cycles
 DivideBy20
-          dim DB20_dividend = temp2
-          dim DB20_quotient = temp6
-          let DB20_quotient = 0
-          if DB20_dividend < 20 then goto DivideBy20Done
-DivideBy20Loop
-          let DB20_dividend = DB20_dividend - 20
-          let DB20_quotient = DB20_quotient + 1
-          if DB20_dividend >= 20 then DivideBy20Loop
-DivideBy20Done
-          let DB20_dividend = DB20_quotient
-          rem Result in temp2
+          asm
+            lda temp2
+            lsr a
+            lsr a
+            sta temp6
+            lsr a
+            adc temp6
+            ror
+            lsr a
+            lsr a
+            adc temp6
+            ror
+            adc temp6
+            ror
+            lsr a
+            lsr a
+            sta temp2
+          end
           return
           
-          rem DivideBy100: compute floor(temp2 / 100) into temp2 via repeated subtraction
+          rem DivideBy100: compute floor(temp2 / 100) using range check
           rem INPUT: temp2 = dividend
-          rem OUTPUT: temp2 = quotient (floor of division)
+          rem OUTPUT: temp2 = quotient (0, 1, or 2)
+          rem Fast approximation for values 0-255
 DivideBy100
           dim DB100_dividend = temp2
-          dim DB100_quotient = temp6
-          let DB100_quotient = 0
-          if DB100_dividend < 100 then goto DivideBy100Done
-DivideBy100Loop
-          let DB100_dividend = DB100_dividend - 100
-          let DB100_quotient = DB100_quotient + 1
-          if DB100_dividend >= 100 then DivideBy100Loop
-DivideBy100Done
-          let DB100_dividend = DB100_quotient
-          rem Result in temp2
+          if DB100_dividend > 200 then goto DivideBy100Two
+          if DB100_dividend > 100 then goto DivideBy100One
+          let DB100_dividend = 0
           return
-          
-          rem MultiplyByVariable: compute temp2 * temp3 into temp2 via repeated addition
-          rem INPUT: temp2 = multiplicand, temp3 = multiplier
-          rem OUTPUT: temp2 = product
-          rem NOTE: Destroys temp3
-MultiplyByVariable
-          dim MBV_product = temp2
-          dim MBV_multiplier = temp3
-          dim MBV_original = temp4
-          let MBV_original = MBV_product
-          rem Save original multiplicand
-          let MBV_product = 0
-          rem Initialize product
-          if MBV_multiplier = 0 then goto MultiplyByVariableDone
-MultiplyByVariableLoop
-          let MBV_product = MBV_product + MBV_original
-          let MBV_multiplier = MBV_multiplier - 1
-          if MBV_multiplier > 0 then MultiplyByVariableLoop
-MultiplyByVariableDone
-          rem Result in temp2
+DivideBy100One
+          let DB100_dividend = 1
           return
-          
-          rem DivideByVariable: compute floor(temp2 / temp3) into temp2 via repeated subtraction
-          rem INPUT: temp2 = dividend, temp3 = divisor
-          rem OUTPUT: temp2 = quotient (floor of division)
-          rem NOTE: Destroys temp3
-DivideByVariable
-          dim DBV_dividend = temp2
-          dim DBV_divisor = temp3
-          dim DBV_quotient = temp6
-          let DBV_quotient = 0
-          if DBV_dividend < DBV_divisor then goto DivideByVariableDone
-DivideByVariableLoop
-          let DBV_dividend = DBV_dividend - DBV_divisor
-          let DBV_quotient = DBV_quotient + 1
-          if DBV_dividend >= DBV_divisor then DivideByVariableLoop
-DivideByVariableDone
-          let DBV_dividend = DBV_quotient
-          rem Result in temp2
+DivideBy100Two
+          let DB100_dividend = 2
           return
           
           rem =================================================================
@@ -468,18 +438,30 @@ CalculateFallDistanceNormal
           rem Store weight
           
           rem Calculate safe fall velocity (from CheckFallDamage logic)
-          temp3 = 120 / temp6 
-          rem Safe velocity threshold
+          rem Divide 120 by weight using repeated subtraction
+          let temp2 = 120
+          let temp3 = temp6
+          gosub DivideByVariable
+          let temp3 = temp2
+          rem temp3 = Safe velocity threshold
           
           rem Convert velocity to distance
           rem Using kinematic equation: v² = 2 * g * d
           rem Rearranged: d = v² / (2 * g)
           rem With g = 2: d = v² / 4
-          temp2 = temp3 * temp3
-          temp2 = temp2 / 4
+          rem Multiply temp3 by temp3 (square) using repeated addition
+          let temp2 = temp3
+          let temp4 = temp3
+          gosub MultiplyByVariable
+          rem temp2 = temp3 * temp3 (v²)
+          rem Divide by 4 using bit shift right twice
+          lsr temp2
+          lsr temp2
+          rem temp2 = v² / 4
           
           rem Apply Ninjish Guy bonus (can fall farther)
-          if temp5 = CharNinjishGuy then temp2 = temp2 * 2
+          if temp5 = CharNinjishGuy then asl temp2
+          rem Multiply by 2 using bit shift left
           
           return
 

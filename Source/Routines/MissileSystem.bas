@@ -96,7 +96,12 @@ HarpyCheckDiveVelocity
           goto VelocityDone
 HarpyBoostDiveVelocity
           rem Increase downward velocity by 50% for dive attacks
-          let velocityCalculation = temp6 / 2
+          rem Divide by 2 using bit shift
+          asm
+            lda temp6
+            lsr a
+            sta velocityCalculation
+          end
           let temp6 = temp6 + velocityCalculation
 VelocityDone
           let missileVelY[temp1] = temp6
@@ -187,14 +192,28 @@ GravityDone
           let velocityCalculation = missileVelocityX
           if velocityCalculation < 0 then FrictionNegative
           rem Positive velocity
-          let velocityCalculation = velocityCalculation / 8
+          rem Divide by 8 using bit shift (3 right shifts)
+          asm
+            lda velocityCalculation
+            lsr a
+            lsr a
+            lsr a
+            sta velocityCalculation
+          end
           rem Reduce by 1/8 (12.5%)
           let missileVelocityX = missileVelocityX - velocityCalculation
           goto FrictionApply
 FrictionNegative
           rem Negative velocity - convert to positive for division
           let velocityCalculation = 0 - velocityCalculation
-          let velocityCalculation = velocityCalculation / 8
+          rem Divide by 8 using bit shift (3 right shifts)
+          asm
+            lda velocityCalculation
+            lsr a
+            lsr a
+            lsr a
+            sta velocityCalculation
+          end
           rem Reduce by 1/8 (12.5%)
           let missileVelocityX = missileVelocityX + velocityCalculation
           rem Add back (since missileVelocityX was negative)
@@ -248,7 +267,13 @@ GuardBounceFromCollision
           let temp6  = 0 - temp6
           rem Invert X velocity (bounce back)
           rem Apply friction damping on bounce (reduce by 25% for guard bounce)
-          let velocityCalculation = temp6 / 4
+          rem Divide by 4 using bit shift (2 right shifts)
+          asm
+            lda temp6
+            lsr a
+            lsr a
+            sta velocityCalculation
+          end
           let temp6  = temp6 - velocityCalculation
           rem Reduce bounce velocity by 25%
           let missileVelX[UOM_playerIndex] = temp6

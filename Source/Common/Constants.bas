@@ -13,7 +13,7 @@
           const MaxArenaID=15
           const RandomArena=255
           const RecoveryFrameCount=8
-          const KnockbackDistance=12
+          const KnockbackDistance=12          
           
           rem =================================================================
           rem PHYSICS CONSTANTS - Gravity and Terminal Velocity

@@ -37,7 +37,7 @@
           rem =================================================================
           rem UPDATE PLAYER 1 HEALTH BAR
           rem =================================================================
-          rem Input: temp1 = health value (0-100)
+    rem Input: temp1 = health value (0-100)
           rem Output: pfscore1 = health bar pattern (8 pixels, bit pattern)
           rem Uses simple comparisons against threshold table, looks up bit pattern
 UpdatePlayer1HealthBar
@@ -73,13 +73,13 @@ P1SetPattern
           
           rem Set pfscore1 to health bar pattern
           pfscore1 = temp3
-          
-          return
+    
+    return
 
           rem =================================================================
           rem UPDATE PLAYER 2 HEALTH BAR
           rem =================================================================
-          rem Input: temp1 = health value (0-100)
+    rem Input: temp1 = health value (0-100)
           rem Output: pfscore2 = health bar pattern (8 pixels, bit pattern)
           rem Uses simple comparisons against threshold table, looks up bit pattern
 UpdatePlayer2HealthBar
@@ -115,8 +115,8 @@ P2SetPattern
           
           rem Set pfscore2 to health bar pattern
           pfscore2 = temp3
-          
-          return
+    
+    return
 
           rem Update both P1 and P2 health bars
           rem Input: playerHealth[0] and playerHealth[1] arrays

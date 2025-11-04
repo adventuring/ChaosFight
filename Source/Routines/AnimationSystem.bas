@@ -10,7 +10,7 @@
           rem Called every frame to manage 10fps animation timing
 UpdateCharacterAnimations
           rem Update animation for each active player
-          currentPlayer = 0  : rem Player index (0-3)
+          let currentPlayer = 0  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 1
           currentPlayer = 1  : rem Player index (0-3)
@@ -19,7 +19,7 @@ UpdateCharacterAnimations
           if controllerStatus & SetQuadtariDetected then goto AnimationUpdatePlayer3
           goto AnimationSkipPlayer3
 AnimationUpdatePlayer3
-          currentPlayer = 2  : rem Player index (0-3)
+          let currentPlayer = 2  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 3
           currentPlayer = 3  : rem Player index (0-3)
@@ -116,6 +116,7 @@ GetCurrentAnimationFrame
 
           rem Get current animation action for a player
           rem INPUT: currentPlayer = player index (0-3)
+          rem        currentAnimationSeq[currentPlayer] = current action (read from array)
           rem OUTPUT: temp2 = current animation action (0-15)
           rem EFFECTS: None (read-only query)
 GetCurrentAnimationAction

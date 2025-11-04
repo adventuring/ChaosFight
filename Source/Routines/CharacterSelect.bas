@@ -568,6 +568,12 @@ SelScreenDone
           let selectedChar2  = playerChar[1]
           let selectedChar3  = playerChar[2]
           let selectedChar4  = playerChar[3]
+          
+          rem Initialize facing bit (bit 0) for all selected players (default: face right = 1)
+          if selectedChar1 <> NoCharacter then playerState[0] = playerState[0] | 1
+          if selectedChar2 <> NoCharacter then playerState[1] = playerState[1] | 1
+          if selectedChar3 <> NoCharacter then playerState[2] = playerState[2] | 1
+          if selectedChar4 <> NoCharacter then playerState[3] = playerState[3] | 1
 
           rem Proceed to falling animation
           return

@@ -116,8 +116,13 @@
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using n,o,p,q (p,q may be used by colorBWOverride)
           dim selectedChar1 = s
           dim selectedChar2 = t
-          dim selectedChar3 = u
-          dim selectedChar4 = v
+          rem selectedChar3 and selectedChar4 moved to SuperChip RAM (w1, w2) to avoid conflicts
+          dim selectedChar3_W = w001
+          dim selectedChar3_R = r001
+          dim selectedChar3 = w001
+          dim selectedChar4_W = w002
+          dim selectedChar4_R = r002
+          dim selectedChar4 = w002
           
           rem =================================================================
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted numerically

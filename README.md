@@ -15,12 +15,48 @@ A sophisticated 4-player fighting game for the Atari 2600, featuring 16 unique c
 - **Professional Architecture** - Modular design, data-driven character system
 
 ### 🎮 Characters & Combat
-**Ranged Fighters** (projectile attacks): Bernie, Curler, Dragon of Storms, ZoeRyen, FatTony, Frooty, Megax, Ursulo  
-**Melée Fighters** (AOE attacks): Harpy, KnightGuy, Nefertem, NinjishGuy, PorkChop, RadishGoblin, RoboTito, Shamone
+
+#### Character Types
+**Ranged Fighters** (projectile attacks): Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Frooty, Megax, Ursulo                                             
+**Melee Fighters** (close-range AOE attacks): Harpy, Knight Guy, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Shamone                                             
+
+#### Character Stats & Missile Types
+
+| Character | Weight | Attack Type | Missile Size | Missile Behavior | Special Move |
+|-----------|--------|-------------|--------------|------------------|--------------|
+| **Bernie** | 5 (Light) | Ranged | 1×1 px | Fast horizontal (momentum 5), 4-frame lifetime | Small quick projectile |
+| **Curler** | 53 (Medium) | Ranged | 4×2 px | Slow ball with gravity/bounce/friction (momentum 8), infinite lifetime | Bouncing curling stone |
+| **Dragon of Storms** | 100 (Heavy) | Ranged | 2×2 px | Ballistic arc (momentum X:4 Y:-4), hits background, infinite lifetime | Parabolic fireball |
+| **Zoe Ryen** | 48 (Medium) | Ranged | 2×2 px | Fast horizontal (momentum 6), infinite lifetime | Energy bolt |
+| **Fat Tony** | 57 (Medium) | Ranged | 2×2 px | Magic ring laser (momentum 0), 4-frame lifetime | Magic ring attack |
+| **Megax** | 100 (Heavy) | Ranged | 2×2 px | Heavy projectile (momentum 0), 4-frame lifetime | Powerful blast |
+| **Harpy** | 23 (Light) | Melee | N/A | Close-range attack, 5-frame lifetime | Aerial melee strike |
+| **Knight Guy** | 57 (Medium) | Melee | N/A | Sword attack, 6-frame lifetime | Sword slash |
+| **Frooty** | 45 (Medium) | Ranged | 2×2 px | Ballistic arc (momentum X:6 Y:-5), hits background, infinite lifetime | Parabolic fruit |
+| **Nefertem** | 66 (Heavy) | Melee | N/A | Claw attack, 5-frame lifetime | Lion pounce |
+| **Ninjish Guy** | 47 (Medium) | Melee | N/A | Ninja strike, 4-frame lifetime | Stealth attack |
+| **Pork Chop** | 57 (Medium) | Melee | N/A | Close-range attack, 4-frame lifetime | Melee strike |
+| **Radish Goblin** | 31 (Light) | Melee | N/A | Quick attack, 3-frame lifetime | Fast melee |
+| **Robo Tito** | 60 (Heavy) | Melee | N/A | Robot punch, 5-frame lifetime | Mechanical strike |
+| **Ursulo** | 83 (Heavy) | Ranged | 2×2 px | Ballistic arc (momentum X:7 Y:-6), hits background, infinite lifetime | Parabolic ice ball |
+| **Shamone** | 35 (Light) | Melee | N/A | Quick attack, 4-frame lifetime | Fast melee combo |
+
+**Weight Effects**:
+- **Jump Height**: Lighter characters (5-23) jump higher, heavier characters (57-100) jump lower
+- **Movement Speed**: Lighter characters move faster, heavier characters are slower but have more momentum
+- **Fall Damage**: Heavier characters take less fall damage per velocity unit (weight/20 multiplier)
+- **Impact Resistance**: Heavier characters resist knockback better
+- **Safe Fall Velocity**: Calculated as 120/weight (heavier characters can fall faster safely)
+
+**Missile Behavior Flags**:
+- **Hit Background**: Missiles disappear on collision with walls/floors (Dragon of Storms, Frooty, Ursulo)
+- **Hit Player**: Missiles cause damage and disappear on player contact (Curler)
+- **Gravity**: Missiles affected by gravity creating ballistic arcs (Curler)
+- **Bounce**: Missiles bounce off walls/floors (Curler)
+- **Friction**: Missiles decelerate over time (Curler)
 
 **Special Mechanics**:
-- **Weight Classes**: Light (10-15) to Heavy (30-35) affecting jump height and fall damage
-- **Handicapping System**: Hold DOWN+FIRE during character select for 25% health reduction
+- **Handicapping System**: Hold DOWN+FIRE during character select for 25% health reduction                                                                      
 - **Fall Damage**: Weight-based calculation with character immunities
 - **Recovery System**: Hitstun and momentum effects
 

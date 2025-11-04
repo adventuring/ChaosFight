@@ -36,23 +36,23 @@ SelScreenLoop
           if qtcontroller then goto SelHandleQuad
           
           rem Handle Player 1 input (joy0 on even frames)
-          if joy0left then playerChar[0] = playerChar[0] - 1 : goto SelChkP0Left
+          if joy0left then let playerChar[0] = playerChar[0] - 1 : goto SelChkP0Left
           goto SelSkipP0Left
 
 SelChkP0Left
-          if playerChar[0] > MaxCharacter then playerChar[0] = MaxCharacter
-          if playerChar[0] > MaxCharacter then playerLocked[0] = 0
+          if playerChar[0] > MaxCharacter then let playerChar[0] = MaxCharacter
+          if playerChar[0] > MaxCharacter then let playerLocked[0] = 0
           
 SelSkipP0Left
-          if joy0right then playerChar[0] = playerChar[0] + 1 : goto SelChkP0Right
+          if joy0right then let playerChar[0] = playerChar[0] + 1 : goto SelChkP0Right
           goto SelSkipP0Right
 
 SelChkP0Right
-          if playerChar[0] > MaxCharacter then playerChar[0] = 0
-          if playerChar[0] > MaxCharacter then playerLocked[0] = 0
+          if playerChar[0] > MaxCharacter then let playerChar[0] = 0
+          if playerChar[0] > MaxCharacter then let playerLocked[0] = 0
           
 SelSkipP0Right
-          if joy0up then playerLocked[0] = 0
+          if joy0up then let playerLocked[0] = 0
           rem Unlock by moving up
           if joy0down then SelChkJoy0Fire
           goto SelJoy0Down
@@ -78,21 +78,21 @@ SelP0Handi
 SelP0Done
 
           rem Handle Player 2 input (joy1 on even frames)
-          if joy1left then playerChar[1] = playerChar[1] - 1 : goto SelChkP1Left
+          if joy1left then let playerChar[1] = playerChar[1] - 1 : goto SelChkP1Left
           goto SelSkipP1Left
 
 SelChkP1Left
-          if playerChar[1] > MaxCharacter then playerChar[1] = MaxCharacter
-          if playerChar[1] > MaxCharacter then playerLocked[1] = 0
+          if playerChar[1] > MaxCharacter then let playerChar[1] = MaxCharacter
+          if playerChar[1] > MaxCharacter then let playerLocked[1] = 0
 SelSkipP1Left
-          if joy1right then playerChar[1] = playerChar[1] + 1 : goto SelChkP1Right
+          if joy1right then let playerChar[1] = playerChar[1] + 1 : goto SelChkP1Right
           goto SelSkipP1Right
 
 SelChkP1Right
-          if playerChar[1] > MaxCharacter then playerChar[1] = 0
-          if playerChar[1] > MaxCharacter then playerLocked[1] = 0
+          if playerChar[1] > MaxCharacter then let playerChar[1] = 0
+          if playerChar[1] > MaxCharacter then let playerLocked[1] = 0
 SelSkipP1Right
-          if joy1up then playerLocked[1] = 0
+          if joy1up then let playerLocked[1] = 0
           rem Unlock by moving up
           if joy1down then SelChkJoy1Fire
 
@@ -109,7 +109,7 @@ SelJoy1Down
           goto SelSkipJoy1Even
 
 SelJoy1Chk
-          if joy1down then playerLocked[1] = 2 : goto SelJoy1Done
+          if joy1down then let playerLocked[1] = 2 : goto SelJoy1Done
 
           rem Locked with handicap (75% health)
           let playerLocked[1] = 1
@@ -127,23 +127,23 @@ SelHandleQuad
           goto SelSkipP2
 
 SelHandleP2
-          if joy0left then playerChar[2] = playerChar[2] - 1 : goto SelChkP2Left
+          if joy0left then let playerChar[2] = playerChar[2] - 1 : goto SelChkP2Left
 
           goto SelSkipP2Left
 
 SelChkP2Left
-          if playerChar[2] > MaxCharacter then playerChar[2] = MaxCharacter
-          if playerChar[2] > MaxCharacter then playerLocked[2] = 0
+          if playerChar[2] > MaxCharacter then let playerChar[2] = MaxCharacter
+          if playerChar[2] > MaxCharacter then let playerLocked[2] = 0
 SelSkipP2Left
-          if joy0right then playerChar[2] = playerChar[2] + 1 : goto SelChkP2Right
+          if joy0right then let playerChar[2] = playerChar[2] + 1 : goto SelChkP2Right
 
           goto SelSkipP2Right
 
 SelChkP2Right
-          if playerChar[2] > MaxCharacter then playerChar[2] = 0
-          if playerChar[2] > MaxCharacter then playerLocked[2] = 0
+          if playerChar[2] > MaxCharacter then let playerChar[2] = 0
+          if playerChar[2] > MaxCharacter then let playerLocked[2] = 0
 SelSkipP2Right
-          if joy0up then playerLocked[2] = 0
+          if joy0up then let playerLocked[2] = 0
           rem Unlock by moving up
           if joy0down then SelChkJoy0Fire2
 
@@ -176,19 +176,19 @@ SelJoy0Done2
           goto SelSkipP3Alt
 
 SelHandleP3
-          if joy1left then playerChar[3] = playerChar[3] - 1 : goto SelCheckP3Left
+          if joy1left then let playerChar[3] = playerChar[3] - 1 : goto SelCheckP3Left
           goto SelSkipP3Left
 SelCheckP3Left
-          if playerChar[3] > MaxCharacter then playerChar[3] = MaxCharacter
-          if playerChar[3] > MaxCharacter then playerLocked[3] = 0
+          if playerChar[3] > MaxCharacter then let playerChar[3] = MaxCharacter
+          if playerChar[3] > MaxCharacter then let playerLocked[3] = 0
 SelSkipP3Left
-          if joy1right then playerChar[3] = playerChar[3] + 1 : goto SelCheckP3Right
+          if joy1right then let playerChar[3] = playerChar[3] + 1 : goto SelCheckP3Right
           goto SelSkipP3Right
 SelCheckP3Right
-          if playerChar[3] > MaxCharacter then playerChar[3] = 0
-          if playerChar[3] > MaxCharacter then playerLocked[3] = 0
+          if playerChar[3] > MaxCharacter then let playerChar[3] = 0
+          if playerChar[3] > MaxCharacter then let playerLocked[3] = 0
 SelSkipP3Right
-          if joy1up then playerLocked[3] = 0
+          if joy1up then let playerLocked[3] = 0
           rem Unlock by moving up
           if joy1down then SelChkJoy1Fire3
 
@@ -230,15 +230,15 @@ SelHandleDone
           let readyCount  = 0
 
           rem Count locked players
-          if playerLocked[0] then readyCount = readyCount + 1
-          if playerLocked[1] then readyCount = readyCount + 1
+          if playerLocked[0] then let readyCount = readyCount + 1
+          if playerLocked[1] then let readyCount = readyCount + 1
           if controllerStatus & SetQuadtariDetected then SelQuadPlayersInline
 
           goto SelSkipQuadPlyInline
           
 SelQuadPlayersInline
-          if playerLocked[2] then readyCount = readyCount + 1
-          if playerLocked[3] then readyCount = readyCount + 1
+          if playerLocked[2] then let readyCount = readyCount + 1
+          if playerLocked[3] then let readyCount = readyCount + 1
 SelSkipQuadPlyInline
           rem Check if enough players are ready
           if controllerStatus & SetQuadtariDetected then SelQuadReadyInline
@@ -424,9 +424,9 @@ SelUpdateAnim
           
           rem Check each player for DOWN held (even frame for P1/P2)
           if qtcontroller then goto SkipEvenFrameCheck 
-                    if joy0down then HandicapMode  = HandicapMode | 1
+                    if joy0down then let HandicapMode  = HandicapMode | 1
           rem P1 handicap flag
-          if joy1down then HandicapMode  = HandicapMode | 2
+          if joy1down then let HandicapMode  = HandicapMode | 2
           rem P2 handicap flag
           
           
@@ -437,9 +437,9 @@ SelQuadHandi
           if controllerStatus & SetQuadtariDetected then SelOddFrame
           goto SkipOddFrameCheck
 SelOddFrame 
-                    if joy0down then HandicapMode  = HandicapMode | 4
+                    if joy0down then let HandicapMode  = HandicapMode | 4
           rem P3 handicap flag
-          if joy1down then HandicapMode  = HandicapMode | 8
+          if joy1down then let HandicapMode  = HandicapMode | 8
           rem P4 handicap flag
           
           
@@ -465,17 +465,17 @@ SelAnimNormal
           rem Randomly choose new animation state
           let charSelectAnimState  = rand & 3
           rem 0-3: idle, running, attacking, special
-          if charSelectAnimState > 2 then charSelectAnimState  = 0
+          if charSelectAnimState > 2 then let charSelectAnimState  = 0
           rem Keep to 0-2 range
           let charSelectAnimFrame  = 0
           rem Cycle through characters for variety
           let charSelectCharIndex  = charSelectCharIndex + 1
-          if charSelectCharIndex > MaxCharacter then charSelectCharIndex  = 0
+          if charSelectCharIndex > MaxCharacter then let charSelectCharIndex  = 0
           
           
           rem Update animation frame within current state
           let charSelectAnimFrame  = charSelectAnimFrame + 1
-          if charSelectAnimFrame > 7 then charSelectAnimFrame  = 0
+          if charSelectAnimFrame > 7 then let charSelectAnimFrame  = 0
           rem 8-frame animation cycles
           
           return
@@ -567,10 +567,10 @@ SelScreenDone
           let selectedChar4_W  = playerChar[3]
           
           rem Initialize facing bit (bit 0) for all selected players (default: face right = 1)
-          if selectedChar1 <> NoCharacter then playerState[0] = playerState[0] | 1
-          if selectedChar2_R <> NoCharacter then playerState[1] = playerState[1] | 1
-          if selectedChar3_R <> NoCharacter then playerState[2] = playerState[2] | 1
-          if selectedChar4_R <> NoCharacter then playerState[3] = playerState[3] | 1
+          if selectedChar1 <> NoCharacter then let playerState[0] = playerState[0] | 1
+          if selectedChar2_R <> NoCharacter then let playerState[1] = playerState[1] | 1
+          if selectedChar3_R <> NoCharacter then let playerState[2] = playerState[2] | 1
+          if selectedChar4_R <> NoCharacter then let playerState[3] = playerState[3] | 1
 
           rem Proceed to falling animation
           return

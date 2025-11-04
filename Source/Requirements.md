@@ -309,10 +309,38 @@ When a player takes damage from any source:
 
 ## Character Behaviors
 
-- FIXME: Update character weights here from manual TeXinfo.
+### Character Weight Table
+
+All weights use a logarithmic scale mapping real-world weights to game units (5-100 range):
+
+| Character | Real-World Weight | Game Unit | Notes |
+|-----------|------------------|-----------|-------|
+| Bernie | 10 lbs (4.5 kg) | 5 | Lightest character |
+| Curler | 190 lbs (86.2 kg) | 53 | Medium weight |
+| Dragon of Storms | 3500 lbs (1588 kg) | 100 | Heaviest (rhino) |
+| Zoe Ryen | 145 lbs (65.8 kg) | 48 | Medium-light |
+| Fat Tony | 240 lbs (108.9 kg) | 57 | Heavy |
+| Megax | 3500 lbs (1588 kg) | 100 | Heaviest (rhino) |
+| Harpy | 30 lbs (13.6 kg) | 23 | Light |
+| Knight Guy | 250 lbs (113.4 kg) | 57 | Heavy (with armor) |
+| Frooty | 120 lbs (54.4 kg) | 45 | Medium-light |
+| Nefertem | 440 lbs (199.6 kg) | 66 | Very heavy (lion) |
+| Ninjish Guy | 130 lbs (59.0 kg) | 47 | Medium |
+| Pork Chop | 250 lbs (113.4 kg) | 57 | Heavy |
+| Radish Goblin | 50 lbs (22.7 kg) | 31 | Light |
+| Robo Tito | 300 lbs (136.1 kg) | 60 | Very heavy (dumpster) |
+| Ursulo | 1200 lbs (544.3 kg) | 83 | Very heavy (polar bear) |
+| Shamone | 65 lbs (29.5 kg) | 35 | Medium-light |
+
+**Weight Effects**:
+- Jump height (higher weight = lower jump)
+- Movement speed (higher weight = slower)
+- Momentum (higher weight = more momentum when moving)
+- Impact resistance (higher weight = less knocked back)
+- Melee force (higher weight = more damage/knockback to opponents)
 
 ### Character 0: Bernie
-- **Weight**: Very Heavy (35)
+- **Weight**: 10 lbs (4.5 kg) - Game Unit: 5
 - **Attack Type**: Melee (hits BOTH DIRECTIONS - dual-direction AOE)
 - **Missile**: None (melee only, 4-frame lifetime for visual)
 - **Special Moves**:
@@ -325,51 +353,88 @@ When a player takes damage from any source:
   - Ground thump affects enemies to either side (dual-direction AOE attack)
 
 ### Character 1: Curling Sweeper
-- **Weight**: Medium (25)
+- **Weight**: 190 lbs (86.2 kg) - Game Unit: 53
 - **Attack Type**: Ranged
 - **Missile**: 4×2 pixels curling stone (from character's feet)
+- **Missile Properties**: 
+  - Emission height: 14 pixels (from feet)
+  - Momentum X: 6 pixels/frame (horizontal)
+  - Momentum Y: 0 (slides along ground)
+  - Flags: HitBackground|HitPlayer|Gravity|Bounce|Friction (ice physics)
+  - Lifetime: 255 frames (until collision)
 - **Special Moves**: 
   - **Ice physics**: Curling stone slides along ground level with ice physics (smooth sliding motion)
   - Great for hitting low targets
   - Projectile spawns at character's feet and slides horizontally across floor
 
 ### Character 2: Dragon of Storms
-- **Weight**: Medium-Light (20)
+- **Weight**: 3500 lbs (1588 kg) - Game Unit: 100
 - **Attack Type**: Ranged
 - **Missile**: 2×2 pixels, ballistic arc (parabolic trajectory)
+- **Missile Properties**:
+  - Emission height: 4 pixels
+  - Momentum X: 4 pixels/frame
+  - Momentum Y: -4 pixels/frame (upward arc)
+  - Flags: HitBackground
+  - Lifetime: 255 frames (until collision)
 - **Special Moves**: 
   - **Flying character**: No gravity, can fly freely (similar to Frooty)
   - Projectile travels in parabolic arc, excellent for hitting enemies at different heights
   - Aerial mobility with full flight control
 
 ### Character 3: Zoe Ryen
-- **Weight**: Light (15)
+- **Weight**: 145 lbs (65.8 kg) - Game Unit: 48
 - **Attack Type**: Ranged
 - **Missile**: Laser blaster (2×2 pixels, horizontal arrowshot)
+- **Missile Properties**:
+  - Emission height: 4 pixels
+  - Momentum X: 6 pixels/frame (horizontal)
+  - Momentum Y: 0 (horizontal only)
+  - Flags: None
+  - Lifetime: 255 frames (until collision)
 - **Special Moves**: 
   - **Laser blaster**: Fires long, thin laser that travels horizontally across entire screen
   - High jumps
   - Fast horizontal laser projectile for long-range combat
 
 ### Character 4: Fat Tony
-- **Weight**: Heavy (30)
+- **Weight**: 240 lbs (108.9 kg) - Game Unit: 57
 - **Attack Type**: Ranged
 - **Missile**: Magic ring lasers (2×2 pixels, arrowshot)
+- **Missile Properties**:
+  - Emission height: 3 pixels
+  - Momentum X: 0 pixels/frame (stationary spawn)
+  - Momentum Y: 0
+  - Flags: None
+  - Lifetime: 255 frames (until collision)
+  - Force: 4
 - **Special Moves**: 
   - **Laser ring**: Magic ring shoots laser projectiles
   - Geography expert
   - Magic ring wielder (laser ring weapon)
 
 ### Character 5: Megax
-- **Weight**: Medium (25)
+- **Weight**: 3500 lbs (1588 kg) - Game Unit: 100
 - **Attack Type**: Ranged
-- **Missile**: Fire breath (ballistic arc)
+- **Missile**: Fire breath (4×2 pixels, ballistic arc)
+- **Missile Properties**:
+  - Emission height: 4 pixels (from mouth)
+  - Momentum X: 0 pixels/frame
+  - Momentum Y: 0
+  - Flags: None
+  - Lifetime: 4 frames (brief visual)
 - **Special Moves**: Giant monster-eating powerhouse, biggest and most powerful known, breathes fire
 
 ### Character 6: Harpy
-- **Weight**: Light (15)
+- **Weight**: 30 lbs (13.6 kg) - Game Unit: 23
 - **Attack Type**: Ranged (diagonal downward swoop)
-- **Missile**: 0×0 (uses character sprite during swoop)
+- **Missile**: 0×0 (uses character sprite during swoop - no visible missile)
+- **Missile Properties**:
+  - Emission height: 4 pixels
+  - Momentum X: 5 pixels/frame
+  - Momentum Y: 4 pixels/frame (downward)
+  - Flags: None
+  - Lifetime: 5 frames (swoop duration)
 - **Special Moves**: 
   - **Flight pattern**: Can "fly" by repeatedly pressing UP (flap to maintain altitude)
   - **Attack pattern**: Swoop attack - moves diagonally down while attacking (5-frame lifetime)
@@ -377,7 +442,7 @@ When a player takes damage from any source:
   - Character sprite itself becomes the attack during swoop animation
 
 ### Character 7: Knight Guy
-- **Weight**: Very Heavy (32)
+- **Weight**: 250 lbs (113.4 kg) - Game Unit: 57
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 6-frame lifetime - longest melee duration)
 - **Special Moves**: 
@@ -386,9 +451,15 @@ When a player takes damage from any source:
   - Longest melee attack duration (6 frames)
 
 ### Character 8: Frooty
-- **Weight**: Very Light (15)
+- **Weight**: 120 lbs (54.4 kg) - Game Unit: 45
 - **Attack Type**: Ranged
 - **Missile**: 2×2 pixels, ballistic arc (lollipop sparkle)
+- **Missile Properties**:
+  - Emission height: 3 pixels
+  - Momentum X: 6 pixels/frame
+  - Momentum Y: -5 pixels/frame (upward arc)
+  - Flags: HitBackground
+  - Lifetime: 255 frames (until collision)
 - **Special Moves**: 
   - **Flying character**: FREE FLIGHT - Use UP/DOWN to move vertically (no guard action)
   - No gravity, full vertical flight control
@@ -397,15 +468,15 @@ When a player takes damage from any source:
   - Complete aerial mobility like Dragon of Storms
 
 ### Character 9: Nefertem
-- **Weight**: Heavy (30)
+- **Weight**: 440 lbs (199.6 kg) - Game Unit: 66
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 5-frame lifetime)
 - **Special Moves**: Loyalist to the High Council, feline reflexes
 
 ### Character 10: Ninjish Guy
-- **Weight**: Very Light (10)
-- **Attack Type**: Ranged (shuriken projectile)
-- **Missile**: Shuriken (2×2 pixels projectile)
+- **Weight**: 130 lbs (59.0 kg) - Game Unit: 47
+- **Attack Type**: Melee (code shows melee, not ranged)
+- **Missile**: None (melee only, 4-frame lifetime)
 - **Special Moves**: 
   - **Shuriken**: Throws shuriken projectiles as ranged attack
   - Highest jumps
@@ -414,13 +485,13 @@ When a player takes damage from any source:
   - Ninja mobility and shuriken throwing
 
 ### Character 11: Pork Chop
-- **Weight**: Heavy (30)
+- **Weight**: 250 lbs (113.4 kg) - Game Unit: 57
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 4-frame lifetime)
 - **Special Moves**: Standard heavy melee fighter
 
 ### Character 12: Radish Goblin
-- **Weight**: Very Light (10)
+- **Weight**: 50 lbs (22.7 kg) - Game Unit: 31
 - **Attack Type**: Melee (bouncing bite attacks)
 - **Missile**: None (melee only, 3-frame lifetime)
 - **Special Moves**: 
@@ -430,7 +501,7 @@ When a player takes damage from any source:
   - Bounces when moving
 
 ### Character 13: Robo Tito
-- **Weight**: Very Heavy (32)
+- **Weight**: 300 lbs (136.1 kg) - Game Unit: 60
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 5-frame lifetime)
 - **Special Moves**: 
@@ -442,14 +513,18 @@ When a player takes damage from any source:
   - Vulnerable entire length to collisions
 
 ### Character 14: Ursulo
-- **Weight**: Heavy (30)
-- **Attack Type**: Ranged
-- **Missile**: no
+- **Weight**: 1200 lbs (544.3 kg) - Game Unit: 83
+- **Attack Type**: Melee (claw swipe)
+- **Missile**: None (melee only, 5-frame lifetime)
+- **Missile Properties**:
+  - No missile (0×0) - melee attack uses character sprite
+  - Changed from ranged to melee (claw swipe attack)
 - **Special Moves**: 
   - Strongest throw
+  - Melee claw swipe attack
 
 ### Character 15: Shamone
-- **Weight**: Light (15)
+- **Weight**: 65 lbs (29.5 kg) - Game Unit: 35
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 4-frame lifetime)
 - **Special Moves**: 

@@ -192,6 +192,46 @@ make gimp-export
 - **SkylineTool** (included) for asset compilation (sprites, fonts, music, bitmaps)
 - **batariBASIC** compiler (included)
 
+### Asset Pipeline
+
+The asset pipeline converts source artwork into batariBASIC-compatible data files:
+
+**Character Sprites** (64×256px PNG, 8 frames × 16 poses):
+1. Source: `Source/Art/CharacterName.xcf` (GIMP format)
+2. Export: `Source/Art/CharacterName.png` (via GIMP batch script)
+3. Compile: `Source/Generated/CharacterName.bas` (via `skyline-tool compile-chaos-character`)
+   - Generates `data CharacterNameFrames` with deduplicated sprite frames
+   - Generates `data CharacterNameFrameMap` with indirection table
+   - Assembly code references `CharacterNameFrames` labels in `CharacterArtBank*.s`
+
+**Pipeline Process:**
+```bash
+# XCF → PNG (automatic via Makefile if XCF is newer)
+make Source/Art/CharacterName.png
+
+# PNG → batariBASIC (automatic via Makefile)
+make Source/Generated/CharacterName.bas
+
+# Generate all character sprites
+make characters
+```
+
+**Character Bank Organization:**
+- Bank 2: Characters 0-7 (Bernie, Curler, DragonOfStorms, ZoeRyen, FatTony, Megax, Harpy, KnightGuy)
+- Bank 3: Characters 8-15 (Frooty, Nefertem, NinjishGuy, PorkChop, RadishGoblin, RoboTito, Ursulo, Shamone)
+- Bank 4: Characters 16-23 (Character16-23 placeholders)
+- Bank 5: Characters 24-31 (Character24-30, MethHound)
+
+**Sprite Loading:**
+- `LoadCharacterSprite` in `SpriteLoader.bas` dispatches to bank-specific routines
+- `LocateCharacterArt` calculates sprite address from action (0-15) and frame (0-7)
+- Assembly routines (`CharacterArtBank*.s`) set player sprite pointers using generated data
+- All sprites use compiled data from generated `.bas` files (no hardcoded placeholders)
+
+**Special Sprites:**
+- QuestionMark, CPU, and No sprites are hardcoded in `Source/Data/SpecialSprites.bas`
+- Used for character selection placeholders (unselected, CPU player, random)
+
 ## Project Status
 
 **Current State**: Actively in development with core systems implemented.
@@ -205,7 +245,7 @@ make gimp-export
 - ✅ Verified hotspot configuration (#544) and missile systems (#416-422)
 - ✅ Broke down complex issues into actionable sub-issues (#431, #429, #434)
 - ✅ Code review complete for all missile implementations
-- ⚠️ Build blocker: Missing character sprite generation (#590)
+- ✅ Character sprite generation complete (#218): All 32 characters have generated sprite files
 
 ### Recent Improvements
 - Fixed syntax errors and code quality issues (#352, #305, #325, #580, #579)

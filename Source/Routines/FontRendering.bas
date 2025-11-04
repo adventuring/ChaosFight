@@ -54,28 +54,35 @@
           rem   rem Draw player "2" in red on right using player1
           rem   temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = ColRed(14) : temp5 = 1 : gosub DrawDigit
 DrawDigit
+          dim DD_digit = temp1
+          dim DD_xPos = temp2
+          dim DD_yPos = temp3
+          dim DD_color = temp4
+          dim DD_spriteSelect = temp5
+          dim DD_digitOffset = temp6
           rem Clamp digit value to 0-15
-          if temp1 > 15 then temp1 = 15
+          if DD_digit > 15 then let DD_digit = 15
           
           rem Calculate data offset: digit * 16 (16 bytes per digit)
-          dim FR_digitOffset = temp6
-          let FR_digitOffset = temp1 * 16
+          let DD_digitOffset = DD_digit * 16
           
-          rem Set sprite position and color based on temp5
-          if temp5 then SkipPlayer0Sprite
+          rem Set sprite position and color based on spriteSelect
+          if DD_spriteSelect then SkipPlayer0Sprite
 
           rem Use player0 sprite
-          let player0x = temp2
-          let player0y = temp3
-          COLUP0 = temp4
+          let player0x = DD_xPos
+          let player0y = DD_yPos
+          let COLUP0 = DD_color
           rem tail call
+          let temp6 = DD_digitOffset
           goto LoadPlayer0Digit
 
 SkipPlayer0Sprite
           rem Use player1 sprite
-          player1x = temp2
-          player1y = temp3
-          _COLUP1 = temp4
+          let player1x = DD_xPos
+          let player1y = DD_yPos
+          let _COLUP1 = DD_color
+          let temp6 = DD_digitOffset
           gosub LoadPlayer1Digit
           return
 
@@ -89,17 +96,18 @@ SkipPlayer0Sprite
           rem   DigitOffset (temp6) = byte offset into font data (digit * 16)
 
 LoadPlayer0Digit
+          dim LP0D_digitOffset = temp6
           rem Load digit graphics from Numbers font data into player0 sprite
           rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
           rem Clamp digit offset to valid range (0-144 for digits 0-9)
-          if temp6 > 144 then LET temp6 = 144
+          if LP0D_digitOffset > 144 then let LP0D_digitOffset = 144
           
           rem Calculate sprite pointer = FontData + offset using assembly
           asm
             rem Load low byte of FontData base address
             lda # <FontData
             clc
-            adc temp6
+            adc LP0D_digitOffset
             sta player0pointerlo
             
             rem Load high byte of FontData base address and add carry
@@ -109,21 +117,22 @@ LoadPlayer0Digit
           end
           
           rem Set sprite height (16 pixels tall)
-          player0height = 16
+          let player0height = 16
           return
 
 LoadPlayer1Digit
+          dim LP1D_digitOffset = temp6
           rem Load digit graphics from Numbers font data into player1 sprite
           rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
           rem Clamp digit offset to valid range (0-144 for digits 0-9)
-          if temp6 > 144 then LET temp6 = 144
+          if LP1D_digitOffset > 144 then let LP1D_digitOffset = 144
           
           rem Calculate sprite pointer = FontData + offset using assembly
           asm
             rem Load low byte of FontData base address
             lda # <FontData
             clc
-            adc temp6
+            adc LP1D_digitOffset
             sta player1pointerlo
             
             rem Load high byte of FontData base address and add carry
@@ -133,7 +142,7 @@ LoadPlayer1Digit
           end
           
           rem Set sprite height (16 pixels tall)
-          player1height = 16
+          let player1height = 16
           return
 
           rem =================================================================
@@ -149,39 +158,46 @@ LoadPlayer1Digit
 
           rem Player colors are looked up from a table.
 DrawPlayerNumber
+          dim DPN_playerIndex = temp1
+          dim DPN_playerDigit = temp1
+          dim DPN_xPos = temp2
+          dim DPN_yPos = temp3
+          dim DPN_playerColor = temp4
+          dim DPN_spriteSelect = temp5
           rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
-          dim FR_playerDigit = temp1
-          let FR_playerDigit = temp1 + 1
+          let DPN_playerDigit = DPN_playerIndex + 1
           
           rem Look up player color
-          dim FR_playerColor = temp4
+          let temp1 = DPN_playerIndex
           on temp1 goto SetP1Color, SetP2Color, SetP3Color, SetP4Color
           
 SetP1Color
-          let FR_playerColor = ColIndigo(14)
+          let DPN_playerColor = ColIndigo(14)
           rem Indigo
           goto DrawPlayerDigitNow
           
 SetP2Color
-          let FR_playerColor = ColRed(14)
+          let DPN_playerColor = ColRed(14)
           rem Red
           goto DrawPlayerDigitNow
           
 SetP3Color
-          FR_playerColor = ColYellow(14)
+          let DPN_playerColor = ColYellow(14)
           rem Yellow
           goto DrawPlayerDigitNow
           
 SetP4Color
-          FR_playerColor = ColGreen(14)
+          let DPN_playerColor = ColGreen(14)
           rem Green
           goto DrawPlayerDigitNow
           
 DrawPlayerDigitNow
           rem Set up parameters for DrawDigit
-          temp1 = FR_playerDigit
-          rem temp2, temp3, temp5 already set by caller
-          temp4 = FR_playerColor
+          let temp1 = DPN_playerDigit
+          let temp2 = DPN_xPos
+          let temp3 = DPN_yPos
+          let temp4 = DPN_playerColor
+          let temp5 = DPN_spriteSelect
           rem tail call
           goto DrawDigit
 
@@ -196,7 +212,17 @@ DrawPlayerDigitNow
           rem   temp3 = Y position
           rem   temp5 = sprite select (0=player0, 1=player1)
 DrawLevelNumber
-          temp4 = ColGrey(14)
+          dim DLN_levelNumber = temp1
+          dim DLN_xPos = temp2
+          dim DLN_yPos = temp3
+          dim DLN_color = temp4
+          dim DLN_spriteSelect = temp5
+          let DLN_color = ColGrey(14)
           rem White
+          let temp1 = DLN_levelNumber
+          let temp2 = DLN_xPos
+          let temp3 = DLN_yPos
+          let temp4 = DLN_color
+          let temp5 = DLN_spriteSelect
           rem tail call
           goto DrawDigit

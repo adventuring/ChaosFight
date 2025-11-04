@@ -40,23 +40,39 @@ CharacterSelectInputEntry
           if joy0left then CharacterSelectPlayer0Left
           goto CharacterSelectSkipPlayer0Left
 CharacterSelectPlayer0Left
-          let temp1 = playerChar[0] : let temp3 = 0
+          dim CS0L_characterIndex = temp1
+          dim CS0L_playerNumber = temp3
+          dim CS0L_soundId = temp1
+          let CS0L_characterIndex = playerChar[0]
+          let CS0L_playerNumber = 0
+          let temp1 = CS0L_characterIndex
+          let temp3 = CS0L_playerNumber
           gosub CycleCharacterLeft
-          let playerChar[0] = temp1
+          let CS0L_characterIndex = temp1
+          let playerChar[0] = CS0L_characterIndex
           let playerLocked[0] = 0
           rem Play navigation sound
-          let temp1 = SoundMenuNavigate
+          let CS0L_soundId = SoundMenuNavigate
+          let temp1 = CS0L_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer0Left
           if joy0right then CharacterSelectPlayer0Right
           goto CharacterSelectSkipPlayer0Right
 CharacterSelectPlayer0Right
-          temp1 = playerChar[0] : temp3 = 0
+          dim CS0R_characterIndex = temp1
+          dim CS0R_playerNumber = temp3
+          dim CS0R_soundId = temp1
+          let CS0R_characterIndex = playerChar[0]
+          let CS0R_playerNumber = 0
+          let temp1 = CS0R_characterIndex
+          let temp3 = CS0R_playerNumber
           gosub CycleCharacterRight
-          let playerChar[0] = temp1
+          let CS0R_characterIndex = temp1
+          let playerChar[0] = CS0R_characterIndex
           let playerLocked[0] = 0
           rem Play navigation sound
-          temp1 = SoundMenuNavigate
+          let CS0R_soundId = SoundMenuNavigate
+          let temp1 = CS0R_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer0Right
           rem Use skip-over pattern to avoid complex || operator
@@ -66,22 +82,27 @@ CharacterSelectPlayer0LockClearDone
           if joy0fire then CharacterSelectPlayer0Fire
           goto CharacterSelectSkipPlayer0Fire
 CharacterSelectPlayer0Fire
+          dim CS0F_soundId = temp1
           rem Check if RandomCharacter selected - needs random selection
           if playerChar[0] = RandomCharacter then CharacterSelectPlayer0Random
           rem Check for handicap mode (down+fire = 75% health)
           if joy0down then CharacterSelectPlayer0FireHandicap
           let playerLocked[0] = 1
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let CS0F_soundId = SoundMenuSelect
+          let temp1 = CS0F_soundId
           gosub bank15 PlaySoundEffect
           goto CharacterSelectSkipPlayer0Fire
 CharacterSelectPlayer0FireHandicap
+          dim CS0FH_soundId = temp1
           let playerLocked[0] = 2
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let CS0FH_soundId = SoundMenuSelect
+          let temp1 = CS0FH_soundId
           gosub bank15 PlaySoundEffect
           goto CharacterSelectSkipPlayer0Fire
 CharacterSelectPlayer0Random
+          dim CS0R_soundId = temp1
           rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if joy0down then randomSelectFlags[0] = $80
@@ -89,7 +110,8 @@ CharacterSelectPlayer0Random
           rem For now, just initiate random roll by leaving playerChar[0]=RandomCharacter
           rem and NOT locking yet - the roll handler will lock when valid
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let CS0R_soundId = SoundMenuSelect
+          let temp1 = CS0R_soundId
           gosub bank15 PlaySoundEffect
           rem Fall through - character will stay as RandomCharacter until roll succeeds
 CharacterSelectSkipPlayer0Fire
@@ -98,23 +120,39 @@ CharacterSelectSkipPlayer0Fire
           if joy1left then CharacterSelectPlayer1Left
           goto CharacterSelectSkipPlayer1Left
 CharacterSelectPlayer1Left
-          temp1 = playerChar[1] : temp3 = 1
+          dim CS1L_characterIndex = temp1
+          dim CS1L_playerNumber = temp3
+          dim CS1L_soundId = temp1
+          let CS1L_characterIndex = playerChar[1]
+          let CS1L_playerNumber = 1
+          let temp1 = CS1L_characterIndex
+          let temp3 = CS1L_playerNumber
           gosub CycleCharacterLeft
-          let playerChar[1] = temp1
+          let CS1L_characterIndex = temp1
+          let playerChar[1] = CS1L_characterIndex
           let playerLocked[1] = 0
           rem Play navigation sound
-          temp1 = SoundMenuNavigate
+          let CS1L_soundId = SoundMenuNavigate
+          let temp1 = CS1L_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer1Left
           if joy1right then CharacterSelectPlayer1Right
           goto CharacterSelectSkipPlayer1Right
 CharacterSelectPlayer1Right
-          temp1 = playerChar[1] : temp3 = 1
+          dim CS1R_characterIndex = temp1
+          dim CS1R_playerNumber = temp3
+          dim CS1R_soundId = temp1
+          let CS1R_characterIndex = playerChar[1]
+          let CS1R_playerNumber = 1
+          let temp1 = CS1R_characterIndex
+          let temp3 = CS1R_playerNumber
           gosub CycleCharacterRight
-          let playerChar[1] = temp1
+          let CS1R_characterIndex = temp1
+          let playerChar[1] = CS1R_characterIndex
           let playerLocked[1] = 0
           rem Play navigation sound
-          temp1 = SoundMenuNavigate
+          let CS1R_soundId = SoundMenuNavigate
+          let temp1 = CS1R_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer1Right
           rem Use skip-over pattern to avoid complex || operator
@@ -124,27 +162,33 @@ CharacterSelectPlayer1LockClearDone
           if joy1fire then CharacterSelectPlayer1Fire
           goto CharacterSelectSkipPlayer1Fire
 CharacterSelectPlayer1Fire
+          dim CS1F_soundId = temp1
           rem Check if RandomCharacter selected - needs random selection
           if playerChar[1] = RandomCharacter then CharacterSelectPlayer1Random
           rem Check for handicap mode (down+fire = 75% health)
           if joy1down then CharacterSelectPlayer1FireHandicap
           let playerLocked[1] = 1
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let CS1F_soundId = SoundMenuSelect
+          let temp1 = CS1F_soundId
           gosub bank15 PlaySoundEffect
           goto CharacterSelectSkipPlayer1Fire
 CharacterSelectPlayer1FireHandicap
+          dim CS1FH_soundId = temp1
           let playerLocked[1] = 2
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let CS1FH_soundId = SoundMenuSelect
+          let temp1 = CS1FH_soundId
           gosub bank15 PlaySoundEffect
           goto CharacterSelectSkipPlayer1Fire
 CharacterSelectPlayer1Random
+          dim CS1R_soundId = temp1
           rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if joy1down then randomSelectFlags[1] = $80
           if !joy1down then randomSelectFlags[1] = 0
-          temp1 = SoundMenuSelect
+          let CS1R_soundId = SoundMenuSelect
+          let temp1 = CS1R_soundId
           gosub bank15 PlaySoundEffect
           rem Fall through - character will stay as RandomCharacter until roll succeeds
 CharacterSelectSkipPlayer1Fire
@@ -160,23 +204,39 @@ CharacterSelectHandlePlayer3
           if joy0left then CharacterSelectPlayer3Left
           goto CharacterSelectSkipPlayer3Left
 CharacterSelectPlayer3Left
-          temp1 = playerChar[2] : temp3 = 2
+          dim CS3L_characterIndex = temp1
+          dim CS3L_playerNumber = temp3
+          dim CS3L_soundId = temp1
+          let CS3L_characterIndex = playerChar[2]
+          let CS3L_playerNumber = 2
+          let temp1 = CS3L_characterIndex
+          let temp3 = CS3L_playerNumber
           gosub CycleCharacterLeft
-          let playerChar[2] = temp1
+          let CS3L_characterIndex = temp1
+          let playerChar[2] = CS3L_characterIndex
           let playerLocked[2] = 0
           rem Play navigation sound
-          temp1 = SoundMenuNavigate
+          let CS3L_soundId = SoundMenuNavigate
+          let temp1 = CS3L_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer3Left
           if joy0right then CharacterSelectPlayer3Right
           goto CharacterSelectSkipPlayer3Right
 CharacterSelectPlayer3Right
-          temp1 = playerChar[2] : temp3 = 2
+          dim CS3R_characterIndex = temp1
+          dim CS3R_playerNumber = temp3
+          dim CS3R_soundId = temp1
+          let CS3R_characterIndex = playerChar[2]
+          let CS3R_playerNumber = 2
+          let temp1 = CS3R_characterIndex
+          let temp3 = CS3R_playerNumber
           gosub CycleCharacterRight
-          let playerChar[2] = temp1
+          let CS3R_characterIndex = temp1
+          let playerChar[2] = CS3R_characterIndex
           let playerLocked[2] = 0
           rem Play navigation sound
-          temp1 = SoundMenuNavigate
+          let CS3R_soundId = SoundMenuNavigate
+          let temp1 = CS3R_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer3Right
           rem Use skip-over pattern to avoid complex || operator
@@ -186,27 +246,33 @@ CharacterSelectPlayer2LockClearDone
           if joy0fire then CharacterSelectPlayer3Fire
           goto CharacterSelectSkipPlayer3Fire
 CharacterSelectPlayer3Fire
+          dim CS3F_soundId = temp1
           rem Check if RandomCharacter selected - needs random selection
           if playerChar[2] = RandomCharacter then CharacterSelectPlayer3Random
           rem Check for handicap mode (down+fire = 75% health)
           if joy0down then CharacterSelectPlayer3FireHandicap
           let playerLocked[2] = 1
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let CS3F_soundId = SoundMenuSelect
+          let temp1 = CS3F_soundId
           gosub bank15 PlaySoundEffect
           goto CharacterSelectSkipPlayer3Fire
 CharacterSelectPlayer3FireHandicap
+          dim CS3FH_soundId = temp1
           let playerLocked[2] = 2
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let CS3FH_soundId = SoundMenuSelect
+          let temp1 = CS3FH_soundId
           gosub bank15 PlaySoundEffect
           goto CharacterSelectSkipPlayer3Fire
 CharacterSelectPlayer3Random
+          dim CS3R_soundId = temp1
           rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if joy0down then randomSelectFlags[2] = $80
           if !joy0down then randomSelectFlags[2] = 0
-          temp1 = SoundMenuSelect
+          let CS3R_soundId = SoundMenuSelect
+          let temp1 = CS3R_soundId
           gosub bank15 PlaySoundEffect
           rem Fall through - character will stay as RandomCharacter until roll succeeds
 CharacterSelectSkipPlayer3Fire
@@ -219,23 +285,39 @@ CharacterSelectHandlePlayer4
           if joy1left then CharacterSelectPlayer4Left
           goto CharacterSelectSkipPlayer4Left
 CharacterSelectPlayer4Left
-          temp1 = playerChar[3] : temp3 = 3
+          dim CS4L_characterIndex = temp1
+          dim CS4L_playerNumber = temp3
+          dim CS4L_soundId = temp1
+          let CS4L_characterIndex = playerChar[3]
+          let CS4L_playerNumber = 3
+          let temp1 = CS4L_characterIndex
+          let temp3 = CS4L_playerNumber
           gosub CycleCharacterLeft
-          let playerChar[3] = temp1
+          let CS4L_characterIndex = temp1
+          let playerChar[3] = CS4L_characterIndex
           let playerLocked[3] = 0
           rem Play navigation sound
-          temp1 = SoundMenuNavigate
+          let CS4L_soundId = SoundMenuNavigate
+          let temp1 = CS4L_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer4Left
           if joy1right then CharacterSelectPlayer4Right
           goto CharacterSelectSkipPlayer4Right
 CharacterSelectPlayer4Right
-          temp1 = playerChar[3] : temp3 = 3
+          dim CS4R_characterIndex = temp1
+          dim CS4R_playerNumber = temp3
+          dim CS4R_soundId = temp1
+          let CS4R_characterIndex = playerChar[3]
+          let CS4R_playerNumber = 3
+          let temp1 = CS4R_characterIndex
+          let temp3 = CS4R_playerNumber
           gosub CycleCharacterRight
-          let playerChar[3] = temp1
+          let CS4R_characterIndex = temp1
+          let playerChar[3] = CS4R_characterIndex
           let playerLocked[3] = 0
           rem Play navigation sound
-          temp1 = SoundMenuNavigate
+          let CS4R_soundId = SoundMenuNavigate
+          let temp1 = CS4R_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer4Right
           rem Use skip-over pattern to avoid complex || operator
@@ -245,27 +327,33 @@ CharacterSelectPlayer3LockClearDone
           if joy1fire then CharacterSelectPlayer4Fire
           goto CharacterSelectSkipPlayer4Fire
 CharacterSelectPlayer4Fire
+          dim CS4F_soundId = temp1
           rem Check if RandomCharacter selected - needs random selection
           if playerChar[3] = RandomCharacter then CharacterSelectPlayer4Random
           rem Check for handicap mode (down+fire = 75% health)
           if joy1down then CharacterSelectPlayer4FireHandicap
           let playerLocked[3] = 1
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let CS4F_soundId = SoundMenuSelect
+          let temp1 = CS4F_soundId
           gosub bank15 PlaySoundEffect
           goto CharacterSelectSkipPlayer4Fire
 CharacterSelectPlayer4FireHandicap
+          dim CS4FH_soundId = temp1
           let playerLocked[3] = 2
           rem Play selection sound
-          temp1 = SoundMenuSelect
+          let CS4FH_soundId = SoundMenuSelect
+          let temp1 = CS4FH_soundId
           gosub bank15 PlaySoundEffect
           goto CharacterSelectSkipPlayer4Fire
 CharacterSelectPlayer4Random
+          dim CS4R_soundId = temp1
           rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if joy1down then randomSelectFlags[3] = $80
           if !joy1down then randomSelectFlags[3] = 0
-          temp1 = SoundMenuSelect
+          let CS4R_soundId = SoundMenuSelect
+          let temp1 = CS4R_soundId
           gosub bank15 PlaySoundEffect
           rem Fall through - character will stay as RandomCharacter until roll succeeds
 CharacterSelectSkipPlayer4Fire
@@ -308,12 +396,13 @@ CharacterSelectCheckRollQuadtari
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer0
+          dim CSR0_rolledValue = temp2
           rem Roll 5-bit random: rand & 31 (0-31)
-          temp2 = rand & 31
+          let CSR0_rolledValue = rand & 31
           rem If > 15, stay as RandomCharacter and retry next frame
-          if temp2 > MaxCharacter then CharacterSelectRollsDone
+          if CSR0_rolledValue > MaxCharacter then CharacterSelectRollsDone
           rem Valid! Set character and lock with normal or handicap
-          let playerChar[0] = temp2
+          let playerChar[0] = CSR0_rolledValue
           if randomSelectFlags[0] then goto CharacterSelectLockPlayer0Handicap
           let playerLocked[0] = 1
           goto CharacterSelectLockPlayer0Done
@@ -324,9 +413,10 @@ CharacterSelectLockPlayer0Done
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer1
-          temp2 = rand & 31
-          if temp2 > MaxCharacter then CharacterSelectRollsDone
-          playerChar[1] = temp2
+          dim CSR1_rolledValue = temp2
+          let CSR1_rolledValue = rand & 31
+          if CSR1_rolledValue > MaxCharacter then CharacterSelectRollsDone
+          let playerChar[1] = CSR1_rolledValue
           if randomSelectFlags[1] then goto CharacterSelectLockPlayer1Handicap
           let playerLocked[1] = 1
           goto CharacterSelectLockPlayer1Done
@@ -337,9 +427,10 @@ CharacterSelectLockPlayer1Done
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer2
-          temp2 = rand & 31
-          if temp2 > MaxCharacter then CharacterSelectRollsDone
-          playerChar[2] = temp2
+          dim CSR2_rolledValue = temp2
+          let CSR2_rolledValue = rand & 31
+          if CSR2_rolledValue > MaxCharacter then CharacterSelectRollsDone
+          let playerChar[2] = CSR2_rolledValue
           if randomSelectFlags[2] then goto CharacterSelectLockPlayer2Handicap
           let playerLocked[2] = 1
           goto CharacterSelectLockPlayer2Done
@@ -350,9 +441,10 @@ CharacterSelectLockPlayer2Done
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer3
-          temp2 = rand & 31
-          if temp2 > MaxCharacter then CharacterSelectRollsDone
-          playerChar[3] = temp2
+          dim CSR3_rolledValue = temp2
+          let CSR3_rolledValue = rand & 31
+          if CSR3_rolledValue > MaxCharacter then CharacterSelectRollsDone
+          let playerChar[3] = CSR3_rolledValue
           if randomSelectFlags[3] then goto CharacterSelectLockPlayer3Handicap
           let playerLocked[3] = 1
           goto CharacterSelectLockPlayer3Done
@@ -363,7 +455,7 @@ CharacterSelectLockPlayer3Done
           
 CharacterSelectRollsDone
           return
-          
+
           rem =================================================================
           rem CHECK IF READY TO PROCEED
           rem =================================================================
@@ -427,140 +519,178 @@ CharacterSelectFinish
           rem Output: temp1 = new playerChar value
           
 CycleCharacterLeft
+          dim CCL_characterIndex = temp1
+          dim CCL_playerNumber = temp3
           rem Decrement character with special value wraparound
           rem P1: RandomCharacter(253) ↔ 0 ↔ 15 ↔ RandomCharacter
           rem P2: CPUCharacter(254) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔ CPUCharacter
           rem P3/P4: NoCharacter(255) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔ NoCharacter
           
-          rem Check if we’re at a special value
-          if temp1 = RandomCharacter then CycleFromRandom : return
-          if temp1 = CPUCharacter then CycleFromCPU : return
-          if temp1 = NoCharacter then CycleFromNO : return
+          rem Check if we're at a special value
+          if CCL_characterIndex = RandomCharacter then CycleFromRandom : return
+          if CCL_characterIndex = CPUCharacter then CycleFromCPU : return
+          if CCL_characterIndex = NoCharacter then CycleFromNO : return
           
           rem Normal character (0-15): decrement
-          rem Check if we’re at 0 before decrementing (need to wrap to special)
-          if !temp1 then CharacterSelectLeftWrapCheck
-          temp1 = temp1 - 1
+          rem Check if we're at 0 before decrementing (need to wrap to special)
+          if !CCL_characterIndex then CharacterSelectLeftWrapCheck
+          let CCL_characterIndex = CCL_characterIndex - 1
+          let temp1 = CCL_characterIndex
           return
           
 CharacterSelectLeftWrapCheck
+          dim CSLWC_characterIndex = temp1
+          dim CSLWC_playerNumber = temp3
           rem After 0, wrap to player-specific special character
-          if temp3 = 0 then temp1 = RandomCharacter : return
-          if temp3 = 1 then SelectP2LeftWrap
-          temp1 = NoCharacter
+          if CSLWC_playerNumber = 0 then let CSLWC_characterIndex = RandomCharacter : let temp1 = CSLWC_characterIndex : return
+          if CSLWC_playerNumber = 1 then SelectP2LeftWrap
+          let CSLWC_characterIndex = NoCharacter
+          let temp1 = CSLWC_characterIndex
           return
           
 SelectP2LeftWrap
+          dim SP2LW_characterIndex = temp1
           rem P2: Check if NO is available (if Quadtari and P3 or P4 not both NO)
-          if !(controllerStatus & SetQuadtariDetected) then temp1 = CPUCharacter : return
+          if !(controllerStatus & SetQuadtariDetected) then let SP2LW_characterIndex = CPUCharacter : let temp1 = SP2LW_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] != NoCharacter then temp1 = NoCharacter : return
-          if playerChar[3] != NoCharacter then temp1 = NoCharacter : return
+          if playerChar[2] != NoCharacter then let SP2LW_characterIndex = NoCharacter : let temp1 = SP2LW_characterIndex : return
+          if playerChar[3] != NoCharacter then let SP2LW_characterIndex = NoCharacter : let temp1 = SP2LW_characterIndex : return
           rem Both P3 and P4 are NO, so P2 wraps to CPU
-          temp1 = CPUCharacter
+          let SP2LW_characterIndex = CPUCharacter
+          let temp1 = SP2LW_characterIndex
           return
           
 CycleFromRandom
+          dim CFR_characterIndex = temp1
+          dim CFR_playerNumber = temp3
           rem RandomCharacter(253) left cycle: direction-dependent
           rem P1: ... Random → 15 → 14 → ...
           rem P2: ... Random → NO (if available) → CPU OR Random → 15
           rem P3/P4: Random → NO
           rem Check if this is P2 with NO available
-          if temp3 = 1 then SelectP2LeftFromRandom
+          if CFR_playerNumber = 1 then SelectP2LeftFromRandom
           rem P1 or P3/P4: Random left goes to NO (P3/P4) or 15 (P1)
-          if temp3 = 0 then temp1 = MaxCharacter : return  : rem P1 → 15
+          if CFR_playerNumber = 0 then let CFR_characterIndex = MaxCharacter : let temp1 = CFR_characterIndex : return
+          rem P1 → 15
           rem P3/P4 → NO
-          temp1 = NoCharacter
+          let CFR_characterIndex = NoCharacter
+          let temp1 = CFR_characterIndex
           return
           
 SelectP2LeftFromRandom
+          dim SP2LFR_characterIndex = temp1
           rem P2 left from Random: Check if NO is available
-          if !(controllerStatus & SetQuadtariDetected) then temp1 = MaxCharacter : return
+          if !(controllerStatus & SetQuadtariDetected) then let SP2LFR_characterIndex = MaxCharacter : let temp1 = SP2LFR_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] != NoCharacter then temp1 = NoCharacter : return
-          if playerChar[3] != NoCharacter then temp1 = NoCharacter : return
+          if playerChar[2] != NoCharacter then let SP2LFR_characterIndex = NoCharacter : let temp1 = SP2LFR_characterIndex : return
+          if playerChar[3] != NoCharacter then let SP2LFR_characterIndex = NoCharacter : let temp1 = SP2LFR_characterIndex : return
           rem Both P3 and P4 are NO, so NO not available, go to 15
-          temp1 = MaxCharacter
+          let SP2LFR_characterIndex = MaxCharacter
+          let temp1 = SP2LFR_characterIndex
           return
           
 CycleFromCPU
+          dim CFC_characterIndex = temp1
           rem CPUCharacter(254) left cycle: goes to RandomCharacter(253) for all players
           rem For P2, this is the left direction from CPU
           rem P2 left from CPU: if NO available, NO → Random, else Random
-          rem Actually, left from CPU means we’re decrementing, so CPU is after Random
+          rem Actually, left from CPU means we're decrementing, so CPU is after Random
           rem The cycle is: ... Random → CPU → Random ...
           rem So left from CPU should go to Random (we already have this)
-          temp1 = RandomCharacter
+          let CFC_characterIndex = RandomCharacter
+          let temp1 = CFC_characterIndex
           return
           
 CycleFromNO
+          dim CFNO_characterIndex = temp1
+          dim CFNO_playerNumber = temp3
           rem NoCharacter(255) left cycle: direction-dependent
           rem P2 with NO available: NO → CPU (left), NO → Random (right)
           rem P3/P4: NO → Random (both directions since NO is start/end)
           rem For left cycle (decrement): P2 goes from NO to CPU
-          if temp3 = 1 then temp1 = CPUCharacter : return  : rem P2 left from NO → CPU
+          if CFNO_playerNumber = 1 then let CFNO_characterIndex = CPUCharacter : let temp1 = CFNO_characterIndex : return
+          rem P2 left from NO → CPU
           rem P3/P4: NO → Random
-          temp1 = RandomCharacter
+          let CFNO_characterIndex = RandomCharacter
+          let temp1 = CFNO_characterIndex
           return
           
 CycleCharacterRight
+          dim CCR_characterIndex = temp1
+          dim CCR_playerNumber = temp3
           rem Increment character with special value wraparound
-          if temp1 = RandomCharacter then CycleRightFromRandom : return
-          if temp1 = CPUCharacter then CycleRightFromCPU : return
-          if temp1 = NoCharacter then CycleRightFromNO : return
+          if CCR_characterIndex = RandomCharacter then CycleRightFromRandom : return
+          if CCR_characterIndex = CPUCharacter then CycleRightFromCPU : return
+          if CCR_characterIndex = NoCharacter then CycleRightFromNO : return
           
           rem Normal character (0-15): increment
-          temp1 = temp1 + 1
+          let CCR_characterIndex = CCR_characterIndex + 1
           rem Check if we went past 15 (wrap to RandomCharacter)
-          if temp1 > MaxCharacter then CharacterSelectRightWrapCheck
+          if CCR_characterIndex > MaxCharacter then CharacterSelectRightWrapCheck
+          let temp1 = CCR_characterIndex
           return
           
 CharacterSelectRightWrapCheck
+          dim CSRWC_characterIndex = temp1
           rem After 15, go to RandomCharacter instead of wrapping to 0
-          temp1 = RandomCharacter
+          let CSRWC_characterIndex = RandomCharacter
+          let temp1 = CSRWC_characterIndex
           return
           
 CycleRightFromRandom
+          dim CRFR_characterIndex = temp1
+          dim CRFR_playerNumber = temp3
           rem RandomCharacter(253) goes to special for each player
-          if temp3 = 0 then temp1 = 0 : return
-          if temp3 = 1 then SelectP2RightFromRandom
-          temp1 = NoCharacter
+          if CRFR_playerNumber = 0 then let CRFR_characterIndex = 0 : let temp1 = CRFR_characterIndex : return
+          if CRFR_playerNumber = 1 then SelectP2RightFromRandom
+          let CRFR_characterIndex = NoCharacter
+          let temp1 = CRFR_characterIndex
           return
           
 SelectP2RightFromRandom
+          dim SP2RFR_characterIndex = temp1
           rem P2: Check if NO is available (if Quadtari and P3 or P4 not both NO)
-          if !(controllerStatus & SetQuadtariDetected) then temp1 = CPUCharacter : return
+          if !(controllerStatus & SetQuadtariDetected) then let SP2RFR_characterIndex = CPUCharacter : let temp1 = SP2RFR_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] != NoCharacter then temp1 = NoCharacter : return
-          if playerChar[3] != NoCharacter then temp1 = NoCharacter : return
+          if playerChar[2] != NoCharacter then let SP2RFR_characterIndex = NoCharacter : let temp1 = SP2RFR_characterIndex : return
+          if playerChar[3] != NoCharacter then let SP2RFR_characterIndex = NoCharacter : let temp1 = SP2RFR_characterIndex : return
           rem Both P3 and P4 are NO, so P2 goes to CPU
-          temp1 = CPUCharacter
+          let SP2RFR_characterIndex = CPUCharacter
+          let temp1 = SP2RFR_characterIndex
           return
           
 CycleRightFromCPU
+          dim CRFC_characterIndex = temp1
+          dim CRFC_playerNumber = temp3
           rem CPUCharacter(254) wraps based on player
           rem P1: CPU → Random → ...
           rem P2: CPU → NO (if available) → Random → ... OR CPU → Random
           rem P3/P4: Should not reach CPU, but handle gracefully
-          if temp3 = 1 then SelectP2RightFromCPU
+          if CRFC_playerNumber = 1 then SelectP2RightFromCPU
           goto CycleRightFromCPUDone
 SelectP2RightFromCPU
+          dim SP2RFC_characterIndex = temp1
           rem P2 from CPU: Check if NO is available
-          if !(controllerStatus & SetQuadtariDetected) then temp1 = RandomCharacter : return
+          if !(controllerStatus & SetQuadtariDetected) then let SP2RFC_characterIndex = RandomCharacter : let temp1 = SP2RFC_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] != NoCharacter then temp1 = NoCharacter : return
-          if playerChar[3] != NoCharacter then temp1 = NoCharacter : return
+          if playerChar[2] != NoCharacter then let SP2RFC_characterIndex = NoCharacter : let temp1 = SP2RFC_characterIndex : return
+          if playerChar[3] != NoCharacter then let SP2RFC_characterIndex = NoCharacter : let temp1 = SP2RFC_characterIndex : return
           rem Both P3 and P4 are NO, so skip NO and go to Random
-          temp1 = RandomCharacter
+          let SP2RFC_characterIndex = RandomCharacter
+          let temp1 = SP2RFC_characterIndex
           return
 CycleRightFromCPUDone
+          dim CRFCD_characterIndex = temp1
           rem Default for P1 or other players (not P2)
-          temp1 = RandomCharacter
+          let CRFCD_characterIndex = RandomCharacter
+          let temp1 = CRFCD_characterIndex
           return
           
 CycleRightFromNO
+          dim CRFNO_characterIndex = temp1
           rem NoCharacter(255) goes to 0
-          temp1 = 0
+          let CRFNO_characterIndex = 0
+          let temp1 = CRFNO_characterIndex
           return
           
           rem =================================================================
@@ -604,65 +734,114 @@ SelectSkipP4
           return
           
 SelectDrawSprite
+          dim SDS_playerNumber = temp3
+          dim SDS_playerNumberSaved = temp6
+          dim SDS_characterIndex = temp1
+          dim SDS_animationFrame = temp2
+          dim SDS_animationAction = temp3
+          dim SDS_playerNumberForArt = temp4
+          dim SDS_isHurt = temp2
+          dim SDS_isFlashing = temp4
           rem Draw character sprite based on current position and playerChar
           rem Determine which player based on position
-          temp3 = 255  : rem Initialize to invalid
+          let SDS_playerNumber = 255
+          rem Initialize to invalid
           if player0x = 56 then SelectDeterminePlayerP0
           if player1x = 104 then SelectDeterminePlayerP1
           goto SelectDrawSpriteDone
           
 SelectDeterminePlayerP0
-          if player0y = 40 then temp3 = 0 : goto SelectLoadSprite
-          if player0y = 80 then temp3 = 2 : goto SelectLoadSprite
+          dim SDPP0_playerNumber = temp3
+          if player0y = 40 then let SDPP0_playerNumber = 0 : let temp3 = SDPP0_playerNumber : goto SelectLoadSprite
+          if player0y = 80 then let SDPP0_playerNumber = 2 : let temp3 = SDPP0_playerNumber : goto SelectLoadSprite
           goto SelectDrawSpriteDone
           
 SelectDeterminePlayerP1
-          if player1y = 40 then temp3 = 1 : goto SelectLoadSprite
-          if player1y = 80 then temp3 = 3 : goto SelectLoadSprite
+          dim SDPP1_playerNumber = temp3
+          if player1y = 40 then let SDPP1_playerNumber = 1 : let temp3 = SDPP1_playerNumber : goto SelectLoadSprite
+          if player1y = 80 then let SDPP1_playerNumber = 3 : let temp3 = SDPP1_playerNumber : goto SelectLoadSprite
           goto SelectDrawSpriteDone
           
 SelectLoadSprite
+          dim SLS_playerNumber = temp3
+          dim SLS_playerNumberSaved = temp6
+          dim SLS_characterIndex = temp1
+          dim SLS_animationFrame = temp2
+          dim SLS_animationAction = temp3
+          dim SLS_playerNumberForArt = temp4
           rem Load sprite for determined player
-          if temp3 > 3 then SelectDrawSpriteDone
-          dim temp3_player_save = temp6
-          let temp3_player_save = temp3  : rem Save player number
-          temp1 = playerChar[temp3_player_save]
+          if SLS_playerNumber > 3 then SelectDrawSpriteDone
+          let SLS_playerNumberSaved = SLS_playerNumber
+          rem Save player number
+          let SLS_characterIndex = playerChar[SLS_playerNumberSaved]
           
           rem Use character select animation state
           rem charSelectPlayerAnimSeq has animation sequence (bit 0: 0=idle, 1=walk)
           rem charSelectPlayerAnimFrame has animation frame counter (0-7)
           rem Map to proper animation action: 0=idle (AnimIdle=1), 1=walk (AnimWalking=3)
-          if charSelectPlayerAnimSeq[temp3_player_save] then SelectLoadWalkingSprite
+          if charSelectPlayerAnimSeq[SLS_playerNumberSaved] then SelectLoadWalkingSprite
           
           rem Idle animation
-          temp2 = charSelectPlayerAnimFrame[temp3_player_save]  : rem frame
+          let SLS_animationFrame = charSelectPlayerAnimFrame[SLS_playerNumberSaved]
+          rem frame
           rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp4=player
-          temp3 = 1  : rem AnimIdle = 1
-          temp4 = temp3_player_save
+          let SLS_animationAction = 1
+          rem AnimIdle = 1
+          let SLS_playerNumberForArt = SLS_playerNumberSaved
+          let temp1 = SLS_characterIndex
+          let temp2 = SLS_animationFrame
+          let temp3 = SLS_animationAction
+          let temp4 = SLS_playerNumberForArt
           gosub bank10 LocateCharacterArt
           goto SelectLoadSpriteColor
           
 SelectLoadWalkingSprite
+          dim SLWS_playerNumberSaved = temp6
+          dim SLWS_animationFrame = temp2
+          dim SLWS_animationAction = temp3
+          dim SLWS_playerNumberForArt = temp4
+          dim SLWS_characterIndex = temp1
+          dim SLWS_isHurt = temp2
+          dim SLWS_isFlashing = temp4
           rem Walking animation
-          temp2 = charSelectPlayerAnimSeq[temp3_player_save]  : rem Use sequence counter as frame (0-3 for 4-frame walk)
-          temp3 = 3  : rem AnimWalking = 3
-          temp4 = temp3_player_save
+          let SLWS_animationFrame = charSelectPlayerAnimSeq[SLS_playerNumberSaved]
+          rem Use sequence counter as frame (0-3 for 4-frame walk)
+          let SLWS_animationAction = 3
+          rem AnimWalking = 3
+          let SLWS_playerNumberForArt = SLS_playerNumberSaved
+          let temp1 = SLS_characterIndex
+          let temp2 = SLWS_animationFrame
+          let temp3 = SLWS_animationAction
+          let temp4 = SLWS_playerNumberForArt
           gosub bank10 LocateCharacterArt
           
 SelectLoadSpriteColor
+          dim SLSC_playerNumberSaved = temp6
+          dim SLSC_characterIndex = temp1
+          dim SLSC_isHurt = temp2
+          dim SLSC_playerNumber = temp3
+          dim SLSC_isFlashing = temp4
           rem Now set player color
-          temp1 = playerChar[temp3_player_save]
-          temp2 = 0  : rem not hurt
-          temp3 = temp3_player_save  : rem player number
-          temp4 = 0  : rem not flashing
+          let SLSC_characterIndex = playerChar[SLSC_playerNumberSaved]
+          let SLSC_isHurt = 0
+          rem not hurt
+          let SLSC_playerNumber = SLSC_playerNumberSaved
+          rem player number
+          let SLSC_isFlashing = 0
+          rem not flashing
+          let temp1 = SLSC_characterIndex
+          let temp2 = SLSC_isHurt
+          let temp3 = SLSC_playerNumber
+          let temp4 = SLSC_isFlashing
           gosub LoadCharacterColors
           
-          let temp3 = temp3_player_save  : rem Restore temp3 for possible future use
+          rem temp3 restored via LoadCharacterColors
           
 SelectDrawSpriteDone
           return
           
 SelectDrawNumber
+          dim SDN_playerIndex = temp1
           rem Draw player number indicator below character
           rem Determine which player based on position (same as SelectDrawSprite logic)
           rem Check if we have valid player position
@@ -672,48 +851,123 @@ SelectDrawNumber
           goto SelectDrawNumberDone
           
 SelectNumberPlayerP0
-          if player0y = 40 then temp1 = 0 : goto NumberPositionCalculate
-          if player0y = 80 then temp1 = 2 : goto NumberPositionCalculate
+          dim SNP0_playerIndex = temp1
+          if player0y = 40 then let SNP0_playerIndex = 0 : let temp1 = SNP0_playerIndex : goto NumberPositionCalculate
+          if player0y = 80 then let SNP0_playerIndex = 2 : let temp1 = SNP0_playerIndex : goto NumberPositionCalculate
           goto SelectDrawNumberDone
           
 SelectNumberPlayerP1
-          if player1y = 40 then temp1 = 1 : goto NumberPositionCalculate
-          if player1y = 80 then temp1 = 3 : goto NumberPositionCalculate
+          dim SNP1_playerIndex = temp1
+          if player1y = 40 then let SNP1_playerIndex = 1 : let temp1 = SNP1_playerIndex : goto NumberPositionCalculate
+          if player1y = 80 then let SNP1_playerIndex = 3 : let temp1 = SNP1_playerIndex : goto NumberPositionCalculate
           goto SelectDrawNumberDone
           
 NumberPositionCalculate
-          rem temp1 now has player index (0-3)
+          dim NPC_playerIndex = temp1
+          dim NPC_xPos = temp2
+          dim NPC_yPos = temp3
+          dim NPC_color = temp4
+          dim NPC_spriteSelect = temp5
+          dim NPC_digit = temp1
+          rem playerIndex now has player index (0-3)
           rem Determine X and Y positions and which sprite to use
           rem P1 (index 0): x=56, y=48, sprite=player0
           rem P2 (index 1): x=104, y=48, sprite=player1
           rem P3 (index 2): x=56, y=88, sprite=player0
           rem P4 (index 3): x=104, y=88, sprite=player1
           
-          if !temp1 then SelectNumberP1  : rem P1 (0)
-          if temp1 = 1 then SelectNumberP2  : rem P2 (1)
-          if temp1 = 2 then SelectNumberP3  : rem P3 (2)
-          goto SelectNumberP4  : rem P4 (3)
+          if !NPC_playerIndex then SelectNumberP1
+          rem P1 (0)
+          if NPC_playerIndex = 1 then SelectNumberP2
+          rem P2 (1)
+          if NPC_playerIndex = 2 then SelectNumberP3
+          rem P3 (2)
+          goto SelectNumberP4
+          rem P4 (3)
           
 SelectNumberP1
-          temp2 = 56 : temp3 = 48 : temp5 = 0 : temp4 = ColIndigo(14) : goto DrawNumberDigit
+          dim SNP1_xPos = temp2
+          dim SNP1_yPos = temp3
+          dim SNP1_spriteSelect = temp5
+          dim SNP1_color = temp4
+          dim SNP1_digit = temp1
+          let SNP1_xPos = 56
+          let SNP1_yPos = 48
+          let SNP1_spriteSelect = 0
+          let SNP1_color = ColIndigo(14)
+          let SNP1_digit = 1
           rem P1: left, top row, player0, indigo
+          let temp1 = SNP1_digit
+          let temp2 = SNP1_xPos
+          let temp3 = SNP1_yPos
+          let temp4 = SNP1_color
+          let temp5 = SNP1_spriteSelect
+          goto DrawNumberDigit
           
 SelectNumberP2
-          temp2 = 104 : temp3 = 48 : temp5 = 1 : temp4 = ColRed(14) : goto DrawNumberDigit
+          dim SNP2_xPos = temp2
+          dim SNP2_yPos = temp3
+          dim SNP2_spriteSelect = temp5
+          dim SNP2_color = temp4
+          dim SNP2_digit = temp1
+          let SNP2_xPos = 104
+          let SNP2_yPos = 48
+          let SNP2_spriteSelect = 1
+          let SNP2_color = ColRed(14)
+          let SNP2_digit = 2
           rem P2: right, top row, player1, red
+          let temp1 = SNP2_digit
+          let temp2 = SNP2_xPos
+          let temp3 = SNP2_yPos
+          let temp4 = SNP2_color
+          let temp5 = SNP2_spriteSelect
+          goto DrawNumberDigit
           
 SelectNumberP3
-          temp2 = 56 : temp3 = 88 : temp5 = 0 : temp4 = ColYellow(14) : goto DrawNumberDigit
+          dim SNP3_xPos = temp2
+          dim SNP3_yPos = temp3
+          dim SNP3_spriteSelect = temp5
+          dim SNP3_color = temp4
+          dim SNP3_digit = temp1
+          let SNP3_xPos = 56
+          let SNP3_yPos = 88
+          let SNP3_spriteSelect = 0
+          let SNP3_color = ColYellow(14)
+          let SNP3_digit = 3
           rem P3: left, bottom row, player0, yellow
+          let temp1 = SNP3_digit
+          let temp2 = SNP3_xPos
+          let temp3 = SNP3_yPos
+          let temp4 = SNP3_color
+          let temp5 = SNP3_spriteSelect
+          goto DrawNumberDigit
           
 SelectNumberP4
-          temp2 = 104 : temp3 = 88 : temp5 = 1 : temp4 = ColGreen(14)
+          dim SNP4_xPos = temp2
+          dim SNP4_yPos = temp3
+          dim SNP4_spriteSelect = temp5
+          dim SNP4_color = temp4
+          dim SNP4_digit = temp1
+          let SNP4_xPos = 104
+          let SNP4_yPos = 88
+          let SNP4_spriteSelect = 1
+          let SNP4_color = ColGreen(14)
+          let SNP4_digit = 4
           rem P4: right, bottom row, player1, green
+          let temp1 = SNP4_digit
+          let temp2 = SNP4_xPos
+          let temp3 = SNP4_yPos
+          let temp4 = SNP4_color
+          let temp5 = SNP4_spriteSelect
           
 DrawNumberDigit
-          rem temp1 already has player index (0-3), convert to digit (1-4)
-          temp1 = temp1 + 1
-          rem temp2=X, temp3=Y, temp4=color, temp5=sprite already set
+          dim DND_digit = temp1
+          dim DND_xPos = temp2
+          dim DND_yPos = temp3
+          dim DND_color = temp4
+          dim DND_spriteSelect = temp5
+          rem digit already has player digit (1-4)
+          rem xPos=X, yPos=Y, color=color, spriteSelect=sprite already set
           rem Call DrawDigit with these parameters (DrawPlayerNumber expects temp1=digit, temp2=X, temp3=Y, temp4=color, temp5=sprite)
           gosub bank10 DrawDigit
           
@@ -806,42 +1060,49 @@ SelectSkipPlayer23Anim
           rem =================================================================
           
 SelectUpdatePlayerAnim
+          dim SUPA_playerIndex = temp1
           rem Update animation for a single player
-          rem Input: temp1 = player index (0-3)
+          rem Input: playerIndex = player index (0-3)
           rem Increment frame counter
-          let charSelectPlayerAnimFrame[temp1] = charSelectPlayerAnimFrame[temp1] + 1
+          let charSelectPlayerAnimFrame[SUPA_playerIndex] = charSelectPlayerAnimFrame[SUPA_playerIndex] + 1
           
-          rem Check if it’s time to advance frame (every 6 frames for 10fps at 60fps)
-          if charSelectPlayerAnimFrame[temp1] >= AnimationFrameDelay then SelectAdvanceAnimFrame
+          rem Check if it's time to advance frame (every 6 frames for 10fps at 60fps)
+          if charSelectPlayerAnimFrame[SUPA_playerIndex] >= AnimationFrameDelay then SelectAdvanceAnimFrame
           return
           
 SelectAdvanceAnimFrame
+          dim SAAF_playerIndex = temp1
+          dim SAAF_sequenceValue = temp2
           rem Reset frame counter
-          let charSelectPlayerAnimFrame[temp1] = 0
+          let charSelectPlayerAnimFrame[SAAF_playerIndex] = 0
           
           rem Check current animation sequence
-          if !charSelectPlayerAnimSeq[temp1] then SelectAdvanceIdleAnim
+          if !charSelectPlayerAnimSeq[SAAF_playerIndex] then SelectAdvanceIdleAnim
           rem Walking animation: cycle through 4 frames (0-3)
           rem Use bit 0-1 of sequence counter
-          let charSelectPlayerAnimSeq[temp1] = (charSelectPlayerAnimSeq[temp1] + 1) & 3
+          let SAAF_sequenceValue = (charSelectPlayerAnimSeq[SAAF_playerIndex] + 1) & 3
+          let charSelectPlayerAnimSeq[SAAF_playerIndex] = SAAF_sequenceValue
           
           rem After 4 walk frames (frame 3→0), switch to idle
-          if charSelectPlayerAnimSeq[temp1] then return
+          if charSelectPlayerAnimSeq[SAAF_playerIndex] then return
           rem Switch back to idle after walk cycle
-          let charSelectPlayerAnimSeq[temp1] = 0
+          let charSelectPlayerAnimSeq[SAAF_playerIndex] = 0
           
           rem Toggle to walk sequence after idle
           rem Just set sequence flag to 1 (walk) for next cycle
           goto SelectAnimWaitForToggle
           
 SelectAdvanceIdleAnim
+          dim SAAI_playerIndex = temp1
           rem Idle animation cycles every 60 frames, then toggles to walk
           rem Use higher bit in sequence to count idle cycles
           rem Every 60 frames (10 idle animations), toggle to walk
-          if frame & 63 then return  : rem Check every 64 frames roughly
+          if frame & 63 then return
+          rem Check every 64 frames roughly
           
           rem Toggle to walk
-          let charSelectPlayerAnimSeq[temp1] = 1  : rem Start walking
+          let charSelectPlayerAnimSeq[SAAI_playerIndex] = 1
+          rem Start walking
           return
           
 SelectAnimWaitForToggle
@@ -855,11 +1116,12 @@ SelectAnimWaitForToggle
           rem to handle Quadtari being connected/disconnected
           
 CharacterSelectCheckControllerRescan
+          dim CSCR_switchBW = temp6
           rem Check for Game Select or Pause button press
           if switchselect then CharacterSelectDoRescan
           rem Check for Color/B&W switch toggle
-          temp6 = switchbw
-          if temp6 = colorBWPrevious_R then CharacterSelectRescanDone
+          let CSCR_switchBW = switchbw
+          if CSCR_switchBW = colorBWPrevious_R then CharacterSelectRescanDone
           rem Switch toggled, do rescan
           gosub bank6 SelDetectQuad
           let colorBWPrevious_W = switchbw

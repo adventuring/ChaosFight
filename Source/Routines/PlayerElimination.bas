@@ -111,7 +111,15 @@ TriggerEliminationEffects
           
           rem Hide player sprite immediately
           let temp1 = TEE_playerIndex
-          gosub HideEliminatedPlayerSprite
+          rem Inline HideEliminatedPlayerSprite
+          dim HEPS_playerIndex = temp1
+          if HEPS_playerIndex = 0 then player0x = 200 
+          rem Off-screen
+          if HEPS_playerIndex = 1 then player1x = 200
+          if HEPS_playerIndex = 2 then player2x = 200 
+          rem Player 3 uses player2 sprite (multisprite)
+          if HEPS_playerIndex = 3 then player3x = 200 
+          rem Player 4 uses player3 sprite (multisprite)
           
           rem Stop any active missiles for this player
           let temp1 = TEE_playerIndex

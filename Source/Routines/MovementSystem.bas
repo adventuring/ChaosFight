@@ -35,8 +35,10 @@ UpdatePlayerMovement
           rem Applies velocity to position with subpixel precision
           rem batariBASIC automatically handles carry from fractional to integer parts
 UpdatePlayerMovementSingle
+          dim UPS_playerIndex = temp1
+          dim UPS_subpixelSum = temp2
           rem Skip if player is eliminated
-          if playerHealth[temp1] = 0 then return
+          if playerHealth[UPS_playerIndex] = 0 then return
           
           rem =================================================================
           rem APPLY X VELOCITY TO X POSITION
@@ -44,18 +46,18 @@ UpdatePlayerMovementSingle
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem For playerVelocityX (declared separately), add high and low bytes manually
           rem batariBASIC will handle carry from low byte to high byte automatically
-          let temp2 = playerSubpixelX_lo[temp1] + playerVelocityX_lo[temp1]
-          if temp2 > 255 then XCarry
-          let playerSubpixelX_lo[temp1] = temp2
+          let UPS_subpixelSum = playerSubpixelX_lo[UPS_playerIndex] + playerVelocityX_lo[UPS_playerIndex]
+          if UPS_subpixelSum > 255 then XCarry
+          let playerSubpixelX_lo[UPS_playerIndex] = UPS_subpixelSum
           goto XNoCarry
 XCarry
-          let playerSubpixelX_lo[temp1] = temp2 - 256
-          let playerSubpixelX[temp1] = playerSubpixelX[temp1] + 1
+          let playerSubpixelX_lo[UPS_playerIndex] = UPS_subpixelSum - 256
+          let playerSubpixelX[UPS_playerIndex] = playerSubpixelX[UPS_playerIndex] + 1
 XNoCarry
-          let playerSubpixelX[temp1] = playerSubpixelX[temp1] + playerVelocityX[temp1]
+          let playerSubpixelX[UPS_playerIndex] = playerSubpixelX[UPS_playerIndex] + playerVelocityX[UPS_playerIndex]
           
           rem Sync integer position for rendering (high byte is the integer part)
-          let playerX[temp1] = playerSubpixelX[temp1]
+          let playerX[UPS_playerIndex] = playerSubpixelX[UPS_playerIndex]
           
           rem =================================================================
           rem APPLY Y VELOCITY TO Y POSITION
@@ -63,85 +65,103 @@ XNoCarry
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem playerVelocityY is declared as .8.8 so batariBASIC handles arithmetic automatically
           rem But we still need to do it manually since both parts are separate arrays
-          let temp2 = playerSubpixelY_lo[temp1] + playerVelocityY_lo[temp1]
-          if temp2 > 255 then YCarry
-          let playerSubpixelY_lo[temp1] = temp2
+          let UPS_subpixelSum = playerSubpixelY_lo[UPS_playerIndex] + playerVelocityY_lo[UPS_playerIndex]
+          if UPS_subpixelSum > 255 then YCarry
+          let playerSubpixelY_lo[UPS_playerIndex] = UPS_subpixelSum
           goto YNoCarry
 YCarry
-          let playerSubpixelY_lo[temp1] = temp2 - 256
-          let playerSubpixelY[temp1] = playerSubpixelY[temp1] + 1
+          let playerSubpixelY_lo[UPS_playerIndex] = UPS_subpixelSum - 256
+          let playerSubpixelY[UPS_playerIndex] = playerSubpixelY[UPS_playerIndex] + 1
 YNoCarry
-          let playerSubpixelY[temp1] = playerSubpixelY[temp1] + playerVelocityY[temp1]
+          let playerSubpixelY[UPS_playerIndex] = playerSubpixelY[UPS_playerIndex] + playerVelocityY[UPS_playerIndex]
           
           rem Sync integer position for rendering (high byte is the integer part)
-          let playerY[temp1] = playerSubpixelY[temp1]
+          let playerY[UPS_playerIndex] = playerSubpixelY[UPS_playerIndex]
           
           return
 
           rem Set player velocity (integer parts only, subpixel parts set to 0)
           rem Input: temp1 = player index (0-3), temp2 = X velocity (integer), temp3 = Y velocity (integer)
 SetPlayerVelocity
-          let playerVelocityX[temp1] = temp2
-          let playerVelocityX_lo[temp1] = 0
-          let playerVelocityY[temp1] = temp3
-          let playerVelocityY_lo[temp1] = 0
+          dim SPV_playerIndex = temp1
+          dim SPV_velocityX = temp2
+          dim SPV_velocityY = temp3
+          let playerVelocityX[SPV_playerIndex] = SPV_velocityX
+          let playerVelocityX_lo[SPV_playerIndex] = 0
+          let playerVelocityY[SPV_playerIndex] = SPV_velocityY
+          let playerVelocityY_lo[SPV_playerIndex] = 0
           return
 
           rem Set player position (integer parts only, subpixel parts set to 0)
           rem Input: temp1 = player index (0-3), temp2 = X position (integer), temp3 = Y position (integer)
 SetPlayerPosition
-          let playerX[temp1] = temp2
-          let playerSubpixelX[temp1] = temp2
-          let playerSubpixelX_lo[temp1] = 0
-          let playerY[temp1] = temp3
-          let playerSubpixelY[temp1] = temp3
-          let playerSubpixelY_lo[temp1] = 0
+          dim SPP_playerIndex = temp1
+          dim SPP_positionX = temp2
+          dim SPP_positionY = temp3
+          let playerX[SPP_playerIndex] = SPP_positionX
+          let playerSubpixelX[SPP_playerIndex] = SPP_positionX
+          let playerSubpixelX_lo[SPP_playerIndex] = 0
+          let playerY[SPP_playerIndex] = SPP_positionY
+          let playerSubpixelY[SPP_playerIndex] = SPP_positionY
+          let playerSubpixelY_lo[SPP_playerIndex] = 0
           return
 
           rem Get player position (integer parts only)
           rem Input: temp1 = player index (0-3)
           rem Output: temp2 = X position, temp3 = Y position
 GetPlayerPosition
-          let temp2 = playerX[temp1]
-          let temp3 = playerY[temp1]
+          dim GPP_playerIndex = temp1
+          dim GPP_positionX = temp2
+          dim GPP_positionY = temp3
+          let GPP_positionX = playerX[GPP_playerIndex]
+          let GPP_positionY = playerY[GPP_playerIndex]
           return
 
           rem Get player velocity (integer parts only)
           rem Input: temp1 = player index (0-3)
           rem Output: temp2 = X velocity, temp3 = Y velocity
 GetPlayerVelocity
-          let temp2 = playerVelocityX[temp1]
-          let temp3 = playerVelocityY[temp1]
+          dim GPV_playerIndex = temp1
+          dim GPV_velocityX = temp2
+          dim GPV_velocityY = temp3
+          let GPV_velocityX = playerVelocityX[GPV_playerIndex]
+          let GPV_velocityY = playerVelocityY[GPV_playerIndex]
           return
 
           rem Apply gravity to player velocity (adds to Y velocity)
           rem Input: temp1 = player index (0-3), temp2 = gravity strength (integer, positive = downward)
           rem NOTE: For subpixel gravity, call AddVelocitySubpixelY separately
 MovementApplyGravity
-          let playerVelocityY[temp1] = playerVelocityY[temp1] + temp2
+          dim MAG_playerIndex = temp1
+          dim MAG_gravityStrength = temp2
+          let playerVelocityY[MAG_playerIndex] = playerVelocityY[MAG_playerIndex] + MAG_gravityStrength
           return
 
           rem Add to Y velocity subpixel part (for fractional gravity)
           rem Input: temp1 = player index (0-3), temp2 = subpixel amount to add (0-255)
           rem If overflow occurs (>255), carry to integer part
 AddVelocitySubpixelY
-          let temp3 = playerVelocityY_lo[temp1] + temp2
-          if temp3 > 255 then VelocityYCarry
-          let playerVelocityY_lo[temp1] = temp3
+          dim AVSY_playerIndex = temp1
+          dim AVSY_subpixelAmount = temp2
+          dim AVSY_sum = temp3
+          let AVSY_sum = playerVelocityY_lo[AVSY_playerIndex] + AVSY_subpixelAmount
+          if AVSY_sum > 255 then VelocityYCarry
+          let playerVelocityY_lo[AVSY_playerIndex] = AVSY_sum
           return
 VelocityYCarry
-          let playerVelocityY_lo[temp1] = temp3 - 256
-          let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
+          let playerVelocityY_lo[AVSY_playerIndex] = AVSY_sum - 256
+          let playerVelocityY[AVSY_playerIndex] = playerVelocityY[AVSY_playerIndex] + 1
           return
 
           rem Apply friction to player X velocity (simple approximation)
           rem Input: temp1 = player index (0-3)
           rem NOTE: Simple decrement approach for 8-bit CPU
 ApplyFriction
-          if playerVelocityX[temp1] > 0 then let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
-          if playerVelocityX[temp1] < 0 then let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
+          dim AF_playerIndex = temp1
+          if playerVelocityX[AF_playerIndex] > 0 then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] - 1
+          if playerVelocityX[AF_playerIndex] < 0 then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] + 1
           rem Also zero subpixel if velocity reaches zero
-          if playerVelocityX[temp1] = 0 then let playerVelocityX_lo[temp1] = 0
+          if playerVelocityX[AF_playerIndex] = 0 then let playerVelocityX_lo[AF_playerIndex] = 0
           return
 
           rem =================================================================
@@ -153,13 +173,15 @@ ApplyFriction
           rem Output: temp3 = 1 if collision, 0 if not
           rem NOTE: Uses integer positions only (subpixel ignored for collision)
 CheckPlayerCollision
-          let temp3 = 0
+          dim CPC_player1Index = temp1
+          dim CPC_player2Index = temp2
+          dim CPC_collisionResult = temp3
           
           rem Get positions
-          let temp4 = playerX[temp1] : rem Player1 X
-          let temp5 = playerY[temp1] : rem Player1 Y
-          let temp6 = playerX[temp2] : rem Player2 X
-          let temp7 = playerY[temp2] : rem Player2 Y
+          let temp4 = playerX[CPC_player1Index] : rem Player1 X
+          let temp5 = playerY[CPC_player1Index] : rem Player1 Y
+          let temp6 = playerX[CPC_player2Index] : rem Player2 X
+          let temp7 = playerY[CPC_player2Index] : rem Player2 Y
           
           rem Check X collision (16 pixel width - double-width NUSIZ sprites)
           rem Calculate distance
@@ -173,9 +195,9 @@ XDistanceDone
           
           rem Check Y collision using CharacterHeights table
           rem Get character types for height lookup
-          temp9 = playerChar[temp1]
+          temp9 = playerChar[CPC_player1Index]
           rem Player1 character type
-          temp10 = playerChar[temp2]
+          temp10 = playerChar[CPC_player2Index]
           rem Player2 character type
           rem Get heights from table
           temp11 = CharacterHeights[temp9]

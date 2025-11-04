@@ -553,15 +553,21 @@ Char6_Execute
           dim C6E_playerIndex = temp1
           rem Harpy: Execute → Idle
           rem Clear dive flag and stop diagonal movement when attack completes
+          rem Also apply upward wing flap momentum after swoop attack
           let C6E_playerIndex = currentPlayer
           rem Clear dive flag (bit 4 in characterStateFlags)
           let characterStateFlags[C6E_playerIndex] = characterStateFlags[C6E_playerIndex] & 239
           rem Clear bit 4 (239 = 0xEF = ~0x10)
-          rem Stop diagonal velocity (zero X and Y velocity)
+          rem Stop horizontal velocity (zero X velocity)
           let playerVelocityX[C6E_playerIndex] = 0
           let playerVelocityX_lo[C6E_playerIndex] = 0
-          let playerVelocityY[C6E_playerIndex] = 0
+          rem Apply upward wing flap momentum after swoop attack (equivalent to HarpyJump)
+          rem Same as normal flap: -2 pixels/frame upward (254 in two's complement)
+          let playerVelocityY[C6E_playerIndex] = 254
+          rem -2 in 8-bit two's complement: 256 - 2 = 254
           let playerVelocityY_lo[C6E_playerIndex] = 0
+          rem Keep jumping flag set to allow vertical movement
+          rem playerState[C6E_playerIndex] bit 2 (jumping) already set from attack, keep it
           rem Transition to Idle
           let C6E_animationAction = ActionIdle
           let temp2 = C6E_animationAction

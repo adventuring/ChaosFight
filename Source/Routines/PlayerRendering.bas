@@ -45,16 +45,16 @@ SetSpritePositions
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Position
           if selectedChar3 = 255 then goto SkipPlayer3Position
           if ! playerHealth[2] then goto SkipPlayer3Position
-                    let player2x = playerX[2]
-                    let player2y = playerY[2]
+          let player2x = playerX[2]
+          let player2y = playerY[2]
 SkipPlayer3Position
           
           rem Set Participant 4 position (array [3] → P3 sprite)
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Position
           if selectedChar4 = 255 then goto SkipPlayer4Position
           if ! playerHealth[3] then goto SkipPlayer4Position
-                    let player3x = playerX[3]
-                    let player3y = playerY[3]
+          let player3x = playerX[3]
+          let player3y = playerY[3]
 SkipPlayer4Position
           
 
@@ -72,47 +72,51 @@ SkipPlayer4Position
           if !(controllerStatus & SetPlayers34Active) then goto RenderMissiles2Player
           
           rem 4-player mode: Use frame multiplexing
-          temp6 = frame & 1
+          dim SSP_frameParity = temp6
+          dim SSP_missileActive = temp4
+          let SSP_frameParity = frame & 1
           rem 0 = even frame (Participants 1-2), 1 = odd frame (Participants 3-4)
           
-          if temp6 = 0 then goto RenderMissilesEvenFrame
+          if SSP_frameParity = 0 then goto RenderMissilesEvenFrame
           
           rem Odd frame: Render Participants 3-4 missiles
           rem Participant 3 missile (array [2], bit 2) → missile0
           ENAM0 = 0
-          temp4 = missileActive & 4
-          if temp4 then missile0x = missileX[2] : missile0y = missileY[2] : ENAM0 = 1
+          let SSP_missileActive = missileActive & 4
+          if SSP_missileActive then missile0x = missileX[2] : missile0y = missileY[2] : ENAM0 = 1
           
           rem Participant 4 missile (array [3], bit 3) → missile1
           ENAM1 = 0
-          temp4 = missileActive & 8
-          if temp4 then missile1x = missileX[3] : missile1y = missileY[3] : ENAM1 = 1
+          let SSP_missileActive = missileActive & 8
+          if SSP_missileActive then missile1x = missileX[3] : missile1y = missileY[3] : ENAM1 = 1
           return
           
 RenderMissilesEvenFrame
+          dim RMEF_missileActive = temp4
           rem Even frame: Render Participants 1-2 missiles
           rem Participant 1 missile (array [0], bit 0) → missile0
           ENAM0 = 0 
-          temp4 = missileActive & 1
-          if temp4 then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1
+          let RMEF_missileActive = missileActive & 1
+          if RMEF_missileActive then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1
           
           rem Participant 2 missile (array [1], bit 1) → missile1
           ENAM1 = 0 
-          temp4 = missileActive & 2
-          if temp4 then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1
+          let RMEF_missileActive = missileActive & 2
+          if RMEF_missileActive then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1
           return
           
 RenderMissiles2Player
+          dim RM2P_missileActive = temp4
           rem 2-player mode: No multiplexing needed, assign missiles directly
           rem Participant 1 (array [0]) missile (missile0, P0 sprite)
           ENAM0 = 0 
-          temp4 = missileActive & 1
-          if temp4 then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1
+          let RM2P_missileActive = missileActive & 1
+          if RM2P_missileActive then missile0x = missileX[0] : missile0y = missileY[0] : ENAM0 = 1
           
           rem Participant 2 (array [1]) missile (missile1, P1 sprite)
           ENAM1 = 0 
-          temp4 = missileActive & 2
-          if temp4 then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1
+          let RM2P_missileActive = missileActive & 2
+          if RM2P_missileActive then missile1x = missileX[1] : missile1y = missileY[1] : ENAM1 = 1
           
           return
 
@@ -123,11 +127,19 @@ RenderMissiles2Player
           rem Colors change based on hurt state and color/B&W switch.
           rem On 7800, Pause button can override Color/B&W setting.
 SetPlayerSprites
+          dim SPS_charIndex = temp1
+          dim SPS_animFrame = temp2
+          dim SPS_playerNum = temp3
           rem Set Player 1 color and sprite
           rem Color mode: Use solid player color or dimmer when hurt
           if playerRecoveryFrames[0] > 0 then COLUP0 = ColIndigo(6) : goto Player1ColorDone 
           rem Hurt: dimmer indigo
-          let temp1 = playerChar[0] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player1ColorDone 
+          let SPS_charIndex = playerChar[0]
+          let SPS_animFrame = 0
+          let temp1 = SPS_charIndex
+          let temp2 = SPS_animFrame
+          gosub bank10 LoadCharacterColors
+          goto Player1ColorDone 
           rem Normal: solid player color
           
 Player1ColorDone
@@ -147,19 +159,27 @@ Player1ColorDone
           end
 
           rem Load sprite data from character definition
-          let temp1 = playerChar[0] 
+          let SPS_charIndex = playerChar[0] 
           rem Character index
-          let temp2 = 0 
+          let SPS_animFrame = 0 
           rem Animation frame (0=idle, 1=running)
-          let temp3 = 0 
+          let SPS_playerNum = 0 
           rem Player number (0=Player 1)
+          let temp1 = SPS_charIndex
+          let temp2 = SPS_animFrame
+          let temp3 = SPS_playerNum
           gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
           rem Color mode: Use solid player color or dimmer when hurt
           if playerRecoveryFrames[1] > 0 then COLUP1 = ColRed(6) : goto Player2ColorDone 
           rem Hurt: dimmer red
-          let temp1 = playerChar[1] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player2ColorDone 
+          let SPS_charIndex = playerChar[1]
+          let SPS_animFrame = 0
+          let temp1 = SPS_charIndex
+          let temp2 = SPS_animFrame
+          gosub bank10 LoadCharacterColors
+          goto Player2ColorDone 
           rem Normal: solid player color
           
 Player2ColorDone
@@ -179,12 +199,15 @@ Player2ColorDone
           end
 
           rem Load sprite data from character definition
-          let temp1 = playerChar[1] 
+          let SPS_charIndex = playerChar[1] 
           rem Character index
-          let temp2 = 0 
+          let SPS_animFrame = 0 
           rem Animation frame (0=idle, 1=running)
-          let temp3 = 1 
+          let SPS_playerNum = 1 
           rem Player number (1=Player 2)
+          let temp1 = SPS_charIndex
+          let temp2 = SPS_animFrame
+          let temp3 = SPS_playerNum
           gosub bank10 LoadCharacterSprite
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
@@ -199,7 +222,12 @@ Player2ColorDone
           rem Color mode: Use solid player color or dimmer when hurt
           if playerRecoveryFrames[2] > 0 then COLUP2 = ColYellow(6) : goto Player3ColorDone
           rem Hurt: dimmer yellow
-          let temp1 = playerChar[2] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player3ColorDone
+          let SPS_charIndex = playerChar[2]
+          let SPS_animFrame = 0
+          let temp1 = SPS_charIndex
+          let temp2 = SPS_animFrame
+          gosub bank10 LoadCharacterColors
+          goto Player3ColorDone
           rem Normal: solid player color
           
 Player3ColorDone
@@ -219,12 +247,15 @@ Player3ColorDone
           end
 
           rem Load sprite data from character definition
-          let temp1 = playerChar[2]
+          let SPS_charIndex = playerChar[2]
           rem Character index
-          let temp2 = 0
+          let SPS_animFrame = 0
           rem Animation frame (0=idle, 1=running)
-          let temp3 = 2 
+          let SPS_playerNum = 2 
           rem Player number (2=Player 3)
+          let temp1 = SPS_charIndex
+          let temp2 = SPS_animFrame
+          let temp3 = SPS_playerNum
           gosub bank10 LoadCharacterSprite
           
 SkipPlayer3Sprite
@@ -237,7 +268,12 @@ SkipPlayer3Sprite
           rem Color mode: Use solid player color or dimmer when hurt
           if playerRecoveryFrames[3] > 0 then COLUP3 = ColGreen(6) : goto Player4ColorDone
           rem Hurt: dimmer green
-          let temp1 = playerChar[3] : let temp2 = 0 : gosub bank10 LoadCharacterColors : goto Player4ColorDone
+          let SPS_charIndex = playerChar[3]
+          let SPS_animFrame = 0
+          let temp1 = SPS_charIndex
+          let temp2 = SPS_animFrame
+          gosub bank10 LoadCharacterColors
+          goto Player4ColorDone
           rem Normal: solid player color
           
 Player4ColorDone
@@ -257,12 +293,15 @@ Player4ColorDone
           end
 
           rem Load sprite data from character definition
-          let temp1 = playerChar[3]
+          let SPS_charIndex = playerChar[3]
           rem Character index
-          let temp2 = 0
+          let SPS_animFrame = 0
           rem Animation frame (0=idle, 1=running)
-          let temp3 = 3 
+          let SPS_playerNum = 3 
           rem Player number (3=Player 4)
+          let temp1 = SPS_charIndex
+          let temp2 = SPS_animFrame
+          let temp3 = SPS_playerNum
           gosub bank10 LoadCharacterSprite
           
 SkipPlayer4Sprite
@@ -287,8 +326,8 @@ SkipParticipant1Flash
           rem Use skip-over pattern to avoid complex || operator
           if playerHealth[1] >= 25 then goto SkipParticipant2Flash
           if playerRecoveryFrames[1] <> 0 then goto SkipParticipant2Flash
-                    if frame & 8 then player1x = 200
-SkipPlayer1Flash
+          if frame & 8 then player1x = 200
+SkipParticipant2Flash
 
           rem Flash Player 3 sprite if health is low (but alive)
           if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Flash

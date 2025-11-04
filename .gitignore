@@ -40,4 +40,5 @@ Source/Art/*.png
 include.bB
 bin/skyline-tool
 *.midi
+!Source/Reference/**
 bin/buildapp

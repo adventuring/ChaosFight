@@ -94,7 +94,11 @@ CheckFallDamage
           rem Average (20): 120/20 = 6
           rem Light (10): 120/10 = 12 (can fall farther)
           rem Heavy (30): 120/30 = 4 (takes damage sooner)
-          let CFD_safeThreshold = 120 / CFD_characterWeight 
+          rem Divide 120 by character weight using repeated subtraction
+          let temp2 = 120
+          let temp3 = CFD_characterWeight
+          gosub DivideByVariable
+          let CFD_safeThreshold = temp2 
           rem Safe fall velocity threshold
           
           rem Check if fall velocity exceeds safe threshold
@@ -119,9 +123,16 @@ CheckFallDamage
           rem Light (10): 10/20 = 0.5x damage, Average (20): 20/20 = 1.0x, Heavy (30): 30/20 = 1.5x
           rem Using integer math: damage = damage * weight / 20
           rem Use damageWeightProduct for intermediate calculation
-          let damageWeightProduct = CFD_damage * CFD_characterWeight
+          rem Multiply damage by weight using repeated addition
+          let temp2 = CFD_damage
+          let temp3 = CFD_characterWeight
+          gosub MultiplyByVariable
+          let damageWeightProduct = temp2
           rem damageWeightProduct = damage * weight
-          let CFD_damage = damageWeightProduct / 20
+          rem Divide by 20 using helper
+          let temp2 = damageWeightProduct
+          gosub DivideBy20
+          let CFD_damage = temp2
           rem CFD_damage = damage * weight / 20 (weight-based multiplier applied)
           
           rem Apply damage reduction for Ninjish Guy (after weight multiplier)
@@ -339,6 +350,86 @@ SetVerticalMomentum
           
           return
 
+          rem =================================================================
+          rem DIVISION/MULTIPLICATION HELPERS (NO MUL/DIV SUPPORT)
+          rem =================================================================
+          rem Helper routines for division and multiplication using repeated
+          rem operations (since batariBASIC does not support * or / operations)
+          
+          rem DivideBy20: compute floor(temp2 / 20) into temp2 via repeated subtraction
+          rem INPUT: temp2 = dividend
+          rem OUTPUT: temp2 = quotient (floor of division)
+DivideBy20
+          dim DB20_dividend = temp2
+          dim DB20_quotient = temp6
+          let DB20_quotient = 0
+          if DB20_dividend < 20 then goto DivideBy20Done
+DivideBy20Loop
+          let DB20_dividend = DB20_dividend - 20
+          let DB20_quotient = DB20_quotient + 1
+          if DB20_dividend >= 20 then DivideBy20Loop
+DivideBy20Done
+          let DB20_dividend = DB20_quotient
+          rem Result in temp2
+          return
+          
+          rem DivideBy100: compute floor(temp2 / 100) into temp2 via repeated subtraction
+          rem INPUT: temp2 = dividend
+          rem OUTPUT: temp2 = quotient (floor of division)
+DivideBy100
+          dim DB100_dividend = temp2
+          dim DB100_quotient = temp6
+          let DB100_quotient = 0
+          if DB100_dividend < 100 then goto DivideBy100Done
+DivideBy100Loop
+          let DB100_dividend = DB100_dividend - 100
+          let DB100_quotient = DB100_quotient + 1
+          if DB100_dividend >= 100 then DivideBy100Loop
+DivideBy100Done
+          let DB100_dividend = DB100_quotient
+          rem Result in temp2
+          return
+          
+          rem MultiplyByVariable: compute temp2 * temp3 into temp2 via repeated addition
+          rem INPUT: temp2 = multiplicand, temp3 = multiplier
+          rem OUTPUT: temp2 = product
+          rem NOTE: Destroys temp3
+MultiplyByVariable
+          dim MBV_product = temp2
+          dim MBV_multiplier = temp3
+          dim MBV_original = temp4
+          let MBV_original = MBV_product
+          rem Save original multiplicand
+          let MBV_product = 0
+          rem Initialize product
+          if MBV_multiplier = 0 then goto MultiplyByVariableDone
+MultiplyByVariableLoop
+          let MBV_product = MBV_product + MBV_original
+          let MBV_multiplier = MBV_multiplier - 1
+          if MBV_multiplier > 0 then MultiplyByVariableLoop
+MultiplyByVariableDone
+          rem Result in temp2
+          return
+          
+          rem DivideByVariable: compute floor(temp2 / temp3) into temp2 via repeated subtraction
+          rem INPUT: temp2 = dividend, temp3 = divisor
+          rem OUTPUT: temp2 = quotient (floor of division)
+          rem NOTE: Destroys temp3
+DivideByVariable
+          dim DBV_dividend = temp2
+          dim DBV_divisor = temp3
+          dim DBV_quotient = temp6
+          let DBV_quotient = 0
+          if DBV_dividend < DBV_divisor then goto DivideByVariableDone
+DivideByVariableLoop
+          let DBV_dividend = DBV_dividend - DBV_divisor
+          let DBV_quotient = DBV_quotient + 1
+          if DBV_dividend >= DBV_divisor then DivideByVariableLoop
+DivideByVariableDone
+          let DBV_dividend = DBV_quotient
+          rem Result in temp2
+          return
+          
           rem =================================================================
           rem CALCULATE SAFE FALL DISTANCE
           rem =================================================================

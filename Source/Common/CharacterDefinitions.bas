@@ -124,25 +124,29 @@ end
           10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
           end
 
-          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+                    rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileWidths
-             1, 4, 2, 2, 2, 4, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0
+             1, 4, 2, 2, 2, 4, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0
           rem Megax uses maximum missile width (4) for fire breath
-end
+          rem Ursulo uses melee (0) for claw swipe
+          end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileHeights
-             1, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0
+             1, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0
+          rem Ursulo uses melee (0) for claw swipe
 end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileMaxX
-             4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 6, 0
+             4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
+          rem Ursulo uses melee (0) for claw swipe
 end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileMaxY
-             4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 6, 0
+             4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
+          rem Ursulo uses melee (0) for claw swipe
 end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
@@ -176,10 +180,11 @@ end
           rem  Bernie    Curler     Dragon of Storms  Zoe Ryen Fat Tony  Grizzard   Harpy     Knight Guy
           rem  melee     ranged     melee     ranged    ranged    melee      ranged    ranged
           rem  Frooty    Nefertem   Ninjish   Pork Chop Radish    Robo Tito  Ursulo    Shamone
-          rem  ranged    melee      melee     melee     melee     melee      ranged    melee
+          rem  ranged    melee      melee     melee     melee     melee      melee     melee
           rem  Harpy changed from melee to ranged (diagonal downward attack)
+          rem  Ursulo changed from ranged to melee (claw swipe)
           data CharacterAttackTypes
-              %01111111, %01000001, %00000000, %00000000
+              %01111111, %00000001, %00000000, %00000000
           end
 
           rem =================================================================

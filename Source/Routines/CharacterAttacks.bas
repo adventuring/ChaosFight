@@ -229,13 +229,13 @@ RoboTitoAttack
           goto PerformMeleeAttack
 
           rem =================================================================
-          rem URSULO (Character 14) - Ranged Attack
+          rem URSULO (Character 14) - Melee Attack (Claw Swipe)
           rem =================================================================
 UrsuloAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           rem tail call
-          goto PerformRangedAttack
+          goto PerformMeleeAttack
 
           rem =================================================================
           rem SHAMONE (Character 15) - Jump + Attack (Special)

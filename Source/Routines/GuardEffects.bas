@@ -151,9 +151,7 @@ UpdateGuardTimers
           let UGT_playerIndex = 3
           let temp1 = UGT_playerIndex
           gosub UpdateSingleGuardTimer
-          rem tail call
-          goto before
-          rem Keeping as gosub+return for clarity since multiple calls precede it
+          return
 
 UpdateSingleGuardTimer
           dim USGT_playerIndex = temp1

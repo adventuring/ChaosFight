@@ -409,7 +409,7 @@ CharacterSelectRollPlayer0
 CharacterSelectLockPlayer0Handicap
           let playerLocked[0] = 2
 CharacterSelectLockPlayer0Done
-          randomSelectFlags[0] = 0
+          let randomSelectFlags[0] = 0
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer1
@@ -423,7 +423,7 @@ CharacterSelectRollPlayer1
 CharacterSelectLockPlayer1Handicap
           let playerLocked[1] = 2
 CharacterSelectLockPlayer1Done
-          randomSelectFlags[1] = 0
+          let randomSelectFlags[1] = 0
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer2
@@ -437,7 +437,7 @@ CharacterSelectRollPlayer2
 CharacterSelectLockPlayer2Handicap
           let playerLocked[2] = 2
 CharacterSelectLockPlayer2Done
-          randomSelectFlags[2] = 0
+          let randomSelectFlags[2] = 0
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer3
@@ -451,7 +451,7 @@ CharacterSelectRollPlayer3
 CharacterSelectLockPlayer3Handicap
           let playerLocked[3] = 2
 CharacterSelectLockPlayer3Done
-          randomSelectFlags[3] = 0
+          let randomSelectFlags[3] = 0
           
 CharacterSelectRollsDone
           return

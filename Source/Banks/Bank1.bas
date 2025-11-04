@@ -12,19 +12,21 @@
           rem Window values are compile-time constants set in bitmap .s files.
           rem Bitmap slot assignments:
           rem   - 48x2_1: AtariAge logo (Publisher)
-          rem   - 48x2_2: AtariAgeText text (Publisher) - replaces Interworldly on Publisher
-          rem   - 48x2_3: ChaosFight logo (Title)
-          rem   - Interworldly: Currently unused (was 48x2_2, now repurposed for AtariAgeText)
+          rem   - 48x2_2: AtariAgeText text (Publisher)
+          rem   - 48x2_3: Interworldly (Author) OR ChaosFight (Title) - switched at runtime
+          rem NOTE: Interworldly and ChaosFight both use slot 3, but only one is included at compile time
+          rem       Since they're in different game modes, we can include both and switch via window values
           asm
           include "Source/Generated/Art.AtariAge.s"
           include "Source/Generated/Art.AtariAgeText.s"
+          include "Source/Generated/Art.Interworldly.s"
           include "Source/Generated/Art.ChaosFight.s"
           
           rem Override window values AFTER includes for correct per-screen display
           rem Window values: 42 = visible, 0 = hidden
           rem Requirements per screen:
-          rem   Publisher (gameMode 0): AtariAge logo (48x2_1)=42, AtariAgeText (48x2_2)=42, ChaosFight=0 (2 bitmaps)
-          rem   Author (gameMode 1): Interworldly (needs different slot) - currently not supported
+          rem   Publisher (gameMode 0): AtariAge logo (48x2_1)=42, AtariAgeText (48x2_2)=42, others=0 (2 bitmaps)
+          rem   Author (gameMode 1): Interworldly (48x2_3)=42, others=0 (1 bitmap)
           rem   Title (gameMode 2): ChaosFight (48x2_3)=42, others=0 (1 bitmap)
           rem
           rem Set compile-time window values to 42 (maximum) for all bitmaps

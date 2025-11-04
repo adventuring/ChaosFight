@@ -21,7 +21,7 @@ HandleConsoleSwitches
           if switchreset then let gameMode = ModePublisherPreamble : gosub bank13 ChangeGameMode : return
 
           rem Game Select switch or Joy2B+ Button III - toggle pause mode
-          temp2 = 0 
+          let temp2 = 0 
           rem Check Player 1 buttons
           gosub CheckEnhancedPause
           if !temp1 then SkipPlayer1Pause
@@ -36,7 +36,7 @@ Player1PauseDone
 SkipPlayer1Pause
           
           
-          temp2 = 1 
+          let temp2 = 1 
           rem Check Player 2 buttons
           gosub CheckEnhancedPause
           if !temp1 then SkipPlayer2Pause

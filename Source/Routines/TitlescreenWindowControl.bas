@@ -28,16 +28,14 @@ SetPublisherWindowValues
           return
           
           rem Initialize window values for Author screen
-          rem Shows: Interworldly (needs different slot - currently not supported)
-          rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText (bmp_48x2_2), ChaosFight (bmp_48x2_3)
-          rem NOTE: Interworldly bitmap was in slot 48x2_2, which is now used for AtariAgeText
-          rem TODO: Need to add Interworldly to a different slot (48x2_4 or separate approach)
+          rem Shows: Interworldly (uses slot 3, same as ChaosFight - switched at runtime)
+          rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText (bmp_48x2_2)
+          rem NOTE: Interworldly and ChaosFight both use slot 3 - bitmap data is switched via includes
 SetAuthorWindowValues
-          rem Set runtime window values for Author screen (all hidden for now)
+          rem Set runtime window values for Author screen (Interworldly visible in slot 3)
           let titlescreenWindow1 = 0   ; AtariAge logo hidden
-          let titlescreenWindow2 = 0   ; AtariAgeText hidden (slot repurposed from Interworldly)
-          let titlescreenWindow3 = 0   ; ChaosFight hidden
-          rem TODO: Add Interworldly display when slot is available
+          let titlescreenWindow2 = 0   ; AtariAgeText hidden
+          let titlescreenWindow3 = 42  ; Interworldly visible (same slot as ChaosFight, different bitmap)
           return
           
           rem Initialize window values for Title screen

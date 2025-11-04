@@ -197,10 +197,10 @@ end
           rem Values: 0-7 (top to bottom of 8-pixel tall sprite)
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          rem  Note: Curler uses 15 for low-trajectory stone near ground
+          rem  Note: Curler uses 14 for emission from feet (14 pixels from top of 16px sprite = near ground)
           rem  Note: Megax uses 4 for mouth height (fire breath emission point)
           data CharacterMissileEmissionHeights
-             3, 15, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
+             3, 14, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
           end
 
           rem =================================================================
@@ -212,7 +212,7 @@ end
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileMomentumX
-             5, 8, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
+             5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 7, 0
           end
 
           rem =================================================================

@@ -302,8 +302,11 @@ FrictionDone
           if !(temp5 & MissileFlagHitBackground) then PlayfieldCollisionDone
           gosub bank7 MissileCollPF
           if !temp4 then PlayfieldCollisionDone
-          if temp5 & MissileFlagBounce then gosub HandleMissileBounce
+          rem Collision detected - check if should bounce or deactivate
+          if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return
+          rem Bounced - continue moving (HandleMissileBounce returns)
           gosub DeactivateMissile : return
+          rem No bounce - deactivate on background hit
 PlayfieldCollisionDone
           
           rem Check collision with players

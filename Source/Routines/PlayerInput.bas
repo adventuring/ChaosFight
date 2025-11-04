@@ -281,9 +281,9 @@ SkipFlyingLeftRight
           if !joy0up then goto SkipUpInputHandling
           
           rem Check Shamone form switching first (Character 15 <-> 31)
-          if PlayerChar[IHLP_playerIndex] = 15 then PlayerChar[IHLP_playerIndex] = 31 : goto SkipJumpInput
+          if PlayerChar[IHLP_playerIndex] = 15 then let PlayerChar[IHLP_playerIndex] = 31 : goto SkipJumpInput
           rem Switch Shamone -> MethHound
-          if PlayerChar[IHLP_playerIndex] = 31 then PlayerChar[IHLP_playerIndex] = 15 : goto SkipJumpInput
+          if PlayerChar[IHLP_playerIndex] = 31 then let PlayerChar[IHLP_playerIndex] = 15 : goto SkipJumpInput
           rem Switch MethHound -> Shamone
           
           rem Check Bernie fall-through (Character 0)
@@ -553,9 +553,9 @@ SkipFlyingLeftRightRight
           if !joy1up then goto SkipUpInputHandlingRight
           
           rem Check Shamone form switching first (Character 15 <-> 31)
-          if PlayerChar[temp1] = 15 then PlayerChar[temp1] = 31 : goto SkipJumpInputRight
+          if PlayerChar[temp1] = 15 then let PlayerChar[temp1] = 31 : goto SkipJumpInputRight
           rem Switch Shamone -> MethHound
-          if PlayerChar[temp1] = 31 then PlayerChar[temp1] = 15 : goto SkipJumpInputRight
+          if PlayerChar[temp1] = 31 then let PlayerChar[temp1] = 15 : goto SkipJumpInputRight
           rem Switch MethHound -> Shamone
           
           rem Check Bernie fall-through (Character 0)

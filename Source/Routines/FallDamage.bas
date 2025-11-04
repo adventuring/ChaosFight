@@ -182,19 +182,19 @@ MultiplyDone
           rem Use oldHealthValue for byte-safe clamp check
           let oldHealthValue = playerHealth[CFD_playerIndex]
           let playerHealth[CFD_playerIndex] = playerHealth[CFD_playerIndex] - CFD_damage
-          if playerHealth[CFD_playerIndex] > oldHealthValue then playerHealth[CFD_playerIndex] = 0
+          if playerHealth[CFD_playerIndex] > oldHealthValue then let playerHealth[CFD_playerIndex] = 0
           
           rem Set recovery frames (proportional to damage, min 10, max 30)
           rem Use recoveryFramesCalc for recovery frames calculation
           let recoveryFramesCalc = CFD_damage
           lsr recoveryFramesCalc
           rem Divide by 2 using bit shift right
-          if recoveryFramesCalc < 10 then recoveryFramesCalc = 10
-          if recoveryFramesCalc > 30 then recoveryFramesCalc = 30
-          playerRecoveryFrames[CFD_playerIndex] = recoveryFramesCalc
+          if recoveryFramesCalc < 10 then let recoveryFramesCalc = 10
+          if recoveryFramesCalc > 30 then let recoveryFramesCalc = 30
+          let playerRecoveryFrames[CFD_playerIndex] = recoveryFramesCalc
           
           rem Synchronize playerState bit 3 with recovery frames
-          playerState[CFD_playerIndex] = playerState[CFD_playerIndex] | 8
+          let playerState[CFD_playerIndex] = playerState[CFD_playerIndex] | 8
           rem Set bit 3 (recovery flag) when recovery frames are set
           
           rem Set animation state to "recovering from fall"

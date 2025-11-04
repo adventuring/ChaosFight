@@ -14,7 +14,7 @@
           rem =================================================================
           
           rem ChaosFight uses TWO memory contexts that never overlap:
-          rem   1. Admin Mode: Title, preambles, character select, falling in, level select, winner (GameModes 0,1,2,3,4,5,7)
+          rem   1. Admin Mode: Title, preambles, character select, falling in, arena select, winner (GameModes 0,1,2,3,4,5,7)
           rem   2. Game Mode: Gameplay only (GameMode 6)
           rem
           rem CRITICAL KERNEL LIMITATION:
@@ -58,7 +58,7 @@
           
           rem REDIMMED VARIABLES (different meaning per context):
           rem   - var24-var40: Shared between Admin Mode and Game Mode (intentional redim)
-          rem     - var24-var27: Level select (Admin) or playerVelocityX_lo (Game) - ZPRAM for physics
+          rem     - var24-var27: Arena select (Admin) or playerVelocityX_lo (Game) - ZPRAM for physics
           rem     - var28-var35: Preamble/music (Admin) or playerVelocityY 8.8 (Game, var28-var31=high, var32-var35=low) - ZPRAM for physics
           rem     - var37-var40: Character select (Admin) or playerAttackCooldown (Game) - ZPRAM
           rem NOTE: Animation vars (animationCounter, currentAnimationFrame, currentAnimationSeq) moved to SCRAM
@@ -141,7 +141,7 @@
           dim selectedArena = w014
           rem Selected arena (SCRAM w014, read via r014) - COMMON variable, cannot be in redimmed location
           
-          rem Level Select fire button hold timer (COMMON - used in Admin Mode)
+          rem Arena Select fire button hold timer (COMMON - used in Admin Mode)
           dim fireHoldTimer_W = w015
           dim fireHoldTimer_R = r015
           dim fireHoldTimer = w015
@@ -258,10 +258,10 @@
           dim charSelectPlayer = var38      
           rem ADMIN: Which player is currently selecting (1-4) (REDIMMED - Game Mode uses var38 for playerAttackCooldown[1])
           
-          rem ADMIN: Level select variables (var24-var27)
+          rem ADMIN: Arena select variables (var24-var27)
           rem NOTE: These are REDIMMED in Game Mode for animationCounter (var24-var27)
           dim levelPreviewData = var24      
-          rem ADMIN: Level preview state (REDIMMED - Game Mode uses var24 for animationCounter[0])
+          rem ADMIN: Arena preview state (REDIMMED - Game Mode uses var24 for animationCounter[0])
           dim levelScrollOffset = var25     
           rem ADMIN: Scroll position (REDIMMED - Game Mode uses var25 for animationCounter[1])
           dim levelCursorPos = var26        

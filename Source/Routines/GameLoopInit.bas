@@ -12,7 +12,7 @@
           rem   - Character types from selections
           rem   - Missiles and projectiles
           rem   - Frame counter and game state
-          rem   - Level data
+          rem   - Arena data
 
           rem STATE FLAG DEFINITIONS (in PlayerState):
           rem   Bit 0: Facing (1 = right, 0 = left)

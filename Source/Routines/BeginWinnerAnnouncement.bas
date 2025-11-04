@@ -10,20 +10,20 @@
 BeginWinnerAnnouncement
           dim BWA_winnerPlayerIndex = temp1
           dim BWA_characterIndex = temp2
-          dim BWA_themeSongIndex = temp3
           dim BWA_songID = temp1
           
           rem Initialize Winner Announcement mode
-          rem winnerPlayerIndex should already be set by game end logic
+          rem winnerPlayerIndex should already be set by game end logic (FindWinner in PlayerElimination.bas)
           
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)
           
-          rem Initialize display state
-          rem displayRank and winScreenTimer are managed by DisplayWinScreen
+          rem Initialize win screen timer (starts at 0, increments each frame)
+          rem Auto-advance after WinScreenAutoAdvanceFrames (600 frames = 10 seconds at 60fps)
+          let winScreenTimer = 0
           
-          rem Note: winnerPlayerIndex, displayRank, winScreenTimer should be
-          rem initialized by game end logic in PlayerElimination.bas
+          rem Initialize display rank (starts at 0, may be updated by DisplayWinScreen if implemented)
+          let displayRank = 0
           
           rem Get winner's character index
           let BWA_winnerPlayerIndex = winnerPlayerIndex
@@ -32,12 +32,8 @@ BeginWinnerAnnouncement
           if BWA_winnerPlayerIndex = 2 then let BWA_characterIndex = PlayerChar[2]
           if BWA_winnerPlayerIndex = 3 then let BWA_characterIndex = PlayerChar[3]
           
-          rem Look up theme song index from mapping table
-          let BWA_themeSongIndex = CharacterThemeSongIndices[BWA_characterIndex]
-          
-          rem Calculate song ID: character theme songs start after main songs
-          rem (Main songs are 0-4: Title, Interworldly, AtariToday, Victory, GameOver)
-          let BWA_songID = BWA_themeSongIndex + MusicCharacterThemeBase
+          rem Look up full song ID from mapping table (table contains song ID constants)
+          let BWA_songID = CharacterThemeSongIndices[BWA_characterIndex]
           
           rem Start winner's character theme song
           let temp1 = BWA_songID

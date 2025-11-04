@@ -22,11 +22,13 @@
           >Song_AtariToday_Voice0, >Song_Interworldly_Voice0, >Song_Title_Voice0, >Song_GameOver_Voice0, >Song_Victory_Voice0
           end
           
-          rem Voice 1 stream offset table (bytes from Voice0 start to Voice1 start)
-          rem Calculated as low byte of (Voice1 - Voice0) address difference
-          rem Format: data SongVoice1Offsets (5 entries: indices 0-4)
-          data SongVoice1Offsets
-          <Song_AtariToday_Voice1 - <Song_AtariToday_Voice0, <Song_Interworldly_Voice1 - <Song_Interworldly_Voice0, <Song_Title_Voice1 - <Song_Title_Voice0, <Song_GameOver_Voice1 - <Song_GameOver_Voice0, <Song_Victory_Voice1 - <Song_Victory_Voice0
+          rem Voice 1 stream pointer lookup tables (populated with symbol addresses)
+          rem Format: data SongPointersSecondL, SongPointersSecondH tables (5 entries: indices 0-4)
+          data SongPointersSecondL
+          <Song_AtariToday_Voice1, <Song_Interworldly_Voice1, <Song_Title_Voice1, <Song_GameOver_Voice1, <Song_Victory_Voice1
+          end
+          data SongPointersSecondH
+          >Song_AtariToday_Voice1, >Song_Interworldly_Voice1, >Song_Title_Voice1, >Song_GameOver_Voice1, >Song_Victory_Voice1
           end
           
           rem Lookup song pointer from tables
@@ -38,6 +40,17 @@ LoadSongPointer
           rem Use array access to lookup pointer
           let SongPointerL = SongPointersL[temp1]
           let SongPointerH = SongPointersH[temp1]
+          return
+          
+          rem Lookup Voice 1 song pointer from tables
+          rem Input: temp1 = song ID (0-4)
+          rem Output: SongPointerL, SongPointerH = pointer to Song_Voice1 stream
+LoadSongVoice1Pointer
+          rem Bounds check: only 5 songs (0-4)
+          if temp1 > 4 then let SongPointerH = 0 : return
+          rem Use array access to lookup Voice 1 pointer directly
+          let SongPointerL = SongPointersSecondL[temp1]
+          let SongPointerH = SongPointersSecondH[temp1]
           return
           
           rem Load next note from Voice 0 stream using assembly for pointer access

@@ -57,6 +57,11 @@ GameMainLoop
           rem Check boundary collisions
           gosub CheckBoundaryCollisions
 
+          rem Check playfield collisions (walls, ceilings, ground) for all players
+          let temp1 = 0 : gosub CheckPlayfieldCollisionAllDirections
+          let temp1 = 1 : gosub CheckPlayfieldCollisionAllDirections
+          if controllerStatus & SetQuadtariDetected then let temp1 = 2 : gosub CheckPlayfieldCollisionAllDirections : let temp1 = 3 : gosub CheckPlayfieldCollisionAllDirections
+
           rem Check multi-player collisions
           gosub CheckAllPlayerCollisions
 

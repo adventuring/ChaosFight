@@ -58,10 +58,11 @@
           
           rem REDIMMED VARIABLES (different meaning per context):
           rem   - var24-var40: Shared between Admin Mode and Game Mode (intentional redim)
-          rem     - var24-var27: Level select (Admin) or animationCounter (Game) - ZPRAM for performance
-          rem     - var28-var32: Preamble/music (Admin) or currentAnimationFrame (Game) - ZPRAM for performance
-          rem     - var33-var36: Title parade (Admin) or currentAnimationSeq (Game) - ZPRAM
+          rem     - var24-var27: Level select (Admin) or playerVelocityX_lo (Game) - ZPRAM for physics
+          rem     - var28-var35: Preamble/music (Admin) or playerVelocityY 8.8 (Game, var28-var31=high, var32-var35=low) - ZPRAM for physics
           rem     - var37-var40: Character select (Admin) or playerAttackCooldown (Game) - ZPRAM
+          rem NOTE: Animation vars (animationCounter, currentAnimationFrame, currentAnimationSeq) moved to SCRAM
+          rem       to free zero-page space (var24-var31, var33-var36) for frequently-accessed physics variables
           rem   - a,b,c,d: Fall animation vars (Admin Mode) or MissileX (Game Mode)
           rem   - w-z: Animation vars (Admin Mode) or Missile velocities (Game Mode)
           rem   - e: console7800Detected (COMMON) - missileLifetime moved to SCRAM w045 to avoid conflict
@@ -258,17 +259,17 @@
           rem ADMIN: Confirmation timer (REDIMMED - Game Mode uses var27 for animationCounter[3])
 
           rem ADMIN: Preamble screen variables (var28-var32)
-          rem NOTE: These are REDIMMED in Game Mode for currentAnimationFrame
+          rem NOTE: These are REDIMMED in Game Mode for playerVelocityY (8.8 fixed-point, uses var28-var35)
           dim preambleTimer = var28         
-          rem ADMIN: Screen timer (REDIMMED - Game Mode uses var28 for currentAnimationFrame[0])
+          rem ADMIN: Screen timer (REDIMMED - Game Mode uses var28-var31 for playerVelocityY high bytes)
           dim preambleState = var29         
-          rem ADMIN: Which preamble (REDIMMED - Game Mode uses var29 for currentAnimationFrame[1])
+          rem ADMIN: Which preamble (REDIMMED - Game Mode uses var29 for playerVelocityY[1] high byte)
           dim musicPlaying = var30          
-          rem ADMIN: Music status (REDIMMED - Game Mode uses var30 for currentAnimationFrame[2])
+          rem ADMIN: Music status (REDIMMED - Game Mode uses var30 for playerVelocityY[2] high byte)
           dim musicPosition = var31         
-          rem ADMIN: Current note (REDIMMED - Game Mode uses var31 for currentAnimationFrame[3])
+          rem ADMIN: Current note (REDIMMED - Game Mode uses var31 for playerVelocityY[3] high byte)
           dim musicTimer = var32            
-          rem ADMIN: Music frame counter (REDIMMED - Game Mode uses var33 for currentAnimationSeq[0])
+          rem ADMIN: Music frame counter (REDIMMED - Game Mode uses var32-var35 for playerVelocityY low bytes)
 
           rem ADMIN: Title screen parade (var33-var36)
           rem NOTE: These are REDIMMED in Game Mode for currentAnimationSeq (var33-var36, but var37-var40 for playerAttackCooldown)
@@ -330,34 +331,55 @@
           dim player3RecoveryFrames = var18
           dim player4RecoveryFrames = var19
           
-          rem playerMomentumX[0-3] = Horizontal momentum for knockback and physics
-          dim playerMomentumX = var20
-          dim player1MomentumX = var20
-          dim player2MomentumX = var21
-          dim player3MomentumX = var22
-          dim player4MomentumX = var23
+          rem playerVelocityX[0-3] = 8.8 fixed-point X velocity
+          rem High byte (integer part) in zero-page for fast access every frame
+          dim playerVelocityX = var20
+          dim player1VelocityX = var20
+          dim player2VelocityX = var21
+          dim player3VelocityX = var22
+          dim player4VelocityX = var23
+          rem High bytes (integer part) in zero-page var20-var23
+          dim playerVelocityX_lo = var24
+          rem Low bytes (fractional part) in zero-page var24-var27 (freed by moving animation vars)
+          rem Access: playerVelocityX[i] = high byte, playerVelocityX_lo[i] = low byte (both in ZPRAM!)
           
-          rem PlayerMomentumY[0-3] - Stored in temp variables during physics update (not persistent)
-          rem Positive = downward, negative = upward
-          rem Used by ApplyGravity and CheckFallDamage routines
-          rem Values calculated and used within frame, not stored persistently
+          rem playerVelocityY[0-3] = 8.8 fixed-point Y velocity
+          rem Both high and low bytes in zero-page for fast access every frame
+          dim playerVelocityY = var28.8.8
+          rem Game Mode: 8.8 fixed-point Y velocity (8 bytes) - var28-var35 in zero-page
+          rem var28-var31 = high bytes, var32-var35 = low bytes
+          rem Array accessible as playerVelocityY[0-3] and playerVelocityY_lo[0-3] (all in ZPRAM!)
+          
+          rem playerSubpixelX[0-3] = 8.8 fixed-point X position
+          rem Updated every frame but accessed less frequently than velocity, so SCRAM is acceptable
+          dim playerSubpixelX = w049.8.8
+          rem Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM w049-w056
+          rem Array accessible as playerSubpixelX[0-3] and playerSubpixelX_lo[0-3]
+          
+          rem playerSubpixelY[0-3] = 8.8 fixed-point Y position
+          dim playerSubpixelY = w057.8.8
+          rem Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM w057-w064
+          rem Array accessible as playerSubpixelY[0-3] and playerSubpixelY_lo[0-3]
           
           rem =================================================================
           rem GAME MODE - Standard RAM (var24-var47) - sorted numerically
           rem =================================================================
           
-          rem Game Mode: Animation system variables (var24-var27, var28-var31, var33-var36)
-          rem PERFORMANCE CRITICAL: Accessed every frame in UpdateCharacterAnimations
-          rem These must be in ZPRAM (var0-var47) for fastest access, NOT redimmed
-          rem NOTE: var24-var36 are redimmed in Admin Mode, but we use var24-var31, var33-var36 for animation here
-          rem       This is safe because Admin and Game modes never overlap
-          rem 10fps character animation with platform-specific timing
-          dim animationCounter = var24
-          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame counter (4 bytes) - ZPRAM for performance
-          dim currentAnimationFrame = var28
-          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current frame in sequence (4 bytes) - ZPRAM for performance
-          dim currentAnimationSeq = var33
-          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current animation sequence (4 bytes) - ZPRAM for performance
+          rem Game Mode: Animation system variables (moved to SCRAM - updated at 10fps, not every frame)
+          rem NOTE: Animation vars updated at 10fps (every 6 frames), so SCRAM access cost is acceptable
+          rem Freed var24-var31 and var33-var36 (12 bytes) for physics variables that update every frame
+          dim animationCounter_W = w077
+          dim animationCounter_R = r077
+          dim animationCounter = w077
+          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame counter (4 bytes) - SCRAM w077-w080
+          dim currentAnimationFrame_W = w081
+          dim currentAnimationFrame_R = r081
+          dim currentAnimationFrame = w081
+          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current frame in sequence (4 bytes) - SCRAM w081-w084
+          dim currentAnimationSeq_W = w085
+          dim currentAnimationSeq_R = r085
+          dim currentAnimationSeq = w085
+          rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current animation sequence (4 bytes) - SCRAM w085-w088
           
           rem Game Mode: Attack cooldown timers (var37-var40 = 4 bytes)
           rem PERFORMANCE CRITICAL: Checked every frame for attack availability
@@ -533,11 +555,13 @@
           rem NOTE: var8-11 used by playerState (core gameplay, cannot redim)
           rem NOTE: var12-15 used by playerHealth (core gameplay, cannot redim)
           rem NOTE: var16-19 used by playerRecoveryFrames (core gameplay, cannot redim)
-          rem NOTE: var20-23 used by playerMomentumX (core gameplay, cannot redim)
+          rem NOTE: var20-23 used by playerVelocityX (core gameplay, cannot redim)
           
-          rem GAME: Subpixel position system - TOO LARGE for standard RAM (32 bytes needed)
-          rem NOTE: PlayerSubpixelX, PlayerSubpixelY, PlayerVelocityX, PlayerVelocityY
-          rem These require 32 bytes total but only 16 bytes available (var44-var47 = 4 bytes left)
-          rem SOLUTION: Use playerX/playerY directly (8-bit) and calculate subpixel/velocity in temp vars
-          rem OR: Store only high bytes in var44-var47 and calculate low bytes on-the-fly
-          rem Current implementation uses temp variables during movement calculations
+          rem GAME: Subpixel position and velocity system - IMPLEMENTED using batariBASIC 8.8 fixed-point
+          rem NOTE: Using batariBASIC built-in 8.8 fixed-point support:
+          rem       playerVelocityX: high bytes in ZPRAM (var20-var23), low bytes in ZPRAM (var24-var27)
+          rem       playerVelocityY: both high and low bytes in ZPRAM (var28-var35)
+          rem       playerSubpixelX/Y: in SCRAM (w049-w064, 16 bytes) - less frequently accessed
+          rem       Total: 16 bytes zero-page + 16 bytes SCRAM
+          rem Animation vars (var24-var31, var33-var36) moved to SCRAM to free zero-page space
+          rem batariBASIC automatically handles carry operations for 8.8 fixed-point arithmetic

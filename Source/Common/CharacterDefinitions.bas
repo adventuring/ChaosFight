@@ -48,6 +48,19 @@
           35, 25, 20, 15, 30, 30, 15, 32, 15, 30, 10, 30, 10, 32, 30, 25
 end
 
+          rem =================================================================
+          rem CHARACTER HEIGHTS
+          rem =================================================================
+          rem Character heights for hitbox collision detection (in pixels)
+          rem Bernie: 10 pixels, all others: 16 pixels
+          rem Used for player:player and player:missile collision detection
+          rem Values: 10-16 pixels (character sprite heights)
+
+          rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
+          data CharacterHeights
+          10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
+          end
+
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Veg Dog
           data CharacterMissileWidths
              1, 4, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0

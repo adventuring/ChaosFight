@@ -99,11 +99,21 @@ Player3HealthSet
           let PlayerTimers[2] = 0
           let PlayerTimers[3] = 0
           
-          rem Initialize player momentum
-          let PlayerMomentumX[0] = 0
-          let PlayerMomentumX[1] = 0
-          let PlayerMomentumX[2] = 0
-          let PlayerMomentumX[3] = 0
+          rem Initialize player velocity
+          let playerVelocityX[0] = 0
+          let playerVelocityX[1] = 0
+          let playerVelocityX[2] = 0
+          let playerVelocityX[3] = 0
+          rem Initialize subpixel velocities to zero
+          let playerVelocitySubpixelX[0] = 0 : let playerVelocitySubpixelY[0] = 0
+          let playerVelocitySubpixelX[1] = 0 : let playerVelocitySubpixelY[1] = 0
+          let playerVelocitySubpixelX[2] = 0 : let playerVelocitySubpixelY[2] = 0
+          let playerVelocitySubpixelX[3] = 0 : let playerVelocitySubpixelY[3] = 0
+          rem Initialize subpixel positions to zero
+          let playerSubpixelX[0] = 0 : let playerSubpixelY[0] = 0
+          let playerSubpixelX[1] = 0 : let playerSubpixelY[1] = 0
+          let playerSubpixelX[2] = 0 : let playerSubpixelY[2] = 0
+          let playerSubpixelX[3] = 0 : let playerSubpixelY[3] = 0
           
           rem Initialize player damage values
           let PlayerDamage[0] = 22

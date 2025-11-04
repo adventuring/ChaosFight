@@ -13,7 +13,7 @@
           rem AVAILABLE VARIABLES:
           rem   playerX[temp1], playerY[temp1] - Position
           rem   playerState[temp1] - State flags
-          rem   playerMomentumX[temp1] - Horizontal momentum
+          rem   playerVelocityX[temp1] - Horizontal velocity
 
           rem CHARACTER INDICES:
           rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=ZoeRyen, 4=FatTony, 5=Megax,
@@ -129,23 +129,29 @@ DragonetJump
           if pfread(temp2, temp4) then return
             rem Blocked, cannot move up
           
-          rem Clear above - move up
-          let playerY[temp1] = playerY[temp1] - 2
+          rem Clear above - apply upward velocity impulse
+          let playerVelocityY[temp1] = 254
+          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping flag for animation
           return
 
           rem ZOE RYEN (3) - STANDARD JUMP (light weight, high jump)
 ZoeRyenJump
-          let playerY[temp1] = playerY[temp1] - 12
-          rem Lighter character, higher jump
+          rem Apply upward velocity impulse (lighter character, higher jump)
+          let playerVelocityY[temp1] = 244
+          rem -12 in 8-bit two's complement: 256 - 12 = 244
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
           rem FAT TONY (4) - STANDARD JUMP (heavy weight, lower jump)
 FatTonyJump
-          let playerY[temp1] = playerY[temp1] - 8
-          rem Heavier character, lower jump
+          rem Apply upward velocity impulse (heavier character, lower jump)
+          let playerVelocityY[temp1] = 248
+          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -164,7 +170,7 @@ HarpyJump
           if harpyFlightEnergy_R[temp1] = 0 then return
           rem No energy remaining, cannot flap
           
-          rem Check flap cooldown: must wait ¼ second between flaps
+          rem Check flap cooldown: must wait for 1.5 flaps/second (40 frames at 60fps)
           let temp2 = frame - harpyLastFlapFrame_R[temp1]
           rem Calculate frames since last flap
           if temp2 > 127 then temp2 = 127
@@ -176,8 +182,14 @@ HarpyJump
           if playerY[temp1] <= 5 then HarpyFlapRecord
           rem Already at top, cannot flap higher but still record
           
-          rem Flap upward - move up by 3 pixels
-          let playerY[temp1] = playerY[temp1] - 3
+          rem Flap upward - apply upward velocity impulse
+          rem Gravity is 0.05 px/frame² for Harpy (reduced). Over 40 frames, gravity accumulates:
+          rem   velocity_change = 0.05 * 40 = 2.0 px/frame (downward)
+          rem To maintain height, flap impulse must counteract: -2.0 px/frame (upward)
+          rem Using -2 px/frame (254 in two's complement) for stable hover with 1.5 flaps/second
+          let playerVelocityY[temp1] = 254
+          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping/flying bit for animation
           rem Set flight mode flag for slow gravity
@@ -195,8 +207,10 @@ HarpyFlapRecord
 
           rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
 KnightGuyJump
-          let playerY[temp1] = playerY[temp1] - 8
-          rem Heavier character, lower jump
+          rem Apply upward velocity impulse (heavier character, lower jump)
+          let playerVelocityY[temp1] = 248
+          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -228,8 +242,10 @@ FrootyJump
           if pfread(temp2, temp4) then return
             rem Blocked, cannot move up
           
-          rem Clear above - move up
-          let playerY[temp1] = playerY[temp1] - 2
+          rem Clear above - apply upward velocity impulse
+          let playerVelocityY[temp1] = 254
+          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping flag for animation
           return
@@ -241,22 +257,28 @@ NefertemJump
 
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
 NinjishGuyJump
-          let playerY[temp1] = playerY[temp1] - 13
-          rem Very light character, highest jump
+          rem Apply upward velocity impulse (very light character, highest jump)
+          let playerVelocityY[temp1] = 243
+          rem -13 in 8-bit two's complement: 256 - 13 = 243
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
           rem PORK CHOP (11) - STANDARD JUMP (heavy weight)
 PorkChopJump
-          let playerY[temp1] = playerY[temp1] - 8
-          rem Heavy character, lower jump
+          rem Apply upward velocity impulse (heavy character, lower jump)
+          let playerVelocityY[temp1] = 248
+          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
           rem RADISH GOBLIN (12) - STANDARD JUMP (very light, high jump)
 RadishGoblinJump
-          let playerY[temp1] = playerY[temp1] - 13
-          rem Very light character, highest jump
+          rem Apply upward velocity impulse (very light character, highest jump)
+          let playerVelocityY[temp1] = 243
+          rem -13 in 8-bit two's complement: 256 - 13 = 243
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -315,15 +337,19 @@ RoboTitoLatch
 
           rem URSULO (14) - STANDARD JUMP (heavy weight)
 UrsuloJump
-          let playerY[temp1] = playerY[temp1] - 8
-          rem Heavy character, lower jump
+          rem Apply upward velocity impulse (heavy character, lower jump)
+          let playerVelocityY[temp1] = 248
+          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
           rem SHAMONE (15) - STANDARD JUMP (light weight)
 ShamoneJump
-          let playerY[temp1] = playerY[temp1] - 11
-          rem Light character, good jump
+          rem Apply upward velocity impulse (light character, good jump)
+          let playerVelocityY[temp1] = 245
+          rem -11 in 8-bit two's complement: 256 - 11 = 245
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -530,7 +556,10 @@ ShamoneDown
           rem INPUT: temp1 = player index
           rem USES: playerY[temp1], playerState[temp1]
 StandardJump
-          let playerY[temp1] = playerY[temp1] - 10
+          rem Apply upward velocity impulse (input applies impulse to rigid body)
+          let playerVelocityY[temp1] = 246
+          rem -10 in 8-bit two's complement: 256 - 10 = 246
+          let playerVelocityY_lo[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping bit
           return

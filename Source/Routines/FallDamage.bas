@@ -24,9 +24,9 @@
           rem   - Dragon of Storms (2): Reduced gravity (1/2 rate) when falling
 
           rem GRAVITY CONSTANTS:
-          rem   - Normal gravity: 2 pixels/frame acceleration
-          rem   - Reduced gravity (Harpy/Dragon of Storms): 1 pixel/frame
-          rem   - Terminal velocity: 8 pixels/frame (cap on fall speed)
+          rem   - Defined in Constants.bas as tunable constants:
+          rem     GravityNormal (0.1 px/frame²), GravityReduced (0.05 px/frame²), TerminalVelocity (8 px/frame)
+          rem   - Scale: 16px = 2m (character height), so 1px = 0.125m = 12.5cm
 
           rem VARIABLES USED:
           rem   - playerY[0-3]: Vertical position
@@ -96,12 +96,22 @@ CheckFallDamage
           rem Fall damage is environmental, so guard does not protect
           
           rem Calculate fall damage
-          rem Damage = (velocity - safe_velocity) * damage_multiplier
-          rem Damage multiplier: 2 (so 1 extra velocity = 2 damage)
+          rem Base damage = (velocity - safe_velocity) * base_damage_multiplier
+          rem Base damage multiplier: 2 (so 1 extra velocity = 2 base damage)
           temp4 = temp2 - temp3
           temp4 = temp4 * 2
           
-          rem Apply damage reduction for Ninjish Guy
+          rem Apply weight-based damage multiplier: "the bigger they are, the harder they fall"
+          rem Heavy characters take more damage for the same impact velocity
+          rem Formula: damage_multiplier = weight / 20 (average weight)
+          rem Light (10): 10/20 = 0.5x damage, Average (20): 20/20 = 1.0x, Heavy (30): 30/20 = 1.5x
+          rem Using integer math: damage = damage * weight / 20
+          temp7 = temp4 * temp6
+          rem temp7 = damage * weight
+          temp4 = temp7 / 20
+          rem temp4 = damage * weight / 20 (weight-based multiplier applied)
+          
+          rem Apply damage reduction for Ninjish Guy (after weight multiplier)
           if temp5 = 10 then temp4 = temp4 / 2 
           rem Ninjish Guy: 1/2 damage
           
@@ -170,8 +180,8 @@ FallDamageApplyGravity
           rem Apply gravity acceleration
           temp2 = temp2 + temp6
           
-          rem Cap at terminal velocity (8 pixels/frame)
-          if temp2 > 8 then temp2 = 8
+          rem Cap at terminal velocity (uses tunable constant from Constants.bas)
+          if temp2 > TerminalVelocity then temp2 = TerminalVelocity
           
           return
 
@@ -280,11 +290,11 @@ HandleHarpySwoopAttack
           rem Vertical: 4 pixels/frame (downward)
           if temp6 = 0 then SetHorizontalMomentumRight
           rem Facing left: set negative momentum (252 = -4 in signed 8-bit)
-          playerMomentumX[temp1] = 252
+          playerVelocityX[temp1] = 252
           goto SetVerticalMomentum
 SetHorizontalMomentumRight
           rem Facing right: set positive momentum
-          playerMomentumX[temp1] = 4
+          playerVelocityX[temp1] = 4
 SetVerticalMomentum
           
           

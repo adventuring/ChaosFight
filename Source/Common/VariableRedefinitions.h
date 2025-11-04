@@ -387,7 +387,8 @@ FramesPerSequence = 8
  
 AnimationSequenceCount = 16
  
-HarpyFlapCooldownFrames = 15
+HarpyFlapCooldownFrames = 40
+rem 1.5 flaps/second = 1 flap every 0.666 seconds = 40 frames at 60fps NTSC
  
 MovementFrameRate = 60
  

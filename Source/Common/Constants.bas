@@ -13,7 +13,27 @@
           const MaxArenaID=15
           const RandomArena=255
           const RecoveryFrameCount=8
-          const KnockbackDistance=12          
+          const KnockbackDistance=12
+          
+          rem =================================================================
+          rem PHYSICS CONSTANTS - Gravity and Terminal Velocity
+          rem =================================================================
+          rem Scale: 16px = 2m (character height), so 1px = 0.125m = 12.5cm
+          rem Gravity values are in 8.8 fixed-point subpixel units (low byte)
+          rem Realistic Earth gravity would be 4410 px/frame² (too high for gameplay!)
+          rem 
+          rem Normal gravity acceleration (0.1 px/frame²)
+          rem Value: 0.1 * 256 = 25.6 ≈ 26 (in low byte of 8.8 fixed-point)
+          const GravityNormal = 26
+          
+          rem Reduced gravity acceleration (0.05 px/frame²) for Harpy
+          rem Value: 0.05 * 256 = 12.8 ≈ 13 (in low byte of 8.8 fixed-point)
+          const GravityReduced = 13
+          
+          rem Terminal velocity cap (maximum downward fall speed in px/frame)
+          rem Prevents infinite acceleration from gravity
+          const TerminalVelocity = 8
+          
           rem Character system constants
           const MaxCharacter = 15
           rem Maximum character ID (NumCharacters - 1)

@@ -23,15 +23,15 @@ HandleWallCollision
           rem Lighter characters bounce more, heavier characters bounce less
           rem Example weights: 12 (light) = 44 bounce, 40 (heavy) = 30 bounce
           
-          rem Get player momentum using direct array access
-          temp4 = playerMomentumX[temp1]
+          rem Get player velocity using direct array access
+          temp4 = playerVelocityX[temp1]
           
-          rem Calculate bounced momentum: momentum = momentum * bounce / 50
-          rem Using integer math: momentum = (momentum * bounce) / 50
+          rem Calculate bounced velocity: velocity = velocity * bounce / 50
+          rem Using integer math: velocity = (velocity * bounce) / 50
           temp2 = temp4 * (50 - temp3 / 2) / 50
           if temp2 = 0 && temp4 then temp2 = 1
           rem Ensure at least 1 if was moving
-          playerMomentumX[temp1] = temp2
+          playerVelocityX[temp1] = temp2
           return
 
           rem Check if player hit left wall and needs weight-based bounce
@@ -48,8 +48,8 @@ CheckRightWallCollision
           if temp4 > 150 then gosub HandleWallCollision : temp4 = playerX[temp1] : if temp4 > 150 then playerX[temp1] = 150
           return
 
-          rem Note: GetPlayerMomentumSub and SetPlayerMomentumSub removed
-          rem Now using direct array access: playerMomentumX[temp1]
+          rem Note: GetPlayerVelocitySub and SetPlayerVelocitySub removed
+          rem Now using direct array access: playerVelocityX[temp1]
 
           rem =================================================================
           rem CHARACTER WEIGHTS DATA

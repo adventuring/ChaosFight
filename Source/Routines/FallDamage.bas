@@ -126,29 +126,32 @@ CheckFallDamage
           if CFD_damage > 50 then let CFD_damage = 50
           
           rem Apply fall damage (byte-safe clamp)
-          temp6 = playerHealth[temp1]
-          playerHealth[temp1] = playerHealth[temp1] - temp4
-          if playerHealth[temp1] > temp6 then playerHealth[temp1] = 0
+          rem Use temp7 temporarily for old health (CFD_damageCalc is no longer needed)
+          temp7 = playerHealth[CFD_playerIndex]
+          playerHealth[CFD_playerIndex] = playerHealth[CFD_playerIndex] - CFD_damage
+          if playerHealth[CFD_playerIndex] > temp7 then playerHealth[CFD_playerIndex] = 0
           
           rem Set recovery frames (proportional to damage, min 10, max 30)
-          temp5 = temp4 / 2
-          if temp5 < 10 then temp5 = 10
-          if temp5 > 30 then temp5 = 30
-          playerRecoveryFrames[temp1] = temp5
+          rem Use temp7 temporarily for recovery frames calculation
+          temp7 = CFD_damage / 2
+          if temp7 < 10 then temp7 = 10
+          if temp7 > 30 then temp7 = 30
+          playerRecoveryFrames[CFD_playerIndex] = temp7
           
           rem Synchronize playerState bit 3 with recovery frames
-          playerState[temp1] = playerState[temp1] | 8
+          playerState[CFD_playerIndex] = playerState[CFD_playerIndex] | 8
           rem Set bit 3 (recovery flag) when recovery frames are set
           
           rem Set animation state to "recovering from fall"
           rem This is animation state 9 in the character animation sequences
           rem playerState bits: [7:animation][4:attacking][2:jumping][1:guarding][0:facing]
           rem Set bits 7-5 to 9 (recovering animation)
-          temp6 = playerState[temp1] & MaskPlayerStateLower 
+          rem Use temp7 temporarily for state manipulation
+          temp7 = playerState[CFD_playerIndex] & MaskPlayerStateLower 
           rem Keep lower 5 bits
-          temp6 = temp6 | MaskAnimationRecovering 
+          temp7 = temp7 | MaskAnimationRecovering 
           rem Set animation to 9 (1001 in bits 7-4)
-          playerState[temp1] = temp6
+          playerState[CFD_playerIndex] = temp7
           
           rem Play fall damage sound effect
           temp1 = SoundFall

@@ -177,46 +177,47 @@ GravityNextPlayer
           rem Velocity gradually decays over time.
           rem Refactored to loop through all players (0-3)
 ApplyMomentumAndRecovery
+          dim AMAR_playerIndex = temp1
           rem Loop through all players (0-3)
-          let temp1 = 0
+          let AMAR_playerIndex = 0
 MomentumRecoveryLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need Quadtari)
-          if temp1 < 2 then MomentumRecoveryProcess
+          if AMAR_playerIndex < 2 then MomentumRecoveryProcess
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto MomentumRecoveryNext
-          if temp1 = 2 && selectedChar3 = 255 then goto MomentumRecoveryNext
-          if temp1 = 3 && selectedChar4 = 255 then goto MomentumRecoveryNext
+          if AMAR_playerIndex = 2 && selectedChar3 = 255 then goto MomentumRecoveryNext
+          if AMAR_playerIndex = 3 && selectedChar4 = 255 then goto MomentumRecoveryNext
           
 MomentumRecoveryProcess
           rem Decrement recovery frames (velocity is applied by UpdatePlayerMovement)
-          if playerRecoveryFrames[temp1] > 0 then let playerRecoveryFrames[temp1] = playerRecoveryFrames[temp1] - 1
+          if playerRecoveryFrames[AMAR_playerIndex] > 0 then let playerRecoveryFrames[AMAR_playerIndex] = playerRecoveryFrames[AMAR_playerIndex] - 1
           
           rem Synchronize playerState bit 3 with recovery frames
-          if playerRecoveryFrames[temp1] > 0 then let playerState[temp1] = playerState[temp1] | 8
+          if playerRecoveryFrames[AMAR_playerIndex] > 0 then let playerState[AMAR_playerIndex] = playerState[AMAR_playerIndex] | 8
           rem Set bit 3 (recovery flag) when recovery frames > 0
-          if ! playerRecoveryFrames[temp1] then let playerState[temp1] = playerState[temp1] & 247
+          if ! playerRecoveryFrames[AMAR_playerIndex] then let playerState[AMAR_playerIndex] = playerState[AMAR_playerIndex] & 247
           rem Clear bit 3 (recovery flag) when recovery frames = 0
           
           rem Decay velocity if recovery frames active
-          if ! playerRecoveryFrames[temp1] then goto MomentumRecoveryNext
+          if ! playerRecoveryFrames[AMAR_playerIndex] then goto MomentumRecoveryNext
           rem Velocity decay during recovery (knockback slows down over time)
-          if playerVelocityX[temp1] <= 0 then MomentumRecoveryDecayNegative
+          if playerVelocityX[AMAR_playerIndex] <= 0 then MomentumRecoveryDecayNegative
           rem Positive velocity: decay by 1
-          let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
+          let playerVelocityX[AMAR_playerIndex] = playerVelocityX[AMAR_playerIndex] - 1
           rem Also decay subpixel if integer velocity is zero
-          if playerVelocityX[temp1] = 0 then let playerVelocityX_lo[temp1] = 0
+          if playerVelocityX[AMAR_playerIndex] = 0 then let playerVelocityX_lo[AMAR_playerIndex] = 0
           goto MomentumRecoveryNext
 MomentumRecoveryDecayNegative
-          if playerVelocityX[temp1] >= 0 then goto MomentumRecoveryNext
+          if playerVelocityX[AMAR_playerIndex] >= 0 then goto MomentumRecoveryNext
           rem Negative velocity: decay by 1 (add 1 to make less negative)
-          let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
+          let playerVelocityX[AMAR_playerIndex] = playerVelocityX[AMAR_playerIndex] + 1
           rem Also decay subpixel if integer velocity is zero
-          if playerVelocityX[temp1] = 0 then let playerVelocityX_lo[temp1] = 0
+          if playerVelocityX[AMAR_playerIndex] = 0 then let playerVelocityX_lo[AMAR_playerIndex] = 0
           
 MomentumRecoveryNext
           rem Next player
-          let temp1 = temp1 + 1
-          if temp1 < 4 then goto MomentumRecoveryLoop
+          let AMAR_playerIndex = AMAR_playerIndex + 1
+          if AMAR_playerIndex < 4 then goto MomentumRecoveryLoop
           
           return
 
@@ -225,48 +226,50 @@ MomentumRecoveryNext
           rem =================================================================
           rem Prevents players from moving off-screen.
 CheckBoundaryCollisions
+          dim CBC_playerIndex = temp1
+          dim CBC_characterType = temp2
           rem Loop through all players (0-3)
-          let temp1 = 0
+          let CBC_playerIndex = 0
 BoundaryLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need Quadtari)
-          if temp1 < 2 then BoundaryCheckBounds
+          if CBC_playerIndex < 2 then BoundaryCheckBounds
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto BoundaryNextPlayer
-          if temp1 = 2 && selectedChar3 = 255 then goto BoundaryNextPlayer
-          if temp1 = 3 && selectedChar4 = 255 then goto BoundaryNextPlayer
+          if CBC_playerIndex = 2 && selectedChar3 = 255 then goto BoundaryNextPlayer
+          if CBC_playerIndex = 3 && selectedChar4 = 255 then goto BoundaryNextPlayer
           
 BoundaryCheckBounds
           rem Bernie (0) - screen wrap: falling off bottom respawns at top
-          temp2 = playerChar[temp1]
-          if temp2 = 0 then BoundaryBernieWrap
+          let CBC_characterType = playerChar[CBC_playerIndex]
+          if CBC_characterType = 0 then BoundaryBernieWrap
           
           rem Other characters - clamp to screen boundaries
           rem Clamp X position to screen boundaries (10-150)
-          if playerX[temp1] < 10 then let playerX[temp1] = 10 : let playerSubpixelX[temp1] = 10 : let playerSubpixelX_lo[temp1] = 0 : let playerVelocityX[temp1] = 0 : let playerVelocityX_lo[temp1] = 0
-          if playerX[temp1] > 150 then let playerX[temp1] = 150 : let playerSubpixelX[temp1] = 150 : let playerSubpixelX_lo[temp1] = 0 : let playerVelocityX[temp1] = 0 : let playerVelocityX_lo[temp1] = 0
+          if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 10 : let playerSubpixelX[CBC_playerIndex] = 10 : let playerSubpixelX_lo[CBC_playerIndex] = 0 : let playerVelocityX[CBC_playerIndex] = 0 : let playerVelocityX_lo[CBC_playerIndex] = 0
+          if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 150 : let playerSubpixelX[CBC_playerIndex] = 150 : let playerSubpixelX_lo[CBC_playerIndex] = 0 : let playerVelocityX[CBC_playerIndex] = 0 : let playerVelocityX_lo[CBC_playerIndex] = 0
           
           rem Clamp Y position to screen boundaries (20-80)
           rem Bernie can fall off bottom and wrap, so skip Y clamp for Bernie
-          if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY[temp1] = 20 : let playerSubpixelY_lo[temp1] = 0 : let playerVelocityY[temp1] = 0 : let playerVelocityY_lo[temp1] = 0
-          if playerY[temp1] > 80 then let playerY[temp1] = 80 : let playerSubpixelY[temp1] = 80 : let playerSubpixelY_lo[temp1] = 0 : let playerVelocityY[temp1] = 0 : let playerVelocityY_lo[temp1] = 0
+          if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20 : let playerSubpixelY[CBC_playerIndex] = 20 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 80 : let playerSubpixelY[CBC_playerIndex] = 80 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
           goto BoundaryNextPlayer
           
 BoundaryBernieWrap
           rem Bernie wraps horizontally and vertically
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
-          if playerX[temp1] < 10 then let playerX[temp1] = 150 : let playerSubpixelX[temp1] = 150 : let playerSubpixelX_lo[temp1] = 0
-          if playerX[temp1] > 150 then let playerX[temp1] = 10 : let playerSubpixelX[temp1] = 10 : let playerSubpixelX_lo[temp1] = 0
+          if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150 : let playerSubpixelX[CBC_playerIndex] = 150 : let playerSubpixelX_lo[CBC_playerIndex] = 0
+          if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 10 : let playerSubpixelX[CBC_playerIndex] = 10 : let playerSubpixelX_lo[CBC_playerIndex] = 0
           
           rem Vertical wrap: falling off bottom (Y > 80) respawns at top (Y = 20)
-          if playerY[temp1] > 80 then let playerY[temp1] = 20 : let playerSubpixelY[temp1] = 20 : let playerSubpixelY_lo[temp1] = 0 : let playerVelocityY[temp1] = 0 : let playerVelocityY_lo[temp1] = 0
+          if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 20 : let playerSubpixelY[CBC_playerIndex] = 20 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
           
           rem Top boundary: still clamp to prevent going above screen
-          if playerY[temp1] < 20 then let playerY[temp1] = 20 : let playerSubpixelY[temp1] = 20 : let playerSubpixelY_lo[temp1] = 0 : let playerVelocityY[temp1] = 0 : let playerVelocityY_lo[temp1] = 0
+          if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20 : let playerSubpixelY[CBC_playerIndex] = 20 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
 
 BoundaryNextPlayer
           rem Move to next player
-          let temp1 = temp1 + 1
-          if temp1 < 4 then goto BoundaryLoop
+          let CBC_playerIndex = CBC_playerIndex + 1
+          if CBC_playerIndex < 4 then goto BoundaryLoop
           
           return
 

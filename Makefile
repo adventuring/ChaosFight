@@ -219,8 +219,11 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 # Character sprites are compiled using compile-chaos-character
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
 
+# Explicit PNG dependencies for character sprites (ensures PNG generation from XCF)
+$(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Source/Art/%.xcf
+
 # Generate character sprite files from PNG using chaos character compiler
-# PNG files are generated from XCF via %.png: %.xcf pattern rule
+# PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
 $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool                                      
 	@echo "Generating character sprite data for $*..."
 	mkdir -p Source/Generated

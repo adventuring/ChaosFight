@@ -99,30 +99,64 @@ MegaxAttack
           goto PerformRangedAttack
 
           rem =================================================================
-          rem HARPY (Character 6) - Diagonal Downward Attack
+          rem HARPY (Character 6) - Diagonal Downward Swoop Attack
           rem =================================================================
-          rem Harpy attack is a downward diagonal projectile in facing direction
+          rem Harpy attack moves the character itself in a 45° rapid downward swoop
+          rem Attack hitbox is below the character during the swoop
+          rem 5-frame duration for the swoop attack visual
+          rem No missile is spawned - character movement IS the attack
 HarpyAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          dim HA_playerIndex = temp1
+          dim HA_facing = temp2
+          dim HA_velocityX = temp2
+          dim HA_velocityY = temp3
+          
+          rem Set attack animation state
+          let playerState[HA_playerIndex] = (playerState[HA_playerIndex] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           
-          rem Check if Harpy is airborne for diving attack
-          rem If jumping bit is set or Y position is above ground, Harpy is airborne
-          if (playerState[temp1] & 4) then HarpyDive
-          rem Jumping bit set, airborne
-          let temp5 = playerY[temp1]
-          if temp5 < 60 then HarpyDive
-          rem Above ground level, airborne
-          goto HarpyNotDiving
-HarpyDive
-          rem Set dive mode flag for increased damage and normal gravity
-          let characterStateFlags[temp1] = characterStateFlags[temp1] | 4
-          rem Set bit 2 (dive mode)
-HarpyNotDiving
+          rem Get facing direction (bit 0: 0=left, 1=right)
+          let HA_facing = playerState[HA_playerIndex] & 1
           
-          rem tail call
-          goto PerformRangedAttack
-          rem Spawns diagonal downward missile (velocity set in character data)
+          rem Set diagonal velocity at 45° angle (4 pixels/frame horizontal, 4 pixels/frame vertical)
+          rem Horizontal: 4 pixels/frame in facing direction
+          if HA_facing = 0 then HarpySetLeftVelocity
+          rem Facing right: positive X velocity
+          let HA_velocityX = 4
+          goto HarpySetVerticalVelocity
+HarpySetLeftVelocity
+          rem Facing left: negative X velocity (252 = -4 in signed 8-bit)
+          let HA_velocityX = 252
+HarpySetVerticalVelocity
+          rem Vertical: 4 pixels/frame downward (positive Y = down)
+          let HA_velocityY = 4
+          
+          rem Set player velocity for diagonal swoop (45° angle: 4px/frame X, 4px/frame Y)
+          rem Use SetPlayerVelocity to set both X and Y velocities
+          let temp1 = HA_playerIndex
+          let temp2 = HA_velocityX
+          let temp3 = HA_velocityY
+          gosub SetPlayerVelocity
+          
+          rem Set jumping state so character can move vertically during swoop
+          rem This allows vertical movement without being "on ground"
+          let playerState[HA_playerIndex] = playerState[HA_playerIndex] | 4
+          rem Set bit 2 (jumping flag)
+          
+          rem Set swoop attack flag for collision detection
+          rem Bit 2 = swoop active (used to extend hitbox below character during swoop)
+          rem Collision system will check for hits below character during swoop
+          let characterStateFlags[HA_playerIndex] = characterStateFlags[HA_playerIndex] | 4
+          
+          rem Attack behavior:
+          rem - Character moves diagonally down at 45° (4px/frame X, 4px/frame Y)
+          rem - Attack hitbox is below character during movement
+          rem - 5-frame attack animation duration (handled by animation system)
+          rem - Movement continues until collision or attack animation completes
+          rem - No missile spawned - character movement IS the attack
+          rem - Hit players are damaged and pushed (knockback handled by collision system)
+          
+          return
 
           rem =================================================================
           rem KNIGHT GUY (Character 7) - Ranged Attack

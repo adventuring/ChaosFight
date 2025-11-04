@@ -9,6 +9,8 @@
           
           rem Gameplay subsystems called from GameLoopMain
           #include "Source/Routines/Combat.bas"
+          #include "Source/Routines/CharacterAttacks.bas"
+          rem CharacterAttacks must be included before PlayerInput (which uses on-goto to call attack routines)
           #include "Source/Routines/PlayerInput.bas"
           #include "Source/Routines/AnimationSystem.bas"
           #include "Source/Routines/MovementSystem.bas"

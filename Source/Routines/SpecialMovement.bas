@@ -16,7 +16,7 @@
           rem CHARACTER INDICES:
           rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=EXO, 4=FatTony, 5=Grizzard,
           rem   6=Harpy, 7=Knight Guy, 8=Frooty, 9=Nefertem, 10=Ninjish Guy,
-          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Veg Dog
+          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Shamone
           rem =================================================================
 
           rem Apply special movement physics to all active players

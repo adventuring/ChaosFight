@@ -1,7 +1,7 @@
 @subsubsection Ninjish Guy
 @display
 @group
-    Weight: Very Light
+    Weight: 58.97 kg (130.0 lbs)
     Attack: Melée
     Special: Highest jumps, fastest movement, 50% fall damage reduction
     Original Game: Ninjish Guy in Low-Res World and other vhzc games

@@ -1,7 +1,7 @@
 @subsubsection Knight Guy
 @display
 @group
-    Weight: Very Heavy
+    Weight: 113.40 kg (250.0 lbs)
     Attack: Ranged (3×3 pixels, arrowshot)
     Special: Armored fighter with powerful projectile, longest melée duration (6 frames)
     Original Game: Knight Guy: Escapes from Castle, In Another Castle, and 30 Squares of Fate

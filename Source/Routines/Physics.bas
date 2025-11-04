@@ -66,4 +66,4 @@ CheckRightWallCollision
           rem 0 Bernie, 1 Curler, 2 Dragon of Storms, 3 Zoe Ryen,
           rem 4 Fat Tony, 5 Megax, 6 Harpy, 7 Knight Guy,
           rem 8 Frooty, 9 Nefertem, 10 Ninjish Guy, 11 Pork Chop,
-          rem 12 Radish Goblin, 13 Robo Tito, 14 Ursulo, 15 Veg Dog
+          rem 12 Radish Goblin, 13 Robo Tito, 14 Ursulo, 15 Shamone

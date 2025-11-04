@@ -1,7 +1,7 @@
 @subsubsection Megax
 @display
 @group
-    Weight: Medium
+    Weight: 1587.57 kg (3500.0 lbs)
     Attack: Ranged (fire breath)
     Special: Giant monster-eating powerhouse, biggest and most powerful Grizzard known
     Original Game: Grizzards

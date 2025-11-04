@@ -407,7 +407,7 @@ Each character has unique properties affecting gameplay:
 
 @include Ursulo.texi
 
-@include VegDog.texi
+@include Shamone.texi
 
 @page
 

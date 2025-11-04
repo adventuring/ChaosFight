@@ -155,11 +155,12 @@ InitializeHealthBars
           rem P3/P4 HEALTH DISPLAY (SCORE MODE)
           rem =================================================================
           rem Display players 3 and 4 health as 2-digit numbers in score area
-          rem Format: XX__XX where:
-          rem   Left 2 digits (XX): Player 3 health (00-99) - indigo color
-          rem   Middle 2 digits (__): blank (00)
-          rem   Right 2 digits (XX): Player 4 health (00-99) - red color
-          rem Score display uses 6 digits total (3 bytes BCD)
+          rem Format: AACFAA where:
+          rem   Left 2 digits (AA): Player 3 health (00-99 in BCD) OR $AA if inactive/eliminated
+          rem   Middle 2 digits (CF): Literal "CF" ($CF - bad BCD displays as hex)
+          rem   Right 2 digits (AA): Player 4 health (00-99 in BCD) OR $AA if inactive/eliminated
+          rem Score display uses 6 digits total (3 bytes)
+          rem Uses "bad BCD" technique: $AA and $CF are invalid BCD but display as hex characters
 
 UpdatePlayer34HealthBars
           dim UP34HB_p3Health = temp1
@@ -170,39 +171,32 @@ UpdatePlayer34HealthBars
           dim UP34HB_p3BCD = temp5
           dim UP34HB_p4Tens = temp6
           dim UP34HB_p4Ones = temp7
-          rem Only update if players 3 or 4 are active
+          
+          rem Check if Quadtari is present
+          rem If no Quadtari, display "CF2025" instead of player health
+          if !(controllerStatus & SetQuadtariDetected) then goto DisplayCF2025
+          
+          rem Only update player health if players 3 or 4 are active
           if !(controllerStatus & SetPlayers34Active) then return
           
           rem Get Player 3 health (0-100), clamp to 99
-          rem Hide if inactive (selectedChar = 255) or eliminated
+          rem Use $AA (bad BCD displays as "AA") if inactive (selectedChar = 255) or eliminated
           let UP34HB_p3Health = playerHealth[2]
-          if selectedChar3_R = 255 then let UP34HB_p3Health = 0
+          if selectedChar3_R = 255 then goto P3UseAA
           rem Check if Player 3 is eliminated (bit 2 of playersEliminated = 4)
           let UP34HB_isEliminated = playersEliminated & 4
-          if UP34HB_isEliminated then let UP34HB_p3Health = 0
-          rem Hide digits if eliminated or inactive
+          if UP34HB_isEliminated then goto P3UseAA
+          rem Clamp health to valid range
           if UP34HB_p3Health > PlayerHealthMax - 1 then let UP34HB_p3Health = PlayerHealthMax - 1
+          goto P3ConvertHealth
           
-          rem Get Player 4 health (0-100), clamp to 99
-          rem Hide if inactive (selectedChar = 255) or eliminated
-          let UP34HB_p4Health = playerHealth[3]
-          if selectedChar4_R = 255 then let UP34HB_p4Health = 0
-          rem Check if Player 4 is eliminated (bit 3 of playersEliminated = 8)
-          let UP34HB_isEliminated = playersEliminated & 8
-          if UP34HB_isEliminated then let UP34HB_p4Health = 0
-          rem Hide digits if eliminated or inactive
-          if UP34HB_p4Health > 99 then let UP34HB_p4Health = 99
+P3UseAA
+          rem Player 3 inactive/eliminated - use $AA (bad BCD displays as "AA")
+          let UP34HB_p3BCD = $AA
+          goto P4GetHealth
           
-          rem Format score as: P3Health * 10000 + P4Health
-          rem This displays as XX00XX where:
-          rem   XX (left 2 digits) = Player 3 health (00-99)
-          rem   00 (middle 2 digits) = blank separator
-          rem   XX (right 2 digits) = Player 4 health (00-99)
-          rem Score is stored in BCD format across 3 bytes
-          rem Format: score (digits 0-1), score+1 (digits 2-3), score+2 (digits 4-5)
-          
-          rem Convert binary health values to BCD and set score
-          rem Use binary-to-decimal conversion: divide by 10 to extract tens and ones
+P3ConvertHealth
+          rem Convert Player 3 health to BCD format (00-99)
           rem Calculate P3 health in BCD format (tens and ones digits)
           let UP34HB_p3Tens = UP34HB_p3Health / 10
           rem Tens digit (0-9)
@@ -227,6 +221,27 @@ UpdatePlayer34HealthBars
           let UP34HB_p3BCD = UP34HB_p3BCD + UP34HB_p3Ones
           rem p3BCD now contains P3 health as BCD (e.g., $75 for 75)
           
+P4GetHealth
+          rem Get Player 4 health (0-100), clamp to 99
+          rem Use $AA (bad BCD displays as "AA") if inactive (selectedChar = 255) or eliminated
+          let UP34HB_p4Health = playerHealth[3]
+          if selectedChar4_R = 255 then goto P4UseAA
+          rem Check if Player 4 is eliminated (bit 3 of playersEliminated = 8)
+          let UP34HB_isEliminated = playersEliminated & 8
+          if UP34HB_isEliminated then goto P4UseAA
+          rem Clamp health to valid range
+          if UP34HB_p4Health > 99 then let UP34HB_p4Health = 99
+          goto P4ConvertHealth
+          
+P4UseAA
+          rem Player 4 inactive/eliminated - use $AA (bad BCD displays as "AA")
+          rem Reuse UP34HB_p4Tens variable to hold $AA value
+          let UP34HB_p4Tens = $AA
+          goto SetScoreBytes
+          
+P4ConvertHealth
+          rem Convert binary health values to BCD and set score
+          rem Use binary-to-decimal conversion: divide by 10 to extract tens and ones
           rem Calculate P4 health in BCD format
           let UP34HB_p4Tens = UP34HB_p4Health / 10
           rem Tens digit (0-9)
@@ -251,21 +266,24 @@ UpdatePlayer34HealthBars
           let UP34HB_p4Tens = UP34HB_p4Tens + UP34HB_p4Ones
           rem p4Tens now contains P4 health as BCD (e.g., $50 for 50)
           
-          rem Set score for XX00XX format using assembly to directly set BCD bytes
-          rem score (high byte, digits 0-1) = P3 BCD (p3BCD) or $00 if inactive/eliminated
-          rem score+1 (middle byte, digits 2-3) = $00 (always hidden - separator)
-          rem score+2 (low byte, digits 4-5) = P4 BCD (p4Tens) or $00 if inactive/eliminated
-          rem Digits are hidden by setting to $00 (displays as "00" - visible but indicates inactive/eliminated)
+SetScoreBytes
+          rem Set score for AACFAA format using "bad BCD" values
+          rem Format: score (digits 0-1), score+1 (digits 2-3), score+2 (digits 4-5)
+          rem score (high byte, digits 0-1) = P3 BCD ($00-$99) OR $AA if inactive/eliminated
+          rem score+1 (middle byte, digits 2-3) = $CF (literal "CF" - bad BCD)
+          rem score+2 (low byte, digits 4-5) = P4 BCD ($00-$99) OR $AA if inactive/eliminated
+          rem Note: $AA and $CF are invalid BCD but display as hex characters via score font
+          
+          rem Set score bytes directly (no BCD arithmetic needed - we already have BCD or bad BCD values)
+          rem Write raw byte values: $AA/$CF/$AA or health BCD values
           asm
-            SED
             LDA UP34HB_p3BCD
             STA score
-            rem Middle 2 digits always hidden (separator between P3 and P4)
-            LDA # 0
+            rem Middle 2 digits always "CF" (literal hex - bad BCD)
+            LDA # $CF
             STA score+1
             LDA UP34HB_p4Tens
             STA score+2
-            CLD
           end
           
           rem Set score colors for score mode
@@ -274,6 +292,26 @@ UpdatePlayer34HealthBars
           rem Note: Per-side colors may require additional kernel support
           rem For now, set to white (Neutral color)
           rem TODO: Investigate if multisprite kernel supports separate left/right score colors
+          let scorecolor = ColGrey(14)
+          
+          return
+          
+DisplayCF2025
+          rem No Quadtari detected - display "CF2025" using bad BCD values
+          rem Format: CF2025 = $CF $20 $25 (bad BCD displays as hex characters)
+          rem score (digits 0-1) = $CF ("CF")
+          rem score+1 (digits 2-3) = $20 ("20")
+          rem score+2 (digits 4-5) = $25 ("25")
+          asm
+            LDA # $CF
+            STA score
+            LDA # $20
+            STA score+1
+            LDA # $25
+            STA score+2
+          end
+          
+          rem Set score color to white
           let scorecolor = ColGrey(14)
           
           return

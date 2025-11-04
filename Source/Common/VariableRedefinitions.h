@@ -1,22 +1,12 @@
 ; This file contains variable mapping and other information for the current project.
 
-PixelIndex = temp7
+PlayerColorsDark_length = .skipL01689-PlayerColorsDark 
  
-PixelIndex = temp7
+PlayerColorsLight_length = .skipL01687-PlayerColorsLight 
  
-PixelIndex = temp7
+NoSprite_length = .skipL01522-NoSprite 
  
-PixelIndex = temp7
- 
-HealthBarLength = temp5
- 
-PlayerColorsDark_length = .skipL02393-PlayerColorsDark 
- 
-PlayerColorsLight_length = .skipL02391-PlayerColorsLight 
- 
-NoSprite_length = .skipL02226-NoSprite 
- 
-CPUSprite_length = .skipL02225-CPUSprite 
+CPUSprite_length = .skipL01521-CPUSprite 
  
 MethHoundFrameMap_length = .skipL0861-MethHoundFrameMap 
  
@@ -169,171 +159,171 @@ savedPlayerForCollision = w016
  
 savedPlayerForCombat = w015
  
-MissileVelY = x
+missileVelY = x
  
-MissileVelX = w
+missileVelX = w
  
-MissileLifetime = e
+missileLifetime = e
  
-MissileActive = i
+missileActive = i
  
-MissileY = w000
+missileY = w000
  
-Missile4X = d
+missile4X = d
  
-Missile3X = c
+missile3X = c
  
-Missile2X = b
+missile2X = b
  
-Missile1X = a
+missile1X = a
  
-MissileX = a
+missileX = a
  
-PlayerTimers = w004
+playerTimers = w004
  
-Player4AttackCooldown = var47
+player4AttackCooldown = var47
  
-Player3AttackCooldown = var46
+player3AttackCooldown = var46
  
-Player2AttackCooldown = var45
+player2AttackCooldown = var45
  
-Player1AttackCooldown = var44
+player1AttackCooldown = var44
  
-PlayerAttackCooldown = var44
+playerAttackCooldown = var44
  
-CurrentAnimationSeq = var40
+currentAnimationSeq = var40
  
-CurrentAnimationFrame = var36
+currentAnimationFrame = var36
  
-AnimationCounter = var32
+animationCounter = var32
  
-WinScreenTimer = var31
+winScreenTimer = var31
  
-DisplayRank = var30
+displayRank = var30
  
-WinnerPlayerIndex = var29
+winnerPlayerIndex = var29
  
-EliminationCounter = var28
+eliminationCounter = var28
  
-EliminationOrder = var27
+eliminationOrder = var27
  
-EliminationEffectTimer = var26
+eliminationEffectTimer = var26
  
-GameEndTimer = var25
+gameEndTimer = var25
  
-PlayersRemaining = var24
+playersRemaining = var24
  
-Player4MomentumX = var23
+player4MomentumX = var23
  
-Player3MomentumX = var22
+player3MomentumX = var22
  
-Player2MomentumX = var21
+player2MomentumX = var21
  
-Player1MomentumX = var20
+player1MomentumX = var20
  
-PlayerMomentumX = var20
+playerMomentumX = var20
  
-Player4RecoveryFrames = var19
+player4RecoveryFrames = var19
  
-Player3RecoveryFrames = var18
+player3RecoveryFrames = var18
  
-Player2RecoveryFrames = var17
+player2RecoveryFrames = var17
  
-Player1RecoveryFrames = var16
+player1RecoveryFrames = var16
  
-PlayerRecoveryFrames = var16
+playerRecoveryFrames = var16
  
-PlayersEliminated = i
+playersEliminated = i
  
-Player4Health = var15
+player4Health = var15
  
-Player3Health = var14
+player3Health = var14
  
-Player2Health = var13
+player2Health = var13
  
-Player1Health = var12
+player1Health = var12
  
-PlayerHealth = var12
+playerHealth = var12
  
-Player4State = var11
+player4State = var11
  
-Player3State = var10
+player3State = var10
  
-Player2State = var9
+player2State = var9
  
-Player1State = var8
+player1State = var8
  
-PlayerState = var8
+playerState = var8
  
-Player4Y = var7
+player4Y = var7
  
-Player3Y = var6
+player3Y = var6
  
-Player2Y = var5
+player2Y = var5
  
-Player1Y = var4
+player1Y = var4
  
-PlayerY = var4
+playerY = var4
  
-Player4X = var3
+player4X = var3
  
-Player3X = var2
+player3X = var2
  
-Player2X = var1
+player2X = var1
  
-Player1X = var0
+player1X = var0
  
-PlayerX = var0
+playerX = var0
  
-TitleCopyrightTimer = w013
+titleCopyrightTimer = w013
  
-TitleParadeActive = var36
+titleParadeActive = var36
  
-TitleParadeX = var35
+titleParadeX = var35
  
-TitleParadeChar = var34
+titleParadeChar = var34
  
-TitleParadeTimer = var33
+titleParadeTimer = var33
  
-MusicTimer = var32
+musicTimer = var32
  
-MusicPosition = var31
+musicPosition = var31
  
-MusicPlaying = var30
+musicPlaying = var30
  
-PreambleState = var29
+preambleState = var29
  
-PreambleTimer = var28
+preambleTimer = var28
  
-LevelSelectHoldTimer = w014
+levelSelectHoldTimer = w014
  
-LevelConfirmTimer = var27
+levelConfirmTimer = var27
  
-LevelCursorPos = var26
+levelCursorPos = var26
  
-LevelScrollOffset = var25
+levelScrollOffset = var25
  
-LevelPreviewData = var24
+levelPreviewData = var24
  
-CharSelectPlayer = var38
+charSelectPlayer = var38
  
-CharSelectCharIndex = var37
+charSelectCharIndex = var37
  
-CharSelectAnimFrame = z
+charSelectAnimFrame = z
  
-CharSelectAnimIndex = y
+charSelectAnimIndex = y
  
-CharSelectAnimState = x
+charSelectAnimState = x
  
-CharSelectAnimTimer = w
+charSelectAnimTimer = w
  
-ReadyCount = x
+readyCount = x
  
 fontDataIndex = var46
  
 fontRow = var47
  
-DigitOffset = temp6
+digitOffset = temp6
  
 selectedArena = w010
  
@@ -345,69 +335,69 @@ selectedChar2 = w012
  
 selectedChar1 = w011
  
-PlayerLocked = n
+playerLocked = n
  
-PlayerDamage = k
+playerDamage = k
  
 playerChar = j
  
-ColorBWPrevious = w001
+colorBWPrevious = w001
  
 currentPlayer = s
  
-PauseButtonPrev = r
+pauseButtonPrev = r
  
-ColorBWOverride = q
+colorBWOverride = q
  
-ControllerStatus = h
+controllerStatus = h
  
-SystemFlags = f
+systemFlags = f
  
-Console7800Detected = e
+console7800Detected = e
  
-GameMode = p
+gameMode = p
  
-GameState = g
+gameState = g
  
-ActivePlayers = d
+activePlayers = d
  
-FallComplete = c
+fallComplete = c
  
-FallSpeed = b
+fallSpeed = b
  
-FallFrame = a
+fallFrame = a
  
-AnimAttackRecovery = 15
+ActionAttackRecovery = 15
  
-AnimAttackExecute = 14
+ActionAttackExecute = 14
  
-AnimAttackWindup = 13
+ActionAttackWindup = 13
  
-AnimLanding = 12
+ActionLanding = 12
  
-AnimFalling = 11
+ActionFalling = 11
  
-AnimJumping = 10
+ActionJumping = 10
  
-AnimRecovering = 9
+ActionRecovering = 9
  
-AnimFallen = 8
+ActionFallen = 8
  
-AnimFallDown = 7
+ActionFallDown = 7
  
-AnimFallBack = 6
+ActionFallBack = 6
  
-AnimHit = 5
+ActionHit = 5
  
-AnimStopping = 4
+ActionStopping = 4
  
-AnimWalking = 3
+ActionWalking = 3
  
-AnimGuarding = 2
+ActionGuarding = 2
  
-AnimIdle = 1
+ActionIdle = 1
  
-AnimStanding = 0
+ActionStanding = 0
  
 ModeAttract = 8
  

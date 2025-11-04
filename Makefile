@@ -102,7 +102,7 @@ BITMAP_NAMES = AtariAge Interworldly ChaosFight
 FONT_NAMES = Numbers
 
 # Music names (MuseScore files)
-MUSIC_NAMES = AtariToday Interworldly Title Victory GameOver
+MUSIC_NAMES = AtariToday Interworldly Victory GameOver
 
 # Character sprite dependencies: BAS depends on PNG, PNG depends on XCF
 # These dependencies are declared in the pattern rules below, but we list them here
@@ -295,7 +295,6 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Routines/ScreenLayout.bas \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
-	Source/Routines/VisualEffects.bas \
 	Source/Generated/Numbers.bas \
 	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
 

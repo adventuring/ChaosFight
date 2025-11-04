@@ -4,7 +4,7 @@
 #include "Source/Common/Colors.h"
 
           rem =================================================================
-          rem LEVEL DATA DEFINITIONS
+          rem ARENA DATA DEFINITIONS
           rem =================================================================
           rem 16 ARENAS inspired by classic fighting and platform games
           rem Playfields are 16 pixels wide (LEFT HALF ONLY - right mirrors)
@@ -18,10 +18,10 @@
           rem =================================================================
 
           rem =================================================================
-          rem LEVEL DATA
+          rem ARENA DATA
           rem =================================================================
 
-Level1Data
+Arena1Data
           rem Arena 1: THE PIT (Mortal Kombat - flat arena with walls)
           rem Result: Walls on sides, open flat floor
           playfield:
@@ -54,7 +54,7 @@ end
           ColGrey(6)
 end
 
-Level2Data
+Arena2Data
           rem Arena 2: BATTLEFIELD (Smash Bros - centered main platform)
           rem Result: High centered platform (left half - mirrors to full width)
           playfield:
@@ -63,7 +63,7 @@ Level2Data
           X...............
           X...............
           X...............
-          X..........XXXXX  rem Left half of centered platform - mirrors to full platform
+          X..........XXXXX : rem Left half of centered platform - mirrors to full platform
           X...............
           X...............
           X...............
@@ -87,7 +87,7 @@ end
           ColBlue(14)
 end
 
-Level3Data
+Arena3Data
           rem Arena 3: MARIO SEWERS (Mario Bros - three tier platforms)
           rem Result: Three descending centered platforms
           playfield:
@@ -120,7 +120,7 @@ end
           ColBrown(6)
 end
 
-Level4Data
+Arena4Data
           rem Arena 4: JOUST PEAKS (Joust - high side platforms)
           rem Result: Tall platforms on left and right edges
           playfield:
@@ -153,7 +153,7 @@ end
           ColOrange(6)
 end
 
-Level5Data
+Arena5Data
           rem Arena 5: FINAL DESTINATION (Smash Bros - wide centered platform)
           rem Result: Single wide high platform
           playfield:
@@ -186,7 +186,7 @@ end
           ColPurple(8)
 end
 
-Level6Data
+Arena6Data
           rem Arena 6: PIPELINE (Mario Bros - left side ledges)
           rem Result: Ledges starting from left edge at different heights (left half - mirrors to full width)
           playfield:
@@ -221,7 +221,7 @@ end
           ColBrown(8)
 end
 
-Level7Data
+Arena7Data
           rem Arena 7: DRAGON TOWER (Joust - asymmetric staggered platforms)
           rem Result: Small platforms scattered at different heights
           playfield:
@@ -254,7 +254,7 @@ end
           ColRed(6)
 end
 
-Level8Data
+Arena8Data
           rem Arena 8: FOUNTAIN (Mortal Kombat - center obstacle)
           rem Result: Centered raised block
           playfield:
@@ -287,7 +287,7 @@ end
           ColCyan(6)
 end
 
-Level9Data
+Arena9Data
           rem Arena 9: RAINBOW ROAD (Smash Bros - scattered platforms)
           rem Result: Multiple small platforms at various heights
           playfield:
@@ -320,7 +320,7 @@ end
           ColRed(8)
 end
 
-Level10Data
+Arena10Data
           rem Arena 10: STAIRWAY (Mario Bros - ascending stairs)
           rem Result: Diagonal staircase from bottom-left to top-right (left half - mirrors to full width)
           rem Stairs start from left edge and progress rightward
@@ -360,7 +360,7 @@ end
           ColGrey(8)
 end
 
-Level11Data
+Arena11Data
           rem Arena 11: BRIDGE GAP (Mortal Kombat - broken floor with pit)
           rem Result: Floor only on left edge (left half - mirrors to floors on both edges)
           playfield:
@@ -394,7 +394,7 @@ end
           ColRed(6)
 end
 
-Level12Data
+Arena12Data
           rem Arena 12: TEMPLE (Smash Bros - multiple small platforms)
           rem Result: Grid of small platforms starting from left edge (left half - mirrors to full width)
           playfield:
@@ -430,7 +430,7 @@ end
           ColGold(8)
 end
 
-Level13Data
+Arena13Data
           rem Arena 13: CASTLE WALLS (Elevated corner platforms)
           rem Result: Raised platforms starting from left edge (left half - mirrors to corner platforms)
           playfield:
@@ -465,7 +465,7 @@ end
           ColGrey(10)
 end
 
-Level14Data
+Arena14Data
           rem Arena 14: SUMMIT (Joust - pyramid mountain)
           rem Result: Pyramid shape starting from left edge (left half - mirrors to symmetric pyramid)
           playfield:
@@ -505,7 +505,7 @@ end
           ColGrey(14)
 end
 
-Level15Data
+Arena15Data
           rem Arena 15: HAZARD ZONE (Split level with ledge)
           rem Result: High ledge starting from left edge (left half - mirrors to create ledges on both sides)
           playfield:
@@ -540,7 +540,7 @@ end
           ColOrange(8)
 end
 
-Level16Data
+Arena16Data
           rem Arena 16: CHAOS ARENA (Complex multi-level asymmetric)
           rem Result: Scattered platforms starting from left edge at multiple heights (left half - mirrors to full width)
           playfield:

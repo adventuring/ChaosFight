@@ -261,7 +261,7 @@ When a player takes damage from any source:
 - **Dragon of Storms**: Ranged - 2×2 pixel standard projectile with ballistic arc (gravity)
 - **Zoe Ryen**: Ranged - 4×1 pixel wide, low-height projectile
 - **Fat Tony**: Ranged - 4×1 pixel wide, low-height projectile
-- **Megax**: Ranged - 4×4 pixel wide, tall fire breath projectile
+- **Megax**: Melee - Uses missile to decorate melee attack (fire breath). Missile never moves.
 - **Harpy**: Melee (diagonal swoop, special case) - No missile sprite, character movement IS the attack
 - **Frooty**: Ranged - 1×1 pixel narrow projectile (magical sparkles)
 - **Other characters**: Melee attacks only (no projectiles)

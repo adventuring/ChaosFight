@@ -496,15 +496,14 @@ emu: $(ROM)
 
 # Clean all generated files
 clean:
-	rm -rf Dist/*
-	rm -rf Object/*
-	rm -f Source/Generated/*
+	rm -rf Dist Object Source/Generated
 	rm -f Source/Art/*.png
-	rm -f $(GAME)$(GAMEYEAR).bB.*.s *.bin *.lst *.sym *.map *.pro
-	rm -f Source/Generated/$(GAME).*.bas Source/Generated/$(GAME).*.s
-	rm -f Source/Generated/$(GAME).*.preprocessed.bas
-	rm -f Object/$(GAME)$(GAMEYEAR).bB.*.s Object/includes.bB
-	cd Tools/batariBASIC && git clean --force
+	rm -f Source/Songs/*.pdf
+	rm -f Source/Songs/*.midi
+	git submodule foreach git clean --force
+
+quickclean:
+	rm -rf Dist Object
 
 # Install GIMP export script
 gimp-export:

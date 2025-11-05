@@ -69,28 +69,29 @@ end
 
 LoadArenaColorsColor
           rem Dispatch to color loader based on arena index (0-31)
-          rem Indices 16-31 wrap around to 0-15 (repeat color patterns)
           dim LACC_tempIndex = temp3
           let LACC_tempIndex = LA_arenaIndex
-          if LACC_tempIndex >= 16 then LACC_tempIndex = LACC_tempIndex - 16
+          if LACC_tempIndex >= 32 then let LACC_tempIndex = 0
+          rem Dispatch to arena 0-7
           if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena0Colors, LoadArena1Colors, LoadArena2Colors, LoadArena3Colors, LoadArena4Colors, LoadArena5Colors, LoadArena6Colors, LoadArena7Colors
           if LACC_tempIndex < 8 then goto DoneArenaColorLoad
-          LACC_tempIndex = LACC_tempIndex - 8
+          rem Dispatch to arena 8-15
+          let LACC_tempIndex = LACC_tempIndex - 8
           if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena8Colors, LoadArena9Colors, LoadArena10Colors, LoadArena11Colors, LoadArena12Colors, LoadArena13Colors, LoadArena14Colors, LoadArena15Colors
+          if LACC_tempIndex < 8 then goto DoneArenaColorLoad
+          rem Dispatch to arena 16-23
+          let LACC_tempIndex = LACC_tempIndex - 8
+          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena16Colors, LoadArena17Colors, LoadArena18Colors, LoadArena19Colors, LoadArena20Colors, LoadArena21Colors, LoadArena22Colors, LoadArena23Colors
+          if LACC_tempIndex < 8 then goto DoneArenaColorLoad
+          rem Dispatch to arena 24-31
+          let LACC_tempIndex = LACC_tempIndex - 8
+          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena24Colors, LoadArena25Colors, LoadArena26Colors, LoadArena27Colors, LoadArena28Colors, LoadArena29Colors, LoadArena30Colors, LoadArena31Colors
 DoneArenaColorLoad
           return
 
 LoadArenaColorsBW
-          rem Dispatch to B&W color loader based on arena index (0-31)
-          rem Indices 16-31 wrap around to 0-15 (repeat color patterns)
-          dim LACBW_tempIndex = temp3
-          let LACBW_tempIndex = LA_arenaIndex
-          if LACBW_tempIndex >= 16 then LACBW_tempIndex = LACBW_tempIndex - 16
-          if LACBW_tempIndex < 8 then on LACBW_tempIndex goto LoadArena0ColorsBW, LoadArena1ColorsBW, LoadArena2ColorsBW, LoadArena3ColorsBW, LoadArena4ColorsBW, LoadArena5ColorsBW, LoadArena6ColorsBW, LoadArena7ColorsBW
-          if LACBW_tempIndex < 8 then goto DoneArenaBWColorLoad
-          LACBW_tempIndex = LACBW_tempIndex - 8
-          if LACBW_tempIndex < 8 then on LACBW_tempIndex goto LoadArena8ColorsBW, LoadArena9ColorsBW, LoadArena10ColorsBW, LoadArena11ColorsBW, LoadArena12ColorsBW, LoadArena13ColorsBW, LoadArena14ColorsBW, LoadArena15ColorsBW
-DoneArenaBWColorLoad
+          rem All arenas use the same B&W colors (all white)
+          pfcolors ArenaColorsBW
           return
 
 LoadRandomArena
@@ -148,52 +149,71 @@ LoadArena15Colors
           pfcolors Arena15ColorsColor
           return
 
-LoadArena0ColorsBW
-          pfcolors ArenaColorsBW
+LoadArena16Colors
+          pfcolors Arena16ColorsColor
           return
-LoadArena1ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena17Colors
+          pfcolors Arena17ColorsColor
           return
-LoadArena2ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena18Colors
+          pfcolors Arena18ColorsColor
           return
-LoadArena3ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena19Colors
+          pfcolors Arena19ColorsColor
           return
-LoadArena4ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena20Colors
+          pfcolors Arena20ColorsColor
           return
-LoadArena5ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena21Colors
+          pfcolors Arena21ColorsColor
           return
-LoadArena6ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena22Colors
+          pfcolors Arena22ColorsColor
           return
-LoadArena7ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena23Colors
+          pfcolors Arena23ColorsColor
           return
-LoadArena8ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena24Colors
+          pfcolors Arena24ColorsColor
           return
-LoadArena9ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena25Colors
+          pfcolors Arena25ColorsColor
           return
-LoadArena10ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena26Colors
+          pfcolors Arena26ColorsColor
           return
-LoadArena11ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena27Colors
+          pfcolors Arena27ColorsColor
           return
-LoadArena12ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena28Colors
+          pfcolors Arena28ColorsColor
           return
-LoadArena13ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena29Colors
+          pfcolors Arena29ColorsColor
           return
-LoadArena14ColorsBW
-          pfcolors ArenaColorsBW
+
+LoadArena30Colors
+          pfcolors Arena30ColorsColor
           return
-LoadArena15ColorsBW
+
+LoadArena31Colors
+          pfcolors Arena31ColorsColor
+          return
+
+LoadArenaColorsBW
           pfcolors ArenaColorsBW
           return
 
@@ -207,172 +227,32 @@ LoadArena15ColorsBW
           rem ==========================================================
 
 ReloadArenaColors
+          rem Reload arena colors based on current Color/B&W switch state
+          rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
           dim RAC_arenaIndex = temp1
           dim RAC_bwMode = temp2
-          dim RAC_tempIndex = temp3
           
           rem Get current arena index
           let RAC_arenaIndex = selectedArena_R
           rem Handle random arena (use stored random selection)
           if RAC_arenaIndex = RandomArena then let RAC_arenaIndex = rand & 31
           
-          rem Get B&W mode state
-          gosub GetBWModeReload
-          
-          rem Wrap indices 16-31 to 0-15 (reuse color patterns)
-          rem Dispatch to appropriate color loader based on arena index (0-31)
-          let RAC_tempIndex = RAC_arenaIndex
-          if RAC_tempIndex >= 16 then let RAC_tempIndex = RAC_tempIndex - 16
-          
-          rem   (0-15)
-          rem Jump to appropriate color loader based on wrapped index
-          if RAC_tempIndex < 8 then on RAC_tempIndex goto ReloadArena0Colors, ReloadArena1Colors, ReloadArena2Colors, ReloadArena3Colors, ReloadArena4Colors, ReloadArena5Colors, ReloadArena6Colors, ReloadArena7Colors
-          if RAC_tempIndex < 8 then goto DoneArenaColorDispatch
-          let RAC_tempIndex = RAC_tempIndex - 8
-          if RAC_tempIndex < 8 then on RAC_tempIndex goto ReloadArena8Colors, ReloadArena9Colors, ReloadArena10Colors, ReloadArena11Colors, ReloadArena12Colors, ReloadArena13Colors, ReloadArena14Colors, ReloadArena15Colors
-DoneArenaColorDispatch
-          
-          rem Default to arena 0 if invalid index
-          goto ReloadArena0Colors
-
-GetBWModeReload
-          rem Check if B&W mode is active (for reload)
-          rem SECAM: Always B&W mode
+          rem Get B&W mode state (same logic as GetBWMode)
           #ifdef TV_SECAM
           let RAC_bwMode = 1
-          return
+          goto ReloadArenaColorsDispatch
           #endif
           
           rem NTSC/PAL: Check switchbw and colorBWOverride
           let RAC_bwMode = switchbw
           if systemFlags & SystemFlagColorBWOverride then let RAC_bwMode = 1
-          return
-
-ReloadArena0Colors
-          if RAC_bwMode then ReloadArena0ColorsBW
-          pfcolors Arena1ColorsColor
-          return
-ReloadArena0ColorsBW
-          pfcolors Arena1ColorsBW
-          return
-
-ReloadArena1Colors
-          if RAC_bwMode then ReloadArena1ColorsBW
-          pfcolors Arena2ColorsColor
-          return
-ReloadArena1ColorsBW
-          pfcolors Arena2ColorsBW
-          return
-
-ReloadArena2Colors
-          if RAC_bwMode then ReloadArena2ColorsBW
-          pfcolors Arena3ColorsColor
-          return
-ReloadArena2ColorsBW
-          pfcolors Arena3ColorsBW
-          return
-
-ReloadArena3Colors
-          if RAC_bwMode then ReloadArena3ColorsBW
-          pfcolors Arena4ColorsColor
-          return
-ReloadArena3ColorsBW
-          pfcolors Arena4ColorsBW
-          return
-
-ReloadArena4Colors
-          if RAC_bwMode then ReloadArena4ColorsBW
-          pfcolors Arena5ColorsColor
-          return
-ReloadArena4ColorsBW
-          pfcolors Arena5ColorsBW
-          return
-
-ReloadArena5Colors
-          if RAC_bwMode then ReloadArena5ColorsBW
-          pfcolors Arena6ColorsColor
-          return
-ReloadArena5ColorsBW
-          pfcolors Arena6ColorsBW
-          return
-
-ReloadArena6Colors
-          if RAC_bwMode then ReloadArena6ColorsBW
-          pfcolors Arena7ColorsColor
-          return
-ReloadArena6ColorsBW
-          pfcolors Arena7ColorsBW
-          return
-
-ReloadArena7Colors
-          if RAC_bwMode then ReloadArena7ColorsBW
-          pfcolors Arena8ColorsColor
-          return
-ReloadArena7ColorsBW
-          pfcolors Arena8ColorsBW
-          return
-
-ReloadArena8Colors
-          if RAC_bwMode then ReloadArena8ColorsBW
-          pfcolors Arena9ColorsColor
-          return
-ReloadArena8ColorsBW
-          pfcolors Arena9ColorsBW
-          return
-
-ReloadArena9Colors
-          if RAC_bwMode then ReloadArena9ColorsBW
-          pfcolors Arena10ColorsColor
-          return
-ReloadArena9ColorsBW
-          pfcolors Arena10ColorsBW
-          return
-
-ReloadArena10Colors
-          if RAC_bwMode then ReloadArena10ColorsBW
-          pfcolors Arena11ColorsColor
-          return
-ReloadArena10ColorsBW
-          pfcolors Arena11ColorsBW
-          return
-
-ReloadArena11Colors
-          if RAC_bwMode then ReloadArena11ColorsBW
-          pfcolors Arena12ColorsColor
-          return
-ReloadArena11ColorsBW
-          pfcolors Arena12ColorsBW
-          return
-
-ReloadArena12Colors
-          if RAC_bwMode then ReloadArena12ColorsBW
-          pfcolors Arena13ColorsColor
-          return
-ReloadArena12ColorsBW
-          pfcolors Arena13ColorsBW
-          return
-
-ReloadArena13Colors
-          if RAC_bwMode then ReloadArena13ColorsBW
-          pfcolors Arena14ColorsColor
-          return
-ReloadArena13ColorsBW
-          pfcolors Arena14ColorsBW
-          return
-
-ReloadArena14Colors
-          if RAC_bwMode then ReloadArena14ColorsBW
-          pfcolors Arena15ColorsColor
-          return
-ReloadArena14ColorsBW
-          pfcolors Arena15ColorsBW
-          return
-
-ReloadArena15Colors
-          if RAC_bwMode then ReloadArena15ColorsBW
-          pfcolors Arena16ColorsColor
-          return
-ReloadArena15ColorsBW
-          pfcolors Arena16ColorsBW
-          return
+          
+ReloadArenaColorsDispatch
+          rem Set up for LoadArenaColorsColor/LoadArenaColorsBW
+          let LA_arenaIndex = RAC_arenaIndex
+          let LA_bwMode = RAC_bwMode
+          
+          rem Use existing LoadArena color functions (identical behavior)
+          if LA_bwMode then goto LoadArenaColorsBW
+          goto LoadArenaColorsColor
 

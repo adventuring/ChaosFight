@@ -46,15 +46,43 @@ GetBWMode
           return
 
 LoadArenaByIndex
-          rem Jump to appropriate arena loader based on index
-          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena0, LoadArena1, LoadArena2, LoadArena3, LoadArena4, LoadArena5, LoadArena6, LoadArena7
-          if LA_arenaIndex < 8 then goto DoneArenaDispatch
-          LA_arenaIndex = LA_arenaIndex - 8
-          on LA_arenaIndex goto LoadArena8, LoadArena9, LoadArena10, LoadArena11, LoadArena12, LoadArena13, LoadArena14, LoadArena15
-DoneArenaDispatch
+          rem Validate arena index (0-15)
+          if LA_arenaIndex > MaxArenaID then let LA_arenaIndex = 0
           
-          rem Default to arena 0 if invalid index
-          goto LoadArena0
+          rem Load playfield pointers from tables using index
+          asm
+            ldx LA_arenaIndex
+            lda ArenaPF1PointerL,x
+            sta PF1pointer
+            lda ArenaPF1PointerH,x
+            sta PF1pointer+1
+            lda ArenaPF2PointerL,x
+            sta PF2pointer
+            lda ArenaPF2PointerH,x
+            sta PF2pointer+1
+end
+          
+          rem Load colors based on B&W mode
+          if LA_bwMode then LoadArenaColorsBW
+          goto LoadArenaColorsColor
+
+LoadArenaColorsColor
+          rem Dispatch to color loader based on arena index
+          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena0Colors, LoadArena1Colors, LoadArena2Colors, LoadArena3Colors, LoadArena4Colors, LoadArena5Colors, LoadArena6Colors, LoadArena7Colors
+          if LA_arenaIndex < 8 then goto DoneArenaColorLoad
+          LA_arenaIndex = LA_arenaIndex - 8
+          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena8Colors, LoadArena9Colors, LoadArena10Colors, LoadArena11Colors, LoadArena12Colors, LoadArena13Colors, LoadArena14Colors, LoadArena15Colors
+DoneArenaColorLoad
+          return
+
+LoadArenaColorsBW
+          rem Dispatch to B&W color loader based on arena index
+          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena0ColorsBW, LoadArena1ColorsBW, LoadArena2ColorsBW, LoadArena3ColorsBW, LoadArena4ColorsBW, LoadArena5ColorsBW, LoadArena6ColorsBW, LoadArena7ColorsBW
+          if LA_arenaIndex < 8 then goto DoneArenaBWColorLoad
+          LA_arenaIndex = LA_arenaIndex - 8
+          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena8ColorsBW, LoadArena9ColorsBW, LoadArena10ColorsBW, LoadArena11ColorsBW, LoadArena12ColorsBW, LoadArena13ColorsBW, LoadArena14ColorsBW, LoadArena15ColorsBW
+DoneArenaBWColorLoad
+          return
 
 LoadRandomArena
           rem Select random arena (0-15)
@@ -62,18 +90,18 @@ LoadRandomArena
           let LA_arenaIndex = frame & 15
           goto LoadArenaByIndex
 
-LoadArena0
+LoadArena0Colors
           rem Load Arena 1: The Pit
           rem Set playfield pointers to Arena1Playfield data
           asm
             lda #<Arena1Playfield
-              sta PF1pointer
+            sta PF1pointer
             lda #>Arena1Playfield
-              sta PF1pointer+1
+            sta PF1pointer+1
             lda #<Arena1Playfield
-              sta PF2pointer
+            sta PF2pointer
             lda #>Arena1Playfield
-              sta PF2pointer+1
+            sta PF2pointer+1
 end
           if LA_bwMode then LoadArena0BW
           pfcolors Arena1ColorsColor
@@ -87,11 +115,11 @@ LoadArena1
           asm
             lda #<Arena2Playfield
             sta PF1pointer
-          lda #>Arena2Playfield
+            lda #>Arena2Playfield
             sta PF1pointer+1
-          lda #<Arena2Playfield
+            lda #<Arena2Playfield
             sta PF2pointer
-          lda #>Arena2Playfield
+            lda #>Arena2Playfield
             sta PF2pointer+1
 end
           if LA_bwMode then LoadArena1BW
@@ -106,11 +134,11 @@ LoadArena2
           asm
             lda #<Arena3Playfield
             sta PF1pointer
-          lda #>Arena3Playfield
+            lda #>Arena3Playfield
             sta PF1pointer+1
-          lda #<Arena3Playfield
+            lda #<Arena3Playfield
             sta PF2pointer
-          lda #>Arena3Playfield
+            lda #>Arena3Playfield
             sta PF2pointer+1
 end
           if LA_bwMode then LoadArena2BW
@@ -125,11 +153,11 @@ LoadArena3
           asm
             lda #<Arena4Playfield
             sta PF1pointer
-          lda #>Arena4Playfield
+            lda #>Arena4Playfield
             sta PF1pointer+1
-          lda #<Arena4Playfield
+            lda #<Arena4Playfield
             sta PF2pointer
-          lda #>Arena4Playfield
+            lda #>Arena4Playfield
             sta PF2pointer+1
 end
           if LA_bwMode then LoadArena3BW

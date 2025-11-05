@@ -2,6 +2,7 @@
  include "TitleScreen/asm/layoutmacros.s"
  include "TitleScreen/titlescreen_layout.s"
 
+TitleScreenDrawScreen:
 .titledrawscreen
 title_eat_overscan
  	;bB runs in overscan. Wait for the overscan to run out...
@@ -115,6 +116,7 @@ OVERSCAN
 		ldy #8
 		lda #0
 		sta player0height
+TitleScreenFixPlayerHeights:
 .playerheightfixloop
 		sta player1height,y
 		ifconst _NUSIZ1

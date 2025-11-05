@@ -116,10 +116,10 @@ DWS_Position1Player
           let playerX[0] = 80
           let playerY[0] = 192
           rem Load winner sprite
-          let temp1 = playerChar[DWS_winnerIndex]
-          let temp2 = 0
+          let LCS_characterIndex = playerChar[DWS_winnerIndex]
+          let LCS_animationFrame = 0
           rem Animation frame 0 (idle)
-          let temp3 = 0
+          let LCS_playerNumber = 0
           rem Player 0
           gosub bank10 LoadCharacterSprite
           rem Hide other players
@@ -133,18 +133,18 @@ DWS_Position2Players
           rem Winner (P0)
           let playerX[0] = 80
           let playerY[0] = 192
-          let temp1 = playerChar[DWS_winnerIndex]
-          let temp2 = 0
-          let temp3 = 0
+          let LCS_characterIndex = playerChar[DWS_winnerIndex]
+          let LCS_animationFrame = 0
+          let LCS_playerNumber = 0
           gosub bank10 LoadCharacterSprite
           
           rem Runner-up (P1) - only if valid
           if DWS_secondIndex = 255 then DWS_Hide2Player
           let playerX[1] = 40
           let playerY[1] = 192
-          let temp1 = playerChar[DWS_secondIndex]
-          let temp2 = 0
-          let temp3 = 1
+          let LCS_characterIndex = playerChar[DWS_secondIndex]
+          let LCS_animationFrame = 0
+          let LCS_playerNumber = 1
           gosub bank10 LoadCharacterSprite
           goto DWS_Hide2PlayerDone
 DWS_Hide2Player
@@ -161,18 +161,18 @@ DWS_Position3Players
           let playerX[0] = 80
           let playerY[0] = 128
           rem Row 16 = 128 pixels (16 * 8)
-          let temp1 = playerChar[DWS_winnerIndex]
-          let temp2 = 0
-          let temp3 = 0
+          let LCS_characterIndex = playerChar[DWS_winnerIndex]
+          let LCS_animationFrame = 0
+          let LCS_playerNumber = 0
           gosub bank10 LoadCharacterSprite
           
           rem 2nd place (P1) - left platform
           if DWS_secondIndex = 255 then DWS_Hide3Player2
           let playerX[1] = 40
           let playerY[1] = 192
-          let temp1 = playerChar[DWS_secondIndex]
-          let temp2 = 0
-          let temp3 = 1
+          let LCS_characterIndex = playerChar[DWS_secondIndex]
+          let LCS_animationFrame = 0
+          let LCS_playerNumber = 1
           gosub bank10 LoadCharacterSprite
           goto DWS_Hide3Player2Done
 DWS_Hide3Player2
@@ -183,9 +183,9 @@ DWS_Hide3Player2Done
           if DWS_thirdIndex = 255 then DWS_Hide3Player3
           let playerX[2] = 120
           let playerY[2] = 192
-          let temp1 = playerChar[DWS_thirdIndex]
-          let temp2 = 0
-          let temp3 = 2
+          let LCS_characterIndex = playerChar[DWS_thirdIndex]
+          let LCS_animationFrame = 0
+          let LCS_playerNumber = 2
           gosub bank10 LoadCharacterSprite
           goto DWS_Hide3Player3Done
 DWS_Hide3Player3

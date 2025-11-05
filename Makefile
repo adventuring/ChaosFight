@@ -7,7 +7,7 @@ test: SkylineTool/skyline-tool.asd
 	cd SkylineTool && sbcl --script tests/run-tests.lisp || (echo "Tests failed!" && exit 1)
 
 # Precious intermediate files
-.PRECIOUS: %.s %.png %.midi Object/bB.%.s Source/Generated/$(GAME).%.preprocessed.bas
+.PRECIOUS: %.s %.png %.midi %.bas
 
 # Don't delete PNG files automatically - they are intermediate but should be preserved
 # between builds if XCF hasn't changed
@@ -444,36 +444,36 @@ Object/2600basic_variable_redefs.h:
 	@mkdir -p Object
 	@touch $@
 
-# Step 2: Compile .preprocessed.bas → bB.ARCH.s
-Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h
+# Step 2: Compile .preprocessed.bas → $(GAME)$(GAMEYEAR).bB.ARCH.s
+Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.NTSC.s
+	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
 
-Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
+Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.PAL.s
+	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s
 
-Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
+Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
+	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s
 
-# Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
+# Step 3: Postprocess $(GAME)$(GAMEYEAR).bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory
 # (it's created by 2600basic in Object/), so run postprocess from Object/
-# postprocess also needs bB.asm to exist (listed in includes.bB), so create symlink
+# postprocess also needs $(GAME)$(GAMEYEAR).bB.asm to exist (listed in includes.bB), so create symlink
 # Fix ## token pasting: cpp should expand ColGreen(6) → _COL_Green_L6, but if ##
 # remains, replace it with _ (e.g., _COL_Green_L##6 → _COL_Green_L6)
-Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s
+Source/Generated/$(GAME).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf bB.NTSC.s bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < bB.NTSC.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.NTSC.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.NTSC.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
 
-Source/Generated/$(GAME).PAL.s: Object/bB.PAL.s
+Source/Generated/$(GAME).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf bB.PAL.s bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < bB.PAL.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.PAL.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.PAL.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
 
-Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
+Source/Generated/$(GAME).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf bB.SECAM.s bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < bB.SECAM.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.SECAM.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.SECAM.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS
@@ -500,10 +500,10 @@ clean:
 	rm -rf Object/*
 	rm -f Source/Generated/*
 	rm -f Source/Art/*.png
-	rm -f bB.*.s *.bin *.lst *.sym *.map *.pro
+	rm -f $(GAME)$(GAMEYEAR).bB.*.s *.bin *.lst *.sym *.map *.pro
 	rm -f Source/Generated/$(GAME).*.bas Source/Generated/$(GAME).*.s
 	rm -f Source/Generated/$(GAME).*.preprocessed.bas
-	rm -f Object/bB.*.s Object/includes.bB
+	rm -f Object/$(GAME)$(GAMEYEAR).bB.*.s Object/includes.bB
 	cd Tools/batariBASIC && git clean --force
 
 # Install GIMP export script

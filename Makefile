@@ -66,7 +66,7 @@ ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 # Assembly files (exclude preprocessed, generated files, and reference files)
 ALL_SOURCES = $(shell find Source -name \*.bas -not -path "Source/Generated/*" -not -path "Source/Reference/*")
 
-.PHONY: all clean emu game help doc characters fonts sprites nowready ready bitmaps music sounds
+.PHONY: all clean emu game help doc nowready ready
 
 # Build game
 game: \
@@ -123,21 +123,6 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 	SoundMenuNavigate SoundMenuSelect SoundSpecialMove SoundPowerup \
 	SoundLandingSafe SoundLandingDamage
 
-# Build character assets
-characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
-
-# Build bitmap assets (48×42 for titlescreen kernel on admin screens)
-bitmaps: $(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
-
-# Build font assets (fonts are universal, not region-specific)
-fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
-
-# Build music assets
-music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas)) \
-       $(foreach song,$(GAME_THEME_SONGS),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
-
-# Build sound effect assets
-sounds: $(foreach sound,$(SOUND_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Sound.$(sound).$(arch).bas))
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz
@@ -533,9 +518,6 @@ help:
 	@echo "  all          - Build game and documentation (default)"
 	@echo "  game         - Build game ROMs for all TV systems"
 	@echo "  doc          - Build PDF and HTML manuals"
-	@echo "  characters   - Generate character sprite data"
-	@echo "  playfields   - Generate playfield/screen data"
-	@echo "  fonts        - Generate font data"
 	@echo "  clean        - Remove generated ROM files"
 	@echo "  emu          - Build and run in Stella emulator"
 	@echo "  gimp-export  - Install GIMP export script"

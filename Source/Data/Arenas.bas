@@ -50,7 +50,7 @@ Arena0Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena0ColorsColor
+Arena0Colors
           pfcolors:
           ColOrange(2)
           ColOrange(4)
@@ -74,7 +74,7 @@ Arena1Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena2ColorsColor
+Arena2Colors
           pfcolors:
           ColTurquoise(4)
           ColTurquoise(4)
@@ -99,7 +99,7 @@ Arena3Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena3ColorsColor
+Arena3Colors
           pfcolors:
           ColSeafoam(2)
           ColSeafoam(2)
@@ -124,7 +124,7 @@ Arena4Playfield
           ................
 end
 
-Arena4ColorsColor
+Arena4Colors
           pfcolors:
           ColYellow(12)
           ColYellow(12)
@@ -149,7 +149,7 @@ Arena5Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena5ColorsColor
+Arena5Colors
           pfcolors:
           ColBlue(4)
           ColBlue(4)
@@ -159,18 +159,6 @@ Arena5ColorsColor
           ColBlue(4)
           ColBlue(4)
           ColBlue(4)
-end
-
-Arena5ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
           rem Arena 6: Multi-Platform (multiple small platforms)
@@ -186,7 +174,7 @@ Arena6Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena6ColorsColor
+Arena6Colors
           pfcolors:
           ColRed(2)
           ColRed(4)
@@ -196,18 +184,6 @@ Arena6ColorsColor
           ColRed(4)
           ColRed(2)
           ColRed(8)
-end
-
-Arena6ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
           rem Arena 7: The Gauntlet (maze-like walls)
@@ -223,7 +199,7 @@ Arena7Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena7ColorsColor
+Arena7Colors
           pfcolors:
           ColGold(2)
           ColGold(2)
@@ -233,18 +209,6 @@ Arena7ColorsColor
           ColGold(4)
           ColGold(2)
           ColGold(6)
-end
-
-Arena7ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
 Arena8Playfield
@@ -259,7 +223,7 @@ Arena8Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena8ColorsColor
+Arena8Colors
           pfcolors:
           ColPurple(2)
           ColPurple(4)
@@ -283,7 +247,7 @@ Arena9Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena9ColorsColor
+Arena9Colors
           pfcolors:
           ColRed(2)
           ColRed(4)
@@ -309,7 +273,7 @@ Arena10Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena10ColorsColor
+Arena10Colors
           pfcolors:
           ColCyan(4)
           ColCyan(2)
@@ -321,17 +285,6 @@ Arena10ColorsColor
           ColCyan(8)
 end
 
-Arena10ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
 
           rem Arena 11: Floating Platforms (variant of Arena 3 with four
           rem   floating blocks when mirrored)
@@ -347,7 +300,7 @@ Arena11Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena11ColorsColor
+Arena11Colors
           pfcolors:
           ColGreen(2)
           ColGreen(4)
@@ -357,18 +310,6 @@ Arena11ColorsColor
           ColGreen(2)
           ColGreen(2)
           ColGreen(8)
-end
-
-Arena11ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
           rem Arena 12: The Chasm (variant of Arena 4 with wider bridge)
@@ -384,7 +325,7 @@ Arena12Playfield
           ................
 end
 
-Arena12ColorsColor
+Arena12Colors
           pfcolors:
           ColBrown(12)
           ColBrown(12)
@@ -394,18 +335,6 @@ Arena12ColorsColor
           ColBrown(12)
           ColBrown(12)
           ColBrown(12)
-end
-
-Arena12ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
           rem Arena 13: Fortress Walls (variant of Arena 5 with
@@ -422,7 +351,7 @@ Arena13Playfield
           XXX..XXXXXXX..XX
 end
 
-Arena13ColorsColor
+Arena13Colors
           pfcolors:
           ColTurquoise(4)
           ColTurquoise(4)
@@ -432,18 +361,6 @@ Arena13ColorsColor
           ColTurquoise(6)
           ColTurquoise(4)
           ColTurquoise(4)
-end
-
-Arena13ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
           rem Arena 14: Floating Islands (variant of Arena 6 with more
@@ -460,7 +377,7 @@ Arena14Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena14ColorsColor
+Arena14Colors
           pfcolors:
           ColMagenta(2)
           ColMagenta(0)
@@ -470,18 +387,6 @@ Arena14ColorsColor
           ColMagenta(0)
           ColMagenta(4)
           ColMagenta(8)
-end
-
-Arena14ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
           rem Arena 15: The Labyrinth (variant of Arena 7 with more
@@ -498,7 +403,7 @@ Arena15Playfield
           XXXX..XXXX..XXXX
 end
 
-Arena15ColorsColor
+Arena15Colors
           pfcolors:
           ColSpringGreen(2)
           ColSpringGreen(2)
@@ -508,18 +413,6 @@ Arena15ColorsColor
           ColSpringGreen(4)
           ColSpringGreen(2)
           ColSpringGreen(8)
-end
-
-Arena15ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
           rem Arena 16: Danger Zone (variant of Arena 8 with alternating
@@ -536,7 +429,7 @@ Arena16Playfield
           XX.X.X.X.X.X.X.X
 end
 
-Arena16ColorsColor
+Arena16Colors
           pfcolors:
           ColIndigo(2)
           ColIndigo(4)
@@ -546,18 +439,6 @@ Arena16ColorsColor
           ColIndigo(4)
           ColIndigo(6)
           ColIndigo(8)
-end
-
-Arena16ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
           rem ==========================================================

@@ -52,12 +52,18 @@ GravityLoop
 GravityCheckCharacter
           let PAG_characterType = playerChar[PAG_playerIndex]
           
-          rem Skip gravity for characters that don’t have it
+          rem Skip gravity for characters that don't have it
           rem Frooty (8): Permanent flight, no gravity
           if PAG_characterType = CharFrooty then goto GravityNextPlayer
           rem Dragon of Storms (2): Permanent flight, no gravity
           rem   (hovering/flying like Frooty)
           if PAG_characterType = CharDragonOfStorms then goto GravityNextPlayer
+          
+          rem RoboTito (13): Skip gravity when latched to ceiling
+          if PAG_characterType = CharRoboTito then
+              if (characterStateFlags_R[PAG_playerIndex] & 1) then goto GravityNextPlayer
+              rem Latched to ceiling (bit 0 set), skip gravity
+          end
           
           rem If NOT jumping, skip gravity (player is on ground)
           if !(playerState[PAG_playerIndex] & PlayerStateBitJumping) then goto GravityNextPlayer

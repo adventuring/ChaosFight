@@ -1,6 +1,8 @@
           rem ChaosFight - Source/Routines/CharacterSelectMain.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
+          #include "Source/Routines/PlayerLockedHelpers.bas"
+          
           rem ==========================================================
           rem CHARACTER SELECT - PER-FRAME LOOP
           rem ==========================================================
@@ -54,7 +56,7 @@ CharacterSelectPlayer0Left
           gosub CycleCharacterLeft
           let CS0L_characterIndex = temp1
           let playerChar[0] = CS0L_characterIndex
-          let playerLocked[0] = 0
+          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Play navigation sound
           let CS0L_soundId = SoundMenuNavigate
           let temp1 = CS0L_soundId
@@ -73,15 +75,15 @@ CharacterSelectPlayer0Right
           gosub CycleCharacterRight
           let CS0R_characterIndex = temp1
           let playerChar[0] = CS0R_characterIndex
-          let playerLocked[0] = 0
+          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Play navigation sound
           let CS0R_soundId = SoundMenuNavigate
           let temp1 = CS0R_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer0Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy0up then playerLocked[0] = 0 : goto CharacterSelectPlayer0LockClearDone
-          if joy0down then playerLocked[0] = 0
+          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CharacterSelectPlayer0LockClearDone
+          if joy0down then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 CharacterSelectPlayer0LockClearDone
           if joy0fire then CharacterSelectPlayer0Fire
           goto CharacterSelectSkipPlayer0Fire
@@ -91,7 +93,7 @@ CharacterSelectPlayer0Fire
           if playerChar[0] = RandomCharacter then CharacterSelectPlayer0Random
           rem Check for handicap mode (down+fire = 75% health)
           if joy0down then CharacterSelectPlayer0FireHandicap
-          let playerLocked[0] = 1
+          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           rem Play selection sound
           let CS0F_soundId = SoundMenuSelect
           let temp1 = CS0F_soundId
@@ -99,7 +101,7 @@ CharacterSelectPlayer0Fire
           goto CharacterSelectSkipPlayer0Fire
 CharacterSelectPlayer0FireHandicap
           dim CS0FH_soundId = temp1
-          let playerLocked[0] = 2
+          let temp1 = 0 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
           rem Play selection sound
           let CS0FH_soundId = SoundMenuSelect
           let temp1 = CS0FH_soundId
@@ -138,7 +140,7 @@ CharacterSelectPlayer1Left
           gosub CycleCharacterLeft
           let CS1L_characterIndex = temp1
           let playerChar[1] = CS1L_characterIndex
-          let playerLocked[1] = 0
+          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Play navigation sound
           let CS1L_soundId = SoundMenuNavigate
           let temp1 = CS1L_soundId
@@ -157,15 +159,15 @@ CharacterSelectPlayer1Right
           gosub CycleCharacterRight
           let CS1R_characterIndex = temp1
           let playerChar[1] = CS1R_characterIndex
-          let playerLocked[1] = 0
+          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Play navigation sound
           let CS1R_soundId = SoundMenuNavigate
           let temp1 = CS1R_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer1Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy1up then playerLocked[1] = 0 : goto CharacterSelectPlayer1LockClearDone
-          if joy1down then playerLocked[1] = 0
+          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CharacterSelectPlayer1LockClearDone
+          if joy1down then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 CharacterSelectPlayer1LockClearDone
           if joy1fire then CharacterSelectPlayer1Fire
           goto CharacterSelectSkipPlayer1Fire
@@ -175,7 +177,7 @@ CharacterSelectPlayer1Fire
           if playerChar[1] = RandomCharacter then CharacterSelectPlayer1Random
           rem Check for handicap mode (down+fire = 75% health)
           if joy1down then CharacterSelectPlayer1FireHandicap
-          let playerLocked[1] = 1
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           rem Play selection sound
           let CS1F_soundId = SoundMenuSelect
           let temp1 = CS1F_soundId
@@ -183,7 +185,7 @@ CharacterSelectPlayer1Fire
           goto CharacterSelectSkipPlayer1Fire
 CharacterSelectPlayer1FireHandicap
           dim CS1FH_soundId = temp1
-          let playerLocked[1] = 2
+          let temp1 = 1 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
           rem Play selection sound
           let CS1FH_soundId = SoundMenuSelect
           let temp1 = CS1FH_soundId
@@ -224,7 +226,7 @@ CharacterSelectPlayer3Left
           gosub CycleCharacterLeft
           let CS3L_characterIndex = temp1
           let playerChar[2] = CS3L_characterIndex
-          let playerLocked[2] = 0
+          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Play navigation sound
           let CS3L_soundId = SoundMenuNavigate
           let temp1 = CS3L_soundId
@@ -243,15 +245,15 @@ CharacterSelectPlayer3Right
           gosub CycleCharacterRight
           let CS3R_characterIndex = temp1
           let playerChar[2] = CS3R_characterIndex
-          let playerLocked[2] = 0
+          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Play navigation sound
           let CS3R_soundId = SoundMenuNavigate
           let temp1 = CS3R_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer3Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy0up then playerLocked[2] = 0 : goto CharacterSelectPlayer2LockClearDone
-          if joy0down then playerLocked[2] = 0
+          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CharacterSelectPlayer2LockClearDone
+          if joy0down then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 CharacterSelectPlayer2LockClearDone
           if joy0fire then CharacterSelectPlayer3Fire
           goto CharacterSelectSkipPlayer3Fire
@@ -261,7 +263,7 @@ CharacterSelectPlayer3Fire
           if playerChar[2] = RandomCharacter then CharacterSelectPlayer3Random
           rem Check for handicap mode (down+fire = 75% health)
           if joy0down then CharacterSelectPlayer3FireHandicap
-          let playerLocked[2] = 1
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           rem Play selection sound
           let CS3F_soundId = SoundMenuSelect
           let temp1 = CS3F_soundId
@@ -269,7 +271,7 @@ CharacterSelectPlayer3Fire
           goto CharacterSelectSkipPlayer3Fire
 CharacterSelectPlayer3FireHandicap
           dim CS3FH_soundId = temp1
-          let playerLocked[2] = 2
+          let temp1 = 2 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
           rem Play selection sound
           let CS3FH_soundId = SoundMenuSelect
           let temp1 = CS3FH_soundId
@@ -307,7 +309,7 @@ CharacterSelectPlayer4Left
           gosub CycleCharacterLeft
           let CS4L_characterIndex = temp1
           let playerChar[3] = CS4L_characterIndex
-          let playerLocked[3] = 0
+          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Play navigation sound
           let CS4L_soundId = SoundMenuNavigate
           let temp1 = CS4L_soundId
@@ -326,15 +328,15 @@ CharacterSelectPlayer4Right
           gosub CycleCharacterRight
           let CS4R_characterIndex = temp1
           let playerChar[3] = CS4R_characterIndex
-          let playerLocked[3] = 0
+          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Play navigation sound
           let CS4R_soundId = SoundMenuNavigate
           let temp1 = CS4R_soundId
           gosub bank15 PlaySoundEffect
 CharacterSelectSkipPlayer4Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy1up then playerLocked[3] = 0 : goto CharacterSelectPlayer3LockClearDone
-          if joy1down then playerLocked[3] = 0
+          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CharacterSelectPlayer3LockClearDone
+          if joy1down then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 CharacterSelectPlayer3LockClearDone
           if joy1fire then CharacterSelectPlayer4Fire
           goto CharacterSelectSkipPlayer4Fire
@@ -344,7 +346,7 @@ CharacterSelectPlayer4Fire
           if playerChar[3] = RandomCharacter then CharacterSelectPlayer4Random
           rem Check for handicap mode (down+fire = 75% health)
           if joy1down then CharacterSelectPlayer4FireHandicap
-          let playerLocked[3] = 1
+          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           rem Play selection sound
           let CS4F_soundId = SoundMenuSelect
           let temp1 = CS4F_soundId
@@ -352,7 +354,7 @@ CharacterSelectPlayer4Fire
           goto CharacterSelectSkipPlayer4Fire
 CharacterSelectPlayer4FireHandicap
           dim CS4FH_soundId = temp1
-          let playerLocked[3] = 2
+          let temp1 = 3 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
           rem Play selection sound
           let CS4FH_soundId = SoundMenuSelect
           let temp1 = CS4FH_soundId
@@ -419,10 +421,10 @@ CharacterSelectRollPlayer0
           rem Valid! Set character and lock with normal or handicap
           let playerChar[0] = CSR0_rolledValue
           if randomSelectFlags[0] then goto CharacterSelectLockPlayer0Handicap
-          let playerLocked[0] = 1
+          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           goto CharacterSelectLockPlayer0Done
 CharacterSelectLockPlayer0Handicap
-          let playerLocked[0] = 2
+          let temp1 = 0 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
 CharacterSelectLockPlayer0Done
           let randomSelectFlags[0] = 0
           goto CharacterSelectRollsDone
@@ -433,10 +435,10 @@ CharacterSelectRollPlayer1
           if CSR1_rolledValue > MaxCharacter then CharacterSelectRollsDone
           let playerChar[1] = CSR1_rolledValue
           if randomSelectFlags[1] then goto CharacterSelectLockPlayer1Handicap
-          let playerLocked[1] = 1
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           goto CharacterSelectLockPlayer1Done
 CharacterSelectLockPlayer1Handicap
-          let playerLocked[1] = 2
+          let temp1 = 1 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
 CharacterSelectLockPlayer1Done
           let randomSelectFlags[1] = 0
           goto CharacterSelectRollsDone
@@ -447,10 +449,10 @@ CharacterSelectRollPlayer2
           if CSR2_rolledValue > MaxCharacter then CharacterSelectRollsDone
           let playerChar[2] = CSR2_rolledValue
           if randomSelectFlags[2] then goto CharacterSelectLockPlayer2Handicap
-          let playerLocked[2] = 1
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           goto CharacterSelectLockPlayer2Done
 CharacterSelectLockPlayer2Handicap
-          let playerLocked[2] = 2
+          let temp1 = 2 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
 CharacterSelectLockPlayer2Done
           let randomSelectFlags[2] = 0
           goto CharacterSelectRollsDone
@@ -461,10 +463,10 @@ CharacterSelectRollPlayer3
           if CSR3_rolledValue > MaxCharacter then CharacterSelectRollsDone
           let playerChar[3] = CSR3_rolledValue
           if randomSelectFlags[3] then goto CharacterSelectLockPlayer3Handicap
-          let playerLocked[3] = 1
+          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           goto CharacterSelectLockPlayer3Done
 CharacterSelectLockPlayer3Handicap
-          let playerLocked[3] = 2
+          let temp1 = 3 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
 CharacterSelectLockPlayer3Done
           let randomSelectFlags[3] = 0
           
@@ -478,9 +480,9 @@ CharacterSelectCheckReady
           rem 2-player mode: P1 must be locked AND (P2 locked OR P2 on
           rem   CPU)
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReady
-          if !playerLocked[0] then CharacterSelectReadyDone
+          let temp1 = 0 : gosub GetPlayerLocked : if !temp2 then CharacterSelectReadyDone
           rem P1 is locked, check P2
-          if playerLocked[1] then CharacterSelectFinish
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then CharacterSelectFinish
           rem P2 not locked, check if on CPU
           if playerChar[1] = CPUCharacter then CharacterSelectFinish
           goto CharacterSelectReadyDone
@@ -490,21 +492,21 @@ CharacterSelectQuadtariReady
           rem   CPU/NO)
           let readyCount = 0
           rem Count P1 ready
-          if playerLocked[0] then readyCount = readyCount + 1
-          if !playerLocked[0] && playerChar[0] = CPUCharacter then readyCount = readyCount + 1
-          if !playerLocked[0] && playerChar[0] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked : if !temp2 && playerChar[0] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked : if !temp2 && playerChar[0] = NoCharacter then readyCount = readyCount + 1
           rem Count P2 ready
-          if playerLocked[1] then readyCount = readyCount + 1
-          if !playerLocked[1] && playerChar[1] = CPUCharacter then readyCount = readyCount + 1
-          if !playerLocked[1] && playerChar[1] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked : if !temp2 && playerChar[1] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked : if !temp2 && playerChar[1] = NoCharacter then readyCount = readyCount + 1
           rem Count P3 ready
-          if playerLocked[2] then readyCount = readyCount + 1
-          if !playerLocked[2] && playerChar[2] = CPUCharacter then readyCount = readyCount + 1
-          if !playerLocked[2] && playerChar[2] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked : if !temp2 && playerChar[2] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked : if !temp2 && playerChar[2] = NoCharacter then readyCount = readyCount + 1
           rem Count P4 ready
-          if playerLocked[3] then readyCount = readyCount + 1
-          if !playerLocked[3] && playerChar[3] = CPUCharacter then readyCount = readyCount + 1
-          if !playerLocked[3] && playerChar[3] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked : if !temp2 && playerChar[3] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked : if !temp2 && playerChar[3] = NoCharacter then readyCount = readyCount + 1
           if readyCount >= 2 then CharacterSelectFinish
           
 CharacterSelectReadyDone
@@ -1014,14 +1016,14 @@ SelectDrawNumberDone
           
 SelectDrawLocks
           rem Draw locked status borders using playfield
-          if playerLocked[0] then SelectDrawP0Border
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then SelectDrawP0Border
           goto SelectSkipP0Border
 SelectDrawP0Border
           pf0 = pf0 | %10000000
           pf1 = pf1 | %00000001
 SelectSkipP0Border
           
-          if playerLocked[1] then SelectDrawP1Border
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then SelectDrawP1Border
           goto SelectSkipP1Border
 SelectDrawP1Border
           pf0 = pf0 | %00001000
@@ -1031,8 +1033,8 @@ SelectSkipP1Border
           if controllerStatus & SetQuadtariDetected then SelectCheckP2Lock
           goto SelectSkipCheckP2Lock
 SelectCheckP2Lock
-          if playerLocked[2] then SelectDrawP2Border
-          if playerLocked[3] then SelectDrawP3Border
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then SelectDrawP2Border
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then SelectDrawP3Border
 SelectSkipCheckP2Lock
           return
           
@@ -1057,7 +1059,7 @@ SelectUpdateAnimations
           rem Each player updates independently with staggered timing
           
           rem Update Player 1 animations (characters)
-          if playerLocked[0] then SelectSkipPlayer0Anim  : rem Locked players don’t animate
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then SelectSkipPlayer0Anim  : rem Locked players don’t animate
           if playerChar[0] = CPUCharacter then SelectSkipPlayer0Anim  : rem CPU doesn’t animate
           if playerChar[0] = NoCharacter then SelectSkipPlayer0Anim  : rem NO doesn’t animate
           if playerChar[0] = RandomCharacter then SelectSkipPlayer0Anim  : rem Random doesn’t animate
@@ -1066,7 +1068,7 @@ SelectUpdateAnimations
           
 SelectSkipPlayer0Anim
           rem Update Player 2 animations
-          if playerLocked[1] then SelectSkipPlayer1Anim
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then SelectSkipPlayer1Anim
           if playerChar[1] = CPUCharacter then SelectSkipPlayer1Anim
           if playerChar[1] = NoCharacter then SelectSkipPlayer1Anim
           if playerChar[1] = RandomCharacter then SelectSkipPlayer1Anim
@@ -1076,7 +1078,7 @@ SelectSkipPlayer0Anim
 SelectSkipPlayer1Anim
           rem Update Player 3 animations (if Quadtari)
           if !(controllerStatus & SetQuadtariDetected) then SelectSkipPlayer23Anim
-          if playerLocked[2] then SelectSkipPlayer2Anim
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then SelectSkipPlayer2Anim
           if playerChar[2] = NoCharacter then SelectSkipPlayer2Anim
           if playerChar[2] = RandomCharacter then SelectSkipPlayer2Anim
           let temp1 = 2
@@ -1085,7 +1087,7 @@ SelectSkipPlayer1Anim
 SelectSkipPlayer2Anim
           rem Update Player 4 animations (if Quadtari)
           if !(controllerStatus & SetQuadtariDetected) then SelectSkipPlayer23Anim
-          if playerLocked[3] then SelectSkipPlayer23Anim
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then SelectSkipPlayer23Anim
           if playerChar[3] = NoCharacter then SelectSkipPlayer23Anim
           if playerChar[3] = RandomCharacter then SelectSkipPlayer23Anim
           let temp1 = 3

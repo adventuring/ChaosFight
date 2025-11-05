@@ -88,16 +88,16 @@ SelP0Done
 
 SelChkP1Left
           if playerChar[1] > MaxCharacter then let playerChar[1] = MaxCharacter
-          if playerChar[1] > MaxCharacter then let playerLocked[1] = 0
+          if playerChar[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelSkipP1Left
           if joy1right then let playerChar[1] = playerChar[1] + 1 : goto SelChkP1Right
           goto SelSkipP1Right
 
 SelChkP1Right
           if playerChar[1] > MaxCharacter then let playerChar[1] = 0
-          if playerChar[1] > MaxCharacter then let playerLocked[1] = 0
+          if playerChar[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelSkipP1Right
-          if joy1up then let playerLocked[1] = 0
+          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy1down then SelChkJoy1Fire
 
@@ -106,7 +106,7 @@ SelSkipP1Right
 SelChkJoy1Fire
           if joy1fire then SelJoy1Down
 
-          let playerLocked[1] = 0
+          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelJoy1Down
           rem Unlock by moving down (without fire)
           if joy1fire then SelJoy1Chk
@@ -114,10 +114,10 @@ SelJoy1Down
           goto SelSkipJoy1Even
 
 SelJoy1Chk
-          if joy1down then let playerLocked[1] = 2 : goto SelJoy1Done
+          if joy1down then let temp1 = 1 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked : goto SelJoy1Done
 
           rem Locked with handicap (75% health)
-          let playerLocked[1] = 1
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
 SelJoy1Done 
           rem Locked normal (100% health)
 
@@ -138,7 +138,7 @@ SelHandleP2
 
 SelChkP2Left
           if playerChar[2] > MaxCharacter then let playerChar[2] = MaxCharacter
-          if playerChar[2] > MaxCharacter then let playerLocked[2] = 0
+          if playerChar[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelSkipP2Left
           if joy0right then let playerChar[2] = playerChar[2] + 1 : goto SelChkP2Right
 
@@ -146,9 +146,9 @@ SelSkipP2Left
 
 SelChkP2Right
           if playerChar[2] > MaxCharacter then let playerChar[2] = 0
-          if playerChar[2] > MaxCharacter then let playerLocked[2] = 0
+          if playerChar[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelSkipP2Right
-          if joy0up then let playerLocked[2] = 0
+          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy0down then SelChkJoy0Fire2
 
@@ -156,7 +156,7 @@ SelSkipP2Right
 
 SelChkJoy0Fire2
           if joy0fire then SelJoy0Down2
-          let playerLocked[2] = 0
+          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelJoy0Down2
           rem Unlock by moving down (without fire)
           if joy0fire then SelChkJoy0Down2
@@ -166,12 +166,12 @@ SelJoy0Down2
 SelChkJoy0Down2
           if joy0down then SelSetHand2
 
-          let playerLocked[2] = 1
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           rem Locked normal (100% health)
           goto SelJoy0Done2
 
 SelSetHand2
-          let playerLocked[2] = 2
+          let temp1 = 2 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
           rem Locked with handicap (75% health)
 SelJoy0Done2
 
@@ -185,15 +185,15 @@ SelHandleP3
           goto SelSkipP3Left
 SelCheckP3Left
           if playerChar[3] > MaxCharacter then let playerChar[3] = MaxCharacter
-          if playerChar[3] > MaxCharacter then let playerLocked[3] = 0
+          if playerChar[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelSkipP3Left
           if joy1right then let playerChar[3] = playerChar[3] + 1 : goto SelCheckP3Right
           goto SelSkipP3Right
 SelCheckP3Right
           if playerChar[3] > MaxCharacter then let playerChar[3] = 0
-          if playerChar[3] > MaxCharacter then let playerLocked[3] = 0
+          if playerChar[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelSkipP3Right
-          if joy1up then let playerLocked[3] = 0
+          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy1down then SelChkJoy1Fire3
 
@@ -202,7 +202,7 @@ SelSkipP3Right
 SelChkJoy1Fire3
           if joy1fire then SelJoy1Down3
 
-          let playerLocked[3] = 0
+          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelJoy1Down3
           rem Unlock by moving down (without fire)
           if joy1fire then SelJoy1Chk3
@@ -212,12 +212,12 @@ SelJoy1Down3
 SelJoy1Chk3
           if joy1down then SelSetHand3
 
-          let playerLocked[3] = 1
+          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           rem Locked normal (100% health)
           goto SelJoy1Done3
 
 SelSetHand3
-          let playerLocked[3] = 2
+          let temp1 = 3 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
           rem Locked with handicap (75% health)
 SelJoy1Done3
           
@@ -236,23 +236,23 @@ SelHandleDone
           let readyCount  = 0
 
           rem Count locked players
-          if playerLocked[0] then let readyCount = readyCount + 1
-          if playerLocked[1] then let readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
           if controllerStatus & SetQuadtariDetected then SelQuadPlayersInline
 
           goto SelSkipQuadPlyInline
           
 SelQuadPlayersInline
-          if playerLocked[2] then let readyCount = readyCount + 1
-          if playerLocked[3] then let readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
 SelSkipQuadPlyInline
           rem Check if enough players are ready
           if controllerStatus & SetQuadtariDetected then SelQuadReadyInline
 
           rem Need at least 1 player ready for 2-player mode
-          if playerLocked[0] then goto SelScreenDone
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto SelScreenDone
 
-          if playerLocked[1] then goto SelScreenDone
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto SelScreenDone
 
           goto SelSkipQuadChkInline
           
@@ -333,7 +333,7 @@ SelSkipP4
           rem Draw locked status indicators
 SelDrawLocks
           rem Draw playfield blocks around locked characters
-          if playerLocked[0] then SelDrawP0Border
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then SelDrawP0Border
           goto SelSkipP0Border
 SelDrawP0Border
           rem Draw border around Player 1
@@ -341,7 +341,7 @@ SelDrawP0Border
           pf1 = pf1 | %00000001
 SelSkipP0Border
 
-          if playerLocked[1] then SelDrawP1Border
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then SelDrawP1Border
           goto SelSkipP1Border
 SelDrawP1Border
           rem Draw border around Player 2
@@ -352,7 +352,7 @@ SelSkipP1Border
           if controllerStatus & SetQuadtariDetected then SelChkP2Lock
           goto DonePlayer2Locked
 SelChkP2Lock
-          if playerLocked[2] then SelDrawP2Border
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then SelDrawP2Border
           goto DonePlayer2Locked
 SelDrawP2Border 
           rem Draw border around Player 3
@@ -362,7 +362,7 @@ SelDrawP2Border
           if controllerStatus & SetQuadtariDetected then SelChkP3Lock
           goto SelSkipP3Locked
 SelChkP3Lock
-          if playerLocked[3] then SelDrawP3Border
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then SelDrawP3Border
           goto SelSkipP3Locked
 SelDrawP3Border 
           rem Draw border around Player 4

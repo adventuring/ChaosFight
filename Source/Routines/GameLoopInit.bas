@@ -1,6 +1,8 @@
           rem ChaosFight - Source/Routines/GameLoopInit.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
+          #include "Source/Routines/PlayerLockedHelpers.bas"
+          
           rem ==========================================================
           rem GAME LOOP INITIALIZATION
           rem ==========================================================
@@ -76,23 +78,23 @@ InitPositionsDone
           rem Initialize player health (apply handicap if selected)
           rem PlayerLocked value: 0=unlocked, 1=normal (100% health),
           rem   2=handicap (75% health)
-          if PlayerLocked[0] = 2 then let PlayerHealth[0] = PlayerHealthHandicap
-          if PlayerLocked[0] = 2 then Player0HealthSet
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then let PlayerHealth[0] = PlayerHealthHandicap
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then Player0HealthSet
           let PlayerHealth[0] = PlayerHealthMax
 Player0HealthSet
           
-          if PlayerLocked[1] = 2 then let PlayerHealth[1] = PlayerHealthHandicap
-          if PlayerLocked[1] = 2 then Player1HealthSet
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then let PlayerHealth[1] = PlayerHealthHandicap
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then Player1HealthSet
           let PlayerHealth[1] = PlayerHealthMax
 Player1HealthSet
           
-          if PlayerLocked[2] = 2 then let PlayerHealth[2] = PlayerHealthHandicap
-          if PlayerLocked[2] = 2 then Player2HealthSet
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then let PlayerHealth[2] = PlayerHealthHandicap
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then Player2HealthSet
           let PlayerHealth[2] = PlayerHealthMax
 Player2HealthSet
           
-          if PlayerLocked[3] = 2 then let PlayerHealth[3] = PlayerHealthHandicap
-          if PlayerLocked[3] = 2 then Player3HealthSet
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then let PlayerHealth[3] = PlayerHealthHandicap
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then Player3HealthSet
           let PlayerHealth[3] = PlayerHealthMax
 Player3HealthSet
           

@@ -67,11 +67,11 @@ Use **camelCase_R** and **camelCase_W** suffixes for:
 ```basic
 dim selectedArena_W = w014
 dim selectedArena_R = r014
-dim selectedArena = w014  ; Convenience alias acceptable when both _R/_W exist
 ```
 
 **Forbidden:**
 ```basic
+dim selectedArena = w014  ; "Convenience alias" not acceptable
 dim selectedArena = w014  ; ERROR: Missing _R/_W variants
 ```
 
@@ -153,6 +153,8 @@ gameState = 1  ; ERROR: Missing let
 Subroutines communicate via:
 - **Global variables**: Shared state (e.g., `playerX[]`, `playerHealth[]`, `gameState`)
 - **temp1-temp6**: Temporary storage for parameter passing and scratch space
+
+Can also use "static" subroutine-specific variables with global extent.
 
 **Examples:**
 ```basic

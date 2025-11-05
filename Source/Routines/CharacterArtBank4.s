@@ -18,12 +18,12 @@
 
 ; Character sprite pointer tables (Bank 4 only)
 ; Low byte pointers for each character base sprite data
-CharacterSpritePtrLoBank4:
+CharacterSpriteLBank4:
     .byte <Character16Frames, <Character17Frames, <Character18Frames, <Character19Frames
     .byte <Character20Frames, <Character21Frames, <Character22Frames, <Character23Frames
 
 ; High byte pointers for each character base sprite data  
-CharacterSpritePtrHiBank4:
+CharacterSpriteHBank4:
     .byte >Character16Frames, >Character17Frames, >Character18Frames, >Character19Frames
     .byte >Character20Frames, >Character21Frames, >Character22Frames, >Character23Frames
 
@@ -51,9 +51,9 @@ LocateCharacterArtBank4:
     
     ; Get base sprite pointer for character (using bank-relative index from temp6)
     ldy temp6           ; Bank-relative character index (0-7) as Y
-    lda CharacterSpritePtrLoBank4,y
+    lda CharacterSpriteLBank4,y
     sta temp4           ; Store low byte
-    lda CharacterSpritePtrHiBank4,y  
+    lda CharacterSpriteHBank4,y  
     sta temp5           ; Store high byte
     
     ; Calculate sprite index: index = (action << 3) | frame
@@ -119,16 +119,16 @@ SetPlayerCharacterArtBank4:
     lda temp5
     cmp #0
     bne .CheckPlayer1
-    jmp .Player0
+    jmp .SetPlayer0Art
 .CheckPlayer1:
     cmp #1
     bne .CheckPlayer2
-    jmp .Player1
+    jmp .SetPlayer1Art
 .CheckPlayer2:
     cmp #2
-    bne .Player3
-    jmp .Player2
-.Player0:
+    bne .SetPlayer3Art
+    jmp .SetPlayer2Art
+.SetPlayer0Art:
     ; Game Player 0 -> P0 sprite
     lda temp4
     sta player0pointerlo
@@ -138,7 +138,7 @@ SetPlayerCharacterArtBank4:
     sta player0height
     rts
     
-.Player1:
+.SetPlayer1Art:
     ; Game Player 1 -> P1 (_P1 virtual sprite)
     lda temp4
     sta player1pointerlo
@@ -148,7 +148,7 @@ SetPlayerCharacterArtBank4:
     sta player1height
     rts
     
-.Player2:
+.SetPlayer2Art:
     ; Game Player 2 -> P2 virtual sprite
     lda temp4
     sta player2pointerlo
@@ -158,7 +158,7 @@ SetPlayerCharacterArtBank4:
     sta player2height
     rts
     
-.Player3:
+.SetPlayer3Art:
     ; Game Player 3 -> P3 virtual sprite
     lda temp4
     sta player3pointerlo

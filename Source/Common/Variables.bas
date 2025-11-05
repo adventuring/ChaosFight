@@ -337,24 +337,20 @@
           rem ADMIN: Falling animation screen (Mode 4) variables
 
           rem ADMIN: Character select and title screen animation
-          rem   (Standard RAM w,x,y,z)
-          rem NOTE: These are REDIMMED in Game Mode for missile
-          rem   velocities
+          rem   (Standard RAM w,x,t,u,v)
+          rem NOTE: w,x are REDIMMED in Game Mode for missile velocities
+          rem NOTE: t,u,v are ADMIN-only (not used in Game Mode)
           dim readyCount = x               
           rem ADMIN: Count of locked players
           dim charSelectAnimTimer = w      
           rem ADMIN: Animation frame counter (REDIM - conflicts with
           rem   missileVelocityX in Game Mode)
-          dim charSelectAnimState = x      
-          rem ADMIN: Current animation state (REDIM - conflicts with
-          rem   readyCount, but readyCount only used in character
-          rem   select)
-          dim charSelectAnimIndex = y      
-          rem ADMIN: Which character animating (REDIM - available in
-          rem   ADMIN)
-          dim charSelectAnimFrame = z      
-          rem ADMIN: Current frame in sequence (REDIM - available in
-          rem   ADMIN)
+          dim charSelectAnimState = t      
+          rem ADMIN: Current animation state (ADMIN-only, no conflict)
+          dim charSelectAnimIndex = u      
+          rem ADMIN: Which character animating (ADMIN-only, no conflict)
+          dim charSelectAnimFrame = v      
+          rem ADMIN: Current frame in sequence (ADMIN-only, no conflict)
           
           rem ==========================================================
           rem ADMIN MODE - Standard RAM (var0-var47) - sorted

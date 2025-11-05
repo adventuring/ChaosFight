@@ -109,18 +109,43 @@ DonePlayer4Position
           missile0height = 0
           rem Clear missile height first
           let SSP_missileActive = missileActive & 4
-          if SSP_missileActive then missile0x = missileX[2] : missile0y = missileY_R[2] : ENAM0 = 1 : NUSIZ0 = missileNUSIZ[2]                                                               
+          if SSP_missileActive then goto RenderMissile0P3
           rem Check for RoboTito stretch missile if no projectile missile
-          if !SSP_missileActive then gosub RenderRoboTitoStretchMissile0
+          gosub RenderRoboTitoStretchMissile0
+          rem If no stretch missile rendered, ENAM0 remains 0 (no blank missile)
+          goto RenderMissile1P4
+RenderMissile0P3
+          rem Set missile 0 position and size for Participant 3
+          missile0x = missileX[2]
+          missile0y = missileY_R[2]
+          ENAM0 = 1
+          NUSIZ0 = missileNUSIZ[2]
+          rem Set missile height from character data (Issue #595)
+          dim RMP3_characterType = temp5
+          let RMP3_characterType = playerChar[2]
+          missile0height = CharacterMissileHeights[RMP3_characterType]
           
+RenderMissile1P4
           rem Participant 4 missile (array [3], bit 3) → missile1
           ENAM1 = 0
           missile1height = 0
           rem Clear missile height first
           let SSP_missileActive = missileActive & 8
-          if SSP_missileActive then missile1x = missileX[3] : missile1y = missileY_R[3] : ENAM1 = 1 : NUSIZ1 = missileNUSIZ[3]                                                               
+          if SSP_missileActive then goto RenderMissile1P4Active
           rem Check for RoboTito stretch missile if no projectile missile
-          if !SSP_missileActive then gosub RenderRoboTitoStretchMissile1
+          gosub RenderRoboTitoStretchMissile1
+          rem If no stretch missile rendered, ENAM1 remains 0 (no blank missile)
+          return
+RenderMissile1P4Active
+          rem Set missile 1 position and size for Participant 4
+          missile1x = missileX[3]
+          missile1y = missileY_R[3]
+          ENAM1 = 1
+          NUSIZ1 = missileNUSIZ[3]
+          rem Set missile height from character data (Issue #595)
+          dim RMP4_characterType = temp5
+          let RMP4_characterType = playerChar[3]
+          missile1height = CharacterMissileHeights[RMP4_characterType]
           return
           
 RenderMissilesEvenFrame
@@ -131,18 +156,43 @@ RenderMissilesEvenFrame
           missile0height = 0
           rem Clear missile height first
           let RMEF_missileActive = missileActive & 1
-          if RMEF_missileActive then missile0x = missileX[0] : missile0y = missileY_R[0] : ENAM0 = 1 : NUSIZ0 = missileNUSIZ[0]                                                              
+          if RMEF_missileActive then goto RenderMissile0P1
           rem Check for RoboTito stretch missile if no projectile missile
-          if !RMEF_missileActive then gosub RenderRoboTitoStretchMissile0
+          gosub RenderRoboTitoStretchMissile0
+          rem If no stretch missile rendered, ENAM0 remains 0 (no blank missile)
+          goto RenderMissile1P2
+RenderMissile0P1
+          rem Set missile 0 position and size for Participant 1
+          missile0x = missileX[0]
+          missile0y = missileY_R[0]
+          ENAM0 = 1
+          NUSIZ0 = missileNUSIZ[0]
+          rem Set missile height from character data (Issue #595)
+          dim RMP1_characterType = temp5
+          let RMP1_characterType = playerChar[0]
+          missile0height = CharacterMissileHeights[RMP1_characterType]
           
+RenderMissile1P2
           rem Participant 2 missile (array [1], bit 1) → missile1
           ENAM1 = 0 
           missile1height = 0
           rem Clear missile height first
           let RMEF_missileActive = missileActive & 2
-          if RMEF_missileActive then missile1x = missileX[1] : missile1y = missileY_R[1] : ENAM1 = 1 : NUSIZ1 = missileNUSIZ[1]                                                              
+          if RMEF_missileActive then goto RenderMissile1P2Active
           rem Check for RoboTito stretch missile if no projectile missile
-          if !RMEF_missileActive then gosub RenderRoboTitoStretchMissile1
+          gosub RenderRoboTitoStretchMissile1
+          rem If no stretch missile rendered, ENAM1 remains 0 (no blank missile)
+          return
+RenderMissile1P2Active
+          rem Set missile 1 position and size for Participant 2
+          missile1x = missileX[1]
+          missile1y = missileY_R[1]
+          ENAM1 = 1
+          NUSIZ1 = missileNUSIZ[1]
+          rem Set missile height from character data (Issue #595)
+          dim RMP2_characterType = temp5
+          let RMP2_characterType = playerChar[1]
+          missile1height = CharacterMissileHeights[RMP2_characterType]
           return
           
 RenderMissiles2Player
@@ -154,19 +204,43 @@ RenderMissiles2Player
           missile0height = 0
           rem Clear missile height first
           let RM2P_missileActive = missileActive & 1
-          if RM2P_missileActive then missile0x = missileX[0] : missile0y = missileY_R[0] : ENAM0 = 1 : NUSIZ0 = missileNUSIZ[0]                                                              
+          if RM2P_missileActive then goto RenderMissile0P1_2P
           rem Check for RoboTito stretch missile if no projectile missile
-          if !RM2P_missileActive then gosub RenderRoboTitoStretchMissile0
+          gosub RenderRoboTitoStretchMissile0
+          rem If no stretch missile rendered, ENAM0 remains 0 (no blank missile)
+          goto RenderMissile1P2_2P
+RenderMissile0P1_2P
+          rem Set missile 0 position and size for Participant 1 (2-player mode)
+          missile0x = missileX[0]
+          missile0y = missileY_R[0]
+          ENAM0 = 1
+          NUSIZ0 = missileNUSIZ[0]
+          rem Set missile height from character data (Issue #595)
+          dim RMP1_2P_characterType = temp5
+          let RMP1_2P_characterType = playerChar[0]
+          missile0height = CharacterMissileHeights[RMP1_2P_characterType]
           
+RenderMissile1P2_2P
           rem Participant 2 (array [1]) missile (missile1, P1 sprite)
           ENAM1 = 0 
           missile1height = 0
           rem Clear missile height first
           let RM2P_missileActive = missileActive & 2
-          if RM2P_missileActive then missile1x = missileX[1] : missile1y = missileY_R[1] : ENAM1 = 1 : NUSIZ1 = missileNUSIZ[1]                                                              
+          if RM2P_missileActive then goto RenderMissile1P2_2PActive
           rem Check for RoboTito stretch missile if no projectile missile
-          if !RM2P_missileActive then gosub RenderRoboTitoStretchMissile1
-          
+          gosub RenderRoboTitoStretchMissile1
+          rem If no stretch missile rendered, ENAM1 remains 0 (no blank missile)
+          return
+RenderMissile1P2_2PActive
+          rem Set missile 1 position and size for Participant 2 (2-player mode)
+          missile1x = missileX[1]
+          missile1y = missileY_R[1]
+          ENAM1 = 1
+          NUSIZ1 = missileNUSIZ[1]
+          rem Set missile height from character data (Issue #595)
+          dim RMP2_2P_characterType = temp5
+          let RMP2_2P_characterType = playerChar[1]
+          missile1height = CharacterMissileHeights[RMP2_2P_characterType]
           return
           
           rem ==========================================================

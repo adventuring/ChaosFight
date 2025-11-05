@@ -252,6 +252,19 @@ When a player takes damage from any source:
 - **Multiplexing**: In 4-player mode, 2 hardware missiles shared via frame multiplexing
   - Even frames: missile0 = Participant 1, missile1 = Participant 2
   - Odd frames: missile0 = Participant 3, missile1 = Participant 4
+  - **No blank missiles**: Only switches to missiles that are actually active (no visual artifacts)
+  - **Separate heights**: Each player's missile height is set correctly when multiplexing (P1/P3 and P2/P4 can have different heights)
+
+#### Character Attack Types and Missile Dimensions
+- **Bernie**: Melee only - "Ground Thump" area-of-effect attack hits both left and right simultaneously, shoving enemies away rapidly (no missile)
+- **Curler**: Ranged - 4×4 pixel wide, tall ground-based projectile
+- **Dragon of Storms**: Ranged - 2×2 pixel standard projectile with ballistic arc (gravity)
+- **Zoe Ryen**: Ranged - 4×1 pixel wide, low-height projectile
+- **Fat Tony**: Ranged - 4×1 pixel wide, low-height projectile
+- **Megax**: Ranged - 4×4 pixel wide, tall fire breath projectile
+- **Harpy**: Ranged - No missile sprite (diagonal swoop attack - character movement IS the attack)
+- **Frooty**: Ranged - 1×1 pixel narrow projectile (magical sparkles)
+- **Other characters**: Melee attacks only (no projectiles)
 
 ### Game End Condition
 - Game ends when only one player remains (all others eliminated)

@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 4.54 kg (10.0 lbs)
-    Attack: Melée (BOTH DIRECTIONS!)
+    Attack: Ground Thump (Area-of-Effect Melee, BOTH DIRECTIONS!)
     Special: No jumping; wraps from bottom to top of screen; fall damage immunity
     Original Game: Bernie and the Towers of Doom (Atari 7800)
     Author: Lewis "Muddyfunster" Hill of Muddyvision @url{https://muddyvision.com,Muddyvision}
@@ -15,9 +15,10 @@
 Bernie cannot jump, but he can fall off the bottom of the screen and reappear
 at the top! 
 
-His unique attack hits both in front AND behind simultaneously 
-(dual-direction AOE), making him dangerous in crowds. 
-He can thump the ground so hard that it affects anyone to either side of him!
+His unique "Ground Thump" attack hits both in front AND behind simultaneously 
+(dual-direction area-of-effect), making him dangerous in crowds. 
+He thumps the ground so hard that it affects anyone to either side of him,
+shoving them rapidly away!
 
 Bernie's tough constitution grants complete
 immunity to fall damage.

@@ -524,7 +524,7 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Vulnerable entire length to collisions
 
 ### Character 14: Ursulo
-- **Weight**: 1200 lbs (544.3 kg) - Game Unit: 83
+- **Weight**: 220 lbs (100 kg) - Game Unit: 55
 - **Attack Type**: Melee (claw swipe)
 - **Missile**: None (melee only, 5-frame lifetime)
 - **Missile Properties**:

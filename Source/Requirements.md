@@ -341,7 +341,7 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
 | Pork Chop | 250 lbs (113.4 kg) | 57 | Heavy |
 | Radish Goblin | 50 lbs (22.7 kg) | 31 | Light |
 | Robo Tito | 300 lbs (136.1 kg) | 60 | Very heavy (dumpster) |
-| Ursulo | 1200 lbs (544.3 kg) | 83 | Very heavy (polar bear) |
+| Ursulo | 220 lbs (100 kg) | 55 | Medium-heavy (1.67m tall walking polar bear) |
 | Shamone | 65 lbs (29.5 kg) | 35 | Medium-light |
 
 **Weight Effects**:

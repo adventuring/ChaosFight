@@ -874,10 +874,13 @@ HandleMissileBounce
           rem Apply friction damping if friction flag is set
           if (temp5 & MissileFlagFriction) = 0 then BounceDone
           rem Reduce velocity by half (divide by BounceDampenDivisor = 2)
+          rem Split into multiple steps to avoid compiler complexity limits
           rem Subtraction works for both positive and negative values:
           rem   Positive: velocity - velocity/2 = 0.5 * velocity (reduces)
           rem   Negative: velocity - velocity/2 = velocity - (negative) = 0.5 * velocity (reduces magnitude)
-          let missileVelocityXCalc = missileVelocityXCalc - (missileVelocityXCalc / BounceDampenDivisor)
+          dim HMB_dampenAmount = temp2
+          let HMB_dampenAmount = missileVelocityXCalc / BounceDampenDivisor
+          let missileVelocityXCalc = missileVelocityXCalc - HMB_dampenAmount
 BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc
           

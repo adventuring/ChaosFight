@@ -76,13 +76,19 @@ CheckConsoleFeatures
           if !console7800Detected then Done7800Features
           
           rem 7800-specific features
-          rem TODO: Implement 7800-specific pause button handling
-          rem TODO: Implement 7800-specific controller detection
+          rem Note: 7800 pause button handling is implemented in
+          rem   ControllerDetection.bas (Check7800Pause) and called
+          rem   from ConsoleHandling.bas during the game loop
+          rem Note: Controller detection works for both 2600 and 7800
+          rem   via ControllerDetection.bas (DetectControllers)
+          rem   No console-specific initialization needed
           goto ConsoleFeaturesDone
           
 Done7800Features
           rem 2600-specific features
-          rem TODO: Implement 2600-specific optimizations
+          rem Note: Controller detection works for both 2600 and 7800
+          rem   via ControllerDetection.bas (DetectControllers)
+          rem   No console-specific initialization needed
           
 ConsoleFeaturesDone
           return

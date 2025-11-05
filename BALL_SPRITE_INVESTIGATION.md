@@ -126,9 +126,10 @@ Adding Ball sprite would require:
 - Per-scanline timing (handled automatically by kernel)
 
 ### Memory Impact
-- Ball sprite uses zero-page RAM: `ballx`, `bally`, `ballheight`
+- Ball sprite uses zero-page RAM: `ballx` ($82), `bally` ($8C)
+- Note: Multisprite kernel does NOT use `ballheight` variable (height via CTRLPF register)
 - No additional missile tracking arrays needed
-- Minimal memory overhead
+- Minimal memory overhead (2 bytes)
 
 ### Performance Impact
 - Ball sprite rendering is per-scanline

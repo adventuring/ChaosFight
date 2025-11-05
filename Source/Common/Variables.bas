@@ -121,6 +121,18 @@
           rem COMMON VARS - Standard RAM (a-z) - sorted alphabetically
           rem ==========================================================
 
+          rem Current iteration variables (used in loops across routines)
+          dim currentPlayer = c
+          rem Current player index (0-3) for iteration loops
+          rem Set before calling functions that operate on a single player
+          rem Used extensively in AnimationSystem, PlayerElimination,
+          rem   MovementSystem, and other routines
+          dim currentCharacter = n
+          rem Current character index (0-31) for character-specific operations
+          rem Set from playerChar[currentPlayer] before character operations
+          rem Used in SpriteLoader, character-specific logic, etc.
+          rem Reduces temp variable pressure by eliminating parameter passing
+          
           rem Game state and system flags (consolidated to save RAM)
           dim gameMode = p
           rem Game mode index (0-8): ModePublisherPreamble, ModeAuthorPreamble, etc.

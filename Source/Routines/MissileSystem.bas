@@ -485,7 +485,7 @@ HandleMegaxMissile
             lsr a
             lsr a
             sta HMM_animationState
-          end
+end
           
           rem If animation state is not ActionAttackExecute (14), attack is complete
           rem ActionAttackExecute = 14, so if animationState != 14, deactivate
@@ -530,7 +530,7 @@ HandleKnightGuyMissile
             lsr a
             lsr a
             sta HKG_animationState
-          end
+end
           
           rem If animation state is not ActionAttackExecute (14), attack is complete
           if HKG_animationState = 14 then KnightGuyAttackActive

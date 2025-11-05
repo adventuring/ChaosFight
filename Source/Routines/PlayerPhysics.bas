@@ -63,7 +63,7 @@ GravityCheckCharacter
           if PAG_characterType = CharRoboTito then
               if (characterStateFlags_R[PAG_playerIndex] & 1) then goto GravityNextPlayer
               rem Latched to ceiling (bit 0 set), skip gravity
-          end
+end
           
           rem If NOT jumping, skip gravity (player is on ground)
           if !(playerState[PAG_playerIndex] & PlayerStateBitJumping) then goto GravityNextPlayer

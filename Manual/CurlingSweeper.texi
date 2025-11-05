@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 86.18 kg (190.0 lbs)
-    Attack: Ranged (from feet, 4×4 pixels, ground-based ballistic)
+    Attack: Ranged (from feet, ground-based)
     Special: Projectile comes from character's feet
     Original Game: RealSports Curling (Atari 5200)
     Author: Ryan Witmer @url{https://phasercat.com,Phaser Cat Games}

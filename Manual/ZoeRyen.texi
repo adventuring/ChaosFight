@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 65.77 kg (145.0 lbs)
-    Attack: Ranged (4×1 pixel wide, low-height projectile)
+    Attack: Ranged
     Special: High jumps, fast horizontal projectile
 @end group
 @end display

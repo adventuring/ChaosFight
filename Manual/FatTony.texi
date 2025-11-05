@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 108.86 kg (240.0 lbs)
-    Attack: Ranged (4×1 pixel wide, low-height magic ring lasers)
+    Attack: Ranged (magic ring lasers)
     Special: Geography expert, magic ring wielder, former bar owner
     Lives: Port Lion island
     Background: Former proprietor of bars in mysterious "Greewich"

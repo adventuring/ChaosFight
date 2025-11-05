@@ -2,8 +2,8 @@
 @display
 @group
     Weight: 113.40 kg (250.0 lbs)
-    Attack: Ranged (3×3 pixels, arrowshot)
-    Special: Armored fighter with powerful projectile, longest melée duration (6 frames)
+    Attack: Ranged (arrowshot)
+    Special: Armored fighter with powerful projectile
     Original Game: Knight Guy: Escapes from Castle, In Another Castle, and 30 Squares of Fate
     Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.itch.io,VHZC Games}
     Purchase: @url{https://store.atariage.com/products/knight-guy-in-another-castle-atari-2600,Knight Guy: In Another Castle at AtariAge Store}
@@ -12,6 +12,5 @@
 @end group
 @end display
 
-Knight Guy combines heavy armor with a powerful ranged attack. His projectile
-is larger than most (3×3 pixels) and travels in a straight line, making him
-a formidable opponent at any range!
+Knight Guy combines heavy armor with a powerful ranged attack. His arrowshot
+travels in a straight line, making him a formidable opponent at any range!

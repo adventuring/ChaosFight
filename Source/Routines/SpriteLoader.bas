@@ -394,12 +394,21 @@ LoadPlayer3Sprite
 
           rem Load player color based on TV standard, B&W, hurt, and
           rem   flashing states
-          rem Input: temp2 = hurt state (0/1), temp3 = player number (0-3)
-          rem        temp4 = flashing state (0/1), temp5 = flashing mode
-          rem        (0=frame-based, 1=player-index)
+          rem Input: temp2 = hurt state (0/1) → LoadCharacterColors_isHurt
+          rem        temp3 = player number (0-3) →
+          rem        LoadCharacterColors_playerNumber
+          rem        temp4 = flashing state (0/1) →
+          rem        LoadCharacterColors_isFlashing
+          rem        temp5 = flashing mode (0=frame-based, 1=player-index) →
+          rem        LoadCharacterColors_flashingMode
           rem Output: Appropriate COLUPx updated
           rem Note: Colors are per-player, not per-character. Players use
           rem   solid colors only (no per-line coloring)
+          rem
+          rem MUTATES:
+          rem   temp6 = LoadCharacterColors_color (internal calculation)
+          rem WARNING: temp6 is mutated during execution. Do not use temp6
+          rem   after calling this subroutine.
 LoadCharacterColors
           dim LoadCharacterColors_isHurt = temp2
           dim LoadCharacterColors_playerNumber = temp3

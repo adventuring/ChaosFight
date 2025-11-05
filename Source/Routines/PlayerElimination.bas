@@ -33,7 +33,7 @@ CheckAllPlayerEliminations
           rem Check each player for elimination using FOR loop
           for currentPlayer = 0 to 3
               let CPE_playerIndex = currentPlayer
-              rem Set alias (which maps to temp1) before calling
+              rem Set callee's alias (maps to temp1) before calling
               gosub CheckPlayerElimination
           next
           
@@ -260,7 +260,7 @@ FindWinner
           for currentPlayer = 0 to 3
               let IPE_playerIndex = currentPlayer
               gosub IsPlayerEliminated
-              let FW_isEliminated = temp2
+              let FW_isEliminated = IPE_isEliminated
               if !FW_isEliminated then let winnerPlayerIndex = currentPlayer
           next
           

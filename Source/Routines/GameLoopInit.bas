@@ -78,53 +78,33 @@ InitPositionsDone
           rem Initialize player health (apply handicap if selected)
           rem PlayerLocked value: 0=unlocked, 1=normal (100% health),
           rem   2=handicap (75% health)
-          let temp1 = 0 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then let PlayerHealth[0] = PlayerHealthHandicap
-          let temp1 = 0 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then Player0HealthSet
-          let PlayerHealth[0] = PlayerHealthMax
-Player0HealthSet
-          
-          let temp1 = 1 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then let PlayerHealth[1] = PlayerHealthHandicap
-          let temp1 = 1 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then Player1HealthSet
-          let PlayerHealth[1] = PlayerHealthMax
-Player1HealthSet
-          
-          let temp1 = 2 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then let PlayerHealth[2] = PlayerHealthHandicap
-          let temp1 = 2 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then Player2HealthSet
-          let PlayerHealth[2] = PlayerHealthMax
-Player2HealthSet
-          
-          let temp1 = 3 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then let PlayerHealth[3] = PlayerHealthHandicap
-          let temp1 = 3 : gosub GetPlayerLocked : if temp2 = PlayerLockedHandicap then Player3HealthSet
-          let PlayerHealth[3] = PlayerHealthMax
-Player3HealthSet
+          for currentPlayer = 0 to 3
+              let GPL_playerIndex = currentPlayer
+              gosub GetPlayerLocked
+              if GPL_lockedState = PlayerLockedHandicap then let PlayerHealth[currentPlayer] = PlayerHealthHandicap
+              if GPL_lockedState = PlayerLockedHandicap then goto PlayerHealthSet
+              let PlayerHealth[currentPlayer] = PlayerHealthMax
+PlayerHealthSet
+          next
           
           rem Initialize player timers
-          let PlayerTimers[0] = 0
-          let PlayerTimers[1] = 0
-          let PlayerTimers[2] = 0
-          let PlayerTimers[3] = 0
+          for currentPlayer = 0 to 3
+              let PlayerTimers[currentPlayer] = 0
+          next
           
           rem Initialize player velocity
-          let playerVelocityX[0] = 0
-          let playerVelocityX[1] = 0
-          let playerVelocityX[2] = 0
-          let playerVelocityX[3] = 0
-          rem Initialize subpixel velocities to zero
-          let playerVelocitySubpixelX[0] = 0 : let playerVelocitySubpixelY[0] = 0
-          let playerVelocitySubpixelX[1] = 0 : let playerVelocitySubpixelY[1] = 0
-          let playerVelocitySubpixelX[2] = 0 : let playerVelocitySubpixelY[2] = 0
-          let playerVelocitySubpixelX[3] = 0 : let playerVelocitySubpixelY[3] = 0
-          rem Initialize subpixel positions to zero
-          let playerSubpixelX[0] = 0 : let playerSubpixelY[0] = 0
-          let playerSubpixelX[1] = 0 : let playerSubpixelY[1] = 0
-          let playerSubpixelX[2] = 0 : let playerSubpixelY[2] = 0
-          let playerSubpixelX[3] = 0 : let playerSubpixelY[3] = 0
+          for currentPlayer = 0 to 3
+              let playerVelocityX[currentPlayer] = 0
+              let playerVelocitySubpixelX[currentPlayer] = 0
+              let playerVelocitySubpixelY[currentPlayer] = 0
+              let playerSubpixelX[currentPlayer] = 0
+              let playerSubpixelY[currentPlayer] = 0
+          next
           
           rem Initialize player damage values
-          let PlayerDamage[0] = 22
-          let PlayerDamage[1] = 22
-          let PlayerDamage[2] = 22
-          let PlayerDamage[3] = 22
+          for currentPlayer = 0 to 3
+              let PlayerDamage[currentPlayer] = 22
+          next
           
           rem Set character types from character select
           let PlayerChar[0] = SelectedChar1

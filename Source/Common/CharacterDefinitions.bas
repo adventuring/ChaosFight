@@ -59,7 +59,7 @@
           rem Frooty (120 lbs twink), Nefertem (440 lbs lion), Ninjish
           rem   Guy (130 lbs thin man), Pork Chop (250 lbs),
           rem Radish Goblin (50 lbs scaled daikon), Robo Tito (300 lbs
-          rem   dumpster), Ursulo (1200 lbs polar bear), Shamone (65 lbs
+          rem   dumpster), Ursulo (220 lbs, 1.67m tall walking polar bear), Shamone (65 lbs
           rem   Labrador)
           data CharacterWeights
             5, 53, 100, 48,
@@ -68,7 +68,7 @@
             rem Fat Tony, Megax, Harpy, Knight Guy
             45, 66, 47, 57,
             rem Frooty, Nefertem, Ninjish Guy, Pork Chop
-            31, 60, 83, 35
+            31, 60, 55, 35
             rem Radish Goblin, Robo Tito, Ursulo, Shamone
 end
 

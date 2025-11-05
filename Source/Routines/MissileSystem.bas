@@ -233,7 +233,7 @@ UpdateOneMissile
           if UOM_characterType = CharKnightGuy then goto HandleKnightGuyMissile
           
           rem Apply gravity if flag is set
-          if !(UOM_missileFlags & MissileFlagGravity) then GravityDone
+          if (UOM_missileFlags & MissileFlagGravity) = 0 then GravityDone
           let UOM_velocityY = UOM_velocityY + GravityPerFrame
           rem Add gravity (1 pixel/frame down)
           let missileVelocityY[UOM_playerIndex] = UOM_velocityY
@@ -355,7 +355,7 @@ FrictionDone
           rem temp5 now contains missile flags again
           let temp1 = UOM_playerIndex
           rem Restore player index for MissileCollPF
-          if !(temp5 & MissileFlagHitBackground) then PlayfieldCollisionDone
+          if (temp5 & MissileFlagHitBackground) = 0 then PlayfieldCollisionDone
           gosub bank7 MissileCollPF
           if !temp4 then PlayfieldCollisionDone
           rem Collision detected - check if should bounce or deactivate

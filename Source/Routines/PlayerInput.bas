@@ -107,7 +107,7 @@ InputHandleAllPlayers
           if qtcontroller then goto InputHandleQuadtariPlayers
           
           rem Even frame: Handle Players 1 & 2 - only if alive  
-          let temp1 = 0 : gosub IsPlayerAlive
+          let currentPlayer = 0 : gosub IsPlayerAlive
           let IHAP_isAlive = temp2
           if IHAP_isAlive = 0 then InputSkipPlayer0Input
           if (PlayerState[0] & 8) then InputSkipPlayer0Input
@@ -115,7 +115,7 @@ InputHandleAllPlayers
           
 InputSkipPlayer0Input
           
-          let temp1 = 1 : gosub IsPlayerAlive
+          let currentPlayer = 1 : gosub IsPlayerAlive
           let IHAP_isAlive = temp2
           if IHAP_isAlive = 0 then InputSkipPlayer1Input
           if (PlayerState[1] & 8) then InputSkipPlayer1Input
@@ -138,7 +138,7 @@ InputHandleQuadtariPlayers
           rem   alive)
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input
           if selectedChar3_R = 0 then InputSkipPlayer3Input
-                    temp1 = 2 : gosub IsPlayerAlive
+          let currentPlayer = 2 : gosub IsPlayerAlive
           let IHQP_isAlive = temp2
           if IHQP_isAlive = 0 then InputSkipPlayer3Input
           if (PlayerState[2] & 8) then InputSkipPlayer3Input
@@ -147,7 +147,7 @@ InputHandleQuadtariPlayers
 InputSkipPlayer3Input
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input
           if selectedChar4_R = 0 then InputSkipPlayer4Input
-                    temp1 = 3 : gosub IsPlayerAlive
+          let currentPlayer = 3 : gosub IsPlayerAlive
           let IHQP_isAlive = temp2
           if IHQP_isAlive = 0 then InputSkipPlayer4Input
           if (PlayerState[3] & 8) then InputSkipPlayer4Input

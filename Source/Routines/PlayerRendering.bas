@@ -97,6 +97,8 @@ DonePlayer4Position
           rem 4-player mode: Use frame multiplexing
           dim SSP_frameParity = temp6
           dim SSP_missileActive = temp4
+          dim SSP_characterType = temp5
+          rem Shared temp5 for character type lookups in this code path
           let SSP_frameParity = frame & 1
           rem 0 = even frame (Participants 1-2), 1 = odd frame
           rem   (Participants 3-4)
@@ -121,9 +123,8 @@ RenderMissile0P3
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ[2]
           rem Set missile height from character data (Issue #595)
-          dim RMP3_characterType = temp5
-          let RMP3_characterType = playerChar[2]
-          missile0height = CharacterMissileHeights[RMP3_characterType]
+          let SSP_characterType = playerChar[2]
+          missile0height = CharacterMissileHeights[SSP_characterType]
           
 RenderMissile1P4
           rem Participant 4 missile (array [3], bit 3) → missile1
@@ -143,13 +144,14 @@ RenderMissile1P4Active
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ[3]
           rem Set missile height from character data (Issue #595)
-          dim RMP4_characterType = temp5
-          let RMP4_characterType = playerChar[3]
-          missile1height = CharacterMissileHeights[RMP4_characterType]
+          let SSP_characterType = playerChar[3]
+          missile1height = CharacterMissileHeights[SSP_characterType]
           return
           
 RenderMissilesEvenFrame
           dim RMEF_missileActive = temp4
+          dim RMEF_characterType = temp5
+          rem Shared temp5 for character type lookups in this code path
                     rem Even frame: Render Participants 1-2 missiles
           rem Participant 1 missile (array [0], bit 0) → missile0
           ENAM0 = 0 
@@ -168,9 +170,8 @@ RenderMissile0P1
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ[0]
           rem Set missile height from character data (Issue #595)
-          dim RMP1_characterType = temp5
-          let RMP1_characterType = playerChar[0]
-          missile0height = CharacterMissileHeights[RMP1_characterType]
+          let RMEF_characterType = playerChar[0]
+          missile0height = CharacterMissileHeights[RMEF_characterType]
           
 RenderMissile1P2
           rem Participant 2 missile (array [1], bit 1) → missile1
@@ -190,13 +191,14 @@ RenderMissile1P2Active
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ[1]
           rem Set missile height from character data (Issue #595)
-          dim RMP2_characterType = temp5
-          let RMP2_characterType = playerChar[1]
-          missile1height = CharacterMissileHeights[RMP2_characterType]
+          let RMEF_characterType = playerChar[1]
+          missile1height = CharacterMissileHeights[RMEF_characterType]
           return
           
 RenderMissiles2Player
           dim RM2P_missileActive = temp4
+          dim RM2P_characterType = temp5
+          rem Shared temp5 for character type lookups in this code path
           rem 2-player mode: No multiplexing needed, assign missiles
           rem   directly
           rem Participant 1 (array [0]) missile (missile0, P0 sprite)
@@ -216,9 +218,8 @@ RenderMissile0P1_2P
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ[0]
           rem Set missile height from character data (Issue #595)
-          dim RMP1_2P_characterType = temp5
-          let RMP1_2P_characterType = playerChar[0]
-          missile0height = CharacterMissileHeights[RMP1_2P_characterType]
+          let RM2P_characterType = playerChar[0]
+          missile0height = CharacterMissileHeights[RM2P_characterType]
           
 RenderMissile1P2_2P
           rem Participant 2 (array [1]) missile (missile1, P1 sprite)
@@ -238,9 +239,8 @@ RenderMissile1P2_2PActive
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ[1]
           rem Set missile height from character data (Issue #595)
-          dim RMP2_2P_characterType = temp5
-          let RMP2_2P_characterType = playerChar[1]
-          missile1height = CharacterMissileHeights[RMP2_2P_characterType]
+          let RM2P_characterType = playerChar[1]
+          missile1height = CharacterMissileHeights[RM2P_characterType]
           return
           
           rem ==========================================================

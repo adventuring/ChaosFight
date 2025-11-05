@@ -256,8 +256,8 @@ $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).png): Source/Generate
 
 # Generate character sprite files from PNG using chaos character compiler
 # PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
-# Explicitly depend on XCF to ensure proper build ordering in parallel builds
-$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool                                      
+# Primary dependency is PNG file (XCF dependency is handled by PNG generation rule)
+$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool                                      
 	@echo "Generating character sprite data for $*..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-chaos-character "$@" "$<"

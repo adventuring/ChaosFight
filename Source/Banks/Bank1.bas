@@ -22,12 +22,22 @@
           rem   - 48x2_3: ChaosFight logo (Title)
           rem   - 48x2_4: Interworldly logo (Author)
 
-          include "Source/Generated/Art.AtariAge.s"
-          include "Source/Generated/Art.AtariAgeText.s"
-          include "Source/Generated/Art.ChaosFight.s"
-          include "Source/Generated/Art.Interworldly.s"
+          asm
+#include "Source/Generated/Art.AtariAge.s"
+end
+          asm
+#include "Source/Generated/Art.AtariAgeText.s"
+end
+          asm
+#include "Source/Generated/Art.ChaosFight.s"
+end
+          asm
+#include "Source/Generated/Art.Interworldly.s"
+end
           
-          include "Source/Titlescreen/asm/titlescreen.s"
+          asm
+#include "Source/Titlescreen/asm/titlescreen.s"
+end
 
           rem Override window values AFTER includes for correct
           rem   per-screen display

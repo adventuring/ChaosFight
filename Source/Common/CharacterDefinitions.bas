@@ -62,14 +62,14 @@
           rem   dumpster), Ursulo (1200 lbs polar bear), Shamone (65 lbs
           rem   Labrador)
           data CharacterWeights
-          5, 53, 100, 48,
-          rem Bernie, Curler, Dragon of Storms, Zoe Ryen
-          57, 100, 23, 57,
-          rem Fat Tony, Megax, Harpy, Knight Guy
-          45, 66, 47, 57,
-          rem Frooty, Nefertem, Ninjish Guy, Pork Chop
-          31, 60, 83, 35
-          rem Radish Goblin, Robo Tito, Ursulo, Shamone
+            5, 53, 100, 48,
+            rem Bernie, Curler, Dragon of Storms, Zoe Ryen
+            57, 100, 23, 57,
+            rem Fat Tony, Megax, Harpy, Knight Guy
+            45, 66, 47, 57,
+            rem Frooty, Nefertem, Ninjish Guy, Pork Chop
+            31, 60, 83, 35
+            rem Radish Goblin, Robo Tito, Ursulo, Shamone
 end
 
           rem ==========================================================
@@ -81,14 +81,14 @@ end
           rem   division
           rem Values: integer division of 120 by each character’s weight
           data SafeFallVelocityThresholds
-          24, 2, 1, 2,
-          rem Bernie(24), Curler(2), Dragon(1), Zoe(2)
-          2, 1, 5, 2,
-          rem Fat Tony(2), Megax(1), Harpy(5), Knight Guy(2)
-          2, 1, 2, 2,
-          rem Frooty(2), Nefertem(1), Ninjish Guy(2), Pork Chop(2)
-          3, 2, 1, 3
-          rem Radish Goblin(3), Robo Tito(2), Ursulo(1), Shamone(3)
+            24, 2, 1, 2,
+            rem Bernie(24), Curler(2), Dragon(1), Zoe(2)
+            2, 1, 5, 2,
+            rem Fat Tony(2), Megax(1), Harpy(5), Knight Guy(2)
+            2, 1, 2, 2,
+            rem Frooty(2), Nefertem(1), Ninjish Guy(2), Pork Chop(2)
+            3, 2, 1, 3
+            rem Radish Goblin(3), Robo Tito(2), Ursulo(1), Shamone(3)
 end
 
           rem ==========================================================
@@ -99,14 +99,14 @@ end
           rem   20)
           rem Pre-computed to avoid variable division
           data WeightDividedBy20
-          0, 2, 5, 2,
-          rem Bernie(0), Curler(2), Dragon(5), Zoe(2)
-          2, 5, 1, 2,
-          rem Fat Tony(2), Megax(5), Harpy(1), Knight Guy(2)
-          2, 3, 2, 2,
-          rem Frooty(2), Nefertem(3), Ninjish Guy(2), Pork Chop(2)
-          1, 3, 4, 1
-          rem Radish Goblin(1), Robo Tito(3), Ursulo(4), Shamone(1)
+            0, 2, 5, 2,
+            rem Bernie(0), Curler(2), Dragon(5), Zoe(2)
+            2, 5, 1, 2,
+            rem Fat Tony(2), Megax(5), Harpy(1), Knight Guy(2)
+            2, 3, 2, 2,
+            rem Frooty(2), Nefertem(3), Ninjish Guy(2), Pork Chop(2)
+            1, 3, 4, 1
+            rem Radish Goblin(1), Robo Tito(3), Ursulo(4), Shamone(1)
 end
 
           rem ==========================================================
@@ -117,12 +117,12 @@ end
           rem Pre-computed to avoid variable multiplication
           rem Index is value (1-24), result is value²
           data SquareTable
-          1, 4, 9, 16, 25, 36, 49, 64,
-          rem 1², 2², 3², 4², 5², 6², 7², 8²
-          81, 100, 121, 144, 169, 196, 225, 256,
-          rem 9², 10², 11², 12², 13², 14², 15², 16²
-          289, 324, 361, 400, 441, 484, 529, 576
-          rem 17², 18², 19², 20², 21², 22², 23², 24²
+            1, 4, 9, 16, 25, 36, 49, 64,
+            rem 1², 2², 3², 4², 5², 6², 7², 8²
+            81, 100, 121, 144, 169, 196, 225, 256,
+            rem 9², 10², 11², 12², 13², 14², 15², 16²
+            289, 324, 361, 400, 441, 484, 529, 576
+            rem 17², 18², 19², 20², 21², 22², 23², 24²
 end
 
           rem ==========================================================
@@ -139,36 +139,36 @@ end
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterHeights
-          10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
-          end
+            10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
+end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileWidths
              0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
-          rem Bernie: no ranged attack (melee only)
-          rem Curler: 4 (wide ground-based projectile)
-          rem Megax: 4 (maximum width for fire breath)
-          rem Zoe Ryen: 4 (wide projectile)
-          rem Fat Tony: 4 (wide projectile)
-          rem Frooty: 1 (narrow projectile)
-          rem Ursulo: melee (0) for claw swipe
-          end
+            rem Bernie: no ranged attack (melee only)
+            rem Curler: 4 (wide ground-based projectile)
+            rem Megax: 4 (maximum width for fire breath)
+            rem Zoe Ryen: 4 (wide projectile)
+            rem Fat Tony: 4 (wide projectile)
+            rem Frooty: 1 (narrow projectile)
+            rem Ursulo: melee (0) for claw swipe
+end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileHeights
              0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
-          rem Bernie: no ranged attack (melee only)
-          rem Curler: 4 (tall ground-based projectile)
-          rem Dragon of Storms: 2 (standard ballistic arc)
-          rem Zoe Ryen: 1 (low-height projectile)
-          rem Fat Tony: 1 (low-height projectile)
-          rem Megax: 4 (tall fire breath)
-          rem Frooty: 1 (low-height sparkles)
-          rem Ursulo: melee (0) for claw swipe
+            rem Bernie: no ranged attack (melee only)
+            rem Curler: 4 (tall ground-based projectile)
+            rem Dragon of Storms: 2 (standard ballistic arc)
+            rem Zoe Ryen: 1 (low-height projectile)
+            rem Fat Tony: 1 (low-height projectile)
+            rem Megax: 4 (tall fire breath)
+            rem Frooty: 1 (low-height sparkles)
+            rem Ursulo: melee (0) for claw swipe
 end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
@@ -176,7 +176,7 @@ end
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileMaxX
              4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
-          rem Ursulo uses melee (0) for claw swipe
+            rem Ursulo uses melee (0) for claw swipe
 end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
@@ -184,7 +184,7 @@ end
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileMaxY
              4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
-          rem Ursulo uses melee (0) for claw swipe
+            rem Ursulo uses melee (0) for claw swipe
 end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
@@ -192,9 +192,9 @@ end
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileForce
              3, 5, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0
-          rem Fat Tony changed from 0 to 4 (ranged magic ring lasers
-          rem   need force)
-          end
+            rem Fat Tony changed from 0 to 4 (ranged magic ring lasers
+            rem   need force)
+end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
@@ -205,10 +205,10 @@ end
           rem   ranged persist until hit
           data CharacterMissileLifetime
              4, 255, 255, 255, 255, 4, 5, 6, 255, 5, 4, 4, 3, 5, 5, 4
-          rem Ursulo changed from 255 (ranged) to 5 (melee claw swipe)
-          rem Fat Tony changed from 4 (melee) to 255 (ranged magic ring
-          rem   lasers)
-          end
+            rem Ursulo changed from 255 (ranged) to 5 (melee claw swipe)
+            rem Fat Tony changed from 4 (melee) to 255 (ranged magic ring
+            rem   lasers)
+end
 
           rem ==========================================================
           rem BIT MASK TABLE FOR PLAYER INDEX
@@ -219,7 +219,7 @@ end
           rem Values: 1, 2, 4, 8 for players 0, 1, 2, 3 respectively
           data BitMask
              1, 2, 4, 8
-          end
+end
 
           rem ==========================================================
           rem CHARACTER ATTACK TYPES
@@ -240,9 +240,9 @@ end
           rem Ursulo changed from ranged to melee (claw swipe)
           data CharacterAttackTypes
               %01111110, %00000001, %00000000, %00000000
-          rem Bit 0 (Bernie) = 0 (melee), bits 1-7 (Curler-Knight Guy) = ranged
-          rem Bit 8 (Frooty) = 1 (ranged)
-          end
+            rem Bit 0 (Bernie) = 0 (melee), bits 1-7 (Curler-Knight Guy) = ranged
+            rem Bit 8 (Frooty) = 1 (ranged)
+end
 
           rem ==========================================================
           rem MISSILE SIZE DEFINITIONS
@@ -268,7 +268,7 @@ end
           rem   point)
           data CharacterMissileEmissionHeights
              3, 14, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
-          end
+end
 
           rem ==========================================================
           rem MISSILE INITIAL MOMENTUM X (Horizontal Velocity)
@@ -282,8 +282,8 @@ end
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileMomentumX
              5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 0, 0
-          rem Ursulo changed from 7 to 0 (melee, no missile momentum)
-          end
+            rem Ursulo changed from 7 to 0 (melee, no missile momentum)
+end
 
           rem ==========================================================
           rem MISSILE INITIAL MOMENTUM Y (Vertical Velocity)
@@ -303,8 +303,8 @@ end
           rem  Ursulo: melee claw swipe (no missile momentum)
           data CharacterMissileMomentumY
              0, 0, -4, 0, 0, 0, 4, 0, -5, 0, 0, 0, 0, 0, 0, 0
-          rem Ursulo changed from -6 to 0 (melee, no missile momentum)
-          end
+            rem Ursulo changed from -6 to 0 (melee, no missile momentum)
+end
 
           rem ==========================================================
           rem MISSILE INTERACTION FLAGS
@@ -338,15 +338,15 @@ end
           rem   and players)
           rem  Frooty = MissileFlagHitBackgroundAndGravity = 5
           data CharacterMissileFlags
-              0, MissileFlagCurlerFull, MissileFlagHitBackgroundAndGravity, MissileFlagHitBackground, 0, 0, 0, 0, MissileFlagHitBackgroundAndGravity, 0, 0, 0, 0, 0, 0, 0
-          rem 0, Curler(MissileFlagCurlerFull),
-          rem   Dragon(MissileFlagHitBackgroundAndGravity),
-          rem   Zoe(MissileFlagHitBackground), 0, 0, 0, 0,
-          rem   Frooty(MissileFlagHitBackgroundAndGravity), 0, 0, 0,
-          rem   0, 0, 0, 0
-          rem Ursulo changed from MissileFlagHitBackground (1) to 0
-          rem   (melee)
-          end
+            0, MissileFlagCurlerFull, MissileFlagHitBackgroundAndGravity, MissileFlagHitBackground, 0, 0, 0, 0, MissileFlagHitBackgroundAndGravity, 0, 0, 0, 0, 0, 0, 0
+            rem 0, Curler(MissileFlagCurlerFull),
+            rem   Dragon(MissileFlagHitBackgroundAndGravity),
+            rem   Zoe(MissileFlagHitBackground), 0, 0, 0, 0,
+            rem   Frooty(MissileFlagHitBackgroundAndGravity), 0, 0, 0,
+            rem   0, 0, 0, 0
+            rem Ursulo changed from MissileFlagHitBackground (1) to 0
+            rem   (melee)
+end
 
           rem ==========================================================
           rem MISSILE LIFETIME (DURATION)
@@ -365,7 +365,7 @@ end
           rem   effect)
           data CharacterAOEOffsets
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-          end
+end
 
           rem ==========================================================
           rem ANIMATION SEQUENCE DEFINITIONS

@@ -68,19 +68,23 @@ end
 
 LoadArenaColorsColor
           rem Dispatch to color loader based on arena index
-          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena0Colors, LoadArena1Colors, LoadArena2Colors, LoadArena3Colors, LoadArena4Colors, LoadArena5Colors, LoadArena6Colors, LoadArena7Colors
-          if LA_arenaIndex < 8 then goto DoneArenaColorLoad
-          LA_arenaIndex = LA_arenaIndex - 8
-          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena8Colors, LoadArena9Colors, LoadArena10Colors, LoadArena11Colors, LoadArena12Colors, LoadArena13Colors, LoadArena14Colors, LoadArena15Colors
+          dim LACC_tempIndex = temp3
+          let LACC_tempIndex = LA_arenaIndex
+          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena0Colors, LoadArena1Colors, LoadArena2Colors, LoadArena3Colors, LoadArena4Colors, LoadArena5Colors, LoadArena6Colors, LoadArena7Colors
+          if LACC_tempIndex < 8 then goto DoneArenaColorLoad
+          LACC_tempIndex = LACC_tempIndex - 8
+          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena8Colors, LoadArena9Colors, LoadArena10Colors, LoadArena11Colors, LoadArena12Colors, LoadArena13Colors, LoadArena14Colors, LoadArena15Colors
 DoneArenaColorLoad
           return
 
 LoadArenaColorsBW
           rem Dispatch to B&W color loader based on arena index
-          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena0ColorsBW, LoadArena1ColorsBW, LoadArena2ColorsBW, LoadArena3ColorsBW, LoadArena4ColorsBW, LoadArena5ColorsBW, LoadArena6ColorsBW, LoadArena7ColorsBW
-          if LA_arenaIndex < 8 then goto DoneArenaBWColorLoad
-          LA_arenaIndex = LA_arenaIndex - 8
-          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena8ColorsBW, LoadArena9ColorsBW, LoadArena10ColorsBW, LoadArena11ColorsBW, LoadArena12ColorsBW, LoadArena13ColorsBW, LoadArena14ColorsBW, LoadArena15ColorsBW
+          dim LACBW_tempIndex = temp3
+          let LACBW_tempIndex = LA_arenaIndex
+          if LACBW_tempIndex < 8 then on LACBW_tempIndex goto LoadArena0ColorsBW, LoadArena1ColorsBW, LoadArena2ColorsBW, LoadArena3ColorsBW, LoadArena4ColorsBW, LoadArena5ColorsBW, LoadArena6ColorsBW, LoadArena7ColorsBW
+          if LACBW_tempIndex < 8 then goto DoneArenaBWColorLoad
+          LACBW_tempIndex = LACBW_tempIndex - 8
+          if LACBW_tempIndex < 8 then on LACBW_tempIndex goto LoadArena8ColorsBW, LoadArena9ColorsBW, LoadArena10ColorsBW, LoadArena11ColorsBW, LoadArena12ColorsBW, LoadArena13ColorsBW, LoadArena14ColorsBW, LoadArena15ColorsBW
 DoneArenaBWColorLoad
           return
 
@@ -91,307 +95,100 @@ LoadRandomArena
           goto LoadArenaByIndex
 
 LoadArena0Colors
-          rem Load Arena 1: The Pit
-          rem Set playfield pointers to Arena1Playfield data
-          asm
-            lda #<Arena1Playfield
-            sta PF1pointer
-            lda #>Arena1Playfield
-            sta PF1pointer+1
-            lda #<Arena1Playfield
-            sta PF2pointer
-            lda #>Arena1Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena0BW
           pfcolors Arena1ColorsColor
           return
-LoadArena0BW
-          pfcolors Arena1ColorsBW
-          return
-
-LoadArena1
-          rem Load Arena 2: Battlefield
-          asm
-            lda #<Arena2Playfield
-            sta PF1pointer
-            lda #>Arena2Playfield
-            sta PF1pointer+1
-            lda #<Arena2Playfield
-            sta PF2pointer
-            lda #>Arena2Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena1BW
+LoadArena1Colors
           pfcolors Arena2ColorsColor
           return
-LoadArena1BW
-          pfcolors Arena2ColorsBW
-          return
-
-LoadArena2
-          rem Load Arena 3: King of the Hill
-          asm
-            lda #<Arena3Playfield
-            sta PF1pointer
-            lda #>Arena3Playfield
-            sta PF1pointer+1
-            lda #<Arena3Playfield
-            sta PF2pointer
-            lda #>Arena3Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena2BW
+LoadArena2Colors
           pfcolors Arena3ColorsColor
           return
-LoadArena2BW
-          pfcolors Arena3ColorsBW
-          return
-
-LoadArena3
-          rem Load Arena 4: The Bridge
-          asm
-            lda #<Arena4Playfield
-            sta PF1pointer
-            lda #>Arena4Playfield
-            sta PF1pointer+1
-            lda #<Arena4Playfield
-            sta PF2pointer
-            lda #>Arena4Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena3BW
+LoadArena3Colors
           pfcolors Arena4ColorsColor
           return
-LoadArena3BW
-          pfcolors Arena4ColorsBW
-          return
-
-LoadArena4
-          rem Load Arena 5: Corner Trap
-          asm
-            lda #<Arena5Playfield
-            sta PF1pointer
-          lda #>Arena5Playfield
-            sta PF1pointer+1
-          lda #<Arena5Playfield
-            sta PF2pointer
-          lda #>Arena5Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena4BW
+LoadArena4Colors
           pfcolors Arena5ColorsColor
           return
-LoadArena4BW
-          pfcolors Arena5ColorsBW
-          return
-
-LoadArena5
-          rem Load Arena 6: Multi-Platform
-          asm
-            lda #<Arena6Playfield
-            sta PF1pointer
-          lda #>Arena6Playfield
-            sta PF1pointer+1
-          lda #<Arena6Playfield
-            sta PF2pointer
-          lda #>Arena6Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena5BW
+LoadArena5Colors
           pfcolors Arena6ColorsColor
           return
-LoadArena5BW
-          pfcolors Arena6ColorsBW
-          return
-
-LoadArena6
-          rem Load Arena 7: The Gauntlet
-          asm
-            lda #<Arena7Playfield
-            sta PF1pointer
-          lda #>Arena7Playfield
-            sta PF1pointer+1
-          lda #<Arena7Playfield
-            sta PF2pointer
-          lda #>Arena7Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena6BW
+LoadArena6Colors
           pfcolors Arena7ColorsColor
           return
-LoadArena6BW
-          pfcolors Arena7ColorsBW
-          return
-
-LoadArena7
-          rem Load Arena 8: Scattered Blocks
-          asm
-            lda #<Arena8Playfield
-            sta PF1pointer
-          lda #>Arena8Playfield
-            sta PF1pointer+1
-          lda #<Arena8Playfield
-            sta PF2pointer
-          lda #>Arena8Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena7BW
+LoadArena7Colors
           pfcolors Arena8ColorsColor
           return
-LoadArena7BW
-          pfcolors Arena8ColorsBW
-          return
-
-LoadArena8
-          rem Load Arena 9: The Deep Pit
-          asm
-            lda #<Arena9Playfield
-            sta PF1pointer
-          lda #>Arena9Playfield
-            sta PF1pointer+1
-          lda #<Arena9Playfield
-            sta PF2pointer
-          lda #>Arena9Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena8BW
+LoadArena8Colors
           pfcolors Arena9ColorsColor
           return
-LoadArena8BW
-          pfcolors Arena9ColorsBW
-          return
-
-LoadArena9
-          rem Load Arena 10: Sky Battlefield
-          asm
-            lda #<Arena10Playfield
-            sta PF1pointer
-          lda #>Arena10Playfield
-            sta PF1pointer+1
-          lda #<Arena10Playfield
-            sta PF2pointer
-          lda #>Arena10Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena9BW
+LoadArena9Colors
           pfcolors Arena10ColorsColor
           return
-LoadArena9BW
-          pfcolors Arena10ColorsBW
-          return
-
-LoadArena10
-          rem Load Arena 11: Floating Platforms
-          asm
-            lda #<Arena11Playfield
-            sta PF1pointer
-          lda #>Arena11Playfield
-            sta PF1pointer+1
-          lda #<Arena11Playfield
-            sta PF2pointer
-          lda #>Arena11Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena10BW
+LoadArena10Colors
           pfcolors Arena11ColorsColor
           return
-LoadArena10BW
-          pfcolors Arena11ColorsBW
-          return
-
-LoadArena11
-          rem Load Arena 12: The Chasm
-          asm
-            lda #<Arena12Playfield
-            sta PF1pointer
-          lda #>Arena12Playfield
-            sta PF1pointer+1
-          lda #<Arena12Playfield
-            sta PF2pointer
-          lda #>Arena12Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena11BW
+LoadArena11Colors
           pfcolors Arena12ColorsColor
           return
-LoadArena11BW
-          pfcolors Arena12ColorsBW
-          return
-
-LoadArena12
-          rem Load Arena 13: Fortress Walls
-          asm
-            lda #<Arena13Playfield
-            sta PF1pointer
-          lda #>Arena13Playfield
-            sta PF1pointer+1
-          lda #<Arena13Playfield
-            sta PF2pointer
-          lda #>Arena13Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena12BW
+LoadArena12Colors
           pfcolors Arena13ColorsColor
           return
-LoadArena12BW
-          pfcolors Arena13ColorsBW
-          return
-
-LoadArena13
-          rem Load Arena 14: Floating Islands
-          asm
-            lda #<Arena14Playfield
-            sta PF1pointer
-          lda #>Arena14Playfield
-            sta PF1pointer+1
-          lda #<Arena14Playfield
-            sta PF2pointer
-          lda #>Arena14Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena13BW
+LoadArena13Colors
           pfcolors Arena14ColorsColor
           return
-LoadArena13BW
-          pfcolors Arena14ColorsBW
-          return
-
-LoadArena14
-          rem Load Arena 15: The Labyrinth
-          asm
-            lda #<Arena15Playfield
-            sta PF1pointer
-          lda #>Arena15Playfield
-            sta PF1pointer+1
-          lda #<Arena15Playfield
-            sta PF2pointer
-          lda #>Arena15Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena14BW
+LoadArena14Colors
           pfcolors Arena15ColorsColor
           return
-LoadArena14BW
-          pfcolors Arena15ColorsBW
-          return
-
-LoadArena15
-          rem Load Arena 16: Danger Zone
-          asm
-            lda #<Arena16Playfield
-            sta PF1pointer
-          lda #>Arena16Playfield
-            sta PF1pointer+1
-          lda #<Arena16Playfield
-            sta PF2pointer
-          lda #>Arena16Playfield
-            sta PF2pointer+1
-end
-          if LA_bwMode then LoadArena15BW
+LoadArena15Colors
           pfcolors Arena16ColorsColor
           return
-LoadArena15BW
+
+LoadArena0ColorsBW
+          pfcolors Arena1ColorsBW
+          return
+LoadArena1ColorsBW
+          pfcolors Arena2ColorsBW
+          return
+LoadArena2ColorsBW
+          pfcolors Arena3ColorsBW
+          return
+LoadArena3ColorsBW
+          pfcolors Arena4ColorsBW
+          return
+LoadArena4ColorsBW
+          pfcolors Arena5ColorsBW
+          return
+LoadArena5ColorsBW
+          pfcolors Arena6ColorsBW
+          return
+LoadArena6ColorsBW
+          pfcolors Arena7ColorsBW
+          return
+LoadArena7ColorsBW
+          pfcolors Arena8ColorsBW
+          return
+LoadArena8ColorsBW
+          pfcolors Arena9ColorsBW
+          return
+LoadArena9ColorsBW
+          pfcolors Arena10ColorsBW
+          return
+LoadArena10ColorsBW
+          pfcolors Arena11ColorsBW
+          return
+LoadArena11ColorsBW
+          pfcolors Arena12ColorsBW
+          return
+LoadArena12ColorsBW
+          pfcolors Arena13ColorsBW
+          return
+LoadArena13ColorsBW
+          pfcolors Arena14ColorsBW
+          return
+LoadArena14ColorsBW
+          pfcolors Arena15ColorsBW
+          return
+LoadArena15ColorsBW
           pfcolors Arena16ColorsBW
           return
 

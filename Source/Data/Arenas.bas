@@ -739,3 +739,40 @@ Arena16ColorsBW
           ColGrey(14)
 end
 
+          rem ==========================================================
+          rem ARENA POINTER TABLES
+          rem ==========================================================
+          rem Playfield pointer lookup tables for efficient arena loading
+          rem Format: 32 entries (indices 0-31) for Arena1-Arena32
+          rem Note: PF1 and PF2 both point to the same ArenaNPlayfield
+          rem Indices 16-31 currently map to Arena1-Arena16 (for future expansion)
+          rem ==========================================================
+
+          data ArenaPF1PointerL
+            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
+            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield,
+            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
+            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield
+end
+
+          data ArenaPF1PointerH
+            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
+            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield,
+            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
+            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield
+end
+
+          data ArenaPF2PointerL
+            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
+            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield,
+            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
+            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield
+end
+
+          data ArenaPF2PointerH
+            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
+            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield,
+            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
+            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield
+end
+

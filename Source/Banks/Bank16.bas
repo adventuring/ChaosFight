@@ -72,4 +72,4 @@
           rem Format: ASCII bytes, null-terminated
           GameURLString:
           .byte "https://interworldly.com/games/ChaosFight",0
-          end
+end

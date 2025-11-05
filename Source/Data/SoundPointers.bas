@@ -15,10 +15,10 @@
           rem ==========================================================
           
           data SoundPointersL
-          <Sound_SoundAttackHit_Voice0, <Sound_SoundGuardBlock_Voice0, <Sound_SoundJump_Voice0, <Sound_SoundPlayerEliminated_Voice0, <Sound_SoundMenuNavigate_Voice0,
-          <Sound_SoundMenuSelect_Voice0, <Sound_SoundSpecialMove_Voice0, <Sound_SoundPowerup_Voice0, <Sound_SoundLandingSafe_Voice0, <Sound_SoundLandingDamage_Voice0
-          end
+            <Sound_SoundAttackHit_Voice0, <Sound_SoundGuardBlock_Voice0, <Sound_SoundJump_Voice0, <Sound_SoundPlayerEliminated_Voice0, <Sound_SoundMenuNavigate_Voice0,
+            <Sound_SoundMenuSelect_Voice0, <Sound_SoundSpecialMove_Voice0, <Sound_SoundPowerup_Voice0, <Sound_SoundLandingSafe_Voice0, <Sound_SoundLandingDamage_Voice0
+end
           data SoundPointersH
-          >Sound_SoundAttackHit_Voice0, >Sound_SoundGuardBlock_Voice0, >Sound_SoundJump_Voice0, >Sound_SoundPlayerEliminated_Voice0, >Sound_SoundMenuNavigate_Voice0,
-          >Sound_SoundMenuSelect_Voice0, >Sound_SoundSpecialMove_Voice0, >Sound_SoundPowerup_Voice0, >Sound_SoundLandingSafe_Voice0, >Sound_SoundLandingDamage_Voice0
-          end
+            >Sound_SoundAttackHit_Voice0, >Sound_SoundGuardBlock_Voice0, >Sound_SoundJump_Voice0, >Sound_SoundPlayerEliminated_Voice0, >Sound_SoundMenuNavigate_Voice0,
+            >Sound_SoundMenuSelect_Voice0, >Sound_SoundSpecialMove_Voice0, >Sound_SoundPowerup_Voice0, >Sound_SoundLandingSafe_Voice0, >Sound_SoundLandingDamage_Voice0
+end

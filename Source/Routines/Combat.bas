@@ -199,15 +199,15 @@ ProcessAttackerAttacks
           dim PAA_attackerID = attackerID
           rem Attack each defender
           for defenderID = 0 to 3
-          rem Skip if defender is attacker
-          if defenderID = PAA_attackerID then NextDefender
+              rem Skip if defender is attacker
+              if defenderID = PAA_attackerID then NextDefender
           
-          rem Skip if defender is dead
-          if playerHealth[defenderID] <= 0 then NextDefender
+              rem Skip if defender is dead
+              if playerHealth[defenderID] <= 0 then NextDefender
           
-          rem Check if attack hits
-          gosub CheckAttackHit
-          if hit then gosub ApplyDamage
+              rem Check if attack hits
+              gosub CheckAttackHit
+              if hit then gosub ApplyDamage
           
 NextDefender
           next
@@ -217,10 +217,10 @@ NextDefender
           rem Process all attacks for all players
 ProcessAllAttacks
           for attackerID = 0 to 3
-          rem Skip if attacker is dead
-          if playerHealth[attackerID] <= 0 then NextAttacker
+              rem Skip if attacker is dead
+              if playerHealth[attackerID] <= 0 then NextAttacker
           
-          gosub ProcessAttackerAttacks
+              gosub ProcessAttackerAttacks
           
 NextAttacker
           next

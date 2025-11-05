@@ -350,20 +350,20 @@ SelDrawP1Border
 SelSkipP1Border
 
           if controllerStatus & SetQuadtariDetected then SelChkP2Lock
-          goto DonePlayer2Locked
+          goto SelChkP3Lock
 SelChkP2Lock
           let temp1 = 2 : gosub GetPlayerLocked : if temp2 then SelDrawP2Border
-          goto DonePlayer2Locked
+          rem Continue to Player 3 check
 SelDrawP2Border 
           rem Draw border around Player 3
           pf0 = pf0 | %10000000
           pf1 = pf1 | %00000001
 
           if controllerStatus & SetQuadtariDetected then SelChkP3Lock
-          goto SelSkipP3Locked
+          return
 SelChkP3Lock
           let temp1 = 3 : gosub GetPlayerLocked : if temp2 then SelDrawP3Border
-          goto SelSkipP3Locked
+          return
 SelDrawP3Border 
           rem Draw border around Player 4
           pf0 = pf0 | %00001000

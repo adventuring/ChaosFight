@@ -418,9 +418,18 @@ TransitionToFallen
 
 TransitionHandleJump
           dim THJ_animationAction = temp2
+          dim THJ_playerIndex = temp4
           rem Stay on frame 7 until Y velocity goes negative
-          rem TODO: Get playerVelocityY array access working
-          rem For now, simple fallback to falling after delay
+          rem Check if player is falling (positive Y velocity = downward)
+          let THJ_playerIndex = currentPlayer
+          if playerVelocityY[THJ_playerIndex] > 0 then THJ_TransitionToFalling
+          rem Still ascending (negative or zero Y velocity), stay in jump
+          let THJ_animationAction = ActionJumping
+          let temp2 = THJ_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+THJ_TransitionToFalling
+          rem Falling (positive Y velocity), transition to falling
           let THJ_animationAction = ActionFalling
           let temp2 = THJ_animationAction
           rem tail call
@@ -428,10 +437,29 @@ TransitionHandleJump
 
 TransitionHandleFallBack
           dim THFB_animationAction = temp2
-          rem Check wall collision
+          dim THFB_playerIndex = temp4
+          dim THFB_pfColumn = temp5
+          dim THFB_pfRow = temp6
+          rem Check wall collision using pfread
           rem If hit wall: goto idle, else: goto fallen
-          rem TODO: implement wall collision check
+          let THFB_playerIndex = currentPlayer
+          rem Convert player X position to playfield column (0-31)
+          let THFB_pfColumn = playerX[THFB_playerIndex]
+          let THFB_pfColumn = THFB_pfColumn - ScreenInsetX
+          let THFB_pfColumn = THFB_pfColumn / 4
+          rem Convert player Y position to playfield row (0-7)
+          let THFB_pfRow = playerY[THFB_playerIndex]
+          let THFB_pfRow = THFB_pfRow / 8
+          rem Check if player hit a wall (playfield pixel is set)
+          if pfread(THFB_pfColumn, THFB_pfRow) then THFB_HitWall
+          rem No wall collision, transition to fallen
           let THFB_animationAction = ActionFallen
+          let temp2 = THFB_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+THFB_HitWall
+          rem Hit wall, transition to idle
+          let THFB_animationAction = ActionIdle
           let temp2 = THFB_animationAction
           rem tail call
           goto SetPlayerAnimation
@@ -459,7 +487,9 @@ HandleWindupEnd
           rem Get character ID
           let HWE_characterType = playerChar[currentPlayer]
           let temp1 = HWE_characterType
-          on temp1 goto Char0_Windup, Char1_Windup, Char2_Windup, Char3_Windup, Char4_Windup, Char5_Windup, Char6_Windup, Char7_Windup, Char8_Windup, Char9_Windup, Char10_Windup, Char11_Windup, Char12_Windup, Char13_Windup, Char14_Windup, Char15_Windup
+          if temp1 < 8 then on temp1 goto Char0_Windup, Char1_Windup, Char2_Windup, Char3_Windup, Char4_Windup, Char5_Windup, Char6_Windup, Char7_Windup
+          if temp1 >= 8 then temp1 = temp1 - 8
+          if temp1 >= 8 then on temp1 goto Char8_Windup, Char9_Windup, Char10_Windup, Char11_Windup, Char12_Windup, Char13_Windup, Char14_Windup, Char15_Windup
           
 Char0_Windup
           rem Bernie: no windup used, Execute only
@@ -538,7 +568,9 @@ HandleExecuteEnd
           rem Character-specific execute→next transitions
           let HEE_characterType = playerChar[currentPlayer]
           let temp1 = HEE_characterType
-          on temp1 goto Char0_Execute, Char1_Execute, Char2_Execute, Char3_Execute, Char4_Execute, Char5_Execute, Char6_Execute, Char7_Execute, Char8_Execute, Char9_Execute, Char10_Execute, Char11_Execute, Char12_Execute, Char13_Execute, Char14_Execute, Char15_Execute
+          if temp1 < 8 then on temp1 goto Char0_Execute, Char1_Execute, Char2_Execute, Char3_Execute, Char4_Execute, Char5_Execute, Char6_Execute, Char7_Execute
+          if temp1 >= 8 then temp1 = temp1 - 8
+          if temp1 >= 8 then on temp1 goto Char8_Execute, Char9_Execute, Char10_Execute, Char11_Execute, Char12_Execute, Char13_Execute, Char14_Execute, Char15_Execute
           
 Char0_Execute
           dim C0E_animationAction = temp2

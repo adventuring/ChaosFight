@@ -45,7 +45,12 @@ UpdatePlayerMovement
           let temp1 = UPM_playerIndex
           gosub UpdatePlayerMovementSingle
           rem Player 2
-          if QuadtariDetected then let UPM_playerIndex = 2 : let temp1 = UPM_playerIndex : gosub UpdatePlayerMovementSingle : let UPM_playerIndex = 3 : let temp1 = UPM_playerIndex : gosub UpdatePlayerMovementSingle
+          if QuadtariDetected then let UPM_playerIndex = 2
+          if QuadtariDetected then let temp1 = UPM_playerIndex
+          if QuadtariDetected then gosub UpdatePlayerMovementSingle
+          if QuadtariDetected then let UPM_playerIndex = 3
+          if QuadtariDetected then let temp1 = UPM_playerIndex
+          if QuadtariDetected then gosub UpdatePlayerMovementSingle
           return
 
           rem Update movement for a specific player
@@ -320,13 +325,21 @@ ConstrainToScreen
           dim CTS_playerIndex = temp1
           rem Constrain X position (10 to 150 for screen bounds)
           rem SCRAM write: Write to w049
-          if playerX[CTS_playerIndex] < 10 then let playerX[CTS_playerIndex] = 10 : let playerSubpixelX_W[CTS_playerIndex] = 10 : let playerSubpixelX_W_lo[CTS_playerIndex] = 0
-          if playerX[CTS_playerIndex] > 150 then let playerX[CTS_playerIndex] = 150 : let playerSubpixelX_W[CTS_playerIndex] = 150 : let playerSubpixelX_W_lo[CTS_playerIndex] = 0
+          if playerX[CTS_playerIndex] < 10 then let playerX[CTS_playerIndex] = 10
+          if playerX[CTS_playerIndex] < 10 then let playerSubpixelX_W[CTS_playerIndex] = 10
+          if playerX[CTS_playerIndex] < 10 then let playerSubpixelX_W_lo[CTS_playerIndex] = 0
+          if playerX[CTS_playerIndex] > 150 then let playerX[CTS_playerIndex] = 150
+          if playerX[CTS_playerIndex] > 150 then let playerSubpixelX_W[CTS_playerIndex] = 150
+          if playerX[CTS_playerIndex] > 150 then let playerSubpixelX_W_lo[CTS_playerIndex] = 0
           
           rem Constrain Y position (20 to 80 for screen bounds)
           rem SCRAM write: Write to w057
-          if playerY[CTS_playerIndex] < 20 then let playerY[CTS_playerIndex] = 20 : let playerSubpixelY_W[CTS_playerIndex] = 20 : let playerSubpixelY_W_lo[CTS_playerIndex] = 0
-          if playerY[CTS_playerIndex] > 80 then let playerY[CTS_playerIndex] = 80 : let playerSubpixelY_W[CTS_playerIndex] = 80 : let playerSubpixelY_W_lo[CTS_playerIndex] = 0
+          if playerY[CTS_playerIndex] < 20 then let playerY[CTS_playerIndex] = 20
+          if playerY[CTS_playerIndex] < 20 then let playerSubpixelY_W[CTS_playerIndex] = 20
+          if playerY[CTS_playerIndex] < 20 then let playerSubpixelY_W_lo[CTS_playerIndex] = 0
+          if playerY[CTS_playerIndex] > 80 then let playerY[CTS_playerIndex] = 80
+          if playerY[CTS_playerIndex] > 80 then let playerSubpixelY_W[CTS_playerIndex] = 80
+          if playerY[CTS_playerIndex] > 80 then let playerSubpixelY_W_lo[CTS_playerIndex] = 0
           
           return
 

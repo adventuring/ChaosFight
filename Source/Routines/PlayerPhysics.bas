@@ -320,14 +320,26 @@ BoundaryCheckBounds
           
           rem All arenas: wrap horizontally (walls may block wrap-around)
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
-          if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150 : let playerSubpixelX[CBC_playerIndex] = 150 : let playerSubpixelX_lo[CBC_playerIndex] = 0
-          if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 10 : let playerSubpixelX[CBC_playerIndex] = 10 : let playerSubpixelX_lo[CBC_playerIndex] = 0
+          if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150
+          if playerX[CBC_playerIndex] < 10 then let playerSubpixelX[CBC_playerIndex] = 150
+          if playerX[CBC_playerIndex] < 10 then let playerSubpixelX_lo[CBC_playerIndex] = 0
+          if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 10
+          if playerX[CBC_playerIndex] > 150 then let playerSubpixelX[CBC_playerIndex] = 10
+          if playerX[CBC_playerIndex] > 150 then let playerSubpixelX_lo[CBC_playerIndex] = 0
           
           rem Y position: clamp to screen boundaries (no vertical wrap)
           rem Top boundary: clamp to prevent going above screen
-          if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20 : let playerSubpixelY[CBC_playerIndex] = 20 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20
+          if playerY[CBC_playerIndex] < 20 then let playerSubpixelY[CBC_playerIndex] = 20
+          if playerY[CBC_playerIndex] < 20 then let playerSubpixelY_lo[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] < 20 then let playerVelocityY[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] < 20 then let playerVelocityY_lo[CBC_playerIndex] = 0
           rem Bottom boundary: clamp to prevent going below screen
-          if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 80 : let playerSubpixelY[CBC_playerIndex] = 80 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 80
+          if playerY[CBC_playerIndex] > 80 then let playerSubpixelY[CBC_playerIndex] = 80
+          if playerY[CBC_playerIndex] > 80 then let playerSubpixelY_lo[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] > 80 then let playerVelocityY[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] > 80 then let playerVelocityY_lo[CBC_playerIndex] = 0
 
 BoundaryNextPlayer
           rem Move to next player
@@ -499,7 +511,9 @@ PFBlockRight
           end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           rem   but same pattern)
-          if playerX[CPF_playerIndex] > rowYPosition then let playerX[CPF_playerIndex] = rowYPosition : let playerSubpixelX[CPF_playerIndex] = rowYPosition : let playerSubpixelX_lo[CPF_playerIndex] = 0
+          if playerX[CPF_playerIndex] > rowYPosition then let playerX[CPF_playerIndex] = rowYPosition
+          if playerX[CPF_playerIndex] > rowYPosition then let playerSubpixelX[CPF_playerIndex] = rowYPosition
+          if playerX[CPF_playerIndex] > rowYPosition then let playerSubpixelX_lo[CPF_playerIndex] = 0
           
           rem ==========================================================
           rem CHECK UP COLLISION
@@ -551,7 +565,9 @@ DBPF_MultiplyBy8
             sta rowYPosition
           end
 DBPF_MultiplyDone
-          if playerY[CPF_playerIndex] < rowYPosition then let playerY[CPF_playerIndex] = rowYPosition : let playerSubpixelY[CPF_playerIndex] = rowYPosition : let playerSubpixelY_lo[CPF_playerIndex] = 0
+          if playerY[CPF_playerIndex] < rowYPosition then let playerY[CPF_playerIndex] = rowYPosition
+          if playerY[CPF_playerIndex] < rowYPosition then let playerSubpixelY[CPF_playerIndex] = rowYPosition
+          if playerY[CPF_playerIndex] < rowYPosition then let playerSubpixelY_lo[CPF_playerIndex] = 0
           
           rem ==========================================================
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity,

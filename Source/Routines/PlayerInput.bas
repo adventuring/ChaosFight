@@ -186,11 +186,21 @@ InputHandleLeftPortPlayer
           
           rem Standard horizontal movement (modifies velocity, not
           rem   position)
-          rem Left movement: set negative velocity (255 in 8-bit two’s
+          rem Left movement: set negative velocity (255 in 8-bit two's
           rem   complement = -1)
-          if joy0left then let playerVelocityX[IHLP_playerIndex] = 255 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : gosub ShouldPreserveFacing : if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & (255 - PlayerStateBitFacing)
+          if !joy0left then goto DoneLeftMovement
+          let playerVelocityX[IHLP_playerIndex] = 255
+          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          gosub ShouldPreserveFacing
+          if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & (255 - PlayerStateBitFacing)
+DoneLeftMovement
           rem Right movement: set positive velocity
-          if joy0right then let playerVelocityX[IHLP_playerIndex] = 1 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : gosub ShouldPreserveFacing : if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
+          if !joy0right then goto DoneRightMovement
+          let playerVelocityX[IHLP_playerIndex] = 1
+          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          gosub ShouldPreserveFacing
+          if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
+DoneRightMovement
           goto DoneFlyingLeftRight
 DoneLeftPortMovement
           
@@ -395,7 +405,9 @@ EnhancedJumpDone0
           if EJ_characterType = 31 then EJ_characterType = 15
           rem Use Shamone jump for MethHound
           let temp4 = EJ_characterType
-                    on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump, FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+          if temp4 < 8 then on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump
+          if temp4 >= 8 then temp4 = temp4 - 8
+          if temp4 >= 8 then on temp4 goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipLeftPortJump
 
           
@@ -409,7 +421,9 @@ InputSkipLeftPortJump
             if GDIL_characterType = 31 then GDIL_characterType = 15
             rem Use Shamone guard for MethHound
             let temp4 = GDIL_characterType
-            on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown, FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
+            if temp4 < 8 then on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown
+            if temp4 >= 8 then temp4 = temp4 - 8
+            if temp4 >= 8 then on temp4 goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
             goto GuardInputDoneLeft
           
           rem DOWN released - check for early guard release
@@ -443,7 +457,9 @@ GuardInputDoneLeft
           let temp4 = PlayerChar[temp1]
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound
-          on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          if temp4 < 8 then on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack
+          if temp4 >= 8 then temp4 = temp4 - 8
+          if temp4 >= 8 then on temp4 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
 InputSkipLeftPortAttack
           
           
@@ -475,24 +491,26 @@ InputHandleRightPortPlayer
           if temp5 = 2 then FrootyDragonetLeftRightMovementRight
           
           rem Standard horizontal movement (no collision check)
-          if joy1left then
-                    rem Apply leftward velocity impulse
-                    let playerVelocityX[temp1] = 255
-                    rem -1 in 8-bit two’s complement: 256 - 1 = 255
-                    let playerVelocityX_lo[temp1] = 0
+          if !joy1left then goto DoneLeftMovementRight
+          rem Apply leftward velocity impulse
+          let playerVelocityX[temp1] = 255
+          rem -1 in 8-bit two's complement: 256 - 1 = 255
+          let playerVelocityX_lo[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
-                    gosub ShouldPreserveFacing
-                    if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
+          gosub ShouldPreserveFacing
+          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
+DoneLeftMovementRight
           
-          if joy1right then
-                    rem Apply rightward velocity impulse
-                    let playerVelocityX[temp1] = 1
-                    let playerVelocityX_lo[temp1] = 0
+          if !joy1right then goto DoneRightMovementRight
+          rem Apply rightward velocity impulse
+          let playerVelocityX[temp1] = 1
+          let playerVelocityX_lo[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
-                    gosub ShouldPreserveFacing
-                    if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
+          gosub ShouldPreserveFacing
+          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
+DoneRightMovementRight
           goto DoneFlyingLeftRightRight
           
 DoneRightPortMovement
@@ -679,7 +697,9 @@ EnhancedJumpDone1
           rem Map MethHound (31) to ShamoneJump handler
           if temp4 = 31 then temp4 = 15
           rem Use Shamone jump for MethHound
-                    on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump, FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+          if temp4 < 8 then on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump
+          if temp4 >= 8 then temp4 = temp4 - 8
+          if temp4 >= 8 then on temp4 goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
 InputSkipRightPortJump
 
           
@@ -690,7 +710,9 @@ InputSkipRightPortJump
           let temp4 = PlayerChar[temp1] 
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
-                    on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown, FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
+            if temp4 < 8 then on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown
+            if temp4 >= 8 then temp4 = temp4 - 8
+            if temp4 >= 8 then on temp4 goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
             goto GuardInputDoneRight
           
           rem DOWN released - check for early guard release
@@ -724,7 +746,9 @@ GuardInputDoneRight
           let temp4 = PlayerChar[temp1] 
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound
-                    on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          if temp4 < 8 then on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack
+          if temp4 >= 8 then temp4 = temp4 - 8
+          if temp4 >= 8 then on temp4 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
 InputSkipRightPortAttack
           
           

@@ -291,8 +291,10 @@ DispatchCharacterAttack
           rem temp1 contains player index (0-3)
           let temp2 = playerChar[temp1]
           rem Map MethHound (31) to ShamoneAttack handler
-          if temp2 = 31 then temp2 = ActionAttackRecovery
+          if temp2 = 31 then temp2 = 15
           rem Use Shamone attack for MethHound
-          on temp2 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack, FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          if temp2 < 8 then on temp2 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack
+          if temp2 >= 8 then temp2 = temp2 - 8
+          if temp2 >= 8 then on temp2 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
           rem Default to Bernie attack if invalid character
           goto BernieAttack

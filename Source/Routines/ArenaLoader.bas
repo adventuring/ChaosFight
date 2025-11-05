@@ -47,7 +47,9 @@ GetBWMode
 
 LoadArenaByIndex
           rem Jump to appropriate arena loader based on index
-          on LA_arenaIndex goto LoadArena0, LoadArena1, LoadArena2, LoadArena3, LoadArena4, LoadArena5, LoadArena6, LoadArena7, LoadArena8, LoadArena9, LoadArena10, LoadArena11, LoadArena12, LoadArena13, LoadArena14, LoadArena15
+          if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena0, LoadArena1, LoadArena2, LoadArena3, LoadArena4, LoadArena5, LoadArena6, LoadArena7
+          if LA_arenaIndex >= 8 then LA_arenaIndex = LA_arenaIndex - 8
+          if LA_arenaIndex >= 8 then on LA_arenaIndex goto LoadArena8, LoadArena9, LoadArena10, LoadArena11, LoadArena12, LoadArena13, LoadArena14, LoadArena15
           
           rem Default to arena 0 if invalid index
           goto LoadArena0
@@ -385,7 +387,9 @@ ReloadArenaColors
           gosub GetBWModeReload
           
           rem Jump to appropriate color loader based on arena index
-          on RAC_arenaIndex goto ReloadArena0Colors, ReloadArena1Colors, ReloadArena2Colors, ReloadArena3Colors, ReloadArena4Colors, ReloadArena5Colors, ReloadArena6Colors, ReloadArena7Colors, ReloadArena8Colors, ReloadArena9Colors, ReloadArena10Colors, ReloadArena11Colors, ReloadArena12Colors, ReloadArena13Colors, ReloadArena14Colors, ReloadArena15Colors
+          if RAC_arenaIndex < 8 then on RAC_arenaIndex goto ReloadArena0Colors, ReloadArena1Colors, ReloadArena2Colors, ReloadArena3Colors, ReloadArena4Colors, ReloadArena5Colors, ReloadArena6Colors, ReloadArena7Colors
+          if RAC_arenaIndex >= 8 then RAC_arenaIndex = RAC_arenaIndex - 8
+          if RAC_arenaIndex >= 8 then on RAC_arenaIndex goto ReloadArena8Colors, ReloadArena9Colors, ReloadArena10Colors, ReloadArena11Colors, ReloadArena12Colors, ReloadArena13Colors, ReloadArena14Colors, ReloadArena15Colors
           
           rem Default to arena 0 if invalid index
           goto ReloadArena0Colors

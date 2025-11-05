@@ -30,11 +30,11 @@ PlaySoundEffect
           gosub bank15 LoadSoundPointer
           
           rem Try Voice 0 first
-          if SoundEffectPointerH then TryVoice1
+          if SoundEffectPointerH_R then TryVoice1
           
           rem Voice 0 is free - use it
           let SoundEffectPointerL = SoundPointerL
-          let SoundEffectPointerH = SoundPointerH
+          let SoundEffectPointerH_W = SoundPointerH_R
           let SoundEffectFrame_W = 1
           rem tail call
           goto UpdateSoundEffectVoice0
@@ -45,7 +45,7 @@ TryVoice1
           
           rem Voice 1 is free - use it
           let SoundEffectPointer1L = SoundPointerL
-          let SoundEffectPointer1H = SoundPointerH
+          let SoundEffectPointer1H = SoundPointerH_R
           let SoundEffectFrame1_W = 1
           rem tail call
           goto UpdateSoundEffectVoice1
@@ -59,7 +59,7 @@ TryVoice1
           rem ==========================================================
 UpdateSoundEffect
           rem Update Voice 0
-          if SoundEffectPointerH then gosub UpdateSoundEffectVoice0
+          if SoundEffectPointerH_R then gosub UpdateSoundEffectVoice0
           
           rem Update Voice 1
           if SoundEffectPointer1H then rem tail call : goto UpdateSoundEffectVoice1
@@ -121,7 +121,7 @@ StopSoundEffects
           AUDV1 = 0
           
           rem Clear sound pointers (high byte = 0 means inactive)
-          let SoundEffectPointerH = 0
+          let SoundEffectPointerH_W = 0
           let SoundEffectPointer1H = 0
           
           rem Reset frame counters

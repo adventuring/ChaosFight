@@ -227,17 +227,23 @@
           rem NOTE: Must avoid var40 (currentAnimationSeq) and var44
           rem   (playerAttackCooldown[0])
           rem Uses var39, var41 (shared with Music), y,z,var45,var46
-          rem Voice 0: var39+var41 (shared), y+z for pointers
+          rem Voice 0: var39+var41 (shared), SCRAM for high bytes
           rem Voice 1: var45+var46 for pointers (zero page)
           dim SoundPointerL = var39
-          dim SoundPointerH = y
-          rem Sound data pointer low/high bytes (in Sounds bank) - zero
-          rem   page (y is available in Game Mode)
+          dim SoundPointerH_W = w048
+          dim SoundPointerH_R = r048
+          dim SoundPointerH = SoundPointerH_W
+          rem Sound data pointer low/high bytes (in Sounds bank) - low byte
+          rem   in zero page (var39), high byte in SCRAM (w048/r048)
+          rem   Moved to SCRAM to avoid conflict with charSelectAnimIndex (y)
           dim SoundEffectPointerL = var41
-          dim SoundEffectPointerH = z
+          dim SoundEffectPointerH_W = w066
+          dim SoundEffectPointerH_R = r066
+          dim SoundEffectPointerH = SoundEffectPointerH_W
           rem Sound effect Voice 0 stream position low/high bytes (high
-          rem   byte = 0 means inactive) - zero page (z is available in
-          rem   Game Mode)
+          rem   byte = 0 means inactive) - low byte in zero page (var41),
+          rem   high byte in SCRAM (w066/r066)
+          rem   Moved to SCRAM to avoid conflict with charSelectAnimFrame (z)
           dim SoundEffectPointer1L = var45
           dim SoundEffectPointer1H = var46
           rem Sound effect Voice 1 stream position low/high bytes (high

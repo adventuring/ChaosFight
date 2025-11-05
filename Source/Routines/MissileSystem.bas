@@ -482,7 +482,8 @@ HandleMegaxMissile
 end
           
           rem If animation state is not ActionAttackExecute (14), attack is complete
-          rem ActionAttackExecute = 14, so if animationState != 14, deactivate
+          rem   deactivate
+          rem ActionAttackExecute = 14, so if animationState != 14,
           if HMM_animationState = 14 then MegaxMissileActive
           rem Attack complete - deactivate missile
           goto DeactivateMissile
@@ -579,7 +580,8 @@ KnightGuySetY
           let missileY_W[HKG_playerIndex] = HKG_missileY
           
           rem Zero velocities to prevent projectile movement
-          rem Position is updated directly each frame based on animation frame
+          rem   frame
+          rem Position is updated directly each frame based on animation
           let missileVelocityX[HKG_playerIndex] = 0
           let missileVelocityY[HKG_playerIndex] = 0
           

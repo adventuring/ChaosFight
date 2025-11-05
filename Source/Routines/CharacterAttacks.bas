@@ -30,7 +30,8 @@ BernieAttack
           let playerState[BA_attackerIndex] = (playerState[BA_attackerIndex] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           
-          rem Save original facing direction (temp5 conflicts with SpawnMissile)
+          rem   SpawnMissile)
+          rem Save original facing direction (temp5 conflicts with
           let BA_originalFacing = playerState[BA_attackerIndex] & PlayerStateBitFacing
           
           rem Attack in facing direction

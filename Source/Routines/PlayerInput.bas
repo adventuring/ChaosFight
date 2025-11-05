@@ -587,7 +587,8 @@ CheckRightMovementRight
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
           rem temp2 = playfield column
-          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          rem   result ≥ 128
+          rem Check for wraparound: if subtraction wrapped negative,
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
           rem Check column to the right

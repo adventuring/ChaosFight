@@ -99,7 +99,8 @@ end
           
 LoadMusicNote0EndOfTrack
           rem End of track reached - mark voice as inactive (pointerH = 0)
-          rem Loop will be handled in UpdateMusic when both voices end (Chaotica
+          rem   (Chaotica
+          rem Loop will be handled in UpdateMusic when both voices end
           rem   only)
           let musicVoice0PointerH = 0
           AUDV0 = 0
@@ -162,7 +163,8 @@ end
           
 LoadMusicNote1EndOfTrack
           rem End of track reached - mark voice as inactive (pointerH = 0)
-          rem Loop will be handled in UpdateMusic when both voices end (Chaotica
+          rem   (Chaotica
+          rem Loop will be handled in UpdateMusic when both voices end
           rem   only)
           let musicVoice1PointerH = 0
           AUDV1 = 0

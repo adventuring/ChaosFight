@@ -12,7 +12,8 @@
           rem   switchbw - Color/B&W → handled in rendering
 
           rem AVAILABLE VARIABLES:
-          rem   systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal play, 1=paused
+          rem   play, 1=paused
+          rem systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal
           rem ==========================================================
 
           rem ==========================================================

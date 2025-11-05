@@ -326,7 +326,8 @@ BudgetedMissileCollisionCheck2P
           rem Simple 2-player mode: alternate missiles
           let temp1 = frame & 1
           rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
-          rem Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
+          rem   BitMask[playerIndex] (1, 2, 4, 8)
+          rem Calculate bit flag using O(1) array lookup:
           let temp6 = BitMask[temp1]
           let temp4 = missileActive & temp6
           if temp4 then gosub bank7 CheckAllMissileCollisions

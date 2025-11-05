@@ -545,7 +545,8 @@ PFCheckUp
           
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
-          rem Check for negative velocity using two's complement (values ≥ 128 are negative)
+          rem   ≥ 128 are negative)
+          rem Check for negative velocity using two's complement (values
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)

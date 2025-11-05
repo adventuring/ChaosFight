@@ -613,7 +613,8 @@ Char3_Execute
 Char4_Execute
           dim C4E_animationAction = temp2
           rem Fat Tony: Execute → Recovery
-          rem NOTE: Laser bullet missile spawning handled by FatTonyAttack
+          rem   FatTonyAttack
+          rem NOTE: Laser bullet missile spawning handled by
           rem   (calls PerformRangedAttack) in CharacterAttacks.bas
           let C4E_animationAction = ActionAttackRecovery
           let temp2 = C4E_animationAction

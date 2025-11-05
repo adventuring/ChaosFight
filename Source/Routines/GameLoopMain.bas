@@ -22,7 +22,7 @@
           rem AVAILABLE VARIABLES:
           rem   frame - Frame counter
           rem   systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal, 1=paused
-          rem                    Bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
+          rem Bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
           rem   qtcontroller - Quadtari multiplexing state
           rem   All Player arrays (X, Y, State, Health, etc.)
           rem ==========================================================
@@ -77,7 +77,8 @@ GameMainLoopQuadtariSkip
           gosub CheckAllPlayerEliminations
           
           rem Check if game should end and transition to winner screen
-          rem systemFlags bit 3 (SystemFlagGameStateEnding) means game is ending,
+          rem   ending,
+          rem systemFlags bit 3 (SystemFlagGameStateEnding) means game is
           rem   gameEndTimer counts down
           if systemFlags & SystemFlagGameStateEnding then CheckGameEndTransition
           goto GameEndCheckDone

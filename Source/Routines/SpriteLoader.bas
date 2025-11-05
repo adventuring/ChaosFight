@@ -514,7 +514,8 @@ SetColor
           dim SetColor_playerNumber = temp3
           rem Set color based on player index (multisprite kernel
           rem   supports COLUP2/COLUP3)
-          rem LoadCharacterColors_color already contains the color from previous code paths
+          rem   previous code paths
+          rem LoadCharacterColors_color already contains the color from
           let SetColor_color = LoadCharacterColors_color
           let SetColor_playerNumber = LoadCharacterColors_playerNumber
           if !SetColor_playerNumber then let COLUP0 = SetColor_color : return

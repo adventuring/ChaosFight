@@ -55,7 +55,8 @@ BernieJump
           let BJ_pfColumn = BJ_pfColumn / 4
           rem Now in range 0-32 (playfield column, clamp to 0-31)
           rem Check for wraparound: if (playerX - ScreenInsetX) wrapped negative, result ≥ 128 after division
-          rem Upper bound check (> 31) catches most wraparound cases, but check explicitly for safety
+          rem   check explicitly for safety
+          rem Upper bound check (> 31) catches most wraparound cases, but
           if BJ_pfColumn & $80 then let BJ_pfColumn = 0
           if BJ_pfColumn > 31 then let BJ_pfColumn = 31
           
@@ -675,7 +676,8 @@ FrootyDown
           let FD_pfColumn = FD_pfColumn - ScreenInsetX
           let FD_pfColumn = FD_pfColumn / 4
           rem pfColumn = playfield column (0-31)
-          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          rem   result ≥ 128
+          rem Check for wraparound: if subtraction wrapped negative,
           if FD_pfColumn & $80 then let FD_pfColumn = 0
           if FD_pfColumn > 31 then let FD_pfColumn = 31
           

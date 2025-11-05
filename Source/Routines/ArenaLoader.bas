@@ -224,7 +224,8 @@ ReloadArenaColors
           let RAC_tempIndex = RAC_arenaIndex
           if RAC_tempIndex >= 16 then let RAC_tempIndex = RAC_tempIndex - 16
           
-          rem Jump to appropriate color loader based on wrapped index (0-15)
+          rem   (0-15)
+          rem Jump to appropriate color loader based on wrapped index
           if RAC_tempIndex < 8 then on RAC_tempIndex goto ReloadArena0Colors, ReloadArena1Colors, ReloadArena2Colors, ReloadArena3Colors, ReloadArena4Colors, ReloadArena5Colors, ReloadArena6Colors, ReloadArena7Colors
           if RAC_tempIndex < 8 then goto DoneArenaColorDispatch
           let RAC_tempIndex = RAC_tempIndex - 8

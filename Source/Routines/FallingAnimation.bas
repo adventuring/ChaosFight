@@ -149,9 +149,11 @@ FallingComplete1
           rem   temp4 = 1 if reached target, 0 if still moving → MPTT_reached
           rem
           rem MUTATES:
-          rem   temp4 = MPTT_reached (return value: 1 if reached, 0 if moving)
+          rem   moving)
+          rem temp4 = MPTT_reached (return value: 1 if reached, 0 if
           rem   temp5, temp6 = Internal calculations (do not use after call)
-          rem WARNING: Callers should read from MPTT_reached alias, not temp4
+          rem   temp4
+          rem WARNING: Callers should read from MPTT_reached alias, not
           rem   directly. Do not use temp5 or temp6 after calling this
           rem   subroutine.
           rem
@@ -300,7 +302,8 @@ end
 end
           if NPF_pfRow >= pfrows then let NPF_pfRow = pfrows - 1
           rem Check for wraparound: if division resulted in value ≥ 128 (negative), clamp to 0
-          rem Note: This is unlikely for row calculation but safe to check
+          rem   check
+          rem Note: This is unlikely for row calculation but safe to
           if NPF_pfRow & $80 then let NPF_pfRow = 0
           
           rem Check collision at player position (simple single-point
@@ -335,7 +338,8 @@ NudgeHorizontalDone
             lsr NPF_pfColumn
             lsr NPF_pfColumn
 end
-          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          rem   result ≥ 128
+          rem Check for wraparound: if subtraction wrapped negative,
           if NPF_pfColumn & $80 then let NPF_pfColumn = 0
           if NPF_pfColumn > 31 then let NPF_pfColumn = 31
           

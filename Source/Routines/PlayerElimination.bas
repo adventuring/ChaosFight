@@ -137,7 +137,8 @@ TriggerEliminationEffects
           rem Move eliminated player sprite off-screen.
           rem INPUT: currentPlayer = player index (0-3) (global variable)
           rem Player 4 uses player3 sprite (multisprite)
-          rem NOTE: This function is now inlined in TriggerEliminationEffects
+          rem   TriggerEliminationEffects
+          rem NOTE: This function is now inlined in
           
           return
 

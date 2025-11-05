@@ -242,7 +242,9 @@ ApplyDecay1
           temp4 = temp4 - NoteDecayFrames
           temp4 = temp4 + musicVoice1Frame_R
           temp4 = temp4 - 1
-          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
+          rem   complement)
+          rem   clamp to 0 (values ≥ 128 are negative in two's
+          rem Check for wraparound: if subtraction resulted in negative,
           if temp4 & $80 then temp4 = 0
           if temp4 > 15 then temp4 = 15
           AUDV1 = temp4

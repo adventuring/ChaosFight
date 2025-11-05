@@ -50,8 +50,9 @@ end
           rem Title (gameMode 2): ChaosFight (48x2_3)=42, others=0 (1
           rem   bitmap)
           rem
-          rem Note: Generated Art.*.s files already define window and height
-          rem   values as 42. These definitions are included above in the
+          rem   height
+          rem Note: Generated Art.*.s files already define window and
+          rem values as 42. These definitions are included above in the
           rem   asm blocks, so we do NOT redefine them here to avoid
           rem   multiply-defined label errors.
           rem Runtime window control is handled via

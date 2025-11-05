@@ -258,8 +258,10 @@ ApplyFriction
           rem MUTATES:
           rem   temp3 = CPC_collisionResult (return value: 1 if collision, 0 if not)
           rem   temp4-temp13 = Used internally for calculations
-          rem WARNING: Callers should read from CPC_collisionResult alias, not
-          rem   temp3 directly. All temp4-temp13 are mutated during execution.
+          rem   alias, not
+          rem WARNING: Callers should read from CPC_collisionResult
+          rem   execution.
+          rem temp3 directly. All temp4-temp13 are mutated during
 CheckPlayerCollision
           dim CPC_player1Index = temp1
           dim CPC_player2Index = temp2
@@ -332,7 +334,8 @@ YDistanceDone
           
 NoCollision
           let CPC_collisionResult = 0
-          rem Return value set in alias (temp3 is set but use alias instead)
+          rem   instead)
+          rem Return value set in alias (temp3 is set but use alias
           return
 
           rem ==========================================================

@@ -94,24 +94,15 @@ SpawnMissile
           rem NUSIZ bits 4-6: 00=1x, 01=2x, 10=4x (multiplied by 16: 0x00, 0x10, 0x20)
           dim SM_missileWidth = temp2
           let SM_missileWidth = CharacterMissileWidths[SM_characterType]
-          rem Convert width to NUSIZ value (width 1=0x00, 2=0x10, 4=0x20)
-          if SM_missileWidth = 1 then SM_NUSIZValue
-          if SM_missileWidth = 2 then SM_NUSIZValue2
-          if SM_missileWidth = 4 then SM_NUSIZValue4
+          rem Convert width to NUSIZ value (width 1=0x00, 2=0x10, 4=0x20) - inlined for performance
+          if SM_missileWidth = 1 then let missileNUSIZ[SM_playerIndex] = 0 : goto SM_NUSIZDone
+          rem 1x size (NUSIZ bits 4-6 = 00)
+          if SM_missileWidth = 2 then let missileNUSIZ[SM_playerIndex] = 16 : goto SM_NUSIZDone
+          rem 2x size (NUSIZ bits 4-6 = 01, value = 0x10 = 16)
+          if SM_missileWidth = 4 then let missileNUSIZ[SM_playerIndex] = 32 : goto SM_NUSIZDone
+          rem 4x size (NUSIZ bits 4-6 = 10, value = 0x20 = 32)
           rem Default to 1x if width not recognized
           let missileNUSIZ[SM_playerIndex] = 0
-          goto SM_NUSIZDone
-SM_NUSIZValue
-          let missileNUSIZ[SM_playerIndex] = 0
-          rem 1x size (NUSIZ bits 4-6 = 00)
-          goto SM_NUSIZDone
-SM_NUSIZValue2
-          let missileNUSIZ[SM_playerIndex] = 16
-          rem 2x size (NUSIZ bits 4-6 = 01, value = 0x10 = 16)
-          goto SM_NUSIZDone
-SM_NUSIZValue4
-          let missileNUSIZ[SM_playerIndex] = 32
-          rem 4x size (NUSIZ bits 4-6 = 10, value = 0x20 = 32)
 SM_NUSIZDone
           
           let SM_velocityCalc  = CharacterMissileMomentumY[SM_characterType]
@@ -123,7 +114,7 @@ SM_NUSIZDone
 HarpyCheckDiveVelocity
           dim HCDV_velocityCalc = temp6
           let HCDV_velocityCalc = SM_velocityCalc
-          if (characterStateFlags[SM_playerIndex] & 4) then HarpyBoostDiveVelocity
+          if (characterStateFlags_R[SM_playerIndex] & 4) then HarpyBoostDiveVelocity
           goto VelocityDone
 HarpyBoostDiveVelocity
           dim HBDV_halfVelocity = velocityCalculation
@@ -306,6 +297,14 @@ FrictionDone
           rem Off-screen, deactivate
           
           rem Check collision with playfield if flag is set
+          rem Reload missile flags (temp5 was overwritten with Y position above)
+          let temp5 = playerChar[UOM_playerIndex]
+          let temp1 = temp5
+          gosub bank6 GetMissileFlags
+          let temp5 = temp2
+          rem temp5 now contains missile flags again
+          let temp1 = UOM_playerIndex
+          rem Restore player index for MissileCollPF
           if !(temp5 & MissileFlagHitBackground) then PlayfieldCollisionDone
           gosub bank7 MissileCollPF
           if !temp4 then PlayfieldCollisionDone
@@ -535,7 +534,7 @@ HandleMissileHit
           goto DiveCheckDone
 HarpyCheckDive
           rem Check if Harpy is in dive mode
-          if (characterStateFlags[temp1] & 4) = 0 then DiveCheckDone
+          if (characterStateFlags_R[temp1] & 4) = 0 then DiveCheckDone
           rem Not diving, skip bonus
           rem Apply 1.5x damage for diving attacks (temp6 + temp6/2 = 1.5 * temp6)
           rem Divide by 2 using bit shift right 1 bit
@@ -586,10 +585,11 @@ WeightBasedKnockbackScale
             asl impulseStrength
             asl impulseStrength
           end
-          rem Divide by 100 using DivideBy100 helper
+          rem Divide by 100 - inlined for performance (fast approximation for values 0-255)
           let temp2 = impulseStrength
-          gosub DivideBy100
-          let impulseStrength = temp2
+          if temp2 > 200 then let impulseStrength = 2
+          if temp2 > 100 then if temp2 <= 200 then let impulseStrength = 1
+          if temp2 <= 100 then let impulseStrength = 0
           rem Scaled knockback (0, 1, or 2)
           if impulseStrength = 0 then impulseStrength = 1
           rem Minimum 1 pixel knockback even for heaviest characters

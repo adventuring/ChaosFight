@@ -45,7 +45,7 @@ FacingDone1
           
           rem Restore original facing
           if temp5 then RestoreFaceRight1
-          let playerState[temp1] = playerState[temp1] & 254
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           goto RestoreFacingDone1
 RestoreFaceRight1
           let playerState[temp1] = playerState[temp1] | 1
@@ -131,12 +131,11 @@ HarpySetVerticalVelocity
           rem Vertical: 4 pixels/frame downward (positive Y = down)
           let HA_velocityY = 4
           
-          rem Set player velocity for diagonal swoop (45° angle: 4px/frame X, 4px/frame Y)
-          rem Use SetPlayerVelocity to set both X and Y velocities
-          let temp1 = HA_playerIndex
-          let temp2 = HA_velocityX
-          let temp3 = HA_velocityY
-          gosub SetPlayerVelocity
+          rem Set player velocity for diagonal swoop (45° angle: 4px/frame X, 4px/frame Y) - inlined for performance
+          let playerVelocityX[HA_playerIndex] = HA_velocityX
+          let playerVelocityX_lo[HA_playerIndex] = 0
+          let playerVelocityY[HA_playerIndex] = HA_velocityY
+          let playerVelocityY_lo[HA_playerIndex] = 0
           
           rem Set jumping state so character can move vertically during swoop
           rem This allows vertical movement without being "on ground"
@@ -146,7 +145,9 @@ HarpySetVerticalVelocity
           rem Set swoop attack flag for collision detection
           rem Bit 2 = swoop active (used to extend hitbox below character during swoop)
           rem Collision system will check for hits below character during swoop
-          let characterStateFlags[HA_playerIndex] = characterStateFlags[HA_playerIndex] | 4
+          rem Fix RMW: Read from _R, modify, write to _W
+          let HA_stateFlags = characterStateFlags_R[HA_playerIndex] | 4
+          let characterStateFlags_W[HA_playerIndex] = HA_stateFlags
           
           rem Attack behavior:
           rem - Character moves diagonally down at 45° (4px/frame X, 4px/frame Y)

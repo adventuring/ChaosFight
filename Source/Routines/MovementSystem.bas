@@ -307,40 +307,58 @@ InitializeMovementSystem
           dim IMS_positionY = temp3
           dim IMS_velocityX = temp2
           dim IMS_velocityY = temp3
-          rem Initialize all players to center of screen
-          let IMS_playerIndex = 0
+          rem Initialize all players to center of screen - inlined for performance
           let IMS_positionX = 80
           let IMS_positionY = 100
-          let temp1 = IMS_playerIndex
-          let temp2 = IMS_positionX
-          let temp3 = IMS_positionY
-          gosub SetPlayerPosition
-          let IMS_playerIndex = 1
-          let temp1 = IMS_playerIndex
-          gosub SetPlayerPosition
-          let IMS_playerIndex = 2
-          let temp1 = IMS_playerIndex
-          gosub SetPlayerPosition
-          let IMS_playerIndex = 3
-          let temp1 = IMS_playerIndex
-          gosub SetPlayerPosition
+          rem Player 0
+          let playerX[0] = IMS_positionX
+          let playerSubpixelX_W[0] = IMS_positionX
+          let playerSubpixelX_W_lo[0] = 0
+          let playerY[0] = IMS_positionY
+          let playerSubpixelY_W[0] = IMS_positionY
+          let playerSubpixelY_W_lo[0] = 0
+          rem Player 1
+          let playerX[1] = IMS_positionX
+          let playerSubpixelX_W[1] = IMS_positionX
+          let playerSubpixelX_W_lo[1] = 0
+          let playerY[1] = IMS_positionY
+          let playerSubpixelY_W[1] = IMS_positionY
+          let playerSubpixelY_W_lo[1] = 0
+          rem Player 2
+          let playerX[2] = IMS_positionX
+          let playerSubpixelX_W[2] = IMS_positionX
+          let playerSubpixelX_W_lo[2] = 0
+          let playerY[2] = IMS_positionY
+          let playerSubpixelY_W[2] = IMS_positionY
+          let playerSubpixelY_W_lo[2] = 0
+          rem Player 3
+          let playerX[3] = IMS_positionX
+          let playerSubpixelX_W[3] = IMS_positionX
+          let playerSubpixelX_W_lo[3] = 0
+          let playerY[3] = IMS_positionY
+          let playerSubpixelY_W[3] = IMS_positionY
+          let playerSubpixelY_W_lo[3] = 0
           
-          rem Initialize velocities to zero
-          let IMS_playerIndex = 0
-          let IMS_velocityX = 0
-          let IMS_velocityY = 0
-          let temp1 = IMS_playerIndex
-          let temp2 = IMS_velocityX
-          let temp3 = IMS_velocityY
-          gosub SetPlayerVelocity
-          let IMS_playerIndex = 1
-          let temp1 = IMS_playerIndex
-          gosub SetPlayerVelocity
-          let IMS_playerIndex = 2
-          let temp1 = IMS_playerIndex
-          gosub SetPlayerVelocity
-          let IMS_playerIndex = 3
-          let temp1 = IMS_playerIndex
-          rem tail call
-          goto SetPlayerVelocity
+          rem Initialize velocities to zero - inlined for performance
+          rem Player 0
+          let playerVelocityX[0] = 0
+          let playerVelocityX_lo[0] = 0
+          let playerVelocityY[0] = 0
+          let playerVelocityY_lo[0] = 0
+          rem Player 1
+          let playerVelocityX[1] = 0
+          let playerVelocityX_lo[1] = 0
+          let playerVelocityY[1] = 0
+          let playerVelocityY_lo[1] = 0
+          rem Player 2
+          let playerVelocityX[2] = 0
+          let playerVelocityX_lo[2] = 0
+          let playerVelocityY[2] = 0
+          let playerVelocityY_lo[2] = 0
+          rem Player 3
+          let playerVelocityX[3] = 0
+          let playerVelocityX_lo[3] = 0
+          let playerVelocityY[3] = 0
+          let playerVelocityY_lo[3] = 0
+          return
           

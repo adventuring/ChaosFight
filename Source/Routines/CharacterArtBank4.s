@@ -103,6 +103,7 @@ LocateCharacterArtBank4:
 ; Input: temp1 = character index, temp2 = animation frame (0-7), temp3 = action (0-15)
 ;        temp4 = player number (0-3)
 SetPlayerCharacterArtBank4:
+    SUBROUTINE
     ; Input: temp6 = bank-relative character index (0-7) - already set by dispatcher
     ;        temp2 = animation frame (0-7) - already set by caller
     ;        temp3 = action (0-15) - already set by caller

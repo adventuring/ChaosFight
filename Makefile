@@ -360,6 +360,10 @@ Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 BUILD_DEPS = $(ALL_SOURCES) \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas \
+	Source/Banks/Bank2.bas \
+	Source/Banks/Bank3.bas \
+	Source/Banks/Bank4.bas \
+	Source/Banks/Bank5.bas \
 	Source/Banks/Banks.bas \
 	Source/Common/Colors.h \
 	Source/Common/Constants.bas \

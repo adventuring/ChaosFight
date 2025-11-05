@@ -254,15 +254,17 @@ end
           rem Values stored as packed bytes per character
 
           rem  Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy, Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          rem  Note: Bit 0=hit bg (MissileFlagHitBackground), Bit 1=hit player (MissileFlagHitPlayer), 
-          rem       Bit 2=gravity (MissileFlagGravity), Bit 3=bounce (MissileFlagBounce), Bit 4=friction (MissileFlagFriction)
-          rem  Values use enum constants for bitfield encoding (see Enums.bas)
-          rem  Curler = HitBackground|HitPlayer|Gravity|Bounce|Friction = 1+2+4+8+16 = 31 (%00011111)
-          rem  Dragon of Storms = HitBackground|Gravity = 1+4 = 5 (%00000101) for ballistic arc
+          rem  Note: Bit 0=hit bg (MissileFlagHitBackground=1), Bit 1=hit player (MissileFlagHitPlayer=2), 
+          rem       Bit 2=gravity (MissileFlagGravity=4), Bit 3=bounce (MissileFlagBounce=8), Bit 4=friction (MissileFlagFriction=16)
+          rem  Values use enum constants for bitfield encoding (see Enums.bas for constant definitions)
+          rem  0 = no flags
+          rem  Curler = MissileFlagCurlerFull = 31 (HitBackground|HitPlayer|Gravity|Bounce|Friction)
+          rem  Dragon of Storms = MissileFlagHitBackgroundAndGravity = 5 (HitBackground|Gravity) for ballistic arc
+          rem  Frooty = MissileFlagHitBackground = 1
           data CharacterMissileFlags
-              %00000000, %00011111, %00000101, %00000000, %00000000, %00000000, %00000000, %00000000, %00000001, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000, %00000000
-          rem  0,      Curler(31), HitBackground|Gravity(5), 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, 0, 0
-          rem  Ursulo changed from MissileFlagHitBackground (%00000001) to 0 (melee)
+              0, MissileFlagCurlerFull, MissileFlagHitBackgroundAndGravity, 0, 0, 0, 0, 0, MissileFlagHitBackground, 0, 0, 0, 0, 0, 0, 0
+          rem  0,      Curler(MissileFlagCurlerFull), Dragon(MissileFlagHitBackgroundAndGravity), 0, 0, 0, 0, 0, Frooty(MissileFlagHitBackground), 0, 0, 0, 0, 0, 0, 0
+          rem  Ursulo changed from MissileFlagHitBackground (1) to 0 (melee)
           end
 
           rem =================================================================

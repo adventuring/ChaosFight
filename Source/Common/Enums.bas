@@ -101,3 +101,9 @@
           rem Combined flags for common combinations
           const MissileFlagHitBoth = 3
           rem Bits 0-1: Hit both background and players (%00000011)
+          
+          const MissileFlagHitBackgroundAndGravity = 5
+          rem Bits 0,2: HitBackground|Gravity = 1+4 = 5 (%00000101) for ballistic arcs
+          
+          const MissileFlagCurlerFull = 31
+          rem Bits 0-4: HitBackground|HitPlayer|Gravity|Bounce|Friction = 1+2+4+8+16 = 31 (%00011111)

@@ -146,17 +146,29 @@ end
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileWidths
-             1, 4, 2, 2, 2, 4, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0
-          rem Megax uses maximum missile width (4) for fire breath
-          rem Ursulo uses melee (0) for claw swipe
+             0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+          rem Bernie: no ranged attack (melee only)
+          rem Curler: 4 (wide ground-based projectile)
+          rem Megax: 4 (maximum width for fire breath)
+          rem Zoe Ryen: 4 (wide projectile)
+          rem Fat Tony: 4 (wide projectile)
+          rem Frooty: 1 (narrow projectile)
+          rem Ursulo: melee (0) for claw swipe
           end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           data CharacterMissileHeights
-             1, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0
-          rem Ursulo uses melee (0) for claw swipe
+             0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+          rem Bernie: no ranged attack (melee only)
+          rem Curler: 4 (tall ground-based projectile)
+          rem Dragon of Storms: 2 (standard ballistic arc)
+          rem Zoe Ryen: 1 (low-height projectile)
+          rem Fat Tony: 1 (low-height projectile)
+          rem Megax: 4 (tall fire breath)
+          rem Frooty: 1 (low-height sparkles)
+          rem Ursulo: melee (0) for claw swipe
 end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
@@ -222,11 +234,14 @@ end
           rem Frooty Nefertem Ninjish Pork Chop Radish Robo Tito Ursulo
           rem   Shamone
           rem ranged melee melee melee melee melee melee melee
+          rem Bernie: melee (no ranged attack)
           rem Harpy changed from melee to ranged (diagonal downward
           rem   attack)
-          rem  Ursulo changed from ranged to melee (claw swipe)
+          rem Ursulo changed from ranged to melee (claw swipe)
           data CharacterAttackTypes
-              %01111111, %00000001, %00000000, %00000000
+              %01111110, %00000001, %00000000, %00000000
+          rem Bit 0 (Bernie) = 0 (melee), bits 1-7 (Curler-Knight Guy) = ranged
+          rem Bit 8 (Frooty) = 1 (ranged)
           end
 
           rem ==========================================================

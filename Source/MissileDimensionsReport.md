@@ -18,14 +18,14 @@ This report documents the missile dimensions (width × height) for all character
 
 | Character          | Attack Type | Width | Height | Notes |
 |--------------------|-------------|-------|--------|-------|
-| Bernie             | Ranged      | 1     | 1      | Narrow, low-height projectile |
-| Curler             | Ranged      | 4     | 2      | Wide projectile (ground-based) |
+| Bernie             | Ground Thump (AOE) | - | - | Area-of-effect melee, hits both sides |
+| Curler             | Ranged      | 4     | 4      | Wide projectile (ground-based) |
 | Dragon of Storms   | Ranged      | 2     | 2      | Standard projectile (ballistic arc) |
-| Zoe Ryen           | Ranged      | 2     | 2      | Standard projectile |
-| Fat Tony           | Ranged      | 2     | 2      | Standard projectile |
-| Megax              | Ranged      | 4     | 2      | Wide projectile (fire breath) |
+| Zoe Ryen           | Ranged      | 4     | 1      | Wide, low-height projectile |
+| Fat Tony           | Ranged      | 4     | 1      | Wide, low-height projectile |
+| Megax              | Ranged      | 4     | 4      | Wide projectile (fire breath) |
 | Harpy              | Ranged      | 0     | 0      | No missile sprite (diagonal swoop attack) |
-| Frooty             | Ranged      | 2     | 2      | Standard projectile (magical sparkles) |
+| Frooty             | Ranged      | 1     | 1      | Narrow projectile (magical sparkles) |
 
 ## Summary Statistics
 
@@ -34,27 +34,28 @@ This report documents the missile dimensions (width × height) for all character
 - **Characters without missile sprites** (width/height = 0): 1 (Harpy)
 
 ### Width Distribution
-- Width 1: 1 character (Bernie)
-- Width 2: 4 characters (Dragon of Storms, Zoe Ryen, Fat Tony, Frooty)
-- Width 4: 2 characters (Curler, Megax)
-- Width 0: 1 character (Harpy)
+- Width 1: 1 character (Frooty)
+- Width 2: 1 character (Dragon of Storms)
+- Width 4: 3 characters (Curler, Zoe Ryen, Fat Tony, Megax)
+- Width 0: 2 characters (Bernie - melee, Harpy - no missile)
 
 ### Height Distribution
-- Height 1: 1 character (Bernie)
-- Height 2: 6 characters (Curler, Dragon of Storms, Zoe Ryen, Fat Tony, Megax, Frooty)
-- Height 0: 1 character (Harpy)
+- Height 1: 3 characters (Zoe Ryen, Fat Tony, Frooty)
+- Height 2: 1 character (Dragon of Storms)
+- Height 4: 2 characters (Curler, Megax)
+- Height 0: 2 characters (Bernie - melee, Harpy - no missile)
 
 ## Character-Specific Notes
 
 ### Bernie (Character #0)
-- **Dimensions**: 1×1 pixels
-- **Type**: Narrow, low-height projectile
-- **Special**: Smallest missile size
+- **Dimensions**: N/A (melee only)
+- **Type**: No ranged attack - uses area-of-effect "Ground Thump" attack
+- **Special**: Ground Thump hits nearby characters both left and right simultaneously, shoving them rapidly away from Bernie
 
 ### Curler (Character #1)
-- **Dimensions**: 4×2 pixels
-- **Type**: Wide, ground-based projectile
-- **Special**: Maximum width (4 pixels), uses ground-based movement
+- **Dimensions**: 4×4 pixels
+- **Type**: Wide, tall ground-based projectile
+- **Special**: Maximum width and height (4×4 pixels), uses ground-based movement
 
 ### Dragon of Storms (Character #2)
 - **Dimensions**: 2×2 pixels
@@ -62,17 +63,17 @@ This report documents the missile dimensions (width × height) for all character
 - **Special**: Uses gravity flag for ballistic trajectory
 
 ### Zoe Ryen (Character #3)
-- **Dimensions**: 2×2 pixels
-- **Type**: Standard projectile
+- **Dimensions**: 4×1 pixels
+- **Type**: Wide, low-height projectile
 
 ### Fat Tony (Character #4)
-- **Dimensions**: 2×2 pixels
+- **Dimensions**: 4×1 pixels
 - **Type**: Standard projectile
 
 ### Megax (Character #5)
-- **Dimensions**: 4×2 pixels
-- **Type**: Wide projectile (fire breath)
-- **Special**: Maximum width (4 pixels), fire breath effect
+- **Dimensions**: 4×4 pixels
+- **Type**: Wide, tall projectile (fire breath)
+- **Special**: Maximum width and height (4×4 pixels), fire breath effect
 
 ### Harpy (Character #6)
 - **Dimensions**: 0×0 pixels
@@ -80,19 +81,21 @@ This report documents the missile dimensions (width × height) for all character
 - **Special**: Diagonal downward swoop attack - character movement IS the attack, no separate missile
 
 ### Frooty (Character #8)
-- **Dimensions**: 2×2 pixels
-- **Type**: Standard projectile (magical sparkles)
-- **Special**: Visual effect should show sparkle particles in sprite graphics
+- **Dimensions**: 1×1 pixels
+- **Type**: Narrow, low-height projectile (magical sparkles)
+- **Special**: Smallest projectile size, visual effect should show sparkle particles in sprite graphics
 
 ## Recommendations for Review
 
-1. **Harpy**: Currently has no missile sprite (0×0) but uses ranged attack. This is intentional as the character movement itself is the attack. No changes needed.
+1. **Bernie**: Ground Thump area-of-effect attack (melee only). Hits nearby characters both left and right, shoving them rapidly away. No missile dimensions needed.
 
-2. **Bernie**: Very small missile (1×1). Consider if this is appropriate for visibility/playability.
+2. **Harpy**: Currently has no missile sprite (0×0) but uses ranged attack. This is intentional as the character movement itself is the attack. No changes needed.
 
-3. **Curler & Megax**: Maximum width (4 pixels). Ensure visual effects match the wide projectile size.
+3. **Curler & Megax**: Maximum dimensions (4×4 pixels). Ensure visual effects match the large projectile size.
 
-4. **Consistency**: Most characters use 2×2 standard projectiles. Consider if Bernie's 1×1 should be increased for consistency.
+4. **Zoe Ryen & Fat Tony**: Wide, low-height projectiles (4×1). Ensure visual effects match the wide but flat projectile shape.
+
+5. **Frooty**: Small projectile (1×1). Consider if this is appropriate for visibility/playability of sparkle effects.
 
 ## Related Issues
 

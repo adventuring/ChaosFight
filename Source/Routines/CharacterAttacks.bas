@@ -17,11 +17,12 @@
           rem from the player arrays using temp1 as the index
 
           rem ==========================================================
-          rem BERNIE (Character 0) - Melee Attack (Both Directions)
+          rem BERNIE (Character 0) - Ground Thump (Area-of-Effect)
           rem ==========================================================
 BernieAttack
-          rem Bernie special attack hits both left AND right
-          rem   simultaneously
+          rem Bernie's "Ground Thump" attack is an area-of-effect that
+          rem   hits nearby characters both to his left AND right
+          rem   simultaneously, and shoves them rapidly away from him
           rem This is unique - all other melee attacks only hit in
           rem   facing direction
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 

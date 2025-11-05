@@ -749,6 +749,25 @@
           rem Array accessible as missileNUSIZ[0] through
           rem   missileNUSIZ[3]
 
+          rem RoboTito stretch missile height tracking (SCRAM)
+          rem Tracks missile height for RoboTito stretch visual effect
+          dim missileStretchHeight_W = w118
+          dim missileStretchHeight_R = r118
+          rem [0-3] Missile height in scanlines for RoboTito stretch visual
+          rem   (4 bytes: w118-w121)
+          rem Height extends downward from player position to ground level
+          rem Array accessible as missileStretchHeight[0] through
+          rem   missileStretchHeight[3]
+
+          rem RoboTito stretch permission flags (SCRAM)
+          rem Bit-packed: 1 bit per player (0=not grounded, 1=can stretch)
+          dim roboTitoCanStretch_W = w122
+          dim roboTitoCanStretch_R = r122
+          rem Bit 0: Player 0 can stretch, Bit 1: Player 1, Bit 2: Player 2,
+          rem   Bit 3: Player 3
+          rem Set to 1 when RoboTito lands on ground, cleared when hit or
+          rem   stretching upward
+
           rem Harpy flight energy/duration counters (SCRAM)
           dim harpyFlightEnergy_W = w009
           dim harpyFlightEnergy_R = r009

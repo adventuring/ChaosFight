@@ -342,20 +342,106 @@ RadishGoblinJump
           rem USES: playerY[temp1]
 RoboTitoJump
           dim RTJ_playerIndex = temp1
+          dim RTJ_canStretch = temp2
           rem RoboTito ceiling-stretch mechanic
           rem Check if already latched to ceiling
           if (characterStateFlags_R[RTJ_playerIndex] & 1) then return
           rem Already latched, ignore UP input
           
-          rem Check if grounded (not jumping)
-          if (playerState[RTJ_playerIndex] & 4) then RoboTitoStretching
-          rem Not grounded, stretching upward
+          rem Check if grounded and stretch is allowed
+          rem Must be grounded (not jumping/falling) to stretch
+          if (playerState[RTJ_playerIndex] & 4) then RoboTitoCannotStretch
+          rem Not grounded (jumping flag set), cannot stretch
+          
+          rem Check stretch permission flag (must be grounded)
+          let RTJ_canStretch = roboTitoCanStretch_R
+          rem Load bit-packed flags
+          let temp3 = RTJ_playerIndex
+          rem Calculate bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp3 = 0 then RTJ_CheckBit0
+          if temp3 = 1 then RTJ_CheckBit1
+          if temp3 = 2 then RTJ_CheckBit2
+          rem Player 3: bit 3
+          let temp3 = RTJ_canStretch & 8
+          if !temp3 then RoboTitoCannotStretch
+          rem Bit 3 not set, cannot stretch
+          goto RoboTitoCanStretch
+RTJ_CheckBit0
+          rem Player 0: bit 0
+          let temp3 = RTJ_canStretch & 1
+          if !temp3 then RoboTitoCannotStretch
+          rem Bit 0 not set, cannot stretch
+          goto RoboTitoCanStretch
+RTJ_CheckBit1
+          rem Player 1: bit 1
+          let temp3 = RTJ_canStretch & 2
+          if !temp3 then RoboTitoCannotStretch
+          rem Bit 1 not set, cannot stretch
+          goto RoboTitoCanStretch
+RTJ_CheckBit2
+          rem Player 2: bit 2
+          let temp3 = RTJ_canStretch & 4
+          if !temp3 then RoboTitoCannotStretch
+          rem Bit 2 not set, cannot stretch
+          goto RoboTitoCanStretch
+RoboTitoCannotStretch
+          rem Cannot stretch - clear missile height and return
+          let missileStretchHeight_W[RTJ_playerIndex] = 0
+          return
+RoboTitoCanStretch
+          rem Grounded and permission granted - allow stretching
           goto RoboTitoStretching
           
 RoboTitoStretching
           dim RTS_playerIndex = temp1
+          dim RTS_groundY = temp2
+          dim RTS_stretchHeight = temp3
           rem Set stretching animation (repurposed ActionJumping = 10)
           let playerState[RTS_playerIndex] = (playerState[RTS_playerIndex] & MaskPlayerStateFlags) | (ActionJumping << ShiftAnimationState)
+          
+          rem Calculate and set missile stretch height
+          rem Ground level: Use ScreenBottom (192) as ground Y position
+          rem Note: Y coordinate increases downward (0=top, 192=bottom)
+          let RTS_groundY = ScreenBottom
+          rem Calculate height: playerY - groundY (extends downward from player)
+          let RTS_stretchHeight = playerY[RTS_playerIndex]
+          let RTS_stretchHeight = RTS_stretchHeight - RTS_groundY
+          rem Clamp height to reasonable maximum (80 scanlines)
+          if RTS_stretchHeight > 80 then let RTS_stretchHeight = 80
+          rem Ensure minimum height of 1 scanline
+          if RTS_stretchHeight < 1 then let RTS_stretchHeight = 1
+          rem Store stretch height
+          let missileStretchHeight_W[RTS_playerIndex] = RTS_stretchHeight
+          
+          rem Clear stretch permission (stretching upward, cannot stretch again until grounded)
+          rem Calculate bit mask and clear bit
+          let temp4 = RTS_playerIndex
+          let temp5 = roboTitoCanStretch_R
+          rem Load current flags
+          if temp4 = 0 then RTS_ClearBit0
+          if temp4 = 1 then RTS_ClearBit1
+          if temp4 = 2 then RTS_ClearBit2
+          rem Player 3: clear bit 3
+          let temp5 = temp5 & 247
+          rem 247 = $F7 = clear bit 3
+          goto RTS_StretchPermissionCleared
+RTS_ClearBit0
+          rem Player 0: clear bit 0
+          let temp5 = temp5 & 254
+          rem 254 = $FE = clear bit 0
+          goto RTS_StretchPermissionCleared
+RTS_ClearBit1
+          rem Player 1: clear bit 1
+          let temp5 = temp5 & 253
+          rem 253 = $FD = clear bit 1
+          goto RTS_StretchPermissionCleared
+RTS_ClearBit2
+          rem Player 2: clear bit 2
+          let temp5 = temp5 & 251
+          rem 251 = $FB = clear bit 2
+RTS_StretchPermissionCleared
+          let roboTitoCanStretch_W = temp5
+          rem Store cleared permission flags
           
           rem Move upward 3 pixels per frame
           if playerY[RTS_playerIndex] <= 5 then RoboTitoCheckCeiling
@@ -389,13 +475,27 @@ RoboTitoCheckCeiling
           
 RoboTitoLatch
           dim RTL_playerIndex = temp1
+          dim RTL_currentHeight = temp2
           rem Ceiling contact detected - latch to ceiling
           rem Fix RMW: Read from _R, modify, write to _W
           let RTL_stateFlags = characterStateFlags_R[RTL_playerIndex] | 1
           let characterStateFlags_W[RTL_playerIndex] = RTL_stateFlags
           rem Set latched bit
-          let playerState[RTL_playerIndex] = (playerState[RTL_playerIndex] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
-          rem Set latched animation (repurposed ActionFalling = 11)
+          let playerState[RTL_playerIndex] = (playerState[RTL_playerIndex] & MaskPlayerStateFlags) | (ActionJumping << ShiftAnimationState)
+          rem Set hanging animation (ActionJumping = 10, repurposed for hanging)
+          
+          rem Rapidly reduce missile height to 0 over 2-3 frames
+          let RTL_currentHeight = missileStretchHeight_R[RTL_playerIndex]
+          if RTL_currentHeight <= 0 then RTL_HeightCleared
+          rem Reduce by 25 scanlines per frame
+          if RTL_currentHeight > 25 then RTL_ReduceHeight
+          rem Less than 25 remaining, set to 0
+          let missileStretchHeight_W[RTL_playerIndex] = 0
+          goto RTL_HeightCleared
+RTL_ReduceHeight
+          let RTL_currentHeight = RTL_currentHeight - 25
+          let missileStretchHeight_W[RTL_playerIndex] = RTL_currentHeight
+RTL_HeightCleared
           return
 
           rem URSULO (14) - STANDARD JUMP (heavy weight)
@@ -621,13 +721,16 @@ RoboTitoDown
           goto RoboTitoNotLatched
           
 RoboTitoVoluntaryDrop
+          dim RTLVD_playerIndex = temp1
           rem Release from ceiling on DOWN press
           rem Fix RMW: Read from _R, modify, write to _W
-          let RTLVD_stateFlags = characterStateFlags_R[temp1] & (255 - PlayerStateBitFacing)
-          let characterStateFlags_W[temp1] = RTLVD_stateFlags
+          let RTLVD_stateFlags = characterStateFlags_R[RTLVD_playerIndex] & (255 - PlayerStateBitFacing)
+          let characterStateFlags_W[RTLVD_playerIndex] = RTLVD_stateFlags
           rem Clear latched bit (bit 0)
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
+          let playerState[RTLVD_playerIndex] = (playerState[RTLVD_playerIndex] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
           rem Set falling animation
+          rem Clear stretch missile height when dropping
+          let missileStretchHeight_W[RTLVD_playerIndex] = 0
           return
           
 RoboTitoNotLatched

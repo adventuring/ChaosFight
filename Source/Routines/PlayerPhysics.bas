@@ -163,7 +163,46 @@ GravityRowCalcDone
           rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           let playerState[PAG_playerIndex] = playerState[PAG_playerIndex] & (255 - PlayerStateBitJumping)
           rem Clear bit 2 (jumping flag)
+          
+          rem If RoboTito, set stretch permission on landing
+          if PAG_characterType = CharRoboTito then PAG_SetRoboTitoStretchPermission
           goto GravityNextPlayer
+          
+PAG_SetRoboTitoStretchPermission
+          dim PAGSRTSP_playerIndex = temp1
+          dim PAGSRTSP_flags = temp2
+          rem Set stretch permission bit for this player
+          let PAGSRTSP_flags = roboTitoCanStretch_R
+          rem Load current flags
+          let temp3 = PAGSRTSP_playerIndex
+          rem Calculate bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp3 = 0 then PAGSRTSP_SetBit0
+          if temp3 = 1 then PAGSRTSP_SetBit1
+          if temp3 = 2 then PAGSRTSP_SetBit2
+          rem Player 3: set bit 3
+          let PAGSRTSP_flags = PAGSRTSP_flags | 8
+          rem 8 = $08 = set bit 3
+          goto PAGSRTSP_PermissionSet
+PAGSRTSP_SetBit0
+          rem Player 0: set bit 0
+          let PAGSRTSP_flags = PAGSRTSP_flags | 1
+          rem 1 = $01 = set bit 0
+          goto PAGSRTSP_PermissionSet
+PAGSRTSP_SetBit1
+          rem Player 1: set bit 1
+          let PAGSRTSP_flags = PAGSRTSP_flags | 2
+          rem 2 = $02 = set bit 1
+          goto PAGSRTSP_PermissionSet
+PAGSRTSP_SetBit2
+          rem Player 2: set bit 2
+          let PAGSRTSP_flags = PAGSRTSP_flags | 4
+          rem 4 = $04 = set bit 2
+PAGSRTSP_PermissionSet
+          let roboTitoCanStretch_W = PAGSRTSP_flags
+          rem Store updated permission flags
+          rem Clear stretch missile height on landing (not stretching)
+          let missileStretchHeight_W[PAGSRTSP_playerIndex] = 0
+          return
           
 GravityCheckBottom
           rem At bottom of playfield - treat as ground if feet are at
@@ -184,6 +223,9 @@ GravityBottomCalcLoop
 GravityBottomCalcDone
           let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           let playerState[temp1] = playerState[temp1] & NOT 4
+          
+          rem If RoboTito, set stretch permission on landing at bottom
+          if PAG_characterType = CharRoboTito then PAG_SetRoboTitoStretchPermission
           
 GravityNextPlayer
           rem Move to next player

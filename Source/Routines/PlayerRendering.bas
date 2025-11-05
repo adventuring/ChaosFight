@@ -106,13 +106,21 @@ DonePlayer4Position
                     rem Odd frame: Render Participants 3-4 missiles
           rem Participant 3 missile (array [2], bit 2) → missile0
           ENAM0 = 0
+          missile0height = 0
+          rem Clear missile height first
           let SSP_missileActive = missileActive & 4
           if SSP_missileActive then missile0x = missileX[2] : missile0y = missileY_R[2] : ENAM0 = 1 : NUSIZ0 = missileNUSIZ[2]                                                               
+          rem Check for RoboTito stretch missile if no projectile missile
+          if !SSP_missileActive then gosub RenderRoboTitoStretchMissile0
           
           rem Participant 4 missile (array [3], bit 3) → missile1
           ENAM1 = 0
+          missile1height = 0
+          rem Clear missile height first
           let SSP_missileActive = missileActive & 8
           if SSP_missileActive then missile1x = missileX[3] : missile1y = missileY_R[3] : ENAM1 = 1 : NUSIZ1 = missileNUSIZ[3]                                                               
+          rem Check for RoboTito stretch missile if no projectile missile
+          if !SSP_missileActive then gosub RenderRoboTitoStretchMissile1
           return
           
 RenderMissilesEvenFrame
@@ -120,13 +128,21 @@ RenderMissilesEvenFrame
                     rem Even frame: Render Participants 1-2 missiles
           rem Participant 1 missile (array [0], bit 0) → missile0
           ENAM0 = 0 
+          missile0height = 0
+          rem Clear missile height first
           let RMEF_missileActive = missileActive & 1
           if RMEF_missileActive then missile0x = missileX[0] : missile0y = missileY_R[0] : ENAM0 = 1 : NUSIZ0 = missileNUSIZ[0]                                                              
+          rem Check for RoboTito stretch missile if no projectile missile
+          if !RMEF_missileActive then gosub RenderRoboTitoStretchMissile0
           
           rem Participant 2 missile (array [1], bit 1) → missile1
           ENAM1 = 0 
+          missile1height = 0
+          rem Clear missile height first
           let RMEF_missileActive = missileActive & 2
           if RMEF_missileActive then missile1x = missileX[1] : missile1y = missileY_R[1] : ENAM1 = 1 : NUSIZ1 = missileNUSIZ[1]                                                              
+          rem Check for RoboTito stretch missile if no projectile missile
+          if !RMEF_missileActive then gosub RenderRoboTitoStretchMissile1
           return
           
 RenderMissiles2Player
@@ -135,14 +151,121 @@ RenderMissiles2Player
           rem   directly
           rem Participant 1 (array [0]) missile (missile0, P0 sprite)
           ENAM0 = 0 
+          missile0height = 0
+          rem Clear missile height first
           let RM2P_missileActive = missileActive & 1
           if RM2P_missileActive then missile0x = missileX[0] : missile0y = missileY_R[0] : ENAM0 = 1 : NUSIZ0 = missileNUSIZ[0]                                                              
+          rem Check for RoboTito stretch missile if no projectile missile
+          if !RM2P_missileActive then gosub RenderRoboTitoStretchMissile0
           
           rem Participant 2 (array [1]) missile (missile1, P1 sprite)
           ENAM1 = 0 
+          missile1height = 0
+          rem Clear missile height first
           let RM2P_missileActive = missileActive & 2
           if RM2P_missileActive then missile1x = missileX[1] : missile1y = missileY_R[1] : ENAM1 = 1 : NUSIZ1 = missileNUSIZ[1]                                                              
+          rem Check for RoboTito stretch missile if no projectile missile
+          if !RM2P_missileActive then gosub RenderRoboTitoStretchMissile1
           
+          return
+          
+          rem ==========================================================
+          rem RENDER ROBOTITO STRETCH MISSILES
+          rem ==========================================================
+          rem Helper functions to render RoboTito stretch visual missiles
+          rem Only rendered if player is RoboTito, stretching upward
+          rem   (not latched), and no projectile missile active
+          
+RenderRoboTitoStretchMissile0
+          dim RRTM_playerIndex = temp1
+          dim RRTM_isStretching = temp2
+          dim RRTM_stretchHeight = temp3
+          dim RRTM_frameParity = temp4
+          rem Determine which player uses missile0 based on frame parity
+          if !(controllerStatus & SetPlayers34Active) then RRTM_CheckPlayer0
+          rem 2-player mode: Player 0 uses missile0
+          let RRTM_frameParity = frame & 1
+          if RRTM_frameParity = 0 then RRTM_CheckPlayer0
+          rem Even frame: Player 0 uses missile0
+          rem Odd frame: Player 2 uses missile0
+          let RRTM_playerIndex = 2
+          goto RRTM_CheckRoboTito
+RRTM_CheckPlayer0
+          let RRTM_playerIndex = 0
+RRTM_CheckRoboTito
+          rem Check if player is RoboTito
+          if playerChar[RRTM_playerIndex] <> CharRoboTito then return
+          rem Not RoboTito, no stretch missile
+          
+          rem Check if stretching upward (not latched, ActionJumping animation = 10)
+          if (characterStateFlags_R[RRTM_playerIndex] & 1) then return
+          rem Latched to ceiling, no stretch missile
+          let RRTM_isStretching = playerState[RRTM_playerIndex]
+          let RRTM_isStretching = RRTM_isStretching & 240
+          rem Mask bits 4-7 (animation state, value 240 = %11110000)
+          let RRTM_isStretching = RRTM_isStretching / 16
+          rem Shift right by 4 (divide by 16) to get animation state (0-15)
+          if RRTM_isStretching <> 10 then return
+          rem Not in stretching animation (ActionJumping = 10), no stretch missile
+          
+          rem Get stretch height and render if > 0
+          let RRTM_stretchHeight = missileStretchHeight_R[RRTM_playerIndex]
+          if RRTM_stretchHeight <= 0 then return
+          rem No height, no stretch missile
+          
+          rem Render stretch missile: position at player, set height
+          missile0x = playerX[RRTM_playerIndex]
+          missile0y = playerY[RRTM_playerIndex]
+          missile0height = RRTM_stretchHeight
+          ENAM0 = 1
+          NUSIZ0 = 0
+          rem 1x size (NUSIZ bits 4-6 = 00)
+          return
+          
+RenderRoboTitoStretchMissile1
+          dim RRTM1_playerIndex = temp1
+          dim RRTM1_isStretching = temp2
+          dim RRTM1_stretchHeight = temp3
+          dim RRTM1_frameParity = temp4
+          rem Determine which player uses missile1 based on frame parity
+          if !(controllerStatus & SetPlayers34Active) then RRTM1_CheckPlayer1
+          rem 2-player mode: Player 1 uses missile1
+          let RRTM1_frameParity = frame & 1
+          if RRTM1_frameParity = 0 then RRTM1_CheckPlayer1
+          rem Even frame: Player 1 uses missile1
+          rem Odd frame: Player 3 uses missile1
+          let RRTM1_playerIndex = 3
+          goto RRTM1_CheckRoboTito
+RRTM1_CheckPlayer1
+          let RRTM1_playerIndex = 1
+RRTM1_CheckRoboTito
+          rem Check if player is RoboTito
+          if playerChar[RRTM1_playerIndex] <> CharRoboTito then return
+          rem Not RoboTito, no stretch missile
+          
+          rem Check if stretching upward (not latched, ActionJumping animation = 10)
+          if (characterStateFlags_R[RRTM1_playerIndex] & 1) then return
+          rem Latched to ceiling, no stretch missile
+          let RRTM1_isStretching = playerState[RRTM1_playerIndex]
+          let RRTM1_isStretching = RRTM1_isStretching & 240
+          rem Mask bits 4-7 (animation state, value 240 = %11110000)
+          let RRTM1_isStretching = RRTM1_isStretching / 16
+          rem Shift right by 4 (divide by 16) to get animation state (0-15)
+          if RRTM1_isStretching <> 10 then return
+          rem Not in stretching animation (ActionJumping = 10), no stretch missile
+          
+          rem Get stretch height and render if > 0
+          let RRTM1_stretchHeight = missileStretchHeight_R[RRTM1_playerIndex]
+          if RRTM1_stretchHeight <= 0 then return
+          rem No height, no stretch missile
+          
+          rem Render stretch missile: position at player, set height
+          missile1x = playerX[RRTM1_playerIndex]
+          missile1y = playerY[RRTM1_playerIndex]
+          missile1height = RRTM1_stretchHeight
+          ENAM1 = 1
+          NUSIZ1 = 0
+          rem 1x size (NUSIZ bits 4-6 = 00)
           return
 
           rem ==========================================================

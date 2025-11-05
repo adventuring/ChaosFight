@@ -182,8 +182,9 @@ DoneSecondPlayer3
           rem   visible missile).
           rem AOE is relative to player position and facing direction.
 
-          rem SPECIAL CASE: Bernie (character 0) attacks both left AND
-          rem   right.
+          rem SPECIAL CASE: Bernie (character 0) "Ground Thump" attack
+          rem   hits both left AND right simultaneously, shoving enemies
+          rem   away rapidly.
 
           rem INPUT:
           rem   temp1 = attacker player index (0-3)

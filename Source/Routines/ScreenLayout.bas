@@ -2,20 +2,24 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Dynamic screen layout switching for admin vs game screens
 
-          rem =================================================================
+          rem ==========================================================
           rem SCREEN LAYOUT SWITCHING SYSTEM
-          rem =================================================================
-          rem Admin screens (title, character select): 32×32 virtual pixels (8 rows)
-          rem Game screen: 32×8 virtual pixels (8 rows) with space for health bars
+          rem ==========================================================
+          rem Admin screens (title, character select): 32×32 virtual
+          rem   pixels (8 rows)
+          rem Game screen: 32×8 virtual pixels (8 rows) with space for
+          rem   health bars
 
 SetAdminScreenLayout
-          rem Set screen layout for title screen and character select (32×32)
+          rem Set screen layout for title screen and character select
+          rem   (32×32)
           let pfrowheight = 8
           let pfrows = 32
           return
 
 SetGameScreenLayout
-          rem Set screen layout for gameplay (32×8) with health bar space
+          rem Set screen layout for gameplay (32×8) with health bar
+          rem   space
           let pfrowheight = 16
           let pfrows = 8
           return

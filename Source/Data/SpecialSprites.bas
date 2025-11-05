@@ -1,9 +1,9 @@
           rem ChaosFight - Source/Data/SpecialSprites.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem =================================================================
+          rem ==========================================================
           rem SPECIAL SPRITES - HARD-CODED DATA
-          rem =================================================================
+          rem ==========================================================
           rem Special sprites for character selection placeholders
           rem Used when no character is selected or for CPU players
           rem 8x16 pixels, white on black

@@ -1,11 +1,12 @@
           rem ChaosFight - Source/Routines/CharacterControls.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem CHARACTER-SPECIFIC CONTROL LOGIC
-          rem =================================================================
+          rem ==========================================================
           rem Handles character-specific jump and down button behaviors.
-          rem Called via "on playerChar[n] goto" dispatch from PlayerInput.bas
+          rem Called via "on playerChar[n] goto" dispatch from
+          rem   PlayerInput.bas
 
           rem INPUT VARIABLE:
           rem   temp1 = player index (0-3)
@@ -16,21 +17,26 @@
           rem   playerVelocityX[temp1] - Horizontal velocity
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=ZoeRyen, 4=FatTony, 5=Megax,
-          rem   6=Harpy, 7=KnightGuy, 8=Frooty, 9=Nefertem, 10=NinjishGuy,
-          rem   11=PorkChop, 12=RadishGoblin, 13=RoboTito, 14=Ursulo, 15=Shamone
-          rem =================================================================
+          rem 0=Bernie, 1=Curler, 2=Dragon of Storms, 3=ZoeRyen,
+          rem   4=FatTony, 5=Megax,
+          rem 6=Harpy, 7=KnightGuy, 8=Frooty, 9=Nefertem, 10=NinjishGuy,
+          rem 11=PorkChop, 12=RadishGoblin, 13=RoboTito, 14=Ursulo,
+          rem   15=Shamone
+          rem ==========================================================
 
-          rem =================================================================
+          rem ==========================================================
           rem JUMP HANDLERS (Called via "on goto" from PlayerInput)
-          rem =================================================================
+          rem ==========================================================
 
           rem BERNIE (0) - NO JUMP, BUT CAN FALL THROUGH 1-ROW FLOORS
-          rem Bernie cannot jump, but pressing UP allows him to fall through
+          rem Bernie cannot jump, but pressing UP allows him to fall
+          rem   through
           rem floors that are only 1 playfield row deep (platforms).
-          rem This is called when UP is pressed to handle fall-through logic.
+          rem This is called when UP is pressed to handle fall-through
+          rem   logic.
           rem INPUT: temp1 = player index
-          rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4, temp5, temp6
+          rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4,
+          rem   temp5, temp6
 BernieJump
           dim BJ_playerIndex = temp1
           dim BJ_pfColumn = temp2
@@ -40,7 +46,8 @@ BernieJump
           dim BJ_feetRow = temp6
           dim BJ_checkRow = temp4
           rem Convert player X position to playfield column (0-31)
-          rem Player X is in pixels (16-144), playfield is 32 columns, 4 pixels per column
+          rem Player X is in pixels (16-144), playfield is 32 columns, 4
+          rem   pixels per column
           rem Column = (playerX[playerIndex] - ScreenInsetX) / 4
           let BJ_pfColumn = playerX[BJ_playerIndex]
           let BJ_pfColumn = BJ_pfColumn - ScreenInsetX
@@ -56,11 +63,15 @@ BernieJump
           rem Row = playerY[playerIndex] / pfrowheight
           let BJ_playerY = playerY[BJ_playerIndex]
           let BJ_currentRow = BJ_playerY / pfrowheight
-          rem currentRow = row player sprite bottom is in (0-7 for pfres=8)
+          rem currentRow = row player sprite bottom is in (0-7 for
+          rem   pfres=8)
           
-          rem Check if Bernie is standing ON a floor (row below feet is solid)
-          rem Bernie feet are visually at bottom of 16px sprite, so check row below
-          rem Feet are at playerY + 16, so row = (playerY + 16) / pfrowheight
+          rem Check if Bernie is standing ON a floor (row below feet is
+          rem   solid)
+          rem Bernie feet are visually at bottom of 16px sprite, so
+          rem   check row below
+          rem Feet are at playerY + 16, so row = (playerY + 16) /
+          rem   pfrowheight
           let BJ_feetY = BJ_playerY + 16
           rem feetY = feet Y position in pixels
           let BJ_feetRow = BJ_feetY / pfrowheight
@@ -70,8 +81,10 @@ BernieJump
           if !pfread(BJ_pfColumn, BJ_feetRow) then return
           rem No floor directly below feet, cannot fall through
           
-          rem Floor exists directly below feet, check if it is only 1 row deep
-          rem Special case: if at bottom row (pfrows - 1), check top row (0) for wrap
+          rem Floor exists directly below feet, check if it is only 1
+          rem   row deep
+          rem Special case: if at bottom row (pfrows - 1), check top row
+          rem   (0) for wrap
           rem For pfres=8: pfrows = 8, so bottom row is 7
           if BJ_feetRow >= pfrows - 1 then BernieCheckBottomWrap
           rem At or beyond bottom row, check wrap
@@ -92,8 +105,10 @@ BernieCheckBottomWrap
           dim BCBW_pfColumn = temp2
           dim BCBW_playerIndex = temp1
           dim BCBW_topRow = temp4
-          rem Special case: Bernie is at bottom row, trying to fall through
-          rem Bottom row is always considered "1 row deep" since nothing is below it
+          rem Special case: Bernie is at bottom row, trying to fall
+          rem   through
+          rem Bottom row is always considered "1 row deep" since nothing
+          rem   is below it
           rem Check if top row (row 0) is clear for wrapping
           let BCBW_topRow = 0
           rem topRow = top row (row 0)
@@ -154,7 +169,8 @@ DragonetJump
 
           rem ZOE RYEN (3) - STANDARD JUMP (light weight, high jump)
 ZoeRyenJump
-          rem Apply upward velocity impulse (lighter character, higher jump)
+          rem Apply upward velocity impulse (lighter character, higher
+          rem   jump)
           let playerVelocityY[temp1] = 244
           rem -12 in 8-bit two’s complement: 256 - 12 = 244
           let playerVelocityY_lo[temp1] = 0
@@ -163,7 +179,8 @@ ZoeRyenJump
 
           rem FAT TONY (4) - STANDARD JUMP (heavy weight, lower jump)
 FatTonyJump
-          rem Apply upward velocity impulse (heavier character, lower jump)
+          rem Apply upward velocity impulse (heavier character, lower
+          rem   jump)
           let playerVelocityY[temp1] = 248
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityY_lo[temp1] = 0
@@ -179,7 +196,8 @@ MegaxJump
           rem Harpy can fly by flapping (pressing UP repeatedly)
           rem Each flap provides upward thrust
           rem INPUT: temp1 = player index
-          rem USES: playerY[temp1], playerState[temp1], harpyFlightEnergy[temp1], harpyLastFlapFrame[temp1]
+          rem USES: playerY[temp1], playerState[temp1],
+          rem   harpyFlightEnergy[temp1], harpyLastFlapFrame[temp1]
 HarpyJump
           dim HJ_playerIndex = temp1
           dim HJ_framesSinceFlap = temp2
@@ -187,7 +205,8 @@ HarpyJump
           if harpyFlightEnergy_R[HJ_playerIndex] = 0 then return
           rem No energy remaining, cannot flap
           
-          rem Check flap cooldown: must wait for 1.5 flaps/second (40 frames at 60fps)
+          rem Check flap cooldown: must wait for 1.5 flaps/second (40
+          rem   frames at 60fps)
           let HJ_framesSinceFlap = frame - harpyLastFlapFrame_R[HJ_playerIndex]
           rem Calculate frames since last flap
           if HJ_framesSinceFlap > 127 then let HJ_framesSinceFlap = 127
@@ -200,10 +219,13 @@ HarpyJump
           rem Already at top, cannot flap higher but still record
           
           rem Flap upward - apply upward velocity impulse
-          rem Gravity is 0.05 px/frame² for Harpy (reduced). Over 40 frames, gravity accumulates:
+          rem Gravity is 0.05 px/frame² for Harpy (reduced). Over 40
+          rem   frames, gravity accumulates:
           rem   velocity_change = 0.05 * 40 = 2.0 px/frame (downward)
-          rem To maintain height, flap impulse must counteract: -2.0 px/frame (upward)
-          rem Using -2 px/frame (254 in two’s complement) for stable hover with 1.5 flaps/second
+          rem To maintain height, flap impulse must counteract: -2.0
+          rem   px/frame (upward)
+          rem Using -2 px/frame (254 in two’s complement) for stable
+          rem   hover with 1.5 flaps/second
           let playerVelocityY[HJ_playerIndex] = 254
           rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityY_lo[HJ_playerIndex] = 0
@@ -227,7 +249,8 @@ HarpyFlapRecord
 
           rem KNIGHT GUY (7) - STANDARD JUMP (heavy weight)
 KnightGuyJump
-          rem Apply upward velocity impulse (heavier character, lower jump)
+          rem Apply upward velocity impulse (heavier character, lower
+          rem   jump)
           let playerVelocityY[temp1] = 248
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityY_lo[temp1] = 0
@@ -235,8 +258,10 @@ KnightGuyJump
           return
 
           rem FROOTY (8) - PERMANENT FREE FLIGHT (vertical movement)
-          rem Frooty has permanent flight ability - no UP tapping required
-          rem Complete control over vertical position, gravity always overridden
+          rem Frooty has permanent flight ability - no UP tapping
+          rem   required
+          rem Complete control over vertical position, gravity always
+          rem   overridden
           rem Can move up/down freely at all times, no guard action
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
@@ -282,7 +307,8 @@ NefertemJump
 
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
 NinjishGuyJump
-          rem Apply upward velocity impulse (very light character, highest jump)
+          rem Apply upward velocity impulse (very light character,
+          rem   highest jump)
           let playerVelocityY[temp1] = 243
           rem -13 in 8-bit two’s complement: 256 - 13 = 243
           let playerVelocityY_lo[temp1] = 0
@@ -291,7 +317,8 @@ NinjishGuyJump
 
           rem PORK CHOP (11) - STANDARD JUMP (heavy weight)
 PorkChopJump
-          rem Apply upward velocity impulse (heavy character, lower jump)
+          rem Apply upward velocity impulse (heavy character, lower
+          rem   jump)
           let playerVelocityY[temp1] = 248
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityY_lo[temp1] = 0
@@ -300,7 +327,8 @@ PorkChopJump
 
           rem RADISH GOBLIN (12) - STANDARD JUMP (very light, high jump)
 RadishGoblinJump
-          rem Apply upward velocity impulse (very light character, highest jump)
+          rem Apply upward velocity impulse (very light character,
+          rem   highest jump)
           let playerVelocityY[temp1] = 243
           rem -13 in 8-bit two’s complement: 256 - 13 = 243
           let playerVelocityY_lo[temp1] = 0
@@ -372,7 +400,8 @@ RoboTitoLatch
 
           rem URSULO (14) - STANDARD JUMP (heavy weight)
 UrsuloJump
-          rem Apply upward velocity impulse (heavy character, lower jump)
+          rem Apply upward velocity impulse (heavy character, lower
+          rem   jump)
           let playerVelocityY[temp1] = 248
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityY_lo[temp1] = 0
@@ -388,9 +417,10 @@ ShamoneJump
           let playerState[temp1] = playerState[temp1] | 4
           return
 
-          rem =================================================================
-          rem DOWN BUTTON HANDLERS (Called via "on goto" from PlayerInput)
-          rem =================================================================
+          rem ==========================================================
+          rem DOWN BUTTON HANDLERS (Called via "on goto" from
+          rem   PlayerInput)
+          rem ==========================================================
 
           rem BERNIE (0) - GUARD
 BernieDown
@@ -614,15 +644,16 @@ ShamoneDown
           rem tail call
           goto StandardGuard
 
-          rem =================================================================
+          rem ==========================================================
           rem STANDARD BEHAVIORS
-          rem =================================================================
+          rem ==========================================================
 
           rem Standard jump behavior for most characters
           rem INPUT: temp1 = player index
           rem USES: playerY[temp1], playerState[temp1]
 StandardJump
-          rem Apply upward velocity impulse (input applies impulse to rigid body)
+          rem Apply upward velocity impulse (input applies impulse to
+          rem   rigid body)
           let playerVelocityY[temp1] = 246
           rem -10 in 8-bit two’s complement: 256 - 10 = 246
           let playerVelocityY_lo[temp1] = 0
@@ -633,12 +664,14 @@ StandardJump
           rem Standard guard behavior
           rem INPUT: temp1 = player index
           rem USES: playerState[temp1], playerTimers[temp1]
-          rem NOTE: Flying characters (Frooty, Dragon of Storms, Harpy) cannot guard
+          rem NOTE: Flying characters (Frooty, Dragon of Storms, Harpy)
+          rem   cannot guard
 StandardGuard
           dim SG_playerIndex = temp1
           dim SG_characterType = temp4
           dim SG_guardAllowed = temp2
-          rem Flying characters cannot guard - DOWN is used for vertical movement
+          rem Flying characters cannot guard - DOWN is used for vertical
+          rem   movement
           rem Frooty (8): DOWN = fly down (no gravity)
           rem Dragon of Storms (2): DOWN = fly down (no gravity)
           rem Harpy (6): DOWN = fly down (reduced gravity)
@@ -664,6 +697,7 @@ StandardGuard
           rem StartGuard sets guard bit and duration timer
           
           rem Set guard visual effect (flashing cyan)
-          rem Character flashes light cyan ColCyan(12) in NTSC/PAL, Cyan in SECAM
+          rem Character flashes light cyan ColCyan(12) in NTSC/PAL, Cyan
+          rem   in SECAM
           rem This will be checked in sprite rendering routines
 

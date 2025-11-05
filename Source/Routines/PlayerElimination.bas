@@ -1,16 +1,19 @@
           rem ChaosFight - Source/Routines/PlayerElimination.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem PLAYER ELIMINATION SYSTEM
-          rem =================================================================
-          rem Handles player elimination when health reaches 0, game end conditions,
-          rem and removal of eliminated players from active gameplay systems.
+          rem ==========================================================
+          rem Handles player elimination when health reaches 0, game end
+          rem   conditions,
+          rem and removal of eliminated players from active gameplay
+          rem   systems.
 
           rem ELIMINATION PROCESS:
           rem   1. Detect when player health reaches 0
           rem   2. Set elimination flag and play elimination effects
-          rem   3. Remove player from active input/physics/collision systems
+          rem 3. Remove player from active input/physics/collision
+          rem   systems
           rem   4. Hide player sprite and health bar
           rem   5. Check for game end conditions (1 player remaining)
 
@@ -18,12 +21,13 @@
           rem   playersEliminated - Bit flags for eliminated players
           rem   playersRemaining - Count of active players
           rem   gameEndTimer - Countdown to game end screen
-          rem =================================================================
+          rem ==========================================================
 
-          rem =================================================================
+          rem ==========================================================
           rem CHECK ALL PLAYER ELIMINATIONS
-          rem =================================================================
-          rem Called each frame to check if any players should be eliminated.
+          rem ==========================================================
+          rem Called each frame to check if any players should be
+          rem   eliminated.
           rem Sets elimination flags and triggers elimination effects.
 CheckAllPlayerEliminations
           dim CAPE_playerIndex = temp1
@@ -41,15 +45,16 @@ CheckAllPlayerEliminations
           let temp1 = CAPE_playerIndex
           gosub CheckPlayerElimination
           
-          rem Count remaining players and check game end (inline CheckGameEndCondition)
+          rem Count remaining players and check game end (inline
+          rem   CheckGameEndCondition)
           gosub CountRemainingPlayers
           rem Game ends when 1 or fewer players remain
           if playersRemaining <= 1 then gosub FindWinner : let gameEndTimer = 180 : let gameState = 2 : return
           
 
-          rem =================================================================
+          rem ==========================================================
           rem CHECK SINGLE PLAYER ELIMINATION
-          rem =================================================================
+          rem ==========================================================
           rem Check if specified player should be eliminated.
           rem INPUT: temp1 = player index (0-3)
 CheckPlayerElimination
@@ -60,7 +65,7 @@ CheckPlayerElimination
           rem Skip if already eliminated
           let CPE_bitMask = BitMask[CPE_playerIndex]
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          let CPE_isEliminated = playersEliminated & CPE_bitMask
+          let CPE_isEliminated = playersEliminated_R & CPE_bitMask
           if CPE_isEliminated then return 
           rem Already eliminated
           
@@ -71,10 +76,14 @@ CheckPlayerElimination
           rem Still alive
           
           rem Player health reached 0 - eliminate them
-          let playersEliminated = playersEliminated | CPE_bitMask
+          rem Fix RMW: Read from _R, modify, write to _W
+          let CPE_eliminatedFlags = playersEliminated_R | CPE_bitMask
+          let playersEliminated_W = CPE_eliminatedFlags
           
-          rem Update Players34Active flag if Player 3 or 4 was eliminated
-          rem Only clear flag if both players 3 and 4 are eliminated or not selected
+          rem Update Players34Active flag if Player 3 or 4 was
+          rem   eliminated
+          rem Only clear flag if both players 3 and 4 are eliminated or
+          rem   not selected
           rem Use skip-over pattern to avoid complex || operator
           if CPE_playerIndex = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
           if CPE_playerIndex = 3 then gosub UpdatePlayers34ActiveFlag
@@ -89,9 +98,9 @@ UpdatePlayers34Done
           goto TriggerEliminationEffects
           
 
-          rem =================================================================
+          rem ==========================================================
           rem TRIGGER ELIMINATION EFFECTS
-          rem =================================================================
+          rem ==========================================================
           rem Visual and audio effects when player is eliminated.
           rem INPUT: temp1 = eliminated player index (0-3)
 TriggerEliminationEffects
@@ -127,18 +136,18 @@ TriggerEliminationEffects
           goto DeactivatePlayerMissiles
           
 
-          rem =================================================================
+          rem ==========================================================
           rem HIDE ELIMINATED PLAYER SPRITE
-          rem =================================================================
+          rem ==========================================================
           rem Move eliminated player sprite off-screen.
           rem INPUT: temp1 = player index (0-3)
           rem Player 4 uses player3 sprite (multisprite)
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem DEACTIVATE PLAYER MISSILES
-          rem =================================================================
+          rem ==========================================================
           rem Remove any active missiles belonging to eliminated player.
           rem INPUT: temp1 = player index (0-3)
 DeactivatePlayerMissiles
@@ -157,9 +166,9 @@ DeactivatePlayerMissiles
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem COUNT REMAINING PLAYERS
-          rem =================================================================
+          rem ==========================================================
           rem Count how many players are still alive.
           rem OUTPUT: temp1 = number of remaining players
 CountRemainingPlayers
@@ -168,25 +177,25 @@ CountRemainingPlayers
           rem Counter
           
           rem Check each player
-          if !(playersEliminated & 1) then let CRP_count = CRP_count + 1 
+          if !(playersEliminated_R & 1) then let CRP_count = CRP_count + 1 
           rem Player 1
-          if !(playersEliminated & 2) then let CRP_count = CRP_count + 1 
+          if !(playersEliminated_R & 2) then let CRP_count = CRP_count + 1 
           rem Player 2
-          if !(playersEliminated & 4) then let CRP_count = CRP_count + 1 
+          if !(playersEliminated_R & 4) then let CRP_count = CRP_count + 1 
           rem Player 3  
-          if !(playersEliminated & 8) then let CRP_count = CRP_count + 1 
+          if !(playersEliminated_R & 8) then let CRP_count = CRP_count + 1 
           rem Player 4
           
           let playersRemaining = CRP_count
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem CHECK GAME END CONDITION
-          rem =================================================================
+          rem ==========================================================
           rem Check if game should end (1 or 0 players remaining).
-          rem =================================================================  
+          rem ==========================================================
           rem IS PLAYER ELIMINATED
-          rem =================================================================
+          rem ==========================================================
           rem Check if specified player is eliminated.
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp2 = 1 if eliminated, 0 if alive
@@ -199,17 +208,18 @@ IsPlayerEliminated
           if IPE_playerIndex = 1 then let IPE_bitMask = 2
           if IPE_playerIndex = 2 then let IPE_bitMask = 4
           if IPE_playerIndex = 3 then let IPE_bitMask = 8
-          let IPE_isEliminated = playersEliminated & IPE_bitMask
+          let IPE_isEliminated = playersEliminated_R & IPE_bitMask
           if IPE_isEliminated then let IPE_isEliminated = 1 : goto IsEliminatedDone
           let IPE_isEliminated = 0
 IsEliminatedDone
           let temp2 = IPE_isEliminated
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem IS PLAYER ALIVE  
-          rem =================================================================
-          rem Check if specified player is alive (not eliminated AND health > 0).
+          rem ==========================================================
+          rem Check if specified player is alive (not eliminated AND
+          rem   health > 0).
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp2 = 1 if alive, 0 if eliminated/dead
 IsPlayerAlive
@@ -234,9 +244,9 @@ IsPlayerAlive
           let temp2 = IPA_isAlive
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem FIND WINNER
-          rem =================================================================
+          rem ==========================================================
           rem Identify the winning player (last one standing).
 FindWinner
           dim FW_playerIndex = temp1
@@ -270,10 +280,11 @@ FindWinner
           rem tail call
           if winnerPlayerIndex = 255 then goto FindLastEliminated
 
-          rem =================================================================
+          rem ==========================================================
           rem FIND LAST ELIMINATED
-          rem =================================================================
-          rem Find player who was eliminated most recently (highest elimination order).
+          rem ==========================================================
+          rem Find player who was eliminated most recently (highest
+          rem   elimination order).
 FindLastEliminated
           dim FLE_highestOrder = temp4
           dim FLE_currentOrder = temp4
@@ -292,25 +303,27 @@ FindLastEliminated
           let FLE_currentOrder = eliminationOrder[3]
           if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = 3
           
-          rem =================================================================
+          rem ==========================================================
           rem UPDATE PLAYERS 3/4 ACTIVE FLAG
-          rem =================================================================
-          rem Updates the Players34Active flag based on whether players 3 or 4
-          rem are selected and not eliminated. Used for missile multiplexing.
+          rem ==========================================================
+          rem Updates the Players34Active flag based on whether players
+          rem   3 or 4
+          rem are selected and not eliminated. Used for missile
+          rem   multiplexing.
 UpdatePlayers34ActiveFlag
           rem Clear flag first
           let controllerStatus = controllerStatus & ClearPlayers34Active
           
           rem Check if Player 3 is active (selected and not eliminated)
           if selectedChar3_R = 255 then CheckPlayer4ActiveFlag
-          if playersEliminated & 4 then CheckPlayer4ActiveFlag
+          if playersEliminated_R & 4 then CheckPlayer4ActiveFlag
           rem Player 3 is active
           let controllerStatus = controllerStatus | SetPlayers34Active
           
 CheckPlayer4ActiveFlag
           rem Check if Player 4 is active (selected and not eliminated)
           if selectedChar4_R = 255 then UpdatePlayers34ActiveDone
-          if playersEliminated & 8 then UpdatePlayers34ActiveDone
+          if playersEliminated_R & 8 then UpdatePlayers34ActiveDone
           rem Player 4 is active
           let controllerStatus = controllerStatus | SetPlayers34Active
           

@@ -17,9 +17,9 @@
           const ModeWinner = 7
           const ModeAttract = 8
 
-          rem =================================================================
+          rem ==========================================================
           rem ANIMATION ACTION ENUMS
-          rem =================================================================
+          rem ==========================================================
           rem 16 animation actions (0-15) stored in playerState bits 4-7
           rem Used for character animation sequences
           rem Each action has up to 8 frames (0-7)
@@ -77,14 +77,15 @@
           rem ActionFalling (11) = Latched to ceiling  
           rem ActionLanding (12) = Retracting trunk
 
-          rem =================================================================
+          rem ==========================================================
           rem MISSILE FLAGS BITFIELD ENCODING
-          rem =================================================================
+          rem ==========================================================
           rem Bit flags for missile behavior (CharacterMissileFlags)
           rem Used for checking missile interaction properties
           
           const MissileFlagHitBackground = 1
-          rem Bit 0: Hit background (1=hit and disappear, 0=pass through)
+          rem Bit 0: Hit background (1=hit and disappear, 0=pass
+          rem   through)
           
           const MissileFlagHitPlayer = 2
           rem Bit 1: Hit player (1=hit and disappear, 0=pass through)
@@ -103,7 +104,9 @@
           rem Bits 0-1: Hit both background and players (%00000011)
           
           const MissileFlagHitBackgroundAndGravity = 5
-          rem Bits 0,2: HitBackground|Gravity = 1+4 = 5 (%00000101) for ballistic arcs
+          rem Bits 0,2: HitBackground|Gravity = 1+4 = 5 (%00000101) for
+          rem   ballistic arcs
           
           const MissileFlagCurlerFull = 31
-          rem Bits 0-4: HitBackground|HitPlayer|Gravity|Bounce|Friction = 1+2+4+8+16 = 31 (%00011111)
+          rem Bits 0-4: HitBackground|HitPlayer|Gravity|Bounce|Friction
+          rem   = 1+2+4+8+16 = 31 (%00011111)

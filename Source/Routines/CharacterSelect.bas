@@ -11,8 +11,10 @@ SelScreenEntry
           let playerLocked[1] = 0
           let playerLocked[2] = 0
           let playerLocked[3] = 0
-          rem NOTE: Do NOT clear controllerStatus flags here - monotonic detection (upgrades only)
-          rem Controller detection is handled by DetectControllers with monotonic state machine
+          rem NOTE: Do NOT clear controllerStatus flags here - monotonic
+          rem   detection (upgrades only)
+          rem Controller detection is handled by DetectControllers with
+          rem   monotonic state machine
           
           rem Initialize character select animations
           let charSelectAnimTimer  = 0
@@ -31,8 +33,10 @@ SelScreenEntry
 
 SelScreenLoop
           rem Quadtari controller multiplexing:
-          rem On even frames (qtcontroller=0): handle controllers 0 and 1
-          rem On odd frames (qtcontroller=1): handle controllers 2 and 3 (if Quadtari detected)
+          rem On even frames (qtcontroller=0): handle controllers 0 and
+          rem   1
+          rem On odd frames (qtcontroller=1): handle controllers 2 and 3
+          rem   (if Quadtari detected)
           
           if qtcontroller then goto SelHandleQuad
           
@@ -227,7 +231,8 @@ SelHandleDone
           rem Update character select animations
           gosub SelUpdateAnim
 
-          rem Check if all players are ready to start (inline SelAllReady)
+          rem Check if all players are ready to start (inline
+          rem   SelAllReady)
           let readyCount  = 0
 
           rem Count locked players
@@ -304,7 +309,8 @@ SelDrawP3
           rem Draw "3" indicator below Player 3 using playfield
           gosub SelDrawNumber
 
-          rem Draw Player 4 selection (bottom right) if Quadtari detected
+          rem Draw Player 4 selection (bottom right) if Quadtari
+          rem   detected
           if controllerStatus & SetQuadtariDetected then SelDrawP4
           goto SelSkipP4
 SelDrawP4
@@ -318,7 +324,8 @@ SelDrawP4
 SelSkipP3
 SelSkipP4
 
-          rem Draw locked status indicators (playfield blocks framing characters)
+          rem Draw locked status indicators (playfield blocks framing
+          rem   characters)
           rem tail call
           goto SelDrawLocks
 
@@ -343,10 +350,10 @@ SelDrawP1Border
 SelSkipP1Border
 
           if controllerStatus & SetQuadtariDetected then SelChkP2Lock
-          goto SkipPlayer2Locked
+          goto DonePlayer2Locked
 SelChkP2Lock
           if playerLocked[2] then SelDrawP2Border
-          goto SkipPlayer2Locked
+          goto DonePlayer2Locked
 SelDrawP2Border 
           rem Draw border around Player 3
           pf0 = pf0 | %10000000
@@ -365,16 +372,17 @@ SelDrawP3Border
 
           rem Draw player number indicator
 SelDrawNumber
-          rem This function draws the player number (1-4) below the character
+          rem This function draws the player number (1-4) below the
+          rem   character
           rem using playfield pixels in a simple digit pattern
           rem Player numbers are determined by position in the grid
 
           rem Player 1 (top left) - draw "1"
           if player0x  = 56 then SelChkP0Y1
-          goto SkipPlayer0Check1
+          goto DonePlayer0Check1
 SelChkP0Y1
           if player0y  = 40 then SelDrawP0Top
-          goto SkipPlayer0Check1
+          goto DonePlayer0Check1
 SelDrawP0Top 
           pf0 = pf0 | %00001000
           pf1 = pf1 | %00011000
@@ -383,10 +391,10 @@ SelDrawP0Top
 
           rem Player 2 (top right) - draw "2"
           if player1x  = 104 then SelChkP1Y1
-          goto SkipPlayer1Check1
+          goto DonePlayer1Check1
 SelChkP1Y1
           if player1y  = 40 then SelDrawP1Top
-          goto SkipPlayer1Check1
+          goto DonePlayer1Check1
 SelDrawP1Top 
           pf3 = pf3 | %00010000
           pf4 = pf4 | %00001000
@@ -394,10 +402,10 @@ SelDrawP1Top
 
           rem Player 3 (bottom left) - draw "3"
           if player0x  = 56 then SelChkP0Y2
-          goto SkipPlayer0Check2
+          goto DonePlayer0Check2
 SelChkP0Y2
           if player0y  = 80 then SelDrawP0Bot
-          goto SkipPlayer0Check2
+          goto DonePlayer0Check2
 SelDrawP0Bot 
           pf0 = pf0 | %00001000
           pf1 = pf1 | %00001000
@@ -406,10 +414,10 @@ SelDrawP0Bot
 
           rem Player 4 (bottom right) - draw "4"
           if player1x  = 104 then SelChkP1Y2
-          goto SkipPlayer1Check2
+          goto DonePlayer1Check2
 SelChkP1Y2
           if player1y  = 80 then SelDrawP1Bot
-          goto SkipPlayer1Check2
+          goto DonePlayer1Check2
 SelDrawP1Bot 
           pf3 = pf3 | %00010000
           pf4 = pf4 | %00010000
@@ -419,12 +427,13 @@ SelDrawP1Bot
           rem Update character select animations
 SelUpdateAnim
           rem Check if any player is holding DOWN (for handicap preview)
-          rem If so, freeze their character in "recovery from far fall" pose (animation state 9)
+          rem If so, freeze their character in "recovery from far fall"
+          rem   pose (animation state 9)
           rem HandicapMode is defined in Variables.bas as variable i
           let HandicapMode  = 0
           
           rem Check each player for DOWN held (even frame for P1/P2)
-          if qtcontroller then goto SkipEvenFrameCheck 
+          if qtcontroller then goto DoneEvenFrameCheck 
                     if joy0down then let HandicapMode  = HandicapMode | 1
           rem P1 handicap flag
           if joy1down then let HandicapMode  = HandicapMode | 2
@@ -433,10 +442,10 @@ SelUpdateAnim
           
           rem Check each player for DOWN held (odd frame for P3/P4)
           if qtcontroller then SelQuadHandi
-          goto SkipOddFrameCheck
+          goto DoneOddFrameCheck
 SelQuadHandi
           if controllerStatus & SetQuadtariDetected then SelOddFrame
-          goto SkipOddFrameCheck
+          goto DoneOddFrameCheck
 SelOddFrame 
                     if joy0down then let HandicapMode  = HandicapMode | 4
           rem P3 handicap flag
@@ -444,7 +453,8 @@ SelOddFrame
           rem P4 handicap flag
           
           
-          rem If any player is holding down, set animation to "recovery" pose
+          rem If any player is holding down, set animation to "recovery"
+          rem   pose
           if HandicapMode then SelHandleHandi
           goto SelAnimNormal
 SelHandleHandi
@@ -456,7 +466,8 @@ SelHandleHandi
           return
 SelAnimNormal
           
-          rem Normal animation updates (only when no handicap mode active)
+          rem Normal animation updates (only when no handicap mode
+          rem   active)
           rem Increment animation timer
           let charSelectAnimTimer  = charSelectAnimTimer + 1
           
@@ -483,13 +494,20 @@ SelAnimNormal
 
           rem Draw character sprite with animation
 SelDrawSprite
-          rem Draw animated character sprite based on current animation state
-          rem Each character has unique 8x16 graphics with unique colors per scanline
-          rem Animation states: ActionStanding=idle, ActionWalking=running, ActionAttackWindup=attacking (hurt simulation)
-          rem Colors are based on player number and hurt status, not animation state
+          rem Draw animated character sprite based on current animation
+          rem   state
+          rem Each character has unique 8x16 graphics with unique colors
+          rem   per scanline
+          rem Animation states: ActionStanding=idle,
+          rem   ActionWalking=running, ActionAttackWindup=attacking
+          rem   (hurt simulation)
+          rem Colors are based on player number and hurt status, not
+          rem   animation state
           
-          rem Set character color based on hurt status and color/B&W mode
-          rem Colors are based on player number (1=Blue, 2=Red, 3=Yellow, 4=Green)
+          rem Set character color based on hurt status and color/B&W
+          rem   mode
+          rem Colors are based on player number (1=Blue, 2=Red,
+          rem   3=Yellow, 4=Green)
           rem Hurt state uses same color but dimmer luminance
           
           rem Check if character is in hurt/recovery state
@@ -532,7 +550,8 @@ SelColorBW
           rem Bright grey (B&W)
 SelColorDone
           
-          rem Draw different sprite patterns based on animation state and frame
+          rem Draw different sprite patterns based on animation state
+          rem   and frame
           if charSelectAnimState = ActionStanding then SelAnimIdle
           if charSelectAnimState = ActionWalking then SelAnimRun
           if charSelectAnimState = ActionAttackWindup then SelAnimAttack
@@ -567,7 +586,8 @@ SelScreenDone
           let selectedChar3_W  = playerChar[2]
           let selectedChar4_W  = playerChar[3]
           
-          rem Initialize facing bit (bit 0) for all selected players (default: face right = 1)
+          rem Initialize facing bit (bit 0) for all selected players
+          rem   (default: face right = 1)
           if selectedChar1 <> NoCharacter then let playerState[0] = playerState[0] | 1
           if selectedChar2_R <> NoCharacter then let playerState[1] = playerState[1] | 1
           if selectedChar3_R <> NoCharacter then let playerState[2] = playerState[2] | 1
@@ -579,7 +599,8 @@ SelScreenDone
           rem Detect Quadtari adapter
 SelDetectQuad
           rem CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
-          rem Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) AND Right (INPT2 LOW, INPT3 HIGH)
+          rem Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH)
+          rem   AND Right (INPT2 LOW, INPT3 HIGH)
           
           rem Check left side: if INPT0 is HIGH then not detected
           if INPT0{7} then SelQuadAbsent
@@ -596,13 +617,17 @@ SelDetectQuad
 
 SelQuadAbsent
           rem Quadtari not detected in this detection cycle
-          rem NOTE: Do NOT clear controllerStatus - monotonic detection (upgrades only)
-          rem If Quadtari was previously detected, it remains detected (monotonic state machine)
-          rem Only DetectControllers (called via SELECT) can update controller status
+          rem NOTE: Do NOT clear controllerStatus - monotonic detection
+          rem   (upgrades only)
+          rem If Quadtari was previously detected, it remains detected
+          rem   (monotonic state machine)
+          rem Only DetectControllers (called via SELECT) can update
+          rem   controller status
           return
           
 SelSkipQuadAbs
-          rem Quadtari detected - use monotonic merge to preserve existing capabilities
+          rem Quadtari detected - use monotonic merge to preserve
+          rem   existing capabilities
           rem OR merge ensures upgrades only, never downgrades
           let controllerStatus  = controllerStatus | SetQuadtariDetected
           return

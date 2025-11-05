@@ -1,10 +1,11 @@
           rem ChaosFight - Source/Routines/FrameBudgeting.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem FRAME BUDGETING SYSTEM
-          rem =================================================================
-          rem Manages expensive operations across multiple frames to ensure
+          rem ==========================================================
+          rem Manages expensive operations across multiple frames to
+          rem   ensure
           rem game logic never exceeds the overscan period.
 
           rem The Atari 2600 has very limited processing time per frame:
@@ -12,13 +13,17 @@
           rem   - Overscan: ~30 scanlines (~1950 cycles)
 
           rem Expensive operations that must be budgeted:
-          rem   1. Health bar rendering (32 pfpixel calls × 4 players = 128 ops)
-          rem   2. Multi-player collision detection (6 pairs in 4-player mode)
-          rem   3. Missile collision detection (up to 4 missiles × 4 players)
+          rem 1. Health bar rendering (32 pfpixel calls × 4 players =
+          rem   128 ops)
+          rem 2. Multi-player collision detection (6 pairs in 4-player
+          rem   mode)
+          rem 3. Missile collision detection (up to 4 missiles × 4
+          rem   players)
           rem   4. Character animation updates (sprite data loading)
 
           rem STRATEGY:
-          rem   - Spread health bar updates across 4 frames (1 player per frame)
+          rem - Spread health bar updates across 4 frames (1 player per
+          rem   frame)
           rem   - Check 1-2 collision pairs per frame instead of all 6
           rem   - Update missile collisions for 1-2 missiles per frame
           rem   - Update animations for 1 player per frame
@@ -26,25 +31,29 @@
           rem AVAILABLE VARIABLES:
           rem   frame - Global frame counter
           rem   FramePhase - Which phase of multi-frame operation (0-3)
-          rem   HealthBarUpdatePlayer - Which player health bar to update
-          rem   CollisionCheckPair - Which collision pair to check this frame
-          rem =================================================================
+          rem HealthBarUpdatePlayer - Which player health bar to update
+          rem CollisionCheckPair - Which collision pair to check this
+          rem   frame
+          rem ==========================================================
 
-          rem =================================================================
+          rem ==========================================================
           rem UPDATE FRAME PHASE
-          rem =================================================================
-          rem Updates the frame phase counter (0-3) used to schedule operations.
+          rem ==========================================================
+          rem Updates the frame phase counter (0-3) used to schedule
+          rem   operations.
           rem Called once per frame at the start of game loop.
 UpdateFramePhase
           let FramePhase = frame & 3 
           rem Cycle 0, 1, 2, 3, 0, 1, 2, 3...
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem BUDGET HEALTH BAR RENDERING
-          rem =================================================================
-          rem Instead of drawing all 4 health bars every frame, draw only one
-          rem player health bar per frame. This reduces pfpixel operations
+          rem ==========================================================
+          rem Instead of drawing all 4 health bars every frame, draw
+          rem   only one
+          rem player health bar per frame. This reduces pfpixel
+          rem   operations
           rem from 128 per frame to 32 per frame (4× reduction).
 
           rem USES: FramePhase (0-3) to determine which player to update
@@ -55,21 +64,21 @@ BudgetedHealthBarUpdate
           rem tail call
           if FramePhase = 1 then UpdateHealthBarPlayer1
           if FramePhase = 2 then CheckPlayer2HealthUpdate
-          goto SkipPlayer2HealthUpdate
+          goto DonePlayer2HealthUpdate
 CheckPlayer2HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer2HealthUpdate
-          if selectedChar3_R = 255 then SkipPlayer2HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate
+          if selectedChar3_R = 255 then DonePlayer2HealthUpdate
           gosub bank8 UpdateHealthBarPlayer2
           return
-SkipPlayer2HealthUpdate
+DonePlayer2HealthUpdate
           if FramePhase = 3 then CheckPlayer3HealthUpdate
-          goto SkipPlayer3HealthUpdate
+          goto DonePlayer3HealthUpdate
 CheckPlayer3HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3HealthUpdate
-          if selectedChar4_R = 255 then SkipPlayer3HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate
+          if selectedChar4_R = 255 then DonePlayer3HealthUpdate
           gosub bank8 UpdateHealthBarPlayer3
           return
-SkipPlayer3HealthUpdate
+DonePlayer3HealthUpdate
           return
 
           rem Update Player 1 health bar
@@ -108,11 +117,13 @@ UpdateHealthBarPlayer3
           gosub bank8 DrawHealthBarRow3
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem BUDGET COLLISION DETECTION
-          rem =================================================================
-          rem Instead of checking all 6 collision pairs every frame in 4-player
-          rem mode, check 2 pairs per frame. This spreads the work across 3 frames.
+          rem ==========================================================
+          rem Instead of checking all 6 collision pairs every frame in
+          rem   4-player
+          rem mode, check 2 pairs per frame. This spreads the work
+          rem   across 3 frames.
 
           rem COLLISION PAIRS (4-player mode):
           rem   Pair 0: P1 vs P2 (always checked, most important)
@@ -137,42 +148,42 @@ BudgetedCollisionCheck
           rem Check additional pairs based on frame phase
           if FramePhase = 0 then CheckPhase0Collisions
           if FramePhase = 1 then CheckPhase1Collisions
-          goto SkipPhase0And1Collisions
+          goto DonePhase0And1Collisions
 CheckPhase0Collisions
-          if selectedChar3_R = 255 then SkipFramePhaseChecks
+          if selectedChar3_R = 255 then DoneFramePhaseChecks
           gosub CheckCollisionP1vsP3
-          goto SkipFramePhaseChecks
+          goto DoneFramePhaseChecks
 CheckPhase1Collisions
           if selectedChar4_R = 255 then CheckPhase1P3
           gosub CheckCollisionP1vsP4
 CheckPhase1P3
-          if selectedChar3_R = 255 then SkipFramePhaseChecks
+          if selectedChar3_R = 255 then DoneFramePhaseChecks
           gosub CheckCollisionP2vsP3
-          goto SkipFramePhaseChecks
-SkipPhase0And1Collisions
+          goto DoneFramePhaseChecks
+DonePhase0And1Collisions
           if FramePhase = 2 then CheckPhase2Collisions
-          goto SkipPhase2Collisions
+          goto DonePhase2Collisions
 CheckPhase2Collisions
-          if selectedChar4_R = 255 then SkipCheckP2vsP4
+          if selectedChar4_R = 255 then DoneCheckP2vsP4
           gosub CheckCollisionP2vsP4
-SkipCheckP2vsP4
-          if selectedChar3_R = 255 then SkipCheckP3vsP4
-          if selectedChar4_R = 255 then SkipCheckP3vsP4
+DoneCheckP2vsP4
+          if selectedChar3_R = 255 then DoneCheckP3vsP4
+          if selectedChar4_R = 255 then DoneCheckP3vsP4
           gosub CheckCollisionP3vsP4
-SkipCheckP3vsP4
-SkipPhase2Collisions
-SkipFramePhaseChecks
+DoneCheckP3vsP4
+DonePhase2Collisions
+DoneFramePhaseChecks
           return
 
           rem Individual collision check routines
 CheckCollisionP1vsP2
           if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
           let temp2 = playerX[1] - playerX[0]
-          goto SkipCalcP1vsP2Diff
+          goto DoneCalcP1vsP2Diff
 CalcP1vsP2AbsDiff
           let temp2 = playerX[0] - playerX[1]
-SkipCalcP1vsP2Diff
-          if temp2 >= CollisionSeparationDistance then SkipPlayerSeparation
+DoneCalcP1vsP2Diff
+          if temp2 >= CollisionSeparationDistance then DonePlayerSeparation
           
           rem Separate players based on their relative positions
           rem If P0 is left of P1, move P0 left and P1 right
@@ -181,22 +192,22 @@ SkipCalcP1vsP2Diff
           rem Else P0 is right of P1, move P0 right and P1 left
           let playerX[0] = playerX[0] + 1
           let playerX[1] = playerX[1] - 1
-          goto SkipPlayerSeparation
+          goto DonePlayerSeparation
 
 SeparateP0Left
           let playerX[0] = playerX[0] - 1
           let playerX[1] = playerX[1] + 1
-SkipPlayerSeparation
+DonePlayerSeparation
           
           return
 
 CheckCollisionP1vsP3
           if playerX[0] >= playerX[2] then CalcP1vsP3AbsDiff
           let temp2 = playerX[2] - playerX[0]
-          goto SkipCalcP1vsP3Diff
+          goto DoneCalcP1vsP3Diff
 CalcP1vsP3AbsDiff
           let temp2 = playerX[0] - playerX[2]
-SkipCalcP1vsP3Diff
+DoneCalcP1vsP3Diff
           if temp2 < 16 then CheckCollisionP1vsP3Aux
           return
 
@@ -211,10 +222,10 @@ CheckCollisionP1vsP3Aux
 CheckCollisionP1vsP4
           if playerX[0] >= playerX[3] then CalcP1vsP4AbsDiff
           let temp2 = playerX[3] - playerX[0]
-          goto SkipCalcP1vsP4Diff
+          goto DoneCalcP1vsP4Diff
 CalcP1vsP4AbsDiff
           let temp2 = playerX[0] - playerX[3]
-SkipCalcP1vsP4Diff
+DoneCalcP1vsP4Diff
           if temp2 < 16 then CheckCollisionP1vsP4Aux
           return
 
@@ -229,10 +240,10 @@ CheckCollisionP1vsP4Aux
 CheckCollisionP2vsP3
           if playerX[1] >= playerX[2] then CalcP2vsP3AbsDiff
           let temp2 = playerX[2] - playerX[1]
-          goto SkipCalcP2vsP3Diff
+          goto DoneCalcP2vsP3Diff
 CalcP2vsP3AbsDiff
           let temp2 = playerX[1] - playerX[2]
-SkipCalcP2vsP3Diff
+DoneCalcP2vsP3Diff
           if temp2 < 16 then CheckCollisionP2vsP3Aux
           return
 
@@ -247,10 +258,10 @@ CheckCollisionP2vsP3Aux
 CheckCollisionP2vsP4
           if playerX[1] >= playerX[3] then CalcP2vsP4AbsDiff
           let temp2 = playerX[3] - playerX[1]
-          goto SkipCalcP2vsP4Diff
+          goto DoneCalcP2vsP4Diff
 CalcP2vsP4AbsDiff
           let temp2 = playerX[1] - playerX[3]
-SkipCalcP2vsP4Diff
+DoneCalcP2vsP4Diff
           if temp2 < 16 then CheckCollisionP2vsP4Aux
           return
 
@@ -265,10 +276,10 @@ CheckCollisionP2vsP4Aux
 CheckCollisionP3vsP4
           if playerX[2] >= playerX[3] then CalcP3vsP4AbsDiff
           let temp2 = playerX[3] - playerX[2]
-          goto SkipCalcP3vsP4Diff
+          goto DoneCalcP3vsP4Diff
 CalcP3vsP4AbsDiff
           let temp2 = playerX[2] - playerX[3]
-SkipCalcP3vsP4Diff
+DoneCalcP3vsP4Diff
           if temp2 < 16 then CheckCollisionP3vsP4Aux
           return
 
@@ -280,9 +291,9 @@ CheckCollisionP3vsP4Aux
           let playerX[3] = playerX[3] - 1
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem BUDGET MISSILE COLLISION DETECTION
-          rem =================================================================
+          rem ==========================================================
           rem Check missile collisions for at most 2 missiles per frame.
 
           rem SCHEDULE (2-player mode):
@@ -295,8 +306,10 @@ CheckCollisionP3vsP4Aux
           rem   Frame 2: Check Game Player 2 missile vs all players
           rem   Frame 3: Check Game Player 3 missile vs all players
 BudgetedMissileCollisionCheck
-          rem Use missileActive bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
-          rem Use CheckAllMissileCollisions from MissileCollision.bas which checks one player missile
+          rem Use missileActive bit flags: bit 0 = Player 0, bit 1 =
+          rem   Player 1, bit 2 = Player 2, bit 3 = Player 3
+          rem Use CheckAllMissileCollisions from MissileCollision.bas
+          rem   which checks one player missile
           
           if !(controllerStatus & SetQuadtariDetected) then BudgetedMissileCollisionCheck2P
           

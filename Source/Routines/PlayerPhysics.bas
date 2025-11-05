@@ -1,30 +1,37 @@
           rem ChaosFight - Source/Routines/PlayerPhysics.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem PLAYER PHYSICS
-          rem =================================================================
-          rem Handles gravity, momentum, collisions, and recovery for all players.
+          rem ==========================================================
+          rem Handles gravity, momentum, collisions, and recovery for
+          rem   all players.
 
           rem AVAILABLE VARIABLES:
           rem   playerX[0-3], playerY[0-3] - Positions
           rem   playerState[0-3] - State flags
-          rem   playerVelocityX[0-3] - Horizontal velocity (8.8 fixed-point)
-          rem   playerVelocityY[0-3] - Vertical velocity (8.8 fixed-point)
-          rem   playerRecoveryFrames[0-3] - Recovery (hitstun) frames remaining
+          rem playerVelocityX[0-3] - Horizontal velocity (8.8
+          rem   fixed-point)
+          rem playerVelocityY[0-3] - Vertical velocity (8.8 fixed-point)
+          rem playerRecoveryFrames[0-3] - Recovery (hitstun) frames
+          rem   remaining
           rem   QuadtariDetected - Whether 4-player mode active
           rem   selectedChar3_R, selectedChar4_R - Player 3/4 selections
           rem   playerChar[0-3] - Character type indices
-          rem =================================================================
+          rem ==========================================================
 
-          rem =================================================================
+          rem ==========================================================
           rem APPLY GRAVITY
-          rem =================================================================
+          rem ==========================================================
           rem Applies gravity acceleration to jumping players.
-          rem Certain characters (Frooty=8, Dragon of Storms=2) are not affected by gravity.
-          rem Players land when they are atop a playfield pixel (ground detection).
-          rem Gravity accelerates downward using tunable constants (Constants.bas):
-          rem   GravityNormal (0.1px/frame²), GravityReduced (0.05px/frame²), TerminalVelocity (8px/frame)
+          rem Certain characters (Frooty=8, Dragon of Storms=2) are not
+          rem   affected by gravity.
+          rem Players land when they are atop a playfield pixel (ground
+          rem   detection).
+          rem Gravity accelerates downward using tunable constants
+          rem   (Constants.bas):
+          rem GravityNormal (0.1px/frame²), GravityReduced
+          rem   (0.05px/frame²), TerminalVelocity (8px/frame)
 PhysicsApplyGravity
           dim PAG_playerIndex = temp1
           dim PAG_playfieldColumn = temp2
@@ -34,7 +41,8 @@ PhysicsApplyGravity
           rem Loop through all players (0-3)
           let PAG_playerIndex = 0
 GravityLoop
-          rem Check if player is active (P1/P2 always active, P3/P4 need Quadtari)
+          rem Check if player is active (P1/P2 always active, P3/P4 need
+          rem   Quadtari)
           if PAG_playerIndex < 2 then GravityCheckCharacter
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto GravityNextPlayer
@@ -42,34 +50,41 @@ GravityLoop
           if PAG_playerIndex = 3 && selectedChar4_R = 255 then goto GravityNextPlayer
           
 GravityCheckCharacter
-          rem Get character type
           let PAG_characterType = playerChar[PAG_playerIndex]
           
           rem Skip gravity for characters that don’t have it
           rem Frooty (8): Permanent flight, no gravity
           if PAG_characterType = CharFrooty then goto GravityNextPlayer
-          rem Dragon of Storms (2): Permanent flight, no gravity (hovering/flying like Frooty)
+          rem Dragon of Storms (2): Permanent flight, no gravity
+          rem   (hovering/flying like Frooty)
           if PAG_characterType = CharDragonOfStorms then goto GravityNextPlayer
           
-          rem Check if player is in jumping state (bit 2 set means jumping, skip gravity)
           rem If NOT jumping, skip gravity (player is on ground)
-          if !(playerState[PAG_playerIndex] & 4) then goto GravityNextPlayer
+          if !(playerState[PAG_playerIndex] & PlayerStateBitJumping) then goto GravityNextPlayer
           
           rem Initialize or get vertical velocity (using temp variable)
-          rem Note: Vertical velocity is not persistent - we’ll track it per-frame
-          rem For now, we’ll apply gravity acceleration directly to position
-          rem TODO: Consider implementing persistent vertical velocity tracking
+          rem Note: Vertical velocity is not persistent - we’ll track it
+          rem   per-frame
+          rem For now, we’ll apply gravity acceleration directly to
+          rem   position
+          rem TODO: Consider implementing persistent vertical velocity
+          rem   tracking
           
-          rem Determine gravity acceleration rate based on character (8.8 fixed-point subpixel)
-          rem Uses tunable constants from Constants.bas for easy adjustment
+          rem Determine gravity acceleration rate based on character
+          rem   (8.8 fixed-point subpixel)
+          rem Uses tunable constants from Constants.bas for easy
+          rem   adjustment
           let gravityRate = GravityNormal
           rem Default gravity acceleration (normal rate)
           if PAG_characterType = CharHarpy then let gravityRate = GravityReduced
           rem Harpy: reduced gravity rate
           
-          rem Apply gravity acceleration to velocity subpixel part (adds to Y velocity, positive = downward)
-          rem playerIndex already set, gravityRate is gravity strength in subpixel (low byte)
-          rem AddVelocitySubpixelY expects temp2, so save temp2 and use it for gravityRate
+          rem Apply gravity acceleration to velocity subpixel part (adds
+          rem   to Y velocity, positive = downward)
+          rem playerIndex already set, gravityRate is gravity strength
+          rem   in subpixel (low byte)
+          rem AddVelocitySubpixelY expects temp2, so save temp2 and use
+          rem   it for gravityRate
           let playfieldColumn = PAG_playfieldColumn
           rem Save playfieldColumn temporarily
           let temp2 = gravityRate
@@ -77,8 +92,10 @@ GravityCheckCharacter
           let PAG_playfieldColumn = temp2
           rem Restore playfieldColumn
           
-          rem Apply terminal velocity cap (prevents infinite acceleration)
-          rem Check if velocity exceeds terminal velocity (positive = downward)
+          rem Apply terminal velocity cap (prevents infinite
+          rem   acceleration)
+          rem Check if velocity exceeds terminal velocity (positive =
+          rem   downward)
           if playerVelocityY[PAG_playerIndex] > TerminalVelocity then let playerVelocityY[PAG_playerIndex] = TerminalVelocity : let playerVelocityY_lo[PAG_playerIndex] = 0
           
           rem Check playfield collision for ground detection (downward)
@@ -104,7 +121,8 @@ GravityCheckCharacter
           rem feetRow = row where feet are
           
           dim PAG_rowBelow = temp5
-          rem Check if there’s a playfield pixel in the row below the feet
+          rem Check if there’s a playfield pixel in the row below the
+          rem   feet
           rem If feet are in row N, check row N+1 for ground
           if PAG_feetRow >= pfrows then goto GravityNextPlayer
           rem Feet are at or below bottom of playfield, continue falling
@@ -123,7 +141,8 @@ GravityCheckCharacter
           let playerVelocityY[PAG_playerIndex] = 0
           let playerVelocityY_lo[PAG_playerIndex] = 0
           
-          rem Calculate Y position for top of ground row using repeated addition
+          rem Calculate Y position for top of ground row using repeated
+          rem   addition
           rem Loop to add pfrowheight to rowYPosition, rowBelow times
           let rowYPosition = 0
           let rowCounter = PAG_rowBelow
@@ -133,7 +152,8 @@ GravityRowCalcLoop
           let rowCounter = rowCounter - 1
           if rowCounter > 0 then goto GravityRowCalcLoop
 GravityRowCalcDone
-          rem rowYPosition now contains rowBelow * pfrowheight (Y position of top of ground row)
+          rem rowYPosition now contains rowBelow * pfrowheight (Y
+          rem   position of top of ground row)
           rem Clamp playerY so feet are at top of ground row
           let playerY[PAG_playerIndex] = rowYPosition - PlayerSpriteHeight
           rem Also sync subpixel position
@@ -146,12 +166,14 @@ GravityRowCalcDone
           goto GravityNextPlayer
           
 GravityCheckBottom
-          rem At bottom of playfield - treat as ground if feet are at bottom row
+          rem At bottom of playfield - treat as ground if feet are at
+          rem   bottom row
           if PAG_feetRow < pfrows - 1 then goto GravityNextPlayer
           rem Not at bottom row yet
           
           rem Bottom row is always ground - clamp to bottom
-          rem Calculate (pfrows - 1) * pfrowheight using repeated addition
+          rem Calculate (pfrows - 1) * pfrowheight using repeated
+          rem   addition
           let rowYPosition = 0
           let rowCounter = pfrows - 1
           if rowCounter = 0 then goto GravityBottomCalcDone
@@ -170,10 +192,11 @@ GravityNextPlayer
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem APPLY MOMENTUM AND RECOVERY
-          rem =================================================================
-          rem Updates recovery frames and applies velocity during hitstun.
+          rem ==========================================================
+          rem Updates recovery frames and applies velocity during
+          rem   hitstun.
           rem Velocity gradually decays over time.
           rem Refactored to loop through all players (0-3)
 ApplyMomentumAndRecovery
@@ -181,7 +204,8 @@ ApplyMomentumAndRecovery
           rem Loop through all players (0-3)
           let AMAR_playerIndex = 0
 MomentumRecoveryLoop
-          rem Check if player is active (P1/P2 always active, P3/P4 need Quadtari)
+          rem Check if player is active (P1/P2 always active, P3/P4 need
+          rem   Quadtari)
           if AMAR_playerIndex < 2 then MomentumRecoveryProcess
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto MomentumRecoveryNext
@@ -189,7 +213,8 @@ MomentumRecoveryLoop
           if AMAR_playerIndex = 3 && selectedChar4_R = 255 then goto MomentumRecoveryNext
           
 MomentumRecoveryProcess
-          rem Decrement recovery frames (velocity is applied by UpdatePlayerMovement)
+          rem Decrement recovery frames (velocity is applied by
+          rem   UpdatePlayerMovement)
           if playerRecoveryFrames[AMAR_playerIndex] > 0 then let playerRecoveryFrames[AMAR_playerIndex] = playerRecoveryFrames[AMAR_playerIndex] - 1
           
           rem Synchronize playerState bit 3 with recovery frames
@@ -200,7 +225,8 @@ MomentumRecoveryProcess
           
           rem Decay velocity if recovery frames active
           if ! playerRecoveryFrames[AMAR_playerIndex] then goto MomentumRecoveryNext
-          rem Velocity decay during recovery (knockback slows down over time)
+          rem Velocity decay during recovery (knockback slows down over
+          rem   time)
           if playerVelocityX[AMAR_playerIndex] <= 0 then MomentumRecoveryDecayNegative
           rem Positive velocity: decay by 1
           let playerVelocityX[AMAR_playerIndex] = playerVelocityX[AMAR_playerIndex] - 1
@@ -209,7 +235,8 @@ MomentumRecoveryProcess
           goto MomentumRecoveryNext
 MomentumRecoveryDecayNegative
           if playerVelocityX[AMAR_playerIndex] >= 0 then goto MomentumRecoveryNext
-          rem Negative velocity: decay by 1 (add 1 to make less negative)
+          rem Negative velocity: decay by 1 (add 1 to make less
+          rem   negative)
           let playerVelocityX[AMAR_playerIndex] = playerVelocityX[AMAR_playerIndex] + 1
           rem Also decay subpixel if integer velocity is zero
           if playerVelocityX[AMAR_playerIndex] = 0 then let playerVelocityX_lo[AMAR_playerIndex] = 0
@@ -221,9 +248,9 @@ MomentumRecoveryNext
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem CHECK BOUNDARY COLLISIONS
-          rem =================================================================
+          rem ==========================================================
           rem Prevents players from moving off-screen.
 CheckBoundaryCollisions
           dim CBC_playerIndex = temp1
@@ -231,7 +258,8 @@ CheckBoundaryCollisions
           rem Loop through all players (0-3)
           let CBC_playerIndex = 0
 BoundaryLoop
-          rem Check if player is active (P1/P2 always active, P3/P4 need Quadtari)
+          rem Check if player is active (P1/P2 always active, P3/P4 need
+          rem   Quadtari)
           if CBC_playerIndex < 2 then BoundaryCheckBounds
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto BoundaryNextPlayer
@@ -239,32 +267,45 @@ BoundaryLoop
           if CBC_playerIndex = 3 && selectedChar4_R = 255 then goto BoundaryNextPlayer
           
 BoundaryCheckBounds
-          rem Bernie (0) - screen wrap: falling off bottom respawns at top
-          let CBC_characterType = playerChar[CBC_playerIndex]
-          if CBC_characterType = 0 then BoundaryBernieWrap
+          rem Check if current arena supports wrap-around
+          rem Arena 4 (index 3) and Arena 12 (index 11) are wrap-around
+          rem   arenas
+          rem Handle RandomArena by checking selected arena (may wrap
+          rem   based on current random selection)
+          dim CBC_arenaIndex = temp3
+          let CBC_arenaIndex = selectedArena_R
+          rem Handle RandomArena (use frame-based selection for
+          rem   consistency)
+          if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = frame & 15
+          rem Check if this is a wrap-around arena (Arena 4 = index 3,
+          rem   Arena 12 = index 11)
+          if CBC_arenaIndex = 3 then BoundaryWrapAround
+          rem Arena 4: The Bridge
+          if CBC_arenaIndex = 11 then BoundaryWrapAround
+          rem Arena 12: The Chasm
           
-          rem Other characters - clamp to screen boundaries
+          rem Non-wrap-around arenas - clamp to screen boundaries
           rem Clamp X position to screen boundaries (10-150)
           if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 10 : let playerSubpixelX[CBC_playerIndex] = 10 : let playerSubpixelX_lo[CBC_playerIndex] = 0 : let playerVelocityX[CBC_playerIndex] = 0 : let playerVelocityX_lo[CBC_playerIndex] = 0
           if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 150 : let playerSubpixelX[CBC_playerIndex] = 150 : let playerSubpixelX_lo[CBC_playerIndex] = 0 : let playerVelocityX[CBC_playerIndex] = 0 : let playerVelocityX_lo[CBC_playerIndex] = 0
           
           rem Clamp Y position to screen boundaries (20-80)
-          rem Bernie can fall off bottom and wrap, so skip Y clamp for Bernie
           if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20 : let playerSubpixelY[CBC_playerIndex] = 20 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 80 : let playerSubpixelY[CBC_playerIndex] = 80 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
           goto BoundaryNextPlayer
           
-BoundaryBernieWrap
-          rem Bernie wraps horizontally and vertically
+BoundaryWrapAround
+          rem Wrap-around arenas: all players wrap horizontally
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
           if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150 : let playerSubpixelX[CBC_playerIndex] = 150 : let playerSubpixelX_lo[CBC_playerIndex] = 0
           if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 10 : let playerSubpixelX[CBC_playerIndex] = 10 : let playerSubpixelX_lo[CBC_playerIndex] = 0
           
-          rem Vertical wrap: falling off bottom (Y > 80) respawns at top (Y = 20)
-          if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 20 : let playerSubpixelY[CBC_playerIndex] = 20 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
-          
-          rem Top boundary: still clamp to prevent going above screen
+          rem Y position: clamp to screen boundaries (no vertical wrap
+          rem   for wrap-around arenas)
+          rem Top boundary: clamp to prevent going above screen
           if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20 : let playerSubpixelY[CBC_playerIndex] = 20 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
+          rem Bottom boundary: clamp to prevent going below screen
+          if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 80 : let playerSubpixelY[CBC_playerIndex] = 80 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
 
 BoundaryNextPlayer
           rem Move to next player
@@ -273,15 +314,18 @@ BoundaryNextPlayer
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem CHECK PLAYFIELD COLLISION ALL DIRECTIONS
-          rem =================================================================
-          rem Checks for playfield pixel collisions in all four directions and
-          rem blocks movement by zeroing velocity in the collision direction.
+          rem ==========================================================
+          rem Checks for playfield pixel collisions in all four
+          rem   directions and
+          rem blocks movement by zeroing velocity in the collision
+          rem   direction.
           rem Uses CharacterHeights table for proper hitbox detection.
           rem
           rem INPUT: temp1 = player index (0-3)
-          rem MODIFIES: playerVelocityX/Y and playerSubpixelX/Y when collisions detected
+          rem MODIFIES: playerVelocityX/Y and playerSubpixelX/Y when
+          rem   collisions detected
 CheckPlayfieldCollisionAllDirections
           dim CPF_playerIndex = temp1
           rem Get player position and character info
@@ -317,10 +361,11 @@ CheckPlayfieldCollisionAllDirections
           if playfieldRow >= pfrows then let playfieldRow = pfrows - 1
           if playfieldRow < 0 then let playfieldRow = 0
           
-          rem =================================================================
+          rem ==========================================================
           rem CHECK LEFT COLLISION
-          rem =================================================================
-          rem Check if player’s left edge (temp6 column) has a playfield pixel
+          rem ==========================================================
+          rem Check if player’s left edge (temp6 column) has a playfield
+          rem   pixel
           rem Check at player’s head, middle, and feet positions
           if temp6 <= 0 then PFCheckRight
           rem At left edge of screen, skip check
@@ -369,20 +414,23 @@ PFBlockLeft
             adc #ScreenInsetX
             sta rowYPosition
           end
-          rem Reuse rowYPosition for X position clamp (not actually Y, but same pattern)
+          rem Reuse rowYPosition for X position clamp (not actually Y,
+          rem   but same pattern)
           if playerX[CPF_playerIndex] < rowYPosition then let playerX[CPF_playerIndex] = rowYPosition : let playerSubpixelX[CPF_playerIndex] = rowYPosition : let playerSubpixelX_lo[CPF_playerIndex] = 0
           
-          rem =================================================================
+          rem ==========================================================
           rem CHECK RIGHT COLLISION
-          rem =================================================================
+          rem ==========================================================
 PFCheckRight
           rem Check if player’s right edge has a playfield pixel
-          rem Player width is 16 pixels (double-width NUSIZ), so right edge is at temp6 + 4 columns (16px / 4px per column = 4)
+          rem Player width is 16 pixels (double-width NUSIZ), so right
+          rem   edge is at temp6 + 4 columns (16px / 4px per column = 4)
           if temp6 >= 31 then PFCheckUp
           rem At right edge of screen, skip check
           
           let playfieldColumn = temp6 + 4
-          rem Column to the right of player’s right edge (playfieldColumn)
+          rem Column to the right of player’s right edge
+          rem   (playfieldColumn)
           if playfieldColumn > 31 then PFCheckUp
           rem Out of bounds, skip
           
@@ -423,12 +471,13 @@ PFBlockRight
             adc #ScreenInsetX
             sta rowYPosition
           end
-          rem Reuse rowYPosition for X position clamp (not actually Y, but same pattern)
+          rem Reuse rowYPosition for X position clamp (not actually Y,
+          rem   but same pattern)
           if playerX[CPF_playerIndex] > rowYPosition then let playerX[CPF_playerIndex] = rowYPosition : let playerSubpixelX[CPF_playerIndex] = rowYPosition : let playerSubpixelX_lo[CPF_playerIndex] = 0
           
-          rem =================================================================
+          rem ==========================================================
           rem CHECK UP COLLISION
-          rem =================================================================
+          rem ==========================================================
 PFCheckUp
           rem Check if player’s head has a playfield pixel above
           if playfieldRow <= 0 then PFCheckDown
@@ -477,12 +526,14 @@ DBPF_MultiplyBy8
 DBPF_MultiplyDone
           if playerY[CPF_playerIndex] < rowYPosition then let playerY[CPF_playerIndex] = rowYPosition : let playerSubpixelY[CPF_playerIndex] = rowYPosition : let playerSubpixelY_lo[CPF_playerIndex] = 0
           
-          rem =================================================================
-          rem CHECK DOWN COLLISION (GROUND - already handled in gravity, but verify)
-          rem =================================================================
+          rem ==========================================================
+          rem CHECK DOWN COLLISION (GROUND - already handled in gravity,
+          rem   but verify)
+          rem ==========================================================
 PFCheckDown
           rem Check if player’s feet have a playfield pixel below
-          rem This is primarily handled in PhysicsApplyGravity, but we verify here
+          rem This is primarily handled in PhysicsApplyGravity, but we
+          rem   verify here
           let temp2 = temp5
           gosub DivideByPfrowheight
           let rowCounter = playfieldRow + temp2
@@ -490,7 +541,8 @@ PFCheckDown
           if rowCounter >= pfrows then PFCheckDone
           
           let playfieldRow = rowCounter + 1
-          rem Row below feet (playfieldRow - temporarily reuse for this check)
+          rem Row below feet (playfieldRow - temporarily reuse for this
+          rem   check)
           if playfieldRow >= pfrows then PFCheckDone
           
           rem Check center, left, and right columns below feet
@@ -502,18 +554,22 @@ PFCheckDown
           
 PFBlockDown
           rem Block downward movement: zero Y velocity if positive
-          rem This should already be handled in PhysicsApplyGravity, but enforce here too
+          rem This should already be handled in PhysicsApplyGravity, but
+          rem   enforce here too
           if playerVelocityY[CPF_playerIndex] > 0 then let playerVelocityY[CPF_playerIndex] = 0 : let playerVelocityY_lo[CPF_playerIndex] = 0
           
 PFCheckDone
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem CHECK MULTI-PLAYER COLLISIONS
-          rem =================================================================
-          rem Checks collisions between players (for pushing, not damage).
-          rem Uses weight-based momentum transfer: heavier characters push lighter ones.
-          rem Applies impulses to velocity instead of directly modifying position.
+          rem ==========================================================
+          rem Checks collisions between players (for pushing, not
+          rem   damage).
+          rem Uses weight-based momentum transfer: heavier characters
+          rem   push lighter ones.
+          rem Applies impulses to velocity instead of directly modifying
+          rem   position.
 CheckAllPlayerCollisions
           rem Loop through all player pairs to check collisions
           rem Pair (i, j) where i < j to avoid checking same pair twice
@@ -562,14 +618,14 @@ CalcCollisionDistanceRight
           let temp3 = playerX[temp1] - playerX[temp2]
           
 CollisionDistanceDone
-          rem Check if players are within collision distance (16 pixels = double-width sprite)
-          if temp3 >= 16 then goto CollisionNextInner
+          if temp3 >= PlayerCollisionDistance then goto CollisionNextInner
           
           rem Calculate Y distance using CharacterHeights table
           let temp4 = playerChar[temp1]
           let temp5 = playerChar[temp2]
           let characterHeight = CharacterHeights[temp4]
-          rem Player1 height (temporarily store in characterHeight, will be overwritten)
+          rem Player1 height (temporarily store in characterHeight, will
+          rem   be overwritten)
           let halfHeight1 = CharacterHeights[temp5]
           rem Player2 height (temporarily store, will calculate half)
           
@@ -602,9 +658,9 @@ CollisionYDistanceDone
           let totalHeight = halfHeight1 + halfHeight2
           if yDistance >= totalHeight then goto CollisionNextInner
           
-          rem =================================================================
+          rem ==========================================================
           rem MOMENTUM TRANSFER BASED ON WEIGHT
-          rem =================================================================
+          rem ==========================================================
           rem Get character weights from CharacterWeights table
           let characterWeight = CharacterWeights[temp4]
           rem Player1 weight (temporarily store, will be overwritten)
@@ -614,10 +670,12 @@ CollisionYDistanceDone
           rem Calculate separation direction (left/right)
           if playerX[temp1] < playerX[temp2] then CollisionSepLeft
           
-          rem Player1 is right of Player2 - push Player1 right, Player2 left
+          rem Player1 is right of Player2 - push Player1 right, Player2
+          rem   left
           rem Apply impulse based on weight difference
           rem Heavier character pushes lighter one more
-          rem Formula: impulse = (weight_difference / total_weight) * separation_speed
+          rem Formula: impulse = (weight_difference / total_weight) *
+          rem   separation_speed
           let totalWeight = characterWeight + halfHeight2
           rem Total weight (halfHeight2 contains Player2 weight here)
           if totalWeight = 0 then goto CollisionNextInner
@@ -642,16 +700,20 @@ ApplyImpulseRight
           rem Separation speed: 1 pixel/frame minimum
           if characterWeight >= halfHeight2 then ApplyImpulse1Heavier
           
-          rem Player2 is heavier - push Player1 left (negative X), Player2 right (positive X)
+          rem Player2 is heavier - push Player1 left (negative X),
+          rem   Player2 right (positive X)
           rem Impulse proportional to weight difference
-          rem Multiply by 2 using bit shift, then approximate division by totalWeight
+          rem Multiply by 2 using bit shift, then approximate division
+          rem   by totalWeight
           asm
             lda impulseStrength
             asl a
             sta impulseStrength
           end
-          rem Approximate division by totalWeight using bit-shift approximation
-          rem totalWeight ranges 10-200, use closest power-of-2 approximation
+          rem Approximate division by totalWeight using bit-shift
+          rem   approximation
+          rem totalWeight ranges 10-200, use closest power-of-2
+          rem   approximation
           if totalWeight >= 128 then goto ApproxDivBy128_1
           if totalWeight >= 64 then goto ApproxDivBy64_1
           if totalWeight >= 32 then goto ApproxDivBy32_1
@@ -698,7 +760,8 @@ ApproxDivDone_1
           rem Minimum 1 pixel/frame
           
           rem Apply to Player1 velocity (push left)
-          rem Check if velocity > -4 (in two's complement: values <= 252 are >= -4)
+          rem Check if velocity > -4 (in two's complement: values <= 252
+          rem   are >= -4)
           rem -4 in two's complement = 256 - 4 = 252
           if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
           rem Cap at -4 pixels/frame (252 in two's complement)
@@ -716,14 +779,17 @@ ApproxDivDone_1
           goto CollisionNextInner
           
 ApplyImpulse1Heavier
-          rem Player1 is heavier - push Player1 right (positive X), Player2 left (negative X)
-          rem Multiply by 2 using bit shift, then approximate division by totalWeight
+          rem Player1 is heavier - push Player1 right (positive X),
+          rem   Player2 left (negative X)
+          rem Multiply by 2 using bit shift, then approximate division
+          rem   by totalWeight
           asm
             lda impulseStrength
             asl a
             sta impulseStrength
           end
-          rem Approximate division by totalWeight using bit-shift approximation
+          rem Approximate division by totalWeight using bit-shift
+          rem   approximation
           if totalWeight >= 128 then goto ApproxDivBy128_2
           if totalWeight >= 64 then goto ApproxDivBy64_2
           if totalWeight >= 32 then goto ApproxDivBy32_2
@@ -773,7 +839,8 @@ ApproxDivDone_2
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
           
           rem Apply to Player2 velocity (push left)
-          rem Check if velocity > -4 (in two's complement: values <= 252 are >= -4)
+          rem Check if velocity > -4 (in two's complement: values <= 252
+          rem   are >= -4)
           rem -4 in two's complement = 256 - 4 = 252
           if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
           rem Cap at -4 pixels/frame (252 in two's complement)
@@ -785,9 +852,11 @@ ApproxDivDone_2
           goto CollisionNextInner
           
 CollisionSepLeft
-          rem Player1 is left of Player2 - push Player1 left, Player2 right
+          rem Player1 is left of Player2 - push Player1 left, Player2
+          rem   right
           rem Same logic but reversed directions
-          rem Re-read weights (characterWeight and halfHeight2 were used for heights)
+          rem Re-read weights (characterWeight and halfHeight2 were used
+          rem   for heights)
           let characterWeight = CharacterWeights[temp4]
           rem Player1 weight
           let halfHeight2 = CharacterWeights[temp5]
@@ -808,13 +877,15 @@ ApplyImpulseLeft
           if characterWeight >= halfHeight2 then ApplyImpulse1HeavierLeft
           
           rem Player2 is heavier - push Player1 left, Player2 right
-          rem Multiply by 2 using bit shift, then approximate division by totalWeight
+          rem Multiply by 2 using bit shift, then approximate division
+          rem   by totalWeight
           asm
             lda impulseStrength
             asl a
             sta impulseStrength
           end
-          rem Approximate division by totalWeight using bit-shift approximation
+          rem Approximate division by totalWeight using bit-shift
+          rem   approximation
           if totalWeight >= 128 then goto ApproxDivBy128_3
           if totalWeight >= 64 then goto ApproxDivBy64_3
           if totalWeight >= 32 then goto ApproxDivBy32_3
@@ -858,7 +929,8 @@ ApproxDivBy128_3
 ApproxDivDone_3
           if impulseStrength = 0 then impulseStrength = 1
           
-          rem Check if velocity > -4 (in two's complement: values <= 252 are >= -4)
+          rem Check if velocity > -4 (in two's complement: values <= 252
+          rem   are >= -4)
           rem -4 in two's complement = 256 - 4 = 252
           if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
           rem Cap at -4 pixels/frame (252 in two's complement)
@@ -873,12 +945,15 @@ ApproxDivDone_3
           
 ApplyImpulse1HeavierLeft
           rem Player1 is heavier - push Player1 right, Player2 left
-          rem Multiply by 2 using bit shift, then approximate division by totalWeight
+          rem Multiply by 2 using bit shift, then approximate division
+          rem   by totalWeight
           asm
             asl impulseStrength
           end
-          rem Approximate division by totalWeight using bit-shift approximation
-          rem totalWeight ranges 10-200, use closest power-of-2 approximation
+          rem Approximate division by totalWeight using bit-shift
+          rem   approximation
+          rem totalWeight ranges 10-200, use closest power-of-2
+          rem   approximation
           if totalWeight >= 128 then goto ApproxDivBy128_1Heavier
           if totalWeight >= 64 then goto ApproxDivBy64_1Heavier
           if totalWeight >= 32 then goto ApproxDivBy32_1Heavier
@@ -934,7 +1009,8 @@ ApproxDivDone_1Heavier
           
           if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
-          rem Check if velocity > -4 (in two's complement: values <= 252 are >= -4)
+          rem Check if velocity > -4 (in two's complement: values <= 252
+          rem   are >= -4)
           rem -4 in two's complement = 256 - 4 = 252
           if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
           rem Cap at -4 pixels/frame (252 in two's complement)
@@ -950,7 +1026,8 @@ CollisionNextInner
 CollisionNextOuter
           let temp1 = temp1 + 1
           if temp1 < 3 then goto CollisionOuterLoop
-          rem Only check pairs where i < j, so i only goes up to 2 (to check pair with j=3)
+          rem Only check pairs where i < j, so i only goes up to 2 (to
+          rem   check pair with j=3)
           
           return
 

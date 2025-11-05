@@ -1,9 +1,9 @@
           rem ChaosFight - Source/Routines/GameLoopInit.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem GAME LOOP INITIALIZATION
-          rem =================================================================
+          rem ==========================================================
           rem Initializes all game state for the main gameplay loop.
           rem Called once when entering gameplay from character select.
 
@@ -26,7 +26,7 @@
           rem   4=Coming to stop, 5=Taking hit, 6=Falling backwards,
           rem   7=Falling down, 8=Fallen down, 9=Recovering,
           rem   10=Jumping, 11=Falling, 12=Landing, 13-15=Reserved
-          rem =================================================================
+          rem ==========================================================
 
 BeginGameLoop
           rem Set screen layout for gameplay (32×8 game layout)
@@ -35,8 +35,10 @@ BeginGameLoop
           
           rem Initialize player positions
           rem 2-Player Game: P1 at 1/3 width (53), P2 at 2/3 width (107)
-          rem 4-Player Game: P1 at 1/5 (32), P3 at 2/5 (64), P4 at 3/5 (96), P2 at 4/5 (128)
-          rem All players start at second row from top (Y=24, center of row 1)
+          rem 4-Player Game: P1 at 1/5 (32), P3 at 2/5 (64), P4 at 3/5
+          rem   (96), P2 at 4/5 (128)
+          rem All players start at second row from top (Y=24, center of
+          rem   row 1)
           rem Check if 4-player mode (Quadtari detected)
           if ControllerStatus & SetQuadtariDetected then Init4PlayerPositions
           
@@ -72,7 +74,8 @@ InitPositionsDone
           rem Player 4 facing left
           
           rem Initialize player health (apply handicap if selected)
-          rem PlayerLocked value: 0=unlocked, 1=normal (100% health), 2=handicap (75% health)
+          rem PlayerLocked value: 0=unlocked, 1=normal (100% health),
+          rem   2=handicap (75% health)
           if PlayerLocked[0] = 2 then let PlayerHealth[0] = PlayerHealthHandicap
           if PlayerLocked[0] = 2 then Player0HealthSet
           let PlayerHealth[0] = PlayerHealthMax
@@ -128,7 +131,8 @@ Player3HealthSet
           let PlayerChar[3] = selectedChar4_R
 
           rem Update Players34Active flag based on character selections
-          rem Flag is used for missile multiplexing (only multiplex when players 3 or 4 are active)
+          rem Flag is used for missile multiplexing (only multiplex when
+          rem   players 3 or 4 are active)
           let ControllerStatus  = ControllerStatus & ClearPlayers34Active
           rem Clear flag first
           if !(SelectedChar3 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active
@@ -137,7 +141,8 @@ Player3HealthSet
           rem Set if Player 4 selected
 
           rem Initialize missiles
-          rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 = Player 1, bit 2 = Player 2, bit 3 = Player 3
+          rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 =
+          rem   Player 1, bit 2 = Player 2, bit 3 = Player 3
           let MissileActive  = 0
 
           rem Initialize elimination system
@@ -198,6 +203,7 @@ Player3HealthSet
           rem batariBASIC may not support def statements with parameters
 
           rem Gameplay state initialized - return to ChangeGameMode
-          rem MainLoop will dispatch to GameMainLoop based on gameMode = ModeGame
+          rem MainLoop will dispatch to GameMainLoop based on gameMode =
+          rem   ModeGame
           return
 

@@ -6,43 +6,55 @@
           rem - Genesis 3-Button: Enhanced controller with Button C
           rem - Joy2b+ Enhanced: Enhanced controller with Buttons II/III
           rem - Quadtari 4-Player: Frame multiplexing for 4 players
-          rem - Buttons II/III (Joy2b+) use paddle ports INPT0-3, require different reading
-          rem Console and controller detection for 7800, Quadtari, Genesis, Joy2b+
+          rem - Buttons II/III (Joy2b+) use paddle ports INPT0-3,
+          rem   require different reading
+          rem Console and controller detection for 7800, Quadtari,
+          rem   Genesis, Joy2b+
 
-          rem 7800 detection method based on Grizzards by Bruce-Robert Pocock
-          rem Genesis detection method based on Grizzards by Bruce-Robert Pocock
+          rem 7800 detection method based on Grizzards by Bruce-Robert
+          rem   Pocock
+          rem Genesis detection method based on Grizzards by
+          rem   Bruce-Robert Pocock
 
-          rem =================================================================
+          rem ==========================================================
           rem CONSOLE DETECTION (7800 vs 2600)
-          rem =================================================================
+          rem ==========================================================
           rem Detect if running on Atari 7800 for enhanced features
           rem Method: Check magic bytes in $D0/$D1 set by BIOS
           
 CtrlDetConsole
-          rem Atari 7800 BIOS sets $D0=$2C and $D1=$A9 when loading cartridge
-          rem Check these before any other detection to avoid corrupting values
+          rem Atari 7800 BIOS sets $D0=$2C and $D1=$A9 when loading
+          rem   cartridge
+          rem Check these before any other detection to avoid corrupting
+          rem   values
           
           rem Call proper console detection routine
-          rem ConsoleDetection.bas is included in same bank, so direct call
+          rem ConsoleDetection.bas is included in same bank, so direct
+          rem   call
           gosub ConsoleDetHW
           
           rem Fall through to controller detection
 
-          rem =================================================================
+          rem ==========================================================
           rem CONTROLLER DETECTION (MONOTONIC - UPGRADES ONLY)
-          rem =================================================================
-          rem Re-detect controllers each time Game Select pressed or title reached
-          rem MONOTONIC STATE MACHINE: Only allows upgrades, never downgrades
+          rem ==========================================================
+          rem Re-detect controllers each time Game Select pressed or
+          rem   title reached
+          rem MONOTONIC STATE MACHINE: Only allows upgrades, never
+          rem   downgrades
           rem - Once Quadtari is detected, it can never be downgraded
-          rem - Once Genesis/Joy2B+ is detected, it can only be upgraded to Quadtari
-          rem - Standard joysticks can be upgraded to Genesis/Joy2B+ or Quadtari
+          rem - Once Genesis/Joy2B+ is detected, it can only be upgraded
+          rem   to Quadtari
+          rem - Standard joysticks can be upgraded to Genesis/Joy2B+ or
+          rem   Quadtari
           rem Note: Genesis/Joy2b+ detection is contrary to Quadtari
           
 CtrlDetPads
           dim CDP_existingStatus = temp1
           dim CDP_newStatus = temp2
           
-          rem Save existing controller capabilities (monotonic - never downgrade)
+          rem Save existing controller capabilities (monotonic - never
+          rem   downgrade)
           let CDP_existingStatus = controllerStatus
           
           rem Perform fresh detection into temporary variable
@@ -53,9 +65,11 @@ CtrlDetPads
 #endif
           
           rem Check for Quadtari (4 joysticks via multiplexing)
-          rem CANONICAL METHOD: Check INPT0-3 paddle ports for Quadtari signature
+          rem CANONICAL METHOD: Check INPT0-3 paddle ports for Quadtari
+          rem   signature
           rem Quadtari presents specific button patterns on paddle ports
-          rem Left side: INPT0 LOW + INPT1 HIGH, or Right side: INPT2 LOW + INPT3 HIGH
+          rem Left side: INPT0 LOW + INPT1 HIGH, or Right side: INPT2
+          rem   LOW + INPT3 HIGH
           
           rem Check left side controllers (INPT0/INPT1)
           if INPT0{7} then CDP_CheckRightSide
@@ -80,17 +94,21 @@ CDP_QuadtariFound
           goto CDP_MergeStatus
 
 CDP_CheckGenesis
-          rem Check for Genesis controller (only if Quadtari not already detected)
-          rem If Quadtari was previously detected, skip all other detection
+          rem Check for Genesis controller (only if Quadtari not already
+          rem   detected)
+          rem If Quadtari was previously detected, skip all other
+          rem   detection
           if CDP_existingStatus & SetQuadtariDetected then CDP_MergeStatus
           
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
-          rem Method: Ground paddle ports via VBLANK, wait a frame, check levels
+          rem Method: Ground paddle ports via VBLANK, wait a frame,
+          rem   check levels
           rem Detect Genesis/MegaDrive controllers using correct method
           gosub CDP_DetectGenesis
           
           rem Detect Joy2b+ controllers (if no Genesis detected)
-          rem Skip Joy2B+ detection if Genesis already exists (existing or newly detected)
+          rem Skip Joy2B+ detection if Genesis already exists (existing
+          rem   or newly detected)
           if CDP_existingStatus & SetLeftPortGenesis then CDP_MergeStatus
           if CDP_existingStatus & SetRightPortGenesis then CDP_MergeStatus
           if CDP_newStatus & SetLeftPortGenesis then CDP_MergeStatus
@@ -98,15 +116,17 @@ CDP_CheckGenesis
           gosub CDP_DetectJoy2bPlus
 
 CDP_MergeStatus
-          rem Merge new detections with existing capabilities (monotonic upgrade)
-          rem OR new status with existing - this ensures upgrades only, never downgrades
+          rem Merge new detections with existing capabilities (monotonic
+          rem   upgrade)
+          rem OR new status with existing - this ensures upgrades only,
+          rem   never downgrades
           let controllerStatus = CDP_existingStatus | CDP_newStatus
           
           return
           
-          rem =================================================================
+          rem ==========================================================
           rem GENESIS DETECTION SUBROUTINE
-          rem =================================================================
+          rem ==========================================================
 CDP_DetectGenesis
           rem Ground paddle ports (INPT0-3) during VBLANK
           VBLANK = VBlankGroundINPT0123
@@ -143,18 +163,21 @@ CDP_NoGenesisLeft
 CDP_NoGenesisRight
           return
           
-          rem =================================================================
+          rem ==========================================================
           rem JOY2BPLUS DETECTION SUBROUTINE
-          rem =================================================================
+          rem ==========================================================
 CDP_DetectJoy2bPlus
-          rem Only check if no Genesis controllers detected (existing or newly detected)
-          rem This check is redundant since caller already checks, but kept for safety
+          rem Only check if no Genesis controllers detected (existing or
+          rem   newly detected)
+          rem This check is redundant since caller already checks, but
+          rem   kept for safety
           if CDP_existingStatus & SetLeftPortGenesis then return
           if CDP_existingStatus & SetRightPortGenesis then return
           if CDP_newStatus & SetLeftPortGenesis then return
           if CDP_newStatus & SetRightPortGenesis then return
           
-          rem Joy2b+ controllers pull all three paddle ports HIGH when idle
+          rem Joy2b+ controllers pull all three paddle ports HIGH when
+          rem   idle
           rem Check left port (INPT0, INPT1, INPT4)
           if !INPT0{7} then CDP_NoJoy2Left
           if !INPT1{7} then CDP_NoJoy2Left
@@ -178,9 +201,9 @@ CDP_NoJoy2Right
           return
           
 
-          rem =================================================================
+          rem ==========================================================
           rem GENESIS/MEGADRIVE CONTROLLER DETECTION
-          rem =================================================================
+          rem ==========================================================
           rem Based on DetectGenesis.s - correct implementation
 CtrlGenesisA
           rem Ground paddle ports (INPT0-3) during VBLANK
@@ -218,11 +241,12 @@ NoGenesisLeft
 NoGenesisRight
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem JOY2BPLUS CONTROLLER DETECTION  
-          rem =================================================================
+          rem ==========================================================
 CtrlJoy2A
-          rem Joy2b+ controllers pull all three paddle ports HIGH when idle
+          rem Joy2b+ controllers pull all three paddle ports HIGH when
+          rem   idle
           rem Check left port (INPT0, INPT1, INPT4)
           if !INPT0{7} then NoJoy2Left
           if !INPT1{7} then NoJoy2Left
@@ -245,9 +269,9 @@ NoJoy2Left
 NoJoy2Right
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem GENESIS/MEGADRIVE CONTROLLER DETECTION
-          rem =================================================================
+          rem ==========================================================
           rem Based on DetectGenesis.s - correct implementation
 CtrlGenesisB
           rem Ground paddle ports (INPT0-3) using VBLANK
@@ -284,9 +308,9 @@ GenesisDetDone
           VBLANK = $00
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem JOY2BPLUS CONTROLLER DETECTION  
-          rem =================================================================
+          rem ==========================================================
 CtrlJoy2B
           rem Only check if no Genesis controllers detected
           if LeftPortGenesis then return
@@ -320,11 +344,12 @@ Joy2PlusDone
           VBLANK = $00
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem 7800 PAUSE BUTTON HANDLER
-          rem =================================================================
+          rem ==========================================================
           rem On Atari 7800, Pause button toggles Color/B&W override
-          rem This allows players to switch between color and B&W without
+          rem This allows players to switch between color and B&W
+          rem   without
           rem flipping the physical switch on the console
           
 Check7800Pause
@@ -335,7 +360,8 @@ Check7800Pause
           rem On 7800, Color/B&W switch becomes momentary pause button
           
 #ifndef TV_SECAM
-          rem Check if pause button just pressed (use switchbw for Color/B&W switch)
+          rem Check if pause button just pressed (use switchbw for
+          rem   Color/B&W switch)
           if switchbw then PauseNotPressed
           
           rem Button is pressed (low)
@@ -352,9 +378,9 @@ Check7800Pause
           return
 #endif
 
-          rem =================================================================
+          rem ==========================================================
           rem QUADTARI MULTIPLEXING
-          rem =================================================================
+          rem ==========================================================
           rem Handle frame-based controller multiplexing for 4 players
           
 UpdateQuadIn
@@ -370,14 +396,17 @@ ReadPlayers12
           rem Even frames: read players 1 & 2
           rem joy0 and joy1 automatically read from physical ports
           rem Quadtari multiplexing handled by hardware
-          rem No additional processing needed - joy0/joy1 are already correct
+          rem No additional processing needed - joy0/joy1 are already
+          rem   correct
           return
 
 ReadPlayers34
           rem Odd frames: read players 3 & 4  
-          rem joy0 and joy1 now read players 3 & 4 via Quadtari multiplexing
+          rem joy0 and joy1 now read players 3 & 4 via Quadtari
+          rem   multiplexing
           rem Hardware automatically switches which players are active
-          rem No additional processing needed - joy0/joy1 are already correct
+          rem No additional processing needed - joy0/joy1 are already
+          rem   correct
           return
 
 PauseNotPressed
@@ -385,10 +414,11 @@ PauseNotPressed
           let pauseButtonPrev = 1
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem DETECT CONTROLLERS (PUBLIC WRAPPER)
-          rem =================================================================
-          rem Public wrapper for controller detection called from ConsoleHandling
+          rem ==========================================================
+          rem Public wrapper for controller detection called from
+          rem   ConsoleHandling
           rem Gates detection behind SELECT button or menu flow
           rem Uses monotonic detection (upgrades only, never downgrades)
 DetectControllers

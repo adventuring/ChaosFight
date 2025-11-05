@@ -3,7 +3,8 @@
 
           bank 4
           
-          rem Bank 4 dedicated to character art only - leave room for animation frames
+          rem Bank 4 dedicated to character art only - leave room for
+          rem   animation frames
           rem Character sprite data for characters 16-23
           #include "Source/Generated/Character16.bas"
           #include "Source/Generated/Character17.bas"
@@ -14,7 +15,8 @@
           #include "Source/Generated/Character22.bas"
           #include "Source/Generated/Character23.bas"
           
-          rem Character art lookup routines for Bank 4 (characters 16-23)
+          rem Character art lookup routines for Bank 4 (characters
+          rem   16-23)
           asm
           #include "Source/Routines/CharacterArtBank4.s"
 end

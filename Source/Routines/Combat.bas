@@ -1,17 +1,20 @@
           rem ChaosFight - Source/Routines/Combat.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem =================================================================
+          rem ==========================================================
           rem COMBAT SYSTEM - Generic subroutines using player arrays
-          rem =================================================================
+          rem ==========================================================
 
           rem Apply damage from attacker to defender
-          rem Inputs: attackerID, defenderID (must be set before calling)
+          rem Inputs: attackerID, defenderID (must be set before
+          rem   calling)
           rem Process:
           rem   1. Player begins "hurt" animation (ActionHit = 5)
-          rem   2. Player enters recovery frames count and color dims (or magenta on SECAM)
+          rem 2. Player enters recovery frames count and color dims (or
+          rem   magenta on SECAM)
           rem   3. If player health >= damage amount, decrement health
-          rem   4. If player health < damage amount, player dies (instantly vanishes)
+          rem 4. If player health < damage amount, player dies
+          rem   (instantly vanishes)
 ApplyDamage
           dim AD_attackerID = attackerID
           dim AD_defenderID = defenderID
@@ -46,7 +49,8 @@ ApplyDamage
           if AD_recoveryFrames > 30 then let AD_recoveryFrames = 30
           let playerRecoveryFrames[AD_defenderID] = AD_recoveryFrames
           
-          rem Set playerState bit 3 (recovery flag) when recovery frames are set
+          rem Set playerState bit 3 (recovery flag) when recovery frames
+          rem   are set
           let playerState[AD_defenderID] = playerState[AD_defenderID] | 8
           
           rem Sound effect
@@ -59,7 +63,8 @@ PlayerDies
           let playerHealth[AD_defenderID] = 0
           
           rem Trigger elimination immediately (instantly vanish)
-          rem CheckPlayerElimination will hide sprite and handle elimination effects
+          rem CheckPlayerElimination will hide sprite and handle
+          rem   elimination effects
           let temp1 = AD_defenderID
           gosub CheckPlayerElimination
           
@@ -69,20 +74,28 @@ PlayerDies
           
 
           rem Check if attack hits defender
-          rem Inputs: attackerID, defenderID (must be set before calling)
+          rem Inputs: attackerID, defenderID (must be set before
+          rem   calling)
           rem Returns: hit (1 = hit, 0 = miss)
 CheckAttackHit
           dim CAH_attackerID = attackerID
           dim CAH_defenderID = defenderID
-          rem Calculate attack hitbox based on attacker facing and attack type
+          rem Calculate attack hitbox based on attacker facing and
+          rem   attack type
           gosub CalculateAttackHitbox
           
-          rem Check if defender bounding box overlaps hitbox (AABB collision detection)
-          rem playerX/playerY represent sprite top-left corner, sprite is 16x16 pixels
-          rem Defender bounding box: [playerX, playerX+16] x [playerY, playerY+16]
-          rem Hitbox: [hitboxLeft, hitboxRight] x [hitboxTop, hitboxBottom]
-          rem Overlap occurs when: defender_right > hitboxLeft AND defender_left < hitboxRight
-          rem                      AND defender_bottom > hitboxTop AND defender_top < hitboxBottom
+          rem Check if defender bounding box overlaps hitbox (AABB
+          rem   collision detection)
+          rem playerX/playerY represent sprite top-left corner, sprite
+          rem   is 16x16 pixels
+          rem Defender bounding box: [playerX, playerX+16] x [playerY,
+          rem   playerY+16]
+          rem Hitbox: [hitboxLeft, hitboxRight] x [hitboxTop,
+          rem   hitboxBottom]
+          rem Overlap occurs when: defender_right > hitboxLeft AND
+          rem   defender_left < hitboxRight
+          rem AND defender_bottom > hitboxTop AND defender_top <
+          rem   hitboxBottom
           if playerX[CAH_defenderID] + PlayerSpriteWidth <= hitboxLeft then NoHit
           rem Defender right edge <= hitbox left edge (no overlap)
           if playerX[CAH_defenderID] >= hitboxRight then NoHit
@@ -101,8 +114,10 @@ NoHit
           let hit = 0
           return
 
-          rem Calculate attack hitbox based on attacker position and facing
-          rem Inputs: attackerID (must be set before calling, or use CAH_attackerID from CheckAttackHit)
+          rem Calculate attack hitbox based on attacker position and
+          rem   facing
+          rem Inputs: attackerID (must be set before calling, or use
+          rem   CAH_attackerID from CheckAttackHit)
           rem Outputs: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
 CalculateAttackHitbox
           dim CAH_attackerID_calc = attackerID
@@ -110,12 +125,14 @@ CalculateAttackHitbox
           on PlayerAttackType[CAH_attackerID_calc] goto MeleeHitbox, ProjectileHitbox, AreaHitbox
           
 MeleeHitbox
-          rem Melee hitbox extends PlayerSpriteWidth pixels in facing direction
+          rem Melee hitbox extends PlayerSpriteWidth pixels in facing
+          rem   direction
           on PlayerFacing[CAH_attackerID_calc] goto FacingRight, FacingLeft, FacingUp, FacingDown
           
 FacingRight
           rem Hitbox extends 16 pixels forward from sprite right edge
-          rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
+          rem Attacker sprite: [playerX, playerX+16] x [playerY,
+          rem   playerY+16]
           rem Hitbox: [playerX+16, playerX+32] x [playerY, playerY+16]
           let hitboxLeft = playerX[CAH_attackerID_calc] + PlayerSpriteWidth
           let hitboxRight = playerX[CAH_attackerID_calc] + PlayerSpriteWidth + PlayerSpriteWidth
@@ -125,7 +142,8 @@ FacingRight
           
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
-          rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
+          rem Attacker sprite: [playerX, playerX+16] x [playerY,
+          rem   playerY+16]
           rem Hitbox: [playerX-16, playerX] x [playerY, playerY+16]
           let hitboxLeft = playerX[CAH_attackerID_calc] - PlayerSpriteWidth
           let hitboxRight = playerX[CAH_attackerID_calc]
@@ -135,7 +153,8 @@ FacingLeft
           
 FacingUp
           rem Hitbox extends 16 pixels upward from sprite top edge
-          rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
+          rem Attacker sprite: [playerX, playerX+16] x [playerY,
+          rem   playerY+16]
           rem Hitbox: [playerX, playerX+16] x [playerY-16, playerY]
           let hitboxLeft = playerX[CAH_attackerID_calc]
           let hitboxRight = playerX[CAH_attackerID_calc] + PlayerSpriteWidth
@@ -145,7 +164,8 @@ FacingUp
           
 FacingDown
           rem Hitbox extends 16 pixels downward from sprite bottom edge
-          rem Attacker sprite: [playerX, playerX+16] x [playerY, playerY+16]
+          rem Attacker sprite: [playerX, playerX+16] x [playerY,
+          rem   playerY+16]
           rem Hitbox: [playerX, playerX+16] x [playerY+16, playerY+32]
           let hitboxLeft = playerX[CAH_attackerID_calc]
           let hitboxRight = playerX[CAH_attackerID_calc] + PlayerSpriteWidth
@@ -154,7 +174,8 @@ FacingDown
           return
           
 ProjectileHitbox
-          rem Projectile hitbox is at current missile position (to be implemented)
+          rem Projectile hitbox is at current missile position (to be
+          rem   implemented)
           let hitboxLeft = 0
           let hitboxRight = 0
           let hitboxTop = 0
@@ -162,7 +183,8 @@ ProjectileHitbox
           return
           
 AreaHitbox
-          rem Area hitbox covers radius around attacker (to be implemented)
+          rem Area hitbox covers radius around attacker (to be
+          rem   implemented)
           let hitboxLeft = 0
           let hitboxRight = 0
           let hitboxTop = 0
@@ -171,7 +193,8 @@ AreaHitbox
 
           rem Process attack for one attacker against all defenders
           rem Input: attackerID (must be set before calling)
-          rem Processes attacks in all directions (facing handled by CalculateAttackHitbox)
+          rem Processes attacks in all directions (facing handled by
+          rem   CalculateAttackHitbox)
 ProcessAttackerAttacks
           dim PAA_defender = temp2
           dim PAA_attackerID = attackerID
@@ -214,7 +237,8 @@ NextAttacker
           return
 
           rem Damage indicator system
-          rem NOTE: VisualEffects.bas was phased out - damage indicators handled inline
+          rem NOTE: VisualEffects.bas was phased out - damage indicators
+          rem   handled inline
 CombatShowDamageIndicator
           rem Visual feedback now handled inline in damage calculation
           return
@@ -230,7 +254,8 @@ rem =================================================================
 rem PERFORM MELEE ATTACK
 rem =================================================================
 rem Executes a melee attack for the specified player.
-rem Spawns a brief missile visual (sword, fist, etc.) and checks for hits.
+          rem Spawns a brief missile visual (sword, fist, etc.) and
+          rem   checks for hits.
 
 rem INPUT:
           rem   temp1 = attacker player index (0-3)
@@ -242,7 +267,8 @@ PerformMeleeAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << 4)
           rem Set animation state 14 (attack execution)
           
-          rem Check immediate collision with other players in melee range
+          rem Check immediate collision with other players in melee
+          rem   range
           rem This is handled by the main collision detection system
           rem For now, collision will be handled in UpdateAllMissiles
           
@@ -267,20 +293,27 @@ PerformRangedAttack
           return
 
           rem Process guard for a player
-          rem DEPRECATED: This function has syntax errors and conflicts with GuardEffects.bas
-          rem Guard restrictions are now handled in PlayerInput.bas (movement/attack blocking)
-          rem Guard timer updates are handled by UpdateGuardTimers in GuardEffects.bas
+          rem DEPRECATED: This function has syntax errors and conflicts
+          rem   with GuardEffects.bas
+          rem Guard restrictions are now handled in PlayerInput.bas
+          rem   (movement/attack blocking)
+          rem Guard timer updates are handled by UpdateGuardTimers in
+          rem   GuardEffects.bas
           rem Input: playerID
 ProcessPlayerGuard
-          rem This function is deprecated - guard restrictions are handled elsewhere
+          rem This function is deprecated - guard restrictions are
+          rem   handled elsewhere
           rem Guard prevents movement - handled in PlayerInput.bas
           rem Guard prevents attacks - handled in PlayerInput.bas
           return
 
           rem Update player guard state
-          rem DEPRECATED: This function uses undefined guard_timer variable and conflicts with GuardEffects.bas
-          rem Guard timer updates are handled by UpdateGuardTimers in GuardEffects.bas
+          rem DEPRECATED: This function uses undefined guard_timer
+          rem   variable and conflicts with GuardEffects.bas
+          rem Guard timer updates are handled by UpdateGuardTimers in
+          rem   GuardEffects.bas
           rem Input: player_id
 UpdatePlayerGuard
-          rem This function is deprecated - use UpdateGuardTimers in GuardEffects.bas instead
+          rem This function is deprecated - use UpdateGuardTimers in
+          rem   GuardEffects.bas instead
           return

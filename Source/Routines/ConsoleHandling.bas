@@ -1,9 +1,9 @@
           rem ChaosFight - Source/Routines/ConsoleHandling.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem CONSOLE SWITCH HANDLING
-          rem =================================================================
+          rem ==========================================================
           rem Handles Atari 2600 console switches during gameplay.
 
           rem SWITCHES:
@@ -13,18 +13,19 @@
 
           rem AVAILABLE VARIABLES:
           rem   gameState - 0=normal play, 1=paused
-          rem =================================================================
+          rem ==========================================================
 
           rem Main console switch handler
 HandleConsoleSwitches
           rem Game Reset switch - return to publisher preamble
           if switchreset then let gameMode = ModePublisherPreamble : gosub bank13 ChangeGameMode : return
 
-          rem Game Select switch or Joy2B+ Button III - toggle pause mode
+          rem Game Select switch or Joy2B+ Button III - toggle pause
+          rem   mode
           let temp2 = 0 
           rem Check Player 1 buttons
           gosub CheckEnhancedPause
-          if !temp1 then SkipPlayer1Pause
+          if !temp1 then DonePlayer1Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
           if gameState = 0 then let gameState = 1:goto Player1PauseDone
@@ -33,13 +34,13 @@ Player1PauseDone
           rem Debounce - wait for button release
           drawscreen
           return
-SkipPlayer1Pause
+DonePlayer1Pause
           
           
           let temp2 = 1 
           rem Check Player 2 buttons
           gosub CheckEnhancedPause
-          if !temp1 then SkipPlayer2Pause
+          if !temp1 then DonePlayer2Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
           if gameState = 0 then let gameState = 1
@@ -49,7 +50,7 @@ Player2PauseDone
           rem Debounce - wait for button release
           drawscreen
           return
-SkipPlayer2Pause
+DonePlayer2Pause
           
 
           rem Color/B&W switch - re-detect controllers when toggled
@@ -63,9 +64,9 @@ SkipPlayer2Pause
 
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem COLOR/B&W SWITCH CHANGE DETECTION
-          rem =================================================================
+          rem ==========================================================
           rem Re-detect controllers when Color/B&W switch is toggled
           
 CheckColorBWToggle
@@ -75,15 +76,16 @@ CheckColorBWToggle
           rem Check if Color/B&W switch state has changed
           temp6 = switchbw
           let CCBT_switchChanged = 0
-          if temp6 = colorBWPrevious_R then SkipSwitchChange
+          if temp6 = colorBWPrevious_R then DoneSwitchChange
           let CCBT_switchChanged = 1
           gosub bank14 DetectControllers
           let colorBWPrevious_W = switchbw
-SkipSwitchChange
+DoneSwitchChange
 
           rem Check if colorBWOverride changed (7800 pause button)
           #ifndef TV_SECAM
-          rem Note: colorBWOverride does not have a previous value stored,
+          rem Note: colorBWOverride does not have a previous value
+          rem   stored,
           rem so we check it every frame. This is acceptable since it is
           rem only toggled by button press, not continuously.
           rem If needed, we could add a previous value variable.
@@ -93,8 +95,10 @@ SkipSwitchChange
           if CCBT_switchChanged then ReloadArenaColorsNow
           #ifndef TV_SECAM
           rem Always check override in case it was toggled
-          rem (Check7800PauseButton is called after this, so we check it here)
-          rem Actually, we should check after Check7800PauseButton is called
+          rem (Check7800PauseButton is called after this, so we check it
+          rem   here)
+          rem Actually, we should check after Check7800PauseButton is
+          rem   called
           rem So we will reload in that function instead
           #endif
           

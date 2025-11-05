@@ -3,7 +3,8 @@
 
           bank 5
           
-          rem Bank 5 dedicated to character art only - leave room for animation frames
+          rem Bank 5 dedicated to character art only - leave room for
+          rem   animation frames
           rem Character sprite data for characters 24-31
           #include "Source/Generated/Character24.bas"
           #include "Source/Generated/Character25.bas"
@@ -14,7 +15,8 @@
           #include "Source/Generated/Character30.bas"
           #include "Source/Generated/MethHound.bas"
           
-          rem Character art lookup routines for Bank 5 (characters 24-31)
+          rem Character art lookup routines for Bank 5 (characters
+          rem   24-31)
           asm
           #include "Source/Routines/CharacterArtBank5.s"
 end

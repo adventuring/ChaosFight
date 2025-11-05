@@ -3,11 +3,12 @@
 
 #include "Source/Common/Colors.h"
 
-          rem =================================================================
+          rem ==========================================================
           rem ARENA DATA DEFINITIONS
-          rem =================================================================
+          rem ==========================================================
           rem 16 ARENAS inspired by classic fighting and platform games
-          rem Playfields are 16 pixels wide (LEFT HALF ONLY - right mirrors)
+          rem Playfields are 16 pixels wide (LEFT HALF ONLY - right
+          rem   mirrors)
           rem X = wall/platform, . = empty space
 
           rem Inspirations:
@@ -15,11 +16,11 @@
           rem - Joust: High platforms, open vertical space
           rem - Super Smash Bros: Varied platform configurations
           rem - Mortal Kombat: Flat arenas with obstacles
-          rem =================================================================
+          rem ==========================================================
 
-          rem =================================================================
+          rem ==========================================================
           rem ARENA DATA
-          rem =================================================================
+          rem ==========================================================
 
 Arena1Data
           rem Arena 1: THE PIT (Mortal Kombat - flat arena with walls)
@@ -56,7 +57,8 @@ end
 
 Arena2Data
           rem Arena 2: BATTLEFIELD (Smash Bros - centered main platform)
-          rem Result: High centered platform (left half - mirrors to full width)
+          rem Result: High centered platform (left half - mirrors to
+          rem   full width)
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
@@ -154,7 +156,8 @@ end
 end
 
 Arena5Data
-          rem Arena 5: FINAL DESTINATION (Smash Bros - wide centered platform)
+          rem Arena 5: FINAL DESTINATION (Smash Bros - wide centered
+          rem   platform)
           rem Result: Single wide high platform
           playfield:
           XXXXXXXXXXXXXXXX
@@ -188,7 +191,8 @@ end
 
 Arena6Data
           rem Arena 6: PIPELINE (Mario Bros - left side ledges)
-          rem Result: Ledges starting from left edge at different heights (left half - mirrors to full width)
+          rem Result: Ledges starting from left edge at different
+          rem   heights (left half - mirrors to full width)
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
@@ -200,7 +204,8 @@ Arena6Data
           X...............
           X...............
           XXXXXX..........
-          rem Lower left edge ledge - mirrors to create left and right ledges
+          rem Lower left edge ledge - mirrors to create left and right
+          rem   ledges
           X...............
           X...............
           XXXXXXXXXXXXXXXX
@@ -222,7 +227,8 @@ end
 end
 
 Arena7Data
-          rem Arena 7: DRAGON TOWER (Joust - asymmetric staggered platforms)
+          rem Arena 7: DRAGON TOWER (Joust - asymmetric staggered
+          rem   platforms)
           rem Result: Small platforms scattered at different heights
           playfield:
           XXXXXXXXXXXXXXXX
@@ -322,7 +328,8 @@ end
 
 Arena10Data
           rem Arena 10: STAIRWAY (Mario Bros - ascending stairs)
-          rem Result: Diagonal staircase from bottom-left to top-right (left half - mirrors to full width)
+          rem Result: Diagonal staircase from bottom-left to top-right
+          rem   (left half - mirrors to full width)
           rem Stairs start from left edge and progress rightward
           playfield:
           XXXXXXXXXXXXXXXX
@@ -361,8 +368,10 @@ end
 end
 
 Arena11Data
-          rem Arena 11: BRIDGE GAP (Mortal Kombat - broken floor with pit)
-          rem Result: Floor only on left edge (left half - mirrors to floors on both edges)
+          rem Arena 11: BRIDGE GAP (Mortal Kombat - broken floor with
+          rem   pit)
+          rem Result: Floor only on left edge (left half - mirrors to
+          rem   floors on both edges)
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
@@ -376,7 +385,8 @@ Arena11Data
           X...............
           X...............
           XXXXX...........
-          rem Left edge floor - mirrors to create floor on both left and right edges with center pit
+          rem Left edge floor - mirrors to create floor on both left and
+          rem   right edges with center pit
 end
           
           pfcolors:
@@ -396,19 +406,23 @@ end
 
 Arena12Data
           rem Arena 12: TEMPLE (Smash Bros - multiple small platforms)
-          rem Result: Grid of small platforms starting from left edge (left half - mirrors to full width)
+          rem Result: Grid of small platforms starting from left edge
+          rem   (left half - mirrors to full width)
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
           X...............
           X.XX............
-          rem Left-side platform - mirrors to create left and right platforms
+          rem Left-side platform - mirrors to create left and right
+          rem   platforms
           X...............
           X...XX..........
-          rem Left-side platform at different position - mirrors to create symmetric platforms
+          rem Left-side platform at different position - mirrors to
+          rem   create symmetric platforms
           X...............
           X.XX............
-          rem Left-side platform - mirrors to create left and right platforms
+          rem Left-side platform - mirrors to create left and right
+          rem   platforms
           X...............
           X...............
           X...............
@@ -432,19 +446,22 @@ end
 
 Arena13Data
           rem Arena 13: CASTLE WALLS (Elevated corner platforms)
-          rem Result: Raised platforms starting from left edge (left half - mirrors to corner platforms)
+          rem Result: Raised platforms starting from left edge (left
+          rem   half - mirrors to corner platforms)
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
           X...............
           X...............
           XXX.............
-          rem Left edge upper platform - mirrors to create upper left and right corner platforms
+          rem Left edge upper platform - mirrors to create upper left
+          rem   and right corner platforms
           X...............
           X...............
           X...............
           XXX.............
-          rem Left edge lower platform - mirrors to create lower left and right corner platforms
+          rem Left edge lower platform - mirrors to create lower left
+          rem   and right corner platforms
           X...............
           X...............
           XXXXXXXXXXXXXXXX
@@ -467,14 +484,16 @@ end
 
 Arena14Data
           rem Arena 14: SUMMIT (Joust - pyramid mountain)
-          rem Result: Pyramid shape starting from left edge (left half - mirrors to symmetric pyramid)
+          rem Result: Pyramid shape starting from left edge (left half -
+          rem   mirrors to symmetric pyramid)
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
           X...............
           X...............
           X.XX............
-          rem Pyramid base row - mirrors to create symmetric pyramid base
+          rem Pyramid base row - mirrors to create symmetric pyramid
+          rem   base
           X..XXX...........
           rem Pyramid second row - mirrors to create symmetric pyramid
           X...XXXX........
@@ -507,7 +526,8 @@ end
 
 Arena15Data
           rem Arena 15: HAZARD ZONE (Split level with ledge)
-          rem Result: High ledge starting from left edge (left half - mirrors to create ledges on both sides)
+          rem Result: High ledge starting from left edge (left half -
+          rem   mirrors to create ledges on both sides)
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
@@ -515,7 +535,8 @@ Arena15Data
           X...............
           X...............
           XXXXXXX.........
-          rem Left edge upper ledge - mirrors to create ledges on both left and right edges
+          rem Left edge upper ledge - mirrors to create ledges on both
+          rem   left and right edges
           XXXXXXX.........
           rem Left edge upper ledge continuation
           X...............
@@ -542,24 +563,30 @@ end
 
 Arena16Data
           rem Arena 16: CHAOS ARENA (Complex multi-level asymmetric)
-          rem Result: Scattered platforms starting from left edge at multiple heights (left half - mirrors to full width)
+          rem Result: Scattered platforms starting from left edge at
+          rem   multiple heights (left half - mirrors to full width)
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
           X.XX............
-          rem Left-side upper platform - mirrors to create symmetric platforms
+          rem Left-side upper platform - mirrors to create symmetric
+          rem   platforms
           X...............
           X..........XXX..
-          rem Right-side upper platform - mirrors to create symmetric platforms
+          rem Right-side upper platform - mirrors to create symmetric
+          rem   platforms
           X...............
           X...XX..........
-          rem Left-side middle platform - mirrors to create symmetric platforms
+          rem Left-side middle platform - mirrors to create symmetric
+          rem   platforms
           X...............
           X...........XX..
-          rem Right-side lower platform - mirrors to create symmetric platforms
+          rem Right-side lower platform - mirrors to create symmetric
+          rem   platforms
           X...............
           X.XXX...........
-          rem Left-side lower platform - mirrors to create symmetric platforms
+          rem Left-side lower platform - mirrors to create symmetric
+          rem   platforms
           XXXXXXXXXXXXXXXX
 end
           

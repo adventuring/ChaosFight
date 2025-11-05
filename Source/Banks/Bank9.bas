@@ -15,7 +15,9 @@
 
           #include "Source/Data/SpecialSprites.bas"
 
-          rem Titlescreen kernel is included in Bank 1 (minikernel for multisprite)
-          rem The title screen routines in this bank call it via gosub titledrawscreen bank1
+          rem Titlescreen kernel is included in Bank 1 (minikernel for
+          rem   multisprite)
+          rem The title screen routines in this bank call it via gosub
+          rem   titledrawscreen bank1
 
 

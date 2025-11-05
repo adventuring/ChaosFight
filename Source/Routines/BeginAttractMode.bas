@@ -1,14 +1,17 @@
           rem ChaosFight - Source/Routines/BeginAttractMode.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem BEGIN ATTRACT MODE - Setup routine
-          rem =================================================================
+          rem ==========================================================
           rem Setup routine for Attract Mode. Sets initial state only.
-          rem Called from ChangeGameMode when transitioning to ModeAttract.
+          rem Called from ChangeGameMode when transitioning to
+          rem   ModeAttract.
           rem
-          rem Attract mode is entered after 3 minutes of title screen inactivity.
-          rem It automatically loops back to Publisher Prelude to restart the sequence.
+          rem Attract mode is entered after 3 minutes of title screen
+          rem   inactivity.
+          rem It automatically loops back to Publisher Prelude to
+          rem   restart the sequence.
 
 BeginAttractMode
           rem Initialize Attract Mode
@@ -16,9 +19,11 @@ BeginAttractMode
           COLUBK = ColGray(0)
           
           rem Reset title screen timers for next cycle
-          rem titleParadeTimer will be reset when we return to title screen
+          rem titleParadeTimer will be reset when we return to title
+          rem   screen
           
-          rem Note: Attract mode immediately transitions to Publisher Prelude
+          rem Note: Attract mode immediately transitions to Publisher
+          rem   Prelude
           rem This is handled in the AttractMode loop
           
           return

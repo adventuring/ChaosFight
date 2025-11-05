@@ -1,16 +1,18 @@
           rem ChaosFight - Source/Routines/Physics.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem =================================================================
+          rem ==========================================================
           rem PHYSICS SYSTEM - Weight-based wall collisions and movement
-          rem =================================================================
+          rem ==========================================================
 
           rem Handle weight-based wall collision for a player
           rem Input: player index (in temp1)
           rem Modifies: Player momentum based on character weight
-          rem Weight affects: wall bounce coefficient (heavier = less bounce)
+          rem Weight affects: wall bounce coefficient (heavier = less
+          rem   bounce)
 HandleWallCollision
-          rem Get character type for this player using direct array access
+          rem Get character type for this player using direct array
+          rem   access
           rem temp1 contains player index (0-3)
           let temp4 = playerChar[temp1]
           
@@ -20,13 +22,16 @@ HandleWallCollision
           rem Weight is now in temp3 (0-40)
           rem Calculate bounce coefficient: higher weight = lower bounce
           rem Formula: bounce = 50 - weight / 2
-          rem Lighter characters bounce more, heavier characters bounce less
-          rem Example weights: 12 (light) = 44 bounce, 40 (heavy) = 30 bounce
+          rem Lighter characters bounce more, heavier characters bounce
+          rem   less
+          rem Example weights: 12 (light) = 44 bounce, 40 (heavy) = 30
+          rem   bounce
           
           rem Get player velocity using direct array access
           let temp4 = playerVelocityX[temp1]
           
-          rem Calculate bounced velocity: velocity = velocity * bounce / 50
+          rem Calculate bounced velocity: velocity = velocity * bounce /
+          rem   50
           rem Using integer math: velocity = (velocity * bounce) / 50
           let temp2 = temp4 * (50 - temp3 / 2) / 50
           if temp2 = 0 && temp4 then let temp2 = 1
@@ -34,35 +39,40 @@ HandleWallCollision
           let playerVelocityX[temp1] = temp2
           return
 
-          rem Check if player hit left wall and needs weight-based bounce
+          rem Check if player hit left wall and needs weight-based
+          rem   bounce
           rem Input: player index (in temp1)
 CheckLeftWallCollision
           let temp4 = playerX[temp1]
           if temp4 < 10 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 < 10 then let playerX[temp1] = 10
           return
 
-          rem Check if player hit right wall and needs weight-based bounce
+          rem Check if player hit right wall and needs weight-based
+          rem   bounce
           rem Input: player index (in temp1)
 CheckRightWallCollision
           let temp4 = playerX[temp1]
           if temp4 > 150 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 > 150 then let playerX[temp1] = 150
           return
 
-          rem Note: GetPlayerVelocitySub and SetPlayerVelocitySub removed
+          rem Note: GetPlayerVelocitySub and SetPlayerVelocitySub
+          rem   removed
           rem Now using direct array access: playerVelocityX[temp1]
 
-          rem =================================================================
+          rem ==========================================================
           rem CHARACTER WEIGHTS DATA
-          rem =================================================================
+          rem ==========================================================
           rem Reference to weights from CharacterDefinitions.bas
-          rem This is just for documentation - actual weights are read from CharacterWeights array
+          rem This is just for documentation - actual weights are read
+          rem   from CharacterWeights array
 
           rem Character weights affect:
           rem   - Wall bounce coefficient (heavier = less bounce)
           rem   - Movement speed resistance
           rem   - Impact resistance
 
-          rem Character order (IDs 0..15) must match CharacterDefinitions.bas:
+          rem Character order (IDs 0..15) must match
+          rem   CharacterDefinitions.bas:
           rem 0 Bernie, 1 Curler, 2 Dragon of Storms, 3 Zoe Ryen,
           rem 4 Fat Tony, 5 Megax, 6 Harpy, 7 Knight Guy,
           rem 8 Frooty, 9 Nefertem, 10 Ninjish Guy, 11 Pork Chop,

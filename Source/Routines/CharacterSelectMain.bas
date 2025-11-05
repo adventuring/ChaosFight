@@ -1,14 +1,17 @@
           rem ChaosFight - Source/Routines/CharacterSelectMain.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem CHARACTER SELECT - PER-FRAME LOOP
-          rem =================================================================
-          rem Per-frame character selection screen with Quadtari support.
+          rem ==========================================================
+          rem Per-frame character selection screen with Quadtari
+          rem   support.
           rem Called from MainLoop each frame (gameMode 3).
-          rem Players cycle through NumCharacters characters and lock in their choice.
+          rem Players cycle through NumCharacters characters and lock in
+          rem   their choice.
           rem
-          rem Setup is handled by SetupCharacterSelect in ChangeGameMode.bas
+          rem Setup is handled by SetupCharacterSelect in
+          rem   ChangeGameMode.bas
           rem This function processes one frame and returns.
 
           rem FLOW PER FRAME:
@@ -27,10 +30,11 @@
           rem   playerLocked[0-3) - Lock state (0=unlocked, 1=locked)
           rem   QuadtariDetected - Whether 4-player mode is active
           rem   readyCount - Number of locked players
-          rem =================================================================
+          rem ==========================================================
 
 CharacterSelectInputEntry
-          rem Check for controller re-detection on Select/Pause/ColorB&W switches
+          rem Check for controller re-detection on Select/Pause/ColorB&W
+          rem   switches
           gosub CharacterSelectCheckControllerRescan
           
           rem Quadtari controller multiplexing
@@ -103,17 +107,21 @@ CharacterSelectPlayer0FireHandicap
           goto CharacterSelectSkipPlayer0Fire
 CharacterSelectPlayer0Random
           dim CS0R_soundId = temp1
-          rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
+          rem Random selection initiated - will be handled by
+          rem   CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if joy0down then randomSelectFlags[0] = $80
           if !joy0down then randomSelectFlags[0] = 0
-          rem For now, just initiate random roll by leaving playerChar[0]=RandomCharacter
-          rem and NOT locking yet - the roll handler will lock when valid
+          rem For now, just initiate random roll by leaving
+          rem   playerChar[0]=RandomCharacter
+          rem and NOT locking yet - the roll handler will lock when
+          rem   valid
           rem Play selection sound
           let CS0R_soundId = SoundMenuSelect
           let temp1 = CS0R_soundId
           gosub bank15 PlaySoundEffect
-          rem Fall through - character will stay as RandomCharacter until roll succeeds
+          rem Fall through - character will stay as RandomCharacter
+          rem   until roll succeeds
 CharacterSelectSkipPlayer0Fire
 
           rem Handle Player 2 input (joy1 on even frames)
@@ -183,14 +191,16 @@ CharacterSelectPlayer1FireHandicap
           goto CharacterSelectSkipPlayer1Fire
 CharacterSelectPlayer1Random
           dim CS1R_soundId = temp1
-          rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
+          rem Random selection initiated - will be handled by
+          rem   CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if joy1down then randomSelectFlags[1] = $80
           if !joy1down then randomSelectFlags[1] = 0
           let CS1R_soundId = SoundMenuSelect
           let temp1 = CS1R_soundId
           gosub bank15 PlaySoundEffect
-          rem Fall through - character will stay as RandomCharacter until roll succeeds
+          rem Fall through - character will stay as RandomCharacter
+          rem   until roll succeeds
 CharacterSelectSkipPlayer1Fire
           
           let qtcontroller = 1
@@ -267,14 +277,16 @@ CharacterSelectPlayer3FireHandicap
           goto CharacterSelectSkipPlayer3Fire
 CharacterSelectPlayer3Random
           dim CS3R_soundId = temp1
-          rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
+          rem Random selection initiated - will be handled by
+          rem   CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if joy0down then randomSelectFlags[2] = $80
           if !joy0down then randomSelectFlags[2] = 0
           let CS3R_soundId = SoundMenuSelect
           let temp1 = CS3R_soundId
           gosub bank15 PlaySoundEffect
-          rem Fall through - character will stay as RandomCharacter until roll succeeds
+          rem Fall through - character will stay as RandomCharacter
+          rem   until roll succeeds
 CharacterSelectSkipPlayer3Fire
 CharacterSelectSkipPlayer3
 
@@ -348,14 +360,16 @@ CharacterSelectPlayer4FireHandicap
           goto CharacterSelectSkipPlayer4Fire
 CharacterSelectPlayer4Random
           dim CS4R_soundId = temp1
-          rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
+          rem Random selection initiated - will be handled by
+          rem   CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if joy1down then randomSelectFlags[3] = $80
           if !joy1down then randomSelectFlags[3] = 0
           let CS4R_soundId = SoundMenuSelect
           let temp1 = CS4R_soundId
           gosub bank15 PlaySoundEffect
-          rem Fall through - character will stay as RandomCharacter until roll succeeds
+          rem Fall through - character will stay as RandomCharacter
+          rem   until roll succeeds
 CharacterSelectSkipPlayer4Fire
 CharacterSelectSkipPlayer4
           
@@ -369,7 +383,8 @@ CharacterSelectInputComplete
           rem Update character select animations
           gosub SelectUpdateAnimations
 
-          rem Check if all players are ready to start (may transition to next mode)
+          rem Check if all players are ready to start (may transition to
+          rem   next mode)
           gosub CharacterSelectCheckReady
 
           rem Draw character selection screen
@@ -378,9 +393,9 @@ CharacterSelectInputComplete
           drawscreen
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem RANDOM CHARACTER ROLL HANDLER
-          rem =================================================================
+          rem ==========================================================
           rem Re-roll random selections until valid (0-15), then lock
           
 CharacterSelectHandleRandomRolls
@@ -456,11 +471,12 @@ CharacterSelectLockPlayer3Done
 CharacterSelectRollsDone
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem CHECK IF READY TO PROCEED
-          rem =================================================================
+          rem ==========================================================
 CharacterSelectCheckReady
-          rem 2-player mode: P1 must be locked AND (P2 locked OR P2 on CPU)
+          rem 2-player mode: P1 must be locked AND (P2 locked OR P2 on
+          rem   CPU)
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReady
           if !playerLocked[0] then CharacterSelectReadyDone
           rem P1 is locked, check P2
@@ -470,7 +486,8 @@ CharacterSelectCheckReady
           goto CharacterSelectReadyDone
           
 CharacterSelectQuadtariReady
-          rem 4-player mode: Count players who are ready (locked OR on CPU/NO)
+          rem 4-player mode: Count players who are ready (locked OR on
+          rem   CPU/NO)
           let readyCount = 0
           rem Count P1 ready
           if playerLocked[0] then readyCount = readyCount + 1
@@ -500,7 +517,8 @@ CharacterSelectFinish
           let selectedChar3_W = playerChar[2]
           let selectedChar4_W = playerChar[3]
           
-          rem Initialize facing bit (bit 0) for all selected players (default: face right = 1)
+          rem Initialize facing bit (bit 0) for all selected players
+          rem   (default: face right = 1)
           if selectedChar1 <> NoCharacter then playerState[0] = playerState[0] | 1
           if selectedChar2_R <> NoCharacter then playerState[1] = playerState[1] | 1
           if selectedChar3_R <> NoCharacter then playerState[2] = playerState[2] | 1
@@ -511,11 +529,13 @@ CharacterSelectFinish
           gosub bank13 ChangeGameMode
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem CHARACTER CYCLING HELPERS
-          rem =================================================================
-          rem Handle wraparound cycling for characters with special values
-          rem Input: temp1 = playerChar value, temp2 = direction (0=left, 1=right), temp3 = player number
+          rem ==========================================================
+          rem Handle wraparound cycling for characters with special
+          rem   values
+          rem Input: temp1 = playerChar value, temp2 = direction
+          rem   (0=left, 1=right), temp3 = player number
           rem Output: temp1 = new playerChar value
           
 CycleCharacterLeft
@@ -523,8 +543,10 @@ CycleCharacterLeft
           dim CCL_playerNumber = temp3
           rem Decrement character with special value wraparound
           rem P1: RandomCharacter(253) ↔ 0 ↔ 15 ↔ RandomCharacter
-          rem P2: CPUCharacter(254) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔ CPUCharacter
-          rem P3/P4: NoCharacter(255) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔ NoCharacter
+          rem P2: CPUCharacter(254) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔
+          rem   CPUCharacter
+          rem P3/P4: NoCharacter(255) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔
+          rem   NoCharacter
           
           rem Check if we’re at a special value
           if CCL_characterIndex = RandomCharacter then CycleFromRandom : return
@@ -532,7 +554,8 @@ CycleCharacterLeft
           if CCL_characterIndex = NoCharacter then CycleFromNO : return
           
           rem Normal character (0-15): decrement
-          rem Check if we’re at 0 before decrementing (need to wrap to special)
+          rem Check if we’re at 0 before decrementing (need to wrap to
+          rem   special)
           if !CCL_characterIndex then CharacterSelectLeftWrapCheck
           let CCL_characterIndex = CCL_characterIndex - 1
           let temp1 = CCL_characterIndex
@@ -550,7 +573,8 @@ CharacterSelectLeftWrapCheck
           
 SelectP2LeftWrap
           dim SP2LW_characterIndex = temp1
-          rem P2: Check if NO is available (if Quadtari and P3 or P4 not both NO)
+          rem P2: Check if NO is available (if Quadtari and P3 or P4 not
+          rem   both NO)
           if !(controllerStatus & SetQuadtariDetected) then let SP2LW_characterIndex = CPUCharacter : let temp1 = SP2LW_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
           if playerChar[2] != NoCharacter then let SP2LW_characterIndex = NoCharacter : let temp1 = SP2LW_characterIndex : return
@@ -591,12 +615,16 @@ SelectP2LeftFromRandom
           
 CycleFromCPU
           dim CFC_characterIndex = temp1
-          rem CPUCharacter(254) left cycle: goes to RandomCharacter(253) for all players
+          rem CPUCharacter(254) left cycle: goes to RandomCharacter(253)
+          rem   for all players
           rem For P2, this is the left direction from CPU
-          rem P2 left from CPU: if NO available, NO → Random, else Random
-          rem Actually, left from CPU means we’re decrementing, so CPU is after Random
+          rem P2 left from CPU: if NO available, NO → Random, else
+          rem   Random
+          rem Actually, left from CPU means we’re decrementing, so CPU
+          rem   is after Random
           rem The cycle is: ... Random → CPU → Random ...
-          rem So left from CPU should go to Random (we already have this)
+          rem So left from CPU should go to Random (we already have
+          rem   this)
           let CFC_characterIndex = RandomCharacter
           let temp1 = CFC_characterIndex
           return
@@ -649,7 +677,8 @@ CycleRightFromRandom
           
 SelectP2RightFromRandom
           dim SP2RFR_characterIndex = temp1
-          rem P2: Check if NO is available (if Quadtari and P3 or P4 not both NO)
+          rem P2: Check if NO is available (if Quadtari and P3 or P4 not
+          rem   both NO)
           if !(controllerStatus & SetQuadtariDetected) then let SP2RFR_characterIndex = CPUCharacter : let temp1 = SP2RFR_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
           if playerChar[2] != NoCharacter then let SP2RFR_characterIndex = NoCharacter : let temp1 = SP2RFR_characterIndex : return
@@ -693,9 +722,9 @@ CycleRightFromNO
           let temp1 = CRFNO_characterIndex
           return
           
-          rem =================================================================
+          rem ==========================================================
           rem CHARACTER SELECT DRAWING FUNCTIONS
-          rem =================================================================
+          rem ==========================================================
 
 SelectDrawScreen
           rem Clear playfield
@@ -742,7 +771,8 @@ SelectDrawSprite
           dim SDS_playerNumberForArt = temp4
           dim SDS_isHurt = temp2
           dim SDS_isFlashing = temp4
-          rem Draw character sprite based on current position and playerChar
+          rem Draw character sprite based on current position and
+          rem   playerChar
           rem Determine which player based on position
           let SDS_playerNumber = 255
           rem Initialize to invalid
@@ -776,15 +806,19 @@ SelectLoadSprite
           let SLS_characterIndex = playerChar[SLS_playerNumberSaved]
           
           rem Use character select animation state
-          rem charSelectPlayerAnimSeq has animation sequence (bit 0: 0=idle, 1=walk)
-          rem charSelectPlayerAnimFrame has animation frame counter (0-7)
-          rem Map to proper animation action: 0=idle (ActionIdle=1), 1=walk (ActionWalking=3)
+          rem charSelectPlayerAnimSeq has animation sequence (bit 0:
+          rem   0=idle, 1=walk)
+          rem charSelectPlayerAnimFrame has animation frame counter
+          rem   (0-7)
+          rem Map to proper animation action: 0=idle (ActionIdle=1),
+          rem   1=walk (ActionWalking=3)
           if charSelectPlayerAnimSeq[SLS_playerNumberSaved] then SelectLoadWalkingSprite
           
           rem Idle animation
           let SLS_animationFrame = charSelectPlayerAnimFrame[SLS_playerNumberSaved]
           rem frame
-          rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp4=player
+          rem LocateCharacterArt expects: temp1=char, temp2=frame,
+          rem   temp3=action, temp4=player
           let SLS_animationAction = 1
           rem ActionIdle = 1
           let SLS_playerNumberForArt = SLS_playerNumberSaved
@@ -843,7 +877,8 @@ SelectDrawSpriteDone
 SelectDrawNumber
           dim SDN_playerIndex = temp1
           rem Draw player number indicator below character
-          rem Determine which player based on position (same as SelectDrawSprite logic)
+          rem Determine which player based on position (same as
+          rem   SelectDrawSprite logic)
           rem Check if we have valid player position
           if player0x = 56 then SelectNumberPlayerP0
           if player1x = 104 then SelectNumberPlayerP1
@@ -967,8 +1002,11 @@ DrawNumberDigit
           dim DND_color = temp4
           dim DND_spriteSelect = temp5
           rem digit already has player digit (1-4)
-          rem xPos=X, yPos=Y, color=color, spriteSelect=sprite already set
-          rem Call DrawDigit with these parameters (DrawPlayerNumber expects temp1=digit, temp2=X, temp3=Y, temp4=color, temp5=sprite)
+          rem xPos=X, yPos=Y, color=color, spriteSelect=sprite already
+          rem   set
+          rem Call DrawDigit with these parameters (DrawPlayerNumber
+          rem   expects temp1=digit, temp2=X, temp3=Y, temp4=color,
+          rem   temp5=sprite)
           gosub bank10 DrawDigit
           
 SelectDrawNumberDone
@@ -1008,13 +1046,14 @@ SelectDrawP3Border
           pf1 = pf1 | %00010000
           return
           
-          rem =================================================================
+          rem ==========================================================
           rem ANIMATION UPDATES
-          rem =================================================================
+          rem ==========================================================
 
 SelectUpdateAnimations
           rem Update character select animations for all players
-          rem Players cycle through idle/walk animations to show selected characters
+          rem Players cycle through idle/walk animations to show
+          rem   selected characters
           rem Each player updates independently with staggered timing
           
           rem Update Player 1 animations (characters)
@@ -1055,9 +1094,9 @@ SelectSkipPlayer2Anim
 SelectSkipPlayer23Anim
           return
           
-          rem =================================================================
+          rem ==========================================================
           rem UPDATE INDIVIDUAL PLAYER ANIMATION
-          rem =================================================================
+          rem ==========================================================
           
 SelectUpdatePlayerAnim
           dim SUPA_playerIndex = temp1
@@ -1066,7 +1105,8 @@ SelectUpdatePlayerAnim
           rem Increment frame counter
           let charSelectPlayerAnimFrame[SUPA_playerIndex] = charSelectPlayerAnimFrame[SUPA_playerIndex] + 1
           
-          rem Check if it’s time to advance frame (every 6 frames for 10fps at 60fps)
+          rem Check if it’s time to advance frame (every 6 frames for
+          rem   10fps at 60fps)
           if charSelectPlayerAnimFrame[SUPA_playerIndex] >= AnimationFrameDelay then SelectAdvanceAnimFrame
           return
           
@@ -1094,7 +1134,8 @@ SelectAdvanceAnimFrame
           
 SelectAdvanceIdleAnim
           dim SAAI_playerIndex = temp1
-          rem Idle animation cycles every 60 frames, then toggles to walk
+          rem Idle animation cycles every 60 frames, then toggles to
+          rem   walk
           rem Use higher bit in sequence to count idle cycles
           rem Every 60 frames (10 idle animations), toggle to walk
           if frame & 63 then return
@@ -1109,9 +1150,9 @@ SelectAnimWaitForToggle
           rem Just return, toggling handled above
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem CONTROLLER RESCAN DETECTION
-          rem =================================================================
+          rem ==========================================================
           rem Re-detect controllers on Select/Pause/ColorB&W toggle
           rem to handle Quadtari being connected/disconnected
           

@@ -1,10 +1,11 @@
           rem ChaosFight - Source/Routines/FallingAnimation1.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem FALLING IN ANIMATION - PER-FRAME LOOP
-          rem =================================================================
-          rem Per-frame falling animation that moves players from quadrants
+          rem ==========================================================
+          rem Per-frame falling animation that moves players from
+          rem   quadrants
           rem to their row 2 starting positions.
           rem Called from MainLoop each frame (gameMode 4).
           rem
@@ -15,8 +16,9 @@
           rem
           rem TARGET POSITIONS (row 2, Y=24):
           rem   2-player: P1 at (53, 24), P2 at (107, 24)
-          rem   4-player: P1 at (32, 24), P3 at (64, 24), P4 at (96, 24), P2 at (128, 24)
-          rem =================================================================
+          rem 4-player: P1 at (32, 24), P3 at (64, 24), P4 at (96, 24),
+          rem   P2 at (128, 24)
+          rem ==========================================================
 
 FallingAnimation1
           dim FA1_playerIndex = temp1
@@ -28,8 +30,9 @@ FallingAnimation1
           if fallFrame > 3 then let fallFrame = 0
           
           rem Move Player 1 from quadrant to target (if active)
-          if selectedChar1 = NoCharacter then SkipPlayer1Move
-          rem playerIndex = 0 (player index), targetX = target X, targetY = target Y (24)
+          if selectedChar1 = NoCharacter then DonePlayer1Move
+          rem playerIndex = 0 (player index), targetX = target X,
+          rem   targetY = target Y (24)
           let FA1_playerIndex = 0
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player1Target4P
@@ -49,10 +52,10 @@ Player1TargetDone
           let FA1_reached = temp4
           if FA1_reached then let fallComplete = fallComplete + 1
           rem reached = 1 if reached target
-SkipPlayer1Move
+DonePlayer1Move
           
           rem Move Player 2 from quadrant to target (if active)
-          if selectedChar2_R = NoCharacter then SkipPlayer2Move
+          if selectedChar2_R = NoCharacter then DonePlayer2Move
           let FA1_playerIndex = 1
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player2Target4P
@@ -71,11 +74,11 @@ Player2TargetDone
           gosub MovePlayerToTarget
           let FA1_reached = temp4
           if FA1_reached then let fallComplete = fallComplete + 1
-SkipPlayer2Move
+DonePlayer2Move
           
           rem Move Player 3 from quadrant to target (if active)
-          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer3Move
-          if selectedChar3_R = NoCharacter then SkipPlayer3Move
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Move
+          if selectedChar3_R = NoCharacter then DonePlayer3Move
           let FA1_playerIndex = 2
           rem 4-player mode: target X = 64
           let FA1_targetX = 64
@@ -87,11 +90,11 @@ SkipPlayer2Move
           gosub MovePlayerToTarget
           let FA1_reached = temp4
           if FA1_reached then let fallComplete = fallComplete + 1
-SkipPlayer3Move
+DonePlayer3Move
           
           rem Move Player 4 from quadrant to target (if active)
-          if !(controllerStatus & SetQuadtariDetected) then SkipPlayer4Move
-          if selectedChar4_R = NoCharacter then SkipPlayer4Move
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Move
+          if selectedChar4_R = NoCharacter then DonePlayer4Move
           let FA1_playerIndex = 3
           rem 4-player mode: target X = 96
           let FA1_targetX = 96
@@ -103,13 +106,15 @@ SkipPlayer3Move
           gosub MovePlayerToTarget
           let FA1_reached = temp4
           if FA1_reached then let fallComplete = fallComplete + 1
-SkipPlayer4Move
+DonePlayer4Move
           
           rem Check if all players have reached their targets
           if fallComplete >= activePlayers then FallingComplete1
           
-          rem Set sprite positions and load character sprites dynamically
-          rem Use dynamic sprite setting instead of relying on player declarations
+          rem Set sprite positions and load character sprites
+          rem   dynamically
+          rem Use dynamic sprite setting instead of relying on player
+          rem   declarations
           gosub bank11 SetSpritePositions
           gosub bank11 SetPlayerSprites
           
@@ -118,18 +123,21 @@ SkipPlayer4Move
           
 FallingComplete1
           rem All players have reached row 2 positions
-          rem Call BeginGameLoop to initialize game state before switching modes
-          rem Note: BeginGameLoop will use final positions from falling animation
+          rem Call BeginGameLoop to initialize game state before
+          rem   switching modes
+          rem Note: BeginGameLoop will use final positions from falling
+          rem   animation
           gosub bank11 BeginGameLoop
           rem Transition to Game Mode
           let gameMode = ModeGame
           gosub bank13 ChangeGameMode
           return
           
-          rem =================================================================
+          rem ==========================================================
           rem MOVE PLAYER TO TARGET POSITION
-          rem =================================================================
-          rem Moves a player from their current position toward target (X, Y).
+          rem ==========================================================
+          rem Moves a player from their current position toward target
+          rem   (X, Y).
           rem Handles both horizontal and vertical movement.
           rem
           rem INPUT:
@@ -222,21 +230,26 @@ AtTarget
           let MPTT_reached = 1
           return
           
-          rem =================================================================
+          rem ==========================================================
           rem NUDGE PLAYER FROM PLAYFIELD COLLISION
-          rem =================================================================
-          rem Checks if player collides with playfield and nudges them away.
-          rem Prevents players from getting stuck in playfield obstacles during animation.
+          rem ==========================================================
+          rem Checks if player collides with playfield and nudges them
+          rem   away.
+          rem Prevents players from getting stuck in playfield obstacles
+          rem   during animation.
           rem
           rem INPUT:
           rem   MPTT_playerIndex (temp1) = player index (0-3)
-          rem   playerX[MPTT_playerIndex], playerY[MPTT_playerIndex] = current position
+          rem playerX[MPTT_playerIndex], playerY[MPTT_playerIndex] =
+          rem   current position
           rem
           rem MODIFIES:
-          rem   playerX[MPTT_playerIndex], playerY[MPTT_playerIndex] = nudged position if collision
+          rem playerX[MPTT_playerIndex], playerY[MPTT_playerIndex] =
+          rem   nudged position if collision
           rem
           rem EFFECTS:
-          rem   If playfield collision detected, nudges player 1 pixel away from obstacle
+          rem If playfield collision detected, nudges player 1 pixel
+          rem   away from obstacle
 NudgePlayerFromPlayfield
           dim NPF_playerIndex = temp1
           dim NPF_playerX = temp7
@@ -261,11 +274,14 @@ NudgePlayerFromPlayfield
           if NPF_pfColumn > 31 then let NPF_pfColumn = 31
           if NPF_pfColumn < 0 then let NPF_pfColumn = 0
           
-          rem Convert Y position to playfield row (divide by pfrowheight)
-          rem pfrowheight is typically 8 or 16 (powers of 2), so use bit shifts
+          rem Convert Y position to playfield row (divide by
+          rem   pfrowheight)
+          rem pfrowheight is typically 8 or 16 (powers of 2), so use bit
+          rem   shifts
           rem If pfrowheight = 8: divide by 8 = 3 right shifts
           rem If pfrowheight = 16: divide by 16 = 4 right shifts
-          rem Use 4 shifts for safety (works for both 8 and 16, may be off by 1 for 8 but acceptable for simple nudge)
+          rem Use 4 shifts for safety (works for both 8 and 16, may be
+          rem   off by 1 for 8 but acceptable for simple nudge)
           let NPF_pfRow = NPF_playerY
           asm
             lsr NPF_pfRow
@@ -276,14 +292,16 @@ NudgePlayerFromPlayfield
           if NPF_pfRow >= pfrows then let NPF_pfRow = pfrows - 1
           if NPF_pfRow < 0 then let NPF_pfRow = 0
           
-          rem Check collision at player position (simple single-point check)
+          rem Check collision at player position (simple single-point
+          rem   check)
           if pfread(NPF_pfColumn, NPF_pfRow) then NudgeFromPF
           
           rem No collision, return
           return
           
 NudgeFromPF
-          rem Collision detected - nudge player 1 pixel in direction toward target
+          rem Collision detected - nudge player 1 pixel in direction
+          rem   toward target
           rem Nudge horizontally toward target first
           rem Get targetX from parent function (preserved in temp2)
           let NPF_targetX = temp2
@@ -324,10 +342,12 @@ NudgeUp
           let playerY[NPF_playerIndex] = playerY[NPF_playerIndex] - 1
           return
           
-          rem =================================================================
-          rem MOVE PLAYER TO ROW 2 (legacy function name, now calls MovePlayerToTarget)                                                                         
-          rem =================================================================
+          rem ==========================================================
+          rem MOVE PLAYER TO ROW 2 (legacy function name, now calls
+          rem   MovePlayerToTarget)
+          rem ==========================================================
 MovePlayerToRow2
-          rem This is a placeholder - actual movement handled by MovePlayerToTarget                                                                             
+          rem This is a placeholder - actual movement handled by
+          rem   MovePlayerToTarget
           rem Kept for compatibility if referenced elsewhere
           return

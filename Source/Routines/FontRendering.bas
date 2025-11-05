@@ -1,9 +1,9 @@
           rem ChaosFight - Source/Routines/FontRendering.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem FONT RENDERING - HEX DIGITS 0-F
-          rem =================================================================
+          rem ==========================================================
           rem Renders 8×16 pixel hexadecimal digits (0-9, A-F) for:
           rem   - Player numbers (1-4) in player colors
           rem   - Arena selection (0-9) in white
@@ -16,43 +16,52 @@
           rem   Solid pixels on transparent background
 
           rem GENERATED FILES:
-          rem   Source/Generated/Numbers.bas (universal, not TV-specific)
+          rem Source/Generated/Numbers.bas (universal, not TV-specific)
 
           rem PLAYER COLORS (match character selection/health bars):
           rem   Player 1: Indigo (ColIndigo(14))
           rem   Player 2: Red   (ColRed(14))
           rem   Player 3: Yellow (ColYellow(14))
-          rem   Player 4: Turquoise (ColTurquoise(14), SECAM maps to Green)
-          rem =================================================================
+          rem Player 4: Turquoise (ColTurquoise(14), SECAM maps to
+          rem   Green)
+          rem ==========================================================
 
           rem Include font data (universal for all TV standards)
           #include "Source/Generated/Numbers.bas"
 
-          rem =================================================================
+          rem ==========================================================
           rem DRAW DIGIT - DATA-DRIVEN VERSION
-          rem =================================================================
-          rem Draws a single hexadecimal digit (0-F) at specified position.
-          rem Supports rendering to player0, player1, player2, player3, player4, or player5 for simultaneous digits.
+          rem ==========================================================
+          rem Draws a single hexadecimal digit (0-F) at specified
+          rem   position.
+          rem Supports rendering to player0, player1, player2, player3,
+          rem   player4, or player5 for simultaneous digits.
 
           rem INPUTS:
           rem   temp1 = digit value (0-15)
           rem   temp2 = X position (pixel column)
           rem   temp3 = Y position (pixel row)
-          rem   temp4 = color ($00-$FF for specific color, $FF = use temp5)
-          rem   temp5 = sprite select (0=player0, 1=player1, 2=player2, 3=player3, 4=player4, 5=player5) OR custom color if temp4=$FF
+          rem temp4 = color ($00-$FF for specific color, $FF = use
+          rem   temp5)
+          rem temp5 = sprite select (0=player0, 1=player1, 2=player2,
+          rem   3=player3, 4=player4, 5=player5) OR custom color if
+          rem   temp4=$FF
 
           rem COLORS:
           rem   ColGrey(14) = White (arena select)
           rem   ColIndigo(14) = Indigo (Player 1)
           rem   ColRed(14) = Red (Player 2)
           rem   ColYellow(14) = Yellow (Player 3)
-          rem   ColTurquoise(14) = Turquoise (Player 4, SECAM maps to Green)
+          rem ColTurquoise(14) = Turquoise (Player 4, SECAM maps to
+          rem   Green)
 
           rem EXAMPLE USAGE:
           rem   rem Draw level "A" (10) in white on left using player0
-          rem   temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = ColGrey(14) : temp5 = 0 : gosub DrawDigit
+          rem temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = ColGrey(14)
+          rem   : temp5 = 0 : gosub DrawDigit
           rem   rem Draw player "2" in red on right using player1
-          rem   temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = ColRed(14) : temp5 = 1 : gosub DrawDigit
+          rem temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = ColRed(14)
+          rem   : temp5 = 1 : gosub DrawDigit
 DrawDigit
           dim DD_digit = temp1
           dim DD_xPos = temp2
@@ -130,23 +139,29 @@ DrawPlayer5Digit
           rem tail call
           goto LoadPlayer5Digit
 
-          rem =================================================================
+          rem ==========================================================
           rem LOAD DIGIT DATA INTO SPRITES
-          rem =================================================================
-          rem These routines load digit bitmaps from the generated data tables.
-          rem The data is accessed using batariBasic data statement indexing.
+          rem ==========================================================
+          rem These routines load digit bitmaps from the generated data
+          rem   tables.
+          rem The data is accessed using batariBasic data statement
+          rem   indexing.
 
           rem INPUT:
-          rem   DigitOffset (temp6) = byte offset into font data (digit * 16)
+          rem DigitOffset (temp6) = byte offset into font data (digit *
+          rem   16)
 
 LoadPlayer0Digit
           dim LP0D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player0 sprite
-          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
+          rem Load digit graphics from Numbers font data into player0
+          rem   sprite
+          rem Input: temp6 = byte offset into font data (digit * 16,
+          rem   where digit is 0-9)
           rem Clamp digit offset to valid range (0-240 for digits 0-15)
           if LP0D_digitOffset > 240 then let LP0D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using assembly
+          rem Calculate sprite pointer = FontData + offset using
+          rem   assembly
           asm
             rem Load low byte of FontData base address
             lda # <FontData
@@ -166,12 +181,15 @@ LoadPlayer0Digit
 
 LoadPlayer1Digit
           dim LP1D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player1 sprite
-          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-9)
+          rem Load digit graphics from Numbers font data into player1
+          rem   sprite
+          rem Input: temp6 = byte offset into font data (digit * 16,
+          rem   where digit is 0-9)
           rem Clamp digit offset to valid range (0-240 for digits 0-15)
           if LP1D_digitOffset > 240 then let LP1D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using assembly
+          rem Calculate sprite pointer = FontData + offset using
+          rem   assembly
           asm
             rem Load low byte of FontData base address
             lda # <FontData
@@ -191,12 +209,15 @@ LoadPlayer1Digit
 
 LoadPlayer2Digit
           dim LP2D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player2 sprite
-          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-15)
+          rem Load digit graphics from Numbers font data into player2
+          rem   sprite
+          rem Input: temp6 = byte offset into font data (digit * 16,
+          rem   where digit is 0-15)
           rem Clamp digit offset to valid range (0-240 for digits 0-15)
           if LP2D_digitOffset > 240 then let LP2D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using assembly
+          rem Calculate sprite pointer = FontData + offset using
+          rem   assembly
           asm
             rem Load low byte of FontData base address
             lda # <FontData
@@ -216,12 +237,15 @@ LoadPlayer2Digit
 
 LoadPlayer3Digit
           dim LP3D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player3 sprite
-          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-15)
+          rem Load digit graphics from Numbers font data into player3
+          rem   sprite
+          rem Input: temp6 = byte offset into font data (digit * 16,
+          rem   where digit is 0-15)
           rem Clamp digit offset to valid range (0-240 for digits 0-15)
           if LP3D_digitOffset > 240 then let LP3D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using assembly
+          rem Calculate sprite pointer = FontData + offset using
+          rem   assembly
           asm
             rem Load low byte of FontData base address
             lda # <FontData
@@ -241,12 +265,15 @@ LoadPlayer3Digit
 
 LoadPlayer4Digit
           dim LP4D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player4 sprite
-          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-15)
+          rem Load digit graphics from Numbers font data into player4
+          rem   sprite
+          rem Input: temp6 = byte offset into font data (digit * 16,
+          rem   where digit is 0-15)
           rem Clamp digit offset to valid range (0-240 for digits 0-15)
           if LP4D_digitOffset > 240 then let LP4D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using assembly
+          rem Calculate sprite pointer = FontData + offset using
+          rem   assembly
           asm
             rem Load low byte of FontData base address
             lda # <FontData
@@ -266,12 +293,15 @@ LoadPlayer4Digit
 
 LoadPlayer5Digit
           dim LP5D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player5 sprite
-          rem Input: temp6 = byte offset into font data (digit * 16, where digit is 0-15)
+          rem Load digit graphics from Numbers font data into player5
+          rem   sprite
+          rem Input: temp6 = byte offset into font data (digit * 16,
+          rem   where digit is 0-15)
           rem Clamp digit offset to valid range (0-240 for digits 0-15)
           if LP5D_digitOffset > 240 then let LP5D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using assembly
+          rem Calculate sprite pointer = FontData + offset using
+          rem   assembly
           asm
             rem Load low byte of FontData base address
             lda # <FontData
@@ -289,10 +319,11 @@ LoadPlayer5Digit
           let player5height = 16
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem DRAW PLAYER NUMBER
-          rem =================================================================
-          rem Convenience routine to draw a player number in their color.
+          rem ==========================================================
+          rem Convenience routine to draw a player number in their
+          rem   color.
 
           rem INPUTS:
           rem   temp1 = player index (0-3)
@@ -350,16 +381,17 @@ DrawPlayerDigitNow
           rem tail call
           goto DrawDigit
 
-          rem =================================================================
+          rem ==========================================================
           rem DRAW ARENA NUMBER
-          rem =================================================================
+          rem ==========================================================
           rem Convenience routine to draw an arena number in white.
 
           rem INPUTS:
           rem   temp1 = arena number (0-31, displays as 1-32)
           rem   temp2 = X position
           rem   temp3 = Y position
-          rem   temp5 = sprite select (0=player0, 1=player1, 2=player2, 3=player3, 4=player4, 5=player5)
+          rem temp5 = sprite select (0=player0, 1=player1, 2=player2,
+          rem   3=player3, 4=player4, 5=player5)
 DrawArenaNumber
           dim DLN_arenaNumber = temp1
           dim DLN_xPos = temp2

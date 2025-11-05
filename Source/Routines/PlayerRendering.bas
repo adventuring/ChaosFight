@@ -1,34 +1,43 @@
           rem ChaosFight - Source/Routines/PlayerRendering.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem PLAYER SPRITE RENDERING
-          rem =================================================================
-          rem Handles sprite positioning, colors, and graphics for all players.
+          rem ==========================================================
+          rem Handles sprite positioning, colors, and graphics for all
+          rem   players.
 
           rem SPRITE ASSIGNMENTS (MULTISPRITE KERNEL):
-          rem   Participant 1 (array [0]): P0 sprite (player0x/player0y, COLUP0)
-          rem   Participant 2 (array [1]): P1 sprite (player1x/player1y, _COLUP1 - virtual sprite)
-          rem   Participant 3 (array [2]): P2 sprite (player2x/player2y, COLUP2)
-          rem   Participant 4 (array [3]): P3 sprite (player3x/player3y, COLUP3)
+          rem Participant 1 (array [0]): P0 sprite (player0x/player0y,
+          rem   COLUP0)
+          rem Participant 2 (array [1]): P1 sprite (player1x/player1y,
+          rem   _COLUP1 - virtual sprite)
+          rem Participant 3 (array [2]): P2 sprite (player2x/player2y,
+          rem   COLUP2)
+          rem Participant 4 (array [3]): P3 sprite (player3x/player3y,
+          rem   COLUP3)
 
           rem MISSILE SPRITES:
-          rem   2-player mode: missile0 = Participant 1, missile1 = Participant 2 (no multiplexing)
-          rem   4-player mode: missile0 and missile1 multiplexed between all 4 participants (even/odd frames)
+          rem 2-player mode: missile0 = Participant 1, missile1 =
+          rem   Participant 2 (no multiplexing)
+          rem 4-player mode: missile0 and missile1 multiplexed between
+          rem   all 4 participants (even/odd frames)
 
           rem AVAILABLE VARIABLES:
           rem   playerX[0-3], playerY[0-3] - Positions
           rem   playerState[0-3] - State flags
           rem   playerRecoveryFrames[0-3] - Hitstun frames
-          rem   missileActive (bit flags) - Projectile states (bit 0=P0, bit 1=P1, bit 2=P2, bit 3=P3)
+          rem missileActive (bit flags) - Projectile states (bit 0=P0,
+          rem   bit 1=P1, bit 2=P2, bit 3=P3)
           rem   missileX[0-3], missileY[0-3] - Projectile positions
           rem   QuadtariDetected, selectedChar3_R, selectedChar4_R
-          rem =================================================================
+          rem ==========================================================
 
-          rem =================================================================
+          rem ==========================================================
           rem SET SPRITE POSITIONS
-          rem =================================================================
-          rem Updates hardware sprite position registers for all active entities.
+          rem ==========================================================
+          rem Updates hardware sprite position registers for all active
+          rem   entities.
 SetSpritePositions
           rem Set player sprite positions
           player0x = playerX[0]
@@ -36,46 +45,61 @@ SetSpritePositions
           player1x = playerX[1]
           player1y = playerY[1]
 
-          rem Set positions for participants 3 & 4 in 4-player mode (multisprite kernel)
-          rem Participant 3 (array [2]): P2 sprite (player2x/player2y, COLUP2)
-          rem Participant 4 (array [3]): P3 sprite (player3x/player3y, COLUP3)
-          rem Missiles are available for projectiles since participants use proper sprites
+          rem Set positions for participants 3 & 4 in 4-player mode
+          rem   (multisprite kernel)
+          rem Participant 3 (array [2]): P2 sprite (player2x/player2y,
+          rem   COLUP2)
+          rem Participant 4 (array [3]): P3 sprite (player3x/player3y,
+          rem   COLUP3)
+          rem Missiles are available for projectiles since participants
+          rem   use proper sprites
           
           rem Set Participant 3 position (array [2] → P2 sprite)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Position
-          if selectedChar3_R = 255 then goto SkipPlayer3Position
-          if ! playerHealth[2] then goto SkipPlayer3Position
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Position
+          if selectedChar3_R = 255 then goto DonePlayer3Position
+          if ! playerHealth[2] then goto DonePlayer3Position
           let player2x = playerX[2]
           let player2y = playerY[2]
-SkipPlayer3Position
+DonePlayer3Position
           
           rem Set Participant 4 position (array [3] → P3 sprite)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Position
-          if selectedChar4_R = 255 then goto SkipPlayer4Position
-          if ! playerHealth[3] then goto SkipPlayer4Position
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Position
+          if selectedChar4_R = 255 then goto DonePlayer4Position
+          if ! playerHealth[3] then goto DonePlayer4Position
           let player3x = playerX[3]
           let player3y = playerY[3]
-SkipPlayer4Position
+DonePlayer4Position
           
 
           rem Set missile positions for projectiles
-          rem Hardware missiles: missile0 and missile1 (only 2 physical missiles available on TIA)
-          rem In 2-player mode: missile0 = Participant 1, missile1 = Participant 2 (no multiplexing needed)
-          rem In 4-player mode: Use frame multiplexing to support 4 logical missiles with 2 hardware missiles:
-          rem   Even frames: missile0 = Participant 1 (array [0]), missile1 = Participant 2 (array [1])
-          rem   Odd frames:  missile0 = Participant 3 (array [2]), missile1 = Participant 4 (array [3])
-          rem Use missileActive bit flags: bit 0 = Participant 1, bit 1 = Participant 2, bit 2 = Participant 3, bit 3 = Participant 4
+          rem Hardware missiles: missile0 and missile1 (only 2 physical
+          rem   missiles available on TIA)
+          rem In 2-player mode: missile0 = Participant 1, missile1 =
+          rem   Participant 2 (no multiplexing needed)
+          rem In 4-player mode: Use frame multiplexing to support 4
+          rem   logical missiles with 2 hardware missiles:
+          rem Even frames: missile0 = Participant 1 (array [0]),
+          rem   missile1 = Participant 2 (array [1])
+          rem Odd frames: missile0 = Participant 3 (array [2]), missile1
+          rem   = Participant 4 (array [3])
+          rem Use missileActive bit flags: bit 0 = Participant 1, bit 1
+          rem   = Participant 2, bit 2 = Participant 3, bit 3 =
+          rem   Participant 4
           
-          rem Check if participants 3 or 4 are active (selected and not eliminated)
-          rem Use this flag instead of QuadtariDetected for missile multiplexing
-          rem because we only need to multiplex when participants 3 or 4 are actually in the game
+          rem Check if participants 3 or 4 are active (selected and not
+          rem   eliminated)
+          rem Use this flag instead of QuadtariDetected for missile
+          rem   multiplexing
+          rem because we only need to multiplex when participants 3 or 4
+          rem   are actually in the game
           if !(controllerStatus & SetPlayers34Active) then goto RenderMissiles2Player
           
           rem 4-player mode: Use frame multiplexing
           dim SSP_frameParity = temp6
           dim SSP_missileActive = temp4
           let SSP_frameParity = frame & 1
-          rem 0 = even frame (Participants 1-2), 1 = odd frame (Participants 3-4)
+          rem 0 = even frame (Participants 1-2), 1 = odd frame
+          rem   (Participants 3-4)
           
           if SSP_frameParity = 0 then goto RenderMissilesEvenFrame
           
@@ -107,7 +131,8 @@ RenderMissilesEvenFrame
           
 RenderMissiles2Player
           dim RM2P_missileActive = temp4
-                    rem 2-player mode: No multiplexing needed, assign missiles directly
+          rem 2-player mode: No multiplexing needed, assign missiles
+          rem   directly
           rem Participant 1 (array [0]) missile (missile0, P0 sprite)
           ENAM0 = 0 
           let RM2P_missileActive = missileActive & 1
@@ -120,9 +145,9 @@ RenderMissiles2Player
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem SET PLAYER SPRITES
-          rem =================================================================
+          rem ==========================================================
           rem Sets colors and graphics for all player sprites.
           rem Colors change based on hurt state and color/B&W switch.
           rem On 7800, Pause button can override Color/B&W setting.
@@ -132,7 +157,8 @@ SetPlayerSprites
           dim SPS_playerNum = temp3
           dim SPS_isHurt = temp4
           rem Set Player 1 color and sprite
-          rem Use LoadCharacterColors for consistent color handling across TV modes
+          rem Use LoadCharacterColors for consistent color handling
+          rem   across TV modes
           let SPS_charIndex = playerChar[0]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[0] > 0
@@ -150,7 +176,8 @@ SetPlayerSprites
           
 Player1ColorDone
 
-          rem Set sprite reflection based on facing direction (bit 0: 0=left, 1=right)
+          rem Set sprite reflection based on facing direction (bit 0:
+          rem   0=left, 1=right)
           asm
           lda playerState
           and #1
@@ -177,8 +204,10 @@ Player1ColorDone
           gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
-          rem Use LoadCharacterColors for consistent color handling across TV modes
-          rem NOTE: Multisprite kernel requires _COLUP1 (with underscore) for Player 2 virtual sprite
+          rem Use LoadCharacterColors for consistent color handling
+          rem   across TV modes
+          rem NOTE: Multisprite kernel requires _COLUP1 (with
+          rem   underscore) for Player 2 virtual sprite
           let SPS_charIndex = playerChar[1]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[1] > 0
@@ -197,7 +226,8 @@ Player1ColorDone
 Player2ColorDone
 
           rem Set sprite reflection based on facing direction
-          rem NOTE: Multisprite kernel requires _NUSIZ1 (not NewNUSIZ+1) for Player 2 virtual sprite
+          rem NOTE: Multisprite kernel requires _NUSIZ1 (not NewNUSIZ+1)
+          rem   for Player 2 virtual sprite
           asm
           lda playerState+1
           and #1
@@ -225,14 +255,16 @@ Player2ColorDone
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
           rem Players 3 & 4 have independent COLUP2/COLUP3 registers
-          rem No color inheritance issues with proper multisprite implementation
+          rem No color inheritance issues with proper multisprite
+          rem   implementation
           
                     rem Set Player 3 color and sprite (if active)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Sprite
-          if selectedChar3_R = 255 then goto SkipPlayer3Sprite
-          if ! playerHealth[2] then goto SkipPlayer3Sprite
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Sprite
+          if selectedChar3_R = 255 then goto DonePlayer3Sprite
+          if ! playerHealth[2] then goto DonePlayer3Sprite
           
-          rem Use LoadCharacterColors for consistent color handling across TV modes
+          rem Use LoadCharacterColors for consistent color handling
+          rem   across TV modes
           let SPS_charIndex = playerChar[2]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[2] > 0
@@ -276,15 +308,17 @@ Player3ColorDone
           let temp3 = SPS_playerNum
           gosub bank10 LoadCharacterSprite
           
-SkipPlayer3Sprite
+DonePlayer3Sprite
 
           rem Set Player 4 color and sprite (if active)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Sprite
-          if selectedChar4_R = 255 then goto SkipPlayer4Sprite
-          if ! playerHealth[3] then goto SkipPlayer4Sprite
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Sprite
+          if selectedChar4_R = 255 then goto DonePlayer4Sprite
+          if ! playerHealth[3] then goto DonePlayer4Sprite
           
-          rem Use LoadCharacterColors for consistent color handling across TV modes
-          rem Player 4: Turquoise (SECAM maps to Green), hurt handled by LoadCharacterColors
+          rem Use LoadCharacterColors for consistent color handling
+          rem   across TV modes
+          rem Player 4: Turquoise (SECAM maps to Green), hurt handled by
+          rem   LoadCharacterColors
           let SPS_charIndex = playerChar[3]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[3] > 0
@@ -328,50 +362,52 @@ Player4ColorDone
           let temp3 = SPS_playerNum
           gosub bank10 LoadCharacterSprite
           
-SkipPlayer4Sprite
+DonePlayer4Sprite
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem DISPLAY HEALTH
-          rem =================================================================
+          rem ==========================================================
           rem Shows health status for all active players.
           rem Flashes sprites when health is critically low.
 DisplayHealth
-          rem Flash Participant 1 sprite (array [0], P0) if health is low (but not during recovery)
+          rem Flash Participant 1 sprite (array [0], P0) if health is
+          rem   low (but not during recovery)
           rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[0] >= 25 then goto SkipParticipant1Flash
-          if playerRecoveryFrames[0] <> 0 then goto SkipParticipant1Flash
+          if playerHealth[0] >= 25 then goto DoneParticipant1Flash
+          if playerRecoveryFrames[0] <> 0 then goto DoneParticipant1Flash
           if frame & 8 then player0x = 200 
           rem Hide P0 sprite
-SkipParticipant1Flash
+DoneParticipant1Flash
 
-          rem Flash Participant 2 sprite (array [1], P1) if health is low
+          rem Flash Participant 2 sprite (array [1], P1) if health is
+          rem   low
           rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[1] >= 25 then goto SkipParticipant2Flash
-          if playerRecoveryFrames[1] <> 0 then goto SkipParticipant2Flash
+          if playerHealth[1] >= 25 then goto DoneParticipant2Flash
+          if playerRecoveryFrames[1] <> 0 then goto DoneParticipant2Flash
           if frame & 8 then player1x = 200
-SkipParticipant2Flash
+DoneParticipant2Flash
 
           rem Flash Player 3 sprite if health is low (but alive)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer3Flash
-          if selectedChar3_R = 255 then goto SkipPlayer3Flash
-          if ! playerHealth[2] then goto SkipPlayer3Flash
-          if playerHealth[2] >= 25 then goto SkipPlayer3Flash
-          if playerRecoveryFrames[2] <> 0 then goto SkipPlayer3Flash
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Flash
+          if selectedChar3_R = 255 then goto DonePlayer3Flash
+          if ! playerHealth[2] then goto DonePlayer3Flash
+          if playerHealth[2] >= 25 then goto DonePlayer3Flash
+          if playerRecoveryFrames[2] <> 0 then goto DonePlayer3Flash
           if frame & 8 then player2x = 200 
           rem Player 3 uses player2 sprite
-SkipPlayer3Flash
+DonePlayer3Flash
 
           rem Flash Player 4 sprite if health is low (but alive)
-          if !(controllerStatus & SetQuadtariDetected) then goto SkipPlayer4Flash
-          if selectedChar4_R = 255 then goto SkipPlayer4Flash
-          if ! playerHealth[3] then goto SkipPlayer4Flash
-          if playerHealth[3] >= 25 then goto SkipPlayer4Flash
-          if playerRecoveryFrames[3] <> 0 then goto SkipPlayer4Flash
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Flash
+          if selectedChar4_R = 255 then goto DonePlayer4Flash
+          if ! playerHealth[3] then goto DonePlayer4Flash
+          if playerHealth[3] >= 25 then goto DonePlayer4Flash
+          if playerRecoveryFrames[3] <> 0 then goto DonePlayer4Flash
           if frame & 8 then player3x = 200 
           rem Player 4 uses player3 sprite
-SkipPlayer4Flash
+DonePlayer4Flash
           
           return
 

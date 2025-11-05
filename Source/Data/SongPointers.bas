@@ -1,19 +1,24 @@
           rem ChaosFight - Source/Data/SongPointers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem SONG POINTER DATA TABLES
-          rem =================================================================
-          rem Song pointer lookup tables (populated with symbol addresses)
-          rem Format: data SongPointersL, SongPointersH tables (29 entries: indices 0-28)
-          rem Songs 0-25: Unique character theme songs in character ID order (skipping duplicates)
-          rem   Character order: 0=Bernie, 1=OCascadia, 2=Revontuli, 3=EXO, 4=Grizzards,
-          rem   7=MagicalFairyForce, 9=Bolero, 10=LowRes, 13=RoboTito, 14=SongOfTheBear,
+          rem ==========================================================
+          rem Song pointer lookup tables (populated with symbol
+          rem   addresses)
+          rem Format: data SongPointersL, SongPointersH tables (29
+          rem   entries: indices 0-28)
+          rem Songs 0-25: Unique character theme songs in character ID
+          rem   order (skipping duplicates)
+          rem Character order: 0=Bernie, 1=OCascadia, 2=Revontuli,
+          rem   3=EXO, 4=Grizzards,
+          rem 7=MagicalFairyForce, 9=Bolero, 10=LowRes, 13=RoboTito,
+          rem   14=SongOfTheBear,
           rem   15=DucksAway, 16-30=Character16Theme-Character30Theme
           rem Song 26: Chaotica (Title screen)
           rem Song 27: AtariToday (Publisher preamble)
           rem Song 28: Interworldly (Author preamble)
-          rem =================================================================
+          rem ==========================================================
           
           data SongPointersL
           <Song_Bernie_Voice0, <Song_OCascadia_Voice0, <Song_Revontuli_Voice0, <Song_EXO_Voice0, <Song_Grizzards_Voice0,
@@ -32,8 +37,10 @@
           >Song_Character30Theme_Voice0, >Song_Chaotica_Voice0, >Song_AtariToday_Voice0, >Song_Interworldly_Voice0
           end
           
-          rem Voice 1 stream pointer lookup tables (populated with symbol addresses)
-          rem Format: data SongPointersSecondL, SongPointersSecondH tables (29 entries: indices 0-28)
+          rem Voice 1 stream pointer lookup tables (populated with
+          rem   symbol addresses)
+          rem Format: data SongPointersSecondL, SongPointersSecondH
+          rem   tables (29 entries: indices 0-28)
           data SongPointersSecondL
           <Song_Bernie_Voice1, <Song_OCascadia_Voice1, <Song_Revontuli_Voice1, <Song_EXO_Voice1, <Song_Grizzards_Voice1,
           <Song_MagicalFairyForce_Voice1, <Song_Bolero_Voice1, <Song_LowRes_Voice1, <Song_RoboTito_Voice1, <Song_SongOfTheBear_Voice1,

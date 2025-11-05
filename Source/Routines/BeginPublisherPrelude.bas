@@ -1,19 +1,23 @@
           rem ChaosFight - Source/Routines/BeginPublisherPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem BEGIN PUBLISHER PRELUDE - SETUP ROUTINE
-          rem =================================================================
-          rem Initializes state for Publisher Preamble screen (gameMode 0).
-          rem Called from ChangeGameMode when transitioning to Publisher Preamble.
+          rem ==========================================================
+          rem Initializes state for Publisher Preamble screen (gameMode
+          rem   0).
+          rem Called from ChangeGameMode when transitioning to Publisher
+          rem   Preamble.
           rem
           rem Sets up:
           rem   - Timer initialization
           rem   - Background color
           rem   - Music playback start
           rem
-          rem Bitmap data is loaded automatically by titlescreen kernel via includes.
-          rem No explicit loading needed - titlescreen kernel handles bitmap display.
+          rem Bitmap data is loaded automatically by titlescreen kernel
+          rem   via includes.
+          rem No explicit loading needed - titlescreen kernel handles
+          rem   bitmap display.
 
 BeginPublisherPrelude
           rem Initialize preamble timer

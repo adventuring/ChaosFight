@@ -1,5 +1,6 @@
           rem ChaosFight - Source/Routines/BeginAuthorPrelude.bas
-          rem Setup routine for Author Preamble. Sets initial state only.
+          rem Setup routine for Author Preamble. Sets initial state
+          rem   only.
 
 BeginAuthorPrelude
           rem Initialize Author Preamble mode
@@ -19,7 +20,8 @@ BeginAuthorPrelude
           rem Set window values for Author screen (Interworldly only)
           gosub bank12 SetAuthorWindowValues
           
-          rem Note: Bitmap data is loaded automatically by titlescreen kernel via includes
+          rem Note: Bitmap data is loaded automatically by titlescreen
+          rem   kernel via includes
           
           return
 

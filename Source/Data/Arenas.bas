@@ -2,22 +2,27 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Arena playfield data (not generated - edit manually)
 
-          rem =================================================================
+          rem ==========================================================
           rem ARENA DATA - PURE DATA FORMAT
-          rem =================================================================
-          rem Game arenas: 16 pixels wide (left half) mirrored, 8 rows high (pfres=8)
-          rem   Memory constraint: 8 rows × 4 bytes = 32 bytes (var96-var127)
+          rem ==========================================================
+          rem Game arenas: 16 pixels wide (left half) mirrored, 8 rows
+          rem   high (pfres=8)
+          rem Memory constraint: 8 rows × 4 bytes = 32 bytes
+          rem   (var96-var127)
           rem Use X for solid, . = empty
           rem
           rem Each arena has:
           rem   - ArenaXPlayfield: playfield pixel data
-          rem   - ArenaXColorsColor: row colors for Color mode (switchbw=0)
-          rem   - ArenaXColorsBW: row colors for B&W mode (switchbw=1) - all white
-          rem =================================================================
+          rem - ArenaXColorsColor: row colors for Color mode
+          rem   (switchbw=0)
+          rem - ArenaXColorsBW: row colors for B&W mode (switchbw=1) -
+          rem   all white
+          rem ==========================================================
 
           rem Winner Screen: Podium/Platform pattern
           rem 32×32 admin screen layout (pfres=32)
-          rem Design: Central high podium for winner, side platforms for 2nd/3rd
+          rem Design: Central high podium for winner, side platforms for
+          rem   2nd/3rd
           rem Row 16: Central high platform (winner podium)
           rem Row 24: Left and right platforms (2nd/3rd place)
 WinnerScreenPlayfield
@@ -39,7 +44,8 @@ WinnerScreenPlayfield
           X...............
           X...............
           X......XXXXXXXXX
-          rem Row 16: Central high podium (left half - mirrors to full width)
+          rem Row 16: Central high podium (left half - mirrors to full
+          rem   width)
           X...............
           X...............
           X...............
@@ -53,7 +59,8 @@ WinnerScreenPlayfield
           X...............
           X...............
           X......XXXXXXXXX
-          rem Row 24: Bottom platforms (left half - mirrors to full width)
+          rem Row 24: Bottom platforms (left half - mirrors to full
+          rem   width)
           X...............
           X...............
           X...............
@@ -321,13 +328,13 @@ end
           rem Arena 6: Multi-Platform (multiple small platforms)
 Arena6Playfield
           playfield:
-          ................
-          ..XXXXXX........
-          ................
-          ......XXXX......
-          ................
+          X...............
+          X.XXXXXX........
+          X...............
+          X.....XXXX......
+          X...............
           XXXXXX..........
-          ................
+          X...............
           XXXXXXXXXXXXXXXX
 end
 
@@ -429,7 +436,8 @@ Arena8ColorsBW
           ColGrey(14)
 end
 
-          rem Arena 9: The Deep Pit (variant of Arena 1 with deeper walls)
+          rem Arena 9: The Deep Pit (variant of Arena 1 with deeper
+          rem   walls)
 Arena9Playfield
           playfield:
           XXXXXXXXXXXXXXXX
@@ -466,16 +474,17 @@ Arena9ColorsBW
           ColGrey(14)
 end
 
-          rem Arena 10: Sky Battlefield (variant of Arena 2 with elevated platforms)
+          rem Arena 10: Sky Battlefield (variant of Arena 2 with
+          rem   elevated platforms)
 Arena10Playfield
           playfield:
-          ....XXXXXXXX....
-          ................
+          X...XXXXXXXX....
+          X...............
           XXXXXX....XXXXXX
-          ................
-          ....XXXXXXXX....
-          ................
-          ................
+          X...............
+          X...XXXXXXXX....
+          X...............
+          X...............
           XXXXXXXXXXXXXXXX
 end
 
@@ -503,16 +512,17 @@ Arena10ColorsBW
           ColGrey(14)
 end
 
-          rem Arena 11: Floating Platforms (variant of Arena 3 with four floating blocks when mirrored)
+          rem Arena 11: Floating Platforms (variant of Arena 3 with four
+          rem   floating blocks when mirrored)
 Arena11Playfield
           playfield:
-          ................
-          ..XXXX....XXXX..
-          ..XXXX....XXXX..
-          ..XXXX....XXXX..
-          ..XXXX....XXXX..
-          ................
-          ................
+          X...............
+          X.XXXX....XXXX..
+          X.XXXX....XXXX..
+          X.XXXX....XXXX..
+          X.XXXX....XXXX..
+          X...............
+          X...............
           XXXXXXXXXXXXXXXX
 end
 
@@ -577,7 +587,8 @@ Arena12ColorsBW
           ColGrey(14)
 end
 
-          rem Arena 13: Fortress Walls (variant of Arena 5 with symmetrical corners)
+          rem Arena 13: Fortress Walls (variant of Arena 5 with
+          rem   symmetrical corners)
 Arena13Playfield
           playfield:
           XXX..XXXXXXX..XX
@@ -614,16 +625,17 @@ Arena13ColorsBW
           ColGrey(14)
 end
 
-          rem Arena 14: Floating Islands (variant of Arena 6 with more platforms)
+          rem Arena 14: Floating Islands (variant of Arena 6 with more
+          rem   platforms)
 Arena14Playfield
           playfield:
-          .XX..XX..XX..XX.
-          ................
-          ..XXXX....XXXX..
-          ................
-          .XX..XX..XX..XX.
-          ................
-          ..XXXX....XXXX..
+          X.XX..XX..XX..XX.
+          X...............
+          X.XXXX....XXXX..
+          X...............
+          X.XX..XX..XX..XX.
+          X...............
+          X.XXXX....XXXX..
           XXXXXXXXXXXXXXXX
 end
 
@@ -651,7 +663,8 @@ Arena14ColorsBW
           ColGrey(14)
 end
 
-          rem Arena 15: The Labyrinth (variant of Arena 7 with more complex maze)
+          rem Arena 15: The Labyrinth (variant of Arena 7 with more
+          rem   complex maze)
 Arena15Playfield
           playfield:
           XX..XXXX..XX..XX
@@ -688,17 +701,18 @@ Arena15ColorsBW
           ColGrey(14)
 end
 
-          rem Arena 16: Danger Zone (variant of Arena 8 with alternating obstacles)
+          rem Arena 16: Danger Zone (variant of Arena 8 with alternating
+          rem   obstacles)
 Arena16Playfield
           playfield:
-          .X.X.X.X.X.X.X.X
-          ................
-          X.X.X.X.X.X.X.X.
-          ................
-          .X.X.X.X.X.X.X.X
-          ................
-          X.X.X.X.X.X.X.X.
-          .X.X.X.X.X.X.X.X
+          XX.X.X.X.X.X.X.X
+          X...............
+          XX.X.X.X.X.X.X.X
+          X...............
+          XX.X.X.X.X.X.X.X
+          X...............
+          XX.X.X.X.X.X.X.X
+          XX.X.X.X.X.X.X.X
 end
 
 Arena16ColorsColor

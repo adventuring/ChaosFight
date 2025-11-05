@@ -1,13 +1,15 @@
           rem ChaosFight - Source/Routines/ArenaLoader.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem ARENA LOADER
-          rem =================================================================
-          rem Loads arena playfield data and colors based on selectedArena.
-          rem Handles Color/B&W switch: switchbw=1 (B&W/white), switchbw=0 (Color/row colors)
+          rem ==========================================================
+          rem Loads arena playfield data and colors based on
+          rem   selectedArena.
+          rem Handles Color/B&W switch: switchbw=1 (B&W/white),
+          rem   switchbw=0 (Color/row colors)
           rem SECAM always uses B&W mode regardless of switch.
-          rem =================================================================
+          rem ==========================================================
 
 #include "Source/Data/Arenas.bas"
 #include "Source/Common/Colors.h"
@@ -35,8 +37,10 @@ GetBWMode
           #endif
           
           rem NTSC/PAL: Check switchbw and colorBWOverride
-          rem switchbw = 1 means B&W mode (white), switchbw = 0 means Color mode
-          rem colorBWOverride = 1 means B&W override (from 7800 pause button)
+          rem switchbw = 1 means B&W mode (white), switchbw = 0 means
+          rem   Color mode
+          rem colorBWOverride = 1 means B&W override (from 7800 pause
+          rem   button)
           let LA_bwMode = switchbw
           if colorBWOverride then let LA_bwMode = 1
           return
@@ -359,12 +363,14 @@ LoadArena15BW
           pfcolors Arena16ColorsBW
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem RELOAD ARENA COLORS
-          rem =================================================================
-          rem Reloads only the arena colors (not playfield) based on current
-          rem Color/B&W switch state. Called when switch changes during gameplay.
-          rem =================================================================
+          rem ==========================================================
+          rem Reloads only the arena colors (not playfield) based on
+          rem   current
+          rem Color/B&W switch state. Called when switch changes during
+          rem   gameplay.
+          rem ==========================================================
 
 ReloadArenaColors
           dim RAC_arenaIndex = temp1

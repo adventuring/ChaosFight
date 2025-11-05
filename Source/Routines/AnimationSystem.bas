@@ -1,10 +1,11 @@
           rem ChaosFight - Source/Routines/AnimationSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem 10fps character animation system with platform-specific timing
+          rem 10fps character animation system with platform-specific
+          rem   timing
 
-          rem =================================================================
+          rem ==========================================================
           rem ANIMATION SYSTEM ROUTINES
-          rem =================================================================
+          rem ==========================================================
 
           rem Update character animations for all players
           rem Called every frame to manage 10fps animation timing
@@ -29,67 +30,86 @@ AnimationSkipPlayer3
           return
 
           rem Update animation for a specific player
-          rem Uses per-sprite 10fps counter (animationCounter), NOT global frame counter
+          rem Uses per-sprite 10fps counter (animationCounter), NOT
+          rem   global frame counter
           rem INPUT: currentPlayer = player index (0-3)
-          rem        animationCounter[currentPlayer] = current frame timer (per-sprite 10fps counter)
-          rem        currentAnimationSeq[currentPlayer] = current animation action/sequence (0-15)
+          rem animationCounter[currentPlayer] = current frame timer
+          rem   (per-sprite 10fps counter)
+          rem currentAnimationSeq[currentPlayer] = current animation
+          rem   action/sequence (0-15)
           rem OUTPUT: None
-          rem EFFECTS: Increments per-sprite animation counter, advances animation frame when counter reaches threshold,
-          rem           updates sprite graphics via LoadPlayerSprite, handles frame 7 transition logic
+          rem EFFECTS: Increments per-sprite animation counter, advances
+          rem   animation frame when counter reaches threshold,
+          rem updates sprite graphics via LoadPlayerSprite, handles
+          rem   frame 7 transition logic
 UpdatePlayerAnimation
           rem Skip if player is eliminated
-          if currentPlayer = 0 && playersEliminated & 1 then return
-          if currentPlayer = 1 && playersEliminated & 2 then return
-          if currentPlayer = 2 && playersEliminated & 4 then return
-          if currentPlayer = 3 && playersEliminated & 8 then return
+          if currentPlayer = 0 && playersEliminated_R & 1 then return
+          if currentPlayer = 1 && playersEliminated_R & 2 then return
+          if currentPlayer = 2 && playersEliminated_R & 4 then return
+          if currentPlayer = 3 && playersEliminated_R & 8 then return
           if playerHealth[currentPlayer] = 0 then return
           
-          rem Increment this sprite 10fps animation counter (NOT global frame counter)
-          rem SCRAM read-modify-write: Read from r077, modify, write to w077
+          rem Increment this sprite 10fps animation counter (NOT global
+          rem   frame counter)
+          rem SCRAM read-modify-write: Read from r077, modify, write to
+          rem   w077
           dim UAS_animCounterRead = temp4
           let UAS_animCounterRead = animationCounter_R[currentPlayer]
           let UAS_animCounterRead = UAS_animCounterRead + 1
           let animationCounter_W[currentPlayer] = UAS_animCounterRead
           
-          rem Check if time to advance animation frame (every AnimationFrameDelay frames)
+          rem Check if time to advance animation frame (every
+          rem   AnimationFrameDelay frames)
           if UAS_animCounterRead >= AnimationFrameDelay then goto AdvanceFrame
-          goto SkipAdvance
+          goto DoneAdvance
 AdvanceFrame
           let animationCounter_W[currentPlayer] = 0
           rem Inline AdvanceAnimationFrame
           rem Advance to next frame in current animation action
-          rem Frame is from sprite 10fps counter (currentAnimationFrame), not global frame
-          rem SCRAM read-modify-write: Read from r081, modify, write to w081
+          rem Frame is from sprite 10fps counter
+          rem   (currentAnimationFrame), not global frame
+          rem SCRAM read-modify-write: Read from r081, modify, write to
+          rem   w081
           dim UAS_animFrameRead = temp4
           let UAS_animFrameRead = currentAnimationFrame_R[currentPlayer]
           let UAS_animFrameRead = UAS_animFrameRead + 1
           let currentAnimationFrame_W[currentPlayer] = UAS_animFrameRead
           
-          rem Check if we have completed the current action (8 frames per action)
-          rem Use temp variable from previous increment (UAS_animFrameRead)
+          rem Check if we have completed the current action (8 frames
+          rem   per action)
+          rem Use temp variable from previous increment
+          rem   (UAS_animFrameRead)
           if UAS_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
-SkipAdvance
+DoneAdvance
           return
 
           rem Advance to next frame in current animation action
-          rem Frame counter is per-sprite 10fps counter, NOT global frame counter
+          rem Frame counter is per-sprite 10fps counter, NOT global
+          rem   frame counter
           rem INPUT: currentPlayer = player index (0-3)
-          rem        currentAnimationSeq[currentPlayer] = current animation action/sequence (0-15)
-          rem        currentAnimationFrame[currentPlayer] = current frame within sequence (0-7)
+          rem currentAnimationSeq[currentPlayer] = current animation
+          rem   action/sequence (0-15)
+          rem currentAnimationFrame[currentPlayer] = current frame
+          rem   within sequence (0-7)
           rem OUTPUT: None
-          rem EFFECTS: Increments currentAnimationFrame[currentPlayer], checks for frame 7 completion,
-          rem           triggers HandleAnimationTransition when 8 frames completed
+          rem EFFECTS: Increments currentAnimationFrame[currentPlayer],
+          rem   checks for frame 7 completion,
+          rem triggers HandleAnimationTransition when 8 frames completed
 AdvanceAnimationFrame
           rem Advance to next frame in current animation action
-          rem Frame is from sprite 10fps counter (currentAnimationFrame), not global frame
-          rem SCRAM read-modify-write: Read from r081, modify, write to w081
+          rem Frame is from sprite 10fps counter
+          rem   (currentAnimationFrame), not global frame
+          rem SCRAM read-modify-write: Read from r081, modify, write to
+          rem   w081
           dim AAF_animFrameRead = temp4
           let AAF_animFrameRead = currentAnimationFrame_R[currentPlayer]
           let AAF_animFrameRead = AAF_animFrameRead + 1
           let currentAnimationFrame_W[currentPlayer] = AAF_animFrameRead
           
-          rem Check if we have completed the current action (8 frames per action)
+          rem Check if we have completed the current action (8 frames
+          rem   per action)
           rem Use temp variable from increment (AAF_animFrameRead)
           if AAF_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
@@ -103,13 +123,19 @@ UpdateSprite
           dim US_animationFrame = temp2
           dim US_animationAction = temp3
           dim US_playerNumber = temp4
-          rem Update character sprite with current animation frame and action
-          rem INPUT: currentPlayer = player index (0-3) (uses global variable)
-          rem        currentAnimationFrame[currentPlayer] = current frame within sequence (0-7)
-          rem        currentAnimationSeq[currentPlayer] = current animation action/sequence (0-15)
+          rem Update character sprite with current animation frame and
+          rem   action
+          rem INPUT: currentPlayer = player index (0-3) (uses global
+          rem   variable)
+          rem currentAnimationFrame[currentPlayer] = current frame
+          rem   within sequence (0-7)
+          rem currentAnimationSeq[currentPlayer] = current animation
+          rem   action/sequence (0-15)
           rem OUTPUT: None
-          rem EFFECTS: Loads sprite graphics for current player with current animation frame and action sequence
-          rem Frame is from this sprite 10fps counter (currentAnimationFrame), not global frame counter
+          rem EFFECTS: Loads sprite graphics for current player with
+          rem   current animation frame and action sequence
+          rem Frame is from this sprite 10fps counter
+          rem   (currentAnimationFrame), not global frame counter
           rem SCRAM read: Read from r081
           let US_animationFrame = currentAnimationFrame_R[currentPlayer] 
           let US_animationAction = currentAnimationSeq[currentPlayer]
@@ -119,10 +145,13 @@ UpdateSprite
           return
 
           rem Set animation action for a player
-          rem INPUT: currentPlayer = player index (0-3), temp2 = animation action (0-15)
+          rem INPUT: currentPlayer = player index (0-3), temp2 =
+          rem   animation action (0-15)
           rem OUTPUT: None
-          rem EFFECTS: Sets new animation sequence, resets animation frame to 0, resets animation counter,
-          rem           immediately updates sprite graphics to show first frame of new animation
+          rem EFFECTS: Sets new animation sequence, resets animation
+          rem   frame to 0, resets animation counter,
+          rem immediately updates sprite graphics to show first frame of
+          rem   new animation
 SetPlayerAnimation
           dim SPA_animationAction = temp2
           dim SPA_animationFrame = temp2
@@ -139,7 +168,8 @@ SetPlayerAnimation
           rem Reset animation counter
           
           rem Update character sprite immediately
-          rem Frame is from this sprite 10fps counter, action from currentAnimationSeq
+          rem Frame is from this sprite 10fps counter, action from
+          rem   currentAnimationSeq
           rem Set up parameters for LoadPlayerSprite
           rem SCRAM read: Read from r081 (we just wrote 0, so this is 0)
           let SPA_animationFrame = 0
@@ -165,7 +195,8 @@ GetCurrentAnimationFrame
 
           rem Get current animation action for a player
           rem INPUT: currentPlayer = player index (0-3)
-          rem        currentAnimationSeq[currentPlayer] = current action (read from array)
+          rem currentAnimationSeq[currentPlayer] = current action (read
+          rem   from array)
           rem OUTPUT: temp2 = current animation action (0-15)
           rem EFFECTS: None (read-only query)
 GetCurrentAnimationAction
@@ -183,7 +214,8 @@ GetCurrentAnimationSequence
           rem Called at game start to set up initial animation states
           rem INPUT: None
           rem OUTPUT: None
-          rem EFFECTS: Sets all players (0-3) to idle animation state (ActionIdle)
+          rem EFFECTS: Sets all players (0-3) to idle animation state
+          rem   (ActionIdle)
 InitializeAnimationSystem
           dim IAS_animationAction = temp2
           rem Initialize all players to idle animation
@@ -202,9 +234,9 @@ InitializeAnimationSystem
           rem tail call
           goto SetPlayerAnimation
 
-          rem =================================================================
+          rem ==========================================================
           rem ANIMATION SEQUENCE MANAGEMENT
-          rem =================================================================
+          rem ==========================================================
 
           rem Set walking animation for a player
           rem INPUT: currentPlayer = player index (0-3)
@@ -231,7 +263,8 @@ SetIdleAnimation
           rem Set attack animation for a player
           rem INPUT: currentPlayer = player index (0-3)
           rem OUTPUT: None
-          rem EFFECTS: Changes player animation to ActionAttackWindup state
+          rem EFFECTS: Changes player animation to ActionAttackWindup
+          rem   state
 SetAttackAnimation
           dim SAA_animationAction = temp2
           let SAA_animationAction = ActionAttackWindup
@@ -272,9 +305,9 @@ SetFallingAnimation
           rem tail call
           goto SetPlayerAnimation
 
-          rem =================================================================
+          rem ==========================================================
           rem ANIMATION STATE QUERIES
-          rem =================================================================
+          rem ==========================================================
 
           rem Check if player is in walking animation
           rem INPUT: currentPlayer = player index (0-3)
@@ -328,13 +361,14 @@ NotJumping
           let temp2 = IPJ_isJumping
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem ANIMATION TRANSITION HANDLING
-          rem =================================================================
+          rem ==========================================================
 
           rem Handle frame 7 completion and transition to next action
           rem Input: currentPlayer = player index (0-3)
-          rem Uses: currentAnimationSeq[currentPlayer] to determine transition
+          rem Uses: currentAnimationSeq[currentPlayer] to determine
+          rem   transition
 HandleAnimationTransition
           dim HAT_currentAction = temp1
           dim HAT_animationAction = temp2
@@ -361,7 +395,8 @@ HandleAnimationTransition
           if HAT_currentAction = ActionFallen then goto TransitionLoopAnimation
           if HAT_currentAction = ActionFallDown then goto TransitionToFallen
           
-          rem Attack transitions (delegate to character-specific handler)
+          rem Attack transitions (delegate to character-specific
+          rem   handler)
           if HAT_currentAction >= ActionAttackWindup && HAT_currentAction <= ActionAttackRecovery then goto HandleAttackTransition
           
           rem Default: loop
@@ -406,9 +441,9 @@ TransitionHandleFallBack
           rem tail call
           goto SetPlayerAnimation
 
-          rem =================================================================
+          rem ==========================================================
           rem ATTACK TRANSITION HANDLING
-          rem =================================================================
+          rem ==========================================================
           rem Character-specific attack transitions based on patterns
           
 HandleAttackTransition
@@ -552,22 +587,28 @@ Char6_Execute
           dim C6E_animationAction = temp2
           dim C6E_playerIndex = temp1
           rem Harpy: Execute → Idle
-          rem Clear dive flag and stop diagonal movement when attack completes
+          rem Clear dive flag and stop diagonal movement when attack
+          rem   completes
           rem Also apply upward wing flap momentum after swoop attack
           let C6E_playerIndex = currentPlayer
           rem Clear dive flag (bit 4 in characterStateFlags)
-          let characterStateFlags[C6E_playerIndex] = characterStateFlags[C6E_playerIndex] & 239
+          rem Fix RMW: Read from _R, modify, write to _W
+          let C6E_stateFlags = characterStateFlags_R[C6E_playerIndex] & 239
+          let characterStateFlags_W[C6E_playerIndex] = C6E_stateFlags
           rem Clear bit 4 (239 = 0xEF = ~0x10)
           rem Stop horizontal velocity (zero X velocity)
           let playerVelocityX[C6E_playerIndex] = 0
           let playerVelocityX_lo[C6E_playerIndex] = 0
-          rem Apply upward wing flap momentum after swoop attack (equivalent to HarpyJump)
-          rem Same as normal flap: -2 pixels/frame upward (254 in two's complement)
+          rem Apply upward wing flap momentum after swoop attack
+          rem   (equivalent to HarpyJump)
+          rem Same as normal flap: -2 pixels/frame upward (254 in two's
+          rem   complement)
           let playerVelocityY[C6E_playerIndex] = 254
           rem -2 in 8-bit two's complement: 256 - 2 = 254
           let playerVelocityY_lo[C6E_playerIndex] = 0
           rem Keep jumping flag set to allow vertical movement
-          rem playerState[C6E_playerIndex] bit 2 (jumping) already set from attack, keep it
+          rem playerState[C6E_playerIndex] bit 2 (jumping) already set
+          rem   from attack, keep it
           rem Transition to Idle
           let C6E_animationAction = ActionIdle
           let temp2 = C6E_animationAction

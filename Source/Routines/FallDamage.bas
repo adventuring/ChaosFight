@@ -1,32 +1,38 @@
           rem ChaosFight - Source/Routines/FallDamage.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem FALL DAMAGE SYSTEM
-          rem =================================================================
+          rem ==========================================================
           rem Handles fall damage detection and application based on:
           rem   - Vertical velocity at landing
-          rem   - Character weight (heavier = shorter safe fall distance)
+          rem - Character weight (heavier = shorter safe fall distance)
           rem   - Character-specific immunities and reductions
 
           rem FALL DAMAGE RULES:
           rem   - Safe fall distance inversely proportional to weight
-          rem   - Average-weight character: ~64 pixels (1/3 of 192 screen height)
-          rem   - Fall damage proportional to distance beyond safe threshold
-          rem   - Triggers damage recovery animation and color shift (darker)
+          rem - Average-weight character: ~64 pixels (1/3 of 192 screen
+          rem   height)
+          rem - Fall damage proportional to distance beyond safe
+          rem   threshold
+          rem - Triggers damage recovery animation and color shift
+          rem   (darker)
 
           rem CHARACTER EXCEPTIONS:
           rem   - Bernie (0): NO fall damage (immune)
           rem   - Robo Tito (13): NO fall damage (immune)
           rem   - Frooty (8): NO gravity (no falling)
-          rem   - Dragon of Storms (2): NO gravity (no falling, hovering/flying like Frooty)
+          rem - Dragon of Storms (2): NO gravity (no falling,
+          rem   hovering/flying like Frooty)
           rem   - Ninjish Guy (10): 1/2 fall damage (reduced)
           rem   - Harpy (6): Reduced gravity (1/2 rate) when falling
 
           rem GRAVITY CONSTANTS:
           rem   - Defined in Constants.bas as tunable constants:
-          rem     GravityNormal (0.1 px/frame²), GravityReduced (0.05 px/frame²), TerminalVelocity (8 px/frame)
-          rem   - Scale: 16px = 2m (character height), so 1px = 0.125m = 12.5cm
+          rem GravityNormal (0.1 px/frame²), GravityReduced (0.05
+          rem   px/frame²), TerminalVelocity (8 px/frame)
+          rem - Scale: 16px = 2m (character height), so 1px = 0.125m =
+          rem   12.5cm
 
           rem VARIABLES USED:
           rem   - playerY[0-3]: Vertical position
@@ -39,17 +45,18 @@
           rem   - temp4: Fall damage amount
           rem   - temp5: Character type
           rem   - temp6: Character weight
-          rem =================================================================
+          rem ==========================================================
 
-          rem =================================================================
+          rem ==========================================================
           rem CHECK FALL DAMAGE
-          rem =================================================================
+          rem ==========================================================
           rem Called when a player lands on the ground or platform.
-          rem Calculates fall damage based on downward velocity at impact.
+          rem Calculates fall damage based on downward velocity at
+          rem   impact.
 
           rem INPUT:
           rem   temp1 = player index (0-3)
-          rem   temp2 = vertical velocity at landing (positive = downward)
+          rem temp2 = vertical velocity at landing (positive = downward)
 
           rem PROCESS:
           rem   1. Get character type and weight
@@ -64,7 +71,8 @@ CheckFallDamage
           dim CFD_damage = temp4
           dim CFD_characterType = temp5
           dim CFD_characterWeight = temp6
-          rem temp7+ don’t exist - using tempWork1 for temporary calculations
+          rem temp7+ don’t exist - using tempWork1 for temporary
+          rem   calculations
 
           rem Get character type for this player
           let CFD_characterType = playerChar[CFD_playerIndex]
@@ -77,7 +85,8 @@ CheckFallDamage
           if CFD_characterType = CharFrooty then return 
           rem Frooty: no gravity, no falling
           if CFD_characterType = CharDragonOfStorms then return
-          rem Dragon of Storms: no gravity, no falling (hovering/flying like Frooty)
+          rem Dragon of Storms: no gravity, no falling (hovering/flying
+          rem   like Frooty)
           
           rem Get character weight from data table
           let temp1 = CFD_characterType 
@@ -97,29 +106,38 @@ CheckFallDamage
           if CFD_fallVelocity <= CFD_safeThreshold then return 
           rem Safe landing, no damage
           
-          rem Check if player is guarding - guard does NOT block fall damage
-          rem Guard only blocks attack damage (missiles, AOE), not environmental damage
+          rem Check if player is guarding - guard does NOT block fall
+          rem   damage
+          rem Guard only blocks attack damage (missiles, AOE), not
+          rem   environmental damage
           rem Fall damage is environmental, so guard does not protect
           
           rem Calculate fall damage
-          rem Base damage = (velocity - safe_velocity) * base_damage_multiplier
-          rem Base damage multiplier: 2 (so 1 extra velocity = 2 base damage)
+          rem Base damage = (velocity - safe_velocity) *
+          rem   base_damage_multiplier
+          rem Base damage multiplier: 2 (so 1 extra velocity = 2 base
+          rem   damage)
           let CFD_damage = CFD_fallVelocity - CFD_safeThreshold
           rem Multiply by 2 using bit shift left
           asl CFD_damage
           rem CFD_damage = CFD_damage * 2
           
-          rem Apply weight-based damage multiplier: "the bigger they are, the harder they fall"
-          rem Heavy characters take more damage for the same impact velocity
+          rem Apply weight-based damage multiplier: "the bigger they
+          rem   are, the harder they fall"
+          rem Heavy characters take more damage for the same impact
+          rem   velocity
           rem Formula: damage_multiplier = weight / 20 (average weight)
           rem Using integer math: damage = damage * (weight / 20)
           rem Use lookup table for weight/20, then multiply by damage
           rem temp2 = weight / 20 from lookup table
           let temp2 = WeightDividedBy20[CFD_characterType]
           rem Multiply damage by (weight / 20) using assembly
-          rem Use Mul macro pattern: if multiplier is 0-15, use optimized assembly
-          rem For small multipliers (0-15), use lookup table or bit shifts
-          rem For larger multipliers, use assembly multiplication routine
+          rem Use Mul macro pattern: if multiplier is 0-15, use
+          rem   optimized assembly
+          rem For small multipliers (0-15), use lookup table or bit
+          rem   shifts
+          rem For larger multipliers, use assembly multiplication
+          rem   routine
           asm
             lda temp2
             beq MultiplyDone
@@ -130,9 +148,12 @@ CheckFallDamage
             rem For multiplier = 3: asl + add original
             rem For multiplier = 4: asl twice
             rem For multiplier = 5: asl twice + add original
-            rem For now, use simple approach: multiply using repeated addition
-            rem But wait - user said no repeated addition! Use lookup table instead
-            rem Actually, we can use a lookup table for common damage values
+          rem For now, use simple approach: multiply using repeated
+          rem   addition
+          rem But wait - user said no repeated addition! Use lookup
+          rem   table instead
+          rem Actually, we can use a lookup table for common damage
+          rem   values
             rem Or use assembly with optimized multiplication
             rem Check multiplier value and use appropriate method
             cmp #1
@@ -169,11 +190,14 @@ CheckMult5
             sta CFD_damage
 MultiplyDone
           end
-          rem CFD_damage = damage * (weight / 20) (weight-based multiplier applied)
+          rem CFD_damage = damage * (weight / 20) (weight-based
+          rem   multiplier applied)
           
-          rem Apply damage reduction for Ninjish Guy (after weight multiplier)
+          rem Apply damage reduction for Ninjish Guy (after weight
+          rem   multiplier)
           if CFD_characterType = CharNinjishGuy then lsr CFD_damage
-          rem Ninjish Guy: 1/2 damage (divide by 2 using bit shift right)
+          rem Ninjish Guy: 1/2 damage (divide by 2 using bit shift
+          rem   right)
           
           rem Cap maximum fall damage at 50
           if CFD_damage > 50 then let CFD_damage = 50
@@ -184,7 +208,8 @@ MultiplyDone
           let playerHealth[CFD_playerIndex] = playerHealth[CFD_playerIndex] - CFD_damage
           if playerHealth[CFD_playerIndex] > oldHealthValue then let playerHealth[CFD_playerIndex] = 0
           
-          rem Set recovery frames (proportional to damage, min 10, max 30)
+          rem Set recovery frames (proportional to damage, min 10, max
+          rem   30)
           rem Use recoveryFramesCalc for recovery frames calculation
           let recoveryFramesCalc = CFD_damage
           lsr recoveryFramesCalc
@@ -198,8 +223,11 @@ MultiplyDone
           rem Set bit 3 (recovery flag) when recovery frames are set
           
           rem Set animation state to "recovering from fall"
-          rem This is animation state 9 in the character animation sequences
-          rem playerState bits: [7:animation][4:attacking][2:jumping][1:guarding][0:facing]
+          rem This is animation state 9 in the character animation
+          rem   sequences
+          rem playerState bits:
+          rem   [7:animation][4:attacking][2:jumping]
+          rem   [1:guarding][0:facing]
           rem Set bits 7-5 to 9 (recovering animation)
           rem Use playerStateTemp for state manipulation
           let playerStateTemp = playerState[CFD_playerIndex] & MaskPlayerStateLower 
@@ -212,16 +240,19 @@ MultiplyDone
           let temp1 = SoundFall
           gosub bank15 PlaySoundEffect
           
-          rem Trigger color shift to darker shade (damage visual feedback)
-          rem This is handled by PlayerRendering.bas using playerRecoveryFrames
+          rem Trigger color shift to darker shade (damage visual
+          rem   feedback)
+          rem This is handled by PlayerRendering.bas using
+          rem   playerRecoveryFrames
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem APPLY GRAVITY
-          rem =================================================================
+          rem ==========================================================
           rem Applies gravity acceleration to a player each frame.
-          rem Handles character-specific gravity rates and terminal velocity.
+          rem Handles character-specific gravity rates and terminal
+          rem   velocity.
 
           rem INPUT:
           rem   temp1 = player index (0-3)
@@ -253,15 +284,16 @@ FallDamageApplyGravity
           rem Apply gravity acceleration
           let FDAG_momentum = FDAG_momentum + FDAG_gravityRate
           
-          rem Cap at terminal velocity (uses tunable constant from Constants.bas)
+          rem Cap at terminal velocity (uses tunable constant from
+          rem   Constants.bas)
           if FDAG_momentum > TerminalVelocity then let FDAG_momentum = TerminalVelocity
           let temp2 = FDAG_momentum
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem CHECK GROUND COLLISION
-          rem =================================================================
+          rem ==========================================================
           rem Checks if player has landed on ground or platform.
           rem Calls CheckFallDamage if landing detected.
 
@@ -269,8 +301,10 @@ FallDamageApplyGravity
           rem   temp1 = player index (0-3)
           rem   temp2 = vertical momentum before position update
 
-          rem This routine should be called AFTER vertical position update
-          rem but BEFORE momentum is cleared, so we can detect the landing
+          rem This routine should be called AFTER vertical position
+          rem   update
+          rem but BEFORE momentum is cleared, so we can detect the
+          rem   landing
           rem velocity for fall damage calculation.
 CheckGroundCollision
           dim CGC_playerIndex = temp1
@@ -280,7 +314,8 @@ CheckGroundCollision
           let CGC_playerY = playerY[CGC_playerIndex]
           
           rem Check if player is at or below ground level
-          rem Ground level is at Y = 176 (bottom of playfield, leaving room for sprite)
+          rem Ground level is at Y = 176 (bottom of playfield, leaving
+          rem   room for sprite)
           if CGC_playerY >= 176 then
           rem Player hit ground
           rem Clamp position to ground
@@ -307,14 +342,15 @@ CheckGroundCollision
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem HANDLE FROOTY VERTICAL CONTROL
-          rem =================================================================
+          rem ==========================================================
           rem Frooty has no gravity and can move up/down freely.
           rem Down button moves down (no guard action).
 
           rem INPUT:
-          rem   temp1 = player index (0-3, but should only be called for Frooty)
+          rem temp1 = player index (0-3, but should only be called for
+          rem   Frooty)
 
           rem This should be called from PlayerInput.bas when processing
           rem joystick up/down for Frooty.
@@ -338,22 +374,25 @@ HandleFrootyVertical
           rem playerY[HFV_playerIndex] = playerY[HFV_playerIndex] + 2
           
           rem Clamp to screen bounds
-          rem Byte-safe clamp: if wrapped below 0, the new value will exceed the old
+          rem Byte-safe clamp: if wrapped below 0, the new value will
+          rem   exceed the old
           let oldHealthValue = playerY[HFV_playerIndex]
-          rem Reuse oldHealthValue for byte-safe clamp check (not actually health, but same pattern)
+          rem Reuse oldHealthValue for byte-safe clamp check (not
+          rem   actually health, but same pattern)
           if playerY[HFV_playerIndex] > oldHealthValue then let playerY[HFV_playerIndex] = 0
           if playerY[HFV_playerIndex] > 176 then let playerY[HFV_playerIndex] = 176
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem HANDLE HARPY SWOOP ATTACK
-          rem =================================================================
+          rem ==========================================================
           rem Harpy attack causes an instant redirection into a rapid
           rem downward diagonal strike at ~45° to the facing direction.
 
           rem INPUT:
-          rem   temp1 = player index (0-3, but should only be called for Harpy)
+          rem temp1 = player index (0-3, but should only be called for
+          rem   Harpy)
 
           rem OUTPUT:
           rem   Sets player momentum for diagonal downward swoop
@@ -368,13 +407,14 @@ HandleHarpySwoopAttack
           rem Not Harpy
           
           rem Get facing direction from playerState bit 0
-          let HHSA_facing = playerState[HHSA_playerIndex] & 1
+          let HHSA_facing = playerState[HHSA_playerIndex] & PlayerStateBitFacing
           
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
           if HHSA_facing = 0 then SetHorizontalMomentumRight
-          rem Facing left: set negative momentum (252 = -4 in signed 8-bit)
+          rem Facing left: set negative momentum (252 = -4 in signed
+          rem   8-bit)
           let playerVelocityX[HHSA_playerIndex] = 252
           goto SetVerticalMomentum
 SetHorizontalMomentumRight
@@ -389,7 +429,8 @@ SetVerticalMomentum
           rem Suggest adding PlayerMomentumY variable or state flag
           
           rem Set animation state to "swooping attack"
-          rem This could be animation state 10 or special attack animation
+          rem This could be animation state 10 or special attack
+          rem   animation
           let HHSA_playerState = playerState[HHSA_playerIndex] & MaskPlayerStateLower
           let HHSA_playerState = HHSA_playerState | MaskAnimationFalling 
           rem Animation state 10
@@ -401,13 +442,17 @@ SetVerticalMomentum
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem DIVISION/MULTIPLICATION HELPERS (NO MUL/DIV SUPPORT)
-          rem =================================================================
-          rem Helper routines using optimized assembly for fast division/multiplication
-          rem Based on Omegamatrix’s optimized 6502 routines from AtariAge forums
-          rem These routines use bit manipulation and carry-based arithmetic for speed
-          rem Thanks to Omegamatrix and AtariAge forum contributors for these routines
+          rem ==========================================================
+          rem Helper routines using optimized assembly for fast
+          rem   division/multiplication
+          rem Based on Omegamatrix’s optimized 6502 routines from
+          rem   AtariAge forums
+          rem These routines use bit manipulation and carry-based
+          rem   arithmetic for speed
+          rem Thanks to Omegamatrix and AtariAge forum contributors for
+          rem   these routines
           
           rem DivideBy20: compute floor(A / 20) using optimized assembly
           rem INPUT: A register = dividend (temp2)
@@ -451,10 +496,12 @@ DivideBy100Two
           let DB100_dividend = 2
           return
 
-          rem DivideByPfrowheight: compute value / pfrowheight using bit shifts
+          rem DivideByPfrowheight: compute value / pfrowheight using bit
+          rem   shifts
           rem INPUT: temp2 = dividend (Y position value)
           rem OUTPUT: temp2 = quotient (row index)
-          rem pfrowheight is either 8 (admin) or 16 (game), both powers of 2
+          rem pfrowheight is either 8 (admin) or 16 (game), both powers
+          rem   of 2
           rem Uses conditional bit shifts based on runtime value
 DivideByPfrowheight
           dim DBPF_value = temp2
@@ -477,10 +524,11 @@ DBPF_DivideBy8
           end
           return
           
-          rem =================================================================
+          rem ==========================================================
           rem CALCULATE SAFE FALL DISTANCE
-          rem =================================================================
-          rem Utility routine to calculate safe fall distance for a character.
+          rem ==========================================================
+          rem Utility routine to calculate safe fall distance for a
+          rem   character.
           rem Used for AI and display purposes.
 
           rem INPUT:

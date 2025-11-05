@@ -15,22 +15,28 @@
           const RecoveryFrameCount=8
           const KnockbackDistance=12          
           
-          rem =================================================================
+          rem ==========================================================
           rem PHYSICS CONSTANTS - Gravity and Terminal Velocity
-          rem =================================================================
-          rem Scale: 16px = 2m (character height), so 1px = 0.125m = 12.5cm
-          rem Gravity values are in 8.8 fixed-point subpixel units (low byte)
-          rem Realistic Earth gravity would be 4410 px/frame² (too high for gameplay!)
+          rem ==========================================================
+          rem Scale: 16px = 2m (character height), so 1px = 0.125m =
+          rem   12.5cm
+          rem Gravity values are in 8.8 fixed-point subpixel units (low
+          rem   byte)
+          rem Realistic Earth gravity would be 4410 px/frame² (too high
+          rem   for gameplay!)
           rem 
           rem Normal gravity acceleration (0.1 px/frame²)
-          rem Value: 0.1 * 256 = 25.6 ≈ 26 (in low byte of 8.8 fixed-point)
+          rem Value: 0.1 * 256 = 25.6 ≈ 26 (in low byte of 8.8
+          rem   fixed-point)
           const GravityNormal = 26
           
           rem Reduced gravity acceleration (0.05 px/frame²) for Harpy
-          rem Value: 0.05 * 256 = 12.8 ≈ 13 (in low byte of 8.8 fixed-point)
+          rem Value: 0.05 * 256 = 12.8 ≈ 13 (in low byte of 8.8
+          rem   fixed-point)
           const GravityReduced = 13
           
-          rem Terminal velocity cap (maximum downward fall speed in px/frame)
+          rem Terminal velocity cap (maximum downward fall speed in
+          rem   px/frame)
           rem Prevents infinite acceleration from gravity
           const TerminalVelocity = 8
           
@@ -44,13 +50,16 @@
           
           rem Sentinel and special value constants
           const MissileLifetimeInfinite = 255
-          rem Missile lifetime value for infinite (until collision, no decrement)
+          rem Missile lifetime value for infinite (until collision, no
+          rem   decrement)
           const MissileHitNotFound = 255
           rem Sentinel value indicating no hit found in collision checks
           const MaxByteValue = 255
-          rem Maximum 8-bit value ($FF), used for two’s complement operations
+          rem Maximum 8-bit value ($FF), used for two’s complement
+          rem   operations
           const InfiniteFallDistance = 255
-          rem Fall distance value for infinite (characters immune to fall damage)
+          rem Fall distance value for infinite (characters immune to
+          rem   fall damage)
           
           rem Character ID constants
           const CharBernie = 0
@@ -90,8 +99,10 @@
           rem Bits 7-5: animation state (3 bits)
           
           rem Bit mask constants for PlayerState bit operations
-          rem Use with: PlayerState[index] = PlayerState[index] & (255 - PlayerStateBitMask) to clear bit
-          rem Use with: PlayerState[index] = PlayerState[index] | PlayerStateBitMask to set bit
+          rem Use with: PlayerState[index] = PlayerState[index] & (255 -
+          rem   PlayerStateBitMask) to clear bit
+          rem Use with: PlayerState[index] = PlayerState[index] |
+          rem   PlayerStateBitMask to set bit
           const PlayerStateBitFacing = 1
           rem Bit mask for bit 0 (PlayerStateFacing)
           const PlayerStateBitGuarding = 2
@@ -119,7 +130,8 @@
           const QuadtariDetected = 7
           rem Bit 7: Quadtari adapter detected
           const Players34Active = 6
-          rem Bit 6: Players 3 or 4 are active (selected and not eliminated) - used for missile multiplexing
+          rem Bit 6: Players 3 or 4 are active (selected and not
+          rem   eliminated) - used for missile multiplexing
           const LeftPortGenesis = 0
           rem Bit 0: Genesis or Joy2b+ on left port
           const LeftPortJoy2bPlus = 1
@@ -130,7 +142,8 @@
           rem Bit 3: Joy2b+ on right port (subset of RightPortGenesis)
           
           rem Bit accessor aliases for controllerStatus
-          rem Bit accessor aliases removed to avoid compiler issues; use bit masks directly
+          rem Bit accessor aliases removed to avoid compiler issues; use
+          rem   bit masks directly
           
           rem Console detection constants
           const SystemFlag7800 = $80
@@ -162,17 +175,22 @@
           const ClearRightPortGenesis = $FB
           const ClearRightPortJoy2bPlus = $F7
 
-          rem =================================================================
+          rem ==========================================================
           rem PHYSICS TUNABLES
-          rem =================================================================
+          rem ==========================================================
           const GravityPerFrame = 1
-          rem Pixels/frame added to vertical velocity when gravity applies
+          rem Pixels/frame added to vertical velocity when gravity
+          rem   applies
           const BounceDampenDivisor = 2
-          rem Divisor applied to velocity on bounce reflect (for minimal velocity reduction)
+          rem Divisor applied to velocity on bounce reflect (for minimal
+          rem   velocity reduction)
           const CurlingFrictionCoefficient = 4
-          rem Ice-like friction coefficient (Q8 fixed-point: 4/256 = 1.56% per frame reduction)
-          rem Used for curling stone near-perfect momentum (very low friction, similar to ice)
-          rem Previous value: 32 (12.5% per frame) - too high for ice-like sliding
+          rem Ice-like friction coefficient (Q8 fixed-point: 4/256 =
+          rem   1.56% per frame reduction)
+          rem Used for curling stone near-perfect momentum (very low
+          rem   friction, similar to ice)
+          rem Previous value: 32 (12.5% per frame) - too high for
+          rem   ice-like sliding
           const KnockbackImpulse = 4
           rem Pixels/frame impulse applied on hit knockback
           const HitstunFrames = 10
@@ -187,6 +205,10 @@
           rem Half-width of player sprite used in AABB checks
           const PlayerSpriteHeight = 16
           rem Player sprite height used in AABB checks
+          const PlayerSpriteWidth = 16
+          rem Full width of double-width sprite (16 pixels)
+          const PlayerCollisionDistance = 16
+          rem Collision detection distance (sprite width in pixels)
           const MissileDefaultHeight = 1
           rem Default missile height when AOE (0) is reported
           const MissileMaxHeight = 8
@@ -200,14 +222,17 @@
           const ScreenTopWrapThreshold = 200
           rem Byte-safe top-wrap detection threshold
 
-          rem =================================================================
+          rem ==========================================================
           rem MUSIC CONSTANTS
-          rem =================================================================
+          rem ==========================================================
           rem Main game songs (0-4)
           rem Song indices match SongPointers.bas (29 songs total: 0-28)
-          rem Songs 0-25: Character theme songs in character ID order (skipping duplicates)
-          rem   Character order: 0=Bernie, 1=OCascadia, 2=Revontuli, 3=EXO, 4=Grizzards,
-          rem   7=MagicalFairyForce, 9=Bolero, 10=LowRes, 13=RoboTito, 14=SongOfTheBear,
+          rem Songs 0-25: Character theme songs in character ID order
+          rem   (skipping duplicates)
+          rem Character order: 0=Bernie, 1=OCascadia, 2=Revontuli,
+          rem   3=EXO, 4=Grizzards,
+          rem 7=MagicalFairyForce, 9=Bolero, 10=LowRes, 13=RoboTito,
+          rem   14=SongOfTheBear,
           rem   15=DucksAway, 16-30=Character16Theme-Character30Theme
           rem Song 26: Chaotica (Title screen - loops)
           rem Song 27: AtariToday (Publisher preamble - plays once)
@@ -245,9 +270,9 @@
           const MusicAtariToday = 27
           const MusicInterworldly = 28
 
-          rem =================================================================
+          rem ==========================================================
           rem SOUND EFFECT CONSTANTS
-          rem =================================================================
+          rem ==========================================================
           const SoundAttack = 1
           const SoundHit = 2
           const SoundFall = 3
@@ -256,11 +281,13 @@
           const SoundVictory = 6
           const SoundElimination = 7
 
-          rem =================================================================
+          rem ==========================================================
           rem ANIMATION SYSTEM CONSTANTS
-          rem =================================================================
-          rem Character frame animation runs at 10fps regardless of TV standard
-          rem Movement updates run at full frame rate (60fps NTSC, 50fps PAL)
+          rem ==========================================================
+          rem Character frame animation runs at 10fps regardless of TV
+          rem   standard
+          rem Movement updates run at full frame rate (60fps NTSC, 50fps
+          rem   PAL)
 
           #ifdef TV_NTSC
           const AnimationFrameDelay = 6
@@ -289,24 +316,30 @@
           const FramesPerSequence = 8
           rem 8 frames per sequence
 
-          rem =================================================================
+          rem ==========================================================
           rem SUBPIXEL POSITION CONSTANTS
-          rem =================================================================
-          rem Fixed-point scheme: 8.8 (integer.fraction), implemented with 8-bit bB vars
-          rem NOTE: batariBASIC variables are 8-bit. Use two 8-bit arrays to represent
-          rem       a 16-bit fixed-point value: Hi = integer pixels, Lo = subpixel (0..255).
+          rem ==========================================================
+          rem Fixed-point scheme: 8.8 (integer.fraction), implemented
+          rem   with 8-bit bB vars
+          rem NOTE: batariBASIC variables are 8-bit. Use two 8-bit
+          rem   arrays to represent
+          rem a 16-bit fixed-point value: Hi = integer pixels, Lo =
+          rem   subpixel (0..255).
           const SubpixelBits = 8
           rem 8 bits of subpixel precision (0..255)
           const SubpixelScale = 256
           rem 2^8 = 256 subpixel units per pixel
 
-          rem =================================================================
+          rem ==========================================================
           rem PLAYFIELD CONSTANTS (runtime variables, not compile-time)
-          rem =================================================================
-          rem NOTE: pfrowheight and pfrows are set at runtime by ScreenLayout.bas
+          rem ==========================================================
+          rem NOTE: pfrowheight and pfrows are set at runtime by
+          rem   ScreenLayout.bas
           rem These are NOT constants - they are runtime variables
           rem pfrowheight: pixels per row (8 for admin, 16 for game)
           rem pfrows: number of rows (32 for admin, 8 for game)
-          rem pfread: built-in batariBASIC function to read playfield pixel
-          rem These are documented here for reference but cannot be consted
+          rem pfread: built-in batariBASIC function to read playfield
+          rem   pixel
+          rem These are documented here for reference but cannot be
+          rem   consted
 

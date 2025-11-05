@@ -1,12 +1,14 @@
           rem ChaosFight - Source/Routines/ColdStart.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem =================================================================
+          rem ==========================================================
           rem COLD START INITIALIZATION
-          rem =================================================================
+          rem ==========================================================
           rem Proper cold start initialization sequence for batariBASIC.
-          rem Called from Bank1 via "goto bank13 ColdStart" - this is the
-          rem correct stanza format (Bank1 jumps to ColdStart in Bank13).
+          rem Called from Bank1 via "goto bank13 ColdStart" - this is
+          rem   the
+          rem correct stanza format (Bank1 jumps to ColdStart in
+          rem   Bank13).
           rem
           rem batariBASIC’s startup.asm include handles:
           rem   - RAM clearing (all RAM set to 0)
@@ -19,7 +21,7 @@
           rem   2. TIA register initialization (colors, audio)
           rem   3. Game state initialization
           rem   4. Transition to first game mode
-          rem =================================================================
+          rem ==========================================================
 
 ColdStart
           rem Step 1: Detect console hardware type (7800 vs 2600)
@@ -48,8 +50,10 @@ ColdStart
           rem Set initial game mode (Publisher Preamble)
           let gameMode = ModePublisherPreamble
           gosub bank13 ChangeGameMode
-          rem ChangeGameMode calls SetupPublisherPreamble and sets up music
+          rem ChangeGameMode calls SetupPublisherPreamble and sets up
+          rem   music
           
           rem Step 5: Fall through to MainLoop
-          rem MainLoop will handle the game mode dispatch and frame rendering
+          rem MainLoop will handle the game mode dispatch and frame
+          rem   rendering
 

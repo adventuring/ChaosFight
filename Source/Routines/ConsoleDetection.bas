@@ -1,22 +1,25 @@
           rem ChaosFight - Source/Routines/ConsoleDetection.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem CONSOLE DETECTION
-          rem =================================================================
+          rem ==========================================================
           rem Detects whether running on Atari 2600 or 7800 console
           rem Based on DetectConsole.s assembly implementation
           
           rem DETECTION LOGIC:
           rem   if $D0 contains $2C and $D1 contains $A9 then
-          rem       system = 7800           // game was loaded from Harmony menu on a 7800
+          rem system = 7800 // game was loaded from Harmony menu on a
+          rem   7800
           rem   else if both contain $00 then
-          rem       system = ZP RAM $80     // game was flashed to Harmony/Melody so CDFJ
-          rem                               // driver checked $D0 and $D1 for us and saved
+          rem system = ZP RAM $80 // game was flashed to Harmony/Melody
+          rem   so CDFJ
+          rem // driver checked $D0 and $D1 for us and saved
           rem                               // results in $80
           rem   else
-          rem       system = 2600           // game was loaded from Harmony menu on a 2600
-          rem =================================================================
+          rem system = 2600 // game was loaded from Harmony menu on a
+          rem   2600
+          rem ==========================================================
           
           rem Main console detection routine
 ConsoleDetHW
@@ -43,7 +46,8 @@ CheckFlashed
           temp1 = $D1
           if temp1 then Is2600
           
-          rem Both $D0 and $D1 are $00 - check $80 for CDFJ driver result
+          rem Both $D0 and $D1 are $00 - check $80 for CDFJ driver
+          rem   result
           temp1 = $80
           if temp1 = 0 then Is2600
           
@@ -62,21 +66,21 @@ Is2600
           let console7800Detected = 0
           return
           
-          rem =================================================================
+          rem ==========================================================
           rem CONSOLE FEATURE DETECTION
-          rem =================================================================
+          rem ==========================================================
           rem Check for console-specific features after detection
           
 CheckConsoleFeatures
           rem Check if running on 7800
-          if !console7800Detected then Skip7800Features
+          if !console7800Detected then Done7800Features
           
           rem 7800-specific features
           rem TODO: Implement 7800-specific pause button handling
           rem TODO: Implement 7800-specific controller detection
           goto ConsoleFeaturesDone
           
-Skip7800Features
+Done7800Features
           rem 2600-specific features
           rem TODO: Implement 2600-specific optimizations
           

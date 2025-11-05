@@ -1,17 +1,19 @@
           rem ChaosFight - Source/Routines/MusicBankHelpers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem SONGS BANK HELPER FUNCTIONS
-          rem =================================================================
-          rem These functions access song data tables and streams in Bank 16
-          rem =================================================================
+          rem ==========================================================
+          rem These functions access song data tables and streams in
+          rem   Bank 16
+          rem ==========================================================
           
           #include "Source/Data/SongPointers.bas"
           
           rem Lookup song pointer from tables
           rem Input: temp1 = song ID (0-28)
-          rem Output: SongPointerL, SongPointerH = pointer to Song_Voice0 stream
+          rem Output: SongPointerL, SongPointerH = pointer to
+          rem   Song_Voice0 stream
 LoadSongPointer
           dim LSP_songID = temp1
           rem Bounds check: 29 songs (0-28)
@@ -23,7 +25,8 @@ LoadSongPointer
           
           rem Lookup Voice 1 song pointer from tables
           rem Input: temp1 = song ID (0-28)
-          rem Output: SongPointerL, SongPointerH = pointer to Song_Voice1 stream
+          rem Output: SongPointerL, SongPointerH = pointer to
+          rem   Song_Voice1 stream
 LoadSongVoice1Pointer
           dim LSV1P_songID = temp1
           rem Bounds check: 29 songs (0-28)
@@ -33,9 +36,12 @@ LoadSongVoice1Pointer
           let SongPointerH = SongPointersSecondH[LSV1P_songID]
           return
           
-          rem Load next note from Voice 0 stream using assembly for pointer access
-          rem Input: MusicVoice0PointerL/H points to current note in Song_Voice0 stream
-          rem Output: Updates TIA registers, advances pointer, sets MusicVoice0Frame
+          rem Load next note from Voice 0 stream using assembly for
+          rem   pointer access
+          rem Input: MusicVoice0PointerL/H points to current note in
+          rem   Song_Voice0 stream
+          rem Output: Updates TIA registers, advances pointer, sets
+          rem   MusicVoice0Frame
 LoadMusicNote0
           dim LMN0_audcv = temp2
           dim LMN0_audf = temp3
@@ -62,25 +68,29 @@ LoadMusicNote0
           rem Check for end of track (Duration = 0)
           if LMN0_duration = 0 then LoadMusicNote0EndOfTrack
           
-          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
+          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
+          rem   AUDCV
           LMN0_audc = LMN0_audcv & %11110000
           LMN0_audc = LMN0_audc / 16
           LMN0_audv = LMN0_audcv & %00001111
           
-          rem Store target AUDV and total frames for envelope calculation
+          rem Store target AUDV and total frames for envelope
+          rem   calculation
           let MusicVoice0TargetAUDV = LMN0_audv
           let MusicVoice0TotalFrames = LMN0_duration + LMN0_delay
           
-          rem Write to TIA registers (will be adjusted by envelope in UpdateMusicVoice0)
+          rem Write to TIA registers (will be adjusted by envelope in
+          rem   UpdateMusicVoice0)
           AUDC0 = LMN0_audc
           AUDF0 = LMN0_audf
           AUDV0 = LMN0_audv
           
           rem Set frame counter = Duration + Delay
-          let MusicVoice0Frame = LMN0_duration + LMN0_delay
+          let MusicVoice0Frame_W = LMN0_duration + LMN0_delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          rem Reuse temp2 (LMN0_audcv no longer needed) for pointer calculation
+          rem Reuse temp2 (LMN0_audcv no longer needed) for pointer
+          rem   calculation
           let temp2 = MusicVoice0PointerL
           let MusicVoice0PointerL = temp2 + 4
           if MusicVoice0PointerL < temp2 then let MusicVoice0PointerH = MusicVoice0PointerH + 1
@@ -98,31 +108,35 @@ LoadMusicNote0EndOfTrack
           
 LoadMusicNote0LoopChaotica
           rem Chaotica loops - reset to start
-          let MusicVoice0PointerL = MusicVoice0StartPointerL
-          let MusicVoice0PointerH = MusicVoice0StartPointerH
+          let MusicVoice0PointerL = MusicVoice0StartPointerL_R
+          let MusicVoice0PointerH = MusicVoice0StartPointerH_R
           rem Tail call to reload first note
           rem tail call
           goto LoadMusicNote0
           
-          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
+          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
+          rem   AUDCV
           LMN0_audc = LMN0_audcv & %11110000
           LMN0_audc = LMN0_audc / 16
           LMN0_audv = LMN0_audcv & %00001111
           
-          rem Store target AUDV and total frames for envelope calculation
+          rem Store target AUDV and total frames for envelope
+          rem   calculation
           let MusicVoice0TargetAUDV = LMN0_audv
           let MusicVoice0TotalFrames = LMN0_duration + LMN0_delay
           
-          rem Write to TIA registers (will be adjusted by envelope in UpdateMusicVoice0)
+          rem Write to TIA registers (will be adjusted by envelope in
+          rem   UpdateMusicVoice0)
           AUDC0 = LMN0_audc
           AUDF0 = LMN0_audf
           AUDV0 = LMN0_audv
           
           rem Set frame counter = Duration + Delay
-          let MusicVoice0Frame = LMN0_duration + LMN0_delay
+          let MusicVoice0Frame_W = LMN0_duration + LMN0_delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          rem Reuse temp2 (LMN0_audcv no longer needed) for pointer calculation
+          rem Reuse temp2 (LMN0_audcv no longer needed) for pointer
+          rem   calculation
           let temp2 = MusicVoice0PointerL
           let MusicVoice0PointerL = temp2 + 4
           if MusicVoice0PointerL < temp2 then let MusicVoice0PointerH = MusicVoice0PointerH + 1
@@ -161,20 +175,23 @@ LoadMusicNote1
           LMN1_audc = LMN1_audc / 16
           LMN1_audv = LMN1_audcv & %00001111
           
-          rem Store target AUDV and total frames for envelope calculation
+          rem Store target AUDV and total frames for envelope
+          rem   calculation
           let MusicVoice1TargetAUDV = LMN1_audv
           let MusicVoice1TotalFrames = LMN1_duration + LMN1_delay
           
-          rem Write to TIA registers (will be adjusted by envelope in UpdateMusicVoice1)
+          rem Write to TIA registers (will be adjusted by envelope in
+          rem   UpdateMusicVoice1)
           AUDC1 = LMN1_audc
           AUDF1 = LMN1_audf
           AUDV1 = LMN1_audv
           
           rem Set frame counter = Duration + Delay
-          let MusicVoice1Frame = LMN1_duration + LMN1_delay
+          let MusicVoice1Frame_W = LMN1_duration + LMN1_delay
           
           rem Advance pointer by 4 bytes
-          rem Reuse temp2 (LMN1_audcv no longer needed) for pointer calculation
+          rem Reuse temp2 (LMN1_audcv no longer needed) for pointer
+          rem   calculation
           let temp2 = MusicVoice1PointerL
           let MusicVoice1PointerL = temp2 + 4
           if MusicVoice1PointerL < temp2 then let MusicVoice1PointerH = MusicVoice1PointerH + 1
@@ -192,8 +209,8 @@ LoadMusicNote1EndOfTrack
           
 LoadMusicNote1LoopChaotica
           rem Chaotica loops - reset to start
-          let MusicVoice1PointerL = MusicVoice1StartPointerL
-          let MusicVoice1PointerH = MusicVoice1StartPointerH
+          let MusicVoice1PointerL = MusicVoice1StartPointerL_R
+          let MusicVoice1PointerH = MusicVoice1StartPointerH_R
           rem Tail call to reload first note
           rem tail call
           goto LoadMusicNote1
@@ -203,20 +220,23 @@ LoadMusicNote1LoopChaotica
           LMN1_audc = LMN1_audc / 16
           LMN1_audv = LMN1_audcv & %00001111
           
-          rem Store target AUDV and total frames for envelope calculation
+          rem Store target AUDV and total frames for envelope
+          rem   calculation
           let MusicVoice1TargetAUDV = LMN1_audv
           let MusicVoice1TotalFrames = LMN1_duration + LMN1_delay
           
-          rem Write to TIA registers (will be adjusted by envelope in UpdateMusicVoice1)
+          rem Write to TIA registers (will be adjusted by envelope in
+          rem   UpdateMusicVoice1)
           AUDC1 = LMN1_audc
           AUDF1 = LMN1_audf
           AUDV1 = LMN1_audv
           
           rem Set frame counter = Duration + Delay
-          let MusicVoice1Frame = LMN1_duration + LMN1_delay
+          let MusicVoice1Frame_W = LMN1_duration + LMN1_delay
           
           rem Advance pointer by 4 bytes
-          rem Reuse temp2 (LMN1_audcv no longer needed) for pointer calculation
+          rem Reuse temp2 (LMN1_audcv no longer needed) for pointer
+          rem   calculation
           let temp2 = MusicVoice1PointerL
           let MusicVoice1PointerL = temp2 + 4
           if MusicVoice1PointerL < temp2 then let MusicVoice1PointerH = MusicVoice1PointerH + 1

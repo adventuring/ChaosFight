@@ -1,17 +1,19 @@
           rem ChaosFight - Source/Routines/SoundBankHelpers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem SOUNDS BANK HELPER FUNCTIONS
-          rem =================================================================
-          rem These functions access sound data tables and streams in Bank 15
-          rem =================================================================
+          rem ==========================================================
+          rem These functions access sound data tables and streams in
+          rem   Bank 15
+          rem ==========================================================
           
           #include "Source/Data/SoundPointers.bas"
           
           rem Lookup sound pointer from tables
           rem Input: temp1 = sound ID (0-9)
-          rem Output: SoundPointerL, SoundPointerH = pointer to Sound_Voice0 stream
+          rem Output: SoundPointerL, SoundPointerH = pointer to
+          rem   Sound_Voice0 stream
 LoadSoundPointer
           dim LSP_soundID = temp1
           rem Bounds check: only 10 sounds (0-9)
@@ -21,9 +23,12 @@ LoadSoundPointer
           let SoundPointerH = SoundPointersH[LSP_soundID]
           return
           
-          rem Load next note from sound effect stream using assembly for pointer access
-          rem Input: SoundEffectPointerL/H points to current note in Sound_Voice0 stream
-          rem Output: Updates TIA registers, advances pointer, sets SoundEffectFrame
+          rem Load next note from sound effect stream using assembly for
+          rem   pointer access
+          rem Input: SoundEffectPointerL/H points to current note in
+          rem   Sound_Voice0 stream
+          rem Output: Updates TIA registers, advances pointer, sets
+          rem   SoundEffectFrame
 LoadSoundNote
           dim LSN_audcv = temp2
           dim LSN_audf = temp3
@@ -50,7 +55,8 @@ LoadSoundNote
           rem Check for end of sound (Duration = 0)
           if LSN_duration = 0 then let SoundEffectPointerH = 0 : AUDV0 = 0 : return
           
-          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
+          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
+          rem   AUDCV
           LSN_audc = LSN_audcv & %11110000
           LSN_audc = LSN_audc / 16
           LSN_audv = LSN_audcv & %00001111
@@ -61,10 +67,11 @@ LoadSoundNote
           AUDV0 = LSN_audv
           
           rem Set frame counter = Duration + Delay
-          let SoundEffectFrame = LSN_duration + LSN_delay
+          let SoundEffectFrame_W = LSN_duration + LSN_delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          rem Reuse temp2 (LSN_audcv no longer needed) for pointer calculation
+          rem Reuse temp2 (LSN_audcv no longer needed) for pointer
+          rem   calculation
           let temp2 = SoundEffectPointerL
           let SoundEffectPointerL = temp2 + 4
           if SoundEffectPointerL < temp2 then let SoundEffectPointerH = SoundEffectPointerH + 1
@@ -72,8 +79,10 @@ LoadSoundNote
           return
           
           rem Load next note from sound effect stream for Voice 1
-          rem Input: SoundEffectPointer1L/H points to current note in Sound_Voice0 stream
-          rem Output: Updates TIA registers, advances pointer, sets SoundEffectFrame1
+          rem Input: SoundEffectPointer1L/H points to current note in
+          rem   Sound_Voice0 stream
+          rem Output: Updates TIA registers, advances pointer, sets
+          rem   SoundEffectFrame1
 LoadSoundNote1
           dim LSN1_audcv = temp2
           dim LSN1_audf = temp3
@@ -100,7 +109,8 @@ LoadSoundNote1
           rem Check for end of sound (Duration = 0)
           if LSN1_duration = 0 then let SoundEffectPointer1H = 0 : AUDV1 = 0 : return
           
-          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV
+          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
+          rem   AUDCV
           LSN1_audc = LSN1_audcv & %11110000
           LSN1_audc = LSN1_audc / 16
           LSN1_audv = LSN1_audcv & %00001111
@@ -111,10 +121,11 @@ LoadSoundNote1
           AUDV1 = LSN1_audv
           
           rem Set frame counter = Duration + Delay
-          let SoundEffectFrame1 = LSN1_duration + LSN1_delay
+          let SoundEffectFrame1_W = LSN1_duration + LSN1_delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          rem Reuse temp2 (LSN1_audcv no longer needed) for pointer calculation
+          rem Reuse temp2 (LSN1_audcv no longer needed) for pointer
+          rem   calculation
           let temp2 = SoundEffectPointer1L
           let SoundEffectPointer1L = temp2 + 4
           if SoundEffectPointer1L < temp2 then let SoundEffectPointer1H = SoundEffectPointer1H + 1

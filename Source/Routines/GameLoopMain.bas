@@ -1,9 +1,9 @@
           rem ChaosFight - Source/Routines/GameLoopMain.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem GAME LOOP - MAIN LOOP
-          rem =================================================================
+          rem ==========================================================
           rem Main gameplay loop that orchestrates all game systems.
           rem Called every frame during active gameplay.
 
@@ -24,10 +24,11 @@
           rem   gameState - 0=normal, 1=paused
           rem   qtcontroller - Quadtari multiplexing state
           rem   All Player arrays (X, Y, State, Health, etc.)
-          rem =================================================================
+          rem ==========================================================
 
 GameMainLoop
-          rem Read enhanced controller buttons (Genesis Button C, Joy2B+ II/III)
+          rem Read enhanced controller buttons (Genesis Button C, Joy2B+
+          rem   II/III)
           gosub ReadEnhancedButtons
           
           rem Handle console switches
@@ -57,7 +58,8 @@ GameMainLoop
           rem Check boundary collisions
           gosub CheckBoundaryCollisions
 
-          rem Check playfield collisions (walls, ceilings, ground) for all players
+          rem Check playfield collisions (walls, ceilings, ground) for
+          rem   all players
           let temp1 = 0 : gosub CheckPlayfieldCollisionAllDirections
           let temp1 = 1 : gosub CheckPlayfieldCollisionAllDirections
           if controllerStatus & SetQuadtariDetected then let temp1 = 2 : gosub CheckPlayfieldCollisionAllDirections : let temp1 = 3 : gosub CheckPlayfieldCollisionAllDirections
@@ -69,7 +71,8 @@ GameMainLoop
           gosub CheckAllPlayerEliminations
           
           rem Check if game should end and transition to winner screen
-          rem gameState = 2 means game is ending, gameEndTimer counts down
+          rem gameState = 2 means game is ending, gameEndTimer counts
+          rem   down
           if gameState = 2 then CheckGameEndTransition
           goto GameEndCheckDone
 CheckGameEndTransition
@@ -91,7 +94,8 @@ GameEndCheckDone
           rem Update missiles (in Bank 7)
           gosub bank7 UpdateAllMissiles
 
-          rem Check missile collisions (in Bank 7) - handled internally by UpdateAllMissiles
+          rem Check missile collisions (in Bank 7) - handled internally
+          rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
           rem Set sprite positions (now handled by movement system)

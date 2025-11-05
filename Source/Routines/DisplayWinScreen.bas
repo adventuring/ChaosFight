@@ -1,18 +1,20 @@
           rem ChaosFight - Source/Routines/DisplayWinScreen.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem DISPLAY WIN SCREEN
-          rem =================================================================
-          rem Displays winner screen with fixed playfield pattern and 1-3 characters
+          rem ==========================================================
+          rem Displays winner screen with fixed playfield pattern and
+          rem   1-3 characters
           rem Called from WinnerAnnouncement.bas per-frame loop.
           rem
           rem Layout:
           rem   - Fixed playfield pattern (podium/platform design)
           rem   - 1 player: Winner centered on podium
           rem   - 2 players: Winner centered, runner-up on left platform
-          rem   - 3+ players: Winner centered high, 2nd on left, 3rd on right
-          rem =================================================================
+          rem - 3+ players: Winner centered high, 2nd on left, 3rd on
+          rem   right
+          rem ==========================================================
 
 DisplayWinScreen
           dim DWS_playersRemaining = temp1
@@ -90,7 +92,8 @@ DWS_UpdateSecond
           goto DWS_RankNext
           
 DWS_CheckThird
-          rem Check if this is 3rd place (higher order than current 3rd, but lower than 2nd)
+          rem Check if this is 3rd place (higher order than current 3rd,
+          rem   but lower than 2nd)
           if DWS_currentOrder > DWS_thirdOrder then let DWS_thirdOrder = DWS_currentOrder : let DWS_thirdIndex = temp1
           
 DWS_RankNext
@@ -100,7 +103,8 @@ DWS_RankNext
           rem Position characters based on playersRemaining
           rem 1 player: Winner centered (X=80, Y=row 24 = 192 pixels)
           rem 2 players: Winner centered (X=80), Runner-up left (X=40)
-          rem 3+ players: Winner centered high (X=80, Y=row 16), 2nd left (X=40), 3rd right (X=120)
+          rem 3+ players: Winner centered high (X=80, Y=row 16), 2nd
+          rem   left (X=40), 3rd right (X=120)
           
           rem Position winner (always centered)
           if DWS_playersRemaining = 1 then DWS_Position1Player
@@ -194,7 +198,8 @@ DWS_Hide3Player3Done
 DWS_GetBWMode
           rem Check if B&W mode is active
           rem switchbw=1 means B&W mode, colorBWOverride can force B&W
-          rem Uses temp2 for DWS_bwMode (DWS_winnerIndex saved by caller)
+          rem Uses temp2 for DWS_bwMode (DWS_winnerIndex saved by
+          rem   caller)
           let temp2 = 0
           if switchbw then let temp2 = 1
           if colorBWOverride then let temp2 = 1

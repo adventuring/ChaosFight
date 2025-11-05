@@ -1,15 +1,16 @@
           rem ChaosFight - Source/Routines/TitleCharacterParade.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem TITLE SCREEN CHARACTER PARADE
-          rem =================================================================
+          rem ==========================================================
           rem Manages the animated character parade that runs across the
-          rem bottom of the title screen after 5 seconds (when copyright disappears).
+          rem bottom of the title screen after 5 seconds (when copyright
+          rem   disappears).
 
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   titleParadeTimer - Frame counter (increments each frame)
-          rem   titleParadeChar - Current character index (0-MaxCharacter)
+          rem titleParadeChar - Current character index (0-MaxCharacter)
           rem   titleParadeX - X position of parade character
           rem   titleParadeActive - Boolean: parade currently running
 
@@ -17,13 +18,16 @@
           rem   - Parade starts after 5 seconds (300 frames at 60fps)
           rem   - Each character moves at 2 pixels/frame (left to right)
           rem   - 1 second pause (60 frames) between characters
-          rem   - Characters chosen randomly from NumCharacters available
+          rem - Characters chosen randomly from NumCharacters available
 
           rem CHARACTER INDICES:
-          rem   0=Bernie, 1=Curler, 2=Dragon of Storms, 3=EXO, 4=FatTony, 5=Grizzard,
-          rem   6=Harpy, 7=Knight Guy, 8=Frooty, 9=Nefertem, 10=Ninjish Guy,
-          rem   11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo, 15=Shamone
-          rem =================================================================
+          rem 0=Bernie, 1=Curler, 2=Dragon of Storms, 3=EXO, 4=FatTony,
+          rem   5=Grizzard,
+          rem 6=Harpy, 7=Knight Guy, 8=Frooty, 9=Nefertem, 10=Ninjish
+          rem   Guy,
+          rem 11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo,
+          rem   15=Shamone
+          rem ==========================================================
 
           rem Update parade state (called every frame)
 UpdateCharacterParade
@@ -48,7 +52,7 @@ UpdateCharacterParade
                     
                     rem Check if character has left screen
                     if titleParadeX > 170 then
-                              rem Character has left - wait 1 second (60 frames) before next
+          rem Character has left - wait 1 second (60 frames) before next
                               let titleParadeActive = 0
           let titleParadeTimer = titleParadeTimer - 60 
           rem Reset timer for next character
@@ -57,9 +61,9 @@ end
           
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem DRAW PARADE CHARACTER
-          rem =================================================================
+          rem ==========================================================
           rem Renders the current parade character at bottom of screen
           rem INPUT VARIABLES:
           rem   titleParadeChar - Character index (0-MaxCharacter)
@@ -68,15 +72,18 @@ end
           rem   player0x, player0y - Sprite position
           rem   COLUP0 - Sprite color
 DrawParadeCharacter
-          rem Draw the current parade character at the bottom of the screen
+          rem Draw the current parade character at the bottom of the
+          rem   screen
           rem Position character at bottom (y=80) and current X position
           player0x = titleParadeX
           player0y = 80
           
-          rem Set character color based on character type (inline SetParadeCharacterColor)
+          rem Set character color based on character type (inline
+          rem   SetParadeCharacterColor)
           rem Randomize color for visual variety
           rem Without Quadtari: Randomly alternate indigo/red (lum=12)
-          rem With Quadtari: Randomly select from indigo, red, yellow, green (lum=12)
+          rem With Quadtari: Randomly select from indigo, red, yellow,
+          rem   green (lum=12)
           if controllerStatus & SetQuadtariDetected then SetParadeColor4Player
           
           rem 2-player mode: Randomly choose indigo or red
@@ -97,7 +104,8 @@ SetParadeColor4Player
           rem Player 3: Yellow
 #ifdef TV_SECAM
           COLUP0 = ColGreen(12)
-          rem Player 4: Green (SECAM-specific, Turquoise maps to Cyan on SECAM)
+          rem Player 4: Green (SECAM-specific, Turquoise maps to Cyan on
+          rem   SECAM)
 #else
           COLUP0 = ColTurquoise(12)
           rem Player 4: Turquoise (NTSC/PAL)
@@ -111,10 +119,11 @@ SetParadeColorDone
 
 
 
-          rem =================================================================
+          rem ==========================================================
           rem DRAW PARADE CHARACTER SPRITE
-          rem =================================================================
-          rem Renders running animation sprite with alternating leg positions
+          rem ==========================================================
+          rem Renders running animation sprite with alternating leg
+          rem   positions
           rem INPUT: titleParadeTimer (for animation frame selection)
           rem USES: player0 sprite data
 DrawParadeCharacterSprite

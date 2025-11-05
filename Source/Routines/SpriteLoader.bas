@@ -6,21 +6,26 @@
 
           rem Loads character sprite data and colors from multiple banks
           rem Supports up to 32 characters (0-31) across 4 banks
-          rem Current implementation: NumCharacters characters (0-MaxCharacter) in 2 banks
-          rem Special sprites: QuestionMark, CPU, No for special selections.
+          rem Current implementation: NumCharacters characters
+          rem   (0-MaxCharacter) in 2 banks
+          rem Special sprites: QuestionMark, CPU, No for special
+          rem   selections.
 
 
           rem MULTI-BANK SPRITE LOADING FUNCTIONS
 
-          rem Loads sprites from appropriate bank based on character index
-          rem Handles special sprites (QuestionMark, CPU, No) for placeholders
+          rem Loads sprites from appropriate bank based on character
+          rem   index
+          rem Handles special sprites (QuestionMark, CPU, No) for
+          rem   placeholders
 
 
-          rem =================================================================
+          rem ==========================================================
           rem SOLID PLAYER COLOR TABLES
-          rem =================================================================
+          rem ==========================================================
           rem Solid color tables for P1-P4 normal and hurt states
-          rem P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise (SECAM maps to Green)
+          rem P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise (SECAM maps to
+          rem   Green)
 
           rem Player Colors - Light versions for normal state
           data PlayerColorsLight
@@ -36,9 +41,11 @@ end
 
 
           rem Load sprite data for a character based on character index
-          rem Input: temp1 = character index (0-31), temp2 = animation frame (0-7)
+          rem Input: temp1 = character index (0-31), temp2 = animation
+          rem   frame (0-7)
           rem        temp3 = player number (0-3)
-          rem Output: Sprite data loaded into appropriate player register
+          rem Output: Sprite data loaded into appropriate player
+          rem   register
 LoadCharacterSprite
           dim LCS_characterIndex = temp1
           dim LCS_animationFrame = temp2
@@ -52,7 +59,8 @@ LoadCharacterSprite
           rem Inline ValidateCharacterIndex
           dim VCI_characterIndex = temp1
           dim VCI_isValid = temp5
-          rem Check if character index is within valid range (0-MaxCharacter for current implementation)
+          rem Check if character index is within valid range
+          rem   (0-MaxCharacter for current implementation)
           if VCI_characterIndex > MaxCharacter then ValidateInvalidCharacterInline
           let VCI_isValid = 1
           let temp5 = VCI_isValid
@@ -79,16 +87,22 @@ ValidateCharacterDoneInline
           rem RandomCharacter = 253
           
           rem Use character art location system for sprite loading
-          rem Input: characterIndex = character index, animationFrame = animation frame
-          rem        playerNumber = player number OR playerNumberAlt = player number (caller provides)
-          rem Default to animation sequence 0 (idle) for character select
-          rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp4=player
+          rem Input: characterIndex = character index, animationFrame =
+          rem   animation frame
+          rem playerNumber = player number OR playerNumberAlt = player
+          rem   number (caller provides)
+          rem Default to animation sequence 0 (idle) for character
+          rem   select
+          rem LocateCharacterArt expects: temp1=char, temp2=frame,
+          rem   temp3=action, temp4=player
           
           rem Check if player number in temp3 or temp4
-          rem If temp4 is not set (0 and caller might have used temp3), copy from temp3
+          rem If temp4 is not set (0 and caller might have used temp3),
+          rem   copy from temp3
           if !LCS_playerNumberAlt then let LCS_playerNumberAlt = LCS_playerNumber
           
-          rem Move player number to temp4 and set temp3 to animation action (0=idle)
+          rem Move player number to temp4 and set temp3 to animation
+          rem   action (0=idle)
           let LCS_animationAction = 0
           rem animation action/sequence 0 = idle
           rem playerNumberAlt already has player number from caller
@@ -99,13 +113,15 @@ ValidateCharacterDoneInline
           gosub bank10 LocateCharacterArt
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem LOAD SPECIAL SPRITE
-          rem =================================================================
+          rem ==========================================================
           rem Loads special placeholder sprites (QuestionMark, CPU, No)
-          rem Input: temp6 = sprite index (SpriteQuestionMark=0, SpriteCPU=1, SpriteNo=2)
+          rem Input: temp6 = sprite index (SpriteQuestionMark=0,
+          rem   SpriteCPU=1, SpriteNo=2)
           rem        temp3 = player number (0-3)
-          rem Output: Appropriate player sprite pointer set to special sprite data
+          rem Output: Appropriate player sprite pointer set to special
+          rem   sprite data
 LoadSpecialSprite
           dim LSS_spriteIndex = temp6
           dim LSS_playerNumber = temp3
@@ -263,15 +279,17 @@ end
           player3height = 16
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem LOAD PLAYER SPRITE (generic dispatcher)
-          rem =================================================================
+          rem ==========================================================
           rem Load sprite data for any player using character art system
-          rem Input: temp1 = character index (from playerChar array) - may be unset, will get from player
-          rem        temp2 = animation frame (0-7) from sprite 10fps counter
-          rem        temp3 = animation action (0-15) from currentAnimationSeq
+          rem Input: temp1 = character index (from playerChar array) -
+          rem   may be unset, will get from player
+          rem temp2 = animation frame (0-7) from sprite 10fps counter
+          rem temp3 = animation action (0-15) from currentAnimationSeq
           rem        temp4 = player number (0-3)
-          rem Note: Frame is relative to sprite own 10fps counter, NOT global frame counter
+          rem Note: Frame is relative to sprite own 10fps counter, NOT
+          rem   global frame counter
 LoadPlayerSprite
           dim LPS_playerNumber = temp4
           dim LPS_characterIndex = temp1
@@ -304,25 +322,30 @@ LoadPlayerSpriteDispatch
           dim LPSD_animationFrame = temp2
           dim LPSD_animationAction = temp3
           dim LPSD_playerNumber = temp4
-          rem characterIndex = character index, animationFrame = frame (10fps counter), animationAction = action, playerNumber = player
+          rem characterIndex = character index, animationFrame =
+          rem   frame (10fps counter), animationAction = action,
+          rem   playerNumber = player
           rem Call character art location system (in bank10)
-          rem LocateCharacterArt expects: temp1=char, temp2=frame, temp3=action, temp4=player
+          rem LocateCharacterArt expects: temp1=char, temp2=frame,
+          rem   temp3=action, temp4=player
           rem temp variables are already set by LoadPlayerSpriteP0-P3
           rem Just ensure temp1 is set from LPS_characterIndex
           let temp1 = LPS_characterIndex
           gosub bank10 LocateCharacterArt
           return
 
-          rem =================================================================
+          rem ==========================================================
           rem LOAD PLAYER SPRITES (legacy player-specific functions)
-          rem =================================================================
+          rem ==========================================================
           rem Load sprite data into specific player registers
-          rem These functions contain the actual player graphics commands
+          rem These functions contain the actual player graphics
+          rem   commands
           
 LoadPlayer0Sprite
           dim LP0S_playerNumber = temp3
           rem Use art location system for player 0 sprite loading
-          rem temp1 = character index, temp2 = animation frame already set
+          rem temp1 = character index, temp2 = animation frame already
+          rem   set
           rem playerNumber = player number (0)
           let LP0S_playerNumber = 0
           let temp3 = LP0S_playerNumber
@@ -333,7 +356,8 @@ LoadPlayer0Sprite
 LoadPlayer1Sprite
           dim LP1S_playerNumber = temp3
           rem Use art location system for player 1 sprite loading
-          rem temp1 = character index, temp2 = animation frame already set
+          rem temp1 = character index, temp2 = animation frame already
+          rem   set
           rem playerNumber = player number (1)
           let LP1S_playerNumber = 1
           let temp3 = LP1S_playerNumber
@@ -344,7 +368,8 @@ LoadPlayer1Sprite
 LoadPlayer2Sprite
           dim LP2S_playerNumber = temp3
           rem Use art location system for player 2 sprite loading
-          rem temp1 = character index, temp2 = animation frame already set
+          rem temp1 = character index, temp2 = animation frame already
+          rem   set
           rem playerNumber = player number (2)
           let LP2S_playerNumber = 2
           let temp3 = LP2S_playerNumber
@@ -355,7 +380,8 @@ LoadPlayer2Sprite
 LoadPlayer3Sprite
           dim LP3S_playerNumber = temp3
           rem Use art location system for player 3 sprite loading
-          rem temp1 = character index, temp2 = animation frame already set
+          rem temp1 = character index, temp2 = animation frame already
+          rem   set
           rem playerNumber = player number (3)
           let LP3S_playerNumber = 3
           let temp3 = LP3S_playerNumber
@@ -367,9 +393,12 @@ LoadPlayer3Sprite
 
 
 
-          rem Load character/player color based on TV standard, B&W, hurt, and flashing states
-          rem Input: temp1 = character index, temp2 = hurt (0/1), temp3 = player (0-3)
-          rem        temp4 = flashing (0/1), temp5 = flashing mode (0=frame-based, 1=player-index)
+          rem Load character/player color based on TV standard, B&W,
+          rem   hurt, and flashing states
+          rem Input: temp1 = character index, temp2 = hurt (0/1), temp3
+          rem   = player (0-3)
+          rem temp4 = flashing (0/1), temp5 = flashing mode
+          rem   (0=frame-based, 1=player-index)
           rem Output: Appropriate COLUPx updated
           rem Note: Players use solid colors only (no per-line coloring)
 LoadCharacterColors
@@ -389,14 +418,18 @@ NormalColor
           dim NC_color = temp6
           dim NC_playerNumber = temp3
 #ifdef TV_SECAM
-          rem SECAM: always use player index colors (no luminance control)
+          rem SECAM: always use player index colors (no luminance
+          rem   control)
           goto PlayerIndexColors
 #else
-          rem Determine effective B&W override locally; if enabled, use player colors
+          rem Determine effective B&W override locally; if enabled, use
+          rem   player colors
           if colorBWOverride then PlayerIndexColors
 
-          rem NTSC/PAL: Character-specific colors would be used here when tables exist
-          rem Placeholder: fall back to player index colors until character tables are wired
+          rem NTSC/PAL: Character-specific colors would be used here
+          rem   when tables exist
+          rem Placeholder: fall back to player index colors until
+          rem   character tables are wired
           goto PlayerIndexColors
 #endif
 
@@ -409,17 +442,21 @@ FlashingColor
 
 PerLineFlashing
           dim PLF_color = temp6
-          rem Frame-based flashing (not per-line - players use solid colors)
-          rem Use alternating bright/dim player index colors by frame bit
+          rem Frame-based flashing (not per-line - players use solid
+          rem   colors)
+          rem Use alternating bright/dim player index colors by frame
+          rem   bit
           if frame & 8 then PlayerIndexColorsDim
           goto PlayerIndexColors
 
 PlayerIndexColors
           dim PIC_color = temp6
           rem Solid player index colors (bright)
-          rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player 4=Turquoise (SECAM maps to Green)
+          rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
+          rem   4=Turquoise (SECAM maps to Green)
 #ifdef TV_SECAM
-          rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise maps to Cyan on SECAM)
+          rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise
+          rem   maps to Cyan on SECAM)
           if !LCC_playerNumber then let PIC_color = ColIndigo(14) : let temp6 = PIC_color : goto SetColor
           rem Player 1: Indigo -> Blue on SECAM
           if LCC_playerNumber = 1 then let PIC_color = ColRed(14) : let temp6 = PIC_color : goto SetColor
@@ -447,9 +484,11 @@ PlayerIndexColors
 PlayerIndexColorsDim
           dim PICD_color = temp6
           rem Dimmed player index colors
-          rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player 4=Turquoise (SECAM maps to Green)
+          rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
+          rem   4=Turquoise (SECAM maps to Green)
 #ifdef TV_SECAM
-          rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise maps to Cyan on SECAM)
+          rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise
+          rem   maps to Cyan on SECAM)
           if !LCC_playerNumber then let PICD_color = ColIndigo(6) : let temp6 = PICD_color : goto SetColor
           rem Player 1: Indigo -> Blue on SECAM (dimmed)
           if LCC_playerNumber = 1 then let PICD_color = ColRed(6) : let temp6 = PICD_color : goto SetColor
@@ -482,14 +521,16 @@ HurtColor
           let temp6 = HC_color
           goto SetColor
 #else
-          rem Dimmed version of normal color: use dim player index color as fallback
+          rem Dimmed version of normal color: use dim player index color
+          rem   as fallback
           goto PlayerIndexColorsDim
 #endif
 
 SetColor
           dim SC_color = temp6
           dim SC_playerNumber = temp3
-          rem Set color based on player index (multisprite kernel supports COLUP2/COLUP3)
+          rem Set color based on player index (multisprite kernel
+          rem   supports COLUP2/COLUP3)
           rem temp6 already contains the color from previous code paths
           let SC_color = temp6
           let SC_playerNumber = LCC_playerNumber

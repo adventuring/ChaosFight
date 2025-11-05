@@ -1,12 +1,14 @@
           rem ChaosFight - Source/Routines/ChangeGameMode.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem =================================================================
+          rem ==========================================================
           rem CHANGE GAME MODE
-          rem =================================================================
+          rem ==========================================================
           rem Centralized game mode switching dispatcher.
-          rem Calls appropriate Begin* setup routine for the new gameMode.
-          rem After setup completes, MainLoop dispatches to the appropriate loop.
+          rem Calls appropriate Begin* setup routine for the new
+          rem   gameMode.
+          rem After setup completes, MainLoop dispatches to the
+          rem   appropriate loop.
 
 ChangeGameMode
           on gameMode goto SetupPublisherPrelude, SetupAuthorPrelude, SetupTitle, SetupCharacterSelect, SetupFallingAnimation, SetupArenaSelect, SetupGame, SetupWinner, SetupAttract
@@ -26,7 +28,8 @@ SetupTitle
           
 SetupCharacterSelect
           rem Character select uses its own internal flow
-          rem No separate Begin function needed - setup is handled inline
+          rem No separate Begin function needed - setup is handled
+          rem   inline
           return
           
 SetupFallingAnimation
@@ -40,7 +43,8 @@ SetupArenaSelect
 SetupGame
           gosub bank11 BeginGameLoop
           rem BeginGameLoop resets gameplay state and returns
-          rem MainLoop will dispatch to GameMainLoop based on gameMode = ModeGame
+          rem MainLoop will dispatch to GameMainLoop based on gameMode =
+          rem   ModeGame
           return
 
 SetupWinner

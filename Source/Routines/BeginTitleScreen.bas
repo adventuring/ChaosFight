@@ -22,6 +22,7 @@ BeginTitleScreen
           rem Set window values for Title screen (ChaosFight only)
           gosub bank12 SetTitleWindowValues
           
-          rem Note: Bitmap data is loaded automatically by titlescreen kernel via includes
+          rem Note: Bitmap data is loaded automatically by titlescreen
+          rem   kernel via includes
           
           return

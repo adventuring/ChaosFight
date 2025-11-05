@@ -62,7 +62,7 @@ UpdateSoundEffect
           if SoundEffectPointerH_R then gosub UpdateSoundEffectVoice0
           
           rem Update Voice 1
-          if SoundEffectPointer1H then rem tail call : goto UpdateSoundEffectVoice1
+          if SoundEffectPointer1H then gosub UpdateSoundEffectVoice1
           return
           
           

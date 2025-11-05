@@ -29,16 +29,36 @@ The Atari 2600 Ball sprite is available but not currently used in ChaosFight. Us
 
 ## Ball Sprite Capabilities
 
-**Hardware Registers:**
-- `ballx` ($84): X position (0-159)
-- `bally` ($89): Y position (0-255)
-- `ballheight` ($92): Height (1, 2, 4, or 8 pixels)
+### Multisprite Kernel Support
+
+**YES - Ball sprite IS supported in multisprite kernel.**
+
+**Available Parameters:**
+- `ballx` ($82): X position (0-159)
+- `bally` ($8C): Y position (0-255)
+- **Width:** Fixed at 1 pixel (hardware limitation - cannot be changed)
+- **Height:** Controlled via `CTRLPF` register bits (1, 2, 4, or 8 pixels)
 - `ENABL` register: Enable/disable Ball sprite
 - `RESBL` register: Reset Ball sprite position
+- `HMBL` register: Horizontal motion Ball
+- `VDELBL` register: Vertical delay Ball
+
+**Note:** Unlike standard kernel, multisprite kernel does NOT define `ballheight` variable.
+Height is controlled directly via `CTRLPF` register bits 4-5:
+- `CTRLPF` bits 4-5 = %00: 1 pixel tall
+- `CTRLPF` bits 4-5 = %01: 2 pixels tall  
+- `CTRLPF` bits 4-5 = %10: 4 pixels tall
+- `CTRLPF` bits 4-5 = %11: 8 pixels tall
+
+**Memory Addresses (multisprite kernel):**
+- `ballx = $82` (zero-page RAM)
+- `bally = $8C` (zero-page RAM)
+- No `ballheight` variable (use `CTRLPF` register directly)
 
 **Limitations:**
 - Single pixel wide (1xN pixels, where N = height)
-- Fixed sizes: 1, 2, 4, or 8 pixels tall
+- Height controlled via CTRLPF register (not a variable)
+- Fixed width: Always 1 pixel (hardware limitation)
 - Shares color register with playfield (`COLUPF`)
 - Cannot change color independently
 - Limited visual appearance (single pixel column)
@@ -80,16 +100,30 @@ The Atari 2600 Ball sprite is available but not currently used in ChaosFight. Us
 
 ## Technical Considerations
 
+### Multisprite Kernel Implementation
+
+**Ball Sprite Support:**
+- Ball sprite is positioned in `PrePositionAllObjects` routine (multisprite_kernel.asm:170)
+- Uses same positioning subroutine as other sprites
+- Y position checked per scanline using `VDELBL` (vertical delay) register
+- Ball sprite is drawn on every scanline if enabled (via `ENABL` register)
+
+**Positioning:**
+- `ballx` set before `PrePositionAllObjects` call
+- `bally` used for scanline comparison during kernel
+- Ball sprite follows same timing constraints as other sprites
+
 ### Flicker Code Integration
 Current flicker code handles:
 - Player sprites (P1-P4)
 - Missile sprites (M0-M1 for P1/P2, M2/M3 for P3/P4)
 
 Adding Ball sprite would require:
-- Additional scanline timing calculations
-- Ball sprite position updates per scanline
-- Color synchronization with playfield
-- Complex flicker scheduling
+- Setting `ballx` and `bally` before `drawscreen`
+- Configuring `CTRLPF` register for ball height
+- Setting `ENABL` register to enable ball
+- Color synchronization with playfield (COLUPF)
+- Per-scanline timing (handled automatically by kernel)
 
 ### Memory Impact
 - Ball sprite uses zero-page RAM: `ballx`, `bally`, `ballheight`

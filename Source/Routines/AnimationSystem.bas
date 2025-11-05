@@ -416,11 +416,9 @@ TransitionToFallen
 
 TransitionHandleJump
           dim THJ_animationAction = temp2
-          dim THJ_playerIndex = temp4
           rem Stay on frame 7 until Y velocity goes negative
           rem Check if player is falling (positive Y velocity = downward)
-          let THJ_playerIndex = currentPlayer
-          if 0 < playerVelocityY[THJ_playerIndex] then TransitionHandleJump_TransitionToFalling
+          if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
           rem Still ascending (negative or zero Y velocity), stay in jump
           let THJ_animationAction = ActionJumping
           let temp2 = THJ_animationAction

@@ -316,11 +316,8 @@ BudgetedMissileCollisionCheck
           rem 4-player mode: check one missile per frame
           let temp1 = FramePhase
           rem FramePhase 0-3 maps to Game Players 0-3
-          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp1 = 0 then let temp6 = 1
-          if temp1 = 1 then let temp6 = 2
-          if temp1 = 2 then let temp6 = 4
-          if temp1 = 3 then let temp6 = 8
+          rem Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
+          let temp6 = BitMask[temp1]
           let temp4 = missileActive & temp6
           if temp4 then gosub bank7 CheckAllMissileCollisions
           return
@@ -329,11 +326,8 @@ BudgetedMissileCollisionCheck2P
           rem Simple 2-player mode: alternate missiles
           let temp1 = frame & 1
           rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
-          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp1 = 0 then let temp6 = 1
-          if temp1 = 1 then let temp6 = 2
-          if temp1 = 2 then let temp6 = 4
-          if temp1 = 3 then let temp6 = 8
+          rem Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
+          let temp6 = BitMask[temp1]
           let temp4 = missileActive & temp6
           if temp4 then gosub bank7 CheckAllMissileCollisions
           return

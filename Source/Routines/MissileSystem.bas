@@ -42,14 +42,8 @@
 GetPlayerMissileBitFlag
           dim GPMBF_playerIndex = temp1
           dim GPMBF_bitFlag = temp6
-          rem Calculate bit flag: 2^playerIndex (1, 2, 4, 8)
-          if GPMBF_playerIndex = 0 then let GPMBF_bitFlag = 1 : goto GPMBF_Done
-          if GPMBF_playerIndex = 1 then let GPMBF_bitFlag = 2 : goto GPMBF_Done
-          if GPMBF_playerIndex = 2 then let GPMBF_bitFlag = 4 : goto GPMBF_Done
-          if GPMBF_playerIndex = 3 then let GPMBF_bitFlag = 8 : goto GPMBF_Done
-          rem Default to 0 if invalid index
-          let GPMBF_bitFlag = 0
-GPMBF_Done
+          rem Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
+          let GPMBF_bitFlag = BitMask[GPMBF_playerIndex]
           let temp6 = GPMBF_bitFlag
           return
 
@@ -893,10 +887,7 @@ BounceDone
           rem   temp1 = player index (0-3)
 DeactivateMissile
           rem Clear active bit for this player missile
-          let temp6  = 1
-          if temp1 = 1 then let temp6  = 2
-          if temp1 = 2 then let temp6  = 4
-          if temp1 = 3 then let temp6  = 8
+          let temp6 = BitMask[temp1]
           let temp6 = MaxByteValue - temp6
           rem Invert bits
           let missileActive  = missileActive & temp6

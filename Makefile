@@ -414,22 +414,22 @@ Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.
 	bin/preprocess < $< > $@
 
 # Create empty variable redefs file if it doesn't exist (will be populated by batariBASIC)
-Source/Common/VariableRedefinitions.h:
-	@mkdir -p Source/Common
+Object/VariableRedefinitions.h:
+	@mkdir -p Object
 	@touch $@
 
 # Step 2: Compile .preprocessed.bas → bB.ARCH.s
-Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Source/Common/VariableRedefinitions.h
+Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Object/VariableRedefinitions.h
 	mkdir -p Object
-	cd Object && ln -sf ../Source/Common/VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/VariableRedefinitions.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.NTSC.s
+	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.NTSC.s
 
-Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Source/Common/VariableRedefinitions.h
+Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Object/VariableRedefinitions.h
 	mkdir -p Object
-	cd Object && ln -sf ../Source/Common/VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/VariableRedefinitions.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.PAL.s
+	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.PAL.s
 
-Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Source/Common/VariableRedefinitions.h
+Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Object/VariableRedefinitions.h
 	mkdir -p Object
-	cd Object && ln -sf ../Source/Common/VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
+	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
 
 # Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory
@@ -454,17 +454,17 @@ Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
 # The .s file is the final assembly output that includes all generated assets
 Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME).NTSC.s
 	mkdir -p Dist Object
-	cd Object && ln -sf ../Source/Common/VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
+	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
 	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).NTSC.lst -sDist/$(GAME)$(GAMEYEAR).NTSC.sym -oDist/$(GAME)$(GAMEYEAR).NTSC.a26
 
 Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME).PAL.s
 	mkdir -p Dist Object
-	cd Object && ln -sf ../Source/Common/VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
+	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
 	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).PAL.lst -sDist/$(GAME)$(GAMEYEAR).PAL.sym -oDist/$(GAME)$(GAMEYEAR).PAL.a26
 
 Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME).SECAM.s
 	mkdir -p Dist Object
-	cd Object && ln -sf ../Source/Common/VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
+	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
 	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).SECAM.lst -sDist/$(GAME)$(GAMEYEAR).SECAM.sym -oDist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator

@@ -234,6 +234,10 @@ UpdateOneMissile
           rem Megax missile stays adjacent to player during attack, no movement
           if UOM_characterType = CharMegax then goto HandleMegaxMissile
           
+          rem Special handling for Knight Guy (character 7): sword swing visual
+          rem Knight Guy missile appears overlapping, moves away, returns, then vanishes
+          if UOM_characterType = CharKnightGuy then goto HandleKnightGuyMissile
+          
           rem Apply gravity if flag is set
           if !(UOM_missileFlags & MissileFlagGravity) then GravityDone
           let UOM_velocityY = UOM_velocityY + GravityPerFrame
@@ -491,6 +495,100 @@ HandleMegaxMissile
           
 MegaxMissileActive
           rem Attack still active - missile stays visible
+          rem Skip normal movement and collision checks
+          return
+
+          rem ==========================================================
+          rem HANDLE KNIGHT GUY MISSILE (Sword Swing Visual)
+          rem ==========================================================
+          rem Knight Guy missile appears partially overlapping player,
+          rem   moves slightly away during attack phase (sword swing),
+          rem   returns to start position, and vanishes when attack
+          rem   completes.
+HandleKnightGuyMissile
+          dim HKG_playerIndex = temp1
+          dim HKG_facing = temp4
+          dim HKG_emissionHeight = temp5
+          dim HKG_missileX = temp2
+          dim HKG_missileY = temp3
+          dim HKG_animationState = temp6
+          dim HKG_animationFrame = temp6
+          dim HKG_swordOffset = temp6
+          
+          rem Get facing direction (bit 0: 0=left, 1=right)
+          let HKG_facing = playerState[HKG_playerIndex] & PlayerStateBitFacing
+          
+          rem Get emission height from character data
+          let HKG_emissionHeight = CharacterMissileEmissionHeights[UOM_characterType]
+          
+          rem Check if attack animation is complete
+          rem Extract animation state (bits 4-7)
+          let HKG_animationState = playerState[HKG_playerIndex]
+          asm
+            lda HKG_animationState
+            lsr a
+            lsr a
+            lsr a
+            lsr a
+            sta HKG_animationState
+          end
+          
+          rem If animation state is not ActionAttackExecute (14), attack is complete
+          if HKG_animationState = 14 then KnightGuyAttackActive
+          rem Attack complete - deactivate missile
+          goto DeactivateMissile
+          
+KnightGuyAttackActive
+          rem Get current animation frame within Execute sequence (0-7)
+          let HKG_animationFrame = currentAnimationFrame_R[HKG_playerIndex]
+          
+          rem Calculate sword swing offset based on animation frame
+          rem Frames 0-3: Move away from player (sword swing out)
+          rem Frames 4-7: Return to start (sword swing back)
+          rem Maximum swing distance: 4 pixels
+          if HKG_animationFrame < 4 then KnightGuySwingOut
+          rem Frames 4-7: Returning to start
+          rem Calculate return offset: (7 - frame) * 1 pixel
+          rem Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1 pixel, Frame 7: 0 pixels
+          let HKG_swordOffset = 7 - HKG_animationFrame
+          goto KnightGuySetPosition
+          
+KnightGuySwingOut
+          rem Frames 0-3: Moving away from player
+          rem Calculate swing offset: (frame + 1) pixels
+          rem Frame 0: 1 pixel, Frame 1: 2 pixels, Frame 2: 3 pixels, Frame 3: 4 pixels
+          let HKG_swordOffset = HKG_animationFrame + 1
+          
+KnightGuySetPosition
+          rem Calculate base X position (partially overlapping player)
+          rem Start position: player X + 8 pixels (halfway through player sprite)
+          rem Then apply swing offset in facing direction
+          let HKG_missileX = playerX[HKG_playerIndex] + 8
+          rem Base position: center of player sprite
+          
+          rem Apply swing offset in facing direction
+          if HKG_facing = 0 then KnightGuySwingLeft
+          rem Facing right: move right (positive offset)
+          let HKG_missileX = HKG_missileX + HKG_swordOffset
+          goto KnightGuySetY
+          
+KnightGuySwingLeft
+          rem Facing left: move left (negative offset)
+          let HKG_missileX = HKG_missileX - HKG_swordOffset
+          
+KnightGuySetY
+          rem Calculate Y position (player Y + emission height)
+          let HKG_missileY = playerY[HKG_playerIndex] + HKG_emissionHeight
+          
+          rem Update missile position
+          let missileX[HKG_playerIndex] = HKG_missileX
+          let missileY_W[HKG_playerIndex] = HKG_missileY
+          
+          rem Zero velocities to prevent projectile movement
+          rem Position is updated directly each frame based on animation frame
+          let missileVelocityX[HKG_playerIndex] = 0
+          let missileVelocityY[HKG_playerIndex] = 0
+          
           rem Skip normal movement and collision checks
           return
 

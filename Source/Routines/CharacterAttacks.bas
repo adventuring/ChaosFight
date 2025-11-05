@@ -180,13 +180,18 @@ HarpySetVerticalVelocity
           return
 
           rem ==========================================================
-          rem KNIGHT GUY (Character 7) - Ranged Attack
+          rem KNIGHT GUY (Character 7) - Melée Attack (sword visual)
           rem ==========================================================
+          rem Knight Guy uses a melée attack with a missile sprite for
+          rem   sword visual effect.
+          rem The missile appears partially overlapping the player, moves
+          rem   slightly away during attack phase (sword swing), returns
+          rem   to start, and vanishes when attack completes.
 KnightGuyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           rem tail call
-          goto PerformRangedAttack
+          goto PerformMeleeAttack
 
           rem ==========================================================
           rem FROOTY (Character 8) - Ranged Attack with Magical Sparkles

@@ -242,7 +242,7 @@ GravityDone
           
           rem Apply friction if flag is set (curling stone deceleration
           rem   with coefficient)
-          if !(temp5 & MissileFlagFriction) then FrictionDone
+          if (temp5 & MissileFlagFriction) = 0 then FrictionDone
           let missileVelocityXCalc = missileVelocityX[UOM_playerIndex]
           rem Get current X velocity
           

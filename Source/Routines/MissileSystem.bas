@@ -512,8 +512,8 @@ HandleKnightGuyMissile
           dim HKG_missileX = temp2
           dim HKG_missileY = temp3
           dim HKG_animationState = temp6
-          dim HKG_animationFrame = temp6
-          dim HKG_swordOffset = temp6
+          dim HKG_animationFrame = velocityCalculation
+          dim HKG_swordOffset = velocityCalculation
           
           rem Get facing direction (bit 0: 0=left, 1=right)
           let HKG_facing = playerState[HKG_playerIndex] & PlayerStateBitFacing

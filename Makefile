@@ -486,15 +486,15 @@ Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS
 # The .s file is the final assembly output that includes all generated assets
-Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME).NTSC.s
+Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME).NTSC.s Object/2600basic_variable_redefs.h
 	mkdir -p Dist Object
 	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).NTSC.lst -sDist/$(GAME)$(GAMEYEAR).NTSC.sym -oDist/$(GAME)$(GAMEYEAR).NTSC.a26
 
-Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME).PAL.s
+Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME).PAL.s Object/2600basic_variable_redefs.h
 	mkdir -p Dist Object
 	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).PAL.lst -sDist/$(GAME)$(GAMEYEAR).PAL.sym -oDist/$(GAME)$(GAMEYEAR).PAL.a26
 
-Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME).SECAM.s
+Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME).SECAM.s Object/2600basic_variable_redefs.h
 	mkdir -p Dist Object
 	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).SECAM.lst -sDist/$(GAME)$(GAMEYEAR).SECAM.sym -oDist/$(GAME)$(GAMEYEAR).SECAM.a26
 

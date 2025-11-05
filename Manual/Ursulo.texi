@@ -3,7 +3,7 @@
 @group
     Weight: 100 kg (220 lbs)
     Attack: Melée (claw swipe)
-    Special: Powerful melée attack, hardest to knock back
+    Special: (none - powerful attack and knockback resistance are normal attributes)
     Species: Bear (1.67m tall walking polar bear)
     Nemeses: Wizards, robots, and penguins (who keep abducting him)
     Original Game: Game of the Bear, Game of the Bear 2: 2 Much 2 Bear, and Game of the Bear 3: Polar Opposites (all vhzc)

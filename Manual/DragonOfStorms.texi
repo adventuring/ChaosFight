@@ -3,7 +3,7 @@
 @group
     Weight: 1590 kg (3500 lbs)
     Attack: Ranged
-    Special: Free flight (no gravity); fires fireballs
+    Special: Can fly (no gravity)
     Original Game: Dragon's Descent, Dragon's Cache, and Dragon's Havoc (Dragon's Trilogy)
     Author: Todd "Revontulli" Furmanski
     Character: Dragon of Storms (alongside Dragon of Embers in Dragon's Havoc)
@@ -20,5 +20,5 @@ through seven stages, each containing outdoor areas, indoor sections, and
 confrontations with the powerful Dragon Monarchs themselves.
 
 As the master of storms, this dragon can hover freely (no gravity) and fires 
-fireballs downward, making them excellent for hitting enemies below. The Dragon of Storms brings the power of wind and tempest to 
+fireballs, making them excellent for hitting enemies. The Dragon of Storms brings the power of wind and tempest to 
 the arena, a formidable force that has faced down monarchs and armies alike.

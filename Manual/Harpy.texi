@@ -3,7 +3,7 @@
 @group
     Weight: 15 kg (30 lbs)
     Attack: Melée (diagonal swoop)
-    Special: Can "fly" by repeatedly pressing UP
+    Special: Can fly by repeatedly pressing UP (flapping wings)
     Background: Former prisoner of the deadly labyrinth, defeated the Great Sphinx
     Nature: Swift of wing and vicious in combat
     Experience: Veteran of maze battles, collector of legendary artifacts

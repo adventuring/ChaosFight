@@ -3,7 +3,7 @@
 @group
     Weight: 30 kg (65 lbs)
     Attack: Melée
-    Special: Attack also causes jump (jump+attack combo); light melée fighter
+    Special: Press UP to transform
     Mission: Protect vegetable gardens from nasty ducks
     Motivation: Dedicated guardian against persistent duck attacks
     Original Game: Ducks Away
@@ -19,5 +19,9 @@ skills through constant battles to defend precious vegetables from relentless
 waterfowl invaders.
 
 Despite being a light melée fighter, Shamone's dedication to garden protection 
-has made them surprisingly tenacious in combat. When attacking, Shamone jumps 
-while striking, allowing for aerial attacks that catch opponents off guard.
+has made them surprisingly tenacious in combat.
+
+Shamone has a unique transformation ability - press UP to transform into a 
+more powerful form that shares all of Shamone's combat abilities but with 
+enhanced capabilities. This ability to switch forms gives Shamone unexpected 
+versatility in battle.

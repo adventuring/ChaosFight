@@ -3,7 +3,7 @@
 @group
     Weight: 135 kg (300 lbs)
     Attack: Melée
-    Special: No jumping! Stretches vertically to ceiling; fall damage immunity
+    Special: Can stretch vertically to ceiling (press UP to latch, DOWN to release); takes limited fall damage
     Original Game: Tito el robotito contra los fantasmas (jumpless platformer)
     Programming Error: Allergic to scary things (zombies, ghosts, bats, skulls)
     Purchase: @url{https://store.atariage.com/products/robo-tito-atari-2600,Robo Tito at AtariAge Store}
@@ -26,4 +26,4 @@ will then grab and hang on to. You can then move Tito left and right along
 the ceiling. To get back down to the floor, press DOWN on your joystick until 
 Tito reaches the floor.
 
-In ChaosFight, his stretch ability works the same way - press UP to stretch to the ceiling and latch on, then press DOWN to return to the floor.
+In ChaosFight, his stretch ability works the same way - press UP to stretch to the ceiling and latch on, then press DOWN to return to the floor. His robotic construction ensures he takes only limited fall damage compared to other characters.

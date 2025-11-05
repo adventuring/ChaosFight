@@ -3,7 +3,7 @@
 @group
     Weight: 1590 kg (3500 lbs)
     Attack: Melée (fire breath)
-    Special: Giant monster-eating powerhouse, biggest and most powerful Grizzard known
+    Special: (none - breathing fire is a normal ability)
     Original Game: Grizzards
     Author: Zephyr & Bruce-Robert Pocock (Interworldly Adventuring, LLC) @url{https://interworldly.com,Interworldly.com}
     Species: Grizzard (giant monster-eating powerhouse)

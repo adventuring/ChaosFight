@@ -3,7 +3,7 @@
 @group
     Weight: 110 kg (240 lbs)
     Attack: Ranged (magic ray)
-    Special: Geography expert, magic ring wielder, former bar owner
+    Special: Magic ring grants ranged magic ray attacks
     Lives: Port Lion island
     Background: Former proprietor of bars in mysterious "Greewich"
     Original Game: Grizzards

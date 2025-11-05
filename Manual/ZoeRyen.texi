@@ -3,7 +3,7 @@
 @group
     Weight: 65 kg (145 lbs)
     Attack: Ranged
-    Special: High jumps, fast horizontal laser beam
+    Special: (none - high jumps and laser beam are normal abilities)
 @end group
 @end display
 

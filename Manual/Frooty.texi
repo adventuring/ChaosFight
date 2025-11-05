@@ -4,7 +4,7 @@
     Age: 24
     Weight: 55 kg (120 lbs)
     Attack: Ranged (magical sparkles)
-    Special: FREE FLIGHT - use UP/DOWN to move vertically, no guard action
+    Special: Can fly using UP/DOWN to move vertically (no guard action)
     Likes: Candy
     Hates: Boredom
     Original Game: Magical Fairy Force, Championship, and Drop

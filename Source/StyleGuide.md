@@ -170,8 +170,10 @@ LoadCharacterSprite
 
 Subroutine-local temporary variables should be:
 - **Dimmed** at the start of the subroutine
-- **Namespaced** with subroutine initials: `XX_varName`
+- **Namespaced** with subroutine initials (abbreviations): `XX_varName`
 - **Mapped** to `temp1`-`temp6` or other appropriate variables
+
+**Important**: Use **abbreviated routine names** (2-4 letters) as prefixes, not full routine names. This keeps variable names concise and readable.
 
 **Example:**
 ```basic
@@ -182,11 +184,33 @@ SpawnMissile
           dim SM_bitFlag = temp6
           rem ... subroutine body ...
           return
+
+UpdatePlayerAnimation
+          dim UPA_animCounterRead = temp4
+          dim UPA_animFrameRead = temp2
+          rem ... subroutine body ...
+          return
 ```
+
+**Pattern**: `[RoutineAbbreviation]_[descriptiveName]`
+- ✅ `UPA_animCounterRead` (UpdatePlayerAnimation → UPA)
+- ❌ `UpdatePlayerAnimation_animCounterRead` (too verbose)
 
 ---
 
 ## Documentation
+
+### Remark Length
+
+**All remarks/comments MUST NOT exceed 72 columns** for readability, consistency, and compatibility with various display formats.
+
+**Examples:**
+```basic
+rem This is a short remark that fits within 72 columns
+
+rem This remark is too long and extends beyond the 72-column limit
+rem   and should be split across multiple lines
+```
 
 ### Subroutine Documentation
 

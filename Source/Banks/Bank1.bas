@@ -36,7 +36,7 @@ end
 end
           
           asm
-#include "Source/Titlescreen/asm/titlescreen.s"
+#include "Source/TitleScreen/asm/titlescreen.s"
 end
 
           rem Override window values AFTER includes for correct

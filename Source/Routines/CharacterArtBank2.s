@@ -19,12 +19,12 @@
 
 ; Character sprite pointer tables (Bank 2 only)
 ; Low byte pointers for each character base sprite data
-CharacterSpritePtrLoBank2:
+CharacterSpriteLBank2:
     .byte <BernieFrames, <CurlerFrames, <DragonOfStormsFrames, <ZoeRyenFrames
     .byte <FatTonyFrames, <MegaxFrames, <HarpyFrames, <KnightGuyFrames
 
 ; High byte pointers for each character base sprite data  
-CharacterSpritePtrHiBank2:
+CharacterSpriteHBank2:
     .byte >BernieFrames, >CurlerFrames, >DragonOfStormsFrames, >ZoeRyenFrames
     .byte >FatTonyFrames, >MegaxFrames, >HarpyFrames, >KnightGuyFrames
 
@@ -48,9 +48,9 @@ LocateCharacterArtBank2:
     
     ; Get base sprite pointer for character (using bank-relative index in temp6)
     ldy temp6           ; Bank-relative character index (0-7) as Y
-    lda CharacterSpritePtrLoBank2,y
+    lda CharacterSpriteLBank2,y
     sta temp4           ; Store low byte
-    lda CharacterSpritePtrHiBank2,y  
+    lda CharacterSpriteHBank2,y  
     sta temp5           ; Store high byte
     
     ; Calculate sprite index: index = (action << 3) | frame

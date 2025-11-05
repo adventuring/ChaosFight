@@ -112,9 +112,9 @@ bmp_48x2_4_04
 bmp_48x2_4_05
  ; *** replace this block with your bimap_05 data block...
 	BYTE %01110111
-	BYTE %00010111
-	BYTE %00110111
-	BYTE %00010111
+	BYTE %01010111
+	BYTE %01110111
+	BYTE %01010111
 	BYTE %01110111
 
 

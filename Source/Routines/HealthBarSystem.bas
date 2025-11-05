@@ -204,10 +204,10 @@ UpdatePlayer34HealthBars
           if selectedChar3_R = 255 then goto P3UseAA
           rem Check if Player 3 is eliminated (bit 2 of
           rem   playersEliminated = 4)
-          let UP34HB_isEliminated = playersEliminated_R & 4
+          let UP34HB_isEliminated = PlayerEliminatedPlayer2 & playersEliminated_R
           if UP34HB_isEliminated then goto P3UseAA
           rem Clamp health to valid range
-          if UP34HB_p3Health > PlayerHealthMax - 1 then let UP34HB_p3Health = PlayerHealthMax - 1
+          if PlayerHealthMax - 1 < UP34HB_p3Health then let UP34HB_p3Health = PlayerHealthMax - 1
           goto P3ConvertHealth
           
 P3UseAA
@@ -250,7 +250,7 @@ P4GetHealth
           if selectedChar4_R = 255 then goto P4UseAA
           rem Check if Player 4 is eliminated (bit 3 of
           rem   playersEliminated = 8)
-          let UP34HB_isEliminated = playersEliminated_R & 8
+          let UP34HB_isEliminated = PlayerEliminatedPlayer3 & playersEliminated_R
           if UP34HB_isEliminated then goto P4UseAA
           rem Clamp health to valid range
           if UP34HB_p4Health > 99 then let UP34HB_p4Health = 99

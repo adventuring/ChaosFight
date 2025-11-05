@@ -403,17 +403,16 @@ EnhancedJumpDone0
           let EJ_characterType = PlayerChar[IHLP_playerIndex]
           rem Dispatch to character-specific jump handler (0-31)
           rem MethHound (31) uses ShamoneJump handler
-          let temp4 = EJ_characterType
-          if temp4 < 8 then on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump
-          if temp4 < 8 then goto DoneLeftPortJumpDispatch
-          temp4 = temp4 - 8
-          if temp4 < 8 then on temp4 goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
-          if temp4 < 8 then goto DoneLeftPortJumpDispatch
-          temp4 = temp4 - 8
-          if temp4 < 8 then on temp4 goto Char16Jump, Char17Jump, Char18Jump, Char19Jump, Char20Jump, Char21Jump, Char22Jump, Char23Jump
-          if temp4 < 8 then goto DoneLeftPortJumpDispatch
-          temp4 = temp4 - 8
-          on temp4 goto Char24Jump, Char25Jump, Char26Jump, Char27Jump, Char28Jump, Char29Jump, Char30Jump, ShamoneJump
+          if EJ_characterType < 8 then on EJ_characterType goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump
+          if EJ_characterType < 8 then goto DoneLeftPortJumpDispatch
+          let EJ_characterType = EJ_characterType - 8
+          if EJ_characterType < 8 then on EJ_characterType goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+          if EJ_characterType < 8 then goto DoneLeftPortJumpDispatch
+          let EJ_characterType = EJ_characterType - 8
+          if EJ_characterType < 8 then on EJ_characterType goto Char16Jump, Char17Jump, Char18Jump, Char19Jump, Char20Jump, Char21Jump, Char22Jump, Char23Jump
+          if EJ_characterType < 8 then goto DoneLeftPortJumpDispatch
+          let EJ_characterType = EJ_characterType - 8
+          on EJ_characterType goto Char24Jump, Char25Jump, Char26Jump, Char27Jump, Char28Jump, Char29Jump, Char30Jump, ShamoneJump
 DoneLeftPortJumpDispatch
 InputSkipLeftPortJump
 

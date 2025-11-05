@@ -1,76 +1,58 @@
 # Milestone 1 (Alpha Reveal) Issue Review
 
-**Date:** 2025-11-05  
+**Date:** 2025-11-05 (Updated)  
 **Reviewer:** AI Assistant  
 **Purpose:** Identify completed issues and duplicates in Milestone 1
 
-## Open Issues in Alpha Reveal Milestone
+## Summary of Actions Taken
 
-### Build/ROM Generation Issues (Potential Duplicates)
+1. **✓ Consolidated build issues:** #81 and #336 merged into #220
+2. **✓ Closed duplicate:** #38 (duplicate of #17)
+3. **✓ Removed from milestone:** #17, #149, #588, #304 (optimization/refactoring tasks)
+4. **✓ Verified closed:** #448 (syntax errors resolved)
 
-**Issue #448: Fix BASIC syntax errors blocking ROM build**
-- **Status:** CLOSED ✓
-- **Description:** Build fails due to BASIC syntax errors, ROM only 299 bytes
-- **Parent:** #336, #445
-- **Comments:** 12 comments
-- **Analysis:** RESOLVED - Issue has been closed, syntax errors were systematically fixed in recent commits
+## Open Issues in Alpha Reveal Milestone (After Consolidation)
 
-**Issue #336: CRITICAL: ROM build produces only 1276 bytes instead of 65536 bytes**
-- **Status:** OPEN  
-- **Description:** ROM files generated at 1276 bytes (0xFF filler) instead of 65536 bytes
-- **Comments:** 4 comments
-- **Analysis:** Related to #448 - may be same root cause or different symptom
+### Build/ROM Generation (Consolidated)
 
 **Issue #220: Build: produce a valid 64KiB ChaosFight ROM**
-- **Status:** OPEN
-- **Description:** Ensure build outputs valid 64KiB ROM with correct 6502 vectors
-- **Comments:** 0 comments
-- **Analysis:** General goal, overlaps with #336 and #448
+- **Status:** OPEN (Consolidated)
+- **Consolidates:** #81, #336 (both closed)
+- **Description:** Comprehensive build validation for all TV standards (NTSC, PAL, SECAM)
+- **Includes:**
+  - ROM size verification (65536 bytes for 64kSC)
+  - Build testing for all three TV standards
+  - Syntax error validation (referencing #448 which is closed)
+- **Analysis:** Primary build validation issue after consolidation
+- **Related closed:** #448 (syntax errors), #81 (test builds), #336 (ROM size)
 
-**Recommendation:** 
-- #448 and #336 are likely duplicates or closely related (both about ROM size/build failures)
-- #220 is the broader goal that encompasses #448 and #336
-- Consider consolidating or closing duplicates once build status is verified
-
-### Duplicate Issues
+### Issues Removed from Milestone (Optimization/Refactoring)
 
 **Issue #17: Large Source Files Exceed 200 Line Target**
-- **Status:** OPEN
+- **Status:** OPEN (removed from milestone)
 - **Description:** Comprehensive refactoring plan for 11 files exceeding 200 lines
-- **Includes:** Detailed split strategies for all files
+- **Reason removed:** Long-term refactoring task, not blocking for Alpha Reveal
 
-**Issue #38: Large Files Need Refactoring**
-- **Status:** OPEN
-- **Description:** States it's a subset of #17, refers to #17 for details
-- **Analysis:** **DUPLICATE** - Issue #38 explicitly states it's related to #17 and the detailed plan is in #17
-
-**Recommendation:** Close #38 as duplicate, keep #17 (has the detailed plan)
-
-### Other Open Issues
+**Issue #149: Reorganize code to minimize bank switching**
+- **Status:** OPEN (removed from milestone)
+- **Reason removed:** Performance optimization, not blocking
 
 **Issue #588: Optimization: Find same-bank tail calls eligible for goto conversion**
-- **Status:** OPEN
-- **Description:** Find subroutines safe to convert from gosub+return to goto
-- **Priority:** Enhancement (performance optimization)
-- **Analysis:** Not blocking, valid optimization task
-
-**Issue #405: Verify RoboTito ceiling stretch special move implementation**
-- **Status:** OPEN
-- **Description:** Verify RoboTito UP/DOWN stretch mechanics work correctly
-- **Priority:** Enhancement (character functionality)
-- **Analysis:** Needs verification/testing
-
-**Issue #272: AI player difficulty (handicap) set by right difficulty switch**
-- **Status:** OPEN
-- **Description:** Implement AI difficulty system controlled by difficulty switch
-- **Priority:** Enhancement
-- **Analysis:** Feature implementation, not blocking
+- **Status:** OPEN (removed from milestone)
+- **Reason removed:** Performance optimization, not blocking
 
 **Issue #304: Consolidate bit-flags into bytes to conserve RAM**
-- **Status:** OPEN
-- **Description:** Pack boolean flags into bytes to save RAM (5 bytes potential savings)
-- **Priority:** Low (RAM optimization)
-- **Analysis:** Valid optimization, not blocking
+- **Status:** OPEN (removed from milestone)
+- **Reason removed:** RAM optimization, not blocking (5 bytes savings)
+
+**Note:** #38 was closed as duplicate of #17
+
+### Remaining Open Issues in Milestone
+
+**Issue #220: Build: produce a valid 64KiB ChaosFight ROM**
+- **Status:** OPEN (Consolidated from #81, #336)
+- **Priority:** HIGH - Build validation
+- **Analysis:** Primary build issue after consolidation
 
 **Issue #51: Manual consistency check: Verify all described features are implemented**
 - **Status:** OPEN
@@ -78,17 +60,17 @@
 - **Priority:** Quality assurance
 - **Analysis:** Needs implementation complete first
 
-**Issue #81: Test build for NTSC, PAL, and SECAM after syntax fixes**
+**Issue #272: AI player difficulty (handicap) set by right difficulty switch**
 - **Status:** OPEN
-- **Description:** Test all three TV standard builds
-- **Dependencies:** All syntax fixes must be completed first
-- **Analysis:** May be ready to test if syntax errors are fixed
+- **Description:** Implement AI difficulty system controlled by difficulty switch
+- **Priority:** Enhancement
+- **Analysis:** Feature implementation, not blocking
 
-**Issue #149: Reorganize code to minimize bank switching**
+**Issue #405: Verify RoboTito ceiling stretch special move implementation**
 - **Status:** OPEN
-- **Description:** Performance optimization - reorganize code structure
-- **Priority:** Performance optimization
-- **Analysis:** Valid optimization, not blocking
+- **Description:** Verify RoboTito UP/DOWN stretch mechanics work correctly
+- **Priority:** Enhancement (character functionality)
+- **Analysis:** Code exists (RoboTitoJump, RoboTitoDown handlers found) - needs verification/testing
 
 ## Findings
 
@@ -113,11 +95,21 @@
    - #448 and #336 are specific symptoms/problems
    - **Action:** Verify if #448 and #336 are resolved, consider consolidating
 
-## Recommendations
+## Final Recommendations
 
-1. **✓ Closed duplicate:** #38 (duplicate of #17) - COMPLETED
-2. **✓ Verified:** #448 (syntax errors) - CLOSED
-3. **Action needed:** Verify #336 (ROM size) - may be resolved if syntax was root cause
-4. **Action needed:** Test build to verify current status
-5. **Consider:** Consolidate #336 into #220 if they're the same root cause
+1. **✓ Completed:** Closed duplicate #38
+2. **✓ Completed:** Consolidated #81 and #336 into #220
+3. **✓ Completed:** Removed #17, #149, #588, #304 from milestone (optimization tasks)
+4. **Remaining:** 4 open issues in milestone:
+   - #220: Build validation (HIGH priority)
+   - #51: Manual consistency check (QA)
+   - #272: AI difficulty (enhancement)
+   - #405: RoboTito verification (enhancement)
+
+## Next Steps
+
+1. Test build to verify #220 status
+2. Verify #405 (RoboTito) - code exists, needs testing
+3. Consider if #51 should remain in milestone (depends on Alpha Reveal scope)
+4. Consider if #272 and #405 are required for Alpha Reveal or can be moved out
 

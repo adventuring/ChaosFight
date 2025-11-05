@@ -60,9 +60,10 @@ GravityCheckCharacter
           if PAG_characterType = CharDragonOfStorms then goto GravityNextPlayer
           
           rem RoboTito (13): Skip gravity when latched to ceiling
-          if PAG_characterType = CharRoboTito then
-              if (characterStateFlags_R[PAG_playerIndex] & 1) then goto GravityNextPlayer
-              rem Latched to ceiling (bit 0 set), skip gravity
+          if PAG_characterType <> CharRoboTito then goto GravityCheckRoboTitoDone
+          if (characterStateFlags_R[PAG_playerIndex] & 1) then goto GravityNextPlayer
+          rem Latched to ceiling (bit 0 set), skip gravity
+GravityCheckRoboTitoDone
           
           rem If NOT jumping, skip gravity (player is on ground)
           if !(playerState[PAG_playerIndex] & PlayerStateBitJumping) then goto GravityNextPlayer

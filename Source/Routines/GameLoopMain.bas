@@ -64,10 +64,11 @@ GameMainLoop
           for currentPlayer = 0 to 1
               gosub CheckPlayfieldCollisionAllDirections
           next
-          if controllerStatus & SetQuadtariDetected then
-              for currentPlayer = 2 to 3
-                  gosub CheckPlayfieldCollisionAllDirections
-              next
+          if controllerStatus & SetQuadtariDetected = 0 then goto GameMainLoopQuadtariSkip
+          for currentPlayer = 2 to 3
+              gosub CheckPlayfieldCollisionAllDirections
+          next
+GameMainLoopQuadtariSkip
 
           rem Check multi-player collisions
           gosub CheckAllPlayerCollisions

@@ -40,10 +40,11 @@ UpdatePlayerMovement
               gosub UpdatePlayerMovementSingle
           next
           rem Players 2-3 only if Quadtari detected
-          if QuadtariDetected then
-              for currentPlayer = 2 to 3
-                  gosub UpdatePlayerMovementSingle
-              next
+          if QuadtariDetected = 0 then goto UpdatePlayerMovementQuadtariSkip
+          for currentPlayer = 2 to 3
+              gosub UpdatePlayerMovementSingle
+          next
+UpdatePlayerMovementQuadtariSkip
           return
 
           rem Update movement for a specific player

@@ -68,9 +68,11 @@ end
           goto LoadArenaColorsColor
 
 LoadArenaColorsColor
-          rem Dispatch to color loader based on arena index
+          rem Dispatch to color loader based on arena index (0-31)
+          rem Indices 16-31 wrap around to 0-15 (repeat color patterns)
           dim LACC_tempIndex = temp3
           let LACC_tempIndex = LA_arenaIndex
+          if LACC_tempIndex >= 16 then LACC_tempIndex = LACC_tempIndex - 16
           if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena0Colors, LoadArena1Colors, LoadArena2Colors, LoadArena3Colors, LoadArena4Colors, LoadArena5Colors, LoadArena6Colors, LoadArena7Colors
           if LACC_tempIndex < 8 then goto DoneArenaColorLoad
           LACC_tempIndex = LACC_tempIndex - 8
@@ -79,9 +81,11 @@ DoneArenaColorLoad
           return
 
 LoadArenaColorsBW
-          rem Dispatch to B&W color loader based on arena index
+          rem Dispatch to B&W color loader based on arena index (0-31)
+          rem Indices 16-31 wrap around to 0-15 (repeat color patterns)
           dim LACBW_tempIndex = temp3
           let LACBW_tempIndex = LA_arenaIndex
+          if LACBW_tempIndex >= 16 then LACBW_tempIndex = LACBW_tempIndex - 16
           if LACBW_tempIndex < 8 then on LACBW_tempIndex goto LoadArena0ColorsBW, LoadArena1ColorsBW, LoadArena2ColorsBW, LoadArena3ColorsBW, LoadArena4ColorsBW, LoadArena5ColorsBW, LoadArena6ColorsBW, LoadArena7ColorsBW
           if LACBW_tempIndex < 8 then goto DoneArenaBWColorLoad
           LACBW_tempIndex = LACBW_tempIndex - 8

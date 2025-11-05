@@ -45,11 +45,11 @@ Player1Target4P
 Player1TargetDone
           let FA1_targetY = 24
           rem Target Y (row 2)
-          let temp1 = FA1_playerIndex
-          let temp2 = FA1_targetX
-          let temp3 = FA1_targetY
+          let MPTT_playerIndex = FA1_playerIndex
+          let MPTT_targetX = FA1_targetX
+          let MPTT_targetY = FA1_targetY
           gosub MovePlayerToTarget
-          let FA1_reached = temp4
+          let FA1_reached = MPTT_reached
           if FA1_reached then let fallComplete = fallComplete + 1
           rem reached = 1 if reached target
 DonePlayer1Move
@@ -68,11 +68,11 @@ Player2Target4P
 Player2TargetDone
           let FA1_targetY = 24
           rem Target Y (row 2)
-          let temp1 = FA1_playerIndex
-          let temp2 = FA1_targetX
-          let temp3 = FA1_targetY
+          let MPTT_playerIndex = FA1_playerIndex
+          let MPTT_targetX = FA1_targetX
+          let MPTT_targetY = FA1_targetY
           gosub MovePlayerToTarget
-          let FA1_reached = temp4
+          let FA1_reached = MPTT_reached
           if FA1_reached then let fallComplete = fallComplete + 1
 DonePlayer2Move
           
@@ -84,11 +84,11 @@ DonePlayer2Move
           let FA1_targetX = 64
           let FA1_targetY = 24
           rem Target Y (row 2)
-          let temp1 = FA1_playerIndex
-          let temp2 = FA1_targetX
-          let temp3 = FA1_targetY
+          let MPTT_playerIndex = FA1_playerIndex
+          let MPTT_targetX = FA1_targetX
+          let MPTT_targetY = FA1_targetY
           gosub MovePlayerToTarget
-          let FA1_reached = temp4
+          let FA1_reached = MPTT_reached
           if FA1_reached then let fallComplete = fallComplete + 1
 DonePlayer3Move
           
@@ -100,11 +100,11 @@ DonePlayer3Move
           let FA1_targetX = 96
           let FA1_targetY = 24
           rem Target Y (row 2)
-          let temp1 = FA1_playerIndex
-          let temp2 = FA1_targetX
-          let temp3 = FA1_targetY
+          let MPTT_playerIndex = FA1_playerIndex
+          let MPTT_targetX = FA1_targetX
+          let MPTT_targetY = FA1_targetY
           gosub MovePlayerToTarget
-          let FA1_reached = temp4
+          let FA1_reached = MPTT_reached
           if FA1_reached then let fallComplete = fallComplete + 1
 DonePlayer4Move
           
@@ -141,15 +141,23 @@ FallingComplete1
           rem Handles both horizontal and vertical movement.
           rem
           rem INPUT:
-          rem   temp1 = player index (0-3)
-          rem   temp2 = target X position
-          rem   temp3 = target Y position
+          rem   temp1 = player index (0-3) → MPTT_playerIndex
+          rem   temp2 = target X position → MPTT_targetX
+          rem   temp3 = target Y position → MPTT_targetY
           rem
           rem OUTPUT:
-          rem   temp4 = 1 if reached target, 0 if still moving
+          rem   temp4 = 1 if reached target, 0 if still moving → MPTT_reached
+          rem
+          rem MUTATES:
+          rem   temp4 = MPTT_reached (return value: 1 if reached, 0 if moving)
+          rem   temp5, temp6 = Internal calculations (do not use after call)
+          rem WARNING: Callers should read from MPTT_reached alias, not temp4
+          rem   directly. Do not use temp5 or temp6 after calling this
+          rem   subroutine.
           rem
           rem EFFECTS:
-          rem   Updates playerX[temp1] and playerY[temp1] toward target
+          rem   Updates playerX[MPTT_playerIndex] and playerY[MPTT_playerIndex]
+          rem   toward target
 MovePlayerToTarget
           dim MPTT_playerIndex = temp1
           dim MPTT_targetX = temp2

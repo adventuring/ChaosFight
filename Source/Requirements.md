@@ -42,7 +42,7 @@ Plays "Atari Today" song once. Upon song completion OR any player button press (
 
 ## Author Prelude (formerly Author Preamble)
 
-Displays "BRP Signature" graphic ("Interworldly.xcf" currently).
+Displays "BRP Signature" graphic ("BRP.xcf").
 Plays "Interworldly" jingle once. Upon jingle completion OR any player button press, advance to Title Screen.
 
 ---

@@ -11,7 +11,7 @@
           rem   screen:
           rem - Publisher (gameMode 0): AtariAge logo (48x2_1) +
           rem   AtariAge text (48x2_2) (2 bitmaps)
-          rem - Author (gameMode 1): Interworldly (1 bitmap) - needs
+          rem - Author (gameMode 1): BRP (1 bitmap) - needs
           rem   different slot
           rem   - Title (gameMode 2): ChaosFight (1 bitmap)
           rem Window values are compile-time constants set in bitmap .s
@@ -20,7 +20,7 @@
           rem   - 48x2_1: AtariAge logo (Publisher)
           rem   - 48x2_2: AtariAgeText text (Publisher)
           rem   - 48x2_3: ChaosFight logo (Title)
-          rem   - 48x2_4: Interworldly logo (Author)
+          rem   - 48x2_4: BRP logo (Author)
 
           asm
 #include "Source/Generated/Art.AtariAge.s"
@@ -32,7 +32,7 @@ end
 #include "Source/Generated/Art.ChaosFight.s"
 end
           asm
-#include "Source/Generated/Art.Interworldly.s"
+#include "Source/Generated/Art.BRP.s"
 end
           
           asm
@@ -45,7 +45,7 @@ end
           rem Requirements per screen:
           rem Publisher (gameMode 0): AtariAge logo (48x2_1)=42,
           rem   AtariAgeText (48x2_2)=42, others=0 (2 bitmaps)
-          rem Author (gameMode 1): Interworldly (48x2_4)=42, others=0 (1
+          rem Author (gameMode 1): BRP (48x2_4)=42, others=0 (1
           rem   bitmap)
           rem Title (gameMode 2): ChaosFight (48x2_3)=42, others=0 (1
           rem   bitmap)

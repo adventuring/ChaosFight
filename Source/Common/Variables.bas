@@ -437,13 +437,13 @@
           rem ADMIN: Runtime window value for bmp_48x2_1 (AtariAge) -
           rem   0=hidden, 42=visible
           dim titlescreenWindow2 = var21
-          rem ADMIN: Runtime window value for bmp_48x2_2 (Interworldly)
+          rem ADMIN: Runtime window value for bmp_48x2_2 (AtariAgeText)
           rem   - 0=hidden, 42=visible
           dim titlescreenWindow3 = var22
           rem ADMIN: Runtime window value for bmp_48x2_3 (ChaosFight) -
           rem   0=hidden, 42=visible
           dim titlescreenWindow4 = var23
-          rem ADMIN: Runtime window value for bmp_48x2_4 (Interworldly)
+          rem ADMIN: Runtime window value for bmp_48x2_4 (BRP)
           rem   - 0=hidden, 42=visible
           
           rem ==========================================================

@@ -97,7 +97,7 @@ CHARACTER_NAMES = \
 TV_ARCHS = NTSC PAL SECAM
 
 # Bitmap names (48×42 bitmaps for titlescreen kernel)
-BITMAP_NAMES = AtariAge AtariAgeText Interworldly ChaosFight
+BITMAP_NAMES = AtariAge AtariAgeText BRP ChaosFight
 
 # Font names
 FONT_NAMES = Numbers
@@ -278,11 +278,36 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/
 # These are bitmaps for the titlescreen kernel minikernels, not playfield data
 # PNG files are built from XCF via the %.png: %.xcf pattern rule (line 180)
 # Explicit PNG→XCF dependencies ensure XCF→PNG conversion happens first
+# These use the pattern rule %.png: %.xcf (line 239) to generate PNGs from XCFs
 Source/Art/AtariAge.png: Source/Art/AtariAge.xcf
+	@echo "Generating PNG from XCF: $@..."
+	@mkdir -p Source/Art
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@touch "$@"
+
 Source/Art/AtariAgeText.png: Source/Art/AtariAgeText.xcf
-Source/Art/Interworldly.png: Source/Art/Interworldly.xcf
+	@echo "Generating PNG from XCF: $@..."
+	@mkdir -p Source/Art
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@touch "$@"
+
+Source/Art/BRP.png: Source/Art/BRP.xcf
+	@echo "Generating PNG from XCF: $@..."
+	@mkdir -p Source/Art
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@touch "$@"
+
 Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
+	@echo "Generating PNG from XCF: $@..."
+	@mkdir -p Source/Art
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@touch "$@"
+
 Source/Art/Numbers.png: Source/Art/Numbers.xcf
+	@echo "Generating PNG from XCF: $@..."
+	@mkdir -p Source/Art
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@touch "$@"
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
@@ -297,7 +322,7 @@ Source/Generated/Art.AtariAgeText.s: Source/Art/AtariAgeText.png Source/Art/Atar
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
-Source/Generated/Art.Interworldly.s: Source/Art/Interworldly.png Source/Art/Interworldly.xcf bin/skyline-tool
+Source/Generated/Art.BRP.s: Source/Art/BRP.png Source/Art/BRP.xcf bin/skyline-tool
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
@@ -327,6 +352,7 @@ Source/Generated/Font.bas: Source/Art/Font.png
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
+	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas)
@@ -336,6 +362,7 @@ Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
+	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
@@ -346,6 +373,7 @@ Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
+	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
@@ -353,7 +381,7 @@ Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
 # Bank file dependencies - each bank explicitly depends on the files it includes
-Source/Banks/Bank1.bas: Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Interworldly.s
+Source/Banks/Bank1.bas: Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s
 
 Source/Banks/Bank2.bas: Source/Generated/Bernie.bas Source/Generated/Curler.bas Source/Generated/DragonOfStorms.bas Source/Generated/ZoeRyen.bas Source/Generated/FatTony.bas Source/Generated/Megax.bas Source/Generated/Harpy.bas Source/Generated/KnightGuy.bas
 

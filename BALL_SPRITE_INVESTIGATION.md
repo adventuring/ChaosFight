@@ -50,12 +50,14 @@ The Atari 2600 Ball sprite is available but not currently used in ChaosFight. Us
 - `CTRLPF` bits 4-5 = %11: 8 pixels wide
 
 **Ball Height Control:**
-- Height is software-controlled via `bally` position and `ENABL` register timing
+- **NO `ballheight` variable** - Unlike standard kernel, multisprite kernel does NOT provide a `ballheight` variable
+- Height must be controlled **manually via `ENABL` register timing**
 - Set `bally` to the starting Y position (0-255)
-- Enable Ball sprite via `ENABL` register at desired scanline
-- Disable Ball sprite via `ENABL` register at desired scanline
+- Enable Ball sprite via `ENABL` register at desired scanline (set `ENABL` to enable)
+- Disable Ball sprite via `ENABL` register at desired scanline (set `ENABL` to disable)
 - Height = (disable scanline - enable scanline) = 1-192 scanlines
-- Note: Unlike standard kernel, multisprite kernel does NOT define `ballheight` variable
+- Requires per-scanline control in kernel code (not automatic like standard kernel)
+- The multisprite kernel uses `VDELBL` (vertical delay) for ball positioning, but height is controlled by when `ENABL` is set
 
 **Memory Addresses (multisprite kernel):**
 - `ballx = $82` (zero-page RAM)

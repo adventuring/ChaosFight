@@ -150,11 +150,12 @@
           rem   GAME)
           dim playerChar = j    
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
-          dim playerDamage = k   
-          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using k,l,m (base damage
-          rem   per player)
-          rem NOTE: Shares k,l,m with playerChar[1-3] - must be
-          rem   recalculated when needed
+          dim playerDamage_W = w050
+          dim playerDamage_R = r050
+          dim playerDamage = playerDamage_W
+          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 base damage per player
+          rem (4 bytes: w050-w053) - SCRAM for low-frequency access
+          rem Array accessible as playerDamage[0] through playerDamage[3]
           dim playerLocked = n  
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using n,o,p,q (p,q may be
           rem   used by colorBWOverride)
@@ -801,12 +802,8 @@
           rem TODO / FUTURE EXPANSION
           rem ==========================================================
           
-          rem playerDamage[0-3] = Player1Damage, Player2Damage,
-          rem   Player3Damage, Player4Damage
-          rem Base damage per player (used in combat calculations)
-          rem NOTE: Currently shares k,l,m with playerChar - must be
-          rem   recalculated when needed
-          rem TODO: Allocate proper array space for playerDamage
+          rem Note: playerDamage[0-3] now properly allocated in SCRAM
+          rem   (w050-w053) - see Common Vars section above
           
           rem NOTE: var0-3 used by playerX (core gameplay, cannot redim)
           rem NOTE: var4-7 used by playerY (core gameplay, cannot redim)

@@ -268,9 +268,10 @@ RRTM_CheckPlayer0
           let RRTM_playerIndex = 0
 RRTM_CheckRoboTito
           rem Check if player is RoboTito
-          if playerChar[RRTM_playerIndex] <> CharRoboTito then return
+          if playerChar[RRTM_playerIndex] = CharRoboTito then RRTM_IsRoboTito
+          return
           rem Not RoboTito, no stretch missile
-          
+RRTM_IsRoboTito
           rem Check if stretching upward (not latched, ActionJumping animation = 10)
           if (characterStateFlags_R[RRTM_playerIndex] & 1) then return
           rem Latched to ceiling, no stretch missile
@@ -279,8 +280,10 @@ RRTM_CheckRoboTito
           rem Mask bits 4-7 (animation state, value 240 = %11110000)
           let RRTM_isStretching = RRTM_isStretching / 16
           rem Shift right by 4 (divide by 16) to get animation state (0-15)
-          if RRTM_isStretching <> 10 then return
+          if RRTM_isStretching = 10 then RRTM_IsStretching
+          return
           rem Not in stretching animation (ActionJumping = 10), no stretch missile
+RRTM_IsStretching
           
           rem Get stretch height and render if > 0
           let RRTM_stretchHeight = missileStretchHeight_R[RRTM_playerIndex]
@@ -314,9 +317,10 @@ RRTM1_CheckPlayer1
           let RRTM1_playerIndex = 1
 RRTM1_CheckRoboTito
           rem Check if player is RoboTito
-          if playerChar[RRTM1_playerIndex] <> CharRoboTito then return
+          if playerChar[RRTM1_playerIndex] = CharRoboTito then RRTM1_IsRoboTito
+          return
           rem Not RoboTito, no stretch missile
-          
+RRTM1_IsRoboTito
           rem Check if stretching upward (not latched, ActionJumping animation = 10)
           if (characterStateFlags_R[RRTM1_playerIndex] & 1) then return
           rem Latched to ceiling, no stretch missile
@@ -325,8 +329,10 @@ RRTM1_CheckRoboTito
           rem Mask bits 4-7 (animation state, value 240 = %11110000)
           let RRTM1_isStretching = RRTM1_isStretching / 16
           rem Shift right by 4 (divide by 16) to get animation state (0-15)
-          if RRTM1_isStretching <> 10 then return
+          if RRTM1_isStretching = 10 then RRTM1_IsStretching
+          return
           rem Not in stretching animation (ActionJumping = 10), no stretch missile
+RRTM1_IsStretching
           
           rem Get stretch height and render if > 0
           let RRTM1_stretchHeight = missileStretchHeight_R[RRTM1_playerIndex]
@@ -573,7 +579,9 @@ DisplayHealth
           rem   low (but not during recovery)
           rem Use skip-over pattern to avoid complex || operator
           if playerHealth[0] >= 25 then goto DoneParticipant1Flash
-          if playerRecoveryFrames[0] <> 0 then goto DoneParticipant1Flash
+          if playerRecoveryFrames[0] = 0 then FlashParticipant1
+          goto DoneParticipant1Flash
+FlashParticipant1
           if frame & 8 then player0x = 200 
           rem Hide P0 sprite
 DoneParticipant1Flash
@@ -582,7 +590,9 @@ DoneParticipant1Flash
           rem   low
           rem Use skip-over pattern to avoid complex || operator
           if playerHealth[1] >= 25 then goto DoneParticipant2Flash
-          if playerRecoveryFrames[1] <> 0 then goto DoneParticipant2Flash
+          if playerRecoveryFrames[1] = 0 then FlashParticipant2
+          goto DoneParticipant2Flash
+FlashParticipant2
           if frame & 8 then player1x = 200
 DoneParticipant2Flash
 
@@ -591,7 +601,9 @@ DoneParticipant2Flash
           if selectedChar3_R = 255 then goto DonePlayer3Flash
           if ! playerHealth[2] then goto DonePlayer3Flash
           if playerHealth[2] >= 25 then goto DonePlayer3Flash
-          if playerRecoveryFrames[2] <> 0 then goto DonePlayer3Flash
+          if playerRecoveryFrames[2] = 0 then FlashPlayer3
+          goto DonePlayer3Flash
+FlashPlayer3
           if frame & 8 then player2x = 200 
           rem Player 3 uses player2 sprite
 DonePlayer3Flash
@@ -601,7 +613,9 @@ DonePlayer3Flash
           if selectedChar4_R = 255 then goto DonePlayer4Flash
           if ! playerHealth[3] then goto DonePlayer4Flash
           if playerHealth[3] >= 25 then goto DonePlayer4Flash
-          if playerRecoveryFrames[3] <> 0 then goto DonePlayer4Flash
+          if playerRecoveryFrames[3] = 0 then FlashPlayer4
+          goto DonePlayer4Flash
+FlashPlayer4
           if frame & 8 then player3x = 200 
           rem Player 4 uses player3 sprite
 DonePlayer4Flash

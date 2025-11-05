@@ -423,17 +423,19 @@ Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Source/Common
 	cd Object && ../bin/2600basic -i $(POSTINC) -r ../Source/Common/VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
 
 # Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
+# postprocess requires includes.bB to be in the current working directory
+# (it's created by 2600basic in Object/), so run postprocess from Object/
 Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s
 	mkdir -p Source/Generated
-	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
+	cd Object && ../bin/postprocess -i ../Tools/batariBASIC < bB.NTSC.s | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../$@
 
 Source/Generated/$(GAME).PAL.s: Object/bB.PAL.s
 	mkdir -p Source/Generated
-	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
+	cd Object && ../bin/postprocess -i ../Tools/batariBASIC < bB.PAL.s | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../$@
 
 Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
 	mkdir -p Source/Generated
-	bin/postprocess -i $(POSTINC) < $< | bin/optimize | sed 's/\.,-1/.-1/g' > $@
+	cd Object && ../bin/postprocess -i ../Tools/batariBASIC < bB.SECAM.s | ../bin/optimize | sed 's/\.,-1/.-1/g' > ../$@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS

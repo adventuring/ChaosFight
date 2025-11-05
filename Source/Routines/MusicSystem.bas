@@ -87,8 +87,10 @@ UpdateMusic
           if MusicVoice1PointerH then MusicUpdateDone
           rem Voice 1 still active, no reset needed
           rem Both voices inactive - check if Chaotica (song ID 26)
-          if CurrentSongID_R <> 26 then MusicUpdateDone
+          if CurrentSongID_R = 26 then IsChaotica
+          goto MusicUpdateDone
           rem Not Chaotica - stop playback (no loop)
+IsChaotica
           
           rem Both voices ended and song is Chaotica - reset to song head
           rem Reset Voice 0 pointer to start

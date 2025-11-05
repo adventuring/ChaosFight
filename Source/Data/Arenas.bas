@@ -74,7 +74,7 @@ Arena1Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena2ColorsColor
+Arena1ColorsColor
           pfcolors:
           ColTurquoise(4)
           ColTurquoise(4)
@@ -87,7 +87,6 @@ Arena2ColorsColor
 end
 
 Arena2Playfield
-Arena3Playfield
           playfield:
           X...............
           X...............
@@ -99,7 +98,7 @@ Arena3Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena3ColorsColor
+Arena2ColorsColor
           pfcolors:
           ColSeafoam(2)
           ColSeafoam(2)
@@ -112,6 +111,29 @@ Arena3ColorsColor
 end
 
 Arena3Playfield
+          playfield:
+          ................
+          ................
+          ................
+          ....XXXXXXXX....
+          ....XXXXXXXX....
+          ................
+          ................
+          ................
+end
+
+Arena3ColorsColor
+          pfcolors:
+          ColYellow(12)
+          ColYellow(12)
+          ColYellow(12)
+          ColYellow(14)
+          ColYellow(14)
+          ColYellow(12)
+          ColYellow(12)
+          ColYellow(12)
+end
+
 Arena4Playfield
           playfield:
           ................
@@ -136,7 +158,6 @@ Arena4ColorsColor
           ColYellow(12)
 end
 
-Arena4Playfield
 Arena5Playfield
           playfield:
           XXXXXX..........
@@ -161,19 +182,6 @@ Arena5ColorsColor
           ColBlue(4)
 end
 
-Arena5ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 6: Multi-Platform (multiple small platforms)
 Arena6Playfield
           playfield:
           X...............
@@ -198,19 +206,6 @@ Arena6ColorsColor
           ColRed(8)
 end
 
-Arena6ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 7: The Gauntlet (maze-like walls)
 Arena7Playfield
           playfield:
           X......XXXX.....
@@ -233,18 +228,6 @@ Arena7ColorsColor
           ColGold(4)
           ColGold(2)
           ColGold(6)
-end
-
-Arena7ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
 Arena8Playfield
@@ -321,20 +304,6 @@ Arena10ColorsColor
           ColCyan(8)
 end
 
-Arena10ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 11: Floating Platforms (variant of Arena 3 with four
-          rem   floating blocks when mirrored)
 Arena11Playfield
           playfield:
           X...............
@@ -359,19 +328,6 @@ Arena11ColorsColor
           ColGreen(8)
 end
 
-Arena11ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 12: The Chasm (variant of Arena 4 with wider bridge)
 Arena12Playfield
           playfield:
           ................
@@ -396,20 +352,6 @@ Arena12ColorsColor
           ColBrown(12)
 end
 
-Arena12ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 13: Fortress Walls (variant of Arena 5 with
-          rem   symmetrical corners)
 Arena13Playfield
           playfield:
           XXX..XXXXXXX..XX
@@ -434,20 +376,6 @@ Arena13ColorsColor
           ColTurquoise(4)
 end
 
-Arena13ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 14: Floating Islands (variant of Arena 6 with more
-          rem   platforms)
 Arena14Playfield
           playfield:
           X.XX..XX..XX..XX.
@@ -472,20 +400,6 @@ Arena14ColorsColor
           ColMagenta(8)
 end
 
-Arena14ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 15: The Labyrinth (variant of Arena 7 with more
-          rem   complex maze)
 Arena15Playfield
           playfield:
           XX..XXXX..XX..XX
@@ -510,20 +424,6 @@ Arena15ColorsColor
           ColSpringGreen(8)
 end
 
-Arena15ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 16: Danger Zone (variant of Arena 8 with alternating
-          rem   obstacles)
 Arena16Playfield
           playfield:
           XX.X.X.X.X.X.X.X
@@ -548,18 +448,6 @@ Arena16ColorsColor
           ColIndigo(8)
 end
 
-Arena16ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
           rem ==========================================================
           rem ARENA POINTER TABLES
           rem ==========================================================
@@ -570,30 +458,30 @@ end
           rem ==========================================================
 
           data ArenaPF1PointerL
-            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
-            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield,
-            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
-            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield
+            <Arena0Playfield, <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield,
+            <Arena8Playfield, <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield,
+            <Arena16Playfield, <Arena15Playfield, <Arena14Playfield, <Arena13Playfield, <Arena12Playfield, <Arena11Playfield, <Arena10Playfield, <Arena9Playfield,
+            <Arena8Playfield, <Arena7Playfield, <Arena6Playfield, <Arena5Playfield, <Arena4Playfield, <Arena3Playfield, <Arena2Playfield, <Arena1Playfield
 end
 
           data ArenaPF1PointerH
-            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
-            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield,
-            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
-            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield
+            >Arena0Playfield, >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield,
+            >Arena8Playfield, >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield,
+            >Arena16Playfield, >Arena15Playfield, >Arena14Playfield, >Arena13Playfield, >Arena12Playfield, >Arena11Playfield, >Arena10Playfield, >Arena9Playfield,
+            >Arena8Playfield, >Arena7Playfield, >Arena6Playfield, >Arena5Playfield, >Arena4Playfield, >Arena3Playfield, >Arena2Playfield, >Arena1Playfield
 end
 
           data ArenaPF2PointerL
-            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
-            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield,
-            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
-            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield
+            <Arena0Playfield, <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield,
+            <Arena8Playfield, <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield,
+            <Arena16Playfield, <Arena15Playfield, <Arena14Playfield, <Arena13Playfield, <Arena12Playfield, <Arena11Playfield, <Arena10Playfield, <Arena9Playfield,
+            <Arena8Playfield, <Arena7Playfield, <Arena6Playfield, <Arena5Playfield, <Arena4Playfield, <Arena3Playfield, <Arena2Playfield, <Arena1Playfield
 end
 
           data ArenaPF2PointerH
-            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
-            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield,
-            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
-            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield
+            >Arena0Playfield, >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield,
+            >Arena8Playfield, >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield,
+            >Arena16Playfield, >Arena15Playfield, >Arena14Playfield, >Arena13Playfield, >Arena12Playfield, >Arena11Playfield, >Arena10Playfield, >Arena9Playfield,
+            >Arena8Playfield, >Arena7Playfield, >Arena6Playfield, >Arena5Playfield, >Arena4Playfield, >Arena3Playfield, >Arena2Playfield, >Arena1Playfield
 end
 

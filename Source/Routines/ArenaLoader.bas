@@ -100,101 +100,101 @@ LoadRandomArena
           goto LoadArenaByIndex
 
 LoadArena0Colors
-          pfcolors Arena1ColorsColor
+          pfcolors Arena0ColorsColor
           return
 LoadArena1Colors
-          pfcolors Arena2ColorsColor
+          pfcolors Arena1ColorsColor
           return
 LoadArena2Colors
-          pfcolors Arena3ColorsColor
+          pfcolors Arena2ColorsColor
           return
 LoadArena3Colors
-          pfcolors Arena4ColorsColor
+          pfcolors Arena3ColorsColor
           return
 LoadArena4Colors
-          pfcolors Arena5ColorsColor
+          pfcolors Arena4ColorsColor
           return
 LoadArena5Colors
-          pfcolors Arena6ColorsColor
+          pfcolors Arena5ColorsColor
           return
 LoadArena6Colors
-          pfcolors Arena7ColorsColor
+          pfcolors Arena6ColorsColor
           return
 LoadArena7Colors
-          pfcolors Arena8ColorsColor
+          pfcolors Arena7ColorsColor
           return
 LoadArena8Colors
-          pfcolors Arena9ColorsColor
+          pfcolors Arena8ColorsColor
           return
 LoadArena9Colors
-          pfcolors Arena10ColorsColor
+          pfcolors Arena9ColorsColor
           return
 LoadArena10Colors
-          pfcolors Arena11ColorsColor
+          pfcolors Arena10ColorsColor
           return
 LoadArena11Colors
-          pfcolors Arena12ColorsColor
+          pfcolors Arena11ColorsColor
           return
 LoadArena12Colors
-          pfcolors Arena13ColorsColor
+          pfcolors Arena12ColorsColor
           return
 LoadArena13Colors
-          pfcolors Arena14ColorsColor
+          pfcolors Arena13ColorsColor
           return
 LoadArena14Colors
-          pfcolors Arena15ColorsColor
+          pfcolors Arena14ColorsColor
           return
 LoadArena15Colors
-          pfcolors Arena16ColorsColor
+          pfcolors Arena15ColorsColor
           return
 
 LoadArena0ColorsBW
-          pfcolors Arena1ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena1ColorsBW
-          pfcolors Arena2ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena2ColorsBW
-          pfcolors Arena3ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena3ColorsBW
-          pfcolors Arena4ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena4ColorsBW
-          pfcolors Arena5ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena5ColorsBW
-          pfcolors Arena6ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena6ColorsBW
-          pfcolors Arena7ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena7ColorsBW
-          pfcolors Arena8ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena8ColorsBW
-          pfcolors Arena9ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena9ColorsBW
-          pfcolors Arena10ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena10ColorsBW
-          pfcolors Arena11ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena11ColorsBW
-          pfcolors Arena12ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena12ColorsBW
-          pfcolors Arena13ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena13ColorsBW
-          pfcolors Arena14ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena14ColorsBW
-          pfcolors Arena15ColorsBW
+          pfcolors ArenaColorsBW
           return
 LoadArena15ColorsBW
-          pfcolors Arena16ColorsBW
+          pfcolors ArenaColorsBW
           return
 
           rem ==========================================================

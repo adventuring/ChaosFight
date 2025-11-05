@@ -342,12 +342,5 @@ NudgeUp
           let playerY[NPF_playerIndex] = playerY[NPF_playerIndex] - 1
           return
           
-          rem ==========================================================
-          rem MOVE PLAYER TO ROW 2 (legacy function name, now calls
-          rem   MovePlayerToTarget)
-          rem ==========================================================
-MovePlayerToRow2
-          rem This is a placeholder - actual movement handled by
-          rem   MovePlayerToTarget
-          rem Kept for compatibility if referenced elsewhere
-          return
+rem NOTE: MovePlayerToRow2 was removed.
+rem Use MovePlayerToTarget in this file for player movement.

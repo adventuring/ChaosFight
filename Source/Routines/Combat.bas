@@ -249,40 +249,20 @@ PlayDamageSound
           gosub bank15 PlaySoundEffect
           return
 
-rem =================================================================
-rem PERFORM MELEE ATTACK
-rem =================================================================
-rem Moved to Source/Routines/PerformMeleeAttack.bas
-rem =================================================================
+          rem =================================================================
+          rem PERFORM MELEE ATTACK
+          rem =================================================================
+          rem Moved to Source/Routines/PerformMeleeAttack.bas
+          rem =================================================================
 
-rem =================================================================
-rem PERFORM RANGED ATTACK
-rem =================================================================
-rem Moved to Source/Routines/PerformRangedAttack.bas
-rem =================================================================
+          rem =================================================================
+          rem PERFORM RANGED ATTACK
+          rem =================================================================
+          rem Moved to Source/Routines/PerformRangedAttack.bas
+          rem =================================================================
 
-          rem Process guard for a player
-          rem DEPRECATED: This function has syntax errors and conflicts
-          rem   with GuardEffects.bas
-          rem Guard restrictions are now handled in PlayerInput.bas
-          rem   (movement/attack blocking)
-          rem Guard timer updates are handled by UpdateGuardTimers in
-          rem   GuardEffects.bas
-          rem Input: playerID
-ProcessPlayerGuard
-          rem This function is deprecated - guard restrictions are
-          rem   handled elsewhere
-          rem Guard prevents movement - handled in PlayerInput.bas
-          rem Guard prevents attacks - handled in PlayerInput.bas
-          return
+          rem NOTE: ProcessPlayerGuard and UpdatePlayerGuard were removed.
+          rem Guard functionality has been migrated to:
+          rem   - Guard restrictions: PlayerInput.bas (movement/attack blocking)
+          rem   - Guard timer updates: GuardEffects.bas (UpdateGuardTimers)
 
-          rem Update player guard state
-          rem DEPRECATED: This function uses undefined guard_timer
-          rem   variable and conflicts with GuardEffects.bas
-          rem Guard timer updates are handled by UpdateGuardTimers in
-          rem   GuardEffects.bas
-          rem Input: player_id
-UpdatePlayerGuard
-          rem This function is deprecated - use UpdateGuardTimers in
-          rem   GuardEffects.bas instead
-          return

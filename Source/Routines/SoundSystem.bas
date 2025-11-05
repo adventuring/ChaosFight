@@ -128,11 +128,3 @@ StopSoundEffects
           let SoundEffectFrame_W = 0
           let SoundEffectFrame1_W = 0
           return
-
-          rem ==========================================================
-          rem Compatibility stub (legacy function name)
-          rem ==========================================================
-SoundSubsystem
-          rem Legacy function - redirects to UpdateSoundEffect
-          rem tail call
-          goto UpdateSoundEffect

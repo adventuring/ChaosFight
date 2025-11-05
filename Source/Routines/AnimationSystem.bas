@@ -204,11 +204,6 @@ GetCurrentAnimationAction
           let GCAA_currentAction = currentAnimationSeq[currentPlayer]
           let temp2 = GCAA_currentAction
           return
-          
-          rem Legacy alias for backward compatibility
-GetCurrentAnimationSequence
-          rem tail call
-          goto GetCurrentAnimationAction
 
           rem Initialize animation system for all players
           rem Called at game start to set up initial animation states

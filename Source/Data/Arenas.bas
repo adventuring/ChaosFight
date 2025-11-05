@@ -15,96 +15,15 @@
           rem   - ArenaXPlayfield: playfield pixel data
           rem - ArenaXColorsColor: row colors for Color mode
           rem   (switchbw=0)
-          rem - ArenaXColorsBW: row colors for B&W mode (switchbw=1) -
-          rem   all white
+          rem All arenas share ArenaColorsBW for B&W mode
           rem ==========================================================
 
-          rem Winner Screen: Podium/Platform pattern
-          rem 32×32 admin screen layout (pfres=32)
-          rem Design: Central high podium for winner, side platforms for
-          rem   2nd/3rd
-          rem Row 16: Central high platform (winner podium)
-          rem Row 24: Left and right platforms (2nd/3rd place)
-WinnerScreenPlayfield
-          playfield:
-          XXXXXXXXXXXXXXXX
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X......XXXXXXXXX
-          rem Row 16: Central high podium (left half - mirrors to full
-          rem   width)
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X......XXXXXXXXX
-          rem Row 24: Bottom platforms (left half - mirrors to full
-          rem   width)
-          X...............
-          X...............
-          X...............
-          X...............
-          XXXXXXXXXXXXXXXX
-end
-
-WinnerScreenColorsColor
-          pfcolors:
-          ColGold(14)
-          ColGold(12)
-          ColGold(10)
-          ColGold(8)
-          ColGold(6)
-          ColGold(4)
-          ColGold(2)
-          ColGold(0)
-          ColGold(2)
-          ColGold(4)
-          ColGold(6)
-          ColGold(8)
-          ColGold(10)
-          ColGold(12)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-end
-
-WinnerScreenColorsBW
+          rem ==========================================================
+          rem SHARED B&W COLOR DEFINITION
+          rem ==========================================================
+          rem All arenas use the same B&W colors (all white)
+          rem ==========================================================
+ArenaColorsBW
           pfcolors:
           ColGrey(14)
           ColGrey(14)
@@ -114,34 +33,12 @@ WinnerScreenColorsBW
           ColGrey(14)
           ColGrey(14)
           ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
-          rem Arena 1: The Pit (classic fighting pit with walls)
-Arena1Playfield
+          rem ==========================================================
+          rem ARENA PLAYFIELDS (32 arenas: indices 0-31)
+          rem ==========================================================
+Arena0Playfield
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
@@ -153,7 +50,7 @@ Arena1Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena1ColorsColor
+Arena0ColorsColor
           pfcolors:
           ColOrange(2)
           ColOrange(4)
@@ -165,20 +62,7 @@ Arena1ColorsColor
           ColOrange(0)
 end
 
-Arena1ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 2: Battlefield (platform fighter style)
-Arena2Playfield
+Arena1Playfield
           playfield:
           X...............
           X...............
@@ -202,19 +86,7 @@ Arena2ColorsColor
           ColTurquoise(2)
 end
 
-Arena2ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 3: King of the Hill (elevated center platform)
+Arena2Playfield
 Arena3Playfield
           playfield:
           X...............
@@ -239,19 +111,7 @@ Arena3ColorsColor
           ColSeafoam(6)
 end
 
-Arena3ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 4: The Bridge (narrow bridge over pit)
+Arena3Playfield
 Arena4Playfield
           playfield:
           ................
@@ -276,19 +136,7 @@ Arena4ColorsColor
           ColYellow(12)
 end
 
-Arena4ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 5: Corner Trap (walls in corners)
+Arena4Playfield
 Arena5Playfield
           playfield:
           XXXXXX..........
@@ -399,54 +247,39 @@ Arena7ColorsBW
           ColGrey(14)
 end
 
-          rem Arena 8: Scattered Blocks (alternating block pattern)
 Arena8Playfield
           playfield:
-          X.X.X.X.X.X.X.X.
-          ................
-          ................
-          ................
-          ................
-          ................
-          ................
-          X.X.X.X.X.X.X.X.
+          XXXXXXXXXXXXXXXX
+          X...............
+          X...XXXX........
+          X...............
+          X.......XXXX....
+          X...............
+          X...XXXX........
+          XXXXXXXXXXXXXXXX
 end
 
 Arena8ColorsColor
           pfcolors:
           ColPurple(2)
           ColPurple(4)
+          ColPurple(6)
           ColPurple(4)
+          ColPurple(6)
           ColPurple(4)
-          ColPurple(4)
-          ColPurple(4)
-          ColPurple(4)
+          ColPurple(6)
           ColPurple(2)
 end
 
-Arena8ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
-
-          rem Arena 9: The Deep Pit (variant of Arena 1 with deeper
-          rem   walls)
 Arena9Playfield
           playfield:
           XXXXXXXXXXXXXXXX
-          XXX.............
-          XXX.............
-          XX..............
-          XX..............
-          XXX.............
-          XXX.............
+          X...............
+          X.XXXX....XXXX..
+          X...............
+          X...............
+          X.XXXX....XXXX..
+          X...............
           XXXXXXXXXXXXXXXX
 end
 
@@ -454,24 +287,12 @@ Arena9ColorsColor
           pfcolors:
           ColRed(2)
           ColRed(4)
-          ColRed(4)
-          ColRed(6)
           ColRed(6)
           ColRed(4)
+          ColRed(4)
+          ColRed(6)
           ColRed(4)
           ColRed(2)
-end
-
-Arena9ColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
 end
 
           rem Arena 10: Sky Battlefield (variant of Arena 2 with

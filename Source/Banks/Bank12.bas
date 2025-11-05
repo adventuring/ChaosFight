@@ -3,8 +3,8 @@
 
           bank 12
 
-          rem Include Arenas.bas for WinnerScreenPlayfield data
-#include "Source/Data/Arenas.bas"
+#include "Source/Data/WinnerScreen.bas"
+          rem WinnerScreen playfield data (pfres=32 admin screen layout)
 
 #include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/FallingAnimation.bas"

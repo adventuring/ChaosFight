@@ -35,20 +35,27 @@ The Atari 2600 Ball sprite is available but not currently used in ChaosFight. Us
 
 **Available Parameters:**
 - `ballx` ($82): X position (0-159)
-- `bally` ($8C): Y position (0-255)
-- **Width:** Fixed at 1 pixel (hardware limitation - cannot be changed)
-- **Height:** Controlled via `CTRLPF` register bits (1, 2, 4, or 8 pixels)
-- `ENABL` register: Enable/disable Ball sprite
+- `bally` ($8C): Y position (0-255) - controls vertical start position
+- **Width:** Controlled via `CTRLPF` register bits 4-5 (1, 2, 4, or 8 pixels wide)
+- **Height:** Software-controlled, can be 1-192 scanlines (hardware maximum)
+- `ENABL` register: Enable/disable Ball sprite (controls when ball is drawn)
 - `RESBL` register: Reset Ball sprite position
 - `HMBL` register: Horizontal motion Ball
 - `VDELBL` register: Vertical delay Ball
 
-**Note:** Unlike standard kernel, multisprite kernel does NOT define `ballheight` variable.
-Height is controlled directly via `CTRLPF` register bits 4-5:
-- `CTRLPF` bits 4-5 = %00: 1 pixel tall
-- `CTRLPF` bits 4-5 = %01: 2 pixels tall  
-- `CTRLPF` bits 4-5 = %10: 4 pixels tall
-- `CTRLPF` bits 4-5 = %11: 8 pixels tall
+**CTRLPF Register Bits for Ball Width:**
+- `CTRLPF` bits 4-5 = %00: 1 pixel wide
+- `CTRLPF` bits 4-5 = %01: 2 pixels wide
+- `CTRLPF` bits 4-5 = %10: 4 pixels wide
+- `CTRLPF` bits 4-5 = %11: 8 pixels wide
+
+**Ball Height Control:**
+- Height is software-controlled via `bally` position and `ENABL` register timing
+- Set `bally` to the starting Y position (0-255)
+- Enable Ball sprite via `ENABL` register at desired scanline
+- Disable Ball sprite via `ENABL` register at desired scanline
+- Height = (disable scanline - enable scanline) = 1-192 scanlines
+- Note: Unlike standard kernel, multisprite kernel does NOT define `ballheight` variable
 
 **Memory Addresses (multisprite kernel):**
 - `ballx = $82` (zero-page RAM)
@@ -56,12 +63,11 @@ Height is controlled directly via `CTRLPF` register bits 4-5:
 - No `ballheight` variable (use `CTRLPF` register directly)
 
 **Limitations:**
-- Single pixel wide (1xN pixels, where N = height)
-- Height controlled via CTRLPF register (not a variable)
-- Fixed width: Always 1 pixel (hardware limitation)
+- Width controlled via CTRLPF register (1, 2, 4, or 8 pixels wide)
+- Height controlled via software timing (1-192 scanlines)
 - Shares color register with playfield (`COLUPF`)
-- Cannot change color independently
-- Limited visual appearance (single pixel column)
+- Cannot change color independently from playfield
+- Requires per-scanline control for precise height positioning
 
 ## Potential Use Cases
 
@@ -120,10 +126,11 @@ Current flicker code handles:
 
 Adding Ball sprite would require:
 - Setting `ballx` and `bally` before `drawscreen`
-- Configuring `CTRLPF` register for ball height
-- Setting `ENABL` register to enable ball
+- Configuring `CTRLPF` register for ball width (bits 4-5)
+- Setting `ENABL` register to enable/disable ball at desired scanlines (controls height)
 - Color synchronization with playfield (COLUPF)
-- Per-scanline timing (handled automatically by kernel)
+- Per-scanline control for precise height (1-192 scanlines)
+- Timing coordination with kernel scanline rendering
 
 ### Memory Impact
 - Ball sprite uses zero-page RAM: `ballx` ($82), `bally` ($8C)

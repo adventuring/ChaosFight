@@ -70,6 +70,7 @@ ALL_SOURCES = $(shell find Source -name \*.bas -not -path "Source/Generated/*" -
 
 # Build game
 game: \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Dist/$(GAME)$(GAMEYEAR).NTSC.a26 \
 	Dist/$(GAME)$(GAMEYEAR).PAL.a26 \
 	Dist/$(GAME)$(GAMEYEAR).SECAM.a26 \
@@ -324,6 +325,7 @@ Source/Generated/Font.bas: Source/Art/Font.png
 # Numbers font is a dependency of Bank12.bas (defined above).
 # Bank15.bas includes Sound.*.bas files, so they must be dependencies here.
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
@@ -332,6 +334,7 @@ Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
@@ -341,6 +344,7 @@ Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 
 # SECAM build uses PAL music/sound files via conditional includes in Bank15/16.bas
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
+	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \

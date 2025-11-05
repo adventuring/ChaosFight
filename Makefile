@@ -434,15 +434,19 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	# Note: SECAM uses PAL music/sound files via conditional includes in Bank15/16.bas
 
 # Step 1: Preprocess .bas → .preprocessed.bas
-Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)
+# Explicitly depend on character and bitmap PNG files to ensure they are generated
+Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS) \
+	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
-Source/Generated/$(GAME).PAL.preprocessed.bas: Source/Generated/$(GAME).PAL.bas $(BUILD_DEPS)
+Source/Generated/$(GAME).PAL.preprocessed.bas: Source/Generated/$(GAME).PAL.bas $(BUILD_DEPS) \
+	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
-Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.bas $(BUILD_DEPS)
+Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.bas $(BUILD_DEPS) \
+	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 

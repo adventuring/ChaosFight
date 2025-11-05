@@ -39,10 +39,10 @@ GetBWMode
           rem NTSC/PAL: Check switchbw and colorBWOverride
           rem switchbw = 1 means B&W mode (white), switchbw = 0 means
           rem   Color mode
-          rem colorBWOverride = 1 means B&W override (from 7800 pause
-          rem   button)
+          rem systemFlags bit 6 (SystemFlagColorBWOverride) = 1 means B&W override
+          rem   (from 7800 pause button)
           let LA_bwMode = switchbw
-          if colorBWOverride then let LA_bwMode = 1
+          if systemFlags & SystemFlagColorBWOverride then let LA_bwMode = 1
           return
 
 LoadArenaByIndex
@@ -400,7 +400,7 @@ GetBWModeReload
           
           rem NTSC/PAL: Check switchbw and colorBWOverride
           let RAC_bwMode = switchbw
-          if colorBWOverride then let RAC_bwMode = 1
+          if systemFlags & SystemFlagColorBWOverride then let RAC_bwMode = 1
           return
 
 ReloadArena0Colors

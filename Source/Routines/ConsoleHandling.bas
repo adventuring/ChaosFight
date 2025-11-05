@@ -12,7 +12,7 @@
           rem   switchbw - Color/B&W → handled in rendering
 
           rem AVAILABLE VARIABLES:
-          rem   gameState - 0=normal play, 1=paused
+          rem   systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal play, 1=paused
           rem ==========================================================
 
           rem ==========================================================
@@ -31,8 +31,8 @@
           rem ==========================================================
 WarmStart
           rem Step 1: Clear critical game state variables
-          let gameState = 0
-          rem 0 = normal (not paused, not ending)
+          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
+          rem Clear paused flag (0 = normal, not paused, not ending)
           let frame = 0
           rem Reset frame counter
           
@@ -88,8 +88,8 @@ HandleConsoleSwitches
           if !temp1 then DonePlayer1Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if gameState = 0 then let gameState = 1:goto Player1PauseDone
-          let gameState = 0
+          if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
+          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
           rem Debounce - wait for button release
           drawscreen
@@ -103,9 +103,9 @@ DonePlayer1Pause
           if !temp1 then DonePlayer2Pause
           rem Re-detect controllers when Select is pressed
           gosub bank14 DetectControllers
-          if gameState = 0 then let gameState = 1
-          if gameState = 0 then Player2PauseDone
-          let gameState = 0
+          if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused
+          if !(systemFlags & SystemFlagGameStatePaused) then Player2PauseDone
+          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player2PauseDone
           rem Debounce - wait for button release
           drawscreen

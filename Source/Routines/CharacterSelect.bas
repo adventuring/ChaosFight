@@ -1,16 +1,16 @@
           rem ChaosFight - Source/Routines/SelScreenEntry.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+          #include "Source/Routines/PlayerLockedHelpers.bas"
+
 SelScreenEntry
           rem Initialize character selections
           let playerChar[0] = 0
           let playerChar[1] = 0
           let playerChar[2] = 0
           let playerChar[3] = 0
-          let playerLocked[0] = 0
-          let playerLocked[1] = 0
-          let playerLocked[2] = 0
-          let playerLocked[3] = 0
+          rem Initialize playerLocked (bit-packed, all unlocked)
+          let playerLocked = 0
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
           rem   detection (upgrades only)
           rem Controller detection is handled by DetectControllers with
@@ -46,7 +46,7 @@ SelScreenLoop
 
 SelChkP0Left
           if playerChar[0] > MaxCharacter then let playerChar[0] = MaxCharacter
-          if playerChar[0] > MaxCharacter then let playerLocked[0] = 0
+          if playerChar[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           
 SelSkipP0Left
           if joy0right then let playerChar[0] = playerChar[0] + 1 : goto SelChkP0Right
@@ -54,17 +54,17 @@ SelSkipP0Left
 
 SelChkP0Right
           if playerChar[0] > MaxCharacter then let playerChar[0] = 0
-          if playerChar[0] > MaxCharacter then let playerLocked[0] = 0
+          if playerChar[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           
 SelSkipP0Right
-          if joy0up then let playerLocked[0] = 0
+          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy0down then SelChkJoy0Fire
           goto SelJoy0Down
 
 SelChkJoy0Fire
           if joy0fire then SelJoy0Down
-          let playerLocked[0] = 0
+          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           
 SelJoy0Down
           rem Unlock by moving down (without fire)
@@ -73,12 +73,12 @@ SelJoy0Down
 
 SelP0Lock
           if joy0down then SelP0Handi
-          let playerLocked[0] = 1
+          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           rem Locked normal (100% health)
           goto SelP0Done
 
 SelP0Handi
-          let playerLocked[0] = 2
+          let temp1 = 0 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
           rem Locked with handicap (75% health)
 SelP0Done
 

@@ -60,8 +60,8 @@ CtrlDetPads
           rem Perform fresh detection into temporary variable
           let CDP_newStatus = 0
 #ifndef TV_SECAM
-          let colorBWOverride = 0
-          let pauseButtonPrev = 0
+          let systemFlags = systemFlags & ClearSystemFlagColorBWOverride
+          let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
 #endif
           
           rem Check for Quadtari (4 joysticks via multiplexing)
@@ -353,8 +353,8 @@ Joy2PlusDone
           rem flipping the physical switch on the console
           
 Check7800Pause
-          rem Only process if running on 7800
-          if !console7800Detected then return
+          rem Only process if running on 7800 (bit 7 of systemFlags)
+          if !(systemFlags & SystemFlag7800) then return
           
           rem 7800 Pause button detection via Color/B&W switch
           rem On 7800, Color/B&W switch becomes momentary pause button
@@ -365,12 +365,14 @@ Check7800Pause
           if switchbw then PauseNotPressed
           
           rem Button is pressed (low)
-          if !pauseButtonPrev then return
+          if !(systemFlags & SystemFlagPauseButtonPrev) then return
           
-          rem Button just pressed! Toggle Color/B&W override
-          let pauseButtonPrev = 0
-          let colorBWOverride = colorBWOverride ^ 1 
-          rem XOR to toggle 0<->1
+          rem Button just pressed! Toggle Color/B&W override (bit 6)
+          let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
+          if systemFlags & SystemFlagColorBWOverride then let systemFlags = systemFlags & ClearSystemFlagColorBWOverride : goto ToggleBWDone
+          let systemFlags = systemFlags | SystemFlagColorBWOverride
+ToggleBWDone
+          rem XOR to toggle 0<->1 (done via if/else above)
           
           rem Reload arena colors with new override state
           gosub bank14 ReloadArenaColors
@@ -410,8 +412,8 @@ ReadPlayers34
           return
 
 PauseNotPressed
-          rem Button not pressed, update previous state
-          let pauseButtonPrev = 1
+          rem Button not pressed, update previous state (set bit 5)
+          let systemFlags = systemFlags | SystemFlagPauseButtonPrev
           return
 
           rem ==========================================================

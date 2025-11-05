@@ -25,7 +25,6 @@
 ConsoleDetHW
           rem Assume 2600 console initially
           let systemFlags = systemFlags & ClearSystemFlag7800
-          let console7800Detected = 0
           
           rem Check $D0 value
           temp1 = $D0
@@ -57,13 +56,11 @@ CheckFlashed
 Is7800
           rem 7800 console detected
           let systemFlags = systemFlags | SystemFlag7800
-          let console7800Detected = 1
           return
           
 Is2600
           rem 2600 console detected
           let systemFlags = systemFlags & ClearSystemFlag7800
-          let console7800Detected = 0
           return
           
           rem ==========================================================
@@ -72,8 +69,8 @@ Is2600
           rem Check for console-specific features after detection
           
 CheckConsoleFeatures
-          rem Check if running on 7800
-          if !console7800Detected then Done7800Features
+          rem Check if running on 7800 (bit 7 of systemFlags)
+          if !(systemFlags & SystemFlag7800) then Done7800Features
           
           rem 7800-specific features
           rem Note: 7800 pause button handling is implemented in

@@ -148,6 +148,15 @@
           rem Console detection constants
           const SystemFlag7800 = $80
           rem Bit 7: 1=7800 console, 0=2600 console
+          const SystemFlagColorBWOverride = $40
+          rem Bit 6: 1=Color/B&W override active (7800 only)
+          const SystemFlagPauseButtonPrev = $20
+          rem Bit 5: 1=Pause button was pressed previous frame
+          const SystemFlagGameStatePaused = $10
+          rem Bit 4: 1=Game paused (0=normal play)
+          const SystemFlagGameStateEnding = $08
+          rem Bit 3: 1=Game ending (transition to winner screen)
+          rem Bits 0-2: Reserved for future use
           const ConsoleDetectD0 = $2C
           rem $D0 value for 7800 detection
           const ConsoleDetectD1 = $A9
@@ -160,9 +169,37 @@
           rem $FF - $40: Clear bit 6 (Players34Active)
           const ClearSystemFlag7800 = $7F
           rem $FF - $80: Clear bit 7 (SystemFlag7800)
+          const ClearSystemFlagColorBWOverride = $BF
+          rem $FF - $40: Clear bit 6 (ColorBWOverride)
+          const ClearSystemFlagPauseButtonPrev = $DF
+          rem $FF - $20: Clear bit 5 (PauseButtonPrev)
+          const ClearSystemFlagGameStatePaused = $EF
+          rem $FF - $10: Clear bit 4 (GameStatePaused)
+          const ClearSystemFlagGameStateEnding = $F7
+          rem $FF - $08: Clear bit 3 (GameStateEnding)
           rem Bit mask constants for setting bits
           const SetQuadtariDetected = $80
           rem Set bit 7 (QuadtariDetected)
+          const SetSystemFlag7800 = $80
+          rem Set bit 7 (SystemFlag7800)
+          const SetSystemFlagColorBWOverride = $40
+          rem Set bit 6 (ColorBWOverride)
+          const SetSystemFlagPauseButtonPrev = $20
+          rem Set bit 5 (PauseButtonPrev)
+          const SetSystemFlagGameStatePaused = $10
+          rem Set bit 4 (GameStatePaused)
+          const SetSystemFlagGameStateEnding = $08
+          rem Set bit 3 (GameStateEnding)
+          
+          rem PlayerLocked value constants (for bit-packed playerLocked byte)
+          rem Values: 0=unlocked, 1=locked normal, 2=locked handicap
+          const PlayerLockedUnlocked = 0
+          rem 0 = Unlocked (still browsing)
+          const PlayerLockedNormal = 1
+          rem 1 = Locked normal (100% health)
+          const PlayerLockedHandicap = 2
+          rem 2 = Locked handicap (75% health)
+          rem 3 = Reserved (unused)
           const SetPlayers34Active = $40
           rem Set bit 6 (Players34Active)
           rem Bit mask constants for controller port detections

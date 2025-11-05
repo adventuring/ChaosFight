@@ -49,7 +49,7 @@ CheckAllPlayerEliminations
           rem   CheckGameEndCondition)
           gosub CountRemainingPlayers
           rem Game ends when 1 or fewer players remain
-          if playersRemaining <= 1 then gosub FindWinner : let gameEndTimer = 180 : let gameState = 2 : return
+          if playersRemaining <= 1 then gosub FindWinner : let gameEndTimer = 180 : let systemFlags = systemFlags | SystemFlagGameStateEnding : return
           
 
           rem ==========================================================

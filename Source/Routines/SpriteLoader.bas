@@ -424,7 +424,7 @@ NormalColor
 #else
           rem Determine effective B&W override locally; if enabled, use
           rem   player colors
-          if colorBWOverride then PlayerIndexColors
+          if systemFlags & SystemFlagColorBWOverride then PlayerIndexColors
 
           rem NTSC/PAL: Character-specific colors would be used here
           rem   when tables exist

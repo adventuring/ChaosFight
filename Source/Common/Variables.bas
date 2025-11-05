@@ -121,30 +121,25 @@
           rem COMMON VARS - Standard RAM (a-z) - sorted alphabetically
           rem ==========================================================
 
-          rem Game state variables
-          dim gameState = g
+          rem Game state and system flags (consolidated to save RAM)
           dim gameMode = p
-          rem 0 = normal play, 1 = paused
-          
-          rem Console and controller detection (set during ADMIN, read
-          rem   during GAME)
-          dim console7800Detected = e
-          rem 1 if running on Atari 7800
+          rem Game mode index (0-8): ModePublisherPreamble, ModeAuthorPreamble, etc.
           dim systemFlags = f
-          rem System flags: $80=7800 console, other bits reserved
+          rem System flags (packed byte):
+          rem   Bit 7: 7800 console detected (SystemFlag7800 = $80)
+          rem   Bit 6: Color/B&W override active (SystemFlagColorBWOverride = $40, 7800 only)
+          rem   Bit 5: Pause button previous state (SystemFlagPauseButtonPrev = $20)
+          rem   Bit 4: Game state paused (SystemFlagGameStatePaused = $10, 0=normal, 1=paused)
+          rem   Bit 3: Game state ending (SystemFlagGameStateEnding = $08, 0=normal, 1=ending)
+          rem   Bits 0-2: Reserved for future use
+          rem NOTE: Previously separate variables (console7800Detected, colorBWOverride,
+          rem   pauseButtonPrev, gameState) are now consolidated into this byte
           dim controllerStatus = h
           rem Packed controller status bits: $80=Quadtari,
           rem   $01=LeftGenesis, $02=LeftJoy2b+, $04=RightGenesis,
           rem   $08=RightJoy2b+
           rem HandicapMode - defined locally in CharacterSelect.bas as
           rem   temp1 (local scope only)
-          dim pauseButtonPrev = r
-          rem Previous frame pause button state
-          
-#ifndef TV_SECAM
-          dim colorBWOverride = q     
-          rem 7800 only: manual Color/B&W override (not used in SECAM)
-#endif
           
           rem Character selection results (set during ADMIN, read during
           rem   GAME)
@@ -156,9 +151,15 @@
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 base damage per player
           rem (4 bytes: w050-w053) - SCRAM for low-frequency access
           rem Array accessible as playerDamage[0] through playerDamage[3]
-          dim playerLocked = n  
-          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using n,o,p,q (p,q may be
-          rem   used by colorBWOverride)
+          dim playerLocked = e
+          rem Bit-packed: 2 bits per player (4 players × 2 bits = 8 bits = 1 byte)
+          rem Bits 0-1: Player 0 locked state (0=unlocked, 1=normal, 2=handicap)
+          rem Bits 2-3: Player 1 locked state
+          rem Bits 4-5: Player 2 locked state
+          rem Bits 6-7: Player 3 locked state
+          rem NOTE: Use helper functions GetPlayerLocked/SetPlayerLocked to access
+          rem   (see Source/Routines/PlayerLockedHelpers.bas)
+          rem Previously used 4 bytes (n,o,p,q) - now consolidated to 1 byte (e)
           dim selectedChar1 = s
           rem selectedChar2, selectedChar3, and selectedChar4 moved to
           rem   SuperChip RAM to avoid conflicts

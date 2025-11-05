@@ -197,12 +197,12 @@ DWS_Hide3Player3Done
           
 DWS_GetBWMode
           rem Check if B&W mode is active
-          rem switchbw=1 means B&W mode, colorBWOverride can force B&W
+          rem switchbw=1 means B&W mode, systemFlags bit 6 (ColorBWOverride) can force B&W
           rem Uses temp2 for DWS_bwMode (DWS_winnerIndex saved by
           rem   caller)
           let temp2 = 0
           if switchbw then let temp2 = 1
-          if colorBWOverride then let temp2 = 1
+          if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           let DWS_bwMode = temp2
           return
 

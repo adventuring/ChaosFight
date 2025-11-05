@@ -249,20 +249,3 @@ PlayDamageSound
           gosub bank15 PlaySoundEffect
           return
 
-          rem =================================================================
-          rem PERFORM MELEE ATTACK
-          rem =================================================================
-          rem Moved to Source/Routines/PerformMeleeAttack.bas
-          rem =================================================================
-
-          rem =================================================================
-          rem PERFORM RANGED ATTACK
-          rem =================================================================
-          rem Moved to Source/Routines/PerformRangedAttack.bas
-          rem =================================================================
-
-          rem NOTE: ProcessPlayerGuard and UpdatePlayerGuard were removed.
-          rem Guard functionality has been migrated to:
-          rem   - Guard restrictions: PlayerInput.bas (movement/attack blocking)
-          rem   - Guard timer updates: GuardEffects.bas (UpdateGuardTimers)
-

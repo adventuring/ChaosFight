@@ -98,7 +98,7 @@ GameEndCheckDone
           rem Check missile collisions (in Bank 7) - handled internally
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
-          
+
           rem Check RoboTito stretch missile collisions
           gosub CheckRoboTitoStretchMissileCollisions
 

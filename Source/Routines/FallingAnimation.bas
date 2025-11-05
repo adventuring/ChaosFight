@@ -341,6 +341,3 @@ NudgeDown
 NudgeUp
           let playerY[NPF_playerIndex] = playerY[NPF_playerIndex] - 1
           return
-          
-rem NOTE: MovePlayerToRow2 was removed.
-rem Use MovePlayerToTarget in this file for player movement.

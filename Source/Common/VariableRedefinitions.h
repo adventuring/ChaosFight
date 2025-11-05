@@ -1,9 +1,5 @@
 ; This file contains variable mapping and other information for the current project.
 
-MethHoundFrameMap_length = .skipL01593-MethHoundFrameMap 
- 
-MethHoundFrames_length = .skipL01592-MethHoundFrames 
- 
 Character30FrameMap_length = .skipL01587-Character30FrameMap 
  
 Character30Frames_length = .skipL01586-Character30Frames 

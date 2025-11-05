@@ -902,23 +902,4 @@ DeactivateMissile
           let missileActive  = missileActive & temp6
           return
 
-          rem ==========================================================
-          rem RENDER ALL MISSILES
-          rem ==========================================================
-          rem NOTE: Missile rendering is now handled in
-          rem   SetSpritePositions (PlayerRendering.bas)
-          rem This function is kept for compatibility but does nothing
-          rem The multisprite kernel only provides 2 hardware missiles
-          rem   (missile0, missile1)
-          rem In 2-player mode: missile0 = Player 0, missile1 = Player 1
-          rem   (no multiplexing)
-          rem In 4-player mode: Frame multiplexing handles 4 logical
-          rem   missiles:
-          rem   Even frames: missile0 = Player 0, missile1 = Player 1
-          rem   Odd frames:  missile0 = Player 2, missile1 = Player 3
-RenderAllMissiles
-          rem Missile positions are set in SetSpritePositions
-          rem   (PlayerRendering.bas)
-          rem which handles 2-player vs 4-player mode automatically
-          rem No additional rendering needed here
-          return
+

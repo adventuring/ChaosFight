@@ -21,7 +21,7 @@
           rem   - 48x2_2: AtariAgeText text (Publisher)
           rem   - 48x2_3: ChaosFight logo (Title)
           rem   - 48x2_4: Interworldly logo (Author)
-          asm
+
           include "Source/Generated/Art.AtariAge.s"
           include "Source/Generated/Art.AtariAgeText.s"
           include "Source/Generated/Art.ChaosFight.s"
@@ -61,7 +61,6 @@
           rem   runtime variables first,
           rem falling back to compile-time constants if runtime
           rem   variables not defined.
-          end
 
           goto bank13 ColdStart
 

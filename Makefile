@@ -339,13 +339,15 @@ Source/Generated/Font.bas: Source/Art/Font.png
 # Bitmap files are dependencies of Bank1.bas (defined above).
 # Numbers font is a dependency of Bank12.bas (defined above).
 # Bank15.bas includes Sound.*.bas files, so they must be dependencies here.
+# Bitmap .s files must exist before cpp runs, so they need PNG dependencies.
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas)
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
@@ -355,7 +357,8 @@ Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
@@ -366,7 +369,8 @@ Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 

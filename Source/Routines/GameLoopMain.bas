@@ -68,7 +68,6 @@ GameMainLoop
               for currentPlayer = 2 to 3
                   gosub CheckPlayfieldCollisionAllDirections
               next
-end
 
           rem Check multi-player collisions
           gosub CheckAllPlayerCollisions

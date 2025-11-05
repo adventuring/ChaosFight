@@ -44,7 +44,6 @@ UpdatePlayerMovement
               for currentPlayer = 2 to 3
                   gosub UpdatePlayerMovementSingle
               next
-end
           return
 
           rem Update movement for a specific player

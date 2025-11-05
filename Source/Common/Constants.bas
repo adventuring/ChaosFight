@@ -10,7 +10,7 @@
           rem Game URL: https://interworldly.com/games/ChaosFight
           rem URL stored as comment for attribution
           const NumArenas=16
-          const MaxArenaID=15
+          const MaxArenaID=1
           const RandomArena=255
           const RecoveryFrameCount=8
           const KnockbackDistance=12          

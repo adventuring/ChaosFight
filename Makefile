@@ -246,7 +246,12 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
 
 # Explicit PNG dependencies for character sprites (ensures PNG generation from XCF)
+# Use pattern rule to ensure PNG is generated from XCF before .bas compilation
 $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Source/Art/%.xcf
+	@echo "Converting $< to $@..."
+	@mkdir -p Source/Art
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@touch "$@"
 
 # Convenience rule: redirect Source/Generated/*.png requests to Source/Art/*.png
 $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).png): Source/Generated/%.png: Source/Art/%.png

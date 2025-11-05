@@ -1,7 +1,7 @@
 @subsubsection Radish Goblin
 @display
 @group
-    Weight: 22.68 kg (50.0 lbs)
+    Weight: 25 kg (50 lbs)
     Attack: Melée (bouncing bite attacks)
     Special: Highest jumps, fastest movement, lowest health, bounces when moving
     Origins: Terrible pests from Syrex, ancient Rome (Karpoi), and Aclypt

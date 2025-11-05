@@ -1,7 +1,7 @@
 @subsubsection Knight Guy
 @display
 @group
-    Weight: 113.40 kg (250.0 lbs)
+    Weight: 115 kg (250 lbs)
     Attack: Melée (sword)
     Special: Armored fighter with powerful melee attack
     Original Game: Knight Guy: Escapes from Castle, In Another Castle, and 30 Squares of Fate

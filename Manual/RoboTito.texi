@@ -1,7 +1,7 @@
 @subsubsection Robo Tito
 @display
 @group
-    Weight: 136.08 kg (300.0 lbs)
+    Weight: 135 kg (300 lbs)
     Attack: Melée
     Special: No jumping! Stretches vertically to ceiling; fall damage immunity
     Original Game: Tito el robotito contra los fantasmas (jumpless platformer)

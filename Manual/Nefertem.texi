@@ -1,7 +1,7 @@
 @subsubsection Nefertem
 @display
 @group
-    Weight: 199.58 kg (440.0 lbs)
+    Weight: 200 kg (440 lbs)
     Attack: Melée
     Special: Loyalist to the High Council
     Original Game: Phantasia

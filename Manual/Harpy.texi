@@ -1,7 +1,7 @@
 @subsubsection Harpy
 @display
 @group
-    Weight: 13.61 kg (30.0 lbs)
+    Weight: 15 kg (30 lbs)
     Attack: Melée (diagonal swoop)
     Special: Can "fly" by repeatedly pressing UP
     Background: Former prisoner of the deadly labyrinth, defeated the Great Sphinx
@@ -25,7 +25,8 @@ enhanced your powers.
 
 Now free of the maze, you bring that hard-won combat experience to ChaosFight. 
 Your time battling through the labyrinth's dangers has honed your aerial combat 
-skills to perfection. The Harpy can maintain flight by repeatedly jumping, and 
+skills to perfection. The Harpy can maintain flight by repeatedly flapping
+her wings (jump button or up on the joystick), and 
 her attack causes her to swoop down diagonally while performing a devastating 
 strike. These techniques were perfected during your trials against the four 
 guardians and the Great Sphinx.

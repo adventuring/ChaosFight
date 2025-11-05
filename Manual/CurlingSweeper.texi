@@ -1,7 +1,7 @@
 @subsubsection Curling Sweeper
 @display
 @group
-    Weight: 86.18 kg (190.0 lbs)
+    Weight: 85 kg (190 lbs)
     Attack: Ranged (from feet, ground-based)
     Special: Projectile comes from character's feet
     Original Game: RealSports Curling (Atari 5200)

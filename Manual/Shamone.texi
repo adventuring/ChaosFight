@@ -1,7 +1,7 @@
 @subsubsection Shamone
 @display
 @group
-    Weight: 29.48 kg (65.0 lbs)
+    Weight: 30 kg (65 lbs)
     Attack: Melée
     Special: Standard light melée fighter, garden protector
     Mission: Protect vegetable gardens from nasty ducks

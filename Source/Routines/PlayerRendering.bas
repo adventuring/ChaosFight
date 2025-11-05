@@ -365,7 +365,6 @@ SetPlayerSprites
           let SPS_charIndex = playerChar[0]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[0] > 0
-          let temp1 = SPS_charIndex
           let temp2 = SPS_isHurt
           rem temp2 = hurt state (0=normal, non-zero=hurt)
           let temp3 = 0
@@ -383,9 +382,9 @@ Player1ColorDone
           rem   0=left, 1=right)
           asm
           lda playerState
-          and #1
+          and # 1
           beq .Player1FacingLeft
-          lda #0
+          lda # 0
           sta REFP0
           jmp .Player1ReflectionDone
 .Player1FacingLeft
@@ -414,7 +413,6 @@ Player1ColorDone
           let SPS_charIndex = playerChar[1]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[1] > 0
-          let temp1 = SPS_charIndex
           let temp2 = SPS_isHurt
           rem temp2 = hurt state (0=normal, non-zero=hurt)
           let temp3 = 1
@@ -471,7 +469,6 @@ Player2ColorDone
           let SPS_charIndex = playerChar[2]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[2] > 0
-          let temp1 = SPS_charIndex
           let temp2 = SPS_isHurt
           rem temp2 = hurt state (0=normal, non-zero=hurt)
           let temp3 = 2
@@ -525,7 +522,6 @@ DonePlayer3Sprite
           let SPS_charIndex = playerChar[3]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[3] > 0
-          let temp1 = SPS_charIndex
           let temp2 = SPS_isHurt
           rem temp2 = hurt state (0=normal, non-zero=hurt)
           let temp3 = 3

@@ -401,9 +401,8 @@ ArenaSelectDrawPlayerSprite
           gosub bank10 LocateCharacterArt
           
           rem Set character color based on player number
-          rem LoadCharacterColors expects: temp1=char, temp2=hurt,
-          rem   temp3=player, temp4=flashing, temp5=mode
-          let temp1 = ASDPS_characterIndex
+          rem LoadCharacterColors expects: temp2=hurt, temp3=player,
+          rem   temp4=flashing, temp5=mode
           let temp2 = 0
           rem Not hurt
           let temp3 = ASDPS_playerNumber

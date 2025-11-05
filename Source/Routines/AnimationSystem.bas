@@ -54,14 +54,14 @@ UpdatePlayerAnimation
           rem   frame counter)
           rem SCRAM read-modify-write: Read from r077, modify, write to
           rem   w077
-          dim UAS_animCounterRead = temp4
-          let UAS_animCounterRead = animationCounter_R[currentPlayer]
-          let UAS_animCounterRead = UAS_animCounterRead + 1
-          let animationCounter_W[currentPlayer] = UAS_animCounterRead
+          dim UpdatePlayerAnimation_animCounterRead = temp4
+          let UpdatePlayerAnimation_animCounterRead = animationCounter_R[currentPlayer]
+          let UpdatePlayerAnimation_animCounterRead = UpdatePlayerAnimation_animCounterRead + 1
+          let animationCounter_W[currentPlayer] = UpdatePlayerAnimation_animCounterRead
           
           rem Check if time to advance animation frame (every
           rem   AnimationFrameDelay frames)
-          if UAS_animCounterRead >= AnimationFrameDelay then goto AdvanceFrame
+          if UpdatePlayerAnimation_animCounterRead >= AnimationFrameDelay then goto AdvanceFrame
           goto DoneAdvance
 AdvanceFrame
           let animationCounter_W[currentPlayer] = 0
@@ -71,16 +71,16 @@ AdvanceFrame
           rem   (currentAnimationFrame), not global frame
           rem SCRAM read-modify-write: Read from r081, modify, write to
           rem   w081
-          dim UAS_animFrameRead = temp4
-          let UAS_animFrameRead = currentAnimationFrame_R[currentPlayer]
-          let UAS_animFrameRead = UAS_animFrameRead + 1
-          let currentAnimationFrame_W[currentPlayer] = UAS_animFrameRead
+          dim UpdatePlayerAnimation_animFrameRead = temp4
+          let UpdatePlayerAnimation_animFrameRead = currentAnimationFrame_R[currentPlayer]
+          let UpdatePlayerAnimation_animFrameRead = UpdatePlayerAnimation_animFrameRead + 1
+          let currentAnimationFrame_W[currentPlayer] = UpdatePlayerAnimation_animFrameRead
           
           rem Check if we have completed the current action (8 frames
           rem   per action)
           rem Use temp variable from previous increment
-          rem   (UAS_animFrameRead)
-          if UAS_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
+          rem   (UpdatePlayerAnimation_animFrameRead)
+          if UpdatePlayerAnimation_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
 DoneAdvance
           return
@@ -103,15 +103,15 @@ AdvanceAnimationFrame
           rem   (currentAnimationFrame), not global frame
           rem SCRAM read-modify-write: Read from r081, modify, write to
           rem   w081
-          dim AAF_animFrameRead = temp4
-          let AAF_animFrameRead = currentAnimationFrame_R[currentPlayer]
-          let AAF_animFrameRead = AAF_animFrameRead + 1
-          let currentAnimationFrame_W[currentPlayer] = AAF_animFrameRead
+          dim AdvanceAnimationFrame_animFrameRead = temp4
+          let AdvanceAnimationFrame_animFrameRead = currentAnimationFrame_R[currentPlayer]
+          let AdvanceAnimationFrame_animFrameRead = AdvanceAnimationFrame_animFrameRead + 1
+          let currentAnimationFrame_W[currentPlayer] = AdvanceAnimationFrame_animFrameRead
           
           rem Check if we have completed the current action (8 frames
           rem   per action)
-          rem Use temp variable from increment (AAF_animFrameRead)
-          if AAF_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
+          rem Use temp variable from increment (AdvanceAnimationFrame_animFrameRead)
+          if AdvanceAnimationFrame_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
           
 HandleFrame7Transition
@@ -120,9 +120,9 @@ HandleFrame7Transition
           goto UpdateSprite
           
 UpdateSprite
-          dim US_animationFrame = temp2
-          dim US_animationAction = temp3
-          dim US_playerNumber = temp4
+          dim UpdateSprite_animationFrame = temp2
+          dim UpdateSprite_animationAction = temp3
+          dim UpdateSprite_playerNumber = temp4
           rem Update character sprite with current animation frame and
           rem   action
           rem INPUT: currentPlayer = player index (0-3) (uses global
@@ -137,9 +137,9 @@ UpdateSprite
           rem Frame is from this sprite 10fps counter
           rem   (currentAnimationFrame), not global frame counter
           rem SCRAM read: Read from r081
-          let US_animationFrame = currentAnimationFrame_R[currentPlayer] 
-          let US_animationAction = currentAnimationSeq[currentPlayer]
-          let US_playerNumber = currentPlayer
+          let UpdateSprite_animationFrame = currentAnimationFrame_R[currentPlayer] 
+          let UpdateSprite_animationAction = currentAnimationSeq[currentPlayer]
+          let UpdateSprite_playerNumber = currentPlayer
           gosub bank10 LoadPlayerSprite
           
           return
@@ -153,13 +153,13 @@ UpdateSprite
           rem immediately updates sprite graphics to show first frame of
           rem   new animation
 SetPlayerAnimation
-          dim SPA_animationAction = temp2
-          dim SPA_animationFrame = temp2
-          dim SPA_animationSeq = temp3
-          dim SPA_playerNumber = temp4
-          if SPA_animationAction >= AnimationSequenceCount then return
+          dim SetPlayerAnimation_animationAction = temp2
+          dim SetPlayerAnimation_animationFrame = temp2
+          dim SetPlayerAnimation_animationSeq = temp3
+          dim SetPlayerAnimation_playerNumber = temp4
+          if SetPlayerAnimation_animationAction >= AnimationSequenceCount then return
           
-          let currentAnimationSeq[currentPlayer] = SPA_animationAction
+          let currentAnimationSeq[currentPlayer] = SetPlayerAnimation_animationAction
           rem SCRAM write: Write to w081
           let currentAnimationFrame_W[currentPlayer] = 0 
           rem Start at first frame
@@ -172,12 +172,12 @@ SetPlayerAnimation
           rem   currentAnimationSeq
           rem Set up parameters for LoadPlayerSprite
           rem SCRAM read: Read from r081 (we just wrote 0, so this is 0)
-          let SPA_animationFrame = 0
-          let SPA_animationSeq = currentAnimationSeq[currentPlayer]
-          let SPA_playerNumber = currentPlayer
-          let temp2 = SPA_animationFrame
-          let temp3 = SPA_animationSeq
-          let temp4 = SPA_playerNumber
+          let SetPlayerAnimation_animationFrame = 0
+          let SetPlayerAnimation_animationSeq = currentAnimationSeq[currentPlayer]
+          let SetPlayerAnimation_playerNumber = currentPlayer
+          let temp2 = SetPlayerAnimation_animationFrame
+          let temp3 = SetPlayerAnimation_animationSeq
+          let temp4 = SetPlayerAnimation_playerNumber
           gosub bank10 LoadPlayerSprite
           
           return
@@ -187,10 +187,10 @@ SetPlayerAnimation
           rem OUTPUT: temp2 = current animation frame (0-7)
           rem EFFECTS: None (read-only query)
 GetCurrentAnimationFrame
-          dim GCAF_currentFrame = temp2
+          dim GetCurrentAnimationFrame_currentFrame = temp2
           rem SCRAM read: Read from r081
-          let GCAF_currentFrame = currentAnimationFrame_R[currentPlayer]
-          let temp2 = GCAF_currentFrame
+          let GetCurrentAnimationFrame_currentFrame = currentAnimationFrame_R[currentPlayer]
+          let temp2 = GetCurrentAnimationFrame_currentFrame
           return
 
           rem Get current animation action for a player
@@ -200,9 +200,9 @@ GetCurrentAnimationFrame
           rem OUTPUT: temp2 = current animation action (0-15)
           rem EFFECTS: None (read-only query)
 GetCurrentAnimationAction
-          dim GCAA_currentAction = temp2
-          let GCAA_currentAction = currentAnimationSeq[currentPlayer]
-          let temp2 = GCAA_currentAction
+          dim GetCurrentAnimationAction_currentAction = temp2
+          let GetCurrentAnimationAction_currentAction = currentAnimationSeq[currentPlayer]
+          let temp2 = GetCurrentAnimationAction_currentAction
           return
 
           rem Initialize animation system for all players
@@ -212,20 +212,20 @@ GetCurrentAnimationAction
           rem EFFECTS: Sets all players (0-3) to idle animation state
           rem   (ActionIdle)
 InitializeAnimationSystem
-          dim IAS_animationAction = temp2
+          dim InitializeAnimationSystem_animationAction = temp2
           rem Initialize all players to idle animation
           let currentPlayer = 0
-          let IAS_animationAction = ActionIdle
-          let temp2 = IAS_animationAction
+          let InitializeAnimationSystem_animationAction = ActionIdle
+          let temp2 = InitializeAnimationSystem_animationAction
           gosub SetPlayerAnimation
           let currentPlayer = 1
-          let temp2 = IAS_animationAction
+          let temp2 = InitializeAnimationSystem_animationAction
           gosub SetPlayerAnimation
           let currentPlayer = 2
-          let temp2 = IAS_animationAction
+          let temp2 = InitializeAnimationSystem_animationAction
           gosub SetPlayerAnimation
           let currentPlayer = 3
-          let temp2 = IAS_animationAction
+          let temp2 = InitializeAnimationSystem_animationAction
           rem tail call
           goto SetPlayerAnimation
 
@@ -238,9 +238,9 @@ InitializeAnimationSystem
           rem OUTPUT: None
           rem EFFECTS: Changes player animation to ActionWalking state
 SetWalkingAnimation
-          dim SWA_animationAction = temp2
-          let SWA_animationAction = ActionWalking
-          let temp2 = SWA_animationAction
+          dim SetWalkingAnimation_animationAction = temp2
+          let SetWalkingAnimation_animationAction = ActionWalking
+          let temp2 = SetWalkingAnimation_animationAction
           rem tail call
           goto SetPlayerAnimation
 
@@ -249,9 +249,9 @@ SetWalkingAnimation
           rem OUTPUT: None
           rem EFFECTS: Changes player animation to ActionIdle state
 SetIdleAnimation
-          dim SIA_animationAction = temp2
-          let SIA_animationAction = ActionIdle
-          let temp2 = SIA_animationAction
+          dim SetIdleAnimation_animationAction = temp2
+          let SetIdleAnimation_animationAction = ActionIdle
+          let temp2 = SetIdleAnimation_animationAction
           rem tail call
           goto SetPlayerAnimation
 
@@ -261,9 +261,9 @@ SetIdleAnimation
           rem EFFECTS: Changes player animation to ActionAttackWindup
           rem   state
 SetAttackAnimation
-          dim SAA_animationAction = temp2
-          let SAA_animationAction = ActionAttackWindup
-          let temp2 = SAA_animationAction
+          dim SetAttackAnimation_animationAction = temp2
+          let SetAttackAnimation_animationAction = ActionAttackWindup
+          let temp2 = SetAttackAnimation_animationAction
           rem tail call
           goto SetPlayerAnimation
 
@@ -272,9 +272,9 @@ SetAttackAnimation
           rem OUTPUT: None
           rem EFFECTS: Changes player animation to ActionHit state
 SetHitAnimation
-          dim SHA_animationAction = temp2
-          let SHA_animationAction = ActionHit
-          let temp2 = SHA_animationAction
+          dim SetHitAnimation_animationAction = temp2
+          let SetHitAnimation_animationAction = ActionHit
+          let temp2 = SetHitAnimation_animationAction
           rem tail call
           goto SetPlayerAnimation
 
@@ -283,9 +283,9 @@ SetHitAnimation
           rem OUTPUT: None
           rem EFFECTS: Changes player animation to ActionJumping state
 SetJumpingAnimation
-          dim SJA_animationAction = temp2
-          let SJA_animationAction = ActionJumping
-          let temp2 = SJA_animationAction
+          dim SetJumpingAnimation_animationAction = temp2
+          let SetJumpingAnimation_animationAction = ActionJumping
+          let temp2 = SetJumpingAnimation_animationAction
           rem tail call
           goto SetPlayerAnimation
 
@@ -294,9 +294,9 @@ SetJumpingAnimation
           rem OUTPUT: None
           rem EFFECTS: Changes player animation to ActionFalling state
 SetFallingAnimation
-          dim SFA_animationAction = temp2
-          let SFA_animationAction = ActionFalling
-          let temp2 = SFA_animationAction
+          dim SetFallingAnimation_animationAction = temp2
+          let SetFallingAnimation_animationAction = ActionFalling
+          let temp2 = SetFallingAnimation_animationAction
           rem tail call
           goto SetPlayerAnimation
 
@@ -309,10 +309,10 @@ SetFallingAnimation
           rem OUTPUT: temp2 = 1 if walking, 0 if not
           rem EFFECTS: None (read-only query)
 IsPlayerWalking
-          dim IPW_isWalking = temp2
-          let IPW_isWalking = 0
-          if currentAnimationSeq[currentPlayer] = ActionWalking then let IPW_isWalking = 1
-          let temp2 = IPW_isWalking
+          dim IsPlayerWalking_isWalking = temp2
+          let IsPlayerWalking_isWalking = 0
+          if currentAnimationSeq[currentPlayer] = ActionWalking then let IsPlayerWalking_isWalking = 1
+          let temp2 = IsPlayerWalking_isWalking
           return
 
           rem Check if player is in attack animation
@@ -320,13 +320,13 @@ IsPlayerWalking
           rem OUTPUT: temp2 = 1 if attacking, 0 if not
           rem EFFECTS: None (read-only query)
 IsPlayerAttacking
-          dim IPA_isAttacking = temp2
-          let IPA_isAttacking = 0
+          dim IsPlayerAttacking_isAttacking = temp2
+          let IsPlayerAttacking_isAttacking = 0
           if currentAnimationSeq[currentPlayer] < ActionAttackWindup then goto NotAttacking
           if currentAnimationSeq[currentPlayer] > ActionAttackRecovery then goto NotAttacking
-          let IPA_isAttacking = 1
+          let IsPlayerAttacking_isAttacking = 1
 NotAttacking
-          let temp2 = IPA_isAttacking
+          let temp2 = IsPlayerAttacking_isAttacking
           return
 
           rem Check if player is in hit animation
@@ -334,10 +334,10 @@ NotAttacking
           rem OUTPUT: temp2 = 1 if hit, 0 if not
           rem EFFECTS: None (read-only query)
 IsPlayerHit
-          dim IPH_isHit = temp2
-          let IPH_isHit = 0
-          if currentAnimationSeq[currentPlayer] = ActionHit then let IPH_isHit = 1
-          let temp2 = IPH_isHit
+          dim IsPlayerHit_isHit = temp2
+          let IsPlayerHit_isHit = 0
+          if currentAnimationSeq[currentPlayer] = ActionHit then let IsPlayerHit_isHit = 1
+          let temp2 = IsPlayerHit_isHit
           return
 
           rem Check if player is in jumping animation
@@ -345,15 +345,15 @@ IsPlayerHit
           rem OUTPUT: temp2 = 1 if jumping, 0 if not
           rem EFFECTS: None (read-only query)
 IsPlayerJumping
-          dim IPJ_isJumping = temp2
-          let IPJ_isJumping = 0
+          dim IsPlayerJumping_isJumping = temp2
+          let IsPlayerJumping_isJumping = 0
           if currentAnimationSeq[currentPlayer] = ActionJumping then goto IsJumping
           if currentAnimationSeq[currentPlayer] = ActionFalling then goto IsJumping
           goto NotJumping
 IsJumping
-          let IPJ_isJumping = 1
+          let IsPlayerJumping_isJumping = 1
 NotJumping
-          let temp2 = IPJ_isJumping
+          let temp2 = IsPlayerJumping_isJumping
           return
 
           rem ==========================================================
@@ -365,34 +365,34 @@ NotJumping
           rem Uses: currentAnimationSeq[currentPlayer] to determine
           rem   transition
 HandleAnimationTransition
-          dim HAT_currentAction = temp1
-          dim HAT_animationAction = temp2
+          dim HandleAnimationTransition_currentAction = temp1
+          dim HandleAnimationTransition_animationAction = temp2
           rem Get current action
-          let HAT_currentAction = currentAnimationSeq[currentPlayer]
+          let HandleAnimationTransition_currentAction = currentAnimationSeq[currentPlayer]
           
           rem Branch by action type
-          if HAT_currentAction = ActionIdle then goto TransitionLoopAnimation
-          if HAT_currentAction = ActionGuarding then goto TransitionLoopAnimation
-          if HAT_currentAction = ActionFalling then goto TransitionLoopAnimation
+          if HandleAnimationTransition_currentAction = ActionIdle then goto TransitionLoopAnimation
+          if HandleAnimationTransition_currentAction = ActionGuarding then goto TransitionLoopAnimation
+          if HandleAnimationTransition_currentAction = ActionFalling then goto TransitionLoopAnimation
           
           rem Special: Jumping stays on frame 7 until falling
-          if HAT_currentAction = ActionJumping then goto TransitionHandleJump
+          if HandleAnimationTransition_currentAction = ActionJumping then goto TransitionHandleJump
           
           rem Transitions to Idle
-          if HAT_currentAction = ActionLanding then goto TransitionToIdle
-          if HAT_currentAction = ActionHit then goto TransitionToIdle
-          if HAT_currentAction = ActionRecovering then goto TransitionToIdle
+          if HandleAnimationTransition_currentAction = ActionLanding then goto TransitionToIdle
+          if HandleAnimationTransition_currentAction = ActionHit then goto TransitionToIdle
+          if HandleAnimationTransition_currentAction = ActionRecovering then goto TransitionToIdle
           
           rem Special: FallBack checks wall collision
-          if HAT_currentAction = ActionFallBack then goto TransitionHandleFallBack
+          if HandleAnimationTransition_currentAction = ActionFallBack then goto TransitionHandleFallBack
           
           rem Fallen waits for stick input (handled elsewhere)
-          if HAT_currentAction = ActionFallen then goto TransitionLoopAnimation
-          if HAT_currentAction = ActionFallDown then goto TransitionToFallen
+          if HandleAnimationTransition_currentAction = ActionFallen then goto TransitionLoopAnimation
+          if HandleAnimationTransition_currentAction = ActionFallDown then goto TransitionToFallen
           
           rem Attack transitions (delegate to character-specific
           rem   handler)
-          if HAT_currentAction >= ActionAttackWindup && HAT_currentAction <= ActionAttackRecovery then goto HandleAttackTransition
+          if HandleAnimationTransition_currentAction >= ActionAttackWindup && HandleAnimationTransition_currentAction <= ActionAttackRecovery then goto HandleAttackTransition
           
           rem Default: loop
           goto TransitionLoopAnimation
@@ -403,64 +403,64 @@ TransitionLoopAnimation
           return
 
 TransitionToIdle
-          dim TTI_animationAction = temp2
-          let TTI_animationAction = ActionIdle
-          let temp2 = TTI_animationAction
+          dim TransitionToIdle_animationAction = temp2
+          let TransitionToIdle_animationAction = ActionIdle
+          let temp2 = TransitionToIdle_animationAction
           rem tail call
           goto SetPlayerAnimation
 
 TransitionToFallen
-          dim TTF_animationAction = temp2
-          let TTF_animationAction = ActionFallen
-          let temp2 = TTF_animationAction
+          dim TransitionToFallen_animationAction = temp2
+          let TransitionToFallen_animationAction = ActionFallen
+          let temp2 = TransitionToFallen_animationAction
           rem tail call
           goto SetPlayerAnimation
 
 TransitionHandleJump
-          dim THJ_animationAction = temp2
-          dim THJ_playerIndex = temp4
+          dim TransitionHandleJump_animationAction = temp2
+          dim TransitionHandleJump_playerIndex = temp4
           rem Stay on frame 7 until Y velocity goes negative
           rem Check if player is falling (positive Y velocity = downward)
-          let THJ_playerIndex = currentPlayer
-          if playerVelocityY[THJ_playerIndex] > 0 then THJ_TransitionToFalling
+          let TransitionHandleJump_playerIndex = currentPlayer
+          if playerVelocityY[TransitionHandleJump_playerIndex] > 0 then TransitionHandleJump_TransitionToFalling
           rem Still ascending (negative or zero Y velocity), stay in jump
-          let THJ_animationAction = ActionJumping
-          let temp2 = THJ_animationAction
+          let TransitionHandleJump_animationAction = ActionJumping
+          let temp2 = TransitionHandleJump_animationAction
           rem tail call
           goto SetPlayerAnimation
-THJ_TransitionToFalling
+TransitionHandleJump_TransitionToFalling
           rem Falling (positive Y velocity), transition to falling
-          let THJ_animationAction = ActionFalling
-          let temp2 = THJ_animationAction
+          let TransitionHandleJump_animationAction = ActionFalling
+          let temp2 = TransitionHandleJump_animationAction
           rem tail call
           goto SetPlayerAnimation
 
 TransitionHandleFallBack
-          dim THFB_animationAction = temp2
-          dim THFB_playerIndex = temp4
-          dim THFB_pfColumn = temp5
-          dim THFB_pfRow = temp6
+          dim TransitionHandleFallBack_animationAction = temp2
+          dim TransitionHandleFallBack_playerIndex = temp4
+          dim TransitionHandleFallBack_pfColumn = temp5
+          dim TransitionHandleFallBack_pfRow = temp6
           rem Check wall collision using pfread
           rem If hit wall: goto idle, else: goto fallen
-          let THFB_playerIndex = currentPlayer
+          let TransitionHandleFallBack_playerIndex = currentPlayer
           rem Convert player X position to playfield column (0-31)
-          let THFB_pfColumn = playerX[THFB_playerIndex]
-          let THFB_pfColumn = THFB_pfColumn - ScreenInsetX
-          let THFB_pfColumn = THFB_pfColumn / 4
+          let TransitionHandleFallBack_pfColumn = playerX[TransitionHandleFallBack_playerIndex]
+          let TransitionHandleFallBack_pfColumn = TransitionHandleFallBack_pfColumn - ScreenInsetX
+          let TransitionHandleFallBack_pfColumn = TransitionHandleFallBack_pfColumn / 4
           rem Convert player Y position to playfield row (0-7)
-          let THFB_pfRow = playerY[THFB_playerIndex]
-          let THFB_pfRow = THFB_pfRow / 8
+          let TransitionHandleFallBack_pfRow = playerY[TransitionHandleFallBack_playerIndex]
+          let TransitionHandleFallBack_pfRow = TransitionHandleFallBack_pfRow / 8
           rem Check if player hit a wall (playfield pixel is set)
-          if pfread(THFB_pfColumn, THFB_pfRow) then THFB_HitWall
+          if pfread(TransitionHandleFallBack_pfColumn, TransitionHandleFallBack_pfRow) then TransitionHandleFallBack_HitWall
           rem No wall collision, transition to fallen
-          let THFB_animationAction = ActionFallen
-          let temp2 = THFB_animationAction
+          let TransitionHandleFallBack_animationAction = ActionFallen
+          let temp2 = TransitionHandleFallBack_animationAction
           rem tail call
           goto SetPlayerAnimation
-THFB_HitWall
+TransitionHandleFallBack_HitWall
           rem Hit wall, transition to idle
-          let THFB_animationAction = ActionIdle
-          let temp2 = THFB_animationAction
+          let TransitionHandleFallBack_animationAction = ActionIdle
+          let temp2 = TransitionHandleFallBack_animationAction
           rem tail call
           goto SetPlayerAnimation
 

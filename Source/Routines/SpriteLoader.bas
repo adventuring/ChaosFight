@@ -393,30 +393,29 @@ LoadPlayer3Sprite
 
 
 
-          rem Load character/player color based on TV standard, B&W,
-          rem   hurt, and flashing states
-          rem Input: temp1 = character index, temp2 = hurt (0/1), temp3
-          rem   = player (0-3)
-          rem temp4 = flashing (0/1), temp5 = flashing mode
-          rem   (0=frame-based, 1=player-index)
+          rem Load player color based on TV standard, B&W, hurt, and
+          rem   flashing states
+          rem Input: temp2 = hurt state (0/1), temp3 = player number (0-3)
+          rem        temp4 = flashing state (0/1), temp5 = flashing mode
+          rem        (0=frame-based, 1=player-index)
           rem Output: Appropriate COLUPx updated
-          rem Note: Players use solid colors only (no per-line coloring)
+          rem Note: Colors are per-player, not per-character. Players use
+          rem   solid colors only (no per-line coloring)
 LoadCharacterColors
-          dim LCC_characterIndex = temp1
-          dim LCC_isHurt = temp2
-          dim LCC_playerNumber = temp3
-          dim LCC_isFlashing = temp4
-          dim LCC_flashingMode = temp5
-          dim LCC_color = temp6
+          dim LoadCharacterColors_isHurt = temp2
+          dim LoadCharacterColors_playerNumber = temp3
+          dim LoadCharacterColors_isFlashing = temp4
+          dim LoadCharacterColors_flashingMode = temp5
+          dim LoadCharacterColors_color = temp6
           rem Highest priority: hurt state
-          if LCC_isHurt then goto HurtColor
+          if LoadCharacterColors_isHurt then goto HurtColor
 
           rem Next priority: flashing state
-          if LCC_isFlashing then FlashingColor
+          if LoadCharacterColors_isFlashing then FlashingColor
 
 NormalColor
-          dim NC_color = temp6
-          dim NC_playerNumber = temp3
+          dim NormalColor_color = temp6
+          dim NormalColor_playerNumber = temp3
 #ifdef TV_SECAM
           rem SECAM: always use player index colors (no luminance
           rem   control)
@@ -434,14 +433,14 @@ NormalColor
 #endif
 
 FlashingColor
-          dim FC_flashingMode = temp5
+          dim FlashingColor_flashingMode = temp5
           rem Flashing mode selection
-          let FC_flashingMode = LCC_flashingMode
-          if !FC_flashingMode then PerLineFlashing
+          let FlashingColor_flashingMode = LoadCharacterColors_flashingMode
+          if !FlashingColor_flashingMode then PerLineFlashing
           goto PlayerIndexColors
 
 PerLineFlashing
-          dim PLF_color = temp6
+          dim PerLineFlashing_color = temp6
           rem Frame-based flashing (not per-line - players use solid
           rem   colors)
           rem Use alternating bright/dim player index colors by frame
@@ -450,75 +449,75 @@ PerLineFlashing
           goto PlayerIndexColors
 
 PlayerIndexColors
-          dim PIC_color = temp6
+          dim PlayerIndexColors_color = temp6
           rem Solid player index colors (bright)
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
 #ifdef TV_SECAM
           rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise
           rem   maps to Cyan on SECAM)
-          if !LCC_playerNumber then let PIC_color = ColIndigo(14) : let temp6 = PIC_color : goto SetColor
+          if !LoadCharacterColors_playerNumber then let PlayerIndexColors_color = ColIndigo(14) : let temp6 = PlayerIndexColors_color : goto SetColor
           rem Player 1: Indigo -> Blue on SECAM
-          if LCC_playerNumber = 1 then let PIC_color = ColRed(14) : let temp6 = PIC_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColors_color = ColRed(14) : let temp6 = PlayerIndexColors_color : goto SetColor
           rem Player 2: Red
-          if LCC_playerNumber = 2 then let PIC_color = ColYellow(14) : let temp6 = PIC_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColors_color = ColYellow(14) : let temp6 = PlayerIndexColors_color : goto SetColor
           rem Player 3: Yellow
-          let PIC_color = ColGreen(14)
+          let PlayerIndexColors_color = ColGreen(14)
           rem Player 4: Green (SECAM-specific, Turquoise would be Cyan)
-          let temp6 = PIC_color
+          let temp6 = PlayerIndexColors_color
           goto SetColor
 #else
           rem NTSC/PAL: Use Turquoise for Player 4
-          if !LCC_playerNumber then let PIC_color = ColIndigo(14) : let temp6 = PIC_color : goto SetColor
+          if !LoadCharacterColors_playerNumber then let PlayerIndexColors_color = ColIndigo(14) : let temp6 = PlayerIndexColors_color : goto SetColor
           rem Player 1: Indigo
-          if LCC_playerNumber = 1 then let PIC_color = ColRed(14) : let temp6 = PIC_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColors_color = ColRed(14) : let temp6 = PlayerIndexColors_color : goto SetColor
           rem Player 2: Red
-          if LCC_playerNumber = 2 then let PIC_color = ColYellow(14) : let temp6 = PIC_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColors_color = ColYellow(14) : let temp6 = PlayerIndexColors_color : goto SetColor
           rem Player 3: Yellow
-          let PIC_color = ColTurquoise(14)
+          let PlayerIndexColors_color = ColTurquoise(14)
           rem Player 4: Turquoise
-          let temp6 = PIC_color
+          let temp6 = PlayerIndexColors_color
           goto SetColor
 #endif
 
 PlayerIndexColorsDim
-          dim PICD_color = temp6
+          dim PlayerIndexColorsDim_color = temp6
           rem Dimmed player index colors
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
 #ifdef TV_SECAM
           rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise
           rem   maps to Cyan on SECAM)
-          if !LCC_playerNumber then let PICD_color = ColIndigo(6) : let temp6 = PICD_color : goto SetColor
+          if !LoadCharacterColors_playerNumber then let PlayerIndexColorsDim_color = ColIndigo(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
           rem Player 1: Indigo -> Blue on SECAM (dimmed)
-          if LCC_playerNumber = 1 then let PICD_color = ColRed(6) : let temp6 = PICD_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColorsDim_color = ColRed(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
           rem Player 2: Red (dimmed)
-          if LCC_playerNumber = 2 then let PICD_color = ColYellow(6) : let temp6 = PICD_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColorsDim_color = ColYellow(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
           rem Player 3: Yellow (dimmed)
-          let PICD_color = ColGreen(6)
+          let PlayerIndexColorsDim_color = ColGreen(6)
           rem Player 4: Green (SECAM-specific, Turquoise would be Cyan)
-          let temp6 = PICD_color
+          let temp6 = PlayerIndexColorsDim_color
           goto SetColor
 #else
           rem NTSC/PAL: Use Turquoise for Player 4
-          if !LCC_playerNumber then let PICD_color = ColIndigo(6) : let temp6 = PICD_color : goto SetColor
+          if !LoadCharacterColors_playerNumber then let PlayerIndexColorsDim_color = ColIndigo(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
           rem Player 1: Indigo (dimmed)
-          if LCC_playerNumber = 1 then let PICD_color = ColRed(6) : let temp6 = PICD_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColorsDim_color = ColRed(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
           rem Player 2: Red (dimmed)
-          if LCC_playerNumber = 2 then let PICD_color = ColYellow(6) : let temp6 = PICD_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColorsDim_color = ColYellow(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
           rem Player 3: Yellow (dimmed)
-          let PICD_color = ColTurquoise(6)
+          let PlayerIndexColorsDim_color = ColTurquoise(6)
           rem Player 4: Turquoise (dimmed)
-          let temp6 = PICD_color
+          let temp6 = PlayerIndexColorsDim_color
           goto SetColor
 #endif
 
 HurtColor
-          dim HC_color = temp6
+          dim HurtColor_color = temp6
 #ifdef TV_SECAM
           rem SECAM hurt is always magenta
-          let HC_color = ColMagenta(10)
-          let temp6 = HC_color
+          let HurtColor_color = ColMagenta(10)
+          let temp6 = HurtColor_color
           goto SetColor
 #else
           rem Dimmed version of normal color: use dim player index color
@@ -527,15 +526,15 @@ HurtColor
 #endif
 
 SetColor
-          dim SC_color = temp6
-          dim SC_playerNumber = temp3
+          dim SetColor_color = temp6
+          dim SetColor_playerNumber = temp3
           rem Set color based on player index (multisprite kernel
           rem   supports COLUP2/COLUP3)
           rem temp6 already contains the color from previous code paths
-          let SC_color = temp6
-          let SC_playerNumber = LCC_playerNumber
-          if !SC_playerNumber then let COLUP0 = SC_color : return
-          if SC_playerNumber = 1 then let _COLUP1 = SC_color : return
-          if SC_playerNumber = 2 then let COLUP2 = SC_color : return
-          let COLUP3 = SC_color
+          let SetColor_color = temp6
+          let SetColor_playerNumber = LoadCharacterColors_playerNumber
+          if !SetColor_playerNumber then let COLUP0 = SetColor_color : return
+          if SetColor_playerNumber = 1 then let _COLUP1 = SetColor_color : return
+          if SetColor_playerNumber = 2 then let COLUP2 = SetColor_color : return
+          let COLUP3 = SetColor_color
           return

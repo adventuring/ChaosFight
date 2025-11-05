@@ -905,7 +905,6 @@ SelectLoadSpriteColor
           rem player number
           let SLSC_isFlashing = 0
           rem not flashing
-          let temp1 = SLSC_characterIndex
           let temp2 = SLSC_isHurt
           let temp3 = SLSC_playerNumber
           let temp4 = SLSC_isFlashing

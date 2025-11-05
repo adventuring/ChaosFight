@@ -189,7 +189,7 @@ CheckMult5
             adc CFD_damage
             sta CFD_damage
 MultiplyDone
-          end
+end
           rem CFD_damage = damage * (weight / 20) (weight-based
           rem   multiplier applied)
           
@@ -476,7 +476,7 @@ DivideBy20
             lsr a
             lsr a
             sta temp2
-          end
+end
           return
           
           rem DivideBy100: compute floor(temp2 / 100) using range check
@@ -513,7 +513,7 @@ DivideByPfrowheight
             lsr DBPF_value
             lsr DBPF_value
             lsr DBPF_value
-          end
+end
           return
 DBPF_DivideBy8
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -521,7 +521,7 @@ DBPF_DivideBy8
             lsr DBPF_value
             lsr DBPF_value
             lsr DBPF_value
-          end
+end
           return
           
           rem ==========================================================
@@ -581,7 +581,7 @@ CalculateFallDistanceNormal
           asm
             lsr temp2
             lsr temp2
-          end
+end
           rem temp2 = v² / 4
           
           rem Apply Ninjish Guy bonus (can fall farther)

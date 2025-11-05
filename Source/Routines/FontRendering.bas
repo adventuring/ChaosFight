@@ -173,7 +173,7 @@ LoadPlayer0Digit
             lda # >FontData
             adc #0
             sta player0pointerhi
-          end
+end
           
           rem Set sprite height (16 pixels tall)
           let player0height = 16
@@ -201,7 +201,7 @@ LoadPlayer1Digit
             lda # >FontData
             adc #0
             sta player1pointerhi
-          end
+end
           
           rem Set sprite height (16 pixels tall)
           let player1height = 16
@@ -229,7 +229,7 @@ LoadPlayer2Digit
             lda # >FontData
             adc #0
             sta player2pointerhi
-          end
+end
           
           rem Set sprite height (16 pixels tall)
           let player2height = 16
@@ -257,7 +257,7 @@ LoadPlayer3Digit
             lda # >FontData
             adc #0
             sta player3pointerhi
-          end
+end
           
           rem Set sprite height (16 pixels tall)
           let player3height = 16
@@ -285,7 +285,7 @@ LoadPlayer4Digit
             lda # >FontData
             adc #0
             sta player4pointerhi
-          end
+end
           
           rem Set sprite height (16 pixels tall)
           let player4height = 16
@@ -313,7 +313,7 @@ LoadPlayer5Digit
             lda # >FontData
             adc #0
             sta player5pointerhi
-          end
+end
           
           rem Set sprite height (16 pixels tall)
           let player5height = 16

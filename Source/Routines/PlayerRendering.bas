@@ -365,9 +365,11 @@ SetPlayerSprites
           let SPS_charIndex = playerChar[0]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[0] > 0
+          let SPS_playerNum = 0
+          rem Set temp variables for cross-bank call
           let temp2 = SPS_isHurt
           rem temp2 = hurt state (0=normal, non-zero=hurt)
-          let temp3 = 0
+          let temp3 = SPS_playerNum
           rem temp3 = player number (0=Player 1)
           let temp4 = 0
           rem temp4 = flashing state (0=not flashing)
@@ -384,7 +386,7 @@ Player1ColorDone
             lda playerState
             and #PlayerStateBitFacing
             sta REFP0
-          end
+end
 
           rem Load sprite data from character definition
           let SPS_charIndex = playerChar[0] 
@@ -406,9 +408,11 @@ Player1ColorDone
           let SPS_charIndex = playerChar[1]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[1] > 0
+          let SPS_playerNum = 1
+          rem Set temp variables for cross-bank call
           let temp2 = SPS_isHurt
           rem temp2 = hurt state (0=normal, non-zero=hurt)
-          let temp3 = 1
+          let temp3 = SPS_playerNum
           rem temp3 = player number (1=Player 2)
           let temp4 = 0
           rem temp4 = flashing state (0=not flashing)
@@ -434,7 +438,7 @@ Player2ColorDone
           ora #PlayerStateBitFacingNUSIZ
           sta _NUSIZ1
 .Player2ReflectionDone
-          end
+end
 
           rem Load sprite data from character definition
           let SPS_charIndex = playerChar[1] 
@@ -463,9 +467,11 @@ Player2ColorDone
           let SPS_charIndex = playerChar[2]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[2] > 0
+          let SPS_playerNum = 2
+          rem Set temp variables for cross-bank call
           let temp2 = SPS_isHurt
           rem temp2 = hurt state (0=normal, non-zero=hurt)
-          let temp3 = 2
+          let temp3 = SPS_playerNum
           rem temp3 = player number (2=Player 3)
           let temp4 = 0
           rem temp4 = flashing state (0=not flashing)
@@ -489,7 +495,7 @@ Player3ColorDone
             ora #PlayerStateBitFacingNUSIZ
             sta NewNUSIZ+2
 .Player3ReflectionDone
-          end
+end
 
           rem Load sprite data from character definition
           let SPS_charIndex = playerChar[2]
@@ -517,9 +523,11 @@ DonePlayer3Sprite
           let SPS_charIndex = playerChar[3]
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[3] > 0
+          let SPS_playerNum = 3
+          rem Set temp variables for cross-bank call
           let temp2 = SPS_isHurt
           rem temp2 = hurt state (0=normal, non-zero=hurt)
-          let temp3 = 3
+          let temp3 = SPS_playerNum
           rem temp3 = player number (3=Player 4)
           let temp4 = 0
           rem temp4 = flashing state (0=not flashing)
@@ -543,7 +551,7 @@ Player4ColorDone
             ora #PlayerStateBitFacingNUSIZ
             sta NewNUSIZ+3
 .Player4ReflectionDone
-          end
+end
 
           rem Load sprite data from character definition
           let SPS_charIndex = playerChar[3]

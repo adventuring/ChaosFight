@@ -41,7 +41,7 @@ DisplayWinScreen
           sta PF2pointer
           lda #>WinnerScreenPlayfield
           sta PF2pointer+1
-          end
+end
           
           rem Load playfield colors based on B&W mode
           gosub DWS_GetBWMode

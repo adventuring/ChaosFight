@@ -106,7 +106,7 @@ GravityCheckCharacter
           asm
             lsr PAG_playfieldColumn
             lsr PAG_playfieldColumn
-          end
+end
           rem Clamp column to valid range
           if PAG_playfieldColumn > 31 then let PAG_playfieldColumn = 31
           if PAG_playfieldColumn < 0 then let PAG_playfieldColumn = 0
@@ -380,7 +380,7 @@ CheckPlayfieldCollisionAllDirections
           asm
             lsr temp6
             lsr temp6
-          end
+end
           rem temp6 = playfield column (0-31)
           rem Clamp column to valid range
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
@@ -420,7 +420,7 @@ CheckPlayfieldCollisionAllDirections
             lda temp5
             lsr a
             sta temp2
-          end
+end
           rem temp2 = temp5 / 2
           gosub DivideByPfrowheight
           rem temp2 = (temp5 / 2) / pfrowheight
@@ -451,7 +451,7 @@ PFBlockLeft
             clc
             adc #ScreenInsetX
             sta rowYPosition
-          end
+end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           rem   but same pattern)
           if playerX[CPF_playerIndex] < rowYPosition then let playerX[CPF_playerIndex] = rowYPosition
@@ -481,7 +481,7 @@ PFCheckRight
             lda temp5
             lsr a
             sta temp2
-          end
+end
           rem temp2 = temp5 / 2
           gosub DivideByPfrowheight
           rem temp2 = (temp5 / 2) / pfrowheight
@@ -510,7 +510,7 @@ PFBlockRight
             clc
             adc #ScreenInsetX
             sta rowYPosition
-          end
+end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           rem   but same pattern)
           if playerX[CPF_playerIndex] > rowYPosition then let playerX[CPF_playerIndex] = rowYPosition
@@ -555,7 +555,7 @@ PFBlockUp
             asl a
             asl a
             sta rowYPosition
-          end
+end
           goto DBPF_MultiplyDone
 DBPF_MultiplyBy8
           rem pfrowheight is 8, multiply by 8 (3 left shifts)
@@ -565,7 +565,7 @@ DBPF_MultiplyBy8
             asl a
             asl a
             sta rowYPosition
-          end
+end
 DBPF_MultiplyDone
           if playerY[CPF_playerIndex] < rowYPosition then let playerY[CPF_playerIndex] = rowYPosition
           if playerY[CPF_playerIndex] < rowYPosition then let playerSubpixelY[CPF_playerIndex] = rowYPosition
@@ -697,7 +697,7 @@ CollisionYDistanceDone
             lda CharacterHeights,x
             lsr a
             sta halfHeight2
-          end
+end
           rem Player1 half height
           rem Player2 half height (re-read from table)
           let totalHeight = halfHeight1 + halfHeight2
@@ -754,7 +754,7 @@ ApplyImpulseRight
             lda impulseStrength
             asl a
             sta impulseStrength
-          end
+end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           rem totalWeight ranges 10-200, use closest power-of-2
@@ -768,7 +768,7 @@ ApplyImpulseRight
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_1
 ApproxDivBy32_1
           asm
@@ -777,7 +777,7 @@ ApproxDivBy32_1
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_1
 ApproxDivBy64_1
           asm
@@ -787,7 +787,7 @@ ApproxDivBy64_1
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_1
 ApproxDivBy128_1
           asm
@@ -798,7 +798,7 @@ ApproxDivBy128_1
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
 ApproxDivDone_1
           rem Scale impulse by weight ratio (0-2 pixels/frame)
           if impulseStrength = 0 then impulseStrength = 1
@@ -832,7 +832,7 @@ ApplyImpulse1Heavier
             lda impulseStrength
             asl a
             sta impulseStrength
-          end
+end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           if totalWeight >= 128 then goto ApproxDivBy128_2
@@ -844,7 +844,7 @@ ApplyImpulse1Heavier
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_2
 ApproxDivBy32_2
           asm
@@ -853,7 +853,7 @@ ApproxDivBy32_2
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_2
 ApproxDivBy64_2
           asm
@@ -863,7 +863,7 @@ ApproxDivBy64_2
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_2
 ApproxDivBy128_2
           asm
@@ -874,7 +874,7 @@ ApproxDivBy128_2
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
 ApproxDivDone_2
           rem Scale impulse by weight ratio
           if impulseStrength = 0 then impulseStrength = 1
@@ -928,7 +928,7 @@ ApplyImpulseLeft
             lda impulseStrength
             asl a
             sta impulseStrength
-          end
+end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           if totalWeight >= 128 then goto ApproxDivBy128_3
@@ -940,7 +940,7 @@ ApplyImpulseLeft
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_3
 ApproxDivBy32_3
           asm
@@ -949,7 +949,7 @@ ApproxDivBy32_3
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_3
 ApproxDivBy64_3
           asm
@@ -959,7 +959,7 @@ ApproxDivBy64_3
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_3
 ApproxDivBy128_3
           asm
@@ -970,7 +970,7 @@ ApproxDivBy128_3
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
 ApproxDivDone_3
           if impulseStrength = 0 then impulseStrength = 1
           
@@ -994,7 +994,7 @@ ApplyImpulse1HeavierLeft
           rem   by totalWeight
           asm
             asl impulseStrength
-          end
+end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           rem totalWeight ranges 10-200, use closest power-of-2
@@ -1014,7 +1014,7 @@ ApproxDivBy128_1Heavier
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_1Heavier
 ApproxDivBy64_1Heavier
           asm
@@ -1024,7 +1024,7 @@ ApproxDivBy64_1Heavier
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_1Heavier
 ApproxDivBy32_1Heavier
           asm
@@ -1033,7 +1033,7 @@ ApproxDivBy32_1Heavier
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_1Heavier
 ApproxDivBy16_1Heavier
           asm
@@ -1041,14 +1041,14 @@ ApproxDivBy16_1Heavier
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
           goto ApproxDivDone_1Heavier
 ApproxDivBy8_1Heavier
           asm
             lsr impulseStrength
             lsr impulseStrength
             lsr impulseStrength
-          end
+end
 ApproxDivDone_1Heavier
           if impulseStrength = 0 then impulseStrength = 1
           

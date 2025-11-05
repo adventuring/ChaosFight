@@ -20,7 +20,7 @@
           rem Health threshold table (split on 12s)
           data HealthThresholds
               84, 72, 60, 48, 36, 24, 12
-          end
+end
 
           rem Bit pattern table for 0-8 pixels (right-aligned fill)
           rem 0 pixels = %00000000, 1 pixel = %00000001, ..., 8 pixels =
@@ -35,7 +35,7 @@
               %00111111
               %01111111
               %11111111
-          end
+end
 
           rem ==========================================================
           rem UPDATE PLAYER 1 HEALTH BAR
@@ -233,7 +233,7 @@ P3ConvertHealth
             adc temp8
             asl a
             sta temp8
-          end
+end
           rem temp8 = p3Tens * 10
           let UP34HB_p3Ones = UP34HB_p3Health - temp8
           rem Ones digit (0-9)
@@ -282,7 +282,7 @@ P4ConvertHealth
             adc temp8
             asl a
             sta temp8
-          end
+end
           rem temp8 = p4Tens * 10
           let UP34HB_p4Ones = UP34HB_p4Health - temp8
           rem Ones digit (0-9)
@@ -315,7 +315,7 @@ SetScoreBytes
             STA score+1
             LDA UP34HB_p4Tens
             STA score+2
-          end
+end
           
           rem Set score colors for score mode
           rem Left side (Player 3): indigo, Right side (Player 4): red
@@ -345,7 +345,7 @@ DisplayCF2025
             STA score+1
             LDA # $25
             STA score+2
-          end
+end
           
           rem Set score color to white
           let scorecolor = ColGrey(14)

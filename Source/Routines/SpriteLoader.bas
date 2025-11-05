@@ -55,21 +55,19 @@ LoadCharacterSprite
           dim LCS_isValid = temp5
           dim LCS_spriteIndex = temp6
           rem Validate character index
-          let temp1 = LCS_characterIndex
           rem Inline ValidateCharacterIndex
           dim VCI_characterIndex = temp1
           dim VCI_isValid = temp5
+          let VCI_characterIndex = LCS_characterIndex
           rem Check if character index is within valid range
           rem   (0-MaxCharacter for current implementation)
           if VCI_characterIndex > MaxCharacter then ValidateInvalidCharacterInline
           let VCI_isValid = 1
-          let temp5 = VCI_isValid
           goto ValidateCharacterDoneInline
 ValidateInvalidCharacterInline
           let VCI_isValid = 0
-          let temp5 = VCI_isValid
 ValidateCharacterDoneInline
-          let LCS_isValid = temp5
+          let LCS_isValid = VCI_isValid
           rem tail call
           if !LCS_isValid then goto LoadSpecialSprite
           
@@ -106,6 +104,7 @@ ValidateCharacterDoneInline
           let LCS_animationAction = 0
           rem animation action/sequence 0 = idle
           rem playerNumberAlt already has player number from caller
+          rem Set temp variables for cross-bank call
           let temp1 = LCS_characterIndex
           let temp2 = LCS_animationFrame
           let temp3 = LCS_animationAction
@@ -456,27 +455,27 @@ PlayerIndexColors
 #ifdef TV_SECAM
           rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise
           rem   maps to Cyan on SECAM)
-          if !LoadCharacterColors_playerNumber then let PlayerIndexColors_color = ColIndigo(14) : let temp6 = PlayerIndexColors_color : goto SetColor
+          if !LoadCharacterColors_playerNumber then let PlayerIndexColors_color = ColIndigo(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor
           rem Player 1: Indigo -> Blue on SECAM
-          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColors_color = ColRed(14) : let temp6 = PlayerIndexColors_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColors_color = ColRed(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor
           rem Player 2: Red
-          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColors_color = ColYellow(14) : let temp6 = PlayerIndexColors_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColors_color = ColYellow(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor
           rem Player 3: Yellow
           let PlayerIndexColors_color = ColGreen(14)
           rem Player 4: Green (SECAM-specific, Turquoise would be Cyan)
-          let temp6 = PlayerIndexColors_color
+          let LoadCharacterColors_color = PlayerIndexColors_color
           goto SetColor
 #else
           rem NTSC/PAL: Use Turquoise for Player 4
-          if !LoadCharacterColors_playerNumber then let PlayerIndexColors_color = ColIndigo(14) : let temp6 = PlayerIndexColors_color : goto SetColor
+          if !LoadCharacterColors_playerNumber then let PlayerIndexColors_color = ColIndigo(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor
           rem Player 1: Indigo
-          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColors_color = ColRed(14) : let temp6 = PlayerIndexColors_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColors_color = ColRed(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor
           rem Player 2: Red
-          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColors_color = ColYellow(14) : let temp6 = PlayerIndexColors_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColors_color = ColYellow(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor
           rem Player 3: Yellow
           let PlayerIndexColors_color = ColTurquoise(14)
           rem Player 4: Turquoise
-          let temp6 = PlayerIndexColors_color
+          let LoadCharacterColors_color = PlayerIndexColors_color
           goto SetColor
 #endif
 
@@ -488,27 +487,27 @@ PlayerIndexColorsDim
 #ifdef TV_SECAM
           rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise
           rem   maps to Cyan on SECAM)
-          if !LoadCharacterColors_playerNumber then let PlayerIndexColorsDim_color = ColIndigo(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
+          if !LoadCharacterColors_playerNumber then let PlayerIndexColorsDim_color = ColIndigo(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor
           rem Player 1: Indigo -> Blue on SECAM (dimmed)
-          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColorsDim_color = ColRed(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColorsDim_color = ColRed(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor
           rem Player 2: Red (dimmed)
-          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColorsDim_color = ColYellow(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColorsDim_color = ColYellow(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor
           rem Player 3: Yellow (dimmed)
           let PlayerIndexColorsDim_color = ColGreen(6)
           rem Player 4: Green (SECAM-specific, Turquoise would be Cyan)
-          let temp6 = PlayerIndexColorsDim_color
+          let LoadCharacterColors_color = PlayerIndexColorsDim_color
           goto SetColor
 #else
           rem NTSC/PAL: Use Turquoise for Player 4
-          if !LoadCharacterColors_playerNumber then let PlayerIndexColorsDim_color = ColIndigo(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
+          if !LoadCharacterColors_playerNumber then let PlayerIndexColorsDim_color = ColIndigo(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor
           rem Player 1: Indigo (dimmed)
-          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColorsDim_color = ColRed(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColorsDim_color = ColRed(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor
           rem Player 2: Red (dimmed)
-          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColorsDim_color = ColYellow(6) : let temp6 = PlayerIndexColorsDim_color : goto SetColor
+          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColorsDim_color = ColYellow(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor
           rem Player 3: Yellow (dimmed)
           let PlayerIndexColorsDim_color = ColTurquoise(6)
           rem Player 4: Turquoise (dimmed)
-          let temp6 = PlayerIndexColorsDim_color
+          let LoadCharacterColors_color = PlayerIndexColorsDim_color
           goto SetColor
 #endif
 
@@ -517,7 +516,7 @@ HurtColor
 #ifdef TV_SECAM
           rem SECAM hurt is always magenta
           let HurtColor_color = ColMagenta(10)
-          let temp6 = HurtColor_color
+          let LoadCharacterColors_color = HurtColor_color
           goto SetColor
 #else
           rem Dimmed version of normal color: use dim player index color
@@ -530,8 +529,8 @@ SetColor
           dim SetColor_playerNumber = temp3
           rem Set color based on player index (multisprite kernel
           rem   supports COLUP2/COLUP3)
-          rem temp6 already contains the color from previous code paths
-          let SetColor_color = temp6
+          rem LoadCharacterColors_color already contains the color from previous code paths
+          let SetColor_color = LoadCharacterColors_color
           let SetColor_playerNumber = LoadCharacterColors_playerNumber
           if !SetColor_playerNumber then let COLUP0 = SetColor_color : return
           if SetColor_playerNumber = 1 then let _COLUP1 = SetColor_color : return

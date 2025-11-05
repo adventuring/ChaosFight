@@ -50,8 +50,8 @@ const RandomArena = 255
 **Forbidden:**
 ```basic
 const SpritePtr = 0          ; Use: SpritePointer
-CharacterSpritePtrLoBank2    ; Use: CharacterSpriteLBank2
-CharacterSpritePtrHiBank2    ; Use: CharacterSpriteHBank2
+CharacterSpritePtrLoBank2    ; Use: CharacterSpriteBank2L
+CharacterSpritePtrHiBank2    ; Use: CharacterSpriteBank2H
 ```
 
 **Rationale**: Abbreviations reduce clarity and make code harder to understand. Fully spelled names are more readable and self-documenting.
@@ -62,14 +62,15 @@ When using pairs of tables or variables for high-byte/low-byte values, use a fin
 
 **Correct:**
 ```basic
-CharacterSpriteLBank2        ; Low byte table
-CharacterSpriteHBank2        ; High byte table
+CharacterSpriteBank2L        ; Low byte table
+CharacterSpriteBank2H        ; High byte table
 musicVoice0PointerL          ; Low byte pointer
 musicVoice0PointerH          ; High byte pointer
 ```
 
 **Forbidden:**
 ```basic
+CharacterSpriteLBank2        ; "L" is not final
 CharacterSpriteLoBank2       ; Never use "Lo" for "low"
 CharacterSpriteHiBank2       ; Never use "Hi" for "high"
 CharacterSpritePtrLoBank2    ; Redundant "Ptr" + wrong suffix

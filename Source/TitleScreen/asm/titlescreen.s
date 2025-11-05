@@ -1,7 +1,6 @@
 
- include "TitleScreen/asm/layoutmacros.s"
- include "TitleScreen/asm/dpcfix.s"
- include "TitleScreen/titlescreen_layout.s"
+ include "layoutmacros.s"
+ include "../titlescreen_layout.s"
 
 .titledrawscreen
 title_eat_overscan
@@ -68,34 +67,34 @@ title_playfield
 
 	jmp PFWAIT ; kernel is done. Finish off the screen
 
- include "TitleScreen/asm/position48.s"
- include "TitleScreen/titlescreen_color.s"
+ include "position48.s"
+ include "../titlescreen_color.s"
 
 	; Unused 48x1 kernels removed - only 48x2_1, 48x2_2, 48x2_3 are used
 
 	ifconst mk_48x2_1_on
-		include "TitleScreen/asm/48x2_1_kernel.s"
+		include "48x2_1_kernel.s"
 	endif ;mk_48x2_1_on
 
 	ifconst mk_48x2_2_on
-		include "TitleScreen/asm/48x2_2_kernel.s"
+		include "48x2_2_kernel.s"
 	endif ;mk_48x2_2_on
 
 	ifconst mk_48x2_3_on
-		include "TitleScreen/asm/48x2_3_kernel.s"
+		include "48x2_3_kernel.s"
 	endif ;mk_48x2_3_on
 	ifconst mk_48x2_4_on
-		include "TitleScreen/asm/48x2_4_kernel.s"
+		include "48x2_4_kernel.s"
 	endif ;mk_48x2_4_on
 
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 
 	ifconst mk_score_on
-		include "TitleScreen/asm/score_kernel.s"
+		include "score_kernel.s"
 	endif ;mk_score_on
 
 	ifconst mk_gameselect_on
-		include "TitleScreen/asm/gameselect_kernel.s"
+		include "gameselect_kernel.s"
 	endif ;mk_gameselect_on
 
 PFWAIT
@@ -111,7 +110,7 @@ OVERSCAN
  	endif
 	sta TIM64T
 
-	;fix height variables we borrowed, so DPC does not crash on drawscreen...
+	;fix height variables we borrowed
 	ifconst player9height
 		ldy #8
 		lda #0
@@ -132,64 +131,64 @@ OVERSCAN
 
 	; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 	ifconst mk_48x2_1_on
-		include "TitleScreen/48x2_1_image.s"
+		include "../48x2_1_image.s"
 	endif
 	ifconst mk_48x2_2_on
-		include "TitleScreen/48x2_2_image.s"
+		include "../48x2_2_image.s"
 	endif
 	ifconst mk_48x2_3_on
-		include "TitleScreen/48x2_3_image.s"
+		include "../48x2_3_image.s"
 	endif
 	ifconst mk_48x2_4_on
-		include "TitleScreen/48x2_4_image.s"
+		include "../48x2_4_image.s"
 	endif
 
 	ifconst mk_player_on
-		include "TitleScreen/player_image.s"
+		include "../player_image.s"
 	endif
 
 	ifconst mk_score_on
-		include "TitleScreen/score_image.s"
+		include "../score_image.s"
 	endif
 
 	ifconst mk_gameselect_on
-		include "TitleScreen/gameselect_image.s"
+		include "../gameselect_image.s"
 	endif
 
 	ifconst mk_player_on
-		include "TitleScreen/asm/player_kernel.s"
+		include "player_kernel.s"
 	endif ;mk_player_on
 
 
 
   ; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
  #ifconst mk_48x2_1_on
-	include "TitleScreen/48x2_1_image.s"
+	include "../48x2_1_image.s"
  #endif
  #ifconst mk_48x2_2_on
-	include "TitleScreen/48x2_2_image.s"
+	include "../48x2_2_image.s"
  #endif
  #ifconst mk_48x2_3_on
-	include "TitleScreen/48x2_3_image.s"
+	include "../48x2_3_image.s"
  #endif
  #ifconst mk_48x2_4_on
-	include "TitleScreen/48x2_4_image.s"
+	include "../48x2_4_image.s"
  #endif
 
  #ifconst mk_player_on
-	include "TitleScreen/player_image.s"
+	include "../player_image.s"
  #endif
 
  #ifconst mk_score_on
-	include "TitleScreen/score_image.s"
+	include "../score_image.s"
  #endif
 
  #ifconst mk_gameselect_on
-	include "TitleScreen/gameselect_image.s"
+	include "../gameselect_image.s"
  #endif
 
  #ifconst mk_player_on
-	include "TitleScreen/asm/player_kernel.s"
+	include "player_kernel.s"
  #endif ;mk_player_on
 
 

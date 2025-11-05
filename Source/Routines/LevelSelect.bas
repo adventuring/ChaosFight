@@ -127,7 +127,7 @@ ArenaSelectSkipRight
             adc LS1_multiplier
             asl a
             sta LS1_multiplier
-          end
+end
           rem multiplier = tensDigit * 10
           let LS1_onesDigit = LS1_arenaNumber - LS1_multiplier
           rem onesDigit = ones digit (0-9)

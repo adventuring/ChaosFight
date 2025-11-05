@@ -155,7 +155,7 @@ HarpyBoostDiveVelocity
             lda HCDV_velocityCalc
             lsr a
             sta HBDV_halfVelocity
-          end
+end
           let HCDV_velocityCalc = HCDV_velocityCalc + HBDV_halfVelocity
           let SM_velocityCalc = HCDV_velocityCalc
 VelocityDone
@@ -273,7 +273,7 @@ GravityDone
             lsr a
             lsr a
             sta velocityCalculation
-          end
+end
           rem Reduce by 1/64 (1.56% - ice-like friction)
           let missileVelocityXCalc = missileVelocityXCalc - velocityCalculation
           goto FrictionApply
@@ -291,7 +291,7 @@ FrictionNegative
             lsr a
             lsr a
             sta velocityCalculation
-          end
+end
           rem Reduce by 1/64 (1.56% - ice-like friction)
           let missileVelocityXCalc = missileVelocityXCalc + velocityCalculation
           rem Add back (since missileVelocityXCalc was negative)
@@ -394,7 +394,7 @@ GuardBounceFromCollision
             lsr a
             lsr a
             sta velocityCalculation
-          end
+end
           let temp6  = temp6 - velocityCalculation
           rem Reduce bounce velocity by 25%
           let missileVelocityX[UOM_playerIndex] = temp6
@@ -601,7 +601,7 @@ HarpyCheckDive
           let HMS_temp6Half = temp6
           asm
             lsr HMS_temp6Half
-          end
+end
           let temp6 = temp6 + HMS_temp6Half
 DiveCheckDone
           
@@ -652,7 +652,7 @@ WeightBasedKnockbackScale
           asm
             asl impulseStrength
             asl impulseStrength
-          end
+end
           rem Divide by 100 - inlined for performance (fast
           rem   approximation for values 0-255)
           let temp2 = impulseStrength

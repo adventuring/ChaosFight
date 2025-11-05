@@ -40,17 +40,17 @@ LoadSoundNote
             ; Load 4 bytes from stream[pointer]
             ldy #0
             lda (SoundEffectPointerL),y  ; Load AUDCV
-            sta temp2
+            sta LSN_audcv
             iny
             lda (SoundEffectPointerL),y  ; Load AUDF
-            sta temp3
+            sta LSN_audf
             iny
             lda (SoundEffectPointerL),y  ; Load Duration
-          sta temp4
-          iny
-          lda (SoundEffectPointerL),y  ; Load Delay
-          sta temp5
-          end
+            sta LSN_duration
+            iny
+            lda (SoundEffectPointerL),y  ; Load Delay
+            sta LSN_delay
+end
           
           rem Check for end of sound (Duration = 0)
           if LSN_duration = 0 then let soundEffectPointerH_W = 0 : AUDV0 = 0 : return
@@ -92,20 +92,20 @@ LoadSoundNote1
           dim LSN1_audc = temp6
           dim LSN1_audv = temp7
           asm
-          ; Load 4 bytes from stream[pointer]
-          ldy #0
-          lda (soundEffectPointer1L),y  ; Load AUDCV
-          sta temp2
-          iny
-          lda (soundEffectPointer1L),y  ; Load AUDF
-          sta temp3
-          iny
-          lda (soundEffectPointer1L),y  ; Load Duration
-          sta temp4
-          iny
-          lda (soundEffectPointer1L),y  ; Load Delay
-          sta temp5
-          end
+            ; Load 4 bytes from stream[pointer]
+            ldy #0
+            lda (soundEffectPointer1L),y  ; Load AUDCV
+            sta LSN1_audcv
+            iny
+            lda (soundEffectPointer1L),y  ; Load AUDF
+            sta LSN1_audf
+            iny
+            lda (soundEffectPointer1L),y  ; Load Duration
+            sta LSN1_duration
+            iny
+            lda (soundEffectPointer1L),y  ; Load Delay
+            sta LSN1_delay
+end
           
           rem Check for end of sound (Duration = 0)
           if LSN1_duration = 0 then let soundEffectPointer1H = 0 : AUDV1 = 0 : return

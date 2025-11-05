@@ -74,7 +74,7 @@ LoadArena0
               sta PF2pointer
             lda #>Arena1Playfield
               sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena0BW
           pfcolors Arena1ColorsColor
           return
@@ -93,7 +93,7 @@ LoadArena1
             sta PF2pointer
           lda #>Arena2Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena1BW
           pfcolors Arena2ColorsColor
           return
@@ -112,7 +112,7 @@ LoadArena2
             sta PF2pointer
           lda #>Arena3Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena2BW
           pfcolors Arena3ColorsColor
           return
@@ -131,7 +131,7 @@ LoadArena3
             sta PF2pointer
           lda #>Arena4Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena3BW
           pfcolors Arena4ColorsColor
           return
@@ -150,7 +150,7 @@ LoadArena4
             sta PF2pointer
           lda #>Arena5Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena4BW
           pfcolors Arena5ColorsColor
           return
@@ -169,7 +169,7 @@ LoadArena5
             sta PF2pointer
           lda #>Arena6Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena5BW
           pfcolors Arena6ColorsColor
           return
@@ -188,7 +188,7 @@ LoadArena6
             sta PF2pointer
           lda #>Arena7Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena6BW
           pfcolors Arena7ColorsColor
           return
@@ -207,7 +207,7 @@ LoadArena7
             sta PF2pointer
           lda #>Arena8Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena7BW
           pfcolors Arena8ColorsColor
           return
@@ -226,7 +226,7 @@ LoadArena8
             sta PF2pointer
           lda #>Arena9Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena8BW
           pfcolors Arena9ColorsColor
           return
@@ -245,7 +245,7 @@ LoadArena9
             sta PF2pointer
           lda #>Arena10Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena9BW
           pfcolors Arena10ColorsColor
           return
@@ -264,7 +264,7 @@ LoadArena10
             sta PF2pointer
           lda #>Arena11Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena10BW
           pfcolors Arena11ColorsColor
           return
@@ -283,7 +283,7 @@ LoadArena11
             sta PF2pointer
           lda #>Arena12Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena11BW
           pfcolors Arena12ColorsColor
           return
@@ -302,7 +302,7 @@ LoadArena12
             sta PF2pointer
           lda #>Arena13Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena12BW
           pfcolors Arena13ColorsColor
           return
@@ -321,7 +321,7 @@ LoadArena13
             sta PF2pointer
           lda #>Arena14Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena13BW
           pfcolors Arena14ColorsColor
           return
@@ -340,7 +340,7 @@ LoadArena14
             sta PF2pointer
           lda #>Arena15Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena14BW
           pfcolors Arena15ColorsColor
           return
@@ -359,7 +359,7 @@ LoadArena15
             sta PF2pointer
           lda #>Arena16Playfield
             sta PF2pointer+1
-          end
+end
           if LA_bwMode then LoadArena15BW
           pfcolors Arena16ColorsColor
           return

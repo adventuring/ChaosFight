@@ -53,17 +53,17 @@ LoadMusicNote0
             ; Load 4 bytes from stream[pointer]
             ldy #0
             lda (musicVoice0PointerL),y  ; Load AUDCV
-            sta temp2
+            sta LMN0_audcv
             iny
             lda (musicVoice0PointerL),y  ; Load AUDF
-            sta temp3
+            sta LMN0_audf
             iny
             lda (musicVoice0PointerL),y  ; Load Duration
-          sta temp4
-          iny
-          lda (musicVoice0PointerL),y  ; Load Delay
-          sta temp5
-          end
+            sta LMN0_duration
+            iny
+            lda (musicVoice0PointerL),y  ; Load Delay
+            sta LMN0_delay
+end
           
           rem Check for end of track (Duration = 0)
           if LMN0_duration = 0 then LoadMusicNote0EndOfTrack
@@ -114,20 +114,20 @@ LoadMusicNote1
           dim LMN1_audc = temp6
           dim LMN1_audv = temp7
           asm
-          ; Load 4 bytes from stream[pointer]
-          ldy #0
-          lda (musicVoice1PointerL),y  ; Load AUDCV
-          sta temp2
-          iny
-          lda (musicVoice1PointerL),y  ; Load AUDF
-          sta temp3
-          iny
-          lda (musicVoice1PointerL),y  ; Load Duration
-          sta temp4
-          iny
-          lda (musicVoice1PointerL),y  ; Load Delay
-          sta temp5
-          end
+            ; Load 4 bytes from stream[pointer]
+            ldy #0
+            lda (musicVoice1PointerL),y  ; Load AUDCV
+            sta LMN1_audcv
+            iny
+            lda (musicVoice1PointerL),y  ; Load AUDF
+            sta LMN1_audf
+            iny
+            lda (musicVoice1PointerL),y  ; Load Duration
+            sta LMN1_duration
+            iny
+            lda (musicVoice1PointerL),y  ; Load Delay
+            sta LMN1_delay
+end
           
           rem Check for end of track (Duration = 0)
           if LMN1_duration = 0 then LoadMusicNote1EndOfTrack

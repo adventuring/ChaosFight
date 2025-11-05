@@ -194,9 +194,7 @@ Source/Generated/Song.Title.PAL.bas: Source/Songs/Chaotica.midi Source/Songs/Cha
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
-Source/Generated/Song.Title.SECAM.bas: Source/Generated/Song.Title.PAL.bas Source/Songs/Chaotica.mscz
-	@echo "SECAM uses PAL music files (same frame rate) for Title"
-	cp "$<" "$@"
+# SECAM music files are not generated - SECAM build uses PAL music files via conditional includes
 
 # Convert MIDI to batariBASIC music data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
@@ -206,12 +204,7 @@ Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/sky
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
-# Convert MIDI to batariBASIC music data for SECAM (50Hz)
-# MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
-# Explicitly depend on MSCZ (via PAL .bas which depends on .midi/.mscz) to ensure proper build ordering
-Source/Generated/Song.%.SECAM.bas: Source/Generated/Song.%.PAL.bas Source/Songs/%.mscz
-	@echo "SECAM uses PAL music files (same frame rate)"
-	cp "$<" "$@"
+# SECAM music files are not generated - SECAM build uses PAL music files via conditional includes
 
 # Sound effect files use Sound. prefix instead of Song. prefix
 # Convert MIDI to batariBASIC sound data for NTSC (60Hz)
@@ -230,14 +223,7 @@ Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/sk
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
-# Convert MIDI to batariBASIC sound data for SECAM (50Hz)
-# MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
-# SECAM uses same frame rate as PAL but may have different timing requirements
-# Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
-Source/Generated/Sound.%.SECAM.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
-	@echo "Converting sound $< to $@ for SECAM..."
-	mkdir -p Source/Generated
-	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
+# SECAM sound files are not generated - SECAM build uses PAL sound files via conditional includes
 
 
 
@@ -353,6 +339,7 @@ Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	mkdir -p Source/Generated
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
+# SECAM build uses PAL music/sound files via conditional includes in Bank15/16.bas
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
@@ -403,13 +390,11 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Routines/SpriteLoader.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
-	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).SECAM.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).SECAM.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).SECAM.bas)
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
+	# Note: SECAM uses PAL music/sound files via conditional includes in Bank15/16.bas
 
 # Step 1: Preprocess .bas → .preprocessed.bas
 Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)

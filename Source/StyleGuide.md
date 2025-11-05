@@ -43,6 +43,41 @@ const MaxCharacter = 15
 const RandomArena = 255
 ```
 
+### Abbreviations
+
+**DO NOT use abbreviations** in names except for subroutine-local variable prefixes (see [Subroutine-Local Variables](#subroutine-local-variables) below).
+
+**Forbidden:**
+```basic
+const SpritePtr = 0          ; Use: SpritePointer
+CharacterSpritePtrLoBank2    ; Use: CharacterSpriteLBank2
+CharacterSpritePtrHiBank2    ; Use: CharacterSpriteHBank2
+```
+
+**Rationale**: Abbreviations reduce clarity and make code harder to understand. Fully spelled names are more readable and self-documenting.
+
+### High/Low Byte Suffixes
+
+When using pairs of tables or variables for high-byte/low-byte values, use a final **`H`** or **`L`** to distinguish them.
+
+**Correct:**
+```basic
+CharacterSpriteLBank2        ; Low byte table
+CharacterSpriteHBank2        ; High byte table
+musicVoice0PointerL          ; Low byte pointer
+musicVoice0PointerH          ; High byte pointer
+```
+
+**Forbidden:**
+```basic
+CharacterSpriteLoBank2       ; Never use "Lo" for "low"
+CharacterSpriteHiBank2       ; Never use "Hi" for "high"
+CharacterSpritePtrLoBank2    ; Redundant "Ptr" + wrong suffix
+CharacterSpritePtrHiBank2    ; Redundant "Ptr" + wrong suffix
+```
+
+**Note**: `H`/`L` as the final character of a variable name is acceptable, but never use "Hi" for "high" or "Lo" for "low" as separate words.
+
 ### camelCase
 
 Use **camelCase** for:

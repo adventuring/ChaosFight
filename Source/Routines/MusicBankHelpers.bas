@@ -86,7 +86,7 @@ LoadMusicNote0
           AUDV0 = LMN0_audv
           
           rem Set frame counter = Duration + Delay
-          let MusicVoice0Frame_W = LMN0_duration + LMN0_delay
+          let musicVoice0Frame_W = LMN0_duration + LMN0_delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
           rem Reuse temp2 (LMN0_audcv no longer needed) for pointer
@@ -149,7 +149,7 @@ LoadMusicNote1
           AUDV1 = LMN1_audv
           
           rem Set frame counter = Duration + Delay
-          let MusicVoice1Frame_W = LMN1_duration + LMN1_delay
+          let musicVoice1Frame_W = LMN1_duration + LMN1_delay
           
           rem Advance pointer by 4 bytes
           rem Reuse temp2 (LMN1_audcv no longer needed) for pointer

@@ -30,12 +30,12 @@ PlaySoundEffect
           gosub bank15 LoadSoundPointer
           
           rem Try Voice 0 first
-          if SoundEffectPointerH_R then TryVoice1
+          if soundEffectPointerH_R then TryVoice1
           
           rem Voice 0 is free - use it
           let SoundEffectPointerL = soundPointerL
-          let SoundEffectPointerH_W = soundPointerH_R
-          let SoundEffectFrame_W = 1
+          let soundEffectPointerH_W = soundPointerH_R
+          let soundEffectFrame_W = 1
           rem tail call
           goto UpdateSoundEffectVoice0
           
@@ -46,7 +46,7 @@ TryVoice1
           rem Voice 1 is free - use it
           let soundEffectPointer1L = soundPointerL
           let soundEffectPointer1H = soundPointerH_R
-          let SoundEffectFrame1_W = 1
+          let soundEffectFrame1_W = 1
           rem tail call
           goto UpdateSoundEffectVoice1
 
@@ -59,7 +59,7 @@ TryVoice1
           rem ==========================================================
 UpdateSoundEffect
           rem Update Voice 0
-          if SoundEffectPointerH_R then gosub UpdateSoundEffectVoice0
+          if soundEffectPointerH_R then gosub UpdateSoundEffectVoice0
           
           rem Update Voice 1
           if soundEffectPointer1H then gosub UpdateSoundEffectVoice1
@@ -72,8 +72,8 @@ UpdateSoundEffect
 UpdateSoundEffectVoice0
           rem Decrement frame counter
           rem Fix RMW: Read from _R, modify, write to _W
-          let SS_frameCount = SoundEffectFrame_R - 1
-          let SoundEffectFrame_W = SS_frameCount
+          let SS_frameCount = soundEffectFrame_R - 1
+          let soundEffectFrame_W = SS_frameCount
           if SS_frameCount then return
           
           rem Frame counter reached 0 - load next note from Sounds bank
@@ -95,8 +95,8 @@ UpdateSoundEffectVoice0
 UpdateSoundEffectVoice1
           rem Decrement frame counter
           rem Fix RMW: Read from _R, modify, write to _W
-          let SS_frameCount1 = SoundEffectFrame1_R - 1
-          let SoundEffectFrame1_W = SS_frameCount1
+          let SS_frameCount1 = soundEffectFrame1_R - 1
+          let soundEffectFrame1_W = SS_frameCount1
           if SS_frameCount1 then return
           
           rem Frame counter reached 0 - load next note from Sounds bank
@@ -121,10 +121,10 @@ StopSoundEffects
           AUDV1 = 0
           
           rem Clear sound pointers (high byte = 0 means inactive)
-          let SoundEffectPointerH_W = 0
+          let soundEffectPointerH_W = 0
           let soundEffectPointer1H = 0
           
           rem Reset frame counters
-          let SoundEffectFrame_W = 0
-          let SoundEffectFrame1_W = 0
+          let soundEffectFrame_W = 0
+          let soundEffectFrame1_W = 0
           return

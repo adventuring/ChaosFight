@@ -85,14 +85,14 @@
           const SpriteNo = 2
           
           rem playerState bit position constants
-          const PlayerStateFacing = 0
-          rem Bit 0: 0=left, 1=right
+          const PlayerStateFacing = 3
+          rem Bit 3: 0=left, 1=right (matches REFP0 bit 3 for direct copy)
           const PlayerStateGuarding = 1
           rem Bit 1: 1=guarding
           const PlayerStateJumping = 2
           rem Bit 2: 1=jumping
-          const PlayerStateRecovery = 3
-          rem Bit 3: 1=in recovery/hitstun
+          const PlayerStateRecovery = 0
+          rem Bit 0: 1=in recovery/hitstun
           const PlayerStateAttacking = 4
           rem Bit 4: 1=attacking
           const PlayerStateAnimation = 7
@@ -103,14 +103,14 @@
           rem   PlayerStateBitMask) to clear bit
           rem Use with: PlayerState[index] = PlayerState[index] |
           rem   PlayerStateBitMask to set bit
-          const PlayerStateBitFacing = 1
-          rem Bit mask for bit 0 (PlayerStateFacing)
+          const PlayerStateBitFacing = 8
+          rem Bit mask for bit 3 (PlayerStateFacing) - matches REFP0 reflection bit
           const PlayerStateBitGuarding = 2
           rem Bit mask for bit 1 (PlayerStateGuarding)
           const PlayerStateBitJumping = 4
           rem Bit mask for bit 2 (PlayerStateJumping)
-          const PlayerStateBitRecovery = 8
-          rem Bit mask for bit 3 (PlayerStateRecovery)
+          const PlayerStateBitRecovery = 1
+          rem Bit mask for bit 0 (PlayerStateRecovery)
           const PlayerStateBitAttacking = 16
           rem Bit mask for bit 4 (PlayerStateAttacking)
           

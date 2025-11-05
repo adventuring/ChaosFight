@@ -39,8 +39,8 @@ StartMusic
           let musicVoice0PointerH = songPointerH
           
           rem Store initial pointers for looping (Chaotica only)
-          let MusicVoice0StartPointerL_W = songPointerL
-          let MusicVoice0StartPointerH_W = songPointerH
+          let musicVoice0StartPointerL_W = songPointerL
+          let musicVoice0StartPointerH_W = songPointerH
           
           rem Calculate Voice 1 pointer offset (find end of Voice0
           rem   stream)
@@ -52,15 +52,15 @@ StartMusic
           let musicVoice1PointerH = songPointerH
           
           rem Store initial Voice 1 pointer for looping (Chaotica only)
-          let MusicVoice1StartPointerL_W = songPointerL
-          let MusicVoice1StartPointerH_W = songPointerH
+          let musicVoice1StartPointerL_W = songPointerL
+          let musicVoice1StartPointerH_W = songPointerH
           
           rem Store current song ID for looping check
-          let CurrentSongID_W = SM_songID
+          let currentSongID_W = SM_songID
           
           rem Initialize frame counters to trigger first note load
-          let MusicVoice0Frame_W = 1
-          let MusicVoice1Frame_W = 1
+          let musicVoice0Frame_W = 1
+          let musicVoice1Frame_W = 1
           
           rem Start first notes
           rem tail call
@@ -87,7 +87,7 @@ UpdateMusic
           if musicVoice1PointerH then MusicUpdateDone
           rem Voice 1 still active, no reset needed
           rem Both voices inactive - check if Chaotica (song ID 26)
-          if CurrentSongID_R = 26 then IsChaotica
+          if currentSongID_R = 26 then IsChaotica
           goto MusicUpdateDone
           rem Not Chaotica - stop playback (no loop)
 IsChaotica
@@ -100,8 +100,8 @@ IsChaotica
           let musicVoice1PointerL = musicVoice1StartPointerL_R
           let musicVoice1PointerH = musicVoice1StartPointerH_R
           rem Initialize frame counters to trigger first note load
-          let MusicVoice0Frame_W = 1
-          let MusicVoice1Frame_W = 1
+          let musicVoice0Frame_W = 1
+          let musicVoice1Frame_W = 1
           rem Tail call to reload first notes
           rem tail call
           goto UpdateMusic
@@ -119,7 +119,7 @@ UpdateMusicVoice0
           rem Calculate frames elapsed = TotalFrames - FrameCounter
           rem   (before decrement)
           temp1 = MusicVoice0TotalFrames
-          temp2 = MusicVoice0Frame_R
+          temp2 = musicVoice0Frame_R
           temp3 = temp1 - temp2
           rem temp3 = frames elapsed (0-based, first frame is 0)
           
@@ -127,7 +127,7 @@ UpdateMusicVoice0
           if temp3 < NoteAttackFrames then goto ApplyAttack0
           
           rem Check if in decay phase (last NoteDecayFrames frames)
-          if MusicVoice0Frame_R <= NoteDecayFrames then goto ApplyDecay0
+          if musicVoice0Frame_R <= NoteDecayFrames then goto ApplyDecay0
           
           rem Sustain phase - use target AUDV (already set)
           goto AfterEnvelope0
@@ -164,7 +164,7 @@ ApplyDecay0
           rem   Target - 3
           temp4 = MusicVoice0TargetAUDV
           temp4 = temp4 - NoteDecayFrames
-          temp4 = temp4 + MusicVoice0Frame_R
+          temp4 = temp4 + musicVoice0Frame_R
           temp4 = temp4 - 1
           rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
           if temp4 & $80 then temp4 = 0
@@ -174,8 +174,8 @@ ApplyDecay0
 AfterEnvelope0
           rem Decrement frame counter
           rem Fix RMW: Read from _R, modify, write to _W
-          let MS_frameCount = MusicVoice0Frame_R - 1
-          let MusicVoice0Frame_W = MS_frameCount
+          let MS_frameCount = musicVoice0Frame_R - 1
+          let musicVoice0Frame_W = MS_frameCount
           if MS_frameCount then return
           
           rem Frame counter reached 0 - load next note from Songs bank
@@ -203,7 +203,7 @@ UpdateMusicVoice1
           rem Calculate frames elapsed = TotalFrames - FrameCounter
           rem   (before decrement)
           temp1 = MusicVoice1TotalFrames
-          temp2 = MusicVoice1Frame_R
+          temp2 = musicVoice1Frame_R
           temp3 = temp1 - temp2
           rem temp3 = frames elapsed (0-based, first frame is 0)
           
@@ -211,7 +211,7 @@ UpdateMusicVoice1
           if temp3 < NoteAttackFrames then goto ApplyAttack1
           
           rem Check if in decay phase (last NoteDecayFrames frames)
-          if MusicVoice1Frame_R <= NoteDecayFrames then goto ApplyDecay1
+          if musicVoice1Frame_R <= NoteDecayFrames then goto ApplyDecay1
           
           rem Sustain phase - use target AUDV (already set)
           goto AfterEnvelope1
@@ -240,7 +240,7 @@ ApplyDecay1
           rem   1)
           temp4 = MusicVoice1TargetAUDV
           temp4 = temp4 - NoteDecayFrames
-          temp4 = temp4 + MusicVoice1Frame_R
+          temp4 = temp4 + musicVoice1Frame_R
           temp4 = temp4 - 1
           rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
           if temp4 & $80 then temp4 = 0
@@ -250,8 +250,8 @@ ApplyDecay1
 AfterEnvelope1
           rem Decrement frame counter
           rem Fix RMW: Read from _R, modify, write to _W
-          let MS_frameCount1 = MusicVoice1Frame_R - 1
-          let MusicVoice1Frame_W = MS_frameCount1
+          let MS_frameCount1 = musicVoice1Frame_R - 1
+          let musicVoice1Frame_W = MS_frameCount1
           if MS_frameCount1 then return
           
           rem Frame counter reached 0 - load next note from Songs bank
@@ -273,6 +273,6 @@ StopMusic
           let musicVoice1PointerH = 0
           
           rem Reset frame counters
-          let MusicVoice0Frame_W = 0
-          let MusicVoice1Frame_W = 0
+          let musicVoice0Frame_W = 0
+          let musicVoice1Frame_W = 0
           return

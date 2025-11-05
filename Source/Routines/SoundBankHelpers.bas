@@ -17,10 +17,10 @@
 LoadSoundPointer
           dim LSP_soundID = temp1
           rem Bounds check: only 10 sounds (0-9)
-          if LSP_soundID > 9 then let SoundPointerH_W = 0 : return
+          if LSP_soundID > 9 then let soundPointerH_W = 0 : return
           rem Use array access to lookup pointer
           let SoundPointerL = SoundPointersL[LSP_soundID]
-          let SoundPointerH_W = SoundPointersH[LSP_soundID]
+          let soundPointerH_W = SoundPointersH[LSP_soundID]
           return
           
           rem Load next note from sound effect stream using assembly for
@@ -53,7 +53,7 @@ LoadSoundNote
           end
           
           rem Check for end of sound (Duration = 0)
-          if LSN_duration = 0 then let SoundEffectPointerH_W = 0 : AUDV0 = 0 : return
+          if LSN_duration = 0 then let soundEffectPointerH_W = 0 : AUDV0 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           rem   AUDCV
@@ -67,7 +67,7 @@ LoadSoundNote
           AUDV0 = LSN_audv
           
           rem Set frame counter = Duration + Delay
-          let SoundEffectFrame_W = LSN_duration + LSN_delay
+          let soundEffectFrame_W = LSN_duration + LSN_delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
           rem Reuse temp2 (LSN_audcv no longer needed) for pointer
@@ -75,7 +75,7 @@ LoadSoundNote
           rem Fix RMW: Read from _R, modify, write to _W
           let temp2 = SoundEffectPointerL
           let SoundEffectPointerL = temp2 + 4
-          if SoundEffectPointerL < temp2 then let SoundEffectPointerH_W = SoundEffectPointerH_R + 1
+          if SoundEffectPointerL < temp2 then let soundEffectPointerH_W = soundEffectPointerH_R + 1
           
           return
           
@@ -122,7 +122,7 @@ LoadSoundNote1
           AUDV1 = LSN1_audv
           
           rem Set frame counter = Duration + Delay
-          let SoundEffectFrame1_W = LSN1_duration + LSN1_delay
+          let soundEffectFrame1_W = LSN1_duration + LSN1_delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
           rem Reuse temp2 (LSN1_audcv no longer needed) for pointer

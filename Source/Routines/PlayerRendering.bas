@@ -378,19 +378,12 @@ SetPlayerSprites
           
 Player1ColorDone
 
-          rem Set sprite reflection based on facing direction (bit 0:
-          rem   0=left, 1=right)
+          rem Set sprite reflection based on facing direction (bit 3:
+          rem   0=left, 1=right) - matches REFP0 bit 3 for direct copy
           asm
           lda playerState
-          and # 1
-          beq .Player1FacingLeft
-          lda # 0
+          and #PlayerStateBitFacing
           sta REFP0
-          jmp .Player1ReflectionDone
-.Player1FacingLeft
-          lda #8
-          sta REFP0
-.Player1ReflectionDone
           end
 
           rem Load sprite data from character definition
@@ -429,17 +422,14 @@ Player2ColorDone
           rem Set sprite reflection based on facing direction
           rem NOTE: Multisprite kernel requires _NUSIZ1 (not NewNUSIZ+1)
           rem   for Player 2 virtual sprite
+          rem NUSIZ reflection uses bit 6 (value 64)
           asm
           lda playerState+1
-          and #1
-          beq .Player2FacingLeft
-          lda #0
+          and #PlayerStateBitFacing
+          asl
+          asl
+          asl
           sta _NUSIZ1
-          jmp .Player2ReflectionDone
-.Player2FacingLeft
-          lda #64
-          sta _NUSIZ1
-.Player2ReflectionDone
           end
 
           rem Load sprite data from character definition
@@ -483,17 +473,14 @@ Player2ColorDone
 Player3ColorDone
 
           rem Set sprite reflection based on facing direction
+          rem NUSIZ reflection uses bit 6 (value 64)
           asm
           lda playerState+2
-          and #1
-          beq .Player3FacingLeft
-          lda #0
+          and #PlayerStateBitFacing
+          asl
+          asl
+          asl
           sta NewNUSIZ+2
-          jmp .Player3ReflectionDone
-.Player3FacingLeft
-          lda #64
-          sta NewNUSIZ+2
-.Player3ReflectionDone
           end
 
           rem Load sprite data from character definition
@@ -536,17 +523,14 @@ DonePlayer3Sprite
 Player4ColorDone
 
           rem Set sprite reflection based on facing direction
+          rem NUSIZ reflection uses bit 6 (value 64)
           asm
           lda playerState+3
-          and #1
-          beq .Player4FacingLeft
-          lda #0
+          and #PlayerStateBitFacing
+          asl
+          asl
+          asl
           sta NewNUSIZ+3
-          jmp .Player4ReflectionDone
-.Player4FacingLeft
-          lda #64
-          sta NewNUSIZ+3
-.Player4ReflectionDone
           end
 
           rem Load sprite data from character definition

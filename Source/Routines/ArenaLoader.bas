@@ -209,6 +209,7 @@ LoadArena15ColorsBW
 ReloadArenaColors
           dim RAC_arenaIndex = temp1
           dim RAC_bwMode = temp2
+          dim RAC_tempIndex = temp3
           
           rem Get current arena index
           let RAC_arenaIndex = selectedArena_R
@@ -218,17 +219,17 @@ ReloadArenaColors
           rem Get B&W mode state
           gosub GetBWModeReload
           
-          rem Jump to appropriate color loader based on arena index (0-31)
-          if RAC_arenaIndex < 4 then on RAC_arenaIndex goto ReloadArena0Colors, ReloadArena1Colors, ReloadArena2Colors, ReloadArena3Colors
-          if RAC_arenaIndex < 4 then goto DoneArenaColorDispatch
-          RAC_arenaIndex = RAC_arenaIndex - 4
-          if RAC_arenaIndex < 4 then on RAC_arenaIndex goto ReloadArena4Colors, ReloadArena5Colors, ReloadArena6Colors, ReloadArena7Colors
-          if RAC_arenaIndex < 4 then goto DoneArenaColorDispatch
-          temp1 = RAC_arenaIndex - 4
-          if temp1 < 4 then on temp1 goto ReloadArena8Colors, ReloadArena9Colors, ReloadArena10Colors, ReloadArena11Colors
-          if temp1 < 4 then goto DoneArenaColorDispatch
-          temp1 = temp1 - 4
-          if temp1 < 4 then on temp1 goto ReloadArena12Colors, ReloadArena13Colors, ReloadArena14Colors, ReloadArena15Colors
+          rem Wrap indices 16-31 to 0-15 (reuse color patterns)
+          rem Dispatch to appropriate color loader based on arena index (0-31)
+          let RAC_tempIndex = RAC_arenaIndex
+          if RAC_tempIndex >= 16 then let RAC_tempIndex = RAC_tempIndex - 16
+          
+          rem   (0-15)
+          rem Jump to appropriate color loader based on wrapped index
+          if RAC_tempIndex < 8 then on RAC_tempIndex goto ReloadArena0Colors, ReloadArena1Colors, ReloadArena2Colors, ReloadArena3Colors, ReloadArena4Colors, ReloadArena5Colors, ReloadArena6Colors, ReloadArena7Colors
+          if RAC_tempIndex < 8 then goto DoneArenaColorDispatch
+          let RAC_tempIndex = RAC_tempIndex - 8
+          if RAC_tempIndex < 8 then on RAC_tempIndex goto ReloadArena8Colors, ReloadArena9Colors, ReloadArena10Colors, ReloadArena11Colors, ReloadArena12Colors, ReloadArena13Colors, ReloadArena14Colors, ReloadArena15Colors
 DoneArenaColorDispatch
           
           rem Default to arena 0 if invalid index

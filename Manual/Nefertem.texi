@@ -1,9 +1,9 @@
 @subsubsection Nefertem
 @display
 @group
-    Weight: 199.58 kg (440.0 lbs)
+    Weight: 200 kg (440 lbs)
     Attack: Melée
-    Special: Loyalist to the High Council
+    Special: (none)
     Original Game: Phantasia
     Author: Zephyr & Bruce-Robert Pocock (Interworldly Adventuring, LLC) @url{https://interworldly.com,Interworldly.com}
     Purchase: @url{https://store.atariage.com/store_search?q=phantasia,Phantasia at AtariAge Store}; @url{https://phantasiagame.com,Phantasia Official Website}; @url{https://atari.com/pages/atari-vcs-store,Phantasia on Atari VCS eShop}

@@ -50,17 +50,15 @@ end
           rem Title (gameMode 2): ChaosFight (48x2_3)=42, others=0 (1
           rem   bitmap)
           rem
-          rem Set compile-time window values to 42 (maximum) for all
-          rem   bitmaps
-          rem This ensures address calculations are always correct
-          rem   regardless of runtime window values
+          rem   height
+          rem Note: Generated Art.*.s files already define window and
+          rem values as 42. These definitions are included above in the
+          rem   asm blocks, so we do NOT redefine them here to avoid
+          rem   multiply-defined label errors.
           rem Runtime window control is handled via
-          rem   titlescreenWindow1/2/3 variables set per screen
+          rem   titlescreenWindow1/2/3/4 variables set per screen
           rem If runtime window = 0, minikernel won't draw (Y register
           rem   will be -1)
-          bmp_48x2_1_window = 42  ; AtariAge logo: compile-time default (runtime controls visibility)
-          bmp_48x2_2_window = 42  ; AtariAgeText: compile-time default (runtime controls visibility)
-          bmp_48x2_3_window = 42  ; ChaosFight: compile-time default (runtime controls visibility)
           
           rem NOTE: Runtime window control implemented via
           rem   titlescreenWindow1/2/3 variables

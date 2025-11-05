@@ -22,7 +22,7 @@
           rem AVAILABLE VARIABLES:
           rem   frame - Frame counter
           rem   systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal, 1=paused
-          rem                    Bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
+          rem Bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
           rem   qtcontroller - Quadtari multiplexing state
           rem   All Player arrays (X, Y, State, Health, etc.)
           rem ==========================================================
@@ -61,9 +61,14 @@ GameMainLoop
 
           rem Check playfield collisions (walls, ceilings, ground) for
           rem   all players
-          let temp1 = 0 : gosub CheckPlayfieldCollisionAllDirections
-          let temp1 = 1 : gosub CheckPlayfieldCollisionAllDirections
-          if controllerStatus & SetQuadtariDetected then let temp1 = 2 : gosub CheckPlayfieldCollisionAllDirections : let temp1 = 3 : gosub CheckPlayfieldCollisionAllDirections
+          for currentPlayer = 0 to 1
+              gosub CheckPlayfieldCollisionAllDirections
+          next
+          if controllerStatus & SetQuadtariDetected = 0 then goto GameMainLoopQuadtariSkip
+          for currentPlayer = 2 to 3
+              gosub CheckPlayfieldCollisionAllDirections
+          next
+GameMainLoopQuadtariSkip
 
           rem Check multi-player collisions
           gosub CheckAllPlayerCollisions
@@ -72,7 +77,8 @@ GameMainLoop
           gosub CheckAllPlayerEliminations
           
           rem Check if game should end and transition to winner screen
-          rem systemFlags bit 3 (SystemFlagGameStateEnding) means game is ending,
+          rem   ending,
+          rem systemFlags bit 3 (SystemFlagGameStateEnding) means game is
           rem   gameEndTimer counts down
           if systemFlags & SystemFlagGameStateEnding then CheckGameEndTransition
           goto GameEndCheckDone

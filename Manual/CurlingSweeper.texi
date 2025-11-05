@@ -1,9 +1,9 @@
 @subsubsection Curling Sweeper
 @display
 @group
-    Weight: 86.18 kg (190.0 lbs)
-    Attack: Ranged (from feet, 4×4 pixels, ground-based ballistic)
-    Special: Projectile comes from character's feet
+    Weight: 85 kg (190 lbs)
+    Attack: Ranged (from feet, ground-based)
+    Special: Curling stone appears without elaboration
     Original Game: RealSports Curling (Atari 5200)
     Author: Ryan Witmer @url{https://phasercat.com,Phaser Cat Games}
     Background: Proud Cascadian and Canadian, very sportif
@@ -12,5 +12,4 @@
 @end group
 @end display
 
-The Curling Sweeper fires a curling stone
-from ground level, sliding across the floor. Great for hitting low targets!
+The Curling Sweeper fires a curling stone that appears without elaboration and slides across the floor. Great for hitting low targets!

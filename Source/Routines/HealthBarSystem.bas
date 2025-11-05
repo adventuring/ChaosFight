@@ -310,7 +310,7 @@ SetScoreBytes
           asm
             LDA UP34HB_p3BCD
             STA score
-            rem Middle 2 digits always "CF" (literal hex - bad BCD)
+            ; Middle 2 digits always "CF" (literal hex - bad BCD)
             LDA # $CF
             STA score+1
             LDA UP34HB_p4Tens

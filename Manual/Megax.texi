@@ -1,9 +1,9 @@
 @subsubsection Megax
 @display
 @group
-    Weight: 1587.57 kg (3500.0 lbs)
-    Attack: Ranged (4×4 pixel wide, tall fire breath)
-    Special: Giant monster-eating powerhouse, biggest and most powerful Grizzard known
+    Weight: 1590 kg (3500 lbs)
+    Attack: Melée (fire breath)
+    Special: (none - breathing fire is a normal ability)
     Original Game: Grizzards
     Author: Zephyr & Bruce-Robert Pocock (Interworldly Adventuring, LLC) @url{https://interworldly.com,Interworldly.com}
     Species: Grizzard (giant monster-eating powerhouse)
@@ -15,6 +15,6 @@
 
 Megax is a Grizzard - a giant monster-eating powerhouse, the biggest and most 
 powerful Grizzard known. He breathes fire, unleashing devastating flames that 
-travel across the arena. As the mightiest of all Grizzards, Megax brings 
+strike adjacent enemies. As the mightiest of all Grizzards, Megax brings 
 incredible strength and size to the arena, making him a formidable opponent 
 with his unique fire breath attacks and massive presence.

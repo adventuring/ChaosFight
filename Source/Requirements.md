@@ -261,8 +261,8 @@ When a player takes damage from any source:
 - **Dragon of Storms**: Ranged - 2×2 pixel standard projectile with ballistic arc (gravity)
 - **Zoe Ryen**: Ranged - 4×1 pixel wide, low-height projectile
 - **Fat Tony**: Ranged - 4×1 pixel wide, low-height projectile
-- **Megax**: Ranged - 4×4 pixel wide, tall fire breath projectile
-- **Harpy**: Ranged - No missile sprite (diagonal swoop attack - character movement IS the attack)
+- **Megax**: Melee - Uses missile to decorate melee attack (fire breath). Missile never moves.
+- **Harpy**: Melee (diagonal swoop, special case) - No missile sprite, character movement IS the attack
 - **Frooty**: Ranged - 1×1 pixel narrow projectile (magical sparkles)
 - **Other characters**: Melee attacks only (no projectiles)
 
@@ -341,7 +341,7 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
 | Pork Chop | 250 lbs (113.4 kg) | 57 | Heavy |
 | Radish Goblin | 50 lbs (22.7 kg) | 31 | Light |
 | Robo Tito | 300 lbs (136.1 kg) | 60 | Very heavy (dumpster) |
-| Ursulo | 1200 lbs (544.3 kg) | 83 | Very heavy (polar bear) |
+| Ursulo | 220 lbs (100 kg) | 55 | Medium-heavy (1.67m tall walking polar bear) |
 | Shamone | 65 lbs (29.5 kg) | 35 | Medium-light |
 
 **Weight Effects**:
@@ -524,7 +524,7 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Vulnerable entire length to collisions
 
 ### Character 14: Ursulo
-- **Weight**: 1200 lbs (544.3 kg) - Game Unit: 83
+- **Weight**: 220 lbs (100 kg) - Game Unit: 55
 - **Attack Type**: Melee (claw swipe)
 - **Missile**: None (melee only, 5-frame lifetime)
 - **Missile Properties**:

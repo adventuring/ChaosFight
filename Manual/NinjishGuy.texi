@@ -1,9 +1,9 @@
 @subsubsection Ninjish Guy
 @display
 @group
-    Weight: 58.97 kg (130.0 lbs)
+    Weight: 60 kg (130 lbs)
     Attack: Melée
-    Special: Highest jumps, fastest movement, 50% fall damage reduction
+    Special: (none - high jumps, fast movement, and shuriken are normal abilities)
     Original Game: Ninjish Guy in Low-Res World and other vhzc games
     Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.itch.io,VHZC Games}
     Purchase: @url{https://store.atariage.com/products/ninjish-guy-in-low-res-world-atari-2600,Ninjish Guy in Low-Res World at AtariAge Store}

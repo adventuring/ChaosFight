@@ -21,7 +21,7 @@
           rem PlayerChar[0-3] - Character type indices (0-MaxCharacter)
           rem playerVelocityX[0-3] - Horizontal velocity (8.8
           rem   fixed-point)
-          rem playerVelocityX_lo[0-3] - Horizontal velocity fractional
+          rem playerVelocityXL[0-3] - Horizontal velocity fractional
           rem   part
           rem   ControllerStatus - Packed controller detection status
           rem   qtcontroller - Multiplexing state (0=P1/P2, 1=P3/P4)
@@ -107,7 +107,7 @@ InputHandleAllPlayers
           if qtcontroller then goto InputHandleQuadtariPlayers
           
           rem Even frame: Handle Players 1 & 2 - only if alive  
-          let temp1 = 0 : gosub IsPlayerAlive
+          let currentPlayer = 0 : gosub IsPlayerAlive
           let IHAP_isAlive = temp2
           if IHAP_isAlive = 0 then InputSkipPlayer0Input
           if (PlayerState[0] & 8) then InputSkipPlayer0Input
@@ -115,7 +115,7 @@ InputHandleAllPlayers
           
 InputSkipPlayer0Input
           
-          let temp1 = 1 : gosub IsPlayerAlive
+          let currentPlayer = 1 : gosub IsPlayerAlive
           let IHAP_isAlive = temp2
           if IHAP_isAlive = 0 then InputSkipPlayer1Input
           if (PlayerState[1] & 8) then InputSkipPlayer1Input
@@ -138,7 +138,7 @@ InputHandleQuadtariPlayers
           rem   alive)
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input
           if selectedChar3_R = 0 then InputSkipPlayer3Input
-                    temp1 = 2 : gosub IsPlayerAlive
+          let currentPlayer = 2 : gosub IsPlayerAlive
           let IHQP_isAlive = temp2
           if IHQP_isAlive = 0 then InputSkipPlayer3Input
           if (PlayerState[2] & 8) then InputSkipPlayer3Input
@@ -147,7 +147,7 @@ InputHandleQuadtariPlayers
 InputSkipPlayer3Input
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input
           if selectedChar4_R = 0 then InputSkipPlayer4Input
-                    temp1 = 3 : gosub IsPlayerAlive
+          let currentPlayer = 3 : gosub IsPlayerAlive
           let IHQP_isAlive = temp2
           if IHQP_isAlive = 0 then InputSkipPlayer4Input
           if (PlayerState[3] & 8) then InputSkipPlayer4Input
@@ -190,14 +190,14 @@ InputHandleLeftPortPlayer
           rem   complement = -1)
           if !joy0left then goto DoneLeftMovement
           let playerVelocityX[IHLP_playerIndex] = 255
-          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let playerVelocityXL[IHLP_playerIndex] = 0
           gosub ShouldPreserveFacing
           if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & (255 - PlayerStateBitFacing)
 DoneLeftMovement
           rem Right movement: set positive velocity
           if !joy0right then goto DoneRightMovement
           let playerVelocityX[IHLP_playerIndex] = 1
-          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let playerVelocityXL[IHLP_playerIndex] = 0
           gosub ShouldPreserveFacing
           if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
 DoneRightMovement
@@ -251,7 +251,7 @@ MoveLeftOK
           rem   width)
           let playerVelocityX[IHLP_playerIndex] = 255
           rem -1 in 8-bit two’s complement: 256 - 1 = 255
-          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let playerVelocityXL[IHLP_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -297,7 +297,7 @@ CheckRightMovement
 MoveRightOK
           rem Apply rightward velocity impulse
           let playerVelocityX[IHLP_playerIndex] = 1
-          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let playerVelocityXL[IHLP_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -516,7 +516,7 @@ InputHandleRightPortPlayer
           rem Apply leftward velocity impulse
           let playerVelocityX[temp1] = 255
           rem -1 in 8-bit two's complement: 256 - 1 = 255
-          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -526,7 +526,7 @@ DoneLeftMovementRight
           if !joy1right then goto DoneRightMovementRight
           rem Apply rightward velocity impulse
           let playerVelocityX[temp1] = 1
-          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -575,7 +575,7 @@ MoveLeftOKRight
           rem   width)
           let playerVelocityX[temp1] = 255
           rem -1 in 8-bit two’s complement: 256 - 1 = 255
-          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -587,7 +587,8 @@ CheckRightMovementRight
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
           rem temp2 = playfield column
-          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          rem   result ≥ 128
+          rem Check for wraparound: if subtraction wrapped negative,
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
           rem Check column to the right
@@ -614,7 +615,7 @@ MoveRightOKRight
           rem Apply rightward velocity impulse (double-width sprite:
           rem   16px width)
           let playerVelocityX[temp1] = 1
-          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing

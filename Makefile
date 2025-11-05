@@ -7,7 +7,7 @@ test: SkylineTool/skyline-tool.asd
 	cd SkylineTool && sbcl --script tests/run-tests.lisp || (echo "Tests failed!" && exit 1)
 
 # Precious intermediate files
-.PRECIOUS: %.s %.png %.midi Object/bB.%.s Source/Generated/$(GAME).%.preprocessed.bas
+.PRECIOUS: %.s %.png %.midi %.bas
 
 # Don't delete PNG files automatically - they are intermediate but should be preserved
 # between builds if XCF hasn't changed
@@ -66,7 +66,7 @@ ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 # Assembly files (exclude preprocessed, generated files, and reference files)
 ALL_SOURCES = $(shell find Source -name \*.bas -not -path "Source/Generated/*" -not -path "Source/Reference/*")
 
-.PHONY: all clean emu game help doc characters fonts sprites nowready ready bitmaps music sounds
+.PHONY: all clean emu game help doc nowready ready
 
 # Build game
 game: \
@@ -123,21 +123,6 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 	SoundMenuNavigate SoundMenuSelect SoundSpecialMove SoundPowerup \
 	SoundLandingSafe SoundLandingDamage
 
-# Build character assets
-characters: $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas)
-
-# Build bitmap assets (48×42 for titlescreen kernel on admin screens)
-bitmaps: $(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s)
-
-# Build font assets (fonts are universal, not region-specific)
-fonts: $(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas)
-
-# Build music assets
-music: $(foreach song,$(MUSIC_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas)) \
-       $(foreach song,$(GAME_THEME_SONGS),$(foreach arch,$(TV_ARCHS),Source/Generated/Song.$(song).$(arch).bas))
-
-# Build sound effect assets
-sounds: $(foreach sound,$(SOUND_NAMES),$(foreach arch,$(TV_ARCHS),Source/Generated/Sound.$(sound).$(arch).bas))
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz
@@ -235,12 +220,11 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 
 # Convert XCF to PNG for sprites (characters and special sprites)
 # Make will only regenerate if XCF is newer than PNG (based on file timestamps)
-# Touch PNG after generation to ensure it's newer than XCF (handles filesystem precision issues)
 %.png: %.xcf
 	@echo "Converting $< to $@..."
 	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@touch "$@"
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Character sprites are compiled using compile-chaos-character
 # Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
@@ -251,7 +235,7 @@ $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Sou
 	@echo "Converting $< to $@..."
 	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@touch "$@"
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Convenience rule: redirect Source/Generated/*.png requests to Source/Art/*.png
 $(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).png): Source/Generated/%.png: Source/Art/%.png
@@ -288,31 +272,31 @@ Source/Art/AtariAge.png: Source/Art/AtariAge.xcf
 	@echo "Generating PNG from XCF: $@..."
 	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@touch "$@"
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 Source/Art/AtariAgeText.png: Source/Art/AtariAgeText.xcf
 	@echo "Generating PNG from XCF: $@..."
 	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@touch "$@"
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 Source/Art/BRP.png: Source/Art/BRP.xcf
 	@echo "Generating PNG from XCF: $@..."
 	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@touch "$@"
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
 	@echo "Generating PNG from XCF: $@..."
 	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@touch "$@"
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 Source/Art/Numbers.png: Source/Art/Numbers.xcf
 	@echo "Generating PNG from XCF: $@..."
 	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@touch "$@"
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
@@ -354,34 +338,38 @@ Source/Generated/Font.bas: Source/Art/Font.png
 # Bitmap files are dependencies of Bank1.bas (defined above).
 # Numbers font is a dependency of Bank12.bas (defined above).
 # Bank15.bas includes Sound.*.bas files, so they must be dependencies here.
-Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
+# Bitmap .s files must exist before cpp runs, so they need PNG dependencies.
+Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas)
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
-Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
+Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
 # SECAM build uses PAL music/sound files via conditional includes in Bank15/16.bas
-Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
+Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
@@ -434,71 +422,73 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	# Note: SECAM uses PAL music/sound files via conditional includes in Bank15/16.bas
 
 # Step 1: Preprocess .bas → .preprocessed.bas
-Source/Generated/$(GAME).NTSC.preprocessed.bas: Source/Generated/$(GAME).NTSC.bas $(BUILD_DEPS)
+# Explicitly depend on character and bitmap PNG files to ensure they are generated
+Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas $(BUILD_DEPS) \
+	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
-Source/Generated/$(GAME).PAL.preprocessed.bas: Source/Generated/$(GAME).PAL.bas $(BUILD_DEPS)
+Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas $(BUILD_DEPS) \
+	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
-Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.bas $(BUILD_DEPS)
+Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas $(BUILD_DEPS) \
+	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
 # Create empty variable redefs file if it doesn't exist (will be populated by batariBASIC)
-Object/VariableRedefinitions.h:
+# batariBASIC expects this file to be named 2600basic_variable_redefs.h
+Object/2600basic_variable_redefs.h:
 	@mkdir -p Object
 	@touch $@
 
-# Step 2: Compile .preprocessed.bas → bB.ARCH.s
-Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Object/VariableRedefinitions.h
+# Step 2: Compile .preprocessed.bas → $(GAME)$(GAMEYEAR).bB.ARCH.s
+Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas | tee bB.NTSC.s > /dev/null
+	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
 
-Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Object/VariableRedefinitions.h
+Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas | tee bB.PAL.s > /dev/null
+	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s
 
-Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Object/VariableRedefinitions.h
+Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas | tee bB.SECAM.s > /dev/null
+	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s
 
-# Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
+# Step 3: Postprocess $(GAME)$(GAMEYEAR).bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory
 # (it's created by 2600basic in Object/), so run postprocess from Object/
-# postprocess also needs bB.asm to exist (listed in includes.bB), so create symlink
+# postprocess also needs $(GAME)$(GAMEYEAR).bB.asm to exist (listed in includes.bB), so create symlink
 # Fix ## token pasting: cpp should expand ColGreen(6) → _COL_Green_L6, but if ##
 # remains, replace it with _ (e.g., _COL_Green_L##6 → _COL_Green_L6)
-Source/Generated/$(GAME).NTSC.s: Object/bB.NTSC.s
+Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf bB.NTSC.s bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < bB.NTSC.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.NTSC.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.NTSC.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
 
-Source/Generated/$(GAME).PAL.s: Object/bB.PAL.s
+Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf bB.PAL.s bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < bB.PAL.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.PAL.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.PAL.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
 
-Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
+Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf bB.SECAM.s bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < bB.SECAM.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.SECAM.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.SECAM.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS
 # The .s file is the final assembly output that includes all generated assets
-Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME).NTSC.s
+Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h
 	mkdir -p Dist Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
-	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).NTSC.lst -sDist/$(GAME)$(GAMEYEAR).NTSC.sym -oDist/$(GAME)$(GAMEYEAR).NTSC.a26
+	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -f3 -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
-Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME).PAL.s
+Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h
 	mkdir -p Dist Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
-	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).PAL.lst -sDist/$(GAME)$(GAMEYEAR).PAL.sym -oDist/$(GAME)$(GAMEYEAR).PAL.a26
+	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -f3 -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
 
-Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME).SECAM.s
+Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h
 	mkdir -p Dist Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
-	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).SECAM.lst -sDist/$(GAME)$(GAMEYEAR).SECAM.sym -oDist/$(GAME)$(GAMEYEAR).SECAM.a26
+	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -ISource/Common -f3 -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator
 emu: $(ROM)
@@ -506,15 +496,14 @@ emu: $(ROM)
 
 # Clean all generated files
 clean:
-	rm -rf Dist/*
-	rm -rf Object/*
-	rm -f Source/Generated/*
+	rm -rf Dist Object Source/Generated
 	rm -f Source/Art/*.png
-	rm -f bB.*.s *.bin *.lst *.sym *.map *.pro
-	rm -f Source/Generated/$(GAME).*.bas Source/Generated/$(GAME).*.s
-	rm -f Source/Generated/$(GAME).*.preprocessed.bas
-	rm -f Object/bB.*.s Object/includes.bB
-	cd Tools/batariBASIC && git clean --force
+	rm -f Source/Songs/*.pdf
+	rm -f Source/Songs/*.midi
+	git submodule foreach git clean --force
+
+quickclean:
+	rm -rf Dist Object
 
 # Install GIMP export script
 gimp-export:
@@ -531,9 +520,6 @@ help:
 	@echo "  all          - Build game and documentation (default)"
 	@echo "  game         - Build game ROMs for all TV systems"
 	@echo "  doc          - Build PDF and HTML manuals"
-	@echo "  characters   - Generate character sprite data"
-	@echo "  playfields   - Generate playfield/screen data"
-	@echo "  fonts        - Generate font data"
 	@echo "  clean        - Remove generated ROM files"
 	@echo "  emu          - Build and run in Stella emulator"
 	@echo "  gimp-export  - Install GIMP export script"
@@ -549,15 +535,15 @@ help:
 	@echo "  Dist/ChaosFight25.SECAM.a26  - SECAM ROM"
 
 # Generate Stella .pro files
-Dist/$(GAME)$(GAMEYEAR).NTSC.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).NTSC.a26
+Dist/$(GAME)$(GAMEYEAR).NTSC.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 	sed $< -e s/@@TV@@/NTSC/g \
 		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).NTSC.a26 | cut -d\  -f1)/g > $@
 
-Dist/$(GAME)$(GAMEYEAR).PAL.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).PAL.a26
+Dist/$(GAME)$(GAMEYEAR).PAL.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(GAMEYEAR).PAL.a26
 	sed $< -e s/@@TV@@/PAL/g \
 		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).PAL.a26 | cut -d\  -f1)/g > $@
 
-Dist/$(GAME)$(GAMEYEAR).SECAM.pro: Source/$(GAME).pro Dist/$(GAME)$(GAMEYEAR).SECAM.a26
+Dist/$(GAME)$(GAMEYEAR).SECAM.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 	sed $< -e s/@@TV@@/SECAM/g \
 		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).SECAM.a26 | cut -d\  -f1)/g > $@
 

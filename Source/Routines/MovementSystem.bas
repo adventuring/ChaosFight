@@ -11,16 +11,16 @@
           rem   var0-var7)
           rem - playerSubpixelX/Y[0-3] = High byte of 8.8 fixed-point
           rem   position (var/w array)
-          rem - playerSubpixelX/Y_lo[0-3] = Low byte of 8.8 fixed-point
+          rem - playerSubpixelX/YL[0-3] = Low byte of 8.8 fixed-point
           rem   position (fractional)
           rem Velocity consists of:
           rem - playerVelocityX[0-3] = High byte of 8.8 fixed-point X
           rem   velocity (var20-var23, ZPRAM)
-          rem - playerVelocityX_lo[0-3] = Low byte of 8.8 fixed-point X
+          rem - playerVelocityXL[0-3] = Low byte of 8.8 fixed-point X
           rem   velocity (var24-var27, ZPRAM)
           rem - playerVelocityY[0-3] = High byte of 8.8 fixed-point Y
           rem   velocity (var28-var31, ZPRAM)
-          rem - playerVelocityY_lo[0-3] = Low byte of 8.8 fixed-point Y
+          rem - playerVelocityYL[0-3] = Low byte of 8.8 fixed-point Y
           rem   velocity (var32-var35, ZPRAM)
           rem
           rem NOTE: batariBASIC automatically handles carry operations
@@ -35,34 +35,37 @@
           rem Update player movement for all active players
           rem Called every frame to update subpixel positions
 UpdatePlayerMovement
-          dim UPM_playerIndex = temp1
           rem Update movement for each active player
-          let UPM_playerIndex = 0
-          let temp1 = UPM_playerIndex
-          gosub UpdatePlayerMovementSingle
-          rem Player 1
-          let UPM_playerIndex = 1
-          let temp1 = UPM_playerIndex
-          gosub UpdatePlayerMovementSingle
-          rem Player 2
-          if QuadtariDetected then let UPM_playerIndex = 2
-          if QuadtariDetected then let temp1 = UPM_playerIndex
-          if QuadtariDetected then gosub UpdatePlayerMovementSingle
-          if QuadtariDetected then let UPM_playerIndex = 3
-          if QuadtariDetected then let temp1 = UPM_playerIndex
-          if QuadtariDetected then gosub UpdatePlayerMovementSingle
+          for currentPlayer = 0 to 1
+              gosub UpdatePlayerMovementSingle
+          next
+          rem Players 2-3 only if Quadtari detected
+          if QuadtariDetected = 0 then goto UpdatePlayerMovementQuadtariSkip
+          for currentPlayer = 2 to 3
+              gosub UpdatePlayerMovementSingle
+          next
+UpdatePlayerMovementQuadtariSkip
           return
 
           rem Update movement for a specific player
-          rem Input: temp1 = player index (0-3)
+          rem Input: currentPlayer = player index (0-3) (global variable)
           rem Applies velocity to position with subpixel precision
           rem batariBASIC automatically handles carry from fractional to
           rem   integer parts
+          rem
+          rem MUTATES:
+          rem   temp2 = UPS_subpixelSum (internal calculation)
+          rem   temp4 = UPS_subpixelXRead (internal SCRAM read-modify-write)
+          rem WARNING: temp2 and temp4 are mutated during execution. Do not
+          rem   use these temp variables after calling this subroutine.
+          rem
+          rem EFFECTS:
+          rem   Modifies playerX[], playerY[], playerSubpixelX_W[],
+          rem   playerSubpixelY_W[]
 UpdatePlayerMovementSingle
-          dim UPS_playerIndex = temp1
           dim UPS_subpixelSum = temp2
           rem Skip if player is eliminated
-          if playerHealth[UPS_playerIndex] = 0 then return
+          if playerHealth[currentPlayer] = 0 then return
           
           rem ==========================================================
           rem APPLY X VELOCITY TO X POSITION
@@ -72,29 +75,29 @@ UpdatePlayerMovementSingle
           rem   low bytes manually
           rem batariBASIC will handle carry from low byte to high byte
           rem   automatically
-          let UPS_subpixelSum = playerSubpixelX_W_lo[UPS_playerIndex] + playerVelocityX_lo[UPS_playerIndex]
+          let UPS_subpixelSum = playerSubpixelX_WL[currentPlayer] + playerVelocityXL[currentPlayer]
           if UPS_subpixelSum > 255 then XCarry
-          let playerSubpixelX_W_lo[UPS_playerIndex] = UPS_subpixelSum
+          let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum
           goto XNoCarry
 XCarry
-          let playerSubpixelX_W_lo[UPS_playerIndex] = UPS_subpixelSum - 256
+          let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum - 256
           rem SCRAM read-modify-write: Read from r049, modify, write to
           rem   w049
           dim UPS_subpixelXRead = temp4
-          let UPS_subpixelXRead = playerSubpixelX_R[UPS_playerIndex]
+          let UPS_subpixelXRead = playerSubpixelX_R[currentPlayer]
           let UPS_subpixelXRead = UPS_subpixelXRead + 1
-          let playerSubpixelX_W[UPS_playerIndex] = UPS_subpixelXRead
+          let playerSubpixelX_W[currentPlayer] = UPS_subpixelXRead
 XNoCarry
           rem SCRAM read-modify-write: Read from r049, modify, write to
           rem   w049
           dim UPS_subpixelXRead = temp4
-          let UPS_subpixelXRead = playerSubpixelX_R[UPS_playerIndex]
-          let UPS_subpixelXRead = UPS_subpixelXRead + playerVelocityX[UPS_playerIndex]
-          let playerSubpixelX_W[UPS_playerIndex] = UPS_subpixelXRead
+          let UPS_subpixelXRead = playerSubpixelX_R[currentPlayer]
+          let UPS_subpixelXRead = UPS_subpixelXRead + playerVelocityX[currentPlayer]
+          let playerSubpixelX_W[currentPlayer] = UPS_subpixelXRead
           
           rem Sync integer position for rendering (high byte is the
           rem   integer part)
-          let playerX[UPS_playerIndex] = playerSubpixelX_R[UPS_playerIndex]
+          let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
           
           rem ==========================================================
           rem APPLY Y VELOCITY TO Y POSITION
@@ -104,29 +107,29 @@ XNoCarry
           rem   arithmetic automatically
           rem But we still need to do it manually since both parts are
           rem   separate arrays
-          let UPS_subpixelSum = playerSubpixelY_W_lo[UPS_playerIndex] + playerVelocityY_lo[UPS_playerIndex]
+          let UPS_subpixelSum = playerSubpixelY_WL[currentPlayer] + playerVelocityYL[currentPlayer]
           if UPS_subpixelSum > 255 then YCarry
-          let playerSubpixelY_W_lo[UPS_playerIndex] = UPS_subpixelSum
+          let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum
           goto YNoCarry
 YCarry
-          let playerSubpixelY_W_lo[UPS_playerIndex] = UPS_subpixelSum - 256
+          let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum - 256
           rem SCRAM read-modify-write: Read from r057, modify, write to
           rem   w057
           dim UPS_subpixelYRead = temp4
-          let UPS_subpixelYRead = playerSubpixelY_R[UPS_playerIndex]
+          let UPS_subpixelYRead = playerSubpixelY_R[currentPlayer]
           let UPS_subpixelYRead = UPS_subpixelYRead + 1
-          let playerSubpixelY_W[UPS_playerIndex] = UPS_subpixelYRead
+          let playerSubpixelY_W[currentPlayer] = UPS_subpixelYRead
 YNoCarry
           rem SCRAM read-modify-write: Read from r057, modify, write to
           rem   w057
           dim UPS_subpixelYRead = temp4
-          let UPS_subpixelYRead = playerSubpixelY_R[UPS_playerIndex]
-          let UPS_subpixelYRead = UPS_subpixelYRead + playerVelocityY[UPS_playerIndex]
-          let playerSubpixelY_W[UPS_playerIndex] = UPS_subpixelYRead
+          let UPS_subpixelYRead = playerSubpixelY_R[currentPlayer]
+          let UPS_subpixelYRead = UPS_subpixelYRead + playerVelocityY[currentPlayer]
+          let playerSubpixelY_W[currentPlayer] = UPS_subpixelYRead
           
           rem Sync integer position for rendering (high byte is the
           rem   integer part)
-          let playerY[UPS_playerIndex] = playerSubpixelY_R[UPS_playerIndex]
+          let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
           
           return
 
@@ -139,9 +142,9 @@ SetPlayerVelocity
           dim SPV_velocityX = temp2
           dim SPV_velocityY = temp3
           let playerVelocityX[SPV_playerIndex] = SPV_velocityX
-          let playerVelocityX_lo[SPV_playerIndex] = 0
+          let playerVelocityXL[SPV_playerIndex] = 0
           let playerVelocityY[SPV_playerIndex] = SPV_velocityY
-          let playerVelocityY_lo[SPV_playerIndex] = 0
+          let playerVelocityYL[SPV_playerIndex] = 0
           return
 
           rem Set player position (integer parts only, subpixel parts
@@ -155,35 +158,47 @@ SetPlayerPosition
           let playerX[SPP_playerIndex] = SPP_positionX
           rem SCRAM write: Write to w049
           let playerSubpixelX_W[SPP_playerIndex] = SPP_positionX
-          let playerSubpixelX_W_lo[SPP_playerIndex] = 0
+          let playerSubpixelX_WL[SPP_playerIndex] = 0
           let playerY[SPP_playerIndex] = SPP_positionY
           rem SCRAM write: Write to w057
           let playerSubpixelY_W[SPP_playerIndex] = SPP_positionY
-          let playerSubpixelY_W_lo[SPP_playerIndex] = 0
+          let playerSubpixelY_WL[SPP_playerIndex] = 0
           return
 
           rem Get player position (integer parts only)
-          rem Input: temp1 = player index (0-3)
-          rem Output: temp2 = X position, temp3 = Y position
+          rem Input: currentPlayer = player index (0-3) (global variable)
+          rem Output: temp2 = X position, temp3 = Y position →
+          rem   GPP_positionX, GPP_positionY
+          rem
+          rem MUTATES:
+          rem   temp2 = GPP_positionX (return value: X position)
+          rem   temp3 = GPP_positionY (return value: Y position)
+          rem WARNING: Callers should read from GPP_positionX/GPP_positionY
+          rem   aliases, not temp2/temp3 directly.
 GetPlayerPosition
-          dim GPP_playerIndex = temp1
           dim GPP_positionX = temp2
           dim GPP_positionY = temp3
-          let GPP_positionX = playerX[GPP_playerIndex]
-          let GPP_positionY = playerY[GPP_playerIndex]
+          let GPP_positionX = playerX[currentPlayer]
+          let GPP_positionY = playerY[currentPlayer]
           let temp2 = GPP_positionX
           let temp3 = GPP_positionY
           return
 
           rem Get player velocity (integer parts only)
-          rem Input: temp1 = player index (0-3)
-          rem Output: temp2 = X velocity, temp3 = Y velocity
+          rem Input: currentPlayer = player index (0-3) (global variable)
+          rem Output: temp2 = X velocity, temp3 = Y velocity →
+          rem   GPV_velocityX, GPV_velocityY
+          rem
+          rem MUTATES:
+          rem   temp2 = GPV_velocityX (return value: X velocity)
+          rem   temp3 = GPV_velocityY (return value: Y velocity)
+          rem WARNING: Callers should read from GPV_velocityX/GPV_velocityY
+          rem   aliases, not temp2/temp3 directly.
 GetPlayerVelocity
-          dim GPV_playerIndex = temp1
           dim GPV_velocityX = temp2
           dim GPV_velocityY = temp3
-          let GPV_velocityX = playerVelocityX[GPV_playerIndex]
-          let GPV_velocityY = playerVelocityY[GPV_playerIndex]
+          let GPV_velocityX = playerVelocityX[currentPlayer]
+          let GPV_velocityY = playerVelocityY[currentPlayer]
           let temp2 = GPV_velocityX
           let temp3 = GPV_velocityY
           return
@@ -207,12 +222,12 @@ AddVelocitySubpixelY
           dim AVSY_playerIndex = temp1
           dim AVSY_subpixelAmount = temp2
           dim AVSY_sum = temp3
-          let AVSY_sum = playerVelocityY_lo[AVSY_playerIndex] + AVSY_subpixelAmount
+          let AVSY_sum = playerVelocityYL[AVSY_playerIndex] + AVSY_subpixelAmount
           if AVSY_sum > 255 then VelocityYCarry
-          let playerVelocityY_lo[AVSY_playerIndex] = AVSY_sum
+          let playerVelocityYL[AVSY_playerIndex] = AVSY_sum
           return
 VelocityYCarry
-          let playerVelocityY_lo[AVSY_playerIndex] = AVSY_sum - 256
+          let playerVelocityYL[AVSY_playerIndex] = AVSY_sum - 256
           let playerVelocityY[AVSY_playerIndex] = playerVelocityY[AVSY_playerIndex] + 1
           return
 
@@ -225,7 +240,7 @@ ApplyFriction
           rem Check for negative velocity using two's complement (values ≥ 128 are negative)
           if playerVelocityX[AF_playerIndex] & $80 then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] + 1
           rem Also zero subpixel if velocity reaches zero
-          if playerVelocityX[AF_playerIndex] = 0 then let playerVelocityX_lo[AF_playerIndex] = 0
+          if playerVelocityX[AF_playerIndex] = 0 then let playerVelocityXL[AF_playerIndex] = 0
           return
 
           rem ==========================================================
@@ -234,10 +249,19 @@ ApplyFriction
 
           rem Check collision between two players using integer
           rem   positions
-          rem Input: temp1 = player 1 index, temp2 = player 2 index
-          rem Output: temp3 = 1 if collision, 0 if not
+          rem Input: temp1 = player 1 index → CPC_player1Index
+          rem        temp2 = player 2 index → CPC_player2Index
+          rem Output: temp3 = 1 if collision, 0 if not → CPC_collisionResult
           rem NOTE: Uses integer positions only (subpixel ignored for
           rem   collision)
+          rem
+          rem MUTATES:
+          rem   temp3 = CPC_collisionResult (return value: 1 if collision, 0 if not)
+          rem   temp4-temp13 = Used internally for calculations
+          rem   alias, not
+          rem WARNING: Callers should read from CPC_collisionResult
+          rem   execution.
+          rem temp3 directly. All temp4-temp13 are mutated during
 CheckPlayerCollision
           dim CPC_player1Index = temp1
           dim CPC_player2Index = temp2
@@ -305,12 +329,13 @@ YDistanceDone
           
           rem Collision detected
           let CPC_collisionResult = 1
-          let temp3 = CPC_collisionResult
+          rem Return value set in alias (temp3 is set but use alias instead)
           return
           
 NoCollision
           let CPC_collisionResult = 0
-          let temp3 = CPC_collisionResult
+          rem   instead)
+          rem Return value set in alias (temp3 is set but use alias
           return
 
           rem ==========================================================
@@ -327,19 +352,19 @@ ConstrainToScreen
           rem SCRAM write: Write to w049
           if playerX[CTS_playerIndex] < 10 then let playerX[CTS_playerIndex] = 10
           if playerX[CTS_playerIndex] < 10 then let playerSubpixelX_W[CTS_playerIndex] = 10
-          if playerX[CTS_playerIndex] < 10 then let playerSubpixelX_W_lo[CTS_playerIndex] = 0
+          if playerX[CTS_playerIndex] < 10 then let playerSubpixelX_WL[CTS_playerIndex] = 0
           if playerX[CTS_playerIndex] > 150 then let playerX[CTS_playerIndex] = 150
           if playerX[CTS_playerIndex] > 150 then let playerSubpixelX_W[CTS_playerIndex] = 150
-          if playerX[CTS_playerIndex] > 150 then let playerSubpixelX_W_lo[CTS_playerIndex] = 0
+          if playerX[CTS_playerIndex] > 150 then let playerSubpixelX_WL[CTS_playerIndex] = 0
           
           rem Constrain Y position (20 to 80 for screen bounds)
           rem SCRAM write: Write to w057
           if playerY[CTS_playerIndex] < 20 then let playerY[CTS_playerIndex] = 20
           if playerY[CTS_playerIndex] < 20 then let playerSubpixelY_W[CTS_playerIndex] = 20
-          if playerY[CTS_playerIndex] < 20 then let playerSubpixelY_W_lo[CTS_playerIndex] = 0
+          if playerY[CTS_playerIndex] < 20 then let playerSubpixelY_WL[CTS_playerIndex] = 0
           if playerY[CTS_playerIndex] > 80 then let playerY[CTS_playerIndex] = 80
           if playerY[CTS_playerIndex] > 80 then let playerSubpixelY_W[CTS_playerIndex] = 80
-          if playerY[CTS_playerIndex] > 80 then let playerSubpixelY_W_lo[CTS_playerIndex] = 0
+          if playerY[CTS_playerIndex] > 80 then let playerSubpixelY_WL[CTS_playerIndex] = 0
           
           return
 
@@ -363,52 +388,52 @@ InitializeMovementSystem
           rem Player 0
           let playerX[0] = IMS_positionX
           let playerSubpixelX_W[0] = IMS_positionX
-          let playerSubpixelX_W_lo[0] = 0
+          let playerSubpixelX_WL[0] = 0
           let playerY[0] = IMS_positionY
           let playerSubpixelY_W[0] = IMS_positionY
-          let playerSubpixelY_W_lo[0] = 0
+          let playerSubpixelY_WL[0] = 0
           rem Player 1
           let playerX[1] = IMS_positionX
           let playerSubpixelX_W[1] = IMS_positionX
-          let playerSubpixelX_W_lo[1] = 0
+          let playerSubpixelX_WL[1] = 0
           let playerY[1] = IMS_positionY
           let playerSubpixelY_W[1] = IMS_positionY
-          let playerSubpixelY_W_lo[1] = 0
+          let playerSubpixelY_WL[1] = 0
           rem Player 2
           let playerX[2] = IMS_positionX
           let playerSubpixelX_W[2] = IMS_positionX
-          let playerSubpixelX_W_lo[2] = 0
+          let playerSubpixelX_WL[2] = 0
           let playerY[2] = IMS_positionY
           let playerSubpixelY_W[2] = IMS_positionY
-          let playerSubpixelY_W_lo[2] = 0
+          let playerSubpixelY_WL[2] = 0
           rem Player 3
           let playerX[3] = IMS_positionX
           let playerSubpixelX_W[3] = IMS_positionX
-          let playerSubpixelX_W_lo[3] = 0
+          let playerSubpixelX_WL[3] = 0
           let playerY[3] = IMS_positionY
           let playerSubpixelY_W[3] = IMS_positionY
-          let playerSubpixelY_W_lo[3] = 0
+          let playerSubpixelY_WL[3] = 0
           
           rem Initialize velocities to zero - inlined for performance
           rem Player 0
           let playerVelocityX[0] = 0
-          let playerVelocityX_lo[0] = 0
+          let playerVelocityXL[0] = 0
           let playerVelocityY[0] = 0
-          let playerVelocityY_lo[0] = 0
+          let playerVelocityYL[0] = 0
           rem Player 1
           let playerVelocityX[1] = 0
-          let playerVelocityX_lo[1] = 0
+          let playerVelocityXL[1] = 0
           let playerVelocityY[1] = 0
-          let playerVelocityY_lo[1] = 0
+          let playerVelocityYL[1] = 0
           rem Player 2
           let playerVelocityX[2] = 0
-          let playerVelocityX_lo[2] = 0
+          let playerVelocityXL[2] = 0
           let playerVelocityY[2] = 0
-          let playerVelocityY_lo[2] = 0
+          let playerVelocityYL[2] = 0
           rem Player 3
           let playerVelocityX[3] = 0
-          let playerVelocityX_lo[3] = 0
+          let playerVelocityXL[3] = 0
           let playerVelocityY[3] = 0
-          let playerVelocityY_lo[3] = 0
+          let playerVelocityYL[3] = 0
           return
           

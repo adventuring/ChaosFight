@@ -80,7 +80,7 @@
           rem REDIMMED VARIABLES (different meaning per context):
           rem - var24-var40: Shared between Admin Mode and Game Mode
           rem   (intentional redim)
-          rem - var24-var27: Arena select (Admin) or playerVelocityX_lo
+          rem - var24-var27: Arena select (Admin) or playerVelocityXL
           rem   (Game) - ZPRAM for physics
           rem - var28-var35: Preamble/music (Admin) or playerVelocityY
           rem   8.8 (Game, var28-var31=high, var32-var35=low) -
@@ -121,6 +121,18 @@
           rem COMMON VARS - Standard RAM (a-z) - sorted alphabetically
           rem ==========================================================
 
+          rem Current iteration variables (used in loops across routines)
+          dim currentPlayer = c
+          rem Current player index (0-3) for iteration loops
+          rem Set before calling functions that operate on a single player
+          rem Used extensively in AnimationSystem, PlayerElimination,
+          rem   MovementSystem, and other routines
+          dim currentCharacter = n
+          rem Current character index (0-31) for character-specific operations
+          rem Set from playerChar[currentPlayer] before character operations
+          rem Used in SpriteLoader, character-specific logic, etc.
+          rem Reduces temp variable pressure by eliminating parameter passing
+          
           rem Game state and system flags (consolidated to save RAM)
           dim gameMode = p
           rem Game mode index (0-8): ModePublisherPreamble, ModeAuthorPreamble, etc.
@@ -512,11 +524,11 @@
           dim player3VelocityX = var22
           dim player4VelocityX = var23
           rem High bytes (integer part) in zero-page var20-var23
-          dim playerVelocityX_lo = var24
+          dim playerVelocityXL = var24
           rem Low bytes (fractional part) in zero-page var24-var27
           rem   (freed by moving animation vars)
           rem Access: playerVelocityX[i] = high byte,
-          rem   playerVelocityX_lo[i] = low byte (both in ZPRAM!)
+          rem   playerVelocityXL[i] = low byte (both in ZPRAM!)
           
           rem playerVelocityY[0-3] = 8.8 fixed-point Y velocity
           rem Both high and low bytes in zero-page for fast access every
@@ -526,7 +538,7 @@
           rem   var28-var35 in zero-page
           rem var28-var31 = high bytes, var32-var35 = low bytes
           rem Array accessible as playerVelocityY[0-3] and
-          rem   playerVelocityY_lo[0-3] (all in ZPRAM!)
+          rem   playerVelocityYL[0-3] (all in ZPRAM!)
           
           rem playerSubpixelX[0-3] = 8.8 fixed-point X position
           rem Updated every frame but accessed less frequently than
@@ -536,12 +548,12 @@
           rem Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM
           rem   w049-w056 (write), r049-r056 (read)
           rem Array accessible as playerSubpixelX_W[0-3] and
-          rem   playerSubpixelX_W_lo[0-3] (write ports)
+          rem   playerSubpixelX_WL[0-3] (write ports)
           rem Array accessible as playerSubpixelX_R[0-3] and
-          rem   playerSubpixelX_R_lo[0-3] (read ports)
+          rem   playerSubpixelX_RL[0-3] (read ports)
           rem Alias for backward compatibility (defaults to write port)
           dim playerSubpixelX = playerSubpixelX_W
-          dim playerSubpixelX_lo = playerSubpixelX_W_lo
+          dim playerSubpixelXL = playerSubpixelX_WL
           
           rem playerSubpixelY[0-3] = 8.8 fixed-point Y position
           dim playerSubpixelY_W = w057.8.8
@@ -549,12 +561,12 @@
           rem Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM
           rem   w057-w064 (write), r057-r064 (read)
           rem Array accessible as playerSubpixelY_W[0-3] and
-          rem   playerSubpixelY_W_lo[0-3] (write ports)
+          rem   playerSubpixelY_WL[0-3] (write ports)
           rem Array accessible as playerSubpixelY_R[0-3] and
-          rem   playerSubpixelY_R_lo[0-3] (read ports)
+          rem   playerSubpixelY_RL[0-3] (read ports)
           rem Alias for backward compatibility (defaults to write port)
           dim playerSubpixelY = playerSubpixelY_W
-          dim playerSubpixelY_lo = playerSubpixelY_W_lo
+          dim playerSubpixelYL = playerSubpixelY_WL
           
           rem ==========================================================
           rem GAME MODE - Standard RAM (var24-var47) - sorted

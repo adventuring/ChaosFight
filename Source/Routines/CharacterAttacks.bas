@@ -20,36 +20,41 @@
           rem BERNIE (Character 0) - Ground Thump (Area-of-Effect)
           rem ==========================================================
 BernieAttack
-          rem Bernie’s "Ground Thump" attack is an area-of-effect that
+          dim BA_attackerIndex = temp1
+          dim BA_originalFacing = temp3
+          rem Bernie's "Ground Thump" attack is an area-of-effect that
           rem   hits nearby characters both to his left AND right
           rem   simultaneously, and shoves them rapidly away from him
           rem This is unique - all other melee attacks only hit in
           rem   facing direction
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[BA_attackerIndex] = (playerState[BA_attackerIndex] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
+          
+          rem   SpawnMissile)
+          rem Save original facing direction (temp5 conflicts with
+          let BA_originalFacing = playerState[BA_attackerIndex] & PlayerStateBitFacing
           
           rem Attack in facing direction
           gosub PerformMeleeAttack
           
           rem Also attack in opposite direction
           rem Temporarily flip facing
-          let temp5 = playerState[temp1] & PlayerStateBitFacing
-          if temp5 then FaceLeft1
-          let playerState[temp1] = playerState[temp1] | PlayerStateBitFacing
+          if BA_originalFacing then FaceLeft1
+          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] | PlayerStateBitFacing
           goto FacingDone1
 FaceLeft1
-          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] & (255 - PlayerStateBitFacing)
 FacingDone1
           
           rem Attack in opposite direction
           gosub PerformMeleeAttack
           
 
-          if temp5 then RestoreFaceRight1
-          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          if BA_originalFacing then RestoreFaceRight1
+          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] & (255 - PlayerStateBitFacing)
           goto RestoreFacingDone1
 RestoreFaceRight1
-          let playerState[temp1] = playerState[temp1] | PlayerStateBitFacing
+          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] | PlayerStateBitFacing
 RestoreFacingDone1
           
           return
@@ -64,13 +69,15 @@ CurlerAttack
           goto PerformRangedAttack
 
           rem ==========================================================
-          rem DRAGON OF STORMS (Character 2) - Melee Attack
+          rem DRAGON OF STORMS (Character 2) - Ranged Attack
           rem ==========================================================
+          rem Fires ranged fireballs that slowly arc downwards
+          rem 2×2 missile with ballistic arc trajectory
 DragonetAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           rem tail call
-          goto PerformMeleeAttack
+          goto PerformRangedAttack
 
           rem ==========================================================
           rem ZOE RYEN (Character 3) - Ranged Attack
@@ -82,8 +89,10 @@ ZoeRyenAttack
           goto PerformRangedAttack
 
           rem ==========================================================
-          rem FAT TONY (Character 4) - Melee Attack
+          rem FAT TONY (Character 4) - Ranged Attack
           rem ==========================================================
+          rem Magic ring lasers shoot across screen very quickly
+          rem Pass through walls, thin, wide missile
 FatTonyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
@@ -91,13 +100,17 @@ FatTonyAttack
           goto PerformRangedAttack
 
           rem ==========================================================
-          rem MEGAX (Character 5) - Ranged Attack
+          rem MEGAX (Character 5) - Melée Attack (fire breath visual)
           rem ==========================================================
+          rem Megax uses a melée attack with a missile sprite for fire
+          rem   breath visual effect.
+          rem The missile appears adjacent to Megax, stays stationary
+          rem   during attack, and vanishes when attack completes.
 MegaxAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           rem tail call
-          goto PerformRangedAttack
+          goto PerformMeleeAttack
 
           rem ==========================================================
           rem HARPY (Character 6) - Diagonal Downward Swoop Attack
@@ -138,9 +151,9 @@ HarpySetVerticalVelocity
           rem Set player velocity for diagonal swoop (45° angle:
           rem   4px/frame X, 4px/frame Y) - inlined for performance
           let playerVelocityX[HA_playerIndex] = HA_velocityX
-          let playerVelocityX_lo[HA_playerIndex] = 0
+          let playerVelocityXL[HA_playerIndex] = 0
           let playerVelocityY[HA_playerIndex] = HA_velocityY
-          let playerVelocityY_lo[HA_playerIndex] = 0
+          let playerVelocityYL[HA_playerIndex] = 0
           
           rem Set jumping state so character can move vertically during
           rem   swoop
@@ -172,13 +185,18 @@ HarpySetVerticalVelocity
           return
 
           rem ==========================================================
-          rem KNIGHT GUY (Character 7) - Ranged Attack
+          rem KNIGHT GUY (Character 7) - Melée Attack (sword visual)
           rem ==========================================================
+          rem Knight Guy uses a melée attack with a missile sprite for
+          rem   sword visual effect.
+          rem The missile appears partially overlapping the player, moves
+          rem   slightly away during attack phase (sword swing), returns
+          rem   to start, and vanishes when attack completes.
 KnightGuyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           rem tail call
-          goto PerformRangedAttack
+          goto PerformMeleeAttack
 
           rem ==========================================================
           rem FROOTY (Character 8) - Ranged Attack with Magical Sparkles

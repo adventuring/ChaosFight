@@ -17,6 +17,13 @@
           rem   pf0-pf2, etc.
           rem - Our variables: gameState, playerX, selectedChar1, etc.
 
+          rem Include assembly configuration constants BEFORE includesfile
+          rem This ensures bankswitch constant is defined before header checks
+
+          asm
+#include "Source/Common/AssemblyConfig.s"
+end
+
           includesfile multisprite_superchip.inc
 
           set kernel multisprite
@@ -25,8 +32,9 @@
           set optimization size
           set smartbranching on
 
+
 #include "Source/Common/Colors.h"
 #include "Source/Common/Constants.bas"
-#include "Source/Common/Enums.bas"
+#include "Source/Common/Enums.s"
 #include "Source/Common/Macros.bas"
 #include "Source/Common/Variables.bas"

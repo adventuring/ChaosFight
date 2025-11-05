@@ -30,20 +30,10 @@
           rem   eliminated.
           rem Sets elimination flags and triggers elimination effects.
 CheckAllPlayerEliminations
-          dim CAPE_playerIndex = temp1
-          rem Check each player for elimination
-          let CAPE_playerIndex = 0
-          let temp1 = CAPE_playerIndex
-          gosub CheckPlayerElimination
-          let CAPE_playerIndex = 1
-          let temp1 = CAPE_playerIndex
-          gosub CheckPlayerElimination  
-          let CAPE_playerIndex = 2
-          let temp1 = CAPE_playerIndex
-          gosub CheckPlayerElimination
-          let CAPE_playerIndex = 3
-          let temp1 = CAPE_playerIndex
-          gosub CheckPlayerElimination
+          rem Check each player for elimination using FOR loop
+          for currentPlayer = 0 to 3
+              gosub CheckPlayerElimination
+          next
           
           rem Count remaining players and check game end (inline
           rem   CheckGameEndCondition)
@@ -56,23 +46,31 @@ CheckAllPlayerEliminations
           rem CHECK SINGLE PLAYER ELIMINATION
           rem ==========================================================
           rem Check if specified player should be eliminated.
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3) (global variable)
+          rem
+          rem MUTATES:
+          rem   temp2 = CPE_isEliminated / CPE_health (reused, internal)
+          rem   temp6 = CPE_bitMask (internal)
+          rem WARNING: temp2 and temp6 are mutated during execution. Do not
+          rem   use these temp variables after calling this subroutine.
+          rem
+          rem EFFECTS:
+          rem   Sets playersEliminated bit flags
 CheckPlayerElimination
-          dim CPE_playerIndex = temp1
           dim CPE_bitMask = temp6
           dim CPE_isEliminated = temp2
           dim CPE_health = temp2
           rem Skip if already eliminated
-          let CPE_bitMask = BitMask[CPE_playerIndex]
+          let CPE_bitMask = BitMask[currentPlayer]
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           let CPE_isEliminated = CPE_bitMask & playersEliminated_R
           if CPE_isEliminated then return 
           rem Already eliminated
           
           rem Check if health has reached 0
-          let CPE_health = playerHealth[CPE_playerIndex]
+          let CPE_health = playerHealth[currentPlayer]
           
-          if CPE_health > 0 then return 
+          if CPE_health then return 
           rem Still alive
           
           rem Player health reached 0 - eliminate them
@@ -85,13 +83,13 @@ CheckPlayerElimination
           rem Only clear flag if both players 3 and 4 are eliminated or
           rem   not selected
           rem Use skip-over pattern to avoid complex || operator
-          if CPE_playerIndex = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
-          if CPE_playerIndex = 3 then gosub UpdatePlayers34ActiveFlag
+          if currentPlayer = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
+          if currentPlayer = 3 then gosub UpdatePlayers34ActiveFlag
 UpdatePlayers34Done
           
           rem Record elimination order
           let eliminationCounter = eliminationCounter + 1
-          let eliminationOrder[CPE_playerIndex] = eliminationCounter
+          let eliminationOrder[currentPlayer] = eliminationCounter
           
           rem Trigger elimination effects
           rem tail call
@@ -102,36 +100,33 @@ UpdatePlayers34Done
           rem TRIGGER ELIMINATION EFFECTS
           rem ==========================================================
           rem Visual and audio effects when player is eliminated.
-          rem INPUT: temp1 = eliminated player index (0-3)
+          rem INPUT: currentPlayer = eliminated player index (0-3) (global variable)
 TriggerEliminationEffects
-          dim TEE_playerIndex = temp1
           dim TEE_soundId = temp5
           dim TEE_effectTimer = temp2
           rem Play elimination sound effect
           let TEE_soundId = SoundElimination
-          let temp5 = TEE_soundId
+          let PSE_soundID = TEE_soundId
+          rem PlaySoundEffect expects temp1 (PSE_soundID alias)
           gosub bank15 PlaySoundEffect
           
           rem Set elimination visual effect timer
           rem This could trigger screen flash, particle effects, etc.
           let TEE_effectTimer = 30 
           rem 30 frames of elimination effect
-          let eliminationEffectTimer[TEE_playerIndex] = TEE_effectTimer
+          let eliminationEffectTimer[currentPlayer] = TEE_effectTimer
           
           rem Hide player sprite immediately
-          let temp1 = TEE_playerIndex
           rem Inline HideEliminatedPlayerSprite
-          dim HEPS_playerIndex = temp1
-          if HEPS_playerIndex = 0 then player0x = 200 
+          if currentPlayer = 0 then player0x = 200 
           rem Off-screen
-          if HEPS_playerIndex = 1 then player1x = 200
-          if HEPS_playerIndex = 2 then player2x = 200 
+          if currentPlayer = 1 then player1x = 200
+          if currentPlayer = 2 then player2x = 200 
           rem Player 3 uses player2 sprite (multisprite)
-          if HEPS_playerIndex = 3 then player3x = 200 
+          if currentPlayer = 3 then player3x = 200 
           rem Player 4 uses player3 sprite (multisprite)
           
           rem Stop any active missiles for this player
-          let temp1 = TEE_playerIndex
           rem tail call
           goto DeactivatePlayerMissiles
           
@@ -140,8 +135,10 @@ TriggerEliminationEffects
           rem HIDE ELIMINATED PLAYER SPRITE
           rem ==========================================================
           rem Move eliminated player sprite off-screen.
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3) (global variable)
           rem Player 4 uses player3 sprite (multisprite)
+          rem   TriggerEliminationEffects
+          rem NOTE: This function is now inlined in
           
           return
 
@@ -149,17 +146,16 @@ TriggerEliminationEffects
           rem DEACTIVATE PLAYER MISSILES
           rem ==========================================================
           rem Remove any active missiles belonging to eliminated player.
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3) (global variable)
 DeactivatePlayerMissiles
-          dim DPM_playerIndex = temp1
           dim DPM_bitMask = temp6
           dim DPM_invertedMask = temp6
           rem Clear missile active bit for this player
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if DPM_playerIndex = 0 then let DPM_bitMask = 1
-          if DPM_playerIndex = 1 then let DPM_bitMask = 2
-          if DPM_playerIndex = 2 then let DPM_bitMask = 4
-          if DPM_playerIndex = 3 then let DPM_bitMask = 8
+          if currentPlayer = 0 then let DPM_bitMask = 1
+          if currentPlayer = 1 then let DPM_bitMask = 2
+          if currentPlayer = 2 then let DPM_bitMask = 4
+          if currentPlayer = 3 then let DPM_bitMask = 8
           let DPM_invertedMask = 255 - DPM_bitMask 
           rem Invert bits for AND mask
           let missileActive = missileActive & DPM_invertedMask
@@ -197,17 +193,16 @@ CountRemainingPlayers
           rem IS PLAYER ELIMINATED
           rem ==========================================================
           rem Check if specified player is eliminated.
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3) (global variable)
           rem OUTPUT: temp2 = 1 if eliminated, 0 if alive
 IsPlayerEliminated
-          dim IPE_playerIndex = temp1
           dim IPE_bitMask = temp6
           dim IPE_isEliminated = temp2
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if 0 = IPE_playerIndex then let IPE_bitMask = PlayerEliminatedPlayer0
-          if 1 = IPE_playerIndex then let IPE_bitMask = PlayerEliminatedPlayer1
-          if 2 = IPE_playerIndex then let IPE_bitMask = PlayerEliminatedPlayer2
-          if 3 = IPE_playerIndex then let IPE_bitMask = PlayerEliminatedPlayer3
+          if currentPlayer = 0 then let IPE_bitMask = PlayerEliminatedPlayer0
+          if currentPlayer = 1 then let IPE_bitMask = PlayerEliminatedPlayer1
+          if currentPlayer = 2 then let IPE_bitMask = PlayerEliminatedPlayer2
+          if currentPlayer = 3 then let IPE_bitMask = PlayerEliminatedPlayer3
           let IPE_isEliminated = IPE_bitMask & playersEliminated_R
           if IPE_isEliminated then let IPE_isEliminated = 1 : goto IsEliminatedDone
           let IPE_isEliminated = 0
@@ -220,22 +215,20 @@ IsEliminatedDone
           rem ==========================================================
           rem Check if specified player is alive (not eliminated AND
           rem   health > 0).
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3) (global variable)
           rem OUTPUT: temp2 = 1 if alive, 0 if eliminated/dead
 IsPlayerAlive
-          dim IPA_playerIndex = temp1
           dim IPA_isEliminated = temp2
           dim IPA_health = temp3
           dim IPA_isAlive = temp2
           rem Check elimination flag first
-          let temp1 = IPA_playerIndex
           gosub IsPlayerEliminated
           let IPA_isEliminated = temp2
           if IPA_isEliminated then return 
           rem Already eliminated
           
           rem Check health
-          let IPA_health = playerHealth[IPA_playerIndex]
+          let IPA_health = playerHealth[currentPlayer]
           
           let IPA_isAlive = 0 
           rem Default: not alive
@@ -249,32 +242,17 @@ IsPlayerAlive
           rem ==========================================================
           rem Identify the winning player (last one standing).
 FindWinner
-          dim FW_playerIndex = temp1
           dim FW_isEliminated = temp2
           rem Find the player who is not eliminated
           let winnerPlayerIndex = 255 
           rem Invalid initially
           
-          let FW_playerIndex = 0
-          let temp1 = FW_playerIndex
-          gosub IsPlayerEliminated
-          let FW_isEliminated = temp2
-          if !FW_isEliminated then let winnerPlayerIndex = 0
-          let FW_playerIndex = 1
-          let temp1 = FW_playerIndex
-          gosub IsPlayerEliminated  
-          let FW_isEliminated = temp2
-          if !FW_isEliminated then let winnerPlayerIndex = 1
-          let FW_playerIndex = 2
-          let temp1 = FW_playerIndex
-          gosub IsPlayerEliminated
-          let FW_isEliminated = temp2
-          if !FW_isEliminated then let winnerPlayerIndex = 2
-          let FW_playerIndex = 3
-          let temp1 = FW_playerIndex
-          gosub IsPlayerEliminated
-          let FW_isEliminated = temp2
-          if !FW_isEliminated then let winnerPlayerIndex = 3
+          rem Check each player using FOR loop
+          for currentPlayer = 0 to 3
+              gosub IsPlayerEliminated
+              let FW_isEliminated = temp2
+              if !FW_isEliminated then let winnerPlayerIndex = currentPlayer
+          next
           
           rem If no winner found (all eliminated), pick last eliminated
           rem tail call
@@ -293,15 +271,11 @@ FindLastEliminated
           let winnerPlayerIndex = 0 
           rem Default winner
           
-          rem Check each player elimination order
-          let FLE_currentOrder = eliminationOrder[0]
-          if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = 0
-          let FLE_currentOrder = eliminationOrder[1]
-          if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = 1
-          let FLE_currentOrder = eliminationOrder[2]
-          if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = 2
-          let FLE_currentOrder = eliminationOrder[3]
-          if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = 3
+          rem Check each player elimination order using FOR loop
+          for currentPlayer = 0 to 3
+              let FLE_currentOrder = eliminationOrder[currentPlayer]
+              if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = currentPlayer
+          next
           
           rem ==========================================================
           rem UPDATE PLAYERS 3/4 ACTIVE FLAG

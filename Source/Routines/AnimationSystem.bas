@@ -416,11 +416,9 @@ TransitionToFallen
 
 TransitionHandleJump
           dim THJ_animationAction = temp2
-          dim THJ_playerIndex = temp4
           rem Stay on frame 7 until Y velocity goes negative
           rem Check if player is falling (positive Y velocity = downward)
-          let THJ_playerIndex = currentPlayer
-          if 0 < playerVelocityY[THJ_playerIndex] then TransitionHandleJump_TransitionToFalling
+          if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
           rem Still ascending (negative or zero Y velocity), stay in jump
           let THJ_animationAction = ActionJumping
           let temp2 = THJ_animationAction
@@ -435,18 +433,16 @@ TransitionHandleJump_TransitionToFalling
 
 TransitionHandleFallBack
           dim THFB_animationAction = temp2
-          dim THFB_playerIndex = temp4
           dim THFB_pfColumn = temp5
           dim THFB_pfRow = temp6
           rem Check wall collision using pfread
           rem If hit wall: goto idle, else: goto fallen
-          let THFB_playerIndex = currentPlayer
           rem Convert player X position to playfield column (0-31)
-          let THFB_pfColumn = playerX[THFB_playerIndex]
+          let THFB_pfColumn = playerX[currentPlayer]
           let THFB_pfColumn = THFB_pfColumn - ScreenInsetX
           let THFB_pfColumn = THFB_pfColumn / 4
           rem Convert player Y position to playfield row (0-7)
-          let THFB_pfRow = playerY[THFB_playerIndex]
+          let THFB_pfRow = playerY[currentPlayer]
           let THFB_pfRow = THFB_pfRow / 8
           rem Check if player hit a wall (playfield pixel is set)
           if pfread(THFB_pfColumn, THFB_pfRow) then TransitionHandleFallBack_HitWall
@@ -617,7 +613,8 @@ Char3_Execute
 Char4_Execute
           dim C4E_animationAction = temp2
           rem Fat Tony: Execute → Recovery
-          rem NOTE: Laser bullet missile spawning handled by FatTonyAttack
+          rem   FatTonyAttack
+          rem NOTE: Laser bullet missile spawning handled by
           rem   (calls PerformRangedAttack) in CharacterAttacks.bas
           let C4E_animationAction = ActionAttackRecovery
           let temp2 = C4E_animationAction
@@ -645,14 +642,14 @@ Char6_Execute
           rem Clear bit 4 (239 = 0xEF = ~0x10)
           rem Stop horizontal velocity (zero X velocity)
           let playerVelocityX[C6E_playerIndex] = 0
-          let playerVelocityX_lo[C6E_playerIndex] = 0
+          let playerVelocityXL[C6E_playerIndex] = 0
           rem Apply upward wing flap momentum after swoop attack
           rem   (equivalent to HarpyJump)
           rem Same as normal flap: -2 pixels/frame upward (254 in two's
           rem   complement)
           let playerVelocityY[C6E_playerIndex] = 254
           rem -2 in 8-bit two's complement: 256 - 2 = 254
-          let playerVelocityY_lo[C6E_playerIndex] = 0
+          let playerVelocityYL[C6E_playerIndex] = 0
           rem Keep jumping flag set to allow vertical movement
           rem playerState[C6E_playerIndex] bit 2 (jumping) already set
           rem   from attack, keep it

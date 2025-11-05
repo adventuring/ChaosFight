@@ -115,10 +115,11 @@ HandleRoboTitoStretchMissileHit
           let playerState[HRTSMH_roboTitoIndex] = playerState[HRTSMH_roboTitoIndex] | PlayerStateBitJumping
           rem Set terminal velocity downward
           let playerVelocityY[HRTSMH_roboTitoIndex] = TerminalVelocity
-          let playerVelocityY_lo[HRTSMH_roboTitoIndex] = 0
+          let playerVelocityYL[HRTSMH_roboTitoIndex] = 0
           rem Set falling animation (ActionFalling = 11)
           let playerState[HRTSMH_roboTitoIndex] = (playerState[HRTSMH_roboTitoIndex] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
-          rem MaskPlayerStateFlags masks bits 0-3, set bits 4-7 to ActionFalling
+          rem   ActionFalling
+          rem MaskPlayerStateFlags masks bits 0-3, set bits 4-7 to
           
           rem Clear stretch permission flag
           let HRTSMH_flags = roboTitoCanStretch_R

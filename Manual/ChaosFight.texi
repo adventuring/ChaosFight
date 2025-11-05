@@ -56,11 +56,9 @@ Video Computer System.
 * Character Selection::         Choosing your fighter
 * Game Controls::               How to play
 * Characters::                  The 16 fighters
-* Combat System::               Fighting mechanics
 * Game Modes::                  Different ways to play
 * Console Switches::            Using console controls
 * Tips and Strategies::         How to win
-* Technical Information::       Game specifications
 * Troubleshooting::             Common issues
 * Credits::                     Who made this game
 @end menu
@@ -269,7 +267,7 @@ the available characters.
 
 @section The Character Selection Screen
 
-The screen shows character sprites in fixed positions:
+The screen shows characters in fixed positions.
 
 @section Selection Controls
 
@@ -280,7 +278,7 @@ Cycle through characters
 @item FIRE
 Lock in character selection
 @itemize @bullet
-@item Playfield border appears around locked sprite
+@item Playfield border appears around locked character
 @item Moving joystick after locking will unlock selection
 @item Hold DOWN when pressing FIRE to handicap your character.
 @end itemize
@@ -349,9 +347,30 @@ Starting health: 75% instead of 100%
 
 @page
 
+@c ============================================================
+@node Game Controls
+@chapter Game Controls
+
+@cindex game controls
+@cindex how to play
+@cindex controls
+
+@section Basic Movement
+
+@itemize @bullet
+@item LEFT/RIGHT
+Move your character left or right and turn to face that direction
+@item UP
+Jump (or character-specific special move)
+@item DOWN
+Guard (or character-specific special move)
+@item FIRE/B/I button
+Attack
+@end itemize
+
 @section Guarding
 
-Enter guard stance. While guarding:
+Enter guard stance by holding DOWN. While guarding:
 @itemize @bullet
 @item You take NO damage from attacks
 @item You cannot move or attack
@@ -361,8 +380,28 @@ Enter guard stance. While guarding:
 @item Character flashes to indicate guard is active
 @end itemize
 
-@page
+@section Health and Damage
 
+Player 1 and 2's health are displayed as colored bars at the bottom of
+the screen.
+
+If player 3 or 4 are present, their health will display as a percentage
+(00-99) in the middle of the bottom of the screen.
+
+When your health reaches 0, you are eliminated and your character
+disappears from the playfield.
+
+Character weight affects knockback - heavier characters resist being
+pushed back more than lighter characters. When hit, lighter characters
+will be knocked back further than heavier ones.
+
+@section Victory
+
+The last player with health remaining wins!
+
+In a 3- or 4- player game, the winner will appear at the top of the
+screen, with other characters arranged below in elimination order
+(second, third, and last place, where last place is first eliminated).
 
 @page
 
@@ -412,45 +451,6 @@ Each character has unique properties affecting gameplay:
 @page
 
 @c ============================================================
-@node Combat System
-@chapter Combat System
-
-@cindex combat
-@cindex fighting
-@cindex damage
-@cindex health
-
-@section Health and Damage
-
-Player 1 and 2's health are displayed as colored bars at the bottom of
-the screen.
-
-If player 3 or 4 are present, their health will display as a percentage
-(00-99) in the middle of the bottom of the screen.
-
-
-@section Victory Conditions
-
-The last player with health remaining wins!
-
-@itemize @bullet
-@item
-When your health reaches 0, you are eliminated
-@item
-Your sprite disappears from the playfield
-@item
-Battle continues until only one remains
-@item
-Winner is displayed with their player number and character
-@end itemize
-
-In a 3- or 4- player game, the winner will appear at the top of the
-screen, with other characters arranged below in elimination order
-(second, third, and last place, where last place is first eliminated).
-
-@page
-
-@c ============================================================
 @node Game Modes
 @chapter Game Modes
 
@@ -471,8 +471,26 @@ free-for-all! Last player standing wins.
 
 @section Battle Arenas
 
-Select from 16 different arenas during Arena Select! Each arena offers unique
-tactical opportunities.
+Select from 2 different arenas during Arena Select! More arenas coming soon.
+Each arena offers unique tactical opportunities.
+
+@subsection Arena Selection
+
+After character selection, Player 1 can choose an arena:
+@itemize @bullet
+@item LEFT/RIGHT
+Cycle through arena numbers (or "??" for random arena)
+@item FIRE/B/I button
+Start the game with selected arena
+@end itemize
+
+Other players can:
+@itemize @bullet
+@item Hold FIRE/B/I button for 1 second
+Return to character selection screen
+@item Press GAME SELECT
+Return to character selection screen
+@end itemize
 
 @page
 
@@ -489,8 +507,7 @@ The console switches provide additional game control:
 
 @section GAME RESET Switch
 
-Pressing the RESET switch immediately returns the the Publisher
-screen and restarts the game.
+Pressing the RESET switch immediately starts the game over.
 
 @section GAME SELECT Switch
 
@@ -513,6 +530,8 @@ colorful.
 
 On SECAM systems, or when in "B&W" mode on NTSC or PAL, the playfield will
 be white on black.
+
+On a 7800, press Pause to toggle between color and black & white modes.@footnote{On Atari 7800, the pause button occupies the same hardware pin as the Color/B&W switch, so it toggles the playfield color mode instead of using the switch position.}
 
 Characters are always colored based on player number.
 

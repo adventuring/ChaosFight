@@ -14,39 +14,14 @@
 
 WinnerScreenPlayfield
           playfield:
-          XXXXXXXXXXXXXXXX
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X......XXXXXXXXX
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X...............
-          X......XXXXXXXXX
-          X...............
-          X...............
-          X...............
-          XXXXXXXXXXXXXXXX
+            ................
+            ................
+            ............XXXX
+            ............XXXX
+            ............XXXX
+            ....XXXXXXXXXXXX
+            ....XXXXXXXXXXXX
+            XXXXXXXXXXXXXXXX
 end
 
 WinnerScreenColorsColor
@@ -58,66 +33,7 @@ WinnerScreenColorsColor
           ColGold(6)
           ColGold(4)
           ColGold(2)
-          ColGold(0)
           ColGold(2)
-          ColGold(4)
-          ColGold(6)
-          ColGold(8)
-          ColGold(10)
-          ColGold(12)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
-          ColGold(14)
 end
 
-WinnerScreenColorsBW
-          pfcolors:
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-          ColGrey(14)
-end
 

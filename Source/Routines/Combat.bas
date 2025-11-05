@@ -65,7 +65,7 @@ PlayerDies
           rem Trigger elimination immediately (instantly vanish)
           rem CheckPlayerElimination will hide sprite and handle
           rem   elimination effects
-          let temp1 = AD_defenderID
+          let currentPlayer = AD_defenderID
           gosub CheckPlayerElimination
           
           rem Sound effect

@@ -1,10 +1,10 @@
 @subsubsection Ursulo
 @display
 @group
-    Weight: 544.31 kg (1200.0 lbs)
-    Attack: Melee (claw swipe)
-    Special: Powerful melee attack, hardest to knock back
-    Species: Bear with unfortunate abduction problems
+    Weight: 100 kg (220 lbs)
+    Attack: Melée (claw swipe)
+    Special: (none - powerful attack and knockback resistance are normal attributes)
+    Species: Bear (1.67m tall walking polar bear)
     Nemeses: Wizards, robots, and penguins (who keep abducting him)
     Original Game: Game of the Bear, Game of the Bear 2: 2 Much 2 Bear, and Game of the Bear 3: Polar Opposites (all vhzc)
     Author: Vladimir "vhzc" Zúñiga @url{https://vhzc.itch.io,VHZC Games}
@@ -14,12 +14,11 @@
 @end group
 @end display
 
-Ursulo is a bear who has an unfortunate habit of being abducted by wizards, 
-robots, and penguins. Despite these constant kidnapping attempts, he's developed 
-into a formidable fighter with incredible strength and resilience.
+Ursulo is a bear - a 1.67m tall walking polar bear - who has an unfortunate habit 
+of being abducted by wizards, robots, and penguins. Despite these constant 
+kidnapping attempts, he's developed into a formidable fighter with incredible 
+strength and resilience.
 
-Ursulo is one of the heaviest characters, making him extremely resistant to 
-knockback but also giving him a lower jump height. His powerful ranged attack
-fires a 2×2 pixel projectile with the highest arc (velocity 7 horizontal, -6
-vertical), making it excellent for hitting enemies on platforms! His experience 
-dealing with various abductors has made him exceptionally tough and determined.
+His experience dealing with various abductors has made him exceptionally tough and 
+determined. His powerful melée claw swipe attack deals significant damage and is 
+difficult to interrupt.

@@ -61,15 +61,15 @@
           rem ==========================================================
           
           asm
-          rem Build date string in year.julian format (YYYY.JJJ)
-          rem Format: ASCII bytes, null-terminated
-          rem Generated at compile time via preprocessor defines
-          rem   BUILD_YEAR and BUILD_DAY
+          ; Build date string in year.julian format (YYYY.JJJ)
+          ; Format: ASCII bytes, null-terminated
+          ; Generated at compile time via preprocessor defines
+          ;   BUILD_YEAR and BUILD_DAY
           BuildDateString:
           .byte "BUILD_DATE_STRING",0
           
-          rem Game URL string for attribution
-          rem Format: ASCII bytes, null-terminated
+          ; Game URL string for attribution
+          ; Format: ASCII bytes, null-terminated
           GameURLString:
           .byte "https://interworldly.com/games/ChaosFight",0
 end

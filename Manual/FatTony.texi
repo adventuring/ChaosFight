@@ -1,9 +1,9 @@
 @subsubsection Fat Tony
 @display
 @group
-    Weight: 108.86 kg (240.0 lbs)
-    Attack: Ranged (4×1 pixel wide, low-height magic ring lasers)
-    Special: Geography expert, magic ring wielder, former bar owner
+    Weight: 110 kg (240 lbs)
+    Attack: Ranged (magic ray)
+    Special: Magic ring grants ranged magic ray attacks
     Lives: Port Lion island
     Background: Former proprietor of bars in mysterious "Greewich"
     Original Game: Grizzards
@@ -21,5 +21,5 @@ the world of Syrex and Grizzard handlers. He lives on the island of Port Lion no
 and has a magic ring that he uses to shoot lasers.
 
 His expertise in geography and mysterious past make him a formidable opponent who 
-knows the terrain better than anyone. The magic ring grants him ranged laser 
+knows the terrain better than anyone. The magic ring grants him ranged magic ray 
 attacks, making him dangerous at any distance despite his heavy build.

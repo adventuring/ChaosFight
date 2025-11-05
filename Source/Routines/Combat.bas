@@ -243,7 +243,6 @@ CombatShowDamageIndicator
           rem Visual feedback now handled inline in damage calculation
           return
 
-rem Damage sound system
 PlayDamageSound
           dim PDS_soundId = temp1
           let PDS_soundId = SoundHit

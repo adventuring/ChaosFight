@@ -4,11 +4,11 @@
           rem   4.0 International
           rem See LICENSE file for full terms
 
-          #define TV_NTSC
+#define TV_NTSC
           const TVStandard = NTSC
           set tv ntsc
  
-          #include "Source/Common/Preamble.bas"
-          #include "Source/Banks/Banks.bas"
+#include "Source/Common/Preamble.bas"
+#include "Source/Banks/Banks.bas"
 
 

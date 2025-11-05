@@ -4,10 +4,10 @@
           rem   4.0 International
           rem See LICENSE file for full terms
 
-          #define TV_PAL
+#define TV_PAL
           const TVStandard = PAL
           set tv pal
 
-          #include "Source/Common/Preamble.bas"
-          #include "Source/Banks/Banks.bas"
+#include "Source/Common/Preamble.bas"
+#include "Source/Banks/Banks.bas"
 

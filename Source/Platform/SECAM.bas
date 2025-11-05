@@ -4,9 +4,9 @@
           rem   4.0 International
           rem See LICENSE file for full terms
 
-          #define TV_SECAM
+#define TV_SECAM
           const TVStandard = SECAM
           set tv secam
 
-          #include "Source/Common/Preamble.bas"
-          #include "Source/Banks/Banks.bas"
+#include "Source/Common/Preamble.bas"
+#include "Source/Banks/Banks.bas"

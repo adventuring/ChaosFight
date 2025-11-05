@@ -25,8 +25,8 @@
           set optimization size
           set smartbranching on
 
-          #include "Source/Common/Colors.h"
-          #include "Source/Common/Constants.bas"
-          #include "Source/Common/Enums.bas"
-          #include "Source/Common/Macros.bas"
-          #include "Source/Common/Variables.bas"
+#include "Source/Common/Colors.h"
+#include "Source/Common/Constants.bas"
+#include "Source/Common/Enums.bas"
+#include "Source/Common/Macros.bas"
+#include "Source/Common/Variables.bas"

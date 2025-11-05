@@ -62,12 +62,10 @@ GameMainLoop
           rem Check playfield collisions (walls, ceilings, ground) for
           rem   all players
           for currentPlayer = 0 to 1
-              let CPF_playerIndex = currentPlayer
               gosub CheckPlayfieldCollisionAllDirections
           next
           if controllerStatus & SetQuadtariDetected then
               for currentPlayer = 2 to 3
-                  let CPF_playerIndex = currentPlayer
                   gosub CheckPlayfieldCollisionAllDirections
               next
           end

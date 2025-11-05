@@ -357,17 +357,16 @@ BoundaryNextPlayer
           rem   direction.
           rem Uses CharacterHeights table for proper hitbox detection.
           rem
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer = player index (0-3) (global variable)
           rem MODIFIES: playerVelocityX/Y and playerSubpixelX/Y when
           rem   collisions detected
 CheckPlayfieldCollisionAllDirections
-          dim CPF_playerIndex = temp1
           rem Get player position and character info
-          let temp2 = playerX[CPF_playerIndex]
+          let temp2 = playerX[currentPlayer]
           rem X position (save original)
-          let temp3 = playerY[CPF_playerIndex]
+          let temp3 = playerY[currentPlayer]
           rem Y position
-          let temp4 = playerChar[CPF_playerIndex]
+          let temp4 = playerChar[currentPlayer]
           rem Character index
           let temp5 = CharacterHeights[temp4]
           rem Character height
@@ -440,7 +439,7 @@ end
 PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
           rem Check for negative velocity using two's complement (values ≥ 128 are negative)
-          if playerVelocityX[CPF_playerIndex] & $80 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
+          if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityX_lo[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
           let rowYPosition = temp6 + 1
@@ -454,9 +453,9 @@ PFBlockLeft
 end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           rem   but same pattern)
-          if playerX[CPF_playerIndex] < rowYPosition then let playerX[CPF_playerIndex] = rowYPosition
-          if playerX[CPF_playerIndex] < rowYPosition then let playerSubpixelX[CPF_playerIndex] = rowYPosition
-          if playerX[CPF_playerIndex] < rowYPosition then let playerSubpixelX_lo[CPF_playerIndex] = 0
+          if playerX[currentPlayer] < rowYPosition then let playerX[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX_lo[currentPlayer] = 0
           
           rem ==========================================================
           rem CHECK RIGHT COLLISION
@@ -499,7 +498,7 @@ end
           
 PFBlockRight
           rem Block rightward movement: zero X velocity if positive
-          if playerVelocityX[CPF_playerIndex] > 0 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
+          if playerVelocityX[currentPlayer] > 0 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityX_lo[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (temp6 - 1) by 4 using bit shift (2 left shifts)
           let rowYPosition = temp6 - 1
@@ -513,9 +512,9 @@ PFBlockRight
 end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           rem   but same pattern)
-          if playerX[CPF_playerIndex] > rowYPosition then let playerX[CPF_playerIndex] = rowYPosition
-          if playerX[CPF_playerIndex] > rowYPosition then let playerSubpixelX[CPF_playerIndex] = rowYPosition
-          if playerX[CPF_playerIndex] > rowYPosition then let playerSubpixelX_lo[CPF_playerIndex] = 0
+          if playerX[currentPlayer] > rowYPosition then let playerX[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX_lo[currentPlayer] = 0
           
           rem ==========================================================
           rem CHECK UP COLLISION
@@ -541,7 +540,7 @@ PFCheckUp
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
           rem Check for negative velocity using two's complement (values ≥ 128 are negative)
-          if playerVelocityY[CPF_playerIndex] & $80 then let playerVelocityY[CPF_playerIndex] = 0 : let playerVelocityY_lo[CPF_playerIndex] = 0
+          if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityY_lo[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
           let rowYPosition = playfieldRow + 1
@@ -567,9 +566,9 @@ DBPF_MultiplyBy8
             sta rowYPosition
 end
 DBPF_MultiplyDone
-          if playerY[CPF_playerIndex] < rowYPosition then let playerY[CPF_playerIndex] = rowYPosition
-          if playerY[CPF_playerIndex] < rowYPosition then let playerSubpixelY[CPF_playerIndex] = rowYPosition
-          if playerY[CPF_playerIndex] < rowYPosition then let playerSubpixelY_lo[CPF_playerIndex] = 0
+          if playerY[currentPlayer] < rowYPosition then let playerY[currentPlayer] = rowYPosition
+          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY[currentPlayer] = rowYPosition
+          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_lo[currentPlayer] = 0
           
           rem ==========================================================
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity,
@@ -601,7 +600,7 @@ PFBlockDown
           rem Block downward movement: zero Y velocity if positive
           rem This should already be handled in PhysicsApplyGravity, but
           rem   enforce here too
-          if playerVelocityY[CPF_playerIndex] > 0 then let playerVelocityY[CPF_playerIndex] = 0 : let playerVelocityY_lo[CPF_playerIndex] = 0
+          if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityY_lo[currentPlayer] = 0
           
 PFCheckDone
           return

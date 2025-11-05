@@ -46,8 +46,9 @@ GetBWMode
           return
 
 LoadArenaByIndex
-          rem Validate arena index (0-15)
-          if LA_arenaIndex > MaxArenaID then let LA_arenaIndex = 0
+          rem Validate arena index (0-31 supported by pointer tables)
+          rem Note: Only 0-15 are selectable (MaxArenaID), but tables support 0-31
+          if LA_arenaIndex > 31 then let LA_arenaIndex = 0
           
           rem Load playfield pointers from tables using index
           asm

@@ -245,8 +245,8 @@ ApplyDamage
 
 All source files should begin with:
 ```basic
-rem ChaosFight - Source/Path/To/File.bas
-rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem ChaosFight - Source/Path/To/File.bas
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 ```
 
 ---
@@ -324,7 +324,7 @@ dim temp2 = var10  ; ERROR: Redim in same context
 
 ### Code Blocks
 
-Use **exactly 10 spaces** for indentation of code blocks within subroutines.
+Use **at least 10 spaces** for indentation of code blocks within subroutines.
 
 **Correct:**
 ```basic
@@ -347,7 +347,7 @@ LoadCharacterSprite
 
 - **Labels** (subroutine names) start at column 0 (no indentation)
 - **First line after label** (typically `rem` or `dim`) uses 10 spaces
-- **Remarks** within code blocks use 10 spaces
+- **Remarks** use 10 spaces
 
 **Example:**
 ```basic
@@ -359,6 +359,25 @@ LoadCharacterSprite
           return
 ```
 
+### Additional indentation
+
+- Block-level code elements like **data**, **playfield**, **asm**
+  are indented on their first line to the current level (typically 10
+  spaces) and then their interior is indented an additional 2
+  spaces more (e.g. 12 spaces).
+
+- Code with block extent (typically a **for** loop or similar)
+  contents are indented 4 spaces more than their beginning/ending
+
+**Example:**
+```basic
+          for currentPlayer = 0 to 3
+              for someValue = 0 to 100
+                  gosub Subroutine
+              next
+          next
+```
+
 ---
 
 ## Includes
@@ -366,6 +385,8 @@ LoadCharacterSprite
 ### batariBASIC Files (.bas, .h)
 
 Use **`#include`** (C-style preprocessor) for batariBASIC source files:
+
+Start in column 0
 
 ```basic
 #include "Source/Common/Constants.bas"
@@ -375,12 +396,19 @@ Use **`#include`** (C-style preprocessor) for batariBASIC source files:
 
 ### Assembly Files (.s)
 
-Use **`include`** (assembly directive) for assembly source files, wrapped in `asm` blocks:
+Use **`include`** (assembly directive) for assembly source files.
 
 ```basic
-asm
-include "Source/Generated/Art.AtariAge.s"
-include "Source/Routines/CharacterArtBank2.s"
+          include "SomeFile.s"
+```
+
+When not practical or not allowed, use `#include` (cpp command)
+wrapped in `asm` blocks:
+
+```basic
+          asm
+#include "Source/Generated/Art.AtariAge.s"
+#include "Source/Routines/CharacterArtBank2.s"
 end
 ```
 
@@ -389,7 +417,7 @@ end
 Use **`includesfile`** (batariBASIC directive) for batariBASIC include files:
 
 ```basic
-includesfile multisprite_superchip.inc
+          includesfile multisprite_superchip.inc
 ```
 
 ### Summary
@@ -441,7 +469,7 @@ LoadPlayer0Sprite
           goto LoadCharacterSprite
 ```
 
-**Rationale**: Tail calls don't push the current function onto the call stack. The target function can return directly to the original caller, saving stack space and improving performance on the 6502 processor.
+This cannot be used when the "gosub" is to a cross-bank routine.
 
 ---
 

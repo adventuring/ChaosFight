@@ -37,15 +37,15 @@ LoadSoundNote
           dim LSN_audc = temp6
           dim LSN_audv = temp7
           asm
-          ; Load 4 bytes from stream[pointer]
-          ldy #0
-          lda (SoundEffectPointerL),y  ; Load AUDCV
-          sta temp2
-          iny
-          lda (SoundEffectPointerL),y  ; Load AUDF
-          sta temp3
-          iny
-          lda (SoundEffectPointerL),y  ; Load Duration
+            ; Load 4 bytes from stream[pointer]
+            ldy #0
+            lda (SoundEffectPointerL),y  ; Load AUDCV
+            sta temp2
+            iny
+            lda (SoundEffectPointerL),y  ; Load AUDF
+            sta temp3
+            iny
+            lda (SoundEffectPointerL),y  ; Load Duration
           sta temp4
           iny
           lda (SoundEffectPointerL),y  ; Load Delay

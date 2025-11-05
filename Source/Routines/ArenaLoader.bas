@@ -66,14 +66,14 @@ LoadArena0
           rem Load Arena 1: The Pit
           rem Set playfield pointers to Arena1Playfield data
           asm
-          lda #<Arena1Playfield
-          sta PF1pointer
-          lda #>Arena1Playfield
-          sta PF1pointer+1
-          lda #<Arena1Playfield
-          sta PF2pointer
-          lda #>Arena1Playfield
-          sta PF2pointer+1
+            lda #<Arena1Playfield
+              sta PF1pointer
+            lda #>Arena1Playfield
+              sta PF1pointer+1
+            lda #<Arena1Playfield
+              sta PF2pointer
+            lda #>Arena1Playfield
+              sta PF2pointer+1
           end
           if LA_bwMode then LoadArena0BW
           pfcolors Arena1ColorsColor
@@ -85,14 +85,14 @@ LoadArena0BW
 LoadArena1
           rem Load Arena 2: Battlefield
           asm
-          lda #<Arena2Playfield
-          sta PF1pointer
+            lda #<Arena2Playfield
+            sta PF1pointer
           lda #>Arena2Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena2Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena2Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena1BW
           pfcolors Arena2ColorsColor
@@ -104,14 +104,14 @@ LoadArena1BW
 LoadArena2
           rem Load Arena 3: King of the Hill
           asm
-          lda #<Arena3Playfield
-          sta PF1pointer
+            lda #<Arena3Playfield
+            sta PF1pointer
           lda #>Arena3Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena3Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena3Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena2BW
           pfcolors Arena3ColorsColor
@@ -123,14 +123,14 @@ LoadArena2BW
 LoadArena3
           rem Load Arena 4: The Bridge
           asm
-          lda #<Arena4Playfield
-          sta PF1pointer
+            lda #<Arena4Playfield
+            sta PF1pointer
           lda #>Arena4Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena4Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena4Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena3BW
           pfcolors Arena4ColorsColor
@@ -142,14 +142,14 @@ LoadArena3BW
 LoadArena4
           rem Load Arena 5: Corner Trap
           asm
-          lda #<Arena5Playfield
-          sta PF1pointer
+            lda #<Arena5Playfield
+            sta PF1pointer
           lda #>Arena5Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena5Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena5Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena4BW
           pfcolors Arena5ColorsColor
@@ -161,14 +161,14 @@ LoadArena4BW
 LoadArena5
           rem Load Arena 6: Multi-Platform
           asm
-          lda #<Arena6Playfield
-          sta PF1pointer
+            lda #<Arena6Playfield
+            sta PF1pointer
           lda #>Arena6Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena6Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena6Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena5BW
           pfcolors Arena6ColorsColor
@@ -180,14 +180,14 @@ LoadArena5BW
 LoadArena6
           rem Load Arena 7: The Gauntlet
           asm
-          lda #<Arena7Playfield
-          sta PF1pointer
+            lda #<Arena7Playfield
+            sta PF1pointer
           lda #>Arena7Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena7Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena7Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena6BW
           pfcolors Arena7ColorsColor
@@ -199,14 +199,14 @@ LoadArena6BW
 LoadArena7
           rem Load Arena 8: Scattered Blocks
           asm
-          lda #<Arena8Playfield
-          sta PF1pointer
+            lda #<Arena8Playfield
+            sta PF1pointer
           lda #>Arena8Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena8Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena8Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena7BW
           pfcolors Arena8ColorsColor
@@ -218,14 +218,14 @@ LoadArena7BW
 LoadArena8
           rem Load Arena 9: The Deep Pit
           asm
-          lda #<Arena9Playfield
-          sta PF1pointer
+            lda #<Arena9Playfield
+            sta PF1pointer
           lda #>Arena9Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena9Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena9Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena8BW
           pfcolors Arena9ColorsColor
@@ -237,14 +237,14 @@ LoadArena8BW
 LoadArena9
           rem Load Arena 10: Sky Battlefield
           asm
-          lda #<Arena10Playfield
-          sta PF1pointer
+            lda #<Arena10Playfield
+            sta PF1pointer
           lda #>Arena10Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena10Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena10Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena9BW
           pfcolors Arena10ColorsColor
@@ -256,14 +256,14 @@ LoadArena9BW
 LoadArena10
           rem Load Arena 11: Floating Platforms
           asm
-          lda #<Arena11Playfield
-          sta PF1pointer
+            lda #<Arena11Playfield
+            sta PF1pointer
           lda #>Arena11Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena11Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena11Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena10BW
           pfcolors Arena11ColorsColor
@@ -275,14 +275,14 @@ LoadArena10BW
 LoadArena11
           rem Load Arena 12: The Chasm
           asm
-          lda #<Arena12Playfield
-          sta PF1pointer
+            lda #<Arena12Playfield
+            sta PF1pointer
           lda #>Arena12Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena12Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena12Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena11BW
           pfcolors Arena12ColorsColor
@@ -294,14 +294,14 @@ LoadArena11BW
 LoadArena12
           rem Load Arena 13: Fortress Walls
           asm
-          lda #<Arena13Playfield
-          sta PF1pointer
+            lda #<Arena13Playfield
+            sta PF1pointer
           lda #>Arena13Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena13Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena13Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena12BW
           pfcolors Arena13ColorsColor
@@ -313,14 +313,14 @@ LoadArena12BW
 LoadArena13
           rem Load Arena 14: Floating Islands
           asm
-          lda #<Arena14Playfield
-          sta PF1pointer
+            lda #<Arena14Playfield
+            sta PF1pointer
           lda #>Arena14Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena14Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena14Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena13BW
           pfcolors Arena14ColorsColor
@@ -332,14 +332,14 @@ LoadArena13BW
 LoadArena14
           rem Load Arena 15: The Labyrinth
           asm
-          lda #<Arena15Playfield
-          sta PF1pointer
+            lda #<Arena15Playfield
+            sta PF1pointer
           lda #>Arena15Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena15Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena15Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena14BW
           pfcolors Arena15ColorsColor
@@ -351,14 +351,14 @@ LoadArena14BW
 LoadArena15
           rem Load Arena 16: Danger Zone
           asm
-          lda #<Arena16Playfield
-          sta PF1pointer
+            lda #<Arena16Playfield
+            sta PF1pointer
           lda #>Arena16Playfield
-          sta PF1pointer+1
+            sta PF1pointer+1
           lda #<Arena16Playfield
-          sta PF2pointer
+            sta PF2pointer
           lda #>Arena16Playfield
-          sta PF2pointer+1
+            sta PF2pointer+1
           end
           if LA_bwMode then LoadArena15BW
           pfcolors Arena16ColorsColor

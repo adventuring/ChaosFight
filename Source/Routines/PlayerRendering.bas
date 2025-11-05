@@ -381,9 +381,9 @@ Player1ColorDone
           rem Set sprite reflection based on facing direction (bit 3:
           rem   0=left, 1=right) - matches REFP0 bit 3 for direct copy
           asm
-          lda playerState
-          and #PlayerStateBitFacing
-          sta REFP0
+            lda playerState
+            and #PlayerStateBitFacing
+            sta REFP0
           end
 
           rem Load sprite data from character definition
@@ -479,15 +479,15 @@ Player3ColorDone
           rem Set sprite reflection based on facing direction
           rem NUSIZ reflection uses bit 6 - preserve other bits (size, etc.)
           asm
-          lda NewNUSIZ+2
-          and #NUSIZMaskReflection
-          sta NewNUSIZ+2
-          lda playerState+2
-          and #PlayerStateBitFacing
-          beq .Player3ReflectionDone
-          lda NewNUSIZ+2
-          ora #PlayerStateBitFacingNUSIZ
-          sta NewNUSIZ+2
+            lda NewNUSIZ+2
+            and #NUSIZMaskReflection
+            sta NewNUSIZ+2
+            lda playerState+2
+            and #PlayerStateBitFacing
+            beq .Player3ReflectionDone
+            lda NewNUSIZ+2
+            ora #PlayerStateBitFacingNUSIZ
+            sta NewNUSIZ+2
 .Player3ReflectionDone
           end
 
@@ -533,15 +533,15 @@ Player4ColorDone
           rem Set sprite reflection based on facing direction
           rem NUSIZ reflection uses bit 6 - preserve other bits (size, etc.)
           asm
-          lda NewNUSIZ+3
-          and #NUSIZMaskReflection
-          sta NewNUSIZ+3
-          lda playerState+3
-          and #PlayerStateBitFacing
-          beq .Player4ReflectionDone
-          lda NewNUSIZ+3
-          ora #PlayerStateBitFacingNUSIZ
-          sta NewNUSIZ+3
+            lda NewNUSIZ+3
+            and #NUSIZMaskReflection
+            sta NewNUSIZ+3
+            lda playerState+3
+            and #PlayerStateBitFacing
+            beq .Player4ReflectionDone
+            lda NewNUSIZ+3
+            ora #PlayerStateBitFacingNUSIZ
+            sta NewNUSIZ+3
 .Player4ReflectionDone
           end
 

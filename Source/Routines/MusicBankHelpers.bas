@@ -50,15 +50,15 @@ LoadMusicNote0
           dim LMN0_audc = temp6
           dim LMN0_audv = temp7
           asm
-          ; Load 4 bytes from stream[pointer]
-          ldy #0
-          lda (musicVoice0PointerL),y  ; Load AUDCV
-          sta temp2
-          iny
-          lda (musicVoice0PointerL),y  ; Load AUDF
-          sta temp3
-          iny
-          lda (musicVoice0PointerL),y  ; Load Duration
+            ; Load 4 bytes from stream[pointer]
+            ldy #0
+            lda (musicVoice0PointerL),y  ; Load AUDCV
+            sta temp2
+            iny
+            lda (musicVoice0PointerL),y  ; Load AUDF
+            sta temp3
+            iny
+            lda (musicVoice0PointerL),y  ; Load Duration
           sta temp4
           iny
           lda (musicVoice0PointerL),y  ; Load Delay

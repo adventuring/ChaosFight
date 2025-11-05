@@ -116,16 +116,16 @@ SetPlayerCharacterArtBank2:
     lda temp5
     cmp #0
     bne .CheckPlayer1
-    jmp .Player0
+    jmp .SetPlayer0Art
 .CheckPlayer1:
     cmp #1
     bne .CheckPlayer2
-    jmp .Player1
+    jmp .SetPlayer1Art
 .CheckPlayer2:
     cmp #2
-    bne .Player3
-    jmp .Player2
-.Player0:
+    bne .SetPlayer3Art
+    jmp .SetPlayer2Art
+.SetPlayer0Art:
     ; Game Player 0 -> P0 sprite
     lda temp4
     sta player0pointerlo
@@ -135,7 +135,7 @@ SetPlayerCharacterArtBank2:
     sta player0height
     rts
     
-.Player1:
+.SetPlayer1Art:
     ; Game Player 1 -> P1 (_P1 virtual sprite)
     lda temp4
     sta player1pointerlo
@@ -145,7 +145,7 @@ SetPlayerCharacterArtBank2:
     sta player1height
     rts
     
-.Player2:
+.SetPlayer2Art:
     ; Game Player 2 -> P2 virtual sprite
     lda temp4
     sta player2pointerlo
@@ -155,7 +155,7 @@ SetPlayerCharacterArtBank2:
     sta player2height
     rts
     
-.Player3:
+.SetPlayer3Art:
     ; Game Player 3 -> P3 virtual sprite
     lda temp4
     sta player3pointerlo

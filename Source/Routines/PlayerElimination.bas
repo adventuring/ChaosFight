@@ -33,16 +33,16 @@ CheckAllPlayerEliminations
           dim CAPE_playerIndex = temp1
           rem Check each player for elimination
           let CAPE_playerIndex = 0
-          let temp1 = CAPE_playerIndex
+          let CPE_playerIndex = CAPE_playerIndex
           gosub CheckPlayerElimination
           let CAPE_playerIndex = 1
-          let temp1 = CAPE_playerIndex
+          let CPE_playerIndex = CAPE_playerIndex
           gosub CheckPlayerElimination  
           let CAPE_playerIndex = 2
-          let temp1 = CAPE_playerIndex
+          let CPE_playerIndex = CAPE_playerIndex
           gosub CheckPlayerElimination
           let CAPE_playerIndex = 3
-          let temp1 = CAPE_playerIndex
+          let CPE_playerIndex = CAPE_playerIndex
           gosub CheckPlayerElimination
           
           rem Count remaining players and check game end (inline
@@ -56,7 +56,16 @@ CheckAllPlayerEliminations
           rem CHECK SINGLE PLAYER ELIMINATION
           rem ==========================================================
           rem Check if specified player should be eliminated.
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: temp1 = player index (0-3) → CPE_playerIndex
+          rem
+          rem MUTATES:
+          rem   temp2 = CPE_isEliminated / CPE_health (reused, internal)
+          rem   temp6 = CPE_bitMask (internal)
+          rem WARNING: temp2 and temp6 are mutated during execution. Do not
+          rem   use these temp variables after calling this subroutine.
+          rem
+          rem EFFECTS:
+          rem   Sets playersEliminated bit flags
 CheckPlayerElimination
           dim CPE_playerIndex = temp1
           dim CPE_bitMask = temp6

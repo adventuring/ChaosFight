@@ -406,8 +406,10 @@ EnhancedJumpDone0
           rem Use Shamone jump for MethHound
           let temp4 = EJ_characterType
           if temp4 < 8 then on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump
-          if temp4 >= 8 then temp4 = temp4 - 8
+          if temp4 < 8 then goto DoneLeftPortJumpDispatch
+          temp4 = temp4 - 8
           on temp4 goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+DoneLeftPortJumpDispatch
 InputSkipLeftPortJump
 
           
@@ -422,8 +424,10 @@ InputSkipLeftPortJump
             rem Use Shamone guard for MethHound
             let temp4 = GDIL_characterType
             if temp4 < 8 then on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown
-            if temp4 >= 8 then temp4 = temp4 - 8
+            if temp4 < 8 then goto DoneLeftPortDownDispatch
+            temp4 = temp4 - 8
             on temp4 goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
+DoneLeftPortDownDispatch
             goto GuardInputDoneLeft
           
           rem DOWN released - check for early guard release
@@ -458,8 +462,10 @@ GuardInputDoneLeft
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound
           if temp4 < 8 then on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack
-          if temp4 >= 8 then temp4 = temp4 - 8
+          if temp4 < 8 then goto DoneLeftPortAttackDispatch
+          temp4 = temp4 - 8
           on temp4 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+DoneLeftPortAttackDispatch
 InputSkipLeftPortAttack
           
           
@@ -698,8 +704,10 @@ EnhancedJumpDone1
           if temp4 = 31 then temp4 = 15
           rem Use Shamone jump for MethHound
           if temp4 < 8 then on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump
-          if temp4 >= 8 then temp4 = temp4 - 8
+          if temp4 < 8 then goto DoneRightPortJumpDispatch
+          temp4 = temp4 - 8
           on temp4 goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+DoneRightPortJumpDispatch
 InputSkipRightPortJump
 
           
@@ -711,8 +719,10 @@ InputSkipRightPortJump
             if temp4 = 31 then temp4 = 15
             rem Use Shamone guard for MethHound
             if temp4 < 8 then on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown
-            if temp4 >= 8 then temp4 = temp4 - 8
+            if temp4 < 8 then goto DoneRightPortDownDispatch
+            temp4 = temp4 - 8
             on temp4 goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
+DoneRightPortDownDispatch
             goto GuardInputDoneRight
           
           rem DOWN released - check for early guard release
@@ -747,8 +757,10 @@ GuardInputDoneRight
           if temp4 = 31 then temp4 = 15
           rem Use Shamone attack for MethHound
           if temp4 < 8 then on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack
-          if temp4 >= 8 then temp4 = temp4 - 8
+          if temp4 < 8 then goto DoneRightPortAttackDispatch
+          temp4 = temp4 - 8
           on temp4 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+DoneRightPortAttackDispatch
 InputSkipRightPortAttack
           
           

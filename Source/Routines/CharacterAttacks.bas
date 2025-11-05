@@ -294,7 +294,9 @@ DispatchCharacterAttack
           if temp2 = 31 then temp2 = 15
           rem Use Shamone attack for MethHound
           if temp2 < 8 then on temp2 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack
-          if temp2 >= 8 then temp2 = temp2 - 8
+          if temp2 < 8 then goto DoneCharacterAttackDispatch
+          temp2 = temp2 - 8
           on temp2 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+DoneCharacterAttackDispatch
           rem Default to Bernie attack if invalid character
           goto BernieAttack

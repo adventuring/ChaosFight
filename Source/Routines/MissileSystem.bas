@@ -540,6 +540,7 @@ HandleKnightGuyMissile
           
 KnightGuyAttackActive
           rem Get current animation frame within Execute sequence (0-7)
+          rem Reuse temp6 (HKG_animationState no longer needed)
           let HKG_animationFrame = currentAnimationFrame_R[HKG_playerIndex]
           
           rem Calculate sword swing offset based on animation frame
@@ -550,6 +551,7 @@ KnightGuyAttackActive
           rem Frames 4-7: Returning to start
           rem Calculate return offset: (7 - frame) * 1 pixel
           rem Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1 pixel, Frame 7: 0 pixels
+          rem Reuse temp6 for sword offset calculation
           let HKG_swordOffset = 7 - HKG_animationFrame
           goto KnightGuySetPosition
           
@@ -557,6 +559,7 @@ KnightGuySwingOut
           rem Frames 0-3: Moving away from player
           rem Calculate swing offset: (frame + 1) pixels
           rem Frame 0: 1 pixel, Frame 1: 2 pixels, Frame 2: 3 pixels, Frame 3: 4 pixels
+          rem Reuse temp6 for sword offset calculation
           let HKG_swordOffset = HKG_animationFrame + 1
           
 KnightGuySetPosition

@@ -116,7 +116,7 @@ DWS_Position1Player
           let playerX[0] = 80
           let playerY[0] = 192
           rem Load winner sprite
-          let LCS_characterIndex = playerChar[DWS_winnerIndex]
+          let currentCharacter = playerChar[DWS_winnerIndex]
           let LCS_animationFrame = 0
           rem Animation frame 0 (idle)
           let LCS_playerNumber = 0
@@ -133,7 +133,7 @@ DWS_Position2Players
           rem Winner (P0)
           let playerX[0] = 80
           let playerY[0] = 192
-          let LCS_characterIndex = playerChar[DWS_winnerIndex]
+          let currentCharacter = playerChar[DWS_winnerIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 0
           gosub bank10 LoadCharacterSprite
@@ -142,7 +142,7 @@ DWS_Position2Players
           if DWS_secondIndex = 255 then DWS_Hide2Player
           let playerX[1] = 40
           let playerY[1] = 192
-          let LCS_characterIndex = playerChar[DWS_secondIndex]
+          let currentCharacter = playerChar[DWS_secondIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 1
           gosub bank10 LoadCharacterSprite
@@ -161,7 +161,7 @@ DWS_Position3Players
           let playerX[0] = 80
           let playerY[0] = 128
           rem Row 16 = 128 pixels (16 * 8)
-          let LCS_characterIndex = playerChar[DWS_winnerIndex]
+          let currentCharacter = playerChar[DWS_winnerIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 0
           gosub bank10 LoadCharacterSprite
@@ -170,7 +170,7 @@ DWS_Position3Players
           if DWS_secondIndex = 255 then DWS_Hide3Player2
           let playerX[1] = 40
           let playerY[1] = 192
-          let LCS_characterIndex = playerChar[DWS_secondIndex]
+          let currentCharacter = playerChar[DWS_secondIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 1
           gosub bank10 LoadCharacterSprite
@@ -183,7 +183,7 @@ DWS_Hide3Player2Done
           if DWS_thirdIndex = 255 then DWS_Hide3Player3
           let playerX[2] = 120
           let playerY[2] = 192
-          let LCS_characterIndex = playerChar[DWS_thirdIndex]
+          let currentCharacter = playerChar[DWS_thirdIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 2
           gosub bank10 LoadCharacterSprite

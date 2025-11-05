@@ -41,13 +41,12 @@ end
 
 
           rem Load sprite data for a character based on character index
-          rem Input: temp1 = character index (0-31), temp2 = animation
-          rem   frame (0-7)
+          rem Input: currentCharacter = character index (0-31) (global variable)
+          rem        temp2 = animation frame (0-7)
           rem        temp3 = player number (0-3)
           rem Output: Sprite data loaded into appropriate player
           rem   register
 LoadCharacterSprite
-          dim LCS_characterIndex = temp1
           dim LCS_animationFrame = temp2
           dim LCS_playerNumber = temp3
           dim LCS_animationAction = temp3
@@ -56,12 +55,10 @@ LoadCharacterSprite
           dim LCS_spriteIndex = temp6
           rem Validate character index
           rem Inline ValidateCharacterIndex
-          dim VCI_characterIndex = temp1
           dim VCI_isValid = temp5
-          let VCI_characterIndex = LCS_characterIndex
           rem Check if character index is within valid range
           rem   (0-MaxCharacter for current implementation)
-          if VCI_characterIndex > MaxCharacter then ValidateInvalidCharacterInline
+          if currentCharacter > MaxCharacter then ValidateInvalidCharacterInline
           let VCI_isValid = 1
           goto ValidateCharacterDoneInline
 ValidateInvalidCharacterInline
@@ -73,19 +70,19 @@ ValidateCharacterDoneInline
           
           rem Check if character is special placeholder
           rem tail call
-          if LCS_characterIndex = 255 then let LCS_spriteIndex = SpriteNo : goto LoadSpecialSprite
+          if currentCharacter = 255 then let LCS_spriteIndex = SpriteNo : goto LoadSpecialSprite
           rem NoCharacter = 255
           
           rem tail call
-          if LCS_characterIndex = 254 then let LCS_spriteIndex = SpriteCPU : goto LoadSpecialSprite
+          if currentCharacter = 254 then let LCS_spriteIndex = SpriteCPU : goto LoadSpecialSprite
           rem CPUCharacter = 254
           
           rem tail call
-          if LCS_characterIndex = 253 then let LCS_spriteIndex = SpriteQuestionMark : goto LoadSpecialSprite
+          if currentCharacter = 253 then let LCS_spriteIndex = SpriteQuestionMark : goto LoadSpecialSprite
           rem RandomCharacter = 253
           
           rem Use character art location system for sprite loading
-          rem Input: characterIndex = character index, animationFrame =
+          rem Input: currentCharacter = character index (global variable), animationFrame =
           rem   animation frame
           rem playerNumber = player number OR playerNumberAlt = player
           rem   number (caller provides)
@@ -105,7 +102,7 @@ ValidateCharacterDoneInline
           rem animation action/sequence 0 = idle
           rem playerNumberAlt already has player number from caller
           rem Set temp variables for cross-bank call
-          let temp1 = LCS_characterIndex
+          let temp1 = currentCharacter
           let temp2 = LCS_animationFrame
           let temp3 = LCS_animationAction
           let temp4 = LCS_playerNumberAlt
@@ -291,45 +288,24 @@ end
           rem   global frame counter
 LoadPlayerSprite
           dim LPS_playerNumber = temp4
-          dim LPS_characterIndex = temp1
           rem Get character index for this player from playerChar array
-          rem Use skip-over pattern to avoid complex compound statements
-          if !LPS_playerNumber then LoadPlayerSpriteP0
-          if LPS_playerNumber = 1 then LoadPlayerSpriteP1
-          if LPS_playerNumber = 2 then LoadPlayerSpriteP2
-          if LPS_playerNumber = 3 then LoadPlayerSpriteP3
-          return
-          
-LoadPlayerSpriteP0
-          let LPS_characterIndex = playerChar[0]
-          goto LoadPlayerSpriteDispatch
-          
-LoadPlayerSpriteP1
-          let LPS_characterIndex = playerChar[1]
-          goto LoadPlayerSpriteDispatch
-          
-LoadPlayerSpriteP2
-          let LPS_characterIndex = playerChar[2]
-          goto LoadPlayerSpriteDispatch
-          
-LoadPlayerSpriteP3
-          let LPS_characterIndex = playerChar[3]
+          rem Use currentPlayer global variable (set by caller)
+          rem Set currentCharacter from playerChar[currentPlayer]
+          let currentCharacter = playerChar[currentPlayer]
           goto LoadPlayerSpriteDispatch
           
 LoadPlayerSpriteDispatch
-          dim LPSD_characterIndex = temp1
           dim LPSD_animationFrame = temp2
           dim LPSD_animationAction = temp3
           dim LPSD_playerNumber = temp4
-          rem characterIndex = character index, animationFrame =
+          rem currentCharacter = character index (global variable), animationFrame =
           rem   frame (10fps counter), animationAction = action,
           rem   playerNumber = player
           rem Call character art location system (in bank10)
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
           rem   temp3=action, temp4=player
-          rem temp variables are already set by LoadPlayerSpriteP0-P3
-          rem Just ensure temp1 is set from LPS_characterIndex
-          let temp1 = LPS_characterIndex
+          rem Set temp1 from currentCharacter (already set from playerChar[currentPlayer])
+          let temp1 = currentCharacter
           gosub bank10 LocateCharacterArt
           return
 

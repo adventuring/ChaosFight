@@ -385,13 +385,13 @@ Player1ColorDone
 end
 
           rem Load sprite data from character definition
-          let SPS_charIndex = playerChar[0] 
+          let currentCharacter = playerChar[0] 
           rem Character index
           let SPS_animFrame = 0 
           rem Animation frame (0=idle, 1=running)
           let SPS_playerNum = 0 
           rem Player number (0=Player 1)
-          rem temp1, temp2, temp3 already set via aliases (SPS_charIndex, SPS_animFrame, SPS_playerNum)
+          rem temp2, temp3 already set via aliases (SPS_animFrame, SPS_playerNum)
           gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
@@ -431,13 +431,13 @@ Player2ColorDone
 end
 
           rem Load sprite data from character definition
-          let SPS_charIndex = playerChar[1] 
+          let currentCharacter = playerChar[1] 
           rem Character index
           let SPS_animFrame = 0 
           rem Animation frame (0=idle, 1=running)
           let SPS_playerNum = 1 
           rem Player number (1=Player 2)
-          rem temp1, temp2, temp3 already set via aliases (SPS_charIndex, SPS_animFrame, SPS_playerNum)
+          rem temp2, temp3 already set via aliases (SPS_animFrame, SPS_playerNum)
           gosub bank10 LoadCharacterSprite
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
@@ -482,13 +482,13 @@ Player3ColorDone
 end
 
           rem Load sprite data from character definition
-          let SPS_charIndex = playerChar[2]
+          let currentCharacter = playerChar[2]
           rem Character index
           let SPS_animFrame = 0
           rem Animation frame (0=idle, 1=running)
           let SPS_playerNum = 2 
           rem Player number (2=Player 3)
-          rem temp1, temp2, temp3 already set via aliases (SPS_charIndex, SPS_animFrame, SPS_playerNum)
+          rem temp2, temp3 already set via aliases (SPS_animFrame, SPS_playerNum)
           gosub bank10 LoadCharacterSprite
           
 DonePlayer3Sprite
@@ -532,13 +532,13 @@ Player4ColorDone
 end
 
           rem Load sprite data from character definition
-          let SPS_charIndex = playerChar[3]
+          let currentCharacter = playerChar[3]
           rem Character index
           let SPS_animFrame = 0
           rem Animation frame (0=idle, 1=running)
           let SPS_playerNum = 3 
           rem Player number (3=Player 4)
-          rem temp1, temp2, temp3 already set via aliases (SPS_charIndex, SPS_animFrame, SPS_playerNum)
+          rem temp2, temp3 already set via aliases (SPS_animFrame, SPS_playerNum)
           gosub bank10 LoadCharacterSprite
           
 DonePlayer4Sprite

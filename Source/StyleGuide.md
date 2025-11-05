@@ -371,7 +371,7 @@ dim selectedArena_W = w014     ; Only accessed during arena select
 
 **DO NOT** "redim" variables (reuse the same memory location for different purposes) except:
 - **Admin Mode vs Game Mode**: Variables can be redimmed between these two contexts (documented in `Variables.bas`)
-- **Example**: `var24`-`var27` used for arena select in Admin Mode, `playerVelocityX_lo` in Game Mode
+- **Example**: `var24`-`var27` used for arena select in Admin Mode, `playerVelocityXL` in Game Mode
 
 **Forbidden:**
 ```basic

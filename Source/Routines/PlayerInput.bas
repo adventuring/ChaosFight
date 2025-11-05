@@ -21,7 +21,7 @@
           rem PlayerChar[0-3] - Character type indices (0-MaxCharacter)
           rem playerVelocityX[0-3] - Horizontal velocity (8.8
           rem   fixed-point)
-          rem playerVelocityX_lo[0-3] - Horizontal velocity fractional
+          rem playerVelocityXL[0-3] - Horizontal velocity fractional
           rem   part
           rem   ControllerStatus - Packed controller detection status
           rem   qtcontroller - Multiplexing state (0=P1/P2, 1=P3/P4)
@@ -190,14 +190,14 @@ InputHandleLeftPortPlayer
           rem   complement = -1)
           if !joy0left then goto DoneLeftMovement
           let playerVelocityX[IHLP_playerIndex] = 255
-          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let playerVelocityXL[IHLP_playerIndex] = 0
           gosub ShouldPreserveFacing
           if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & (255 - PlayerStateBitFacing)
 DoneLeftMovement
           rem Right movement: set positive velocity
           if !joy0right then goto DoneRightMovement
           let playerVelocityX[IHLP_playerIndex] = 1
-          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let playerVelocityXL[IHLP_playerIndex] = 0
           gosub ShouldPreserveFacing
           if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
 DoneRightMovement
@@ -251,7 +251,7 @@ MoveLeftOK
           rem   width)
           let playerVelocityX[IHLP_playerIndex] = 255
           rem -1 in 8-bit two’s complement: 256 - 1 = 255
-          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let playerVelocityXL[IHLP_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -297,7 +297,7 @@ CheckRightMovement
 MoveRightOK
           rem Apply rightward velocity impulse
           let playerVelocityX[IHLP_playerIndex] = 1
-          let playerVelocityX_lo[IHLP_playerIndex] = 0
+          let playerVelocityXL[IHLP_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -516,7 +516,7 @@ InputHandleRightPortPlayer
           rem Apply leftward velocity impulse
           let playerVelocityX[temp1] = 255
           rem -1 in 8-bit two's complement: 256 - 1 = 255
-          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -526,7 +526,7 @@ DoneLeftMovementRight
           if !joy1right then goto DoneRightMovementRight
           rem Apply rightward velocity impulse
           let playerVelocityX[temp1] = 1
-          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -575,7 +575,7 @@ MoveLeftOKRight
           rem   width)
           let playerVelocityX[temp1] = 255
           rem -1 in 8-bit two’s complement: 256 - 1 = 255
-          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -614,7 +614,7 @@ MoveRightOKRight
           rem Apply rightward velocity impulse (double-width sprite:
           rem   16px width)
           let playerVelocityX[temp1] = 1
-          let playerVelocityX_lo[temp1] = 0
+          let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
           gosub ShouldPreserveFacing

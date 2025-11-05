@@ -824,11 +824,11 @@ end
           rem Minimum 1 pixel knockback even for heaviest characters
 WeightBasedKnockbackApply
           rem Apply scaled knockback impulse to velocity (not momentum)
-          if temp2 < playerX[temp4] then let playerVelocityX[temp4] = playerVelocityX[temp4] + impulseStrength : let playerVelocityX_lo[temp4] = 0 : goto KnockbackDone 
+          if temp2 < playerX[temp4] then let playerVelocityX[temp4] = playerVelocityX[temp4] + impulseStrength : let playerVelocityXL[temp4] = 0 : goto KnockbackDone 
           rem Missile from left, push right (positive velocity)
           let playerVelocityX[temp4] = playerVelocityX[temp4] - impulseStrength
           rem Missile from right, push left (negative velocity)
-          let playerVelocityX_lo[temp4] = 0
+          let playerVelocityXL[temp4] = 0
           rem Zero subpixel when applying knockback impulse
 KnockbackDone
           

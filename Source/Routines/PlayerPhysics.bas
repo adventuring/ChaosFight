@@ -102,7 +102,7 @@ GravityCheckRoboTitoDone
           rem   acceleration)
           rem Check if velocity exceeds terminal velocity (positive =
           rem   downward)
-          if playerVelocityY[PAG_playerIndex] > TerminalVelocity then let playerVelocityY[PAG_playerIndex] = TerminalVelocity : let playerVelocityY_lo[PAG_playerIndex] = 0
+          if playerVelocityY[PAG_playerIndex] > TerminalVelocity then let playerVelocityY[PAG_playerIndex] = TerminalVelocity : let playerVelocityYL[PAG_playerIndex] = 0
           
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
@@ -145,7 +145,7 @@ end
           rem Ground detected! Stop falling and clamp position to ground
           rem Zero Y velocity (stop falling)
           let playerVelocityY[PAG_playerIndex] = 0
-          let playerVelocityY_lo[PAG_playerIndex] = 0
+          let playerVelocityYL[PAG_playerIndex] = 0
           
           rem Calculate Y position for top of ground row using repeated
           rem   addition
@@ -164,7 +164,7 @@ GravityRowCalcDone
           let playerY[PAG_playerIndex] = rowYPosition - PlayerSpriteHeight
           rem Also sync subpixel position
           let playerSubpixelY[PAG_playerIndex] = playerY[PAG_playerIndex]
-          let playerSubpixelY_lo[PAG_playerIndex] = 0
+          let playerSubpixelYL[PAG_playerIndex] = 0
           
           rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           let playerState[PAG_playerIndex] = playerState[PAG_playerIndex] & (255 - PlayerStateBitJumping)
@@ -279,7 +279,7 @@ MomentumRecoveryProcess
           rem Positive velocity: decay by 1
           let playerVelocityX[AMAR_playerIndex] = playerVelocityX[AMAR_playerIndex] - 1
           rem Also decay subpixel if integer velocity is zero
-          if playerVelocityX[AMAR_playerIndex] = 0 then let playerVelocityX_lo[AMAR_playerIndex] = 0
+          if playerVelocityX[AMAR_playerIndex] = 0 then let playerVelocityXL[AMAR_playerIndex] = 0
           goto MomentumRecoveryNext
 MomentumRecoveryDecayNegative
           if playerVelocityX[AMAR_playerIndex] >= 0 then goto MomentumRecoveryNext
@@ -287,7 +287,7 @@ MomentumRecoveryDecayNegative
           rem   negative)
           let playerVelocityX[AMAR_playerIndex] = playerVelocityX[AMAR_playerIndex] + 1
           rem Also decay subpixel if integer velocity is zero
-          if playerVelocityX[AMAR_playerIndex] = 0 then let playerVelocityX_lo[AMAR_playerIndex] = 0
+          if playerVelocityX[AMAR_playerIndex] = 0 then let playerVelocityXL[AMAR_playerIndex] = 0
           
 MomentumRecoveryNext
           rem Next player
@@ -328,24 +328,24 @@ BoundaryCheckBounds
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
           if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150
           if playerX[CBC_playerIndex] < 10 then let playerSubpixelX[CBC_playerIndex] = 150
-          if playerX[CBC_playerIndex] < 10 then let playerSubpixelX_lo[CBC_playerIndex] = 0
+          if playerX[CBC_playerIndex] < 10 then let playerSubpixelXL[CBC_playerIndex] = 0
           if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 10
           if playerX[CBC_playerIndex] > 150 then let playerSubpixelX[CBC_playerIndex] = 10
-          if playerX[CBC_playerIndex] > 150 then let playerSubpixelX_lo[CBC_playerIndex] = 0
+          if playerX[CBC_playerIndex] > 150 then let playerSubpixelXL[CBC_playerIndex] = 0
           
           rem Y position: clamp to screen boundaries (no vertical wrap)
           rem Top boundary: clamp to prevent going above screen
           if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20
           if playerY[CBC_playerIndex] < 20 then let playerSubpixelY[CBC_playerIndex] = 20
-          if playerY[CBC_playerIndex] < 20 then let playerSubpixelY_lo[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] < 20 then let playerSubpixelYL[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] < 20 then let playerVelocityY[CBC_playerIndex] = 0
-          if playerY[CBC_playerIndex] < 20 then let playerVelocityY_lo[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] < 20 then let playerVelocityYL[CBC_playerIndex] = 0
           rem Bottom boundary: clamp to prevent going below screen
           if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 80
           if playerY[CBC_playerIndex] > 80 then let playerSubpixelY[CBC_playerIndex] = 80
-          if playerY[CBC_playerIndex] > 80 then let playerSubpixelY_lo[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] > 80 then let playerSubpixelYL[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] > 80 then let playerVelocityY[CBC_playerIndex] = 0
-          if playerY[CBC_playerIndex] > 80 then let playerVelocityY_lo[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] > 80 then let playerVelocityYL[CBC_playerIndex] = 0
 
 BoundaryNextPlayer
           rem Move to next player
@@ -445,7 +445,7 @@ end
 PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
           rem Check for negative velocity using two's complement (values ≥ 128 are negative)
-          if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityX_lo[currentPlayer] = 0
+          if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
           let rowYPosition = temp6 + 1
@@ -461,7 +461,7 @@ end
           rem   but same pattern)
           if playerX[currentPlayer] < rowYPosition then let playerX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] < rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
-          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX_lo[currentPlayer] = 0
+          if playerX[currentPlayer] < rowYPosition then let playerSubpixelXL[currentPlayer] = 0
           
           rem ==========================================================
           rem CHECK RIGHT COLLISION
@@ -504,7 +504,7 @@ end
           
 PFBlockRight
           rem Block rightward movement: zero X velocity if positive
-          if playerVelocityX[currentPlayer] > 0 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityX_lo[currentPlayer] = 0
+          if playerVelocityX[currentPlayer] > 0 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (temp6 - 1) by 4 using bit shift (2 left shifts)
           let rowYPosition = temp6 - 1
@@ -520,7 +520,7 @@ end
           rem   but same pattern)
           if playerX[currentPlayer] > rowYPosition then let playerX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] > rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
-          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX_lo[currentPlayer] = 0
+          if playerX[currentPlayer] > rowYPosition then let playerSubpixelXL[currentPlayer] = 0
           
           rem ==========================================================
           rem CHECK UP COLLISION
@@ -546,7 +546,7 @@ PFCheckUp
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
           rem Check for negative velocity using two's complement (values ≥ 128 are negative)
-          if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityY_lo[currentPlayer] = 0
+          if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
           let rowYPosition = playfieldRow + 1
@@ -574,7 +574,7 @@ end
 DBPF_MultiplyDone
           if playerY[currentPlayer] < rowYPosition then let playerY[currentPlayer] = rowYPosition
           if playerY[currentPlayer] < rowYPosition then let playerSubpixelY[currentPlayer] = rowYPosition
-          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_lo[currentPlayer] = 0
+          if playerY[currentPlayer] < rowYPosition then let playerSubpixelYL[currentPlayer] = 0
           
           rem ==========================================================
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity,
@@ -606,7 +606,7 @@ PFBlockDown
           rem Block downward movement: zero Y velocity if positive
           rem This should already be handled in PhysicsApplyGravity, but
           rem   enforce here too
-          if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityY_lo[currentPlayer] = 0
+          if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           
 PFCheckDone
           return
@@ -823,8 +823,8 @@ ApproxDivDone_1
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           
           rem Also zero subpixel velocities when applying impulse
-          let playerVelocityX_lo[temp1] = 0
-          let playerVelocityX_lo[temp2] = 0
+          let playerVelocityXL[temp1] = 0
+          let playerVelocityXL[temp2] = 0
           
           goto CollisionNextInner
           
@@ -896,8 +896,8 @@ ApproxDivDone_2
           rem Cap at -4 pixels/frame (252 in two’s complement)
           if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
           
-          let playerVelocityX_lo[temp1] = 0
-          let playerVelocityX_lo[temp2] = 0
+          let playerVelocityXL[temp1] = 0
+          let playerVelocityXL[temp2] = 0
           
           goto CollisionNextInner
           
@@ -988,8 +988,8 @@ ApproxDivDone_3
           if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           
-          let playerVelocityX_lo[temp1] = 0
-          let playerVelocityX_lo[temp2] = 0
+          let playerVelocityXL[temp1] = 0
+          let playerVelocityXL[temp2] = 0
           
           goto CollisionNextInner
           
@@ -1066,8 +1066,8 @@ ApproxDivDone_1Heavier
           rem Cap at -4 pixels/frame (252 in two’s complement)
           if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
           
-          let playerVelocityX_lo[temp1] = 0
-          let playerVelocityX_lo[temp2] = 0
+          let playerVelocityXL[temp1] = 0
+          let playerVelocityXL[temp2] = 0
           
 CollisionNextInner
           let temp2 = temp2 + 1

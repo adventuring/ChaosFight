@@ -150,9 +150,9 @@ HarpySetVerticalVelocity
           rem Set player velocity for diagonal swoop (45° angle:
           rem   4px/frame X, 4px/frame Y) - inlined for performance
           let playerVelocityX[HA_playerIndex] = HA_velocityX
-          let playerVelocityX_lo[HA_playerIndex] = 0
+          let playerVelocityXL[HA_playerIndex] = 0
           let playerVelocityY[HA_playerIndex] = HA_velocityY
-          let playerVelocityY_lo[HA_playerIndex] = 0
+          let playerVelocityYL[HA_playerIndex] = 0
           
           rem Set jumping state so character can move vertically during
           rem   swoop

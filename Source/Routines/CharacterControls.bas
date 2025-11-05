@@ -165,7 +165,7 @@ DragonetJump
           rem Clear above - apply upward velocity impulse
           let playerVelocityY[DJ_playerIndex] = 254
           rem -2 in 8-bit two’s complement: 256 - 2 = 254
-          let playerVelocityY_lo[DJ_playerIndex] = 0
+          let playerVelocityYL[DJ_playerIndex] = 0
           let playerState[DJ_playerIndex] = playerState[DJ_playerIndex] | 4
           rem Set jumping flag for animation
           return
@@ -176,7 +176,7 @@ ZoeRyenJump
           rem   jump)
           let playerVelocityY[temp1] = 244
           rem -12 in 8-bit two’s complement: 256 - 12 = 244
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -186,7 +186,7 @@ FatTonyJump
           rem   jump)
           let playerVelocityY[temp1] = 248
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -231,7 +231,7 @@ HarpyJump
           rem   hover with 1.5 flaps/second
           let playerVelocityY[HJ_playerIndex] = 254
           rem -2 in 8-bit two’s complement: 256 - 2 = 254
-          let playerVelocityY_lo[HJ_playerIndex] = 0
+          let playerVelocityYL[HJ_playerIndex] = 0
           let playerState[HJ_playerIndex] = playerState[HJ_playerIndex] | 4
           rem Set jumping/flying bit for animation
           rem Set flight mode flag for slow gravity
@@ -256,7 +256,7 @@ KnightGuyJump
           rem   jump)
           let playerVelocityY[temp1] = 248
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -299,7 +299,7 @@ FrootyJump
           rem Clear above - apply upward velocity impulse
           let playerVelocityY[FJ_playerIndex] = 254
           rem -2 in 8-bit two’s complement: 256 - 2 = 254
-          let playerVelocityY_lo[FJ_playerIndex] = 0
+          let playerVelocityYL[FJ_playerIndex] = 0
           let playerState[FJ_playerIndex] = playerState[FJ_playerIndex] | 4
           rem Set jumping flag for animation
           return
@@ -315,7 +315,7 @@ NinjishGuyJump
           rem   highest jump)
           let playerVelocityY[temp1] = 243
           rem -13 in 8-bit two’s complement: 256 - 13 = 243
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -325,7 +325,7 @@ PorkChopJump
           rem   jump)
           let playerVelocityY[temp1] = 248
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -335,7 +335,7 @@ RadishGoblinJump
           rem   highest jump)
           let playerVelocityY[temp1] = 243
           rem -13 in 8-bit two’s complement: 256 - 13 = 243
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -509,7 +509,7 @@ UrsuloJump
           rem   jump)
           let playerVelocityY[temp1] = 248
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -518,7 +518,7 @@ ShamoneJump
           rem Apply upward velocity impulse (light character, good jump)
           let playerVelocityY[temp1] = 245
           rem -11 in 8-bit two’s complement: 256 - 11 = 245
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
 
@@ -573,7 +573,7 @@ DragonetDown
           rem Clear below - apply downward velocity impulse
           let playerVelocityY[DD_playerIndex] = 2
           rem +2 pixels/frame downward
-          let playerVelocityY_lo[DD_playerIndex] = 0
+          let playerVelocityYL[DD_playerIndex] = 0
           let playerState[DD_playerIndex] = playerState[DD_playerIndex] & !2
           rem Ensure guard bit clear
           return
@@ -649,7 +649,7 @@ HarpyNormalDown
           rem Clear below - apply downward velocity impulse
           let playerVelocityY[HND_playerIndex] = 2
           rem +2 pixels/frame downward
-          let playerVelocityY_lo[HND_playerIndex] = 0
+          let playerVelocityYL[HND_playerIndex] = 0
           let playerState[HND_playerIndex] = playerState[HND_playerIndex] & !2
           rem Ensure guard bit clear
           return
@@ -695,7 +695,7 @@ FrootyDown
           rem Clear below - apply downward velocity impulse
           let playerVelocityY[FD_playerIndex] = 2
           rem +2 pixels/frame downward
-          let playerVelocityY_lo[FD_playerIndex] = 0
+          let playerVelocityYL[FD_playerIndex] = 0
           let playerState[FD_playerIndex] = playerState[FD_playerIndex] & !2
           rem Ensure guard bit clear
           return
@@ -767,7 +767,7 @@ StandardJump
           rem   rigid body)
           let playerVelocityY[temp1] = 246
           rem -10 in 8-bit two’s complement: 256 - 10 = 246
-          let playerVelocityY_lo[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping bit
           return

@@ -292,8 +292,10 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/
 # PNG files are built from XCF via the %.png: %.xcf pattern rule (line 180)
 # Explicit PNG→XCF dependencies ensure XCF→PNG conversion happens first
 Source/Art/AtariAge.png: Source/Art/AtariAge.xcf
+Source/Art/AtariAgeText.png: Source/Art/AtariAgeText.xcf
 Source/Art/Interworldly.png: Source/Art/Interworldly.xcf
 Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
+Source/Art/Numbers.png: Source/Art/Numbers.xcf
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule

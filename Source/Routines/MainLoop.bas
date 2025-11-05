@@ -20,7 +20,7 @@ MainLoopContinue
           rem   screen
           if gameMode < 3 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
           if gameMode = 7 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
-          rem Other modes (3-6) don't need audio updates here - handled
+          rem Other modes (3-6) don’t need audio updates here - handled
           rem   in their subroutines
 MainLoopDrawScreen
           rem Admin screens (0-2) use titlescreen kernel, others use

@@ -44,7 +44,7 @@
           rem   regardless of runtime window values
           rem Runtime window control is handled via
           rem   titlescreenWindow1/2/3 variables set per screen
-          rem If runtime window = 0, minikernel won't draw (Y register
+          rem If runtime window = 0, minikernel won’t draw (Y register
           rem   will be -1)
           bmp_48x2_1_window = 42  ; AtariAge logo: compile-time default (runtime controls visibility)
           bmp_48x2_2_window = 42  ; AtariAgeText: compile-time default (runtime controls visibility)

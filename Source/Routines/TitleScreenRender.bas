@@ -41,7 +41,7 @@ DrawTitleScreen
           rem Uses 48x2_3 minikernel - set window/height via assembly
           rem   constants
           rem Bitmap data in: Source/Generated/Art.ChaosFight.s
-          rem Other screens' minikernels should have window=0 in their
+          rem Other screens’ minikernels should have window=0 in their
           rem   image files
           rem The titlescreen kernel uses fixed labels
           rem   (bmp_48x2_3_window, etc.)

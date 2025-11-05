@@ -20,7 +20,7 @@
           rem BERNIE (Character 0) - Ground Thump (Area-of-Effect)
           rem ==========================================================
 BernieAttack
-          rem Bernie's "Ground Thump" attack is an area-of-effect that
+          rem Bernie’s "Ground Thump" attack is an area-of-effect that
           rem   hits nearby characters both to his left AND right
           rem   simultaneously, and shoves them rapidly away from him
           rem This is unique - all other melee attacks only hit in

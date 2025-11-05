@@ -256,9 +256,9 @@ GravityDone
           rem Calculate friction reduction (velocity / 64, approximates
           rem   1.56% reduction)
           let velocityCalculation = missileVelocityXCalc
-          rem Check if velocity is negative (two's complement: values >
+          rem Check if velocity is negative (two’s complement: values >
           rem   127 are negative)
-          rem For unsigned bytes, negative values in two's complement
+          rem For unsigned bytes, negative values in two’s complement
           rem   are 128-255
           if velocityCalculation > 127 then FrictionNegative
           rem Positive velocity

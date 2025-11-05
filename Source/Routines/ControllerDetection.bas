@@ -84,7 +84,7 @@ CDP_CheckRightSide
 CDP_NoQuadtari
           
           rem Quadtari not detected in this detection cycle
-          rem (Don't clear existing Quadtari - monotonic upgrade only)
+          rem (Don’t clear existing Quadtari - monotonic upgrade only)
           goto CDP_CheckGenesis
 
 CDP_QuadtariFound

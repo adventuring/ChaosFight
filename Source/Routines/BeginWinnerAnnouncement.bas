@@ -34,7 +34,7 @@ BeginWinnerAnnouncement
           rem   DisplayWinScreen if implemented)
           let displayRank = 0
           
-          rem Get winner's character index
+          rem Get winner’s character index
           let BWA_winnerPlayerIndex = winnerPlayerIndex
           if BWA_winnerPlayerIndex = 0 then let BWA_characterIndex = PlayerChar[0]
           if BWA_winnerPlayerIndex = 1 then let BWA_characterIndex = PlayerChar[1]
@@ -45,7 +45,7 @@ BeginWinnerAnnouncement
           rem   song ID constants)
           let BWA_songID = CharacterThemeSongIndices[BWA_characterIndex]
           
-          rem Start winner's character theme song
+          rem Start winner’s character theme song
           let temp1 = BWA_songID
           gosub bank16 StartMusic
           

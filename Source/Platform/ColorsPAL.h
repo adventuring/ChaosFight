@@ -3,7 +3,7 @@
 /* Note: PAL colors may appear different due to TV standard differences */
 /* Some hues produce different colors on PAL vs NTSC */
 /* 
- * TODO: Verify PAL color values match SkylineTool graphics.lisp +vcs-pal-palette+
+ * TODO: Verify PAL color values match SkylineTool graphics.lisp +vcs-pal-palette+ (Issue #601)
  * Currently ColorsPAL.h uses same values as ColorsNTSC.h, but PAL colors should differ.
  * Reference: SkylineTool/src/graphics.lisp line 297 (+vcs-pal-palette+ - TODO #1225)
  * Issue: #313 - Fix PAL color definitions using SkylineTool graphics.lisp palette

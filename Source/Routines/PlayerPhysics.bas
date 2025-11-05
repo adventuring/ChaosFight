@@ -68,7 +68,7 @@ GravityCheckCharacter
           rem For now, we’ll apply gravity acceleration directly to
           rem   position
           rem TODO: Consider implementing persistent vertical velocity
-          rem   tracking
+          rem   tracking (Issue #599)
           
           rem Determine gravity acceleration rate based on character
           rem   (8.8 fixed-point subpixel)

@@ -325,7 +325,7 @@ SetScoreBytes
           rem   support
           rem For now, set to white (Neutral color)
           rem TODO: Investigate if multisprite kernel supports separate
-          rem   left/right score colors
+          rem   left/right score colors (Issue #600)
           let scorecolor = ColGrey(14)
           
           return

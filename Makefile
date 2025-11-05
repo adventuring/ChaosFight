@@ -379,6 +379,7 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Banks/Bank3.bas \
 	Source/Banks/Bank4.bas \
 	Source/Banks/Bank5.bas \
+	Source/Banks/Bank12.bas \
 	Source/Banks/Banks.bas \
 	Source/Common/Colors.h \
 	Source/Common/Constants.bas \

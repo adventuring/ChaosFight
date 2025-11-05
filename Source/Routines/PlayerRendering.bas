@@ -367,14 +367,13 @@ SetPlayerSprites
           let SPS_isHurt = playerRecoveryFrames[0] > 0
           let SPS_playerNum = 0
           rem Set temp variables for cross-bank call
+          rem temp2 = hurt state (from temp4/SPS_isHurt)
           let temp2 = SPS_isHurt
-          rem temp2 = hurt state (0=normal, non-zero=hurt)
-          let temp3 = SPS_playerNum
-          rem temp3 = player number (0=Player 1)
-          let temp4 = 0
+          rem temp3 = player number (already set via SPS_playerNum alias)
           rem temp4 = flashing state (0=not flashing)
-          let temp5 = 0
+          let temp4 = 0
           rem temp5 = flashing mode (not used when not flashing)
+          let temp5 = 0
           gosub bank10 LoadCharacterColors
           goto Player1ColorDone
           
@@ -395,9 +394,7 @@ end
           rem Animation frame (0=idle, 1=running)
           let SPS_playerNum = 0 
           rem Player number (0=Player 1)
-          let temp1 = SPS_charIndex
-          let temp2 = SPS_animFrame
-          let temp3 = SPS_playerNum
+          rem temp1, temp2, temp3 already set via aliases (SPS_charIndex, SPS_animFrame, SPS_playerNum)
           gosub bank10 LoadCharacterSprite
 
           rem Set Player 2 color and sprite
@@ -410,14 +407,13 @@ end
           let SPS_isHurt = playerRecoveryFrames[1] > 0
           let SPS_playerNum = 1
           rem Set temp variables for cross-bank call
+          rem temp2 = hurt state (from temp4/SPS_isHurt)
           let temp2 = SPS_isHurt
-          rem temp2 = hurt state (0=normal, non-zero=hurt)
-          let temp3 = SPS_playerNum
-          rem temp3 = player number (1=Player 2)
-          let temp4 = 0
+          rem temp3 = player number (already set via SPS_playerNum alias)
           rem temp4 = flashing state (0=not flashing)
-          let temp5 = 0
+          let temp4 = 0
           rem temp5 = flashing mode (not used when not flashing)
+          let temp5 = 0
           gosub bank10 LoadCharacterColors
           goto Player2ColorDone
           
@@ -447,9 +443,7 @@ end
           rem Animation frame (0=idle, 1=running)
           let SPS_playerNum = 1 
           rem Player number (1=Player 2)
-          let temp1 = SPS_charIndex
-          let temp2 = SPS_animFrame
-          let temp3 = SPS_playerNum
+          rem temp1, temp2, temp3 already set via aliases (SPS_charIndex, SPS_animFrame, SPS_playerNum)
           gosub bank10 LoadCharacterSprite
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
@@ -469,14 +463,13 @@ end
           let SPS_isHurt = playerRecoveryFrames[2] > 0
           let SPS_playerNum = 2
           rem Set temp variables for cross-bank call
+          rem temp2 = hurt state (from temp4/SPS_isHurt)
           let temp2 = SPS_isHurt
-          rem temp2 = hurt state (0=normal, non-zero=hurt)
-          let temp3 = SPS_playerNum
-          rem temp3 = player number (2=Player 3)
-          let temp4 = 0
+          rem temp3 = player number (already set via SPS_playerNum alias)
           rem temp4 = flashing state (0=not flashing)
-          let temp5 = 0
+          let temp4 = 0
           rem temp5 = flashing mode (not used when not flashing)
+          let temp5 = 0
           gosub bank10 LoadCharacterColors
           goto Player3ColorDone
           
@@ -504,9 +497,7 @@ end
           rem Animation frame (0=idle, 1=running)
           let SPS_playerNum = 2 
           rem Player number (2=Player 3)
-          let temp1 = SPS_charIndex
-          let temp2 = SPS_animFrame
-          let temp3 = SPS_playerNum
+          rem temp1, temp2, temp3 already set via aliases (SPS_charIndex, SPS_animFrame, SPS_playerNum)
           gosub bank10 LoadCharacterSprite
           
 DonePlayer3Sprite
@@ -525,14 +516,13 @@ DonePlayer3Sprite
           let SPS_isHurt = playerRecoveryFrames[3] > 0
           let SPS_playerNum = 3
           rem Set temp variables for cross-bank call
+          rem temp2 = hurt state (from temp4/SPS_isHurt)
           let temp2 = SPS_isHurt
-          rem temp2 = hurt state (0=normal, non-zero=hurt)
-          let temp3 = SPS_playerNum
-          rem temp3 = player number (3=Player 4)
-          let temp4 = 0
+          rem temp3 = player number (already set via SPS_playerNum alias)
           rem temp4 = flashing state (0=not flashing)
-          let temp5 = 0
+          let temp4 = 0
           rem temp5 = flashing mode (not used when not flashing)
+          let temp5 = 0
           gosub bank10 LoadCharacterColors
           goto Player4ColorDone
           
@@ -560,9 +550,7 @@ end
           rem Animation frame (0=idle, 1=running)
           let SPS_playerNum = 3 
           rem Player number (3=Player 4)
-          let temp1 = SPS_charIndex
-          let temp2 = SPS_animFrame
-          let temp3 = SPS_playerNum
+          rem temp1, temp2, temp3 already set via aliases (SPS_charIndex, SPS_animFrame, SPS_playerNum)
           gosub bank10 LoadCharacterSprite
           
 DonePlayer4Sprite

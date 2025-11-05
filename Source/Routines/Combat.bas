@@ -253,44 +253,14 @@ PlayDamageSound
 rem =================================================================
 rem PERFORM MELEE ATTACK
 rem =================================================================
-rem Executes a melee attack for the specified player.
-          rem Spawns a brief missile visual (sword, fist, etc.) and
-          rem   checks for hits.
-
-rem INPUT:
-          rem   temp1 = attacker player index (0-3)
-PerformMeleeAttack
-          rem Spawn missile visual for this attack
-          gosub bank7 SpawnMissile
-          
-          rem Set animation state to attacking
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << 4)
-          rem Set animation state 14 (attack execution)
-          
-          rem Check immediate collision with other players in melee
-          rem   range
-          rem This is handled by the main collision detection system
-          rem For now, collision will be handled in UpdateAllMissiles
-          
-          return
+rem Moved to Source/Routines/PerformMeleeAttack.bas
+rem =================================================================
 
 rem =================================================================
 rem PERFORM RANGED ATTACK
 rem =================================================================
-rem Executes a ranged attack for the specified player.
-rem Spawns a projectile missile that travels across the screen.
-
-rem INPUT:
-          rem   temp1 = attacker player index (0-3)
-PerformRangedAttack
-          rem Spawn projectile missile for this attack
-          gosub bank7 SpawnMissile
-          
-          rem Set animation state to attacking
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << 4)
-          rem Set animation state 14 (attack execution)
-          
-          return
+rem Moved to Source/Routines/PerformRangedAttack.bas
+rem =================================================================
 
           rem Process guard for a player
           rem DEPRECATED: This function has syntax errors and conflicts

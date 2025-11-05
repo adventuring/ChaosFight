@@ -261,6 +261,12 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 # Explicit PNG dependencies for character sprites (ensures PNG generation from XCF)
 $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Source/Art/%.xcf
 
+# Convenience rule: redirect Source/Generated/*.png requests to Source/Art/*.png
+$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).png): Source/Generated/%.png: Source/Art/%.png
+	@echo "Note: Character PNG files are in Source/Art/, not Source/Generated/"
+	@mkdir -p Source/Generated
+	@cp "$<" "$@"
+
 # Generate character sprite files from PNG using chaos character compiler
 # PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
 # Explicitly depend on XCF to ensure proper build ordering in parallel builds

@@ -133,6 +133,31 @@ ApplyDamage
 
 **Pattern**: `[SubroutineInitials]_[descriptiveName]`
 
+**Important**: Use **abbreviated routine names** (2-4 letters) as prefixes, not full routine names. This keeps variable names concise and readable.
+
+**Example:**
+```basic
+SpawnMissile
+          dim SM_playerIndex = temp1
+          dim SM_facing = temp4
+          dim SM_characterType = temp5
+          dim SM_bitFlag = temp6
+          rem ... subroutine body ...
+          return
+
+UpdatePlayerAnimation
+          dim UPA_animCounterRead = temp4
+          dim UPA_animFrameRead = temp2
+          rem ... subroutine body ...
+          return
+```
+
+**Pattern**: `[RoutineAbbreviation]_[descriptiveName]`
+- ✅ `UPA_animCounterRead` (UpdatePlayerAnimation → UPA)
+- ❌ `UpdatePlayerAnimation_animCounterRead` (too verbose)
+
+**Note**: This is the **only exception** to the "no abbreviations" rule. Subroutine-local variable prefixes may use abbreviations to keep names manageable, but all other names (labels, constants, global variables, etc.) must use full words.
+
 ---
 
 ## Variable Assignments
@@ -541,7 +566,7 @@ When reviewing code, check for:
 
 ### ✅ Includes
 - [ ] `.bas`/`.h` files use `#include`
-- [ ] `.s` files use `include` in `asm` blocks
+- [ ] `.s` files use `#include` in `asm` blocks
 - [ ] `.inc` files use `includesfile`
 
 ### ✅ Control Flow

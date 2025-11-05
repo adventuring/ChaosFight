@@ -332,11 +332,11 @@ Source/Generated/Font.bas: Source/Art/Font.png
 # CRITICAL: cpp preprocessor processes includes immediately, so all generated files
 # that are included via #include directives MUST exist before cpp runs.
 # Character files are dependencies of Bank2/3/4/5.bas (defined above).
+# Bitmap files are dependencies of Bank1.bas (defined above).
+# Numbers font is a dependency of Bank12.bas (defined above).
 # Bank15.bas includes Sound.*.bas files, so they must be dependencies here.
 Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
-	Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
-	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
+	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas)
@@ -344,9 +344,7 @@ Source/Generated/$(GAME).NTSC.bas: Source/Platform/NTSC.bas \
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
 Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
-	Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
-	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
+	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
@@ -354,16 +352,16 @@ Source/Generated/$(GAME).PAL.bas: Source/Platform/PAL.bas \
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
 Source/Generated/$(GAME).SECAM.bas: Source/Platform/SECAM.bas \
-	Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
-	$(foreach font,$(FONT_NAMES),Source/Generated/$(font).bas) \
+	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
 	mkdir -p Source/Generated
 	cpp -P -traditional -I. -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format -Wno-invalid-pp-token $< > $@
 
-# Bank file dependencies - each bank explicitly depends on the character files it includes
+# Bank file dependencies - each bank explicitly depends on the files it includes
+Source/Banks/Bank1.bas: Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Interworldly.s
+
 Source/Banks/Bank2.bas: Source/Generated/Bernie.bas Source/Generated/Curler.bas Source/Generated/DragonOfStorms.bas Source/Generated/ZoeRyen.bas Source/Generated/FatTony.bas Source/Generated/Megax.bas Source/Generated/Harpy.bas Source/Generated/KnightGuy.bas
 
 Source/Banks/Bank3.bas: Source/Generated/Frooty.bas Source/Generated/Nefertem.bas Source/Generated/NinjishGuy.bas Source/Generated/PorkChop.bas Source/Generated/RadishGoblin.bas Source/Generated/RoboTito.bas Source/Generated/Ursulo.bas Source/Generated/Shamone.bas
@@ -371,6 +369,8 @@ Source/Banks/Bank3.bas: Source/Generated/Frooty.bas Source/Generated/Nefertem.ba
 Source/Banks/Bank4.bas: Source/Generated/Character16.bas Source/Generated/Character17.bas Source/Generated/Character18.bas Source/Generated/Character19.bas Source/Generated/Character20.bas Source/Generated/Character21.bas Source/Generated/Character22.bas Source/Generated/Character23.bas
 
 Source/Banks/Bank5.bas: Source/Generated/Character24.bas Source/Generated/Character25.bas Source/Generated/Character26.bas Source/Generated/Character27.bas Source/Generated/Character28.bas Source/Generated/Character29.bas Source/Generated/Character30.bas Source/Generated/MethHound.bas
+
+Source/Banks/Bank12.bas: Source/Generated/Numbers.bas
 
 # Shared dependencies for all TV standards
 BUILD_DEPS = $(ALL_SOURCES) \
@@ -398,8 +398,6 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Routines/ScreenLayout.bas \
 	Source/Routines/SoundSystem.bas \
 	Source/Routines/SpriteLoader.bas \
-	Source/Generated/Numbers.bas \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Generated/Art.$(bitmap).s) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).SECAM.bas) \

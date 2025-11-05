@@ -579,8 +579,16 @@ SelectP2LeftWrap
           rem   both NO)
           if !(controllerStatus & SetQuadtariDetected) then let SP2LW_characterIndex = CPUCharacter : let temp1 = SP2LW_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] != NoCharacter then let SP2LW_characterIndex = NoCharacter : let temp1 = SP2LW_characterIndex : return
-          if playerChar[3] != NoCharacter then let SP2LW_characterIndex = NoCharacter : let temp1 = SP2LW_characterIndex : return
+          if playerChar[2] = NoCharacter then CheckP4_LeftWrap
+          let SP2LW_characterIndex = NoCharacter
+          let temp1 = SP2LW_characterIndex
+          return
+CheckP4_LeftWrap
+          if playerChar[3] = NoCharacter then BothNO_LeftWrap
+          let SP2LW_characterIndex = NoCharacter
+          let temp1 = SP2LW_characterIndex
+          return
+BothNO_LeftWrap
           rem Both P3 and P4 are NO, so P2 wraps to CPU
           let SP2LW_characterIndex = CPUCharacter
           let temp1 = SP2LW_characterIndex
@@ -608,8 +616,16 @@ SelectP2LeftFromRandom
           rem P2 left from Random: Check if NO is available
           if !(controllerStatus & SetQuadtariDetected) then let SP2LFR_characterIndex = MaxCharacter : let temp1 = SP2LFR_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] != NoCharacter then let SP2LFR_characterIndex = NoCharacter : let temp1 = SP2LFR_characterIndex : return
-          if playerChar[3] != NoCharacter then let SP2LFR_characterIndex = NoCharacter : let temp1 = SP2LFR_characterIndex : return
+          if playerChar[2] = NoCharacter then CheckP4_LeftFromRandom
+          let SP2LFR_characterIndex = NoCharacter
+          let temp1 = SP2LFR_characterIndex
+          return
+CheckP4_LeftFromRandom
+          if playerChar[3] = NoCharacter then BothNO_LeftFromRandom
+          let SP2LFR_characterIndex = NoCharacter
+          let temp1 = SP2LFR_characterIndex
+          return
+BothNO_LeftFromRandom
           rem Both P3 and P4 are NO, so NO not available, go to 15
           let SP2LFR_characterIndex = MaxCharacter
           let temp1 = SP2LFR_characterIndex
@@ -683,8 +699,16 @@ SelectP2RightFromRandom
           rem   both NO)
           if !(controllerStatus & SetQuadtariDetected) then let SP2RFR_characterIndex = CPUCharacter : let temp1 = SP2RFR_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] != NoCharacter then let SP2RFR_characterIndex = NoCharacter : let temp1 = SP2RFR_characterIndex : return
-          if playerChar[3] != NoCharacter then let SP2RFR_characterIndex = NoCharacter : let temp1 = SP2RFR_characterIndex : return
+          if playerChar[2] = NoCharacter then CheckP4_RightFromRandom
+          let SP2RFR_characterIndex = NoCharacter
+          let temp1 = SP2RFR_characterIndex
+          return
+CheckP4_RightFromRandom
+          if playerChar[3] = NoCharacter then BothNO_RightFromRandom
+          let SP2RFR_characterIndex = NoCharacter
+          let temp1 = SP2RFR_characterIndex
+          return
+BothNO_RightFromRandom
           rem Both P3 and P4 are NO, so P2 goes to CPU
           let SP2RFR_characterIndex = CPUCharacter
           let temp1 = SP2RFR_characterIndex
@@ -704,8 +728,16 @@ SelectP2RightFromCPU
           rem P2 from CPU: Check if NO is available
           if !(controllerStatus & SetQuadtariDetected) then let SP2RFC_characterIndex = RandomCharacter : let temp1 = SP2RFC_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] != NoCharacter then let SP2RFC_characterIndex = NoCharacter : let temp1 = SP2RFC_characterIndex : return
-          if playerChar[3] != NoCharacter then let SP2RFC_characterIndex = NoCharacter : let temp1 = SP2RFC_characterIndex : return
+          if playerChar[2] = NoCharacter then CheckP4_RightFromCPU
+          let SP2RFC_characterIndex = NoCharacter
+          let temp1 = SP2RFC_characterIndex
+          return
+CheckP4_RightFromCPU
+          if playerChar[3] = NoCharacter then BothNO_RightFromCPU
+          let SP2RFC_characterIndex = NoCharacter
+          let temp1 = SP2RFC_characterIndex
+          return
+BothNO_RightFromCPU
           rem Both P3 and P4 are NO, so skip NO and go to Random
           let SP2RFC_characterIndex = RandomCharacter
           let temp1 = SP2RFC_characterIndex

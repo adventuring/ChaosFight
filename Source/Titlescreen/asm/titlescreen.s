@@ -71,7 +71,7 @@ title_playfield
  include "Titlescreen/asm/position48.s"
  include "Titlescreen/titlescreen_color.s"
 
-	rem Unused 48x1 kernels removed - only 48x2_1, 48x2_2, 48x2_3 are used
+	; Unused 48x1 kernels removed - only 48x2_1, 48x2_2, 48x2_3 are used
 
 	ifconst mk_48x2_1_on
 		include "Titlescreen/asm/48x2_1_kernel.s"
@@ -88,7 +88,7 @@ title_playfield
 		include "Titlescreen/asm/48x2_4_kernel.s"
 	endif ;mk_48x2_4_on
 
-	rem Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
+	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 
 	ifconst mk_score_on
 		include "Titlescreen/asm/score_kernel.s"
@@ -130,7 +130,7 @@ OVERSCAN
 	sta VBLANK
 	RETURN
 
-	rem Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
+	; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 	ifconst mk_48x2_1_on
 		include "Titlescreen/48x2_1_image.s"
 	endif
@@ -162,7 +162,7 @@ OVERSCAN
 
 
 
-  rem Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
+  ; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
  #ifconst mk_48x2_1_on
 	include "titlescreen/48x2_1_image.s"
  #endif

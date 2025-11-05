@@ -3,7 +3,7 @@
 @group
     Weight: 85 kg (190 lbs)
     Attack: Ranged (from feet, ground-based)
-    Special: Projectile comes from character's feet
+    Special: Stone comes from character's feet
     Original Game: RealSports Curling (Atari 5200)
     Author: Ryan Witmer @url{https://phasercat.com,Phaser Cat Games}
     Background: Proud Cascadian and Canadian, very sportif

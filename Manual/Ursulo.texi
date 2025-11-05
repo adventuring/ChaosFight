@@ -2,8 +2,8 @@
 @display
 @group
     Weight: 100 kg (220 lbs)
-    Attack: Melee (claw swipe)
-    Special: Powerful melee attack, hardest to knock back
+    Attack: Melée (claw swipe)
+    Special: Powerful melée attack, hardest to knock back
     Species: Bear (1.67m tall walking polar bear)
     Nemeses: Wizards, robots, and penguins (who keep abducting him)
     Original Game: Game of the Bear, Game of the Bear 2: 2 Much 2 Bear, and Game of the Bear 3: Polar Opposites (all vhzc)
@@ -20,5 +20,5 @@ kidnapping attempts, he's developed into a formidable fighter with incredible
 strength and resilience.
 
 His experience dealing with various abductors has made him exceptionally tough and 
-determined. His powerful melee claw swipe attack deals significant damage and is 
+determined. His powerful melée claw swipe attack deals significant damage and is 
 difficult to interrupt.

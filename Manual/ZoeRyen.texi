@@ -3,9 +3,9 @@
 @group
     Weight: 65 kg (145 lbs)
     Attack: Ranged
-    Special: High jumps, fast horizontal projectile
+    Special: High jumps, fast horizontal laser beam
 @end group
 @end display
 
-Zoe Ryen fires a long, thin missile that travels horizontally across
+Zoe Ryen fires a long, thin laser beam that travels horizontally across
 the entire screen. Excellent for long-range combat!

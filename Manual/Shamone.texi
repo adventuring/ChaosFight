@@ -3,7 +3,7 @@
 @group
     Weight: 30 kg (65 lbs)
     Attack: Melée
-    Special: Standard light melée fighter, garden protector
+    Special: Attack also causes jump (jump+attack combo); light melée fighter
     Mission: Protect vegetable gardens from nasty ducks
     Motivation: Dedicated guardian against persistent duck attacks
     Original Game: Ducks Away
@@ -19,5 +19,5 @@ skills through constant battles to defend precious vegetables from relentless
 waterfowl invaders.
 
 Despite being a light melée fighter, Shamone's dedication to garden protection 
-has made them surprisingly tenacious in combat, never backing down from a fight 
-when there are vegetables to defend.
+has made them surprisingly tenacious in combat. When attacking, Shamone jumps 
+while striking, allowing for aerial attacks that catch opponents off guard.

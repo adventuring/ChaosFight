@@ -1,0 +1,9 @@
+multispritesuperchipheader.asm
+bB.asm
+multisprite_kernel.asm
+startup.asm
+std_routines.asm
+bB2.asm
+score_graphics.asm
+banksw.asm
+2600basicfooter.asm

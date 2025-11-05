@@ -26,4 +26,4 @@ will then grab and hang on to. You can then move Tito left and right along
 the ceiling. To get back down to the floor, press DOWN on your joystick until 
 Tito reaches the floor.
 
-In ChaosFight, he is vulnerable the entire length to collisions.
+In ChaosFight, his stretch ability works the same way - press UP to stretch to the ceiling and latch on, then press DOWN to return to the floor.

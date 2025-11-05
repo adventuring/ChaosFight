@@ -267,7 +267,7 @@ the available characters.
 
 @section The Character Selection Screen
 
-The screen shows character sprites in fixed positions:
+The screen shows characters in fixed positions.
 
 @section Selection Controls
 
@@ -278,7 +278,7 @@ Cycle through characters
 @item FIRE
 Lock in character selection
 @itemize @bullet
-@item Playfield border appears around locked sprite
+@item Playfield border appears around locked character
 @item Moving joystick after locking will unlock selection
 @item Hold DOWN when pressing FIRE to handicap your character.
 @end itemize
@@ -391,6 +391,10 @@ If player 3 or 4 are present, their health will display as a percentage
 When your health reaches 0, you are eliminated and your character
 disappears from the playfield.
 
+Character weight affects knockback - heavier characters resist being
+pushed back more than lighter characters. When hit, lighter characters
+will be knocked back further than heavier ones.
+
 @section Victory
 
 The last player with health remaining wins!
@@ -470,6 +474,24 @@ free-for-all! Last player standing wins.
 Select from 2 different arenas during Arena Select! More arenas coming soon.
 Each arena offers unique tactical opportunities.
 
+@subsection Arena Selection
+
+After character selection, Player 1 can choose an arena:
+@itemize @bullet
+@item LEFT/RIGHT
+Cycle through arena numbers (or "??" for random arena)
+@item FIRE/B/I button
+Start the game with selected arena
+@end itemize
+
+Other players can:
+@itemize @bullet
+@item Hold FIRE/B/I button for 1 second
+Return to character selection screen
+@item Press GAME SELECT
+Return to character selection screen
+@end itemize
+
 @page
 
 @c ============================================================
@@ -485,7 +507,7 @@ The console switches provide additional game control:
 
 @section GAME RESET Switch
 
-Pressing the RESET switch immediately returns the the Publisher
+Pressing the RESET switch immediately returns to the Publisher
 screen and restarts the game.
 
 @section GAME SELECT Switch

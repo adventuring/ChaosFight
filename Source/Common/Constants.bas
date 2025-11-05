@@ -326,26 +326,26 @@
           rem Movement updates run at full frame rate (60fps NTSC, 50fps
           rem   PAL)
 
-          #ifdef TV_NTSC
+#ifdef TV_NTSC
           const AnimationFrameDelay = 6
           rem 60fps / 10fps = 6 frames
           const MovementFrameRate = 60
           rem 60fps movement updates
-          #endif
+#endif
 
-          #ifdef TV_PAL  
+#ifdef TV_PAL  
           const AnimationFrameDelay = 5
           rem 50fps / 10fps = 5 frames
           const MovementFrameRate = 50
           rem 50fps movement updates
-          #endif
+#endif
 
-          #ifdef TV_SECAM
+#ifdef TV_SECAM
           const AnimationFrameDelay = 5
           rem Same as PAL (50fps / 10fps = 5 frames)
           const MovementFrameRate = 50
           rem 50fps movement updates
-          #endif
+#endif
 
           rem Animation sequence structure constants
           const AnimationSequenceCount = 16

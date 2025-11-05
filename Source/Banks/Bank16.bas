@@ -28,28 +28,28 @@
           rem   and handled separately
           
           rem Song 0: AtariToday (Publisher preamble)
-          #ifdef TV_NTSC
-          #include "Source/Generated/Song.AtariToday.NTSC.bas"
-          #else
+#ifdef TV_NTSC
+#include "Source/Generated/Song.AtariToday.NTSC.bas"
+#else
           rem PAL or SECAM: Use PAL version for both
-          #include "Source/Generated/Song.AtariToday.PAL.bas"
-          #endif
+#include "Source/Generated/Song.AtariToday.PAL.bas"
+#endif
           
           rem Song 1: Interworldly (Author preamble)
-          #ifdef TV_NTSC
-          #include "Source/Generated/Song.Interworldly.NTSC.bas"
-          #else
+#ifdef TV_NTSC
+#include "Source/Generated/Song.Interworldly.NTSC.bas"
+#else
           rem PAL or SECAM: Use PAL version for both
-          #include "Source/Generated/Song.Interworldly.PAL.bas"
-          #endif
+#include "Source/Generated/Song.Interworldly.PAL.bas"
+#endif
           
           rem Song 2: Chaotica (Title screen)
-          #ifdef TV_NTSC
-          #include "Source/Generated/Song.Chaotica.NTSC.bas"
-          #else
+#ifdef TV_NTSC
+#include "Source/Generated/Song.Chaotica.NTSC.bas"
+#else
           rem PAL or SECAM: Use PAL version for both
-          #include "Source/Generated/Song.Chaotica.PAL.bas"
-          #endif
+#include "Source/Generated/Song.Chaotica.PAL.bas"
+#endif
           
           rem ==========================================================
           rem BUILD INFO - Version Tracking and Attribution

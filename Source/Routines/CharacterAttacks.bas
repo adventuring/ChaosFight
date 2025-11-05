@@ -68,13 +68,15 @@ CurlerAttack
           goto PerformRangedAttack
 
           rem ==========================================================
-          rem DRAGON OF STORMS (Character 2) - Melee Attack
+          rem DRAGON OF STORMS (Character 2) - Ranged Attack
           rem ==========================================================
+          rem Fires ranged fireballs that slowly arc downwards
+          rem 2×2 missile with ballistic arc trajectory
 DragonetAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           rem tail call
-          goto PerformMeleeAttack
+          goto PerformRangedAttack
 
           rem ==========================================================
           rem ZOE RYEN (Character 3) - Ranged Attack
@@ -86,8 +88,10 @@ ZoeRyenAttack
           goto PerformRangedAttack
 
           rem ==========================================================
-          rem FAT TONY (Character 4) - Melee Attack
+          rem FAT TONY (Character 4) - Ranged Attack
           rem ==========================================================
+          rem Magic ring lasers shoot across screen very quickly
+          rem Pass through walls, thin, wide missile
 FatTonyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)

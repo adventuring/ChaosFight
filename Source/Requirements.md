@@ -262,7 +262,7 @@ When a player takes damage from any source:
 - **Zoe Ryen**: Ranged - 4×1 pixel wide, low-height projectile
 - **Fat Tony**: Ranged - 4×1 pixel wide, low-height projectile
 - **Megax**: Ranged - 4×4 pixel wide, tall fire breath projectile
-- **Harpy**: Ranged - No missile sprite (diagonal swoop attack - character movement IS the attack)
+- **Harpy**: Melee (diagonal swoop, special case) - No missile sprite, character movement IS the attack
 - **Frooty**: Ranged - 1×1 pixel narrow projectile (magical sparkles)
 - **Other characters**: Melee attacks only (no projectiles)
 

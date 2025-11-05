@@ -2,7 +2,7 @@
 @display
 @group
     Weight: 13.61 kg (30.0 lbs)
-    Attack: Ranged (diagonal swoop)
+    Attack: Melée (diagonal swoop)
     Special: Can "fly" by repeatedly pressing UP
     Background: Former prisoner of the deadly labyrinth, defeated the Great Sphinx
     Nature: Swift of wing and vicious in combat

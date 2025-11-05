@@ -238,10 +238,18 @@ end
           rem Harpy changed from melee to ranged (diagonal downward
           rem   attack)
           rem Ursulo changed from ranged to melee (claw swipe)
+          rem Harpy changed from ranged to melee (diagonal swoop, special case)
+          rem Megax changed from ranged to melee (decorative missile)
+          rem NinjishGuy changed from melee to ranged (shuriken)
           data CharacterAttackTypes
-              %01111110, %00000001, %00000000, %00000000
-            rem Bit 0 (Bernie) = 0 (melee), bits 1-7 (Curler-Knight Guy) = ranged
+              %00011110, %00000101, %00000000, %00000000
+            rem Bit 0 (Bernie) = 0 (melee)
+            rem Bits 1-4 (Curler, Dragon, Zoe, FatTony) = 1 (ranged)
+            rem Bits 5-7 (Megax, Harpy, KnightGuy) = 0 (melee)
             rem Bit 8 (Frooty) = 1 (ranged)
+            rem Bit 9 (Nefertem) = 0 (melee)
+            rem Bit 10 (NinjishGuy) = 1 (ranged)
+            rem Bits 11-15 (Pork Chop, Radish, RoboTito, Ursulo, Shamone) = 0 (melee)
 end
 
           rem ==========================================================

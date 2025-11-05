@@ -248,7 +248,7 @@ GravityDone
           
           rem Apply friction if flag is set (curling stone deceleration
           rem   with coefficient)
-          if !(temp5 & MissileFlagFriction) then FrictionDone
+          if (temp5 & MissileFlagFriction) = 0 then FrictionDone
           let missileVelocityXCalc = missileVelocityX[UOM_playerIndex]
           rem Get current X velocity
           
@@ -871,7 +871,7 @@ HandleMissileBounce
           rem Invert velocity (bounce back) using two’s complement
           
           rem Apply friction damping if friction flag is set
-          if !(temp5 & MissileFlagFriction) then BounceDone
+          if (temp5 & MissileFlagFriction) = 0 then BounceDone
           rem Multiply by bounce multiplier for friction missiles
           if missileVelocityXCalc > 0 then BounceMultiply
           let missileVelocityXCalc = missileVelocityXCalc + (missileVelocityXCalc / BounceDampenDivisor)

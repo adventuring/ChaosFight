@@ -472,11 +472,12 @@ Char0_Windup
 Char1_Windup
           dim C1W_animationAction = temp2
           rem Curler: Windup → Recovery
+          rem NOTE: Curling stone missile spawning handled by CurlerAttack
+          rem   (calls PerformRangedAttack) in CharacterAttacks.bas
           let C1W_animationAction = ActionAttackRecovery
           let temp2 = C1W_animationAction
           rem tail call
           goto SetPlayerAnimation
-          rem TODO: Spawn curling stone missile at foot level
 Char2_Windup
           rem Dragon of Storms: Execute only
           return
@@ -571,11 +572,12 @@ Char3_Execute
 Char4_Execute
           dim C4E_animationAction = temp2
           rem Fat Tony: Execute → Recovery
+          rem NOTE: Laser bullet missile spawning handled by FatTonyAttack
+          rem   (calls PerformRangedAttack) in CharacterAttacks.bas
           let C4E_animationAction = ActionAttackRecovery
           let temp2 = C4E_animationAction
           rem tail call
           goto SetPlayerAnimation
-          rem TODO: Spawn laser bullet missile
 Char5_Execute
           dim C5E_animationAction = temp2
           rem Megax: Execute → Idle (fire breath during Execute)

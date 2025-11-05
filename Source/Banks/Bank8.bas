@@ -3,6 +3,7 @@
 
           bank 8
 
-          #include "Source/Routines/VisualEffects.bas"
+          rem NOTE: VisualEffects.bas was phased out - damage indicators
+          rem   now handled in Combat.bas and MissileSystem.bas
           #include "Source/Routines/ScreenLayout.bas"
           #include "Source/Routines/HealthBarSystem.bas"

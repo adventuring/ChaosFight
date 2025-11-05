@@ -201,9 +201,6 @@ Player3HealthSet
           rem Load arena data
           gosub bank14 LoadArena
 
-          rem TODO: Replace def statements with regular subroutines
-          rem batariBASIC may not support def statements with parameters
-
           rem Gameplay state initialized - return to ChangeGameMode
           rem MainLoop will dispatch to GameMainLoop based on gameMode =
           rem   ModeGame

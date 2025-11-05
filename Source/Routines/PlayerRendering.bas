@@ -366,14 +366,11 @@ SetPlayerSprites
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[0] > 0
           let SPS_playerNum = 0
-          rem Set temp variables for cross-bank call
-          rem temp2 = hurt state (from temp4/SPS_isHurt)
-          let temp2 = SPS_isHurt
-          rem temp3 = player number (already set via SPS_playerNum alias)
-          rem temp4 = flashing state (0=not flashing)
-          let temp4 = 0
-          rem temp5 = flashing mode (not used when not flashing)
-          let temp5 = 0
+          rem Set LoadCharacterColors aliases for cross-bank call
+          let LoadCharacterColors_isHurt = SPS_isHurt
+          rem LoadCharacterColors_playerNumber already set via SPS_playerNum alias
+          let LoadCharacterColors_isFlashing = 0
+          let LoadCharacterColors_flashingMode = 0
           gosub bank10 LoadCharacterColors
           goto Player1ColorDone
           
@@ -406,14 +403,11 @@ end
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[1] > 0
           let SPS_playerNum = 1
-          rem Set temp variables for cross-bank call
-          rem temp2 = hurt state (from temp4/SPS_isHurt)
-          let temp2 = SPS_isHurt
-          rem temp3 = player number (already set via SPS_playerNum alias)
-          rem temp4 = flashing state (0=not flashing)
-          let temp4 = 0
-          rem temp5 = flashing mode (not used when not flashing)
-          let temp5 = 0
+          rem Set LoadCharacterColors aliases for cross-bank call
+          let LoadCharacterColors_isHurt = SPS_isHurt
+          rem LoadCharacterColors_playerNumber already set via SPS_playerNum alias
+          let LoadCharacterColors_isFlashing = 0
+          let LoadCharacterColors_flashingMode = 0
           gosub bank10 LoadCharacterColors
           goto Player2ColorDone
           
@@ -462,14 +456,11 @@ end
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[2] > 0
           let SPS_playerNum = 2
-          rem Set temp variables for cross-bank call
-          rem temp2 = hurt state (from temp4/SPS_isHurt)
-          let temp2 = SPS_isHurt
-          rem temp3 = player number (already set via SPS_playerNum alias)
-          rem temp4 = flashing state (0=not flashing)
-          let temp4 = 0
-          rem temp5 = flashing mode (not used when not flashing)
-          let temp5 = 0
+          rem Set LoadCharacterColors aliases for cross-bank call
+          let LoadCharacterColors_isHurt = SPS_isHurt
+          rem LoadCharacterColors_playerNumber already set via SPS_playerNum alias
+          let LoadCharacterColors_isFlashing = 0
+          let LoadCharacterColors_flashingMode = 0
           gosub bank10 LoadCharacterColors
           goto Player3ColorDone
           
@@ -515,14 +506,11 @@ DonePlayer3Sprite
           let SPS_animFrame = 0
           let SPS_isHurt = playerRecoveryFrames[3] > 0
           let SPS_playerNum = 3
-          rem Set temp variables for cross-bank call
-          rem temp2 = hurt state (from temp4/SPS_isHurt)
-          let temp2 = SPS_isHurt
-          rem temp3 = player number (already set via SPS_playerNum alias)
-          rem temp4 = flashing state (0=not flashing)
-          let temp4 = 0
-          rem temp5 = flashing mode (not used when not flashing)
-          let temp5 = 0
+          rem Set LoadCharacterColors aliases for cross-bank call
+          let LoadCharacterColors_isHurt = SPS_isHurt
+          rem LoadCharacterColors_playerNumber already set via SPS_playerNum alias
+          let LoadCharacterColors_isFlashing = 0
+          let LoadCharacterColors_flashingMode = 0
           gosub bank10 LoadCharacterColors
           goto Player4ColorDone
           

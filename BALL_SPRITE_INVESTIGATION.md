@@ -134,7 +134,7 @@ Adding Ball sprite would require:
 
 ### Memory Impact
 - Ball sprite uses zero-page RAM: `ballx` ($82), `bally` ($8C)
-- Note: Multisprite kernel does NOT use `ballheight` variable (height via CTRLPF register)
+- Note: Multisprite kernel does NOT use `ballheight` variable (height controlled via ENABL timing, width via CTRLPF register)
 - No additional missile tracking arrays needed
 - Minimal memory overhead (2 bytes)
 

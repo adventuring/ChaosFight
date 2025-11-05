@@ -82,10 +82,26 @@
           rem Bit 1: 1=guarding
           const PlayerStateJumping = 2
           rem Bit 2: 1=jumping
+          const PlayerStateRecovery = 3
+          rem Bit 3: 1=in recovery/hitstun
           const PlayerStateAttacking = 4
           rem Bit 4: 1=attacking
           const PlayerStateAnimation = 7
           rem Bits 7-5: animation state (3 bits)
+          
+          rem Bit mask constants for PlayerState bit operations
+          rem Use with: PlayerState[index] = PlayerState[index] & (255 - PlayerStateBitMask) to clear bit
+          rem Use with: PlayerState[index] = PlayerState[index] | PlayerStateBitMask to set bit
+          const PlayerStateBitFacing = 1
+          rem Bit mask for bit 0 (PlayerStateFacing)
+          const PlayerStateBitGuarding = 2
+          rem Bit mask for bit 1 (PlayerStateGuarding)
+          const PlayerStateBitJumping = 4
+          rem Bit mask for bit 2 (PlayerStateJumping)
+          const PlayerStateBitRecovery = 8
+          rem Bit mask for bit 3 (PlayerStateRecovery)
+          const PlayerStateBitAttacking = 16
+          rem Bit mask for bit 4 (PlayerStateAttacking)
           
           rem High bit constants for input testing
           const HighBit = $80

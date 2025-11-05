@@ -141,7 +141,7 @@ GravityRowCalcDone
           let playerSubpixelY_lo[PAG_playerIndex] = 0
           
           rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
-          let playerState[PAG_playerIndex] = playerState[PAG_playerIndex] & 251
+          let playerState[PAG_playerIndex] = playerState[PAG_playerIndex] & (255 - PlayerStateBitJumping)
           rem Clear bit 2 (jumping flag)
           goto GravityNextPlayer
           
@@ -193,9 +193,9 @@ MomentumRecoveryProcess
           if playerRecoveryFrames[AMAR_playerIndex] > 0 then let playerRecoveryFrames[AMAR_playerIndex] = playerRecoveryFrames[AMAR_playerIndex] - 1
           
           rem Synchronize playerState bit 3 with recovery frames
-          if playerRecoveryFrames[AMAR_playerIndex] > 0 then let playerState[AMAR_playerIndex] = playerState[AMAR_playerIndex] | 8
+          if playerRecoveryFrames[AMAR_playerIndex] > 0 then let playerState[AMAR_playerIndex] = playerState[AMAR_playerIndex] | PlayerStateBitRecovery
           rem Set bit 3 (recovery flag) when recovery frames > 0
-          if ! playerRecoveryFrames[AMAR_playerIndex] then let playerState[AMAR_playerIndex] = playerState[AMAR_playerIndex] & 247
+          if ! playerRecoveryFrames[AMAR_playerIndex] then let playerState[AMAR_playerIndex] = playerState[AMAR_playerIndex] & (255 - PlayerStateBitRecovery)
           rem Clear bit 3 (recovery flag) when recovery frames = 0
           
           rem Decay velocity if recovery frames active

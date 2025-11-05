@@ -210,7 +210,9 @@ HarpyJump
           let playerState[HJ_playerIndex] = playerState[HJ_playerIndex] | 4
           rem Set jumping/flying bit for animation
           rem Set flight mode flag for slow gravity
-          let characterStateFlags[HJ_playerIndex] = characterStateFlags[HJ_playerIndex] | 2
+          rem Fix RMW: Read from _R, modify, write to _W
+          let HJ_stateFlags = characterStateFlags_R[HJ_playerIndex] | 2
+          let characterStateFlags_W[HJ_playerIndex] = HJ_stateFlags
           rem Set bit 1 (flight mode)
           
 HarpyFlapRecord
@@ -314,7 +316,7 @@ RoboTitoJump
           dim RTJ_playerIndex = temp1
           rem RoboTito ceiling-stretch mechanic
           rem Check if already latched to ceiling
-          if (characterStateFlags[RTJ_playerIndex] & 1) then return
+          if (characterStateFlags_R[RTJ_playerIndex] & 1) then return
           rem Already latched, ignore UP input
           
           rem Check if grounded (not jumping)
@@ -360,7 +362,9 @@ RoboTitoCheckCeiling
 RoboTitoLatch
           dim RTL_playerIndex = temp1
           rem Ceiling contact detected - latch to ceiling
-          let characterStateFlags[RTL_playerIndex] = characterStateFlags[RTL_playerIndex] | 1
+          rem Fix RMW: Read from _R, modify, write to _W
+          let RTL_stateFlags = characterStateFlags_R[RTL_playerIndex] | 1
+          let characterStateFlags_W[RTL_playerIndex] = RTL_stateFlags
           rem Set latched bit
           let playerState[RTL_playerIndex] = (playerState[RTL_playerIndex] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
           rem Set latched animation (repurposed ActionFalling = 11)
@@ -473,7 +477,9 @@ HarpyDown
 HarpySetDive
           dim HSD_playerIndex = temp1
           rem Set dive mode flag for increased damage and normal gravity
-          let characterStateFlags[HSD_playerIndex] = characterStateFlags[HSD_playerIndex] | 4
+          rem Fix RMW: Read from _R, modify, write to _W
+          let HSD_stateFlags = characterStateFlags_R[HSD_playerIndex] | 4
+          let characterStateFlags_W[HSD_playerIndex] = HSD_stateFlags
           rem Set bit 2 (dive mode)
 HarpyNormalDown
           dim HND_playerIndex = temp1
@@ -580,13 +586,15 @@ RadishGoblinDown
 RoboTitoDown
           rem RoboTito voluntary drop from ceiling
           rem Check if latched to ceiling
-          if (characterStateFlags[temp1] & 1) = 0 then RoboTitoNotLatched
+          if (characterStateFlags_R[temp1] & 1) = 0 then RoboTitoNotLatched
           rem Not latched, proceed to guard
           goto RoboTitoNotLatched
           
 RoboTitoVoluntaryDrop
           rem Release from ceiling on DOWN press
-          let characterStateFlags[temp1] = characterStateFlags[temp1] & 254
+          rem Fix RMW: Read from _R, modify, write to _W
+          let RTLVD_stateFlags = characterStateFlags_R[temp1] & (255 - PlayerStateBitFacing)
+          let characterStateFlags_W[temp1] = RTLVD_stateFlags
           rem Clear latched bit (bit 0)
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
           rem Set falling animation

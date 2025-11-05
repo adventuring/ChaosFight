@@ -32,11 +32,11 @@ BernieAttack
           let temp5 = playerState[temp1] & 1 
           rem Store original facing
           if temp5 then FaceLeft1
-          let playerState[temp1] = playerState[temp1] | 1 
+          let playerState[temp1] = playerState[temp1] | PlayerStateBitFacing
           rem Face right
           goto FacingDone1
 FaceLeft1
-          let playerState[temp1] = playerState[temp1] & 254 
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           rem Face left
 FacingDone1
           
@@ -48,7 +48,7 @@ FacingDone1
           let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
           goto RestoreFacingDone1
 RestoreFaceRight1
-          let playerState[temp1] = playerState[temp1] | 1
+          let playerState[temp1] = playerState[temp1] | PlayerStateBitFacing
 RestoreFacingDone1
           
           return

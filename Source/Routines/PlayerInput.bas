@@ -171,7 +171,7 @@ InputHandleLeftPortPlayer
           
           rem Standard horizontal movement (modifies velocity, not position)
           rem Left movement: set negative velocity (255 in 8-bit two’s complement = -1)
-          if joy0left then let playerVelocityX[IHLP_playerIndex] = 255 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : gosub ShouldPreserveFacing : if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
+          if joy0left then let playerVelocityX[IHLP_playerIndex] = 255 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : gosub ShouldPreserveFacing : if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & (255 - PlayerStateBitFacing)
           rem Right movement: set positive velocity
           if joy0right then let playerVelocityX[IHLP_playerIndex] = 1 : let playerVelocityX_lo[IHLP_playerIndex] = 0 : gosub ShouldPreserveFacing : if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] | 1
           goto SkipFlyingLeftRight
@@ -224,7 +224,7 @@ MoveLeftOK
           let playerVelocityX_lo[IHLP_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
           gosub ShouldPreserveFacing
-          if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & 254
+          if !temp3 then let PlayerState[IHLP_playerIndex] = PlayerState[IHLP_playerIndex] & (255 - PlayerStateBitFacing)
 CheckRightMovement
           dim CRM_pfColumn = temp2
           dim CRM_rightColumn = temp3
@@ -391,7 +391,7 @@ InputSkipLeftPortJump
           
 StopGuardEarlyLeft
           rem Stop guard early and start cooldown
-          let PlayerState[temp1] = PlayerState[temp1] & 253
+          let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitGuarding)
           rem Clear guard bit
           let playerTimers[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer
@@ -452,7 +452,7 @@ InputHandleRightPortPlayer
                     let playerVelocityX_lo[temp1] = 0
                     rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
                     gosub ShouldPreserveFacing
-                    if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & 254
+                    if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
                     rem Face left
           
           if joy1right then
@@ -506,7 +506,7 @@ MoveLeftOKRight
           let playerVelocityX_lo[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
           gosub ShouldPreserveFacing
-          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & 254
+          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
 CheckRightMovementRight
           rem Check right movement
           if !joy1right then goto SkipFlyingLeftRightRight
@@ -657,7 +657,7 @@ InputSkipRightPortJump
           
 StopGuardEarlyRight
           rem Stop guard early and start cooldown
-          let PlayerState[temp1] = PlayerState[temp1] & 253
+          let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitGuarding)
           rem Clear guard bit
           let playerTimers[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer

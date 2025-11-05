@@ -20,6 +20,5 @@ through seven stages, each containing outdoor areas, indoor sections, and
 confrontations with the powerful Dragon Monarchs themselves.
 
 As the master of storms, this dragon can hover freely (no gravity) and fires 
-fireballs that travel upward, making them excellent for hitting enemies at 
-different heights. The Dragon of Storms brings the power of wind and tempest to 
+fireballs downward, making them excellent for hitting enemies below. The Dragon of Storms brings the power of wind and tempest to 
 the arena, a formidable force that has faced down monarchs and armies alike.

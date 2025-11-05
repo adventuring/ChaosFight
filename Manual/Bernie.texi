@@ -1,7 +1,7 @@
 @subsubsection Bernie
 @display
 @group
-    Weight: 4.54 kg (10 lbs)
+    Weight: 5 kg (10 lbs)
     Attack: Ground Thump (Melée, BOTH DIRECTIONS!)
     Special: No jumping; wraps from bottom to top of screen; fall damage immunity
     Original Game: Bernie and the Towers of Doom (Atari 7800)

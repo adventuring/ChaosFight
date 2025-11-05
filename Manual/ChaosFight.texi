@@ -507,8 +507,7 @@ The console switches provide additional game control:
 
 @section GAME RESET Switch
 
-Pressing the RESET switch immediately returns to the Publisher
-screen and restarts the game.
+Pressing the RESET switch immediately starts the game over.
 
 @section GAME SELECT Switch
 

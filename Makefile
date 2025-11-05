@@ -454,15 +454,15 @@ Object/VariableRedefinitions.h:
 # Step 2: Compile .preprocessed.bas → bB.ARCH.s
 Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Object/VariableRedefinitions.h
 	mkdir -p Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas | tee bB.NTSC.s > /dev/null
+	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && timeout 60 ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas | tee bB.NTSC.s > /dev/null
 
 Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Object/VariableRedefinitions.h
 	mkdir -p Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas | tee bB.PAL.s > /dev/null
+	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && timeout 60 ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas | tee bB.PAL.s > /dev/null
 
 Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Object/VariableRedefinitions.h
 	mkdir -p Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas | tee bB.SECAM.s > /dev/null
+	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && timeout 60 ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas | tee bB.SECAM.s > /dev/null
 
 # Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory

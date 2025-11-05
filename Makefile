@@ -455,15 +455,15 @@ Object/2600basic_variable_redefs.h:
 # Step 2: Compile .preprocessed.bas → bB.ARCH.s
 Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas | tee bB.NTSC.s > /dev/null
+	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas > bB.NTSC.s
 
 Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas | tee bB.PAL.s > /dev/null
+	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas > bB.PAL.s
 
 Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas | tee bB.SECAM.s > /dev/null
+	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas > bB.SECAM.s
 
 # Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory

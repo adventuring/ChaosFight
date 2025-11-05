@@ -74,7 +74,7 @@ Arena1Playfield
           XXXXXXXXXXXXXXXX
 end
 
-Arena2Colors
+Arena1Colors
           pfcolors:
           ColTurquoise(4)
           ColTurquoise(4)
@@ -87,6 +87,29 @@ Arena2Colors
 end
 
 Arena2Playfield
+          playfield:
+          X...............
+          X...............
+          X...........XXXX
+          X...........XXXX
+          X...........XXXX
+          X...............
+          X...............
+          XXXXXXXXXXXXXXXX
+end
+
+Arena2Colors
+          pfcolors:
+          ColTurquoise(4)
+          ColTurquoise(4)
+          ColTurquoise(6)
+          ColTurquoise(4)
+          ColTurquoise(6)
+          ColTurquoise(4)
+          ColTurquoise(4)
+          ColTurquoise(2)
+end
+
 Arena3Playfield
           playfield:
           X...............
@@ -111,7 +134,6 @@ Arena3Colors
           ColSeafoam(6)
 end
 
-Arena3Playfield
 Arena4Playfield
           playfield:
           ................
@@ -136,7 +158,6 @@ Arena4Colors
           ColYellow(12)
 end
 
-Arena4Playfield
 Arena5Playfield
           playfield:
           XXXXXX..........
@@ -441,40 +462,414 @@ Arena16Colors
           ColIndigo(8)
 end
 
+          rem Arena 17: The Spire (vertical tower platforms)
+Arena17Playfield
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X...............
+          X......XX.......
+          X...............
+          X......XX.......
+          X...............
+          X......XX.......
+          XXXXXXXXXXXXXXXX
+end
+
+Arena17Colors
+          pfcolors:
+          ColLime(2)
+          ColLime(4)
+          ColLime(6)
+          ColLime(4)
+          ColLime(6)
+          ColLime(4)
+          ColLime(2)
+          ColLime(8)
+end
+
+          rem Arena 18: The Bridge (wide center platform)
+Arena18Playfield
+          playfield:
+          ................
+          ................
+          ................
+          XXXXXXXXXXXXXXXX
+          XXXXXXXXXXXXXXXX
+          ................
+          ................
+          ................
+end
+
+Arena18Colors
+          pfcolors:
+          ColTeal(12)
+          ColTeal(12)
+          ColTeal(12)
+          ColTeal(14)
+          ColTeal(14)
+          ColTeal(12)
+          ColTeal(12)
+          ColTeal(12)
+end
+
+          rem Arena 19: The Pits (narrow platforms with gaps)
+Arena19Playfield
+          playfield:
+          XXXX........XXXX
+          XXXX........XXXX
+          ................
+          XXXX........XXXX
+          XXXX........XXXX
+          ................
+          XXXX........XXXX
+          XXXX........XXXX
+end
+
+Arena19Colors
+          pfcolors:
+          ColMaroon(2)
+          ColMaroon(2)
+          ColMaroon(0)
+          ColMaroon(2)
+          ColMaroon(2)
+          ColMaroon(0)
+          ColMaroon(2)
+          ColMaroon(4)
+end
+
+          rem Arena 20: The Stairs (stepped platforms)
+Arena20Playfield
+          playfield:
+          XXXXXXXXXXXXXXXX
+          XXXX............
+          XXXX............
+          XX..............
+          XX..............
+          X...............
+          X...............
+          XXXXXXXXXXXXXXXX
+end
+
+Arena20Colors
+          pfcolors:
+          ColNavy(4)
+          ColNavy(4)
+          ColNavy(4)
+          ColNavy(6)
+          ColNavy(6)
+          ColNavy(8)
+          ColNavy(8)
+          ColNavy(2)
+end
+
+          rem Arena 21: The Grid (checkerboard pattern)
+Arena21Playfield
+          playfield:
+          XX..XX..XX..XX..
+          XX..XX..XX..XX..
+          ..XX..XX..XX..XX
+          ..XX..XX..XX..XX
+          XX..XX..XX..XX..
+          XX..XX..XX..XX..
+          ..XX..XX..XX..XX
+          ..XX..XX..XX..XX
+end
+
+Arena21Colors
+          pfcolors:
+          ColOlive(4)
+          ColOlive(4)
+          ColOlive(6)
+          ColOlive(6)
+          ColOlive(4)
+          ColOlive(4)
+          ColOlive(6)
+          ColOlive(6)
+end
+
+          rem Arena 22: The Columns (vertical pillars)
+Arena22Playfield
+          playfield:
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+end
+
+Arena22Colors
+          pfcolors:
+          ColCrimson(4)
+          ColCrimson(4)
+          ColCrimson(4)
+          ColCrimson(4)
+          ColCrimson(4)
+          ColCrimson(4)
+          ColCrimson(4)
+          ColCrimson(6)
+end
+
+          rem Arena 23: The Waves (curved platforms)
+Arena23Playfield
+          playfield:
+          XXXXXXXXXXXXXXXX
+          XXXX............
+          XXXX............
+          XXXXXXXXXXXXXXXX
+          XXXX............
+          XXXX............
+          XXXXXXXXXXXXXXXX
+          XXXXXXXXXXXXXXXX
+end
+
+Arena23Colors
+          pfcolors:
+          ColAqua(2)
+          ColAqua(4)
+          ColAqua(4)
+          ColAqua(2)
+          ColAqua(4)
+          ColAqua(4)
+          ColAqua(2)
+          ColAqua(6)
+end
+
+          rem Arena 24: The Cross (cross-shaped platform)
+Arena24Playfield
+          playfield:
+          XXXX....XXXX....
+          XXXX....XXXX....
+          XXXX....XXXX....
+          XXXXXXXXXXXXXXXX
+          XXXXXXXXXXXXXXXX
+          XXXX....XXXX....
+          XXXX....XXXX....
+          XXXX....XXXX....
+end
+
+Arena24Colors
+          pfcolors:
+          ColSlate(4)
+          ColSlate(4)
+          ColSlate(4)
+          ColSlate(6)
+          ColSlate(6)
+          ColSlate(4)
+          ColSlate(4)
+          ColSlate(4)
+end
+
+          rem Arena 25: The Maze (complex wall pattern)
+Arena25Playfield
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X......X......X
+          X.XXXX.X.XXXX.X
+          X.X..X.X.X..X.X
+          X.X..X.X.X..X.X
+          X.XXXX.X.XXXX.X
+          X......X......X
+          XXXXXXXXXXXXXXXX
+end
+
+Arena25Colors
+          pfcolors:
+          ColViolet(2)
+          ColViolet(4)
+          ColViolet(6)
+          ColViolet(8)
+          ColViolet(8)
+          ColViolet(6)
+          ColViolet(4)
+          ColViolet(2)
+end
+
+          rem Arena 26: The Islands (scattered platforms)
+Arena26Playfield
+          playfield:
+          XX............XX
+          XX............XX
+          ................
+          ....XXXXXX......
+          ....XXXXXX......
+          ................
+          XX............XX
+          XX............XX
+end
+
+Arena26Colors
+          pfcolors:
+          ColCoral(2)
+          ColCoral(2)
+          ColCoral(0)
+          ColCoral(4)
+          ColCoral(4)
+          ColCoral(0)
+          ColCoral(2)
+          ColCoral(2)
+end
+
+          rem Arena 27: The Rings (concentric platforms)
+Arena27Playfield
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X..............X
+          X.XXXXXXXXXXXX.X
+          X.X..........X.X
+          X.X..........X.X
+          X.XXXXXXXXXXXX.X
+          X..............X
+          XXXXXXXXXXXXXXXX
+end
+
+Arena27Colors
+          pfcolors:
+          ColAmber(2)
+          ColAmber(4)
+          ColAmber(6)
+          ColAmber(8)
+          ColAmber(8)
+          ColAmber(6)
+          ColAmber(4)
+          ColAmber(2)
+end
+
+          rem Arena 28: The Slopes (diagonal platforms)
+Arena28Playfield
+          playfield:
+          XXXXXXXXXXXXXXXX
+          .XXXXXXXXXXXXXX.
+          ..XXXXXXXXXXXX..
+          ...XXXXXXXXXX...
+          ...XXXXXXXXXX...
+          ..XXXXXXXXXXXX..
+          .XXXXXXXXXXXXXX.
+          XXXXXXXXXXXXXXXX
+end
+
+Arena28Colors
+          pfcolors:
+          ColEmerald(2)
+          ColEmerald(4)
+          ColEmerald(6)
+          ColEmerald(8)
+          ColEmerald(8)
+          ColEmerald(6)
+          ColEmerald(4)
+          ColEmerald(2)
+end
+
+          rem Arena 29: The Zigzag (zigzag pattern)
+Arena29Playfield
+          playfield:
+          XXXX........XXXX
+          ..XXXX....XXXX..
+          ....XXXXXX......
+          ......XXXX......
+          ......XXXX......
+          ....XXXXXX......
+          ..XXXX....XXXX..
+          XXXX........XXXX
+end
+
+Arena29Colors
+          pfcolors:
+          ColRose(2)
+          ColRose(4)
+          ColRose(6)
+          ColRose(4)
+          ColRose(4)
+          ColRose(6)
+          ColRose(4)
+          ColRose(2)
+end
+
+          rem Arena 30: The Ladder (vertical rungs)
+Arena30Playfield
+          playfield:
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+end
+
+Arena30Colors
+          pfcolors:
+          ColMint(4)
+          ColMint(4)
+          ColMint(4)
+          ColMint(4)
+          ColMint(4)
+          ColMint(4)
+          ColMint(4)
+          ColMint(6)
+end
+
+          rem Arena 31: The Final Battle (complex multi-platform)
+Arena31Playfield
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X.XX..XX..XX.XX.X
+          X.XX..XX..XX.XX.X
+          X..............X
+          X.XX..XX..XX.XX.X
+          X.XX..XX..XX.XX.X
+          X..............X
+          XXXXXXXXXXXXXXXX
+end
+
+Arena31Colors
+          pfcolors:
+          ColPlatinum(2)
+          ColPlatinum(4)
+          ColPlatinum(4)
+          ColPlatinum(6)
+          ColPlatinum(4)
+          ColPlatinum(4)
+          ColPlatinum(6)
+          ColPlatinum(8)
+end
+
           rem ==========================================================
           rem ARENA POINTER TABLES
           rem ==========================================================
           rem Playfield pointer lookup tables for efficient arena loading
-          rem Format: 32 entries (indices 0-31) for Arena1-Arena32
+          rem Format: 32 entries (indices 0-31) for Arena0-Arena31
           rem Note: PF1 and PF2 both point to the same ArenaNPlayfield
-          rem Indices 16-31 currently map to Arena1-Arena16 (for future expansion)
           rem ==========================================================
 
           data ArenaPF1PointerL
-            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
-            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield,
-            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
-            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield
+            <Arena0Playfield, <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield,
+            <Arena8Playfield, <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield,
+            <Arena16Playfield, <Arena17Playfield, <Arena18Playfield, <Arena19Playfield, <Arena20Playfield, <Arena21Playfield, <Arena22Playfield, <Arena23Playfield,
+            <Arena24Playfield, <Arena25Playfield, <Arena26Playfield, <Arena27Playfield, <Arena28Playfield, <Arena29Playfield, <Arena30Playfield, <Arena31Playfield
 end
 
           data ArenaPF1PointerH
-            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
-            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield,
-            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
-            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield
+            >Arena0Playfield, >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield,
+            >Arena8Playfield, >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield,
+            >Arena16Playfield, >Arena17Playfield, >Arena18Playfield, >Arena19Playfield, >Arena20Playfield, >Arena21Playfield, >Arena22Playfield, >Arena23Playfield,
+            >Arena24Playfield, >Arena25Playfield, >Arena26Playfield, >Arena27Playfield, >Arena28Playfield, >Arena29Playfield, >Arena30Playfield, >Arena31Playfield
 end
 
           data ArenaPF2PointerL
-            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
-            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield,
-            <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield, <Arena8Playfield,
-            <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield, <Arena16Playfield
+            <Arena0Playfield, <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield,
+            <Arena8Playfield, <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield,
+            <Arena16Playfield, <Arena17Playfield, <Arena18Playfield, <Arena19Playfield, <Arena20Playfield, <Arena21Playfield, <Arena22Playfield, <Arena23Playfield,
+            <Arena24Playfield, <Arena25Playfield, <Arena26Playfield, <Arena27Playfield, <Arena28Playfield, <Arena29Playfield, <Arena30Playfield, <Arena31Playfield
 end
 
           data ArenaPF2PointerH
-            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
-            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield,
-            >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield, >Arena8Playfield,
-            >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield, >Arena16Playfield
+            >Arena0Playfield, >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield,
+            >Arena8Playfield, >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield,
+            >Arena16Playfield, >Arena17Playfield, >Arena18Playfield, >Arena19Playfield, >Arena20Playfield, >Arena21Playfield, >Arena22Playfield, >Arena23Playfield,
+            >Arena24Playfield, >Arena25Playfield, >Arena26Playfield, >Arena27Playfield, >Arena28Playfield, >Arena29Playfield, >Arena30Playfield, >Arena31Playfield
 end
 

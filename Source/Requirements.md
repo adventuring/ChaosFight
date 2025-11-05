@@ -292,8 +292,7 @@ When a player takes damage from any source:
 - Return to title screen after acknowledgment
 
 - If a two-player game, only the winner appears.
-- For a human winner, music is Victory.
-- For a CPU winner, music is Game Over.
+- Music plays the winner's character theme song (regardless of human or CPU).
 
 - If a 3- or 4-player game, all but the last player
   appear. The winner (last man standing) appears in the top-center.

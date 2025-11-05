@@ -428,10 +428,6 @@ SoundGuardBlock = 1
  
 SoundAttackHit = 0
  
-SongVictory = 4
- 
-SongGameOver = 3
- 
 SongTitle = 2
  
 SongAuthor = 1

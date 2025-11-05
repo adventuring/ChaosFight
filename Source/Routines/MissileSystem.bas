@@ -512,7 +512,6 @@ HandleKnightGuyMissile
           dim HKG_missileX = temp2
           dim HKG_missileY = temp3
           dim HKG_animationState = temp6
-          dim HKG_animationFrame = velocityCalculation
           dim HKG_swordOffset = velocityCalculation
           
           rem Get facing direction (bit 0: 0=left, 1=right)
@@ -540,27 +539,25 @@ HandleKnightGuyMissile
           
 KnightGuyAttackActive
           rem Get current animation frame within Execute sequence (0-7)
-          rem Reuse temp6 (HKG_animationState no longer needed)
-          let HKG_animationFrame = currentAnimationFrame_R[HKG_playerIndex]
+          rem Read from SCRAM and calculate offset immediately
+          let HKG_swordOffset = currentAnimationFrame_R[HKG_playerIndex]
           
           rem Calculate sword swing offset based on animation frame
           rem Frames 0-3: Move away from player (sword swing out)
           rem Frames 4-7: Return to start (sword swing back)
           rem Maximum swing distance: 4 pixels
-          if HKG_animationFrame < 4 then KnightGuySwingOut
+          if HKG_swordOffset < 4 then KnightGuySwingOut
           rem Frames 4-7: Returning to start
-          rem Calculate return offset: (7 - frame) * 1 pixel
+          rem Calculate return offset: (7 - frame) pixels
           rem Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1 pixel, Frame 7: 0 pixels
-          rem Reuse temp6 for sword offset calculation
-          let HKG_swordOffset = 7 - HKG_animationFrame
+          let HKG_swordOffset = 7 - HKG_swordOffset
           goto KnightGuySetPosition
           
 KnightGuySwingOut
           rem Frames 0-3: Moving away from player
           rem Calculate swing offset: (frame + 1) pixels
           rem Frame 0: 1 pixel, Frame 1: 2 pixels, Frame 2: 3 pixels, Frame 3: 4 pixels
-          rem Reuse temp6 for sword offset calculation
-          let HKG_swordOffset = HKG_animationFrame + 1
+          let HKG_swordOffset = HKG_swordOffset + 1
           
 KnightGuySetPosition
           rem Calculate base X position (partially overlapping player)

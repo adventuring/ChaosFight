@@ -7,7 +7,7 @@
           rem Handles Atari 2600 console switches during gameplay.
 
           rem SWITCHES:
-          rem   switchreset - Game Reset → return to character select
+          rem   switchreset - Game Reset → return to publisher preamble
           rem   switchselect - Game Select → toggle pause
           rem   switchbw - Color/B&W → handled in rendering
 
@@ -15,10 +15,70 @@
           rem   gameState - 0=normal play, 1=paused
           rem ==========================================================
 
+          rem ==========================================================
+          rem WARM START / RESET HANDLER
+          rem ==========================================================
+          rem Handles game reset from any screen/state.
+          rem Clears critical state variables and reinitializes hardware
+          rem   registers.
+          rem Called when RESET button is pressed.
+          rem
+          rem EFFECTS:
+          rem   - Clears game state variables
+          rem   - Reinitializes TIA color and audio registers
+          rem   - Resets gameMode to ModePublisherPreamble
+          rem   - Calls ChangeGameMode to transition to startup sequence
+          rem ==========================================================
+WarmStart
+          rem Step 1: Clear critical game state variables
+          let gameState = 0
+          rem 0 = normal (not paused, not ending)
+          let frame = 0
+          rem Reset frame counter
+          
+          rem Step 2: Reinitialize TIA color registers to safe defaults
+          rem Match ColdStart initialization for consistency
+          COLUBK = ColGray(0)
+          rem Background: black
+          COLUPF = ColGrey(14)
+          rem Playfield: white
+          COLUP0 = ColBlue(14)
+          rem Player 0: bright blue
+          _COLUP1 = ColRed(14)
+          rem Player 1: bright red (multisprite kernel requires _COLUP1)
+          
+          rem Step 3: Initialize audio channels (silent on reset)
+          AUDC0 = 0
+          AUDV0 = 0
+          AUDC1 = 0
+          AUDV1 = 0
+          
+          rem Step 4: Clear playfield registers to prevent artifacts
+          pf0 = 0
+          pf1 = 0
+          pf2 = 0
+          pf3 = 0
+          pf4 = 0
+          pf5 = 0
+          
+          rem Step 5: Clear sprite enable registers
+          ENAM0 = 0
+          ENAM1 = 0
+          ENABL = 0
+          
+          rem Step 6: Reset game mode to startup sequence
+          let gameMode = ModePublisherPreamble
+          gosub bank13 ChangeGameMode
+          
+          rem Reset complete - return to MainLoop which will dispatch to
+          rem   new mode
+          return
+
           rem Main console switch handler
+          rem NOTE: RESET is now handled in MainLoop via centralized
+          rem   WarmStart call
+          rem This function only handles pause/select switches
 HandleConsoleSwitches
-          rem Game Reset switch - return to publisher preamble
-          if switchreset then let gameMode = ModePublisherPreamble : gosub bank13 ChangeGameMode : return
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
           rem   mode

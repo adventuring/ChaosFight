@@ -2,6 +2,11 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 MainLoop
+          rem Centralized RESET handling - check before any mode dispatch
+          rem RESET must work from any screen/state (title, gameplay,
+          rem   pause, preambles, win/lose, menus)
+          if switchreset then gosub bank11 WarmStart : goto MainLoopContinue
+          
           if gameMode = 0 then gosub bank9 PublisherPreambleMain : goto MainLoopContinue
           if gameMode = 1 then gosub bank9 AuthorPreamble : goto MainLoopContinue
           if gameMode = 2 then gosub bank9 TitleScreenMain : goto MainLoopContinue

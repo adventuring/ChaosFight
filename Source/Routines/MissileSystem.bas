@@ -314,30 +314,34 @@ FrictionDone
           let UOM_missileY = UOM_missileY + temp3
           let missileY_W[UOM_playerIndex] = UOM_missileY
           
-          rem Check screen bounds
-          rem Inline CheckMissileBounds
+          rem Check screen bounds and wrap around horizontally
+          rem Missiles wrap around horizontally like players (all arenas)
           rem Get missile X/Y position (read from _R port)
           let temp2  = missileX[temp1]
           let temp3  = missileY_R[temp1]
           
-          rem Check bounds (usable sprite area is 128px wide, 16px inset
-          rem   from each side)
+          rem Wrap around horizontally: X < 10 wraps to 150, X > 150 wraps
+          rem   to 10
+          rem Match player wrap-around behavior (same boundaries: 10-150)
+          if temp2 < 10 then let temp2 = 150 : let missileX[temp1] = 150
+          rem Off left edge, wrap to right
+          if temp2 > 150 then let temp2 = 10 : let missileX[temp1] = 10
+          rem Off right edge, wrap to left
+          
+          rem Check vertical bounds (deactivate if off top/bottom, like
+          rem   players are clamped)
           let temp4  = 0
-          if temp2 > ScreenInsetX + ScreenUsableWidth then temp4  = 1
-          rem Off right edge (16 + 128)
-          if temp2 < ScreenInsetX then temp4  = 1
-          rem Off left edge
           if temp3 > ScreenBottom then temp4  = 1
-          rem Off bottom
+          rem Off bottom, deactivate
           rem Byte-safe top bound: if wrapped past 0 due to subtract,
           rem   temp3 will be > original
           let temp5  = temp3
           rem Assuming prior update may have subtracted from temp3
           rem   earlier in loop
           if temp3 > ScreenTopWrapThreshold then temp4  = 1
-          rem Off top
+          rem Off top, deactivate
           if temp4 then goto DeactivateMissile 
-          rem Off-screen, deactivate
+          rem Off-screen vertically, deactivate
           
           rem Check collision with playfield if flag is set
           rem Reload missile flags (temp5 was overwritten with Y

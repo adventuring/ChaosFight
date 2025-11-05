@@ -267,41 +267,21 @@ BoundaryLoop
           if CBC_playerIndex = 3 && selectedChar4_R = 255 then goto BoundaryNextPlayer
           
 BoundaryCheckBounds
-          rem Check if current arena supports wrap-around
-          rem Arena 4 (index 3) and Arena 12 (index 11) are wrap-around
-          rem   arenas
-          rem Handle RandomArena by checking selected arena (may wrap
-          rem   based on current random selection)
+          rem All arenas support horizontal wrap-around for players
+          rem   (except where walls stop it)
+          rem Handle RandomArena by checking selected arena
           dim CBC_arenaIndex = temp3
           let CBC_arenaIndex = selectedArena_R
           rem Handle RandomArena (use frame-based selection for
           rem   consistency)
           if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = frame & 15
-          rem Check if this is a wrap-around arena (Arena 4 = index 3,
-          rem   Arena 12 = index 11)
-          if CBC_arenaIndex = 3 then BoundaryWrapAround
-          rem Arena 4: The Bridge
-          if CBC_arenaIndex = 11 then BoundaryWrapAround
-          rem Arena 12: The Chasm
           
-          rem Non-wrap-around arenas - clamp to screen boundaries
-          rem Clamp X position to screen boundaries (10-150)
-          if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 10 : let playerSubpixelX[CBC_playerIndex] = 10 : let playerSubpixelX_lo[CBC_playerIndex] = 0 : let playerVelocityX[CBC_playerIndex] = 0 : let playerVelocityX_lo[CBC_playerIndex] = 0
-          if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 150 : let playerSubpixelX[CBC_playerIndex] = 150 : let playerSubpixelX_lo[CBC_playerIndex] = 0 : let playerVelocityX[CBC_playerIndex] = 0 : let playerVelocityX_lo[CBC_playerIndex] = 0
-          
-          rem Clamp Y position to screen boundaries (20-80)
-          if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20 : let playerSubpixelY[CBC_playerIndex] = 20 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
-          if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 80 : let playerSubpixelY[CBC_playerIndex] = 80 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
-          goto BoundaryNextPlayer
-          
-BoundaryWrapAround
-          rem Wrap-around arenas: all players wrap horizontally
+          rem All arenas: wrap horizontally (walls may block wrap-around)
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
           if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150 : let playerSubpixelX[CBC_playerIndex] = 150 : let playerSubpixelX_lo[CBC_playerIndex] = 0
           if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 10 : let playerSubpixelX[CBC_playerIndex] = 10 : let playerSubpixelX_lo[CBC_playerIndex] = 0
           
-          rem Y position: clamp to screen boundaries (no vertical wrap
-          rem   for wrap-around arenas)
+          rem Y position: clamp to screen boundaries (no vertical wrap)
           rem Top boundary: clamp to prevent going above screen
           if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20 : let playerSubpixelY[CBC_playerIndex] = 20 : let playerSubpixelY_lo[CBC_playerIndex] = 0 : let playerVelocityY[CBC_playerIndex] = 0 : let playerVelocityY_lo[CBC_playerIndex] = 0
           rem Bottom boundary: clamp to prevent going below screen

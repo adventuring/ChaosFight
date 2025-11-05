@@ -38,26 +38,36 @@ UpdatePlayerMovement
           dim UPM_playerIndex = temp1
           rem Update movement for each active player
           let UPM_playerIndex = 0
-          let temp1 = UPM_playerIndex
+          let UPS_playerIndex = UPM_playerIndex
           gosub UpdatePlayerMovementSingle
           rem Player 1
           let UPM_playerIndex = 1
-          let temp1 = UPM_playerIndex
+          let UPS_playerIndex = UPM_playerIndex
           gosub UpdatePlayerMovementSingle
           rem Player 2
           if QuadtariDetected then let UPM_playerIndex = 2
-          if QuadtariDetected then let temp1 = UPM_playerIndex
+          if QuadtariDetected then let UPS_playerIndex = UPM_playerIndex
           if QuadtariDetected then gosub UpdatePlayerMovementSingle
           if QuadtariDetected then let UPM_playerIndex = 3
-          if QuadtariDetected then let temp1 = UPM_playerIndex
+          if QuadtariDetected then let UPS_playerIndex = UPM_playerIndex
           if QuadtariDetected then gosub UpdatePlayerMovementSingle
           return
 
           rem Update movement for a specific player
-          rem Input: temp1 = player index (0-3)
+          rem Input: temp1 = player index (0-3) → UPS_playerIndex
           rem Applies velocity to position with subpixel precision
           rem batariBASIC automatically handles carry from fractional to
           rem   integer parts
+          rem
+          rem MUTATES:
+          rem   temp2 = UPS_subpixelSum (internal calculation)
+          rem   temp4 = UPS_subpixelXRead (internal SCRAM read-modify-write)
+          rem WARNING: temp2 and temp4 are mutated during execution. Do not
+          rem   use these temp variables after calling this subroutine.
+          rem
+          rem EFFECTS:
+          rem   Modifies playerX[], playerY[], playerSubpixelX_W[],
+          rem   playerSubpixelY_W[]
 UpdatePlayerMovementSingle
           dim UPS_playerIndex = temp1
           dim UPS_subpixelSum = temp2
@@ -163,8 +173,15 @@ SetPlayerPosition
           return
 
           rem Get player position (integer parts only)
-          rem Input: temp1 = player index (0-3)
-          rem Output: temp2 = X position, temp3 = Y position
+          rem Input: temp1 = player index (0-3) → GPP_playerIndex
+          rem Output: temp2 = X position, temp3 = Y position →
+          rem   GPP_positionX, GPP_positionY
+          rem
+          rem MUTATES:
+          rem   temp2 = GPP_positionX (return value: X position)
+          rem   temp3 = GPP_positionY (return value: Y position)
+          rem WARNING: Callers should read from GPP_positionX/GPP_positionY
+          rem   aliases, not temp2/temp3 directly.
 GetPlayerPosition
           dim GPP_playerIndex = temp1
           dim GPP_positionX = temp2
@@ -176,8 +193,15 @@ GetPlayerPosition
           return
 
           rem Get player velocity (integer parts only)
-          rem Input: temp1 = player index (0-3)
-          rem Output: temp2 = X velocity, temp3 = Y velocity
+          rem Input: temp1 = player index (0-3) → GPV_playerIndex
+          rem Output: temp2 = X velocity, temp3 = Y velocity →
+          rem   GPV_velocityX, GPV_velocityY
+          rem
+          rem MUTATES:
+          rem   temp2 = GPV_velocityX (return value: X velocity)
+          rem   temp3 = GPV_velocityY (return value: Y velocity)
+          rem WARNING: Callers should read from GPV_velocityX/GPV_velocityY
+          rem   aliases, not temp2/temp3 directly.
 GetPlayerVelocity
           dim GPV_playerIndex = temp1
           dim GPV_velocityX = temp2
@@ -234,10 +258,17 @@ ApplyFriction
 
           rem Check collision between two players using integer
           rem   positions
-          rem Input: temp1 = player 1 index, temp2 = player 2 index
-          rem Output: temp3 = 1 if collision, 0 if not
+          rem Input: temp1 = player 1 index → CPC_player1Index
+          rem        temp2 = player 2 index → CPC_player2Index
+          rem Output: temp3 = 1 if collision, 0 if not → CPC_collisionResult
           rem NOTE: Uses integer positions only (subpixel ignored for
           rem   collision)
+          rem
+          rem MUTATES:
+          rem   temp3 = CPC_collisionResult (return value: 1 if collision, 0 if not)
+          rem   temp4-temp13 = Used internally for calculations
+          rem WARNING: Callers should read from CPC_collisionResult alias, not
+          rem   temp3 directly. All temp4-temp13 are mutated during execution.
 CheckPlayerCollision
           dim CPC_player1Index = temp1
           dim CPC_player2Index = temp2
@@ -305,12 +336,12 @@ YDistanceDone
           
           rem Collision detected
           let CPC_collisionResult = 1
-          let temp3 = CPC_collisionResult
+          rem Return value set in alias (temp3 is set but use alias instead)
           return
           
 NoCollision
           let CPC_collisionResult = 0
-          let temp3 = CPC_collisionResult
+          rem Return value set in alias (temp3 is set but use alias instead)
           return
 
           rem ==========================================================

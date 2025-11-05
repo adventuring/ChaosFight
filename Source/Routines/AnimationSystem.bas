@@ -433,18 +433,16 @@ TransitionHandleJump_TransitionToFalling
 
 TransitionHandleFallBack
           dim THFB_animationAction = temp2
-          dim THFB_playerIndex = temp4
           dim THFB_pfColumn = temp5
           dim THFB_pfRow = temp6
           rem Check wall collision using pfread
           rem If hit wall: goto idle, else: goto fallen
-          let THFB_playerIndex = currentPlayer
           rem Convert player X position to playfield column (0-31)
-          let THFB_pfColumn = playerX[THFB_playerIndex]
+          let THFB_pfColumn = playerX[currentPlayer]
           let THFB_pfColumn = THFB_pfColumn - ScreenInsetX
           let THFB_pfColumn = THFB_pfColumn / 4
           rem Convert player Y position to playfield row (0-7)
-          let THFB_pfRow = playerY[THFB_playerIndex]
+          let THFB_pfRow = playerY[currentPlayer]
           let THFB_pfRow = THFB_pfRow / 8
           rem Check if player hit a wall (playfield pixel is set)
           if pfread(THFB_pfColumn, THFB_pfRow) then TransitionHandleFallBack_HitWall

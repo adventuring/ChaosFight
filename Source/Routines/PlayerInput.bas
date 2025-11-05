@@ -401,14 +401,19 @@ EnhancedJumpDone0
           if IHLP_animationState >= 13 then InputSkipLeftPortJump
           rem Block jump during attack windup/execute/recovery
           let EJ_characterType = PlayerChar[IHLP_playerIndex]
-          rem Map MethHound (31) to ShamoneJump handler
-          if EJ_characterType = 31 then EJ_characterType = 15
-          rem Use Shamone jump for MethHound
+          rem Dispatch to character-specific jump handler (0-31)
+          rem MethHound (31) uses ShamoneJump handler
           let temp4 = EJ_characterType
           if temp4 < 8 then on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump
           if temp4 < 8 then goto DoneLeftPortJumpDispatch
           temp4 = temp4 - 8
-          on temp4 goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+          if temp4 < 8 then on temp4 goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+          if temp4 < 8 then goto DoneLeftPortJumpDispatch
+          temp4 = temp4 - 8
+          if temp4 < 8 then on temp4 goto Char16Jump, Char17Jump, Char18Jump, Char19Jump, Char20Jump, Char21Jump, Char22Jump, Char23Jump
+          if temp4 < 8 then goto DoneLeftPortJumpDispatch
+          temp4 = temp4 - 8
+          on temp4 goto Char24Jump, Char25Jump, Char26Jump, Char27Jump, Char28Jump, Char29Jump, Char30Jump, ShamoneJump
 DoneLeftPortJumpDispatch
 InputSkipLeftPortJump
 
@@ -417,16 +422,21 @@ InputSkipLeftPortJump
           dim GDIL_characterType = temp4
           dim GDIL_guardState = temp2
           rem Process down/guard input
-          rem Map MethHound (31) to ShamoneDown handler
           if joy0down then 
             let GDIL_characterType = PlayerChar[IHLP_playerIndex]
-            if GDIL_characterType = 31 then GDIL_characterType = 15
-            rem Use Shamone guard for MethHound
+            rem Dispatch to character-specific down handler (0-31)
+            rem MethHound (31) uses ShamoneDown handler
             let temp4 = GDIL_characterType
             if temp4 < 8 then on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown
             if temp4 < 8 then goto DoneLeftPortDownDispatch
             temp4 = temp4 - 8
-            on temp4 goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
+            if temp4 < 8 then on temp4 goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
+            if temp4 < 8 then goto DoneLeftPortDownDispatch
+            temp4 = temp4 - 8
+            if temp4 < 8 then on temp4 goto Char16Down, Char17Down, Char18Down, Char19Down, Char20Down, Char21Down, Char22Down, Char23Down
+            if temp4 < 8 then goto DoneLeftPortDownDispatch
+            temp4 = temp4 - 8
+            on temp4 goto Char24Down, Char25Down, Char26Down, Char27Down, Char28Down, Char29Down, Char30Down, ShamoneDown
 DoneLeftPortDownDispatch
             goto GuardInputDoneLeft
           
@@ -459,12 +469,18 @@ GuardInputDoneLeft
           if !joy0fire then InputSkipLeftPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipLeftPortAttack
           let temp4 = PlayerChar[temp1]
-          if temp4 = 31 then temp4 = 15
-          rem Use Shamone attack for MethHound
+          rem Dispatch to character-specific attack handler (0-31)
+          rem MethHound (31) uses ShamoneAttack handler
           if temp4 < 8 then on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack
           if temp4 < 8 then goto DoneLeftPortAttackDispatch
           temp4 = temp4 - 8
-          on temp4 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          if temp4 < 8 then on temp4 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          if temp4 < 8 then goto DoneLeftPortAttackDispatch
+          temp4 = temp4 - 8
+          if temp4 < 8 then on temp4 goto Char16Attack, Char17Attack, Char18Attack, Char19Attack, Char20Attack, Char21Attack, Char22Attack, Char23Attack
+          if temp4 < 8 then goto DoneLeftPortAttackDispatch
+          temp4 = temp4 - 8
+          on temp4 goto Char24Attack, Char25Attack, Char26Attack, Char27Attack, Char28Attack, Char29Attack, Char30Attack, ShamoneAttack
 DoneLeftPortAttackDispatch
 InputSkipLeftPortAttack
           
@@ -700,28 +716,38 @@ EnhancedJumpDone1
           if temp2 >= 13 then InputSkipRightPortJump
           rem Block jump during attack windup/execute/recovery
           let temp4 = PlayerChar[temp1]
-          rem Map MethHound (31) to ShamoneJump handler
-          if temp4 = 31 then temp4 = 15
-          rem Use Shamone jump for MethHound
+          rem Dispatch to character-specific jump handler (0-31)
+          rem MethHound (31) uses ShamoneJump handler
           if temp4 < 8 then on temp4 goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump
           if temp4 < 8 then goto DoneRightPortJumpDispatch
           temp4 = temp4 - 8
-          on temp4 goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+          if temp4 < 8 then on temp4 goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+          if temp4 < 8 then goto DoneRightPortJumpDispatch
+          temp4 = temp4 - 8
+          if temp4 < 8 then on temp4 goto Char16Jump, Char17Jump, Char18Jump, Char19Jump, Char20Jump, Char21Jump, Char22Jump, Char23Jump
+          if temp4 < 8 then goto DoneRightPortJumpDispatch
+          temp4 = temp4 - 8
+          on temp4 goto Char24Jump, Char25Jump, Char26Jump, Char27Jump, Char28Jump, Char29Jump, Char30Jump, ShamoneJump
 DoneRightPortJumpDispatch
 InputSkipRightPortJump
 
           
 
           rem Process down/guard input
-          rem Map MethHound (31) to ShamoneDown handler
           if joy1down then
           let temp4 = PlayerChar[temp1] 
-            if temp4 = 31 then temp4 = 15
-            rem Use Shamone guard for MethHound
+            rem Dispatch to character-specific down handler (0-31)
+            rem MethHound (31) uses ShamoneDown handler
             if temp4 < 8 then on temp4 goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown
             if temp4 < 8 then goto DoneRightPortDownDispatch
             temp4 = temp4 - 8
-            on temp4 goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
+            if temp4 < 8 then on temp4 goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
+            if temp4 < 8 then goto DoneRightPortDownDispatch
+            temp4 = temp4 - 8
+            if temp4 < 8 then on temp4 goto Char16Down, Char17Down, Char18Down, Char19Down, Char20Down, Char21Down, Char22Down, Char23Down
+            if temp4 < 8 then goto DoneRightPortDownDispatch
+            temp4 = temp4 - 8
+            on temp4 goto Char24Down, Char25Down, Char26Down, Char27Down, Char28Down, Char29Down, Char30Down, ShamoneDown
 DoneRightPortDownDispatch
             goto GuardInputDoneRight
           
@@ -741,7 +767,6 @@ GuardInputDoneRight
           
           
           rem Process attack input
-          rem Map MethHound (31) to ShamoneAttack handler
           rem Check animation state - block attack input during attack
           rem   animations (states 13-15)
           gosub GetPlayerAnimationState
@@ -754,12 +779,18 @@ GuardInputDoneRight
           if !joy1fire then InputSkipRightPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipRightPortAttack
           let temp4 = PlayerChar[temp1] 
-          if temp4 = 31 then temp4 = 15
-          rem Use Shamone attack for MethHound
+          rem Dispatch to character-specific attack handler (0-31)
+          rem MethHound (31) uses ShamoneAttack handler
           if temp4 < 8 then on temp4 goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack
           if temp4 < 8 then goto DoneRightPortAttackDispatch
           temp4 = temp4 - 8
-          on temp4 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          if temp4 < 8 then on temp4 goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          if temp4 < 8 then goto DoneRightPortAttackDispatch
+          temp4 = temp4 - 8
+          if temp4 < 8 then on temp4 goto Char16Attack, Char17Attack, Char18Attack, Char19Attack, Char20Attack, Char21Attack, Char22Attack, Char23Attack
+          if temp4 < 8 then goto DoneRightPortAttackDispatch
+          temp4 = temp4 - 8
+          on temp4 goto Char24Attack, Char25Attack, Char26Attack, Char27Attack, Char28Attack, Char29Attack, Char30Attack, ShamoneAttack
 DoneRightPortAttackDispatch
 InputSkipRightPortAttack
           

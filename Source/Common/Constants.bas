@@ -41,8 +41,13 @@
           const TerminalVelocity = 8
           
           rem Character system constants
+          rem Note: Only 16 characters are selectable (0-15), but code
+          rem   handles up to 32 characters (0-31) including non-selectable
+          rem   characters like MethHound (31)
+          const NumCharacters=16
+          rem Number of selectable characters
           const MaxCharacter = 15
-          rem Maximum character ID (NumCharacters - 1)
+          rem Maximum selectable character ID (NumCharacters - 1)
           const NoCharacter = 255
           rem No character selected ($FF)
           const CPUCharacter = 254

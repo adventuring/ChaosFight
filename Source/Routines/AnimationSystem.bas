@@ -486,11 +486,19 @@ HandleWindupEnd
           rem Most characters skip windup (go directly to Execute)
           rem Get character ID
           let HandleWindupEnd_characterType = playerChar[currentPlayer]
+          rem Dispatch to character-specific windup handler (0-31)
+          rem MethHound (31) uses Char15_Windup (Shamone) handler
           let temp1 = HandleWindupEnd_characterType
           if temp1 < 8 then on temp1 goto Char0_Windup, Char1_Windup, Char2_Windup, Char3_Windup, Char4_Windup, Char5_Windup, Char6_Windup, Char7_Windup
           if temp1 < 8 then goto DoneWindupDispatch
           temp1 = temp1 - 8
-          on temp1 goto Char8_Windup, Char9_Windup, Char10_Windup, Char11_Windup, Char12_Windup, Char13_Windup, Char14_Windup, Char15_Windup
+          if temp1 < 8 then on temp1 goto Char8_Windup, Char9_Windup, Char10_Windup, Char11_Windup, Char12_Windup, Char13_Windup, Char14_Windup, Char15_Windup
+          if temp1 < 8 then goto DoneWindupDispatch
+          temp1 = temp1 - 8
+          if temp1 < 8 then on temp1 goto Char16_Windup, Char17_Windup, Char18_Windup, Char19_Windup, Char20_Windup, Char21_Windup, Char22_Windup, Char23_Windup
+          if temp1 < 8 then goto DoneWindupDispatch
+          temp1 = temp1 - 8
+          on temp1 goto Char24_Windup, Char25_Windup, Char26_Windup, Char27_Windup, Char28_Windup, Char29_Windup, Char30_Windup, Char15_Windup
 DoneWindupDispatch
           
 Char0_Windup
@@ -569,11 +577,19 @@ HandleExecuteEnd
           dim HandleExecuteEnd_animationAction = temp2
           rem Character-specific execute→next transitions
           let HandleExecuteEnd_characterType = playerChar[currentPlayer]
+          rem Dispatch to character-specific execute handler (0-31)
+          rem MethHound (31) uses Char15_Execute (Shamone) handler
           let temp1 = HandleExecuteEnd_characterType
           if temp1 < 8 then on temp1 goto Char0_Execute, Char1_Execute, Char2_Execute, Char3_Execute, Char4_Execute, Char5_Execute, Char6_Execute, Char7_Execute
           if temp1 < 8 then goto DoneExecuteDispatch
           temp1 = temp1 - 8
-          on temp1 goto Char8_Execute, Char9_Execute, Char10_Execute, Char11_Execute, Char12_Execute, Char13_Execute, Char14_Execute, Char15_Execute
+          if temp1 < 8 then on temp1 goto Char8_Execute, Char9_Execute, Char10_Execute, Char11_Execute, Char12_Execute, Char13_Execute, Char14_Execute, Char15_Execute
+          if temp1 < 8 then goto DoneExecuteDispatch
+          temp1 = temp1 - 8
+          if temp1 < 8 then on temp1 goto Char16_Execute, Char17_Execute, Char18_Execute, Char19_Execute, Char20_Execute, Char21_Execute, Char22_Execute, Char23_Execute
+          if temp1 < 8 then goto DoneExecuteDispatch
+          temp1 = temp1 - 8
+          on temp1 goto Char24_Execute, Char25_Execute, Char26_Execute, Char27_Execute, Char28_Execute, Char29_Execute, Char30_Execute, Char15_Execute
 DoneExecuteDispatch
           
 Char0_Execute

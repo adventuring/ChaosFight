@@ -57,9 +57,9 @@ LoadSoundNote
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           rem   AUDCV
-          LSN_audc = LSN_audcv & %11110000
-          LSN_audc = LSN_audc / 16
-          LSN_audv = LSN_audcv & %00001111
+          let LSN_audc = LSN_audcv & %11110000
+          let LSN_audc = LSN_audc / 16
+          let LSN_audv = LSN_audcv & %00001111
           
           rem Write to TIA registers (use Voice 0 for sound effects)
           AUDC0 = LSN_audc
@@ -111,9 +111,9 @@ LoadSoundNote1
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           rem   AUDCV
-          LSN1_audc = LSN1_audcv & %11110000
-          LSN1_audc = LSN1_audc / 16
-          LSN1_audv = LSN1_audcv & %00001111
+          let LSN1_audc = LSN1_audcv & %11110000
+          let LSN1_audc = LSN1_audc / 16
+          let LSN1_audv = LSN1_audcv & %00001111
           
           rem Write to TIA registers (use Voice 1 for sound effects)
           AUDC1 = LSN1_audc

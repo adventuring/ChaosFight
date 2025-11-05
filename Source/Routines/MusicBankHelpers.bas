@@ -70,9 +70,9 @@ LoadMusicNote0
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           rem   AUDCV
-          LMN0_audc = LMN0_audcv & %11110000
-          LMN0_audc = LMN0_audc / 16
-          LMN0_audv = LMN0_audcv & %00001111
+          let LMN0_audc = LMN0_audcv & %11110000
+          let LMN0_audc = LMN0_audc / 16
+          let LMN0_audv = LMN0_audcv & %00001111
           
           rem Store target AUDV and total frames for envelope
           rem   calculation
@@ -116,9 +116,9 @@ LoadMusicNote0LoopChaotica
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           rem   AUDCV
-          LMN0_audc = LMN0_audcv & %11110000
-          LMN0_audc = LMN0_audc / 16
-          LMN0_audv = LMN0_audcv & %00001111
+          let LMN0_audc = LMN0_audcv & %11110000
+          let LMN0_audc = LMN0_audc / 16
+          let LMN0_audv = LMN0_audcv & %00001111
           
           rem Store target AUDV and total frames for envelope
           rem   calculation
@@ -171,9 +171,9 @@ LoadMusicNote1
           if LMN1_duration = 0 then LoadMusicNote1EndOfTrack
           
           rem Extract AUDC and AUDV
-          LMN1_audc = LMN1_audcv & %11110000
-          LMN1_audc = LMN1_audc / 16
-          LMN1_audv = LMN1_audcv & %00001111
+          let LMN1_audc = LMN1_audcv & %11110000
+          let LMN1_audc = LMN1_audc / 16
+          let LMN1_audv = LMN1_audcv & %00001111
           
           rem Store target AUDV and total frames for envelope
           rem   calculation
@@ -216,9 +216,9 @@ LoadMusicNote1LoopChaotica
           goto LoadMusicNote1
           
           rem Extract AUDC and AUDV
-          LMN1_audc = LMN1_audcv & %11110000
-          LMN1_audc = LMN1_audc / 16
-          LMN1_audv = LMN1_audcv & %00001111
+          let LMN1_audc = LMN1_audcv & %11110000
+          let LMN1_audc = LMN1_audc / 16
+          let LMN1_audv = LMN1_audcv & %00001111
           
           rem Store target AUDV and total frames for envelope
           rem   calculation

@@ -130,18 +130,20 @@ OVERSCAN
 	RETURN
 
 	; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
-	ifconst mk_48x2_1_on
-		include "TitleScreen/48x2_1_image.s"
-	endif
-	ifconst mk_48x2_2_on
-		include "TitleScreen/48x2_2_image.s"
-	endif
-	ifconst mk_48x2_3_on
-		include "TitleScreen/48x2_3_image.s"
-	endif
-	ifconst mk_48x2_4_on
-		include "TitleScreen/48x2_4_image.s"
-	endif
+	; Note: Bitmap image data is now included from generated Art.*.s files in Bank1.bas
+	; The TitleScreen/48x2_N_image.s files are NOT included here to avoid duplicate definitions
+	; ifconst mk_48x2_1_on
+	;	include "TitleScreen/48x2_1_image.s"
+	; endif
+	; ifconst mk_48x2_2_on
+	;	include "TitleScreen/48x2_2_image.s"
+	; endif
+	; ifconst mk_48x2_3_on
+	;	include "TitleScreen/48x2_3_image.s"
+	; endif
+	; ifconst mk_48x2_4_on
+	;	include "TitleScreen/48x2_4_image.s"
+	; endif
 
 	ifconst mk_player_on
 		include "TitleScreen/player_image.s"
@@ -158,37 +160,5 @@ OVERSCAN
 	ifconst mk_player_on
 		include "TitleScreen/asm/player_kernel.s"
 	endif ;mk_player_on
-
-
-
-  ; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
- #ifconst mk_48x2_1_on
-	include "TitleScreen/48x2_1_image.s"
- #endif
- #ifconst mk_48x2_2_on
-	include "TitleScreen/48x2_2_image.s"
- #endif
- #ifconst mk_48x2_3_on
-	include "TitleScreen/48x2_3_image.s"
- #endif
- #ifconst mk_48x2_4_on
-	include "TitleScreen/48x2_4_image.s"
- #endif
-
- #ifconst mk_player_on
-	include "TitleScreen/player_image.s"
- #endif
-
- #ifconst mk_score_on
-	include "TitleScreen/score_image.s"
- #endif
-
- #ifconst mk_gameselect_on
-	include "TitleScreen/gameselect_image.s"
- #endif
-
- #ifconst mk_player_on
-	include "TitleScreen/asm/player_kernel.s"
- #endif ;mk_player_on
 
 

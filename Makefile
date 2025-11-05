@@ -447,22 +447,23 @@ Source/Generated/$(GAME).SECAM.preprocessed.bas: Source/Generated/$(GAME).SECAM.
 	bin/preprocess < $< > $@
 
 # Create empty variable redefs file if it doesn't exist (will be populated by batariBASIC)
-Object/VariableRedefinitions.h:
+# batariBASIC expects this file to be named 2600basic_variable_redefs.h
+Object/2600basic_variable_redefs.h:
 	@mkdir -p Object
 	@touch $@
 
 # Step 2: Compile .preprocessed.bas → bB.ARCH.s
-Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Object/VariableRedefinitions.h
+Object/bB.NTSC.s: Source/Generated/$(GAME).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && timeout 60 ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas | tee bB.NTSC.s > /dev/null
+	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).NTSC.preprocessed.bas | tee bB.NTSC.s > /dev/null
 
-Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Object/VariableRedefinitions.h
+Object/bB.PAL.s: Source/Generated/$(GAME).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && timeout 60 ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas | tee bB.PAL.s > /dev/null
+	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).PAL.preprocessed.bas | tee bB.PAL.s > /dev/null
 
-Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Object/VariableRedefinitions.h
+Object/bB.SECAM.s: Source/Generated/$(GAME).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && timeout 60 ../bin/2600basic -i $(POSTINC) -r VariableRedefinitions.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas | tee bB.SECAM.s > /dev/null
+	cd Object && timeout 60 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME).SECAM.preprocessed.bas | tee bB.SECAM.s > /dev/null
 
 # Step 3: Postprocess bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory
@@ -487,17 +488,14 @@ Source/Generated/$(GAME).SECAM.s: Object/bB.SECAM.s
 # The .s file is the final assembly output that includes all generated assets
 Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME).NTSC.s
 	mkdir -p Dist Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
 	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).NTSC.lst -sDist/$(GAME)$(GAMEYEAR).NTSC.sym -oDist/$(GAME)$(GAMEYEAR).NTSC.a26
 
 Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME).PAL.s
 	mkdir -p Dist Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
 	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).PAL.lst -sDist/$(GAME)$(GAMEYEAR).PAL.sym -oDist/$(GAME)$(GAMEYEAR).PAL.a26
 
 Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME).SECAM.s
 	mkdir -p Dist Object
-	cd Object && ln -sf VariableRedefinitions.h 2600basic_variable_redefs.h && cd ..
 	bin/dasm $< -ITools/batariBASIC/includes -IObject -ISource -ISource/Common -f3 -lDist/$(GAME)$(GAMEYEAR).SECAM.lst -sDist/$(GAME)$(GAMEYEAR).SECAM.sym -oDist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator

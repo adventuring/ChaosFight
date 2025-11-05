@@ -23,8 +23,8 @@
 PlaySoundEffect
           dim PSE_soundID = temp1
           rem Check if music is active (music takes priority)
-          if MusicVoice0PointerH then return
-          if MusicVoice1PointerH then return
+          if musicVoice0PointerH then return
+          if musicVoice1PointerH then return
           
           rem Lookup sound pointer from Sounds bank (Bank15)
           gosub bank15 LoadSoundPointer
@@ -33,19 +33,19 @@ PlaySoundEffect
           if SoundEffectPointerH_R then TryVoice1
           
           rem Voice 0 is free - use it
-          let SoundEffectPointerL = SoundPointerL
-          let SoundEffectPointerH_W = SoundPointerH_R
+          let SoundEffectPointerL = soundPointerL
+          let SoundEffectPointerH_W = soundPointerH_R
           let SoundEffectFrame_W = 1
           rem tail call
           goto UpdateSoundEffectVoice0
           
 TryVoice1
           rem Try Voice 1
-          if SoundEffectPointer1H then return
+          if soundEffectPointer1H then return
           
           rem Voice 1 is free - use it
-          let SoundEffectPointer1L = SoundPointerL
-          let SoundEffectPointer1H = SoundPointerH_R
+          let soundEffectPointer1L = soundPointerL
+          let soundEffectPointer1H = soundPointerH_R
           let SoundEffectFrame1_W = 1
           rem tail call
           goto UpdateSoundEffectVoice1
@@ -62,7 +62,7 @@ UpdateSoundEffect
           if SoundEffectPointerH_R then gosub UpdateSoundEffectVoice0
           
           rem Update Voice 1
-          if SoundEffectPointer1H then gosub UpdateSoundEffectVoice1
+          if soundEffectPointer1H then gosub UpdateSoundEffectVoice1
           return
           
           
@@ -108,7 +108,7 @@ UpdateSoundEffectVoice1
           rem   - Write to TIA: AUDC1, AUDF1, AUDV1 (use Voice 1)
           rem   - Set SoundEffectFrame1 = Duration + Delay
           rem   - Advance SoundEffectPointer1 by 4 bytes
-          rem - Handle end-of-sound: set SoundEffectPointer1H = 0, AUDV1
+          rem - Handle end-of-sound: set soundEffectPointer1H = 0, AUDV1
           rem   = 0, free voice
           return
 
@@ -122,7 +122,7 @@ StopSoundEffects
           
           rem Clear sound pointers (high byte = 0 means inactive)
           let SoundEffectPointerH_W = 0
-          let SoundEffectPointer1H = 0
+          let soundEffectPointer1H = 0
           
           rem Reset frame counters
           let SoundEffectFrame_W = 0

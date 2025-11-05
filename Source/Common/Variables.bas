@@ -210,16 +210,16 @@
           rem Music System Pointers (Admin Mode: gameMode 0-2, 7)
           rem NOTE: Music only runs in Admin Mode, so safe to use
           rem   var39-var44
-          dim SongPointerL = var39
-          dim SongPointerH = var40
+          dim songPointerL = var39
+          dim songPointerH = var40
           rem Song data pointer low/high bytes (in Songs bank) - zero
           rem   page
-          dim MusicVoice0PointerL = var41
-          dim MusicVoice0PointerH = var42
+          dim musicVoice0PointerL = var41
+          dim musicVoice0PointerH = var42
           rem Voice 0 stream position low/high bytes (high byte = 0
           rem   means inactive) - zero page
-          dim MusicVoice1PointerL = var43
-          dim MusicVoice1PointerH = var44
+          dim musicVoice1PointerL = var43
+          dim musicVoice1PointerH = var44
           rem Voice 1 stream position low/high bytes (high byte = 0
           rem   means inactive) - zero page
           
@@ -229,23 +229,23 @@
           rem Uses var39, var41 (shared with Music), y,z,var45,var46
           rem Voice 0: var39+var41 (shared), SCRAM for high bytes
           rem Voice 1: var45+var46 for pointers (zero page)
-          dim SoundPointerL = var39
-          dim SoundPointerH_W = w048
-          dim SoundPointerH_R = r048
-          dim SoundPointerH = SoundPointerH_W
+          dim soundPointerL = var39
+          dim soundPointerH_W = w048
+          dim soundPointerH_R = r048
+          dim soundPointerH = soundPointerH_W
           rem Sound data pointer low/high bytes (in Sounds bank) - low byte
           rem   in zero page (var39), high byte in SCRAM (w048/r048)
           rem   Moved to SCRAM to avoid conflict with charSelectAnimIndex (y)
-          dim SoundEffectPointerL = var41
-          dim SoundEffectPointerH_W = w066
-          dim SoundEffectPointerH_R = r066
-          dim SoundEffectPointerH = SoundEffectPointerH_W
+          dim soundEffectPointerL = var41
+          dim soundEffectPointerH_W = w066
+          dim soundEffectPointerH_R = r066
+          dim soundEffectPointerH = soundEffectPointerH_W
           rem Sound effect Voice 0 stream position low/high bytes (high
           rem   byte = 0 means inactive) - low byte in zero page (var41),
           rem   high byte in SCRAM (w066/r066)
           rem   Moved to SCRAM to avoid conflict with charSelectAnimFrame (z)
-          dim SoundEffectPointer1L = var45
-          dim SoundEffectPointer1H = var46
+          dim soundEffectPointer1L = var45
+          dim soundEffectPointer1H = var46
           rem Sound effect Voice 1 stream position low/high bytes (high
           rem   byte = 0 means inactive) - zero page
           
@@ -258,36 +258,36 @@
           rem ==========================================================
           
           rem Music System Frame Counters (SCRAM - used in Admin Mode)
-          dim MusicVoice0Frame_W = w020
-          dim MusicVoice0Frame_R = r020
-          dim MusicVoice0Frame = MusicVoice0Frame_W
-          dim MusicVoice1Frame_W = w021
-          dim MusicVoice1Frame_R = r021
-          dim MusicVoice1Frame = MusicVoice1Frame_W
+          dim musicVoice0Frame_W = w020
+          dim musicVoice0Frame_R = r020
+          dim musicVoice0Frame = musicVoice0Frame_W
+          dim musicVoice1Frame_W = w021
+          dim musicVoice1Frame_R = r021
+          dim musicVoice1Frame = musicVoice1Frame_W
           rem Frame counters for current notes on each voice (SCRAM
           rem   acceptable)
           
           rem Music System Current Song ID and Loop Pointers (SCRAM -
           rem   used in Admin Mode)
-          dim CurrentSongID_W = w022
-          dim CurrentSongID_R = r022
-          rem NOTE: w022 now free for CurrentSongID (SoundEffectFrame
+          dim currentSongID_W = w022
+          dim currentSongID_R = r022
+          rem NOTE: w022 now free for currentSongID (SoundEffectFrame
           rem   moved to w046)
           rem Current playing song ID (used to check if Chaotica for
           rem   looping)
-          dim MusicVoice0StartPointerL_W = w033
-          dim MusicVoice0StartPointerL_R = r033
-          dim MusicVoice0StartPointerL = MusicVoice0StartPointerL_W
-          dim MusicVoice0StartPointerH_W = w034
-          dim MusicVoice0StartPointerH_R = r034
-          dim MusicVoice0StartPointerH = MusicVoice0StartPointerH_W
+          dim musicVoice0StartPointerL_W = w033
+          dim musicVoice0StartPointerL_R = r033
+          dim musicVoice0StartPointerL = musicVoice0StartPointerL_W
+          dim musicVoice0StartPointerH_W = w034
+          dim musicVoice0StartPointerH_R = r034
+          dim musicVoice0StartPointerH = musicVoice0StartPointerH_W
           rem Initial Voice 0 pointer for looping (Chaotica only)
-          dim MusicVoice1StartPointerL_W = w035
-          dim MusicVoice1StartPointerL_R = r035
-          dim MusicVoice1StartPointerL = MusicVoice1StartPointerL_W
-          dim MusicVoice1StartPointerH_W = w030
-          dim MusicVoice1StartPointerH_R = r030
-          dim MusicVoice1StartPointerH = MusicVoice1StartPointerH_W
+          dim musicVoice1StartPointerL_W = w035
+          dim musicVoice1StartPointerL_R = r035
+          dim musicVoice1StartPointerL = musicVoice1StartPointerL_W
+          dim musicVoice1StartPointerH_W = w030
+          dim musicVoice1StartPointerH_R = r030
+          dim musicVoice1StartPointerH = musicVoice1StartPointerH_W
           rem Moved from w023-w026 to w030/w033-w035 to avoid conflict
           rem   with harpyLastFlapFrame_W (w023-w026)
           rem Initial Voice 1 pointer for looping (Chaotica only)
@@ -312,12 +312,12 @@
           
           rem Sound Effect System Frame Counters (SCRAM - used in Game
           rem   Mode)
-          dim SoundEffectFrame_W = w046
-          dim SoundEffectFrame_R = r046
-          dim SoundEffectFrame = SoundEffectFrame_W
-          dim SoundEffectFrame1_W = w047
-          dim SoundEffectFrame1_R = r047
-          dim SoundEffectFrame1 = SoundEffectFrame1_W
+          dim soundEffectFrame_W = w046
+          dim soundEffectFrame_R = r046
+          dim soundEffectFrame = soundEffectFrame_W
+          dim soundEffectFrame1_W = w047
+          dim soundEffectFrame1_R = r047
+          dim soundEffectFrame1 = soundEffectFrame1_W
           rem Moved from w022/w024 to w046/w047 to avoid conflicts
           rem Frame counters for current sound effect notes on each
           rem   voice (SCRAM acceptable)

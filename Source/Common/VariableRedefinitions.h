@@ -474,17 +474,17 @@ fallSpeed = b
  
 fallFrame = a
  
-SoundEffectFrame1 = SoundEffectFrame1_W
- 
-SoundEffectFrame1_R = r047
- 
-SoundEffectFrame1_W = w047
- 
-SoundEffectFrame = SoundEffectFrame_W
- 
-SoundEffectFrame_R = r046
- 
-SoundEffectFrame_W = w046
+soundEffectFrame1 = soundEffectFrame1_W
+
+soundEffectFrame1_R = r047
+
+soundEffectFrame1_W = w047
+
+soundEffectFrame = soundEffectFrame_W
+
+soundEffectFrame_R = r046
+
+soundEffectFrame_W = w046
  
 MusicVoice1TotalFrames_R = r039
  
@@ -502,77 +502,77 @@ MusicVoice0TargetAUDV_R = r036
  
 MusicVoice0TargetAUDV_W = w036
  
-MusicVoice1StartPointerH = MusicVoice1StartPointerH_W
+musicVoice1StartPointerH = musicVoice1StartPointerH_W
+
+musicVoice1StartPointerH_R = r030
+
+musicVoice1StartPointerH_W = w030
+
+musicVoice1StartPointerL = musicVoice1StartPointerL_W
+
+musicVoice1StartPointerL_R = r035
+
+musicVoice1StartPointerL_W = w035
+
+musicVoice0StartPointerH = musicVoice0StartPointerH_W
+
+musicVoice0StartPointerH_R = r034
+
+musicVoice0StartPointerH_W = w034
+
+musicVoice0StartPointerL = musicVoice0StartPointerL_W
+
+musicVoice0StartPointerL_R = r033
+
+musicVoice0StartPointerL_W = w033
+
+currentSongID_R = r022
+
+currentSongID_W = w022
+
+musicVoice1Frame = musicVoice1Frame_W
+
+musicVoice1Frame_R = r021
+
+musicVoice1Frame_W = w021
  
-MusicVoice1StartPointerH_R = r030
+musicVoice0Frame = musicVoice0Frame_W
+
+musicVoice0Frame_R = r020
+
+musicVoice0Frame_W = w020
  
-MusicVoice1StartPointerH_W = w030
+soundEffectPointer1H = var46
+
+soundEffectPointer1L = var45
+
+soundEffectPointerH = soundEffectPointerH_W
+
+soundEffectPointerH_R = r066
+
+soundEffectPointerH_W = w066
+
+soundEffectPointerL = var41
+
+soundPointerH = soundPointerH_W
+
+soundPointerH_R = r048
+
+soundPointerH_W = w048
+
+soundPointerL = var39
+
+musicVoice1PointerH = var44
+
+musicVoice1PointerL = var43
+
+musicVoice0PointerH = var42
+
+musicVoice0PointerL = var41
+
+songPointerH = var40
  
-MusicVoice1StartPointerL = MusicVoice1StartPointerL_W
- 
-MusicVoice1StartPointerL_R = r035
- 
-MusicVoice1StartPointerL_W = w035
- 
-MusicVoice0StartPointerH = MusicVoice0StartPointerH_W
- 
-MusicVoice0StartPointerH_R = r034
- 
-MusicVoice0StartPointerH_W = w034
- 
-MusicVoice0StartPointerL = MusicVoice0StartPointerL_W
- 
-MusicVoice0StartPointerL_R = r033
- 
-MusicVoice0StartPointerL_W = w033
- 
-CurrentSongID_R = r022
- 
-CurrentSongID_W = w022
- 
-MusicVoice1Frame = MusicVoice1Frame_W
- 
-MusicVoice1Frame_R = r021
- 
-MusicVoice1Frame_W = w021
- 
-MusicVoice0Frame = MusicVoice0Frame_W
- 
-MusicVoice0Frame_R = r020
- 
-MusicVoice0Frame_W = w020
- 
-SoundEffectPointer1H = var46
- 
-SoundEffectPointer1L = var45
- 
-SoundEffectPointerH = SoundEffectPointerH_W
- 
-SoundEffectPointerH_R = r066
- 
-SoundEffectPointerH_W = w066
- 
-SoundEffectPointerL = var41
- 
-SoundPointerH = SoundPointerH_W
- 
-SoundPointerH_R = r048
- 
-SoundPointerH_W = w048
- 
-SoundPointerL = var39
- 
-MusicVoice1PointerH = var44
- 
-MusicVoice1PointerL = var43
- 
-MusicVoice0PointerH = var42
- 
-MusicVoice0PointerL = var41
- 
-SongPointerH = var40
- 
-SongPointerL = var39
+songPointerL = var39
  
 fireHoldTimer_R = r015
  

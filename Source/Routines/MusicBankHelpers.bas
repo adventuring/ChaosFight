@@ -38,7 +38,7 @@ LoadSongVoice1Pointer
           
           rem Load next note from Voice 0 stream using assembly for
           rem   pointer access
-          rem Input: MusicVoice0PointerL/H points to current note in
+          rem Input: musicVoice0PointerL/H points to current note in
           rem   Song_Voice0 stream
           rem Output: Updates TIA registers, advances pointer, sets
           rem   MusicVoice0Frame
@@ -52,16 +52,16 @@ LoadMusicNote0
           asm
           ; Load 4 bytes from stream[pointer]
           ldy #0
-          lda (MusicVoice0PointerL),y  ; Load AUDCV
+          lda (musicVoice0PointerL),y  ; Load AUDCV
           sta temp2
           iny
-          lda (MusicVoice0PointerL),y  ; Load AUDF
+          lda (musicVoice0PointerL),y  ; Load AUDF
           sta temp3
           iny
-          lda (MusicVoice0PointerL),y  ; Load Duration
+          lda (musicVoice0PointerL),y  ; Load Duration
           sta temp4
           iny
-          lda (MusicVoice0PointerL),y  ; Load Delay
+          lda (musicVoice0PointerL),y  ; Load Delay
           sta temp5
           end
           
@@ -91,9 +91,9 @@ LoadMusicNote0
           rem Advance pointer by 4 bytes (16-bit addition)
           rem Reuse temp2 (LMN0_audcv no longer needed) for pointer
           rem   calculation
-          let temp2 = MusicVoice0PointerL
-          let MusicVoice0PointerL = temp2 + 4
-          if MusicVoice0PointerL < temp2 then let MusicVoice0PointerH = MusicVoice0PointerH + 1
+          let temp2 = musicVoice0PointerL
+          let musicVoice0PointerL = temp2 + 4
+          if musicVoice0PointerL < temp2 then let musicVoice0PointerH = musicVoice0PointerH + 1
           
           return
           
@@ -101,7 +101,7 @@ LoadMusicNote0EndOfTrack
           rem End of track reached - mark voice as inactive (pointerH = 0)
           rem Loop will be handled in UpdateMusic when both voices end (Chaotica
           rem   only)
-          let MusicVoice0PointerH = 0
+          let musicVoice0PointerH = 0
           AUDV0 = 0
           return
           
@@ -116,16 +116,16 @@ LoadMusicNote1
           asm
           ; Load 4 bytes from stream[pointer]
           ldy #0
-          lda (MusicVoice1PointerL),y  ; Load AUDCV
+          lda (musicVoice1PointerL),y  ; Load AUDCV
           sta temp2
           iny
-          lda (MusicVoice1PointerL),y  ; Load AUDF
+          lda (musicVoice1PointerL),y  ; Load AUDF
           sta temp3
           iny
-          lda (MusicVoice1PointerL),y  ; Load Duration
+          lda (musicVoice1PointerL),y  ; Load Duration
           sta temp4
           iny
-          lda (MusicVoice1PointerL),y  ; Load Delay
+          lda (musicVoice1PointerL),y  ; Load Delay
           sta temp5
           end
           
@@ -154,9 +154,9 @@ LoadMusicNote1
           rem Advance pointer by 4 bytes
           rem Reuse temp2 (LMN1_audcv no longer needed) for pointer
           rem   calculation
-          let temp2 = MusicVoice1PointerL
-          let MusicVoice1PointerL = temp2 + 4
-          if MusicVoice1PointerL < temp2 then let MusicVoice1PointerH = MusicVoice1PointerH + 1
+          let temp2 = musicVoice1PointerL
+          let musicVoice1PointerL = temp2 + 4
+          if musicVoice1PointerL < temp2 then let musicVoice1PointerH = musicVoice1PointerH + 1
           
           return
           
@@ -164,6 +164,6 @@ LoadMusicNote1EndOfTrack
           rem End of track reached - mark voice as inactive (pointerH = 0)
           rem Loop will be handled in UpdateMusic when both voices end (Chaotica
           rem   only)
-          let MusicVoice1PointerH = 0
+          let musicVoice1PointerH = 0
           AUDV1 = 0
           return

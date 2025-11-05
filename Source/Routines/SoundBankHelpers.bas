@@ -80,7 +80,7 @@ LoadSoundNote
           return
           
           rem Load next note from sound effect stream for Voice 1
-          rem Input: SoundEffectPointer1L/H points to current note in
+          rem Input: soundEffectPointer1L/H points to current note in
           rem   Sound_Voice0 stream
           rem Output: Updates TIA registers, advances pointer, sets
           rem   SoundEffectFrame1
@@ -94,21 +94,21 @@ LoadSoundNote1
           asm
           ; Load 4 bytes from stream[pointer]
           ldy #0
-          lda (SoundEffectPointer1L),y  ; Load AUDCV
+          lda (soundEffectPointer1L),y  ; Load AUDCV
           sta temp2
           iny
-          lda (SoundEffectPointer1L),y  ; Load AUDF
+          lda (soundEffectPointer1L),y  ; Load AUDF
           sta temp3
           iny
-          lda (SoundEffectPointer1L),y  ; Load Duration
+          lda (soundEffectPointer1L),y  ; Load Duration
           sta temp4
           iny
-          lda (SoundEffectPointer1L),y  ; Load Delay
+          lda (soundEffectPointer1L),y  ; Load Delay
           sta temp5
           end
           
           rem Check for end of sound (Duration = 0)
-          if LSN1_duration = 0 then let SoundEffectPointer1H = 0 : AUDV1 = 0 : return
+          if LSN1_duration = 0 then let soundEffectPointer1H = 0 : AUDV1 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           rem   AUDCV
@@ -127,8 +127,8 @@ LoadSoundNote1
           rem Advance pointer by 4 bytes (16-bit addition)
           rem Reuse temp2 (LSN1_audcv no longer needed) for pointer
           rem   calculation
-          let temp2 = SoundEffectPointer1L
-          let SoundEffectPointer1L = temp2 + 4
-          if SoundEffectPointer1L < temp2 then let SoundEffectPointer1H = SoundEffectPointer1H + 1
+          let temp2 = soundEffectPointer1L
+          let soundEffectPointer1L = temp2 + 4
+          if soundEffectPointer1L < temp2 then let soundEffectPointer1H = soundEffectPointer1H + 1
           
           return

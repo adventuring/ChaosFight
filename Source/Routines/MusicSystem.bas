@@ -25,22 +25,22 @@ StartMusic
           AUDV1 = 0
           
           rem Clear voice pointers (high byte = 0 means inactive)
-          let MusicVoice0PointerH = 0
-          let MusicVoice1PointerH = 0
+          let musicVoice0PointerH = 0
+          let musicVoice1PointerH = 0
           
           rem Lookup song pointer from Songs bank (Bank16)
-          rem Note: SongPointerL/H tables are in Songs bank
+          rem Note: songPointerL/H tables are in Songs bank
           gosub bank16 LoadSongPointer
-          rem LoadSongPointer will set SongPointerL and SongPointerH
+          rem LoadSongPointer will set songPointerL and songPointerH
           rem   from temp1
           
           rem Set Voice 0 pointer to song start (Song_Voice0 stream)
-          let MusicVoice0PointerL = SongPointerL
-          let MusicVoice0PointerH = SongPointerH
+          let musicVoice0PointerL = songPointerL
+          let musicVoice0PointerH = songPointerH
           
           rem Store initial pointers for looping (Chaotica only)
-          let MusicVoice0StartPointerL_W = SongPointerL
-          let MusicVoice0StartPointerH_W = SongPointerH
+          let MusicVoice0StartPointerL_W = songPointerL
+          let MusicVoice0StartPointerH_W = songPointerH
           
           rem Calculate Voice 1 pointer offset (find end of Voice0
           rem   stream)
@@ -48,12 +48,12 @@ StartMusic
           gosub bank16 LoadSongVoice1Pointer
           rem LoadSongVoice1Pointer will calculate and set Voice 1
           rem   pointer
-          let MusicVoice1PointerL = SongPointerL
-          let MusicVoice1PointerH = SongPointerH
+          let musicVoice1PointerL = songPointerL
+          let musicVoice1PointerH = songPointerH
           
           rem Store initial Voice 1 pointer for looping (Chaotica only)
-          let MusicVoice1StartPointerL_W = SongPointerL
-          let MusicVoice1StartPointerH_W = SongPointerH
+          let MusicVoice1StartPointerL_W = songPointerL
+          let MusicVoice1StartPointerH_W = songPointerH
           
           rem Store current song ID for looping check
           let CurrentSongID_W = SM_songID
@@ -74,17 +74,17 @@ StartMusic
           rem ==========================================================
 UpdateMusic
           rem Update Voice 0 if active
-          if MusicVoice0PointerH then gosub UpdateMusicVoice0
+          if musicVoice0PointerH then gosub UpdateMusicVoice0
           
           rem Update Voice 1 if active
-          if MusicVoice1PointerH then gosub UpdateMusicVoice1
+          if musicVoice1PointerH then gosub UpdateMusicVoice1
           
           rem Check if both voices have ended (both pointerH = 0) and song is
           rem   Chaotica (26) for looping
           rem Only Chaotica loops - other songs stop when both voices end
-          if MusicVoice0PointerH then MusicUpdateDone
+          if musicVoice0PointerH then MusicUpdateDone
           rem Voice 0 still active, no reset needed
-          if MusicVoice1PointerH then MusicUpdateDone
+          if musicVoice1PointerH then MusicUpdateDone
           rem Voice 1 still active, no reset needed
           rem Both voices inactive - check if Chaotica (song ID 26)
           if CurrentSongID_R = 26 then IsChaotica
@@ -94,11 +94,11 @@ IsChaotica
           
           rem Both voices ended and song is Chaotica - reset to song head
           rem Reset Voice 0 pointer to start
-          let MusicVoice0PointerL = MusicVoice0StartPointerL_R
-          let MusicVoice0PointerH = MusicVoice0StartPointerH_R
+          let musicVoice0PointerL = musicVoice0StartPointerL_R
+          let musicVoice0PointerH = musicVoice0StartPointerH_R
           rem Reset Voice 1 pointer to start
-          let MusicVoice1PointerL = MusicVoice1StartPointerL_R
-          let MusicVoice1PointerH = MusicVoice1StartPointerH_R
+          let musicVoice1PointerL = musicVoice1StartPointerL_R
+          let musicVoice1PointerH = musicVoice1StartPointerH_R
           rem Initialize frame counters to trigger first note load
           let MusicVoice0Frame_W = 1
           let MusicVoice1Frame_W = 1
@@ -188,7 +188,7 @@ AfterEnvelope0
           rem   - Write to TIA: AUDC0, AUDF0, AUDV0
           rem   - Set MusicVoice0Frame = Duration + Delay
           rem   - Advance MusicVoice0Pointer by 4 bytes
-          rem - Handle end-of-track: set MusicVoice0PointerH = 0, AUDV0
+          rem - Handle end-of-track: set musicVoice0PointerH = 0, AUDV0
           rem   = 0
           return
 
@@ -269,8 +269,8 @@ StopMusic
           AUDV1 = 0
           
           rem Clear voice pointers (high byte = 0 means inactive)
-          let MusicVoice0PointerH = 0
-          let MusicVoice1PointerH = 0
+          let musicVoice0PointerH = 0
+          let musicVoice1PointerH = 0
           
           rem Reset frame counters
           let MusicVoice0Frame_W = 0

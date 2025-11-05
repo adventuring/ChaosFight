@@ -1,7 +1,7 @@
           rem ChaosFight - Source/Routines/SelScreenEntry.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          #include "Source/Routines/PlayerLockedHelpers.bas"
+#include "Source/Routines/PlayerLockedHelpers.bas"
 
 SelScreenEntry
           rem Initialize character selections

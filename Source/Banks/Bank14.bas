@@ -3,8 +3,8 @@
 
           bank 14
 
-          #include "Source/Routines/LevelData.bas"
-          #include "Source/Routines/ArenaLoader.bas"
+#include "Source/Routines/LevelData.bas"
+#include "Source/Routines/ArenaLoader.bas"
 
-          #include "Source/Routines/ConsoleDetection.bas"
-          #include "Source/Routines/ControllerDetection.bas"
+#include "Source/Routines/ConsoleDetection.bas"
+#include "Source/Routines/ControllerDetection.bas"

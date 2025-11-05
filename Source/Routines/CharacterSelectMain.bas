@@ -1,7 +1,7 @@
           rem ChaosFight - Source/Routines/CharacterSelectMain.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          #include "Source/Routines/PlayerLockedHelpers.bas"
+#include "Source/Routines/PlayerLockedHelpers.bas"
           
           rem ==========================================================
           rem CHARACTER SELECT - PER-FRAME LOOP

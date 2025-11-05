@@ -6,17 +6,17 @@
           rem Character sprite data for characters 8-15
           rem Bank 3 dedicated to character art only - leave room for
           rem   animation frames
-          #include "Source/Generated/Frooty.bas"
-          #include "Source/Generated/Nefertem.bas"
-          #include "Source/Generated/NinjishGuy.bas"
-          #include "Source/Generated/PorkChop.bas"
-          #include "Source/Generated/RadishGoblin.bas"
-          #include "Source/Generated/RoboTito.bas"
-          #include "Source/Generated/Ursulo.bas"
-          #include "Source/Generated/Shamone.bas"
+#include "Source/Generated/Frooty.bas"
+#include "Source/Generated/Nefertem.bas"
+#include "Source/Generated/NinjishGuy.bas"
+#include "Source/Generated/PorkChop.bas"
+#include "Source/Generated/RadishGoblin.bas"
+#include "Source/Generated/RoboTito.bas"
+#include "Source/Generated/Ursulo.bas"
+#include "Source/Generated/Shamone.bas"
 
           rem Character art lookup routines for Bank 3 (characters 8-15
           rem   and 24-31)
           asm
-          #include "Source/Routines/CharacterArtBank3.s"
+#include "Source/Routines/CharacterArtBank3.s"
 end

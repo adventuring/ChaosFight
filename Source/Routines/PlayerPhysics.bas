@@ -454,7 +454,9 @@ PFBlockLeft
           end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           rem   but same pattern)
-          if playerX[CPF_playerIndex] < rowYPosition then let playerX[CPF_playerIndex] = rowYPosition : let playerSubpixelX[CPF_playerIndex] = rowYPosition : let playerSubpixelX_lo[CPF_playerIndex] = 0
+          if playerX[CPF_playerIndex] < rowYPosition then let playerX[CPF_playerIndex] = rowYPosition
+          if playerX[CPF_playerIndex] < rowYPosition then let playerSubpixelX[CPF_playerIndex] = rowYPosition
+          if playerX[CPF_playerIndex] < rowYPosition then let playerSubpixelX_lo[CPF_playerIndex] = 0
           
           rem ==========================================================
           rem CHECK RIGHT COLLISION

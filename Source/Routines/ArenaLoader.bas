@@ -387,9 +387,13 @@ ReloadArenaColors
           gosub GetBWModeReload
           
           rem Jump to appropriate color loader based on arena index
-          if RAC_arenaIndex < 8 then on RAC_arenaIndex goto ReloadArena0Colors, ReloadArena1Colors, ReloadArena2Colors, ReloadArena3Colors, ReloadArena4Colors, ReloadArena5Colors, ReloadArena6Colors, ReloadArena7Colors
-          if RAC_arenaIndex >= 8 then RAC_arenaIndex = RAC_arenaIndex - 8
-          if RAC_arenaIndex >= 8 then on RAC_arenaIndex goto ReloadArena8Colors, ReloadArena9Colors, ReloadArena10Colors, ReloadArena11Colors, ReloadArena12Colors, ReloadArena13Colors, ReloadArena14Colors, ReloadArena15Colors
+          if RAC_arenaIndex < 4 then on RAC_arenaIndex goto ReloadArena0Colors, ReloadArena1Colors, ReloadArena2Colors, ReloadArena3Colors
+          if RAC_arenaIndex >= 4 then RAC_arenaIndex = RAC_arenaIndex - 4
+          if RAC_arenaIndex < 4 then on RAC_arenaIndex goto ReloadArena4Colors, ReloadArena5Colors, ReloadArena6Colors, ReloadArena7Colors
+          if RAC_arenaIndex >= 4 then temp1 = RAC_arenaIndex - 4
+          if temp1 < 4 then on temp1 goto ReloadArena8Colors, ReloadArena9Colors, ReloadArena10Colors, ReloadArena11Colors
+          if temp1 >= 4 then temp1 = temp1 - 4
+          if temp1 < 4 then on temp1 goto ReloadArena12Colors, ReloadArena13Colors, ReloadArena14Colors, ReloadArena15Colors
           
           rem Default to arena 0 if invalid index
           goto ReloadArena0Colors

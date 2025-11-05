@@ -98,21 +98,12 @@ LoadMusicNote0
           return
           
 LoadMusicNote0EndOfTrack
-          rem End of track reached - check if Chaotica (26) for looping
-          if CurrentSongID_R = 26 then LoadMusicNote0LoopChaotica
-          
-          rem Not Chaotica - stop playback
+          rem End of track reached - mark voice as inactive (pointerH = 0)
+          rem Loop will be handled in UpdateMusic when both voices end (Chaotica
+          rem   only)
           let MusicVoice0PointerH = 0
           AUDV0 = 0
           return
-          
-LoadMusicNote0LoopChaotica
-          rem Chaotica loops - reset to start
-          let MusicVoice0PointerL = MusicVoice0StartPointerL_R
-          let MusicVoice0PointerH = MusicVoice0StartPointerH_R
-          rem Tail call to reload first note
-          rem tail call
-          goto LoadMusicNote0
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           rem   AUDCV
@@ -199,21 +190,12 @@ LoadMusicNote1
           return
           
 LoadMusicNote1EndOfTrack
-          rem End of track reached - check if Chaotica (26) for looping
-          if CurrentSongID_R = 26 then LoadMusicNote1LoopChaotica
-          
-          rem Not Chaotica - stop playback
+          rem End of track reached - mark voice as inactive (pointerH = 0)
+          rem Loop will be handled in UpdateMusic when both voices end (Chaotica
+          rem   only)
           let MusicVoice1PointerH = 0
           AUDV1 = 0
           return
-          
-LoadMusicNote1LoopChaotica
-          rem Chaotica loops - reset to start
-          let MusicVoice1PointerL = MusicVoice1StartPointerL_R
-          let MusicVoice1PointerH = MusicVoice1StartPointerH_R
-          rem Tail call to reload first note
-          rem tail call
-          goto LoadMusicNote1
           
           rem Extract AUDC and AUDV
           let LMN1_audc = LMN1_audcv & %11110000

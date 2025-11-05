@@ -78,6 +78,32 @@ UpdateMusic
           
           rem Update Voice 1 if active
           if MusicVoice1PointerH then rem tail call : goto UpdateMusicVoice1
+          
+          rem Check if both voices have ended (both pointerH = 0) and song is
+          rem   Chaotica (26) for looping
+          rem Only Chaotica loops - other songs stop when both voices end
+          if MusicVoice0PointerH then MusicUpdateDone
+          rem Voice 0 still active, no reset needed
+          if MusicVoice1PointerH then MusicUpdateDone
+          rem Voice 1 still active, no reset needed
+          rem Both voices inactive - check if Chaotica (song ID 26)
+          if CurrentSongID_R <> 26 then MusicUpdateDone
+          rem Not Chaotica - stop playback (no loop)
+          
+          rem Both voices ended and song is Chaotica - reset to song head
+          rem Reset Voice 0 pointer to start
+          let MusicVoice0PointerL = MusicVoice0StartPointerL_R
+          let MusicVoice0PointerH = MusicVoice0StartPointerH_R
+          rem Reset Voice 1 pointer to start
+          let MusicVoice1PointerL = MusicVoice1StartPointerL_R
+          let MusicVoice1PointerH = MusicVoice1StartPointerH_R
+          rem Initialize frame counters to trigger first note load
+          let MusicVoice0Frame_W = 1
+          let MusicVoice1Frame_W = 1
+          rem Tail call to reload first notes
+          rem tail call
+          goto UpdateMusic
+MusicUpdateDone
           return
 
           rem ==========================================================

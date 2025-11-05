@@ -213,12 +213,12 @@ ReloadArenaColors
           rem Get current arena index
           let RAC_arenaIndex = selectedArena_R
           rem Handle random arena (use stored random selection)
-          if RAC_arenaIndex = RandomArena then let RAC_arenaIndex = frame & 15
+          if RAC_arenaIndex = RandomArena then let RAC_arenaIndex = rand & 31
           
           rem Get B&W mode state
           gosub GetBWModeReload
           
-          rem Jump to appropriate color loader based on arena index
+          rem Jump to appropriate color loader based on arena index (0-31)
           if RAC_arenaIndex < 4 then on RAC_arenaIndex goto ReloadArena0Colors, ReloadArena1Colors, ReloadArena2Colors, ReloadArena3Colors
           if RAC_arenaIndex < 4 then goto DoneArenaColorDispatch
           RAC_arenaIndex = RAC_arenaIndex - 4

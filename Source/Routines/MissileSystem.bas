@@ -230,6 +230,10 @@ UpdateOneMissile
           let UOM_playerIndex  = UOM_savedIndex
           rem Restore player index
           
+          rem Special handling for Megax (character 5): stationary fire breath visual
+          rem Megax missile stays adjacent to player during attack, no movement
+          if UOM_characterType = CharMegax then goto HandleMegaxMissile
+          
           rem Apply gravity if flag is set
           if !(UOM_missileFlags & MissileFlagGravity) then GravityDone
           let UOM_velocityY = UOM_velocityY + GravityPerFrame
@@ -424,6 +428,70 @@ MissileSystemNoHit
           let missileLifetime[UOM_playerIndex] = missileLifetimeValue
 MissileUpdateComplete
           
+          return
+
+          rem ==========================================================
+          rem HANDLE MEGAX MISSILE (Stationary Fire Breath Visual)
+          rem ==========================================================
+          rem Megax missile stays adjacent to player, no movement.
+          rem Missile appears when attack starts, stays during attack phase,
+          rem   and vanishes when attack animation completes.
+HandleMegaxMissile
+          dim HMM_playerIndex = temp1
+          dim HMM_facing = temp4
+          dim HMM_emissionHeight = temp5
+          dim HMM_missileX = temp2
+          dim HMM_missileY = temp3
+          dim HMM_animationState = temp6
+          
+          rem Get facing direction (bit 0: 0=left, 1=right)
+          let HMM_facing = playerState[HMM_playerIndex] & PlayerStateBitFacing
+          
+          rem Get emission height from character data
+          let HMM_emissionHeight = CharacterMissileEmissionHeights[UOM_characterType]
+          
+          rem Lock missile position to player position (adjacent, no movement)
+          rem Calculate X position based on player position and facing
+          let HMM_missileX = playerX[HMM_playerIndex]
+          if HMM_facing = 0 then let HMM_missileX = HMM_missileX - MissileSpawnOffsetLeft
+          rem Facing left, spawn left
+          if HMM_facing = 1 then let HMM_missileX = HMM_missileX + MissileSpawnOffsetRight
+          rem Facing right, spawn right
+          
+          rem Calculate Y position (player Y + emission height)
+          let HMM_missileY = playerY[HMM_playerIndex] + HMM_emissionHeight
+          
+          rem Update missile position (locked to player)
+          let missileX[HMM_playerIndex] = HMM_missileX
+          let missileY_W[HMM_playerIndex] = HMM_missileY
+          
+          rem Zero velocities to prevent any movement
+          let missileVelocityX[HMM_playerIndex] = 0
+          let missileVelocityY[HMM_playerIndex] = 0
+          
+          rem Check if attack animation is complete
+          rem Animation state is in bits 4-7 of playerState
+          rem ActionAttackExecute = 14 (0xE)
+          rem Extract animation state (bits 4-7)
+          let HMM_animationState = playerState[HMM_playerIndex]
+          asm
+            lda HMM_animationState
+            lsr a
+            lsr a
+            lsr a
+            lsr a
+            sta HMM_animationState
+          end
+          
+          rem If animation state is not ActionAttackExecute (14), attack is complete
+          rem ActionAttackExecute = 14, so if animationState != 14, deactivate
+          if HMM_animationState = 14 then MegaxMissileActive
+          rem Attack complete - deactivate missile
+          goto DeactivateMissile
+          
+MegaxMissileActive
+          rem Attack still active - missile stays visible
+          rem Skip normal movement and collision checks
           return
 
           rem ==========================================================

@@ -95,13 +95,17 @@ FatTonyAttack
           goto PerformRangedAttack
 
           rem ==========================================================
-          rem MEGAX (Character 5) - Ranged Attack
+          rem MEGAX (Character 5) - Melée Attack (fire breath visual)
           rem ==========================================================
+          rem Megax uses a melée attack with a missile sprite for fire
+          rem   breath visual effect.
+          rem The missile appears adjacent to Megax, stays stationary
+          rem   during attack, and vanishes when attack completes.
 MegaxAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
           rem tail call
-          goto PerformRangedAttack
+          goto PerformMeleeAttack
 
           rem ==========================================================
           rem HARPY (Character 6) - Diagonal Downward Swoop Attack

@@ -107,6 +107,8 @@
           rem Bit mask for bit 3 (PlayerStateFacing) - matches REFP0 reflection bit
           const PlayerStateBitFacingNUSIZ = 64
           rem Bit mask for bit 6 (NUSIZ reflection) - PlayerStateBitFacing shifted left 3 bits
+          const NUSIZMaskReflection = 191
+          rem Mask to clear bit 6 (reflection) from NUSIZ: $BF = %10111111
           const PlayerStateBitGuarding = 2
           rem Bit mask for bit 1 (PlayerStateGuarding)
           const PlayerStateBitJumping = 4

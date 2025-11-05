@@ -118,17 +118,17 @@ SetPlayerCharacterArtBank5:
     ; Note: temp5 = player number (set by dispatcher from temp4)
     lda temp5
     cmp #0
-    bne .check_player1
-    jmp .player0
-.check_player1:
+    bne .CheckPlayer1
+    jmp .Player0
+.CheckPlayer1:
     cmp #1
-    bne .check_player2
-    jmp .player1
-.check_player2:
+    bne .CheckPlayer2
+    jmp .Player1
+.CheckPlayer2:
     cmp #2
-    bne .player3
-    jmp .player2
-.player0:
+    bne .Player3
+    jmp .Player2
+.Player0:
     ; Game Player 0 -> P0 sprite
     lda temp4
     sta player0pointerlo
@@ -138,7 +138,7 @@ SetPlayerCharacterArtBank5:
     sta player0height
     rts
     
-.player1:
+.Player1:
     ; Game Player 1 -> P1 (_P1 virtual sprite)
     lda temp4
     sta player1pointerlo
@@ -148,7 +148,7 @@ SetPlayerCharacterArtBank5:
     sta player1height
     rts
     
-.player2:
+.Player2:
     ; Game Player 2 -> P2 virtual sprite
     lda temp4
     sta player2pointerlo
@@ -158,7 +158,7 @@ SetPlayerCharacterArtBank5:
     sta player2height
     rts
     
-.player3:
+.Player3:
     ; Game Player 3 -> P3 virtual sprite
     lda temp4
     sta player3pointerlo

@@ -489,7 +489,7 @@ HandleWindupEnd
           let temp1 = HandleWindupEnd_characterType
           if temp1 < 8 then on temp1 goto Char0_Windup, Char1_Windup, Char2_Windup, Char3_Windup, Char4_Windup, Char5_Windup, Char6_Windup, Char7_Windup
           if temp1 >= 8 then temp1 = temp1 - 8
-          if temp1 >= 8 then on temp1 goto Char8_Windup, Char9_Windup, Char10_Windup, Char11_Windup, Char12_Windup, Char13_Windup, Char14_Windup, Char15_Windup
+          on temp1 goto Char8_Windup, Char9_Windup, Char10_Windup, Char11_Windup, Char12_Windup, Char13_Windup, Char14_Windup, Char15_Windup
           
 Char0_Windup
           rem Bernie: no windup used, Execute only
@@ -570,7 +570,7 @@ HandleExecuteEnd
           let temp1 = HandleExecuteEnd_characterType
           if temp1 < 8 then on temp1 goto Char0_Execute, Char1_Execute, Char2_Execute, Char3_Execute, Char4_Execute, Char5_Execute, Char6_Execute, Char7_Execute
           if temp1 >= 8 then temp1 = temp1 - 8
-          if temp1 >= 8 then on temp1 goto Char8_Execute, Char9_Execute, Char10_Execute, Char11_Execute, Char12_Execute, Char13_Execute, Char14_Execute, Char15_Execute
+          on temp1 goto Char8_Execute, Char9_Execute, Char10_Execute, Char11_Execute, Char12_Execute, Char13_Execute, Char14_Execute, Char15_Execute
           
 Char0_Execute
           dim Char0_Execute_animationAction = temp2

@@ -422,14 +422,18 @@ Player2ColorDone
           rem Set sprite reflection based on facing direction
           rem NOTE: Multisprite kernel requires _NUSIZ1 (not NewNUSIZ+1)
           rem   for Player 2 virtual sprite
-          rem NUSIZ reflection uses bit 6
+          rem NUSIZ reflection uses bit 6 - preserve other bits (size, etc.)
           asm
+          lda _NUSIZ1
+          and #NUSIZMaskReflection
+          sta _NUSIZ1
           lda playerState+1
           and #PlayerStateBitFacing
-          beq .Player2NoReflection
-          lda #PlayerStateBitFacingNUSIZ
-.Player2NoReflection
+          beq .Player2ReflectionDone
+          lda _NUSIZ1
+          ora #PlayerStateBitFacingNUSIZ
           sta _NUSIZ1
+.Player2ReflectionDone
           end
 
           rem Load sprite data from character definition
@@ -473,14 +477,18 @@ Player2ColorDone
 Player3ColorDone
 
           rem Set sprite reflection based on facing direction
-          rem NUSIZ reflection uses bit 6
+          rem NUSIZ reflection uses bit 6 - preserve other bits (size, etc.)
           asm
+          lda NewNUSIZ+2
+          and #NUSIZMaskReflection
+          sta NewNUSIZ+2
           lda playerState+2
           and #PlayerStateBitFacing
-          beq .Player3NoReflection
-          lda #PlayerStateBitFacingNUSIZ
-.Player3NoReflection
+          beq .Player3ReflectionDone
+          lda NewNUSIZ+2
+          ora #PlayerStateBitFacingNUSIZ
           sta NewNUSIZ+2
+.Player3ReflectionDone
           end
 
           rem Load sprite data from character definition
@@ -523,14 +531,18 @@ DonePlayer3Sprite
 Player4ColorDone
 
           rem Set sprite reflection based on facing direction
-          rem NUSIZ reflection uses bit 6
+          rem NUSIZ reflection uses bit 6 - preserve other bits (size, etc.)
           asm
+          lda NewNUSIZ+3
+          and #NUSIZMaskReflection
+          sta NewNUSIZ+3
           lda playerState+3
           and #PlayerStateBitFacing
-          beq .Player4NoReflection
-          lda #PlayerStateBitFacingNUSIZ
-.Player4NoReflection
+          beq .Player4ReflectionDone
+          lda NewNUSIZ+3
+          ora #PlayerStateBitFacingNUSIZ
           sta NewNUSIZ+3
+.Player4ReflectionDone
           end
 
           rem Load sprite data from character definition

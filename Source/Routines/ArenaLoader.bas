@@ -49,7 +49,7 @@ LoadArenaByIndex
           rem Jump to appropriate arena loader based on index
           if LA_arenaIndex < 8 then on LA_arenaIndex goto LoadArena0, LoadArena1, LoadArena2, LoadArena3, LoadArena4, LoadArena5, LoadArena6, LoadArena7
           if LA_arenaIndex >= 8 then LA_arenaIndex = LA_arenaIndex - 8
-          if LA_arenaIndex >= 8 then on LA_arenaIndex goto LoadArena8, LoadArena9, LoadArena10, LoadArena11, LoadArena12, LoadArena13, LoadArena14, LoadArena15
+          on LA_arenaIndex goto LoadArena8, LoadArena9, LoadArena10, LoadArena11, LoadArena12, LoadArena13, LoadArena14, LoadArena15
           
           rem Default to arena 0 if invalid index
           goto LoadArena0

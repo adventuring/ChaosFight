@@ -28,7 +28,7 @@
           include "Source/Generated/Art.Interworldly.s"
           
           include "Source/Titlescreen/asm/titlescreen.s"
-          
+
           rem Override window values AFTER includes for correct
           rem   per-screen display
           rem Window values: 42 = visible, 0 = hidden

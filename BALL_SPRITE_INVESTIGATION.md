@@ -60,7 +60,7 @@ The Atari 2600 Ball sprite is available but not currently used in ChaosFight. Us
 **Memory Addresses (multisprite kernel):**
 - `ballx = $82` (zero-page RAM)
 - `bally = $8C` (zero-page RAM)
-- No `ballheight` variable (use `CTRLPF` register directly)
+- No `ballheight` variable (width via `CTRLPF` register, height via `ENABL` timing)
 
 **Limitations:**
 - Width controlled via CTRLPF register (1, 2, 4, or 8 pixels wide)

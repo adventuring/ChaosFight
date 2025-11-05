@@ -371,8 +371,9 @@ CheckPlayfieldCollisionAllDirections
           end
           rem temp6 = playfield column (0-31)
           rem Clamp column to valid range
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if temp6 & $80 then let temp6 = 0
           if temp6 > 31 then let temp6 = 31
-          if temp6 < 0 then let temp6 = 0
           
           rem Convert Y position to playfield row (0-pfrows-1)
           rem Divide by pfrowheight using helper
@@ -381,7 +382,8 @@ CheckPlayfieldCollisionAllDirections
           let playfieldRow = temp2
           rem playfieldRow = playfield row
           if playfieldRow >= pfrows then let playfieldRow = pfrows - 1
-          if playfieldRow < 0 then let playfieldRow = 0
+          rem Check for wraparound: if division resulted in value ≥ 128 (negative), clamp to 0
+          if playfieldRow & $80 then let playfieldRow = 0
           
           rem ==========================================================
           rem CHECK LEFT COLLISION
@@ -394,7 +396,8 @@ CheckPlayfieldCollisionAllDirections
           
           let playfieldColumn = temp6 - 1
           rem Column to the left (playfieldColumn)
-          if playfieldColumn < 0 then PFCheckRight
+          rem Check for wraparound: if temp6 was 0, playfieldColumn wraps to 255 (≥ 128)
+          if playfieldColumn & $80 then PFCheckRight
           rem Out of bounds, skip
           
           rem Check head position (top of sprite)
@@ -424,7 +427,8 @@ CheckPlayfieldCollisionAllDirections
           
 PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
-          if playerVelocityX[CPF_playerIndex] < 0 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
+          rem Check for negative velocity using two's complement (values ≥ 128 are negative)
+          if playerVelocityX[CPF_playerIndex] & $80 then let playerVelocityX[CPF_playerIndex] = 0 : let playerVelocityX_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
           let rowYPosition = temp6 + 1
@@ -520,7 +524,8 @@ PFCheckUp
           
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
-          if playerVelocityY[CPF_playerIndex] < 0 then let playerVelocityY[CPF_playerIndex] = 0 : let playerVelocityY_lo[CPF_playerIndex] = 0
+          rem Check for negative velocity using two's complement (values ≥ 128 are negative)
+          if playerVelocityY[CPF_playerIndex] & $80 then let playerVelocityY[CPF_playerIndex] = 0 : let playerVelocityY_lo[CPF_playerIndex] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
           let rowYPosition = playfieldRow + 1

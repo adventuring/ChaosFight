@@ -271,8 +271,9 @@ NudgePlayerFromPlayfield
             lsr NPF_pfColumn
           end
           rem Clamp column to valid range
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if NPF_pfColumn & $80 then let NPF_pfColumn = 0
           if NPF_pfColumn > 31 then let NPF_pfColumn = 31
-          if NPF_pfColumn < 0 then let NPF_pfColumn = 0
           
           rem Convert Y position to playfield row (divide by
           rem   pfrowheight)
@@ -290,7 +291,9 @@ NudgePlayerFromPlayfield
             lsr NPF_pfRow
           end
           if NPF_pfRow >= pfrows then let NPF_pfRow = pfrows - 1
-          if NPF_pfRow < 0 then let NPF_pfRow = 0
+          rem Check for wraparound: if division resulted in value ≥ 128 (negative), clamp to 0
+          rem Note: This is unlikely for row calculation but safe to check
+          if NPF_pfRow & $80 then let NPF_pfRow = 0
           
           rem Check collision at player position (simple single-point
           rem   check)
@@ -324,8 +327,9 @@ NudgeHorizontalDone
             lsr NPF_pfColumn
             lsr NPF_pfColumn
           end
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if NPF_pfColumn & $80 then let NPF_pfColumn = 0
           if NPF_pfColumn > 31 then let NPF_pfColumn = 31
-          if NPF_pfColumn < 0 then let NPF_pfColumn = 0
           
           if pfread(NPF_pfColumn, NPF_pfRow) then NudgeVertical
           return

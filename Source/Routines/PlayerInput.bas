@@ -210,7 +210,8 @@ CheckLeftCollision
           let FDLRM_pfColumn = FDLRM_pfColumn / 4
           rem pfColumn = playfield column
           if FDLRM_pfColumn > 31 then FDLRM_pfColumn = 31
-          if FDLRM_pfColumn < 0 then FDLRM_pfColumn = 0
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if FDLRM_pfColumn & $80 then FDLRM_pfColumn = 0
           rem Check column to the left
           if FDLRM_pfColumn <= 0 then goto CheckRightMovement
           rem Already at left edge
@@ -257,7 +258,8 @@ CheckRightMovement
           let CRM_pfColumn = CRM_pfColumn / 4
           rem pfColumn = playfield column
           if CRM_pfColumn > 31 then CRM_pfColumn = 31
-          if CRM_pfColumn < 0 then CRM_pfColumn = 0
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if CRM_pfColumn & $80 then CRM_pfColumn = 0
           rem Check column to the right
           if CRM_pfColumn >= 31 then goto DoneFlyingLeftRight
           rem Already at right edge
@@ -506,8 +508,9 @@ CheckLeftCollisionRight
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
           rem temp2 = playfield column
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
-          if temp2 < 0 then temp2 = 0
           rem Check column to the left
           if temp2 <= 0 then goto CheckRightMovementRight
           rem Already at left edge
@@ -545,8 +548,9 @@ CheckRightMovementRight
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
           rem temp2 = playfield column
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
-          if temp2 < 0 then temp2 = 0
           rem Check column to the right
           if temp2 >= 31 then goto DoneFlyingLeftRightRight
           rem Already at right edge

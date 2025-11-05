@@ -196,19 +196,14 @@ AreaHitbox
           rem Processes attacks in all directions (facing handled by
           rem   CalculateAttackHitbox)
 ProcessAttackerAttacks
-          dim PAA_defender = temp2
           dim PAA_attackerID = attackerID
           rem Attack each defender
-          for defender = 0 to 3
+          for defenderID = 0 to 3
           rem Skip if defender is attacker
-          if defender = PAA_attackerID then NextDefender
+          if defenderID = PAA_attackerID then NextDefender
           
           rem Skip if defender is dead
-          if playerHealth[defender] <= 0 then NextDefender
-          
-          rem Set defenderID before calling functions
-          let PAA_defender = defender
-          let defenderID = PAA_defender
+          if playerHealth[defenderID] <= 0 then NextDefender
           
           rem Check if attack hits
           gosub CheckAttackHit
@@ -221,14 +216,10 @@ NextDefender
 
           rem Process all attacks for all players
 ProcessAllAttacks
-          dim PAA_attacker = temp1
-          for attacker = 0 to 3
+          for attackerID = 0 to 3
           rem Skip if attacker is dead
-          if playerHealth[attacker] <= 0 then NextAttacker
+          if playerHealth[attackerID] <= 0 then NextAttacker
           
-          rem Set attackerID before calling ProcessAttackerAttacks
-          let PAA_attacker = attacker
-          let attackerID = PAA_attacker
           gosub ProcessAttackerAttacks
           
 NextAttacker

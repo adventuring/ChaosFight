@@ -105,35 +105,6 @@ LoadMusicNote0EndOfTrack
           AUDV0 = 0
           return
           
-          rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          rem   AUDCV
-          let LMN0_audc = LMN0_audcv & %11110000
-          let LMN0_audc = LMN0_audc / 16
-          let LMN0_audv = LMN0_audcv & %00001111
-          
-          rem Store target AUDV and total frames for envelope
-          rem   calculation
-          let MusicVoice0TargetAUDV = LMN0_audv
-          let MusicVoice0TotalFrames = LMN0_duration + LMN0_delay
-          
-          rem Write to TIA registers (will be adjusted by envelope in
-          rem   UpdateMusicVoice0)
-          AUDC0 = LMN0_audc
-          AUDF0 = LMN0_audf
-          AUDV0 = LMN0_audv
-          
-          rem Set frame counter = Duration + Delay
-          let MusicVoice0Frame_W = LMN0_duration + LMN0_delay
-          
-          rem Advance pointer by 4 bytes (16-bit addition)
-          rem Reuse temp2 (LMN0_audcv no longer needed) for pointer
-          rem   calculation
-          let temp2 = MusicVoice0PointerL
-          let MusicVoice0PointerL = temp2 + 4
-          if MusicVoice0PointerL < temp2 then let MusicVoice0PointerH = MusicVoice0PointerH + 1
-          
-          return
-          
           rem Load next note from Voice 1 stream
 LoadMusicNote1
           dim LMN1_audcv = temp2
@@ -195,32 +166,4 @@ LoadMusicNote1EndOfTrack
           rem   only)
           let MusicVoice1PointerH = 0
           AUDV1 = 0
-          return
-          
-          rem Extract AUDC and AUDV
-          let LMN1_audc = LMN1_audcv & %11110000
-          let LMN1_audc = LMN1_audc / 16
-          let LMN1_audv = LMN1_audcv & %00001111
-          
-          rem Store target AUDV and total frames for envelope
-          rem   calculation
-          let MusicVoice1TargetAUDV = LMN1_audv
-          let MusicVoice1TotalFrames = LMN1_duration + LMN1_delay
-          
-          rem Write to TIA registers (will be adjusted by envelope in
-          rem   UpdateMusicVoice1)
-          AUDC1 = LMN1_audc
-          AUDF1 = LMN1_audf
-          AUDV1 = LMN1_audv
-          
-          rem Set frame counter = Duration + Delay
-          let MusicVoice1Frame_W = LMN1_duration + LMN1_delay
-          
-          rem Advance pointer by 4 bytes
-          rem Reuse temp2 (LMN1_audcv no longer needed) for pointer
-          rem   calculation
-          let temp2 = MusicVoice1PointerL
-          let MusicVoice1PointerL = temp2 + 4
-          if MusicVoice1PointerL < temp2 then let MusicVoice1PointerH = MusicVoice1PointerH + 1
-          
           return

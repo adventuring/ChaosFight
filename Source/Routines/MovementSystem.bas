@@ -216,8 +216,9 @@ VelocityYCarry
           rem NOTE: Simple decrement approach for 8-bit CPU
 ApplyFriction
           dim AF_playerIndex = temp1
-          if playerVelocityX[AF_playerIndex] > 0 then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] - 1
-          if playerVelocityX[AF_playerIndex] < 0 then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] + 1
+          if playerVelocityX[AF_playerIndex] > 0 && !(playerVelocityX[AF_playerIndex] & $80) then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] - 1
+          rem Check for negative velocity using two's complement (values ≥ 128 are negative)
+          if playerVelocityX[AF_playerIndex] & $80 then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] + 1
           rem Also zero subpixel if velocity reaches zero
           if playerVelocityX[AF_playerIndex] = 0 then let playerVelocityX_lo[AF_playerIndex] = 0
           return

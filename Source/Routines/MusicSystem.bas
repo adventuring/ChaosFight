@@ -77,7 +77,7 @@ UpdateMusic
           if MusicVoice0PointerH then gosub UpdateMusicVoice0
           
           rem Update Voice 1 if active
-          if MusicVoice1PointerH then rem tail call : goto UpdateMusicVoice1
+          if MusicVoice1PointerH then gosub UpdateMusicVoice1
           
           rem Check if both voices have ended (both pointerH = 0) and song is
           rem   Chaotica (26) for looping
@@ -147,7 +147,8 @@ ApplyAttack0
           temp4 = MusicVoice0TargetAUDV
           temp4 = temp4 - NoteAttackFrames
           temp4 = temp4 + temp3
-          if temp4 < 0 then temp4 = 0
+          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
+          if temp4 & $80 then temp4 = 0
           if temp4 > 15 then temp4 = 15
           AUDV0 = temp4
           goto AfterEnvelope0
@@ -165,7 +166,8 @@ ApplyDecay0
           temp4 = temp4 - NoteDecayFrames
           temp4 = temp4 + MusicVoice0Frame_R
           temp4 = temp4 - 1
-          if temp4 < 0 then temp4 = 0
+          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
+          if temp4 & $80 then temp4 = 0
           if temp4 > 15 then temp4 = 15
           AUDV0 = temp4
           
@@ -227,7 +229,8 @@ ApplyAttack1
           temp4 = MusicVoice1TargetAUDV
           temp4 = temp4 - NoteAttackFrames
           temp4 = temp4 + temp3
-          if temp4 < 0 then temp4 = 0
+          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
+          if temp4 & $80 then temp4 = 0
           if temp4 > 15 then temp4 = 15
           AUDV1 = temp4
           goto AfterEnvelope1
@@ -239,7 +242,8 @@ ApplyDecay1
           temp4 = temp4 - NoteDecayFrames
           temp4 = temp4 + MusicVoice1Frame_R
           temp4 = temp4 - 1
-          if temp4 < 0 then temp4 = 0
+          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
+          if temp4 & $80 then temp4 = 0
           if temp4 > 15 then temp4 = 15
           AUDV1 = temp4
           

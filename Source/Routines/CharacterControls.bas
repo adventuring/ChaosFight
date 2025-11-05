@@ -54,8 +54,10 @@ BernieJump
           rem Now in range 0-128
           let BJ_pfColumn = BJ_pfColumn / 4
           rem Now in range 0-32 (playfield column, clamp to 0-31)
+          rem Check for wraparound: if (playerX - ScreenInsetX) wrapped negative, result ≥ 128 after division
+          rem Upper bound check (> 31) catches most wraparound cases, but check explicitly for safety
+          if BJ_pfColumn & $80 then let BJ_pfColumn = 0
           if BJ_pfColumn > 31 then let BJ_pfColumn = 31
-          if BJ_pfColumn < 0 then let BJ_pfColumn = 0
           
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
@@ -144,8 +146,9 @@ DragonetJump
           let DJ_pfColumn = DJ_pfColumn - ScreenInsetX
           let DJ_pfColumn = DJ_pfColumn / 4
           rem pfColumn = playfield column (0-31)
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if DJ_pfColumn & $80 then let DJ_pfColumn = 0
           if DJ_pfColumn > 31 then let DJ_pfColumn = 31
-          if DJ_pfColumn < 0 then let DJ_pfColumn = 0
           
           rem Check row above player (top of sprite)
           let DJ_playerY = playerY[DJ_playerIndex]
@@ -277,8 +280,9 @@ FrootyJump
           let FJ_pfColumn = FJ_pfColumn - ScreenInsetX
           let FJ_pfColumn = FJ_pfColumn / 4
           rem pfColumn = playfield column (0-31)
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if FJ_pfColumn & $80 then let FJ_pfColumn = 0
           if FJ_pfColumn > 31 then let FJ_pfColumn = 31
-          if FJ_pfColumn < 0 then let FJ_pfColumn = 0
           
           rem Check row above player (top of sprite)
           let FJ_playerY = playerY[FJ_playerIndex]
@@ -458,8 +462,9 @@ RoboTitoCheckCeiling
           let RTCC_pfColumn = playerX[RTCC_playerIndex]
           let RTCC_pfColumn = RTCC_pfColumn - ScreenInsetX
           let RTCC_pfColumn = RTCC_pfColumn / 4
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if RTCC_pfColumn & $80 then let RTCC_pfColumn = 0
           if RTCC_pfColumn > 31 then let RTCC_pfColumn = 31
-          if RTCC_pfColumn < 0 then let RTCC_pfColumn = 0
           
           rem Check row above player for ceiling
           let RTCC_playerY = playerY[RTCC_playerIndex]
@@ -548,8 +553,9 @@ DragonetDown
           let DD_pfColumn = DD_pfColumn - ScreenInsetX
           let DD_pfColumn = DD_pfColumn / 4
           rem pfColumn = playfield column (0-31)
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if DD_pfColumn & $80 then let DD_pfColumn = 0
           if DD_pfColumn > 31 then let DD_pfColumn = 31
-          if DD_pfColumn < 0 then let DD_pfColumn = 0
           
           rem Check row below player (feet at bottom of sprite)
           let DD_playerY = playerY[DD_playerIndex]
@@ -623,8 +629,9 @@ HarpyNormalDown
           let HND_pfColumn = HND_pfColumn - ScreenInsetX
           let HND_pfColumn = HND_pfColumn / 4
           rem pfColumn = playfield column (0-31)
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if HND_pfColumn & $80 then let HND_pfColumn = 0
           if HND_pfColumn > 31 then let HND_pfColumn = 31
-          if HND_pfColumn < 0 then let HND_pfColumn = 0
           
           rem Check row below player (feet at bottom of sprite)
           let HND_playerY = playerY[HND_playerIndex]
@@ -668,8 +675,9 @@ FrootyDown
           let FD_pfColumn = FD_pfColumn - ScreenInsetX
           let FD_pfColumn = FD_pfColumn / 4
           rem pfColumn = playfield column (0-31)
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if FD_pfColumn & $80 then let FD_pfColumn = 0
           if FD_pfColumn > 31 then let FD_pfColumn = 31
-          if FD_pfColumn < 0 then let FD_pfColumn = 0
           
           rem Check row below player (feet at bottom of sprite)
           let FD_playerY = playerY[FD_playerIndex]

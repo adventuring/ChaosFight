@@ -422,13 +422,13 @@ Player2ColorDone
           rem Set sprite reflection based on facing direction
           rem NOTE: Multisprite kernel requires _NUSIZ1 (not NewNUSIZ+1)
           rem   for Player 2 virtual sprite
-          rem NUSIZ reflection uses bit 6 (value 64)
+          rem NUSIZ reflection uses bit 6
           asm
           lda playerState+1
           and #PlayerStateBitFacing
-          asl
-          asl
-          asl
+          beq .Player2NoReflection
+          lda #PlayerStateBitFacingNUSIZ
+.Player2NoReflection
           sta _NUSIZ1
           end
 
@@ -473,13 +473,13 @@ Player2ColorDone
 Player3ColorDone
 
           rem Set sprite reflection based on facing direction
-          rem NUSIZ reflection uses bit 6 (value 64)
+          rem NUSIZ reflection uses bit 6
           asm
           lda playerState+2
           and #PlayerStateBitFacing
-          asl
-          asl
-          asl
+          beq .Player3NoReflection
+          lda #PlayerStateBitFacingNUSIZ
+.Player3NoReflection
           sta NewNUSIZ+2
           end
 
@@ -523,13 +523,13 @@ DonePlayer3Sprite
 Player4ColorDone
 
           rem Set sprite reflection based on facing direction
-          rem NUSIZ reflection uses bit 6 (value 64)
+          rem NUSIZ reflection uses bit 6
           asm
           lda playerState+3
           and #PlayerStateBitFacing
-          asl
-          asl
-          asl
+          beq .Player4NoReflection
+          lda #PlayerStateBitFacingNUSIZ
+.Player4NoReflection
           sta NewNUSIZ+3
           end
 

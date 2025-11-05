@@ -163,13 +163,13 @@ LoadPlayer0Digit
           rem Calculate sprite pointer = FontData + offset using
           rem   assembly
           asm
-            rem Load low byte of FontData base address
+            ; Load low byte of FontData base address
             lda # <FontData
             clc
             adc LP0D_digitOffset
             sta player0pointerlo
             
-            rem Load high byte of FontData base address and add carry
+            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player0pointerhi
@@ -191,13 +191,13 @@ LoadPlayer1Digit
           rem Calculate sprite pointer = FontData + offset using
           rem   assembly
           asm
-            rem Load low byte of FontData base address
+            ; Load low byte of FontData base address
             lda # <FontData
             clc
             adc LP1D_digitOffset
             sta player1pointerlo
             
-            rem Load high byte of FontData base address and add carry
+            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player1pointerhi
@@ -219,13 +219,13 @@ LoadPlayer2Digit
           rem Calculate sprite pointer = FontData + offset using
           rem   assembly
           asm
-            rem Load low byte of FontData base address
+            ; Load low byte of FontData base address
             lda # <FontData
             clc
             adc LP2D_digitOffset
             sta player2pointerlo
             
-            rem Load high byte of FontData base address and add carry
+            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player2pointerhi
@@ -247,13 +247,13 @@ LoadPlayer3Digit
           rem Calculate sprite pointer = FontData + offset using
           rem   assembly
           asm
-            rem Load low byte of FontData base address
+            ; Load low byte of FontData base address
             lda # <FontData
             clc
             adc LP3D_digitOffset
             sta player3pointerlo
             
-            rem Load high byte of FontData base address and add carry
+            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player3pointerhi
@@ -275,13 +275,13 @@ LoadPlayer4Digit
           rem Calculate sprite pointer = FontData + offset using
           rem   assembly
           asm
-            rem Load low byte of FontData base address
+            ; Load low byte of FontData base address
             lda # <FontData
             clc
             adc LP4D_digitOffset
             sta player4pointerlo
             
-            rem Load high byte of FontData base address and add carry
+            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player4pointerhi
@@ -303,13 +303,13 @@ LoadPlayer5Digit
           rem Calculate sprite pointer = FontData + offset using
           rem   assembly
           asm
-            rem Load low byte of FontData base address
+            ; Load low byte of FontData base address
             lda # <FontData
             clc
             adc LP5D_digitOffset
             sta player5pointerlo
             
-            rem Load high byte of FontData base address and add carry
+            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player5pointerhi

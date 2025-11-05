@@ -20,36 +20,40 @@
           rem BERNIE (Character 0) - Ground Thump (Area-of-Effect)
           rem ==========================================================
 BernieAttack
-          rem Bernie’s "Ground Thump" attack is an area-of-effect that
+          dim BA_attackerIndex = temp1
+          dim BA_originalFacing = temp3
+          rem Bernie's "Ground Thump" attack is an area-of-effect that
           rem   hits nearby characters both to his left AND right
           rem   simultaneously, and shoves them rapidly away from him
           rem This is unique - all other melee attacks only hit in
           rem   facing direction
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[BA_attackerIndex] = (playerState[BA_attackerIndex] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
           rem Set animation state 14 (attack execution)
+          
+          rem Save original facing direction (temp5 conflicts with SpawnMissile)
+          let BA_originalFacing = playerState[BA_attackerIndex] & PlayerStateBitFacing
           
           rem Attack in facing direction
           gosub PerformMeleeAttack
           
           rem Also attack in opposite direction
           rem Temporarily flip facing
-          let temp5 = playerState[temp1] & PlayerStateBitFacing
-          if temp5 then FaceLeft1
-          let playerState[temp1] = playerState[temp1] | PlayerStateBitFacing
+          if BA_originalFacing then FaceLeft1
+          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] | PlayerStateBitFacing
           goto FacingDone1
 FaceLeft1
-          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] & (255 - PlayerStateBitFacing)
 FacingDone1
           
           rem Attack in opposite direction
           gosub PerformMeleeAttack
           
 
-          if temp5 then RestoreFaceRight1
-          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
+          if BA_originalFacing then RestoreFaceRight1
+          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] & (255 - PlayerStateBitFacing)
           goto RestoreFacingDone1
 RestoreFaceRight1
-          let playerState[temp1] = playerState[temp1] | PlayerStateBitFacing
+          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] | PlayerStateBitFacing
 RestoreFacingDone1
           
           return

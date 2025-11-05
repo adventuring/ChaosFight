@@ -30,20 +30,12 @@
           rem   eliminated.
           rem Sets elimination flags and triggers elimination effects.
 CheckAllPlayerEliminations
-          dim CAPE_playerIndex = temp1
-          rem Check each player for elimination
-          let CAPE_playerIndex = 0
-          let CPE_playerIndex = CAPE_playerIndex
-          gosub CheckPlayerElimination
-          let CAPE_playerIndex = 1
-          let CPE_playerIndex = CAPE_playerIndex
-          gosub CheckPlayerElimination  
-          let CAPE_playerIndex = 2
-          let CPE_playerIndex = CAPE_playerIndex
-          gosub CheckPlayerElimination
-          let CAPE_playerIndex = 3
-          let CPE_playerIndex = CAPE_playerIndex
-          gosub CheckPlayerElimination
+          rem Check each player for elimination using FOR loop
+          for currentPlayer = 0 to 3
+              let CPE_playerIndex = currentPlayer
+              rem Set alias (which maps to temp1) before calling
+              gosub CheckPlayerElimination
+          next
           
           rem Count remaining players and check game end (inline
           rem   CheckGameEndCondition)
@@ -81,7 +73,7 @@ CheckPlayerElimination
           rem Check if health has reached 0
           let CPE_health = playerHealth[CPE_playerIndex]
           
-          if CPE_health > 0 then return 
+          if CPE_health then return 
           rem Still alive
           
           rem Player health reached 0 - eliminate them
@@ -118,7 +110,8 @@ TriggerEliminationEffects
           dim TEE_effectTimer = temp2
           rem Play elimination sound effect
           let TEE_soundId = SoundElimination
-          let temp5 = TEE_soundId
+          let PSE_soundID = TEE_soundId
+          rem PlaySoundEffect expects temp1 (PSE_soundID alias)
           gosub bank15 PlaySoundEffect
           
           rem Set elimination visual effect timer
@@ -258,32 +251,18 @@ IsPlayerAlive
           rem ==========================================================
           rem Identify the winning player (last one standing).
 FindWinner
-          dim FW_playerIndex = temp1
           dim FW_isEliminated = temp2
           rem Find the player who is not eliminated
           let winnerPlayerIndex = 255 
           rem Invalid initially
           
-          let FW_playerIndex = 0
-          let temp1 = FW_playerIndex
-          gosub IsPlayerEliminated
-          let FW_isEliminated = temp2
-          if !FW_isEliminated then let winnerPlayerIndex = 0
-          let FW_playerIndex = 1
-          let temp1 = FW_playerIndex
-          gosub IsPlayerEliminated  
-          let FW_isEliminated = temp2
-          if !FW_isEliminated then let winnerPlayerIndex = 1
-          let FW_playerIndex = 2
-          let temp1 = FW_playerIndex
-          gosub IsPlayerEliminated
-          let FW_isEliminated = temp2
-          if !FW_isEliminated then let winnerPlayerIndex = 2
-          let FW_playerIndex = 3
-          let temp1 = FW_playerIndex
-          gosub IsPlayerEliminated
-          let FW_isEliminated = temp2
-          if !FW_isEliminated then let winnerPlayerIndex = 3
+          rem Check each player using FOR loop
+          for currentPlayer = 0 to 3
+              let IPE_playerIndex = currentPlayer
+              gosub IsPlayerEliminated
+              let FW_isEliminated = temp2
+              if !FW_isEliminated then let winnerPlayerIndex = currentPlayer
+          next
           
           rem If no winner found (all eliminated), pick last eliminated
           rem tail call
@@ -302,15 +281,11 @@ FindLastEliminated
           let winnerPlayerIndex = 0 
           rem Default winner
           
-          rem Check each player elimination order
-          let FLE_currentOrder = eliminationOrder[0]
-          if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = 0
-          let FLE_currentOrder = eliminationOrder[1]
-          if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = 1
-          let FLE_currentOrder = eliminationOrder[2]
-          if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = 2
-          let FLE_currentOrder = eliminationOrder[3]
-          if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = 3
+          rem Check each player elimination order using FOR loop
+          for currentPlayer = 0 to 3
+              let FLE_currentOrder = eliminationOrder[currentPlayer]
+              if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = currentPlayer
+          next
           
           rem ==========================================================
           rem UPDATE PLAYERS 3/4 ACTIVE FLAG

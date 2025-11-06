@@ -14,7 +14,7 @@ BeginTitleScreen
           rem   SetTitleWindowValues (bank12) - sets window values
           rem Constraints: Called from ChangeGameMode when transitioning to ModeTitle
           rem Initialize Title Screen mode
-          rem Note: pfres is defined globally in Constants.bas
+          rem Note: pfres is defined globally in AssemblyConfig.bas
           
           rem Initialize title parade state
           let titleParadeTimer = 0

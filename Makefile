@@ -480,13 +480,13 @@ Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.pr
 
 Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic
 	mkdir -p Object
-	cd Object && bB=$(POSTINC) timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s
+	cd Object && bB=$(POSTINC) timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s 2>/dev/null
 	@echo "Cleaning variable redefinitions file..."
 	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 
 Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic
 	mkdir -p Object
-	cd Object && bB=$(POSTINC) timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s
+	cd Object && bB=$(POSTINC) timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s 2>/dev/null
 	@echo "Cleaning variable redefinitions file..."
 	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 

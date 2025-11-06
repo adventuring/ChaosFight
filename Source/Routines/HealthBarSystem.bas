@@ -172,12 +172,12 @@ InitializeHealthBars
           rem Format: AACFAA where:
           rem Left 2 digits (AA): Player 3 health (00-99 in BCD) OR $AA
           rem   if inactive/eliminated
-          rem Middle 2 digits (CF): Literal "CF" ($CF - bad BCD displays
+          rem Middle 2 digits (CF): Literal CF ($CF - bad BCD displays
           rem   as hex)
           rem Right 2 digits (AA): Player 4 health (00-99 in BCD) OR $AA
           rem   if inactive/eliminated
           rem Score display uses 6 digits total (3 bytes)
-          rem Uses "bad BCD" technique: $AA and $CF are invalid BCD but
+          rem Uses bad BCD technique: $AA and $CF are invalid BCD but
           rem   display as hex characters
 
 UpdatePlayer34HealthBars
@@ -191,14 +191,14 @@ UpdatePlayer34HealthBars
           dim UP34HB_p4Ones = temp7
           
           rem Check if Quadtari is present
-          rem If no Quadtari, display "CF2025" instead of player health
+          rem If no Quadtari, display CF2025 instead of player health
           if !(controllerStatus & SetQuadtariDetected) then goto DisplayCF2025
           
           rem Only update player health if players 3 or 4 are active
           if !(controllerStatus & SetPlayers34Active) then return
           
           rem Get Player 3 health (0-100), clamp to 99
-          rem Use $AA (bad BCD displays as "AA") if inactive
+          rem Use $AA (bad BCD displays as AA) if inactive
           rem   (selectedChar = 255) or eliminated
           let UP34HB_p3Health = playerHealth[2]
           if selectedChar3_R = 255 then goto P3UseAA
@@ -212,7 +212,7 @@ UpdatePlayer34HealthBars
           
 P3UseAA
           rem Player 3 inactive/eliminated - use $AA (bad BCD displays
-          rem   as "AA")
+          rem   as AA)
           let UP34HB_p3BCD = $AA
           goto P4GetHealth
           
@@ -244,7 +244,7 @@ end
           
 P4GetHealth
           rem Get Player 4 health (0-100), clamp to 99
-          rem Use $AA (bad BCD displays as "AA") if inactive
+          rem Use $AA (bad BCD displays as AA) if inactive
           rem   (selectedChar = 255) or eliminated
           let UP34HB_p4Health = playerHealth[3]
           if selectedChar4_R = 255 then goto P4UseAA
@@ -258,7 +258,7 @@ P4GetHealth
           
 P4UseAA
           rem Player 4 inactive/eliminated - use $AA (bad BCD displays
-          rem   as "AA")
+          rem   as AA)
           rem Reuse UP34HB_p4Tens variable to hold $AA value
           let UP34HB_p4Tens = $AA
           goto SetScoreBytes
@@ -292,12 +292,12 @@ end
           rem p4Tens now contains P4 health as BCD (e.g., $50 for 50)
           
 SetScoreBytes
-          rem Set score for AACFAA format using "bad BCD" values
+          rem Set score for AACFAA format using bad BCD values
           rem Format: score (digits 0-1), score+1 (digits 2-3), score+2
           rem   (digits 4-5)
           rem score (high byte, digits 0-1) = P3 BCD ($00-$99) OR $AA if
           rem   inactive/eliminated
-          rem score+1 (middle byte, digits 2-3) = $CF (literal "CF" -
+          rem score+1 (middle byte, digits 2-3) = $CF (literal CF -
           rem   bad BCD)
           rem score+2 (low byte, digits 4-5) = P4 BCD ($00-$99) OR $AA
           rem   if inactive/eliminated
@@ -331,13 +331,13 @@ end
           return
           
 DisplayCF2025
-          rem No Quadtari detected - display "CF2025" using bad BCD
+          rem No Quadtari detected - display CF2025 using bad BCD
           rem   values
           rem Format: CF2025 = $CF $20 $25 (bad BCD displays as hex
           rem   characters)
-          rem score (digits 0-1) = $CF ("CF")
-          rem score+1 (digits 2-3) = $20 ("20")
-          rem score+2 (digits 4-5) = $25 ("25")
+          rem score (digits 0-1) = $CF (CF)
+          rem score+1 (digits 2-3) = $20 (20)
+          rem score+2 (digits 4-5) = $25 (25)
           asm
             LDA # $CF
             STA score

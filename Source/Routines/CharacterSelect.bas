@@ -285,7 +285,7 @@ SelDrawScreen
           rem Adjusted for 16px left margin (40+16)
           gosub SelDrawSprite
 
-          rem Draw "1" indicator below Player 1 using playfield
+          rem Draw 1 indicator below Player 1 using playfield
           gosub SelDrawNumber
 
           rem Draw Player 2 selection (top right) with number
@@ -294,7 +294,7 @@ SelDrawScreen
           rem Adjusted for 16px margins (120-16)
           gosub SelDrawSprite
 
-          rem Draw "2" indicator below Player 2 using playfield
+          rem Draw 2 indicator below Player 2 using playfield
           gosub SelDrawNumber
 
           rem Draw Player 3 selection (bottom left) if Quadtari detected
@@ -306,7 +306,7 @@ SelDrawP3
           rem Adjusted for 16px left margin
           gosub SelDrawSprite
 
-          rem Draw "3" indicator below Player 3 using playfield
+          rem Draw 3 indicator below Player 3 using playfield
           gosub SelDrawNumber
 
           rem Draw Player 4 selection (bottom right) if Quadtari
@@ -319,7 +319,7 @@ SelDrawP4
           rem Adjusted for 16px margins
           gosub SelDrawSprite
 
-          rem Draw "4" indicator below Player 4 using playfield
+          rem Draw 4 indicator below Player 4 using playfield
           gosub SelDrawNumber
 SelSkipP3
 SelSkipP4
@@ -377,7 +377,7 @@ SelDrawNumber
           rem using playfield pixels in a simple digit pattern
           rem Player numbers are determined by position in the grid
 
-          rem Player 1 (top left) - draw "1"
+          rem Player 1 (top left) - draw 1
           if player0x  = 56 then SelChkP0Y1
           goto DonePlayer0Check1
 SelChkP0Y1
@@ -389,7 +389,7 @@ SelDrawP0Top
           pf2 = pf2 | %00001000
           pf3 = pf3 | %00001000
 
-          rem Player 2 (top right) - draw "2"
+          rem Player 2 (top right) - draw 2
           if player1x  = 104 then SelChkP1Y1
           goto DonePlayer1Check1
 SelChkP1Y1
@@ -400,7 +400,7 @@ SelDrawP1Top
           pf4 = pf4 | %00001000
           pf5 = pf5 | %00010000
 
-          rem Player 3 (bottom left) - draw "3"
+          rem Player 3 (bottom left) - draw 3
           if player0x  = 56 then SelChkP0Y2
           goto DonePlayer0Check2
 SelChkP0Y2
@@ -412,7 +412,7 @@ SelDrawP0Bot
           pf2 = pf2 | %00001000
           pf3 = pf3 | %00001000
 
-          rem Player 4 (bottom right) - draw "4"
+          rem Player 4 (bottom right) - draw 4
           if player1x  = 104 then SelChkP1Y2
           goto DonePlayer1Check2
 SelChkP1Y2
@@ -427,7 +427,7 @@ SelDrawP1Bot
           rem Update character select animations
 SelUpdateAnim
           rem Check if any player is holding DOWN (for handicap preview)
-          rem If so, freeze their character in "recovery from far fall"
+          rem If so, freeze their character in recovery from far fall
           rem   pose (animation state 9)
           rem HandicapMode is defined in Variables.bas as variable i
           let HandicapMode  = 0
@@ -453,13 +453,13 @@ SelOddFrame
           rem P4 handicap flag
           
           
-          rem If any player is holding down, set animation to "recovery"
+          rem If any player is holding down, set animation to recovery
           rem   pose
           if HandicapMode then SelHandleHandi
           goto SelAnimNormal
 SelHandleHandi
           let charSelectAnimState = ActionRecovering
-          rem Animation state 9 = "Recovering to standing"
+          rem Animation state 9 = Recovering to standing
           let charSelectAnimFrame  = 0
           rem First frame of recovery animation
           rem Do not update timer or frame - freeze the animation

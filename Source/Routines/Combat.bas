@@ -9,7 +9,7 @@
           rem Inputs: attackerID, defenderID (must be set before
           rem   calling)
           rem Process:
-          rem   1. Player begins "hurt" animation (ActionHit = 5)
+          rem   1. Player begins hurt animation (ActionHit = 5)
           rem 2. Player enters recovery frames count and color dims (or
           rem   magenta on SECAM)
           rem   3. If player health >= damage amount, decrement health

@@ -171,7 +171,7 @@ DisplayRandomArena
           dim DRA_yPos = temp3
           dim DRA_color = temp4
           dim DRA_spriteSelect = temp5
-          rem Display "??" for random arena
+          rem Display ?? for random arena
           rem Use player4 and player5 for two question marks
           rem Question mark is digit 10 (hex A) in font
           let DRA_digit = 10

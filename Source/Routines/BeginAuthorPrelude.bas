@@ -12,7 +12,7 @@ BeginAuthorPrelude
           rem Set background color
           COLUBK = ColGray(0)
           
-          rem Start "Interworldly" music
+          rem Start Interworldly music
           temp1 = MusicInterworldly
           gosub bank16 StartMusic
           

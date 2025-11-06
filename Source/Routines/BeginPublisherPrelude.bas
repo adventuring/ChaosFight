@@ -26,7 +26,7 @@ BeginPublisherPrelude
           rem Set background color
           COLUBK = ColGray(0)
           
-          rem Start "AtariToday" music
+          rem Start AtariToday music
           temp1 = MusicAtariToday
           rem tail call
           goto StartMusic

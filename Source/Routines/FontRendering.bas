@@ -56,10 +56,10 @@
           rem   Green)
 
           rem EXAMPLE USAGE:
-          rem   rem Draw level "A" (10) in white on left using player0
+          rem   rem Draw level A (10) in white on left using player0
           rem temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = ColGrey(14)
           rem   : temp5 = 0 : gosub DrawDigit
-          rem   rem Draw player "2" in red on right using player1
+          rem   rem Draw player 2 in red on right using player1
           rem temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = ColRed(14)
           rem   : temp5 = 1 : gosub DrawDigit
 DrawDigit

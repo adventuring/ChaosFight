@@ -5,7 +5,7 @@
           rem COLD START INITIALIZATION
           rem ==========================================================
           rem Proper cold start initialization sequence for batariBASIC.
-          rem Called from Bank1 via "goto bank13 ColdStart" - this is
+          rem Called from Bank1 via goto bank13 ColdStart - this is
           rem   the
           rem correct stanza format (Bank1 jumps to ColdStart in
           rem   Bank13).

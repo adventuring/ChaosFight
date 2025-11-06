@@ -10,7 +10,7 @@
           rem FLOW:
           rem 1. Display 48×42 bitmap from Source/Art/Interworldly.xcf
           rem   (via titlescreen kernel)
-          rem   2. Play "Interworldly" music
+          rem   2. Play Interworldly music
           rem   3. Wait for music completion + 0.5s OR button press
           rem   4. Transition to title screen
 

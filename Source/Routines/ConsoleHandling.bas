@@ -164,7 +164,7 @@ ReloadArenaColorsNow
 
           rem Display paused screen
 DisplayPausedScreen
-          rem Display "PAUSED" message using built-in font system
+          rem Display PAUSED message using built-in font system
           rem Center the text on screen
           temp1 = 40 
           rem X position (centered)
@@ -173,40 +173,40 @@ DisplayPausedScreen
           temp3 = 14 
           rem Color (white)
           
-          rem Draw each character of "PAUSED"
+          rem Draw each character of PAUSED
           rem P
           temp4 = 25 
-          rem ASCII "P"
+          rem ASCII P
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem A
           temp4 = 10 
-          rem ASCII "A"
+          rem ASCII A
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem U
           temp4 = 30 
-          rem ASCII "U"
+          rem ASCII U
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem S
           temp4 = 28 
-          rem ASCII "S"
+          rem ASCII S
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem E
           temp4 = 14 
-          rem ASCII "E"
+          rem ASCII E
           gosub DrawCharacter
           temp1 = temp1 + 6
           
           rem D
           temp4 = 13 
-          rem ASCII "D"
+          rem ASCII D
           rem tail call
           goto DrawCharacter
           

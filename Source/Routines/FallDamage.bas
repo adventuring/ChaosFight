@@ -122,8 +122,8 @@ CheckFallDamage
           asl CFD_damage
           rem CFD_damage = CFD_damage * 2
           
-          rem Apply weight-based damage multiplier: "the bigger they
-          rem   are, the harder they fall"
+          rem Apply weight-based damage multiplier: the bigger they
+          rem   are, the harder they fall
           rem Heavy characters take more damage for the same impact
           rem   velocity
           rem Formula: damage_multiplier = weight / 20 (average weight)
@@ -222,7 +222,7 @@ end
           let playerState[CFD_playerIndex] = playerState[CFD_playerIndex] | 8
           rem Set bit 3 (recovery flag) when recovery frames are set
           
-          rem Set animation state to "recovering from fall"
+          rem Set animation state to recovering from fall
           rem This is animation state 9 in the character animation
           rem   sequences
           rem playerState bits:
@@ -428,7 +428,7 @@ SetVerticalMomentum
           rem This needs to override normal gravity temporarily
           rem Suggest adding PlayerMomentumY variable or state flag
           
-          rem Set animation state to "swooping attack"
+          rem Set animation state to swooping attack
           rem This could be animation state 10 or special attack
           rem   animation
           let HHSA_playerState = playerState[HHSA_playerIndex] & MaskPlayerStateLower

@@ -5,7 +5,7 @@
           rem CHARACTER-SPECIFIC CONTROL LOGIC
           rem ==========================================================
           rem Handles character-specific jump and down button behaviors.
-          rem Called via "on playerChar[n] goto" dispatch from
+          rem Called via on playerChar[n] goto dispatch from
           rem   PlayerInput.bas
 
           rem INPUT VARIABLE:
@@ -25,7 +25,7 @@
           rem ==========================================================
 
           rem ==========================================================
-          rem JUMP HANDLERS (Called via "on goto" from PlayerInput)
+          rem JUMP HANDLERS (Called via on goto from PlayerInput)
           rem ==========================================================
 
           rem BERNIE (0) - NO JUMP, BUT CAN FALL THROUGH 1-ROW FLOORS
@@ -110,7 +110,7 @@ BernieCheckBottomWrap
           dim BCBW_topRow = temp4
           rem Special case: Bernie is at bottom row, trying to fall
           rem   through
-          rem Bottom row is always considered "1 row deep" since nothing
+          rem Bottom row is always considered 1 row deep since nothing
           rem   is below it
           rem Check if top row (row 0) is clear for wrapping
           let BCBW_topRow = 0
@@ -524,7 +524,7 @@ ShamoneJump
           return
 
           rem ==========================================================
-          rem DOWN BUTTON HANDLERS (Called via "on goto" from
+          rem DOWN BUTTON HANDLERS (Called via on goto from
           rem   PlayerInput)
           rem ==========================================================
 

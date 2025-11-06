@@ -322,7 +322,7 @@
           const SongCharacter30Theme = 25
           const MusicChaotica = 26
           const MusicTitle = 26
-          rem Title song "Chaotica" (index 26, loops)
+          rem Title song Chaotica (index 26, loops)
           const MusicAtariToday = 27
           const MusicInterworldly = 28
 

@@ -33,7 +33,7 @@ BeginFallingAnimation
           let COLUBK = ColGray(0)
           
           rem Initialize player positions in quadrants
-          rem Player 1: Top-left quadrant (unless "NO")
+          rem Player 1: Top-left quadrant (unless NO)
           if selectedChar1 = NoCharacter then DonePlayer1Init
           let playerX[0] = 16
           rem Top-left X position
@@ -42,7 +42,7 @@ BeginFallingAnimation
           let activePlayers = activePlayers + 1
 DonePlayer1Init
           
-          rem Player 2: Top-right quadrant (unless "NO")
+          rem Player 2: Top-right quadrant (unless NO)
           if selectedChar2_R = NoCharacter then DonePlayer2Init
           let playerX[1] = 144
           rem Top-right X position
@@ -51,7 +51,7 @@ DonePlayer1Init
           let activePlayers = activePlayers + 1
 DonePlayer2Init
           
-          rem Player 3: Bottom-left quadrant (if Quadtari and not "NO")
+          rem Player 3: Bottom-left quadrant (if Quadtari and not NO)
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Init
           if selectedChar3_R = NoCharacter then DonePlayer3Init
           let playerX[2] = 16
@@ -61,7 +61,7 @@ DonePlayer2Init
           let activePlayers = activePlayers + 1
 DonePlayer3Init
           
-          rem Player 4: Bottom-right quadrant (if Quadtari and not "NO")
+          rem Player 4: Bottom-right quadrant (if Quadtari and not NO)
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Init
           if selectedChar4_R = NoCharacter then DonePlayer4Init
           let playerX[3] = 144

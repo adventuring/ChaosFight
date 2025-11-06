@@ -17,5 +17,5 @@
 ; Code generation options
           const noscore = 0
           const qtcontroller = 0
-          const pfres = 32
+          const pfres = 8
 

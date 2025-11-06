@@ -52,7 +52,7 @@ GravityLoop
 GravityCheckCharacter
           let PAG_characterType = playerChar[PAG_playerIndex]
           
-          rem Skip gravity for characters that don't have it
+          rem Skip gravity for characters that do not have it
           rem Frooty (8): Permanent flight, no gravity
           if PAG_characterType = CharFrooty then goto GravityNextPlayer
           rem Dragon of Storms (2): Permanent flight, no gravity

@@ -22,7 +22,7 @@
 BernieAttack
           dim BA_attackerIndex = temp1
           dim BA_originalFacing = temp3
-          rem Bernie's "Ground Thump" attack is an area-of-effect that
+          rem Bernies Ground Thump attack is an area-of-effect that
           rem   hits nearby characters both to his left AND right
           rem   simultaneously, and shoves them rapidly away from him
           rem This is unique - all other melee attacks only hit in
@@ -157,7 +157,7 @@ HarpySetVerticalVelocity
           
           rem Set jumping state so character can move vertically during
           rem   swoop
-          rem This allows vertical movement without being "on ground"
+          rem This allows vertical movement without being on ground
           let playerState[HA_playerIndex] = playerState[HA_playerIndex] | 4
           rem Set bit 2 (jumping flag)
           

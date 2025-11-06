@@ -14,7 +14,7 @@ BeginTitleScreen
           rem Set background color
           COLUBK = ColGray(0)
           
-          rem Start "Chaotica" title music
+          rem Start Chaotica title music
           let temp1 = MusicChaotica
           gosub bank16 StartMusic
           

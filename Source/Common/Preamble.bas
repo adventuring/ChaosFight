@@ -9,7 +9,7 @@
           rem - Constants and Enums: PascalCase (MaxCharacter,
           rem   ActionStanding, etc.)
           rem - Labels/Routines: PascalCase (LoadCharacterSprite, etc.)
-          rem - Do NOT use "dim" for built-in variables - they already
+          rem - Do NOT use dim for built-in variables - they already
           rem   exist!
           rem - Built-in variables: temp1-temp6, qtcontroller,
           rem   joy0up/down/left/right/fire, frame
@@ -18,10 +18,10 @@
           rem - Our variables: gameState, playerX, selectedChar1, etc.
 
           rem batariBASIC automatically defines constants like bankswitch, multisprite,
-          rem superchip, etc. based on 'set kernel' and 'set romsize' commands below.
+          rem superchip, etc. based on set kernel and set romsize commands below.
           rem These constants are written to 2600basic_variable_redefs.h which is
           rem included by multispritesuperchipheader.asm before the ifconst bankswitch check.
-          rem pfres (playfield resolution) must be defined manually as it's not auto-generated.
+          rem pfres (playfield resolution) must be defined manually as it is not auto-generated.
 
 #include "Source/Common/AssemblyConfig.s"
 

@@ -57,7 +57,7 @@ end
           rem   multiply-defined label errors.
           rem Runtime window control is handled via
           rem   titlescreenWindow1/2/3/4 variables set per screen
-          rem If runtime window = 0, minikernel won't draw (Y register
+          rem If runtime window = 0, minikernel will not draw (Y register
           rem   will be -1)
           
           rem NOTE: Runtime window control implemented via

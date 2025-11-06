@@ -153,7 +153,7 @@ CharacterSelectInputEntry
           gosub CharacterSelectCheckControllerRescan
           
           rem Quadtari controller multiplexing
-          if qtcontroller then CharacterSelectHandleQuadtari
+          if qtcontroller then goto CharacterSelectHandleQuadtari
           
           rem Handle Player 1 input (joy0 on even frames)
           if joy0left then CS_HandlePlayer0Left
@@ -267,14 +267,14 @@ CharacterSelectInputComplete
           
 CharacterSelectHandleRandomRolls
           rem Check each player for pending random roll
-          if playerChar[0] = RandomCharacter then CharacterSelectRollPlayer0
-          if playerChar[1] = RandomCharacter then CharacterSelectRollPlayer1
-          if controllerStatus & SetQuadtariDetected then CharacterSelectCheckRollQuadtari
+          if playerChar[0] = RandomCharacter then goto CharacterSelectRollPlayer0
+          if playerChar[1] = RandomCharacter then goto CharacterSelectRollPlayer1
+          if controllerStatus & SetQuadtariDetected then goto CharacterSelectCheckRollQuadtari
           goto CharacterSelectRollsDone
           
 CharacterSelectCheckRollQuadtari
-          if playerChar[2] = RandomCharacter then CharacterSelectRollPlayer2
-          if playerChar[3] = RandomCharacter then CharacterSelectRollPlayer3
+          if playerChar[2] = RandomCharacter then goto CharacterSelectRollPlayer2
+          if playerChar[3] = RandomCharacter then goto CharacterSelectRollPlayer3
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer0
@@ -282,7 +282,7 @@ CharacterSelectRollPlayer0
           rem Roll 5-bit random: rand & 31 (0-31)
           let CSR0_rolledValue = rand & 31
           rem If > 15, stay as RandomCharacter and retry next frame
-          if CSR0_rolledValue > MaxCharacter then CharacterSelectRollsDone
+          if CSR0_rolledValue > MaxCharacter then goto CharacterSelectRollsDone
           rem Valid! Set character and lock with normal or handicap
           let playerChar[0] = CSR0_rolledValue
           if randomSelectFlags[0] then goto CharacterSelectLockPlayer0Handicap
@@ -297,7 +297,7 @@ CharacterSelectLockPlayer0Done
 CharacterSelectRollPlayer1
           dim CSR1_rolledValue = temp2
           let CSR1_rolledValue = rand & 31
-          if CSR1_rolledValue > MaxCharacter then CharacterSelectRollsDone
+          if CSR1_rolledValue > MaxCharacter then goto CharacterSelectRollsDone
           let playerChar[1] = CSR1_rolledValue
           if randomSelectFlags[1] then goto CharacterSelectLockPlayer1Handicap
           let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub bank14 SetPlayerLocked
@@ -311,7 +311,7 @@ CharacterSelectLockPlayer1Done
 CharacterSelectRollPlayer2
           dim CSR2_rolledValue = temp2
           let CSR2_rolledValue = rand & 31
-          if CSR2_rolledValue > MaxCharacter then CharacterSelectRollsDone
+          if CSR2_rolledValue > MaxCharacter then goto CharacterSelectRollsDone
           let playerChar[2] = CSR2_rolledValue
           if randomSelectFlags[2] then goto CharacterSelectLockPlayer2Handicap
           let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub bank14 SetPlayerLocked
@@ -325,7 +325,7 @@ CharacterSelectLockPlayer2Done
 CharacterSelectRollPlayer3
           dim CSR3_rolledValue = temp2
           let CSR3_rolledValue = rand & 31
-          if CSR3_rolledValue > MaxCharacter then CharacterSelectRollsDone
+          if CSR3_rolledValue > MaxCharacter then goto CharacterSelectRollsDone
           let playerChar[3] = CSR3_rolledValue
           if randomSelectFlags[3] then goto CharacterSelectLockPlayer3Handicap
           let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub bank14 SetPlayerLocked
@@ -344,12 +344,12 @@ CharacterSelectRollsDone
 CharacterSelectCheckReady
           rem 2-player mode: P1 must be locked AND (P2 locked OR P2 on
           rem   CPU)
-          if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReady
-          let temp1 = 0 : gosub bank14 GetPlayerLocked : if !temp2 then CharacterSelectReadyDone
+          if controllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
+          let temp1 = 0 : gosub bank14 GetPlayerLocked : if !temp2 then goto CharacterSelectReadyDone
           rem P1 is locked, check P2
-          let temp1 = 1 : gosub bank14 GetPlayerLocked : if temp2 then CharacterSelectFinish
+          let temp1 = 1 : gosub bank14 GetPlayerLocked : if temp2 then goto CharacterSelectFinish
           rem P2 not locked, check if on CPU
-          if playerChar[1] = CPUCharacter then CharacterSelectFinish
+          if playerChar[1] = CPUCharacter then goto CharacterSelectFinish
           goto CharacterSelectReadyDone
           
 CharacterSelectQuadtariReady
@@ -372,7 +372,7 @@ CharacterSelectQuadtariReady
           let temp1 = 3 : gosub bank14 GetPlayerLocked : if temp2 then readyCount = readyCount + 1
           let temp1 = 3 : gosub bank14 GetPlayerLocked : if !temp2 && playerChar[3] = CPUCharacter then readyCount = readyCount + 1
           let temp1 = 3 : gosub bank14 GetPlayerLocked : if !temp2 && playerChar[3] = NoCharacter then readyCount = readyCount + 1
-          if readyCount >= 2 then CharacterSelectFinish
+          if readyCount >= 2 then goto CharacterSelectFinish
           
 CharacterSelectReadyDone
           return
@@ -429,9 +429,9 @@ CycleCharacterLeft
           if CCL_characterIndex = NoCharacter then CycleFromNO : return
           
           rem Normal character (0-15): decrement
-          rem Check if we’re at 0 before decrementing (need to wrap to
+          rem Check if we're at 0 before decrementing (need to wrap to
           rem   special)
-          if !CCL_characterIndex then CharacterSelectLeftWrapCheck
+          if !CCL_characterIndex then goto CharacterSelectLeftWrapCheck
           let CCL_characterIndex = CCL_characterIndex - 1
           let temp1 = CCL_characterIndex
           return
@@ -441,7 +441,7 @@ CharacterSelectLeftWrapCheck
           dim CSLWC_playerNumber = temp3
           rem After 0, wrap to player-specific special character
           if CSLWC_playerNumber = 0 then let CSLWC_characterIndex = RandomCharacter : let temp1 = CSLWC_characterIndex : return
-          if CSLWC_playerNumber = 1 then SelectP2LeftWrap
+          if CSLWC_playerNumber = 1 then goto SelectP2LeftWrap
           let CSLWC_characterIndex = NoCharacter
           let temp1 = CSLWC_characterIndex
           return
@@ -452,12 +452,12 @@ SelectP2LeftWrap
           rem   both NO)
           if !(controllerStatus & SetQuadtariDetected) then let SP2LW_characterIndex = CPUCharacter : let temp1 = SP2LW_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] = NoCharacter then CheckP4_LeftWrap
+          if playerChar[2] = NoCharacter then goto CheckP4_LeftWrap
           let SP2LW_characterIndex = NoCharacter
           let temp1 = SP2LW_characterIndex
           return
 CheckP4_LeftWrap
-          if playerChar[3] = NoCharacter then BothNO_LeftWrap
+          if playerChar[3] = NoCharacter then goto BothNO_LeftWrap
           let SP2LW_characterIndex = NoCharacter
           let temp1 = SP2LW_characterIndex
           return
@@ -475,7 +475,7 @@ CycleFromRandom
           rem P2: ... Random → NO (if available) → CPU OR Random → 15
           rem P3/P4: Random → NO
           rem Check if this is P2 with NO available
-          if CFR_playerNumber = 1 then SelectP2LeftFromRandom
+          if CFR_playerNumber = 1 then goto SelectP2LeftFromRandom
           rem P1 or P3/P4: Random left goes to NO (P3/P4) or 15 (P1)
           if CFR_playerNumber = 0 then let CFR_characterIndex = MaxCharacter : let temp1 = CFR_characterIndex : return
           rem P1 → 15
@@ -545,7 +545,7 @@ CycleCharacterRight
           rem Normal character (0-15): increment
           let CCR_characterIndex = CCR_characterIndex + 1
           rem Check if we went past 15 (wrap to RandomCharacter)
-          if CCR_characterIndex > MaxCharacter then CharacterSelectRightWrapCheck
+          if CCR_characterIndex > MaxCharacter then goto CharacterSelectRightWrapCheck
           let temp1 = CCR_characterIndex
           return
           
@@ -561,7 +561,7 @@ CycleRightFromRandom
           dim CRFR_playerNumber = temp3
           rem RandomCharacter(253) goes to special for each player
           if CRFR_playerNumber = 0 then let CRFR_characterIndex = 0 : let temp1 = CRFR_characterIndex : return
-          if CRFR_playerNumber = 1 then SelectP2RightFromRandom
+          if CRFR_playerNumber = 1 then goto SelectP2RightFromRandom
           let CRFR_characterIndex = NoCharacter
           let temp1 = CRFR_characterIndex
           return
@@ -572,12 +572,12 @@ SelectP2RightFromRandom
           rem   both NO)
           if !(controllerStatus & SetQuadtariDetected) then let SP2RFR_characterIndex = CPUCharacter : let temp1 = SP2RFR_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] = NoCharacter then CheckP4_RightFromRandom
+          if playerChar[2] = NoCharacter then goto CheckP4_RightFromRandom
           let SP2RFR_characterIndex = NoCharacter
           let temp1 = SP2RFR_characterIndex
           return
 CheckP4_RightFromRandom
-          if playerChar[3] = NoCharacter then BothNO_RightFromRandom
+          if playerChar[3] = NoCharacter then goto BothNO_RightFromRandom
           let SP2RFR_characterIndex = NoCharacter
           let temp1 = SP2RFR_characterIndex
           return
@@ -594,19 +594,19 @@ CycleRightFromCPU
           rem P1: CPU → Random → ...
           rem P2: CPU → NO (if available) → Random → ... OR CPU → Random
           rem P3/P4: Should not reach CPU, but handle gracefully
-          if CRFC_playerNumber = 1 then SelectP2RightFromCPU
+          if CRFC_playerNumber = 1 then goto SelectP2RightFromCPU
           goto CycleRightFromCPUDone
 SelectP2RightFromCPU
           dim SP2RFC_characterIndex = temp1
           rem P2 from CPU: Check if NO is available
           if !(controllerStatus & SetQuadtariDetected) then let SP2RFC_characterIndex = RandomCharacter : let temp1 = SP2RFC_characterIndex : return
           rem Check if P3 or P4 are NOT both NO
-          if playerChar[2] = NoCharacter then CheckP4_RightFromCPU
+          if playerChar[2] = NoCharacter then goto CheckP4_RightFromCPU
           let SP2RFC_characterIndex = NoCharacter
           let temp1 = SP2RFC_characterIndex
           return
 CheckP4_RightFromCPU
-          if playerChar[3] = NoCharacter then BothNO_RightFromCPU
+          if playerChar[3] = NoCharacter then goto BothNO_RightFromCPU
           let SP2RFC_characterIndex = NoCharacter
           let temp1 = SP2RFC_characterIndex
           return
@@ -648,7 +648,7 @@ SelectDrawScreen
           rem numbers are not shown on character select
           
           rem Draw Player 3 selection (bottom left) if Quadtari
-          if controllerStatus & SetQuadtariDetected then SelectDrawP3
+          if controllerStatus & SetQuadtariDetected then goto SelectDrawP3
           goto SelectSkipP3
 SelectDrawP3
           player0x = 56 : player0y = 80
@@ -656,7 +656,7 @@ SelectDrawP3
           rem numbers are not shown on character select
           
           rem Draw Player 4 selection (bottom right) if Quadtari
-          if controllerStatus & SetQuadtariDetected then SelectDrawP4
+          if controllerStatus & SetQuadtariDetected then goto SelectDrawP4
           goto SelectSkipP4
 SelectDrawP4
           player1x = 104 : player1y = 80
@@ -683,8 +683,8 @@ SelectDrawSprite
           rem Determine which player based on position
           let SDS_playerNumber = 255
           rem Initialize to invalid
-          if player0x = 56 then SelectDeterminePlayerP0
-          if player1x = 104 then SelectDeterminePlayerP1
+          if player0x = 56 then goto SelectDeterminePlayerP0
+          if player1x = 104 then goto SelectDeterminePlayerP1
           goto SelectDrawSpriteDone
           
 SelectDeterminePlayerP0
@@ -708,18 +708,18 @@ SelectLoadSprite
           dim SLS_playerNumberForArt = temp4
           dim SLS_spriteIndex = temp6
           rem Load sprite for determined player
-          if SLS_playerNumber > 3 then SelectDrawSpriteDone
+          if SLS_playerNumber > 3 then goto SelectDrawSpriteDone
           let SLS_playerNumberSaved = SLS_playerNumber
           rem Save player number
           let SLS_characterIndex = playerChar[SLS_playerNumberSaved]
           
           rem Check for special characters (?, CPU, NO) before normal art loading
-          rem Special characters don’t animate, so handle them separately
-          if SLS_characterIndex = NoCharacter then SelectLoadSpecialSprite
+          rem Special characters don't animate, so handle them separately
+          if SLS_characterIndex = NoCharacter then goto SelectLoadSpecialSprite
           rem NoCharacter = 255
-          if SLS_characterIndex = CPUCharacter then SelectLoadSpecialSprite
+          if SLS_characterIndex = CPUCharacter then goto SelectLoadSpecialSprite
           rem CPUCharacter = 254
-          if SLS_characterIndex = RandomCharacter then SelectLoadSpecialSprite
+          if SLS_characterIndex = RandomCharacter then goto SelectLoadSpecialSprite
           rem RandomCharacter = 253
           
           rem Normal character - use animation state
@@ -730,7 +730,7 @@ SelectLoadSprite
           rem   (0-7)
           rem Map to proper animation action: 0=idle (ActionIdle=1),
           rem   1=walk (ActionWalking=3)
-          if charSelectPlayerAnimSeq[SLS_playerNumberSaved] then SelectLoadWalkingSprite
+          if charSelectPlayerAnimSeq[SLS_playerNumberSaved] then goto SelectLoadWalkingSprite
           
           rem Idle animation
           let SLS_animationFrame = charSelectPlayerAnimFrame[SLS_playerNumberSaved]
@@ -827,8 +827,8 @@ SelectDrawNumber
           rem Determine which player based on position (same as
           rem   SelectDrawSprite logic)
           rem Check if we have valid player position
-          if player0x = 56 then SelectNumberPlayerP0
-          if player1x = 104 then SelectNumberPlayerP1
+          if player0x = 56 then goto SelectNumberPlayerP0
+          if player1x = 104 then goto SelectNumberPlayerP1
           rem No valid position, skip number
           goto SelectDrawNumberDone
           
@@ -858,11 +858,11 @@ NumberPositionCalculate
           rem P3 (index 2): x=56, y=88, sprite=player0, shows P2 (virtual sprite)
           rem P4 (index 3): x=104, y=88, sprite=player1, shows P3 (virtual sprite)
           
-          if !NPC_playerIndex then SelectNumberP1
+          if !NPC_playerIndex then goto SelectNumberP1
           rem P1 (0)
-          if NPC_playerIndex = 1 then SelectNumberP2
+          if NPC_playerIndex = 1 then goto SelectNumberP2
           rem P2 (1)
-          if NPC_playerIndex = 2 then SelectNumberP3
+          if NPC_playerIndex = 2 then goto SelectNumberP3
           rem P3 (2)
           goto SelectNumberP4
           rem P4 (3)
@@ -962,21 +962,21 @@ SelectDrawNumberDone
           
 SelectDrawLocks
           rem Draw locked status borders using playfield
-          let temp1 = 0 : gosub bank14 GetPlayerLocked : if temp2 then SelectDrawP0Border
+          let temp1 = 0 : gosub bank14 GetPlayerLocked : if temp2 then goto SelectDrawP0Border
           goto SelectSkipP0Border
 SelectDrawP0Border
           pf0 = pf0 | %10000000
           pf1 = pf1 | %00000001
 SelectSkipP0Border
           
-          let temp1 = 1 : gosub bank14 GetPlayerLocked : if temp2 then SelectDrawP1Border
+          let temp1 = 1 : gosub bank14 GetPlayerLocked : if temp2 then goto SelectDrawP1Border
           goto SelectSkipP1Border
 SelectDrawP1Border
           pf0 = pf0 | %00001000
           pf1 = pf1 | %00010000
 SelectSkipP1Border
           
-          if controllerStatus & SetQuadtariDetected then SelectCheckP2Lock
+          if controllerStatus & SetQuadtariDetected then goto SelectCheckP2Lock
           goto SelectSkipCheckP2Lock
 SelectCheckP2Lock
           let temp1 = 2 : gosub bank14 GetPlayerLocked : if temp2 then SelectDrawP2Border
@@ -1005,37 +1005,37 @@ SelectUpdateAnimations
           rem Each player updates independently with staggered timing
           
           rem Update Player 1 animations (characters)
-          let temp1 = 0 : gosub bank14 GetPlayerLocked : if temp2 then SelectSkipPlayer0Anim  : rem Locked players don’t animate
-          if playerChar[0] = CPUCharacter then SelectSkipPlayer0Anim  : rem CPU doesn’t animate
-          if playerChar[0] = NoCharacter then SelectSkipPlayer0Anim  : rem NO doesn’t animate
-          if playerChar[0] = RandomCharacter then SelectSkipPlayer0Anim  : rem Random doesn’t animate
+          let temp1 = 0 : gosub bank14 GetPlayerLocked : if temp2 then goto SelectSkipPlayer0Anim  : rem Locked players don't animate
+          if playerChar[0] = CPUCharacter then goto SelectSkipPlayer0Anim  : rem CPU doesn't animate
+          if playerChar[0] = NoCharacter then goto SelectSkipPlayer0Anim  : rem NO doesn't animate
+          if playerChar[0] = RandomCharacter then goto SelectSkipPlayer0Anim  : rem Random doesn't animate
           let temp1 = 0
           gosub SelectUpdatePlayerAnim
           
 SelectSkipPlayer0Anim
           rem Update Player 2 animations
-          let temp1 = 1 : gosub bank14 GetPlayerLocked : if temp2 then SelectSkipPlayer1Anim
-          if playerChar[1] = CPUCharacter then SelectSkipPlayer1Anim
-          if playerChar[1] = NoCharacter then SelectSkipPlayer1Anim
-          if playerChar[1] = RandomCharacter then SelectSkipPlayer1Anim
+          let temp1 = 1 : gosub bank14 GetPlayerLocked : if temp2 then goto SelectSkipPlayer1Anim
+          if playerChar[1] = CPUCharacter then goto SelectSkipPlayer1Anim
+          if playerChar[1] = NoCharacter then goto SelectSkipPlayer1Anim
+          if playerChar[1] = RandomCharacter then goto SelectSkipPlayer1Anim
           let temp1 = 1
           gosub SelectUpdatePlayerAnim
           
 SelectSkipPlayer1Anim
           rem Update Player 3 animations (if Quadtari)
-          if !(controllerStatus & SetQuadtariDetected) then SelectSkipPlayer23Anim
-          let temp1 = 2 : gosub bank14 GetPlayerLocked : if temp2 then SelectSkipPlayer2Anim
-          if playerChar[2] = NoCharacter then SelectSkipPlayer2Anim
-          if playerChar[2] = RandomCharacter then SelectSkipPlayer2Anim
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Anim
+          let temp1 = 2 : gosub bank14 GetPlayerLocked : if temp2 then goto SelectSkipPlayer2Anim
+          if playerChar[2] = NoCharacter then goto SelectSkipPlayer2Anim
+          if playerChar[2] = RandomCharacter then goto SelectSkipPlayer2Anim
           let temp1 = 2
           gosub SelectUpdatePlayerAnim
           
 SelectSkipPlayer2Anim
           rem Update Player 4 animations (if Quadtari)
-          if !(controllerStatus & SetQuadtariDetected) then SelectSkipPlayer23Anim
-          let temp1 = 3 : gosub bank14 GetPlayerLocked : if temp2 then SelectSkipPlayer23Anim
-          if playerChar[3] = NoCharacter then SelectSkipPlayer23Anim
-          if playerChar[3] = RandomCharacter then SelectSkipPlayer23Anim
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Anim
+          let temp1 = 3 : gosub bank14 GetPlayerLocked : if temp2 then goto SelectSkipPlayer23Anim
+          if playerChar[3] = NoCharacter then goto SelectSkipPlayer23Anim
+          if playerChar[3] = RandomCharacter then goto SelectSkipPlayer23Anim
           let temp1 = 3
           gosub SelectUpdatePlayerAnim
           
@@ -1053,9 +1053,9 @@ SelectUpdatePlayerAnim
           rem Increment frame counter
           let charSelectPlayerAnimFrame[SUPA_playerIndex] = charSelectPlayerAnimFrame[SUPA_playerIndex] + 1
           
-          rem Check if it’s time to advance frame (every 6 frames for
+          rem Check if it's time to advance frame (every 6 frames for
           rem   10fps at 60fps)
-          if charSelectPlayerAnimFrame[SUPA_playerIndex] >= AnimationFrameDelay then SelectAdvanceAnimFrame
+          if charSelectPlayerAnimFrame[SUPA_playerIndex] >= AnimationFrameDelay then goto SelectAdvanceAnimFrame
           return
           
 SelectAdvanceAnimFrame
@@ -1065,7 +1065,7 @@ SelectAdvanceAnimFrame
           let charSelectPlayerAnimFrame[SAAF_playerIndex] = 0
           
           rem Check current animation sequence
-          if !charSelectPlayerAnimSeq[SAAF_playerIndex] then SelectAdvanceIdleAnim
+          if !charSelectPlayerAnimSeq[SAAF_playerIndex] then goto SelectAdvanceIdleAnim
           rem Walking animation: cycle through 4 frames (0-3)
           rem Use bit 0-1 of sequence counter
           let SAAF_sequenceValue = (charSelectPlayerAnimSeq[SAAF_playerIndex] + 1) & 3
@@ -1107,10 +1107,10 @@ SelectAnimWaitForToggle
 CharacterSelectCheckControllerRescan
           dim CSCR_switchBW = temp6
           rem Check for Game Select or Pause button press
-          if switchselect then CharacterSelectDoRescan
+          if switchselect then goto CharacterSelectDoRescan
           rem Check for Color/B&W switch toggle
           let CSCR_switchBW = switchbw
-          if CSCR_switchBW = colorBWPrevious_R then CharacterSelectRescanDone
+          if CSCR_switchBW = colorBWPrevious_R then goto CharacterSelectRescanDone
           rem Switch toggled, do rescan
           gosub bank6 SelDetectQuad
           let colorBWPrevious_W = switchbw

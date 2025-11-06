@@ -122,7 +122,7 @@ LoadSpecialSprite
           dim LSS_spriteIndex = temp6
           dim LSS_playerNumber = temp3
           rem Set sprite pointer based on sprite index
-          if !LSS_spriteIndex then LoadQuestionMarkSprite
+          if !LSS_spriteIndex then goto LoadQuestionMarkSprite
           if LSS_spriteIndex = 1 then goto LoadCPUSprite
           if LSS_spriteIndex = 2 then goto LoadNoSprite
           rem Invalid sprite index, default to question mark
@@ -132,8 +132,8 @@ LoadQuestionMarkSprite
           dim LQMS_playerNumber = temp3
           rem Set pointer to QuestionMarkSprite data
           rem Use skip-over pattern to avoid complex compound statements
-          if !LQMS_playerNumber then LoadQuestionMarkSpriteP0
-          if LQMS_playerNumber = 1 then LoadQuestionMarkSpriteP1
+          if !LQMS_playerNumber then goto LoadQuestionMarkSpriteP0
+          if LQMS_playerNumber = 1 then goto LoadQuestionMarkSpriteP1
           if LQMS_playerNumber = 2 then goto LoadQuestionMarkSpriteP2
           goto LoadQuestionMarkSpriteP3
           

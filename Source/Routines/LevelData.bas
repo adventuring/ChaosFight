@@ -38,8 +38,7 @@ Arena1Data
           XXXXXXXXXXXXXXXX
 end
 
-Arena1DataColors
-          data
+          data Arena1DataColors
                     ColGrey(6),
           ColGrey(4),
           ColGrey(4),
@@ -70,8 +69,7 @@ Arena2Data
           XXXXXXXXXXXXXXXX
 end
 
-Arena2DataColors
-          data
+          data Arena2DataColors
                     ColBlue(14),
           ColBlue(12),
           ColBlue(10),
@@ -101,8 +99,7 @@ Arena3Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena3DataColors
-          data
+          data Arena3DataColors
                     ColBrown(6),
           ColSeafoam(4),
           ColSeafoam(4),
@@ -132,8 +129,7 @@ Arena4Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena4DataColors
-          data
+          data Arena4DataColors
                     ColOrange(8),
           ColOrange(6),
           ColOrange(4),
@@ -163,8 +159,7 @@ Arena5Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena5DataColors
-          data
+          data Arena5DataColors
                     ColPurple(6),
           ColPurple(4),
           ColPurple(2),
@@ -194,8 +189,7 @@ Arena6Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena6DataColors
-          data
+          data Arena6DataColors
                     ColBrown(8),
           ColBrown(6),
           ColBrown(6),
@@ -225,8 +219,7 @@ Arena7Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena7DataColors
-          data
+          data Arena7DataColors
                     ColRed(6),
           ColRed(4),
           ColRed(4),
@@ -256,8 +249,7 @@ Arena8Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena8DataColors
-          data
+          data Arena8DataColors
                     ColCyan(8),
           ColCyan(6),
           ColCyan(4),
@@ -287,8 +279,7 @@ Arena9Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena9DataColors
-          data
+          data Arena9DataColors
                     ColRed(8),
           ColOrange(6),
           ColSeafoam(6),
@@ -316,8 +307,7 @@ Arena10Data
           X.......XXXXXXXX
           XXXXXXXXXXXXXXXX
 end
-Arena10DataColors
-          data
+          data Arena10DataColors
                     ColGrey(8),
           ColGrey(6),
           ColGrey(6),
@@ -347,8 +337,7 @@ Arena11Data
           X...............
           XXXXX...........
 end
-Arena11DataColors
-          data
+          data Arena11DataColors
                     ColGrey(6),
           ColGrey(4),
           ColGrey(4),
@@ -378,8 +367,7 @@ Arena12Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena12DataColors
-          data
+          data Arena12DataColors
                     ColGold(8),
           ColGold(6),
           ColGold(4),
@@ -409,8 +397,7 @@ Arena13Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena13DataColors
-          data
+          data Arena13DataColors
                     ColGrey(10),
           ColGrey(8),
           ColGrey(8),
@@ -440,8 +427,7 @@ Arena14Data
           X.......XXXXXXXX
           XXXXXXXXXXXXXXXX
 end
-Arena14DataColors
-          data
+          data Arena14DataColors
                     ColGrey(14),
           ColGrey(14),
           ColGrey(12),
@@ -471,8 +457,7 @@ Arena15Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-Arena15DataColors
-          data
+          data Arena15DataColors
                     ColOrange(8),
           ColOrange(6),
           ColOrange(4),
@@ -502,8 +487,7 @@ Arena16Data
           X.XXX...........
           XXXXXXXXXXXXXXXX
 end
-Arena16DataColors
-          data
+          data Arena16DataColors
                     ColRed(6),
           ColPurple(2),
           ColPurple(8),

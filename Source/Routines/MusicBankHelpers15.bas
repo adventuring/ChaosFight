@@ -1,39 +1,44 @@
-          rem ChaosFight - Source/Routines/MusicBankHelpers.bas
+          rem ChaosFight - Source/Routines/MusicBankHelpers15.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem ==========================================================
-          rem SONGS BANK HELPER FUNCTIONS (BANK 16)
+          rem SONGS BANK HELPER FUNCTIONS (BANK 15)
           rem ==========================================================
           rem These functions access song data tables and streams in
-          rem   Bank 16
+          rem   Bank 15
+          rem Duplicate of MusicBankHelpers.bas but for Bank 15 songs
           rem ==========================================================
           
-          #include "Source/Data/SongPointers16.bas"
+          #include "Source/Data/SongPointers15.bas"
           
-          rem Lookup song pointer from tables
-          rem Input: temp1 = song ID (0-28)
+          rem Lookup song pointer from tables (Bank 15 songs)
+          rem Input: temp1 = song ID (Bank 15 songs only)
           rem Output: SongPointerL, SongPointerH = pointer to
           rem   Song_Voice0 stream
 LoadSongPointer
           dim LSP_songID = temp1
-          rem Bounds check: 29 songs (0-28)
+          rem Bounds check: Only handle songs in Bank 15
+          rem Bank 15 songs: OCascadia (1), Revontuli (2), and
+          rem   Character16-30 themes (11-25)
+          rem For now, handle all song IDs but pointers will be 0 for
+          rem   songs not in this bank
           if LSP_songID > 28 then let SongPointerH = 0 : return
-          rem Use array access to lookup pointer (Bank 16 songs)
-          let SongPointerL = SongPointersL16[LSP_songID]
-          let SongPointerH = SongPointersH16[LSP_songID]
+          rem Use array access to lookup pointer
+          let SongPointerL = SongPointersL15[LSP_songID]
+          let SongPointerH = SongPointersH15[LSP_songID]
           return
           
-          rem Lookup Voice 1 song pointer from tables
-          rem Input: temp1 = song ID (0-28)
+          rem Lookup Voice 1 song pointer from tables (Bank 15 songs)
+          rem Input: temp1 = song ID (Bank 15 songs only)
           rem Output: SongPointerL, SongPointerH = pointer to
           rem   Song_Voice1 stream
 LoadSongVoice1Pointer
           dim LSV1P_songID = temp1
-          rem Bounds check: 29 songs (0-28)
+          rem Bounds check: Only handle songs in Bank 15
           if LSV1P_songID > 28 then let SongPointerH = 0 : return
-          rem Use array access to lookup Voice 1 pointer directly (Bank 16)
-          let SongPointerL = SongPointersSecondL16[LSV1P_songID]
-          let SongPointerH = SongPointersSecondH16[LSV1P_songID]
+          rem Use array access to lookup Voice 1 pointer directly
+          let SongPointerL = SongPointersSecondL15[LSV1P_songID]
+          let SongPointerH = SongPointersSecondH15[LSV1P_songID]
           return
           
           rem Load next note from Voice 0 stream using assembly for
@@ -169,3 +174,4 @@ LoadMusicNote1EndOfTrack
           let musicVoice1PointerH = 0
           AUDV1 = 0
           return
+

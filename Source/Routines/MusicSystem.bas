@@ -28,9 +28,21 @@ StartMusic
           let musicVoice0PointerH = 0
           let musicVoice1PointerH = 0
           
-          rem Lookup song pointer from Songs bank (Bank16)
-          rem Note: songPointerL/H tables are in Songs bank
+          rem Lookup song pointer from appropriate bank (Bank15 or Bank16)
+          rem Songs in Bank 15: OCascadia (1), Revontuli (2)
+          rem Songs in Bank 16: All other songs (0, 3-28)
+          rem Route to correct bank based on song ID
+          if SM_songID = 1 then goto LoadSongFromBank15
+          if SM_songID = 2 then goto LoadSongFromBank15
+          rem Song in Bank 16
           gosub bank16 LoadSongPointer
+          gosub bank16 LoadSongVoice1Pointer
+          goto LoadSongPointersDone
+LoadSongFromBank15
+          rem Song in Bank 15
+          gosub bank15 LoadSongPointer
+          gosub bank15 LoadSongVoice1Pointer
+LoadSongPointersDone
           rem LoadSongPointer will set songPointerL and songPointerH
           rem   from temp1
           
@@ -42,10 +54,7 @@ StartMusic
           let musicVoice0StartPointerL_W = songPointerL
           let musicVoice0StartPointerH_W = songPointerH
           
-          rem Calculate Voice 1 pointer offset (find end of Voice0
-          rem   stream)
-          rem Voice1 stream starts after Voice0 stream
-          gosub bank16 LoadSongVoice1Pointer
+          rem LoadSongVoice1Pointer already called above
           rem LoadSongVoice1Pointer will calculate and set Voice 1
           rem   pointer
           let musicVoice1PointerL = songPointerL
@@ -187,7 +196,11 @@ UpdateMusicVoice0
           let MS_frameCount = musicVoice0Frame_R - 1
           let musicVoice0Frame_W = MS_frameCount
           if MS_frameCount then return
-          rem Frame counter reached 0 - load next note from Songs bank
+          rem Frame counter reached 0 - load next note from appropriate bank
+          rem Check which bank this song is in (Bank 15: songs 1-2, Bank 16: others)
+          if currentSongID_R = 1 then gosub bank15 LoadMusicNote0 : return
+          if currentSongID_R = 2 then gosub bank15 LoadMusicNote0 : return
+          rem Song in Bank 16
           gosub bank16 LoadMusicNote0
           return
 
@@ -206,7 +219,11 @@ UpdateMusicVoice1
           let MS_frameCount1 = musicVoice1Frame_R - 1
           let musicVoice1Frame_W = MS_frameCount1
           if MS_frameCount1 then return
-          rem Frame counter reached 0 - load next note from Songs bank
+          rem Frame counter reached 0 - load next note from appropriate bank
+          rem Check which bank this song is in (Bank 15: songs 1-2, Bank 16: others)
+          if currentSongID_R = 1 then gosub bank15 LoadMusicNote1 : return
+          if currentSongID_R = 2 then gosub bank15 LoadMusicNote1 : return
+          rem Song in Bank 16
           gosub bank16 LoadMusicNote1
           return
 

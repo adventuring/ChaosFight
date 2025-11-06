@@ -27,7 +27,8 @@ end
             >Song_Character30Theme_Voice0, >Song_Chaotica_Voice0, >Song_AtariToday_Voice0, >Song_Interworldly_Voice0
 end
           
-          data SongPointersSecondL16 : rem Voice 1 stream pointer lookup tables for Bank 16
+          rem Voice 1 stream pointer lookup tables for Bank 16
+          data SongPointersSecondL16
             <Song_Bernie_Voice1, <Song_EXO_Voice1, <Song_Grizzards_Voice1,
             <Song_MagicalFairyForce_Voice1, <Song_Bolero_Voice1, <Song_LowRes_Voice1, <Song_RoboTito_Voice1, <Song_SongOfTheBear_Voice1,
             <Song_DucksAway_Voice1, <Song_Character16Theme_Voice1, <Song_Character17Theme_Voice1, <Song_Character18Theme_Voice1, <Song_Character19Theme_Voice1,
@@ -72,7 +73,8 @@ end
             >Song_Character30Theme_Voice0, >Song_Chaotica_Voice0, >Song_AtariToday_Voice0, >Song_Interworldly_Voice0
 end
           
-          data SongPointersSecondL16 : rem Voice 1 stream pointer lookup tables for Bank 16
+          rem Voice 1 stream pointer lookup tables for Bank 16
+          data SongPointersSecondL16
             <Song_Bernie_Voice1, <Song_EXO_Voice1, <Song_Grizzards_Voice1,
             <Song_MagicalFairyForce_Voice1, <Song_Bolero_Voice1, <Song_LowRes_Voice1, <Song_RoboTito_Voice1, <Song_SongOfTheBear_Voice1,
             <Song_DucksAway_Voice1, <Song_Character16Theme_Voice1, <Song_Character17Theme_Voice1, <Song_Character18Theme_Voice1, <Song_Character19Theme_Voice1,

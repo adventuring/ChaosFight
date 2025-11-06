@@ -16,7 +16,8 @@ end
             >Song_OCascadia_Voice0, >Song_Revontuli_Voice0
 end
           
-          data SongPointersSecondL15 : rem Voice 1 stream pointer lookup tables for Bank 15
+          rem Voice 1 stream pointer lookup tables for Bank 15
+          data SongPointersSecondL15
             <Song_OCascadia_Voice1, <Song_Revontuli_Voice1
 end
           data SongPointersSecondH15

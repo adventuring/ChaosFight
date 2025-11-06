@@ -32,7 +32,8 @@
           rem Characters 16-30: Future characters (each has own theme
           rem   placeholder)
           rem Character 31 (MethHound) → SongDucksAway - shared with
-          data CharacterThemeSongIndices : rem   Shamone
+          rem   Shamone
+          data CharacterThemeSongIndices
             SongBernie, SongOCascadia, SongRevontuli, SongEXO, SongGrizzards, SongGrizzards, SongRevontuli, SongMagicalFairyForce
             SongMagicalFairyForce, SongBolero, SongLowRes, SongMagicalFairyForce, SongBolero, SongRoboTito, SongSongOfTheBear, SongDucksAway
             SongCharacter16Theme, SongCharacter17Theme, SongCharacter18Theme, SongCharacter19Theme, SongCharacter20Theme, SongCharacter21Theme, SongCharacter22Theme, SongCharacter23Theme

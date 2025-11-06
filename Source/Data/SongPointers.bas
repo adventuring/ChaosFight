@@ -38,7 +38,8 @@ end
           rem Voice 1 stream pointer lookup tables (populated with
           rem   symbol addresses)
           rem Format: data SongPointersSecondL, SongPointersSecondH
-          data SongPointersSecondL : rem   tables (29 entries: indices 0-28)
+          rem   tables (29 entries: indices 0-28)
+          data SongPointersSecondL
             <Song_Bernie_Voice1, <Song_OCascadia_Voice1, <Song_Revontuli_Voice1, <Song_EXO_Voice1, <Song_Grizzards_Voice1,
             <Song_MagicalFairyForce_Voice1, <Song_Bolero_Voice1, <Song_LowRes_Voice1, <Song_RoboTito_Voice1, <Song_SongOfTheBear_Voice1,
             <Song_DucksAway_Voice1, <Song_Character16Theme_Voice1, <Song_Character17Theme_Voice1, <Song_Character18Theme_Voice1, <Song_Character19Theme_Voice1,

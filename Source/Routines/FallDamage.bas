@@ -20,7 +20,7 @@
 
           rem CHARACTER EXCEPTIONS:
           rem   - Bernie (0): NO fall damage (immune)
-          rem   - Robo Tito (13): NO fall damage (immune)
+          rem   - Robo Tito (13): 1/2 fall damage (reduced)
           rem   - Frooty (8): NO gravity (no falling)
           rem - Dragon of Storms (2): NO gravity (no falling,
           rem   hovering/flying like Frooty)
@@ -80,8 +80,7 @@ CheckFallDamage
           rem Check for fall damage immunity
           if CFD_characterType = CharBernie then return 
           rem Bernie: immune
-          if CFD_characterType = CharRoboTito then return
-          rem Robo Tito: immune
+          rem Robo Tito: reduced fall damage (handled after damage calculation)
           if CFD_characterType = CharFrooty then return 
           rem Frooty: no gravity, no falling
           if CFD_characterType = CharDragonOfStorms then return
@@ -193,10 +192,13 @@ end
           rem CFD_damage = damage * (weight / 20) (weight-based
           rem   multiplier applied)
           
-          rem Apply damage reduction for Ninjish Guy (after weight
-          rem   multiplier)
+          rem Apply damage reduction for characters with fall damage
+          rem   resistance (after weight multiplier)
           if CFD_characterType = CharNinjishGuy then lsr CFD_damage
           rem Ninjish Guy: 1/2 damage (divide by 2 using bit shift
+          rem   right)
+          if CFD_characterType = CharRoboTito then lsr CFD_damage
+          rem Robo Tito: 1/2 damage (divide by 2 using bit shift
           rem   right)
           
           rem Cap maximum fall damage at 50

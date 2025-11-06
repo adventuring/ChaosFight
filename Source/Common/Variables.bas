@@ -157,11 +157,13 @@
           rem   GAME)
           dim playerChar = j    
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
-          dim playerDamage_W = w050
-          dim playerDamage_R = r050
+          dim playerDamage_W = w067
+          dim playerDamage_R = r067
           dim playerDamage = playerDamage_W
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 base damage per player
-          rem (4 bytes: w050-w053) - SCRAM for low-frequency access
+          rem (4 bytes: w067-w070) - SCRAM for low-frequency access
+          rem Moved from w050-w053 to w067-w070 to avoid conflict with
+          rem   playerSubpixelX[0-3] (w049-w056) in Game Mode
           rem Array accessible as playerDamage[0] through playerDamage[3]
           dim playerLocked = e
           rem Bit-packed: 2 bits per player (4 players × 2 bits = 8 bits = 1 byte)
@@ -837,7 +839,8 @@
           rem ==========================================================
           
           rem Note: playerDamage[0-3] now properly allocated in SCRAM
-          rem   (w050-w053) - see Common Vars section above
+          rem   (w067-w070) - see Common Vars section above
+          rem Moved from w050-w053 to avoid conflict with playerSubpixelX
           
           rem NOTE: var0-3 used by playerX (core gameplay, cannot redim)
           rem NOTE: var4-7 used by playerY (core gameplay, cannot redim)

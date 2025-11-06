@@ -310,8 +310,8 @@
           rem   14=SongOfTheBear,
           rem   15=DucksAway, 16-30=Character16Theme-Character30Theme
           rem Song 26: Chaotica (Title screen - loops)
-          rem Song 27: AtariToday (Publisher preamble - plays once)
-          rem Song 28: Interworldly (Author preamble - plays once)
+          rem Song 27: AtariToday (Publisher prelude - plays once)
+          rem Song 28: Interworldly (Author prelude - plays once)
           rem NOTE: Only Chaotica (26) loops; all others play once
           const SongBernie = 0
           const SongOCascadia = 1

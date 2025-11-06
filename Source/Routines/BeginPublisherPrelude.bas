@@ -4,10 +4,10 @@
           rem ==========================================================
           rem BEGIN PUBLISHER PRELUDE - SETUP ROUTINE
           rem ==========================================================
-          rem Initializes state for Publisher Preamble screen (gameMode
+          rem Initializes state for Publisher Prelude screen (gameMode
           rem   0).
           rem Called from ChangeGameMode when transitioning to Publisher
-          rem   Preamble.
+          rem   Prelude.
           rem
           rem Sets up:
           rem   - Timer initialization
@@ -20,7 +20,7 @@
           rem   bitmap display.
 
 BeginPublisherPrelude
-          rem Initialize preamble timer
+          rem Initialize prelude timer
           let preambleTimer = 0
           
           rem Set background color

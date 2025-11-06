@@ -2,9 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem ==========================================================
-          rem PUBLISHER PREAMBLE SCREEN - PER-FRAME LOOP
+          rem PUBLISHER PRELUDE SCREEN - PER-FRAME LOOP
           rem ==========================================================
-          rem Per-frame publisher preamble display and input handling.
+          rem Per-frame publisher prelude display and input handling.
           rem Called from MainLoop each frame (gameMode 0).
           rem
           rem Setup is handled by BeginPublisherPrelude in
@@ -13,7 +13,7 @@
           rem
           rem FLOW PER FRAME:
           rem 1. Handle input - any button press skips to author
-          rem   preamble
+          rem   prelude
           rem   2. Update music playback
           rem   3. Check auto-advance timer (music completion + 0.5s)
           rem   4. Set window values for Publisher screen
@@ -34,7 +34,7 @@
           rem   QuadtariDetected - For checking all controllers
           rem ==========================================================
 
-PublisherPreambleMain
+PublisherPreludeMain
           rem Bitmap data is loaded automatically by titlescreen kernel
           rem   via includes
           rem No explicit loading needed - titlescreen kernel handles
@@ -42,22 +42,22 @@ PublisherPreambleMain
           
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then goto PublisherPreambleComplete
-          if joy1fire then goto PublisherPreambleComplete
+          if joy0fire then goto PublisherPreludeComplete
+          if joy1fire then goto PublisherPreludeComplete
           
           if controllerStatus & SetQuadtariDetected then PublisherCheckQuadtari
 
           goto PublisherSkipQuadtari
 
 PublisherCheckQuadtari
-          if !INPT0{7} then PublisherPreambleComplete
-          if !INPT2{7} then PublisherPreambleComplete
+          if !INPT0{7} then PublisherPreludeComplete
+          if !INPT2{7} then PublisherPreludeComplete
 PublisherSkipQuadtari
           
           rem Music update handled by MainLoop after per-frame logic
           
           rem Auto-advance after music completes + 0.5s
-          if preambleTimer > 30 && musicPlaying = 0 then PublisherPreambleComplete
+          if preambleTimer > 30 && musicPlaying = 0 then PublisherPreludeComplete
 
           let preambleTimer = preambleTimer + 1
           
@@ -69,8 +69,8 @@ PublisherSkipQuadtari
           rem   screens)
           return
 
-PublisherPreambleComplete
-          let gameMode = ModeAuthorPreamble
+PublisherPreludeComplete
+          let gameMode = ModeAuthorPrelude
           gosub bank14 ChangeGameMode
           return
 

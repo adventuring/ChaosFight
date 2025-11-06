@@ -2,7 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem ==========================================================
-          rem AUTHOR PREAMBLE SCREEN
+          rem AUTHOR PRELUDE SCREEN
           rem ==========================================================
           rem Displays the Interworldly author logo/artwork with music.
           rem This is the second screen shown at cold start.
@@ -29,7 +29,7 @@
           rem   QuadtariDetected - For checking all controllers
           rem ==========================================================
 
-AuthorPreamble
+AuthorPrelude
           rem Bitmap data is loaded automatically by titlescreen kernel
           rem   via includes
           rem No explicit loading needed - titlescreen kernel handles
@@ -37,27 +37,27 @@ AuthorPreamble
           
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then goto AuthorPreambleComplete
-          if joy1fire then goto AuthorPreambleComplete
+          if joy0fire then goto AuthorPreludeComplete
+          if joy1fire then goto AuthorPreludeComplete
           
           if controllerStatus & SetQuadtariDetected then AuthorCheckQuadtari
           goto AuthorSkipQuadtari
 
 AuthorCheckQuadtari
-          if !INPT0{7} then AuthorPreambleComplete
-          if !INPT2{7} then AuthorPreambleComplete
+          if !INPT0{7} then AuthorPreludeComplete
+          if !INPT2{7} then AuthorPreludeComplete
 AuthorSkipQuadtari
           
           gosub bank16 UpdateMusic
 
           rem Auto-advance after music completes + 0.5s
-          if preambleTimer > 30 && musicPlaying = 0 then AuthorPreambleComplete
+          if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
 
           let preambleTimer = preambleTimer + 1
 
           return
 
-AuthorPreambleComplete
+AuthorPreludeComplete
           let gameMode = ModeTitle
           gosub bank14 ChangeGameMode
           return

@@ -7,8 +7,8 @@
           const SECAM = 3
 
           rem Game Modes
-          const ModePublisherPreamble = 0
-          const ModeAuthorPreamble = 1
+          const ModePublisherPrelude = 0
+          const ModeAuthorPrelude = 1
           const ModeTitle = 2
           const ModeCharacterSelect = 3
           const ModeFallingAnimation = 4

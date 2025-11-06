@@ -183,7 +183,7 @@
 #include "Source/Generated/Song.Chaotica.PAL.bas"
 #endif
           
-          rem Song 27: AtariToday (Publisher preamble)
+          rem Song 27: AtariToday (Publisher prelude)
 #ifdef TV_NTSC
 #include "Source/Generated/Song.AtariToday.NTSC.bas"
 #else
@@ -191,7 +191,7 @@
 #include "Source/Generated/Song.AtariToday.PAL.bas"
 #endif
           
-          rem Song 28: Interworldly (Author preamble)
+          rem Song 28: Interworldly (Author prelude)
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Interworldly.NTSC.bas"
 #else

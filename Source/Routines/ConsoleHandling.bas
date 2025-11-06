@@ -7,7 +7,7 @@
           rem Handles Atari 2600 console switches during gameplay.
 
           rem SWITCHES:
-          rem   switchreset - Game Reset → return to publisher preamble
+          rem   switchreset - Game Reset → return to publisher prelude
           rem   switchselect - Game Select → toggle pause
           rem   switchbw - Color/B&W → handled in rendering
 
@@ -27,7 +27,7 @@
           rem EFFECTS:
           rem   - Clears game state variables
           rem   - Reinitializes TIA color and audio registers
-          rem   - Resets gameMode to ModePublisherPreamble
+          rem   - Resets gameMode to ModePublisherPrelude
           rem   - Calls ChangeGameMode to transition to startup sequence
           rem ==========================================================
 WarmStart
@@ -68,7 +68,7 @@ WarmStart
           ENABL = 0
           
           rem Step 6: Reset game mode to startup sequence
-          let gameMode = ModePublisherPreamble
+          let gameMode = ModePublisherPrelude
           gosub bank14 ChangeGameMode
           
           rem Reset complete - return to MainLoop which will dispatch to

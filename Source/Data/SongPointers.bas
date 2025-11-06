@@ -16,8 +16,8 @@
           rem   14=SongOfTheBear,
           rem   15=DucksAway, 16-30=Character16Theme-Character30Theme
           rem Song 26: Chaotica (Title screen)
-          rem Song 27: AtariToday (Publisher preamble)
-          rem Song 28: Interworldly (Author preamble)
+          rem Song 27: AtariToday (Publisher prelude)
+          rem Song 28: Interworldly (Author prelude)
           rem ==========================================================
           
           data SongPointersL

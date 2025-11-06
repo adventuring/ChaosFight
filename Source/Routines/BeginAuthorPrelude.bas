@@ -1,9 +1,9 @@
           rem ChaosFight - Source/Routines/BeginAuthorPrelude.bas
-          rem Setup routine for Author Preamble. Sets initial state
+          rem Setup routine for Author Prelude. Sets initial state
           rem   only.
 
 BeginAuthorPrelude
-          rem Initialize Author Preamble mode
+          rem Initialize Author Prelude mode
           rem Note: pfres is defined globally in AssemblyConfig.bas
           
           rem Initialize timer

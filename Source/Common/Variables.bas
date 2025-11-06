@@ -20,7 +20,7 @@
           rem ==========================================================
           
           rem ChaosFight uses TWO memory contexts that never overlap:
-          rem 1. Admin Mode: Title, preambles, character select, falling
+          rem 1. Admin Mode: Title, preludes, character select, falling
           rem   in, arena select, winner (GameModes 0,1,2,3,4,5,7)
           rem   2. Game Mode: Gameplay only (GameMode 6)
           rem
@@ -82,7 +82,7 @@
           rem   (intentional redim)
           rem - var24-var27: Arena select (Admin) or playerVelocityXL
           rem   (Game) - ZPRAM for physics
-          rem - var28-var35: Preamble/music (Admin) or playerVelocityY
+          rem - var28-var35: Prelude/music (Admin) or playerVelocityY
           rem   8.8 (Game, var28-var31=high, var32-var35=low) -
           rem   ZPRAM for physics
           rem - var37-var40: Character select (Admin) or
@@ -135,7 +135,7 @@
           
           rem Game state and system flags (consolidated to save RAM)
           dim gameMode = p
-          rem Game mode index (0-8): ModePublisherPreamble, ModeAuthorPreamble, etc.
+          rem Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
           dim systemFlags = f
           rem System flags (packed byte):
           rem   Bit 7: 7800 console detected (SystemFlag7800 = $80)
@@ -415,14 +415,14 @@
           rem ADMIN: Confirmation timer (REDIMMED - Game Mode uses var27
           rem   for animationCounter[3])
 
-          rem ADMIN: Preamble screen variables (var28-var32)
+          rem ADMIN: Prelude screen variables (var28-var32)
           rem NOTE: These are REDIMMED in Game Mode for playerVelocityY
           rem   (8.8 fixed-point, uses var28-var35)
           dim preambleTimer = var28         
           rem ADMIN: Screen timer (REDIMMED - Game Mode uses var28-var31
           rem   for playerVelocityY high bytes)
           dim preambleState = var29         
-          rem ADMIN: Which preamble (REDIMMED - Game Mode uses var29 for
+          rem ADMIN: Which prelude (REDIMMED - Game Mode uses var29 for
           rem   playerVelocityY[1] high byte)
           dim musicPlaying = var30          
           rem ADMIN: Music status (REDIMMED - Game Mode uses var30 for

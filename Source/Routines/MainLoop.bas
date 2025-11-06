@@ -4,11 +4,11 @@
 MainLoop
           rem Centralized RESET handling - check before any mode dispatch
           rem RESET must work from any screen/state (title, gameplay,
-          rem   pause, preambles, win/lose, menus)
+          rem   pause, preludes, win/lose, menus)
           if switchreset then gosub bank11 WarmStart : goto MainLoopContinue
           
-          if gameMode = 0 then gosub bank9 PublisherPreambleMain : goto MainLoopContinue
-          if gameMode = 1 then gosub bank9 AuthorPreamble : goto MainLoopContinue
+          if gameMode = 0 then gosub bank9 PublisherPreludeMain : goto MainLoopContinue
+          if gameMode = 1 then gosub bank9 AuthorPrelude : goto MainLoopContinue
           if gameMode = 2 then gosub bank9 TitleScreenMain : goto MainLoopContinue
           if gameMode = 3 then gosub bank10 CharacterSelectInputEntry : goto MainLoopContinue
           if gameMode = 4 then gosub bank12 FallingAnimation1 : goto MainLoopContinue
@@ -16,7 +16,7 @@ MainLoop
           if gameMode = 6 then gosub bank11 GameMainLoop : goto MainLoopContinue
           gosub bank12 WinnerAnnouncement
 MainLoopContinue
-          rem Call music handler for preambles, title screen, and winner
+          rem Call music handler for preludes, title screen, and winner
           rem   screen
           if gameMode < 3 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen
           if gameMode = 7 then gosub bank16 UpdateMusic : goto MainLoopDrawScreen

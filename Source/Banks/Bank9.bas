@@ -3,7 +3,7 @@
 
           bank 9
           
-          rem Title sequence and preambles
+          rem Title sequence and preludes
           rem Grouped together - title screen flow
           rem TitleSequence.bas has been split into separate files below
 #include "Source/Routines/PublisherPreamble.bas"

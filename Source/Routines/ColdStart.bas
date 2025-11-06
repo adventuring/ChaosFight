@@ -52,10 +52,10 @@ ColdStart
           AUDV1 = 0
           
           rem Step 5: Initialize game state and transition to first mode
-          rem Set initial game mode (Publisher Preamble)
-          let gameMode = ModePublisherPreamble
+          rem Set initial game mode (Publisher Prelude)
+          let gameMode = ModePublisherPrelude
           gosub bank14 ChangeGameMode
-          rem ChangeGameMode calls SetupPublisherPreamble and sets up
+          rem ChangeGameMode calls SetupPublisherPrelude and sets up
           rem   music
           
           rem Step 6: Jump to MainLoop (in Bank 14)

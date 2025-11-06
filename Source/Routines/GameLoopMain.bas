@@ -28,6 +28,23 @@
           rem ==========================================================
 
 GameMainLoop
+          rem Main gameplay loop that orchestrates all game systems
+          rem Input: All player state arrays, controller inputs, system flags
+          rem Output: All game systems updated for one frame
+          rem Mutates: All game state (players, missiles, animations, physics, etc.), frame counter
+          rem Called Routines: ReadEnhancedButtons, HandleConsoleSwitches (bank14),
+          rem   InputHandleAllPlayers (bank13), UpdateGuardTimers, UpdateCharacterAnimations (bank11),
+          rem   UpdatePlayerMovement (bank13), PhysicsApplyGravity (bank8),
+          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank9),
+          rem   CheckBoundaryCollisions (bank9), CheckPlayfieldCollisionAllDirections (bank9),
+          rem   CheckAllPlayerCollisions (bank9), CheckAllPlayerEliminations,
+          rem   UpdateAttackCooldowns (bank7), UpdateAllMissiles (bank7),
+          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank8),
+          rem   DisplayHealth (bank8), UpdatePlayer12HealthBars (bank8),
+          rem   UpdatePlayer34HealthBars (bank8), UpdateSoundEffect (bank15)
+          rem Constraints: Must be colocated with GameMainLoopQuadtariSkip, CheckGameEndTransition,
+          rem              TransitionToWinner, GameEndCheckDone (all called via goto)
+          rem              Entry point for main gameplay loop (called from MainLoop)
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+
           rem   II/III)
           gosub ReadEnhancedButtons
@@ -69,6 +86,12 @@ GameMainLoop
               gosub CheckPlayfieldCollisionAllDirections bank9
           next
 GameMainLoopQuadtariSkip
+          rem Skip 4-player collision checks (not in 4-player mode)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with GameMainLoop
 
           rem Check multi-player collisions (in Bank 9)
           gosub CheckAllPlayerCollisions bank9
@@ -83,6 +106,13 @@ GameMainLoopQuadtariSkip
           if systemFlags & SystemFlagGameStateEnding then CheckGameEndTransition
           goto GameEndCheckDone
 CheckGameEndTransition
+          rem Check if game end timer should transition to winner screen
+          rem Input: gameEndTimer (global) = game end countdown timer
+          rem        systemFlags (global) = system flags including ending state
+          rem Output: Dispatches to TransitionToWinner or GameEndCheckDone
+          rem Mutates: gameEndTimer (decremented)
+          rem Called Routines: None (dispatcher only)
+          rem Constraints: Must be colocated with GameMainLoop, TransitionToWinner, GameEndCheckDone
           rem Decrement game end timer
           if gameEndTimer > 0 then let gameEndTimer = gameEndTimer - 1
           rem When timer reaches 0, transition to winner announcement
@@ -90,10 +120,21 @@ CheckGameEndTransition
           goto GameEndCheckDone
 TransitionToWinner
           rem Transition to winner announcement mode
+          rem Input: None (called from CheckGameEndTransition)
+          rem Output: gameMode set to ModeWinner, ChangeGameMode called
+          rem Mutates: gameMode (global)
+          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
           let gameMode = ModeWinner
           gosub ChangeGameMode bank14
           return
 GameEndCheckDone
+          rem Game end check complete
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with GameMainLoop
 
           rem Update attack cooldowns (in Bank 7)
           gosub UpdateAttackCooldowns bank7

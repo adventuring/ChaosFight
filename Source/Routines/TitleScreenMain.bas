@@ -30,6 +30,17 @@
           rem ==========================================================
 
 TitleScreenMain
+          rem Per-frame title screen display and input handling
+          rem Input: joy0fire, joy1fire (hardware) = button states
+          rem        controllerStatus (global) = controller detection state
+          rem        INPT0, INPT2 (hardware) = Quadtari controller states
+          rem Output: Dispatches to TitleScreenComplete or returns
+          rem Mutates: None (dispatcher only)
+          rem Called Routines: UpdateCharacterParade (bank9) - accesses parade state,
+          rem   DrawTitleScreen (bank9) - accesses title screen state,
+          rem   titledrawscreen (bank9) - accesses title screen graphics
+          rem Constraints: Must be colocated with TitleSkipQuad, TitleScreenComplete
+          rem              Called from MainLoop each frame (gameMode 2)
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
           rem Use skip-over pattern to avoid complex || operator issues
@@ -41,6 +52,12 @@ TitleScreenMain
           if !INPT0{7} then TitleScreenComplete
           if !INPT2{7} then TitleScreenComplete
 TitleSkipQuad
+          rem Skip Quadtari controller check (not in 4-player mode)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with TitleScreenMain
           
           rem Update character parade animation
           gosub UpdateCharacterParade bank9
@@ -56,6 +73,11 @@ TitleSkipQuad
 
 TitleScreenComplete
           rem Transition to character select
+          rem Input: None (called from TitleScreenMain)
+          rem Output: gameMode set to ModeCharacterSelect, ChangeGameMode called
+          rem Mutates: gameMode (global)
+          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Constraints: Must be colocated with TitleScreenMain
           let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
           return

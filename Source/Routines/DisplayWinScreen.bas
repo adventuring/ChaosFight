@@ -204,11 +204,23 @@ DWS_GetBWMode
 
 DWS_LoadBWColors
           rem Load B&W colors (all white)
-          pfcolors WinnerScreenColorsBW
+          rem Set pfcolortable pointer to WinnerScreenColorsBW
+          asm
+            lda #<WinnerScreenColorsBW
+            sta pfcolortable
+            lda #>WinnerScreenColorsBW
+            sta pfcolortable+1
+          end
           return
 
 DWS_LoadColorColors
           rem Load color colors (gold gradient)
-          pfcolors WinnerScreenColorsColor
+          rem Set pfcolortable pointer to WinnerScreenColorsColor
+          asm
+            lda #<WinnerScreenColorsColor
+            sta pfcolortable
+            lda #>WinnerScreenColorsColor
+            sta pfcolortable+1
+          end
           return
 

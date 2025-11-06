@@ -37,8 +37,8 @@ AuthorPrelude
           
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then goto AuthorPreludeComplete
-          if joy1fire then goto AuthorPreludeComplete
+          if joy0fire then AuthorPreludeComplete
+          if joy1fire then AuthorPreludeComplete
           
           if controllerStatus & SetQuadtariDetected then AuthorCheckQuadtari
           goto AuthorSkipQuadtari

@@ -42,8 +42,8 @@ PublisherPreludeMain
           
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then goto PublisherPreludeComplete
-          if joy1fire then goto PublisherPreludeComplete
+          if joy0fire then PublisherPreludeComplete
+          if joy1fire then PublisherPreludeComplete
           
           if controllerStatus & SetQuadtariDetected then PublisherCheckQuadtari
 

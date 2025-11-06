@@ -65,13 +65,27 @@
           rem   4. Calculate fall damage if exceeded
           rem   5. Apply damage, recovery frames, and color shift
 CheckFallDamage
+          rem Called when a player lands on the ground or platform - calculates fall damage
+          rem Input: temp1 = player index (0-3)
+          rem        temp2 = vertical velocity at landing (positive = downward)
+          rem        playerChar[] (global array) = player character selections
+          rem        SafeFallVelocityThresholds[] (global array) = safe fall velocity thresholds
+          rem        WeightDividedBy20[] (global array) = weight/20 lookup table
+          rem Output: playerHealth[] reduced, playerRecoveryFrames[] set, playerState[] updated,
+          rem         sound effect played
+          rem Mutates: temp1-temp6 (used for calculations), playerHealth[] (reduced),
+          rem         playerRecoveryFrames[] (set), playerState[] (recovery flag and animation state set),
+          rem         oldHealthValue, recoveryFramesCalc, playerStateTemp (temporary calculations)
+          rem Called Routines: GetCharacterWeight - accesses temp1, temp2,
+          rem   PlaySoundEffect (bank15) - plays landing damage sound
+          rem Constraints: None
           dim CFD_playerIndex = temp1
           dim CFD_fallVelocity = temp2
           dim CFD_safeThreshold = temp3
           dim CFD_damage = temp4
           dim CFD_characterType = temp5
           dim CFD_characterWeight = temp6
-          rem temp7+ don’t exist - using tempWork1 for temporary
+          rem temp7+ don't exist - using tempWork1 for temporary
           rem   calculations
 
           rem Get character type for this player
@@ -263,6 +277,15 @@ end
           rem OUTPUT:
           rem   temp2 = updated vertical momentum
 FallDamageApplyGravity
+          rem Applies gravity acceleration to a player each frame
+          rem Input: temp1 = player index (0-3)
+          rem        temp2 = current vertical momentum (positive = down)
+          rem        playerChar[] (global array) = player character selections
+          rem        TerminalVelocity (constant) = maximum fall velocity
+          rem Output: temp2 = updated vertical momentum
+          rem Mutates: temp1, temp2, temp5, temp6 (used for calculations)
+          rem Called Routines: None
+          rem Constraints: None
           dim FDAG_playerIndex = temp1
           dim FDAG_momentum = temp2
           dim FDAG_characterType = temp5
@@ -309,6 +332,16 @@ FallDamageApplyGravity
           rem   landing
           rem velocity for fall damage calculation.
 CheckGroundCollision
+          rem Checks if player has landed on ground or platform
+          rem Input: temp1 = player index (0-3)
+          rem        temp2 = vertical momentum before position update
+          rem        playerY[] (global array) = player Y positions
+          rem Output: playerY[] clamped to ground if landed, CheckFallDamage called if moving downward
+          rem Mutates: temp1, temp2, temp3 (used for calculations), playerY[] (clamped to 176 if landed)
+          rem Called Routines: CheckFallDamage - accesses temp1, temp2, playerChar[], playerHealth[],
+          rem   playerRecoveryFrames[], playerState[], PlaySoundEffect (bank15)
+          rem Constraints: Tail call to CheckFallDamage
+          rem              Should be called AFTER vertical position update but BEFORE momentum is cleared
           dim CGC_playerIndex = temp1
           dim CGC_momentum = temp2
           dim CGC_playerY = temp3

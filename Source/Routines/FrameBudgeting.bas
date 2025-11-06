@@ -43,6 +43,12 @@
           rem   operations.
           rem Called once per frame at the start of game loop.
 UpdateFramePhase
+          rem Updates the frame phase counter (0-3) used to schedule operations
+          rem Input: frame (global) = global frame counter
+          rem Output: FramePhase set to frame & 3 (cycles 0, 1, 2, 3, 0, 1, 2, 3...)
+          rem Mutates: FramePhase (set to frame & 3)
+          rem Called Routines: None
+          rem Constraints: Called once per frame at the start of game loop
           let FramePhase = frame & 3 
           rem Cycle 0, 1, 2, 3, 0, 1, 2, 3...
           return
@@ -58,6 +64,19 @@ UpdateFramePhase
 
           rem USES: FramePhase (0-3) to determine which player to update
 BudgetedHealthBarUpdate
+          rem Instead of drawing all 4 health bars every frame, draw only one player health bar per frame
+          rem Input: FramePhase (global) = frame phase counter (0-3)
+          rem        controllerStatus (global) = controller detection state
+          rem        selectedChar3_R, selectedChar4_R (global SCRAM) = character selections
+          rem        playerHealth[] (global array) = player health values
+          rem        HealthBarMaxLength (constant) = maximum health bar length
+          rem Output: One player health bar updated per frame, COLUPF set, health bar drawn
+          rem Mutates: temp6 (health bar length), COLUPF (TIA register), playfield data (via DrawHealthBarRow*)
+          rem Called Routines: UpdateHealthBarPlayer0-3 - update individual player health bars,
+          rem   DrawHealthBarRow0-3 (bank8) - draw health bar rows
+          rem Constraints: Must be colocated with CheckPlayer2HealthUpdate, DonePlayer2HealthUpdate,
+          rem              CheckPlayer3HealthUpdate, DonePlayer3HealthUpdate, UpdateHealthBarPlayer0-3
+          rem              (all called via goto or gosub)
           rem Determine which player to update based on frame phase
           rem tail call
           if FramePhase = 0 then UpdateHealthBarPlayer0
@@ -66,23 +85,54 @@ BudgetedHealthBarUpdate
           if FramePhase = 2 then CheckPlayer2HealthUpdate
           goto DonePlayer2HealthUpdate
 CheckPlayer2HealthUpdate
+          rem Check if Player 3 health bar should be updated (4-player mode, active player)
+          rem Input: controllerStatus (global), selectedChar3_R (global SCRAM)
+          rem Output: Player 3 health bar updated if conditions met
+          rem Mutates: temp6, COLUPF, playfield data (via UpdateHealthBarPlayer2)
+          rem Called Routines: UpdateHealthBarPlayer2 (bank8) - updates Player 3 health bar
+          rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate
           if selectedChar3_R = 255 then DonePlayer2HealthUpdate
           gosub UpdateHealthBarPlayer2 bank8
           return
 DonePlayer2HealthUpdate
+          rem Player 2 health update check complete (label only)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with BudgetedHealthBarUpdate
           if FramePhase = 3 then CheckPlayer3HealthUpdate
           goto DonePlayer3HealthUpdate
 CheckPlayer3HealthUpdate
+          rem Check if Player 4 health bar should be updated (4-player mode, active player)
+          rem Input: controllerStatus (global), selectedChar4_R (global SCRAM)
+          rem Output: Player 4 health bar updated if conditions met
+          rem Mutates: temp6, COLUPF, playfield data (via UpdateHealthBarPlayer3)
+          rem Called Routines: UpdateHealthBarPlayer3 (bank8) - updates Player 4 health bar
+          rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate
           if selectedChar4_R = 255 then DonePlayer3HealthUpdate
           gosub UpdateHealthBarPlayer3 bank8
           return
 DonePlayer3HealthUpdate
+          rem Player 3 health update check complete (label only)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with BudgetedHealthBarUpdate
           return
 
           rem Update Player 1 health bar
 UpdateHealthBarPlayer0
+          rem Update Player 1 health bar (FramePhase 0)
+          rem Input: playerHealth[] (global array) = player health values
+          rem        HealthBarMaxLength (constant) = maximum health bar length
+          rem Output: COLUPF set to Player 1 color, health bar drawn
+          rem Mutates: temp6 (health bar length), COLUPF (TIA register), playfield data (via DrawHealthBarRow0)
+          rem Called Routines: DrawHealthBarRow0 (bank8) - draws Player 1 health bar row
+          rem Constraints: None
           dim FB_healthBarLength = temp6
           let FB_healthBarLength = playerHealth[0] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
@@ -92,6 +142,13 @@ UpdateHealthBarPlayer0
 
           rem Update Player 2 health bar
 UpdateHealthBarPlayer1
+          rem Update Player 2 health bar (FramePhase 1)
+          rem Input: playerHealth[] (global array) = player health values
+          rem        HealthBarMaxLength (constant) = maximum health bar length
+          rem Output: COLUPF set to Player 2 color, health bar drawn
+          rem Mutates: temp6 (health bar length), COLUPF (TIA register), playfield data (via DrawHealthBarRow1)
+          rem Called Routines: DrawHealthBarRow1 (bank8) - draws Player 2 health bar row
+          rem Constraints: None
           dim FB_healthBarLength = temp6
           let FB_healthBarLength = playerHealth[1] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
@@ -101,6 +158,13 @@ UpdateHealthBarPlayer1
 
           rem Update Player 3 health bar
 UpdateHealthBarPlayer2
+          rem Update Player 3 health bar (FramePhase 2, 4-player mode only)
+          rem Input: playerHealth[] (global array) = player health values
+          rem        HealthBarMaxLength (constant) = maximum health bar length
+          rem Output: COLUPF set to Player 3 color, health bar drawn
+          rem Mutates: temp6 (health bar length), COLUPF (TIA register), playfield data (via DrawHealthBarRow2)
+          rem Called Routines: DrawHealthBarRow2 (bank8) - draws Player 3 health bar row
+          rem Constraints: None
           dim FB_healthBarLength = temp6
           let FB_healthBarLength = playerHealth[2] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
@@ -110,6 +174,13 @@ UpdateHealthBarPlayer2
 
           rem Update Player 4 health bar
 UpdateHealthBarPlayer3
+          rem Update Player 4 health bar (FramePhase 3, 4-player mode only)
+          rem Input: playerHealth[] (global array) = player health values
+          rem        HealthBarMaxLength (constant) = maximum health bar length
+          rem Output: COLUPF set to Player 4 color, health bar drawn
+          rem Mutates: temp6 (health bar length), COLUPF (TIA register), playfield data (via DrawHealthBarRow3)
+          rem Called Routines: DrawHealthBarRow3 (bank8) - draws Player 4 health bar row
+          rem Constraints: None
           dim FB_healthBarLength = temp6
           let FB_healthBarLength = playerHealth[3] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength

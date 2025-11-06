@@ -95,7 +95,8 @@ P1SetPattern
           rem Called Routines: None (reads ROM data table)
           rem Constraints: Must be colocated with UpdatePlayer1HealthBar
           rem Look up bit pattern from table using patternIndex as index
-          let UP1HB_pattern = bank8 HealthBarPatterns[UP1HB_patternIndex]
+          rem Note: HealthBarPatterns is in same bank (Bank 8) as this function, so no bank prefix needed
+          let UP1HB_pattern = HealthBarPatterns[UP1HB_patternIndex]
           
           rem Set pfscore1 to health bar pattern
           let pfscore1 = UP1HB_pattern
@@ -160,7 +161,8 @@ P2SetPattern
           rem Called Routines: None (reads ROM data table)
           rem Constraints: Must be colocated with UpdatePlayer2HealthBar
           rem Look up bit pattern from table using patternIndex as index
-          let UP2HB_pattern = bank8 HealthBarPatterns[UP2HB_patternIndex]
+          rem Note: HealthBarPatterns is in same bank (Bank 8) as this function, so no bank prefix needed
+          let UP2HB_pattern = HealthBarPatterns[UP2HB_patternIndex]
           
           rem Set pfscore2 to health bar pattern
           let pfscore2 = UP2HB_pattern

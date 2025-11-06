@@ -4,7 +4,7 @@
 
 BeginAuthorPrelude
           rem Initialize Author Preamble mode
-          rem Note: pfres is defined globally in AssemblyConfig.s
+          rem Note: pfres is defined globally in AssemblyConfig.bas
           
           rem Initialize timer
           let preambleTimer = 0

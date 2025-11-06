@@ -23,7 +23,7 @@
           rem included by multispritesuperchipheader.asm before the ifconst bankswitch check.
           rem pfres (playfield resolution) must be defined manually as it is not auto-generated.
 
-#include "Source/Common/AssemblyConfig.s"
+#include "Source/Common/AssemblyConfig.bas"
 
           includesfile multisprite_superchip.inc
 

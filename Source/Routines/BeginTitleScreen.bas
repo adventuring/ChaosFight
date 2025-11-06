@@ -5,7 +5,7 @@
 
 BeginTitleScreen
           rem Initialize Title Screen mode
-          rem Note: pfres is defined globally in AssemblyConfig.s
+          rem Note: pfres is defined globally in AssemblyConfig.bas
           
           rem Initialize title parade state
           let titleParadeTimer = 0

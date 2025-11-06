@@ -16,11 +16,7 @@
           rem   count
           rem Bit patterns: 0-8 pixels filled from right to left
           rem ==========================================================
-
-          rem Health threshold table (split on 12s)
-          data HealthThresholds
-              84, 72, 60, 48, 36, 24, 12
-end
+          rem NOTE: HealthThresholds table removed - code uses hardcoded thresholds
 
           rem Bit pattern table for 0-8 pixels (right-aligned fill)
           rem 0 pixels = %00000000, 1 pixel = %00000001, ..., 8 pixels =

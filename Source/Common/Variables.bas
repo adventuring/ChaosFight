@@ -552,6 +552,10 @@
           rem var28-var31 = high bytes, var32-var35 = low bytes
           rem Array accessible as playerVelocityY[0-3] and
           rem   playerVelocityYL[0-3] (all in ZPRAM!)
+          dim playerVelocityYL = var32
+          rem Low bytes (fractional part) in zero-page var32-var35
+          rem Access: playerVelocityY[i] = high byte (var28-var31),
+          rem   playerVelocityYL[i] = low byte (var32-var35) (both in ZPRAM!)
           
           rem playerSubpixelX[0-3] = 8.8 fixed-point X position
           rem Updated every frame but accessed less frequently than
@@ -1048,6 +1052,21 @@
           dim cachedHitboxBottom_W = w127
           dim cachedHitboxBottom_R = r127
           rem Single hitbox cache (4 bytes total) - reused for each attacker
+          
+          rem Hitbox calculation variables (global, used in Combat.bas)
+          rem These are set by CalculateAttackHitbox and immediately copied to cached versions
+          rem NOTE: Since CalculateAttackHitbox is only called from ProcessAttackerAttacks,
+          rem   and the values are immediately copied to cached versions, we can alias
+          rem   the hitbox variables directly to the cached versions to save memory.
+          rem This avoids needing separate storage since they're never used simultaneously.
+          dim hitboxLeft = cachedHitboxLeft_W
+          dim hitboxRight = cachedHitboxRight_W
+          dim hitboxTop = cachedHitboxTop_W
+          dim hitboxBottom = cachedHitboxBottom_W
+          rem Hitbox bounds for attack collision detection (aliased to cached versions)
+          rem NOTE: CalculateAttackHitbox sets these, then ProcessAttackerAttacks uses them.
+          rem   Since they're immediately copied (no-op since aliased), this is safe.
+          
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM
           rem   to free zero-page space

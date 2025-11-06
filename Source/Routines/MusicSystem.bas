@@ -243,20 +243,3 @@ StopMusic
           let musicVoice0Frame_W = 0
           let musicVoice1Frame_W = 0
           return
-
-          rem ==========================================================
-          rem StopMusic - Stop all music playback
-          rem ==========================================================
-StopMusic
-          rem Zero TIA volumes
-          AUDV0 = 0
-          AUDV1 = 0
-          
-          rem Clear voice pointers (high byte = 0 means inactive)
-          let musicVoice0PointerH = 0
-          let musicVoice1PointerH = 0
-          
-          rem Reset frame counters
-          let musicVoice0Frame_W = 0
-          let musicVoice1Frame_W = 0
-          return

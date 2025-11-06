@@ -10,6 +10,19 @@
           rem   ModeWinner.
 
 BeginWinnerAnnouncement
+          rem Setup routine for Winner Announcement mode - sets initial state only
+          rem Input: winnerPlayerIndex (global) = winner player index (set by game end logic)
+          rem        PlayerChar[] (global array) = player character selections
+          rem        CharacterThemeSongIndices[] (global array) = character theme song mapping
+          rem Output: screen layout set, COLUBK set, winScreenTimer initialized, displayRank initialized,
+          rem         music started with winner's character theme
+          rem Mutates: pfrowheight, pfrows (set via SetAdminScreenLayout),
+          rem         COLUBK (TIA register), winScreenTimer (set to 0), displayRank (set to 0),
+          rem         temp1, temp2 (used for character/song lookup)
+          rem Called Routines: SetAdminScreenLayout (bank8) - sets screen layout,
+          rem   StartMusic (bank16) - starts winner's character theme song
+          rem Constraints: Called from ChangeGameMode when transitioning to ModeWinner
+          rem              winnerPlayerIndex must be set by game end logic (FindWinner in PlayerElimination.bas)
           dim BWA_winnerPlayerIndex = temp1
           dim BWA_characterIndex = temp2
           dim BWA_songID = temp1
@@ -34,7 +47,7 @@ BeginWinnerAnnouncement
           rem   DisplayWinScreen if implemented)
           let displayRank = 0
           
-          rem Get winner’s character index
+          rem Get winner's character index
           let BWA_winnerPlayerIndex = winnerPlayerIndex
           if BWA_winnerPlayerIndex = 0 then let BWA_characterIndex = PlayerChar[0]
           if BWA_winnerPlayerIndex = 1 then let BWA_characterIndex = PlayerChar[1]
@@ -45,7 +58,7 @@ BeginWinnerAnnouncement
           rem   song ID constants)
           let BWA_songID = CharacterThemeSongIndices[BWA_characterIndex]
           
-          rem Start winner’s character theme song
+          rem Start winner's character theme song
           let temp1 = BWA_songID
           gosub StartMusic bank16
           

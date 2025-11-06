@@ -16,6 +16,15 @@
           rem ==========================================================
 
 BeginArenaSelect
+          rem Setup routine for Arena Select screen - initializes arena selection state and screen layout
+          rem Input: None (called from ChangeGameMode)
+          rem Output: selectedArena_W initialized, fireHoldTimer_W initialized, screen layout set,
+          rem         COLUBK set, playfield cleared
+          rem Mutates: selectedArena_W (set to 0), fireHoldTimer_W (set to 0),
+          rem         pfrowheight, pfrows (set via SetAdminScreenLayout),
+          rem         COLUBK (TIA register), pf0-pf5 (playfield registers)
+          rem Called Routines: SetAdminScreenLayout (bank8) - sets screen layout
+          rem Constraints: Called from ChangeGameMode when entering arena select mode (gameMode 5)
           rem Initialize arena selection state
           let selectedArena_W = 0
           rem Start at arena 1 (0-indexed, displays as 1)

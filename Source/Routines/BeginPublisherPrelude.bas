@@ -20,6 +20,13 @@
           rem   bitmap display.
 
 BeginPublisherPrelude
+          rem Initializes state for Publisher Prelude screen (gameMode 0)
+          rem Input: None (called from ChangeGameMode)
+          rem Output: preambleTimer initialized, COLUBK set, music started
+          rem Mutates: preambleTimer (set to 0), COLUBK (TIA register), temp1 (passed to StartMusic)
+          rem Called Routines: StartMusic (bank16) - starts AtariToday music
+          rem Constraints: Called from ChangeGameMode when transitioning to ModePublisherPrelude
+          rem              Tail call to StartMusic
           rem Initialize prelude timer
           let preambleTimer = 0
           

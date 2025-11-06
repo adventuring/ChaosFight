@@ -20,6 +20,19 @@
           rem ==========================================================
 
 BeginFallingAnimation
+          rem Setup routine for Falling In animation - sets players in quadrant starting positions
+          rem Input: selectedChar1, selectedChar2_R, selectedChar3_R, selectedChar4_R (global) = character selections
+          rem        controllerStatus (global) = controller detection state
+          rem Output: fallFrame, fallSpeed, fallComplete, activePlayers initialized,
+          rem         screen layout set, COLUBK set, playerX[], playerY[] set for active players
+          rem Mutates: fallFrame (set to 0), fallSpeed (set to 2), fallComplete (set to 0),
+          rem         activePlayers (incremented per active player),
+          rem         pfrowheight, pfrows (set via SetGameScreenLayout),
+          rem         COLUBK (TIA register), playerX[0-3], playerY[0-3] (set for active players)
+          rem Called Routines: SetGameScreenLayout (bank8) - sets screen layout
+          rem Constraints: Must be colocated with DonePlayer1Init, DonePlayer2Init,
+          rem              DonePlayer3Init, DonePlayer4Init (all called via goto)
+          rem              Called from ChangeGameMode when entering falling animation mode
           rem Initialize animation state
           let fallFrame = 0
           let fallSpeed = 2
@@ -41,6 +54,12 @@ BeginFallingAnimation
           rem Top-left Y position (near top)
           let activePlayers = activePlayers + 1
 DonePlayer1Init
+          rem Player 1 initialization complete (skipped if not active)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with BeginFallingAnimation
           
           rem Player 2: Top-right quadrant (unless NO)
           if selectedChar2_R = NoCharacter then DonePlayer2Init
@@ -50,6 +69,12 @@ DonePlayer1Init
           rem Top-right Y position (near top)
           let activePlayers = activePlayers + 1
 DonePlayer2Init
+          rem Player 2 initialization complete (skipped if not active)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with BeginFallingAnimation
           
           rem Player 3: Bottom-left quadrant (if Quadtari and not NO)
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Init
@@ -60,6 +85,12 @@ DonePlayer2Init
           rem Bottom-left Y position (near bottom)
           let activePlayers = activePlayers + 1
 DonePlayer3Init
+          rem Player 3 initialization complete (skipped if not in 4-player mode or not active)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with BeginFallingAnimation
           
           rem Player 4: Bottom-right quadrant (if Quadtari and not NO)
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Init
@@ -70,6 +101,12 @@ DonePlayer3Init
           rem Bottom-right Y position (near bottom)
           let activePlayers = activePlayers + 1
 DonePlayer4Init
+          rem Player 4 initialization complete (skipped if not in 4-player mode or not active)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with BeginFallingAnimation
           
           return
 

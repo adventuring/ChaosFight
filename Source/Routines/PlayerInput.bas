@@ -392,7 +392,7 @@ HFCM_CheckLeftCollision
 HFCM_MoveLeftOK
           rem Apply leftward velocity impulse (double-width sprite: 16px width)
           let playerVelocityX[HFCM_playerIndex] = 255
-          rem -1 in 8-bit two’s complement: 256 - 1 = 255
+          rem -1 in 8-bit twos complement: 256 - 1 = 255
           let playerVelocityXL[HFCM_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
           let temp1 = HFCM_playerIndex
@@ -471,7 +471,7 @@ InputHandleLeftPortPlayer
           if IHLP_characterType = 2 then IHLP_FlyingMovement
           
           rem Standard horizontal movement (modifies velocity, not position)
-          rem Left movement: set negative velocity (255 in 8-bit two’s complement = -1)
+          rem Left movement: set negative velocity (255 in 8-bit twos complement = -1)
           if !joy0left then goto IHLP_DoneLeftMovement
           let playerVelocityX[IHLP_playerIndex] = 255
           let playerVelocityXL[IHLP_playerIndex] = 0
@@ -628,7 +628,7 @@ InputHandleRightPortPlayer
           if !joy1left then goto IHRP_DoneLeftMovement
           rem Apply leftward velocity impulse
           let playerVelocityX[temp1] = 255
-          rem -1 in 8-bit two’s complement: 256 - 1 = 255
+          rem -1 in 8-bit twos complement: 256 - 1 = 255
           let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states (knockback, hitstun)
           gosub ShouldPreserveFacing

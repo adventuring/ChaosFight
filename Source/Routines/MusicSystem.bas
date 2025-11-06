@@ -109,87 +109,86 @@ MusicUpdateDone
           return
 
           rem ==========================================================
+          rem SHARED MUSIC VOICE ENVELOPE CALCULATION
+          rem ==========================================================
+          rem Calculates envelope (attack/decay/sustain) for a music voice
+          rem INPUT: temp1 = voice number (0 or 1)
+          rem OUTPUT: Sets AUDV0 or AUDV1 based on voice
+          rem Uses voice-specific variables based on temp1
+CalculateMusicVoiceEnvelope
+          dim CMVE_voice = temp1
+          dim CMVE_totalFrames = temp2
+          dim CMVE_frameCounter = temp3
+          dim CMVE_framesElapsed = temp4
+          dim CMVE_targetAUDV = temp5
+          dim CMVE_audv = temp6
+          rem Get voice-specific variables
+          if CMVE_voice = 0 then CMVE_GetVoice0Vars
+          rem Voice 1
+          let CMVE_totalFrames = MusicVoice1TotalFrames
+          let CMVE_frameCounter = musicVoice1Frame_R
+          let CMVE_targetAUDV = MusicVoice1TargetAUDV
+          goto CMVE_CalcElapsed
+CMVE_GetVoice0Vars
+          rem Voice 0
+          let CMVE_totalFrames = MusicVoice0TotalFrames
+          let CMVE_frameCounter = musicVoice0Frame_R
+          let CMVE_targetAUDV = MusicVoice0TargetAUDV
+CMVE_CalcElapsed
+          rem Calculate frames elapsed = TotalFrames - FrameCounter
+          let CMVE_framesElapsed = CMVE_totalFrames - CMVE_frameCounter
+          rem Check if in attack phase (first NoteAttackFrames frames)
+          if CMVE_framesElapsed < NoteAttackFrames then CMVE_ApplyAttack
+          rem Check if in decay phase (last NoteDecayFrames frames)
+          if CMVE_frameCounter <= NoteDecayFrames then CMVE_ApplyDecay
+          rem Sustain phase - use target AUDV (already set)
+          return
+CMVE_ApplyAttack
+          rem Attack: AUDV = Target - NoteAttackFrames + frames_elapsed
+          let CMVE_audv = CMVE_targetAUDV
+          let CMVE_audv = CMVE_audv - NoteAttackFrames
+          let CMVE_audv = CMVE_audv + CMVE_framesElapsed
+          rem Check for wraparound: clamp to 0 if negative
+          if CMVE_audv & $80 then let CMVE_audv = 0
+          if CMVE_audv > 15 then let CMVE_audv = 15
+          rem Set voice-specific AUDV
+          if CMVE_voice = 0 then CMVE_SetAUDV0
+          let AUDV1 = CMVE_audv
+          return
+CMVE_SetAUDV0
+          let AUDV0 = CMVE_audv
+          return
+CMVE_ApplyDecay
+          rem Decay: AUDV = Target - (NoteDecayFrames - FrameCounter + 1)
+          let CMVE_audv = CMVE_targetAUDV
+          let CMVE_audv = CMVE_audv - NoteDecayFrames
+          let CMVE_audv = CMVE_audv + CMVE_frameCounter
+          let CMVE_audv = CMVE_audv - 1
+          rem Check for wraparound: clamp to 0 if negative
+          if CMVE_audv & $80 then let CMVE_audv = 0
+          if CMVE_audv > 15 then let CMVE_audv = 15
+          rem Set voice-specific AUDV
+          if CMVE_voice = 0 then CMVE_SetAUDV0
+          let AUDV1 = CMVE_audv
+          return
+
+          rem ==========================================================
           rem UpdateMusicVoice0 - Update Voice 0 playback
           rem ==========================================================
           rem Applies envelope (attack/decay), decrements frame counter,
           rem   loads new note when counter reaches 0
           rem ==========================================================
 UpdateMusicVoice0
-          rem Apply envelope to AUDV based on current frame position
-          rem Calculate frames elapsed = TotalFrames - FrameCounter
-          rem   (before decrement)
-          temp1 = MusicVoice0TotalFrames
-          temp2 = musicVoice0Frame_R
-          temp3 = temp1 - temp2
-          rem temp3 = frames elapsed (0-based, first frame is 0)
-          
-          rem Check if in attack phase (first NoteAttackFrames frames)
-          if temp3 < NoteAttackFrames then goto ApplyAttack0
-          
-          rem Check if in decay phase (last NoteDecayFrames frames)
-          if musicVoice0Frame_R <= NoteDecayFrames then goto ApplyDecay0
-          
-          rem Sustain phase - use target AUDV (already set)
-          goto AfterEnvelope0
-          
-ApplyAttack0
-          rem Attack: AUDV = Target - NoteAttackFrames + frames_elapsed
-          rem First frame (elapsed=0): AUDV = Target - 4 + 0 = Target -
-          rem   4
-          rem Second frame (elapsed=1): AUDV = Target - 4 + 1 = Target -
-          rem   3
-          rem Third frame (elapsed=2): AUDV = Target - 4 + 2 = Target -
-          rem   2
-          rem Fourth frame (elapsed=3): AUDV = Target - 4 + 3 = Target -
-          rem   1
-          rem Fifth frame (elapsed=4): AUDV = Target - 4 + 4 = Target
-          rem   (handled as sustain)
-          temp4 = MusicVoice0TargetAUDV
-          temp4 = temp4 - NoteAttackFrames
-          temp4 = temp4 + temp3
-          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in twos complement)
-          if temp4 & $80 then temp4 = 0
-          if temp4 > 15 then temp4 = 15
-          AUDV0 = temp4
-          goto AfterEnvelope0
-          
-ApplyDecay0
-          rem Decay: AUDV = Target - (NoteDecayFrames - FrameCounter +
-          rem   1)
-          rem When FrameCounter = 3: AUDV = Target - (3 - 3 + 1) =
-          rem   Target - 1
-          rem When FrameCounter = 2: AUDV = Target - (3 - 2 + 1) =
-          rem   Target - 2
-          rem When FrameCounter = 1: AUDV = Target - (3 - 1 + 1) =
-          rem   Target - 3
-          temp4 = MusicVoice0TargetAUDV
-          temp4 = temp4 - NoteDecayFrames
-          temp4 = temp4 + musicVoice0Frame_R
-          temp4 = temp4 - 1
-          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in twos complement)
-          if temp4 & $80 then temp4 = 0
-          if temp4 > 15 then temp4 = 15
-          AUDV0 = temp4
-          
-AfterEnvelope0
+          rem Apply envelope using shared calculation
+          let temp1 = 0
+          gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter
           rem Fix RMW: Read from _R, modify, write to _W
           let MS_frameCount = musicVoice0Frame_R - 1
           let musicVoice0Frame_W = MS_frameCount
           if MS_frameCount then return
-          
           rem Frame counter reached 0 - load next note from Songs bank
           gosub bank16 LoadMusicNote0
-          rem LoadMusicNote0 will:
-          rem - Load 4-byte note from Song_Voice0[pointer]: AUDCV, AUDF,
-          rem   Duration, Delay
-          rem   - Extract AUDC (upper 4 bits) and AUDV (lower 4 bits)
-          rem   - Store target AUDV and total frames for envelope
-          rem   - Write to TIA: AUDC0, AUDF0, AUDV0
-          rem   - Set MusicVoice0Frame = Duration + Delay
-          rem   - Advance MusicVoice0Pointer by 4 bytes
-          rem - Handle end-of-track: set musicVoice0PointerH = 0, AUDV0
-          rem   = 0
           return
 
           rem ==========================================================
@@ -199,67 +198,16 @@ AfterEnvelope0
           rem   loads new note when counter reaches 0
           rem ==========================================================
 UpdateMusicVoice1
-          rem Apply envelope to AUDV based on current frame position
-          rem Calculate frames elapsed = TotalFrames - FrameCounter
-          rem   (before decrement)
-          temp1 = MusicVoice1TotalFrames
-          temp2 = musicVoice1Frame_R
-          temp3 = temp1 - temp2
-          rem temp3 = frames elapsed (0-based, first frame is 0)
-          
-          rem Check if in attack phase (first NoteAttackFrames frames)
-          if temp3 < NoteAttackFrames then goto ApplyAttack1
-          
-          rem Check if in decay phase (last NoteDecayFrames frames)
-          if musicVoice1Frame_R <= NoteDecayFrames then goto ApplyDecay1
-          
-          rem Sustain phase - use target AUDV (already set)
-          goto AfterEnvelope1
-          
-ApplyAttack1
-          rem Attack: AUDV = Target - NoteAttackFrames + frames_elapsed
-          rem First frame (elapsed=0): AUDV = Target - 4 + 0 = Target -
-          rem   4
-          rem Second frame (elapsed=1): AUDV = Target - 4 + 1 = Target -
-          rem   3
-          rem Third frame (elapsed=2): AUDV = Target - 4 + 2 = Target -
-          rem   2
-          rem Fourth frame (elapsed=3): AUDV = Target - 4 + 3 = Target -
-          rem   1
-          temp4 = MusicVoice1TargetAUDV
-          temp4 = temp4 - NoteAttackFrames
-          temp4 = temp4 + temp3
-          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in twos complement)
-          if temp4 & $80 then temp4 = 0
-          if temp4 > 15 then temp4 = 15
-          AUDV1 = temp4
-          goto AfterEnvelope1
-          
-ApplyDecay1
-          rem Decay: AUDV = Target - (NoteDecayFrames - FrameCounter +
-          rem   1)
-          temp4 = MusicVoice1TargetAUDV
-          temp4 = temp4 - NoteDecayFrames
-          temp4 = temp4 + musicVoice1Frame_R
-          temp4 = temp4 - 1
-          rem   complement)
-          rem   clamp to 0 (values ≥ 128 are negative in twos
-          rem Check for wraparound: if subtraction resulted in negative,
-          if temp4 & $80 then temp4 = 0
-          if temp4 > 15 then temp4 = 15
-          AUDV1 = temp4
-          
-AfterEnvelope1
+          rem Apply envelope using shared calculation
+          let temp1 = 1
+          gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter
           rem Fix RMW: Read from _R, modify, write to _W
           let MS_frameCount1 = musicVoice1Frame_R - 1
           let musicVoice1Frame_W = MS_frameCount1
           if MS_frameCount1 then return
-          
           rem Frame counter reached 0 - load next note from Songs bank
           gosub bank16 LoadMusicNote1
-          rem LoadMusicNote1 does same as LoadMusicNote0 but for Voice 1
-          rem   (Song_Voice1)
           return
 
           rem ==========================================================

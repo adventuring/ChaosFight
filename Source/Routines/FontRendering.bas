@@ -76,246 +76,144 @@ DrawDigit
           let DD_digitOffset = DD_digit * 16
           
           rem Set sprite position and color based on spriteSelect
-          if DD_spriteSelect = 0 then DrawPlayer0Digit
-          if DD_spriteSelect = 1 then DrawPlayer1Digit
-          if DD_spriteSelect = 2 then DrawPlayer2Digit
-          if DD_spriteSelect = 3 then DrawPlayer3Digit
-          if DD_spriteSelect = 4 then DrawPlayer4Digit
-          if DD_spriteSelect = 5 then DrawPlayer5Digit
-          rem Default to player0 if invalid spriteSelect
-          goto DrawPlayer0Digit
-
-DrawPlayer0Digit
-          rem Use player0 sprite
+          rem Clamp spriteSelect to valid range (0-5)
+          if DD_spriteSelect > 5 then let DD_spriteSelect = 0
+          let temp5 = DD_spriteSelect
+          rem Preserve spriteSelect in temp5 for LoadPlayerDigit
+          let temp6 = DD_digitOffset
+          rem Dispatch to sprite-specific handler using on/goto
+          on DD_spriteSelect goto SetSprite0, SetSprite1, SetSprite2, SetSprite3, SetSprite4, SetSprite5
+          
+SetSprite0
           let player0x = DD_xPos
           let player0y = DD_yPos
           let COLUP0 = DD_color
           rem tail call
-          let temp6 = DD_digitOffset
-          goto LoadPlayer0Digit
-
-DrawPlayer1Digit
-          rem Use player1 sprite
+          goto LoadPlayerDigit
+SetSprite1
           let player1x = DD_xPos
           let player1y = DD_yPos
           let _COLUP1 = DD_color
-          let temp6 = DD_digitOffset
           rem tail call
-          goto LoadPlayer1Digit
-
-DrawPlayer2Digit
-          rem Use player2 sprite
+          goto LoadPlayerDigit
+SetSprite2
           let player2x = DD_xPos
           let player2y = DD_yPos
           let COLUP2 = DD_color
-          let temp6 = DD_digitOffset
           rem tail call
-          goto LoadPlayer2Digit
-
-DrawPlayer3Digit
-          rem Use player3 sprite
+          goto LoadPlayerDigit
+SetSprite3
           let player3x = DD_xPos
           let player3y = DD_yPos
           let COLUP3 = DD_color
-          let temp6 = DD_digitOffset
           rem tail call
-          goto LoadPlayer3Digit
-
-DrawPlayer4Digit
-          rem Use player4 sprite
+          goto LoadPlayerDigit
+SetSprite4
           let player4x = DD_xPos
           let player4y = DD_yPos
           let COLUP4 = DD_color
-          let temp6 = DD_digitOffset
           rem tail call
-          goto LoadPlayer4Digit
-
-DrawPlayer5Digit
-          rem Use player5 sprite
+          goto LoadPlayerDigit
+SetSprite5
           let player5x = DD_xPos
           let player5y = DD_yPos
           let COLUP5 = DD_color
-          let temp6 = DD_digitOffset
           rem tail call
-          goto LoadPlayer5Digit
+          goto LoadPlayerDigit
 
           rem ==========================================================
           rem LOAD DIGIT DATA INTO SPRITES
           rem ==========================================================
-          rem These routines load digit bitmaps from the generated data
-          rem   tables.
-          rem The data is accessed using batariBasic data statement
-          rem   indexing.
-
-          rem INPUT:
-          rem DigitOffset (temp6) = byte offset into font data (digit *
-          rem   16)
-
-LoadPlayer0Digit
-          dim LP0D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player0
-          rem   sprite
-          rem Input: temp6 = byte offset into font data (digit * 16,
-          rem   where digit is 0-9)
+          rem Consolidated generic loader that dispatches to sprite-specific
+          rem   pointer assignment based on spriteSelect
+          rem INPUT: temp5 = spriteSelect (0-5), temp6 = digitOffset
+          rem Uses spriteSelect from previous DrawDigit call (stored in DD_spriteSelect)
+          rem   but we need to preserve it in temp5
+LoadPlayerDigit
+          dim LPD_digitOffset = temp6
+          dim LPD_spriteSelect = temp5
           rem Clamp digit offset to valid range (0-240 for digits 0-15)
-          if LP0D_digitOffset > 240 then let LP0D_digitOffset = 240
+          if LPD_digitOffset > 240 then let LPD_digitOffset = 240
+          rem Dispatch to sprite-specific pointer loader based on spriteSelect
+          rem   (still in temp5 from DrawDigit)
+          if LPD_spriteSelect > 5 then let LPD_spriteSelect = 0
+          on LPD_spriteSelect goto LoadSprite0Ptr, LoadSprite1Ptr, LoadSprite2Ptr, LoadSprite3Ptr, LoadSprite4Ptr, LoadSprite5Ptr
           
-          rem Calculate sprite pointer = FontData + offset using
-          rem   assembly
+LoadSprite0Ptr
           asm
-            ; Load low byte of FontData base address
             lda # <FontData
             clc
-            adc LP0D_digitOffset
+            adc LPD_digitOffset
             sta player0pointerlo
-            
-            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player0pointerhi
 end
-          
-          rem Set sprite height (16 pixels tall)
           let player0height = 16
           return
-
-LoadPlayer1Digit
-          dim LP1D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player1
-          rem   sprite
-          rem Input: temp6 = byte offset into font data (digit * 16,
-          rem   where digit is 0-9)
-          rem Clamp digit offset to valid range (0-240 for digits 0-15)
-          if LP1D_digitOffset > 240 then let LP1D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using
-          rem   assembly
+LoadSprite1Ptr
           asm
-            ; Load low byte of FontData base address
             lda # <FontData
             clc
-            adc LP1D_digitOffset
+            adc LPD_digitOffset
             sta player1pointerlo
-            
-            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player1pointerhi
 end
-          
-          rem Set sprite height (16 pixels tall)
           let player1height = 16
           return
-
-LoadPlayer2Digit
-          dim LP2D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player2
-          rem   sprite
-          rem Input: temp6 = byte offset into font data (digit * 16,
-          rem   where digit is 0-15)
-          rem Clamp digit offset to valid range (0-240 for digits 0-15)
-          if LP2D_digitOffset > 240 then let LP2D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using
-          rem   assembly
+LoadSprite2Ptr
           asm
-            ; Load low byte of FontData base address
             lda # <FontData
             clc
-            adc LP2D_digitOffset
+            adc LPD_digitOffset
             sta player2pointerlo
-            
-            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player2pointerhi
 end
-          
-          rem Set sprite height (16 pixels tall)
           let player2height = 16
           return
-
-LoadPlayer3Digit
-          dim LP3D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player3
-          rem   sprite
-          rem Input: temp6 = byte offset into font data (digit * 16,
-          rem   where digit is 0-15)
-          rem Clamp digit offset to valid range (0-240 for digits 0-15)
-          if LP3D_digitOffset > 240 then let LP3D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using
-          rem   assembly
+LoadSprite3Ptr
           asm
-            ; Load low byte of FontData base address
             lda # <FontData
             clc
-            adc LP3D_digitOffset
+            adc LPD_digitOffset
             sta player3pointerlo
-            
-            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player3pointerhi
 end
-          
-          rem Set sprite height (16 pixels tall)
           let player3height = 16
           return
-
-LoadPlayer4Digit
-          dim LP4D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player4
-          rem   sprite
-          rem Input: temp6 = byte offset into font data (digit * 16,
-          rem   where digit is 0-15)
-          rem Clamp digit offset to valid range (0-240 for digits 0-15)
-          if LP4D_digitOffset > 240 then let LP4D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using
-          rem   assembly
+LoadSprite4Ptr
           asm
-            ; Load low byte of FontData base address
             lda # <FontData
             clc
-            adc LP4D_digitOffset
+            adc LPD_digitOffset
             sta player4pointerlo
-            
-            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player4pointerhi
 end
-          
-          rem Set sprite height (16 pixels tall)
           let player4height = 16
           return
-
-LoadPlayer5Digit
-          dim LP5D_digitOffset = temp6
-          rem Load digit graphics from Numbers font data into player5
-          rem   sprite
-          rem Input: temp6 = byte offset into font data (digit * 16,
-          rem   where digit is 0-15)
-          rem Clamp digit offset to valid range (0-240 for digits 0-15)
-          if LP5D_digitOffset > 240 then let LP5D_digitOffset = 240
           
-          rem Calculate sprite pointer = FontData + offset using
-          rem   assembly
+LoadSprite5Ptr
           asm
-            ; Load low byte of FontData base address
             lda # <FontData
             clc
-            adc LP5D_digitOffset
+            adc LPD_digitOffset
             sta player5pointerlo
-            
-            ; Load high byte of FontData base address and add carry
             lda # >FontData
             adc #0
             sta player5pointerhi
 end
-          
-          rem Set sprite height (16 pixels tall)
           let player5height = 16
           return
 

@@ -258,9 +258,9 @@ GravityDone
           rem Calculate friction reduction (velocity / 64, approximates
           rem   1.56% reduction)
           let velocityCalculation = missileVelocityXCalc
-          rem Check if velocity is negative (two’s complement: values >
+          rem Check if velocity is negative (twos complement: values >
           rem   127 are negative)
-          rem For unsigned bytes, negative values in two’s complement
+          rem For unsigned bytes, negative values in twos complement
           rem   are 128-255
           if velocityCalculation > 127 then FrictionNegative
           rem Positive velocity
@@ -862,13 +862,13 @@ KnockbackDone
 HandleMissileBounce
           let missileVelocityXCalc = missileVelocityX[temp1]
           rem Get current X velocity
-          rem Invert velocity (bounce back) using two’s complement
+          rem Invert velocity (bounce back) using twos complement
           rem Split calculation to avoid sbc #256 (256 > 255)
           dim HMB_tempCalc = temp6
           let HMB_tempCalc = MaxByteValue - missileVelocityXCalc
           rem tempCalc = 255 - velocity
           let missileVelocityXCalc = HMB_tempCalc + 1
-          rem velocity = (255 - velocity) + 1 = 256 - velocity (two’s complement)
+          rem velocity = (255 - velocity) + 1 = 256 - velocity (twos complement)
           
           rem Apply friction damping if friction flag is set
           if !(temp5 & MissileFlagFriction) then BounceDone

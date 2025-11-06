@@ -34,349 +34,213 @@
           rem   readyCount - Number of locked players
           rem ==========================================================
 
+          rem ==========================================================
+          rem SHARED CHARACTER SELECT INPUT HANDLERS
+          rem ==========================================================
+          rem Consolidated input handlers for character selection
+          
+          rem Handle character cycling (left/right)
+          rem INPUT: temp1 = player index (0-3), temp2 = direction (0=left, 1=right)
+          rem        temp3 = player number (0-3)
+          rem Uses: joy0left/joy0right for players 0,2; joy1left/joy1right for players 1,3
+          rem OUTPUT: Updates playerChar[playerIndex] and plays sound
+HandleCharacterSelectCycle
+          dim HCSC_playerIndex = temp1
+          dim HCSC_direction = temp2
+          dim HCSC_playerNumber = temp3
+          dim HCSC_characterIndex = temp1
+          dim HCSC_soundId = temp1
+          rem Determine which joy port to use
+          if HCSC_playerIndex = 0 then HCSC_CheckJoy0
+          if HCSC_playerIndex = 2 then HCSC_CheckJoy0
+          rem Players 1,3 use joy1
+          if HCSC_direction = 0 then HCSC_CheckJoy1Left
+          if !joy1right then return
+          goto HCSC_DoCycle
+HCSC_CheckJoy0
+          rem Players 0,2 use joy0
+          if HCSC_direction = 0 then HCSC_CheckJoy0Left
+          if !joy0right then return
+          goto HCSC_DoCycle
+HCSC_CheckJoy0Left
+          if !joy0left then return
+HCSC_CheckJoy1Left
+          if !joy1left then return
+HCSC_DoCycle
+          rem Get current character index
+          let HCSC_characterIndex = playerChar[HCSC_playerIndex]
+          let HCSC_playerNumber = HCSC_playerIndex
+          let temp1 = HCSC_characterIndex
+          let temp3 = HCSC_playerNumber
+          rem Cycle based on direction
+          if HCSC_direction = 0 then HCSC_CycleLeft
+          gosub CycleCharacterRight
+          goto HCSC_CycleDone
+HCSC_CycleLeft
+          gosub CycleCharacterLeft
+HCSC_CycleDone
+          let HCSC_characterIndex = temp1
+          let playerChar[HCSC_playerIndex] = HCSC_characterIndex
+          let temp1 = HCSC_playerIndex
+          let temp2 = PlayerLockedUnlocked
+          gosub SetPlayerLocked
+          rem Play navigation sound
+          let HCSC_soundId = SoundMenuNavigate
+          let temp1 = HCSC_soundId
+          gosub bank15 PlaySoundEffect
+          return
+          
+          rem Handle fire input (selection)
+          rem INPUT: temp1 = player index (0-3)
+          rem Uses: joy0fire/joy0down for players 0,2; joy1fire/joy1down for players 1,3
+          rem OUTPUT: Updates playerLocked and plays sound
+HandleCharacterSelectFire
+          dim HCSF_playerIndex = temp1
+          dim HCSF_soundId = temp1
+          dim HCSF_playerNumber = temp3
+          dim HCSF_joyFire = temp2
+          dim HCSF_joyDown = temp4
+          rem Determine which joy port to use
+          if HCSF_playerIndex = 0 then HCSF_CheckJoy0
+          if HCSF_playerIndex = 2 then HCSF_CheckJoy0
+          rem Players 1,3 use joy1
+          if !joy1fire then return
+          let HCSF_joyFire = 1
+          if joy1down then let HCSF_joyDown = 1 else let HCSF_joyDown = 0
+          goto HCSF_HandleFire
+HCSF_CheckJoy0
+          rem Players 0,2 use joy0
+          if !joy0fire then return
+          let HCSF_joyFire = 1
+          if joy0down then let HCSF_joyDown = 1 else let HCSF_joyDown = 0
+HCSF_HandleFire
+          rem Check if RandomCharacter selected
+          if playerChar[HCSF_playerIndex] = RandomCharacter then HCSF_HandleRandom
+          rem Check for handicap mode (down+fire = 75% health)
+          if HCSF_joyDown then HCSF_HandleHandicap
+          let HCSF_playerNumber = HCSF_playerIndex
+          let temp1 = HCSF_playerNumber
+          let temp2 = PlayerLockedNormal
+          gosub SetPlayerLocked
+          rem Play selection sound
+          let HCSF_soundId = SoundMenuSelect
+          let temp1 = HCSF_soundId
+          gosub bank15 PlaySoundEffect
+          return
+HCSF_HandleHandicap
+          let HCSF_playerNumber = HCSF_playerIndex
+          let temp1 = HCSF_playerNumber
+          let temp2 = PlayerLockedHandicap
+          gosub SetPlayerLocked
+          rem Play selection sound
+          let HCSF_soundId = SoundMenuSelect
+          let temp1 = HCSF_soundId
+          gosub bank15 PlaySoundEffect
+          return
+HCSF_HandleRandom
+          rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
+          rem Store handicap flag if down was held
+          if HCSF_joyDown then randomSelectFlags[HCSF_playerIndex] = $80 else randomSelectFlags[HCSF_playerIndex] = 0
+          rem Play selection sound
+          let HCSF_soundId = SoundMenuSelect
+          let temp1 = HCSF_soundId
+          gosub bank15 PlaySoundEffect
+          rem Fall through - character will stay as RandomCharacter until roll succeeds
+          return
+
 CharacterSelectInputEntry
-          rem Check for controller re-detection on Select/Pause/ColorB&W
-          rem   switches
+          rem Check for controller re-detection on Select/Pause/ColorB&W switches
           gosub CharacterSelectCheckControllerRescan
           
           rem Quadtari controller multiplexing
           if qtcontroller then CharacterSelectHandleQuadtari
           
           rem Handle Player 1 input (joy0 on even frames)
-          if joy0left then CharacterSelectPlayer0Left
-          goto CharacterSelectSkipPlayer0Left
-CharacterSelectPlayer0Left
-          dim CS0L_characterIndex = temp1
-          dim CS0L_playerNumber = temp3
-          dim CS0L_soundId = temp1
-          let CS0L_characterIndex = playerChar[0]
-          let CS0L_playerNumber = 0
-          let temp1 = CS0L_characterIndex
-          let temp3 = CS0L_playerNumber
-          gosub CycleCharacterLeft
-          let CS0L_characterIndex = temp1
-          let playerChar[0] = CS0L_characterIndex
-          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          rem Play navigation sound
-          let CS0L_soundId = SoundMenuNavigate
-          let temp1 = CS0L_soundId
-          gosub bank15 PlaySoundEffect
-CharacterSelectSkipPlayer0Left
-          if joy0right then CharacterSelectPlayer0Right
-          goto CharacterSelectSkipPlayer0Right
-CharacterSelectPlayer0Right
-          dim CS0R_characterIndex = temp1
-          dim CS0R_playerNumber = temp3
-          dim CS0R_soundId = temp1
-          let CS0R_characterIndex = playerChar[0]
-          let CS0R_playerNumber = 0
-          let temp1 = CS0R_characterIndex
-          let temp3 = CS0R_playerNumber
-          gosub CycleCharacterRight
-          let CS0R_characterIndex = temp1
-          let playerChar[0] = CS0R_characterIndex
-          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          rem Play navigation sound
-          let CS0R_soundId = SoundMenuNavigate
-          let temp1 = CS0R_soundId
-          gosub bank15 PlaySoundEffect
-CharacterSelectSkipPlayer0Right
+          if joy0left then CS_HandlePlayer0Left
+          if joy0right then CS_HandlePlayer0Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CharacterSelectPlayer0LockClearDone
+          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CS_Player0LockClearDone
           if joy0down then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-CharacterSelectPlayer0LockClearDone
-          if joy0fire then CharacterSelectPlayer0Fire
-          goto CharacterSelectSkipPlayer0Fire
-CharacterSelectPlayer0Fire
-          dim CS0F_soundId = temp1
-          rem Check if RandomCharacter selected - needs random selection
-          if playerChar[0] = RandomCharacter then CharacterSelectPlayer0Random
-          rem Check for handicap mode (down+fire = 75% health)
-          if joy0down then CharacterSelectPlayer0FireHandicap
-          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
-          rem Play selection sound
-          let CS0F_soundId = SoundMenuSelect
-          let temp1 = CS0F_soundId
-          gosub bank15 PlaySoundEffect
-          goto CharacterSelectSkipPlayer0Fire
-CharacterSelectPlayer0FireHandicap
-          dim CS0FH_soundId = temp1
-          let temp1 = 0 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
-          rem Play selection sound
-          let CS0FH_soundId = SoundMenuSelect
-          let temp1 = CS0FH_soundId
-          gosub bank15 PlaySoundEffect
-          goto CharacterSelectSkipPlayer0Fire
-CharacterSelectPlayer0Random
-          dim CS0R_soundId = temp1
-          rem Random selection initiated - will be handled by
-          rem   CharacterSelectHandleRandomRolls
-          rem Store handicap flag if down was held
-          if joy0down then randomSelectFlags[0] = $80
-          if !joy0down then randomSelectFlags[0] = 0
-          rem For now, just initiate random roll by leaving
-          rem   playerChar[0]=RandomCharacter
-          rem and NOT locking yet - the roll handler will lock when
-          rem   valid
-          rem Play selection sound
-          let CS0R_soundId = SoundMenuSelect
-          let temp1 = CS0R_soundId
-          gosub bank15 PlaySoundEffect
-          rem Fall through - character will stay as RandomCharacter
-          rem   until roll succeeds
-CharacterSelectSkipPlayer0Fire
-
+CS_Player0LockClearDone
+          if joy0fire then CS_HandlePlayer0Fire
+          
           rem Handle Player 2 input (joy1 on even frames)
-          if joy1left then CharacterSelectPlayer1Left
-          goto CharacterSelectSkipPlayer1Left
-CharacterSelectPlayer1Left
-          dim CS1L_characterIndex = temp1
-          dim CS1L_playerNumber = temp3
-          dim CS1L_soundId = temp1
-          let CS1L_characterIndex = playerChar[1]
-          let CS1L_playerNumber = 1
-          let temp1 = CS1L_characterIndex
-          let temp3 = CS1L_playerNumber
-          gosub CycleCharacterLeft
-          let CS1L_characterIndex = temp1
-          let playerChar[1] = CS1L_characterIndex
-          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          rem Play navigation sound
-          let CS1L_soundId = SoundMenuNavigate
-          let temp1 = CS1L_soundId
-          gosub bank15 PlaySoundEffect
-CharacterSelectSkipPlayer1Left
-          if joy1right then CharacterSelectPlayer1Right
-          goto CharacterSelectSkipPlayer1Right
-CharacterSelectPlayer1Right
-          dim CS1R_characterIndex = temp1
-          dim CS1R_playerNumber = temp3
-          dim CS1R_soundId = temp1
-          let CS1R_characterIndex = playerChar[1]
-          let CS1R_playerNumber = 1
-          let temp1 = CS1R_characterIndex
-          let temp3 = CS1R_playerNumber
-          gosub CycleCharacterRight
-          let CS1R_characterIndex = temp1
-          let playerChar[1] = CS1R_characterIndex
-          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          rem Play navigation sound
-          let CS1R_soundId = SoundMenuNavigate
-          let temp1 = CS1R_soundId
-          gosub bank15 PlaySoundEffect
-CharacterSelectSkipPlayer1Right
+          if joy1left then CS_HandlePlayer1Left
+          if joy1right then CS_HandlePlayer1Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CharacterSelectPlayer1LockClearDone
+          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CS_Player1LockClearDone
           if joy1down then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-CharacterSelectPlayer1LockClearDone
-          if joy1fire then CharacterSelectPlayer1Fire
-          goto CharacterSelectSkipPlayer1Fire
-CharacterSelectPlayer1Fire
-          dim CS1F_soundId = temp1
-          rem Check if RandomCharacter selected - needs random selection
-          if playerChar[1] = RandomCharacter then CharacterSelectPlayer1Random
-          rem Check for handicap mode (down+fire = 75% health)
-          if joy1down then CharacterSelectPlayer1FireHandicap
-          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
-          rem Play selection sound
-          let CS1F_soundId = SoundMenuSelect
-          let temp1 = CS1F_soundId
-          gosub bank15 PlaySoundEffect
-          goto CharacterSelectSkipPlayer1Fire
-CharacterSelectPlayer1FireHandicap
-          dim CS1FH_soundId = temp1
-          let temp1 = 1 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
-          rem Play selection sound
-          let CS1FH_soundId = SoundMenuSelect
-          let temp1 = CS1FH_soundId
-          gosub bank15 PlaySoundEffect
-          goto CharacterSelectSkipPlayer1Fire
-CharacterSelectPlayer1Random
-          dim CS1R_soundId = temp1
-          rem Random selection initiated - will be handled by
-          rem   CharacterSelectHandleRandomRolls
-          rem Store handicap flag if down was held
-          if joy1down then randomSelectFlags[1] = $80
-          if !joy1down then randomSelectFlags[1] = 0
-          let CS1R_soundId = SoundMenuSelect
-          let temp1 = CS1R_soundId
-          gosub bank15 PlaySoundEffect
-          rem Fall through - character will stay as RandomCharacter
-          rem   until roll succeeds
-CharacterSelectSkipPlayer1Fire
+CS_Player1LockClearDone
+          if joy1fire then CS_HandlePlayer1Fire
           
           let qtcontroller = 1
           goto CharacterSelectInputComplete
+          
+CS_HandlePlayer0Left
+          let temp1 = 0 : let temp2 = 0 : gosub HandleCharacterSelectCycle
+          return
+CS_HandlePlayer0Right
+          let temp1 = 0 : let temp2 = 1 : gosub HandleCharacterSelectCycle
+          return
+CS_HandlePlayer0Fire
+          let temp1 = 0 : gosub HandleCharacterSelectFire
+          return
+CS_HandlePlayer1Left
+          let temp1 = 1 : let temp2 = 0 : gosub HandleCharacterSelectCycle
+          return
+CS_HandlePlayer1Right
+          let temp1 = 1 : let temp2 = 1 : gosub HandleCharacterSelectCycle
+          return
+CS_HandlePlayer1Fire
+          let temp1 = 1 : gosub HandleCharacterSelectFire
+          return
 
 CharacterSelectHandleQuadtari
           rem Handle Player 3 input (joy0 on odd frames)
-          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer3
-          goto CharacterSelectSkipPlayer3
-CharacterSelectHandlePlayer3
-          if joy0left then CharacterSelectPlayer3Left
-          goto CharacterSelectSkipPlayer3Left
-CharacterSelectPlayer3Left
-          dim CS3L_characterIndex = temp1
-          dim CS3L_playerNumber = temp3
-          dim CS3L_soundId = temp1
-          let CS3L_characterIndex = playerChar[2]
-          let CS3L_playerNumber = 2
-          let temp1 = CS3L_characterIndex
-          let temp3 = CS3L_playerNumber
-          gosub CycleCharacterLeft
-          let CS3L_characterIndex = temp1
-          let playerChar[2] = CS3L_characterIndex
-          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          rem Play navigation sound
-          let CS3L_soundId = SoundMenuNavigate
-          let temp1 = CS3L_soundId
-          gosub bank15 PlaySoundEffect
-CharacterSelectSkipPlayer3Left
-          if joy0right then CharacterSelectPlayer3Right
-          goto CharacterSelectSkipPlayer3Right
-CharacterSelectPlayer3Right
-          dim CS3R_characterIndex = temp1
-          dim CS3R_playerNumber = temp3
-          dim CS3R_soundId = temp1
-          let CS3R_characterIndex = playerChar[2]
-          let CS3R_playerNumber = 2
-          let temp1 = CS3R_characterIndex
-          let temp3 = CS3R_playerNumber
-          gosub CycleCharacterRight
-          let CS3R_characterIndex = temp1
-          let playerChar[2] = CS3R_characterIndex
-          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          rem Play navigation sound
-          let CS3R_soundId = SoundMenuNavigate
-          let temp1 = CS3R_soundId
-          gosub bank15 PlaySoundEffect
-CharacterSelectSkipPlayer3Right
+          if !(controllerStatus & SetQuadtariDetected) then CS_SkipPlayer3
+          if selectedChar3_R = 0 then CS_SkipPlayer3
+          if joy0left then CS_HandlePlayer3Left
+          if joy0right then CS_HandlePlayer3Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CharacterSelectPlayer2LockClearDone
+          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CS_Player3LockClearDone
           if joy0down then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-CharacterSelectPlayer2LockClearDone
-          if joy0fire then CharacterSelectPlayer3Fire
-          goto CharacterSelectSkipPlayer3Fire
-CharacterSelectPlayer3Fire
-          dim CS3F_soundId = temp1
-          rem Check if RandomCharacter selected - needs random selection
-          if playerChar[2] = RandomCharacter then CharacterSelectPlayer3Random
-          rem Check for handicap mode (down+fire = 75% health)
-          if joy0down then CharacterSelectPlayer3FireHandicap
-          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
-          rem Play selection sound
-          let CS3F_soundId = SoundMenuSelect
-          let temp1 = CS3F_soundId
-          gosub bank15 PlaySoundEffect
-          goto CharacterSelectSkipPlayer3Fire
-CharacterSelectPlayer3FireHandicap
-          dim CS3FH_soundId = temp1
-          let temp1 = 2 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
-          rem Play selection sound
-          let CS3FH_soundId = SoundMenuSelect
-          let temp1 = CS3FH_soundId
-          gosub bank15 PlaySoundEffect
-          goto CharacterSelectSkipPlayer3Fire
-CharacterSelectPlayer3Random
-          dim CS3R_soundId = temp1
-          rem Random selection initiated - will be handled by
-          rem   CharacterSelectHandleRandomRolls
-          rem Store handicap flag if down was held
-          if joy0down then randomSelectFlags[2] = $80
-          if !joy0down then randomSelectFlags[2] = 0
-          let CS3R_soundId = SoundMenuSelect
-          let temp1 = CS3R_soundId
-          gosub bank15 PlaySoundEffect
-          rem Fall through - character will stay as RandomCharacter
-          rem   until roll succeeds
-CharacterSelectSkipPlayer3Fire
-CharacterSelectSkipPlayer3
-
-          rem Handle Player 4 input (joy1 on odd frames)
-          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer4
-          goto CharacterSelectSkipPlayer4
-CharacterSelectHandlePlayer4
-          if joy1left then CharacterSelectPlayer4Left
-          goto CharacterSelectSkipPlayer4Left
-CharacterSelectPlayer4Left
-          dim CS4L_characterIndex = temp1
-          dim CS4L_playerNumber = temp3
-          dim CS4L_soundId = temp1
-          let CS4L_characterIndex = playerChar[3]
-          let CS4L_playerNumber = 3
-          let temp1 = CS4L_characterIndex
-          let temp3 = CS4L_playerNumber
-          gosub CycleCharacterLeft
-          let CS4L_characterIndex = temp1
-          let playerChar[3] = CS4L_characterIndex
-          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          rem Play navigation sound
-          let CS4L_soundId = SoundMenuNavigate
-          let temp1 = CS4L_soundId
-          gosub bank15 PlaySoundEffect
-CharacterSelectSkipPlayer4Left
-          if joy1right then CharacterSelectPlayer4Right
-          goto CharacterSelectSkipPlayer4Right
-CharacterSelectPlayer4Right
-          dim CS4R_characterIndex = temp1
-          dim CS4R_playerNumber = temp3
-          dim CS4R_soundId = temp1
-          let CS4R_characterIndex = playerChar[3]
-          let CS4R_playerNumber = 3
-          let temp1 = CS4R_characterIndex
-          let temp3 = CS4R_playerNumber
-          gosub CycleCharacterRight
-          let CS4R_characterIndex = temp1
-          let playerChar[3] = CS4R_characterIndex
-          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          rem Play navigation sound
-          let CS4R_soundId = SoundMenuNavigate
-          let temp1 = CS4R_soundId
-          gosub bank15 PlaySoundEffect
-CharacterSelectSkipPlayer4Right
-          rem Use skip-over pattern to avoid complex || operator
-          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CharacterSelectPlayer3LockClearDone
-          if joy1down then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-CharacterSelectPlayer3LockClearDone
-          if joy1fire then CharacterSelectPlayer4Fire
-          goto CharacterSelectSkipPlayer4Fire
-CharacterSelectPlayer4Fire
-          dim CS4F_soundId = temp1
-          rem Check if RandomCharacter selected - needs random selection
-          if playerChar[3] = RandomCharacter then CharacterSelectPlayer4Random
-          rem Check for handicap mode (down+fire = 75% health)
-          if joy1down then CharacterSelectPlayer4FireHandicap
-          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
-          rem Play selection sound
-          let CS4F_soundId = SoundMenuSelect
-          let temp1 = CS4F_soundId
-          gosub bank15 PlaySoundEffect
-          goto CharacterSelectSkipPlayer4Fire
-CharacterSelectPlayer4FireHandicap
-          dim CS4FH_soundId = temp1
-          let temp1 = 3 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked
-          rem Play selection sound
-          let CS4FH_soundId = SoundMenuSelect
-          let temp1 = CS4FH_soundId
-          gosub bank15 PlaySoundEffect
-          goto CharacterSelectSkipPlayer4Fire
-CharacterSelectPlayer4Random
-          dim CS4R_soundId = temp1
-          rem Random selection initiated - will be handled by
-          rem   CharacterSelectHandleRandomRolls
-          rem Store handicap flag if down was held
-          if joy1down then randomSelectFlags[3] = $80
-          if !joy1down then randomSelectFlags[3] = 0
-          let CS4R_soundId = SoundMenuSelect
-          let temp1 = CS4R_soundId
-          gosub bank15 PlaySoundEffect
-          rem Fall through - character will stay as RandomCharacter
-          rem   until roll succeeds
-CharacterSelectSkipPlayer4Fire
-CharacterSelectSkipPlayer4
+CS_Player3LockClearDone
+          if joy0fire then CS_HandlePlayer3Fire
+CS_SkipPlayer3
           
+          rem Handle Player 4 input (joy1 on odd frames)
+          if !(controllerStatus & SetQuadtariDetected) then CS_SkipPlayer4
+          if selectedChar4_R = 0 then CS_SkipPlayer4
+          if joy1left then CS_HandlePlayer4Left
+          if joy1right then CS_HandlePlayer4Right
+          rem Use skip-over pattern to avoid complex || operator
+          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked : goto CS_Player4LockClearDone
+          if joy1down then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+CS_Player4LockClearDone
+          if joy1fire then CS_HandlePlayer4Fire
+CS_SkipPlayer4
           
           let qtcontroller = 0
+          goto CharacterSelectInputComplete
+          
+CS_HandlePlayer3Left
+          let temp1 = 2 : let temp2 = 0 : gosub HandleCharacterSelectCycle
+          return
+CS_HandlePlayer3Right
+          let temp1 = 2 : let temp2 = 1 : gosub HandleCharacterSelectCycle
+          return
+CS_HandlePlayer3Fire
+          let temp1 = 2 : gosub HandleCharacterSelectFire
+          return
+CS_HandlePlayer4Left
+          let temp1 = 3 : let temp2 = 0 : gosub HandleCharacterSelectCycle
+          return
+CS_HandlePlayer4Right
+          let temp1 = 3 : let temp2 = 1 : gosub HandleCharacterSelectCycle
+          return
+CS_HandlePlayer4Fire
+          let temp1 = 3 : gosub HandleCharacterSelectFire
+          return
 
 CharacterSelectInputComplete
           rem Handle random character re-rolls if any players need it

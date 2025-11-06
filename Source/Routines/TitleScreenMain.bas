@@ -48,9 +48,9 @@ TitleSkipQuad
           rem Draw title screen
           gosub DrawTitleScreen bank9
           
-          rem Draw screen with titlescreen kernel minikernel (titlescreen graphics in Bank 1)
+          rem Draw screen with titlescreen kernel minikernel (titlescreen graphics in Bank 9)
           rem Note: MainLoop calls titledrawscreen, so this is only reached if called directly
-          gosub titledrawscreen bank1
+          gosub titledrawscreen bank9
           
           return
 

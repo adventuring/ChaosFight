@@ -158,7 +158,24 @@ DBPF_InlineDivideDone
             sta temp2
 end
           rem temp2 = temp5 / 2
-          gosub DivideByPfrowheight
+          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          if pfrowheight = 8 then DBPF_InlineDivideBy8_1
+          rem pfrowheight is 16, divide by 16 (4 right shifts)
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+          end
+          goto DBPF_InlineDivideDone_1
+DBPF_InlineDivideBy8_1
+          rem pfrowheight is 8, divide by 8 (3 right shifts)
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+          end
+DBPF_InlineDivideDone_1
           rem temp2 = (temp5 / 2) / pfrowheight
           let rowCounter = playfieldRow + temp2
           if rowCounter >= pfrows then goto PFCheckRight

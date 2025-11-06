@@ -477,14 +477,14 @@ end
 
 Arena17Colors
           pfcolors:
-          ColLime(2)
-          ColLime(4)
-          ColLime(6)
-          ColLime(4)
-          ColLime(6)
-          ColLime(4)
-          ColLime(2)
-          ColLime(8)
+          ColGreen(2)
+          ColGreen(4)
+          ColGreen(6)
+          ColGreen(4)
+          ColGreen(6)
+          ColGreen(4)
+          ColGreen(2)
+          ColGreen(8)
 end
 
           rem Arena 18: The Bridge (wide center platform)
@@ -552,14 +552,14 @@ end
 
 Arena20Colors
           pfcolors:
-          ColNavy(4)
-          ColNavy(4)
-          ColNavy(4)
-          ColNavy(6)
-          ColNavy(6)
-          ColNavy(8)
-          ColNavy(8)
-          ColNavy(2)
+          ColBlue(4)
+          ColBlue(4)
+          ColBlue(4)
+          ColBlue(6)
+          ColBlue(6)
+          ColBlue(8)
+          ColBlue(8)
+          ColBlue(2)
 end
 
           rem Arena 21: The Grid (checkerboard pattern)
@@ -602,14 +602,14 @@ end
 
 Arena22Colors
           pfcolors:
-          ColCrimson(4)
-          ColCrimson(4)
-          ColCrimson(4)
-          ColCrimson(4)
-          ColCrimson(4)
-          ColCrimson(4)
-          ColCrimson(4)
-          ColCrimson(6)
+          ColRed(4)
+          ColRed(4)
+          ColRed(4)
+          ColRed(4)
+          ColRed(4)
+          ColRed(4)
+          ColRed(4)
+          ColRed(6)
 end
 
           rem Arena 23: The Waves (curved platforms)
@@ -627,14 +627,14 @@ end
 
 Arena23Colors
           pfcolors:
-          ColAqua(2)
-          ColAqua(4)
-          ColAqua(4)
-          ColAqua(2)
-          ColAqua(4)
-          ColAqua(4)
-          ColAqua(2)
-          ColAqua(6)
+          ColCyan(2)
+          ColCyan(4)
+          ColCyan(4)
+          ColCyan(2)
+          ColCyan(4)
+          ColCyan(4)
+          ColCyan(2)
+          ColCyan(6)
 end
 
           rem Arena 24: The Cross (cross-shaped platform)
@@ -652,14 +652,14 @@ end
 
 Arena24Colors
           pfcolors:
-          ColSlate(4)
-          ColSlate(4)
-          ColSlate(4)
-          ColSlate(6)
-          ColSlate(6)
-          ColSlate(4)
-          ColSlate(4)
-          ColSlate(4)
+          ColGrey(4)
+          ColGrey(4)
+          ColGrey(4)
+          ColGrey(6)
+          ColGrey(6)
+          ColGrey(4)
+          ColGrey(4)
+          ColGrey(4)
 end
 
           rem Arena 25: The Maze (complex wall pattern)
@@ -677,14 +677,14 @@ end
 
 Arena25Colors
           pfcolors:
-          ColViolet(2)
-          ColViolet(4)
-          ColViolet(6)
-          ColViolet(8)
-          ColViolet(8)
-          ColViolet(6)
-          ColViolet(4)
-          ColViolet(2)
+          ColPurple(2)
+          ColPurple(4)
+          ColPurple(6)
+          ColPurple(8)
+          ColPurple(8)
+          ColPurple(6)
+          ColPurple(4)
+          ColPurple(2)
 end
 
           rem Arena 26: The Islands (scattered platforms)
@@ -702,14 +702,14 @@ end
 
 Arena26Colors
           pfcolors:
-          ColCoral(2)
-          ColCoral(2)
-          ColCoral(0)
-          ColCoral(4)
-          ColCoral(4)
-          ColCoral(0)
-          ColCoral(2)
-          ColCoral(2)
+          ColOrange(2)
+          ColOrange(2)
+          ColOrange(0)
+          ColOrange(4)
+          ColOrange(4)
+          ColOrange(0)
+          ColOrange(2)
+          ColOrange(2)
 end
 
           rem Arena 27: The Rings (concentric platforms)
@@ -727,14 +727,14 @@ end
 
 Arena27Colors
           pfcolors:
-          ColAmber(2)
-          ColAmber(4)
-          ColAmber(6)
-          ColAmber(8)
-          ColAmber(8)
-          ColAmber(6)
-          ColAmber(4)
-          ColAmber(2)
+          ColYellow(2)
+          ColYellow(4)
+          ColYellow(6)
+          ColYellow(8)
+          ColYellow(8)
+          ColYellow(6)
+          ColYellow(4)
+          ColYellow(2)
 end
 
           rem Arena 28: The Slopes (diagonal platforms)
@@ -752,14 +752,14 @@ end
 
 Arena28Colors
           pfcolors:
-          ColEmerald(2)
-          ColEmerald(4)
-          ColEmerald(6)
-          ColEmerald(8)
-          ColEmerald(8)
-          ColEmerald(6)
-          ColEmerald(4)
-          ColEmerald(2)
+          ColGreen(2)
+          ColGreen(4)
+          ColGreen(6)
+          ColGreen(8)
+          ColGreen(8)
+          ColGreen(6)
+          ColGreen(4)
+          ColGreen(2)
 end
 
           rem Arena 29: The Zigzag (zigzag pattern)
@@ -777,14 +777,14 @@ end
 
 Arena29Colors
           pfcolors:
-          ColRose(2)
-          ColRose(4)
-          ColRose(6)
-          ColRose(4)
-          ColRose(4)
-          ColRose(6)
-          ColRose(4)
-          ColRose(2)
+          ColMagenta(2)
+          ColMagenta(4)
+          ColMagenta(6)
+          ColMagenta(4)
+          ColMagenta(4)
+          ColMagenta(6)
+          ColMagenta(4)
+          ColMagenta(2)
 end
 
           rem Arena 30: The Ladder (vertical rungs)
@@ -802,14 +802,14 @@ end
 
 Arena30Colors
           pfcolors:
-          ColMint(4)
-          ColMint(4)
-          ColMint(4)
-          ColMint(4)
-          ColMint(4)
-          ColMint(4)
-          ColMint(4)
-          ColMint(6)
+          ColSpringGreen(4)
+          ColSpringGreen(4)
+          ColSpringGreen(4)
+          ColSpringGreen(4)
+          ColSpringGreen(4)
+          ColSpringGreen(4)
+          ColSpringGreen(4)
+          ColSpringGreen(6)
 end
 
           rem Arena 31: The Final Battle (complex multi-platform)
@@ -827,14 +827,14 @@ end
 
 Arena31Colors
           pfcolors:
-          ColPlatinum(2)
-          ColPlatinum(4)
-          ColPlatinum(4)
-          ColPlatinum(6)
-          ColPlatinum(4)
-          ColPlatinum(4)
-          ColPlatinum(6)
-          ColPlatinum(8)
+          ColGrey(2)
+          ColGrey(4)
+          ColGrey(4)
+          ColGrey(6)
+          ColGrey(4)
+          ColGrey(4)
+          ColGrey(6)
+          ColGrey(8)
 end
 
           rem ==========================================================

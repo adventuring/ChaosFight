@@ -20,6 +20,12 @@
           rem INPUT: temp1 = player index (0-3)
           rem USES: playerState[temp1], frame counter for flashing
 ApplyGuardFlashing
+          rem Applies guard flashing effect to a guarding player (flashes light cyan every 4 frames)
+          rem Input: temp1 = player index (0-3), playerState[] (global array) = player state flags (bit 1 = guarding), frame (global) = frame counter, ColCyan (global constant) = cyan color function, TV_SECAM (compile-time constant) = TV standard
+          rem Output: Player color set to flashing cyan if guarding, normal color otherwise
+          rem Mutates: temp1-temp4 (used for calculations), COLUP0, _COLUP1, COLUP2, COLUP3 (TIA registers) = player colors (set to flashing cyan or normal)
+          rem Called Routines: GuardNormalPhase (tail call via goto) - restores normal color
+          rem Constraints: Flash every 4 frames (frames 0-1 = flash, frames 2-3 = normal). SECAM uses ColCyan(6), NTSC/PAL uses ColCyan(12). Only applies if player is guarding (bit 1 set)
           dim AGF_playerIndex = temp1
           dim AGF_isGuarding = temp2
           dim AGF_flashPhase = temp3
@@ -49,6 +55,12 @@ ApplyGuardFlashing
           return
 
 GuardNormalPhase
+          rem Helper: Normal phase - restore normal player colors
+          rem Input: temp1 = player index (0-3), playerChar[] (global array) = player character selections
+          rem Output: Normal player colors restored
+          rem Mutates: None (colors restored by RestoreNormalPlayerColor)
+          rem Called Routines: RestoreNormalPlayerColor (tail call via goto) - restores normal colors
+          rem Constraints: Internal helper for ApplyGuardFlashing, only called during normal phase (frames 2-3)
           rem Normal phase - restore normal player colors
           rem tail call
           goto RestoreNormalPlayerColor

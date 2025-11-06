@@ -212,38 +212,96 @@ HarpySetVerticalVelocity
           return
 
 KnightGuyAttack
+          rem KnightGuy (Character 7) - Melee attack (sword visual - missile moves away then returns)
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Melee attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformMeleeAttack)
+          rem Called Routines: PerformMeleeAttack (tail call via goto) - executes melee attack, spawns missile
+          rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (sword visual - missile moves away then returns)
           goto PerformMeleeAttack
 
 FrootyAttack
+          rem Frooty (Character 8) - Ranged attack (magical sparkles from lollipop)
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Ranged attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformRangedAttack)
+          rem Called Routines: PerformRangedAttack (tail call via goto) - executes ranged attack, spawns projectile
+          rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (magical sparkles from lollipop)
           goto PerformRangedAttack
 
 NefertemAttack
+          rem Nefertem (Character 9) - Melee attack
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Melee attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformMeleeAttack)
+          rem Called Routines: PerformMeleeAttack (tail call via goto) - executes melee attack, spawns missile
+          rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
           goto PerformMeleeAttack
 
 NinjishGuyAttack
+          rem NinjishGuy (Character 10) - Ranged attack (small bullet)
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Ranged attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformRangedAttack)
+          rem Called Routines: PerformRangedAttack (tail call via goto) - executes ranged attack, spawns projectile
+          rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (small bullet)
           goto PerformRangedAttack
 
 PorkChopAttack
+          rem PorkChop (Character 11) - Melee attack
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Melee attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformMeleeAttack)
+          rem Called Routines: PerformMeleeAttack (tail call via goto) - executes melee attack, spawns missile
+          rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
           goto PerformMeleeAttack
 
 RadishGoblinAttack
+          rem RadishGoblin (Character 12) - Melee attack
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Melee attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformMeleeAttack)
+          rem Called Routines: PerformMeleeAttack (tail call via goto) - executes melee attack, spawns missile
+          rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
           goto PerformMeleeAttack
 
 RoboTitoAttack
+          rem RoboTito (Character 13) - Melee attack
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Melee attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformMeleeAttack)
+          rem Called Routines: PerformMeleeAttack (tail call via goto) - executes melee attack, spawns missile
+          rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
           goto PerformMeleeAttack
 
 UrsuloAttack
+          rem Ursulo (Character 14) - Melee attack (claw swipe)
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Melee attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformMeleeAttack)
+          rem Called Routines: PerformMeleeAttack (tail call via goto) - executes melee attack, spawns missile
+          rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (claw swipe)
           goto PerformMeleeAttack
 
 ShamoneAttack
+          rem Shamone (Character 15) - Special attack: jumps while attacking simultaneously
+          rem Input: temp1 = attacker player index (0-3)
+          rem        playerY[] (global array) = player Y positions
+          rem        playerState[] (global array) = player state flags
+          rem        MaskPlayerStateFlags (constant) = bitmask to preserve state flags
+          rem        ActionAttackExecuteShifted (constant) = attack execution animation state
+          rem Output: Player jumps 11 pixels up, melee attack executed
+          rem Mutates: temp1 (used for calculations), playerY[] (moved up 11 pixels), playerState[] (animation state set), missile state (via PerformMeleeAttack)
+          rem Called Routines: PerformMeleeAttack - executes melee attack, spawns missile
+          rem Constraints: None
           rem Special attack: jumps while attacking simultaneously
           rem First, execute the jump
           let playerY[temp1] = playerY[temp1] - 11 

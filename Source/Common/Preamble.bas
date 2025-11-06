@@ -19,10 +19,9 @@
 
           rem Include assembly configuration constants BEFORE includesfile
           rem This ensures bankswitch constant is defined before header checks
+          rem These are BASIC constants, so include outside asm block (C preprocessor will expand)
 
-          asm
 #include "Source/Common/AssemblyConfig.s"
-end
 
           includesfile multisprite_superchip.inc
 

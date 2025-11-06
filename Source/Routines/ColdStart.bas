@@ -20,7 +20,6 @@
           rem   2. TIA register initialization (colors, audio)
           rem   3. Game state initialization
           rem   4. Transition to first game mode
-          rem ==========================================================
 
 ColdStart
           rem Step 1: Detect console hardware type (7800 vs 2600)

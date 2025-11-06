@@ -21,7 +21,6 @@
           rem   kernel supports
           rem runtime modification. Otherwise, window values must be set
           rem   at compile time.
-          rem ==========================================================
           
           rem Initialize window values for Publisher screen
           rem Shows: AtariAge logo (bmp_48x2_1) + AtariAge text

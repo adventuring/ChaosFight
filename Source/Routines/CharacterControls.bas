@@ -21,7 +21,6 @@
           rem 6=Harpy, 7=KnightGuy, 8=Frooty, 9=Nefertem, 10=NinjishGuy,
           rem 11=PorkChop, 12=RadishGoblin, 13=RoboTito, 14=Ursulo,
           rem   15=Shamone
-          rem ==========================================================
 
           rem Jump Handlers (called Via On Goto From Playerinput)
           rem
@@ -634,10 +633,8 @@ ShamoneJump
           let playerState[temp1] = playerState[temp1] | 4
           return
 
-          rem ==========================================================
           rem DOWN BUTTON HANDLERS (Called via on goto from
           rem   PlayerInput)
-          rem ==========================================================
 
           rem BERNIE (0) - GUARD
 BernieDown

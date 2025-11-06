@@ -11,7 +11,6 @@
           rem
           rem Setup is handled by BeginArenaSelect in ChangeGameMode.bas
           rem This function processes one frame and returns.
-          rem ==========================================================
 
 ArenaSelect1
           rem Per-frame arena select screen with arena cycling (1-32/random)

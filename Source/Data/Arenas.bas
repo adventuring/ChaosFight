@@ -15,12 +15,10 @@
           rem - ArenaXColorsColor: row colors for Color mode
           rem   (switchbw=0)
           rem All arenas share ArenaColorsBW for B&W mode
-          rem ==========================================================
 
           rem Shared B&w Color Definition
           rem
           rem All arenas use the same B&W colors (all white)
-          rem ==========================================================
 ArenaColorsBW
           pfcolors:
           ColGrey(14)
@@ -839,7 +837,6 @@ end
           rem Playfield pointer lookup tables for efficient arena loading
           rem Format: 32 entries (indices 0-31) for Arena0-Arena31
           rem Note: PF1 and PF2 both point to the same ArenaNPlayfield
-          rem ==========================================================
 
           data ArenaPF1PointerL
             <Arena0Playfield, <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield,

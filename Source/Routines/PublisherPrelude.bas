@@ -31,7 +31,6 @@
           rem   preambleTimer - Frame counter for timing
           rem   musicPlaying - Music state flag
           rem   QuadtariDetected - For checking all controllers
-          rem ==========================================================
 
 PublisherPreludeMain
           rem Per-frame publisher prelude display and input handling

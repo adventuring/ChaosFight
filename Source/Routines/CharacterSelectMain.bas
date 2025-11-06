@@ -31,7 +31,6 @@
           rem   playerLocked[0-3) - Lock state (0=unlocked, 1=locked)
           rem   QuadtariDetected - Whether 4-player mode is active
           rem   readyCount - Number of locked players
-          rem ==========================================================
 
           rem Shared Character Select Input Handlers
           rem

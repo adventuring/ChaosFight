@@ -816,9 +816,8 @@ Char15_Execute
           rem tail call
           goto SetPlayerAnimation
 
-          rem ==========================================================
           rem PLACEHOLDER CHARACTER ANIMATION HANDLERS (16-30)
-          rem ==========================================================
+          rem
           rem These characters are not yet implemented and use standard
           rem   behaviors (Execute → Idle, no Windup)
 

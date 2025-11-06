@@ -16,7 +16,6 @@
           rem After animation completes, players will be at row 2
           rem   positions
           rem and transition to Game Mode.
-          rem ==========================================================
 
 BeginFallingAnimation
           rem Setup routine for Falling In animation - sets players in quadrant starting positions

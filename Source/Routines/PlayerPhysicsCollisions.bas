@@ -15,7 +15,6 @@
           rem playerChar[0-3] - Character type indices
           rem QuadtariDetected - Whether 4-player mode active
           rem   selectedChar3_R, selectedChar4_R - Player 3/4 selections
-          rem ==========================================================
 
           rem Check Boundary Collisions
           rem
@@ -386,10 +385,8 @@ DBPF_MultiplyDone
           if playerY[currentPlayer] < rowYPosition then let playerSubpixelY[currentPlayer] = rowYPosition
           if playerY[currentPlayer] < rowYPosition then let playerSubpixelYL[currentPlayer] = 0
           
-          rem ==========================================================
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity,
           rem   but verify)
-          rem ==========================================================
 PFCheckDown
           rem Check if player feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we

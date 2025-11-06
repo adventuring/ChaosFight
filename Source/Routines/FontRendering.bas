@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/FontRendering.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem FONT RENDERING - HEX DIGITS 0-F
-          rem ==========================================================
+          rem FONT RENDERING - HEX DIGITS 0-f
+          rem
           rem Renders 8×16 pixel hexadecimal digits (0-9, A-F) for:
           rem   - Player numbers (1-4) in player colors
           rem   - Arena selection (0-9) in white
@@ -24,7 +23,6 @@
           rem   Player 3: Yellow (ColYellow(14))
           rem Player 4: Turquoise (ColTurquoise(14), SECAM maps to
           rem   Green)
-          rem ==========================================================
 
           rem Include font data (universal for all TV standards)
           #include "Source/Generated/Numbers.bas"

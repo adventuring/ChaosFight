@@ -18,7 +18,6 @@
           rem   else
           rem system = 2600 // game was loaded from Harmony menu on a
           rem   2600
-          rem ==========================================================
           
           rem Main console detection routine
 ConsoleDetHW

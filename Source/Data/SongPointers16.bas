@@ -9,7 +9,6 @@
           rem   Revontuli (2) which are in Bank 15
           rem Index mapping: song 0 → index 0, songs 3-28 → indices 1-26
           rem Use: if songID = 0 then index = 0, else index = songID - 2
-          rem ==========================================================
           
           data SongPointersL16
             <Song_Bernie_Voice0, <Song_EXO_Voice0, <Song_Grizzards_Voice0,
@@ -56,7 +55,6 @@ end
           rem   Revontuli (2) which are in Bank 15
           rem Index mapping: song 0 → index 0, songs 3-28 → indices 1-26
           rem Use: if songID = 0 then index = 0, else index = songID - 2
-          rem ==========================================================
           
           data SongPointersL16
             <Song_Bernie_Voice0, <Song_EXO_Voice0, <Song_Grizzards_Voice0,

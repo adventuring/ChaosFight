@@ -17,7 +17,6 @@
           rem Song 26: Chaotica (Title screen)
           rem Song 27: AtariToday (Publisher prelude)
           rem Song 28: Interworldly (Author prelude)
-          rem ==========================================================
           
           data SongPointersL
             <Song_Bernie_Voice0, <Song_OCascadia_Voice0, <Song_Revontuli_Voice0, <Song_EXO_Voice0, <Song_Grizzards_Voice0,

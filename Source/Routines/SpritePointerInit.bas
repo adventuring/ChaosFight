@@ -16,7 +16,6 @@
           rem   Kernel will automatically adjust these pointers for Y offsets
           rem   during rendering. The kernel existing pointer adjustment
           rem   logic works perfectly with RAM addresses.
-          rem ==========================================================
 
 InitializeSpritePointers
           rem Sets all sprite pointers to point to SCRAM buffers

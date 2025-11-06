@@ -24,7 +24,6 @@
           rem Bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
           rem   qtcontroller - Quadtari multiplexing state
           rem   All Player arrays (X, Y, State, Health, etc.)
-          rem ==========================================================
 
 GameMainLoop
           rem Main gameplay loop that orchestrates all game systems

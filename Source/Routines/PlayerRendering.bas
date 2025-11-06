@@ -30,7 +30,6 @@
           rem   bit 1=P1, bit 2=P2, bit 3=P3)
           rem   missileX[0-3], missileY[0-3] - Projectile positions
           rem   QuadtariDetected, selectedChar3_R, selectedChar4_R
-          rem ==========================================================
 
           rem Set Sprite Positions
           rem

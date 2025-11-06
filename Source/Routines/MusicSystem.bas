@@ -1,23 +1,19 @@
           rem ChaosFight - Source/Routines/MusicSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation
-          rem ==========================================================
+          rem
           rem Music system for publisher/author/title/winner screens
           rem   (gameMode 0-2, 7)
           rem Uses interleaved 4-byte streams: AUDCV, AUDF, Duration,
           rem   Delay
           rem AUDCV = (AUDC << 4) | AUDV (packed into single byte)
           rem High byte of pointer = 0 indicates voice inactive
-          rem ==========================================================
 
-          rem ==========================================================
-          rem StartMusic - Initialize music playback
-          rem ==========================================================
+          rem Startmusic - Initialize Music Playback
+          rem
           rem Input: temp1 = song ID (0-255)
           rem Stops any current music and starts the specified song
-          rem ==========================================================
 StartMusic
           rem Initialize music playback (stops any current music and starts the specified song)
           rem Input: temp1 = song ID (0-255), songPointerL, songPointerH (global) = song pointers (via LoadSongPointer)
@@ -93,12 +89,10 @@ LoadSongPointersDone
           rem tail call
           goto UpdateMusic
 
-          rem ==========================================================
-          rem UpdateMusic - Update music playback each frame
-          rem ==========================================================
+          rem Updatemusic - Update Music Playback Each Frame
+          rem
           rem Called every frame from MainLoop for gameMode 0-2, 7
           rem Updates both voices if active (high byte ≠ 0)
-          rem ==========================================================
 UpdateMusic
           rem Update music playback each frame (called every frame from MainLoop for gameMode 0-2, 7)
           rem Input: musicVoice0PointerH, musicVoice1PointerH (global) = voice pointers, musicVoice0Frame_R, musicVoice1Frame_R (global SCRAM) = frame counters, currentSongID_R (global SCRAM) = current song ID, musicVoice0StartPointerL_R, musicVoice0StartPointerH_R, musicVoice1StartPointerL_R, musicVoice1StartPointerH_R (global SCRAM) = start pointers
@@ -251,12 +245,10 @@ CMVE_ApplyDecay
           let AUDV1 = CMVE_audv
           return
 
-          rem ==========================================================
-          rem UpdateMusicVoice0 - Update Voice 0 playback
-          rem ==========================================================
+          rem Updatemusicvoice0 - Update Voice 0 Playback
+          rem
           rem Applies envelope (attack/decay), decrements frame counter,
           rem   loads new note when counter reaches 0
-          rem ==========================================================
 UpdateMusicVoice0
           rem Update Voice 0 playback (applies envelope, decrements frame counter, loads new note when counter reaches 0)
           rem Input: musicVoice0Frame_R (global SCRAM) = frame counter, musicVoice0PointerL, musicVoice0PointerH (global) = voice pointer, currentSongID_R (global SCRAM) = current song ID, MusicVoice0TotalFrames, MusicVoice0TargetAUDV (global) = envelope parameters, NoteAttackFrames, NoteDecayFrames (global constants) = envelope constants
@@ -280,12 +272,10 @@ UpdateMusicVoice0
           gosub LoadMusicNote0 bank16
           return
 
-          rem ==========================================================
-          rem UpdateMusicVoice1 - Update Voice 1 playback
-          rem ==========================================================
+          rem Updatemusicvoice1 - Update Voice 1 Playback
+          rem
           rem Applies envelope (attack/decay), decrements frame counter,
           rem   loads new note when counter reaches 0
-          rem ==========================================================
 UpdateMusicVoice1
           rem Update Voice 1 playback (applies envelope, decrements frame counter, loads new note when counter reaches 0)
           rem Input: musicVoice1Frame_R (global SCRAM) = frame counter, musicVoice1PointerL, musicVoice1PointerH (global) = voice pointer, currentSongID_R (global SCRAM) = current song ID, MusicVoice1TotalFrames, MusicVoice1TargetAUDV (global) = envelope parameters, NoteAttackFrames, NoteDecayFrames (global constants) = envelope constants
@@ -309,9 +299,8 @@ UpdateMusicVoice1
           gosub LoadMusicNote1 bank16
           return
 
-          rem ==========================================================
-          rem StopMusic - Stop all music playback
-          rem ==========================================================
+          rem Stopmusic - Stop All Music Playback
+          rem
 StopMusic
           rem Stop all music playback (zeroes TIA volumes, clears pointers, resets frame counters)
           rem Input: None

@@ -6,7 +6,6 @@
           rem These functions access song data tables and streams in
           rem   Bank 15
           rem Duplicate of MusicBankHelpers.bas but for Bank 15 songs
-          rem ==========================================================
           
           #include "Source/Data/SongPointers15.bas"
           

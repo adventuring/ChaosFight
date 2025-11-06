@@ -127,9 +127,8 @@ LoadFromBank5
           gosub SetPlayerCharacterArtBank5 bank5
           return
           
-          rem ==========================================================
-          rem SET PLAYER CHARACTER ART (batariBASIC interface)
-          rem ==========================================================
+          rem SET PLAYER CHARACTER ART (bataribasic Interface)
+          rem
           rem Convenience function that calls LocateCharacterArt
           rem Input: temp1 = character index, temp2 = animation frame
           rem        temp3 = action, temp4 = player number

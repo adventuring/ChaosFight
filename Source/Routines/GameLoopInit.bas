@@ -27,7 +27,6 @@
           rem   4=Coming to stop, 5=Taking hit, 6=Falling backwards,
           rem   7=Falling down, 8=Fallen down, 9=Recovering,
           rem   10=Jumping, 11=Falling, 12=Landing, 13-15=Reserved
-          rem ==========================================================
 
 BeginGameLoop
           rem Initialize all game state for the main gameplay loop

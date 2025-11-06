@@ -22,7 +22,6 @@
           rem   titleParadeActive - Whether to draw parade character
           rem   COLUBK - Background color
           rem   COLUPF - Playfield color
-          rem ==========================================================
 
           rem Main draw routine for title screen
 DrawTitleScreen

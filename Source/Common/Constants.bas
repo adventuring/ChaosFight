@@ -15,9 +15,8 @@
           const RecoveryFrameCount=8
           const KnockbackDistance=12          
           
-          rem ==========================================================
-          rem PHYSICS CONSTANTS - Gravity and Terminal Velocity
-          rem ==========================================================
+          rem PHYSICS CONSTANTS - Gravity And Terminal Velocity
+          rem
           rem Scale: 16px = 2m (character height), so 1px = 0.125m =
           rem   12.5cm
           rem Gravity values are in 8.8 fixed-point subpixel units (low
@@ -419,9 +418,8 @@
           const SubpixelScale = 256
           rem 2^8 = 256 subpixel units per pixel
 
-          rem ==========================================================
-          rem PLAYFIELD CONSTANTS (runtime variables, not compile-time)
-          rem ==========================================================
+          rem PLAYFIELD CONSTANTS (runtime Variables, Not Compile-time)
+          rem
           rem NOTE: pfrowheight and pfrows are set at runtime by
           rem   ScreenLayout.bas
           rem These are NOT constants - they are runtime variables

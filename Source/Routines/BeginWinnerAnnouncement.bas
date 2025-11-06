@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/BeginWinnerAnnouncement.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem BEGIN WINNER ANNOUNCEMENT - Setup routine
-          rem ==========================================================
+          rem BEGIN WINNER ANNOUNCEMENT - Setup Routine
+          rem
           rem Setup routine for Winner Announcement mode. Sets initial
           rem   state only.
           rem Called from ChangeGameMode when transitioning to

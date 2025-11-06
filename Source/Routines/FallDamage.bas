@@ -44,7 +44,6 @@
           rem   - temp4: Fall damage amount
           rem   - temp5: Character type
           rem   - temp6: Character weight
-          rem ==========================================================
 
           rem Check Fall Damage
           rem
@@ -471,9 +470,8 @@ SetVerticalMomentum
           
           return
 
-          rem ==========================================================
-          rem DIVISION/MULTIPLICATION HELPERS (NO MUL/DIV SUPPORT)
-          rem ==========================================================
+          rem Division/multiplication HELPERS (no Mul/div Support)
+          rem
           rem Helper routines using optimized assembly for fast
           rem   division/multiplication
           rem Based on Omegamatrix’s optimized 6502 routines from

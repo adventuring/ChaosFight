@@ -9,7 +9,6 @@
           rem   2nd/3rd
           rem Row 4: Central high platform (winner podium)
           rem Row 6: Left and right platforms (2nd/3rd place)
-          rem ==========================================================
 
 WinnerScreenPlayfield
           playfield:

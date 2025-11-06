@@ -20,7 +20,6 @@
           rem   playersEliminated - Bit flags for eliminated players
           rem   playersRemaining - Count of active players
           rem   gameEndTimer - Countdown to game end screen
-          rem ==========================================================
 
           rem Check All Player Eliminations
           rem
@@ -319,9 +318,8 @@ FindLastEliminated
               if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = currentPlayer
           next
           
-          rem ==========================================================
           rem UPDATE PLAYERS 3/4 ACTIVE FLAG
-          rem ==========================================================
+          rem
           rem Updates the Players34Active flag based on whether players
           rem   3 or 4
           rem are selected and not eliminated. Used for missile

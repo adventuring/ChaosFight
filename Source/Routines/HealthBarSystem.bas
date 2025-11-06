@@ -14,7 +14,6 @@
           rem Compare health starting from 84 downward to find pixel
           rem   count
           rem Bit patterns: 0-8 pixels filled from right to left
-          rem ==========================================================
           rem NOTE: HealthThresholds table removed - code uses hardcoded thresholds
 
           rem Bit pattern table for 0-8 pixels (right-aligned fill)
@@ -32,9 +31,8 @@
               %11111111
 end
 
-          rem ==========================================================
           rem UPDATE PLAYER 1 HEALTH BAR
-          rem ==========================================================
+          rem
           rem Input: temp1 = health value (0-100)
           rem Output: pfscore1 = health bar pattern (8 pixels, bit
           rem   pattern)
@@ -98,9 +96,8 @@ P1SetPattern
           
           return
 
-          rem ==========================================================
           rem UPDATE PLAYER 2 HEALTH BAR
-          rem ==========================================================
+          rem
           rem Input: temp1 = health value (0-100)
           rem Output: pfscore2 = health bar pattern (8 pixels, bit
           rem   pattern)
@@ -207,9 +204,8 @@ InitializeHealthBars
           rem tail call
           goto UpdatePlayer2HealthBar
 
-          rem ==========================================================
-          rem P3/P4 HEALTH DISPLAY (SCORE MODE)
-          rem ==========================================================
+          rem P3/p4 HEALTH DISPLAY (score Mode)
+          rem
           rem Display players 3 and 4 health as 2-digit numbers in score
           rem   area
           rem Format: AACFAA where:

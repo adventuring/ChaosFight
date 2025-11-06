@@ -17,7 +17,6 @@
           rem   QuadtariDetected - Whether 4-player mode active
           rem   selectedChar3_R, selectedChar4_R - Player 3/4 selections
           rem   playerChar[0-3] - Character type indices
-          rem ==========================================================
 
           rem Apply Gravity
           rem

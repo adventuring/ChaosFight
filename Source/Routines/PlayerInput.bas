@@ -38,7 +38,6 @@
           rem 6=Harpy, 7=KnightGuy, 8=Frooty, 9=Nefertem, 10=NinjishGuy,
           rem 11=PorkChop, 12=RadishGoblin, 13=RoboTito, 14=Ursulo,
           rem   15=Shamone
-          rem ==========================================================
 
           rem Animation State Helper
           rem
@@ -290,9 +289,8 @@ DispatchCharacterAttack
           on DCA_characterType goto gotoChar24Attack, gotoChar25Attack, gotoChar26Attack, gotoChar27Attack, gotoChar28Attack, gotoChar29Attack, gotoChar30Attack, gotoShamoneAttack
           return
           
-          rem ==========================================================
-          rem ATTACK TRAMPOLINE FUNCTIONS (Bank 11 → CharacterAttacks.bas)
-          rem ==========================================================
+          rem ATTACK TRAMPOLINE FUNCTIONS (bank 11 → Characterattacks.bas)
+          rem
           rem Local trampoline labels that jump to Bank 11 attack handlers
           rem This allows on/goto to work with cross-bank references
           
@@ -617,9 +615,8 @@ HFCM_MoveRightOK
 HFCM_DoneFlyingMovement
           return
 
-          rem ==========================================================
-          rem LEFT PORT PLAYER INPUT HANDLER (Joy0 - Players 1 & 3)
-          rem ==========================================================
+          rem LEFT PORT PLAYER INPUT HANDLER (joy0 - Players 1 & 3)
+          rem
           rem INPUT: temp1 = player index (0 or 2)
           rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
 InputHandleLeftPortPlayer
@@ -766,9 +763,8 @@ InputSkipLeftPortAttack
           
           return
 
-          rem ==========================================================
-          rem RIGHT PORT PLAYER INPUT HANDLER (Joy1 - Players 2 & 4)
-          rem ==========================================================
+          rem RIGHT PORT PLAYER INPUT HANDLER (joy1 - Players 2 & 4)
+          rem
           rem INPUT: temp1 = player index (1 or 3)
           rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
 InputHandleRightPortPlayer
@@ -958,10 +954,8 @@ DonePauseToggle
           
           return
 
-          rem ==========================================================
           rem OLD INDIVIDUAL PLAYER HANDLERS - REPLACED BY GENERIC
           rem   ROUTINES
-          rem ==========================================================
           rem The original InputHandlePlayer1, HandlePlayer2Input,
           rem   HandlePlayer3Input,
           rem and HandlePlayer4Input have been consolidated into

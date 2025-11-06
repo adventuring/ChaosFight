@@ -8,7 +8,6 @@
           rem Handles Color/B&W switch: switchbw=1 (B&W/white),
           rem   switchbw=0 (Color/row colors)
           rem SECAM always uses B&W mode regardless of switch.
-          rem ==========================================================
 
 #include "Source/Data/Arenas.bas"
 #include "Source/Common/Colors.h"
@@ -643,7 +642,6 @@ end
           rem   current
           rem Color/B&W switch state. Called when switch changes during
           rem   gameplay.
-          rem ==========================================================
 
 ReloadArenaColors
           rem Reload arena colors based on current Color/B&W switch state

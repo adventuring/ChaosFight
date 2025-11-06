@@ -26,7 +26,6 @@
           rem   2. Update character parade
           rem   3. Draw screen
           rem   4. Return to MainLoop
-          rem ==========================================================
 
 TitleScreenMain
           rem Per-frame title screen display and input handling

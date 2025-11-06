@@ -33,7 +33,6 @@
           rem   placeholder)
           rem Character 31 (MethHound) → SongDucksAway - shared with
           rem   Shamone
-          rem ==========================================================
           data CharacterThemeSongIndices
             SongBernie, SongOCascadia, SongRevontuli, SongEXO, SongGrizzards, SongGrizzards, SongRevontuli, SongMagicalFairyForce
             SongMagicalFairyForce, SongBolero, SongLowRes, SongMagicalFairyForce, SongBolero, SongRoboTito, SongSongOfTheBear, SongDucksAway

@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/BeginAttractMode.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem BEGIN ATTRACT MODE - Setup routine
-          rem ==========================================================
+          rem BEGIN ATTRACT MODE - Setup Routine
+          rem
           rem Setup routine for Attract Mode. Sets initial state only.
           rem Called from ChangeGameMode when transitioning to
           rem   ModeAttract.

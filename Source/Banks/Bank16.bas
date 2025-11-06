@@ -10,7 +10,6 @@
           rem
           rem These functions access song data tables and streams in
           rem   this bank
-          rem ==========================================================
           
           rem Include helper functions (must be in bank to access
           rem   bank-local symbols)
@@ -57,7 +56,6 @@
           rem   Song 9: SongOfTheBear (Character 14 - Ursulo theme)
           rem   Song 10: DucksAway (Character 15 - Shamone theme)
           rem   Songs 11-25: Character16Theme through Character30Theme
-          rem ==========================================================
           
           rem Song 0: Bernie (Character 0 theme) - COMMENTED OUT
           rem #ifdef TV_NTSC
@@ -201,7 +199,6 @@
           rem Game URL: https://interworldly.com/games/ChaosFight
           rem These strings are embedded in the ROM after the end of
           rem   real code
-          rem ==========================================================
           
           asm
           ; Build date string in year.julian format (YYYY.JJJ)

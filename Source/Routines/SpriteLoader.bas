@@ -372,9 +372,8 @@ LoadNoSpriteP3
           player3height = 16
           return
 
-          rem ==========================================================
-          rem LOAD PLAYER SPRITE (generic dispatcher)
-          rem ==========================================================
+          rem LOAD PLAYER SPRITE (generic Dispatcher)
+          rem
           rem Load sprite data for any player using character art system
           rem Input: currentPlayer (global) = player index (0-3)
           rem        playerChar[] (global array) = character indices per player
@@ -418,9 +417,8 @@ LoadPlayerSpriteDispatch
           gosub LocateCharacterArt bank14
           return
 
-          rem ==========================================================
-          rem LOAD PLAYER SPRITES (legacy player-specific functions)
-          rem ==========================================================
+          rem LOAD PLAYER SPRITES (legacy Player-specific Functions)
+          rem
           rem Load sprite data into specific player registers
           rem These functions contain the actual player graphics
           rem   commands

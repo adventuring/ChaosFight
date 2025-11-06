@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/SoundSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
           rem SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
-          rem ==========================================================
+          rem
           rem Sound effects for gameplay (gameMode 6)
           rem Uses interleaved 4-byte streams: AUDCV, AUDF, Duration,
           rem   Delay
@@ -11,15 +10,12 @@
           rem High byte of pointer = 0 indicates sound inactive
           rem Supports 2 simultaneous sound effects (one per voice)
           rem Music takes priority (no sounds if music active)
-          rem ==========================================================
 
-          rem ==========================================================
-          rem PlaySoundEffect - Start sound effect playback
-          rem ==========================================================
+          rem Playsoundeffect - Start Sound Effect Playback
+          rem
           rem Input: temp1 = sound ID (0-255)
           rem Plays sound effect if voice is free, else forgets it (no
           rem   queuing)
-          rem ==========================================================
 PlaySoundEffect
           rem Start sound effect playback (plays sound if voice is free, else forgets it)
           rem Input: temp1 = sound ID (0-255), musicVoice0PointerH, musicVoice1PointerH (global) = music voice pointers, soundEffectPointerH_R, soundEffectPointer1H (global SCRAM) = sound effect pointers
@@ -62,13 +58,10 @@ TryVoice1
           rem tail call
           goto UpdateSoundEffectVoice1
 
-          rem ==========================================================
           rem UpdateSoundEffect - Update sound effect playback each
           rem   frame
-          rem ==========================================================
           rem Called every frame from MainLoop for gameMode 6
           rem Updates both voices if active (high byte != 0)
-          rem ==========================================================
 UpdateSoundEffect
           rem Update sound effect playback each frame (called every frame from MainLoop for gameMode 6)
           rem Input: soundEffectPointerH_R, soundEffectPointer1H (global SCRAM) = sound effect pointers, soundEffectFrame_R, soundEffectFrame1_R (global SCRAM) = frame counters
@@ -84,9 +77,8 @@ UpdateSoundEffect
           return
           
           
-          rem ==========================================================
-          rem UpdateSoundEffectVoice0 - Update Voice 0 sound effect
-          rem ==========================================================
+          rem Updatesoundeffectvoice0 - Update Voice 0 Sound Effect
+          rem
 UpdateSoundEffectVoice0
           rem Update Voice 0 sound effect playback (decrements frame counter, loads next note when counter reaches 0)
           rem Input: soundEffectFrame_R (global SCRAM) = frame counter, SoundEffectPointerL, soundEffectPointerH_R (global SCRAM) = sound pointer
@@ -113,9 +105,8 @@ UpdateSoundEffectVoice0
           rem   = 0, free voice
           return
           
-          rem ==========================================================
-          rem UpdateSoundEffectVoice1 - Update Voice 1 sound effect
-          rem ==========================================================
+          rem Updatesoundeffectvoice1 - Update Voice 1 Sound Effect
+          rem
 UpdateSoundEffectVoice1
           rem Update Voice 1 sound effect playback (decrements frame counter, loads next note when counter reaches 0)
           rem Input: soundEffectFrame1_R (global SCRAM) = frame counter, soundEffectPointer1L, soundEffectPointer1H (global SCRAM) = sound pointer
@@ -142,9 +133,8 @@ UpdateSoundEffectVoice1
           rem   = 0, free voice
           return
 
-          rem ==========================================================
-          rem StopSoundEffects - Stop all sound effects
-          rem ==========================================================
+          rem Stopsoundeffects - Stop All Sound Effects
+          rem
 StopSoundEffects
           rem Stop all sound effects (zeroes TIA volumes, clears pointers, resets frame counters)
           rem Input: None

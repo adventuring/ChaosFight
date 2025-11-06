@@ -40,7 +40,6 @@
           rem purposes depending on which screen we are on, maximizing
           rem   our limited RAM!
           
-          rem ==========================================================
           rem STANDARD RAM (Available everywhere):
           rem   a-z = 26 variables
           
@@ -98,16 +97,13 @@
           rem   to SCRAM w045 to avoid conflict
           rem - selectedArena: Moved from w to w014 (SCRAM) to avoid
           rem   redim conflict
-          rem ==========================================================
           
-          rem ==========================================================
-          rem COMMON VARS (Used in BOTH Admin Mode and Game Mode)
-          rem ==========================================================
+          rem COMMON VARS (used In BOTH Admin Mode And Game Mode)
+          rem
           rem These variables maintain their values across context
           rem   switches
           rem NOTE: All Common vars use earliest letters/digits (a, b,
           rem   c, ..., var0, var1, var2, ...)
-          rem ==========================================================
           
           rem Built-in variables (NO DIM NEEDED - already exist in
           rem   batariBasic):
@@ -116,9 +112,8 @@
           rem   qtcontroller - Quadtari multiplexing state (0 or 1)
           rem   frame - frame counter (increments every frame)
           
-          rem ==========================================================
-          rem COMMON VARS - Standard RAM (a-z) - sorted alphabetically
-          rem ==========================================================
+          rem COMMON VARS - Standard RAM (a-z) - Sorted Alphabetically
+          rem
 
           rem Current iteration variables (used in loops across routines)
           dim currentPlayer = c
@@ -187,10 +182,8 @@
           dim selectedChar3_R = r085
           dim selectedChar4_W = w086
           dim selectedChar4_R = r086
-          rem ==========================================================
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
-          rem ==========================================================
           
           rem Console switch handling (used in both Admin Mode and Game
           rem   Mode)
@@ -213,15 +206,13 @@
           dim fireHoldTimer_W = w015
           dim fireHoldTimer_R = r015
           
-          rem ==========================================================
-          rem MUSIC/SOUND POINTERS - Zero Page Memory (standard RAM)
-          rem ==========================================================
+          rem Music/sound POINTERS - Zero Page Memory (standard Ram)
+          rem
           rem CRITICAL: 16-bit pointers MUST be in zero page for
           rem   indirect addressing
           rem Music and Sound never run simultaneously, so pointers can
           rem   be shared
           rem Used in Admin Mode (music) and Game Mode (sound effects)
-          rem ==========================================================
           
           rem Music System Pointers (Admin Mode: gameMode 0-2, 7)
           rem NOTE: Music only runs in Admin Mode, so safe to use
@@ -265,13 +256,10 @@
           rem Sound effect Voice 1 stream position low/high bytes (high
           rem   byte = 0 means inactive) - zero page
           
-          rem ==========================================================
           rem MUSIC/SOUND FRAME COUNTERS - SCRAM (not pointers, can be
           rem   in SCRAM)
-          rem ==========================================================
           rem Frame counters are simple counters, not pointers, so SCRAM
           rem   is acceptable
-          rem ==========================================================
           
           rem Music System Frame Counters (SCRAM - used in Admin Mode)
           rem OPTIMIZED: Moved from w020-w021 to w064-w065 to free space
@@ -346,17 +334,13 @@
           rem Frame counters for current sound effect notes on each
           rem   voice (SCRAM acceptable)
 
-          rem ==========================================================
           rem ADMIN MODE VARIABLES (may be re-used in Game Mode for
           rem   other purposes)
-          rem ==========================================================
           rem These variables are ONLY valid on Admin Mode screens
           rem   (GameModes 0-5,7)
-          rem ==========================================================
           
-          rem ==========================================================
-          rem ADMIN MODE - Standard RAM (a-z) - sorted alphabetically
-          rem ==========================================================
+          rem ADMIN MODE - Standard RAM (a-z) - Sorted Alphabetically
+          rem
           
           rem ADMIN: Falling animation variables (standard RAM a,b,c,d)
           rem NOTE: These are REDIMMED in Game Mode for missileX[0-3]
@@ -382,10 +366,8 @@
           dim charSelectAnimFrame = v      
           rem ADMIN: Current frame in sequence (ADMIN-only, no conflict)
           
-          rem ==========================================================
           rem ADMIN MODE - Standard RAM (var0-var47) - sorted
           rem   numerically
-          rem ==========================================================
           
           rem ADMIN: Character selection state (var37-var38)
           rem NOTE: These are REDIMMED in Game Mode for
@@ -470,13 +452,10 @@
           rem ADMIN: Runtime window value for bmp_48x2_4 (BRP)
           rem   - 0=hidden, 42=visible
           
-          rem ==========================================================
           rem GAME MODE VARIABLES (may be re-used in Admin Mode for
           rem   other purposes)
-          rem ==========================================================
           rem These variables are ONLY valid on Game Mode screens
           rem   (GameMode 6)
-          rem ==========================================================
 
           rem Player data arrays using batariBasic array syntax
           rem playerX[0-3] = player1X, player2X, player3X, player4X
@@ -592,10 +571,8 @@
           dim playerSubpixelY = playerSubpixelY_W
           dim playerSubpixelYL = playerSubpixelY_WL
           
-          rem ==========================================================
           rem GAME MODE - Standard RAM (var24-var47) - sorted
           rem   numerically
-          rem ==========================================================
           
           rem Game Mode: Animation system variables (moved to SCRAM -
           rem   updated at 10fps, not every frame)
@@ -659,9 +636,8 @@
           dim winScreenTimer_R = r044
           rem Game Mode: Win screen display timer (SCRAM)
           
-          rem ==========================================================
-          rem GAME MODE - Standard RAM (a-z) - sorted alphabetically
-          rem ==========================================================
+          rem GAME MODE - Standard RAM (a-z) - Sorted Alphabetically
+          rem
           
           rem Game Mode: Missile active flags - bit-packed into single
           rem   byte (standard RAM)
@@ -717,10 +693,8 @@
           rem These are looked up from character data each frame and
           rem   stored in missileVelocityX/Y
 
-          rem ==========================================================
           rem GAME MODE - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
-          rem ==========================================================
           
           rem PlayerFrameBuffer (64-byte contiguous block for sprite
           rem   rendering)
@@ -842,10 +816,8 @@
           rem Array accessible as harpyLastFlapFrame[0] through
           rem   harpyLastFlapFrame[3]
 
-          rem ==========================================================
           rem ADMIN MODE - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
-          rem ==========================================================
           
           rem ADMIN: Random character selection flags (SCRAM - used in
           rem   character select)
@@ -888,9 +860,8 @@
           rem Array accessible as charSelectPlayerAnimSeq[0] through
           rem   charSelectPlayerAnimSeq[3]
 
-          rem ==========================================================
           rem TODO / FUTURE EXPANSION
-          rem ==========================================================
+          rem
           
           rem Note: playerDamage[0-3] now properly allocated in SCRAM
           rem   (w067-w070) - see Common Vars section above
@@ -917,15 +888,12 @@
           rem playerSubpixelX/Y: in SCRAM (w049-w064, 16 bytes) - less
           rem   frequently accessed
           
-          rem ==========================================================
           rem TEMPORARY WORKING VARIABLES - SCRAM (for temp7+
           rem   replacements)
-          rem ==========================================================
           rem These replace invalid temp7+ variables (only temp1-temp6
           rem   exist)
           rem Each variable has a semantically meaningful name based on
           rem   its usage context
-          rem ==========================================================
           
           dim oldHealthValue_W = w089
           dim oldHealthValue_R = r089

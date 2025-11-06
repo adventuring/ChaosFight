@@ -11,9 +11,8 @@
           rem   - Missile size (width × height)
           rem   - Missile emission height (on character sprite)
 
-          rem ==========================================================
-          rem CHARACTER NAMES (Internal Documentation Only)
-          rem ==========================================================
+          rem CHARACTER NAMES (internal Documentation Only)
+          rem
           rem Character 0:  Bernie
           rem Character 1:  Curler
           rem Character 2:  Dragon of Storms
@@ -70,9 +69,8 @@
             rem Radish Goblin, Robo Tito, Ursulo, Shamone
 end
 
-          rem ==========================================================
-          rem SAFE FALL VELOCITY THRESHOLDS (120 / weight)
-          rem ==========================================================
+          rem SAFE FALL VELOCITY THRESHOLDS (120 / Weight)
+          rem
           rem Lookup table for safe fall velocity threshold calculation
           rem Formula: safe_velocity = 120 / weight
           rem Pre-computed for all 16 characters to avoid variable
@@ -89,9 +87,8 @@ end
             rem Radish Goblin(3), Robo Tito(2), Ursulo(1), Shamone(3)
 end
 
-          rem ==========================================================
-          rem WEIGHT DIVIDED BY 20 (for damage multiplier)
-          rem ==========================================================
+          rem WEIGHT DIVIDED BY 20 (for Damage Multiplier)
+          rem
           rem Lookup table for weight / 20 calculation
           rem Used for damage multiplier: damage = damage * (weight /
           rem   20)
@@ -107,9 +104,8 @@ end
             rem Radish Goblin(1), Robo Tito(3), Ursulo(4), Shamone(1)
 end
 
-          rem ==========================================================
-          rem SQUARE LOOKUP TABLE (for velocity² calculations)
-          rem ==========================================================
+          rem SQUARE LOOKUP TABLE (for Velocity² Calculations)
+          rem
           rem Lookup table for squaring values 1-24
           rem Used for kinematic calculations: d = v² / 4
           rem Pre-computed to avoid variable multiplication
@@ -271,9 +267,8 @@ end
              3, 14, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
 end
 
-          rem ==========================================================
-          rem MISSILE INITIAL MOMENTUM X (Horizontal Velocity)
-          rem ==========================================================
+          rem MISSILE INITIAL MOMENTUM X (horizontal Velocity)
+          rem
           rem Initial horizontal velocity of missile in pixels per frame
           rem Positive = right, Negative = left, 0 = straight up/down
           rem Values: -127 to 127
@@ -286,9 +281,8 @@ end
             rem Ursulo changed from 7 to 0 (melee, no missile momentum)
 end
 
-          rem ==========================================================
-          rem MISSILE INITIAL MOMENTUM Y (Vertical Velocity)
-          rem ==========================================================
+          rem MISSILE INITIAL MOMENTUM Y (vertical Velocity)
+          rem
           rem Initial vertical velocity of missile in pixels per frame
           rem Positive = down, Negative = up, 0 = horizontal only
           rem   (arrowshot)
@@ -348,9 +342,8 @@ end
             rem   (melee)
 end
 
-          rem ==========================================================
-          rem MISSILE LIFETIME (DURATION)
-          rem ==========================================================
+          rem MISSILE LIFETIME (duration)
+          rem
           rem How long the missile/attack visual stays active (in
           rem   frames)
           rem For melee attacks: 3-8 frames (brief sword/punch visual)

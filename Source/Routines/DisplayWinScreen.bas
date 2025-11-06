@@ -13,7 +13,6 @@
           rem   - 2 players: Winner centered, runner-up on left platform
           rem - 3+ players: Winner centered high, 2nd on left, 3rd on
           rem   right
-          rem ==========================================================
 
 DisplayWinScreen
           rem Displays winner screen with fixed playfield pattern and 1-3 characters

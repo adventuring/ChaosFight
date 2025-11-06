@@ -26,7 +26,6 @@
           rem   Guy,
           rem 11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo,
           rem   15=Shamone
-          rem ==========================================================
 
           rem Update parade state (called every frame)
 UpdateCharacterParade

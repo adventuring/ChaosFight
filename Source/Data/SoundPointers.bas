@@ -11,7 +11,6 @@
           rem   3=PlayerEliminated, 4=MenuNavigate,
           rem 5=MenuSelect, 6=SpecialMove, 7=Powerup, 8=LandingSafe,
           rem   9=LandingDamage
-          rem ==========================================================
           
           data SoundPointersL
             <Sound_SoundAttackHit, <Sound_SoundGuardBlock, <Sound_SoundJump, <Sound_SoundPlayerEliminated, <Sound_SoundMenuNavigate,

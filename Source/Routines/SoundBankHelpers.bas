@@ -5,7 +5,6 @@
           rem
           rem These functions access sound data tables and streams in
           rem   Bank 15
-          rem ==========================================================
           
           #include "Source/Data/SoundPointers.bas"
           

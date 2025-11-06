@@ -8,7 +8,6 @@
           rem All character data is defined in CharacterDefinitions.bas
           rem   and
           rem accessed through these optimized lookup routines.
-          rem ==========================================================
 
           rem Get Character Weight
           rem

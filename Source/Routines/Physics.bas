@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/Physics.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem PHYSICS SYSTEM - Weight-based wall collisions and movement
-          rem ==========================================================
+          rem PHYSICS SYSTEM - Weight-based Wall Collisions And Movement
+          rem
 
           rem Handle weight-based wall collision for a player
           rem Input: player index (in temp1)

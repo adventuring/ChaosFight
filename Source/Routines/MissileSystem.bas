@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/MissileSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem MISSILE SYSTEM - 4-PLAYER MISSILE MANAGEMENT
-          rem ==========================================================
+          rem MISSILE SYSTEM - 4-player MISSILE MANAGEMENT
+          rem
           rem Manages up to 4 simultaneous missiles/attack visuals (one
           rem   per player).
           rem Each player can have ONE active missile at a time, which
@@ -30,7 +29,6 @@
           rem   player
           rem temp5 = scratch for character data lookups / missile flags
           rem   temp6 = scratch for bit manipulation / collision bounds
-          rem ==========================================================
 
           rem Get Player Missile Bit Flag
           rem
@@ -456,9 +454,8 @@ MissileUpdateComplete
           
           return
 
-          rem ==========================================================
-          rem HANDLE MEGAX MISSILE (Stationary Fire Breath Visual)
-          rem ==========================================================
+          rem HANDLE MEGAX MISSILE (stationary Fire Breath Visual)
+          rem
           rem Megax missile stays adjacent to player, no movement.
           rem Missile appears when attack starts, stays during attack phase,
           rem   and vanishes when attack animation completes.
@@ -526,9 +523,8 @@ MegaxMissileActive
           rem Skip normal movement and collision checks
           return
 
-          rem ==========================================================
-          rem HANDLE KNIGHT GUY MISSILE (Sword Swing Visual)
-          rem ==========================================================
+          rem HANDLE KNIGHT GUY MISSILE (sword Swing Visual)
+          rem
           rem Knight Guy missile appears partially overlapping player,
           rem   moves slightly away during attack phase (sword swing),
           rem   returns to start position, and vanishes when attack
@@ -687,9 +683,8 @@ MissileSysPF
           
           return
 
-          rem ==========================================================
-          rem DIVIDE HELPERS (NO MUL/DIV SUPPORT)
-          rem ==========================================================
+          rem DIVIDE HELPERS (no Mul/div Support)
+          rem
           rem HalfTemp7: integer divide temp7 by 2 using bit shift
 HalfTemp7
           rem Helper: Divides temp7 by 2 using bit shift (integer division)

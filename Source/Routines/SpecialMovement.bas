@@ -21,7 +21,6 @@
           rem   Guy,
           rem 11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo,
           rem   15=Shamone
-          rem ==========================================================
 
           rem Apply special movement physics to all active players
 ApplySpecialMovement

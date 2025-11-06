@@ -13,7 +13,6 @@
           rem AVAILABLE VARIABLES:
           rem   play, 1=paused
           rem systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal
-          rem ==========================================================
 
           rem Warm Start / Reset Handler
           rem
@@ -27,7 +26,6 @@
           rem   - Reinitializes TIA color and audio registers
           rem   - Resets gameMode to ModePublisherPrelude
           rem   - Calls ChangeGameMode to transition to startup sequence
-          rem ==========================================================
 WarmStart
           rem Handles game reset from any screen/state
           rem Input: None (called from MainLoop on RESET)

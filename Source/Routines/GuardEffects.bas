@@ -10,7 +10,6 @@
           rem - Guard lasts maximum 1 second (60 frames)
           rem - Guard cannot be used again for 1 second after previous
           rem   use
-          rem ==========================================================
 
           rem Apply Guard Visual Effects
           rem

@@ -21,7 +21,6 @@
           rem FACING DIRECTION FORMULA (for AOE attacks):
           rem   Facing right (bit 0 = 1): AOE_X = playerX + offset
           rem   Facing left  (bit 0 = 0): AOE_X = playerX + 7 - offset
-          rem ==========================================================
 
           rem Check All Missile Collisions
           rem

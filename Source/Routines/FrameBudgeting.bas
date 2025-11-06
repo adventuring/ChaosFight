@@ -33,7 +33,6 @@
           rem HealthBarUpdatePlayer - Which player health bar to update
           rem CollisionCheckPair - Which collision pair to check this
           rem   frame
-          rem ==========================================================
 
           rem Update Frame Phase
           rem

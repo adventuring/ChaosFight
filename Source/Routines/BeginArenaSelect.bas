@@ -12,7 +12,6 @@
           rem   BeginLevelSelect.bas for consistency).
           rem Function name is BeginArenaSelect (Arena Select is preferred
           rem   terminology in codebase per Requirements.md).
-          rem ==========================================================
 
 BeginArenaSelect
           rem Setup routine for Arena Select screen - initializes arena selection state and screen layout

@@ -17,7 +17,6 @@
           rem   2-player: P1 at (53, 24), P2 at (107, 24)
           rem 4-player: P1 at (32, 24), P3 at (64, 24), P4 at (96, 24),
           rem   P2 at (128, 24)
-          rem ==========================================================
 
 FallingAnimation1
           rem Per-frame falling animation that moves players from quadrants to row 2 positions

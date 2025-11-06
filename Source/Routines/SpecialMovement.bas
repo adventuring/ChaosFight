@@ -26,11 +26,31 @@
 
           rem Apply special movement physics to all active players
 ApplySpecialMovement
-          temp1 = 0 : gosub ApplyPlayerSpecialMovement
-          temp1 = 1 : gosub ApplyPlayerSpecialMovement
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then temp1 = 2 : gosub ApplyPlayerSpecialMovement
-          rem tail call
-          goto ApplyPlayerSpecialMovement
+          rem Inline ApplyPlayerSpecialMovement to avoid local label cross-bank issues
+          rem Player 0 - Frooty (8) and Dragon of Storms (2) skip gravity
+          temp4 = playerChar[0]
+          if temp4 = 8 then ApplySpecialMovementP1
+          rem Frooty: no gravity (free flight)
+          if temp4 = 2 then ApplySpecialMovementP1
+          rem Dragon of Storms: no gravity (free flight)
+ApplySpecialMovementP1
+          rem Player 1 - Frooty (8) and Dragon of Storms (2) skip gravity
+          temp4 = playerChar[1]
+          if temp4 = 8 then ApplySpecialMovementP2
+          rem Frooty: no gravity (free flight)
+          if temp4 = 2 then ApplySpecialMovementP2
+          rem Dragon of Storms: no gravity (free flight)
+ApplySpecialMovementP2
+          rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then if playerChar[2] = 8 then ApplySpecialMovementP3
+          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then if playerChar[2] = 2 then ApplySpecialMovementP3
+          rem Dragon of Storms: no gravity (free flight)
+ApplySpecialMovementP3
+          rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then if playerChar[3] = 8 then return
+          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then if playerChar[3] = 2 then return
+          rem Dragon of Storms: no gravity (free flight)
+          return
 
           rem ==========================================================
           rem APPLY SPECIAL PHYSICS TO ONE PLAYER

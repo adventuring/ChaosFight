@@ -121,6 +121,7 @@ UpdateSprite
           dim US_animationFrame = temp2
           dim US_animationAction = temp3
           dim US_playerNumber = temp4
+          const US_SEPARATOR = 0
           rem Update character sprite with current animation frame and
           rem   action
           rem INPUT: currentPlayer = player index (0-3) (uses global
@@ -135,6 +136,8 @@ UpdateSprite
           rem Frame is from this sprite 10fps counter
           rem   (currentAnimationFrame), not global frame counter
           rem SCRAM read: Read from r081
+          rem NOTE: US_SEPARATOR const added to work around compiler bug
+          rem   where dim entries concatenate with subsequent constants
           let US_animationFrame = currentAnimationFrame_R[currentPlayer] 
           let US_animationAction = currentAnimationSeq[currentPlayer]
           let US_playerNumber = currentPlayer

@@ -448,14 +448,20 @@ Object/2600basic_variable_redefs.h:
 Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
+	@echo "Fixing broken concatenated entries in 2600basic_variable_redefs.h..."
+	@cd Object && sed -i '/^[A-Z][A-Z][A-Z]_[a-zA-Z]*Song_/d; /^[A-Z][A-Z][A-Z]_[a-zA-Z]*Sound_/d; /^[A-Z][A-Z][A-Z]_[a-zA-Z]*ArenaPF/d; /^[A-Z][A-Z][A-Z]_[a-zA-Z]*SongPointers/d' 2600basic_variable_redefs.h || true
 
 Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s
+	@echo "Fixing broken concatenated entries in 2600basic_variable_redefs.h..."
+	@cd Object && sed -i '/^[A-Z][A-Z][A-Z]_[a-zA-Z]*Song_/d; /^[A-Z][A-Z][A-Z]_[a-zA-Z]*Sound_/d; /^[A-Z][A-Z][A-Z]_[a-zA-Z]*ArenaPF/d; /^[A-Z][A-Z][A-Z]_[a-zA-Z]*SongPointers/d' 2600basic_variable_redefs.h || true
 
 Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s
+	@echo "Fixing broken concatenated entries in 2600basic_variable_redefs.h..."
+	@cd Object && sed -i '/^[A-Z][A-Z][A-Z]_[a-zA-Z]*Song_/d; /^[A-Z][A-Z][A-Z]_[a-zA-Z]*Sound_/d; /^[A-Z][A-Z][A-Z]_[a-zA-Z]*ArenaPF/d; /^[A-Z][A-Z][A-Z]_[a-zA-Z]*SongPointers/d' 2600basic_variable_redefs.h || true
 
 # Step 3: Postprocess $(GAME)$(GAMEYEAR).bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory

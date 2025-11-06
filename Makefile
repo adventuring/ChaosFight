@@ -447,33 +447,34 @@ Object/2600basic_variable_redefs.h:
 # Step 2: Compile .preprocessed.bas → $(GAME)$(GAMEYEAR).bB.ARCH.s
 Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
+	cd Object && timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
 
 Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s
+	cd Object && timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s
 
 Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
-	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s
+	cd Object && timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s
 
 # Step 3: Postprocess $(GAME)$(GAMEYEAR).bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory
 # (it's created by 2600basic in Object/), so run postprocess from Object/
 # postprocess also needs $(GAME)$(GAMEYEAR).bB.asm to exist (listed in includes.bB), so create symlink
-# Fix ## token pasting: cpp should expand ColGreen(6) → _COL_Green_L6, but if ##
-# remains, replace it with _ (e.g., _COL_Green_L##6 → _COL_Green_L6)
+# Fix ## token pasting: cpp should expand ColGrey(6) → _COL_Grey_L6, but if ##
+# remains, replace ## with nothing (e.g., _COL_Grey_L##6 → _COL_Grey_L6)
+# Pattern: ## followed by digits should be removed, leaving just the digits
 Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.NTSC.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.NTSC.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.NTSC.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.NTSC.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/\1/g' > ../$@
 
 Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.PAL.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.PAL.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.PAL.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.PAL.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/\1/g' > ../$@
 
 Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.SECAM.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.SECAM.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.SECAM.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.SECAM.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/\1/g' > ../$@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS

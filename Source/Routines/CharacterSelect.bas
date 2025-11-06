@@ -4,6 +4,15 @@
           rem PlayerLockedHelpers.bas moved to Bank 1
 
 SelScreenEntry
+          rem Initialize character select screen state
+          rem Input: None (entry point)
+          rem Output: playerChar[] initialized, playerLocked initialized, animation state initialized,
+          rem         COLUBK set, Quadtari detection called
+          rem Mutates: playerChar[0-3] (set to 0), playerLocked (set to 0), charSelectAnimTimer,
+          rem         charSelectAnimState, charSelectCharIndex, charSelectAnimFrame, COLUBK (TIA register)
+          rem Called Routines: SelDetectQuad - accesses controller detection state
+          rem Constraints: Entry point for character select screen initialization
+          rem              Must be colocated with SelScreenLoop (called via goto)
           rem Initialize character selections
           let playerChar[0] = 0
           let playerChar[1] = 0
@@ -32,6 +41,22 @@ SelScreenEntry
           rem Always black background
 
 SelScreenLoop
+          rem Per-frame character select screen loop with Quadtari multiplexing
+          rem Input: qtcontroller (global) = Quadtari controller frame toggle
+          rem        joy0left, joy0right, joy0up, joy0down, joy0fire (hardware) = Player 1/3 joystick
+          rem        joy1left, joy1right, joy1up, joy1down, joy1fire (hardware) = Player 2/4 joystick
+          rem        playerChar[] (global array) = current character selections
+          rem        playerLocked (global) = player lock states
+          rem        MaxCharacter (constant) = maximum character index
+          rem Output: Dispatches to SelHandleQuad or processes even frame input, then returns
+          rem Mutates: qtcontroller (toggled), playerChar[], playerLocked state, temp1, temp2 (passed to SetPlayerLocked)
+          rem Called Routines: SetPlayerLocked (bank1) - accesses playerLocked state
+          rem Constraints: Must be colocated with SelChkP0Left, SelSkipP0Left, SelChkP0Right, SelSkipP0Right,
+          rem              SelChkJoy0Fire, SelJoy0Down, SelP0Lock, SelP0Handi, SelP0Done,
+          rem              SelChkP1Left, SelSkipP1Left, SelChkP1Right, SelSkipP1Right,
+          rem              SelChkJoy1Fire, SelJoy1Down, SelJoy1Chk, SelJoy1Done, SelSkipJoy1Even,
+          rem              SelHandleQuad (all called via goto)
+          rem              Entry point for character select screen loop
           rem Quadtari controller multiplexing:
           rem On even frames (qtcontroller=0): handle controllers 0 and
           rem   1
@@ -272,6 +297,17 @@ SelSkipQuadChkInline
 
           rem Draw character selection screen
 SelDrawScreen
+          rem Draw character selection screen with player sprites and numbers
+          rem Input: playerChar[] (global array) = current character selections
+          rem        controllerStatus (global) = controller detection state
+          rem        player0-3x, player0-3y (TIA registers) = sprite positions (set by caller or inline)
+          rem Output: pf0-pf5 (playfield registers) cleared, player sprites drawn, numbers drawn
+          rem Mutates: pf0-pf5 (playfield registers), player0-3x, player0-3y (TIA registers),
+          rem         player sprite pointers (via SelDrawSprite), playfield data (via SelDrawNumber)
+          rem Called Routines: SelDrawSprite - accesses playerChar[], draws character sprites,
+          rem   SelDrawNumber - draws player number indicators
+          rem Constraints: Must be colocated with SelDrawP3, SelSkipP3, SelDrawP4, SelSkipP4
+          rem              (all called via goto)
           rem Clear playfield
           pf0 = 0
           pf1 = 0
@@ -302,6 +338,13 @@ SelDrawScreen
           if controllerStatus & SetQuadtariDetected then SelDrawP3
           goto SelSkipP3
 SelDrawP3
+          rem Draw Player 3 character sprite and number
+          rem Input: playerChar[] (global array) = current character selections
+          rem        player0x, player0y (TIA registers) = sprite position (set inline)
+          rem Output: Player 3 sprite drawn, number indicator drawn
+          rem Mutates: player sprite pointers (via SelDrawSprite), playfield data (via SelDrawNumber)
+          rem Called Routines: SelDrawSprite, SelDrawNumber
+          rem Constraints: Must be colocated with SelDrawScreen, SelSkipP3
           player0x = 56
           player0y = 80 
           rem Adjusted for 16px left margin
@@ -315,6 +358,13 @@ SelDrawP3
           if controllerStatus & SetQuadtariDetected then SelDrawP4
           goto SelSkipP4
 SelDrawP4
+          rem Draw Player 4 character sprite and number
+          rem Input: playerChar[] (global array) = current character selections
+          rem        player1x, player1y (TIA registers) = sprite position (set inline)
+          rem Output: Player 4 sprite drawn, number indicator drawn
+          rem Mutates: player sprite pointers (via SelDrawSprite), playfield data (via SelDrawNumber)
+          rem Called Routines: SelDrawSprite, SelDrawNumber
+          rem Constraints: Must be colocated with SelDrawScreen, SelSkipP4
           let player1x = 104
           let player1y = 80
           rem Adjusted for 16px margins

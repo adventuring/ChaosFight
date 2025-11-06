@@ -107,316 +107,306 @@ LoadRandomArena
           goto LoadArenaByIndex
 
 LoadArena0Colors
-          rem Set pfcolortable pointer to Arena0ColorsColor
+          rem Set pfcolortable pointer to Arena0Colors
           asm
-            lda #<Arena0ColorsColor
+            lda #<Arena0Colors
             sta pfcolortable
-            lda #>Arena0ColorsColor
+            lda #>Arena0Colors
             sta pfcolortable+1
 end
           return
 LoadArena1Colors
-          rem Set pfcolortable pointer to Arena1ColorsColor
+          rem Set pfcolortable pointer to Arena1Colors
           asm
-            lda #<Arena1ColorsColor
+            lda #<Arena1Colors
             sta pfcolortable
-            lda #>Arena1ColorsColor
+            lda #>Arena1Colors
             sta pfcolortable+1
 end
           return
 LoadArena2Colors
-          rem Set pfcolortable pointer to Arena2ColorsColor
+          rem Set pfcolortable pointer to Arena2Colors
           asm
-            lda #<Arena2ColorsColor
+            lda #<Arena2Colors
             sta pfcolortable
-            lda #>Arena2ColorsColor
+            lda #>Arena2Colors
             sta pfcolortable+1
 end
           return
 LoadArena3Colors
-          rem Set pfcolortable pointer to Arena3ColorsColor
+          rem Set pfcolortable pointer to Arena3Colors
           asm
-            lda #<Arena3ColorsColor
+            lda #<Arena3Colors
             sta pfcolortable
-            lda #>Arena3ColorsColor
+            lda #>Arena3Colors
             sta pfcolortable+1
 end
           return
 LoadArena4Colors
-          rem Set pfcolortable pointer to Arena4ColorsColor
+          rem Set pfcolortable pointer to Arena4Colors
           asm
-            lda #<Arena4ColorsColor
+            lda #<Arena4Colors
             sta pfcolortable
-            lda #>Arena4ColorsColor
+            lda #>Arena4Colors
             sta pfcolortable+1
 end
           return
 LoadArena5Colors
-          rem Set pfcolortable pointer to Arena5ColorsColor
+          rem Set pfcolortable pointer to Arena5Colors
           asm
-            lda #<Arena5ColorsColor
+            lda #<Arena5Colors
             sta pfcolortable
-            lda #>Arena5ColorsColor
+            lda #>Arena5Colors
             sta pfcolortable+1
 end
           return
 LoadArena6Colors
-          rem Set pfcolortable pointer to Arena6ColorsColor
+          rem Set pfcolortable pointer to Arena6Colors
           asm
-            lda #<Arena6ColorsColor
+            lda #<Arena6Colors
             sta pfcolortable
-            lda #>Arena6ColorsColor
+            lda #>Arena6Colors
             sta pfcolortable+1
 end
           return
 LoadArena7Colors
-          rem Set pfcolortable pointer to Arena7ColorsColor
+          rem Set pfcolortable pointer to Arena7Colors
           asm
-            lda #<Arena7ColorsColor
+            lda #<Arena7Colors
             sta pfcolortable
-            lda #>Arena7ColorsColor
+            lda #>Arena7Colors
             sta pfcolortable+1
 end
           return
 LoadArena8Colors
-          rem Set pfcolortable pointer to Arena8ColorsColor
+          rem Set pfcolortable pointer to Arena8Colors
           asm
-            lda #<Arena8ColorsColor
+            lda #<Arena8Colors
             sta pfcolortable
-            lda #>Arena8ColorsColor
+            lda #>Arena8Colors
             sta pfcolortable+1
 end
           return
 LoadArena9Colors
-          rem Set pfcolortable pointer to Arena9ColorsColor
+          rem Set pfcolortable pointer to Arena9Colors
           asm
-            lda #<Arena9ColorsColor
+            lda #<Arena9Colors
             sta pfcolortable
-            lda #>Arena9ColorsColor
+            lda #>Arena9Colors
             sta pfcolortable+1
 end
           return
 LoadArena10Colors
-          rem Set pfcolortable pointer to Arena10ColorsColor
+          rem Set pfcolortable pointer to Arena10Colors
           asm
-            lda #<Arena10ColorsColor
+            lda #<Arena10Colors
             sta pfcolortable
-            lda #>Arena10ColorsColor
+            lda #>Arena10Colors
             sta pfcolortable+1
 end
           return
 LoadArena11Colors
-          rem Set pfcolortable pointer to Arena11ColorsColor
+          rem Set pfcolortable pointer to Arena11Colors
           asm
-            lda #<Arena11ColorsColor
+            lda #<Arena11Colors
             sta pfcolortable
-            lda #>Arena11ColorsColor
+            lda #>Arena11Colors
             sta pfcolortable+1
 end
           return
 LoadArena12Colors
-          rem Set pfcolortable pointer to Arena12ColorsColor
+          rem Set pfcolortable pointer to Arena12Colors
           asm
-            lda #<Arena12ColorsColor
+            lda #<Arena12Colors
             sta pfcolortable
-            lda #>Arena12ColorsColor
+            lda #>Arena12Colors
             sta pfcolortable+1
 end
           return
 LoadArena13Colors
-          rem Set pfcolortable pointer to Arena13ColorsColor
+          rem Set pfcolortable pointer to Arena13Colors
           asm
-            lda #<Arena13ColorsColor
+            lda #<Arena13Colors
             sta pfcolortable
-            lda #>Arena13ColorsColor
+            lda #>Arena13Colors
             sta pfcolortable+1
 end
           return
 LoadArena14Colors
-          rem Set pfcolortable pointer to Arena14ColorsColor
+          rem Set pfcolortable pointer to Arena14Colors
           asm
-            lda #<Arena14ColorsColor
+            lda #<Arena14Colors
             sta pfcolortable
-            lda #>Arena14ColorsColor
+            lda #>Arena14Colors
             sta pfcolortable+1
 end
           return
 LoadArena15Colors
-          rem Set pfcolortable pointer to Arena15ColorsColor
+          rem Set pfcolortable pointer to Arena15Colors
           asm
-            lda #<Arena15ColorsColor
+            lda #<Arena15Colors
             sta pfcolortable
-            lda #>Arena15ColorsColor
+            lda #>Arena15Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena16Colors
-          rem Set pfcolortable pointer to Arena16ColorsColor
+          rem Set pfcolortable pointer to Arena16Colors
           asm
-            lda #<Arena16ColorsColor
+            lda #<Arena16Colors
             sta pfcolortable
-            lda #>Arena16ColorsColor
+            lda #>Arena16Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena17Colors
-          rem Set pfcolortable pointer to Arena17ColorsColor
+          rem Set pfcolortable pointer to Arena17Colors
           asm
-            lda #<Arena17ColorsColor
+            lda #<Arena17Colors
             sta pfcolortable
-            lda #>Arena17ColorsColor
+            lda #>Arena17Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena18Colors
-          rem Set pfcolortable pointer to Arena18ColorsColor
+          rem Set pfcolortable pointer to Arena18Colors
           asm
-            lda #<Arena18ColorsColor
+            lda #<Arena18Colors
             sta pfcolortable
-            lda #>Arena18ColorsColor
+            lda #>Arena18Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena19Colors
-          rem Set pfcolortable pointer to Arena19ColorsColor
+          rem Set pfcolortable pointer to Arena19Colors
           asm
-            lda #<Arena19ColorsColor
+            lda #<Arena19Colors
             sta pfcolortable
-            lda #>Arena19ColorsColor
+            lda #>Arena19Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena20Colors
-          rem Set pfcolortable pointer to Arena20ColorsColor
+          rem Set pfcolortable pointer to Arena20Colors
           asm
-            lda #<Arena20ColorsColor
+            lda #<Arena20Colors
             sta pfcolortable
-            lda #>Arena20ColorsColor
+            lda #>Arena20Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena21Colors
-          rem Set pfcolortable pointer to Arena21ColorsColor
+          rem Set pfcolortable pointer to Arena21Colors
           asm
-            lda #<Arena21ColorsColor
+            lda #<Arena21Colors
             sta pfcolortable
-            lda #>Arena21ColorsColor
+            lda #>Arena21Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena22Colors
-          rem Set pfcolortable pointer to Arena22ColorsColor
+          rem Set pfcolortable pointer to Arena22Colors
           asm
-            lda #<Arena22ColorsColor
+            lda #<Arena22Colors
             sta pfcolortable
-            lda #>Arena22ColorsColor
+            lda #>Arena22Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena23Colors
-          rem Set pfcolortable pointer to Arena23ColorsColor
+          rem Set pfcolortable pointer to Arena23Colors
           asm
-            lda #<Arena23ColorsColor
+            lda #<Arena23Colors
             sta pfcolortable
-            lda #>Arena23ColorsColor
+            lda #>Arena23Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena24Colors
-          rem Set pfcolortable pointer to Arena24ColorsColor
+          rem Set pfcolortable pointer to Arena24Colors
           asm
-            lda #<Arena24ColorsColor
+            lda #<Arena24Colors
             sta pfcolortable
-            lda #>Arena24ColorsColor
+            lda #>Arena24Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena25Colors
-          rem Set pfcolortable pointer to Arena25ColorsColor
+          rem Set pfcolortable pointer to Arena25Colors
           asm
-            lda #<Arena25ColorsColor
+            lda #<Arena25Colors
             sta pfcolortable
-            lda #>Arena25ColorsColor
+            lda #>Arena25Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena26Colors
-          rem Set pfcolortable pointer to Arena26ColorsColor
+          rem Set pfcolortable pointer to Arena26Colors
           asm
-            lda #<Arena26ColorsColor
+            lda #<Arena26Colors
             sta pfcolortable
-            lda #>Arena26ColorsColor
+            lda #>Arena26Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena27Colors
-          rem Set pfcolortable pointer to Arena27ColorsColor
+          rem Set pfcolortable pointer to Arena27Colors
           asm
-            lda #<Arena27ColorsColor
+            lda #<Arena27Colors
             sta pfcolortable
-            lda #>Arena27ColorsColor
+            lda #>Arena27Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena28Colors
-          rem Set pfcolortable pointer to Arena28ColorsColor
+          rem Set pfcolortable pointer to Arena28Colors
           asm
-            lda #<Arena28ColorsColor
+            lda #<Arena28Colors
             sta pfcolortable
-            lda #>Arena28ColorsColor
+            lda #>Arena28Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena29Colors
-          rem Set pfcolortable pointer to Arena29ColorsColor
+          rem Set pfcolortable pointer to Arena29Colors
           asm
-            lda #<Arena29ColorsColor
+            lda #<Arena29Colors
             sta pfcolortable
-            lda #>Arena29ColorsColor
+            lda #>Arena29Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena30Colors
-          rem Set pfcolortable pointer to Arena30ColorsColor
+          rem Set pfcolortable pointer to Arena30Colors
           asm
-            lda #<Arena30ColorsColor
+            lda #<Arena30Colors
             sta pfcolortable
-            lda #>Arena30ColorsColor
+            lda #>Arena30Colors
             sta pfcolortable+1
 end
           return
 
 LoadArena31Colors
-          rem Set pfcolortable pointer to Arena31ColorsColor
+          rem Set pfcolortable pointer to Arena31Colors
           asm
-            lda #<Arena31ColorsColor
+            lda #<Arena31Colors
             sta pfcolortable
-            lda #>Arena31ColorsColor
-            sta pfcolortable+1
-end
-          return
-
-LoadArenaColorsBW
-          rem Set pfcolortable pointer to ArenaColorsBW
-          asm
-            lda #<ArenaColorsBW
-            sta pfcolortable
-            lda #>ArenaColorsBW
+            lda #>Arena31Colors
             sta pfcolortable+1
 end
           return

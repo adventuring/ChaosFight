@@ -378,7 +378,8 @@ SetPlayerSprites
           rem   across TV modes
           let SPS_charIndex = playerChar[0]
           let SPS_animFrame = 0
-          let SPS_isHurt = playerRecoveryFrames[0] > 0
+          let SPS_isHurt = 0
+          if playerRecoveryFrames[0] > 0 then let SPS_isHurt = 1
           let SPS_playerNum = 0
           rem Set LoadCharacterColors aliases for cross-bank call
           let LoadCharacterColors_isHurt = SPS_isHurt
@@ -417,7 +418,8 @@ end
           rem   underscore) for Player 2 virtual sprite
           let SPS_charIndex = playerChar[1]
           let SPS_animFrame = 0
-          let SPS_isHurt = playerRecoveryFrames[1] > 0
+          let SPS_isHurt = 0
+          if playerRecoveryFrames[1] > 0 then let SPS_isHurt = 1
           let SPS_playerNum = 1
           rem Set LoadCharacterColors aliases for cross-bank call
           let LoadCharacterColors_isHurt = SPS_isHurt
@@ -473,7 +475,8 @@ end
           rem   across TV modes
           let SPS_charIndex = playerChar[2]
           let SPS_animFrame = 0
-          let SPS_isHurt = playerRecoveryFrames[2] > 0
+          let SPS_isHurt = 0
+          if playerRecoveryFrames[2] > 0 then let SPS_isHurt = 1
           let SPS_playerNum = 2
           rem Set LoadCharacterColors aliases for cross-bank call
           let LoadCharacterColors_isHurt = SPS_isHurt
@@ -526,7 +529,8 @@ DonePlayer3Sprite
           rem   LoadCharacterColors
           let SPS_charIndex = playerChar[3]
           let SPS_animFrame = 0
-          let SPS_isHurt = playerRecoveryFrames[3] > 0
+          let SPS_isHurt = 0
+          if playerRecoveryFrames[3] > 0 then let SPS_isHurt = 1
           let SPS_playerNum = 3
           rem Set LoadCharacterColors aliases for cross-bank call
           let LoadCharacterColors_isHurt = SPS_isHurt

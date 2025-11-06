@@ -11,7 +11,7 @@ BeginAuthorPrelude
           rem   SetAuthorWindowValues (bank12) - sets window values
           rem Constraints: Called from ChangeGameMode when transitioning to ModeAuthorPrelude
           rem Initialize Author Prelude mode
-          rem Note: pfres is defined globally in AssemblyConfig.bas
+          rem Note: pfres is defined globally in Constants.bas
           
           rem Initialize timer
           let preambleTimer = 0

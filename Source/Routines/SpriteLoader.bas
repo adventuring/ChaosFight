@@ -510,16 +510,14 @@ HurtColor
 #endif
 
 SetColor
-          dim SetColor_color = temp6
-          dim SetColor_playerNumber = temp3
           rem Set color based on player index (multisprite kernel
           rem   supports COLUP2/COLUP3)
-          rem   previous code paths
+          rem Use temp6 directly instead of alias to avoid symbol conflict
           rem LoadCharacterColors_color already contains the color from
-          let SetColor_color = LoadCharacterColors_color
-          let SetColor_playerNumber = LoadCharacterColors_playerNumber
-          if !SetColor_playerNumber then let COLUP0 = SetColor_color : return
-          if SetColor_playerNumber = 1 then let _COLUP1 = SetColor_color : return
-          if SetColor_playerNumber = 2 then let COLUP2 = SetColor_color : return
-          let COLUP3 = SetColor_color
+          rem   previous code paths
+          let temp6 = LoadCharacterColors_color
+          if !LoadCharacterColors_playerNumber then let COLUP0 = temp6 : return
+          if LoadCharacterColors_playerNumber = 1 then let _COLUP1 = temp6 : return
+          if LoadCharacterColors_playerNumber = 2 then let COLUP2 = temp6 : return
+          let COLUP3 = temp6
           return

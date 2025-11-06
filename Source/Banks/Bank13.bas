@@ -10,3 +10,6 @@
           rem Input and movement routines moved from Bank 11
 #include "Source/Routines/PlayerInput.bas"
 #include "Source/Routines/MovementSystem.bas"
+#include "Source/Routines/CharacterControls.bas"
+          rem CharacterControls.bas contains character-specific jump and down handlers
+          rem   referenced by PlayerInput.bas via on...goto statements

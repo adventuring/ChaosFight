@@ -429,7 +429,7 @@ CycleCharacterLeft
           if CCL_characterIndex = NoCharacter then CycleFromNO : return
           
           rem Normal character (0-15): decrement
-          rem Check if we're at 0 before decrementing (need to wrap to
+          rem Check if we’re at 0 before decrementing (need to wrap to
           rem   special)
           if !CCL_characterIndex then goto CharacterSelectLeftWrapCheck
           let CCL_characterIndex = CCL_characterIndex - 1
@@ -714,7 +714,7 @@ SelectLoadSprite
           let SLS_characterIndex = playerChar[SLS_playerNumberSaved]
           
           rem Check for special characters (?, CPU, NO) before normal art loading
-          rem Special characters don't animate, so handle them separately
+          rem Special characters don’t animate, so handle them separately
           if SLS_characterIndex = NoCharacter then goto SelectLoadSpecialSprite
           rem NoCharacter = 255
           if SLS_characterIndex = CPUCharacter then goto SelectLoadSpecialSprite
@@ -774,7 +774,7 @@ SelectLoadSpecialSpriteCall
           let temp6 = SLSS_spriteIndex
           rem temp6 now has sprite index
           gosub LoadSpecialSprite bank10
-          rem Special sprites don't need animation handling, go to color
+          rem Special sprites don’t need animation handling, go to color
           goto SelectLoadSpriteColor
           
 SelectLoadWalkingSprite
@@ -1005,10 +1005,10 @@ SelectUpdateAnimations
           rem Each player updates independently with staggered timing
           
           rem Update Player 1 animations (characters)
-          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then goto SelectSkipPlayer0Anim  : rem Locked players don't animate
-          if playerChar[0] = CPUCharacter then goto SelectSkipPlayer0Anim  : rem CPU doesn't animate
-          if playerChar[0] = NoCharacter then goto SelectSkipPlayer0Anim  : rem NO doesn't animate
-          if playerChar[0] = RandomCharacter then goto SelectSkipPlayer0Anim  : rem Random doesn't animate
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then goto SelectSkipPlayer0Anim  : rem Locked players don’t animate
+          if playerChar[0] = CPUCharacter then goto SelectSkipPlayer0Anim  : rem CPU doesn’t animate
+          if playerChar[0] = NoCharacter then goto SelectSkipPlayer0Anim  : rem NO doesn’t animate
+          if playerChar[0] = RandomCharacter then goto SelectSkipPlayer0Anim  : rem Random doesn’t animate
           let temp1 = 0
           gosub SelectUpdatePlayerAnim
           
@@ -1053,7 +1053,7 @@ SelectUpdatePlayerAnim
           rem Increment frame counter
           let charSelectPlayerAnimFrame[SUPA_playerIndex] = charSelectPlayerAnimFrame[SUPA_playerIndex] + 1
           
-          rem Check if it's time to advance frame (every 6 frames for
+          rem Check if it’s time to advance frame (every 6 frames for
           rem   10fps at 60fps)
           if charSelectPlayerAnimFrame[SUPA_playerIndex] >= AnimationFrameDelay then goto SelectAdvanceAnimFrame
           return

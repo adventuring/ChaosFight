@@ -38,27 +38,36 @@ UpdateCharacterParade
           if titleParadeTimer < TitleParadeDelayFrames then return
           
           rem Check if we need to start a new character
-          if !titleParadeActive then
-                    rem Start new character parade
+          if !titleParadeActive then StartNewParadeCharacter
+          
+          rem Move character across screen (if active)
+          if titleParadeActive then MoveParadeCharacter
+          
+          return
+          
+StartNewParadeCharacter
+          rem Start new character parade
           let titleParadeChar = rand & MaxCharacter 
           rem Random character 0-MaxCharacter
           let titleParadeX = 246
           rem Start off-screen left
-                    let titleParadeActive = 1
-
-                    rem Move character across screen
+          let titleParadeActive = 1
+          return
+          
+MoveParadeCharacter
+          rem Move character across screen
           let titleParadeX = titleParadeX + 2 
           rem Move 2 pixels per frame
-                    
-                    rem Check if character has left screen
-                    if titleParadeX > 170 then
+          
+          rem Check if character has left screen
+          if titleParadeX > 170 then ParadeCharacterLeft
+          return
+          
+ParadeCharacterLeft
           rem Character has left - wait 1 second (60 frames) before next
-                              let titleParadeActive = 0
+          let titleParadeActive = 0
           let titleParadeTimer = titleParadeTimer - 60 
           rem Reset timer for next character
-end
-end
-          
           return
 
           rem ==========================================================

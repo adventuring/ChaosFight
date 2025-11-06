@@ -724,6 +724,192 @@ Char15_Execute
           rem tail call
           goto SetPlayerAnimation
 
+          rem ==========================================================
+          rem PLACEHOLDER CHARACTER ANIMATION HANDLERS (16-30)
+          rem ==========================================================
+          rem These characters are not yet implemented and use standard
+          rem   behaviors (Execute → Idle, no Windup)
+
+Char16_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char17_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char18_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char19_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char20_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char21_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char22_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char23_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char24_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char25_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char26_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char27_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char28_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char29_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char30_Windup
+          rem Placeholder: no windup used, Execute only
+          return
+
+Char16_Execute
+          dim C16E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C16E_animationAction = ActionIdle
+          let temp2 = C16E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char17_Execute
+          dim C17E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C17E_animationAction = ActionIdle
+          let temp2 = C17E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char18_Execute
+          dim C18E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C18E_animationAction = ActionIdle
+          let temp2 = C18E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char19_Execute
+          dim C19E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C19E_animationAction = ActionIdle
+          let temp2 = C19E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char20_Execute
+          dim C20E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C20E_animationAction = ActionIdle
+          let temp2 = C20E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char21_Execute
+          dim C21E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C21E_animationAction = ActionIdle
+          let temp2 = C21E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char22_Execute
+          dim C22E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C22E_animationAction = ActionIdle
+          let temp2 = C22E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char23_Execute
+          dim C23E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C23E_animationAction = ActionIdle
+          let temp2 = C23E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char24_Execute
+          dim C24E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C24E_animationAction = ActionIdle
+          let temp2 = C24E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char25_Execute
+          dim C25E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C25E_animationAction = ActionIdle
+          let temp2 = C25E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char26_Execute
+          dim C26E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C26E_animationAction = ActionIdle
+          let temp2 = C26E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char27_Execute
+          dim C27E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C27E_animationAction = ActionIdle
+          let temp2 = C27E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char28_Execute
+          dim C28E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C28E_animationAction = ActionIdle
+          let temp2 = C28E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char29_Execute
+          dim C29E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C29E_animationAction = ActionIdle
+          let temp2 = C29E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
+Char30_Execute
+          dim C30E_animationAction = temp2
+          rem Placeholder: Execute → Idle
+          let C30E_animationAction = ActionIdle
+          let temp2 = C30E_animationAction
+          rem tail call
+          goto SetPlayerAnimation
+
 HandleRecoveryEnd
           dim HRE_animationAction = temp2
           rem All characters: Recovery → Idle

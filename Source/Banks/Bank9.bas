@@ -6,12 +6,16 @@
           rem Title sequence and preludes
           rem Grouped together - title screen flow
           rem TitleSequence.bas has been split into separate files below
+#include "Source/Routines/BeginPublisherPrelude.bas"
 #include "Source/Routines/PublisherPrelude.bas"
 #include "Source/Routines/BeginAuthorPrelude.bas"
 #include "Source/Routines/AuthorPrelude.bas"
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/TitleScreenMain.bas"
+#include "Source/Routines/TitleScreenRender.bas"
+#include "Source/Routines/TitleCharacterParade.bas"
 #include "Source/Routines/BeginAttractMode.bas"
+#include "Source/Routines/AttractMode.bas"
           
           rem Special movement routines moved from Bank 11
 #include "Source/Routines/SpecialMovement.bas"

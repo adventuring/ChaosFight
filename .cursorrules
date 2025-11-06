@@ -12,4 +12,35 @@ This project uses batariBASIC and some Common Lisp asset-compilation tools.
 Accept no regressions and do not introduce a "placeholder," "stub," or
 similar without explicit permission.
 
+# Build System
+- Use "make quickclean" for cleaning (NOT "make clean" which deletes PNGs)
+- PNG files are generated from XCF source files
+- Never delete Source/Art/*.xcf files
+
+# Code Quality
+- All cross-bank references must use explicit bank prefixes (e.g., "gosub bank14 LabelName")
+- FrameMap and Frames references must stay within their character's bank
+- Verify no unresolved symbol errors after changes
+
+# Testing
+- Check for linter errors after edits
+- Verify build completes successfully
+- Test cross-bank symbol resolution
+
+# Documentation
+
+## Developer Documentation (GitHub issues, commit messages, code comments)
+- Update GitHub issues with progress on related work
+- Add comments explaining complex assembly routines
+- Document bank boundaries and symbol locations
+- Tone: "Sassy gay friend" - precise, accurate, may be completely technical
+- Must be kept up-to-date with code changes
+
+## User Documentation (Player's manual, help text)
+- Fun and playful in tone
+- Precisely accurate
+- Non-technical (avoid jargon, explain concepts simply)
+- Written for players, not developers
+- Must be kept up-to-date with code changes
+
 

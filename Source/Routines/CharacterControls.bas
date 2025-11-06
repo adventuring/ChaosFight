@@ -745,6 +745,132 @@ ShamoneDown
           goto StandardGuard
 
           rem ==========================================================
+          rem PLACEHOLDER CHARACTER HANDLERS (16-30)
+          rem ==========================================================
+          rem These characters are not yet implemented and use standard
+          rem   behaviors
+
+Char16Jump
+          rem tail call
+          goto StandardJump
+
+Char17Jump
+          rem tail call
+          goto StandardJump
+
+Char18Jump
+          rem tail call
+          goto StandardJump
+
+Char19Jump
+          rem tail call
+          goto StandardJump
+
+Char20Jump
+          rem tail call
+          goto StandardJump
+
+Char21Jump
+          rem tail call
+          goto StandardJump
+
+Char22Jump
+          rem tail call
+          goto StandardJump
+
+Char23Jump
+          rem tail call
+          goto StandardJump
+
+Char24Jump
+          rem tail call
+          goto StandardJump
+
+Char25Jump
+          rem tail call
+          goto StandardJump
+
+Char26Jump
+          rem tail call
+          goto StandardJump
+
+Char27Jump
+          rem tail call
+          goto StandardJump
+
+Char28Jump
+          rem tail call
+          goto StandardJump
+
+Char29Jump
+          rem tail call
+          goto StandardJump
+
+Char30Jump
+          rem tail call
+          goto StandardJump
+
+Char16Down
+          rem tail call
+          goto StandardGuard
+
+Char17Down
+          rem tail call
+          goto StandardGuard
+
+Char18Down
+          rem tail call
+          goto StandardGuard
+
+Char19Down
+          rem tail call
+          goto StandardGuard
+
+Char20Down
+          rem tail call
+          goto StandardGuard
+
+Char21Down
+          rem tail call
+          goto StandardGuard
+
+Char22Down
+          rem tail call
+          goto StandardGuard
+
+Char23Down
+          rem tail call
+          goto StandardGuard
+
+Char24Down
+          rem tail call
+          goto StandardGuard
+
+Char25Down
+          rem tail call
+          goto StandardGuard
+
+Char26Down
+          rem tail call
+          goto StandardGuard
+
+Char27Down
+          rem tail call
+          goto StandardGuard
+
+Char28Down
+          rem tail call
+          goto StandardGuard
+
+Char29Down
+          rem tail call
+          goto StandardGuard
+
+Char30Down
+          rem tail call
+          goto StandardGuard
+
+          rem ==========================================================
           rem STANDARD BEHAVIORS
           rem ==========================================================
 

@@ -28,6 +28,17 @@ CharacterSpriteHBank3
     BYTE > FrootyFrames, > NefertemFrames, > NinjishGuyFrames, > PorkChopFrames
     BYTE > RadishGoblinFrames, > RoboTitoFrames, > UrsuloFrames, > ShamoneFrames
 
+; Character FrameMap pointer tables (Bank 3 only)
+; Low byte pointers for each character FrameMap
+CharacterFrameMapLBank3
+    BYTE < FrootyFrameMap, < NefertemFrameMap, < NinjishGuyFrameMap, < PorkChopFrameMap
+    BYTE < RadishGoblinFrameMap, < RoboTitoFrameMap, < UrsuloFrameMap, < ShamoneFrameMap
+
+; High byte pointers for each character FrameMap
+CharacterFrameMapHBank3
+    BYTE > FrootyFrameMap, > NefertemFrameMap, > NinjishGuyFrameMap, > PorkChopFrameMap
+    BYTE > RadishGoblinFrameMap, > RoboTitoFrameMap, > UrsuloFrameMap, > ShamoneFrameMap
+
 ; =================================================================
 ; CHARACTER ARTWORK LOCATION FUNCTION - BANK 3
 ; =================================================================
@@ -46,37 +57,56 @@ LocateCharacterArtBank3
     ;        temp3 = action (0-15) - already set by caller
     ; Note: temp6 is passed from dispatcher, already 0-7 for Bank 3
     
-    ; Set bank to 3
-    lda #3
-    sta temp6
+    ; Save bank-relative character index (we’ll need it for both FrameMap and Frames)
+    lda temp6
+    pha                 ; Save on stack
     
-    ; Get base sprite pointer for character (using bank-relative index from temp6)
+    ; Get FrameMap pointer for character
     ldy temp6           ; Bank-relative character index (0-7) as Y
-    lda CharacterSpriteLBank3,y
-    sta temp4           ; Store low byte
-    lda CharacterSpriteHBank3,y  
-    sta temp5           ; Store high byte
+    lda CharacterFrameMapLBank3,y
+    sta temp1           ; Store FrameMap low byte in temp1
+    lda CharacterFrameMapHBank3,y
+    pha                 ; Save FrameMap high byte on stack
     
-    ; Calculate sprite index: index = (action << 3) | frame
+    ; Calculate FrameMap index: FrameMap_index = action * 8 + frame
     ; action is in temp3 (0-15), frame is in temp2 (0-7)
     lda temp3           ; Load action
     asl                 ; action << 1
     asl                 ; action << 2
     asl                 ; action << 3 (action * 8)
-    ora temp2           ; OR with frame: (action << 3) | frame
-    sta temp1           ; Store sprite index (0-127) in temp1
+    clc
+    adc temp2           ; Add frame: action * 8 + frame
+    tay                 ; Use as index into FrameMap (0-127)
     
-    ; Calculate byte offset: offset = index << 4 (needs 16-bit arithmetic)
-    ; temp1 = sprite_index (0-127)
-    ; We need: offset = sprite_index * 16
-    ; Since sprite_index can be up to 127, offset can be up to 2032 (needs 16-bit)
+    ; Set up indirect pointer for FrameMap lookup
+    pla                 ; Restore FrameMap high byte
+    sta temp5           ; Store in temp5 for indirect addressing
+    ; temp1/temp5 now point to FrameMap
     
-    ; Clear high byte of offset (will be calculated)
+    ; Look up actual frame index from FrameMap
+    lda (temp1),y       ; Load FrameMap[FrameMap_index] - this is the actual frame index (8-bit)
+    sta temp1           ; Store actual frame index low byte in temp1
+    
+    ; Zero-extend frame index to 16-bit (clear high byte)
     lda #0
-    sta temp2           ; temp2 = high byte of offset (initially 0)
+    sta temp2           ; temp2 = frame_index high byte (zero-extended)
+    ; Now temp1/temp2 = 16-bit frame_index (0-255, zero-extended)
     
-    ; Multiply sprite_index by 16 (shift left 4 times)
-    lda temp1           ; Load sprite_index
+    ; Get base Frames pointer for character
+    pla                 ; Restore bank-relative character index
+    tay                 ; Use as index
+    lda CharacterSpriteLBank3,y
+    sta temp4           ; Store Frames low byte in temp4
+    lda CharacterSpriteHBank3,y
+    sta temp5           ; Store Frames high byte in temp5
+    
+    ; Calculate byte offset: offset = frame_index * 16 (frame_index << 4)
+    ; temp1/temp2 = 16-bit frame_index (0-255, zero-extended)
+    ; We need: offset = frame_index * 16
+    ; Since frame_index can be up to 255, offset can be up to 4080 (needs 16-bit)
+    
+    ; Multiply 16-bit frame_index by 16 (shift left 4 times)
+    lda temp1           ; Load frame_index low byte
     asl                 ; << 1 (multiply by 2)
     rol temp2           ; Rotate carry into high byte
     asl                 ; << 1 (multiply by 4)
@@ -87,7 +117,7 @@ LocateCharacterArtBank3
     rol temp2           ; Rotate carry into high byte
     ; Now A = low byte of offset, temp2 = high byte of offset
     
-    ; Add offset to base address (16-bit addition)
+    ; Add offset to base Frames address (16-bit addition)
     clc
     adc temp4           ; Add low byte of offset to low byte of base
     sta temp4           ; Store result low byte

@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/BeginPublisherPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem BEGIN PUBLISHER PRELUDE - SETUP ROUTINE
-          rem ==========================================================
+          rem Begin Publisher Prelude - Setup Routine
+          rem
           rem Initializes state for Publisher Prelude screen (gameMode
           rem   0).
           rem Called from ChangeGameMode when transitioning to Publisher

@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/CharacterData.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem CHARACTER DATA LOOKUP ROUTINES
-          rem ==========================================================
+          rem Character Data Lookup Routines
+          rem
           rem Provides O(1) character property lookups using direct
           rem   array access.
           rem All character data is defined in CharacterDefinitions.bas
@@ -11,9 +10,8 @@
           rem accessed through these optimized lookup routines.
           rem ==========================================================
 
-          rem ==========================================================
-          rem GET CHARACTER WEIGHT
-          rem ==========================================================
+          rem Get Character Weight
+          rem
           rem Fast lookup of character weight using direct array access.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = character weight
@@ -28,9 +26,8 @@ GetCharacterWeight
           let temp2  = CharacterWeights[temp1]
           return
 
-          rem ==========================================================
-          rem GET CHARACTER ATTACK TYPE
-          rem ==========================================================
+          rem Get Character Attack Type
+          rem
           rem Fast lookup of character attack type (0=melee, 1=ranged).
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = attack type (0=melee, 1=ranged)
@@ -45,9 +42,8 @@ GetCharacterAttackType
           let temp2  = CharacterAttackTypes[temp1]
           return
 
-          rem ==========================================================
-          rem GET CHARACTER MISSILE HEIGHT
-          rem ==========================================================
+          rem Get Character Missile Height
+          rem
           rem Fast lookup of character missile height for ranged
           rem   attacks.
           rem INPUT: temp1 = character index (0-MaxCharacter)
@@ -63,9 +59,8 @@ GetCharacterMissileHeight
           let temp2  = CharacterMissileHeights[temp1]
           return
 
-          rem ==========================================================
-          rem GET CHARACTER MISSILE MAX X
-          rem ==========================================================
+          rem Get Character Missile Max X
+          rem
           rem Fast lookup of character missile maximum X range.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile max X range
@@ -80,9 +75,8 @@ GetCharacterMissileMaxX
           let temp2  = CharacterMissileMaxX[temp1]
           return
 
-          rem ==========================================================
-          rem GET CHARACTER MISSILE MAX Y
-          rem ==========================================================
+          rem Get Character Missile Max Y
+          rem
           rem Fast lookup of character missile maximum Y range.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile max Y range
@@ -97,9 +91,8 @@ GetCharacterMissileMaxY
           let temp2  = CharacterMissileMaxY[temp1]
           return
 
-          rem ==========================================================
-          rem IS CHARACTER RANGED
-          rem ==========================================================
+          rem Is Character Ranged
+          rem
           rem Quick check if character uses ranged attacks.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = 1 if ranged, 0 if melee
@@ -113,9 +106,8 @@ IsCharacterRanged
           let temp2  = CharacterAttackTypes[temp1]
           return
 
-          rem ==========================================================
-          rem IS CHARACTER MELEE
-          rem ==========================================================
+          rem Is Character Melee
+          rem
           rem Quick check if character uses melee attacks.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = 1 if melee, 0 if ranged
@@ -131,9 +123,8 @@ IsCharacterMelee
           rem XOR to flip 0<->1
           return
 
-          rem ==========================================================
-          rem GET CHARACTER DAMAGE
-          rem ==========================================================
+          rem Get Character Damage
+          rem
           rem Get base damage value for character attacks.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = base damage value
@@ -159,9 +150,8 @@ GetCharacterDamage
           rem Heavy characters
 GetCharacterDamageEnd
           return          
-          rem ==========================================================
-          rem GET MISSILE WIDTH
-          rem ==========================================================
+          rem Get Missile Width
+          rem
           rem Fast lookup of character missile width.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile width
@@ -175,9 +165,8 @@ GetMissileWidth
           let temp2  = CharacterMissileWidths[temp1]
           return
           
-          rem ==========================================================
-          rem GET MISSILE HEIGHT
-          rem ==========================================================
+          rem Get Missile Height
+          rem
           rem Fast lookup of character missile height.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile height
@@ -191,9 +180,8 @@ GetMissileHeight
           let temp2  = CharacterMissileHeights[temp1]
           return
           
-          rem ==========================================================
-          rem GET MISSILE FLAGS
-          rem ==========================================================
+          rem Get Missile Flags
+          rem
           rem Fast lookup of character missile flags.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile flags
@@ -207,9 +195,8 @@ GetMissileFlags
           let temp2  = CharacterMissileFlags[temp1]
           return
           
-          rem ==========================================================
-          rem GET MISSILE MOMENTUM X
-          rem ==========================================================
+          rem Get Missile Momentum X
+          rem
           rem Fast lookup of character missile horizontal momentum.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile momentum X
@@ -223,9 +210,8 @@ GetMissileMomentumX
           let temp2  = CharacterMissileMomentumX[temp1]
           return
           
-          rem ==========================================================
-          rem GET MISSILE MOMENTUM Y
-          rem ==========================================================
+          rem Get Missile Momentum Y
+          rem
           rem Fast lookup of character missile vertical momentum.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile momentum Y

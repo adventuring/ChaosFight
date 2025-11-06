@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/PlayerElimination.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem PLAYER ELIMINATION SYSTEM
-          rem ==========================================================
+          rem Player Elimination System
+          rem
           rem Handles player elimination when health reaches 0, game end
           rem   conditions,
           rem and removal of eliminated players from active gameplay
@@ -23,9 +22,8 @@
           rem   gameEndTimer - Countdown to game end screen
           rem ==========================================================
 
-          rem ==========================================================
-          rem CHECK ALL PLAYER ELIMINATIONS
-          rem ==========================================================
+          rem Check All Player Eliminations
+          rem
           rem Called each frame to check if any players should be
           rem   eliminated.
           rem Sets elimination flags and triggers elimination effects.
@@ -48,9 +46,8 @@ CheckAllPlayerEliminations
           if playersRemaining <= 1 then gosub FindWinner : let gameEndTimer = 180 : let systemFlags = systemFlags | SystemFlagGameStateEnding : return
           
 
-          rem ==========================================================
-          rem CHECK SINGLE PLAYER ELIMINATION
-          rem ==========================================================
+          rem Check Single Player Elimination
+          rem
           rem Check if specified player should be eliminated.
           rem INPUT: currentPlayer = player index (0-3) (global variable)
           rem
@@ -108,9 +105,8 @@ UpdatePlayers34Done
           goto TriggerEliminationEffects
           
 
-          rem ==========================================================
-          rem TRIGGER ELIMINATION EFFECTS
-          rem ==========================================================
+          rem Trigger Elimination Effects
+          rem
           rem Visual and audio effects when player is eliminated.
           rem INPUT: currentPlayer = eliminated player index (0-3) (global variable)
 TriggerEliminationEffects
@@ -149,9 +145,8 @@ TriggerEliminationEffects
           goto DeactivatePlayerMissiles
           
 
-          rem ==========================================================
-          rem HIDE ELIMINATED PLAYER SPRITE
-          rem ==========================================================
+          rem Hide Eliminated Player Sprite
+          rem
           rem Move eliminated player sprite off-screen.
           rem INPUT: currentPlayer = player index (0-3) (global variable)
           rem Player 4 uses player3 sprite (multisprite)
@@ -160,9 +155,8 @@ TriggerEliminationEffects
           
           return
 
-          rem ==========================================================
-          rem DEACTIVATE PLAYER MISSILES
-          rem ==========================================================
+          rem Deactivate Player Missiles
+          rem
           rem Remove any active missiles belonging to eliminated player.
           rem INPUT: currentPlayer = player index (0-3) (global variable)
 DeactivatePlayerMissiles
@@ -186,9 +180,8 @@ DeactivatePlayerMissiles
           
           return
 
-          rem ==========================================================
-          rem COUNT REMAINING PLAYERS
-          rem ==========================================================
+          rem Count Remaining Players
+          rem
           rem Count how many players are still alive.
           rem OUTPUT: temp1 = number of remaining players
 CountRemainingPlayers
@@ -215,13 +208,11 @@ CountRemainingPlayers
           let playersRemaining = CRP_count
           return
 
-          rem ==========================================================
-          rem CHECK GAME END CONDITION
-          rem ==========================================================
+          rem Check Game End Condition
+          rem
           rem Check if game should end (1 or 0 players remaining).
-          rem ==========================================================
-          rem IS PLAYER ELIMINATED
-          rem ==========================================================
+          rem Is Player Eliminated
+          rem
           rem Check if specified player is eliminated.
           rem INPUT: currentPlayer = player index (0-3) (global variable)
           rem OUTPUT: temp2 = 1 if eliminated, 0 if alive
@@ -246,9 +237,8 @@ IsEliminatedDone
           let temp2 = IPE_isEliminated
           return
 
-          rem ==========================================================
-          rem IS PLAYER ALIVE  
-          rem ==========================================================
+          rem Is Player Alive
+          rem
           rem Check if specified player is alive (not eliminated AND
           rem   health > 0).
           rem INPUT: currentPlayer = player index (0-3) (global variable)
@@ -279,9 +269,8 @@ IsPlayerAlive
           let temp2 = IPA_isAlive
           return
 
-          rem ==========================================================
-          rem FIND WINNER
-          rem ==========================================================
+          rem Find Winner
+          rem
           rem Identify the winning player (last one standing).
 FindWinner
           rem Identify the winning player (last one standing)
@@ -306,9 +295,8 @@ FindWinner
           rem tail call
           if winnerPlayerIndex = 255 then goto FindLastEliminated
 
-          rem ==========================================================
-          rem FIND LAST ELIMINATED
-          rem ==========================================================
+          rem Find Last Eliminated
+          rem
           rem Find player who was eliminated most recently (highest
           rem   elimination order).
 FindLastEliminated

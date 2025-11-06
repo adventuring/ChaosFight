@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/FallingAnimation1.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem FALLING IN ANIMATION - PER-FRAME LOOP
-          rem ==========================================================
+          rem Falling In Animation - Per-frame Loop
+          rem
           rem Per-frame falling animation that moves players from
           rem   quadrants
           rem to their row 2 starting positions.
@@ -207,9 +206,8 @@ FallingComplete1
           gosub ChangeGameMode bank14
           return
           
-          rem ==========================================================
-          rem MOVE PLAYER TO TARGET POSITION
-          rem ==========================================================
+          rem Move Player To Target Position
+          rem
           rem Moves a player from their current position toward target
           rem   (X, Y).
           rem Handles both horizontal and vertical movement.
@@ -400,9 +398,8 @@ AtTarget
           let MPTT_reached = 1
           return
           
-          rem ==========================================================
-          rem NUDGE PLAYER FROM PLAYFIELD COLLISION
-          rem ==========================================================
+          rem Nudge Player From Playfield Collision
+          rem
           rem Checks if player collides with playfield and nudges them
           rem   away.
           rem Prevents players from getting stuck in playfield obstacles

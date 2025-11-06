@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/SoundBankHelpers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem SOUNDS BANK HELPER FUNCTIONS
-          rem ==========================================================
+          rem Sounds Bank Helper Functions
+          rem
           rem These functions access sound data tables and streams in
           rem   Bank 15
           rem ==========================================================

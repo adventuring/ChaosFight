@@ -2,9 +2,8 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Arena playfield data (not generated - edit manually)
 
-          rem ==========================================================
-          rem ARENA DATA - PURE DATA FORMAT
-          rem ==========================================================
+          rem Arena Data - Pure Data Format
+          rem
           rem Game arenas: 16 pixels wide (left half) mirrored, 8 rows
           rem   high (pfres=8)
           rem Memory constraint: 8 rows × 4 bytes = 32 bytes
@@ -837,9 +836,8 @@ Arena31Colors
           ColGrey(8)
 end
 
-          rem ==========================================================
-          rem ARENA POINTER TABLES
-          rem ==========================================================
+          rem Arena Pointer Tables
+          rem
           rem Playfield pointer lookup tables for efficient arena loading
           rem Format: 32 entries (indices 0-31) for Arena0-Arena31
           rem Note: PF1 and PF2 both point to the same ArenaNPlayfield

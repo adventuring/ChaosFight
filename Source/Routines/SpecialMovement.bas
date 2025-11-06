@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/SpecialMovement.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem SPECIAL MOVEMENT PHYSICS
-          rem ==========================================================
+          rem Special Movement Physics
+          rem
           rem Per-frame physics updates for characters with special
           rem   movement.
           rem Called every frame after input handling to apply
@@ -57,9 +56,8 @@ ApplySpecialMovementP3
           rem Dragon of Storms: no gravity (free flight)
           return
 
-          rem ==========================================================
-          rem APPLY SPECIAL PHYSICS TO ONE PLAYER
-          rem ==========================================================
+          rem Apply Special Physics To One Player
+          rem
           rem INPUT: temp1 = player index (0-3)
           rem USES: temp4 = character type
 ApplyPlayerSpecialMovement

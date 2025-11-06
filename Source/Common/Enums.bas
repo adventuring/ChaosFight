@@ -17,9 +17,8 @@
           const ModeWinner = 7
           const ModeAttract = 8
 
-          rem ==========================================================
-          rem ANIMATION ACTION ENUMS
-          rem ==========================================================
+          rem Animation Action Enums
+          rem
           rem 16 animation actions (0-15) stored in playerState bits 4-7
           rem Used for character animation sequences
           rem Each action has up to 8 frames (0-7)
@@ -77,9 +76,8 @@
           rem ActionFalling (11) = Latched to ceiling  
           rem ActionLanding (12) = Retracting trunk
 
-          rem ==========================================================
-          rem MISSILE FLAGS BITFIELD ENCODING
-          rem ==========================================================
+          rem Missile Flags Bitfield Encoding
+          rem
           rem Bit flags for missile behavior (CharacterMissileFlags)
           rem Used for checking missile interaction properties
           

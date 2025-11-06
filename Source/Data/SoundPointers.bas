@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Data/SoundPointers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem SOUND POINTER DATA TABLES
-          rem ==========================================================
+          rem Sound Pointer Data Tables
+          rem
           rem Sound pointer lookup tables (populated with symbol
           rem   addresses)
           rem Format: data SoundPointersL, SoundPointersH tables (10

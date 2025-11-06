@@ -8,9 +8,8 @@
           rem P1/P2 health displayed as score bars at top of screen
           rem P3/P4 health will be implemented separately
 
-          rem ==========================================================
-          rem HEALTH BAR THRESHOLDS AND PATTERNS
-          rem ==========================================================
+          rem Health Bar Thresholds And Patterns
+          rem
           rem Health thresholds split on 12s: 12, 24, 36, 48, 60, 72, 84
           rem Compare health starting from 84 downward to find pixel
           rem   count

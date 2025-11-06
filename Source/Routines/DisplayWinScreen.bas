@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/DisplayWinScreen.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem DISPLAY WIN SCREEN
-          rem ==========================================================
+          rem Display Win Screen
+          rem
           rem Displays winner screen with fixed playfield pattern and
           rem   1-3 characters
           rem Called from WinnerAnnouncement.bas per-frame loop.

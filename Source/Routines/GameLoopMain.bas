@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/GameLoopMain.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem GAME LOOP - MAIN LOOP
-          rem ==========================================================
+          rem Game Loop - Main Loop
+          rem
           rem Main gameplay loop that orchestrates all game systems.
           rem Called every frame during active gameplay.
 

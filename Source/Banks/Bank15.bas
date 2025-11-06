@@ -7,9 +7,8 @@
           rem   samples
 #include "Source/Routines/SoundSystem.bas"
 
-          rem ==========================================================
-          rem SOUNDS BANK HELPER FUNCTIONS AND DATA
-          rem ==========================================================
+          rem Sounds Bank Helper Functions And Data
+          rem
           rem These functions access sound data tables and streams in
           rem   this bank
           rem ==========================================================

@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/TitleCharacterParade.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem TITLE SCREEN CHARACTER PARADE
-          rem ==========================================================
+          rem Title Screen Character Parade
+          rem
           rem Manages the animated character parade that runs across the
           rem bottom of the title screen after 5 seconds (when copyright
           rem   disappears).
@@ -98,9 +97,8 @@ ParadeCharacterLeft
           rem Reset timer for next character
           return
 
-          rem ==========================================================
-          rem DRAW PARADE CHARACTER
-          rem ==========================================================
+          rem Draw Parade Character
+          rem
           rem Renders the current parade character at bottom of screen
           rem INPUT VARIABLES:
           rem   titleParadeChar - Character index (0-MaxCharacter)
@@ -176,9 +174,8 @@ SetParadeColor4PlayerLastInline
 
 
 
-          rem ==========================================================
-          rem DRAW PARADE CHARACTER SPRITE
-          rem ==========================================================
+          rem Draw Parade Character Sprite
+          rem
           rem Renders running animation sprite with alternating leg
           rem   positions
           rem INPUT: titleParadeTimer (for animation frame selection)

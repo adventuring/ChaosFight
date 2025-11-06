@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/TitleScreenMain.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem TITLE SCREEN - PER-FRAME LOOP
-          rem ==========================================================
+          rem Title Screen - Per-frame Loop
+          rem
           rem Per-frame title screen display and input handling.
           rem Called from MainLoop each frame (gameMode 2).
           rem Dispatches to other modules for character parade and

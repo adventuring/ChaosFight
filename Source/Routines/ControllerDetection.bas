@@ -136,9 +136,8 @@ CDP_MergeStatus
           
           return
           
-          rem ==========================================================
-          rem GENESIS DETECTION SUBROUTINE
-          rem ==========================================================
+          rem Genesis Detection Subroutine
+          rem
 CDP_DetectGenesis
           rem Detect Genesis/MegaDrive controllers by grounding paddle ports and checking levels
           rem Input: CDP_newStatus (temp2) = new detection status, INPT0-3 (hardware registers) = paddle port states, VBLANK (TIA register) = vertical blank register
@@ -434,9 +433,8 @@ ToggleBWDone
           return
 #endif
 
-          rem ==========================================================
-          rem QUADTARI MULTIPLEXING
-          rem ==========================================================
+          rem Quadtari Multiplexing
+          rem
           rem Handle frame-based controller multiplexing for 4 players
           
 UpdateQuadIn

@@ -15,9 +15,8 @@
           rem NOTE: Multisprite playfield is symmetrical
           rem   (repeated/reflected), not asymmetrical
 
-          rem ==========================================================
-          rem VARIABLE MEMORY LAYOUT - DUAL CONTEXT SYSTEM
-          rem ==========================================================
+          rem Variable Memory Layout - Dual Context System
+          rem
           
           rem ChaosFight uses TWO memory contexts that never overlap:
           rem 1. Admin Mode: Title, preludes, character select, falling

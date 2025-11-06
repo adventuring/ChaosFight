@@ -67,9 +67,8 @@ LoadPlayer3Sprite
           rem For now, use placeholder sprite data
           return
 
-          rem ==========================================================
-          rem HEALTHBAR SYSTEM UNUSED FUNCTION
-          rem ==========================================================
+          rem Healthbar System Unused Function
+          rem
           rem MOVED FROM: Source/Routines/HealthBarSystem.bas
           rem DATE: 2025-01-XX
           rem REASON: P3/P4 health uses score digits, not playfield

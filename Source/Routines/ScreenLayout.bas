@@ -2,9 +2,8 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Dynamic screen layout switching for admin vs game screens
 
-          rem ==========================================================
-          rem SCREEN LAYOUT SWITCHING SYSTEM
-          rem ==========================================================
+          rem Screen Layout Switching System
+          rem
           rem Admin screens (title, character select): 32×32 virtual
           rem   pixels (8 rows)
           rem Game screen: 32×8 virtual pixels (8 rows) with space for

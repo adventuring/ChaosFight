@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/PlayerPhysics.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem PLAYER PHYSICS
-          rem ==========================================================
+          rem Player Physics
+          rem
           rem Handles gravity, momentum, collisions, and recovery for
           rem   all players.
 
@@ -20,9 +19,8 @@
           rem   playerChar[0-3] - Character type indices
           rem ==========================================================
 
-          rem ==========================================================
-          rem APPLY GRAVITY
-          rem ==========================================================
+          rem Apply Gravity
+          rem
           rem Applies gravity acceleration to jumping players.
           rem Certain characters (Frooty=8, Dragon of Storms=2) are not
           rem   affected by gravity.
@@ -227,9 +225,8 @@ GravityNextPlayer
           
           return
 
-          rem ==========================================================
-          rem APPLY MOMENTUM AND RECOVERY
-          rem ==========================================================
+          rem Apply Momentum And Recovery
+          rem
           rem Updates recovery frames and applies velocity during
           rem   hitstun.
           rem Velocity gradually decays over time.
@@ -289,9 +286,8 @@ MomentumRecoveryNext
           
           return
 
-          rem ==========================================================
-          rem CHECK BOUNDARY COLLISIONS
-          rem ==========================================================
+          rem Check Boundary Collisions
+          rem
           rem Prevents players from moving off-screen.
 CheckBoundaryCollisions
           rem Prevents players from moving off-screen, handles horizontal wrap-around and vertical clamping
@@ -353,21 +349,18 @@ BoundaryNextPlayer
           
           return
 
-          rem ==========================================================
-          rem CHECK PLAYFIELD COLLISION ALL DIRECTIONS
-          rem ==========================================================
+          rem Check Playfield Collision All Directions
+          rem
           rem This function has been moved to PlayerPhysicsCollisions.bas
           rem to reduce bank size. Use gosub CheckPlayfieldCollisionAllDirections bank9
           rem to call it from this bank.
 
-          rem ==========================================================
-          rem CHECK MULTI-PLAYER COLLISIONS
-          rem ==========================================================
+          rem Check Multi-player Collisions
+          rem
           rem This function has been moved to PlayerPhysicsCollisions.bas
           rem to reduce bank size. Use gosub CheckAllPlayerCollisions bank9
           rem to call it from this bank.
 
-          rem ==========================================================
-          rem DIVIDE BY PFROWHEIGHT HELPER
-          rem ==========================================================
+          rem Divide By Pfrowheight Helper
+          rem
 

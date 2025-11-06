@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/BeginArenaSelect.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem BEGIN ARENA SELECT
-          rem ==========================================================
+          rem Begin Arena Select
+          rem
           rem Setup routine for Arena Select screen.
           rem Initializes arena selection state and screen layout.
           rem Called from ChangeGameMode when entering arena select mode

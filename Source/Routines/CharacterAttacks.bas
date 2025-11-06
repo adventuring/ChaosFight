@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/CharacterAttacks.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem CHARACTER-SPECIFIC ATTACK SUBROUTINES
-          rem ==========================================================
+          rem Character-specific Attack Subroutines
+          rem
           rem Each character has a unique attack subroutine that:
           rem 1. Calls either PerformMeleeAttack or PerformRangedAttack
           rem   2. Sets the appropriate animation state
@@ -311,9 +310,8 @@ ShamoneAttack
           rem Then execute the attack (PerformMeleeAttack sets animation state)
           goto PerformMeleeAttack
 
-          rem ==========================================================
-          rem CHARACTER ATTACK DISPATCHER
-          rem ==========================================================
+          rem Character Attack Dispatcher
+          rem
           rem NOTE: DispatchCharacterAttack is defined in PlayerInput.bas
           rem   to avoid duplication. This file contains only the
           rem   character-specific attack implementations.

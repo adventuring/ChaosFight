@@ -20,9 +20,8 @@
           rem   placeholders
 
 
-          rem ==========================================================
-          rem SOLID PLAYER COLOR TABLES
-          rem ==========================================================
+          rem Solid Player Color Tables
+          rem
           rem Solid color tables for P1-P4 normal and hurt states
           rem P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise (SECAM maps to
           rem   Green)
@@ -117,9 +116,8 @@ ValidateCharacterDoneInline
           gosub LocateCharacterArt bank14
           return
 
-          rem ==========================================================
-          rem LOAD SPECIAL SPRITE
-          rem ==========================================================
+          rem Load Special Sprite
+          rem
           rem Loads special placeholder sprites (QuestionMark, CPU, No)
           rem Input: temp6 = sprite index (SpriteQuestionMark=0,
           rem   SpriteCPU=1, SpriteNo=2)

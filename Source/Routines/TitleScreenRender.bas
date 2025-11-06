@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/TitleScreenRender.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem TITLE SCREEN RENDERING
-          rem ==========================================================
+          rem Title Screen Rendering
+          rem
           rem Renders the title screen using a 48×42 bitmap image.
           rem The bitmap data is generated from
           rem   Source/Art/ChaosFight.xcf
@@ -57,9 +56,8 @@ DrawTitleScreen
           if titleParadeActive then gosub DrawParadeCharacter bank9
           return
 
-          rem ==========================================================
-          rem LOAD TITLE BITMAP
-          rem ==========================================================
+          rem Load Title Bitmap
+          rem
           rem Loads the ChaosFight title bitmap data for titlescreen
           rem   kernel.
           rem Generated from Source/Art/ChaosFight.xcf → ChaosFight.png

@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/PlayerRendering.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem PLAYER SPRITE RENDERING
-          rem ==========================================================
+          rem Player Sprite Rendering
+          rem
           rem Handles sprite positioning, colors, and graphics for all
           rem   players.
 
@@ -33,9 +32,8 @@
           rem   QuadtariDetected, selectedChar3_R, selectedChar4_R
           rem ==========================================================
 
-          rem ==========================================================
-          rem SET SPRITE POSITIONS
-          rem ==========================================================
+          rem Set Sprite Positions
+          rem
           rem Updates hardware sprite position registers for all active
           rem   entities.
 SetSpritePositions
@@ -257,9 +255,8 @@ RenderMissile1P2_2PActive
           missile1height = CharacterMissileHeights[RM2P_characterType]
           return
           
-          rem ==========================================================
-          rem RENDER ROBOTITO STRETCH MISSILES
-          rem ==========================================================
+          rem Render Robotito Stretch Missiles
+          rem
           rem Helper functions to render RoboTito stretch visual missiles
           rem Only rendered if player is RoboTito, stretching upward
           rem   (not latched), and no projectile missile active
@@ -380,9 +377,8 @@ RRTM1_IsStretching
           rem 1x size (NUSIZ bits 4-6 = 00)
           return
 
-          rem ==========================================================
-          rem SET PLAYER SPRITES
-          rem ==========================================================
+          rem Set Player Sprites
+          rem
           rem Sets colors and graphics for all player sprites.
           rem Colors change based on hurt state and color/B&W switch.
           rem On 7800, Pause button can override Color/B&W setting.
@@ -598,9 +594,8 @@ DonePlayer4Sprite
           
           return
 
-          rem ==========================================================
-          rem DISPLAY HEALTH
-          rem ==========================================================
+          rem Display Health
+          rem
           rem Shows health status for all active players.
           rem Flashes sprites when health is critically low.
 DisplayHealth

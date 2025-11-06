@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/ArenaSelect.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem ARENA SELECT - PER-FRAME LOOP
-          rem ==========================================================
+          rem Arena Select - Per-frame Loop
+          rem
           rem Per-frame arena select screen with arena cycling (
           rem   1-32/random)
           rem Called from MainLoop each frame (gameMode 5).
@@ -282,9 +281,8 @@ StartGame1
           gosub ChangeGameMode bank14
           return
 
-          rem ==========================================================
-          rem CHARACTER DISPLAY AND ANIMATION
-          rem ==========================================================
+          rem Character Display And Animation
+          rem
           
 ArenaSelectUpdateAnimations
           rem Update idle animations for all selected characters

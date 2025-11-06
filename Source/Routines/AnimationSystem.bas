@@ -3,9 +3,8 @@
           rem 10fps character animation system with platform-specific
           rem   timing
 
-          rem ==========================================================
-          rem ANIMATION SYSTEM ROUTINES
-          rem ==========================================================
+          rem Animation System Routines
+          rem
 
           rem Update character animations for all players
           rem Called every frame to manage 10fps animation timing
@@ -326,9 +325,8 @@ InitializeAnimationSystem
           rem tail call
           goto SetPlayerAnimation
 
-          rem ==========================================================
-          rem ANIMATION SEQUENCE MANAGEMENT
-          rem ==========================================================
+          rem Animation Sequence Management
+          rem
 
           rem Set walking animation for a player
           rem INPUT: currentPlayer = player index (0-3)
@@ -397,9 +395,8 @@ SetFallingAnimation
           rem tail call
           goto SetPlayerAnimation
 
-          rem ==========================================================
-          rem ANIMATION STATE QUERIES
-          rem ==========================================================
+          rem Animation State Queries
+          rem
 
           rem Check if player is in walking animation
           rem INPUT: currentPlayer = player index (0-3)
@@ -453,9 +450,8 @@ IsJumping
 NotJumping
           return
 
-          rem ==========================================================
-          rem ANIMATION TRANSITION HANDLING
-          rem ==========================================================
+          rem Animation Transition Handling
+          rem
 
           rem Handle frame 7 completion and transition to next action
           rem Input: currentPlayer = player index (0-3)
@@ -557,9 +553,8 @@ TransitionHandleFallBack_HitWall
           rem tail call
           goto SetPlayerAnimation
 
-          rem ==========================================================
-          rem ATTACK TRANSITION HANDLING
-          rem ==========================================================
+          rem Attack Transition Handling
+          rem
           rem Character-specific attack transitions based on patterns
           
 HandleAttackTransition

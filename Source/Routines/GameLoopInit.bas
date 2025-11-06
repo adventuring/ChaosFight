@@ -3,9 +3,8 @@
           
 #include "Source/Routines/PlayerLockedHelpers.bas"
           
-          rem ==========================================================
-          rem GAME LOOP INITIALIZATION
-          rem ==========================================================
+          rem Game Loop Initialization
+          rem
           rem Initializes all game state for the main gameplay loop.
           rem Called once when entering gameplay from character select.
 

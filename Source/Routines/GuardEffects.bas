@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/GuardEffects.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem GUARD VISUAL EFFECTS SYSTEM
-          rem ==========================================================
+          rem Guard Visual Effects System
+          rem
           rem Implements guard flashing visual feedback as specified in
           rem   manual:
           rem - Character flashes light cyan ColCyan(12) in NTSC/PAL
@@ -13,9 +12,8 @@
           rem   use
           rem ==========================================================
 
-          rem ==========================================================
-          rem APPLY GUARD VISUAL EFFECTS
-          rem ==========================================================
+          rem Apply Guard Visual Effects
+          rem
           rem Applies guard flashing effect to a guarding player
           rem INPUT: temp1 = player index (0-3)
           rem USES: playerState[temp1], frame counter for flashing
@@ -65,9 +63,8 @@ GuardNormalPhase
           rem tail call
           goto RestoreNormalPlayerColor
 
-          rem ==========================================================
-          rem RESTORE NORMAL PLAYER COLOR
-          rem ==========================================================
+          rem Restore Normal Player Color
+          rem
           rem Restores the normal color for a player after guard
           rem   flashing
           rem INPUT: temp1 = player index (0-3)
@@ -95,9 +92,8 @@ RestoreNormalPlayerColor
           rem   LoadCharacterColors
           return
 
-          rem ==========================================================
-          rem CHECK GUARD COOLDOWN
-          rem ==========================================================
+          rem Check Guard Cooldown
+          rem
           rem Prevents guard use if still in cooldown period (1 second
           rem   after guard ends)
           rem INPUT: temp1 = player index (0-3)
@@ -144,9 +140,8 @@ GuardCooldownBlocked
           let temp2 = GCBD_guardAllowed
           return
 
-          rem ==========================================================
-          rem START GUARD
-          rem ==========================================================
+          rem Start Guard
+          rem
           rem Activates guard state with proper timing
           rem INPUT: temp1 = player index (0-3)
 StartGuard
@@ -170,9 +165,8 @@ StartGuard
           
           return
 
-          rem ==========================================================
-          rem UPDATE GUARD TIMERS
-          rem ==========================================================
+          rem Update Guard Timers
+          rem
           rem Updates guard duration and cooldown timers each frame
           rem Should be called from main game loop
 UpdateGuardTimers

@@ -3,9 +3,8 @@
           
           rem PlayerLockedHelpers.bas moved to Bank 1
           
-          rem ==========================================================
-          rem CHARACTER SELECT - PER-FRAME LOOP
-          rem ==========================================================
+          rem Character Select - Per-frame Loop
+          rem
           rem Per-frame character selection screen with Quadtari
           rem   support.
           rem Called from MainLoop each frame (gameMode 3).
@@ -34,9 +33,8 @@
           rem   readyCount - Number of locked players
           rem ==========================================================
 
-          rem ==========================================================
-          rem SHARED CHARACTER SELECT INPUT HANDLERS
-          rem ==========================================================
+          rem Shared Character Select Input Handlers
+          rem
           rem Consolidated input handlers for character selection
           
           rem Handle character cycling (left/right)
@@ -383,9 +381,8 @@ CharacterSelectInputComplete
           return
           return
 
-          rem ==========================================================
-          rem RANDOM CHARACTER ROLL HANDLER
-          rem ==========================================================
+          rem Random Character Roll Handler
+          rem
           rem Re-roll random selections until valid (0-15), then lock
           
 CharacterSelectHandleRandomRolls
@@ -461,9 +458,8 @@ CharacterSelectLockPlayer3Done
 CharacterSelectRollsDone
           return
 
-          rem ==========================================================
-          rem CHECK IF READY TO PROCEED
-          rem ==========================================================
+          rem Check If Ready To Proceed
+          rem
 CharacterSelectCheckReady
           rem 2-player mode: P1 must be locked AND (P2 locked OR P2 on
           rem   CPU)
@@ -527,9 +523,8 @@ SkipChar4Facing
           gosub ChangeGameMode bank14
           return
 
-          rem ==========================================================
-          rem CHARACTER CYCLING HELPERS
-          rem ==========================================================
+          rem Character Cycling Helpers
+          rem
           rem Handle wraparound cycling for characters with special
           rem   values
           rem Input: temp1 = playerChar value, temp2 = direction
@@ -752,9 +747,8 @@ CycleRightFromNO
           let temp1 = CRFNO_characterIndex
           return
           
-          rem ==========================================================
-          rem CHARACTER SELECT DRAWING FUNCTIONS
-          rem ==========================================================
+          rem Character Select Drawing Functions
+          rem
 
 SelectDrawScreen
           rem Clear playfield
@@ -1117,9 +1111,8 @@ SelectDrawP3Border
           pf1 = pf1 | %00010000
           return
           
-          rem ==========================================================
-          rem ANIMATION UPDATES
-          rem ==========================================================
+          rem Animation Updates
+          rem
 
 SelectUpdateAnimations
           rem Update character select animations for all players
@@ -1165,9 +1158,8 @@ SelectSkipPlayer2Anim
 SelectSkipPlayer23Anim
           return
           
-          rem ==========================================================
-          rem UPDATE INDIVIDUAL PLAYER ANIMATION
-          rem ==========================================================
+          rem Update Individual Player Animation
+          rem
           
 SelectUpdatePlayerAnim
           dim SUPA_playerIndex = temp1
@@ -1221,9 +1213,8 @@ SelectAnimWaitForToggle
           rem Just return, toggling handled above
           return
 
-          rem ==========================================================
-          rem CONTROLLER RESCAN DETECTION
-          rem ==========================================================
+          rem Controller Rescan Detection
+          rem
           rem Re-detect controllers on Select/Pause/ColorB&W toggle
           rem to handle Quadtari being connected/disconnected
           

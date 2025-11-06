@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/AuthorPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem AUTHOR PRELUDE SCREEN
-          rem ==========================================================
+          rem Author Prelude Screen
+          rem
           rem Displays the Interworldly author logo/artwork with music.
           rem This is the second screen shown at cold start.
 
@@ -75,9 +74,8 @@ AuthorPreludeComplete
           gosub ChangeGameMode bank14
           return
 
-          rem ==========================================================
-          rem BITMAP LOADING
-          rem ==========================================================
+          rem Bitmap Loading
+          rem
           rem Bitmap data is loaded automatically by titlescreen kernel
           rem   via includes.
           rem Generated from Source/Art/Interworldly.xcf →

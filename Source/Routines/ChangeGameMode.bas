@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/ChangeGameMode.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem CHANGE GAME MODE
-          rem ==========================================================
+          rem Change Game Mode
+          rem
           rem Centralized game mode switching dispatcher.
           rem Calls appropriate Begin* setup routine for the new
           rem   gameMode.

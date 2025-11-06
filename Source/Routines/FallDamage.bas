@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/FallDamage.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem FALL DAMAGE SYSTEM
-          rem ==========================================================
+          rem Fall Damage System
+          rem
           rem Handles fall damage detection and application based on:
           rem   - Vertical velocity at landing
           rem - Character weight (heavier = shorter safe fall distance)
@@ -47,9 +46,8 @@
           rem   - temp6: Character weight
           rem ==========================================================
 
-          rem ==========================================================
-          rem CHECK FALL DAMAGE
-          rem ==========================================================
+          rem Check Fall Damage
+          rem
           rem Called when a player lands on the ground or platform.
           rem Calculates fall damage based on downward velocity at
           rem   impact.
@@ -263,9 +261,8 @@ end
           
           return
 
-          rem ==========================================================
-          rem APPLY GRAVITY
-          rem ==========================================================
+          rem Apply Gravity
+          rem
           rem Applies gravity acceleration to a player each frame.
           rem Handles character-specific gravity rates and terminal
           rem   velocity.
@@ -316,9 +313,8 @@ FallDamageApplyGravity
           
           return
 
-          rem ==========================================================
-          rem CHECK GROUND COLLISION
-          rem ==========================================================
+          rem Check Ground Collision
+          rem
           rem Checks if player has landed on ground or platform.
           rem Calls CheckFallDamage if landing detected.
 
@@ -377,9 +373,8 @@ CheckGroundCollision
           
           return
 
-          rem ==========================================================
-          rem HANDLE FROOTY VERTICAL CONTROL
-          rem ==========================================================
+          rem Handle Frooty Vertical Control
+          rem
           rem Frooty has no gravity and can move up/down freely.
           rem Down button moves down (no guard action).
 
@@ -419,9 +414,8 @@ HandleFrootyVertical
           
           return
 
-          rem ==========================================================
-          rem HANDLE HARPY SWOOP ATTACK
-          rem ==========================================================
+          rem Handle Harpy Swoop Attack
+          rem
           rem Harpy attack causes an instant redirection into a rapid
           rem downward diagonal strike at ~45° to the facing direction.
 
@@ -559,9 +553,8 @@ DBPF_DivideBy8
 end
           return
           
-          rem ==========================================================
-          rem CALCULATE SAFE FALL DISTANCE
-          rem ==========================================================
+          rem Calculate Safe Fall Distance
+          rem
           rem Utility routine to calculate safe fall distance for a
           rem   character.
           rem Used for AI and display purposes.

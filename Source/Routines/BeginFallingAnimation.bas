@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/BeginFallingAnimation.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem BEGIN FALLING ANIMATION
-          rem ==========================================================
+          rem Begin Falling Animation
+          rem
           rem Setup routine for Falling In animation.
           rem Sets players in quadrant starting positions and
           rem   initializes state.

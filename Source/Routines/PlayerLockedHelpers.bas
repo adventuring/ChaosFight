@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/PlayerLockedHelpers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem PLAYER LOCKED HELPER FUNCTIONS
-          rem ==========================================================
+          rem Player Locked Helper Functions
+          rem
           rem Helper functions to access bit-packed playerLocked variable
           rem playerLocked is a single byte with 2 bits per player:
           rem   Bits 0-1: Player 0 (0=unlocked, 1=normal, 2=handicap)
@@ -11,9 +10,8 @@
           rem   Bits 4-5: Player 2
           rem   Bits 6-7: Player 3
 
-          rem ==========================================================
-          rem GET PLAYER LOCKED STATE
-          rem ==========================================================
+          rem Get Player Locked State
+          rem
           rem Gets the locked state for a specific player
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp2 = locked state (0=unlocked, 1=normal, 2=handicap)
@@ -69,9 +67,8 @@ GPL_Done
           let temp2 = GPL_lockedState
           return
 
-          rem ==========================================================
-          rem SET PLAYER LOCKED STATE
-          rem ==========================================================
+          rem Set Player Locked State
+          rem
           rem Sets the locked state for a specific player
           rem INPUT: temp1 = player index (0-3)
           rem         temp2 = locked state (0=unlocked, 1=normal, 2=handicap)

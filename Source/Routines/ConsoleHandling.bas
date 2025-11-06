@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/ConsoleHandling.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem CONSOLE SWITCH HANDLING
-          rem ==========================================================
+          rem Console Switch Handling
+          rem
           rem Handles Atari 2600 console switches during gameplay.
 
           rem SWITCHES:

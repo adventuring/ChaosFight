@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/PublisherPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem PUBLISHER PRELUDE SCREEN - PER-FRAME LOOP
-          rem ==========================================================
+          rem Publisher Prelude Screen - Per-frame Loop
+          rem
           rem Per-frame publisher prelude display and input handling.
           rem Called from MainLoop each frame (gameMode 0).
           rem
@@ -86,9 +85,8 @@ PublisherPreludeComplete
           gosub ChangeGameMode bank14
           return
 
-          rem ==========================================================
-          rem BITMAP LOADING
-          rem ==========================================================
+          rem Bitmap Loading
+          rem
           rem Bitmap data is loaded automatically by titlescreen kernel
           rem   via includes.
           rem Generated from Source/Art/AtariAge.xcf → AtariAge.png

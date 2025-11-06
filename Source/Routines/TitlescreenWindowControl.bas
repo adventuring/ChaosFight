@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/TitlescreenWindowControl.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem TITLESCREEN WINDOW CONTROL
-          rem ==========================================================
+          rem Titlescreen Window Control
+          rem
           rem Screen-specific window value initialization for
           rem   titlescreen kernel.
           rem Window values control which bitmaps display on each

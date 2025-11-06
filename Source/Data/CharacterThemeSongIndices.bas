@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Data/CharacterThemeSongIndices.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem CHARACTER THEME SONG ID MAPPING TABLE
-          rem ==========================================================
+          rem Character Theme Song Id Mapping Table
+          rem
           rem Maps character index (0-31) to full song ID constants
           rem This table allows multiple characters to share the same
           rem   theme song

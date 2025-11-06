@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/PlayerPhysicsGravity.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem PLAYER PHYSICS - GRAVITY AND MOMENTUM
-          rem ==========================================================
+          rem Player Physics - Gravity And Momentum
+          rem
           rem Handles gravity, momentum, and recovery for all players.
           rem Split from PlayerPhysics.bas to reduce bank size.
 
@@ -20,9 +19,8 @@
           rem   playerChar[0-3] - Character type indices
           rem ==========================================================
 
-          rem ==========================================================
-          rem APPLY GRAVITY
-          rem ==========================================================
+          rem Apply Gravity
+          rem
           rem Applies gravity acceleration to jumping players.
           rem Certain characters (Frooty=8, Dragon of Storms=2) are not
           rem   affected by gravity.
@@ -227,9 +225,8 @@ GravityNextPlayer
           
           return
 
-          rem ==========================================================
-          rem APPLY MOMENTUM AND RECOVERY
-          rem ==========================================================
+          rem Apply Momentum And Recovery
+          rem
           rem Updates recovery frames and applies velocity during
           rem   hitstun.
           rem Velocity gradually decays over time.

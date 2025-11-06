@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/PlayerInput.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem PLAYER INPUT HANDLING
-          rem ==========================================================
+          rem Player Input Handling
+          rem
           rem All input handling for the four players, with
           rem   character-specific
           rem control logic dispatched to character-specific
@@ -41,9 +40,8 @@
           rem   15=Shamone
           rem ==========================================================
 
-          rem ==========================================================
-          rem ANIMATION STATE HELPER
-          rem ==========================================================
+          rem Animation State Helper
+          rem
           rem Extracts animation state (bits 4-7) from playerState
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp2 = animation state (0-15)
@@ -66,9 +64,8 @@ GetPlayerAnimationState
           rem   (0-15)
           return
 
-          rem ==========================================================
-          rem CHECK IF FACING SHOULD BE PRESERVED
-          rem ==========================================================
+          rem Check If Facing Should Be Preserved
+          rem
           rem Returns 1 if facing should be preserved (during
           rem   hurt/recovery states),
           rem 0 if facing can be updated normally.
@@ -237,9 +234,8 @@ InputSkipPlayer4Input
           rem Switch back to even frame
           return
 
-          rem ==========================================================
-          rem SHARED CHARACTER DISPATCH SUBROUTINES
-          rem ==========================================================
+          rem Shared Character Dispatch Subroutines
+          rem
           rem These subroutines replace duplicate dispatch blocks throughout
           rem   the input handlers
           rem INPUT: temp4 = character type (0-31)
@@ -395,9 +391,8 @@ gotoChar29Attack
 gotoChar30Attack
           goto Char30Attack bank11
 
-          rem ==========================================================
-          rem SHARED ENHANCED BUTTON CHECK
-          rem ==========================================================
+          rem Shared Enhanced Button Check
+          rem
           rem Checks Genesis/Joy2b+ Button C/II for jump input
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp3 = 1 if jump button pressed, 0 otherwise
@@ -457,9 +452,8 @@ CEJB_Done
           let temp3 = CEJB_jumpPressed
           return
 
-          rem ==========================================================
-          rem SHARED GUARD INPUT HANDLING
-          rem ==========================================================
+          rem Shared Guard Input Handling
+          rem
           rem Handles down/guard input for both ports
           rem INPUT: temp1 = player index (0-3)
           rem Uses: joy0down for players 0,2; joy1down for players 1,3
@@ -495,9 +489,8 @@ HGI_CheckGuardRelease
           rem Start cooldown timer
           return
 
-          rem ==========================================================
-          rem PLAYFIELD COORDINATE CONVERSION
-          rem ==========================================================
+          rem Playfield Coordinate Conversion
+          rem
           rem Converts player X position to playfield column index
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp2 = playfield column (0-31)
@@ -516,9 +509,8 @@ ConvertPlayerXToPlayfieldColumn
           let temp2 = CPXTPC_pfColumn
           return
 
-          rem ==========================================================
-          rem SHARED FLYING CHARACTER MOVEMENT
-          rem ==========================================================
+          rem Shared Flying Character Movement
+          rem
           rem Handles horizontal movement with collision for flying
           rem   characters (Frooty, Dragon of Storms)
           rem INPUT: temp1 = player index (0-3)
@@ -929,9 +921,8 @@ InputSkipRightPortAttack
           
           return
 
-          rem ==========================================================
-          rem PAUSE BUTTON HANDLING WITH DEBOUNCING
-          rem ==========================================================
+          rem Pause Button Handling With Debouncing
+          rem
           rem Handles SELECT switch and Joy2b+ Button III with proper
           rem   debouncing
           rem Uses PauseButtonPrev for debouncing state

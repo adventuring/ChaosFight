@@ -256,9 +256,8 @@
           const ClearRightPortGenesis = $FB
           const ClearRightPortJoy2bPlus = $F7
 
-          rem ==========================================================
-          rem PHYSICS TUNABLES
-          rem ==========================================================
+          rem Physics Tunables
+          rem
           const GravityPerFrame = 1
           rem Pixels/frame added to vertical velocity when gravity
           rem   applies
@@ -306,9 +305,8 @@
           const ScreenTopWrapThreshold = 200
           rem Byte-safe top-wrap detection threshold
 
-          rem ==========================================================
-          rem MUSIC CONSTANTS
-          rem ==========================================================
+          rem Music Constants
+          rem
           rem Main game songs (0-4)
           rem Song indices match SongPointers.bas (29 songs total: 0-28)
           rem Songs 0-25: Character theme songs in character ID order
@@ -354,9 +352,8 @@
           const MusicAtariToday = 27
           const MusicInterworldly = 28
 
-          rem ==========================================================
-          rem SOUND EFFECT CONSTANTS
-          rem ==========================================================
+          rem Sound Effect Constants
+          rem
           rem Sound effect enumerated IDs (matching SoundPointers.bas indices 0-9)
           const SoundAttackHit = 0
           const SoundGuardBlock = 1
@@ -369,9 +366,8 @@
           const SoundLandingSafe = 8
           const SoundLandingDamage = 9
 
-          rem ==========================================================
-          rem ANIMATION SYSTEM CONSTANTS
-          rem ==========================================================
+          rem Animation System Constants
+          rem
           rem Character frame animation runs at 10fps regardless of TV
           rem   standard
           rem Movement updates run at full frame rate (60fps NTSC, 50fps
@@ -410,9 +406,8 @@
           const FramesPerSequence = 8
           rem 8 frames per sequence
 
-          rem ==========================================================
-          rem SUBPIXEL POSITION CONSTANTS
-          rem ==========================================================
+          rem Subpixel Position Constants
+          rem
           rem Fixed-point scheme: 8.8 (integer.fraction), implemented
           rem   with 8-bit bB vars
           rem NOTE: batariBASIC variables are 8-bit. Use two 8-bit

@@ -6,9 +6,8 @@
           rem Music system - dedicated 3.5kiB bank for compiled samples
 #include "Source/Routines/MusicSystem.bas"
           
-          rem ==========================================================
-          rem SONGS BANK HELPER FUNCTIONS AND DATA
-          rem ==========================================================
+          rem Songs Bank Helper Functions And Data
+          rem
           rem These functions access song data tables and streams in
           rem   this bank
           rem ==========================================================

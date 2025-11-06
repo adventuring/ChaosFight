@@ -2,9 +2,8 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Winner screen playfield data (pfres=8, 8 rows)
 
-          rem ==========================================================
-          rem WINNER SCREEN PLAYFIELD DATA
-          rem ==========================================================
+          rem Winner Screen Playfield Data
+          rem
           rem 8 rows (pfres=8)
           rem Design: Central high podium for winner, side platforms for
           rem   2nd/3rd

@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/CharacterControls.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem CHARACTER-SPECIFIC CONTROL LOGIC
-          rem ==========================================================
+          rem Character-specific Control Logic
+          rem
           rem Handles character-specific jump and down button behaviors.
           rem Called via on playerChar[n] goto dispatch from
           rem   PlayerInput.bas
@@ -1056,9 +1055,8 @@ Char30Down
           rem tail call
           goto StandardGuard
 
-          rem ==========================================================
-          rem STANDARD BEHAVIORS
-          rem ==========================================================
+          rem Standard Behaviors
+          rem
 
           rem Standard jump behavior for most characters
           rem INPUT: temp1 = player index

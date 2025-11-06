@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/ConsoleDetection.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem CONSOLE DETECTION
-          rem ==========================================================
+          rem Console Detection
+          rem
           rem Detects whether running on Atari 2600 or 7800 console
           rem Based on DetectConsole.s assembly implementation
           
@@ -90,9 +89,8 @@ Is2600
           let systemFlags = systemFlags & ClearSystemFlag7800
           return
           
-          rem ==========================================================
-          rem CONSOLE FEATURE DETECTION
-          rem ==========================================================
+          rem Console Feature Detection
+          rem
           rem Check for console-specific features after detection
           
 CheckConsoleFeatures

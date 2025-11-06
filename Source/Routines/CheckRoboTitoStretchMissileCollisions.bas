@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/CheckRoboTitoStretchMissileCollisions.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem CHECK ROBOTITO STRETCH MISSILE COLLISIONS
-          rem ==========================================================
+          rem Check Robotito Stretch Missile Collisions
+          rem
           rem Checks collision between RoboTito stretch missiles and other
           rem   players.
           rem When a stretch missile is hit, RoboTito falls and cannot
@@ -100,9 +99,8 @@ CRTSMC_NextPlayer
           
           return
           
-          rem ==========================================================
-          rem HANDLE ROBOTITO STRETCH MISSILE HIT
-          rem ==========================================================
+          rem Handle Robotito Stretch Missile Hit
+          rem
           rem Processes a stretch missile hit on another player.
           rem Causes RoboTito to fall and prevents further stretching.
           

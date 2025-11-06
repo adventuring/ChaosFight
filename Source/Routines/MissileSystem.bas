@@ -32,9 +32,8 @@
           rem   temp6 = scratch for bit manipulation / collision bounds
           rem ==========================================================
 
-          rem ==========================================================
-          rem GET PLAYER MISSILE BIT FLAG
-          rem ==========================================================
+          rem Get Player Missile Bit Flag
+          rem
           rem Calculates the bit flag for missile active tracking
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp6 = bit flag (1, 2, 4, or 8)
@@ -53,9 +52,8 @@ GetPlayerMissileBitFlag
           let temp6 = GPMBF_bitFlag
           return
 
-          rem ==========================================================
-          rem SPAWN MISSILE
-          rem ==========================================================
+          rem Spawn Missile
+          rem
           rem Creates a new missile/attack visual for a player.
           rem Called when player presses attack button.
 
@@ -181,9 +179,8 @@ VelocityDone
           
           return
 
-          rem ==========================================================
-          rem UPDATE ALL MISSILES
-          rem ==========================================================
+          rem Update All Missiles
+          rem
           rem Called once per frame to update all active missiles.
           rem Updates position, checks collisions, handles lifetime.
 UpdateAllMissiles
@@ -204,9 +201,8 @@ UpdateAllMissiles
           rem tail call
           goto UpdateOneMissile
 
-          rem ==========================================================
-          rem UPDATE ONE MISSILE
-          rem ==========================================================
+          rem Update One Missile
+          rem
           rem Updates a single player missile.
           rem Handles movement, gravity, collisions, and lifetime.
 
@@ -630,9 +626,8 @@ KnightGuySetY
           rem Skip normal movement and collision checks
           return
 
-          rem ==========================================================
-          rem CHECK MISSILE BOUNDS
-          rem ==========================================================
+          rem Check Missile Bounds
+          rem
           rem Checks if missile is off-screen.
 
           rem INPUT:
@@ -651,9 +646,8 @@ CheckMissileBounds
           
           return
 
-          rem ==========================================================
-          rem CHECK MISSILE-PLAYFIELD COLLISION
-          rem ==========================================================
+          rem Check Missile-playfield Collision
+          rem
           rem Checks if missile hit the playfield (walls, obstacles).
           rem Uses pfread to check playfield pixel at missile position.
 
@@ -726,9 +720,8 @@ Div5Loop
           if temp2>= 5 then Div5Loop
           return
 
-          rem ==========================================================
-          rem CHECK MISSILE-PLAYER COLLISION
-          rem ==========================================================
+          rem Check Missile-player Collision
+          rem
           rem Checks if a missile hit any player (except the owner).
           rem Uses axis-aligned bounding box (AABB) collision detection.
 
@@ -804,9 +797,8 @@ MissileSkipPlayer3
           
           return
 
-          rem ==========================================================
-          rem HANDLE MISSILE HIT
-          rem ==========================================================
+          rem Handle Missile Hit
+          rem
           rem Processes a missile hitting a player.
           rem Applies damage, knockback, and visual/audio feedback.
 
@@ -935,9 +927,8 @@ KnockbackDone
           
           return
 
-          rem ==========================================================
-          rem HANDLE MISSILE BOUNCE
-          rem ==========================================================
+          rem Handle Missile Bounce
+          rem
           rem Handles wall bounce for missiles with bounce flag set.
 
           rem INPUT:
@@ -980,9 +971,8 @@ BounceDone
           rem Continue bouncing (do not deactivate)
           return
 
-          rem ==========================================================
-          rem DEACTIVATE MISSILE
-          rem ==========================================================
+          rem Deactivate Missile
+          rem
           rem Removes a missile from active status.
 
           rem INPUT:

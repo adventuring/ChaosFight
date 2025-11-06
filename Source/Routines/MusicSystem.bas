@@ -152,9 +152,8 @@ MusicUpdateDone
           rem Constraints: Internal label for UpdateMusic, marks end of update
           return
 
-          rem ==========================================================
-          rem SHARED MUSIC VOICE ENVELOPE CALCULATION
-          rem ==========================================================
+          rem Shared Music Voice Envelope Calculation
+          rem
           rem Calculates envelope (attack/decay/sustain) for a music voice
           rem INPUT: temp1 = voice number (0 or 1)
           rem OUTPUT: Sets AUDV0 or AUDV1 based on voice

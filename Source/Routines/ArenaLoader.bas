@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/ArenaLoader.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem ARENA LOADER
-          rem ==========================================================
+          rem Arena Loader
+          rem
           rem Loads arena playfield data and colors based on
           rem   selectedArena.
           rem Handles Color/B&W switch: switchbw=1 (B&W/white),
@@ -638,9 +637,8 @@ LoadArena31Colors
 end
           return
 
-          rem ==========================================================
-          rem RELOAD ARENA COLORS
-          rem ==========================================================
+          rem Reload Arena Colors
+          rem
           rem Reloads only the arena colors (not playfield) based on
           rem   current
           rem Color/B&W switch state. Called when switch changes during

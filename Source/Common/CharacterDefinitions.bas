@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Common/CharacterDefinitions.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem CHARACTER DEFINITIONS
-          rem ==========================================================
+          rem Character Definitions
+          rem
           rem Each character definition includes:
           rem - Weight (affects jump height, movement speed, momentum,
           rem   impact resistance/force)
@@ -32,9 +31,8 @@
           rem Character 14: Ursulo
           rem Character 15: Shamone
 
-          rem ==========================================================
-          rem CHARACTER WEIGHTS
-          rem ==========================================================
+          rem Character Weights
+          rem
           rem Weight values affect:
           rem   - Jump height (higher weight = lower jump)
           rem   - Movement speed (higher weight = slower)
@@ -125,9 +123,8 @@ end
             rem 17², 18², 19², 20², 21², 22², 23², 24²
 end
 
-          rem ==========================================================
-          rem CHARACTER HEIGHTS
-          rem ==========================================================
+          rem Character Heights
+          rem
           rem Character heights for hitbox collision detection (in
           rem   pixels)
           rem Bernie: 10 pixels, all others: 16 pixels
@@ -210,9 +207,8 @@ end
             rem   lasers)
 end
 
-          rem ==========================================================
-          rem BIT MASK TABLE FOR PLAYER INDEX
-          rem ==========================================================
+          rem Bit Mask Table For Player Index
+          rem
           rem Bit mask values for player indices (0-3)
           rem Used for bit-flag operations on playersEliminated and
           rem   missileActive
@@ -221,9 +217,8 @@ end
              1, 2, 4, 8
 end
 
-          rem ==========================================================
-          rem CHARACTER ATTACK TYPES
-          rem ==========================================================
+          rem Character Attack Types
+          rem
           rem 0 = melee, 1 = ranged
           rem Stored as bit-per-character in packed bytes (4 bytes for
           rem   up to 32 characters)
@@ -252,17 +247,15 @@ end
             rem Bits 11-15 (Pork Chop, Radish, RoboTito, Ursulo, Shamone) = 0 (melee)
 end
 
-          rem ==========================================================
-          rem MISSILE SIZE DEFINITIONS
-          rem ==========================================================
+          rem Missile Size Definitions
+          rem
           rem Missile dimensions (width × height) for each character
           rem Format: width, height
           rem Melee attacks can use 0x0 if no visible missile
 
 
-          rem ==========================================================
-          rem MISSILE EMISSION HEIGHTS
-          rem ==========================================================
+          rem Missile Emission Heights
+          rem
           rem Vertical offset on character sprite where missile is
           rem   emitted
           rem Values: 0-7 (top to bottom of 8-pixel tall sprite)
@@ -314,9 +307,8 @@ end
             rem Ursulo changed from -6 to 0 (melee, no missile momentum)
 end
 
-          rem ==========================================================
-          rem MISSILE INTERACTION FLAGS
-          rem ==========================================================
+          rem Missile Interaction Flags
+          rem
           rem Bit flags for missile behavior:
           rem Bit 0: Hit background (0=pass through, 1=hit and
           rem   disappear)
@@ -375,9 +367,8 @@ end
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
-          rem ==========================================================
-          rem ANIMATION SEQUENCE DEFINITIONS
-          rem ==========================================================
+          rem Animation Sequence Definitions
+          rem
           rem Animation sequences (16 total) - all use 8-frame padded
           rem   format:
           rem   0 = Standing still (facing right)
@@ -401,9 +392,8 @@ end
           rem Frame counts are implicit in the data structure (all 8
           rem   frames)
 
-          rem ==========================================================
-          rem ANIMATION FRAME REFERENCES
-          rem ==========================================================
+          rem Animation Frame References
+          rem
           rem Each animation sequence consists of 1, 2, 4, or 8 frame
           rem   references
           rem Frame references are always written as 8 bytes (padded
@@ -439,9 +429,8 @@ end
           rem Attack execution (1 frame)
           rem Attack recovery (1 frame)
 
-          rem ==========================================================
-          rem GRAPHICS DATA STRUCTURE
-          rem ==========================================================
+          rem Graphics Data Structure
+          rem
           rem Each character has:
           rem   - 8px × 16px bitmap data (16 bytes per frame)
           rem   - Frame references point to these 16-byte blocks
@@ -449,9 +438,8 @@ end
           rem - Duplicate frames are compacted, gaps removed, empty
           rem   frames padded
 
-          rem ==========================================================
-          rem CHARACTER DEFINITION LOOKUP SUBROUTINES
-          rem ==========================================================
+          rem Character Definition Lookup Subroutines
+          rem
 
           rem Get character weight
           rem Input: character index (in temp1)
@@ -524,9 +512,8 @@ end
               temp4 = CharacterMissileFlags(temp1)
               return
 
-          rem ==========================================================
-          rem DATA FORMAT NOTES FOR SKYLINETOOL OUTPUT
-          rem ==========================================================
+          rem Data Format Notes For Skylinetool Output
+          rem
 
           rem SkylineTool should emit batariBasic-compatible data in
           rem   this format:

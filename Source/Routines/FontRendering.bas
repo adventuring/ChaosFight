@@ -29,9 +29,8 @@
           rem Include font data (universal for all TV standards)
           #include "Source/Generated/Numbers.bas"
 
-          rem ==========================================================
-          rem DRAW DIGIT - DATA-DRIVEN VERSION
-          rem ==========================================================
+          rem Draw Digit - Data-driven Version
+          rem
           rem Draws a single hexadecimal digit (0-F) at specified
           rem   position.
           rem Supports rendering to player0, player1, player2, player3,
@@ -171,9 +170,8 @@ SetSprite5
           rem tail call
           goto LoadPlayerDigit
 
-          rem ==========================================================
-          rem LOAD DIGIT DATA INTO SPRITES
-          rem ==========================================================
+          rem Load Digit Data Into Sprites
+          rem
           rem Consolidated generic loader that dispatches to sprite-specific
           rem   pointer assignment based on spriteSelect
           rem INPUT: temp5 = spriteSelect (0-5), temp6 = digitOffset
@@ -306,9 +304,8 @@ end
           let player5height = 16
           return
 
-          rem ==========================================================
-          rem DRAW PLAYER NUMBER
-          rem ==========================================================
+          rem Draw Player Number
+          rem
           rem Convenience routine to draw a player number in their
           rem   color.
 
@@ -368,9 +365,8 @@ DrawPlayerDigitNow
           rem tail call
           goto DrawDigit
 
-          rem ==========================================================
-          rem DRAW ARENA NUMBER
-          rem ==========================================================
+          rem Draw Arena Number
+          rem
           rem Convenience routine to draw an arena number in white.
 
           rem INPUTS:

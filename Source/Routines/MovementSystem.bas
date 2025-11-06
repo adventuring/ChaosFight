@@ -3,9 +3,8 @@
           rem 8.8 fixed-point movement system using batariBASIC built-in
           rem   support
 
-          rem ==========================================================
-          rem MOVEMENT SYSTEM ROUTINES
-          rem ==========================================================
+          rem Movement System Routines
+          rem
           rem All integers are 8-bit. Position consists of:
           rem - playerX/Y[0-3] = Integer part (8-bit, already exists in
           rem   var0-var7)
@@ -99,9 +98,8 @@ UpdatePlayerMovementSingle
           rem Skip if player is eliminated
           if playerHealth[currentPlayer] = 0 then return
           
-          rem ==========================================================
-          rem APPLY X VELOCITY TO X POSITION
-          rem ==========================================================
+          rem Apply X Velocity To X Position
+          rem
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem Use 16-bit accumulator to detect carry properly
           rem temp2 = low byte, temp3 = high byte (carry flag)
@@ -131,9 +129,8 @@ XNoCarry
           rem   integer part)
           let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
           
-          rem ==========================================================
-          rem APPLY Y VELOCITY TO Y POSITION
-          rem ==========================================================
+          rem Apply Y Velocity To Y Position
+          rem
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem Use 16-bit accumulator to detect carry properly
           rem temp2 = low byte, temp3 = high byte (carry flag)
@@ -336,9 +333,8 @@ ApplyFriction
           if playerVelocityX[AF_playerIndex] = 0 then let playerVelocityXL[AF_playerIndex] = 0
           return
 
-          rem ==========================================================
-          rem COLLISION DETECTION WITH SUBPIXEL PRECISION
-          rem ==========================================================
+          rem Collision Detection With Subpixel Precision
+          rem
 
           rem Check collision between two players using integer
           rem   positions
@@ -437,9 +433,8 @@ NoCollision
           rem Return value set in alias (temp3 is set but use alias
           return
 
-          rem ==========================================================
-          rem MOVEMENT CONSTRAINTS
-          rem ==========================================================
+          rem Movement Constraints
+          rem
 
           rem Constrain player to screen bounds
           rem Input: temp1 = player index (0-3)
@@ -473,9 +468,8 @@ ConstrainToScreen
           
           return
 
-          rem ==========================================================
-          rem INITIALIZATION
-          rem ==========================================================
+          rem Initialization
+          rem
 
           rem Initialize movement system for all players
           rem Called at game start to set up initial positions and

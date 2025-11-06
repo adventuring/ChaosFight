@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/SpritePointerInit.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem ==========================================================
-          rem SPRITE POINTER INITIALIZATION
-          rem ==========================================================
+          rem Sprite Pointer Initialization
+          rem
           rem Sets all sprite pointers to point to SCRAM buffers
           rem Called once at game initialization
           rem 

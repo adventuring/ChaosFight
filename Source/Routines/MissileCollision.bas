@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/MissileCollision.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem MISSILE COLLISION SYSTEM
-          rem ==========================================================
+          rem Missile Collision System
+          rem
           rem Handles all collision detection for missiles and
           rem   area-of-effect attacks.
 
@@ -24,9 +23,8 @@
           rem   Facing left  (bit 0 = 0): AOE_X = playerX + 7 - offset
           rem ==========================================================
 
-          rem ==========================================================
-          rem CHECK ALL MISSILE COLLISIONS
-          rem ==========================================================
+          rem Check All Missile Collisions
+          rem
           rem Master routine called each frame to check all active
           rem   missiles.
           rem Checks both visible missiles and AOE attacks.
@@ -78,9 +76,8 @@ CheckAllMissileCollisions
           goto CheckVisibleMissileCollision
           
 
-          rem ==========================================================
-          rem CHECK VISIBLE MISSILE COLLISION
-          rem ==========================================================
+          rem Check Visible Missile Collision
+          rem
           rem Checks collision between a visible missile and all
           rem   players.
           rem Uses axis-aligned bounding box (AABB) collision detection.
@@ -187,9 +184,8 @@ DoneSecondPlayer3
           
           return
 
-          rem ==========================================================
-          rem CHECK AOE COLLISION
-          rem ==========================================================
+          rem Check Aoe Collision
+          rem
           rem Checks collision for area-of-effect melee attacks (no
           rem   visible missile).
           rem AOE is relative to player position and facing direction.
@@ -255,9 +251,8 @@ CheckBernieAOELeft
           let temp4 = temp4
           return
 
-          rem ==========================================================
-          rem CHECK AOE DIRECTION - RIGHT
-          rem ==========================================================
+          rem Check Aoe Direction - Right
+          rem
           rem Checks AOE collision when attacking to the right.
           rem Formula: AOE_X = playerX + offset
 
@@ -364,9 +359,8 @@ DoneAOEPlayer3
           
           return
 
-          rem ==========================================================
-          rem CHECK AOE DIRECTION - LEFT
-          rem ==========================================================
+          rem Check Aoe Direction - Left
+          rem
           rem Checks AOE collision when attacking to the left.
           rem Formula: AOE_X = playerX + 7 - offset
 
@@ -477,9 +471,8 @@ DoneThirdPlayer3
           
           return
 
-          rem ==========================================================
-          rem CHECK MISSILE-PLAYFIELD COLLISION
-          rem ==========================================================
+          rem Check Missile-playfield Collision
+          rem
           rem Checks if missile hit the playfield (walls, obstacles).
           rem Uses pfread to check playfield pixel at missile position.
 

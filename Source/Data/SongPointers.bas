@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Data/SongPointers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem SONG POINTER DATA TABLES
-          rem ==========================================================
+          rem Song Pointer Data Tables
+          rem
           rem Song pointer lookup tables (populated with symbol
           rem   addresses)
           rem Format: data SongPointersL, SongPointersH tables (29

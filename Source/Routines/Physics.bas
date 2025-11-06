@@ -77,9 +77,8 @@ CheckRightWallCollision
           rem   removed
           rem Now using direct array access: playerVelocityX[temp1]
 
-          rem ==========================================================
-          rem CHARACTER WEIGHTS DATA
-          rem ==========================================================
+          rem Character Weights Data
+          rem
           rem Reference to weights from CharacterDefinitions.bas
           rem This is just for documentation - actual weights are read
           rem   from CharacterWeights array

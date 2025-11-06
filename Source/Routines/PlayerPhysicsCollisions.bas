@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/PlayerPhysicsCollisions.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem PLAYER PHYSICS - COLLISIONS
-          rem ==========================================================
+          rem Player Physics - Collisions
+          rem
           rem Handles boundary, playfield, and player-to-player collisions.
           rem Split from PlayerPhysics.bas to reduce bank size.
 
@@ -18,9 +17,8 @@
           rem   selectedChar3_R, selectedChar4_R - Player 3/4 selections
           rem ==========================================================
 
-          rem ==========================================================
-          rem CHECK BOUNDARY COLLISIONS
-          rem ==========================================================
+          rem Check Boundary Collisions
+          rem
           rem Prevents players from moving off-screen.
 CheckBoundaryCollisions
           rem Prevents players from moving off-screen (horizontal wrap-around, vertical clamping)
@@ -72,9 +70,8 @@ CheckBoundaryCollisions
           
           return
 
-          rem ==========================================================
-          rem CHECK PLAYFIELD COLLISION ALL DIRECTIONS
-          rem ==========================================================
+          rem Check Playfield Collision All Directions
+          rem
           rem Checks for playfield pixel collisions in all four
           rem   directions and blocks movement by zeroing velocity.
           rem Uses CharacterHeights table for proper hitbox detection.
@@ -145,9 +142,8 @@ DBPF_InlineDivideDone
           rem Check for wraparound: if division resulted in value ≥ 128 (negative), clamp to 0
           if playfieldRow & $80 then let playfieldRow = 0
           
-          rem ==========================================================
-          rem CHECK LEFT COLLISION
-          rem ==========================================================
+          rem Check Left Collision
+          rem
           rem Check if player left edge (temp6 column) has a playfield pixel
           rem Check at player head, middle, and feet positions
           rem Skip if at left edge (temp6 is 0-31, so = 0 means exactly 0)
@@ -240,9 +236,8 @@ end
           if playerX[currentPlayer] < rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] < rowYPosition then let playerSubpixelXL[currentPlayer] = 0
           
-          rem ==========================================================
-          rem CHECK RIGHT COLLISION
-          rem ==========================================================
+          rem Check Right Collision
+          rem
 PFCheckRight
           rem Check if player right edge has a playfield pixel
           rem Player width is 16 pixels (double-width NUSIZ), so right
@@ -332,9 +327,8 @@ end
           if playerX[currentPlayer] > rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] > rowYPosition then let playerSubpixelXL[currentPlayer] = 0
           
-          rem ==========================================================
-          rem CHECK UP COLLISION
-          rem ==========================================================
+          rem Check Up Collision
+          rem
 PFCheckUp
           rem Check if player head has a playfield pixel above
           if playfieldRow = 0 then goto PFCheckDown
@@ -449,9 +443,8 @@ PFBlockDown
 PFCheckDone
           return
 
-          rem ==========================================================
-          rem CHECK MULTI-PLAYER COLLISIONS
-          rem ==========================================================
+          rem Check Multi-player Collisions
+          rem
           rem Checks collisions between players (for pushing, not
           rem   damage).
           rem Uses weight-based momentum transfer: heavier characters
@@ -552,9 +545,8 @@ end
           let totalHeight = halfHeight1 + halfHeight2
           if yDistance >= totalHeight then goto CollisionNextInner
           
-          rem ==========================================================
-          rem MOMENTUM TRANSFER BASED ON WEIGHT
-          rem ==========================================================
+          rem Momentum Transfer Based On Weight
+          rem
           rem Get character weights from CharacterWeights table
           let characterWeight = CharacterWeights[temp4]
           rem Player1 weight (temporarily store, will be overwritten)

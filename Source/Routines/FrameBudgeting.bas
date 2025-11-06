@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/FrameBudgeting.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem FRAME BUDGETING SYSTEM
-          rem ==========================================================
+          rem Frame Budgeting System
+          rem
           rem Manages expensive operations across multiple frames to
           rem   ensure
           rem game logic never exceeds the overscan period.
@@ -36,9 +35,8 @@
           rem   frame
           rem ==========================================================
 
-          rem ==========================================================
-          rem UPDATE FRAME PHASE
-          rem ==========================================================
+          rem Update Frame Phase
+          rem
           rem Updates the frame phase counter (0-3) used to schedule
           rem   operations.
           rem Called once per frame at the start of game loop.
@@ -53,9 +51,8 @@ UpdateFramePhase
           rem Cycle 0, 1, 2, 3, 0, 1, 2, 3...
           return
 
-          rem ==========================================================
-          rem BUDGET HEALTH BAR RENDERING
-          rem ==========================================================
+          rem Budget Health Bar Rendering
+          rem
           rem Instead of drawing all 4 health bars every frame, draw
           rem   only one
           rem player health bar per frame. This reduces pfpixel
@@ -188,9 +185,8 @@ UpdateHealthBarPlayer3
           gosub DrawHealthBarRow3 bank8
           return
 
-          rem ==========================================================
-          rem BUDGET COLLISION DETECTION
-          rem ==========================================================
+          rem Budget Collision Detection
+          rem
           rem Instead of checking all 6 collision pairs every frame in
           rem   4-player
           rem mode, check 2 pairs per frame. This spreads the work
@@ -362,9 +358,8 @@ CheckCollisionP3vsP4Aux
           let playerX[3] = playerX[3] - 1
           return
 
-          rem ==========================================================
-          rem BUDGET MISSILE COLLISION DETECTION
-          rem ==========================================================
+          rem Budget Missile Collision Detection
+          rem
           rem Check missile collisions for at most 2 missiles per frame.
 
           rem SCHEDULE (2-player mode):

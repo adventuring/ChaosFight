@@ -3,9 +3,8 @@
           rem batariBASIC wrapper for character art location with bank
           rem   switching
           
-          rem ==========================================================
-          rem CHARACTER ART LOCATION WRAPPER
-          rem ==========================================================
+          rem Character Art Location Wrapper
+          rem
           rem Wrapper that determines correct bank and switches to it
           rem Input: temp1 = character index (0-31)
           rem temp2 = animation frame (0-7) from sprite 10fps counter,

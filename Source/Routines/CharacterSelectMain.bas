@@ -773,8 +773,8 @@ SelectLoadSpecialSpriteCall
           rem temp3 now has player number
           let temp6 = SLSS_spriteIndex
           rem temp6 now has sprite index
-          gosub LoadSpecialSprite
-          rem Special sprites don’t need animation handling, go to color
+          gosub bank10 LoadSpecialSprite
+          rem Special sprites don't need animation handling, go to color
           goto SelectLoadSpriteColor
           
 SelectLoadWalkingSprite

@@ -210,7 +210,7 @@ DWS_LoadBWColors
             sta pfcolortable
             lda #>WinnerScreenColorsBW
             sta pfcolortable+1
-          end
+end
           return
 
 DWS_LoadColorColors
@@ -221,6 +221,6 @@ DWS_LoadColorColors
             sta pfcolortable
             lda #>WinnerScreenColorsColor
             sta pfcolortable+1
-          end
+end
           return
 

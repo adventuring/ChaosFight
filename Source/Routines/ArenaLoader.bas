@@ -97,7 +97,7 @@ LoadArenaColorsBW
             sta pfcolortable
             lda #>ArenaColorsBW
             sta pfcolortable+1
-          end
+end
           return
 
 LoadRandomArena
@@ -113,7 +113,7 @@ LoadArena0Colors
             sta pfcolortable
             lda #>Arena0ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena1Colors
           rem Set pfcolortable pointer to Arena1ColorsColor
@@ -122,7 +122,7 @@ LoadArena1Colors
             sta pfcolortable
             lda #>Arena1ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena2Colors
           rem Set pfcolortable pointer to Arena2ColorsColor
@@ -131,7 +131,7 @@ LoadArena2Colors
             sta pfcolortable
             lda #>Arena2ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena3Colors
           rem Set pfcolortable pointer to Arena3ColorsColor
@@ -140,7 +140,7 @@ LoadArena3Colors
             sta pfcolortable
             lda #>Arena3ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena4Colors
           rem Set pfcolortable pointer to Arena4ColorsColor
@@ -149,7 +149,7 @@ LoadArena4Colors
             sta pfcolortable
             lda #>Arena4ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena5Colors
           rem Set pfcolortable pointer to Arena5ColorsColor
@@ -158,7 +158,7 @@ LoadArena5Colors
             sta pfcolortable
             lda #>Arena5ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena6Colors
           rem Set pfcolortable pointer to Arena6ColorsColor
@@ -167,7 +167,7 @@ LoadArena6Colors
             sta pfcolortable
             lda #>Arena6ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena7Colors
           rem Set pfcolortable pointer to Arena7ColorsColor
@@ -176,7 +176,7 @@ LoadArena7Colors
             sta pfcolortable
             lda #>Arena7ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena8Colors
           rem Set pfcolortable pointer to Arena8ColorsColor
@@ -185,7 +185,7 @@ LoadArena8Colors
             sta pfcolortable
             lda #>Arena8ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena9Colors
           rem Set pfcolortable pointer to Arena9ColorsColor
@@ -194,7 +194,7 @@ LoadArena9Colors
             sta pfcolortable
             lda #>Arena9ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena10Colors
           rem Set pfcolortable pointer to Arena10ColorsColor
@@ -203,7 +203,7 @@ LoadArena10Colors
             sta pfcolortable
             lda #>Arena10ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena11Colors
           rem Set pfcolortable pointer to Arena11ColorsColor
@@ -212,7 +212,7 @@ LoadArena11Colors
             sta pfcolortable
             lda #>Arena11ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena12Colors
           rem Set pfcolortable pointer to Arena12ColorsColor
@@ -221,7 +221,7 @@ LoadArena12Colors
             sta pfcolortable
             lda #>Arena12ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena13Colors
           rem Set pfcolortable pointer to Arena13ColorsColor
@@ -230,7 +230,7 @@ LoadArena13Colors
             sta pfcolortable
             lda #>Arena13ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena14Colors
           rem Set pfcolortable pointer to Arena14ColorsColor
@@ -239,7 +239,7 @@ LoadArena14Colors
             sta pfcolortable
             lda #>Arena14ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 LoadArena15Colors
           rem Set pfcolortable pointer to Arena15ColorsColor
@@ -248,7 +248,7 @@ LoadArena15Colors
             sta pfcolortable
             lda #>Arena15ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena16Colors
@@ -258,7 +258,7 @@ LoadArena16Colors
             sta pfcolortable
             lda #>Arena16ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena17Colors
@@ -268,7 +268,7 @@ LoadArena17Colors
             sta pfcolortable
             lda #>Arena17ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena18Colors
@@ -278,7 +278,7 @@ LoadArena18Colors
             sta pfcolortable
             lda #>Arena18ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena19Colors
@@ -288,7 +288,7 @@ LoadArena19Colors
             sta pfcolortable
             lda #>Arena19ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena20Colors
@@ -298,7 +298,7 @@ LoadArena20Colors
             sta pfcolortable
             lda #>Arena20ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena21Colors
@@ -308,7 +308,7 @@ LoadArena21Colors
             sta pfcolortable
             lda #>Arena21ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena22Colors
@@ -318,7 +318,7 @@ LoadArena22Colors
             sta pfcolortable
             lda #>Arena22ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena23Colors
@@ -328,7 +328,7 @@ LoadArena23Colors
             sta pfcolortable
             lda #>Arena23ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena24Colors
@@ -338,7 +338,7 @@ LoadArena24Colors
             sta pfcolortable
             lda #>Arena24ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena25Colors
@@ -348,7 +348,7 @@ LoadArena25Colors
             sta pfcolortable
             lda #>Arena25ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena26Colors
@@ -358,7 +358,7 @@ LoadArena26Colors
             sta pfcolortable
             lda #>Arena26ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena27Colors
@@ -368,7 +368,7 @@ LoadArena27Colors
             sta pfcolortable
             lda #>Arena27ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena28Colors
@@ -378,7 +378,7 @@ LoadArena28Colors
             sta pfcolortable
             lda #>Arena28ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena29Colors
@@ -388,7 +388,7 @@ LoadArena29Colors
             sta pfcolortable
             lda #>Arena29ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena30Colors
@@ -398,7 +398,7 @@ LoadArena30Colors
             sta pfcolortable
             lda #>Arena30ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArena31Colors
@@ -408,7 +408,7 @@ LoadArena31Colors
             sta pfcolortable
             lda #>Arena31ColorsColor
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArenaColorsBW
@@ -418,7 +418,7 @@ LoadArenaColorsBW
             sta pfcolortable
             lda #>ArenaColorsBW
             sta pfcolortable+1
-          end
+end
           return
 
           rem ==========================================================

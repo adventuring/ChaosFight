@@ -392,7 +392,7 @@ GuardBounceFromCollision
           asm
             lsr velocityCalculation
             lsr velocityCalculation
-          end
+end
           let temp6  = temp6 - velocityCalculation
           rem Reduce bounce velocity by 25%
           let missileVelocityX[UOM_playerIndex] = temp6
@@ -474,7 +474,7 @@ HandleMegaxMissile
             lsr HMM_animationState
             lsr HMM_animationState
             lsr HMM_animationState
-          end
+end
           
           rem If animation state is not ActionAttackExecute (14), attack is complete
           rem   deactivate
@@ -519,7 +519,7 @@ HandleKnightGuyMissile
             lsr HKG_animationState
             lsr HKG_animationState
             lsr HKG_animationState
-          end
+end
           
           rem If animation state is not ActionAttackExecute (14), attack is complete
           if HKG_animationState = 14 then KnightGuyAttackActive
@@ -877,7 +877,7 @@ HandleMissileBounce
           rem Divide by 2 using bit shift right (LSR) - direct memory mode
           asm
             lsr HMB_dampenAmount
-          end
+end
           let missileVelocityXCalc = missileVelocityXCalc - HMB_dampenAmount
 BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc

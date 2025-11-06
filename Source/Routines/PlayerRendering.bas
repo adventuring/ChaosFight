@@ -39,6 +39,12 @@
           rem Updates hardware sprite position registers for all active
           rem   entities.
 SetSpritePositions
+          rem Updates hardware sprite position registers for all active entities (players and missiles)
+          rem Input: playerX[], playerY[] (global arrays) = player positions, missileX[] (global array) = missile X positions, missileY_R[] (global SCRAM array) = missile Y positions, missileActive (global) = missile active flags, playerChar[] (global array) = character types, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, playerHealth[] (global array) = player health, frame (global) = frame counter, missileNUSIZ[] (global array) = missile size registers, CharacterMissileHeights[] (global data table) = missile heights, characterStateFlags_R[] (global SCRAM array) = character state flags, playerState[] (global array) = player states, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights
+          rem Output: All sprite positions set, missile positions set with frame multiplexing in 4-player mode
+          rem Mutates: player0x, player0y, player1x, player1y, player2x, player2y, player3x, player3y (TIA registers) = sprite positions, missile0x, missile0y, missile1x, missile1y (TIA registers) = missile positions, ENAM0, ENAM1 (TIA registers) = missile enable flags, missile0height, missile1height (TIA registers) = missile heights, NUSIZ0, NUSIZ1 (TIA registers) = missile size registers, temp1-temp6 (used for calculations)
+          rem Called Routines: RenderRoboTitoStretchMissile0 - renders RoboTito stretch missile for missile0, RenderRoboTitoStretchMissile1 - renders RoboTito stretch missile for missile1
+          rem Constraints: 4-player mode uses frame multiplexing (even frames = P1/P2, odd frames = P3/P4)
           rem Set player sprite positions
           player0x = playerX[0]
           player0y = playerY[0]
@@ -259,6 +265,12 @@ RenderMissile1P2_2PActive
           rem   (not latched), and no projectile missile active
           
 RenderRoboTitoStretchMissile0
+          rem Renders RoboTito stretch visual missile for missile0 (only if RoboTito, stretching, and no projectile missile)
+          rem Input: controllerStatus (global) = controller state, frame (global) = frame counter, playerChar[] (global array) = character types, characterStateFlags_R[] (global SCRAM array) = character state flags, playerState[] (global array) = player states, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights, playerX[], playerY[] (global arrays) = player positions, CharRoboTito (global constant) = RoboTito character index
+          rem Output: missile0 rendered as stretch missile if conditions met
+          rem Mutates: temp1-temp4 (used for calculations), missile0x, missile0y (TIA registers) = missile position, missile0height (TIA register) = missile height, ENAM0 (TIA register) = missile enable flag, NUSIZ0 (TIA register) = missile size
+          rem Called Routines: None
+          rem Constraints: Only renders if player is RoboTito, stretching upward (not latched, ActionJumping=10), and stretch height > 0. Frame multiplexing determines which player uses missile0
           dim RRTM_playerIndex = temp1
           dim RRTM_isStretching = temp2
           dim RRTM_stretchHeight = temp3
@@ -311,6 +323,12 @@ RRTM_IsStretching
           return
           
 RenderRoboTitoStretchMissile1
+          rem Renders RoboTito stretch visual missile for missile1 (only if RoboTito, stretching, and no projectile missile)
+          rem Input: controllerStatus (global) = controller state, frame (global) = frame counter, playerChar[] (global array) = character types, characterStateFlags_R[] (global SCRAM array) = character state flags, playerState[] (global array) = player states, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights, playerX[], playerY[] (global arrays) = player positions, CharRoboTito (global constant) = RoboTito character index
+          rem Output: missile1 rendered as stretch missile if conditions met
+          rem Mutates: temp1-temp4 (used for calculations), missile1x, missile1y (TIA registers) = missile position, missile1height (TIA register) = missile height, ENAM1 (TIA register) = missile enable flag, NUSIZ1 (TIA register) = missile size
+          rem Called Routines: None
+          rem Constraints: Only renders if player is RoboTito, stretching upward (not latched, ActionJumping=10), and stretch height > 0. Frame multiplexing determines which player uses missile1
           dim RRTM1_playerIndex = temp1
           dim RRTM1_isStretching = temp2
           dim RRTM1_stretchHeight = temp3
@@ -369,6 +387,12 @@ RRTM1_IsStretching
           rem Colors change based on hurt state and color/B&W switch.
           rem On 7800, Pause button can override Color/B&W setting.
 SetPlayerSprites
+          rem Sets colors and graphics for all player sprites with hurt state and facing direction handling
+          rem Input: playerChar[] (global array) = character types, playerRecoveryFrames[] (global array) = recovery frame counts, playerState[] (global array) = player states, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, playerHealth[] (global array) = player health, currentCharacter (global) = character index for sprite loading
+          rem Output: All player sprite colors and graphics set, sprite reflections set based on facing direction
+          rem Mutates: temp1-temp4 (used for calculations), COLUP0, COLUP1, COLUP2, COLUP3 (TIA registers) = player colors, REFP0 (TIA register) = player 0 reflection, _NUSIZ1, NewNUSIZ+2, NewNUSIZ+3 (TIA registers) = player sprite reflections, player sprite pointers (via LoadCharacterSprite), LoadCharacterColors_isHurt, LoadCharacterColors_isFlashing, LoadCharacterColors_flashingMode, LoadCharacterColors_playerNumber (global aliases) = color loading parameters
+          rem Called Routines: LoadCharacterColors (bank10) - loads player colors, LoadCharacterSprite (bank10) - loads sprite graphics
+          rem Constraints: Multisprite kernel requires _COLUP1 and _NUSIZ1 for Player 2 virtual sprite. Players 3/4 only rendered if Quadtari detected and selected
           dim SPS_charIndex = temp1
           dim SPS_animFrame = temp2
           dim SPS_playerNum = temp3
@@ -580,6 +604,12 @@ DonePlayer4Sprite
           rem Shows health status for all active players.
           rem Flashes sprites when health is critically low.
 DisplayHealth
+          rem Shows health status for all active players by flashing sprites when health is critically low
+          rem Input: playerHealth[] (global array) = player health values, playerRecoveryFrames[] (global array) = recovery frame counts, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, frame (global) = frame counter
+          rem Output: Sprites flashed (hidden) when health < 25 and not in recovery
+          rem Mutates: player0x, player1x, player2x, player3x (TIA registers) = sprite positions (set to 200 to hide when flashing)
+          rem Called Routines: None
+          rem Constraints: Only flashes when health < 25 and not in recovery. Players 3/4 only checked if Quadtari detected and selected
           rem Flash Participant 1 sprite (array [0], P0) if health is
           rem   low (but not during recovery)
           rem Use skip-over pattern to avoid complex || operator

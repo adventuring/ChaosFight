@@ -812,10 +812,10 @@ NumberPositionCalculate
           dim NPC_digit = temp1
           rem playerIndex now has player index (0-3)
           rem Determine X and Y positions and which sprite to use
-          rem P1 (index 0): x=56, y=48, sprite=player0
-          rem P2 (index 1): x=104, y=48, sprite=player1
-          rem P3 (index 2): x=56, y=88, sprite=player0
-          rem P4 (index 3): x=104, y=88, sprite=player1
+          rem P1 (index 0): x=56, y=48, sprite=player0, shows P1
+          rem P2 (index 1): x=104, y=48, sprite=player1, shows P1 (virtual sprite)
+          rem P3 (index 2): x=56, y=88, sprite=player0, shows P2 (virtual sprite)
+          rem P4 (index 3): x=104, y=88, sprite=player1, shows P3 (virtual sprite)
           
           if !NPC_playerIndex then SelectNumberP1
           rem P1 (0)
@@ -855,8 +855,8 @@ SelectNumberP2
           let SNP2_yPos = 48
           let SNP2_spriteSelect = 1
           let SNP2_color = ColRed(14)
-          let SNP2_digit = 2
-          rem P2: right, top row, player1, red
+          let SNP2_digit = 1
+          rem P2 (virtual sprite): right, top row, player1, red, shows P1
           let temp1 = SNP2_digit
           let temp2 = SNP2_xPos
           let temp3 = SNP2_yPos
@@ -874,8 +874,8 @@ SelectNumberP3
           let SNP3_yPos = 88
           let SNP3_spriteSelect = 0
           let SNP3_color = ColYellow(14)
-          let SNP3_digit = 3
-          rem P3: left, bottom row, player0, yellow
+          let SNP3_digit = 2
+          rem P3 (virtual sprite): left, bottom row, player0, yellow, shows P2
           let temp1 = SNP3_digit
           let temp2 = SNP3_xPos
           let temp3 = SNP3_yPos
@@ -893,8 +893,8 @@ SelectNumberP4
           let SNP4_yPos = 88
           let SNP4_spriteSelect = 1
           let SNP4_color = ColGreen(14)
-          let SNP4_digit = 4
-          rem P4: right, bottom row, player1, green
+          let SNP4_digit = 3
+          rem P4 (virtual sprite): right, bottom row, player1, green, shows P3
           let temp1 = SNP4_digit
           let temp2 = SNP4_xPos
           let temp3 = SNP4_yPos

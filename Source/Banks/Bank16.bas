@@ -65,11 +65,11 @@
           ; Format: ASCII bytes, null-terminated
           ; Generated at compile time via preprocessor defines
           ;   BUILD_YEAR and BUILD_DAY
-          BuildDateString:
+BuildDateString:
           .byte "BUILD_DATE_STRING",0
           
           ; Game URL string for attribution
           ; Format: ASCII bytes, null-terminated
-          GameURLString:
+GameURLString:
           .byte "https://interworldly.com/games/ChaosFight",0
 end

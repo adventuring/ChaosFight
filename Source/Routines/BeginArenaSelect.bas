@@ -9,11 +9,10 @@
           rem Called from ChangeGameMode when entering arena select mode
           rem   (gameMode 5).
           rem
-          rem NOTE: File is named BeginLevelSelect.bas for historical
-          rem   reasons,
-          rem but function name is BeginArenaSelect (Arena Select is
-          rem   preferred
-          rem terminology in codebase per Requirements.md).
+          rem NOTE: File is named BeginArenaSelect.bas (normalized from
+          rem   BeginLevelSelect.bas for consistency).
+          rem Function name is BeginArenaSelect (Arena Select is preferred
+          rem   terminology in codebase per Requirements.md).
           rem ==========================================================
 
 BeginArenaSelect

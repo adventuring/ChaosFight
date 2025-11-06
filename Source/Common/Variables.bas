@@ -389,16 +389,16 @@
           rem ADMIN: Arena select variables (var24-var27)
           rem NOTE: These are REDIMMED in Game Mode for animationCounter
           rem   (var24-var27)
-          dim levelPreviewData = var24      
+          dim arenaPreviewData = var24      
           rem ADMIN: Arena preview state (REDIMMED - Game Mode uses
           rem   var24 for animationCounter[0])
-          dim levelScrollOffset = var25     
+          dim arenaScrollOffset = var25     
           rem ADMIN: Scroll position (REDIMMED - Game Mode uses var25
           rem   for animationCounter[1])
-          dim levelCursorPos = var26        
+          dim arenaCursorPos = var26        
           rem ADMIN: Cursor position (REDIMMED - Game Mode uses var26
           rem   for animationCounter[2])
-          dim levelConfirmTimer = var27     
+          dim arenaConfirmTimer = var27     
           rem ADMIN: Confirmation timer (REDIMMED - Game Mode uses var27
           rem   for animationCounter[3])
 

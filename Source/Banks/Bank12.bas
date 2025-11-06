@@ -8,8 +8,8 @@
 
 #include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/FallingAnimation.bas"
-#include "Source/Routines/BeginLevelSelect.bas"
-#include "Source/Routines/LevelSelect.bas"
+#include "Source/Routines/BeginArenaSelect.bas"
+#include "Source/Routines/ArenaSelect.bas"
 #include "Source/Data/CharacterThemeSongIndices.bas"
           rem Character-to-theme-song mapping table for winner
           rem   announcements

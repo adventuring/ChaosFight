@@ -119,12 +119,18 @@ end
           rem ==========================================================
           rem Check if player left edge (temp6 column) has a playfield pixel
           rem Check at player head, middle, and feet positions
-          rem Skip if at left edge or out of bounds (inline nested ifs to avoid labels)
-          if temp6 > 0 then let playfieldColumn = temp6 - 1
+          rem Skip if at left edge
+          if temp6 <= 0 then PFCheckRight
+          rem At left edge of screen, skip check
+          
+          let playfieldColumn = temp6 - 1
           rem Column to the left (playfieldColumn)
           rem Check for wraparound: if temp6 was 0, playfieldColumn wraps to 255 (≥ 128)
-          if temp6 > 0 then if !(playfieldColumn & $80) then rem Check head position (top of sprite)
-          if temp6 > 0 then if !(playfieldColumn & $80) then if pfread(playfieldColumn, playfieldRow) then PFBlockLeft
+          if playfieldColumn & $80 then PFCheckRight
+          rem Out of bounds, skip
+          
+          rem Check head position (top of sprite)
+          if pfread(playfieldColumn, playfieldRow) then PFBlockLeft
           rem Check middle position
           rem Calculate (temp5 / 2) / pfrowheight
           asm
@@ -136,13 +142,15 @@ end
           gosub DivideByPfrowheight
           rem temp2 = (temp5 / 2) / pfrowheight
           let rowCounter = playfieldRow + temp2
-          if temp6 > 0 then if !(playfieldColumn & $80) then if rowCounter < pfrows then if pfread(playfieldColumn, rowCounter) then PFBlockLeft
+          if rowCounter >= pfrows then PFCheckRight
+          if pfread(playfieldColumn, rowCounter) then PFBlockLeft
           rem Check feet position (bottom of sprite)
           let temp2 = temp5
           gosub DivideByPfrowheight
           rem temp2 = temp5 / pfrowheight
           let rowCounter = playfieldRow + temp2
-          if temp6 > 0 then if !(playfieldColumn & $80) then if rowCounter < pfrows then if pfread(playfieldColumn, rowCounter) then PFBlockLeft
+          if rowCounter >= pfrows then PFCheckRight
+          if pfread(playfieldColumn, rowCounter) then PFBlockLeft
           
 PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
@@ -240,8 +248,6 @@ PFCheckUp
           rem Check right edge column
           if temp6 < 31 then if pfread(temp6 + 1, rowCounter) then PFBlockUp
           
-          goto PFCheckDown
-          
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
           rem   ≥ 128 are negative)
@@ -261,7 +267,7 @@ PFBlockUp
             asl a
             sta rowYPosition
 end
-          goto DBPF_MultiplyDone
+          DBPF_MultiplyDone
 DBPF_MultiplyBy8
           rem pfrowheight is 8, multiply by 8 (3 left shifts)
           asm
@@ -299,8 +305,6 @@ PFCheckDown
           if pfread(temp6, playfieldRow) then PFBlockDown
           if temp6 > 0 then if pfread(temp6 - 1, playfieldRow) then PFBlockDown
           if temp6 < 31 then if pfread(temp6 + 1, playfieldRow) then PFBlockDown
-          
-          goto PFCheckDone
           
 PFBlockDown
           rem Block downward movement: zero Y velocity if positive

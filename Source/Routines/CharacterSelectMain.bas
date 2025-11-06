@@ -706,12 +706,23 @@ SelectLoadSprite
           dim SLS_animationFrame = temp2
           dim SLS_animationAction = temp3
           dim SLS_playerNumberForArt = temp4
+          dim SLS_spriteIndex = temp6
           rem Load sprite for determined player
           if SLS_playerNumber > 3 then SelectDrawSpriteDone
           let SLS_playerNumberSaved = SLS_playerNumber
           rem Save player number
           let SLS_characterIndex = playerChar[SLS_playerNumberSaved]
           
+          rem Check for special characters (?, CPU, NO) before normal art loading
+          rem Special characters don't animate, so handle them separately
+          if SLS_characterIndex = NoCharacter then SelectLoadSpecialSprite
+          rem NoCharacter = 255
+          if SLS_characterIndex = CPUCharacter then SelectLoadSpecialSprite
+          rem CPUCharacter = 254
+          if SLS_characterIndex = RandomCharacter then SelectLoadSpecialSprite
+          rem RandomCharacter = 253
+          
+          rem Normal character - use animation state
           rem Use character select animation state
           rem charSelectPlayerAnimSeq has animation sequence (bit 0:
           rem   0=idle, 1=walk)
@@ -734,6 +745,36 @@ SelectLoadSprite
           let temp3 = SLS_animationAction
           let temp4 = SLS_playerNumberForArt
           gosub bank14 LocateCharacterArt
+          goto SelectLoadSpriteColor
+          
+SelectLoadSpecialSprite
+          dim SLSS_characterIndex = temp1
+          dim SLSS_spriteIndex = temp6
+          dim SLSS_playerNumber = temp3
+          rem Map special character indices to sprite indices
+          rem NoCharacter (255) -> SpriteNo (2)
+          rem CPUCharacter (254) -> SpriteCPU (1)
+          rem RandomCharacter (253) -> SpriteQuestionMark (0)
+          rem temp1 still contains character index from SelectLoadSprite
+          rem temp6 still contains player number saved (SLS_playerNumberSaved)
+          let SLSS_characterIndex = temp1
+          rem Character index already in temp1
+          let SLSS_playerNumber = temp6
+          rem Player number saved in temp6
+          if SLSS_characterIndex = NoCharacter then let SLSS_spriteIndex = SpriteNo : goto SelectLoadSpecialSpriteCall
+          if SLSS_characterIndex = CPUCharacter then let SLSS_spriteIndex = SpriteCPU : goto SelectLoadSpecialSpriteCall
+          let SLSS_spriteIndex = SpriteQuestionMark
+          rem RandomCharacter = 253
+          
+SelectLoadSpecialSpriteCall
+          rem LoadSpecialSprite expects: temp6 = sprite index, temp3 = player number
+          rem Preserve player number from temp6 to temp3 before overwriting temp6
+          let temp3 = SLSS_playerNumber
+          rem temp3 now has player number
+          let temp6 = SLSS_spriteIndex
+          rem temp6 now has sprite index
+          gosub LoadSpecialSprite
+          rem Special sprites don't need animation handling, go to color
           goto SelectLoadSpriteColor
           
 SelectLoadWalkingSprite

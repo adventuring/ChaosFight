@@ -120,12 +120,20 @@ NoHit
 CalculateAttackHitbox
           dim CAH_attackerID_calc = attackerID
           rem Set hitbox based on attack type and direction
-          on PlayerAttackType[CAH_attackerID_calc] goto MeleeHitbox, ProjectileHitbox, AreaHitbox
+          rem Use temporary variable to avoid compiler bug with array indexing
+          rem   in on statement
+          dim CAH_attackType = temp1
+          let CAH_attackType = PlayerAttackType[CAH_attackerID_calc]
+          on CAH_attackType goto MeleeHitbox, ProjectileHitbox, AreaHitbox
           
 MeleeHitbox
           rem Melee hitbox extends PlayerSpriteWidth pixels in facing
           rem   direction
-          on PlayerFacing[CAH_attackerID_calc] goto FacingRight, FacingLeft, FacingUp, FacingDown
+          rem Use temporary variable to avoid compiler bug with array indexing
+          rem   in on statement
+          dim CAH_facing = temp2
+          let CAH_facing = PlayerFacing[CAH_attackerID_calc]
+          on CAH_facing goto FacingRight, FacingLeft, FacingUp, FacingDown
           
 FacingRight
           rem Hitbox extends 16 pixels forward from sprite right edge

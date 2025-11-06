@@ -40,18 +40,18 @@ end
 
 Arena1DataColors
           data
-          ColGrey(6),
-ColGrey(4),
-ColGrey(4),
-ColGrey(2),
-ColGrey(2),
-ColGrey(2),
-ColGrey(2),
-ColGrey(2),
-ColGrey(2),
-ColGrey(2),
-ColGrey(4),
-ColGrey(6)
+                    ColGrey(6),
+          ColGrey(4),
+          ColGrey(4),
+          ColGrey(2),
+          ColGrey(2),
+          ColGrey(2),
+          ColGrey(2),
+          ColGrey(2),
+          ColGrey(2),
+          ColGrey(2),
+          ColGrey(4),
+          ColGrey(6)
 end
 
 Arena2Data
@@ -72,18 +72,18 @@ end
 
 Arena2DataColors
           data
-          ColBlue(14),
-ColBlue(12),
-ColBlue(10),
-ColBlue(8),
-ColBlue(6),
-ColBlue(4),
-ColBlue(6),
-ColBlue(8),
-ColBlue(10),
-ColBlue(12),
-ColBlue(12),
-ColBlue(14)
+                    ColBlue(14),
+          ColBlue(12),
+          ColBlue(10),
+          ColBlue(8),
+          ColBlue(6),
+          ColBlue(4),
+          ColBlue(6),
+          ColBlue(8),
+          ColBlue(10),
+          ColBlue(12),
+          ColBlue(12),
+          ColBlue(14)
 end
 
 Arena3Data
@@ -103,18 +103,18 @@ Arena3Data
 end
 Arena3DataColors
           data
-          ColBrown(6),
-ColSeafoam(4),
-ColSeafoam(4),
-ColSeafoam(6),
-ColSeafoam(4),
-ColSeafoam(4),
-ColSeafoam(6),
-ColSeafoam(4),
-ColSeafoam(2),
-ColSeafoam(4),
-ColSeafoam(2),
-ColBrown(6)
+                    ColBrown(6),
+          ColSeafoam(4),
+          ColSeafoam(4),
+          ColSeafoam(6),
+          ColSeafoam(4),
+          ColSeafoam(4),
+          ColSeafoam(6),
+          ColSeafoam(4),
+          ColSeafoam(2),
+          ColSeafoam(4),
+          ColSeafoam(2),
+          ColBrown(6)
 end
 
 Arena4Data
@@ -134,18 +134,18 @@ Arena4Data
 end
 Arena4DataColors
           data
-          ColOrange(8),
-ColOrange(6),
-ColOrange(4),
-ColOrange(4),
-ColOrange(4),
-ColOrange(2),
-ColOrange(2),
-ColOrange(2),
-ColOrange(2),
-ColOrange(2),
-ColOrange(4),
-ColOrange(6)
+                    ColOrange(8),
+          ColOrange(6),
+          ColOrange(4),
+          ColOrange(4),
+          ColOrange(4),
+          ColOrange(2),
+          ColOrange(2),
+          ColOrange(2),
+          ColOrange(2),
+          ColOrange(2),
+          ColOrange(4),
+          ColOrange(6)
 end
 
 Arena5Data
@@ -165,18 +165,18 @@ Arena5Data
 end
 Arena5DataColors
           data
+                    ColPurple(6),
+          ColPurple(4),
+          ColPurple(2),
+          ColPurple(0),
+          ColMagenta(14),
+          ColMagenta(12),
+          ColMagenta(10),
+          ColPurple(0),
+          ColPurple(2),
+          ColPurple(4),
           ColPurple(6),
-ColPurple(4),
-ColPurple(2),
-ColPurple(0),
-ColMagenta(14),
-ColMagenta(12),
-ColMagenta(10),
-ColPurple(0),
-ColPurple(2),
-ColPurple(4),
-ColPurple(6),
-ColPurple(8)
+          ColPurple(8)
 end
 
 Arena6Data
@@ -196,18 +196,18 @@ Arena6Data
 end
 Arena6DataColors
           data
-          ColBrown(8),
-ColBrown(6),
-ColBrown(6),
-ColBrown(4),
-ColBrown(4),
-ColBrown(4),
-ColBrown(4),
-ColBrown(4),
-ColBrown(4),
-ColBrown(4),
-ColBrown(6),
-ColBrown(8)
+                    ColBrown(8),
+          ColBrown(6),
+          ColBrown(6),
+          ColBrown(4),
+          ColBrown(4),
+          ColBrown(4),
+          ColBrown(4),
+          ColBrown(4),
+          ColBrown(4),
+          ColBrown(4),
+          ColBrown(6),
+          ColBrown(8)
 end
 
 Arena7Data
@@ -227,18 +227,18 @@ Arena7Data
 end
 Arena7DataColors
           data
-          ColRed(6),
-ColRed(4),
-ColRed(4),
-ColRed(2),
-ColPurple(2),
-ColPurple(0),
-ColPurple(2),
-ColPurple(0),
-ColPurple(2),
-ColRed(2),
-ColRed(4),
-ColRed(6)
+                    ColRed(6),
+          ColRed(4),
+          ColRed(4),
+          ColRed(2),
+          ColPurple(2),
+          ColPurple(0),
+          ColPurple(2),
+          ColPurple(0),
+          ColPurple(2),
+          ColRed(2),
+          ColRed(4),
+          ColRed(6)
 end
 
 Arena8Data
@@ -258,18 +258,18 @@ Arena8Data
 end
 Arena8DataColors
           data
+                    ColCyan(8),
+          ColCyan(6),
+          ColCyan(4),
+          ColCyan(2),
+          ColCyan(4),
+          ColCyan(6),
           ColCyan(8),
-ColCyan(6),
-ColCyan(4),
-ColCyan(2),
-ColCyan(4),
-ColCyan(6),
-ColCyan(8),
-ColCyan(10),
-ColCyan(8),
-ColCyan(6),
-ColCyan(4),
-ColCyan(6)
+          ColCyan(10),
+          ColCyan(8),
+          ColCyan(6),
+          ColCyan(4),
+          ColCyan(6)
 end
 
 Arena9Data
@@ -289,18 +289,18 @@ Arena9Data
 end
 Arena9DataColors
           data
-          ColRed(8),
-ColOrange(6),
-ColSeafoam(6),
-ColBlue(6),
-ColPurple(6),
-ColCyan(6),
-ColGreen(6),
-ColGold(6),
-ColOrange(6),
-ColBlue(6),
-ColGreen(6),
-ColRed(8)
+                    ColRed(8),
+          ColOrange(6),
+          ColSeafoam(6),
+          ColBlue(6),
+          ColPurple(6),
+          ColCyan(6),
+          ColGreen(6),
+          ColGold(6),
+          ColOrange(6),
+          ColBlue(6),
+          ColGreen(6),
+          ColRed(8)
 end
 
 Arena10Data
@@ -318,18 +318,18 @@ Arena10Data
 end
 Arena10DataColors
           data
-          ColGrey(8),
-ColGrey(6),
-ColGrey(6),
-ColGrey(6),
-ColGrey(4),
-ColGrey(4),
-ColGrey(4),
-ColGrey(4),
-ColGrey(4),
-ColGrey(4),
-ColGrey(6),
-ColGrey(8)
+                    ColGrey(8),
+          ColGrey(6),
+          ColGrey(6),
+          ColGrey(6),
+          ColGrey(4),
+          ColGrey(4),
+          ColGrey(4),
+          ColGrey(4),
+          ColGrey(4),
+          ColGrey(4),
+          ColGrey(6),
+          ColGrey(8)
 end
 
 Arena11Data
@@ -349,18 +349,18 @@ Arena11Data
 end
 Arena11DataColors
           data
-          ColGrey(6),
-ColGrey(4),
-ColGrey(4),
-ColGrey(2),
-ColGrey(2),
-ColGrey(2),
-ColRed(2),
-ColRed(2),
-ColRed(2),
-ColRed(4),
-ColRed(4),
-ColRed(6)
+                    ColGrey(6),
+          ColGrey(4),
+          ColGrey(4),
+          ColGrey(2),
+          ColGrey(2),
+          ColGrey(2),
+          ColRed(2),
+          ColRed(2),
+          ColRed(2),
+          ColRed(4),
+          ColRed(4),
+          ColRed(6)
 end
 
 Arena12Data
@@ -380,18 +380,18 @@ Arena12Data
 end
 Arena12DataColors
           data
-          ColGold(8),
-ColGold(6),
-ColGold(4),
-ColGold(4),
-ColGold(2),
-ColGold(2),
-ColGold(2),
-ColGold(2),
-ColGold(4),
-ColGold(4),
-ColGold(6),
-ColGold(8)
+                    ColGold(8),
+          ColGold(6),
+          ColGold(4),
+          ColGold(4),
+          ColGold(2),
+          ColGold(2),
+          ColGold(2),
+          ColGold(2),
+          ColGold(4),
+          ColGold(4),
+          ColGold(6),
+          ColGold(8)
 end
 
 Arena13Data
@@ -411,18 +411,18 @@ Arena13Data
 end
 Arena13DataColors
           data
-          ColGrey(10),
-ColGrey(8),
-ColGrey(8),
-ColGrey(6),
-ColGrey(6),
-ColGrey(6),
-ColGrey(6),
-ColGrey(6),
-ColGrey(6),
-ColGrey(8),
-ColGrey(8),
-ColGrey(10)
+                    ColGrey(10),
+          ColGrey(8),
+          ColGrey(8),
+          ColGrey(6),
+          ColGrey(6),
+          ColGrey(6),
+          ColGrey(6),
+          ColGrey(6),
+          ColGrey(6),
+          ColGrey(8),
+          ColGrey(8),
+          ColGrey(10)
 end
 
 Arena14Data
@@ -442,18 +442,18 @@ Arena14Data
 end
 Arena14DataColors
           data
+                    ColGrey(14),
           ColGrey(14),
-ColGrey(14),
-ColGrey(12),
-ColGrey(12),
-ColGrey(10),
-ColGrey(10),
-ColGrey(8),
-ColGrey(8),
-ColGrey(6),
-ColGrey(6),
-ColGrey(4),
-ColGrey(14)
+          ColGrey(12),
+          ColGrey(12),
+          ColGrey(10),
+          ColGrey(10),
+          ColGrey(8),
+          ColGrey(8),
+          ColGrey(6),
+          ColGrey(6),
+          ColGrey(4),
+          ColGrey(14)
 end
 
 Arena15Data
@@ -473,18 +473,18 @@ Arena15Data
 end
 Arena15DataColors
           data
+                    ColOrange(8),
+          ColOrange(6),
+          ColOrange(4),
+          ColOrange(2),
+          ColOrange(2),
+          ColOrange(4),
+          ColOrange(6),
           ColOrange(8),
-ColOrange(6),
-ColOrange(4),
-ColOrange(2),
-ColOrange(2),
-ColOrange(4),
-ColOrange(6),
-ColOrange(8),
-ColOrange(10),
-ColOrange(12),
-ColOrange(14),
-ColOrange(8)
+          ColOrange(10),
+          ColOrange(12),
+          ColOrange(14),
+          ColOrange(8)
 end
 
 Arena16Data
@@ -504,16 +504,16 @@ Arena16Data
 end
 Arena16DataColors
           data
-          ColRed(6),
-ColPurple(2),
-ColPurple(8),
-ColCyan(4),
-ColGreen(6),
-ColGold(2),
-ColSeafoam(8),
-ColBlue(4),
-ColMagenta(2),
-ColOrange(6),
-ColRed(4),
-ColRed(6)
+                    ColRed(6),
+          ColPurple(2),
+          ColPurple(8),
+          ColCyan(4),
+          ColGreen(6),
+          ColGold(2),
+          ColSeafoam(8),
+          ColBlue(4),
+          ColMagenta(2),
+          ColOrange(6),
+          ColRed(4),
+          ColRed(6)
 end

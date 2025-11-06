@@ -1,4 +1,4 @@
-          rem Chaos Fight Source/Common/Enums.s
+          rem Chaos Fight Source/Common/Enums.bas
           rem Copyright 2025 Interworldly Adventuring, LLC
 
           rem TV Standards
@@ -110,3 +110,4 @@
           const MissileFlagCurlerFull = 31
           rem Bits 0-4: HitBackground|HitPlayer|Gravity|Bounce|Friction
           rem   = 1+2+4+8+16 = 31 (%00011111)
+

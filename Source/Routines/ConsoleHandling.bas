@@ -144,24 +144,16 @@ CheckColorBWToggle
 DoneSwitchChange
 
           rem Check if colorBWOverride changed (7800 pause button)
-          #ifndef TV_SECAM
-          rem Note: colorBWOverride does not have a previous value
-          rem   stored,
-          rem so we check it every frame. This is acceptable since it is
-          rem only toggled by button press, not continuously.
-          rem If needed, we could add a previous value variable.
-          #endif
+          rem Note: colorBWOverride does not have a previous value stored,
+          rem   so we check it every frame (NTSC/PAL only, not SECAM).
+          rem   This is acceptable since it is only toggled by button press,
+          rem   not continuously. If needed, we could add a previous value
+          rem   variable.
           
           rem Reload arena colors if switch or override changed
           if CCBT_switchChanged then ReloadArenaColorsNow
-          #ifndef TV_SECAM
-          rem Always check override in case it was toggled
-          rem (Check7800PauseButton is called after this, so we check it
-          rem   here)
-          rem Actually, we should check after Check7800PauseButton is
-          rem   called
-          rem So we will reload in that function instead
-          #endif
+          rem Note: colorBWOverride check handled in Check7800PauseButton
+          rem   (NTSC/PAL only, not SECAM)
           
           return
 

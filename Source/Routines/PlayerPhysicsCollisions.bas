@@ -250,11 +250,13 @@ PFCheckUp
           if pfread(temp6, rowCounter) then goto PFBlockUp
           rem Check left edge column
           if temp6 = 0 then goto PFCheckUp_CheckRight
-          if pfread(temp6 - 1, rowCounter) then goto PFBlockUp
+          let playfieldColumn = temp6 - 1
+          if pfread(playfieldColumn, rowCounter) then goto PFBlockUp
 PFCheckUp_CheckRight
           rem Check right edge column
           if temp6 >= 31 then goto PFCheckDown
-          if pfread(temp6 + 1, rowCounter) then goto PFBlockUp
+          let playfieldColumn = temp6 + 1
+          if pfread(playfieldColumn, rowCounter) then goto PFBlockUp
           
           goto PFCheckDown
           
@@ -314,10 +316,12 @@ PFCheckDown
           rem Check center, left, and right columns below feet
           if pfread(temp6, playfieldRow) then goto PFBlockDown
           if temp6 = 0 then goto PFCheckDown_CheckRight
-          if pfread(temp6 - 1, playfieldRow) then goto PFBlockDown
+          let playfieldColumn = temp6 - 1
+          if pfread(playfieldColumn, playfieldRow) then goto PFBlockDown
 PFCheckDown_CheckRight
           if temp6 >= 31 then goto PFCheckDone
-          if pfread(temp6 + 1, playfieldRow) then goto PFBlockDown
+          let playfieldColumn = temp6 + 1
+          if pfread(playfieldColumn, playfieldRow) then goto PFBlockDown
           
           goto PFCheckDone
           

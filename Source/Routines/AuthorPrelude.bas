@@ -30,6 +30,17 @@
           rem ==========================================================
 
 AuthorPrelude
+          rem Per-frame author prelude display and input handling
+          rem Input: joy0fire, joy1fire (hardware) = button states
+          rem        controllerStatus (global) = controller detection state
+          rem        INPT0, INPT2 (hardware) = Quadtari controller states
+          rem        preambleTimer (global) = frame counter
+          rem        musicPlaying (global) = music playback state
+          rem Output: Dispatches to AuthorPreludeComplete or returns
+          rem Mutates: preambleTimer (incremented)
+          rem Called Routines: UpdateMusic (bank16) - accesses music state variables
+          rem Constraints: Must be colocated with AuthorPreludeComplete
+          rem              Called from MainLoop each frame (gameMode 1)
           rem Bitmap data is loaded automatically by titlescreen kernel
           rem   via includes
           rem No explicit loading needed - titlescreen kernel handles
@@ -54,6 +65,12 @@ AuthorPrelude
           return
 
 AuthorPreludeComplete
+          rem Transition to Title Screen mode
+          rem Input: None (called from AuthorPrelude)
+          rem Output: gameMode set to ModeTitle, ChangeGameMode called
+          rem Mutates: gameMode (global)
+          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Constraints: Must be colocated with AuthorPrelude
           let gameMode = ModeTitle
           gosub ChangeGameMode bank14
           return

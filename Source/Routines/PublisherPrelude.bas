@@ -35,6 +35,17 @@
           rem ==========================================================
 
 PublisherPreludeMain
+          rem Per-frame publisher prelude display and input handling
+          rem Input: joy0fire, joy1fire (hardware) = button states
+          rem        controllerStatus (global) = controller detection state
+          rem        INPT0, INPT2 (hardware) = Quadtari controller states
+          rem        preambleTimer (global) = frame counter
+          rem        musicPlaying (global) = music playback state
+          rem Output: Dispatches to PublisherPreludeComplete or returns
+          rem Mutates: preambleTimer (incremented)
+          rem Called Routines: SetPublisherWindowValues (bank12) - accesses window state
+          rem Constraints: Must be colocated with PublisherPreludeComplete
+          rem              Called from MainLoop each frame (gameMode 0)
           rem Bitmap data is loaded automatically by titlescreen kernel
           rem   via includes
           rem No explicit loading needed - titlescreen kernel handles
@@ -65,6 +76,12 @@ PublisherPreludeMain
           return
 
 PublisherPreludeComplete
+          rem Transition to Author Prelude mode
+          rem Input: None (called from PublisherPreludeMain)
+          rem Output: gameMode set to ModeAuthorPrelude, ChangeGameMode called
+          rem Mutates: gameMode (global)
+          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Constraints: Must be colocated with PublisherPreludeMain
           let gameMode = ModeAuthorPrelude
           gosub ChangeGameMode bank14
           return

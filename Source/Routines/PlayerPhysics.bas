@@ -383,8 +383,8 @@ end
           rem Check if player left edge (temp6 column) has a playfield
           rem   pixel
           rem Check at player head, middle, and feet positions
-          if temp6 <= 0 then PFCheckRight
-          rem At left edge of screen, skip check
+          if temp6 = 0 then PFCheckRight
+          rem At left edge of screen, skip check (temp6 is 0-31, so = 0 means left edge)
           
           let playfieldColumn = temp6 - 1
           rem Column to the left (playfieldColumn)
@@ -502,12 +502,13 @@ end
           rem ==========================================================
 PFCheckUp
           rem Check if player head has a playfield pixel above
-          if playfieldRow <= 0 then PFCheckDown
+          if playfieldRow = 0 then PFCheckDown
           rem At top of screen, skip check
           
           let rowCounter = playfieldRow - 1
           rem Row above player head (rowCounter)
-          if rowCounter < 0 then PFCheckDown
+          rem Check for wraparound: if playfieldRow was 0, rowCounter wraps to 255 (≥ 128)
+          if rowCounter & $80 then PFCheckDown
           
           rem Check center column (temp6)
           if pfread(temp6, rowCounter) then PFBlockUp

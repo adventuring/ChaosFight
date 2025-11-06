@@ -83,7 +83,7 @@ HCSC_CycleDone
           let playerChar[HCSC_playerIndex] = HCSC_characterIndex
           let temp1 = HCSC_playerIndex
           let temp2 = PlayerLockedUnlocked
-          gosub SetPlayerLocked bank144
+          gosub SetPlayerLocked bank14
           rem Play navigation sound
           let HCSC_soundId = SoundMenuNavigate
           let temp1 = HCSC_soundId
@@ -121,7 +121,7 @@ HCSF_HandleFire
           let HCSF_playerNumber = HCSF_playerIndex
           let temp1 = HCSF_playerNumber
           let temp2 = PlayerLockedNormal
-          gosub SetPlayerLocked bank144
+          gosub SetPlayerLocked bank14
           rem Play selection sound
           let HCSF_soundId = SoundMenuSelect
           let temp1 = HCSF_soundId
@@ -131,7 +131,7 @@ HCSF_HandleHandicap
           let HCSF_playerNumber = HCSF_playerIndex
           let temp1 = HCSF_playerNumber
           let temp2 = PlayerLockedHandicap
-          gosub SetPlayerLocked bank144
+          gosub SetPlayerLocked bank14
           rem Play selection sound
           let HCSF_soundId = SoundMenuSelect
           let temp1 = HCSF_soundId

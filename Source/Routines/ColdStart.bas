@@ -27,7 +27,19 @@ ColdStart
           rem Step 1: Detect console hardware type (7800 vs 2600)
           rem This MUST run before any code modifies $D0/$D1 registers
           rem as those registers are used for hardware detection
-          gosub ConsoleDetHW bank14
+          rem Input: None (cold start entry point)
+          rem Output: Console type detected, sprite pointers initialized,
+          rem         TIA registers initialized, gameMode set, transitions to MainLoop
+          rem Mutates: Console detection state (via ConsoleDetHW),
+          rem         Sprite pointer state (via InitializeSpritePointers),
+          rem         COLUBK, COLUPF, COLUP0, _COLUP1, AUDC0, AUDV0, AUDC1, AUDV1,
+          rem         gameMode (global)
+          rem Called Routines: ConsoleDetHW (bank1) - accesses $D0/$D1 hardware registers,
+          rem   InitializeSpritePointers (bank10) - sets sprite pointer addresses,
+          rem   ChangeGameMode (bank1) - sets up initial game mode
+          rem Constraints: Must be entry point for cold start (called from Bank1)
+          rem              Only reachable via goto from Bank1 startup code
+          gosub ConsoleDetHW bank1
           
           rem Step 2: Initialize sprite pointers to RAM addresses
           rem Must be done before any sprite loading to ensure pointers
@@ -54,12 +66,12 @@ ColdStart
           rem Step 5: Initialize game state and transition to first mode
           rem Set initial game mode (Publisher Prelude)
           let gameMode = ModePublisherPrelude
-          gosub ChangeGameMode bank14
+          gosub ChangeGameMode bank1
           rem ChangeGameMode calls SetupPublisherPrelude and sets up
           rem   music
           
-          rem Step 6: Jump to MainLoop (in Bank 14)
+          rem Step 6: Jump to MainLoop (in Bank 1)
           rem MainLoop will handle the game mode dispatch and frame
           rem   rendering
-          goto MainLoop bank14
+          goto MainLoop bank1
 

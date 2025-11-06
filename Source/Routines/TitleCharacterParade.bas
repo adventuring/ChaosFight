@@ -93,24 +93,27 @@ DrawParadeCharacter
           rem Without Quadtari: Randomly alternate indigo/red (lum=12)
           rem With Quadtari: Randomly select from indigo, red, yellow,
           rem   green (lum=12)
-          if controllerStatus & SetQuadtariDetected then SetParadeColor4Player
-          
+          if controllerStatus & SetQuadtariDetected then SetParadeColor4PlayerInline
           rem 2-player mode: Randomly choose indigo or red
           temp1 = rand & 1
-          if temp1 then SetParadeRed
-          COLUP0 = ColIndigo(12) : goto SetParadeColorDone
-SetParadeRed
-          COLUP0 = ColRed(12) : goto SetParadeColorDone
+          if temp1 then COLUP0 = ColRed(12)
+          if !temp1 then COLUP0 = ColIndigo(12)
+          rem Draw running animation for parade character
+          rem tail call
+          goto DrawParadeCharacterSprite bank9
           
-SetParadeColor4Player
+SetParadeColor4PlayerInline
           rem 4-player mode: Randomly choose from all 4 player colors
           temp1 = rand & 3
-          if temp1 = 0 then COLUP0 = ColIndigo(12) : goto SetParadeColorDone
-          rem Player 1: Indigo
-          if temp1 = 1 then COLUP0 = ColRed(12) : goto SetParadeColorDone
-          rem Player 2: Red
-          if temp1 = 2 then COLUP0 = ColYellow(12) : goto SetParadeColorDone
-          rem Player 3: Yellow
+          if temp1 = 0 then COLUP0 = ColIndigo(12)
+          if temp1 = 1 then COLUP0 = ColRed(12)
+          if temp1 = 2 then COLUP0 = ColYellow(12)
+          if temp1 = 3 then SetParadeColor4PlayerLastInline
+          rem Draw running animation for parade character
+          rem tail call
+          goto DrawParadeCharacterSprite bank9
+          
+SetParadeColor4PlayerLastInline
 #ifdef TV_SECAM
           COLUP0 = ColGreen(12)
           rem Player 4: Green (SECAM-specific, Turquoise maps to Cyan on
@@ -119,11 +122,9 @@ SetParadeColor4Player
           COLUP0 = ColTurquoise(12)
           rem Player 4: Turquoise (NTSC/PAL)
 #endif
-SetParadeColorDone
-          
           rem Draw running animation for parade character
           rem tail call
-          goto DrawParadeCharacterSprite
+          goto DrawParadeCharacterSprite bank9
           
 
 

@@ -369,6 +369,8 @@
           rem 60fps / 10fps = 6 frames
           const MovementFrameRate = 60
           rem 60fps movement updates
+          const FramesPerSecond = 60
+          rem 60fps frame rate
 #endif
 
 #ifdef TV_PAL  
@@ -376,6 +378,8 @@
           rem 50fps / 10fps = 5 frames
           const MovementFrameRate = 50
           rem 50fps movement updates
+          const FramesPerSecond = 50
+          rem 50fps frame rate
 #endif
 
 #ifdef TV_SECAM
@@ -383,6 +387,8 @@
           rem Same as PAL (50fps / 10fps = 5 frames)
           const MovementFrameRate = 50
           rem 50fps movement updates
+          const FramesPerSecond = 50
+          rem 50fps frame rate
 #endif
 
           rem Animation sequence structure constants

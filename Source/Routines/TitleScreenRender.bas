@@ -49,7 +49,7 @@ DrawTitleScreen
           rem Title screen: bmp_48x2_3_window = 42, others = 0
           
           rem Draw character parade if active
-          if titleParadeActive then gosub DrawParadeCharacter
+          if titleParadeActive then gosub DrawParadeCharacter bank9
           return
 
           rem ==========================================================

@@ -530,10 +530,12 @@ clean:
 	rm -f Source/Art/*.png
 	rm -f Source/Songs/*.pdf
 	rm -f Source/Songs/*.midi
+	rm -f $(GAME)*.aux $(GAME)*.cp $(GAME)*.cps $(GAME)*.toc $(GAME)*.log
 	git submodule foreach git clean --force
 
 quickclean:
 	rm -rf Dist Object
+	rm -f $(GAME)*.aux $(GAME)*.cp $(GAME)*.cps $(GAME)*.toc $(GAME)*.log
 
 # Install GIMP export script
 gimp-export:
@@ -581,7 +583,7 @@ Dist/$(GAME)$(GAMEYEAR).SECAM.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(G
 # Build PDF in Object/ to contain auxiliary files (.aux, .cp, .cps, .toc)
 Dist/$(GAME)$(GAMEYEAR).pdf: Manual/ChaosFight.texi
 	mkdir -p Object Dist
-	makeinfo --pdf --output=Object/$(GAME)$(GAMEYEAR).pdf $<
+	cd Object && makeinfo --pdf --output=$(GAME)$(GAMEYEAR).pdf ../$<
 	cp Object/$(GAME)$(GAMEYEAR).pdf $@
 
 Dist/$(GAME)$(GAMEYEAR).html: Manual/ChaosFight.texi

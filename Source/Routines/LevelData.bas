@@ -38,19 +38,20 @@ Arena1Data
           XXXXXXXXXXXXXXXX
 end
 
-pfcolors:
-ColGrey(6)
-ColGrey(4)
-ColGrey(4)
-ColGrey(2)
-ColGrey(2)
-ColGrey(2)
-ColGrey(2)
-ColGrey(2)
-ColGrey(2)
-ColGrey(2)
-ColGrey(4)
-ColGrey(6)
+Arena1DataColors
+          pfcolors:
+          ColGrey(6)
+          ColGrey(4)
+          ColGrey(4)
+          ColGrey(2)
+          ColGrey(2)
+          ColGrey(2)
+          ColGrey(2)
+          ColGrey(2)
+          ColGrey(2)
+          ColGrey(2)
+          ColGrey(4)
+          ColGrey(6)
 end
 
 Arena2Data
@@ -68,9 +69,10 @@ Arena2Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+
+Arena2DataColors
           pfcolors:
-ColBlue(14)
+          ColBlue(14)
 ColBlue(12)
 ColBlue(10)
 ColBlue(8)
@@ -99,7 +101,7 @@ Arena3Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena3DataColors
           pfcolors:
 ColBrown(6)
 ColSeafoam(4)
@@ -130,7 +132,7 @@ Arena4Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena4DataColors
           pfcolors:
 ColOrange(8)
 ColOrange(6)
@@ -161,7 +163,7 @@ Arena5Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena5DataColors
           pfcolors:
 ColPurple(6)
 ColPurple(4)
@@ -192,7 +194,7 @@ Arena6Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena6DataColors
           pfcolors:
 ColBrown(8)
 ColBrown(6)
@@ -223,7 +225,7 @@ Arena7Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena7DataColors
           pfcolors:
 ColRed(6)
 ColRed(4)
@@ -254,7 +256,7 @@ Arena8Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena8DataColors
           pfcolors:
 ColCyan(8)
 ColCyan(6)
@@ -285,7 +287,7 @@ Arena9Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena9DataColors
           pfcolors:
 ColRed(8)
 ColOrange(6)
@@ -314,7 +316,7 @@ Arena10Data
           X.......XXXXXXXX
           XXXXXXXXXXXXXXXX
 end
-          
+Arena10DataColors
           pfcolors:
 ColGrey(8)
 ColGrey(6)
@@ -345,7 +347,7 @@ Arena11Data
           X...............
           XXXXX...........
 end
-          
+Arena11DataColors
           pfcolors:
 ColGrey(6)
 ColGrey(4)
@@ -376,7 +378,7 @@ Arena12Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena12DataColors
           pfcolors:
 ColGold(8)
 ColGold(6)
@@ -407,7 +409,7 @@ Arena13Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena13DataColors
           pfcolors:
 ColGrey(10)
 ColGrey(8)
@@ -438,7 +440,7 @@ Arena14Data
           X.......XXXXXXXX
           XXXXXXXXXXXXXXXX
 end
-          
+Arena14DataColors
           pfcolors:
 ColGrey(14)
 ColGrey(14)
@@ -469,7 +471,7 @@ Arena15Data
           X...............
           XXXXXXXXXXXXXXXX
 end
-          
+Arena15DataColors
           pfcolors:
 ColOrange(8)
 ColOrange(6)
@@ -500,7 +502,7 @@ Arena16Data
           X.XXX...........
           XXXXXXXXXXXXXXXX
 end
-          
+Arena16DataColors
           pfcolors:
 ColRed(6)
 ColPurple(2)

@@ -268,8 +268,7 @@ PFBlockUp
             asl a
             sta rowYPosition
 end
-          DBPF_MultiplyDone
-          return
+DBPF_MultiplyDone
 DBPF_MultiplyBy8
           rem pfrowheight is 8, multiply by 8 (3 left shifts)
           asm

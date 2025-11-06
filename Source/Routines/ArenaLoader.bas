@@ -117,14 +117,15 @@ end
           return
 
 LoadRandomArena
-          rem Select random arena (0-15) using frame counter
-          rem Input: frame (global) = frame counter
+          rem Select random arena (0-15) using proper random number generator
+          rem Input: rand (global) = random number generator
           rem Output: Random arena loaded via LoadArenaByIndex
-          rem Mutates: temp1 (LA_arenaIndex set to random value)
+          rem Mutates: temp1 (LA_arenaIndex set to random value), rand (global) = random number generator state
           rem Called Routines: LoadArenaByIndex (tail call) - loads selected random arena
           rem Constraints: None
-          rem Select random arena (0-15)
-          let LA_arenaIndex = frame & 15 : rem Use frame counter for pseudo-random selection
+          rem Select random arena (0-15) using proper RNG
+          let LA_arenaIndex = rand : rem Get random value (0-255)
+          let LA_arenaIndex = LA_arenaIndex & 15 : rem Mask to 0-15 range
           goto LoadArenaByIndex
 
 LoadArena0Colors

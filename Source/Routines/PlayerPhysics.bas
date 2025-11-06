@@ -259,8 +259,8 @@ BoundaryCheckBounds
           rem   (except where walls stop it)
           dim CBC_arenaIndex = temp3 : rem Handle RandomArena by checking selected arena
           let CBC_arenaIndex = selectedArena_R
-          rem Handle RandomArena (use frame-based selection for
-          if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = frame & 15 : rem   consistency)
+          rem Handle RandomArena (use proper random number generator)
+          if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = rand : let CBC_arenaIndex = CBC_arenaIndex & 15
           
           rem All arenas: wrap horizontally (walls may block wrap-around)
           if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150 : rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10

@@ -28,7 +28,7 @@ CheckBoundaryCollisions
           rem Loop through all players (0-3) - fully inlined to avoid labels
           dim CBC_arenaIndex = temp3 : rem Handle RandomArena by checking selected arena (shared for all players)
           let CBC_arenaIndex = selectedArena_R
-          if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = frame & 15 : rem Handle RandomArena (use frame-based selection for consistency)
+          if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = rand : let CBC_arenaIndex = CBC_arenaIndex & 15 : rem Handle RandomArena (use proper RNG)
           
           let CBC_playerIndex = 0 : rem Player 0 - boundaries
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10

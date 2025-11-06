@@ -203,4 +203,6 @@
           rem   bare "include" directive (not #include) to avoid C preprocessor
           rem   quote issues
           
-          include "BuildInfo.s"
+          asm
+          include "Source/Common/BuildInfo.s"
+end

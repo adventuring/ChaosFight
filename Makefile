@@ -453,7 +453,7 @@ Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.pr
 	@echo "Removing trailing spaces that cause concatenation..."
 	@cd Object && sed -i 's/[[:space:]]*$$//' 2600basic_variable_redefs.h || true
 	@echo "Removing malformed entries (missing values or concatenated)..."
-	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
+	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d; /^[A-Z_][A-Z_]* [A-Z_][A-Z_]*$$/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
 
 Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
@@ -463,7 +463,7 @@ Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.prep
 	@echo "Removing trailing spaces that cause concatenation..."
 	@cd Object && sed -i 's/[[:space:]]*$$//' 2600basic_variable_redefs.h || true
 	@echo "Removing malformed entries (missing values or concatenated)..."
-	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
+	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d; /^[A-Z_][A-Z_]* [A-Z_][A-Z_]*$$/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
 
 Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
@@ -473,7 +473,7 @@ Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.
 	@echo "Removing trailing spaces that cause concatenation..."
 	@cd Object && sed -i 's/[[:space:]]*$$//' 2600basic_variable_redefs.h || true
 	@echo "Removing malformed entries (missing values or concatenated)..."
-	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
+	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d; /^[A-Z_][A-Z_]* [A-Z_][A-Z_]*$$/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
 
 # Step 3: Postprocess $(GAME)$(GAMEYEAR).bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory

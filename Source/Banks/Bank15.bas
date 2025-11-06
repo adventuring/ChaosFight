@@ -11,7 +11,6 @@
           rem
           rem These functions access sound data tables and streams in
           rem   this bank
-          rem ==========================================================
           
           rem Include helper functions (must be in bank to access
           rem   bank-local symbols)
@@ -112,7 +111,6 @@
           rem
           rem Duplicate music player helpers for Bank 15 songs
           rem Songs in Bank 15: OCascadia (1), Revontuli (2)
-          rem ==========================================================
           
           rem Include helper functions (must be in bank to access
           rem   bank-local symbols)

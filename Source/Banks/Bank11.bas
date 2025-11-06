@@ -20,4 +20,3 @@
           rem   AnimationSystem.bas -> Bank 11 (moved from Bank 8)
           rem   SpecialMovement.bas -> Bank 9
           rem   ConsoleHandling.bas -> Bank 14
-          rem   UpdateAttackCooldowns.bas -> Bank 7

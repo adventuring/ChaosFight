@@ -471,15 +471,15 @@ Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.
 # remains, replace it with _ (e.g., _COL_Green_L##6 → _COL_Green_L6)
 Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.NTSC.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.NTSC.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.NTSC.s bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.NTSC.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
 
 Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.PAL.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.PAL.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.PAL.s bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.PAL.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
 
 Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s
 	mkdir -p Source/Generated
-	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.SECAM.s $(GAME)$(GAMEYEAR).bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.SECAM.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
+	cd Object && ln -sf $(GAME)$(GAMEYEAR).bB.SECAM.s bB.asm && ../bin/postprocess -i ../Tools/batariBASIC < $(GAME)$(GAMEYEAR).bB.SECAM.s | ../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../$@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS

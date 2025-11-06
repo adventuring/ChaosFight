@@ -264,7 +264,7 @@ PFBlockUp
           rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
           let rowYPosition = playfieldRow + 1
           rem Check if pfrowheight is 8 or 16
-          if pfrowheight = 8 then DBPF_MultiplyBy8
+          if pfrowheight = 8 then goto DBPF_MultiplyBy8
           rem pfrowheight is 16, multiply by 16 (4 left shifts)
           asm
             lda rowYPosition
@@ -274,7 +274,7 @@ PFBlockUp
             asl a
             sta rowYPosition
 end
-DBPF_MultiplyDone
+          goto DBPF_MultiplyDone
 DBPF_MultiplyBy8
           rem pfrowheight is 8, multiply by 8 (3 left shifts)
           asm

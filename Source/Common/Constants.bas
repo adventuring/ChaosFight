@@ -238,6 +238,12 @@
           const PlayerLockedHandicap = 2
           rem 2 = Locked handicap (75% health)
           rem 3 = Reserved (unused)
+          
+          rem Player health constants
+          const PlayerHealthMax = 100
+          rem Maximum player health (100% = full health, range 0-100)
+          const PlayerHealthHandicap = 75
+          rem Handicap player health (75% of max = 75/100)
           const SetPlayers34Active = $40
           rem Set bit 6 (Players34Active)
           rem Bit mask constants for controller port detections
@@ -288,6 +294,9 @@
           rem Default missile height when AOE (0) is reported
           const MissileMaxHeight = 8
           rem Cap for missile height (TIA limit)
+          const MinimumVelocityThreshold = 1
+          rem Minimum velocity threshold for missile deactivation (pixels/frame)
+          rem Missiles with velocity below this threshold are deactivated
           const ScreenInsetX = 16
           rem Usable X inset from each side (playable area starts at 16)
           const ScreenUsableWidth = 128

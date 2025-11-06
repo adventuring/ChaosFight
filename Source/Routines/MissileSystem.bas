@@ -799,7 +799,7 @@ HandleMissileBounce
           rem Output: X velocity inverted (bounced), friction damping applied if flag set
           rem Mutates: temp2, temp6 (used for calculations), missileVelocityX[] (global array) = missile X velocity (inverted and dampened)
           rem Called Routines: None
-          rem Constraints: Velocity inverted using two's complement. If friction flag set, velocity reduced by 50% (half). Missile continues bouncing (not deactivated)
+          rem Constraints: Velocity inverted using two’s complement. If friction flag set, velocity reduced by 50% (half). Missile continues bouncing (not deactivated)
           let missileVelocityXCalc = missileVelocityX[temp1]
           rem Get current X velocity
           rem Invert velocity (bounce back) using twos complement

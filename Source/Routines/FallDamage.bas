@@ -73,7 +73,7 @@ CheckFallDamage
           dim CFD_damage = temp4
           dim CFD_characterType = temp5
           dim CFD_characterWeight = temp6
-          rem temp7+ don't exist - using tempWork1 for temporary
+          rem temp7+ don’t exist - using tempWork1 for temporary
           rem   calculations
 
           let CFD_characterType = playerChar[CFD_playerIndex] : rem Get character type for this player

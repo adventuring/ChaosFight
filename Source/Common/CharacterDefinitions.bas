@@ -69,7 +69,7 @@ end
           rem Pre-computed for all 16 characters to avoid variable
           rem   division
           rem Safe fall velocity thresholds: Bernie(24), Curler(2), Dragon(1), Zoe(2), Fat Tony(2), Megax(1), Harpy(5), Knight Guy(2), Frooty(2), Nefertem(1), Ninjish Guy(2), Pork Chop(2), Radish Goblin(3), Robo Tito(2), Ursulo(1), Shamone(3)
-          data SafeFallVelocityThresholds : rem Values: integer division of 120 by each character's weight
+          data SafeFallVelocityThresholds : rem Values: integer division of 120 by each character’s weight
             24, 2, 1, 2, 2, 1, 5, 2, 2, 1, 2, 2, 3, 2, 1, 3
 end
 

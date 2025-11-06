@@ -165,7 +165,7 @@ ZoeRyenJump
           rem Constraints: None
           rem Apply upward velocity impulse (lighter character, higher
           let playerVelocityY[temp1] = 244 : rem   jump)
-          rem -12 in 8-bit two's complement: 256 - 12 = 244
+          rem -12 in 8-bit two’s complement: 256 - 12 = 244
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -180,7 +180,7 @@ FatTonyJump
           rem Constraints: None
           rem Apply upward velocity impulse (heavier character, lower
           let playerVelocityY[temp1] = 248 : rem   jump)
-          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -262,7 +262,7 @@ KnightGuyJump
           rem Constraints: None
           rem Apply upward velocity impulse (heavier character, lower
           let playerVelocityY[temp1] = 248 : rem   jump)
-          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -330,7 +330,7 @@ NinjishGuyJump
           rem Constraints: None
           rem Apply upward velocity impulse (very light character,
           let playerVelocityY[temp1] = 243 : rem   highest jump)
-          rem -13 in 8-bit two's complement: 256 - 13 = 243
+          rem -13 in 8-bit two’s complement: 256 - 13 = 243
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -345,7 +345,7 @@ PorkChopJump
           rem Constraints: None
           rem Apply upward velocity impulse (heavy character, lower
           let playerVelocityY[temp1] = 248 : rem   jump)
-          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -360,7 +360,7 @@ RadishGoblinJump
           rem Constraints: None
           rem Apply upward velocity impulse (very light character,
           let playerVelocityY[temp1] = 243 : rem   highest jump)
-          rem -13 in 8-bit two's complement: 256 - 13 = 243
+          rem -13 in 8-bit two’s complement: 256 - 13 = 243
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -523,7 +523,7 @@ UrsuloJump
           rem Constraints: None
           rem Apply upward velocity impulse (heavy character, lower
           let playerVelocityY[temp1] = 248 : rem   jump)
-          rem -8 in 8-bit two's complement: 256 - 8 = 248
+          rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -537,7 +537,7 @@ ShamoneJump
           rem Called Routines: None
           rem Constraints: None
           let playerVelocityY[temp1] = 245 : rem Apply upward velocity impulse (light character, good jump)
-          rem -11 in 8-bit two's complement: 256 - 11 = 245
+          rem -11 in 8-bit two’s complement: 256 - 11 = 245
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
@@ -895,7 +895,7 @@ StandardJump
           rem Constraints: None
           rem Apply upward velocity impulse (input applies impulse to
           let playerVelocityY[temp1] = 246 : rem   rigid body)
-          rem -10 in 8-bit two's complement: 256 - 10 = 246
+          rem -10 in 8-bit two’s complement: 256 - 10 = 246
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping bit

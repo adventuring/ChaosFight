@@ -931,14 +931,14 @@
           rem NOTE: Since CalculateAttackHitbox is only called from ProcessAttackerAttacks,
           rem   and the values are immediately copied to cached versions, we can alias
           rem   the hitbox variables directly to the cached versions to save memory.
-          rem This avoids needing separate storage since they're never used simultaneously.
+          rem This avoids needing separate storage since they’re never used simultaneously.
           dim hitboxLeft = cachedHitboxLeft_W
           dim hitboxRight = cachedHitboxRight_W
           dim hitboxTop = cachedHitboxTop_W
           dim hitboxBottom = cachedHitboxBottom_W
           rem Hitbox bounds for attack collision detection (aliased to cached versions)
           rem NOTE: CalculateAttackHitbox sets these, then ProcessAttackerAttacks uses them.
-          rem   Since they're immediately copied (no-op since aliased), this is safe.
+          rem   Since they’re immediately copied (no-op since aliased), this is safe.
           
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM

@@ -85,7 +85,7 @@ CDP_CheckRightSide
 CDP_NoQuadtari
           
           rem Quadtari not detected in this detection cycle
-          goto CDP_CheckGenesis : rem (Don't clear existing Quadtari - monotonic upgrade only)
+          goto CDP_CheckGenesis : rem (Don’t clear existing Quadtari - monotonic upgrade only)
 
 CDP_QuadtariFound
           let CDP_newStatus = CDP_newStatus | SetQuadtariDetected : rem Quadtari detected - set flag in new status

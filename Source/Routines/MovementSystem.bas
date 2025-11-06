@@ -301,7 +301,7 @@ ApplyFriction
           rem Output: X velocity reduced by 1 (positive velocities decremented, negative velocities incremented), subpixel zeroed if velocity reaches zero
           rem Mutates: playerVelocityX[], playerVelocityXL[] (global arrays) = X velocities (reduced by 1, subpixel zeroed if zero)
           rem Called Routines: None
-          rem Constraints: Simple decrement approach for 8-bit CPU. Positive velocities (>0 and not negative) decremented, negative velocities (≥128 in two's complement) incremented
+          rem Constraints: Simple decrement approach for 8-bit CPU. Positive velocities (>0 and not negative) decremented, negative velocities (≥128 in two’s complement) incremented
           dim AF_playerIndex = temp1
           if playerVelocityX[AF_playerIndex] > 0 && !(playerVelocityX[AF_playerIndex] & $80) then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] - 1
           rem Check for negative velocity using twos complement (values ≥ 128 are negative)

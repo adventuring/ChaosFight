@@ -5,7 +5,7 @@
 
           rem Bankswitching configuration
           rem Note: batariBASIC automatically defines bankswitch from set romsize,
-          const bankswitch = 64 : rem   but we explicitly define it here to ensure it's available in assembler
+          const bankswitch = 64 : rem   but we explicitly define it here to ensure it’s available in assembler
           rem EF bankswitching (64KiB with SuperChip RAM)
 
           rem Kernel configuration

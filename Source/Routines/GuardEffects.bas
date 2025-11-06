@@ -218,7 +218,7 @@ UpdateGuardTimerActive
           dim UGTA_timer = temp3 : rem Constraints: Must be colocated with UpdateSingleGuardTimer, GuardTimerExpired
           let UGTA_timer = playerTimers_R[USGT_playerIndex] : rem Player is guarding - decrement guard duration timer
           if UGTA_timer = 0 then GuardTimerExpired
-          rem Guard timer already expired (shouldn't happen, but safety
+          rem Guard timer already expired (shouldn’t happen, but safety
           rem   check)
           
           let UGTA_timer = UGTA_timer - 1 : rem Decrement guard duration timer

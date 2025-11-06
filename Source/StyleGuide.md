@@ -223,25 +223,26 @@ UpdatePlayerAnimation
 
 ### Apostrophes in Remarks
 
-**DO NOT use apostrophes in `rem` comments** - the C preprocessor (`cpp`) treats apostrophe characters (both straight `'` and Unicode right single quote `'`) as string delimiters, causing compilation warnings.
-
-**Instead, expand contractions or use alternative phrasing:**
+**MUST use right single quotes (`'`) instead of straight apostrophes (`'`) in `rem` comments** - the C preprocessor (`cpp`) treats straight apostrophes as string delimiters, causing compilation warnings. Right single quotes are typographically correct and do not trigger preprocessor warnings.
 
 **Correct:**
 ```basic
-rem Check for negative velocity using twos complement
-rem It is important to note that this uses twos complement
-rem The player will not move if velocity is zero
+rem Check for negative velocity using two's complement
+rem It's important to note that this uses two's complement
+rem The player won't move if velocity is zero
+rem Other screens' minikernels should have window=0
+rem Character's weight affects fall damage
 ```
 
 **Incorrect:**
 ```basic
-rem Check for negative velocity using two's complement  ; Wrong: causes cpp warnings
-rem It's important to note that this uses two's complement  ; Wrong: causes cpp warnings
-rem The player won't move if velocity is zero  ; Wrong: causes cpp warnings
+rem Check for negative velocity using two's complement  ; Wrong: straight apostrophe causes cpp warnings
+rem It's important to note that this uses two's complement  ; Wrong: straight apostrophe causes cpp warnings
+rem The player won't move if velocity is zero  ; Wrong: straight apostrophe causes cpp warnings
+rem Other screens' minikernels should have window=0  ; Wrong: straight apostrophe causes cpp warnings
 ```
 
-**Rationale**: The C preprocessor parses all comments and treats both straight apostrophes (`'`) and right single quotes (`'`) as potential string delimiters. Expanding contractions or using alternative phrasing avoids preprocessor warnings while maintaining clarity.
+**Rationale**: The C preprocessor parses all comments and treats straight apostrophes (`'`) as potential string delimiters, causing compilation warnings. Right single quotes (`'`, U+2019) are the typographically correct character for apostrophes in English text and do not trigger preprocessor warnings. Always use right single quotes for contractions and possessives in remarks.
 
 ### Remark Length
 

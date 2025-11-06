@@ -19,6 +19,12 @@
           rem Stops any current music and starts the specified song
           rem ==========================================================
 StartMusic
+          rem Initialize music playback (stops any current music and starts the specified song)
+          rem Input: temp1 = song ID (0-255), songPointerL, songPointerH (global) = song pointers (via LoadSongPointer)
+          rem Output: Music started, voice pointers set, frame counters initialized, first notes loaded
+          rem Mutates: temp1 (used for song ID), AUDV0, AUDV1 (TIA registers) = sound volumes (set to 0), musicVoice0PointerL, musicVoice0PointerH, musicVoice1PointerL, musicVoice1PointerH (global) = voice pointers (set to song start), musicVoice0StartPointerL_W, musicVoice0StartPointerH_W, musicVoice1StartPointerL_W, musicVoice1StartPointerH_W (global SCRAM) = start pointers (stored for looping), currentSongID_W (global SCRAM) = current song ID (stored), musicVoice0Frame_W, musicVoice1Frame_W (global SCRAM) = frame counters (set to 1)
+          rem Called Routines: LoadSongPointer (bank15 or bank16) - looks up song pointer, LoadSongVoice1Pointer (bank15 or bank16) - calculates Voice 1 pointer, UpdateMusic (tail call via goto) - starts first notes
+          rem Constraints: Songs in Bank 15: OCascadia (1), Revontuli (2). All other songs (0, 3-28) in Bank 16. Routes to correct bank based on song ID
           dim SM_songID = temp1
           rem Stop any current music
           AUDV0 = 0
@@ -39,10 +45,22 @@ StartMusic
           gosub LoadSongVoice1Pointer bank16
           goto LoadSongPointersDone
 LoadSongFromBank15
+          rem Helper: Loads song pointers from Bank 15
+          rem Input: temp1 = song ID, songPointerL, songPointerH (global) = song pointers (via LoadSongPointer)
+          rem Output: Song pointers loaded from Bank 15
+          rem Mutates: songPointerL, songPointerH (global) = song pointers (via LoadSongPointer and LoadSongVoice1Pointer)
+          rem Called Routines: LoadSongPointer (bank15) - looks up song pointer, LoadSongVoice1Pointer (bank15) - calculates Voice 1 pointer
+          rem Constraints: Internal helper for StartMusic, only called for songs 1-2
           rem Song in Bank 15
           gosub LoadSongPointer bank15
           gosub LoadSongVoice1Pointer bank15
 LoadSongPointersDone
+          rem Helper: Completes song pointer setup after loading
+          rem Input: songPointerL, songPointerH (global) = song pointers
+          rem Output: Voice pointers set, start pointers stored, frame counters initialized
+          rem Mutates: musicVoice0PointerL, musicVoice0PointerH, musicVoice1PointerL, musicVoice1PointerH (global) = voice pointers, musicVoice0StartPointerL_W, musicVoice0StartPointerH_W, musicVoice1StartPointerL_W, musicVoice1StartPointerH_W (global SCRAM) = start pointers, currentSongID_W (global SCRAM) = current song ID, musicVoice0Frame_W, musicVoice1Frame_W (global SCRAM) = frame counters
+          rem Called Routines: UpdateMusic (tail call via goto) - starts first notes
+          rem Constraints: Internal helper for StartMusic, completes setup after pointer loading
           rem LoadSongPointer will set songPointerL and songPointerH
           rem   from temp1
           
@@ -82,6 +100,12 @@ LoadSongPointersDone
           rem Updates both voices if active (high byte ≠ 0)
           rem ==========================================================
 UpdateMusic
+          rem Update music playback each frame (called every frame from MainLoop for gameMode 0-2, 7)
+          rem Input: musicVoice0PointerH, musicVoice1PointerH (global) = voice pointers, musicVoice0Frame_R, musicVoice1Frame_R (global SCRAM) = frame counters, currentSongID_R (global SCRAM) = current song ID, musicVoice0StartPointerL_R, musicVoice0StartPointerH_R, musicVoice1StartPointerL_R, musicVoice1StartPointerH_R (global SCRAM) = start pointers
+          rem Output: Both voices updated if active (high byte ≠ 0), Chaotica (song 26) loops when both voices end
+          rem Mutates: All music voice state (via UpdateMusicVoice0 and UpdateMusicVoice1), musicVoice0PointerL, musicVoice0PointerH, musicVoice1PointerL, musicVoice1PointerH (global) = voice pointers (reset to start for Chaotica loop), musicVoice0Frame_W, musicVoice1Frame_W (global SCRAM) = frame counters (reset to 1 for Chaotica loop)
+          rem Called Routines: UpdateMusicVoice0 - updates Voice 0 if active, UpdateMusicVoice1 - updates Voice 1 if active
+          rem Constraints: Called every frame from MainLoop for gameMode 0-2, 7. Only Chaotica (song ID 26) loops - other songs stop when both voices end
           rem Update Voice 0 if active
           if musicVoice0PointerH then gosub UpdateMusicVoice0
           
@@ -100,7 +124,12 @@ UpdateMusic
           goto MusicUpdateDone
           rem Not Chaotica - stop playback (no loop)
 IsChaotica
-          
+          rem Helper: Resets Chaotica to song head when both voices end
+          rem Input: musicVoice0StartPointerL_R, musicVoice0StartPointerH_R, musicVoice1StartPointerL_R, musicVoice1StartPointerH_R (global SCRAM) = start pointers
+          rem Output: Voice pointers reset to start, frame counters reset, first notes reloaded
+          rem Mutates: musicVoice0PointerL, musicVoice0PointerH, musicVoice1PointerL, musicVoice1PointerH (global) = voice pointers (reset to start), musicVoice0Frame_W, musicVoice1Frame_W (global SCRAM) = frame counters (reset to 1)
+          rem Called Routines: UpdateMusic (tail call via goto) - reloads first notes
+          rem Constraints: Internal helper for UpdateMusic, only called when both voices ended and song is Chaotica (26)
           rem Both voices ended and song is Chaotica - reset to song head
           rem Reset Voice 0 pointer to start
           let musicVoice0PointerL = musicVoice0StartPointerL_R
@@ -115,6 +144,12 @@ IsChaotica
           rem tail call
           goto UpdateMusic
 MusicUpdateDone
+          rem Helper: End of UpdateMusic (label only)
+          rem Input: None (label only)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Internal label for UpdateMusic, marks end of update
           return
 
           rem ==========================================================
@@ -125,6 +160,12 @@ MusicUpdateDone
           rem OUTPUT: Sets AUDV0 or AUDV1 based on voice
           rem Uses voice-specific variables based on temp1
 CalculateMusicVoiceEnvelope
+          rem Calculates envelope (attack/decay/sustain) for a music voice
+          rem Input: temp1 = voice number (0 or 1), MusicVoice0TotalFrames, MusicVoice1TotalFrames (global) = total frames, musicVoice0Frame_R, musicVoice1Frame_R (global SCRAM) = frame counters, MusicVoice0TargetAUDV, MusicVoice1TargetAUDV (global) = target volumes, NoteAttackFrames, NoteDecayFrames (global constants) = envelope constants
+          rem Output: Sets AUDV0 or AUDV1 based on voice and envelope phase
+          rem Mutates: temp1-temp6 (used for calculations), AUDV0, AUDV1 (TIA registers) = sound volumes (set based on envelope)
+          rem Called Routines: None
+          rem Constraints: Uses voice-specific variables based on temp1. Attack phase: first NoteAttackFrames frames. Decay phase: last NoteDecayFrames frames. Sustain phase: uses target AUDV. Clamps AUDV to 0-15
           dim CMVE_voice = temp1
           dim CMVE_totalFrames = temp2
           dim CMVE_frameCounter = temp3
@@ -139,11 +180,23 @@ CalculateMusicVoiceEnvelope
           let CMVE_targetAUDV = MusicVoice1TargetAUDV
           goto CMVE_CalcElapsed
 CMVE_GetVoice0Vars
+          rem Helper: Gets Voice 0 specific variables
+          rem Input: MusicVoice0TotalFrames (global) = total frames, musicVoice0Frame_R (global SCRAM) = frame counter, MusicVoice0TargetAUDV (global) = target volume
+          rem Output: Voice 0 variables loaded
+          rem Mutates: CMVE_totalFrames, CMVE_frameCounter, CMVE_targetAUDV (local variables)
+          rem Called Routines: None
+          rem Constraints: Internal helper for CalculateMusicVoiceEnvelope, only called for voice 0
           rem Voice 0
           let CMVE_totalFrames = MusicVoice0TotalFrames
           let CMVE_frameCounter = musicVoice0Frame_R
           let CMVE_targetAUDV = MusicVoice0TargetAUDV
 CMVE_CalcElapsed
+          rem Helper: Calculates frames elapsed and determines envelope phase
+          rem Input: CMVE_totalFrames, CMVE_frameCounter, CMVE_targetAUDV (local variables), NoteAttackFrames, NoteDecayFrames (global constants)
+          rem Output: Envelope phase determined, appropriate phase handler called
+          rem Mutates: CMVE_framesElapsed (local variable)
+          rem Called Routines: CMVE_ApplyAttack - applies attack envelope, CMVE_ApplyDecay - applies decay envelope
+          rem Constraints: Internal helper for CalculateMusicVoiceEnvelope
           rem Calculate frames elapsed = TotalFrames - FrameCounter
           let CMVE_framesElapsed = CMVE_totalFrames - CMVE_frameCounter
           rem Check if in attack phase (first NoteAttackFrames frames)
@@ -153,6 +206,12 @@ CMVE_CalcElapsed
           rem Sustain phase - use target AUDV (already set)
           return
 CMVE_ApplyAttack
+          rem Helper: Applies attack envelope (ramps up volume)
+          rem Input: CMVE_targetAUDV, CMVE_framesElapsed (local variables), CMVE_voice (local variable), NoteAttackFrames (global constant)
+          rem Output: AUDV set based on attack phase
+          rem Mutates: CMVE_audv (local variable), AUDV0, AUDV1 (TIA registers) = sound volumes
+          rem Called Routines: CMVE_SetAUDV0 - sets AUDV0
+          rem Constraints: Internal helper for CalculateMusicVoiceEnvelope, only called in attack phase. Formula: AUDV = Target - NoteAttackFrames + frames_elapsed
           rem Attack: AUDV = Target - NoteAttackFrames + frames_elapsed
           let CMVE_audv = CMVE_targetAUDV
           let CMVE_audv = CMVE_audv - NoteAttackFrames
@@ -165,9 +224,21 @@ CMVE_ApplyAttack
           let AUDV1 = CMVE_audv
           return
 CMVE_SetAUDV0
+          rem Helper: Sets AUDV0 for Voice 0
+          rem Input: CMVE_audv (local variable)
+          rem Output: AUDV0 set
+          rem Mutates: AUDV0 (TIA register) = sound volume
+          rem Called Routines: None
+          rem Constraints: Internal helper for CMVE_ApplyAttack and CMVE_ApplyDecay, only called for voice 0
           let AUDV0 = CMVE_audv
           return
 CMVE_ApplyDecay
+          rem Helper: Applies decay envelope (ramps down volume)
+          rem Input: CMVE_targetAUDV, CMVE_frameCounter (local variables), CMVE_voice (local variable), NoteDecayFrames (global constant)
+          rem Output: AUDV set based on decay phase
+          rem Mutates: CMVE_audv (local variable), AUDV0, AUDV1 (TIA registers) = sound volumes
+          rem Called Routines: CMVE_SetAUDV0 - sets AUDV0
+          rem Constraints: Internal helper for CalculateMusicVoiceEnvelope, only called in decay phase. Formula: AUDV = Target - (NoteDecayFrames - FrameCounter + 1)
           rem Decay: AUDV = Target - (NoteDecayFrames - FrameCounter + 1)
           let CMVE_audv = CMVE_targetAUDV
           let CMVE_audv = CMVE_audv - NoteDecayFrames
@@ -188,6 +259,12 @@ CMVE_ApplyDecay
           rem   loads new note when counter reaches 0
           rem ==========================================================
 UpdateMusicVoice0
+          rem Update Voice 0 playback (applies envelope, decrements frame counter, loads new note when counter reaches 0)
+          rem Input: musicVoice0Frame_R (global SCRAM) = frame counter, musicVoice0PointerL, musicVoice0PointerH (global) = voice pointer, currentSongID_R (global SCRAM) = current song ID, MusicVoice0TotalFrames, MusicVoice0TargetAUDV (global) = envelope parameters, NoteAttackFrames, NoteDecayFrames (global constants) = envelope constants
+          rem Output: Envelope applied, frame counter decremented, next note loaded when counter reaches 0
+          rem Mutates: temp1 (used for voice number), MS_frameCount (global) = frame count calculation, musicVoice0Frame_W (global SCRAM) = frame counter (decremented), musicVoice0PointerL, musicVoice0PointerH (global) = voice pointer (advanced via LoadMusicNote0), AUDC0, AUDF0, AUDV0 (TIA registers) = sound registers (updated via LoadMusicNote0 and CalculateMusicVoiceEnvelope)
+          rem Called Routines: CalculateMusicVoiceEnvelope - applies attack/decay/sustain envelope, LoadMusicNote0 (bank15 or bank16) - loads next 4-byte note, extracts AUDC/AUDV, writes to TIA, advances pointer, handles end-of-song
+          rem Constraints: Uses Voice 0 (AUDC0, AUDF0, AUDV0). Songs 1-2 in Bank 15, all others in Bank 16. Routes to correct bank based on currentSongID_R
           rem Apply envelope using shared calculation
           let temp1 = 0
           gosub CalculateMusicVoiceEnvelope
@@ -211,6 +288,12 @@ UpdateMusicVoice0
           rem   loads new note when counter reaches 0
           rem ==========================================================
 UpdateMusicVoice1
+          rem Update Voice 1 playback (applies envelope, decrements frame counter, loads new note when counter reaches 0)
+          rem Input: musicVoice1Frame_R (global SCRAM) = frame counter, musicVoice1PointerL, musicVoice1PointerH (global) = voice pointer, currentSongID_R (global SCRAM) = current song ID, MusicVoice1TotalFrames, MusicVoice1TargetAUDV (global) = envelope parameters, NoteAttackFrames, NoteDecayFrames (global constants) = envelope constants
+          rem Output: Envelope applied, frame counter decremented, next note loaded when counter reaches 0
+          rem Mutates: temp1 (used for voice number), MS_frameCount1 (global) = frame count calculation, musicVoice1Frame_W (global SCRAM) = frame counter (decremented), musicVoice1PointerL, musicVoice1PointerH (global) = voice pointer (advanced via LoadMusicNote1), AUDC1, AUDF1, AUDV1 (TIA registers) = sound registers (updated via LoadMusicNote1 and CalculateMusicVoiceEnvelope)
+          rem Called Routines: CalculateMusicVoiceEnvelope - applies attack/decay/sustain envelope, LoadMusicNote1 (bank15 or bank16) - loads next 4-byte note, extracts AUDC/AUDV, writes to TIA, advances pointer, handles end-of-song
+          rem Constraints: Uses Voice 1 (AUDC1, AUDF1, AUDV1). Songs 1-2 in Bank 15, all others in Bank 16. Routes to correct bank based on currentSongID_R
           rem Apply envelope using shared calculation
           let temp1 = 1
           gosub CalculateMusicVoiceEnvelope
@@ -231,6 +314,12 @@ UpdateMusicVoice1
           rem StopMusic - Stop all music playback
           rem ==========================================================
 StopMusic
+          rem Stop all music playback (zeroes TIA volumes, clears pointers, resets frame counters)
+          rem Input: None
+          rem Output: All music stopped, voices freed
+          rem Mutates: AUDV0, AUDV1 (TIA registers) = sound volumes (set to 0), musicVoice0PointerH, musicVoice1PointerH (global) = voice pointers (set to 0), musicVoice0Frame_W, musicVoice1Frame_W (global SCRAM) = frame counters (set to 0)
+          rem Called Routines: None
+          rem Constraints: None
           rem Zero TIA volumes
           AUDV0 = 0
           AUDV1 = 0

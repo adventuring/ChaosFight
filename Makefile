@@ -36,9 +36,34 @@ SkylineTool/zx7mini/zx7mini.c:
 	git submodule update --init --recursive
 
 bin/zx7mini:	SkylineTool/zx7mini/zx7mini.c
+	mkdir -p bin
 	$(CC) SkylineTool/zx7mini/zx7mini.c -o bin/zx7mini
 	chmod +x bin/zx7mini
 
+# batariBASIC tool links
+bin/preprocess: Tools/batariBASIC/preprocess
+	mkdir -p bin
+	ln -sf ../Tools/batariBASIC/preprocess bin/preprocess
+
+bin/postprocess: Tools/batariBASIC/postprocess
+	mkdir -p bin
+	ln -sf ../Tools/batariBASIC/postprocess bin/postprocess
+
+bin/optimize: Tools/batariBASIC/optimize
+	mkdir -p bin
+	ln -sf ../Tools/batariBASIC/optimize bin/optimize
+
+bin/2600basic: Tools/batariBASIC/2600basic
+	mkdir -p bin
+	ln -sf ../Tools/batariBASIC/2600basic bin/2600basic
+
+bin/bbfilter: Tools/batariBASIC/bbfilter
+	mkdir -p bin
+	ln -sf ../Tools/batariBASIC/bbfilter bin/bbfilter
+
+bin/dasm: Tools/batariBASIC/dasm.Linux.x64
+	mkdir -p bin
+	ln -sf ../Tools/batariBASIC/dasm.Linux.x64 bin/dasm
 
 skyline-tool:	bin/skyline-tool
 
@@ -56,7 +81,8 @@ libraries already compiled. On subsequent runs, though, it'll be much quicker." 
 		--load-system skyline-tool \
 		--entry skyline-tool::command
 
-bin/buildapp:
+bin/buildapp: SkylineTool/prepare-system.lisp
+	mkdir -p bin
 	sbcl --load SkylineTool/prepare-system.lisp --eval '(cl-user::quit)'
 
 # Output files
@@ -423,19 +449,19 @@ BUILD_DEPS = $(ALL_SOURCES) \
 # Explicitly depend on character and bitmap PNG files to ensure they are generated
 Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas $(BUILD_DEPS) \
 	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Source/Generated/Numbers.bas
+	Source/Generated/Numbers.bas bin/preprocess
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
 Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas $(BUILD_DEPS) \
 	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Source/Generated/Numbers.bas
+	Source/Generated/Numbers.bas bin/preprocess
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
 Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas $(BUILD_DEPS) \
 	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Source/Generated/Numbers.bas
+	Source/Generated/Numbers.bas bin/preprocess
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
@@ -446,19 +472,19 @@ Object/2600basic_variable_redefs.h:
 	@touch $@
 
 # Step 2: Compile .preprocessed.bas → $(GAME)$(GAMEYEAR).bB.ARCH.s
-Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool
+Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
 	@echo "Cleaning variable redefinitions file..."
 	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 
-Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool
+Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s
 	@echo "Cleaning variable redefinitions file..."
 	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 
-Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool
+Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s
 	@echo "Cleaning variable redefinitions file..."
@@ -470,34 +496,34 @@ Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.
 # postprocess also needs $(GAME)$(GAMEYEAR).bB.asm to exist (listed in includes.bB), so create symlink
 # Fix ## token pasting: cpp should expand ColGreen(6) → _COL_Green_L6, but if ##
 # remains, replace it with _ (e.g., _COL_Green_L##6 → _COL_Green_L6)
-Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s
+Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s bin/postprocess bin/optimize
 	mkdir -p Source/Generated Object/NTSC
 	cd Object/NTSC && ln -sf ../$(GAME)$(GAMEYEAR).bB.NTSC.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../../$@
 
-Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s
+Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s bin/postprocess bin/optimize
 	mkdir -p Source/Generated Object/PAL
 	cd Object/PAL && ln -sf ../$(GAME)$(GAMEYEAR).bB.PAL.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../../$@
 
-Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s
+Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s bin/postprocess bin/optimize
 	mkdir -p Source/Generated Object/SECAM
 	cd Object/SECAM && ln -sf ../$(GAME)$(GAMEYEAR).bB.SECAM.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../../$@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS
 # The .s file is the final assembly output that includes all generated assets
-Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h
+Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h bin/dasm
 	mkdir -p Dist Object
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
 	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
-Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h
+Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h bin/dasm
 	mkdir -p Dist Object
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
 	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
 
-Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h
+Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h bin/dasm
 	mkdir -p Dist Object
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<

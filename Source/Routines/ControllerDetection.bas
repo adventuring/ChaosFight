@@ -23,6 +23,12 @@
           rem Method: Check magic bytes in $D0/$D1 set by BIOS
           
 CtrlDetConsole
+          rem Detect console type (7800 vs 2600) and fall through to controller detection
+          rem Input: None (reads hardware registers $D0/$D1)
+          rem Output: Console type detected, controller detection initiated
+          rem Mutates: Console detection state (via ConsoleDetHW)
+          rem Called Routines: ConsoleDetHW - detects console hardware type
+          rem Constraints: Falls through to CtrlDetPads after console detection
           rem Atari 7800 BIOS sets $D0=$2C and $D1=$A9 when loading
           rem   cartridge
           rem Check these before any other detection to avoid corrupting
@@ -50,6 +56,12 @@ CtrlDetConsole
           rem Note: Genesis/Joy2b+ detection is contrary to Quadtari
           
 CtrlDetPads
+          rem Re-detect controllers with monotonic upgrade (only upgrades, never downgrades)
+          rem Input: controllerStatus (global) = existing controller capabilities, INPT0-5 (hardware registers) = paddle port states, systemFlags (global) = system flags
+          rem Output: controllerStatus (global) = updated controller capabilities (upgraded only)
+          rem Mutates: temp1-temp2 (used for status tracking), controllerStatus (global) = controller capabilities, systemFlags (global) = system flags (clears ColorBWOverride and PauseButtonPrev on non-SECAM)
+          rem Called Routines: CDP_DetectGenesis - detects Genesis controllers, CDP_DetectJoy2bPlus - detects Joy2b+ controllers
+          rem Constraints: Monotonic state machine - only allows upgrades, never downgrades. Quadtari takes priority over Genesis/Joy2B+
           dim CDP_existingStatus = temp1
           dim CDP_newStatus = temp2
           
@@ -84,7 +96,7 @@ CDP_CheckRightSide
 CDP_NoQuadtari
           
           rem Quadtari not detected in this detection cycle
-          rem (Don’t clear existing Quadtari - monotonic upgrade only)
+          rem (Don't clear existing Quadtari - monotonic upgrade only)
           goto CDP_CheckGenesis
 
 CDP_QuadtariFound
@@ -128,6 +140,12 @@ CDP_MergeStatus
           rem GENESIS DETECTION SUBROUTINE
           rem ==========================================================
 CDP_DetectGenesis
+          rem Detect Genesis/MegaDrive controllers by grounding paddle ports and checking levels
+          rem Input: CDP_newStatus (temp2) = new detection status, INPT0-3 (hardware registers) = paddle port states, VBLANK (TIA register) = vertical blank register
+          rem Output: CDP_newStatus (temp2) = updated with Genesis detection flags (SetLeftPortGenesis, SetRightPortGenesis)
+          rem Mutates: temp2 (CDP_newStatus updated), VBLANK (TIA register) = temporarily set to ground ports, drawscreen called multiple times
+          rem Called Routines: None
+          rem Constraints: Must ground ports via VBLANK and wait multiple frames for proper detection
           rem Ground paddle ports (INPT0-3) during VBLANK
           VBLANK = VBlankGroundINPT0123
           
@@ -167,6 +185,12 @@ CDP_NoGenesisRight
           rem JOY2BPLUS DETECTION SUBROUTINE
           rem ==========================================================
 CDP_DetectJoy2bPlus
+          rem Detect Joy2b+ enhanced controllers by checking paddle port states
+          rem Input: CDP_existingStatus (temp1) = existing controller status, CDP_newStatus (temp2) = new detection status, INPT0-5 (hardware registers) = paddle port states
+          rem Output: CDP_newStatus (temp2) = updated with Joy2b+ detection flags (SetLeftPortJoy2bPlus, SetRightPortJoy2bPlus)
+          rem Mutates: temp2 (CDP_newStatus updated)
+          rem Called Routines: None
+          rem Constraints: Only checks if no Genesis controllers detected (redundant check for safety)
           rem Only check if no Genesis controllers detected (existing or
           rem   newly detected)
           rem This check is redundant since caller already checks, but
@@ -206,6 +230,12 @@ CDP_NoJoy2Right
           rem ==========================================================
           rem Based on DetectGenesis.s - correct implementation
 CtrlGenesisA
+          rem Detect Genesis/MegaDrive controllers (variant A - based on DetectGenesis.s)
+          rem Input: INPT0-3 (hardware registers) = paddle port states, VBLANK (TIA register) = vertical blank register, controllerStatus (global) = controller capabilities
+          rem Output: controllerStatus (global) = updated with Genesis detection flags (SetLeftPortGenesis, SetRightPortGenesis)
+          rem Mutates: VBLANK (TIA register) = temporarily set to ground ports, controllerStatus (global) = controller capabilities, drawscreen called multiple times
+          rem Called Routines: None
+          rem Constraints: Must ground ports via VBLANK and wait multiple frames for proper detection
           rem Ground paddle ports (INPT0-3) during VBLANK
           VBLANK = VBlankGroundINPT0123
           
@@ -245,6 +275,12 @@ NoGenesisRight
           rem JOY2BPLUS CONTROLLER DETECTION  
           rem ==========================================================
 CtrlJoy2A
+          rem Detect Joy2b+ enhanced controllers (variant A)
+          rem Input: INPT0-5 (hardware registers) = paddle port states, controllerStatus (global) = controller capabilities
+          rem Output: controllerStatus (global) = updated with Joy2b+ detection flags (SetLeftPortJoy2bPlus, SetRightPortJoy2bPlus)
+          rem Mutates: controllerStatus (global) = controller capabilities
+          rem Called Routines: None
+          rem Constraints: None
           rem Joy2b+ controllers pull all three paddle ports HIGH when
           rem   idle
           rem Check left port (INPT0, INPT1, INPT4)
@@ -274,6 +310,12 @@ NoJoy2Right
           rem ==========================================================
           rem Based on DetectGenesis.s - correct implementation
 CtrlGenesisB
+          rem Detect Genesis/MegaDrive controllers (variant B - alternative implementation)
+          rem Input: INPT0-3 (hardware registers) = paddle port states, VBLANK (TIA register) = vertical blank register, controllerStatus (global) = controller capabilities
+          rem Output: controllerStatus (global) = updated with Genesis detection flags (SetLeftPortGenesis, SetRightPortGenesis)
+          rem Mutates: VBLANK (TIA register) = temporarily set to ground ports, controllerStatus (global) = controller capabilities, drawscreen called multiple times
+          rem Called Routines: None
+          rem Constraints: Must ground ports via VBLANK and wait frames for proper detection
           rem Ground paddle ports (INPT0-3) using VBLANK
           VBLANK = VBlankGroundINPT0123
           
@@ -312,6 +354,12 @@ GenesisDetDone
           rem JOY2BPLUS CONTROLLER DETECTION  
           rem ==========================================================
 CtrlJoy2B
+          rem Detect Joy2b+ enhanced controllers (variant B - alternative implementation)
+          rem Input: LeftPortGenesis, RightPortGenesis (global constants/flags) = Genesis detection flags, INPT0-5 (hardware registers) = paddle port states, VBLANK (TIA register) = vertical blank register, controllerStatus (global) = controller capabilities
+          rem Output: controllerStatus (global) = updated with Joy2b+ detection flags (SetLeftPortJoy2bPlus, SetRightPortJoy2bPlus)
+          rem Mutates: VBLANK (TIA register) = temporarily set to ground ports, controllerStatus (global) = controller capabilities, drawscreen called multiple times
+          rem Called Routines: None
+          rem Constraints: Only checks if no Genesis controllers detected
           rem Only check if no Genesis controllers detected
           if LeftPortGenesis then return
           if RightPortGenesis then return
@@ -353,6 +401,12 @@ Joy2PlusDone
           rem flipping the physical switch on the console
           
 Check7800Pause
+          rem Handle 7800 pause button (toggles Color/B&W override on 7800 console)
+          rem Input: systemFlags (global) = system flags (bit 7 = SystemFlag7800, bit 6 = SystemFlagColorBWOverride, bit 5 = SystemFlagPauseButtonPrev), switchbw (global) = Color/B&W switch state
+          rem Output: systemFlags (global) = updated with ColorBWOverride toggled, arena colors reloaded
+          rem Mutates: systemFlags (global) = system flags
+          rem Called Routines: ReloadArenaColors (bank14) - reloads arena colors after override change
+          rem Constraints: Only processes on 7800 console (SystemFlag7800 set), not available on SECAM
           rem Only process if running on 7800 (bit 7 of systemFlags)
           if !(systemFlags & SystemFlag7800) then return
           
@@ -386,6 +440,12 @@ ToggleBWDone
           rem Handle frame-based controller multiplexing for 4 players
           
 UpdateQuadIn
+          rem Handle Quadtari frame-based controller multiplexing for 4 players
+          rem Input: QuadtariDetected (global) = Quadtari detection flag, qtcontroller (global) = multiplexing state (0=P1/P2, 1=P3/P4)
+          rem Output: Controller input read for appropriate player pair
+          rem Mutates: None (Quadtari hardware handles multiplexing automatically)
+          rem Called Routines: ReadPlayers12 (if even frame), ReadPlayers34 (if odd frame)
+          rem Constraints: Only runs if Quadtari detected
           rem Only run if Quadtari detected
           if !QuadtariDetected then return
           
@@ -395,6 +455,12 @@ UpdateQuadIn
           goto ReadPlayers12
 
 ReadPlayers12
+          rem Read players 1 & 2 (even frames, qtcontroller=0)
+          rem Input: qtcontroller (global) = multiplexing state (0 for P1/P2)
+          rem Output: joy0, joy1 (hardware registers) = player 1 & 2 input
+          rem Mutates: None (Quadtari hardware handles multiplexing automatically)
+          rem Called Routines: None
+          rem Constraints: Only called when qtcontroller=0
           rem Even frames: read players 1 & 2
           rem joy0 and joy1 automatically read from physical ports
           rem Quadtari multiplexing handled by hardware
@@ -403,6 +469,12 @@ ReadPlayers12
           return
 
 ReadPlayers34
+          rem Read players 3 & 4 (odd frames, qtcontroller=1)
+          rem Input: qtcontroller (global) = multiplexing state (1 for P3/P4)
+          rem Output: joy0, joy1 (hardware registers) = player 3 & 4 input
+          rem Mutates: None (Quadtari hardware handles multiplexing automatically)
+          rem Called Routines: None
+          rem Constraints: Only called when qtcontroller=1
           rem Odd frames: read players 3 & 4  
           rem joy0 and joy1 now read players 3 & 4 via Quadtari
           rem   multiplexing
@@ -424,6 +496,12 @@ PauseNotPressed
           rem Gates detection behind SELECT button or menu flow
           rem Uses monotonic detection (upgrades only, never downgrades)
 DetectControllers
+          rem Main entry point for controller detection (tail call to CtrlDetPads)
+          rem Input: controllerStatus (global) = existing controller capabilities, INPT0-5 (hardware registers) = paddle port states
+          rem Output: controllerStatus (global) = updated controller capabilities
+          rem Mutates: controllerStatus (global) = controller capabilities (via CtrlDetPads)
+          rem Called Routines: CtrlDetPads (tail call) - performs actual controller detection
+          rem Constraints: None
           rem tail call
           goto CtrlDetPads
 

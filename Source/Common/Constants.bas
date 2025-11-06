@@ -123,6 +123,16 @@
           const PlayerStateBitAttacking = 16
           rem Bit mask for bit 4 (PlayerStateAttacking)
           
+          rem Bit mask for preserving PlayerState flags (bits 0-3) while clearing animation state (bits 4-7)
+          const MaskPlayerStateFlags = 15
+          rem Mask to preserve bits 0-3 (flags) and clear bits 4-7 (animation state): $0F = %00001111
+          rem Use: PlayerState[index] = (PlayerState[index] & MaskPlayerStateFlags) | (animationState << ShiftAnimationState)
+          
+          rem Bit shift constants for PlayerState bit operations
+          const ShiftAnimationState = 4
+          rem Shift amount for animation state (bits 4-7): ActionAttackExecute << 4
+          rem Animation state is stored in bits 4-7 of PlayerState byte
+          
           rem High bit constants for input testing
           const HighBit = $80
           rem Bit 7: high bit for testing input states

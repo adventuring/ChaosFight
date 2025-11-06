@@ -20,6 +20,17 @@
           rem BERNIE (Character 0) - Ground Thump (Area-of-Effect)
           rem ==========================================================
 BernieAttack
+          rem Bernie (Character 0) - Ground Thump (Area-of-Effect) attack
+          rem Input: temp1 = attacker player index (0-3)
+          rem        playerState[] (global array) = player state flags
+          rem        MaskPlayerStateFlags (constant) = bitmask to preserve state flags
+          rem        ActionAttackExecuteShifted (constant) = attack execution animation state
+          rem        PlayerStateBitFacing (constant) = facing direction bit
+          rem Output: Two melee attacks executed (left and right), facing direction restored
+          rem Mutates: temp1, temp3 (used for calculations), playerState[] (animation state set, facing toggled and restored),
+          rem         missile state (via PerformMeleeAttack)
+          rem Called Routines: PerformMeleeAttack - executes melee attack, spawns missile
+          rem Constraints: None
           dim BA_attackerIndex = temp1
           dim BA_originalFacing = temp3
           rem Area-of-effect attack: hits both left AND right simultaneously
@@ -47,22 +58,52 @@ BernieAttack
           rem Character-specific attack type is determined by dispatcher
           rem   which uses CharacterAttackTypes lookup table
 CurlerAttack
+          rem Curler (Character 1) - Ranged attack (ground-based)
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Ranged attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformRangedAttack)
+          rem Called Routines: PerformRangedAttack - executes ranged attack, spawns projectile
+          rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (ground-based)
           goto PerformRangedAttack
 
 DragonetAttack
+          rem Dragonet (Character 2) - Ranged attack (fireballs that arc downwards)
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Ranged attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformRangedAttack)
+          rem Called Routines: PerformRangedAttack - executes ranged attack, spawns projectile
+          rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (fireballs that arc downwards)
           goto PerformRangedAttack
 
 ZoeRyenAttack
+          rem ZoeRyen (Character 3) - Ranged attack
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Ranged attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformRangedAttack)
+          rem Called Routines: PerformRangedAttack - executes ranged attack, spawns projectile
+          rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack
           goto PerformRangedAttack
 
 FatTonyAttack
+          rem FatTony (Character 4) - Ranged attack (magic ring lasers)
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Ranged attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformRangedAttack)
+          rem Called Routines: PerformRangedAttack - executes ranged attack, spawns projectile
+          rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (magic ring lasers)
           goto PerformRangedAttack
 
 MegaxAttack
+          rem Megax (Character 5) - Melee attack (fire breath visual - missile stays stationary)
+          rem Input: temp1 = attacker player index (0-3)
+          rem Output: Melee attack executed
+          rem Mutates: playerState[] (animation state set), missile state (via PerformMeleeAttack)
+          rem Called Routines: PerformMeleeAttack - executes melee attack, spawns missile
+          rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (fire breath visual - missile stays stationary)
           goto PerformMeleeAttack
 
@@ -75,6 +116,20 @@ MegaxAttack
           rem 5-frame duration for the swoop attack visual
           rem No missile is spawned - character movement IS the attack
 HarpyAttack
+          rem Harpy (Character 6) - Diagonal Downward Swoop Attack
+          rem Input: temp1 = attacker player index (0-3)
+          rem        playerState[] (global array) = player state flags
+          rem        characterStateFlags_R[] (global SCRAM array) = character state flags
+          rem        MaskPlayerStateFlags (constant) = bitmask to preserve state flags
+          rem        ActionAttackExecuteShifted (constant) = attack execution animation state
+          rem        PlayerStateBitFacing (constant) = facing direction bit
+          rem Output: Animation state set, player velocity set for diagonal swoop, jumping flag set,
+          rem         swoop attack flag set
+          rem Mutates: temp1-temp5 (used for calculations), playerState[] (animation state and jumping flag set),
+          rem         playerVelocityX[], playerVelocityXL[], playerVelocityY[], playerVelocityYL[] (set for swoop),
+          rem         characterStateFlags_W[] (swoop attack flag set)
+          rem Called Routines: None
+          rem Constraints: Must be colocated with HarpySetLeftVelocity, HarpySetVerticalVelocity (called via goto)
           dim HA_playerIndex = temp1
           dim HA_facing = temp2
           dim HA_velocityX = temp4
@@ -97,10 +152,23 @@ HarpyAttack
           let HA_velocityX = 4
           goto HarpySetVerticalVelocity
 HarpySetLeftVelocity
+          rem Set left-facing velocity for Harpy swoop
+          rem Input: None (called from HarpyAttack)
+          rem Output: HA_velocityX set to 252 (-4 in signed 8-bit)
+          rem Mutates: temp4 (HA_velocityX set to 252)
+          rem Called Routines: None
+          rem Constraints: Must be colocated with HarpyAttack, HarpySetVerticalVelocity
           rem Facing left: negative X velocity (252 = -4 in signed
           rem   8-bit)
           let HA_velocityX = 252
 HarpySetVerticalVelocity
+          rem Set vertical velocity for Harpy swoop
+          rem Input: None (called from HarpyAttack)
+          rem Output: HA_velocityY set to 4, player velocity arrays set
+          rem Mutates: temp3 (HA_velocityY set to 4), playerVelocityX[], playerVelocityXL[],
+          rem         playerVelocityY[], playerVelocityYL[], playerState[], characterStateFlags_W[]
+          rem Called Routines: None
+          rem Constraints: Must be colocated with HarpyAttack, HarpySetLeftVelocity
           rem Vertical: 4 pixels/frame downward (positive Y = down)
           let HA_velocityY = 4
           

@@ -41,6 +41,7 @@ tmp*
 temp*
 .#*
 include.bB
+dumper-*.lisp
 
 # TeX/LaTeX auxiliary files (should be in Object/)
 *.aux

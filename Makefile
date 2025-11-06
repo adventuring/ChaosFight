@@ -35,34 +35,27 @@ READYFILE = .#ready.$(READYDATE)
 SkylineTool/zx7mini/zx7mini.c:
 	git submodule update --init --recursive
 
-bin/zx7mini:	SkylineTool/zx7mini/zx7mini.c
-	mkdir -p bin
+bin/zx7mini:	SkylineTool/zx7mini/zx7mini.c | bin/
 	$(CC) SkylineTool/zx7mini/zx7mini.c -o bin/zx7mini
 	chmod +x bin/zx7mini
 
 # batariBASIC tool links
-bin/preprocess: Tools/batariBASIC/preprocess
-	mkdir -p bin
+bin/preprocess: Tools/batariBASIC/preprocess | bin/
 	ln -sf ../Tools/batariBASIC/preprocess bin/preprocess
 
-bin/postprocess: Tools/batariBASIC/postprocess
-	mkdir -p bin
+bin/postprocess: Tools/batariBASIC/postprocess | bin/
 	ln -sf ../Tools/batariBASIC/postprocess bin/postprocess
 
-bin/optimize: Tools/batariBASIC/optimize
-	mkdir -p bin
+bin/optimize: Tools/batariBASIC/optimize | bin/
 	ln -sf ../Tools/batariBASIC/optimize bin/optimize
 
-bin/2600basic: Tools/batariBASIC/2600basic
-	mkdir -p bin
+bin/2600basic: Tools/batariBASIC/2600basic | bin/
 	ln -sf ../Tools/batariBASIC/2600basic bin/2600basic
 
-bin/bbfilter: Tools/batariBASIC/bbfilter
-	mkdir -p bin
+bin/bbfilter: Tools/batariBASIC/bbfilter | bin/
 	ln -sf ../Tools/batariBASIC/bbfilter bin/bbfilter
 
-bin/dasm: Tools/batariBASIC/dasm.Linux.x64
-	mkdir -p bin
+bin/dasm: Tools/batariBASIC/dasm.Linux.x64 | bin/
 	ln -sf ../Tools/batariBASIC/dasm.Linux.x64 bin/dasm
 
 skyline-tool:	bin/skyline-tool
@@ -72,8 +65,7 @@ SkylineTool/skyline-tool.asd:
 
 bin/skyline-tool:	bin/buildapp bin/zx7mini \
 	SkylineTool/skyline-tool.asd \
-	$(shell ls SkylineTool/*.lisp SkylineTool/src/*.lisp)
-	mkdir -p bin
+	$(shell ls SkylineTool/*.lisp SkylineTool/src/*.lisp) | bin/
 	@echo "Note: This may take a while if you don't have some common Quicklisp \
 libraries already compiled. On subsequent runs, though, it'll be much quicker." >&2
 	bin/buildapp --output bin/skyline-tool \
@@ -81,8 +73,7 @@ libraries already compiled. On subsequent runs, though, it'll be much quicker." 
 		--load-system skyline-tool \
 		--entry skyline-tool::command
 
-bin/buildapp: SkylineTool/prepare-system.lisp
-	mkdir -p bin
+bin/buildapp: SkylineTool/prepare-system.lisp | bin/
 	sbcl --load SkylineTool/prepare-system.lisp --eval '(cl-user::quit)'
 
 # Output files
@@ -94,6 +85,31 @@ ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 ALL_SOURCES = $(shell find Source -name \*.bas -not -path "Source/Generated/*" -not -path "Source/Reference/*")
 
 .PHONY: all clean emu game help doc nowready ready
+
+# Directory targets for order-only prerequisites (prevents race conditions in parallel builds)
+bin/:
+	mkdir -p $@
+
+Source/Generated/:
+	mkdir -p $@
+
+Source/Art/:
+	mkdir -p $@
+
+Object/:
+	mkdir -p $@
+
+Object/NTSC/:
+	mkdir -p $@
+
+Object/PAL/:
+	mkdir -p $@
+
+Object/SECAM/:
+	mkdir -p $@
+
+Dist/:
+	mkdir -p $@
 
 # Build game
 game: \
@@ -191,20 +207,17 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 # Convert MIDI to batariBASIC music data for NTSC (60Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
-Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
+Source/Generated/Song.%.NTSC.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting music $< to $@ for NTSC..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Special rule: Title song is generated from Chaotica source files
-Source/Generated/Song.Title.NTSC.bas: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool
+Source/Generated/Song.Title.NTSC.bas: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting Chaotica music $< to Song.Title $@ for NTSC..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
-Source/Generated/Song.Title.PAL.bas: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool
+Source/Generated/Song.Title.PAL.bas: Source/Songs/Chaotica.midi Source/Songs/Chaotica.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting Chaotica music $< to Song.Title $@ for PAL..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 # SECAM music files are not generated - SECAM build uses PAL music files via conditional includes
@@ -212,9 +225,8 @@ Source/Generated/Song.Title.PAL.bas: Source/Songs/Chaotica.midi Source/Songs/Cha
 # Convert MIDI to batariBASIC music data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
-Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
+Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting music $< to $@ for PAL..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 # SECAM music files are not generated - SECAM build uses PAL music files via conditional includes
@@ -223,17 +235,15 @@ Source/Generated/Song.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/sky
 # Convert MIDI to batariBASIC sound data for NTSC (60Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
-Source/Generated/Sound.%.NTSC.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
+Source/Generated/Sound.%.NTSC.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting sound $< to $@ for NTSC..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "60" "$@"
 
 # Convert MIDI to batariBASIC sound data for PAL (50Hz)
 # MIDI files are generated from MSCZ via %.midi: %.mscz pattern rule
 # Explicitly depend on MSCZ to ensure proper build ordering in parallel builds
-Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool
+Source/Generated/Sound.%.PAL.bas: Source/Songs/%.midi Source/Songs/%.mscz bin/skyline-tool | Source/Generated/
 	@echo "Converting sound $< to $@ for PAL..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-midi "$<" "batariBASIC" "50" "$@"
 
 # SECAM sound files are not generated - SECAM build uses PAL sound files via conditional includes
@@ -247,9 +257,8 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 
 # Convert XCF to PNG for sprites (characters and special sprites)
 # Make will only regenerate if XCF is newer than PNG (based on file timestamps)
-%.png: %.xcf
+%.png: %.xcf | Source/Art/
 	@echo "Converting $< to $@..."
-	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
@@ -258,26 +267,23 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 
 # Explicit PNG dependencies for character sprites (ensures PNG generation from XCF)
 # Use pattern rule to ensure PNG is generated from XCF before .bas compilation
-$(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Source/Art/%.xcf
+$(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Source/Art/%.xcf | Source/Art/
 	@echo "Converting $< to $@..."
-	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Generate character sprite files from PNG using chaos character compiler
 # PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
 # Explicitly depend on both PNG and XCF to ensure proper build ordering
-$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool
+$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool | Source/Generated/
 	@echo "Generating character sprite data for $*..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-chaos-character "$@" "$(filter %.png,$^)"
 
 # Convert Numbers PNG to batariBASIC data using SkylineTool
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
 # Explicitly depend on XCF to ensure proper build ordering in parallel builds
-Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/skyline-tool
+Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting Numbers font $< to $@..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-2600-font-8x16 "$@" "$<"
 
 # Fonts are universal (not TV-specific)
@@ -289,67 +295,57 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/
 # PNG files are built from XCF via the %.png: %.xcf pattern rule (line 180)
 # Explicit PNG→XCF dependencies ensure XCF→PNG conversion happens first
 # These use the pattern rule %.png: %.xcf (line 239) to generate PNGs from XCFs
-Source/Art/AtariAge.png: Source/Art/AtariAge.xcf
+Source/Art/AtariAge.png: Source/Art/AtariAge.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
-	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
-Source/Art/AtariAgeText.png: Source/Art/AtariAgeText.xcf
+Source/Art/AtariAgeText.png: Source/Art/AtariAgeText.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
-	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
-Source/Art/BRP.png: Source/Art/BRP.xcf
+Source/Art/BRP.png: Source/Art/BRP.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
-	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
-Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf
+Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
-	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
-Source/Art/Numbers.png: Source/Art/Numbers.xcf
+Source/Art/Numbers.png: Source/Art/Numbers.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
-	@mkdir -p Source/Art
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule
 # Explicitly depend on XCF to ensure proper build ordering in parallel builds
-Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png Source/Art/AtariAge.xcf bin/skyline-tool
+Source/Generated/Art.AtariAge.s: Source/Art/AtariAge.png Source/Art/AtariAge.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
-Source/Generated/Art.AtariAgeText.s: Source/Art/AtariAgeText.png Source/Art/AtariAgeText.xcf bin/skyline-tool
+Source/Generated/Art.AtariAgeText.s: Source/Art/AtariAgeText.png Source/Art/AtariAgeText.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
-Source/Generated/Art.BRP.s: Source/Art/BRP.png Source/Art/BRP.xcf bin/skyline-tool
+Source/Generated/Art.BRP.s: Source/Art/BRP.png Source/Art/BRP.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
-Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png Source/Art/ChaosFight.xcf bin/skyline-tool
+Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png Source/Art/ChaosFight.xcf bin/skyline-tool | Source/Generated/
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 # Convert XCF to PNG for maps
-Source/Art/Map-%.png: Source/Art/Map-%.xcf
+Source/Art/Map-%.png: Source/Art/Map-%.xcf | Source/Art/
 	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
 # Convert PNG font to batariBASIC data
-Source/Generated/Font.bas: Source/Art/Font.png
+Source/Generated/Font.bas: Source/Art/Font.png | Source/Generated/
 	@echo "Converting font $< to $@ for NTSC..."
-	mkdir -p Source/Generated
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 
 # Build game - accurate dependencies based on actual includes
@@ -368,8 +364,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
-	mkdir -p Source/Generated
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
 	cpp -P -I. -ISource -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas: Source/Platform/PAL.bas \
@@ -380,8 +375,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
-	mkdir -p Source/Generated
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
 	cpp -P -I. -ISource -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 # SECAM build uses PAL music/sound files via conditional includes in Bank15/16.bas
@@ -393,8 +387,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
-	mkdir -p Source/Generated
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
 	cpp -P -I. -ISource -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 # Bank file dependencies - each bank explicitly depends on the files it includes
@@ -449,44 +442,37 @@ BUILD_DEPS = $(ALL_SOURCES) \
 # Explicitly depend on character and bitmap PNG files to ensure they are generated
 Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas $(BUILD_DEPS) \
 	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Source/Generated/Numbers.bas bin/preprocess
-	mkdir -p Source/Generated
+	Source/Generated/Numbers.bas bin/preprocess | Source/Generated/
 	bin/preprocess < $< > $@
 
 Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas $(BUILD_DEPS) \
 	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Source/Generated/Numbers.bas bin/preprocess
-	mkdir -p Source/Generated
+	Source/Generated/Numbers.bas bin/preprocess | Source/Generated/
 	bin/preprocess < $< > $@
 
 Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas $(BUILD_DEPS) \
 	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
-	Source/Generated/Numbers.bas bin/preprocess
-	mkdir -p Source/Generated
+	Source/Generated/Numbers.bas bin/preprocess | Source/Generated/
 	bin/preprocess < $< > $@
 
 # Create empty variable redefs file if it doesn't exist (will be populated by batariBASIC)
 # batariBASIC expects this file to be named 2600basic_variable_redefs.h
-Object/2600basic_variable_redefs.h:
-	@mkdir -p Object
+Object/2600basic_variable_redefs.h: | Object/
 	@touch $@
 
 # Step 2: Compile .preprocessed.bas → $(GAME)$(GAMEYEAR).bB.ARCH.s
-Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic
-	mkdir -p Object
-	cd Object && bB=$(POSTINC) timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
+Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic | Object/
+	cd Object && bB=$(POSTINC) timeout 90 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
 	@echo "Cleaning variable redefinitions file..."
 	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 
-Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic
-	mkdir -p Object
-	cd Object && bB=$(POSTINC) timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s 2>/dev/null
+Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic | Object/
+	cd Object && bB=$(POSTINC) timeout 90 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s 2>/dev/null
 	@echo "Cleaning variable redefinitions file..."
 	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 
-Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic
-	mkdir -p Object
-	cd Object && bB=$(POSTINC) timeout 30 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s 2>/dev/null
+Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool bin/2600basic | Object/
+	cd Object && bB=$(POSTINC) timeout 90 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s 2>/dev/null
 	@echo "Cleaning variable redefinitions file..."
 	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 
@@ -496,35 +482,29 @@ Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.
 # postprocess also needs $(GAME)$(GAMEYEAR).bB.asm to exist (listed in includes.bB), so create symlink
 # Fix ## token pasting: cpp should expand ColGreen(6) → _COL_Green_L6, but if ##
 # remains, replace it with _ (e.g., _COL_Green_L##6 → _COL_Green_L6)
-Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s bin/postprocess bin/optimize
-	mkdir -p Source/Generated Object/NTSC
+Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s: Object/$(GAME)$(GAMEYEAR).bB.NTSC.s bin/postprocess bin/optimize | Source/Generated/ Object/NTSC/
 	cd Object/NTSC && ln -sf ../$(GAME)$(GAMEYEAR).bB.NTSC.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../../$@
 
-Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s bin/postprocess bin/optimize
-	mkdir -p Source/Generated Object/PAL
+Source/Generated/$(GAME)$(GAMEYEAR).PAL.s: Object/$(GAME)$(GAMEYEAR).bB.PAL.s bin/postprocess bin/optimize | Source/Generated/ Object/PAL/
 	cd Object/PAL && ln -sf ../$(GAME)$(GAMEYEAR).bB.PAL.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../../$@
 
-Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s bin/postprocess bin/optimize
-	mkdir -p Source/Generated Object/SECAM
+Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.s bin/postprocess bin/optimize | Source/Generated/ Object/SECAM/
 	cd Object/SECAM && ln -sf ../$(GAME)$(GAMEYEAR).bB.SECAM.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize | sed -e 's/\.,-1/.-1/g' -e 's/##\([0-9]\+\)/_\1/g' > ../../$@
 
 # Step 4: Assemble ARCH.s → ARCH.a26 + ARCH.lst + ARCH.sym
 # ROM build targets depend on generated .s file, which already depends on all generated assets via BUILD_DEPS
 # The .s file is the final assembly output that includes all generated assets
-Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h bin/dasm
-	mkdir -p Dist Object
+Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
 	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
-Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h bin/dasm
-	mkdir -p Dist Object
+Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
 	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
 
-Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h bin/dasm
-	mkdir -p Dist Object
+Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
 	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
@@ -590,13 +570,11 @@ Dist/$(GAME)$(GAMEYEAR).SECAM.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(G
 
 # Documentation generation
 # Build PDF in Object/ to contain auxiliary files (.aux, .cp, .cps, .toc)
-Dist/$(GAME)$(GAMEYEAR).pdf: Manual/ChaosFight.texi
-	mkdir -p Object Dist
+Dist/$(GAME)$(GAMEYEAR).pdf: Manual/ChaosFight.texi | Object/ Dist/
 	cd Object && makeinfo --pdf --output=$(GAME)$(GAMEYEAR).pdf ../$<
 	cp Object/$(GAME)$(GAMEYEAR).pdf $@
 
-Dist/$(GAME)$(GAMEYEAR).html: Manual/ChaosFight.texi
-	mkdir -p Dist
+Dist/$(GAME)$(GAMEYEAR).html: Manual/ChaosFight.texi | Dist/
 	makeinfo --html --output=$@ $<
 
 nowready: $(READYFILE)

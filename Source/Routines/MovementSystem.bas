@@ -330,9 +330,9 @@ CheckPlayerCollision
           rem Check collision between two players using integer positions (subpixel ignored)
           rem Input: temp1 = player 1 index (0-3), temp2 = player 2 index (0-3), playerX[], playerY[] (global arrays) = player positions, playerChar[] (global array) = character types, CharacterHeights[] (global data table) = character heights
           rem Output: temp3 = 1 if collision, 0 if not
-          rem Mutates: temp3-temp13 (used for calculations)
+          rem Mutates: temp3-temp9 (used for calculations, temp4-7 reused after X/Y checks)
           rem Called Routines: None
-          rem Constraints: Uses integer positions only (subpixel ignored for collision). Checks X collision (16 pixel width) and Y collision (using CharacterHeights table). WARNING: Callers should read from CPC_collisionResult alias, not temp3 directly. All temp4-temp13 are mutated during execution
+          rem Constraints: Uses integer positions only (subpixel ignored for collision). Checks X collision (16 pixel width) and Y collision (using CharacterHeights table). WARNING: Callers should read from CPC_collisionResult alias, not temp3 directly. Uses temp1-temp9 (temp4-7 reused after X/Y checks)
           dim CPC_player1Index = temp1
           dim CPC_player2Index = temp2
           dim CPC_collisionResult = temp3
@@ -342,10 +342,6 @@ CheckPlayerCollision
           dim CPC_player2Y = temp7
           dim CPC_distance = temp8
           dim CPC_char1Type = temp9
-          dim CPC_char2Type = temp10
-          dim CPC_char1Height = temp11
-          dim CPC_char2Height = temp12
-          dim CPC_halfHeightSum = temp13
           
           let CPC_player1X = playerX[CPC_player1Index] : rem Get positions
           let CPC_player1Y = playerY[CPC_player1Index] : rem Player1 X
@@ -364,24 +360,33 @@ XDistanceDone
           if CPC_distance >= 16 then NoCollision
           
           rem Check Y collision using CharacterHeights table
+          rem Reuse temp4 and temp6 (player1X and player2X no longer needed after X check)
+          dim CPC_char2Type = temp4
+          dim CPC_char1Height = temp6
           let CPC_char1Type = playerChar[CPC_player1Index] : rem Get character types for height lookup
           let CPC_char2Type = playerChar[CPC_player2Index] : rem Player1 character type
           rem Player2 character type
           let CPC_char1Height = CharacterHeights[CPC_char1Type] : rem Get heights from table
+          dim CPC_char2Height = temp4
           let CPC_char2Height = CharacterHeights[CPC_char2Type] : rem Player1 height
           rem Player2 height
           rem Calculate Y distance using center points
           rem Player centers: player1Y + char1Height/2 and player2Y +
           rem   char2Height/2
+          rem Store half-heights in temp4 and temp6 (char2Type no longer needed)
           let CPC_char1Height = CPC_char1Height / 2 : rem For collision check, use half-height sum
           let CPC_char2Height = CPC_char2Height / 2 : rem Player1 half-height
+          rem Store char2Height half in temp4 for later use
+          let temp4 = CPC_char2Height
           if CPC_player1Y >= CPC_player2Y then CalcYDistanceDown : rem Player2 half-height
           let CPC_distance = CPC_player2Y - CPC_player1Y
           goto YDistanceDone
 CalcYDistanceDown
           let CPC_distance = CPC_player1Y - CPC_player2Y
 YDistanceDone
-          let CPC_halfHeightSum = CPC_char1Height + CPC_char2Height : rem Check if Y distance is less than sum of half-heights
+          rem Reuse temp5 and temp7 (player1Y and player2Y no longer needed after Y distance calculated)
+          dim CPC_halfHeightSum = temp5
+          let CPC_halfHeightSum = CPC_char1Height + temp4 : rem Check if Y distance is less than sum of half-heights
           if CPC_distance >= CPC_halfHeightSum then NoCollision
           
           let CPC_collisionResult = 1 : rem Collision detected

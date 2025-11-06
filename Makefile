@@ -450,26 +450,30 @@ Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.pr
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
 	@echo "Fixing broken concatenated entries in 2600basic_variable_redefs.h..."
 	@cd Object && sed -i '/Song_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/Sound_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/ArenaPF/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/SongPointers/!b; /=/!d' 2600basic_variable_redefs.h || true
-	@echo "Fixing concatenated entries with leading numbers/letters (e.g., '= 0Song_' or '= tempSound_')..."
-	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d' 2600basic_variable_redefs.h || true
-	@echo "Deduplicating constants in 2600basic_variable_redefs.h (keep last value)..."
-	@cd Object && awk '/^[a-zA-Z_][a-zA-Z0-9_]* = / {var=$$1; if (seen[var]) {delete lines[seen[var]]} seen[var]=NR; lines[NR]=$$0; next} {lines[NR]=$$0} END {for (i=1; i<=NR; i++) if (lines[i]) print lines[i]}' 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h || true
+	@echo "Removing trailing spaces that cause concatenation..."
+	@cd Object && sed -i 's/[[:space:]]*$$//' 2600basic_variable_redefs.h || true
+	@echo "Removing malformed entries (missing values or concatenated)..."
+	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
 
 Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s
 	@echo "Fixing broken concatenated entries in 2600basic_variable_redefs.h..."
 	@cd Object && sed -i '/Song_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/Sound_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/ArenaPF/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/SongPointers/!b; /=/!d' 2600basic_variable_redefs.h || true
-	@echo "Deduplicating constants in 2600basic_variable_redefs.h (keep last value)..."
-	@cd Object && awk '/^[a-zA-Z_][a-zA-Z0-9_]* = / {var=$$1; if (seen[var]) {delete lines[seen[var]]} seen[var]=NR; lines[NR]=$$0; next} {lines[NR]=$$0} END {for (i=1; i<=NR; i++) if (lines[i]) print lines[i]}' 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h || true
+	@echo "Removing trailing spaces that cause concatenation..."
+	@cd Object && sed -i 's/[[:space:]]*$$//' 2600basic_variable_redefs.h || true
+	@echo "Removing malformed entries (missing values or concatenated)..."
+	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
 
 Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s
 	@echo "Fixing broken concatenated entries in 2600basic_variable_redefs.h..."
 	@cd Object && sed -i '/Song_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/Sound_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/ArenaPF/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/SongPointers/!b; /=/!d' 2600basic_variable_redefs.h || true
-	@echo "Deduplicating constants in 2600basic_variable_redefs.h (keep last value)..."
-	@cd Object && awk '/^[a-zA-Z_][a-zA-Z0-9_]* = / {var=$$1; if (seen[var]) {delete lines[seen[var]]} seen[var]=NR; lines[NR]=$$0; next} {lines[NR]=$$0} END {for (i=1; i<=NR; i++) if (lines[i]) print lines[i]}' 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h || true
+	@echo "Removing trailing spaces that cause concatenation..."
+	@cd Object && sed -i 's/[[:space:]]*$$//' 2600basic_variable_redefs.h || true
+	@echo "Removing malformed entries (missing values or concatenated)..."
+	@cd Object && sed -i '/^[A-Z_][A-Z_]* = [0-9][A-Za-z]/d; /^[A-Z_][A-Z_]* =[a-z][A-Z]/d; /^[A-Z_][A-Z_]* =Sound_/d; /^[A-Z_][A-Z_]* =Song_/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
 
 # Step 3: Postprocess $(GAME)$(GAMEYEAR).bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory

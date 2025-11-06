@@ -1,7 +1,14 @@
+!Source/Reference
+
 # Build outputs
 Dist/
 Object/
 Source/Generated/
+bin/
+Source/Art/*.png
+Source/Songs/*.midi
+Source/Songs/*.pdf
+Source/Songs/*.ogg
 
 # Intermediate files
 *.asm
@@ -9,9 +16,6 @@ Source/Generated/
 *.sym
 *.map
 *.bin
-
-# Test files
-simple_game.bas
 
 # OS generated files
 .DS_Store
@@ -36,14 +40,9 @@ Thumbs.db
 tmp*
 temp*
 .#*
-Source/Art/*.png
 include.bB
-bin/skyline-tool
-*.midi
-!Source/Reference/**
-bin/buildapp
 
-# TeX/LaTeX auxiliary files (should be in Object/ but ignore if in root)
+# TeX/LaTeX auxiliary files (should be in Object/)
 *.aux
 *.cp
 *.cps

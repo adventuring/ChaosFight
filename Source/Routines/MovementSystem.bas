@@ -223,15 +223,20 @@ MovementApplyGravity
 AddVelocitySubpixelY
           dim AVSY_playerIndex = temp1
           dim AVSY_subpixelAmount = temp2
-          dim AVSY_sum = temp3
-          let AVSY_sum = playerVelocityYL[AVSY_playerIndex] + AVSY_subpixelAmount
-          if AVSY_sum > 255 then VelocityYCarry
-          let playerVelocityYL[AVSY_playerIndex] = AVSY_sum
+          rem Save subpixel amount before using temp2 for accumulator
+          dim AVSY_subpixelAmountSaved = temp4
+          let AVSY_subpixelAmountSaved = AVSY_subpixelAmount
+          rem 16-bit accumulator for proper carry detection
+          dim AVSY_sum16 = temp2.temp3
+          rem Use saved amount in accumulator
+          let AVSY_sum16 = playerVelocityYL[AVSY_playerIndex] + AVSY_subpixelAmountSaved
+          if temp3 > 0 then VelocityYCarry
+          rem No carry: temp3 = 0, use low byte directly
+          let playerVelocityYL[AVSY_playerIndex] = temp2
           return
 VelocityYCarry
-          rem AVSY_sum is already wrapped to 0-255 (8-bit variable)
-          rem Use it directly - no need to subtract 256
-          let playerVelocityYL[AVSY_playerIndex] = AVSY_sum
+          rem Carry detected: temp3 > 0, extract wrapped low byte
+          let playerVelocityYL[AVSY_playerIndex] = temp2
           let playerVelocityY[AVSY_playerIndex] = playerVelocityY[AVSY_playerIndex] + 1
           return
 

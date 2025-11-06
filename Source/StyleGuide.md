@@ -510,6 +510,70 @@ Use **`includesfile`** (batariBASIC directive) for batariBASIC include files:
           includesfile multisprite_superchip.inc
 ```
 
+### Lexical Order Requirements
+
+**CRITICAL**: All constants, data tables, and labels (except subroutine labels) **MUST** be defined lexically prior to their use. This ensures the compiler can resolve references correctly.
+
+**What must be defined before use:**
+- ✅ **Constants**: `const MaxCharacter = 15` must appear before `if characterIndex > MaxCharacter`
+- ✅ **Data tables**: `data CharacterColors` must appear before `let color = CharacterColors[index]`
+- ✅ **Labels** (non-subroutine): Jump targets, data labels, etc. must be defined before use
+- ❌ **Subroutine labels**: Subroutine labels can be called via `gosub` or `goto` without prior definition (forward references are allowed)
+
+**Correct (constants defined before use):**
+```basic
+const MaxCharacter = 15
+const RandomArena = 255
+
+ProcessCharacter
+          if characterIndex > MaxCharacter then InvalidCharacter
+          rem ... rest of code ...
+```
+
+**Incorrect (constant used before definition):**
+```basic
+ProcessCharacter
+          if characterIndex > MaxCharacter then InvalidCharacter  ; ERROR: MaxCharacter not yet defined
+          rem ... rest of code ...
+
+const MaxCharacter = 15  ; Too late - already used above
+```
+
+**Correct (data table defined before use):**
+```basic
+data CharacterColors
+$0E, $0C, $0A, $08
+end
+
+LoadCharacterColor
+          let color = CharacterColors[characterIndex]  ; OK: table defined above
+          rem ... rest of code ...
+```
+
+**Incorrect (data table used before definition):**
+```basic
+LoadCharacterColor
+          let color = CharacterColors[characterIndex]  ; ERROR: CharacterColors not yet defined
+          rem ... rest of code ...
+
+data CharacterColors
+$0E, $0C, $0A, $08
+end
+```
+
+**Correct (subroutine forward reference allowed):**
+```basic
+ProcessInput
+          gosub ValidateInput  ; OK: subroutine forward reference allowed
+          rem ... rest of code ...
+
+ValidateInput
+          rem Validation logic
+          return
+```
+
+**Rationale**: batariBASIC requires constants, data tables, and non-subroutine labels to be defined before use because it performs a single-pass compilation. Subroutine labels are an exception because `gosub` and `goto` can resolve forward references to subroutines.
+
 ### Summary
 
 | File Type | Directive | Example |

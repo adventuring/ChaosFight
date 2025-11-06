@@ -444,7 +444,7 @@ end
           
 PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
-          rem Check for negative velocity using two's complement (values ≥ 128 are negative)
+          rem Check for negative velocity using twos complement (values ≥ 128 are negative)
           if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
@@ -546,7 +546,7 @@ PFCheckUp
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
           rem   ≥ 128 are negative)
-          rem Check for negative velocity using two's complement (values
+          rem Check for negative velocity using twos complement (values
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
@@ -811,11 +811,11 @@ ApproxDivDone_1
           rem Minimum 1 pixel/frame
           
           rem Apply to Player1 velocity (push left)
-          rem Check if velocity > -4 (in two’s complement: values <= 252
+          rem Check if velocity > -4 (in twos complement: values <= 252
           rem   are >= -4)
-          rem -4 in two’s complement = 256 - 4 = 252
+          rem -4 in twos complement = 256 - 4 = 252
           if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
-          rem Cap at -4 pixels/frame (252 in two’s complement)
+          rem Cap at -4 pixels/frame (252 in twos complement)
           if playerVelocityX[temp1] > 252 then let playerVelocityX[temp1] = 252
           
           rem Apply to Player2 velocity (push right)
@@ -890,11 +890,11 @@ ApproxDivDone_2
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
           
           rem Apply to Player2 velocity (push left)
-          rem Check if velocity > -4 (in two’s complement: values <= 252
+          rem Check if velocity > -4 (in twos complement: values <= 252
           rem   are >= -4)
-          rem -4 in two’s complement = 256 - 4 = 252
+          rem -4 in twos complement = 256 - 4 = 252
           if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
-          rem Cap at -4 pixels/frame (252 in two’s complement)
+          rem Cap at -4 pixels/frame (252 in twos complement)
           if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
           
           let playerVelocityXL[temp1] = 0
@@ -980,11 +980,11 @@ end
 ApproxDivDone_3
           if impulseStrength = 0 then impulseStrength = 1
           
-          rem Check if velocity > -4 (in two’s complement: values <= 252
+          rem Check if velocity > -4 (in twos complement: values <= 252
           rem   are >= -4)
-          rem -4 in two’s complement = 256 - 4 = 252
+          rem -4 in twos complement = 256 - 4 = 252
           if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
-          rem Cap at -4 pixels/frame (252 in two’s complement)
+          rem Cap at -4 pixels/frame (252 in twos complement)
           if playerVelocityX[temp1] > 252 then let playerVelocityX[temp1] = 252
           if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
@@ -1060,11 +1060,11 @@ ApproxDivDone_1Heavier
           
           if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
-          rem Check if velocity > -4 (in two’s complement: values <= 252
+          rem Check if velocity > -4 (in twos complement: values <= 252
           rem   are >= -4)
-          rem -4 in two’s complement = 256 - 4 = 252
+          rem -4 in twos complement = 256 - 4 = 252
           if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
-          rem Cap at -4 pixels/frame (252 in two’s complement)
+          rem Cap at -4 pixels/frame (252 in twos complement)
           if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
           
           let playerVelocityXL[temp1] = 0

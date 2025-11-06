@@ -648,10 +648,10 @@ Char6_Execute
           let playerVelocityXL[C6E_playerIndex] = 0
           rem Apply upward wing flap momentum after swoop attack
           rem   (equivalent to HarpyJump)
-          rem Same as normal flap: -2 pixels/frame upward (254 in two's
+          rem Same as normal flap: -2 pixels/frame upward (254 in twos
           rem   complement)
           let playerVelocityY[C6E_playerIndex] = 254
-          rem -2 in 8-bit two's complement: 256 - 2 = 254
+          rem -2 in 8-bit twos complement: 256 - 2 = 254
           let playerVelocityYL[C6E_playerIndex] = 0
           rem Keep jumping flag set to allow vertical movement
           rem playerState[C6E_playerIndex] bit 2 (jumping) already set

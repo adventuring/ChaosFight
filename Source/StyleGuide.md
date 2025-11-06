@@ -265,21 +265,25 @@ UpdatePlayerAnimation
 
 ### Apostrophes in Remarks
 
-**All apostrophes in `rem` comments MUST use the right single quotation mark** (U+2019, `'`) instead of the straight apostrophe (U+0027, `'`).
+**DO NOT use apostrophes in `rem` comments** - the C preprocessor (`cpp`) treats apostrophe characters (both straight `'` and Unicode `'`) as string delimiters, causing compilation warnings.
+
+**Instead, expand contractions or use alternative phrasing:**
 
 **Correct:**
 ```basic
-rem Check for negative velocity using two's complement
-rem It's important to note that this uses two's complement
+rem Check for negative velocity using twos complement
+rem It is important to note that this uses twos complement
+rem The player will not move if velocity is zero
 ```
 
 **Incorrect:**
 ```basic
-rem Check for negative velocity using two's complement  ; Wrong: straight apostrophe
-rem It's important to note that this uses two's complement  ; Wrong: straight apostrophe
+rem Check for negative velocity using two's complement  ; Wrong: causes cpp warnings
+rem It's important to note that this uses two's complement  ; Wrong: causes cpp warnings
+rem The player won't move if velocity is zero  ; Wrong: causes cpp warnings
 ```
 
-**Rationale**: The right single quotation mark is the typographically correct character for apostrophes in English text, and ensures consistent typography throughout the codebase.
+**Rationale**: The C preprocessor parses all comments and cannot handle apostrophes properly. Expanding contractions or using alternative phrasing avoids preprocessor warnings while maintaining clarity.
 
 ### Remark Length
 

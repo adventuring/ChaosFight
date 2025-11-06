@@ -186,7 +186,7 @@ InputHandleLeftPortPlayer
           
           rem Standard horizontal movement (modifies velocity, not
           rem   position)
-          rem Left movement: set negative velocity (255 in 8-bit two's
+          rem Left movement: set negative velocity (255 in 8-bit twos
           rem   complement = -1)
           if !joy0left then goto DoneLeftMovement
           let playerVelocityX[IHLP_playerIndex] = 255
@@ -250,7 +250,7 @@ MoveLeftOK
           rem Apply leftward velocity impulse (double-width sprite: 16px
           rem   width)
           let playerVelocityX[IHLP_playerIndex] = 255
-          rem -1 in 8-bit two’s complement: 256 - 1 = 255
+          rem -1 in 8-bit twos complement: 256 - 1 = 255
           let playerVelocityXL[IHLP_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
@@ -515,7 +515,7 @@ InputHandleRightPortPlayer
           if !joy1left then goto DoneLeftMovementRight
           rem Apply leftward velocity impulse
           let playerVelocityX[temp1] = 255
-          rem -1 in 8-bit two's complement: 256 - 1 = 255
+          rem -1 in 8-bit twos complement: 256 - 1 = 255
           let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)
@@ -574,7 +574,7 @@ MoveLeftOKRight
           rem Apply leftward velocity impulse (double-width sprite: 16px
           rem   width)
           let playerVelocityX[temp1] = 255
-          rem -1 in 8-bit two’s complement: 256 - 1 = 255
+          rem -1 in 8-bit twos complement: 256 - 1 = 255
           let playerVelocityXL[temp1] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem   (knockback, hitstun)

@@ -147,7 +147,7 @@ ApplyAttack0
           temp4 = MusicVoice0TargetAUDV
           temp4 = temp4 - NoteAttackFrames
           temp4 = temp4 + temp3
-          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
+          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in twos complement)
           if temp4 & $80 then temp4 = 0
           if temp4 > 15 then temp4 = 15
           AUDV0 = temp4
@@ -166,7 +166,7 @@ ApplyDecay0
           temp4 = temp4 - NoteDecayFrames
           temp4 = temp4 + musicVoice0Frame_R
           temp4 = temp4 - 1
-          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
+          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in twos complement)
           if temp4 & $80 then temp4 = 0
           if temp4 > 15 then temp4 = 15
           AUDV0 = temp4
@@ -229,7 +229,7 @@ ApplyAttack1
           temp4 = MusicVoice1TargetAUDV
           temp4 = temp4 - NoteAttackFrames
           temp4 = temp4 + temp3
-          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in two's complement)
+          rem Check for wraparound: if subtraction resulted in negative, clamp to 0 (values ≥ 128 are negative in twos complement)
           if temp4 & $80 then temp4 = 0
           if temp4 > 15 then temp4 = 15
           AUDV1 = temp4
@@ -243,7 +243,7 @@ ApplyDecay1
           temp4 = temp4 + musicVoice1Frame_R
           temp4 = temp4 - 1
           rem   complement)
-          rem   clamp to 0 (values ≥ 128 are negative in two's
+          rem   clamp to 0 (values ≥ 128 are negative in twos
           rem Check for wraparound: if subtraction resulted in negative,
           if temp4 & $80 then temp4 = 0
           if temp4 > 15 then temp4 = 15

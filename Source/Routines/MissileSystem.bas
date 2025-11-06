@@ -40,6 +40,12 @@
           rem OUTPUT: temp6 = bit flag (1, 2, 4, or 8)
           rem EFFECTS: Uses temp6 for calculation
 GetPlayerMissileBitFlag
+          rem Calculates the bit flag for missile active tracking (1, 2, 4, or 8)
+          rem Input: temp1 = player index (0-3), BitMask[] (global data table) = bit masks
+          rem Output: temp6 = bit flag (1, 2, 4, or 8)
+          rem Mutates: temp6 (return value)
+          rem Called Routines: None
+          rem Constraints: None
           dim GPMBF_playerIndex = temp1
           dim GPMBF_bitFlag = temp6
           rem Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
@@ -64,6 +70,12 @@ GetPlayerMissileBitFlag
           rem   4. Set active bit for this player missile
           rem   5. Initialize lifetime counter from character data
 SpawnMissile
+          rem Creates a new missile/attack visual for a player at spawn position with initial velocity
+          rem Input: temp1 = player index (0-3), playerChar[] (global array) = character types, playerX[], playerY[] (global arrays) = player positions, playerState[] (global array) = player states (facing direction), CharacterMissileEmissionHeights[], CharacterMissileLifetime[], CharacterMissileMomentumX[], CharacterMissileMomentumY[], CharacterMissileWidths[] (global data tables) = missile properties, characterStateFlags_R[] (global SCRAM array) = character state flags (for Harpy dive mode), MissileSpawnOffsetLeft, MissileSpawnOffsetRight (global constants) = spawn offsets, PlayerStateBitFacing (global constant) = facing bit mask
+          rem Output: Missile spawned at correct position with initial velocity and lifetime
+          rem Mutates: temp1-temp6 (used for calculations), missileX[], missileY_W[] (global arrays) = missile positions, missileActive (global) = missile active flags, missileLifetime[] (global array) = missile lifetime counters, missileVelocityX[], missileVelocityY[] (global arrays) = missile velocities, missileNUSIZ[] (global array) = missile size registers
+          rem Called Routines: GetPlayerMissileBitFlag - calculates bit flag for missile active tracking
+          rem Constraints: Only one missile per player at a time. Harpy dive mode increases downward velocity by 50%
           dim SM_playerIndex = temp1
           dim SM_facing = temp4
           dim SM_characterType = temp5
@@ -137,11 +149,23 @@ SM_NUSIZDone
           if SM_characterType = 6 then HarpyCheckDiveVelocity
           goto VelocityDone
 HarpyCheckDiveVelocity
+          rem Helper: Checks if Harpy is in dive mode and boosts velocity if so
+          rem Input: temp6 = base Y velocity, SM_playerIndex = player index, characterStateFlags_R[] (global SCRAM array) = character state flags
+          rem Output: Y velocity boosted by 50% if in dive mode
+          rem Mutates: temp6 (velocity calculation), SM_velocityCalc (via HarpyBoostDiveVelocity)
+          rem Called Routines: None
+          rem Constraints: Internal helper for SpawnMissile, only called for Harpy (character 6)
           dim HCDV_velocityCalc = temp6
           let HCDV_velocityCalc = SM_velocityCalc
           if (characterStateFlags_R[SM_playerIndex] & 4) then HarpyBoostDiveVelocity
           goto VelocityDone
 HarpyBoostDiveVelocity
+          rem Helper: Increases Harpy downward velocity by 50% for dive attacks
+          rem Input: HCDV_velocityCalc = base velocity
+          rem Output: Velocity increased by 50% (velocity + velocity/2)
+          rem Mutates: HCDV_velocityCalc, SM_velocityCalc (velocity values)
+          rem Called Routines: None
+          rem Constraints: Internal helper for HarpyCheckDiveVelocity, only called when dive mode active
           dim HBDV_halfVelocity = velocityCalculation
           rem Increase downward velocity by 50% for dive attacks
           rem Divide by 2 using bit shift
@@ -163,6 +187,12 @@ VelocityDone
           rem Called once per frame to update all active missiles.
           rem Updates position, checks collisions, handles lifetime.
 UpdateAllMissiles
+          rem Updates all active missiles (called once per frame)
+          rem Input: None (processes all players 0-3)
+          rem Output: All active missiles updated (position, velocity, lifetime, collisions)
+          rem Mutates: All missile state (via UpdateOneMissile for each player)
+          rem Called Routines: UpdateOneMissile (for each player 0-3)
+          rem Constraints: None
           rem Check each player missile
           let temp1  = 0
           gosub UpdateOneMissile
@@ -183,6 +213,12 @@ UpdateAllMissiles
           rem INPUT:
           rem   temp1 = player index (0-3)
 UpdateOneMissile
+          rem Updates a single player missile (movement, gravity, friction, collisions, lifetime)
+          rem Input: temp1 = player index (0-3), missileActive (global) = missile active flags, missileVelocityX[], missileVelocityY[] (global arrays) = missile velocities, missileX[], missileY_R[] (global arrays) = missile positions, playerChar[] (global array) = character types, playerState[] (global array) = player states, playerX[], playerY[] (global arrays) = player positions, BitMask[] (global data table) = bit masks, MissileFlagGravity, MissileFlagFriction, MissileFlagHitBackground, MissileFlagBounce (global constants) = missile flags, GravityPerFrame, CurlingFrictionCoefficient, MinimumVelocityThreshold (global constants) = physics constants, ScreenBottom, ScreenTopWrapThreshold (global constants) = screen bounds, MissileLifetimeInfinite, MissileHitNotFound (global constants) = missile constants, CharMegax, CharKnightGuy (global constants) = character indices, SoundGuardBlock (global constant) = sound effect ID
+          rem Output: Missile updated (position, velocity, lifetime), collisions checked, missile deactivated if expired or off-screen
+          rem Mutates: temp1-temp6 (used for calculations), missileX[], missileY_W[] (global arrays) = missile positions, missileVelocityX[], missileVelocityY[] (global arrays) = missile velocities, missileActive (global) = missile active flags (via DeactivateMissile), missileLifetime[] (global array) = missile lifetime counters, soundEffectID (global) = sound effect ID (via guard bounce)
+          rem Called Routines: GetPlayerMissileBitFlag - calculates bit flag, GetMissileFlags (bank6) - gets missile flags, HandleMegaxMissile - handles Megax stationary missile, HandleKnightGuyMissile - handles Knight Guy sword swing, MissileCollPF (bank7) - checks playfield collision, CheckAllMissileCollisions (bank7) - checks player collisions, PlaySoundEffect (bank15) - plays guard bounce sound, HandleMissileBounce - handles bounce physics, HandleMissileHit - handles damage application, DeactivateMissile - deactivates missile
+          rem Constraints: Special handling for Megax (stationary) and Knight Guy (sword swing). Missiles wrap horizontally, deactivate if off-screen vertically. Guard bounce reduces velocity by 25%
           dim UOM_playerIndex = temp1
           dim UOM_bitFlag = temp6
           dim UOM_isActive = temp4
@@ -431,6 +467,12 @@ MissileUpdateComplete
           rem Missile appears when attack starts, stays during attack phase,
           rem   and vanishes when attack animation completes.
 HandleMegaxMissile
+          rem Handles Megax stationary fire breath visual (locked to player position)
+          rem Input: temp1 = player index (0-3), playerX[], playerY[] (global arrays) = player positions, playerState[] (global array) = player states (facing direction, animation state), CharacterMissileEmissionHeights[] (global data table) = emission heights, MissileSpawnOffsetLeft, MissileSpawnOffsetRight (global constants) = spawn offsets, PlayerStateBitFacing (global constant) = facing bit mask, ActionAttackExecute (global constant) = attack animation state (14)
+          rem Output: Missile position locked to player, missile deactivated when attack animation completes
+          rem Mutates: temp1-temp6 (used for calculations), missileX[], missileY_W[] (global arrays) = missile positions, missileVelocityX[], missileVelocityY[] (global arrays) = missile velocities (zeroed), missileActive (global) = missile active flags (via DeactivateMissile)
+          rem Called Routines: DeactivateMissile - deactivates missile when attack completes
+          rem Constraints: Megax missile stays adjacent to player with zero velocity. Deactivates when animation state != ActionAttackExecute (14)
           dim HMM_playerIndex = temp1
           dim HMM_facing = temp4
           dim HMM_emissionHeight = temp5
@@ -496,6 +538,12 @@ MegaxMissileActive
           rem   returns to start position, and vanishes when attack
           rem   completes.
 HandleKnightGuyMissile
+          rem Handles Knight Guy sword swing visual (moves away then returns during attack)
+          rem Input: temp1 = player index (0-3), playerX[], playerY[] (global arrays) = player positions, playerState[] (global array) = player states (facing direction, animation state), CharacterMissileEmissionHeights[] (global data table) = emission heights, currentAnimationFrame_R[] (global SCRAM array) = animation frames, PlayerStateBitFacing (global constant) = facing bit mask, ActionAttackExecute (global constant) = attack animation state (14)
+          rem Output: Missile position animated based on animation frame (swing out frames 0-3, return frames 4-7), missile deactivated when attack completes
+          rem Mutates: temp1-temp6 (used for calculations), missileX[], missileY_W[] (global arrays) = missile positions, missileVelocityX[], missileVelocityY[] (global arrays) = missile velocities (zeroed), missileActive (global) = missile active flags (via DeactivateMissile)
+          rem Called Routines: DeactivateMissile - deactivates missile when attack completes
+          rem Constraints: Knight Guy missile swings out 1-4 pixels (frames 0-3) then returns (frames 4-7). Deactivates when animation state != ActionAttackExecute (14)
           dim HKG_playerIndex = temp1
           dim HKG_facing = temp4
           dim HKG_emissionHeight = temp5
@@ -593,6 +641,12 @@ KnightGuySetY
           rem OUTPUT:
           rem   temp4 = 1 if off-screen, 0 if on-screen
 CheckMissileBounds
+          rem Checks if missile is off-screen (currently incomplete/unused)
+          rem Input: temp1 = player index (0-3)
+          rem Output: temp4 = 1 if off-screen, 0 if on-screen (not implemented)
+          rem Mutates: None (incomplete)
+          rem Called Routines: None
+          rem Constraints: Currently incomplete/unused - bounds checking handled inline in UpdateOneMissile
           rem Get missile X/Y position (read from _R port)
           
           return
@@ -609,6 +663,12 @@ CheckMissileBounds
           rem OUTPUT:
           rem   temp4 = 1 if hit playfield, 0 if clear
 MissileSysPF
+          rem Checks if missile hit the playfield (walls, obstacles) using pfread
+          rem Input: temp1 = player index (0-3), missileX[] (global array) = missile X positions, missileY_R[] (global SCRAM array) = missile Y positions
+          rem Output: temp4 = 1 if hit playfield, 0 if clear, temp6 = playfield column (0-31)
+          rem Mutates: temp2-temp6 (used for calculations)
+          rem Called Routines: Div5Compute - converts X pixel to playfield column
+          rem Constraints: Uses pfread to check playfield pixel at missile position. X coordinate divided by 5 to get column (0-31)
           rem Get missile X/Y position (read from _R port)
           let temp2  = missileX[temp1]
           let temp3  = missileY_R[temp1]
@@ -638,6 +698,12 @@ MissileSysPF
           rem ==========================================================
           rem HalfTemp7: integer divide temp7 by 2 using bit shift
 HalfTemp7
+          rem Helper: Divides temp7 by 2 using bit shift (integer division)
+          rem Input: temp7 = value to divide
+          rem Output: temp7 = value / 2 (integer division)
+          rem Mutates: temp7 (divided by 2)
+          rem Called Routines: None
+          rem Constraints: Internal helper, uses assembly bit shift for performance
           asm
             lsr temp7
 end
@@ -646,6 +712,12 @@ end
           rem Div5Compute: compute floor(temp2/5) into temp6 via
           rem   repeated subtraction
 Div5Compute
+          rem Helper: Computes floor(temp2/5) into temp6 via repeated subtraction
+          rem Input: temp2 = value to divide by 5
+          rem Output: temp6 = floor(temp2/5), temp2 = temp2 mod 5 (remainder)
+          rem Mutates: temp2 (reduced by multiples of 5), temp6 (result)
+          rem Called Routines: None
+          rem Constraints: Internal helper for playfield coordinate conversion, uses repeated subtraction (no division support)
           let temp6  = 0
           if temp2 < 5 then return
 Div5Loop
@@ -666,6 +738,12 @@ Div5Loop
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
 CheckMissilePlayerCollision
+          rem Checks if missile hit any player (except owner) using AABB collision detection
+          rem Input: temp1 = missile owner player index (0-3), missileX[] (global array) = missile X positions, missileY_R[] (global SCRAM array) = missile Y positions, playerX[], playerY[] (global arrays) = player positions, playerHealth[] (global array) = player health, MissileAABBSize, PlayerSpriteHalfWidth, PlayerSpriteHeight (global constants) = collision bounds, MissileHitNotFound (global constant) = no hit value (255)
+          rem Output: temp4 = hit player index (0-3), or MissileHitNotFound (255) if no hit
+          rem Mutates: temp2-temp4 (used for calculations)
+          rem Called Routines: None
+          rem Constraints: Skips owner player and eliminated players (health = 0). Uses axis-aligned bounding box (AABB) collision detection
           rem Get missile X/Y position (read from _R port)
           let temp2  = missileX[temp1]
           let temp3  = missileY_R[temp1]
@@ -736,6 +814,12 @@ MissileSkipPlayer3
           rem   temp1 = attacker player index (0-3, missile owner)
           rem   temp4 = defender player index (0-3, hit player)
 HandleMissileHit
+          rem Processes missile hitting a player (damage, knockback, hitstun, sound)
+          rem Input: temp1 = attacker player index (0-3, missile owner), temp4 = defender player index (0-3, hit player), playerChar[] (global array) = character types, playerDamage[] (global array) = damage values, characterStateFlags_R[] (global SCRAM array) = character state flags (for Harpy dive mode), missileX[] (global array) = missile X positions, playerX[], playerY[] (global arrays) = player positions, CharacterWeights[] (global data table) = character weights, KnockbackImpulse, HitstunFrames (global constants) = physics constants, SoundAttackHit (global constant) = sound effect ID
+          rem Output: Damage applied, knockback applied (weight-based), hitstun set, sound played
+          rem Mutates: temp1-temp7 (used for calculations), playerHealth[] (global array) = player health (decremented), playerVelocityX[], playerVelocityXL[] (global arrays) = player velocities (knockback applied), playerRecoveryFrames[] (global array) = recovery frames (set to HitstunFrames), playerState[] (global array) = player states (recovery flag set), soundEffectID (global) = sound effect ID
+          rem Called Routines: PlaySoundEffect (bank15) - plays hit sound
+          rem Constraints: Harpy dive mode increases damage by 50%. Knockback scales with character weight (heavier = less knockback). Minimum 1 pixel knockback even for heaviest characters
           rem Get character type for damage calculation
           let temp5  = playerChar[temp1]
           
@@ -860,6 +944,12 @@ KnockbackDone
           rem   temp1 = player index (0-3)
           rem   temp5 = missile flags
 HandleMissileBounce
+          rem Handles wall bounce for missiles with bounce flag set (inverts X velocity, applies friction damping)
+          rem Input: temp1 = player index (0-3), temp5 = missile flags, missileVelocityX[] (global array) = missile X velocities, MissileFlagFriction (global constant) = friction flag, MaxByteValue (global constant) = 255
+          rem Output: X velocity inverted (bounced), friction damping applied if flag set
+          rem Mutates: temp2, temp6 (used for calculations), missileVelocityX[] (global array) = missile X velocity (inverted and dampened)
+          rem Called Routines: None
+          rem Constraints: Velocity inverted using two's complement. If friction flag set, velocity reduced by 50% (half). Missile continues bouncing (not deactivated)
           let missileVelocityXCalc = missileVelocityX[temp1]
           rem Get current X velocity
           rem Invert velocity (bounce back) using twos complement
@@ -882,7 +972,7 @@ HandleMissileBounce
           rem Divide by 2 using bit shift right (LSR) - direct memory mode
           asm
             lsr HMB_dampenAmount
-end
+          end
           let missileVelocityXCalc = missileVelocityXCalc - HMB_dampenAmount
 BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc
@@ -898,6 +988,12 @@ BounceDone
           rem INPUT:
           rem   temp1 = player index (0-3)
 DeactivateMissile
+          rem Removes a missile from active status (clears active bit)
+          rem Input: temp1 = player index (0-3), BitMask[] (global data table) = bit masks, MaxByteValue (global constant) = 255, missileActive (global) = missile active flags
+          rem Output: Missile deactivated (active bit cleared)
+          rem Mutates: temp6 (used for bit manipulation), missileActive (global) = missile active flags (bit cleared)
+          rem Called Routines: None
+          rem Constraints: None
           rem Clear active bit for this player missile
           let temp6 = BitMask[temp1]
           let temp6 = MaxByteValue - temp6

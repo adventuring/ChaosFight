@@ -2,6 +2,8 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Arena playfield data (not generated - edit manually)
 
+#include "Source/Common/Colors.h"
+
           rem ==========================================================
           rem ARENA DATA - PURE DATA FORMAT
           rem ==========================================================

@@ -2,6 +2,8 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Winner screen playfield data (pfres=32 admin screen layout)
 
+#include "Source/Common/Colors.h"
+
           rem ==========================================================
           rem WINNER SCREEN PLAYFIELD DATA
           rem ==========================================================

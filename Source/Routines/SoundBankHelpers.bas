@@ -15,6 +15,12 @@
           rem Output: SoundPointerL, SoundPointerH = pointer to
           rem   Sound_Voice0 stream
 LoadSoundPointer
+          rem Lookup sound pointer from tables (Bank 15 sounds: 0-9)
+          rem Input: temp1 = sound ID (0-9), SoundPointersL[], SoundPointersH[] (global data tables) = sound pointer tables
+          rem Output: SoundPointerL, soundPointerH_W = pointer to Sound_Voice0 stream
+          rem Mutates: temp1 (used for sound ID), SoundPointerL, soundPointerH_W (global SCRAM) = sound pointer (set from tables)
+          rem Called Routines: None
+          rem Constraints: Only 10 sounds (0-9) available. Returns soundPointerH_W = 0 if sound ID out of bounds
           dim LSP_soundID = temp1
           rem Bounds check: only 10 sounds (0-9)
           if LSP_soundID > 9 then let soundPointerH_W = 0 : return
@@ -30,6 +36,12 @@ LoadSoundPointer
           rem Output: Updates TIA registers, advances pointer, sets
           rem   SoundEffectFrame
 LoadSoundNote
+          rem Load next note from sound effect stream using assembly for pointer access (Voice 0)
+          rem Input: SoundEffectPointerL, soundEffectPointerH_R (global SCRAM) = pointer to current note in Sound_Voice0 stream
+          rem Output: TIA registers updated (AUDC0, AUDF0, AUDV0), pointer advanced by 4 bytes, SoundEffectFrame set
+          rem Mutates: temp2-temp7 (used for calculations), AUDC0, AUDF0, AUDV0 (TIA registers) = sound registers (updated), soundEffectFrame_W (global SCRAM) = frame counter (set to Duration + Delay), SoundEffectPointerL, soundEffectPointerH_W (global SCRAM) = sound pointer (advanced by 4 bytes)
+          rem Called Routines: None
+          rem Constraints: Loads 4-byte note format: AUDCV (packed AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV. End of sound marked by Duration = 0 (sets soundEffectPointerH_W = 0 and AUDV0 = 0). Uses Voice 0 for sound effects
           dim LSN_audcv = temp2
           dim LSN_audf = temp3
           dim LSN_duration = temp4
@@ -85,6 +97,12 @@ end
           rem Output: Updates TIA registers, advances pointer, sets
           rem   SoundEffectFrame1
 LoadSoundNote1
+          rem Load next note from sound effect stream using assembly for pointer access (Voice 1)
+          rem Input: soundEffectPointer1L, soundEffectPointer1H (global SCRAM) = pointer to current note in Sound_Voice0 stream
+          rem Output: TIA registers updated (AUDC1, AUDF1, AUDV1), pointer advanced by 4 bytes, SoundEffectFrame1 set
+          rem Mutates: temp2-temp7 (used for calculations), AUDC1, AUDF1, AUDV1 (TIA registers) = sound registers (updated), soundEffectFrame1_W (global SCRAM) = frame counter (set to Duration + Delay), soundEffectPointer1L, soundEffectPointer1H (global SCRAM) = sound pointer (advanced by 4 bytes)
+          rem Called Routines: None
+          rem Constraints: Loads 4-byte note format: AUDCV (packed AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV. End of sound marked by Duration = 0 (sets soundEffectPointer1H = 0 and AUDV1 = 0). Uses Voice 1 for sound effects
           dim LSN1_audcv = temp2
           dim LSN1_audf = temp3
           dim LSN1_duration = temp4

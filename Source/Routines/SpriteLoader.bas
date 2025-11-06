@@ -184,15 +184,6 @@ LoadQuestionMarkSpriteP0
           return
           
 LoadQuestionMarkSpriteP1
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (1, read but not used in this function)
-          rem        QuestionMarkSprite (ROM data) = source sprite data
-          rem Output: w016-w031 (SCRAM) = sprite data copied
-          rem         player1height = 16
-          rem Mutates: w016-w031 (SCRAM write port), player1height
-          rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadQuestionMarkSprite
-LoadQuestionMarkSpriteP1
           rem Copy QuestionMarkSprite data from ROM to RAM buffer (w016-w031)
           asm
             ldy #15
@@ -206,15 +197,6 @@ LoadQuestionMarkSpriteP1
           return
           
 LoadQuestionMarkSpriteP2
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (2, read but not used in this function)
-          rem        QuestionMarkSprite (ROM data) = source sprite data
-          rem Output: w032-w047 (SCRAM) = sprite data copied
-          rem         player2height = 16
-          rem Mutates: w032-w047 (SCRAM write port), player2height
-          rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadQuestionMarkSprite
-LoadQuestionMarkSpriteP2
           rem Copy QuestionMarkSprite data from ROM to RAM buffer (w032-w047)
           asm
             ldy #15
@@ -227,15 +209,6 @@ LoadQuestionMarkSpriteP2
           player2height = 16
           return
           
-LoadQuestionMarkSpriteP3
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (3, read but not used in this function)
-          rem        QuestionMarkSprite (ROM data) = source sprite data
-          rem Output: w048-w063 (SCRAM) = sprite data copied
-          rem         player3height = 16
-          rem Mutates: w048-w063 (SCRAM write port), player3height
-          rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadQuestionMarkSprite
 LoadQuestionMarkSpriteP3
           rem Copy QuestionMarkSprite data from ROM to RAM buffer (w048-w063)
           asm
@@ -287,15 +260,6 @@ LoadCPUSpriteP0
           return
           
 LoadCPUSpriteP1
-          rem Copy CPUSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (1, read but not used in this function)
-          rem        CPUSprite (ROM data) = source sprite data
-          rem Output: w016-w031 (SCRAM) = sprite data copied
-          rem         player1height = 16
-          rem Mutates: w016-w031 (SCRAM write port), player1height
-          rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadCPUSprite
-LoadCPUSpriteP1
           rem Copy CPUSprite data from ROM to RAM buffer (w016-w031)
           asm
             ldy #15
@@ -309,15 +273,6 @@ LoadCPUSpriteP1
           return
           
 LoadCPUSpriteP2
-          rem Copy CPUSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (2, read but not used in this function)
-          rem        CPUSprite (ROM data) = source sprite data
-          rem Output: w032-w047 (SCRAM) = sprite data copied
-          rem         player2height = 16
-          rem Mutates: w032-w047 (SCRAM write port), player2height
-          rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadCPUSprite
-LoadCPUSpriteP2
           rem Copy CPUSprite data from ROM to RAM buffer (w032-w047)
           asm
             ldy #15
@@ -330,15 +285,6 @@ LoadCPUSpriteP2
           player2height = 16
           return
           
-LoadCPUSpriteP3
-          rem Copy CPUSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (3, read but not used in this function)
-          rem        CPUSprite (ROM data) = source sprite data
-          rem Output: w048-w063 (SCRAM) = sprite data copied
-          rem         player3height = 16
-          rem Mutates: w048-w063 (SCRAM write port), player3height
-          rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadCPUSprite
 LoadCPUSpriteP3
           rem Copy CPUSprite data from ROM to RAM buffer (w048-w063)
           asm
@@ -390,15 +336,6 @@ LoadNoSpriteP0
           return
           
 LoadNoSpriteP1
-          rem Copy NoSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (1, read but not used in this function)
-          rem        NoSprite (ROM data) = source sprite data
-          rem Output: w016-w031 (SCRAM) = sprite data copied
-          rem         player1height = 16
-          rem Mutates: w016-w031 (SCRAM write port), player1height
-          rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadNoSprite
-LoadNoSpriteP1
           rem Copy NoSprite data from ROM to RAM buffer (w016-w031)
           asm
             ldy #15
@@ -412,15 +349,6 @@ LoadNoSpriteP1
           return
           
 LoadNoSpriteP2
-          rem Copy NoSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (2, read but not used in this function)
-          rem        NoSprite (ROM data) = source sprite data
-          rem Output: w032-w047 (SCRAM) = sprite data copied
-          rem         player2height = 16
-          rem Mutates: w032-w047 (SCRAM write port), player2height
-          rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadNoSprite
-LoadNoSpriteP2
           rem Copy NoSprite data from ROM to RAM buffer (w032-w047)
           asm
             ldy #15
@@ -433,15 +361,6 @@ LoadNoSpriteP2
           player2height = 16
           return
           
-LoadNoSpriteP3
-          rem Copy NoSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (3, read but not used in this function)
-          rem        NoSprite (ROM data) = source sprite data
-          rem Output: w048-w063 (SCRAM) = sprite data copied
-          rem         player3height = 16
-          rem Mutates: w048-w063 (SCRAM write port), player3height
-          rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadNoSprite
 LoadNoSpriteP3
           rem Copy NoSprite data from ROM to RAM buffer (w048-w063)
           asm

@@ -31,6 +31,15 @@
           rem   - Calls ChangeGameMode to transition to startup sequence
           rem ==========================================================
 WarmStart
+          rem Handles game reset from any screen/state
+          rem Input: None (called from MainLoop on RESET)
+          rem Output: gameMode set to ModePublisherPrelude, ChangeGameMode called, TIA registers initialized
+          rem Mutates: systemFlags (paused flag cleared), frame (reset to 0), gameMode (set to ModePublisherPrelude),
+          rem         COLUBK, COLUPF, COLUP0, _COLUP1 (TIA color registers),
+          rem         AUDC0, AUDV0, AUDC1, AUDV1 (TIA audio registers),
+          rem         pf0-pf5 (playfield registers), ENAM0, ENAM1, ENABL (sprite enable registers)
+          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Constraints: Entry point for warm start/reset (called from MainLoop)
           rem Step 1: Clear critical game state variables
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           rem Clear paused flag (0 = normal, not paused, not ending)
@@ -80,6 +89,20 @@ WarmStart
           rem   WarmStart call
           rem This function only handles pause/select switches
 HandleConsoleSwitches
+          rem Handle console switches during gameplay (pause/select, Color/B&W, 7800 pause)
+          rem Input: switchselect (hardware) = Game Select switch state
+          rem        switchbw (hardware) = Color/B&W switch state
+          rem        systemFlags (global) = system flags (SystemFlagGameStatePaused)
+          rem        temp2 (parameter) = player index for CheckEnhancedPause (0 or 1)
+          rem Output: systemFlags updated (pause state toggled), DetectControllers called if Select pressed
+          rem Mutates: systemFlags (pause state toggled), temp1, temp2 (passed to CheckEnhancedPause),
+          rem         colorBWPrevious_W (updated via CheckColorBWToggle)
+          rem Called Routines: CheckEnhancedPause - accesses controller state, temp2,
+          rem   DetectControllers (bank14) - accesses controller detection state,
+          rem   CheckColorBWToggle - accesses switchbw, colorBWPrevious_R,
+          rem   Check7800PauseButton - accesses 7800 pause button state
+          rem Constraints: Must be colocated with DonePlayer1Pause, Player1PauseDone,
+          rem              DonePlayer2Pause, Player2PauseDone (all called via goto)
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
           rem   mode
@@ -129,6 +152,14 @@ DonePlayer2Pause
           rem Re-detect controllers when Color/B&W switch is toggled
           
 CheckColorBWToggle
+          rem Re-detect controllers when Color/B&W switch is toggled
+          rem Input: switchbw (hardware) = Color/B&W switch state
+          rem        colorBWPrevious_R (global SCRAM) = previous Color/B&W switch state
+          rem Output: colorBWPrevious_W updated, DetectControllers called if switch changed
+          rem Mutates: temp1 (switch changed flag), temp6 (used for switchbw read),
+          rem         colorBWPrevious_W (updated if switch changed)
+          rem Called Routines: DetectControllers (bank14) - accesses controller detection state
+          rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           dim CCBT_switchChanged = temp1
           dim CCBT_overrideChanged = temp2
           
@@ -140,6 +171,12 @@ CheckColorBWToggle
           gosub DetectControllers bank14
           let colorBWPrevious_W = switchbw
 DoneSwitchChange
+          rem Color/B&W switch change check complete (label only, no execution)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CheckColorBWToggle
 
           rem Check if colorBWOverride changed (7800 pause button)
           rem Note: colorBWOverride does not have a previous value stored,

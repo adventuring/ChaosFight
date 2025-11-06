@@ -50,6 +50,13 @@
           rem Uses: ActionAttackWindup=13, ActionAttackExecute=14,
           rem   ActionAttackRecovery=15
 GetPlayerAnimationState
+          rem Extracts animation state (bits 4-7) from playerState
+          rem Input: temp1 = player index (0-3)
+          rem        playerState[] (global array) = player state flags
+          rem Output: temp2 = animation state (0-15)
+          rem Mutates: temp2 (set to animation state)
+          rem Called Routines: None
+          rem Constraints: None
           dim GPAS_playerIndex = temp1
           dim GPAS_animationState = temp2
           let GPAS_animationState = playerState[GPAS_playerIndex] & 240
@@ -72,6 +79,13 @@ GetPlayerAnimationState
           rem   update
           rem EFFECTS: Uses temp2 for animation state check
 ShouldPreserveFacing
+          rem Returns 1 if facing should be preserved (during hurt/recovery states), 0 if facing can be updated normally
+          rem Input: temp1 = player index (0-3)
+          rem        playerState[] (global array) = player state flags
+          rem Output: temp3 = 1 if facing should be preserved, 0 if can update
+          rem Mutates: temp2, temp3 (used for calculations)
+          rem Called Routines: GetPlayerAnimationState - accesses temp1, temp2, playerState[]
+          rem Constraints: Must be colocated with SPF_PreserveYes, SPF_PreserveNo (called via goto)
           dim SPF_playerIndex = temp1
           dim SPF_animationState = temp2
           dim SPF_preserveFlag = temp3
@@ -91,18 +105,41 @@ ShouldPreserveFacing
           
 SPF_PreserveYes
           rem In hurt/recovery state, preserve facing
+          rem Input: None (called from ShouldPreserveFacing)
+          rem Output: temp3 set to 1
+          rem Mutates: temp3 (set to 1)
+          rem Called Routines: None
+          rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveNo
           let SPF_preserveFlag = 1
           let temp3 = SPF_preserveFlag
           return
           
 SPF_PreserveNo
           rem Not in hurt/recovery state, allow facing update
+          rem Input: None (called from ShouldPreserveFacing)
+          rem Output: temp3 set to 0
+          rem Mutates: temp3 (set to 0)
+          rem Called Routines: None
+          rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveYes
           let SPF_preserveFlag = 0
           let temp3 = SPF_preserveFlag
           return
 
           rem Main input handler for all players
 InputHandleAllPlayers
+          rem Main input handler for all players with Quadtari multiplexing
+          rem Input: qtcontroller (global) = multiplexing state (0=P1/P2, 1=P3/P4)
+          rem        ControllerStatus (global) = controller detection state
+          rem        selectedChar3_R, selectedChar4_R (global SCRAM) = character selections
+          rem        PlayerState[] (global array) = player state flags
+          rem Output: Input processed for active players, qtcontroller toggled
+          rem Mutates: temp1, temp2 (used for calculations), currentPlayer (set to 0-3),
+          rem         qtcontroller (toggled between 0 and 1)
+          rem Called Routines: IsPlayerAlive - checks if player is alive,
+          rem   InputHandleLeftPortPlayer, InputHandleRightPortPlayer - handle input for left/right port players
+          rem Constraints: Must be colocated with InputSkipPlayer0Input, InputSkipPlayer1Input,
+          rem              InputHandlePlayer1, InputHandleQuadtariPlayers, InputSkipPlayer3Input,
+          rem              InputSkipPlayer4Input (all called via goto or gosub)
           dim IHAP_isAlive = temp2
           if qtcontroller then goto InputHandleQuadtariPlayers
           
@@ -114,6 +151,12 @@ InputHandleAllPlayers
           let temp1 = 0 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer0Input
+          rem Skip Player 0 input (label only, no execution)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with InputHandleAllPlayers
           
           let currentPlayer = 1 : gosub IsPlayerAlive
           let IHAP_isAlive = temp2
@@ -124,15 +167,37 @@ InputSkipPlayer0Input
           goto InputSkipPlayer1Input
           
 InputHandlePlayer1
+          rem Handle Player 1 input (right port)
+          rem Input: temp1 (set to 1), PlayerState[] (global array)
+          rem Output: Player 1 input processed
+          rem Mutates: temp1 (set to 1), player state (via InputHandleRightPortPlayer)
+          rem Called Routines: InputHandleRightPortPlayer - handles right port player input
+          rem Constraints: Must be colocated with InputHandleAllPlayers, InputSkipPlayer1Input
           let temp1 = 1 : gosub InputHandleRightPortPlayer 
           rem Player 1 uses Joy1
 InputSkipPlayer1Input
+          rem Skip Player 1 input (label only, no execution)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with InputHandleAllPlayers
           
           qtcontroller = 1 
           rem Switch to odd frame
           return
 
 InputHandleQuadtariPlayers
+          rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and alive)
+          rem Input: ControllerStatus (global), selectedChar3_R, selectedChar4_R (global SCRAM),
+          rem        PlayerState[] (global array)
+          rem Output: Input processed for Players 3 & 4 if conditions met, qtcontroller reset to 0
+          rem Mutates: temp1, temp2 (used for calculations), currentPlayer (set to 2-3),
+          rem         qtcontroller (reset to 0)
+          rem Called Routines: IsPlayerAlive - checks if player is alive,
+          rem   InputHandleLeftPortPlayer, InputHandleRightPortPlayer - handle input for left/right port players
+          rem Constraints: Must be colocated with InputHandleAllPlayers, InputSkipPlayer3Input,
+          rem              InputSkipPlayer4Input
           dim IHQP_isAlive = temp2
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and
           rem   alive)
@@ -145,6 +210,12 @@ InputHandleQuadtariPlayers
           let temp1 = 2 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer3Input
+          rem Skip Player 3 input (label only, no execution)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with InputHandleQuadtariPlayers
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input
           if selectedChar4_R = 0 then InputSkipPlayer4Input
           let currentPlayer = 3 : gosub IsPlayerAlive
@@ -154,6 +225,12 @@ InputSkipPlayer3Input
           let temp1 = 3 : gosub InputHandleRightPortPlayer
           
 InputSkipPlayer4Input
+          rem Skip Player 4 input (label only, no execution)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with InputHandleQuadtariPlayers
           
           
           qtcontroller = 0 

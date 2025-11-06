@@ -45,9 +45,7 @@ PublisherPreludeMain
           if joy0fire then PublisherPreludeComplete
           if joy1fire then PublisherPreludeComplete
           
-          if controllerStatus & SetQuadtariDetected then PublisherCheckQuadtari
-
-          goto PublisherSkipQuadtari
+          if controllerStatus & SetQuadtariDetected then PublisherCheckQuadtari else PublisherSkipQuadtari
 
 PublisherCheckQuadtari
           if !INPT0{7} then PublisherPreludeComplete

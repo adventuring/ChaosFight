@@ -40,8 +40,7 @@ AuthorPrelude
           if joy0fire then AuthorPreludeComplete
           if joy1fire then AuthorPreludeComplete
           
-          if controllerStatus & SetQuadtariDetected then AuthorCheckQuadtari
-          goto AuthorSkipQuadtari
+          if controllerStatus & SetQuadtariDetected then AuthorCheckQuadtari else AuthorSkipQuadtari
 
 AuthorCheckQuadtari
           if !INPT0{7} then AuthorPreludeComplete

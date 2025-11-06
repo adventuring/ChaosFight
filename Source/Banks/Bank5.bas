@@ -6,63 +6,13 @@
           rem Bank 5 dedicated to character art only - leave room for
           rem   animation frames
           rem Character sprite data for characters 24-31
-          
 #include "Source/Generated/Character24.bas"
-          asm
-Character24Frames_end:
-Character24FrameMap_end:
-Character24Frames_length = Character24Frames_end - Character24Frames
-Character24FrameMap_length = Character24FrameMap_end - Character24FrameMap
-end
-
 #include "Source/Generated/Character25.bas"
-          asm
-Character25Frames_end:
-Character25FrameMap_end:
-Character25Frames_length = Character25Frames_end - Character25Frames
-Character25FrameMap_length = Character25FrameMap_end - Character25FrameMap
-end
-
 #include "Source/Generated/Character26.bas"
-          asm
-Character26Frames_end:
-Character26FrameMap_end:
-Character26Frames_length = Character26Frames_end - Character26Frames
-Character26FrameMap_length = Character26FrameMap_end - Character26FrameMap
-end
-
 #include "Source/Generated/Character27.bas"
-          asm
-Character27Frames_end:
-Character27FrameMap_end:
-Character27Frames_length = Character27Frames_end - Character27Frames
-Character27FrameMap_length = Character27FrameMap_end - Character27FrameMap
-end
-
 #include "Source/Generated/Character28.bas"
-          asm
-Character28Frames_end:
-Character28FrameMap_end:
-Character28Frames_length = Character28Frames_end - Character28Frames
-Character28FrameMap_length = Character28FrameMap_end - Character28FrameMap
-end
-
 #include "Source/Generated/Character29.bas"
-          asm
-Character29Frames_end:
-Character29FrameMap_end:
-Character29Frames_length = Character29Frames_end - Character29Frames
-Character29FrameMap_length = Character29FrameMap_end - Character29FrameMap
-end
-
 #include "Source/Generated/Character30.bas"
-          asm
-Character30Frames_end:
-Character30FrameMap_end:
-Character30Frames_length = Character30Frames_end - Character30Frames
-Character30FrameMap_length = Character30FrameMap_end - Character30FrameMap
-end
-
 #include "Source/Generated/MethHound.bas"
           
           rem Character art lookup routines for Bank 5 (characters
@@ -70,3 +20,26 @@ end
           asm
 #include "Source/Routines/CharacterArtBank5.s"
 end
+
+          rem Define _length constants using label subtraction after data
+          rem   blocks are included
+          rem batariBASIC auto-generates these but calculates them incorrectly
+          rem   due to label ordering in bank-switched code
+          rem Formula: CharacterXXFrames_length = end_label - start_label
+          rem   where end_label is .skipL0XXXX and start_label is CharacterXXFrames
+          asm
+          Character24Frames_length = .skipL01656 - Character24Frames
+          Character24FrameMap_length = .skipL01657 - Character24FrameMap
+          Character25Frames_length = .skipL01662 - Character25Frames
+          Character25FrameMap_length = .skipL01663 - Character25FrameMap
+          Character26Frames_length = .skipL01668 - Character26Frames
+          Character26FrameMap_length = .skipL01669 - Character26FrameMap
+          Character27Frames_length = .skipL01674 - Character27Frames
+          Character27FrameMap_length = .skipL01675 - Character27FrameMap
+          Character28Frames_length = .skipL01680 - Character28Frames
+          Character28FrameMap_length = .skipL01681 - Character28FrameMap
+          Character29Frames_length = .skipL01686 - Character29Frames
+          Character29FrameMap_length = .skipL01687 - Character29FrameMap
+          Character30Frames_length = .skipL01692 - Character30Frames
+          Character30FrameMap_length = .skipL01693 - Character30FrameMap
+          end

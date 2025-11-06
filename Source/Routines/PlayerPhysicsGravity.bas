@@ -33,6 +33,12 @@
           rem GravityNormal (0.1px/frame²), GravityReduced
           rem   (0.05px/frame²), TerminalVelocity (8px/frame)
 PhysicsApplyGravity
+          rem Applies gravity acceleration to jumping players and handles ground detection
+          rem Input: playerChar[] (global array) = character types, playerState[] (global array) = player states, playerX[], playerY[] (global arrays) = player positions, playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, characterStateFlags_R[] (global SCRAM array) = character state flags, gravityRate (global) = gravity acceleration rate, GravityNormal, GravityReduced, TerminalVelocity (global constants) = gravity constants, BitMask[] (global data table) = bit masks, roboTitoCanStretch_R (global SCRAM) = stretch permission flags
+          rem Output: Gravity applied to jumping players, ground detection performed, players clamped to ground on landing
+          rem Mutates: temp1-temp6 (used for calculations), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerY[] (global array) = player Y positions, playerSubpixelY[], playerSubpixelYL[] (global arrays) = subpixel Y positions, playerState[] (global array) = player states (jumping flag cleared on landing), roboTitoCanStretch_W (global SCRAM) = stretch permission flags (via PAG_SetRoboTitoStretchPermission), missileStretchHeight_W[] (global SCRAM array) = stretch missile heights (via PAG_SetRoboTitoStretchPermission), rowYPosition, rowCounter (global) = calculation temporaries
+          rem Called Routines: AddVelocitySubpixelY (bank13) - adds gravity to vertical velocity, ConvertPlayerXToPlayfieldColumn (bank13) - converts player X to playfield column, DivideByPfrowheight - divides Y by row height, PAG_SetRoboTitoStretchPermission - sets RoboTito stretch permission on landing
+          rem Constraints: Frooty (8) and Dragon of Storms (2) skip gravity entirely. RoboTito (13) skips gravity when latched to ceiling
           dim PAG_playerIndex = temp1
           dim PAG_playfieldColumn = temp2
           dim PAG_feetY = temp3
@@ -169,6 +175,12 @@ GravityRowCalcDone
           goto GravityNextPlayer
           
 PAG_SetRoboTitoStretchPermission
+          rem Set RoboTito stretch permission on landing (allows stretching again)
+          rem Input: PAGSRTSP_playerIndex (temp1) = player index (0-3), roboTitoCanStretch_R (global SCRAM) = stretch permission flags, BitMask[] (global data table) = bit masks
+          rem Output: roboTitoCanStretch_W (global SCRAM) = stretch permission flags updated, missileStretchHeight_W[] (global SCRAM array) = stretch missile height cleared
+          rem Mutates: temp1-temp3 (used for calculations), roboTitoCanStretch_W (global SCRAM) = stretch permission flags, missileStretchHeight_W[] (global SCRAM array) = stretch missile heights
+          rem Called Routines: None
+          rem Constraints: Only called for RoboTito character on landing
           dim PAGSRTSP_playerIndex = temp1
           dim PAGSRTSP_flags = temp2
           dim PAGSRTSP_bitMask = temp3
@@ -223,6 +235,12 @@ GravityNextPlayer
           rem Velocity gradually decays over time.
           rem Refactored to loop through all players (0-3)
 ApplyMomentumAndRecovery
+          rem Updates recovery frames and applies velocity decay during hitstun for all players
+          rem Input: playerRecoveryFrames[] (global array) = recovery frame counts, playerVelocityX[], playerVelocityXL[] (global arrays) = horizontal velocity, playerState[] (global array) = player states, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, PlayerStateBitRecovery (global constant) = recovery flag bit
+          rem Output: Recovery frames decremented, recovery flag synchronized, velocity decayed during recovery
+          rem Mutates: temp1 (used for player index), playerRecoveryFrames[] (global array) = recovery frame counts, playerState[] (global array) = player states (recovery flag bit 3), playerVelocityX[], playerVelocityXL[] (global arrays) = horizontal velocity (decayed)
+          rem Called Routines: None
+          rem Constraints: None
           dim AMAR_playerIndex = temp1
           rem Loop through all players (0-3)
           let AMAR_playerIndex = 0

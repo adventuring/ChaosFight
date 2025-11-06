@@ -45,6 +45,20 @@
           rem Uses: joy0left/joy0right for players 0,2; joy1left/joy1right for players 1,3
           rem OUTPUT: Updates playerChar[playerIndex] and plays sound
 HandleCharacterSelectCycle
+          rem Handle character cycling (left/right) for a player
+          rem Input: temp1 = player index (0-3)
+          rem        temp2 = direction (0=left, 1=right)
+          rem        playerChar[] (global array) = current character selections
+          rem        joy0left, joy0right, joy1left, joy1right (hardware) = joystick states
+          rem Output: playerChar[HCSC_playerIndex] updated, playerLocked state set to unlocked
+          rem Mutates: playerChar[HCSC_playerIndex] (cycled), playerLocked state (set to unlocked),
+          rem         temp1, temp2, temp3 (passed to helper routines)
+          rem Called Routines: CycleCharacterLeft, CycleCharacterRight - access playerChar[],
+          rem   SetPlayerLocked (bank144) - accesses playerLocked state,
+          rem   PlaySoundEffect (bank15) - plays navigation sound
+          rem Constraints: Must be colocated with HCSC_CheckJoy0, HCSC_CheckJoy0Left,
+          rem              HCSC_CheckJoy1Left, HCSC_DoCycle, HCSC_CycleLeft, HCSC_CycleDone
+          rem              (all called via goto)
           dim HCSC_playerIndex = temp1
           dim HCSC_direction = temp2
           dim HCSC_playerNumber = temp3
@@ -58,15 +72,42 @@ HandleCharacterSelectCycle
           if !joy1right then return
           goto HCSC_DoCycle
 HCSC_CheckJoy0
+          rem Check joy0 for players 0,2
+          rem Input: HCSC_playerIndex, HCSC_direction (from HandleCharacterSelectCycle)
+          rem        joy0left, joy0right (hardware) = joystick states
+          rem Output: Dispatches to HCSC_CheckJoy0Left or HCSC_DoCycle
+          rem Mutates: None (dispatcher only)
+          rem Called Routines: None (dispatcher only)
+          rem Constraints: Must be colocated with HandleCharacterSelectCycle
           rem Players 0,2 use joy0
           if HCSC_direction = 0 then HCSC_CheckJoy0Left
           if !joy0right then return
           goto HCSC_DoCycle
 HCSC_CheckJoy0Left
+          rem Check joy0 left button
+          rem Input: joy0left (hardware) = joystick state
+          rem Output: Returns if not pressed, continues to HCSC_DoCycle if pressed
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with HandleCharacterSelectCycle
           if !joy0left then return
 HCSC_CheckJoy1Left
+          rem Check joy1 left button
+          rem Input: joy1left (hardware) = joystick state
+          rem Output: Returns if not pressed, continues to HCSC_DoCycle if pressed
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with HandleCharacterSelectCycle
           if !joy1left then return
 HCSC_DoCycle
+          rem Perform character cycling
+          rem Input: HCSC_playerIndex, HCSC_direction (from HandleCharacterSelectCycle)
+          rem        playerChar[] (global array) = current character selections
+          rem Output: playerChar[HCSC_playerIndex] cycled, playerLocked state set to unlocked
+          rem Mutates: playerChar[HCSC_playerIndex], playerLocked state, temp1, temp2, temp3
+          rem Called Routines: CycleCharacterLeft, CycleCharacterRight, SetPlayerLocked (bank144),
+          rem   PlaySoundEffect (bank15)
+          rem Constraints: Must be colocated with HandleCharacterSelectCycle, HCSC_CycleLeft, HCSC_CycleDone
           rem Get current character index
           let HCSC_characterIndex = playerChar[HCSC_playerIndex]
           let HCSC_playerNumber = HCSC_playerIndex
@@ -77,8 +118,21 @@ HCSC_DoCycle
           gosub CycleCharacterRight
           goto HCSC_CycleDone
 HCSC_CycleLeft
+          rem Cycle character left
+          rem Input: temp1, temp3 (from HCSC_DoCycle)
+          rem Output: temp1 updated with cycled character index
+          rem Mutates: temp1 (cycled character index)
+          rem Called Routines: CycleCharacterLeft - accesses playerChar[]
+          rem Constraints: Must be colocated with HandleCharacterSelectCycle, HCSC_DoCycle, HCSC_CycleDone
           gosub CycleCharacterLeft
 HCSC_CycleDone
+          rem Character cycling complete
+          rem Input: HCSC_characterIndex, HCSC_playerIndex (from HandleCharacterSelectCycle)
+          rem        temp1 (from CycleCharacterLeft/Right)
+          rem Output: playerChar[HCSC_playerIndex] updated, playerLocked state set to unlocked
+          rem Mutates: playerChar[HCSC_playerIndex], playerLocked state, temp1, temp2
+          rem Called Routines: SetPlayerLocked (bank144), PlaySoundEffect (bank15)
+          rem Constraints: Must be colocated with HandleCharacterSelectCycle
           let HCSC_characterIndex = temp1
           let playerChar[HCSC_playerIndex] = HCSC_characterIndex
           let temp1 = HCSC_playerIndex
@@ -95,6 +149,18 @@ HCSC_CycleDone
           rem Uses: joy0fire/joy0down for players 0,2; joy1fire/joy1down for players 1,3
           rem OUTPUT: Updates playerLocked and plays sound
 HandleCharacterSelectFire
+          rem Handle fire input (selection) for a player
+          rem Input: temp1 = player index (0-3)
+          rem        playerChar[] (global array) = current character selections
+          rem        joy0fire, joy0down, joy1fire, joy1down (hardware) = joystick states
+          rem        randomSelectFlags[] (global array) = random selection flags
+          rem Output: playerLocked state updated, randomSelectFlags[] updated if random selected
+          rem Mutates: playerLocked state (set to normal or handicap), randomSelectFlags[] (if random),
+          rem         temp1, temp2, temp3, temp4 (passed to helper routines)
+          rem Called Routines: SetPlayerLocked (bank144) - accesses playerLocked state,
+          rem   PlaySoundEffect (bank15) - plays selection sound
+          rem Constraints: Must be colocated with HCSF_CheckJoy0, HCSF_HandleFire,
+          rem              HCSF_HandleHandicap, HCSF_HandleRandom (all called via goto)
           dim HCSF_playerIndex = temp1
           dim HCSF_soundId = temp1
           dim HCSF_playerNumber = temp3
@@ -109,11 +175,25 @@ HandleCharacterSelectFire
           if joy1down then let HCSF_joyDown = 1 else let HCSF_joyDown = 0
           goto HCSF_HandleFire
 HCSF_CheckJoy0
+          rem Check joy0 for players 0,2
+          rem Input: HCSF_playerIndex (from HandleCharacterSelectFire)
+          rem        joy0fire, joy0down (hardware) = joystick states
+          rem Output: Dispatches to HCSF_HandleFire or returns
+          rem Mutates: HCSF_joyFire, HCSF_joyDown
+          rem Called Routines: None
+          rem Constraints: Must be colocated with HandleCharacterSelectFire
           rem Players 0,2 use joy0
           if !joy0fire then return
           let HCSF_joyFire = 1
           if joy0down then let HCSF_joyDown = 1 else let HCSF_joyDown = 0
 HCSF_HandleFire
+          rem Handle fire button press
+          rem Input: HCSF_playerIndex, HCSF_joyDown (from HandleCharacterSelectFire)
+          rem        playerChar[] (global array) = current character selections
+          rem Output: Dispatches to HCSF_HandleRandom, HCSF_HandleHandicap, or locks normally
+          rem Mutates: playerLocked state, randomSelectFlags[] (if random)
+          rem Called Routines: SetPlayerLocked (bank144), PlaySoundEffect (bank15)
+          rem Constraints: Must be colocated with HandleCharacterSelectFire
           rem Check if RandomCharacter selected
           if playerChar[HCSF_playerIndex] = RandomCharacter then HCSF_HandleRandom
           rem Check for handicap mode (down+fire = 75% health)
@@ -128,6 +208,12 @@ HCSF_HandleFire
           gosub PlaySoundEffect bank15
           return
 HCSF_HandleHandicap
+          rem Handle handicap mode selection (75% health)
+          rem Input: HCSF_playerIndex (from HandleCharacterSelectFire)
+          rem Output: playerLocked state set to handicap
+          rem Mutates: playerLocked state (set to handicap)
+          rem Called Routines: SetPlayerLocked (bank144), PlaySoundEffect (bank15)
+          rem Constraints: Must be colocated with HandleCharacterSelectFire
           let HCSF_playerNumber = HCSF_playerIndex
           let temp1 = HCSF_playerNumber
           let temp2 = PlayerLockedHandicap
@@ -138,6 +224,13 @@ HCSF_HandleHandicap
           gosub PlaySoundEffect bank15
           return
 HCSF_HandleRandom
+          rem Handle random character selection
+          rem Input: HCSF_playerIndex, HCSF_joyDown (from HandleCharacterSelectFire)
+          rem        randomSelectFlags[] (global array) = random selection flags
+          rem Output: randomSelectFlags[HCSF_playerIndex] set, selection sound played
+          rem Mutates: randomSelectFlags[HCSF_playerIndex] (set to $80 if handicap, 0 otherwise)
+          rem Called Routines: PlaySoundEffect (bank15)
+          rem Constraints: Must be colocated with HandleCharacterSelectFire
           rem Random selection initiated - will be handled by CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if HCSF_joyDown then randomSelectFlags[HCSF_playerIndex] = $80 else randomSelectFlags[HCSF_playerIndex] = 0
@@ -149,6 +242,24 @@ HCSF_HandleRandom
           return
 
 CharacterSelectInputEntry
+          rem Per-frame character select input handler with Quadtari multiplexing
+          rem Input: qtcontroller (global) = Quadtari controller frame toggle
+          rem        joy0left, joy0right, joy0up, joy0down, joy0fire (hardware) = Player 1/3 joystick
+          rem        joy1left, joy1right, joy1up, joy1down, joy1fire (hardware) = Player 2/4 joystick
+          rem        playerChar[] (global array) = current character selections
+          rem        playerLocked (global) = player lock states
+          rem Output: Dispatches to CharacterSelectHandleQuadtari or CharacterSelectInputComplete
+          rem Mutates: qtcontroller (toggled to 1), playerChar[], playerLocked state
+          rem Called Routines: CharacterSelectCheckControllerRescan - accesses controller state,
+          rem   SetPlayerLocked (bank1) - accesses playerLocked state,
+          rem   HandleCharacterSelectCycle - accesses playerChar[], playerLocked,
+          rem   HandleCharacterSelectFire - accesses playerChar[], playerLocked
+          rem Constraints: Must be colocated with CS_Player0LockClearDone, CS_Player1LockClearDone,
+          rem              CS_HandlePlayer0Left, CS_HandlePlayer0Right, CS_HandlePlayer0Fire,
+          rem              CS_HandlePlayer1Left, CS_HandlePlayer1Right, CS_HandlePlayer1Fire,
+          rem              CharacterSelectHandleQuadtari, CharacterSelectInputComplete
+          rem              (all called via goto)
+          rem              Entry point for character select input (called from MainLoop)
           rem Check for controller re-detection on Select/Pause/ColorB&W switches
           gosub CharacterSelectCheckControllerRescan
           
@@ -162,6 +273,12 @@ CharacterSelectInputEntry
           if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1 : goto CS_Player0LockClearDone
           if joy0down then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 CS_Player0LockClearDone
+          rem Player 0 lock clear complete (label only)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CharacterSelectInputEntry
           if joy0fire then CS_HandlePlayer0Fire
           
           rem Handle Player 2 input (joy1 on even frames)
@@ -171,6 +288,12 @@ CS_Player0LockClearDone
           if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1 : goto CS_Player1LockClearDone
           if joy1down then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 CS_Player1LockClearDone
+          rem Player 1 lock clear complete (label only)
+          rem Input: None (label only, no execution)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CharacterSelectInputEntry
           if joy1fire then CS_HandlePlayer1Fire
           
           let qtcontroller = 1

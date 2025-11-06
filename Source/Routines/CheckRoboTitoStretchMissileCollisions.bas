@@ -14,6 +14,12 @@
           rem   collision with other players.
           
 CheckRoboTitoStretchMissileCollisions
+          rem Check collision between RoboTito stretch missiles and other players
+          rem Input: playerChar[] (global array) = character types, playerState[] (global array) = player states, characterStateFlags_R[] (global SCRAM array) = character state flags, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights, playerX[], playerY[] (global arrays) = player positions, playerHealth[] (global array) = player health
+          rem Output: Stretch missile collisions detected and handled
+          rem Mutates: temp1-temp7 (used for calculations), playerState[], characterStateFlags_W[], missileStretchHeight_W[], roboTitoCanStretch_W (via HandleRoboTitoStretchMissileHit)
+          rem Called Routines: HandleRoboTitoStretchMissileHit - processes collision when detected
+          rem Constraints: None
           dim CRTSMC_playerIndex = temp1
           dim CRTSMC_stretchHeight = temp2
           dim CRTSMC_missileX = temp3
@@ -104,6 +110,12 @@ CRTSMC_NextPlayer
           rem   temp1 = RoboTito player index (stretch missile owner)
           rem   temp5 = hit player index (victim)
 HandleRoboTitoStretchMissileHit
+          rem Process a stretch missile hit on another player, causing RoboTito to fall
+          rem Input: temp1 = RoboTito player index (stretch missile owner), temp5 = hit player index (victim), playerState[] (global array) = player states, roboTitoCanStretch_R (global SCRAM) = stretch permission flags, characterStateFlags_R[] (global SCRAM array) = character state flags
+          rem Output: RoboTito falls, stretch missile removed, stretch permission cleared
+          rem Mutates: missileStretchHeight_W[] (global SCRAM array) = stretch missile heights, playerState[] (global array) = player states, playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, roboTitoCanStretch_W (global SCRAM) = stretch permission flags, characterStateFlags_W[] (global SCRAM array) = character state flags, temp2-temp3 (used for calculations)
+          rem Called Routines: None
+          rem Constraints: None
           dim HRTSMH_roboTitoIndex = temp1
           dim HRTSMH_hitPlayer = temp5
           dim HRTSMH_flags = temp2

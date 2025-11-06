@@ -54,16 +54,18 @@ UpdatePlayerMovementQuadtariSkip
           rem   integer parts
           rem
           rem MUTATES:
-          rem   temp2 = UPS_subpixelSum (internal calculation)
+          rem   temp2 = UPS_sum16 low byte (16-bit accumulator)
+          rem   temp3 = UPS_sum16 high byte (16-bit accumulator)
           rem   temp4 = UPS_subpixelXRead (internal SCRAM read-modify-write)
-          rem WARNING: temp2 and temp4 are mutated during execution. Do not
-          rem   use these temp variables after calling this subroutine.
+          rem WARNING: temp2, temp3, and temp4 are mutated during execution.
+          rem   Do not use these temp variables after calling this subroutine.
           rem
           rem EFFECTS:
           rem   Modifies playerX[], playerY[], playerSubpixelX_W[],
           rem   playerSubpixelY_W[]
 UpdatePlayerMovementSingle
-          dim UPS_subpixelSum = temp2
+          rem 16-bit accumulator for proper carry detection
+          dim UPS_sum16 = temp2.temp3
           rem Skip if player is eliminated
           if playerHealth[currentPlayer] = 0 then return
           
@@ -71,18 +73,16 @@ UpdatePlayerMovementSingle
           rem APPLY X VELOCITY TO X POSITION
           rem ==========================================================
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
-          rem For playerVelocityX (declared separately), add high and
-          rem   low bytes manually
-          rem batariBASIC will handle carry from low byte to high byte
-          rem   automatically
-          let UPS_subpixelSum = playerSubpixelX_WL[currentPlayer] + playerVelocityXL[currentPlayer]
-          if UPS_subpixelSum > 255 then XCarry
-          let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum
+          rem Use 16-bit accumulator to detect carry properly
+          rem temp2 = low byte, temp3 = high byte (carry flag)
+          let UPS_sum16 = playerSubpixelX_WL[currentPlayer] + playerVelocityXL[currentPlayer]
+          if temp3 > 0 then XCarry
+          rem No carry: temp3 = 0, use low byte directly
+          let playerSubpixelX_WL[currentPlayer] = temp2
           goto XNoCarry
 XCarry
-          rem UPS_subpixelSum is already wrapped to 0-255 (8-bit variable)
-          rem Use it directly - no need to subtract 256
-          let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum
+          rem Carry detected: temp3 > 0, extract wrapped low byte
+          let playerSubpixelX_WL[currentPlayer] = temp2
           rem SCRAM read-modify-write: Read from r049, modify, write to
           rem   w049
           dim UPS_subpixelXRead = temp4
@@ -105,18 +105,16 @@ XNoCarry
           rem APPLY Y VELOCITY TO Y POSITION
           rem ==========================================================
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
-          rem playerVelocityY is declared as .8.8 so batariBASIC handles
-          rem   arithmetic automatically
-          rem But we still need to do it manually since both parts are
-          rem   separate arrays
-          let UPS_subpixelSum = playerSubpixelY_WL[currentPlayer] + playerVelocityYL[currentPlayer]
-          if UPS_subpixelSum > 255 then YCarry
-          let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum
+          rem Use 16-bit accumulator to detect carry properly
+          rem temp2 = low byte, temp3 = high byte (carry flag)
+          let UPS_sum16 = playerSubpixelY_WL[currentPlayer] + playerVelocityYL[currentPlayer]
+          if temp3 > 0 then YCarry
+          rem No carry: temp3 = 0, use low byte directly
+          let playerSubpixelY_WL[currentPlayer] = temp2
           goto YNoCarry
 YCarry
-          rem UPS_subpixelSum is already wrapped to 0-255 (8-bit variable)
-          rem Use it directly - no need to subtract 256
-          let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum
+          rem Carry detected: temp3 > 0, extract wrapped low byte
+          let playerSubpixelY_WL[currentPlayer] = temp2
           rem SCRAM read-modify-write: Read from r057, modify, write to
           rem   w057
           dim UPS_subpixelYRead = temp4

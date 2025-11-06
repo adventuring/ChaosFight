@@ -32,9 +32,10 @@ BoundaryLoop
           rem   Quadtari)
           if CBC_playerIndex < 2 then BoundaryCheckBounds
           rem Players 0-1 always active
-          if !(controllerStatus & SetQuadtariDetected) then goto BoundaryNextPlayer
-          if CBC_playerIndex = 2 && selectedChar3_R = 255 then goto BoundaryNextPlayer
-          if CBC_playerIndex = 3 && selectedChar4_R = 255 then goto BoundaryNextPlayer
+          rem Skip inactive players (inline checks to avoid labels)
+          if !(controllerStatus & SetQuadtariDetected) then BoundaryNextPlayer
+          if CBC_playerIndex = 2 && selectedChar3_R = 255 then BoundaryNextPlayer
+          if CBC_playerIndex = 3 && selectedChar4_R = 255 then BoundaryNextPlayer
           
 BoundaryCheckBounds
           rem All arenas support horizontal wrap-around for players
@@ -72,7 +73,7 @@ BoundaryCheckBounds
 BoundaryNextPlayer
           rem Move to next player
           let CBC_playerIndex = CBC_playerIndex + 1
-          if CBC_playerIndex < 4 then goto BoundaryLoop
+          if CBC_playerIndex < 4 then BoundaryLoop
           
           return
 

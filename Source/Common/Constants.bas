@@ -133,6 +133,15 @@
           rem Shift amount for animation state (bits 4-7): ActionAttackExecute << 4
           rem Animation state is stored in bits 4-7 of PlayerState byte
           
+          rem Pre-calculated shifted animation state values (to avoid bit shift
+          rem   expressions that generate invalid assembly)
+          rem ActionAttackExecute (14) << 4 = 224 (0xE0)
+          const ActionAttackExecuteShifted = 224
+          rem ActionJumping (10) << 4 = 160 (0xA0)
+          const ActionJumpingShifted = 160
+          rem ActionFalling (11) << 4 = 176 (0xB0)
+          const ActionFallingShifted = 176
+          
           rem High bit constants for input testing
           const HighBit = $80
           rem Bit 7: high bit for testing input states

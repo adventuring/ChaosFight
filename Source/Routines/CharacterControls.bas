@@ -402,7 +402,7 @@ RoboTitoStretching
           dim RTS_groundY = temp2
           dim RTS_stretchHeight = temp3
           rem Set stretching animation (repurposed ActionJumping = 10)
-          let playerState[RTS_playerIndex] = (playerState[RTS_playerIndex] & MaskPlayerStateFlags) | (ActionJumping << ShiftAnimationState)
+          let playerState[RTS_playerIndex] = (playerState[RTS_playerIndex] & MaskPlayerStateFlags) | ActionJumpingShifted
           
           rem Calculate and set missile stretch height
           rem Ground level: Use ScreenBottom (192) as ground Y position
@@ -487,7 +487,7 @@ RoboTitoLatch
           let RTL_stateFlags = characterStateFlags_R[RTL_playerIndex] | 1
           let characterStateFlags_W[RTL_playerIndex] = RTL_stateFlags
           rem Set latched bit
-          let playerState[RTL_playerIndex] = (playerState[RTL_playerIndex] & MaskPlayerStateFlags) | (ActionJumping << ShiftAnimationState)
+          let playerState[RTL_playerIndex] = (playerState[RTL_playerIndex] & MaskPlayerStateFlags) | ActionJumpingShifted
           rem Set hanging animation (ActionJumping = 10, repurposed for hanging)
           
           rem Rapidly reduce missile height to 0 over 2-3 frames
@@ -737,7 +737,7 @@ RoboTitoVoluntaryDrop
           let RTLVD_stateFlags = characterStateFlags_R[RTLVD_playerIndex] & (255 - PlayerStateBitFacing)
           let characterStateFlags_W[RTLVD_playerIndex] = RTLVD_stateFlags
           rem Clear latched bit (bit 0)
-          let playerState[RTLVD_playerIndex] = (playerState[RTLVD_playerIndex] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
+          let playerState[RTLVD_playerIndex] = (playerState[RTLVD_playerIndex] & MaskPlayerStateFlags) | ActionFallingShifted
           rem Set falling animation
           rem Clear stretch missile height when dropping
           let missileStretchHeight_W[RTLVD_playerIndex] = 0

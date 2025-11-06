@@ -27,7 +27,7 @@ BernieAttack
           rem   simultaneously, and shoves them rapidly away from him
           rem This is unique - all other melee attacks only hit in
           rem   facing direction
-          let playerState[BA_attackerIndex] = (playerState[BA_attackerIndex] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[BA_attackerIndex] = (playerState[BA_attackerIndex] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           
           rem   SpawnMissile)

@@ -117,7 +117,7 @@ HandleRoboTitoStretchMissileHit
           let playerVelocityY[HRTSMH_roboTitoIndex] = TerminalVelocity
           let playerVelocityYL[HRTSMH_roboTitoIndex] = 0
           rem Set falling animation (ActionFalling = 11)
-          let playerState[HRTSMH_roboTitoIndex] = (playerState[HRTSMH_roboTitoIndex] & MaskPlayerStateFlags) | (ActionFalling << ShiftAnimationState)
+          let playerState[HRTSMH_roboTitoIndex] = (playerState[HRTSMH_roboTitoIndex] & MaskPlayerStateFlags) | ActionFallingShifted
           rem   ActionFalling
           rem MaskPlayerStateFlags masks bits 0-3, set bits 4-7 to
           

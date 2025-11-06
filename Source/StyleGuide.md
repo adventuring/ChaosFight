@@ -662,6 +662,10 @@ When reviewing code, check for:
 - [ ] `.bas`/`.h` files use `#include`
 - [ ] `.s` files use `#include` in `asm` blocks
 - [ ] `.inc` files use `includesfile`
+- [ ] Constants defined before use
+- [ ] Data tables defined before use
+- [ ] Non-subroutine labels defined before use
+- [ ] Subroutine labels can be forward-referenced (exception)
 
 ### ✅ Control Flow
 - [ ] IF/THEN statements are line-based (not blocks)

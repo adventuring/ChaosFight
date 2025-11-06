@@ -259,6 +259,8 @@ UpdatePlayerAnimation
 - ✅ `UPA_animCounterRead` (UpdatePlayerAnimation → UPA)
 - ❌ `UpdatePlayerAnimation_animCounterRead` (too verbose)
 
+**CRITICAL - Cross-Bank Access**: Variables with numeric prefixes (subroutine-local variables using the `XX_varName` pattern) are **local to their bank** and **will NOT be available cross-bank at all without a separate label for it**. If a subroutine needs to access a local variable from another bank, that variable must be exposed via a separate label or passed through global variables (`temp1`-`temp6` or other globals).
+
 ---
 
 ## Documentation
@@ -303,6 +305,7 @@ Every subroutine **MUST** have documentation comments immediately after the labe
 - **Input**: Parameters (via temp variables or globals)
 - **Output**: Return values or side effects
 - **Side Effects**: Any global state modifications
+- **Constraints**: Colocation requirements, cross-bank access limitations
 
 **Format:**
 ```basic
@@ -312,6 +315,7 @@ LoadCharacterSprite
           rem        temp3 = player number (0-3)
           rem Output: Sprite data loaded into appropriate player register
           rem Side Effects: Updates player0-3pointerlo/hi and player0-3height
+          rem Constraints: Must be colocated with LoadSpecialSprite (called via goto)
           dim LCS_characterIndex = temp1
           rem ... implementation ...
 ```
@@ -322,7 +326,10 @@ ApplyDamage
           rem Apply damage from attacker to defender
           rem Input: attackerID, defenderID (must be set before calling)
           rem Output: Damage applied, recovery frames set, health decremented
+          rem Constraints: None
 ```
+
+**CRITICAL - Cross-Bank Variable Access**: When documenting subroutines, note that variables with numeric prefixes (subroutine-local variables using the `XX_varName` pattern) are **local to their bank** and **will NOT be available cross-bank at all without a separate label for it**. Document this in the **Constraints** section if a subroutine uses local variables that might need cross-bank access.
 
 ### File Headers
 

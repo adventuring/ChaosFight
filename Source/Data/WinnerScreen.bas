@@ -1,15 +1,15 @@
           rem ChaosFight - Source/Data/WinnerScreen.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem Winner screen playfield data (pfres=32 admin screen layout)
+          rem Winner screen playfield data (pfres=8, 8 rows)
 
           rem ==========================================================
           rem WINNER SCREEN PLAYFIELD DATA
           rem ==========================================================
-          rem 32×32 admin screen layout (pfres=32)
+          rem 8 rows (pfres=8)
           rem Design: Central high podium for winner, side platforms for
           rem   2nd/3rd
-          rem Row 16: Central high platform (winner podium)
-          rem Row 24: Left and right platforms (2nd/3rd place)
+          rem Row 4: Central high platform (winner podium)
+          rem Row 6: Left and right platforms (2nd/3rd place)
           rem ==========================================================
 
 WinnerScreenPlayfield

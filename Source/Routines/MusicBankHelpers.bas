@@ -10,30 +10,56 @@
           
           #include "Source/Data/SongPointers16.bas"
           
-          rem Lookup song pointer from tables
-          rem Input: temp1 = song ID (0-28)
+          rem Lookup song pointer from tables (Bank 16 songs)
+          rem Input: temp1 = song ID (Bank 16 songs: 0, 3-28)
           rem Output: SongPointerL, SongPointerH = pointer to
           rem   Song_Voice0 stream
+          rem Index mapping: song 0 → index 0, songs 3-28 → indices 1-26
 LoadSongPointer
           dim LSP_songID = temp1
-          rem Bounds check: 29 songs (0-28)
+          rem Bounds check: Only songs 0, 3-28 are in Bank 16
           if LSP_songID > 28 then let SongPointerH = 0 : return
-          rem Use array access to lookup pointer (Bank 16 songs)
-          let SongPointerL = SongPointersL16[LSP_songID]
-          let SongPointerH = SongPointersH16[LSP_songID]
+          rem Check if song 1 or 2 (not in this bank)
+          if LSP_songID = 1 then let SongPointerH = 0 : return
+          if LSP_songID = 2 then let SongPointerH = 0 : return
+          rem Calculate compact index: if songID = 0 then index = 0,
+          rem   else index = songID - 2
+          dim LSP_index = temp2
+          if LSP_songID = 0 then LSP_IndexZero
+          let LSP_index = LSP_songID - 2
+          goto LSP_Lookup
+LSP_IndexZero
+          let LSP_index = 0
+LSP_Lookup
+          rem Use array access to lookup pointer
+          let SongPointerL = SongPointersL16[LSP_index]
+          let SongPointerH = SongPointersH16[LSP_index]
           return
           
-          rem Lookup Voice 1 song pointer from tables
-          rem Input: temp1 = song ID (0-28)
+          rem Lookup Voice 1 song pointer from tables (Bank 16 songs)
+          rem Input: temp1 = song ID (Bank 16 songs: 0, 3-28)
           rem Output: SongPointerL, SongPointerH = pointer to
           rem   Song_Voice1 stream
+          rem Index mapping: song 0 → index 0, songs 3-28 → indices 1-26
 LoadSongVoice1Pointer
           dim LSV1P_songID = temp1
-          rem Bounds check: 29 songs (0-28)
+          rem Bounds check: Only songs 0, 3-28 are in Bank 16
           if LSV1P_songID > 28 then let SongPointerH = 0 : return
-          rem Use array access to lookup Voice 1 pointer directly (Bank 16)
-          let SongPointerL = SongPointersSecondL16[LSV1P_songID]
-          let SongPointerH = SongPointersSecondH16[LSV1P_songID]
+          rem Check if song 1 or 2 (not in this bank)
+          if LSV1P_songID = 1 then let SongPointerH = 0 : return
+          if LSV1P_songID = 2 then let SongPointerH = 0 : return
+          rem Calculate compact index: if songID = 0 then index = 0,
+          rem   else index = songID - 2
+          dim LSV1P_index = temp2
+          if LSV1P_songID = 0 then LSV1P_IndexZero
+          let LSV1P_index = LSV1P_songID - 2
+          goto LSV1P_Lookup
+LSV1P_IndexZero
+          let LSV1P_index = 0
+LSV1P_Lookup
+          rem Use array access to lookup Voice 1 pointer directly
+          let SongPointerL = SongPointersSecondL16[LSV1P_index]
+          let SongPointerH = SongPointersSecondH16[LSV1P_index]
           return
           
           rem Load next note from Voice 0 stream using assembly for

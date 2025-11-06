@@ -16,6 +16,21 @@
           rem 4. If player health < damage amount, player dies
           rem   (instantly vanishes)
 ApplyDamage
+          rem Apply damage from attacker to defender
+          rem Input: attackerID (global) = attacker player index
+          rem        defenderID (global) = defender player index
+          rem        playerDamage[] (global array) = player damage values
+          rem        playerHealth[] (global array) = player health values
+          rem        ActionHit (constant) = hurt animation action
+          rem Output: playerHealth[] reduced, playerRecoveryFrames[] set, playerState[] updated,
+          rem         animation set to hurt, sound effect played, or player eliminated
+          rem Mutates: temp1-temp4 (used for calculations), playerHealth[] (reduced or set to 0),
+          rem         playerRecoveryFrames[] (set), playerState[] (recovery flag set),
+          rem         currentPlayer (set to defenderID), temp2 (passed to SetPlayerAnimation)
+          rem Called Routines: SetPlayerAnimation (bank11) - sets hurt animation,
+          rem   CheckPlayerElimination - handles player elimination,
+          rem   PlayDamageSound - plays damage sound effect
+          rem Constraints: Must be colocated with PlayerDies, PlayDamageSound (called via goto)
           dim AD_attackerID = attackerID
           dim AD_defenderID = defenderID
           dim AD_damage = temp1
@@ -60,6 +75,13 @@ ApplyDamage
 
 PlayerDies
           rem Player dies - instantly vanish
+          rem Input: AD_defenderID (from ApplyDamage) = defender player index
+          rem        playerHealth[] (global array) = player health values
+          rem Output: playerHealth[] set to 0, player eliminated, sound effect played
+          rem Mutates: playerHealth[] (set to 0), currentPlayer (set to defenderID)
+          rem Called Routines: CheckPlayerElimination - handles player elimination,
+          rem   PlayDamageSound - plays damage sound effect
+          rem Constraints: Must be colocated with ApplyDamage, PlayDamageSound
           let playerHealth[AD_defenderID] = 0
           
           rem Trigger elimination immediately (instantly vanish)
@@ -80,6 +102,16 @@ PlayerDies
           rem Uses cached hitbox values from ProcessAttackerAttacks
           rem   (cached once per attacker, reused for all defenders)
 CheckAttackHit
+          rem Check if attack hits defender using AABB collision detection
+          rem Input: defenderID (global) = defender player index
+          rem        playerX[], playerY[] (global arrays) = player positions
+          rem        cachedHitboxLeft_R, cachedHitboxRight_R, cachedHitboxTop_R, cachedHitboxBottom_R (global SCRAM) = cached hitbox bounds
+          rem        PlayerSpriteWidth, PlayerSpriteHeight (constants) = sprite dimensions
+          rem Output: hit (global) = 1 if hit, 0 if miss
+          rem Mutates: hit (set to 1 or 0)
+          rem Called Routines: None
+          rem Constraints: Must be colocated with NoHit (called via goto)
+          rem              Uses cached hitbox values (set in ProcessAttackerAttacks)
           dim CAH_defenderID = defenderID
           rem Use cached hitbox values (set in ProcessAttackerAttacks)
           rem Check if defender bounding box overlaps hitbox (AABB
@@ -109,6 +141,11 @@ CheckAttackHit
    
 NoHit
           rem Defender is outside hitbox bounds
+          rem Input: None (called from CheckAttackHit)
+          rem Output: hit set to 0
+          rem Mutates: hit (set to 0)
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CheckAttackHit
           let hit = 0
           return
 
@@ -118,6 +155,17 @@ NoHit
           rem   CAH_attackerID from CheckAttackHit)
           rem Outputs: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
 CalculateAttackHitbox
+          rem Calculate attack hitbox based on attacker position and facing
+          rem Input: attackerID (global) = attacker player index
+          rem        playerX[], playerY[] (global arrays) = player positions
+          rem        PlayerAttackType[] (global array) = attack type for each player
+          rem        PlayerFacing[] (global array) = facing direction for each player
+          rem        PlayerSpriteWidth, PlayerSpriteHeight (constants) = sprite dimensions
+          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom (global) = hitbox bounds
+          rem Mutates: temp1, temp2 (used for attack type and facing), hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Called Routines: None
+          rem Constraints: Must be colocated with MeleeHitbox, ProjectileHitbox, AreaHitbox,
+          rem              FacingRight, FacingLeft, FacingUp, FacingDown (all called via on/goto)
           dim CAH_attackerID_calc = attackerID
           rem Set hitbox based on attack type and direction
           rem Use temporary variable to avoid compiler bug with array indexing
@@ -127,8 +175,12 @@ CalculateAttackHitbox
           on CAH_attackType goto MeleeHitbox, ProjectileHitbox, AreaHitbox
           
 MeleeHitbox
-          rem Melee hitbox extends PlayerSpriteWidth pixels in facing
-          rem   direction
+          rem Melee hitbox extends PlayerSpriteWidth pixels in facing direction
+          rem Input: CAH_attackerID_calc, PlayerFacing[] (from CalculateAttackHitbox)
+          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom set based on facing direction
+          rem Mutates: temp2 (facing direction), hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CalculateAttackHitbox, FacingRight, FacingLeft, FacingUp, FacingDown
           rem Use temporary variable to avoid compiler bug with array indexing
           rem   in on statement
           dim CAH_facing = temp2
@@ -137,6 +189,11 @@ MeleeHitbox
           
 FacingRight
           rem Hitbox extends 16 pixels forward from sprite right edge
+          rem Input: CAH_attackerID_calc, playerX[], playerY[] (from MeleeHitbox)
+          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom set for right-facing attack
+          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CalculateAttackHitbox, MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
           rem Hitbox: [playerX+16, playerX+32] x [playerY, playerY+16]
@@ -148,6 +205,11 @@ FacingRight
           
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
+          rem Input: CAH_attackerID_calc, playerX[], playerY[] (from MeleeHitbox)
+          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom set for left-facing attack
+          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CalculateAttackHitbox, MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
           rem Hitbox: [playerX-16, playerX] x [playerY, playerY+16]
@@ -159,6 +221,11 @@ FacingLeft
           
 FacingUp
           rem Hitbox extends 16 pixels upward from sprite top edge
+          rem Input: CAH_attackerID_calc, playerX[], playerY[] (from MeleeHitbox)
+          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom set for up-facing attack
+          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CalculateAttackHitbox, MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
           rem Hitbox: [playerX, playerX+16] x [playerY-16, playerY]
@@ -170,6 +237,11 @@ FacingUp
           
 FacingDown
           rem Hitbox extends 16 pixels downward from sprite bottom edge
+          rem Input: CAH_attackerID_calc, playerX[], playerY[] (from MeleeHitbox)
+          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom set for down-facing attack
+          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CalculateAttackHitbox, MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
           rem Hitbox: [playerX, playerX+16] x [playerY+16, playerY+32]
@@ -180,8 +252,12 @@ FacingDown
           return
           
 ProjectileHitbox
-          rem Projectile hitbox is at current missile position (to be
-          rem   implemented)
+          rem Projectile hitbox is at current missile position (to be implemented)
+          rem Input: None (placeholder)
+          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom set to 0 (placeholder)
+          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom (set to 0)
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CalculateAttackHitbox
           let hitboxLeft = 0
           let hitboxRight = 0
           let hitboxTop = 0
@@ -189,8 +265,12 @@ ProjectileHitbox
           return
           
 AreaHitbox
-          rem Area hitbox covers radius around attacker (to be
-          rem   implemented)
+          rem Area hitbox covers radius around attacker (to be implemented)
+          rem Input: None (placeholder)
+          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom set to 0 (placeholder)
+          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom (set to 0)
+          rem Called Routines: None
+          rem Constraints: Must be colocated with CalculateAttackHitbox
           let hitboxLeft = 0
           let hitboxRight = 0
           let hitboxTop = 0
@@ -249,14 +329,6 @@ NextAttacker
 CombatShowDamageIndicator
           rem Visual feedback now handled inline in damage calculation
           return
-
-PlayDamageSound
-          dim PDS_soundId = temp1
-          let PDS_soundId = SoundAttackHit
-          gosub PlaySoundEffect bank15
-          return
-
-
 
 PlayDamageSound
           dim PDS_soundId = temp1

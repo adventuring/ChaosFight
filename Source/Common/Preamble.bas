@@ -17,11 +17,10 @@
           rem   pf0-pf2, etc.
           rem - Our variables: gameState, playerX, selectedChar1, etc.
 
-          rem Include assembly configuration constants BEFORE includesfile
-          rem This ensures bankswitch constant is defined before header checks
-          rem These are BASIC constants, so include outside asm block (C preprocessor will expand)
-
-#include "Source/Common/AssemblyConfig.s"
+          rem batariBASIC automatically defines constants like bankswitch, multisprite,
+          rem superchip, etc. based on 'set kernel' and 'set romsize' commands below.
+          rem These constants are written to 2600basic_variable_redefs.h which is
+          rem included by multispritesuperchipheader.asm before the ifconst bankswitch check.
 
           includesfile multisprite_superchip.inc
 

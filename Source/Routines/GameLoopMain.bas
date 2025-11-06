@@ -37,7 +37,7 @@ GameMainLoop
           rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank9),
           rem   CheckBoundaryCollisions (bank9), CheckPlayfieldCollisionAllDirections (bank9),
           rem   CheckAllPlayerCollisions (bank9), CheckAllPlayerEliminations,
-          rem   UpdateAttackCooldowns (bank7), UpdateAllMissiles (bank7),
+          rem   UpdateAllMissiles (bank7),
           rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank8),
           rem   DisplayHealth (bank8), UpdatePlayer12HealthBars (bank8),
           rem   UpdatePlayer34HealthBars (bank8), UpdateSoundEffect (bank15)
@@ -98,6 +98,9 @@ GameMainLoopQuadtariSkip
           rem Check for player eliminations
           gosub CheckAllPlayerEliminations
           
+          rem Update missiles (in Bank 7)
+          gosub UpdateAllMissiles bank7
+          
           rem Check if game should end and transition to winner screen
           rem   ending,
           rem systemFlags bit 3 (SystemFlagGameStateEnding) means game is
@@ -134,9 +137,6 @@ GameEndCheckDone
           rem Mutates: None
           rem Called Routines: None
           rem Constraints: Must be colocated with GameMainLoop
-
-          rem Update attack cooldowns (in Bank 7)
-          gosub UpdateAttackCooldowns bank7
 
           rem Update missiles (in Bank 7)
           gosub UpdateAllMissiles bank7

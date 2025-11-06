@@ -70,14 +70,15 @@ CheckBoundaryCollisions
           rem CHECK PLAYFIELD COLLISION ALL DIRECTIONS
           rem ==========================================================
           rem Checks for playfield pixel collisions in all four
-          rem   directions and
-          rem blocks movement by zeroing velocity in the collision
-          rem   direction.
+          rem   directions and blocks movement by zeroing velocity.
           rem Uses CharacterHeights table for proper hitbox detection.
           rem
           rem INPUT: currentPlayer = player index (0-3) (global variable)
           rem MODIFIES: playerVelocityX/Y and playerSubpixelX/Y when
           rem   collisions detected
+          rem
+          rem Split into horizontal and vertical checks to avoid bank
+          rem   boundary issues with local labels
 CheckPlayfieldCollisionAllDirections
           rem Get player position and character info
           let temp2 = playerX[currentPlayer]
@@ -114,23 +115,30 @@ end
           rem Check for wraparound: if division resulted in value ≥ 128 (negative), clamp to 0
           if playfieldRow & $80 then let playfieldRow = 0
           
+          rem Check horizontal collisions (left/right)
+          gosub CheckPlayfieldCollisionHorizontal
+          
+          rem Check vertical collisions (up/down)
+          gosub CheckPlayfieldCollisionVertical
+          
+          return
+          
           rem ==========================================================
-          rem CHECK LEFT COLLISION
+          rem CHECK HORIZONTAL COLLISIONS (LEFT/RIGHT)
           rem ==========================================================
-          rem Check if player left edge (temp6 column) has a playfield pixel
-          rem Check at player head, middle, and feet positions
-          rem Skip if at left edge (temp6 is 0-31, so <= 0 means exactly 0)
-          if temp6 = 0 then goto PFCheckRight
+CheckPlayfieldCollisionHorizontal
+          rem Check left collision
+          if temp6 = 0 then goto PFH_CheckRight
           rem At left edge of screen, skip check
           
           let playfieldColumn = temp6 - 1
           rem Column to the left (playfieldColumn)
           rem Check for wraparound: if temp6 was 0, playfieldColumn wraps to 255 (≥ 128)
-          if playfieldColumn & $80 then goto PFCheckRight
+          if playfieldColumn & $80 then goto PFH_CheckRight
           rem Out of bounds, skip
           
           rem Check head position (top of sprite)
-          if pfread(playfieldColumn, playfieldRow) then goto PFBlockLeft
+          if pfread(playfieldColumn, playfieldRow) then goto PFH_BlockLeft
           rem Check middle position
           rem Calculate (temp5 / 2) / pfrowheight
           asm
@@ -142,19 +150,19 @@ end
           gosub DivideByPfrowheight
           rem temp2 = (temp5 / 2) / pfrowheight
           let rowCounter = playfieldRow + temp2
-          if rowCounter >= pfrows then goto PFCheckRight
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockLeft
+          if rowCounter >= pfrows then goto PFH_CheckRight
+          if pfread(playfieldColumn, rowCounter) then goto PFH_BlockLeft
           rem Check feet position (bottom of sprite)
           let temp2 = temp5
           gosub DivideByPfrowheight
           rem temp2 = temp5 / pfrowheight
           let rowCounter = playfieldRow + temp2
-          if rowCounter >= pfrows then goto PFCheckRight
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockLeft
+          if rowCounter >= pfrows then goto PFH_CheckRight
+          if pfread(playfieldColumn, rowCounter) then goto PFH_BlockLeft
           
-          goto PFCheckRight
+          goto PFH_CheckRight
           
-PFBlockLeft
+PFH_BlockLeft
           rem Block leftward movement: zero X velocity if negative
           rem Check for negative velocity using twos complement (values ≥ 128 are negative)
           if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
@@ -174,24 +182,22 @@ end
           if playerX[currentPlayer] < rowYPosition then let playerX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] < rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] < rowYPosition then let playerSubpixelXL[currentPlayer] = 0
+          return
           
-          rem ==========================================================
-          rem CHECK RIGHT COLLISION
-          rem ==========================================================
-PFCheckRight
+PFH_CheckRight
           rem Check if player right edge has a playfield pixel
           rem Player width is 16 pixels (double-width NUSIZ), so right
           rem   edge is at temp6 + 4 columns (16px / 4px per column = 4)
-          if temp6 >= 31 then goto PFCheckUp
+          if temp6 >= 31 then return
           rem At right edge of screen, skip check
           
           let playfieldColumn = temp6 + 4
           rem Column to the right of player right edge (playfieldColumn)
-          if playfieldColumn > 31 then goto PFCheckUp
+          if playfieldColumn > 31 then return
           rem Out of bounds, skip
           
           rem Check head, middle, and feet positions
-          if pfread(playfieldColumn, playfieldRow) then goto PFBlockRight
+          if pfread(playfieldColumn, playfieldRow) then goto PFH_BlockRight
           rem Calculate (temp5 / 2) / pfrowheight
           asm
             lda temp5
@@ -202,18 +208,18 @@ end
           gosub DivideByPfrowheight
           rem temp2 = (temp5 / 2) / pfrowheight
           let rowCounter = playfieldRow + temp2
-          if rowCounter >= pfrows then goto PFCheckUp
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockRight
+          if rowCounter >= pfrows then return
+          if pfread(playfieldColumn, rowCounter) then goto PFH_BlockRight
           let temp2 = temp5
           gosub DivideByPfrowheight
           rem temp2 = temp5 / pfrowheight
           let rowCounter = playfieldRow + temp2
-          if rowCounter >= pfrows then goto PFCheckUp
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockRight
+          if rowCounter >= pfrows then return
+          if pfread(playfieldColumn, rowCounter) then goto PFH_BlockRight
           
-          goto PFCheckUp
+          return
           
-PFBlockRight
+PFH_BlockRight
           rem Block rightward movement: zero X velocity if positive
           if playerVelocityX[currentPlayer] > 0 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
@@ -232,44 +238,44 @@ end
           if playerX[currentPlayer] > rowYPosition then let playerX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] > rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] > rowYPosition then let playerSubpixelXL[currentPlayer] = 0
+          return
           
           rem ==========================================================
-          rem CHECK UP COLLISION
+          rem CHECK VERTICAL COLLISIONS (UP/DOWN)
           rem ==========================================================
-PFCheckUp
-          rem Check if player head has a playfield pixel above
-          if playfieldRow = 0 then goto PFCheckDown
+CheckPlayfieldCollisionVertical
+          rem Check up collision
+          if playfieldRow = 0 then goto PFV_CheckDown
           rem At top of screen, skip check
           
           let rowCounter = playfieldRow - 1
           rem Row above player head (rowCounter)
           rem Check for wraparound: if playfieldRow was 0, rowCounter wraps to 255 (≥ 128)
-          if rowCounter & $80 then goto PFCheckDown
+          if rowCounter & $80 then goto PFV_CheckDown
           
           rem Check center column (temp6)
-          if pfread(temp6, rowCounter) then goto PFBlockUp
+          if pfread(temp6, rowCounter) then goto PFV_BlockUp
           rem Check left edge column
-          if temp6 = 0 then goto PFCheckUp_CheckRight
+          if temp6 = 0 then goto PFV_CheckUp_CheckRight
           let playfieldColumn = temp6 - 1
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockUp
-PFCheckUp_CheckRight
+          if pfread(playfieldColumn, rowCounter) then goto PFV_BlockUp
+PFV_CheckUp_CheckRight
           rem Check right edge column
-          if temp6 >= 31 then goto PFCheckDown
+          if temp6 >= 31 then goto PFV_CheckDown
           let playfieldColumn = temp6 + 1
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockUp
+          if pfread(playfieldColumn, rowCounter) then goto PFV_BlockUp
           
-          goto PFCheckDown
+          goto PFV_CheckDown
           
-PFBlockUp
+PFV_BlockUp
           rem Block upward movement: zero Y velocity if negative
-          rem   ≥ 128 are negative)
-          rem Check for negative velocity using twos complement (values
+          rem Check for negative velocity using twos complement (values ≥ 128 are negative)
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
           let rowYPosition = playfieldRow + 1
           rem Check if pfrowheight is 8 or 16
-          if pfrowheight = 8 then goto DBPF_MultiplyBy8
+          if pfrowheight = 8 then goto PFV_MultiplyBy8
           rem pfrowheight is 16, multiply by 16 (4 left shifts)
           asm
             lda rowYPosition
@@ -279,8 +285,8 @@ PFBlockUp
             asl a
             sta rowYPosition
 end
-          goto DBPF_MultiplyDone
-DBPF_MultiplyBy8
+          goto PFV_MultiplyDone
+PFV_MultiplyBy8
           rem pfrowheight is 8, multiply by 8 (3 left shifts)
           asm
             lda rowYPosition
@@ -289,16 +295,12 @@ DBPF_MultiplyBy8
             asl a
             sta rowYPosition
 end
-DBPF_MultiplyDone
+PFV_MultiplyDone
           if playerY[currentPlayer] < rowYPosition then let playerY[currentPlayer] = rowYPosition
           if playerY[currentPlayer] < rowYPosition then let playerSubpixelY[currentPlayer] = rowYPosition
           if playerY[currentPlayer] < rowYPosition then let playerSubpixelYL[currentPlayer] = 0
           
-          rem ==========================================================
-          rem CHECK DOWN COLLISION (GROUND - already handled in gravity,
-          rem   but verify)
-          rem ==========================================================
-PFCheckDown
+PFV_CheckDown
           rem Check if player feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we
           rem   verify here
@@ -306,32 +308,30 @@ PFCheckDown
           gosub DivideByPfrowheight
           let rowCounter = playfieldRow + temp2
           rem Row at player feet (rowCounter)
-          if rowCounter >= pfrows then goto PFCheckDone
+          if rowCounter >= pfrows then return
           
           let playfieldRow = rowCounter + 1
           rem Row below feet (playfieldRow - temporarily reuse for this
           rem   check)
-          if playfieldRow >= pfrows then goto PFCheckDone
+          if playfieldRow >= pfrows then return
           
           rem Check center, left, and right columns below feet
-          if pfread(temp6, playfieldRow) then goto PFBlockDown
-          if temp6 = 0 then goto PFCheckDown_CheckRight
+          if pfread(temp6, playfieldRow) then goto PFV_BlockDown
+          if temp6 = 0 then goto PFV_CheckDown_CheckRight
           let playfieldColumn = temp6 - 1
-          if pfread(playfieldColumn, playfieldRow) then goto PFBlockDown
-PFCheckDown_CheckRight
-          if temp6 >= 31 then goto PFCheckDone
+          if pfread(playfieldColumn, playfieldRow) then goto PFV_BlockDown
+PFV_CheckDown_CheckRight
+          if temp6 >= 31 then return
           let playfieldColumn = temp6 + 1
-          if pfread(playfieldColumn, playfieldRow) then goto PFBlockDown
+          if pfread(playfieldColumn, playfieldRow) then goto PFV_BlockDown
           
-          goto PFCheckDone
+          return
           
-PFBlockDown
+PFV_BlockDown
           rem Block downward movement: zero Y velocity if positive
           rem This should already be handled in PhysicsApplyGravity, but
           rem   enforce here too
           if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
-          
-PFCheckDone
           return
 
           rem ==========================================================

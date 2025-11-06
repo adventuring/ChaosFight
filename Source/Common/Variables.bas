@@ -177,16 +177,17 @@
           dim selectedChar1 = s
           rem selectedChar2, selectedChar3, and selectedChar4 moved to
           rem   SuperChip RAM to avoid conflicts
-          rem NOTE: missileY uses w000-w003 in Game Mode, but
-          rem   selectedChar2 is COMMON (both modes)
-          rem Using w003 is safe since missileY[3] (w003) is only used
-          rem   in Game Mode
-          dim selectedChar2_W = w003
-          dim selectedChar2_R = r003
-          dim selectedChar3_W = w001
-          dim selectedChar3_R = r001
-          dim selectedChar4_W = w002
-          dim selectedChar4_R = r002
+          rem OPTIMIZED: Moved from w001-w003 to w084-w086 to free space
+          rem   for PlayerFrameBuffer (w000-w063)
+          rem NOTE: These are REDIMMED with Admin Mode char select anim
+          rem   variables - safe since selectedChar* are only read once at
+          rem   game start (BeginGameLoop), then copied to PlayerChar array
+          dim selectedChar2_W = w084
+          dim selectedChar2_R = r084
+          dim selectedChar3_W = w085
+          dim selectedChar3_R = r085
+          dim selectedChar4_W = w086
+          dim selectedChar4_R = r086
           rem ==========================================================
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
@@ -194,8 +195,10 @@
           
           rem Console switch handling (used in both Admin Mode and Game
           rem   Mode)
-          dim colorBWPrevious_W = w008
-          dim colorBWPrevious_R = r008
+          rem OPTIMIZED: Moved from w008 to w012 to free space for
+          rem   PlayerFrameBuffer (w000-w063)
+          dim colorBWPrevious_W = w012
+          dim colorBWPrevious_R = r012
           
           rem Arena selection (COMMON - used in both Admin and Game
           rem   Mode)
@@ -272,55 +275,63 @@
           rem ==========================================================
           
           rem Music System Frame Counters (SCRAM - used in Admin Mode)
-          dim musicVoice0Frame_W = w020
-          dim musicVoice0Frame_R = r020
+          rem OPTIMIZED: Moved from w020-w021 to w064-w065 to free space
+          rem   for PlayerFrameBuffer (w000-w063)
+          rem NOTE: Overlaps with Game Mode playerSubpixelX - safe since
+          rem   Admin and Game Mode never run simultaneously
+          dim musicVoice0Frame_W = w064
+          dim musicVoice0Frame_R = r064
           dim musicVoice0Frame = musicVoice0Frame_W
-          dim musicVoice1Frame_W = w021
-          dim musicVoice1Frame_R = r021
+          dim musicVoice1Frame_W = w065
+          dim musicVoice1Frame_R = r065
           dim musicVoice1Frame = musicVoice1Frame_W
           rem Frame counters for current notes on each voice (SCRAM
           rem   acceptable)
           
           rem Music System Current Song ID and Loop Pointers (SCRAM -
           rem   used in Admin Mode)
-          dim currentSongID_W = w022
-          dim currentSongID_R = r022
-          rem NOTE: w022 now free for currentSongID (SoundEffectFrame
-          rem   moved to w046)
+          rem OPTIMIZED: Moved from w022 to w066 to free space for
+          rem   PlayerFrameBuffer (w000-w063)
+          dim currentSongID_W = w066
+          dim currentSongID_R = r066
           rem Current playing song ID (used to check if Chaotica for
           rem   looping)
-          dim musicVoice0StartPointerL_W = w033
-          dim musicVoice0StartPointerL_R = r033
+          dim musicVoice0StartPointerL_W = w067
+          dim musicVoice0StartPointerL_R = r067
           dim musicVoice0StartPointerL = musicVoice0StartPointerL_W
-          dim musicVoice0StartPointerH_W = w034
-          dim musicVoice0StartPointerH_R = r034
+          dim musicVoice0StartPointerH_W = w068
+          dim musicVoice0StartPointerH_R = r068
           dim musicVoice0StartPointerH = musicVoice0StartPointerH_W
           rem Initial Voice 0 pointer for looping (Chaotica only)
-          dim musicVoice1StartPointerL_W = w035
-          dim musicVoice1StartPointerL_R = r035
+          dim musicVoice1StartPointerL_W = w069
+          dim musicVoice1StartPointerL_R = r069
           dim musicVoice1StartPointerL = musicVoice1StartPointerL_W
-          dim musicVoice1StartPointerH_W = w030
-          dim musicVoice1StartPointerH_R = r030
+          dim musicVoice1StartPointerH_W = w070
+          dim musicVoice1StartPointerH_R = r070
           dim musicVoice1StartPointerH = musicVoice1StartPointerH_W
-          rem Moved from w023-w026 to w030/w033-w035 to avoid conflict
-          rem   with harpyLastFlapFrame_W (w023-w026)
+          rem OPTIMIZED: Moved from w030/w033-w035 to w067-w070 to free
+          rem   space for PlayerFrameBuffer
           rem Initial Voice 1 pointer for looping (Chaotica only)
           
           rem Music System Envelope State (SCRAM - used in Admin Mode)
-          dim MusicVoice0TargetAUDV_W = w036
-          dim MusicVoice0TargetAUDV_R = r036
+          rem OPTIMIZED: Moved from w036-w039 to w071-w074 to free space
+          rem   for PlayerFrameBuffer (w000-w063)
+          rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
+          rem   Admin and Game Mode never run simultaneously
+          dim MusicVoice0TargetAUDV_W = w071
+          dim MusicVoice0TargetAUDV_R = r071
           rem Target AUDV value from note data (for envelope
           rem   calculation)
-          dim MusicVoice1TargetAUDV_W = w037
-          dim MusicVoice1TargetAUDV_R = r037
+          dim MusicVoice1TargetAUDV_W = w072
+          dim MusicVoice1TargetAUDV_R = r072
           rem Target AUDV value from note data (for envelope
           rem   calculation)
-          dim MusicVoice0TotalFrames_W = w038
-          dim MusicVoice0TotalFrames_R = r038
+          dim MusicVoice0TotalFrames_W = w073
+          dim MusicVoice0TotalFrames_R = r073
           rem Total frames (Duration + Delay) when note was loaded (for
           rem   envelope calculation)
-          dim MusicVoice1TotalFrames_W = w039
-          dim MusicVoice1TotalFrames_R = r039
+          dim MusicVoice1TotalFrames_W = w074
+          dim MusicVoice1TotalFrames_R = r074
           rem Total frames (Duration + Delay) when note was loaded (for
           rem   envelope calculation)
           
@@ -545,10 +556,14 @@
           rem playerSubpixelX[0-3] = 8.8 fixed-point X position
           rem Updated every frame but accessed less frequently than
           rem   velocity, so SCRAM is acceptable
-          dim playerSubpixelX_W = w049.8.8
-          dim playerSubpixelX_R = r049.8.8
+          rem OPTIMIZED: Moved from w049-w056 to w064-w071 to free space
+          rem   for PlayerFrameBuffer (w000-w063)
+          rem NOTE: Overlaps with Admin Mode music variables (w064-w079) -
+          rem   safe since Admin and Game Mode never run simultaneously
+          dim playerSubpixelX_W = w064.8.8
+          dim playerSubpixelX_R = r064.8.8
           rem Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM
-          rem   w049-w056 (write), r049-r056 (read)
+          rem   w064-w071 (write), r064-r071 (read)
           rem Array accessible as playerSubpixelX_W[0-3] and
           rem   playerSubpixelX_WL[0-3] (write ports)
           rem Array accessible as playerSubpixelX_R[0-3] and
@@ -558,10 +573,14 @@
           dim playerSubpixelXL = playerSubpixelX_WL
           
           rem playerSubpixelY[0-3] = 8.8 fixed-point Y position
-          dim playerSubpixelY_W = w057.8.8
-          dim playerSubpixelY_R = r057.8.8
+          rem OPTIMIZED: Moved from w057-w064 to w072-w079 to free space
+          rem   for PlayerFrameBuffer (w000-w063)
+          rem NOTE: Overlaps with Admin Mode music variables (w064-w079) -
+          rem   safe since Admin and Game Mode never run simultaneously
+          dim playerSubpixelY_W = w072.8.8
+          dim playerSubpixelY_R = r072.8.8
           rem Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM
-          rem   w057-w064 (write), r057-r064 (read)
+          rem   w072-w079 (write), r072-r079 (read)
           rem Array accessible as playerSubpixelY_W[0-3] and
           rem   playerSubpixelY_WL[0-3] (write ports)
           rem Array accessible as playerSubpixelY_R[0-3] and
@@ -700,14 +719,29 @@
           rem   numerically
           rem ==========================================================
           
+          rem PlayerFrameBuffer (64-byte contiguous block for sprite
+          rem   rendering)
+          rem OPTIMIZED: Allocated at w000-w063 (64 bytes) after moving
+          rem   variables to higher addresses
+          rem This block is used for buffering player sprite data during
+          rem   rendering operations
+          rem Physical addresses: $F000-$F03F (write ports), $F080-$F0BF
+          rem   (read ports)
+          dim PlayerFrameBuffer_W = w000
+          dim PlayerFrameBuffer_R = r000
+          dim PlayerFrameBuffer = PlayerFrameBuffer_W
+          rem 64-byte buffer for player frame data (w000-w063)
+          rem Array accessible as PlayerFrameBuffer[0] through
+          rem   PlayerFrameBuffer[63]
+          
           rem Game Mode: Missile Y positions [0-3] - using SCRAM
           rem   (SuperChip RAM)
-          rem Stored in w000-w003 for players 1-4
-          rem Using SCRAM allows all 4 missile Y positions
-          dim missileY_W = w000
-          dim missileY_R = r000
+          rem OPTIMIZED: Moved to w017-w020 to free w000-w063 for
+          rem   PlayerFrameBuffer
+          dim missileY_W = w017
+          dim missileY_R = r017
           rem NOTE: batariBASIC uses array syntax - missileY[0] =
-          rem   w000/r000, missileY[1] = w001/r001, etc.
+          rem   w017/r017, missileY[1] = w018/r018, etc.
           rem NOTE: Must use missileY_R for reads and missileY_W for
           rem   writes to avoid RMW issues
 
@@ -715,10 +749,12 @@
           rem   cooldowns and other timers
           rem SCRAM allocated since var44-var47 already used by
           rem   playerAttackCooldown
-          dim playerTimers_W = w004
-          dim playerTimers_R = r004
+          rem OPTIMIZED: Moved from w004-w007 to w013-w016 to free space
+          rem   for PlayerFrameBuffer (w000-w063)
+          dim playerTimers_W = w013
+          dim playerTimers_R = r013
           dim playerTimers = playerTimers_W
-          rem Game Mode: Player timers array (4 bytes) - SCRAM w004-w007
+          rem Game Mode: Player timers array (4 bytes) - SCRAM w013-w016
           rem Array accessible as playerTimers[0] through
           rem   playerTimers[3]
 
@@ -810,8 +846,12 @@
           
           rem ADMIN: Random character selection flags (SCRAM - used in
           rem   character select)
-          dim randomSelectFlags_W = w027
-          dim randomSelectFlags_R = r027
+          rem OPTIMIZED: Moved from w027 to w075 to free space for
+          rem   PlayerFrameBuffer (w000-w063)
+          rem NOTE: Overlaps with Game Mode variables - safe since Admin
+          rem   and Game Mode never run simultaneously
+          dim randomSelectFlags_W = w075
+          dim randomSelectFlags_R = r075
           rem Bit 7 = handicap flag (1 if down+fire was held), bits 0-6
           rem   unused
           rem Array accessible as randomSelectFlags[0] through
@@ -819,8 +859,12 @@
           
           rem ADMIN: Character select animation frame counters (SCRAM -
           rem   used in character select)
-          dim charSelectPlayerAnimFrame_W = w028
-          dim charSelectPlayerAnimFrame_R = r028
+          rem OPTIMIZED: Moved from w028-w031 to w076-w079 to free space
+          rem   for PlayerFrameBuffer (w000-w063)
+          rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
+          rem   Admin and Game Mode never run simultaneously
+          dim charSelectPlayerAnimFrame_W = w076
+          dim charSelectPlayerAnimFrame_R = r076
           rem Frame counters for idle/walk animation cycles in character
           rem   select
           rem Array accessible as charSelectPlayerAnimFrame[0] through
@@ -828,8 +872,15 @@
           
           rem ADMIN: Character select animation sequence flags (SCRAM -
           rem   used in character select)
-          dim charSelectPlayerAnimSeq_W = w032
-          dim charSelectPlayerAnimSeq_R = r032
+          rem OPTIMIZED: Moved from w032-w035 to w080-w083 to free space
+          rem   for PlayerFrameBuffer (w000-w063)
+          rem NOTE: Overlaps with Game Mode variables - safe since Admin
+          rem   and Game Mode never run simultaneously
+          rem NOTE: Also REDIMMED with selectedChar2/3/4 (w084-w086) -
+          rem   selectedChar* are read once at game start before Admin
+          rem   charSelect anim runs again, so safe overlap
+          dim charSelectPlayerAnimSeq_W = w080
+          dim charSelectPlayerAnimSeq_R = r080
           rem Bit 0: 0=idle, 1=walk. Toggles every 60 frames
           rem Array accessible as charSelectPlayerAnimSeq[0] through
           rem   charSelectPlayerAnimSeq[3]

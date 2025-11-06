@@ -77,15 +77,17 @@ MegaxAttack
 HarpyAttack
           dim HA_playerIndex = temp1
           dim HA_facing = temp2
-          dim HA_velocityX = temp2
+          dim HA_velocityX = temp4
           dim HA_velocityY = temp3
+          dim HA_stateFlags = temp5
           
           rem Set attack animation state
-          let playerState[HA_playerIndex] = (playerState[HA_playerIndex] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
+          rem Use temp1 directly for indexed addressing (batariBASIC does not resolve dim aliases)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           
           rem Get facing direction (bit 0: 0=left, 1=right)
-          let HA_facing = playerState[HA_playerIndex] & PlayerStateBitFacing
+          let HA_facing = playerState[temp1] & PlayerStateBitFacing
           
           rem Set diagonal velocity at 45° angle (4 pixels/frame
           rem   horizontal, 4 pixels/frame vertical)
@@ -104,15 +106,17 @@ HarpySetVerticalVelocity
           
           rem Set player velocity for diagonal swoop (45° angle:
           rem   4px/frame X, 4px/frame Y) - inlined for performance
-          let playerVelocityX[HA_playerIndex] = HA_velocityX
-          let playerVelocityXL[HA_playerIndex] = 0
-          let playerVelocityY[HA_playerIndex] = HA_velocityY
-          let playerVelocityYL[HA_playerIndex] = 0
+          rem Use temp1 directly for indexed addressing (batariBASIC does not resolve dim aliases)
+          let playerVelocityX[temp1] = HA_velocityX
+          let playerVelocityXL[temp1] = 0
+          let playerVelocityY[temp1] = HA_velocityY
+          let playerVelocityYL[temp1] = 0
           
           rem Set jumping state so character can move vertically during
           rem   swoop
           rem This allows vertical movement without being on ground
-          let playerState[HA_playerIndex] = playerState[HA_playerIndex] | 4
+          rem Use temp1 directly for indexed addressing (batariBASIC does not resolve dim aliases)
+          let playerState[temp1] = playerState[temp1] | 4
           rem Set bit 2 (jumping flag)
           
           rem Set swoop attack flag for collision detection
@@ -121,8 +125,9 @@ HarpySetVerticalVelocity
           rem Collision system will check for hits below character
           rem   during swoop
           rem Fix RMW: Read from _R, modify, write to _W
-          let HA_stateFlags = characterStateFlags_R[HA_playerIndex] | 4
-          let characterStateFlags_W[HA_playerIndex] = HA_stateFlags
+          rem Use temp1 directly for indexed addressing (batariBASIC does not resolve dim aliases)
+          let HA_stateFlags = characterStateFlags_R[temp1] | 4
+          let characterStateFlags_W[temp1] = HA_stateFlags
           
           rem Attack behavior:
           rem - Character moves diagonally down at 45° (4px/frame X,

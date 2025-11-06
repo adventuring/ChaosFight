@@ -264,7 +264,8 @@ SelSkipQuadChkInline
           rem Draw character selection screen
           gosub SelDrawScreen
 
-          drawscreen
+          rem drawscreen called by MainLoop
+          return
           goto SelScreenLoop
 
 

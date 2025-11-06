@@ -12,8 +12,6 @@
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/TitleScreenMain.bas"
 #include "Source/Routines/BeginAttractMode.bas"
-
-#include "Source/Data/SpecialSprites.bas"
           
           rem Special movement routines moved from Bank 11
 #include "Source/Routines/SpecialMovement.bas"
@@ -21,9 +19,9 @@
           rem Physics collision detection moved from Bank 8
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 
-          rem Titlescreen kernel is included in Bank 1 (minikernel for
-          rem   multisprite)
+          rem Titlescreen kernel is included in Bank 14 (minikernel for
+          rem   multisprite, same bank as MainLoop and drawscreen)
           rem The title screen routines in this bank call it via gosub
-          rem   titledrawscreen bank1
+          rem   titledrawscreen bank14
 
 

@@ -18,7 +18,7 @@
           rem Character art lookup routines for Bank 4 (characters
           rem   16-23)
           asm
-#include "Source/Routines/CharacterArtBank4.s"
+#include "Routines/CharacterArtBank4.s"
 end
 
           rem Define _length constants using label subtraction after data

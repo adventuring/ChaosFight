@@ -195,3 +195,29 @@ LoadMusicNote1EndOfTrack
           let musicVoice1PointerH = 0
           AUDV1 = 0
           return
+
+          rem   UpdateMusicVoice1)
+          AUDC1 = LMN1_audc
+          AUDF1 = LMN1_audf
+          AUDV1 = LMN1_audv
+          
+          rem Set frame counter = Duration + Delay
+          let musicVoice1Frame_W = LMN1_duration + LMN1_delay
+          
+          rem Advance pointer by 4 bytes
+          rem Reuse temp2 (LMN1_audcv no longer needed) for pointer
+          rem   calculation
+          let temp2 = musicVoice1PointerL
+          let musicVoice1PointerL = temp2 + 4
+          if musicVoice1PointerL < temp2 then let musicVoice1PointerH = musicVoice1PointerH + 1
+          
+          return
+          
+LoadMusicNote1EndOfTrack
+          rem End of track reached - mark voice as inactive (pointerH = 0)
+          rem   (Chaotica
+          rem Loop will be handled in UpdateMusic when both voices end
+          rem   only)
+          let musicVoice1PointerH = 0
+          AUDV1 = 0
+          return

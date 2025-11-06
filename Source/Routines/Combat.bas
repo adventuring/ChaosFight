@@ -256,3 +256,11 @@ PlayDamageSound
           gosub bank15 PlaySoundEffect
           return
 
+
+
+PlayDamageSound
+          dim PDS_soundId = temp1
+          let PDS_soundId = SoundHit
+          gosub bank15 PlaySoundEffect
+          return
+

@@ -14,7 +14,8 @@ WinnerAnnouncementLoop
           
           rem Display win screen and continue loop
           gosub bank12 DisplayWinScreen
-          drawscreen
+          rem drawscreen called by MainLoop
+          return
           goto WinnerAnnouncementLoop
 
 WinnerAdvanceToCharacterSelect

@@ -215,7 +215,8 @@ ArenaSelectConfirm
           goto StartGame1
 ArenaSelectSkipConfirm
           
-          drawscreen
+          rem drawscreen called by MainLoop
+          return
           goto ArenaSelect1Loop
 
 CheckQuadtariFireHold

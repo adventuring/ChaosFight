@@ -3,6 +3,7 @@
 
           bank 6
           
+          
           rem Character selection routines
 #include "Source/Routines/CharacterSelect.bas"
 #include "Source/Routines/CharacterData.bas"

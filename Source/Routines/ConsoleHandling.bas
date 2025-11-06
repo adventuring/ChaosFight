@@ -92,8 +92,7 @@ HandleConsoleSwitches
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
-          rem Debounce - wait for button release
-          drawscreen
+          rem Debounce - wait for button release (drawscreen called by MainLoop)
           return
 DonePlayer1Pause
           
@@ -108,8 +107,7 @@ DonePlayer1Pause
           if !(systemFlags & SystemFlagGameStatePaused) then Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player2PauseDone
-          rem Debounce - wait for button release
-          drawscreen
+          rem Debounce - wait for button release (drawscreen called by MainLoop)
           return
 DonePlayer2Pause
           

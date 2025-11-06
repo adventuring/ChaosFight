@@ -138,42 +138,55 @@ LoadQuestionMarkSprite
           goto LoadQuestionMarkSpriteP3
           
 LoadQuestionMarkSpriteP0
+          rem Copy QuestionMarkSprite data from ROM to RAM buffer (w000-w015)
+          rem Pointers already initialized to RAM addresses by InitializeSpritePointers
           asm
-            lda # <QuestionMarkSprite
-            sta player0pointerlo
-            lda # >QuestionMarkSprite
-            sta player0pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda QuestionMarkSprite,y
+            sta w000,y
+            dey
+            bpl .CopyLoop
+          end
           player0height = 16
           return
           
 LoadQuestionMarkSpriteP1
+          rem Copy QuestionMarkSprite data from ROM to RAM buffer (w016-w031)
           asm
-            lda # <QuestionMarkSprite
-            sta player1pointerlo
-            lda # >QuestionMarkSprite
-            sta player1pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda QuestionMarkSprite,y
+            sta w016,y
+            dey
+            bpl .CopyLoop
+          end
           player1height = 16
           return
           
 LoadQuestionMarkSpriteP2
+          rem Copy QuestionMarkSprite data from ROM to RAM buffer (w032-w047)
           asm
-            lda # <QuestionMarkSprite
-            sta player2pointerlo
-            lda # >QuestionMarkSprite
-            sta player2pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda QuestionMarkSprite,y
+            sta w032,y
+            dey
+            bpl .CopyLoop
+          end
           player2height = 16
           return
           
 LoadQuestionMarkSpriteP3
+          rem Copy QuestionMarkSprite data from ROM to RAM buffer (w048-w063)
           asm
-            lda # <QuestionMarkSprite
-            sta player3pointerlo
-            lda # >QuestionMarkSprite
-            sta player3pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda QuestionMarkSprite,y
+            sta w048,y
+            dey
+            bpl .CopyLoop
+          end
           player3height = 16
           return
           
@@ -187,42 +200,55 @@ LoadCPUSprite
           goto LoadCPUSpriteP3
           
 LoadCPUSpriteP0
+          rem Copy CPUSprite data from ROM to RAM buffer (w000-w015)
+          rem Pointers already initialized to RAM addresses by InitializeSpritePointers
           asm
-            lda # <CPUSprite
-            sta player0pointerlo
-            lda # >CPUSprite
-            sta player0pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda CPUSprite,y
+            sta w000,y
+            dey
+            bpl .CopyLoop
+          end
           player0height = 16
           return
           
 LoadCPUSpriteP1
+          rem Copy CPUSprite data from ROM to RAM buffer (w016-w031)
           asm
-            lda # <CPUSprite
-            sta player1pointerlo
-            lda # >CPUSprite
-            sta player1pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda CPUSprite,y
+            sta w016,y
+            dey
+            bpl .CopyLoop
+          end
           player1height = 16
           return
           
 LoadCPUSpriteP2
+          rem Copy CPUSprite data from ROM to RAM buffer (w032-w047)
           asm
-            lda # <CPUSprite
-            sta player2pointerlo
-            lda # >CPUSprite
-            sta player2pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda CPUSprite,y
+            sta w032,y
+            dey
+            bpl .CopyLoop
+          end
           player2height = 16
           return
           
 LoadCPUSpriteP3
+          rem Copy CPUSprite data from ROM to RAM buffer (w048-w063)
           asm
-            lda # <CPUSprite
-            sta player3pointerlo
-            lda # >CPUSprite
-            sta player3pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda CPUSprite,y
+            sta w048,y
+            dey
+            bpl .CopyLoop
+          end
           player3height = 16
           return
           
@@ -236,42 +262,55 @@ LoadNoSprite
           goto LoadNoSpriteP3
           
 LoadNoSpriteP0
+          rem Copy NoSprite data from ROM to RAM buffer (w000-w015)
+          rem Pointers already initialized to RAM addresses by InitializeSpritePointers
           asm
-            lda # <NoSprite
-            sta player0pointerlo
-            lda # >NoSprite
-            sta player0pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda NoSprite,y
+            sta w000,y
+            dey
+            bpl .CopyLoop
+          end
           player0height = 16
           return
           
 LoadNoSpriteP1
+          rem Copy NoSprite data from ROM to RAM buffer (w016-w031)
           asm
-            lda # <NoSprite
-            sta player1pointerlo
-            lda # >NoSprite
-            sta player1pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda NoSprite,y
+            sta w016,y
+            dey
+            bpl .CopyLoop
+          end
           player1height = 16
           return
           
 LoadNoSpriteP2
+          rem Copy NoSprite data from ROM to RAM buffer (w032-w047)
           asm
-            lda # <NoSprite
-            sta player2pointerlo
-            lda # >NoSprite
-            sta player2pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda NoSprite,y
+            sta w032,y
+            dey
+            bpl .CopyLoop
+          end
           player2height = 16
           return
           
 LoadNoSpriteP3
+          rem Copy NoSprite data from ROM to RAM buffer (w048-w063)
           asm
-            lda # <NoSprite
-            sta player3pointerlo
-            lda # >NoSprite
-            sta player3pointerhi
-end
+            ldy #15
+.CopyLoop:
+            lda NoSprite,y
+            sta w048,y
+            dey
+            bpl .CopyLoop
+          end
           player3height = 16
           return
 

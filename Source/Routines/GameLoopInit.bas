@@ -31,6 +31,10 @@
           rem ==========================================================
 
 BeginGameLoop
+          rem Initialize sprite pointers to RAM addresses
+          rem Ensure pointers are set before loading any sprite data
+          gosub bank10 InitializeSpritePointers
+          
           rem Set screen layout for gameplay (32×8 game layout)
           gosub bank8 SetGameScreenLayout
           rem SuperChip variables var0-var15 available in gameplay

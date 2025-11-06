@@ -310,9 +310,9 @@ SetFallingAnimation
           rem EFFECTS: None (read-only query)
 IsPlayerWalking
           dim IPW_isWalking = temp2
-          let IPW_isWalking = 0
-          if ActionWalking = currentAnimationSeq[currentPlayer] then let IPW_isWalking = 1
-          let temp2 = IPW_isWalking
+          rem Use temp2 directly to avoid batariBASIC alias resolution issues
+          let temp2 = 0
+          if ActionWalking = currentAnimationSeq[currentPlayer] then let temp2 = 1
           return
 
           rem Check if player is in attack animation
@@ -346,14 +346,14 @@ IsPlayerHit
           rem EFFECTS: None (read-only query)
 IsPlayerJumping
           dim IPJ_isJumping = temp2
-          let IPJ_isJumping = 0
+          rem Use temp2 directly to avoid batariBASIC alias resolution issues
+          let temp2 = 0
           if ActionJumping = currentAnimationSeq[currentPlayer] then goto IsJumping
           if ActionFalling = currentAnimationSeq[currentPlayer] then goto IsJumping
           goto NotJumping
 IsJumping
-          let IPJ_isJumping = 1
+          let temp2 = 1
 NotJumping
-          let temp2 = IPJ_isJumping
           return
 
           rem ==========================================================

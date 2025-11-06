@@ -256,7 +256,8 @@ CharacterSelectInputComplete
           rem Draw character selection screen
           gosub SelectDrawScreen
 
-          drawscreen
+          rem drawscreen called by MainLoop
+          return
           return
 
           rem ==========================================================
@@ -912,7 +913,8 @@ DrawNumberDigit
           rem Call DrawDigit with these parameters (DrawPlayerNumber
           rem   expects temp1=digit, temp2=X, temp3=Y, temp4=color,
           rem   temp5=sprite)
-          gosub bank10 DrawDigit
+          rem DrawDigit is in Bank 14 (FontRendering.bas) with MainLoop and drawscreen
+          gosub bank14 DrawDigit
           
 SelectDrawNumberDone
           return
@@ -1076,8 +1078,7 @@ CharacterSelectCheckControllerRescan
 CharacterSelectDoRescan
           rem Re-detect Quadtari via bank6
           gosub bank6 SelDetectQuad
-          rem Debounce - wait for switch release
-          drawscreen
+          rem Debounce - wait for switch release (drawscreen called by MainLoop)
           
 CharacterSelectRescanDone
           return

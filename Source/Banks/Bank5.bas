@@ -18,7 +18,7 @@
           rem Character art lookup routines for Bank 5 (characters
           rem   24-31)
           asm
-#include "Source/Routines/CharacterArtBank5.s"
+#include "Routines/CharacterArtBank5.s"
 end
 
           rem Define _length constants using label subtraction after data

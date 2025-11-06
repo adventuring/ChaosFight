@@ -118,7 +118,8 @@ DonePlayer4Move
           gosub bank11 SetSpritePositions
           gosub bank11 SetPlayerSprites
           
-          drawscreen
+          rem drawscreen called by MainLoop
+          return
           goto FallingAnimation1
           
 FallingComplete1

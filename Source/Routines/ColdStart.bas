@@ -29,7 +29,12 @@ ColdStart
           rem as those registers are used for hardware detection
           gosub bank14 ConsoleDetHW
           
-          rem Step 2: Initialize TIA color registers to safe defaults
+          rem Step 2: Initialize sprite pointers to RAM addresses
+          rem Must be done before any sprite loading to ensure pointers
+          rem   point to SCRAM buffers instead of ROM
+          gosub bank10 InitializeSpritePointers
+          
+          rem Step 3: Initialize TIA color registers to safe defaults
           rem Prevents undefined colors on cold start
           COLUBK = ColGray(0)
           rem Background: black
@@ -40,20 +45,20 @@ ColdStart
           _COLUP1 = ColRed(14)
           rem Player 1: bright red (multisprite kernel requires _COLUP1)
 
-          rem Step 3: Initialize audio channels (silent on cold start)
+          rem Step 4: Initialize audio channels (silent on cold start)
           AUDC0 = 0
           AUDV0 = 0
           AUDC1 = 0
           AUDV1 = 0
           
-          rem Step 4: Initialize game state and transition to first mode
+          rem Step 5: Initialize game state and transition to first mode
           rem Set initial game mode (Publisher Preamble)
           let gameMode = ModePublisherPreamble
           gosub bank14 ChangeGameMode
           rem ChangeGameMode calls SetupPublisherPreamble and sets up
           rem   music
           
-          rem Step 5: Jump to MainLoop (in Bank 14)
+          rem Step 6: Jump to MainLoop (in Bank 14)
           rem MainLoop will handle the game mode dispatch and frame
           rem   rendering
           goto bank14 MainLoop

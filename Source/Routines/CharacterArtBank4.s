@@ -18,14 +18,14 @@
 
 ; Character sprite pointer tables (Bank 4 only)
 ; Low byte pointers for each character base sprite data
-CharacterSpriteLBank4:
-    .byte <Character16Frames, <Character17Frames, <Character18Frames, <Character19Frames
-    .byte <Character20Frames, <Character21Frames, <Character22Frames, <Character23Frames
+CharacterSpriteLBank4
+    BYTE < Character16Frames, < Character17Frames, < Character18Frames, < Character19Frames
+    BYTE < Character20Frames, < Character21Frames, < Character22Frames, < Character23Frames
 
 ; High byte pointers for each character base sprite data  
-CharacterSpriteHBank4:
-    .byte >Character16Frames, >Character17Frames, >Character18Frames, >Character19Frames
-    .byte >Character20Frames, >Character21Frames, >Character22Frames, >Character23Frames
+CharacterSpriteHBank4
+    BYTE > Character16Frames, > Character17Frames, > Character18Frames, > Character19Frames
+    BYTE > Character20Frames, > Character21Frames, > Character22Frames, > Character23Frames
 
 ; =================================================================
 ; CHARACTER ARTWORK LOCATION FUNCTION - BANK 4
@@ -39,7 +39,7 @@ CharacterSpriteHBank4:
 ;         temp5 = sprite data pointer high byte
 ; Modifies: A, X, Y, temp1, temp2, temp4, temp5
 
-LocateCharacterArtBank4:
+LocateCharacterArtBank4
     ; Input: temp6 = bank-relative character index (0-7) - already set by dispatcher
     ;        temp2 = animation frame (0-7) - already set by caller
     ;        temp3 = action (0-15) - already set by caller
@@ -99,72 +99,128 @@ LocateCharacterArtBank4:
 ; =================================================================
 ; SET PLAYER CHARACTER ART - BANK 4
 ; =================================================================
-; Set player sprite to character artwork
+; Copy character sprite data from ROM to RAM and set sprite height
 ; Input: temp1 = character index, temp2 = animation frame (0-7), temp3 = action (0-15)
 ;        temp4 = player number (0-3)
-SetPlayerCharacterArtBank4:
+; Note: Sprite pointers are already initialized to RAM addresses by InitializeSpritePointers
+;       This routine copies sprite data from ROM to the appropriate RAM buffer
+SetPlayerCharacterArtBank4
     SUBROUTINE
     ; Input: temp6 = bank-relative character index (0-7) - already set by dispatcher
     ;        temp2 = animation frame (0-7) - already set by caller
     ;        temp3 = action (0-15) - already set by caller
     ;        temp5 = player number (0-3) - already set by caller
-    jsr LocateCharacterArtBank4
+    ; Save player number before LocateCharacterArtBank4 overwrites temp4/temp5
+    lda temp5           ; Load player number
+    pha                 ; Save on stack
     
-    ; Set appropriate sprite pointer based on game player number (0-3)
-    ; Game player assignments to multisprite kernel sprites:
-    ;   Game Player 0 -> P0 (hardware sprite)
-    ;   Game Player 1 -> P1 (_P1 virtual sprite)
-    ;   Game Player 2 -> P2 (virtual sprite)
-    ;   Game Player 3 -> P3 (virtual sprite)
-    ; Note: temp5 = player number (set by dispatcher from temp4)
-    lda temp5
+    jsr LocateCharacterArtBank4
+    ; After LocateCharacterArtBank4:
+    ;   temp4 = sprite data pointer low byte (ROM address)
+    ;   temp5 = sprite data pointer high byte (ROM address)
+    ;   temp6 is available for use
+    
+    ; Restore player number from stack
+    pla
+    sta temp6           ; Store player number in temp6 (safe to use)
+    
+    ; Copy sprite data from ROM to RAM buffer
+    ; Source: ROM address in temp4/temp5
+    ; Destination depends on player number (now in temp6):
+    ;   Player 0 -> w000-w015 (r000-r015)
+    ;   Player 1 -> w016-w031 (r016-r031)
+    ;   Player 2 -> w032-w047 (r032-r047)
+    ;   Player 3 -> w048-w063 (r048-r063)
+    
+    ; Set up destination pointer based on player number (in temp6)
+    ; Save player number to stack before using it
+    lda temp6           ; Load player number (0-3)
+    pha                 ; Save player number to stack
+    ; Determine destination base address based on player
     cmp #0
-    bne .CheckPlayer1
-    jmp .SetPlayer0Art
-.CheckPlayer1:
+    bne .CheckPlayer1Copy
+    ; Player 0: Copy to w000-w015 (absolute address $F000)
+    jmp .CopyPlayer0
+.CheckPlayer1Copy
     cmp #1
-    bne .CheckPlayer2
-    jmp .SetPlayer1Art
-.CheckPlayer2:
+    bne .CheckPlayer2Copy
+    ; Player 1: Copy to w016-w031 (absolute address $F010)
+    jmp .CopyPlayer1
+.CheckPlayer2Copy
     cmp #2
-    bne .SetPlayer3Art
-    jmp .SetPlayer2Art
-.SetPlayer0Art:
-    ; Game Player 0 -> P0 sprite
-    lda temp4
-    sta player0pointerlo
-    lda temp5  
-    sta player0pointerhi
+    bne .CopyPlayer3
+    ; Player 2: Copy to w032-w047 (absolute address $F020)
+    jmp .CopyPlayer2
+.CopyPlayer3
+    ; Player 3: Copy to w048-w063 (absolute address $F030)
+    jmp .CopyPlayer3Data
+    
+.CopyPlayer0
+    ; Copy 16 bytes from ROM (temp4/temp5) to w000-w015
+    ldy #0
+.CopyLoop0
+    lda (temp4),y       ; Read from ROM (indirect addressing via temp4/temp5)
+    sta w000,y          ; Write to SCRAM (absolute indexed addressing)
+    iny
+    cpy #16
+    bne .CopyLoop0
+    jmp .SetHeight
+    
+.CopyPlayer1
+    ; Copy 16 bytes from ROM (temp4/temp5) to w016-w031
+    ldy #0
+.CopyLoop1
+    lda (temp4),y       ; Read from ROM
+    sta w016,y          ; Write to SCRAM
+    iny
+    cpy #16
+    bne .CopyLoop1
+    jmp .SetHeight
+    
+.CopyPlayer2
+    ; Copy 16 bytes from ROM (temp4/temp5) to w032-w047
+    ldy #0
+.CopyLoop2
+    lda (temp4),y       ; Read from ROM
+    sta w032,y          ; Write to SCRAM
+    iny
+    cpy #16
+    bne .CopyLoop2
+    jmp .SetHeight
+    
+.CopyPlayer3Data
+    ; Copy 16 bytes from ROM (temp4/temp5) to w048-w063
+    ldy #0
+.CopyLoop3
+    lda (temp4),y       ; Read from ROM
+    sta w048,y          ; Write to SCRAM
+    iny
+    cpy #16
+    bne .CopyLoop3
+    
+.SetHeight
+    ; Set sprite height (all sprites are 16 bytes = 16 scanlines)
+    ; Restore player number from stack
+    pla                 ; Restore player number from stack
+    sta temp6           ; Store in temp6 for height setting
+    cmp #0
+    bne .CheckPlayer1Height
     lda #16
     sta player0height
     rts
-    
-.SetPlayer1Art:
-    ; Game Player 1 -> P1 (_P1 virtual sprite)
-    lda temp4
-    sta player1pointerlo
-    lda temp5
-    sta player1pointerhi
+.CheckPlayer1Height
+    cmp #1
+    bne .CheckPlayer2Height
     lda #16
     sta player1height
     rts
-    
-.SetPlayer2Art:
-    ; Game Player 2 -> P2 virtual sprite
-    lda temp4
-    sta player2pointerlo
-    lda temp5
-    sta player2pointerhi
+.CheckPlayer2Height
+    cmp #2
+    bne .SetPlayer3Height
     lda #16
     sta player2height
     rts
-    
-.SetPlayer3Art:
-    ; Game Player 3 -> P3 virtual sprite
-    lda temp4
-    sta player3pointerlo
-    lda temp5
-    sta player3pointerhi
+.SetPlayer3Height
     lda #16
     sta player3height
     rts

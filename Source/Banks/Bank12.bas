@@ -18,8 +18,6 @@
 #include "Source/Routines/DisplayWinScreen.bas"
           rem DisplayWinScreen function for winner screen with fixed
           rem   playfield and 1-3 characters
-#include "Source/Routines/FontRendering.bas"
-          rem Font rendering for arena number display ( 1-32/??)
 #include "Source/Routines/TitlescreenWindowControl.bas"
           rem Titlescreen kernel window control for per-screen bitmap
           rem   display

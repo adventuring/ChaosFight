@@ -424,17 +424,20 @@ BUILD_DEPS = $(ALL_SOURCES) \
 # Step 1: Preprocess .bas → .preprocessed.bas
 # Explicitly depend on character and bitmap PNG files to ensure they are generated
 Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas $(BUILD_DEPS) \
-	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
+	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
+	Source/Generated/Numbers.bas
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
 Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas $(BUILD_DEPS) \
-	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
+	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
+	Source/Generated/Numbers.bas
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 
 Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas $(BUILD_DEPS) \
-	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png)
+	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
+	Source/Generated/Numbers.bas
 	mkdir -p Source/Generated
 	bin/preprocess < $< > $@
 

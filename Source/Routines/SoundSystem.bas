@@ -27,7 +27,7 @@ PlaySoundEffect
           if musicVoice1PointerH then return
           
           rem Lookup sound pointer from Sounds bank (Bank15)
-          gosub bank15 LoadSoundPointer
+          gosub LoadSoundPointer bank15
           
           rem Try Voice 0 first
           if soundEffectPointerH_R then TryVoice1
@@ -77,7 +77,7 @@ UpdateSoundEffectVoice0
           if SS_frameCount then return
           
           rem Frame counter reached 0 - load next note from Sounds bank
-          gosub bank15 LoadSoundNote
+          gosub LoadSoundNote bank15
           rem LoadSoundNote will:
           rem - Load 4-byte note from Sound_Voice0[pointer]: AUDCV,
           rem   AUDF, Duration, Delay
@@ -100,7 +100,7 @@ UpdateSoundEffectVoice1
           if SS_frameCount1 then return
           
           rem Frame counter reached 0 - load next note from Sounds bank
-          gosub bank15 LoadSoundNote1
+          gosub LoadSoundNote1 bank15
           rem LoadSoundNote1 will:
           rem - Load 4-byte note from Sound_Voice0[pointer]: AUDCV,
           rem   AUDF, Duration, Delay

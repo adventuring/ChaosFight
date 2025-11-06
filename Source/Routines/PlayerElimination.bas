@@ -108,7 +108,7 @@ TriggerEliminationEffects
           let TEE_soundId = SoundElimination
           let PSE_soundID = TEE_soundId
           rem PlaySoundEffect expects temp1 (PSE_soundID alias)
-          gosub bank15 PlaySoundEffect
+          gosub PlaySoundEffect bank15
           
           rem Set elimination visual effect timer
           rem This could trigger screen flash, particle effects, etc.

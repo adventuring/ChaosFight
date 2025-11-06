@@ -33,10 +33,10 @@
 BeginGameLoop
           rem Initialize sprite pointers to RAM addresses
           rem Ensure pointers are set before loading any sprite data
-          gosub bank10 InitializeSpritePointers
+          gosub InitializeSpritePointers bank10
           
           rem Set screen layout for gameplay (32×8 game layout)
-          gosub bank8 SetGameScreenLayout
+          gosub SetGameScreenLayout bank8
           rem SuperChip variables var0-var15 available in gameplay
           
           rem Initialize player positions
@@ -84,7 +84,7 @@ InitPositionsDone
           rem   2=handicap (75% health)
           for currentPlayer = 0 to 3
               let GPL_playerIndex = currentPlayer
-              gosub bank14 GetPlayerLocked
+              gosub GetPlayerLocked bank14
               if GPL_lockedState = PlayerLockedHandicap then let PlayerHealth[currentPlayer] = PlayerHealthHandicap
               if GPL_lockedState = PlayerLockedHandicap then goto PlayerHealthSet
               let PlayerHealth[currentPlayer] = PlayerHealthMax
@@ -180,10 +180,10 @@ PlayerHealthSet
           rem Player 3 (Player 4) - multisprite kernel
 
           rem Initialize health bars
-          gosub bank8 InitializeHealthBars
+          gosub InitializeHealthBars bank8
 
           rem Load arena data
-          gosub bank14 LoadArena
+          gosub LoadArena bank14
 
           rem Gameplay state initialized - return to ChangeGameMode
           rem MainLoop will dispatch to GameMainLoop based on gameMode =

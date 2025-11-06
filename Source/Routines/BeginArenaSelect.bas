@@ -24,7 +24,7 @@ BeginArenaSelect
           rem   Select)
           
           rem Set admin screen layout (32×32 for character display)
-          gosub bank8 SetAdminScreenLayout
+          gosub SetAdminScreenLayout bank8
           
           rem Set background color (B&W safe)
           let COLUBK = ColGray(0)

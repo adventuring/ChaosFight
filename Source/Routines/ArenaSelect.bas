@@ -75,7 +75,7 @@ ArenaSelectLeftSound
           rem Play navigation sound
           let ASL_soundId = SoundSelect
           let temp1 = ASL_soundId
-          gosub bank15 PlaySoundEffect
+          gosub PlaySoundEffect bank15
 ArenaSelectSkipLeft
           
           if joy0right then ArenaSelectRight
@@ -96,7 +96,7 @@ ArenaSelectRightSound
           rem Play navigation sound
           let ASR_soundId = SoundSelect
           let temp1 = ASR_soundId
-          gosub bank15 PlaySoundEffect
+          gosub PlaySoundEffect bank15
 ArenaSelectSkipRight
           
           rem Display arena number ( 1-32) or ?? (random)
@@ -148,7 +148,7 @@ DrawTensDigit
           let temp3 = LS1_yPos
           let temp4 = LS1_color
           let temp5 = LS1_spriteSelect
-          gosub bank14 DrawDigit
+          gosub DrawDigit bank14
 DoneTensDigit
           
           rem Draw ones digit (player5)
@@ -161,7 +161,7 @@ DoneTensDigit
           let temp3 = LS1_yPos
           let temp4 = LS1_color
           let temp5 = LS1_spriteSelect
-          gosub bank14 DrawDigit
+          gosub DrawDigit bank14
           
           goto DisplayDone
           
@@ -189,7 +189,7 @@ DisplayRandomArena
           let temp3 = DRA_yPos
           let temp4 = DRA_color
           let temp5 = DRA_spriteSelect
-          gosub bank14 DrawDigit
+          gosub DrawDigit bank14
           
           rem Second question mark
           let DRA_xPos = 88
@@ -198,7 +198,7 @@ DisplayRandomArena
           rem Use player5
           let temp2 = DRA_xPos
           let temp5 = DRA_spriteSelect
-          gosub bank14 DrawDigit
+          gosub DrawDigit bank14
           
 DisplayDone
           
@@ -210,7 +210,7 @@ ArenaSelectConfirm
           rem Play selection sound
           let ASC_soundId = SoundMenuSelect
           let temp1 = ASC_soundId
-          gosub bank15 PlaySoundEffect
+          gosub PlaySoundEffect bank15
           rem tail call
           goto StartGame1
 ArenaSelectSkipConfirm
@@ -233,13 +233,13 @@ ReturnToCharacterSelect
           rem Return to Character Select screen
           let fireHoldTimer_W = 0
           let gameMode = ModeCharacterSelect
-          gosub bank14 ChangeGameMode
+          gosub ChangeGameMode bank14
           return
 
 StartGame1
           rem Start game with selected arena
           let gameMode = ModeGame
-          gosub bank14 ChangeGameMode
+          gosub ChangeGameMode bank14
           return
 
           rem ==========================================================
@@ -399,7 +399,7 @@ ArenaSelectDrawPlayerSprite
           let temp2 = ASDPS_animationFrame
           let temp3 = ASDPS_animationAction
           let temp4 = ASDPS_playerNumber
-          gosub bank14 LocateCharacterArt
+          gosub LocateCharacterArt bank14
           
           rem Set character color based on player number
           rem LoadCharacterColors expects aliases: isHurt, playerNumber,
@@ -411,6 +411,6 @@ ArenaSelectDrawPlayerSprite
           rem Not flashing
           let LoadCharacterColors_flashingMode = 0
           rem Not flashing mode
-          gosub bank10 LoadCharacterColors
+          gosub LoadCharacterColors bank10
           
           return

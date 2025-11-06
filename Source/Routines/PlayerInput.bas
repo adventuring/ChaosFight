@@ -224,99 +224,99 @@ DispatchCharacterAttack
           rem This allows on/goto to work with cross-bank references
           
 gotoBernieAttack
-          goto bank11 BernieAttack
+          goto BernieAttack bank11
           
 gotoCurlerAttack
-          goto bank11 CurlerAttack
+          goto CurlerAttack bank11
           
 gotoDragonetAttack
-          goto bank11 DragonetAttack
+          goto DragonetAttack bank11
           
 gotoZoeRyenAttack
-          goto bank11 ZoeRyenAttack
+          goto ZoeRyenAttack bank11
           
 gotoFatTonyAttack
-          goto bank11 FatTonyAttack
+          goto FatTonyAttack bank11
           
 gotoMegaxAttack
-          goto bank11 MegaxAttack
+          goto MegaxAttack bank11
           
 gotoHarpyAttack
-          goto bank11 HarpyAttack
+          goto HarpyAttack bank11
           
 gotoKnightGuyAttack
-          goto bank11 KnightGuyAttack
+          goto KnightGuyAttack bank11
           
 gotoFrootyAttack
-          goto bank11 FrootyAttack
+          goto FrootyAttack bank11
           
 gotoNefertemAttack
-          goto bank11 NefertemAttack
+          goto NefertemAttack bank11
           
 gotoNinjishGuyAttack
-          goto bank11 NinjishGuyAttack
+          goto NinjishGuyAttack bank11
           
 gotoPorkChopAttack
-          goto bank11 PorkChopAttack
+          goto PorkChopAttack bank11
           
 gotoRadishGoblinAttack
-          goto bank11 RadishGoblinAttack
+          goto RadishGoblinAttack bank11
           
 gotoRoboTitoAttack
-          goto bank11 RoboTitoAttack
+          goto RoboTitoAttack bank11
           
 gotoUrsuloAttack
-          goto bank11 UrsuloAttack
+          goto UrsuloAttack bank11
           
 gotoShamoneAttack
-          goto bank11 ShamoneAttack
+          goto ShamoneAttack bank11
           
           rem Character 16-23 attack handlers (future characters)
 gotoChar16Attack
-          goto bank11 Char16Attack
+          goto Char16Attack bank11
           
 gotoChar17Attack
-          goto bank11 Char17Attack
+          goto Char17Attack bank11
           
 gotoChar18Attack
-          goto bank11 Char18Attack
+          goto Char18Attack bank11
           
 gotoChar19Attack
-          goto bank11 Char19Attack
+          goto Char19Attack bank11
           
 gotoChar20Attack
-          goto bank11 Char20Attack
+          goto Char20Attack bank11
           
 gotoChar21Attack
-          goto bank11 Char21Attack
+          goto Char21Attack bank11
           
 gotoChar22Attack
-          goto bank11 Char22Attack
+          goto Char22Attack bank11
           
 gotoChar23Attack
-          goto bank11 Char23Attack
+          goto Char23Attack bank11
           
           rem Character 24-30 attack handlers (future characters)
 gotoChar24Attack
-          goto bank11 Char24Attack
+          goto Char24Attack bank11
           
 gotoChar25Attack
-          goto bank11 Char25Attack
+          goto Char25Attack bank11
           
 gotoChar26Attack
-          goto bank11 Char26Attack
+          goto Char26Attack bank11
           
 gotoChar27Attack
-          goto bank11 Char27Attack
+          goto Char27Attack bank11
           
 gotoChar28Attack
-          goto bank11 Char28Attack
+          goto Char28Attack bank11
           
 gotoChar29Attack
-          goto bank11 Char29Attack
+          goto Char29Attack bank11
           
 gotoChar30Attack
-          goto bank11 Char30Attack
+          goto Char30Attack bank11
 
           rem ==========================================================
           rem SHARED ENHANCED BUTTON CHECK

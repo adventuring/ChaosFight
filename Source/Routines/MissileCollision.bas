@@ -62,7 +62,7 @@ CheckAllMissileCollisions
           let CAMC_savedCharType = CAMC_characterType 
           rem Character type as index
           let temp7 = CAMC_savedCharType
-          gosub bank6 GetMissileWidth
+          gosub GetMissileWidth bank6
           let CAMC_missileWidth = temp2 
           rem Missile width (0 = AOE, >0 = visible missile)
           
@@ -105,12 +105,12 @@ CheckVisibleMissileCollision
           rem   temp2/temp3)
           let CVMC_savedCharType = CVMC_characterType
           let temp7 = CVMC_savedCharType
-          gosub bank6 GetMissileWidth
+          gosub GetMissileWidth bank6
           let CVMC_missileWidth = temp2 
           rem Missile width (temp2 now contains width)
           rem Reload character index
           let temp7 = CVMC_savedCharType
-          gosub bank6 GetMissileHeight
+          gosub GetMissileHeight bank6
           let CVMC_missileHeight = temp2 
           rem Missile height (temp2 now contains height)
           rem Restore missileX/Y (they were preserved in CVMC_* aliases)

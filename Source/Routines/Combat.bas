@@ -41,7 +41,7 @@ ApplyDamage
           rem Set hurt animation (ActionHit = 5)
           let currentPlayer = AD_defenderID
           let temp2 = ActionHit
-          gosub bank11 SetPlayerAnimation
+          gosub SetPlayerAnimation bank11
           
           rem Calculate recovery frames (damage / 2, clamped 10-30)
           let AD_recoveryFrames = AD_damage / 2
@@ -253,7 +253,7 @@ CombatShowDamageIndicator
 PlayDamageSound
           dim PDS_soundId = temp1
           let PDS_soundId = SoundHit
-          gosub bank15 PlaySoundEffect
+          gosub PlaySoundEffect bank15
           return
 
 
@@ -261,6 +261,6 @@ PlayDamageSound
 PlayDamageSound
           dim PDS_soundId = temp1
           let PDS_soundId = SoundHit
-          gosub bank15 PlaySoundEffect
+          gosub PlaySoundEffect bank15
           return
 

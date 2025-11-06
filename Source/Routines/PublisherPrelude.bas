@@ -58,7 +58,7 @@ PublisherPreludeMain
           
           rem Set window values for Publisher screen (AtariAge logo +
           rem   AtariAge text)
-          gosub bank12 SetPublisherWindowValues
+          gosub SetPublisherWindowValues bank12
           
           rem Drawing handled by MainLoop (titledrawscreen for admin
           rem   screens)
@@ -66,7 +66,7 @@ PublisherPreludeMain
 
 PublisherPreludeComplete
           let gameMode = ModeAuthorPrelude
-          gosub bank14 ChangeGameMode
+          gosub ChangeGameMode bank14
           return
 
           rem ==========================================================

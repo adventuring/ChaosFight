@@ -27,7 +27,7 @@ BeginFallingAnimation
           let activePlayers = 0
           
           rem Set game screen layout (32×8 for playfield scanning)
-          gosub bank8 SetGameScreenLayout
+          gosub SetGameScreenLayout bank8
           
           rem Set background color
           let COLUBK = ColGray(0)

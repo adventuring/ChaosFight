@@ -333,14 +333,14 @@ BoundaryNextPlayer
           rem CHECK PLAYFIELD COLLISION ALL DIRECTIONS
           rem ==========================================================
           rem This function has been moved to PlayerPhysicsCollisions.bas
-          rem to reduce bank size. Use gosub bank9 CheckPlayfieldCollisionAllDirections
+          rem to reduce bank size. Use gosub CheckPlayfieldCollisionAllDirections bank9
           rem to call it from this bank.
 
           rem ==========================================================
           rem CHECK MULTI-PLAYER COLLISIONS
           rem ==========================================================
           rem This function has been moved to PlayerPhysicsCollisions.bas
-          rem to reduce bank size. Use gosub bank9 CheckAllPlayerCollisions
+          rem to reduce bank size. Use gosub CheckAllPlayerCollisions bank9
           rem to call it from this bank.
 
           rem ==========================================================

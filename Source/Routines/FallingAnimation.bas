@@ -115,8 +115,8 @@ DonePlayer4Move
           rem   dynamically
           rem Use dynamic sprite setting instead of relying on player
           rem   declarations
-          gosub bank11 SetSpritePositions
-          gosub bank11 SetPlayerSprites
+          gosub SetSpritePositions bank11
+          gosub SetPlayerSprites bank11
           
           rem drawscreen called by MainLoop
           return
@@ -128,10 +128,10 @@ FallingComplete1
           rem   switching modes
           rem Note: BeginGameLoop will use final positions from falling
           rem   animation
-          gosub bank11 BeginGameLoop
+          gosub BeginGameLoop bank11
           rem Transition to Game Mode
           let gameMode = ModeGame
-          gosub bank14 ChangeGameMode
+          gosub ChangeGameMode bank14
           return
           
           rem ==========================================================

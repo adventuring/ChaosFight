@@ -387,7 +387,7 @@ SetPlayerSprites
           rem   SPS_playerNum alias
           let LoadCharacterColors_isFlashing = 0
           let LoadCharacterColors_flashingMode = 0
-          gosub bank10 LoadCharacterColors
+          gosub LoadCharacterColors bank10
           goto Player1ColorDone
           
 Player1ColorDone
@@ -409,7 +409,7 @@ end
           rem Player number (0=Player 1)
           rem temp2, temp3 already set via aliases (SPS_animFrame,
           rem   SPS_playerNum)
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
 
           rem Set Player 2 color and sprite
           rem Use LoadCharacterColors for consistent color handling
@@ -427,7 +427,7 @@ end
           rem   SPS_playerNum alias
           let LoadCharacterColors_isFlashing = 0
           let LoadCharacterColors_flashingMode = 0
-          gosub bank10 LoadCharacterColors
+          gosub LoadCharacterColors bank10
           goto Player2ColorDone
           
 Player2ColorDone
@@ -459,7 +459,7 @@ end
           rem Player number (1=Player 2)
           rem temp2, temp3 already set via aliases (SPS_animFrame,
           rem   SPS_playerNum)
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
           rem Players 3 & 4 have independent COLUP2/COLUP3 registers
@@ -484,7 +484,7 @@ end
           rem   SPS_playerNum alias
           let LoadCharacterColors_isFlashing = 0
           let LoadCharacterColors_flashingMode = 0
-          gosub bank10 LoadCharacterColors
+          gosub LoadCharacterColors bank10
           goto Player3ColorDone
           
 Player3ColorDone
@@ -514,7 +514,7 @@ end
           rem Player number (2=Player 3)
           rem temp2, temp3 already set via aliases (SPS_animFrame,
           rem   SPS_playerNum)
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
           
 DonePlayer3Sprite
 
@@ -538,7 +538,7 @@ DonePlayer3Sprite
           rem   SPS_playerNum alias
           let LoadCharacterColors_isFlashing = 0
           let LoadCharacterColors_flashingMode = 0
-          gosub bank10 LoadCharacterColors
+          gosub LoadCharacterColors bank10
           goto Player4ColorDone
           
 Player4ColorDone
@@ -568,7 +568,7 @@ end
           rem Player number (3=Player 4)
           rem temp2, temp3 already set via aliases (SPS_animFrame,
           rem   SPS_playerNum)
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
           
 DonePlayer4Sprite
           

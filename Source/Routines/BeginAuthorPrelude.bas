@@ -14,10 +14,10 @@ BeginAuthorPrelude
           
           rem Start Interworldly music
           temp1 = MusicInterworldly
-          gosub bank16 StartMusic
+          gosub StartMusic bank16
           
           rem Set window values for Author screen (Interworldly only)
-          gosub bank12 SetAuthorWindowValues
+          gosub SetAuthorWindowValues bank12
           
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes

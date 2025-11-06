@@ -216,7 +216,7 @@ UpdateOneMissile
           rem Get character index
           let temp1  = UOM_characterType
           rem Use temp1 for flags lookup (temp1 will be overwritten)
-          gosub bank6 GetMissileFlags
+          gosub GetMissileFlags bank6
           let UOM_missileFlags  = temp2
           rem Store flags
           
@@ -346,13 +346,13 @@ FrictionDone
           rem   position above)
           let temp5 = playerChar[UOM_playerIndex]
           let temp1 = temp5
-          gosub bank6 GetMissileFlags
+          gosub GetMissileFlags bank6
           let temp5 = temp2
           rem temp5 now contains missile flags again
           let temp1 = UOM_playerIndex
           rem Restore player index for MissileCollPF
           if !(temp5 & MissileFlagHitBackground) then PlayfieldCollisionDone
-          gosub bank7 MissileCollPF
+          gosub MissileCollPF bank7
           if !temp4 then PlayfieldCollisionDone
           rem Collision detected - check if should bounce or deactivate
           if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return
@@ -363,7 +363,7 @@ PlayfieldCollisionDone
           
           rem Check collision with players
           rem This handles both visible missiles and AOE attacks
-          gosub bank7 CheckAllMissileCollisions
+          gosub CheckAllMissileCollisions bank7
           rem Check if hit was found (temp4 != MissileHitNotFound)
           if temp4 = MissileHitNotFound then MissileSystemNoHit
           
@@ -377,7 +377,7 @@ GuardBounceFromCollision
           rem Guarding player - bounce the curling stone
           rem Play guard sound
           let soundEffectID = SoundGuard
-          gosub bank15 PlaySoundEffect
+          gosub PlaySoundEffect bank15
           
           rem Bounce the missile: invert X velocity and apply friction
           rem   damping
@@ -843,7 +843,7 @@ KnockbackDone
           
           rem Play hit sound effect
           let temp1  = SoundHit
-          gosub bank15 PlaySoundEffect
+          gosub PlaySoundEffect bank15
           
           rem Spawn damage indicator visual
           rem NOTE: VisualEffects.bas was phased out - damage indicators

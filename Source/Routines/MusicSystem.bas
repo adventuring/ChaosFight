@@ -35,13 +35,13 @@ StartMusic
           if SM_songID = 1 then goto LoadSongFromBank15
           if SM_songID = 2 then goto LoadSongFromBank15
           rem Song in Bank 16
-          gosub bank16 LoadSongPointer
-          gosub bank16 LoadSongVoice1Pointer
+          gosub LoadSongPointer bank16
+          gosub LoadSongVoice1Pointer bank16
           goto LoadSongPointersDone
 LoadSongFromBank15
           rem Song in Bank 15
-          gosub bank15 LoadSongPointer
-          gosub bank15 LoadSongVoice1Pointer
+          gosub LoadSongPointer bank15
+          gosub LoadSongVoice1Pointer bank15
 LoadSongPointersDone
           rem LoadSongPointer will set songPointerL and songPointerH
           rem   from temp1
@@ -198,10 +198,10 @@ UpdateMusicVoice0
           if MS_frameCount then return
           rem Frame counter reached 0 - load next note from appropriate bank
           rem Check which bank this song is in (Bank 15: songs 1-2, Bank 16: others)
-          if currentSongID_R = 1 then gosub bank15 LoadMusicNote0 : return
-          if currentSongID_R = 2 then gosub bank15 LoadMusicNote0 : return
+          if currentSongID_R = 1 then gosub LoadMusicNote0 bank15 : return
+          if currentSongID_R = 2 then gosub LoadMusicNote0 bank15 : return
           rem Song in Bank 16
-          gosub bank16 LoadMusicNote0
+          gosub LoadMusicNote0 bank16
           return
 
           rem ==========================================================
@@ -221,10 +221,10 @@ UpdateMusicVoice1
           if MS_frameCount1 then return
           rem Frame counter reached 0 - load next note from appropriate bank
           rem Check which bank this song is in (Bank 15: songs 1-2, Bank 16: others)
-          if currentSongID_R = 1 then gosub bank15 LoadMusicNote1 : return
-          if currentSongID_R = 2 then gosub bank15 LoadMusicNote1 : return
+          if currentSongID_R = 1 then gosub LoadMusicNote1 bank15 : return
+          if currentSongID_R = 2 then gosub LoadMusicNote1 bank15 : return
           rem Song in Bank 16
-          gosub bank16 LoadMusicNote1
+          gosub LoadMusicNote1 bank16
           return
 
           rem ==========================================================

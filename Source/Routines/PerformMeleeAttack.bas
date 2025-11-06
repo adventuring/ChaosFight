@@ -12,7 +12,7 @@
           rem   temp1 = attacker player index (0-3)
 PerformMeleeAttack
           rem Spawn missile visual for this attack
-          gosub bank7 SpawnMissile
+          gosub SpawnMissile bank7
           
           rem Set animation state to attacking
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted

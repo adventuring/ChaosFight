@@ -35,5 +35,5 @@
           rem falling back to compile-time constants if runtime
           rem   variables not defined.
 
-          goto bank13 ColdStart
+          goto ColdStart bank13
 

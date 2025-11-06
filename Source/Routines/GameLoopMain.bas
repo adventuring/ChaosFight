@@ -33,45 +33,45 @@ GameMainLoop
           gosub ReadEnhancedButtons
           
           rem Handle console switches (in Bank 14)
-          gosub bank14 HandleConsoleSwitches
+          gosub HandleConsoleSwitches bank14
 
           rem Handle all player input (with Quadtari multiplexing) (in Bank 13)
-          gosub bank13 InputHandleAllPlayers
+          gosub InputHandleAllPlayers bank13
 
           rem Update guard timers (duration and cooldown)
           gosub UpdateGuardTimers
 
           rem Update animation system (10fps character animation) (in Bank 11)
-          gosub bank11 UpdateCharacterAnimations
+          gosub UpdateCharacterAnimations bank11
           
           rem Update movement system (full frame rate movement) (in Bank 13)
-          gosub bank13 UpdatePlayerMovement
+          gosub UpdatePlayerMovement bank13
 
           rem Apply gravity and physics (in Bank 8)
-          gosub bank8 PhysicsApplyGravity
+          gosub PhysicsApplyGravity bank8
           
           rem Apply momentum and recovery effects (in Bank 8)
-          gosub bank8 ApplyMomentumAndRecovery
+          gosub ApplyMomentumAndRecovery bank8
 
           rem Apply special movement physics (Bernie wrap, etc.) (in Bank 9)
-          gosub bank9 ApplySpecialMovement
+          gosub ApplySpecialMovement bank9
 
           rem Check boundary collisions (in Bank 9)
-          gosub bank9 CheckBoundaryCollisions
+          gosub CheckBoundaryCollisions bank9
 
           rem Check playfield collisions (walls, ceilings, ground) for
           rem   all players (in Bank 9)
           for currentPlayer = 0 to 1
-              gosub bank9 CheckPlayfieldCollisionAllDirections
+              gosub CheckPlayfieldCollisionAllDirections bank9
           next
           if controllerStatus & SetQuadtariDetected = 0 then goto GameMainLoopQuadtariSkip
           for currentPlayer = 2 to 3
-              gosub bank9 CheckPlayfieldCollisionAllDirections
+              gosub CheckPlayfieldCollisionAllDirections bank9
           next
 GameMainLoopQuadtariSkip
 
           rem Check multi-player collisions (in Bank 9)
-          gosub bank9 CheckAllPlayerCollisions
+          gosub CheckAllPlayerCollisions bank9
 
           rem Check for player eliminations
           gosub CheckAllPlayerEliminations
@@ -91,15 +91,15 @@ CheckGameEndTransition
 TransitionToWinner
           rem Transition to winner announcement mode
           let gameMode = ModeWinner
-          gosub bank14 ChangeGameMode
+          gosub ChangeGameMode bank14
           return
 GameEndCheckDone
 
           rem Update attack cooldowns (in Bank 7)
-          gosub bank7 UpdateAttackCooldowns
+          gosub UpdateAttackCooldowns bank7
 
           rem Update missiles (in Bank 7)
-          gosub bank7 UpdateAllMissiles
+          gosub UpdateAllMissiles bank7
 
           rem Check missile collisions (in Bank 7) - handled internally
           rem   by UpdateAllMissiles
@@ -113,19 +113,19 @@ GameEndCheckDone
           rem Replaced by UpdatePlayerMovement
 
           rem Set sprite graphics (in Bank 8)
-          gosub bank8 SetPlayerSprites
+          gosub SetPlayerSprites bank8
 
           rem Display health information
-          gosub bank8 DisplayHealth
+          gosub DisplayHealth bank8
           
           rem Update P1/P2 health bars using pfscore system
-          gosub bank8 UpdatePlayer12HealthBars
+          gosub UpdatePlayer12HealthBars bank8
           
           rem Update P3/P4 health bars using playfield system
-          gosub bank8 UpdatePlayer34HealthBars
+          gosub UpdatePlayer34HealthBars bank8
           
           rem Update sound effects (game mode 6 only)
-          gosub bank15 UpdateSoundEffect
+          gosub UpdateSoundEffect bank15
           
           rem Update frame counter
           frame = frame + 1

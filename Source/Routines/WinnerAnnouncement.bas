@@ -13,7 +13,7 @@ WinnerAnnouncementLoop
           if WinScreenTimer > WinScreenAutoAdvanceFrames then WinnerAdvanceToCharacterSelect
           
           rem Display win screen and continue loop
-          gosub bank12 DisplayWinScreen
+          gosub DisplayWinScreen bank12
           rem drawscreen called by MainLoop
           return
           goto WinnerAnnouncementLoop
@@ -21,7 +21,7 @@ WinnerAnnouncementLoop
 WinnerAdvanceToCharacterSelect
           rem Transition to title screen (per issue #483 requirement)
           let gameMode = ModeTitle
-          gosub bank14 ChangeGameMode
+          gosub ChangeGameMode bank14
           return
 
 

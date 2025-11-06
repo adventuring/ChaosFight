@@ -140,7 +140,7 @@ UpdateSprite
           let US_animationFrame = currentAnimationFrame_R[currentPlayer] 
           let US_animationAction = currentAnimationSeq[currentPlayer]
           let US_playerNumber = currentPlayer
-          gosub bank10 LoadPlayerSprite
+          gosub LoadPlayerSprite bank10
           
           return
 
@@ -178,7 +178,7 @@ SetPlayerAnimation
           let temp2 = SPA_animationFrame
           let temp3 = SPA_animationSeq
           let temp4 = SPA_playerNumber
-          gosub bank10 LoadPlayerSprite
+          gosub LoadPlayerSprite bank10
           
           return
 

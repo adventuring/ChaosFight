@@ -11,7 +11,7 @@
           rem   temp1 = attacker player index (0-3)
 PerformRangedAttack
           rem Spawn projectile missile for this attack
-          gosub bank7 SpawnMissile
+          gosub SpawnMissile bank7
           
           rem Set animation state to attacking
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted

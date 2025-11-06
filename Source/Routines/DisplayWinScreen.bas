@@ -28,7 +28,7 @@ DisplayWinScreen
           dim DWS_bwMode = temp2
           
           rem Set admin screen layout (32×32 for character display)
-          gosub bank8 SetAdminScreenLayout
+          gosub SetAdminScreenLayout bank8
           
           rem Load winner screen playfield pattern
           rem Set playfield pointers to WinnerScreenPlayfield data
@@ -116,7 +116,7 @@ DWS_Position1Player
           rem Animation frame 0 (idle)
           let LCS_playerNumber = 0
           rem Player 0
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
           rem Hide other players
           let playerX[1] = 0
           let playerX[2] = 0
@@ -131,7 +131,7 @@ DWS_Position2Players
           let currentCharacter = playerChar[DWS_winnerIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 0
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
           
           rem Runner-up (P1) - only if valid
           if DWS_secondIndex = 255 then DWS_Hide2Player
@@ -140,7 +140,7 @@ DWS_Position2Players
           let currentCharacter = playerChar[DWS_secondIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 1
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
           goto DWS_Hide2PlayerDone
 DWS_Hide2Player
           let playerX[1] = 0
@@ -159,7 +159,7 @@ DWS_Position3Players
           let currentCharacter = playerChar[DWS_winnerIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 0
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
           
           rem 2nd place (P1) - left platform
           if DWS_secondIndex = 255 then DWS_Hide3Player2
@@ -168,7 +168,7 @@ DWS_Position3Players
           let currentCharacter = playerChar[DWS_secondIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 1
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
           goto DWS_Hide3Player2Done
 DWS_Hide3Player2
           let playerX[1] = 0
@@ -181,7 +181,7 @@ DWS_Hide3Player2Done
           let currentCharacter = playerChar[DWS_thirdIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 2
-          gosub bank10 LoadCharacterSprite
+          gosub LoadCharacterSprite bank10
           goto DWS_Hide3Player3Done
 DWS_Hide3Player3
           let playerX[2] = 0

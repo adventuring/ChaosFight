@@ -68,7 +68,7 @@ BudgetedHealthBarUpdate
 CheckPlayer2HealthUpdate
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate
           if selectedChar3_R = 255 then DonePlayer2HealthUpdate
-          gosub bank8 UpdateHealthBarPlayer2
+          gosub UpdateHealthBarPlayer2 bank8
           return
 DonePlayer2HealthUpdate
           if FramePhase = 3 then CheckPlayer3HealthUpdate
@@ -76,7 +76,7 @@ DonePlayer2HealthUpdate
 CheckPlayer3HealthUpdate
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate
           if selectedChar4_R = 255 then DonePlayer3HealthUpdate
-          gosub bank8 UpdateHealthBarPlayer3
+          gosub UpdateHealthBarPlayer3 bank8
           return
 DonePlayer3HealthUpdate
           return
@@ -87,7 +87,7 @@ UpdateHealthBarPlayer0
           let FB_healthBarLength = playerHealth[0] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColBlue(12)
-          gosub bank8 DrawHealthBarRow0
+          gosub DrawHealthBarRow0 bank8
           return
 
           rem Update Player 2 health bar
@@ -96,7 +96,7 @@ UpdateHealthBarPlayer1
           let FB_healthBarLength = playerHealth[1] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColRed(12)
-          gosub bank8 DrawHealthBarRow1
+          gosub DrawHealthBarRow1 bank8
           return
 
           rem Update Player 3 health bar
@@ -105,7 +105,7 @@ UpdateHealthBarPlayer2
           let FB_healthBarLength = playerHealth[2] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColYellow(12)
-          gosub bank8 DrawHealthBarRow2
+          gosub DrawHealthBarRow2 bank8
           return
 
           rem Update Player 4 health bar
@@ -114,7 +114,7 @@ UpdateHealthBarPlayer3
           let FB_healthBarLength = playerHealth[3] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColGreen(12)
-          gosub bank8 DrawHealthBarRow3
+          gosub DrawHealthBarRow3 bank8
           return
 
           rem ==========================================================
@@ -319,7 +319,7 @@ BudgetedMissileCollisionCheck
           rem Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
           let temp6 = BitMask[temp1]
           let temp4 = missileActive & temp6
-          if temp4 then gosub bank7 CheckAllMissileCollisions
+          if temp4 then gosub CheckAllMissileCollisions bank7
           return
           
 BudgetedMissileCollisionCheck2P
@@ -330,6 +330,6 @@ BudgetedMissileCollisionCheck2P
           rem Calculate bit flag using O(1) array lookup:
           let temp6 = BitMask[temp1]
           let temp4 = missileActive & temp6
-          if temp4 then gosub bank7 CheckAllMissileCollisions
+          if temp4 then gosub CheckAllMissileCollisions bank7
           return
 

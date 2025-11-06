@@ -240,7 +240,7 @@ end
           
           rem Play fall damage sound effect
           let temp1 = SoundFall
-          gosub bank15 PlaySoundEffect
+          gosub PlaySoundEffect bank15
           
           rem Trigger color shift to darker shade (damage visual
           rem   feedback)
@@ -440,7 +440,7 @@ SetVerticalMomentum
           
           rem Spawn melee attack missile for swoop hit detection
           let temp1 = HHSA_playerIndex
-          gosub bank7 SpawnMissile
+          gosub SpawnMissile bank7
           
           return
 

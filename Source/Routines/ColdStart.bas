@@ -5,7 +5,7 @@
           rem COLD START INITIALIZATION
           rem ==========================================================
           rem Proper cold start initialization sequence for batariBASIC.
-          rem Called from Bank1 via goto bank13 ColdStart - this is
+          rem Called from Bank1 via goto ColdStart bank13 - this is
           rem   the
           rem correct stanza format (Bank1 jumps to ColdStart in
           rem   Bank13).
@@ -27,12 +27,12 @@ ColdStart
           rem Step 1: Detect console hardware type (7800 vs 2600)
           rem This MUST run before any code modifies $D0/$D1 registers
           rem as those registers are used for hardware detection
-          gosub bank14 ConsoleDetHW
+          gosub ConsoleDetHW bank14
           
           rem Step 2: Initialize sprite pointers to RAM addresses
           rem Must be done before any sprite loading to ensure pointers
           rem   point to SCRAM buffers instead of ROM
-          gosub bank10 InitializeSpritePointers
+          gosub InitializeSpritePointers bank10
           
           rem Step 3: Initialize TIA color registers to safe defaults
           rem Prevents undefined colors on cold start
@@ -54,12 +54,12 @@ ColdStart
           rem Step 5: Initialize game state and transition to first mode
           rem Set initial game mode (Publisher Prelude)
           let gameMode = ModePublisherPrelude
-          gosub bank14 ChangeGameMode
+          gosub ChangeGameMode bank14
           rem ChangeGameMode calls SetupPublisherPrelude and sets up
           rem   music
           
           rem Step 6: Jump to MainLoop (in Bank 14)
           rem MainLoop will handle the game mode dispatch and frame
           rem   rendering
-          goto bank14 MainLoop
+          goto MainLoop bank14
 

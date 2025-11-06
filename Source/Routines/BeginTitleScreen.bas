@@ -16,10 +16,10 @@ BeginTitleScreen
           
           rem Start Chaotica title music
           let temp1 = MusicChaotica
-          gosub bank16 StartMusic
+          gosub StartMusic bank16
           
           rem Set window values for Title screen (ChaosFight only)
-          gosub bank12 SetTitleWindowValues
+          gosub SetTitleWindowValues bank12
           
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes

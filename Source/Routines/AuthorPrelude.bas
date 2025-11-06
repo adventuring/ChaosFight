@@ -44,7 +44,7 @@ AuthorPrelude
           if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete
           if controllerStatus & SetQuadtariDetected then if !INPT2{7} then AuthorPreludeComplete
           
-          gosub bank16 UpdateMusic
+          gosub UpdateMusic bank16
 
           rem Auto-advance after music completes + 0.5s
           if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
@@ -55,7 +55,7 @@ AuthorPrelude
 
 AuthorPreludeComplete
           let gameMode = ModeTitle
-          gosub bank14 ChangeGameMode
+          gosub ChangeGameMode bank14
           return
 
           rem ==========================================================

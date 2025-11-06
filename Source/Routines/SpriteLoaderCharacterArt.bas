@@ -46,7 +46,7 @@ LoadFromBank2
           let temp5 = temp4
           rem Bank routine expects: temp6=char, temp2=frame,
           rem   temp3=action, temp5=player
-          gosub bank2 SetPlayerCharacterArtBank2
+          gosub SetPlayerCharacterArtBank2 bank2
           return
           
 LoadFromBank3
@@ -59,7 +59,7 @@ LoadFromBank3
           let temp5 = temp4
           rem Bank routine expects: temp6=char, temp2=frame,
           rem   temp3=action, temp5=player
-          gosub bank3 SetPlayerCharacterArtBank3
+          gosub SetPlayerCharacterArtBank3 bank3
           return
           
 LoadFromBank4
@@ -72,7 +72,7 @@ LoadFromBank4
           let temp5 = temp4
           rem Bank routine expects: temp6=char, temp2=frame,
           rem   temp3=action, temp5=player
-          gosub bank4 SetPlayerCharacterArtBank4
+          gosub SetPlayerCharacterArtBank4 bank4
           return
           
 LoadFromBank5
@@ -85,7 +85,7 @@ LoadFromBank5
           let temp5 = temp4
           rem Bank routine expects: temp6=char, temp2=frame,
           rem   temp3=action, temp5=player
-          gosub bank5 SetPlayerCharacterArtBank5
+          gosub SetPlayerCharacterArtBank5 bank5
           return
           
           rem ==========================================================

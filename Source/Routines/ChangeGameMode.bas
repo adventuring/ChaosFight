@@ -15,15 +15,15 @@ ChangeGameMode
           return
           
 SetupPublisherPrelude
-          gosub bank9 BeginPublisherPrelude
+          gosub BeginPublisherPrelude bank9
           return
           
 SetupAuthorPrelude
-          gosub bank9 BeginAuthorPrelude
+          gosub BeginAuthorPrelude bank9
           return
           
 SetupTitle
-          gosub bank9 BeginTitleScreen
+          gosub BeginTitleScreen bank9
           return
           
 SetupCharacterSelect
@@ -33,24 +33,24 @@ SetupCharacterSelect
           return
           
 SetupFallingAnimation
-          gosub bank12 BeginFallingAnimation
+          gosub BeginFallingAnimation bank12
           return
           
 SetupArenaSelect
-          gosub bank12 BeginArenaSelect
+          gosub BeginArenaSelect bank12
           return
 
 SetupGame
-          gosub bank11 BeginGameLoop
+          gosub BeginGameLoop bank11
           rem BeginGameLoop resets gameplay state and returns
           rem MainLoop will dispatch to GameMainLoop based on gameMode =
           rem   ModeGame
           return
 
 SetupWinner
-          gosub bank12 BeginWinnerAnnouncement
+          gosub BeginWinnerAnnouncement bank12
           return
 
 SetupAttract
-          gosub bank9 BeginAttractMode
+          gosub BeginAttractMode bank9
           return

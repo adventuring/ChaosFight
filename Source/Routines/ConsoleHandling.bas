@@ -69,7 +69,7 @@ WarmStart
           
           rem Step 6: Reset game mode to startup sequence
           let gameMode = ModePublisherPrelude
-          gosub bank14 ChangeGameMode
+          gosub ChangeGameMode bank14
           
           rem Reset complete - return to MainLoop which will dispatch to
           rem   new mode
@@ -88,7 +88,7 @@ HandleConsoleSwitches
           gosub CheckEnhancedPause
           if !temp1 then DonePlayer1Pause
           rem Re-detect controllers when Select is pressed
-          gosub bank14 DetectControllers
+          gosub DetectControllers bank14
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
@@ -102,7 +102,7 @@ DonePlayer1Pause
           gosub CheckEnhancedPause
           if !temp1 then DonePlayer2Pause
           rem Re-detect controllers when Select is pressed
-          gosub bank14 DetectControllers
+          gosub DetectControllers bank14
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused
           if !(systemFlags & SystemFlagGameStatePaused) then Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
@@ -137,7 +137,7 @@ CheckColorBWToggle
           let CCBT_switchChanged = 0
           if temp6 = colorBWPrevious_R then DoneSwitchChange
           let CCBT_switchChanged = 1
-          gosub bank14 DetectControllers
+          gosub DetectControllers bank14
           let colorBWPrevious_W = switchbw
 DoneSwitchChange
 
@@ -157,7 +157,7 @@ DoneSwitchChange
 
 ReloadArenaColorsNow
           rem Reload arena colors with current switch state
-          gosub bank14 ReloadArenaColors
+          gosub ReloadArenaColors bank14
           return
 
           rem Display paused screen

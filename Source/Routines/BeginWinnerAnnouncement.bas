@@ -19,7 +19,7 @@ BeginWinnerAnnouncement
           rem   (FindWinner in PlayerElimination.bas)
           
           rem Set admin screen layout (32×32 for character display)
-          gosub bank8 SetAdminScreenLayout
+          gosub SetAdminScreenLayout bank8
           
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)
@@ -47,7 +47,7 @@ BeginWinnerAnnouncement
           
           rem Start winner’s character theme song
           let temp1 = BWA_songID
-          gosub bank16 StartMusic
+          gosub StartMusic bank16
           
           return
 

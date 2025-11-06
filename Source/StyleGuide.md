@@ -265,22 +265,25 @@ UpdatePlayerAnimation
 
 ### Apostrophes in Remarks
 
-**USE right single quotes (') for apostrophes in `rem` comments** - the C preprocessor (`cpp`) treats straight apostrophes (`'`) as string delimiters, but right single quotes (U+2019, `'`) are safe to use.
+**DO NOT use apostrophes in `rem` comments** - the C preprocessor (`cpp`) treats apostrophe characters (both straight `'` and Unicode right single quote `'`) as string delimiters, causing compilation warnings.
+
+**Instead, expand contractions or use alternative phrasing:**
 
 **Correct:**
 ```basic
-rem Check for negative velocity using two's complement
-rem It's important to note that this uses two's complement
-rem The player won't move if velocity is zero
+rem Check for negative velocity using twos complement
+rem It is important to note that this uses twos complement
+rem The player will not move if velocity is zero
 ```
 
 **Incorrect:**
 ```basic
-rem Check for negative velocity using two's complement  ; Wrong: straight apostrophe causes cpp warnings
-rem It's important to note that this uses two's complement  ; Wrong: straight apostrophe causes cpp warnings
+rem Check for negative velocity using two's complement  ; Wrong: causes cpp warnings
+rem It's important to note that this uses two's complement  ; Wrong: causes cpp warnings
+rem The player won't move if velocity is zero  ; Wrong: causes cpp warnings
 ```
 
-**Rationale**: The C preprocessor treats straight apostrophes (`'`) as string delimiters, but right single quotes (`'`) are not interpreted as delimiters and are safe to use in comments. Use right single quotes for contractions and possessives.
+**Rationale**: The C preprocessor parses all comments and treats both straight apostrophes (`'`) and right single quotes (`'`) as potential string delimiters. Expanding contractions or using alternative phrasing avoids preprocessor warnings while maintaining clarity.
 
 ### Remark Length
 

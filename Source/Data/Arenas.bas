@@ -527,14 +527,14 @@ end
 
 Arena19Colors
           pfcolors:
-          ColMaroon(2)
-          ColMaroon(2)
-          ColMaroon(0)
-          ColMaroon(2)
-          ColMaroon(2)
-          ColMaroon(0)
-          ColMaroon(2)
-          ColMaroon(4)
+          ColRed(2)
+          ColRed(2)
+          ColRed(0)
+          ColRed(2)
+          ColRed(2)
+          ColRed(0)
+          ColRed(2)
+          ColRed(4)
 end
 
           rem Arena 20: The Stairs (stepped platforms)
@@ -577,14 +577,14 @@ end
 
 Arena21Colors
           pfcolors:
-          ColOlive(4)
-          ColOlive(4)
-          ColOlive(6)
-          ColOlive(6)
-          ColOlive(4)
-          ColOlive(4)
-          ColOlive(6)
-          ColOlive(6)
+          ColBrown(4)
+          ColBrown(4)
+          ColBrown(6)
+          ColBrown(6)
+          ColBrown(4)
+          ColBrown(4)
+          ColBrown(6)
+          ColBrown(6)
 end
 
           rem Arena 22: The Columns (vertical pillars)

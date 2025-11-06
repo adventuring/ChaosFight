@@ -37,6 +37,8 @@
 #define ColGreen(lum) ((lum) == 0 ? 0 : 2)  /* lum=0 -> black, lum>0 -> green */
 #define ColSpringGreen(lum) ((lum) == 0 ? 0 : 2)  /* lum=0 -> black, lum>0 -> green */
 #define ColGold(lum) ((lum) == 0 ? 0 : 6)  /* lum=0 -> black, lum>0 -> yellow */
+#define ColMaroon(lum) ((lum) == 0 ? 0 : 1)  /* lum=0 -> black, lum>0 -> red (maroon is dark red) */
+#define ColOlive(lum) ((lum) == 0 ? 0 : 6)  /* lum=0 -> black, lum>0 -> yellow (olive is dark yellow-green) */
 
 #else
 /* Default to NTSC */

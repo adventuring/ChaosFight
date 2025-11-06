@@ -37,7 +37,7 @@ MainLoopContinue
           rem Constraints: Must be colocated with MainLoop, MainLoopDrawScreen
           if gameMode < 3 then gosub UpdateMusic bank16 : goto MainLoopDrawScreen
           if gameMode = 7 then gosub UpdateMusic bank16 : goto MainLoopDrawScreen
-          rem Other modes (3-6) don't need audio updates here - handled
+          rem Other modes (3-6) don’t need audio updates here - handled
           rem   in their subroutines
 MainLoopDrawScreen
           rem Admin screens (0-2) use titlescreen kernel, others use

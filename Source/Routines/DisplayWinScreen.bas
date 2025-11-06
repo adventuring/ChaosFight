@@ -105,7 +105,7 @@ DWS_RankLoop
           rem Skip if this is the winner
           if temp1 = DWS_winnerIndex then DWS_RankNext
           
-          rem Get this player's elimination order (SCRAM read)
+          rem Get this player’s elimination order (SCRAM read)
           let DWS_currentOrder = eliminationOrder_R[temp1]
           
           rem Check if this is 2nd place (higher order than current 2nd)

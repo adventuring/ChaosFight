@@ -640,12 +640,12 @@ SelectDrawScreen
           rem Draw Player 1 selection (top left)
           player0x = 56 : player0y = 40
           gosub SelectDrawSprite
-          gosub SelectDrawNumber
+          rem numbers are not shown on character select
           
           rem Draw Player 2 selection (top right)
           player1x = 104 : player1y = 40
           gosub SelectDrawSprite
-          gosub SelectDrawNumber
+          rem numbers are not shown on character select
           
           rem Draw Player 3 selection (bottom left) if Quadtari
           if controllerStatus & SetQuadtariDetected then SelectDrawP3
@@ -653,7 +653,7 @@ SelectDrawScreen
 SelectDrawP3
           player0x = 56 : player0y = 80
           gosub SelectDrawSprite
-          gosub SelectDrawNumber
+          rem numbers are not shown on character select
           
           rem Draw Player 4 selection (bottom right) if Quadtari
           if controllerStatus & SetQuadtariDetected then SelectDrawP4
@@ -661,7 +661,7 @@ SelectDrawP3
 SelectDrawP4
           player1x = 104 : player1y = 80
           gosub SelectDrawSprite
-          gosub SelectDrawNumber
+          rem numbers are not shown on character select
 SelectSkipP3
 SelectSkipP4
           

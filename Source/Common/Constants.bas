@@ -200,21 +200,21 @@
           rem   friction, similar to ice)
           rem Previous value: 32 (12.5% per frame) - too high for
           const KnockbackImpulse = 4 : rem   ice-like sliding
-const HitstunFrames = 10 : rem Frames of hitstun after a missile hit
-const MissileSpawnOffsetLeft = 4 : rem Pixels to the left when facing right at spawn
-const MissileSpawnOffsetRight = 12 : rem Pixels to the right when facing right at spawn
-const MissileAABBSize = 4 : rem Missile bounding box size (square)
-const PlayerSpriteHalfWidth = 8 : rem Half-width of player sprite used in AABB checks
-const PlayerSpriteHeight = 16 : rem Player sprite height used in AABB checks
-const PlayerSpriteWidth = 16 : rem Player sprite width used in AABB checks
-const PlayerCollisionDistance = 16 : rem Collision detection distance (sprite width in pixels)
-const MissileDefaultHeight = 1 : rem Default missile height when AOE (0) is reported
-const MissileMaxHeight = 8 : rem Cap for missile height (TIA limit)
-const MinimumVelocityThreshold = 1 : rem Minimum velocity threshold for missile deactivation (pixels/frame)
-const ScreenInsetX = 16 : rem Usable X inset from each side (playable area starts at 16)
-const ScreenUsableWidth = 128 : rem Usable width inside insets
-const ScreenBottom = 192 : rem Bottom pixel threshold
-const ScreenTopWrapThreshold = 200
+          const HitstunFrames = 10 : rem Frames of hitstun after a missile hit
+          const MissileSpawnOffsetLeft = 4 : rem Pixels to the left when facing left at spawn
+          const MissileSpawnOffsetRight = 12 : rem Pixels to the right when facing right at spawn
+          const MissileAABBSize = 4 : rem Missile bounding box size (square)
+          const PlayerSpriteHalfWidth = 8 : rem Half-width of player sprite used in AABB checks
+          const PlayerSpriteHeight = 16 : rem Player sprite height used in AABB checks
+          const PlayerSpriteWidth = 16 : rem Player sprite width used in AABB checks
+          const PlayerCollisionDistance = 16 : rem Collision detection distance (sprite width in pixels)
+          const MissileDefaultHeight = 1 : rem Default missile height when AOE (0) is reported
+          const MissileMaxHeight = 8 : rem Cap for missile height (TIA limit)
+          const MinimumVelocityThreshold = 1 : rem Minimum velocity threshold for missile deactivation (pixels/frame)
+          const ScreenInsetX = 16 : rem Usable X inset from each side (playable area starts at 16)
+          const ScreenUsableWidth = 128 : rem Usable width inside insets
+          const ScreenBottom = 192 : rem Bottom pixel threshold
+          const ScreenTopWrapThreshold = 200
           rem
           rem Byte-safe top-wrap detection threshold
 
@@ -280,7 +280,7 @@ const ScreenTopWrapThreshold = 200
           rem Animation System Constants
           rem Character frame animation runs at 10fps regardless of TV
           rem   standard
-          rem Movement updates run at full frame rate (60fps NTSC, 50fps
+          remMovement updates run at full frame rate (60fps NTSC, 50fps
           rem   PAL)
 
 #ifdef TV_NTSC

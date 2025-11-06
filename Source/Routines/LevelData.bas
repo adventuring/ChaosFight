@@ -1,8 +1,6 @@
           rem ChaosFight - Source/Routines/LevelData.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-#include "Source/Common/Colors.h"
-
           rem ==========================================================
           rem ARENA DATA DEFINITIONS
           rem ==========================================================

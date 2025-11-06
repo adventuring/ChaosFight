@@ -237,16 +237,10 @@ $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Sou
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
-# Convenience rule: redirect Source/Generated/*.png requests to Source/Art/*.png
-$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).png): Source/Generated/%.png: Source/Art/%.png
-	@echo "Note: Character PNG files are in Source/Art/, not Source/Generated/"
-	@mkdir -p Source/Generated
-	@cp "$<" "$@"
-
 # Generate character sprite files from PNG using chaos character compiler
 # PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
 # Explicitly depend on both PNG and XCF to ensure proper build ordering
-$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool                                      
+$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool
 	@echo "Generating character sprite data for $*..."
 	mkdir -p Source/Generated
 	bin/skyline-tool compile-chaos-character "$@" "$(filter %.png,$^)"

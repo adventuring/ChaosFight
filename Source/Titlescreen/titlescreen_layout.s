@@ -8,18 +8,19 @@
  MAC titlescreenlayout
 	; For 48×42 bitmaps using ×2 drawing style (double-height mode)
 	; Each bitmap row is displayed as 2 scanlines: 42 rows → 84 scanlines on screen
-	; Three admin screens use three different minikernel slots:
-	;   - 48x2_1: Publisher (AtariAge logo) bitmap
-	;   - 48x2_2: Author (Interworldly) bitmap  
-	;   - 48x2_3: Title (ChaosFight) bitmap
+	; Three admin screens use four minikernel slots:
+	;   - 48x2_1: AtariAge logo bitmap
+	;   - 48x2_2: AtariAge text bitmap
+	;   - 48x2_3: ChaosFight title bitmap
+	;   - 48x2_4: BRP signature bitmap (Author screen)
 	; Publisher screen: Shows 48x2_1 (logo) + 48x2_2 (text) - both window=42
-	; Author screen: Shows only 48x2_2 (Interworldly) - window=42
+	; Author screen: Shows only 48x2_4 (BRP) - window=42
 	; Title screen: Shows only 48x2_3 (ChaosFight) - window=42
 	; Each screen activates only its minikernel by setting height/window = 0 for others
-	; OR: Use conditional layout based on GameMode variable
 	draw_48x2_1
 	draw_48x2_2
 	draw_48x2_3
+	draw_48x2_4
  ENDM
 
  ; minikernel choices are:

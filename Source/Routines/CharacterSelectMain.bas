@@ -714,7 +714,7 @@ SelectLoadSprite
           let SLS_characterIndex = playerChar[SLS_playerNumberSaved]
           
           rem Check for special characters (?, CPU, NO) before normal art loading
-          rem Special characters don't animate, so handle them separately
+          rem Special characters don’t animate, so handle them separately
           if SLS_characterIndex = NoCharacter then SelectLoadSpecialSprite
           rem NoCharacter = 255
           if SLS_characterIndex = CPUCharacter then SelectLoadSpecialSprite
@@ -774,7 +774,7 @@ SelectLoadSpecialSpriteCall
           let temp6 = SLSS_spriteIndex
           rem temp6 now has sprite index
           gosub LoadSpecialSprite
-          rem Special sprites don't need animation handling, go to color
+          rem Special sprites don’t need animation handling, go to color
           goto SelectLoadSpriteColor
           
 SelectLoadWalkingSprite

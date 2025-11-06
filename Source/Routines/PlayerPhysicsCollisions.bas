@@ -249,7 +249,7 @@ PFCheckUp
           rem Check center column (temp6)
           if pfread(temp6, rowCounter) then goto PFBlockUp
           rem Check left edge column
-          if temp6 = 0 then PFCheckUp_CheckRight
+          if temp6 = 0 then goto PFCheckUp_CheckRight
           if pfread(temp6 - 1, rowCounter) then goto PFBlockUp
 PFCheckUp_CheckRight
           rem Check right edge column
@@ -313,7 +313,7 @@ PFCheckDown
           
           rem Check center, left, and right columns below feet
           if pfread(temp6, playfieldRow) then goto PFBlockDown
-          if temp6 = 0 then PFCheckDown_CheckRight
+          if temp6 = 0 then goto PFCheckDown_CheckRight
           if pfread(temp6 - 1, playfieldRow) then goto PFBlockDown
 PFCheckDown_CheckRight
           if temp6 >= 31 then goto PFCheckDone

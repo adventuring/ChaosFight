@@ -11,6 +11,12 @@
           rem Weight affects: wall bounce coefficient (heavier = less
           rem   bounce)
 HandleWallCollision
+          rem Handle weight-based wall collision for a player (modifies momentum based on character weight)
+          rem Input: temp1 = player index (0-3), playerChar[] (global array) = character types, playerVelocityX[] (global array) = X velocities, CharacterWeights[] (global data table) = character weights
+          rem Output: X velocity adjusted based on weight-based bounce coefficient
+          rem Mutates: temp2-temp4 (used for calculations), playerVelocityX[] (global array) = X velocity (adjusted for bounce)
+          rem Called Routines: None
+          rem Constraints: Weight affects wall bounce coefficient (heavier = less bounce). Formula: bounce = 50 - weight / 2. Ensures at least 1 pixel/frame velocity if was moving
           rem Get character type for this player using direct array
           rem   access
           rem temp1 contains player index (0-3)
@@ -43,6 +49,12 @@ HandleWallCollision
           rem   bounce
           rem Input: player index (in temp1)
 CheckLeftWallCollision
+          rem Check if player hit left wall and needs weight-based bounce
+          rem Input: temp1 = player index (0-3), playerX[] (global array) = player X positions, playerChar[] (global array) = character types, playerVelocityX[] (global array) = X velocities, CharacterWeights[] (global data table) = character weights
+          rem Output: Player bounced if hit left wall (X < 10), position clamped to 10 if still out of bounds
+          rem Mutates: temp4 (used for calculations), playerX[] (global array) = player X position (clamped to 10 if needed), playerVelocityX[] (global array) = X velocity (adjusted via HandleWallCollision)
+          rem Called Routines: HandleWallCollision - applies weight-based bounce
+          rem Constraints: Left wall boundary is X = 10
           let temp4 = playerX[temp1]
           if temp4 < 10 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 < 10 then let playerX[temp1] = 10
           return
@@ -51,6 +63,12 @@ CheckLeftWallCollision
           rem   bounce
           rem Input: player index (in temp1)
 CheckRightWallCollision
+          rem Check if player hit right wall and needs weight-based bounce
+          rem Input: temp1 = player index (0-3), playerX[] (global array) = player X positions, playerChar[] (global array) = character types, playerVelocityX[] (global array) = X velocities, CharacterWeights[] (global data table) = character weights
+          rem Output: Player bounced if hit right wall (X > 150), position clamped to 150 if still out of bounds
+          rem Mutates: temp4 (used for calculations), playerX[] (global array) = player X position (clamped to 150 if needed), playerVelocityX[] (global array) = X velocity (adjusted via HandleWallCollision)
+          rem Called Routines: HandleWallCollision - applies weight-based bounce
+          rem Constraints: Right wall boundary is X = 150
           let temp4 = playerX[temp1]
           if temp4 > 150 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 > 150 then let playerX[temp1] = 150
           return

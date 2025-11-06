@@ -1,8 +1,8 @@
+          rem
           rem ChaosFight - Source/Data/SongPointers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem Song Pointer Data Tables
-          rem
           rem Song pointer lookup tables (populated with symbol
           rem   addresses)
           rem Format: data SongPointersL, SongPointersH tables (29
@@ -38,8 +38,7 @@ end
           rem Voice 1 stream pointer lookup tables (populated with
           rem   symbol addresses)
           rem Format: data SongPointersSecondL, SongPointersSecondH
-          rem   tables (29 entries: indices 0-28)
-          data SongPointersSecondL
+          data SongPointersSecondL : rem   tables (29 entries: indices 0-28)
             <Song_Bernie_Voice1, <Song_OCascadia_Voice1, <Song_Revontuli_Voice1, <Song_EXO_Voice1, <Song_Grizzards_Voice1,
             <Song_MagicalFairyForce_Voice1, <Song_Bolero_Voice1, <Song_LowRes_Voice1, <Song_RoboTito_Voice1, <Song_SongOfTheBear_Voice1,
             <Song_DucksAway_Voice1, <Song_Character16Theme_Voice1, <Song_Character17Theme_Voice1, <Song_Character18Theme_Voice1, <Song_Character19Theme_Voice1,

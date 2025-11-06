@@ -15,9 +15,9 @@
 #include "Source/Generated/Character30.bas"
 #include "Source/Generated/MethHound.bas"
           
+          asm
           rem Character art lookup routines for Bank 5 (characters
           rem   24-31)
-          asm
 #include "Source/Routines/CharacterArtBank5.s"
 end
 

@@ -1,14 +1,12 @@
+PerformRangedAttack
+          rem
           rem ChaosFight - Source/Routines/PerformRangedAttack.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-
           rem Perform Ranged Attack
-          rem
           rem Executes a ranged attack for the specified player.
           rem Spawns a projectile missile that travels across the screen.
-
           rem INPUT:
           rem   temp1 = attacker player index (0-3)
-PerformRangedAttack
           rem Executes a ranged attack for the specified player
           rem Input: temp1 = attacker player index (0-3)
           rem        playerState[] (global array) = player state flags
@@ -19,11 +17,9 @@ PerformRangedAttack
           rem         missile state (via SpawnMissile)
           rem Called Routines: SpawnMissile (bank7) - spawns projectile missile
           rem Constraints: None
-          rem Spawn projectile missile for this attack
-          gosub SpawnMissile bank7
+          gosub SpawnMissile bank7 : rem Spawn projectile missile for this attack
           
-          rem Set animation state to attacking
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted : rem Set animation state to attacking
           rem Set animation state 14 (attack execution)
           
           return

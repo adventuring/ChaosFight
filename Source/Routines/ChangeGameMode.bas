@@ -1,15 +1,14 @@
+ChangeGameMode
+          rem
           rem ChaosFight - Source/Routines/ChangeGameMode.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
           rem Change Game Mode
-          rem
           rem Centralized game mode switching dispatcher.
           rem Calls appropriate Begin* setup routine for the new
           rem   gameMode.
           rem After setup completes, MainLoop dispatches to the
           rem   appropriate loop.
 
-ChangeGameMode
           rem Centralized game mode switching dispatcher
           rem Input: gameMode (global) = target game mode (0-8)
           rem Output: Dispatches to appropriate Setup* routine
@@ -25,8 +24,7 @@ SetupPublisherPrelude
           rem Output: Publisher prelude state initialized
           rem Mutates: Publisher prelude state variables (via BeginPublisherPrelude)
           rem Called Routines: BeginPublisherPrelude (bank9) - accesses prelude state
-          rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginPublisherPrelude bank9
+          gosub BeginPublisherPrelude bank9 : rem Constraints: Must be colocated with ChangeGameMode
           return
           
 SetupAuthorPrelude
@@ -35,8 +33,7 @@ SetupAuthorPrelude
           rem Output: Author prelude state initialized
           rem Mutates: Author prelude state variables (via BeginAuthorPrelude)
           rem Called Routines: BeginAuthorPrelude (bank9) - accesses prelude state
-          rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginAuthorPrelude bank9
+          gosub BeginAuthorPrelude bank9 : rem Constraints: Must be colocated with ChangeGameMode
           return
           
 SetupTitle
@@ -45,29 +42,26 @@ SetupTitle
           rem Output: Title screen state initialized
           rem Mutates: Title screen state variables (via BeginTitleScreen)
           rem Called Routines: BeginTitleScreen (bank9) - accesses title screen state
-          rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginTitleScreen bank9
+          gosub BeginTitleScreen bank9 : rem Constraints: Must be colocated with ChangeGameMode
           return
           
 SetupCharacterSelect
+          return
           rem Character select uses its own internal flow
           rem No separate Begin function needed - setup is handled
           rem   inline
           rem Input: gameMode (global) = ModeCharacterSelect (3)
           rem Output: None (character select handles its own setup)
           rem Mutates: None
+SetupFallingAnimation
           rem Called Routines: None
           rem Constraints: Must be colocated with ChangeGameMode
-          return
-          
-SetupFallingAnimation
           rem Setup Falling Animation mode
           rem Input: gameMode (global) = ModeFallingAnimation (4)
           rem Output: Falling animation state initialized
           rem Mutates: Falling animation state variables (via BeginFallingAnimation)
           rem Called Routines: BeginFallingAnimation (bank12) - accesses animation state
-          rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginFallingAnimation bank12
+          gosub BeginFallingAnimation bank12 : rem Constraints: Must be colocated with ChangeGameMode
           return
           
 SetupArenaSelect
@@ -76,8 +70,7 @@ SetupArenaSelect
           rem Output: Arena select state initialized
           rem Mutates: Arena select state variables (via BeginArenaSelect)
           rem Called Routines: BeginArenaSelect (bank12) - accesses arena select state
-          rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginArenaSelect bank12
+          gosub BeginArenaSelect bank12 : rem Constraints: Must be colocated with ChangeGameMode
           return
 
 SetupGame
@@ -89,8 +82,7 @@ SetupGame
           rem Constraints: Must be colocated with ChangeGameMode
           rem BeginGameLoop resets gameplay state and returns
           rem MainLoop will dispatch to GameMainLoop based on gameMode =
-          rem   ModeGame
-          gosub BeginGameLoop bank11
+          gosub BeginGameLoop bank11 : rem   ModeGame
           return
 
 SetupWinner
@@ -99,8 +91,7 @@ SetupWinner
           rem Output: Winner announcement state initialized
           rem Mutates: Winner announcement state variables (via BeginWinnerAnnouncement)
           rem Called Routines: BeginWinnerAnnouncement (bank12) - accesses winner state
-          rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginWinnerAnnouncement bank12
+          gosub BeginWinnerAnnouncement bank12 : rem Constraints: Must be colocated with ChangeGameMode
           return
 
 SetupAttract
@@ -109,6 +100,5 @@ SetupAttract
           rem Output: Attract mode state initialized
           rem Mutates: Attract mode state variables (via BeginAttractMode)
           rem Called Routines: BeginAttractMode (bank9) - accesses attract mode state
-          rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginAttractMode bank9
+          gosub BeginAttractMode bank9 : rem Constraints: Must be colocated with ChangeGameMode
           return

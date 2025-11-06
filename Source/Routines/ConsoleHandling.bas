@@ -1,32 +1,28 @@
+WarmStart
+          rem
           rem ChaosFight - Source/Routines/ConsoleHandling.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
           rem Console Switch Handling
-          rem
           rem Handles Atari 2600 console switches during gameplay.
-
           rem SWITCHES:
           rem   switchreset - Game Reset → return to publisher prelude
           rem   switchselect - Game Select → toggle pause
           rem   switchbw - Color/B&W → handled in rendering
-
+          rem
           rem AVAILABLE VARIABLES:
           rem   play, 1=paused
           rem systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal
-
           rem Warm Start / Reset Handler
           rem
           rem Handles game reset from any screen/state.
           rem Clears critical state variables and reinitializes hardware
           rem   registers.
           rem Called when RESET button is pressed.
-          rem
           rem EFFECTS:
           rem   - Clears game state variables
           rem   - Reinitializes TIA color and audio registers
           rem   - Resets gameMode to ModePublisherPrelude
           rem   - Calls ChangeGameMode to transition to startup sequence
-WarmStart
           rem Handles game reset from any screen/state
           rem Input: None (called from MainLoop on RESET)
           rem Output: gameMode set to ModePublisherPrelude, ChangeGameMode called, TIA registers initialized
@@ -36,8 +32,7 @@ WarmStart
           rem         pf0-pf5 (playfield registers), ENAM0, ENAM1, ENABL (sprite enable registers)
           rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
           rem Constraints: Entry point for warm start/reset (called from MainLoop)
-          rem Step 1: Clear critical game state variables
-          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
+          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused : rem Step 1: Clear critical game state variables
           rem Clear paused flag (0 = normal, not paused, not ending)
           let frame = 0
           rem Reset frame counter
@@ -72,19 +67,18 @@ WarmStart
           ENAM1 = 0
           ENABL = 0
           
-          rem Step 6: Reset game mode to startup sequence
-          let gameMode = ModePublisherPrelude
+          let gameMode = ModePublisherPrelude : rem Step 6: Reset game mode to startup sequence
           gosub ChangeGameMode bank14
           
+          return
           rem Reset complete - return to MainLoop which will dispatch to
           rem   new mode
-          return
 
           rem Main console switch handler
           rem NOTE: RESET is now handled in MainLoop via centralized
           rem   WarmStart call
-          rem This function only handles pause/select switches
 HandleConsoleSwitches
+          rem This function only handles pause/select switches
           rem Handle console switches during gameplay (pause/select, Color/B&W, 7800 pause)
           rem Input: switchselect (hardware) = Game Select switch state
           rem        switchbw (hardware) = Color/B&W switch state
@@ -101,13 +95,10 @@ HandleConsoleSwitches
           rem              DonePlayer2Pause, Player2PauseDone (all called via goto)
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
-          rem   mode
-          let temp2 = 0 
-          rem Check Player 1 buttons
-          gosub CheckEnhancedPause
+          let temp2 = 0 : rem   mode
+          gosub CheckEnhancedPause : rem Check Player 1 buttons
           if !temp1 then DonePlayer1Pause
-          rem Re-detect controllers when Select is pressed
-          gosub DetectControllers bank14
+          gosub DetectControllers bank14 : rem Re-detect controllers when Select is pressed
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
@@ -117,11 +108,9 @@ DonePlayer1Pause
           
           
           let temp2 = 1 
-          rem Check Player 2 buttons
-          gosub CheckEnhancedPause
+          gosub CheckEnhancedPause : rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause
-          rem Re-detect controllers when Select is pressed
-          gosub DetectControllers bank14
+          gosub DetectControllers bank14 : rem Re-detect controllers when Select is pressed
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused
           if !(systemFlags & SystemFlagGameStatePaused) then Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
@@ -131,19 +120,17 @@ Player2PauseDone
 DonePlayer2Pause
           
 
-          rem Color/B&W switch - re-detect controllers when toggled
-          gosub CheckColorBWToggle
+          gosub CheckColorBWToggle : rem Color/B&W switch - re-detect controllers when toggled
           
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
-          rem tail call
-          goto Check7800PauseButton
+          goto Check7800PauseButton : rem tail call
 #endif
 
           return
 
-          rem Color/b&w Switch Change Detection
           rem
+          rem Color/b&w Switch Change Detection
           rem Re-detect controllers when Color/B&W switch is toggled
           
 CheckColorBWToggle
@@ -154,8 +141,7 @@ CheckColorBWToggle
           rem Mutates: temp1 (switch changed flag), temp6 (used for switchbw read),
           rem         colorBWPrevious_W (updated if switch changed)
           rem Called Routines: DetectControllers (bank14) - accesses controller detection state
-          rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
-          dim CCBT_switchChanged = temp1
+          dim CCBT_switchChanged = temp1 : rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           dim CCBT_overrideChanged = temp2
           
           rem Check if Color/B&W switch state has changed
@@ -180,16 +166,14 @@ DoneSwitchChange
           rem   not continuously. If needed, we could add a previous value
           rem   variable.
           
-          rem Reload arena colors if switch or override changed
-          if CCBT_switchChanged then ReloadArenaColorsNow
+          if CCBT_switchChanged then ReloadArenaColorsNow : rem Reload arena colors if switch or override changed
           rem Note: colorBWOverride check handled in Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)
           
           return
 
 ReloadArenaColorsNow
-          rem Reload arena colors with current switch state
-          gosub ReloadArenaColors bank14
+          gosub ReloadArenaColors bank14 : rem Reload arena colors with current switch state
           return
 
           rem Display paused screen
@@ -206,38 +190,32 @@ DisplayPausedScreen
           rem Draw each character of PAUSED
           rem P
           temp4 = 25 
-          rem ASCII P
-          gosub DrawCharacter
+          gosub DrawCharacter : rem ASCII P
           temp1 = temp1 + 6
           
           rem A
           temp4 = 10 
-          rem ASCII A
-          gosub DrawCharacter
+          gosub DrawCharacter : rem ASCII A
           temp1 = temp1 + 6
           
           rem U
           temp4 = 30 
-          rem ASCII U
-          gosub DrawCharacter
+          gosub DrawCharacter : rem ASCII U
           temp1 = temp1 + 6
           
           rem S
           temp4 = 28 
-          rem ASCII S
-          gosub DrawCharacter
+          gosub DrawCharacter : rem ASCII S
           temp1 = temp1 + 6
           
           rem E
           temp4 = 14 
-          rem ASCII E
-          gosub DrawCharacter
+          gosub DrawCharacter : rem ASCII E
           temp1 = temp1 + 6
           
           rem D
           temp4 = 13 
           rem ASCII D
-          rem tail call
-          goto DrawCharacter
+          goto DrawCharacter : rem tail call
           
 

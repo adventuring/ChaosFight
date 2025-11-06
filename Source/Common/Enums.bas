@@ -1,13 +1,11 @@
           rem Chaos Fight Source/Common/Enums.bas
           rem Copyright 2025 Interworldly Adventuring, LLC
 
-          rem TV Standards
-          const NTSC = 1
+          const NTSC = 1 : rem TV Standards
           const PAL = 2
           const SECAM = 3
 
-          rem Game Modes
-          const ModePublisherPrelude = 0
+          const ModePublisherPrelude = 0 : rem Game Modes
           const ModeAuthorPrelude = 1
           const ModeTitle = 2
           const ModeCharacterSelect = 3
@@ -17,8 +15,8 @@
           const ModeWinner = 7
           const ModeAttract = 8
 
-          rem Animation Action Enums
           rem
+          rem Animation Action Enums
           rem 16 animation actions (0-15) stored in playerState bits 4-7
           rem Used for character animation sequences
           rem Each action has up to 8 frames (0-7)
@@ -72,12 +70,12 @@
           rem Attack recovery
 
           rem NOTE: RoboTito repurposes existing animation states:
+          rem
           rem ActionJumping (10) = Stretching upward
           rem ActionFalling (11) = Latched to ceiling  
           rem ActionLanding (12) = Retracting trunk
 
           rem Missile Flags Bitfield Encoding
-          rem
           rem Bit flags for missile behavior (CharacterMissileFlags)
           rem Used for checking missile interaction properties
           
@@ -97,8 +95,7 @@
           const MissileFlagFriction = 16
           rem Bit 4: Apply friction physics (curling stone deceleration)
           
-          rem Combined flags for common combinations
-          const MissileFlagHitBoth = 3
+          const MissileFlagHitBoth = 3 : rem Combined flags for common combinations
           rem Bits 0-1: Hit both background and players (%00000011)
           
           const MissileFlagHitBackgroundAndGravity = 5

@@ -1,15 +1,13 @@
+HandleWallCollision
+          rem
           rem ChaosFight - Source/Routines/Physics.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-
           rem PHYSICS SYSTEM - Weight-based Wall Collisions And Movement
-          rem
-
           rem Handle weight-based wall collision for a player
           rem Input: player index (in temp1)
           rem Modifies: Player momentum based on character weight
           rem Weight affects: wall bounce coefficient (heavier = less
           rem   bounce)
-HandleWallCollision
           rem Handle weight-based wall collision for a player (modifies momentum based on character weight)
           rem Input: temp1 = player index (0-3), playerChar[] (global array) = character types, playerVelocityX[] (global array) = X velocities, CharacterWeights[] (global data table) = character weights
           rem Output: X velocity adjusted based on weight-based bounce coefficient
@@ -18,11 +16,9 @@ HandleWallCollision
           rem Constraints: Weight affects wall bounce coefficient (heavier = less bounce). Formula: bounce = 50 - weight / 2. Ensures at least 1 pixel/frame velocity if was moving
           rem Get character type for this player using direct array
           rem   access
-          rem temp1 contains player index (0-3)
-          let temp4 = playerChar[temp1]
+          let temp4 = playerChar[temp1] : rem temp1 contains player index (0-3)
           
-          rem Get character weight using direct array access
-          let temp3 = CharacterWeights[temp4]
+          let temp3 = CharacterWeights[temp4] : rem Get character weight using direct array access
           
           rem Weight is now in temp3 (0-40)
           rem Calculate bounce coefficient: higher weight = lower bounce
@@ -32,22 +28,20 @@ HandleWallCollision
           rem Example weights: 12 (light) = 44 bounce, 40 (heavy) = 30
           rem   bounce
           
-          rem Get player velocity using direct array access
-          let temp4 = playerVelocityX[temp1]
+          let temp4 = playerVelocityX[temp1] : rem Get player velocity using direct array access
           
           rem Calculate bounced velocity: velocity = velocity * bounce /
           rem   50
           rem Using integer math: velocity = (velocity * bounce) / 50
           let temp2 = temp4 * (50 - temp3 / 2) / 50
           if temp2 = 0 && temp4 then let temp2 = 1
-          rem Ensure at least 1 if was moving
-          let playerVelocityX[temp1] = temp2
+          let playerVelocityX[temp1] = temp2 : rem Ensure at least 1 if was moving
           return
 
+CheckLeftWallCollision
           rem Check if player hit left wall and needs weight-based
           rem   bounce
           rem Input: player index (in temp1)
-CheckLeftWallCollision
           rem Check if player hit left wall and needs weight-based bounce
           rem Input: temp1 = player index (0-3), playerX[] (global array) = player X positions, playerChar[] (global array) = character types, playerVelocityX[] (global array) = X velocities, CharacterWeights[] (global data table) = character weights
           rem Output: Player bounced if hit left wall (X < 10), position clamped to 10 if still out of bounds
@@ -58,10 +52,10 @@ CheckLeftWallCollision
           if temp4 < 10 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 < 10 then let playerX[temp1] = 10
           return
 
+CheckRightWallCollision
           rem Check if player hit right wall and needs weight-based
           rem   bounce
           rem Input: player index (in temp1)
-CheckRightWallCollision
           rem Check if player hit right wall and needs weight-based bounce
           rem Input: temp1 = player index (0-3), playerX[] (global array) = player X positions, playerChar[] (global array) = character types, playerVelocityX[] (global array) = X velocities, CharacterWeights[] (global data table) = character weights
           rem Output: Player bounced if hit right wall (X > 150), position clamped to 150 if still out of bounds
@@ -72,12 +66,12 @@ CheckRightWallCollision
           if temp4 > 150 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 > 150 then let playerX[temp1] = 150
           return
 
+          rem
           rem Note: GetPlayerVelocitySub and SetPlayerVelocitySub
           rem   removed
           rem Now using direct array access: playerVelocityX[temp1]
 
           rem Character Weights Data
-          rem
           rem Reference to weights from CharacterDefinitions.bas
           rem This is just for documentation - actual weights are read
           rem   from CharacterWeights array

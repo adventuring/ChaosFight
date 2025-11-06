@@ -1,11 +1,10 @@
+ConsoleDetHW
+          rem
           rem ChaosFight - Source/Routines/ConsoleDetection.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
           rem Console Detection
-          rem
           rem Detects whether running on Atari 2600 or 7800 console
           rem Based on DetectConsole.s assembly implementation
-          
           rem DETECTION LOGIC:
           rem   if $D0 contains $2C and $D1 contains $A9 then
           rem system = 7800 // game was loaded from Harmony menu on a
@@ -18,9 +17,7 @@
           rem   else
           rem system = 2600 // game was loaded from Harmony menu on a
           rem   2600
-          
           rem Main console detection routine
-ConsoleDetHW
           rem Detect whether running on Atari 2600 or 7800 console
           rem Input: $D0, $D1 (hardware registers) = console detection values
           rem        $80 (zero-page RAM) = CDFJ driver detection result (if flashed)
@@ -31,22 +28,19 @@ ConsoleDetHW
           rem Constraints: Must be colocated with CheckFlashed, Is7800, Is2600 (all called via goto)
           rem              MUST run before any code modifies $D0/$D1 registers
           rem              Entry point for console detection (called from ColdStart)
-          rem Assume 2600 console initially
-          let systemFlags = systemFlags & ClearSystemFlag7800
+          let systemFlags = systemFlags & ClearSystemFlag7800 : rem Assume 2600 console initially
           
           rem Check $D0 value
           temp1 = $D0
           if temp1 = 0 then CheckFlashed
           
-          rem Check if $D0 = $2C (7800 indicator)
-          if !(temp1 = ConsoleDetectD0) then goto Is2600
+          if !(temp1 = ConsoleDetectD0) then goto Is2600 : rem Check if $D0 = $2C (7800 indicator)
           
           rem Check $D1 value for 7800 confirmation
           temp1 = $D1
           if !(temp1 = ConsoleDetectD1) then goto Is2600
           
-          rem 7800 detected: $D0=$2C and $D1=$A9
-          goto Is7800
+          goto Is7800 : rem 7800 detected: $D0=$2C and $D1=$A9
           
 CheckFlashed
           rem Check if game was flashed to Harmony/Melody (both $D0 and $D1 are $00)
@@ -65,8 +59,7 @@ CheckFlashed
           temp1 = $80
           if temp1 = 0 then Is2600
           
-          rem CDFJ driver detected 7800
-          goto Is7800
+          goto Is7800 : rem CDFJ driver detected 7800
           
 Is7800
           rem 7800 console detected
@@ -74,8 +67,7 @@ Is7800
           rem Output: systemFlags updated with SystemFlag7800 set
           rem Mutates: systemFlags (SystemFlag7800 set)
           rem Called Routines: None
-          rem Constraints: Must be colocated with ConsoleDetHW
-          let systemFlags = systemFlags | SystemFlag7800
+          let systemFlags = systemFlags | SystemFlag7800 : rem Constraints: Must be colocated with ConsoleDetHW
           return
           
 Is2600
@@ -84,12 +76,11 @@ Is2600
           rem Output: systemFlags updated with SystemFlag7800 cleared
           rem Mutates: systemFlags (SystemFlag7800 cleared)
           rem Called Routines: None
-          rem Constraints: Must be colocated with ConsoleDetHW
-          let systemFlags = systemFlags & ClearSystemFlag7800
+          let systemFlags = systemFlags & ClearSystemFlag7800 : rem Constraints: Must be colocated with ConsoleDetHW
           return
           
-          rem Console Feature Detection
           rem
+          rem Console Feature Detection
           rem Check for console-specific features after detection
           
 CheckConsoleFeatures
@@ -99,8 +90,7 @@ CheckConsoleFeatures
           rem Mutates: None
           rem Called Routines: None
           rem Constraints: Must be colocated with Done7800Features, ConsoleFeaturesDone
-          rem Check if running on 7800 (bit 7 of systemFlags)
-          if !(systemFlags & SystemFlag7800) then Done7800Features
+          if !(systemFlags & SystemFlag7800) then Done7800Features : rem Check if running on 7800 (bit 7 of systemFlags)
           
           rem 7800-specific features
           rem Note: 7800 pause button handling is implemented in
@@ -108,10 +98,10 @@ CheckConsoleFeatures
           rem   from ConsoleHandling.bas during the game loop
           rem Note: Controller detection works for both 2600 and 7800
           rem   via ControllerDetection.bas (DetectControllers)
-          rem   No console-specific initialization needed
-          goto ConsoleFeaturesDone
+          goto ConsoleFeaturesDone : rem   No console-specific initialization needed
           
 Done7800Features
+ConsoleFeaturesDone
           rem 2600-specific features (label only, no execution)
           rem Input: None (label only, no execution)
           rem Output: None (label only)
@@ -122,12 +112,10 @@ Done7800Features
           rem Note: Controller detection works for both 2600 and 7800
           rem   via ControllerDetection.bas (DetectControllers)
           rem   No console-specific initialization needed
-          
-ConsoleFeaturesDone
+          return
           rem Console features check complete (label only, no execution)
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
           rem Constraints: Must be colocated with CheckConsoleFeatures
-          return

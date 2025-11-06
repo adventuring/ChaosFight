@@ -1,3 +1,4 @@
+          rem
           rem ChaosFight - Source/Data/CharacterThemeSongIndices.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
@@ -7,7 +8,6 @@
           rem This table allows multiple characters to share the same
           rem   theme song
           rem without duplicating song files in the Makefile.
-          rem
           rem Song ID constants in this table:
           rem   Character 0 (Bernie) → SongBernie
           rem   Character 1 (Curler) → SongOCascadia
@@ -32,8 +32,7 @@
           rem Characters 16-30: Future characters (each has own theme
           rem   placeholder)
           rem Character 31 (MethHound) → SongDucksAway - shared with
-          rem   Shamone
-          data CharacterThemeSongIndices
+          data CharacterThemeSongIndices : rem   Shamone
             SongBernie, SongOCascadia, SongRevontuli, SongEXO, SongGrizzards, SongGrizzards, SongRevontuli, SongMagicalFairyForce
             SongMagicalFairyForce, SongBolero, SongLowRes, SongMagicalFairyForce, SongBolero, SongRoboTito, SongSongOfTheBear, SongDucksAway
             SongCharacter16Theme, SongCharacter17Theme, SongCharacter18Theme, SongCharacter19Theme, SongCharacter20Theme, SongCharacter21Theme, SongCharacter22Theme, SongCharacter23Theme

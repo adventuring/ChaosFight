@@ -1,6 +1,7 @@
+ArenaSelect1
+          rem
           rem ChaosFight - Source/Routines/ArenaSelect.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-
           rem Arena Select - Per-frame Loop
           rem
           rem Per-frame arena select screen with arena cycling (
@@ -8,11 +9,9 @@
           rem Called from MainLoop each frame (gameMode 5).
           rem Players can cycle through arenas 1-32 or select random
           rem   (random).
-          rem
           rem Setup is handled by BeginArenaSelect in ChangeGameMode.bas
+ArenaSelect1Loop
           rem This function processes one frame and returns.
-
-ArenaSelect1
           rem Per-frame arena select screen with arena cycling (1-32/random)
           rem Input: selectedArena_R (global SCRAM) = current arena selection
           rem        controllerStatus (global) = controller detection state
@@ -36,7 +35,6 @@ ArenaSelect1
           rem              ReturnToCharacterSelect, StartGame1, ArenaSelectLeft, ArenaSelectRight,
           rem              DisplayRandomArena, ArenaSelectConfirm (all called via goto)
           rem              Entry point for arena select mode (called from MainLoop)
-ArenaSelect1Loop
           dim LS1_firePressed = temp1
           dim LS1_arenaNumber = temp1
           dim LS1_tensDigit = temp2
@@ -48,27 +46,18 @@ ArenaSelect1Loop
           dim LS1_color = temp4
           dim LS1_spriteSelect = temp5
           dim LS1_soundId = temp1
-          rem Update character idle animations
-          gosub ArenaSelectUpdateAnimations
-          rem Draw locked-in player characters
-          gosub ArenaSelectDrawCharacters
-          rem Check Game Select switch - return to Character Select
-          if switchselect then ReturnToCharacterSelect
+          gosub ArenaSelectUpdateAnimations : rem Update character idle animations
+          gosub ArenaSelectDrawCharacters : rem Draw locked-in player characters
+          if switchselect then ReturnToCharacterSelect : rem Check Game Select switch - return to Character Select
           
           rem Check fire button hold detection (1 second to return to
-          rem   Character Select)
-          let LS1_firePressed = 0
-          rem Check Player 1 fire button
-          if joy0fire then let LS1_firePressed = 1
-          rem Check Player 2 fire button
-          if joy1fire then let LS1_firePressed = 1
-          rem Check Quadtari players (3 & 4) if active
-          if controllerStatus & SetQuadtariDetected then CheckQuadtariFireHold
+          let LS1_firePressed = 0 : rem   Character Select)
+          if joy0fire then let LS1_firePressed = 1 : rem Check Player 1 fire button
+          if joy1fire then let LS1_firePressed = 1 : rem Check Player 2 fire button
+          if controllerStatus & SetQuadtariDetected then CheckQuadtariFireHold : rem Check Quadtari players (3 & 4) if active
           
-          rem If fire button held, increment timer
-          if LS1_firePressed then goto IncrementFireHold
-          rem Fire released, reset timer
-          let fireHoldTimer_W = 0
+          if LS1_firePressed then goto IncrementFireHold : rem If fire button held, increment timer
+          let fireHoldTimer_W = 0 : rem Fire released, reset timer
           goto FireHoldCheckDone
           
 IncrementFireHold
@@ -76,12 +65,10 @@ IncrementFireHold
           let LS_timer = fireHoldTimer_R
           let LS_timer = LS_timer + 1
           let fireHoldTimer_W = LS_timer
-          rem 60 frames = 1 second @ 60fps
-          if LS_timer >= 60 then goto ReturnToCharacterSelect
+          if LS_timer >= 60 then goto ReturnToCharacterSelect : rem 60 frames = 1 second @ 60fps
 FireHoldCheckDone
           
-          rem Handle LEFT/RIGHT navigation for arena selection
-          if joy0left then ArenaSelectLeft
+          if joy0left then ArenaSelectLeft : rem Handle LEFT/RIGHT navigation for arena selection
           goto ArenaSelectSkipLeft
 ArenaSelectLeft
           dim ASL_soundId = temp1
@@ -93,8 +80,7 @@ ArenaSelectLeft
           let ASL_arena = ASL_arena - 1
           let selectedArena_W = ASL_arena
 ArenaSelectLeftSound
-          rem Play navigation sound
-          let ASL_soundId = SoundMenuNavigate
+          let ASL_soundId = SoundMenuNavigate : rem Play navigation sound
           let temp1 = ASL_soundId
           gosub PlaySoundEffect bank15
 ArenaSelectSkipLeft
@@ -104,18 +90,15 @@ ArenaSelectSkipLeft
 ArenaSelectRight
           dim ASR_soundId = temp1
           rem Increment arena, wrap from MaxArenaID to 0, then to
-          rem   RandomArena
-          if selectedArena_R = MaxArenaID then let selectedArena_W = RandomArena : goto ArenaSelectRightSound
+          if selectedArena_R = MaxArenaID then let selectedArena_W = RandomArena : goto ArenaSelectRightSound : rem RandomArena
           if selectedArena_R = RandomArena then let selectedArena_W = 0 : goto ArenaSelectRightSound
           dim ASR_arena = temp2
           let ASR_arena = selectedArena_R
           let ASR_arena = ASR_arena + 1
           let selectedArena_W = ASR_arena
-          rem Wrap from 255 to 0 if needed
-          if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
+          if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0 : rem Wrap from 255 to 0 if needed
 ArenaSelectRightSound
-          rem Play navigation sound
-          let ASR_soundId = SoundMenuNavigate
+          let ASR_soundId = SoundMenuNavigate : rem Play navigation sound
           let temp1 = ASR_soundId
           gosub PlaySoundEffect bank15
 ArenaSelectSkipRight
@@ -126,17 +109,14 @@ ArenaSelectSkipRight
           rem Position: center of screen (X=80 for tens, X=88 for ones,
           rem   Y=20)
           rem Note: Tens digit only shown for arenas 10-32 (tensDigit >
-          rem   0)
-          if selectedArena_R = RandomArena then DisplayRandomArena
+          if selectedArena_R = RandomArena then DisplayRandomArena : rem   0)
           
           rem Display arena number (selectedArena + 1 = 1-32)
           rem Convert to two-digit display: tens and ones
           rem Supports up to 32 arenas (tens digit: blank for 1-9, 1 for
-          rem   10-19, 2 for 20-29, 3 for 30-32)
-          let LS1_arenaNumber = selectedArena_R + 1
+          let LS1_arenaNumber = selectedArena_R + 1 : rem   10-19, 2 for 20-29, 3 for 30-32)
           rem arenaNumber = arena number (1-32)
-          rem Calculate tens digit
-          let LS1_tensDigit = LS1_arenaNumber / 10
+          let LS1_tensDigit = LS1_arenaNumber / 10 : rem Calculate tens digit
           rem Calculate ones digit using optimized assembly
           asm
             lda LS1_tensDigit
@@ -149,13 +129,11 @@ ArenaSelectSkipRight
             asl a
             sta LS1_multiplier
 end
-          rem multiplier = tensDigit * 10
-          let LS1_onesDigit = LS1_arenaNumber - LS1_multiplier
+          let LS1_onesDigit = LS1_arenaNumber - LS1_multiplier : rem multiplier = tensDigit * 10
           rem onesDigit = ones digit (0-9)
           
           rem Draw tens digit (player4) - only if tensDigit > 0 (for
-          rem   arenas 10-32)
-          if LS1_tensDigit > 0 then DrawTensDigit
+          if LS1_tensDigit > 0 then DrawTensDigit : rem   arenas 10-32)
           goto DoneTensDigit
 DrawTensDigit
           let LS1_digit = LS1_tensDigit
@@ -163,8 +141,7 @@ DrawTensDigit
           let LS1_yPos = 20
           let LS1_color = ColGrey(14)
           let LS1_spriteSelect = 4
-          rem Use player4 for tens digit
-          let temp1 = LS1_digit
+          let temp1 = LS1_digit : rem Use player4 for tens digit
           let temp2 = LS1_xPos
           let temp3 = LS1_yPos
           let temp4 = LS1_color
@@ -172,12 +149,10 @@ DrawTensDigit
           gosub DrawDigit bank1
 DoneTensDigit
           
-          rem Draw ones digit (player5)
-          let LS1_digit = LS1_onesDigit
+          let LS1_digit = LS1_onesDigit : rem Draw ones digit (player5)
           let LS1_xPos = 88
           let LS1_spriteSelect = 5
-          rem Use player5 for ones digit
-          let temp1 = LS1_digit
+          let temp1 = LS1_digit : rem Use player5 for ones digit
           let temp2 = LS1_xPos
           let temp3 = LS1_yPos
           let temp4 = LS1_color
@@ -194,46 +169,34 @@ DisplayRandomArena
           dim DRA_spriteSelect = temp5
           rem Display ?? for random arena
           rem Use player4 and player5 for two question marks
-          rem Question mark is digit 10 (hex A) in font
-          let DRA_digit = 10
-          rem Question mark digit
-          let DRA_xPos = 80
-          rem X position for first ?
-          let DRA_yPos = 20
-          rem Y position
-          let DRA_color = ColGrey(14)
-          rem White
-          let DRA_spriteSelect = 4
-          rem Use player4
-          let temp1 = DRA_digit
+          let DRA_digit = 10 : rem Question mark is digit 10 (hex A) in font
+          let DRA_xPos = 80 : rem Question mark digit
+          let DRA_yPos = 20 : rem X position for first ?
+          let DRA_color = ColGrey(14) : rem Y position
+          let DRA_spriteSelect = 4 : rem White
+          let temp1 = DRA_digit : rem Use player4
           let temp2 = DRA_xPos
           let temp3 = DRA_yPos
           let temp4 = DRA_color
           let temp5 = DRA_spriteSelect
           gosub DrawDigit bank1
           
-          rem Second question mark
-          let DRA_xPos = 88
-          rem X position for second ?
-          let DRA_spriteSelect = 5
-          rem Use player5
-          let temp2 = DRA_xPos
+          let DRA_xPos = 88 : rem Second question mark
+          let DRA_spriteSelect = 5 : rem X position for second ?
+          let temp2 = DRA_xPos : rem Use player5
           let temp5 = DRA_spriteSelect
           gosub DrawDigit bank1
           
 DisplayDone
           
-          rem Handle fire button press (confirm selection, start game)
-          if joy0fire then ArenaSelectConfirm
+          if joy0fire then ArenaSelectConfirm : rem Handle fire button press (confirm selection, start game)
           goto ArenaSelectSkipConfirm
 ArenaSelectConfirm
           dim ASC_soundId = temp1
-          rem Play selection sound
-          let ASC_soundId = SoundMenuSelect
+          let ASC_soundId = SoundMenuSelect : rem Play selection sound
           let temp1 = ASC_soundId
           gosub PlaySoundEffect bank15
-          rem tail call
-          goto StartGame1
+          goto StartGame1 : rem tail call
 ArenaSelectSkipConfirm
           
           rem drawscreen called by MainLoop
@@ -247,14 +210,10 @@ CheckQuadtariFireHold
           rem Output: temp1 = 1 if any Quadtari fire button pressed, 0 otherwise
           rem Mutates: temp1 (fire pressed flag)
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelect1 (called via goto)
-          dim CQFH_firePressed = temp1
-          rem Check Player 3 and 4 fire buttons (Quadtari)
-          if !INPT0{7} then let CQFH_firePressed = 1
-          rem Player 3 fire button (left port, odd frame)
-          if !INPT2{7} then let CQFH_firePressed = 1
-          rem Player 4 fire button (right port, odd frame)
-          let temp1 = CQFH_firePressed
+          dim CQFH_firePressed = temp1 : rem Constraints: Must be colocated with ArenaSelect1 (called via goto)
+          if !INPT0{7} then let CQFH_firePressed = 1 : rem Check Player 3 and 4 fire buttons (Quadtari)
+          if !INPT2{7} then let CQFH_firePressed = 1 : rem Player 3 fire button (left port, odd frame)
+          let temp1 = CQFH_firePressed : rem Player 4 fire button (right port, odd frame)
           return
 
 ReturnToCharacterSelect
@@ -263,8 +222,7 @@ ReturnToCharacterSelect
           rem Output: gameMode set to ModeCharacterSelect, ChangeGameMode called
           rem Mutates: fireHoldTimer_W (reset to 0), gameMode (global)
           rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
-          rem Constraints: Must be colocated with ArenaSelect1
-          let fireHoldTimer_W = 0
+          let fireHoldTimer_W = 0 : rem Constraints: Must be colocated with ArenaSelect1
           let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
           return
@@ -275,13 +233,12 @@ StartGame1
           rem Output: gameMode set to ModeGame, ChangeGameMode called
           rem Mutates: gameMode (global)
           rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
-          rem Constraints: Must be colocated with ArenaSelect1
-          let gameMode = ModeGame
+          let gameMode = ModeGame : rem Constraints: Must be colocated with ArenaSelect1
           gosub ChangeGameMode bank14
           return
 
-          rem Character Display And Animation
           rem
+          rem Character Display And Animation
           
 ArenaSelectUpdateAnimations
           rem Update idle animations for all selected characters
@@ -293,21 +250,16 @@ ArenaSelectUpdateAnimations
           rem Called Routines: ArenaSelectUpdatePlayerAnim - accesses frame counter
           rem Constraints: Must be colocated with ArenaSelectSkipPlayer0Anim, ArenaSelectSkipPlayer1Anim,
           rem              ArenaSelectSkipPlayer2Anim, ArenaSelectSkipPlayer23Anim,
-          rem              ArenaSelectUpdatePlayerAnim (all called via goto)
-          dim ASUA_playerIndex = temp1
+          dim ASUA_playerIndex = temp1 : rem              ArenaSelectUpdatePlayerAnim (all called via goto)
           dim ASUA_animFrame = temp2
           rem Update idle animations for all selected characters
           rem Each player updates independently with simple frame
           rem   counter
           
-          rem Update Player 1 animation (if character selected)
-          if selectedChar1 = 255 then ArenaSelectSkipPlayer0Anim
-          rem NoCharacter = 255
-          if selectedChar1 = 254 then ArenaSelectSkipPlayer0Anim
-          rem CPUCharacter = 254
-          if selectedChar1 = 253 then ArenaSelectSkipPlayer0Anim
-          rem RandomCharacter = 253
-          let ASUA_playerIndex = 0
+          if selectedChar1 = 255 then ArenaSelectSkipPlayer0Anim : rem Update Player 1 animation (if character selected)
+          if selectedChar1 = 254 then ArenaSelectSkipPlayer0Anim : rem NoCharacter = 255
+          if selectedChar1 = 253 then ArenaSelectSkipPlayer0Anim : rem CPUCharacter = 254
+          let ASUA_playerIndex = 0 : rem RandomCharacter = 253
           gosub ArenaSelectUpdatePlayerAnim
           
 ArenaSelectSkipPlayer0Anim
@@ -317,8 +269,7 @@ ArenaSelectSkipPlayer0Anim
           rem Mutates: None
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelectUpdateAnimations
-          rem Update Player 2 animation (if character selected)
-          if selectedChar2_R = 255 then ArenaSelectSkipPlayer1Anim
+          if selectedChar2_R = 255 then ArenaSelectSkipPlayer1Anim : rem Update Player 2 animation (if character selected)
           if selectedChar2_R = 254 then ArenaSelectSkipPlayer1Anim
           if selectedChar2_R = 253 then ArenaSelectSkipPlayer1Anim
           let ASUA_playerIndex = 1
@@ -332,8 +283,7 @@ ArenaSelectSkipPlayer1Anim
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelectUpdateAnimations
           rem Update Player 3 animation (if Quadtari and character
-          rem   selected)
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim : rem   selected)
           if selectedChar3_R = 255 then ArenaSelectSkipPlayer2Anim
           if selectedChar3_R = 254 then ArenaSelectSkipPlayer2Anim
           if selectedChar3_R = 253 then ArenaSelectSkipPlayer2Anim
@@ -348,8 +298,7 @@ ArenaSelectSkipPlayer2Anim
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelectUpdateAnimations
           rem Update Player 4 animation (if Quadtari and character
-          rem   selected)
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim : rem   selected)
           if selectedChar4_R = 255 then ArenaSelectSkipPlayer23Anim
           if selectedChar4_R = 254 then ArenaSelectSkipPlayer23Anim
           if selectedChar4_R = 253 then ArenaSelectSkipPlayer23Anim
@@ -358,14 +307,13 @@ ArenaSelectSkipPlayer2Anim
           
 ArenaSelectSkipPlayer23Anim
           rem Skip Player 3/4 animation updates (not in 4-player mode or not selected)
+          return
+ArenaSelectUpdatePlayerAnim
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelectUpdateAnimations
-          return
-          
-ArenaSelectUpdatePlayerAnim
           rem Update idle animation frame for a single player
           rem Input: temp1 = player index (0-3)
           rem        frame (global) = frame counter
@@ -382,8 +330,7 @@ ArenaSelectUpdatePlayerAnim
           rem   arenaSelectAnimFrame[playerIndex] array
           rem For simplicity, just cycle through frames 0-7 for idle
           rem   animation
-          rem Frame updates every 8 frames (7.5fps at 60fps)
-          dim ASUPA_playerIndex = temp1
+          dim ASUPA_playerIndex = temp1 : rem Frame updates every 8 frames (7.5fps at 60fps)
           dim ASUPA_frameCounter = temp2
           let ASUPA_frameCounter = frame & 7
           rem Simple frame-based animation (cycles every 8 frames)
@@ -402,8 +349,7 @@ ArenaSelectDrawCharacters
           rem   LoadCharacterColors (bank10) - accesses color tables
           rem Constraints: Must be colocated with ArenaSelectSkipDrawP0, ArenaSelectSkipDrawP1,
           rem              ArenaSelectSkipDrawP2, ArenaSelectSkipDrawP23, ArenaSelectDrawPlayerSprite
-          rem              (all called via goto)
-          dim ASDC_playerIndex = temp1
+          dim ASDC_playerIndex = temp1 : rem              (all called via goto)
           dim ASDC_characterIndex = temp1
           dim ASDC_animationFrame = temp2
           dim ASDC_animationAction = temp3
@@ -416,8 +362,7 @@ ArenaSelectDrawCharacters
           rem Clear playfield
           pf0 = 0 : pf1 = 0 : pf2 = 0 : pf3 = 0 : pf4 = 0 : pf5 = 0
           
-          rem Draw Player 1 character (top left) if selected
-          if selectedChar1 = 255 then ArenaSelectSkipDrawP0
+          if selectedChar1 = 255 then ArenaSelectSkipDrawP0 : rem Draw Player 1 character (top left) if selected
           if selectedChar1 = 254 then ArenaSelectSkipDrawP0
           if selectedChar1 = 253 then ArenaSelectSkipDrawP0
           player0x = 56 : player0y = 40
@@ -431,8 +376,7 @@ ArenaSelectSkipDrawP0
           rem Mutates: None
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelectDrawCharacters
-          rem Draw Player 2 character (top right) if selected
-          if selectedChar2_R = 255 then ArenaSelectSkipDrawP1
+          if selectedChar2_R = 255 then ArenaSelectSkipDrawP1 : rem Draw Player 2 character (top right) if selected
           if selectedChar2_R = 254 then ArenaSelectSkipDrawP1
           if selectedChar2_R = 253 then ArenaSelectSkipDrawP1
           player1x = 104 : player1y = 40
@@ -447,8 +391,7 @@ ArenaSelectSkipDrawP1
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelectDrawCharacters
           rem Draw Player 3 character (bottom left) if Quadtari and
-          rem   selected
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23 : rem   selected
           if selectedChar3_R = 255 then ArenaSelectSkipDrawP2
           if selectedChar3_R = 254 then ArenaSelectSkipDrawP2
           if selectedChar3_R = 253 then ArenaSelectSkipDrawP2
@@ -464,8 +407,7 @@ ArenaSelectSkipDrawP2
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelectDrawCharacters
           rem Draw Player 4 character (bottom right) if Quadtari and
-          rem   selected
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23 : rem   selected
           if selectedChar4_R = 255 then ArenaSelectSkipDrawP23
           if selectedChar4_R = 254 then ArenaSelectSkipDrawP23
           if selectedChar4_R = 253 then ArenaSelectSkipDrawP23
@@ -475,14 +417,13 @@ ArenaSelectSkipDrawP2
           
 ArenaSelectSkipDrawP23
           rem Skip Player 3/4 character drawing (not in 4-player mode or not selected)
+          return
+ArenaSelectDrawPlayerSprite
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelectDrawCharacters
-          return
-          
-ArenaSelectDrawPlayerSprite
           rem Draw character sprite for specified player
           rem Input: temp1 = player index (0-3)
           rem        selectedChar1, selectedChar2_R, selectedChar3_R, selectedChar4_R (global) = character selections
@@ -493,8 +434,7 @@ ArenaSelectDrawPlayerSprite
           rem         COLUP0-COLUP3 (via LoadCharacterColors), LoadCharacterColors_* aliases (global)
           rem Called Routines: LocateCharacterArt (bank14) - accesses character art data, temp1-temp4,
           rem   LoadCharacterColors (bank10) - accesses color tables, LoadCharacterColors_* aliases
-          rem Constraints: Must be colocated with ArenaSelectDrawCharacters
-          dim ASDPS_playerIndex = temp1
+          dim ASDPS_playerIndex = temp1 : rem Constraints: Must be colocated with ArenaSelectDrawCharacters
           dim ASDPS_characterIndex = temp1
           dim ASDPS_animationFrame = temp2
           dim ASDPS_animationAction = temp3
@@ -503,23 +443,18 @@ ArenaSelectDrawPlayerSprite
           rem Input: playerIndex = player index (0-3)
           rem Uses selectedChar1-4 and player positions set by caller
           
-          rem Get character index based on player
-          if ASDPS_playerIndex = 0 then let ASDPS_characterIndex = selectedChar1
+          if ASDPS_playerIndex = 0 then let ASDPS_characterIndex = selectedChar1 : rem Get character index based on player
           if ASDPS_playerIndex = 1 then let ASDPS_characterIndex = selectedChar2_R
           if ASDPS_playerIndex = 2 then let ASDPS_characterIndex = selectedChar3_R
           if ASDPS_playerIndex = 3 then let ASDPS_characterIndex = selectedChar4_R
           
-          rem Use idle animation (action 1 = ActionIdle)
-          let ASDPS_animationAction = 1
-          rem Simple frame counter cycles 0-7
-          let ASDPS_animationFrame = frame & 7
-          rem Player number for art system
-          let ASDPS_playerNumber = ASDPS_playerIndex
+          let ASDPS_animationAction = 1 : rem Use idle animation (action 1 = ActionIdle)
+          let ASDPS_animationFrame = frame & 7 : rem Simple frame counter cycles 0-7
+          let ASDPS_playerNumber = ASDPS_playerIndex : rem Player number for art system
           
           rem Load character sprite using art location system
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
-          rem   temp3=action, temp4=player
-          let temp1 = ASDPS_characterIndex
+          let temp1 = ASDPS_characterIndex : rem temp3=action, temp4=player
           let temp2 = ASDPS_animationFrame
           let temp3 = ASDPS_animationAction
           let temp4 = ASDPS_playerNumber
@@ -527,14 +462,10 @@ ArenaSelectDrawPlayerSprite
           
           rem Set character color based on player number
           rem LoadCharacterColors expects aliases: isHurt, playerNumber,
-          rem   isFlashing, flashingMode
-          let LoadCharacterColors_isHurt = 0
-          rem Not hurt
-          let LoadCharacterColors_playerNumber = ASDPS_playerNumber
+          let LoadCharacterColors_isHurt = 0 : rem   isFlashing, flashingMode
+          let LoadCharacterColors_playerNumber = ASDPS_playerNumber : rem Not hurt
           let LoadCharacterColors_isFlashing = 0
-          rem Not flashing
-          let LoadCharacterColors_flashingMode = 0
-          rem Not flashing mode
-          gosub LoadCharacterColors bank10
+          let LoadCharacterColors_flashingMode = 0 : rem Not flashing
+          gosub LoadCharacterColors bank10 : rem Not flashing mode
           
           return

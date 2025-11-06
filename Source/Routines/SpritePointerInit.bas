@@ -1,23 +1,21 @@
+InitializeSpritePointers
+          rem
           rem ChaosFight - Source/Routines/SpritePointerInit.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-
           rem Sprite Pointer Initialization
-          rem
+          rem 
           rem Sets all sprite pointers to point to SCRAM buffers
           rem Called once at game initialization
-          rem 
+          rem
           rem RAM Buffer Layout (64 bytes total):
           rem   P0: r000-r015 ($F080-$F08F) - 16 bytes
           rem   P1: r016-r031 ($F090-$F09F) - 16 bytes
           rem   P2: r032-r047 ($F0A0-$F0AF) - 16 bytes
           rem   P3: r048-r063 ($F0B0-$F0BF) - 16 bytes
-          rem
           rem Note: Pointers are set to SCRAM read ports (r000-r063)
           rem   Kernel will automatically adjust these pointers for Y offsets
           rem   during rendering. The kernel existing pointer adjustment
           rem   logic works perfectly with RAM addresses.
-
-InitializeSpritePointers
           rem Sets all sprite pointers to point to SCRAM buffers
           rem Input: None (initialization routine)
           rem Output: player0pointerlo/hi, player1pointerlo/hi, player2pointerlo/hi,

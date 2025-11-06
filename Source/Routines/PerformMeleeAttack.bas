@@ -1,15 +1,13 @@
+PerformMeleeAttack
+          rem
           rem ChaosFight - Source/Routines/PerformMeleeAttack.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-
           rem Perform Melee Attack
-          rem
           rem Executes a melee attack for the specified player.
           rem Spawns a brief missile visual (sword, fist, etc.) and
           rem   checks for hits.
-
           rem INPUT:
           rem   temp1 = attacker player index (0-3)
-PerformMeleeAttack
           rem Executes a melee attack for the specified player
           rem Input: temp1 = attacker player index (0-3)
           rem        playerState[] (global array) = player state flags
@@ -20,11 +18,9 @@ PerformMeleeAttack
           rem         missile state (via SpawnMissile)
           rem Called Routines: SpawnMissile (bank7) - spawns missile visual for attack
           rem Constraints: None
-          rem Spawn missile visual for this attack
-          gosub SpawnMissile bank7
+          gosub SpawnMissile bank7 : rem Spawn missile visual for this attack
           
-          rem Set animation state to attacking
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted : rem Set animation state to attacking
           rem Set animation state 14 (attack execution)
           
           rem Check immediate collision with other players in melee

@@ -1,8 +1,8 @@
+          rem
           rem ChaosFight - Source/Data/SongPointers16.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem Song Pointer Data Tables - Bank 16
-          rem
           rem Compact pointer lookup tables for songs stored in Bank 16
           rem Format: data SongPointersL16, SongPointersH16 (27 entries)
           rem Songs in Bank 16: All songs except OCascadia (1) and
@@ -27,8 +27,7 @@ end
             >Song_Character30Theme_Voice0, >Song_Chaotica_Voice0, >Song_AtariToday_Voice0, >Song_Interworldly_Voice0
 end
           
-          rem Voice 1 stream pointer lookup tables for Bank 16
-          data SongPointersSecondL16
+          data SongPointersSecondL16 : rem Voice 1 stream pointer lookup tables for Bank 16
             <Song_Bernie_Voice1, <Song_EXO_Voice1, <Song_Grizzards_Voice1,
             <Song_MagicalFairyForce_Voice1, <Song_Bolero_Voice1, <Song_LowRes_Voice1, <Song_RoboTito_Voice1, <Song_SongOfTheBear_Voice1,
             <Song_DucksAway_Voice1, <Song_Character16Theme_Voice1, <Song_Character17Theme_Voice1, <Song_Character18Theme_Voice1, <Song_Character19Theme_Voice1,
@@ -47,8 +46,8 @@ end
 
 
           
-          rem Song Pointer Data Tables - Bank 16
           rem
+          rem Song Pointer Data Tables - Bank 16
           rem Compact pointer lookup tables for songs stored in Bank 16
           rem Format: data SongPointersL16, SongPointersH16 (27 entries)
           rem Songs in Bank 16: All songs except OCascadia (1) and
@@ -73,8 +72,7 @@ end
             >Song_Character30Theme_Voice0, >Song_Chaotica_Voice0, >Song_AtariToday_Voice0, >Song_Interworldly_Voice0
 end
           
-          rem Voice 1 stream pointer lookup tables for Bank 16
-          data SongPointersSecondL16
+          data SongPointersSecondL16 : rem Voice 1 stream pointer lookup tables for Bank 16
             <Song_Bernie_Voice1, <Song_EXO_Voice1, <Song_Grizzards_Voice1,
             <Song_MagicalFairyForce_Voice1, <Song_Bolero_Voice1, <Song_LowRes_Voice1, <Song_RoboTito_Voice1, <Song_SongOfTheBear_Voice1,
             <Song_DucksAway_Voice1, <Song_Character16Theme_Voice1, <Song_Character17Theme_Voice1, <Song_Character18Theme_Voice1, <Song_Character19Theme_Voice1,

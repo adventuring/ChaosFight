@@ -15,8 +15,8 @@
 #include "Source/Generated/Ursulo.bas"
 #include "Source/Generated/Shamone.bas"
 
+          asm
           rem Character art lookup routines for Bank 3 (characters 8-15
           rem   and 24-31)
-          asm
 #include "Source/Routines/CharacterArtBank3.s"
 end

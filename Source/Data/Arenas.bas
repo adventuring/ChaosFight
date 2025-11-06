@@ -1,7 +1,8 @@
+ArenaColorsBW
+          rem
           rem ChaosFight - Source/Data/Arenas.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Arena playfield data (not generated - edit manually)
-
           rem Arena Data - Pure Data Format
           rem
           rem Game arenas: 16 pixels wide (left half) mirrored, 8 rows
@@ -9,17 +10,14 @@
           rem Memory constraint: 8 rows × 4 bytes = 32 bytes
           rem   (var96-var127)
           rem Use X for solid, . = empty
-          rem
           rem Each arena has:
           rem   - ArenaXPlayfield: playfield pixel data
+          rem
           rem - ArenaXColorsColor: row colors for Color mode
           rem   (switchbw=0)
           rem All arenas share ArenaColorsBW for B&W mode
-
           rem Shared B&w Color Definition
-          rem
           rem All arenas use the same B&W colors (all white)
-ArenaColorsBW
           pfcolors:
           ColGrey(14)
           ColGrey(14)
@@ -31,8 +29,8 @@ ArenaColorsBW
           ColGrey(14)
 end
 
-          rem Arena Playfields (32 Arenas: Indices 0-31)
           rem
+          rem Arena Playfields (32 Arenas: Indices 0-31)
 Arena0Playfield
           playfield:
           XXXXXXXXXXXXXXXX
@@ -832,8 +830,8 @@ Arena31Colors
           ColGrey(8)
 end
 
-          rem Arena Pointer Tables
           rem
+          rem Arena Pointer Tables
           rem Playfield pointer lookup tables for efficient arena loading
           rem Format: 32 entries (indices 0-31) for Arena0-Arena31
           rem Note: PF1 and PF2 both point to the same ArenaNPlayfield

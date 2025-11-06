@@ -23,6 +23,7 @@
           rem Physics collision detection moved from Bank 8
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 
+          asm
           rem Titlescreen graphics and kernel (moved from Bank 1)
           rem Titlescreen graphics for admin screens (48×42 bitmaps)
           rem Override window values AFTER includes for correct per-screen display
@@ -43,7 +44,6 @@
           rem   SetTitleWindowValues to set runtime window values before drawing.
           rem   Kernel checks runtime variables first, falling back to compile-time
           rem   constants if runtime variables not defined.
-          asm
 #include "Source/Generated/Art.AtariAge.s"
 end
           asm

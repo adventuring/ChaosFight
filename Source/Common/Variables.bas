@@ -11,18 +11,18 @@
           rem - MULTISPRITE KERNEL: Playfield data is stored in ROM (not
           rem   RAM), so playfield uses ZERO bytes of RAM
           rem This means ALL 128 bytes of SCRAM (r000-r127/w000-w127)
+          rem
           rem   are available at all times!
           rem NOTE: Multisprite playfield is symmetrical
           rem   (repeated/reflected), not asymmetrical
 
           rem Variable Memory Layout - Dual Context System
-          rem
           
+          rem
           rem ChaosFight uses TWO memory contexts that never overlap:
           rem 1. Admin Mode: Title, preludes, character select, falling
           rem   in, arena select, winner (GameModes 0,1,2,3,4,5,7)
           rem   2. Game Mode: Gameplay only (GameMode 6)
-          rem
           rem CRITICAL KERNEL LIMITATION:
           rem batariBASIC sets kernel at COMPILE TIME - cannot switch at
           rem   runtime!
@@ -50,20 +50,20 @@
           rem SuperChip RAM (SCRAM): r000-r127/w000-w127 ($1000-$107F
           rem   physical RAM) = 128 bytes
           rem     - r000-r127: read ports at $F080-$F0FF
+          rem   
           rem     - w000-w127: write ports at $F000-$F07F
           rem - NOTE: r000-r127 and w000-w127 map to SAME physical
           rem   128-byte SCRAM!
           rem - NOTE: There is NO var48-var127! SuperChip RAM accessed
           rem   via r000-r127/w000-w127 only!
-          rem   
           rem   MULTISPRITE KERNEL BEHAVIOR:
           rem - Playfield data is stored in ROM (ROMpf=1), NOT in RAM
+          rem
           rem - Playfield uses ZERO bytes of SCRAM - ALL 128 bytes are
           rem   available!
           rem - Playfield is symmetrical (repeated/reflected), not
           rem   asymmetrical like standard kernel
           rem - This applies to ALL screens (Admin Mode and Game Mode)
-          rem
           rem   TOTAL AVAILABLE RAM:
           rem     - Standard RAM: 74 bytes (var0-var47, a-z)
           rem - SCRAM: 128 bytes (r000-r127/w000-w127) - ALL available!
@@ -94,12 +94,12 @@
           rem - w-z: Animation vars (Admin Mode) or Missile velocities
           rem   (Game Mode)
           rem - e: console7800Detected (COMMON) - missileLifetime moved
+          rem
           rem   to SCRAM w045 to avoid conflict
           rem - selectedArena: Moved from w to w014 (SCRAM) to avoid
           rem   redim conflict
           
           rem COMMON VARS (used In BOTH Admin Mode And Game Mode)
-          rem
           rem These variables maintain their values across context
           rem   switches
           rem NOTE: All Common vars use earliest letters/digits (a, b,
@@ -108,29 +108,25 @@
           rem Built-in variables (NO DIM NEEDED - already exist in
           rem   batariBasic):
           rem temp1, temp2, temp3, temp4, temp5, temp6 - temporary
+          rem
           rem   storage
           rem   qtcontroller - Quadtari multiplexing state (0 or 1)
           rem   frame - frame counter (increments every frame)
           
           rem COMMON VARS - Standard RAM (a-z) - Sorted Alphabetically
-          rem
 
-          rem Current iteration variables (used in loops across routines)
-          dim currentPlayer = c
+          dim currentPlayer = c : rem Current iteration variables (used in loops across routines)
           rem Current player index (0-3) for iteration loops
           rem Set before calling functions that operate on a single player
           rem Used extensively in AnimationSystem, PlayerElimination,
-          rem   MovementSystem, and other routines
-          dim currentCharacter = n
+          dim currentCharacter = n : rem   MovementSystem, and other routines
           rem Current character index (0-31) for character-specific operations
           rem Set from playerChar[currentPlayer] before character operations
           rem Used in SpriteLoader, character-specific logic, etc.
           rem Reduces temp variable pressure by eliminating parameter passing
           
-          rem Game state and system flags (consolidated to save RAM)
-          dim gameMode = p
-          rem Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
-          dim systemFlags = f
+          dim gameMode = p : rem Game state and system flags (consolidated to save RAM)
+          dim systemFlags = f : rem Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
           rem System flags (packed byte):
           rem   Bit 7: 7800 console detected (SystemFlag7800 = $80)
           rem   Bit 6: Color/B&W override active (SystemFlagColorBWOverride = $40, 7800 only)
@@ -139,8 +135,7 @@
           rem   Bit 3: Game state ending (SystemFlagGameStateEnding = $08, 0=normal, 1=ending)
           rem   Bits 0-2: Reserved for future use
           rem NOTE: Previously separate variables (console7800Detected, colorBWOverride,
-          rem   pauseButtonPrev, gameState) are now consolidated into this byte
-          dim controllerStatus = h
+          dim controllerStatus = h : rem   pauseButtonPrev, gameState) are now consolidated into this byte
           rem Packed controller status bits: $80=Quadtari,
           rem   $01=LeftGenesis, $02=LeftJoy2b+, $04=RightGenesis,
           rem   $08=RightJoy2b+
@@ -148,18 +143,15 @@
           rem   temp1 (local scope only)
           
           rem Character selection results (set during ADMIN, read during
-          rem   GAME)
-          dim playerChar = j    
-          rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
-          dim playerDamage_W = w067
+          dim playerChar = j : rem   GAME)
+          dim playerDamage_W = w067 : rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
           dim playerDamage_R = r067
           dim playerDamage = playerDamage_W
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 base damage per player
           rem (4 bytes: w067-w070) - SCRAM for low-frequency access
           rem Moved from w050-w053 to w067-w070 to avoid conflict with
           rem   playerSubpixelX[0-3] (w049-w056) in Game Mode
-          rem Array accessible as playerDamage[0] through playerDamage[3]
-          dim playerLocked = e
+          dim playerLocked = e : rem Array accessible as playerDamage[0] through playerDamage[3]
           rem Bit-packed: 2 bits per player (4 players × 2 bits = 8 bits = 1 byte)
           rem Bits 0-1: Player 0 locked state (0=unlocked, 1=normal, 2=handicap)
           rem Bits 2-3: Player 1 locked state
@@ -167,16 +159,14 @@
           rem Bits 6-7: Player 3 locked state
           rem NOTE: Use helper functions GetPlayerLocked/SetPlayerLocked to access
           rem   (see Source/Routines/PlayerLockedHelpers.bas)
-          rem Previously used 4 bytes (n,o,p,q) - now consolidated to 1 byte (e)
-          dim selectedChar1 = s
+          dim selectedChar1 = s : rem Previously used 4 bytes (n,o,p,q) - now consolidated to 1 byte (e)
           rem selectedChar2, selectedChar3, and selectedChar4 moved to
           rem   SuperChip RAM to avoid conflicts
           rem OPTIMIZED: Moved from w001-w003 to w084-w086 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: These are REDIMMED with Admin Mode char select anim
           rem   variables - safe since selectedChar* are only read once at
-          rem   game start (BeginGameLoop), then copied to PlayerChar array
-          dim selectedChar2_W = w084
+          dim selectedChar2_W = w084 : rem   game start (BeginGameLoop), then copied to PlayerChar array
           dim selectedChar2_R = r084
           dim selectedChar3_W = w085
           dim selectedChar3_R = r085
@@ -188,8 +178,7 @@
           rem Console switch handling (used in both Admin Mode and Game
           rem   Mode)
           rem OPTIMIZED: Moved from w008 to w012 to free space for
-          rem   PlayerFrameBuffer (w000-w063)
-          dim colorBWPrevious_W = w012
+          dim colorBWPrevious_W = w012 : rem   PlayerFrameBuffer (w000-w063)
           dim colorBWPrevious_R = r012
           
           rem Arena selection (COMMON - used in both Admin and Game
@@ -197,17 +186,15 @@
           rem NOTE: Must be in SCRAM since w is REDIMMED between
           rem   Admin/Game modes
           rem NOTE: w010 is used by harpyFlightEnergy array, so using
-          rem   w014 instead
-          dim selectedArena_W = w014
+          dim selectedArena_W = w014 : rem   w014 instead
           dim selectedArena_R = r014
           
           rem Arena Select fire button hold timer (COMMON - used in
-          rem   Admin Mode)
-          dim fireHoldTimer_W = w015
+          dim fireHoldTimer_W = w015 : rem   Admin Mode)
           dim fireHoldTimer_R = r015
           
-          rem Music/sound POINTERS - Zero Page Memory (standard Ram)
           rem
+          rem Music/sound POINTERS - Zero Page Memory (standard Ram)
           rem CRITICAL: 16-bit pointers MUST be in zero page for
           rem   indirect addressing
           rem Music and Sound never run simultaneously, so pointers can
@@ -216,16 +203,13 @@
           
           rem Music System Pointers (Admin Mode: gameMode 0-2, 7)
           rem NOTE: Music only runs in Admin Mode, so safe to use
-          rem   var39-var44
-          dim songPointerL = var39
+          dim songPointerL = var39 : rem   var39-var44
           dim songPointerH = var40
           rem Song data pointer low/high bytes (in Songs bank) - zero
-          rem   page
-          dim musicVoice0PointerL = var41
+          dim musicVoice0PointerL = var41 : rem   page
           dim musicVoice0PointerH = var42
           rem Voice 0 stream position low/high bytes (high byte = 0
-          rem   means inactive) - zero page
-          dim musicVoice1PointerL = var43
+          dim musicVoice1PointerL = var43 : rem   means inactive) - zero page
           dim musicVoice1PointerH = var44
           rem Voice 1 stream position low/high bytes (high byte = 0
           rem   means inactive) - zero page
@@ -235,23 +219,20 @@
           rem   (playerAttackCooldown[0])
           rem Uses var39, var41 (shared with Music), y,z,var45,var46
           rem Voice 0: var39+var41 (shared), SCRAM for high bytes
-          rem Voice 1: var45+var46 for pointers (zero page)
-          dim soundPointerL = var39
+          dim soundPointerL = var39 : rem Voice 1: var45+var46 for pointers (zero page)
           dim soundPointerH_W = w048
           dim soundPointerH_R = r048
           dim soundPointerH = soundPointerH_W
           rem Sound data pointer low/high bytes (in Sounds bank) - low byte
           rem   in zero page (var39), high byte in SCRAM (w048/r048)
-          rem   Moved to SCRAM to avoid conflict with charSelectAnimIndex (y)
-          dim soundEffectPointerL = var41
+          dim soundEffectPointerL = var41 : rem   Moved to SCRAM to avoid conflict with charSelectAnimIndex (y)
           dim soundEffectPointerH_W = w066
           dim soundEffectPointerH_R = r066
           dim soundEffectPointerH = soundEffectPointerH_W
           rem Sound effect Voice 0 stream position low/high bytes (high
           rem   byte = 0 means inactive) - low byte in zero page (var41),
           rem   high byte in SCRAM (w066/r066)
-          rem   Moved to SCRAM to avoid conflict with charSelectAnimFrame (z)
-          dim soundEffectPointer1L = var45
+          dim soundEffectPointer1L = var45 : rem   Moved to SCRAM to avoid conflict with charSelectAnimFrame (z)
           dim soundEffectPointer1H = var46
           rem Sound effect Voice 1 stream position low/high bytes (high
           rem   byte = 0 means inactive) - zero page
@@ -265,8 +246,7 @@
           rem OPTIMIZED: Moved from w020-w021 to w064-w065 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode playerSubpixelX - safe since
-          rem   Admin and Game Mode never run simultaneously
-          dim musicVoice0Frame_W = w064
+          dim musicVoice0Frame_W = w064 : rem   Admin and Game Mode never run simultaneously
           dim musicVoice0Frame_R = r064
           dim musicVoice0Frame = musicVoice0Frame_W
           dim musicVoice1Frame_W = w065
@@ -278,19 +258,16 @@
           rem Music System Current Song ID and Loop Pointers (SCRAM -
           rem   used in Admin Mode)
           rem OPTIMIZED: Moved from w022 to w066 to free space for
-          rem   PlayerFrameBuffer (w000-w063)
-          dim currentSongID_W = w066
+          dim currentSongID_W = w066 : rem   PlayerFrameBuffer (w000-w063)
           dim currentSongID_R = r066
           rem Current playing song ID (used to check if Chaotica for
-          rem   looping)
-          dim musicVoice0StartPointerL_W = w067
+          dim musicVoice0StartPointerL_W = w067 : rem   looping)
           dim musicVoice0StartPointerL_R = r067
           dim musicVoice0StartPointerL = musicVoice0StartPointerL_W
           dim musicVoice0StartPointerH_W = w068
           dim musicVoice0StartPointerH_R = r068
           dim musicVoice0StartPointerH = musicVoice0StartPointerH_W
-          rem Initial Voice 0 pointer for looping (Chaotica only)
-          dim musicVoice1StartPointerL_W = w069
+          dim musicVoice1StartPointerL_W = w069 : rem Initial Voice 0 pointer for looping (Chaotica only)
           dim musicVoice1StartPointerL_R = r069
           dim musicVoice1StartPointerL = musicVoice1StartPointerL_W
           dim musicVoice1StartPointerH_W = w070
@@ -304,27 +281,22 @@
           rem OPTIMIZED: Moved from w036-w039 to w071-w074 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
-          rem   Admin and Game Mode never run simultaneously
-          dim MusicVoice0TargetAUDV_W = w071
+          dim MusicVoice0TargetAUDV_W = w071 : rem   Admin and Game Mode never run simultaneously
           dim MusicVoice0TargetAUDV_R = r071
           rem Target AUDV value from note data (for envelope
-          rem   calculation)
-          dim MusicVoice1TargetAUDV_W = w072
+          dim MusicVoice1TargetAUDV_W = w072 : rem   calculation)
           dim MusicVoice1TargetAUDV_R = r072
           rem Target AUDV value from note data (for envelope
-          rem   calculation)
-          dim MusicVoice0TotalFrames_W = w073
+          dim MusicVoice0TotalFrames_W = w073 : rem   calculation)
           dim MusicVoice0TotalFrames_R = r073
           rem Total frames (Duration + Delay) when note was loaded (for
-          rem   envelope calculation)
-          dim MusicVoice1TotalFrames_W = w074
+          dim MusicVoice1TotalFrames_W = w074 : rem   envelope calculation)
           dim MusicVoice1TotalFrames_R = r074
           rem Total frames (Duration + Delay) when note was loaded (for
           rem   envelope calculation)
           
           rem Sound Effect System Frame Counters (SCRAM - used in Game
-          rem   Mode)
-          dim soundEffectFrame_W = w046
+          dim soundEffectFrame_W = w046 : rem   Mode)
           dim soundEffectFrame_R = r046
           dim soundEffectFrame = soundEffectFrame_W
           dim soundEffectFrame1_W = w047
@@ -335,12 +307,12 @@
           rem   voice (SCRAM acceptable)
 
           rem ADMIN MODE VARIABLES (may be re-used in Game Mode for
+          rem
           rem   other purposes)
           rem These variables are ONLY valid on Admin Mode screens
           rem   (GameModes 0-5,7)
           
           rem ADMIN MODE - Standard RAM (a-z) - Sorted Alphabetically
-          rem
           
           rem ADMIN: Falling animation variables (standard RAM a,b,c,d)
           rem NOTE: These are REDIMMED in Game Mode for missileX[0-3]
@@ -355,15 +327,11 @@
           rem NOTE: w,x are REDIMMED in Game Mode for missile velocities
           rem NOTE: t,u,v are ADMIN-only (not used in Game Mode)
           dim readyCount = x               
-          rem ADMIN: Count of locked players
-          dim charSelectAnimTimer = w      
+          dim charSelectAnimTimer = w : rem ADMIN: Count of locked players
           rem ADMIN: Animation frame counter (REDIM - conflicts with
-          rem   missileVelocityX in Game Mode)
-          dim charSelectAnimState = t      
-          rem ADMIN: Current animation state (ADMIN-only, no conflict)
-          dim charSelectAnimIndex = u      
-          rem ADMIN: Which character animating (ADMIN-only, no conflict)
-          dim charSelectAnimFrame = v      
+          dim charSelectAnimState = t : rem   missileVelocityX in Game Mode)
+          dim charSelectAnimIndex = u : rem ADMIN: Current animation state (ADMIN-only, no conflict)
+          dim charSelectAnimFrame = v : rem ADMIN: Which character animating (ADMIN-only, no conflict)
           rem ADMIN: Current frame in sequence (ADMIN-only, no conflict)
           
           rem ADMIN MODE - Standard RAM (var0-var47) - sorted
@@ -371,64 +339,49 @@
           
           rem ADMIN: Character selection state (var37-var38)
           rem NOTE: These are REDIMMED in Game Mode for
-          rem   playerAttackCooldown
-          dim charSelectCharIndex = var37   
+          dim charSelectCharIndex = var37 : rem   playerAttackCooldown
           rem ADMIN: Currently selected character index (0-15) for
           rem   preview (REDIMMED - Game Mode uses var37 for
-          rem   playerAttackCooldown[0])
-          dim charSelectPlayer = var38      
+          dim charSelectPlayer = var38 : rem   playerAttackCooldown[0])
           rem ADMIN: Which player is currently selecting (1-4) (REDIMMED
           rem   - Game Mode uses var38 for playerAttackCooldown[1])
           
           rem ADMIN: Arena select variables (var24-var27)
           rem NOTE: These are REDIMMED in Game Mode for animationCounter
-          rem   (var24-var27)
-          dim arenaPreviewData = var24      
+          dim arenaPreviewData = var24 : rem   (var24-var27)
           rem ADMIN: Arena preview state (REDIMMED - Game Mode uses
-          rem   var24 for animationCounter[0])
-          dim arenaScrollOffset = var25     
+          dim arenaScrollOffset = var25 : rem   var24 for animationCounter[0])
           rem ADMIN: Scroll position (REDIMMED - Game Mode uses var25
-          rem   for animationCounter[1])
-          dim arenaCursorPos = var26        
+          dim arenaCursorPos = var26 : rem   for animationCounter[1])
           rem ADMIN: Cursor position (REDIMMED - Game Mode uses var26
-          rem   for animationCounter[2])
-          dim arenaConfirmTimer = var27     
+          dim arenaConfirmTimer = var27 : rem   for animationCounter[2])
           rem ADMIN: Confirmation timer (REDIMMED - Game Mode uses var27
           rem   for animationCounter[3])
 
           rem ADMIN: Prelude screen variables (var28-var32)
           rem NOTE: These are REDIMMED in Game Mode for playerVelocityY
-          rem   (8.8 fixed-point, uses var28-var35)
-          dim preambleTimer = var28         
+          dim preambleTimer = var28 : rem   (8.8 fixed-point, uses var28-var35)
           rem ADMIN: Screen timer (REDIMMED - Game Mode uses var28-var31
-          rem   for playerVelocityY high bytes)
-          dim preambleState = var29         
+          dim preambleState = var29 : rem   for playerVelocityY high bytes)
           rem ADMIN: Which prelude (REDIMMED - Game Mode uses var29 for
-          rem   playerVelocityY[1] high byte)
-          dim musicPlaying = var30          
+          dim musicPlaying = var30 : rem   playerVelocityY[1] high byte)
           rem ADMIN: Music status (REDIMMED - Game Mode uses var30 for
-          rem   playerVelocityY[2] high byte)
-          dim musicPosition = var31         
+          dim musicPosition = var31 : rem   playerVelocityY[2] high byte)
           rem ADMIN: Current note (REDIMMED - Game Mode uses var31 for
-          rem   playerVelocityY[3] high byte)
-          dim musicTimer = var32            
+          dim musicTimer = var32 : rem   playerVelocityY[3] high byte)
           rem ADMIN: Music frame counter (REDIMMED - Game Mode uses
           rem   var32-var35 for playerVelocityY low bytes)
 
           rem ADMIN: Title screen parade (var33-var36)
           rem NOTE: These are REDIMMED in Game Mode for
           rem   currentAnimationSeq (var33-var36, but var37-var40 for
-          rem   playerAttackCooldown)
-          dim titleParadeTimer = var33     
+          dim titleParadeTimer = var33 : rem   playerAttackCooldown)
           rem ADMIN: Parade timing (REDIMMED - Game Mode uses var33 for
-          rem   currentAnimationSeq[0])
-          dim titleParadeChar = var34      
+          dim titleParadeChar = var34 : rem   currentAnimationSeq[0])
           rem ADMIN: Current parade character (REDIMMED - Game Mode uses
-          rem   var34 for currentAnimationSeq[1])
-          dim titleParadeX = var35         
+          dim titleParadeX = var35 : rem   var34 for currentAnimationSeq[1])
           rem ADMIN: Parade X position (REDIMMED - Game Mode uses var35
-          rem   for currentAnimationSeq[2])
-          dim titleParadeActive = var36    
+          dim titleParadeActive = var36 : rem   for currentAnimationSeq[2])
           rem ADMIN: Parade active flag (REDIMMED - Game Mode uses var36
           rem   for currentAnimationSeq[3])
           
@@ -438,17 +391,13 @@
           rem These override compile-time constants if kernel supports
           rem   runtime variables
           rem var20-var23 unused in Admin Mode - used for titlescreen
-          rem   window control
-          dim titlescreenWindow1 = var20
+          dim titlescreenWindow1 = var20 : rem   window control
           rem ADMIN: Runtime window value for bmp_48x2_1 (AtariAge) -
-          rem   0=hidden, 42=visible
-          dim titlescreenWindow2 = var21
+          dim titlescreenWindow2 = var21 : rem 0=hidden, 42=visible
           rem ADMIN: Runtime window value for bmp_48x2_2 (AtariAgeText)
-          rem   - 0=hidden, 42=visible
-          dim titlescreenWindow3 = var22
+          dim titlescreenWindow3 = var22 : rem - 0=hidden, 42=visible
           rem ADMIN: Runtime window value for bmp_48x2_3 (ChaosFight) -
-          rem   0=hidden, 42=visible
-          dim titlescreenWindow4 = var23
+          dim titlescreenWindow4 = var23 : rem 0=hidden, 42=visible
           rem ADMIN: Runtime window value for bmp_48x2_4 (BRP)
           rem   - 0=hidden, 42=visible
           
@@ -458,15 +407,13 @@
           rem   (GameMode 6)
 
           rem Player data arrays using batariBasic array syntax
-          rem playerX[0-3] = player1X, player2X, player3X, player4X
-          dim playerX = var0
+          dim playerX = var0 : rem playerX[0-3] = player1X, player2X, player3X, player4X
           dim player1X = var0
           dim player2X = var1
           dim player3X = var2
           dim player4X = var3
           
-          rem playerY[0-3] = player1Y, player2Y, player3Y, player4Y
-          dim playerY = var4
+          dim playerY = var4 : rem playerY[0-3] = player1Y, player2Y, player3Y, player4Y
           dim player1Y = var4
           dim player2Y = var5
           dim player3Y = var6
@@ -483,24 +430,21 @@
           rem   Bit 1: Guarding
           rem   Bit 2: Jumping
           rem   Bit 3: Recovery (hitstun)
-          rem   Bits 4-7: Animation state (0-15)
-          dim playerState = var8
+          dim playerState = var8 : rem   Bits 4-7: Animation state (0-15)
           dim player1State = var8
           dim player2State = var9
           dim player3State = var10
           dim player4State = var11
           
           rem playerHealth[0-3] = player1Health, player2Health,
-          rem   player3Health, player4Health
-          dim playerHealth = var12
+          dim playerHealth = var12 : rem   player3Health, player4Health
           dim player1Health = var12
           dim player2Health = var13
           dim player3Health = var14
           dim player4Health = var15
 
           rem playerRecoveryFrames[0-3] - Recovery/hitstun frame
-          rem   counters
-          dim playerRecoveryFrames = var16
+          dim playerRecoveryFrames = var16 : rem   counters
           dim player1RecoveryFrames = var16
           dim player2RecoveryFrames = var17
           dim player3RecoveryFrames = var18
@@ -508,14 +452,12 @@
           
           rem playerVelocityX[0-3] = 8.8 fixed-point X velocity
           rem High byte (integer part) in zero-page for fast access
-          rem   every frame
-          dim playerVelocityX = var20
+          dim playerVelocityX = var20 : rem   every frame
           dim player1VelocityX = var20
           dim player2VelocityX = var21
           dim player3VelocityX = var22
           dim player4VelocityX = var23
-          rem High bytes (integer part) in zero-page var20-var23
-          dim playerVelocityXL = var24
+          dim playerVelocityXL = var24 : rem High bytes (integer part) in zero-page var20-var23
           rem Low bytes (fractional part) in zero-page var24-var27
           rem   (freed by moving animation vars)
           rem Access: playerVelocityX[i] = high byte,
@@ -523,14 +465,12 @@
           
           rem playerVelocityY[0-3] = 8.8 fixed-point Y velocity
           rem Both high and low bytes in zero-page for fast access every
-          rem   frame
-          dim playerVelocityY = var28.8.8
+          dim playerVelocityY = var28.8.8 : rem   frame
           rem Game Mode: 8.8 fixed-point Y velocity (8 bytes) -
           rem   var28-var35 in zero-page
           rem var28-var31 = high bytes, var32-var35 = low bytes
           rem Array accessible as playerVelocityY[0-3] and
-          rem   playerVelocityYL[0-3] (all in ZPRAM!)
-          dim playerVelocityYL = var32
+          dim playerVelocityYL = var32 : rem   playerVelocityYL[0-3] (all in ZPRAM!)
           rem Low bytes (fractional part) in zero-page var32-var35
           rem Access: playerVelocityY[i] = high byte (var28-var31),
           rem   playerVelocityYL[i] = low byte (var32-var35) (both in ZPRAM!)
@@ -541,8 +481,7 @@
           rem OPTIMIZED: Moved from w049-w056 to w064-w071 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Admin Mode music variables (w064-w079) -
-          rem   safe since Admin and Game Mode never run simultaneously
-          dim playerSubpixelX_W = w064.8.8
+          dim playerSubpixelX_W = w064.8.8 : rem   safe since Admin and Game Mode never run simultaneously
           dim playerSubpixelX_R = r064.8.8
           rem Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM
           rem   w064-w071 (write), r064-r071 (read)
@@ -550,16 +489,14 @@
           rem   playerSubpixelX_WL[0-3] (write ports)
           rem Array accessible as playerSubpixelX_R[0-3] and
           rem   playerSubpixelX_RL[0-3] (read ports)
-          rem Alias for backward compatibility (defaults to write port)
-          dim playerSubpixelX = playerSubpixelX_W
+          dim playerSubpixelX = playerSubpixelX_W : rem Alias for backward compatibility (defaults to write port)
           dim playerSubpixelXL = playerSubpixelX_WL
           
           rem playerSubpixelY[0-3] = 8.8 fixed-point Y position
           rem OPTIMIZED: Moved from w057-w064 to w072-w079 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Admin Mode music variables (w064-w079) -
-          rem   safe since Admin and Game Mode never run simultaneously
-          dim playerSubpixelY_W = w072.8.8
+          dim playerSubpixelY_W = w072.8.8 : rem   safe since Admin and Game Mode never run simultaneously
           dim playerSubpixelY_R = r072.8.8
           rem Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM
           rem   w072-w079 (write), r072-r079 (read)
@@ -567,8 +504,7 @@
           rem   playerSubpixelY_WL[0-3] (write ports)
           rem Array accessible as playerSubpixelY_R[0-3] and
           rem   playerSubpixelY_RL[0-3] (read ports)
-          rem Alias for backward compatibility (defaults to write port)
-          dim playerSubpixelY = playerSubpixelY_W
+          dim playerSubpixelY = playerSubpixelY_W : rem Alias for backward compatibility (defaults to write port)
           dim playerSubpixelYL = playerSubpixelY_WL
           
           rem GAME MODE - Standard RAM (var24-var47) - sorted
@@ -579,24 +515,20 @@
           rem NOTE: Animation vars updated at 10fps (every 6 frames), so
           rem   SCRAM access cost is acceptable
           rem Freed var24-var31 and var33-var36 (12 bytes) for physics
-          rem   variables that update every frame
-          dim animationCounter_W = w077
+          dim animationCounter_W = w077 : rem   variables that update every frame
           dim animationCounter_R = r077
           rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 animation frame
-          rem   counter (4 bytes) - SCRAM w077-w080
-          dim currentAnimationFrame_W = w081
+          dim currentAnimationFrame_W = w081 : rem   counter (4 bytes) - SCRAM w077-w080
           dim currentAnimationFrame_R = r081
           rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current frame in
-          rem   sequence (4 bytes) - SCRAM w081-w084
-          dim currentAnimationSeq_W = w085
+          dim currentAnimationSeq_W = w085 : rem   sequence (4 bytes) - SCRAM w081-w084
           dim currentAnimationSeq_R = r085
           rem Game Mode: [0]=P1, [1]=P2, [2]=P3, [3]=P4 current
           rem   animation sequence (4 bytes) - SCRAM w085-w088
           
           rem Game Mode: Attack cooldown timers (var37-var40 = 4 bytes)
           rem PERFORMANCE CRITICAL: Checked every frame for attack
-          rem   availability
-          dim playerAttackCooldown = var37
+          dim playerAttackCooldown = var37 : rem   availability
           rem Array accessible as playerAttackCooldown[0] through
           rem   playerAttackCooldown[3] - ZPRAM for performance
           rem NOTE: var37-var40 used for playerAttackCooldown (Game
@@ -607,37 +539,29 @@
           rem NOTE: These are accessed infrequently (elimination/win
           rem   screen only), safe in SCRAM
           rem Moved from var24-var31 to SCRAM to free ZPRAM for
-          rem   animation vars
-          dim playersRemaining_W = w016
+          dim playersRemaining_W = w016 : rem   animation vars
           dim playersRemaining_R = r016
           rem Game Mode: Count of active players (SCRAM - low frequency
-          rem   access)
-          dim gameEndTimer_W = w018
+          dim gameEndTimer_W = w018 : rem   access)
           dim gameEndTimer_R = r018
-          rem Game Mode: Countdown to game end screen (SCRAM)
-          dim eliminationEffectTimer_W = w019
+          dim eliminationEffectTimer_W = w019 : rem Game Mode: Countdown to game end screen (SCRAM)
           dim eliminationEffectTimer_R = r019
           rem Game Mode: Visual effect timers (single byte, bits for
-          rem   each player) (SCRAM)
-          dim eliminationOrder_W = w040
+          dim eliminationOrder_W = w040 : rem   each player) (SCRAM)
           dim eliminationOrder_R = r040
           rem Game Mode: Order players were eliminated [0-3] (packed
-          rem   into 4 bits) (SCRAM)
-          dim eliminationCounter_W = w041
+          dim eliminationCounter_W = w041 : rem   into 4 bits) (SCRAM)
           dim eliminationCounter_R = r041
-          rem Game Mode: Counter for elimination sequence (SCRAM)
-          dim winnerPlayerIndex_W = w042
+          dim winnerPlayerIndex_W = w042 : rem Game Mode: Counter for elimination sequence (SCRAM)
           dim winnerPlayerIndex_R = r042
-          rem Game Mode: Index of winning player (0-3) (SCRAM)
-          dim displayRank_W = w043
+          dim displayRank_W = w043 : rem Game Mode: Index of winning player (0-3) (SCRAM)
           dim displayRank_R = r043
-          rem Game Mode: Current rank being displayed (1-4) (SCRAM)
-          dim winScreenTimer_W = w044
+          dim winScreenTimer_W = w044 : rem Game Mode: Current rank being displayed (1-4) (SCRAM)
           dim winScreenTimer_R = r044
+          rem
           rem Game Mode: Win screen display timer (SCRAM)
           
           rem GAME MODE - Standard RAM (a-z) - Sorted Alphabetically
-          rem
           
           rem Game Mode: Missile active flags - bit-packed into single
           rem   byte (standard RAM)
@@ -651,8 +575,7 @@
           rem Game Mode: Missile X positions [0-3] for players 1-4
           rem   (standard RAM a,b,c,d)
           rem NOTE: These are REDIMMED in Admin Mode for fall animation
-          rem   variables
-          dim missileX = a                  
+          dim missileX = a : rem   variables
           rem Array accessible as missileX[0] through missileX[3]
 
           rem Game Mode: Missile lifetime counters [0-3] - frames
@@ -663,8 +586,7 @@
           rem PERFORMANCE: Moved to SCRAM since accessed less frequently
           rem   than other missile vars
           rem NOTE: console7800Detected (COMMON) uses ’e’ in standard
-          rem   RAM, missileLifetime moved to SCRAM to avoid conflict
-          dim missileLifetime_W = w045
+          dim missileLifetime_W = w045 : rem   RAM, missileLifetime moved to SCRAM to avoid conflict
           dim missileLifetime_R = r045
           rem Game Mode: Missile lifetime array (4 bytes) - SCRAM
           rem   w045-w048 for performance
@@ -676,11 +598,9 @@
           rem NOTE: These are REDIMMED in Admin Mode for character
           rem   select animation
           rem Stored velocities for bounce calculations and physics
-          rem   updates
-          dim missileVelocityX = w
+          dim missileVelocityX = w : rem   updates
           rem Game Mode: Missile X velocity array (4 bytes) - REDIM from
-          rem   charSelectAnimTimer
-          dim missileVelocityY = x
+          dim missileVelocityY = x : rem   charSelectAnimTimer
           rem Game Mode: Missile Y velocity array (4 bytes) - REDIM from
           rem   charSelectAnimState
 
@@ -703,8 +623,7 @@
           rem This block is used for buffering player sprite data during
           rem   rendering operations
           rem Physical addresses: $F000-$F03F (write ports), $F080-$F0BF
-          rem   (read ports)
-          dim PlayerFrameBuffer_W = w000
+          dim PlayerFrameBuffer_W = w000 : rem   (read ports)
           dim PlayerFrameBuffer_R = r000
           dim PlayerFrameBuffer = PlayerFrameBuffer_W
           rem 64-byte buffer for player frame data (w000-w063)
@@ -714,8 +633,7 @@
           rem Game Mode: Missile Y positions [0-3] - using SCRAM
           rem   (SuperChip RAM)
           rem OPTIMIZED: Moved to w017-w020 to free w000-w063 for
-          rem   PlayerFrameBuffer
-          dim missileY_W = w017
+          dim missileY_W = w017 : rem   PlayerFrameBuffer
           dim missileY_R = r017
           rem NOTE: batariBASIC uses array syntax - missileY[0] =
           rem   w017/r017, missileY[1] = w018/r018, etc.
@@ -727,8 +645,7 @@
           rem SCRAM allocated since var44-var47 already used by
           rem   playerAttackCooldown
           rem OPTIMIZED: Moved from w004-w007 to w013-w016 to free space
-          rem   for PlayerFrameBuffer (w000-w063)
-          dim playerTimers_W = w013
+          dim playerTimers_W = w013 : rem   for PlayerFrameBuffer (w000-w063)
           dim playerTimers_R = r013
           dim playerTimers = playerTimers_W
           rem Game Mode: Player timers array (4 bytes) - SCRAM w013-w016
@@ -742,16 +659,14 @@
           rem NOTE: w015 conflicts with fireHoldTimer_W (COMMON Admin
           rem   Mode), but playersEliminated is GAME MODE only
           rem Using proper _W/_R suffixes to follow SCRAM conventions
-          rem   despite intentional redim
-          dim playersEliminated_W = w015
+          dim playersEliminated_W = w015 : rem   despite intentional redim
           dim playersEliminated_R = r015
           dim playersEliminated = playersEliminated_W
           rem GAME: Eliminated player bit flags (SCRAM - low frequency
           rem   access, redimmed with fireHoldTimer_W)
 
           rem Character-specific state flags for special mechanics
-          rem   (SCRAM)
-          dim characterStateFlags_W = w013
+          dim characterStateFlags_W = w013 : rem   (SCRAM)
           dim characterStateFlags_R = r013
           dim characterStateFlags = characterStateFlags_W
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 character state bits (4
@@ -762,8 +677,7 @@
           rem Bit 3-7: Reserved for future character mechanics
 
           rem Missile angular velocity for curling stone rotation
-          rem   (SCRAM)
-          dim missileAngularVel_W = w017
+          dim missileAngularVel_W = w017 : rem   (SCRAM)
           dim missileAngularVel_R = r017
           dim missileAngularVel = missileAngularVel_W
           rem [0-3] angular velocity for rotation effects (4 bytes,
@@ -771,16 +685,14 @@
 
           rem Missile NUSIZ tracking (SCRAM)
           rem Tracks NUSIZ register values for each missile (0-3) to
-          rem   ensure proper sizing
-          dim missileNUSIZ_W = w114
+          dim missileNUSIZ_W = w114 : rem   ensure proper sizing
           dim missileNUSIZ_R = r114
           rem [0-3] NUSIZ values for missiles M0-M3 (4 bytes: w114-w117)
           rem Array accessible as missileNUSIZ[0] through
           rem   missileNUSIZ[3]
 
           rem RoboTito stretch missile height tracking (SCRAM)
-          rem Tracks missile height for RoboTito stretch visual effect
-          dim missileStretchHeight_W = w118
+          dim missileStretchHeight_W = w118 : rem Tracks missile height for RoboTito stretch visual effect
           dim missileStretchHeight_R = r118
           rem [0-3] Missile height in scanlines for RoboTito stretch visual
           rem   (4 bytes: w118-w121)
@@ -797,8 +709,7 @@
           rem Set to 1 when RoboTito lands on ground, cleared when hit or
           rem   stretching upward
 
-          rem Harpy flight energy/duration counters (SCRAM)
-          dim harpyFlightEnergy_W = w009
+          dim harpyFlightEnergy_W = w009 : rem Harpy flight energy/duration counters (SCRAM)
           dim harpyFlightEnergy_R = r009
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 flight energy remaining (4
           rem   bytes: w009-w012)
@@ -807,8 +718,7 @@
           rem Array accessible as harpyFlightEnergy[0] through
           rem   harpyFlightEnergy[3]
           
-          rem Last flap frame tracker for rapid tap detection (SCRAM)
-          dim harpyLastFlapFrame_W = w023
+          dim harpyLastFlapFrame_W = w023 : rem Last flap frame tracker for rapid tap detection (SCRAM)
           dim harpyLastFlapFrame_R = r023
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 last flap frame counter (4
           rem   bytes: w023-w026)
@@ -824,8 +734,7 @@
           rem OPTIMIZED: Moved from w027 to w075 to free space for
           rem   PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode variables - safe since Admin
-          rem   and Game Mode never run simultaneously
-          dim randomSelectFlags_W = w075
+          dim randomSelectFlags_W = w075 : rem   and Game Mode never run simultaneously
           dim randomSelectFlags_R = r075
           rem Bit 7 = handicap flag (1 if down+fire was held), bits 0-6
           rem   unused
@@ -837,8 +746,7 @@
           rem OPTIMIZED: Moved from w028-w031 to w076-w079 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
-          rem   Admin and Game Mode never run simultaneously
-          dim charSelectPlayerAnimFrame_W = w076
+          dim charSelectPlayerAnimFrame_W = w076 : rem   Admin and Game Mode never run simultaneously
           dim charSelectPlayerAnimFrame_R = r076
           rem Frame counters for idle/walk animation cycles in character
           rem   select
@@ -853,15 +761,14 @@
           rem   and Game Mode never run simultaneously
           rem NOTE: Also REDIMMED with selectedChar2/3/4 (w084-w086) -
           rem   selectedChar* are read once at game start before Admin
-          rem   charSelect anim runs again, so safe overlap
-          dim charSelectPlayerAnimSeq_W = w080
+          dim charSelectPlayerAnimSeq_W = w080 : rem   charSelect anim runs again, so safe overlap
           dim charSelectPlayerAnimSeq_R = r080
+          rem
           rem Bit 0: 0=idle, 1=walk. Toggles every 60 frames
           rem Array accessible as charSelectPlayerAnimSeq[0] through
           rem   charSelectPlayerAnimSeq[3]
 
           rem TODO / FUTURE EXPANSION
-          rem
           
           rem Note: playerDamage[0-3] now properly allocated in SCRAM
           rem   (w067-w070) - see Common Vars section above
@@ -1009,8 +916,7 @@
           rem   per attacker to avoid redundant calculations
           rem When processing an attacker, we check against 3 defenders,
           rem   so caching saves 2 redundant hitbox calculations per attacker
-          rem Uses 4 bytes: left, right, top, bottom for current attacker
-          dim cachedHitboxLeft_W = w124
+          dim cachedHitboxLeft_W = w124 : rem Uses 4 bytes: left, right, top, bottom for current attacker
           dim cachedHitboxLeft_R = r124
           dim cachedHitboxRight_W = w125
           dim cachedHitboxRight_R = r125

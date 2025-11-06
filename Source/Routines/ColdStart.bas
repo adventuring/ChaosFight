@@ -1,6 +1,7 @@
+ColdStart
+          rem
           rem ChaosFight - Source/Routines/ColdStart.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-
           rem Cold Start Initialization
           rem
           rem Proper cold start initialization sequence for batariBASIC.
@@ -14,14 +15,11 @@
           rem   - Stack initialization (SP = $FF)
           rem   - Register initialization (A = X = Y = 0)
           rem   - Decimal mode disabled (CLD)
-          rem
           rem This routine handles game-specific initialization:
           rem   1. Hardware detection (console type)
           rem   2. TIA register initialization (colors, audio)
           rem   3. Game state initialization
           rem   4. Transition to first game mode
-
-ColdStart
           rem Step 1: Detect console hardware type (7800 vs 2600)
           rem This MUST run before any code modifies $D0/$D1 registers
           rem as those registers are used for hardware detection
@@ -36,13 +34,11 @@ ColdStart
           rem   InitializeSpritePointers (bank10) - sets sprite pointer addresses,
           rem   ChangeGameMode (bank1) - sets up initial game mode
           rem Constraints: Must be entry point for cold start (called from Bank1)
-          rem              Only reachable via goto from Bank1 startup code
-          gosub ConsoleDetHW bank1
+          gosub ConsoleDetHW bank1 : rem              Only reachable via goto from Bank1 startup code
           
           rem Step 2: Initialize sprite pointers to RAM addresses
           rem Must be done before any sprite loading to ensure pointers
-          rem   point to SCRAM buffers instead of ROM
-          gosub InitializeSpritePointers bank10
+          gosub InitializeSpritePointers bank10 : rem   point to SCRAM buffers instead of ROM
           
           rem Step 3: Initialize TIA color registers to safe defaults
           rem Prevents undefined colors on cold start
@@ -62,14 +58,12 @@ ColdStart
           AUDV1 = 0
           
           rem Step 5: Initialize game state and transition to first mode
-          rem Set initial game mode (Publisher Prelude)
-          let gameMode = ModePublisherPrelude
+          let gameMode = ModePublisherPrelude : rem Set initial game mode (Publisher Prelude)
           gosub ChangeGameMode bank1
           rem ChangeGameMode calls SetupPublisherPrelude and sets up
           rem   music
           
           rem Step 6: Jump to MainLoop (in Bank 1)
           rem MainLoop will handle the game mode dispatch and frame
-          rem   rendering
-          goto MainLoop bank1
+          goto MainLoop bank1 : rem   rendering
 

@@ -1,18 +1,16 @@
+AuthorPrelude
+          rem
           rem ChaosFight - Source/Routines/AuthorPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
           rem Author Prelude Screen
-          rem
           rem Displays the Interworldly author logo/artwork with music.
           rem This is the second screen shown at cold start.
-
           rem FLOW:
           rem 1. Display 48×42 bitmap from Source/Art/Interworldly.xcf
           rem   (via titlescreen kernel)
           rem   2. Play Interworldly music
           rem   3. Wait for music completion + 0.5s OR button press
           rem   4. Transition to title screen
-
           rem BITMAP CONFIGURATION:
           rem - Size: 48×42 pixels (displayed as 48×84 scanlines in
           rem   double-height mode)
@@ -21,13 +19,10 @@
           rem   double-height)
           rem - Bitmap data stored in ROM:
           rem   Source/Generated/Art.Interworldly.s
-
           rem AVAILABLE VARIABLES:
           rem   preambleTimer - Frame counter for timing
           rem   musicPlaying - Music state flag
           rem   QuadtariDetected - For checking all controllers
-
-AuthorPrelude
           rem Per-frame author prelude display and input handling
           rem Input: joy0fire, joy1fire (hardware) = button states
           rem        controllerStatus (global) = controller detection state
@@ -45,18 +40,15 @@ AuthorPrelude
           rem   bitmap display
           
           rem Check for button press on any controller to skip
-          rem Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then AuthorPreludeComplete
+          if joy0fire then AuthorPreludeComplete : rem Use skip-over pattern to avoid complex || operator issues
           if joy1fire then AuthorPreludeComplete
           
-          rem Check Quadtari controllers if detected (inline to avoid label)
-          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete
+          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete : rem Check Quadtari controllers if detected (inline to avoid label)
           if controllerStatus & SetQuadtariDetected then if !INPT2{7} then AuthorPreludeComplete
           
           gosub UpdateMusic bank16
 
-          rem Auto-advance after music completes + 0.5s
-          if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
+          if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete : rem Auto-advance after music completes + 0.5s
 
           let preambleTimer = preambleTimer + 1
 
@@ -68,13 +60,12 @@ AuthorPreludeComplete
           rem Output: gameMode set to ModeTitle, ChangeGameMode called
           rem Mutates: gameMode (global)
           rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
-          rem Constraints: Must be colocated with AuthorPrelude
-          let gameMode = ModeTitle
+          let gameMode = ModeTitle : rem Constraints: Must be colocated with AuthorPrelude
           gosub ChangeGameMode bank14
           return
 
-          rem Bitmap Loading
           rem
+          rem Bitmap Loading
           rem Bitmap data is loaded automatically by titlescreen kernel
           rem   via includes.
           rem Generated from Source/Art/Interworldly.xcf →

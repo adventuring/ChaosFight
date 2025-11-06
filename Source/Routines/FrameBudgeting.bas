@@ -1,16 +1,14 @@
+UpdateFramePhase
+          rem
           rem ChaosFight - Source/Routines/FrameBudgeting.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
           rem Frame Budgeting System
-          rem
           rem Manages expensive operations across multiple frames to
           rem   ensure
           rem game logic never exceeds the overscan period.
-
           rem The Atari 2600 has very limited processing time per frame:
           rem   - Vertical blank: ~37 scanlines (~2400 cycles)
           rem   - Overscan: ~30 scanlines (~1950 cycles)
-
           rem Expensive operations that must be budgeted:
           rem 1. Health bar rendering (32 pfpixel calls × 4 players =
           rem   128 ops)
@@ -19,39 +17,34 @@
           rem 3. Missile collision detection (up to 4 missiles × 4
           rem   players)
           rem   4. Character animation updates (sprite data loading)
-
           rem STRATEGY:
           rem - Spread health bar updates across 4 frames (1 player per
           rem   frame)
           rem   - Check 1-2 collision pairs per frame instead of all 6
           rem   - Update missile collisions for 1-2 missiles per frame
           rem   - Update animations for 1 player per frame
-
           rem AVAILABLE VARIABLES:
           rem   frame - Global frame counter
           rem   FramePhase - Which phase of multi-frame operation (0-3)
+          rem
           rem HealthBarUpdatePlayer - Which player health bar to update
           rem CollisionCheckPair - Which collision pair to check this
           rem   frame
-
           rem Update Frame Phase
-          rem
           rem Updates the frame phase counter (0-3) used to schedule
           rem   operations.
           rem Called once per frame at the start of game loop.
-UpdateFramePhase
           rem Updates the frame phase counter (0-3) used to schedule operations
           rem Input: frame (global) = global frame counter
           rem Output: FramePhase set to frame & 3 (cycles 0, 1, 2, 3, 0, 1, 2, 3...)
           rem Mutates: FramePhase (set to frame & 3)
           rem Called Routines: None
-          rem Constraints: Called once per frame at the start of game loop
-          let FramePhase = frame & 3 
+          let FramePhase = frame & 3 : rem Constraints: Called once per frame at the start of game loop
           rem Cycle 0, 1, 2, 3, 0, 1, 2, 3...
           return
 
-          rem Budget Health Bar Rendering
           rem
+          rem Budget Health Bar Rendering
           rem Instead of drawing all 4 health bars every frame, draw
           rem   only one
           rem player health bar per frame. This reduces pfpixel
@@ -74,10 +67,8 @@ BudgetedHealthBarUpdate
           rem              CheckPlayer3HealthUpdate, DonePlayer3HealthUpdate, UpdateHealthBarPlayer0-3
           rem              (all called via goto or gosub)
           rem Determine which player to update based on frame phase
-          rem tail call
-          if FramePhase = 0 then UpdateHealthBarPlayer0
-          rem tail call
-          if FramePhase = 1 then UpdateHealthBarPlayer1
+          if FramePhase = 0 then UpdateHealthBarPlayer0 : rem tail call
+          if FramePhase = 1 then UpdateHealthBarPlayer1 : rem tail call
           if FramePhase = 2 then CheckPlayer2HealthUpdate
           goto DonePlayer2HealthUpdate
 CheckPlayer2HealthUpdate
@@ -86,8 +77,7 @@ CheckPlayer2HealthUpdate
           rem Output: Player 3 health bar updated if conditions met
           rem Mutates: temp6, COLUPF, playfield data (via UpdateHealthBarPlayer2)
           rem Called Routines: UpdateHealthBarPlayer2 (bank8) - updates Player 3 health bar
-          rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate : rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
           if selectedChar3_R = 255 then DonePlayer2HealthUpdate
           gosub UpdateHealthBarPlayer2 bank8
           return
@@ -97,8 +87,7 @@ DonePlayer2HealthUpdate
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with BudgetedHealthBarUpdate
-          if FramePhase = 3 then CheckPlayer3HealthUpdate
+          if FramePhase = 3 then CheckPlayer3HealthUpdate : rem Constraints: Must be colocated with BudgetedHealthBarUpdate
           goto DonePlayer3HealthUpdate
 CheckPlayer3HealthUpdate
           rem Check if Player 4 health bar should be updated (4-player mode, active player)
@@ -106,30 +95,27 @@ CheckPlayer3HealthUpdate
           rem Output: Player 4 health bar updated if conditions met
           rem Mutates: temp6, COLUPF, playfield data (via UpdateHealthBarPlayer3)
           rem Called Routines: UpdateHealthBarPlayer3 (bank8) - updates Player 4 health bar
-          rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate : rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
           if selectedChar4_R = 255 then DonePlayer3HealthUpdate
           gosub UpdateHealthBarPlayer3 bank8
           return
 DonePlayer3HealthUpdate
+          return
           rem Player 3 health update check complete (label only)
+UpdateHealthBarPlayer0
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate
-          return
-
           rem Update Player 1 health bar
-UpdateHealthBarPlayer0
           rem Update Player 1 health bar (FramePhase 0)
           rem Input: playerHealth[] (global array) = player health values
           rem        HealthBarMaxLength (constant) = maximum health bar length
           rem Output: COLUPF set to Player 1 color, health bar drawn
           rem Mutates: temp6 (health bar length), COLUPF (TIA register), playfield data (via DrawHealthBarRow0)
           rem Called Routines: DrawHealthBarRow0 (bank8) - draws Player 1 health bar row
-          rem Constraints: None
-          dim FB_healthBarLength = temp6
+          dim FB_healthBarLength = temp6 : rem Constraints: None
           let FB_healthBarLength = playerHealth[0] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColBlue(12)
@@ -144,8 +130,7 @@ UpdateHealthBarPlayer1
           rem Output: COLUPF set to Player 2 color, health bar drawn
           rem Mutates: temp6 (health bar length), COLUPF (TIA register), playfield data (via DrawHealthBarRow1)
           rem Called Routines: DrawHealthBarRow1 (bank8) - draws Player 2 health bar row
-          rem Constraints: None
-          dim FB_healthBarLength = temp6
+          dim FB_healthBarLength = temp6 : rem Constraints: None
           let FB_healthBarLength = playerHealth[1] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColRed(12)
@@ -160,8 +145,7 @@ UpdateHealthBarPlayer2
           rem Output: COLUPF set to Player 3 color, health bar drawn
           rem Mutates: temp6 (health bar length), COLUPF (TIA register), playfield data (via DrawHealthBarRow2)
           rem Called Routines: DrawHealthBarRow2 (bank8) - draws Player 3 health bar row
-          rem Constraints: None
-          dim FB_healthBarLength = temp6
+          dim FB_healthBarLength = temp6 : rem Constraints: None
           let FB_healthBarLength = playerHealth[2] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColYellow(12)
@@ -176,16 +160,15 @@ UpdateHealthBarPlayer3
           rem Output: COLUPF set to Player 4 color, health bar drawn
           rem Mutates: temp6 (health bar length), COLUPF (TIA register), playfield data (via DrawHealthBarRow3)
           rem Called Routines: DrawHealthBarRow3 (bank8) - draws Player 4 health bar row
-          rem Constraints: None
-          dim FB_healthBarLength = temp6
+          dim FB_healthBarLength = temp6 : rem Constraints: None
           let FB_healthBarLength = playerHealth[3] / 3
           if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
           COLUPF = ColGreen(12)
           gosub DrawHealthBarRow3 bank8
           return
 
-          rem Budget Collision Detection
           rem
+          rem Budget Collision Detection
           rem Instead of checking all 6 collision pairs every frame in
           rem   4-player
           rem mode, check 2 pairs per frame. This spreads the work
@@ -205,14 +188,11 @@ UpdateHealthBarPlayer3
           rem   Frame 2: Pairs 4, 5 (P2 vs P4, P3 vs P4)
           rem   Frame 3: Pairs 0, 1 (repeat)
 BudgetedCollisionCheck
-          rem Always check P1 vs P2 (most important)
-          gosub CheckCollisionP1vsP2
+          gosub CheckCollisionP1vsP2 : rem Always check P1 vs P2 (most important)
           
-          rem Skip other checks if not Quadtari
-          if !(controllerStatus & SetQuadtariDetected) then return
+          if !(controllerStatus & SetQuadtariDetected) then return : rem Skip other checks if not Quadtari
           
-          rem Check additional pairs based on frame phase
-          if FramePhase = 0 then CheckPhase0Collisions
+          if FramePhase = 0 then CheckPhase0Collisions : rem Check additional pairs based on frame phase
           if FramePhase = 1 then CheckPhase1Collisions
           goto DonePhase0And1Collisions
 CheckPhase0Collisions
@@ -241,9 +221,8 @@ DonePhase2Collisions
 DoneFramePhaseChecks
           return
 
-          rem Individual collision check routines
 CheckCollisionP1vsP2
-          if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
+          if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff : rem Individual collision check routines
           let temp2 = playerX[1] - playerX[0]
           goto DoneCalcP1vsP2Diff
 CalcP1vsP2AbsDiff
@@ -252,11 +231,9 @@ DoneCalcP1vsP2Diff
           if temp2 >= CollisionSeparationDistance then DonePlayerSeparation
           
           rem Separate players based on their relative positions
-          rem If P0 is left of P1, move P0 left and P1 right
-          if playerX[0] < playerX[1] then SeparateP0Left
+          if playerX[0] < playerX[1] then SeparateP0Left : rem If P0 is left of P1, move P0 left and P1 right
           
-          rem Else P0 is right of P1, move P0 right and P1 left
-          let playerX[0] = playerX[0] + 1
+          let playerX[0] = playerX[0] + 1 : rem Else P0 is right of P1, move P0 right and P1 left
           let playerX[1] = playerX[1] - 1
           goto DonePlayerSeparation
 
@@ -357,8 +334,8 @@ CheckCollisionP3vsP4Aux
           let playerX[3] = playerX[3] - 1
           return
 
-          rem Budget Missile Collision Detection
           rem
+          rem Budget Missile Collision Detection
           rem Check missile collisions for at most 2 missiles per frame.
 
           rem SCHEDULE (2-player mode):
@@ -378,8 +355,7 @@ BudgetedMissileCollisionCheck
           
           if !(controllerStatus & SetQuadtariDetected) then BudgetedMissileCollisionCheck2P
           
-          rem 4-player mode: check one missile per frame
-          let temp1 = FramePhase
+          let temp1 = FramePhase : rem 4-player mode: check one missile per frame
           rem FramePhase 0-3 maps to Game Players 0-3
           rem Calculate bit flag using O(1) array lookup: BitMask[playerIndex] (1, 2, 4, 8)
           let temp6 = BitMask[temp1]
@@ -388,12 +364,10 @@ BudgetedMissileCollisionCheck
           return
           
 BudgetedMissileCollisionCheck2P
-          rem Simple 2-player mode: alternate missiles
-          let temp1 = frame & 1
+          let temp1 = frame & 1 : rem Simple 2-player mode: alternate missiles
           rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
           rem   BitMask[playerIndex] (1, 2, 4, 8)
-          rem Calculate bit flag using O(1) array lookup:
-          let temp6 = BitMask[temp1]
+          let temp6 = BitMask[temp1] : rem Calculate bit flag using O(1) array lookup:
           let temp4 = missileActive & temp6
           if temp4 then gosub CheckAllMissileCollisions bank7
           return

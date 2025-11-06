@@ -1,18 +1,18 @@
+          rem
           rem ChaosFight - Source/Common/CharacterDefinitions.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Character Definitions
-          rem
           rem Each character definition includes:
           rem - Weight (affects jump height, movement speed, momentum,
           rem   impact resistance/force)
           rem   - Animation graphics tables and frame counts
+          rem
           rem   - Attack type (melee or ranged)
           rem   - Missile size (width × height)
           rem   - Missile emission height (on character sprite)
 
           rem CHARACTER NAMES (internal Documentation Only)
-          rem
           rem Character 0:  Bernie
           rem Character 1:  Curler
           rem Character 2:  Dragon of Storms
@@ -26,12 +26,12 @@
           rem Character 10: Ninjish Guy
           rem Character 11: Pork Chop
           rem Character 12: Radish Goblin
+          rem
           rem Character 13: Robo Tito
           rem Character 14: Ursulo
           rem Character 15: Shamone
 
           rem Character Weights
-          rem
           rem Weight values affect:
           rem   - Jump height (higher weight = lower jump)
           rem   - Movement speed (higher weight = slower)
@@ -57,8 +57,7 @@
           rem   Guy (130 lbs thin man), Pork Chop (250 lbs),
           rem Radish Goblin (50 lbs scaled daikon), Robo Tito (300 lbs
           rem   dumpster), Ursulo (220 lbs, 1.67m tall walking polar bear), Shamone (65 lbs
-          rem   Labrador)
-          data CharacterWeights
+          data CharacterWeights : rem   Labrador)
             5, 53, 100, 48,
             rem Bernie, Curler, Dragon of Storms, Zoe Ryen
             57, 100, 23, 57,
@@ -69,14 +68,13 @@
             rem Radish Goblin, Robo Tito, Ursulo, Shamone
 end
 
-          rem SAFE FALL VELOCITY THRESHOLDS (120 / Weight)
           rem
+          rem SAFE FALL VELOCITY THRESHOLDS (120 / Weight)
           rem Lookup table for safe fall velocity threshold calculation
           rem Formula: safe_velocity = 120 / weight
           rem Pre-computed for all 16 characters to avoid variable
           rem   division
-          rem Values: integer division of 120 by each character’s weight
-          data SafeFallVelocityThresholds
+          data SafeFallVelocityThresholds : rem Values: integer division of 120 by each character’s weight
             24, 2, 1, 2,
             rem Bernie(24), Curler(2), Dragon(1), Zoe(2)
             2, 1, 5, 2,
@@ -87,13 +85,12 @@ end
             rem Radish Goblin(3), Robo Tito(2), Ursulo(1), Shamone(3)
 end
 
-          rem WEIGHT DIVIDED BY 20 (for Damage Multiplier)
           rem
+          rem WEIGHT DIVIDED BY 20 (for Damage Multiplier)
           rem Lookup table for weight / 20 calculation
           rem Used for damage multiplier: damage = damage * (weight /
           rem   20)
-          rem Pre-computed to avoid variable division
-          data WeightDividedBy20
+          data WeightDividedBy20 : rem Pre-computed to avoid variable division
             0, 2, 5, 2,
             rem Bernie(0), Curler(2), Dragon(5), Zoe(2)
             2, 5, 1, 2,
@@ -104,13 +101,12 @@ end
             rem Radish Goblin(1), Robo Tito(3), Ursulo(4), Shamone(1)
 end
 
-          rem SQUARE LOOKUP TABLE (for Velocity² Calculations)
           rem
+          rem SQUARE LOOKUP TABLE (for Velocity² Calculations)
           rem Lookup table for squaring values 1-24
           rem Used for kinematic calculations: d = v² / 4
           rem Pre-computed to avoid variable multiplication
-          rem Index is value (1-24), result is value²
-          data SquareTable
+          data SquareTable : rem Index is value (1-24), result is value²
             1, 4, 9, 16, 25, 36, 49, 64,
             rem 1², 2², 3², 4², 5², 6², 7², 8²
             81, 100, 121, 144, 169, 196, 225, 256,
@@ -119,8 +115,8 @@ end
             rem 17², 18², 19², 20², 21², 22², 23², 24²
 end
 
-          rem Character Heights
           rem
+          rem Character Heights
           rem Character heights for hitbox collision detection (in
           rem   pixels)
           rem Bernie: 10 pixels, all others: 16 pixels
@@ -130,15 +126,13 @@ end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          data CharacterHeights
+          data CharacterHeights : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
             10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
 end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          data CharacterMissileWidths
+          data CharacterMissileWidths : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
             rem Bernie: no ranged attack (melee only)
             rem Curler: 4 (wide ground-based projectile)
@@ -151,8 +145,7 @@ end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          data CharacterMissileHeights
+          data CharacterMissileHeights : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
             rem Bernie: no ranged attack (melee only)
             rem Curler: 4 (tall ground-based projectile)
@@ -166,24 +159,21 @@ end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          data CharacterMissileMaxX
+          data CharacterMissileMaxX : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
             rem Ursulo uses melee (0) for claw swipe
 end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          data CharacterMissileMaxY
+          data CharacterMissileMaxY : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
             rem Ursulo uses melee (0) for claw swipe
 end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          data CharacterMissileForce
+          data CharacterMissileForce : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              3, 5, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0
             rem Fat Tony changed from 0 to 4 (ranged magic ring lasers
             rem   need force)
@@ -195,26 +185,24 @@ end
           rem melee ranged ranged ranged ranged melee melee melee ranged
           rem   melee melee melee melee melee ranged melee
           rem Note: Melee attacks show brief visual (sword, fist, etc.),
-          rem   ranged persist until hit
-          data CharacterMissileLifetime
+          data CharacterMissileLifetime : rem   ranged persist until hit
              4, 255, 255, 255, 255, 4, 5, 6, 255, 5, 4, 4, 3, 5, 5, 4
             rem Ursulo changed from 255 (ranged) to 5 (melee claw swipe)
             rem Fat Tony changed from 4 (melee) to 255 (ranged magic ring
             rem   lasers)
 end
 
-          rem Bit Mask Table For Player Index
           rem
+          rem Bit Mask Table For Player Index
           rem Bit mask values for player indices (0-3)
           rem Used for bit-flag operations on playersEliminated and
           rem   missileActive
-          rem Values: 1, 2, 4, 8 for players 0, 1, 2, 3 respectively
-          data BitMask
+          data BitMask : rem Values: 1, 2, 4, 8 for players 0, 1, 2, 3 respectively
              1, 2, 4, 8
 end
 
-          rem Character Attack Types
           rem
+          rem Character Attack Types
           rem 0 = melee, 1 = ranged
           rem Stored as bit-per-character in packed bytes (4 bytes for
           rem   up to 32 characters)
@@ -231,8 +219,7 @@ end
           rem Ursulo changed from ranged to melee (claw swipe)
           rem Harpy changed from ranged to melee (diagonal swoop, special case)
           rem Megax changed from ranged to melee (decorative missile)
-          rem NinjishGuy changed from melee to ranged (shuriken)
-          data CharacterAttackTypes
+          data CharacterAttackTypes : rem NinjishGuy changed from melee to ranged (shuriken)
               %00011110, %00000101, %00000000, %00000000
             rem Bit 0 (Bernie) = 0 (melee)
             rem Bits 1-4 (Curler, Dragon, Zoe, FatTony) = 1 (ranged)
@@ -243,15 +230,15 @@ end
             rem Bits 11-15 (Pork Chop, Radish, RoboTito, Ursulo, Shamone) = 0 (melee)
 end
 
-          rem Missile Size Definitions
           rem
+          rem Missile Size Definitions
           rem Missile dimensions (width × height) for each character
+          rem
           rem Format: width, height
           rem Melee attacks can use 0x0 if no visible missile
 
 
           rem Missile Emission Heights
-          rem
           rem Vertical offset on character sprite where missile is
           rem   emitted
           rem Values: 0-7 (top to bottom of 8-pixel tall sprite)
@@ -262,27 +249,25 @@ end
           rem Note: Curler uses 14 for emission from feet (14 pixels
           rem   from top of 16px sprite = near ground)
           rem Note: Megax uses 4 for mouth height (fire breath emission
-          rem   point)
-          data CharacterMissileEmissionHeights
+          data CharacterMissileEmissionHeights : rem   point)
              3, 14, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
 end
 
-          rem MISSILE INITIAL MOMENTUM X (horizontal Velocity)
           rem
+          rem MISSILE INITIAL MOMENTUM X (horizontal Velocity)
           rem Initial horizontal velocity of missile in pixels per frame
           rem Positive = right, Negative = left, 0 = straight up/down
           rem Values: -127 to 127
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
-          data CharacterMissileMomentumX
+          data CharacterMissileMomentumX : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 0, 0
             rem Ursulo changed from 7 to 0 (melee, no missile momentum)
 end
 
-          rem MISSILE INITIAL MOMENTUM Y (vertical Velocity)
           rem
+          rem MISSILE INITIAL MOMENTUM Y (vertical Velocity)
           rem Initial vertical velocity of missile in pixels per frame
           rem Positive = down, Negative = up, 0 = horizontal only
           rem   (arrowshot)
@@ -295,14 +280,13 @@ end
           rem N/A arrowshot ballistic arrowshot N/A N/A N/A diagonal
           rem   ballistic N/A arrowshot N/A N/A N/A melee N/A
           rem  Harpy: diagonal downward attack (positive = down)
-          rem  Ursulo: melee claw swipe (no missile momentum)
-          data CharacterMissileMomentumY
+          data CharacterMissileMomentumY : rem  Ursulo: melee claw swipe (no missile momentum)
              0, 0, -4, 0, 0, 0, 4, 0, -5, 0, 0, 0, 0, 0, 0, 0
             rem Ursulo changed from -6 to 0 (melee, no missile momentum)
 end
 
-          rem Missile Interaction Flags
           rem
+          rem Missile Interaction Flags
           rem Bit flags for missile behavior:
           rem Bit 0: Hit background (0=pass through, 1=hit and
           rem   disappear)
@@ -330,8 +314,7 @@ end
           rem   (HitBackground|Gravity) for ballistic arc
           rem Zoe Ryen = MissileFlagHitBackground = 1 (hits backgrounds
           rem   and players)
-          rem  Frooty = MissileFlagHitBackgroundAndGravity = 5
-          data CharacterMissileFlags
+          data CharacterMissileFlags : rem Frooty = MissileFlagHitBackgroundAndGravity = 5
             0, MissileFlagCurlerFull, MissileFlagHitBackgroundAndGravity, MissileFlagHitBackground, 0, 0, 0, 0, MissileFlagHitBackgroundAndGravity, 0, 0, 0, 0, 0, 0, 0
             rem 0, Curler(MissileFlagCurlerFull),
             rem   Dragon(MissileFlagHitBackgroundAndGravity),
@@ -342,8 +325,8 @@ end
             rem   (melee)
 end
 
-          rem MISSILE LIFETIME (duration)
           rem
+          rem MISSILE LIFETIME (duration)
           rem How long the missile/attack visual stays active (in
           rem   frames)
           rem For melee attacks: 3-8 frames (brief sword/punch visual)
@@ -355,13 +338,13 @@ end
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           rem AOE offset in pixels (0 = no AOE, positive = area of
-          rem   effect)
-          data CharacterAOEOffsets
+          data CharacterAOEOffsets : rem   effect)
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
-          rem Animation Sequence Definitions
+          GetCharWeightSub
           rem
+          rem Animation Sequence Definitions
           rem Animation sequences (16 total) - all use 8-frame padded
           rem   format:
           rem   0 = Standing still (facing right)
@@ -380,13 +363,11 @@ end
           rem  13 = Attack windup
           rem  14 = Attack execution
           rem  15 = Attack recovery
-
+          rem
           rem Note: All animations use 8 bytes per sequence with padding
           rem Frame counts are implicit in the data structure (all 8
           rem   frames)
-
           rem Animation Frame References
-          rem
           rem Each animation sequence consists of 1, 2, 4, or 8 frame
           rem   references
           rem Frame references are always written as 8 bytes (padded
@@ -398,13 +379,11 @@ end
           rem   2 frames: (1, 2, 1, 2, 1, 2, 1, 2)  
           rem   4 frames: (1, 2, 3, 4, 1, 2, 3, 4)
           rem   8 frames: (1, 2, 3, 4, 5, 6, 7, 8)
-
           rem Animation frame reference tables (NumCharacters characters
           rem   × 16 sequences × 8 bytes)
           rem Each character animation data is 128 bytes (16 sequences ×
           rem   8 bytes)
           rem Total: 2048 bytes for all character animations
-
           rem Standing still (1 frame)
           rem Idle (2 frames)
           rem Guarding (1 frame)
@@ -418,36 +397,32 @@ end
           rem Jumping (2 frames)
           rem Falling after jump (2 frames)
           rem Landing (2 frames)
+          rem
           rem Attack windup (2 frames)
           rem Attack execution (1 frame)
           rem Attack recovery (1 frame)
-
           rem Graphics Data Structure
-          rem
           rem Each character has:
           rem   - 8px × 16px bitmap data (16 bytes per frame)
           rem   - Frame references point to these 16-byte blocks
+          rem
           rem   - Graphics data will be loaded from ROM
           rem - Duplicate frames are compacted, gaps removed, empty
           rem   frames padded
-
           rem Character Definition Lookup Subroutines
-          rem
-
           rem Get character weight
           rem Input: character index (in temp1)
           rem Output: weight (in temp4)
           rem Note: Uses array access since data is immutable
-          GetCharWeightSub
               temp4 = CharacterWeights(temp1)
               return
 
+          GetCharAttackTypeSub
           rem Get character attack type
           rem Input: character index (in temp1)
           rem Output: attack type 0=melee, 1=ranged (in temp4)
           rem Note: Attack types are bit-packed, so we need to extract
           rem   the bit
-          GetCharAttackTypeSub
           rem Division by 8 should compile to LSR x3 (bit shift right 3
           rem   times)
           rem batariBASIC optimizes division by powers of 2 to bit
@@ -457,41 +432,42 @@ end
               temp4 = (CharacterAttackTypes(temp3) & (1 << temp2)) >> temp2
               return
 
+          GetMissileDimsSub
           rem Get missile dimensions
           rem Input: character index (in temp1)
           rem Output: width (in temp3), height (in temp4)
           rem Note: Uses array access since data is immutable
-          GetMissileDimsSub
               temp3 = CharacterMissileWidths(temp1)
               temp4 = CharacterMissileHeights(temp1)
               return
 
+          GetMissileEmissionHeightSub
           rem Get missile emission height
           rem Input: character index (in temp1)
           rem Output: emission height (in temp4)
           rem Note: Uses array access since data is immutable
-          GetMissileEmissionHeightSub
               temp4 = CharacterMissileEmissionHeights(temp1)
               return
 
+          GetMissileMomentumXSub
           rem Get missile momentum X
           rem Input: character index (in temp1)
           rem Output: momentum X (in temp4)
           rem Note: Uses array access since data is immutable
           rem Values range from -127 to 127 (signed)
-          GetMissileMomentumXSub
               temp4 = CharacterMissileMomentumX(temp1)
               return
 
+          GetMissileMomentumYSub
           rem Get missile momentum Y
           rem Input: character index (in temp1)
           rem Output: momentum Y (in temp4)
           rem Note: Uses array access since data is immutable
           rem Values range from -127 to 127 (signed)
-          GetMissileMomentumYSub
               temp4 = CharacterMissileMomentumY(temp1)
               return
 
+          GetMissileFlagsSub
           rem Get missile flags
           rem Input: character index (in temp1)
           rem Output: flags (in temp4)
@@ -501,12 +477,11 @@ end
           rem Note: Uses array access since data is immutable
           rem Use constants from Enums.bas for bitfield checking: temp5
           rem   & MissileFlagGravity
-          GetMissileFlagsSub
               temp4 = CharacterMissileFlags(temp1)
               return
 
-          rem Data Format Notes For Skylinetool Output
           rem
+          rem Data Format Notes For Skylinetool Output
 
           rem SkylineTool should emit batariBasic-compatible data in
           rem   this format:

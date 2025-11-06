@@ -80,9 +80,9 @@ UpdatePlayerMovementSingle
           let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum
           goto XNoCarry
 XCarry
-          rem Split -256 to avoid sbc #256 (256 > 255)
-          let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum - 255
-          let playerSubpixelX_WL[currentPlayer] = playerSubpixelX_WL[currentPlayer] - 1
+          rem UPS_subpixelSum is already wrapped to 0-255 (8-bit variable)
+          rem Use it directly - no need to subtract 256
+          let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum
           rem SCRAM read-modify-write: Read from r049, modify, write to
           rem   w049
           dim UPS_subpixelXRead = temp4
@@ -114,9 +114,9 @@ XNoCarry
           let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum
           goto YNoCarry
 YCarry
-          rem Split -256 to avoid sbc #256 (256 > 255)
-          let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum - 255
-          let playerSubpixelY_WL[currentPlayer] = playerSubpixelY_WL[currentPlayer] - 1
+          rem UPS_subpixelSum is already wrapped to 0-255 (8-bit variable)
+          rem Use it directly - no need to subtract 256
+          let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum
           rem SCRAM read-modify-write: Read from r057, modify, write to
           rem   w057
           dim UPS_subpixelYRead = temp4
@@ -231,9 +231,9 @@ AddVelocitySubpixelY
           let playerVelocityYL[AVSY_playerIndex] = AVSY_sum
           return
 VelocityYCarry
-          rem Split -256 to avoid sbc #256 (256 > 255)
-          let playerVelocityYL[AVSY_playerIndex] = AVSY_sum - 255
-          let playerVelocityYL[AVSY_playerIndex] = playerVelocityYL[AVSY_playerIndex] - 1
+          rem AVSY_sum is already wrapped to 0-255 (8-bit variable)
+          rem Use it directly - no need to subtract 256
+          let playerVelocityYL[AVSY_playerIndex] = AVSY_sum
           let playerVelocityY[AVSY_playerIndex] = playerVelocityY[AVSY_playerIndex] + 1
           return
 

@@ -28,18 +28,18 @@ end
           rem Formula: CharacterXXFrames_length = end_label - start_label
           rem   where end_label is .skipL0XXXX and start_label is CharacterXXFrames
           asm
-          Character24Frames_length = .skipL01656 - Character24Frames
-          Character24FrameMap_length = .skipL01657 - Character24FrameMap
-          Character25Frames_length = .skipL01662 - Character25Frames
-          Character25FrameMap_length = .skipL01663 - Character25FrameMap
-          Character26Frames_length = .skipL01668 - Character26Frames
-          Character26FrameMap_length = .skipL01669 - Character26FrameMap
-          Character27Frames_length = .skipL01674 - Character27Frames
-          Character27FrameMap_length = .skipL01675 - Character27FrameMap
-          Character28Frames_length = .skipL01680 - Character28Frames
-          Character28FrameMap_length = .skipL01681 - Character28FrameMap
-          Character29Frames_length = .skipL01686 - Character29Frames
-          Character29FrameMap_length = .skipL01687 - Character29FrameMap
-          Character30Frames_length = .skipL01692 - Character30Frames
-          Character30FrameMap_length = .skipL01693 - Character30FrameMap
-          end
+Character24Frames_length = .skipL01656 - Character24Frames
+Character24FrameMap_length = .skipL01657 - Character24FrameMap
+Character25Frames_length = .skipL01662 - Character25Frames
+Character25FrameMap_length = .skipL01663 - Character25FrameMap
+Character26Frames_length = .skipL01668 - Character26Frames
+Character26FrameMap_length = .skipL01669 - Character26FrameMap
+Character27Frames_length = .skipL01674 - Character27Frames
+Character27FrameMap_length = .skipL01675 - Character27FrameMap
+Character28Frames_length = .skipL01680 - Character28Frames
+Character28FrameMap_length = .skipL01681 - Character28FrameMap
+Character29Frames_length = .skipL01686 - Character29Frames
+Character29FrameMap_length = .skipL01687 - Character29FrameMap
+Character30Frames_length = .skipL01692 - Character30Frames
+Character30FrameMap_length = .skipL01693 - Character30FrameMap
+end

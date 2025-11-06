@@ -27,117 +27,149 @@
           rem Songs 0, 3-28 are in this bank
           
           rem ==========================================================
-          rem CHARACTER THEME SONGS (Song IDs 0, 3-25)
+          rem TEMPORARY WORKAROUND: CHARACTER THEME SONGS COMMENTED OUT
+          rem ==========================================================
+          rem ISSUE: Character theme music files are too large for Bank 16
+          rem   ROM space. This is causing build failures due to bank overflow.
+          rem
+          rem STATUS: This is a temporary workaround authorized one-time to
+          rem   unbreak the build. Character theme songs (Song IDs 0, 3-25) are
+          rem   commented out until proper ROM distribution can be implemented.
+          rem
+          rem IMPACT: 
+          rem   - Character themes will not play during gameplay
+          rem   - Music system will return null pointers for character songs
+          rem   - Admin screen songs (Chaotica, AtariToday, Interworldly) remain
+          rem     active and functional
+          rem
+          rem NEXT STEPS (when resuming this work):
+          rem   1. Analyze ROM distribution across all 16 banks
+          rem   2. Redistribute character themes to fit within available space
+          rem   3. Consider compressing or optimizing song data
+          rem   4. May need to split character themes across multiple banks
+          rem   5. Update pointer tables after distribution changes
+          rem
+          rem AFFECTED SONGS (commented out):
+          rem   Song 0: Bernie (Character 0 theme)
+          rem   Song 3: EXO (Character 3 - ZoeRyen theme)
+          rem   Song 4: Grizzards (Character 4 - FatTony theme)
+          rem   Song 5: MagicalFairyForce (Character 7 - KnightGuy theme)
+          rem   Song 6: Bolero (Character 9 - Nefertem theme)
+          rem   Song 7: LowRes (Character 10 - NinjishGuy theme)
+          rem   Song 8: RoboTito (Character 13 theme)
+          rem   Song 9: SongOfTheBear (Character 14 - Ursulo theme)
+          rem   Song 10: DucksAway (Character 15 - Shamone theme)
+          rem   Songs 11-25: Character16Theme through Character30Theme
           rem ==========================================================
           
-          rem Song 0: Bernie (Character 0 theme)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.Bernie.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.Bernie.PAL.bas"
-#endif
+          rem Song 0: Bernie (Character 0 theme) - COMMENTED OUT
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.Bernie.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.Bernie.PAL.bas"
+          rem #endif
           
-          rem Song 3: EXO (Character 3 - ZoeRyen theme)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.EXO.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.EXO.PAL.bas"
-#endif
+          rem Song 3: EXO (Character 3 - ZoeRyen theme) - COMMENTED OUT
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.EXO.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.EXO.PAL.bas"
+          rem #endif
           
-          rem Song 4: Grizzards (Character 4 - FatTony theme)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.Grizzards.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.Grizzards.PAL.bas"
-#endif
+          rem Song 4: Grizzards (Character 4 - FatTony theme) - COMMENTED OUT
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.Grizzards.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.Grizzards.PAL.bas"
+          rem #endif
           
-          rem Song 5: MagicalFairyForce (Character 7 - KnightGuy theme)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.MagicalFairyForce.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.MagicalFairyForce.PAL.bas"
-#endif
+          rem Song 5: MagicalFairyForce (Character 7 - KnightGuy theme) - COMMENTED OUT
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.MagicalFairyForce.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.MagicalFairyForce.PAL.bas"
+          rem #endif
           
-          rem Song 6: Bolero (Character 9 - Nefertem theme)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.Bolero.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.Bolero.PAL.bas"
-#endif
+          rem Song 6: Bolero (Character 9 - Nefertem theme) - COMMENTED OUT
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.Bolero.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.Bolero.PAL.bas"
+          rem #endif
           
-          rem Song 7: LowRes (Character 10 - NinjishGuy theme)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.LowRes.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.LowRes.PAL.bas"
-#endif
+          rem Song 7: LowRes (Character 10 - NinjishGuy theme) - COMMENTED OUT
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.LowRes.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.LowRes.PAL.bas"
+          rem #endif
           
-          rem Song 8: RoboTito (Character 13 theme)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.RoboTito.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.RoboTito.PAL.bas"
-#endif
+          rem Song 8: RoboTito (Character 13 theme) - COMMENTED OUT
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.RoboTito.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.RoboTito.PAL.bas"
+          rem #endif
           
-          rem Song 9: SongOfTheBear (Character 14 - Ursulo theme)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.SongOfTheBear.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.SongOfTheBear.PAL.bas"
-#endif
+          rem Song 9: SongOfTheBear (Character 14 - Ursulo theme) - COMMENTED OUT
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.SongOfTheBear.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.SongOfTheBear.PAL.bas"
+          rem #endif
           
-          rem Song 10: DucksAway (Character 15 - Shamone theme)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.DucksAway.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.DucksAway.PAL.bas"
-#endif
+          rem Song 10: DucksAway (Character 15 - Shamone theme) - COMMENTED OUT
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.DucksAway.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.DucksAway.PAL.bas"
+          rem #endif
           
-          rem Songs 11-25: Character16Theme through Character30Theme
+          rem Songs 11-25: Character16Theme through Character30Theme - COMMENTED OUT
           rem   (Placeholder themes for future characters)
-#ifdef TV_NTSC
-#include "Source/Generated/Song.Character16Theme.NTSC.bas"
-#include "Source/Generated/Song.Character17Theme.NTSC.bas"
-#include "Source/Generated/Song.Character18Theme.NTSC.bas"
-#include "Source/Generated/Song.Character19Theme.NTSC.bas"
-#include "Source/Generated/Song.Character20Theme.NTSC.bas"
-#include "Source/Generated/Song.Character21Theme.NTSC.bas"
-#include "Source/Generated/Song.Character22Theme.NTSC.bas"
-#include "Source/Generated/Song.Character23Theme.NTSC.bas"
-#include "Source/Generated/Song.Character24Theme.NTSC.bas"
-#include "Source/Generated/Song.Character25Theme.NTSC.bas"
-#include "Source/Generated/Song.Character26Theme.NTSC.bas"
-#include "Source/Generated/Song.Character27Theme.NTSC.bas"
-#include "Source/Generated/Song.Character28Theme.NTSC.bas"
-#include "Source/Generated/Song.Character29Theme.NTSC.bas"
-#include "Source/Generated/Song.Character30Theme.NTSC.bas"
-#else
-          rem PAL or SECAM: Use PAL version for both
-#include "Source/Generated/Song.Character16Theme.PAL.bas"
-#include "Source/Generated/Song.Character17Theme.PAL.bas"
-#include "Source/Generated/Song.Character18Theme.PAL.bas"
-#include "Source/Generated/Song.Character19Theme.PAL.bas"
-#include "Source/Generated/Song.Character20Theme.PAL.bas"
-#include "Source/Generated/Song.Character21Theme.PAL.bas"
-#include "Source/Generated/Song.Character22Theme.PAL.bas"
-#include "Source/Generated/Song.Character23Theme.PAL.bas"
-#include "Source/Generated/Song.Character24Theme.PAL.bas"
-#include "Source/Generated/Song.Character25Theme.PAL.bas"
-#include "Source/Generated/Song.Character26Theme.PAL.bas"
-#include "Source/Generated/Song.Character27Theme.PAL.bas"
-#include "Source/Generated/Song.Character28Theme.PAL.bas"
-#include "Source/Generated/Song.Character29Theme.PAL.bas"
-#include "Source/Generated/Song.Character30Theme.PAL.bas"
-#endif
+          rem #ifdef TV_NTSC
+          rem #include "Source/Generated/Song.Character16Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character17Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character18Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character19Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character20Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character21Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character22Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character23Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character24Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character25Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character26Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character27Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character28Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character29Theme.NTSC.bas"
+          rem #include "Source/Generated/Song.Character30Theme.NTSC.bas"
+          rem #else
+          rem   rem PAL or SECAM: Use PAL version for both
+          rem #include "Source/Generated/Song.Character16Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character17Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character18Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character19Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character20Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character21Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character22Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character23Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character24Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character25Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character26Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character27Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character28Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character29Theme.PAL.bas"
+          rem #include "Source/Generated/Song.Character30Theme.PAL.bas"
+          rem #endif
           
           rem ==========================================================
           rem ADMIN SCREEN SONGS (Song IDs 26-28)

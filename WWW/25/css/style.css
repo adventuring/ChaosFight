@@ -9,8 +9,8 @@
     --tan-light: #e8ddd0;
     --olive-light: #d1d9c0;
     --shadow-color: rgba(0, 0, 0, 0.15);
-    --text-dark: #3a3a2a;
-    --text-medium: #5a5a4a;
+    --text-dark: #000000;
+    --text-medium: #000000;
     --link-color: #6b7a4f;
     --link-hover: #4a5a2f;
 }

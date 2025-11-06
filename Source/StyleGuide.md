@@ -113,52 +113,6 @@ dim selectedArena = w014  ; ERROR: Missing _R/_W variants
 
 **Rationale**: SCRAM has separate read/write ports. Using convenience aliases without explicit `_R`/`_W` makes it unclear which port is accessed, which can lead to bugs where writes are attempted via read ports or reads via write ports.
 
-### Subroutine-Local Variables
-
-Use **XX_varName** pattern for subroutine-local temporary variables:
-- Prefix with subroutine initials (2-4 letters) followed by underscore
-- Use camelCase for the variable name portion
-
-**Examples:**
-```basic
-LoadCharacterSprite
-          dim LCS_characterIndex = temp1
-          dim LCS_animationFrame = temp2
-          dim LCS_playerNumber = temp3
-
-ApplyDamage
-          dim AD_attackerID = attackerID
-          dim AD_defenderID = defenderID
-          dim AD_damage = temp1
-```
-
-**Pattern**: `[SubroutineInitials]_[descriptiveName]`
-
-**Important**: Use **abbreviated routine names** (2-4 letters) as prefixes, not full routine names. This keeps variable names concise and readable.
-
-**Example:**
-```basic
-SpawnMissile
-          dim SM_playerIndex = temp1
-          dim SM_facing = temp4
-          dim SM_characterType = temp5
-          dim SM_bitFlag = temp6
-          rem ... subroutine body ...
-          return
-
-UpdatePlayerAnimation
-          dim UPA_animCounterRead = temp4
-          dim UPA_animFrameRead = temp2
-          rem ... subroutine body ...
-          return
-```
-
-**Pattern**: `[RoutineAbbreviation]_[descriptiveName]`
-- ✅ `UPA_animCounterRead` (UpdatePlayerAnimation → UPA)
-- ❌ `UpdatePlayerAnimation_animCounterRead` (too verbose)
-
-**Note**: This is the **only exception** to the "no abbreviations" rule. Subroutine-local variable prefixes may use abbreviations to keep names manageable, but all other names (labels, constants, global variables, etc.) must use full words.
-
 ---
 
 ## Variable Assignments
@@ -259,6 +213,8 @@ UpdatePlayerAnimation
 - ✅ `UPA_animCounterRead` (UpdatePlayerAnimation → UPA)
 - ❌ `UpdatePlayerAnimation_animCounterRead` (too verbose)
 
+**Note**: This is the **only exception** to the "no abbreviations" rule. Subroutine-local variable prefixes may use abbreviations to keep names manageable, but all other names (labels, constants, global variables, etc.) must use full words.
+
 **CRITICAL - Cross-Bank Access**: Variables with numeric prefixes (subroutine-local variables using the `XX_varName` pattern) are **local to their bank** and **will NOT be available cross-bank at all without a separate label for it**. If a subroutine needs to access a local variable from another bank, that variable must be exposed via a separate label or passed through global variables (`temp1`-`temp6` or other globals).
 
 ---
@@ -302,10 +258,11 @@ rem   and should be split across multiple lines
 ### Subroutine Documentation
 
 Every subroutine **MUST** have documentation comments immediately after the label describing:
-- **Input**: Parameters (via temp variables or globals)
-- **Output**: Return values or side effects
-- **Side Effects**: Any global state modifications
-- **Constraints**: Colocation requirements, cross-bank access limitations
+- **Input**: Parameters (via temp variables or globals), including all variables read
+- **Output**: Return values or state changes
+- **Mutates**: All variables modified, including `temp1`-`temp6` when modified
+- **Called Routines**: Subroutines called and their variable access
+- **Constraints**: Colocation requirements, cross-bank access limitations, entry point status
 
 **Format:**
 ```basic
@@ -313,8 +270,10 @@ LoadCharacterSprite
           rem Load sprite data for a character based on character index
           rem Input: temp1 = character index (0-31), temp2 = animation frame (0-7)
           rem        temp3 = player number (0-3)
+          rem        playerChar[] (global array) = player character selections
           rem Output: Sprite data loaded into appropriate player register
-          rem Side Effects: Updates player0-3pointerlo/hi and player0-3height
+          rem Mutates: temp1-temp3 (used for calculations), player sprite pointers
+          rem Called Routines: LoadSpecialSprite - accesses temp1, playerChar[]
           rem Constraints: Must be colocated with LoadSpecialSprite (called via goto)
           dim LCS_characterIndex = temp1
           rem ... implementation ...
@@ -324,8 +283,10 @@ LoadCharacterSprite
 ```basic
 ApplyDamage
           rem Apply damage from attacker to defender
-          rem Input: attackerID, defenderID (must be set before calling)
+          rem Input: attackerID (global), defenderID (global), playerDamage[] (global array)
           rem Output: Damage applied, recovery frames set, health decremented
+          rem Mutates: temp1-temp4 (used for calculations), playerHealth[], playerRecoveryFrames[]
+          rem Called Routines: SetPlayerAnimation (bank11), CheckPlayerElimination, PlayDamageSound
           rem Constraints: None
 ```
 

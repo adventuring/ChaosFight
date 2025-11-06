@@ -3,7 +3,10 @@
 
           bank 13
 
-          rem ColdStart falls through to MainLoop
+          rem ColdStart falls through to MainLoop (which is now in Bank 14)
 #include "Source/Routines/ColdStart.bas"
-#include "Source/Routines/ChangeGameMode.bas"
-#include "Source/Routines/MainLoop.bas"
+          rem ChangeGameMode.bas and MainLoop.bas moved to Bank 14
+          
+          rem Input and movement routines moved from Bank 11
+#include "Source/Routines/PlayerInput.bas"
+#include "Source/Routines/MovementSystem.bas"

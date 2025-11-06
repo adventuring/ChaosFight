@@ -14,6 +14,12 @@
 #include "Source/Routines/BeginAttractMode.bas"
 
 #include "Source/Data/SpecialSprites.bas"
+          
+          rem Special movement routines moved from Bank 11
+#include "Source/Routines/SpecialMovement.bas"
+          
+          rem Physics collision detection moved from Bank 8
+#include "Source/Routines/PlayerPhysicsCollisions.bas"
 
           rem Titlescreen kernel is included in Bank 1 (minikernel for
           rem   multisprite)

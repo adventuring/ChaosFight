@@ -20,6 +20,6 @@ AttractMode
           rem No user interaction - just transition immediately
           rem This creates a continuous attract loop: Publisher → Author
           rem   → Title → Attract → (repeat)
-          let gameMode = ModePublisherPrelude : gosub bank13 ChangeGameMode
+          let gameMode = ModePublisherPrelude : gosub bank14 ChangeGameMode
           return
 

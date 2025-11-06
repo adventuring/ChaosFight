@@ -7,3 +7,6 @@
 #include "Source/Routines/CharacterSelect.bas"
 #include "Source/Routines/CharacterData.bas"
           
+          rem Combat system moved from Bank 11
+#include "Source/Routines/Combat.bas"
+          

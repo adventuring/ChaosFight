@@ -80,7 +80,7 @@ InitPositionsDone
           rem   2=handicap (75% health)
           for currentPlayer = 0 to 3
               let GPL_playerIndex = currentPlayer
-              gosub GetPlayerLocked
+              gosub bank14 GetPlayerLocked
               if GPL_lockedState = PlayerLockedHandicap then let PlayerHealth[currentPlayer] = PlayerHealthHandicap
               if GPL_lockedState = PlayerLockedHandicap then goto PlayerHealthSet
               let PlayerHealth[currentPlayer] = PlayerHealthMax

@@ -979,6 +979,21 @@
           dim healthBarRemainder_R = r113
           rem Health bar remainder calculation (for displaying partial
           rem   bars)
+          
+          rem Cached hitbox for current attacker (SCRAM) - calculated once
+          rem   per attacker to avoid redundant calculations
+          rem When processing an attacker, we check against 3 defenders,
+          rem   so caching saves 2 redundant hitbox calculations per attacker
+          rem Uses 4 bytes: left, right, top, bottom for current attacker
+          dim cachedHitboxLeft_W = w124
+          dim cachedHitboxLeft_R = r124
+          dim cachedHitboxRight_W = w125
+          dim cachedHitboxRight_R = r125
+          dim cachedHitboxTop_W = w126
+          dim cachedHitboxTop_R = r126
+          dim cachedHitboxBottom_W = w127
+          dim cachedHitboxBottom_R = r127
+          rem Single hitbox cache (4 bytes total) - reused for each attacker
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM
           rem   to free zero-page space

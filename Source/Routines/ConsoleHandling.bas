@@ -69,7 +69,7 @@ WarmStart
           
           rem Step 6: Reset game mode to startup sequence
           let gameMode = ModePublisherPreamble
-          gosub bank13 ChangeGameMode
+          gosub bank14 ChangeGameMode
           
           rem Reset complete - return to MainLoop which will dispatch to
           rem   new mode

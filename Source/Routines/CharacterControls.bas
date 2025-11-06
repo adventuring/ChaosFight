@@ -46,19 +46,10 @@ BernieJump
           dim BJ_feetRow = temp6
           dim BJ_checkRow = temp4
           rem Convert player X position to playfield column (0-31)
-          rem Player X is in pixels (16-144), playfield is 32 columns, 4
-          rem   pixels per column
-          rem Column = (playerX[playerIndex] - ScreenInsetX) / 4
-          let BJ_pfColumn = playerX[BJ_playerIndex]
-          let BJ_pfColumn = BJ_pfColumn - ScreenInsetX
-          rem Now in range 0-128
-          let BJ_pfColumn = BJ_pfColumn / 4
-          rem Now in range 0-32 (playfield column, clamp to 0-31)
-          rem Check for wraparound: if (playerX - ScreenInsetX) wrapped negative, result ≥ 128 after division
-          rem   check explicitly for safety
-          rem Upper bound check (> 31) catches most wraparound cases, but
-          if BJ_pfColumn & $80 then let BJ_pfColumn = 0
-          if BJ_pfColumn > 31 then let BJ_pfColumn = 31
+          rem Use shared coordinate conversion subroutine
+          let temp1 = BJ_playerIndex
+          gosub ConvertPlayerXToPlayfieldColumn
+          let BJ_pfColumn = temp2
           
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
@@ -142,14 +133,10 @@ DragonetJump
           dim DJ_currentRow = temp4
           dim DJ_checkRow = temp4
           rem Fly up with playfield collision check
-          rem Check collision before moving
-          let DJ_pfColumn = playerX[DJ_playerIndex]
-          let DJ_pfColumn = DJ_pfColumn - ScreenInsetX
-          let DJ_pfColumn = DJ_pfColumn / 4
-          rem pfColumn = playfield column (0-31)
-          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
-          if DJ_pfColumn & $80 then let DJ_pfColumn = 0
-          if DJ_pfColumn > 31 then let DJ_pfColumn = 31
+          rem Check collision before moving - use shared coordinate conversion
+          let temp1 = DJ_playerIndex
+          gosub ConvertPlayerXToPlayfieldColumn
+          let DJ_pfColumn = temp2
           
           rem Check row above player (top of sprite)
           let DJ_playerY = playerY[DJ_playerIndex]

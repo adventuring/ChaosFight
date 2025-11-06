@@ -71,7 +71,7 @@ PublisherSkipQuadtari
 
 PublisherPreambleComplete
           let gameMode = ModeAuthorPreamble
-          gosub bank13 ChangeGameMode
+          gosub bank14 ChangeGameMode
           return
 
           rem ==========================================================

@@ -49,11 +49,12 @@ ColdStart
           rem Step 4: Initialize game state and transition to first mode
           rem Set initial game mode (Publisher Preamble)
           let gameMode = ModePublisherPreamble
-          gosub bank13 ChangeGameMode
+          gosub bank14 ChangeGameMode
           rem ChangeGameMode calls SetupPublisherPreamble and sets up
           rem   music
           
-          rem Step 5: Fall through to MainLoop
+          rem Step 5: Jump to MainLoop (in Bank 14)
           rem MainLoop will handle the game mode dispatch and frame
           rem   rendering
+          goto bank14 MainLoop
 

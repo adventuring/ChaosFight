@@ -130,7 +130,7 @@ FallingComplete1
           gosub bank11 BeginGameLoop
           rem Transition to Game Mode
           let gameMode = ModeGame
-          gosub bank13 ChangeGameMode
+          gosub bank14 ChangeGameMode
           return
           
           rem ==========================================================

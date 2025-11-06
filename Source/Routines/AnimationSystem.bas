@@ -43,11 +43,10 @@ AnimationSkipPlayer3
           rem updates sprite graphics via LoadPlayerSprite, handles
           rem   frame 7 transition logic
 UpdatePlayerAnimation
-          rem Skip if player is eliminated
-          if 0 = currentPlayer && playersEliminated_R & PlayerEliminatedPlayer0 then return
-          if 1 = currentPlayer && playersEliminated_R & PlayerEliminatedPlayer1 then return
-          if 2 = currentPlayer && playersEliminated_R & PlayerEliminatedPlayer2 then return
-          if 3 = currentPlayer && playersEliminated_R & PlayerEliminatedPlayer3 then return
+          rem Skip if player is eliminated - use BitMask array lookup
+          dim UPA_eliminatedMask = temp4
+          let UPA_eliminatedMask = BitMask[currentPlayer]
+          if playersEliminated_R & UPA_eliminatedMask then return
           
           rem Increment this sprite 10fps animation counter (NOT global
           rem   frame counter)

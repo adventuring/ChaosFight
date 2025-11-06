@@ -5,18 +5,19 @@
 
 #include "Source/Routines/GameLoopInit.bas"
 #include "Source/Routines/GameLoopMain.bas"
-#include "Source/Routines/Combat.bas"
 #include "Source/Routines/PerformMeleeAttack.bas"
 #include "Source/Routines/PerformRangedAttack.bas"
 #include "Source/Routines/CharacterAttacks.bas"
-          rem CharacterAttacks must be included before PlayerInput
-          rem   (which uses on-goto to call attack routines)
-#include "Source/Routines/PlayerInput.bas"
-#include "Source/Routines/AnimationSystem.bas"
-#include "Source/Routines/MovementSystem.bas"
-#include "Source/Routines/PlayerPhysics.bas"
-#include "Source/Routines/SpecialMovement.bas"
-#include "Source/Routines/PlayerRendering.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
-#include "Source/Routines/ConsoleHandling.bas"
-#include "Source/Routines/UpdateAttackCooldowns.bas"
+#include "Source/Routines/AnimationSystem.bas"
+          rem Routines moved to other banks:
+          rem   Combat.bas -> Bank 6
+          rem   PlayerInput.bas -> Bank 13
+          rem   MovementSystem.bas -> Bank 13
+          rem   PlayerPhysicsGravity.bas -> Bank 8
+          rem   PlayerPhysicsCollisions.bas -> Bank 9
+          rem   PlayerRendering.bas -> Bank 8
+          rem   AnimationSystem.bas -> Bank 11 (moved from Bank 8)
+          rem   SpecialMovement.bas -> Bank 9
+          rem   ConsoleHandling.bas -> Bank 14
+          rem   UpdateAttackCooldowns.bas -> Bank 7

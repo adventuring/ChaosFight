@@ -6,5 +6,5 @@
 #include "Source/Routines/CharacterSelectMain.bas"
 
 #include "Source/Routines/SpriteLoader.bas"
-#include "Source/Routines/SpriteLoaderCharacterArt.bas"
+          rem SpriteLoaderCharacterArt.bas moved to Bank 14
 

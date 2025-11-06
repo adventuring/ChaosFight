@@ -5,4 +5,7 @@
 
 #include "Source/Routines/MissileSystem.bas"
 #include "Source/Routines/MissileCollision.bas"
+          
+          rem Attack cooldown system moved from Bank 11
+#include "Source/Routines/UpdateAttackCooldowns.bas"
 

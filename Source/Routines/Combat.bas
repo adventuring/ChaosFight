@@ -77,32 +77,30 @@ PlayerDies
           rem Inputs: attackerID, defenderID (must be set before
           rem   calling)
           rem Returns: hit (1 = hit, 0 = miss)
+          rem Uses cached hitbox values from ProcessAttackerAttacks
+          rem   (cached once per attacker, reused for all defenders)
 CheckAttackHit
-          dim CAH_attackerID = attackerID
           dim CAH_defenderID = defenderID
-          rem Calculate attack hitbox based on attacker facing and
-          rem   attack type
-          gosub CalculateAttackHitbox
-          
+          rem Use cached hitbox values (set in ProcessAttackerAttacks)
           rem Check if defender bounding box overlaps hitbox (AABB
           rem   collision detection)
           rem playerX/playerY represent sprite top-left corner, sprite
           rem   is 16x16 pixels
           rem Defender bounding box: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
-          rem Hitbox: [hitboxLeft, hitboxRight] x [hitboxTop,
-          rem   hitboxBottom]
+          rem Hitbox: [cachedHitboxLeft, cachedHitboxRight] x [cachedHitboxTop,
+          rem   cachedHitboxBottom]
           rem Overlap occurs when: defender_right > hitboxLeft AND
           rem   defender_left < hitboxRight
           rem AND defender_bottom > hitboxTop AND defender_top <
           rem   hitboxBottom
-          if playerX[CAH_defenderID] + PlayerSpriteWidth <= hitboxLeft then NoHit
+          if playerX[CAH_defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit
           rem Defender right edge <= hitbox left edge (no overlap)
-          if playerX[CAH_defenderID] >= hitboxRight then NoHit
+          if playerX[CAH_defenderID] >= cachedHitboxRight_R then NoHit
           rem Defender left edge >= hitbox right edge (no overlap)
-          if playerY[CAH_defenderID] + PlayerSpriteHeight <= hitboxTop then NoHit
+          if playerY[CAH_defenderID] + PlayerSpriteHeight <= cachedHitboxTop_R then NoHit
           rem Defender bottom edge <= hitbox top edge (no overlap)
-          if playerY[CAH_defenderID] >= hitboxBottom then NoHit
+          if playerY[CAH_defenderID] >= cachedHitboxBottom_R then NoHit
           rem Defender top edge >= hitbox bottom edge (no overlap)
           
           rem All bounds checked - defender is inside hitbox
@@ -195,8 +193,18 @@ AreaHitbox
           rem Input: attackerID (must be set before calling)
           rem Processes attacks in all directions (facing handled by
           rem   CalculateAttackHitbox)
+          rem Caches hitbox once per attacker to avoid recalculating for
+          rem   each defender
 ProcessAttackerAttacks
           dim PAA_attackerID = attackerID
+          rem Cache hitbox for this attacker (calculated once, used for all
+          rem   defenders)
+          gosub CalculateAttackHitbox
+          let cachedHitboxLeft_W = hitboxLeft
+          let cachedHitboxRight_W = hitboxRight
+          let cachedHitboxTop_W = hitboxTop
+          let cachedHitboxBottom_W = hitboxBottom
+          
           rem Attack each defender
           for defenderID = 0 to 3
               rem Skip if defender is attacker
@@ -205,7 +213,7 @@ ProcessAttackerAttacks
               rem Skip if defender is dead
               if playerHealth[defenderID] <= 0 then NextDefender
           
-              rem Check if attack hits
+              rem Check if attack hits (uses cached hitbox)
               gosub CheckAttackHit
               if hit then gosub ApplyDamage
           

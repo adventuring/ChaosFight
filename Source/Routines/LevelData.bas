@@ -40,18 +40,18 @@ end
 
 Arena1DataColors
           pfcolors:
-          ColGrey(6)
-          ColGrey(4)
-          ColGrey(4)
-          ColGrey(2)
-          ColGrey(2)
-          ColGrey(2)
-          ColGrey(2)
-          ColGrey(2)
-          ColGrey(2)
-          ColGrey(2)
-          ColGrey(4)
-          ColGrey(6)
+ColGrey(6)
+ColGrey(4)
+ColGrey(4)
+ColGrey(2)
+ColGrey(2)
+ColGrey(2)
+ColGrey(2)
+ColGrey(2)
+ColGrey(2)
+ColGrey(2)
+ColGrey(4)
+ColGrey(6)
 end
 
 Arena2Data
@@ -72,7 +72,7 @@ end
 
 Arena2DataColors
           pfcolors:
-          ColBlue(14)
+ColBlue(14)
 ColBlue(12)
 ColBlue(10)
 ColBlue(8)

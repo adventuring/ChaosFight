@@ -40,11 +40,9 @@ AuthorPrelude
           if joy0fire then AuthorPreludeComplete
           if joy1fire then AuthorPreludeComplete
           
-          rem Check Quadtari controllers if detected
-          if controllerStatus & SetQuadtariDetected then
-            if !INPT0{7} then AuthorPreludeComplete
-            if !INPT2{7} then AuthorPreludeComplete
-          endif
+          rem Check Quadtari controllers if detected (inline to avoid label)
+          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete
+          if controllerStatus & SetQuadtariDetected then if !INPT2{7} then AuthorPreludeComplete
           
           gosub bank16 UpdateMusic
 

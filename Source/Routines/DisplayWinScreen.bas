@@ -45,11 +45,13 @@ end
           
           rem Load playfield colors based on B&W mode
           gosub DWS_GetBWMode
-          if DWS_bwMode then DWS_LoadBWColors
-          pfcolors WinnerScreenColorsColor
-          goto DWS_LoadPlayfieldDone
-DWS_LoadBWColors
+          if !DWS_bwMode then DWS_LoadColorColors
+          rem B&W mode: load B&W colors
           pfcolors WinnerScreenColorsBW
+          goto DWS_LoadPlayfieldDone
+DWS_LoadColorColors
+          rem Color mode: load color colors
+          pfcolors WinnerScreenColorsColor
 DWS_LoadPlayfieldDone
           
           rem Get players remaining count (SCRAM read)

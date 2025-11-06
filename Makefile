@@ -407,7 +407,7 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Routines/GameLoopInit.bas \
 	Source/Routines/GameLoopMain.bas \
 	Source/Routines/HealthBarSystem.bas \
-	Source/Routines/LevelSelect.bas \
+	Source/Routines/ArenaSelect.bas \
 	Source/Routines/MainLoop.bas \
 	Source/Routines/MusicSystem.bas \
 	Source/Routines/ScreenLayout.bas \

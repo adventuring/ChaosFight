@@ -69,9 +69,9 @@ GravityCheckRoboTitoDone
           if !(playerState[PAG_playerIndex] & PlayerStateBitJumping) then goto GravityNextPlayer
           
           rem Initialize or get vertical velocity (using temp variable)
-          rem Note: Vertical velocity is not persistent - we’ll track it
+          rem Note: Vertical velocity is not persistent - we will track it
           rem   per-frame
-          rem For now, we’ll apply gravity acceleration directly to
+          rem For now, we will apply gravity acceleration directly to
           rem   position
           rem TODO: Consider implementing persistent vertical velocity
           rem   tracking (Issue #599)
@@ -117,7 +117,7 @@ end
           if PAG_playfieldColumn > 31 then let PAG_playfieldColumn = 31
           if PAG_playfieldColumn < 0 then let PAG_playfieldColumn = 0
           
-          rem Calculate row where player’s feet are (bottom of sprite)
+          rem Calculate row where player feet are (bottom of sprite)
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
           let PAG_feetY = playerY[PAG_playerIndex] + PlayerSpriteHeight
           rem Divide by pfrowheight using helper
@@ -127,7 +127,7 @@ end
           rem feetRow = row where feet are
           
           dim PAG_rowBelow = temp5
-          rem Check if there’s a playfield pixel in the row below the
+          rem Check if there is a playfield pixel in the row below the
           rem   feet
           rem If feet are in row N, check row N+1 for ground
           if PAG_feetRow >= pfrows then goto GravityNextPlayer
@@ -405,9 +405,9 @@ end
           rem ==========================================================
           rem CHECK LEFT COLLISION
           rem ==========================================================
-          rem Check if player’s left edge (temp6 column) has a playfield
+          rem Check if player left edge (temp6 column) has a playfield
           rem   pixel
-          rem Check at player’s head, middle, and feet positions
+          rem Check at player head, middle, and feet positions
           if temp6 <= 0 then PFCheckRight
           rem At left edge of screen, skip check
           
@@ -467,14 +467,14 @@ end
           rem CHECK RIGHT COLLISION
           rem ==========================================================
 PFCheckRight
-          rem Check if player’s right edge has a playfield pixel
+          rem Check if player right edge has a playfield pixel
           rem Player width is 16 pixels (double-width NUSIZ), so right
           rem   edge is at temp6 + 4 columns (16px / 4px per column = 4)
           if temp6 >= 31 then PFCheckUp
           rem At right edge of screen, skip check
           
           let playfieldColumn = temp6 + 4
-          rem Column to the right of player’s right edge
+          rem Column to the right of player right edge
           rem   (playfieldColumn)
           if playfieldColumn > 31 then PFCheckUp
           rem Out of bounds, skip
@@ -526,12 +526,12 @@ end
           rem CHECK UP COLLISION
           rem ==========================================================
 PFCheckUp
-          rem Check if player’s head has a playfield pixel above
+          rem Check if player head has a playfield pixel above
           if playfieldRow <= 0 then PFCheckDown
           rem At top of screen, skip check
           
           let rowCounter = playfieldRow - 1
-          rem Row above player’s head (rowCounter)
+          rem Row above player head (rowCounter)
           if rowCounter < 0 then PFCheckDown
           
           rem Check center column (temp6)
@@ -582,13 +582,13 @@ DBPF_MultiplyDone
           rem   but verify)
           rem ==========================================================
 PFCheckDown
-          rem Check if player’s feet have a playfield pixel below
+          rem Check if player feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we
           rem   verify here
           let temp2 = temp5
           gosub DivideByPfrowheight
           let rowCounter = playfieldRow + temp2
-          rem Row at player’s feet (rowCounter)
+          rem Row at player feet (rowCounter)
           if rowCounter >= pfrows then PFCheckDone
           
           let playfieldRow = rowCounter + 1

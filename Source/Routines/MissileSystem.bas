@@ -887,7 +887,7 @@ end
 BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc
           
-          rem Continue bouncing (don’t deactivate)
+          rem Continue bouncing (do not deactivate)
           return
 
           rem ==========================================================

@@ -148,7 +148,7 @@ DrawTensDigit
           let temp3 = LS1_yPos
           let temp4 = LS1_color
           let temp5 = LS1_spriteSelect
-          gosub DrawDigit
+          gosub bank14 DrawDigit
 DoneTensDigit
           
           rem Draw ones digit (player5)
@@ -161,7 +161,7 @@ DoneTensDigit
           let temp3 = LS1_yPos
           let temp4 = LS1_color
           let temp5 = LS1_spriteSelect
-          gosub DrawDigit
+          gosub bank14 DrawDigit
           
           goto DisplayDone
           
@@ -189,7 +189,7 @@ DisplayRandomArena
           let temp3 = DRA_yPos
           let temp4 = DRA_color
           let temp5 = DRA_spriteSelect
-          gosub DrawDigit
+          gosub bank14 DrawDigit
           
           rem Second question mark
           let DRA_xPos = 88
@@ -198,7 +198,7 @@ DisplayRandomArena
           rem Use player5
           let temp2 = DRA_xPos
           let temp5 = DRA_spriteSelect
-          gosub DrawDigit
+          gosub bank14 DrawDigit
           
 DisplayDone
           

@@ -116,7 +116,7 @@ GameEndCheckDone
           gosub bank8 SetPlayerSprites
 
           rem Display health information
-          gosub DisplayHealth
+          gosub bank8 DisplayHealth
           
           rem Update P1/P2 health bars using pfscore system
           gosub bank8 UpdatePlayer12HealthBars

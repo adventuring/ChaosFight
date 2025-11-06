@@ -94,7 +94,7 @@ GravityCheckRoboTitoDone
           let playfieldColumn = PAG_playfieldColumn
           rem Save playfieldColumn temporarily
           let temp2 = gravityRate
-          gosub AddVelocitySubpixelY
+          gosub bank13 AddVelocitySubpixelY
           let PAG_playfieldColumn = temp2
           rem Restore playfieldColumn
           
@@ -108,7 +108,7 @@ GravityCheckRoboTitoDone
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
           let temp1 = PAG_playerIndex
-          gosub ConvertPlayerXToPlayfieldColumn
+          gosub bank13 ConvertPlayerXToPlayfieldColumn
           let PAG_playfieldColumn = temp2
           
           rem Calculate row where player feet are (bottom of sprite)

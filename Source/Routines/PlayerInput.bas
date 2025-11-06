@@ -204,17 +204,119 @@ DispatchCharacterAttack
           dim DCA_characterType = temp4
           rem Dispatch to character-specific attack handler (0-31)
           rem MethHound (31) uses ShamoneAttack handler
-          if DCA_characterType < 8 then on DCA_characterType goto BernieAttack, CurlerAttack, DragonetAttack, ZoeRyenAttack, FatTonyAttack, MegaxAttack, HarpyAttack, KnightGuyAttack
+          rem Use trampoline labels for cross-bank references (Bank 11)
+          if DCA_characterType < 8 then on DCA_characterType goto gotoBernieAttack, gotoCurlerAttack, gotoDragonetAttack, gotoZoeRyenAttack, gotoFatTonyAttack, gotoMegaxAttack, gotoHarpyAttack, gotoKnightGuyAttack
           if DCA_characterType < 8 then return
           let DCA_characterType = DCA_characterType - 8
-          if DCA_characterType < 8 then on DCA_characterType goto FrootyAttack, NefertemAttack, NinjishGuyAttack, PorkChopAttack, RadishGoblinAttack, RoboTitoAttack, UrsuloAttack, ShamoneAttack
+          if DCA_characterType < 8 then on DCA_characterType goto gotoFrootyAttack, gotoNefertemAttack, gotoNinjishGuyAttack, gotoPorkChopAttack, gotoRadishGoblinAttack, gotoRoboTitoAttack, gotoUrsuloAttack, gotoShamoneAttack
           if DCA_characterType < 8 then return
           let DCA_characterType = DCA_characterType - 8
-          if DCA_characterType < 8 then on DCA_characterType goto Char16Attack, Char17Attack, Char18Attack, Char19Attack, Char20Attack, Char21Attack, Char22Attack, Char23Attack
+          if DCA_characterType < 8 then on DCA_characterType goto gotoChar16Attack, gotoChar17Attack, gotoChar18Attack, gotoChar19Attack, gotoChar20Attack, gotoChar21Attack, gotoChar22Attack, gotoChar23Attack
           if DCA_characterType < 8 then return
           let DCA_characterType = DCA_characterType - 8
-          on DCA_characterType goto Char24Attack, Char25Attack, Char26Attack, Char27Attack, Char28Attack, Char29Attack, Char30Attack, ShamoneAttack
+          on DCA_characterType goto gotoChar24Attack, gotoChar25Attack, gotoChar26Attack, gotoChar27Attack, gotoChar28Attack, gotoChar29Attack, gotoChar30Attack, gotoShamoneAttack
           return
+          
+          rem ==========================================================
+          rem ATTACK TRAMPOLINE FUNCTIONS (Bank 11 → CharacterAttacks.bas)
+          rem ==========================================================
+          rem Local trampoline labels that jump to Bank 11 attack handlers
+          rem This allows on/goto to work with cross-bank references
+          
+gotoBernieAttack
+          goto bank11 BernieAttack
+          
+gotoCurlerAttack
+          goto bank11 CurlerAttack
+          
+gotoDragonetAttack
+          goto bank11 DragonetAttack
+          
+gotoZoeRyenAttack
+          goto bank11 ZoeRyenAttack
+          
+gotoFatTonyAttack
+          goto bank11 FatTonyAttack
+          
+gotoMegaxAttack
+          goto bank11 MegaxAttack
+          
+gotoHarpyAttack
+          goto bank11 HarpyAttack
+          
+gotoKnightGuyAttack
+          goto bank11 KnightGuyAttack
+          
+gotoFrootyAttack
+          goto bank11 FrootyAttack
+          
+gotoNefertemAttack
+          goto bank11 NefertemAttack
+          
+gotoNinjishGuyAttack
+          goto bank11 NinjishGuyAttack
+          
+gotoPorkChopAttack
+          goto bank11 PorkChopAttack
+          
+gotoRadishGoblinAttack
+          goto bank11 RadishGoblinAttack
+          
+gotoRoboTitoAttack
+          goto bank11 RoboTitoAttack
+          
+gotoUrsuloAttack
+          goto bank11 UrsuloAttack
+          
+gotoShamoneAttack
+          goto bank11 ShamoneAttack
+          
+          rem Character 16-23 attack handlers (future characters)
+gotoChar16Attack
+          goto bank11 Char16Attack
+          
+gotoChar17Attack
+          goto bank11 Char17Attack
+          
+gotoChar18Attack
+          goto bank11 Char18Attack
+          
+gotoChar19Attack
+          goto bank11 Char19Attack
+          
+gotoChar20Attack
+          goto bank11 Char20Attack
+          
+gotoChar21Attack
+          goto bank11 Char21Attack
+          
+gotoChar22Attack
+          goto bank11 Char22Attack
+          
+gotoChar23Attack
+          goto bank11 Char23Attack
+          
+          rem Character 24-30 attack handlers (future characters)
+gotoChar24Attack
+          goto bank11 Char24Attack
+          
+gotoChar25Attack
+          goto bank11 Char25Attack
+          
+gotoChar26Attack
+          goto bank11 Char26Attack
+          
+gotoChar27Attack
+          goto bank11 Char27Attack
+          
+gotoChar28Attack
+          goto bank11 Char28Attack
+          
+gotoChar29Attack
+          goto bank11 Char29Attack
+          
+gotoChar30Attack
+          goto bank11 Char30Attack
 
           rem ==========================================================
           rem SHARED ENHANCED BUTTON CHECK

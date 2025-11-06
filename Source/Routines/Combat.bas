@@ -41,7 +41,7 @@ ApplyDamage
           rem Set hurt animation (ActionHit = 5)
           let currentPlayer = AD_defenderID
           let temp2 = ActionHit
-          gosub SetPlayerAnimation
+          gosub bank11 SetPlayerAnimation
           
           rem Calculate recovery frames (damage / 2, clamped 10-30)
           let AD_recoveryFrames = AD_damage / 2

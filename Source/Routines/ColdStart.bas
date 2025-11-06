@@ -27,7 +27,7 @@ ColdStart
           rem Step 1: Detect console hardware type (7800 vs 2600)
           rem This MUST run before any code modifies $D0/$D1 registers
           rem as those registers are used for hardware detection
-          gosub ConsoleDetHW bank14
+          gosub ConsoleDetHW bank1
           
           rem Step 2: Initialize sprite pointers to RAM addresses
           rem Must be done before any sprite loading to ensure pointers
@@ -54,12 +54,12 @@ ColdStart
           rem Step 5: Initialize game state and transition to first mode
           rem Set initial game mode (Publisher Prelude)
           let gameMode = ModePublisherPrelude
-          gosub ChangeGameMode bank14
+          gosub ChangeGameMode bank1
           rem ChangeGameMode calls SetupPublisherPrelude and sets up
           rem   music
           
-          rem Step 6: Jump to MainLoop (in Bank 14)
+          rem Step 6: Jump to MainLoop (in Bank 1)
           rem MainLoop will handle the game mode dispatch and frame
           rem   rendering
-          goto MainLoop bank14
+          goto MainLoop bank1
 

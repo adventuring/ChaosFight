@@ -84,7 +84,7 @@ InitPositionsDone
           rem   2=handicap (75% health)
           for currentPlayer = 0 to 3
               let GPL_playerIndex = currentPlayer
-              gosub GetPlayerLocked bank14
+              gosub GetPlayerLocked bank1
               if GPL_lockedState = PlayerLockedHandicap then let PlayerHealth[currentPlayer] = PlayerHealthHandicap
               if GPL_lockedState = PlayerLockedHandicap then goto PlayerHealthSet
               let PlayerHealth[currentPlayer] = PlayerHealthMax
@@ -183,7 +183,7 @@ PlayerHealthSet
           gosub InitializeHealthBars bank8
 
           rem Load arena data
-          gosub LoadArena bank14
+          gosub LoadArena bank1
 
           rem Gameplay state initialized - return to ChangeGameMode
           rem MainLoop will dispatch to GameMainLoop based on gameMode =

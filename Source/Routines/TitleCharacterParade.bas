@@ -123,7 +123,7 @@ SetParadeColorDone
           
           rem Draw running animation for parade character
           rem tail call
-          goto DrawParadeCharacterSprite
+          goto DrawParadeCharacterSprite bank9
           
 
 

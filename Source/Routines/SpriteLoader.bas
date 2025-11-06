@@ -106,7 +106,7 @@ ValidateCharacterDoneInline
           let temp2 = LCS_animationFrame
           let temp3 = LCS_animationAction
           let temp4 = LCS_playerNumberAlt
-          gosub LocateCharacterArt bank14
+          gosub LocateCharacterArt bank1
           return
 
           rem ==========================================================
@@ -345,7 +345,7 @@ LoadPlayerSpriteDispatch
           rem   temp3=action, temp4=player
           rem Set temp1 from currentCharacter (already set from playerChar[currentPlayer])
           let temp1 = currentCharacter
-          gosub LocateCharacterArt bank14
+          gosub LocateCharacterArt bank1
           return
 
           rem ==========================================================

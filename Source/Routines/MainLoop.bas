@@ -25,6 +25,6 @@ MainLoopContinue
 MainLoopDrawScreen
           rem Admin screens (0-2) use titlescreen kernel, others use
           rem   standard drawscreen
-          rem Titlescreen graphics are in Bank 14 (same bank as MainLoop and drawscreen)
-          if gameMode < 3 then gosub titledrawscreen bank14 else drawscreen
+          rem Titlescreen graphics are in Bank 1 (same bank as MainLoop and drawscreen)
+          if gameMode < 3 then gosub titledrawscreen bank1 else drawscreen
           goto MainLoop

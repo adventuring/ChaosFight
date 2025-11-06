@@ -1,7 +1,7 @@
           rem ChaosFight - Source/Routines/SelScreenEntry.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem PlayerLockedHelpers.bas moved to Bank 14
+          rem PlayerLockedHelpers.bas moved to Bank 1
 
 SelScreenEntry
           rem Initialize character selections
@@ -46,7 +46,7 @@ SelScreenLoop
 
 SelChkP0Left
           if playerChar[0] > MaxCharacter then let playerChar[0] = MaxCharacter
-          if playerChar[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerChar[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           
 SelSkipP0Left
           if joy0right then let playerChar[0] = playerChar[0] + 1 : goto SelChkP0Right
@@ -54,17 +54,17 @@ SelSkipP0Left
 
 SelChkP0Right
           if playerChar[0] > MaxCharacter then let playerChar[0] = 0
-          if playerChar[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerChar[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           
 SelSkipP0Right
-          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           rem Unlock by moving up
           if joy0down then SelChkJoy0Fire
           goto SelJoy0Down
 
 SelChkJoy0Fire
           if joy0fire then SelJoy0Down
-          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           
 SelJoy0Down
           rem Unlock by moving down (without fire)
@@ -73,12 +73,12 @@ SelJoy0Down
 
 SelP0Lock
           if joy0down then SelP0Handi
-          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
+          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
           rem Locked normal (100% health)
           goto SelP0Done
 
 SelP0Handi
-          let temp1 = 0 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank14
+          let temp1 = 0 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank1
           rem Locked with handicap (75% health)
 SelP0Done
 
@@ -88,16 +88,16 @@ SelP0Done
 
 SelChkP1Left
           if playerChar[1] > MaxCharacter then let playerChar[1] = MaxCharacter
-          if playerChar[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerChar[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP1Left
           if joy1right then let playerChar[1] = playerChar[1] + 1 : goto SelChkP1Right
           goto SelSkipP1Right
 
 SelChkP1Right
           if playerChar[1] > MaxCharacter then let playerChar[1] = 0
-          if playerChar[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerChar[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP1Right
-          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           rem Unlock by moving up
           if joy1down then SelChkJoy1Fire
 
@@ -106,7 +106,7 @@ SelSkipP1Right
 SelChkJoy1Fire
           if joy1fire then SelJoy1Down
 
-          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelJoy1Down
           rem Unlock by moving down (without fire)
           if joy1fire then SelJoy1Chk
@@ -114,10 +114,10 @@ SelJoy1Down
           goto SelSkipJoy1Even
 
 SelJoy1Chk
-          if joy1down then let temp1 = 1 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank14 : goto SelJoy1Done
+          if joy1down then let temp1 = 1 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank1 : goto SelJoy1Done
 
           rem Locked with handicap (75% health)
-          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
 SelJoy1Done 
           rem Locked normal (100% health)
 
@@ -138,7 +138,7 @@ SelHandleP2
 
 SelChkP2Left
           if playerChar[2] > MaxCharacter then let playerChar[2] = MaxCharacter
-          if playerChar[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerChar[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP2Left
           if joy0right then let playerChar[2] = playerChar[2] + 1 : goto SelChkP2Right
 
@@ -146,9 +146,9 @@ SelSkipP2Left
 
 SelChkP2Right
           if playerChar[2] > MaxCharacter then let playerChar[2] = 0
-          if playerChar[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerChar[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP2Right
-          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           rem Unlock by moving up
           if joy0down then SelChkJoy0Fire2
 
@@ -156,7 +156,7 @@ SelSkipP2Right
 
 SelChkJoy0Fire2
           if joy0fire then SelJoy0Down2
-          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelJoy0Down2
           rem Unlock by moving down (without fire)
           if joy0fire then SelChkJoy0Down2
@@ -166,12 +166,12 @@ SelJoy0Down2
 SelChkJoy0Down2
           if joy0down then SelSetHand2
 
-          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
           rem Locked normal (100% health)
           goto SelJoy0Done2
 
 SelSetHand2
-          let temp1 = 2 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank14
+          let temp1 = 2 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank1
           rem Locked with handicap (75% health)
 SelJoy0Done2
 
@@ -185,15 +185,15 @@ SelHandleP3
           goto SelSkipP3Left
 SelCheckP3Left
           if playerChar[3] > MaxCharacter then let playerChar[3] = MaxCharacter
-          if playerChar[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerChar[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP3Left
           if joy1right then let playerChar[3] = playerChar[3] + 1 : goto SelCheckP3Right
           goto SelSkipP3Right
 SelCheckP3Right
           if playerChar[3] > MaxCharacter then let playerChar[3] = 0
-          if playerChar[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerChar[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP3Right
-          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           rem Unlock by moving up
           if joy1down then SelChkJoy1Fire3
 
@@ -202,7 +202,7 @@ SelSkipP3Right
 SelChkJoy1Fire3
           if joy1fire then SelJoy1Down3
 
-          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelJoy1Down3
           rem Unlock by moving down (without fire)
           if joy1fire then SelJoy1Chk3

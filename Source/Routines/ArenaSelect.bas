@@ -148,7 +148,7 @@ DrawTensDigit
           let temp3 = LS1_yPos
           let temp4 = LS1_color
           let temp5 = LS1_spriteSelect
-          gosub DrawDigit bank14
+          gosub DrawDigit bank1
 DoneTensDigit
           
           rem Draw ones digit (player5)
@@ -161,7 +161,7 @@ DoneTensDigit
           let temp3 = LS1_yPos
           let temp4 = LS1_color
           let temp5 = LS1_spriteSelect
-          gosub DrawDigit bank14
+          gosub DrawDigit bank1
           
           goto DisplayDone
           
@@ -189,7 +189,7 @@ DisplayRandomArena
           let temp3 = DRA_yPos
           let temp4 = DRA_color
           let temp5 = DRA_spriteSelect
-          gosub DrawDigit bank14
+          gosub DrawDigit bank1
           
           rem Second question mark
           let DRA_xPos = 88
@@ -198,7 +198,7 @@ DisplayRandomArena
           rem Use player5
           let temp2 = DRA_xPos
           let temp5 = DRA_spriteSelect
-          gosub DrawDigit bank14
+          gosub DrawDigit bank1
           
 DisplayDone
           
@@ -233,13 +233,13 @@ ReturnToCharacterSelect
           rem Return to Character Select screen
           let fireHoldTimer_W = 0
           let gameMode = ModeCharacterSelect
-          gosub ChangeGameMode bank14
+          gosub ChangeGameMode bank1
           return
 
 StartGame1
           rem Start game with selected arena
           let gameMode = ModeGame
-          gosub ChangeGameMode bank14
+          gosub ChangeGameMode bank1
           return
 
           rem ==========================================================
@@ -399,7 +399,7 @@ ArenaSelectDrawPlayerSprite
           let temp2 = ASDPS_animationFrame
           let temp3 = ASDPS_animationAction
           let temp4 = ASDPS_playerNumber
-          gosub LocateCharacterArt bank14
+          gosub LocateCharacterArt bank1
           
           rem Set character color based on player number
           rem LoadCharacterColors expects aliases: isHurt, playerNumber,

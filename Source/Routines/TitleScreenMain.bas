@@ -43,19 +43,19 @@ TitleScreenMain
 TitleSkipQuad
           
           rem Update character parade animation
-          gosub UpdateCharacterParade
+          gosub UpdateCharacterParade bank9
           
           rem Draw title screen
-          gosub DrawTitleScreen
+          gosub DrawTitleScreen bank9
           
-          rem Draw screen with titlescreen kernel minikernel (titlescreen graphics in Bank 14)
+          rem Draw screen with titlescreen kernel minikernel (titlescreen graphics in Bank 1)
           rem Note: MainLoop calls titledrawscreen, so this is only reached if called directly
-          gosub titledrawscreen bank14
+          gosub titledrawscreen bank1
           
           return
 
 TitleScreenComplete
           rem Transition to character select
           let gameMode = ModeCharacterSelect
-          gosub ChangeGameMode bank14
+          gosub ChangeGameMode bank1
           return

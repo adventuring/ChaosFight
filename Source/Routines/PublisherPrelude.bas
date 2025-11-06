@@ -66,7 +66,7 @@ PublisherPreludeMain
 
 PublisherPreludeComplete
           let gameMode = ModeAuthorPrelude
-          gosub ChangeGameMode bank14
+          gosub ChangeGameMode bank1
           return
 
           rem ==========================================================

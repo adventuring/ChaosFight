@@ -32,8 +32,8 @@ GameMainLoop
           rem   II/III)
           gosub ReadEnhancedButtons
           
-          rem Handle console switches (in Bank 14)
-          gosub HandleConsoleSwitches bank14
+          rem Handle console switches (in Bank 1)
+          gosub HandleConsoleSwitches bank1
 
           rem Handle all player input (with Quadtari multiplexing) (in Bank 13)
           gosub InputHandleAllPlayers bank13
@@ -91,7 +91,7 @@ CheckGameEndTransition
 TransitionToWinner
           rem Transition to winner announcement mode
           let gameMode = ModeWinner
-          gosub ChangeGameMode bank14
+          gosub ChangeGameMode bank1
           return
 GameEndCheckDone
 

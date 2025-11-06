@@ -284,6 +284,12 @@ AreaHitbox
           rem Caches hitbox once per attacker to avoid recalculating for
           rem   each defender
 ProcessAttackerAttacks
+          rem Process attack for one attacker against all defenders (caches hitbox once per attacker)
+          rem Input: attackerID (global) = attacker player index, playerX[], playerY[] (global arrays) = player positions, PlayerAttackType[], PlayerFacing[] (global arrays) = attack type and facing, playerHealth[] (global array) = player health values
+          rem Output: Attacks processed for all defenders, damage applied if hits detected
+          rem Mutates: temp1-temp2 (used for calculations), hitboxLeft, hitboxRight, hitboxTop, hitboxBottom (global) = hitbox bounds (calculated), cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W (global SCRAM) = cached hitbox bounds (stored), defenderID (global) = defender index (set to 0-3), hit (global) = hit result (set by CheckAttackHit), playerHealth[], playerRecoveryFrames[], playerState[] (via ApplyDamage)
+          rem Called Routines: CalculateAttackHitbox - calculates hitbox based on attacker position and facing, CheckAttackHit - checks if attack hits defender, ApplyDamage - applies damage if hit
+          rem Constraints: Must be colocated with NextDefender (called via next). Caches hitbox once per attacker to avoid recalculating for each defender. Skips attacker as defender and dead players
           dim PAA_attackerID = attackerID
           rem Cache hitbox for this attacker (calculated once, used for all
           rem   defenders)
@@ -306,12 +312,24 @@ ProcessAttackerAttacks
               if hit then gosub ApplyDamage
           
 NextDefender
+          rem Helper: End of defender loop iteration (label only)
+          rem Input: None (label only)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Internal label for ProcessAttackerAttacks FOR loop
           next
           
           return
 
           rem Process all attacks for all players
 ProcessAllAttacks
+          rem Process all attacks for all players (orchestrates attack processing for all active players)
+          rem Input: attackerID (global) = attacker index (set to 0-3), playerHealth[] (global array) = player health values
+          rem Output: All attacks processed for all active players
+          rem Mutates: attackerID (global) = attacker index (set to 0-3), all attack processing state (via ProcessAttackerAttacks)
+          rem Called Routines: ProcessAttackerAttacks - processes attacks for one attacker against all defenders
+          rem Constraints: Must be colocated with NextAttacker (called via next). Skips dead attackers
           for attackerID = 0 to 3
               rem Skip if attacker is dead
               if playerHealth[attackerID] <= 0 then NextAttacker
@@ -319,6 +337,12 @@ ProcessAllAttacks
               gosub ProcessAttackerAttacks
           
 NextAttacker
+          rem Helper: End of attacker loop iteration (label only)
+          rem Input: None (label only)
+          rem Output: None (label only)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: Internal label for ProcessAllAttacks FOR loop
           next
           
           return
@@ -327,10 +351,22 @@ NextAttacker
           rem NOTE: VisualEffects.bas was phased out - damage indicators
           rem   handled inline
 CombatShowDamageIndicator
+          rem Damage indicator system (phased out - visual feedback now handled inline)
+          rem Input: None
+          rem Output: None (no-op)
+          rem Mutates: None
+          rem Called Routines: None
+          rem Constraints: VisualEffects.bas was phased out - damage indicators handled inline in damage calculation
           rem Visual feedback now handled inline in damage calculation
           return
 
 PlayDamageSound
+          rem Play damage sound effect (attack hit sound)
+          rem Input: SoundAttackHit (global constant) = sound effect ID
+          rem Output: Sound effect played
+          rem Mutates: temp1 (set to sound ID)
+          rem Called Routines: PlaySoundEffect (bank15) - plays sound effect
+          rem Constraints: None
           dim PDS_soundId = temp1
           let PDS_soundId = SoundAttackHit
           gosub PlaySoundEffect bank15

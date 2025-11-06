@@ -84,13 +84,13 @@
           rem   through)
           
           const MissileFlagHitPlayer = 2
-          rem Bit 1: Hit player (1=hit and disappear, 0=pass through)
+          rem Bit 1: Hit player (2=hit and disappear, 0=pass through)
           
           const MissileFlagGravity = 4
-          rem Bit 2: Apply gravity (1=affected by gravity, 0=no gravity)
+          rem Bit 2: Apply gravity (4=affected by gravity, 0=no gravity)
           
           const MissileFlagBounce = 8
-          rem Bit 3: Bounce off walls (1=bounce, 0=stop/hit)
+          rem Bit 3: Bounce off walls (8=bounce, 0=stop/hit)
           
           const MissileFlagFriction = 16
           rem Bit 4: Apply friction physics (curling stone deceleration)

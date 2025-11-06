@@ -819,7 +819,7 @@ HandleMissileBounce
           rem Divide by 2 using bit shift right (LSR) - direct memory mode
           asm
             lsr HMB_dampenAmount
-          end
+end
           let missileVelocityXCalc = missileVelocityXCalc - HMB_dampenAmount
 BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc

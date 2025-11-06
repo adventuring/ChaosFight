@@ -199,20 +199,8 @@
           rem Game URL: https://interworldly.com/games/ChaosFight
           rem These strings are embedded in the ROM after the end of
           rem   real code
+          rem Note: Strings are defined in BuildInfo.s and included with
+          rem   bare "include" directive (not #include) to avoid C preprocessor
+          rem   quote issues
           
-          asm
-          ; Build date string in year.julian format (YYYY.JJJ)
-          ; Format: ASCII bytes, null-terminated
-          ; Generated at compile time via preprocessor defines
-          ;   BUILD_YEAR and BUILD_DAY
-BuildDateString
-          .byte (BUILD_YEAR / 1000) + 48, ((BUILD_YEAR / 100) % 10) + 48, ((BUILD_YEAR / 10) % 10) + 48, (BUILD_YEAR % 10) + 48, 46, (BUILD_DAY / 100) + 48, ((BUILD_DAY / 10) % 10) + 48, (BUILD_DAY % 10) + 48, 0
-          
-          ; Game URL string for attribution
-          ; Format: ASCII bytes, null-terminated
-GameURLString
-          .byte $68,$74,$74,$70,$73,$3A,$2F,$2F,$69,$6E,$74,$65,$72,$77,$6F,$72
-          .byte $6C,$64,$6C,$79,$2E,$63,$6F,$6D,$2F,$67,$61,$6D,$65,$73,$2F,$43
-          .byte $68,$61,$6F,$73,$46,$69,$67,$68,$74,$00
-end
-
+          include "BuildInfo.s"

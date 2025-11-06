@@ -6,33 +6,6 @@
           rem Bank 4 dedicated to character art only - leave room for
           rem   animation frames
           rem Character sprite data for characters 16-23
-          
-          rem Forward declarations for _length constants to avoid DASM
-          rem   unresolved symbol errors
-          rem batariBASIC auto-generates these but calculates them incorrectly
-          rem   due to label ordering in bank-switched code
-          rem Formula: CharacterXXFrames_length = n = x × 16 (x >= 1)
-          rem   where x is the number of frames (each frame = 16 bytes)
-          rem These constants are not used, but DASM requires them to be defined
-          asm
-          Character16Frames_length = 1 * 16
-          Character16FrameMap_length = 128
-          Character17Frames_length = 1 * 16
-          Character17FrameMap_length = 128
-          Character18Frames_length = 1 * 16
-          Character18FrameMap_length = 128
-          Character19Frames_length = 1 * 16
-          Character19FrameMap_length = 128
-          Character20Frames_length = 1 * 16
-          Character20FrameMap_length = 128
-          Character21Frames_length = 1 * 16
-          Character21FrameMap_length = 128
-          Character22Frames_length = 1 * 16
-          Character22FrameMap_length = 128
-          Character23Frames_length = 1 * 16
-          Character23FrameMap_length = 128
-          end
-          
 #include "Source/Generated/Character16.bas"
 #include "Source/Generated/Character17.bas"
 #include "Source/Generated/Character18.bas"
@@ -47,3 +20,28 @@
           asm
 #include "Source/Routines/CharacterArtBank4.s"
 end
+
+          rem Define _length constants using label subtraction after data
+          rem   blocks are included
+          rem batariBASIC auto-generates these but calculates them incorrectly
+          rem   due to label ordering in bank-switched code
+          rem Formula: CharacterXXFrames_length = end_label - start_label
+          rem   where end_label is .skipL0XXXX and start_label is CharacterXXFrames
+          asm
+          Character16Frames_length = .skipL01599 - Character16Frames
+          Character16FrameMap_length = .skipL01600 - Character16FrameMap
+          Character17Frames_length = .skipL01605 - Character17Frames
+          Character17FrameMap_length = .skipL01606 - Character17FrameMap
+          Character18Frames_length = .skipL01611 - Character18Frames
+          Character18FrameMap_length = .skipL01612 - Character18FrameMap
+          Character19Frames_length = .skipL01617 - Character19Frames
+          Character19FrameMap_length = .skipL01618 - Character19FrameMap
+          Character20Frames_length = .skipL01623 - Character20Frames
+          Character20FrameMap_length = .skipL01624 - Character20FrameMap
+          Character21Frames_length = .skipL01629 - Character21Frames
+          Character21FrameMap_length = .skipL01630 - Character21FrameMap
+          Character22Frames_length = .skipL01635 - Character22Frames
+          Character22FrameMap_length = .skipL01636 - Character22FrameMap
+          Character23Frames_length = .skipL01641 - Character23Frames
+          Character23FrameMap_length = .skipL01642 - Character23FrameMap
+          end

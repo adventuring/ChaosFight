@@ -25,19 +25,27 @@
 CheckBoundaryCollisions
           dim CBC_playerIndex = temp1
           dim CBC_characterType = temp2
-          rem Loop through all players (0-3)
+          rem Loop through all players (0-3) - unrolled to avoid loop labels
+          rem Player 0
           let CBC_playerIndex = 0
-BoundaryLoop
-          rem Check if player is active (P1/P2 always active, P3/P4 need
-          rem   Quadtari)
-          if CBC_playerIndex < 2 then BoundaryCheckBounds
-          rem Players 0-1 always active
-          rem Skip inactive players (inline checks to avoid labels)
-          if !(controllerStatus & SetQuadtariDetected) then BoundaryNextPlayer
-          if CBC_playerIndex = 2 && selectedChar3_R = 255 then BoundaryNextPlayer
-          if CBC_playerIndex = 3 && selectedChar4_R = 255 then BoundaryNextPlayer
+          gosub BoundaryCheckOnePlayer
           
-BoundaryCheckBounds
+          rem Player 1
+          let CBC_playerIndex = 1
+          gosub BoundaryCheckOnePlayer
+          
+          rem Player 2 (if Quadtari)
+          let CBC_playerIndex = 2
+          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then gosub BoundaryCheckOnePlayer
+          
+          rem Player 3 (if Quadtari)
+          let CBC_playerIndex = 3
+          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then gosub BoundaryCheckOnePlayer
+          
+          return
+
+BoundaryCheckOnePlayer
+          rem Check boundaries for one player (CBC_playerIndex)
           rem All arenas support horizontal wrap-around for players
           rem   (except where walls stop it)
           rem Handle RandomArena by checking selected arena
@@ -69,11 +77,6 @@ BoundaryCheckBounds
           if playerY[CBC_playerIndex] > 80 then let playerSubpixelYL[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] > 80 then let playerVelocityY[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] > 80 then let playerVelocityYL[CBC_playerIndex] = 0
-
-BoundaryNextPlayer
-          rem Move to next player
-          let CBC_playerIndex = CBC_playerIndex + 1
-          if CBC_playerIndex < 4 then BoundaryLoop
           
           return
 

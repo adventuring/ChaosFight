@@ -80,7 +80,9 @@ UpdatePlayerMovementSingle
           let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum
           goto XNoCarry
 XCarry
-          let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum - 256
+          rem Split -256 to avoid sbc #256 (256 > 255)
+          let playerSubpixelX_WL[currentPlayer] = UPS_subpixelSum - 255
+          let playerSubpixelX_WL[currentPlayer] = playerSubpixelX_WL[currentPlayer] - 1
           rem SCRAM read-modify-write: Read from r049, modify, write to
           rem   w049
           dim UPS_subpixelXRead = temp4
@@ -112,7 +114,9 @@ XNoCarry
           let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum
           goto YNoCarry
 YCarry
-          let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum - 256
+          rem Split -256 to avoid sbc #256 (256 > 255)
+          let playerSubpixelY_WL[currentPlayer] = UPS_subpixelSum - 255
+          let playerSubpixelY_WL[currentPlayer] = playerSubpixelY_WL[currentPlayer] - 1
           rem SCRAM read-modify-write: Read from r057, modify, write to
           rem   w057
           dim UPS_subpixelYRead = temp4
@@ -227,7 +231,9 @@ AddVelocitySubpixelY
           let playerVelocityYL[AVSY_playerIndex] = AVSY_sum
           return
 VelocityYCarry
-          let playerVelocityYL[AVSY_playerIndex] = AVSY_sum - 256
+          rem Split -256 to avoid sbc #256 (256 > 255)
+          let playerVelocityYL[AVSY_playerIndex] = AVSY_sum - 255
+          let playerVelocityYL[AVSY_playerIndex] = playerVelocityYL[AVSY_playerIndex] - 1
           let playerVelocityY[AVSY_playerIndex] = playerVelocityY[AVSY_playerIndex] + 1
           return
 

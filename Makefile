@@ -39,6 +39,7 @@ bin/zx7mini:	SkylineTool/zx7mini/zx7mini.c
 	$(CC) SkylineTool/zx7mini/zx7mini.c -o bin/zx7mini
 	chmod +x bin/zx7mini
 
+
 skyline-tool:	bin/skyline-tool
 
 SkylineTool/skyline-tool.asd:
@@ -451,35 +452,23 @@ Object/2600basic_variable_redefs.h:
 	@touch $@
 
 # Step 2: Compile .preprocessed.bas → $(GAME)$(GAMEYEAR).bB.ARCH.s
-Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h
+Object/$(GAME)$(GAMEYEAR).bB.NTSC.s: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.NTSC.s
-	@echo "Fixing broken concatenated entries in 2600basic_variable_redefs.h..."
-	@cd Object && sed -i '/Song_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/Sound_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/ArenaPF/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/SongPointers/!b; /=/!d' 2600basic_variable_redefs.h || true
-	@echo "Removing trailing spaces that cause concatenation..."
-	@cd Object && sed -i 's/[[:space:]]*$$//' 2600basic_variable_redefs.h || true
-	@echo "Removing malformed entries (missing values or concatenated)..."
-	@cd Object && sed -i '/^[A-Za-z_][A-Za-z0-9_]* = [0-9][A-Za-z]/d; /^[A-Za-z_][A-Za-z0-9_]* =[a-z][A-Z]/d; /^[A-Za-z_][A-Za-z0-9_]* =Sound_/d; /^[A-Za-z_][A-Za-z0-9_]* =Song_/d; /^[A-Za-z_][A-Za-z0-9_]* [A-Za-z_][A-Za-z0-9_]*$$/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
+	@echo "Cleaning variable redefinitions file..."
+	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 
-Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h
+Object/$(GAME)$(GAMEYEAR).bB.PAL.s: Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).PAL.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.PAL.s
-	@echo "Fixing broken concatenated entries in 2600basic_variable_redefs.h..."
-	@cd Object && sed -i '/Song_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/Sound_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/ArenaPF/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/SongPointers/!b; /=/!d' 2600basic_variable_redefs.h || true
-	@echo "Removing trailing spaces that cause concatenation..."
-	@cd Object && sed -i 's/[[:space:]]*$$//' 2600basic_variable_redefs.h || true
-	@echo "Removing malformed entries (missing values or concatenated)..."
-	@cd Object && sed -i '/^[A-Za-z_][A-Za-z0-9_]* = [0-9][A-Za-z]/d; /^[A-Za-z_][A-Za-z0-9_]* =[a-z][A-Z]/d; /^[A-Za-z_][A-Za-z0-9_]* =Sound_/d; /^[A-Za-z_][A-Za-z0-9_]* =Song_/d; /^[A-Za-z_][A-Za-z0-9_]* [A-Za-z_][A-Za-z0-9_]*$$/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
+	@echo "Cleaning variable redefinitions file..."
+	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 
-Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h
+Object/$(GAME)$(GAMEYEAR).bB.SECAM.s: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas Object/2600basic_variable_redefs.h bin/skyline-tool
 	mkdir -p Object
 	cd Object && timeout 3 ../bin/2600basic -i $(POSTINC) -r 2600basic_variable_redefs.h < ../Source/Generated/$(GAME)$(GAMEYEAR).SECAM.preprocessed.bas > $(GAME)$(GAMEYEAR).bB.SECAM.s
-	@echo "Fixing broken concatenated entries in 2600basic_variable_redefs.h..."
-	@cd Object && sed -i '/Song_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/Sound_/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/ArenaPF/!b; /=/!d' 2600basic_variable_redefs.h && sed -i '/SongPointers/!b; /=/!d' 2600basic_variable_redefs.h || true
-	@echo "Removing trailing spaces that cause concatenation..."
-	@cd Object && sed -i 's/[[:space:]]*$$//' 2600basic_variable_redefs.h || true
-	@echo "Removing malformed entries (missing values or concatenated)..."
-	@cd Object && sed -i '/^[A-Za-z_][A-Za-z0-9_]* = [0-9][A-Za-z]/d; /^[A-Za-z_][A-Za-z0-9_]* =[a-z][A-Z]/d; /^[A-Za-z_][A-Za-z0-9_]* =Sound_/d; /^[A-Za-z_][A-Za-z0-9_]* =Song_/d; /^[A-Za-z_][A-Za-z0-9_]* [A-Za-z_][A-Za-z0-9_]*$$/d; /^[[:space:]]*$$/d' 2600basic_variable_redefs.h || true
+	@echo "Cleaning variable redefinitions file..."
+	@cd Object && ../bin/skyline-tool clean-redefs 2600basic_variable_redefs.h > 2600basic_variable_redefs.h.tmp && mv 2600basic_variable_redefs.h.tmp 2600basic_variable_redefs.h
 
 # Step 3: Postprocess $(GAME)$(GAMEYEAR).bB.ARCH.s → ARCH.s (final assembly)
 # postprocess requires includes.bB to be in the current working directory

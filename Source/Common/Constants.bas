@@ -348,13 +348,17 @@
           rem ==========================================================
           rem SOUND EFFECT CONSTANTS
           rem ==========================================================
-          const SoundAttack = 1
-          const SoundHit = 2
-          const SoundFall = 3
-          const SoundGuard = 4
-          const SoundSelect = 5
-          const SoundVictory = 6
-          const SoundElimination = 7
+          rem Sound effect enumerated IDs (matching SoundPointers.bas indices 0-9)
+          const SoundAttackHit = 0
+          const SoundGuardBlock = 1
+          const SoundJump = 2
+          const SoundPlayerEliminated = 3
+          const SoundMenuNavigate = 4
+          const SoundMenuSelect = 5
+          const SoundSpecialMove = 6
+          const SoundPowerup = 7
+          const SoundLandingSafe = 8
+          const SoundLandingDamage = 9
 
           rem ==========================================================
           rem ANIMATION SYSTEM CONSTANTS

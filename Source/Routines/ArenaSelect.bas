@@ -96,7 +96,7 @@ ArenaSelectLeft
           let selectedArena_W = ASL_arena
 ArenaSelectLeftSound
           rem Play navigation sound
-          let ASL_soundId = SoundSelect
+          let ASL_soundId = SoundMenuNavigate
           let temp1 = ASL_soundId
           gosub PlaySoundEffect bank15
 ArenaSelectSkipLeft
@@ -117,7 +117,7 @@ ArenaSelectRight
           if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
 ArenaSelectRightSound
           rem Play navigation sound
-          let ASR_soundId = SoundSelect
+          let ASR_soundId = SoundMenuNavigate
           let temp1 = ASR_soundId
           gosub PlaySoundEffect bank15
 ArenaSelectSkipRight

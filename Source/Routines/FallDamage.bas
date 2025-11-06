@@ -239,7 +239,7 @@ end
           let playerState[CFD_playerIndex] = playerStateTemp
           
           rem Play fall damage sound effect
-          let temp1 = SoundFall
+          let temp1 = SoundLandingDamage
           gosub PlaySoundEffect bank15
           
           rem Trigger color shift to darker shade (damage visual

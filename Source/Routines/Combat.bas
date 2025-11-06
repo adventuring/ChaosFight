@@ -252,7 +252,7 @@ CombatShowDamageIndicator
 
 PlayDamageSound
           dim PDS_soundId = temp1
-          let PDS_soundId = SoundHit
+          let PDS_soundId = SoundAttackHit
           gosub PlaySoundEffect bank15
           return
 
@@ -260,7 +260,7 @@ PlayDamageSound
 
 PlayDamageSound
           dim PDS_soundId = temp1
-          let PDS_soundId = SoundHit
+          let PDS_soundId = SoundAttackHit
           gosub PlaySoundEffect bank15
           return
 

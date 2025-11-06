@@ -376,7 +376,7 @@ PlayfieldCollisionDone
 GuardBounceFromCollision
           rem Guarding player - bounce the curling stone
           rem Play guard sound
-          let soundEffectID = SoundGuard
+          let soundEffectID = SoundGuardBlock
           gosub PlaySoundEffect bank15
           
           rem Bounce the missile: invert X velocity and apply friction
@@ -842,7 +842,7 @@ KnockbackDone
           rem Set bit 3 (recovery flag) when recovery frames are set
           
           rem Play hit sound effect
-          let temp1  = SoundHit
+          let temp1  = SoundAttackHit
           gosub PlaySoundEffect bank15
           
           rem Spawn damage indicator visual

@@ -105,7 +105,7 @@ TriggerEliminationEffects
           dim TEE_soundId = temp5
           dim TEE_effectTimer = temp2
           rem Play elimination sound effect
-          let TEE_soundId = SoundElimination
+          let TEE_soundId = SoundPlayerEliminated
           let PSE_soundID = TEE_soundId
           rem PlaySoundEffect expects temp1 (PSE_soundID alias)
           gosub PlaySoundEffect bank15

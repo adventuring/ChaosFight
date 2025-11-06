@@ -38,6 +38,7 @@ Arena1Data
           XXXXXXXXXXXXXXXX
 end
 
+
           data Arena1DataColors
                     ColGrey(6),
           ColGrey(4),
@@ -68,6 +69,7 @@ Arena2Data
           X...............
           XXXXXXXXXXXXXXXX
 end
+
 
           data Arena2DataColors
                     ColBlue(14),

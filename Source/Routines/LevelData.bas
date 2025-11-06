@@ -4,7 +4,7 @@
           rem ==========================================================
           rem ARENA DATA DEFINITIONS
           rem ==========================================================
-          rem 16 ARENAS inspired by classic fighting and platform games
+          rem 32 ARENAS inspired by classic fighting and platform games
           rem Playfields are 16 pixels wide (LEFT HALF ONLY - right
           rem   mirrors)
           rem X = wall/platform, . = empty space
@@ -260,9 +260,378 @@ Arena16Data
           X.XXX...........
           XXXXXXXXXXXXXXXX
 end
+Arena0Data
+          rem Arena 0: Flat arena
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          X...............
+          XXXXXXXXXXXXXXXX
+end
+Arena17Data
+          rem The Spire (vertical tower platforms)
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X...............
+          X......XX.......
+          X...............
+          X......XX.......
+          X...............
+          X......XX.......
+          XXXXXXXXXXXXXXXX
+end
+Arena18Data
+          rem The Bridge (wide center platform)
+          playfield:
+          ................
+          ................
+          ................
+          XXXXXXXXXXXXXXXX
+          XXXXXXXXXXXXXXXX
+          ................
+          ................
+          ................
+end
+Arena19Data
+          rem The Pits (narrow platforms with gaps)
+          playfield:
+          XXXX........XXXX
+          XXXX........XXXX
+          ................
+          XXXX........XXXX
+          XXXX........XXXX
+          ................
+          XXXX........XXXX
+          XXXX........XXXX
+end
+Arena20Data
+          rem The Stairs (stepped platforms)
+          playfield:
+          XXXXXXXXXXXXXXXX
+          XXXX............
+          XXXX............
+          XX..............
+          XX..............
+          X...............
+          X...............
+          XXXXXXXXXXXXXXXX
+end
+Arena21Data
+          rem The Grid (checkerboard pattern)
+          playfield:
+          XX..XX..XX..XX..
+          XX..XX..XX..XX..
+          ..XX..XX..XX..XX
+          ..XX..XX..XX..XX
+          XX..XX..XX..XX..
+          XX..XX..XX..XX..
+          ..XX..XX..XX..XX
+          ..XX..XX..XX..XX
+end
+Arena22Data
+          rem The Columns (vertical pillars)
+          playfield:
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+end
+Arena23Data
+          rem The Waves (curved platforms)
+          playfield:
+          XXXXXXXXXXXXXXXX
+          XXXX............
+          XXXX............
+          XXXXXXXXXXXXXXXX
+          XXXX............
+          XXXX............
+          XXXXXXXXXXXXXXXX
+          XXXXXXXXXXXXXXXX
+end
+Arena24Data
+          rem The Cross (cross-shaped platform)
+          playfield:
+          XXXX....XXXX....
+          XXXX....XXXX....
+          XXXX....XXXX....
+          XXXXXXXXXXXXXXXX
+          XXXXXXXXXXXXXXXX
+          XXXX....XXXX....
+          XXXX....XXXX....
+          XXXX....XXXX....
+end
+Arena25Data
+          rem The Maze (complex wall pattern)
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X......X......X
+          X.XXXX.X.XXXX.X
+          X.X..X.X.X..X.X
+          X.X..X.X.X..X.X
+          X.XXXX.X.XXXX.X
+          X......X......X
+          XXXXXXXXXXXXXXXX
+end
+Arena26Data
+          rem The Islands (scattered platforms)
+          playfield:
+          XX............XX
+          XX............XX
+          ................
+          ....XXXXXX......
+          ....XXXXXX......
+          ................
+          XX............XX
+          XX............XX
+end
+Arena27Data
+          rem The Rings (concentric platforms)
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X..............X
+          X.XXXXXXXXXXXX.X
+          X.X..........X.X
+          X.X..........X.X
+          X.XXXXXXXXXXXX.X
+          X..............X
+          XXXXXXXXXXXXXXXX
+end
+Arena28Data
+          rem The Slopes (diagonal platforms)
+          playfield:
+          XXXXXXXXXXXXXXXX
+          .XXXXXXXXXXXXXX.
+          ..XXXXXXXXXXXX..
+          ...XXXXXXXXXX...
+          ...XXXXXXXXXX...
+          ..XXXXXXXXXXXX..
+          .XXXXXXXXXXXXXX.
+          XXXXXXXXXXXXXXXX
+end
+Arena29Data
+          rem The Zigzag (zigzag pattern)
+          playfield:
+          XXXX........XXXX
+          ..XXXX....XXXX..
+          ....XXXXXX......
+          ......XXXX......
+          ......XXXX......
+          ....XXXXXX......
+          ..XXXX....XXXX..
+          XXXX........XXXX
+end
+Arena30Data
+          rem The Ladder (vertical rungs)
+          playfield:
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+          X..X..X..X..X..X
+end
+Arena31Data
+          rem The Final Battle (complex multi-platform)
+          playfield:
+          XXXXXXXXXXXXXXXX
+          X.XX..XX..XX.XX.X
+          X.XX..XX..XX.XX.X
+          X..............X
+          X.XX..XX..XX.XX.X
+          X.XX..XX..XX.XX.X
+          X..............X
+          XXXXXXXXXXXXXXXX
+end
 
 
 
+
+
+          data Arena0DataColors
+          ColOrange(2),
+          ColOrange(4),
+          ColOrange(6),
+          ColOrange(8),
+          ColOrange(10),
+          ColOrange(12),
+          ColOrange(14),
+          ColOrange(0)
+end
+
+          data Arena17DataColors
+          ColLime(2),
+          ColLime(4),
+          ColLime(6),
+          ColLime(4),
+          ColLime(6),
+          ColLime(4),
+          ColLime(2),
+          ColLime(8)
+end
+
+          data Arena18DataColors
+          ColTeal(12),
+          ColTeal(12),
+          ColTeal(12),
+          ColTeal(14),
+          ColTeal(14),
+          ColTeal(12),
+          ColTeal(12),
+          ColTeal(12)
+end
+
+          data Arena19DataColors
+          ColMaroon(2),
+          ColMaroon(2),
+          ColMaroon(0),
+          ColMaroon(2),
+          ColMaroon(2),
+          ColMaroon(0),
+          ColMaroon(2),
+          ColMaroon(4)
+end
+
+          data Arena20DataColors
+          ColNavy(4),
+          ColNavy(4),
+          ColNavy(4),
+          ColNavy(6),
+          ColNavy(6),
+          ColNavy(8),
+          ColNavy(8),
+          ColNavy(2)
+end
+
+          data Arena21DataColors
+          ColOlive(4),
+          ColOlive(4),
+          ColOlive(6),
+          ColOlive(6),
+          ColOlive(4),
+          ColOlive(4),
+          ColOlive(6),
+          ColOlive(6)
+end
+
+          data Arena22DataColors
+          ColCrimson(4),
+          ColCrimson(4),
+          ColCrimson(4),
+          ColCrimson(4),
+          ColCrimson(4),
+          ColCrimson(4),
+          ColCrimson(4),
+          ColCrimson(6)
+end
+
+          data Arena23DataColors
+          ColAqua(2),
+          ColAqua(4),
+          ColAqua(4),
+          ColAqua(2),
+          ColAqua(4),
+          ColAqua(4),
+          ColAqua(2),
+          ColAqua(6)
+end
+
+          data Arena24DataColors
+          ColSlate(4),
+          ColSlate(4),
+          ColSlate(4),
+          ColSlate(6),
+          ColSlate(6),
+          ColSlate(4),
+          ColSlate(4),
+          ColSlate(4)
+end
+
+          data Arena25DataColors
+          ColViolet(2),
+          ColViolet(4),
+          ColViolet(6),
+          ColViolet(8),
+          ColViolet(8),
+          ColViolet(6),
+          ColViolet(4),
+          ColViolet(2)
+end
+
+          data Arena26DataColors
+          ColCoral(2),
+          ColCoral(2),
+          ColCoral(0),
+          ColCoral(4),
+          ColCoral(4),
+          ColCoral(0),
+          ColCoral(2),
+          ColCoral(2)
+end
+
+          data Arena27DataColors
+          ColAmber(2),
+          ColAmber(4),
+          ColAmber(6),
+          ColAmber(8),
+          ColAmber(8),
+          ColAmber(6),
+          ColAmber(4),
+          ColAmber(2)
+end
+
+          data Arena28DataColors
+          ColEmerald(2),
+          ColEmerald(4),
+          ColEmerald(6),
+          ColEmerald(8),
+          ColEmerald(8),
+          ColEmerald(6),
+          ColEmerald(4),
+          ColEmerald(2)
+end
+
+          data Arena29DataColors
+          ColRose(2),
+          ColRose(4),
+          ColRose(6),
+          ColRose(4),
+          ColRose(4),
+          ColRose(6),
+          ColRose(4),
+          ColRose(2)
+end
+
+          data Arena30DataColors
+          ColMint(4),
+          ColMint(4),
+          ColMint(4),
+          ColMint(4),
+          ColMint(4),
+          ColMint(4),
+          ColMint(4),
+          ColMint(6)
+end
+
+          data Arena31DataColors
+          ColPlatinum(2),
+          ColPlatinum(4),
+          ColPlatinum(4),
+          ColPlatinum(6),
+          ColPlatinum(4),
+          ColPlatinum(4),
+          ColPlatinum(6),
+          ColPlatinum(8)
+end
 
           data Arena1DataColors
                     ColGrey(6),

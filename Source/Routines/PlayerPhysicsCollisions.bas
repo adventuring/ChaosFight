@@ -23,6 +23,12 @@
           rem ==========================================================
           rem Prevents players from moving off-screen.
 CheckBoundaryCollisions
+          rem Prevents players from moving off-screen (horizontal wrap-around, vertical clamping)
+          rem Input: playerX[], playerY[] (global arrays) = player positions, playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions, playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, selectedArena_R (global SCRAM) = selected arena, frame (global) = frame counter, RandomArena (global constant) = random arena constant
+          rem Output: Players clamped to screen boundaries, horizontal wrap-around applied, vertical velocity zeroed at boundaries
+          rem Mutates: temp1-temp3 (used for calculations), playerX[], playerY[] (global arrays) = player positions (wrapped/clamped), playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions (set to clamped values), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity (zeroed at boundaries)
+          rem Called Routines: None
+          rem Constraints: All arenas support horizontal wrap-around (X < 10 wraps to 150, X > 150 wraps to 10). Vertical boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped to 80). Players 3/4 only checked if Quadtari detected and selected
           dim CBC_playerIndex = temp1
           dim CBC_characterType = temp2
           rem Loop through all players (0-3) - fully inlined to avoid labels
@@ -80,6 +86,12 @@ CheckBoundaryCollisions
           rem Split into horizontal and vertical checks to avoid bank
           rem   boundary issues with local labels
 CheckPlayfieldCollisionAllDirections
+          rem Checks for playfield pixel collisions in all four directions and blocks movement by zeroing velocity
+          rem Input: currentPlayer (global) = player index (0-3), playerX[], playerY[] (global arrays) = player positions, playerChar[] (global array) = character types, playerVelocityX[], playerVelocityY[], playerVelocityXL[], playerVelocityYL[] (global arrays) = player velocities, playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions, CharacterHeights[] (global data table) = character heights, ScreenInsetX, pfrowheight, pfrows (global constants) = screen/playfield constants
+          rem Output: Player velocities zeroed when collisions detected in any direction
+          rem Mutates: temp2-temp6 (used for calculations), playfieldRow, playfieldColumn, rowCounter (global) = calculation temporaries, playerVelocityX[], playerVelocityY[], playerVelocityXL[], playerVelocityYL[] (global arrays) = player velocities (zeroed on collision), playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions (zeroed on collision)
+          rem Called Routines: None
+          rem Constraints: Checks collisions at head, middle, and feet positions. Uses CharacterHeights table for proper hitbox detection. Inline division by pfrowheight (8 or 16) using bit shifts
           rem Get player position and character info
           let temp2 = playerX[currentPlayer]
           rem X position (save original)
@@ -447,6 +459,12 @@ PFCheckDone
           rem Applies impulses to velocity instead of directly modifying
           rem   position.
 CheckAllPlayerCollisions
+          rem Checks all player-to-player collisions and applies momentum transfer based on weight
+          rem Input: playerX[], playerY[] (global arrays) = player positions, playerChar[] (global array) = character types, playerHealth[] (global array) = player health, playerVelocityX[] (global array) = player X velocities, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, CharacterHeights[], CharacterWeights[] (global data tables) = character properties, PlayerCollisionDistance (global constant) = collision distance threshold
+          rem Output: Player velocities adjusted based on weight-based momentum transfer when collisions detected
+          rem Mutates: temp1-temp6 (used for calculations), characterHeight, halfHeight1, halfHeight2, totalHeight, characterWeight, totalWeight, weightDifference, impulseStrength, yDistance (global) = calculation temporaries, playerVelocityX[] (global array) = player X velocities (adjusted for separation)
+          rem Called Routines: None
+          rem Constraints: Only checks pairs (i, j) where i < j to avoid duplicate checks. Skips eliminated players (health = 0). Players 3/4 only checked if Quadtari detected and selected. Uses weight-based momentum transfer (heavier characters push lighter ones more). Approximates division using bit shifts
           rem Loop through all player pairs to check collisions
           rem Pair (i, j) where i < j to avoid checking same pair twice
           let temp1 = 0

@@ -213,12 +213,18 @@ BuildDateString
           ; Format: ASCII bytes, null-terminated
           ; Generated at compile time via preprocessor defines
           ;   BUILD_YEAR and BUILD_DAY
-          .byte BUILD_DATE_STRING,0
+          ; Note: BUILD_DATE_STRING is a macro that expands to quoted string,
+          ;   but batariBASIC preprocessor doesn't handle quotes in asm blocks,
+          ;   so we use BUILD_YEAR and BUILD_DAY directly
+          .byte BUILD_YEAR / 1000 + '0, (BUILD_YEAR / 100) % 10 + '0, (BUILD_YEAR / 10) % 10 + '0, BUILD_YEAR % 10 + '0, '.', (BUILD_DAY / 100) + '0, ((BUILD_DAY / 10) % 10) + '0, BUILD_DAY % 10 + '0, 0
 end
           
           ; Game URL string for attribution
           ; Format: ASCII bytes, null-terminated
+          ; Note: String converted to individual bytes to avoid preprocessor quote issues
 GameURLString
-          .byte "https://interworldly.com/games/ChaosFight",0
+          .byte $68,$74,$74,$70,$73,$3A,$2F,$2F,$69,$6E,$74,$65,$72,$77,$6F,$72
+          .byte $6C,$64,$6C,$79,$2E,$63,$6F,$6D,$2F,$67,$61,$6D,$65,$73,$2F,$43
+          .byte $68,$61,$6F,$73,$46,$69,$67,$68,$74,$00
 end
 

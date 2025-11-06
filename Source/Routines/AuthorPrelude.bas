@@ -1,4 +1,4 @@
-          rem ChaosFight - Source/Routines/AuthorPreamble.bas
+          rem ChaosFight - Source/Routines/AuthorPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem ==========================================================

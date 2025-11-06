@@ -263,6 +263,24 @@ UpdatePlayerAnimation
 
 ## Documentation
 
+### Apostrophes in Remarks
+
+**All apostrophes in `rem` comments MUST use the right single quotation mark** (U+2019, `'`) instead of the straight apostrophe (U+0027, `'`).
+
+**Correct:**
+```basic
+rem Check for negative velocity using two's complement
+rem It's important to note that this uses two's complement
+```
+
+**Incorrect:**
+```basic
+rem Check for negative velocity using two's complement  ; Wrong: straight apostrophe
+rem It's important to note that this uses two's complement  ; Wrong: straight apostrophe
+```
+
+**Rationale**: The right single quotation mark is the typographically correct character for apostrophes in English text, and ensures consistent typography throughout the codebase.
+
 ### Remark Length
 
 **All remarks/comments MUST NOT exceed 72 columns** for readability, consistency, and compatibility with various display formats.

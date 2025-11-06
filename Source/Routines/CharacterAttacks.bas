@@ -63,7 +63,7 @@ RestoreFacingDone1
           rem CURLER (Character 1) - Ranged Attack (ground-based)
           rem ==========================================================
 CurlerAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformRangedAttack
@@ -74,7 +74,7 @@ CurlerAttack
           rem Fires ranged fireballs that slowly arc downwards
           rem 2×2 missile with ballistic arc trajectory
 DragonetAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformRangedAttack
@@ -83,7 +83,7 @@ DragonetAttack
           rem ZOE RYEN (Character 3) - Ranged Attack
           rem ==========================================================
 ZoeRyenAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformRangedAttack
@@ -94,7 +94,7 @@ ZoeRyenAttack
           rem Magic ring lasers shoot across screen very quickly
           rem Pass through walls, thin, wide missile
 FatTonyAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformRangedAttack
@@ -107,7 +107,7 @@ FatTonyAttack
           rem The missile appears adjacent to Megax, stays stationary
           rem   during attack, and vanishes when attack completes.
 MegaxAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformMeleeAttack
@@ -127,7 +127,7 @@ HarpyAttack
           dim HA_velocityY = temp3
           
           rem Set attack animation state
-          let playerState[HA_playerIndex] = (playerState[HA_playerIndex] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[HA_playerIndex] = (playerState[HA_playerIndex] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           
           rem Get facing direction (bit 0: 0=left, 1=right)
@@ -193,7 +193,7 @@ HarpySetVerticalVelocity
           rem   slightly away during attack phase (sword swing), returns
           rem   to start, and vanishes when attack completes.
 KnightGuyAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformMeleeAttack
@@ -207,7 +207,7 @@ KnightGuyAttack
           rem   sprites
           rem Sprite data should show sparkle particle effects
 FrootyAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformRangedAttack
@@ -222,7 +222,7 @@ FrootyAttack
           rem NEFERTEM (Character 9) - Melee Attack
           rem ==========================================================
 NefertemAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformMeleeAttack
@@ -231,7 +231,7 @@ NefertemAttack
           rem NINJISH GUY (Character 10) - Ranged Attack (small bullet)
           rem ==========================================================
 NinjishGuyAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformRangedAttack
@@ -240,7 +240,7 @@ NinjishGuyAttack
           rem PORK CHOP (Character 11) - Melee Attack
           rem ==========================================================
 PorkChopAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformMeleeAttack
@@ -249,7 +249,7 @@ PorkChopAttack
           rem RADISH GOBLIN (Character 12) - Melee Attack
           rem ==========================================================
 RadishGoblinAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformMeleeAttack
@@ -258,7 +258,7 @@ RadishGoblinAttack
           rem ROBO TITO (Character 13) - Melee Attack
           rem ==========================================================
 RoboTitoAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformMeleeAttack
@@ -267,7 +267,7 @@ RoboTitoAttack
           rem URSULO (Character 14) - Melee Attack (Claw Swipe)
           rem ==========================================================
 UrsuloAttack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformMeleeAttack
@@ -281,11 +281,11 @@ ShamoneAttack
           rem First, execute the jump
           let playerY[temp1] = playerY[temp1] - 11 
           rem Light character, good jump
-          let playerState[temp1] = playerState[temp1] | (1 << PlayerStateJumping)
+          let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           rem Set jumping flag
           
           rem Then execute the attack
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | (ActionAttackExecute << ShiftAnimationState) 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           rem tail call
           goto PerformMeleeAttack

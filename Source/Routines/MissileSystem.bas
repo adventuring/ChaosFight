@@ -273,7 +273,7 @@ GravityDone
             lsr velocityCalculation
             lsr velocityCalculation
             lsr velocityCalculation
-          end
+end
           rem Reduce by 1/64 (1.56% - ice-like friction)
           let missileVelocityXCalc = missileVelocityXCalc - velocityCalculation
           goto FrictionApply
@@ -289,7 +289,7 @@ FrictionNegative
             lsr velocityCalculation
             lsr velocityCalculation
             lsr velocityCalculation
-          end
+end
           rem Reduce by 1/64 (1.56% - ice-like friction)
           let missileVelocityXCalc = missileVelocityXCalc + velocityCalculation
           rem Add back (since missileVelocityXCalc was negative)

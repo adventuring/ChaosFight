@@ -21,7 +21,7 @@ WinnerAnnouncementLoop
 WinnerAdvanceToCharacterSelect
           rem Transition to title screen (per issue #483 requirement)
           let gameMode = ModeTitle
-          gosub ChangeGameMode bank1
+          gosub ChangeGameMode bank14
           return
 
 

@@ -233,13 +233,13 @@ ReturnToCharacterSelect
           rem Return to Character Select screen
           let fireHoldTimer_W = 0
           let gameMode = ModeCharacterSelect
-          gosub ChangeGameMode bank1
+          gosub ChangeGameMode bank14
           return
 
 StartGame1
           rem Start game with selected arena
           let gameMode = ModeGame
-          gosub ChangeGameMode bank1
+          gosub ChangeGameMode bank14
           return
 
           rem ==========================================================
@@ -399,7 +399,7 @@ ArenaSelectDrawPlayerSprite
           let temp2 = ASDPS_animationFrame
           let temp3 = ASDPS_animationAction
           let temp4 = ASDPS_playerNumber
-          gosub LocateCharacterArt bank1
+          gosub LocateCharacterArt bank14
           
           rem Set character color based on player number
           rem LoadCharacterColors expects aliases: isHurt, playerNumber,

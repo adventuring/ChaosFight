@@ -83,7 +83,7 @@ HCSC_CycleDone
           let playerChar[HCSC_playerIndex] = HCSC_characterIndex
           let temp1 = HCSC_playerIndex
           let temp2 = PlayerLockedUnlocked
-          gosub SetPlayerLocked bank1
+          gosub SetPlayerLocked bank144
           rem Play navigation sound
           let HCSC_soundId = SoundMenuNavigate
           let temp1 = HCSC_soundId
@@ -121,7 +121,7 @@ HCSF_HandleFire
           let HCSF_playerNumber = HCSF_playerIndex
           let temp1 = HCSF_playerNumber
           let temp2 = PlayerLockedNormal
-          gosub SetPlayerLocked bank1
+          gosub SetPlayerLocked bank144
           rem Play selection sound
           let HCSF_soundId = SoundMenuSelect
           let temp1 = HCSF_soundId
@@ -131,7 +131,7 @@ HCSF_HandleHandicap
           let HCSF_playerNumber = HCSF_playerIndex
           let temp1 = HCSF_playerNumber
           let temp2 = PlayerLockedHandicap
-          gosub SetPlayerLocked bank1
+          gosub SetPlayerLocked bank144
           rem Play selection sound
           let HCSF_soundId = SoundMenuSelect
           let temp1 = HCSF_soundId
@@ -345,9 +345,9 @@ CharacterSelectCheckReady
           rem 2-player mode: P1 must be locked AND (P2 locked OR P2 on
           rem   CPU)
           if controllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
-          let temp1 = 0 : gosub GetPlayerLocked bank1 : if !temp2 then goto CharacterSelectReadyDone
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if !temp2 then goto CharacterSelectReadyDone
           rem P1 is locked, check P2
-          let temp1 = 1 : gosub GetPlayerLocked bank1 : if temp2 then goto CharacterSelectFinish
+          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then goto CharacterSelectFinish
           rem P2 not locked, check if on CPU
           if playerChar[1] = CPUCharacter then goto CharacterSelectFinish
           goto CharacterSelectReadyDone
@@ -357,21 +357,21 @@ CharacterSelectQuadtariReady
           rem   CPU/NO)
           let readyCount = 0
           rem Count P1 ready
-          let temp1 = 0 : gosub GetPlayerLocked bank1 : if temp2 then readyCount = readyCount + 1
-          let temp1 = 0 : gosub GetPlayerLocked bank1 : if !temp2 && playerChar[0] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 0 : gosub GetPlayerLocked bank1 : if !temp2 && playerChar[0] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if !temp2 && playerChar[0] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if !temp2 && playerChar[0] = NoCharacter then readyCount = readyCount + 1
           rem Count P2 ready
-          let temp1 = 1 : gosub GetPlayerLocked bank1 : if temp2 then readyCount = readyCount + 1
-          let temp1 = 1 : gosub GetPlayerLocked bank1 : if !temp2 && playerChar[1] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 1 : gosub GetPlayerLocked bank1 : if !temp2 && playerChar[1] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank14 : if !temp2 && playerChar[1] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank14 : if !temp2 && playerChar[1] = NoCharacter then readyCount = readyCount + 1
           rem Count P3 ready
-          let temp1 = 2 : gosub GetPlayerLocked bank1 : if temp2 then readyCount = readyCount + 1
-          let temp1 = 2 : gosub GetPlayerLocked bank1 : if !temp2 && playerChar[2] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 2 : gosub GetPlayerLocked bank1 : if !temp2 && playerChar[2] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank14 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank14 : if !temp2 && playerChar[2] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank14 : if !temp2 && playerChar[2] = NoCharacter then readyCount = readyCount + 1
           rem Count P4 ready
-          let temp1 = 3 : gosub GetPlayerLocked bank1 : if temp2 then readyCount = readyCount + 1
-          let temp1 = 3 : gosub GetPlayerLocked bank1 : if !temp2 && playerChar[3] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 3 : gosub GetPlayerLocked bank1 : if !temp2 && playerChar[3] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank14 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank14 : if !temp2 && playerChar[3] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank14 : if !temp2 && playerChar[3] = NoCharacter then readyCount = readyCount + 1
           if readyCount >= 2 then goto CharacterSelectFinish
           
 CharacterSelectReadyDone
@@ -401,7 +401,7 @@ SkipChar4Facing
           
           rem Transition to falling animation
           let gameMode = ModeFallingAnimation
-          gosub ChangeGameMode bank1
+          gosub ChangeGameMode bank14
           return
 
           rem ==========================================================
@@ -744,7 +744,7 @@ SelectLoadSprite
           let temp2 = SLS_animationFrame
           let temp3 = SLS_animationAction
           let temp4 = SLS_playerNumberForArt
-          gosub LocateCharacterArt bank1
+          gosub LocateCharacterArt bank14
           goto SelectLoadSpriteColor
           
 SelectLoadSpecialSprite
@@ -795,7 +795,7 @@ SelectLoadWalkingSprite
           let temp2 = SLWS_animationFrame
           let temp3 = SLWS_animationAction
           let temp4 = SLWS_playerNumberForArt
-          gosub LocateCharacterArt bank1
+          gosub LocateCharacterArt bank14
           
 SelectLoadSpriteColor
           dim SLSC_playerNumberSaved = temp6

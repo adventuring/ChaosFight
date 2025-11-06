@@ -57,5 +57,5 @@ TitleSkipQuad
 TitleScreenComplete
           rem Transition to character select
           let gameMode = ModeCharacterSelect
-          gosub ChangeGameMode bank1
+          gosub ChangeGameMode bank14
           return

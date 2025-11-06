@@ -47,24 +47,12 @@ end
 #include "Source/Routines/FontRendering.bas"
 
           rem Arena data (includes playfield and pfcolors data)
+          rem Needed for drawscreen playfield rendering
 #include "Source/Routines/ArenaLoader.bas"
-
-          rem Console detection and handling
-#include "Source/Routines/ConsoleDetection.bas"
-#include "Source/Routines/ControllerDetection.bas"
-#include "Source/Routines/ConsoleHandling.bas"
-          
-          rem Character art location system
-#include "Source/Routines/SpriteLoaderCharacterArt.bas"
-          
-          rem Game mode transitions
-#include "Source/Routines/ChangeGameMode.bas"
           
           rem Main loop and drawscreen
+          rem MainLoop calls drawscreen, must be in same bank as kernel
 #include "Source/Routines/MainLoop.bas"
-          
-          rem Player locked helpers
-#include "Source/Routines/PlayerLockedHelpers.bas"
 
           goto ColdStart bank13
 

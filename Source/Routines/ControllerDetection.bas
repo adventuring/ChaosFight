@@ -375,7 +375,7 @@ ToggleBWDone
           rem XOR to toggle 0<->1 (done via if/else above)
           
           rem Reload arena colors with new override state
-          gosub ReloadArenaColors bank1
+          gosub ReloadArenaColors bank14
           
           return
 #endif

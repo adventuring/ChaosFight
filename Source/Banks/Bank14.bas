@@ -3,7 +3,19 @@
 
           bank 14
 
-          rem MainLoop, drawscreen, arenas, numeric font, titlescreen graphics, and special sprites
-          rem moved to Bank 1 (where the kernel resides) to resolve cross-bank jump errors
+          rem Routines moved from Bank 1 - not needed for drawscreen calls
+          rem These are called before/after drawscreen, not during it
           
-          rem Bank 14 is now available for other resources
+          rem Console detection and handling
+#include "Source/Routines/ConsoleDetection.bas"
+#include "Source/Routines/ControllerDetection.bas"
+#include "Source/Routines/ConsoleHandling.bas"
+          
+          rem Character art location system
+#include "Source/Routines/SpriteLoaderCharacterArt.bas"
+          
+          rem Game mode transitions
+#include "Source/Routines/ChangeGameMode.bas"
+          
+          rem Player locked helpers
+#include "Source/Routines/PlayerLockedHelpers.bas"

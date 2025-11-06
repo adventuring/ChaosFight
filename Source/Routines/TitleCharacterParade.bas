@@ -98,18 +98,18 @@ DrawParadeCharacter
           rem 2-player mode: Randomly choose indigo or red
           temp1 = rand & 1
           if temp1 then SetParadeRed
-          COLUP0 = ColIndigo(12) : goto SetParadeColorDone
+          COLUP0 = ColIndigo(12) : goto SetParadeColorDone bank9
 SetParadeRed
-          COLUP0 = ColRed(12) : goto SetParadeColorDone
+          COLUP0 = ColRed(12) : goto SetParadeColorDone bank9
           
 SetParadeColor4Player
           rem 4-player mode: Randomly choose from all 4 player colors
           temp1 = rand & 3
-          if temp1 = 0 then COLUP0 = ColIndigo(12) : goto SetParadeColorDone
+          if temp1 = 0 then COLUP0 = ColIndigo(12) : goto SetParadeColorDone bank9
           rem Player 1: Indigo
-          if temp1 = 1 then COLUP0 = ColRed(12) : goto SetParadeColorDone
+          if temp1 = 1 then COLUP0 = ColRed(12) : goto SetParadeColorDone bank9
           rem Player 2: Red
-          if temp1 = 2 then COLUP0 = ColYellow(12) : goto SetParadeColorDone
+          if temp1 = 2 then COLUP0 = ColYellow(12) : goto SetParadeColorDone bank9
           rem Player 3: Yellow
 #ifdef TV_SECAM
           COLUP0 = ColGreen(12)

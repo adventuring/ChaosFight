@@ -142,22 +142,25 @@
 #define _COL_Gold_L12 $FC
 #define _COL_Gold_L14 $FE
 
+/* Helper macro for token pasting - required for proper macro parameter expansion */
+#define _COL_CONCAT(a, b) a##b
+
 /* Color function macros using token pasting */
-#define ColGrey(lum) _COL_Grey_L##lum
-#define ColGray(lum) _COL_Grey_L##lum  /* ColGray and ColGrey are synonyms */
-#define ColYellow(lum) _COL_Yellow_L##lum
-#define ColBrown(lum) _COL_Brown_L##lum
-#define ColOrange(lum) _COL_Orange_L##lum
-#define ColRed(lum) _COL_Red_L##lum
-#define ColMagenta(lum) _COL_Magenta_L##lum
-#define ColPurple(lum) _COL_Purple_L##lum
-#define ColIndigo(lum) _COL_Indigo_L##lum
-#define ColBlue(lum) _COL_Blue_L##lum
-#define ColTurquoise(lum) _COL_Turquoise_L##lum
-#define ColCyan(lum) _COL_Cyan_L##lum
-#define ColTeal(lum) _COL_Teal_L##lum
-#define ColSeafoam(lum) _COL_Seafoam_L##lum
-#define ColGreen(lum) _COL_Green_L##lum
-#define ColSpringGreen(lum) _COL_SpringGreen_L##lum
-#define ColGold(lum) _COL_Gold_L##lum
+#define ColGrey(lum) _COL_CONCAT(_COL_Grey_L, lum)
+#define ColGray(lum) _COL_CONCAT(_COL_Grey_L, lum)  /* ColGray and ColGrey are synonyms */
+#define ColYellow(lum) _COL_CONCAT(_COL_Yellow_L, lum)
+#define ColBrown(lum) _COL_CONCAT(_COL_Brown_L, lum)
+#define ColOrange(lum) _COL_CONCAT(_COL_Orange_L, lum)
+#define ColRed(lum) _COL_CONCAT(_COL_Red_L, lum)
+#define ColMagenta(lum) _COL_CONCAT(_COL_Magenta_L, lum)
+#define ColPurple(lum) _COL_CONCAT(_COL_Purple_L, lum)
+#define ColIndigo(lum) _COL_CONCAT(_COL_Indigo_L, lum)
+#define ColBlue(lum) _COL_CONCAT(_COL_Blue_L, lum)
+#define ColTurquoise(lum) _COL_CONCAT(_COL_Turquoise_L, lum)
+#define ColCyan(lum) _COL_CONCAT(_COL_Cyan_L, lum)
+#define ColTeal(lum) _COL_CONCAT(_COL_Teal_L, lum)
+#define ColSeafoam(lum) _COL_CONCAT(_COL_Seafoam_L, lum)
+#define ColGreen(lum) _COL_CONCAT(_COL_Green_L, lum)
+#define ColSpringGreen(lum) _COL_CONCAT(_COL_SpringGreen_L, lum)
+#define ColGold(lum) _COL_CONCAT(_COL_Gold_L, lum)
 

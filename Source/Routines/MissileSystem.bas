@@ -267,15 +267,13 @@ GravityDone
           rem Divide by 64 using bit shift (6 right shifts) - derived
           rem   from CurlingFrictionCoefficient
           asm
-            lda velocityCalculation
-            lsr a
-            lsr a
-            lsr a
-            lsr a
-            lsr a
-            lsr a
-            sta velocityCalculation
-end
+            lsr velocityCalculation
+            lsr velocityCalculation
+            lsr velocityCalculation
+            lsr velocityCalculation
+            lsr velocityCalculation
+            lsr velocityCalculation
+          end
           rem Reduce by 1/64 (1.56% - ice-like friction)
           let missileVelocityXCalc = missileVelocityXCalc - velocityCalculation
           goto FrictionApply
@@ -285,15 +283,13 @@ FrictionNegative
           rem Divide by 64 using bit shift (6 right shifts) - derived
           rem   from CurlingFrictionCoefficient
           asm
-            lda velocityCalculation
-            lsr a
-            lsr a
-            lsr a
-            lsr a
-            lsr a
-            lsr a
-            sta velocityCalculation
-end
+            lsr velocityCalculation
+            lsr velocityCalculation
+            lsr velocityCalculation
+            lsr velocityCalculation
+            lsr velocityCalculation
+            lsr velocityCalculation
+          end
           rem Reduce by 1/64 (1.56% - ice-like friction)
           let missileVelocityXCalc = missileVelocityXCalc + velocityCalculation
           rem Add back (since missileVelocityXCalc was negative)
@@ -391,12 +387,12 @@ GuardBounceFromCollision
           rem Apply friction damping on bounce (reduce by 25% for guard
           rem   bounce)
           rem Divide by 4 using bit shift (2 right shifts)
+          rem Copy to velocityCalculation first, then shift in-place
+          let velocityCalculation = temp6
           asm
-            lda temp6
-            lsr a
-            lsr a
-            sta velocityCalculation
-end
+            lsr velocityCalculation
+            lsr velocityCalculation
+          end
           let temp6  = temp6 - velocityCalculation
           rem Reduce bounce velocity by 25%
           let missileVelocityX[UOM_playerIndex] = temp6
@@ -472,14 +468,13 @@ HandleMegaxMissile
           rem ActionAttackExecute = 14 (0xE)
           rem Extract animation state (bits 4-7)
           let HMM_animationState = playerState[HMM_playerIndex]
+          rem Extract animation state (bits 4-7) using bit shift
           asm
-            lda HMM_animationState
-            lsr a
-            lsr a
-            lsr a
-            lsr a
-            sta HMM_animationState
-end
+            lsr HMM_animationState
+            lsr HMM_animationState
+            lsr HMM_animationState
+            lsr HMM_animationState
+          end
           
           rem If animation state is not ActionAttackExecute (14), attack is complete
           rem   deactivate
@@ -518,14 +513,13 @@ HandleKnightGuyMissile
           rem Check if attack animation is complete
           rem Extract animation state (bits 4-7)
           let HKG_animationState = playerState[HKG_playerIndex]
+          rem Extract animation state (bits 4-7) using bit shift
           asm
-            lda HKG_animationState
-            lsr a
-            lsr a
-            lsr a
-            lsr a
-            sta HKG_animationState
-end
+            lsr HKG_animationState
+            lsr HKG_animationState
+            lsr HKG_animationState
+            lsr HKG_animationState
+          end
           
           rem If animation state is not ActionAttackExecute (14), attack is complete
           if HKG_animationState = 14 then KnightGuyAttackActive
@@ -880,11 +874,9 @@ HandleMissileBounce
           rem   Negative: velocity - (velocity >> 1) = 0.5 velocity (reduces magnitude)
           dim HMB_dampenAmount = temp2
           let HMB_dampenAmount = missileVelocityXCalc
-          rem Divide by 2 using bit shift right (LSR)
+          rem Divide by 2 using bit shift right (LSR) - direct memory mode
           asm
-            lda HMB_dampenAmount
-            lsr a
-            sta HMB_dampenAmount
+            lsr HMB_dampenAmount
           end
           let missileVelocityXCalc = missileVelocityXCalc - HMB_dampenAmount
 BounceDone

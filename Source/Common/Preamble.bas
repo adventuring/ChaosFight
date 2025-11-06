@@ -21,7 +21,9 @@
           rem superchip, etc. based on set kernel and set romsize commands below.
           rem These constants are written to 2600basic_variable_redefs.h which is
           rem included by multispritesuperchipheader.asm before the ifconst bankswitch check.
-          rem pfres (playfield resolution) is defined in Constants.bas as it is not auto-generated.
+          rem pfres (playfield resolution) must be defined manually as it is not auto-generated.
+
+#include "Source/Common/AssemblyConfig.bas"
 
           includesfile multisprite_superchip.inc
 

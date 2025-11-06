@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Data/SongPointers16.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem SONG POINTER DATA TABLES - BANK 16
-          rem ==========================================================
+          rem Song Pointer Data Tables - Bank 16
+          rem
           rem Compact pointer lookup tables for songs stored in Bank 16
           rem Format: data SongPointersL16, SongPointersH16 (27 entries)
           rem Songs in Bank 16: All songs except OCascadia (1) and
@@ -49,9 +48,8 @@ end
 
 
           
-          rem ==========================================================
-          rem SONG POINTER DATA TABLES - BANK 16
-          rem ==========================================================
+          rem Song Pointer Data Tables - Bank 16
+          rem
           rem Compact pointer lookup tables for songs stored in Bank 16
           rem Format: data SongPointersL16, SongPointersH16 (27 entries)
           rem Songs in Bank 16: All songs except OCascadia (1) and

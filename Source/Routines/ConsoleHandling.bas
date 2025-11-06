@@ -15,9 +15,8 @@
           rem systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal
           rem ==========================================================
 
-          rem ==========================================================
-          rem WARM START / RESET HANDLER
-          rem ==========================================================
+          rem Warm Start / Reset Handler
+          rem
           rem Handles game reset from any screen/state.
           rem Clears critical state variables and reinitializes hardware
           rem   registers.
@@ -145,9 +144,8 @@ DonePlayer2Pause
 
           return
 
-          rem ==========================================================
-          rem COLOR/B&W SWITCH CHANGE DETECTION
-          rem ==========================================================
+          rem Color/b&w Switch Change Detection
+          rem
           rem Re-detect controllers when Color/B&W switch is toggled
           
 CheckColorBWToggle

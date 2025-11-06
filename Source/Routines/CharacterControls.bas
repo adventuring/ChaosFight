@@ -23,9 +23,8 @@
           rem   15=Shamone
           rem ==========================================================
 
-          rem ==========================================================
-          rem JUMP HANDLERS (Called via on goto from PlayerInput)
-          rem ==========================================================
+          rem Jump Handlers (called Via On Goto From Playerinput)
+          rem
 
           rem BERNIE (0) - NO JUMP, BUT CAN FALL THROUGH 1-ROW FLOORS
           rem Bernie cannot jump, but pressing UP allows him to fall
@@ -929,9 +928,8 @@ ShamoneDown
           rem tail call
           goto StandardGuard
 
-          rem ==========================================================
-          rem PLACEHOLDER CHARACTER HANDLERS (16-30)
-          rem ==========================================================
+          rem Placeholder Character Handlers (16-30)
+          rem
           rem These characters are not yet implemented and use standard
           rem   behaviors
 

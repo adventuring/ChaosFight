@@ -5,9 +5,8 @@
           rem REASON: Unused legacy functions, replaced by
           rem   LoadPlayerSprite dispatcher
           
-          rem ==========================================================
-          rem LOAD PLAYER SPRITES (legacy player-specific functions)
-          rem ==========================================================
+          rem Load Player Sprites (legacy Player-specific Functions)
+          rem
           rem Load sprite data into specific player registers
           rem These functions contain the actual player graphics
           rem   commands

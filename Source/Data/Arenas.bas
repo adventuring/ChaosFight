@@ -17,9 +17,8 @@
           rem All arenas share ArenaColorsBW for B&W mode
           rem ==========================================================
 
-          rem ==========================================================
-          rem SHARED B&W COLOR DEFINITION
-          rem ==========================================================
+          rem Shared B&w Color Definition
+          rem
           rem All arenas use the same B&W colors (all white)
           rem ==========================================================
 ArenaColorsBW
@@ -34,9 +33,8 @@ ArenaColorsBW
           ColGrey(14)
 end
 
-          rem ==========================================================
-          rem ARENA PLAYFIELDS (32 arenas: indices 0-31)
-          rem ==========================================================
+          rem Arena Playfields (32 Arenas: Indices 0-31)
+          rem
 Arena0Playfield
           playfield:
           XXXXXXXXXXXXXXXX

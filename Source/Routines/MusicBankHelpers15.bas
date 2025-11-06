@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Routines/MusicBankHelpers15.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem SONGS BANK HELPER FUNCTIONS (BANK 15)
-          rem ==========================================================
+          rem Songs Bank Helper Functions (bank 15)
+          rem
           rem These functions access song data tables and streams in
           rem   Bank 15
           rem Duplicate of MusicBankHelpers.bas but for Bank 15 songs

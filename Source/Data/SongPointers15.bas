@@ -1,9 +1,8 @@
           rem ChaosFight - Source/Data/SongPointers15.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem ==========================================================
-          rem SONG POINTER DATA TABLES - BANK 15
-          rem ==========================================================
+          rem Song Pointer Data Tables - Bank 15
+          rem
           rem Compact pointer lookup tables for songs stored in Bank 15
           rem Format: data SongPointersL15, SongPointersH15 (2 entries)
           rem Songs in Bank 15: OCascadia (1), Revontuli (2)

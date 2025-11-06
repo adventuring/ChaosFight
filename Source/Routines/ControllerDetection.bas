@@ -16,9 +16,8 @@
           rem Genesis detection method based on Grizzards by
           rem   Bruce-Robert Pocock
 
-          rem ==========================================================
-          rem CONSOLE DETECTION (7800 vs 2600)
-          rem ==========================================================
+          rem Console Detection (7800 Vs 2600)
+          rem
           rem Detect if running on Atari 7800 for enhanced features
           rem Method: Check magic bytes in $D0/$D1 set by BIOS
           
@@ -41,9 +40,8 @@ CtrlDetConsole
           
           rem Fall through to controller detection
 
-          rem ==========================================================
-          rem CONTROLLER DETECTION (MONOTONIC - UPGRADES ONLY)
-          rem ==========================================================
+          rem Controller Detection (monotonic - Upgrades Only)
+          rem
           rem Re-detect controllers each time Game Select pressed or
           rem   title reached
           rem MONOTONIC STATE MACHINE: Only allows upgrades, never
@@ -180,9 +178,8 @@ CDP_NoGenesisLeft
 CDP_NoGenesisRight
           return
           
-          rem ==========================================================
-          rem JOY2BPLUS DETECTION SUBROUTINE
-          rem ==========================================================
+          rem Joy2bplus Detection Subroutine
+          rem
 CDP_DetectJoy2bPlus
           rem Detect Joy2b+ enhanced controllers by checking paddle port states
           rem Input: CDP_existingStatus (temp1) = existing controller status, CDP_newStatus (temp2) = new detection status, INPT0-5 (hardware registers) = paddle port states
@@ -224,9 +221,8 @@ CDP_NoJoy2Right
           return
           
 
-          rem ==========================================================
-          rem GENESIS/MEGADRIVE CONTROLLER DETECTION
-          rem ==========================================================
+          rem Genesis/megadrive Controller Detection
+          rem
           rem Based on DetectGenesis.s - correct implementation
 CtrlGenesisA
           rem Detect Genesis/MegaDrive controllers (variant A - based on DetectGenesis.s)
@@ -270,9 +266,8 @@ NoGenesisLeft
 NoGenesisRight
           return
 
-          rem ==========================================================
-          rem JOY2BPLUS CONTROLLER DETECTION  
-          rem ==========================================================
+          rem Joy2bplus Controller Detection
+          rem
 CtrlJoy2A
           rem Detect Joy2b+ enhanced controllers (variant A)
           rem Input: INPT0-5 (hardware registers) = paddle port states, controllerStatus (global) = controller capabilities
@@ -304,9 +299,8 @@ NoJoy2Left
 NoJoy2Right
           return
 
-          rem ==========================================================
-          rem GENESIS/MEGADRIVE CONTROLLER DETECTION
-          rem ==========================================================
+          rem Genesis/megadrive Controller Detection
+          rem
           rem Based on DetectGenesis.s - correct implementation
 CtrlGenesisB
           rem Detect Genesis/MegaDrive controllers (variant B - alternative implementation)
@@ -349,9 +343,8 @@ GenesisDetDone
           VBLANK = $00
           return
 
-          rem ==========================================================
-          rem JOY2BPLUS CONTROLLER DETECTION  
-          rem ==========================================================
+          rem Joy2bplus Controller Detection
+          rem
 CtrlJoy2B
           rem Detect Joy2b+ enhanced controllers (variant B - alternative implementation)
           rem Input: LeftPortGenesis, RightPortGenesis (global constants/flags) = Genesis detection flags, INPT0-5 (hardware registers) = paddle port states, VBLANK (TIA register) = vertical blank register, controllerStatus (global) = controller capabilities
@@ -391,9 +384,8 @@ Joy2PlusDone
           VBLANK = $00
           return
 
-          rem ==========================================================
-          rem 7800 PAUSE BUTTON HANDLER
-          rem ==========================================================
+          rem 7800 Pause Button Handler
+          rem
           rem On Atari 7800, Pause button toggles Color/B&W override
           rem This allows players to switch between color and B&W
           rem   without
@@ -486,9 +478,8 @@ PauseNotPressed
           let systemFlags = systemFlags | SystemFlagPauseButtonPrev
           return
 
-          rem ==========================================================
-          rem DETECT CONTROLLERS (PUBLIC WRAPPER)
-          rem ==========================================================
+          rem Detect Controllers (public Wrapper)
+          rem
           rem Public wrapper for controller detection called from
           rem   ConsoleHandling
           rem Gates detection behind SELECT button or menu flow

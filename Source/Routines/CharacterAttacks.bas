@@ -15,9 +15,8 @@
           rem   looked up
           rem from the player arrays using temp1 as the index
 
-          rem ==========================================================
-          rem BERNIE (Character 0) - Ground Thump (Area-of-Effect)
-          rem ==========================================================
+          rem Bernie (character 0) - Ground Thump (area-of-effect)
+          rem
 BernieAttack
           rem Bernie (Character 0) - Ground Thump (Area-of-Effect) attack
           rem Input: temp1 = attacker player index (0-3)
@@ -47,9 +46,8 @@ BernieAttack
           let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] ^ PlayerStateBitFacing
           return
 
-          rem ==========================================================
-          rem SIMPLE CHARACTER ATTACKS (Consolidated)
-          rem ==========================================================
+          rem Simple Character Attacks (consolidated)
+          rem
           rem Simple attacks that just set animation state and call
           rem   PerformMeleeAttack or PerformRangedAttack
           rem NOTE: PerformMeleeAttack and PerformRangedAttack already set
@@ -106,9 +104,8 @@ MegaxAttack
           rem Melee attack (fire breath visual - missile stays stationary)
           goto PerformMeleeAttack
 
-          rem ==========================================================
-          rem HARPY (Character 6) - Diagonal Downward Swoop Attack
-          rem ==========================================================
+          rem Harpy (character 6) - Diagonal Downward Swoop Attack
+          rem
           rem Harpy attack moves the character itself in a 45° rapid
           rem   downward swoop
           rem Attack hitbox is below the character during the swoop

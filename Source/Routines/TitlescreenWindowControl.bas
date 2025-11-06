@@ -31,6 +31,11 @@
 SetPublisherWindowValues
           rem Set runtime window values for Publisher screen (2 bitmaps
           rem   visible)
+          rem Input: None
+          rem Output: titlescreenWindow1-4 set for Publisher screen
+          rem Mutates: titlescreenWindow1, titlescreenWindow2, titlescreenWindow3, titlescreenWindow4
+          rem Called Routines: None
+          rem Constraints: None
           let titlescreenWindow1 = 42  ; AtariAge logo visible
           let titlescreenWindow2 = 42  ; AtariAgeText visible
           let titlescreenWindow3 = 0   ; ChaosFight hidden
@@ -44,6 +49,11 @@ SetPublisherWindowValues
 SetAuthorWindowValues
           rem Set runtime window values for Author screen (BRP
           rem   visible in slot 4)
+          rem Input: None
+          rem Output: titlescreenWindow1-4 set for Author screen
+          rem Mutates: titlescreenWindow1, titlescreenWindow2, titlescreenWindow3, titlescreenWindow4
+          rem Called Routines: None
+          rem Constraints: None
           let titlescreenWindow1 = 0   ; AtariAge logo hidden
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
           let titlescreenWindow3 = 0   ; ChaosFight hidden
@@ -57,6 +67,11 @@ SetAuthorWindowValues
 SetTitleWindowValues
           rem Set runtime window values for Title screen (1 bitmap
           rem   visible)
+          rem Input: None
+          rem Output: titlescreenWindow1-4 set for Title screen
+          rem Mutates: titlescreenWindow1, titlescreenWindow2, titlescreenWindow3, titlescreenWindow4
+          rem Called Routines: None
+          rem Constraints: None
           let titlescreenWindow1 = 0   ; AtariAge logo hidden
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
           let titlescreenWindow3 = 42  ; ChaosFight visible

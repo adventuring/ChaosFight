@@ -18,6 +18,12 @@
           rem INPUT: temp1 = player index (0-3)
           rem OUTPUT: temp2 = locked state (0=unlocked, 1=normal, 2=handicap)
 GetPlayerLocked
+          rem Get the locked state for a specific player from bit-packed playerLocked variable
+          rem Input: temp1 = player index (0-3), playerLocked (global) = bit-packed locked states
+          rem Output: temp2 = locked state (0=unlocked, 1=normal, 2=handicap)
+          rem Mutates: temp2 (return value), temp3 (used for bit extraction)
+          rem Called Routines: None
+          rem Constraints: None
           dim GPL_playerIndex = temp1
           dim GPL_lockedState = temp2
           dim GPL_playerLocked = temp3
@@ -71,6 +77,12 @@ GPL_Done
           rem         temp2 = locked state (0=unlocked, 1=normal, 2=handicap)
           rem OUTPUT: playerLocked variable updated
 SetPlayerLocked
+          rem Set the locked state for a specific player in bit-packed playerLocked variable
+          rem Input: temp1 = player index (0-3), temp2 = locked state (0=unlocked, 1=normal, 2=handicap), playerLocked (global) = current bit-packed locked states
+          rem Output: playerLocked (global) updated with new state for specified player
+          rem Mutates: playerLocked (global), temp3-temp5 (used for bit manipulation)
+          rem Called Routines: None
+          rem Constraints: None
           dim SPL_playerIndex = temp1
           dim SPL_lockedState = temp2
           dim SPL_playerLocked = temp3

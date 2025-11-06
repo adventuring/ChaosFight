@@ -27,6 +27,11 @@
           rem Apply special movement physics to all active players
 ApplySpecialMovement
           rem Inline ApplyPlayerSpecialMovement to avoid local label cross-bank issues
+          rem Input: playerChar[] (global array) = character types, controllerStatus (global) = Quadtari detection, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections
+          rem Output: Special movement applied (currently no-op, characters handled in gravity system)
+          rem Mutates: temp4 (used for character type checks)
+          rem Called Routines: None
+          rem Constraints: None
           rem Player 0 - Frooty (8) and Dragon of Storms (2) skip gravity
           temp4 = playerChar[0]
           if temp4 = 8 then ApplySpecialMovementP1
@@ -58,6 +63,12 @@ ApplySpecialMovementP3
           rem INPUT: temp1 = player index (0-3)
           rem USES: temp4 = character type
 ApplyPlayerSpecialMovement
+          rem Apply special movement physics to a single player
+          rem Input: temp1 = player index (0-3), playerChar[] (global array) = character types
+          rem Output: Special movement applied (currently no-op, characters handled in gravity system)
+          rem Mutates: temp4 (used for character type lookup)
+          rem Called Routines: None
+          rem Constraints: None
           dim APSM_playerIndex = temp1
           temp4 = playerChar[APSM_playerIndex]
           

@@ -5,8 +5,7 @@
 
 BeginTitleScreen
           rem Initialize Title Screen mode
-          rem Set playfield resolution
-          const pfres = 32
+          rem Note: pfres is defined globally in AssemblyConfig.s
           
           rem Initialize title parade state
           let titleParadeTimer = 0

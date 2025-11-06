@@ -4,8 +4,7 @@
 
 BeginAuthorPrelude
           rem Initialize Author Preamble mode
-          rem Set playfield resolution for admin screen
-          const pfres = 32
+          rem Note: pfres is defined globally in AssemblyConfig.s
           
           rem Initialize timer
           let preambleTimer = 0

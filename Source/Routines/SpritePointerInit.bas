@@ -20,6 +20,16 @@
           rem ==========================================================
 
 InitializeSpritePointers
+          rem Sets all sprite pointers to point to SCRAM buffers
+          rem Input: None (initialization routine)
+          rem Output: player0pointerlo/hi, player1pointerlo/hi, player2pointerlo/hi,
+          rem         player3pointerlo/hi set to SCRAM read port addresses
+          rem Mutates: player0pointerlo, player0pointerhi (set to $80/$F0 for r000),
+          rem         player1pointerlo, player1pointerhi (set to $90/$F0 for r016),
+          rem         player2pointerlo, player2pointerhi (set to $A0/$F0 for r032),
+          rem         player3pointerlo, player3pointerhi (set to $B0/$F0 for r048)
+          rem Called Routines: None (uses inline assembly)
+          rem Constraints: Called once at game initialization (from ColdStart, BeginGameLoop)
           rem Set Player 0 pointer to r000 ($F080)
           rem player0pointer is 16-bit pointer (player0pointerlo + player0pointerhi)
           rem Low byte: $80 (base address of r000)

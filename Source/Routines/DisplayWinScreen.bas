@@ -45,14 +45,7 @@ end
           
           rem Load playfield colors based on B&W mode
           gosub DWS_GetBWMode
-          if !DWS_bwMode then DWS_LoadColorColors
-          rem B&W mode: load B&W colors
-          pfcolors WinnerScreenColorsBW
-          goto DWS_LoadPlayfieldDone
-DWS_LoadColorColors
-          rem Color mode: load color colors
-          pfcolors WinnerScreenColorsColor
-DWS_LoadPlayfieldDone
+          if DWS_bwMode then gosub DWS_LoadBWColors else gosub DWS_LoadColorColors
           
           rem Get players remaining count (SCRAM read)
           let DWS_playersRemaining = playersRemaining_R
@@ -207,5 +200,15 @@ DWS_GetBWMode
           if switchbw then let temp2 = 1
           if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           let DWS_bwMode = temp2
+          return
+
+DWS_LoadBWColors
+          rem Load B&W colors (all white)
+          pfcolors WinnerScreenColorsBW
+          return
+
+DWS_LoadColorColors
+          rem Load color colors (gold gradient)
+          pfcolors WinnerScreenColorsColor
           return
 

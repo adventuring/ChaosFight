@@ -233,7 +233,7 @@ UpdateOneMissile
           if UOM_characterType = CharKnightGuy then goto HandleKnightGuyMissile
           
           rem Apply gravity if flag is set
-          if (UOM_missileFlags & MissileFlagGravity) = 0 then GravityDone
+          if !(UOM_missileFlags & MissileFlagGravity) then GravityDone
           let UOM_velocityY = UOM_velocityY + GravityPerFrame
           rem Add gravity (1 pixel/frame down)
           let missileVelocityY[UOM_playerIndex] = UOM_velocityY
@@ -242,7 +242,7 @@ GravityDone
           
           rem Apply friction if flag is set (curling stone deceleration
           rem   with coefficient)
-          if (temp5 & MissileFlagFriction) = 0 then FrictionDone
+          if !(temp5 & MissileFlagFriction) then FrictionDone
           let missileVelocityXCalc = missileVelocityX[UOM_playerIndex]
           rem Get current X velocity
           
@@ -351,7 +351,7 @@ FrictionDone
           rem temp5 now contains missile flags again
           let temp1 = UOM_playerIndex
           rem Restore player index for MissileCollPF
-          if (temp5 & MissileFlagHitBackground) = 0 then PlayfieldCollisionDone
+          if !(temp5 & MissileFlagHitBackground) then PlayfieldCollisionDone
           gosub bank7 MissileCollPF
           if !temp4 then PlayfieldCollisionDone
           rem Collision detected - check if should bounce or deactivate
@@ -748,7 +748,7 @@ HandleMissileHit
           goto DiveCheckDone
 HarpyCheckDive
           rem Check if Harpy is in dive mode
-          if (characterStateFlags_R[temp1] & 4) = 0 then DiveCheckDone
+          if !(characterStateFlags_R[temp1] & 4) then DiveCheckDone
           rem Not diving, skip bonus
           rem Apply 1.5x damage for diving attacks (temp6 + temp6/2 =
           rem   1.5 * temp6)
@@ -866,7 +866,7 @@ HandleMissileBounce
           rem Invert velocity (bounce back) using two’s complement
           
           rem Apply friction damping if friction flag is set
-          if (temp5 & MissileFlagFriction) = 0 then BounceDone
+          if !(temp5 & MissileFlagFriction) then BounceDone
           rem Reduce velocity by half (bit shift right by 1)
           rem Use bit shift instead of division to avoid complexity issues
           rem Subtraction works for both positive and negative values:

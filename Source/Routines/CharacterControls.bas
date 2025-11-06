@@ -726,7 +726,7 @@ RadishGoblinDown
 RoboTitoDown
           rem RoboTito voluntary drop from ceiling
           rem Check if latched to ceiling
-          if (characterStateFlags_R[temp1] & 1) = 0 then RoboTitoNotLatched
+          if !(characterStateFlags_R[temp1] & 1) then RoboTitoNotLatched
           rem Not latched, proceed to guard
           goto RoboTitoNotLatched
           

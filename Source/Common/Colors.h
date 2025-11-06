@@ -28,6 +28,7 @@
 #define ColRed(lum) ((lum) == 0 ? 0 : 1)  /* lum=0 -> black, lum>0 -> red */
 #define ColMagenta(lum) ((lum) == 0 ? 0 : 5)  /* lum=0 -> black, lum>0 -> magenta */
 #define ColPurple(lum) ((lum) == 0 ? 0 : 5)  /* lum=0 -> black, lum>0 -> magenta */
+#define ColViolet(lum) ((lum) == 0 ? 0 : 5)  /* lum=0 -> black, lum>0 -> magenta (synonym of Purple) */
 #define ColIndigo(lum) ((lum) == 0 ? 0 : 3)  /* lum=0 -> black, lum>0 -> blue */
 #define ColBlue(lum) ((lum) == 0 ? 0 : 3)  /* lum=0 -> black, lum>0 -> blue */
 #define ColTurquoise(lum) ((lum) == 0 ? 0 : 4)  /* lum=0 -> black, lum>0 -> cyan */
@@ -35,10 +36,9 @@
 #define ColTeal(lum) ((lum) == 0 ? 0 : 4)  /* lum=0 -> black, lum>0 -> cyan */
 #define ColSeafoam(lum) ((lum) == 0 ? 0 : 4)  /* lum=0 -> black, lum>0 -> cyan */
 #define ColGreen(lum) ((lum) == 0 ? 0 : 2)  /* lum=0 -> black, lum>0 -> green */
+#define ColLime(lum) ((lum) == 0 ? 0 : 2)  /* lum=0 -> black, lum>0 -> green (synonym of Green) */
 #define ColSpringGreen(lum) ((lum) == 0 ? 0 : 2)  /* lum=0 -> black, lum>0 -> green */
 #define ColGold(lum) ((lum) == 0 ? 0 : 6)  /* lum=0 -> black, lum>0 -> yellow */
-#define ColMaroon(lum) ((lum) == 0 ? 0 : 1)  /* lum=0 -> black, lum>0 -> red (maroon is dark red) */
-#define ColOlive(lum) ((lum) == 0 ? 0 : 6)  /* lum=0 -> black, lum>0 -> yellow (olive is dark yellow-green) */
 
 #else
 /* Default to NTSC */

@@ -155,6 +155,7 @@
 #define ColRed(lum) _COL_EXPAND_AND_CONCAT(_COL_Red_L, lum)
 #define ColMagenta(lum) _COL_EXPAND_AND_CONCAT(_COL_Magenta_L, lum)
 #define ColPurple(lum) _COL_EXPAND_AND_CONCAT(_COL_Purple_L, lum)
+#define ColViolet(lum) _COL_EXPAND_AND_CONCAT(_COL_Purple_L, lum)  /* ColViolet and ColPurple are synonyms */
 #define ColIndigo(lum) _COL_EXPAND_AND_CONCAT(_COL_Indigo_L, lum)
 #define ColBlue(lum) _COL_EXPAND_AND_CONCAT(_COL_Blue_L, lum)
 #define ColTurquoise(lum) _COL_EXPAND_AND_CONCAT(_COL_Turquoise_L, lum)
@@ -162,6 +163,7 @@
 #define ColTeal(lum) _COL_EXPAND_AND_CONCAT(_COL_Teal_L, lum)
 #define ColSeafoam(lum) _COL_EXPAND_AND_CONCAT(_COL_Seafoam_L, lum)
 #define ColGreen(lum) _COL_EXPAND_AND_CONCAT(_COL_Green_L, lum)
+#define ColLime(lum) _COL_EXPAND_AND_CONCAT(_COL_Green_L, lum)  /* ColLime and ColGreen are synonyms */
 #define ColSpringGreen(lum) _COL_EXPAND_AND_CONCAT(_COL_SpringGreen_L, lum)
 #define ColGold(lum) _COL_EXPAND_AND_CONCAT(_COL_Gold_L, lum)
 

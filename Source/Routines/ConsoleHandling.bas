@@ -34,8 +34,7 @@ WarmStart
           rem Constraints: Entry point for warm start/reset (called from MainLoop)
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused : rem Step 1: Clear critical game state variables
           rem Clear paused flag (0 = normal, not paused, not ending)
-          let frame = 0
-          rem Reset frame counter
+          rem Frame counter is automatically managed by batariBASIC kernel
           
           rem Step 2: Reinitialize TIA color registers to safe defaults
           rem Match ColdStart initialization for consistency

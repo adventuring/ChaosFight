@@ -137,8 +137,7 @@ GameEndCheckDone
           
           gosub UpdateSoundEffect bank15 : rem Update sound effects (game mode 6 only)
           
-          rem Update frame counter
-          frame = frame + 1
+          rem Frame counter is automatically incremented by batariBASIC kernel
           
           return
 

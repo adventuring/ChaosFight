@@ -168,8 +168,7 @@ PlayerHealthSet
           if !(selectedChar3_R = 255) then let PlayersRemaining = PlayersRemaining + 1
           if !(selectedChar4_R = 255) then let PlayersRemaining = PlayersRemaining + 1
 
-          rem Initialize frame counter
-          frame = 0
+          rem Frame counter is automatically initialized and incremented by batariBASIC kernel
 
           let GameState  = 0 : rem Initialize game state
           rem 0 = normal play, 1 = paused, 2 = game ending

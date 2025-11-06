@@ -45,12 +45,11 @@ PublisherPreludeMain
           if joy0fire then PublisherPreludeComplete
           if joy1fire then PublisherPreludeComplete
           
-          if controllerStatus & SetQuadtariDetected then PublisherCheckQuadtari else PublisherSkipQuadtari
-
-PublisherCheckQuadtari
-          if !INPT0{7} then PublisherPreludeComplete
-          if !INPT2{7} then PublisherPreludeComplete
-PublisherSkipQuadtari
+          rem Check Quadtari controllers if detected
+          if controllerStatus & SetQuadtariDetected then
+            if !INPT0{7} then PublisherPreludeComplete
+            if !INPT2{7} then PublisherPreludeComplete
+          endif
           
           rem Music update handled by MainLoop after per-frame logic
           

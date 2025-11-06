@@ -515,7 +515,14 @@ HandleWindupEnd
           if 8 > temp1 then on temp1 goto Char16_Windup, Char17_Windup, Char18_Windup, Char19_Windup, Char20_Windup, Char21_Windup, Char22_Windup, Char23_Windup
           if 8 > temp1 then goto DoneWindupDispatch
           let temp1 = temp1 - 8
-          on temp1 goto Char24_Windup, Char25_Windup, Char26_Windup, Char27_Windup, Char28_Windup, Char29_Windup, Char30_Windup, Char15_Windup
+          if temp1 = 0 then goto Char24_Windup
+          if temp1 = 1 then goto Char25_Windup
+          if temp1 = 2 then goto Char26_Windup
+          if temp1 = 3 then goto Char27_Windup
+          if temp1 = 4 then goto Char28_Windup
+          if temp1 = 5 then goto Char29_Windup
+          if temp1 = 6 then goto Char30_Windup
+          if temp1 = 7 then goto Char15_Windup
 DoneWindupDispatch
           
 Char0_Windup
@@ -594,7 +601,14 @@ HandleExecuteEnd
           if 8 > temp1 then on temp1 goto Char16_Execute, Char17_Execute, Char18_Execute, Char19_Execute, Char20_Execute, Char21_Execute, Char22_Execute, Char23_Execute
           if 8 > temp1 then goto DoneExecuteDispatch
           let temp1 = temp1 - 8
-          on temp1 goto Char24_Execute, Char25_Execute, Char26_Execute, Char27_Execute, Char28_Execute, Char29_Execute, Char30_Execute, Char15_Execute
+          if temp1 = 0 then goto Char24_Execute
+          if temp1 = 1 then goto Char25_Execute
+          if temp1 = 2 then goto Char26_Execute
+          if temp1 = 3 then goto Char27_Execute
+          if temp1 = 4 then goto Char28_Execute
+          if temp1 = 5 then goto Char29_Execute
+          if temp1 = 6 then goto Char30_Execute
+          if temp1 = 7 then goto Char15_Execute
 DoneExecuteDispatch
           
 Char0_Execute

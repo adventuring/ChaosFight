@@ -153,7 +153,9 @@ CalculateAttackHitbox
           rem Use temporary variable to avoid compiler bug with array indexing
           dim CAH_attackType = temp1 : rem   in on statement
           let CAH_attackType = PlayerAttackType[CAH_attackerID_calc]
-          on CAH_attackType goto MeleeHitbox, ProjectileHitbox, AreaHitbox
+          if CAH_attackType = 0 then goto MeleeHitbox
+          if CAH_attackType = 1 then goto ProjectileHitbox
+          if CAH_attackType = 2 then goto AreaHitbox
           
 MeleeHitbox
           rem Melee hitbox extends PlayerSpriteWidth pixels in facing direction
@@ -165,7 +167,10 @@ MeleeHitbox
           rem Use temporary variable to avoid compiler bug with array indexing
           dim CAH_facing = temp2 : rem   in on statement
           let CAH_facing = PlayerFacing[CAH_attackerID_calc]
-          on CAH_facing goto FacingRight, FacingLeft, FacingUp, FacingDown
+          if CAH_facing = 0 then goto FacingRight
+          if CAH_facing = 1 then goto FacingLeft
+          if CAH_facing = 2 then goto FacingUp
+          if CAH_facing = 3 then goto FacingDown
           
 FacingRight
           rem Hitbox extends 16 pixels forward from sprite right edge

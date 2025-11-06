@@ -14,8 +14,16 @@ ChangeGameMode
           rem Output: Dispatches to appropriate Setup* routine
           rem Mutates: None (dispatcher only)
           rem Called Routines: Various Begin* routines (see Setup* functions below)
-          rem Constraints: Must be colocated with all Setup* functions (called via on...goto)
-          on gameMode goto SetupPublisherPrelude, SetupAuthorPrelude, SetupTitle, SetupCharacterSelect, SetupFallingAnimation, SetupArenaSelect, SetupGame, SetupWinner, SetupAttract
+          rem Constraints: Must be colocated with all Setup* functions (called via if...goto)
+          if gameMode = 0 then goto SetupPublisherPrelude
+          if gameMode = 1 then goto SetupAuthorPrelude
+          if gameMode = 2 then goto SetupTitle
+          if gameMode = 3 then goto SetupCharacterSelect
+          if gameMode = 4 then goto SetupFallingAnimation
+          if gameMode = 5 then goto SetupArenaSelect
+          if gameMode = 6 then goto SetupGame
+          if gameMode = 7 then goto SetupWinner
+          if gameMode = 8 then goto SetupAttract
           return
           
 SetupPublisherPrelude

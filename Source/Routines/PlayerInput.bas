@@ -230,7 +230,14 @@ DispatchCharacterJump
           if DCJ_characterType < 8 then on DCJ_characterType goto Char16Jump, Char17Jump, Char18Jump, Char19Jump, Char20Jump, Char21Jump, Char22Jump, Char23Jump
           if DCJ_characterType < 8 then return
           let DCJ_characterType = DCJ_characterType - 8
-          on DCJ_characterType goto Char24Jump, Char25Jump, Char26Jump, Char27Jump, Char28Jump, Char29Jump, Char30Jump, ShamoneJump
+          if DCJ_characterType = 0 then goto Char24Jump
+          if DCJ_characterType = 1 then goto Char25Jump
+          if DCJ_characterType = 2 then goto Char26Jump
+          if DCJ_characterType = 3 then goto Char27Jump
+          if DCJ_characterType = 4 then goto Char28Jump
+          if DCJ_characterType = 5 then goto Char29Jump
+          if DCJ_characterType = 6 then goto Char30Jump
+          if DCJ_characterType = 7 then goto ShamoneJump
           return
           
 DispatchCharacterDown
@@ -245,7 +252,14 @@ DispatchCharacterDown
           if DCD_characterType < 8 then on DCD_characterType goto Char16Down, Char17Down, Char18Down, Char19Down, Char20Down, Char21Down, Char22Down, Char23Down
           if DCD_characterType < 8 then return
           let DCD_characterType = DCD_characterType - 8
-          on DCD_characterType goto Char24Down, Char25Down, Char26Down, Char27Down, Char28Down, Char29Down, Char30Down, ShamoneDown
+          if DCD_characterType = 0 then goto Char24Down
+          if DCD_characterType = 1 then goto Char25Down
+          if DCD_characterType = 2 then goto Char26Down
+          if DCD_characterType = 3 then goto Char27Down
+          if DCD_characterType = 4 then goto Char28Down
+          if DCD_characterType = 5 then goto Char29Down
+          if DCD_characterType = 6 then goto Char30Down
+          if DCD_characterType = 7 then goto ShamoneDown
           return
           
 DispatchCharacterAttack
@@ -261,7 +275,14 @@ DispatchCharacterAttack
           if DCA_characterType < 8 then on DCA_characterType goto gotoChar16Attack, gotoChar17Attack, gotoChar18Attack, gotoChar19Attack, gotoChar20Attack, gotoChar21Attack, gotoChar22Attack, gotoChar23Attack
           if DCA_characterType < 8 then return
           let DCA_characterType = DCA_characterType - 8
-          on DCA_characterType goto gotoChar24Attack, gotoChar25Attack, gotoChar26Attack, gotoChar27Attack, gotoChar28Attack, gotoChar29Attack, gotoChar30Attack, gotoShamoneAttack
+          if DCA_characterType = 0 then goto gotoChar24Attack
+          if DCA_characterType = 1 then goto gotoChar25Attack
+          if DCA_characterType = 2 then goto gotoChar26Attack
+          if DCA_characterType = 3 then goto gotoChar27Attack
+          if DCA_characterType = 4 then goto gotoChar28Attack
+          if DCA_characterType = 5 then goto gotoChar29Attack
+          if DCA_characterType = 6 then goto gotoChar30Attack
+          if DCA_characterType = 7 then goto gotoShamoneAttack
           return
           
 gotoBernieAttack

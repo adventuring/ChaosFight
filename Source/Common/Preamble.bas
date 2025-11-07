@@ -1,22 +1,6 @@
           rem ChaosFight - Source/Common/Preamble.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem NAMING CONVENTIONS:
-          rem - Built-in batariBasic identifiers (temp1-temp6, joy0up,
-          rem   frame, etc.) are lowercase
-          rem - User-defined variables: camelCase (gameState, playerX,
-          rem   etc.)
-          rem - Constants and Enums: PascalCase (MaxCharacter,
-          rem   ActionStanding, etc.)
-          rem - Labels/Routines: PascalCase (LoadCharacterSprite, etc.)
-          rem - Do NOT use dim for built-in variables - they already
-          rem   exist!
-          rem - Built-in variables: temp1-temp6, qtcontroller,
-          rem   joy0up/down/left/right/fire, frame
-          rem - TIA registers: player0x, player0y, COLUP0, NUSIZ0,
-          rem   pf0-pf2, etc.
-          rem - Our variables: gameState, playerX, selectedCharacter1, etc.
-
           rem batariBASIC automatically defines constants like
           rem bankswitch, multisprite,
           rem superchip, etc. based on set kernel and set romsize
@@ -30,6 +14,8 @@
 
 #include "Source/Common/AssemblyConfig.bas"
 
+          rem includesfile must execute before any set statements so batariBASIC
+          rem keeps multispritesuperchipheader.asm (which pulls in superchip.h)
           includesfile multisprite_superchip.inc
 
           set kernel multisprite
@@ -38,11 +24,6 @@
           set optimization size
           rem Enable smartbranching; filter-smartbranch converts bB v1.9 guards to DASM .if/.else/.endif syntax
           set smartbranching on
-
-          asm
-          include "chaos_var_equates.asm"
-          end
-
 
 #include "Source/Common/Colors.h"
 #include "Source/Common/Constants.bas"

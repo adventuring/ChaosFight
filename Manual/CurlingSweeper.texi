@@ -1,4 +1,4 @@
-@subsubsection Curling Sweeper
+@subsection Curling Sweeper
 @display
 @group
     Weight: 85 kg (190 lbs)

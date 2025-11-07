@@ -1,4 +1,4 @@
-@subsubsection Pork Chop
+@subsection Pork Chop
 @display
 @group
     Weight: 115 kg (250 lbs)

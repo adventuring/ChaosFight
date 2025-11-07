@@ -1,4 +1,4 @@
-@subsubsection Ursulo
+@subsection Ursulo
 @display
 @group
     Weight: 100 kg (220 lbs)

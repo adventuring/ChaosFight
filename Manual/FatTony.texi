@@ -1,4 +1,4 @@
-@subsubsection Fat Tony
+@subsection Fat Tony
 @display
 @group
     Weight: 110 kg (240 lbs)

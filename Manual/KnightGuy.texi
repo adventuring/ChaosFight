@@ -1,4 +1,4 @@
-@subsubsection Knight Guy
+@subsection Knight Guy
 @display
 @group
     Weight: 115 kg (250 lbs)

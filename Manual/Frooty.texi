@@ -1,4 +1,4 @@
-@subsubsection Frooty
+@subsection Frooty
 @display
 @group
     Age: 24

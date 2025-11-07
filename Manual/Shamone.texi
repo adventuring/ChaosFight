@@ -1,4 +1,4 @@
-@subsubsection Shamone
+@subsection Shamone
 @display
 @group
     Weight: 30 kg (65 lbs)

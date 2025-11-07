@@ -1,4 +1,4 @@
-@subsubsection Radish Goblin
+@subsection Radish Goblin
 @display
 @group
     Weight: 25 kg (50 lbs)

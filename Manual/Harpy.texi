@@ -1,4 +1,4 @@
-@subsubsection Harpy
+@subsection Harpy
 @display
 @group
     Weight: 15 kg (30 lbs)

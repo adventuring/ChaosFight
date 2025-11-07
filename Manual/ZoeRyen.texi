@@ -1,4 +1,4 @@
-@subsubsection Zoe Ryen
+@subsection Zoe Ryen
 @display
 @group
     Weight: 65 kg (145 lbs)

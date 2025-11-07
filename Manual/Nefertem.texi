@@ -1,4 +1,4 @@
-@subsubsection Nefertem
+@subsection Nefertem
 @display
 @group
     Weight: 200 kg (440 lbs)

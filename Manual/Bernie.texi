@@ -1,4 +1,4 @@
-@subsubsection Bernie
+@subsection Bernie
 @display
 @group
     Weight: 5 kg (10 lbs)

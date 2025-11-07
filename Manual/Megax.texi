@@ -1,4 +1,4 @@
-@subsubsection Megax
+@subsection Megax
 @display
 @group
     Weight: 1590 kg (3500 lbs)

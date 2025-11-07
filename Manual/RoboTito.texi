@@ -1,4 +1,4 @@
-@subsubsection Robo Tito
+@subsection Robo Tito
 @display
 @group
     Weight: 135 kg (300 lbs)

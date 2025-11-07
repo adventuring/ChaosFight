@@ -1,4 +1,4 @@
-@subsubsection Ninjish Guy
+@subsection Ninjish Guy
 @display
 @group
     Weight: 60 kg (130 lbs)

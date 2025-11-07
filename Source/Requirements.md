@@ -266,6 +266,35 @@ When a player takes damage from any source:
 - **Frooty**: Ranged - 1×1 pixel narrow projectile (magical sparkles)
 - **Other characters**: Melee attacks only (no projectiles)
 
+### Missile Spawn Offsets
+
+Per-character missile spawn offsets are defined in `CharacterDefinitions.bas`:
+
+- `CharacterMissileSpawnOffsetRight[]` – pixels added to `playerX` when the character faces right
+- `CharacterMissileSpawnOffsetLeft[]` – pixels added to `playerX` when the character faces left (values that represent negative offsets use 8-bit two’s complement, e.g. `251` = −5)
+- `CharacterMissileEmissionHeights[]` – vertical offset (in pixels) added to `playerY`
+
+| Character | Facing Right Offset | Facing Left Offset | Vertical Offset | Notes |
+|-----------|--------------------:|-------------------:|----------------:|-------|
+| Bernie (0) | — | — | — | Melee only |
+| Curler (1) | +17 | −5 | +12 | Stone spawns with 1px horizontal gap, bottoms aligned |
+| Dragon of Storms (2) | +18 | −4 | +4 | Fireball spawns 2px ahead, 4px below sprite top |
+| Zoe Ryen (3) | +18 | −6 | +7 | Laser originates 2px ahead at shoulder height |
+| Fat Tony (4) | +18 | −6 | +7 | Magic ray (shares offsets with Zoe, tuned independently) |
+| Megax (5) | +17 | −5 | +4 | Fire breath anchored near mouth (stationary) |
+| Harpy (6) | — | — | — | No missile |
+| Knight Guy (7) | +8 | +8 | +10 | Sword swing handled via `HandleKnightGuyMissile`; starts at −2px overlap and animates out to +1px gap |
+| Frooty (8) | +20 | −5 | +6 | Sparkle projectile with 4px horizontal gap |
+| Nefertem (9) | — | — | — | No missile |
+| Ninjish Guy (10) | +20 | −6 | +9 | Shuriken spawns 4px ahead |
+| Pork Chop (11) | — | — | — | Melee only |
+| Radish Goblin (12) | — | — | — | Melee only |
+| Robo Tito (13) | +6 | +6 | +16 | Trunk drops vertically, occupying pixels 6–9 beneath sprite, ending 1px above ground |
+| Ursulo (14) | — | — | — | Melee only |
+| Shamone (15) | — | — | — | Melee only |
+
+These offsets guarantee that missiles spawn at artist-authored positions; adjusting a single character’s values will not affect others.
+
 ### Game End Condition
 - Game ends when only one player remains (all others eliminated)
 - Eliminated players: Health reached 0, marked in playersEliminated bit flags

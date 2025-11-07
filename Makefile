@@ -80,11 +80,17 @@ bin/buildapp: SkylineTool/prepare-system.lisp | bin/
 GAME = ChaosFight
 GAMEYEAR = 25
 ROM = Dist/$(GAME)$(GAMEYEAR).NTSC.a26
+PROJECT_JSON = Project.json
+PROJECT_VERSION := $(shell jq -r '.Version // empty' $(PROJECT_JSON))
+ifeq ($(strip $(PROJECT_VERSION)),)
+$(error Version field missing in $(PROJECT_JSON))
+endif
+RELEASE_TAG = v$(PROJECT_VERSION)
 
 # Assembly files (exclude preprocessed, generated files, and reference files)
 ALL_SOURCES = $(shell find Source -name \*.bas -not -path "Source/Generated/*" -not -path "Source/Reference/*")
 
-.PHONY: all clean emu game help doc nowready ready
+.PHONY: all clean emu game help doc nowready ready web
 
 # Directory targets for order-only prerequisites (prevents race conditions in parallel builds)
 bin/:
@@ -127,7 +133,10 @@ game: \
 	Dist/$(GAME)$(GAMEYEAR).PAL.pro \
 	Dist/$(GAME)$(GAMEYEAR).SECAM.pro
 
-doc: Dist/$(GAME)$(GAMEYEAR).pdf Dist/$(GAME)$(GAMEYEAR).html
+MANUAL_PDF = Dist/$(GAME)$(GAMEYEAR).pdf
+MANUAL_HTML = Dist/$(GAME)$(GAMEYEAR).html
+
+doc: $(MANUAL_PDF) $(MANUAL_HTML)
 
 # Character sprite sheet names (32 characters: 16 main + 16 future)
 CHARACTER_NAMES = \
@@ -138,6 +147,10 @@ CHARACTER_NAMES = \
 
 # TV architectures
 TV_ARCHS = NTSC PAL SECAM
+ZIP_ARCHIVES = $(foreach arch,$(TV_ARCHS),Dist/$(GAME)$(GAMEYEAR).$(arch).$(RELEASE_TAG).zip)
+WEB_REMOTE = interworldly.com:interworldly.com/games/ChaosFight
+WEB_DOWNLOADS = $(WEB_REMOTE)/25/downloads/
+WEB_MANUAL = $(WEB_REMOTE)/25/manual/
 
 # Bitmap names (48×42 bitmaps for titlescreen kernel)
 BITMAP_NAMES = AtariAge AtariAgeText BRP ChaosFight
@@ -541,6 +554,7 @@ help:
 	@echo "  all          - Build game and documentation (default)"
 	@echo "  game         - Build game ROMs for all TV systems"
 	@echo "  doc          - Build PDF and HTML manuals"
+	@echo "  web          - Build release archives and deploy website assets"
 	@echo "  clean        - Remove generated ROM files"
 	@echo "  emu          - Build and run in Stella emulator"
 	@echo "  gimp-export  - Install GIMP export script"
@@ -567,6 +581,19 @@ Dist/$(GAME)$(GAMEYEAR).PAL.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(GAM
 Dist/$(GAME)$(GAMEYEAR).SECAM.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 	sed $< -e s/@@TV@@/SECAM/g \
 		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).SECAM.a26 | cut -d\  -f1)/g > $@
+
+Dist/$(GAME)$(GAMEYEAR).%.$(RELEASE_TAG).zip: Dist/$(GAME)$(GAMEYEAR).%.a26 Dist/$(GAME)$(GAMEYEAR).%.pro $(MANUAL_PDF) | Dist/
+	@echo "Packaging $* release $(RELEASE_TAG)..."
+	rm -f $@
+	zip -j $@ $^
+
+web: $(ZIP_ARCHIVES) $(MANUAL_HTML) $(MANUAL_PDF)
+	@echo "Deploying website to $(WEB_REMOTE)..."
+	ssh interworldly.com 'mkdir -p interworldly.com/games/ChaosFight/25/downloads interworldly.com/games/ChaosFight/25/manual'
+	rsync -av WWW/ $(WEB_REMOTE)/
+	rsync -av $(MANUAL_HTML) $(WEB_MANUAL)
+	rsync -av $(MANUAL_PDF) $(WEB_DOWNLOADS)
+	rsync -av $(ZIP_ARCHIVES) $(WEB_DOWNLOADS)
 
 # Documentation generation
 # Build PDF in Object/ to contain auxiliary files (.aux, .cp, .cps, .toc)

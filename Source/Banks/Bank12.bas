@@ -2,17 +2,15 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           bank 12
-
+ 
 #include "Source/Data/WinnerScreen.bas"
-          rem WinnerScreen playfield data (pfres=32 admin screen layout)
+#include "Source/Data/CharacterThemeSongIndices.bas"
+          rem Data tables for winner screen layouts and theme mapping
 
 #include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/FallingAnimation.bas"
 #include "Source/Routines/BeginArenaSelect.bas"
 #include "Source/Routines/ArenaSelect.bas"
-#include "Source/Data/CharacterThemeSongIndices.bas"
-          rem Character-to-theme-song mapping table for winner
-          rem   announcements
 #include "Source/Routines/BeginWinnerAnnouncement.bas"
 #include "Source/Routines/WinnerAnnouncement.bas"
 #include "Source/Routines/DisplayWinScreen.bas"

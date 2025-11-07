@@ -2,7 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           bank 2
-          
+
           rem Character sprite data for characters 0-7
           rem Bank 2 dedicated to character art only - leave room for
           rem   animation frames

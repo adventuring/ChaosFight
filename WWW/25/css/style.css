@@ -11,8 +11,8 @@
     --shadow-color: rgba(0, 0, 0, 0.15);
     --text-dark: #000000;
     --text-medium: #000000;
-    --link-color: #6b7a4f;
-    --link-hover: #4a5a2f;
+    --link-color: #014421;
+    --link-hover: #0b5d2a;
 }
 
 * {
@@ -43,10 +43,10 @@ body::before {
     height: 100%;
     background-image: repeating-linear-gradient(
         0deg,
-        transparent,
-        transparent 2px,
-        rgba(255, 255, 255, 0.03) 2px,
-        rgba(255, 255, 255, 0.03) 4px
+        rgba(0, 0, 0, 0.07),
+        rgba(0, 0, 0, 0.07) 1.6667px,
+        rgba(255, 255, 255, 0) 1.6667px,
+        rgba(255, 255, 255, 0) 17.6667px
     );
     pointer-events: none;
     z-index: 0;
@@ -117,7 +117,7 @@ nav ul {
 }
 
 nav a {
-    color: var(--text-dark);
+    color: var(--link-color);
     text-decoration: none;
     font-weight: 500;
     padding: 8px 16px;
@@ -179,7 +179,7 @@ nav a:hover {
         -2px 2px 8px var(--shadow-color);
     transition: transform 0.2s;
     text-decoration: none;
-    color: var(--text-dark);
+    color: var(--link-color);
     display: block;
 }
 

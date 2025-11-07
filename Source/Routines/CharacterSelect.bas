@@ -1,5 +1,5 @@
-SelScreenEntry
-          rem ChaosFight - Source/Routines/SelScreenEntry.bas
+CharacterSelectEntry
+          rem ChaosFight - Source/Routines/CharacterSelectEntry.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem PlayerLockedHelpers.bas moved to Bank 1
@@ -17,12 +17,12 @@ SelScreenEntry
           rem         characterSelectAnimationState, characterSelectCharacterIndex,
           rem         characterSelectAnimationFrame, COLUBK (TIA register)
           rem
-          rem Called Routines: SelDetectQuad - accesses controller
+          rem Called Routines: CharacterSelectDetectQuadtari - accesses controller
           rem detection state
           rem
           rem Constraints: Entry point for character select screen
           rem initialization
-          rem              Must be colocated with SelScreenLoop (called
+          rem              Must be colocated with CharacterSelectLoop (called
           rem              via goto)
           let playerCharacter[0] = 0 : rem Initialize character selections
           let playerCharacter[1] = 0
@@ -39,12 +39,12 @@ SelScreenEntry
           let characterSelectCharacterIndex  = 0 : rem Start with idle animation
           let characterSelectAnimationFrame  = 0 : rem Start with first character
 
-          gosub SelDetectQuad : rem Check for Quadtari adapter
+          gosub CharacterSelectDetectQuadtari : rem Check for Quadtari adapter
 
           let COLUBK  = ColGray(0) : rem Set background color (B&W safe)
           rem Always black background
 
-SelScreenLoop
+CharacterSelectLoop
           rem Per-frame character select screen loop with Quadtari
           rem multiplexing
           rem
@@ -59,7 +59,7 @@ SelScreenLoop
           rem        playerLocked (global) = player lock states
           rem        MaxCharacter (constant) = maximum character index
           rem
-          rem Output: Dispatches to SelHandleQuad or processes even
+          rem Output: Dispatches to CharacterSelectHandleQuadtari or processes even
           rem frame input, then returns
           rem
           rem Mutates: qtcontroller (toggled), playerCharacter[],
@@ -69,15 +69,15 @@ SelScreenLoop
           rem Called Routines: SetPlayerLocked (bank1) - accesses
           rem playerLocked state
           rem
-          rem Constraints: Must be colocated with SelChkP0Left,
-          rem SelSkipP0Left, SelChkP0Right, SelSkipP0Right,
-          rem              SelChkJoy0Fire, SelJoy0Down, SelP0Lock,
-          rem              SelP0Handi, SelP0Done,
-          rem              SelChkP1Left, SelSkipP1Left, SelChkP1Right,
-          rem              SelSkipP1Right,
-          rem              SelChkJoy1Fire, SelJoy1Down, SelJoy1Chk,
-          rem              SelJoy1Done, SelSkipJoy1Even,
-          rem              SelHandleQuad (all called via goto)
+          rem Constraints: Must be colocated with Player1LeftSelectionQ,
+          rem Player1LeftSelectionSkip, Player1RightSelectionQ, Player1RightSelectionSkip,
+          rem              SelectStick0FireQ, SelectStick0Down, Player1LockSelection,
+          rem              Player1HandicapSelection, Player1LockSelectionDone,
+          rem              Player2LeftSelectionQ, Player2LeftSelectionSkip, Player2RightSelectionQ,
+          rem              Player2RightSelectionSkip,
+          rem              SelectStick1FireQ, SelectStick1Down, SelectStick1DownQ,
+          rem              Player2LockSelectionDone, SelectStick1EvenFrameSkip,
+          rem              CharacterSelectHandleQuadtari (all called via goto)
           rem              Entry point for character select screen loop
           rem Quadtari controller multiplexing:
           rem On even frames (qtcontroller=0): handle controllers 0 and
@@ -85,183 +85,183 @@ SelScreenLoop
           rem On odd frames (qtcontroller=1): handle controllers 2 and 3
           rem   (if Quadtari detected)
           
-          if qtcontroller then goto SelHandleQuad
+          if qtcontroller then goto CharacterSelectHandleQuadtari
           
           rem Handle Player 1 input (joy0 on even frames)
-          if joy0left then let playerCharacter[0] = playerCharacter[0] - 1 : goto SelChkP0Left
-          goto SelSkipP0Left
+          if joy0left then let playerCharacter[0] = playerCharacter[0] - 1 : goto Player1LeftSelectionQ
+          goto Player1LeftSelectionSkip
 
-SelChkP0Left
+Player1LeftSelectionQ
           if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = MaxCharacter
           if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           
-SelSkipP0Left
-          if joy0right then let playerCharacter[0] = playerCharacter[0] + 1 : goto SelChkP0Right
-          goto SelSkipP0Right
+Player1LeftSelectionSkip
+          if joy0right then let playerCharacter[0] = playerCharacter[0] + 1 : goto Player1RightSelectionQ
+          goto Player1RightSelectionSkip
 
-SelChkP0Right
+Player1RightSelectionQ
           if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = 0
           if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           
-SelSkipP0Right
+Player1RightSelectionSkip
           if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-          if joy0down then SelChkJoy0Fire : rem Unlock by moving up
-          goto SelJoy0Down
+          if joy0down then SelectStick0FireQ : rem Unlock by moving up
+          goto SelectStick0Down
 
-SelChkJoy0Fire
-          if joy0fire then SelJoy0Down
+SelectStick0FireQ
+          if joy0fire then SelectStick0Down
           let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           
-SelJoy0Down
-          if joy0fire then SelP0Lock : rem Unlock by moving down (without fire)
-          goto SelP0Done
+SelectStick0Down
+          if joy0fire then Player1LockSelection : rem Unlock by moving down (without fire)
+          goto Player1LockSelectionDone
 
-SelP0Lock
-          if joy0down then SelP0Handi
+Player1LockSelection
+          if joy0down then Player1HandicapSelection
           let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
-          goto SelP0Done : rem Locked normal (100% health)
+          goto Player1LockSelectionDone : rem Locked normal (100% health)
 
-SelP0Handi
+Player1HandicapSelection
           let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
-SelP0Done
+Player1LockSelectionDone
           rem Locked with handicap (75% health)
 
           rem Handle Player 2 input (joy1 on even frames)
-          if joy1left then let playerCharacter[1] = playerCharacter[1] - 1 : goto SelChkP1Left
-          goto SelSkipP1Left
+          if joy1left then let playerCharacter[1] = playerCharacter[1] - 1 : goto Player2LeftSelectionQ
+          goto Player2LeftSelectionSkip
 
-SelChkP1Left
+Player2LeftSelectionQ
           if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = MaxCharacter
           if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-SelSkipP1Left
-          if joy1right then let playerCharacter[1] = playerCharacter[1] + 1 : goto SelChkP1Right
-          goto SelSkipP1Right
+Player2LeftSelectionSkip
+          if joy1right then let playerCharacter[1] = playerCharacter[1] + 1 : goto Player2RightSelectionQ
+          goto Player2RightSelectionSkip
 
-SelChkP1Right
+Player2RightSelectionQ
           if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = 0
           if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-SelSkipP1Right
+Player2RightSelectionSkip
           if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-          if joy1down then SelChkJoy1Fire : rem Unlock by moving up
+          if joy1down then SelectStick1FireQ : rem Unlock by moving up
 
-          goto SelJoy1Down
+          goto SelectStick1Down
 
-SelChkJoy1Fire
-          if joy1fire then SelJoy1Down
+SelectStick1FireQ
+          if joy1fire then SelectStick1Down
 
           let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-SelJoy1Down
-          if joy1fire then SelJoy1Chk : rem Unlock by moving down (without fire)
+SelectStick1Down
+          if joy1fire then SelectStick1DownQ : rem Unlock by moving down (without fire)
 
-          goto SelSkipJoy1Even
+          goto SelectStick1EvenFrameSkip
 
-SelJoy1Chk
-          if joy1down then let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1 : goto SelJoy1Done
+SelectStick1DownQ
+          if joy1down then let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1 : goto Player2LockSelectionDone
 
           let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1 : rem Locked with handicap (75% health)
-SelJoy1Done 
+Player2LockSelectionDone 
           rem Locked normal (100% health)
 
-SelSkipJoy1Even
+SelectStick1EvenFrameSkip
           let qtcontroller  = 1 : rem Switch to odd frame mode for next iteration
-          goto SelHandleDone
+          goto CharacterSelectHandleComplete
 
-SelHandleQuad
-          if controllerStatus & SetQuadtariDetected then SelHandleP2 : rem Handle Player 3 input (joy0 on odd frames, Quadtari only)
+CharacterSelectHandleQuadtari
+          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer3 : rem Handle Player 3 input (joy0 on odd frames, Quadtari only)
 
-          goto SelSkipP2
+          goto CharacterSelectSkipPlayer3
 
-SelHandleP2
-          if joy0left then let playerCharacter[2] = playerCharacter[2] - 1 : goto SelChkP2Left
+CharacterSelectHandlePlayer3
+          if joy0left then let playerCharacter[2] = playerCharacter[2] - 1 : goto Player3LeftSelectionQ
 
-          goto SelSkipP2Left
+          goto Player3LeftSelectionSkip
 
-SelChkP2Left
+Player3LeftSelectionQ
           if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = MaxCharacter
           if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-SelSkipP2Left
-          if joy0right then let playerCharacter[2] = playerCharacter[2] + 1 : goto SelChkP2Right
+Player3LeftSelectionSkip
+          if joy0right then let playerCharacter[2] = playerCharacter[2] + 1 : goto Player3RightSelectionQ
 
-          goto SelSkipP2Right
+          goto Player3RightSelectionSkip
 
-SelChkP2Right
+Player3RightSelectionQ
           if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = 0
           if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-SelSkipP2Right
+Player3RightSelectionSkip
           if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-          if joy0down then SelChkJoy0Fire2 : rem Unlock by moving up
+          if joy0down then SelectStick0FirePlayer3Q : rem Unlock by moving up
 
-          goto SelJoy0Down2
+          goto SelectStick0DownPlayer3
 
-SelChkJoy0Fire2
-          if joy0fire then SelJoy0Down2
+SelectStick0FirePlayer3Q
+          if joy0fire then SelectStick0DownPlayer3
           let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-SelJoy0Down2
-          if joy0fire then SelChkJoy0Down2 : rem Unlock by moving down (without fire)
+SelectStick0DownPlayer3
+          if joy0fire then SelectStick0DownPlayer3Q : rem Unlock by moving down (without fire)
 
-          goto SelJoy0Done2
+          goto Player3LockSelectionDone
 
-SelChkJoy0Down2
-          if joy0down then SelSetHand2
+SelectStick0DownPlayer3Q
+          if joy0down then Player3HandicapSelection
 
           let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
-          goto SelJoy0Done2 : rem Locked normal (100% health)
+          goto Player3LockSelectionDone : rem Locked normal (100% health)
 
-SelSetHand2
+Player3HandicapSelection
           let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
-SelJoy0Done2
+Player3LockSelectionDone
           rem Locked with handicap (75% health)
 
-          if controllerStatus & SetQuadtariDetected then SelHandleP3 : rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
+          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer4 : rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
 
-          goto SelSkipP3Alt
+          goto CharacterSelectSkipPlayer4
 
-SelHandleP3
-          if joy1left then let playerCharacter[3] = playerCharacter[3] - 1 : goto SelCheckP3Left
-          goto SelSkipP3Left
-SelCheckP3Left
+CharacterSelectHandlePlayer4
+          if joy1left then let playerCharacter[3] = playerCharacter[3] - 1 : goto Player4LeftSelectionQ
+          goto Player4LeftSelectionSkip
+Player4LeftSelectionQ
           if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = MaxCharacter
           if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-SelSkipP3Left
-          if joy1right then let playerCharacter[3] = playerCharacter[3] + 1 : goto SelCheckP3Right
-          goto SelSkipP3Right
-SelCheckP3Right
+Player4LeftSelectionSkip
+          if joy1right then let playerCharacter[3] = playerCharacter[3] + 1 : goto Player4RightSelectionQ
+          goto Player4RightSelectionSkip
+Player4RightSelectionQ
           if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = 0
           if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-SelSkipP3Right
+Player4RightSelectionSkip
           if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-          if joy1down then SelChkJoy1Fire3 : rem Unlock by moving up
+          if joy1down then SelectStick1FirePlayer4Q : rem Unlock by moving up
 
-          goto SelJoy1Down3
+          goto SelectStick1DownPlayer4
 
-SelChkJoy1Fire3
-          if joy1fire then SelJoy1Down3
+SelectStick1FirePlayer4Q
+          if joy1fire then SelectStick1DownPlayer4
 
           let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
-SelJoy1Down3
-          if joy1fire then SelJoy1Chk3 : rem Unlock by moving down (without fire)
+SelectStick1DownPlayer4
+          if joy1fire then SelectStick1DownPlayer4Q : rem Unlock by moving down (without fire)
 
-          goto SelSkipJoy1Odd
+          goto SelectStick1OddFrameSkip
 
-SelJoy1Chk3
-          if joy1down then SelSetHand3
+SelectStick1DownPlayer4Q
+          if joy1down then Player4HandicapSelection
 
           let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
-          goto SelJoy1Done3 : rem Locked normal (100% health)
+          goto Player4LockSelectionDone : rem Locked normal (100% health)
 
-SelSetHand3
+Player4HandicapSelection
           let temp1 = 3 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
-SelJoy1Done3
+Player4LockSelectionDone
           rem Locked with handicap (75% health)
           
           let qtcontroller  = 0 : rem Switch back to even frame mode for next iteration
-SelSkipP2
-SelSkipP3Alt
-SelSkipJoy1Odd
+CharacterSelectSkipPlayer3
+CharacterSelectSkipPlayer4
+SelectStick1OddFrameSkip
 
-SelHandleDone
+CharacterSelectHandleComplete
 
-          gosub SelUpdateAnimation : rem Update character select animations
+          gosub CharacterSelectUpdateAnimation : rem Update character select animations
 
           rem Check if all players are ready to start (inline
           let readyCount  = 0 : rem   SelAllReady)
@@ -270,42 +270,42 @@ SelHandleDone
           let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
-          goto SelSkipQuadPlyInline
+          goto CharacterSelectSkipQuadtariPlayersInline
           
 CharacterSelectQuadtariPlayersInline
           let temp1 = 2 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
           let temp1 = 3 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
-SelSkipQuadPlyInline
+CharacterSelectSkipQuadtariPlayersInline
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline : rem Check if enough players are ready
 
           rem Need at least 1 player ready for 2-player mode
-          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then goto SelScreenDone
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then goto CharacterSelectCompleted
 
-          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then goto SelScreenDone
+          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then goto CharacterSelectCompleted
 
-          goto SelSkipQuadChkInline
+          goto CharacterSelectSkipQuadtariReadyInline
           
 CharacterSelectQuadtariReadyInline
-          if readyCount>= 2 then goto SelScreenDone : rem Need at least 2 players ready for 4-player mode
-SelSkipQuadChkInline
+          if readyCount>= 2 then goto CharacterSelectCompleted : rem Need at least 2 players ready for 4-player mode
+CharacterSelectSkipQuadtariReadyInline
 
-          gosub SelDrawScreen : rem Draw character selection screen
+          gosub CharacterSelectDrawScreen : rem Draw character selection screen
 
           rem drawscreen called by MainLoop
           return
-          goto SelScreenLoop
+          goto CharacterSelectLoop
 
 
 
-SelDrawScreen
+CharacterSelectDrawScreen
           rem Draw character selection screen via shared renderer
           gosub bank10 SelectDrawScreen
           return
 
-SelDrawScreenLegacy
+CharacterSelectDrawScreenLegacy
           rem Legacy implementation retained for historical reference; do not execute
           return
-LegacySelDrawScreenBody
+LegacyCharacterSelectDrawScreenBody
           rem Draw character selection screen
           rem Draw character selection screen with player sprites and
           rem numbers
@@ -320,32 +320,32 @@ LegacySelDrawScreenBody
           rem Output: player sprites drawn, numbers drawn
           rem
           rem Mutates: player0-3x, player0-3y (TIA registers),
-          rem         player sprite pointers (via SelDrawSprite),
-          rem         playfield data (via SelDrawNumber)
+          rem         player sprite pointers (via CharacterSelectDrawSprite),
+          rem         playfield data (via CharacterSelectDrawNumber)
           rem
-          rem Called Routines: SelDrawSprite - accesses playerCharacter[],
+          rem Called Routines: CharacterSelectDrawSprite - accesses playerCharacter[],
           rem draws character sprites,
-          rem   SelDrawNumber - draws player number indicators
+          rem   CharacterSelectDrawNumber - draws player number indicators
           rem
-          rem Constraints: Must be colocated with SelDrawP3, SelSkipP3,
-          rem SelDrawP4, SelSkipP4
+          rem Constraints: Must be colocated with CharacterSelectDrawPlayer3, CharacterSelectSkipPlayer3Draw,
+          rem CharacterSelectDrawPlayer4, CharacterSelectSkipPlayer4Draw
           rem              (all called via goto)
           rem Draw Player 1 selection (top left) with number
           player0x = 56
           player0y = 40 
-          gosub SelDrawSprite : rem Adjusted for 16px left margin (40+16)
+          gosub CharacterSelectDrawSprite : rem Adjusted for 16px left margin (40+16)
 
-          gosub SelDrawNumber : rem Draw 1 indicator below Player 1 using playfield
+          gosub CharacterSelectDrawNumber : rem Draw 1 indicator below Player 1 using playfield
 
           let player1x = 104 : rem Draw Player 2 selection (top right) with number
           let player1y = 40
-          gosub SelDrawSprite : rem Adjusted for 16px margins (120-16)
+          gosub CharacterSelectDrawSprite : rem Adjusted for 16px margins (120-16)
 
-          gosub SelDrawNumber : rem Draw 2 indicator below Player 2 using playfield
+          gosub CharacterSelectDrawNumber : rem Draw 2 indicator below Player 2 using playfield
 
-          if controllerStatus & SetQuadtariDetected then SelDrawP3 : rem Draw Player 3 selection (bottom left) if Quadtari detected
-          goto SelSkipP3
-SelDrawP3
+          if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer3 : rem Draw Player 3 selection (bottom left) if Quadtari detected
+          goto CharacterSelectSkipPlayer3Draw
+CharacterSelectDrawPlayer3
           rem Draw Player 3 character sprite and number
           rem
           rem Input: playerCharacter[] (global array) = current character
@@ -355,23 +355,23 @@ SelDrawP3
           rem
           rem Output: Player 3 sprite drawn, number indicator drawn
           rem
-          rem Mutates: player sprite pointers (via SelDrawSprite),
-          rem playfield data (via SelDrawNumber)
+          rem Mutates: player sprite pointers (via CharacterSelectDrawSprite),
+          rem playfield data (via CharacterSelectDrawNumber)
           rem
-          rem Called Routines: SelDrawSprite, SelDrawNumber
+          rem Called Routines: CharacterSelectDrawSprite, CharacterSelectDrawNumber
           rem
-          rem Constraints: Must be colocated with SelDrawScreen,
-          rem SelSkipP3
+          rem Constraints: Must be colocated with CharacterSelectDrawScreen,
+          rem CharacterSelectSkipPlayer3Draw
           player0x = 56
           player0y = 80 
-          gosub SelDrawSprite : rem Adjusted for 16px left margin
+          gosub CharacterSelectDrawSprite : rem Adjusted for 16px left margin
 
-          gosub SelDrawNumber : rem Draw 3 indicator below Player 3 using playfield
+          gosub CharacterSelectDrawNumber : rem Draw 3 indicator below Player 3 using playfield
 
           rem Draw Player 4 selection (bottom right) if Quadtari
-          if controllerStatus & SetQuadtariDetected then SelDrawP4 : rem   detected
-          goto SelSkipP4
-SelDrawP4
+          if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer4 : rem   detected
+          goto CharacterSelectSkipPlayer4Draw
+CharacterSelectDrawPlayer4
           rem Draw Player 4 character sprite and number
           rem
           rem Input: playerCharacter[] (global array) = current character
@@ -381,24 +381,24 @@ SelDrawP4
           rem
           rem Output: Player 4 sprite drawn, number indicator drawn
           rem
-          rem Mutates: player sprite pointers (via SelDrawSprite),
-          rem playfield data (via SelDrawNumber)
+          rem Mutates: player sprite pointers (via CharacterSelectDrawSprite),
+          rem playfield data (via CharacterSelectDrawNumber)
           rem
-          rem Called Routines: SelDrawSprite, SelDrawNumber
-          let player1x = 104 : rem Constraints: Must be colocated with SelDrawScreen, SelSkipP4
+          rem Called Routines: CharacterSelectDrawSprite, CharacterSelectDrawNumber
+          let player1x = 104 : rem Constraints: Must be colocated with CharacterSelectDrawScreen, CharacterSelectSkipPlayer4Draw
           let player1y = 80
-          gosub SelDrawSprite : rem Adjusted for 16px margins
+          gosub CharacterSelectDrawSprite : rem Adjusted for 16px margins
 
-          gosub SelDrawNumber : rem Draw 4 indicator below Player 4 using playfield
-SelSkipP3
-SelSkipP4
+          gosub CharacterSelectDrawNumber : rem Draw 4 indicator below Player 4 using playfield
+CharacterSelectSkipPlayer3Draw
+CharacterSelectSkipPlayer4Draw
 
           rem Draw locked status indicators (playfield blocks framing
           rem   characters)
-          goto SelDrawLocks : rem tail call
+          goto CharacterSelectDrawLocks : rem tail call
 
 
-SelDrawLocks
+CharacterSelectDrawLocks
           rem Draw locked status indicators
           rem Draw locked status indicators (playfield blocks framing
           rem locked characters)
@@ -417,10 +417,10 @@ SelDrawLocks
           rem
           rem Constraints: Players 3/4 only checked if Quadtari
           rem detected. Borders drawn using playfield bits
-          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then SelDrawP0Border : rem Draw playfield blocks around locked characters
-          goto SelSkipP0Border
-SelDrawP0Border
-SelSkipP0Border
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then CharacterSelectDrawPlayer1Border : rem Draw playfield blocks around locked characters
+          goto CharacterSelectSkipPlayer1Border
+CharacterSelectDrawPlayer1Border
+CharacterSelectSkipPlayer1Border
           rem Helper: Draw border around Player 1
           rem
           rem Input: legacy playfield registers (unused)
@@ -432,14 +432,14 @@ SelSkipP0Border
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelDrawLocks, only called
+          rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem when Player 1 is locked
           rem Draw border around Player 1
 
-          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then SelDrawP1Border
-          goto SelSkipP1Border
-SelDrawP1Border
-SelSkipP1Border
+          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then CharacterSelectDrawPlayer2Border
+          goto CharacterSelectSkipPlayer2Border
+CharacterSelectDrawPlayer2Border
+CharacterSelectSkipPlayer2Border
           rem Helper: Draw border around Player 2
           rem
           rem Input: legacy playfield registers (unused)
@@ -451,7 +451,7 @@ SelSkipP1Border
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelDrawLocks, only called
+          rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem when Player 2 is locked
           rem Draw border around Player 2
 
@@ -472,7 +472,7 @@ SelectCheckPlayer2Lock
           rem Called Routines: GetPlayerLocked (bank14) - gets lock
           rem state, SelectDrawPlayer2Border - draws border
           rem
-          rem Constraints: Internal helper for SelDrawLocks, only called
+          rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem if Quadtari detected
           let temp1 = 2 : gosub GetPlayerLocked bank14 : if temp2 then SelectDrawPlayer2Border
           rem Continue to Player 3 check
@@ -509,21 +509,21 @@ SelectCheckPlayer3Lock
           rem Called Routines: GetPlayerLocked (bank14) - gets lock
           rem state, SelectDrawPlayer3Border - draws border
           rem
-          rem Constraints: Internal helper for SelDrawLocks, only called
+          rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem if Quadtari detected
           let temp1 = 3 : gosub GetPlayerLocked bank14 : if temp2 then SelectDrawPlayer3Border
           return
 SelectDrawPlayer3Border 
           return
-SelDrawNumber
+CharacterSelectDrawNumber
           rem Draw number indicator via shared renderer
           gosub bank10 SelectDrawNumber
           return
 
-SelDrawNumberLegacy
+CharacterSelectDrawNumberLegacy
           rem Legacy implementation retained for historical reference; do not execute
           return
-LegacySelDrawNumberBody
+LegacyCharacterSelectDrawNumberBody
           rem Helper: Draw border around Player 4
           rem
           rem Input: legacy playfield registers (unused)
@@ -561,40 +561,40 @@ LegacySelDrawNumberBody
           rem using playfield pixels in a simple digit pattern
           rem Player numbers are determined by position in the grid
 
-          if player0x  = 56 then SelChkP0Y1 : rem Player 1 (top left) - draw 1
+          if player0x  = 56 then Player1TopRowQ : rem Player 1 (top left) - draw 1
           goto DonePlayer0Check1
-SelChkP0Y1
-          if player0y  = 40 then SelDrawP0Top
+Player1TopRowQ
+          if player0y  = 40 then Player1DrawTopDigit
           goto DonePlayer0Check1
-SelDrawP0Top 
+Player1DrawTopDigit 
           return
 
-          if player1x  = 104 then SelChkP1Y1 : rem Player 2 (top right) - draw 2
+          if player1x  = 104 then Player2TopRowQ : rem Player 2 (top right) - draw 2
           goto DonePlayer1Check1
-SelChkP1Y1
-          if player1y  = 40 then SelDrawP1Top
+Player2TopRowQ
+          if player1y  = 40 then Player2DrawTopDigit
           goto DonePlayer1Check1
-SelDrawP1Top 
+Player2DrawTopDigit 
           return
 
-          if player0x  = 56 then SelChkP0Y2 : rem Player 3 (bottom left) - draw 3
+          if player0x  = 56 then Player1BottomRowQ : rem Player 3 (bottom left) - draw 3
           goto DonePlayer0Check2
-SelChkP0Y2
-          if player0y  = 80 then SelDrawP0Bot
+Player1BottomRowQ
+          if player0y  = 80 then Player1DrawBottomDigit
           goto DonePlayer0Check2
-SelDrawP0Bot 
+Player1DrawBottomDigit 
           return
 
-          if player1x  = 104 then SelChkP1Y2 : rem Player 4 (bottom right) - draw 4
+          if player1x  = 104 then Player2BottomRowQ : rem Player 4 (bottom right) - draw 4
           goto DonePlayer1Check2
-SelChkP1Y2
-          if player1y  = 80 then SelDrawP1Bot
+Player2BottomRowQ
+          if player1y  = 80 then Player2DrawBottomDigit
           goto DonePlayer1Check2
-SelDrawP1Bot 
+Player2DrawBottomDigit 
           return
           return
 
-SelUpdateAnimation
+CharacterSelectUpdateAnimation
           rem Update character select animations
           rem Update character select animations (handicap preview,
           rem normal animation cycling)
@@ -654,9 +654,9 @@ CharacterSelectQuadtariHandicap
           rem set)
           rem
           rem Called Routines: None
-          if controllerStatus & SetQuadtariDetected then SelOddFrame : rem Constraints: Internal helper for SelUpdateAnimation, only called on odd frames
+          if controllerStatus & SetQuadtariDetected then CharacterSelectOddFrame : rem Constraints: Internal helper for CharacterSelectUpdateAnimation, only called on odd frames
           goto DoneOddFrameCheck
-SelOddFrame 
+CharacterSelectOddFrame 
           rem Helper: Check Players 3/4 DOWN states
           rem
           rem Input: joy0down, joy1down (hardware) = joystick DOWN
@@ -677,9 +677,9 @@ SelOddFrame
           
           
           rem If any player is holding down, set animation to recovery
-          if HandicapMode then SelHandleHandi : rem   pose
+          if HandicapMode then CharacterSelectHandleHandicap : rem   pose
           goto SelectAnimationNormal
-SelHandleHandi
+CharacterSelectHandleHandicap
           rem Helper: Freeze animation in recovery pose for handicap
           rem preview
           rem
@@ -694,7 +694,7 @@ SelHandleHandi
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelUpdateAnimation, only
+          rem Constraints: Internal helper for CharacterSelectUpdateAnimation, only
           rem called when HandicapMode is set. Animation frozen (timer
           rem not updated)
           let characterSelectAnimationState = ActionRecovering
@@ -723,7 +723,7 @@ SelectAnimationNormal
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelUpdateAnimation, only
+          rem Constraints: Internal helper for CharacterSelectUpdateAnimation, only
           rem called when no handicap preview. Changes animation state
           rem every 60 frames (1 second) with random selection (0-2)
           rem Normal animation updates (only when no handicap mode
@@ -747,7 +747,7 @@ SelectAnimationAdvance
           
           return
 
-SelDrawSprite
+CharacterSelectDrawSprite
           rem Draw character sprite with animation
           rem Draw animated character sprite based on current animation
           rem state
@@ -795,14 +795,14 @@ SelDrawSprite
           let temp1  = characterSelectAnimationState : rem For character select, we will use a simple hurt simulation
           rem Use animation state as hurt simulation for demo
           
-          if !(temp1 = 2) then SelColorNormal
-          if switchbw then SelHurtBW : rem Hurt state - dimmer colors
+          if !(temp1 = 2) then CharacterSelectColorNormal
+          if switchbw then CharacterSelectHurtBlackWhite : rem Hurt state - dimmer colors
           if characterSelectPlayer = 1 then COLUP0  = ColIndigo(6) : rem Player color but dimmer
           if characterSelectPlayer = 2 then COLUP0  = ColRed(6) : rem Dark indigo (Player 1)
           if characterSelectPlayer = 3 then COLUP0  = ColYellow(6) : rem Dark red (Player 2)
           if characterSelectPlayer = 4 then COLUP0  = ColGreen(6) : rem Dark yellow (Player 3)
-          goto SelColorDone : rem Dark green
-SelHurtBW
+          goto CharacterSelectColorDone : rem Dark green
+CharacterSelectHurtBlackWhite
           rem Helper: Set hurt color for B&W mode
           rem
           rem Input: None
@@ -817,8 +817,8 @@ SelHurtBW
           rem Constraints: Internal helper for SelectDrawSprite, only
           rem called in hurt state and B&W mode
           let COLUP0  = ColGrey(6)
-          goto SelColorDone : rem Dark grey for hurt (B&W)
-SelColorNormal
+          goto CharacterSelectColorDone : rem Dark grey for hurt (B&W)
+CharacterSelectColorNormal
           rem Helper: Set normal color (bright)
           rem
           rem Input: characterSelectPlayer (global) = player number, switchbw
@@ -830,17 +830,17 @@ SelColorNormal
           rem Mutates: COLUP0 (TIA register) = player color (set to
           rem bright color)
           rem
-          rem Called Routines: SelColorBW - sets B&W color
+          rem Called Routines: CharacterSelectColorBlackWhite - sets B&W color
           rem
-          rem Constraints: Internal helper for SelDrawSprite, only
+          rem Constraints: Internal helper for CharacterSelectDrawSprite, only
           rem called in normal state
-          if switchbw then SelColorBW : rem Normal state - bright colors
+          if switchbw then CharacterSelectColorBlackWhite : rem Normal state - bright colors
           if characterSelectPlayer = 1 then COLUP0  = ColIndigo(12) : rem Player color - bright
           if characterSelectPlayer = 2 then COLUP0  = ColRed(12) : rem Bright indigo (Player 1)
           if characterSelectPlayer = 3 then COLUP0  = ColYellow(12) : rem Bright red (Player 2)
           if characterSelectPlayer = 4 then COLUP0  = ColGreen(12) : rem Bright yellow (Player 3)
-          goto SelColorDone : rem Bright green
-SelColorBW
+          goto CharacterSelectColorDone : rem Bright green
+CharacterSelectColorBlackWhite
           rem Helper: Set normal color for B&W mode
           rem
           rem Input: None
@@ -851,8 +851,8 @@ SelColorBW
           rem ColGrey(14))
           rem
           rem Called Routines: None
-          let COLUP0  = ColGrey(14) : rem Constraints: Internal helper for SelColorNormal, only called in B&W mode
-SelColorDone
+          let COLUP0  = ColGrey(14) : rem Constraints: Internal helper for CharacterSelectColorNormal, only called in B&W mode
+CharacterSelectColorDone
           rem Bright grey (B&W)
           
           rem Draw different sprite patterns based on animation state
@@ -871,7 +871,7 @@ SelectAnimationIdle
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelDrawSprite, only
+          rem Constraints: Internal helper for CharacterSelectDrawSprite, only
           rem called for ActionStanding
           goto SelectAnimationDone : rem Idle animation - simple standing pose
 SelectAnimationRun
@@ -883,15 +883,15 @@ SelectAnimationRun
           rem
           rem Mutates: Player sprite graphics (set to running pattern)
           rem
-          rem Called Routines: SelLeftLeg - sets left leg forward
+          rem Called Routines: CharacterSelectLeftLeg - sets left leg forward
           rem pattern
           rem
-          rem Constraints: Internal helper for SelDrawSprite, only
+          rem Constraints: Internal helper for CharacterSelectDrawSprite, only
           rem called for ActionWalking. Frames 0,2,4,6 = right leg
           rem forward, frames 1,3,5,7 = left leg forward
-          if characterSelectAnimationFrame & 1 then SelLeftLeg : rem Running animation - alternating leg positions
+          if characterSelectAnimationFrame & 1 then CharacterSelectLeftLeg : rem Running animation - alternating leg positions
           goto SelectAnimationDone : rem Frame 0,2,4,6 - right leg forward
-SelLeftLeg
+CharacterSelectLeftLeg
           rem Helper: Set left leg forward pattern for running
           rem
           rem Input: None
@@ -940,7 +940,7 @@ SelectWindup
 SelectAnimationDone
           return
 
-SelScreenDone
+CharacterSelectCompleted
           rem Character selection complete (stores selected characters
           rem and initializes facing directions)
           rem
@@ -987,7 +987,7 @@ SkipCharacter4FacingSel
           rem Proceed to falling animation
           return
 
-SelDetectQuad
+CharacterSelectDetectQuadtari
           rem Detect Quadtari adapter
           rem Detect Quadtari adapter (canonical detection: check paddle
           rem ports INPT0-3)
@@ -1019,7 +1019,7 @@ SelDetectQuad
           if INPT2{7} then CharacterSelectQuadtariAbsent : rem Check right side: if INPT2 is HIGH then not detected
           if !INPT3{7} then CharacterSelectQuadtariAbsent : rem Check right side: if INPT3 is LOW then not detected
           
-          goto SelSkipQuadAbs : rem All checks passed - Quadtari detected
+          goto CharacterSelectQuadtariDetected : rem All checks passed - Quadtari detected
 
 CharacterSelectQuadtariAbsent
           return
@@ -1034,7 +1034,7 @@ CharacterSelectQuadtariAbsent
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelDetectQuad, only
+          rem Constraints: Internal helper for CharacterSelectDetectQuadtari, only
           rem called when Quadtari not detected. Does NOT clear
           rem controllerStatus - monotonic detection (upgrades only).
           rem Only DetectControllers (called via SELECT) can update
@@ -1047,7 +1047,7 @@ CharacterSelectQuadtariAbsent
           rem Only DetectControllers (called via SELECT) can update
           rem   controller status
           
-SelSkipQuadAbs
+CharacterSelectQuadtariDetected
           rem Helper: Quadtari detected - set detection flag
           rem
           rem Input: controllerStatus (global) = controller detection
@@ -1061,7 +1061,7 @@ SelSkipQuadAbs
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelDetectQuad, only
+          rem Constraints: Internal helper for CharacterSelectDetectQuadtari, only
           rem called when Quadtari detected. Uses monotonic merge (OR)
           rem to preserve existing capabilities (upgrades only, never
           rem downgrades)

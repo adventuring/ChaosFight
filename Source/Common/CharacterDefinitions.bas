@@ -57,13 +57,13 @@
           rem   Guy (130 lbs thin man), Pork Chop (250 lbs),
           rem Radish Goblin (50 lbs scaled daikon), Robo Tito (300 lbs
           rem   dumpster), Ursulo (220 lbs, 1.67m tall walking polar
-          rem   bear), Shamone (65 lbs
+          rem   bear), Shamone (65 lbs Labrador)
           rem Character weights: Bernie(5), Curler(53), Dragon(100),
           rem Zoe(48), Fat Tony(57), Megax(100), Harpy(23), Knight
           rem Guy(57), Frooty(45), Nefertem(66), Ninjish Guy(47), Pork
           rem Chop(57), Radish Goblin(31), Robo Tito(60), Ursulo(55),
           rem Shamone(35)
-          data CharacterWeights : rem   Labrador)
+          data CharacterWeights
             5, 53, 100, 48, 57, 100, 23, 57, 45, 66, 47, 57, 31, 60, 55, 35
 end
 
@@ -78,7 +78,8 @@ end
           rem Guy(2), Frooty(2), Nefertem(1), Ninjish Guy(2), Pork
           rem Chop(2), Radish Goblin(3), Robo Tito(2), Ursulo(1),
           rem Shamone(3)
-          data SafeFallVelocityThresholds : rem Values: integer division of 120 by each character’s weight
+          rem Values: integer division of 120 by each character’s weight
+          data SafeFallVelocityThresholds
             24, 2, 1, 2, 2, 1, 5, 2, 2, 1, 2, 2, 3, 2, 1, 3
 end
 
@@ -91,7 +92,8 @@ end
           rem Zoe(2), Fat Tony(2), Megax(5), Harpy(1), Knight Guy(2),
           rem Frooty(2), Nefertem(3), Ninjish Guy(2), Pork Chop(2),
           rem Radish Goblin(1), Robo Tito(3), Ursulo(4), Shamone(1)
-          data WeightDividedBy20 : rem Pre-computed to avoid variable division
+          rem Pre-computed to avoid variable division
+          data WeightDividedBy20
             0, 2, 5, 2, 2, 5, 1, 2, 2, 3, 2, 2, 1, 3, 4, 1
 end
 
@@ -103,7 +105,8 @@ end
           rem Square table values pre-divided by 4 (v² / 4) for velocities 1-24
           rem (0,1,2,4,6,9,12,16), (20,25,30,36,42,49,56,64),
           rem (72,81,90,100,110,121,132,144)
-          data SquareTable : rem Index is value (1-24), result is floor(v² / 4)
+          rem Index is value (1-24), result is floor(v² / 4)
+          data SquareTable
             0, 1, 2, 4, 6, 9, 12, 16, 20, 25, 30, 36, 42, 49, 56, 64, 72, 81, 90, 100, 110, 121, 132, 144
 end
 
@@ -118,7 +121,8 @@ end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          data CharacterHeights : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          data CharacterHeights
             10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
 end
 
@@ -130,7 +134,8 @@ end
           rem Shamone(0, melee)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          data CharacterMissileWidths : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          data CharacterMissileWidths
              0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end
 
@@ -142,7 +147,8 @@ end
           rem Shamone(0, melee)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          data CharacterMissileHeights : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          data CharacterMissileHeights
              0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end
 
@@ -154,7 +160,8 @@ end
           rem melee)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          data CharacterMissileMaxX : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          data CharacterMissileMaxX
              4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
 end
 
@@ -166,7 +173,8 @@ end
           rem melee)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          data CharacterMissileMaxY : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          data CharacterMissileMaxY
              4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
 end
 
@@ -177,7 +185,8 @@ end
           rem Ursulo(4), Shamone(0)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          data CharacterMissileForce : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          data CharacterMissileForce
              3, 5, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0
 end
 
@@ -194,7 +203,8 @@ end
           rem melee ranged ranged ranged ranged melee melee melee ranged
           rem   melee melee melee melee melee ranged melee
           rem Note: Melee attacks show brief visual (sword, fist, etc.),
-          data CharacterMissileLifetime : rem   ranged persist until hit
+          rem   ranged persist until hit
+          data CharacterMissileLifetime
              4, 255, 255, 255, 255, 4, 5, 6, 255, 5, 4, 4, 3, 5, 5, 4
 end
 
@@ -203,7 +213,8 @@ end
           rem Bit mask values for player indices (0-3)
           rem Used for bit-flag operations on playersEliminated and
           rem   missileActive
-          data BitMask : rem Values: 1, 2, 4, 8 for players 0, 1, 2, 3 respectively
+          rem Values: 1, 2, 4, 8 for players 0, 1, 2, 3 respectively
+          data BitMask
              1, 2, 4, 8
 end
 
@@ -226,17 +237,18 @@ end
           rem Harpy changed from ranged to melee (diagonal swoop,
           rem special case)
           rem Megax changed from ranged to melee (decorative missile)
-          data CharacterAttackTypes : rem NinjishGuy changed from melee to ranged (shuriken)
+          rem NinjishGuy changed from melee to ranged (shuriken)
+          data CharacterAttackTypes
               %00011110, %00000101, %00000000, %00000000
-            rem Bit 0 (Bernie) = 0 (melee)
-            rem Bits 1-4 (Curler, Dragon, Zoe, FatTony) = 1 (ranged)
-            rem Bits 5-7 (Megax, Harpy, KnightGuy) = 0 (melee)
-            rem Bit 8 (Frooty) = 1 (ranged)
-            rem Bit 9 (Nefertem) = 0 (melee)
-            rem Bit 10 (NinjishGuy) = 1 (ranged)
-            rem Bits 11-15 (Pork Chop, Radish, RoboTito, Ursulo,
-            rem Shamone) = 0 (melee)
 end
+          rem CharacterAttackTypes bits:
+          rem   Bit 0  (Bernie)                        = 0 (melee)
+          rem   Bits 1-4 (Curler, Dragon, Zoe, FatTony) = 1 (ranged)
+          rem   Bits 5-7 (Megax, Harpy, KnightGuy)      = 0 (melee)
+          rem   Bit 8  (Frooty)                        = 1 (ranged)
+          rem   Bit 9  (Nefertem)                      = 0 (melee)
+          rem   Bit 10 (NinjishGuy)                    = 1 (ranged)
+          rem   Bits 11-15 (Pork Chop, Radish, RoboTito, Ursulo, Shamone) = 0 (melee)
 
           rem
           rem Missile Size Definitions
@@ -257,7 +269,8 @@ end
           rem Note: Curler uses 14 for emission from feet (14 pixels
           rem   from top of 16px sprite = near ground)
           rem Note: Megax uses 4 for mouth height (fire breath emission
-          data CharacterMissileEmissionHeights : rem   point)
+          rem   point)
+          data CharacterMissileEmissionHeights
              3, 14, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
 end
 
@@ -274,7 +287,8 @@ end
           rem Guy(8), Frooty(6), Nefertem(0), Ninjish Guy(0), Pork
           rem Chop(0), Radish Goblin(0), Robo Tito(0), Ursulo(0, melee,
           rem changed from 7), Shamone(0)
-          data CharacterMissileMomentumX : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          data CharacterMissileMomentumX
              5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 0, 0
 end
 
@@ -332,16 +346,17 @@ end
           rem   (HitBackground|Gravity) for ballistic arc
           rem Zoe Ryen = MissileFlagHitBackground = 1 (hits backgrounds
           rem   and players)
-          data CharacterMissileFlags : rem Frooty = MissileFlagHitBackgroundAndGravity = 5
+          rem Frooty = MissileFlagHitBackgroundAndGravity = 5
+          data CharacterMissileFlags
             0, MissileFlagCurlerFull, MissileFlagHitBackgroundAndGravity, MissileFlagHitBackground, 0, 0, 0, 0, MissileFlagHitBackgroundAndGravity, 0, 0, 0, 0, 0, 0, 0
-            rem 0, Curler(MissileFlagCurlerFull),
-            rem   Dragon(MissileFlagHitBackgroundAndGravity),
-            rem   Zoe(MissileFlagHitBackground), 0, 0, 0, 0,
-            rem   Frooty(MissileFlagHitBackgroundAndGravity), 0, 0, 0,
-            rem   0, 0, 0, 0
-            rem Ursulo changed from MissileFlagHitBackground (1) to 0
-            rem   (melee)
 end
+          rem CharacterMissileFlags entries:
+          rem   0 = Bernie (melee)
+          rem   MissileFlagCurlerFull = Curler (all flags set)
+          rem   MissileFlagHitBackgroundAndGravity = Dragon of Storms, Frooty
+          rem   MissileFlagHitBackground = Zoe Ryen
+          rem   Remaining entries (Fat Tony through Shamone) have no missile flags (0)
+          rem   Ursulo changed from MissileFlagHitBackground to 0 (melee)
 
           rem
           rem MISSILE LIFETIME (duration)
@@ -356,7 +371,8 @@ end
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
           rem AOE offset in pixels (0 = no AOE, positive = area of
-          data CharacterAOEOffsets : rem   effect)
+          rem   effect)
+          data CharacterAOEOffsets
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
@@ -449,16 +465,22 @@ GetCharAttackTypeSub
           rem
           rem Output: temp4 = attack type (0=melee, 1=ranged)
           rem
-          rem Mutates: temp2-temp4
+          rem Mutates: temp2-temp5
           rem
           rem Called Routines: None
           rem
           rem Constraints: CharacterAttackTypes table must share bank
           temp3 = temp1 / 8
           temp2 = temp1 & 7
-          temp4 = CharacterAttackTypes(temp3)
-          temp4 = temp4 & (1 << temp2)
-          temp4 = temp4 >> temp2
+          temp4 = CharacterAttackTypes[temp3]
+          temp5 = temp2
+GetCharAttackTypeSubShiftLoop
+          if temp5 = 0 then goto GetCharAttackTypeSubShiftDone
+          temp4 = temp4 / 2
+          temp5 = temp5 - 1
+          goto GetCharAttackTypeSubShiftLoop
+GetCharAttackTypeSubShiftDone
+          temp4 = temp4 & 1
           return
 
 GetMissileDimsSub

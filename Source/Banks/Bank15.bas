@@ -3,6 +3,10 @@
 
           bank 15
           
+          rem Data segment for sound and song pointer tables
+#include "Source/Data/SoundPointers.bas"
+#include "Source/Data/SongPointers15.bas"
+
           rem Sound effects system - dedicated 3.5kiB bank for compiled
           rem   samples
 #include "Source/Routines/SoundSystem.bas"

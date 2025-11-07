@@ -1,7 +1,7 @@
           rem ChaosFight - Source/Banks/Bank9.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          bank 9
+bank 9
           
           rem Title sequence and preludes
           rem Grouped together - title screen flow

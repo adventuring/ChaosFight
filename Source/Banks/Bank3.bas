@@ -1,7 +1,7 @@
           rem ChaosFight - Source/Banks/Bank3.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          bank 3
+bank 3
           
           rem Character sprite data for characters 8-15
           rem Bank 3 dedicated to character art only - leave room for

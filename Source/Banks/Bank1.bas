@@ -3,24 +3,26 @@
 
           bank 1
 
-          rem MainLoop, drawscreen, arenas, numeric font, and special
-          rem sprites
-          rem must all be in Bank 1 for EF bankswitching (kernel is in
-          rem Bank 1)
-          rem Titlescreen graphics and kernel moved to Bank 9 (only used
-          rem during title screens)
-          
-          rem Special sprites and numeric font
+          rem Data segment (loaded before any routines)
+#include "Source/Data/CharacterTables.bas"
 #include "Source/Data/SpecialSprites.bas"
+#include "Source/Data/Arenas.bas"
+
+          rem MainLoop, drawscreen, arenas, numeric font, and special
+          rem sprites must all be in Bank 1 for EF bankswitching (kernel
+          rem is in Bank 1). Titlescreen graphics and kernel moved to
+          rem Bank 9 (only used during title screens)
+
+#include "Source/Common/CharacterDefinitions.bas"
 #include "Source/Routines/FontRendering.bas"
-
-          rem Arena data (includes playfield and pfcolors data)
-          rem Needed for drawscreen playfield rendering
 #include "Source/Routines/ArenaLoader.bas"
-          
-          rem Main loop and drawscreen
-          rem MainLoop calls drawscreen, must be in same bank as kernel
 #include "Source/Routines/MainLoop.bas"
-
+game
+          rem Entry point jumped to by batariBASIC startup
+          rem
+          rem Input: None (hardware already reset by startup.asm)
+          rem Output: Transfers execution to ColdStart routine
+          rem Mutates: None (falls through to banked goto)
+          rem Constraints: Must remain in Bank 1 for startup vector
           goto ColdStart bank13
 

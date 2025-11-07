@@ -1,7 +1,7 @@
           rem ChaosFight - Source/Banks/Bank4.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          bank 4
+bank 4
           
           rem Bank 4 dedicated to character art only - leave room for
           rem   animation frames

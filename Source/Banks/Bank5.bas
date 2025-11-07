@@ -1,7 +1,7 @@
           rem ChaosFight - Source/Banks/Bank5.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          bank 5
+bank 5
           
           rem Bank 5 dedicated to character art only - leave room for
           rem   animation frames

@@ -39,17 +39,24 @@ LoadCharacterSprite
           rem Load sprite data for a character based on character index
           rem Input: currentCharacter (global) = character index (0-31)
           rem        temp2 = animation frame (0-7)
-          rem        temp3 = player number (0-3), may be in temp4 instead
-          rem        MaxCharacter (constant) = maximum valid character index
-          rem Output: Sprite data loaded into appropriate player register
+          rem        temp3 = player number (0-3), may be in temp4
+          rem        instead
+          rem        MaxCharacter (constant) = maximum valid character
+          rem        index
+          rem Output: Sprite data loaded into appropriate player
+          rem register
           rem         via LocateCharacterArt (bank14)
-          rem Mutates: temp1, temp2, temp3, temp4 (passed to LocateCharacterArt)
+          rem Mutates: temp1, temp2, temp3, temp4 (passed to
+          rem LocateCharacterArt)
           rem Called Routines: LocateCharacterArt (bank14) accesses:
           rem   - temp1, temp2, temp3, temp4, temp5, temp6
-          rem   - Sets player sprite pointers via SetPlayerCharacterArtBankX
+          rem   - Sets player sprite pointers via
+          rem   SetPlayerCharacterArtBankX
           rem   - Modifies player0-3pointerlo/hi, player0-3height
-          rem Constraints: Must be colocated with LoadSpecialSprite (called via goto)
-          rem              Must be in same file as special sprite loaders
+          rem Constraints: Must be colocated with LoadSpecialSprite
+          rem (called via goto)
+          rem              Must be in same file as special sprite
+          rem              loaders
           dim LCS_animationFrame = temp2
           dim LCS_playerNumber = temp3
           dim LCS_animationAction = temp3
@@ -79,7 +86,8 @@ ValidateCharacterDoneInline
           rem RandomCharacter = 253
           
           rem Use character art location system for sprite loading
-          rem Input: currentCharacter = character index (global variable), animationFrame =
+          rem Input: currentCharacter = character index (global
+          rem variable), animationFrame =
           rem   animation frame
           rem playerNumber = player number OR playerNumberAlt = player
           rem   number (caller provides)
@@ -113,13 +121,19 @@ LoadSpecialSprite
           rem Output: Appropriate player sprite pointer set to special
           rem   sprite data
           rem         player0-3height set to 16
-          rem         SCRAM w000-w063 written (sprite data copied to RAM)
+          rem         SCRAM w000-w063 written (sprite data copied to
+          rem         RAM)
           rem Mutates: temp6 (read only), temp3 (read only)
-          rem           w000-w015, w016-w031, w032-w047, w048-w063 (SCRAM)
-          rem           player0height, player1height, player2height, player3height
-          rem Called Routines: None (uses inline assembly to copy sprite data)
-          rem Constraints: Must be colocated with LoadCharacterSprite (called from it)
-          rem              Must be in same file as QuestionMark/CPU/No sprite loaders
+          rem           w000-w015, w016-w031, w032-w047, w048-w063
+          rem           (SCRAM)
+          rem           player0height, player1height, player2height,
+          rem           player3height
+          rem Called Routines: None (uses inline assembly to copy sprite
+          rem data)
+          rem Constraints: Must be colocated with LoadCharacterSprite
+          rem (called from it)
+          rem              Must be in same file as QuestionMark/CPU/No
+          rem              sprite loaders
           dim LSS_spriteIndex = temp6 : rem Depends on QuestionMarkSprite, CPUSprite, NoSprite data
           dim LSS_playerNumber = temp3
           if !LSS_spriteIndex then goto LoadQuestionMarkSprite : rem Set sprite pointer based on sprite index
@@ -134,7 +148,8 @@ LoadQuestionMarkSprite
           rem Output: Dispatches to player-specific loader
           rem Mutates: None (dispatcher only)
           rem Called Routines: None (dispatcher only)
-          rem Constraints: Must be colocated with LoadQuestionMarkSpriteP0-P3
+          rem Constraints: Must be colocated with
+          rem LoadQuestionMarkSpriteP0-P3
           if !LQMS_playerNumber then goto LoadQuestionMarkSpriteP0 : rem Use skip-over pattern to avoid complex compound statements
           if LQMS_playerNumber = 1 then goto LoadQuestionMarkSpriteP1
           if LQMS_playerNumber = 2 then goto LoadQuestionMarkSpriteP2
@@ -143,7 +158,8 @@ LoadQuestionMarkSprite
 LoadQuestionMarkSpriteP0
           asm
           rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (0, read but not used in this function)
+          rem Input: temp3 = player number (0, read but not used in this
+          rem function)
           rem        QuestionMarkSprite (ROM data) = source sprite data
           rem Output: w000-w015 (SCRAM) = sprite data copied
           rem         player0height = 16
@@ -151,9 +167,12 @@ LoadQuestionMarkSpriteP0
           rem Called Routines: None (uses inline assembly)
           rem Constraints: Must be colocated with LoadQuestionMarkSprite
           rem              Depends on QuestionMarkSprite ROM data
-          rem              Depends on InitializeSpritePointers setting pointers
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer (w000-w015)
-          rem Pointers already initialized to RAM addresses by InitializeSpritePointers
+          rem              Depends on InitializeSpritePointers setting
+          rem              pointers
+          rem Copy QuestionMarkSprite data from ROM to RAM buffer
+          rem (w000-w015)
+          rem Pointers already initialized to RAM addresses by
+          rem InitializeSpritePointers
             ldy #15
 .CopyLoop:
             lda QuestionMarkSprite,y
@@ -165,7 +184,8 @@ LoadQuestionMarkSpriteP0
           return
           
 LoadQuestionMarkSpriteP1
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer (w016-w031)
+          rem Copy QuestionMarkSprite data from ROM to RAM buffer
+          rem (w016-w031)
           asm
             ldy #15
 .CopyLoop:
@@ -178,7 +198,8 @@ LoadQuestionMarkSpriteP1
           return
           
 LoadQuestionMarkSpriteP2
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer (w032-w047)
+          rem Copy QuestionMarkSprite data from ROM to RAM buffer
+          rem (w032-w047)
           asm
             ldy #15
 .CopyLoop:
@@ -191,7 +212,8 @@ LoadQuestionMarkSpriteP2
           return
           
 LoadQuestionMarkSpriteP3
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer (w048-w063)
+          rem Copy QuestionMarkSprite data from ROM to RAM buffer
+          rem (w048-w063)
           asm
             ldy #15
 .CopyLoop:
@@ -219,7 +241,8 @@ LoadCPUSprite
 LoadCPUSpriteP0
           asm
           rem Copy CPUSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (0, read but not used in this function)
+          rem Input: temp3 = player number (0, read but not used in this
+          rem function)
           rem        CPUSprite (ROM data) = source sprite data
           rem Output: w000-w015 (SCRAM) = sprite data copied
           rem         player0height = 16
@@ -228,7 +251,8 @@ LoadCPUSpriteP0
           rem Constraints: Must be colocated with LoadCPUSprite
           rem              Depends on CPUSprite ROM data
           rem Copy CPUSprite data from ROM to RAM buffer (w000-w015)
-          rem Pointers already initialized to RAM addresses by InitializeSpritePointers
+          rem Pointers already initialized to RAM addresses by
+          rem InitializeSpritePointers
             ldy #15
 .CopyLoop:
             lda CPUSprite,y
@@ -294,7 +318,8 @@ LoadNoSprite
 LoadNoSpriteP0
           asm
           rem Copy NoSprite data from ROM to RAM buffer
-          rem Input: temp3 = player number (0, read but not used in this function)
+          rem Input: temp3 = player number (0, read but not used in this
+          rem function)
           rem        NoSprite (ROM data) = source sprite data
           rem Output: w000-w015 (SCRAM) = sprite data copied
           rem         player0height = 16
@@ -303,7 +328,8 @@ LoadNoSpriteP0
           rem Constraints: Must be colocated with LoadNoSprite
           rem              Depends on NoSprite ROM data
           rem Copy NoSprite data from ROM to RAM buffer (w000-w015)
-          rem Pointers already initialized to RAM addresses by InitializeSpritePointers
+          rem Pointers already initialized to RAM addresses by
+          rem InitializeSpritePointers
             ldy #15
 .CopyLoop:
             lda NoSprite,y
@@ -358,16 +384,22 @@ LoadPlayerSprite
           rem LOAD PLAYER SPRITE (generic Dispatcher)
           rem Load sprite data for any player using character art system
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        playerChar[] (global array) = character indices per player
-          rem        temp2 = animation frame (0-7) from sprite 10fps counter
-          rem        temp3 = animation action (0-15) from currentAnimationSeq
+          rem        playerChar[] (global array) = character indices per
+          rem        player
+          rem        temp2 = animation frame (0-7) from sprite 10fps
+          rem        counter
+          rem        temp3 = animation action (0-15) from
+          rem        currentAnimationSeq
           rem        temp4 = player number (0-3)
           rem Note: Frame is relative to sprite own 10fps counter, NOT
           rem   global frame counter
           rem Output: Sprite data loaded via LocateCharacterArt (bank14)
-          rem Mutates: currentCharacter (global), temp1 (passed to LocateCharacterArt)
-          rem Called Routines: LocateCharacterArt (bank14) - see LoadCharacterSprite
-          rem Constraints: Must be colocated with LoadPlayerSpriteDispatch (called via goto)
+          rem Mutates: currentCharacter (global), temp1 (passed to
+          rem LocateCharacterArt)
+          rem Called Routines: LocateCharacterArt (bank14) - see
+          rem LoadCharacterSprite
+          rem Constraints: Must be colocated with
+          rem LoadPlayerSpriteDispatch (called via goto)
           dim LPS_playerNumber = temp4
           rem Get character index for this player from playerChar array
           rem Use currentPlayer global variable (set by caller)
@@ -378,21 +410,27 @@ LoadPlayerSpriteDispatch
           dim LPSD_animationFrame = temp2
           dim LPSD_animationAction = temp3
           dim LPSD_playerNumber = temp4
-          rem currentCharacter = character index (global variable), animationFrame =
+          rem currentCharacter = character index (global variable),
+          rem animationFrame =
           rem   frame (10fps counter), animationAction = action,
           rem   playerNumber = player
-          rem Input: currentCharacter (global) = character index (already set)
+          rem Input: currentCharacter (global) = character index
+          rem (already set)
           rem        temp2 = animation frame (0-7)
           rem        temp3 = animation action (0-15)
           rem        temp4 = player number (0-3)
           rem Output: Sprite data loaded via LocateCharacterArt (bank14)
-          rem Mutates: temp1 (set from currentCharacter, passed to LocateCharacterArt)
-          rem Called Routines: LocateCharacterArt (bank14) - see LoadCharacterSprite
-          rem Constraints: Must be colocated with LoadPlayerSprite (called from it)
+          rem Mutates: temp1 (set from currentCharacter, passed to
+          rem LocateCharacterArt)
+          rem Called Routines: LocateCharacterArt (bank14) - see
+          rem LoadCharacterSprite
+          rem Constraints: Must be colocated with LoadPlayerSprite
+          rem (called from it)
           rem Call character art location system (in bank14)
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
           rem   temp3=action, temp4=player
-          rem Set temp1 from currentCharacter (already set from playerChar[currentPlayer])
+          rem Set temp1 from currentCharacter (already set from
+          rem playerChar[currentPlayer])
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank14
           return
@@ -406,13 +444,18 @@ LoadPlayer0Sprite
           
           dim LP0S_playerNumber = temp3
           rem Use art location system for player 0 sprite loading
-          rem Input: currentCharacter (global) = character index (must be set)
-          rem        temp2 = animation frame (0-7, must be set by caller)
+          rem Input: currentCharacter (global) = character index (must
+          rem be set)
+          rem        temp2 = animation frame (0-7, must be set by
+          rem        caller)
           rem Output: Sprite data loaded via LoadCharacterSprite
           rem Mutates: temp3 (set to 0, passed to LoadCharacterSprite)
-          rem Called Routines: LoadCharacterSprite - see its documentation
-          rem Constraints: Must be colocated with LoadCharacterSprite (tail call)
-          rem              Only reachable via gosub/goto (could be own file)
+          rem Called Routines: LoadCharacterSprite - see its
+          rem documentation
+          rem Constraints: Must be colocated with LoadCharacterSprite
+          rem (tail call)
+          rem              Only reachable via gosub/goto (could be own
+          rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
           let LP0S_playerNumber = 0 : rem playerNumber = player number (0)
@@ -423,13 +466,18 @@ LoadPlayer0Sprite
 LoadPlayer1Sprite
           dim LP1S_playerNumber = temp3
           rem Use art location system for player 1 sprite loading
-          rem Input: currentCharacter (global) = character index (must be set)
-          rem        temp2 = animation frame (0-7, must be set by caller)
+          rem Input: currentCharacter (global) = character index (must
+          rem be set)
+          rem        temp2 = animation frame (0-7, must be set by
+          rem        caller)
           rem Output: Sprite data loaded via LoadCharacterSprite
           rem Mutates: temp3 (set to 1, passed to LoadCharacterSprite)
-          rem Called Routines: LoadCharacterSprite - see its documentation
-          rem Constraints: Must be colocated with LoadCharacterSprite (tail call)
-          rem              Only reachable via gosub/goto (could be own file)
+          rem Called Routines: LoadCharacterSprite - see its
+          rem documentation
+          rem Constraints: Must be colocated with LoadCharacterSprite
+          rem (tail call)
+          rem              Only reachable via gosub/goto (could be own
+          rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
           let LP1S_playerNumber = 1 : rem playerNumber = player number (1)
@@ -440,13 +488,18 @@ LoadPlayer1Sprite
 LoadPlayer2Sprite
           dim LP2S_playerNumber = temp3
           rem Use art location system for player 2 sprite loading
-          rem Input: currentCharacter (global) = character index (must be set)
-          rem        temp2 = animation frame (0-7, must be set by caller)
+          rem Input: currentCharacter (global) = character index (must
+          rem be set)
+          rem        temp2 = animation frame (0-7, must be set by
+          rem        caller)
           rem Output: Sprite data loaded via LoadCharacterSprite
           rem Mutates: temp3 (set to 2, passed to LoadCharacterSprite)
-          rem Called Routines: LoadCharacterSprite - see its documentation
-          rem Constraints: Must be colocated with LoadCharacterSprite (tail call)
-          rem              Only reachable via gosub/goto (could be own file)
+          rem Called Routines: LoadCharacterSprite - see its
+          rem documentation
+          rem Constraints: Must be colocated with LoadCharacterSprite
+          rem (tail call)
+          rem              Only reachable via gosub/goto (could be own
+          rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
           let LP2S_playerNumber = 2 : rem playerNumber = player number (2)
@@ -457,13 +510,18 @@ LoadPlayer2Sprite
 LoadPlayer3Sprite
           dim LP3S_playerNumber = temp3
           rem Use art location system for player 3 sprite loading
-          rem Input: currentCharacter (global) = character index (must be set)
-          rem        temp2 = animation frame (0-7, must be set by caller)
+          rem Input: currentCharacter (global) = character index (must
+          rem be set)
+          rem        temp2 = animation frame (0-7, must be set by
+          rem        caller)
           rem Output: Sprite data loaded via LoadCharacterSprite
           rem Mutates: temp3 (set to 3, passed to LoadCharacterSprite)
-          rem Called Routines: LoadCharacterSprite - see its documentation
-          rem Constraints: Must be colocated with LoadCharacterSprite (tail call)
-          rem              Only reachable via gosub/goto (could be own file)
+          rem Called Routines: LoadCharacterSprite - see its
+          rem documentation
+          rem Constraints: Must be colocated with LoadCharacterSprite
+          rem (tail call)
+          rem              Only reachable via gosub/goto (could be own
+          rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
           let LP3S_playerNumber = 3 : rem playerNumber = player number (3)
@@ -481,19 +539,25 @@ LoadCharacterColors
           rem Input: temp2 = hurt state (0/1)
           rem        temp3 = player number (0-3)
           rem        temp4 = flashing state (0/1)
-          rem        temp5 = flashing mode (0=frame-based, 1=player-index)
+          rem        temp5 = flashing mode (0=frame-based,
+          rem        1=player-index)
           rem        frame (global) = frame counter for flashing
-          rem        systemFlags (global) = system flags including B&W override
+          rem        systemFlags (global) = system flags including B&W
+          rem        override
           rem Output: Appropriate COLUP0/COLUP1/COLUP2/COLUP3 updated
-          rem Note: Colors are per-player, not per-character. Players use
+          rem Note: Colors are per-player, not per-character. Players
+          rem use
           rem   solid colors only (no per-line coloring)
           rem Mutates: temp6 (color calculation, internal use)
           rem           COLUP0, COLUP1, COLUP2, COLUP3 (TIA registers)
           rem Called Routines: None (all logic inline)
-          rem Constraints: Must be colocated with NormalColor, FlashingColor,
-          rem              PerLineFlashing, PlayerIndexColors, PlayerIndexColorsDim,
+          rem Constraints: Must be colocated with NormalColor,
+          rem FlashingColor,
+          rem              PerLineFlashing, PlayerIndexColors,
+          rem              PlayerIndexColorsDim,
           rem              HurtColor, SetColor (all called via goto)
-          rem WARNING: temp6 is mutated during execution. Do not use temp6
+          rem WARNING: temp6 is mutated during execution. Do not use
+          rem temp6
           dim LoadCharacterColors_isHurt = temp2 : rem after calling this subroutine.
           dim LoadCharacterColors_playerNumber = temp3
           dim LoadCharacterColors_isFlashing = temp4
@@ -507,8 +571,10 @@ NormalColor
           dim NormalColor_color = temp6
           dim NormalColor_playerNumber = temp3
           rem Calculate normal (non-hurt, non-flashing) player color
-          rem Input: temp3 = player number (0-3, from LoadCharacterColors)
-          rem        systemFlags (global) = system flags including B&W override
+          rem Input: temp3 = player number (0-3, from
+          rem LoadCharacterColors)
+          rem        systemFlags (global) = system flags including B&W
+          rem        override
           rem Output: Dispatches to PlayerIndexColors
           rem Mutates: None (dispatcher only)
           rem Called Routines: None (dispatcher only)
@@ -529,7 +595,8 @@ NormalColor
 FlashingColor
           dim FlashingColor_flashingMode = temp5
           rem Flashing mode selection
-          rem Input: temp5 = flashing mode (0=frame-based, 1=player-index)
+          rem Input: temp5 = flashing mode (0=frame-based,
+          rem 1=player-index)
           rem Output: Dispatches to PerLineFlashing or PlayerIndexColors
           rem Mutates: None (dispatcher only)
           rem Called Routines: None (dispatcher only)
@@ -542,8 +609,10 @@ PerLineFlashing
           rem Frame-based flashing (not per-line - players use solid
           rem   colors)
           rem Input: frame (global) = frame counter for flashing
-          rem        temp3 = player number (0-3, from LoadCharacterColors)
-          rem Output: Dispatches to PlayerIndexColorsDim or PlayerIndexColors
+          rem        temp3 = player number (0-3, from
+          rem        LoadCharacterColors)
+          rem Output: Dispatches to PlayerIndexColorsDim or
+          rem PlayerIndexColors
           rem Mutates: None (dispatcher only)
           rem Called Routines: None (dispatcher only)
           rem Constraints: Must be colocated with LoadCharacterColors
@@ -553,7 +622,8 @@ PerLineFlashing
           
 PlayerIndexColors
           rem Calculate bright player index colors
-          rem Input: temp3 = player number (0-3, from LoadCharacterColors)
+          rem Input: temp3 = player number (0-3, from
+          rem LoadCharacterColors)
           rem Output: temp6 = color value, dispatches to SetColor
           rem Mutates: temp6 (color value)
           rem Called Routines: None (dispatcher only)
@@ -581,11 +651,13 @@ PlayerIndexColors
 PlayerIndexColorsDim
           dim PlayerIndexColorsDim_color = temp6
           rem Dimmed player index colors
-          rem Input: temp3 = player number (0-3, from LoadCharacterColors)
+          rem Input: temp3 = player number (0-3, from
+          rem LoadCharacterColors)
           rem Output: temp6 = dimmed color value, dispatches to SetColor
           rem Mutates: temp6 (color value)
           rem Called Routines: None (dispatcher only)
-          rem Constraints: Must be colocated with LoadCharacterColors, SetColor
+          rem Constraints: Must be colocated with LoadCharacterColors,
+          rem SetColor
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
 #ifdef TV_SECAM
@@ -609,11 +681,13 @@ PlayerIndexColorsDim
 HurtColor
           dim HurtColor_color = temp6
           rem Calculate hurt state player color
-          rem Input: temp3 = player number (0-3, from LoadCharacterColors)
+          rem Input: temp3 = player number (0-3, from
+          rem LoadCharacterColors)
           rem Output: temp6 = hurt color value, dispatches to SetColor
           rem Mutates: temp6 (color value)
           rem Called Routines: None (dispatcher only)
-          rem Constraints: Must be colocated with LoadCharacterColors, SetColor
+          rem Constraints: Must be colocated with LoadCharacterColors,
+          rem SetColor
 #ifdef TV_SECAM
           let HurtColor_color = ColMagenta(10) : rem SECAM hurt is always magenta
           let LoadCharacterColors_color = HurtColor_color
@@ -626,13 +700,16 @@ HurtColor
 SetColor
           rem Set color based on player index (multisprite kernel
           rem   supports COLUP2/COLUP3)
-          rem Input: temp6 = color value (from previous color calculation)
-          rem        temp3 = player number (0-3, from LoadCharacterColors)
+          rem Input: temp6 = color value (from previous color
+          rem calculation)
+          rem        temp3 = player number (0-3, from
+          rem        LoadCharacterColors)
           rem Output: COLUP0, COLUP1, COLUP2, or COLUP3 updated
           rem Mutates: COLUP0, COLUP1, COLUP2, COLUP3 (TIA registers)
           rem Called Routines: None
           rem Constraints: Must be colocated with LoadCharacterColors
-          rem Use temp6 directly instead of alias to avoid symbol conflict
+          rem Use temp6 directly instead of alias to avoid symbol
+          rem conflict
           rem LoadCharacterColors_color already contains the color from
           let temp6 = LoadCharacterColors_color : rem   previous code paths
           if !LoadCharacterColors_playerNumber then let COLUP0 = temp6 : return

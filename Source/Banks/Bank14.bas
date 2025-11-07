@@ -3,7 +3,8 @@
 
           bank 14
 
-          rem Routines moved from Bank 1 - not needed for drawscreen calls
+          rem Routines moved from Bank 1 - not needed for drawscreen
+          rem calls
           rem These are called before/after drawscreen, not during it
           
           rem Console detection and handling

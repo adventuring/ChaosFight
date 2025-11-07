@@ -25,16 +25,23 @@ WarmStart
           rem   - Calls ChangeGameMode to transition to startup sequence
           rem Handles game reset from any screen/state
           rem Input: None (called from MainLoop on RESET)
-          rem Output: gameMode set to ModePublisherPrelude, ChangeGameMode called, TIA registers initialized
-          rem Mutates: systemFlags (paused flag cleared), frame (reset to 0), gameMode (set to ModePublisherPrelude),
-          rem         COLUBK, COLUPF, COLUP0, _COLUP1 (TIA color registers),
+          rem Output: gameMode set to ModePublisherPrelude,
+          rem ChangeGameMode called, TIA registers initialized
+          rem Mutates: systemFlags (paused flag cleared), frame (reset
+          rem to 0), gameMode (set to ModePublisherPrelude),
+          rem         COLUBK, COLUPF, COLUP0, _COLUP1 (TIA color
+          rem         registers),
           rem         AUDC0, AUDV0, AUDC1, AUDV1 (TIA audio registers),
-          rem         pf0-pf5 (playfield registers), ENAM0, ENAM1, ENABL (sprite enable registers)
-          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
-          rem Constraints: Entry point for warm start/reset (called from MainLoop)
+          rem         pf0-pf5 (playfield registers), ENAM0, ENAM1, ENABL
+          rem         (sprite enable registers)
+          rem Called Routines: ChangeGameMode (bank14) - accesses game
+          rem mode state
+          rem Constraints: Entry point for warm start/reset (called from
+          rem MainLoop)
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused : rem Step 1: Clear critical game state variables
           rem Clear paused flag (0 = normal, not paused, not ending)
-          rem Frame counter is automatically managed by batariBASIC kernel
+          rem Frame counter is automatically managed by batariBASIC
+          rem kernel
           
           rem Step 2: Reinitialize TIA color registers to safe defaults
           rem Match ColdStart initialization for consistency
@@ -78,20 +85,30 @@ WarmStart
           rem   WarmStart call
 HandleConsoleSwitches
           rem This function only handles pause/select switches
-          rem Handle console switches during gameplay (pause/select, Color/B&W, 7800 pause)
+          rem Handle console switches during gameplay (pause/select,
+          rem Color/B&W, 7800 pause)
           rem Input: switchselect (hardware) = Game Select switch state
           rem        switchbw (hardware) = Color/B&W switch state
-          rem        systemFlags (global) = system flags (SystemFlagGameStatePaused)
-          rem        temp2 (parameter) = player index for CheckEnhancedPause (0 or 1)
-          rem Output: systemFlags updated (pause state toggled), DetectControllers called if Select pressed
-          rem Mutates: systemFlags (pause state toggled), temp1, temp2 (passed to CheckEnhancedPause),
+          rem        systemFlags (global) = system flags
+          rem        (SystemFlagGameStatePaused)
+          rem        temp2 (parameter) = player index for
+          rem        CheckEnhancedPause (0 or 1)
+          rem Output: systemFlags updated (pause state toggled),
+          rem DetectControllers called if Select pressed
+          rem Mutates: systemFlags (pause state toggled), temp1, temp2
+          rem (passed to CheckEnhancedPause),
           rem         colorBWPrevious_W (updated via CheckColorBWToggle)
-          rem Called Routines: CheckEnhancedPause - accesses controller state, temp2,
-          rem   DetectControllers (bank14) - accesses controller detection state,
-          rem   CheckColorBWToggle - accesses switchbw, colorBWPrevious_R,
+          rem Called Routines: CheckEnhancedPause - accesses controller
+          rem state, temp2,
+          rem   DetectControllers (bank14) - accesses controller
+          rem   detection state,
+          rem   CheckColorBWToggle - accesses switchbw,
+          rem   colorBWPrevious_R,
           rem   Check7800PauseButton - accesses 7800 pause button state
-          rem Constraints: Must be colocated with DonePlayer1Pause, Player1PauseDone,
-          rem              DonePlayer2Pause, Player2PauseDone (all called via goto)
+          rem Constraints: Must be colocated with DonePlayer1Pause,
+          rem Player1PauseDone,
+          rem              DonePlayer2Pause, Player2PauseDone (all
+          rem              called via goto)
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
           let temp2 = 0 : rem   mode
@@ -101,7 +118,8 @@ HandleConsoleSwitches
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
-          rem Debounce - wait for button release (drawscreen called by MainLoop)
+          rem Debounce - wait for button release (drawscreen called by
+          rem MainLoop)
           return
 DonePlayer1Pause
           
@@ -114,7 +132,8 @@ DonePlayer1Pause
           if !(systemFlags & SystemFlagGameStatePaused) then Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player2PauseDone
-          rem Debounce - wait for button release (drawscreen called by MainLoop)
+          rem Debounce - wait for button release (drawscreen called by
+          rem MainLoop)
           return
 DonePlayer2Pause
           
@@ -135,11 +154,15 @@ DonePlayer2Pause
 CheckColorBWToggle
           rem Re-detect controllers when Color/B&W switch is toggled
           rem Input: switchbw (hardware) = Color/B&W switch state
-          rem        colorBWPrevious_R (global SCRAM) = previous Color/B&W switch state
-          rem Output: colorBWPrevious_W updated, DetectControllers called if switch changed
-          rem Mutates: temp1 (switch changed flag), temp6 (used for switchbw read),
+          rem        colorBWPrevious_R (global SCRAM) = previous
+          rem        Color/B&W switch state
+          rem Output: colorBWPrevious_W updated, DetectControllers
+          rem called if switch changed
+          rem Mutates: temp1 (switch changed flag), temp6 (used for
+          rem switchbw read),
           rem         colorBWPrevious_W (updated if switch changed)
-          rem Called Routines: DetectControllers (bank14) - accesses controller detection state
+          rem Called Routines: DetectControllers (bank14) - accesses
+          rem controller detection state
           dim CCBT_switchChanged = temp1 : rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           dim CCBT_overrideChanged = temp2
           
@@ -151,7 +174,8 @@ CheckColorBWToggle
           gosub DetectControllers bank14
           let colorBWPrevious_W = switchbw
 DoneSwitchChange
-          rem Color/B&W switch change check complete (label only, no execution)
+          rem Color/B&W switch change check complete (label only, no
+          rem execution)
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
@@ -159,14 +183,18 @@ DoneSwitchChange
           rem Constraints: Must be colocated with CheckColorBWToggle
 
           rem Check if colorBWOverride changed (7800 pause button)
-          rem Note: colorBWOverride does not have a previous value stored,
+          rem Note: colorBWOverride does not have a previous value
+          rem stored,
           rem   so we check it every frame (NTSC/PAL only, not SECAM).
-          rem   This is acceptable since it is only toggled by button press,
-          rem   not continuously. If needed, we could add a previous value
+          rem   This is acceptable since it is only toggled by button
+          rem   press,
+          rem   not continuously. If needed, we could add a previous
+          rem   value
           rem   variable.
           
           if CCBT_switchChanged then ReloadArenaColorsNow : rem Reload arena colors if switch or override changed
-          rem Note: colorBWOverride check handled in Check7800PauseButton
+          rem Note: colorBWOverride check handled in
+          rem Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)
           
           return

@@ -13,11 +13,21 @@
 #include "Source/Common/Colors.h"
 
 LoadArena
-          rem Load arena playfield data and colors based on selectedArena
-          rem Input: selectedArena_R (global SCRAM) = selected arena index (0-15 or RandomArena), switchbw (global) = B&W switch state, systemFlags (global) = system flags, frame (global) = frame counter (for random), RandomArena (global constant) = random arena constant
+          rem Load arena playfield data and colors based on
+          rem selectedArena
+          rem Input: selectedArena_R (global SCRAM) = selected arena
+          rem index (0-15 or RandomArena), switchbw (global) = B&W
+          rem switch state, systemFlags (global) = system flags, frame
+          rem (global) = frame counter (for random), RandomArena (global
+          rem constant) = random arena constant
           rem Output: Arena playfield and colors loaded
-          rem Mutates: temp1 (used for arena index), temp2 (used for B&W mode), PF1pointer, PF2pointer (TIA registers) = playfield pointers, pfcolortable (TIA register) = color table pointer
-          rem Called Routines: GetBWMode - determines B&W mode, LoadRandomArena (if random selected), LoadArenaByIndex - loads arena data
+          rem Mutates: temp1 (used for arena index), temp2 (used for B&W
+          rem mode), PF1pointer, PF2pointer (TIA registers) = playfield
+          rem pointers, pfcolortable (TIA register) = color table
+          rem pointer
+          rem Called Routines: GetBWMode - determines B&W mode,
+          rem LoadRandomArena (if random selected), LoadArenaByIndex -
+          rem loads arena data
           dim LA_arenaIndex = temp1 : rem Constraints: None
           dim LA_bwMode = temp2
           
@@ -31,11 +41,14 @@ LoadArena
 GetBWMode
           rem Check if B&W mode is active
           rem SECAM: Always B&W mode
-          rem Input: switchbw (global) = B&W switch state, systemFlags (global) = system flags (bit 6 = SystemFlagColorBWOverride)
+          rem Input: switchbw (global) = B&W switch state, systemFlags
+          rem (global) = system flags (bit 6 =
+          rem SystemFlagColorBWOverride)
           rem Output: LA_bwMode (temp2) = B&W mode (1=B&W, 0=Color)
           rem Mutates: temp2 (LA_bwMode return value)
           rem Called Routines: None
-          rem Constraints: SECAM always returns B&W mode (compile-time check)
+          rem Constraints: SECAM always returns B&W mode (compile-time
+          rem check)
           #ifdef TV_SECAM
           let LA_bwMode = 1
           return
@@ -44,20 +57,32 @@ GetBWMode
           rem NTSC/PAL: Check switchbw and colorBWOverride
           rem switchbw = 1 means B&W mode (white), switchbw = 0 means
           rem   Color mode
-          rem systemFlags bit 6 (SystemFlagColorBWOverride) = 1 means B&W override
+          rem systemFlags bit 6 (SystemFlagColorBWOverride) = 1 means
+          rem B&W override
           let LA_bwMode = switchbw : rem   (from 7800 pause button)
           if systemFlags & SystemFlagColorBWOverride then let LA_bwMode = 1
           return
 
 LoadArenaByIndex
           rem Load arena playfield and colors by index
-          rem Input: LA_arenaIndex (temp1) = arena index (0-31), LA_bwMode (temp2) = B&W mode (1=B&W, 0=Color), ArenaPF1PointerL[], ArenaPF1PointerH[], ArenaPF2PointerL[], ArenaPF2PointerH[] (global data tables) = playfield pointers
+          rem Input: LA_arenaIndex (temp1) = arena index (0-31),
+          rem LA_bwMode (temp2) = B&W mode (1=B&W, 0=Color),
+          rem ArenaPF1PointerL[], ArenaPF1PointerH[],
+          rem ArenaPF2PointerL[], ArenaPF2PointerH[] (global data
+          rem tables) = playfield pointers
           rem Output: Arena playfield and colors loaded
-          rem Mutates: temp1 (LA_arenaIndex validated), PF1pointer, PF2pointer (TIA registers) = playfield pointers, pfcolortable (TIA register) = color table pointer (via color loaders)
-          rem Called Routines: LoadArenaColorsBW (if B&W mode), LoadArenaColorsColor (if Color mode), LoadArena0Colors-LoadArena31Colors (via LoadArenaColorsColor dispatch)
+          rem Mutates: temp1 (LA_arenaIndex validated), PF1pointer,
+          rem PF2pointer (TIA registers) = playfield pointers,
+          rem pfcolortable (TIA register) = color table pointer (via
+          rem color loaders)
+          rem Called Routines: LoadArenaColorsBW (if B&W mode),
+          rem LoadArenaColorsColor (if Color mode),
+          rem LoadArena0Colors-LoadArena31Colors (via
+          rem LoadArenaColorsColor dispatch)
           rem Constraints: Arena index validated to 0-31 range
           rem Validate arena index (0-31 supported by pointer tables)
-          rem Note: Only 0-15 are selectable (MaxArenaID), but tables support 0-31
+          rem Note: Only 0-15 are selectable (MaxArenaID), but tables
+          rem support 0-31
           if LA_arenaIndex > 31 then let LA_arenaIndex = 0
           
           rem Load playfield pointers from tables using index
@@ -77,11 +102,16 @@ end
           goto LoadArenaColorsColor
 
 LoadArenaColorsColor
-          rem Dispatch to arena-specific color loader based on arena index (0-31)
+          rem Dispatch to arena-specific color loader based on arena
+          rem index (0-31)
           rem Input: LA_arenaIndex (temp1) = arena index (0-31)
-          rem Output: Arena color table loaded via dispatch to LoadArenaXColors
-          rem Mutates: temp3 (used for dispatch index), pfcolortable (TIA register) = color table pointer (via LoadArenaXColors)
-          rem Called Routines: LoadArena0Colors-LoadArena31Colors (dispatched based on arena index)
+          rem Output: Arena color table loaded via dispatch to
+          rem LoadArenaXColors
+          rem Mutates: temp3 (used for dispatch index), pfcolortable
+          rem (TIA register) = color table pointer (via
+          rem LoadArenaXColors)
+          rem Called Routines: LoadArena0Colors-LoadArena31Colors
+          rem (dispatched based on arena index)
           rem Constraints: None
           dim LACC_tempIndex = temp3 : rem Dispatch to color loader based on arena index (0-31)
           let LACC_tempIndex = LA_arenaIndex
@@ -117,11 +147,14 @@ end
           return
 
 LoadRandomArena
-          rem Select random arena (0-15) using proper random number generator
+          rem Select random arena (0-15) using proper random number
+          rem generator
           rem Input: rand (global) = random number generator
           rem Output: Random arena loaded via LoadArenaByIndex
-          rem Mutates: temp1 (LA_arenaIndex set to random value), rand (global) = random number generator state
-          rem Called Routines: LoadArenaByIndex (tail call) - loads selected random arena
+          rem Mutates: temp1 (LA_arenaIndex set to random value), rand
+          rem (global) = random number generator state
+          rem Called Routines: LoadArenaByIndex (tail call) - loads
+          rem selected random arena
           rem Constraints: None
           rem Select random arena (0-15) using proper RNG
           let LA_arenaIndex = rand : rem Get random value (0-255)
@@ -131,7 +164,8 @@ LoadRandomArena
 LoadArena0Colors
           asm
           rem Load color table for arena 0
-          rem Input: Arena0Colors (global data table) = arena 0 color table
+          rem Input: Arena0Colors (global data table) = arena 0 color
+          rem table
           rem Output: pfcolortable set to Arena0Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -146,7 +180,8 @@ end
 LoadArena1Colors
           asm
           rem Load color table for arena 1
-          rem Input: Arena1Colors (global data table) = arena 1 color table
+          rem Input: Arena1Colors (global data table) = arena 1 color
+          rem table
           rem Output: pfcolortable set to Arena1Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -161,7 +196,8 @@ end
 LoadArena2Colors
           asm
           rem Load color table for arena 2
-          rem Input: Arena2Colors (global data table) = arena 2 color table
+          rem Input: Arena2Colors (global data table) = arena 2 color
+          rem table
           rem Output: pfcolortable set to Arena2Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -176,7 +212,8 @@ end
 LoadArena3Colors
           asm
           rem Load color table for arena 3
-          rem Input: Arena3Colors (global data table) = arena 3 color table
+          rem Input: Arena3Colors (global data table) = arena 3 color
+          rem table
           rem Output: pfcolortable set to Arena3Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -191,7 +228,8 @@ end
 LoadArena4Colors
           asm
           rem Load color table for arena 4
-          rem Input: Arena4Colors (global data table) = arena 4 color table
+          rem Input: Arena4Colors (global data table) = arena 4 color
+          rem table
           rem Output: pfcolortable set to Arena4Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -206,7 +244,8 @@ end
 LoadArena5Colors
           asm
           rem Load color table for arena 5
-          rem Input: Arena5Colors (global data table) = arena 5 color table
+          rem Input: Arena5Colors (global data table) = arena 5 color
+          rem table
           rem Output: pfcolortable set to Arena5Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -221,7 +260,8 @@ end
 LoadArena6Colors
           asm
           rem Load color table for arena 6
-          rem Input: Arena6Colors (global data table) = arena 6 color table
+          rem Input: Arena6Colors (global data table) = arena 6 color
+          rem table
           rem Output: pfcolortable set to Arena6Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -236,7 +276,8 @@ end
 LoadArena7Colors
           asm
           rem Load color table for arena 7
-          rem Input: Arena7Colors (global data table) = arena 7 color table
+          rem Input: Arena7Colors (global data table) = arena 7 color
+          rem table
           rem Output: pfcolortable set to Arena7Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -251,7 +292,8 @@ end
 LoadArena8Colors
           asm
           rem Load color table for arena 8
-          rem Input: Arena8Colors (global data table) = arena 8 color table
+          rem Input: Arena8Colors (global data table) = arena 8 color
+          rem table
           rem Output: pfcolortable set to Arena8Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -266,7 +308,8 @@ end
 LoadArena9Colors
           asm
           rem Load color table for arena 9
-          rem Input: Arena9Colors (global data table) = arena 9 color table
+          rem Input: Arena9Colors (global data table) = arena 9 color
+          rem table
           rem Output: pfcolortable set to Arena9Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -281,7 +324,8 @@ end
 LoadArena10Colors
           asm
           rem Load color table for arena 10
-          rem Input: Arena10Colors (global data table) = arena 10 color table
+          rem Input: Arena10Colors (global data table) = arena 10 color
+          rem table
           rem Output: pfcolortable set to Arena10Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -296,7 +340,8 @@ end
 LoadArena11Colors
           asm
           rem Load color table for arena 11
-          rem Input: Arena11Colors (global data table) = arena 11 color table
+          rem Input: Arena11Colors (global data table) = arena 11 color
+          rem table
           rem Output: pfcolortable set to Arena11Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -311,7 +356,8 @@ end
 LoadArena12Colors
           asm
           rem Load color table for arena 12
-          rem Input: Arena12Colors (global data table) = arena 12 color table
+          rem Input: Arena12Colors (global data table) = arena 12 color
+          rem table
           rem Output: pfcolortable set to Arena12Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -326,7 +372,8 @@ end
 LoadArena13Colors
           asm
           rem Load color table for arena 13
-          rem Input: Arena13Colors (global data table) = arena 13 color table
+          rem Input: Arena13Colors (global data table) = arena 13 color
+          rem table
           rem Output: pfcolortable set to Arena13Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -341,7 +388,8 @@ end
 LoadArena14Colors
           asm
           rem Load color table for arena 14
-          rem Input: Arena14Colors (global data table) = arena 14 color table
+          rem Input: Arena14Colors (global data table) = arena 14 color
+          rem table
           rem Output: pfcolortable set to Arena14Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -356,7 +404,8 @@ end
 LoadArena15Colors
           asm
           rem Load color table for arena 15
-          rem Input: Arena15Colors (global data table) = arena 15 color table
+          rem Input: Arena15Colors (global data table) = arena 15 color
+          rem table
           rem Output: pfcolortable set to Arena15Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -372,7 +421,8 @@ end
 LoadArena16Colors
           asm
           rem Load color table for arena 16
-          rem Input: Arena16Colors (global data table) = arena 16 color table
+          rem Input: Arena16Colors (global data table) = arena 16 color
+          rem table
           rem Output: pfcolortable set to Arena16Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -388,7 +438,8 @@ end
 LoadArena17Colors
           asm
           rem Load color table for arena 17
-          rem Input: Arena17Colors (global data table) = arena 17 color table
+          rem Input: Arena17Colors (global data table) = arena 17 color
+          rem table
           rem Output: pfcolortable set to Arena17Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -404,7 +455,8 @@ end
 LoadArena18Colors
           asm
           rem Load color table for arena 18
-          rem Input: Arena18Colors (global data table) = arena 18 color table
+          rem Input: Arena18Colors (global data table) = arena 18 color
+          rem table
           rem Output: pfcolortable set to Arena18Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -420,7 +472,8 @@ end
 LoadArena19Colors
           asm
           rem Load color table for arena 19
-          rem Input: Arena19Colors (global data table) = arena 19 color table
+          rem Input: Arena19Colors (global data table) = arena 19 color
+          rem table
           rem Output: pfcolortable set to Arena19Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -436,7 +489,8 @@ end
 LoadArena20Colors
           asm
           rem Load color table for arena 20
-          rem Input: Arena20Colors (global data table) = arena 20 color table
+          rem Input: Arena20Colors (global data table) = arena 20 color
+          rem table
           rem Output: pfcolortable set to Arena20Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -452,7 +506,8 @@ end
 LoadArena21Colors
           asm
           rem Load color table for arena 21
-          rem Input: Arena21Colors (global data table) = arena 21 color table
+          rem Input: Arena21Colors (global data table) = arena 21 color
+          rem table
           rem Output: pfcolortable set to Arena21Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -468,7 +523,8 @@ end
 LoadArena22Colors
           asm
           rem Load color table for arena 22
-          rem Input: Arena22Colors (global data table) = arena 22 color table
+          rem Input: Arena22Colors (global data table) = arena 22 color
+          rem table
           rem Output: pfcolortable set to Arena22Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -484,7 +540,8 @@ end
 LoadArena23Colors
           asm
           rem Load color table for arena 23
-          rem Input: Arena23Colors (global data table) = arena 23 color table
+          rem Input: Arena23Colors (global data table) = arena 23 color
+          rem table
           rem Output: pfcolortable set to Arena23Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -500,7 +557,8 @@ end
 LoadArena24Colors
           asm
           rem Load color table for arena 24
-          rem Input: Arena24Colors (global data table) = arena 24 color table
+          rem Input: Arena24Colors (global data table) = arena 24 color
+          rem table
           rem Output: pfcolortable set to Arena24Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -516,7 +574,8 @@ end
 LoadArena25Colors
           asm
           rem Load color table for arena 25
-          rem Input: Arena25Colors (global data table) = arena 25 color table
+          rem Input: Arena25Colors (global data table) = arena 25 color
+          rem table
           rem Output: pfcolortable set to Arena25Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -532,7 +591,8 @@ end
 LoadArena26Colors
           asm
           rem Load color table for arena 26
-          rem Input: Arena26Colors (global data table) = arena 26 color table
+          rem Input: Arena26Colors (global data table) = arena 26 color
+          rem table
           rem Output: pfcolortable set to Arena26Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -548,7 +608,8 @@ end
 LoadArena27Colors
           asm
           rem Load color table for arena 27
-          rem Input: Arena27Colors (global data table) = arena 27 color table
+          rem Input: Arena27Colors (global data table) = arena 27 color
+          rem table
           rem Output: pfcolortable set to Arena27Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -564,7 +625,8 @@ end
 LoadArena28Colors
           asm
           rem Load color table for arena 28
-          rem Input: Arena28Colors (global data table) = arena 28 color table
+          rem Input: Arena28Colors (global data table) = arena 28 color
+          rem table
           rem Output: pfcolortable set to Arena28Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -580,7 +642,8 @@ end
 LoadArena29Colors
           asm
           rem Load color table for arena 29
-          rem Input: Arena29Colors (global data table) = arena 29 color table
+          rem Input: Arena29Colors (global data table) = arena 29 color
+          rem table
           rem Output: pfcolortable set to Arena29Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -596,7 +659,8 @@ end
 LoadArena30Colors
           asm
           rem Load color table for arena 30
-          rem Input: Arena30Colors (global data table) = arena 30 color table
+          rem Input: Arena30Colors (global data table) = arena 30 color
+          rem table
           rem Output: pfcolortable set to Arena30Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -612,7 +676,8 @@ end
 LoadArena31Colors
           asm
           rem Load color table for arena 31
-          rem Input: Arena31Colors (global data table) = arena 31 color table
+          rem Input: Arena31Colors (global data table) = arena 31 color
+          rem table
           rem Output: pfcolortable set to Arena31Colors
           rem Mutates: pfcolortable (TIA register) = color table pointer
           rem Called Routines: None
@@ -633,7 +698,8 @@ end
           rem   gameplay.
 
 ReloadArenaColors
-          rem Reload arena colors based on current Color/B&W switch state
+          rem Reload arena colors based on current Color/B&W switch
+          rem state
           dim RAC_arenaIndex = temp1 : rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
           dim RAC_bwMode = temp2
           

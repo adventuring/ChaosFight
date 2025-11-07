@@ -19,15 +19,22 @@ ConsoleDetHW
           rem   2600
           rem Main console detection routine
           rem Detect whether running on Atari 2600 or 7800 console
-          rem Input: $D0, $D1 (hardware registers) = console detection values
-          rem        $80 (zero-page RAM) = CDFJ driver detection result (if flashed)
+          rem Input: $D0, $D1 (hardware registers) = console detection
+          rem values
+          rem        $80 (zero-page RAM) = CDFJ driver detection result
+          rem        (if flashed)
           rem        systemFlags (global) = system flags
-          rem Output: systemFlags updated with SystemFlag7800 if 7800 detected
-          rem Mutates: systemFlags (SystemFlag7800 set or cleared), temp1 (used for hardware register reads)
+          rem Output: systemFlags updated with SystemFlag7800 if 7800
+          rem detected
+          rem Mutates: systemFlags (SystemFlag7800 set or cleared),
+          rem temp1 (used for hardware register reads)
           rem Called Routines: None (reads hardware registers directly)
-          rem Constraints: Must be colocated with CheckFlashed, Is7800, Is2600 (all called via goto)
-          rem              MUST run before any code modifies $D0/$D1 registers
-          rem              Entry point for console detection (called from ColdStart)
+          rem Constraints: Must be colocated with CheckFlashed, Is7800,
+          rem Is2600 (all called via goto)
+          rem              MUST run before any code modifies $D0/$D1
+          rem              registers
+          rem              Entry point for console detection (called
+          rem              from ColdStart)
           let systemFlags = systemFlags & ClearSystemFlag7800 : rem Assume 2600 console initially
           
           rem Check $D0 value
@@ -43,13 +50,15 @@ ConsoleDetHW
           goto Is7800 : rem 7800 detected: $D0=$2C and $D1=$A9
           
 CheckFlashed
-          rem Check if game was flashed to Harmony/Melody (both $D0 and $D1 are $00)
+          rem Check if game was flashed to Harmony/Melody (both $D0 and
+          rem $D1 are $00)
           rem Input: $D1 (hardware register) = console detection value
           rem        $80 (zero-page RAM) = CDFJ driver detection result
           rem Output: Dispatches to Is7800 or Is2600
           rem Mutates: temp1 (used for hardware register reads)
           rem Called Routines: None
-          rem Constraints: Must be colocated with ConsoleDetHW, Is7800, Is2600
+          rem Constraints: Must be colocated with ConsoleDetHW, Is7800,
+          rem Is2600
           rem Check if $D1 is also $00 (flashed game)
           temp1 = $D1
           if temp1 then Is2600
@@ -85,11 +94,13 @@ Is2600
           
 CheckConsoleFeatures
           rem Check for console-specific features after detection
-          rem Input: systemFlags (global) = system flags (SystemFlag7800 indicates 7800)
+          rem Input: systemFlags (global) = system flags (SystemFlag7800
+          rem indicates 7800)
           rem Output: None (no console-specific initialization needed)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with Done7800Features, ConsoleFeaturesDone
+          rem Constraints: Must be colocated with Done7800Features,
+          rem ConsoleFeaturesDone
           if !(systemFlags & SystemFlag7800) then Done7800Features : rem Check if running on 7800 (bit 7 of systemFlags)
           
           rem 7800-specific features

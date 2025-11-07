@@ -15,11 +15,15 @@ WinnerAnnouncementLoop
           rem Input: joy0fire, joy1fire (hardware) = button states
           rem        switchselect (hardware) = select switch state
           rem        WinScreenTimer (global) = frame counter
-          rem        WinScreenAutoAdvanceFrames (constant) = auto-advance threshold
-          rem Output: Dispatches to WinnerAdvanceToCharacterSelect or returns
+          rem        WinScreenAutoAdvanceFrames (constant) =
+          rem        auto-advance threshold
+          rem Output: Dispatches to WinnerAdvanceToCharacterSelect or
+          rem returns
           rem Mutates: WinScreenTimer (incremented)
-          rem Called Routines: DisplayWinScreen (bank12) - accesses winner screen state
-          rem Constraints: Must be colocated with WinnerAnnouncement, WinnerAdvanceToCharacterSelect
+          rem Called Routines: DisplayWinScreen (bank12) - accesses
+          rem winner screen state
+          rem Constraints: Must be colocated with WinnerAnnouncement,
+          rem WinnerAdvanceToCharacterSelect
           if joy0fire then WinnerAdvanceToCharacterSelect : rem Check for button press to advance immediately
           if joy1fire then WinnerAdvanceToCharacterSelect
           if switchselect then WinnerAdvanceToCharacterSelect
@@ -37,7 +41,8 @@ WinnerAdvanceToCharacterSelect
           rem Input: None (called from WinnerAnnouncementLoop)
           rem Output: gameMode set to ModeTitle, ChangeGameMode called
           rem Mutates: gameMode (global)
-          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Called Routines: ChangeGameMode (bank14) - accesses game
+          rem mode state
           let gameMode = ModeTitle : rem Constraints: Must be colocated with WinnerAnnouncementLoop
           gosub ChangeGameMode bank14
           return

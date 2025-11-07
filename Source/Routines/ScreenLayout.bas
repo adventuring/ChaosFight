@@ -8,7 +8,8 @@ SetAdminScreenLayout
           rem   pixels (8 rows)
           rem Game screen: 32×8 virtual pixels (8 rows) with space for
           rem   health bars
-          rem Set screen layout for title screen and character select (32×32)
+          rem Set screen layout for title screen and character select
+          rem (32×32)
           rem Input: None
           rem Output: pfrowheight set to 8, pfrows set to 32
           rem Mutates: pfrowheight (set to 8), pfrows (set to 32)
@@ -18,7 +19,8 @@ SetAdminScreenLayout
           return
 
 SetGameScreenLayout
-          rem Set screen layout for gameplay (32×8) with health bar space
+          rem Set screen layout for gameplay (32×8) with health bar
+          rem space
           rem Input: None
           rem Output: pfrowheight set to 16, pfrows set to 8
           rem Mutates: pfrowheight (set to 16), pfrows (set to 8)

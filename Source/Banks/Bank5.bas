@@ -21,6 +21,7 @@
 #include "Source/Routines/CharacterArtBank5.s"
 end
 
-          rem batariBASIC auto-generates _length constants for data blocks
+          rem batariBASIC auto-generates _length constants for data
+          rem blocks
           rem Manual calculations removed - let batariBASIC handle them
           rem to avoid unresolved local label issues

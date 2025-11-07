@@ -24,16 +24,23 @@ ColdStart
           rem This MUST run before any code modifies $D0/$D1 registers
           rem as those registers are used for hardware detection
           rem Input: None (cold start entry point)
-          rem Output: Console type detected, sprite pointers initialized,
-          rem         TIA registers initialized, gameMode set, transitions to MainLoop
+          rem Output: Console type detected, sprite pointers
+          rem initialized,
+          rem         TIA registers initialized, gameMode set,
+          rem         transitions to MainLoop
           rem Mutates: Console detection state (via ConsoleDetHW),
-          rem         Sprite pointer state (via InitializeSpritePointers),
-          rem         COLUBK, COLUPF, COLUP0, _COLUP1, AUDC0, AUDV0, AUDC1, AUDV1,
+          rem         Sprite pointer state (via
+          rem         InitializeSpritePointers),
+          rem         COLUBK, COLUPF, COLUP0, _COLUP1, AUDC0, AUDV0,
+          rem         AUDC1, AUDV1,
           rem         gameMode (global)
-          rem Called Routines: ConsoleDetHW (bank1) - accesses $D0/$D1 hardware registers,
-          rem   InitializeSpritePointers (bank10) - sets sprite pointer addresses,
+          rem Called Routines: ConsoleDetHW (bank1) - accesses $D0/$D1
+          rem hardware registers,
+          rem   InitializeSpritePointers (bank10) - sets sprite pointer
+          rem   addresses,
           rem   ChangeGameMode (bank1) - sets up initial game mode
-          rem Constraints: Must be entry point for cold start (called from Bank1)
+          rem Constraints: Must be entry point for cold start (called
+          rem from Bank1)
           gosub ConsoleDetHW bank1 : rem              Only reachable via goto from Bank1 startup code
           
           rem Step 2: Initialize sprite pointers to RAM addresses

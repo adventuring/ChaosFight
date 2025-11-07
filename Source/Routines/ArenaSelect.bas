@@ -12,29 +12,45 @@ ArenaSelect1
           rem Setup is handled by BeginArenaSelect in ChangeGameMode.bas
 ArenaSelect1Loop
           rem This function processes one frame and returns.
-          rem Per-frame arena select screen with arena cycling (1-32/random)
-          rem Input: selectedArena_R (global SCRAM) = current arena selection
-          rem        controllerStatus (global) = controller detection state
-          rem        fireHoldTimer_R (global SCRAM) = fire button hold timer
+          rem Per-frame arena select screen with arena cycling
+          rem (1-32/random)
+          rem Input: selectedArena_R (global SCRAM) = current arena
+          rem selection
+          rem        controllerStatus (global) = controller detection
+          rem        state
+          rem        fireHoldTimer_R (global SCRAM) = fire button hold
+          rem        timer
           rem        joy0fire, joy1fire (hardware) = fire button states
-          rem        joy0left, joy0right (hardware) = navigation button states
+          rem        joy0left, joy0right (hardware) = navigation button
+          rem        states
           rem        switchselect (hardware) = game select switch
-          rem        INPT0, INPT2 (hardware) = Quadtari fire button states
-          rem        selectedChar1, selectedChar2_R, selectedChar3_R, selectedChar4_R (global) = character selections
+          rem        INPT0, INPT2 (hardware) = Quadtari fire button
+          rem        states
+          rem        selectedChar1, selectedChar2_R, selectedChar3_R,
+          rem        selectedChar4_R (global) = character selections
           rem        frame (global) = frame counter
-          rem Output: Dispatches to ReturnToCharacterSelect, StartGame1, or returns
-          rem Mutates: selectedArena_W (updated via navigation), fireHoldTimer_W (incremented/reset),
+          rem Output: Dispatches to ReturnToCharacterSelect, StartGame1,
+          rem or returns
+          rem Mutates: selectedArena_W (updated via navigation),
+          rem fireHoldTimer_W (incremented/reset),
           rem         gameMode (set to ModeCharacterSelect or ModeGame)
-          rem Called Routines: ArenaSelectUpdateAnimations - accesses character selections, frame,
-          rem   ArenaSelectDrawCharacters - accesses character selections, player positions,
+          rem Called Routines: ArenaSelectUpdateAnimations - accesses
+          rem character selections, frame,
+          rem   ArenaSelectDrawCharacters - accesses character
+          rem   selections, player positions,
           rem   CheckQuadtariFireHold - accesses INPT0, INPT2,
-          rem   PlaySoundEffect (bank15) - plays navigation/selection sounds,
+          rem   PlaySoundEffect (bank15) - plays navigation/selection
+          rem   sounds,
           rem   DrawDigit (bank1) - draws arena number digits,
           rem   ChangeGameMode (bank14) - accesses game mode state
-          rem Constraints: Must be colocated with ArenaSelect1Loop, CheckQuadtariFireHold,
-          rem              ReturnToCharacterSelect, StartGame1, ArenaSelectLeft, ArenaSelectRight,
-          rem              DisplayRandomArena, ArenaSelectConfirm (all called via goto)
-          rem              Entry point for arena select mode (called from MainLoop)
+          rem Constraints: Must be colocated with ArenaSelect1Loop,
+          rem CheckQuadtariFireHold,
+          rem              ReturnToCharacterSelect, StartGame1,
+          rem              ArenaSelectLeft, ArenaSelectRight,
+          rem              DisplayRandomArena, ArenaSelectConfirm (all
+          rem              called via goto)
+          rem              Entry point for arena select mode (called
+          rem              from MainLoop)
           dim LS1_firePressed = temp1
           dim LS1_arenaNumber = temp1
           dim LS1_tensDigit = temp2
@@ -207,7 +223,8 @@ CheckQuadtariFireHold
           rem Check Player 3 and 4 fire buttons (Quadtari)
           rem Input: INPT0 (hardware) = Player 3 fire button state
           rem        INPT2 (hardware) = Player 4 fire button state
-          rem Output: temp1 = 1 if any Quadtari fire button pressed, 0 otherwise
+          rem Output: temp1 = 1 if any Quadtari fire button pressed, 0
+          rem otherwise
           rem Mutates: temp1 (fire pressed flag)
           rem Called Routines: None
           dim CQFH_firePressed = temp1 : rem Constraints: Must be colocated with ArenaSelect1 (called via goto)
@@ -219,9 +236,11 @@ CheckQuadtariFireHold
 ReturnToCharacterSelect
           rem Return to Character Select screen
           rem Input: None (called from ArenaSelect1)
-          rem Output: gameMode set to ModeCharacterSelect, ChangeGameMode called
+          rem Output: gameMode set to ModeCharacterSelect,
+          rem ChangeGameMode called
           rem Mutates: fireHoldTimer_W (reset to 0), gameMode (global)
-          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Called Routines: ChangeGameMode (bank14) - accesses game
+          rem mode state
           let fireHoldTimer_W = 0 : rem Constraints: Must be colocated with ArenaSelect1
           let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
@@ -232,7 +251,8 @@ StartGame1
           rem Input: None (called from ArenaSelect1)
           rem Output: gameMode set to ModeGame, ChangeGameMode called
           rem Mutates: gameMode (global)
-          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Called Routines: ChangeGameMode (bank14) - accesses game
+          rem mode state
           let gameMode = ModeGame : rem Constraints: Must be colocated with ArenaSelect1
           gosub ChangeGameMode bank14
           return
@@ -242,14 +262,20 @@ StartGame1
           
 ArenaSelectUpdateAnimations
           rem Update idle animations for all selected characters
-          rem Input: selectedChar1, selectedChar2_R, selectedChar3_R, selectedChar4_R (global) = character selections
-          rem        controllerStatus (global) = controller detection state
+          rem Input: selectedChar1, selectedChar2_R, selectedChar3_R,
+          rem selectedChar4_R (global) = character selections
+          rem        controllerStatus (global) = controller detection
+          rem        state
           rem        frame (global) = frame counter
-          rem Output: None (updates animation state via ArenaSelectUpdatePlayerAnim)
+          rem Output: None (updates animation state via
+          rem ArenaSelectUpdatePlayerAnim)
           rem Mutates: None (no persistent state updates)
-          rem Called Routines: ArenaSelectUpdatePlayerAnim - accesses frame counter
-          rem Constraints: Must be colocated with ArenaSelectSkipPlayer0Anim, ArenaSelectSkipPlayer1Anim,
-          rem              ArenaSelectSkipPlayer2Anim, ArenaSelectSkipPlayer23Anim,
+          rem Called Routines: ArenaSelectUpdatePlayerAnim - accesses
+          rem frame counter
+          rem Constraints: Must be colocated with
+          rem ArenaSelectSkipPlayer0Anim, ArenaSelectSkipPlayer1Anim,
+          rem              ArenaSelectSkipPlayer2Anim,
+          rem              ArenaSelectSkipPlayer23Anim,
           dim ASUA_playerIndex = temp1 : rem              ArenaSelectUpdatePlayerAnim (all called via goto)
           dim ASUA_animFrame = temp2
           rem Update idle animations for all selected characters
@@ -268,7 +294,8 @@ ArenaSelectSkipPlayer0Anim
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelectUpdateAnimations
+          rem Constraints: Must be colocated with
+          rem ArenaSelectUpdateAnimations
           if selectedChar2_R = 255 then ArenaSelectSkipPlayer1Anim : rem Update Player 2 animation (if character selected)
           if selectedChar2_R = 254 then ArenaSelectSkipPlayer1Anim
           if selectedChar2_R = 253 then ArenaSelectSkipPlayer1Anim
@@ -281,7 +308,8 @@ ArenaSelectSkipPlayer1Anim
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelectUpdateAnimations
+          rem Constraints: Must be colocated with
+          rem ArenaSelectUpdateAnimations
           rem Update Player 3 animation (if Quadtari and character
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim : rem   selected)
           if selectedChar3_R = 255 then ArenaSelectSkipPlayer2Anim
@@ -291,12 +319,14 @@ ArenaSelectSkipPlayer1Anim
           gosub ArenaSelectUpdatePlayerAnim
           
 ArenaSelectSkipPlayer2Anim
-          rem Skip Player 3 animation update (not in 4-player mode or not selected)
+          rem Skip Player 3 animation update (not in 4-player mode or
+          rem not selected)
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelectUpdateAnimations
+          rem Constraints: Must be colocated with
+          rem ArenaSelectUpdateAnimations
           rem Update Player 4 animation (if Quadtari and character
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim : rem   selected)
           if selectedChar4_R = 255 then ArenaSelectSkipPlayer23Anim
@@ -306,21 +336,25 @@ ArenaSelectSkipPlayer2Anim
           gosub ArenaSelectUpdatePlayerAnim
           
 ArenaSelectSkipPlayer23Anim
-          rem Skip Player 3/4 animation updates (not in 4-player mode or not selected)
+          rem Skip Player 3/4 animation updates (not in 4-player mode or
+          rem not selected)
           return
 ArenaSelectUpdatePlayerAnim
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelectUpdateAnimations
+          rem Constraints: Must be colocated with
+          rem ArenaSelectUpdateAnimations
           rem Update idle animation frame for a single player
           rem Input: temp1 = player index (0-3)
           rem        frame (global) = frame counter
-          rem Output: None (no persistent state updates, animation frame calculated from frame counter)
+          rem Output: None (no persistent state updates, animation frame
+          rem calculated from frame counter)
           rem Mutates: temp2 (internal calculation)
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelectUpdateAnimations
+          rem Constraints: Must be colocated with
+          rem ArenaSelectUpdateAnimations
           rem Simple frame counter that cycles every 60 frames (1 second
           rem   at 60fps)
           rem Increment frame counter (stored in arenaSelectAnimFrame
@@ -337,18 +371,29 @@ ArenaSelectUpdatePlayerAnim
           return
           
 ArenaSelectDrawCharacters
-          rem Draw all selected characters at their character select positions
-          rem Input: selectedChar1, selectedChar2_R, selectedChar3_R, selectedChar4_R (global) = character selections
-          rem        controllerStatus (global) = controller detection state
+          rem Draw all selected characters at their character select
+          rem positions
+          rem Input: selectedChar1, selectedChar2_R, selectedChar3_R,
+          rem selectedChar4_R (global) = character selections
+          rem        controllerStatus (global) = controller detection
+          rem        state
           rem        frame (global) = frame counter
-          rem Output: player0-3x, player0-3y (TIA registers) set, sprites loaded via ArenaSelectDrawPlayerSprite
-          rem Mutates: pf0-pf5 (playfield registers cleared), player0-3x, player0-3y (TIA registers),
-          rem         player sprite pointers (via LocateCharacterArt), COLUP0-COLUP3 (via LoadCharacterColors)
-          rem Called Routines: ArenaSelectDrawPlayerSprite - accesses character selections, frame,
-          rem   LocateCharacterArt (bank14) - accesses character art data,
+          rem Output: player0-3x, player0-3y (TIA registers) set,
+          rem sprites loaded via ArenaSelectDrawPlayerSprite
+          rem Mutates: pf0-pf5 (playfield registers cleared),
+          rem player0-3x, player0-3y (TIA registers),
+          rem         player sprite pointers (via LocateCharacterArt),
+          rem         COLUP0-COLUP3 (via LoadCharacterColors)
+          rem Called Routines: ArenaSelectDrawPlayerSprite - accesses
+          rem character selections, frame,
+          rem   LocateCharacterArt (bank14) - accesses character art
+          rem   data,
           rem   LoadCharacterColors (bank10) - accesses color tables
-          rem Constraints: Must be colocated with ArenaSelectSkipDrawP0, ArenaSelectSkipDrawP1,
-          rem              ArenaSelectSkipDrawP2, ArenaSelectSkipDrawP23, ArenaSelectDrawPlayerSprite
+          rem Constraints: Must be colocated with ArenaSelectSkipDrawP0,
+          rem ArenaSelectSkipDrawP1,
+          rem              ArenaSelectSkipDrawP2,
+          rem              ArenaSelectSkipDrawP23,
+          rem              ArenaSelectDrawPlayerSprite
           dim ASDC_playerIndex = temp1 : rem              (all called via goto)
           dim ASDC_characterIndex = temp1
           dim ASDC_animationFrame = temp2
@@ -375,7 +420,8 @@ ArenaSelectSkipDrawP0
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelectDrawCharacters
+          rem Constraints: Must be colocated with
+          rem ArenaSelectDrawCharacters
           if selectedChar2_R = 255 then ArenaSelectSkipDrawP1 : rem Draw Player 2 character (top right) if selected
           if selectedChar2_R = 254 then ArenaSelectSkipDrawP1
           if selectedChar2_R = 253 then ArenaSelectSkipDrawP1
@@ -389,7 +435,8 @@ ArenaSelectSkipDrawP1
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelectDrawCharacters
+          rem Constraints: Must be colocated with
+          rem ArenaSelectDrawCharacters
           rem Draw Player 3 character (bottom left) if Quadtari and
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23 : rem   selected
           if selectedChar3_R = 255 then ArenaSelectSkipDrawP2
@@ -400,12 +447,14 @@ ArenaSelectSkipDrawP1
           gosub ArenaSelectDrawPlayerSprite
           
 ArenaSelectSkipDrawP2
-          rem Skip Player 3 character drawing (not in 4-player mode or not selected)
+          rem Skip Player 3 character drawing (not in 4-player mode or
+          rem not selected)
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelectDrawCharacters
+          rem Constraints: Must be colocated with
+          rem ArenaSelectDrawCharacters
           rem Draw Player 4 character (bottom right) if Quadtari and
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23 : rem   selected
           if selectedChar4_R = 255 then ArenaSelectSkipDrawP23
@@ -416,24 +465,33 @@ ArenaSelectSkipDrawP2
           gosub ArenaSelectDrawPlayerSprite
           
 ArenaSelectSkipDrawP23
-          rem Skip Player 3/4 character drawing (not in 4-player mode or not selected)
+          rem Skip Player 3/4 character drawing (not in 4-player mode or
+          rem not selected)
           return
 ArenaSelectDrawPlayerSprite
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with ArenaSelectDrawCharacters
+          rem Constraints: Must be colocated with
+          rem ArenaSelectDrawCharacters
           rem Draw character sprite for specified player
           rem Input: temp1 = player index (0-3)
-          rem        selectedChar1, selectedChar2_R, selectedChar3_R, selectedChar4_R (global) = character selections
+          rem        selectedChar1, selectedChar2_R, selectedChar3_R,
+          rem        selectedChar4_R (global) = character selections
           rem        frame (global) = frame counter
-          rem        player0-3x, player0-3y (TIA registers) = sprite positions (set by caller)
-          rem Output: Player sprite pointer set via LocateCharacterArt, COLUP0-COLUP3 set via LoadCharacterColors
-          rem Mutates: temp1-temp4 (passed to LocateCharacterArt), player sprite pointers (via LocateCharacterArt),
-          rem         COLUP0-COLUP3 (via LoadCharacterColors), LoadCharacterColors_* aliases (global)
-          rem Called Routines: LocateCharacterArt (bank14) - accesses character art data, temp1-temp4,
-          rem   LoadCharacterColors (bank10) - accesses color tables, LoadCharacterColors_* aliases
+          rem        player0-3x, player0-3y (TIA registers) = sprite
+          rem        positions (set by caller)
+          rem Output: Player sprite pointer set via LocateCharacterArt,
+          rem COLUP0-COLUP3 set via LoadCharacterColors
+          rem Mutates: temp1-temp4 (passed to LocateCharacterArt),
+          rem player sprite pointers (via LocateCharacterArt),
+          rem         COLUP0-COLUP3 (via LoadCharacterColors),
+          rem         LoadCharacterColors_* aliases (global)
+          rem Called Routines: LocateCharacterArt (bank14) - accesses
+          rem character art data, temp1-temp4,
+          rem   LoadCharacterColors (bank10) - accesses color tables,
+          rem   LoadCharacterColors_* aliases
           dim ASDPS_playerIndex = temp1 : rem Constraints: Must be colocated with ArenaSelectDrawCharacters
           dim ASDPS_characterIndex = temp1
           dim ASDPS_animationFrame = temp2

@@ -3,7 +3,8 @@
 
           bank 13
 
-          rem ColdStart falls through to MainLoop (which is now in Bank 14)
+          rem ColdStart falls through to MainLoop (which is now in Bank
+          rem 14)
 #include "Source/Routines/ColdStart.bas"
           rem ChangeGameMode.bas and MainLoop.bas moved to Bank 14
           
@@ -11,5 +12,6 @@
 #include "Source/Routines/PlayerInput.bas"
 #include "Source/Routines/MovementSystem.bas"
 #include "Source/Routines/CharacterControls.bas"
-          rem CharacterControls.bas contains character-specific jump and down handlers
+          rem CharacterControls.bas contains character-specific jump and
+          rem down handlers
           rem   referenced by PlayerInput.bas via on...goto statements

@@ -13,8 +13,10 @@ ChangeGameMode
           rem Input: gameMode (global) = target game mode (0-8)
           rem Output: Dispatches to appropriate Setup* routine
           rem Mutates: None (dispatcher only)
-          rem Called Routines: Various Begin* routines (see Setup* functions below)
-          rem Constraints: Must be colocated with all Setup* functions (called via if...goto)
+          rem Called Routines: Various Begin* routines (see Setup*
+          rem functions below)
+          rem Constraints: Must be colocated with all Setup* functions
+          rem (called via if...goto)
           if gameMode = 0 then goto SetupPublisherPrelude
           if gameMode = 1 then goto SetupAuthorPrelude
           if gameMode = 2 then goto SetupTitle
@@ -30,8 +32,10 @@ SetupPublisherPrelude
           rem Setup Publisher Prelude mode
           rem Input: gameMode (global) = ModePublisherPrelude (0)
           rem Output: Publisher prelude state initialized
-          rem Mutates: Publisher prelude state variables (via BeginPublisherPrelude)
-          rem Called Routines: BeginPublisherPrelude (bank9) - accesses prelude state
+          rem Mutates: Publisher prelude state variables (via
+          rem BeginPublisherPrelude)
+          rem Called Routines: BeginPublisherPrelude (bank9) - accesses
+          rem prelude state
           gosub BeginPublisherPrelude bank9 : rem Constraints: Must be colocated with ChangeGameMode
           return
           
@@ -39,8 +43,10 @@ SetupAuthorPrelude
           rem Setup Author Prelude mode
           rem Input: gameMode (global) = ModeAuthorPrelude (1)
           rem Output: Author prelude state initialized
-          rem Mutates: Author prelude state variables (via BeginAuthorPrelude)
-          rem Called Routines: BeginAuthorPrelude (bank9) - accesses prelude state
+          rem Mutates: Author prelude state variables (via
+          rem BeginAuthorPrelude)
+          rem Called Routines: BeginAuthorPrelude (bank9) - accesses
+          rem prelude state
           gosub BeginAuthorPrelude bank9 : rem Constraints: Must be colocated with ChangeGameMode
           return
           
@@ -48,8 +54,10 @@ SetupTitle
           rem Setup Title Screen mode
           rem Input: gameMode (global) = ModeTitle (2)
           rem Output: Title screen state initialized
-          rem Mutates: Title screen state variables (via BeginTitleScreen)
-          rem Called Routines: BeginTitleScreen (bank9) - accesses title screen state
+          rem Mutates: Title screen state variables (via
+          rem BeginTitleScreen)
+          rem Called Routines: BeginTitleScreen (bank9) - accesses title
+          rem screen state
           gosub BeginTitleScreen bank9 : rem Constraints: Must be colocated with ChangeGameMode
           return
           
@@ -67,8 +75,10 @@ SetupFallingAnimation
           rem Setup Falling Animation mode
           rem Input: gameMode (global) = ModeFallingAnimation (4)
           rem Output: Falling animation state initialized
-          rem Mutates: Falling animation state variables (via BeginFallingAnimation)
-          rem Called Routines: BeginFallingAnimation (bank12) - accesses animation state
+          rem Mutates: Falling animation state variables (via
+          rem BeginFallingAnimation)
+          rem Called Routines: BeginFallingAnimation (bank12) - accesses
+          rem animation state
           gosub BeginFallingAnimation bank12 : rem Constraints: Must be colocated with ChangeGameMode
           return
           
@@ -76,8 +86,10 @@ SetupArenaSelect
           rem Setup Arena Select mode
           rem Input: gameMode (global) = ModeArenaSelect (5)
           rem Output: Arena select state initialized
-          rem Mutates: Arena select state variables (via BeginArenaSelect)
-          rem Called Routines: BeginArenaSelect (bank12) - accesses arena select state
+          rem Mutates: Arena select state variables (via
+          rem BeginArenaSelect)
+          rem Called Routines: BeginArenaSelect (bank12) - accesses
+          rem arena select state
           gosub BeginArenaSelect bank12 : rem Constraints: Must be colocated with ChangeGameMode
           return
 
@@ -86,7 +98,8 @@ SetupGame
           rem Input: gameMode (global) = ModeGame (6)
           rem Output: Game state initialized
           rem Mutates: Game state variables (via BeginGameLoop)
-          rem Called Routines: BeginGameLoop (bank11) - accesses game state
+          rem Called Routines: BeginGameLoop (bank11) - accesses game
+          rem state
           rem Constraints: Must be colocated with ChangeGameMode
           rem BeginGameLoop resets gameplay state and returns
           rem MainLoop will dispatch to GameMainLoop based on gameMode =
@@ -97,8 +110,10 @@ SetupWinner
           rem Setup Winner Announcement mode
           rem Input: gameMode (global) = ModeWinner (7)
           rem Output: Winner announcement state initialized
-          rem Mutates: Winner announcement state variables (via BeginWinnerAnnouncement)
-          rem Called Routines: BeginWinnerAnnouncement (bank12) - accesses winner state
+          rem Mutates: Winner announcement state variables (via
+          rem BeginWinnerAnnouncement)
+          rem Called Routines: BeginWinnerAnnouncement (bank12) -
+          rem accesses winner state
           gosub BeginWinnerAnnouncement bank12 : rem Constraints: Must be colocated with ChangeGameMode
           return
 
@@ -106,7 +121,9 @@ SetupAttract
           rem Setup Attract Mode
           rem Input: gameMode (global) = ModeAttract (8)
           rem Output: Attract mode state initialized
-          rem Mutates: Attract mode state variables (via BeginAttractMode)
-          rem Called Routines: BeginAttractMode (bank9) - accesses attract mode state
+          rem Mutates: Attract mode state variables (via
+          rem BeginAttractMode)
+          rem Called Routines: BeginAttractMode (bank9) - accesses
+          rem attract mode state
           gosub BeginAttractMode bank9 : rem Constraints: Must be colocated with ChangeGameMode
           return

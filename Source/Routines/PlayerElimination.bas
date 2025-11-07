@@ -23,11 +23,28 @@ CheckAllPlayerEliminations
           rem Called each frame to check if any players should be
           rem   eliminated.
           rem Sets elimination flags and triggers elimination effects.
-          rem Check all players for elimination and handle game end condition
-          rem Input: playerHealth[] (global array) = player health values, playersEliminated_R (global SCRAM) = elimination flags
-          rem Output: Players eliminated if health reaches 0, game end triggered if 1 or fewer players remain
-          rem Mutates: currentPlayer (global loop variable), playersEliminated_W (global SCRAM) = elimination flags, eliminationCounter (global) = elimination order counter, eliminationOrder[] (global array) = elimination order, playersRemaining (global) = count of remaining players, gameEndTimer (global) = game end countdown, systemFlags (global) = system state flags, player sprite positions (via TriggerEliminationEffects), missileActive (global) = missile state (via DeactivatePlayerMissiles)
-          rem Called Routines: CheckPlayerElimination (for each player), CountRemainingPlayers, FindWinner (if game end), TriggerEliminationEffects (via CheckPlayerElimination), DeactivatePlayerMissiles (via TriggerEliminationEffects), UpdatePlayers34ActiveFlag (via CheckPlayerElimination), PlaySoundEffect (bank15, via TriggerEliminationEffects)
+          rem Check all players for elimination and handle game end
+          rem condition
+          rem Input: playerHealth[] (global array) = player health
+          rem values, playersEliminated_R (global SCRAM) = elimination
+          rem flags
+          rem Output: Players eliminated if health reaches 0, game end
+          rem triggered if 1 or fewer players remain
+          rem Mutates: currentPlayer (global loop variable),
+          rem playersEliminated_W (global SCRAM) = elimination flags,
+          rem eliminationCounter (global) = elimination order counter,
+          rem eliminationOrder[] (global array) = elimination order,
+          rem playersRemaining (global) = count of remaining players,
+          rem gameEndTimer (global) = game end countdown, systemFlags
+          rem (global) = system state flags, player sprite positions
+          rem (via TriggerEliminationEffects), missileActive (global) =
+          rem missile state (via DeactivatePlayerMissiles)
+          rem Called Routines: CheckPlayerElimination (for each player),
+          rem CountRemainingPlayers, FindWinner (if game end),
+          rem TriggerEliminationEffects (via CheckPlayerElimination),
+          rem DeactivatePlayerMissiles (via TriggerEliminationEffects),
+          rem UpdatePlayers34ActiveFlag (via CheckPlayerElimination),
+          rem PlaySoundEffect (bank15, via TriggerEliminationEffects)
           rem Constraints: None
           for currentPlayer = 0 to 3 : rem Check each player for elimination using FOR loop
               gosub CheckPlayerElimination
@@ -44,21 +61,43 @@ CheckPlayerElimination
           rem Check Single Player Elimination
           rem
           rem Check if specified player should be eliminated.
-          rem INPUT: currentPlayer = player index (0-3) (global variable)
+          rem INPUT: currentPlayer = player index (0-3) (global
+          rem variable)
           rem
           rem MUTATES:
           rem   temp2 = CPE_isEliminated / CPE_health (reused, internal)
           rem   temp6 = CPE_bitMask (internal)
-          rem WARNING: temp2 and temp6 are mutated during execution. Do not
+          rem WARNING: temp2 and temp6 are mutated during execution. Do
+          rem not
           rem   use these temp variables after calling this subroutine.
           rem EFFECTS:
           rem   Sets playersEliminated bit flags
-          rem Check if specified player should be eliminated (health = 0)
-          rem Input: currentPlayer (global) = player index (0-3), playerHealth[] (global array) = player health values, playersEliminated_R (global SCRAM) = elimination flags, BitMask[] (global data table) = bit masks for players
-          rem Output: Player eliminated if health = 0, elimination effects triggered
-          rem Mutates: temp2 (used for isEliminated/health check), temp6 (used for bit mask), playersEliminated_W (global SCRAM) = elimination flags, eliminationCounter (global) = elimination order counter, eliminationOrder[] (global array) = elimination order, controllerStatus (global) = controller state (via UpdatePlayers34ActiveFlag), player sprite positions (via TriggerEliminationEffects), missileActive (global) = missile state (via DeactivatePlayerMissiles), eliminationEffectTimer[] (global array) = effect timers (via TriggerEliminationEffects)
-          rem Called Routines: UpdatePlayers34ActiveFlag (if player 2 or 3 eliminated), TriggerEliminationEffects (tail call), DeactivatePlayerMissiles (via TriggerEliminationEffects), PlaySoundEffect (bank15, via TriggerEliminationEffects)
-          rem Constraints: WARNING - temp2 and temp6 are mutated during execution. Do not use these temp variables after calling this subroutine.
+          rem Check if specified player should be eliminated (health =
+          rem 0)
+          rem Input: currentPlayer (global) = player index (0-3),
+          rem playerHealth[] (global array) = player health values,
+          rem playersEliminated_R (global SCRAM) = elimination flags,
+          rem BitMask[] (global data table) = bit masks for players
+          rem Output: Player eliminated if health = 0, elimination
+          rem effects triggered
+          rem Mutates: temp2 (used for isEliminated/health check), temp6
+          rem (used for bit mask), playersEliminated_W (global SCRAM) =
+          rem elimination flags, eliminationCounter (global) =
+          rem elimination order counter, eliminationOrder[] (global
+          rem array) = elimination order, controllerStatus (global) =
+          rem controller state (via UpdatePlayers34ActiveFlag), player
+          rem sprite positions (via TriggerEliminationEffects),
+          rem missileActive (global) = missile state (via
+          rem DeactivatePlayerMissiles), eliminationEffectTimer[]
+          rem (global array) = effect timers (via
+          rem TriggerEliminationEffects)
+          rem Called Routines: UpdatePlayers34ActiveFlag (if player 2 or
+          rem 3 eliminated), TriggerEliminationEffects (tail call),
+          rem DeactivatePlayerMissiles (via TriggerEliminationEffects),
+          rem PlaySoundEffect (bank15, via TriggerEliminationEffects)
+          rem Constraints: WARNING - temp2 and temp6 are mutated during
+          rem execution. Do not use these temp variables after calling
+          rem this subroutine.
           dim CPE_bitMask = temp6
           dim CPE_isEliminated = temp2
           dim CPE_health = temp2
@@ -96,12 +135,23 @@ TriggerEliminationEffects
           rem
           rem Trigger Elimination Effects
           rem Visual and audio effects when player is eliminated.
-          rem INPUT: currentPlayer = eliminated player index (0-3) (global variable)
+          rem INPUT: currentPlayer = eliminated player index (0-3)
+          rem (global variable)
           rem Visual and audio effects when player is eliminated
-          rem Input: currentPlayer (global) = eliminated player index (0-3), SoundPlayerEliminated (global constant) = elimination sound ID
-          rem Output: Elimination sound played, visual effect timer set, sprite hidden, missiles deactivated
-          rem Mutates: temp2 (used for effect timer), temp5 (used for sound ID), player0x, player1x, player2x, player3x (TIA registers) = sprite positions moved off-screen, eliminationEffectTimer[] (global array) = effect timers, missileActive (global) = missile state (via DeactivatePlayerMissiles)
-          rem Called Routines: PlaySoundEffect (bank15) - plays elimination sound, DeactivatePlayerMissiles (tail call) - removes player missiles
+          rem Input: currentPlayer (global) = eliminated player index
+          rem (0-3), SoundPlayerEliminated (global constant) =
+          rem elimination sound ID
+          rem Output: Elimination sound played, visual effect timer set,
+          rem sprite hidden, missiles deactivated
+          rem Mutates: temp2 (used for effect timer), temp5 (used for
+          rem sound ID), player0x, player1x, player2x, player3x (TIA
+          rem registers) = sprite positions moved off-screen,
+          rem eliminationEffectTimer[] (global array) = effect timers,
+          rem missileActive (global) = missile state (via
+          rem DeactivatePlayerMissiles)
+          rem Called Routines: PlaySoundEffect (bank15) - plays
+          rem elimination sound, DeactivatePlayerMissiles (tail call) -
+          rem removes player missiles
           dim TEE_soundId = temp5 : rem Constraints: None
           dim TEE_effectTimer = temp2
           let TEE_soundId = SoundPlayerEliminated : rem Play elimination sound effect
@@ -127,7 +177,8 @@ TriggerEliminationEffects
           rem
           rem Hide Eliminated Player Sprite
           rem Move eliminated player sprite off-screen.
-          rem INPUT: currentPlayer = player index (0-3) (global variable)
+          rem INPUT: currentPlayer = player index (0-3) (global
+          rem variable)
           rem Player 4 uses player3 sprite (multisprite)
           rem   TriggerEliminationEffects
 DeactivatePlayerMissiles
@@ -135,11 +186,14 @@ DeactivatePlayerMissiles
           rem
           rem Deactivate Player Missiles
           rem Remove any active missiles belonging to eliminated player.
-          rem INPUT: currentPlayer = player index (0-3) (global variable)
+          rem INPUT: currentPlayer = player index (0-3) (global
+          rem variable)
           rem Remove any active missiles belonging to eliminated player
-          rem Input: currentPlayer (global) = player index (0-3), missileActive (global) = missile active flags
+          rem Input: currentPlayer (global) = player index (0-3),
+          rem missileActive (global) = missile active flags
           rem Output: Missile active flag cleared for specified player
-          rem Mutates: temp6 (used for bit mask calculation), missileActive (global) = missile active flags
+          rem Mutates: temp6 (used for bit mask calculation),
+          rem missileActive (global) = missile active flags
           rem Called Routines: None
           dim DPM_bitMask = temp6 : rem Constraints: None
           dim DPM_invertedMask = temp6
@@ -159,9 +213,13 @@ CountRemainingPlayers
           rem Count how many players are still alive.
           rem OUTPUT: temp1 = number of remaining players
           rem Count how many players are still alive (not eliminated)
-          rem Input: playersEliminated_R (global SCRAM) = elimination flags, PlayerEliminatedPlayer0-3 (global constants) = elimination bit masks
-          rem Output: playersRemaining (global) = number of remaining players, temp1 = count (return value)
-          rem Mutates: temp1 (used for count), playersRemaining (global) = count of remaining players
+          rem Input: playersEliminated_R (global SCRAM) = elimination
+          rem flags, PlayerEliminatedPlayer0-3 (global constants) =
+          rem elimination bit masks
+          rem Output: playersRemaining (global) = number of remaining
+          rem players, temp1 = count (return value)
+          rem Mutates: temp1 (used for count), playersRemaining (global)
+          rem = count of remaining players
           rem Called Routines: None
           dim CRP_count = temp1 : rem Constraints: None
           let CRP_count = 0 
@@ -183,10 +241,14 @@ IsPlayerEliminated
           rem Check if game should end (1 or 0 players remaining).
           rem Is Player Eliminated
           rem Check if specified player is eliminated.
-          rem INPUT: currentPlayer = player index (0-3) (global variable)
+          rem INPUT: currentPlayer = player index (0-3) (global
+          rem variable)
           rem OUTPUT: temp2 = 1 if eliminated, 0 if alive
           rem Check if specified player is eliminated
-          rem Input: currentPlayer (global) = player index (0-3), playersEliminated_R (global SCRAM) = elimination flags, PlayerEliminatedPlayer0-3 (global constants) = elimination bit masks
+          rem Input: currentPlayer (global) = player index (0-3),
+          rem playersEliminated_R (global SCRAM) = elimination flags,
+          rem PlayerEliminatedPlayer0-3 (global constants) = elimination
+          rem bit masks
           rem Output: temp2 = 1 if eliminated, 0 if alive
           rem Mutates: temp2 (return value), temp6 (used for bit mask)
           rem Called Routines: None
@@ -208,13 +270,19 @@ IsPlayerAlive
           rem Is Player Alive
           rem Check if specified player is alive (not eliminated AND
           rem   health > 0).
-          rem INPUT: currentPlayer = player index (0-3) (global variable)
+          rem INPUT: currentPlayer = player index (0-3) (global
+          rem variable)
           rem OUTPUT: temp2 = 1 if alive, 0 if eliminated/dead
-          rem Check if specified player is alive (not eliminated AND health > 0)
-          rem Input: currentPlayer (global) = player index (0-3), playerHealth[] (global array) = player health values, playersEliminated_R (global SCRAM) = elimination flags
+          rem Check if specified player is alive (not eliminated AND
+          rem health > 0)
+          rem Input: currentPlayer (global) = player index (0-3),
+          rem playerHealth[] (global array) = player health values,
+          rem playersEliminated_R (global SCRAM) = elimination flags
           rem Output: temp2 = 1 if alive, 0 if eliminated/dead
-          rem Mutates: temp2 (return value, reused for isEliminated and isAlive), temp3 (used for health check)
-          rem Called Routines: IsPlayerEliminated - checks elimination flag
+          rem Mutates: temp2 (return value, reused for isEliminated and
+          rem isAlive), temp3 (used for health check)
+          rem Called Routines: IsPlayerEliminated - checks elimination
+          rem flag
           dim IPA_isEliminated = temp2 : rem Constraints: None
           dim IPA_health = temp3
           dim IPA_isAlive = temp2
@@ -235,10 +303,17 @@ IsPlayerAlive
           rem Identify the winning player (last one standing).
 FindWinner
           rem Identify the winning player (last one standing)
-          rem Input: currentPlayer (global loop variable), playersEliminated_R (global SCRAM) = elimination flags, eliminationOrder[] (global array) = elimination order
-          rem Output: winnerPlayerIndex (global) = winning player index (0-3) or 255 if all eliminated
-          rem Mutates: temp2 (used for isEliminated check), currentPlayer (global loop variable), winnerPlayerIndex (global) = winner index
-          rem Called Routines: IsPlayerEliminated - checks each player elimination status, FindLastEliminated (tail call) - if no winner found
+          rem Input: currentPlayer (global loop variable),
+          rem playersEliminated_R (global SCRAM) = elimination flags,
+          rem eliminationOrder[] (global array) = elimination order
+          rem Output: winnerPlayerIndex (global) = winning player index
+          rem (0-3) or 255 if all eliminated
+          rem Mutates: temp2 (used for isEliminated check),
+          rem currentPlayer (global loop variable), winnerPlayerIndex
+          rem (global) = winner index
+          rem Called Routines: IsPlayerEliminated - checks each player
+          rem elimination status, FindLastEliminated (tail call) - if no
+          rem winner found
           dim FW_isEliminated = temp2 : rem Constraints: None
           let winnerPlayerIndex = 255 : rem Find the player who is not eliminated
           rem Invalid initially
@@ -257,10 +332,15 @@ FindWinner
           rem Find player who was eliminated most recently (highest
           rem   elimination order).
 FindLastEliminated
-          rem Find player who was eliminated most recently (highest elimination order)
-          rem Input: currentPlayer (global loop variable), eliminationOrder[] (global array) = elimination order
-          rem Output: winnerPlayerIndex (global) = player with highest elimination order (last eliminated)
-          rem Mutates: temp4 (used for order comparison), currentPlayer (global loop variable), winnerPlayerIndex (global) = winner index
+          rem Find player who was eliminated most recently (highest
+          rem elimination order)
+          rem Input: currentPlayer (global loop variable),
+          rem eliminationOrder[] (global array) = elimination order
+          rem Output: winnerPlayerIndex (global) = player with highest
+          rem elimination order (last eliminated)
+          rem Mutates: temp4 (used for order comparison), currentPlayer
+          rem (global loop variable), winnerPlayerIndex (global) =
+          rem winner index
           rem Called Routines: None
           dim FLE_highestOrder = temp4 : rem Constraints: None
           dim FLE_currentOrder = temp4
@@ -280,12 +360,21 @@ FindLastEliminated
           rem are selected and not eliminated. Used for missile
           rem   multiplexing.
 UpdatePlayers34ActiveFlag
-          rem Updates the Players34Active flag based on whether players 3 or 4 are selected and not eliminated
-          rem Input: selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 character selections, playersEliminated_R (global SCRAM) = elimination flags, PlayerEliminatedPlayer2, PlayerEliminatedPlayer3 (global constants) = elimination bit masks, controllerStatus (global) = controller state
-          rem Output: controllerStatus (global) = controller state with Players34Active flag updated
-          rem Mutates: controllerStatus (global) = controller state flags
+          rem Updates the Players34Active flag based on whether players
+          rem 3 or 4 are selected and not eliminated
+          rem Input: selectedChar3_R, selectedChar4_R (global SCRAM) =
+          rem player 3/4 character selections, playersEliminated_R
+          rem (global SCRAM) = elimination flags,
+          rem PlayerEliminatedPlayer2, PlayerEliminatedPlayer3 (global
+          rem constants) = elimination bit masks, controllerStatus
+          rem (global) = controller state
+          rem Output: controllerStatus (global) = controller state with
+          rem Players34Active flag updated
+          rem Mutates: controllerStatus (global) = controller state
+          rem flags
           rem Called Routines: None
-          rem Constraints: Used for missile multiplexing - flag indicates if players 3/4 need missile updates
+          rem Constraints: Used for missile multiplexing - flag
+          rem indicates if players 3/4 need missile updates
           let controllerStatus = controllerStatus & ClearPlayers34Active : rem Clear flag first
           
           if 255 = selectedChar3_R then CheckPlayer4ActiveFlag : rem Check if Player 3 is active (selected and not eliminated)

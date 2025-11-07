@@ -15,12 +15,30 @@ PlaySoundEffect
           rem Input: temp1 = sound ID (0-255)
           rem Plays sound effect if voice is free, else forgets it (no
           rem   queuing)
-          rem Start sound effect playback (plays sound if voice is free, else forgets it)
-          rem Input: temp1 = sound ID (0-255), musicVoice0PointerH, musicVoice1PointerH (global) = music voice pointers, soundEffectPointerH_R, soundEffectPointer1H (global SCRAM) = sound effect pointers
-          rem Output: Sound effect started on available voice (Voice 0 preferred, Voice 1 fallback)
-          rem Mutates: temp1 (used for sound ID), soundPointerL, soundPointerH_R (global) = sound pointer (via LoadSoundPointer), SoundEffectPointerL, soundEffectPointerH_W, soundEffectFrame_W (global SCRAM) = Voice 0 sound state (if Voice 0 used), soundEffectPointer1L, soundEffectPointer1H, soundEffectFrame1_W (global SCRAM) = Voice 1 sound state (if Voice 1 used)
-          rem Called Routines: LoadSoundPointer (bank15) - looks up sound pointer from Sounds bank, UpdateSoundEffectVoice0 (tail call via goto) - starts Voice 0 playback, UpdateSoundEffectVoice1 (tail call via goto) - starts Voice 1 playback
-          rem Constraints: Music takes priority (no sounds if music active). No queuing - sound forgotten if both voices busy. Voice 0 tried first, Voice 1 as fallback
+          rem Start sound effect playback (plays sound if voice is free,
+          rem else forgets it)
+          rem Input: temp1 = sound ID (0-255), musicVoice0PointerH,
+          rem musicVoice1PointerH (global) = music voice pointers,
+          rem soundEffectPointerH_R, soundEffectPointer1H (global SCRAM)
+          rem = sound effect pointers
+          rem Output: Sound effect started on available voice (Voice 0
+          rem preferred, Voice 1 fallback)
+          rem Mutates: temp1 (used for sound ID), soundPointerL,
+          rem soundPointerH_R (global) = sound pointer (via
+          rem LoadSoundPointer), SoundEffectPointerL,
+          rem soundEffectPointerH_W, soundEffectFrame_W (global SCRAM) =
+          rem Voice 0 sound state (if Voice 0 used),
+          rem soundEffectPointer1L, soundEffectPointer1H,
+          rem soundEffectFrame1_W (global SCRAM) = Voice 1 sound state
+          rem (if Voice 1 used)
+          rem Called Routines: LoadSoundPointer (bank15) - looks up
+          rem sound pointer from Sounds bank, UpdateSoundEffectVoice0
+          rem (tail call via goto) - starts Voice 0 playback,
+          rem UpdateSoundEffectVoice1 (tail call via goto) - starts
+          rem Voice 1 playback
+          rem Constraints: Music takes priority (no sounds if music
+          rem active). No queuing - sound forgotten if both voices busy.
+          rem Voice 0 tried first, Voice 1 as fallback
           dim PSE_soundID = temp1
           if musicVoice0PointerH then return : rem Check if music is active (music takes priority)
           if musicVoice1PointerH then return
@@ -36,11 +54,16 @@ PlaySoundEffect
           
 TryVoice1
           rem Helper: Tries Voice 1 if Voice 0 is busy
-          rem Input: soundPointerL, soundPointerH_R (global) = sound pointer, soundEffectPointer1H (global SCRAM) = Voice 1 pointer
+          rem Input: soundPointerL, soundPointerH_R (global) = sound
+          rem pointer, soundEffectPointer1H (global SCRAM) = Voice 1
+          rem pointer
           rem Output: Sound effect started on Voice 1 if free
-          rem Mutates: soundEffectPointer1L, soundEffectPointer1H, soundEffectFrame1_W (global SCRAM) = Voice 1 sound state
-          rem Called Routines: UpdateSoundEffectVoice1 (tail call via goto) - starts Voice 1 playback
-          rem Constraints: Internal helper for PlaySoundEffect, only called when Voice 0 is busy
+          rem Mutates: soundEffectPointer1L, soundEffectPointer1H,
+          rem soundEffectFrame1_W (global SCRAM) = Voice 1 sound state
+          rem Called Routines: UpdateSoundEffectVoice1 (tail call via
+          rem goto) - starts Voice 1 playback
+          rem Constraints: Internal helper for PlaySoundEffect, only
+          rem called when Voice 0 is busy
           if soundEffectPointer1H then return : rem Try Voice 1
           
           let soundEffectPointer1L = soundPointerL : rem Voice 1 is free - use it
@@ -53,12 +76,19 @@ UpdateSoundEffect
           rem   frame
           rem Called every frame from MainLoop for gameMode 6
           rem Updates both voices if active (high byte != 0)
-          rem Update sound effect playback each frame (called every frame from MainLoop for gameMode 6)
-          rem Input: soundEffectPointerH_R, soundEffectPointer1H (global SCRAM) = sound effect pointers, soundEffectFrame_R, soundEffectFrame1_R (global SCRAM) = frame counters
+          rem Update sound effect playback each frame (called every
+          rem frame from MainLoop for gameMode 6)
+          rem Input: soundEffectPointerH_R, soundEffectPointer1H (global
+          rem SCRAM) = sound effect pointers, soundEffectFrame_R,
+          rem soundEffectFrame1_R (global SCRAM) = frame counters
           rem Output: Both voices updated if active (high byte != 0)
-          rem Mutates: All sound effect state (via UpdateSoundEffectVoice0 and UpdateSoundEffectVoice1)
-          rem Called Routines: UpdateSoundEffectVoice0 - updates Voice 0 if active, UpdateSoundEffectVoice1 - updates Voice 1 if active
-          rem Constraints: Called every frame from MainLoop for gameMode 6. Only updates voices if active (high byte != 0)
+          rem Mutates: All sound effect state (via
+          rem UpdateSoundEffectVoice0 and UpdateSoundEffectVoice1)
+          rem Called Routines: UpdateSoundEffectVoice0 - updates Voice 0
+          rem if active, UpdateSoundEffectVoice1 - updates Voice 1 if
+          rem active
+          rem Constraints: Called every frame from MainLoop for gameMode
+          rem 6. Only updates voices if active (high byte != 0)
           if soundEffectPointerH_R then gosub UpdateSoundEffectVoice0 : rem Update Voice 0
           
           if soundEffectPointer1H then gosub UpdateSoundEffectVoice1 : rem Update Voice 1
@@ -68,12 +98,25 @@ UpdateSoundEffect
 UpdateSoundEffectVoice0
           rem
           rem Updatesoundeffectvoice0 - Update Voice 0 Sound Effect
-          rem Update Voice 0 sound effect playback (decrements frame counter, loads next note when counter reaches 0)
-          rem Input: soundEffectFrame_R (global SCRAM) = frame counter, SoundEffectPointerL, soundEffectPointerH_R (global SCRAM) = sound pointer
-          rem Output: Frame counter decremented, next note loaded when counter reaches 0, voice freed when sound ends
-          rem Mutates: SS_frameCount (global) = frame count calculation, soundEffectFrame_W (global SCRAM) = frame counter (decremented), SoundEffectPointerL, soundEffectPointerH_W (global SCRAM) = sound pointer (advanced by 4 bytes), AUDC0, AUDF0, AUDV0 (TIA registers) = sound registers (updated via LoadSoundNote)
-          rem Called Routines: LoadSoundNote (bank15) - loads next 4-byte note from Sounds bank, extracts AUDC/AUDV, writes to TIA, advances pointer, handles end-of-sound
-          rem Constraints: Uses Voice 0 (AUDC0, AUDF0, AUDV0). LoadSoundNote handles end-of-sound by setting SoundEffectPointerH = 0 and AUDV0 = 0
+          rem Update Voice 0 sound effect playback (decrements frame
+          rem counter, loads next note when counter reaches 0)
+          rem Input: soundEffectFrame_R (global SCRAM) = frame counter,
+          rem SoundEffectPointerL, soundEffectPointerH_R (global SCRAM)
+          rem = sound pointer
+          rem Output: Frame counter decremented, next note loaded when
+          rem counter reaches 0, voice freed when sound ends
+          rem Mutates: SS_frameCount (global) = frame count calculation,
+          rem soundEffectFrame_W (global SCRAM) = frame counter
+          rem (decremented), SoundEffectPointerL, soundEffectPointerH_W
+          rem (global SCRAM) = sound pointer (advanced by 4 bytes),
+          rem AUDC0, AUDF0, AUDV0 (TIA registers) = sound registers
+          rem (updated via LoadSoundNote)
+          rem Called Routines: LoadSoundNote (bank15) - loads next
+          rem 4-byte note from Sounds bank, extracts AUDC/AUDV, writes
+          rem to TIA, advances pointer, handles end-of-sound
+          rem Constraints: Uses Voice 0 (AUDC0, AUDF0, AUDV0).
+          rem LoadSoundNote handles end-of-sound by setting
+          rem SoundEffectPointerH = 0 and AUDV0 = 0
           rem Decrement frame counter
           let SS_frameCount = soundEffectFrame_R - 1 : rem Fix RMW: Read from _R, modify, write to _W
           let soundEffectFrame_W = SS_frameCount
@@ -94,12 +137,25 @@ UpdateSoundEffectVoice0
 UpdateSoundEffectVoice1
           rem
           rem Updatesoundeffectvoice1 - Update Voice 1 Sound Effect
-          rem Update Voice 1 sound effect playback (decrements frame counter, loads next note when counter reaches 0)
-          rem Input: soundEffectFrame1_R (global SCRAM) = frame counter, soundEffectPointer1L, soundEffectPointer1H (global SCRAM) = sound pointer
-          rem Output: Frame counter decremented, next note loaded when counter reaches 0, voice freed when sound ends
-          rem Mutates: SS_frameCount1 (global) = frame count calculation, soundEffectFrame1_W (global SCRAM) = frame counter (decremented), soundEffectPointer1L, soundEffectPointer1H (global SCRAM) = sound pointer (advanced by 4 bytes), AUDC1, AUDF1, AUDV1 (TIA registers) = sound registers (updated via LoadSoundNote1)
-          rem Called Routines: LoadSoundNote1 (bank15) - loads next 4-byte note from Sounds bank, extracts AUDC/AUDV, writes to TIA, advances pointer, handles end-of-sound
-          rem Constraints: Uses Voice 1 (AUDC1, AUDF1, AUDV1). LoadSoundNote1 handles end-of-sound by setting soundEffectPointer1H = 0 and AUDV1 = 0
+          rem Update Voice 1 sound effect playback (decrements frame
+          rem counter, loads next note when counter reaches 0)
+          rem Input: soundEffectFrame1_R (global SCRAM) = frame counter,
+          rem soundEffectPointer1L, soundEffectPointer1H (global SCRAM)
+          rem = sound pointer
+          rem Output: Frame counter decremented, next note loaded when
+          rem counter reaches 0, voice freed when sound ends
+          rem Mutates: SS_frameCount1 (global) = frame count
+          rem calculation, soundEffectFrame1_W (global SCRAM) = frame
+          rem counter (decremented), soundEffectPointer1L,
+          rem soundEffectPointer1H (global SCRAM) = sound pointer
+          rem (advanced by 4 bytes), AUDC1, AUDF1, AUDV1 (TIA registers)
+          rem = sound registers (updated via LoadSoundNote1)
+          rem Called Routines: LoadSoundNote1 (bank15) - loads next
+          rem 4-byte note from Sounds bank, extracts AUDC/AUDV, writes
+          rem to TIA, advances pointer, handles end-of-sound
+          rem Constraints: Uses Voice 1 (AUDC1, AUDF1, AUDV1).
+          rem LoadSoundNote1 handles end-of-sound by setting
+          rem soundEffectPointer1H = 0 and AUDV1 = 0
           rem Decrement frame counter
           let SS_frameCount1 = soundEffectFrame1_R - 1 : rem Fix RMW: Read from _R, modify, write to _W
           let soundEffectFrame1_W = SS_frameCount1
@@ -120,10 +176,15 @@ UpdateSoundEffectVoice1
 StopSoundEffects
           rem
           rem Stopsoundeffects - Stop All Sound Effects
-          rem Stop all sound effects (zeroes TIA volumes, clears pointers, resets frame counters)
+          rem Stop all sound effects (zeroes TIA volumes, clears
+          rem pointers, resets frame counters)
           rem Input: None
           rem Output: All sound effects stopped, voices freed
-          rem Mutates: AUDV0, AUDV1 (TIA registers) = sound volumes (set to 0), soundEffectPointerH_W, soundEffectPointer1H (global SCRAM) = sound pointers (set to 0), soundEffectFrame_W, soundEffectFrame1_W (global SCRAM) = frame counters (set to 0)
+          rem Mutates: AUDV0, AUDV1 (TIA registers) = sound volumes (set
+          rem to 0), soundEffectPointerH_W, soundEffectPointer1H (global
+          rem SCRAM) = sound pointers (set to 0), soundEffectFrame_W,
+          rem soundEffectFrame1_W (global SCRAM) = frame counters (set
+          rem to 0)
           rem Called Routines: None
           rem Constraints: None
           rem Zero TIA volumes

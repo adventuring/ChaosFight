@@ -6,7 +6,8 @@
           rem Compact pointer lookup tables for songs stored in Bank 15
           rem Format: data SongPointersL15, SongPointersH15 (2 entries)
           rem Songs in Bank 15: OCascadia (1), Revontuli (2)
-          rem Index 0 = OCascadia (song ID 1), Index 1 = Revontuli (song ID 2)
+          rem Index 0 = OCascadia (song ID 1), Index 1 = Revontuli (song
+          rem ID 2)
           rem Use: index = songID - 1 (for songs 1-2)
           
           data SongPointersL15

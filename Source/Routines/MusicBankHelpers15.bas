@@ -16,11 +16,18 @@ LoadSongPointer
           rem   Song_Voice0 stream
           rem Index mapping: song 1 → index 0, song 2 → index 1
           rem Lookup song pointer from tables (Bank 15 songs: 1-2 only)
-          rem Input: temp1 = song ID (Bank 15 songs: 1-2 only), SongPointersL15[], SongPointersH15[] (global data tables) = song pointer tables
-          rem Output: SongPointerL, SongPointerH = pointer to Song_Voice0 stream
-          rem Mutates: temp1-temp2 (used for calculations), SongPointerL, SongPointerH (global) = song pointer (set from tables)
+          rem Input: temp1 = song ID (Bank 15 songs: 1-2 only),
+          rem SongPointersL15[], SongPointersH15[] (global data tables)
+          rem = song pointer tables
+          rem Output: SongPointerL, SongPointerH = pointer to
+          rem Song_Voice0 stream
+          rem Mutates: temp1-temp2 (used for calculations),
+          rem SongPointerL, SongPointerH (global) = song pointer (set
+          rem from tables)
           rem Called Routines: None
-          rem Constraints: Only songs 1-2 are in Bank 15. Index mapping: song 1 → index 0, song 2 → index 1. Returns SongPointerH = 0 if song not in this bank
+          rem Constraints: Only songs 1-2 are in Bank 15. Index mapping:
+          rem song 1 → index 0, song 2 → index 1. Returns SongPointerH =
+          rem 0 if song not in this bank
           dim LSP_songID = temp1
           rem Bounds check: Only songs 1-2 are in Bank 15
           if LSP_songID < 1 then let SongPointerH = 0 : return
@@ -37,12 +44,20 @@ LoadSongVoice1Pointer
           rem Output: SongPointerL, SongPointerH = pointer to
           rem   Song_Voice1 stream
           rem Index mapping: song 1 → index 0, song 2 → index 1
-          rem Lookup Voice 1 song pointer from tables (Bank 15 songs: 1-2 only)
-          rem Input: temp1 = song ID (Bank 15 songs: 1-2 only), SongPointersSecondL15[], SongPointersSecondH15[] (global data tables) = Voice 1 song pointer tables
-          rem Output: SongPointerL, SongPointerH = pointer to Song_Voice1 stream
-          rem Mutates: temp1-temp2 (used for calculations), SongPointerL, SongPointerH (global) = song pointer (set from Voice 1 tables)
+          rem Lookup Voice 1 song pointer from tables (Bank 15 songs:
+          rem 1-2 only)
+          rem Input: temp1 = song ID (Bank 15 songs: 1-2 only),
+          rem SongPointersSecondL15[], SongPointersSecondH15[] (global
+          rem data tables) = Voice 1 song pointer tables
+          rem Output: SongPointerL, SongPointerH = pointer to
+          rem Song_Voice1 stream
+          rem Mutates: temp1-temp2 (used for calculations),
+          rem SongPointerL, SongPointerH (global) = song pointer (set
+          rem from Voice 1 tables)
           rem Called Routines: None
-          rem Constraints: Only songs 1-2 are in Bank 15. Index mapping: song 1 → index 0, song 2 → index 1. Returns SongPointerH = 0 if song not in this bank
+          rem Constraints: Only songs 1-2 are in Bank 15. Index mapping:
+          rem song 1 → index 0, song 2 → index 1. Returns SongPointerH =
+          rem 0 if song not in this bank
           dim LSV1P_songID = temp1
           rem Bounds check: Only songs 1-2 are in Bank 15
           if LSV1P_songID < 1 then let SongPointerH = 0 : return
@@ -60,12 +75,27 @@ LoadMusicNote0
           rem   Song_Voice0 stream
           rem Output: Updates TIA registers, advances pointer, sets
           rem   MusicVoice0Frame
-          rem Load next note from Voice 0 stream using assembly for pointer access (Bank 15)
-          rem Input: musicVoice0PointerL, musicVoice0PointerH (global) = pointer to current note in Song_Voice0 stream
-          rem Output: TIA registers updated (AUDC0, AUDF0, AUDV0), pointer advanced by 4 bytes, MusicVoice0Frame set, envelope parameters stored
-          rem Mutates: temp2-temp7 (used for calculations), AUDC0, AUDF0, AUDV0 (TIA registers) = sound registers (updated), MusicVoice0TargetAUDV, MusicVoice0TotalFrames (global) = envelope parameters (stored), musicVoice0Frame_W (global SCRAM) = frame counter (set to Duration + Delay), musicVoice0PointerL, musicVoice0PointerH (global) = voice pointer (advanced by 4 bytes)
-          rem Called Routines: LoadMusicNote0EndOfTrack - handles end of track
-          rem Constraints: Loads 4-byte note format: AUDCV (packed AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV. End of track marked by Duration = 0. Chaotica loop handled in UpdateMusic when both voices end
+          rem Load next note from Voice 0 stream using assembly for
+          rem pointer access (Bank 15)
+          rem Input: musicVoice0PointerL, musicVoice0PointerH (global) =
+          rem pointer to current note in Song_Voice0 stream
+          rem Output: TIA registers updated (AUDC0, AUDF0, AUDV0),
+          rem pointer advanced by 4 bytes, MusicVoice0Frame set,
+          rem envelope parameters stored
+          rem Mutates: temp2-temp7 (used for calculations), AUDC0,
+          rem AUDF0, AUDV0 (TIA registers) = sound registers (updated),
+          rem MusicVoice0TargetAUDV, MusicVoice0TotalFrames (global) =
+          rem envelope parameters (stored), musicVoice0Frame_W (global
+          rem SCRAM) = frame counter (set to Duration + Delay),
+          rem musicVoice0PointerL, musicVoice0PointerH (global) = voice
+          rem pointer (advanced by 4 bytes)
+          rem Called Routines: LoadMusicNote0EndOfTrack - handles end of
+          rem track
+          rem Constraints: Loads 4-byte note format: AUDCV (packed
+          rem AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4
+          rem bits) and AUDV (lower 4 bits) from AUDCV. End of track
+          rem marked by Duration = 0. Chaotica loop handled in
+          rem UpdateMusic when both voices end
           dim LMN0_audcv = temp2
           dim LMN0_audf = temp3
           dim LMN0_duration = temp4
@@ -120,10 +150,14 @@ LoadMusicNote0EndOfTrack
           rem Helper: Handle end of track for Voice 0 (Bank 15)
           rem Input: None
           rem Output: Voice 0 marked as inactive, volume zeroed
-          rem Mutates: musicVoice0PointerH (global) = voice pointer (set to 0), AUDV0 (TIA register) = sound volume (set to 0)
+          rem Mutates: musicVoice0PointerH (global) = voice pointer (set
+          rem to 0), AUDV0 (TIA register) = sound volume (set to 0)
           rem Called Routines: None
-          rem Constraints: Internal helper for LoadMusicNote0, only called when Duration = 0. Chaotica loop handled in UpdateMusic when both voices end
-          rem End of track reached - mark voice as inactive (pointerH = 0)
+          rem Constraints: Internal helper for LoadMusicNote0, only
+          rem called when Duration = 0. Chaotica loop handled in
+          rem UpdateMusic when both voices end
+          rem End of track reached - mark voice as inactive (pointerH =
+          rem 0)
           rem   (Chaotica
           rem Loop will be handled in UpdateMusic when both voices end
           let musicVoice0PointerH = 0 : rem   only)
@@ -132,12 +166,27 @@ LoadMusicNote0EndOfTrack
           
           rem Load next note from Voice 1 stream
 LoadMusicNote1
-          rem Load next note from Voice 1 stream using assembly for pointer access (Bank 15)
-          rem Input: musicVoice1PointerL, musicVoice1PointerH (global) = pointer to current note in Song_Voice1 stream
-          rem Output: TIA registers updated (AUDC1, AUDF1, AUDV1), pointer advanced by 4 bytes, MusicVoice1Frame set, envelope parameters stored
-          rem Mutates: temp2-temp7 (used for calculations), AUDC1, AUDF1, AUDV1 (TIA registers) = sound registers (updated), MusicVoice1TargetAUDV, MusicVoice1TotalFrames (global) = envelope parameters (stored), musicVoice1Frame_W (global SCRAM) = frame counter (set to Duration + Delay), musicVoice1PointerL, musicVoice1PointerH (global) = voice pointer (advanced by 4 bytes)
-          rem Called Routines: LoadMusicNote1EndOfTrack - handles end of track
-          rem Constraints: Loads 4-byte note format: AUDCV (packed AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4 bits) and AUDV (lower 4 bits) from AUDCV. End of track marked by Duration = 0. Chaotica loop handled in UpdateMusic when both voices end
+          rem Load next note from Voice 1 stream using assembly for
+          rem pointer access (Bank 15)
+          rem Input: musicVoice1PointerL, musicVoice1PointerH (global) =
+          rem pointer to current note in Song_Voice1 stream
+          rem Output: TIA registers updated (AUDC1, AUDF1, AUDV1),
+          rem pointer advanced by 4 bytes, MusicVoice1Frame set,
+          rem envelope parameters stored
+          rem Mutates: temp2-temp7 (used for calculations), AUDC1,
+          rem AUDF1, AUDV1 (TIA registers) = sound registers (updated),
+          rem MusicVoice1TargetAUDV, MusicVoice1TotalFrames (global) =
+          rem envelope parameters (stored), musicVoice1Frame_W (global
+          rem SCRAM) = frame counter (set to Duration + Delay),
+          rem musicVoice1PointerL, musicVoice1PointerH (global) = voice
+          rem pointer (advanced by 4 bytes)
+          rem Called Routines: LoadMusicNote1EndOfTrack - handles end of
+          rem track
+          rem Constraints: Loads 4-byte note format: AUDCV (packed
+          rem AUDC/AUDV), AUDF, Duration, Delay. Extracts AUDC (upper 4
+          rem bits) and AUDV (lower 4 bits) from AUDCV. End of track
+          rem marked by Duration = 0. Chaotica loop handled in
+          rem UpdateMusic when both voices end
           dim LMN1_audcv = temp2
           dim LMN1_audf = temp3
           dim LMN1_duration = temp4
@@ -191,10 +240,14 @@ LoadMusicNote1EndOfTrack
           rem Helper: Handle end of track for Voice 1 (Bank 15)
           rem Input: None
           rem Output: Voice 1 marked as inactive, volume zeroed
-          rem Mutates: musicVoice1PointerH (global) = voice pointer (set to 0), AUDV1 (TIA register) = sound volume (set to 0)
+          rem Mutates: musicVoice1PointerH (global) = voice pointer (set
+          rem to 0), AUDV1 (TIA register) = sound volume (set to 0)
           rem Called Routines: None
-          rem Constraints: Internal helper for LoadMusicNote1, only called when Duration = 0. Chaotica loop handled in UpdateMusic when both voices end
-          rem End of track reached - mark voice as inactive (pointerH = 0)
+          rem Constraints: Internal helper for LoadMusicNote1, only
+          rem called when Duration = 0. Chaotica loop handled in
+          rem UpdateMusic when both voices end
+          rem End of track reached - mark voice as inactive (pointerH =
+          rem 0)
           rem   (Chaotica
           rem Loop will be handled in UpdateMusic when both voices end
           let musicVoice1PointerH = 0 : rem   only)

@@ -56,8 +56,13 @@
           rem Frooty (120 lbs twink), Nefertem (440 lbs lion), Ninjish
           rem   Guy (130 lbs thin man), Pork Chop (250 lbs),
           rem Radish Goblin (50 lbs scaled daikon), Robo Tito (300 lbs
-          rem   dumpster), Ursulo (220 lbs, 1.67m tall walking polar bear), Shamone (65 lbs
-          rem Character weights: Bernie(5), Curler(53), Dragon(100), Zoe(48), Fat Tony(57), Megax(100), Harpy(23), Knight Guy(57), Frooty(45), Nefertem(66), Ninjish Guy(47), Pork Chop(57), Radish Goblin(31), Robo Tito(60), Ursulo(55), Shamone(35)
+          rem   dumpster), Ursulo (220 lbs, 1.67m tall walking polar
+          rem   bear), Shamone (65 lbs
+          rem Character weights: Bernie(5), Curler(53), Dragon(100),
+          rem Zoe(48), Fat Tony(57), Megax(100), Harpy(23), Knight
+          rem Guy(57), Frooty(45), Nefertem(66), Ninjish Guy(47), Pork
+          rem Chop(57), Radish Goblin(31), Robo Tito(60), Ursulo(55),
+          rem Shamone(35)
           data CharacterWeights : rem   Labrador)
             5, 53, 100, 48, 57, 100, 23, 57, 45, 66, 47, 57, 31, 60, 55, 35
 end
@@ -68,7 +73,11 @@ end
           rem Formula: safe_velocity = 120 / weight
           rem Pre-computed for all 16 characters to avoid variable
           rem   division
-          rem Safe fall velocity thresholds: Bernie(24), Curler(2), Dragon(1), Zoe(2), Fat Tony(2), Megax(1), Harpy(5), Knight Guy(2), Frooty(2), Nefertem(1), Ninjish Guy(2), Pork Chop(2), Radish Goblin(3), Robo Tito(2), Ursulo(1), Shamone(3)
+          rem Safe fall velocity thresholds: Bernie(24), Curler(2),
+          rem Dragon(1), Zoe(2), Fat Tony(2), Megax(1), Harpy(5), Knight
+          rem Guy(2), Frooty(2), Nefertem(1), Ninjish Guy(2), Pork
+          rem Chop(2), Radish Goblin(3), Robo Tito(2), Ursulo(1),
+          rem Shamone(3)
           data SafeFallVelocityThresholds : rem Values: integer division of 120 by each character’s weight
             24, 2, 1, 2, 2, 1, 5, 2, 2, 1, 2, 2, 3, 2, 1, 3
 end
@@ -78,7 +87,10 @@ end
           rem Lookup table for weight / 20 calculation
           rem Used for damage multiplier: damage = damage * (weight /
           rem   20)
-          rem Weight divided by 20: Bernie(0), Curler(2), Dragon(5), Zoe(2), Fat Tony(2), Megax(5), Harpy(1), Knight Guy(2), Frooty(2), Nefertem(3), Ninjish Guy(2), Pork Chop(2), Radish Goblin(1), Robo Tito(3), Ursulo(4), Shamone(1)
+          rem Weight divided by 20: Bernie(0), Curler(2), Dragon(5),
+          rem Zoe(2), Fat Tony(2), Megax(5), Harpy(1), Knight Guy(2),
+          rem Frooty(2), Nefertem(3), Ninjish Guy(2), Pork Chop(2),
+          rem Radish Goblin(1), Robo Tito(3), Ursulo(4), Shamone(1)
           data WeightDividedBy20 : rem Pre-computed to avoid variable division
             0, 2, 5, 2, 2, 5, 1, 2, 2, 3, 2, 2, 1, 3, 4, 1
 end
@@ -88,7 +100,10 @@ end
           rem Lookup table for squaring values 1-24
           rem Used for kinematic calculations: d = v squared / 4
           rem Pre-computed to avoid variable multiplication
-          rem Square table values: 1 squared-8 squared (1,4,9,16,25,36,49,64), 9 squared-16 squared (81,100,121,144,169,196,225,256), 17 squared-24 squared (289,324,361,400,441,484,529,576)
+          rem Square table values: 1 squared-8 squared
+          rem (1,4,9,16,25,36,49,64), 9 squared-16 squared
+          rem (81,100,121,144,169,196,225,256), 17 squared-24 squared
+          rem (289,324,361,400,441,484,529,576)
           data SquareTable : rem Index is value (1-24), result is value squared
             1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400, 441, 484, 529, 576
 end
@@ -108,42 +123,72 @@ end
             10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
 end
 
-          rem Character missile widths: Bernie(0, melee), Curler(4), Dragon(2), Zoe(4), Fat Tony(4), Megax(4), Harpy(0, melee), Knight Guy(0, melee), Frooty(1), Nefertem(0, melee), Ninjish Guy(0, melee), Pork Chop(0, melee), Radish Goblin(0, melee), Robo Tito(0, melee), Ursulo(0, melee), Shamone(0, melee)
+          rem Character missile widths: Bernie(0, melee), Curler(4),
+          rem Dragon(2), Zoe(4), Fat Tony(4), Megax(4), Harpy(0, melee),
+          rem Knight Guy(0, melee), Frooty(1), Nefertem(0, melee),
+          rem Ninjish Guy(0, melee), Pork Chop(0, melee), Radish
+          rem Goblin(0, melee), Robo Tito(0, melee), Ursulo(0, melee),
+          rem Shamone(0, melee)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           data CharacterMissileWidths : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end
 
-          rem Character missile heights: Bernie(0, melee), Curler(4), Dragon(2), Zoe(1), Fat Tony(1), Megax(4), Harpy(0, melee), Knight Guy(0, melee), Frooty(1), Nefertem(0, melee), Ninjish Guy(0, melee), Pork Chop(0, melee), Radish Goblin(0, melee), Robo Tito(0, melee), Ursulo(0, melee), Shamone(0, melee)
+          rem Character missile heights: Bernie(0, melee), Curler(4),
+          rem Dragon(2), Zoe(1), Fat Tony(1), Megax(4), Harpy(0, melee),
+          rem Knight Guy(0, melee), Frooty(1), Nefertem(0, melee),
+          rem Ninjish Guy(0, melee), Pork Chop(0, melee), Radish
+          rem Goblin(0, melee), Robo Tito(0, melee), Ursulo(0, melee),
+          rem Shamone(0, melee)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           data CharacterMissileHeights : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end
 
-          rem Character missile max X: Bernie(4), Curler(8), Dragon(6), Zoe(6), Fat Tony(6), Megax(6), Harpy(0, melee), Knight Guy(0, melee), Frooty(6), Nefertem(0, melee), Ninjish Guy(0, melee), Pork Chop(0, melee), Radish Goblin(0, melee), Robo Tito(0, melee), Ursulo(0, melee), Shamone(0, melee)
+          rem Character missile max X: Bernie(4), Curler(8), Dragon(6),
+          rem Zoe(6), Fat Tony(6), Megax(6), Harpy(0, melee), Knight
+          rem Guy(0, melee), Frooty(6), Nefertem(0, melee), Ninjish
+          rem Guy(0, melee), Pork Chop(0, melee), Radish Goblin(0,
+          rem melee), Robo Tito(0, melee), Ursulo(0, melee), Shamone(0,
+          rem melee)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           data CharacterMissileMaxX : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
 end
 
-          rem Character missile max Y: Bernie(4), Curler(6), Dragon(6), Zoe(6), Fat Tony(0), Megax(0), Harpy(0, melee), Knight Guy(0, melee), Frooty(6), Nefertem(0, melee), Ninjish Guy(0, melee), Pork Chop(0, melee), Radish Goblin(0, melee), Robo Tito(0, melee), Ursulo(0, melee), Shamone(0, melee)
+          rem Character missile max Y: Bernie(4), Curler(6), Dragon(6),
+          rem Zoe(6), Fat Tony(0), Megax(0), Harpy(0, melee), Knight
+          rem Guy(0, melee), Frooty(6), Nefertem(0, melee), Ninjish
+          rem Guy(0, melee), Pork Chop(0, melee), Radish Goblin(0,
+          rem melee), Robo Tito(0, melee), Ursulo(0, melee), Shamone(0,
+          rem melee)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           data CharacterMissileMaxY : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
 end
 
-          rem Character missile force: Bernie(3), Curler(5), Dragon(4), Zoe(4), Fat Tony(4, ranged magic ring lasers), Megax(0), Harpy(0), Knight Guy(0), Frooty(4), Nefertem(0), Ninjish Guy(0), Pork Chop(0), Radish Goblin(0), Robo Tito(0), Ursulo(4), Shamone(0)
+          rem Character missile force: Bernie(3), Curler(5), Dragon(4),
+          rem Zoe(4), Fat Tony(4, ranged magic ring lasers), Megax(0),
+          rem Harpy(0), Knight Guy(0), Frooty(4), Nefertem(0), Ninjish
+          rem Guy(0), Pork Chop(0), Radish Goblin(0), Robo Tito(0),
+          rem Ursulo(4), Shamone(0)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           data CharacterMissileForce : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              3, 5, 4, 4, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0
 end
 
-          rem Character missile lifetime: Bernie(4, melee), Curler(255, ranged), Dragon(255, ranged), Zoe(255, ranged), Fat Tony(255, ranged magic ring lasers), Megax(4, melee), Harpy(5, melee), Knight Guy(6, melee), Frooty(255, ranged), Nefertem(5, melee), Ninjish Guy(4, melee), Pork Chop(4, melee), Radish Goblin(3, melee), Robo Tito(5, melee), Ursulo(5, melee claw swipe), Shamone(4, melee)
+          rem Character missile lifetime: Bernie(4, melee), Curler(255,
+          rem ranged), Dragon(255, ranged), Zoe(255, ranged), Fat
+          rem Tony(255, ranged magic ring lasers), Megax(4, melee),
+          rem Harpy(5, melee), Knight Guy(6, melee), Frooty(255,
+          rem ranged), Nefertem(5, melee), Ninjish Guy(4, melee), Pork
+          rem Chop(4, melee), Radish Goblin(3, melee), Robo Tito(5,
+          rem melee), Ursulo(5, melee claw swipe), Shamone(4, melee)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
@@ -179,7 +224,8 @@ end
           rem Harpy changed from melee to ranged (diagonal downward
           rem   attack)
           rem Ursulo changed from ranged to melee (claw swipe)
-          rem Harpy changed from ranged to melee (diagonal swoop, special case)
+          rem Harpy changed from ranged to melee (diagonal swoop,
+          rem special case)
           rem Megax changed from ranged to melee (decorative missile)
           data CharacterAttackTypes : rem NinjishGuy changed from melee to ranged (shuriken)
               %00011110, %00000101, %00000000, %00000000
@@ -189,7 +235,8 @@ end
             rem Bit 8 (Frooty) = 1 (ranged)
             rem Bit 9 (Nefertem) = 0 (melee)
             rem Bit 10 (NinjishGuy) = 1 (ranged)
-            rem Bits 11-15 (Pork Chop, Radish, RoboTito, Ursulo, Shamone) = 0 (melee)
+            rem Bits 11-15 (Pork Chop, Radish, RoboTito, Ursulo,
+            rem Shamone) = 0 (melee)
 end
 
           rem
@@ -223,7 +270,11 @@ end
 
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
-          rem Character missile momentum X: Bernie(5), Curler(6), Dragon(4), Zoe(6), Fat Tony(0), Megax(0), Harpy(5), Knight Guy(8), Frooty(6), Nefertem(0), Ninjish Guy(0), Pork Chop(0), Radish Goblin(0), Robo Tito(0), Ursulo(0, melee, changed from 7), Shamone(0)
+          rem Character missile momentum X: Bernie(5), Curler(6),
+          rem Dragon(4), Zoe(6), Fat Tony(0), Megax(0), Harpy(5), Knight
+          rem Guy(8), Frooty(6), Nefertem(0), Ninjish Guy(0), Pork
+          rem Chop(0), Radish Goblin(0), Robo Tito(0), Ursulo(0, melee,
+          rem changed from 7), Shamone(0)
           data CharacterMissileMomentumX : rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
              5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 0, 0
 end
@@ -236,7 +287,12 @@ end
           rem Negative = ballistic/parabolic arc
           rem Values: -127 to 127 (typically -8 to 0 for parabolic arcs)
 
-          rem Character missile momentum Y: Bernie(0), Curler(0), Dragon(-4, ballistic), Zoe(0, arrowshot), Fat Tony(0), Megax(0), Harpy(4, diagonal downward), Knight Guy(0), Frooty(-5, ballistic), Nefertem(0), Ninjish Guy(0), Pork Chop(0), Radish Goblin(0), Robo Tito(0), Ursulo(0, melee), Shamone(0)
+          rem Character missile momentum Y: Bernie(0), Curler(0),
+          rem Dragon(-4, ballistic), Zoe(0, arrowshot), Fat Tony(0),
+          rem Megax(0), Harpy(4, diagonal downward), Knight Guy(0),
+          rem Frooty(-5, ballistic), Nefertem(0), Ninjish Guy(0), Pork
+          rem Chop(0), Radish Goblin(0), Robo Tito(0), Ursulo(0, melee),
+          rem Shamone(0)
           rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
           rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
           rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone

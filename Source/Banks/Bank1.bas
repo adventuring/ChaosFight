@@ -3,9 +3,12 @@
 
           bank 1
 
-          rem MainLoop, drawscreen, arenas, numeric font, and special sprites
-          rem must all be in Bank 1 for EF bankswitching (kernel is in Bank 1)
-          rem Titlescreen graphics and kernel moved to Bank 9 (only used during title screens)
+          rem MainLoop, drawscreen, arenas, numeric font, and special
+          rem sprites
+          rem must all be in Bank 1 for EF bankswitching (kernel is in
+          rem Bank 1)
+          rem Titlescreen graphics and kernel moved to Bank 9 (only used
+          rem during title screens)
           
           rem Special sprites and numeric font
 #include "Source/Data/SpecialSprites.bas"

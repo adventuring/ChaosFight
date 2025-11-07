@@ -36,7 +36,8 @@
           
           rem Character system constants
           rem Note: Only 16 characters are selectable (0-15), but code
-          rem   handles up to 32 characters (0-31) including non-selectable
+          rem   handles up to 32 characters (0-31) including
+          rem   non-selectable
           const NumCharacters=16 : rem   characters like MethHound (31)
           const MaxCharacter = 15 : rem Number of selectable characters
           const NoCharacter = 255 : rem Maximum selectable character ID (NumCharacters - 1)
@@ -74,7 +75,8 @@
           const SpriteNo = 2
           
           const PlayerStateFacing = 3 : rem playerState bit position constants
-          rem Bit 3: 0=left, 1=right (matches REFP0 bit 3 for direct copy)
+          rem Bit 3: 0=left, 1=right (matches REFP0 bit 3 for direct
+          rem copy)
           const PlayerStateGuarding = 1
           const PlayerStateJumping = 2 : rem Bit 1: 1=guarding
           const PlayerStateRecovery = 0 : rem Bit 2: 1=jumping
@@ -88,25 +90,33 @@
           rem Use with: PlayerState[index] = PlayerState[index] |
           const PlayerStateBitFacing = 8 : rem   PlayerStateBitMask to set bit
           const PlayerStateBitFacingNUSIZ = 64 : rem Bit mask for bit 3 (PlayerStateFacing) - matches REFP0 reflection bit
-          rem Bit mask for bit 6 (NUSIZ reflection) - PlayerStateBitFacing shifted left 3 bits
+          rem Bit mask for bit 6 (NUSIZ reflection) -
+          rem PlayerStateBitFacing shifted left 3 bits
           const NUSIZMaskReflection = 191
-          rem Mask to clear bit 6 (reflection) from NUSIZ: $BF = %10111111
+          rem Mask to clear bit 6 (reflection) from NUSIZ: $BF =
+          rem %10111111
           const PlayerStateBitGuarding = 2
           const PlayerStateBitJumping = 4 : rem Bit mask for bit 1 (PlayerStateGuarding)
           const PlayerStateBitRecovery = 1 : rem Bit mask for bit 2 (PlayerStateJumping)
           const PlayerStateBitAttacking = 16 : rem Bit mask for bit 0 (PlayerStateRecovery)
           rem Bit mask for bit 4 (PlayerStateAttacking)
           
-          rem Bit mask for preserving PlayerState flags (bits 0-3) while clearing animation state (bits 4-7)
+          rem Bit mask for preserving PlayerState flags (bits 0-3) while
+          rem clearing animation state (bits 4-7)
           const MaskPlayerStateFlags = 15
-          rem Mask to preserve bits 0-3 (flags) and clear bits 4-7 (animation state): $0F = %00001111
-          rem Use: PlayerState[index] = (PlayerState[index] & MaskPlayerStateFlags) | (animationState << ShiftAnimationState)
+          rem Mask to preserve bits 0-3 (flags) and clear bits 4-7
+          rem (animation state): $0F = %00001111
+          rem Use: PlayerState[index] = (PlayerState[index] &
+          rem MaskPlayerStateFlags) | (animationState <<
+          rem ShiftAnimationState)
           
           const ShiftAnimationState = 4 : rem Bit shift constants for PlayerState bit operations
-          rem Shift amount for animation state (bits 4-7): ActionAttackExecute << 4
+          rem Shift amount for animation state (bits 4-7):
+          rem ActionAttackExecute << 4
           rem Animation state is stored in bits 4-7 of PlayerState byte
           
-          rem Pre-calculated shifted animation state values (to avoid bit shift
+          rem Pre-calculated shifted animation state values (to avoid
+          rem bit shift
           rem   expressions that generate invalid assembly)
           const ActionAttackExecuteShifted = 224 : rem ActionAttackExecute (14) << 4 = 224 (0xE0)
           const ActionJumpingShifted = 160 : rem ActionJumping (10) << 4 = 160 (0xA0)
@@ -166,7 +176,8 @@
           const SetSystemFlagGameStateEnding = $08 : rem Set bit 4 (GameStatePaused)
           rem Set bit 3 (GameStateEnding)
           
-          rem PlayerLocked value constants (for bit-packed playerLocked byte)
+          rem PlayerLocked value constants (for bit-packed playerLocked
+          rem byte)
           const PlayerLockedUnlocked = 0 : rem Values: 0=unlocked, 1=locked normal, 2=locked handicap
           const PlayerLockedNormal = 1 : rem 0 = Unlocked (still browsing)
           const PlayerLockedHandicap = 2 : rem 1 = Locked normal (100% health)
@@ -280,8 +291,7 @@
           rem Animation System Constants
           rem Character frame animation runs at 10fps regardless of TV
           rem   standard
-          remMovement updates run at full frame rate (60fps NTSC, 50fps
-          rem   PAL)
+          rem Movement updates run at 60fps NTSC / 50fps PAL
 
 #ifdef TV_NTSC
           const AnimationFrameDelay = 6

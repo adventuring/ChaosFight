@@ -117,24 +117,33 @@
 
           dim currentPlayer = c : rem Current iteration variables (used in loops across routines)
           rem Current player index (0-3) for iteration loops
-          rem Set before calling functions that operate on a single player
+          rem Set before calling functions that operate on a single
+          rem player
           rem Used extensively in AnimationSystem, PlayerElimination,
           dim currentCharacter = n : rem   MovementSystem, and other routines
-          rem Current character index (0-31) for character-specific operations
-          rem Set from playerChar[currentPlayer] before character operations
+          rem Current character index (0-31) for character-specific
+          rem operations
+          rem Set from playerChar[currentPlayer] before character
+          rem operations
           rem Used in SpriteLoader, character-specific logic, etc.
-          rem Reduces temp variable pressure by eliminating parameter passing
+          rem Reduces temp variable pressure by eliminating parameter
+          rem passing
           
           dim gameMode = p : rem Game state and system flags (consolidated to save RAM)
           dim systemFlags = f : rem Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
           rem System flags (packed byte):
           rem   Bit 7: 7800 console detected (SystemFlag7800 = $80)
-          rem   Bit 6: Color/B&W override active (SystemFlagColorBWOverride = $40, 7800 only)
-          rem   Bit 5: Pause button previous state (SystemFlagPauseButtonPrev = $20)
-          rem   Bit 4: Game state paused (SystemFlagGameStatePaused = $10, 0=normal, 1=paused)
-          rem   Bit 3: Game state ending (SystemFlagGameStateEnding = $08, 0=normal, 1=ending)
+          rem   Bit 6: Color/B&W override active
+          rem   (SystemFlagColorBWOverride = $40, 7800 only)
+          rem   Bit 5: Pause button previous state
+          rem   (SystemFlagPauseButtonPrev = $20)
+          rem   Bit 4: Game state paused (SystemFlagGameStatePaused =
+          rem   $10, 0=normal, 1=paused)
+          rem   Bit 3: Game state ending (SystemFlagGameStateEnding =
+          rem   $08, 0=normal, 1=ending)
           rem   Bits 0-2: Reserved for future use
-          rem NOTE: Previously separate variables (console7800Detected, colorBWOverride,
+          rem NOTE: Previously separate variables (console7800Detected,
+          rem colorBWOverride,
           dim controllerStatus = h : rem   pauseButtonPrev, gameState) are now consolidated into this byte
           rem Packed controller status bits: $80=Quadtari,
           rem   $01=LeftGenesis, $02=LeftJoy2b+, $04=RightGenesis,
@@ -152,12 +161,15 @@
           rem Moved from w050-w053 to w067-w070 to avoid conflict with
           rem   playerSubpixelX[0-3] (w049-w056) in Game Mode
           dim playerLocked = e : rem Array accessible as playerDamage[0] through playerDamage[3]
-          rem Bit-packed: 2 bits per player (4 players × 2 bits = 8 bits = 1 byte)
-          rem Bits 0-1: Player 0 locked state (0=unlocked, 1=normal, 2=handicap)
+          rem Bit-packed: 2 bits per player (4 players × 2 bits = 8 bits
+          rem = 1 byte)
+          rem Bits 0-1: Player 0 locked state (0=unlocked, 1=normal,
+          rem 2=handicap)
           rem Bits 2-3: Player 1 locked state
           rem Bits 4-5: Player 2 locked state
           rem Bits 6-7: Player 3 locked state
-          rem NOTE: Use helper functions GetPlayerLocked/SetPlayerLocked to access
+          rem NOTE: Use helper functions GetPlayerLocked/SetPlayerLocked
+          rem to access
           rem   (see Source/Routines/PlayerLockedHelpers.bas)
           dim selectedChar1 = s : rem Previously used 4 bytes (n,o,p,q) - now consolidated to 1 byte (e)
           rem selectedChar2, selectedChar3, and selectedChar4 moved to
@@ -165,7 +177,8 @@
           rem OPTIMIZED: Moved from w001-w003 to w084-w086 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: These are REDIMMED with Admin Mode char select anim
-          rem   variables - safe since selectedChar* are only read once at
+          rem   variables - safe since selectedChar* are only read once
+          rem   at
           dim selectedChar2_W = w084 : rem   game start (BeginGameLoop), then copied to PlayerChar array
           dim selectedChar2_R = r084
           dim selectedChar3_W = w085
@@ -223,14 +236,16 @@
           dim soundPointerH_W = w048
           dim soundPointerH_R = r048
           dim soundPointerH = soundPointerH_W
-          rem Sound data pointer low/high bytes (in Sounds bank) - low byte
+          rem Sound data pointer low/high bytes (in Sounds bank) - low
+          rem byte
           rem   in zero page (var39), high byte in SCRAM (w048/r048)
           dim soundEffectPointerL = var41 : rem   Moved to SCRAM to avoid conflict with charSelectAnimIndex (y)
           dim soundEffectPointerH_W = w066
           dim soundEffectPointerH_R = r066
           dim soundEffectPointerH = soundEffectPointerH_W
           rem Sound effect Voice 0 stream position low/high bytes (high
-          rem   byte = 0 means inactive) - low byte in zero page (var41),
+          rem   byte = 0 means inactive) - low byte in zero page
+          rem   (var41),
           rem   high byte in SCRAM (w066/r066)
           dim soundEffectPointer1L = var45 : rem   Moved to SCRAM to avoid conflict with charSelectAnimFrame (z)
           dim soundEffectPointer1H = var46
@@ -473,14 +488,16 @@
           dim playerVelocityYL = var32 : rem   playerVelocityYL[0-3] (all in ZPRAM!)
           rem Low bytes (fractional part) in zero-page var32-var35
           rem Access: playerVelocityY[i] = high byte (var28-var31),
-          rem   playerVelocityYL[i] = low byte (var32-var35) (both in ZPRAM!)
+          rem   playerVelocityYL[i] = low byte (var32-var35) (both in
+          rem   ZPRAM!)
           
           rem playerSubpixelX[0-3] = 8.8 fixed-point X position
           rem Updated every frame but accessed less frequently than
           rem   velocity, so SCRAM is acceptable
           rem OPTIMIZED: Moved from w049-w056 to w064-w071 to free space
           rem   for PlayerFrameBuffer (w000-w063)
-          rem NOTE: Overlaps with Admin Mode music variables (w064-w079) -
+          rem NOTE: Overlaps with Admin Mode music variables (w064-w079)
+          rem -
           dim playerSubpixelX_W = w064.8.8 : rem   safe since Admin and Game Mode never run simultaneously
           dim playerSubpixelX_R = r064.8.8
           rem Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM
@@ -495,7 +512,8 @@
           rem playerSubpixelY[0-3] = 8.8 fixed-point Y position
           rem OPTIMIZED: Moved from w057-w064 to w072-w079 to free space
           rem   for PlayerFrameBuffer (w000-w063)
-          rem NOTE: Overlaps with Admin Mode music variables (w064-w079) -
+          rem NOTE: Overlaps with Admin Mode music variables (w064-w079)
+          rem -
           dim playerSubpixelY_W = w072.8.8 : rem   safe since Admin and Game Mode never run simultaneously
           dim playerSubpixelY_R = r072.8.8
           rem Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM
@@ -694,19 +712,24 @@
           rem RoboTito stretch missile height tracking (SCRAM)
           dim missileStretchHeight_W = w118 : rem Tracks missile height for RoboTito stretch visual effect
           dim missileStretchHeight_R = r118
-          rem [0-3] Missile height in scanlines for RoboTito stretch visual
+          rem [0-3] Missile height in scanlines for RoboTito stretch
+          rem visual
           rem   (4 bytes: w118-w121)
-          rem Height extends downward from player position to ground level
+          rem Height extends downward from player position to ground
+          rem level
           rem Array accessible as missileStretchHeight[0] through
           rem   missileStretchHeight[3]
 
           rem RoboTito stretch permission flags (SCRAM)
-          rem Bit-packed: 1 bit per player (0=not grounded, 1=can stretch)
+          rem Bit-packed: 1 bit per player (0=not grounded, 1=can
+          rem stretch)
           dim roboTitoCanStretch_W = w122
           dim roboTitoCanStretch_R = r122
-          rem Bit 0: Player 0 can stretch, Bit 1: Player 1, Bit 2: Player 2,
+          rem Bit 0: Player 0 can stretch, Bit 1: Player 1, Bit 2:
+          rem Player 2,
           rem   Bit 3: Player 3
-          rem Set to 1 when RoboTito lands on ground, cleared when hit or
+          rem Set to 1 when RoboTito lands on ground, cleared when hit
+          rem or
           rem   stretching upward
 
           dim harpyFlightEnergy_W = w009 : rem Harpy flight energy/duration counters (SCRAM)
@@ -772,7 +795,8 @@
           
           rem Note: playerDamage[0-3] now properly allocated in SCRAM
           rem   (w067-w070) - see Common Vars section above
-          rem Moved from w050-w053 to avoid conflict with playerSubpixelX
+          rem Moved from w050-w053 to avoid conflict with
+          rem playerSubpixelX
           
           rem NOTE: var0-3 used by playerX (core gameplay, cannot redim)
           rem NOTE: var4-7 used by playerY (core gameplay, cannot redim)
@@ -912,10 +936,12 @@
           rem Health bar remainder calculation (for displaying partial
           rem   bars)
           
-          rem Cached hitbox for current attacker (SCRAM) - calculated once
+          rem Cached hitbox for current attacker (SCRAM) - calculated
+          rem once
           rem   per attacker to avoid redundant calculations
           rem When processing an attacker, we check against 3 defenders,
-          rem   so caching saves 2 redundant hitbox calculations per attacker
+          rem   so caching saves 2 redundant hitbox calculations per
+          rem   attacker
           dim cachedHitboxLeft_W = w124 : rem Uses 4 bytes: left, right, top, bottom for current attacker
           dim cachedHitboxLeft_R = r124
           dim cachedHitboxRight_W = w125
@@ -924,21 +950,30 @@
           dim cachedHitboxTop_R = r126
           dim cachedHitboxBottom_W = w127
           dim cachedHitboxBottom_R = r127
-          rem Single hitbox cache (4 bytes total) - reused for each attacker
+          rem Single hitbox cache (4 bytes total) - reused for each
+          rem attacker
           
           rem Hitbox calculation variables (global, used in Combat.bas)
-          rem These are set by CalculateAttackHitbox and immediately copied to cached versions
-          rem NOTE: Since CalculateAttackHitbox is only called from ProcessAttackerAttacks,
-          rem   and the values are immediately copied to cached versions, we can alias
-          rem   the hitbox variables directly to the cached versions to save memory.
-          rem This avoids needing separate storage since they’re never used simultaneously.
+          rem These are set by CalculateAttackHitbox and immediately
+          rem copied to cached versions
+          rem NOTE: Since CalculateAttackHitbox is only called from
+          rem ProcessAttackerAttacks,
+          rem   and the values are immediately copied to cached
+          rem   versions, we can alias
+          rem   the hitbox variables directly to the cached versions to
+          rem   save memory.
+          rem This avoids needing separate storage since they’re never
+          rem used simultaneously.
           dim hitboxLeft = cachedHitboxLeft_W
           dim hitboxRight = cachedHitboxRight_W
           dim hitboxTop = cachedHitboxTop_W
           dim hitboxBottom = cachedHitboxBottom_W
-          rem Hitbox bounds for attack collision detection (aliased to cached versions)
-          rem NOTE: CalculateAttackHitbox sets these, then ProcessAttackerAttacks uses them.
-          rem   Since they’re immediately copied (no-op since aliased), this is safe.
+          rem Hitbox bounds for attack collision detection (aliased to
+          rem cached versions)
+          rem NOTE: CalculateAttackHitbox sets these, then
+          rem ProcessAttackerAttacks uses them.
+          rem   Since they’re immediately copied (no-op since aliased),
+          rem   this is safe.
           
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM

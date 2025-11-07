@@ -20,19 +20,26 @@ ApplySpecialMovement
           rem 11=Pork Chop, 12=Radish, 13=Robo Tito, 14=Ursulo,
           rem   15=Shamone
           rem Apply special movement physics to all active players
-          rem Inline ApplyPlayerSpecialMovement to avoid local label cross-bank issues
-          rem Input: playerChar[] (global array) = character types, controllerStatus (global) = Quadtari detection, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections
-          rem Output: Special movement applied (currently no-op, characters handled in gravity system)
+          rem Inline ApplyPlayerSpecialMovement to avoid local label
+          rem cross-bank issues
+          rem Input: playerChar[] (global array) = character types,
+          rem controllerStatus (global) = Quadtari detection,
+          rem selectedChar3_R, selectedChar4_R (global SCRAM) = player
+          rem 3/4 selections
+          rem Output: Special movement applied (currently no-op,
+          rem characters handled in gravity system)
           rem Mutates: temp4 (used for character type checks)
           rem Called Routines: None
           rem Constraints: None
-          rem Player 0 - Frooty (8) and Dragon of Storms (2) skip gravity
+          rem Player 0 - Frooty (8) and Dragon of Storms (2) skip
+          rem gravity
           temp4 = playerChar[0]
           if temp4 = 8 then ApplySpecialMovementP1
           if temp4 = 2 then ApplySpecialMovementP1 : rem Frooty: no gravity (free flight)
           rem Dragon of Storms: no gravity (free flight)
 ApplySpecialMovementP1
-          rem Player 1 - Frooty (8) and Dragon of Storms (2) skip gravity
+          rem Player 1 - Frooty (8) and Dragon of Storms (2) skip
+          rem gravity
           temp4 = playerChar[1]
           if temp4 = 8 then ApplySpecialMovementP2
           if temp4 = 2 then ApplySpecialMovementP2 : rem Frooty: no gravity (free flight)
@@ -53,8 +60,10 @@ ApplyPlayerSpecialMovement
           rem INPUT: temp1 = player index (0-3)
           rem USES: temp4 = character type
           rem Apply special movement physics to a single player
-          rem Input: temp1 = player index (0-3), playerChar[] (global array) = character types
-          rem Output: Special movement applied (currently no-op, characters handled in gravity system)
+          rem Input: temp1 = player index (0-3), playerChar[] (global
+          rem array) = character types
+          rem Output: Special movement applied (currently no-op,
+          rem characters handled in gravity system)
           rem Mutates: temp4 (used for character type lookup)
           rem Called Routines: None
           dim APSM_playerIndex = temp1 : rem Constraints: None

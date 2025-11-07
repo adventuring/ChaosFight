@@ -13,30 +13,51 @@ DisplayWinScreen
           rem   - 2 players: Winner centered, runner-up on left platform
           rem - 3+ players: Winner centered high, 2nd on left, 3rd on
           rem   right
-          rem Displays winner screen with fixed playfield pattern and 1-3 characters
-          rem Input: playersRemaining_R (global SCRAM) = number of players remaining
-          rem        winnerPlayerIndex_R (global SCRAM) = winner player index
-          rem        eliminationOrder_R[] (global SCRAM array) = elimination order for each player
-          rem        playerChar[] (global array) = player character selections
+          rem Displays winner screen with fixed playfield pattern and
+          rem 1-3 characters
+          rem Input: playersRemaining_R (global SCRAM) = number of
+          rem players remaining
+          rem        winnerPlayerIndex_R (global SCRAM) = winner player
+          rem        index
+          rem        eliminationOrder_R[] (global SCRAM array) =
+          rem        elimination order for each player
+          rem        playerChar[] (global array) = player character
+          rem        selections
           rem        switchbw (hardware) = Color/B&W switch state
-          rem        systemFlags (global) = system flags (SystemFlagColorBWOverride)
-          rem        WinnerScreenPlayfield (ROM constant) = playfield pattern data
-          rem        WinnerScreenColorsBW, WinnerScreenColorsColor (ROM constants) = color tables
-          rem Output: Screen layout set, playfield pattern loaded, colors loaded, player sprites positioned and loaded
-          rem Mutates: pfrowheight, pfrows (set via SetAdminScreenLayout),
-          rem         PF1pointer, PF2pointer (playfield pointers, set via inline assembly),
-          rem         pfcolortable (playfield color table pointer, set via DWS_LoadBWColors/ColorColors),
-          rem         playerX[0-3], playerY[0-3] (TIA registers), player sprite pointers (via LoadCharacterSprite),
-          rem         temp1-temp8 (used for ranking calculations), DWS_bwMode
-          rem Called Routines: SetAdminScreenLayout (bank8) - sets screen layout,
+          rem        systemFlags (global) = system flags
+          rem        (SystemFlagColorBWOverride)
+          rem        WinnerScreenPlayfield (ROM constant) = playfield
+          rem        pattern data
+          rem        WinnerScreenColorsBW, WinnerScreenColorsColor (ROM
+          rem        constants) = color tables
+          rem Output: Screen layout set, playfield pattern loaded,
+          rem colors loaded, player sprites positioned and loaded
+          rem Mutates: pfrowheight, pfrows (set via
+          rem SetAdminScreenLayout),
+          rem         PF1pointer, PF2pointer (playfield pointers, set
+          rem         via inline assembly),
+          rem         pfcolortable (playfield color table pointer, set
+          rem         via DWS_LoadBWColors/ColorColors),
+          rem         playerX[0-3], playerY[0-3] (TIA registers), player
+          rem         sprite pointers (via LoadCharacterSprite),
+          rem         temp1-temp8 (used for ranking calculations),
+          rem         DWS_bwMode
+          rem Called Routines: SetAdminScreenLayout (bank8) - sets
+          rem screen layout,
           rem   DWS_GetBWMode - accesses switchbw, systemFlags,
-          rem   DWS_LoadBWColors, DWS_LoadColorColors - set color table pointers,
+          rem   DWS_LoadBWColors, DWS_LoadColorColors - set color table
+          rem   pointers,
           rem   LoadCharacterSprite (bank10) - loads character sprites
-          rem Constraints: Must be colocated with DWS_RankLoop, DWS_UpdateSecond, DWS_CheckThird,
-          rem              DWS_RankNext, DWS_Position1Player, DWS_Position2Players, DWS_Position3Players,
-          rem              DWS_Hide2Player, DWS_Hide2PlayerDone, DWS_Hide3Player2, DWS_Hide3Player2Done,
-          rem              DWS_Hide3Player3, DWS_Hide3Player3Done, DWS_GetBWMode, DWS_LoadBWColors,
-          rem              DWS_LoadColorColors (all called via goto or gosub)
+          rem Constraints: Must be colocated with DWS_RankLoop,
+          rem DWS_UpdateSecond, DWS_CheckThird,
+          rem              DWS_RankNext, DWS_Position1Player,
+          rem              DWS_Position2Players, DWS_Position3Players,
+          rem              DWS_Hide2Player, DWS_Hide2PlayerDone,
+          rem              DWS_Hide3Player2, DWS_Hide3Player2Done,
+          rem              DWS_Hide3Player3, DWS_Hide3Player3Done,
+          rem              DWS_GetBWMode, DWS_LoadBWColors,
+          rem              DWS_LoadColorColors (all called via goto or
+          rem              gosub)
           dim DWS_playersRemaining = temp1 : rem              Called from WinnerAnnouncement per-frame loop
           dim DWS_winnerIndex = temp2
           dim DWS_secondIndex = temp3
@@ -83,14 +104,20 @@ end
           let temp1 = 0 : rem Check all players for ranking
 DWS_RankLoop
           rem Ranking loop - check all players for 2nd and 3rd place
-          rem Input: temp1 (player index), DWS_winnerIndex, DWS_secondIndex, DWS_secondOrder,
-          rem        DWS_thirdIndex, DWS_thirdOrder (from DisplayWinScreen)
-          rem        eliminationOrder_R[] (global SCRAM array) = elimination order
-          rem Output: DWS_secondIndex, DWS_thirdIndex, DWS_secondOrder, DWS_thirdOrder updated
-          rem Mutates: temp1 (incremented), DWS_secondIndex, DWS_thirdIndex, DWS_secondOrder, DWS_thirdOrder,
+          rem Input: temp1 (player index), DWS_winnerIndex,
+          rem DWS_secondIndex, DWS_secondOrder,
+          rem        DWS_thirdIndex, DWS_thirdOrder (from
+          rem        DisplayWinScreen)
+          rem        eliminationOrder_R[] (global SCRAM array) =
+          rem        elimination order
+          rem Output: DWS_secondIndex, DWS_thirdIndex, DWS_secondOrder,
+          rem DWS_thirdOrder updated
+          rem Mutates: temp1 (incremented), DWS_secondIndex,
+          rem DWS_thirdIndex, DWS_secondOrder, DWS_thirdOrder,
           rem         DWS_currentOrder
           rem Called Routines: None
-          rem Constraints: Must be colocated with DisplayWinScreen, DWS_UpdateSecond, DWS_CheckThird, DWS_RankNext
+          rem Constraints: Must be colocated with DisplayWinScreen,
+          rem DWS_UpdateSecond, DWS_CheckThird, DWS_RankNext
           if temp1 = DWS_winnerIndex then DWS_RankNext : rem Skip if this is the winner
           
           let DWS_currentOrder = eliminationOrder_R[temp1] : rem Get this player’s elimination order (SCRAM read)
@@ -100,9 +127,12 @@ DWS_RankLoop
           
 DWS_UpdateSecond
           rem Move current 2nd to 3rd, then update 2nd
-          rem Input: DWS_secondIndex, DWS_secondOrder, DWS_currentOrder, temp1 (from DWS_RankLoop)
-          rem Output: DWS_thirdIndex, DWS_thirdOrder updated, DWS_secondIndex, DWS_secondOrder updated
-          rem Mutates: DWS_thirdIndex, DWS_thirdOrder, DWS_secondIndex, DWS_secondOrder
+          rem Input: DWS_secondIndex, DWS_secondOrder, DWS_currentOrder,
+          rem temp1 (from DWS_RankLoop)
+          rem Output: DWS_thirdIndex, DWS_thirdOrder updated,
+          rem DWS_secondIndex, DWS_secondOrder updated
+          rem Mutates: DWS_thirdIndex, DWS_thirdOrder, DWS_secondIndex,
+          rem DWS_secondOrder
           rem Called Routines: None
           let DWS_thirdOrder = DWS_secondOrder : rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
           let DWS_thirdIndex = DWS_secondIndex
@@ -111,18 +141,22 @@ DWS_UpdateSecond
           goto DWS_RankNext
           
 DWS_CheckThird
-          rem Check if this is 3rd place (higher order than current 3rd, but lower than 2nd)
-          rem Input: DWS_currentOrder, DWS_thirdOrder, temp1 (from DWS_RankLoop)
+          rem Check if this is 3rd place (higher order than current 3rd,
+          rem but lower than 2nd)
+          rem Input: DWS_currentOrder, DWS_thirdOrder, temp1 (from
+          rem DWS_RankLoop)
           rem Output: DWS_thirdIndex, DWS_thirdOrder updated if higher
           rem Mutates: DWS_thirdIndex, DWS_thirdOrder
           rem Called Routines: None
-          rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop, DWS_RankNext
+          rem Constraints: Must be colocated with DisplayWinScreen,
+          rem DWS_RankLoop, DWS_RankNext
           if DWS_currentOrder > DWS_thirdOrder then let DWS_thirdOrder = DWS_currentOrder : let DWS_thirdIndex = temp1
           
 DWS_RankNext
           rem Ranking loop continuation
           rem Input: temp1 (player index, from DWS_RankLoop)
-          rem Output: temp1 incremented, loops back to DWS_RankLoop if < 4
+          rem Output: temp1 incremented, loops back to DWS_RankLoop if <
+          rem 4
           rem Mutates: temp1 (incremented)
           rem Called Routines: None
           let temp1 = temp1 + 1 : rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
@@ -140,11 +174,16 @@ DWS_RankNext
           
 DWS_Position1Player
           rem 1 player: Winner centered on podium
-          rem Input: DWS_winnerIndex, playerChar[] (from DisplayWinScreen)
-          rem Output: playerX[0], playerY[0] set, winner sprite loaded, other players hidden
-          rem Mutates: playerX[0-3], playerY[0] (TIA registers), player sprite pointers (via LoadCharacterSprite),
-          rem         currentCharacter, LCS_animationFrame, LCS_playerNumber (passed to LoadCharacterSprite)
-          rem Called Routines: LoadCharacterSprite (bank10) - loads character sprite
+          rem Input: DWS_winnerIndex, playerChar[] (from
+          rem DisplayWinScreen)
+          rem Output: playerX[0], playerY[0] set, winner sprite loaded,
+          rem other players hidden
+          rem Mutates: playerX[0-3], playerY[0] (TIA registers), player
+          rem sprite pointers (via LoadCharacterSprite),
+          rem         currentCharacter, LCS_animationFrame,
+          rem         LCS_playerNumber (passed to LoadCharacterSprite)
+          rem Called Routines: LoadCharacterSprite (bank10) - loads
+          rem character sprite
           let playerX[0] = 80 : rem Constraints: Must be colocated with DisplayWinScreen
           let playerY[0] = 192
           let currentCharacter = playerChar[DWS_winnerIndex] : rem Load winner sprite
@@ -158,12 +197,18 @@ DWS_Position1Player
           
 DWS_Position2Players
           rem 2 players: Winner centered, runner-up left
-          rem Input: DWS_winnerIndex, DWS_secondIndex, playerChar[] (from DisplayWinScreen)
-          rem Output: playerX[0-1], playerY[0-1] set, winner and runner-up sprites loaded, other players hidden
-          rem Mutates: playerX[0-3], playerY[0-1] (TIA registers), player sprite pointers (via LoadCharacterSprite),
-          rem         currentCharacter, LCS_animationFrame, LCS_playerNumber (passed to LoadCharacterSprite)
-          rem Called Routines: LoadCharacterSprite (bank10) - loads character sprites
-          rem Constraints: Must be colocated with DisplayWinScreen, DWS_Hide2Player, DWS_Hide2PlayerDone
+          rem Input: DWS_winnerIndex, DWS_secondIndex, playerChar[]
+          rem (from DisplayWinScreen)
+          rem Output: playerX[0-1], playerY[0-1] set, winner and
+          rem runner-up sprites loaded, other players hidden
+          rem Mutates: playerX[0-3], playerY[0-1] (TIA registers),
+          rem player sprite pointers (via LoadCharacterSprite),
+          rem         currentCharacter, LCS_animationFrame,
+          rem         LCS_playerNumber (passed to LoadCharacterSprite)
+          rem Called Routines: LoadCharacterSprite (bank10) - loads
+          rem character sprites
+          rem Constraints: Must be colocated with DisplayWinScreen,
+          rem DWS_Hide2Player, DWS_Hide2PlayerDone
           let playerX[0] = 80 : rem Winner (P0)
           let playerY[0] = 192
           let currentCharacter = playerChar[DWS_winnerIndex]
@@ -185,7 +230,8 @@ DWS_Hide2Player
           rem Output: playerX[1] set to 0
           rem Mutates: playerX[1] (TIA register)
           rem Called Routines: None
-          rem Constraints: Must be colocated with DisplayWinScreen, DWS_Position2Players, DWS_Hide2PlayerDone
+          rem Constraints: Must be colocated with DisplayWinScreen,
+          rem DWS_Position2Players, DWS_Hide2PlayerDone
           let playerX[1] = 0
 DWS_Hide2PlayerDone
           rem Hide Player 2 complete (label only)
@@ -200,12 +246,18 @@ DWS_Hide2PlayerDone
           
 DWS_Position3Players
           rem 3+ players: Winner centered high, 2nd left, 3rd right
-          rem Input: DWS_winnerIndex, DWS_secondIndex, DWS_thirdIndex, playerChar[] (from DisplayWinScreen)
-          rem Output: playerX[0-2], playerY[0-2] set, winner/2nd/3rd sprites loaded, player 4 hidden
-          rem Mutates: playerX[0-3], playerY[0-2] (TIA registers), player sprite pointers (via LoadCharacterSprite),
-          rem         currentCharacter, LCS_animationFrame, LCS_playerNumber (passed to LoadCharacterSprite)
-          rem Called Routines: LoadCharacterSprite (bank10) - loads character sprites
-          rem Constraints: Must be colocated with DisplayWinScreen, DWS_Hide3Player2, DWS_Hide3Player2Done,
+          rem Input: DWS_winnerIndex, DWS_secondIndex, DWS_thirdIndex,
+          rem playerChar[] (from DisplayWinScreen)
+          rem Output: playerX[0-2], playerY[0-2] set, winner/2nd/3rd
+          rem sprites loaded, player 4 hidden
+          rem Mutates: playerX[0-3], playerY[0-2] (TIA registers),
+          rem player sprite pointers (via LoadCharacterSprite),
+          rem         currentCharacter, LCS_animationFrame,
+          rem         LCS_playerNumber (passed to LoadCharacterSprite)
+          rem Called Routines: LoadCharacterSprite (bank10) - loads
+          rem character sprites
+          rem Constraints: Must be colocated with DisplayWinScreen,
+          rem DWS_Hide3Player2, DWS_Hide3Player2Done,
           rem              DWS_Hide3Player3, DWS_Hide3Player3Done
           let playerX[0] = 80 : rem Winner (P0) - higher platform
           let playerY[0] = 128
@@ -229,7 +281,8 @@ DWS_Hide3Player2
           rem Output: playerX[1] set to 0
           rem Mutates: playerX[1] (TIA register)
           rem Called Routines: None
-          rem Constraints: Must be colocated with DisplayWinScreen, DWS_Position3Players, DWS_Hide3Player2Done
+          rem Constraints: Must be colocated with DisplayWinScreen,
+          rem DWS_Position3Players, DWS_Hide3Player2Done
           let playerX[1] = 0
 DWS_Hide3Player2Done
           rem Hide Player 2 complete (label only)
@@ -253,7 +306,8 @@ DWS_Hide3Player3
           rem Output: playerX[2] set to 0
           rem Mutates: playerX[2] (TIA register)
           rem Called Routines: None
-          rem Constraints: Must be colocated with DisplayWinScreen, DWS_Position3Players, DWS_Hide3Player3Done
+          rem Constraints: Must be colocated with DisplayWinScreen,
+          rem DWS_Position3Players, DWS_Hide3Player3Done
           let playerX[2] = 0
 DWS_Hide3Player3Done
           rem Hide Player 3 complete (label only)
@@ -268,7 +322,8 @@ DWS_Hide3Player3Done
 DWS_GetBWMode
           rem Check if B&W mode is active
           rem Input: switchbw (hardware) = Color/B&W switch state
-          rem        systemFlags (global) = system flags (SystemFlagColorBWOverride)
+          rem        systemFlags (global) = system flags
+          rem        (SystemFlagColorBWOverride)
           rem Output: DWS_bwMode set to 1 if B&W mode, 0 otherwise
           rem Mutates: temp2 (used for B&W mode check), DWS_bwMode
           rem Called Routines: None
@@ -285,9 +340,11 @@ DWS_GetBWMode
 DWS_LoadBWColors
           asm
           rem Load B&W colors (all white)
-          rem Input: WinnerScreenColorsBW (ROM constant) = B&W color table
+          rem Input: WinnerScreenColorsBW (ROM constant) = B&W color
+          rem table
           rem Output: pfcolortable pointer set to WinnerScreenColorsBW
-          rem Mutates: pfcolortable (playfield color table pointer, set via inline assembly)
+          rem Mutates: pfcolortable (playfield color table pointer, set
+          rem via inline assembly)
           rem Called Routines: None (uses inline assembly)
           rem Constraints: Must be colocated with DisplayWinScreen
           rem Set pfcolortable pointer to WinnerScreenColorsBW
@@ -301,9 +358,12 @@ end
 DWS_LoadColorColors
           asm
           rem Load color colors (gold gradient)
-          rem Input: WinnerScreenColorsColor (ROM constant) = color table
-          rem Output: pfcolortable pointer set to WinnerScreenColorsColor
-          rem Mutates: pfcolortable (playfield color table pointer, set via inline assembly)
+          rem Input: WinnerScreenColorsColor (ROM constant) = color
+          rem table
+          rem Output: pfcolortable pointer set to
+          rem WinnerScreenColorsColor
+          rem Mutates: pfcolortable (playfield color table pointer, set
+          rem via inline assembly)
           rem Called Routines: None (uses inline assembly)
           rem Constraints: Must be colocated with DisplayWinScreen
           rem Set pfcolortable pointer to WinnerScreenColorsColor

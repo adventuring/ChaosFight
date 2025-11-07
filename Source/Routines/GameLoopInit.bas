@@ -30,23 +30,36 @@
 
 BeginGameLoop
           rem Initialize all game state for the main gameplay loop
-          rem Input: ControllerStatus (global) = controller detection state
-          rem        SelectedChar1, SelectedChar2, selectedChar3_R, selectedChar4_R (global) = character selections
-          rem        PlayerLocked[] (global array) = lock states for handicap calculation
+          rem Input: ControllerStatus (global) = controller detection
+          rem state
+          rem        SelectedChar1, SelectedChar2, selectedChar3_R,
+          rem        selectedChar4_R (global) = character selections
+          rem        PlayerLocked[] (global array) = lock states for
+          rem        handicap calculation
           rem Output: All game state initialized for gameplay
-          rem Mutates: PlayerX[], PlayerY[], PlayerState[], PlayerHealth[], PlayerChar[],
-          rem         PlayerTimers[], playerVelocityX[], playerVelocitySubpixelX[],
-          rem         playerVelocitySubpixelY[], playerSubpixelX[], playerSubpixelY[],
-          rem         PlayerDamage[], ControllerStatus, MissileActive, PlayersEliminated,
-          rem         PlayersRemaining, GameEndTimer, EliminationCounter, EliminationOrder[],
-          rem         WinnerPlayerIndex, DisplayRank, WinScreenTimer, GameState,
-          rem         NUSIZ0, _NUSIZ1, NUSIZ2, NUSIZ3, frame, sprite pointers, screen layout
-          rem Called Routines: InitializeSpritePointers (bank10) - sets sprite pointer addresses,
+          rem Mutates: PlayerX[], PlayerY[], PlayerState[],
+          rem PlayerHealth[], PlayerChar[],
+          rem         PlayerTimers[], playerVelocityX[],
+          rem         playerVelocitySubpixelX[],
+          rem         playerVelocitySubpixelY[], playerSubpixelX[],
+          rem         playerSubpixelY[],
+          rem         PlayerDamage[], ControllerStatus, MissileActive,
+          rem         PlayersEliminated,
+          rem         PlayersRemaining, GameEndTimer,
+          rem         EliminationCounter, EliminationOrder[],
+          rem         WinnerPlayerIndex, DisplayRank, WinScreenTimer,
+          rem         GameState,
+          rem         NUSIZ0, _NUSIZ1, NUSIZ2, NUSIZ3, frame, sprite
+          rem         pointers, screen layout
+          rem Called Routines: InitializeSpritePointers (bank10) - sets
+          rem sprite pointer addresses,
           rem   SetGameScreenLayout (bank8) - sets screen layout,
           rem   GetPlayerLocked (bank14) - accesses player lock state,
-          rem   InitializeHealthBars (bank8) - initializes health bar state,
+          rem   InitializeHealthBars (bank8) - initializes health bar
+          rem   state,
           rem   LoadArena (bank1) - loads arena data
-          rem Constraints: Must be colocated with Init4PlayerPositions, InitPositionsDone,
+          rem Constraints: Must be colocated with Init4PlayerPositions,
+          rem InitPositionsDone,
           rem              PlayerHealthSet (all called via goto)
           rem              Entry point for game loop initialization
           rem Initialize sprite pointers to RAM addresses
@@ -76,7 +89,8 @@ Init4PlayerPositions
           rem Output: PlayerX[], PlayerY[] set for 4-player layout
           rem Mutates: PlayerX[], PlayerY[]
           rem Called Routines: None
-          rem Constraints: Must be colocated with BeginGameLoop, InitPositionsDone
+          rem Constraints: Must be colocated with BeginGameLoop,
+          rem InitPositionsDone
           let PlayerX[0] = 32 : PlayerY[0] = 24 : rem 4-player mode positions
           let PlayerX[2] = 64 : PlayerY[2] = 24 : rem Player 1: 1/5 width
           let PlayerX[3] = 96 : PlayerY[3] = 24 : rem Player 3: 2/5 width
@@ -168,7 +182,8 @@ PlayerHealthSet
           if !(selectedChar3_R = 255) then let PlayersRemaining = PlayersRemaining + 1
           if !(selectedChar4_R = 255) then let PlayersRemaining = PlayersRemaining + 1
 
-          rem Frame counter is automatically initialized and incremented by batariBASIC kernel
+          rem Frame counter is automatically initialized and incremented
+          rem by batariBASIC kernel
 
           let GameState  = 0 : rem Initialize game state
           rem 0 = normal play, 1 = paused, 2 = game ending

@@ -18,27 +18,41 @@ GameMainLoop
           rem   10. Draw screen
           rem AVAILABLE VARIABLES:
           rem   frame - Frame counter
-          rem   systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal, 1=paused
+          rem   systemFlags - Bit 4 (SystemFlagGameStatePaused):
+          rem   0=normal, 1=paused
           rem Bit 3 (SystemFlagGameStateEnding): 0=normal, 1=ending
           rem   qtcontroller - Quadtari multiplexing state
           rem   All Player arrays (X, Y, State, Health, etc.)
           rem Main gameplay loop that orchestrates all game systems
-          rem Input: All player state arrays, controller inputs, system flags
+          rem Input: All player state arrays, controller inputs, system
+          rem flags
           rem Output: All game systems updated for one frame
-          rem Mutates: All game state (players, missiles, animations, physics, etc.), frame counter
-          rem Called Routines: ReadEnhancedButtons, HandleConsoleSwitches (bank14),
-          rem   InputHandleAllPlayers (bank13), UpdateGuardTimers, UpdateCharacterAnimations (bank11),
-          rem   UpdatePlayerMovement (bank13), PhysicsApplyGravity (bank8),
-          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank9),
-          rem   CheckBoundaryCollisions (bank9), CheckPlayfieldCollisionAllDirections (bank9),
-          rem   CheckAllPlayerCollisions (bank9), CheckAllPlayerEliminations,
+          rem Mutates: All game state (players, missiles, animations,
+          rem physics, etc.), frame counter
+          rem Called Routines: ReadEnhancedButtons,
+          rem HandleConsoleSwitches (bank14),
+          rem   InputHandleAllPlayers (bank13), UpdateGuardTimers,
+          rem   UpdateCharacterAnimations (bank11),
+          rem   UpdatePlayerMovement (bank13), PhysicsApplyGravity
+          rem   (bank8),
+          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement
+          rem   (bank9),
+          rem   CheckBoundaryCollisions (bank9),
+          rem   CheckPlayfieldCollisionAllDirections (bank9),
+          rem   CheckAllPlayerCollisions (bank9),
+          rem   CheckAllPlayerEliminations,
           rem   UpdateAllMissiles (bank7),
-          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank8),
+          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites
+          rem   (bank8),
           rem   DisplayHealth (bank8), UpdatePlayer12HealthBars (bank8),
-          rem   UpdatePlayer34HealthBars (bank8), UpdateSoundEffect (bank15)
-          rem Constraints: Must be colocated with GameMainLoopQuadtariSkip, CheckGameEndTransition,
-          rem              TransitionToWinner, GameEndCheckDone (all called via goto)
-          rem              Entry point for main gameplay loop (called from MainLoop)
+          rem   UpdatePlayer34HealthBars (bank8), UpdateSoundEffect
+          rem   (bank15)
+          rem Constraints: Must be colocated with
+          rem GameMainLoopQuadtariSkip, CheckGameEndTransition,
+          rem              TransitionToWinner, GameEndCheckDone (all
+          rem              called via goto)
+          rem              Entry point for main gameplay loop (called
+          rem              from MainLoop)
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+
           gosub ReadEnhancedButtons : rem   II/III)
           
@@ -84,17 +98,21 @@ GameMainLoopQuadtariSkip
           
           rem Check if game should end and transition to winner screen
           rem   ending,
-          rem systemFlags bit 3 (SystemFlagGameStateEnding) means game is
+          rem systemFlags bit 3 (SystemFlagGameStateEnding) means game
+          rem is
           if systemFlags & SystemFlagGameStateEnding then CheckGameEndTransition : rem   gameEndTimer counts down
           goto GameEndCheckDone
 CheckGameEndTransition
           rem Check if game end timer should transition to winner screen
           rem Input: gameEndTimer (global) = game end countdown timer
-          rem        systemFlags (global) = system flags including ending state
-          rem Output: Dispatches to TransitionToWinner or GameEndCheckDone
+          rem        systemFlags (global) = system flags including
+          rem        ending state
+          rem Output: Dispatches to TransitionToWinner or
+          rem GameEndCheckDone
           rem Mutates: gameEndTimer (decremented)
           rem Called Routines: None (dispatcher only)
-          rem Constraints: Must be colocated with GameMainLoop, TransitionToWinner, GameEndCheckDone
+          rem Constraints: Must be colocated with GameMainLoop,
+          rem TransitionToWinner, GameEndCheckDone
           if gameEndTimer > 0 then let gameEndTimer = gameEndTimer - 1 : rem Decrement game end timer
           if gameEndTimer = 0 then TransitionToWinner : rem When timer reaches 0, transition to winner announcement
           goto GameEndCheckDone
@@ -103,7 +121,8 @@ TransitionToWinner
           rem Input: None (called from CheckGameEndTransition)
           rem Output: gameMode set to ModeWinner, ChangeGameMode called
           rem Mutates: gameMode (global)
-          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Called Routines: ChangeGameMode (bank14) - accesses game
+          rem mode state
           let gameMode = ModeWinner : rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
           gosub ChangeGameMode bank14
           return
@@ -137,7 +156,8 @@ GameEndCheckDone
           
           gosub UpdateSoundEffect bank15 : rem Update sound effects (game mode 6 only)
           
-          rem Frame counter is automatically incremented by batariBASIC kernel
+          rem Frame counter is automatically incremented by batariBASIC
+          rem kernel
           
           return
 

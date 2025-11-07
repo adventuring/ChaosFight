@@ -29,12 +29,19 @@ BernieJump
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4,
           rem   temp5, temp6
-          rem Bernie cannot jump, but pressing UP allows him to fall through 1-row platforms
-          rem Input: temp1 = player index (0-3), playerX[], playerY[] (global arrays) = player positions
-          rem Output: Bernie falls through 1-row platforms or wraps to top if at bottom
-          rem Mutates: temp1-temp6 (used for calculations), playerY[] (global array) = player Y position (moved down 1 pixel or wrapped to top)
-          rem Called Routines: ConvertPlayerXToPlayfieldColumn (bank13) - converts player X to playfield column
-          rem Constraints: Only works on 1-row deep platforms. At bottom row, wraps to top if top row is clear
+          rem Bernie cannot jump, but pressing UP allows him to fall
+          rem through 1-row platforms
+          rem Input: temp1 = player index (0-3), playerX[], playerY[]
+          rem (global arrays) = player positions
+          rem Output: Bernie falls through 1-row platforms or wraps to
+          rem top if at bottom
+          rem Mutates: temp1-temp6 (used for calculations), playerY[]
+          rem (global array) = player Y position (moved down 1 pixel or
+          rem wrapped to top)
+          rem Called Routines: ConvertPlayerXToPlayfieldColumn (bank13)
+          rem - converts player X to playfield column
+          rem Constraints: Only works on 1-row deep platforms. At bottom
+          rem row, wraps to top if top row is clear
           dim BJ_playerIndex = temp1
           dim BJ_pfColumn = temp2
           dim BJ_playerY = temp3
@@ -85,10 +92,13 @@ BernieJump
           return 
           
 BernieCheckBottomWrap
-          rem Helper: Handles Bernie fall-through at bottom row by wrapping to top if clear
-          rem Input: temp1 = player index, temp2 = playfield column, temp4 = top row (0)
+          rem Helper: Handles Bernie fall-through at bottom row by
+          rem wrapping to top if clear
+          rem Input: temp1 = player index, temp2 = playfield column,
+          rem temp4 = top row (0)
           rem Output: Bernie wrapped to top if top row is clear
-          rem Mutates: playerY[] (global array) = player Y position (set to 0 if wrapped)
+          rem Mutates: playerY[] (global array) = player Y position (set
+          rem to 0 if wrapped)
           rem Called Routines: None
           dim BCBW_pfColumn = temp2 : rem Constraints: Internal helper for BernieJump, only called when at bottom row
           dim BCBW_playerIndex = temp1
@@ -114,7 +124,8 @@ CurlerJump
           rem Standard jump behavior (tail call to StandardJump)
           rem Input: temp1 = player index (0-3)
           rem Output: Standard jump applied
-          rem Mutates: playerVelocityY[], playerVelocityYL[], playerState[] (via StandardJump)
+          rem Mutates: playerVelocityY[], playerVelocityYL[],
+          rem playerState[] (via StandardJump)
           rem Called Routines: StandardJump (tail call via goto)
           rem Constraints: None
           goto StandardJump : rem tail call
@@ -125,11 +136,18 @@ DragonetJump
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
           rem Dragon of Storms flies up with playfield collision check
-          rem Input: temp1 = player index (0-3), playerX[], playerY[] (global arrays) = player positions
-          rem Output: Upward velocity applied if clear above, jumping flag set
-          rem Mutates: temp1-temp4 (used for calculations), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
-          rem Called Routines: ConvertPlayerXToPlayfieldColumn (bank13) - converts player X to playfield column
-          rem Constraints: Only moves up if row above is clear. Cannot move if already at top row
+          rem Input: temp1 = player index (0-3), playerX[], playerY[]
+          rem (global arrays) = player positions
+          rem Output: Upward velocity applied if clear above, jumping
+          rem flag set
+          rem Mutates: temp1-temp4 (used for calculations),
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity, playerState[] (global array) = player
+          rem states (jumping flag set)
+          rem Called Routines: ConvertPlayerXToPlayfieldColumn (bank13)
+          rem - converts player X to playfield column
+          rem Constraints: Only moves up if row above is clear. Cannot
+          rem move if already at top row
           dim DJ_playerIndex = temp1
           dim DJ_pfColumn = temp2
           dim DJ_playerY = temp3
@@ -160,7 +178,9 @@ ZoeRyenJump
           rem Light character with high jump (stronger upward impulse)
           rem Input: temp1 = player index (0-3)
           rem Output: Upward velocity applied, jumping flag set
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
+          rem arrays) = vertical velocity, playerState[] (global array)
+          rem = player states (jumping flag set)
           rem Called Routines: None
           rem Constraints: None
           rem Apply upward velocity impulse (lighter character, higher
@@ -175,7 +195,9 @@ FatTonyJump
           rem Heavy character with lower jump (weaker upward impulse)
           rem Input: temp1 = player index (0-3)
           rem Output: Upward velocity applied, jumping flag set
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
+          rem arrays) = vertical velocity, playerState[] (global array)
+          rem = player states (jumping flag set)
           rem Called Routines: None
           rem Constraints: None
           rem Apply upward velocity impulse (heavier character, lower
@@ -190,7 +212,8 @@ MegaxJump
           rem Standard jump behavior (tail call to StandardJump)
           rem Input: temp1 = player index (0-3)
           rem Output: Standard jump applied
-          rem Mutates: playerVelocityY[], playerVelocityYL[], playerState[] (via StandardJump)
+          rem Mutates: playerVelocityY[], playerVelocityYL[],
+          rem playerState[] (via StandardJump)
           rem Called Routines: StandardJump (tail call via goto)
           rem Constraints: None
           goto StandardJump : rem tail call
@@ -202,12 +225,29 @@ HarpyJump
           rem INPUT: temp1 = player index
           rem USES: playerY[temp1], playerState[temp1],
           rem   harpyFlightEnergy[temp1], harpyLastFlapFrame[temp1]
-          rem Harpy flaps to fly upward, consuming flight energy with cooldown
-          rem Input: temp1 = player index (0-3), harpyFlightEnergy_R[] (global SCRAM array) = flight energy, harpyLastFlapFrame_R[] (global SCRAM array) = last flap frame, frame (global) = frame counter, playerY[] (global array) = player Y position, characterStateFlags_R[] (global SCRAM array) = character state flags, HarpyFlapCooldownFrames (global constant) = flap cooldown
-          rem Output: Upward velocity applied if energy available and cooldown expired, flight mode flag set, energy decremented
-          rem Mutates: temp1-temp2 (used for calculations), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set), characterStateFlags_W[] (global SCRAM array) = character state flags (flight mode set), harpyFlightEnergy_W[] (global SCRAM array) = flight energy (decremented), harpyLastFlapFrame_W[] (global SCRAM array) = last flap frame (updated)
+          rem Harpy flaps to fly upward, consuming flight energy with
+          rem cooldown
+          rem Input: temp1 = player index (0-3), harpyFlightEnergy_R[]
+          rem (global SCRAM array) = flight energy,
+          rem harpyLastFlapFrame_R[] (global SCRAM array) = last flap
+          rem frame, frame (global) = frame counter, playerY[] (global
+          rem array) = player Y position, characterStateFlags_R[]
+          rem (global SCRAM array) = character state flags,
+          rem HarpyFlapCooldownFrames (global constant) = flap cooldown
+          rem Output: Upward velocity applied if energy available and
+          rem cooldown expired, flight mode flag set, energy decremented
+          rem Mutates: temp1-temp2 (used for calculations),
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity, playerState[] (global array) = player
+          rem states (jumping flag set), characterStateFlags_W[] (global
+          rem SCRAM array) = character state flags (flight mode set),
+          rem harpyFlightEnergy_W[] (global SCRAM array) = flight energy
+          rem (decremented), harpyLastFlapFrame_W[] (global SCRAM array)
+          rem = last flap frame (updated)
           rem Called Routines: None
-          rem Constraints: Requires flight energy > 0 and cooldown expired. Cannot flap if already at top of screen (but still records flap)
+          rem Constraints: Requires flight energy > 0 and cooldown
+          rem expired. Cannot flap if already at top of screen (but
+          rem still records flap)
           dim HJ_playerIndex = temp1
           dim HJ_framesSinceFlap = temp2
           if harpyFlightEnergy_R[HJ_playerIndex] = 0 then return : rem Check if flight energy depleted
@@ -241,9 +281,13 @@ HarpyJump
           
 HarpyFlapRecord
           rem Helper: Records flap and decrements flight energy
-          rem Input: temp1 = player index, harpyFlightEnergy_R[] (global SCRAM array) = flight energy, frame (global) = frame counter
+          rem Input: temp1 = player index, harpyFlightEnergy_R[] (global
+          rem SCRAM array) = flight energy, frame (global) = frame
+          rem counter
           rem Output: Flight energy decremented, last flap frame updated
-          rem Mutates: harpyFlightEnergy_W[] (global SCRAM array) = flight energy (decremented), harpyLastFlapFrame_W[] (global SCRAM array) = last flap frame (updated)
+          rem Mutates: harpyFlightEnergy_W[] (global SCRAM array) =
+          rem flight energy (decremented), harpyLastFlapFrame_W[]
+          rem (global SCRAM array) = last flap frame (updated)
           rem Called Routines: None
           dim HFR_playerIndex = temp1 : rem Constraints: Internal helper for HarpyJump, only called after flap check
           if harpyFlightEnergy_R[HFR_playerIndex] > 0 then let harpyFlightEnergy_W[HFR_playerIndex] = harpyFlightEnergy_R[HFR_playerIndex] - 1 : rem Decrement flight energy on each flap
@@ -257,7 +301,9 @@ KnightGuyJump
           rem Heavy character with lower jump (weaker upward impulse)
           rem Input: temp1 = player index (0-3)
           rem Output: Upward velocity applied, jumping flag set
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
+          rem arrays) = vertical velocity, playerState[] (global array)
+          rem = player states (jumping flag set)
           rem Called Routines: None
           rem Constraints: None
           rem Apply upward velocity impulse (heavier character, lower
@@ -276,12 +322,21 @@ FrootyJump
           rem Can move up/down freely at all times, no guard action
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
-          rem Frooty flies up with playfield collision check (permanent flight)
-          rem Input: temp1 = player index (0-3), playerX[], playerY[] (global arrays) = player positions, ScreenInsetX (global constant) = screen X inset
-          rem Output: Upward velocity applied if clear above, jumping flag set
-          rem Mutates: temp1-temp4 (used for calculations), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Frooty flies up with playfield collision check (permanent
+          rem flight)
+          rem Input: temp1 = player index (0-3), playerX[], playerY[]
+          rem (global arrays) = player positions, ScreenInsetX (global
+          rem constant) = screen X inset
+          rem Output: Upward velocity applied if clear above, jumping
+          rem flag set
+          rem Mutates: temp1-temp4 (used for calculations),
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity, playerState[] (global array) = player
+          rem states (jumping flag set)
           rem Called Routines: None
-          rem Constraints: Only moves up if row above is clear. Cannot move if already at top row. Uses inline coordinate conversion (not shared subroutine)
+          rem Constraints: Only moves up if row above is clear. Cannot
+          rem move if already at top row. Uses inline coordinate
+          rem conversion (not shared subroutine)
           dim FJ_playerIndex = temp1
           dim FJ_pfColumn = temp2
           dim FJ_playerY = temp3
@@ -315,17 +370,21 @@ NefertemJump
           rem Standard jump behavior (tail call to StandardJump)
           rem Input: temp1 = player index (0-3)
           rem Output: Standard jump applied
-          rem Mutates: playerVelocityY[], playerVelocityYL[], playerState[] (via StandardJump)
+          rem Mutates: playerVelocityY[], playerVelocityYL[],
+          rem playerState[] (via StandardJump)
           rem Called Routines: StandardJump (tail call via goto)
           rem Constraints: None
           goto StandardJump : rem tail call
 
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
 NinjishGuyJump
-          rem Very light character with highest jump (strongest upward impulse)
+          rem Very light character with highest jump (strongest upward
+          rem impulse)
           rem Input: temp1 = player index (0-3)
           rem Output: Upward velocity applied, jumping flag set
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
+          rem arrays) = vertical velocity, playerState[] (global array)
+          rem = player states (jumping flag set)
           rem Called Routines: None
           rem Constraints: None
           rem Apply upward velocity impulse (very light character,
@@ -340,7 +399,9 @@ PorkChopJump
           rem Heavy character with lower jump (weaker upward impulse)
           rem Input: temp1 = player index (0-3)
           rem Output: Upward velocity applied, jumping flag set
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
+          rem arrays) = vertical velocity, playerState[] (global array)
+          rem = player states (jumping flag set)
           rem Called Routines: None
           rem Constraints: None
           rem Apply upward velocity impulse (heavy character, lower
@@ -352,10 +413,13 @@ PorkChopJump
 
           rem RADISH GOBLIN (12) - STANDARD JUMP (very light, high jump)
 RadishGoblinJump
-          rem Very light character with highest jump (strongest upward impulse)
+          rem Very light character with highest jump (strongest upward
+          rem impulse)
           rem Input: temp1 = player index (0-3)
           rem Output: Upward velocity applied, jumping flag set
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
+          rem arrays) = vertical velocity, playerState[] (global array)
+          rem = player states (jumping flag set)
           rem Called Routines: None
           rem Constraints: None
           rem Apply upward velocity impulse (very light character,
@@ -371,12 +435,32 @@ RoboTitoJump
           rem Special: sprite may not clear GRPn when done
           rem INPUT: temp1 = player index
           rem USES: playerY[temp1]
-          rem RoboTito stretches upward to latch to ceiling (no jump physics)
-          rem Input: temp1 = player index (0-3), characterStateFlags_R[] (global SCRAM array) = character state flags, playerState[] (global array) = player states, roboTitoCanStretch_R (global SCRAM) = stretch permission flags, playerY[] (global array) = player Y position, ScreenBottom (global constant) = bottom Y coordinate, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights
-          rem Output: RoboTito moves up 3 pixels per frame if stretch allowed, latches to ceiling on contact, stretch height calculated
-          rem Mutates: temp1-temp5 (used for calculations), playerY[] (global array) = player Y position (moved up), playerState[] (global array) = player states (ActionJumping set), characterStateFlags_W[] (global SCRAM array) = character state flags (latched bit set on ceiling contact), missileStretchHeight_W[] (global SCRAM array) = stretch missile heights (calculated and set), roboTitoCanStretch_W (global SCRAM) = stretch permission flags (cleared when stretching)
+          rem RoboTito stretches upward to latch to ceiling (no jump
+          rem physics)
+          rem Input: temp1 = player index (0-3), characterStateFlags_R[]
+          rem (global SCRAM array) = character state flags,
+          rem playerState[] (global array) = player states,
+          rem roboTitoCanStretch_R (global SCRAM) = stretch permission
+          rem flags, playerY[] (global array) = player Y position,
+          rem ScreenBottom (global constant) = bottom Y coordinate,
+          rem missileStretchHeight_R[] (global SCRAM array) = stretch
+          rem missile heights
+          rem Output: RoboTito moves up 3 pixels per frame if stretch
+          rem allowed, latches to ceiling on contact, stretch height
+          rem calculated
+          rem Mutates: temp1-temp5 (used for calculations), playerY[]
+          rem (global array) = player Y position (moved up),
+          rem playerState[] (global array) = player states
+          rem (ActionJumping set), characterStateFlags_W[] (global SCRAM
+          rem array) = character state flags (latched bit set on ceiling
+          rem contact), missileStretchHeight_W[] (global SCRAM array) =
+          rem stretch missile heights (calculated and set),
+          rem roboTitoCanStretch_W (global SCRAM) = stretch permission
+          rem flags (cleared when stretching)
           rem Called Routines: None
-          rem Constraints: Requires grounded state and stretch permission. Cannot stretch if already latched. Stretch height clamped to 1-80 scanlines
+          rem Constraints: Requires grounded state and stretch
+          rem permission. Cannot stretch if already latched. Stretch
+          rem height clamped to 1-80 scanlines
           dim RTJ_playerIndex = temp1
           dim RTJ_canStretch = temp2
           rem RoboTito ceiling-stretch mechanic
@@ -414,12 +498,25 @@ RoboTitoCanStretch
           goto RoboTitoStretching : rem Grounded and permission granted - allow stretching
           
 RoboTitoStretching
-          rem Helper: Sets stretching animation and calculates stretch height
-          rem Input: temp1 = player index, playerY[] (global array) = player Y position, ScreenBottom (global constant) = bottom Y coordinate, roboTitoCanStretch_R (global SCRAM) = stretch permission flags, playerState[] (global array) = player states, MaskPlayerStateFlags, ActionJumpingShifted (global constants) = state mask and animation value
-          rem Output: Stretching animation set, stretch height calculated and stored, stretch permission cleared
-          rem Mutates: temp1-temp5 (used for calculations), playerState[] (global array) = player states (ActionJumping set), missileStretchHeight_W[] (global SCRAM array) = stretch missile heights (calculated), roboTitoCanStretch_W (global SCRAM) = stretch permission flags (cleared)
+          rem Helper: Sets stretching animation and calculates stretch
+          rem height
+          rem Input: temp1 = player index, playerY[] (global array) =
+          rem player Y position, ScreenBottom (global constant) = bottom
+          rem Y coordinate, roboTitoCanStretch_R (global SCRAM) =
+          rem stretch permission flags, playerState[] (global array) =
+          rem player states, MaskPlayerStateFlags, ActionJumpingShifted
+          rem (global constants) = state mask and animation value
+          rem Output: Stretching animation set, stretch height
+          rem calculated and stored, stretch permission cleared
+          rem Mutates: temp1-temp5 (used for calculations),
+          rem playerState[] (global array) = player states
+          rem (ActionJumping set), missileStretchHeight_W[] (global
+          rem SCRAM array) = stretch missile heights (calculated),
+          rem roboTitoCanStretch_W (global SCRAM) = stretch permission
+          rem flags (cleared)
           rem Called Routines: None
-          rem Constraints: Internal helper for RoboTitoJump, only called when stretch allowed
+          rem Constraints: Internal helper for RoboTitoJump, only called
+          rem when stretch allowed
           dim RTS_playerIndex = temp1
           dim RTS_groundY = temp2
           dim RTS_stretchHeight = temp3
@@ -434,7 +531,8 @@ RoboTitoStretching
           if RTS_stretchHeight < 1 then let RTS_stretchHeight = 1 : rem Ensure minimum height of 1 scanline
           let missileStretchHeight_W[RTS_playerIndex] = RTS_stretchHeight : rem Store stretch height
           
-          rem Clear stretch permission (stretching upward, cannot stretch again until grounded)
+          rem Clear stretch permission (stretching upward, cannot
+          rem stretch again until grounded)
           let temp4 = RTS_playerIndex : rem Calculate bit mask and clear bit
           let temp5 = roboTitoCanStretch_R
           if temp4 = 0 then RTS_ClearBit0 : rem Load current flags
@@ -461,11 +559,27 @@ RTS_StretchPermissionCleared
           
 RoboTitoCheckCeiling
           rem Helper: Checks for ceiling contact and latches if detected
-          rem Input: temp1 = player index, playerX[], playerY[] (global arrays) = player positions, ScreenInsetX (global constant) = screen X inset, characterStateFlags_R[] (global SCRAM array) = character state flags, playerState[] (global array) = player states, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights, MaskPlayerStateFlags, ActionJumpingShifted (global constants) = state mask and animation value
-          rem Output: RoboTito latched to ceiling if contact detected, stretch height cleared
-          rem Mutates: temp1-temp4 (used for calculations), playerY[] (global array) = player Y position (moved up if no contact), characterStateFlags_W[] (global SCRAM array) = character state flags (latched bit set on contact), playerState[] (global array) = player states (ActionJumping set on latch), missileStretchHeight_W[] (global SCRAM array) = stretch missile heights (cleared on latch)
+          rem Input: temp1 = player index, playerX[], playerY[] (global
+          rem arrays) = player positions, ScreenInsetX (global constant)
+          rem = screen X inset, characterStateFlags_R[] (global SCRAM
+          rem array) = character state flags, playerState[] (global
+          rem array) = player states, missileStretchHeight_R[] (global
+          rem SCRAM array) = stretch missile heights,
+          rem MaskPlayerStateFlags, ActionJumpingShifted (global
+          rem constants) = state mask and animation value
+          rem Output: RoboTito latched to ceiling if contact detected,
+          rem stretch height cleared
+          rem Mutates: temp1-temp4 (used for calculations), playerY[]
+          rem (global array) = player Y position (moved up if no
+          rem contact), characterStateFlags_W[] (global SCRAM array) =
+          rem character state flags (latched bit set on contact),
+          rem playerState[] (global array) = player states
+          rem (ActionJumping set on latch), missileStretchHeight_W[]
+          rem (global SCRAM array) = stretch missile heights (cleared on
+          rem latch)
           rem Called Routines: None
-          rem Constraints: Internal helper for RoboTitoJump, only called when at top of screen
+          rem Constraints: Internal helper for RoboTitoJump, only called
+          rem when at top of screen
           dim RTCC_playerIndex = temp1
           dim RTCC_pfColumn = temp2
           dim RTCC_playerY = temp3
@@ -488,19 +602,34 @@ RoboTitoCheckCeiling
           return
           
 RoboTitoLatch
-          rem Helper: Latches RoboTito to ceiling and clears stretch height
-          rem Input: temp1 = player index, characterStateFlags_R[] (global SCRAM array) = character state flags, playerState[] (global array) = player states, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights, MaskPlayerStateFlags, ActionJumpingShifted (global constants) = state mask and animation value
-          rem Output: RoboTito latched to ceiling, hanging animation set, stretch height cleared
-          rem Mutates: temp1-temp2 (used for calculations), characterStateFlags_W[] (global SCRAM array) = character state flags (latched bit set), playerState[] (global array) = player states (ActionJumping set), missileStretchHeight_W[] (global SCRAM array) = stretch missile heights (cleared)
+          rem Helper: Latches RoboTito to ceiling and clears stretch
+          rem height
+          rem Input: temp1 = player index, characterStateFlags_R[]
+          rem (global SCRAM array) = character state flags,
+          rem playerState[] (global array) = player states,
+          rem missileStretchHeight_R[] (global SCRAM array) = stretch
+          rem missile heights, MaskPlayerStateFlags,
+          rem ActionJumpingShifted (global constants) = state mask and
+          rem animation value
+          rem Output: RoboTito latched to ceiling, hanging animation
+          rem set, stretch height cleared
+          rem Mutates: temp1-temp2 (used for calculations),
+          rem characterStateFlags_W[] (global SCRAM array) = character
+          rem state flags (latched bit set), playerState[] (global
+          rem array) = player states (ActionJumping set),
+          rem missileStretchHeight_W[] (global SCRAM array) = stretch
+          rem missile heights (cleared)
           rem Called Routines: None
-          rem Constraints: Internal helper for RoboTitoCheckCeiling, only called on ceiling contact
+          rem Constraints: Internal helper for RoboTitoCheckCeiling,
+          rem only called on ceiling contact
           dim RTL_playerIndex = temp1
           dim RTL_currentHeight = temp2
           rem Ceiling contact detected - latch to ceiling
           let RTL_stateFlags = characterStateFlags_R[RTL_playerIndex] | 1 : rem Fix RMW: Read from _R, modify, write to _W
           let characterStateFlags_W[RTL_playerIndex] = RTL_stateFlags
           let playerState[RTL_playerIndex] = (playerState[RTL_playerIndex] & MaskPlayerStateFlags) | ActionJumpingShifted : rem Set latched bit
-          rem Set hanging animation (ActionJumping = 10, repurposed for hanging)
+          rem Set hanging animation (ActionJumping = 10, repurposed for
+          rem hanging)
           
           let RTL_currentHeight = missileStretchHeight_R[RTL_playerIndex] : rem Rapidly reduce missile height to 0 over 2-3 frames
           if RTL_currentHeight <= 0 then RTL_HeightCleared
@@ -518,7 +647,9 @@ UrsuloJump
           rem Heavy character with lower jump (weaker upward impulse)
           rem Input: temp1 = player index (0-3)
           rem Output: Upward velocity applied, jumping flag set
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
+          rem arrays) = vertical velocity, playerState[] (global array)
+          rem = player states (jumping flag set)
           rem Called Routines: None
           rem Constraints: None
           rem Apply upward velocity impulse (heavy character, lower
@@ -533,7 +664,9 @@ ShamoneJump
           rem Light character with good jump (strong upward impulse)
           rem Input: temp1 = player index (0-3)
           rem Output: Upward velocity applied, jumping flag set
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
+          rem arrays) = vertical velocity, playerState[] (global array)
+          rem = player states (jumping flag set)
           rem Called Routines: None
           rem Constraints: None
           let playerVelocityY[temp1] = 245 : rem Apply upward velocity impulse (light character, good jump)
@@ -571,11 +704,19 @@ DragonetDown
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
           rem Dragon of Storms flies down with playfield collision check
-          rem Input: temp1 = player index (0-3), playerX[], playerY[] (global arrays) = player positions, ScreenInsetX (global constant) = screen X inset
-          rem Output: Downward velocity applied if clear below, guard bit cleared
-          rem Mutates: temp1-temp4 (used for calculations), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (guard bit cleared)
+          rem Input: temp1 = player index (0-3), playerX[], playerY[]
+          rem (global arrays) = player positions, ScreenInsetX (global
+          rem constant) = screen X inset
+          rem Output: Downward velocity applied if clear below, guard
+          rem bit cleared
+          rem Mutates: temp1-temp4 (used for calculations),
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity, playerState[] (global array) = player
+          rem states (guard bit cleared)
           rem Called Routines: None
-          rem Constraints: Only moves down if row below is clear. Cannot move if already at bottom. Uses inline coordinate conversion (not shared subroutine)
+          rem Constraints: Only moves down if row below is clear. Cannot
+          rem move if already at bottom. Uses inline coordinate
+          rem conversion (not shared subroutine)
           dim DD_playerIndex = temp1
           dim DD_pfColumn = temp2
           dim DD_playerY = temp3
@@ -621,12 +762,26 @@ HarpyDown
           rem Harpy flies down instead of guarding
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
-          rem Harpy flies down with playfield collision check, sets dive mode if airborne
-          rem Input: temp1 = player index (0-3), playerX[], playerY[] (global arrays) = player positions, playerState[] (global array) = player states, characterStateFlags_R[] (global SCRAM array) = character state flags, ScreenInsetX (global constant) = screen X inset
-          rem Output: Downward velocity applied if clear below, dive mode set if airborne, guard bit cleared
-          rem Mutates: temp1-temp4 (used for calculations), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (guard bit cleared), characterStateFlags_W[] (global SCRAM array) = character state flags (dive mode set if airborne)
+          rem Harpy flies down with playfield collision check, sets dive
+          rem mode if airborne
+          rem Input: temp1 = player index (0-3), playerX[], playerY[]
+          rem (global arrays) = player positions, playerState[] (global
+          rem array) = player states, characterStateFlags_R[] (global
+          rem SCRAM array) = character state flags, ScreenInsetX (global
+          rem constant) = screen X inset
+          rem Output: Downward velocity applied if clear below, dive
+          rem mode set if airborne, guard bit cleared
+          rem Mutates: temp1-temp4 (used for calculations),
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity, playerState[] (global array) = player
+          rem states (guard bit cleared), characterStateFlags_W[]
+          rem (global SCRAM array) = character state flags (dive mode
+          rem set if airborne)
           rem Called Routines: None
-          rem Constraints: Only moves down if row below is clear. Cannot move if already at bottom. Sets dive mode if airborne (jumping flag set or Y < 60). Uses inline coordinate conversion (not shared subroutine)
+          rem Constraints: Only moves down if row below is clear. Cannot
+          rem move if already at bottom. Sets dive mode if airborne
+          rem (jumping flag set or Y < 60). Uses inline coordinate
+          rem conversion (not shared subroutine)
           dim HD_playerIndex = temp1
           dim HD_playerY = temp2
           dim HD_pfColumn = temp2
@@ -638,9 +793,11 @@ HarpyDown
           goto HarpyNormalDown : rem Above ground level, airborne
 HarpySetDive
           rem Helper: Sets dive mode flag for Harpy when airborne
-          rem Input: temp1 = player index, characterStateFlags_R[] (global SCRAM array) = character state flags
+          rem Input: temp1 = player index, characterStateFlags_R[]
+          rem (global SCRAM array) = character state flags
           rem Output: Dive mode flag set (bit 2)
-          rem Mutates: characterStateFlags_W[] (global SCRAM array) = character state flags (dive mode set)
+          rem Mutates: characterStateFlags_W[] (global SCRAM array) =
+          rem character state flags (dive mode set)
           rem Called Routines: None
           dim HSD_playerIndex = temp1 : rem Constraints: Internal helper for HarpyDown, only called when airborne
           rem Set dive mode flag for increased damage and normal gravity
@@ -649,9 +806,15 @@ HarpySetDive
           rem Set bit 2 (dive mode)
 HarpyNormalDown
           rem Helper: Handles Harpy flying down with collision check
-          rem Input: temp1 = player index, playerX[], playerY[] (global arrays) = player positions, ScreenInsetX (global constant) = screen X inset
-          rem Output: Downward velocity applied if clear below, guard bit cleared
-          rem Mutates: temp1-temp4 (used for calculations), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (guard bit cleared)
+          rem Input: temp1 = player index, playerX[], playerY[] (global
+          rem arrays) = player positions, ScreenInsetX (global constant)
+          rem = screen X inset
+          rem Output: Downward velocity applied if clear below, guard
+          rem bit cleared
+          rem Mutates: temp1-temp4 (used for calculations),
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity, playerState[] (global array) = player
+          rem states (guard bit cleared)
           rem Called Routines: None
           dim HND_playerIndex = temp1 : rem Constraints: Internal helper for HarpyDown, handles downward movement
           dim HND_pfColumn = temp2
@@ -690,12 +853,21 @@ FrootyDown
           rem Frooty flies down instead of guarding
           rem INPUT: temp1 = player index
           rem USES: playerX[temp1], playerY[temp1], temp2, temp3, temp4
-          rem Frooty flies down with playfield collision check (permanent flight)
-          rem Input: temp1 = player index (0-3), playerX[], playerY[] (global arrays) = player positions, ScreenInsetX (global constant) = screen X inset
-          rem Output: Downward velocity applied if clear below, guard bit cleared
-          rem Mutates: temp1-temp4 (used for calculations), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (guard bit cleared)
+          rem Frooty flies down with playfield collision check
+          rem (permanent flight)
+          rem Input: temp1 = player index (0-3), playerX[], playerY[]
+          rem (global arrays) = player positions, ScreenInsetX (global
+          rem constant) = screen X inset
+          rem Output: Downward velocity applied if clear below, guard
+          rem bit cleared
+          rem Mutates: temp1-temp4 (used for calculations),
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity, playerState[] (global array) = player
+          rem states (guard bit cleared)
           rem Called Routines: None
-          rem Constraints: Only moves down if row below is clear. Cannot move if already at bottom. Uses inline coordinate conversion (not shared subroutine)
+          rem Constraints: Only moves down if row below is clear. Cannot
+          rem move if already at bottom. Uses inline coordinate
+          rem conversion (not shared subroutine)
           dim FD_playerIndex = temp1
           dim FD_pfColumn = temp2
           dim FD_playerY = temp3
@@ -743,23 +915,54 @@ RadishGoblinDown
 
           rem ROBO TITO (13) - GUARD
 RoboTitoDown
-          rem RoboTito drops from ceiling on DOWN press, or guards if not latched
-          rem Input: temp1 = player index (0-3), characterStateFlags_R[] (global SCRAM array) = character state flags, playerState[] (global array) = player states, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights, MaskPlayerStateFlags, ActionFallingShifted (global constants) = state mask and animation value, PlayerStateBitFacing (global constant) = facing bit mask
-          rem Output: RoboTito drops from ceiling if latched, or standard guard applied if not latched
-          rem Mutates: temp1 (used for calculations), characterStateFlags_W[] (global SCRAM array) = character state flags (latched bit cleared if dropping), playerState[] (global array) = player states (ActionFalling set if dropping), missileStretchHeight_W[] (global SCRAM array) = stretch missile heights (cleared if dropping), playerState[], playerTimers[] (via StandardGuard if not latched)
-          rem Called Routines: StandardGuard (tail call via goto if not latched)
-          rem Constraints: If latched to ceiling, DOWN causes voluntary drop. If not latched, DOWN triggers standard guard
+          rem RoboTito drops from ceiling on DOWN press, or guards if
+          rem not latched
+          rem Input: temp1 = player index (0-3), characterStateFlags_R[]
+          rem (global SCRAM array) = character state flags,
+          rem playerState[] (global array) = player states,
+          rem missileStretchHeight_R[] (global SCRAM array) = stretch
+          rem missile heights, MaskPlayerStateFlags,
+          rem ActionFallingShifted (global constants) = state mask and
+          rem animation value, PlayerStateBitFacing (global constant) =
+          rem facing bit mask
+          rem Output: RoboTito drops from ceiling if latched, or
+          rem standard guard applied if not latched
+          rem Mutates: temp1 (used for calculations),
+          rem characterStateFlags_W[] (global SCRAM array) = character
+          rem state flags (latched bit cleared if dropping),
+          rem playerState[] (global array) = player states
+          rem (ActionFalling set if dropping), missileStretchHeight_W[]
+          rem (global SCRAM array) = stretch missile heights (cleared if
+          rem dropping), playerState[], playerTimers[] (via
+          rem StandardGuard if not latched)
+          rem Called Routines: StandardGuard (tail call via goto if not
+          rem latched)
+          rem Constraints: If latched to ceiling, DOWN causes voluntary
+          rem drop. If not latched, DOWN triggers standard guard
           rem RoboTito voluntary drop from ceiling
           if !(characterStateFlags_R[temp1] & 1) then RoboTitoNotLatched : rem Check if latched to ceiling
           goto RoboTitoNotLatched : rem Not latched, proceed to guard
           
 RoboTitoVoluntaryDrop
           rem Helper: Releases RoboTito from ceiling on DOWN press
-          rem Input: temp1 = player index, characterStateFlags_R[] (global SCRAM array) = character state flags, playerState[] (global array) = player states, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights, MaskPlayerStateFlags, ActionFallingShifted (global constants) = state mask and animation value, PlayerStateBitFacing (global constant) = facing bit mask
-          rem Output: RoboTito released from ceiling, falling animation set, stretch height cleared
-          rem Mutates: characterStateFlags_W[] (global SCRAM array) = character state flags (latched bit cleared), playerState[] (global array) = player states (ActionFalling set), missileStretchHeight_W[] (global SCRAM array) = stretch missile heights (cleared)
+          rem Input: temp1 = player index, characterStateFlags_R[]
+          rem (global SCRAM array) = character state flags,
+          rem playerState[] (global array) = player states,
+          rem missileStretchHeight_R[] (global SCRAM array) = stretch
+          rem missile heights, MaskPlayerStateFlags,
+          rem ActionFallingShifted (global constants) = state mask and
+          rem animation value, PlayerStateBitFacing (global constant) =
+          rem facing bit mask
+          rem Output: RoboTito released from ceiling, falling animation
+          rem set, stretch height cleared
+          rem Mutates: characterStateFlags_W[] (global SCRAM array) =
+          rem character state flags (latched bit cleared), playerState[]
+          rem (global array) = player states (ActionFalling set),
+          rem missileStretchHeight_W[] (global SCRAM array) = stretch
+          rem missile heights (cleared)
           rem Called Routines: None
-          rem Constraints: Internal helper for RoboTitoDown, only called when latched to ceiling
+          rem Constraints: Internal helper for RoboTitoDown, only called
+          rem when latched to ceiling
           dim RTLVD_playerIndex = temp1
           rem Release from ceiling on DOWN press
           let RTLVD_stateFlags = characterStateFlags_R[RTLVD_playerIndex] & (255 - PlayerStateBitFacing) : rem Fix RMW: Read from _R, modify, write to _W
@@ -775,7 +978,8 @@ RoboTitoNotLatched
           rem Output: Standard guard applied
           rem Mutates: playerState[], playerTimers[] (via StandardGuard)
           rem Called Routines: StandardGuard (tail call via goto)
-          rem Constraints: Internal helper for RoboTitoDown, only called when not latched
+          rem Constraints: Internal helper for RoboTitoDown, only called
+          rem when not latched
           goto StandardGuard : rem Not latched, use standard guard
 
           rem URSULO (14) - GUARD
@@ -887,10 +1091,13 @@ StandardJump
           rem Standard jump behavior for most characters
           rem INPUT: temp1 = player index
           rem USES: playerY[temp1], playerState[temp1]
-          rem Standard jump behavior used by most characters (default jump impulse)
+          rem Standard jump behavior used by most characters (default
+          rem jump impulse)
           rem Input: temp1 = player index (0-3)
           rem Output: Upward velocity applied, jumping flag set
-          rem Mutates: playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerState[] (global array) = player states (jumping flag set)
+          rem Mutates: playerVelocityY[], playerVelocityYL[] (global
+          rem arrays) = vertical velocity, playerState[] (global array)
+          rem = player states (jumping flag set)
           rem Called Routines: None
           rem Constraints: None
           rem Apply upward velocity impulse (input applies impulse to
@@ -907,12 +1114,20 @@ StandardGuard
           rem USES: playerState[temp1], playerTimers[temp1]
           rem NOTE: Flying characters (Frooty, Dragon of Storms, Harpy)
           rem   cannot guard
-          rem Standard guard behavior used by most characters (blocks attacks, visual flashing)
-          rem Input: temp1 = player index (0-3), playerChar[] (global array) = character types
-          rem Output: Guard activated if allowed (not flying character, not in cooldown)
-          rem Mutates: temp1-temp4 (used for calculations), playerState[], playerTimers[] (global arrays) = player states and timers (via StartGuard)
-          rem Called Routines: CheckGuardCooldown (bank11) - checks guard cooldown, StartGuard (bank11) - activates guard
-          rem Constraints: Flying characters (Frooty=8, Dragon of Storms=2, Harpy=6) cannot guard. Guard blocked if in cooldown
+          rem Standard guard behavior used by most characters (blocks
+          rem attacks, visual flashing)
+          rem Input: temp1 = player index (0-3), playerChar[] (global
+          rem array) = character types
+          rem Output: Guard activated if allowed (not flying character,
+          rem not in cooldown)
+          rem Mutates: temp1-temp4 (used for calculations),
+          rem playerState[], playerTimers[] (global arrays) = player
+          rem states and timers (via StartGuard)
+          rem Called Routines: CheckGuardCooldown (bank11) - checks
+          rem guard cooldown, StartGuard (bank11) - activates guard
+          rem Constraints: Flying characters (Frooty=8, Dragon of
+          rem Storms=2, Harpy=6) cannot guard. Guard blocked if in
+          rem cooldown
           dim SG_playerIndex = temp1
           dim SG_characterType = temp4
           dim SG_guardAllowed = temp2

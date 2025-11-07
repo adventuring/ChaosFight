@@ -24,7 +24,8 @@
           rem Player 4: Turquoise (ColTurquoise(14), SECAM maps to
           rem   Green)
 
-          #include "Source/Generated/Numbers.bas" : rem Include font data (universal for all TV standards)
+          rem Include font data (universal for all TV standards)
+          #include "Source/Generated/Numbers.bas"
 
           rem
           rem Draw Digit - Data-driven Version
@@ -59,20 +60,27 @@ DrawDigit
           rem   rem Draw player 2 in red on right using player1
           rem temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = ColRed(14)
           rem   : temp5 = 1 : gosub DrawDigit
-          rem Draws a single hexadecimal digit (0-F) at specified position
+          rem Draws a single hexadecimal digit (0-F) at specified
+          rem position
           rem Input: temp1 = digit value (0-15)
           rem        temp2 = X position (pixel column)
           rem        temp3 = Y position (pixel row)
           rem        temp4 = color ($00-$FF for specific color)
-          rem        temp5 = sprite select (0=player0, 1=player1, 2=player2, 3=player3, 4=player4, 5=player5)
+          rem        temp5 = sprite select (0=player0, 1=player1,
+          rem        2=player2, 3=player3, 4=player4, 5=player5)
           rem        FontData (ROM constant) = font data array
-          rem Output: player0-5x, player0-5y (TIA registers) set, COLUP0-COLUP5 set,
+          rem Output: player0-5x, player0-5y (TIA registers) set,
+          rem COLUP0-COLUP5 set,
           rem         player sprite pointer set via LoadPlayerDigit
-          rem Mutates: temp1 (clamped to 0-15), temp5 (preserved for LoadPlayerDigit), temp6 (digit offset),
-          rem         player0-5x, player0-5y (TIA registers), COLUP0-COLUP5 (TIA color registers),
+          rem Mutates: temp1 (clamped to 0-15), temp5 (preserved for
+          rem LoadPlayerDigit), temp6 (digit offset),
+          rem         player0-5x, player0-5y (TIA registers),
+          rem         COLUP0-COLUP5 (TIA color registers),
           rem         player sprite pointers (via LoadPlayerDigit)
-          rem Called Routines: LoadPlayerDigit - accesses temp5, temp6, FontData
-          rem Constraints: Must be colocated with SetSprite0-5, LoadPlayerDigit (all called via goto)
+          rem Called Routines: LoadPlayerDigit - accesses temp5, temp6,
+          rem FontData
+          rem Constraints: Must be colocated with SetSprite0-5,
+          rem LoadPlayerDigit (all called via goto)
           dim DD_digit = temp1
           dim DD_xPos = temp2
           dim DD_yPos = temp3
@@ -159,24 +167,32 @@ SetSprite5
 LoadPlayerDigit
           rem
           rem Load Digit Data Into Sprites
-          rem Consolidated generic loader that dispatches to sprite-specific
+          rem Consolidated generic loader that dispatches to
+          rem sprite-specific
           rem   pointer assignment based on spriteSelect
           rem INPUT: temp5 = spriteSelect (0-5), temp6 = digitOffset
-          rem Uses spriteSelect from previous DrawDigit call (stored in DD_spriteSelect)
+          rem Uses spriteSelect from previous DrawDigit call (stored in
+          rem DD_spriteSelect)
           rem   but we need to preserve it in temp5
-          rem Consolidated generic loader that dispatches to sprite-specific pointer assignment
+          rem Consolidated generic loader that dispatches to
+          rem sprite-specific pointer assignment
           rem Input: temp5 = spriteSelect (0-5), temp6 = digitOffset
-          rem        FontData (ROM constant) = font data array base address
-          rem Output: player0-5pointerlo/hi set to FontData + digitOffset, player0-5height set to 16
+          rem        FontData (ROM constant) = font data array base
+          rem        address
+          rem Output: player0-5pointerlo/hi set to FontData +
+          rem digitOffset, player0-5height set to 16
           rem Mutates: temp5 (clamped to 0-5), temp6 (clamped to 0-240),
-          rem         player0-5pointerlo, player0-5pointerhi (set via inline assembly),
+          rem         player0-5pointerlo, player0-5pointerhi (set via
+          rem         inline assembly),
           rem         player0-5height (set to 16)
           rem Called Routines: None (uses inline assembly)
-          rem Constraints: Must be colocated with LoadSprite0Ptr-5Ptr (all called via on/goto)
+          rem Constraints: Must be colocated with LoadSprite0Ptr-5Ptr
+          rem (all called via on/goto)
           dim LPD_digitOffset = temp6
           dim LPD_spriteSelect = temp5
           if LPD_digitOffset > 240 then let LPD_digitOffset = 240 : rem Clamp digit offset to valid range (0-240 for digits 0-15)
-          rem Dispatch to sprite-specific pointer loader based on spriteSelect
+          rem Dispatch to sprite-specific pointer loader based on
+          rem spriteSelect
           if LPD_spriteSelect > 5 then let LPD_spriteSelect = 0 : rem   (still in temp5 from DrawDigit)
           if LPD_spriteSelect = 0 then goto LoadSprite0Ptr
           if LPD_spriteSelect = 1 then goto LoadSprite1Ptr
@@ -188,9 +204,11 @@ LoadPlayerDigit
 LoadSprite0Ptr
           asm
           rem Load Player 0 sprite pointer to font data
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData (ROM constant)
+          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          rem (ROM constant)
           rem Output: player0pointerlo/hi set, player0height set to 16
-          rem Mutates: player0pointerlo, player0pointerhi (set via inline assembly), player0height
+          rem Mutates: player0pointerlo, player0pointerhi (set via
+          rem inline assembly), player0height
           rem Called Routines: None (uses inline assembly)
           rem Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
@@ -207,9 +225,11 @@ end
 LoadSprite1Ptr
           asm
           rem Load Player 1 sprite pointer to font data
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData (ROM constant)
+          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          rem (ROM constant)
           rem Output: player1pointerlo/hi set, player1height set to 16
-          rem Mutates: player1pointerlo, player1pointerhi (set via inline assembly), player1height
+          rem Mutates: player1pointerlo, player1pointerhi (set via
+          rem inline assembly), player1height
           rem Called Routines: None (uses inline assembly)
           rem Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
@@ -226,9 +246,11 @@ end
 LoadSprite2Ptr
           asm
           rem Load Player 2 sprite pointer to font data
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData (ROM constant)
+          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          rem (ROM constant)
           rem Output: player2pointerlo/hi set, player2height set to 16
-          rem Mutates: player2pointerlo, player2pointerhi (set via inline assembly), player2height
+          rem Mutates: player2pointerlo, player2pointerhi (set via
+          rem inline assembly), player2height
           rem Called Routines: None (uses inline assembly)
           rem Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
@@ -245,9 +267,11 @@ end
 LoadSprite3Ptr
           asm
           rem Load Player 3 sprite pointer to font data
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData (ROM constant)
+          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          rem (ROM constant)
           rem Output: player3pointerlo/hi set, player3height set to 16
-          rem Mutates: player3pointerlo, player3pointerhi (set via inline assembly), player3height
+          rem Mutates: player3pointerlo, player3pointerhi (set via
+          rem inline assembly), player3height
           rem Called Routines: None (uses inline assembly)
           rem Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
@@ -264,9 +288,11 @@ end
 LoadSprite4Ptr
           asm
           rem Load Player 4 sprite pointer to font data
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData (ROM constant)
+          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          rem (ROM constant)
           rem Output: player4pointerlo/hi set, player4height set to 16
-          rem Mutates: player4pointerlo, player4pointerhi (set via inline assembly), player4height
+          rem Mutates: player4pointerlo, player4pointerhi (set via
+          rem inline assembly), player4height
           rem Called Routines: None (uses inline assembly)
           rem Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData

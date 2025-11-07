@@ -24,8 +24,10 @@ DrawTitleScreen
           rem Clear sprites first
           rem Input: titleParadeActive (global) = whether to draw parade
           rem Output: Title screen rendered, sprites cleared
-          rem Mutates: player0x, player0y, player1x, player1y (cleared to 0)
-          rem Called Routines: DrawParadeCharacter (bank9) - if titleParadeActive set
+          rem Mutates: player0x, player0y, player1x, player1y (cleared
+          rem to 0)
+          rem Called Routines: DrawParadeCharacter (bank9) - if
+          rem titleParadeActive set
           rem Constraints: None
           player0x = 0
           player0y = 0
@@ -69,10 +71,12 @@ LoadTitleBitmap
           rem Other screens’ minikernels should have window=0 in their
           rem   image files
           rem Input: None
-          rem Output: Title bitmap configured (via compile-time constants)
+          rem Output: Title bitmap configured (via compile-time
+          rem constants)
           rem Mutates: None (compile-time configuration only)
           rem Called Routines: None
-          rem Constraints: Bitmap configuration is compile-time only, no runtime changes
+          rem Constraints: Bitmap configuration is compile-time only, no
+          rem runtime changes
           rem The titlescreen kernel uses fixed labels
           rem   (bmp_48x2_3_window, etc.)
               rem These are set as constants in the .s image files

@@ -16,8 +16,11 @@ BeginAttractMode
           rem Output: COLUBK set
           rem Mutates: COLUBK (TIA register)
           rem Called Routines: None
-          rem Constraints: Called from ChangeGameMode when transitioning to ModeAttract
-          rem              Attract mode immediately transitions to Publisher Prelude (handled in AttractMode loop)
+          rem Constraints: Called from ChangeGameMode when transitioning
+          rem to ModeAttract
+          rem              Attract mode immediately transitions to
+          rem              Publisher Prelude (handled in AttractMode
+          rem              loop)
           rem Initialize Attract Mode
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)

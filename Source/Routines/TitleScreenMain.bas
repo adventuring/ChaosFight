@@ -26,14 +26,18 @@ TitleScreenMain
           rem   4. Return to MainLoop
           rem Per-frame title screen display and input handling
           rem Input: joy0fire, joy1fire (hardware) = button states
-          rem        controllerStatus (global) = controller detection state
-          rem        INPT0, INPT2 (hardware) = Quadtari controller states
+          rem        controllerStatus (global) = controller detection
+          rem        state
+          rem        INPT0, INPT2 (hardware) = Quadtari controller
+          rem        states
           rem Output: Dispatches to TitleScreenComplete or returns
           rem Mutates: None (dispatcher only)
-          rem Called Routines: UpdateCharacterParade (bank9) - accesses parade state,
+          rem Called Routines: UpdateCharacterParade (bank9) - accesses
+          rem parade state,
           rem   DrawTitleScreen (bank9) - accesses title screen state,
           rem   titledrawscreen (bank9) - accesses title screen graphics
-          rem Constraints: Must be colocated with TitleSkipQuad, TitleScreenComplete
+          rem Constraints: Must be colocated with TitleSkipQuad,
+          rem TitleScreenComplete
           rem              Called from MainLoop each frame (gameMode 2)
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
@@ -55,8 +59,10 @@ TitleSkipQuad
           
           gosub DrawTitleScreen bank9 : rem Draw title screen
           
-          rem Draw screen with titlescreen kernel minikernel (titlescreen graphics in Bank 9)
-          rem Note: MainLoop calls titledrawscreen, so this is only reached if called directly
+          rem Draw screen with titlescreen kernel minikernel
+          rem (titlescreen graphics in Bank 9)
+          rem Note: MainLoop calls titledrawscreen, so this is only
+          rem reached if called directly
           gosub titledrawscreen bank9
           
           return
@@ -64,9 +70,11 @@ TitleSkipQuad
 TitleScreenComplete
           rem Transition to character select
           rem Input: None (called from TitleScreenMain)
-          rem Output: gameMode set to ModeCharacterSelect, ChangeGameMode called
+          rem Output: gameMode set to ModeCharacterSelect,
+          rem ChangeGameMode called
           rem Mutates: gameMode (global)
-          rem Called Routines: ChangeGameMode (bank14) - accesses game mode state
+          rem Called Routines: ChangeGameMode (bank14) - accesses game
+          rem mode state
           let gameMode = ModeCharacterSelect : rem Constraints: Must be colocated with TitleScreenMain
           gosub ChangeGameMode bank14
           return

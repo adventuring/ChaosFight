@@ -37,7 +37,8 @@ Use **PascalCase** for:
 LoadCharacterSprite
           rem Load sprite data for a character
           rem Input: temp1 = character index, temp2 = animation frame
-          rem Output: Sprite data loaded into appropriate player register
+          rem Output: Sprite data loaded into appropriate player
+          rem register
 
 const MaxCharacter = 15
 const RandomArena = 255
@@ -236,10 +237,14 @@ rem Character's weight affects fall damage
 
 **Incorrect:**
 ```basic
-rem Check for negative velocity using two's complement  ; Wrong: straight apostrophe causes cpp warnings
-rem It's important to note that this uses two's complement  ; Wrong: straight apostrophe causes cpp warnings
-rem The player won't move if velocity is zero  ; Wrong: straight apostrophe causes cpp warnings
-rem Other screens' minikernels should have window=0  ; Wrong: straight apostrophe causes cpp warnings
+rem Check for negative velocity using two's complement  ; Wrong:
+rem straight apostrophe causes cpp warnings
+rem It's important to note that this uses two's complement  ; Wrong:
+rem straight apostrophe causes cpp warnings
+rem The player won't move if velocity is zero  ; Wrong: straight
+rem apostrophe causes cpp warnings
+rem Other screens' minikernels should have window=0  ; Wrong: straight
+rem apostrophe causes cpp warnings
 ```
 
 **Rationale**: The C preprocessor parses all comments and treats straight apostrophes (`'`) as potential string delimiters, causing compilation warnings. Right single quotes (`'`, U+2019) are the typographically correct character for apostrophes in English text and do not trigger preprocessor warnings. Always use right single quotes for contractions and possessives in remarks.
@@ -269,13 +274,19 @@ Every subroutine **MUST** have documentation comments immediately after the labe
 ```basic
 LoadCharacterSprite
           rem Load sprite data for a character based on character index
-          rem Input: temp1 = character index (0-31), temp2 = animation frame (0-7)
+          rem Input: temp1 = character index (0-31), temp2 = animation
+          rem frame (0-7)
           rem        temp3 = player number (0-3)
-          rem        playerChar[] (global array) = player character selections
-          rem Output: Sprite data loaded into appropriate player register
-          rem Mutates: temp1-temp3 (used for calculations), player sprite pointers
-          rem Called Routines: LoadSpecialSprite - accesses temp1, playerChar[]
-          rem Constraints: Must be colocated with LoadSpecialSprite (called via goto)
+          rem        playerChar[] (global array) = player character
+          rem        selections
+          rem Output: Sprite data loaded into appropriate player
+          rem register
+          rem Mutates: temp1-temp3 (used for calculations), player
+          rem sprite pointers
+          rem Called Routines: LoadSpecialSprite - accesses temp1,
+          rem playerChar[]
+          rem Constraints: Must be colocated with LoadSpecialSprite
+          rem (called via goto)
           dim LCS_characterIndex = temp1
           rem ... implementation ...
 ```
@@ -284,10 +295,14 @@ LoadCharacterSprite
 ```basic
 ApplyDamage
           rem Apply damage from attacker to defender
-          rem Input: attackerID (global), defenderID (global), playerDamage[] (global array)
-          rem Output: Damage applied, recovery frames set, health decremented
-          rem Mutates: temp1-temp4 (used for calculations), playerHealth[], playerRecoveryFrames[]
-          rem Called Routines: SetPlayerAnimation (bank11), CheckPlayerElimination, PlayDamageSound
+          rem Input: attackerID (global), defenderID (global),
+          rem playerDamage[] (global array)
+          rem Output: Damage applied, recovery frames set, health
+          rem decremented
+          rem Mutates: temp1-temp4 (used for calculations),
+          rem playerHealth[], playerRecoveryFrames[]
+          rem Called Routines: SetPlayerAnimation (bank11),
+          rem CheckPlayerElimination, PlayDamageSound
           rem Constraints: None
 ```
 
@@ -643,9 +658,9 @@ When reviewing code, check for:
           rem ChaosFight - Source/Routines/Example.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem =================================================================
+          rem =========================================================
           rem EXAMPLE SUBROUTINE
-          rem =================================================================
+          rem =========================================================
 
           rem Process player input and update game state
           rem Input: temp1 = player index (0-3)

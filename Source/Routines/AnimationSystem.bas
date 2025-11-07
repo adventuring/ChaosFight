@@ -8,20 +8,31 @@ UpdateCharacterAnimations
           rem Update character animations for all players
           rem Called every frame to manage 10fps animation timing
           rem Update character animations for all players (10fps timing)
-          rem Input: controllerStatus (global) = controller detection state
+          rem Input: controllerStatus (global) = controller detection
+          rem state
           rem        currentPlayer (global) = player index (set inline)
-          rem        animationCounter_R[] (global SCRAM array) = per-sprite animation counters
-          rem        currentAnimationFrame_R[] (global SCRAM array) = current animation frames
-          rem        currentAnimationSeq[] (global array) = current animation sequences
-          rem        playersEliminated_R (global SCRAM) = eliminated players bitmask
-          rem Output: animationCounter_W[] updated, currentAnimationFrame_W[] updated,
+          rem        animationCounter_R[] (global SCRAM array) =
+          rem        per-sprite animation counters
+          rem        currentAnimationFrame_R[] (global SCRAM array) =
+          rem        current animation frames
+          rem        currentAnimationSeq[] (global array) = current
+          rem        animation sequences
+          rem        playersEliminated_R (global SCRAM) = eliminated
+          rem        players bitmask
+          rem Output: animationCounter_W[] updated,
+          rem currentAnimationFrame_W[] updated,
           rem         player sprites updated via UpdatePlayerAnimation
-          rem Mutates: currentPlayer (set to 0-3), animationCounter_W[], currentAnimationFrame_W[],
+          rem Mutates: currentPlayer (set to 0-3), animationCounter_W[],
+          rem currentAnimationFrame_W[],
           rem         player sprite pointers (via UpdatePlayerAnimation)
-          rem Called Routines: UpdatePlayerAnimation - accesses currentPlayer, animationCounter_R/W,
-          rem   currentAnimationFrame_R/W, currentAnimationSeq, playersEliminated_R,
+          rem Called Routines: UpdatePlayerAnimation - accesses
+          rem currentPlayer, animationCounter_R/W,
+          rem   currentAnimationFrame_R/W, currentAnimationSeq,
+          rem   playersEliminated_R,
           rem   LoadPlayerSprite (bank10)
-          rem Constraints: Must be colocated with AnimationUpdatePlayer3, AnimationSkipPlayer3 (called via goto)
+          rem Constraints: Must be colocated with
+          rem AnimationUpdatePlayer3, AnimationSkipPlayer3 (called via
+          rem goto)
           rem              Called every frame from game loop
           rem Update animation for each active player
           let currentPlayer = 0  : rem Player index (0-3)
@@ -35,12 +46,16 @@ AnimationUpdatePlayer3
           rem Update Player 3 and 4 animations (4-player mode only)
           rem Input: currentPlayer (global) = player index (set inline)
           rem Output: Player 3 and 4 animations updated
-          rem Mutates: currentPlayer (set to 2, then 3), animationCounter_W[], currentAnimationFrame_W[],
+          rem Mutates: currentPlayer (set to 2, then 3),
+          rem animationCounter_W[], currentAnimationFrame_W[],
           rem         player sprite pointers (via UpdatePlayerAnimation)
-          rem Called Routines: UpdatePlayerAnimation - accesses currentPlayer, animationCounter_R/W,
-          rem   currentAnimationFrame_R/W, currentAnimationSeq, playersEliminated_R,
+          rem Called Routines: UpdatePlayerAnimation - accesses
+          rem currentPlayer, animationCounter_R/W,
+          rem   currentAnimationFrame_R/W, currentAnimationSeq,
+          rem   playersEliminated_R,
           rem   LoadPlayerSprite (bank10)
-          rem Constraints: Must be colocated with UpdateCharacterAnimations, AnimationSkipPlayer3
+          rem Constraints: Must be colocated with
+          rem UpdateCharacterAnimations, AnimationSkipPlayer3
           let currentPlayer = 2  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 3
@@ -49,13 +64,15 @@ AnimationUpdatePlayer3
           rem Player 4
 AnimationSkipPlayer3
           return
-          rem Skip Player 3/4 animations (2-player mode only, label only)
+          rem Skip Player 3/4 animations (2-player mode only, label
+          rem only)
 UpdatePlayerAnimation
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with UpdateCharacterAnimations
+          rem Constraints: Must be colocated with
+          rem UpdateCharacterAnimations
           rem Update animation for a specific player
           rem Uses per-sprite 10fps counter (animationCounter), NOT
           rem   global frame counter
@@ -71,21 +88,33 @@ UpdatePlayerAnimation
           rem   frame 7 transition logic
           rem Update animation for a specific player (10fps timing)
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        animationCounter_R[] (global SCRAM array) = per-sprite animation counters
-          rem        currentAnimationFrame_R[] (global SCRAM array) = current animation frames
-          rem        currentAnimationSeq[] (global array) = current animation sequences
-          rem        playersEliminated_R (global SCRAM) = eliminated players bitmask
+          rem        animationCounter_R[] (global SCRAM array) =
+          rem        per-sprite animation counters
+          rem        currentAnimationFrame_R[] (global SCRAM array) =
+          rem        current animation frames
+          rem        currentAnimationSeq[] (global array) = current
+          rem        animation sequences
+          rem        playersEliminated_R (global SCRAM) = eliminated
+          rem        players bitmask
           rem        BitMask[] (global array) = bitmask lookup table
-          rem        AnimationFrameDelay (constant) = frames per animation step
-          rem        FramesPerSequence (constant) = frames per animation sequence
-          rem Output: animationCounter_W[] updated, currentAnimationFrame_W[] updated,
+          rem        AnimationFrameDelay (constant) = frames per
+          rem        animation step
+          rem        FramesPerSequence (constant) = frames per animation
+          rem        sequence
+          rem Output: animationCounter_W[] updated,
+          rem currentAnimationFrame_W[] updated,
           rem         player sprite updated via UpdateSprite
-          rem Mutates: animationCounter_W[] (incremented, reset to 0 when threshold reached),
-          rem         currentAnimationFrame_W[] (incremented, reset to 0 when sequence complete),
-          rem         temp4 (used for calculations), player sprite pointers (via UpdateSprite)
-          rem Called Routines: HandleAnimationTransition - handles frame 7 completion,
+          rem Mutates: animationCounter_W[] (incremented, reset to 0
+          rem when threshold reached),
+          rem         currentAnimationFrame_W[] (incremented, reset to 0
+          rem         when sequence complete),
+          rem         temp4 (used for calculations), player sprite
+          rem         pointers (via UpdateSprite)
+          rem Called Routines: HandleAnimationTransition - handles frame
+          rem 7 completion,
           rem   UpdateSprite - loads player sprite
-          rem Constraints: Must be colocated with AdvanceFrame, DoneAdvance, HandleFrame7Transition,
+          rem Constraints: Must be colocated with AdvanceFrame,
+          rem DoneAdvance, HandleFrame7Transition,
           rem              UpdateSprite (all called via goto)
           dim UPA_eliminatedMask = temp4 : rem Skip if player is eliminated - use BitMask array lookup
           let UPA_eliminatedMask = BitMask[currentPlayer]
@@ -103,14 +132,20 @@ UpdatePlayerAnimation
           goto DoneAdvance
 AdvanceFrame
           rem Advance animation frame (counter reached threshold)
-          rem Input: currentPlayer (global), currentAnimationFrame_R[] (from UpdatePlayerAnimation)
-          rem Output: animationCounter_W[] reset to 0, currentAnimationFrame_W[] incremented,
-          rem         dispatches to HandleFrame7Transition or UpdateSprite
-          rem Mutates: animationCounter_W[] (reset to 0), currentAnimationFrame_W[] (incremented),
+          rem Input: currentPlayer (global), currentAnimationFrame_R[]
+          rem (from UpdatePlayerAnimation)
+          rem Output: animationCounter_W[] reset to 0,
+          rem currentAnimationFrame_W[] incremented,
+          rem         dispatches to HandleFrame7Transition or
+          rem         UpdateSprite
+          rem Mutates: animationCounter_W[] (reset to 0),
+          rem currentAnimationFrame_W[] (incremented),
           rem         temp4 (used for frame read)
-          rem Called Routines: HandleAnimationTransition - handles frame 7 completion,
+          rem Called Routines: HandleAnimationTransition - handles frame
+          rem 7 completion,
           rem   UpdateSprite - loads player sprite
-          rem Constraints: Must be colocated with UpdatePlayerAnimation, DoneAdvance, HandleFrame7Transition,
+          rem Constraints: Must be colocated with UpdatePlayerAnimation,
+          rem DoneAdvance, HandleFrame7Transition,
           let animationCounter_W[currentPlayer] = 0 : rem              UpdateSprite
           rem Inline AdvanceAnimationFrame
           rem Advance to next frame in current animation action
@@ -129,7 +164,8 @@ AdvanceFrame
           goto UpdateSprite
 DoneAdvance
           return
-          rem Animation counter not at threshold (label only, no execution)
+          rem Animation counter not at threshold (label only, no
+          rem execution)
 AdvanceAnimationFrame
           rem Input: None (label only, no execution)
           rem Output: None (label only)
@@ -164,24 +200,35 @@ AdvanceAnimationFrame
           
 HandleFrame7Transition
           rem Frame 7 completed, handle action-specific transitions
-          rem Input: currentPlayer (global) = player index (from UpdatePlayerAnimation/AdvanceAnimationFrame)
-          rem Output: Animation transition handled, dispatches to UpdateSprite
+          rem Input: currentPlayer (global) = player index (from
+          rem UpdatePlayerAnimation/AdvanceAnimationFrame)
+          rem Output: Animation transition handled, dispatches to
+          rem UpdateSprite
           rem Mutates: Animation state (via HandleAnimationTransition)
-          rem Called Routines: HandleAnimationTransition - handles animation state transitions,
+          rem Called Routines: HandleAnimationTransition - handles
+          rem animation state transitions,
           rem   UpdateSprite - loads player sprite
-          rem Constraints: Must be colocated with UpdatePlayerAnimation, AdvanceAnimationFrame, UpdateSprite
+          rem Constraints: Must be colocated with UpdatePlayerAnimation,
+          rem AdvanceAnimationFrame, UpdateSprite
           gosub HandleAnimationTransition
           goto UpdateSprite
           
 UpdateSprite
-          rem Update character sprite with current animation frame and action
+          rem Update character sprite with current animation frame and
+          rem action
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        currentAnimationFrame_R[] (global SCRAM array) = current animation frames
-          rem        currentAnimationSeq[] (global array) = current animation sequences
-          rem Output: Player sprite loaded with current animation frame and action
-          rem Mutates: temp2, temp3, temp4 (passed to LoadPlayerSprite), player sprite pointers (via LoadPlayerSprite)
-          rem Called Routines: LoadPlayerSprite (bank10) - loads character sprite graphics
-          rem Constraints: Must be colocated with UpdatePlayerAnimation, AdvanceAnimationFrame, HandleFrame7Transition
+          rem        currentAnimationFrame_R[] (global SCRAM array) =
+          rem        current animation frames
+          rem        currentAnimationSeq[] (global array) = current
+          rem        animation sequences
+          rem Output: Player sprite loaded with current animation frame
+          rem and action
+          rem Mutates: temp2, temp3, temp4 (passed to LoadPlayerSprite),
+          rem player sprite pointers (via LoadPlayerSprite)
+          rem Called Routines: LoadPlayerSprite (bank10) - loads
+          rem character sprite graphics
+          rem Constraints: Must be colocated with UpdatePlayerAnimation,
+          rem AdvanceAnimationFrame, HandleFrame7Transition
           dim US_animationFrame = temp2
           dim US_animationAction = temp3
           dim US_playerNumber = temp4
@@ -220,13 +267,19 @@ SetPlayerAnimation
           rem Set animation action for a player
           rem Input: currentPlayer (global) = player index (0-3)
           rem        temp2 = animation action (0-15)
-          rem        AnimationSequenceCount (constant) = maximum animation sequence count
-          rem Output: currentAnimationSeq[] updated, currentAnimationFrame_W[] reset to 0,
-          rem         animationCounter_W[] reset to 0, player sprite updated
-          rem Mutates: currentAnimationSeq[] (set to new action), currentAnimationFrame_W[] (reset to 0),
-          rem         animationCounter_W[] (reset to 0), temp2, temp3, temp4 (passed to LoadPlayerSprite),
+          rem        AnimationSequenceCount (constant) = maximum
+          rem        animation sequence count
+          rem Output: currentAnimationSeq[] updated,
+          rem currentAnimationFrame_W[] reset to 0,
+          rem         animationCounter_W[] reset to 0, player sprite
+          rem         updated
+          rem Mutates: currentAnimationSeq[] (set to new action),
+          rem currentAnimationFrame_W[] (reset to 0),
+          rem         animationCounter_W[] (reset to 0), temp2, temp3,
+          rem         temp4 (passed to LoadPlayerSprite),
           rem         player sprite pointers (via LoadPlayerSprite)
-          rem Called Routines: LoadPlayerSprite (bank10) - loads character sprite graphics
+          rem Called Routines: LoadPlayerSprite (bank10) - loads
+          rem character sprite graphics
           dim SPA_animationAction = temp2 : rem Constraints: None
           dim SPA_animationFrame = temp2
           dim SPA_animationSeq = temp3
@@ -260,7 +313,8 @@ GetCurrentAnimationFrame
           rem EFFECTS: None (read-only query)
           rem Get current animation frame for a player (read-only query)
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        currentAnimationFrame_R[] (global SCRAM array) = current animation frames
+          rem        currentAnimationFrame_R[] (global SCRAM array) =
+          rem        current animation frames
           rem Output: temp2 = current animation frame (0-7)
           rem Mutates: temp2 (set to current frame)
           rem Called Routines: None
@@ -455,7 +509,8 @@ TransitionToFallen
 TransitionHandleJump
           dim THJ_animationAction = temp2
           rem Stay on frame 7 until Y velocity goes negative
-          rem Check if player is falling (positive Y velocity = downward)
+          rem Check if player is falling (positive Y velocity =
+          rem downward)
           if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
           let THJ_animationAction = ActionJumping : rem Still ascending (negative or zero Y velocity), stay in jump
           let temp2 = THJ_animationAction
@@ -531,7 +586,8 @@ Char0_Windup
 Char1_Windup
           dim C1W_animationAction = temp2
           rem Curler: Windup → Recovery
-          rem NOTE: Curling stone missile spawning handled by CurlerAttack
+          rem NOTE: Curling stone missile spawning handled by
+          rem CurlerAttack
           let C1W_animationAction = ActionAttackRecovery : rem   (calls PerformRangedAttack) in CharacterAttacks.bas
           let temp2 = C1W_animationAction
           goto SetPlayerAnimation : rem tail call

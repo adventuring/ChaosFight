@@ -17,23 +17,33 @@ FallingAnimation1
           rem   2-player: P1 at (53, 24), P2 at (107, 24)
           rem 4-player: P1 at (32, 24), P3 at (64, 24), P4 at (96, 24),
           rem   P2 at (128, 24)
-          rem Per-frame falling animation that moves players from quadrants to row 2 positions
-          rem Input: selectedChar1, selectedChar2, selectedChar3_R, selectedChar4_R (global) = character selections
-          rem        controllerStatus (global) = controller detection state
+          rem Per-frame falling animation that moves players from
+          rem quadrants to row 2 positions
+          rem Input: selectedChar1, selectedChar2, selectedChar3_R,
+          rem selectedChar4_R (global) = character selections
+          rem        controllerStatus (global) = controller detection
+          rem        state
           rem        fallFrame (global) = animation frame counter
-          rem        fallComplete (global) = count of players who reached target
+          rem        fallComplete (global) = count of players who
+          rem        reached target
           rem        activePlayers (global) = number of active players
           rem Output: Dispatches to FallingComplete1 or returns
-          rem Mutates: fallFrame (incremented, wraps at 4), fallComplete (incremented per player),
-          rem         playerX[], playerY[] (updated via MovePlayerToTarget)
-          rem Called Routines: MovePlayerToTarget - accesses player positions, target positions,
+          rem Mutates: fallFrame (incremented, wraps at 4), fallComplete
+          rem (incremented per player),
+          rem         playerX[], playerY[] (updated via
+          rem         MovePlayerToTarget)
+          rem Called Routines: MovePlayerToTarget - accesses player
+          rem positions, target positions,
           rem   SetSpritePositions (bank11) - accesses player positions,
           rem   SetPlayerSprites (bank11) - accesses character sprites,
           rem   BeginGameLoop (bank11) - initializes game state,
           rem   ChangeGameMode (bank14) - accesses game mode state
-          rem Constraints: Must be colocated with Player1Target4P, Player1TargetDone, DonePlayer1Move,
-          rem              Player2Target4P, Player2TargetDone, DonePlayer2Move, DonePlayer3Move,
-          rem              DonePlayer4Move, FallingComplete1 (all called via goto)
+          rem Constraints: Must be colocated with Player1Target4P,
+          rem Player1TargetDone, DonePlayer1Move,
+          rem              Player2Target4P, Player2TargetDone,
+          rem              DonePlayer2Move, DonePlayer3Move,
+          rem              DonePlayer4Move, FallingComplete1 (all called
+          rem              via goto)
           dim FA1_playerIndex = temp1 : rem              Entry point for falling animation mode (called from MainLoop)
           dim FA1_targetX = temp2
           dim FA1_targetY = temp3
@@ -53,7 +63,8 @@ Player1Target4P
           rem Output: FA1_targetX set to 32
           rem Mutates: FA1_targetX
           rem Called Routines: None
-          rem Constraints: Must be colocated with FallingAnimation1, Player1TargetDone
+          rem Constraints: Must be colocated with FallingAnimation1,
+          rem Player1TargetDone
           let FA1_targetX = 32 : rem 4-player mode: target X = 32
 Player1TargetDone
           rem Player 1 target calculation complete
@@ -88,7 +99,8 @@ Player2Target4P
           rem Output: FA1_targetX set to 128
           rem Mutates: FA1_targetX
           rem Called Routines: None
-          rem Constraints: Must be colocated with FallingAnimation1, Player2TargetDone
+          rem Constraints: Must be colocated with FallingAnimation1,
+          rem Player2TargetDone
           let FA1_targetX = 128 : rem 4-player mode: target X = 128
 Player2TargetDone
           rem Player 2 target calculation complete
@@ -123,7 +135,8 @@ DonePlayer2Move
           let FA1_reached = MPTT_reached
           if FA1_reached then let fallComplete = fallComplete + 1
 DonePlayer3Move
-          rem Player 3 movement complete (skipped if not in 4-player mode or not active)
+          rem Player 3 movement complete (skipped if not in 4-player
+          rem mode or not active)
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
@@ -142,7 +155,8 @@ DonePlayer3Move
           let FA1_reached = MPTT_reached
           if FA1_reached then let fallComplete = fallComplete + 1
 DonePlayer4Move
-          rem Player 4 movement complete (skipped if not in 4-player mode or not active)
+          rem Player 4 movement complete (skipped if not in 4-player
+          rem mode or not active)
           rem Input: None (label only, no execution)
           rem Output: None (label only)
           rem Mutates: None
@@ -164,9 +178,11 @@ DonePlayer4Move
 FallingComplete1
           rem All players have reached row 2 positions
           rem Input: None (called from FallingAnimation1)
-          rem Output: gameMode set to ModeGame, BeginGameLoop and ChangeGameMode called
+          rem Output: gameMode set to ModeGame, BeginGameLoop and
+          rem ChangeGameMode called
           rem Mutates: gameMode (global)
-          rem Called Routines: BeginGameLoop (bank11) - accesses game state,
+          rem Called Routines: BeginGameLoop (bank11) - accesses game
+          rem state,
           rem   ChangeGameMode (bank14) - accesses game mode state
           rem Constraints: Must be colocated with FallingAnimation1
           rem All players have reached row 2 positions
@@ -192,35 +208,48 @@ MovePlayerToTarget
           rem   temp3 = target Y position → MPTT_targetY
           rem
           rem OUTPUT:
-          rem   temp4 = 1 if reached target, 0 if still moving → MPTT_reached
+          rem   temp4 = 1 if reached target, 0 if still moving →
+          rem   MPTT_reached
           rem MUTATES:
           rem   moving)
           rem temp4 = MPTT_reached (return value: 1 if reached, 0 if
           rem
-          rem   temp5, temp6 = Internal calculations (do not use after call)
+          rem   temp5, temp6 = Internal calculations (do not use after
+          rem   call)
           rem   temp4
           rem WARNING: Callers should read from MPTT_reached alias, not
           rem   directly. Do not use temp5 or temp6 after calling this
           rem   subroutine.
           rem EFFECTS:
-          rem   Updates playerX[MPTT_playerIndex] and playerY[MPTT_playerIndex]
+          rem   Updates playerX[MPTT_playerIndex] and
+          rem   playerY[MPTT_playerIndex]
           rem   toward target
-          rem Moves a player from their current position toward target (X, Y)
+          rem Moves a player from their current position toward target
+          rem (X, Y)
           rem Input: temp1 = player index (0-3)
           rem        temp2 = target X position
           rem        temp3 = target Y position
-          rem        playerX[] (global array) = current player X positions
-          rem        playerY[] (global array) = current player Y positions
+          rem        playerX[] (global array) = current player X
+          rem        positions
+          rem        playerY[] (global array) = current player Y
+          rem        positions
           rem        fallSpeed (global) = movement speed per frame
           rem Output: temp4 = 1 if reached target, 0 if still moving
-          rem Mutates: playerX[MPTT_playerIndex], playerY[MPTT_playerIndex] (updated toward target),
-          rem         temp4 (reached flag), temp5, temp6 (internal calculations),
-          rem         yDistance (SCRAM, used as MPTT_deltaX), rowYPosition (SCRAM, used as MPTT_deltaY)
-          rem Called Routines: NudgePlayerFromPlayfield - accesses player positions, playfield data
-          rem Constraints: Must be colocated with CalcDeltaXRight, DeltaXDone, CalcDeltaYDown,
-          rem              DeltaYDone, MoveRight, MoveLeft, HorizontalDone, MoveDown, MoveUp,
+          rem Mutates: playerX[MPTT_playerIndex],
+          rem playerY[MPTT_playerIndex] (updated toward target),
+          rem         temp4 (reached flag), temp5, temp6 (internal
+          rem         calculations),
+          rem         yDistance (SCRAM, used as MPTT_deltaX),
+          rem         rowYPosition (SCRAM, used as MPTT_deltaY)
+          rem Called Routines: NudgePlayerFromPlayfield - accesses
+          rem player positions, playfield data
+          rem Constraints: Must be colocated with CalcDeltaXRight,
+          rem DeltaXDone, CalcDeltaYDown,
+          rem              DeltaYDone, MoveRight, MoveLeft,
+          rem              HorizontalDone, MoveDown, MoveUp,
           rem              VerticalDone, AtTarget (all called via goto)
-          rem WARNING: temp5, temp6, yDistance, rowYPosition are mutated during execution.
+          rem WARNING: temp5, temp6, yDistance, rowYPosition are mutated
+          rem during execution.
           dim MPTT_playerIndex = temp1 : rem         Do not use these variables after calling this subroutine.
           dim MPTT_targetX = temp2
           dim MPTT_targetY = temp3
@@ -239,7 +268,8 @@ MovePlayerToTarget
           goto DeltaXDone
 CalcDeltaXRight
           rem Calculate delta X when current X >= target X
-          rem Input: MPTT_currentX, MPTT_targetX (from MovePlayerToTarget)
+          rem Input: MPTT_currentX, MPTT_targetX (from
+          rem MovePlayerToTarget)
           rem Output: MPTT_deltaX = absolute distance
           rem Mutates: MPTT_deltaX
           rem Called Routines: None
@@ -257,7 +287,8 @@ DeltaXDone
           goto DeltaYDone
 CalcDeltaYDown
           rem Calculate delta Y when current Y >= target Y
-          rem Input: MPTT_currentY, MPTT_targetY (from MovePlayerToTarget)
+          rem Input: MPTT_currentY, MPTT_targetY (from
+          rem MovePlayerToTarget)
           rem Output: MPTT_deltaY = absolute distance
           rem Mutates: MPTT_deltaY
           rem Called Routines: None
@@ -278,7 +309,8 @@ DeltaYDone
           goto HorizontalDone
 MoveRight
           rem Move player right toward target
-          rem Input: MPTT_playerIndex, MPTT_targetX (from MovePlayerToTarget)
+          rem Input: MPTT_playerIndex, MPTT_targetX (from
+          rem MovePlayerToTarget)
           rem        fallSpeed (global) = movement speed
           rem Output: playerX[MPTT_playerIndex] updated
           rem Mutates: playerX[MPTT_playerIndex]
@@ -288,7 +320,8 @@ MoveRight
           goto HorizontalDone
 MoveLeft
           rem Move player left toward target
-          rem Input: MPTT_playerIndex, MPTT_targetX (from MovePlayerToTarget)
+          rem Input: MPTT_playerIndex, MPTT_targetX (from
+          rem MovePlayerToTarget)
           rem        fallSpeed (global) = movement speed
           rem Output: playerX[MPTT_playerIndex] updated
           rem Mutates: playerX[MPTT_playerIndex]
@@ -308,7 +341,8 @@ HorizontalDone
           goto VerticalDone
 MoveDown
           rem Move player down toward target
-          rem Input: MPTT_playerIndex, MPTT_targetY (from MovePlayerToTarget)
+          rem Input: MPTT_playerIndex, MPTT_targetY (from
+          rem MovePlayerToTarget)
           rem        fallSpeed (global) = movement speed
           rem Output: playerY[MPTT_playerIndex] updated
           rem Mutates: playerY[MPTT_playerIndex]
@@ -318,7 +352,8 @@ MoveDown
           goto VerticalDone
 MoveUp
           rem Move player up toward target
-          rem Input: MPTT_playerIndex, MPTT_targetY (from MovePlayerToTarget)
+          rem Input: MPTT_playerIndex, MPTT_targetY (from
+          rem MovePlayerToTarget)
           rem        fallSpeed (global) = movement speed
           rem Output: playerY[MPTT_playerIndex] updated
           rem Mutates: playerY[MPTT_playerIndex]
@@ -370,20 +405,30 @@ NudgePlayerFromPlayfield
           rem EFFECTS:
           rem If playfield collision detected, nudges player 1 pixel
           rem   away from obstacle
-          rem Checks if player collides with playfield and nudges them away
+          rem Checks if player collides with playfield and nudges them
+          rem away
           rem Input: temp1 = player index (0-3, from MovePlayerToTarget)
-          rem        temp2 = target X position (from MovePlayerToTarget, preserved)
-          rem        temp3 = target Y position (from MovePlayerToTarget, preserved)
-          rem        playerX[] (global array) = current player X positions
-          rem        playerY[] (global array) = current player Y positions
+          rem        temp2 = target X position (from MovePlayerToTarget,
+          rem        preserved)
+          rem        temp3 = target Y position (from MovePlayerToTarget,
+          rem        preserved)
+          rem        playerX[] (global array) = current player X
+          rem        positions
+          rem        playerY[] (global array) = current player Y
+          rem        positions
           rem        ScreenInsetX (constant) = screen X offset
           rem        pfrows (global) = number of playfield rows
-          rem Output: playerX[NPF_playerIndex], playerY[NPF_playerIndex] nudged if collision
-          rem Mutates: playerX[NPF_playerIndex], playerY[NPF_playerIndex] (nudged 1 pixel if collision),
+          rem Output: playerX[NPF_playerIndex], playerY[NPF_playerIndex]
+          rem nudged if collision
+          rem Mutates: playerX[NPF_playerIndex],
+          rem playerY[NPF_playerIndex] (nudged 1 pixel if collision),
           rem         temp7, temp8, temp9, tempA (internal calculations)
-          rem Called Routines: None (uses pfread for playfield collision check)
-          rem Constraints: Must be colocated with NudgeFromPF, NudgeRight, NudgeLeft,
-          rem              NudgeHorizontalDone, NudgeVertical, NudgeDown, NudgeUp (all called via goto)
+          rem Called Routines: None (uses pfread for playfield collision
+          rem check)
+          rem Constraints: Must be colocated with NudgeFromPF,
+          rem NudgeRight, NudgeLeft,
+          rem              NudgeHorizontalDone, NudgeVertical,
+          rem              NudgeDown, NudgeUp (all called via goto)
           dim NPF_playerIndex = temp1 : rem              Called from MovePlayerToTarget
           dim NPF_playerX = temp7
           dim NPF_playerY = temp8
@@ -420,7 +465,8 @@ end
             lsr NPF_pfRow
 end
           if NPF_pfRow >= pfrows then let NPF_pfRow = pfrows - 1
-          rem Check for wraparound: if division resulted in value ≥ 128 (negative), clamp to 0
+          rem Check for wraparound: if division resulted in value ≥ 128
+          rem (negative), clamp to 0
           rem   check
           rem Note: This is unlikely for row calculation but safe to
           if NPF_pfRow & $80 then let NPF_pfRow = 0
@@ -432,13 +478,18 @@ end
           rem No collision, return
           
 NudgeFromPF
-          rem Collision detected - nudge player 1 pixel in direction toward target
-          rem Input: NPF_playerX, NPF_playerY, NPF_playerIndex (from NudgePlayerFromPlayfield)
-          rem        temp2, temp3 (target positions, preserved from MovePlayerToTarget)
-          rem Output: Dispatches to NudgeRight, NudgeLeft, or NudgeHorizontalDone
+          rem Collision detected - nudge player 1 pixel in direction
+          rem toward target
+          rem Input: NPF_playerX, NPF_playerY, NPF_playerIndex (from
+          rem NudgePlayerFromPlayfield)
+          rem        temp2, temp3 (target positions, preserved from
+          rem        MovePlayerToTarget)
+          rem Output: Dispatches to NudgeRight, NudgeLeft, or
+          rem NudgeHorizontalDone
           rem Mutates: None (dispatcher only)
           rem Called Routines: None (dispatcher only)
-          rem Constraints: Must be colocated with NudgePlayerFromPlayfield
+          rem Constraints: Must be colocated with
+          rem NudgePlayerFromPlayfield
           rem Nudge horizontally toward target first
           let NPF_targetX = temp2 : rem Get targetX from parent function (preserved in temp2)
           let NPF_targetY = temp3
@@ -466,7 +517,8 @@ NudgeHorizontalDone
           rem Output: None (label only)
           rem Mutates: None
           rem Called Routines: None
-          rem Constraints: Must be colocated with NudgePlayerFromPlayfield
+          rem Constraints: Must be colocated with
+          rem NudgePlayerFromPlayfield
           
           let NPF_playerX = playerX[NPF_playerIndex] : rem If still colliding, nudge vertically toward target
           let NPF_pfColumn = NPF_playerX
@@ -484,7 +536,8 @@ end
           
 NudgeVertical
           rem Still colliding, nudge vertically
-          rem Input: NPF_playerY, NPF_targetY, NPF_playerIndex (from NudgePlayerFromPlayfield)
+          rem Input: NPF_playerY, NPF_targetY, NPF_playerIndex (from
+          rem NudgePlayerFromPlayfield)
           rem Output: Dispatches to NudgeDown or NudgeUp
           rem Mutates: None (dispatcher only)
           rem Called Routines: None (dispatcher only)

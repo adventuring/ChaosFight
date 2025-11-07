@@ -832,7 +832,8 @@ end
 
           rem
           rem Arena Pointer Tables
-          rem Playfield pointer lookup tables for efficient arena loading
+          rem Playfield pointer lookup tables for efficient arena
+          rem loading
           rem Format: 32 entries (indices 0-31) for Arena0-Arena31
           rem Note: PF1 and PF2 both point to the same ArenaNPlayfield
 

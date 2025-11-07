@@ -2,20 +2,24 @@ MainLoop
           rem ChaosFight - Source/Routines/MainLoop.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem Centralized RESET handling - check before any mode dispatch
+          rem Centralized RESET handling - check before any mode
+          rem dispatch
           rem RESET must work from any screen/state (title, gameplay,
           rem   pause, preludes, win/lose, menus)
           rem Input: switchreset (hardware) = reset switch state
           rem        gameMode (global) = current game mode (0-7)
           rem Output: Dispatches to mode-specific handlers
           rem Mutates: None (dispatcher only)
-          rem Called Routines: WarmStart (bank11), PublisherPreludeMain (bank9),
+          rem Called Routines: WarmStart (bank11), PublisherPreludeMain
+          rem (bank9),
           rem   AuthorPrelude (bank9), TitleScreenMain (bank9),
-          rem   CharacterSelectInputEntry (bank10), FallingAnimation1 (bank12),
+          rem   CharacterSelectInputEntry (bank10), FallingAnimation1
+          rem   (bank12),
           rem   ArenaSelect1 (bank12), GameMainLoop (bank11),
           rem   WinnerAnnouncement (bank12), UpdateMusic (bank16),
           rem   titledrawscreen (bank9)
-          rem Constraints: Must be colocated with MainLoopContinue, MainLoopDrawScreen
+          rem Constraints: Must be colocated with MainLoopContinue,
+          rem MainLoopDrawScreen
           if switchreset then gosub WarmStart bank11 : goto MainLoopContinue : rem Entry point for entire game loop
           
           if gameMode = 0 then gosub PublisherPreludeMain bank9 : goto MainLoopContinue
@@ -32,7 +36,8 @@ MainLoopContinue
           rem Input: gameMode (global) = current game mode (0-7)
           rem Output: Dispatches to MainLoopDrawScreen
           rem Mutates: None (dispatcher only)
-          rem Called Routines: UpdateMusic (bank16) - accesses music state variables
+          rem Called Routines: UpdateMusic (bank16) - accesses music
+          rem state variables
           if gameMode < 3 then gosub UpdateMusic bank16 : goto MainLoopDrawScreen : rem Constraints: Must be colocated with MainLoop, MainLoopDrawScreen
           if gameMode = 7 then gosub UpdateMusic bank16 : goto MainLoopDrawScreen
           rem Other modes (3-6) don’t need audio updates here - handled
@@ -43,8 +48,10 @@ MainLoopDrawScreen
           rem Input: gameMode (global) = current game mode (0-7)
           rem Output: Screen rendered via titledrawscreen or drawscreen
           rem Mutates: Screen state (TIA registers, playfield, sprites)
-          rem Called Routines: titledrawscreen (bank9) - accesses title screen state
-          rem Constraints: Must be colocated with MainLoop, MainLoopContinue
+          rem Called Routines: titledrawscreen (bank9) - accesses title
+          rem screen state
+          rem Constraints: Must be colocated with MainLoop,
+          rem MainLoopContinue
           rem              Entry point for entire game loop
           if gameMode < 3 then gosub titledrawscreen bank9 else drawscreen : rem Titlescreen graphics and kernel are in Bank 9
           goto MainLoop

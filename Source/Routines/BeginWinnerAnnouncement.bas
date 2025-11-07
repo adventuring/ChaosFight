@@ -8,19 +8,30 @@ BeginWinnerAnnouncement
           rem Called from ChangeGameMode when transitioning to
           rem   ModeWinner.
 
-          rem Setup routine for Winner Announcement mode - sets initial state only
-          rem Input: winnerPlayerIndex (global) = winner player index (set by game end logic)
-          rem        PlayerChar[] (global array) = player character selections
-          rem        CharacterThemeSongIndices[] (global array) = character theme song mapping
-          rem Output: screen layout set, COLUBK set, winScreenTimer initialized, displayRank initialized,
+          rem Setup routine for Winner Announcement mode - sets initial
+          rem state only
+          rem Input: winnerPlayerIndex (global) = winner player index
+          rem (set by game end logic)
+          rem        PlayerChar[] (global array) = player character
+          rem        selections
+          rem        CharacterThemeSongIndices[] (global array) =
+          rem        character theme song mapping
+          rem Output: screen layout set, COLUBK set, winScreenTimer
+          rem initialized, displayRank initialized,
           rem         music started with winner’s character theme
-          rem Mutates: pfrowheight, pfrows (set via SetAdminScreenLayout),
-          rem         COLUBK (TIA register), winScreenTimer (set to 0), displayRank (set to 0),
+          rem Mutates: pfrowheight, pfrows (set via
+          rem SetAdminScreenLayout),
+          rem         COLUBK (TIA register), winScreenTimer (set to 0),
+          rem         displayRank (set to 0),
           rem         temp1, temp2 (used for character/song lookup)
-          rem Called Routines: SetAdminScreenLayout (bank8) - sets screen layout,
-          rem   StartMusic (bank16) - starts winner’s character theme song
-          rem Constraints: Called from ChangeGameMode when transitioning to ModeWinner
-          rem              winnerPlayerIndex must be set by game end logic (FindWinner in PlayerElimination.bas)
+          rem Called Routines: SetAdminScreenLayout (bank8) - sets
+          rem screen layout,
+          rem   StartMusic (bank16) - starts winner’s character theme
+          rem   song
+          rem Constraints: Called from ChangeGameMode when transitioning
+          rem to ModeWinner
+          rem              winnerPlayerIndex must be set by game end
+          rem              logic (FindWinner in PlayerElimination.bas)
           dim BWA_winnerPlayerIndex = temp1
           dim BWA_characterIndex = temp2
           dim BWA_songID = temp1

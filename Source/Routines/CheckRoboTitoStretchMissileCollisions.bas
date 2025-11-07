@@ -1,9 +1,11 @@
 CheckRoboTitoStretchMissileCollisions
           rem
-          rem ChaosFight - Source/Routines/CheckRoboTitoStretchMissileCollisions.bas
+          rem ChaosFight -
+          rem Source/Routines/CheckRoboTitoStretchMissileCollisions.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Check Robotito Stretch Missile Collisions
-          rem Checks collision between RoboTito stretch missiles and other
+          rem Checks collision between RoboTito stretch missiles and
+          rem other
           rem   players.
           rem When a stretch missile is hit, RoboTito falls and cannot
           rem   stretch again until grounded.
@@ -11,11 +13,22 @@ CheckRoboTitoStretchMissileCollisions
           rem   stretching (have active stretch missiles), and checks
           rem   collision with other players.
           
-          rem Check collision between RoboTito stretch missiles and other players
-          rem Input: playerChar[] (global array) = character types, playerState[] (global array) = player states, characterStateFlags_R[] (global SCRAM array) = character state flags, missileStretchHeight_R[] (global SCRAM array) = stretch missile heights, playerX[], playerY[] (global arrays) = player positions, playerHealth[] (global array) = player health
+          rem Check collision between RoboTito stretch missiles and
+          rem other players
+          rem Input: playerChar[] (global array) = character types,
+          rem playerState[] (global array) = player states,
+          rem characterStateFlags_R[] (global SCRAM array) = character
+          rem state flags, missileStretchHeight_R[] (global SCRAM array)
+          rem = stretch missile heights, playerX[], playerY[] (global
+          rem arrays) = player positions, playerHealth[] (global array)
+          rem = player health
           rem Output: Stretch missile collisions detected and handled
-          rem Mutates: temp1-temp7 (used for calculations), playerState[], characterStateFlags_W[], missileStretchHeight_W[], roboTitoCanStretch_W (via HandleRoboTitoStretchMissileHit)
-          rem Called Routines: HandleRoboTitoStretchMissileHit - processes collision when detected
+          rem Mutates: temp1-temp7 (used for calculations),
+          rem playerState[], characterStateFlags_W[],
+          rem missileStretchHeight_W[], roboTitoCanStretch_W (via
+          rem HandleRoboTitoStretchMissileHit)
+          rem Called Routines: HandleRoboTitoStretchMissileHit -
+          rem processes collision when detected
           dim CRTSMC_playerIndex = temp1 : rem Constraints: None
           dim CRTSMC_stretchHeight = temp2
           dim CRTSMC_missileX = temp3
@@ -29,7 +42,8 @@ CRTSMC_PlayerLoop
           goto CRTSMC_NextPlayer
           rem Not RoboTito, skip
 CRTSMC_IsRoboTito
-          rem Check if stretching (not latched, ActionJumping animation = 10)
+          rem Check if stretching (not latched, ActionJumping animation
+          rem = 10)
           if (characterStateFlags_R[CRTSMC_playerIndex] & 1) then CRTSMC_NextPlayer
           let temp7 = playerState[CRTSMC_playerIndex] : rem Latched to ceiling, no stretch missile
           let temp7 = temp7 & 240
@@ -48,7 +62,8 @@ CRTSMC_IsStretching
           
           rem Check collision with other players
           rem Missile extends from playerY down by stretchHeight
-          rem Bounding box: X = missileX, Y = missileY, Width = 1 (missile width),
+          rem Bounding box: X = missileX, Y = missileY, Width = 1
+          rem (missile width),
           let CRTSMC_otherPlayer = 0 : rem Height = stretchHeight
           
 CRTSMC_CheckOtherPlayer
@@ -57,9 +72,11 @@ CRTSMC_CheckOtherPlayer
           if playerHealth[CRTSMC_otherPlayer] = 0 then CRTSMC_SkipSelf : rem Skip eliminated players
           
           rem AABB collision check
-          rem Missile left/right: missileX to missileX+1 (missile width = 1)
+          rem Missile left/right: missileX to missileX+1 (missile width
+          rem = 1)
           rem Missile top/bottom: missileY to missileY+stretchHeight
-          rem Player left/right: playerX to playerX+PlayerSpriteHalfWidth*2
+          rem Player left/right: playerX to
+          rem playerX+PlayerSpriteHalfWidth*2
           if CRTSMC_missileX >= playerX[CRTSMC_otherPlayer] + PlayerSpriteHalfWidth then CRTSMC_SkipSelf : rem Player top/bottom: playerY to playerY+PlayerSpriteHeight
           rem Missile left edge >= player right edge, no collision
           if CRTSMC_missileX + 1 <= playerX[CRTSMC_otherPlayer] then CRTSMC_SkipSelf
@@ -91,10 +108,23 @@ HandleRoboTitoStretchMissileHit
           rem INPUT:
           rem   temp1 = RoboTito player index (stretch missile owner)
           rem   temp5 = hit player index (victim)
-          rem Process a stretch missile hit on another player, causing RoboTito to fall
-          rem Input: temp1 = RoboTito player index (stretch missile owner), temp5 = hit player index (victim), playerState[] (global array) = player states, roboTitoCanStretch_R (global SCRAM) = stretch permission flags, characterStateFlags_R[] (global SCRAM array) = character state flags
-          rem Output: RoboTito falls, stretch missile removed, stretch permission cleared
-          rem Mutates: missileStretchHeight_W[] (global SCRAM array) = stretch missile heights, playerState[] (global array) = player states, playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, roboTitoCanStretch_W (global SCRAM) = stretch permission flags, characterStateFlags_W[] (global SCRAM array) = character state flags, temp2-temp3 (used for calculations)
+          rem Process a stretch missile hit on another player, causing
+          rem RoboTito to fall
+          rem Input: temp1 = RoboTito player index (stretch missile
+          rem owner), temp5 = hit player index (victim), playerState[]
+          rem (global array) = player states, roboTitoCanStretch_R
+          rem (global SCRAM) = stretch permission flags,
+          rem characterStateFlags_R[] (global SCRAM array) = character
+          rem state flags
+          rem Output: RoboTito falls, stretch missile removed, stretch
+          rem permission cleared
+          rem Mutates: missileStretchHeight_W[] (global SCRAM array) =
+          rem stretch missile heights, playerState[] (global array) =
+          rem player states, playerVelocityY[], playerVelocityYL[]
+          rem (global arrays) = vertical velocity, roboTitoCanStretch_W
+          rem (global SCRAM) = stretch permission flags,
+          rem characterStateFlags_W[] (global SCRAM array) = character
+          rem state flags, temp2-temp3 (used for calculations)
           rem Called Routines: None
           dim HRTSMH_roboTitoIndex = temp1 : rem Constraints: None
           dim HRTSMH_hitPlayer = temp5

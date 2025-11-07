@@ -54,18 +54,28 @@ CheckFallDamage
           rem   3. Calculate safe fall velocity threshold
           rem   4. Calculate fall damage if exceeded
           rem   5. Apply damage, recovery frames, and color shift
-          rem Called when a player lands on the ground or platform - calculates fall damage
+          rem Called when a player lands on the ground or platform -
+          rem calculates fall damage
           rem Input: temp1 = player index (0-3)
-          rem        temp2 = vertical velocity at landing (positive = downward)
-          rem        playerChar[] (global array) = player character selections
-          rem        SafeFallVelocityThresholds[] (global array) = safe fall velocity thresholds
-          rem        WeightDividedBy20[] (global array) = weight/20 lookup table
-          rem Output: playerHealth[] reduced, playerRecoveryFrames[] set, playerState[] updated,
+          rem        temp2 = vertical velocity at landing (positive =
+          rem        downward)
+          rem        playerChar[] (global array) = player character
+          rem        selections
+          rem        SafeFallVelocityThresholds[] (global array) = safe
+          rem        fall velocity thresholds
+          rem        WeightDividedBy20[] (global array) = weight/20
+          rem        lookup table
+          rem Output: playerHealth[] reduced, playerRecoveryFrames[]
+          rem set, playerState[] updated,
           rem         sound effect played
-          rem Mutates: temp1-temp6 (used for calculations), playerHealth[] (reduced),
-          rem         playerRecoveryFrames[] (set), playerState[] (recovery flag and animation state set),
-          rem         oldHealthValue, recoveryFramesCalc, playerStateTemp (temporary calculations)
-          rem Called Routines: GetCharacterWeight - accesses temp1, temp2,
+          rem Mutates: temp1-temp6 (used for calculations),
+          rem playerHealth[] (reduced),
+          rem         playerRecoveryFrames[] (set), playerState[]
+          rem         (recovery flag and animation state set),
+          rem         oldHealthValue, recoveryFramesCalc,
+          rem         playerStateTemp (temporary calculations)
+          rem Called Routines: GetCharacterWeight - accesses temp1,
+          rem temp2,
           rem   PlaySoundEffect (bank15) - plays landing damage sound
           dim CFD_playerIndex = temp1 : rem Constraints: None
           dim CFD_fallVelocity = temp2
@@ -245,10 +255,12 @@ FallDamageApplyGravity
           rem Applies gravity acceleration to a player each frame
           rem Input: temp1 = player index (0-3)
           rem        temp2 = current vertical momentum (positive = down)
-          rem        playerChar[] (global array) = player character selections
+          rem        playerChar[] (global array) = player character
+          rem        selections
           rem        TerminalVelocity (constant) = maximum fall velocity
           rem Output: temp2 = updated vertical momentum
-          rem Mutates: temp1, temp2, temp5, temp6 (used for calculations)
+          rem Mutates: temp1, temp2, temp5, temp6 (used for
+          rem calculations)
           rem Called Routines: None
           dim FDAG_playerIndex = temp1 : rem Constraints: None
           dim FDAG_momentum = temp2
@@ -290,12 +302,17 @@ CheckGroundCollision
           rem Input: temp1 = player index (0-3)
           rem        temp2 = vertical momentum before position update
           rem        playerY[] (global array) = player Y positions
-          rem Output: playerY[] clamped to ground if landed, CheckFallDamage called if moving downward
-          rem Mutates: temp1, temp2, temp3 (used for calculations), playerY[] (clamped to 176 if landed)
-          rem Called Routines: CheckFallDamage - accesses temp1, temp2, playerChar[], playerHealth[],
-          rem   playerRecoveryFrames[], playerState[], PlaySoundEffect (bank15)
+          rem Output: playerY[] clamped to ground if landed,
+          rem CheckFallDamage called if moving downward
+          rem Mutates: temp1, temp2, temp3 (used for calculations),
+          rem playerY[] (clamped to 176 if landed)
+          rem Called Routines: CheckFallDamage - accesses temp1, temp2,
+          rem playerChar[], playerHealth[],
+          rem   playerRecoveryFrames[], playerState[], PlaySoundEffect
+          rem   (bank15)
           rem Constraints: Tail call to CheckFallDamage
-          rem              Should be called AFTER vertical position update but BEFORE momentum is cleared
+          rem              Should be called AFTER vertical position
+          rem              update but BEFORE momentum is cleared
           dim CGC_playerIndex = temp1
           dim CGC_momentum = temp2
           dim CGC_playerY = temp3

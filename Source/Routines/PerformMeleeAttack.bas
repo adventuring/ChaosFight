@@ -11,12 +11,17 @@ PerformMeleeAttack
           rem Executes a melee attack for the specified player
           rem Input: temp1 = attacker player index (0-3)
           rem        playerState[] (global array) = player state flags
-          rem        MaskPlayerStateFlags (constant) = bitmask to preserve state flags
-          rem        ActionAttackExecuteShifted (constant) = attack execution animation state
-          rem Output: Missile spawned, playerState[] animation state set to attacking
-          rem Mutates: playerState[] (animation state set to ActionAttackExecuteShifted),
+          rem        MaskPlayerStateFlags (constant) = bitmask to
+          rem        preserve state flags
+          rem        ActionAttackExecuteShifted (constant) = attack
+          rem        execution animation state
+          rem Output: Missile spawned, playerState[] animation state set
+          rem to attacking
+          rem Mutates: playerState[] (animation state set to
+          rem ActionAttackExecuteShifted),
           rem         missile state (via SpawnMissile)
-          rem Called Routines: SpawnMissile (bank7) - spawns missile visual for attack
+          rem Called Routines: SpawnMissile (bank7) - spawns missile
+          rem visual for attack
           rem Constraints: None
           gosub SpawnMissile bank7 : rem Spawn missile visual for this attack
           

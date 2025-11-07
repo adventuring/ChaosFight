@@ -17,12 +17,17 @@ BeginPublisherPrelude
           rem   via includes.
           rem No explicit loading needed - titlescreen kernel handles
           rem   bitmap display.
-          rem Initializes state for Publisher Prelude screen (gameMode 0)
+          rem Initializes state for Publisher Prelude screen (gameMode
+          rem 0)
           rem Input: None (called from ChangeGameMode)
-          rem Output: preambleTimer initialized, COLUBK set, music started
-          rem Mutates: preambleTimer (set to 0), COLUBK (TIA register), temp1 (passed to StartMusic)
-          rem Called Routines: StartMusic (bank16) - starts AtariToday music
-          rem Constraints: Called from ChangeGameMode when transitioning to ModePublisherPrelude
+          rem Output: preambleTimer initialized, COLUBK set, music
+          rem started
+          rem Mutates: preambleTimer (set to 0), COLUBK (TIA register),
+          rem temp1 (passed to StartMusic)
+          rem Called Routines: StartMusic (bank16) - starts AtariToday
+          rem music
+          rem Constraints: Called from ChangeGameMode when transitioning
+          rem to ModePublisherPrelude
           rem              Tail call to StartMusic
           let preambleTimer = 0 : rem Initialize prelude timer
           

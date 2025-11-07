@@ -14,7 +14,8 @@ GetCharacterWeight
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = character weight
           rem Fast lookup of character weight using direct array access
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterWeights[] (global data table) = character weights
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterWeights[] (global data table) = character weights
           rem Output: temp2 = character weight
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -29,7 +30,9 @@ GetCharacterAttackType
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = attack type (0=melee, 1=ranged)
           rem Fast lookup of character attack type (0=melee, 1=ranged)
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterAttackTypes[] (global data table) = character attack types
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterAttackTypes[] (global data table) = character
+          rem attack types
           rem Output: temp2 = attack type (0=melee, 1=ranged)
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -45,7 +48,9 @@ GetCharacterMissileHeight
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile height (0=no missile, 1-2=height)
           rem Fast lookup of character missile height for ranged attacks
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterMissileHeights[] (global data table) = character missile heights
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterMissileHeights[] (global data table) = character
+          rem missile heights
           rem Output: temp2 = missile height (0=no missile, 1-2=height)
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -60,7 +65,9 @@ GetCharacterMissileMaxX
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile max X range
           rem Fast lookup of character missile maximum X range
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterMissileMaxX[] (global data table) = character missile max X ranges
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterMissileMaxX[] (global data table) = character
+          rem missile max X ranges
           rem Output: temp2 = missile max X range
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -75,7 +82,9 @@ GetCharacterMissileMaxY
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile max Y range
           rem Fast lookup of character missile maximum Y range
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterMissileMaxY[] (global data table) = character missile max Y ranges
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterMissileMaxY[] (global data table) = character
+          rem missile max Y ranges
           rem Output: temp2 = missile max Y range
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -90,7 +99,9 @@ IsCharacterRanged
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = 1 if ranged, 0 if melee
           rem Quick check if character uses ranged attacks
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterAttackTypes[] (global data table) = character attack types
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterAttackTypes[] (global data table) = character
+          rem attack types
           rem Output: temp2 = 1 if ranged, 0 if melee
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -104,7 +115,9 @@ IsCharacterMelee
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = 1 if melee, 0 if ranged
           rem Quick check if character uses melee attacks
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterAttackTypes[] (global data table) = character attack types
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterAttackTypes[] (global data table) = character
+          rem attack types
           rem Output: temp2 = 1 if melee, 0 if ranged
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -119,10 +132,14 @@ GetCharacterDamage
           rem Get base damage value for character attacks.
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = base damage value
-          rem Get base damage value for character attacks based on weight class
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterWeights[] (global data table) = character weights
-          rem Output: temp2 = base damage value (12=light, 18=medium, 22=heavy)
-          rem Mutates: temp2 (return value), temp3 (used for weight lookup)
+          rem Get base damage value for character attacks based on
+          rem weight class
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterWeights[] (global data table) = character weights
+          rem Output: temp2 = base damage value (12=light, 18=medium,
+          rem 22=heavy)
+          rem Mutates: temp2 (return value), temp3 (used for weight
+          rem lookup)
           rem Called Routines: None
           rem Constraints: None
           rem Base damage varies by character type and weight
@@ -146,7 +163,9 @@ GetMissileWidth
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile width
           rem Fast lookup of character missile width
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterMissileWidths[] (global data table) = character missile widths
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterMissileWidths[] (global data table) = character
+          rem missile widths
           rem Output: temp2 = missile width
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -160,7 +179,9 @@ GetMissileHeight
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile height
           rem Fast lookup of character missile height
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterMissileHeights[] (global data table) = character missile heights
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterMissileHeights[] (global data table) = character
+          rem missile heights
           rem Output: temp2 = missile height
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -174,7 +195,9 @@ GetMissileFlags
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile flags
           rem Fast lookup of character missile flags
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterMissileFlags[] (global data table) = character missile flags
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterMissileFlags[] (global data table) = character
+          rem missile flags
           rem Output: temp2 = missile flags
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -188,7 +211,9 @@ GetMissileMomentumX
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile momentum X
           rem Fast lookup of character missile horizontal momentum
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterMissileMomentumX[] (global data table) = character missile horizontal momentum
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterMissileMomentumX[] (global data table) =
+          rem character missile horizontal momentum
           rem Output: temp2 = missile momentum X
           rem Mutates: temp2 (return value)
           rem Called Routines: None
@@ -202,7 +227,9 @@ GetMissileMomentumY
           rem INPUT: temp1 = character index (0-MaxCharacter)
           rem OUTPUT: temp2 = missile momentum Y
           rem Fast lookup of character missile vertical momentum
-          rem Input: temp1 = character index (0-MaxCharacter), CharacterMissileMomentumY[] (global data table) = character missile vertical momentum
+          rem Input: temp1 = character index (0-MaxCharacter),
+          rem CharacterMissileMomentumY[] (global data table) =
+          rem character missile vertical momentum
           rem Output: temp2 = missile momentum Y
           rem Mutates: temp2 (return value)
           rem Called Routines: None

@@ -5,11 +5,15 @@ BeginAuthorPrelude
 
           rem Setup routine for Author Prelude - sets initial state only
           rem Input: None (called from ChangeGameMode)
-          rem Output: preambleTimer initialized, COLUBK set, music started, window values set
-          rem Mutates: preambleTimer (set to 0), COLUBK (TIA register), temp1 (passed to StartMusic)
-          rem Called Routines: StartMusic (bank16) - starts Interworldly music,
+          rem Output: preambleTimer initialized, COLUBK set, music
+          rem started, window values set
+          rem Mutates: preambleTimer (set to 0), COLUBK (TIA register),
+          rem temp1 (passed to StartMusic)
+          rem Called Routines: StartMusic (bank16) - starts Interworldly
+          rem music,
           rem   SetAuthorWindowValues (bank12) - sets window values
-          rem Constraints: Called from ChangeGameMode when transitioning to ModeAuthorPrelude
+          rem Constraints: Called from ChangeGameMode when transitioning
+          rem to ModeAuthorPrelude
           rem Initialize Author Prelude mode
           rem Note: pfres is defined globally in AssemblyConfig.bas
           

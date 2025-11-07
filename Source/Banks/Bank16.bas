@@ -20,36 +20,47 @@
           rem Note: Pointer tables must be updated with actual addresses
           rem   after compilation
           rem
-          rem Songs stored in Bank 16: All songs except OCascadia (1) and
+          rem Songs stored in Bank 16: All songs except OCascadia (1)
+          rem and
           rem   Revontuli (2) which are in Bank 15
           rem Songs 0, 3-28 are in this bank
           
           rem Temporary Workaround: Character Theme Songs Commented Out
           rem
-          rem ISSUE: Character theme music files are too large for Bank 16
-          rem   ROM space. This is causing build failures due to bank overflow.
+          rem ISSUE: Character theme music files are too large for Bank
+          rem 16
+          rem   ROM space. This is causing build failures due to bank
+          rem   overflow.
           rem
-          rem STATUS: This is a temporary workaround authorized one-time to
-          rem   unbreak the build. Character theme songs (Song IDs 0, 3-25) are
-          rem   commented out until proper ROM distribution can be implemented.
+          rem STATUS: This is a temporary workaround authorized one-time
+          rem to
+          rem   unbreak the build. Character theme songs (Song IDs 0,
+          rem   3-25) are
+          rem   commented out until proper ROM distribution can be
+          rem   implemented.
           rem
           rem IMPACT: 
           rem   - Character themes will not play during gameplay
-          rem   - Music system will return null pointers for character songs
-          rem   - Admin screen songs (Chaotica, AtariToday, Interworldly) remain
+          rem   - Music system will return null pointers for character
+          rem   songs
+          rem   - Admin screen songs (Chaotica, AtariToday,
+          rem   Interworldly) remain
           rem     active and functional
           rem NEXT STEPS (when resuming this work):
           rem
           rem   1. Analyze ROM distribution across all 16 banks
-          rem   2. Redistribute character themes to fit within available space
+          rem   2. Redistribute character themes to fit within available
+          rem   space
           rem   3. Consider compressing or optimizing song data
-          rem   4. May need to split character themes across multiple banks
+          rem   4. May need to split character themes across multiple
+          rem   banks
           rem   5. Update pointer tables after distribution changes
           rem AFFECTED SONGS (commented out):
           rem   Song 0: Bernie (Character 0 theme)
           rem   Song 3: EXO (Character 3 - ZoeRyen theme)
           rem   Song 4: Grizzards (Character 4 - FatTony theme)
-          rem   Song 5: MagicalFairyForce (Character 7 - KnightGuy theme)
+          rem   Song 5: MagicalFairyForce (Character 7 - KnightGuy
+          rem   theme)
           rem   Song 6: Bolero (Character 9 - Nefertem theme)
           rem   Song 7: LowRes (Character 10 - NinjishGuy theme)
           rem   Song 8: RoboTito (Character 13 theme)
@@ -73,7 +84,8 @@
           rem #include "Source/Generated/Song.EXO.PAL.bas"
           rem #endif
           
-          rem Song 4: Grizzards (Character 4 - FatTony theme) - COMMENTED OUT
+          rem Song 4: Grizzards (Character 4 - FatTony theme) -
+          rem COMMENTED OUT
           rem #ifdef TV_NTSC
           rem #include "Source/Generated/Song.Grizzards.NTSC.bas"
           rem #else
@@ -81,15 +93,18 @@
           rem #include "Source/Generated/Song.Grizzards.PAL.bas"
           rem #endif
           
-          rem Song 5: MagicalFairyForce (Character 7 - KnightGuy theme) - COMMENTED OUT
+          rem Song 5: MagicalFairyForce (Character 7 - KnightGuy theme)
+          rem - COMMENTED OUT
           rem #ifdef TV_NTSC
-          rem #include "Source/Generated/Song.MagicalFairyForce.NTSC.bas"
+          rem #include
+          rem "Source/Generated/Song.MagicalFairyForce.NTSC.bas"
           rem #else
           rem   rem PAL or SECAM: Use PAL version for both
           rem #include "Source/Generated/Song.MagicalFairyForce.PAL.bas"
           rem #endif
           
-          rem Song 6: Bolero (Character 9 - Nefertem theme) - COMMENTED OUT
+          rem Song 6: Bolero (Character 9 - Nefertem theme) - COMMENTED
+          rem OUT
           rem #ifdef TV_NTSC
           rem #include "Source/Generated/Song.Bolero.NTSC.bas"
           rem #else
@@ -97,7 +112,8 @@
           rem #include "Source/Generated/Song.Bolero.PAL.bas"
           rem #endif
           
-          rem Song 7: LowRes (Character 10 - NinjishGuy theme) - COMMENTED OUT
+          rem Song 7: LowRes (Character 10 - NinjishGuy theme) -
+          rem COMMENTED OUT
           rem #ifdef TV_NTSC
           rem #include "Source/Generated/Song.LowRes.NTSC.bas"
           rem #else
@@ -113,7 +129,8 @@
           rem #include "Source/Generated/Song.RoboTito.PAL.bas"
           rem #endif
           
-          rem Song 9: SongOfTheBear (Character 14 - Ursulo theme) - COMMENTED OUT
+          rem Song 9: SongOfTheBear (Character 14 - Ursulo theme) -
+          rem COMMENTED OUT
           rem #ifdef TV_NTSC
           rem #include "Source/Generated/Song.SongOfTheBear.NTSC.bas"
           rem #else
@@ -121,7 +138,8 @@
           rem #include "Source/Generated/Song.SongOfTheBear.PAL.bas"
           rem #endif
           
-          rem Song 10: DucksAway (Character 15 - Shamone theme) - COMMENTED OUT
+          rem Song 10: DucksAway (Character 15 - Shamone theme) -
+          rem COMMENTED OUT
           rem #ifdef TV_NTSC
           rem #include "Source/Generated/Song.DucksAway.NTSC.bas"
           rem #else
@@ -129,7 +147,8 @@
           rem #include "Source/Generated/Song.DucksAway.PAL.bas"
           rem #endif
           
-          rem Songs 11-25: Character16Theme through Character30Theme - COMMENTED OUT
+          rem Songs 11-25: Character16Theme through Character30Theme -
+          rem COMMENTED OUT
           rem   (Placeholder themes for future characters)
           rem #ifdef TV_NTSC
           rem #include "Source/Generated/Song.Character16Theme.NTSC.bas"
@@ -200,7 +219,8 @@
           rem These strings are embedded in the ROM after the end of
           rem   real code
           rem Note: Strings are defined in BuildInfo.s and included with
-          rem   bare "include" directive (not #include) to avoid C preprocessor
+          rem   bare "include" directive (not #include) to avoid C
+          rem   preprocessor
           rem   quote issues
           
           asm

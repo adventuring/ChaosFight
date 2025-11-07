@@ -29,7 +29,8 @@ SetPublisherWindowValues
           rem   visible)
           rem Input: None
           rem Output: titlescreenWindow1-4 set for Publisher screen
-          rem Mutates: titlescreenWindow1, titlescreenWindow2, titlescreenWindow3, titlescreenWindow4
+          rem Mutates: titlescreenWindow1, titlescreenWindow2,
+          rem titlescreenWindow3, titlescreenWindow4
           rem Called Routines: None
           let titlescreenWindow1 = 42  ; AtariAge logo visible : rem Constraints: None
           let titlescreenWindow2 = 42  ; AtariAgeText visible
@@ -46,7 +47,8 @@ SetAuthorWindowValues
           rem   visible in slot 4)
           rem Input: None
           rem Output: titlescreenWindow1-4 set for Author screen
-          rem Mutates: titlescreenWindow1, titlescreenWindow2, titlescreenWindow3, titlescreenWindow4
+          rem Mutates: titlescreenWindow1, titlescreenWindow2,
+          rem titlescreenWindow3, titlescreenWindow4
           rem Called Routines: None
           let titlescreenWindow1 = 0   ; AtariAge logo hidden : rem Constraints: None
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
@@ -63,7 +65,8 @@ SetTitleWindowValues
           rem   visible)
           rem Input: None
           rem Output: titlescreenWindow1-4 set for Title screen
-          rem Mutates: titlescreenWindow1, titlescreenWindow2, titlescreenWindow3, titlescreenWindow4
+          rem Mutates: titlescreenWindow1, titlescreenWindow2,
+          rem titlescreenWindow3, titlescreenWindow4
           rem Called Routines: None
           let titlescreenWindow1 = 0   ; AtariAge logo hidden : rem Constraints: None
           let titlescreenWindow2 = 0   ; AtariAgeText hidden

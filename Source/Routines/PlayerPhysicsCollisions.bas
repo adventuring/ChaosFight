@@ -3,7 +3,8 @@ CheckBoundaryCollisions
           rem ChaosFight - Source/Routines/PlayerPhysicsCollisions.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Player Physics - Collisions
-          rem Handles boundary, playfield, and player-to-player collisions.
+          rem Handles boundary, playfield, and player-to-player
+          rem collisions.
           rem Split from PlayerPhysics.bas to reduce bank size.
           rem AVAILABLE VARIABLES:
           rem   playerX[0-3], playerY[0-3] - Positions
@@ -17,15 +18,38 @@ CheckBoundaryCollisions
           rem   selectedChar3_R, selectedChar4_R - Player 3/4 selections
           rem Check Boundary Collisions
           rem Prevents players from moving off-screen.
-          rem Prevents players from moving off-screen (horizontal wrap-around, vertical clamping)
-          rem Input: playerX[], playerY[] (global arrays) = player positions, playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions, playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, selectedArena_R (global SCRAM) = selected arena, frame (global) = frame counter, RandomArena (global constant) = random arena constant
-          rem Output: Players clamped to screen boundaries, horizontal wrap-around applied, vertical velocity zeroed at boundaries
-          rem Mutates: temp1-temp3 (used for calculations), playerX[], playerY[] (global arrays) = player positions (wrapped/clamped), playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions (set to clamped values), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity (zeroed at boundaries)
+          rem Prevents players from moving off-screen (horizontal
+          rem wrap-around, vertical clamping)
+          rem Input: playerX[], playerY[] (global arrays) = player
+          rem positions, playerSubpixelX[], playerSubpixelY[],
+          rem playerSubpixelXL[], playerSubpixelYL[] (global arrays) =
+          rem subpixel positions, playerVelocityY[], playerVelocityYL[]
+          rem (global arrays) = vertical velocity, controllerStatus
+          rem (global) = controller state, selectedChar3_R,
+          rem selectedChar4_R (global SCRAM) = player 3/4 selections,
+          rem selectedArena_R (global SCRAM) = selected arena, frame
+          rem (global) = frame counter, RandomArena (global constant) =
+          rem random arena constant
+          rem Output: Players clamped to screen boundaries, horizontal
+          rem wrap-around applied, vertical velocity zeroed at
+          rem boundaries
+          rem Mutates: temp1-temp3 (used for calculations), playerX[],
+          rem playerY[] (global arrays) = player positions
+          rem (wrapped/clamped), playerSubpixelX[], playerSubpixelY[],
+          rem playerSubpixelXL[], playerSubpixelYL[] (global arrays) =
+          rem subpixel positions (set to clamped values),
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity (zeroed at boundaries)
           rem Called Routines: None
-          rem Constraints: All arenas support horizontal wrap-around (X < 10 wraps to 150, X > 150 wraps to 10). Vertical boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped to 80). Players 3/4 only checked if Quadtari detected and selected
+          rem Constraints: All arenas support horizontal wrap-around (X
+          rem < 10 wraps to 150, X > 150 wraps to 10). Vertical
+          rem boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped
+          rem to 80). Players 3/4 only checked if Quadtari detected and
+          rem selected
           dim CBC_playerIndex = temp1
           dim CBC_characterType = temp2
-          rem Loop through all players (0-3) - fully inlined to avoid labels
+          rem Loop through all players (0-3) - fully inlined to avoid
+          rem labels
           dim CBC_arenaIndex = temp3 : rem Handle RandomArena by checking selected arena (shared for all players)
           let CBC_arenaIndex = selectedArena_R
           if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = rand : let CBC_arenaIndex = CBC_arenaIndex & 15 : rem Handle RandomArena (use proper RNG)
@@ -66,17 +90,39 @@ CheckPlayfieldCollisionAllDirections
           rem   directions and blocks movement by zeroing velocity.
           rem Uses CharacterHeights table for proper hitbox detection.
           rem
-          rem INPUT: currentPlayer = player index (0-3) (global variable)
+          rem INPUT: currentPlayer = player index (0-3) (global
+          rem variable)
           rem MODIFIES: playerVelocityX/Y and playerSubpixelX/Y when
           rem   collisions detected
           rem Split into horizontal and vertical checks to avoid bank
           rem   boundary issues with local labels
-          rem Checks for playfield pixel collisions in all four directions and blocks movement by zeroing velocity
-          rem Input: currentPlayer (global) = player index (0-3), playerX[], playerY[] (global arrays) = player positions, playerChar[] (global array) = character types, playerVelocityX[], playerVelocityY[], playerVelocityXL[], playerVelocityYL[] (global arrays) = player velocities, playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions, CharacterHeights[] (global data table) = character heights, ScreenInsetX, pfrowheight, pfrows (global constants) = screen/playfield constants
-          rem Output: Player velocities zeroed when collisions detected in any direction
-          rem Mutates: temp2-temp6 (used for calculations), playfieldRow, playfieldColumn, rowCounter (global) = calculation temporaries, playerVelocityX[], playerVelocityY[], playerVelocityXL[], playerVelocityYL[] (global arrays) = player velocities (zeroed on collision), playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions (zeroed on collision)
+          rem Checks for playfield pixel collisions in all four
+          rem directions and blocks movement by zeroing velocity
+          rem Input: currentPlayer (global) = player index (0-3),
+          rem playerX[], playerY[] (global arrays) = player positions,
+          rem playerChar[] (global array) = character types,
+          rem playerVelocityX[], playerVelocityY[], playerVelocityXL[],
+          rem playerVelocityYL[] (global arrays) = player velocities,
+          rem playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[],
+          rem playerSubpixelYL[] (global arrays) = subpixel positions,
+          rem CharacterHeights[] (global data table) = character
+          rem heights, ScreenInsetX, pfrowheight, pfrows (global
+          rem constants) = screen/playfield constants
+          rem Output: Player velocities zeroed when collisions detected
+          rem in any direction
+          rem Mutates: temp2-temp6 (used for calculations),
+          rem playfieldRow, playfieldColumn, rowCounter (global) =
+          rem calculation temporaries, playerVelocityX[],
+          rem playerVelocityY[], playerVelocityXL[], playerVelocityYL[]
+          rem (global arrays) = player velocities (zeroed on collision),
+          rem playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[],
+          rem playerSubpixelYL[] (global arrays) = subpixel positions
+          rem (zeroed on collision)
           rem Called Routines: None
-          rem Constraints: Checks collisions at head, middle, and feet positions. Uses CharacterHeights table for proper hitbox detection. Inline division by pfrowheight (8 or 16) using bit shifts
+          rem Constraints: Checks collisions at head, middle, and feet
+          rem positions. Uses CharacterHeights table for proper hitbox
+          rem detection. Inline division by pfrowheight (8 or 16) using
+          rem bit shifts
           let temp2 = playerX[currentPlayer] : rem Get player position and character info
           let temp3 = playerY[currentPlayer] : rem X position (save original)
           let temp4 = playerChar[currentPlayer] : rem Y position
@@ -117,14 +163,17 @@ DBPF_InlineDivideBy8
 DBPF_InlineDivideDone
           let playfieldRow = temp2
           if playfieldRow >= pfrows then let playfieldRow = pfrows - 1 : rem playfieldRow = playfield row
-          rem Check for wraparound: if division resulted in value ≥ 128 (negative), clamp to 0
+          rem Check for wraparound: if division resulted in value ≥ 128
+          rem (negative), clamp to 0
           if playfieldRow & $80 then let playfieldRow = 0
           
           rem
           rem Check Left Collision
-          rem Check if player left edge (temp6 column) has a playfield pixel
+          rem Check if player left edge (temp6 column) has a playfield
+          rem pixel
           rem Check at player head, middle, and feet positions
-          rem Skip if at left edge (temp6 is 0-31, so = 0 means exactly 0)
+          rem Skip if at left edge (temp6 is 0-31, so = 0 means exactly
+          rem 0)
           if temp6 = 0 then goto PFCheckRight
           rem At left edge of screen, skip check
           
@@ -188,7 +237,8 @@ DBPF_InlineDivideDone_2
           
 PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
-          rem Check for negative velocity using twos complement (values ≥ 128 are negative)
+          rem Check for negative velocity using twos complement (values
+          rem ≥ 128 are negative)
           if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           let rowYPosition = temp6 + 1 : rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
@@ -296,7 +346,8 @@ PFCheckUp
           
           let rowCounter = playfieldRow - 1
           rem Row above player head (rowCounter)
-          rem Check for wraparound: if playfieldRow was 0, rowCounter wraps to 255 (≥ 128)
+          rem Check for wraparound: if playfieldRow was 0, rowCounter
+          rem wraps to 255 (≥ 128)
           if rowCounter & $80 then goto PFCheckDown
           
           if pfread(temp6, rowCounter) then goto PFBlockUp : rem Check center column (temp6)
@@ -312,7 +363,8 @@ PFCheckUp_CheckRight
           
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
-          rem Check for negative velocity using twos complement (values ≥ 128 are negative)
+          rem Check for negative velocity using twos complement (values
+          rem ≥ 128 are negative)
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           let rowYPosition = playfieldRow + 1 : rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
@@ -399,12 +451,33 @@ PFCheckDone
           rem Applies impulses to velocity instead of directly modifying
           rem   position.
 CheckAllPlayerCollisions
-          rem Checks all player-to-player collisions and applies momentum transfer based on weight
-          rem Input: playerX[], playerY[] (global arrays) = player positions, playerChar[] (global array) = character types, playerHealth[] (global array) = player health, playerVelocityX[] (global array) = player X velocities, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, CharacterHeights[], CharacterWeights[] (global data tables) = character properties, PlayerCollisionDistance (global constant) = collision distance threshold
-          rem Output: Player velocities adjusted based on weight-based momentum transfer when collisions detected
-          rem Mutates: temp1-temp6 (used for calculations), characterHeight, halfHeight1, halfHeight2, totalHeight, characterWeight, totalWeight, weightDifference, impulseStrength, yDistance (global) = calculation temporaries, playerVelocityX[] (global array) = player X velocities (adjusted for separation)
+          rem Checks all player-to-player collisions and applies
+          rem momentum transfer based on weight
+          rem Input: playerX[], playerY[] (global arrays) = player
+          rem positions, playerChar[] (global array) = character types,
+          rem playerHealth[] (global array) = player health,
+          rem playerVelocityX[] (global array) = player X velocities,
+          rem controllerStatus (global) = controller state,
+          rem selectedChar3_R, selectedChar4_R (global SCRAM) = player
+          rem 3/4 selections, CharacterHeights[], CharacterWeights[]
+          rem (global data tables) = character properties,
+          rem PlayerCollisionDistance (global constant) = collision
+          rem distance threshold
+          rem Output: Player velocities adjusted based on weight-based
+          rem momentum transfer when collisions detected
+          rem Mutates: temp1-temp6 (used for calculations),
+          rem characterHeight, halfHeight1, halfHeight2, totalHeight,
+          rem characterWeight, totalWeight, weightDifference,
+          rem impulseStrength, yDistance (global) = calculation
+          rem temporaries, playerVelocityX[] (global array) = player X
+          rem velocities (adjusted for separation)
           rem Called Routines: None
-          rem Constraints: Only checks pairs (i, j) where i < j to avoid duplicate checks. Skips eliminated players (health = 0). Players 3/4 only checked if Quadtari detected and selected. Uses weight-based momentum transfer (heavier characters push lighter ones more). Approximates division using bit shifts
+          rem Constraints: Only checks pairs (i, j) where i < j to avoid
+          rem duplicate checks. Skips eliminated players (health = 0).
+          rem Players 3/4 only checked if Quadtari detected and
+          rem selected. Uses weight-based momentum transfer (heavier
+          rem characters push lighter ones more). Approximates division
+          rem using bit shifts
           rem Loop through all player pairs to check collisions
           let temp1 = 0 : rem Pair (i, j) where i < j to avoid checking same pair twice
           rem Player 1 index

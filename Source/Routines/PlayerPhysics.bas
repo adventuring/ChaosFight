@@ -27,12 +27,44 @@ PhysicsApplyGravity
           rem   (Constants.bas):
           rem GravityNormal (0.1px/frame²), GravityReduced
           rem   (0.05px/frame²), TerminalVelocity (8px/frame)
-          rem Applies gravity acceleration to jumping players and handles ground detection
-          rem Input: playerChar[] (global array) = character types, playerState[] (global array) = player states, playerX[], playerY[] (global arrays) = player positions, playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, characterStateFlags_R[] (global SCRAM array) = character state flags, gravityRate (global) = gravity acceleration rate, GravityNormal, GravityReduced, TerminalVelocity (global constants) = gravity constants, BitMask[] (global data table) = bit masks, roboTitoCanStretch_R (global SCRAM) = stretch permission flags
-          rem Output: Gravity applied to jumping players, ground detection performed, players clamped to ground on landing
-          rem Mutates: temp1-temp6 (used for calculations), playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, playerY[] (global array) = player Y positions, playerSubpixelY[], playerSubpixelYL[] (global arrays) = subpixel Y positions, playerState[] (global array) = player states (jumping flag cleared on landing), roboTitoCanStretch_W (global SCRAM) = stretch permission flags (via PAG_SetRoboTitoStretchPermission), missileStretchHeight_W[] (global SCRAM array) = stretch missile heights (via PAG_SetRoboTitoStretchPermission), rowYPosition, rowCounter (global) = calculation temporaries
-          rem Called Routines: AddVelocitySubpixelY - adds gravity to vertical velocity, ConvertPlayerXToPlayfieldColumn - converts player X to playfield column, DivideByPfrowheight - divides Y by row height, PAG_SetRoboTitoStretchPermission - sets RoboTito stretch permission on landing
-          rem Constraints: Frooty (8) and Dragon of Storms (2) skip gravity entirely. RoboTito (13) skips gravity when latched to ceiling
+          rem Applies gravity acceleration to jumping players and
+          rem handles ground detection
+          rem Input: playerChar[] (global array) = character types,
+          rem playerState[] (global array) = player states, playerX[],
+          rem playerY[] (global arrays) = player positions,
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity, controllerStatus (global) = controller
+          rem state, selectedChar3_R, selectedChar4_R (global SCRAM) =
+          rem player 3/4 selections, characterStateFlags_R[] (global
+          rem SCRAM array) = character state flags, gravityRate (global)
+          rem = gravity acceleration rate, GravityNormal,
+          rem GravityReduced, TerminalVelocity (global constants) =
+          rem gravity constants, BitMask[] (global data table) = bit
+          rem masks, roboTitoCanStretch_R (global SCRAM) = stretch
+          rem permission flags
+          rem Output: Gravity applied to jumping players, ground
+          rem detection performed, players clamped to ground on landing
+          rem Mutates: temp1-temp6 (used for calculations),
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity, playerY[] (global array) = player Y
+          rem positions, playerSubpixelY[], playerSubpixelYL[] (global
+          rem arrays) = subpixel Y positions, playerState[] (global
+          rem array) = player states (jumping flag cleared on landing),
+          rem roboTitoCanStretch_W (global SCRAM) = stretch permission
+          rem flags (via PAG_SetRoboTitoStretchPermission),
+          rem missileStretchHeight_W[] (global SCRAM array) = stretch
+          rem missile heights (via PAG_SetRoboTitoStretchPermission),
+          rem rowYPosition, rowCounter (global) = calculation
+          rem temporaries
+          rem Called Routines: AddVelocitySubpixelY - adds gravity to
+          rem vertical velocity, ConvertPlayerXToPlayfieldColumn -
+          rem converts player X to playfield column, DivideByPfrowheight
+          rem - divides Y by row height,
+          rem PAG_SetRoboTitoStretchPermission - sets RoboTito stretch
+          rem permission on landing
+          rem Constraints: Frooty (8) and Dragon of Storms (2) skip
+          rem gravity entirely. RoboTito (13) skips gravity when latched
+          rem to ceiling
           dim PAG_playerIndex = temp1
           dim PAG_playfieldColumn = temp2
           dim PAG_feetY = temp3
@@ -62,7 +94,8 @@ GravityCheckRoboTitoDone
           if !(playerState[PAG_playerIndex] & PlayerStateBitJumping) then goto GravityNextPlayer : rem If NOT jumping, skip gravity (player is on ground)
           
           rem Initialize or get vertical velocity (using temp variable)
-          rem Note: Vertical velocity is not persistent - we will track it
+          rem Note: Vertical velocity is not persistent - we will track
+          rem it
           rem   per-frame
           rem For now, we will apply gravity acceleration directly to
           rem   position
@@ -145,10 +178,18 @@ GravityRowCalcDone
           goto GravityNextPlayer
           
 PAG_SetRoboTitoStretchPermission
-          rem Set RoboTito stretch permission on landing (allows stretching again)
-          rem Input: PAGSRTSP_playerIndex (temp1) = player index (0-3), roboTitoCanStretch_R (global SCRAM) = stretch permission flags, BitMask[] (global data table) = bit masks
-          rem Output: roboTitoCanStretch_W (global SCRAM) = stretch permission flags updated, missileStretchHeight_W[] (global SCRAM array) = stretch missile height cleared
-          rem Mutates: temp1-temp3 (used for calculations), roboTitoCanStretch_W (global SCRAM) = stretch permission flags, missileStretchHeight_W[] (global SCRAM array) = stretch missile heights
+          rem Set RoboTito stretch permission on landing (allows
+          rem stretching again)
+          rem Input: PAGSRTSP_playerIndex (temp1) = player index (0-3),
+          rem roboTitoCanStretch_R (global SCRAM) = stretch permission
+          rem flags, BitMask[] (global data table) = bit masks
+          rem Output: roboTitoCanStretch_W (global SCRAM) = stretch
+          rem permission flags updated, missileStretchHeight_W[] (global
+          rem SCRAM array) = stretch missile height cleared
+          rem Mutates: temp1-temp3 (used for calculations),
+          rem roboTitoCanStretch_W (global SCRAM) = stretch permission
+          rem flags, missileStretchHeight_W[] (global SCRAM array) =
+          rem stretch missile heights
           rem Called Routines: None
           dim PAGSRTSP_playerIndex = temp1 : rem Constraints: Only called for RoboTito character on landing
           dim PAGSRTSP_flags = temp2
@@ -194,10 +235,24 @@ GravityNextPlayer
           rem Velocity gradually decays over time.
           rem Refactored to loop through all players (0-3)
 ApplyMomentumAndRecovery
-          rem Updates recovery frames and applies velocity decay during hitstun for all players
-          rem Input: playerRecoveryFrames[] (global array) = recovery frame counts, playerVelocityX[], playerVelocityXL[] (global arrays) = horizontal velocity, playerState[] (global array) = player states, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, PlayerStateBitRecovery (global constant) = recovery flag bit
-          rem Output: Recovery frames decremented, recovery flag synchronized, velocity decayed during recovery
-          rem Mutates: temp1 (used for player index), playerRecoveryFrames[] (global array) = recovery frame counts, playerState[] (global array) = player states (recovery flag bit 3), playerVelocityX[], playerVelocityXL[] (global arrays) = horizontal velocity (decayed)
+          rem Updates recovery frames and applies velocity decay during
+          rem hitstun for all players
+          rem Input: playerRecoveryFrames[] (global array) = recovery
+          rem frame counts, playerVelocityX[], playerVelocityXL[]
+          rem (global arrays) = horizontal velocity, playerState[]
+          rem (global array) = player states, controllerStatus (global)
+          rem = controller state, selectedChar3_R, selectedChar4_R
+          rem (global SCRAM) = player 3/4 selections,
+          rem PlayerStateBitRecovery (global constant) = recovery flag
+          rem bit
+          rem Output: Recovery frames decremented, recovery flag
+          rem synchronized, velocity decayed during recovery
+          rem Mutates: temp1 (used for player index),
+          rem playerRecoveryFrames[] (global array) = recovery frame
+          rem counts, playerState[] (global array) = player states
+          rem (recovery flag bit 3), playerVelocityX[],
+          rem playerVelocityXL[] (global arrays) = horizontal velocity
+          rem (decayed)
           rem Called Routines: None
           dim AMAR_playerIndex = temp1 : rem Constraints: None
           let AMAR_playerIndex = 0 : rem Loop through all players (0-3)
@@ -238,12 +293,31 @@ MomentumRecoveryNext
           rem Check Boundary Collisions
           rem Prevents players from moving off-screen.
 CheckBoundaryCollisions
-          rem Prevents players from moving off-screen, handles horizontal wrap-around and vertical clamping
-          rem Input: playerX[], playerY[] (global arrays) = player positions, playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions, playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity, controllerStatus (global) = controller state, selectedChar3_R, selectedChar4_R (global SCRAM) = player 3/4 selections, selectedArena_R (global SCRAM) = selected arena, frame (global) = frame counter, RandomArena (global constant) = random arena constant
-          rem Output: Players clamped to screen boundaries, horizontal wrap-around applied
-          rem Mutates: temp1-temp3 (used for calculations), playerX[], playerY[] (global arrays) = player positions, playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[], playerSubpixelYL[] (global arrays) = subpixel positions, playerVelocityY[], playerVelocityYL[] (global arrays) = vertical velocity (zeroed at boundaries)
+          rem Prevents players from moving off-screen, handles
+          rem horizontal wrap-around and vertical clamping
+          rem Input: playerX[], playerY[] (global arrays) = player
+          rem positions, playerSubpixelX[], playerSubpixelY[],
+          rem playerSubpixelXL[], playerSubpixelYL[] (global arrays) =
+          rem subpixel positions, playerVelocityY[], playerVelocityYL[]
+          rem (global arrays) = vertical velocity, controllerStatus
+          rem (global) = controller state, selectedChar3_R,
+          rem selectedChar4_R (global SCRAM) = player 3/4 selections,
+          rem selectedArena_R (global SCRAM) = selected arena, frame
+          rem (global) = frame counter, RandomArena (global constant) =
+          rem random arena constant
+          rem Output: Players clamped to screen boundaries, horizontal
+          rem wrap-around applied
+          rem Mutates: temp1-temp3 (used for calculations), playerX[],
+          rem playerY[] (global arrays) = player positions,
+          rem playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[],
+          rem playerSubpixelYL[] (global arrays) = subpixel positions,
+          rem playerVelocityY[], playerVelocityYL[] (global arrays) =
+          rem vertical velocity (zeroed at boundaries)
           rem Called Routines: None
-          rem Constraints: All arenas support horizontal wrap-around (X < 10 wraps to 150, X > 150 wraps to 10). Vertical boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped to 80)
+          rem Constraints: All arenas support horizontal wrap-around (X
+          rem < 10 wraps to 150, X > 150 wraps to 10). Vertical
+          rem boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped
+          rem to 80)
           dim CBC_playerIndex = temp1
           dim CBC_characterType = temp2
           let CBC_playerIndex = 0 : rem Loop through all players (0-3)
@@ -262,7 +336,8 @@ BoundaryCheckBounds
           rem Handle RandomArena (use proper random number generator)
           if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = rand : let CBC_arenaIndex = CBC_arenaIndex & 15
           
-          rem All arenas: wrap horizontally (walls may block wrap-around)
+          rem All arenas: wrap horizontally (walls may block
+          rem wrap-around)
           if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150 : rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
           if playerX[CBC_playerIndex] < 10 then let playerSubpixelX[CBC_playerIndex] = 150
           if playerX[CBC_playerIndex] < 10 then let playerSubpixelXL[CBC_playerIndex] = 0
@@ -291,14 +366,18 @@ BoundaryNextPlayer
           rem
           rem Check Playfield Collision All Directions
           rem
-          rem This function has been moved to PlayerPhysicsCollisions.bas
-          rem to reduce bank size. Use gosub CheckPlayfieldCollisionAllDirections bank9
+          rem This function has been moved to
+          rem PlayerPhysicsCollisions.bas
+          rem to reduce bank size. Use gosub
+          rem CheckPlayfieldCollisionAllDirections bank9
           rem to call it from this bank.
 
           rem Check Multi-player Collisions
           rem
-          rem This function has been moved to PlayerPhysicsCollisions.bas
-          rem to reduce bank size. Use gosub CheckAllPlayerCollisions bank9
+          rem This function has been moved to
+          rem PlayerPhysicsCollisions.bas
+          rem to reduce bank size. Use gosub CheckAllPlayerCollisions
+          rem bank9
           rem to call it from this bank.
 
           rem Divide By Pfrowheight Helper

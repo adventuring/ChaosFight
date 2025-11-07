@@ -259,7 +259,7 @@ CountRemainingPlayers
           if !(PlayerEliminatedPlayer3 & playersEliminated_R) then let CRP_count = 1 + CRP_count : rem Player 3
           rem Player 4
           
-          let playersRemaining = CRP_count
+          let playersRemaining_W = CRP_count
           return
 
 IsPlayerEliminated

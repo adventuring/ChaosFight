@@ -38,8 +38,8 @@ WinnerAnnouncementLoop
           if joy1fire then WinnerAdvanceToCharacterSelect
           if switchselect then WinnerAdvanceToCharacterSelect
           
-          let WinScreenTimer = WinScreenTimer + 1 : rem Auto-advance after 10 seconds (600 frames at 60fps)
-          if WinScreenTimer > WinScreenAutoAdvanceFrames then WinnerAdvanceToCharacterSelect
+          let winScreenTimer_W = winScreenTimer_R + 1 : rem Auto-advance after 10 seconds (600 frames at 60fps)
+          if winScreenTimer_R > WinScreenAutoAdvanceFrames then WinnerAdvanceToCharacterSelect
           
           gosub DisplayWinScreen bank12 : rem Display win screen and continue loop
           rem drawscreen called by MainLoop

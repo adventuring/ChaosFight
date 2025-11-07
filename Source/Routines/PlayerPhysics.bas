@@ -173,8 +173,8 @@ GravityRowCalcDone
           rem rowYPosition now contains rowBelow * pfrowheight (Y
           rem   position of top of ground row)
           let playerY[PAG_playerIndex] = rowYPosition - PlayerSpriteHeight : rem Clamp playerY so feet are at top of ground row
-          let playerSubpixelY[PAG_playerIndex] = playerY[PAG_playerIndex] : rem Also sync subpixel position
-          let playerSubpixelYL[PAG_playerIndex] = 0
+          let playerSubpixelY_W[PAG_playerIndex] = playerY[PAG_playerIndex] : rem Also sync subpixel position
+          let playerSubpixelY_WL[PAG_playerIndex] = 0
           
           let playerState[PAG_playerIndex] = playerState[PAG_playerIndex] & (255 - PlayerStateBitJumping) : rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           rem Clear bit 2 (jumping flag)
@@ -357,21 +357,21 @@ BoundaryCheckBounds
           rem All arenas: wrap horizontally (walls may block
           rem wrap-around)
           if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150 : rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
-          if playerX[CBC_playerIndex] < 10 then let playerSubpixelX[CBC_playerIndex] = 150
-          if playerX[CBC_playerIndex] < 10 then let playerSubpixelXL[CBC_playerIndex] = 0
+          if playerX[CBC_playerIndex] < 10 then let playerSubpixelX_W[CBC_playerIndex] = 150
+          if playerX[CBC_playerIndex] < 10 then let playerSubpixelX_WL[CBC_playerIndex] = 0
           if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 10
-          if playerX[CBC_playerIndex] > 150 then let playerSubpixelX[CBC_playerIndex] = 10
-          if playerX[CBC_playerIndex] > 150 then let playerSubpixelXL[CBC_playerIndex] = 0
+          if playerX[CBC_playerIndex] > 150 then let playerSubpixelX_W[CBC_playerIndex] = 10
+          if playerX[CBC_playerIndex] > 150 then let playerSubpixelX_WL[CBC_playerIndex] = 0
           
           rem Y position: clamp to screen boundaries (no vertical wrap)
           if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20 : rem Top boundary: clamp to prevent going above screen
-          if playerY[CBC_playerIndex] < 20 then let playerSubpixelY[CBC_playerIndex] = 20
-          if playerY[CBC_playerIndex] < 20 then let playerSubpixelYL[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] < 20 then let playerSubpixelY_W[CBC_playerIndex] = 20
+          if playerY[CBC_playerIndex] < 20 then let playerSubpixelY_WL[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] < 20 then let playerVelocityY[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] < 20 then let playerVelocityYL[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 80 : rem Bottom boundary: clamp to prevent going below screen
-          if playerY[CBC_playerIndex] > 80 then let playerSubpixelY[CBC_playerIndex] = 80
-          if playerY[CBC_playerIndex] > 80 then let playerSubpixelYL[CBC_playerIndex] = 0
+          if playerY[CBC_playerIndex] > 80 then let playerSubpixelY_W[CBC_playerIndex] = 80
+          if playerY[CBC_playerIndex] > 80 then let playerSubpixelY_WL[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] > 80 then let playerVelocityY[CBC_playerIndex] = 0
           if playerY[CBC_playerIndex] > 80 then let playerVelocityYL[CBC_playerIndex] = 0
 

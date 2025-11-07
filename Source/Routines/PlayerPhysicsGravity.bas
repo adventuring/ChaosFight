@@ -173,8 +173,8 @@ GravityRowCalcDone
           rem rowYPosition now contains rowBelow * pfrowheight (Y
           rem   position of top of ground row)
           let playerY[PAG_playerIndex] = rowYPosition - PlayerSpriteHeight : rem Clamp playerY so feet are at top of ground row
-          let playerSubpixelY[PAG_playerIndex] = playerY[PAG_playerIndex] : rem Also sync subpixel position
-          let playerSubpixelYL[PAG_playerIndex] = 0
+          let playerSubpixelY_W[PAG_playerIndex] = playerY[PAG_playerIndex] : rem Also sync subpixel position
+          let playerSubpixelY_WL[PAG_playerIndex] = 0
           
           let playerState[PAG_playerIndex] = playerState[PAG_playerIndex] & (255 - PlayerStateBitJumping) : rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           rem Clear bit 2 (jumping flag)

@@ -141,7 +141,7 @@ UpdatePlayerMovementSingle
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem Use 16-bit accumulator to detect carry properly
           rem temp2 = low byte, temp3 = high byte (carry flag)
-          let UPS_sum16 = playerSubpixelX_WL[currentPlayer] + playerVelocityXL[currentPlayer]
+          let UPS_sum16 = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
           if temp3 > 0 then XCarry
           rem No carry: temp3 = 0, use low byte directly
           let playerSubpixelX_WL[currentPlayer] = temp2
@@ -168,7 +168,7 @@ XNoCarry
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem Use 16-bit accumulator to detect carry properly
           rem temp2 = low byte, temp3 = high byte (carry flag)
-          let UPS_sum16 = playerSubpixelY_WL[currentPlayer] + playerVelocityYL[currentPlayer]
+          let UPS_sum16 = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]
           if temp3 > 0 then YCarry
           rem No carry: temp3 = 0, use low byte directly
           let playerSubpixelY_WL[currentPlayer] = temp2

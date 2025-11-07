@@ -61,29 +61,29 @@ CheckBoundaryCollisions
           
           let CBC_playerIndex = 0 : rem Player 0 - boundaries
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
-          if playerX[0] < 10 then let playerX[0] = 150 : let playerSubpixelX[0] = 150 : let playerSubpixelXL[0] = 0
-          if playerX[0] > 150 then let playerX[0] = 10 : let playerSubpixelX[0] = 10 : let playerSubpixelXL[0] = 0
-          if playerY[0] < 20 then let playerY[0] = 20 : let playerSubpixelY[0] = 20 : let playerSubpixelYL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0 : rem Y clamp: top 20, bottom 80
-          if playerY[0] > 80 then let playerY[0] = 80 : let playerSubpixelY[0] = 80 : let playerSubpixelYL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
+          if playerX[0] < 10 then let playerX[0] = 150 : let playerSubpixelX_W[0] = 150 : let playerSubpixelX_WL[0] = 0
+          if playerX[0] > 150 then let playerX[0] = 10 : let playerSubpixelX_W[0] = 10 : let playerSubpixelX_WL[0] = 0
+          if playerY[0] < 20 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0 : rem Y clamp: top 20, bottom 80
+          if playerY[0] > 80 then let playerY[0] = 80 : let playerSubpixelY_W[0] = 80 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
           
           let CBC_playerIndex = 1 : rem Player 1 - boundaries
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
-          if playerX[1] < 10 then let playerX[1] = 150 : let playerSubpixelX[1] = 150 : let playerSubpixelXL[1] = 0
-          if playerX[1] > 150 then let playerX[1] = 10 : let playerSubpixelX[1] = 10 : let playerSubpixelXL[1] = 0
-          if playerY[1] < 20 then let playerY[1] = 20 : let playerSubpixelY[1] = 20 : let playerSubpixelYL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0 : rem Y clamp: top 20, bottom 80
-          if playerY[1] > 80 then let playerY[1] = 80 : let playerSubpixelY[1] = 80 : let playerSubpixelYL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
+          if playerX[1] < 10 then let playerX[1] = 150 : let playerSubpixelX_W[1] = 150 : let playerSubpixelX_WL[1] = 0
+          if playerX[1] > 150 then let playerX[1] = 10 : let playerSubpixelX_W[1] = 10 : let playerSubpixelX_WL[1] = 0
+          if playerY[1] < 20 then let playerY[1] = 20 : let playerSubpixelY_W[1] = 20 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0 : rem Y clamp: top 20, bottom 80
+          if playerY[1] > 80 then let playerY[1] = 80 : let playerSubpixelY_W[1] = 80 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
           
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then let CBC_playerIndex = 2 : rem Player 2 - boundaries (if Quadtari and active) - inline nested ifs
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerX[2] < 10 then let playerX[2] = 150 : let playerSubpixelX[2] = 150 : let playerSubpixelXL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerX[2] > 150 then let playerX[2] = 10 : let playerSubpixelX[2] = 10 : let playerSubpixelXL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY[2] = 20 : let playerSubpixelYL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerY[2] > 80 then let playerY[2] = 80 : let playerSubpixelY[2] = 80 : let playerSubpixelYL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerX[2] < 10 then let playerX[2] = 150 : let playerSubpixelX_W[2] = 150 : let playerSubpixelX_WL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerX[2] > 150 then let playerX[2] = 10 : let playerSubpixelX_W[2] = 10 : let playerSubpixelX_WL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerY[2] > 80 then let playerY[2] = 80 : let playerSubpixelY_W[2] = 80 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
           
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then let CBC_playerIndex = 3 : rem Player 3 - boundaries (if Quadtari and active) - inline nested ifs
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerX[3] < 10 then let playerX[3] = 150 : let playerSubpixelX[3] = 150 : let playerSubpixelXL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerX[3] > 150 then let playerX[3] = 10 : let playerSubpixelX[3] = 10 : let playerSubpixelXL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY[3] = 20 : let playerSubpixelYL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerY[3] > 80 then let playerY[3] = 80 : let playerSubpixelY[3] = 80 : let playerSubpixelYL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerX[3] < 10 then let playerX[3] = 150 : let playerSubpixelX_W[3] = 150 : let playerSubpixelX_WL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerX[3] > 150 then let playerX[3] = 10 : let playerSubpixelX_W[3] = 10 : let playerSubpixelX_WL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerY[3] > 80 then let playerY[3] = 80 : let playerSubpixelY_W[3] = 80 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
           
           return
 
@@ -262,8 +262,8 @@ PFBlockLeft
 end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           if playerX[currentPlayer] < rowYPosition then let playerX[currentPlayer] = rowYPosition : rem   but same pattern)
-          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
-          if playerX[currentPlayer] < rowYPosition then let playerSubpixelXL[currentPlayer] = 0
+          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX_W[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX_WL[currentPlayer] = 0
           
 PFCheckRight
           rem
@@ -345,8 +345,8 @@ PFBlockRight
 end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           if playerX[currentPlayer] > rowYPosition then let playerX[currentPlayer] = rowYPosition : rem   but same pattern)
-          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
-          if playerX[currentPlayer] > rowYPosition then let playerSubpixelXL[currentPlayer] = 0
+          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX_W[currentPlayer] = rowYPosition
+          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX_WL[currentPlayer] = 0
           
 PFCheckUp
           rem
@@ -400,8 +400,8 @@ DBPF_MultiplyBy8
 end
 DBPF_MultiplyDone
           if playerY[currentPlayer] < rowYPosition then let playerY[currentPlayer] = rowYPosition
-          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY[currentPlayer] = rowYPosition
-          if playerY[currentPlayer] < rowYPosition then let playerSubpixelYL[currentPlayer] = 0
+          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_W[currentPlayer] = rowYPosition
+          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_WL[currentPlayer] = 0
           
 PFCheckDown
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity,

@@ -49,7 +49,7 @@ ApplyDamage
           dim AD_willDie = temp3
           dim AD_recoveryFrames = temp4
           
-          let AD_damage = playerDamage[AD_attackerID] - playerDamage[AD_defenderID] : rem Calculate damage (considering defender state)
+          let AD_damage = playerDamage_R[AD_attackerID] - playerDamage_R[AD_defenderID] : rem Calculate damage (considering defender state)
           if AD_damage < 1 then let AD_damage = 1 : rem Minimum damage
 
           let AD_currentHealth = playerHealth[AD_defenderID] : rem Check if player will die from this damage
@@ -143,8 +143,8 @@ CheckAttackHit
           rem Hitbox: [cachedHitboxLeft, cachedHitboxRight] x
           rem [cachedHitboxTop,
           rem   cachedHitboxBottom]
-          rem Overlap occurs when: defender_right > hitboxLeft AND
-          rem   defender_left < hitboxRight
+          rem Overlap occurs when: defender_right > cachedHitboxLeft_R AND
+          rem   defender_left < cachedHitboxRight_R
           rem AND defender_bottom > hitboxTop AND defender_top <
           if playerX[CAH_defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit : rem   hitboxBottom
           rem Defender right edge <= hitbox left edge (no overlap)
@@ -176,7 +176,7 @@ CalculateAttackHitbox
           rem   facing
           rem Inputs: attackerID (must be set before calling, or use
           rem   CAH_attackerID from CheckAttackHit)
-          rem Outputs: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Outputs: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem Calculate attack hitbox based on attacker position and
           rem facing
           rem
@@ -190,11 +190,11 @@ CalculateAttackHitbox
           rem        PlayerSpriteWidth, PlayerSpriteHeight (constants) =
           rem        sprite dimensions
           rem
-          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem (global) = hitbox bounds
           rem
           rem Mutates: temp1, temp2 (used for attack type and facing),
-          rem hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem
           rem Called Routines: None
           rem
@@ -219,11 +219,11 @@ MeleeHitbox
           rem Input: CAH_attackerID_calc, PlayerFacing[] (from
           rem CalculateAttackHitbox)
           rem
-          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem set based on facing direction
           rem
-          rem Mutates: temp2 (facing direction), hitboxLeft,
-          rem hitboxRight, hitboxTop, hitboxBottom
+          rem Mutates: temp2 (facing direction), cachedHitboxLeft_W,
+          rem cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem
           rem Called Routines: None
           rem
@@ -244,10 +244,10 @@ FacingRight
           rem Input: CAH_attackerID_calc, playerX[], playerY[] (from
           rem MeleeHitbox)
           rem
-          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem set for right-facing attack
           rem
-          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem
           rem Called Routines: None
           rem
@@ -255,10 +255,10 @@ FacingRight
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
-          let hitboxLeft = playerX[CAH_attackerID_calc] + PlayerSpriteWidth : rem Hitbox: [playerX+16, playerX+32] x [playerY, playerY+16]
-          let hitboxRight = playerX[CAH_attackerID_calc] + PlayerSpriteWidth + PlayerSpriteWidth
-          let hitboxTop = playerY[CAH_attackerID_calc]
-          let hitboxBottom = playerY[CAH_attackerID_calc] + PlayerSpriteHeight
+          let cachedHitboxLeft_W = playerX[CAH_attackerID_calc] + PlayerSpriteWidth : rem Hitbox: [playerX+16, playerX+32] x [playerY, playerY+16]
+          let cachedHitboxRight_W = playerX[CAH_attackerID_calc] + PlayerSpriteWidth + PlayerSpriteWidth
+          let cachedHitboxTop_W = playerY[CAH_attackerID_calc]
+          let cachedHitboxBottom_W = playerY[CAH_attackerID_calc] + PlayerSpriteHeight
           return
           
 FacingLeft
@@ -267,10 +267,10 @@ FacingLeft
           rem Input: CAH_attackerID_calc, playerX[], playerY[] (from
           rem MeleeHitbox)
           rem
-          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem set for left-facing attack
           rem
-          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem
           rem Called Routines: None
           rem
@@ -278,10 +278,10 @@ FacingLeft
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
-          let hitboxLeft = playerX[CAH_attackerID_calc] - PlayerSpriteWidth : rem Hitbox: [playerX-16, playerX] x [playerY, playerY+16]
-          let hitboxRight = playerX[CAH_attackerID_calc]
-          let hitboxTop = playerY[CAH_attackerID_calc]
-          let hitboxBottom = playerY[CAH_attackerID_calc] + PlayerSpriteHeight
+          let cachedHitboxLeft_W = playerX[CAH_attackerID_calc] - PlayerSpriteWidth : rem Hitbox: [playerX-16, playerX] x [playerY, playerY+16]
+          let cachedHitboxRight_W = playerX[CAH_attackerID_calc]
+          let cachedHitboxTop_W = playerY[CAH_attackerID_calc]
+          let cachedHitboxBottom_W = playerY[CAH_attackerID_calc] + PlayerSpriteHeight
           return
           
 FacingUp
@@ -290,10 +290,10 @@ FacingUp
           rem Input: CAH_attackerID_calc, playerX[], playerY[] (from
           rem MeleeHitbox)
           rem
-          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem set for up-facing attack
           rem
-          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem
           rem Called Routines: None
           rem
@@ -301,10 +301,10 @@ FacingUp
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
-          let hitboxLeft = playerX[CAH_attackerID_calc] : rem Hitbox: [playerX, playerX+16] x [playerY-16, playerY]
-          let hitboxRight = playerX[CAH_attackerID_calc] + PlayerSpriteWidth
-          let hitboxTop = playerY[CAH_attackerID_calc] - PlayerSpriteHeight
-          let hitboxBottom = playerY[CAH_attackerID_calc]
+          let cachedHitboxLeft_W = playerX[CAH_attackerID_calc] : rem Hitbox: [playerX, playerX+16] x [playerY-16, playerY]
+          let cachedHitboxRight_W = playerX[CAH_attackerID_calc] + PlayerSpriteWidth
+          let cachedHitboxTop_W = playerY[CAH_attackerID_calc] - PlayerSpriteHeight
+          let cachedHitboxBottom_W = playerY[CAH_attackerID_calc]
           return
           
 FacingDown
@@ -313,10 +313,10 @@ FacingDown
           rem Input: CAH_attackerID_calc, playerX[], playerY[] (from
           rem MeleeHitbox)
           rem
-          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem set for down-facing attack
           rem
-          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem
           rem Called Routines: None
           rem
@@ -324,10 +324,10 @@ FacingDown
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
           rem   playerY+16]
-          let hitboxLeft = playerX[CAH_attackerID_calc] : rem Hitbox: [playerX, playerX+16] x [playerY+16, playerY+32]
-          let hitboxRight = playerX[CAH_attackerID_calc] + PlayerSpriteWidth
-          let hitboxTop = playerY[CAH_attackerID_calc] + PlayerSpriteHeight
-          let hitboxBottom = playerY[CAH_attackerID_calc] + PlayerSpriteHeight + PlayerSpriteHeight
+          let cachedHitboxLeft_W = playerX[CAH_attackerID_calc] : rem Hitbox: [playerX, playerX+16] x [playerY+16, playerY+32]
+          let cachedHitboxRight_W = playerX[CAH_attackerID_calc] + PlayerSpriteWidth
+          let cachedHitboxTop_W = playerY[CAH_attackerID_calc] + PlayerSpriteHeight
+          let cachedHitboxBottom_W = playerY[CAH_attackerID_calc] + PlayerSpriteHeight + PlayerSpriteHeight
           return
           
 ProjectileHitbox
@@ -336,17 +336,17 @@ ProjectileHitbox
           rem
           rem Input: None (placeholder)
           rem
-          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem set to 0 (placeholder)
           rem
-          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem (set to 0)
           rem
           rem Called Routines: None
-          let hitboxLeft = 0 : rem Constraints: Must be colocated with CalculateAttackHitbox
-          let hitboxRight = 0
-          let hitboxTop = 0
-          let hitboxBottom = 0
+          let cachedHitboxLeft_W = 0 : rem Constraints: Must be colocated with CalculateAttackHitbox
+          let cachedHitboxRight_W = 0
+          let cachedHitboxTop_W = 0
+          let cachedHitboxBottom_W = 0
           return
           
 AreaHitbox
@@ -355,17 +355,17 @@ AreaHitbox
           rem
           rem Input: None (placeholder)
           rem
-          rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem set to 0 (placeholder)
           rem
-          rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem Mutates: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
           rem (set to 0)
           rem
           rem Called Routines: None
-          let hitboxLeft = 0 : rem Constraints: Must be colocated with CalculateAttackHitbox
-          let hitboxRight = 0
-          let hitboxTop = 0
-          let hitboxBottom = 0
+          let cachedHitboxLeft_W = 0 : rem Constraints: Must be colocated with CalculateAttackHitbox
+          let cachedHitboxRight_W = 0
+          let cachedHitboxTop_W = 0
+          let cachedHitboxBottom_W = 0
           return
 
 ProcessAttackerAttacks
@@ -388,8 +388,8 @@ ProcessAttackerAttacks
           rem Output: Attacks processed for all defenders, damage
           rem applied if hits detected
           rem
-          rem Mutates: temp1-temp2 (used for calculations), hitboxLeft,
-          rem hitboxRight, hitboxTop, hitboxBottom (global) = hitbox
+          rem Mutates: temp1-temp2 (used for calculations), cachedHitboxLeft_W,
+          rem cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W (global) = hitbox
           rem bounds (calculated), cachedHitboxLeft_W,
           rem cachedHitboxRight_W, cachedHitboxTop_W,
           rem cachedHitboxBottom_W (global SCRAM) = cached hitbox bounds
@@ -411,10 +411,7 @@ ProcessAttackerAttacks
           rem Cache hitbox for this attacker (calculated once, used for
           rem all
           gosub CalculateAttackHitbox : rem   defenders)
-          let cachedHitboxLeft_W = hitboxLeft
-          let cachedHitboxRight_W = hitboxRight
-          let cachedHitboxTop_W = hitboxTop
-          let cachedHitboxBottom_W = hitboxBottom
+          rem Hitbox values are already written into cachedHitbox*_W via aliasing
           
           for defenderID = 0 to 3 : rem Attack each defender
               if defenderID = PAA_attackerID then NextDefender : rem Skip if defender is attacker

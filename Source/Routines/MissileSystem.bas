@@ -958,7 +958,7 @@ HandleMissileHit
           let temp5  = playerCharacter[temp1] : rem Get character type for damage calculation
           
           rem Apply damage from attacker to defender
-          let temp6  = playerDamage[temp1] : rem Use playerDamage array for base damage amount
+          let temp6  = playerDamage_R[temp1] : rem Use playerDamage array for base damage amount
           
           if temp5 = 6 then HarpyCheckDive : rem Apply dive damage bonus for Harpy
           goto DiveCheckDone

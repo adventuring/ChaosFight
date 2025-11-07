@@ -155,7 +155,6 @@
           dim playerCharacter = j : rem   GAME)
           dim playerDamage_W = w067 : rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
           dim playerDamage_R = r067
-          dim playerDamage = playerDamage_W
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 base damage per player
           rem (4 bytes: w067-w070) - SCRAM for low-frequency access
           rem Moved from w050-w053 to w067-w070 to avoid conflict with
@@ -235,14 +234,12 @@
           dim soundPointerL = var39 : rem Voice 1: var45+var46 for pointers (zero page)
           dim soundPointerH_W = w048
           dim soundPointerH_R = r048
-          dim soundPointerH = soundPointerH_W
           rem Sound data pointer low/high bytes (in Sounds bank) - low
           rem byte
           rem   in zero page (var39), high byte in SCRAM (w048/r048)
           dim soundEffectPointerL = var41 : rem   Moved to SCRAM to avoid conflict with characterSelectAnimationIndex (y)
           dim soundEffectPointerH_W = w066
           dim soundEffectPointerH_R = r066
-          dim soundEffectPointerH = soundEffectPointerH_W
           rem Sound effect Voice 0 stream position low/high bytes (high
           rem   byte = 0 means inactive) - low byte in zero page
           rem   (var41),
@@ -263,10 +260,8 @@
           rem NOTE: Overlaps with Game Mode playerSubpixelX - safe since
           dim musicVoice0Frame_W = w064 : rem   Admin and Game Mode never run simultaneously
           dim musicVoice0Frame_R = r064
-          dim musicVoice0Frame = musicVoice0Frame_W
           dim musicVoice1Frame_W = w065
           dim musicVoice1Frame_R = r065
-          dim musicVoice1Frame = musicVoice1Frame_W
           rem Frame counters for current notes on each voice (SCRAM
           rem   acceptable)
           
@@ -278,16 +273,12 @@
           rem Current playing song ID (used to check if Chaotica for
           dim musicVoice0StartPointerL_W = w067 : rem   looping)
           dim musicVoice0StartPointerL_R = r067
-          dim musicVoice0StartPointerL = musicVoice0StartPointerL_W
           dim musicVoice0StartPointerH_W = w068
           dim musicVoice0StartPointerH_R = r068
-          dim musicVoice0StartPointerH = musicVoice0StartPointerH_W
           dim musicVoice1StartPointerL_W = w069 : rem Initial Voice 0 pointer for looping (Chaotica only)
           dim musicVoice1StartPointerL_R = r069
-          dim musicVoice1StartPointerL = musicVoice1StartPointerL_W
           dim musicVoice1StartPointerH_W = w070
           dim musicVoice1StartPointerH_R = r070
-          dim musicVoice1StartPointerH = musicVoice1StartPointerH_W
           rem OPTIMIZED: Moved from w030/w033-w035 to w067-w070 to free
           rem   space for PlayerFrameBuffer
           rem Initial Voice 1 pointer for looping (Chaotica only)
@@ -313,10 +304,8 @@
           rem Sound Effect System Frame Counters (SCRAM - used in Game
           dim soundEffectFrame_W = w046 : rem   Mode)
           dim soundEffectFrame_R = r046
-          dim soundEffectFrame = soundEffectFrame_W
           dim soundEffectFrame1_W = w047
           dim soundEffectFrame1_R = r047
-          dim soundEffectFrame1 = soundEffectFrame1_W
           rem Moved from w022/w024 to w046/w047 to avoid conflicts
           rem Frame counters for current sound effect notes on each
           rem   voice (SCRAM acceptable)
@@ -506,8 +495,6 @@
           rem   playerSubpixelX_WL[0-3] (write ports)
           rem Array accessible as playerSubpixelX_R[0-3] and
           rem   playerSubpixelX_RL[0-3] (read ports)
-          dim playerSubpixelX = playerSubpixelX_W : rem Alias for backward compatibility (defaults to write port)
-          dim playerSubpixelXL = playerSubpixelX_WL
           
           rem playerSubpixelY[0-3] = 8.8 fixed-point Y position
           rem OPTIMIZED: Moved from w057-w064 to w072-w079 to free space
@@ -522,8 +509,6 @@
           rem   playerSubpixelY_WL[0-3] (write ports)
           rem Array accessible as playerSubpixelY_R[0-3] and
           rem   playerSubpixelY_RL[0-3] (read ports)
-          dim playerSubpixelY = playerSubpixelY_W : rem Alias for backward compatibility (defaults to write port)
-          dim playerSubpixelYL = playerSubpixelY_WL
           
           rem GAME MODE - Standard RAM (var24-var47) - sorted
           rem   numerically
@@ -643,7 +628,6 @@
           rem Physical addresses: $F000-$F03F (write ports), $F080-$F0BF
           dim PlayerFrameBuffer_W = w000 : rem   (read ports)
           dim PlayerFrameBuffer_R = r000
-          dim PlayerFrameBuffer = PlayerFrameBuffer_W
           rem 64-byte buffer for player frame data (w000-w063)
           rem Array accessible as PlayerFrameBuffer[0] through
           rem   PlayerFrameBuffer[63]
@@ -665,7 +649,6 @@
           rem OPTIMIZED: Moved from w004-w007 to w013-w016 to free space
           dim playerTimers_W = w013 : rem   for PlayerFrameBuffer (w000-w063)
           dim playerTimers_R = r013
-          dim playerTimers = playerTimers_W
           rem Game Mode: Player timers array (4 bytes) - SCRAM w013-w016
           rem Array accessible as playerTimers[0] through
           rem   playerTimers[3]
@@ -679,14 +662,12 @@
           rem Using proper _W/_R suffixes to follow SCRAM conventions
           dim playersEliminated_W = w015 : rem   despite intentional redim
           dim playersEliminated_R = r015
-          dim playersEliminated = playersEliminated_W
           rem GAME: Eliminated player bit flags (SCRAM - low frequency
           rem   access, redimmed with fireHoldTimer_W)
 
           rem Character-specific state flags for special mechanics
           dim characterStateFlags_W = w013 : rem   (SCRAM)
           dim characterStateFlags_R = r013
-          dim characterStateFlags = characterStateFlags_W
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 character state bits (4
           rem   bytes)
           rem Bit 0: RoboTito ceiling latched
@@ -697,7 +678,6 @@
           rem Missile angular velocity for curling stone rotation
           dim missileAngularVel_W = w017 : rem   (SCRAM)
           dim missileAngularVel_R = r017
-          dim missileAngularVel = missileAngularVel_W
           rem [0-3] angular velocity for rotation effects (4 bytes,
           rem   reserved for future)
 
@@ -964,10 +944,6 @@
           rem   save memory.
           rem This avoids needing separate storage since they’re never
           rem used simultaneously.
-          dim hitboxLeft = cachedHitboxLeft_W
-          dim hitboxRight = cachedHitboxRight_W
-          dim hitboxTop = cachedHitboxTop_W
-          dim hitboxBottom = cachedHitboxBottom_W
           rem Hitbox bounds for attack collision detection (aliased to
           rem cached versions)
           rem NOTE: CalculateAttackHitbox sets these, then

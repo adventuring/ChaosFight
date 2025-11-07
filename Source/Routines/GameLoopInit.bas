@@ -149,19 +149,19 @@ PlayerHealthSet
           rem Constraints: Must be colocated with BeginGameLoop
           
           for currentPlayer = 0 to 3 : rem Initialize player timers
-              let PlayerTimers[currentPlayer] = 0
+              let playerTimers_W[currentPlayer] = 0
           next
           
           for currentPlayer = 0 to 3 : rem Initialize player velocity
               let playerVelocityX[currentPlayer] = 0
               let playerVelocitySubpixelX[currentPlayer] = 0
               let playerVelocitySubpixelY[currentPlayer] = 0
-              let playerSubpixelX[currentPlayer] = 0
-              let playerSubpixelY[currentPlayer] = 0
+              let playerSubpixelX_W[currentPlayer] = 0
+              let playerSubpixelY_W[currentPlayer] = 0
           next
           
           for currentPlayer = 0 to 3 : rem Initialize player damage values
-              let PlayerDamage[currentPlayer] = 22
+              let playerDamage_W[currentPlayer] = 22
           next
           
           let PlayerCharacter[0] = SelectedCharacter1 : rem Set character types from character select
@@ -181,26 +181,26 @@ PlayerHealthSet
           rem   Player 1, bit 2 = Player 2, bit 3 = Player 3
           let MissileActive  = 0
 
-          let PlayersEliminated  = 0 : rem Initialize elimination system
-          let PlayersRemaining  = 0 : rem No players eliminated at start
-          let GameEndTimer  = 0 : rem Will be calculated
-          let EliminationCounter  = 0 : rem No game end countdown
+          let playersEliminated_W = 0 : rem Initialize elimination system
+          let playersRemaining_W = 0 : rem No players eliminated at start
+          let gameEndTimer_W = 0 : rem Will be calculated
+          let eliminationCounter_W = 0 : rem No game end countdown
           rem Reset elimination order counter
           
-          let EliminationOrder[0] = 0 : rem Initialize elimination order tracking
-          let EliminationOrder[1] = 0
-          let EliminationOrder[2] = 0
-          let EliminationOrder[3] = 0
+          let eliminationOrder_W[0] = 0 : rem Initialize elimination order tracking
+          let eliminationOrder_W[1] = 0
+          let eliminationOrder_W[2] = 0
+          let eliminationOrder_W[3] = 0
           
-          let WinnerPlayerIndex  = 255 : rem Initialize win screen variables
-          let DisplayRank  = 0 : rem No winner yet
-          let WinScreenTimer  = 0 : rem No rank being displayed
+          let winnerPlayerIndex_W = 255 : rem Initialize win screen variables
+          let displayRank_W = 0 : rem No winner yet
+          let winScreenTimer_W = 0 : rem No rank being displayed
           rem Reset win screen timer
 
-          if !(SelectedCharacter1 = 255) then let PlayersRemaining = PlayersRemaining + 1 : rem Count initial players
-          if !(SelectedCharacter2 = 255) then let PlayersRemaining = PlayersRemaining + 1  
-          if !(selectedCharacter3_R = 255) then let PlayersRemaining = PlayersRemaining + 1
-          if !(selectedCharacter4_R = 255) then let PlayersRemaining = PlayersRemaining + 1
+          if !(SelectedCharacter1 = 255) then let playersRemaining_W = playersRemaining_R + 1 : rem Count initial players
+          if !(SelectedCharacter2 = 255) then let playersRemaining_W = playersRemaining_R + 1
+          if !(selectedCharacter3_R = 255) then let playersRemaining_W = playersRemaining_R + 1
+          if !(selectedCharacter4_R = 255) then let playersRemaining_W = playersRemaining_R + 1
 
           rem Frame counter is automatically initialized and incremented
           rem by batariBASIC kernel

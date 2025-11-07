@@ -28,6 +28,9 @@
           rem   9=SoundLandingDamage
           
           rem Sound 0: Attack Hit
+          asm
+Sound
+          end
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundAttackHit.NTSC.bas"
 #else

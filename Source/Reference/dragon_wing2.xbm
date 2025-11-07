@@ -1,0 +1,12 @@
+#define dragon_wing2_width 8
+#define dragon_wing2_height 8
+static unsigned char dragon_wing2_bits[] = {
+  0xb8,
+  0xd0,
+  0x3c,
+  0x7e,
+  0x1e,
+  0x1c,
+  0x3d,
+  0x76
+};

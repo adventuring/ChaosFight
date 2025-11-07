@@ -39,6 +39,10 @@
           rem Enable smartbranching; filter-smartbranch converts bB v1.9 guards to DASM .if/.else/.endif syntax
           set smartbranching on
 
+          asm
+          include "chaos_var_equates.asm"
+          end
+
 
 #include "Source/Common/Colors.h"
 #include "Source/Common/Constants.bas"

@@ -175,7 +175,7 @@ LoadMusicNote0
           rem pointer advanced by 4 bytes, MusicVoice0Frame set,
           rem envelope parameters stored
           rem
-          rem Mutates: temp2-temp7 (used for calculations), AUDC0,
+          rem Mutates: temp2-temp6 (used for calculations), AUDC0,
           rem AUDF0, AUDV0 (TIA registers) = sound registers (updated),
           rem MusicVoice0TargetAUDV, MusicVoice0TotalFrames (global) =
           rem envelope parameters (stored), musicVoice0Frame_W (global
@@ -196,7 +196,6 @@ LoadMusicNote0
           dim LMN0_duration = temp4
           dim LMN0_delay = temp5
           dim LMN0_audc = temp6
-          dim LMN0_audv = temp7
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
@@ -219,17 +218,16 @@ end
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           let LMN0_audc = LMN0_audcv & %11110000 : rem   AUDCV
           let LMN0_audc = LMN0_audc / 16
-          let LMN0_audv = LMN0_audcv & %00001111
+          let MusicVoice0TargetAUDV = LMN0_audcv & %00001111
           
           rem Store target AUDV and total frames for envelope
-          let MusicVoice0TargetAUDV = LMN0_audv : rem   calculation
           let MusicVoice0TotalFrames = LMN0_duration + LMN0_delay
           
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice0)
           AUDC0 = LMN0_audc
           AUDF0 = LMN0_audf
-          AUDV0 = LMN0_audv
+          AUDV0 = MusicVoice0TargetAUDV
           
           let musicVoice0Frame_W = LMN0_duration + LMN0_delay : rem Set frame counter = Duration + Delay
           
@@ -276,7 +274,7 @@ LoadMusicNote1
           rem pointer advanced by 4 bytes, MusicVoice1Frame set,
           rem envelope parameters stored
           rem
-          rem Mutates: temp2-temp7 (used for calculations), AUDC1,
+          rem Mutates: temp2-temp6 (used for calculations), AUDC1,
           rem AUDF1, AUDV1 (TIA registers) = sound registers (updated),
           rem MusicVoice1TargetAUDV, MusicVoice1TotalFrames (global) =
           rem envelope parameters (stored), musicVoice1Frame_W (global
@@ -297,7 +295,6 @@ LoadMusicNote1
           dim LMN1_duration = temp4
           dim LMN1_delay = temp5
           dim LMN1_audc = temp6
-          dim LMN1_audv = temp7
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
@@ -319,17 +316,16 @@ end
           
           let LMN1_audc = LMN1_audcv & %11110000 : rem Extract AUDC and AUDV
           let LMN1_audc = LMN1_audc / 16
-          let LMN1_audv = LMN1_audcv & %00001111
+          let MusicVoice1TargetAUDV = LMN1_audcv & %00001111
           
           rem Store target AUDV and total frames for envelope
-          let MusicVoice1TargetAUDV = LMN1_audv : rem   calculation
           let MusicVoice1TotalFrames = LMN1_duration + LMN1_delay
           
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice1)
           AUDC1 = LMN1_audc
           AUDF1 = LMN1_audf
-          AUDV1 = LMN1_audv
+          AUDV1 = MusicVoice1TargetAUDV
           
           let musicVoice1Frame_W = LMN1_duration + LMN1_delay : rem Set frame counter = Duration + Delay
           

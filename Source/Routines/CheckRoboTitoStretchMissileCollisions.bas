@@ -26,7 +26,7 @@ CheckRoboTitoStretchMissileCollisions
           rem
           rem Output: Stretch missile collisions detected and handled
           rem
-          rem Mutates: temp1-temp7 (used for calculations),
+          rem Mutates: temp1-temp6 (used for calculations),
           rem playerState[], characterStateFlags_W[],
           rem missileStretchHeight_W[], roboTitoCanStretch_W (via
           rem HandleRoboTitoStretchMissileHit)
@@ -49,10 +49,10 @@ CRTSMC_IsRoboTito
           rem Check if stretching (not latched, ActionJumping animation
           rem = 10)
           if (characterStateFlags_R[CRTSMC_playerIndex] & 1) then CRTSMC_NextPlayer
-          let temp7 = playerState[CRTSMC_playerIndex] : rem Latched to ceiling, no stretch missile
-          let temp7 = temp7 & 240
-          let temp7 = temp7 / 16 : rem Mask bits 4-7 (animation state)
-          if temp7 = 10 then CRTSMC_IsStretching : rem Shift right by 4 to get animation state
+          let playerStateTemp_W = playerState[CRTSMC_playerIndex] : rem Latched to ceiling, no stretch missile
+          let playerStateTemp_W = playerStateTemp_R & 240
+          let playerStateTemp_W = playerStateTemp_R / 16 : rem Mask bits 4-7 (animation state)
+          if playerStateTemp_R = 10 then CRTSMC_IsStretching : rem Shift right by 4 to get animation state
           goto CRTSMC_NextPlayer
 CRTSMC_IsStretching
           rem Not in stretching animation, no stretch missile

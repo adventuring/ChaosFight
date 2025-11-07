@@ -210,9 +210,9 @@ end
           if CFD_damage > 50 then let CFD_damage = 50 : rem Cap maximum fall damage at 50
           
           rem Apply fall damage (byte-safe clamp)
-          let oldHealthValue = playerHealth[CFD_playerIndex] : rem Use oldHealthValue for byte-safe clamp check
+          let oldHealthValue_W = playerHealth[CFD_playerIndex] : rem Use oldHealthValue for byte-safe clamp check
           let playerHealth[CFD_playerIndex] = playerHealth[CFD_playerIndex] - CFD_damage
-          if playerHealth[CFD_playerIndex] > oldHealthValue then let playerHealth[CFD_playerIndex] = 0
+          if playerHealth[CFD_playerIndex] > oldHealthValue_R then let playerHealth[CFD_playerIndex] = 0
           
           rem Set recovery frames (proportional to damage, min 10, max
           rem   30)
@@ -389,9 +389,9 @@ HandleFrootyVertical
           
           rem Clamp to screen bounds
           rem Byte-safe clamp: if wrapped below 0, the new value will
-          let oldHealthValue = playerY[HFV_playerIndex] : rem   exceed the old
+          let oldHealthValue_W = playerY[HFV_playerIndex] : rem   exceed the old
           rem Reuse oldHealthValue for byte-safe clamp check (not
-          if playerY[HFV_playerIndex] > oldHealthValue then let playerY[HFV_playerIndex] = 0 : rem   actually health, but same pattern)
+          if playerY[HFV_playerIndex] > oldHealthValue_R then let playerY[HFV_playerIndex] = 0 : rem   actually health, but same pattern)
           if playerY[HFV_playerIndex] > 176 then let playerY[HFV_playerIndex] = 176
           
           return

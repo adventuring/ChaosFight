@@ -110,8 +110,8 @@ GravityCheckRoboTitoDone
           rem Determine gravity acceleration rate based on character
           rem   (8.8 fixed-point subpixel)
           rem Uses tunable constants from Constants.bas for easy
-          let gravityRate = GravityNormal : rem   adjustment
-          if PAG_characterType = CharacterHarpy then let gravityRate = GravityReduced : rem Default gravity acceleration (normal rate)
+          let gravityRate_W = GravityNormal : rem   adjustment
+          if PAG_characterType = CharacterHarpy then let gravityRate_W = GravityReduced : rem Default gravity acceleration (normal rate)
           rem Harpy: reduced gravity rate
           
           rem Apply gravity acceleration to velocity subpixel part (adds
@@ -119,8 +119,8 @@ GravityCheckRoboTitoDone
           rem playerIndex already set, gravityRate is gravity strength
           rem   in subpixel (low byte)
           rem AddVelocitySubpixelY expects temp2, so save temp2 and use
-          let playfieldColumn = PAG_playfieldColumn : rem   it for gravityRate
-          let temp2 = gravityRate : rem Save playfieldColumn temporarily
+          let playfieldColumn_W = PAG_playfieldColumn : rem   it for gravityRate
+          let temp2 = gravityRate_R : rem Save playfieldColumn temporarily
           gosub AddVelocitySubpixelY bank13
           let PAG_playfieldColumn = temp2
           rem Restore playfieldColumn
@@ -162,17 +162,17 @@ GravityCheckRoboTitoDone
           
           rem Calculate Y position for top of ground row using repeated
           rem   addition
-          let rowYPosition = 0 : rem Loop to add pfrowheight to rowYPosition, rowBelow times
-          let rowCounter = PAG_rowBelow
-          if rowCounter = 0 then goto GravityRowCalcDone
+          let rowYPosition_W = 0 : rem Loop to add pfrowheight to rowYPosition, rowBelow times
+          let rowCounter_W = PAG_rowBelow
+          if rowCounter_R = 0 then goto GravityRowCalcDone
 GravityRowCalcLoop
-          let rowYPosition = rowYPosition + pfrowheight
-          let rowCounter = rowCounter - 1
-          if rowCounter > 0 then goto GravityRowCalcLoop
+          let rowYPosition_W = rowYPosition_R + pfrowheight
+          let rowCounter_W = rowCounter_R - 1
+          if rowCounter_R > 0 then goto GravityRowCalcLoop
 GravityRowCalcDone
           rem rowYPosition now contains rowBelow * pfrowheight (Y
           rem   position of top of ground row)
-          let playerY[PAG_playerIndex] = rowYPosition - PlayerSpriteHeight : rem Clamp playerY so feet are at top of ground row
+          let playerY[PAG_playerIndex] = rowYPosition_R - PlayerSpriteHeight : rem Clamp playerY so feet are at top of ground row
           let playerSubpixelY_W[PAG_playerIndex] = playerY[PAG_playerIndex] : rem Also sync subpixel position
           let playerSubpixelY_WL[PAG_playerIndex] = 0
           
@@ -218,15 +218,15 @@ GravityCheckBottom
           
           rem Bottom row is always ground - clamp to bottom
           rem Calculate (pfrows - 1) * pfrowheight using repeated
-          let rowYPosition = 0 : rem   addition
-          let rowCounter = pfrows - 1
-          if rowCounter = 0 then goto GravityBottomCalcDone
+          let rowYPosition_W = 0 : rem   addition
+          let rowCounter_W = pfrows - 1
+          if rowCounter_R = 0 then goto GravityBottomCalcDone
 GravityBottomCalcLoop
-          let rowYPosition = rowYPosition + pfrowheight
-          let rowCounter = rowCounter - 1
-          if rowCounter > 0 then goto GravityBottomCalcLoop
+          let rowYPosition_W = rowYPosition_R + pfrowheight
+          let rowCounter_W = rowCounter_R - 1
+          if rowCounter_R > 0 then goto GravityBottomCalcLoop
 GravityBottomCalcDone
-          let playerY[temp1] = rowYPosition - PlayerSpriteHeight
+          let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight
           let playerState[temp1] = playerState[temp1] & NOT 4
           
           if PAG_characterType = CharacterRoboTito then PAG_SetRoboTitoStretchPermission : rem If RoboTito, set stretch permission on landing at bottom

@@ -6,7 +6,8 @@
 
 #define TV_SECAM
           const TVStandard = SECAM
-          set tv secam
+          rem batariBASIC lacks SECAM timing keyword; use PAL timing with SECAM defines
+          set tv pal
 
 #include "Source/Common/Preamble.bas"
 #include "Source/Banks/Banks.bas"

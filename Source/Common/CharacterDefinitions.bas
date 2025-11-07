@@ -274,6 +274,23 @@ end
              3, 14, 4, 4, 3, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 3
 end
 
+          rem Character missile spawn offsets (facing right): positive pixels ahead of player
+          rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
+          rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
+          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          data CharacterMissileSpawnOffsetRight
+             0, 17, 18, 18, 18, 17, 0, 8, 20, 0, 20, 0, 0, 6, 0, 0
+end
+
+          rem Character missile spawn offsets (facing left): values stored as unsigned bytes
+          rem Negative offsets use two’s complement (e.g., -5 → 251)
+          rem Bernie, Curler, Dragon of Storms, Zoe Ryen, Fat Tony,
+          rem   Megax, Harpy, Knight Guy, Frooty, Nefertem, Ninjish Guy,
+          rem   Pork Chop, Radish Goblin, Robo Tito, Ursulo, Shamone
+          data CharacterMissileSpawnOffsetLeft
+             0, 251, 252, 250, 250, 251, 0, 8, 251, 0, 250, 0, 0, 6, 0, 0
+end
+
           rem
           rem MISSILE INITIAL MOMENTUM X (horizontal Velocity)
           rem Initial horizontal velocity of missile in pixels per frame

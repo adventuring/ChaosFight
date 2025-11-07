@@ -43,7 +43,7 @@ DisplayWinScreen
           rem         via DWS_LoadBWColors/ColorColors),
           rem         playerX[0-3], playerY[0-3] (TIA registers), player
           rem         sprite pointers (via LoadCharacterSprite),
-          rem         temp1-temp8 (used for ranking calculations),
+          rem         temp1-temp6 plus SCRAM scratch (used for ranking calculations),
           rem         DWS_bwMode
           rem
           rem Called Routines: SetAdminScreenLayout (bank8) - sets
@@ -67,10 +67,11 @@ DisplayWinScreen
           dim DWS_winnerIndex = temp2
           dim DWS_secondIndex = temp3
           dim DWS_thirdIndex = temp4
-          dim DWS_winnerOrder = temp5
-          dim DWS_secondOrder = temp6
-          dim DWS_thirdOrder = temp7
-          dim DWS_currentOrder = temp8
+          dim DWS_secondOrder = temp5
+          dim DWS_thirdOrder_W = w095
+          dim DWS_thirdOrder_R = r095
+          dim DWS_currentOrder_W = w094
+          dim DWS_currentOrder_R = r094
           dim DWS_bwMode = temp2
           
           gosub SetAdminScreenLayout bank8 : rem Set admin screen layout (32×32 for character display)
@@ -104,7 +105,7 @@ end
           let DWS_secondIndex = 255 : rem Find 2nd and 3rd place rankings
           let DWS_thirdIndex = 255
           let DWS_secondOrder = 0
-          let DWS_thirdOrder = 0
+          let DWS_thirdOrder_W = 0
           
           let temp1 = 0 : rem Check all players for ranking
 DWS_RankLoop
@@ -112,17 +113,17 @@ DWS_RankLoop
           rem
           rem Input: temp1 (player index), DWS_winnerIndex,
           rem DWS_secondIndex, DWS_secondOrder,
-          rem        DWS_thirdIndex, DWS_thirdOrder (from
+          rem        DWS_thirdIndex, DWS_thirdOrder_R (from
           rem        DisplayWinScreen)
           rem        eliminationOrder_R[] (global SCRAM array) =
           rem        elimination order
           rem
           rem Output: DWS_secondIndex, DWS_thirdIndex, DWS_secondOrder,
-          rem DWS_thirdOrder updated
+          rem DWS_thirdOrder_W updated
           rem
           rem Mutates: temp1 (incremented), DWS_secondIndex,
-          rem DWS_thirdIndex, DWS_secondOrder, DWS_thirdOrder,
-          rem         DWS_currentOrder
+          rem DWS_thirdIndex, DWS_secondOrder, DWS_thirdOrder_W,
+          rem         DWS_currentOrder_W
           rem
           rem Called Routines: None
           rem
@@ -130,27 +131,27 @@ DWS_RankLoop
           rem DWS_UpdateSecond, DWS_CheckThird, DWS_RankNext
           if temp1 = DWS_winnerIndex then DWS_RankNext : rem Skip if this is the winner
           
-          let DWS_currentOrder = eliminationOrder_R[temp1] : rem Get this player’s elimination order (SCRAM read)
+          let DWS_currentOrder_W = eliminationOrder_R[temp1] : rem Get this player’s elimination order (SCRAM read)
           
-          if DWS_currentOrder > DWS_secondOrder then DWS_UpdateSecond : rem Check if this is 2nd place (higher order than current 2nd)
+          if DWS_currentOrder_R > DWS_secondOrder then DWS_UpdateSecond : rem Check if this is 2nd place (higher order than current 2nd)
           goto DWS_CheckThird
           
 DWS_UpdateSecond
           rem Move current 2nd to 3rd, then update 2nd
           rem
-          rem Input: DWS_secondIndex, DWS_secondOrder, DWS_currentOrder,
+          rem Input: DWS_secondIndex, DWS_secondOrder, DWS_currentOrder_R,
           rem temp1 (from DWS_RankLoop)
           rem
-          rem Output: DWS_thirdIndex, DWS_thirdOrder updated,
+          rem Output: DWS_thirdIndex, DWS_thirdOrder_W updated,
           rem DWS_secondIndex, DWS_secondOrder updated
           rem
-          rem Mutates: DWS_thirdIndex, DWS_thirdOrder, DWS_secondIndex,
+          rem Mutates: DWS_thirdIndex, DWS_thirdOrder_W, DWS_secondIndex,
           rem DWS_secondOrder
           rem
           rem Called Routines: None
-          let DWS_thirdOrder = DWS_secondOrder : rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
+          let DWS_thirdOrder_W = DWS_secondOrder : rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
           let DWS_thirdIndex = DWS_secondIndex
-          let DWS_secondOrder = DWS_currentOrder
+          let DWS_secondOrder = DWS_currentOrder_R
           let DWS_secondIndex = temp1
           goto DWS_RankNext
           
@@ -158,18 +159,18 @@ DWS_CheckThird
           rem Check if this is 3rd place (higher order than current 3rd,
           rem but lower than 2nd)
           rem
-          rem Input: DWS_currentOrder, DWS_thirdOrder, temp1 (from
+          rem Input: DWS_currentOrder_R, DWS_thirdOrder_R, temp1 (from
           rem DWS_RankLoop)
           rem
-          rem Output: DWS_thirdIndex, DWS_thirdOrder updated if higher
+          rem Output: DWS_thirdIndex, DWS_thirdOrder_W updated if higher
           rem
-          rem Mutates: DWS_thirdIndex, DWS_thirdOrder
+          rem Mutates: DWS_thirdIndex, DWS_thirdOrder_W
           rem
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_RankLoop, DWS_RankNext
-          if DWS_currentOrder > DWS_thirdOrder then let DWS_thirdOrder = DWS_currentOrder : let DWS_thirdIndex = temp1
+          if DWS_currentOrder_R > DWS_thirdOrder_R then let DWS_thirdOrder_W = DWS_currentOrder_R : let DWS_thirdIndex = temp1
           
 DWS_RankNext
           rem Ranking loop continuation

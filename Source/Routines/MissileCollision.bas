@@ -38,7 +38,7 @@ CheckAllMissileCollisions
           rem
           rem Output: temp4 = hit player index (0-3) if hit, 0 if no hit
           rem
-          rem Mutates: temp1-temp7 (used for calculations), temp4
+          rem Mutates: temp1-temp6 (used for calculations), temp4
           rem (return value)
           rem
           rem Called Routines: GetMissileWidth (bank6) - gets missile
@@ -49,7 +49,6 @@ CheckAllMissileCollisions
           dim CAMC_missileWidth = temp6
           dim CAMC_isActive = temp4
           dim CAMC_characterType = temp5
-          dim CAMC_savedCharacterType = temp7
           rem First, check if this player has an active missile
           if CAMC_attackerIndex = 0 then let CAMC_missileWidth = 1 : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           if CAMC_attackerIndex = 1 then let CAMC_missileWidth = 2
@@ -63,15 +62,13 @@ CheckAllMissileCollisions
           
           rem Check if this is a visible missile or AOE attack
           rem Read missile width from character data (in Bank 6)
-          rem attackerIndex needs to be preserved, use temp7 for
-          let CAMC_savedCharacterType = CAMC_characterType : rem   function call
-          let temp7 = CAMC_savedCharacterType : rem Character type as index
+          let temp1 = CAMC_characterType
           gosub GetMissileWidth bank6
           let CAMC_missileWidth = temp2 
           rem Missile width (0 = AOE, >0 = visible missile)
-          
-          if CAMC_missileWidth = 0 then goto CheckAOECollision
+
           let temp1 = CAMC_attackerIndex
+          if CAMC_missileWidth = 0 then goto CheckAOECollision
           goto CheckVisibleMissileCollision : rem tail call
           
 
@@ -100,7 +97,7 @@ CheckVisibleMissileCollision
           rem Output: temp4 = hit player index (0-3) if hit, 255 if no
           rem hit
           rem
-          rem Mutates: temp1-temp7 (used for calculations), temp4
+          rem Mutates: temp1-temp6 (used for calculations), temp4
           rem (return value)
           rem
           rem Called Routines: GetMissileWidth (bank6) - gets missile
@@ -110,7 +107,6 @@ CheckVisibleMissileCollision
           dim CVMC_missileY = temp3
           dim CVMC_characterType = temp5
           dim CVMC_missileWidth = temp6
-          dim CVMC_savedCharacterType = temp7
           dim CVMC_hitPlayer = temp4
           dim CVMC_missileHeight = temp3
           let CVMC_missileX = missileX[CVMC_attackerIndex] : rem Get missile X/Y position
@@ -119,16 +115,15 @@ CheckVisibleMissileCollision
           rem Get missile size from character data (in Bank 6)
           let CVMC_characterType = playerCharacter[CVMC_attackerIndex] : rem Get character type from player
           rem Use characterType as index (preserve attackerIndex)
-          rem Save missileX/Y before function calls (functions use
-          let CVMC_savedCharacterType = CVMC_characterType : rem   temp2/temp3)
-          let temp7 = CVMC_savedCharacterType
+          let temp1 = CVMC_characterType
           gosub GetMissileWidth bank6
           let CVMC_missileWidth = temp2 
           rem Missile width (temp2 now contains width)
-          let temp7 = CVMC_savedCharacterType : rem Reload character index
+          let temp1 = CVMC_characterType
           gosub GetMissileHeight bank6
           let CVMC_missileHeight = temp2 
           rem Missile height (temp2 now contains height)
+          let temp1 = CVMC_attackerIndex
           rem Restore missileX/Y (they were preserved in CVMC_* aliases)
           
           rem Missile bounding box:
@@ -214,7 +209,7 @@ CheckAOECollision
           rem Output: temp4 = hit player index (0-3) if hit, 255 if no
           rem hit
           rem
-          rem Mutates: temp1-temp7 (used for calculations), temp4
+          rem Mutates: temp1-temp6 (used for calculations), temp4
           rem (return value)
           rem
           rem Called Routines: CheckAOEDirection_Right - checks AOE
@@ -283,7 +278,7 @@ CheckAOEDirection_Right
           rem Output: temp4 = hit player index (0-3) if hit, 255 if no
           rem hit
           rem
-          rem Mutates: temp1-temp7 (used for calculations), temp4
+          rem Mutates: temp1-temp6 (used for calculations), temp4
           rem (return value)
           rem
           rem Called Routines: None
@@ -291,7 +286,6 @@ CheckAOEDirection_Right
           dim CAOER_playerX = temp2
           dim CAOER_playerY = temp3
           dim CAOER_characterType = temp5
-          dim CAOER_aoeOffset = temp7
           dim CAOER_aoeX = temp2
           dim CAOER_aoeWidth = temp6
           dim CAOER_aoeHeight = temp3
@@ -302,11 +296,9 @@ CheckAOEDirection_Right
           rem Calculate AOE bounds
           rem Read AOE offset from character data
           let CAOER_characterType = playerCharacter[CAOER_attackerIndex] : rem Get character-specific AOE offset
-          let CAOER_aoeOffset = CharacterAOEOffsets[CAOER_characterType]
-          rem For now, use default: 8 pixels forward, 8 pixels wide, 16
-          rem   pixels tall
-          rem AOE_X = playerX + 8 (facing right formula)
-          let CAOER_aoeX = CAOER_playerX + 8
+          let aoeOffset_W = CharacterAOEOffsets[CAOER_characterType]
+          rem AOE_X = playerX + offset (facing right formula)
+          let CAOER_aoeX = CAOER_playerX + aoeOffset_R
           let CAOER_aoeWidth = 8 
           let CAOER_aoeHeight = 16 : rem AOE width
           rem AOE height
@@ -389,7 +381,7 @@ CheckAOEDirection_Left
           rem Output: temp4 = hit player index (0-3) if hit, 255 if no
           rem hit
           rem
-          rem Mutates: temp1-temp7 (used for calculations), temp4
+          rem Mutates: temp1-temp6 (used for calculations), temp4
           rem (return value)
           rem
           rem Called Routines: None
@@ -397,7 +389,6 @@ CheckAOEDirection_Left
           dim CAOEL_playerX = temp2
           dim CAOEL_playerY = temp3
           dim CAOEL_characterType = temp5
-          dim CAOEL_aoeOffset = temp7
           dim CAOEL_aoeX = temp2
           dim CAOEL_aoeWidth = temp6
           dim CAOEL_aoeHeight = temp3
@@ -408,10 +399,9 @@ CheckAOEDirection_Left
           rem Calculate AOE bounds for facing left
           rem Read AOE offset from character data
           let CAOEL_characterType = playerCharacter[CAOEL_attackerIndex] : rem Get character-specific AOE offset
-          let CAOEL_aoeOffset = CharacterAOEOffsets[CAOEL_characterType]
-          rem For now, use default offset of 8 pixels
-          rem AOE_X = playerX + 7 - 8 = playerX - 1 (facing left
-          let CAOEL_aoeX = CAOEL_playerX - 1 : rem   formula)
+          let aoeOffset_W = CharacterAOEOffsets[CAOEL_characterType]
+          rem AOE_X = playerX + 7 - offset (facing left formula)
+          let CAOEL_aoeX = CAOEL_playerX + PlayerSpriteWidth - 1 - aoeOffset_R
           let CAOEL_aoeWidth = 8 
           let CAOEL_aoeHeight = 16 : rem AOE width
           rem AOE height

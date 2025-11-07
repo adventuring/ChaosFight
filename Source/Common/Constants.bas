@@ -52,6 +52,8 @@
           const InfiniteFallDistance = 255 : rem   operations
           rem Fall distance value for infinite (characters immune to
           rem   fall damage)
+
+          const TitleParadeDelayFrames = 250 : rem Title screen parade starts after ~4.17 seconds (fits in 8-bit timer)
           
           const CharacterBernie = 0 : rem Character ID constants
           const CharacterCurler = 1
@@ -211,8 +213,6 @@
           rem Previous value: 32 (12.5% per frame) - too high for
           const KnockbackImpulse = 4 : rem   ice-like sliding
           const HitstunFrames = 10 : rem Frames of hitstun after a missile hit
-          const MissileSpawnOffsetLeft = 4 : rem Pixels to the left when facing left at spawn
-          const MissileSpawnOffsetRight = 12 : rem Pixels to the right when facing right at spawn
           const MissileAABBSize = 4 : rem Missile bounding box size (square)
           const PlayerSpriteHalfWidth = 8 : rem Half-width of player sprite used in AABB checks
           const PlayerSpriteHeight = 16 : rem Player sprite height used in AABB checks

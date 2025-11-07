@@ -469,7 +469,7 @@
           
           rem playerVelocityY[0-3] = 8.8 fixed-point Y velocity
           rem Both high and low bytes in zero-page for fast access every
-          dim playerVelocityY = var28.8.8 : rem   frame
+          dim playerVelocityY = var28 : rem   frame
           rem Game Mode: 8.8 fixed-point Y velocity (8 bytes) -
           rem   var28-var35 in zero-page
           rem var28-var31 = high bytes, var32-var35 = low bytes
@@ -487,8 +487,8 @@
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Admin Mode music variables (w064-w079)
           rem -
-          dim playerSubpixelX_W = w064.8.8 : rem   safe since Admin and Game Mode never run simultaneously
-          dim playerSubpixelX_R = r064.8.8
+          dim playerSubpixelX_W = w064 : rem   safe since Admin and Game Mode never run simultaneously
+          dim playerSubpixelX_R = r064
           rem Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM
           rem   w064-w071 (write), r064-r071 (read)
           rem Array accessible as playerSubpixelX_W[0-3] and
@@ -501,8 +501,8 @@
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Admin Mode music variables (w064-w079)
           rem -
-          dim playerSubpixelY_W = w072.8.8 : rem   safe since Admin and Game Mode never run simultaneously
-          dim playerSubpixelY_R = r072.8.8
+          dim playerSubpixelY_W = w072 : rem   safe since Admin and Game Mode never run simultaneously
+          dim playerSubpixelY_R = r072
           rem Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM
           rem   w072-w079 (write), r072-r079 (read)
           rem Array accessible as playerSubpixelY_W[0-3] and

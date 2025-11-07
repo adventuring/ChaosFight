@@ -187,12 +187,12 @@ DBPF_InlineDivideDone
           if temp6 = 0 then goto PFCheckRight
           rem At left edge of screen, skip check
           
-          let playfieldColumn = temp6 - 1
+          let playfieldColumn_W = temp6 - 1
           rem Column to the left (playfieldColumn)
-          if playfieldColumn & $80 then goto PFCheckRight : rem Check for wraparound: if temp6 was 0, playfieldColumn wraps to 255 (≥ 128)
+          if playfieldColumn_R & $80 then goto PFCheckRight : rem Check for wraparound: if temp6 was 0, playfieldColumn wraps to 255 (≥ 128)
           rem Out of bounds, skip
           
-          if pfread(playfieldColumn, playfieldRow) then goto PFBlockLeft : rem Check head position (top of sprite)
+          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockLeft : rem Check head position (top of sprite)
           rem Check middle position
           rem Calculate (temp5 / 2) / pfrowheight
           asm
@@ -218,9 +218,9 @@ DBPF_InlineDivideBy8_1
             lsr temp2
           end
 DBPF_InlineDivideDone_1
-          let rowCounter = playfieldRow + temp2 : rem temp2 = (temp5 / 2) / pfrowheight
-          if rowCounter >= pfrows then goto PFCheckRight
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockLeft
+          let rowCounter_W = playfieldRow + temp2 : rem temp2 = (temp5 / 2) / pfrowheight
+          if rowCounter_R >= pfrows then goto PFCheckRight
+          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockLeft
           let temp2 = temp5 : rem Check feet position (bottom of sprite)
           if pfrowheight = 8 then DBPF_InlineDivideBy8_2 : rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           rem pfrowheight is 16, divide by 16 (4 right shifts)
@@ -239,9 +239,9 @@ DBPF_InlineDivideBy8_2
             lsr temp2
           end
 DBPF_InlineDivideDone_2
-          let rowCounter = playfieldRow + temp2 : rem temp2 = temp5 / pfrowheight
-          if rowCounter >= pfrows then goto PFCheckRight
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockLeft
+          let rowCounter_W = playfieldRow + temp2 : rem temp2 = temp5 / pfrowheight
+          if rowCounter_R >= pfrows then goto PFCheckRight
+          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockLeft
           
           goto PFCheckRight
           
@@ -251,19 +251,19 @@ PFBlockLeft
           rem ≥ 128 are negative)
           if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
-          let rowYPosition = temp6 + 1 : rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
+          let rowYPosition_W = temp6 + 1 : rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
           asm
-            lda rowYPosition
+            lda rowYPosition_W
             asl a
             asl a
             clc
             adc #ScreenInsetX
-            sta rowYPosition
+            sta rowYPosition_W
 end
           rem Reuse rowYPosition for X position clamp (not actually Y,
-          if playerX[currentPlayer] < rowYPosition then let playerX[currentPlayer] = rowYPosition : rem   but same pattern)
-          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX_W[currentPlayer] = rowYPosition
-          if playerX[currentPlayer] < rowYPosition then let playerSubpixelX_WL[currentPlayer] = 0
+          if playerX[currentPlayer] < rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R : rem   but same pattern)
+          if playerX[currentPlayer] < rowYPosition_R then let playerSubpixelX_W[currentPlayer] = rowYPosition_R
+          if playerX[currentPlayer] < rowYPosition_R then let playerSubpixelX_WL[currentPlayer] = 0
           
 PFCheckRight
           rem
@@ -274,11 +274,11 @@ PFCheckRight
           if temp6 >= 31 then goto PFCheckUp
           rem At right edge of screen, skip check
           
-          let playfieldColumn = temp6 + 4
-          if playfieldColumn > 31 then goto PFCheckUp : rem Column to the right of player right edge (playfieldColumn)
+          let playfieldColumn_W = temp6 + 4
+          if playfieldColumn_R > 31 then goto PFCheckUp : rem Column to the right of player right edge (playfieldColumn)
           rem Out of bounds, skip
           
-          if pfread(playfieldColumn, playfieldRow) then goto PFBlockRight : rem Check head, middle, and feet positions
+          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockRight : rem Check head, middle, and feet positions
           rem Calculate (temp5 / 2) / pfrowheight
           asm
             lda temp5
@@ -303,9 +303,9 @@ DBPF_InlineDivideBy8_6
             lsr temp2
           end
 DBPF_InlineDivideDone_6
-          let rowCounter = playfieldRow + temp2 : rem temp2 = (temp5 / 2) / pfrowheight
-          if rowCounter >= pfrows then goto PFCheckUp
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockRight
+          let rowCounter_W = playfieldRow + temp2 : rem temp2 = (temp5 / 2) / pfrowheight
+          if rowCounter_R >= pfrows then goto PFCheckUp
+          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockRight
           let temp2 = temp5
           if pfrowheight = 8 then DBPF_InlineDivideBy8_7 : rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           rem pfrowheight is 16, divide by 16 (4 right shifts)
@@ -324,9 +324,9 @@ DBPF_InlineDivideBy8_7
             lsr temp2
           end
 DBPF_InlineDivideDone_7
-          let rowCounter = playfieldRow + temp2 : rem temp2 = temp5 / pfrowheight
-          if rowCounter >= pfrows then goto PFCheckUp
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockRight
+          let rowCounter_W = playfieldRow + temp2 : rem temp2 = temp5 / pfrowheight
+          if rowCounter_R >= pfrows then goto PFCheckUp
+          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockRight
           
           goto PFCheckUp
           
@@ -334,19 +334,19 @@ PFBlockRight
           rem Block rightward movement: zero X velocity if positive
           if playerVelocityX[currentPlayer] > 0 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
-          let rowYPosition = temp6 - 1 : rem Multiply (temp6 - 1) by 4 using bit shift (2 left shifts)
+          let rowYPosition_W = temp6 - 1 : rem Multiply (temp6 - 1) by 4 using bit shift (2 left shifts)
           asm
-            lda rowYPosition
+            lda rowYPosition_W
             asl a
             asl a
             clc
             adc #ScreenInsetX
-            sta rowYPosition
+            sta rowYPosition_W
 end
           rem Reuse rowYPosition for X position clamp (not actually Y,
-          if playerX[currentPlayer] > rowYPosition then let playerX[currentPlayer] = rowYPosition : rem   but same pattern)
-          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX_W[currentPlayer] = rowYPosition
-          if playerX[currentPlayer] > rowYPosition then let playerSubpixelX_WL[currentPlayer] = 0
+          if playerX[currentPlayer] > rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R : rem   but same pattern)
+          if playerX[currentPlayer] > rowYPosition_R then let playerSubpixelX_W[currentPlayer] = rowYPosition_R
+          if playerX[currentPlayer] > rowYPosition_R then let playerSubpixelX_WL[currentPlayer] = 0
           
 PFCheckUp
           rem
@@ -354,20 +354,20 @@ PFCheckUp
           if playfieldRow = 0 then goto PFCheckDown : rem Check if player head has a playfield pixel above
           rem At top of screen, skip check
           
-          let rowCounter = playfieldRow - 1
+          let rowCounter_W = playfieldRow - 1
           rem Row above player head (rowCounter)
           rem Check for wraparound: if playfieldRow was 0, rowCounter
           rem wraps to 255 (≥ 128)
-          if rowCounter & $80 then goto PFCheckDown
+          if rowCounter_R & $80 then goto PFCheckDown
           
-          if pfread(temp6, rowCounter) then goto PFBlockUp : rem Check center column (temp6)
+          if pfread(temp6, rowCounter_R) then goto PFBlockUp : rem Check center column (temp6)
           if temp6 = 0 then goto PFCheckUp_CheckRight : rem Check left edge column
-          let playfieldColumn = temp6 - 1
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockUp
+          let playfieldColumn_W = temp6 - 1
+          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockUp
 PFCheckUp_CheckRight
           if temp6 >= 31 then goto PFCheckDown : rem Check right edge column
-          let playfieldColumn = temp6 + 1
-          if pfread(playfieldColumn, rowCounter) then goto PFBlockUp
+          let playfieldColumn_W = temp6 + 1
+          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockUp
           
           goto PFCheckDown
           
@@ -377,31 +377,31 @@ PFBlockUp
           rem ≥ 128 are negative)
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
-          let rowYPosition = playfieldRow + 1 : rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
+          let rowYPosition_W = playfieldRow + 1 : rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
           if pfrowheight = 8 then goto DBPF_MultiplyBy8 : rem Check if pfrowheight is 8 or 16
           rem pfrowheight is 16, multiply by 16 (4 left shifts)
           asm
-            lda rowYPosition
+            lda rowYPosition_W
             asl a
             asl a
             asl a
             asl a
-            sta rowYPosition
+            sta rowYPosition_W
 end
           goto DBPF_MultiplyDone
 DBPF_MultiplyBy8
           rem pfrowheight is 8, multiply by 8 (3 left shifts)
           asm
-            lda rowYPosition
+            lda rowYPosition_W
             asl a
             asl a
             asl a
-            sta rowYPosition
+            sta rowYPosition_W
 end
 DBPF_MultiplyDone
-          if playerY[currentPlayer] < rowYPosition then let playerY[currentPlayer] = rowYPosition
-          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_W[currentPlayer] = rowYPosition
-          if playerY[currentPlayer] < rowYPosition then let playerSubpixelY_WL[currentPlayer] = 0
+          if playerY[currentPlayer] < rowYPosition_R then let playerY[currentPlayer] = rowYPosition_R
+          if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_W[currentPlayer] = rowYPosition_R
+          if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_WL[currentPlayer] = 0
           
 PFCheckDown
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity,
@@ -426,21 +426,21 @@ DBPF_InlineDivideBy8_5
             lsr temp2
           end
 DBPF_InlineDivideDone_5
-          let rowCounter = playfieldRow + temp2
-          if rowCounter >= pfrows then goto PFCheckDone : rem Row at player feet (rowCounter)
+          let rowCounter_W = playfieldRow + temp2
+          if rowCounter_R >= pfrows then goto PFCheckDone : rem Row at player feet (rowCounter)
           
-          let playfieldRow = rowCounter + 1
+          let playfieldRow = rowCounter_R + 1
           rem Row below feet (playfieldRow - temporarily reuse for this
           if playfieldRow >= pfrows then goto PFCheckDone : rem   check)
           
           if pfread(temp6, playfieldRow) then goto PFBlockDown : rem Check center, left, and right columns below feet
           if temp6 = 0 then goto PFCheckDown_CheckRight
-          let playfieldColumn = temp6 - 1
-          if pfread(playfieldColumn, playfieldRow) then goto PFBlockDown
+          let playfieldColumn_W = temp6 - 1
+          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockDown
 PFCheckDown_CheckRight
           if temp6 >= 31 then goto PFCheckDone
-          let playfieldColumn = temp6 + 1
-          if pfread(playfieldColumn, playfieldRow) then goto PFBlockDown
+          let playfieldColumn_W = temp6 + 1
+          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockDown
           
           goto PFCheckDone
           

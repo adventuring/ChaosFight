@@ -529,7 +529,7 @@ NudgePlayerFromPlayfield
           rem
           rem Mutates: playerX[NPF_playerIndex],
           rem playerY[NPF_playerIndex] (nudged 1 pixel if collision),
-          rem         temp7, temp8, temp9, tempA (internal calculations)
+          rem         temp4-temp6 (internal calculations), playfieldRow_W
           rem
           rem Called Routines: None (uses pfread for playfield collision
           rem check)
@@ -539,10 +539,9 @@ NudgePlayerFromPlayfield
           rem              NudgeHorizontalDone, NudgeVertical,
           rem              NudgeDown, NudgeUp (all called via goto)
           dim NPF_playerIndex = temp1 : rem              Called from MovePlayerToTarget
-          dim NPF_playerX = temp7
-          dim NPF_playerY = temp8
-          dim NPF_pfColumn = temp9
-          dim NPF_pfRow = tempA
+          dim NPF_playerX = temp4
+          dim NPF_playerY = temp5
+          dim NPF_pfColumn = temp6
           dim NPF_targetX = temp2
           dim NPF_targetY = temp3
           
@@ -566,22 +565,22 @@ end
           rem If pfrowheight = 8: divide by 8 = 3 right shifts
           rem If pfrowheight = 16: divide by 16 = 4 right shifts
           rem Use 4 shifts for safety (works for both 8 and 16, may be
-          let NPF_pfRow = NPF_playerY : rem   off by 1 for 8 but acceptable for simple nudge)
+          let playfieldRow_W = NPF_playerY : rem   off by 1 for 8 but acceptable for simple nudge)
           asm
-            lsr NPF_pfRow
-            lsr NPF_pfRow
-            lsr NPF_pfRow
-            lsr NPF_pfRow
+            lsr playfieldRow_W
+            lsr playfieldRow_W
+            lsr playfieldRow_W
+            lsr playfieldRow_W
 end
-          if NPF_pfRow >= pfrows then let NPF_pfRow = pfrows - 1
+          if playfieldRow_R >= pfrows then let playfieldRow_W = pfrows - 1
           rem Check for wraparound: if division resulted in value ≥ 128
           rem (negative), clamp to 0
           rem   check
           rem Note: This is unlikely for row calculation but safe to
-          if NPF_pfRow & $80 then let NPF_pfRow = 0
+          if playfieldRow_R & $80 then let playfieldRow_W = 0
           
           rem Check collision at player position (simple single-point
-          if pfread(NPF_pfColumn, NPF_pfRow) then NudgeFromPF : rem   check)
+          if pfread(NPF_pfColumn, playfieldRow_R) then NudgeFromPF : rem   check)
           
           return
           rem No collision, return
@@ -658,7 +657,7 @@ end
           if NPF_pfColumn & $80 then let NPF_pfColumn = 0 : rem Check for wraparound: if subtraction wrapped negative,
           if NPF_pfColumn > 31 then let NPF_pfColumn = 31
           
-          if pfread(NPF_pfColumn, NPF_pfRow) then NudgeVertical
+          if pfread(NPF_pfColumn, playfieldRow_R) then NudgeVertical
           return
           
 NudgeVertical

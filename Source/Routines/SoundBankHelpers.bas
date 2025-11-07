@@ -56,7 +56,7 @@ LoadSoundNote
           rem Output: TIA registers updated (AUDC0, AUDF0, AUDV0),
           rem pointer advanced by 4 bytes, SoundEffectFrame set
           rem
-          rem Mutates: temp2-temp7 (used for calculations), AUDC0,
+          rem Mutates: temp2-temp6 (used for calculations), AUDC0,
           rem AUDF0, AUDV0 (TIA registers) = sound registers (updated),
           rem soundEffectFrame_W (global SCRAM) = frame counter (set to
           rem Duration + Delay), SoundEffectPointerL,
@@ -75,7 +75,6 @@ LoadSoundNote
           dim LSN_duration = temp4
           dim LSN_delay = temp5
           dim LSN_audc = temp6
-          dim LSN_audv = temp7
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
@@ -98,12 +97,12 @@ end
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           let LSN_audc = LSN_audcv & %11110000 : rem   AUDCV
           let LSN_audc = LSN_audc / 16
-          let LSN_audv = LSN_audcv & %00001111
+          let soundEffectID_W = LSN_audcv & %00001111
           
           rem Write to TIA registers (use Voice 0 for sound effects)
           AUDC0 = LSN_audc
           AUDF0 = LSN_audf
-          AUDV0 = LSN_audv
+          AUDV0 = soundEffectID_R
           
           let soundEffectFrame_W = LSN_duration + LSN_delay : rem Set frame counter = Duration + Delay
           
@@ -133,7 +132,7 @@ LoadSoundNote1
           rem Output: TIA registers updated (AUDC1, AUDF1, AUDV1),
           rem pointer advanced by 4 bytes, SoundEffectFrame1 set
           rem
-          rem Mutates: temp2-temp7 (used for calculations), AUDC1,
+          rem Mutates: temp2-temp6 (used for calculations), AUDC1,
           rem AUDF1, AUDV1 (TIA registers) = sound registers (updated),
           rem soundEffectFrame1_W (global SCRAM) = frame counter (set to
           rem Duration + Delay), soundEffectPointer1L,
@@ -152,7 +151,6 @@ LoadSoundNote1
           dim LSN1_duration = temp4
           dim LSN1_delay = temp5
           dim LSN1_audc = temp6
-          dim LSN1_audv = temp7
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
@@ -175,12 +173,12 @@ end
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           let LSN1_audc = LSN1_audcv & %11110000 : rem   AUDCV
           let LSN1_audc = LSN1_audc / 16
-          let LSN1_audv = LSN1_audcv & %00001111
+          let soundEffectID_W = LSN1_audcv & %00001111
           
           rem Write to TIA registers (use Voice 1 for sound effects)
           AUDC1 = LSN1_audc
           AUDF1 = LSN1_audf
-          AUDV1 = LSN1_audv
+          AUDV1 = soundEffectID_R
           
           let soundEffectFrame1_W = LSN1_duration + LSN1_delay : rem Set frame counter = Duration + Delay
           

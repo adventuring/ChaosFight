@@ -439,8 +439,9 @@ FrictionDone
           gosub MissileCollPF bank7
           if !temp4 then PlayfieldCollisionDone
           rem Collision detected - check if should bounce or deactivate
-          if temp5 & MissileFlagBounce then gosub HandleMissileBounce : return
-          gosub DeactivateMissile : return : rem Bounced - continue moving (HandleMissileBounce returns)
+          if temp5 & MissileFlagBounce then goto HandleMissileBounceTail
+          rem Bounced - continue moving (HandleMissileBounce returns)
+          goto DeactivateMissile
 PlayfieldCollisionDone
           rem No bounce - deactivate on background hit
           
@@ -493,6 +494,10 @@ MissileSystemNoHit
           let missileLifetime[UOM_playerIndex] = missileLifetimeValue
 MissileUpdateComplete
           
+          return
+
+HandleMissileBounceTail
+          gosub HandleMissileBounce
           return
 
 HandleMegaxMissile
@@ -757,31 +762,34 @@ MissileSysPF
           rem   it
           
           rem Check if playfield pixel is set
-          rem pfread(column, row) returns 0 if clear, non-zero if set
           let temp4 = 0 : rem pfread can only be used in if/then conditionals
-          if pfread(temp6, temp3) then let temp4 = 1 : rem Default: clear
-          rem Hit playfield
-          
+          if pfread(temp6, temp3) then goto MissileHitPlayfield
+          rem Default: no collision detected
+          return
+
+MissileHitPlayfield
+          rem pfread detected a solid playfield pixel
+          let temp4 = 1
           return
 
 HalfTemp7
           rem
           rem DIVIDE HELPERS (no Mul/div Support)
           asm
-          rem HalfTemp7: integer divide temp7 by 2 using bit shift
-          rem Helper: Divides temp7 by 2 using bit shift (integer
-          rem division)
-          rem
-          rem Input: temp7 = value to divide
-          rem
-          rem Output: temp7 = value / 2 (integer division)
-          rem
-          rem Mutates: temp7 (divided by 2)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper, uses assembly bit shift for
-          rem performance
+          ; rem HalfTemp7: integer divide temp7 by 2 using bit shift
+          ; rem Helper: Divides temp7 by 2 using bit shift (integer
+          ; rem division)
+          ; rem
+          ; rem Input: temp7 = value to divide
+          ; rem
+          ; rem Output: temp7 = value / 2 (integer division)
+          ; rem
+          ; rem Mutates: temp7 (divided by 2)
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: Internal helper, uses assembly bit shift for
+          ; rem performance
             lsr temp7
 end
           return
@@ -863,7 +871,8 @@ CheckMissilePlayerCollision
           if temp2 + MissileAABBSize<= playerX[0] then MissileSkipPlayer0
           if temp3>= playerY[0] + PlayerSpriteHeight then MissileSkipPlayer0
           if temp3 + MissileAABBSize<= playerY[0] then MissileSkipPlayer0
-          let temp4  = 0 : return
+          let temp4  = 0
+          goto MissileCollisionReturn
 MissileSkipPlayer0
           rem Hit Player 1
           
@@ -873,7 +882,8 @@ MissileSkipPlayer0
           if temp2 + MissileAABBSize<= playerX[1] then MissileSkipPlayer1
           if temp3>= playerY[1] + PlayerSpriteHeight then MissileSkipPlayer1
           if temp3 + MissileAABBSize<= playerY[1] then MissileSkipPlayer1
-          let temp4  = 1 : return
+          let temp4  = 1
+          goto MissileCollisionReturn
 MissileSkipPlayer1
           rem Hit Player 2
           
@@ -883,7 +893,8 @@ MissileSkipPlayer1
           if temp2 + MissileAABBSize<= playerX[2] then MissileSkipPlayer2
           if temp3>= playerY[2] + PlayerSpriteHeight then MissileSkipPlayer2
           if temp3 + MissileAABBSize<= playerY[2] then MissileSkipPlayer2
-          let temp4  = 2 : return
+          let temp4  = 2
+          goto MissileCollisionReturn
 MissileSkipPlayer2
           rem Hit Player 3
           
@@ -893,10 +904,12 @@ MissileSkipPlayer2
           if temp2 + MissileAABBSize<= playerX[3] then MissileSkipPlayer3
           if temp3>= playerY[3] + PlayerSpriteHeight then MissileSkipPlayer3
           if temp3 + MissileAABBSize<= playerY[3] then MissileSkipPlayer3
-          let temp4  = 3 : return
+          let temp4  = 3
+          goto MissileCollisionReturn
 MissileSkipPlayer3
           rem Hit Player 4
           
+MissileCollisionReturn
           return
 
 HandleMissileHit
@@ -986,7 +999,7 @@ DiveCheckDone
           rem For KnockbackImpulse = 4: scaled = (4 * (100 - weight)) /
           rem   100
           rem Simplify to avoid division: if weight < 50, use full
-          if characterWeight >= 50 then WeightBasedKnockbackScale : rem   knockback; else scale down
+          if characterWeight >= 50 then WeightBasedKnockbackScale : rem Heavy characters use reduced knockback scaling
           let impulseStrength = KnockbackImpulse : rem Light characters (weight < 50): full knockback
           goto WeightBasedKnockbackApply
 WeightBasedKnockbackScale

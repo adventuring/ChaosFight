@@ -56,14 +56,8 @@ GetBWMode
           rem
           rem Called Routines: None
           rem
-          rem Constraints: SECAM always returns B&W mode (compile-time
-          rem check)
-          #ifdef TV_SECAM
-          let LA_bwMode = 1
-          return
-          #endif
-          
-          rem NTSC/PAL: Check switchbw and colorBWOverride
+          rem Constraints: Applies to all TV standards
+          rem Check switchbw and colorBWOverride
           rem switchbw = 1 means B&W mode (white), switchbw = 0 means
           rem   Color mode
           rem systemFlags bit 6 (SystemFlagColorBWOverride) = 1 means
@@ -150,19 +144,19 @@ DoneArenaColorLoad
 
 LoadArenaColorsBW
           asm
-          rem Load B&W color table (all arenas use same white colors)
-          rem
-          rem Input: ArenaColorsBW (global data table) = B&W color table
-          rem
-          rem Output: pfcolortable set to ArenaColorsBW
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem All arenas use the same B&W colors (all white)
-          rem Set pfcolortable pointer to ArenaColorsBW
+          ; rem Load B&W color table (all arenas use same white colors)
+          ; rem
+          ; rem Input: ArenaColorsBW (global data table) = B&W color table
+          ; rem
+          ; rem Output: pfcolortable set to ArenaColorsBW
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem All arenas use the same B&W colors (all white)
+          ; rem Set pfcolortable pointer to ArenaColorsBW
             lda #<ArenaColorsBW
             sta pfcolortable
             lda #>ArenaColorsBW
@@ -192,19 +186,19 @@ LoadRandomArena
 
 LoadArena0Colors
           asm
-          rem Load color table for arena 0
-          rem
-          rem Input: Arena0Colors (global data table) = arena 0 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena0Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena0Colors
+          ; rem Load color table for arena 0
+          ; rem
+          ; rem Input: Arena0Colors (global data table) = arena 0 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena0Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena0Colors
             lda #<Arena0Colors
             sta pfcolortable
             lda #>Arena0Colors
@@ -213,19 +207,19 @@ end
           return
 LoadArena1Colors
           asm
-          rem Load color table for arena 1
-          rem
-          rem Input: Arena1Colors (global data table) = arena 1 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena1Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena1Colors
+          ; rem Load color table for arena 1
+          ; rem
+          ; rem Input: Arena1Colors (global data table) = arena 1 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena1Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena1Colors
             lda #<Arena1Colors
             sta pfcolortable
             lda #>Arena1Colors
@@ -234,19 +228,19 @@ end
           return
 LoadArena2Colors
           asm
-          rem Load color table for arena 2
-          rem
-          rem Input: Arena2Colors (global data table) = arena 2 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena2Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena2Colors
+          ; rem Load color table for arena 2
+          ; rem
+          ; rem Input: Arena2Colors (global data table) = arena 2 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena2Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena2Colors
             lda #<Arena2Colors
             sta pfcolortable
             lda #>Arena2Colors
@@ -255,19 +249,19 @@ end
           return
 LoadArena3Colors
           asm
-          rem Load color table for arena 3
-          rem
-          rem Input: Arena3Colors (global data table) = arena 3 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena3Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena3Colors
+          ; rem Load color table for arena 3
+          ; rem
+          ; rem Input: Arena3Colors (global data table) = arena 3 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena3Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena3Colors
             lda #<Arena3Colors
             sta pfcolortable
             lda #>Arena3Colors
@@ -276,19 +270,19 @@ end
           return
 LoadArena4Colors
           asm
-          rem Load color table for arena 4
-          rem
-          rem Input: Arena4Colors (global data table) = arena 4 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena4Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena4Colors
+          ; rem Load color table for arena 4
+          ; rem
+          ; rem Input: Arena4Colors (global data table) = arena 4 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena4Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena4Colors
             lda #<Arena4Colors
             sta pfcolortable
             lda #>Arena4Colors
@@ -297,19 +291,19 @@ end
           return
 LoadArena5Colors
           asm
-          rem Load color table for arena 5
-          rem
-          rem Input: Arena5Colors (global data table) = arena 5 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena5Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena5Colors
+          ; rem Load color table for arena 5
+          ; rem
+          ; rem Input: Arena5Colors (global data table) = arena 5 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena5Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena5Colors
             lda #<Arena5Colors
             sta pfcolortable
             lda #>Arena5Colors
@@ -318,19 +312,19 @@ end
           return
 LoadArena6Colors
           asm
-          rem Load color table for arena 6
-          rem
-          rem Input: Arena6Colors (global data table) = arena 6 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena6Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena6Colors
+          ; rem Load color table for arena 6
+          ; rem
+          ; rem Input: Arena6Colors (global data table) = arena 6 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena6Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena6Colors
             lda #<Arena6Colors
             sta pfcolortable
             lda #>Arena6Colors
@@ -339,19 +333,19 @@ end
           return
 LoadArena7Colors
           asm
-          rem Load color table for arena 7
-          rem
-          rem Input: Arena7Colors (global data table) = arena 7 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena7Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena7Colors
+          ; rem Load color table for arena 7
+          ; rem
+          ; rem Input: Arena7Colors (global data table) = arena 7 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena7Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena7Colors
             lda #<Arena7Colors
             sta pfcolortable
             lda #>Arena7Colors
@@ -360,19 +354,19 @@ end
           return
 LoadArena8Colors
           asm
-          rem Load color table for arena 8
-          rem
-          rem Input: Arena8Colors (global data table) = arena 8 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena8Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena8Colors
+          ; rem Load color table for arena 8
+          ; rem
+          ; rem Input: Arena8Colors (global data table) = arena 8 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena8Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena8Colors
             lda #<Arena8Colors
             sta pfcolortable
             lda #>Arena8Colors
@@ -381,19 +375,19 @@ end
           return
 LoadArena9Colors
           asm
-          rem Load color table for arena 9
-          rem
-          rem Input: Arena9Colors (global data table) = arena 9 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena9Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena9Colors
+          ; rem Load color table for arena 9
+          ; rem
+          ; rem Input: Arena9Colors (global data table) = arena 9 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena9Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena9Colors
             lda #<Arena9Colors
             sta pfcolortable
             lda #>Arena9Colors
@@ -402,19 +396,19 @@ end
           return
 LoadArena10Colors
           asm
-          rem Load color table for arena 10
-          rem
-          rem Input: Arena10Colors (global data table) = arena 10 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena10Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena10Colors
+          ; rem Load color table for arena 10
+          ; rem
+          ; rem Input: Arena10Colors (global data table) = arena 10 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena10Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena10Colors
             lda #<Arena10Colors
             sta pfcolortable
             lda #>Arena10Colors
@@ -423,19 +417,19 @@ end
           return
 LoadArena11Colors
           asm
-          rem Load color table for arena 11
-          rem
-          rem Input: Arena11Colors (global data table) = arena 11 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena11Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena11Colors
+          ; rem Load color table for arena 11
+          ; rem
+          ; rem Input: Arena11Colors (global data table) = arena 11 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena11Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena11Colors
             lda #<Arena11Colors
             sta pfcolortable
             lda #>Arena11Colors
@@ -444,19 +438,19 @@ end
           return
 LoadArena12Colors
           asm
-          rem Load color table for arena 12
-          rem
-          rem Input: Arena12Colors (global data table) = arena 12 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena12Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena12Colors
+          ; rem Load color table for arena 12
+          ; rem
+          ; rem Input: Arena12Colors (global data table) = arena 12 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena12Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena12Colors
             lda #<Arena12Colors
             sta pfcolortable
             lda #>Arena12Colors
@@ -465,19 +459,19 @@ end
           return
 LoadArena13Colors
           asm
-          rem Load color table for arena 13
-          rem
-          rem Input: Arena13Colors (global data table) = arena 13 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena13Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena13Colors
+          ; rem Load color table for arena 13
+          ; rem
+          ; rem Input: Arena13Colors (global data table) = arena 13 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena13Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena13Colors
             lda #<Arena13Colors
             sta pfcolortable
             lda #>Arena13Colors
@@ -486,19 +480,19 @@ end
           return
 LoadArena14Colors
           asm
-          rem Load color table for arena 14
-          rem
-          rem Input: Arena14Colors (global data table) = arena 14 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena14Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena14Colors
+          ; rem Load color table for arena 14
+          ; rem
+          ; rem Input: Arena14Colors (global data table) = arena 14 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena14Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena14Colors
             lda #<Arena14Colors
             sta pfcolortable
             lda #>Arena14Colors
@@ -507,19 +501,19 @@ end
           return
 LoadArena15Colors
           asm
-          rem Load color table for arena 15
-          rem
-          rem Input: Arena15Colors (global data table) = arena 15 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena15Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena15Colors
+          ; rem Load color table for arena 15
+          ; rem
+          ; rem Input: Arena15Colors (global data table) = arena 15 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena15Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena15Colors
             lda #<Arena15Colors
             sta pfcolortable
             lda #>Arena15Colors
@@ -529,19 +523,19 @@ end
 
 LoadArena16Colors
           asm
-          rem Load color table for arena 16
-          rem
-          rem Input: Arena16Colors (global data table) = arena 16 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena16Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena16Colors
+          ; rem Load color table for arena 16
+          ; rem
+          ; rem Input: Arena16Colors (global data table) = arena 16 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena16Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena16Colors
             lda #<Arena16Colors
             sta pfcolortable
             lda #>Arena16Colors
@@ -551,19 +545,19 @@ end
 
 LoadArena17Colors
           asm
-          rem Load color table for arena 17
-          rem
-          rem Input: Arena17Colors (global data table) = arena 17 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena17Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena17Colors
+          ; rem Load color table for arena 17
+          ; rem
+          ; rem Input: Arena17Colors (global data table) = arena 17 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena17Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena17Colors
             lda #<Arena17Colors
             sta pfcolortable
             lda #>Arena17Colors
@@ -573,19 +567,19 @@ end
 
 LoadArena18Colors
           asm
-          rem Load color table for arena 18
-          rem
-          rem Input: Arena18Colors (global data table) = arena 18 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena18Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena18Colors
+          ; rem Load color table for arena 18
+          ; rem
+          ; rem Input: Arena18Colors (global data table) = arena 18 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena18Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena18Colors
             lda #<Arena18Colors
             sta pfcolortable
             lda #>Arena18Colors
@@ -595,19 +589,19 @@ end
 
 LoadArena19Colors
           asm
-          rem Load color table for arena 19
-          rem
-          rem Input: Arena19Colors (global data table) = arena 19 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena19Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena19Colors
+          ; rem Load color table for arena 19
+          ; rem
+          ; rem Input: Arena19Colors (global data table) = arena 19 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena19Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena19Colors
             lda #<Arena19Colors
             sta pfcolortable
             lda #>Arena19Colors
@@ -617,19 +611,19 @@ end
 
 LoadArena20Colors
           asm
-          rem Load color table for arena 20
-          rem
-          rem Input: Arena20Colors (global data table) = arena 20 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena20Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena20Colors
+          ; rem Load color table for arena 20
+          ; rem
+          ; rem Input: Arena20Colors (global data table) = arena 20 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena20Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena20Colors
             lda #<Arena20Colors
             sta pfcolortable
             lda #>Arena20Colors
@@ -639,19 +633,19 @@ end
 
 LoadArena21Colors
           asm
-          rem Load color table for arena 21
-          rem
-          rem Input: Arena21Colors (global data table) = arena 21 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena21Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena21Colors
+          ; rem Load color table for arena 21
+          ; rem
+          ; rem Input: Arena21Colors (global data table) = arena 21 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena21Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena21Colors
             lda #<Arena21Colors
             sta pfcolortable
             lda #>Arena21Colors
@@ -661,19 +655,19 @@ end
 
 LoadArena22Colors
           asm
-          rem Load color table for arena 22
-          rem
-          rem Input: Arena22Colors (global data table) = arena 22 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena22Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena22Colors
+          ; rem Load color table for arena 22
+          ; rem
+          ; rem Input: Arena22Colors (global data table) = arena 22 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena22Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena22Colors
             lda #<Arena22Colors
             sta pfcolortable
             lda #>Arena22Colors
@@ -683,19 +677,19 @@ end
 
 LoadArena23Colors
           asm
-          rem Load color table for arena 23
-          rem
-          rem Input: Arena23Colors (global data table) = arena 23 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena23Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena23Colors
+          ; rem Load color table for arena 23
+          ; rem
+          ; rem Input: Arena23Colors (global data table) = arena 23 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena23Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena23Colors
             lda #<Arena23Colors
             sta pfcolortable
             lda #>Arena23Colors
@@ -705,19 +699,19 @@ end
 
 LoadArena24Colors
           asm
-          rem Load color table for arena 24
-          rem
-          rem Input: Arena24Colors (global data table) = arena 24 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena24Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena24Colors
+          ; rem Load color table for arena 24
+          ; rem
+          ; rem Input: Arena24Colors (global data table) = arena 24 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena24Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena24Colors
             lda #<Arena24Colors
             sta pfcolortable
             lda #>Arena24Colors
@@ -727,19 +721,19 @@ end
 
 LoadArena25Colors
           asm
-          rem Load color table for arena 25
-          rem
-          rem Input: Arena25Colors (global data table) = arena 25 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena25Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena25Colors
+          ; rem Load color table for arena 25
+          ; rem
+          ; rem Input: Arena25Colors (global data table) = arena 25 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena25Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena25Colors
             lda #<Arena25Colors
             sta pfcolortable
             lda #>Arena25Colors
@@ -749,19 +743,19 @@ end
 
 LoadArena26Colors
           asm
-          rem Load color table for arena 26
-          rem
-          rem Input: Arena26Colors (global data table) = arena 26 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena26Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena26Colors
+          ; rem Load color table for arena 26
+          ; rem
+          ; rem Input: Arena26Colors (global data table) = arena 26 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena26Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena26Colors
             lda #<Arena26Colors
             sta pfcolortable
             lda #>Arena26Colors
@@ -771,19 +765,19 @@ end
 
 LoadArena27Colors
           asm
-          rem Load color table for arena 27
-          rem
-          rem Input: Arena27Colors (global data table) = arena 27 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena27Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena27Colors
+          ; rem Load color table for arena 27
+          ; rem
+          ; rem Input: Arena27Colors (global data table) = arena 27 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena27Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena27Colors
             lda #<Arena27Colors
             sta pfcolortable
             lda #>Arena27Colors
@@ -793,19 +787,19 @@ end
 
 LoadArena28Colors
           asm
-          rem Load color table for arena 28
-          rem
-          rem Input: Arena28Colors (global data table) = arena 28 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena28Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena28Colors
+          ; rem Load color table for arena 28
+          ; rem
+          ; rem Input: Arena28Colors (global data table) = arena 28 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena28Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena28Colors
             lda #<Arena28Colors
             sta pfcolortable
             lda #>Arena28Colors
@@ -815,19 +809,19 @@ end
 
 LoadArena29Colors
           asm
-          rem Load color table for arena 29
-          rem
-          rem Input: Arena29Colors (global data table) = arena 29 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena29Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena29Colors
+          ; rem Load color table for arena 29
+          ; rem
+          ; rem Input: Arena29Colors (global data table) = arena 29 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena29Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena29Colors
             lda #<Arena29Colors
             sta pfcolortable
             lda #>Arena29Colors
@@ -837,19 +831,19 @@ end
 
 LoadArena30Colors
           asm
-          rem Load color table for arena 30
-          rem
-          rem Input: Arena30Colors (global data table) = arena 30 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena30Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena30Colors
+          ; rem Load color table for arena 30
+          ; rem
+          ; rem Input: Arena30Colors (global data table) = arena 30 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena30Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena30Colors
             lda #<Arena30Colors
             sta pfcolortable
             lda #>Arena30Colors
@@ -859,19 +853,19 @@ end
 
 LoadArena31Colors
           asm
-          rem Load color table for arena 31
-          rem
-          rem Input: Arena31Colors (global data table) = arena 31 color
-          rem table
-          rem
-          rem Output: pfcolortable set to Arena31Colors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Set pfcolortable pointer to Arena31Colors
+          ; rem Load color table for arena 31
+          ; rem
+          ; rem Input: Arena31Colors (global data table) = arena 31 color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable set to Arena31Colors
+          ; rem
+          ; rem Mutates: pfcolortable (TIA register) = color table pointer
+          ; rem
+          ; rem Called Routines: None
+          ; rem
+          ; rem Constraints: None
+          ; rem Set pfcolortable pointer to Arena31Colors
             lda #<Arena31Colors
             sta pfcolortable
             lda #>Arena31Colors
@@ -896,12 +890,7 @@ ReloadArenaColors
           if RAC_arenaIndex = RandomArena then let RAC_arenaIndex = rand & 31 : rem Handle random arena (use stored random selection)
           
           rem Get B&W mode state (same logic as GetBWMode)
-          #ifdef TV_SECAM
-          let RAC_bwMode = 1
-          goto ReloadArenaColorsDispatch
-          #endif
-          
-          let RAC_bwMode = switchbw : rem NTSC/PAL: Check switchbw and colorBWOverride
+          let RAC_bwMode = switchbw : rem Check switchbw and colorBWOverride
           if systemFlags & SystemFlagColorBWOverride then let RAC_bwMode = 1
           
 ReloadArenaColorsDispatch

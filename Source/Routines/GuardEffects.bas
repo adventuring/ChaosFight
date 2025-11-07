@@ -50,15 +50,28 @@ ApplyGuardFlashing
           if AGF_flashPhase >= 2 then goto GuardNormalPhase
           rem Flash phase - set light cyan color
           dim AGF_colorValue = temp4 : rem Set color based on player index (COLUP0/1/2/3)
-#ifdef TV_SECAM
-          let AGF_colorValue = ColCyan(6) : rem SECAM uses player-based colors (always cyan for guard)
-#else
-          let AGF_colorValue = ColCyan(12) : rem NTSC/PAL - light cyan ColCyan(12)
-#endif
-          if AGF_playerIndex = 0 then COLUP0 = AGF_colorValue : return : rem Apply color to appropriate player register
-          if AGF_playerIndex = 1 then _COLUP1 = AGF_colorValue : return
-          if AGF_playerIndex = 2 then COLUP2 = AGF_colorValue : return
-          if AGF_playerIndex = 3 then COLUP3 = AGF_colorValue : return
+          let AGF_colorValue = ColCyan(12) : rem Bright cyan guard flash (SECAM maps to cyan)
+          if AGF_playerIndex = 0 then goto ApplyGuardFlashColor0
+          rem Apply color to appropriate player register
+          if AGF_playerIndex = 1 then goto ApplyGuardFlashColor1
+          if AGF_playerIndex = 2 then goto ApplyGuardFlashColor2
+          if AGF_playerIndex = 3 then goto ApplyGuardFlashColor3
+          return
+
+ApplyGuardFlashColor0
+          COLUP0 = AGF_colorValue
+          return
+
+ApplyGuardFlashColor1
+          _COLUP1 = AGF_colorValue
+          return
+
+ApplyGuardFlashColor2
+          COLUP2 = AGF_colorValue
+          return
+
+ApplyGuardFlashColor3
+          COLUP3 = AGF_colorValue
           return
 
 GuardNormalPhase

@@ -200,14 +200,8 @@ SetParadeColor4PlayerLastInline
           rem
           rem Constraints: Must be colocated with DrawParadeCharacter,
           rem SetParadeColor4PlayerInline
-#ifdef TV_SECAM
-          COLUP0 = ColGreen(12)
-          rem Player 4: Green (SECAM-specific, Turquoise maps to Cyan on
-          rem   SECAM)
-#else
           COLUP0 = ColTurquoise(12)
-          rem Player 4: Turquoise (NTSC/PAL)
-#endif
+          rem Player 4: Turquoise (SECAM macro maps to Cyan)
           rem Draw running animation for parade character
           goto DrawParadeCharacterSprite bank9 : rem tail call
           

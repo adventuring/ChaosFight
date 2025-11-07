@@ -26,11 +26,13 @@
           rem P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise (SECAM maps to
           rem   Green)
 
-          data PlayerColorsLight : rem Player Colors - Light versions for normal state
+          rem Player Colors - Light versions for normal state
+          data PlayerColorsLight
               ColIndigo(14), ColRed(14), ColYellow(14), ColTurquoise(14)
 end
 
-          data PlayerColorsDark : rem Player Colors - Dark versions for hurt state
+          rem Player Colors - Dark versions for hurt state
+          data PlayerColorsDark
               ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
 end
 
@@ -173,27 +175,27 @@ LoadQuestionMarkSprite
           
 LoadQuestionMarkSpriteP0
           asm
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem
-          rem Input: temp3 = player number (0, read but not used in this
-          rem function)
-          rem        QuestionMarkSprite (ROM data) = source sprite data
-          rem
-          rem Output: w000-w015 (SCRAM) = sprite data copied
-          rem         player0height = 16
-          rem
-          rem Mutates: w000-w015 (SCRAM write port), player0height
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with LoadQuestionMarkSprite
-          rem              Depends on QuestionMarkSprite ROM data
-          rem              Depends on InitializeSpritePointers setting
-          rem              pointers
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem (w000-w015)
-          rem Pointers already initialized to RAM addresses by
-          rem InitializeSpritePointers
+          ; Copy QuestionMarkSprite data from ROM to RAM buffer
+          ;
+          ; Input: temp3 = player number (0, read but not used in this
+          ; function)
+          ;        QuestionMarkSprite (ROM data) = source sprite data
+          ;
+          ; Output: w000-w015 (SCRAM) = sprite data copied
+          ;         player0height = 16
+          ;
+          ; Mutates: w000-w015 (SCRAM write port), player0height
+          ;
+          ; Called Routines: None (uses inline assembly)
+          ;
+          ; Constraints: Must be colocated with LoadQuestionMarkSprite
+          ;              Depends on QuestionMarkSprite ROM data
+          ;              Depends on InitializeSpritePointers setting
+          ;              pointers
+          ; Copy QuestionMarkSprite data from ROM to RAM buffer
+          ; (w000-w015)
+          ; Pointers already initialized to RAM addresses by
+          ; InitializeSpritePointers
             ldy #15
 .CopyLoop:
             lda QuestionMarkSprite,y
@@ -266,24 +268,24 @@ LoadCPUSprite
           
 LoadCPUSpriteP0
           asm
-          rem Copy CPUSprite data from ROM to RAM buffer
-          rem
-          rem Input: temp3 = player number (0, read but not used in this
-          rem function)
-          rem        CPUSprite (ROM data) = source sprite data
-          rem
-          rem Output: w000-w015 (SCRAM) = sprite data copied
-          rem         player0height = 16
-          rem
-          rem Mutates: w000-w015 (SCRAM write port), player0height
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with LoadCPUSprite
-          rem              Depends on CPUSprite ROM data
-          rem Copy CPUSprite data from ROM to RAM buffer (w000-w015)
-          rem Pointers already initialized to RAM addresses by
-          rem InitializeSpritePointers
+          ; rem Copy CPUSprite data from ROM to RAM buffer
+          ; rem
+          ; rem Input: temp3 = player number (0, read but not used in this
+          ; rem function)
+          ; rem        CPUSprite (ROM data) = source sprite data
+          ; rem
+          ; rem Output: w000-w015 (SCRAM) = sprite data copied
+          ; rem         player0height = 16
+          ; rem
+          ; rem Mutates: w000-w015 (SCRAM write port), player0height
+          ; rem
+          ; rem Called Routines: None (uses inline assembly)
+          ; rem
+          ; rem Constraints: Must be colocated with LoadCPUSprite
+          ; rem              Depends on CPUSprite ROM data
+          ; rem Copy CPUSprite data from ROM to RAM buffer (w000-w015)
+          ; rem Pointers already initialized to RAM addresses by
+          ; rem InitializeSpritePointers
             ldy #15
 .CopyLoop:
             lda CPUSprite,y
@@ -353,24 +355,24 @@ LoadNoSprite
           
 LoadNoSpriteP0
           asm
-          rem Copy NoSprite data from ROM to RAM buffer
-          rem
-          rem Input: temp3 = player number (0, read but not used in this
-          rem function)
-          rem        NoSprite (ROM data) = source sprite data
-          rem
-          rem Output: w000-w015 (SCRAM) = sprite data copied
-          rem         player0height = 16
-          rem
-          rem Mutates: w000-w015 (SCRAM write port), player0height
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with LoadNoSprite
-          rem              Depends on NoSprite ROM data
-          rem Copy NoSprite data from ROM to RAM buffer (w000-w015)
-          rem Pointers already initialized to RAM addresses by
-          rem InitializeSpritePointers
+          ; rem Copy NoSprite data from ROM to RAM buffer
+          ; rem
+          ; rem Input: temp3 = player number (0, read but not used in this
+          ; rem function)
+          ; rem        NoSprite (ROM data) = source sprite data
+          ; rem
+          ; rem Output: w000-w015 (SCRAM) = sprite data copied
+          ; rem         player0height = 16
+          ; rem
+          ; rem Mutates: w000-w015 (SCRAM write port), player0height
+          ; rem
+          ; rem Called Routines: None (uses inline assembly)
+          ; rem
+          ; rem Constraints: Must be colocated with LoadNoSprite
+          ; rem              Depends on NoSprite ROM data
+          ; rem Copy NoSprite data from ROM to RAM buffer (w000-w015)
+          ; rem Pointers already initialized to RAM addresses by
+          ; rem InitializeSpritePointers
             ldy #15
 .CopyLoop:
             lda NoSprite,y
@@ -660,10 +662,6 @@ NormalColor
           rem Called Routines: None (dispatcher only)
           rem
           rem Constraints: Must be colocated with LoadCharacterColors
-#ifdef TV_SECAM
-          rem SECAM: always use player index colors (no luminance
-          goto PlayerIndexColors : rem   control)
-#else
           rem Determine effective B&W override locally; if enabled, use
           if systemFlags & SystemFlagColorBWOverride then PlayerIndexColors : rem   player colors
 
@@ -671,7 +669,6 @@ NormalColor
           rem   when tables exist
           rem Placeholder: fall back to player index colors until
           goto PlayerIndexColors : rem   character tables are wired
-#endif
 
 FlashingColor
           dim FlashingColor_flashingMode = temp5
@@ -725,22 +722,12 @@ PlayerIndexColors
           rem Solid player index colors (bright)
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
-#ifdef TV_SECAM
-          rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise
-          if !LoadCharacterColors_playerNumber then let PlayerIndexColors_color = ColIndigo(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor : rem maps to Cyan on SECAM)
-          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColors_color = ColRed(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor : rem Player 1: Indigo -> Blue on SECAM
-          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColors_color = ColYellow(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor : rem Player 2: Red
-          let PlayerIndexColors_color = ColGreen(14) : rem Player 3: Yellow
-          let LoadCharacterColors_color = PlayerIndexColors_color : rem Player 4: Green (SECAM-specific, Turquoise would be Cyan)
-          goto SetColor
-#else
           if !LoadCharacterColors_playerNumber then let PlayerIndexColors_color = ColIndigo(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor : rem NTSC/PAL: Use Turquoise for Player 4
           if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColors_color = ColRed(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor : rem Player 1: Indigo
           if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColors_color = ColYellow(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor : rem Player 2: Red
           let PlayerIndexColors_color = ColTurquoise(14) : rem Player 3: Yellow
           let LoadCharacterColors_color = PlayerIndexColors_color : rem Player 4: Turquoise
           goto SetColor
-#endif
 
 PlayerIndexColorsDim
           dim PlayerIndexColorsDim_color = temp6
@@ -759,23 +746,12 @@ PlayerIndexColorsDim
           rem SetColor
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
-#ifdef TV_SECAM
-          rem SECAM: Player 4 uses Green instead of Turquoise (Turquoise
-          if !LoadCharacterColors_playerNumber then let PlayerIndexColorsDim_color = ColIndigo(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor : rem maps to Cyan on SECAM)
-          rem Player 1: Indigo -> Blue on SECAM (dimmed)
-          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColorsDim_color = ColRed(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor
-          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColorsDim_color = ColYellow(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor : rem Player 2: Red (dimmed)
-          let PlayerIndexColorsDim_color = ColGreen(6) : rem Player 3: Yellow (dimmed)
-          let LoadCharacterColors_color = PlayerIndexColorsDim_color : rem Player 4: Green (SECAM-specific, Turquoise would be Cyan)
-          goto SetColor
-#else
           if !LoadCharacterColors_playerNumber then let PlayerIndexColorsDim_color = ColIndigo(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor : rem NTSC/PAL: Use Turquoise for Player 4
           if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColorsDim_color = ColRed(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor : rem Player 1: Indigo (dimmed)
           if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColorsDim_color = ColYellow(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor : rem Player 2: Red (dimmed)
           let PlayerIndexColorsDim_color = ColTurquoise(6) : rem Player 3: Yellow (dimmed)
           let LoadCharacterColors_color = PlayerIndexColorsDim_color : rem Player 4: Turquoise (dimmed)
           goto SetColor
-#endif
 
 HurtColor
           dim HurtColor_color = temp6

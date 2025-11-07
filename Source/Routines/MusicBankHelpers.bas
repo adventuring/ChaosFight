@@ -37,10 +37,10 @@ LoadSongPointer
           rem in this bank
           dim LSP_songID = temp1
           rem Bounds check: Only songs 0, 3-28 are in Bank 16
-          if LSP_songID > 28 then let SongPointerH = 0 : return
+          if LSP_songID > 28 then goto LSP_InvalidSong
           rem Check if song 1 or 2 (not in this bank)
-          if LSP_songID = 1 then let SongPointerH = 0 : return
-          if LSP_songID = 2 then let SongPointerH = 0 : return
+          if LSP_songID = 1 then goto LSP_InvalidSong
+          if LSP_songID = 2 then goto LSP_InvalidSong
           rem Calculate compact index: if songID = 0 then index = 0,
           dim LSP_index = temp2 : rem else index = songID - 2
           if LSP_songID = 0 then LSP_IndexZero
@@ -75,6 +75,10 @@ LSP_Lookup
           let SongPointerL = SongPointersL16[LSP_index] : rem Use array access to lookup pointer
           let SongPointerH = SongPointersH16[LSP_index]
           return
+
+LSP_InvalidSong
+          let SongPointerH = 0
+          return
           
 LoadSongVoice1Pointer
           rem Lookup Voice 1 song pointer from tables (Bank 16 songs)
@@ -106,10 +110,10 @@ LoadSongVoice1Pointer
           rem in this bank
           dim LSV1P_songID = temp1
           rem Bounds check: Only songs 0, 3-28 are in Bank 16
-          if LSV1P_songID > 28 then let SongPointerH = 0 : return
+          if LSV1P_songID > 28 then goto LSV1P_InvalidSong
           rem Check if song 1 or 2 (not in this bank)
-          if LSV1P_songID = 1 then let SongPointerH = 0 : return
-          if LSV1P_songID = 2 then let SongPointerH = 0 : return
+          if LSV1P_songID = 1 then goto LSV1P_InvalidSong
+          if LSV1P_songID = 2 then goto LSV1P_InvalidSong
           rem Calculate compact index: if songID = 0 then index = 0,
           dim LSV1P_index = temp2 : rem else index = songID - 2
           if LSV1P_songID = 0 then LSV1P_IndexZero
@@ -146,6 +150,10 @@ LSV1P_Lookup
           rem Constraints: Internal helper for LoadSongVoice1Pointer
           let SongPointerL = SongPointersSecondL16[LSV1P_index] : rem Use array access to lookup Voice 1 pointer directly
           let SongPointerH = SongPointersSecondH16[LSV1P_index]
+          return
+
+LSV1P_InvalidSong
+          let SongPointerH = 0
           return
           
 LoadMusicNote0

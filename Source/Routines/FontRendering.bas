@@ -238,19 +238,19 @@ LoadPlayerDigit
           
 LoadSprite0Ptr
           asm
-          rem Load Player 0 sprite pointer to font data
-          rem
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
-          rem (ROM constant)
-          rem
-          rem Output: player0pointerlo/hi set, player0height set to 16
-          rem
-          rem Mutates: player0pointerlo, player0pointerhi (set via
-          rem inline assembly), player0height
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with LoadPlayerDigit
+          ; Load Player 0 sprite pointer to font data
+          ;
+          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; (ROM constant)
+          ;
+          ; Output: player0pointerlo/hi set, player0height set to 16
+          ;
+          ; Mutates: player0pointerlo, player0pointerhi (set via
+          ; inline assembly), player0height
+          ;
+          ; Called Routines: None (uses inline assembly)
+          ;
+          ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
             adc LPD_digitOffset
@@ -264,19 +264,19 @@ end
           
 LoadSprite1Ptr
           asm
-          rem Load Player 1 sprite pointer to font data
-          rem
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
-          rem (ROM constant)
-          rem
-          rem Output: player1pointerlo/hi set, player1height set to 16
-          rem
-          rem Mutates: player1pointerlo, player1pointerhi (set via
-          rem inline assembly), player1height
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with LoadPlayerDigit
+          ; Load Player 1 sprite pointer to font data
+          ;
+          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; (ROM constant)
+          ;
+          ; Output: player1pointerlo/hi set, player1height set to 16
+          ;
+          ; Mutates: player1pointerlo, player1pointerhi (set via
+          ; inline assembly), player1height
+          ;
+          ; Called Routines: None (uses inline assembly)
+          ;
+          ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
             adc LPD_digitOffset
@@ -290,19 +290,19 @@ end
           
 LoadSprite2Ptr
           asm
-          rem Load Player 2 sprite pointer to font data
-          rem
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
-          rem (ROM constant)
-          rem
-          rem Output: player2pointerlo/hi set, player2height set to 16
-          rem
-          rem Mutates: player2pointerlo, player2pointerhi (set via
-          rem inline assembly), player2height
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with LoadPlayerDigit
+          ; Load Player 2 sprite pointer to font data
+          ;
+          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; (ROM constant)
+          ;
+          ; Output: player2pointerlo/hi set, player2height set to 16
+          ;
+          ; Mutates: player2pointerlo, player2pointerhi (set via
+          ; inline assembly), player2height
+          ;
+          ; Called Routines: None (uses inline assembly)
+          ;
+          ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
             adc LPD_digitOffset
@@ -316,19 +316,19 @@ end
           
 LoadSprite3Ptr
           asm
-          rem Load Player 3 sprite pointer to font data
-          rem
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
-          rem (ROM constant)
-          rem
-          rem Output: player3pointerlo/hi set, player3height set to 16
-          rem
-          rem Mutates: player3pointerlo, player3pointerhi (set via
-          rem inline assembly), player3height
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with LoadPlayerDigit
+          ; Load Player 3 sprite pointer to font data
+          ;
+          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; (ROM constant)
+          ;
+          ; Output: player3pointerlo/hi set, player3height set to 16
+          ;
+          ; Mutates: player3pointerlo, player3pointerhi (set via
+          ; inline assembly), player3height
+          ;
+          ; Called Routines: None (uses inline assembly)
+          ;
+          ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
             adc LPD_digitOffset
@@ -342,19 +342,19 @@ end
           
 LoadSprite4Ptr
           asm
-          rem Load Player 4 sprite pointer to font data
-          rem
-          rem Input: LPD_digitOffset (from LoadPlayerDigit), FontData
-          rem (ROM constant)
-          rem
-          rem Output: player4pointerlo/hi set, player4height set to 16
-          rem
-          rem Mutates: player4pointerlo, player4pointerhi (set via
-          rem inline assembly), player4height
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with LoadPlayerDigit
+          ; Load Player 4 sprite pointer to font data
+          ;
+          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; (ROM constant)
+          ;
+          ; Output: player4pointerlo/hi set, player4height set to 16
+          ;
+          ; Mutates: player4pointerlo, player4pointerhi (set via
+          ; inline assembly), player4height
+          ;
+          ; Called Routines: None (uses inline assembly)
+          ;
+          ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
             adc LPD_digitOffset
@@ -417,13 +417,8 @@ SetP3Color
           goto DrawPlayerDigitNow : rem Yellow
           
 SetP4Color
-#ifdef TV_SECAM
-          let DPN_playerColor = ColGreen(14)
-          rem Green (SECAM-specific, Turquoise maps to Cyan on SECAM)
-#else
           let DPN_playerColor = ColTurquoise(14)
-          rem Turquoise (NTSC/PAL)
-#endif
+          rem Turquoise (SECAM macro maps to Cyan)
           goto DrawPlayerDigitNow
           
 DrawPlayerDigitNow

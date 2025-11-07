@@ -622,9 +622,10 @@ CycleCharacterLeft
           rem P3/P4: NoCharacter(255) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔
           rem   NoCharacter
           
-          if CCL_characterIndex = RandomCharacter then CycleFromRandom : return : rem Check if we’re at a special value
-          if CCL_characterIndex = CPUCharacter then CycleFromCPU : return
-          if CCL_characterIndex = NoCharacter then CycleFromNO : return
+          if CCL_characterIndex = RandomCharacter then goto CycleFromRandom
+          rem Check if we’re at a special value
+          if CCL_characterIndex = CPUCharacter then goto CycleFromCPU
+          if CCL_characterIndex = NoCharacter then goto CycleFromNO
           
           rem Normal character (0-15): decrement
           rem Check if we’re at 0 before decrementing (need to wrap to
@@ -636,18 +637,29 @@ CycleCharacterLeft
 CharacterSelectLeftWrapCheck
           dim CSLWC_characterIndex = temp1
           dim CSLWC_playerNumber = temp3
-          if CSLWC_playerNumber = 0 then let CSLWC_characterIndex = RandomCharacter : let temp1 = CSLWC_characterIndex : return : rem After 0, wrap to player-specific special character
+          if CSLWC_playerNumber = 0 then goto CSLWrapPlayer0Left
+          rem After 0, wrap to player-specific special character
           if CSLWC_playerNumber = 1 then goto SelectP2LeftWrap
           let CSLWC_characterIndex = NoCharacter
+          let temp1 = CSLWC_characterIndex
+          return
+
+CSLWrapPlayer0Left
+          let CSLWC_characterIndex = RandomCharacter
           let temp1 = CSLWC_characterIndex
           return
           
 SelectP2LeftWrap
           dim SP2LW_characterIndex = temp1
           rem P2: Check if NO is available (if Quadtari and P3 or P4 not
-          if !(controllerStatus & SetQuadtariDetected) then let SP2LW_characterIndex = CPUCharacter : let temp1 = SP2LW_characterIndex : return : rem both NO)
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectP2LeftWrapCPU
+          rem both NO)
           if playerChar[2] = NoCharacter then goto CheckP4_LeftWrap : rem Check if P3 or P4 are NOT both NO
           let SP2LW_characterIndex = NoCharacter
+          let temp1 = SP2LW_characterIndex
+          return
+SelectP2LeftWrapCPU
+          let SP2LW_characterIndex = CPUCharacter
           let temp1 = SP2LW_characterIndex
           return
 CheckP4_LeftWrap
@@ -669,18 +681,28 @@ CycleFromRandom
           rem P3/P4: Random → NO
           if CFR_playerNumber = 1 then goto SelectP2LeftFromRandom : rem Check if this is P2 with NO available
           rem P1 or P3/P4: Random left goes to NO (P3/P4) or 15 (P1)
-          if CFR_playerNumber = 0 then let CFR_characterIndex = MaxCharacter : let temp1 = CFR_characterIndex : return
+          if CFR_playerNumber = 0 then goto CycleFromRandomPlayer0
           rem P1 → 15
           let CFR_characterIndex = NoCharacter : rem P3/P4 → NO
+          let temp1 = CFR_characterIndex
+          return
+
+CycleFromRandomPlayer0
+          let CFR_characterIndex = MaxCharacter
           let temp1 = CFR_characterIndex
           return
           
 SelectP2LeftFromRandom
           dim SP2LFR_characterIndex = temp1
           rem P2 left from Random: Check if NO is available
-          if !(controllerStatus & SetQuadtariDetected) then let SP2LFR_characterIndex = MaxCharacter : let temp1 = SP2LFR_characterIndex : return
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectP2LeftFromRandomMax
           if playerChar[2] = NoCharacter then CheckP4_LeftFromRandom : rem Check if P3 or P4 are NOT both NO
           let SP2LFR_characterIndex = NoCharacter
+          let temp1 = SP2LFR_characterIndex
+          return
+
+SelectP2LeftFromRandomMax
+          let SP2LFR_characterIndex = MaxCharacter
           let temp1 = SP2LFR_characterIndex
           return
 CheckP4_LeftFromRandom
@@ -715,18 +737,24 @@ CycleFromNO
           rem P2 with NO available: NO → CPU (left), NO → Random (right)
           rem P3/P4: NO → Random (both directions since NO is start/end)
           rem For left cycle (decrement): P2 goes from NO to CPU
-          if CFNO_playerNumber = 1 then let CFNO_characterIndex = CPUCharacter : let temp1 = CFNO_characterIndex : return
+          if CFNO_playerNumber = 1 then goto CycleFromNOPlayer2
           rem P2 left from NO → CPU
           let CFNO_characterIndex = RandomCharacter : rem P3/P4: NO → Random
+          let temp1 = CFNO_characterIndex
+          return
+
+CycleFromNOPlayer2
+          let CFNO_characterIndex = CPUCharacter
           let temp1 = CFNO_characterIndex
           return
           
 CycleCharacterRight
           dim CCR_characterIndex = temp1
           dim CCR_playerNumber = temp3
-          if CCR_characterIndex = RandomCharacter then CycleRightFromRandom : return : rem Increment character with special value wraparound
-          if CCR_characterIndex = CPUCharacter then CycleRightFromCPU : return
-          if CCR_characterIndex = NoCharacter then CycleRightFromNO : return
+          if CCR_characterIndex = RandomCharacter then goto CycleRightFromRandom
+          rem Increment character with special value wraparound
+          if CCR_characterIndex = CPUCharacter then goto CycleRightFromCPU
+          if CCR_characterIndex = NoCharacter then goto CycleRightFromNO
           
           let CCR_characterIndex = CCR_characterIndex + 1 : rem Normal character (0-15): increment
           if CCR_characterIndex > MaxCharacter then goto CharacterSelectRightWrapCheck : rem Check if we went past 15 (wrap to RandomCharacter)
@@ -742,18 +770,29 @@ CharacterSelectRightWrapCheck
 CycleRightFromRandom
           dim CRFR_characterIndex = temp1
           dim CRFR_playerNumber = temp3
-          if CRFR_playerNumber = 0 then let CRFR_characterIndex = 0 : let temp1 = CRFR_characterIndex : return : rem RandomCharacter(253) goes to special for each player
+          if CRFR_playerNumber = 0 then goto CycleRightFromRandomPlayer0
+          rem RandomCharacter(253) goes to special for each player
           if CRFR_playerNumber = 1 then goto SelectP2RightFromRandom
           let CRFR_characterIndex = NoCharacter
+          let temp1 = CRFR_characterIndex
+          return
+
+CycleRightFromRandomPlayer0
+          let CRFR_characterIndex = 0
           let temp1 = CRFR_characterIndex
           return
           
 SelectP2RightFromRandom
           dim SP2RFR_characterIndex = temp1
           rem P2: Check if NO is available (if Quadtari and P3 or P4 not
-          if !(controllerStatus & SetQuadtariDetected) then let SP2RFR_characterIndex = CPUCharacter : let temp1 = SP2RFR_characterIndex : return : rem both NO)
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectP2RightFromRandomCPU
+          rem both NO)
           if playerChar[2] = NoCharacter then goto CheckP4_RightFromRandom : rem Check if P3 or P4 are NOT both NO
           let SP2RFR_characterIndex = NoCharacter
+          let temp1 = SP2RFR_characterIndex
+          return
+SelectP2RightFromRandomCPU
+          let SP2RFR_characterIndex = CPUCharacter
           let temp1 = SP2RFR_characterIndex
           return
 CheckP4_RightFromRandom
@@ -777,9 +816,13 @@ CycleRightFromCPU
 SelectP2RightFromCPU
           dim SP2RFC_characterIndex = temp1
           rem P2 from CPU: Check if NO is available
-          if !(controllerStatus & SetQuadtariDetected) then let SP2RFC_characterIndex = RandomCharacter : let temp1 = SP2RFC_characterIndex : return
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectP2RightFromCPURandom
           if playerChar[2] = NoCharacter then goto CheckP4_RightFromCPU : rem Check if P3 or P4 are NOT both NO
           let SP2RFC_characterIndex = NoCharacter
+          let temp1 = SP2RFC_characterIndex
+          return
+SelectP2RightFromCPURandom
+          let SP2RFC_characterIndex = RandomCharacter
           let temp1 = SP2RFC_characterIndex
           return
 CheckP4_RightFromCPU
@@ -804,39 +847,37 @@ CycleRightFromNO
           return
           
 SelectDrawScreen
-          rem
-          rem Character Select Drawing Functions
-          rem Clear playfield
-          pf0 = 0 : pf1 = 0 : pf2 = 0 : pf3 = 0 : pf4 = 0 : pf5 = 0
+          rem Character Select drawing (sprites and HUD)
+          rem Playfield layout is static; no runtime register writes
           
           rem Draw Player 1 selection (top left)
           player0x = 56 : player0y = 40
           gosub SelectDrawSprite
-          rem numbers are not shown on character select
+          let temp1 = 0
+          gosub SelectDrawNumber
           
           rem Draw Player 2 selection (top right)
           player1x = 104 : player1y = 40
           gosub SelectDrawSprite
-          rem numbers are not shown on character select
+          let temp1 = 1
+          gosub SelectDrawNumber
           
-          if controllerStatus & SetQuadtariDetected then goto SelectDrawP3 : rem Draw Player 3 selection (bottom left) if Quadtari
-          goto SelectSkipP3
-SelectDrawP3
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectDrawScreenDone
+          
+          rem Draw Player 3 selection (bottom left)
           player0x = 56 : player0y = 80
           gosub SelectDrawSprite
-          rem numbers are not shown on character select
+          let temp1 = 2
+          gosub SelectDrawNumber
           
-          if controllerStatus & SetQuadtariDetected then goto SelectDrawP4 : rem Draw Player 4 selection (bottom right) if Quadtari
-          goto SelectSkipP4
-SelectDrawP4
+          rem Draw Player 4 selection (bottom right)
           player1x = 104 : player1y = 80
           gosub SelectDrawSprite
-SelectSkipP3
-SelectSkipP4
-          rem numbers are not shown on character select
+          let temp1 = 3
+          gosub SelectDrawNumber
           
-          rem Draw locked status indicators
-          goto SelectDrawLocks : rem tail call
+SelectDrawScreenDone
+          return
           
 SelectDrawSprite
           dim SDS_playerNumber = temp3
@@ -953,6 +994,7 @@ SelectLoadSpriteColor
           dim SLSC_isHurt = temp2
           dim SLSC_playerNumber = temp3
           dim SLSC_isFlashing = temp4
+          dim SLSC_lockedState = temp5
           let SLSC_characterIndex = playerChar[SLSC_playerNumberSaved] : rem Now set player color
           let SLSC_isHurt = 0
           let SLSC_playerNumber = SLSC_playerNumberSaved : rem not hurt
@@ -963,173 +1005,141 @@ SelectLoadSpriteColor
           gosub LoadCharacterColors
           
           rem temp3 restored via LoadCharacterColors
+          let temp1 = SLSC_playerNumberSaved
+          gosub GetPlayerLocked bank1
+          let SLSC_lockedState = temp2
+          let temp3 = SLSC_playerNumberSaved
+          if !SLSC_lockedState then goto SelectApplyUnlockedColor
+          if SLSC_lockedState = PlayerLockedHandicap then goto SelectApplyHandicapColor
           
 SelectDrawSpriteDone
           return
+
+SelectApplyUnlockedColor
+          gosub SelectSetPlayerColorUnlocked
+          goto SelectDrawSpriteDone
+
+SelectApplyHandicapColor
+          gosub SelectSetPlayerColorHandicap
+          goto SelectDrawSpriteDone
           
 SelectDrawNumber
+          rem Draw player number indicator (1-4) beneath selection
+          rem Input: temp1 = player index (0-3)
           dim SDN_playerIndex = temp1
-          rem Draw player number indicator below character
-          rem Determine which player based on position (same as
-          rem   SelectDrawSprite logic)
-          if player0x = 56 then goto SelectNumberPlayerP0 : rem Check if we have valid player position
-          if player1x = 104 then goto SelectNumberPlayerP1
-          goto SelectDrawNumberDone : rem No valid position, skip number
+          dim SDN_xPos = temp2
+          dim SDN_yPos = temp3
+          dim SDN_color = temp4
+          dim SDN_spriteSelect = temp5
+          dim SDN_lockedState = temp6
+          let SDN_playerIndex = temp1
           
-SelectNumberPlayerP0
-          dim SNP0_playerIndex = temp1
-          if player0y = 40 then let SNP0_playerIndex = 0 : let temp1 = SNP0_playerIndex : goto NumberPositionCalculate
-          if player0y = 80 then let SNP0_playerIndex = 2 : let temp1 = SNP0_playerIndex : goto NumberPositionCalculate
-          goto SelectDrawNumberDone
+          let temp1 = SDN_playerIndex
+          gosub GetPlayerLocked bank1
+          let SDN_lockedState = temp2
           
-SelectNumberPlayerP1
-          dim SNP1_playerIndex = temp1
-          if player1y = 40 then let SNP1_playerIndex = 1 : let temp1 = SNP1_playerIndex : goto NumberPositionCalculate
-          if player1y = 80 then let SNP1_playerIndex = 3 : let temp1 = SNP1_playerIndex : goto NumberPositionCalculate
-          goto SelectDrawNumberDone
+          let SDN_color = ColGrey(14)
+          if SDN_lockedState = PlayerLockedNormal then goto SDN_SetBrightColor
+          if SDN_lockedState = PlayerLockedHandicap then goto SDN_SetDimColor
+          goto SDN_SelectPosition
           
-NumberPositionCalculate
-          dim NPC_playerIndex = temp1
-          dim NPC_xPos = temp2
-          dim NPC_yPos = temp3
-          dim NPC_color = temp4
-          dim NPC_spriteSelect = temp5
-          dim NPC_digit = temp1
-          rem playerIndex now has player index (0-3)
-          rem Determine X and Y positions and which sprite to use
-          rem P1 (index 0): x=56, y=48, sprite=player0, shows P1
-          rem P2 (index 1): x=104, y=48, sprite=player1, shows P1
-          rem (virtual sprite)
-          rem P3 (index 2): x=56, y=88, sprite=player0, shows P2
-          rem (virtual sprite)
-          rem P4 (index 3): x=104, y=88, sprite=player1, shows P3
-          rem (virtual sprite)
+SDN_SetBrightColor
+          if !SDN_playerIndex then let SDN_color = ColIndigo(14) : goto SDN_SelectPosition
+          if SDN_playerIndex = 1 then let SDN_color = ColRed(14) : goto SDN_SelectPosition
+          if SDN_playerIndex = 2 then let SDN_color = ColYellow(14) : goto SDN_SelectPosition
+          let SDN_color = ColTurquoise(14)
+          goto SDN_SelectPosition
           
-          if !NPC_playerIndex then goto SelectNumberP1
-          if NPC_playerIndex = 1 then goto SelectNumberP2 : rem P1 (0)
-          if NPC_playerIndex = 2 then goto SelectNumberP3 : rem P2 (1)
-          goto SelectNumberP4 : rem P3 (2)
-          rem P4 (3)
+SDN_SetDimColor
+          if !SDN_playerIndex then let SDN_color = ColIndigo(6) : goto SDN_SelectPosition
+          if SDN_playerIndex = 1 then let SDN_color = ColRed(6) : goto SDN_SelectPosition
+          if SDN_playerIndex = 2 then let SDN_color = ColYellow(6) : goto SDN_SelectPosition
+          let SDN_color = ColTurquoise(6)
           
-SelectNumberP1
-          dim SNP1_xPos = temp2
-          dim SNP1_yPos = temp3
-          dim SNP1_spriteSelect = temp5
-          dim SNP1_color = temp4
-          dim SNP1_digit = temp1
-          let SNP1_xPos = 56
-          let SNP1_yPos = 48
-          let SNP1_spriteSelect = 0
-          let SNP1_color = ColIndigo(14)
-          let SNP1_digit = 1
-          let temp1 = SNP1_digit : rem P1: left, top row, player0, indigo
-          let temp2 = SNP1_xPos
-          let temp3 = SNP1_yPos
-          let temp4 = SNP1_color
-          let temp5 = SNP1_spriteSelect
-          goto DrawNumberDigit
+SDN_SelectPosition
+          if !SDN_playerIndex then goto SDN_Player0
+          if SDN_playerIndex = 1 then goto SDN_Player1
+          if SDN_playerIndex = 2 then goto SDN_Player2
+          goto SDN_Player3
           
-SelectNumberP2
-          dim SNP2_xPos = temp2
-          dim SNP2_yPos = temp3
-          dim SNP2_spriteSelect = temp5
-          dim SNP2_color = temp4
-          dim SNP2_digit = temp1
-          let SNP2_xPos = 104
-          let SNP2_yPos = 48
-          let SNP2_spriteSelect = 1
-          let SNP2_color = ColRed(14)
-          let SNP2_digit = 1
-          let temp1 = SNP2_digit : rem P2 (virtual sprite): right, top row, player1, red, shows P1
-          let temp2 = SNP2_xPos
-          let temp3 = SNP2_yPos
-          let temp4 = SNP2_color
-          let temp5 = SNP2_spriteSelect
-          goto DrawNumberDigit
+SDN_Player0
+          let SDN_xPos = 56
+          let SDN_yPos = 48
+          let SDN_spriteSelect = 0
+          let temp1 = 1
+          goto SDN_DrawDigit
           
-SelectNumberP3
-          dim SNP3_xPos = temp2
-          dim SNP3_yPos = temp3
-          dim SNP3_spriteSelect = temp5
-          dim SNP3_color = temp4
-          dim SNP3_digit = temp1
-          let SNP3_xPos = 56
-          let SNP3_yPos = 88
-          let SNP3_spriteSelect = 0
-          let SNP3_color = ColYellow(14)
-          let SNP3_digit = 2
-          let temp1 = SNP3_digit : rem P3 (virtual sprite): left, bottom row, player0, yellow, shows P2
-          let temp2 = SNP3_xPos
-          let temp3 = SNP3_yPos
-          let temp4 = SNP3_color
-          let temp5 = SNP3_spriteSelect
-          goto DrawNumberDigit
+SDN_Player1
+          let SDN_xPos = 104
+          let SDN_yPos = 48
+          let SDN_spriteSelect = 1
+          let temp1 = 2
+          goto SDN_DrawDigit
           
-SelectNumberP4
-          dim SNP4_xPos = temp2
-          dim SNP4_yPos = temp3
-          dim SNP4_spriteSelect = temp5
-          dim SNP4_color = temp4
-          dim SNP4_digit = temp1
-          let SNP4_xPos = 104
-          let SNP4_yPos = 88
-          let SNP4_spriteSelect = 1
-          let SNP4_color = ColGreen(14)
-          let SNP4_digit = 3
-          let temp1 = SNP4_digit : rem P4 (virtual sprite): right, bottom row, player1, green, shows P3
-          let temp2 = SNP4_xPos
-          let temp3 = SNP4_yPos
-          let temp4 = SNP4_color
-          let temp5 = SNP4_spriteSelect
+SDN_Player2
+          let SDN_xPos = 56
+          let SDN_yPos = 88
+          let SDN_spriteSelect = 0
+          let temp1 = 3
+          goto SDN_DrawDigit
           
-DrawNumberDigit
-          dim DND_digit = temp1
-          dim DND_xPos = temp2
-          dim DND_yPos = temp3
-          dim DND_color = temp4
-          dim DND_spriteSelect = temp5
-          rem digit already has player digit (1-4)
-          rem xPos=X, yPos=Y, color=color, spriteSelect=sprite already
-          rem   set
-          rem Call DrawDigit with these parameters (DrawPlayerNumber
-          rem   expects temp1=digit, temp2=X, temp3=Y, temp4=color,
-          rem   temp5=sprite)
-          gosub DrawDigit bank1 : rem DrawDigit is in Bank 1 (FontRendering.bas) with MainLoop and drawscreen
+SDN_Player3
+          let SDN_xPos = 104
+          let SDN_yPos = 88
+          let SDN_spriteSelect = 1
+          let temp1 = 4
           
-SelectDrawNumberDone
+SDN_DrawDigit
+          let temp2 = SDN_xPos
+          let temp3 = SDN_yPos
+          let temp4 = SDN_color
+          let temp5 = SDN_spriteSelect
+          gosub DrawDigit bank1
+          return
+
+SelectSetPlayerColorUnlocked
+          rem Override sprite color to indicate unlocked state (white)
+          rem Input: temp3 = player number (0-3)
+          if !temp3 then goto SelectSetPlayerColorUnlocked0
+          if temp3 = 1 then goto SelectSetPlayerColorUnlocked1
+          if temp3 = 2 then goto SelectSetPlayerColorUnlocked2
+          COLUP3 = ColGrey(14)
+          return
+
+SelectSetPlayerColorUnlocked0
+          COLUP0 = ColGrey(14)
+          return
+
+SelectSetPlayerColorUnlocked1
+          _COLUP1 = ColGrey(14)
+          return
+
+SelectSetPlayerColorUnlocked2
+          COLUP2 = ColGrey(14)
+          return
+
+SelectSetPlayerColorHandicap
+          rem Override sprite color to indicate handicap lock (dim player color)
+          rem Input: temp3 = player number (0-3)
+          if !temp3 then goto SelectSetPlayerColorHandicap0
+          if temp3 = 1 then goto SelectSetPlayerColorHandicap1
+          if temp3 = 2 then goto SelectSetPlayerColorHandicap2
+          COLUP3 = ColTurquoise(6)
+          return
+SelectSetPlayerColorHandicap0
+          COLUP0 = ColIndigo(6)
+          return
+
+SelectSetPlayerColorHandicap1
+          _COLUP1 = ColRed(6)
+          return
+
+SelectSetPlayerColorHandicap2
+          COLUP2 = ColYellow(6)
           return
           
 SelectDrawLocks
-          let temp1 = 0 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectDrawP0Border : rem Draw locked status borders using playfield
-          goto SelectSkipP0Border
-SelectDrawP0Border
-          pf0 = pf0 | %10000000
-          pf1 = pf1 | %00000001
-SelectSkipP0Border
-          
-          let temp1 = 1 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectDrawP1Border
-          goto SelectSkipP1Border
-SelectDrawP1Border
-          pf0 = pf0 | %00001000
-          pf1 = pf1 | %00010000
-SelectSkipP1Border
-          
-          if controllerStatus & SetQuadtariDetected then goto SelectCheckP2Lock
-          goto SelectSkipCheckP2Lock
-SelectCheckP2Lock
-          let temp1 = 2 : gosub GetPlayerLocked bank1 : if temp2 then SelectDrawP2Border
-          let temp1 = 3 : gosub GetPlayerLocked bank1 : if temp2 then SelectDrawP3Border
-SelectSkipCheckP2Lock
-          return
-          
-SelectDrawP2Border
-          pf0 = pf0 | %10000000
-          pf1 = pf1 | %00000001
-          return
-          
-SelectDrawP3Border
-          pf0 = pf0 | %00001000
-          pf1 = pf1 | %00010000
+          rem Legacy playfield borders removed; no runtime playfield writes
           return
           
           rem

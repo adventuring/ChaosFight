@@ -26,18 +26,23 @@ UpdateCharacterParade
           rem Update parade state (called every frame)
           rem Manages the animated character parade that runs across the
           rem bottom of the title screen
+          rem
           rem Input: titleParadeTimer (global) = frame counter
           rem        titleParadeActive (global) = parade active flag
           rem        TitleParadeDelayFrames (constant) = delay before
           rem        parade starts
+          rem
           rem Output: titleParadeTimer incremented, parade state updated
+          rem
           rem Mutates: titleParadeTimer (incremented), titleParadeActive
           rem (set via StartNewParadeCharacter),
           rem         titleParadeChar, titleParadeX (set via
           rem         StartNewParadeCharacter, MoveParadeCharacter)
+          rem
           rem Called Routines: StartNewParadeCharacter - accesses rand,
           rem MaxCharacter,
           rem   MoveParadeCharacter - accesses titleParadeX
+          rem
           rem Constraints: Must be colocated with
           rem StartNewParadeCharacter, MoveParadeCharacter,
           rem              ParadeCharacterLeft (all called via goto)
@@ -54,13 +59,17 @@ UpdateCharacterParade
           
 StartNewParadeCharacter
           rem Start new character parade
+          rem
           rem Input: rand (global) = random number generator,
           rem MaxCharacter (constant) = maximum character index
+          rem
           rem Output: titleParadeChar set to random character,
           rem titleParadeX set to 246, titleParadeActive set to 1
+          rem
           rem Mutates: titleParadeChar (set to random 0-MaxCharacter),
           rem titleParadeX (set to 246),
           rem         titleParadeActive (set to 1)
+          rem
           rem Called Routines: None
           let titleParadeChar = rand & MaxCharacter : rem Constraints: Must be colocated with UpdateCharacterParade
           let titleParadeX = 246 : rem Random character 0-MaxCharacter
@@ -69,10 +78,14 @@ StartNewParadeCharacter
           
 MoveParadeCharacter
           rem Move character across screen
+          rem
           rem Input: titleParadeX (global) = current X position
+          rem
           rem Output: titleParadeX incremented by 2, dispatches to
           rem ParadeCharacterLeft if off-screen
+          rem
           rem Mutates: titleParadeX (incremented by 2)
+          rem
           rem Called Routines: None (dispatcher only)
           let titleParadeX = titleParadeX + 2 : rem Constraints: Must be colocated with UpdateCharacterParade, ParadeCharacterLeft
           rem Move 2 pixels per frame
@@ -82,18 +95,23 @@ MoveParadeCharacter
           
 ParadeCharacterLeft
           rem Character has left - wait 1 second (60 frames) before next
+          rem
           rem Input: titleParadeTimer, titleParadeActive (from
           rem UpdateCharacterParade)
+          rem
           rem Output: titleParadeActive set to 0, titleParadeTimer
           rem decremented by 60
+          rem
           rem Mutates: titleParadeActive (set to 0), titleParadeTimer
           rem (decremented by 60)
+          rem
           rem Called Routines: None
           let titleParadeActive = 0 : rem Constraints: Must be colocated with UpdateCharacterParade
           let titleParadeTimer = titleParadeTimer - 60 
           rem Reset timer for next character
           return
 
+DrawParadeCharacter
           rem
           rem Draw Parade Character
           rem Renders the current parade character at bottom of screen
@@ -103,20 +121,24 @@ ParadeCharacterLeft
           rem USES:
           rem   player0x, player0y - Sprite position
           rem   COLUP0 - Sprite color
-DrawParadeCharacter
           rem Renders the current parade character at bottom of screen
+          rem
           rem Input: titleParadeX (global) = X position of parade
           rem character
           rem        controllerStatus (global) = controller detection
           rem        state
           rem        rand (global) = random number generator
+          rem
           rem Output: player0x, player0y set, COLUP0 set, sprite drawn
           rem via DrawParadeCharacterSprite
+          rem
           rem Mutates: player0x, player0y (TIA registers), COLUP0 (TIA
           rem color register),
           rem         temp1 (used for random color selection)
+          rem
           rem Called Routines: DrawParadeCharacterSprite (bank9) - draws
           rem character sprite
+          rem
           rem Constraints: Must be colocated with
           rem SetParadeColor4PlayerInline,
           rem              SetParadeColor4PlayerLastInline (all called
@@ -140,14 +162,19 @@ DrawParadeCharacter
           
 SetParadeColor4PlayerInline
           rem 4-player mode: Randomly choose from all 4 player colors
+          rem
           rem Input: rand (global) = random number generator
+          rem
           rem Output: COLUP0 set to random player color, dispatches to
           rem SetParadeColor4PlayerLastInline or
           rem DrawParadeCharacterSprite
+          rem
           rem Mutates: temp1 (random color selection), COLUP0 (TIA color
           rem register)
+          rem
           rem Called Routines: None (dispatcher only, tail call to
           rem DrawParadeCharacterSprite)
+          rem
           rem Constraints: Must be colocated with DrawParadeCharacter,
           rem SetParadeColor4PlayerLastInline
           temp1 = rand & 3
@@ -161,11 +188,16 @@ SetParadeColor4PlayerInline
 SetParadeColor4PlayerLastInline
           rem Set Player 4 color (Turquoise/Green depending on TV
           rem standard)
+          rem
           rem Input: None (called from SetParadeColor4PlayerInline)
+          rem
           rem Output: COLUP0 set to Player 4 color
+          rem
           rem Mutates: COLUP0 (TIA color register)
+          rem
           rem Called Routines: None (tail call to
           rem DrawParadeCharacterSprite)
+          rem
           rem Constraints: Must be colocated with DrawParadeCharacter,
           rem SetParadeColor4PlayerInline
 #ifdef TV_SECAM
@@ -187,16 +219,22 @@ DrawParadeCharacterSprite
           rem Draw Parade Character Sprite
           rem Renders running animation sprite with alternating leg
           rem   positions
+          rem
           rem INPUT: titleParadeTimer (for animation frame selection)
           rem USES: player0 sprite data
           rem Renders running animation sprite with alternating leg
           rem positions
+          rem
           rem Input: titleParadeTimer (global) = frame counter (for
           rem animation frame selection)
+          rem
           rem Output: player0 sprite data set to running animation frame
+          rem
           rem Mutates: player0 sprite data (set via inline sprite
           rem definition)
+          rem
           rem Called Routines: None (uses inline sprite data)
+          rem
           rem Constraints: Must be colocated with DrawParadeFrame1
           rem (called via goto)
           rem              Called from DrawParadeCharacter (bank9)
@@ -217,11 +255,16 @@ end
 DrawParadeFrame1
                     player0:
           rem Frame 1 - left leg forward
+          rem
           rem Input: None (called from DrawParadeCharacterSprite)
+          rem
           rem Output: player0 sprite data set to frame 1
+          rem
           rem Mutates: player0 sprite data (set via inline sprite
           rem definition)
+          rem
           rem Called Routines: None (uses inline sprite data)
+          rem
           rem Constraints: Must be colocated with
           rem DrawParadeCharacterSprite
                     %00011000

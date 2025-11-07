@@ -34,21 +34,27 @@ end
 UpdatePlayer1HealthBar
           rem
           rem UPDATE PLAYER 1 HEALTH BAR
+          rem
           rem Input: temp1 = health value (0-100)
+          rem
           rem Output: pfscore1 = health bar pattern (8 pixels, bit
           rem   pattern)
           rem Uses simple comparisons against threshold table, looks up
           rem   bit pattern
           rem Update Player 1 health bar using pfscore1
+          rem
           rem Input: temp1 = health value (0-100)
           rem        PlayerHealthMax (constant) = maximum health value
           rem        HealthBarPatterns (ROM constant, bank8) = bit
           rem        pattern table
+          rem
           rem Output: pfscore1 set to health bar pattern (8 pixels, bit
           rem pattern)
+          rem
           rem Mutates: temp1 (clamped to PlayerHealthMax), temp2
           rem (pattern index), temp3 (pattern value),
           rem         pfscore1 (TIA register)
+          rem
           rem Called Routines: None (reads ROM data table)
           dim UP1HB_health = temp1 : rem Constraints: Must be colocated with P1SetPattern (called via goto)
           dim UP1HB_patternIndex = temp2
@@ -75,11 +81,16 @@ UpdatePlayer1HealthBar
           
 P1SetPattern
           rem Look up bit pattern from table and set pfscore1
+          rem
           rem Input: UP1HB_patternIndex (from UpdatePlayer1HealthBar),
           rem HealthBarPatterns (ROM constant, bank8)
+          rem
           rem Output: pfscore1 set to health bar pattern
+          rem
           rem Mutates: temp3 (pattern value), pfscore1 (TIA register)
+          rem
           rem Called Routines: None (reads ROM data table)
+          rem
           rem Constraints: Must be colocated with UpdatePlayer1HealthBar
           rem Look up bit pattern from table using patternIndex as index
           rem Note: HealthBarPatterns is in same bank (Bank 8) as this
@@ -93,21 +104,27 @@ P1SetPattern
 UpdatePlayer2HealthBar
           rem
           rem UPDATE PLAYER 2 HEALTH BAR
+          rem
           rem Input: temp1 = health value (0-100)
+          rem
           rem Output: pfscore2 = health bar pattern (8 pixels, bit
           rem   pattern)
           rem Uses simple comparisons against threshold table, looks up
           rem   bit pattern
           rem Update Player 2 health bar using pfscore2
+          rem
           rem Input: temp1 = health value (0-100)
           rem        PlayerHealthMax (constant) = maximum health value
           rem        HealthBarPatterns (ROM constant, bank8) = bit
           rem        pattern table
+          rem
           rem Output: pfscore2 set to health bar pattern (8 pixels, bit
           rem pattern)
+          rem
           rem Mutates: temp1 (clamped to PlayerHealthMax), temp2
           rem (pattern index), temp3 (pattern value),
           rem         pfscore2 (TIA register)
+          rem
           rem Called Routines: None (reads ROM data table)
           dim UP2HB_health = temp1 : rem Constraints: Must be colocated with P2SetPattern (called via goto)
           dim UP2HB_patternIndex = temp2
@@ -134,11 +151,16 @@ UpdatePlayer2HealthBar
           
 P2SetPattern
           rem Look up bit pattern from table and set pfscore2
+          rem
           rem Input: UP2HB_patternIndex (from UpdatePlayer2HealthBar),
           rem HealthBarPatterns (ROM constant, bank8)
+          rem
           rem Output: pfscore2 set to health bar pattern
+          rem
           rem Mutates: temp3 (pattern value), pfscore2 (TIA register)
+          rem
           rem Called Routines: None (reads ROM data table)
+          rem
           rem Constraints: Must be colocated with UpdatePlayer2HealthBar
           rem Look up bit pattern from table using patternIndex as index
           rem Note: HealthBarPatterns is in same bank (Bank 8) as this
@@ -151,15 +173,20 @@ P2SetPattern
           
 UpdatePlayer12HealthBars
           rem Update both P1 and P2 health bars
+          rem
           rem Input: playerHealth[0] and playerHealth[1] arrays
           rem Update both Player 1 and Player 2 health bars
+          rem
           rem Input: playerHealth[] (global array) = player health
           rem values
+          rem
           rem Output: pfscore1, pfscore2 updated
+          rem
           rem Mutates: temp1 (passed to
           rem UpdatePlayer1HealthBar/UpdatePlayer2HealthBar),
           rem         pfscore1, pfscore2 (TIA registers, via
           rem         UpdatePlayer1HealthBar/UpdatePlayer2HealthBar)
+          rem
           rem Called Routines: UpdatePlayer1HealthBar - accesses temp1,
           rem HealthBarPatterns,
           rem   UpdatePlayer2HealthBar - accesses temp1,
@@ -174,15 +201,19 @@ UpdatePlayer12HealthBars
           goto UpdatePlayer2HealthBar : rem tail call
           
           
-          rem Initialize health bars at game start
 InitializeHealthBars
+          rem Initialize health bars at game start
           rem Initialize health bars at game start - set to full (100%)
+          rem
           rem Input: PlayerHealthMax (constant) = maximum health value
+          rem
           rem Output: pfscore1, pfscore2 set to full health pattern
+          rem
           rem Mutates: temp1 (passed to
           rem UpdatePlayer1HealthBar/UpdatePlayer2HealthBar),
           rem         pfscore1, pfscore2 (TIA registers, via
           rem         UpdatePlayer1HealthBar/UpdatePlayer2HealthBar)
+          rem
           rem Called Routines: UpdatePlayer1HealthBar - accesses temp1,
           rem HealthBarPatterns,
           rem   UpdatePlayer2HealthBar - accesses temp1,

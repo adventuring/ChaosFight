@@ -24,11 +24,15 @@ GameMainLoop
           rem   qtcontroller - Quadtari multiplexing state
           rem   All Player arrays (X, Y, State, Health, etc.)
           rem Main gameplay loop that orchestrates all game systems
+          rem
           rem Input: All player state arrays, controller inputs, system
           rem flags
+          rem
           rem Output: All game systems updated for one frame
+          rem
           rem Mutates: All game state (players, missiles, animations,
           rem physics, etc.), frame counter
+          rem
           rem Called Routines: ReadEnhancedButtons,
           rem HandleConsoleSwitches (bank14),
           rem   InputHandleAllPlayers (bank13), UpdateGuardTimers,
@@ -47,6 +51,7 @@ GameMainLoop
           rem   DisplayHealth (bank8), UpdatePlayer12HealthBars (bank8),
           rem   UpdatePlayer34HealthBars (bank8), UpdateSoundEffect
           rem   (bank15)
+          rem
           rem Constraints: Must be colocated with
           rem GameMainLoopQuadtariSkip, CheckGameEndTransition,
           rem              TransitionToWinner, GameEndCheckDone (all
@@ -84,10 +89,15 @@ GameMainLoop
           next
 GameMainLoopQuadtariSkip
           rem Skip 4-player collision checks (not in 4-player mode)
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with GameMainLoop
 
           gosub CheckAllPlayerCollisions bank9 : rem Check multi-player collisions (in Bank 9)
@@ -104,13 +114,18 @@ GameMainLoopQuadtariSkip
           goto GameEndCheckDone
 CheckGameEndTransition
           rem Check if game end timer should transition to winner screen
+          rem
           rem Input: gameEndTimer (global) = game end countdown timer
           rem        systemFlags (global) = system flags including
           rem        ending state
+          rem
           rem Output: Dispatches to TransitionToWinner or
           rem GameEndCheckDone
+          rem
           rem Mutates: gameEndTimer (decremented)
+          rem
           rem Called Routines: None (dispatcher only)
+          rem
           rem Constraints: Must be colocated with GameMainLoop,
           rem TransitionToWinner, GameEndCheckDone
           if gameEndTimer > 0 then let gameEndTimer = gameEndTimer - 1 : rem Decrement game end timer
@@ -118,9 +133,13 @@ CheckGameEndTransition
           goto GameEndCheckDone
 TransitionToWinner
           rem Transition to winner announcement mode
+          rem
           rem Input: None (called from CheckGameEndTransition)
+          rem
           rem Output: gameMode set to ModeWinner, ChangeGameMode called
+          rem
           rem Mutates: gameMode (global)
+          rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
           let gameMode = ModeWinner : rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
@@ -128,10 +147,15 @@ TransitionToWinner
           return
 GameEndCheckDone
           rem Game end check complete
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with GameMainLoop
 
           gosub UpdateAllMissiles bank7 : rem Update missiles (in Bank 7)

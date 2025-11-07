@@ -20,6 +20,7 @@ CheckBoundaryCollisions
           rem Prevents players from moving off-screen.
           rem Prevents players from moving off-screen (horizontal
           rem wrap-around, vertical clamping)
+          rem
           rem Input: playerX[], playerY[] (global arrays) = player
           rem positions, playerSubpixelX[], playerSubpixelY[],
           rem playerSubpixelXL[], playerSubpixelYL[] (global arrays) =
@@ -30,9 +31,11 @@ CheckBoundaryCollisions
           rem selectedArena_R (global SCRAM) = selected arena, frame
           rem (global) = frame counter, RandomArena (global constant) =
           rem random arena constant
+          rem
           rem Output: Players clamped to screen boundaries, horizontal
           rem wrap-around applied, vertical velocity zeroed at
           rem boundaries
+          rem
           rem Mutates: temp1-temp3 (used for calculations), playerX[],
           rem playerY[] (global arrays) = player positions
           rem (wrapped/clamped), playerSubpixelX[], playerSubpixelY[],
@@ -40,7 +43,9 @@ CheckBoundaryCollisions
           rem subpixel positions (set to clamped values),
           rem playerVelocityY[], playerVelocityYL[] (global arrays) =
           rem vertical velocity (zeroed at boundaries)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: All arenas support horizontal wrap-around (X
           rem < 10 wraps to 150, X > 150 wraps to 10). Vertical
           rem boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped
@@ -98,6 +103,7 @@ CheckPlayfieldCollisionAllDirections
           rem   boundary issues with local labels
           rem Checks for playfield pixel collisions in all four
           rem directions and blocks movement by zeroing velocity
+          rem
           rem Input: currentPlayer (global) = player index (0-3),
           rem playerX[], playerY[] (global arrays) = player positions,
           rem playerChar[] (global array) = character types,
@@ -108,8 +114,10 @@ CheckPlayfieldCollisionAllDirections
           rem CharacterHeights[] (global data table) = character
           rem heights, ScreenInsetX, pfrowheight, pfrows (global
           rem constants) = screen/playfield constants
+          rem
           rem Output: Player velocities zeroed when collisions detected
           rem in any direction
+          rem
           rem Mutates: temp2-temp6 (used for calculations),
           rem playfieldRow, playfieldColumn, rowCounter (global) =
           rem calculation temporaries, playerVelocityX[],
@@ -118,7 +126,9 @@ CheckPlayfieldCollisionAllDirections
           rem playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[],
           rem playerSubpixelYL[] (global arrays) = subpixel positions
           rem (zeroed on collision)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Checks collisions at head, middle, and feet
           rem positions. Uses CharacterHeights table for proper hitbox
           rem detection. Inline division by pfrowheight (8 or 16) using
@@ -255,9 +265,9 @@ end
           if playerX[currentPlayer] < rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] < rowYPosition then let playerSubpixelXL[currentPlayer] = 0
           
+PFCheckRight
           rem
           rem Check Right Collision
-PFCheckRight
           rem Check if player right edge has a playfield pixel
           rem Player width is 16 pixels (double-width NUSIZ), so right
           rem   edge is at temp6 + 4 columns (16px / 4px per column = 4)
@@ -338,9 +348,9 @@ end
           if playerX[currentPlayer] > rowYPosition then let playerSubpixelX[currentPlayer] = rowYPosition
           if playerX[currentPlayer] > rowYPosition then let playerSubpixelXL[currentPlayer] = 0
           
+PFCheckUp
           rem
           rem Check Up Collision
-PFCheckUp
           if playfieldRow = 0 then goto PFCheckDown : rem Check if player head has a playfield pixel above
           rem At top of screen, skip check
           
@@ -393,9 +403,9 @@ DBPF_MultiplyDone
           if playerY[currentPlayer] < rowYPosition then let playerSubpixelY[currentPlayer] = rowYPosition
           if playerY[currentPlayer] < rowYPosition then let playerSubpixelYL[currentPlayer] = 0
           
+PFCheckDown
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity,
           rem   but verify)
-PFCheckDown
           rem Check if player feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we
           let temp2 = temp5 : rem   verify here
@@ -442,6 +452,7 @@ PFBlockDown
 PFCheckDone
           return
 
+CheckAllPlayerCollisions
           rem
           rem Check Multi-player Collisions
           rem Checks collisions between players (for pushing, not
@@ -450,9 +461,9 @@ PFCheckDone
           rem   push lighter ones.
           rem Applies impulses to velocity instead of directly modifying
           rem   position.
-CheckAllPlayerCollisions
           rem Checks all player-to-player collisions and applies
           rem momentum transfer based on weight
+          rem
           rem Input: playerX[], playerY[] (global arrays) = player
           rem positions, playerChar[] (global array) = character types,
           rem playerHealth[] (global array) = player health,
@@ -463,15 +474,19 @@ CheckAllPlayerCollisions
           rem (global data tables) = character properties,
           rem PlayerCollisionDistance (global constant) = collision
           rem distance threshold
+          rem
           rem Output: Player velocities adjusted based on weight-based
           rem momentum transfer when collisions detected
+          rem
           rem Mutates: temp1-temp6 (used for calculations),
           rem characterHeight, halfHeight1, halfHeight2, totalHeight,
           rem characterWeight, totalWeight, weightDifference,
           rem impulseStrength, yDistance (global) = calculation
           rem temporaries, playerVelocityX[] (global array) = player X
           rem velocities (adjusted for separation)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Only checks pairs (i, j) where i < j to avoid
           rem duplicate checks. Skips eliminated players (health = 0).
           rem Players 3/4 only checked if Quadtari detected and

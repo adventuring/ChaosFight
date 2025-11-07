@@ -8,6 +8,7 @@ UpdateCharacterAnimations
           rem Update character animations for all players
           rem Called every frame to manage 10fps animation timing
           rem Update character animations for all players (10fps timing)
+          rem
           rem Input: controllerStatus (global) = controller detection
           rem state
           rem        currentPlayer (global) = player index (set inline)
@@ -19,17 +20,21 @@ UpdateCharacterAnimations
           rem        animation sequences
           rem        playersEliminated_R (global SCRAM) = eliminated
           rem        players bitmask
+          rem
           rem Output: animationCounter_W[] updated,
           rem currentAnimationFrame_W[] updated,
           rem         player sprites updated via UpdatePlayerAnimation
+          rem
           rem Mutates: currentPlayer (set to 0-3), animationCounter_W[],
           rem currentAnimationFrame_W[],
           rem         player sprite pointers (via UpdatePlayerAnimation)
+          rem
           rem Called Routines: UpdatePlayerAnimation - accesses
           rem currentPlayer, animationCounter_R/W,
           rem   currentAnimationFrame_R/W, currentAnimationSeq,
           rem   playersEliminated_R,
           rem   LoadPlayerSprite (bank10)
+          rem
           rem Constraints: Must be colocated with
           rem AnimationUpdatePlayer3, AnimationSkipPlayer3 (called via
           rem goto)
@@ -44,16 +49,21 @@ UpdateCharacterAnimations
           goto AnimationSkipPlayer3
 AnimationUpdatePlayer3
           rem Update Player 3 and 4 animations (4-player mode only)
+          rem
           rem Input: currentPlayer (global) = player index (set inline)
+          rem
           rem Output: Player 3 and 4 animations updated
+          rem
           rem Mutates: currentPlayer (set to 2, then 3),
           rem animationCounter_W[], currentAnimationFrame_W[],
           rem         player sprite pointers (via UpdatePlayerAnimation)
+          rem
           rem Called Routines: UpdatePlayerAnimation - accesses
           rem currentPlayer, animationCounter_R/W,
           rem   currentAnimationFrame_R/W, currentAnimationSeq,
           rem   playersEliminated_R,
           rem   LoadPlayerSprite (bank10)
+          rem
           rem Constraints: Must be colocated with
           rem UpdateCharacterAnimations, AnimationSkipPlayer3
           let currentPlayer = 2  : rem Player index (0-3)
@@ -61,32 +71,41 @@ AnimationUpdatePlayer3
           rem Player 3
           let currentPlayer = 3  : rem Player index (0-3)
           gosub UpdatePlayerAnimation
-          rem Player 4
 AnimationSkipPlayer3
+          rem Player 4
           return
+UpdatePlayerAnimation
           rem Skip Player 3/4 animations (2-player mode only, label
           rem only)
-UpdatePlayerAnimation
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with
           rem UpdateCharacterAnimations
           rem Update animation for a specific player
           rem Uses per-sprite 10fps counter (animationCounter), NOT
           rem   global frame counter
+          rem
           rem INPUT: currentPlayer = player index (0-3)
           rem animationCounter[currentPlayer] = current frame timer
           rem   (per-sprite 10fps counter)
           rem currentAnimationSeq[currentPlayer] = current animation
           rem   action/sequence (0-15)
+          rem
           rem OUTPUT: None
+          rem
           rem EFFECTS: Increments per-sprite animation counter, advances
           rem   animation frame when counter reaches threshold,
           rem updates sprite graphics via LoadPlayerSprite, handles
           rem   frame 7 transition logic
           rem Update animation for a specific player (10fps timing)
+          rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        animationCounter_R[] (global SCRAM array) =
           rem        per-sprite animation counters
@@ -101,18 +120,22 @@ UpdatePlayerAnimation
           rem        animation step
           rem        FramesPerSequence (constant) = frames per animation
           rem        sequence
+          rem
           rem Output: animationCounter_W[] updated,
           rem currentAnimationFrame_W[] updated,
           rem         player sprite updated via UpdateSprite
+          rem
           rem Mutates: animationCounter_W[] (incremented, reset to 0
           rem when threshold reached),
           rem         currentAnimationFrame_W[] (incremented, reset to 0
           rem         when sequence complete),
           rem         temp4 (used for calculations), player sprite
           rem         pointers (via UpdateSprite)
+          rem
           rem Called Routines: HandleAnimationTransition - handles frame
           rem 7 completion,
           rem   UpdateSprite - loads player sprite
+          rem
           rem Constraints: Must be colocated with AdvanceFrame,
           rem DoneAdvance, HandleFrame7Transition,
           rem              UpdateSprite (all called via goto)
@@ -132,18 +155,23 @@ UpdatePlayerAnimation
           goto DoneAdvance
 AdvanceFrame
           rem Advance animation frame (counter reached threshold)
+          rem
           rem Input: currentPlayer (global), currentAnimationFrame_R[]
           rem (from UpdatePlayerAnimation)
+          rem
           rem Output: animationCounter_W[] reset to 0,
           rem currentAnimationFrame_W[] incremented,
           rem         dispatches to HandleFrame7Transition or
           rem         UpdateSprite
+          rem
           rem Mutates: animationCounter_W[] (reset to 0),
           rem currentAnimationFrame_W[] (incremented),
           rem         temp4 (used for frame read)
+          rem
           rem Called Routines: HandleAnimationTransition - handles frame
           rem 7 completion,
           rem   UpdateSprite - loads player sprite
+          rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
           rem DoneAdvance, HandleFrame7Transition,
           let animationCounter_W[currentPlayer] = 0 : rem              UpdateSprite
@@ -164,23 +192,31 @@ AdvanceFrame
           goto UpdateSprite
 DoneAdvance
           return
+AdvanceAnimationFrame
           rem Animation counter not at threshold (label only, no
           rem execution)
-AdvanceAnimationFrame
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation
           rem Advance to next frame in current animation action
           rem Frame counter is per-sprite 10fps counter, NOT global
           rem   frame counter
+          rem
           rem INPUT: currentPlayer = player index (0-3)
           rem currentAnimationSeq[currentPlayer] = current animation
           rem   action/sequence (0-15)
           rem currentAnimationFrame[currentPlayer] = current frame
           rem   within sequence (0-7)
+          rem
           rem OUTPUT: None
+          rem
           rem EFFECTS: Increments currentAnimationFrame[currentPlayer],
           rem   checks for frame 7 completion,
           rem triggers HandleAnimationTransition when 8 frames completed
@@ -200,14 +236,19 @@ AdvanceAnimationFrame
           
 HandleFrame7Transition
           rem Frame 7 completed, handle action-specific transitions
+          rem
           rem Input: currentPlayer (global) = player index (from
           rem UpdatePlayerAnimation/AdvanceAnimationFrame)
+          rem
           rem Output: Animation transition handled, dispatches to
           rem UpdateSprite
+          rem
           rem Mutates: Animation state (via HandleAnimationTransition)
+          rem
           rem Called Routines: HandleAnimationTransition - handles
           rem animation state transitions,
           rem   UpdateSprite - loads player sprite
+          rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
           rem AdvanceAnimationFrame, UpdateSprite
           gosub HandleAnimationTransition
@@ -216,17 +257,22 @@ HandleFrame7Transition
 UpdateSprite
           rem Update character sprite with current animation frame and
           rem action
+          rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        currentAnimationFrame_R[] (global SCRAM array) =
           rem        current animation frames
           rem        currentAnimationSeq[] (global array) = current
           rem        animation sequences
+          rem
           rem Output: Player sprite loaded with current animation frame
           rem and action
+          rem
           rem Mutates: temp2, temp3, temp4 (passed to LoadPlayerSprite),
           rem player sprite pointers (via LoadPlayerSprite)
+          rem
           rem Called Routines: LoadPlayerSprite (bank10) - loads
           rem character sprite graphics
+          rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
           rem AdvanceAnimationFrame, HandleFrame7Transition
           dim US_animationFrame = temp2
@@ -235,13 +281,16 @@ UpdateSprite
           const US_SEPARATOR = 0
           rem Update character sprite with current animation frame and
           rem   action
+          rem
           rem INPUT: currentPlayer = player index (0-3) (uses global
           rem   variable)
           rem currentAnimationFrame[currentPlayer] = current frame
           rem   within sequence (0-7)
           rem currentAnimationSeq[currentPlayer] = current animation
           rem   action/sequence (0-15)
+          rem
           rem OUTPUT: None
+          rem
           rem EFFECTS: Loads sprite graphics for current player with
           rem   current animation frame and action sequence
           rem Frame is from this sprite 10fps counter
@@ -257,27 +306,34 @@ UpdateSprite
 
 SetPlayerAnimation
           rem Set animation action for a player
+          rem
           rem INPUT: currentPlayer = player index (0-3), temp2 =
           rem   animation action (0-15)
+          rem
           rem OUTPUT: None
+          rem
           rem EFFECTS: Sets new animation sequence, resets animation
           rem   frame to 0, resets animation counter,
           rem immediately updates sprite graphics to show first frame of
           rem   new animation
           rem Set animation action for a player
+          rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        temp2 = animation action (0-15)
           rem        AnimationSequenceCount (constant) = maximum
           rem        animation sequence count
+          rem
           rem Output: currentAnimationSeq[] updated,
           rem currentAnimationFrame_W[] reset to 0,
           rem         animationCounter_W[] reset to 0, player sprite
           rem         updated
+          rem
           rem Mutates: currentAnimationSeq[] (set to new action),
           rem currentAnimationFrame_W[] (reset to 0),
           rem         animationCounter_W[] (reset to 0), temp2, temp3,
           rem         temp4 (passed to LoadPlayerSprite),
           rem         player sprite pointers (via LoadPlayerSprite)
+          rem
           rem Called Routines: LoadPlayerSprite (bank10) - loads
           rem character sprite graphics
           dim SPA_animationAction = temp2 : rem Constraints: None
@@ -308,15 +364,22 @@ SetPlayerAnimation
 
 GetCurrentAnimationFrame
           rem Get current animation frame for a player
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: temp2 = current animation frame (0-7)
+          rem
           rem EFFECTS: None (read-only query)
           rem Get current animation frame for a player (read-only query)
+          rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        currentAnimationFrame_R[] (global SCRAM array) =
           rem        current animation frames
+          rem
           rem Output: temp2 = current animation frame (0-7)
+          rem
           rem Mutates: temp2 (set to current frame)
+          rem
           rem Called Routines: None
           dim GCAF_currentFrame = temp2 : rem Constraints: None
           let GCAF_currentFrame = currentAnimationFrame_R[currentPlayer] : rem SCRAM read: Read from r081
@@ -325,9 +388,11 @@ GetCurrentAnimationFrame
 
 GetCurrentAnimationAction
           rem Get current animation action for a player
+          rem
           rem INPUT: currentPlayer = player index (0-3)
           rem currentAnimationSeq[currentPlayer] = current action (read
           rem   from array)
+          rem
           rem OUTPUT: temp2 = current animation action (0-15)
           dim GCAA_currentAction = temp2 : rem EFFECTS: None (read-only query)
           let GCAA_currentAction = currentAnimationSeq[currentPlayer]
@@ -337,8 +402,11 @@ GetCurrentAnimationAction
 InitializeAnimationSystem
           rem Initialize animation system for all players
           rem Called at game start to set up initial animation states
+          rem
           rem INPUT: None
+          rem
           rem OUTPUT: None
+          rem
           rem EFFECTS: Sets all players (0-3) to idle animation state
           dim IAS_animationAction = temp2 : rem (ActionIdle)
           let currentPlayer = 0 : rem Initialize all players to idle animation
@@ -359,7 +427,9 @@ SetWalkingAnimation
           rem
           rem Animation Sequence Management
           rem Set walking animation for a player
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: None
           dim SWA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionWalking state
           let SWA_animationAction = ActionWalking
@@ -368,7 +438,9 @@ SetWalkingAnimation
 
 SetIdleAnimation
           rem Set idle animation for a player
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: None
           dim SIA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionIdle state
           let SIA_animationAction = ActionIdle
@@ -377,8 +449,11 @@ SetIdleAnimation
 
 SetAttackAnimation
           rem Set attack animation for a player
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: None
+          rem
           rem EFFECTS: Changes player animation to ActionAttackWindup
           dim SAA_animationAction = temp2 : rem state
           let SAA_animationAction = ActionAttackWindup
@@ -387,7 +462,9 @@ SetAttackAnimation
 
 SetHitAnimation
           rem Set hit animation for a player
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: None
           dim SHA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionHit state
           let SHA_animationAction = ActionHit
@@ -396,7 +473,9 @@ SetHitAnimation
 
 SetJumpingAnimation
           rem Set jumping animation for a player
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: None
           dim SJA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionJumping state
           let SJA_animationAction = ActionJumping
@@ -405,7 +484,9 @@ SetJumpingAnimation
 
 SetFallingAnimation
           rem Set falling animation for a player
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: None
           dim SFA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionFalling state
           let SFA_animationAction = ActionFalling
@@ -416,7 +497,9 @@ IsPlayerWalking
           rem
           rem Animation State Queries
           rem Check if player is in walking animation
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: temp2 = 1 if walking, 0 if not
           dim IPW_isWalking = temp2 : rem EFFECTS: None (read-only query)
           let temp2 = 0 : rem Use temp2 directly to avoid batariBASIC alias resolution issues
@@ -425,7 +508,9 @@ IsPlayerWalking
 
 IsPlayerAttacking
           rem Check if player is in attack animation
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: temp2 = 1 if attacking, 0 if not
           dim IPA_isAttacking = temp2 : rem EFFECTS: None (read-only query)
           let IPA_isAttacking = 0
@@ -438,7 +523,9 @@ NotAttacking
 
 IsPlayerHit
           rem Check if player is in hit animation
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: temp2 = 1 if hit, 0 if not
           dim IPH_isHit = temp2 : rem EFFECTS: None (read-only query)
           let IPH_isHit = 0
@@ -448,7 +535,9 @@ IsPlayerHit
 
 IsPlayerJumping
           rem Check if player is in jumping animation
+          rem
           rem INPUT: currentPlayer = player index (0-3)
+          rem
           rem OUTPUT: temp2 = 1 if jumping, 0 if not
           dim IPJ_isJumping = temp2 : rem EFFECTS: None (read-only query)
           let temp2 = 0 : rem Use temp2 directly to avoid batariBASIC alias resolution issues
@@ -464,6 +553,7 @@ HandleAnimationTransition
           rem
           rem Animation Transition Handling
           rem Handle frame 7 completion and transition to next action
+          rem
           rem Input: currentPlayer = player index (0-3)
           rem Uses: currentAnimationSeq[currentPlayer] to determine
           dim HAT_currentAction = temp1 : rem transition

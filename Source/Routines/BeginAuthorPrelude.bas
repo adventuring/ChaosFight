@@ -4,14 +4,19 @@ BeginAuthorPrelude
           rem   only.
 
           rem Setup routine for Author Prelude - sets initial state only
+          rem
           rem Input: None (called from ChangeGameMode)
+          rem
           rem Output: preambleTimer initialized, COLUBK set, music
           rem started, window values set
+          rem
           rem Mutates: preambleTimer (set to 0), COLUBK (TIA register),
           rem temp1 (passed to StartMusic)
+          rem
           rem Called Routines: StartMusic (bank16) - starts Interworldly
           rem music,
           rem   SetAuthorWindowValues (bank12) - sets window values
+          rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModeAuthorPrelude
           rem Initialize Author Prelude mode

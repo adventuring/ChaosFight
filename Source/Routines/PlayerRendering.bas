@@ -33,6 +33,7 @@ SetSpritePositions
           rem   entities.
           rem Updates hardware sprite position registers for all active
           rem entities (players and missiles)
+          rem
           rem Input: playerX[], playerY[] (global arrays) = player
           rem positions, missileX[] (global array) = missile X
           rem positions, missileY_R[] (global SCRAM array) = missile Y
@@ -48,8 +49,10 @@ SetSpritePositions
           rem character state flags, playerState[] (global array) =
           rem player states, missileStretchHeight_R[] (global SCRAM
           rem array) = stretch missile heights
+          rem
           rem Output: All sprite positions set, missile positions set
           rem with frame multiplexing in 4-player mode
+          rem
           rem Mutates: player0x, player0y, player1x, player1y, player2x,
           rem player2y, player3x, player3y (TIA registers) = sprite
           rem positions, missile0x, missile0y, missile1x, missile1y (TIA
@@ -58,10 +61,12 @@ SetSpritePositions
           rem missile1height (TIA registers) = missile heights, NUSIZ0,
           rem NUSIZ1 (TIA registers) = missile size registers,
           rem temp1-temp6 (used for calculations)
+          rem
           rem Called Routines: RenderRoboTitoStretchMissile0 - renders
           rem RoboTito stretch missile for missile0,
           rem RenderRoboTitoStretchMissile1 - renders RoboTito stretch
           rem missile for missile1
+          rem
           rem Constraints: 4-player mode uses frame multiplexing (even
           rem frames = P1/P2, odd frames = P3/P4)
           rem Set player sprite positions
@@ -252,9 +257,9 @@ RenderMissile1P2_2PActive
           missile1height = CharacterMissileHeights[RM2P_characterType]
           return
           
+RenderRoboTitoStretchMissile0
           rem
           rem Render Robotito Stretch Missiles
-RenderRoboTitoStretchMissile0
           rem Helper functions to render RoboTito stretch visual
           rem missiles
           rem Only rendered if player is RoboTito, stretching upward
@@ -262,6 +267,7 @@ RenderRoboTitoStretchMissile0
           
           rem Renders RoboTito stretch visual missile for missile0 (only
           rem if RoboTito, stretching, and no projectile missile)
+          rem
           rem Input: controllerStatus (global) = controller state, frame
           rem (global) = frame counter, playerChar[] (global array) =
           rem character types, characterStateFlags_R[] (global SCRAM
@@ -270,14 +276,18 @@ RenderRoboTitoStretchMissile0
           rem SCRAM array) = stretch missile heights, playerX[],
           rem playerY[] (global arrays) = player positions, CharRoboTito
           rem (global constant) = RoboTito character index
+          rem
           rem Output: missile0 rendered as stretch missile if conditions
           rem met
+          rem
           rem Mutates: temp1-temp4 (used for calculations), missile0x,
           rem missile0y (TIA registers) = missile position,
           rem missile0height (TIA register) = missile height, ENAM0 (TIA
           rem register) = missile enable flag, NUSIZ0 (TIA register) =
           rem missile size
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Only renders if player is RoboTito,
           rem stretching upward (not latched, ActionJumping=10), and
           rem stretch height > 0. Frame multiplexing determines which
@@ -297,8 +307,8 @@ RRTM_CheckPlayer0
 RRTM_CheckRoboTito
           if playerChar[RRTM_playerIndex] = CharRoboTito then RRTM_IsRoboTito : rem Check if player is RoboTito
           return
-          rem Not RoboTito, no stretch missile
 RRTM_IsRoboTito
+          rem Not RoboTito, no stretch missile
           rem Check if stretching upward (not latched, ActionJumping
           if (characterStateFlags_R[RRTM_playerIndex] & 1) then return : rem animation = 10)
           let RRTM_isStretching = playerState[RRTM_playerIndex] : rem Latched to ceiling, no stretch missile
@@ -308,9 +318,9 @@ RRTM_IsRoboTito
           rem Shift right by 4 (divide by 16) to get animation state
           if RRTM_isStretching = 10 then RRTM_IsStretching : rem   (0-15)
           return
+RRTM_IsStretching
           rem Not in stretching animation (ActionJumping = 10), no
           rem   stretch missile
-RRTM_IsStretching
           
           let RRTM_stretchHeight = missileStretchHeight_R[RRTM_playerIndex] : rem Get stretch height and render if > 0
           if RRTM_stretchHeight <= 0 then return
@@ -328,6 +338,7 @@ RRTM_IsStretching
 RenderRoboTitoStretchMissile1
           rem Renders RoboTito stretch visual missile for missile1 (only
           rem if RoboTito, stretching, and no projectile missile)
+          rem
           rem Input: controllerStatus (global) = controller state, frame
           rem (global) = frame counter, playerChar[] (global array) =
           rem character types, characterStateFlags_R[] (global SCRAM
@@ -336,14 +347,18 @@ RenderRoboTitoStretchMissile1
           rem SCRAM array) = stretch missile heights, playerX[],
           rem playerY[] (global arrays) = player positions, CharRoboTito
           rem (global constant) = RoboTito character index
+          rem
           rem Output: missile1 rendered as stretch missile if conditions
           rem met
+          rem
           rem Mutates: temp1-temp4 (used for calculations), missile1x,
           rem missile1y (TIA registers) = missile position,
           rem missile1height (TIA register) = missile height, ENAM1 (TIA
           rem register) = missile enable flag, NUSIZ1 (TIA register) =
           rem missile size
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Only renders if player is RoboTito,
           rem stretching upward (not latched, ActionJumping=10), and
           rem stretch height > 0. Frame multiplexing determines which
@@ -363,8 +378,8 @@ RRTM1_CheckPlayer1
 RRTM1_CheckRoboTito
           if playerChar[RRTM1_playerIndex] = CharRoboTito then RRTM1_IsRoboTito : rem Check if player is RoboTito
           return
-          rem Not RoboTito, no stretch missile
 RRTM1_IsRoboTito
+          rem Not RoboTito, no stretch missile
           rem Check if stretching upward (not latched, ActionJumping
           if (characterStateFlags_R[RRTM1_playerIndex] & 1) then return : rem animation = 10)
           let RRTM1_isStretching = playerState[RRTM1_playerIndex] : rem Latched to ceiling, no stretch missile
@@ -374,9 +389,9 @@ RRTM1_IsRoboTito
           rem Shift right by 4 (divide by 16) to get animation state
           if RRTM1_isStretching = 10 then RRTM1_IsStretching : rem   (0-15)
           return
+RRTM1_IsStretching
           rem Not in stretching animation (ActionJumping = 10), no
           rem   stretch missile
-RRTM1_IsStretching
           
           let RRTM1_stretchHeight = missileStretchHeight_R[RRTM1_playerIndex] : rem Get stretch height and render if > 0
           if RRTM1_stretchHeight <= 0 then return
@@ -391,14 +406,15 @@ RRTM1_IsStretching
           rem 1x size (NUSIZ bits 4-6 = 00)
           return
 
+SetPlayerSprites
           rem
           rem Set Player Sprites
           rem Sets colors and graphics for all player sprites.
           rem Colors change based on hurt state and color/B&W switch.
           rem On 7800, Pause button can override Color/B&W setting.
-SetPlayerSprites
           rem Sets colors and graphics for all player sprites with hurt
           rem state and facing direction handling
+          rem
           rem Input: playerChar[] (global array) = character types,
           rem playerRecoveryFrames[] (global array) = recovery frame
           rem counts, playerState[] (global array) = player states,
@@ -407,8 +423,10 @@ SetPlayerSprites
           rem 3/4 selections, playerHealth[] (global array) = player
           rem health, currentCharacter (global) = character index for
           rem sprite loading
+          rem
           rem Output: All player sprite colors and graphics set, sprite
           rem reflections set based on facing direction
+          rem
           rem Mutates: temp1-temp4 (used for calculations), COLUP0,
           rem COLUP1, COLUP2, COLUP3 (TIA registers) = player colors,
           rem REFP0 (TIA register) = player 0 reflection, _NUSIZ1,
@@ -419,9 +437,11 @@ SetPlayerSprites
           rem LoadCharacterColors_flashingMode,
           rem LoadCharacterColors_playerNumber (global aliases) = color
           rem loading parameters
+          rem
           rem Called Routines: LoadCharacterColors (bank10) - loads
           rem player colors, LoadCharacterSprite (bank10) - loads sprite
           rem graphics
+          rem
           rem Constraints: Multisprite kernel requires _COLUP1 and
           rem _NUSIZ1 for Player 2 virtual sprite. Players 3/4 only
           rem rendered if Quadtari detected and selected
@@ -600,24 +620,29 @@ DonePlayer4Sprite
           
           return
 
+DisplayHealth
           rem
           rem Display Health
           rem Shows health status for all active players.
           rem Flashes sprites when health is critically low.
-DisplayHealth
           rem Shows health status for all active players by flashing
           rem sprites when health is critically low
+          rem
           rem Input: playerHealth[] (global array) = player health
           rem values, playerRecoveryFrames[] (global array) = recovery
           rem frame counts, controllerStatus (global) = controller
           rem state, selectedChar3_R, selectedChar4_R (global SCRAM) =
           rem player 3/4 selections, frame (global) = frame counter
+          rem
           rem Output: Sprites flashed (hidden) when health < 25 and not
           rem in recovery
+          rem
           rem Mutates: player0x, player1x, player2x, player3x (TIA
           rem registers) = sprite positions (set to 200 to hide when
           rem flashing)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Only flashes when health < 25 and not in
           rem recovery. Players 3/4 only checked if Quadtari detected
           rem and selected
@@ -628,8 +653,8 @@ DisplayHealth
           goto DoneParticipant1Flash
 FlashParticipant1
           if frame & 8 then player0x = 200 
-          rem Hide P0 sprite
 DoneParticipant1Flash
+          rem Hide P0 sprite
 
           rem Flash Participant 2 sprite (array [1], P1) if health is
           rem   low
@@ -648,8 +673,8 @@ DoneParticipant2Flash
           goto DonePlayer3Flash
 FlashPlayer3
           if frame & 8 then player2x = 200 
-          rem Player 3 uses player2 sprite
 DonePlayer3Flash
+          rem Player 3 uses player2 sprite
 
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Flash : rem Flash Player 4 sprite if health is low (but alive)
           if selectedChar4_R = 255 then goto DonePlayer4Flash
@@ -659,8 +684,8 @@ DonePlayer3Flash
           goto DonePlayer4Flash
 FlashPlayer4
           if frame & 8 then player3x = 200 
-          rem Player 4 uses player3 sprite
 DonePlayer4Flash
+          rem Player 4 uses player3 sprite
           
           return
 

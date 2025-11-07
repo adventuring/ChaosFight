@@ -45,6 +45,7 @@ CheckFallDamage
           rem Called when a player lands on the ground or platform.
           rem Calculates fall damage based on downward velocity at
           rem   impact.
+          rem
           rem INPUT:
           rem   temp1 = player index (0-3)
           rem temp2 = vertical velocity at landing (positive = downward)
@@ -56,6 +57,7 @@ CheckFallDamage
           rem   5. Apply damage, recovery frames, and color shift
           rem Called when a player lands on the ground or platform -
           rem calculates fall damage
+          rem
           rem Input: temp1 = player index (0-3)
           rem        temp2 = vertical velocity at landing (positive =
           rem        downward)
@@ -65,15 +67,18 @@ CheckFallDamage
           rem        fall velocity thresholds
           rem        WeightDividedBy20[] (global array) = weight/20
           rem        lookup table
+          rem
           rem Output: playerHealth[] reduced, playerRecoveryFrames[]
           rem set, playerState[] updated,
           rem         sound effect played
+          rem
           rem Mutates: temp1-temp6 (used for calculations),
           rem playerHealth[] (reduced),
           rem         playerRecoveryFrames[] (set), playerState[]
           rem         (recovery flag and animation state set),
           rem         oldHealthValue, recoveryFramesCalc,
           rem         playerStateTemp (temporary calculations)
+          rem
           rem Called Routines: GetCharacterWeight - accesses temp1,
           rem temp2,
           rem   PlaySoundEffect (bank15) - plays landing damage sound
@@ -247,20 +252,26 @@ FallDamageApplyGravity
           rem Applies gravity acceleration to a player each frame.
           rem Handles character-specific gravity rates and terminal
           rem   velocity.
+          rem
           rem INPUT:
           rem   temp1 = player index (0-3)
           rem   temp2 = current vertical momentum (positive = down)
+          rem
           rem OUTPUT:
           rem   temp2 = updated vertical momentum
           rem Applies gravity acceleration to a player each frame
+          rem
           rem Input: temp1 = player index (0-3)
           rem        temp2 = current vertical momentum (positive = down)
           rem        playerChar[] (global array) = player character
           rem        selections
           rem        TerminalVelocity (constant) = maximum fall velocity
+          rem
           rem Output: temp2 = updated vertical momentum
+          rem
           rem Mutates: temp1, temp2, temp5, temp6 (used for
           rem calculations)
+          rem
           rem Called Routines: None
           dim FDAG_playerIndex = temp1 : rem Constraints: None
           dim FDAG_momentum = temp2
@@ -290,6 +301,7 @@ CheckGroundCollision
           rem Check Ground Collision
           rem Checks if player has landed on ground or platform.
           rem Calls CheckFallDamage if landing detected.
+          rem
           rem INPUT:
           rem   temp1 = player index (0-3)
           rem   temp2 = vertical momentum before position update
@@ -299,17 +311,22 @@ CheckGroundCollision
           rem   landing
           rem velocity for fall damage calculation.
           rem Checks if player has landed on ground or platform
+          rem
           rem Input: temp1 = player index (0-3)
           rem        temp2 = vertical momentum before position update
           rem        playerY[] (global array) = player Y positions
+          rem
           rem Output: playerY[] clamped to ground if landed,
           rem CheckFallDamage called if moving downward
+          rem
           rem Mutates: temp1, temp2, temp3 (used for calculations),
           rem playerY[] (clamped to 176 if landed)
+          rem
           rem Called Routines: CheckFallDamage - accesses temp1, temp2,
           rem playerChar[], playerHealth[],
           rem   playerRecoveryFrames[], playerState[], PlaySoundEffect
           rem   (bank15)
+          rem
           rem Constraints: Tail call to CheckFallDamage
           rem              Should be called AFTER vertical position
           rem              update but BEFORE momentum is cleared
@@ -347,6 +364,7 @@ HandleFrootyVertical
           rem Handle Frooty Vertical Control
           rem Frooty has no gravity and can move up/down freely.
           rem Down button moves down (no guard action).
+          rem
           rem INPUT:
           rem temp1 = player index (0-3, but should only be called for
           rem   Frooty)
@@ -382,9 +400,11 @@ HandleHarpySwoopAttack
           rem Handle Harpy Swoop Attack
           rem Harpy attack causes an instant redirection into a rapid
           rem downward diagonal strike at ~45° to the facing direction.
+          rem
           rem INPUT:
           rem temp1 = player index (0-3, but should only be called for
           rem   Harpy)
+          rem
           rem OUTPUT:
           dim HHSA_playerIndex = temp1 : rem Sets player momentum for diagonal downward swoop
           dim HHSA_characterType = temp5
@@ -436,7 +456,9 @@ DivideBy20
           rem   these routines
           asm
           rem DivideBy20: compute floor(A / 20) using optimized assembly
+          rem
           rem INPUT: A register = dividend (temp2)
+          rem
           rem OUTPUT: A register = quotient (result in temp2)
           rem Uses 18 bytes, 32 cycles
             lda temp2
@@ -460,7 +482,9 @@ end
           
 DivideBy100
           rem DivideBy100: compute floor(temp2 / 100) using range check
+          rem
           rem INPUT: temp2 = dividend
+          rem
           rem OUTPUT: temp2 = quotient (0, 1, or 2)
           dim DB100_dividend = temp2 : rem Fast approximation for values 0-255
           if DB100_dividend > 200 then goto DivideBy100Two
@@ -477,7 +501,9 @@ DivideBy100Two
 DivideByPfrowheight
           rem DivideByPfrowheight: compute value / pfrowheight using bit
           rem   shifts
+          rem
           rem INPUT: temp2 = dividend (Y position value)
+          rem
           rem OUTPUT: temp2 = quotient (row index)
           rem pfrowheight is either 8 (admin) or 16 (game), both powers
           rem   of 2
@@ -507,8 +533,10 @@ CalculateSafeFallDistance
           rem Utility routine to calculate safe fall distance for a
           rem   character.
           rem Used for AI and display purposes.
+          rem
           rem INPUT:
           rem   temp1 = player index (0-3)
+          rem
           rem OUTPUT:
           rem   temp2 = safe fall distance in pixels
           rem Get character type and weight

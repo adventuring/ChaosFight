@@ -27,10 +27,14 @@ SetPublisherWindowValues
           rem Hides: ChaosFight (bmp_48x2_3), BRP (bmp_48x2_4)
           rem Set runtime window values for Publisher screen (2 bitmaps
           rem   visible)
+          rem
           rem Input: None
+          rem
           rem Output: titlescreenWindow1-4 set for Publisher screen
+          rem
           rem Mutates: titlescreenWindow1, titlescreenWindow2,
           rem titlescreenWindow3, titlescreenWindow4
+          rem
           rem Called Routines: None
           let titlescreenWindow1 = 42  ; AtariAge logo visible : rem Constraints: None
           let titlescreenWindow2 = 42  ; AtariAgeText visible
@@ -38,17 +42,21 @@ SetPublisherWindowValues
           let titlescreenWindow4 = 0   ; BRP hidden
           return
           
+SetAuthorWindowValues
           rem Initialize window values for Author screen
           rem Shows: BRP (slot 4)
           rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText
           rem   (bmp_48x2_2), ChaosFight (bmp_48x2_3)
-SetAuthorWindowValues
           rem Set runtime window values for Author screen (BRP
           rem   visible in slot 4)
+          rem
           rem Input: None
+          rem
           rem Output: titlescreenWindow1-4 set for Author screen
+          rem
           rem Mutates: titlescreenWindow1, titlescreenWindow2,
           rem titlescreenWindow3, titlescreenWindow4
+          rem
           rem Called Routines: None
           let titlescreenWindow1 = 0   ; AtariAge logo hidden : rem Constraints: None
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
@@ -56,17 +64,21 @@ SetAuthorWindowValues
           let titlescreenWindow4 = 42  ; BRP visible
           return
           
+SetTitleWindowValues
           rem Initialize window values for Title screen
           rem Shows: ChaosFight (bmp_48x2_3) only
           rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText
           rem   (bmp_48x2_2), BRP (bmp_48x2_4)
-SetTitleWindowValues
           rem Set runtime window values for Title screen (1 bitmap
           rem   visible)
+          rem
           rem Input: None
+          rem
           rem Output: titlescreenWindow1-4 set for Title screen
+          rem
           rem Mutates: titlescreenWindow1, titlescreenWindow2,
           rem titlescreenWindow3, titlescreenWindow4
+          rem
           rem Called Routines: None
           let titlescreenWindow1 = 0   ; AtariAge logo hidden : rem Constraints: None
           let titlescreenWindow2 = 0   ; AtariAgeText hidden

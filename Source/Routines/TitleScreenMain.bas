@@ -25,17 +25,22 @@ TitleScreenMain
           rem   3. Draw screen
           rem   4. Return to MainLoop
           rem Per-frame title screen display and input handling
+          rem
           rem Input: joy0fire, joy1fire (hardware) = button states
           rem        controllerStatus (global) = controller detection
           rem        state
           rem        INPT0, INPT2 (hardware) = Quadtari controller
           rem        states
+          rem
           rem Output: Dispatches to TitleScreenComplete or returns
+          rem
           rem Mutates: None (dispatcher only)
+          rem
           rem Called Routines: UpdateCharacterParade (bank9) - accesses
           rem parade state,
           rem   DrawTitleScreen (bank9) - accesses title screen state,
           rem   titledrawscreen (bank9) - accesses title screen graphics
+          rem
           rem Constraints: Must be colocated with TitleSkipQuad,
           rem TitleScreenComplete
           rem              Called from MainLoop each frame (gameMode 2)
@@ -49,10 +54,15 @@ TitleScreenMain
           if !INPT2{7} then TitleScreenComplete
 TitleSkipQuad
           rem Skip Quadtari controller check (not in 4-player mode)
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with TitleScreenMain
           
           gosub UpdateCharacterParade bank9 : rem Update character parade animation
@@ -69,10 +79,14 @@ TitleSkipQuad
 
 TitleScreenComplete
           rem Transition to character select
+          rem
           rem Input: None (called from TitleScreenMain)
+          rem
           rem Output: gameMode set to ModeCharacterSelect,
           rem ChangeGameMode called
+          rem
           rem Mutates: gameMode (global)
+          rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
           let gameMode = ModeCharacterSelect : rem Constraints: Must be colocated with TitleScreenMain

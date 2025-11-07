@@ -10,24 +10,29 @@ BeginWinnerAnnouncement
 
           rem Setup routine for Winner Announcement mode - sets initial
           rem state only
+          rem
           rem Input: winnerPlayerIndex (global) = winner player index
           rem (set by game end logic)
           rem        PlayerChar[] (global array) = player character
           rem        selections
           rem        CharacterThemeSongIndices[] (global array) =
           rem        character theme song mapping
+          rem
           rem Output: screen layout set, COLUBK set, winScreenTimer
           rem initialized, displayRank initialized,
           rem         music started with winner’s character theme
+          rem
           rem Mutates: pfrowheight, pfrows (set via
           rem SetAdminScreenLayout),
           rem         COLUBK (TIA register), winScreenTimer (set to 0),
           rem         displayRank (set to 0),
           rem         temp1, temp2 (used for character/song lookup)
+          rem
           rem Called Routines: SetAdminScreenLayout (bank8) - sets
           rem screen layout,
           rem   StartMusic (bank16) - starts winner’s character theme
           rem   song
+          rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModeWinner
           rem              winnerPlayerIndex must be set by game end

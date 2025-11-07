@@ -10,9 +10,13 @@ SetAdminScreenLayout
           rem   health bars
           rem Set screen layout for title screen and character select
           rem (32×32)
+          rem
           rem Input: None
+          rem
           rem Output: pfrowheight set to 8, pfrows set to 32
+          rem
           rem Mutates: pfrowheight (set to 8), pfrows (set to 32)
+          rem
           rem Called Routines: None
           let pfrowheight = 8 : rem Constraints: Called from setup routines for admin screens
           let pfrows = 32
@@ -21,9 +25,13 @@ SetAdminScreenLayout
 SetGameScreenLayout
           rem Set screen layout for gameplay (32×8) with health bar
           rem space
+          rem
           rem Input: None
+          rem
           rem Output: pfrowheight set to 16, pfrows set to 8
+          rem
           rem Mutates: pfrowheight (set to 16), pfrows (set to 8)
+          rem
           rem Called Routines: None
           let pfrowheight = 16 : rem Constraints: Called from BeginGameLoop for gameplay screen
           let pfrows = 8
@@ -31,10 +39,15 @@ SetGameScreenLayout
 
 GetScreenLayoutInfo
           rem Get current screen layout dimensions
+          rem
           rem Input: pfrows (global) = number of playfield rows
+          rem
           rem Output: temp1 = virtual width (32), temp2 = virtual height
+          rem
           rem Mutates: temp1 (set to 32), temp2 (calculated from pfrows)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: None
           temp1 = 32              
           rem Always 32 virtual pixels wide

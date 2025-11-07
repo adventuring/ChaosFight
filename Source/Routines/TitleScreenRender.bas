@@ -22,12 +22,17 @@ DrawTitleScreen
           rem   COLUPF - Playfield color
           rem Main draw routine for title screen
           rem Clear sprites first
+          rem
           rem Input: titleParadeActive (global) = whether to draw parade
+          rem
           rem Output: Title screen rendered, sprites cleared
+          rem
           rem Mutates: player0x, player0y, player1x, player1y (cleared
           rem to 0)
+          rem
           rem Called Routines: DrawParadeCharacter (bank9) - if
           rem titleParadeActive set
+          rem
           rem Constraints: None
           player0x = 0
           player0y = 0
@@ -70,11 +75,16 @@ LoadTitleBitmap
               rem Bitmap data in: Source/Generated/Art.ChaosFight.s
           rem Other screens’ minikernels should have window=0 in their
           rem   image files
+          rem
           rem Input: None
+          rem
           rem Output: Title bitmap configured (via compile-time
           rem constants)
+          rem
           rem Mutates: None (compile-time configuration only)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Bitmap configuration is compile-time only, no
           rem runtime changes
           rem The titlescreen kernel uses fixed labels

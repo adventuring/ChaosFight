@@ -18,11 +18,14 @@ InitializeSpritePointers
           rem   during rendering. The kernel existing pointer adjustment
           rem   logic works perfectly with RAM addresses.
           rem Sets all sprite pointers to point to SCRAM buffers
+          rem
           rem Input: None (initialization routine)
+          rem
           rem Output: player0pointerlo/hi, player1pointerlo/hi,
           rem player2pointerlo/hi,
           rem         player3pointerlo/hi set to SCRAM read port
           rem         addresses
+          rem
           rem Mutates: player0pointerlo, player0pointerhi (set to
           rem $80/$F0 for r000),
           rem         player1pointerlo, player1pointerhi (set to $90/$F0
@@ -31,7 +34,9 @@ InitializeSpritePointers
           rem         for r032),
           rem         player3pointerlo, player3pointerhi (set to $B0/$F0
           rem         for r048)
+          rem
           rem Called Routines: None (uses inline assembly)
+          rem
           rem Constraints: Called once at game initialization (from
           rem ColdStart, BeginGameLoop)
           rem Set Player 0 pointer to r000 ($F080)

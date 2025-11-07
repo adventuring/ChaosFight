@@ -12,10 +12,15 @@ BeginAttractMode
           rem It automatically loops back to Publisher Prelude to
           rem   restart the sequence.
           rem Setup routine for Attract Mode - sets initial state only
+          rem
           rem Input: None (called from ChangeGameMode)
+          rem
           rem Output: COLUBK set
+          rem
           rem Mutates: COLUBK (TIA register)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModeAttract
           rem              Attract mode immediately transitions to

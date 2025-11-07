@@ -23,22 +23,27 @@ ColdStart
           rem Step 1: Detect console hardware type (7800 vs 2600)
           rem This MUST run before any code modifies $D0/$D1 registers
           rem as those registers are used for hardware detection
+          rem
           rem Input: None (cold start entry point)
+          rem
           rem Output: Console type detected, sprite pointers
           rem initialized,
           rem         TIA registers initialized, gameMode set,
           rem         transitions to MainLoop
+          rem
           rem Mutates: Console detection state (via ConsoleDetHW),
           rem         Sprite pointer state (via
           rem         InitializeSpritePointers),
           rem         COLUBK, COLUPF, COLUP0, _COLUP1, AUDC0, AUDV0,
           rem         AUDC1, AUDV1,
           rem         gameMode (global)
+          rem
           rem Called Routines: ConsoleDetHW (bank1) - accesses $D0/$D1
           rem hardware registers,
           rem   InitializeSpritePointers (bank10) - sets sprite pointer
           rem   addresses,
           rem   ChangeGameMode (bank1) - sets up initial game mode
+          rem
           rem Constraints: Must be entry point for cold start (called
           rem from Bank1)
           gosub ConsoleDetHW bank1 : rem              Only reachable via goto from Bank1 startup code

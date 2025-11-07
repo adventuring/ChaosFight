@@ -263,7 +263,9 @@ rem   and should be split across multiple lines
 
 ### Subroutine Documentation
 
-Every subroutine **MUST** have documentation comments immediately after the label describing:
+Every subroutine **MUST** place its documentation comments **immediately after the label**. The label comes first on column 0, followed directly by the documentation block. Within the documentation block, insert a blank remark line (`rem` with no trailing text) between major sections to improve readability.
+
+Every documentation block **MUST** describe:
 - **Input**: Parameters (via temp variables or globals), including all variables read
 - **Output**: Return values or state changes
 - **Mutates**: All variables modified, including `temp1`-`temp6` when modified
@@ -274,17 +276,22 @@ Every subroutine **MUST** have documentation comments immediately after the labe
 ```basic
 LoadCharacterSprite
           rem Load sprite data for a character based on character index
+          rem
           rem Input: temp1 = character index (0-31), temp2 = animation
           rem frame (0-7)
           rem        temp3 = player number (0-3)
           rem        playerChar[] (global array) = player character
           rem        selections
+          rem
           rem Output: Sprite data loaded into appropriate player
           rem register
+          rem
           rem Mutates: temp1-temp3 (used for calculations), player
           rem sprite pointers
+          rem
           rem Called Routines: LoadSpecialSprite - accesses temp1,
           rem playerChar[]
+          rem
           rem Constraints: Must be colocated with LoadSpecialSprite
           rem (called via goto)
           dim LCS_characterIndex = temp1
@@ -295,14 +302,19 @@ LoadCharacterSprite
 ```basic
 ApplyDamage
           rem Apply damage from attacker to defender
+          rem
           rem Input: attackerID (global), defenderID (global),
           rem playerDamage[] (global array)
+          rem
           rem Output: Damage applied, recovery frames set, health
           rem decremented
+          rem
           rem Mutates: temp1-temp4 (used for calculations),
           rem playerHealth[], playerRecoveryFrames[]
+          rem
           rem Called Routines: SetPlayerAnimation (bank11),
           rem CheckPlayerElimination, PlayDamageSound
+          rem
           rem Constraints: None
 ```
 

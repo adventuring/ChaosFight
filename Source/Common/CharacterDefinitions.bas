@@ -100,12 +100,11 @@ end
           rem Lookup table for squaring values 1-24
           rem Used for kinematic calculations: d = v squared / 4
           rem Pre-computed to avoid variable multiplication
-          rem Square table values: 1 squared-8 squared
-          rem (1,4,9,16,25,36,49,64), 9 squared-16 squared
-          rem (81,100,121,144,169,196,225,256), 17 squared-24 squared
-          rem (289,324,361,400,441,484,529,576)
-          data SquareTable : rem Index is value (1-24), result is value squared
-            1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400, 441, 484, 529, 576
+          rem Square table values pre-divided by 4 (v² / 4) for velocities 1-24
+          rem (0,1,2,4,6,9,12,16), (20,25,30,36,42,49,56,64),
+          rem (72,81,90,100,110,121,132,144)
+          data SquareTable : rem Index is value (1-24), result is floor(v² / 4)
+            0, 1, 2, 4, 6, 9, 12, 16, 20, 25, 30, 36, 42, 49, 56, 64, 72, 81, 90, 100, 110, 121, 132, 144
 end
 
           rem
@@ -361,6 +360,7 @@ end
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
+GetCharacterWeightSub
           rem
           rem Animation Sequence Definitions
           rem Animation sequences (16 total) - all use 8-frame padded
@@ -428,75 +428,114 @@ end
           rem - Duplicate frames are compacted, gaps removed, empty
           rem   frames padded
           rem Character Definition Lookup Subroutines
-          rem Get character weight
-          rem Input: character index (in temp1)
-          rem Output: weight (in temp4)
-          rem Note: Uses array access since data is immutable
-              temp4 = CharacterWeights(temp1)
-              return
+          rem Return character weight based on CharacterWeights table
+          rem
+          rem Input: temp1 = character index (0-15)
+          rem
+          rem Output: temp4 = weight value
+          rem
+          rem Mutates: temp4
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must share bank with CharacterWeights data
+          temp4 = CharacterWeights(temp1)
+          return
 
-          GetCharAttackTypeSub
-          rem Get character attack type
-          rem Input: character index (in temp1)
-          rem Output: attack type 0=melee, 1=ranged (in temp4)
-          rem Note: Attack types are bit-packed, so we need to extract
-          rem   the bit
-          rem Division by 8 should compile to LSR x3 (bit shift right 3
-          rem   times)
-          rem batariBASIC optimizes division by powers of 2 to bit
-          rem   shifts
-              temp3 = temp1 / 8
-              temp2 = temp1 & 7
-              temp4 = (CharacterAttackTypes(temp3) & (1 << temp2)) >> temp2
-              return
+GetCharAttackTypeSub
+          rem Decode bit-packed attack type for the requested character
+          rem
+          rem Input: temp1 = character index (0-15)
+          rem
+          rem Output: temp4 = attack type (0=melee, 1=ranged)
+          rem
+          rem Mutates: temp2-temp4
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: CharacterAttackTypes table must share bank
+          temp3 = temp1 / 8
+          temp2 = temp1 & 7
+          temp4 = CharacterAttackTypes(temp3)
+          temp4 = temp4 & (1 << temp2)
+          temp4 = temp4 >> temp2
+          return
 
-          GetMissileDimsSub
-          rem Get missile dimensions
-          rem Input: character index (in temp1)
-          rem Output: width (in temp3), height (in temp4)
-          rem Note: Uses array access since data is immutable
-              temp3 = CharacterMissileWidths(temp1)
-              temp4 = CharacterMissileHeights(temp1)
-              return
+GetMissileDimsSub
+          rem Retrieve missile width and height for the character
+          rem
+          rem Input: temp1 = character index (0-15)
+          rem
+          rem Output: temp3 = missile width, temp4 = missile height
+          rem
+          rem Mutates: temp3-temp4
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must share bank with missile dimension tables
+          temp3 = CharacterMissileWidths(temp1)
+          temp4 = CharacterMissileHeights(temp1)
+          return
 
-          GetMissileEmissionHeightSub
-          rem Get missile emission height
-          rem Input: character index (in temp1)
-          rem Output: emission height (in temp4)
-          rem Note: Uses array access since data is immutable
-              temp4 = CharacterMissileEmissionHeights(temp1)
-              return
+GetMissileEmissionHeightSub
+          rem Get missile emission height from character data
+          rem
+          rem Input: temp1 = character index (0-15)
+          rem
+          rem Output: temp4 = emission height in pixels
+          rem
+          rem Mutates: temp4
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Table access requires same bank residency
+          temp4 = CharacterMissileEmissionHeights(temp1)
+          return
 
-          GetMissileMomentumXSub
-          rem Get missile momentum X
-          rem Input: character index (in temp1)
-          rem Output: momentum X (in temp4)
-          rem Note: Uses array access since data is immutable
-          rem Values range from -127 to 127 (signed)
-              temp4 = CharacterMissileMomentumX(temp1)
-              return
+GetMissileMomentumXSub
+          rem Fetch missile horizontal momentum for the character
+          rem
+          rem Input: temp1 = character index (0-15)
+          rem
+          rem Output: temp4 = horizontal momentum (signed)
+          rem
+          rem Mutates: temp4
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Shares bank with CharacterMissileMomentumX
+          temp4 = CharacterMissileMomentumX(temp1)
+          return
 
-          GetMissileMomentumYSub
-          rem Get missile momentum Y
-          rem Input: character index (in temp1)
-          rem Output: momentum Y (in temp4)
-          rem Note: Uses array access since data is immutable
-          rem Values range from -127 to 127 (signed)
-              temp4 = CharacterMissileMomentumY(temp1)
-              return
+GetMissileMomentumYSub
+          rem Fetch missile vertical momentum for the character
+          rem
+          rem Input: temp1 = character index (0-15)
+          rem
+          rem Output: temp4 = vertical momentum (signed)
+          rem
+          rem Mutates: temp4
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Shares bank with CharacterMissileMomentumY
+          temp4 = CharacterMissileMomentumY(temp1)
+          return
 
-          GetMissileFlagsSub
-          rem Get missile flags
-          rem Input: character index (in temp1)
-          rem Output: flags (in temp4)
-          rem Note: Bit flags: MissileFlagHitBackground (bit 0),
-          rem   MissileFlagHitPlayer (bit 1),
-          rem MissileFlagGravity (bit 2), MissileFlagBounce (bit 3)
-          rem Note: Uses array access since data is immutable
-          rem Use constants from Enums.bas for bitfield checking: temp5
-          rem   & MissileFlagGravity
-              temp4 = CharacterMissileFlags(temp1)
-              return
+GetMissileFlagsSub
+          rem Retrieve missile flag bitfield for the character
+          rem
+          rem Input: temp1 = character index (0-15)
+          rem
+          rem Output: temp4 = missile flags
+          rem
+          rem Mutates: temp4
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Shares bank with CharacterMissileFlags table
+          temp4 = CharacterMissileFlags(temp1)
+          return
 
           rem
           rem Data Format Notes For Skylinetool Output

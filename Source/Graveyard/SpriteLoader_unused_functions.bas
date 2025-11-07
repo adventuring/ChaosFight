@@ -70,6 +70,7 @@ DrawPlayfieldHealthBar
           rem   pixels
 
           rem Displays a health bar using playfield pixels
+          rem
           rem INPUT: temp1 = health (0-100), temp2 = player index (2-3)
           rem temp3 = Y row (23 for bottom), temp4 = starting X position
           rem NOTE: Replaced by UpdatePlayer34HealthBars which uses

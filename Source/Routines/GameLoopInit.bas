@@ -30,13 +30,16 @@
 
 BeginGameLoop
           rem Initialize all game state for the main gameplay loop
+          rem
           rem Input: ControllerStatus (global) = controller detection
           rem state
           rem        SelectedChar1, SelectedChar2, selectedChar3_R,
           rem        selectedChar4_R (global) = character selections
           rem        PlayerLocked[] (global array) = lock states for
           rem        handicap calculation
+          rem
           rem Output: All game state initialized for gameplay
+          rem
           rem Mutates: PlayerX[], PlayerY[], PlayerState[],
           rem PlayerHealth[], PlayerChar[],
           rem         PlayerTimers[], playerVelocityX[],
@@ -51,6 +54,7 @@ BeginGameLoop
           rem         GameState,
           rem         NUSIZ0, _NUSIZ1, NUSIZ2, NUSIZ3, frame, sprite
           rem         pointers, screen layout
+          rem
           rem Called Routines: InitializeSpritePointers (bank10) - sets
           rem sprite pointer addresses,
           rem   SetGameScreenLayout (bank8) - sets screen layout,
@@ -58,6 +62,7 @@ BeginGameLoop
           rem   InitializeHealthBars (bank8) - initializes health bar
           rem   state,
           rem   LoadArena (bank1) - loads arena data
+          rem
           rem Constraints: Must be colocated with Init4PlayerPositions,
           rem InitPositionsDone,
           rem              PlayerHealthSet (all called via goto)
@@ -85,10 +90,15 @@ BeginGameLoop
           
 Init4PlayerPositions
           rem Initialize player positions for 4-player mode
+          rem
           rem Input: None (called from BeginGameLoop)
+          rem
           rem Output: PlayerX[], PlayerY[] set for 4-player layout
+          rem
           rem Mutates: PlayerX[], PlayerY[]
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with BeginGameLoop,
           rem InitPositionsDone
           let PlayerX[0] = 32 : PlayerY[0] = 24 : rem 4-player mode positions
@@ -99,10 +109,15 @@ Init4PlayerPositions
           
 InitPositionsDone
           rem Player positions initialization complete
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with BeginGameLoop
           
           let PlayerState[0] = 1 : rem Initialize player states (facing direction)
@@ -122,10 +137,15 @@ InitPositionsDone
 PlayerHealthSet
           next
           rem Skip to next player after setting health
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with BeginGameLoop
           
           for currentPlayer = 0 to 3 : rem Initialize player timers

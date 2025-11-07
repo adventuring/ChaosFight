@@ -14,6 +14,7 @@ ApplyDamage
           rem 4. If player health < damage amount, player dies
           rem   (instantly vanishes)
           rem Apply damage from attacker to defender
+          rem
           rem Input: attackerID (global) = attacker player index
           rem        defenderID (global) = defender player index
           rem        playerDamage[] (global array) = player damage
@@ -21,20 +22,24 @@ ApplyDamage
           rem        playerHealth[] (global array) = player health
           rem        values
           rem        ActionHit (constant) = hurt animation action
+          rem
           rem Output: playerHealth[] reduced, playerRecoveryFrames[]
           rem set, playerState[] updated,
           rem         animation set to hurt, sound effect played, or
           rem         player eliminated
+          rem
           rem Mutates: temp1-temp4 (used for calculations),
           rem playerHealth[] (reduced or set to 0),
           rem         playerRecoveryFrames[] (set), playerState[]
           rem         (recovery flag set),
           rem         currentPlayer (set to defenderID), temp2 (passed
           rem         to SetPlayerAnimation)
+          rem
           rem Called Routines: SetPlayerAnimation (bank11) - sets hurt
           rem animation,
           rem   CheckPlayerElimination - handles player elimination,
           rem   PlayDamageSound - plays damage sound effect
+          rem
           rem Constraints: Must be colocated with PlayerDies,
           rem PlayDamageSound (called via goto)
           dim AD_attackerID = attackerID
@@ -73,14 +78,18 @@ ApplyDamage
 
 PlayerDies
           rem Player dies - instantly vanish
+          rem
           rem Input: AD_defenderID (from ApplyDamage) = defender player
           rem index
           rem        playerHealth[] (global array) = player health
           rem        values
+          rem
           rem Output: playerHealth[] set to 0, player eliminated, sound
           rem effect played
+          rem
           rem Mutates: playerHealth[] (set to 0), currentPlayer (set to
           rem defenderID)
+          rem
           rem Called Routines: CheckPlayerElimination - handles player
           rem elimination,
           rem   PlayDamageSound - plays damage sound effect
@@ -95,15 +104,17 @@ PlayerDies
           goto PlayDamageSound : rem tail call
           
 
+CheckAttackHit
           rem Check if attack hits defender
           rem Inputs: attackerID, defenderID (must be set before
           rem   calling)
+          rem
           rem Returns: hit (1 = hit, 0 = miss)
           rem Uses cached hitbox values from ProcessAttackerAttacks
           rem   (cached once per attacker, reused for all defenders)
-CheckAttackHit
           rem Check if attack hits defender using AABB collision
           rem detection
+          rem
           rem Input: defenderID (global) = defender player index
           rem        playerX[], playerY[] (global arrays) = player
           rem        positions
@@ -112,9 +123,13 @@ CheckAttackHit
           rem        SCRAM) = cached hitbox bounds
           rem        PlayerSpriteWidth, PlayerSpriteHeight (constants) =
           rem        sprite dimensions
+          rem
           rem Output: hit (global) = 1 if hit, 0 if miss
+          rem
           rem Mutates: hit (set to 1 or 0)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with NoHit (called via
           rem goto)
           dim CAH_defenderID = defenderID : rem              Uses cached hitbox values (set in ProcessAttackerAttacks)
@@ -145,21 +160,26 @@ CheckAttackHit
    
 NoHit
           rem Defender is outside hitbox bounds
+          rem
           rem Input: None (called from CheckAttackHit)
+          rem
           rem Output: hit set to 0
+          rem
           rem Mutates: hit (set to 0)
+          rem
           rem Called Routines: None
           let hit = 0 : rem Constraints: Must be colocated with CheckAttackHit
           return
 
+CalculateAttackHitbox
           rem Calculate attack hitbox based on attacker position and
           rem   facing
           rem Inputs: attackerID (must be set before calling, or use
           rem   CAH_attackerID from CheckAttackHit)
           rem Outputs: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
-CalculateAttackHitbox
           rem Calculate attack hitbox based on attacker position and
           rem facing
+          rem
           rem Input: attackerID (global) = attacker player index
           rem        playerX[], playerY[] (global arrays) = player
           rem        positions
@@ -169,11 +189,15 @@ CalculateAttackHitbox
           rem        for each player
           rem        PlayerSpriteWidth, PlayerSpriteHeight (constants) =
           rem        sprite dimensions
+          rem
           rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem (global) = hitbox bounds
+          rem
           rem Mutates: temp1, temp2 (used for attack type and facing),
           rem hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with MeleeHitbox,
           rem ProjectileHitbox, AreaHitbox,
           rem              FacingRight, FacingLeft, FacingUp, FacingDown
@@ -191,13 +215,18 @@ CalculateAttackHitbox
 MeleeHitbox
           rem Melee hitbox extends PlayerSpriteWidth pixels in facing
           rem direction
+          rem
           rem Input: CAH_attackerID_calc, PlayerFacing[] (from
           rem CalculateAttackHitbox)
+          rem
           rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem set based on facing direction
+          rem
           rem Mutates: temp2 (facing direction), hitboxLeft,
           rem hitboxRight, hitboxTop, hitboxBottom
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with CalculateAttackHitbox,
           rem FacingRight, FacingLeft, FacingUp, FacingDown
           rem Use temporary variable to avoid compiler bug with array
@@ -211,12 +240,17 @@ MeleeHitbox
           
 FacingRight
           rem Hitbox extends 16 pixels forward from sprite right edge
+          rem
           rem Input: CAH_attackerID_calc, playerX[], playerY[] (from
           rem MeleeHitbox)
+          rem
           rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem set for right-facing attack
+          rem
           rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with CalculateAttackHitbox,
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
@@ -229,12 +263,17 @@ FacingRight
           
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
+          rem
           rem Input: CAH_attackerID_calc, playerX[], playerY[] (from
           rem MeleeHitbox)
+          rem
           rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem set for left-facing attack
+          rem
           rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with CalculateAttackHitbox,
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
@@ -247,12 +286,17 @@ FacingLeft
           
 FacingUp
           rem Hitbox extends 16 pixels upward from sprite top edge
+          rem
           rem Input: CAH_attackerID_calc, playerX[], playerY[] (from
           rem MeleeHitbox)
+          rem
           rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem set for up-facing attack
+          rem
           rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with CalculateAttackHitbox,
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
@@ -265,12 +309,17 @@ FacingUp
           
 FacingDown
           rem Hitbox extends 16 pixels downward from sprite bottom edge
+          rem
           rem Input: CAH_attackerID_calc, playerX[], playerY[] (from
           rem MeleeHitbox)
+          rem
           rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem set for down-facing attack
+          rem
           rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with CalculateAttackHitbox,
           rem MeleeHitbox
           rem Attacker sprite: [playerX, playerX+16] x [playerY,
@@ -284,11 +333,15 @@ FacingDown
 ProjectileHitbox
           rem Projectile hitbox is at current missile position (to be
           rem implemented)
+          rem
           rem Input: None (placeholder)
+          rem
           rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem set to 0 (placeholder)
+          rem
           rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem (set to 0)
+          rem
           rem Called Routines: None
           let hitboxLeft = 0 : rem Constraints: Must be colocated with CalculateAttackHitbox
           let hitboxRight = 0
@@ -299,11 +352,15 @@ ProjectileHitbox
 AreaHitbox
           rem Area hitbox covers radius around attacker (to be
           rem implemented)
+          rem
           rem Input: None (placeholder)
+          rem
           rem Output: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem set to 0 (placeholder)
+          rem
           rem Mutates: hitboxLeft, hitboxRight, hitboxTop, hitboxBottom
           rem (set to 0)
+          rem
           rem Called Routines: None
           let hitboxLeft = 0 : rem Constraints: Must be colocated with CalculateAttackHitbox
           let hitboxRight = 0
@@ -313,6 +370,7 @@ AreaHitbox
 
 ProcessAttackerAttacks
           rem Process attack for one attacker against all defenders
+          rem
           rem Input: attackerID (must be set before calling)
           rem Processes attacks in all directions (facing handled by
           rem   CalculateAttackHitbox)
@@ -320,13 +378,16 @@ ProcessAttackerAttacks
           rem   each defender
           rem Process attack for one attacker against all defenders
           rem (caches hitbox once per attacker)
+          rem
           rem Input: attackerID (global) = attacker player index,
           rem playerX[], playerY[] (global arrays) = player positions,
           rem PlayerAttackType[], PlayerFacing[] (global arrays) =
           rem attack type and facing, playerHealth[] (global array) =
           rem player health values
+          rem
           rem Output: Attacks processed for all defenders, damage
           rem applied if hits detected
+          rem
           rem Mutates: temp1-temp2 (used for calculations), hitboxLeft,
           rem hitboxRight, hitboxTop, hitboxBottom (global) = hitbox
           rem bounds (calculated), cachedHitboxLeft_W,
@@ -336,10 +397,12 @@ ProcessAttackerAttacks
           rem 0-3), hit (global) = hit result (set by CheckAttackHit),
           rem playerHealth[], playerRecoveryFrames[], playerState[] (via
           rem ApplyDamage)
+          rem
           rem Called Routines: CalculateAttackHitbox - calculates hitbox
           rem based on attacker position and facing, CheckAttackHit -
           rem checks if attack hits defender, ApplyDamage - applies
           rem damage if hit
+          rem
           rem Constraints: Must be colocated with NextDefender (called
           rem via next). Caches hitbox once per attacker to avoid
           rem recalculating for each defender. Skips attacker as
@@ -366,24 +429,33 @@ NextDefender
           rem Helper: End of defender loop iteration (label only)
           return
           rem Input: None (label only)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal label for ProcessAttackerAttacks FOR
           rem loop
 
-          rem Process all attacks for all players
 ProcessAllAttacks
+          rem Process all attacks for all players
           rem Process all attacks for all players (orchestrates attack
           rem processing for all active players)
+          rem
           rem Input: attackerID (global) = attacker index (set to 0-3),
           rem playerHealth[] (global array) = player health values
+          rem
           rem Output: All attacks processed for all active players
+          rem
           rem Mutates: attackerID (global) = attacker index (set to
           rem 0-3), all attack processing state (via
           rem ProcessAttackerAttacks)
+          rem
           rem Called Routines: ProcessAttackerAttacks - processes
           rem attacks for one attacker against all defenders
+          rem
           rem Constraints: Must be colocated with NextAttacker (called
           rem via next). Skips dead attackers
           for attackerID = 0 to 3
@@ -396,30 +468,43 @@ NextAttacker
           rem Helper: End of attacker loop iteration (label only)
           return
           rem Input: None (label only)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal label for ProcessAllAttacks FOR loop
 
+CombatShowDamageIndicator
           rem Damage indicator system
           rem NOTE: VisualEffects.bas was phased out - damage indicators
           rem   handled inline
-CombatShowDamageIndicator
           return
+PlayDamageSound
           rem Damage indicator system (phased out - visual feedback now
           rem handled inline)
+          rem
           rem Input: None
+          rem
           rem Output: None (no-op)
+          rem
           rem Mutates: None
-PlayDamageSound
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: VisualEffects.bas was phased out - damage
           rem indicators handled inline in damage calculation
           rem Visual feedback now handled inline in damage calculation
           rem Play damage sound effect (attack hit sound)
+          rem
           rem Input: SoundAttackHit (global constant) = sound effect ID
+          rem
           rem Output: Sound effect played
+          rem
           rem Mutates: temp1 (set to sound ID)
+          rem
           rem Called Routines: PlaySoundEffect (bank15) - plays sound
           rem effect
           dim PDS_soundId = temp1 : rem Constraints: None

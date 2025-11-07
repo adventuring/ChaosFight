@@ -17,12 +17,17 @@ AttractMode
           rem No user interaction - just transition immediately
           rem This creates a continuous attract loop: Publisher → Author
           rem   → Title → Attract → (repeat)
+          rem
           rem Input: None (called from MainLoop)
+          rem
           rem Output: gameMode set to ModePublisherPrelude,
           rem ChangeGameMode called
+          rem
           rem Mutates: gameMode (global)
+          rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
+          rem
           rem Constraints: Entry point for attract mode (called from
           rem MainLoop)
           let gameMode = ModePublisherPrelude : gosub ChangeGameMode bank14 : rem Only reachable via gosub from MainLoop

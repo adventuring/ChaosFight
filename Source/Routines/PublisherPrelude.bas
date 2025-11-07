@@ -30,6 +30,7 @@ PublisherPreludeMain
           rem   musicPlaying - Music state flag
           rem   QuadtariDetected - For checking all controllers
           rem Per-frame publisher prelude display and input handling
+          rem
           rem Input: joy0fire, joy1fire (hardware) = button states
           rem        controllerStatus (global) = controller detection
           rem        state
@@ -37,10 +38,14 @@ PublisherPreludeMain
           rem        states
           rem        preambleTimer (global) = frame counter
           rem        musicPlaying (global) = music playback state
+          rem
           rem Output: Dispatches to PublisherPreludeComplete or returns
+          rem
           rem Mutates: preambleTimer (incremented)
+          rem
           rem Called Routines: SetPublisherWindowValues (bank12) -
           rem accesses window state
+          rem
           rem Constraints: Must be colocated with
           rem PublisherPreludeComplete
           rem              Called from MainLoop each frame (gameMode 0)
@@ -71,10 +76,14 @@ PublisherPreludeMain
 
 PublisherPreludeComplete
           rem Transition to Author Prelude mode
+          rem
           rem Input: None (called from PublisherPreludeMain)
+          rem
           rem Output: gameMode set to ModeAuthorPrelude, ChangeGameMode
           rem called
+          rem
           rem Mutates: gameMode (global)
+          rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
           let gameMode = ModeAuthorPrelude : rem Constraints: Must be colocated with PublisherPreludeMain

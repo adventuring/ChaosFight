@@ -24,6 +24,7 @@ AuthorPrelude
           rem   musicPlaying - Music state flag
           rem   QuadtariDetected - For checking all controllers
           rem Per-frame author prelude display and input handling
+          rem
           rem Input: joy0fire, joy1fire (hardware) = button states
           rem        controllerStatus (global) = controller detection
           rem        state
@@ -31,10 +32,14 @@ AuthorPrelude
           rem        states
           rem        preambleTimer (global) = frame counter
           rem        musicPlaying (global) = music playback state
+          rem
           rem Output: Dispatches to AuthorPreludeComplete or returns
+          rem
           rem Mutates: preambleTimer (incremented)
+          rem
           rem Called Routines: UpdateMusic (bank16) - accesses music
           rem state variables
+          rem
           rem Constraints: Must be colocated with AuthorPreludeComplete
           rem              Called from MainLoop each frame (gameMode 1)
           rem Bitmap data is loaded automatically by titlescreen kernel
@@ -59,9 +64,13 @@ AuthorPrelude
 
 AuthorPreludeComplete
           rem Transition to Title Screen mode
+          rem
           rem Input: None (called from AuthorPrelude)
+          rem
           rem Output: gameMode set to ModeTitle, ChangeGameMode called
+          rem
           rem Mutates: gameMode (global)
+          rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
           let gameMode = ModeTitle : rem Constraints: Must be colocated with AuthorPrelude

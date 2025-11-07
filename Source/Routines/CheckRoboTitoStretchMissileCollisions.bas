@@ -15,6 +15,7 @@ CheckRoboTitoStretchMissileCollisions
           
           rem Check collision between RoboTito stretch missiles and
           rem other players
+          rem
           rem Input: playerChar[] (global array) = character types,
           rem playerState[] (global array) = player states,
           rem characterStateFlags_R[] (global SCRAM array) = character
@@ -22,11 +23,14 @@ CheckRoboTitoStretchMissileCollisions
           rem = stretch missile heights, playerX[], playerY[] (global
           rem arrays) = player positions, playerHealth[] (global array)
           rem = player health
+          rem
           rem Output: Stretch missile collisions detected and handled
+          rem
           rem Mutates: temp1-temp7 (used for calculations),
           rem playerState[], characterStateFlags_W[],
           rem missileStretchHeight_W[], roboTitoCanStretch_W (via
           rem HandleRoboTitoStretchMissileHit)
+          rem
           rem Called Routines: HandleRoboTitoStretchMissileHit -
           rem processes collision when detected
           dim CRTSMC_playerIndex = temp1 : rem Constraints: None
@@ -40,8 +44,8 @@ CheckRoboTitoStretchMissileCollisions
 CRTSMC_PlayerLoop
           if playerChar[CRTSMC_playerIndex] = CharRoboTito then CRTSMC_IsRoboTito : rem Check if player is RoboTito and stretching
           goto CRTSMC_NextPlayer
-          rem Not RoboTito, skip
 CRTSMC_IsRoboTito
+          rem Not RoboTito, skip
           rem Check if stretching (not latched, ActionJumping animation
           rem = 10)
           if (characterStateFlags_R[CRTSMC_playerIndex] & 1) then CRTSMC_NextPlayer
@@ -50,8 +54,8 @@ CRTSMC_IsRoboTito
           let temp7 = temp7 / 16 : rem Mask bits 4-7 (animation state)
           if temp7 = 10 then CRTSMC_IsStretching : rem Shift right by 4 to get animation state
           goto CRTSMC_NextPlayer
-          rem Not in stretching animation, no stretch missile
 CRTSMC_IsStretching
+          rem Not in stretching animation, no stretch missile
           
           let CRTSMC_stretchHeight = missileStretchHeight_R[CRTSMC_playerIndex] : rem Check if stretch missile has height > 0
           if CRTSMC_stretchHeight <= 0 then CRTSMC_NextPlayer
@@ -105,19 +109,23 @@ HandleRoboTitoStretchMissileHit
           rem Handle Robotito Stretch Missile Hit
           rem Processes a stretch missile hit on another player.
           rem Causes RoboTito to fall and prevents further stretching.
+          rem
           rem INPUT:
           rem   temp1 = RoboTito player index (stretch missile owner)
           rem   temp5 = hit player index (victim)
           rem Process a stretch missile hit on another player, causing
           rem RoboTito to fall
+          rem
           rem Input: temp1 = RoboTito player index (stretch missile
           rem owner), temp5 = hit player index (victim), playerState[]
           rem (global array) = player states, roboTitoCanStretch_R
           rem (global SCRAM) = stretch permission flags,
           rem characterStateFlags_R[] (global SCRAM array) = character
           rem state flags
+          rem
           rem Output: RoboTito falls, stretch missile removed, stretch
           rem permission cleared
+          rem
           rem Mutates: missileStretchHeight_W[] (global SCRAM array) =
           rem stretch missile heights, playerState[] (global array) =
           rem player states, playerVelocityY[], playerVelocityYL[]
@@ -125,6 +133,7 @@ HandleRoboTitoStretchMissileHit
           rem (global SCRAM) = stretch permission flags,
           rem characterStateFlags_W[] (global SCRAM array) = character
           rem state flags, temp2-temp3 (used for calculations)
+          rem
           rem Called Routines: None
           dim HRTSMH_roboTitoIndex = temp1 : rem Constraints: None
           dim HRTSMH_hitPlayer = temp5
@@ -154,8 +163,8 @@ HRTSMH_ClearBit1
           goto HRTSMH_PermissionCleared : rem 253 = $FD = clear bit 1
 HRTSMH_ClearBit2
           let HRTSMH_flags = HRTSMH_flags & 251 : rem Player 2: clear bit 2
-          rem 251 = $FB = clear bit 2
 HRTSMH_PermissionCleared
+          rem 251 = $FB = clear bit 2
           let roboTitoCanStretch_W = HRTSMH_flags
           rem Store cleared permission flags
           

@@ -19,13 +19,18 @@ BeginPublisherPrelude
           rem   bitmap display.
           rem Initializes state for Publisher Prelude screen (gameMode
           rem 0)
+          rem
           rem Input: None (called from ChangeGameMode)
+          rem
           rem Output: preambleTimer initialized, COLUBK set, music
           rem started
+          rem
           rem Mutates: preambleTimer (set to 0), COLUBK (TIA register),
           rem temp1 (passed to StartMusic)
+          rem
           rem Called Routines: StartMusic (bank16) - starts AtariToday
           rem music
+          rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModePublisherPrelude
           rem              Tail call to StartMusic

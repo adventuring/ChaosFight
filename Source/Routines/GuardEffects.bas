@@ -13,22 +13,28 @@ ApplyGuardFlashing
           rem   use
           rem Apply Guard Visual Effects
           rem Applies guard flashing effect to a guarding player
+          rem
           rem INPUT: temp1 = player index (0-3)
           rem USES: playerState[temp1], frame counter for flashing
           rem Applies guard flashing effect to a guarding player
           rem (flashes light cyan every 4 frames)
+          rem
           rem Input: temp1 = player index (0-3), playerState[] (global
           rem array) = player state flags (bit 1 = guarding), frame
           rem (global) = frame counter, ColCyan (global constant) = cyan
           rem color function, TV_SECAM (compile-time constant) = TV
           rem standard
+          rem
           rem Output: Player color set to flashing cyan if guarding,
           rem normal color otherwise
+          rem
           rem Mutates: temp1-temp4 (used for calculations), COLUP0,
           rem _COLUP1, COLUP2, COLUP3 (TIA registers) = player colors
           rem (set to flashing cyan or normal)
+          rem
           rem Called Routines: GuardNormalPhase (tail call via goto) -
           rem restores normal color
+          rem
           rem Constraints: Flash every 4 frames (frames 0-1 = flash,
           rem frames 2-3 = normal). SECAM uses ColCyan(6), NTSC/PAL uses
           rem ColCyan(12). Only applies if player is guarding (bit 1
@@ -57,13 +63,18 @@ ApplyGuardFlashing
 
 GuardNormalPhase
           rem Helper: Normal phase - restore normal player colors
+          rem
           rem Input: temp1 = player index (0-3), playerChar[] (global
           rem array) = player character selections
+          rem
           rem Output: Normal player colors restored
+          rem
           rem Mutates: None (colors restored by
           rem RestoreNormalPlayerColor)
+          rem
           rem Called Routines: RestoreNormalPlayerColor (tail call via
           rem goto) - restores normal colors
+          rem
           rem Constraints: Internal helper for ApplyGuardFlashing, only
           rem called during normal phase (frames 2-3)
           rem Normal phase - restore normal player colors
@@ -74,15 +85,20 @@ RestoreNormalPlayerColor
           rem Restore Normal Player Color
           rem Restores the normal color for a player after guard
           rem   flashing
+          rem
           rem INPUT: temp1 = player index (0-3)
           rem Restores the normal color for a player after guard
           rem flashing
+          rem
           rem Input: temp1 = player index (0-3)
           rem        playerChar[] (global array) = player character
           rem        selections
+          rem
           rem Output: None (colors restored by LoadCharacterColors in
           rem PlayerRendering.bas)
+          rem
           rem Mutates: None (colors already set by LoadCharacterColors)
+          rem
           rem Called Routines: None (colors handled by
           rem LoadCharacterColors)
           dim RNPC_playerIndex = temp1 : rem Constraints: None
@@ -105,17 +121,23 @@ CheckGuardCooldown
           rem Check Guard Cooldown
           rem Prevents guard use if still in cooldown period (1 second
           rem   after guard ends)
+          rem
           rem INPUT: temp1 = player index (0-3)
+          rem
           rem OUTPUT: temp2 = 1 if guard allowed, 0 if in cooldown
           rem Prevents guard use if still in cooldown period (1 second
           rem after guard ends)
+          rem
           rem Input: temp1 = player index (0-3)
           rem        playerState[] (global array) = player state flags
           rem        (bit 1 = guarding)
           rem        playerTimers_R[] (global SCRAM array) = guard
           rem        cooldown timers
+          rem
           rem Output: temp2 = 1 if guard allowed, 0 if in cooldown
+          rem
           rem Mutates: temp2 (set to 0 or 1)
+          rem
           rem Called Routines: None
           dim CGC_playerIndex = temp1 : rem Constraints: Must be colocated with GuardCooldownBlocked (called via goto)
           dim CGC_guardAllowed = temp2
@@ -136,9 +158,13 @@ CheckGuardCooldown
 GuardCooldownBlocked
           rem Currently guarding or in cooldown - not allowed to start
           rem new guard
+          rem
           rem Input: None (called from CheckGuardCooldown)
+          rem
           rem Output: temp2 set to 0
+          rem
           rem Mutates: temp2 (set to 0)
+          rem
           rem Called Routines: None
           dim GCBD_guardAllowed = temp2 : rem Constraints: Must be colocated with CheckGuardCooldown
           rem Currently guarding or in cooldown - not allowed to start
@@ -150,15 +176,20 @@ StartGuard
           rem
           rem Start Guard
           rem Activates guard state with proper timing
+          rem
           rem INPUT: temp1 = player index (0-3)
           rem Activates guard state with proper timing
+          rem
           rem Input: temp1 = player index (0-3)
           rem        GuardTimerMaxFrames (constant) = guard duration in
           rem        frames
+          rem
           rem Output: playerState[] guard bit set, playerTimers_W[] set
           rem to guard duration
+          rem
           rem Mutates: playerState[] (guard bit set), playerTimers_W[]
           rem (set to GuardTimerMaxFrames)
+          rem
           rem Called Routines: None
           dim SG_playerIndex = temp1 : rem Constraints: None
           let playerState[SG_playerIndex] = playerState[SG_playerIndex] | 2 : rem Set guard bit in playerState
@@ -171,27 +202,35 @@ StartGuard
           
           return
 
+UpdateGuardTimers
           rem
           rem Update Guard Timers
           rem Updates guard duration and cooldown timers each frame
           rem Should be called from main game loop
-UpdateGuardTimers
           rem Updates guard duration and cooldown timers each frame for
           rem all players
+          rem
           rem Input: None
+          rem
           rem Output: Guard timers and cooldown timers updated for all
           rem players
+          rem
           rem Mutates: temp1 (set to 0-3), playerTimers_W[]
           rem (decremented), playerState[] (guard bit cleared when
           rem expired)
+          rem
           rem Called Routines: UpdateSingleGuardTimer - updates guard
           rem timer for one player
+          rem
           rem Constraints: Tail call to UpdateSingleGuardTimer for
           rem player 3
           dim UGT_playerIndex = temp1 : rem              Should be called from main game loop
           rem Update guard timers for all players
+          rem
           rem INPUT: None
+          rem
           rem OUTPUT: None
+          rem
           rem EFFECTS: Decrements guard duration timers for guarding
           rem   players,
           rem decrements cooldown timers for non-guarding players,
@@ -210,6 +249,7 @@ UpdateGuardTimers
 
 UpdateSingleGuardTimer
           rem Update guard timer or cooldown for a single player
+          rem
           rem Input: temp1 = player index (0-3)
           rem        playerState[] (global array) = player state flags
           rem        (bit 1 = guarding)
@@ -219,13 +259,17 @@ UpdateSingleGuardTimer
           rem        frames
           rem        MaskClearGuard (constant) = bitmask to clear guard
           rem        bit
+          rem
           rem Output: playerTimers_W[] decremented, playerState[] guard
           rem bit cleared when expired,
           rem         cooldown started when guard expires
+          rem
           rem Mutates: temp1-temp3 (used for calculations),
           rem playerTimers_W[] (decremented),
           rem         playerState[] (guard bit cleared when expired)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with
           rem UpdateGuardTimerActive, GuardTimerExpired (called via
           rem goto)
@@ -233,10 +277,13 @@ UpdateSingleGuardTimer
           dim USGT_isGuarding = temp2
           dim USGT_timer = temp3
           rem Update guard timer or cooldown for a single player
+          rem
           rem INPUT: temp1 = player index (0-3)
           rem        playerState = player state flags (bit 1 = guarding)
           rem        playerTimers = guard duration or cooldown timer
+          rem
           rem OUTPUT: None
+          rem
           rem EFFECTS: If guarding: decrements guard duration timer,
           rem   clears guard and starts cooldown when expired
           rem If not guarding: decrements cooldown timer (if active)
@@ -252,12 +299,16 @@ UpdateSingleGuardTimer
 
 UpdateGuardTimerActive
           rem Player is guarding - decrement guard duration timer
+          rem
           rem Input: USGT_playerIndex (from UpdateSingleGuardTimer),
           rem playerTimers_R[] (global SCRAM array)
+          rem
           rem Output: playerTimers_W[] decremented, dispatches to
           rem GuardTimerExpired when timer reaches 0
+          rem
           rem Mutates: temp3 (timer value), playerTimers_W[]
           rem (decremented)
+          rem
           rem Called Routines: None
           dim UGTA_timer = temp3 : rem Constraints: Must be colocated with UpdateSingleGuardTimer, GuardTimerExpired
           let UGTA_timer = playerTimers_R[USGT_playerIndex] : rem Player is guarding - decrement guard duration timer
@@ -273,13 +324,17 @@ UpdateGuardTimerActive
 GuardTimerExpired
           rem Guard duration expired - clear guard bit and start
           rem cooldown
+          rem
           rem Input: USGT_playerIndex (from UpdateGuardTimerActive),
           rem playerState[] (global array),
           rem        GuardTimerMaxFrames (constant)
+          rem
           rem Output: playerState[] guard bit cleared, playerTimers_W[]
           rem set to cooldown duration
+          rem
           rem Mutates: playerState[] (guard bit cleared),
           rem playerTimers_W[] (set to GuardTimerMaxFrames)
+          rem
           rem Called Routines: None
           let playerState[USGT_playerIndex] = playerState[USGT_playerIndex] & MaskClearGuard : rem Constraints: Must be colocated with UpdateSingleGuardTimer, UpdateGuardTimerActive
           let playerTimers_W[USGT_playerIndex] = GuardTimerMaxFrames : rem Start cooldown timer (same duration as guard)

@@ -37,15 +37,21 @@ GetPlayerAnimationState
           rem   15=Shamone
           rem Animation State Helper
           rem Extracts animation state (bits 4-7) from playerState
+          rem
           rem INPUT: temp1 = player index (0-3)
+          rem
           rem OUTPUT: temp2 = animation state (0-15)
           rem Uses: ActionAttackWindup=13, ActionAttackExecute=14,
           rem   ActionAttackRecovery=15
           rem Extracts animation state (bits 4-7) from playerState
+          rem
           rem Input: temp1 = player index (0-3)
           rem        playerState[] (global array) = player state flags
+          rem
           rem Output: temp2 = animation state (0-15)
+          rem
           rem Mutates: temp2 (set to animation state)
+          rem
           rem Called Routines: None
           dim GPAS_playerIndex = temp1 : rem Constraints: None
           dim GPAS_animationState = temp2
@@ -63,19 +69,27 @@ ShouldPreserveFacing
           rem 0 if facing can be updated normally.
           rem Preserves facing during: recovery/hitstun (bit 3) OR hurt
           rem   animation states (5-9)
+          rem
           rem INPUT: temp1 = player index (0-3)
+          rem
           rem OUTPUT: temp3 = 1 if facing should be preserved, 0 if can
           rem   update
+          rem
           rem EFFECTS: Uses temp2 for animation state check
           rem Returns 1 if facing should be preserved (during
           rem hurt/recovery states), 0 if facing can be updated normally
+          rem
           rem Input: temp1 = player index (0-3)
           rem        playerState[] (global array) = player state flags
+          rem
           rem Output: temp3 = 1 if facing should be preserved, 0 if can
           rem update
+          rem
           rem Mutates: temp2, temp3 (used for calculations)
+          rem
           rem Called Routines: GetPlayerAnimationState - accesses temp1,
           rem temp2, playerState[]
+          rem
           rem Constraints: Must be colocated with SPF_PreserveYes,
           rem SPF_PreserveNo (called via goto)
           dim SPF_playerIndex = temp1
@@ -94,9 +108,13 @@ ShouldPreserveFacing
           
 SPF_PreserveYes
           rem In hurt/recovery state, preserve facing
+          rem
           rem Input: None (called from ShouldPreserveFacing)
+          rem
           rem Output: temp3 set to 1
+          rem
           rem Mutates: temp3 (set to 1)
+          rem
           rem Called Routines: None
           let SPF_preserveFlag = 1 : rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveNo
           let temp3 = SPF_preserveFlag
@@ -104,18 +122,23 @@ SPF_PreserveYes
           
 SPF_PreserveNo
           rem Not in hurt/recovery state, allow facing update
+          rem
           rem Input: None (called from ShouldPreserveFacing)
+          rem
           rem Output: temp3 set to 0
+          rem
           rem Mutates: temp3 (set to 0)
+          rem
           rem Called Routines: None
           let SPF_preserveFlag = 0 : rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveYes
           let temp3 = SPF_preserveFlag
           return
 
-          rem Main input handler for all players
 InputHandleAllPlayers
+          rem Main input handler for all players
           rem Main input handler for all players with Quadtari
           rem multiplexing
+          rem
           rem Input: qtcontroller (global) = multiplexing state
           rem (0=P1/P2, 1=P3/P4)
           rem        ControllerStatus (global) = controller detection
@@ -123,15 +146,19 @@ InputHandleAllPlayers
           rem        selectedChar3_R, selectedChar4_R (global SCRAM) =
           rem        character selections
           rem        PlayerState[] (global array) = player state flags
+          rem
           rem Output: Input processed for active players, qtcontroller
           rem toggled
+          rem
           rem Mutates: temp1, temp2 (used for calculations),
           rem currentPlayer (set to 0-3),
           rem         qtcontroller (toggled between 0 and 1)
+          rem
           rem Called Routines: IsPlayerAlive - checks if player is
           rem alive,
           rem   InputHandleLeftPortPlayer, InputHandleRightPortPlayer -
           rem   handle input for left/right port players
+          rem
           rem Constraints: Must be colocated with InputSkipPlayer0Input,
           rem InputSkipPlayer1Input,
           rem              InputHandlePlayer1,
@@ -149,10 +176,15 @@ InputHandleAllPlayers
           
 InputSkipPlayer0Input
           rem Skip Player 0 input (label only, no execution)
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with InputHandleAllPlayers
           
           let currentPlayer = 1 : gosub IsPlayerAlive
@@ -165,37 +197,51 @@ InputSkipPlayer0Input
           
 InputHandlePlayer1
           rem Handle Player 1 input (right port)
+          rem
           rem Input: temp1 (set to 1), PlayerState[] (global array)
+          rem
           rem Output: Player 1 input processed
+          rem
           rem Mutates: temp1 (set to 1), player state (via
           rem InputHandleRightPortPlayer)
+          rem
           rem Called Routines: InputHandleRightPortPlayer - handles
           rem right port player input
           let temp1 = 1 : gosub InputHandleRightPortPlayer : rem Constraints: Must be colocated with InputHandleAllPlayers, InputSkipPlayer1Input
-          rem Player 1 uses Joy1
 InputSkipPlayer1Input
+          rem Player 1 uses Joy1
           return
-          rem Skip Player 1 input (label only, no execution)
-          rem Input: None (label only, no execution)
-          rem Output: None (label only)
-          rem Mutates: None
 InputHandleQuadtariPlayers
+          rem Skip Player 1 input (label only, no execution)
+          rem
+          rem Input: None (label only, no execution)
+          rem
+          rem Output: None (label only)
+          rem
+          rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with InputHandleAllPlayers
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and
           rem alive)
+          rem
           rem Input: ControllerStatus (global), selectedChar3_R,
           rem selectedChar4_R (global SCRAM),
           rem        PlayerState[] (global array)
+          rem
           rem Output: Input processed for Players 3 & 4 if conditions
           rem met, qtcontroller reset to 0
+          rem
           rem Mutates: temp1, temp2 (used for calculations),
           rem currentPlayer (set to 2-3),
           rem         qtcontroller (reset to 0)
+          rem
           rem Called Routines: IsPlayerAlive - checks if player is
           rem alive,
           rem   InputHandleLeftPortPlayer, InputHandleRightPortPlayer -
           rem   handle input for left/right port players
+          rem
           rem Constraints: Must be colocated with InputHandleAllPlayers,
           rem InputSkipPlayer3Input,
           dim IHQP_isAlive = temp2 : rem              InputSkipPlayer4Input
@@ -210,9 +256,13 @@ InputHandleQuadtariPlayers
           
 InputSkipPlayer3Input
           rem Skip Player 3 input (label only, no execution)
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input : rem Constraints: Must be colocated with InputHandleQuadtariPlayers
           if selectedChar4_R = 0 then InputSkipPlayer4Input
@@ -224,10 +274,15 @@ InputSkipPlayer3Input
           
 InputSkipPlayer4Input
           rem Skip Player 4 input (label only, no execution)
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with
           rem InputHandleQuadtariPlayers
           
@@ -242,7 +297,9 @@ DispatchCharacterJump
           rem These subroutines replace duplicate dispatch blocks
           rem throughout
           rem   the input handlers
+          rem
           rem INPUT: temp4 = character type (0-31)
+          rem
           rem OUTPUT: Dispatches to appropriate character-specific
           rem routine
           
@@ -367,8 +424,8 @@ gotoUrsuloAttack
 gotoShamoneAttack
           goto ShamoneAttack bank11
           
-          rem Character 16-23 attack handlers (future characters)
 gotoChar16Attack
+          rem Character 16-23 attack handlers (future characters)
           goto Char16Attack bank11
           
 gotoChar17Attack
@@ -392,8 +449,8 @@ gotoChar22Attack
 gotoChar23Attack
           goto Char23Attack bank11
           
-          rem Character 24-30 attack handlers (future characters)
 gotoChar24Attack
+          rem Character 24-30 attack handlers (future characters)
           goto Char24Attack bank11
           
 gotoChar25Attack
@@ -418,7 +475,9 @@ CheckEnhancedJumpButton
           rem
           rem Shared Enhanced Button Check
           rem Checks Genesis/Joy2b+ Button C/II for jump input
+          rem
           rem INPUT: temp1 = player index (0-3)
+          rem
           rem OUTPUT: temp3 = 1 if jump button pressed, 0 otherwise
           rem Uses: INPT0 for players 0,2; INPT2 for players 1,3
           dim CEJB_playerIndex = temp1
@@ -468,6 +527,7 @@ HandleGuardInput
           rem
           rem Shared Guard Input Handling
           rem Handles down/guard input for both ports
+          rem
           rem INPUT: temp1 = player index (0-3)
           rem Uses: joy0down for players 0,2; joy1down for players 1,3
           dim HGI_playerIndex = temp1
@@ -499,7 +559,9 @@ ConvertPlayerXToPlayfieldColumn
           rem
           rem Playfield Coordinate Conversion
           rem Converts player X position to playfield column index
+          rem
           rem INPUT: temp1 = player index (0-3)
+          rem
           rem OUTPUT: temp2 = playfield column (0-31)
           dim CPXTPC_playerIndex = temp1 : rem MUTATES: temp2 (return value)
           dim CPXTPC_pfColumn = temp2
@@ -516,6 +578,7 @@ HandleFlyingCharacterMovement
           rem Shared Flying Character Movement
           rem Handles horizontal movement with collision for flying
           rem   characters (Frooty, Dragon of Storms)
+          rem
           rem INPUT: temp1 = player index (0-3)
           rem Uses: joy0left/joy0right for players 0,2;
           rem joy1left/joy1right
@@ -551,8 +614,8 @@ HFCM_CheckLeftCollision
           let HFCM_pfRow = temp2
           if HFCM_pfRow >= pfrows then goto HFCM_MoveLeftOK
           if pfread(HFCM_checkColumn, HFCM_pfRow) then goto HFCM_CheckRightMovement : rem Do not check if beyond screen
-          rem Blocked at bottom too
 HFCM_MoveLeftOK
+          rem Blocked at bottom too
           let playerVelocityX[HFCM_playerIndex] = 255 : rem Apply leftward velocity impulse (double-width sprite: 16px width)
           rem -1 in 8-bit twos complement: 256 - 1 = 255
           let playerVelocityXL[HFCM_playerIndex] = 0
@@ -587,8 +650,8 @@ HFCM_DoRightMovement
           let HFCM_pfRow = temp2
           if HFCM_pfRow >= pfrows then goto HFCM_MoveRightOK
           if pfread(HFCM_checkColumn, HFCM_pfRow) then goto HFCM_DoneFlyingMovement : rem Do not check if beyond screen
-          rem Blocked at bottom too
 HFCM_MoveRightOK
+          rem Blocked at bottom too
           let playerVelocityX[HFCM_playerIndex] = 1 : rem Apply rightward velocity impulse
           let playerVelocityXL[HFCM_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states
@@ -602,6 +665,7 @@ HFCM_DoneFlyingMovement
 InputHandleLeftPortPlayer
           rem
           rem LEFT PORT PLAYER INPUT HANDLER (joy0 - Players 1 & 3)
+          rem
           rem INPUT: temp1 = player index (0 or 2)
           dim IHLP_playerIndex = temp1 : rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
           dim IHLP_animationState = temp2
@@ -732,6 +796,7 @@ InputSkipLeftPortAttack
 InputHandleRightPortPlayer
           rem
           rem RIGHT PORT PLAYER INPUT HANDLER (joy1 - Players 2 & 4)
+          rem
           rem INPUT: temp1 = player index (1 or 3)
           dim IHRP_playerIndex = temp1 : rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
           dim IHRP_animationState = temp2
@@ -879,15 +944,15 @@ HandlePauseInput
 CheckJoy2bButtons
           if !INPT1{7} then temp1 = 1 
           if !INPT3{7} then temp1 = 1 : rem Player 1 Button III
-          rem Player 2 Button III
 Joy2bPauseDone
+          rem Player 2 Button III
           
           rem Debounce: only toggle if button just pressed (was 0, now
           if temp1 = 0 then DonePauseToggle : rem   1)
           if PauseButtonPrev then DonePauseToggle
           let GameState  = GameState ^ 1
-          rem Toggle pause (0<->1)
 DonePauseToggle
+          rem Toggle pause (0<->1)
           
           
           let PauseButtonPrev  = temp1 : rem Update previous button state for next frame

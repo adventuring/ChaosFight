@@ -33,6 +33,7 @@ UpdatePlayerMovement
           rem Update player movement for all active players
           rem Called every frame to update subpixel positions
           rem Update player movement for all active players
+          rem
           rem Input: currentPlayer (global) = player index (set inline)
           rem        QuadtariDetected (global) = Quadtari detection flag
           rem        playerHealth[] (global array) = player health
@@ -45,11 +46,15 @@ UpdatePlayerMovement
           rem        arrays) = velocities
           rem        playerX[], playerY[] (global arrays) = integer
           rem        positions
+          rem
           rem Output: Player positions updated for all active players
+          rem
           rem Mutates: currentPlayer (set to 0-3), player positions and
           rem subpixel positions (via UpdatePlayerMovementSingle)
+          rem
           rem Called Routines: UpdatePlayerMovementSingle - updates
           rem movement for one player
+          rem
           rem Constraints: Must be colocated with
           rem UpdatePlayerMovementQuadtariSkip (called via goto)
           rem              Called every frame to update subpixel
@@ -63,21 +68,28 @@ UpdatePlayerMovement
           next
 UpdatePlayerMovementQuadtariSkip
           return
+UpdatePlayerMovementSingle
           rem Skip Players 2-3 movement update (2-player mode only,
           rem label only)
-UpdatePlayerMovementSingle
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with UpdatePlayerMovement
           rem
           rem Update movement for a specific player
+          rem
           rem Input: currentPlayer = player index (0-3) (global
           rem variable)
           rem Applies velocity to position with subpixel precision
           rem batariBASIC automatically handles carry from fractional to
           rem   integer parts
+          rem
           rem MUTATES:
           rem
           rem   temp2 = UPS_sum16 low byte (16-bit accumulator)
@@ -88,11 +100,13 @@ UpdatePlayerMovementSingle
           rem execution.
           rem   Do not use these temp variables after calling this
           rem   subroutine.
+          rem
           rem EFFECTS:
           rem   Modifies playerX[], playerY[], playerSubpixelX_W[],
           rem   playerSubpixelY_W[]
           rem Update movement for a specific player (applies velocity to
           rem position with subpixel precision)
+          rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        playerHealth[] (global array) = player health
           rem        values
@@ -104,12 +118,16 @@ UpdatePlayerMovementSingle
           rem        arrays) = velocities
           rem        playerX[], playerY[] (global arrays) = integer
           rem        positions
+          rem
           rem Output: Player positions updated (integer and subpixel)
+          rem
           rem Mutates: temp2, temp3, temp4 (used for calculations),
           rem playerSubpixelX_W[], playerSubpixelX_WL[],
           rem         playerSubpixelY_W[], playerSubpixelY_WL[],
           rem         playerX[], playerY[]
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with XCarry, XNoCarry,
           rem YCarry, YNoCarry (called via goto)
           rem              WARNING: temp2, temp3, and temp4 are mutated
@@ -177,19 +195,24 @@ YNoCarry
 SetPlayerVelocity
           rem Set player velocity (integer parts only, subpixel parts
           rem   set to 0)
+          rem
           rem Input: temp1 = player index (0-3), temp2 = X velocity
           rem   (integer), temp3 = Y velocity (integer)
           rem Set player velocity (integer parts only, subpixel parts
           rem set to 0)
+          rem
           rem Input: temp1 = player index (0-3), temp2 = X velocity
           rem (integer), temp3 = Y velocity (integer)
           rem        playerVelocityX[], playerVelocityXL[],
           rem        playerVelocityY[], playerVelocityYL[] (global
           rem        arrays) = velocities
+          rem
           rem Output: Player velocities set (integer parts only,
           rem subpixel parts set to 0)
+          rem
           rem Mutates: playerVelocityX[], playerVelocityXL[],
           rem playerVelocityY[], playerVelocityYL[]
+          rem
           rem Called Routines: None
           dim SPV_playerIndex = temp1 : rem Constraints: None
           dim SPV_velocityX = temp2
@@ -203,10 +226,12 @@ SetPlayerVelocity
 SetPlayerPosition
           rem Set player position (integer parts only, subpixel parts
           rem   set to 0)
+          rem
           rem Input: temp1 = player index (0-3), temp2 = X position
           rem   (integer), temp3 = Y position (integer)
           rem Set player position (integer parts only, subpixel parts
           rem set to 0)
+          rem
           rem Input: temp1 = player index (0-3), temp2 = X position
           rem (integer), temp3 = Y position (integer)
           rem        playerX[], playerY[] (global arrays) = integer
@@ -214,11 +239,14 @@ SetPlayerPosition
           rem        playerSubpixelX_W[], playerSubpixelX_WL[],
           rem        playerSubpixelY_W[], playerSubpixelY_WL[] (global
           rem        SCRAM arrays) = subpixel positions
+          rem
           rem Output: Player positions set (integer and subpixel parts
           rem set)
+          rem
           rem Mutates: playerX[], playerY[], playerSubpixelX_W[],
           rem playerSubpixelX_WL[],
           rem         playerSubpixelY_W[], playerSubpixelY_WL[]
+          rem
           rem Called Routines: None
           dim SPP_playerIndex = temp1 : rem Constraints: None
           dim SPP_positionX = temp2
@@ -234,10 +262,13 @@ SetPlayerPosition
 GetPlayerPosition
           rem
           rem Get player position (integer parts only)
+          rem
           rem Input: currentPlayer = player index (0-3) (global
           rem variable)
+          rem
           rem Output: temp2 = X position, temp3 = Y position →
           rem   GPP_positionX, GPP_positionY
+          rem
           rem MUTATES:
           rem   temp2 = GPP_positionX (return value: X position)
           rem   temp3 = GPP_positionY (return value: Y position)
@@ -245,12 +276,17 @@ GetPlayerPosition
           rem GPP_positionX/GPP_positionY
           rem   aliases, not temp2/temp3 directly.
           rem Get player position (integer parts only)
+          rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        playerX[], playerY[] (global arrays) = integer
           rem        positions
+          rem
           rem Output: temp2 = X position, temp3 = Y position
+          rem
           rem Mutates: temp2, temp3 (set to position values)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: WARNING: Callers should read from
           rem GPP_positionX/GPP_positionY aliases, not temp2/temp3
           rem directly.
@@ -265,10 +301,13 @@ GetPlayerPosition
 GetPlayerVelocity
           rem
           rem Get player velocity (integer parts only)
+          rem
           rem Input: currentPlayer = player index (0-3) (global
           rem variable)
+          rem
           rem Output: temp2 = X velocity, temp3 = Y velocity →
           rem   GPV_velocityX, GPV_velocityY
+          rem
           rem MUTATES:
           rem   temp2 = GPV_velocityX (return value: X velocity)
           rem   temp3 = GPV_velocityY (return value: Y velocity)
@@ -276,12 +315,17 @@ GetPlayerVelocity
           rem GPV_velocityX/GPV_velocityY
           rem   aliases, not temp2/temp3 directly.
           rem Get player velocity (integer parts only)
+          rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        playerVelocityX[], playerVelocityY[] (global
           rem        arrays) = velocities
+          rem
           rem Output: temp2 = X velocity, temp3 = Y velocity
+          rem
           rem Mutates: temp2, temp3 (set to velocity values)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: WARNING: Callers should read from
           rem GPV_velocityX/GPV_velocityY aliases, not temp2/temp3
           rem directly.
@@ -295,19 +339,25 @@ GetPlayerVelocity
 
 MovementApplyGravity
           rem Apply gravity to player velocity (adds to Y velocity)
+          rem
           rem Input: temp1 = player index (0-3), temp2 = gravity
           rem   strength (integer, positive = downward)
           rem NOTE: For subpixel gravity, call AddVelocitySubpixelY
           rem   separately
           rem Apply gravity to player velocity (adds to Y velocity,
           rem integer part only)
+          rem
           rem Input: temp1 = player index (0-3), temp2 = gravity
           rem strength (integer, positive = downward), playerVelocityY[]
           rem (global array) = Y velocities
+          rem
           rem Output: Y velocity increased by gravity strength
+          rem
           rem Mutates: playerVelocityY[] (global array) = Y velocity
           rem (incremented)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Integer gravity only. For subpixel gravity,
           rem call AddVelocitySubpixelY separately
           dim MAG_playerIndex = temp1
@@ -317,20 +367,26 @@ MovementApplyGravity
 
 AddVelocitySubpixelY
           rem Add to Y velocity subpixel part (for fractional gravity)
+          rem
           rem Input: temp1 = player index (0-3), temp2 = subpixel amount
           rem   to add (0-255)
           rem If overflow occurs (>255), carry to integer part
           rem Add to Y velocity subpixel part (for fractional gravity)
+          rem
           rem Input: temp1 = player index (0-3), temp2 = subpixel amount
           rem to add (0-255), playerVelocityY[], playerVelocityYL[]
           rem (global arrays) = Y velocities
+          rem
           rem Output: Y velocity subpixel part incremented, integer part
           rem incremented if overflow occurs
+          rem
           rem Mutates: temp2-temp4 (used for calculations),
           rem playerVelocityY[], playerVelocityYL[] (global arrays) = Y
           rem velocities (subpixel incremented, integer incremented on
           rem carry)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: If overflow occurs (>255), carry to integer
           rem part. Uses 16-bit accumulator for proper carry detection
           dim AVSY_playerIndex = temp1
@@ -345,13 +401,18 @@ AddVelocitySubpixelY
           return
 VelocityYCarry
           rem Helper: Handles carry from subpixel to integer part
+          rem
           rem Input: temp2 = wrapped low byte, AVSY_playerIndex = player
           rem index, playerVelocityY[] (global array) = Y velocities
+          rem
           rem Output: Subpixel part set, integer part incremented
+          rem
           rem Mutates: playerVelocityYL[] (global array) = Y velocity
           rem subpixel (set), playerVelocityY[] (global array) = Y
           rem velocity integer (incremented)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for AddVelocitySubpixelY,
           rem only called when carry detected
           let playerVelocityYL[AVSY_playerIndex] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
@@ -360,19 +421,25 @@ VelocityYCarry
 
 ApplyFriction
           rem Apply friction to player X velocity (simple approximation)
+          rem
           rem Input: temp1 = player index (0-3)
           rem NOTE: Simple decrement approach for 8-bit CPU
           rem Apply friction to player X velocity (simple approximation
           rem using decrement/increment)
+          rem
           rem Input: temp1 = player index (0-3), playerVelocityX[],
           rem playerVelocityXL[] (global arrays) = X velocities
+          rem
           rem Output: X velocity reduced by 1 (positive velocities
           rem decremented, negative velocities incremented), subpixel
           rem zeroed if velocity reaches zero
+          rem
           rem Mutates: playerVelocityX[], playerVelocityXL[] (global
           rem arrays) = X velocities (reduced by 1, subpixel zeroed if
           rem zero)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Simple decrement approach for 8-bit CPU.
           rem Positive velocities (>0 and not negative) decremented,
           rem negative velocities (≥128 in two’s complement) incremented
@@ -392,10 +459,12 @@ CheckPlayerCollision
           rem
           rem Input: temp1 = player 1 index → CPC_player1Index
           rem        temp2 = player 2 index → CPC_player2Index
+          rem
           rem Output: temp3 = 1 if collision, 0 if not →
           rem CPC_collisionResult
           rem NOTE: Uses integer positions only (subpixel ignored for
           rem   collision)
+          rem
           rem MUTATES:
           rem   temp3 = CPC_collisionResult (return value: 1 if
           rem   collision, 0 if not)
@@ -406,14 +475,19 @@ CheckPlayerCollision
           rem temp3 directly. All temp4-temp13 are mutated during
           rem Check collision between two players using integer
           rem positions (subpixel ignored)
+          rem
           rem Input: temp1 = player 1 index (0-3), temp2 = player 2
           rem index (0-3), playerX[], playerY[] (global arrays) = player
           rem positions, playerChar[] (global array) = character types,
           rem CharacterHeights[] (global data table) = character heights
+          rem
           rem Output: temp3 = 1 if collision, 0 if not
+          rem
           rem Mutates: temp3-temp9 (used for calculations, temp4-7
           rem reused after X/Y checks)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Uses integer positions only (subpixel ignored
           rem for collision). Checks X collision (16 pixel width) and Y
           rem collision (using CharacterHeights table). WARNING: Callers
@@ -493,23 +567,28 @@ ConstrainToScreen
           rem
           rem Movement Constraints
           rem Constrain player to screen bounds
+          rem
           rem Input: temp1 = player index (0-3)
           rem Clamps integer positions and zeros subpixel parts at
           rem   boundaries
           rem Constrain player to screen bounds (clamps integer
           rem positions and zeros subpixel parts at boundaries)
+          rem
           rem Input: temp1 = player index (0-3), playerX[], playerY[]
           rem (global arrays) = integer positions, playerSubpixelX_W[],
           rem playerSubpixelX_WL[], playerSubpixelY_W[],
           rem playerSubpixelY_WL[] (global SCRAM arrays) = subpixel
           rem positions
+          rem
           rem Output: Player positions clamped to screen bounds (X:
           rem 10-150, Y: 20-80), subpixel parts zeroed at boundaries
+          rem
           rem Mutates: playerX[], playerY[] (global arrays) = integer
           rem positions (clamped), playerSubpixelX_W[],
           rem playerSubpixelX_WL[], playerSubpixelY_W[],
           rem playerSubpixelY_WL[] (global SCRAM arrays) = subpixel
           rem positions (set to clamped values, low bytes zeroed)
+          rem
           rem Called Routines: None
           dim CTS_playerIndex = temp1 : rem Constraints: X bounds: 10-150, Y bounds: 20-80
           rem Constrain X position (10 to 150 for screen bounds)
@@ -533,15 +612,18 @@ ConstrainToScreen
           rem
           rem Initialization
 
+InitializeMovementSystem
           rem Initialize movement system for all players
           rem Called at game start to set up initial positions and
           rem   velocities
-InitializeMovementSystem
           rem Initialize movement system for all players (called at game
           rem start to set up initial positions and velocities)
+          rem
           rem Input: None (initializes all players 0-3)
+          rem
           rem Output: All players initialized to center of screen (X=80,
           rem Y=100) with zero velocities
+          rem
           rem Mutates: temp1-temp3 (used for calculations), playerX[],
           rem playerY[] (global arrays) = integer positions (set to 80,
           rem 100), playerSubpixelX_W[], playerSubpixelX_WL[],
@@ -550,7 +632,9 @@ InitializeMovementSystem
           rem zeroed), playerVelocityX[], playerVelocityXL[],
           rem playerVelocityY[], playerVelocityYL[] (global arrays) =
           rem velocities (all set to 0)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Initializes all 4 players to same position
           rem (center of screen). All velocities set to zero
           dim IMS_playerIndex = temp1

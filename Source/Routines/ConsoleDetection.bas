@@ -19,16 +19,21 @@ ConsoleDetHW
           rem   2600
           rem Main console detection routine
           rem Detect whether running on Atari 2600 or 7800 console
+          rem
           rem Input: $D0, $D1 (hardware registers) = console detection
           rem values
           rem        $80 (zero-page RAM) = CDFJ driver detection result
           rem        (if flashed)
           rem        systemFlags (global) = system flags
+          rem
           rem Output: systemFlags updated with SystemFlag7800 if 7800
           rem detected
+          rem
           rem Mutates: systemFlags (SystemFlag7800 set or cleared),
           rem temp1 (used for hardware register reads)
+          rem
           rem Called Routines: None (reads hardware registers directly)
+          rem
           rem Constraints: Must be colocated with CheckFlashed, Is7800,
           rem Is2600 (all called via goto)
           rem              MUST run before any code modifies $D0/$D1
@@ -52,11 +57,16 @@ ConsoleDetHW
 CheckFlashed
           rem Check if game was flashed to Harmony/Melody (both $D0 and
           rem $D1 are $00)
+          rem
           rem Input: $D1 (hardware register) = console detection value
           rem        $80 (zero-page RAM) = CDFJ driver detection result
+          rem
           rem Output: Dispatches to Is7800 or Is2600
+          rem
           rem Mutates: temp1 (used for hardware register reads)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with ConsoleDetHW, Is7800,
           rem Is2600
           rem Check if $D1 is also $00 (flashed game)
@@ -72,18 +82,26 @@ CheckFlashed
           
 Is7800
           rem 7800 console detected
+          rem
           rem Input: systemFlags (global) = system flags
+          rem
           rem Output: systemFlags updated with SystemFlag7800 set
+          rem
           rem Mutates: systemFlags (SystemFlag7800 set)
+          rem
           rem Called Routines: None
           let systemFlags = systemFlags | SystemFlag7800 : rem Constraints: Must be colocated with ConsoleDetHW
           return
           
 Is2600
           rem 2600 console detected
+          rem
           rem Input: systemFlags (global) = system flags
+          rem
           rem Output: systemFlags updated with SystemFlag7800 cleared
+          rem
           rem Mutates: systemFlags (SystemFlag7800 cleared)
+          rem
           rem Called Routines: None
           let systemFlags = systemFlags & ClearSystemFlag7800 : rem Constraints: Must be colocated with ConsoleDetHW
           return
@@ -94,11 +112,16 @@ Is2600
           
 CheckConsoleFeatures
           rem Check for console-specific features after detection
+          rem
           rem Input: systemFlags (global) = system flags (SystemFlag7800
           rem indicates 7800)
+          rem
           rem Output: None (no console-specific initialization needed)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with Done7800Features,
           rem ConsoleFeaturesDone
           if !(systemFlags & SystemFlag7800) then Done7800Features : rem Check if running on 7800 (bit 7 of systemFlags)
@@ -114,10 +137,15 @@ CheckConsoleFeatures
 Done7800Features
 ConsoleFeaturesDone
           rem 2600-specific features (label only, no execution)
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with CheckConsoleFeatures
           rem 2600-specific features
           rem Note: Controller detection works for both 2600 and 7800
@@ -125,8 +153,13 @@ ConsoleFeaturesDone
           rem   No console-specific initialization needed
           return
           rem Console features check complete (label only, no execution)
+          rem
           rem Input: None (label only, no execution)
+          rem
           rem Output: None (label only)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Must be colocated with CheckConsoleFeatures

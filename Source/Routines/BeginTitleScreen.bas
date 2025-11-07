@@ -5,16 +5,21 @@ BeginTitleScreen
           rem Setup routine for Title Screen. Sets initial state only.
 
           rem Setup routine for Title Screen - sets initial state only
+          rem
           rem Input: None (called from ChangeGameMode)
+          rem
           rem Output: titleParadeTimer initialized, titleParadeActive
           rem initialized, COLUBK set,
           rem         music started, window values set
+          rem
           rem Mutates: titleParadeTimer (set to 0), titleParadeActive
           rem (set to 0),
           rem         COLUBK (TIA register), temp1 (passed to
           rem         StartMusic)
+          rem
           rem Called Routines: StartMusic (bank16) - starts title music,
           rem   SetTitleWindowValues (bank12) - sets window values
+          rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModeTitle
           rem Initialize Title Screen mode

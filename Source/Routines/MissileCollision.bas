@@ -23,18 +23,24 @@ CheckAllMissileCollisions
           rem Master routine called each frame to check all active
           rem   missiles.
           rem Checks both visible missiles and AOE attacks.
+          rem
           rem INPUT:
           rem   temp1 = attacker player index (0-3)
+          rem
           rem OUTPUT:
           rem   temp4 = 0 if no hit, or player index (0-3) if hit
           rem Master routine called each frame to check all active
           rem missiles (visible and AOE)
+          rem
           rem Input: temp1 = attacker player index (0-3), missileActive
           rem (global) = missile active flags, playerChar[] (global
           rem array) = character types
+          rem
           rem Output: temp4 = hit player index (0-3) if hit, 0 if no hit
+          rem
           rem Mutates: temp1-temp7 (used for calculations), temp4
           rem (return value)
+          rem
           rem Called Routines: GetMissileWidth (bank6) - gets missile
           rem width to determine if AOE or visible,
           rem CheckVisibleMissileCollision (tail call) - if visible
@@ -75,22 +81,28 @@ CheckVisibleMissileCollision
           rem Checks collision between a visible missile and all
           rem   players.
           rem Uses axis-aligned bounding box (AABB) collision detection.
+          rem
           rem INPUT:
           rem   temp1 = attacker player index (0-3, missile owner)
+          rem
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
           rem Checks collision between a visible missile and all players
           rem using AABB collision detection
+          rem
           rem Input: temp1 = attacker player index (0-3, missile owner),
           rem missileX[] (global array) = missile X positions,
           rem missileY_R[] (global SCRAM array) = missile Y positions,
           rem playerChar[] (global array) = character types, playerX[],
           rem playerY[] (global arrays) = player positions,
           rem playerHealth[] (global array) = player health
+          rem
           rem Output: temp4 = hit player index (0-3) if hit, 255 if no
           rem hit
+          rem
           rem Mutates: temp1-temp7 (used for calculations), temp4
           rem (return value)
+          rem
           rem Called Routines: GetMissileWidth (bank6) - gets missile
           rem width, GetMissileHeight (bank6) - gets missile height
           dim CVMC_attackerIndex = temp1 : rem Constraints: None
@@ -183,22 +195,28 @@ CheckAOECollision
           rem SPECIAL CASE: Bernie (character 0) Ground Thump attack
           rem   hits both left AND right simultaneously, shoving enemies
           rem   away rapidly.
+          rem
           rem INPUT:
           rem   temp1 = attacker player index (0-3)
+          rem
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
           rem Checks collision for area-of-effect melee attacks (no
           rem visible missile)
+          rem
           rem Input: temp1 = attacker player index (0-3), playerChar[]
           rem (global array) = character types, playerState[] (global
           rem array) = player states (bit 0 = facing), playerX[],
           rem playerY[] (global arrays) = player positions,
           rem playerHealth[] (global array) = player health,
           rem CharacterAOEOffsets[] (global data table) = AOE offsets
+          rem
           rem Output: temp4 = hit player index (0-3) if hit, 255 if no
           rem hit
+          rem
           rem Mutates: temp1-temp7 (used for calculations), temp4
           rem (return value)
+          rem
           rem Called Routines: CheckAOEDirection_Right - checks AOE
           rem collision facing right, CheckAOEDirection_Left - checks
           rem AOE collision facing left, CheckBernieAOE - special case
@@ -247,21 +265,27 @@ CheckAOEDirection_Right
           rem Check Aoe Direction - Right
           rem Checks AOE collision when attacking to the right.
           rem Formula: AOE_X = playerX + offset
+          rem
           rem INPUT:
           rem   temp1 = attacker player index (0-3)
+          rem
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
           rem Checks AOE collision when attacking to the right (AOE_X =
           rem playerX + offset)
+          rem
           rem Input: temp1 = attacker player index (0-3), playerX[],
           rem playerY[] (global arrays) = player positions, playerChar[]
           rem (global array) = character types, playerHealth[] (global
           rem array) = player health, CharacterAOEOffsets[] (global data
           rem table) = AOE offsets
+          rem
           rem Output: temp4 = hit player index (0-3) if hit, 255 if no
           rem hit
+          rem
           rem Mutates: temp1-temp7 (used for calculations), temp4
           rem (return value)
+          rem
           rem Called Routines: None
           dim CAOER_attackerIndex = temp1 : rem Constraints: None
           dim CAOER_playerX = temp2
@@ -347,21 +371,27 @@ CheckAOEDirection_Left
           rem Check Aoe Direction - Left
           rem Checks AOE collision when attacking to the left.
           rem Formula: AOE_X = playerX + 7 - offset
+          rem
           rem INPUT:
           rem   temp1 = attacker player index (0-3)
+          rem
           rem OUTPUT:
           rem   temp4 = hit player index (0-3), or 255 if no hit
           rem Checks AOE collision when attacking to the left (AOE_X =
           rem playerX + 7 - offset)
+          rem
           rem Input: temp1 = attacker player index (0-3), playerX[],
           rem playerY[] (global arrays) = player positions, playerChar[]
           rem (global array) = character types, playerHealth[] (global
           rem array) = player health, CharacterAOEOffsets[] (global data
           rem table) = AOE offsets
+          rem
           rem Output: temp4 = hit player index (0-3) if hit, 255 if no
           rem hit
+          rem
           rem Mutates: temp1-temp7 (used for calculations), temp4
           rem (return value)
+          rem
           rem Called Routines: None
           dim CAOEL_attackerIndex = temp1 : rem Constraints: None
           dim CAOEL_playerX = temp2
@@ -449,20 +479,27 @@ MissileCollPF
           rem Check Missile-playfield Collision
           rem Checks if missile hit the playfield (walls, obstacles).
           rem Uses pfread to check playfield pixel at missile position.
+          rem
           rem INPUT:
           rem   temp1 = player index (0-3)
+          rem
           rem OUTPUT:
           rem   temp4 = 1 if hit playfield, 0 if clear
           rem Checks if missile hit the playfield (walls, obstacles)
           rem using pfread
+          rem
           rem Input: temp1 = player index (0-3), missileX[] (global
           rem array) = missile X positions, missileY_R[] (global SCRAM
           rem array) = missile Y positions
+          rem
           rem Output: temp4 = 1 if hit playfield, 0 if clear
+          rem
           rem Mutates: temp2 (used for missile X), temp3 (used for
           rem missile Y), temp4 (return value), temp6 (used for
           rem playfield column calculation)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: None
           let temp2 = missileX[temp1] : rem Get missile X/Y position
           let temp3 = missileY_R[temp1]

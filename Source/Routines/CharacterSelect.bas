@@ -5,16 +5,21 @@ SelScreenEntry
           rem PlayerLockedHelpers.bas moved to Bank 1
 
           rem Initialize character select screen state
+          rem
           rem Input: None (entry point)
+          rem
           rem Output: playerChar[] initialized, playerLocked
           rem initialized, animation state initialized,
           rem         COLUBK set, Quadtari detection called
+          rem
           rem Mutates: playerChar[0-3] (set to 0), playerLocked (set to
           rem 0), charSelectAnimTimer,
           rem         charSelectAnimState, charSelectCharIndex,
           rem         charSelectAnimFrame, COLUBK (TIA register)
+          rem
           rem Called Routines: SelDetectQuad - accesses controller
           rem detection state
+          rem
           rem Constraints: Entry point for character select screen
           rem initialization
           rem              Must be colocated with SelScreenLoop (called
@@ -42,6 +47,7 @@ SelScreenEntry
 SelScreenLoop
           rem Per-frame character select screen loop with Quadtari
           rem multiplexing
+          rem
           rem Input: qtcontroller (global) = Quadtari controller frame
           rem toggle
           rem        joy0left, joy0right, joy0up, joy0down, joy0fire
@@ -52,13 +58,17 @@ SelScreenLoop
           rem        selections
           rem        playerLocked (global) = player lock states
           rem        MaxCharacter (constant) = maximum character index
+          rem
           rem Output: Dispatches to SelHandleQuad or processes even
           rem frame input, then returns
+          rem
           rem Mutates: qtcontroller (toggled), playerChar[],
           rem playerLocked state, temp1, temp2 (passed to
           rem SetPlayerLocked)
+          rem
           rem Called Routines: SetPlayerLocked (bank1) - accesses
           rem playerLocked state
+          rem
           rem Constraints: Must be colocated with SelChkP0Left,
           rem SelSkipP0Left, SelChkP0Right, SelSkipP0Right,
           rem              SelChkJoy0Fire, SelJoy0Down, SelP0Lock,
@@ -113,8 +123,8 @@ SelP0Lock
 
 SelP0Handi
           let temp1 = 0 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank1
-          rem Locked with handicap (75% health)
 SelP0Done
+          rem Locked with handicap (75% health)
 
           rem Handle Player 2 input (joy1 on even frames)
           if joy1left then let playerChar[1] = playerChar[1] - 1 : goto SelChkP1Left
@@ -199,8 +209,8 @@ SelChkJoy0Down2
 
 SelSetHand2
           let temp1 = 2 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank1
-          rem Locked with handicap (75% health)
 SelJoy0Done2
+          rem Locked with handicap (75% health)
 
           if controllerStatus & SetQuadtariDetected then SelHandleP3 : rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
 
@@ -241,8 +251,8 @@ SelJoy1Chk3
 
 SelSetHand3
           let temp1 = 3 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank14
-          rem Locked with handicap (75% health)
 SelJoy1Done3
+          rem Locked with handicap (75% health)
           
           let qtcontroller  = 0 : rem Switch back to even frame mode for next iteration
 SelSkipP2
@@ -287,25 +297,30 @@ SelSkipQuadChkInline
 
 
 
-          rem Draw character selection screen
 SelDrawScreen
+          rem Draw character selection screen
           rem Draw character selection screen with player sprites and
           rem numbers
+          rem
           rem Input: playerChar[] (global array) = current character
           rem selections
           rem        controllerStatus (global) = controller detection
           rem        state
           rem        player0-3x, player0-3y (TIA registers) = sprite
           rem        positions (set by caller or inline)
+          rem
           rem Output: pf0-pf5 (playfield registers) cleared, player
           rem sprites drawn, numbers drawn
+          rem
           rem Mutates: pf0-pf5 (playfield registers), player0-3x,
           rem player0-3y (TIA registers),
           rem         player sprite pointers (via SelDrawSprite),
           rem         playfield data (via SelDrawNumber)
+          rem
           rem Called Routines: SelDrawSprite - accesses playerChar[],
           rem draws character sprites,
           rem   SelDrawNumber - draws player number indicators
+          rem
           rem Constraints: Must be colocated with SelDrawP3, SelSkipP3,
           rem SelDrawP4, SelSkipP4
           rem              (all called via goto)
@@ -334,14 +349,19 @@ SelDrawScreen
           goto SelSkipP3
 SelDrawP3
           rem Draw Player 3 character sprite and number
+          rem
           rem Input: playerChar[] (global array) = current character
           rem selections
           rem        player0x, player0y (TIA registers) = sprite
           rem        position (set inline)
+          rem
           rem Output: Player 3 sprite drawn, number indicator drawn
+          rem
           rem Mutates: player sprite pointers (via SelDrawSprite),
           rem playfield data (via SelDrawNumber)
+          rem
           rem Called Routines: SelDrawSprite, SelDrawNumber
+          rem
           rem Constraints: Must be colocated with SelDrawScreen,
           rem SelSkipP3
           player0x = 56
@@ -355,13 +375,17 @@ SelDrawP3
           goto SelSkipP4
 SelDrawP4
           rem Draw Player 4 character sprite and number
+          rem
           rem Input: playerChar[] (global array) = current character
           rem selections
           rem        player1x, player1y (TIA registers) = sprite
           rem        position (set inline)
+          rem
           rem Output: Player 4 sprite drawn, number indicator drawn
+          rem
           rem Mutates: player sprite pointers (via SelDrawSprite),
           rem playfield data (via SelDrawNumber)
+          rem
           rem Called Routines: SelDrawSprite, SelDrawNumber
           let player1x = 104 : rem Constraints: Must be colocated with SelDrawScreen, SelSkipP4
           let player1y = 80
@@ -376,18 +400,23 @@ SelSkipP4
           goto SelDrawLocks : rem tail call
 
 
-          rem Draw locked status indicators
 SelDrawLocks
+          rem Draw locked status indicators
           rem Draw locked status indicators (playfield blocks framing
           rem locked characters)
+          rem
           rem Input: playerLocked (global) = player lock states,
           rem controllerStatus (global) = controller detection state
+          rem
           rem Output: Playfield blocks drawn around locked characters
+          rem
           rem Mutates: temp1-temp2 (used for calculations), pf0, pf1
           rem (TIA registers) = playfield registers (bits set for
           rem borders)
+          rem
           rem Called Routines: GetPlayerLocked (bank14) - gets lock
           rem state for each player
+          rem
           rem Constraints: Players 3/4 only checked if Quadtari
           rem detected. Borders drawn using playfield bits
           let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then SelDrawP0Border : rem Draw playfield blocks around locked characters
@@ -395,11 +424,16 @@ SelDrawLocks
 SelDrawP0Border
 SelSkipP0Border
           rem Helper: Draw border around Player 1
+          rem
           rem Input: pf0, pf1 (TIA registers) = playfield registers
+          rem
           rem Output: Border bits set for Player 1
+          rem
           rem Mutates: pf0, pf1 (TIA registers) = playfield registers
           rem (bits ORed)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelDrawLocks, only called
           rem when Player 1 is locked
           rem Draw border around Player 1
@@ -409,11 +443,16 @@ SelSkipP0Border
 SelDrawP1Border
 SelSkipP1Border
           rem Helper: Draw border around Player 2
+          rem
           rem Input: pf0, pf1 (TIA registers) = playfield registers
+          rem
           rem Output: Border bits set for Player 2
+          rem
           rem Mutates: pf0, pf1 (TIA registers) = playfield registers
           rem (bits ORed)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelDrawLocks, only called
           rem when Player 2 is locked
           rem Draw border around Player 2
@@ -422,25 +461,35 @@ SelSkipP1Border
           goto SelectCheckPlayer3Lock
 SelectCheckPlayer2Lock
           rem Helper: Check if Player 3 is locked and draw border
+          rem
           rem Input: temp1 = player index (2), playerLocked (global) =
           rem player lock states
+          rem
           rem Output: Border drawn if Player 3 is locked
+          rem
           rem Mutates: temp1-temp2 (used for calculations), pf0, pf1
           rem (TIA registers) = playfield registers (via
           rem SelectDrawPlayer2Border)
+          rem
           rem Called Routines: GetPlayerLocked (bank14) - gets lock
           rem state, SelectDrawPlayer2Border - draws border
+          rem
           rem Constraints: Internal helper for SelDrawLocks, only called
           rem if Quadtari detected
           let temp1 = 2 : gosub GetPlayerLocked bank14 : if temp2 then SelectDrawPlayer2Border
           rem Continue to Player 3 check
 SelectDrawPlayer2Border 
           rem Helper: Draw border around Player 3
+          rem
           rem Input: pf0, pf1 (TIA registers) = playfield registers
+          rem
           rem Output: Border bits set for Player 3
+          rem
           rem Mutates: pf0, pf1 (TIA registers) = playfield registers
           rem (bits ORed)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelectCheckPlayer2Lock,
           rem only called when Player 3 is locked
           rem Draw border around Player 3
@@ -451,40 +500,55 @@ SelectDrawPlayer2Border
           return
 SelectCheckPlayer3Lock
           rem Helper: Check if Player 4 is locked and draw border
+          rem
           rem Input: temp1 = player index (3), playerLocked (global) =
           rem player lock states
+          rem
           rem Output: Border drawn if Player 4 is locked
+          rem
           rem Mutates: temp1-temp2 (used for calculations), pf0, pf1
           rem (TIA registers) = playfield registers (via
           rem SelectDrawPlayer3Border)
+          rem
           rem Called Routines: GetPlayerLocked (bank14) - gets lock
           rem state, SelectDrawPlayer3Border - draws border
+          rem
           rem Constraints: Internal helper for SelDrawLocks, only called
           rem if Quadtari detected
           let temp1 = 3 : gosub GetPlayerLocked bank14 : if temp2 then SelectDrawPlayer3Border
           return
 SelectDrawPlayer3Border 
           return
+SelDrawNumber
           rem Helper: Draw border around Player 4
+          rem
           rem Input: pf0, pf1 (TIA registers) = playfield registers
+          rem
           rem Output: Border bits set for Player 4
+          rem
           rem Mutates: pf0, pf1 (TIA registers) = playfield registers
           rem (bits ORed)
-SelDrawNumber
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelectCheckPlayer3Lock,
           rem only called when Player 4 is locked
           rem Draw border around Player 4
           rem Draw player number indicator
           rem Draw player number indicator (1-4) below character using
           rem playfield pixels
+          rem
           rem Input: player0x, player0y, player1x, player1y (TIA
           rem registers) = sprite positions
+          rem
           rem Output: Player number drawn using playfield bits (1-4
           rem based on position)
+          rem
           rem Mutates: pf0-pf5 (TIA registers) = playfield registers
           rem (bits ORed for digit patterns)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Player numbers determined by position in grid
           rem (top left=1, top right=2, bottom left=3, bottom right=4).
           rem Uses simple digit patterns
@@ -536,10 +600,11 @@ SelDrawP1Bot
           pf5 = pf5 | %00010000
           return
 
-          rem Update character select animations
 SelUpdateAnim
+          rem Update character select animations
           rem Update character select animations (handicap preview,
           rem normal animation cycling)
+          rem
           rem Input: qtcontroller (global) = Quadtari frame toggle,
           rem joy0down, joy1down (hardware) = joystick DOWN states,
           rem controllerStatus (global) = controller detection state,
@@ -550,8 +615,10 @@ SelUpdateAnim
           rem state (9), FramesPerSecond, MaxCharacter (global
           rem constants) = animation constants, rand (global) = random
           rem number generator
+          rem
           rem Output: Animation state updated (frozen in recovery if
           rem handicap preview, or cycled normally)
+          rem
           rem Mutates: HandicapMode (global) = handicap flags (set based
           rem on DOWN held), charSelectAnimState (global) = animation
           rem state (set to ActionRecovering if handicap, or random
@@ -559,7 +626,9 @@ SelUpdateAnim
           rem (incremented or reset), charSelectCharIndex (global) =
           rem character index (cycled), charSelectAnimFrame (global) =
           rem animation frame (set to 0 or incremented)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Handicap preview freezes animation in
           rem recovery pose (ActionRecovering=9) when any player holds
           rem DOWN. Normal animation cycles every 60 frames (1 second)
@@ -580,23 +649,32 @@ SelUpdateAnim
           goto DoneOddFrameCheck
 SelQuadHandi
           rem Helper: Check Players 3/4 for DOWN held (odd frame)
+          rem
           rem Input: controllerStatus (global) = controller detection
           rem state, joy0down, joy1down (hardware) = joystick DOWN
           rem states, HandicapMode (global) = handicap flags
+          rem
           rem Output: Handicap flags set for Players 3/4 if DOWN held
+          rem
           rem Mutates: HandicapMode (global) = handicap flags (bits 2-3
           rem set)
+          rem
           rem Called Routines: None
           if controllerStatus & SetQuadtariDetected then SelOddFrame : rem Constraints: Internal helper for SelUpdateAnim, only called on odd frames
           goto DoneOddFrameCheck
 SelOddFrame 
           rem Helper: Check Players 3/4 DOWN states
+          rem
           rem Input: joy0down, joy1down (hardware) = joystick DOWN
           rem states, HandicapMode (global) = handicap flags
+          rem
           rem Output: Handicap flags set for Players 3/4
+          rem
           rem Mutates: HandicapMode (global) = handicap flags (bits 2-3
           rem set)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelQuadHandi, only called
           rem if Quadtari detected
                     if joy0down then let HandicapMode  = HandicapMode | 4
@@ -610,13 +688,18 @@ SelOddFrame
 SelHandleHandi
           rem Helper: Freeze animation in recovery pose for handicap
           rem preview
+          rem
           rem Input: ActionRecovering (global constant) = recovery
           rem animation state (9)
+          rem
           rem Output: Animation frozen in recovery pose
+          rem
           rem Mutates: charSelectAnimState (global) = animation state
           rem (set to ActionRecovering), charSelectAnimFrame (global) =
           rem animation frame (set to 0)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelUpdateAnim, only
           rem called when HandicapMode is set. Animation frozen (timer
           rem not updated)
@@ -628,19 +711,24 @@ SelHandleHandi
 SelAnimNormal
           rem Helper: Update normal animation (cycling through states
           rem and frames)
+          rem
           rem Input: charSelectAnimTimer, charSelectAnimState,
           rem charSelectCharIndex, charSelectAnimFrame (global) =
           rem animation state, FramesPerSecond, MaxCharacter (global
           rem constants) = animation constants, rand (global) = random
           rem number generator
+          rem
           rem Output: Animation state and frame updated
+          rem
           rem Mutates: charSelectAnimTimer (global) = animation timer
           rem (incremented or reset), charSelectAnimState (global) =
           rem animation state (random 0-2 every 60 frames),
           rem charSelectCharIndex (global) = character index (cycled),
           rem charSelectAnimFrame (global) = animation frame
           rem (incremented, wraps at 8)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelUpdateAnim, only
           rem called when no handicap preview. Changes animation state
           rem every 60 frames (1 second) with random selection (0-2)
@@ -663,10 +751,11 @@ SelAnimNormal
           
           return
 
-          rem Draw character sprite with animation
 SelDrawSprite
+          rem Draw character sprite with animation
           rem Draw animated character sprite based on current animation
           rem state
+          rem
           rem Input: charSelectAnimState, charSelectAnimFrame (global) =
           rem animation state and frame, charSelectPlayer (global) =
           rem player number (1-4), switchbw (global) = B&W switch state,
@@ -674,13 +763,17 @@ SelDrawSprite
           rem constants) = animation states, ColIndigo, ColRed,
           rem ColYellow, ColGreen, ColGrey (global constants) = color
           rem functions
+          rem
           rem Output: Character sprite drawn with appropriate color and
           rem animation pattern
+          rem
           rem Mutates: temp1 (used for animation state check), COLUP0
           rem (TIA register) = player color (set based on player number
           rem and hurt status), player sprite graphics (set based on
           rem animation state and frame)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Colors based on player number (1=Indigo,
           rem 2=Red, 3=Yellow, 4=Green) and hurt status (dimmer if
           rem hurt). Animation states: ActionStanding=idle,
@@ -715,24 +808,34 @@ SelDrawSprite
           goto SelColorDone : rem Dark green
 SelHurtBW
           rem Helper: Set hurt color for B&W mode
+          rem
           rem Input: None
+          rem
           rem Output: COLUP0 set to dark grey
+          rem
           rem Mutates: COLUP0 (TIA register) = player color (set to
           rem ColGrey(6))
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelDrawSprite, only
           rem called in hurt state and B&W mode
           let COLUP0  = ColGrey(6)
           goto SelColorDone : rem Dark grey for hurt (B&W)
 SelColorNormal
           rem Helper: Set normal color (bright)
+          rem
           rem Input: charSelectPlayer (global) = player number, switchbw
           rem (global) = B&W switch state
+          rem
           rem Output: COLUP0 set to bright player color or bright grey
           rem (B&W)
+          rem
           rem Mutates: COLUP0 (TIA register) = player color (set to
           rem bright color)
+          rem
           rem Called Routines: SelColorBW - sets B&W color
+          rem
           rem Constraints: Internal helper for SelDrawSprite, only
           rem called in normal state
           if switchbw then SelColorBW : rem Normal state - bright colors
@@ -743,14 +846,18 @@ SelColorNormal
           goto SelColorDone : rem Bright green
 SelColorBW
           rem Helper: Set normal color for B&W mode
+          rem
           rem Input: None
+          rem
           rem Output: COLUP0 set to bright grey
+          rem
           rem Mutates: COLUP0 (TIA register) = player color (set to
           rem ColGrey(14))
+          rem
           rem Called Routines: None
           let COLUP0  = ColGrey(14) : rem Constraints: Internal helper for SelColorNormal, only called in B&W mode
-          rem Bright grey (B&W)
 SelColorDone
+          rem Bright grey (B&W)
           
           rem Draw different sprite patterns based on animation state
           if charSelectAnimState = ActionStanding then SelAnimIdle : rem   and frame
@@ -759,20 +866,30 @@ SelColorDone
           goto SelAnimDone
 SelAnimIdle
           rem Helper: Draw idle animation (standing pose)
+          rem
           rem Input: None
+          rem
           rem Output: Idle sprite pattern set
+          rem
           rem Mutates: Player sprite graphics (set to idle pattern)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelDrawSprite, only
           rem called for ActionStanding
           goto SelAnimDone : rem Idle animation - simple standing pose
 SelAnimRun
           rem Helper: Draw running animation (alternating leg positions)
+          rem
           rem Input: charSelectAnimFrame (global) = animation frame
+          rem
           rem Output: Running sprite pattern set (alternating legs)
+          rem
           rem Mutates: Player sprite graphics (set to running pattern)
+          rem
           rem Called Routines: SelLeftLeg - sets left leg forward
           rem pattern
+          rem
           rem Constraints: Internal helper for SelDrawSprite, only
           rem called for ActionWalking. Frames 0,2,4,6 = right leg
           rem forward, frames 1,3,5,7 = left leg forward
@@ -780,21 +897,31 @@ SelAnimRun
           goto SelAnimDone : rem Frame 0,2,4,6 - right leg forward
 SelLeftLeg
           rem Helper: Set left leg forward pattern for running
+          rem
           rem Input: None
+          rem
           rem Output: Left leg forward sprite pattern set
+          rem
           rem Mutates: Player sprite graphics (set to left leg forward
           rem pattern)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelAnimRun, only called
           rem for odd frames (1,3,5,7)
           goto SelAnimDone : rem Frame 1,3,5,7 - left leg forward
 SelAnimAttack
           rem Helper: Draw attacking animation (arm extended)
+          rem
           rem Input: charSelectAnimFrame (global) = animation frame
+          rem
           rem Output: Attacking sprite pattern set (arm extended or
           rem windup)
+          rem
           rem Mutates: Player sprite graphics (set to attack pattern)
+          rem
           rem Called Routines: SelWindup - sets windup pattern
+          rem
           rem Constraints: Internal helper for SelDrawSprite, only
           rem called for ActionAttackWindup. Frames 0-3 = windup, frames
           rem 4-7 = attack
@@ -802,10 +929,15 @@ SelAnimAttack
           goto SelAnimDone : rem Attack frames - arm forward
 SelWindup
           rem Helper: Set windup pattern for attack
+          rem
           rem Input: None
+          rem
           rem Output: Windup sprite pattern set
+          rem
           rem Mutates: Player sprite graphics (set to windup pattern)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelAnimAttack, only
           rem called for frames 0-3
           goto SelAnimDone : rem Windup frames - arm back
@@ -815,19 +947,24 @@ SelAnimDone
 SelScreenDone
           rem Character selection complete (stores selected characters
           rem and initializes facing directions)
+          rem
           rem Input: playerChar[] (global array) = current character
           rem selections, selectedChar1, selectedChar2_R,
           rem selectedChar3_R, selectedChar4_R (global SCRAM) = stored
           rem selections, playerState[] (global array) = player states,
           rem NoCharacter (global constant) = no character constant
+          rem
           rem Output: Selected characters stored, facing directions
           rem initialized (default: face right = 1)
+          rem
           rem Mutates: selectedChar1 (global) = player 1 selection
           rem (set), selectedChar2_W, selectedChar3_W, selectedChar4_W
           rem (global SCRAM) = player 2-4 selections (set),
           rem playerState[] (global array) = player states (facing bit
           rem set for selected players)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Only sets facing bit for players with valid
           rem character selections (not NoCharacter). Default facing:
           rem right (bit 0 = 1)
@@ -854,18 +991,23 @@ SkipChar4FacingSel
           rem Proceed to falling animation
           return
 
-          rem Detect Quadtari adapter
 SelDetectQuad
+          rem Detect Quadtari adapter
           rem Detect Quadtari adapter (canonical detection: check paddle
           rem ports INPT0-3)
+          rem
           rem Input: INPT0-3 (hardware registers) = paddle port states,
           rem controllerStatus (global) = controller detection state,
           rem SetQuadtariDetected (global constant) = Quadtari detection
           rem flag
+          rem
           rem Output: Quadtari detection flag set if adapter detected
+          rem
           rem Mutates: controllerStatus (global) = controller detection
           rem state (Quadtari flag set if detected)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Requires BOTH sides present: Left (INPT0 LOW,
           rem INPT1 HIGH) AND Right (INPT2 LOW, INPT3 HIGH). Uses
           rem monotonic merge (OR) to preserve existing capabilities
@@ -886,11 +1028,16 @@ SelDetectQuad
 SelQuadAbsent
           return
           rem Helper: Quadtari not detected in this detection cycle
+          rem
           rem Input: None
+          rem
           rem Output: No changes (monotonic detection preserves previous
           rem state)
+          rem
           rem Mutates: None
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelDetectQuad, only
           rem called when Quadtari not detected. Does NOT clear
           rem controllerStatus - monotonic detection (upgrades only).
@@ -906,13 +1053,18 @@ SelQuadAbsent
           
 SelSkipQuadAbs
           rem Helper: Quadtari detected - set detection flag
+          rem
           rem Input: controllerStatus (global) = controller detection
           rem state, SetQuadtariDetected (global constant) = Quadtari
           rem detection flag
+          rem
           rem Output: Quadtari detection flag set
+          rem
           rem Mutates: controllerStatus (global) = controller detection
           rem state (Quadtari flag set via OR merge)
+          rem
           rem Called Routines: None
+          rem
           rem Constraints: Internal helper for SelDetectQuad, only
           rem called when Quadtari detected. Uses monotonic merge (OR)
           rem to preserve existing capabilities (upgrades only, never

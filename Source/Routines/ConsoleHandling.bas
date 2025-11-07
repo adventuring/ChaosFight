@@ -36,8 +36,7 @@ WarmStart
           rem         COLUBK, COLUPF, COLUP0, _COLUP1 (TIA color
           rem         registers),
           rem         AUDC0, AUDV0, AUDC1, AUDV1 (TIA audio registers),
-          rem         pf0-pf5 (playfield registers), ENAM0, ENAM1, ENABL
-          rem         (sprite enable registers)
+          rem         ENAM0, ENAM1, ENABL (sprite enable registers)
           rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
@@ -66,20 +65,12 @@ WarmStart
           AUDC1 = 0
           AUDV1 = 0
           
-          rem Step 4: Clear playfield registers to prevent artifacts
-          pf0 = 0
-          pf1 = 0
-          pf2 = 0
-          pf3 = 0
-          pf4 = 0
-          pf5 = 0
-          
-          rem Step 5: Clear sprite enable registers
+          rem Step 4: Clear sprite enable registers
           ENAM0 = 0
           ENAM1 = 0
           ENABL = 0
           
-          let gameMode = ModePublisherPrelude : rem Step 6: Reset game mode to startup sequence
+          let gameMode = ModePublisherPrelude : rem Step 5: Reset game mode to startup sequence
           gosub ChangeGameMode bank14
           
           return

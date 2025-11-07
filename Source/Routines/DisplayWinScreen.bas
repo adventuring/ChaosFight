@@ -411,20 +411,20 @@ DWS_GetBWMode
 
 DWS_LoadBWColors
           asm
-          rem Load B&W colors (all white)
-          rem
-          rem Input: WinnerScreenColorsBW (ROM constant) = B&W color
-          rem table
-          rem
-          rem Output: pfcolortable pointer set to WinnerScreenColorsBW
-          rem
-          rem Mutates: pfcolortable (playfield color table pointer, set
-          rem via inline assembly)
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with DisplayWinScreen
-          rem Set pfcolortable pointer to WinnerScreenColorsBW
+          ; rem Load B&W colors (all white)
+          ; rem
+          ; rem Input: WinnerScreenColorsBW (ROM constant) = B&W color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable pointer set to WinnerScreenColorsBW
+          ; rem
+          ; rem Mutates: pfcolortable (playfield color table pointer, set
+          ; rem via inline assembly)
+          ; rem
+          ; rem Called Routines: None (uses inline assembly)
+          ; rem
+          ; rem Constraints: Must be colocated with DisplayWinScreen
+          ; rem Set pfcolortable pointer to WinnerScreenColorsBW
             lda #<WinnerScreenColorsBW
             sta pfcolortable
             lda #>WinnerScreenColorsBW
@@ -434,21 +434,21 @@ end
 
 DWS_LoadColorColors
           asm
-          rem Load color colors (gold gradient)
-          rem
-          rem Input: WinnerScreenColorsColor (ROM constant) = color
-          rem table
-          rem
-          rem Output: pfcolortable pointer set to
-          rem WinnerScreenColorsColor
-          rem
-          rem Mutates: pfcolortable (playfield color table pointer, set
-          rem via inline assembly)
-          rem
-          rem Called Routines: None (uses inline assembly)
-          rem
-          rem Constraints: Must be colocated with DisplayWinScreen
-          rem Set pfcolortable pointer to WinnerScreenColorsColor
+          ; rem Load color colors (gold gradient)
+          ; rem
+          ; rem Input: WinnerScreenColorsColor (ROM constant) = color
+          ; rem table
+          ; rem
+          ; rem Output: pfcolortable pointer set to
+          ; rem WinnerScreenColorsColor
+          ; rem
+          ; rem Mutates: pfcolortable (playfield color table pointer, set
+          ; rem via inline assembly)
+          ; rem
+          ; rem Called Routines: None (uses inline assembly)
+          ; rem
+          ; rem Constraints: Must be colocated with DisplayWinScreen
+          ; rem Set pfcolortable pointer to WinnerScreenColorsColor
             lda #<WinnerScreenColorsColor
             sta pfcolortable
             lda #>WinnerScreenColorsColor

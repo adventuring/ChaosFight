@@ -296,33 +296,40 @@ RenderRoboTitoStretchMissile0
           dim RRTM_isStretching = temp2
           dim RRTM_stretchHeight = temp3
           dim RRTM_frameParity = temp4
-          if !(controllerStatus & SetPlayers34Active) then RRTM_CheckPlayer0 : rem Determine which player uses missile0 based on frame parity
-          let RRTM_frameParity = frame & 1 : rem 2-player mode: Player 0 uses missile0
+          if !(controllerStatus & SetPlayers34Active) then RRTM_CheckPlayer0
+          rem Determine which player uses missile0 based on frame parity
+          let RRTM_frameParity = frame & 1
+          rem 2-player mode: Player 0 uses missile0
           if RRTM_frameParity = 0 then RRTM_CheckPlayer0
           rem Even frame: Player 0 uses missile0
-          let RRTM_playerIndex = 2 : rem Odd frame: Player 2 uses missile0
+          let RRTM_playerIndex = 2
+          rem Odd frame: Player 2 uses missile0
           goto RRTM_CheckRoboTito
 RRTM_CheckPlayer0
           let RRTM_playerIndex = 0
 RRTM_CheckRoboTito
-          if playerChar[RRTM_playerIndex] = CharRoboTito then RRTM_IsRoboTito : rem Check if player is RoboTito
+          if playerChar[RRTM_playerIndex] = CharRoboTito then RRTM_IsRoboTito
+          rem Check if player is RoboTito
           return
 RRTM_IsRoboTito
           rem Not RoboTito, no stretch missile
           rem Check if stretching upward (not latched, ActionJumping
-          if (characterStateFlags_R[RRTM_playerIndex] & 1) then return : rem animation = 10)
-          let RRTM_isStretching = playerState[RRTM_playerIndex] : rem Latched to ceiling, no stretch missile
+          if (characterStateFlags_R[RRTM_playerIndex] & 1) then return
+          rem animation = 10)
+          let RRTM_isStretching = playerState[RRTM_playerIndex]
+          rem Latched to ceiling, no stretch missile
           let RRTM_isStretching = RRTM_isStretching & 240
           rem Mask bits 4-7 (animation state, value 240 = %11110000)
           let RRTM_isStretching = RRTM_isStretching / 16
           rem Shift right by 4 (divide by 16) to get animation state
-          if RRTM_isStretching = 10 then RRTM_IsStretching : rem   (0-15)
+          if RRTM_isStretching = 10 then RRTM_IsStretching
+          rem   (0-15)
           return
 RRTM_IsStretching
           rem Not in stretching animation (ActionJumping = 10), no
           rem   stretch missile
-          
-          let RRTM_stretchHeight = missileStretchHeight_R[RRTM_playerIndex] : rem Get stretch height and render if > 0
+          let RRTM_stretchHeight = missileStretchHeight_R[RRTM_playerIndex]
+          rem Get stretch height and render if > 0
           if RRTM_stretchHeight <= 0 then return
           rem No height, no stretch missile
           
@@ -367,33 +374,41 @@ RenderRoboTitoStretchMissile1
           dim RRTM1_isStretching = temp2
           dim RRTM1_stretchHeight = temp3
           dim RRTM1_frameParity = temp4
-          if !(controllerStatus & SetPlayers34Active) then RRTM1_CheckPlayer1 : rem Determine which player uses missile1 based on frame parity
-          let RRTM1_frameParity = frame & 1 : rem 2-player mode: Player 1 uses missile1
+          if !(controllerStatus & SetPlayers34Active) then RRTM1_CheckPlayer1
+          rem Determine which player uses missile1 based on frame parity
+          let RRTM1_frameParity = frame & 1
+          rem 2-player mode: Player 1 uses missile1
           if RRTM1_frameParity = 0 then RRTM1_CheckPlayer1
           rem Even frame: Player 1 uses missile1
-          let RRTM1_playerIndex = 3 : rem Odd frame: Player 3 uses missile1
+          let RRTM1_playerIndex = 3
+          rem Odd frame: Player 3 uses missile1
           goto RRTM1_CheckRoboTito
 RRTM1_CheckPlayer1
           let RRTM1_playerIndex = 1
 RRTM1_CheckRoboTito
-          if playerChar[RRTM1_playerIndex] = CharRoboTito then RRTM1_IsRoboTito : rem Check if player is RoboTito
+          if playerChar[RRTM1_playerIndex] = CharRoboTito then RRTM1_IsRoboTito
+          rem Check if player is RoboTito
           return
 RRTM1_IsRoboTito
           rem Not RoboTito, no stretch missile
           rem Check if stretching upward (not latched, ActionJumping
-          if (characterStateFlags_R[RRTM1_playerIndex] & 1) then return : rem animation = 10)
-          let RRTM1_isStretching = playerState[RRTM1_playerIndex] : rem Latched to ceiling, no stretch missile
+          if (characterStateFlags_R[RRTM1_playerIndex] & 1) then return
+          rem animation = 10)
+          let RRTM1_isStretching = playerState[RRTM1_playerIndex]
+          rem Latched to ceiling, no stretch missile
           let RRTM1_isStretching = RRTM1_isStretching & 240
           rem Mask bits 4-7 (animation state, value 240 = %11110000)
           let RRTM1_isStretching = RRTM1_isStretching / 16
           rem Shift right by 4 (divide by 16) to get animation state
-          if RRTM1_isStretching = 10 then RRTM1_IsStretching : rem   (0-15)
+          if RRTM1_isStretching = 10 then RRTM1_IsStretching
+          rem   (0-15)
           return
 RRTM1_IsStretching
           rem Not in stretching animation (ActionJumping = 10), no
           rem   stretch missile
           
-          let RRTM1_stretchHeight = missileStretchHeight_R[RRTM1_playerIndex] : rem Get stretch height and render if > 0
+          let RRTM1_stretchHeight = missileStretchHeight_R[RRTM1_playerIndex]
+          rem Get stretch height and render if > 0
           if RRTM1_stretchHeight <= 0 then return
           rem No height, no stretch missile
           

@@ -145,35 +145,35 @@ CheckFallDamage
           rem   shifts
           rem For larger multipliers, use assembly multiplication
           asm
-          rem   routine
+          ; rem   routine
             lda temp2
             beq MultiplyDone
-            rem Multiplier is non-zero, multiply CFD_damage by temp2
-            rem Use optimized multiplication based on multiplier value
-            rem For multiplier = 1: no change
-            rem For multiplier = 2: asl once
-            rem For multiplier = 3: asl + add original
-            rem For multiplier = 4: asl twice
-            rem For multiplier = 5: asl twice + add original
-          rem For now, use simple approach: multiply using repeated
-          rem   addition
-          rem But wait - user said no repeated addition! Use lookup
-          rem   table instead
-          rem Actually, we can use a lookup table for common damage
-          rem   values
-            rem Or use assembly with optimized multiplication
-            rem Check multiplier value and use appropriate method
+            ; rem Multiplier is non-zero, multiply CFD_damage by temp2
+            ; rem Use optimized multiplication based on multiplier value
+            ; rem For multiplier = 1: no change
+            ; rem For multiplier = 2: asl once
+            ; rem For multiplier = 3: asl + add original
+            ; rem For multiplier = 4: asl twice
+            ; rem For multiplier = 5: asl twice + add original
+          ; rem For now, use simple approach: multiply using repeated
+          ; rem   addition
+          ; rem But wait - user said no repeated addition! Use lookup
+          ; rem   table instead
+          ; rem Actually, we can use a lookup table for common damage
+          ; rem   values
+            ; rem Or use assembly with optimized multiplication
+            ; rem Check multiplier value and use appropriate method
             cmp #1
             beq MultiplyDone
             cmp #2
             bne CheckMult3
-            rem Multiply by 2: shift left once
+            ; rem Multiply by 2: shift left once
             asl CFD_damage
             jmp MultiplyDone
 CheckMult3
             cmp #3
             bne CheckMult4
-            rem Multiply by 3: damage * 2 + damage
+            ; rem Multiply by 3: damage * 2 + damage
             lda CFD_damage
             asl a
             clc
@@ -183,12 +183,12 @@ CheckMult3
 CheckMult4
             cmp #4
             bne CheckMult5
-            rem Multiply by 4: shift left twice
+            ; rem Multiply by 4: shift left twice
             asl CFD_damage
             asl CFD_damage
             jmp MultiplyDone
 CheckMult5
-            rem For 5: multiply by 4 + add original
+            ; rem For 5: multiply by 4 + add original
             lda CFD_damage
             asl a
             asl a
@@ -455,12 +455,12 @@ DivideBy20
           rem Thanks to Omegamatrix and AtariAge forum contributors for
           rem   these routines
           asm
-          rem DivideBy20: compute floor(A / 20) using optimized assembly
-          rem
-          rem INPUT: A register = dividend (temp2)
-          rem
-          rem OUTPUT: A register = quotient (result in temp2)
-          rem Uses 18 bytes, 32 cycles
+          ; rem DivideBy20: compute floor(A / 20) using optimized assembly
+          ; rem
+          ; rem INPUT: A register = dividend (temp2)
+          ; rem
+          ; rem OUTPUT: A register = quotient (result in temp2)
+          ; rem Uses 18 bytes, 32 cycles
             lda temp2
             lsr a
             lsr a

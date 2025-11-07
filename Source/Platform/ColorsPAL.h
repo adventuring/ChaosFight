@@ -1,18 +1,6 @@
 /* PAL color palette - pre-calculated hex value macros (even luminances only) */
 /* Each hue supports 8 luminance levels: 0, 2, 4, 6, 8, 10, 12, 14 */
-/* Note: PAL colors may appear different due to TV standard differences */
-/* Some hues produce different colors on PAL vs NTSC */
-/* 
- * TODO: Verify PAL color values match SkylineTool graphics.lisp +vcs-pal-palette+ (Issue #601)
- * Currently ColorsPAL.h uses same values as ColorsNTSC.h, but PAL colors should differ.
- * Reference: SkylineTool/src/graphics.lisp line 297 (+vcs-pal-palette+ - TODO #1225)
- * Issue: #313 - Fix PAL color definitions using SkylineTool graphics.lisp palette
- * 
- * PAL color differences from NTSC:
- * - Different hue rotation/phases due to PAL TV standard
- * - Some colors may appear shifted or tinted differently
- * - Should match +vcs-pal-palette+ once implemented in graphics.lisp
- */
+/* Color ordering and nomenclature matches SkylineTool +vcs-pal-palette+ */
 #define _COL_Grey_L0 $00
 #define _COL_Grey_L2 $02
 #define _COL_Grey_L4 $04
@@ -21,22 +9,22 @@
 #define _COL_Grey_L10 $0A
 #define _COL_Grey_L12 $0C
 #define _COL_Grey_L14 $0E
-#define _COL_Yellow_L0 $10
-#define _COL_Yellow_L2 $12
-#define _COL_Yellow_L4 $14
-#define _COL_Yellow_L6 $16
-#define _COL_Yellow_L8 $18
-#define _COL_Yellow_L10 $1A
-#define _COL_Yellow_L12 $1C
-#define _COL_Yellow_L14 $1E
-#define _COL_Brown_L0 $20
-#define _COL_Brown_L2 $22
-#define _COL_Brown_L4 $24
-#define _COL_Brown_L6 $26
-#define _COL_Brown_L8 $28
-#define _COL_Brown_L10 $2A
-#define _COL_Brown_L12 $2C
-#define _COL_Brown_L14 $2E
+#define _COL_Spinach_L0 $10
+#define _COL_Spinach_L2 $12
+#define _COL_Spinach_L4 $14
+#define _COL_Spinach_L6 $16
+#define _COL_Spinach_L8 $18
+#define _COL_Spinach_L10 $1A
+#define _COL_Spinach_L12 $1C
+#define _COL_Spinach_L14 $1E
+#define _COL_Gold_L0 $20
+#define _COL_Gold_L2 $22
+#define _COL_Gold_L4 $24
+#define _COL_Gold_L6 $26
+#define _COL_Gold_L8 $28
+#define _COL_Gold_L10 $2A
+#define _COL_Gold_L12 $2C
+#define _COL_Gold_L14 $2E
 #define _COL_Orange_L0 $30
 #define _COL_Orange_L2 $32
 #define _COL_Orange_L4 $34
@@ -61,70 +49,70 @@
 #define _COL_Magenta_L10 $5A
 #define _COL_Magenta_L12 $5C
 #define _COL_Magenta_L14 $5E
-#define _COL_Purple_L0 $60
-#define _COL_Purple_L2 $62
-#define _COL_Purple_L4 $64
-#define _COL_Purple_L6 $66
-#define _COL_Purple_L8 $68
-#define _COL_Purple_L10 $6A
-#define _COL_Purple_L12 $6C
-#define _COL_Purple_L14 $6E
-#define _COL_Indigo_L0 $70
-#define _COL_Indigo_L2 $72
-#define _COL_Indigo_L4 $74
-#define _COL_Indigo_L6 $76
-#define _COL_Indigo_L8 $78
-#define _COL_Indigo_L10 $7A
-#define _COL_Indigo_L12 $7C
-#define _COL_Indigo_L14 $7E
-#define _COL_Blue_L0 $80
-#define _COL_Blue_L2 $82
-#define _COL_Blue_L4 $84
-#define _COL_Blue_L6 $86
-#define _COL_Blue_L8 $88
-#define _COL_Blue_L10 $8A
-#define _COL_Blue_L12 $8C
-#define _COL_Blue_L14 $8E
-#define _COL_Turquoise_L0 $90
-#define _COL_Turquoise_L2 $92
-#define _COL_Turquoise_L4 $94
-#define _COL_Turquoise_L6 $96
-#define _COL_Turquoise_L8 $98
-#define _COL_Turquoise_L10 $9A
-#define _COL_Turquoise_L12 $9C
-#define _COL_Turquoise_L14 $9E
-#define _COL_Cyan_L0 $A0
-#define _COL_Cyan_L2 $A2
-#define _COL_Cyan_L4 $A4
-#define _COL_Cyan_L6 $A6
-#define _COL_Cyan_L8 $A8
-#define _COL_Cyan_L10 $AA
-#define _COL_Cyan_L12 $AC
-#define _COL_Cyan_L14 $AE
-#define _COL_Teal_L0 $B0
-#define _COL_Teal_L2 $B2
-#define _COL_Teal_L4 $B4
-#define _COL_Teal_L6 $B6
-#define _COL_Teal_L8 $B8
-#define _COL_Teal_L10 $BA
-#define _COL_Teal_L12 $BC
-#define _COL_Teal_L14 $BE
-#define _COL_Seafoam_L0 $C0
-#define _COL_Seafoam_L2 $C2
-#define _COL_Seafoam_L4 $C4
-#define _COL_Seafoam_L6 $C6
-#define _COL_Seafoam_L8 $C8
-#define _COL_Seafoam_L10 $CA
-#define _COL_Seafoam_L12 $CC
-#define _COL_Seafoam_L14 $CE
-#define _COL_Green_L0 $D0
-#define _COL_Green_L2 $D2
-#define _COL_Green_L4 $D4
-#define _COL_Green_L6 $D6
-#define _COL_Green_L8 $D8
-#define _COL_Green_L10 $DA
-#define _COL_Green_L12 $DC
-#define _COL_Green_L14 $DE
+#define _COL_Violet_L0 $60
+#define _COL_Violet_L2 $62
+#define _COL_Violet_L4 $64
+#define _COL_Violet_L6 $66
+#define _COL_Violet_L8 $68
+#define _COL_Violet_L10 $6A
+#define _COL_Violet_L12 $6C
+#define _COL_Violet_L14 $6E
+#define _COL_Purple_L0 $70
+#define _COL_Purple_L2 $72
+#define _COL_Purple_L4 $74
+#define _COL_Purple_L6 $76
+#define _COL_Purple_L8 $78
+#define _COL_Purple_L10 $7A
+#define _COL_Purple_L12 $7C
+#define _COL_Purple_L14 $7E
+#define _COL_Indigo_L0 $80
+#define _COL_Indigo_L2 $82
+#define _COL_Indigo_L4 $84
+#define _COL_Indigo_L6 $86
+#define _COL_Indigo_L8 $88
+#define _COL_Indigo_L10 $8A
+#define _COL_Indigo_L12 $8C
+#define _COL_Indigo_L14 $8E
+#define _COL_Blue_L0 $90
+#define _COL_Blue_L2 $92
+#define _COL_Blue_L4 $94
+#define _COL_Blue_L6 $96
+#define _COL_Blue_L8 $98
+#define _COL_Blue_L10 $9A
+#define _COL_Blue_L12 $9C
+#define _COL_Blue_L14 $9E
+#define _COL_Stonewash_L0 $A0
+#define _COL_Stonewash_L2 $A2
+#define _COL_Stonewash_L4 $A4
+#define _COL_Stonewash_L6 $A6
+#define _COL_Stonewash_L8 $A8
+#define _COL_Stonewash_L10 $AA
+#define _COL_Stonewash_L12 $AC
+#define _COL_Stonewash_L14 $AE
+#define _COL_Turquoise_L0 $B0
+#define _COL_Turquoise_L2 $B2
+#define _COL_Turquoise_L4 $B4
+#define _COL_Turquoise_L6 $B6
+#define _COL_Turquoise_L8 $B8
+#define _COL_Turquoise_L10 $BA
+#define _COL_Turquoise_L12 $BC
+#define _COL_Turquoise_L14 $BE
+#define _COL_Green_L0 $C0
+#define _COL_Green_L2 $C2
+#define _COL_Green_L4 $C4
+#define _COL_Green_L6 $C6
+#define _COL_Green_L8 $C8
+#define _COL_Green_L10 $CA
+#define _COL_Green_L12 $CC
+#define _COL_Green_L14 $CE
+#define _COL_Seafoam_L0 $D0
+#define _COL_Seafoam_L2 $D2
+#define _COL_Seafoam_L4 $D4
+#define _COL_Seafoam_L6 $D6
+#define _COL_Seafoam_L8 $D8
+#define _COL_Seafoam_L10 $DA
+#define _COL_Seafoam_L12 $DC
+#define _COL_Seafoam_L14 $DE
 #define _COL_SpringGreen_L0 $E0
 #define _COL_SpringGreen_L2 $E2
 #define _COL_SpringGreen_L4 $E4
@@ -133,14 +121,14 @@
 #define _COL_SpringGreen_L10 $EA
 #define _COL_SpringGreen_L12 $EC
 #define _COL_SpringGreen_L14 $EE
-#define _COL_Gold_L0 $F0
-#define _COL_Gold_L2 $F2
-#define _COL_Gold_L4 $F4
-#define _COL_Gold_L6 $F6
-#define _COL_Gold_L8 $F8
-#define _COL_Gold_L10 $FA
-#define _COL_Gold_L12 $FC
-#define _COL_Gold_L14 $FE
+#define _COL_Algae_L0 $F0
+#define _COL_Algae_L2 $F2
+#define _COL_Algae_L4 $F4
+#define _COL_Algae_L6 $F6
+#define _COL_Algae_L8 $F8
+#define _COL_Algae_L10 $FA
+#define _COL_Algae_L12 $FC
+#define _COL_Algae_L14 $FE
 
 /* Helper macros for token pasting - double expansion required for proper macro parameter expansion */
 #define _COL_CONCAT(a, b) a##b
@@ -148,22 +136,27 @@
 
 /* Color function macros using token pasting */
 #define ColGrey(lum) _COL_EXPAND_AND_CONCAT(_COL_Grey_L, lum)
-#define ColGray(lum) _COL_EXPAND_AND_CONCAT(_COL_Grey_L, lum)  /* ColGray and ColGrey are synonyms */
-#define ColYellow(lum) _COL_EXPAND_AND_CONCAT(_COL_Yellow_L, lum)
-#define ColBrown(lum) _COL_EXPAND_AND_CONCAT(_COL_Brown_L, lum)
+#define ColGray(lum) ColGrey(lum)
+#define ColSpinach(lum) _COL_EXPAND_AND_CONCAT(_COL_Spinach_L, lum)
+#define ColGold(lum) _COL_EXPAND_AND_CONCAT(_COL_Gold_L, lum)
 #define ColOrange(lum) _COL_EXPAND_AND_CONCAT(_COL_Orange_L, lum)
 #define ColRed(lum) _COL_EXPAND_AND_CONCAT(_COL_Red_L, lum)
 #define ColMagenta(lum) _COL_EXPAND_AND_CONCAT(_COL_Magenta_L, lum)
+#define ColViolet(lum) _COL_EXPAND_AND_CONCAT(_COL_Violet_L, lum)
 #define ColPurple(lum) _COL_EXPAND_AND_CONCAT(_COL_Purple_L, lum)
-#define ColViolet(lum) _COL_EXPAND_AND_CONCAT(_COL_Purple_L, lum)  /* ColViolet and ColPurple are synonyms */
 #define ColIndigo(lum) _COL_EXPAND_AND_CONCAT(_COL_Indigo_L, lum)
 #define ColBlue(lum) _COL_EXPAND_AND_CONCAT(_COL_Blue_L, lum)
+#define ColStonewash(lum) _COL_EXPAND_AND_CONCAT(_COL_Stonewash_L, lum)
 #define ColTurquoise(lum) _COL_EXPAND_AND_CONCAT(_COL_Turquoise_L, lum)
-#define ColCyan(lum) _COL_EXPAND_AND_CONCAT(_COL_Cyan_L, lum)
-#define ColTeal(lum) _COL_EXPAND_AND_CONCAT(_COL_Teal_L, lum)
-#define ColSeafoam(lum) _COL_EXPAND_AND_CONCAT(_COL_Seafoam_L, lum)
 #define ColGreen(lum) _COL_EXPAND_AND_CONCAT(_COL_Green_L, lum)
-#define ColLime(lum) _COL_EXPAND_AND_CONCAT(_COL_Green_L, lum)  /* ColLime and ColGreen are synonyms */
+#define ColSeafoam(lum) _COL_EXPAND_AND_CONCAT(_COL_Seafoam_L, lum)
 #define ColSpringGreen(lum) _COL_EXPAND_AND_CONCAT(_COL_SpringGreen_L, lum)
-#define ColGold(lum) _COL_EXPAND_AND_CONCAT(_COL_Gold_L, lum)
+#define ColAlgae(lum) _COL_EXPAND_AND_CONCAT(_COL_Algae_L, lum)
+
+/* Legacy synonyms retained for backwards compatibility */
+#define ColYellow(lum) ColGold(lum)
+#define ColBrown(lum) ColGold(lum)
+#define ColCyan(lum) ColStonewash(lum)
+#define ColTeal(lum) ColSeafoam(lum)
+#define ColLime(lum) ColSpringGreen(lum)
 

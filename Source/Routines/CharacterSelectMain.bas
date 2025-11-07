@@ -928,14 +928,14 @@ SelectLoadSprite
           
           rem Normal character - use animation state
           rem Use character select animation state
-          rem charSelectPlayerAnimSeq has animation sequence (bit 0:
+          rem charSelectPlayerAnimationSequence has animation sequence (bit 0:
           rem   0=idle, 1=walk)
-          rem charSelectPlayerAnimFrame has animation frame counter
+          rem charSelectPlayerAnimationFrame has animation frame counter
           rem   (0-7)
           rem Map to proper animation action: 0=idle (ActionIdle=1),
-          if charSelectPlayerAnimSeq[SLS_playerNumberSaved] then goto SelectLoadWalkingSprite : rem 1=walk (ActionWalking=3)
+          if charSelectPlayerAnimationSequence[SLS_playerNumberSaved] then goto SelectLoadWalkingSprite : rem 1=walk (ActionWalking=3)
           
-          let SLS_animationFrame = charSelectPlayerAnimFrame[SLS_playerNumberSaved] : rem Idle animation
+          let SLS_animationFrame = charSelectPlayerAnimationFrame[SLS_playerNumberSaved] : rem Idle animation
           rem frame
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
           let SLS_animationAction = 1 : rem temp3=action, temp4=player
@@ -979,7 +979,7 @@ SelectLoadWalkingSprite
           dim SLWS_characterIndex = temp1
           dim SLWS_isHurt = temp2
           dim SLWS_isFlashing = temp4
-          let SLWS_animationFrame = charSelectPlayerAnimSeq[SLS_playerNumberSaved] : rem Walking animation
+          let SLWS_animationFrame = charSelectPlayerAnimationSequence[SLS_playerNumberSaved] : rem Walking animation
           let SLWS_animationAction = 3 : rem Use sequence counter as frame (0-3 for 4-frame walk)
           let SLWS_playerNumberForArt = SLS_playerNumberSaved : rem ActionWalking = 3
           let temp1 = SLS_characterIndex
@@ -1152,71 +1152,71 @@ SelectUpdateAnimations
           rem Each player updates independently with staggered timing
           
           rem Update Player 1 animations (characters)
-          let temp1 = 0 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer0Anim  : rem Locked players don’t animate
-          if playerChar[0] = CPUCharacter then goto SelectSkipPlayer0Anim  : rem CPU doesn’t animate
-          if playerChar[0] = NoCharacter then goto SelectSkipPlayer0Anim  : rem NO doesn’t animate
-          if playerChar[0] = RandomCharacter then goto SelectSkipPlayer0Anim  : rem Random doesn’t animate
+          let temp1 = 0 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer0Animation  : rem Locked players don’t animate
+          if playerChar[0] = CPUCharacter then goto SelectSkipPlayer0Animation  : rem CPU doesn’t animate
+          if playerChar[0] = NoCharacter then goto SelectSkipPlayer0Animation  : rem NO doesn’t animate
+          if playerChar[0] = RandomCharacter then goto SelectSkipPlayer0Animation  : rem Random doesn’t animate
           let temp1 = 0
-          gosub SelectUpdatePlayerAnim
+          gosub SelectUpdatePlayerAnimation
           
-SelectSkipPlayer0Anim
-          let temp1 = 1 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer1Anim : rem Update Player 2 animations
-          if playerChar[1] = CPUCharacter then goto SelectSkipPlayer1Anim
-          if playerChar[1] = NoCharacter then goto SelectSkipPlayer1Anim
-          if playerChar[1] = RandomCharacter then goto SelectSkipPlayer1Anim
+SelectSkipPlayer0Animation
+          let temp1 = 1 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer1Animation : rem Update Player 2 animations
+          if playerChar[1] = CPUCharacter then goto SelectSkipPlayer1Animation
+          if playerChar[1] = NoCharacter then goto SelectSkipPlayer1Animation
+          if playerChar[1] = RandomCharacter then goto SelectSkipPlayer1Animation
           let temp1 = 1
-          gosub SelectUpdatePlayerAnim
+          gosub SelectUpdatePlayerAnimation
           
-SelectSkipPlayer1Anim
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Anim : rem Update Player 3 animations (if Quadtari)
-          let temp1 = 2 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer2Anim
-          if playerChar[2] = NoCharacter then goto SelectSkipPlayer2Anim
-          if playerChar[2] = RandomCharacter then goto SelectSkipPlayer2Anim
+SelectSkipPlayer1Animation
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Animation : rem Update Player 3 animations (if Quadtari)
+          let temp1 = 2 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer2Animation
+          if playerChar[2] = NoCharacter then goto SelectSkipPlayer2Animation
+          if playerChar[2] = RandomCharacter then goto SelectSkipPlayer2Animation
           let temp1 = 2
-          gosub SelectUpdatePlayerAnim
+          gosub SelectUpdatePlayerAnimation
           
-SelectSkipPlayer2Anim
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Anim : rem Update Player 4 animations (if Quadtari)
-          let temp1 = 3 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer23Anim
-          if playerChar[3] = NoCharacter then goto SelectSkipPlayer23Anim
-          if playerChar[3] = RandomCharacter then goto SelectSkipPlayer23Anim
+SelectSkipPlayer2Animation
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Animation : rem Update Player 4 animations (if Quadtari)
+          let temp1 = 3 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer23Animation
+          if playerChar[3] = NoCharacter then goto SelectSkipPlayer23Animation
+          if playerChar[3] = RandomCharacter then goto SelectSkipPlayer23Animation
           let temp1 = 3
-          gosub SelectUpdatePlayerAnim
+          gosub SelectUpdatePlayerAnimation
           
-SelectSkipPlayer23Anim
+SelectSkipPlayer23Animation
           return
           
           rem
           rem Update Individual Player Animation
           
-SelectUpdatePlayerAnim
+SelectUpdatePlayerAnimation
           dim SUPA_playerIndex = temp1
           rem Update animation for a single player
           rem
           rem Input: playerIndex = player index (0-3)
-          let charSelectPlayerAnimFrame[SUPA_playerIndex] = charSelectPlayerAnimFrame[SUPA_playerIndex] + 1 : rem Increment frame counter
+          let charSelectPlayerAnimationFrame[SUPA_playerIndex] = charSelectPlayerAnimationFrame[SUPA_playerIndex] + 1 : rem Increment frame counter
           
           rem Check if it’s time to advance frame (every 6 frames for
-          if charSelectPlayerAnimFrame[SUPA_playerIndex] >= AnimationFrameDelay then goto SelectAdvanceAnimFrame : rem   10fps at 60fps)
+          if charSelectPlayerAnimationFrame[SUPA_playerIndex] >= AnimationFrameDelay then goto SelectAdvanceAnimationFrame : rem   10fps at 60fps)
           return
           
-SelectAdvanceAnimFrame
+SelectAdvanceAnimationFrame
           dim SAAF_playerIndex = temp1
           dim SAAF_sequenceValue = temp2
-          let charSelectPlayerAnimFrame[SAAF_playerIndex] = 0 : rem Reset frame counter
+          let charSelectPlayerAnimationFrame[SAAF_playerIndex] = 0 : rem Reset frame counter
           
-          if !charSelectPlayerAnimSeq[SAAF_playerIndex] then goto SelectAdvanceIdleAnim : rem Check current animation sequence
+          if !charSelectPlayerAnimationSequence[SAAF_playerIndex] then goto SelectAdvanceIdleAnimation : rem Check current animation sequence
           rem Walking animation: cycle through 4 frames (0-3)
-          let SAAF_sequenceValue = (charSelectPlayerAnimSeq[SAAF_playerIndex] + 1) & 3 : rem Use bit 0-1 of sequence counter
-          let charSelectPlayerAnimSeq[SAAF_playerIndex] = SAAF_sequenceValue
+          let SAAF_sequenceValue = (charSelectPlayerAnimationSequence[SAAF_playerIndex] + 1) & 3 : rem Use bit 0-1 of sequence counter
+          let charSelectPlayerAnimationSequence[SAAF_playerIndex] = SAAF_sequenceValue
           
-          if charSelectPlayerAnimSeq[SAAF_playerIndex] then return : rem After 4 walk frames (frame 3→0), switch to idle
-          let charSelectPlayerAnimSeq[SAAF_playerIndex] = 0 : rem Switch back to idle after walk cycle
+          if charSelectPlayerAnimationSequence[SAAF_playerIndex] then return : rem After 4 walk frames (frame 3→0), switch to idle
+          let charSelectPlayerAnimationSequence[SAAF_playerIndex] = 0 : rem Switch back to idle after walk cycle
           
           rem Toggle to walk sequence after idle
-          goto SelectAnimWaitForToggle : rem Just set sequence flag to 1 (walk) for next cycle
+          goto SelectAnimationWaitForToggle : rem Just set sequence flag to 1 (walk) for next cycle
           
-SelectAdvanceIdleAnim
+SelectAdvanceIdleAnimation
           dim SAAI_playerIndex = temp1
           rem Idle animation cycles every 60 frames, then toggles to
           rem   walk
@@ -1224,11 +1224,11 @@ SelectAdvanceIdleAnim
           if frame & 63 then return : rem Every 60 frames (10 idle animations), toggle to walk
           rem Check every 64 frames roughly
           
-          let charSelectPlayerAnimSeq[SAAI_playerIndex] = 1 : rem Toggle to walk
+          let charSelectPlayerAnimationSequence[SAAI_playerIndex] = 1 : rem Toggle to walk
           rem Start walking
           return
           
-SelectAnimWaitForToggle
+SelectAnimationWaitForToggle
           return
           rem Just return, toggling handled above
 

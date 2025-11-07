@@ -287,30 +287,30 @@ ArenaSelectUpdateAnimations
           rem        frame (global) = frame counter
           rem
           rem Output: None (updates animation state via
-          rem ArenaSelectUpdatePlayerAnim)
+          rem ArenaSelectUpdatePlayerAnimation)
           rem
           rem Mutates: None (no persistent state updates)
           rem
-          rem Called Routines: ArenaSelectUpdatePlayerAnim - accesses
+          rem Called Routines: ArenaSelectUpdatePlayerAnimation - accesses
           rem frame counter
           rem
           rem Constraints: Must be colocated with
-          rem ArenaSelectSkipPlayer0Anim, ArenaSelectSkipPlayer1Anim,
-          rem              ArenaSelectSkipPlayer2Anim,
-          rem              ArenaSelectSkipPlayer23Anim,
-          dim ASUA_playerIndex = temp1 : rem              ArenaSelectUpdatePlayerAnim (all called via goto)
-          dim ASUA_animFrame = temp2
+          rem ArenaSelectSkipPlayer0Animation, ArenaSelectSkipPlayer1Animation,
+          rem              ArenaSelectSkipPlayer2Animation,
+          rem              ArenaSelectSkipPlayer23Animation,
+          dim ASUA_playerIndex = temp1 : rem              ArenaSelectUpdatePlayerAnimation (all called via goto)
+          dim ASUA_animationFrame = temp2
           rem Update idle animations for all selected characters
           rem Each player updates independently with simple frame
           rem   counter
           
-          if selectedChar1 = 255 then ArenaSelectSkipPlayer0Anim : rem Update Player 1 animation (if character selected)
-          if selectedChar1 = 254 then ArenaSelectSkipPlayer0Anim : rem NoCharacter = 255
-          if selectedChar1 = 253 then ArenaSelectSkipPlayer0Anim : rem CPUCharacter = 254
+          if selectedChar1 = 255 then ArenaSelectSkipPlayer0Animation : rem Update Player 1 animation (if character selected)
+          if selectedChar1 = 254 then ArenaSelectSkipPlayer0Animation : rem NoCharacter = 255
+          if selectedChar1 = 253 then ArenaSelectSkipPlayer0Animation : rem CPUCharacter = 254
           let ASUA_playerIndex = 0 : rem RandomCharacter = 253
-          gosub ArenaSelectUpdatePlayerAnim
+          gosub ArenaSelectUpdatePlayerAnimation
           
-ArenaSelectSkipPlayer0Anim
+ArenaSelectSkipPlayer0Animation
           rem Skip Player 1 animation update (not selected)
           rem
           rem Input: None (label only, no execution)
@@ -323,13 +323,13 @@ ArenaSelectSkipPlayer0Anim
           rem
           rem Constraints: Must be colocated with
           rem ArenaSelectUpdateAnimations
-          if selectedChar2_R = 255 then ArenaSelectSkipPlayer1Anim : rem Update Player 2 animation (if character selected)
-          if selectedChar2_R = 254 then ArenaSelectSkipPlayer1Anim
-          if selectedChar2_R = 253 then ArenaSelectSkipPlayer1Anim
+          if selectedChar2_R = 255 then ArenaSelectSkipPlayer1Animation : rem Update Player 2 animation (if character selected)
+          if selectedChar2_R = 254 then ArenaSelectSkipPlayer1Animation
+          if selectedChar2_R = 253 then ArenaSelectSkipPlayer1Animation
           let ASUA_playerIndex = 1
-          gosub ArenaSelectUpdatePlayerAnim
+          gosub ArenaSelectUpdatePlayerAnimation
           
-ArenaSelectSkipPlayer1Anim
+ArenaSelectSkipPlayer1Animation
           rem Skip Player 2 animation update (not selected)
           rem
           rem Input: None (label only, no execution)
@@ -343,14 +343,14 @@ ArenaSelectSkipPlayer1Anim
           rem Constraints: Must be colocated with
           rem ArenaSelectUpdateAnimations
           rem Update Player 3 animation (if Quadtari and character
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim : rem   selected)
-          if selectedChar3_R = 255 then ArenaSelectSkipPlayer2Anim
-          if selectedChar3_R = 254 then ArenaSelectSkipPlayer2Anim
-          if selectedChar3_R = 253 then ArenaSelectSkipPlayer2Anim
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation : rem   selected)
+          if selectedChar3_R = 255 then ArenaSelectSkipPlayer2Animation
+          if selectedChar3_R = 254 then ArenaSelectSkipPlayer2Animation
+          if selectedChar3_R = 253 then ArenaSelectSkipPlayer2Animation
           let ASUA_playerIndex = 2
-          gosub ArenaSelectUpdatePlayerAnim
+          gosub ArenaSelectUpdatePlayerAnimation
           
-ArenaSelectSkipPlayer2Anim
+ArenaSelectSkipPlayer2Animation
           rem Skip Player 3 animation update (not in 4-player mode or
           rem not selected)
           rem
@@ -365,18 +365,18 @@ ArenaSelectSkipPlayer2Anim
           rem Constraints: Must be colocated with
           rem ArenaSelectUpdateAnimations
           rem Update Player 4 animation (if Quadtari and character
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Anim : rem   selected)
-          if selectedChar4_R = 255 then ArenaSelectSkipPlayer23Anim
-          if selectedChar4_R = 254 then ArenaSelectSkipPlayer23Anim
-          if selectedChar4_R = 253 then ArenaSelectSkipPlayer23Anim
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation : rem   selected)
+          if selectedChar4_R = 255 then ArenaSelectSkipPlayer23Animation
+          if selectedChar4_R = 254 then ArenaSelectSkipPlayer23Animation
+          if selectedChar4_R = 253 then ArenaSelectSkipPlayer23Animation
           let ASUA_playerIndex = 3
-          gosub ArenaSelectUpdatePlayerAnim
+          gosub ArenaSelectUpdatePlayerAnimation
           
-ArenaSelectSkipPlayer23Anim
+ArenaSelectSkipPlayer23Animation
           rem Skip Player 3/4 animation updates (not in 4-player mode or
           rem not selected)
           return
-ArenaSelectUpdatePlayerAnim
+ArenaSelectUpdatePlayerAnimation
           rem Input: None (label only, no execution)
           rem
           rem Output: None (label only)
@@ -403,11 +403,11 @@ ArenaSelectUpdatePlayerAnim
           rem ArenaSelectUpdateAnimations
           rem Simple frame counter that cycles every 60 frames (1 second
           rem   at 60fps)
-          rem Increment frame counter (stored in arenaSelectAnimFrame
+          rem Increment frame counter (stored in arenaSelectAnimationFrame
           rem   array)
           rem For now, use a simple counter that wraps every 8 frames
           rem In the future, this could use
-          rem   arenaSelectAnimFrame[playerIndex] array
+          rem   arenaSelectAnimationFrame[playerIndex] array
           rem For simplicity, just cycle through frames 0-7 for idle
           rem   animation
           dim ASUPA_playerIndex = temp1 : rem Frame updates every 8 frames (7.5fps at 60fps)
@@ -429,8 +429,7 @@ ArenaSelectDrawCharacters
           rem Output: player0-3x, player0-3y (TIA registers) set,
           rem sprites loaded via ArenaSelectDrawPlayerSprite
           rem
-          rem Mutates: pf0-pf5 (playfield registers cleared),
-          rem player0-3x, player0-3y (TIA registers),
+          rem Mutates: player0-3x, player0-3y (TIA registers),
           rem         player sprite pointers (via LocateCharacterArt),
           rem         COLUP0-COLUP3 (via LoadCharacterColors)
           rem
@@ -455,9 +454,7 @@ ArenaSelectDrawCharacters
           rem Characters remain in same positions as character select
           rem   screen
           
-          rem Clear playfield
-          pf0 = 0 : pf1 = 0 : pf2 = 0 : pf3 = 0 : pf4 = 0 : pf5 = 0
-          
+          rem Playfield defined by ArenaSelect data; no per-frame register writes
           if selectedChar1 = 255 then ArenaSelectSkipDrawP0 : rem Draw Player 1 character (top left) if selected
           if selectedChar1 = 254 then ArenaSelectSkipDrawP0
           if selectedChar1 = 253 then ArenaSelectSkipDrawP0

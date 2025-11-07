@@ -154,3 +154,8 @@
 #define ColSpringGreen(lum) _COL_EXPAND_AND_CONCAT(_COL_SpringGreen_L, lum)
 #define ColGold(lum) _COL_EXPAND_AND_CONCAT(_COL_Gold_L, lum)
 
+/* PAL/SECAM naming compatibility */
+#define ColSpinach(lum) ColSpringGreen(lum)
+#define ColStonewash(lum) ColCyan(lum)
+#define ColAlgae(lum) ColGreen(lum)
+

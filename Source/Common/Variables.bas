@@ -239,7 +239,7 @@
           rem Sound data pointer low/high bytes (in Sounds bank) - low
           rem byte
           rem   in zero page (var39), high byte in SCRAM (w048/r048)
-          dim soundEffectPointerL = var41 : rem   Moved to SCRAM to avoid conflict with charSelectAnimIndex (y)
+          dim soundEffectPointerL = var41 : rem   Moved to SCRAM to avoid conflict with charSelectAnimationIndex (y)
           dim soundEffectPointerH_W = w066
           dim soundEffectPointerH_R = r066
           dim soundEffectPointerH = soundEffectPointerH_W
@@ -247,7 +247,7 @@
           rem   byte = 0 means inactive) - low byte in zero page
           rem   (var41),
           rem   high byte in SCRAM (w066/r066)
-          dim soundEffectPointer1L = var45 : rem   Moved to SCRAM to avoid conflict with charSelectAnimFrame (z)
+          dim soundEffectPointer1L = var45 : rem   Moved to SCRAM to avoid conflict with charSelectAnimationFrame (z)
           dim soundEffectPointer1H = var46
           rem Sound effect Voice 1 stream position low/high bytes (high
           rem   byte = 0 means inactive) - zero page
@@ -342,11 +342,11 @@
           rem NOTE: w,x are REDIMMED in Game Mode for missile velocities
           rem NOTE: t,u,v are ADMIN-only (not used in Game Mode)
           dim readyCount = x               
-          dim charSelectAnimTimer = w : rem ADMIN: Count of locked players
+          dim charSelectAnimationTimer = w : rem ADMIN: Count of locked players
           rem ADMIN: Animation frame counter (REDIM - conflicts with
-          dim charSelectAnimState = t : rem   missileVelocityX in Game Mode)
-          dim charSelectAnimIndex = u : rem ADMIN: Current animation state (ADMIN-only, no conflict)
-          dim charSelectAnimFrame = v : rem ADMIN: Which character animating (ADMIN-only, no conflict)
+          dim charSelectAnimationState = t : rem   missileVelocityX in Game Mode)
+          dim charSelectAnimationIndex = u : rem ADMIN: Current animation state (ADMIN-only, no conflict)
+          dim charSelectAnimationFrame = v : rem ADMIN: Which character animating (ADMIN-only, no conflict)
           rem ADMIN: Current frame in sequence (ADMIN-only, no conflict)
           
           rem ADMIN MODE - Standard RAM (var0-var47) - sorted
@@ -618,9 +618,9 @@
           rem Stored velocities for bounce calculations and physics
           dim missileVelocityX = w : rem   updates
           rem Game Mode: Missile X velocity array (4 bytes) - REDIM from
-          dim missileVelocityY = x : rem   charSelectAnimTimer
+          dim missileVelocityY = x : rem   charSelectAnimationTimer
           rem Game Mode: Missile Y velocity array (4 bytes) - REDIM from
-          rem   charSelectAnimState
+          rem   charSelectAnimationState
 
           rem Missile momentum stored in temp variables during
           rem   UpdateMissiles subroutine
@@ -769,12 +769,12 @@
           rem OPTIMIZED: Moved from w028-w031 to w076-w079 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
-          dim charSelectPlayerAnimFrame_W = w076 : rem   Admin and Game Mode never run simultaneously
-          dim charSelectPlayerAnimFrame_R = r076
+          dim charSelectPlayerAnimationFrame_W = w076 : rem   Admin and Game Mode never run simultaneously
+          dim charSelectPlayerAnimationFrame_R = r076
           rem Frame counters for idle/walk animation cycles in character
           rem   select
-          rem Array accessible as charSelectPlayerAnimFrame[0] through
-          rem   charSelectPlayerAnimFrame[3]
+          rem Array accessible as charSelectPlayerAnimationFrame[0] through
+          rem   charSelectPlayerAnimationFrame[3]
           
           rem ADMIN: Character select animation sequence flags (SCRAM -
           rem   used in character select)
@@ -784,12 +784,12 @@
           rem   and Game Mode never run simultaneously
           rem NOTE: Also REDIMMED with selectedChar2/3/4 (w084-w086) -
           rem   selectedChar* are read once at game start before Admin
-          dim charSelectPlayerAnimSeq_W = w080 : rem   charSelect anim runs again, so safe overlap
-          dim charSelectPlayerAnimSeq_R = r080
+          dim charSelectPlayerAnimationSequence_W = w080 : rem   character select animation runs again, so safe overlap
+          dim charSelectPlayerAnimationSequence_R = r080
           rem
           rem Bit 0: 0=idle, 1=walk. Toggles every 60 frames
-          rem Array accessible as charSelectPlayerAnimSeq[0] through
-          rem   charSelectPlayerAnimSeq[3]
+          rem Array accessible as charSelectPlayerAnimationSequence[0] through
+          rem   charSelectPlayerAnimationSequence[3]
 
           rem TODO / FUTURE EXPANSION
           

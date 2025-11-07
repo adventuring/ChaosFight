@@ -27,8 +27,7 @@ BeginArenaSelect
           rem to 0),
           rem         pfrowheight, pfrows (set via
           rem         SetAdminScreenLayout),
-          rem         COLUBK (TIA register), pf0-pf5 (playfield
-          rem         registers)
+          rem         COLUBK (TIA register)
           rem
           rem Called Routines: SetAdminScreenLayout (bank8) - sets
           rem screen layout
@@ -44,14 +43,7 @@ BeginArenaSelect
           
           let COLUBK = ColGray(0) : rem Set background color (B&W safe)
           
-          rem Clear playfield (will be drawn by ArenaSelect1 loop)
-          pf0 = 0
-          pf1 = 0
-          pf2 = 0
-          pf3 = 0
-          pf4 = 0
-          pf5 = 0
-          
+          rem Playfield layout is static; ArenaSelect renders via playfield data
           return
 
 

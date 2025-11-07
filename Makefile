@@ -538,6 +538,7 @@ clean:
 quickclean:
 	rm -rf Dist Object
 	rm -f Source/Generated/$(GAME)$(GAMEYEAR).*.bas
+	rm -f Source/Generated/$(GAME)$(GAMEYEAR).*.preprocessed.bas
 	rm -f Source/Generated/$(GAME)$(GAMEYEAR).*.s
 	rm -f $(GAME)*.aux $(GAME)*.cp $(GAME)*.cps $(GAME)*.toc $(GAME)*.log
 

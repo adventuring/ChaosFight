@@ -337,11 +337,12 @@ CheckGroundCollision
           
           rem Check if player is at or below ground level
           rem Ground level is at Y = 176 (bottom of playfield, leaving
-          if CGC_playerY >= 176 then : rem   room for sprite)
-          rem Player hit ground
+          if CGC_playerY < 176 then return
+          rem Player hit ground (room for sprite)
           let playerY[CGC_playerIndex] = 176 : rem Clamp position to ground
           
-          if CGC_momentum > 0 then : rem Check fall damage if moving downward
+          if CGC_momentum <= 0 then return
+          rem Check fall damage if moving downward
           let temp1 = CGC_playerIndex : rem momentum contains downward velocity
           let temp2 = CGC_momentum
           goto CheckFallDamage : rem tail call

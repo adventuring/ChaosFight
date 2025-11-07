@@ -57,7 +57,7 @@ HandleCharacterSelectCycle
           rem
           rem Called Routines: CycleCharacterLeft, CycleCharacterRight -
           rem access playerCharacter[],
-          rem   SetPlayerLocked (bank144) - accesses playerLocked state,
+          rem   SetPlayerLocked (bank14) - accesses playerLocked state,
           rem   PlaySoundEffect (bank15) - plays navigation sound
           rem
           rem Constraints: Must be colocated with HCSC_CheckJoy0,
@@ -131,7 +131,7 @@ HCSC_DoCycle
           rem temp1, temp2, temp3
           rem
           rem Called Routines: CycleCharacterLeft, CycleCharacterRight,
-          rem SetPlayerLocked (bank144),
+          rem SetPlayerLocked (bank14),
           rem   PlaySoundEffect (bank15)
           rem
           rem Constraints: Must be colocated with
@@ -171,13 +171,13 @@ HCSC_CycleDone
           rem Mutates: playerCharacter[HCSC_playerIndex], playerLocked state,
           rem temp1, temp2
           rem
-          rem Called Routines: SetPlayerLocked (bank144),
+          rem Called Routines: SetPlayerLocked (bank14),
           rem PlaySoundEffect (bank15)
           let HCSC_characterIndex = temp1 : rem Constraints: Must be colocated with HandleCharacterSelectCycle
           let playerCharacter[HCSC_playerIndex] = HCSC_characterIndex
           let temp1 = HCSC_playerIndex
           let temp2 = PlayerLockedUnlocked
-          gosub SetPlayerLocked bank144
+          gosub SetPlayerLocked bank14
           let HCSC_soundId = SoundMenuNavigate : rem Play navigation sound
           let temp1 = HCSC_soundId
           gosub PlaySoundEffect bank15
@@ -209,7 +209,7 @@ HandleCharacterSelectFire
           rem         temp1, temp2, temp3, temp4 (passed to helper
           rem         routines)
           rem
-          rem Called Routines: SetPlayerLocked (bank144) - accesses
+          rem Called Routines: SetPlayerLocked (bank14) - accesses
           rem playerLocked state,
           rem   PlaySoundEffect (bank15) - plays selection sound
           rem
@@ -257,7 +257,7 @@ HCSF_HandleFire
           rem Mutates: playerLocked state, randomSelectFlags[] (if
           rem random)
           rem
-          rem Called Routines: SetPlayerLocked (bank144),
+          rem Called Routines: SetPlayerLocked (bank14),
           rem PlaySoundEffect (bank15)
           rem
           rem Constraints: Must be colocated with
@@ -268,7 +268,7 @@ HCSF_HandleFire
           let HCSF_playerNumber = HCSF_playerIndex
           let temp1 = HCSF_playerNumber
           let temp2 = PlayerLockedNormal
-          gosub SetPlayerLocked bank144
+          gosub SetPlayerLocked bank14
           let HCSF_soundId = SoundMenuSelect : rem Play selection sound
           let temp1 = HCSF_soundId
           gosub PlaySoundEffect bank15
@@ -282,12 +282,12 @@ HCSF_HandleHandicap
           rem
           rem Mutates: playerLocked state (set to handicap)
           rem
-          rem Called Routines: SetPlayerLocked (bank144),
+          rem Called Routines: SetPlayerLocked (bank14),
           rem PlaySoundEffect (bank15)
           let HCSF_playerNumber = HCSF_playerIndex : rem Constraints: Must be colocated with HandleCharacterSelectFire
           let temp1 = HCSF_playerNumber
           let temp2 = PlayerHandicapped
-          gosub SetPlayerLocked bank144
+          gosub SetPlayerLocked bank14
           let HCSF_soundId = SoundMenuSelect : rem Play selection sound
           let temp1 = HCSF_soundId
           gosub PlaySoundEffect bank15
@@ -342,7 +342,7 @@ CharacterSelectInputEntry
           rem
           rem Called Routines: CharacterSelectCheckControllerRescan -
           rem accesses controller state,
-          rem   SetPlayerLocked (bank1) - accesses playerLocked state,
+          rem   SetPlayerLocked (bank14) - accesses playerLocked state,
           rem   HandleCharacterSelectCycle - accesses playerCharacter[],
           rem   playerLocked,
           rem   HandleCharacterSelectFire - accesses playerCharacter[],
@@ -366,8 +366,8 @@ CharacterSelectInputEntry
           if joy0left then CS_HandlePlayer0Left : rem Handle Player 1 input (joy0 on even frames)
           if joy0right then CS_HandlePlayer0Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1 : goto CS_Player0LockClearDone
-          if joy0down then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14 : goto CS_Player0LockClearDone
+          if joy0down then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 CS_Player0LockClearDone
           rem Player 0 lock clear complete (label only)
           rem
@@ -383,8 +383,8 @@ CS_Player0LockClearDone
           if joy1left then CS_HandlePlayer1Left : rem Handle Player 2 input (joy1 on even frames)
           if joy1right then CS_HandlePlayer1Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1 : goto CS_Player1LockClearDone
-          if joy1down then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14 : goto CS_Player1LockClearDone
+          if joy1down then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 CS_Player1LockClearDone
           rem Player 1 lock clear complete (label only)
           rem
@@ -425,8 +425,8 @@ CharacterSelectHandleQuadtari
           if joy0left then CS_HandlePlayer3Left
           if joy0right then CS_HandlePlayer3Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1 : goto CS_Player3LockClearDone
-          if joy0down then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14 : goto CS_Player3LockClearDone
+          if joy0down then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 CS_Player3LockClearDone
           if joy0fire then CS_HandlePlayer3Fire
 CS_SkipPlayer3
@@ -436,8 +436,8 @@ CS_SkipPlayer3
           if joy1left then CS_HandlePlayer4Left
           if joy1right then CS_HandlePlayer4Right
           rem Use skip-over pattern to avoid complex || operator
-          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1 : goto CS_Player4LockClearDone
-          if joy1down then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14 : goto CS_Player4LockClearDone
+          if joy1down then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 CS_Player4LockClearDone
           if joy1fire then CS_HandlePlayer4Fire
 CS_SkipPlayer4
@@ -499,10 +499,10 @@ CharacterSelectRollPlayer0
           if CSR0_rolledValue > MaxCharacter then goto CharacterSelectRollsDone : rem If > 15, stay as RandomCharacter and retry next frame
           let playerCharacter[0] = CSR0_rolledValue : rem Valid! Set character and lock with normal or handicap
           if randomSelectFlags[0] then goto CharacterSelectLockPlayer0Handicap
-          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
+          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto CharacterSelectLockPlayer0Done
 CharacterSelectLockPlayer0Handicap
-          let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
+          let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 CharacterSelectLockPlayer0Done
           let randomSelectFlags[0] = 0
           goto CharacterSelectRollsDone
@@ -513,10 +513,10 @@ CharacterSelectRollPlayer1
           if CSR1_rolledValue > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[1] = CSR1_rolledValue
           if randomSelectFlags[1] then goto CharacterSelectLockPlayer1Handicap
-          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto CharacterSelectLockPlayer1Done
 CharacterSelectLockPlayer1Handicap
-          let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
+          let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 CharacterSelectLockPlayer1Done
           let randomSelectFlags[1] = 0
           goto CharacterSelectRollsDone
@@ -527,10 +527,10 @@ CharacterSelectRollPlayer2
           if CSR2_rolledValue > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[2] = CSR2_rolledValue
           if randomSelectFlags[2] then goto CharacterSelectLockPlayer2Handicap
-          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto CharacterSelectLockPlayer2Done
 CharacterSelectLockPlayer2Handicap
-          let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
+          let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 CharacterSelectLockPlayer2Done
           let randomSelectFlags[2] = 0
           goto CharacterSelectRollsDone
@@ -541,10 +541,10 @@ CharacterSelectRollPlayer3
           if CSR3_rolledValue > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[3] = CSR3_rolledValue
           if randomSelectFlags[3] then goto CharacterSelectLockPlayer3Handicap
-          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
+          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto CharacterSelectLockPlayer3Done
 CharacterSelectLockPlayer3Handicap
-          let temp1 = 3 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
+          let temp1 = 3 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 CharacterSelectLockPlayer3Done
           let randomSelectFlags[3] = 0
           
@@ -1006,7 +1006,7 @@ SelectLoadSpriteColor
           
           rem temp3 restored via LoadCharacterColors
           let temp1 = SLSC_playerNumberSaved
-          gosub GetPlayerLocked bank1
+          gosub GetPlayerLocked bank14
           let SLSC_lockedState = temp2
           let temp3 = SLSC_playerNumberSaved
           if !SLSC_lockedState then goto SelectApplyUnlockedColor
@@ -1035,7 +1035,7 @@ SelectDrawNumber
           let SDN_playerIndex = temp1
           
           let temp1 = SDN_playerIndex
-          gosub GetPlayerLocked bank1
+          gosub GetPlayerLocked bank14
           let SDN_lockedState = temp2
           
           let SDN_color = ColGrey(14)
@@ -1152,7 +1152,7 @@ SelectUpdateAnimations
           rem Each player updates independently with staggered timing
           
           rem Update Player 1 animations (characters)
-          let temp1 = 0 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer0Animation  : rem Locked players don’t animate
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then goto SelectSkipPlayer0Animation  : rem Locked players don’t animate
           if playerCharacter[0] = CPUCharacter then goto SelectSkipPlayer0Animation  : rem CPU doesn’t animate
           if playerCharacter[0] = NoCharacter then goto SelectSkipPlayer0Animation  : rem NO doesn’t animate
           if playerCharacter[0] = RandomCharacter then goto SelectSkipPlayer0Animation  : rem Random doesn’t animate
@@ -1160,7 +1160,7 @@ SelectUpdateAnimations
           gosub SelectUpdatePlayerAnimation
           
 SelectSkipPlayer0Animation
-          let temp1 = 1 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer1Animation : rem Update Player 2 animations
+          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then goto SelectSkipPlayer1Animation : rem Update Player 2 animations
           if playerCharacter[1] = CPUCharacter then goto SelectSkipPlayer1Animation
           if playerCharacter[1] = NoCharacter then goto SelectSkipPlayer1Animation
           if playerCharacter[1] = RandomCharacter then goto SelectSkipPlayer1Animation
@@ -1169,7 +1169,7 @@ SelectSkipPlayer0Animation
           
 SelectSkipPlayer1Animation
           if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Animation : rem Update Player 3 animations (if Quadtari)
-          let temp1 = 2 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer2Animation
+          let temp1 = 2 : gosub GetPlayerLocked bank14 : if temp2 then goto SelectSkipPlayer2Animation
           if playerCharacter[2] = NoCharacter then goto SelectSkipPlayer2Animation
           if playerCharacter[2] = RandomCharacter then goto SelectSkipPlayer2Animation
           let temp1 = 2
@@ -1177,7 +1177,7 @@ SelectSkipPlayer1Animation
           
 SelectSkipPlayer2Animation
           if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Animation : rem Update Player 4 animations (if Quadtari)
-          let temp1 = 3 : gosub GetPlayerLocked bank1 : if temp2 then goto SelectSkipPlayer23Animation
+          let temp1 = 3 : gosub GetPlayerLocked bank14 : if temp2 then goto SelectSkipPlayer23Animation
           if playerCharacter[3] = NoCharacter then goto SelectSkipPlayer23Animation
           if playerCharacter[3] = RandomCharacter then goto SelectSkipPlayer23Animation
           let temp1 = 3

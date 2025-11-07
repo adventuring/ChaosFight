@@ -2,7 +2,7 @@ CharacterSelectEntry
           rem ChaosFight - Source/Routines/CharacterSelectEntry.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem PlayerLockedHelpers.bas moved to Bank 1
+          rem PlayerLockedHelpers.bas moved to Bank 14
 
           rem Initialize character select screen state
           rem
@@ -66,7 +66,7 @@ CharacterSelectLoop
           rem playerLocked state, temp1, temp2 (passed to
           rem SetPlayerLocked)
           rem
-          rem Called Routines: SetPlayerLocked (bank1) - accesses
+          rem Called Routines: SetPlayerLocked (bank14) - accesses
           rem playerLocked state
           rem
           rem Constraints: Must be colocated with Player1LeftSelectionQ,
@@ -93,7 +93,7 @@ CharacterSelectLoop
 
 Player1LeftSelectionQ
           if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = MaxCharacter
-          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
           
 Player1LeftSelectionSkip
           if joy0right then let playerCharacter[0] = playerCharacter[0] + 1 : goto Player1RightSelectionQ
@@ -101,16 +101,16 @@ Player1LeftSelectionSkip
 
 Player1RightSelectionQ
           if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = 0
-          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
           
 Player1RightSelectionSkip
-          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
           if joy0down then SelectStick0FireQ : rem Unlock by moving up
           goto SelectStick0Down
 
 SelectStick0FireQ
           if joy0fire then SelectStick0Down
-          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
           
 SelectStick0Down
           if joy0fire then Player1LockSelection : rem Unlock by moving down (without fire)
@@ -118,11 +118,11 @@ SelectStick0Down
 
 Player1LockSelection
           if joy0down then Player1HandicapSelection
-          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
+          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto Player1LockSelectionDone : rem Locked normal (100% health)
 
 Player1HandicapSelection
-          let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
+          let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 Player1LockSelectionDone
           rem Locked with handicap (75% health)
 
@@ -132,16 +132,16 @@ Player1LockSelectionDone
 
 Player2LeftSelectionQ
           if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = MaxCharacter
-          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 Player2LeftSelectionSkip
           if joy1right then let playerCharacter[1] = playerCharacter[1] + 1 : goto Player2RightSelectionQ
           goto Player2RightSelectionSkip
 
 Player2RightSelectionQ
           if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = 0
-          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 Player2RightSelectionSkip
-          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
           if joy1down then SelectStick1FireQ : rem Unlock by moving up
 
           goto SelectStick1Down
@@ -149,16 +149,16 @@ Player2RightSelectionSkip
 SelectStick1FireQ
           if joy1fire then SelectStick1Down
 
-          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 SelectStick1Down
           if joy1fire then SelectStick1DownQ : rem Unlock by moving down (without fire)
 
           goto SelectStick1EvenFrameSkip
 
 SelectStick1DownQ
-          if joy1down then let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1 : goto Player2LockSelectionDone
+          if joy1down then let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14 : goto Player2LockSelectionDone
 
-          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1 : rem Locked with handicap (75% health)
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14 : rem Locked with handicap (75% health)
 Player2LockSelectionDone 
           rem Locked normal (100% health)
 
@@ -178,7 +178,7 @@ CharacterSelectHandlePlayer3
 
 Player3LeftSelectionQ
           if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = MaxCharacter
-          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 Player3LeftSelectionSkip
           if joy0right then let playerCharacter[2] = playerCharacter[2] + 1 : goto Player3RightSelectionQ
 
@@ -186,16 +186,16 @@ Player3LeftSelectionSkip
 
 Player3RightSelectionQ
           if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = 0
-          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 Player3RightSelectionSkip
-          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
           if joy0down then SelectStick0FirePlayer3Q : rem Unlock by moving up
 
           goto SelectStick0DownPlayer3
 
 SelectStick0FirePlayer3Q
           if joy0fire then SelectStick0DownPlayer3
-          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 SelectStick0DownPlayer3
           if joy0fire then SelectStick0DownPlayer3Q : rem Unlock by moving down (without fire)
 
@@ -204,11 +204,11 @@ SelectStick0DownPlayer3
 SelectStick0DownPlayer3Q
           if joy0down then Player3HandicapSelection
 
-          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto Player3LockSelectionDone : rem Locked normal (100% health)
 
 Player3HandicapSelection
-          let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
+          let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 Player3LockSelectionDone
           rem Locked with handicap (75% health)
 
@@ -221,15 +221,15 @@ CharacterSelectHandlePlayer4
           goto Player4LeftSelectionSkip
 Player4LeftSelectionQ
           if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = MaxCharacter
-          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 Player4LeftSelectionSkip
           if joy1right then let playerCharacter[3] = playerCharacter[3] + 1 : goto Player4RightSelectionQ
           goto Player4RightSelectionSkip
 Player4RightSelectionQ
           if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = 0
-          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 Player4RightSelectionSkip
-          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
           if joy1down then SelectStick1FirePlayer4Q : rem Unlock by moving up
 
           goto SelectStick1DownPlayer4
@@ -237,7 +237,7 @@ Player4RightSelectionSkip
 SelectStick1FirePlayer4Q
           if joy1fire then SelectStick1DownPlayer4
 
-          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 SelectStick1DownPlayer4
           if joy1fire then SelectStick1DownPlayer4Q : rem Unlock by moving down (without fire)
 

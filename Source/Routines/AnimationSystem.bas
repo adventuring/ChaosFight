@@ -180,7 +180,8 @@ AdvanceFrame
           rem Frame is from sprite 10fps counter
           rem   (currentAnimationFrame), not global frame
           rem SCRAM read-modify-write: Read from r081, modify, write to
-          dim UPA_animFrameRead = temp4 : rem   w081
+          rem   w081
+          dim UPA_animFrameRead = temp4
           let UPA_animFrameRead = currentAnimationFrame_R[currentPlayer]
           let UPA_animFrameRead = 1 + UPA_animFrameRead
           let currentAnimationFrame_W[currentPlayer] = UPA_animFrameRead
@@ -188,7 +189,8 @@ AdvanceFrame
           rem Check if we have completed the current action (8 frames
           rem   per action)
           rem Use temp variable from previous increment
-          if UPA_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition : rem   (UPA_animFrameRead)
+          rem   (UPA_animFrameRead)
+          if UPA_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
 DoneAdvance
           return

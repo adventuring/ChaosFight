@@ -722,11 +722,33 @@ PlayerIndexColors
           rem Solid player index colors (bright)
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
-          if !LoadCharacterColors_playerNumber then let PlayerIndexColors_color = ColIndigo(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor : rem NTSC/PAL: Use Turquoise for Player 4
-          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColors_color = ColRed(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor : rem Player 1: Indigo
-          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColors_color = ColYellow(14) : let LoadCharacterColors_color = PlayerIndexColors_color : goto SetColor : rem Player 2: Red
-          let PlayerIndexColors_color = ColTurquoise(14) : rem Player 3: Yellow
-          let LoadCharacterColors_color = PlayerIndexColors_color : rem Player 4: Turquoise
+          if !LoadCharacterColors_playerNumber then goto PlayerIndexColorsPlayer0
+          if LoadCharacterColors_playerNumber = 1 then goto PlayerIndexColorsPlayer1
+          if LoadCharacterColors_playerNumber = 2 then goto PlayerIndexColorsPlayer2
+          goto PlayerIndexColorsPlayer3
+
+PlayerIndexColorsPlayer0
+          rem Player 1: Indigo (SECAM maps to Blue)
+          let PlayerIndexColors_color = ColIndigo(14)
+          let LoadCharacterColors_color = PlayerIndexColors_color
+          goto SetColor
+
+PlayerIndexColorsPlayer1
+          rem Player 2: Red
+          let PlayerIndexColors_color = ColRed(14)
+          let LoadCharacterColors_color = PlayerIndexColors_color
+          goto SetColor
+
+PlayerIndexColorsPlayer2
+          rem Player 3: Yellow (SECAM maps to Yellow)
+          let PlayerIndexColors_color = ColYellow(14)
+          let LoadCharacterColors_color = PlayerIndexColors_color
+          goto SetColor
+
+PlayerIndexColorsPlayer3
+          rem Player 4: Turquoise (SECAM maps to Green)
+          let PlayerIndexColors_color = ColTurquoise(14)
+          let LoadCharacterColors_color = PlayerIndexColors_color
           goto SetColor
 
 PlayerIndexColorsDim
@@ -746,11 +768,33 @@ PlayerIndexColorsDim
           rem SetColor
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
-          if !LoadCharacterColors_playerNumber then let PlayerIndexColorsDim_color = ColIndigo(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor : rem NTSC/PAL: Use Turquoise for Player 4
-          if LoadCharacterColors_playerNumber = 1 then let PlayerIndexColorsDim_color = ColRed(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor : rem Player 1: Indigo (dimmed)
-          if LoadCharacterColors_playerNumber = 2 then let PlayerIndexColorsDim_color = ColYellow(6) : let LoadCharacterColors_color = PlayerIndexColorsDim_color : goto SetColor : rem Player 2: Red (dimmed)
-          let PlayerIndexColorsDim_color = ColTurquoise(6) : rem Player 3: Yellow (dimmed)
-          let LoadCharacterColors_color = PlayerIndexColorsDim_color : rem Player 4: Turquoise (dimmed)
+          if !LoadCharacterColors_playerNumber then goto PlayerIndexColorsDimPlayer0
+          if LoadCharacterColors_playerNumber = 1 then goto PlayerIndexColorsDimPlayer1
+          if LoadCharacterColors_playerNumber = 2 then goto PlayerIndexColorsDimPlayer2
+          goto PlayerIndexColorsDimPlayer3
+
+PlayerIndexColorsDimPlayer0
+          rem Player 1: Indigo (dimmed)
+          let PlayerIndexColorsDim_color = ColIndigo(6)
+          let LoadCharacterColors_color = PlayerIndexColorsDim_color
+          goto SetColor
+
+PlayerIndexColorsDimPlayer1
+          rem Player 2: Red (dimmed)
+          let PlayerIndexColorsDim_color = ColRed(6)
+          let LoadCharacterColors_color = PlayerIndexColorsDim_color
+          goto SetColor
+
+PlayerIndexColorsDimPlayer2
+          rem Player 3: Yellow (dimmed)
+          let PlayerIndexColorsDim_color = ColYellow(6)
+          let LoadCharacterColors_color = PlayerIndexColorsDim_color
+          goto SetColor
+
+PlayerIndexColorsDimPlayer3
+          rem Player 4: Turquoise (dimmed)
+          let PlayerIndexColorsDim_color = ColTurquoise(6)
+          let LoadCharacterColors_color = PlayerIndexColorsDim_color
           goto SetColor
 
 HurtColor

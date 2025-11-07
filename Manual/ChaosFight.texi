@@ -685,7 +685,7 @@ AtariAge and Atari community
 @item
 Random Terrain (batariBasic documentation)
 @item
-@dfn{Omegamatrix} (for the sparkling 0-99 BCD converter that keeps our score digits cute) and the AtariAge forum contributors sharing their wizardry
+@dfn{Omegamatrix} (for the BCD converter) and the AtariAge forum contributors sharing their wizardry
 @end itemize
 
 @section Tools Used

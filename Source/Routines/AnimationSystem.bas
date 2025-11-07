@@ -543,12 +543,8 @@ IsPlayerJumping
           rem OUTPUT: temp2 = 1 if jumping, 0 if not
           dim IPJ_isJumping = temp2 : rem EFFECTS: None (read-only query)
           let temp2 = 0 : rem Use temp2 directly to avoid batariBASIC alias resolution issues
-          if ActionJumping = currentAnimationSeq[currentPlayer] then goto IsJumping
-          if ActionFalling = currentAnimationSeq[currentPlayer] then goto IsJumping
-          goto NotJumping
-IsJumping
-          let temp2 = 1
-NotJumping
+          if ActionJumping = currentAnimationSeq[currentPlayer] then let temp2 = 1
+          if ActionFalling = currentAnimationSeq[currentPlayer] then let temp2 = 1
           return
 
 HandleAnimationTransition
@@ -561,26 +557,9 @@ HandleAnimationTransition
           dim HAT_currentAction = temp1 : rem transition
           dim HAT_animationAction = temp2
           let HAT_currentAction = currentAnimationSeq[currentPlayer] : rem Get current action
+          if ActionAttackRecovery < HAT_currentAction then goto TransitionLoopAnimation : rem Guard against invalid action values
           
-          if ActionIdle = HAT_currentAction then goto TransitionLoopAnimation : rem Branch by action type
-          if ActionGuarding = HAT_currentAction then goto TransitionLoopAnimation
-          if ActionFalling = HAT_currentAction then goto TransitionLoopAnimation
-          
-          if ActionJumping = HAT_currentAction then goto TransitionHandleJump : rem Special: Jumping stays on frame 7 until falling
-          
-          if ActionLanding = HAT_currentAction then goto TransitionToIdle : rem Transitions to Idle
-          if ActionHit = HAT_currentAction then goto TransitionToIdle
-          if ActionRecovering = HAT_currentAction then goto TransitionToIdle
-          
-          if ActionFallBack = HAT_currentAction then goto TransitionHandleFallBack : rem Special: FallBack checks wall collision
-          
-          if ActionFallen = HAT_currentAction then goto TransitionLoopAnimation : rem Fallen waits for stick input (handled elsewhere)
-          if ActionFallDown = HAT_currentAction then goto TransitionToFallen
-          
-          rem Attack transitions (delegate to character-specific
-          if ActionAttackWindup <= HAT_currentAction && ActionAttackRecovery >= HAT_currentAction then goto HandleAttackTransition : rem   handler)
-          
-          goto TransitionLoopAnimation : rem Default: loop
+          on HAT_currentAction goto TransitionLoopAnimation, TransitionLoopAnimation, TransitionLoopAnimation, TransitionLoopAnimation, TransitionLoopAnimation, TransitionToIdle, TransitionHandleFallBack, TransitionToFallen, TransitionLoopAnimation, TransitionToIdle, TransitionHandleJump, TransitionLoopAnimation, TransitionToIdle, HandleAttackTransition, HandleAttackTransition, HandleAttackTransition
 
 TransitionLoopAnimation
           let currentAnimationFrame_W[currentPlayer] = 0 : rem SCRAM write: Write to w081

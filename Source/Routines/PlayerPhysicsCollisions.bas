@@ -427,29 +427,27 @@ DBPF_InlineDivideBy8_5
           end
 DBPF_InlineDivideDone_5
           let rowCounter_W = playfieldRow + temp2
-          if rowCounter_R >= pfrows then goto PFCheckDone : rem Row at player feet (rowCounter)
+          if rowCounter_R >= pfrows then return : rem Row at player feet (rowCounter)
           
           let playfieldRow = rowCounter_R + 1
           rem Row below feet (playfieldRow - temporarily reuse for this
-          if playfieldRow >= pfrows then goto PFCheckDone : rem   check)
+          if playfieldRow >= pfrows then return : rem   check)
           
           if pfread(temp6, playfieldRow) then goto PFBlockDown : rem Check center, left, and right columns below feet
           if temp6 = 0 then goto PFCheckDown_CheckRight
           let playfieldColumn_W = temp6 - 1
           if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockDown
 PFCheckDown_CheckRight
-          if temp6 >= 31 then goto PFCheckDone
+          if temp6 >= 31 then return
           let playfieldColumn_W = temp6 + 1
           if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockDown
           
-          goto PFCheckDone
+          return
           
 PFBlockDown
           rem Block downward movement: zero Y velocity if positive
           rem This should already be handled in PhysicsApplyGravity, but
           if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0 : rem enforce here too
-          
-PFCheckDone
           return
 
 CheckAllPlayerCollisions

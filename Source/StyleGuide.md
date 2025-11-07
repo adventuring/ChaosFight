@@ -594,6 +594,24 @@ if selectedArena = RandomArena then
 end if
 ```
 
+**Never bounce through a label just to run a one-liner.** Patterns like the following waste a branch and should be collapsed so the work happens directly in the `then` clause:
+
+```
+if CONDITION then goto SomeLabel
+goto SkipLabel
+SomeLabel
+          let flag = 1
+SkipLabel
+```
+
+Refactor to:
+
+```
+if CONDITION then let flag = 1
+```
+
+If the label performs more than a one-liner, factor it into a proper subroutine or early `return`; do not leave a dummy detour just to hide a single assignment.
+
 ### Tail Call Optimization
 
 When a subroutine ends with `gosub` immediately followed by `return`, optimize to a tail call using `goto`:

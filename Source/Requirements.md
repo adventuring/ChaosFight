@@ -12,6 +12,18 @@ Then continues into warm start:
 
 ---
 
+## Naming Conventions
+
+- Built-in batariBasic identifiers (temp1-temp6, joy0up, frame, and their hardware frenemies) stay lowercase because they were here before we moved in.
+- User-defined variables flaunt camelCase (`gameState`, `playerX`, `selectedCharacter1`) so we can spot our handiwork instantly.
+- Constants, enums, labels, and routines work the PascalCase runway (`MaxCharacter`, `ActionStanding`, `LoadCharacterSprite`) to telegraph their importance.
+- TIA registers (`player0x`, `COLUP0`, `pf0`-`pf2`, etc.) keep their canonical lowercase spellings—do not “improve” them.
+- Never `dim` a built-in variable; batariBasic already reserved their seats and will throw shade if you double-book them.
+
+Stick to these rules and the codebase reads like a chic gossip column instead of an anonymized police report.
+
+---
+
 ## Game Reset Behavior
 
 In any mode, pressing Game Reset causes an instant hard reboot:

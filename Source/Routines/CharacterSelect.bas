@@ -268,15 +268,15 @@ SelHandleDone
 
           let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1 : rem Count locked players
           let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
-          if controllerStatus & SetQuadtariDetected then SelQuadPlayersInline
+          if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
           goto SelSkipQuadPlyInline
           
-SelQuadPlayersInline
+CharacterSelectQuadtariPlayersInline
           let temp1 = 2 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
           let temp1 = 3 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
 SelSkipQuadPlyInline
-          if controllerStatus & SetQuadtariDetected then SelQuadReadyInline : rem Check if enough players are ready
+          if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline : rem Check if enough players are ready
 
           rem Need at least 1 player ready for 2-player mode
           let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then goto SelScreenDone
@@ -285,7 +285,7 @@ SelSkipQuadPlyInline
 
           goto SelSkipQuadChkInline
           
-SelQuadReadyInline
+CharacterSelectQuadtariReadyInline
           if readyCount>= 2 then goto SelScreenDone : rem Need at least 2 players ready for 4-player mode
 SelSkipQuadChkInline
 
@@ -639,9 +639,9 @@ SelUpdateAnimation
           rem P2 handicap flag
           
           
-          if qtcontroller then SelQuadHandi : rem Check each player for DOWN held (odd frame for P3/P4)
+          if qtcontroller then CharacterSelectQuadtariHandicap : rem Check each player for DOWN held (odd frame for P3/P4)
           goto DoneOddFrameCheck
-SelQuadHandi
+CharacterSelectQuadtariHandicap
           rem Helper: Check Players 3/4 for DOWN held (odd frame)
           rem
           rem Input: controllerStatus (global) = controller detection
@@ -669,7 +669,7 @@ SelOddFrame
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelQuadHandi, only called
+          rem Constraints: Internal helper for CharacterSelectQuadtariHandicap, only called
           rem if Quadtari detected
                     if joy0down then let HandicapMode  = HandicapMode | 4
           if joy1down then let HandicapMode  = HandicapMode | 8 : rem P3 handicap flag
@@ -1013,15 +1013,15 @@ SelDetectQuad
           rem Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH)
           rem   AND Right (INPT2 LOW, INPT3 HIGH)
           
-          if INPT0{7} then SelQuadAbsent : rem Check left side: if INPT0 is HIGH then not detected
-          if !INPT1{7} then SelQuadAbsent : rem Check left side: if INPT1 is LOW then not detected
+          if INPT0{7} then CharacterSelectQuadtariAbsent : rem Check left side: if INPT0 is HIGH then not detected
+          if !INPT1{7} then CharacterSelectQuadtariAbsent : rem Check left side: if INPT1 is LOW then not detected
           
-          if INPT2{7} then SelQuadAbsent : rem Check right side: if INPT2 is HIGH then not detected
-          if !INPT3{7} then SelQuadAbsent : rem Check right side: if INPT3 is LOW then not detected
+          if INPT2{7} then CharacterSelectQuadtariAbsent : rem Check right side: if INPT2 is HIGH then not detected
+          if !INPT3{7} then CharacterSelectQuadtariAbsent : rem Check right side: if INPT3 is LOW then not detected
           
           goto SelSkipQuadAbs : rem All checks passed - Quadtari detected
 
-SelQuadAbsent
+CharacterSelectQuadtariAbsent
           return
           rem Helper: Quadtari not detected in this detection cycle
           rem

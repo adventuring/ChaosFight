@@ -536,7 +536,13 @@ IsPlayerHit
           return
 
 IsPlayerJumping
-          rem Check if player is in jumping animation
+          rem Check if player is in jumping animation based on sequence
+          rem NOTE: Returns 1 only when the current animation sequence is
+          rem       ActionJumping or ActionFalling. Permanent flyers such
+          rem       as Frooty or Dragon of Storms remain in idle/hover
+          rem       animations and will report 0 even while aloft. Use
+          rem       PlayerStateBitJumping if you need to detect physical
+          rem       airborne status instead of animation state.
           rem
           rem INPUT: currentPlayer = player index (0-3)
           rem
@@ -559,7 +565,7 @@ HandleAnimationTransition
           let HAT_currentAction = currentAnimationSeq[currentPlayer] : rem Get current action
           if ActionAttackRecovery < HAT_currentAction then goto TransitionLoopAnimation : rem Guard against invalid action values
           
-          on HAT_currentAction goto TransitionLoopAnimation, TransitionLoopAnimation, TransitionLoopAnimation, TransitionLoopAnimation, TransitionLoopAnimation, TransitionToIdle, TransitionHandleFallBack, TransitionToFallen, TransitionLoopAnimation, TransitionToIdle, TransitionHandleJump, TransitionLoopAnimation, TransitionToIdle, HandleAttackTransition, HandleAttackTransition, HandleAttackTransition
+          on HAT_currentAction goto TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionToIdle TransitionHandleFallBack TransitionToFallen TransitionLoopAnimation TransitionToIdle TransitionHandleJump TransitionLoopAnimation TransitionToIdle HandleAttackTransition HandleAttackTransition HandleAttackTransition
 
 TransitionLoopAnimation
           let currentAnimationFrame_W[currentPlayer] = 0 : rem SCRAM write: Write to w081

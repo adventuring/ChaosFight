@@ -305,13 +305,13 @@ DispatchCharacterJump
           
           dim DCJ_characterType = temp4
           rem Dispatch to character-specific jump handler (0-31)
-          if DCJ_characterType < 8 then on DCJ_characterType goto BernieJump, CurlerJump, DragonetJump, ZoeRyenJump, FatTonyJump, MegaxJump, HarpyJump, KnightGuyJump : rem MethHound (31) uses ShamoneJump handler
+          if DCJ_characterType < 8 then on DCJ_characterType goto BernieJump CurlerJump DragonetJump ZoeRyenJump FatTonyJump MegaxJump HarpyJump KnightGuyJump : rem MethHound (31) uses ShamoneJump handler
           if DCJ_characterType < 8 then return
           let DCJ_characterType = DCJ_characterType - 8
-          if DCJ_characterType < 8 then on DCJ_characterType goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
+          if DCJ_characterType < 8 then on DCJ_characterType goto FrootyJump NefertemJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
           if DCJ_characterType < 8 then return
           let DCJ_characterType = DCJ_characterType - 8
-          if DCJ_characterType < 8 then on DCJ_characterType goto Character16Jump, Character17Jump, Character18Jump, Character19Jump, Character20Jump, Character21Jump, Character22Jump, Character23Jump
+          if DCJ_characterType < 8 then on DCJ_characterType goto Character16Jump Character17Jump Character18Jump Character19Jump Character20Jump Character21Jump Character22Jump Character23Jump
           if DCJ_characterType < 8 then return
           let DCJ_characterType = DCJ_characterType - 8
           if DCJ_characterType = 0 then goto Character24Jump
@@ -327,13 +327,13 @@ DispatchCharacterJump
 DispatchCharacterDown
           dim DCD_characterType = temp4
           rem Dispatch to character-specific down handler (0-31)
-          if DCD_characterType < 8 then on DCD_characterType goto BernieDown, CurlerDown, DragonetDown, ZoeRyenDown, FatTonyDown, MegaxDown, HarpyDown, KnightGuyDown : rem MethHound (31) uses ShamoneDown handler
+          if DCD_characterType < 8 then on DCD_characterType goto BernieDown CurlerDown DragonetDown ZoeRyenDown FatTonyDown MegaxDown HarpyDown KnightGuyDown : rem MethHound (31) uses ShamoneDown handler
           if DCD_characterType < 8 then return
           let DCD_characterType = DCD_characterType - 8
-          if DCD_characterType < 8 then on DCD_characterType goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
+          if DCD_characterType < 8 then on DCD_characterType goto FrootyDown NefertemDown NinjishGuyDown PorkChopDown RadishGoblinDown RoboTitoDown UrsuloDown ShamoneDown
           if DCD_characterType < 8 then return
           let DCD_characterType = DCD_characterType - 8
-          if DCD_characterType < 8 then on DCD_characterType goto Character16Down, Character17Down, Character18Down, Character19Down, Character20Down, Character21Down, Character22Down, Character23Down
+          if DCD_characterType < 8 then on DCD_characterType goto Character16Down Character17Down Character18Down Character19Down Character20Down Character21Down Character22Down Character23Down
           if DCD_characterType < 8 then return
           let DCD_characterType = DCD_characterType - 8
           if DCD_characterType = 0 then goto Character24Down
@@ -350,13 +350,13 @@ DispatchCharacterAttack
           dim DCA_characterType = temp4
           rem Dispatch to character-specific attack handler (0-31)
           rem MethHound (31) uses ShamoneAttack handler
-          if DCA_characterType < 8 then on DCA_characterType goto gotoBernieAttack, gotoCurlerAttack, gotoDragonetAttack, gotoZoeRyenAttack, gotoFatTonyAttack, gotoMegaxAttack, gotoHarpyAttack, gotoKnightGuyAttack : rem Use trampoline labels for cross-bank references (Bank 11)
+          if DCA_characterType < 8 then on DCA_characterType goto gotoBernieAttack gotoCurlerAttack gotoDragonetAttack gotoZoeRyenAttack gotoFatTonyAttack gotoMegaxAttack gotoHarpyAttack gotoKnightGuyAttack : rem Use trampoline labels for cross-bank references (Bank 11)
           if DCA_characterType < 8 then return
           let DCA_characterType = DCA_characterType - 8
-          if DCA_characterType < 8 then on DCA_characterType goto gotoFrootyAttack, gotoNefertemAttack, gotoNinjishGuyAttack, gotoPorkChopAttack, gotoRadishGoblinAttack, gotoRoboTitoAttack, gotoUrsuloAttack, gotoShamoneAttack
+          if DCA_characterType < 8 then on DCA_characterType goto gotoFrootyAttack gotoNefertemAttack gotoNinjishGuyAttack gotoPorkChopAttack gotoRadishGoblinAttack gotoRoboTitoAttack gotoUrsuloAttack gotoShamoneAttack
           if DCA_characterType < 8 then return
           let DCA_characterType = DCA_characterType - 8
-          if DCA_characterType < 8 then on DCA_characterType goto gotoCharacter16Attack, gotoCharacter17Attack, gotoCharacter18Attack, gotoCharacter19Attack, gotoCharacter20Attack, gotoCharacter21Attack, gotoCharacter22Attack, gotoCharacter23Attack
+          if DCA_characterType < 8 then on DCA_characterType goto gotoCharacter16Attack gotoCharacter17Attack gotoCharacter18Attack gotoCharacter19Attack gotoCharacter20Attack gotoCharacter21Attack gotoCharacter22Attack gotoCharacter23Attack
           if DCA_characterType < 8 then return
           let DCA_characterType = DCA_characterType - 8
           if DCA_characterType = 0 then goto gotoCharacter24Attack

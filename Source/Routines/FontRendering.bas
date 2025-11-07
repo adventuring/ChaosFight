@@ -100,13 +100,7 @@ DrawDigit
           if DD_spriteSelect > 5 then let DD_spriteSelect = 0 : rem Clamp spriteSelect to valid range (0-5)
           let temp5 = DD_spriteSelect
           let temp6 = DD_digitOffset : rem Preserve spriteSelect in temp5 for LoadPlayerDigit
-          rem Dispatch to sprite-specific handler using if/goto
-          if DD_spriteSelect = 0 then goto SetSprite0
-          if DD_spriteSelect = 1 then goto SetSprite1
-          if DD_spriteSelect = 2 then goto SetSprite2
-          if DD_spriteSelect = 3 then goto SetSprite3
-          if DD_spriteSelect = 4 then goto SetSprite4
-          if DD_spriteSelect = 5 then goto SetSprite5
+          on DD_spriteSelect goto SetSprite0 SetSprite1 SetSprite2 SetSprite3 SetSprite4 SetSprite5
           
 SetSprite0
           rem Set Player 0 sprite position and color
@@ -229,12 +223,7 @@ LoadPlayerDigit
           rem Dispatch to sprite-specific pointer loader based on
           rem spriteSelect
           if LPD_spriteSelect > 5 then let LPD_spriteSelect = 0 : rem   (still in temp5 from DrawDigit)
-          if LPD_spriteSelect = 0 then goto LoadSprite0Ptr
-          if LPD_spriteSelect = 1 then goto LoadSprite1Ptr
-          if LPD_spriteSelect = 2 then goto LoadSprite2Ptr
-          if LPD_spriteSelect = 3 then goto LoadSprite3Ptr
-          if LPD_spriteSelect = 4 then goto LoadSprite4Ptr
-          if LPD_spriteSelect = 5 then goto LoadSprite5Ptr
+          on LPD_spriteSelect goto LoadSprite0Ptr LoadSprite1Ptr LoadSprite2Ptr LoadSprite3Ptr LoadSprite4Ptr LoadSprite5Ptr
           
 LoadSprite0Ptr
           asm
@@ -399,10 +388,8 @@ DrawPlayerNumber
           let DPN_playerDigit = DPN_playerIndex + 1 : rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
           
           let temp1 = DPN_playerIndex : rem Look up player color
-          if temp1 = 0 then goto SetP1Color
-          if temp1 = 1 then goto SetP2Color
-          if temp1 = 2 then goto SetP3Color
-          if temp1 = 3 then goto SetP4Color
+          if temp1 > 3 then temp1 = 3
+          on temp1 goto SetP1Color SetP2Color SetP3Color SetP4Color
           
 SetP1Color
           let DPN_playerColor = ColIndigo(14)

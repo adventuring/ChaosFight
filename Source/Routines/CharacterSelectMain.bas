@@ -1033,6 +1033,7 @@ SelectDrawNumber
           dim SDN_spriteSelect = temp5
           dim SDN_lockedState = temp6
           let SDN_playerIndex = temp1
+          if SDN_playerIndex > 3 then let SDN_playerIndex = 3
           
           let temp1 = SDN_playerIndex
           gosub GetPlayerLocked bank14
@@ -1044,23 +1045,44 @@ SelectDrawNumber
           goto SDN_SelectPosition
           
 SDN_SetBrightColor
-          if !SDN_playerIndex then let SDN_color = ColIndigo(14) : goto SDN_SelectPosition
-          if SDN_playerIndex = 1 then let SDN_color = ColRed(14) : goto SDN_SelectPosition
-          if SDN_playerIndex = 2 then let SDN_color = ColYellow(14) : goto SDN_SelectPosition
+          on SDN_playerIndex goto SDN_SetBrightColor0 SDN_SetBrightColor1 SDN_SetBrightColor2 SDN_SetBrightColor3
+
+SDN_SetBrightColor0
+          let SDN_color = ColIndigo(14)
+          goto SDN_SelectPosition
+
+SDN_SetBrightColor1
+          let SDN_color = ColRed(14)
+          goto SDN_SelectPosition
+
+SDN_SetBrightColor2
+          let SDN_color = ColYellow(14)
+          goto SDN_SelectPosition
+
+SDN_SetBrightColor3
           let SDN_color = ColTurquoise(14)
           goto SDN_SelectPosition
           
 SDN_SetDimColor
-          if !SDN_playerIndex then let SDN_color = ColIndigo(6) : goto SDN_SelectPosition
-          if SDN_playerIndex = 1 then let SDN_color = ColRed(6) : goto SDN_SelectPosition
-          if SDN_playerIndex = 2 then let SDN_color = ColYellow(6) : goto SDN_SelectPosition
+          on SDN_playerIndex goto SDN_SetDimColor0 SDN_SetDimColor1 SDN_SetDimColor2 SDN_SetDimColor3
+
+SDN_SetDimColor0
+          let SDN_color = ColIndigo(6)
+          goto SDN_SelectPosition
+
+SDN_SetDimColor1
+          let SDN_color = ColRed(6)
+          goto SDN_SelectPosition
+
+SDN_SetDimColor2
+          let SDN_color = ColYellow(6)
+          goto SDN_SelectPosition
+
+SDN_SetDimColor3
           let SDN_color = ColTurquoise(6)
-          
+
 SDN_SelectPosition
-          if !SDN_playerIndex then goto SDN_Player0
-          if SDN_playerIndex = 1 then goto SDN_Player1
-          if SDN_playerIndex = 2 then goto SDN_Player2
-          goto SDN_Player3
+          on SDN_playerIndex goto SDN_Player0 SDN_Player1 SDN_Player2 SDN_Player3
           
 SDN_Player0
           let SDN_xPos = 56
@@ -1100,11 +1122,8 @@ SDN_DrawDigit
 SelectSetPlayerColorUnlocked
           rem Override sprite color to indicate unlocked state (white)
           rem Input: temp3 = player number (0-3)
-          if !temp3 then goto SelectSetPlayerColorUnlocked0
-          if temp3 = 1 then goto SelectSetPlayerColorUnlocked1
-          if temp3 = 2 then goto SelectSetPlayerColorUnlocked2
-          COLUP3 = ColGrey(14)
-          return
+          if temp3 > 3 then temp3 = 3
+          on temp3 goto SelectSetPlayerColorUnlocked0 SelectSetPlayerColorUnlocked1 SelectSetPlayerColorUnlocked2 SelectSetPlayerColorUnlocked3
 
 SelectSetPlayerColorUnlocked0
           COLUP0 = ColGrey(14)
@@ -1118,14 +1137,15 @@ SelectSetPlayerColorUnlocked2
           COLUP2 = ColGrey(14)
           return
 
+SelectSetPlayerColorUnlocked3
+          COLUP3 = ColGrey(14)
+          return
+
 SelectSetPlayerColorHandicap
           rem Override sprite color to indicate handicap lock (dim player color)
           rem Input: temp3 = player number (0-3)
-          if !temp3 then goto SelectSetPlayerColorHandicap0
-          if temp3 = 1 then goto SelectSetPlayerColorHandicap1
-          if temp3 = 2 then goto SelectSetPlayerColorHandicap2
-          COLUP3 = ColTurquoise(6)
-          return
+          if temp3 > 3 then temp3 = 3
+          on temp3 goto SelectSetPlayerColorHandicap0 SelectSetPlayerColorHandicap1 SelectSetPlayerColorHandicap2 SelectSetPlayerColorHandicap3
 SelectSetPlayerColorHandicap0
           COLUP0 = ColIndigo(6)
           return
@@ -1136,6 +1156,10 @@ SelectSetPlayerColorHandicap1
 
 SelectSetPlayerColorHandicap2
           COLUP2 = ColYellow(6)
+          return
+
+SelectSetPlayerColorHandicap3
+          COLUP3 = ColTurquoise(6)
           return
           
 SelectDrawLocks

@@ -129,16 +129,16 @@ LoadArenaColorsColor
           dim LACC_tempIndex = temp3 : rem Dispatch to color loader based on arena index (0-31)
           let LACC_tempIndex = LA_arenaIndex
           if LACC_tempIndex >= 32 then let LACC_tempIndex = 0
-          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena0Colors, LoadArena1Colors, LoadArena2Colors, LoadArena3Colors, LoadArena4Colors, LoadArena5Colors, LoadArena6Colors, LoadArena7Colors : rem Dispatch to arena 0-7
+          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena0Colors LoadArena1Colors LoadArena2Colors LoadArena3Colors LoadArena4Colors LoadArena5Colors LoadArena6Colors LoadArena7Colors : rem Dispatch to arena 0-7
           if LACC_tempIndex < 8 then goto DoneArenaColorLoad
           let LACC_tempIndex = LACC_tempIndex - 8 : rem Dispatch to arena 8-15
-          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena8Colors, LoadArena9Colors, LoadArena10Colors, LoadArena11Colors, LoadArena12Colors, LoadArena13Colors, LoadArena14Colors, LoadArena15Colors
+          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena8Colors LoadArena9Colors LoadArena10Colors LoadArena11Colors LoadArena12Colors LoadArena13Colors LoadArena14Colors LoadArena15Colors
           if LACC_tempIndex < 8 then goto DoneArenaColorLoad
           let LACC_tempIndex = LACC_tempIndex - 8 : rem Dispatch to arena 16-23
-          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena16Colors, LoadArena17Colors, LoadArena18Colors, LoadArena19Colors, LoadArena20Colors, LoadArena21Colors, LoadArena22Colors, LoadArena23Colors
+          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena16Colors LoadArena17Colors LoadArena18Colors LoadArena19Colors LoadArena20Colors LoadArena21Colors LoadArena22Colors LoadArena23Colors
           if LACC_tempIndex < 8 then goto DoneArenaColorLoad
           let LACC_tempIndex = LACC_tempIndex - 8 : rem Dispatch to arena 24-31
-          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena24Colors, LoadArena25Colors, LoadArena26Colors, LoadArena27Colors, LoadArena28Colors, LoadArena29Colors, LoadArena30Colors, LoadArena31Colors
+          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena24Colors LoadArena25Colors LoadArena26Colors LoadArena27Colors LoadArena28Colors LoadArena29Colors LoadArena30Colors LoadArena31Colors
 DoneArenaColorLoad
           return
 

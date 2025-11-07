@@ -730,14 +730,13 @@ SelAnimationNormal
           rem   active)
           let charSelectAnimationTimer  = charSelectAnimationTimer + 1 : rem Increment animation timer
           
-          if charSelectAnimationTimer <= FramesPerSecond then goto SelAnimationTimerContinue
+          if charSelectAnimationTimer > FramesPerSecond then : rem Change animation state every 60 frames (1 second at 60fps)
           let charSelectAnimationTimer  = 0
           let charSelectAnimationState  = rand & 3 : rem Randomly choose new animation state
           if charSelectAnimationState > 2 then let charSelectAnimationState  = 0 : rem 0-3: idle, running, attacking, special
           let charSelectAnimationFrame  = 0 : rem Keep to 0-2 range
           let charSelectCharIndex  = charSelectCharIndex + 1 : rem Cycle through characters for variety
           if charSelectCharIndex > MaxCharacter then let charSelectCharIndex  = 0
-SelAnimationTimerContinue
           let charSelectAnimationFrame  = charSelectAnimationFrame + 1 : rem Update animation frame within current state
           if charSelectAnimationFrame > 7 then let charSelectAnimationFrame  = 0
           rem 8-frame animation cycles

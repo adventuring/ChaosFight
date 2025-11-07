@@ -5,6 +5,10 @@
           rem These are included at the top of the generated assembly
           rem file
 
+          asm
+include "2600basic.h"
+end
+
           rem Bankswitching configuration
           rem Note: batariBASIC automatically defines bankswitch from
           rem set romsize,

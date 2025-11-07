@@ -15,7 +15,7 @@
           rem   joy0up/down/left/right/fire, frame
           rem - TIA registers: player0x, player0y, COLUP0, NUSIZ0,
           rem   pf0-pf2, etc.
-          rem - Our variables: gameState, playerX, selectedChar1, etc.
+          rem - Our variables: gameState, playerX, selectedCharacter1, etc.
 
           rem batariBASIC automatically defines constants like
           rem bankswitch, multisprite,
@@ -36,6 +36,7 @@
           set kernel_options playercolors player1colors pfcolors
           set romsize 64kSC
           set optimization size
+          rem Enable smartbranching; filter-smartbranch converts bB v1.9 guards to DASM .if/.else/.endif syntax
           set smartbranching on
 
 

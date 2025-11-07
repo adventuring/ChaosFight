@@ -70,8 +70,8 @@
           rem     - TOTAL: 202 bytes available at all times!
           
           rem Common Vars (needed in both contexts):
-          rem   - playerChar[0-3], playerLocked[0-3]
-          rem   - selectedChar1-4, selectedArena
+          rem   - playerCharacter[0-3], playerLocked[0-3]
+          rem   - selectedCharacter1-4, selectedArena
           rem   - QuadtariDetected
           rem   - temp1-4, qtcontroller, frame (built-ins)
           
@@ -123,7 +123,7 @@
           dim currentCharacter = n : rem   MovementSystem, and other routines
           rem Current character index (0-31) for character-specific
           rem operations
-          rem Set from playerChar[currentPlayer] before character
+          rem Set from playerCharacter[currentPlayer] before character
           rem operations
           rem Used in SpriteLoader, character-specific logic, etc.
           rem Reduces temp variable pressure by eliminating parameter
@@ -152,7 +152,7 @@
           rem   temp1 (local scope only)
           
           rem Character selection results (set during ADMIN, read during
-          dim playerChar = j : rem   GAME)
+          dim playerCharacter = j : rem   GAME)
           dim playerDamage_W = w067 : rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
           dim playerDamage_R = r067
           dim playerDamage = playerDamage_W
@@ -171,20 +171,20 @@
           rem NOTE: Use helper functions GetPlayerLocked/SetPlayerLocked
           rem to access
           rem   (see Source/Routines/PlayerLockedHelpers.bas)
-          dim selectedChar1 = s : rem Previously used 4 bytes (n,o,p,q) - now consolidated to 1 byte (e)
-          rem selectedChar2, selectedChar3, and selectedChar4 moved to
+          dim selectedCharacter1 = s : rem Previously used 4 bytes (n,o,p,q) - now consolidated to 1 byte (e)
+          rem selectedCharacter2, selectedCharacter3, and selectedCharacter4 moved to
           rem   SuperChip RAM to avoid conflicts
           rem OPTIMIZED: Moved from w001-w003 to w084-w086 to free space
           rem   for PlayerFrameBuffer (w000-w063)
-          rem NOTE: These are REDIMMED with Admin Mode char select anim
-          rem   variables - safe since selectedChar* are only read once
+          rem NOTE: These are REDIMMED with Admin Mode character select anim
+          rem   variables - safe since selectedCharacter* are only read once
           rem   at
-          dim selectedChar2_W = w084 : rem   game start (BeginGameLoop), then copied to PlayerChar array
-          dim selectedChar2_R = r084
-          dim selectedChar3_W = w085
-          dim selectedChar3_R = r085
-          dim selectedChar4_W = w086
-          dim selectedChar4_R = r086
+          dim selectedCharacter2_W = w084 : rem   game start (BeginGameLoop), then copied to PlayerCharacter array
+          dim selectedCharacter2_R = r084
+          dim selectedCharacter3_W = w085
+          dim selectedCharacter3_R = r085
+          dim selectedCharacter4_W = w086
+          dim selectedCharacter4_R = r086
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
           
@@ -239,7 +239,7 @@
           rem Sound data pointer low/high bytes (in Sounds bank) - low
           rem byte
           rem   in zero page (var39), high byte in SCRAM (w048/r048)
-          dim soundEffectPointerL = var41 : rem   Moved to SCRAM to avoid conflict with charSelectAnimationIndex (y)
+          dim soundEffectPointerL = var41 : rem   Moved to SCRAM to avoid conflict with characterSelectAnimationIndex (y)
           dim soundEffectPointerH_W = w066
           dim soundEffectPointerH_R = r066
           dim soundEffectPointerH = soundEffectPointerH_W
@@ -247,7 +247,7 @@
           rem   byte = 0 means inactive) - low byte in zero page
           rem   (var41),
           rem   high byte in SCRAM (w066/r066)
-          dim soundEffectPointer1L = var45 : rem   Moved to SCRAM to avoid conflict with charSelectAnimationFrame (z)
+          dim soundEffectPointer1L = var45 : rem   Moved to SCRAM to avoid conflict with characterSelectAnimationFrame (z)
           dim soundEffectPointer1H = var46
           rem Sound effect Voice 1 stream position low/high bytes (high
           rem   byte = 0 means inactive) - zero page
@@ -342,11 +342,11 @@
           rem NOTE: w,x are REDIMMED in Game Mode for missile velocities
           rem NOTE: t,u,v are ADMIN-only (not used in Game Mode)
           dim readyCount = x               
-          dim charSelectAnimationTimer = w : rem ADMIN: Count of locked players
+          dim characterSelectAnimationTimer = w : rem ADMIN: Count of locked players
           rem ADMIN: Animation frame counter (REDIM - conflicts with
-          dim charSelectAnimationState = t : rem   missileVelocityX in Game Mode)
-          dim charSelectAnimationIndex = u : rem ADMIN: Current animation state (ADMIN-only, no conflict)
-          dim charSelectAnimationFrame = v : rem ADMIN: Which character animating (ADMIN-only, no conflict)
+          dim characterSelectAnimationState = t : rem   missileVelocityX in Game Mode)
+          dim characterSelectAnimationIndex = u : rem ADMIN: Current animation state (ADMIN-only, no conflict)
+          dim characterSelectAnimationFrame = v : rem ADMIN: Which character animating (ADMIN-only, no conflict)
           rem ADMIN: Current frame in sequence (ADMIN-only, no conflict)
           
           rem ADMIN MODE - Standard RAM (var0-var47) - sorted
@@ -354,10 +354,10 @@
           
           rem ADMIN: Character selection state (var37-var38)
           rem NOTE: These are REDIMMED in Game Mode for
-          dim charSelectCharIndex = var37 : rem   playerAttackCooldown
+          dim characterSelectCharacterIndex = var37 : rem   playerAttackCooldown
           rem ADMIN: Currently selected character index (0-15) for
           rem   preview (REDIMMED - Game Mode uses var37 for
-          dim charSelectPlayer = var38 : rem   playerAttackCooldown[0])
+          dim characterSelectPlayer = var38 : rem   playerAttackCooldown[0])
           rem ADMIN: Which player is currently selecting (1-4) (REDIMMED
           rem   - Game Mode uses var38 for playerAttackCooldown[1])
           
@@ -392,7 +392,7 @@
           rem   currentAnimationSeq (var33-var36, but var37-var40 for
           dim titleParadeTimer = var33 : rem   playerAttackCooldown)
           rem ADMIN: Parade timing (REDIMMED - Game Mode uses var33 for
-          dim titleParadeChar = var34 : rem   currentAnimationSeq[0])
+          dim titleParadeCharacter = var34 : rem   currentAnimationSeq[0])
           rem ADMIN: Current parade character (REDIMMED - Game Mode uses
           dim titleParadeX = var35 : rem   var34 for currentAnimationSeq[1])
           rem ADMIN: Parade X position (REDIMMED - Game Mode uses var35
@@ -550,7 +550,7 @@
           rem Array accessible as playerAttackCooldown[0] through
           rem   playerAttackCooldown[3] - ZPRAM for performance
           rem NOTE: var37-var40 used for playerAttackCooldown (Game
-          rem   Mode), var37-var38 used for charSelect (Admin Mode)
+          rem   Mode), var37-var38 used for characterSelect (Admin Mode)
           
           rem Game Mode: Additional game state variables (moved to SCRAM
           rem   - less performance critical)
@@ -618,9 +618,9 @@
           rem Stored velocities for bounce calculations and physics
           dim missileVelocityX = w : rem   updates
           rem Game Mode: Missile X velocity array (4 bytes) - REDIM from
-          dim missileVelocityY = x : rem   charSelectAnimationTimer
+          dim missileVelocityY = x : rem   characterSelectAnimationTimer
           rem Game Mode: Missile Y velocity array (4 bytes) - REDIM from
-          rem   charSelectAnimationState
+          rem   characterSelectAnimationState
 
           rem Missile momentum stored in temp variables during
           rem   UpdateMissiles subroutine
@@ -769,12 +769,12 @@
           rem OPTIMIZED: Moved from w028-w031 to w076-w079 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
-          dim charSelectPlayerAnimationFrame_W = w076 : rem   Admin and Game Mode never run simultaneously
-          dim charSelectPlayerAnimationFrame_R = r076
+          dim characterSelectPlayerAnimationFrame_W = w076 : rem   Admin and Game Mode never run simultaneously
+          dim characterSelectPlayerAnimationFrame_R = r076
           rem Frame counters for idle/walk animation cycles in character
           rem   select
-          rem Array accessible as charSelectPlayerAnimationFrame[0] through
-          rem   charSelectPlayerAnimationFrame[3]
+          rem Array accessible as characterSelectPlayerAnimationFrame[0] through
+          rem   characterSelectPlayerAnimationFrame[3]
           
           rem ADMIN: Character select animation sequence flags (SCRAM -
           rem   used in character select)
@@ -782,14 +782,14 @@
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode variables - safe since Admin
           rem   and Game Mode never run simultaneously
-          rem NOTE: Also REDIMMED with selectedChar2/3/4 (w084-w086) -
-          rem   selectedChar* are read once at game start before Admin
-          dim charSelectPlayerAnimationSequence_W = w080 : rem   character select animation runs again, so safe overlap
-          dim charSelectPlayerAnimationSequence_R = r080
+          rem NOTE: Also REDIMMED with selectedCharacter2/3/4 (w084-w086) -
+          rem   selectedCharacter* are read once at game start before Admin
+          dim characterSelectPlayerAnimationSequence_W = w080 : rem   character select animation runs again, so safe overlap
+          dim characterSelectPlayerAnimationSequence_R = r080
           rem
           rem Bit 0: 0=idle, 1=walk. Toggles every 60 frames
-          rem Array accessible as charSelectPlayerAnimationSequence[0] through
-          rem   charSelectPlayerAnimationSequence[3]
+          rem Array accessible as characterSelectPlayerAnimationSequence[0] through
+          rem   characterSelectPlayerAnimationSequence[3]
 
           rem TODO / FUTURE EXPANSION
           

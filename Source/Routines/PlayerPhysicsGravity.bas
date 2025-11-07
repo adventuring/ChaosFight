@@ -15,8 +15,8 @@ PhysicsApplyGravity
           rem   remaining
           rem
           rem   QuadtariDetected - Whether 4-player mode active
-          rem   selectedChar3_R, selectedChar4_R - Player 3/4 selections
-          rem   playerChar[0-3] - Character type indices
+          rem   selectedCharacter3_R, selectedCharacter4_R - Player 3/4 selections
+          rem   playerCharacter[0-3] - Character type indices
           rem Apply Gravity
           rem Applies gravity acceleration to jumping players.
           rem Certain characters (Frooty=8, Dragon of Storms=2) are not
@@ -30,12 +30,12 @@ PhysicsApplyGravity
           rem Applies gravity acceleration to jumping players and
           rem handles ground detection
           rem
-          rem Input: playerChar[] (global array) = character types,
+          rem Input: playerCharacter[] (global array) = character types,
           rem playerState[] (global array) = player states, playerX[],
           rem playerY[] (global arrays) = player positions,
           rem playerVelocityY[], playerVelocityYL[] (global arrays) =
           rem vertical velocity, controllerStatus (global) = controller
-          rem state, selectedChar3_R, selectedChar4_R (global SCRAM) =
+          rem state, selectedCharacter3_R, selectedCharacter4_R (global SCRAM) =
           rem player 3/4 selections, characterStateFlags_R[] (global
           rem SCRAM array) = character state flags, gravityRate (global)
           rem = gravity acceleration rate, GravityNormal,
@@ -80,18 +80,18 @@ GravityLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
           if PAG_playerIndex < 2 then GravityCheckCharacter : rem   Quadtari)
           if !(controllerStatus & SetQuadtariDetected) then goto GravityNextPlayer : rem Players 0-1 always active
-          if PAG_playerIndex = 2 && selectedChar3_R = 255 then goto GravityNextPlayer
-          if PAG_playerIndex = 3 && selectedChar4_R = 255 then goto GravityNextPlayer
+          if PAG_playerIndex = 2 && selectedCharacter3_R = 255 then goto GravityNextPlayer
+          if PAG_playerIndex = 3 && selectedCharacter4_R = 255 then goto GravityNextPlayer
           
 GravityCheckCharacter
-          let PAG_characterType = playerChar[PAG_playerIndex]
+          let PAG_characterType = playerCharacter[PAG_playerIndex]
           
           rem Skip gravity for characters that do not have it
-          if PAG_characterType = CharFrooty then goto GravityNextPlayer : rem Frooty (8): Permanent flight, no gravity
+          if PAG_characterType = CharacterFrooty then goto GravityNextPlayer : rem Frooty (8): Permanent flight, no gravity
           rem Dragon of Storms (2): Permanent flight, no gravity
-          if PAG_characterType = CharDragonOfStorms then goto GravityNextPlayer : rem   (hovering/flying like Frooty)
+          if PAG_characterType = CharacterDragonOfStorms then goto GravityNextPlayer : rem   (hovering/flying like Frooty)
           
-          if PAG_characterType <> CharRoboTito then goto GravityCheckRoboTitoDone : rem RoboTito (13): Skip gravity when latched to ceiling
+          if PAG_characterType <> CharacterRoboTito then goto GravityCheckRoboTitoDone : rem RoboTito (13): Skip gravity when latched to ceiling
           if (characterStateFlags_R[PAG_playerIndex] & 1) then goto GravityNextPlayer
 GravityCheckRoboTitoDone
           rem Latched to ceiling (bit 0 set), skip gravity
@@ -111,7 +111,7 @@ GravityCheckRoboTitoDone
           rem   (8.8 fixed-point subpixel)
           rem Uses tunable constants from Constants.bas for easy
           let gravityRate = GravityNormal : rem   adjustment
-          if PAG_characterType = CharHarpy then let gravityRate = GravityReduced : rem Default gravity acceleration (normal rate)
+          if PAG_characterType = CharacterHarpy then let gravityRate = GravityReduced : rem Default gravity acceleration (normal rate)
           rem Harpy: reduced gravity rate
           
           rem Apply gravity acceleration to velocity subpixel part (adds
@@ -179,7 +179,7 @@ GravityRowCalcDone
           let playerState[PAG_playerIndex] = playerState[PAG_playerIndex] & (255 - PlayerStateBitJumping) : rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           rem Clear bit 2 (jumping flag)
           
-          if PAG_characterType = CharRoboTito then PAG_SetRoboTitoStretchPermission : rem If RoboTito, set stretch permission on landing
+          if PAG_characterType = CharacterRoboTito then PAG_SetRoboTitoStretchPermission : rem If RoboTito, set stretch permission on landing
           goto GravityNextPlayer
           
 PAG_SetRoboTitoStretchPermission
@@ -229,7 +229,7 @@ GravityBottomCalcDone
           let playerY[temp1] = rowYPosition - PlayerSpriteHeight
           let playerState[temp1] = playerState[temp1] & NOT 4
           
-          if PAG_characterType = CharRoboTito then PAG_SetRoboTitoStretchPermission : rem If RoboTito, set stretch permission on landing at bottom
+          if PAG_characterType = CharacterRoboTito then PAG_SetRoboTitoStretchPermission : rem If RoboTito, set stretch permission on landing at bottom
           
 GravityNextPlayer
           let temp1 = temp1 + 1 : rem Move to next player
@@ -251,7 +251,7 @@ ApplyMomentumAndRecovery
           rem frame counts, playerVelocityX[], playerVelocityXL[]
           rem (global arrays) = horizontal velocity, playerState[]
           rem (global array) = player states, controllerStatus (global)
-          rem = controller state, selectedChar3_R, selectedChar4_R
+          rem = controller state, selectedCharacter3_R, selectedCharacter4_R
           rem (global SCRAM) = player 3/4 selections,
           rem PlayerStateBitRecovery (global constant) = recovery flag
           rem bit
@@ -273,8 +273,8 @@ MomentumRecoveryLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
           if AMAR_playerIndex < 2 then MomentumRecoveryProcess : rem   Quadtari)
           if !(controllerStatus & SetQuadtariDetected) then goto MomentumRecoveryNext : rem Players 0-1 always active
-          if AMAR_playerIndex = 2 && selectedChar3_R = 255 then goto MomentumRecoveryNext
-          if AMAR_playerIndex = 3 && selectedChar4_R = 255 then goto MomentumRecoveryNext
+          if AMAR_playerIndex = 2 && selectedCharacter3_R = 255 then goto MomentumRecoveryNext
+          if AMAR_playerIndex = 3 && selectedCharacter4_R = 255 then goto MomentumRecoveryNext
           
 MomentumRecoveryProcess
           rem Decrement recovery frames (velocity is applied by

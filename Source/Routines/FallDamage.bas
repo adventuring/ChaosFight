@@ -61,7 +61,7 @@ CheckFallDamage
           rem Input: temp1 = player index (0-3)
           rem        temp2 = vertical velocity at landing (positive =
           rem        downward)
-          rem        playerChar[] (global array) = player character
+          rem        playerCharacter[] (global array) = player character
           rem        selections
           rem        SafeFallVelocityThresholds[] (global array) = safe
           rem        fall velocity thresholds
@@ -91,12 +91,12 @@ CheckFallDamage
           rem temp7+ don’t exist - using tempWork1 for temporary
           rem   calculations
 
-          let CFD_characterType = playerChar[CFD_playerIndex] : rem Get character type for this player
+          let CFD_characterType = playerCharacter[CFD_playerIndex] : rem Get character type for this player
           
-          if CFD_characterType = CharBernie then return : rem Check for fall damage immunity
+          if CFD_characterType = CharacterBernie then return : rem Check for fall damage immunity
           rem Bernie: immune
-          if CFD_characterType = CharFrooty then return : rem Robo Tito: reduced fall damage (handled after damage calculation)
-          if CFD_characterType = CharDragonOfStorms then return : rem Frooty: no gravity, no falling
+          if CFD_characterType = CharacterFrooty then return : rem Robo Tito: reduced fall damage (handled after damage calculation)
+          if CFD_characterType = CharacterDragonOfStorms then return : rem Frooty: no gravity, no falling
           rem Dragon of Storms: no gravity, no falling (hovering/flying
           rem   like Frooty)
           
@@ -201,9 +201,9 @@ end
           rem   multiplier applied)
           
           rem Apply damage reduction for characters with fall damage
-          if CFD_characterType = CharNinjishGuy then lsr CFD_damage : rem   resistance (after weight multiplier)
+          if CFD_characterType = CharacterNinjishGuy then lsr CFD_damage : rem   resistance (after weight multiplier)
           rem Ninjish Guy: 1/2 damage (divide by 2 using bit shift
-          if CFD_characterType = CharRoboTito then lsr CFD_damage : rem   right)
+          if CFD_characterType = CharacterRoboTito then lsr CFD_damage : rem   right)
           rem Robo Tito: 1/2 damage (divide by 2 using bit shift
           rem   right)
           
@@ -263,7 +263,7 @@ FallDamageApplyGravity
           rem
           rem Input: temp1 = player index (0-3)
           rem        temp2 = current vertical momentum (positive = down)
-          rem        playerChar[] (global array) = player character
+          rem        playerCharacter[] (global array) = player character
           rem        selections
           rem        TerminalVelocity (constant) = maximum fall velocity
           rem
@@ -277,15 +277,15 @@ FallDamageApplyGravity
           dim FDAG_momentum = temp2
           dim FDAG_characterType = temp5
           dim FDAG_gravityRate = temp6
-          let FDAG_characterType = playerChar[FDAG_playerIndex] : rem Get character type
+          let FDAG_characterType = playerCharacter[FDAG_playerIndex] : rem Get character type
           
-          if FDAG_characterType = CharFrooty then return : rem Check for no-gravity characters
-          if FDAG_characterType = CharDragonOfStorms then return : rem Frooty: no gravity
+          if FDAG_characterType = CharacterFrooty then return : rem Check for no-gravity characters
+          if FDAG_characterType = CharacterDragonOfStorms then return : rem Frooty: no gravity
           rem Dragon of Storms: no gravity (hovering/flying like Frooty)
           
           rem Check for reduced gravity characters
           let FDAG_gravityRate = 2 : rem Harpy (6): 1/2 gravity when falling
-          if FDAG_characterType = CharHarpy then let FDAG_gravityRate = 1 : rem Default gravity: 2 pixels/frame²
+          if FDAG_characterType = CharacterHarpy then let FDAG_gravityRate = 1 : rem Default gravity: 2 pixels/frame²
           rem Harpy: reduced gravity
           
           let FDAG_momentum = FDAG_momentum + FDAG_gravityRate : rem Apply gravity acceleration
@@ -323,7 +323,7 @@ CheckGroundCollision
           rem playerY[] (clamped to 176 if landed)
           rem
           rem Called Routines: CheckFallDamage - accesses temp1, temp2,
-          rem playerChar[], playerHealth[],
+          rem playerCharacter[], playerHealth[],
           rem   playerRecoveryFrames[], playerState[], PlaySoundEffect
           rem   (bank15)
           rem
@@ -372,8 +372,8 @@ HandleFrootyVertical
           dim HFV_playerIndex = temp1 : rem joystick up/down for Frooty.
           dim HFV_characterType = temp5
           dim HFV_playerY = temp1
-          let HFV_characterType = playerChar[HFV_playerIndex] : rem Check character type to confirm
-          if !(HFV_characterType = CharFrooty) then return 
+          let HFV_characterType = playerCharacter[HFV_playerIndex] : rem Check character type to confirm
+          if !(HFV_characterType = CharacterFrooty) then return 
           rem Not Frooty
           
           rem Get joystick state
@@ -410,8 +410,8 @@ HandleHarpySwoopAttack
           dim HHSA_characterType = temp5
           dim HHSA_facing = temp6
           dim HHSA_playerState = temp6
-          let HHSA_characterType = playerChar[HHSA_playerIndex] : rem Check character type to confirm
-          if !(HHSA_characterType = CharHarpy) then return 
+          let HHSA_characterType = playerCharacter[HHSA_playerIndex] : rem Check character type to confirm
+          if !(HHSA_characterType = CharacterHarpy) then return 
           rem Not Harpy
           
           let HHSA_facing = playerState[HHSA_playerIndex] & PlayerStateBitFacing : rem Get facing direction from playerState bit 0
@@ -540,12 +540,12 @@ CalculateSafeFallDistance
           rem OUTPUT:
           rem   temp2 = safe fall distance in pixels
           rem Get character type and weight
-          temp5 = playerChar[temp1]
+          temp5 = playerCharacter[temp1]
           
-          if temp5 = CharBernie then SetInfiniteFallDistance : rem Check for fall damage immunity
-          if temp5 = CharRoboTito then SetInfiniteFallDistance : rem Bernie: infinite
-          if temp5 = CharFrooty then SetInfiniteFallDistance : rem Robo Tito: infinite
-          if temp5 = CharDragonOfStorms then SetInfiniteFallDistance : rem Frooty: no falling
+          if temp5 = CharacterBernie then SetInfiniteFallDistance : rem Check for fall damage immunity
+          if temp5 = CharacterRoboTito then SetInfiniteFallDistance : rem Bernie: infinite
+          if temp5 = CharacterFrooty then SetInfiniteFallDistance : rem Robo Tito: infinite
+          if temp5 = CharacterDragonOfStorms then SetInfiniteFallDistance : rem Frooty: no falling
           goto CalculateFallDistanceNormal : rem Dragon of Storms: no falling (hovering/flying like Frooty)
 SetInfiniteFallDistance
           temp2 = InfiniteFallDistance
@@ -578,7 +578,7 @@ CalculateFallDistanceNormal
 end
           rem temp2 = v² / 4
           
-          if temp5 = CharNinjishGuy then asl temp2 : rem Apply Ninjish Guy bonus (can fall farther)
+          if temp5 = CharacterNinjishGuy then asl temp2 : rem Apply Ninjish Guy bonus (can fall farther)
           rem Multiply by 2 using bit shift left
           
           return

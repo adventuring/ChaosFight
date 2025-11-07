@@ -33,7 +33,7 @@ CheckAllMissileCollisions
           rem missiles (visible and AOE)
           rem
           rem Input: temp1 = attacker player index (0-3), missileActive
-          rem (global) = missile active flags, playerChar[] (global
+          rem (global) = missile active flags, playerCharacter[] (global
           rem array) = character types
           rem
           rem Output: temp4 = hit player index (0-3) if hit, 0 if no hit
@@ -49,7 +49,7 @@ CheckAllMissileCollisions
           dim CAMC_missileWidth = temp6
           dim CAMC_isActive = temp4
           dim CAMC_characterType = temp5
-          dim CAMC_savedCharType = temp7
+          dim CAMC_savedCharacterType = temp7
           rem First, check if this player has an active missile
           if CAMC_attackerIndex = 0 then let CAMC_missileWidth = 1 : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           if CAMC_attackerIndex = 1 then let CAMC_missileWidth = 2
@@ -59,13 +59,13 @@ CheckAllMissileCollisions
           if CAMC_isActive = 0 then return 
           rem No active missile
           
-          let CAMC_characterType = playerChar[CAMC_attackerIndex] : rem Get character type to determine missile properties
+          let CAMC_characterType = playerCharacter[CAMC_attackerIndex] : rem Get character type to determine missile properties
           
           rem Check if this is a visible missile or AOE attack
           rem Read missile width from character data (in Bank 6)
           rem attackerIndex needs to be preserved, use temp7 for
-          let CAMC_savedCharType = CAMC_characterType : rem   function call
-          let temp7 = CAMC_savedCharType : rem Character type as index
+          let CAMC_savedCharacterType = CAMC_characterType : rem   function call
+          let temp7 = CAMC_savedCharacterType : rem Character type as index
           gosub GetMissileWidth bank6
           let CAMC_missileWidth = temp2 
           rem Missile width (0 = AOE, >0 = visible missile)
@@ -93,7 +93,7 @@ CheckVisibleMissileCollision
           rem Input: temp1 = attacker player index (0-3, missile owner),
           rem missileX[] (global array) = missile X positions,
           rem missileY_R[] (global SCRAM array) = missile Y positions,
-          rem playerChar[] (global array) = character types, playerX[],
+          rem playerCharacter[] (global array) = character types, playerX[],
           rem playerY[] (global arrays) = player positions,
           rem playerHealth[] (global array) = player health
           rem
@@ -110,22 +110,22 @@ CheckVisibleMissileCollision
           dim CVMC_missileY = temp3
           dim CVMC_characterType = temp5
           dim CVMC_missileWidth = temp6
-          dim CVMC_savedCharType = temp7
+          dim CVMC_savedCharacterType = temp7
           dim CVMC_hitPlayer = temp4
           dim CVMC_missileHeight = temp3
           let CVMC_missileX = missileX[CVMC_attackerIndex] : rem Get missile X/Y position
           let CVMC_missileY = missileY_R[CVMC_attackerIndex]
           
           rem Get missile size from character data (in Bank 6)
-          let CVMC_characterType = playerChar[CVMC_attackerIndex] : rem Get character type from player
+          let CVMC_characterType = playerCharacter[CVMC_attackerIndex] : rem Get character type from player
           rem Use characterType as index (preserve attackerIndex)
           rem Save missileX/Y before function calls (functions use
-          let CVMC_savedCharType = CVMC_characterType : rem   temp2/temp3)
-          let temp7 = CVMC_savedCharType
+          let CVMC_savedCharacterType = CVMC_characterType : rem   temp2/temp3)
+          let temp7 = CVMC_savedCharacterType
           gosub GetMissileWidth bank6
           let CVMC_missileWidth = temp2 
           rem Missile width (temp2 now contains width)
-          let temp7 = CVMC_savedCharType : rem Reload character index
+          let temp7 = CVMC_savedCharacterType : rem Reload character index
           gosub GetMissileHeight bank6
           let CVMC_missileHeight = temp2 
           rem Missile height (temp2 now contains height)
@@ -204,7 +204,7 @@ CheckAOECollision
           rem Checks collision for area-of-effect melee attacks (no
           rem visible missile)
           rem
-          rem Input: temp1 = attacker player index (0-3), playerChar[]
+          rem Input: temp1 = attacker player index (0-3), playerCharacter[]
           rem (global array) = character types, playerState[] (global
           rem array) = player states (bit 0 = facing), playerX[],
           rem playerY[] (global arrays) = player positions,
@@ -225,7 +225,7 @@ CheckAOECollision
           dim CAOC_characterType = temp5
           dim CAOC_facing = temp6
           dim CAOC_hitPlayer = temp4
-          let CAOC_characterType = playerChar[CAOC_attackerIndex] : rem Get attacker character type
+          let CAOC_characterType = playerCharacter[CAOC_attackerIndex] : rem Get attacker character type
           
           rem Check if this is Bernie (character 0)
           rem Bernie attacks both left AND right, so check both
@@ -275,7 +275,7 @@ CheckAOEDirection_Right
           rem playerX + offset)
           rem
           rem Input: temp1 = attacker player index (0-3), playerX[],
-          rem playerY[] (global arrays) = player positions, playerChar[]
+          rem playerY[] (global arrays) = player positions, playerCharacter[]
           rem (global array) = character types, playerHealth[] (global
           rem array) = player health, CharacterAOEOffsets[] (global data
           rem table) = AOE offsets
@@ -301,7 +301,7 @@ CheckAOEDirection_Right
           
           rem Calculate AOE bounds
           rem Read AOE offset from character data
-          let CAOER_characterType = playerChar[CAOER_attackerIndex] : rem Get character-specific AOE offset
+          let CAOER_characterType = playerCharacter[CAOER_attackerIndex] : rem Get character-specific AOE offset
           let CAOER_aoeOffset = CharacterAOEOffsets[CAOER_characterType]
           rem For now, use default: 8 pixels forward, 8 pixels wide, 16
           rem   pixels tall
@@ -381,7 +381,7 @@ CheckAOEDirection_Left
           rem playerX + 7 - offset)
           rem
           rem Input: temp1 = attacker player index (0-3), playerX[],
-          rem playerY[] (global arrays) = player positions, playerChar[]
+          rem playerY[] (global arrays) = player positions, playerCharacter[]
           rem (global array) = character types, playerHealth[] (global
           rem array) = player health, CharacterAOEOffsets[] (global data
           rem table) = AOE offsets
@@ -407,7 +407,7 @@ CheckAOEDirection_Left
           
           rem Calculate AOE bounds for facing left
           rem Read AOE offset from character data
-          let CAOEL_characterType = playerChar[CAOEL_attackerIndex] : rem Get character-specific AOE offset
+          let CAOEL_characterType = playerCharacter[CAOEL_attackerIndex] : rem Get character-specific AOE offset
           let CAOEL_aoeOffset = CharacterAOEOffsets[CAOEL_characterType]
           rem For now, use default offset of 8 pixels
           rem AOE_X = playerX + 7 - 8 = playerX - 1 (facing left

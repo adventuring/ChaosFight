@@ -648,32 +648,66 @@ HandleWindupEnd
           dim HWE_animationAction = temp2
           rem Character-specific windup→next transitions
           rem Most characters skip windup (go directly to Execute)
-          let HWE_characterType = playerChar[currentPlayer] : rem Get character ID
+          let HWE_characterType = playerCharacter[currentPlayer] : rem Get character ID
           rem Dispatch to character-specific windup handler (0-31)
-          let temp1 = HWE_characterType : rem MethHound (31) uses Char15_Windup (Shamone) handler
-          if 8 > temp1 then on temp1 goto Char0_Windup, Char1_Windup, Char2_Windup, Char3_Windup, Char4_Windup, Char5_Windup, Char6_Windup, Char7_Windup
-          if 8 > temp1 then goto DoneWindupDispatch
+          let temp1 = HWE_characterType : rem MethHound (31) uses Character15_Windup (Shamone) handler
+          if temp1 < 8 then goto WindupDispatchBank0
           let temp1 = temp1 - 8
-          if 8 > temp1 then on temp1 goto Char8_Windup, Char9_Windup, Char10_Windup, Char11_Windup, Char12_Windup, Char13_Windup, Char14_Windup, Char15_Windup
-          if 8 > temp1 then goto DoneWindupDispatch
+          if temp1 < 8 then goto WindupDispatchBank1
           let temp1 = temp1 - 8
-          if 8 > temp1 then on temp1 goto Char16_Windup, Char17_Windup, Char18_Windup, Char19_Windup, Char20_Windup, Char21_Windup, Char22_Windup, Char23_Windup
-          if 8 > temp1 then goto DoneWindupDispatch
+          if temp1 < 8 then goto WindupDispatchBank2
           let temp1 = temp1 - 8
-          if temp1 = 0 then goto Char24_Windup
-          if temp1 = 1 then goto Char25_Windup
-          if temp1 = 2 then goto Char26_Windup
-          if temp1 = 3 then goto Char27_Windup
-          if temp1 = 4 then goto Char28_Windup
-          if temp1 = 5 then goto Char29_Windup
-          if temp1 = 6 then goto Char30_Windup
-          if temp1 = 7 then goto Char15_Windup
+          goto WindupDispatchBank3
+
+WindupDispatchBank0
+          if temp1 = 0 then goto Character0_Windup
+          if temp1 = 1 then goto Character1_Windup
+          if temp1 = 2 then goto Character2_Windup
+          if temp1 = 3 then goto Character3_Windup
+          if temp1 = 4 then goto Character4_Windup
+          if temp1 = 5 then goto Character5_Windup
+          if temp1 = 6 then goto Character6_Windup
+          if temp1 = 7 then goto Character7_Windup
+          goto DoneWindupDispatch
+
+WindupDispatchBank1
+          if temp1 = 0 then goto Character8_Windup
+          if temp1 = 1 then goto Character9_Windup
+          if temp1 = 2 then goto Character10_Windup
+          if temp1 = 3 then goto Character11_Windup
+          if temp1 = 4 then goto Character12_Windup
+          if temp1 = 5 then goto Character13_Windup
+          if temp1 = 6 then goto Character14_Windup
+          if temp1 = 7 then goto Character15_Windup
+          goto DoneWindupDispatch
+
+WindupDispatchBank2
+          if temp1 = 0 then goto Character16_Windup
+          if temp1 = 1 then goto Character17_Windup
+          if temp1 = 2 then goto Character18_Windup
+          if temp1 = 3 then goto Character19_Windup
+          if temp1 = 4 then goto Character20_Windup
+          if temp1 = 5 then goto Character21_Windup
+          if temp1 = 6 then goto Character22_Windup
+          if temp1 = 7 then goto Character23_Windup
+          goto DoneWindupDispatch
+
+WindupDispatchBank3
+          if temp1 = 0 then goto Character24_Windup
+          if temp1 = 1 then goto Character25_Windup
+          if temp1 = 2 then goto Character26_Windup
+          if temp1 = 3 then goto Character27_Windup
+          if temp1 = 4 then goto Character28_Windup
+          if temp1 = 5 then goto Character29_Windup
+          if temp1 = 6 then goto Character30_Windup
+          if temp1 = 7 then goto Character15_Windup
+          goto DoneWindupDispatch
 DoneWindupDispatch
           
-Char0_Windup
+Character0_Windup
           rem Bernie: no windup used, Execute only
           return
-Char1_Windup
+Character1_Windup
           dim C1W_animationAction = temp2
           rem Curler: Windup → Recovery
           rem NOTE: Curling stone missile spawning handled by
@@ -681,101 +715,135 @@ Char1_Windup
           let C1W_animationAction = ActionAttackRecovery : rem   (calls PerformRangedAttack) in CharacterAttacks.bas
           let temp2 = C1W_animationAction
           goto SetPlayerAnimation : rem tail call
-Char2_Windup
+Character2_Windup
           rem Dragon of Storms: Execute only
           return
-Char3_Windup
+Character3_Windup
           rem Zoe Ryen: Execute only
           return
-Char4_Windup
+Character4_Windup
           dim C4W_animationAction = temp2
           let C4W_animationAction = ActionAttackExecute : rem Fat Tony: Windup → Execute
           let temp2 = C4W_animationAction
           goto SetPlayerAnimation : rem tail call
-Char5_Windup
+Character5_Windup
           dim C5W_animationAction = temp2
           let C5W_animationAction = ActionAttackExecute : rem Megax: Windup → Execute
           let temp2 = C5W_animationAction
           goto SetPlayerAnimation : rem tail call
-Char6_Windup
+Character6_Windup
           rem Harpy: Execute only
           return
-Char7_Windup
+Character7_Windup
           rem Knight Guy: Execute only
           return
-Char8_Windup
+Character8_Windup
           rem Frooty: Execute only
           return
-Char9_Windup
+Character9_Windup
           dim C9W_animationAction = temp2
           let C9W_animationAction = ActionAttackExecute : rem Nefertem: Windup → Execute
           let temp2 = C9W_animationAction
           goto SetPlayerAnimation : rem tail call
-Char10_Windup
+Character10_Windup
           rem Ninjish Guy: Execute only
           return
-Char11_Windup
+Character11_Windup
           dim C11W_animationAction = temp2
           let C11W_animationAction = ActionAttackExecute : rem Pork Chop: Windup → Execute
           let temp2 = C11W_animationAction
           goto SetPlayerAnimation : rem tail call
-Char12_Windup
+Character12_Windup
           rem Radish Goblin: Execute only
           return
-Char13_Windup
+Character13_Windup
           rem Robo Tito: Execute only
           return
-Char14_Windup
+Character14_Windup
           rem Ursulo: Execute only
           return
-Char15_Windup
+Character15_Windup
           rem Shamone: Execute only
           return
 
 HandleExecuteEnd
           dim HEE_characterType = temp1
           dim HEE_animationAction = temp2
-          let HEE_characterType = playerChar[currentPlayer] : rem Character-specific execute→next transitions
+          let HEE_characterType = playerCharacter[currentPlayer] : rem Character-specific execute→next transitions
           rem Dispatch to character-specific execute handler (0-31)
-          let temp1 = HEE_characterType : rem MethHound (31) uses Char15_Execute (Shamone) handler
-          if 8 > temp1 then on temp1 goto Char0_Execute, Char1_Execute, Char2_Execute, Char3_Execute, Char4_Execute, Char5_Execute, Char6_Execute, Char7_Execute
-          if 8 > temp1 then goto DoneExecuteDispatch
+          let temp1 = HEE_characterType : rem MethHound (31) uses Character15_Execute (Shamone) handler
+          if temp1 < 8 then goto ExecuteDispatchBank0
           let temp1 = temp1 - 8
-          if 8 > temp1 then on temp1 goto Char8_Execute, Char9_Execute, Char10_Execute, Char11_Execute, Char12_Execute, Char13_Execute, Char14_Execute, Char15_Execute
-          if 8 > temp1 then goto DoneExecuteDispatch
+          if temp1 < 8 then goto ExecuteDispatchBank1
           let temp1 = temp1 - 8
-          if 8 > temp1 then on temp1 goto Char16_Execute, Char17_Execute, Char18_Execute, Char19_Execute, Char20_Execute, Char21_Execute, Char22_Execute, Char23_Execute
-          if 8 > temp1 then goto DoneExecuteDispatch
+          if temp1 < 8 then goto ExecuteDispatchBank2
           let temp1 = temp1 - 8
-          if temp1 = 0 then goto Char24_Execute
-          if temp1 = 1 then goto Char25_Execute
-          if temp1 = 2 then goto Char26_Execute
-          if temp1 = 3 then goto Char27_Execute
-          if temp1 = 4 then goto Char28_Execute
-          if temp1 = 5 then goto Char29_Execute
-          if temp1 = 6 then goto Char30_Execute
-          if temp1 = 7 then goto Char15_Execute
+          goto ExecuteDispatchBank3
+
+ExecuteDispatchBank0
+          if temp1 = 0 then goto Character0_Execute
+          if temp1 = 1 then goto Character1_Execute
+          if temp1 = 2 then goto Character2_Execute
+          if temp1 = 3 then goto Character3_Execute
+          if temp1 = 4 then goto Character4_Execute
+          if temp1 = 5 then goto Character5_Execute
+          if temp1 = 6 then goto Character6_Execute
+          if temp1 = 7 then goto Character7_Execute
+          goto DoneExecuteDispatch
+
+ExecuteDispatchBank1
+          if temp1 = 0 then goto Character8_Execute
+          if temp1 = 1 then goto Character9_Execute
+          if temp1 = 2 then goto Character10_Execute
+          if temp1 = 3 then goto Character11_Execute
+          if temp1 = 4 then goto Character12_Execute
+          if temp1 = 5 then goto Character13_Execute
+          if temp1 = 6 then goto Character14_Execute
+          if temp1 = 7 then goto Character15_Execute
+          goto DoneExecuteDispatch
+
+ExecuteDispatchBank2
+          if temp1 = 0 then goto Character16_Execute
+          if temp1 = 1 then goto Character17_Execute
+          if temp1 = 2 then goto Character18_Execute
+          if temp1 = 3 then goto Character19_Execute
+          if temp1 = 4 then goto Character20_Execute
+          if temp1 = 5 then goto Character21_Execute
+          if temp1 = 6 then goto Character22_Execute
+          if temp1 = 7 then goto Character23_Execute
+          goto DoneExecuteDispatch
+
+ExecuteDispatchBank3
+          if temp1 = 0 then goto Character24_Execute
+          if temp1 = 1 then goto Character25_Execute
+          if temp1 = 2 then goto Character26_Execute
+          if temp1 = 3 then goto Character27_Execute
+          if temp1 = 4 then goto Character28_Execute
+          if temp1 = 5 then goto Character29_Execute
+          if temp1 = 6 then goto Character30_Execute
+          if temp1 = 7 then goto Character15_Execute
+          goto DoneExecuteDispatch
 DoneExecuteDispatch
           
-Char0_Execute
+Character0_Execute
           dim C0E_animationAction = temp2
           let C0E_animationAction = ActionIdle : rem Bernie: Execute → Idle
           let temp2 = C0E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char1_Execute
+Character1_Execute
           rem Curler: no Execute used
           return
-Char2_Execute
+Character2_Execute
           dim C2E_animationAction = temp2
           let C2E_animationAction = ActionIdle : rem Dragon of Storms: Execute → Idle
           let temp2 = C2E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char3_Execute
+Character3_Execute
           dim C3E_animationAction = temp2
           let C3E_animationAction = ActionIdle : rem Zoe Ryen: Execute → Idle
           let temp2 = C3E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char4_Execute
+Character4_Execute
           dim C4E_animationAction = temp2
           rem Fat Tony: Execute → Recovery
           rem   FatTonyAttack
@@ -783,12 +851,12 @@ Char4_Execute
           let C4E_animationAction = ActionAttackRecovery : rem   (calls PerformRangedAttack) in CharacterAttacks.bas
           let temp2 = C4E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char5_Execute
+Character5_Execute
           dim C5E_animationAction = temp2
           let C5E_animationAction = ActionIdle : rem Megax: Execute → Idle (fire breath during Execute)
           let temp2 = C5E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char6_Execute
+Character6_Execute
           dim C6E_animationAction = temp2
           dim C6E_playerIndex = temp1
           rem Harpy: Execute → Idle
@@ -813,47 +881,47 @@ Char6_Execute
           let C6E_animationAction = ActionIdle : rem Transition to Idle
           let temp2 = C6E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char7_Execute
+Character7_Execute
           dim C7E_animationAction = temp2
           let C7E_animationAction = ActionIdle : rem Knight Guy: Execute → Idle (sword during Execute)
           let temp2 = C7E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char8_Execute
+Character8_Execute
           dim C8E_animationAction = temp2
           let C8E_animationAction = ActionIdle : rem Frooty: Execute → Idle
           let temp2 = C8E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char9_Execute
+Character9_Execute
           dim C9E_animationAction = temp2
           let C9E_animationAction = ActionIdle : rem Nefertem: Execute → Idle
           let temp2 = C9E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char10_Execute
+Character10_Execute
           dim C10E_animationAction = temp2
           let C10E_animationAction = ActionIdle : rem Ninjish Guy: Execute → Idle
           let temp2 = C10E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char11_Execute
+Character11_Execute
           dim C11E_animationAction = temp2
           let C11E_animationAction = ActionAttackRecovery : rem Pork Chop: Execute → Recovery
           let temp2 = C11E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char12_Execute
+Character12_Execute
           dim C12E_animationAction = temp2
           let C12E_animationAction = ActionIdle : rem Radish Goblin: Execute → Idle
           let temp2 = C12E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char13_Execute
+Character13_Execute
           dim C13E_animationAction = temp2
           let C13E_animationAction = ActionIdle : rem Robo Tito: Execute → Idle
           let temp2 = C13E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char14_Execute
+Character14_Execute
           dim C14E_animationAction = temp2
           let C14E_animationAction = ActionIdle : rem Ursulo: Execute → Idle
           let temp2 = C14E_animationAction
           goto SetPlayerAnimation : rem tail call
-Char15_Execute
+Character15_Execute
           dim C15E_animationAction = temp2
           let C15E_animationAction = ActionIdle : rem Shamone: Execute → Idle
           let temp2 = C15E_animationAction
@@ -864,151 +932,151 @@ Char15_Execute
           rem These characters are not yet implemented and use standard
           rem   behaviors (Execute → Idle, no Windup)
 
-Char16_Windup
+Character16_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char17_Windup
+Character17_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char18_Windup
+Character18_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char19_Windup
+Character19_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char20_Windup
+Character20_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char21_Windup
+Character21_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char22_Windup
+Character22_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char23_Windup
+Character23_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char24_Windup
+Character24_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char25_Windup
+Character25_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char26_Windup
+Character26_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char27_Windup
+Character27_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char28_Windup
+Character28_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char29_Windup
+Character29_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char30_Windup
+Character30_Windup
           rem Placeholder: no windup used, Execute only
           return
 
-Char16_Execute
+Character16_Execute
           dim C16E_animationAction = temp2
           let C16E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C16E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char17_Execute
+Character17_Execute
           dim C17E_animationAction = temp2
           let C17E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C17E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char18_Execute
+Character18_Execute
           dim C18E_animationAction = temp2
           let C18E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C18E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char19_Execute
+Character19_Execute
           dim C19E_animationAction = temp2
           let C19E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C19E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char20_Execute
+Character20_Execute
           dim C20E_animationAction = temp2
           let C20E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C20E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char21_Execute
+Character21_Execute
           dim C21E_animationAction = temp2
           let C21E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C21E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char22_Execute
+Character22_Execute
           dim C22E_animationAction = temp2
           let C22E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C22E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char23_Execute
+Character23_Execute
           dim C23E_animationAction = temp2
           let C23E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C23E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char24_Execute
+Character24_Execute
           dim C24E_animationAction = temp2
           let C24E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C24E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char25_Execute
+Character25_Execute
           dim C25E_animationAction = temp2
           let C25E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C25E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char26_Execute
+Character26_Execute
           dim C26E_animationAction = temp2
           let C26E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C26E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char27_Execute
+Character27_Execute
           dim C27E_animationAction = temp2
           let C27E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C27E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char28_Execute
+Character28_Execute
           dim C28E_animationAction = temp2
           let C28E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C28E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char29_Execute
+Character29_Execute
           dim C29E_animationAction = temp2
           let C29E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C29E_animationAction
           goto SetPlayerAnimation : rem tail call
 
-Char30_Execute
+Character30_Execute
           dim C30E_animationAction = temp2
           let C30E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
           let temp2 = C30E_animationAction

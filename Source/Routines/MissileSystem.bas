@@ -73,7 +73,7 @@ SpawnMissile
           rem Creates a new missile/attack visual for a player at spawn
           rem position with initial velocity
           rem
-          rem Input: temp1 = player index (0-3), playerChar[] (global
+          rem Input: temp1 = player index (0-3), playerCharacter[] (global
           rem array) = character types, playerX[], playerY[] (global
           rem arrays) = player positions, playerState[] (global array) =
           rem player states (facing direction),
@@ -108,7 +108,7 @@ SpawnMissile
           dim SM_characterType = temp5
           dim SM_bitFlag = temp6
           dim SM_velocityCalc = temp6
-          let SM_characterType  = playerChar[SM_playerIndex] : rem Get character type for this player
+          let SM_characterType  = playerCharacter[SM_playerIndex] : rem Get character type for this player
           
           let SM_bitFlag  = CharacterMissileEmissionHeights[SM_characterType] : rem Read missile emission height from character data table
           
@@ -253,7 +253,7 @@ UpdateOneMissile
           rem = missile active flags, missileVelocityX[],
           rem missileVelocityY[] (global arrays) = missile velocities,
           rem missileX[], missileY_R[] (global arrays) = missile
-          rem positions, playerChar[] (global array) = character types,
+          rem positions, playerCharacter[] (global array) = character types,
           rem playerState[] (global array) = player states, playerX[],
           rem playerY[] (global arrays) = player positions, BitMask[]
           rem (global data table) = bit masks, MissileFlagGravity,
@@ -264,7 +264,7 @@ UpdateOneMissile
           rem constants, ScreenBottom, ScreenTopWrapThreshold (global
           rem constants) = screen bounds, MissileLifetimeInfinite,
           rem MissileHitNotFound (global constants) = missile constants,
-          rem CharMegax, CharKnightGuy (global constants) = character
+          rem CharacterMegax, CharacterKnightGuy (global constants) = character
           rem indices, SoundGuardBlock (global constant) = sound effect
           rem ID
           rem
@@ -319,7 +319,7 @@ UpdateOneMissile
           let UOM_velocityY  = missileVelocityY[UOM_playerIndex] : rem X velocity (already facing-adjusted from spawn)
           rem Y velocity
           
-          let UOM_characterType  = playerChar[UOM_playerIndex] : rem Read missile flags from character data
+          let UOM_characterType  = playerCharacter[UOM_playerIndex] : rem Read missile flags from character data
           let temp1  = UOM_characterType : rem Get character index
           gosub GetMissileFlags bank6 : rem Use temp1 for flags lookup (temp1 will be overwritten)
           let UOM_missileFlags  = temp2
@@ -330,11 +330,11 @@ UpdateOneMissile
           
           rem Special handling for Megax (character 5): stationary fire
           rem breath visual
-          if UOM_characterType = CharMegax then goto HandleMegaxMissile : rem Megax missile stays adjacent to player during attack, no movement
+          if UOM_characterType = CharacterMegax then goto HandleMegaxMissile : rem Megax missile stays adjacent to player during attack, no movement
           
           rem Special handling for Knight Guy (character 7): sword swing
           rem visual
-          if UOM_characterType = CharKnightGuy then goto HandleKnightGuyMissile : rem Knight Guy missile appears overlapping, moves away, returns, then vanishes
+          if UOM_characterType = CharacterKnightGuy then goto HandleKnightGuyMissile : rem Knight Guy missile appears overlapping, moves away, returns, then vanishes
           
           if !(UOM_missileFlags & MissileFlagGravity) then GravityDone : rem Apply gravity if flag is set
           let UOM_velocityY = UOM_velocityY + GravityPerFrame
@@ -430,7 +430,7 @@ FrictionDone
           
           rem Check collision with playfield if flag is set
           rem Reload missile flags (temp5 was overwritten with Y
-          let temp5 = playerChar[UOM_playerIndex] : rem   position above)
+          let temp5 = playerCharacter[UOM_playerIndex] : rem   position above)
           let temp1 = temp5
           gosub GetMissileFlags bank6
           let temp5 = temp2
@@ -926,7 +926,7 @@ HandleMissileHit
           rem
           rem Input: temp1 = attacker player index (0-3, missile owner),
           rem temp4 = defender player index (0-3, hit player),
-          rem playerChar[] (global array) = character types,
+          rem playerCharacter[] (global array) = character types,
           rem playerDamage[] (global array) = damage values,
           rem characterStateFlags_R[] (global SCRAM array) = character
           rem state flags (for Harpy dive mode), missileX[] (global
@@ -955,7 +955,7 @@ HandleMissileHit
           rem Knockback scales with character weight (heavier = less
           rem knockback). Minimum 1 pixel knockback even for heaviest
           rem characters
-          let temp5  = playerChar[temp1] : rem Get character type for damage calculation
+          let temp5  = playerCharacter[temp1] : rem Get character type for damage calculation
           
           rem Apply damage from attacker to defender
           let temp6  = playerDamage[temp1] : rem Use playerDamage array for base damage amount
@@ -990,7 +990,7 @@ DiveCheckDone
           
           rem Calculate weight-based knockback scaling
           rem Heavier characters resist knockback more (max weight =
-          let characterWeight = playerChar[temp4] : rem   100)
+          let characterWeight = playerCharacter[temp4] : rem   100)
           let characterWeight = CharacterWeights[characterWeight] : rem Get character index
           rem Get character weight (5-100) - overwrite with weight value
           rem Calculate scaled knockback: KnockbackImpulse * (100 -

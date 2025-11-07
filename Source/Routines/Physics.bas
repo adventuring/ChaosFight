@@ -12,7 +12,7 @@ HandleWallCollision
           rem Handle weight-based wall collision for a player (modifies
           rem momentum based on character weight)
           rem
-          rem Input: temp1 = player index (0-3), playerChar[] (global
+          rem Input: temp1 = player index (0-3), playerCharacter[] (global
           rem array) = character types, playerVelocityX[] (global array)
           rem = X velocities, CharacterWeights[] (global data table) =
           rem character weights
@@ -31,7 +31,7 @@ HandleWallCollision
           rem 2. Ensures at least 1 pixel/frame velocity if was moving
           rem Get character type for this player using direct array
           rem   access
-          let temp4 = playerChar[temp1] : rem temp1 contains player index (0-3)
+          let temp4 = playerCharacter[temp1] : rem temp1 contains player index (0-3)
           
           let temp3 = CharacterWeights[temp4] : rem Get character weight using direct array access
           
@@ -62,7 +62,7 @@ CheckLeftWallCollision
           rem bounce
           rem
           rem Input: temp1 = player index (0-3), playerX[] (global
-          rem array) = player X positions, playerChar[] (global array) =
+          rem array) = player X positions, playerCharacter[] (global array) =
           rem character types, playerVelocityX[] (global array) = X
           rem velocities, CharacterWeights[] (global data table) =
           rem character weights
@@ -92,7 +92,7 @@ CheckRightWallCollision
           rem bounce
           rem
           rem Input: temp1 = player index (0-3), playerX[] (global
-          rem array) = player X positions, playerChar[] (global array) =
+          rem array) = player X positions, playerCharacter[] (global array) =
           rem character types, playerVelocityX[] (global array) = X
           rem velocities, CharacterWeights[] (global data table) =
           rem character weights

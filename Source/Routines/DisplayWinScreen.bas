@@ -22,7 +22,7 @@ DisplayWinScreen
           rem        index
           rem        eliminationOrder_R[] (global SCRAM array) =
           rem        elimination order for each player
-          rem        playerChar[] (global array) = player character
+          rem        playerCharacter[] (global array) = player character
           rem        selections
           rem        switchbw (hardware) = Color/B&W switch state
           rem        systemFlags (global) = system flags
@@ -198,7 +198,7 @@ DWS_RankNext
 DWS_Position1Player
           rem 1 player: Winner centered on podium
           rem
-          rem Input: DWS_winnerIndex, playerChar[] (from
+          rem Input: DWS_winnerIndex, playerCharacter[] (from
           rem DisplayWinScreen)
           rem
           rem Output: playerX[0], playerY[0] set, winner sprite loaded,
@@ -213,7 +213,7 @@ DWS_Position1Player
           rem character sprite
           let playerX[0] = 80 : rem Constraints: Must be colocated with DisplayWinScreen
           let playerY[0] = 192
-          let currentCharacter = playerChar[DWS_winnerIndex] : rem Load winner sprite
+          let currentCharacter = playerCharacter[DWS_winnerIndex] : rem Load winner sprite
           let LCS_animationFrame = 0
           let LCS_playerNumber = 0 : rem Animation frame 0 (idle)
           gosub LoadCharacterSprite bank10 : rem Player 0
@@ -225,7 +225,7 @@ DWS_Position1Player
 DWS_Position2Players
           rem 2 players: Winner centered, runner-up left
           rem
-          rem Input: DWS_winnerIndex, DWS_secondIndex, playerChar[]
+          rem Input: DWS_winnerIndex, DWS_secondIndex, playerCharacter[]
           rem (from DisplayWinScreen)
           rem
           rem Output: playerX[0-1], playerY[0-1] set, winner and
@@ -243,7 +243,7 @@ DWS_Position2Players
           rem DWS_Hide2Player, DWS_Hide2PlayerDone
           let playerX[0] = 80 : rem Winner (P0)
           let playerY[0] = 192
-          let currentCharacter = playerChar[DWS_winnerIndex]
+          let currentCharacter = playerCharacter[DWS_winnerIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 0
           gosub LoadCharacterSprite bank10
@@ -251,7 +251,7 @@ DWS_Position2Players
           if DWS_secondIndex = 255 then DWS_Hide2Player : rem Runner-up (P1) - only if valid
           let playerX[1] = 40
           let playerY[1] = 192
-          let currentCharacter = playerChar[DWS_secondIndex]
+          let currentCharacter = playerCharacter[DWS_secondIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 1
           gosub LoadCharacterSprite bank10
@@ -290,7 +290,7 @@ DWS_Position3Players
           rem 3+ players: Winner centered high, 2nd left, 3rd right
           rem
           rem Input: DWS_winnerIndex, DWS_secondIndex, DWS_thirdIndex,
-          rem playerChar[] (from DisplayWinScreen)
+          rem playerCharacter[] (from DisplayWinScreen)
           rem
           rem Output: playerX[0-2], playerY[0-2] set, winner/2nd/3rd
           rem sprites loaded, player 4 hidden
@@ -309,7 +309,7 @@ DWS_Position3Players
           let playerX[0] = 80 : rem Winner (P0) - higher platform
           let playerY[0] = 128
           rem Row 16 = 128 pixels (16 * 8)
-          let currentCharacter = playerChar[DWS_winnerIndex]
+          let currentCharacter = playerCharacter[DWS_winnerIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 0
           gosub LoadCharacterSprite bank10
@@ -317,7 +317,7 @@ DWS_Position3Players
           if DWS_secondIndex = 255 then DWS_Hide3Player2 : rem 2nd place (P1) - left platform
           let playerX[1] = 40
           let playerY[1] = 192
-          let currentCharacter = playerChar[DWS_secondIndex]
+          let currentCharacter = playerCharacter[DWS_secondIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 1
           gosub LoadCharacterSprite bank10
@@ -352,7 +352,7 @@ DWS_Hide3Player2Done
           if DWS_thirdIndex = 255 then DWS_Hide3Player3 : rem 3rd place (P2) - right platform
           let playerX[2] = 120
           let playerY[2] = 192
-          let currentCharacter = playerChar[DWS_thirdIndex]
+          let currentCharacter = playerCharacter[DWS_thirdIndex]
           let LCS_animationFrame = 0
           let LCS_playerNumber = 2
           gosub LoadCharacterSprite bank10

@@ -458,7 +458,7 @@ GetCharacterWeightSub
           temp4 = CharacterWeights(temp1)
           return
 
-GetCharAttackTypeSub
+GetCharacterAttackTypeSub
           rem Decode bit-packed attack type for the requested character
           rem
           rem Input: temp1 = character index (0-15)
@@ -474,12 +474,12 @@ GetCharAttackTypeSub
           temp2 = temp1 & 7
           temp4 = CharacterAttackTypes[temp3]
           temp5 = temp2
-GetCharAttackTypeSubShiftLoop
-          if temp5 = 0 then goto GetCharAttackTypeSubShiftDone
+GetCharacterAttackTypeSubShiftLoop
+          if temp5 = 0 then goto GetCharacterAttackTypeSubShiftDone
           temp4 = temp4 / 2
           temp5 = temp5 - 1
-          goto GetCharAttackTypeSubShiftLoop
-GetCharAttackTypeSubShiftDone
+          goto GetCharacterAttackTypeSubShiftLoop
+GetCharacterAttackTypeSubShiftDone
           temp4 = temp4 & 1
           return
 

@@ -13,7 +13,7 @@ TitleScreenMain
           rem This function processes one frame and returns.
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   titleParadeTimer - Frame counter for parade timing
-          rem titleParadeChar - Current parade character
+          rem titleParadeCharacter - Current parade character
           rem   (0-MaxCharacter)
           rem   titleParadeX - X position of parade character
           rem   titleParadeActive - Whether parade is currently running

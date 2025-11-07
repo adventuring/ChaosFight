@@ -77,7 +77,7 @@ ApplyGuardFlashColor3
 GuardNormalPhase
           rem Helper: Normal phase - restore normal player colors
           rem
-          rem Input: temp1 = player index (0-3), playerChar[] (global
+          rem Input: temp1 = player index (0-3), playerCharacter[] (global
           rem array) = player character selections
           rem
           rem Output: Normal player colors restored
@@ -104,7 +104,7 @@ RestoreNormalPlayerColor
           rem flashing
           rem
           rem Input: temp1 = player index (0-3)
-          rem        playerChar[] (global array) = player character
+          rem        playerCharacter[] (global array) = player character
           rem        selections
           rem
           rem Output: None (colors restored by LoadCharacterColors in
@@ -116,7 +116,7 @@ RestoreNormalPlayerColor
           rem LoadCharacterColors)
           dim RNPC_playerIndex = temp1 : rem Constraints: None
           dim RNPC_characterType = temp4
-          let RNPC_characterType = playerChar[RNPC_playerIndex] : rem Get character type for this player
+          let RNPC_characterType = playerCharacter[RNPC_playerIndex] : rem Get character type for this player
           
           return
           rem Restore normal player colors based on player index

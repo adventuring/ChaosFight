@@ -27,7 +27,7 @@ SetSpritePositions
           rem
           rem   bit 1=P1, bit 2=P2, bit 3=P3)
           rem   missileX[0-3], missileY[0-3] - Projectile positions
-          rem   QuadtariDetected, selectedChar3_R, selectedChar4_R
+          rem   QuadtariDetected, selectedCharacter3_R, selectedCharacter4_R
           rem Set Sprite Positions
           rem Updates hardware sprite position registers for all active
           rem   entities.
@@ -38,9 +38,9 @@ SetSpritePositions
           rem positions, missileX[] (global array) = missile X
           rem positions, missileY_R[] (global SCRAM array) = missile Y
           rem positions, missileActive (global) = missile active flags,
-          rem playerChar[] (global array) = character types,
+          rem playerCharacter[] (global array) = character types,
           rem controllerStatus (global) = controller state,
-          rem selectedChar3_R, selectedChar4_R (global SCRAM) = player
+          rem selectedCharacter3_R, selectedCharacter4_R (global SCRAM) = player
           rem 3/4 selections, playerHealth[] (global array) = player
           rem health, frame (global) = frame counter, missileNUSIZ[]
           rem (global array) = missile size registers,
@@ -85,14 +85,14 @@ SetSpritePositions
           rem   use proper sprites
           
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Position : rem Set Participant 3 position (array [2] → P2 sprite)
-          if selectedChar3_R = 255 then goto DonePlayer3Position
+          if selectedCharacter3_R = 255 then goto DonePlayer3Position
           if ! playerHealth[2] then goto DonePlayer3Position
           let player2x = playerX[2]
           let player2y = playerY[2]
 DonePlayer3Position
           
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Position : rem Set Participant 4 position (array [3] → P3 sprite)
-          if selectedChar4_R = 255 then goto DonePlayer4Position
+          if selectedCharacter4_R = 255 then goto DonePlayer4Position
           if ! playerHealth[3] then goto DonePlayer4Position
           let player3x = playerX[3]
           let player3y = playerY[3]
@@ -145,7 +145,7 @@ RenderMissile0P3
           missile0y = missileY_R[2]
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ[2]
-          let SSP_characterType = playerChar[2] : rem Set missile height from character data (Issue #595)
+          let SSP_characterType = playerCharacter[2] : rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[SSP_characterType]
           
 RenderMissile1P4
@@ -164,7 +164,7 @@ RenderMissile1P4Active
           missile1y = missileY_R[3]
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ[3]
-          let SSP_characterType = playerChar[3] : rem Set missile height from character data (Issue #595)
+          let SSP_characterType = playerCharacter[3] : rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[SSP_characterType]
           return
           
@@ -187,7 +187,7 @@ RenderMissile0P1
           missile0y = missileY_R[0]
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ[0]
-          let RMEF_characterType = playerChar[0] : rem Set missile height from character data (Issue #595)
+          let RMEF_characterType = playerCharacter[0] : rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[RMEF_characterType]
           
 RenderMissile1P2
@@ -206,7 +206,7 @@ RenderMissile1P2Active
           missile1y = missileY_R[1]
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ[1]
-          let RMEF_characterType = playerChar[1] : rem Set missile height from character data (Issue #595)
+          let RMEF_characterType = playerCharacter[1] : rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[RMEF_characterType]
           return
           
@@ -232,7 +232,7 @@ RenderMissile0P1_2P
           missile0y = missileY_R[0]
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ[0]
-          let RM2P_characterType = playerChar[0] : rem Set missile height from character data (Issue #595)
+          let RM2P_characterType = playerCharacter[0] : rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[RM2P_characterType]
           
 RenderMissile1P2_2P
@@ -253,7 +253,7 @@ RenderMissile1P2_2PActive
           missile1y = missileY_R[1]
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ[1]
-          let RM2P_characterType = playerChar[1] : rem Set missile height from character data (Issue #595)
+          let RM2P_characterType = playerCharacter[1] : rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[RM2P_characterType]
           return
           
@@ -269,12 +269,12 @@ RenderRoboTitoStretchMissile0
           rem if RoboTito, stretching, and no projectile missile)
           rem
           rem Input: controllerStatus (global) = controller state, frame
-          rem (global) = frame counter, playerChar[] (global array) =
+          rem (global) = frame counter, playerCharacter[] (global array) =
           rem character types, characterStateFlags_R[] (global SCRAM
           rem array) = character state flags, playerState[] (global
           rem array) = player states, missileStretchHeight_R[] (global
           rem SCRAM array) = stretch missile heights, playerX[],
-          rem playerY[] (global arrays) = player positions, CharRoboTito
+          rem playerY[] (global arrays) = player positions, CharacterRoboTito
           rem (global constant) = RoboTito character index
           rem
           rem Output: missile0 rendered as stretch missile if conditions
@@ -308,7 +308,7 @@ RenderRoboTitoStretchMissile0
 RRTM_CheckPlayer0
           let RRTM_playerIndex = 0
 RRTM_CheckRoboTito
-          if playerChar[RRTM_playerIndex] = CharRoboTito then RRTM_IsRoboTito
+          if playerCharacter[RRTM_playerIndex] = CharacterRoboTito then RRTM_IsRoboTito
           rem Check if player is RoboTito
           return
 RRTM_IsRoboTito
@@ -347,12 +347,12 @@ RenderRoboTitoStretchMissile1
           rem if RoboTito, stretching, and no projectile missile)
           rem
           rem Input: controllerStatus (global) = controller state, frame
-          rem (global) = frame counter, playerChar[] (global array) =
+          rem (global) = frame counter, playerCharacter[] (global array) =
           rem character types, characterStateFlags_R[] (global SCRAM
           rem array) = character state flags, playerState[] (global
           rem array) = player states, missileStretchHeight_R[] (global
           rem SCRAM array) = stretch missile heights, playerX[],
-          rem playerY[] (global arrays) = player positions, CharRoboTito
+          rem playerY[] (global arrays) = player positions, CharacterRoboTito
           rem (global constant) = RoboTito character index
           rem
           rem Output: missile1 rendered as stretch missile if conditions
@@ -386,7 +386,7 @@ RenderRoboTitoStretchMissile1
 RRTM1_CheckPlayer1
           let RRTM1_playerIndex = 1
 RRTM1_CheckRoboTito
-          if playerChar[RRTM1_playerIndex] = CharRoboTito then RRTM1_IsRoboTito
+          if playerCharacter[RRTM1_playerIndex] = CharacterRoboTito then RRTM1_IsRoboTito
           rem Check if player is RoboTito
           return
 RRTM1_IsRoboTito
@@ -430,11 +430,11 @@ SetPlayerSprites
           rem Sets colors and graphics for all player sprites with hurt
           rem state and facing direction handling
           rem
-          rem Input: playerChar[] (global array) = character types,
+          rem Input: playerCharacter[] (global array) = character types,
           rem playerRecoveryFrames[] (global array) = recovery frame
           rem counts, playerState[] (global array) = player states,
           rem controllerStatus (global) = controller state,
-          rem selectedChar3_R, selectedChar4_R (global SCRAM) = player
+          rem selectedCharacter3_R, selectedCharacter4_R (global SCRAM) = player
           rem 3/4 selections, playerHealth[] (global array) = player
           rem health, currentCharacter (global) = character index for
           rem sprite loading
@@ -466,7 +466,7 @@ SetPlayerSprites
           dim SPS_isHurt = temp4
           rem Set Player 1 color and sprite
           rem Use LoadCharacterColors for consistent color handling
-          let SPS_charIndex = playerChar[0] : rem   across TV modes
+          let SPS_charIndex = playerCharacter[0] : rem   across TV modes
           let SPS_animFrame = 0
           let SPS_isHurt = 0
           if playerRecoveryFrames[0] > 0 then let SPS_isHurt = 1
@@ -488,7 +488,7 @@ Player1ColorDone
             sta REFP0
 end
 
-          let currentCharacter = playerChar[0] : rem Load sprite data from character definition
+          let currentCharacter = playerCharacter[0] : rem Load sprite data from character definition
           let SPS_animFrame = 0 : rem Character index
           let SPS_playerNum = 0 : rem Animation frame (0=idle, 1=running)
           rem Player number (0=Player 1)
@@ -499,7 +499,7 @@ end
           rem Use LoadCharacterColors for consistent color handling
           rem   across TV modes
           rem NOTE: Multisprite kernel requires _COLUP1 (with
-          let SPS_charIndex = playerChar[1] : rem   underscore) for Player 2 virtual sprite
+          let SPS_charIndex = playerCharacter[1] : rem   underscore) for Player 2 virtual sprite
           let SPS_animFrame = 0
           let SPS_isHurt = 0
           if playerRecoveryFrames[1] > 0 then let SPS_isHurt = 1
@@ -531,7 +531,7 @@ Player2ColorDone
 .Player2ReflectionDone
 end
 
-          let currentCharacter = playerChar[1] : rem Load sprite data from character definition
+          let currentCharacter = playerCharacter[1] : rem Load sprite data from character definition
           let SPS_animFrame = 0 : rem Character index
           let SPS_playerNum = 1 : rem Animation frame (0=idle, 1=running)
           rem Player number (1=Player 2)
@@ -544,11 +544,11 @@ end
           rem   implementation
           
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Sprite : rem Set Player 3 color and sprite (if active)
-          if selectedChar3_R = 255 then goto DonePlayer3Sprite
+          if selectedCharacter3_R = 255 then goto DonePlayer3Sprite
           if ! playerHealth[2] then goto DonePlayer3Sprite
           
           rem Use LoadCharacterColors for consistent color handling
-          let SPS_charIndex = playerChar[2] : rem   across TV modes
+          let SPS_charIndex = playerCharacter[2] : rem   across TV modes
           let SPS_animFrame = 0
           let SPS_isHurt = 0
           if playerRecoveryFrames[2] > 0 then let SPS_isHurt = 1
@@ -578,7 +578,7 @@ Player3ColorDone
 .Player3ReflectionDone
 end
 
-          let currentCharacter = playerChar[2] : rem Load sprite data from character definition
+          let currentCharacter = playerCharacter[2] : rem Load sprite data from character definition
           let SPS_animFrame = 0 : rem Character index
           let SPS_playerNum = 2 : rem Animation frame (0=idle, 1=running)
           rem Player number (2=Player 3)
@@ -588,13 +588,13 @@ end
 DonePlayer3Sprite
 
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Sprite : rem Set Player 4 color and sprite (if active)
-          if selectedChar4_R = 255 then goto DonePlayer4Sprite
+          if selectedCharacter4_R = 255 then goto DonePlayer4Sprite
           if ! playerHealth[3] then goto DonePlayer4Sprite
           
           rem Use LoadCharacterColors for consistent color handling
           rem   across TV modes
           rem Player 4: Turquoise (SECAM maps to Green), hurt handled by
-          let SPS_charIndex = playerChar[3] : rem   LoadCharacterColors
+          let SPS_charIndex = playerCharacter[3] : rem   LoadCharacterColors
           let SPS_animFrame = 0
           let SPS_isHurt = 0
           if playerRecoveryFrames[3] > 0 then let SPS_isHurt = 1
@@ -624,7 +624,7 @@ Player4ColorDone
 .Player4ReflectionDone
 end
 
-          let currentCharacter = playerChar[3] : rem Load sprite data from character definition
+          let currentCharacter = playerCharacter[3] : rem Load sprite data from character definition
           let SPS_animFrame = 0 : rem Character index
           let SPS_playerNum = 3 : rem Animation frame (0=idle, 1=running)
           rem Player number (3=Player 4)
@@ -646,7 +646,7 @@ DisplayHealth
           rem Input: playerHealth[] (global array) = player health
           rem values, playerRecoveryFrames[] (global array) = recovery
           rem frame counts, controllerStatus (global) = controller
-          rem state, selectedChar3_R, selectedChar4_R (global SCRAM) =
+          rem state, selectedCharacter3_R, selectedCharacter4_R (global SCRAM) =
           rem player 3/4 selections, frame (global) = frame counter
           rem
           rem Output: Sprites flashed (hidden) when health < 25 and not
@@ -681,7 +681,7 @@ FlashParticipant2
 DoneParticipant2Flash
 
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Flash : rem Flash Player 3 sprite if health is low (but alive)
-          if selectedChar3_R = 255 then goto DonePlayer3Flash
+          if selectedCharacter3_R = 255 then goto DonePlayer3Flash
           if ! playerHealth[2] then goto DonePlayer3Flash
           if playerHealth[2] >= 25 then goto DonePlayer3Flash
           if playerRecoveryFrames[2] = 0 then FlashPlayer3
@@ -692,7 +692,7 @@ DonePlayer3Flash
           rem Player 3 uses player2 sprite
 
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Flash : rem Flash Player 4 sprite if health is low (but alive)
-          if selectedChar4_R = 255 then goto DonePlayer4Flash
+          if selectedCharacter4_R = 255 then goto DonePlayer4Flash
           if ! playerHealth[3] then goto DonePlayer4Flash
           if playerHealth[3] >= 25 then goto DonePlayer4Flash
           if playerRecoveryFrames[3] = 0 then FlashPlayer4

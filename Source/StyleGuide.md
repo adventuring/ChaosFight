@@ -83,14 +83,14 @@ CharacterSpritePtrHiBank2    ; Redundant "Ptr" + wrong suffix
 ### camelCase
 
 Use **camelCase** for:
-- **Zero-page variables** (standard RAM): `gameState`, `playerX`, `selectedChar1`, `playerHealth`
+- **Zero-page variables** (standard RAM): `gameState`, `playerX`, `selectedCharacter1`, `playerHealth`
 - **Built-in variables**: `temp1`, `temp2`, `qtcontroller`, `frame` (already lowercase)
 
 **Examples:**
 ```basic
 dim gameState = g
 dim playerX = var0
-dim selectedChar1 = s
+dim selectedCharacter1 = s
 ```
 
 ### camelCase_R and camelCase_W
@@ -280,7 +280,7 @@ LoadCharacterSprite
           rem Input: temp1 = character index (0-31), temp2 = animation
           rem frame (0-7)
           rem        temp3 = player number (0-3)
-          rem        playerChar[] (global array) = player character
+          rem        playerCharacter[] (global array) = player character
           rem        selections
           rem
           rem Output: Sprite data loaded into appropriate player
@@ -290,7 +290,7 @@ LoadCharacterSprite
           rem sprite pointers
           rem
           rem Called Routines: LoadSpecialSprite - accesses temp1,
-          rem playerChar[]
+          rem playerCharacter[]
           rem
           rem Constraints: Must be colocated with LoadSpecialSprite
           rem (called via goto)

@@ -65,7 +65,7 @@ BudgetedHealthBarUpdate
           rem Input: FramePhase (global) = frame phase counter (0-3)
           rem        controllerStatus (global) = controller detection
           rem        state
-          rem        selectedChar3_R, selectedChar4_R (global SCRAM) =
+          rem        selectedCharacter3_R, selectedCharacter4_R (global SCRAM) =
           rem        character selections
           rem        playerHealth[] (global array) = player health
           rem        values
@@ -97,7 +97,7 @@ CheckPlayer2HealthUpdate
           rem Check if Player 3 health bar should be updated (4-player
           rem mode, active player)
           rem
-          rem Input: controllerStatus (global), selectedChar3_R (global
+          rem Input: controllerStatus (global), selectedCharacter3_R (global
           rem SCRAM)
           rem
           rem Output: Player 3 health bar updated if conditions met
@@ -108,7 +108,7 @@ CheckPlayer2HealthUpdate
           rem Called Routines: UpdateHealthBarPlayer2 (bank8) - updates
           rem Player 3 health bar
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate : rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
-          if selectedChar3_R = 255 then DonePlayer2HealthUpdate
+          if selectedCharacter3_R = 255 then DonePlayer2HealthUpdate
           gosub UpdateHealthBarPlayer2 bank8
           return
 DonePlayer2HealthUpdate
@@ -127,7 +127,7 @@ CheckPlayer3HealthUpdate
           rem Check if Player 4 health bar should be updated (4-player
           rem mode, active player)
           rem
-          rem Input: controllerStatus (global), selectedChar4_R (global
+          rem Input: controllerStatus (global), selectedCharacter4_R (global
           rem SCRAM)
           rem
           rem Output: Player 4 health bar updated if conditions met
@@ -138,7 +138,7 @@ CheckPlayer3HealthUpdate
           rem Called Routines: UpdateHealthBarPlayer3 (bank8) - updates
           rem Player 4 health bar
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate : rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
-          if selectedChar4_R = 255 then DonePlayer3HealthUpdate
+          if selectedCharacter4_R = 255 then DonePlayer3HealthUpdate
           gosub UpdateHealthBarPlayer3 bank8
           return
 DonePlayer3HealthUpdate
@@ -278,25 +278,25 @@ BudgetedCollisionCheck
           if FramePhase = 1 then CheckPhase1Collisions
           goto DonePhase0And1Collisions
 CheckPhase0Collisions
-          if selectedChar3_R = 255 then DoneFramePhaseChecks
+          if selectedCharacter3_R = 255 then DoneFramePhaseChecks
           gosub CheckCollisionP1vsP3
           goto DoneFramePhaseChecks
 CheckPhase1Collisions
-          if selectedChar4_R = 255 then CheckPhase1P3
+          if selectedCharacter4_R = 255 then CheckPhase1P3
           gosub CheckCollisionP1vsP4
 CheckPhase1P3
-          if selectedChar3_R = 255 then DoneFramePhaseChecks
+          if selectedCharacter3_R = 255 then DoneFramePhaseChecks
           gosub CheckCollisionP2vsP3
           goto DoneFramePhaseChecks
 DonePhase0And1Collisions
           if FramePhase = 2 then CheckPhase2Collisions
           goto DonePhase2Collisions
 CheckPhase2Collisions
-          if selectedChar4_R = 255 then DoneCheckP2vsP4
+          if selectedCharacter4_R = 255 then DoneCheckP2vsP4
           gosub CheckCollisionP2vsP4
 DoneCheckP2vsP4
-          if selectedChar3_R = 255 then DoneCheckP3vsP4
-          if selectedChar4_R = 255 then DoneCheckP3vsP4
+          if selectedCharacter3_R = 255 then DoneCheckP3vsP4
+          if selectedCharacter4_R = 255 then DoneCheckP3vsP4
           gosub CheckCollisionP3vsP4
 DoneCheckP3vsP4
 DonePhase2Collisions

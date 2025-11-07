@@ -15,7 +15,7 @@ GetPlayerAnimationState
           rem   PlayerY[0-3] - Y positions
           rem PlayerState[0-3] - State flags (attacking, guarding,
           rem   jumping, etc.)
-          rem PlayerChar[0-3] - Character type indices (0-MaxCharacter)
+          rem PlayerCharacter[0-3] - Character type indices (0-MaxCharacter)
           rem playerVelocityX[0-3] - Horizontal velocity (8.8
           rem   fixed-point)
           rem playerVelocityXL[0-3] - Horizontal velocity fractional
@@ -143,7 +143,7 @@ InputHandleAllPlayers
           rem (0=P1/P2, 1=P3/P4)
           rem        ControllerStatus (global) = controller detection
           rem        state
-          rem        selectedChar3_R, selectedChar4_R (global SCRAM) =
+          rem        selectedCharacter3_R, selectedCharacter4_R (global SCRAM) =
           rem        character selections
           rem        PlayerState[] (global array) = player state flags
           rem
@@ -226,8 +226,8 @@ InputHandleQuadtariPlayers
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and
           rem alive)
           rem
-          rem Input: ControllerStatus (global), selectedChar3_R,
-          rem selectedChar4_R (global SCRAM),
+          rem Input: ControllerStatus (global), selectedCharacter3_R,
+          rem selectedCharacter4_R (global SCRAM),
           rem        PlayerState[] (global array)
           rem
           rem Output: Input processed for Players 3 & 4 if conditions
@@ -247,7 +247,7 @@ InputHandleQuadtariPlayers
           dim IHQP_isAlive = temp2 : rem              InputSkipPlayer4Input
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input : rem   alive)
-          if selectedChar3_R = 0 then InputSkipPlayer3Input
+          if selectedCharacter3_R = 0 then InputSkipPlayer3Input
           let currentPlayer = 2 : gosub IsPlayerAlive
           let IHQP_isAlive = temp2
           if IHQP_isAlive = 0 then InputSkipPlayer3Input
@@ -265,7 +265,7 @@ InputSkipPlayer3Input
           rem
           rem Called Routines: None
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input : rem Constraints: Must be colocated with InputHandleQuadtariPlayers
-          if selectedChar4_R = 0 then InputSkipPlayer4Input
+          if selectedCharacter4_R = 0 then InputSkipPlayer4Input
           let currentPlayer = 3 : gosub IsPlayerAlive
           let IHQP_isAlive = temp2
           if IHQP_isAlive = 0 then InputSkipPlayer4Input
@@ -311,16 +311,16 @@ DispatchCharacterJump
           if DCJ_characterType < 8 then on DCJ_characterType goto FrootyJump, NefertemJump, NinjishGuyJump, PorkChopJump, RadishGoblinJump, RoboTitoJump, UrsuloJump, ShamoneJump
           if DCJ_characterType < 8 then return
           let DCJ_characterType = DCJ_characterType - 8
-          if DCJ_characterType < 8 then on DCJ_characterType goto Char16Jump, Char17Jump, Char18Jump, Char19Jump, Char20Jump, Char21Jump, Char22Jump, Char23Jump
+          if DCJ_characterType < 8 then on DCJ_characterType goto Character16Jump, Character17Jump, Character18Jump, Character19Jump, Character20Jump, Character21Jump, Character22Jump, Character23Jump
           if DCJ_characterType < 8 then return
           let DCJ_characterType = DCJ_characterType - 8
-          if DCJ_characterType = 0 then goto Char24Jump
-          if DCJ_characterType = 1 then goto Char25Jump
-          if DCJ_characterType = 2 then goto Char26Jump
-          if DCJ_characterType = 3 then goto Char27Jump
-          if DCJ_characterType = 4 then goto Char28Jump
-          if DCJ_characterType = 5 then goto Char29Jump
-          if DCJ_characterType = 6 then goto Char30Jump
+          if DCJ_characterType = 0 then goto Character24Jump
+          if DCJ_characterType = 1 then goto Character25Jump
+          if DCJ_characterType = 2 then goto Character26Jump
+          if DCJ_characterType = 3 then goto Character27Jump
+          if DCJ_characterType = 4 then goto Character28Jump
+          if DCJ_characterType = 5 then goto Character29Jump
+          if DCJ_characterType = 6 then goto Character30Jump
           if DCJ_characterType = 7 then goto ShamoneJump
           return
           
@@ -333,16 +333,16 @@ DispatchCharacterDown
           if DCD_characterType < 8 then on DCD_characterType goto FrootyDown, NefertemDown, NinjishGuyDown, PorkChopDown, RadishGoblinDown, RoboTitoDown, UrsuloDown, ShamoneDown
           if DCD_characterType < 8 then return
           let DCD_characterType = DCD_characterType - 8
-          if DCD_characterType < 8 then on DCD_characterType goto Char16Down, Char17Down, Char18Down, Char19Down, Char20Down, Char21Down, Char22Down, Char23Down
+          if DCD_characterType < 8 then on DCD_characterType goto Character16Down, Character17Down, Character18Down, Character19Down, Character20Down, Character21Down, Character22Down, Character23Down
           if DCD_characterType < 8 then return
           let DCD_characterType = DCD_characterType - 8
-          if DCD_characterType = 0 then goto Char24Down
-          if DCD_characterType = 1 then goto Char25Down
-          if DCD_characterType = 2 then goto Char26Down
-          if DCD_characterType = 3 then goto Char27Down
-          if DCD_characterType = 4 then goto Char28Down
-          if DCD_characterType = 5 then goto Char29Down
-          if DCD_characterType = 6 then goto Char30Down
+          if DCD_characterType = 0 then goto Character24Down
+          if DCD_characterType = 1 then goto Character25Down
+          if DCD_characterType = 2 then goto Character26Down
+          if DCD_characterType = 3 then goto Character27Down
+          if DCD_characterType = 4 then goto Character28Down
+          if DCD_characterType = 5 then goto Character29Down
+          if DCD_characterType = 6 then goto Character30Down
           if DCD_characterType = 7 then goto ShamoneDown
           return
           
@@ -356,16 +356,16 @@ DispatchCharacterAttack
           if DCA_characterType < 8 then on DCA_characterType goto gotoFrootyAttack, gotoNefertemAttack, gotoNinjishGuyAttack, gotoPorkChopAttack, gotoRadishGoblinAttack, gotoRoboTitoAttack, gotoUrsuloAttack, gotoShamoneAttack
           if DCA_characterType < 8 then return
           let DCA_characterType = DCA_characterType - 8
-          if DCA_characterType < 8 then on DCA_characterType goto gotoChar16Attack, gotoChar17Attack, gotoChar18Attack, gotoChar19Attack, gotoChar20Attack, gotoChar21Attack, gotoChar22Attack, gotoChar23Attack
+          if DCA_characterType < 8 then on DCA_characterType goto gotoCharacter16Attack, gotoCharacter17Attack, gotoCharacter18Attack, gotoCharacter19Attack, gotoCharacter20Attack, gotoCharacter21Attack, gotoCharacter22Attack, gotoCharacter23Attack
           if DCA_characterType < 8 then return
           let DCA_characterType = DCA_characterType - 8
-          if DCA_characterType = 0 then goto gotoChar24Attack
-          if DCA_characterType = 1 then goto gotoChar25Attack
-          if DCA_characterType = 2 then goto gotoChar26Attack
-          if DCA_characterType = 3 then goto gotoChar27Attack
-          if DCA_characterType = 4 then goto gotoChar28Attack
-          if DCA_characterType = 5 then goto gotoChar29Attack
-          if DCA_characterType = 6 then goto gotoChar30Attack
+          if DCA_characterType = 0 then goto gotoCharacter24Attack
+          if DCA_characterType = 1 then goto gotoCharacter25Attack
+          if DCA_characterType = 2 then goto gotoCharacter26Attack
+          if DCA_characterType = 3 then goto gotoCharacter27Attack
+          if DCA_characterType = 4 then goto gotoCharacter28Attack
+          if DCA_characterType = 5 then goto gotoCharacter29Attack
+          if DCA_characterType = 6 then goto gotoCharacter30Attack
           if DCA_characterType = 7 then goto gotoShamoneAttack
           return
           
@@ -424,52 +424,52 @@ gotoUrsuloAttack
 gotoShamoneAttack
           goto ShamoneAttack bank11
           
-gotoChar16Attack
+gotoCharacter16Attack
           rem Character 16-23 attack handlers (future characters)
-          goto Char16Attack bank11
+          goto Character16Attack bank11
           
-gotoChar17Attack
-          goto Char17Attack bank11
+gotoCharacter17Attack
+          goto Character17Attack bank11
           
-gotoChar18Attack
-          goto Char18Attack bank11
+gotoCharacter18Attack
+          goto Character18Attack bank11
           
-gotoChar19Attack
-          goto Char19Attack bank11
+gotoCharacter19Attack
+          goto Character19Attack bank11
           
-gotoChar20Attack
-          goto Char20Attack bank11
+gotoCharacter20Attack
+          goto Character20Attack bank11
           
-gotoChar21Attack
-          goto Char21Attack bank11
+gotoCharacter21Attack
+          goto Character21Attack bank11
           
-gotoChar22Attack
-          goto Char22Attack bank11
+gotoCharacter22Attack
+          goto Character22Attack bank11
           
-gotoChar23Attack
-          goto Char23Attack bank11
+gotoCharacter23Attack
+          goto Character23Attack bank11
           
-gotoChar24Attack
+gotoCharacter24Attack
           rem Character 24-30 attack handlers (future characters)
-          goto Char24Attack bank11
+          goto Character24Attack bank11
           
-gotoChar25Attack
-          goto Char25Attack bank11
+gotoCharacter25Attack
+          goto Character25Attack bank11
           
-gotoChar26Attack
-          goto Char26Attack bank11
+gotoCharacter26Attack
+          goto Character26Attack bank11
           
-gotoChar27Attack
-          goto Char27Attack bank11
+gotoCharacter27Attack
+          goto Character27Attack bank11
           
-gotoChar28Attack
-          goto Char28Attack bank11
+gotoCharacter28Attack
+          goto Character28Attack bank11
           
-gotoChar29Attack
-          goto Char29Attack bank11
+gotoCharacter29Attack
+          goto Character29Attack bank11
           
-gotoChar30Attack
-          goto Char30Attack bank11
+gotoCharacter30Attack
+          goto Character30Attack bank11
 
 CheckEnhancedJumpButton
           rem
@@ -542,7 +542,7 @@ HandleGuardInput
 HGI_CheckJoy0
           if !joy0down then goto HGI_CheckGuardRelease : rem Players 0,2 use joy0
 HGI_HandleDownPressed
-          let HGI_characterType = PlayerChar[HGI_playerIndex] : rem DOWN pressed - dispatch to character-specific down handler
+          let HGI_characterType = PlayerCharacter[HGI_playerIndex] : rem DOWN pressed - dispatch to character-specific down handler
           let temp4 = HGI_characterType
           gosub DispatchCharacterDown
           return
@@ -680,7 +680,7 @@ InputHandleLeftPortPlayer
           rem Process left/right movement (with playfield collision for
           rem   flying characters)
           rem Frooty (8) and Dragon of Storms (2) need collision checks
-          let IHLP_characterType = PlayerChar[IHLP_playerIndex] : rem   for horizontal movement
+          let IHLP_characterType = PlayerCharacter[IHLP_playerIndex] : rem   for horizontal movement
           if IHLP_characterType = 8 then IHLP_FlyingMovement
           if IHLP_characterType = 2 then IHLP_FlyingMovement
           
@@ -715,13 +715,13 @@ IHLP_DoneFlyingLeftRight
           if !joy0up then goto DoneUpInputHandling : rem - Harpy: flap to fly (Character 6)
           
           rem Check Shamone form switching first (Character 15 <-> 31)
-          if PlayerChar[IHLP_playerIndex] = 15 then let PlayerChar[IHLP_playerIndex] = 31 : goto DoneJumpInput
-          if PlayerChar[IHLP_playerIndex] = 31 then let PlayerChar[IHLP_playerIndex] = 15 : goto DoneJumpInput : rem Switch Shamone -> MethHound
+          if PlayerCharacter[IHLP_playerIndex] = 15 then let PlayerCharacter[IHLP_playerIndex] = 31 : goto DoneJumpInput
+          if PlayerCharacter[IHLP_playerIndex] = 31 then let PlayerCharacter[IHLP_playerIndex] = 15 : goto DoneJumpInput : rem Switch Shamone -> MethHound
           rem Switch MethHound -> Shamone
           
-          if PlayerChar[IHLP_playerIndex] = 0 then BernieFallThrough : rem Check Bernie fall-through (Character 0)
+          if PlayerCharacter[IHLP_playerIndex] = 0 then BernieFallThrough : rem Check Bernie fall-through (Character 0)
           
-          if PlayerChar[IHLP_playerIndex] = 6 then HarpyFlap : rem Check Harpy flap (Character 6)
+          if PlayerCharacter[IHLP_playerIndex] = 6 then HarpyFlap : rem Check Harpy flap (Character 6)
           
           goto NormalJumpInput : rem For all other characters, UP is jump
           
@@ -750,10 +750,10 @@ DoneUpInputHandling
           rem Note: For Bernie, UP is fall-through, so jump via enhanced
           rem   buttons only
           rem Note: For Harpy, UP is flap, so jump via enhanced buttons
-          if PlayerChar[IHLP_playerIndex] = 15 then goto ShamoneJumpCheckEnhanced : rem   only
-          if PlayerChar[IHLP_playerIndex] = 31 then goto ShamoneJumpCheckEnhanced
-          if PlayerChar[IHLP_playerIndex] = 0 then goto ShamoneJumpCheckEnhanced
-          if PlayerChar[IHLP_playerIndex] = 6 then goto ShamoneJumpCheckEnhanced
+          if PlayerCharacter[IHLP_playerIndex] = 15 then goto ShamoneJumpCheckEnhanced : rem   only
+          if PlayerCharacter[IHLP_playerIndex] = 31 then goto ShamoneJumpCheckEnhanced
+          if PlayerCharacter[IHLP_playerIndex] = 0 then goto ShamoneJumpCheckEnhanced
+          if PlayerCharacter[IHLP_playerIndex] = 6 then goto ShamoneJumpCheckEnhanced
           rem Bernie and Harpy also use enhanced buttons for jump
           
           gosub CheckEnhancedJumpButton : rem Check Genesis/Joy2b+ Button C/II
@@ -766,7 +766,7 @@ DoneUpInputHandling
           if (PlayerState[IHLP_playerIndex] & 4) then InputSkipLeftPortJump
           rem Use cached animation state - block jump during attack
           if IHLP_animationState >= 13 then InputSkipLeftPortJump : rem   animations (states 13-15)
-          let EJ_characterType = PlayerChar[IHLP_playerIndex] : rem Block jump during attack windup/execute/recovery
+          let EJ_characterType = PlayerCharacter[IHLP_playerIndex] : rem Block jump during attack windup/execute/recovery
           let temp4 = EJ_characterType
           gosub DispatchCharacterJump
 InputSkipLeftPortJump
@@ -786,7 +786,7 @@ InputSkipLeftPortJump
           if temp2 then InputSkipLeftPortAttack
           if !joy0fire then InputSkipLeftPortAttack : rem Guarding - block attack input
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipLeftPortAttack
-          let temp4 = PlayerChar[temp1]
+          let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack
 InputSkipLeftPortAttack
           
@@ -815,7 +815,7 @@ InputHandleRightPortPlayer
           rem Guarding - block movement
           
           rem Frooty (8) and Dragon of Storms (2) need collision checks
-          let temp5 = PlayerChar[temp1] : rem   for horizontal movement
+          let temp5 = PlayerCharacter[temp1] : rem   for horizontal movement
           if temp5 = 8 then IHRP_FlyingMovement
           if temp5 = 2 then IHRP_FlyingMovement
           
@@ -852,13 +852,13 @@ IHRP_DoneFlyingLeftRight
           if !joy1up then goto DoneUpInputHandlingRight : rem - Harpy: flap to fly (Character 6)
           
           rem Check Shamone form switching first (Character 15 <-> 31)
-          if PlayerChar[temp1] = 15 then let PlayerChar[temp1] = 31 : goto DoneJumpInputRight
-          if PlayerChar[temp1] = 31 then let PlayerChar[temp1] = 15 : goto DoneJumpInputRight : rem Switch Shamone -> MethHound
+          if PlayerCharacter[temp1] = 15 then let PlayerCharacter[temp1] = 31 : goto DoneJumpInputRight
+          if PlayerCharacter[temp1] = 31 then let PlayerCharacter[temp1] = 15 : goto DoneJumpInputRight : rem Switch Shamone -> MethHound
           rem Switch MethHound -> Shamone
           
-          if PlayerChar[temp1] = 0 then BernieFallThroughRight : rem Check Bernie fall-through (Character 0)
+          if PlayerCharacter[temp1] = 0 then BernieFallThroughRight : rem Check Bernie fall-through (Character 0)
           
-          if PlayerChar[temp1] = 6 then HarpyFlapRight : rem Check Harpy flap (Character 6)
+          if PlayerCharacter[temp1] = 6 then HarpyFlapRight : rem Check Harpy flap (Character 6)
           
           goto NormalJumpInputRight : rem For all other characters, UP is jump
           
@@ -887,10 +887,10 @@ DoneUpInputHandlingRight
           rem Note: For Bernie, UP is fall-through, so jump via enhanced
           rem   buttons only
           rem Note: For Harpy, UP is flap, so jump via enhanced buttons
-          if PlayerChar[temp1] = 15 then goto ShamoneJumpCheckEnhancedRight : rem   only
-          if PlayerChar[temp1] = 31 then goto ShamoneJumpCheckEnhancedRight
-          if PlayerChar[temp1] = 0 then goto ShamoneJumpCheckEnhancedRight
-          if PlayerChar[temp1] = 6 then goto ShamoneJumpCheckEnhancedRight
+          if PlayerCharacter[temp1] = 15 then goto ShamoneJumpCheckEnhancedRight : rem   only
+          if PlayerCharacter[temp1] = 31 then goto ShamoneJumpCheckEnhancedRight
+          if PlayerCharacter[temp1] = 0 then goto ShamoneJumpCheckEnhancedRight
+          if PlayerCharacter[temp1] = 6 then goto ShamoneJumpCheckEnhancedRight
           rem Bernie and Harpy also use enhanced buttons for jump
           
           gosub CheckEnhancedJumpButton : rem Check Genesis/Joy2b+ Button C/II
@@ -902,7 +902,7 @@ DoneUpInputHandlingRight
           if (PlayerState[temp1] & 4) then InputSkipRightPortJump
           rem Use cached animation state - block jump during attack
           if IHRP_animationState >= 13 then InputSkipRightPortJump : rem   animations (states 13-15)
-          let temp4 = PlayerChar[temp1] : rem Block jump during attack windup/execute/recovery
+          let temp4 = PlayerCharacter[temp1] : rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump
 InputSkipRightPortJump
 
@@ -920,7 +920,7 @@ InputSkipRightPortJump
           if temp2 then InputSkipRightPortAttack
           if !joy1fire then InputSkipRightPortAttack : rem Guarding - block attack input
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipRightPortAttack
-          let temp4 = PlayerChar[temp1]
+          let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack
 InputSkipRightPortAttack
           

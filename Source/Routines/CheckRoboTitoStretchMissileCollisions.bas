@@ -16,7 +16,7 @@ CheckRoboTitoStretchMissileCollisions
           rem Check collision between RoboTito stretch missiles and
           rem other players
           rem
-          rem Input: playerChar[] (global array) = character types,
+          rem Input: playerCharacter[] (global array) = character types,
           rem playerState[] (global array) = player states,
           rem characterStateFlags_R[] (global SCRAM array) = character
           rem state flags, missileStretchHeight_R[] (global SCRAM array)
@@ -42,7 +42,7 @@ CheckRoboTitoStretchMissileCollisions
           let CRTSMC_playerIndex = 0 : rem Loop through all players
           
 CRTSMC_PlayerLoop
-          if playerChar[CRTSMC_playerIndex] = CharRoboTito then CRTSMC_IsRoboTito : rem Check if player is RoboTito and stretching
+          if playerCharacter[CRTSMC_playerIndex] = CharacterRoboTito then CRTSMC_IsRoboTito : rem Check if player is RoboTito and stretching
           goto CRTSMC_NextPlayer
 CRTSMC_IsRoboTito
           rem Not RoboTito, skip

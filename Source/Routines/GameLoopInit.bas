@@ -33,15 +33,15 @@ BeginGameLoop
           rem
           rem Input: ControllerStatus (global) = controller detection
           rem state
-          rem        SelectedChar1, SelectedChar2, selectedChar3_R,
-          rem        selectedChar4_R (global) = character selections
+          rem        SelectedCharacter1, SelectedCharacter2, selectedCharacter3_R,
+          rem        selectedCharacter4_R (global) = character selections
           rem        PlayerLocked[] (global array) = lock states for
           rem        handicap calculation
           rem
           rem Output: All game state initialized for gameplay
           rem
           rem Mutates: PlayerX[], PlayerY[], PlayerState[],
-          rem PlayerHealth[], PlayerChar[],
+          rem PlayerHealth[], PlayerCharacter[],
           rem         PlayerTimers[], playerVelocityX[],
           rem         playerVelocitySubpixelX[],
           rem         playerVelocitySubpixelY[], playerSubpixelX[],
@@ -131,8 +131,8 @@ InitPositionsDone
           for currentPlayer = 0 to 3 : rem 2=handicap (75% health)
               let GPL_playerIndex = currentPlayer
               gosub GetPlayerLocked bank14
-              if GPL_lockedState = PlayerLockedHandicap then let PlayerHealth[currentPlayer] = PlayerHealthHandicap
-              if GPL_lockedState = PlayerLockedHandicap then goto PlayerHealthSet
+              if GPL_lockedState = PlayerHandicapped then let PlayerHealth[currentPlayer] = PlayerHealthHandicap
+              if GPL_lockedState = PlayerHandicapped then goto PlayerHealthSet
               let PlayerHealth[currentPlayer] = PlayerHealthMax
 PlayerHealthSet
           next
@@ -164,16 +164,16 @@ PlayerHealthSet
               let PlayerDamage[currentPlayer] = 22
           next
           
-          let PlayerChar[0] = SelectedChar1 : rem Set character types from character select
-          let PlayerChar[1] = SelectedChar2
-          let PlayerChar[2] = selectedChar3_R
-          let PlayerChar[3] = selectedChar4_R
+          let PlayerCharacter[0] = SelectedCharacter1 : rem Set character types from character select
+          let PlayerCharacter[1] = SelectedCharacter2
+          let PlayerCharacter[2] = selectedCharacter3_R
+          let PlayerCharacter[3] = selectedCharacter4_R
 
           rem Update Players34Active flag based on character selections
           rem Flag is used for missile multiplexing (only multiplex when
           let ControllerStatus  = ControllerStatus & ClearPlayers34Active : rem   players 3 or 4 are active)
-          if !(SelectedChar3 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Clear flag first
-          if !(SelectedChar4 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Set if Player 3 selected
+          if !(SelectedCharacter3 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Clear flag first
+          if !(SelectedCharacter4 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Set if Player 3 selected
           rem Set if Player 4 selected
 
           rem Initialize missiles
@@ -197,10 +197,10 @@ PlayerHealthSet
           let WinScreenTimer  = 0 : rem No rank being displayed
           rem Reset win screen timer
 
-          if !(SelectedChar1 = 255) then let PlayersRemaining = PlayersRemaining + 1 : rem Count initial players
-          if !(SelectedChar2 = 255) then let PlayersRemaining = PlayersRemaining + 1  
-          if !(selectedChar3_R = 255) then let PlayersRemaining = PlayersRemaining + 1
-          if !(selectedChar4_R = 255) then let PlayersRemaining = PlayersRemaining + 1
+          if !(SelectedCharacter1 = 255) then let PlayersRemaining = PlayersRemaining + 1 : rem Count initial players
+          if !(SelectedCharacter2 = 255) then let PlayersRemaining = PlayersRemaining + 1  
+          if !(selectedCharacter3_R = 255) then let PlayersRemaining = PlayersRemaining + 1
+          if !(selectedCharacter4_R = 255) then let PlayersRemaining = PlayersRemaining + 1
 
           rem Frame counter is automatically initialized and incremented
           rem by batariBASIC kernel

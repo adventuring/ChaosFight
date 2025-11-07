@@ -13,7 +13,7 @@ BeginWinnerAnnouncement
           rem
           rem Input: winnerPlayerIndex (global) = winner player index
           rem (set by game end logic)
-          rem        PlayerChar[] (global array) = player character
+          rem        PlayerCharacter[] (global array) = player character
           rem        selections
           rem        CharacterThemeSongIndices[] (global array) =
           rem        character theme song mapping
@@ -59,10 +59,10 @@ BeginWinnerAnnouncement
           let displayRank = 0 : rem   DisplayWinScreen if implemented)
           
           let BWA_winnerPlayerIndex = winnerPlayerIndex : rem Get winner’s character index
-          if BWA_winnerPlayerIndex = 0 then let BWA_characterIndex = PlayerChar[0]
-          if BWA_winnerPlayerIndex = 1 then let BWA_characterIndex = PlayerChar[1]
-          if BWA_winnerPlayerIndex = 2 then let BWA_characterIndex = PlayerChar[2]
-          if BWA_winnerPlayerIndex = 3 then let BWA_characterIndex = PlayerChar[3]
+          if BWA_winnerPlayerIndex = 0 then let BWA_characterIndex = PlayerCharacter[0]
+          if BWA_winnerPlayerIndex = 1 then let BWA_characterIndex = PlayerCharacter[1]
+          if BWA_winnerPlayerIndex = 2 then let BWA_characterIndex = PlayerCharacter[2]
+          if BWA_winnerPlayerIndex = 3 then let BWA_characterIndex = PlayerCharacter[3]
           
           rem Look up full song ID from mapping table (table contains
           let BWA_songID = CharacterThemeSongIndices[BWA_characterIndex] : rem   song ID constants)

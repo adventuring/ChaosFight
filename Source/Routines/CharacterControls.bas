@@ -4,7 +4,7 @@ BernieJump
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Character-specific Control Logic
           rem Handles character-specific jump and down button behaviors.
-          rem Called via on playerChar[n] goto dispatch from
+          rem Called via on playerCharacter[n] goto dispatch from
           rem   PlayerInput.bas
           rem INPUT VARIABLE:
           rem   temp1 = player index (0-3)
@@ -1155,94 +1155,94 @@ ShamoneDown
           rem These characters are not yet implemented and use standard
           rem   behaviors
 
-Char16Jump
+Character16Jump
           goto StandardJump : rem tail call
 
-Char17Jump
+Character17Jump
           goto StandardJump : rem tail call
 
-Char18Jump
+Character18Jump
           goto StandardJump : rem tail call
 
-Char19Jump
+Character19Jump
           goto StandardJump : rem tail call
 
-Char20Jump
+Character20Jump
           goto StandardJump : rem tail call
 
-Char21Jump
+Character21Jump
           goto StandardJump : rem tail call
 
-Char22Jump
+Character22Jump
           goto StandardJump : rem tail call
 
-Char23Jump
+Character23Jump
           goto StandardJump : rem tail call
 
-Char24Jump
+Character24Jump
           goto StandardJump : rem tail call
 
-Char25Jump
+Character25Jump
           goto StandardJump : rem tail call
 
-Char26Jump
+Character26Jump
           goto StandardJump : rem tail call
 
-Char27Jump
+Character27Jump
           goto StandardJump : rem tail call
 
-Char28Jump
+Character28Jump
           goto StandardJump : rem tail call
 
-Char29Jump
+Character29Jump
           goto StandardJump : rem tail call
 
-Char30Jump
+Character30Jump
           goto StandardJump : rem tail call
 
-Char16Down
+Character16Down
           goto StandardGuard : rem tail call
 
-Char17Down
+Character17Down
           goto StandardGuard : rem tail call
 
-Char18Down
+Character18Down
           goto StandardGuard : rem tail call
 
-Char19Down
+Character19Down
           goto StandardGuard : rem tail call
 
-Char20Down
+Character20Down
           goto StandardGuard : rem tail call
 
-Char21Down
+Character21Down
           goto StandardGuard : rem tail call
 
-Char22Down
+Character22Down
           goto StandardGuard : rem tail call
 
-Char23Down
+Character23Down
           goto StandardGuard : rem tail call
 
-Char24Down
+Character24Down
           goto StandardGuard : rem tail call
 
-Char25Down
+Character25Down
           goto StandardGuard : rem tail call
 
-Char26Down
+Character26Down
           goto StandardGuard : rem tail call
 
-Char27Down
+Character27Down
           goto StandardGuard : rem tail call
 
-Char28Down
+Character28Down
           goto StandardGuard : rem tail call
 
-Char29Down
+Character29Down
           goto StandardGuard : rem tail call
 
-Char30Down
+Character30Down
           goto StandardGuard : rem tail call
 
 StandardJump
@@ -1284,7 +1284,7 @@ StandardGuard
           rem Standard guard behavior used by most characters (blocks
           rem attacks, visual flashing)
           rem
-          rem Input: temp1 = player index (0-3), playerChar[] (global
+          rem Input: temp1 = player index (0-3), playerCharacter[] (global
           rem array) = character types
           rem
           rem Output: Guard activated if allowed (not flying character,
@@ -1308,7 +1308,7 @@ StandardGuard
           rem Frooty (8): DOWN = fly down (no gravity)
           rem Dragon of Storms (2): DOWN = fly down (no gravity)
           rem Harpy (6): DOWN = fly down (reduced gravity)
-          let SG_characterType = playerChar[SG_playerIndex]
+          let SG_characterType = playerCharacter[SG_playerIndex]
           if SG_characterType = 8 then return
           if SG_characterType = 2 then return : rem Frooty cannot guard
           if SG_characterType = 6 then return : rem Dragon of Storms cannot guard

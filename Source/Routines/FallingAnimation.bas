@@ -20,8 +20,8 @@ FallingAnimation1
           rem Per-frame falling animation that moves players from
           rem quadrants to row 2 positions
           rem
-          rem Input: selectedChar1, selectedChar2, selectedChar3_R,
-          rem selectedChar4_R (global) = character selections
+          rem Input: selectedCharacter1, selectedCharacter2, selectedCharacter3_R,
+          rem selectedCharacter4_R (global) = character selections
           rem        controllerStatus (global) = controller detection
           rem        state
           rem        fallFrame (global) = animation frame counter
@@ -56,7 +56,7 @@ FallingAnimation1
           let fallFrame = fallFrame + 1 : rem Update animation frame
           if fallFrame > 3 then let fallFrame = 0
           
-          if selectedChar1 = NoCharacter then DonePlayer1Move : rem Move Player 1 from quadrant to target (if active)
+          if selectedCharacter1 = NoCharacter then DonePlayer1Move : rem Move Player 1 from quadrant to target (if active)
           rem playerIndex = 0 (player index), targetX = target X,
           let FA1_playerIndex = 0 : rem targetY = target Y (24)
           if controllerStatus & SetQuadtariDetected then Player1Target4P : rem Check if 4-player mode for target X
@@ -107,7 +107,7 @@ DonePlayer1Move
           rem
           rem Constraints: Must be colocated with FallingAnimation1
           
-          if selectedChar2_R = NoCharacter then DonePlayer2Move : rem Move Player 2 from quadrant to target (if active)
+          if selectedCharacter2_R = NoCharacter then DonePlayer2Move : rem Move Player 2 from quadrant to target (if active)
           let FA1_playerIndex = 1
           if controllerStatus & SetQuadtariDetected then Player2Target4P : rem Check if 4-player mode for target X
           let FA1_targetX = 107 : rem 2-player mode: target X = 107
@@ -157,7 +157,7 @@ DonePlayer2Move
           rem Constraints: Must be colocated with FallingAnimation1
           
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Move : rem Move Player 3 from quadrant to target (if active)
-          if selectedChar3_R = NoCharacter then DonePlayer3Move
+          if selectedCharacter3_R = NoCharacter then DonePlayer3Move
           let FA1_playerIndex = 2
           let FA1_targetX = 64 : rem 4-player mode: target X = 64
           let FA1_targetY = 24
@@ -182,7 +182,7 @@ DonePlayer3Move
           rem Constraints: Must be colocated with FallingAnimation1
           
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Move : rem Move Player 4 from quadrant to target (if active)
-          if selectedChar4_R = NoCharacter then DonePlayer4Move
+          if selectedCharacter4_R = NoCharacter then DonePlayer4Move
           let FA1_playerIndex = 3
           let FA1_targetX = 96 : rem 4-player mode: target X = 96
           let FA1_targetY = 24

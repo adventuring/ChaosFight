@@ -8,7 +8,7 @@ UpdateCharacterParade
           rem   disappears).
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   titleParadeTimer - Frame counter (increments each frame)
-          rem titleParadeChar - Current character index (0-MaxCharacter)
+          rem titleParadeCharacter - Current character index (0-MaxCharacter)
           rem   titleParadeX - X position of parade character
           rem   titleParadeActive - Boolean: parade currently running
           rem TIMING:
@@ -36,7 +36,7 @@ UpdateCharacterParade
           rem
           rem Mutates: titleParadeTimer (incremented), titleParadeActive
           rem (set via StartNewParadeCharacter),
-          rem         titleParadeChar, titleParadeX (set via
+          rem         titleParadeCharacter, titleParadeX (set via
           rem         StartNewParadeCharacter, MoveParadeCharacter)
           rem
           rem Called Routines: StartNewParadeCharacter - accesses rand,
@@ -63,15 +63,15 @@ StartNewParadeCharacter
           rem Input: rand (global) = random number generator,
           rem MaxCharacter (constant) = maximum character index
           rem
-          rem Output: titleParadeChar set to random character,
+          rem Output: titleParadeCharacter set to random character,
           rem titleParadeX set to 246, titleParadeActive set to 1
           rem
-          rem Mutates: titleParadeChar (set to random 0-MaxCharacter),
+          rem Mutates: titleParadeCharacter (set to random 0-MaxCharacter),
           rem titleParadeX (set to 246),
           rem         titleParadeActive (set to 1)
           rem
           rem Called Routines: None
-          let titleParadeChar = rand & MaxCharacter : rem Constraints: Must be colocated with UpdateCharacterParade
+          let titleParadeCharacter = rand & MaxCharacter : rem Constraints: Must be colocated with UpdateCharacterParade
           let titleParadeX = 246 : rem Random character 0-MaxCharacter
           let titleParadeActive = 1 : rem Start off-screen left
           return
@@ -116,7 +116,7 @@ DrawParadeCharacter
           rem Draw Parade Character
           rem Renders the current parade character at bottom of screen
           rem INPUT VARIABLES:
-          rem   titleParadeChar - Character index (0-MaxCharacter)
+          rem   titleParadeCharacter - Character index (0-MaxCharacter)
           rem   titleParadeX - X position on screen
           rem USES:
           rem   player0x, player0y - Sprite position

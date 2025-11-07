@@ -9,7 +9,7 @@ ApplySpecialMovement
           rem   character-specific
           rem physics that are not handled by standard movement/gravity.
           rem AVAILABLE VARIABLES (from Variables.bas):
-          rem   playerChar[0-3] - Character type indices
+          rem   playerCharacter[0-3] - Character type indices
           rem   playerX[0-3], playerY[0-3] - Position
           rem   playerState[0-3] - State flags
           rem CHARACTER INDICES:
@@ -23,9 +23,9 @@ ApplySpecialMovement
           rem Inline ApplyPlayerSpecialMovement to avoid local label
           rem cross-bank issues
           rem
-          rem Input: playerChar[] (global array) = character types,
+          rem Input: playerCharacter[] (global array) = character types,
           rem controllerStatus (global) = Quadtari detection,
-          rem selectedChar3_R, selectedChar4_R (global SCRAM) = player
+          rem selectedCharacter3_R, selectedCharacter4_R (global SCRAM) = player
           rem 3/4 selections
           rem
           rem Output: Special movement applied (currently no-op,
@@ -38,24 +38,24 @@ ApplySpecialMovement
           rem Constraints: None
           rem Player 0 - Frooty (8) and Dragon of Storms (2) skip
           rem gravity
-          temp4 = playerChar[0]
+          temp4 = playerCharacter[0]
           if temp4 = 8 then ApplySpecialMovementP1
           if temp4 = 2 then ApplySpecialMovementP1 : rem Frooty: no gravity (free flight)
 ApplySpecialMovementP1
           rem Dragon of Storms: no gravity (free flight)
           rem Player 1 - Frooty (8) and Dragon of Storms (2) skip
           rem gravity
-          temp4 = playerChar[1]
+          temp4 = playerCharacter[1]
           if temp4 = 8 then ApplySpecialMovementP2
           if temp4 = 2 then ApplySpecialMovementP2 : rem Frooty: no gravity (free flight)
 ApplySpecialMovementP2
           rem Dragon of Storms: no gravity (free flight)
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then if playerChar[2] = 8 then ApplySpecialMovementP3 : rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then if playerChar[2] = 2 then ApplySpecialMovementP3
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerCharacter[2] = 8 then ApplySpecialMovementP3 : rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerCharacter[2] = 2 then ApplySpecialMovementP3
 ApplySpecialMovementP3
           rem Dragon of Storms: no gravity (free flight)
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then if playerChar[3] = 8 then return : rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then if playerChar[3] = 2 then return
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerCharacter[3] = 8 then return : rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerCharacter[3] = 2 then return
           rem Dragon of Storms: no gravity (free flight)
           return
 
@@ -67,7 +67,7 @@ ApplyPlayerSpecialMovement
           rem USES: temp4 = character type
           rem Apply special movement physics to a single player
           rem
-          rem Input: temp1 = player index (0-3), playerChar[] (global
+          rem Input: temp1 = player index (0-3), playerCharacter[] (global
           rem array) = character types
           rem
           rem Output: Special movement applied (currently no-op,
@@ -77,7 +77,7 @@ ApplyPlayerSpecialMovement
           rem
           rem Called Routines: None
           dim APSM_playerIndex = temp1 : rem Constraints: None
-          temp4 = playerChar[APSM_playerIndex]
+          temp4 = playerCharacter[APSM_playerIndex]
           
           rem Bernie (0) - screen wrap handled in
           rem   CheckBoundaryCollisions

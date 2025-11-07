@@ -53,22 +53,22 @@
           rem Fall distance value for infinite (characters immune to
           rem   fall damage)
           
-          const CharBernie = 0 : rem Character ID constants
-          const CharCurler = 1
-          const CharDragonOfStorms = 2
-          const CharZoeRyen = 3
-          const CharFatTony = 4
-          const CharMegax = 5
-          const CharHarpy = 6
-          const CharKnightGuy = 7
-          const CharFrooty = 8
-          const CharNefertem = 9
-          const CharNinjishGuy = 10
-          const CharPorkChop = 11
-          const CharRadishGoblin = 12
-          const CharRoboTito = 13
-          const CharUrsulo = 14
-          const CharShamone = 15
+          const CharacterBernie = 0 : rem Character ID constants
+          const CharacterCurler = 1
+          const CharacterDragonOfStorms = 2
+          const CharacterZoeRyen = 3
+          const CharacterFatTony = 4
+          const CharacterMegax = 5
+          const CharacterHarpy = 6
+          const CharacterKnightGuy = 7
+          const CharacterFrooty = 8
+          const CharacterNefertem = 9
+          const CharacterNinjishGuy = 10
+          const CharacterPorkChop = 11
+          const CharacterRadishGoblin = 12
+          const CharacterRoboTito = 13
+          const CharacterUrsulo = 14
+          const CharacterShamone = 15
 
           const SpriteQuestionMark = 0 : rem Special sprite constants for SpecialSpritePointers table
           const SpriteCPU = 1
@@ -178,10 +178,9 @@
           
           rem PlayerLocked value constants (for bit-packed playerLocked
           rem byte)
-          const PlayerLockedUnlocked = 0 : rem Values: 0=unlocked, 1=locked normal, 2=locked handicap
-          const PlayerLockedNormal = 1 : rem 0 = Unlocked (still browsing)
-          const PlayerLockedHandicap = 2 : rem 1 = Locked normal (100% health)
-          rem 2 = Locked handicap (75% health)
+          const PlayerLockedUnlocked = 0 : rem 0 = Unlocked (still browsing)
+          const PlayerLockedNormal = 1 : rem 1 = Locked normal (100% health)
+          const PlayerHandicapped = 2 : rem 2 = Locked handicap (75% health)
           rem 3 = Reserved (unused)
           
           const PlayerHealthMax = 100 : rem Player health constants

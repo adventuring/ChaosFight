@@ -428,7 +428,7 @@ LoadPlayerSprite
           rem Load sprite data for any player using character art system
           rem
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        playerChar[] (global array) = character indices per
+          rem        playerCharacter[] (global array) = character indices per
           rem        player
           rem        temp2 = animation frame (0-7) from sprite 10fps
           rem        counter
@@ -449,9 +449,9 @@ LoadPlayerSprite
           rem Constraints: Must be colocated with
           rem LoadPlayerSpriteDispatch (called via goto)
           dim LPS_playerNumber = temp4
-          rem Get character index for this player from playerChar array
+          rem Get character index for this player from playerCharacter array
           rem Use currentPlayer global variable (set by caller)
-          let currentCharacter = playerChar[currentPlayer] : rem Set currentCharacter from playerChar[currentPlayer]
+          let currentCharacter = playerCharacter[currentPlayer] : rem Set currentCharacter from playerCharacter[currentPlayer]
           goto LoadPlayerSpriteDispatch
           
 LoadPlayerSpriteDispatch
@@ -483,7 +483,7 @@ LoadPlayerSpriteDispatch
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
           rem   temp3=action, temp4=player
           rem Set temp1 from currentCharacter (already set from
-          rem playerChar[currentPlayer])
+          rem playerCharacter[currentPlayer])
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank14
           return

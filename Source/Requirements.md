@@ -107,10 +107,10 @@ Player 2: ? or 0 ↔ MaxCharacterID and
 
 - **playerLocked[0-3]**: Lock state:
   - Must use enumerated constants
-  - 0 = Unlocked (still browsing) = PlayerCharacterUnlocked
-  - 1 = Locked (normal health, 100%) = PlayerCharacterLocked
-  - 2 = handicap mode, 75% health = PlayerCharacterHandicapped
-  - 3 = Locked in handicap mode = PlayerCharacterLocked | PlayerCharacterHandicapped
+  - 0 = Unlocked (still browsing) = PlayerLockedUnlocked
+  - 1 = Locked (normal health, 100%) = PlayerLockedNormal
+  - 2 = handicap mode, 75% health = PlayerHandicapped
+  - 3 = Locked in handicap mode = PlayerLockedNormal | PlayerHandicapped
 
 ### Visual Display
 - Display character preview with idle animation
@@ -177,7 +177,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
   - Set player facing directions (alternating: P1 right, P2 left, P3 right, P4 left)
   - Apply handicap if selected (playerLocked[0-3] & PlayerCharacterHandicapped → 75% health, else 100%)
   - Initialize player states, timers, momentum
-  - Load character types from selectedChar[0-3] variables
+  - Load character types from selectedCharacter[0-3] variables
   - Initialize missiles and projectiles
   - Set frame counter and game state
   - Load arena data

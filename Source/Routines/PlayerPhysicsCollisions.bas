@@ -13,9 +13,9 @@ CheckBoundaryCollisions
           rem   fixed-point)
           rem playerVelocityY[0-3] - Vertical velocity (8.8 fixed-point)
           rem
-          rem playerChar[0-3] - Character type indices
+          rem playerCharacter[0-3] - Character type indices
           rem QuadtariDetected - Whether 4-player mode active
-          rem   selectedChar3_R, selectedChar4_R - Player 3/4 selections
+          rem   selectedCharacter3_R, selectedCharacter4_R - Player 3/4 selections
           rem Check Boundary Collisions
           rem Prevents players from moving off-screen.
           rem Prevents players from moving off-screen (horizontal
@@ -26,8 +26,8 @@ CheckBoundaryCollisions
           rem playerSubpixelXL[], playerSubpixelYL[] (global arrays) =
           rem subpixel positions, playerVelocityY[], playerVelocityYL[]
           rem (global arrays) = vertical velocity, controllerStatus
-          rem (global) = controller state, selectedChar3_R,
-          rem selectedChar4_R (global SCRAM) = player 3/4 selections,
+          rem (global) = controller state, selectedCharacter3_R,
+          rem selectedCharacter4_R (global SCRAM) = player 3/4 selections,
           rem selectedArena_R (global SCRAM) = selected arena, frame
           rem (global) = frame counter, RandomArena (global constant) =
           rem random arena constant
@@ -73,17 +73,17 @@ CheckBoundaryCollisions
           if playerY[1] < 20 then let playerY[1] = 20 : let playerSubpixelY[1] = 20 : let playerSubpixelYL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0 : rem Y clamp: top 20, bottom 80
           if playerY[1] > 80 then let playerY[1] = 80 : let playerSubpixelY[1] = 80 : let playerSubpixelYL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
           
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then let CBC_playerIndex = 2 : rem Player 2 - boundaries (if Quadtari and active) - inline nested ifs
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then if playerX[2] < 10 then let playerX[2] = 150 : let playerSubpixelX[2] = 150 : let playerSubpixelXL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then if playerX[2] > 150 then let playerX[2] = 10 : let playerSubpixelX[2] = 10 : let playerSubpixelXL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY[2] = 20 : let playerSubpixelYL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar3_R = 255) then if playerY[2] > 80 then let playerY[2] = 80 : let playerSubpixelY[2] = 80 : let playerSubpixelYL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then let CBC_playerIndex = 2 : rem Player 2 - boundaries (if Quadtari and active) - inline nested ifs
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerX[2] < 10 then let playerX[2] = 150 : let playerSubpixelX[2] = 150 : let playerSubpixelXL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerX[2] > 150 then let playerX[2] = 10 : let playerSubpixelX[2] = 10 : let playerSubpixelXL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY[2] = 20 : let playerSubpixelYL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerY[2] > 80 then let playerY[2] = 80 : let playerSubpixelY[2] = 80 : let playerSubpixelYL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
           
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then let CBC_playerIndex = 3 : rem Player 3 - boundaries (if Quadtari and active) - inline nested ifs
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then if playerX[3] < 10 then let playerX[3] = 150 : let playerSubpixelX[3] = 150 : let playerSubpixelXL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then if playerX[3] > 150 then let playerX[3] = 10 : let playerSubpixelX[3] = 10 : let playerSubpixelXL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY[3] = 20 : let playerSubpixelYL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(selectedChar4_R = 255) then if playerY[3] > 80 then let playerY[3] = 80 : let playerSubpixelY[3] = 80 : let playerSubpixelYL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then let CBC_playerIndex = 3 : rem Player 3 - boundaries (if Quadtari and active) - inline nested ifs
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerX[3] < 10 then let playerX[3] = 150 : let playerSubpixelX[3] = 150 : let playerSubpixelXL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerX[3] > 150 then let playerX[3] = 10 : let playerSubpixelX[3] = 10 : let playerSubpixelXL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY[3] = 20 : let playerSubpixelYL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerY[3] > 80 then let playerY[3] = 80 : let playerSubpixelY[3] = 80 : let playerSubpixelYL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
           
           return
 
@@ -106,7 +106,7 @@ CheckPlayfieldCollisionAllDirections
           rem
           rem Input: currentPlayer (global) = player index (0-3),
           rem playerX[], playerY[] (global arrays) = player positions,
-          rem playerChar[] (global array) = character types,
+          rem playerCharacter[] (global array) = character types,
           rem playerVelocityX[], playerVelocityY[], playerVelocityXL[],
           rem playerVelocityYL[] (global arrays) = player velocities,
           rem playerSubpixelX[], playerSubpixelY[], playerSubpixelXL[],
@@ -135,7 +135,7 @@ CheckPlayfieldCollisionAllDirections
           rem bit shifts
           let temp2 = playerX[currentPlayer] : rem Get player position and character info
           let temp3 = playerY[currentPlayer] : rem X position (save original)
-          let temp4 = playerChar[currentPlayer] : rem Y position
+          let temp4 = playerCharacter[currentPlayer] : rem Y position
           let temp5 = CharacterHeights[temp4] : rem Character index
           rem Character height
           
@@ -465,11 +465,11 @@ CheckAllPlayerCollisions
           rem momentum transfer based on weight
           rem
           rem Input: playerX[], playerY[] (global arrays) = player
-          rem positions, playerChar[] (global array) = character types,
+          rem positions, playerCharacter[] (global array) = character types,
           rem playerHealth[] (global array) = player health,
           rem playerVelocityX[] (global array) = player X velocities,
           rem controllerStatus (global) = controller state,
-          rem selectedChar3_R, selectedChar4_R (global SCRAM) = player
+          rem selectedCharacter3_R, selectedCharacter4_R (global SCRAM) = player
           rem 3/4 selections, CharacterHeights[], CharacterWeights[]
           rem (global data tables) = character properties,
           rem PlayerCollisionDistance (global constant) = collision
@@ -503,8 +503,8 @@ CollisionOuterLoop
           
 CollisionCheckP1Active
           if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextOuter
-          if temp1 = 2 && selectedChar3_R = 255 then goto CollisionNextOuter
-          if temp1 = 3 && selectedChar4_R = 255 then goto CollisionNextOuter
+          if temp1 = 2 && selectedCharacter3_R = 255 then goto CollisionNextOuter
+          if temp1 = 3 && selectedCharacter4_R = 255 then goto CollisionNextOuter
           
 CollisionInnerLoop
           let temp2 = temp1 + 1
@@ -518,8 +518,8 @@ CollisionCheckPair
           
 CollisionCheckP2Active
           if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextInner
-          if temp2 = 2 && selectedChar3_R = 255 then goto CollisionNextInner
-          if temp2 = 3 && selectedChar4_R = 255 then goto CollisionNextInner
+          if temp2 = 2 && selectedCharacter3_R = 255 then goto CollisionNextInner
+          if temp2 = 3 && selectedCharacter4_R = 255 then goto CollisionNextInner
           
 CollisionCheckDistance
           if playerHealth[temp1] = 0 then goto CollisionNextInner : rem Skip if either player is eliminated
@@ -535,8 +535,8 @@ CalcCollisionDistanceRight
 CollisionDistanceDone
           if temp3 >= PlayerCollisionDistance then goto CollisionNextInner
           
-          let temp4 = playerChar[temp1] : rem Calculate Y distance using CharacterHeights table
-          let temp5 = playerChar[temp2]
+          let temp4 = playerCharacter[temp1] : rem Calculate Y distance using CharacterHeights table
+          let temp5 = playerCharacter[temp2]
           let characterHeight = CharacterHeights[temp4]
           rem Player1 height (temporarily store in characterHeight, will
           let halfHeight1 = CharacterHeights[temp5] : rem   be overwritten)

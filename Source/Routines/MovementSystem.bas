@@ -478,7 +478,7 @@ CheckPlayerCollision
           rem
           rem Input: temp1 = player 1 index (0-3), temp2 = player 2
           rem index (0-3), playerX[], playerY[] (global arrays) = player
-          rem positions, playerChar[] (global array) = character types,
+          rem positions, playerCharacter[] (global array) = character types,
           rem CharacterHeights[] (global data table) = character heights
           rem
           rem Output: temp3 = 1 if collision, 0 if not
@@ -525,8 +525,8 @@ XDistanceDone
           rem needed after X check)
           dim CPC_char2Type = temp4
           dim CPC_char1Height = temp6
-          let CPC_char1Type = playerChar[CPC_player1Index] : rem Get character types for height lookup
-          let CPC_char2Type = playerChar[CPC_player2Index] : rem Player1 character type
+          let CPC_char1Type = playerCharacter[CPC_player1Index] : rem Get character types for height lookup
+          let CPC_char2Type = playerCharacter[CPC_player2Index] : rem Player1 character type
           rem Player2 character type
           let CPC_char1Height = CharacterHeights[CPC_char1Type] : rem Get heights from table
           dim CPC_char2Height = temp4

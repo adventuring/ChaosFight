@@ -411,7 +411,7 @@ UpdatePlayers34ActiveFlag
           rem Updates the Players34Active flag based on whether players
           rem 3 or 4 are selected and not eliminated
           rem
-          rem Input: selectedChar3_R, selectedChar4_R (global SCRAM) =
+          rem Input: selectedCharacter3_R, selectedCharacter4_R (global SCRAM) =
           rem player 3/4 character selections, playersEliminated_R
           rem (global SCRAM) = elimination flags,
           rem PlayerEliminatedPlayer2, PlayerEliminatedPlayer3 (global
@@ -430,12 +430,12 @@ UpdatePlayers34ActiveFlag
           rem indicates if players 3/4 need missile updates
           let controllerStatus = controllerStatus & ClearPlayers34Active : rem Clear flag first
           
-          if 255 = selectedChar3_R then CheckPlayer4ActiveFlag : rem Check if Player 3 is active (selected and not eliminated)
+          if 255 = selectedCharacter3_R then CheckPlayer4ActiveFlag : rem Check if Player 3 is active (selected and not eliminated)
           if PlayerEliminatedPlayer2 & playersEliminated_R then CheckPlayer4ActiveFlag
           let controllerStatus = controllerStatus | SetPlayers34Active : rem Player 3 is active
           
 CheckPlayer4ActiveFlag
-          if 255 = selectedChar4_R then UpdatePlayers34ActiveDone : rem Check if Player 4 is active (selected and not eliminated)
+          if 255 = selectedCharacter4_R then UpdatePlayers34ActiveDone : rem Check if Player 4 is active (selected and not eliminated)
           if PlayerEliminatedPlayer3 & playersEliminated_R then UpdatePlayers34ActiveDone
           let controllerStatus = controllerStatus | SetPlayers34Active : rem Player 4 is active
           

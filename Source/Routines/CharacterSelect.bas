@@ -8,14 +8,14 @@ SelScreenEntry
           rem
           rem Input: None (entry point)
           rem
-          rem Output: playerChar[] initialized, playerLocked
+          rem Output: playerCharacter[] initialized, playerLocked
           rem initialized, animation state initialized,
           rem         COLUBK set, Quadtari detection called
           rem
-          rem Mutates: playerChar[0-3] (set to 0), playerLocked (set to
-          rem 0), charSelectAnimationTimer,
-          rem         charSelectAnimationState, charSelectCharIndex,
-          rem         charSelectAnimationFrame, COLUBK (TIA register)
+          rem Mutates: playerCharacter[0-3] (set to 0), playerLocked (set to
+          rem 0), characterSelectAnimationTimer,
+          rem         characterSelectAnimationState, characterSelectCharacterIndex,
+          rem         characterSelectAnimationFrame, COLUBK (TIA register)
           rem
           rem Called Routines: SelDetectQuad - accesses controller
           rem detection state
@@ -24,20 +24,20 @@ SelScreenEntry
           rem initialization
           rem              Must be colocated with SelScreenLoop (called
           rem              via goto)
-          let playerChar[0] = 0 : rem Initialize character selections
-          let playerChar[1] = 0
-          let playerChar[2] = 0
-          let playerChar[3] = 0
+          let playerCharacter[0] = 0 : rem Initialize character selections
+          let playerCharacter[1] = 0
+          let playerCharacter[2] = 0
+          let playerCharacter[3] = 0
           let playerLocked = 0 : rem Initialize playerLocked (bit-packed, all unlocked)
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
           rem   detection (upgrades only)
           rem Controller detection is handled by DetectControllers with
           rem   monotonic state machine
           
-          let charSelectAnimationTimer  = 0 : rem Initialize character select animations
-          let charSelectAnimationState  = 0
-          let charSelectCharIndex  = 0 : rem Start with idle animation
-          let charSelectAnimationFrame  = 0 : rem Start with first character
+          let characterSelectAnimationTimer  = 0 : rem Initialize character select animations
+          let characterSelectAnimationState  = 0
+          let characterSelectCharacterIndex  = 0 : rem Start with idle animation
+          let characterSelectAnimationFrame  = 0 : rem Start with first character
 
           gosub SelDetectQuad : rem Check for Quadtari adapter
 
@@ -54,7 +54,7 @@ SelScreenLoop
           rem        (hardware) = Player 1/3 joystick
           rem        joy1left, joy1right, joy1up, joy1down, joy1fire
           rem        (hardware) = Player 2/4 joystick
-          rem        playerChar[] (global array) = current character
+          rem        playerCharacter[] (global array) = current character
           rem        selections
           rem        playerLocked (global) = player lock states
           rem        MaxCharacter (constant) = maximum character index
@@ -62,7 +62,7 @@ SelScreenLoop
           rem Output: Dispatches to SelHandleQuad or processes even
           rem frame input, then returns
           rem
-          rem Mutates: qtcontroller (toggled), playerChar[],
+          rem Mutates: qtcontroller (toggled), playerCharacter[],
           rem playerLocked state, temp1, temp2 (passed to
           rem SetPlayerLocked)
           rem
@@ -88,20 +88,20 @@ SelScreenLoop
           if qtcontroller then goto SelHandleQuad
           
           rem Handle Player 1 input (joy0 on even frames)
-          if joy0left then let playerChar[0] = playerChar[0] - 1 : goto SelChkP0Left
+          if joy0left then let playerCharacter[0] = playerCharacter[0] - 1 : goto SelChkP0Left
           goto SelSkipP0Left
 
 SelChkP0Left
-          if playerChar[0] > MaxCharacter then let playerChar[0] = MaxCharacter
-          if playerChar[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = MaxCharacter
+          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           
 SelSkipP0Left
-          if joy0right then let playerChar[0] = playerChar[0] + 1 : goto SelChkP0Right
+          if joy0right then let playerCharacter[0] = playerCharacter[0] + 1 : goto SelChkP0Right
           goto SelSkipP0Right
 
 SelChkP0Right
-          if playerChar[0] > MaxCharacter then let playerChar[0] = 0
-          if playerChar[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = 0
+          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           
 SelSkipP0Right
           if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
@@ -122,24 +122,24 @@ SelP0Lock
           goto SelP0Done : rem Locked normal (100% health)
 
 SelP0Handi
-          let temp1 = 0 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank1
+          let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
 SelP0Done
           rem Locked with handicap (75% health)
 
           rem Handle Player 2 input (joy1 on even frames)
-          if joy1left then let playerChar[1] = playerChar[1] - 1 : goto SelChkP1Left
+          if joy1left then let playerCharacter[1] = playerCharacter[1] - 1 : goto SelChkP1Left
           goto SelSkipP1Left
 
 SelChkP1Left
-          if playerChar[1] > MaxCharacter then let playerChar[1] = MaxCharacter
-          if playerChar[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = MaxCharacter
+          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP1Left
-          if joy1right then let playerChar[1] = playerChar[1] + 1 : goto SelChkP1Right
+          if joy1right then let playerCharacter[1] = playerCharacter[1] + 1 : goto SelChkP1Right
           goto SelSkipP1Right
 
 SelChkP1Right
-          if playerChar[1] > MaxCharacter then let playerChar[1] = 0
-          if playerChar[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = 0
+          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP1Right
           if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           if joy1down then SelChkJoy1Fire : rem Unlock by moving up
@@ -156,7 +156,7 @@ SelJoy1Down
           goto SelSkipJoy1Even
 
 SelJoy1Chk
-          if joy1down then let temp1 = 1 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank1 : goto SelJoy1Done
+          if joy1down then let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1 : goto SelJoy1Done
 
           let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank1 : rem Locked with handicap (75% health)
 SelJoy1Done 
@@ -172,21 +172,21 @@ SelHandleQuad
           goto SelSkipP2
 
 SelHandleP2
-          if joy0left then let playerChar[2] = playerChar[2] - 1 : goto SelChkP2Left
+          if joy0left then let playerCharacter[2] = playerCharacter[2] - 1 : goto SelChkP2Left
 
           goto SelSkipP2Left
 
 SelChkP2Left
-          if playerChar[2] > MaxCharacter then let playerChar[2] = MaxCharacter
-          if playerChar[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = MaxCharacter
+          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP2Left
-          if joy0right then let playerChar[2] = playerChar[2] + 1 : goto SelChkP2Right
+          if joy0right then let playerCharacter[2] = playerCharacter[2] + 1 : goto SelChkP2Right
 
           goto SelSkipP2Right
 
 SelChkP2Right
-          if playerChar[2] > MaxCharacter then let playerChar[2] = 0
-          if playerChar[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = 0
+          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP2Right
           if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           if joy0down then SelChkJoy0Fire2 : rem Unlock by moving up
@@ -208,7 +208,7 @@ SelChkJoy0Down2
           goto SelJoy0Done2 : rem Locked normal (100% health)
 
 SelSetHand2
-          let temp1 = 2 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank1
+          let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank1
 SelJoy0Done2
           rem Locked with handicap (75% health)
 
@@ -217,17 +217,17 @@ SelJoy0Done2
           goto SelSkipP3Alt
 
 SelHandleP3
-          if joy1left then let playerChar[3] = playerChar[3] - 1 : goto SelCheckP3Left
+          if joy1left then let playerCharacter[3] = playerCharacter[3] - 1 : goto SelCheckP3Left
           goto SelSkipP3Left
 SelCheckP3Left
-          if playerChar[3] > MaxCharacter then let playerChar[3] = MaxCharacter
-          if playerChar[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = MaxCharacter
+          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP3Left
-          if joy1right then let playerChar[3] = playerChar[3] + 1 : goto SelCheckP3Right
+          if joy1right then let playerCharacter[3] = playerCharacter[3] + 1 : goto SelCheckP3Right
           goto SelSkipP3Right
 SelCheckP3Right
-          if playerChar[3] > MaxCharacter then let playerChar[3] = 0
-          if playerChar[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
+          if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = 0
+          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
 SelSkipP3Right
           if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank1
           if joy1down then SelChkJoy1Fire3 : rem Unlock by moving up
@@ -250,7 +250,7 @@ SelJoy1Chk3
           goto SelJoy1Done3 : rem Locked normal (100% health)
 
 SelSetHand3
-          let temp1 = 3 : let temp2 = PlayerLockedHandicap : gosub SetPlayerLocked bank14
+          let temp1 = 3 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 SelJoy1Done3
           rem Locked with handicap (75% health)
           
@@ -310,7 +310,7 @@ LegacySelDrawScreenBody
           rem Draw character selection screen with player sprites and
           rem numbers
           rem
-          rem Input: playerChar[] (global array) = current character
+          rem Input: playerCharacter[] (global array) = current character
           rem selections
           rem        controllerStatus (global) = controller detection
           rem        state
@@ -323,7 +323,7 @@ LegacySelDrawScreenBody
           rem         player sprite pointers (via SelDrawSprite),
           rem         playfield data (via SelDrawNumber)
           rem
-          rem Called Routines: SelDrawSprite - accesses playerChar[],
+          rem Called Routines: SelDrawSprite - accesses playerCharacter[],
           rem draws character sprites,
           rem   SelDrawNumber - draws player number indicators
           rem
@@ -348,7 +348,7 @@ LegacySelDrawScreenBody
 SelDrawP3
           rem Draw Player 3 character sprite and number
           rem
-          rem Input: playerChar[] (global array) = current character
+          rem Input: playerCharacter[] (global array) = current character
           rem selections
           rem        player0x, player0y (TIA registers) = sprite
           rem        position (set inline)
@@ -374,7 +374,7 @@ SelDrawP3
 SelDrawP4
           rem Draw Player 4 character sprite and number
           rem
-          rem Input: playerChar[] (global array) = current character
+          rem Input: playerCharacter[] (global array) = current character
           rem selections
           rem        player1x, player1y (TIA registers) = sprite
           rem        position (set inline)
@@ -602,8 +602,8 @@ SelUpdateAnimation
           rem Input: qtcontroller (global) = Quadtari frame toggle,
           rem joy0down, joy1down (hardware) = joystick DOWN states,
           rem controllerStatus (global) = controller detection state,
-          rem charSelectAnimationTimer, charSelectAnimationState,
-          rem charSelectCharIndex, charSelectAnimationFrame (global) =
+          rem characterSelectAnimationTimer, characterSelectAnimationState,
+          rem characterSelectCharacterIndex, characterSelectAnimationFrame (global) =
           rem animation state, HandicapMode (global) = handicap flags,
           rem ActionRecovering (global constant) = recovery animation
           rem state (9), FramesPerSecond, MaxCharacter (global
@@ -614,11 +614,11 @@ SelUpdateAnimation
           rem handicap preview, or cycled normally)
           rem
           rem Mutates: HandicapMode (global) = handicap flags (set based
-          rem on DOWN held), charSelectAnimationState (global) = animation
+          rem on DOWN held), characterSelectAnimationState (global) = animation
           rem state (set to ActionRecovering if handicap, or random
-          rem 0-2), charSelectAnimationTimer (global) = animation timer
-          rem (incremented or reset), charSelectCharIndex (global) =
-          rem character index (cycled), charSelectAnimationFrame (global) =
+          rem 0-2), characterSelectAnimationTimer (global) = animation timer
+          rem (incremented or reset), characterSelectCharacterIndex (global) =
+          rem character index (cycled), characterSelectAnimationFrame (global) =
           rem animation frame (set to 0 or incremented)
           rem
           rem Called Routines: None
@@ -688,8 +688,8 @@ SelHandleHandi
           rem
           rem Output: Animation frozen in recovery pose
           rem
-          rem Mutates: charSelectAnimationState (global) = animation state
-          rem (set to ActionRecovering), charSelectAnimationFrame (global) =
+          rem Mutates: characterSelectAnimationState (global) = animation state
+          rem (set to ActionRecovering), characterSelectAnimationFrame (global) =
           rem animation frame (set to 0)
           rem
           rem Called Routines: None
@@ -697,8 +697,8 @@ SelHandleHandi
           rem Constraints: Internal helper for SelUpdateAnimation, only
           rem called when HandicapMode is set. Animation frozen (timer
           rem not updated)
-          let charSelectAnimationState = ActionRecovering
-          let charSelectAnimationFrame  = 0 : rem Animation state 9 = Recovering to standing
+          let characterSelectAnimationState = ActionRecovering
+          let characterSelectAnimationFrame  = 0 : rem Animation state 9 = Recovering to standing
           rem First frame of recovery animation
           rem Do not update timer or frame - freeze the animation
           return
@@ -706,19 +706,19 @@ SelAnimationNormal
           rem Helper: Update normal animation (cycling through states
           rem and frames)
           rem
-          rem Input: charSelectAnimationTimer, charSelectAnimationState,
-          rem charSelectCharIndex, charSelectAnimationFrame (global) =
+          rem Input: characterSelectAnimationTimer, characterSelectAnimationState,
+          rem characterSelectCharacterIndex, characterSelectAnimationFrame (global) =
           rem animation state, FramesPerSecond, MaxCharacter (global
           rem constants) = animation constants, rand (global) = random
           rem number generator
           rem
           rem Output: Animation state and frame updated
           rem
-          rem Mutates: charSelectAnimationTimer (global) = animation timer
-          rem (incremented or reset), charSelectAnimationState (global) =
+          rem Mutates: characterSelectAnimationTimer (global) = animation timer
+          rem (incremented or reset), characterSelectAnimationState (global) =
           rem animation state (random 0-2 every 60 frames),
-          rem charSelectCharIndex (global) = character index (cycled),
-          rem charSelectAnimationFrame (global) = animation frame
+          rem characterSelectCharacterIndex (global) = character index (cycled),
+          rem characterSelectAnimationFrame (global) = animation frame
           rem (incremented, wraps at 8)
           rem
           rem Called Routines: None
@@ -728,17 +728,17 @@ SelAnimationNormal
           rem every 60 frames (1 second) with random selection (0-2)
           rem Normal animation updates (only when no handicap mode
           rem   active)
-          let charSelectAnimationTimer  = charSelectAnimationTimer + 1 : rem Increment animation timer
+          let characterSelectAnimationTimer  = characterSelectAnimationTimer + 1 : rem Increment animation timer
           
-          if charSelectAnimationTimer > FramesPerSecond then : rem Change animation state every 60 frames (1 second at 60fps)
-          let charSelectAnimationTimer  = 0
-          let charSelectAnimationState  = rand & 3 : rem Randomly choose new animation state
-          if charSelectAnimationState > 2 then let charSelectAnimationState  = 0 : rem 0-3: idle, running, attacking, special
-          let charSelectAnimationFrame  = 0 : rem Keep to 0-2 range
-          let charSelectCharIndex  = charSelectCharIndex + 1 : rem Cycle through characters for variety
-          if charSelectCharIndex > MaxCharacter then let charSelectCharIndex  = 0
-          let charSelectAnimationFrame  = charSelectAnimationFrame + 1 : rem Update animation frame within current state
-          if charSelectAnimationFrame > 7 then let charSelectAnimationFrame  = 0
+          if characterSelectAnimationTimer > FramesPerSecond then : rem Change animation state every 60 frames (1 second at 60fps)
+          let characterSelectAnimationTimer  = 0
+          let characterSelectAnimationState  = rand & 3 : rem Randomly choose new animation state
+          if characterSelectAnimationState > 2 then let characterSelectAnimationState  = 0 : rem 0-3: idle, running, attacking, special
+          let characterSelectAnimationFrame  = 0 : rem Keep to 0-2 range
+          let characterSelectCharacterIndex  = characterSelectCharacterIndex + 1 : rem Cycle through characters for variety
+          if characterSelectCharacterIndex > MaxCharacter then let characterSelectCharacterIndex  = 0
+          let characterSelectAnimationFrame  = characterSelectAnimationFrame + 1 : rem Update animation frame within current state
+          if characterSelectAnimationFrame > 7 then let characterSelectAnimationFrame  = 0
           rem 8-frame animation cycles
           
           return
@@ -748,8 +748,8 @@ SelDrawSprite
           rem Draw animated character sprite based on current animation
           rem state
           rem
-          rem Input: charSelectAnimationState, charSelectAnimationFrame (global) =
-          rem animation state and frame, charSelectPlayer (global) =
+          rem Input: characterSelectAnimationState, characterSelectAnimationFrame (global) =
+          rem animation state and frame, characterSelectPlayer (global) =
           rem player number (1-4), switchbw (global) = B&W switch state,
           rem ActionStanding, ActionWalking, ActionAttackWindup (global
           rem constants) = animation states, ColIndigo, ColRed,
@@ -788,15 +788,15 @@ SelDrawSprite
           rem Hurt state uses same color but dimmer luminance
           
           rem Check if character is in hurt/recovery state
-          let temp1  = charSelectAnimationState : rem For character select, we will use a simple hurt simulation
+          let temp1  = characterSelectAnimationState : rem For character select, we will use a simple hurt simulation
           rem Use animation state as hurt simulation for demo
           
           if !(temp1 = 2) then SelColorNormal
           if switchbw then SelHurtBW : rem Hurt state - dimmer colors
-          if charSelectPlayer = 1 then COLUP0  = ColIndigo(6) : rem Player color but dimmer
-          if charSelectPlayer = 2 then COLUP0  = ColRed(6) : rem Dark indigo (Player 1)
-          if charSelectPlayer = 3 then COLUP0  = ColYellow(6) : rem Dark red (Player 2)
-          if charSelectPlayer = 4 then COLUP0  = ColGreen(6) : rem Dark yellow (Player 3)
+          if characterSelectPlayer = 1 then COLUP0  = ColIndigo(6) : rem Player color but dimmer
+          if characterSelectPlayer = 2 then COLUP0  = ColRed(6) : rem Dark indigo (Player 1)
+          if characterSelectPlayer = 3 then COLUP0  = ColYellow(6) : rem Dark red (Player 2)
+          if characterSelectPlayer = 4 then COLUP0  = ColGreen(6) : rem Dark yellow (Player 3)
           goto SelColorDone : rem Dark green
 SelHurtBW
           rem Helper: Set hurt color for B&W mode
@@ -817,7 +817,7 @@ SelHurtBW
 SelColorNormal
           rem Helper: Set normal color (bright)
           rem
-          rem Input: charSelectPlayer (global) = player number, switchbw
+          rem Input: characterSelectPlayer (global) = player number, switchbw
           rem (global) = B&W switch state
           rem
           rem Output: COLUP0 set to bright player color or bright grey
@@ -831,10 +831,10 @@ SelColorNormal
           rem Constraints: Internal helper for SelDrawSprite, only
           rem called in normal state
           if switchbw then SelColorBW : rem Normal state - bright colors
-          if charSelectPlayer = 1 then COLUP0  = ColIndigo(12) : rem Player color - bright
-          if charSelectPlayer = 2 then COLUP0  = ColRed(12) : rem Bright indigo (Player 1)
-          if charSelectPlayer = 3 then COLUP0  = ColYellow(12) : rem Bright red (Player 2)
-          if charSelectPlayer = 4 then COLUP0  = ColGreen(12) : rem Bright yellow (Player 3)
+          if characterSelectPlayer = 1 then COLUP0  = ColIndigo(12) : rem Player color - bright
+          if characterSelectPlayer = 2 then COLUP0  = ColRed(12) : rem Bright indigo (Player 1)
+          if characterSelectPlayer = 3 then COLUP0  = ColYellow(12) : rem Bright red (Player 2)
+          if characterSelectPlayer = 4 then COLUP0  = ColGreen(12) : rem Bright yellow (Player 3)
           goto SelColorDone : rem Bright green
 SelColorBW
           rem Helper: Set normal color for B&W mode
@@ -852,9 +852,9 @@ SelColorDone
           rem Bright grey (B&W)
           
           rem Draw different sprite patterns based on animation state
-          if charSelectAnimationState = ActionStanding then SelAnimationIdle : rem   and frame
-          if charSelectAnimationState = ActionWalking then SelAnimationRun
-          if charSelectAnimationState = ActionAttackWindup then SelAnimationAttack
+          if characterSelectAnimationState = ActionStanding then SelAnimationIdle : rem   and frame
+          if characterSelectAnimationState = ActionWalking then SelAnimationRun
+          if characterSelectAnimationState = ActionAttackWindup then SelAnimationAttack
           goto SelAnimationDone
 SelAnimationIdle
           rem Helper: Draw idle animation (standing pose)
@@ -873,7 +873,7 @@ SelAnimationIdle
 SelAnimationRun
           rem Helper: Draw running animation (alternating leg positions)
           rem
-          rem Input: charSelectAnimationFrame (global) = animation frame
+          rem Input: characterSelectAnimationFrame (global) = animation frame
           rem
           rem Output: Running sprite pattern set (alternating legs)
           rem
@@ -885,7 +885,7 @@ SelAnimationRun
           rem Constraints: Internal helper for SelDrawSprite, only
           rem called for ActionWalking. Frames 0,2,4,6 = right leg
           rem forward, frames 1,3,5,7 = left leg forward
-          if charSelectAnimationFrame & 1 then SelLeftLeg : rem Running animation - alternating leg positions
+          if characterSelectAnimationFrame & 1 then SelLeftLeg : rem Running animation - alternating leg positions
           goto SelAnimationDone : rem Frame 0,2,4,6 - right leg forward
 SelLeftLeg
           rem Helper: Set left leg forward pattern for running
@@ -905,7 +905,7 @@ SelLeftLeg
 SelAnimationAttack
           rem Helper: Draw attacking animation (arm extended)
           rem
-          rem Input: charSelectAnimationFrame (global) = animation frame
+          rem Input: characterSelectAnimationFrame (global) = animation frame
           rem
           rem Output: Attacking sprite pattern set (arm extended or
           rem windup)
@@ -917,7 +917,7 @@ SelAnimationAttack
           rem Constraints: Internal helper for SelDrawSprite, only
           rem called for ActionAttackWindup. Frames 0-3 = windup, frames
           rem 4-7 = attack
-          if charSelectAnimationFrame < 4 then SelWindup : rem Attacking animation - arm extended
+          if characterSelectAnimationFrame < 4 then SelWindup : rem Attacking animation - arm extended
           goto SelAnimationDone : rem Attack frames - arm forward
 SelWindup
           rem Helper: Set windup pattern for attack
@@ -940,17 +940,17 @@ SelScreenDone
           rem Character selection complete (stores selected characters
           rem and initializes facing directions)
           rem
-          rem Input: playerChar[] (global array) = current character
-          rem selections, selectedChar1, selectedChar2_R,
-          rem selectedChar3_R, selectedChar4_R (global SCRAM) = stored
+          rem Input: playerCharacter[] (global array) = current character
+          rem selections, selectedCharacter1, selectedCharacter2_R,
+          rem selectedCharacter3_R, selectedCharacter4_R (global SCRAM) = stored
           rem selections, playerState[] (global array) = player states,
           rem NoCharacter (global constant) = no character constant
           rem
           rem Output: Selected characters stored, facing directions
           rem initialized (default: face right = 1)
           rem
-          rem Mutates: selectedChar1 (global) = player 1 selection
-          rem (set), selectedChar2_W, selectedChar3_W, selectedChar4_W
+          rem Mutates: selectedCharacter1 (global) = player 1 selection
+          rem (set), selectedCharacter2_W, selectedCharacter3_W, selectedCharacter4_W
           rem (global SCRAM) = player 2-4 selections (set),
           rem playerState[] (global array) = player states (facing bit
           rem set for selected players)
@@ -961,24 +961,24 @@ SelScreenDone
           rem character selections (not NoCharacter). Default facing:
           rem right (bit 0 = 1)
           rem Character selection complete
-          let selectedChar1  = playerChar[0] : rem Store selected characters for use in game
-          let selectedChar2_W  = playerChar[1]
-          let selectedChar3_W  = playerChar[2]
-          let selectedChar4_W  = playerChar[3]
+          let selectedCharacter1  = playerCharacter[0] : rem Store selected characters for use in game
+          let selectedCharacter2_W  = playerCharacter[1]
+          let selectedCharacter3_W  = playerCharacter[2]
+          let selectedCharacter4_W  = playerCharacter[3]
           
           rem Initialize facing bit (bit 0) for all selected players
-          if selectedChar1 = NoCharacter then SkipChar1FacingSel : rem (default: face right = 1)
+          if selectedCharacter1 = NoCharacter then SkipCharacter1FacingSel : rem (default: face right = 1)
           let playerState[0] = playerState[0] | 1
-SkipChar1FacingSel
-          if selectedChar2_R = NoCharacter then SkipChar2FacingSel
+SkipCharacter1FacingSel
+          if selectedCharacter2_R = NoCharacter then SkipCharacter2FacingSel
           let playerState[1] = playerState[1] | 1
-SkipChar2FacingSel
-          if selectedChar3_R = NoCharacter then SkipChar3FacingSel
+SkipCharacter2FacingSel
+          if selectedCharacter3_R = NoCharacter then SkipCharacter3FacingSel
           let playerState[2] = playerState[2] | 1
-SkipChar3FacingSel
-          if selectedChar4_R = NoCharacter then SkipChar4FacingSel
+SkipCharacter3FacingSel
+          if selectedCharacter4_R = NoCharacter then SkipCharacter4FacingSel
           let playerState[3] = playerState[3] | 1
-SkipChar4FacingSel
+SkipCharacter4FacingSel
 
           rem Proceed to falling animation
           return

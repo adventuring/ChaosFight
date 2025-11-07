@@ -32,6 +32,14 @@ In any mode, pressing Game Reset causes an instant hard reboot:
 
 ---
 
+## Toolchain Maintenance
+
+- Common Lisp tooling (e.g., SkylineTool) may not be modified unless the change ships with new or updated automated tests that cover the behaviour being altered.
+- Run the full existing test suite and the newly added tests locally before opening a review; include the command output in the change notes.
+- If test infrastructure is missing for the affected component, build it first—tooling changes without executable verification are blocked.
+
+---
+
 ## Admin Mode Controller Redetection
 
 In any admin modes (title, preambles, arena select):

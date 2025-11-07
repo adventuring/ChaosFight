@@ -98,8 +98,7 @@ DrawDigit
           
           rem Set sprite position and color based on spriteSelect
           if DD_spriteSelect > 5 then let DD_spriteSelect = 0 : rem Clamp spriteSelect to valid range (0-5)
-          let temp5 = DD_spriteSelect
-          let temp6 = DD_digitOffset : rem Preserve spriteSelect in temp5 for LoadPlayerDigit
+          rem Preserve spriteSelect in temp5 for LoadPlayerDigit
           on DD_spriteSelect goto SetSprite0 SetSprite1 SetSprite2 SetSprite3 SetSprite4 SetSprite5
           
 SetSprite0
@@ -387,7 +386,7 @@ DrawPlayerNumber
           dim DPN_spriteSelect = temp5
           let DPN_playerDigit = DPN_playerIndex + 1 : rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
           
-          let temp1 = DPN_playerIndex : rem Look up player color
+          rem Look up player color
           if temp1 > 3 then temp1 = 3
           on temp1 goto SetP1Color SetP2Color SetP3Color SetP4Color
           
@@ -409,11 +408,7 @@ SetP4Color
           goto DrawPlayerDigitNow
           
 DrawPlayerDigitNow
-          let temp1 = DPN_playerDigit : rem Set up parameters for DrawDigit
-          let temp2 = DPN_xPos
-          let temp3 = DPN_yPos
-          let temp4 = DPN_playerColor
-          let temp5 = DPN_spriteSelect
+          rem Set up parameters for DrawDigit
           goto DrawDigit : rem tail call
 
 DrawArenaNumber
@@ -431,9 +426,5 @@ DrawArenaNumber
           dim DLN_color = temp4
           dim DLN_spriteSelect = temp5
           let DLN_color = ColGrey(14)
-          let temp1 = DLN_arenaNumber : rem White
-          let temp2 = DLN_xPos
-          let temp3 = DLN_yPos
-          let temp4 = DLN_color
-          let temp5 = DLN_spriteSelect
+          rem White
           goto DrawDigit : rem tail call

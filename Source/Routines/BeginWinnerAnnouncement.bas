@@ -67,7 +67,7 @@ BeginWinnerAnnouncement
           rem Look up full song ID from mapping table (table contains
           let BWA_songID = CharacterThemeSongIndices[BWA_characterIndex] : rem   song ID constants)
           
-          let temp1 = BWA_songID : rem Start winner’s character theme song
+          rem Start winner’s character theme song
           gosub StartMusic bank16
           
           return

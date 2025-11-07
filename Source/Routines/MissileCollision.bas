@@ -67,7 +67,6 @@ CheckAllMissileCollisions
           let CAMC_missileWidth = temp2 
           rem Missile width (0 = AOE, >0 = visible missile)
 
-          let temp1 = CAMC_attackerIndex
           if CAMC_missileWidth = 0 then goto CheckAOECollision
           goto CheckVisibleMissileCollision : rem tail call
           
@@ -123,7 +122,6 @@ CheckVisibleMissileCollision
           gosub GetMissileHeight bank6
           let CVMC_missileHeight = temp2 
           rem Missile height (temp2 now contains height)
-          let temp1 = CVMC_attackerIndex
           rem Restore missileX/Y (they were preserved in CVMC_* aliases)
           
           rem Missile bounding box:
@@ -142,7 +140,6 @@ CheckVisibleMissileCollision
           if CVMC_missileY >= playerY[0] + PlayerSpriteHeight then DoneSecondPlayer0
           if CVMC_missileY + CVMC_missileHeight <= playerY[0] then DoneSecondPlayer0
           let CVMC_hitPlayer = 0
-          let temp4 = CVMC_hitPlayer
           return
 DoneSecondPlayer0
           
@@ -153,7 +150,6 @@ DoneSecondPlayer0
           if CVMC_missileY >= playerY[1] + PlayerSpriteHeight then DoneSecondPlayer1
           if CVMC_missileY + CVMC_missileHeight <= playerY[1] then DoneSecondPlayer1
           let CVMC_hitPlayer = 1
-          let temp4 = CVMC_hitPlayer
           return
 DoneSecondPlayer1
           
@@ -164,7 +160,6 @@ DoneSecondPlayer1
           if CVMC_missileY >= playerY[2] + PlayerSpriteHeight then DoneSecondPlayer2
           if CVMC_missileY + CVMC_missileHeight <= playerY[2] then DoneSecondPlayer2
           let CVMC_hitPlayer = 2
-          let temp4 = CVMC_hitPlayer
           return
 DoneSecondPlayer2
           
@@ -175,7 +170,6 @@ DoneSecondPlayer2
           if CVMC_missileY >= playerY[3] + PlayerSpriteHeight then DoneSecondPlayer3
           if CVMC_missileY + CVMC_missileHeight <= playerY[3] then DoneSecondPlayer3
           let CVMC_hitPlayer = 3
-          let temp4 = CVMC_hitPlayer
           return
 DoneSecondPlayer3
           
@@ -228,29 +222,26 @@ CheckAOECollision
           
           let CAOC_facing = playerState[CAOC_attackerIndex] & PlayerStateBitFacing : rem Normal character: Check only facing direction
           if CAOC_facing = 0 then CheckAOELeftDirection
-          let temp1 = CAOC_attackerIndex
           gosub CheckAOEDirection_Right
           let CAOC_hitPlayer = temp4
           return
 CheckAOELeftDirection
-          let temp1 = CAOC_attackerIndex
           gosub CheckAOEDirection_Left
           let CAOC_hitPlayer = temp4
           return
           
 CheckBernieAOE
           dim CBA_hitPlayer = temp4
-          let temp1 = CAOC_attackerIndex : rem Bernie: Check right direction first
+          rem Bernie: Check right direction first
           gosub CheckAOEDirection_Right
           let CBA_hitPlayer = temp4
           rem If hit found (hitPlayer != 255), return early
           rem Use skip-over pattern: if hitPlayer = 255, skip to left
           if CBA_hitPlayer = 255 then CheckBernieAOELeft : rem   check
-          let temp4 = CBA_hitPlayer
           return
           
 CheckBernieAOELeft
-          let temp1 = CAOC_attackerIndex : rem Check left direction
+          rem Check left direction
           gosub CheckAOEDirection_Left
           let temp4 = temp4
           return
@@ -319,7 +310,6 @@ CheckAOEDirection_Right
           if CAOER_playerY >= playerY[0] + 16 then DoneAOEPlayer0 : rem AOE right edge before player left edge
           if CAOER_playerY + CAOER_aoeHeight <= playerY[0] then DoneAOEPlayer0 : rem AOE top edge past player bottom edge
           let CAOER_hitPlayer = 0 : rem AOE bottom edge before player top edge
-          let temp4 = CAOER_hitPlayer
           return
 DoneAOEPlayer0
           
@@ -330,7 +320,6 @@ DoneAOEPlayer0
           if CAOER_playerY >= playerY[1] + 16 then DoneAOEPlayer1
           if CAOER_playerY + CAOER_aoeHeight <= playerY[1] then DoneAOEPlayer1
           let CAOER_hitPlayer = 1
-          let temp4 = CAOER_hitPlayer
           return
 DoneAOEPlayer1
           
@@ -341,7 +330,6 @@ DoneAOEPlayer1
           if CAOER_playerY >= playerY[2] + 16 then DoneAOEPlayer2
           if CAOER_playerY + CAOER_aoeHeight <= playerY[2] then DoneAOEPlayer2
           let CAOER_hitPlayer = 2
-          let temp4 = CAOER_hitPlayer
           return
 DoneAOEPlayer2
           
@@ -352,7 +340,6 @@ DoneAOEPlayer2
           if CAOER_playerY >= playerY[3] + 16 then DoneAOEPlayer3
           if CAOER_playerY + CAOER_aoeHeight <= playerY[3] then DoneAOEPlayer3
           let CAOER_hitPlayer = 3
-          let temp4 = CAOER_hitPlayer
           return
 DoneAOEPlayer3
           
@@ -425,7 +412,6 @@ CheckAOEDirection_Left
           if CAOEL_playerY >= playerY[0] + 16 then CheckPlayer2 : rem AOE right edge before player left edge
           if CAOEL_playerY + CAOEL_aoeHeight <= playerY[0] then CheckPlayer2 : rem AOE top edge past player bottom edge
           let CAOEL_hitPlayer = 0 : rem AOE bottom edge before player top edge
-          let temp4 = CAOEL_hitPlayer
           return
 CheckPlayer2
           
@@ -436,7 +422,6 @@ CheckPlayer2
           if CAOEL_playerY >= playerY[1] + 16 then DoneThirdPlayer1
           if CAOEL_playerY + CAOEL_aoeHeight <= playerY[1] then DoneThirdPlayer1
           let CAOEL_hitPlayer = 1
-          let temp4 = CAOEL_hitPlayer
           return
 DoneThirdPlayer1
           
@@ -447,7 +432,6 @@ DoneThirdPlayer1
           if CAOEL_playerY >= playerY[2] + 16 then DoneThirdPlayer2
           if CAOEL_playerY + CAOEL_aoeHeight <= playerY[2] then DoneThirdPlayer2
           let CAOEL_hitPlayer = 2
-          let temp4 = CAOEL_hitPlayer
           return
 DoneThirdPlayer2
           
@@ -458,7 +442,6 @@ DoneThirdPlayer2
           if CAOEL_playerY >= playerY[3] + 16 then DoneThirdPlayer3
           if CAOEL_playerY + CAOEL_aoeHeight <= playerY[3] then DoneThirdPlayer3
           let CAOEL_hitPlayer = 3
-          let temp4 = CAOEL_hitPlayer
           return
 DoneThirdPlayer3
           

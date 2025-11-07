@@ -194,11 +194,9 @@ UpdatePlayer12HealthBars
           rem   HealthBarPatterns
           dim UP12HB_health = temp1 : rem Constraints: Tail call to UpdatePlayer2HealthBar
           let UP12HB_health = playerHealth[0] : rem Update P1 health bar
-          let temp1 = UP12HB_health
           gosub UpdatePlayer1HealthBar
           
           let UP12HB_health = playerHealth[1] : rem Update P2 health bar
-          let temp1 = UP12HB_health
           goto UpdatePlayer2HealthBar : rem tail call
           
           
@@ -223,9 +221,7 @@ InitializeHealthBars
           rem Constraints: Tail call to UpdatePlayer2HealthBar
           let IHB_health = PlayerHealthMax
           rem Set initial health bars to full (100%)
-          let temp1 = IHB_health
           gosub UpdatePlayer1HealthBar
-          let temp1 = IHB_health
           rem tail call
           goto UpdatePlayer2HealthBar
 

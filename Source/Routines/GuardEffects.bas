@@ -165,7 +165,6 @@ CheckGuardCooldown
           if CGC_cooldownTimer > 0 then GuardCooldownBlocked
           
           let CGC_guardAllowed = 1 : rem Cooldown expired, guard allowed
-          let temp2 = CGC_guardAllowed
           return
 
 GuardCooldownBlocked
@@ -182,7 +181,6 @@ GuardCooldownBlocked
           dim GCBD_guardAllowed = temp2 : rem Constraints: Must be colocated with CheckGuardCooldown
           rem Currently guarding or in cooldown - not allowed to start
           let GCBD_guardAllowed = 0 : rem   new guard
-          let temp2 = GCBD_guardAllowed
           return
 
 StartGuard
@@ -248,16 +246,12 @@ UpdateGuardTimers
           rem   players,
           rem decrements cooldown timers for non-guarding players,
           let UGT_playerIndex = 0 : rem clears guard state and starts cooldown when guard expires
-          let temp1 = UGT_playerIndex
           gosub UpdateSingleGuardTimer
           let UGT_playerIndex = 1
-          let temp1 = UGT_playerIndex
           gosub UpdateSingleGuardTimer
           let UGT_playerIndex = 2
-          let temp1 = UGT_playerIndex
           gosub UpdateSingleGuardTimer
           let UGT_playerIndex = 3
-          let temp1 = UGT_playerIndex
           goto UpdateSingleGuardTimer : rem tail call
 
 UpdateSingleGuardTimer

@@ -102,7 +102,6 @@ ArenaSelectLeft
           let selectedArena_W = ASL_arena
 ArenaSelectLeftSound
           let ASL_soundId = SoundMenuNavigate : rem Play navigation sound
-          let temp1 = ASL_soundId
           gosub PlaySoundEffect bank15
 ArenaSelectSkipLeft
           
@@ -120,7 +119,6 @@ ArenaSelectRight
           if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0 : rem Wrap from 255 to 0 if needed
 ArenaSelectRightSound
           let ASR_soundId = SoundMenuNavigate : rem Play navigation sound
-          let temp1 = ASR_soundId
           gosub PlaySoundEffect bank15
 ArenaSelectSkipRight
           
@@ -162,22 +160,14 @@ DrawTensDigit
           let LS1_yPos = 20
           let LS1_color = ColGrey(14)
           let LS1_spriteSelect = 4
-          let temp1 = LS1_digit : rem Use player4 for tens digit
-          let temp2 = LS1_xPos
-          let temp3 = LS1_yPos
-          let temp4 = LS1_color
-          let temp5 = LS1_spriteSelect
+          rem Use player4 for tens digit
           gosub DrawDigit bank1
 DoneTensDigit
           
           let LS1_digit = LS1_onesDigit : rem Draw ones digit (player5)
           let LS1_xPos = 88
           let LS1_spriteSelect = 5
-          let temp1 = LS1_digit : rem Use player5 for ones digit
-          let temp2 = LS1_xPos
-          let temp3 = LS1_yPos
-          let temp4 = LS1_color
-          let temp5 = LS1_spriteSelect
+          rem Use player5 for ones digit
           gosub DrawDigit bank1
           
           goto DisplayDone
@@ -195,17 +185,12 @@ DisplayRandomArena
           let DRA_yPos = 20 : rem X position for first ?
           let DRA_color = ColGrey(14) : rem Y position
           let DRA_spriteSelect = 4 : rem White
-          let temp1 = DRA_digit : rem Use player4
-          let temp2 = DRA_xPos
-          let temp3 = DRA_yPos
-          let temp4 = DRA_color
-          let temp5 = DRA_spriteSelect
+          rem Use player4
           gosub DrawDigit bank1
           
           let DRA_xPos = 88 : rem Second question mark
           let DRA_spriteSelect = 5 : rem X position for second ?
-          let temp2 = DRA_xPos : rem Use player5
-          let temp5 = DRA_spriteSelect
+          rem Use player5
           gosub DrawDigit bank1
           
 DisplayDone
@@ -215,7 +200,6 @@ DisplayDone
 ArenaSelectConfirm
           dim ASC_soundId = temp1
           let ASC_soundId = SoundMenuSelect : rem Play selection sound
-          let temp1 = ASC_soundId
           gosub PlaySoundEffect bank15
           goto StartGame1 : rem tail call
 ArenaSelectSkipConfirm
@@ -239,7 +223,7 @@ CheckQuadtariFireHold
           dim CQFH_firePressed = temp1 : rem Constraints: Must be colocated with ArenaSelect1 (called via goto)
           if !INPT0{7} then let CQFH_firePressed = 1 : rem Check Player 3 and 4 fire buttons (Quadtari)
           if !INPT2{7} then let CQFH_firePressed = 1 : rem Player 3 fire button (left port, odd frame)
-          let temp1 = CQFH_firePressed : rem Player 4 fire button (right port, odd frame)
+          rem Player 4 fire button (right port, odd frame)
           return
 
 ReturnToCharacterSelect
@@ -584,10 +568,7 @@ ArenaSelectDrawPlayerSprite
           
           rem Load character sprite using art location system
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
-          let temp1 = ASDPS_characterIndex : rem temp3=action, temp4=player
-          let temp2 = ASDPS_animationFrame
-          let temp3 = ASDPS_animationAction
-          let temp4 = ASDPS_playerNumber
+          rem temp3=action, temp4=player
           gosub LocateCharacterArt bank14
           
           rem Set character color based on player number

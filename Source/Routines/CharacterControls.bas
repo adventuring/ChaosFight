@@ -56,7 +56,7 @@ BernieJump
           dim BJ_feetRow = temp6
           dim BJ_checkRow = temp4
           rem Convert player X position to playfield column (0-31)
-          let temp1 = BJ_playerIndex : rem Use shared coordinate conversion subroutine
+          rem Use shared coordinate conversion subroutine
           gosub ConvertPlayerXToPlayfieldColumn
           let BJ_pfColumn = temp2
           
@@ -176,7 +176,7 @@ DragonetJump
           dim DJ_currentRow = temp4
           dim DJ_checkRow = temp4
           rem Fly up with playfield collision check
-          let temp1 = DJ_playerIndex : rem Check collision before moving - use shared coordinate conversion
+          rem Check collision before moving - use shared coordinate conversion
           gosub ConvertPlayerXToPlayfieldColumn
           let DJ_pfColumn = temp2
           
@@ -1314,13 +1314,13 @@ StandardGuard
           if SG_characterType = 6 then return : rem Dragon of Storms cannot guard
           rem Harpy cannot guard
           
-          let temp1 = SG_playerIndex : rem Check if guard is allowed (not in cooldown)
+          rem Check if guard is allowed (not in cooldown)
           gosub CheckGuardCooldown
           let SG_guardAllowed = temp2
           if SG_guardAllowed = 0 then return
           rem Guard blocked by cooldown
           
-          let temp1 = SG_playerIndex : rem Start guard with proper timing
+          rem Start guard with proper timing
           goto StartGuard : rem tail call
           rem StartGuard sets guard bit and duration timer
           

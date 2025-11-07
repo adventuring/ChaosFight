@@ -113,9 +113,6 @@ ValidateCharacterDoneInline
           rem animation action/sequence 0 = idle
           rem playerNumberAlt already has player number from caller
           let temp1 = currentCharacter : rem Set temp variables for cross-bank call
-          let temp2 = LCS_animationFrame
-          let temp3 = LCS_animationAction
-          let temp4 = LCS_playerNumberAlt
           gosub LocateCharacterArt bank14
           return
 
@@ -517,7 +514,6 @@ LoadPlayer0Sprite
           rem temp1 = character index, temp2 = animation frame already
           rem   set
           let LP0S_playerNumber = 0 : rem playerNumber = player number (0)
-          let temp3 = LP0S_playerNumber
           rem Use LoadCharacterSprite which handles LocateCharacterArt
           goto LoadCharacterSprite : rem tail call
           
@@ -544,7 +540,6 @@ LoadPlayer1Sprite
           rem temp1 = character index, temp2 = animation frame already
           rem   set
           let LP1S_playerNumber = 1 : rem playerNumber = player number (1)
-          let temp3 = LP1S_playerNumber
           rem Use LoadCharacterSprite which handles LocateCharacterArt
           goto LoadCharacterSprite : rem tail call
           
@@ -571,7 +566,6 @@ LoadPlayer2Sprite
           rem temp1 = character index, temp2 = animation frame already
           rem   set
           let LP2S_playerNumber = 2 : rem playerNumber = player number (2)
-          let temp3 = LP2S_playerNumber
           rem Use LoadCharacterSprite which handles LocateCharacterArt
           goto LoadCharacterSprite : rem tail call
           
@@ -598,7 +592,6 @@ LoadPlayer3Sprite
           rem temp1 = character index, temp2 = animation frame already
           rem   set
           let LP3S_playerNumber = 3 : rem playerNumber = player number (3)
-          let temp3 = LP3S_playerNumber
           rem Use LoadCharacterSprite which handles LocateCharacterArt
           goto LoadCharacterSprite : rem tail call
 
@@ -840,7 +833,7 @@ SetColor
           rem Use temp6 directly instead of alias to avoid symbol
           rem conflict
           rem LoadCharacterColors_color already contains the color from
-          let temp6 = LoadCharacterColors_color : rem   previous code paths
+          rem   previous code paths
           if !LoadCharacterColors_playerNumber then let COLUP0 = temp6 : return
           if LoadCharacterColors_playerNumber = 1 then let _COLUP1 = temp6 : return
           if LoadCharacterColors_playerNumber = 2 then let COLUP2 = temp6 : return

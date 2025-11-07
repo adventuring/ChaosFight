@@ -296,7 +296,6 @@ IsPlayerEliminated
           if IPE_isEliminated then let IPE_isEliminated = 1 : goto IsEliminatedDone
           let IPE_isEliminated = 0
 IsEliminatedDone
-          let temp2 = IPE_isEliminated
           return
 
 IsPlayerAlive
@@ -335,7 +334,7 @@ IsPlayerAlive
           
           let IPA_isAlive = 0 
           if IPA_health > 0 then let IPA_isAlive = 1 : rem Default: not alive
-          let temp2 = IPA_isAlive : rem Alive if health > 0
+          rem Alive if health > 0
           return
 
 FindWinner

@@ -52,7 +52,6 @@ GetPlayerMissileBitFlag
           rem Calculate bit flag using O(1) array lookup:
           rem BitMask[playerIndex] (1, 2, 4, 8)
           let GPMBF_bitFlag = BitMask[GPMBF_playerIndex]
-          let temp6 = GPMBF_bitFlag
           return
 
 SpawnMissile
@@ -128,7 +127,7 @@ SpawnMissile
           
           rem Set active bit for this player missile
           rem Bit 0 = P1, Bit 1 = P2, Bit 2 = P3, Bit 3 = P4
-          let temp1 = SM_playerIndex : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           gosub GetPlayerMissileBitFlag
           let SM_bitFlag = temp6
           let missileActive  = missileActive | SM_bitFlag
@@ -305,7 +304,7 @@ UpdateOneMissile
           dim UOM_velocityY = temp3
           dim UOM_characterType = temp5
           dim UOM_missileFlags = temp5
-          let temp1 = UOM_playerIndex : rem Check if this missile is active
+          rem Check if this missile is active
           gosub GetPlayerMissileBitFlag
           let UOM_bitFlag = temp6
           let UOM_isActive  = missileActive & UOM_bitFlag
@@ -436,7 +435,7 @@ FrictionDone
           let temp1 = temp5
           gosub GetMissileFlags bank6
           let temp5 = temp2
-          let temp1 = UOM_playerIndex : rem temp5 now contains missile flags again
+          rem temp5 now contains missile flags again
           if !(temp5 & MissileFlagHitBackground) then PlayfieldCollisionDone : rem Restore player index for MissileCollPF
           gosub MissileCollPF bank7
           if !temp4 then PlayfieldCollisionDone

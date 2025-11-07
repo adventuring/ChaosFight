@@ -117,7 +117,6 @@ SPF_PreserveYes
           rem
           rem Called Routines: None
           let SPF_preserveFlag = 1 : rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveNo
-          let temp3 = SPF_preserveFlag
           return
           
 SPF_PreserveNo
@@ -131,7 +130,6 @@ SPF_PreserveNo
           rem
           rem Called Routines: None
           let SPF_preserveFlag = 0 : rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveYes
-          let temp3 = SPF_preserveFlag
           return
 
 InputHandleAllPlayers
@@ -520,7 +518,6 @@ CEJB_CheckPlayer4Joy2bPlus
           if !RightPortJoy2bPlus then CEJB_Done : rem Player 4: Check Joy2b+ controller
           if !INPT2{7} then let CEJB_jumpPressed = 1
 CEJB_Done
-          let temp3 = CEJB_jumpPressed
           return
 
 HandleGuardInput
@@ -543,7 +540,6 @@ HGI_CheckJoy0
           if !joy0down then goto HGI_CheckGuardRelease : rem Players 0,2 use joy0
 HGI_HandleDownPressed
           let HGI_characterType = PlayerCharacter[HGI_playerIndex] : rem DOWN pressed - dispatch to character-specific down handler
-          let temp4 = HGI_characterType
           gosub DispatchCharacterDown
           return
 HGI_CheckGuardRelease
@@ -570,7 +566,6 @@ ConvertPlayerXToPlayfieldColumn
           let CPXTPC_pfColumn = CPXTPC_pfColumn / 4
           if CPXTPC_pfColumn > 31 then let CPXTPC_pfColumn = 31 : rem pfColumn = playfield column
           if CPXTPC_pfColumn & $80 then let CPXTPC_pfColumn = 0 : rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
-          let temp2 = CPXTPC_pfColumn
           return
 
 HandleFlyingCharacterMovement
@@ -621,7 +616,6 @@ HFCM_MoveLeftOK
           let playerVelocityXL[HFCM_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem (knockback, hitstun)
-          let temp1 = HFCM_playerIndex
           gosub ShouldPreserveFacing
           if !temp3 then let PlayerState[HFCM_playerIndex] = PlayerState[HFCM_playerIndex] & (255 - PlayerStateBitFacing)
 HFCM_CheckRightMovement
@@ -656,7 +650,6 @@ HFCM_MoveRightOK
           let playerVelocityXL[HFCM_playerIndex] = 0
           rem NOTE: Preserve facing during hurt/recovery states
           rem (knockback, hitstun)
-          let temp1 = HFCM_playerIndex
           gosub ShouldPreserveFacing
           if !temp3 then let PlayerState[HFCM_playerIndex] = PlayerState[HFCM_playerIndex] | 1
 HFCM_DoneFlyingMovement
@@ -767,7 +760,6 @@ DoneUpInputHandling
           rem Use cached animation state - block jump during attack
           if IHLP_animationState >= 13 then InputSkipLeftPortJump : rem   animations (states 13-15)
           let EJ_characterType = PlayerCharacter[IHLP_playerIndex] : rem Block jump during attack windup/execute/recovery
-          let temp4 = EJ_characterType
           gosub DispatchCharacterJump
 InputSkipLeftPortJump
 

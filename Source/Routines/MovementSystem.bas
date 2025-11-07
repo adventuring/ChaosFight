@@ -294,8 +294,6 @@ GetPlayerPosition
           dim GPP_positionY = temp3
           let GPP_positionX = playerX[currentPlayer]
           let GPP_positionY = playerY[currentPlayer]
-          let temp2 = GPP_positionX
-          let temp3 = GPP_positionY
           return
 
 GetPlayerVelocity
@@ -333,8 +331,6 @@ GetPlayerVelocity
           dim GPV_velocityY = temp3
           let GPV_velocityX = playerVelocityX[currentPlayer]
           let GPV_velocityY = playerVelocityY[currentPlayer]
-          let temp2 = GPV_velocityX
-          let temp3 = GPV_velocityY
           return
 
 MovementApplyGravity

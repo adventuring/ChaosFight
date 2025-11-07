@@ -292,7 +292,6 @@ FallDamageApplyGravity
           
           rem Cap at terminal velocity (uses tunable constant from
           if FDAG_momentum > TerminalVelocity then let FDAG_momentum = TerminalVelocity : rem   Constants.bas)
-          let temp2 = FDAG_momentum
           
           return
 
@@ -343,8 +342,7 @@ CheckGroundCollision
           
           if CGC_momentum <= 0 then return
           rem Check fall damage if moving downward
-          let temp1 = CGC_playerIndex : rem momentum contains downward velocity
-          let temp2 = CGC_momentum
+          rem momentum contains downward velocity
           goto CheckFallDamage : rem tail call
           
           rem Stop vertical momentum
@@ -439,7 +437,7 @@ SetVerticalMomentum
           let HHSA_playerState = HHSA_playerState | MaskAnimationFalling 
           let playerState[HHSA_playerIndex] = HHSA_playerState : rem Animation state 10
           
-          let temp1 = HHSA_playerIndex : rem Spawn melee attack missile for swoop hit detection
+          rem Spawn melee attack missile for swoop hit detection
           gosub SpawnMissile bank7
           
           return

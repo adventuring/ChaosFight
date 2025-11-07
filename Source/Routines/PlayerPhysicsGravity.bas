@@ -132,7 +132,7 @@ GravityCheckRoboTitoDone
           
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
-          let temp1 = PAG_playerIndex : rem Use shared coordinate conversion subroutine
+          rem Use shared coordinate conversion subroutine
           gosub ConvertPlayerXToPlayfieldColumn bank13
           let PAG_playfieldColumn = temp2
           

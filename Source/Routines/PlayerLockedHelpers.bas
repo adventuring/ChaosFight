@@ -67,7 +67,6 @@ GPL_ExtractBits6
           goto GPL_Done
           
 GPL_Done
-          let temp2 = GPL_lockedState
           return
 
 SetPlayerLocked

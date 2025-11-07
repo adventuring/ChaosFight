@@ -138,8 +138,6 @@ HCSC_DoCycle
           rem HandleCharacterSelectCycle, HCSC_CycleLeft, HCSC_CycleDone
           let HCSC_characterIndex = playerCharacter[HCSC_playerIndex] : rem Get current character index
           let HCSC_playerNumber = HCSC_playerIndex
-          let temp1 = HCSC_characterIndex
-          let temp3 = HCSC_playerNumber
           if HCSC_direction = 0 then HCSC_CycleLeft : rem Cycle based on direction
           gosub CycleCharacterRight
           goto HCSC_CycleDone
@@ -175,11 +173,9 @@ HCSC_CycleDone
           rem PlaySoundEffect (bank15)
           let HCSC_characterIndex = temp1 : rem Constraints: Must be colocated with HandleCharacterSelectCycle
           let playerCharacter[HCSC_playerIndex] = HCSC_characterIndex
-          let temp1 = HCSC_playerIndex
           let temp2 = PlayerLockedUnlocked
           gosub SetPlayerLocked bank14
           let HCSC_soundId = SoundMenuNavigate : rem Play navigation sound
-          let temp1 = HCSC_soundId
           gosub PlaySoundEffect bank15
           return
           
@@ -270,7 +266,6 @@ HCSF_HandleFire
           let temp2 = PlayerLockedNormal
           gosub SetPlayerLocked bank14
           let HCSF_soundId = SoundMenuSelect : rem Play selection sound
-          let temp1 = HCSF_soundId
           gosub PlaySoundEffect bank15
           return
 HCSF_HandleHandicap
@@ -289,7 +284,6 @@ HCSF_HandleHandicap
           let temp2 = PlayerHandicapped
           gosub SetPlayerLocked bank14
           let HCSF_soundId = SoundMenuSelect : rem Play selection sound
-          let temp1 = HCSF_soundId
           gosub PlaySoundEffect bank15
           return
 HCSF_HandleRandom
@@ -314,7 +308,6 @@ HCSF_HandleRandom
           rem CharacterSelectHandleRandomRolls
           if HCSF_joyDown then randomSelectFlags[HCSF_playerIndex] = $80 else randomSelectFlags[HCSF_playerIndex] = 0 : rem Store handicap flag if down was held
           let HCSF_soundId = SoundMenuSelect : rem Play selection sound
-          let temp1 = HCSF_soundId
           gosub PlaySoundEffect bank15
           rem Fall through - character will stay as RandomCharacter
           rem until roll succeeds
@@ -631,7 +624,6 @@ CycleCharacterLeft
           rem Check if we’re at 0 before decrementing (need to wrap to
           if !CCL_characterIndex then goto CharacterSelectLeftWrapCheck : rem   special)
           let CCL_characterIndex = CCL_characterIndex - 1
-          let temp1 = CCL_characterIndex
           return
           
 CharacterSelectLeftWrapCheck
@@ -641,12 +633,10 @@ CharacterSelectLeftWrapCheck
           rem After 0, wrap to player-specific special character
           if CSLWC_playerNumber = 1 then goto SelectP2LeftWrap
           let CSLWC_characterIndex = NoCharacter
-          let temp1 = CSLWC_characterIndex
           return
 
 CSLWrapPlayer0Left
           let CSLWC_characterIndex = RandomCharacter
-          let temp1 = CSLWC_characterIndex
           return
           
 SelectP2LeftWrap
@@ -656,20 +646,16 @@ SelectP2LeftWrap
           rem both NO)
           if playerCharacter[2] = NoCharacter then goto CheckP4_LeftWrap : rem Check if P3 or P4 are NOT both NO
           let SP2LW_characterIndex = NoCharacter
-          let temp1 = SP2LW_characterIndex
           return
 SelectP2LeftWrapCPU
           let SP2LW_characterIndex = CPUCharacter
-          let temp1 = SP2LW_characterIndex
           return
 CheckP4_LeftWrap
           if playerCharacter[3] = NoCharacter then goto BothNO_LeftWrap
           let SP2LW_characterIndex = NoCharacter
-          let temp1 = SP2LW_characterIndex
           return
 BothNO_LeftWrap
           let SP2LW_characterIndex = CPUCharacter : rem Both P3 and P4 are NO, so P2 wraps to CPU
-          let temp1 = SP2LW_characterIndex
           return
           
 CycleFromRandom
@@ -684,12 +670,10 @@ CycleFromRandom
           if CFR_playerNumber = 0 then goto CycleFromRandomPlayer0
           rem P1 → 15
           let CFR_characterIndex = NoCharacter : rem P3/P4 → NO
-          let temp1 = CFR_characterIndex
           return
 
 CycleFromRandomPlayer0
           let CFR_characterIndex = MaxCharacter
-          let temp1 = CFR_characterIndex
           return
           
 SelectP2LeftFromRandom
@@ -698,21 +682,17 @@ SelectP2LeftFromRandom
           if !(controllerStatus & SetQuadtariDetected) then goto SelectP2LeftFromRandomMax
           if playerCharacter[2] = NoCharacter then CheckP4_LeftFromRandom : rem Check if P3 or P4 are NOT both NO
           let SP2LFR_characterIndex = NoCharacter
-          let temp1 = SP2LFR_characterIndex
           return
 
 SelectP2LeftFromRandomMax
           let SP2LFR_characterIndex = MaxCharacter
-          let temp1 = SP2LFR_characterIndex
           return
 CheckP4_LeftFromRandom
           if playerCharacter[3] = NoCharacter then BothNO_LeftFromRandom
           let SP2LFR_characterIndex = NoCharacter
-          let temp1 = SP2LFR_characterIndex
           return
 BothNO_LeftFromRandom
           let SP2LFR_characterIndex = MaxCharacter : rem Both P3 and P4 are NO, so NO not available, go to 15
-          let temp1 = SP2LFR_characterIndex
           return
           
 CycleFromCPU
@@ -727,7 +707,6 @@ CycleFromCPU
           rem The cycle is: ... Random → CPU → Random ...
           rem So left from CPU should go to Random (we already have
           let CFC_characterIndex = RandomCharacter : rem   this)
-          let temp1 = CFC_characterIndex
           return
           
 CycleFromNO
@@ -740,12 +719,10 @@ CycleFromNO
           if CFNO_playerNumber = 1 then goto CycleFromNOPlayer2
           rem P2 left from NO → CPU
           let CFNO_characterIndex = RandomCharacter : rem P3/P4: NO → Random
-          let temp1 = CFNO_characterIndex
           return
 
 CycleFromNOPlayer2
           let CFNO_characterIndex = CPUCharacter
-          let temp1 = CFNO_characterIndex
           return
           
 CycleCharacterRight
@@ -758,13 +735,11 @@ CycleCharacterRight
           
           let CCR_characterIndex = CCR_characterIndex + 1 : rem Normal character (0-15): increment
           if CCR_characterIndex > MaxCharacter then goto CharacterSelectRightWrapCheck : rem Check if we went past 15 (wrap to RandomCharacter)
-          let temp1 = CCR_characterIndex
           return
           
 CharacterSelectRightWrapCheck
           dim CSRWC_characterIndex = temp1
           let CSRWC_characterIndex = RandomCharacter : rem After 15, go to RandomCharacter instead of wrapping to 0
-          let temp1 = CSRWC_characterIndex
           return
           
 CycleRightFromRandom
@@ -774,12 +749,10 @@ CycleRightFromRandom
           rem RandomCharacter(253) goes to special for each player
           if CRFR_playerNumber = 1 then goto SelectP2RightFromRandom
           let CRFR_characterIndex = NoCharacter
-          let temp1 = CRFR_characterIndex
           return
 
 CycleRightFromRandomPlayer0
           let CRFR_characterIndex = 0
-          let temp1 = CRFR_characterIndex
           return
           
 SelectP2RightFromRandom
@@ -789,20 +762,16 @@ SelectP2RightFromRandom
           rem both NO)
           if playerCharacter[2] = NoCharacter then goto CheckP4_RightFromRandom : rem Check if P3 or P4 are NOT both NO
           let SP2RFR_characterIndex = NoCharacter
-          let temp1 = SP2RFR_characterIndex
           return
 SelectP2RightFromRandomCPU
           let SP2RFR_characterIndex = CPUCharacter
-          let temp1 = SP2RFR_characterIndex
           return
 CheckP4_RightFromRandom
           if playerCharacter[3] = NoCharacter then goto BothNO_RightFromRandom
           let SP2RFR_characterIndex = NoCharacter
-          let temp1 = SP2RFR_characterIndex
           return
 BothNO_RightFromRandom
           let SP2RFR_characterIndex = CPUCharacter : rem Both P3 and P4 are NO, so P2 goes to CPU
-          let temp1 = SP2RFR_characterIndex
           return
           
 CycleRightFromCPU
@@ -819,31 +788,25 @@ SelectP2RightFromCPU
           if !(controllerStatus & SetQuadtariDetected) then goto SelectP2RightFromCPURandom
           if playerCharacter[2] = NoCharacter then goto CheckP4_RightFromCPU : rem Check if P3 or P4 are NOT both NO
           let SP2RFC_characterIndex = NoCharacter
-          let temp1 = SP2RFC_characterIndex
           return
 SelectP2RightFromCPURandom
           let SP2RFC_characterIndex = RandomCharacter
-          let temp1 = SP2RFC_characterIndex
           return
 CheckP4_RightFromCPU
           if playerCharacter[3] = NoCharacter then goto BothNO_RightFromCPU
           let SP2RFC_characterIndex = NoCharacter
-          let temp1 = SP2RFC_characterIndex
           return
 BothNO_RightFromCPU
           let SP2RFC_characterIndex = RandomCharacter : rem Both P3 and P4 are NO, so skip NO and go to Random
-          let temp1 = SP2RFC_characterIndex
           return
 CycleRightFromCPUDone
           dim CRFCD_characterIndex = temp1
           let CRFCD_characterIndex = RandomCharacter : rem Default for P1 or other players (not P2)
-          let temp1 = CRFCD_characterIndex
           return
           
 CycleRightFromNO
           dim CRFNO_characterIndex = temp1
           let CRFNO_characterIndex = 0 : rem NoCharacter(255) goes to 0
-          let temp1 = CRFNO_characterIndex
           return
           
 SelectDrawScreen
@@ -940,10 +903,6 @@ SelectLoadSprite
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
           let SLS_animationAction = 1 : rem temp3=action, temp4=player
           let SLS_playerNumberForArt = SLS_playerNumberSaved : rem ActionIdle = 1
-          let temp1 = SLS_characterIndex
-          let temp2 = SLS_animationFrame
-          let temp3 = SLS_animationAction
-          let temp4 = SLS_playerNumberForArt
           gosub LocateCharacterArt bank14
           goto SelectLoadSpriteColor
           
@@ -966,8 +925,8 @@ SelectLoadSpecialSprite
 SelectLoadSpecialSpriteCall
           rem LoadSpecialSprite expects: temp6 = sprite index, temp3 =
           rem player number
-          let temp3 = SLSS_playerNumber : rem Preserve player number from temp6 to temp3 before overwriting temp6
-          let temp6 = SLSS_spriteIndex : rem temp3 now has player number
+          rem Preserve player number from temp6 to temp3 before overwriting temp6
+          rem temp3 now has player number
           gosub LoadSpecialSprite bank10 : rem temp6 now has sprite index
           goto SelectLoadSpriteColor : rem Special sprites don’t need animation handling, go to color
           
@@ -982,10 +941,6 @@ SelectLoadWalkingSprite
           let SLWS_animationFrame = characterSelectPlayerAnimationSequence[SLS_playerNumberSaved] : rem Walking animation
           let SLWS_animationAction = 3 : rem Use sequence counter as frame (0-3 for 4-frame walk)
           let SLWS_playerNumberForArt = SLS_playerNumberSaved : rem ActionWalking = 3
-          let temp1 = SLS_characterIndex
-          let temp2 = SLWS_animationFrame
-          let temp3 = SLWS_animationAction
-          let temp4 = SLWS_playerNumberForArt
           gosub LocateCharacterArt bank14
           
 SelectLoadSpriteColor
@@ -999,9 +954,7 @@ SelectLoadSpriteColor
           let SLSC_isHurt = 0
           let SLSC_playerNumber = SLSC_playerNumberSaved : rem not hurt
           let SLSC_isFlashing = 0 : rem player number
-          let temp2 = SLSC_isHurt : rem not flashing
-          let temp3 = SLSC_playerNumber
-          let temp4 = SLSC_isFlashing
+          rem not flashing
           gosub LoadCharacterColors
           
           rem temp3 restored via LoadCharacterColors
@@ -1035,7 +988,6 @@ SelectDrawNumber
           let SDN_playerIndex = temp1
           if SDN_playerIndex > 3 then let SDN_playerIndex = 3
           
-          let temp1 = SDN_playerIndex
           gosub GetPlayerLocked bank14
           let SDN_lockedState = temp2
           
@@ -1112,10 +1064,6 @@ SDN_Player3
           let temp1 = 4
           
 SDN_DrawDigit
-          let temp2 = SDN_xPos
-          let temp3 = SDN_yPos
-          let temp4 = SDN_color
-          let temp5 = SDN_spriteSelect
           gosub DrawDigit bank1
           return
 

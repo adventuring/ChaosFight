@@ -678,7 +678,7 @@ SelOddFrame
           
           rem If any player is holding down, set animation to recovery
           if HandicapMode then SelHandleHandi : rem   pose
-          goto SelAnimationNormal
+          goto SelectAnimationNormal
 SelHandleHandi
           rem Helper: Freeze animation in recovery pose for handicap
           rem preview
@@ -702,7 +702,7 @@ SelHandleHandi
           rem First frame of recovery animation
           rem Do not update timer or frame - freeze the animation
           return
-SelAnimationNormal
+SelectAnimationNormal
           rem Helper: Update normal animation (cycling through states
           rem and frames)
           rem
@@ -730,15 +730,19 @@ SelAnimationNormal
           rem   active)
           let characterSelectAnimationTimer  = characterSelectAnimationTimer + 1 : rem Increment animation timer
           
-          if characterSelectAnimationTimer > FramesPerSecond then : rem Change animation state every 60 frames (1 second at 60fps)
+          rem Change animation state every 60 frames (1 second at 60fps)
+          if characterSelectAnimationTimer <= FramesPerSecond then goto SelectAnimationAdvance
+SelectAnimationReset
           let characterSelectAnimationTimer  = 0
           let characterSelectAnimationState  = rand & 3 : rem Randomly choose new animation state
           if characterSelectAnimationState > 2 then let characterSelectAnimationState  = 0 : rem 0-3: idle, running, attacking, special
           let characterSelectAnimationFrame  = 0 : rem Keep to 0-2 range
           let characterSelectCharacterIndex  = characterSelectCharacterIndex + 1 : rem Cycle through characters for variety
           if characterSelectCharacterIndex > MaxCharacter then let characterSelectCharacterIndex  = 0
+SelectAnimationAdvance
           let characterSelectAnimationFrame  = characterSelectAnimationFrame + 1 : rem Update animation frame within current state
-          if characterSelectAnimationFrame > 7 then let characterSelectAnimationFrame  = 0
+          if characterSelectAnimationFrame <= 7 then return
+          let characterSelectAnimationFrame  = 0
           rem 8-frame animation cycles
           
           return
@@ -810,7 +814,7 @@ SelHurtBW
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelDrawSprite, only
+          rem Constraints: Internal helper for SelectDrawSprite, only
           rem called in hurt state and B&W mode
           let COLUP0  = ColGrey(6)
           goto SelColorDone : rem Dark grey for hurt (B&W)
@@ -852,11 +856,11 @@ SelColorDone
           rem Bright grey (B&W)
           
           rem Draw different sprite patterns based on animation state
-          if characterSelectAnimationState = ActionStanding then SelAnimationIdle : rem   and frame
-          if characterSelectAnimationState = ActionWalking then SelAnimationRun
-          if characterSelectAnimationState = ActionAttackWindup then SelAnimationAttack
-          goto SelAnimationDone
-SelAnimationIdle
+          if characterSelectAnimationState = ActionStanding then SelectAnimationIdle : rem   and frame
+          if characterSelectAnimationState = ActionWalking then SelectAnimationRun
+          if characterSelectAnimationState = ActionAttackWindup then SelectAnimationAttack
+          goto SelectAnimationDone
+SelectAnimationIdle
           rem Helper: Draw idle animation (standing pose)
           rem
           rem Input: None
@@ -869,8 +873,8 @@ SelAnimationIdle
           rem
           rem Constraints: Internal helper for SelDrawSprite, only
           rem called for ActionStanding
-          goto SelAnimationDone : rem Idle animation - simple standing pose
-SelAnimationRun
+          goto SelectAnimationDone : rem Idle animation - simple standing pose
+SelectAnimationRun
           rem Helper: Draw running animation (alternating leg positions)
           rem
           rem Input: characterSelectAnimationFrame (global) = animation frame
@@ -886,7 +890,7 @@ SelAnimationRun
           rem called for ActionWalking. Frames 0,2,4,6 = right leg
           rem forward, frames 1,3,5,7 = left leg forward
           if characterSelectAnimationFrame & 1 then SelLeftLeg : rem Running animation - alternating leg positions
-          goto SelAnimationDone : rem Frame 0,2,4,6 - right leg forward
+          goto SelectAnimationDone : rem Frame 0,2,4,6 - right leg forward
 SelLeftLeg
           rem Helper: Set left leg forward pattern for running
           rem
@@ -899,10 +903,10 @@ SelLeftLeg
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelAnimationRun, only called
+          rem Constraints: Internal helper for SelectAnimationRun, only called
           rem for odd frames (1,3,5,7)
-          goto SelAnimationDone : rem Frame 1,3,5,7 - left leg forward
-SelAnimationAttack
+          goto SelectAnimationDone : rem Frame 1,3,5,7 - left leg forward
+SelectAnimationAttack
           rem Helper: Draw attacking animation (arm extended)
           rem
           rem Input: characterSelectAnimationFrame (global) = animation frame
@@ -912,14 +916,14 @@ SelAnimationAttack
           rem
           rem Mutates: Player sprite graphics (set to attack pattern)
           rem
-          rem Called Routines: SelWindup - sets windup pattern
+          rem Called Routines: SelectWindup - sets windup pattern
           rem
-          rem Constraints: Internal helper for SelDrawSprite, only
+          rem Constraints: Internal helper for SelectDrawSprite, only
           rem called for ActionAttackWindup. Frames 0-3 = windup, frames
           rem 4-7 = attack
-          if characterSelectAnimationFrame < 4 then SelWindup : rem Attacking animation - arm extended
-          goto SelAnimationDone : rem Attack frames - arm forward
-SelWindup
+          if characterSelectAnimationFrame < 4 then SelectWindup : rem Attacking animation - arm extended
+          goto SelectAnimationDone : rem Attack frames - arm forward
+SelectWindup
           rem Helper: Set windup pattern for attack
           rem
           rem Input: None
@@ -930,10 +934,10 @@ SelWindup
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for SelAnimationAttack, only
+          rem Constraints: Internal helper for SelectAnimationAttack, only
           rem called for frames 0-3
-          goto SelAnimationDone : rem Windup frames - arm back
-SelAnimationDone
+          goto SelectAnimationDone : rem Windup frames - arm back
+SelectAnimationDone
           return
 
 SelScreenDone

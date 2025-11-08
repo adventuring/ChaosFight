@@ -1,5 +1,3 @@
-WarmStart
-          rem
           rem ChaosFight - Source/Routines/ConsoleHandling.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Console Switch Handling
@@ -9,10 +7,11 @@ WarmStart
           rem   switchselect - Game Select → toggle pause
           rem   switchbw - Color/B&W → handled in rendering
           rem
+WarmStart
+          rem Warm Start / Reset Handler
           rem AVAILABLE VARIABLES:
           rem   play, 1=paused
           rem systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal
-          rem Warm Start / Reset Handler
           rem
           rem Handles game reset from any screen/state.
           rem Clears critical state variables and reinitializes hardware
@@ -201,7 +200,9 @@ DoneSwitchChange
           rem   value
           rem   variable.
           
-          if temp1 then ReloadArenaColorsNow : rem Reload arena colors if switch or override changed
+          rem Reload arena colors if switch or override changed
+          
+          if temp1 then ReloadArenaColorsNow
           rem Note: colorBWOverride check handled in
           rem Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)

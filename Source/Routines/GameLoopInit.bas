@@ -159,7 +159,7 @@ PlayerHealthSet
           let MissileActive  = 0
 
           let playersEliminated_W = 0 : rem Initialize elimination system
-          let playersRemaining_W = 0 : rem No players eliminated at start
+          let playersRemaining_W = 1 : rem CharacterSelectCheckReady guarantees Player 1 is active; seed count with P1
           let gameEndTimer_W = 0 : rem Will be calculated
           let eliminationCounter_W = 0 : rem No game end countdown
           rem Reset elimination order counter
@@ -174,7 +174,7 @@ PlayerHealthSet
           let winScreenTimer_W = 0 : rem No rank being displayed
           rem Reset win screen timer
 
-          if !(playerCharacter[0] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1 : rem Count initial players
+          rem Count additional human/CPU players beyond Player 1
           if !(playerCharacter[1] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1
           if !(playerCharacter[2] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1
           if !(playerCharacter[3] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1

@@ -147,7 +147,8 @@ InitPositionsDone
           
           rem Optimized: Set Players34Active flag based on character selections
           let ControllerStatus = ControllerStatus & ClearPlayers34Active
-          if !(playerCharacter[2] = NoCharacter) || !(playerCharacter[3] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
+          if !(playerCharacter[2] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
+          if !(playerCharacter[3] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
 
           rem Initialize missiles
           rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 =

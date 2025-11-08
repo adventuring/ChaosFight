@@ -16,7 +16,7 @@ MainLoop
           rem Entry point for entire game loop
           if switchreset then gosub WarmStart bank11 : goto MainLoopContinue
 
-          let temp1 = gameMode + 1
+          let temp1 = gameMode
           on temp1 gosub MainLoopModePublisherPrelude, MainLoopModeAuthorPrelude, MainLoopModeTitleScreen, MainLoopModeCharacterSelect, MainLoopModeFallingAnimation, MainLoopModeArenaSelect, MainLoopModeGameMain, MainLoopModeWinnerAnnouncement
           goto MainLoopContinue
 

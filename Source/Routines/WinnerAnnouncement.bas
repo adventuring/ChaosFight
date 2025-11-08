@@ -12,7 +12,8 @@ WinnerAnnouncement
           rem
           rem Called Routines: WinnerAnnouncementLoop (bank9) - renders winner screen
           rem Constraints: Must be colocated with WinnerAnnouncementLoop (called via goto)
-          goto WinnerAnnouncementLoop : rem              Entry point for winner announcement mode
+          rem Entry point for winner announcement mode
+          goto WinnerAnnouncementLoop
 
 WinnerAnnouncementLoop
           rem Winner announcement mode per-frame loop
@@ -33,14 +34,17 @@ WinnerAnnouncementLoop
           rem
           rem Constraints: Must be colocated with WinnerAnnouncement,
           rem WinnerAdvanceToCharacterSelect
-          if joy0fire then WinnerAdvanceToCharacterSelect : rem Check for button press to advance immediately
+          rem Check for button press to advance immediately
+          if joy0fire then WinnerAdvanceToCharacterSelect
           if joy1fire then WinnerAdvanceToCharacterSelect
           if switchselect then WinnerAdvanceToCharacterSelect
           
-          let winScreenTimer_W = winScreenTimer_R + 1 : rem Auto-advance after 10 seconds (600 frames at 60fps)
+          rem Auto-advance after 10 seconds (600 frames at 60fps)
+          let winScreenTimer_W = winScreenTimer_R + 1
           if winScreenTimer_R > WinScreenAutoAdvanceFrames then WinnerAdvanceToCharacterSelect
           
-          gosub DisplayWinScreen bank12 : rem Display win screen and continue loop
+          rem Display win screen and continue loop
+          gosub DisplayWinScreen bank12
           rem drawscreen called by MainLoop
           return
           goto WinnerAnnouncementLoop
@@ -56,7 +60,8 @@ WinnerAdvanceToCharacterSelect
           rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
-          let gameMode = ModeTitle : rem Constraints: Must be colocated with WinnerAnnouncementLoop
+          rem Constraints: Must be colocated with WinnerAnnouncementLoop
+          let gameMode = ModeTitle
           gosub ChangeGameMode bank14
           return
 

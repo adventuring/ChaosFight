@@ -117,7 +117,7 @@ SpawnMissile
           
           rem Store lifetime in player-specific variable
           rem Using individual variables for each player missile
-          let missileLifetime[temp1] = missileLifetimeValue_R : rem   lifetime
+          let missileLifetime_W[temp1] = missileLifetimeValue_R : rem   lifetime
           
           rem Initialize velocity from character data for friction
           let temp6  = CharacterMissileMomentumX[temp5] : rem   physics
@@ -129,12 +129,12 @@ SpawnMissile
           rem 0x00, 0x10, 0x20)
           let temp2 = CharacterMissileWidths[temp5]
           rem Convert width to NUSIZ value (width 1=0x00, 2=0x10,
-          if temp2 = 1 then let missileNUSIZ[temp1] = 0 : goto SM_NUSIZDone : rem 4=0x20) - inlined for performance
-          if temp2 = 2 then let missileNUSIZ[temp1] = 16 : goto SM_NUSIZDone : rem 1x size (NUSIZ bits 4-6 = 00)
+          if temp2 = 1 then let missileNUSIZ_W[temp1] = 0 : goto SM_NUSIZDone : rem 4=0x20) - inlined for performance
+          if temp2 = 2 then let missileNUSIZ_W[temp1] = 16 : goto SM_NUSIZDone : rem 1x size (NUSIZ bits 4-6 = 00)
           rem 2x size (NUSIZ bits 4-6 = 01, value = 0x10 = 16)
-          if temp2 = 4 then let missileNUSIZ[temp1] = 32 : goto SM_NUSIZDone
+          if temp2 = 4 then let missileNUSIZ_W[temp1] = 32 : goto SM_NUSIZDone
           rem 4x size (NUSIZ bits 4-6 = 10, value = 0x20 = 32)
-          let missileNUSIZ[temp1] = 0 : rem Default to 1x if width not recognized
+          let missileNUSIZ_W[temp1] = 0 : rem Default to 1x if width not recognized
 SM_NUSIZDone
           
           let temp6  = CharacterMissileMomentumY[temp5]
@@ -182,9 +182,9 @@ HarpyBoostDiveVelocity
           asm
             lda temp6
             lsr a
-            sta velocityCalculation
-end
-          let temp6 = temp6 + velocityCalculation
+            sta velocityCalculation_W
+          end
+          let temp6 = temp6 + velocityCalculation_R
           let temp6 = temp6
 VelocityDone
           let missileVelocityY[temp1] = temp6
@@ -437,12 +437,13 @@ GuardBounceFromCollision
           rem Apply friction damping on bounce (reduce by 25% for guard
           rem   bounce)
           rem Divide by 4 using bit shift (2 right shifts)
-          let velocityCalculation_W = temp6 : rem Copy to velocityCalculation first, then shift in-place
+          let temp2 = temp6 : rem Copy to temp2 for shift
           asm
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
-end
-          let temp6  = temp6 - velocityCalculation
+            lsr temp2
+            lsr temp2
+          end
+          let velocityCalculation_W = temp2
+          let temp6  = temp6 - velocityCalculation_R
           let missileVelocityX[temp1] = temp6 : rem Reduce bounce velocity by 25%
           
           rem Continue without deactivating - missile bounces and
@@ -456,13 +457,13 @@ MissileSystemNoHit
           rem Missile disappears after hitting player
           
           rem Decrement lifetime counter and check expiration
-          let missileLifetimeValue_W = missileLifetime[temp1] : rem Retrieve current lifetime for this missile
+          let missileLifetimeValue_W = missileLifetime_R[temp1] : rem Retrieve current lifetime for this missile
           
           rem Decrement if not set to infinite (infinite until
           if missileLifetimeValue_R = MissileLifetimeInfinite then MissileUpdateComplete : rem   collision)
           let missileLifetimeValue_W = missileLifetimeValue_R - 1
           if missileLifetimeValue_R = 0 then goto DeactivateMissile : rem tail call
-          let missileLifetime[temp1] = missileLifetimeValue_R
+          let missileLifetime_W[temp1] = missileLifetimeValue_R
 MissileUpdateComplete
           
           return
@@ -607,23 +608,23 @@ end
           
 KnightGuyAttackActive
           rem Get current animation frame within Execute sequence (0-7)
-          let velocityCalculation = currentAnimationFrame_R[temp1] : rem Read from SCRAM and calculate offset immediately
+          let velocityCalculation_W = currentAnimationFrame_R[temp1] : rem Read from SCRAM and calculate offset immediately
           
           rem Calculate sword swing offset based on animation frame
           rem Frames 0-3: Move away from player (sword swing out)
           rem Frames 4-7: Return to start (sword swing back)
-          if velocityCalculation < 4 then KnightGuySwingOut : rem Maximum swing distance: 4 pixels
+          if velocityCalculation_R < 4 then KnightGuySwingOut : rem Maximum swing distance: 4 pixels
           rem Frames 4-7: Returning to start
           rem Calculate return offset: (7 - frame) pixels
           rem Frame 4: 3 pixels away, Frame 5: 2 pixels, Frame 6: 1
           rem pixel, Frame 7: 0 pixels
-          let velocityCalculation = 7 - velocityCalculation
+          let velocityCalculation_W = 7 - velocityCalculation_R
           goto KnightGuySetPosition
           
 KnightGuySwingOut
           rem Frames 0-3: Moving away from player
           rem Calculate swing offset: (frame + 1) pixels
-          let velocityCalculation = velocityCalculation + 1 : rem Frame 0: 1 pixel, Frame 1: 2 pixels, Frame 2: 3 pixels, Frame 3: 4 pixels
+          let velocityCalculation_W = velocityCalculation_R + 1 : rem Frame 0: 1 pixel, Frame 1: 2 pixels, Frame 2: 3 pixels, Frame 3: 4 pixels
           
 KnightGuySetPosition
           rem Calculate base X position (partially overlapping player)
@@ -633,11 +634,11 @@ KnightGuySetPosition
           rem Base position: center of player sprite
           
           if temp4 = 0 then KnightGuySwingLeft : rem Apply swing offset in facing direction
-          let temp2 = temp2 + velocityCalculation : rem Facing right: move right (positive offset)
+          let temp2 = temp2 + velocityCalculation_R : rem Facing right: move right (positive offset)
           goto KnightGuySetY
           
 KnightGuySwingLeft
-          let temp2 = temp2 - velocityCalculation : rem Facing left: move left (negative offset)
+          let temp2 = temp2 - velocityCalculation_R : rem Facing left: move left (negative offset)
           
 KnightGuySetY
           let temp3 = playerY[temp1] + temp5 : rem Calculate Y position (player Y + emission height)
@@ -904,11 +905,12 @@ HarpyCheckDive
           rem Not diving, skip bonus
           rem Apply 1.5x damage for diving attacks (temp6 + temp6/2 =
           rem   1.5 * temp6)
-          let velocityCalculation = temp6
+          let temp2 = temp6
           asm
-            lsr velocityCalculation
-end
-          let temp6 = temp6 + velocityCalculation
+            lsr temp2
+          end
+          let velocityCalculation_W = temp2
+          let temp6 = temp6 + velocityCalculation_R
 DiveCheckDone
           
           rem Guard check is now handled before HandleMissileHit is
@@ -926,8 +928,8 @@ DiveCheckDone
           
           rem Calculate weight-based knockback scaling
           rem Heavier characters resist knockback more (max weight =
-          let characterWeight = playerCharacter[temp4] : rem   100)
-          let characterWeight = CharacterWeights[characterWeight] : rem Get character index
+          let characterWeight_W = playerCharacter[temp4] : rem   100)
+          let characterWeight_W = CharacterWeights[characterWeight_R] : rem Get character index
           rem Get character weight (5-100) - overwrite with weight value
           rem Calculate scaled knockback: KnockbackImpulse * (100 -
           rem   weight) / 100
@@ -935,7 +937,7 @@ DiveCheckDone
           rem For KnockbackImpulse = 4: scaled = (4 * (100 - weight)) /
           rem   100
           rem Simplify to avoid division: if weight < 50, use full
-          if characterWeight >= 50 then WeightBasedKnockbackScale : rem Heavy characters use reduced knockback scaling
+          if characterWeight_R >= 50 then WeightBasedKnockbackScale : rem Heavy characters use reduced knockback scaling
           let impulseStrength_W = KnockbackImpulse : rem Light characters (weight < 50): full knockback
           goto WeightBasedKnockbackApply
 WeightBasedKnockbackScale
@@ -943,7 +945,7 @@ WeightBasedKnockbackScale
           rem Calculate: KnockbackImpulse * (100 - weight) / 100
           rem KnockbackImpulse = 4, so: 4 * (100 - weight) / 100
           rem Multiply first: 4 * velocityCalculation using bit shift
-          let velocityCalculation = 100 - characterWeight : rem   (ASL 2)
+          let velocityCalculation_W = 100 - characterWeight_R : rem   (ASL 2)
           let impulseStrength_W = velocityCalculation_R : rem Resistance factor (0-50 for weights 50-100)
           rem Multiply by 4 (KnockbackImpulse = 4) using left shift 2
           rem   bits
@@ -1012,12 +1014,12 @@ HandleMissileBounce
           rem Constraints: Velocity inverted using two’s complement. If
           rem friction flag set, velocity reduced by 50% (half). Missile
           rem continues bouncing (not deactivated)
-          let missileVelocityXCalc = missileVelocityX[temp1]
+          let missileVelocityXCalc_W = missileVelocityX[temp1]
           rem Get current X velocity
           rem Invert velocity (bounce back) using twos complement
           rem Split calculation to avoid sbc #256 (256 > 255)
-          let temp6 = MaxByteValue - missileVelocityXCalc
-          let missileVelocityXCalc = temp6 + 1 : rem tempCalc = 255 - velocity
+          let temp6 = MaxByteValue - missileVelocityXCalc_R
+          let missileVelocityXCalc_W = temp6 + 1 : rem tempCalc = 255 - velocity
           rem velocity = (255 - velocity) + 1 = 256 - velocity (twos
           rem complement)
           
@@ -1030,15 +1032,15 @@ HandleMissileBounce
           rem   (reduces)
           rem   Negative: velocity - (velocity >> 1) = 0.5 velocity
           rem   (reduces magnitude)
-          let temp2 = missileVelocityXCalc
+          let temp2 = missileVelocityXCalc_R
           rem Divide by 2 using bit shift right (LSR) - direct memory
           rem mode
           asm
             lsr temp2
 end
-          let missileVelocityXCalc = missileVelocityXCalc - temp2
+          let missileVelocityXCalc_W = missileVelocityXCalc_R - temp2
 BounceDone
-          let missileVelocityX[temp1] = missileVelocityXCalc
+          let missileVelocityX[temp1] = missileVelocityXCalc_R
           
           rem Continue bouncing (do not deactivate)
           return

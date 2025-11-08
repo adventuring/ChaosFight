@@ -35,13 +35,13 @@ StartMusic
           rem musicVoice1Frame_W (global SCRAM) = frame counters (set to
           rem 1)
           rem
-          rem Called Routines: LoadSongPointer (bank15 or bank16) -
+          rem Called Routines: LoadSongPointer (bank15 or bank1) -
           rem looks up song pointer, LoadSongVoice1Pointer (bank15 or
-          rem bank16) - calculates Voice 1 pointer, UpdateMusic (tail
+          rem bank1) - calculates Voice 1 pointer, UpdateMusic (tail
           rem call via goto) - starts first notes
           rem
-          rem Constraints: Songs in Bank 15: OCascadia (1), Revontuli
-          rem (2). All other songs (0, 3-28) in Bank 16. Routes to
+          rem Constraints: Songs in Bank 15: Bernie (0), OCascadia (1),
+          rem Revontuli (2). All other songs (3-28) in Bank 1. Routes to
           rem correct bank based on song ID
           rem Stop any current music
           AUDV0 = 0
@@ -52,13 +52,14 @@ StartMusic
           let musicVoice1PointerH = 0
           
           rem Lookup song pointer from appropriate bank (Bank15 or
-          rem Bank16)
-          rem Songs in Bank 15: OCascadia (1), Revontuli (2)
-          rem Songs in Bank 16: All other songs (0, 3-28)
-          if temp1 = 1 then goto LoadSongFromBank15 : rem Route to correct bank based on song ID
+          rem Bank1)
+          rem Songs in Bank 15: Bernie (0), OCascadia (1), Revontuli (2)
+          rem Songs in Bank 1: All other songs (3-28)
+          if temp1 = 0 then goto LoadSongFromBank15 : rem Route to correct bank based on song ID
+          if temp1 = 1 then goto LoadSongFromBank15
           if temp1 = 2 then goto LoadSongFromBank15
-          gosub LoadSongPointer bank16 : rem Song in Bank 16
-          gosub LoadSongVoice1Pointer bank16
+          gosub LoadSongPointer bank1 : rem Song in Bank 1
+          gosub LoadSongVoice1Pointer bank1
           goto LoadSongPointersDone
 LoadSongFromBank15
           rem Helper: Loads song pointers from Bank 15
@@ -76,7 +77,7 @@ LoadSongFromBank15
           rem 1 pointer
           rem
           rem Constraints: Internal helper for StartMusic, only called
-          rem for songs 1-2
+          rem for songs 0-2
           gosub LoadSongPointer bank15 : rem Song in Bank 15
           gosub LoadSongVoice1Pointer bank15
 LoadSongPointersDone
@@ -228,9 +229,9 @@ CalculateMusicVoiceEnvelope
           rem last NoteDecayFrames frames. Sustain phase: uses target
           rem AUDV. Clamps AUDV to 0-15
           if temp1 = 0 then CMVE_GetVoice0Vars : rem Get voice-specific variables
-          let temp2 = MusicVoice1TotalFrames : rem Voice 1
+          let temp2 = MusicVoice1TotalFrames_R : rem Voice 1
           let temp3 = musicVoice1Frame_R
-          let temp5 = MusicVoice1TargetAUDV
+          let temp5 = MusicVoice1TargetAUDV_R
           goto CMVE_CalcElapsed
 CMVE_GetVoice0Vars
           rem Helper: Gets Voice 0 specific variables
@@ -248,9 +249,9 @@ CMVE_GetVoice0Vars
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope, only called for voice 0
-          let temp2 = MusicVoice0TotalFrames : rem Voice 0
+          let temp2 = MusicVoice0TotalFrames_R : rem Voice 0
           let temp3 = musicVoice0Frame_R
-          let temp5 = MusicVoice0TargetAUDV
+          let temp5 = MusicVoice0TargetAUDV_R
 CMVE_CalcElapsed
           rem Helper: Calculates frames elapsed and determines envelope
           rem phase
@@ -355,11 +356,11 @@ UpdateMusicVoice0
           rem
           rem Called Routines: CalculateMusicVoiceEnvelope - applies
           rem attack/decay/sustain envelope, LoadMusicNote0 (bank15 or
-          rem bank16) - loads next 4-byte note, extracts AUDC/AUDV,
+          rem bank1) - loads next 4-byte note, extracts AUDC/AUDV,
           rem writes to TIA, advances pointer, handles end-of-song
           rem
-          rem Constraints: Uses Voice 0 (AUDC0, AUDF0, AUDV0). Songs 1-2
-          rem in Bank 15, all others in Bank 16. Routes to correct bank
+          rem Constraints: Uses Voice 0 (AUDC0, AUDF0, AUDV0). Songs 0-3
+          rem in Bank 15, all others in Bank 1. Routes to correct bank
           rem based on currentSongID_R
           let temp1 = 0 : rem Apply envelope using shared calculation
           gosub CalculateMusicVoiceEnvelope
@@ -369,11 +370,10 @@ UpdateMusicVoice0
           if MS_frameCount then return
           rem Frame counter reached 0 - load next note from appropriate
           rem bank
-          rem Check which bank this song is in (Bank 15: songs 1-2, Bank
-          rem 16: others)
-          if currentSongID_R = 1 then gosub LoadMusicNote0 bank15 : return
-          if currentSongID_R = 2 then gosub LoadMusicNote0 bank15 : return
-          gosub LoadMusicNote0 bank16 : rem Song in Bank 16
+          rem Check which bank this song is in (Bank 15: songs 0-3, Bank
+          rem 1: others)
+          if currentSongID_R < 4 then gosub LoadMusicNote0 bank15 : return
+          gosub LoadMusicNote0 bank1 : rem Song in Bank 1
           return
 
 UpdateMusicVoice1
@@ -404,11 +404,11 @@ UpdateMusicVoice1
           rem
           rem Called Routines: CalculateMusicVoiceEnvelope - applies
           rem attack/decay/sustain envelope, LoadMusicNote1 (bank15 or
-          rem bank16) - loads next 4-byte note, extracts AUDC/AUDV,
+          rem bank1) - loads next 4-byte note, extracts AUDC/AUDV,
           rem writes to TIA, advances pointer, handles end-of-song
           rem
-          rem Constraints: Uses Voice 1 (AUDC1, AUDF1, AUDV1). Songs 1-2
-          rem in Bank 15, all others in Bank 16. Routes to correct bank
+          rem Constraints: Uses Voice 1 (AUDC1, AUDF1, AUDV1). Songs 0-3
+          rem in Bank 15, all others in Bank 1. Routes to correct bank
           rem based on currentSongID_R
           let temp1 = 1 : rem Apply envelope using shared calculation
           gosub CalculateMusicVoiceEnvelope
@@ -418,11 +418,10 @@ UpdateMusicVoice1
           if MS_frameCount1 then return
           rem Frame counter reached 0 - load next note from appropriate
           rem bank
-          rem Check which bank this song is in (Bank 15: songs 1-2, Bank
-          rem 16: others)
-          if currentSongID_R = 1 then gosub LoadMusicNote1 bank15 : return
-          if currentSongID_R = 2 then gosub LoadMusicNote1 bank15 : return
-          gosub LoadMusicNote1 bank16 : rem Song in Bank 16
+          rem Check which bank this song is in (Bank 15: songs 0-3, Bank
+          rem 1: others)
+          if currentSongID_R < 4 then gosub LoadMusicNote1 bank15 : return
+          gosub LoadMusicNote1 bank1 : rem Song in Bank 1
           return
 
 StopMusic

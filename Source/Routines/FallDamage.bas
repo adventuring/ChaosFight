@@ -211,11 +211,12 @@ end
           
           rem Set recovery frames (proportional to damage, min 10, max
           rem   30)
-          let recoveryFramesCalc = temp4 : rem Use recoveryFramesCalc for recovery frames calculation
-          lsr recoveryFramesCalc
-          if recoveryFramesCalc < 10 then let recoveryFramesCalc = 10 : rem Divide by 2 using bit shift right
-          if recoveryFramesCalc > 30 then let recoveryFramesCalc = 30
-          let playerRecoveryFrames[temp1] = recoveryFramesCalc
+          let temp2 = temp4 : rem Use temp2 for recovery frames calculation
+          lsr temp2
+          if temp2 < 10 then let temp2 = 10 : rem Divide by 2 using bit shift right
+          if temp2 > 30 then let temp2 = 30
+          let recoveryFramesCalc_W = temp2
+          let playerRecoveryFrames[temp1] = temp2
           
           let playerState[temp1] = playerState[temp1] | 8 : rem Synchronize playerState bit 3 with recovery frames
           rem Set bit 3 (recovery flag) when recovery frames are set
@@ -227,9 +228,10 @@ end
           rem   [7:animation][4:attacking][2:jumping]
           rem   [1:guarding][0:facing]
           rem Set bits 7-5 to 9 (recovering animation)
-          let playerStateTemp = playerState[temp1] & MaskPlayerStateLower : rem Use playerStateTemp for state manipulation
-          let playerStateTemp = playerStateTemp | MaskAnimationRecovering : rem Keep lower 5 bits
-          let playerState[temp1] = playerStateTemp : rem Set animation to 9 (1001 in bits 7-4)
+          let temp2 = playerState[temp1] & MaskPlayerStateLower : rem Use temp2 for state manipulation
+          let temp2 = temp2 | MaskAnimationRecovering : rem Keep lower 5 bits
+          let playerStateTemp_W = temp2
+          let playerState[temp1] = temp2 : rem Set animation to 9 (1001 in bits 7-4)
           
           let temp1 = SoundLandingDamage : rem Play fall damage sound effect
           gosub PlaySoundEffect bank15

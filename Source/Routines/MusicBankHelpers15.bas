@@ -8,24 +8,24 @@
           rem Duplicate of MusicBankHelpers.bas but for Bank 15 songs
           
 LoadSongPointer
-          rem Lookup song pointer from tables (Bank 15 songs: 1-2 only)
+          rem Lookup song pointer from tables (Bank 15 songs: 0-3)
           rem
-          rem Input: temp1 = song ID (Bank 15 songs: 1-2 only),
-          rem        SongPointersL15[], SongPointersH15[] = pointer tables
+          rem Input: temp1 = song ID (Bank 15 songs: 0-3),
+          rem        SongPointers2L[], SongPointers2H[] = pointer tables
           rem
           rem Output: SongPointerL, SongPointerH = pointer to Song_Voice0 stream
           rem
           rem Mutates: temp1-temp2, SongPointerL, SongPointerH
           rem
-          rem Constraints: Only songs 1-2 live in Bank 15. Index mapping:
-          rem song 1 → index 0, song 2 → index 1. Returns SongPointerH = 0 if song not in this bank.
-          rem Bounds check: only songs 1-2 reside in Bank 15
-          if temp1 < 1 then goto LSP15_InvalidSong
-          if temp1 > 2 then goto LSP15_InvalidSong
-          rem Calculate compact index: songID - 1 (song 1→0, song 2→1)
-          let temp2 = temp1 - 1
-          let SongPointerL = SongPointersL15[temp2] : rem Use array access to lookup pointer
-          let SongPointerH = SongPointersH15[temp2]
+          rem Constraints: Only songs 0-3 live in Bank 15. Index mapping:
+          rem song ID maps directly (index = songID). Returns SongPointerH = 0 if song not in this bank.
+          rem Bounds check: only songs 0-3 reside in Bank 15
+          if temp1 < 0 then goto LSP15_InvalidSong
+          if temp1 > 3 then goto LSP15_InvalidSong
+          rem Calculate compact index: index = songID
+          let temp2 = temp1
+          let SongPointerL = SongPointers2L[temp2] : rem Use array access to lookup pointer
+          let SongPointerH = SongPointers2H[temp2]
           return
 
 LSP15_InvalidSong
@@ -35,16 +35,16 @@ LSP15_InvalidSong
 LoadSongVoice1Pointer
           rem Lookup Voice 1 song pointer from tables (Bank 15 songs)
           rem
-          rem Input: temp1 = song ID (Bank 15 songs: 1-2 only)
+          rem Input: temp1 = song ID (Bank 15 songs: 0-3)
           rem
           rem Output: SongPointerL, SongPointerH = pointer to
           rem   Song_Voice1 stream
-          rem Index mapping: song 1 → index 0, song 2 → index 1
+          rem Index mapping: song ID maps directly (index = songID)
           rem Lookup Voice 1 song pointer from tables (Bank 15 songs:
-          rem 1-2 only)
+          rem 0-3)
           rem
-          rem Input: temp1 = song ID (Bank 15 songs: 1-2 only),
-          rem SongPointersSecondL15[], SongPointersSecondH15[] (global
+          rem Input: temp1 = song ID (Bank 15 songs: 0-3),
+          rem SongPointers2SecondL[], SongPointers2SecondH[] (global
           rem data tables) = Voice 1 song pointer tables
           rem
           rem Output: SongPointerL, SongPointerH = pointer to
@@ -56,16 +56,16 @@ LoadSongVoice1Pointer
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Only songs 1-2 are in Bank 15. Index mapping:
-          rem song 1 → index 0, song 2 → index 1. Returns SongPointerH =
+          rem Constraints: Only songs 0-3 are in Bank 15. Index mapping:
+          rem song ID maps directly (index = songID). Returns SongPointerH =
           rem 0 if song not in this bank
-          rem Bounds check: Only songs 1-2 are in Bank 15
-          if temp1 < 1 then let SongPointerH = 0 : return
-          if temp1 > 2 then let SongPointerH = 0 : return
-          rem Calculate compact index: songID - 1 (song 1→0, song 2→1)
-          let temp2 = temp1 - 1
-          let SongPointerL = SongPointersSecondL15[temp2] : rem Use array access to lookup Voice 1 pointer directly
-          let SongPointerH = SongPointersSecondH15[temp2]
+          rem Bounds check: Only songs 0-3 are in Bank 15
+          if temp1 < 0 then let SongPointerH = 0 : return
+          if temp1 > 3 then let SongPointerH = 0 : return
+          rem Calculate compact index: index = songID
+          let temp2 = temp1
+          let SongPointerL = SongPointers2SecondL[temp2] : rem Use array access to lookup Voice 1 pointer directly
+          let SongPointerH = SongPointers2SecondH[temp2]
           return
           
 LoadMusicNote0
@@ -111,16 +111,16 @@ end
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           let temp6 = temp2 & %11110000 : rem   AUDCV
           let temp6 = temp6 / 16
-          let MusicVoice0TargetAUDV = temp2 & %00001111
+          let MusicVoice0TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope
-          let MusicVoice0TotalFrames = temp4 + temp5
+          let MusicVoice0TotalFrames_W = temp4 + temp5
           
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice0)
           AUDC0 = temp6
           AUDF0 = temp3
-          AUDV0 = MusicVoice0TargetAUDV
+          AUDV0 = MusicVoice0TargetAUDV_R
           
           let musicVoice0Frame_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
           
@@ -204,16 +204,16 @@ end
           
           let temp6 = temp2 & %11110000 : rem Extract AUDC and AUDV
           let temp6 = temp6 / 16
-          let MusicVoice1TargetAUDV = temp2 & %00001111
+          let MusicVoice1TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope
-          let MusicVoice1TotalFrames = temp4 + temp5
+          let MusicVoice1TotalFrames_W = temp4 + temp5
           
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice1)
           AUDC1 = temp6
           AUDF1 = temp3
-          AUDV1 = MusicVoice1TargetAUDV
+          AUDV1 = MusicVoice1TargetAUDV_R
           
           let musicVoice1Frame_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
           

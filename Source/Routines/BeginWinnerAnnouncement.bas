@@ -30,7 +30,7 @@ BeginWinnerAnnouncement
           rem
           rem Called Routines: SetAdminScreenLayout (bank8) - sets
           rem screen layout,
-          rem   StartMusic (bank16) - starts winner’s character theme
+          rem   StartMusic (bank1) - starts winner’s character theme
           rem   song
           rem
           rem Constraints: Called from ChangeGameMode when transitioning
@@ -50,12 +50,12 @@ BeginWinnerAnnouncement
           rem Initialize win screen timer (starts at 0, increments each
           rem   frame)
           rem Auto-advance after WinScreenAutoAdvanceFrames (600 frames
-          let winScreenTimer = 0 : rem = 10 seconds at 60fps)
+          let winScreenTimer_W = 0 : rem = 10 seconds at 60fps)
           
           rem Initialize display rank (starts at 0, may be updated by
-          let displayRank = 0 : rem   DisplayWinScreen if implemented)
+          let displayRank_W = 0 : rem   DisplayWinScreen if implemented)
           
-          let temp1 = winnerPlayerIndex : rem Get winner’s character index
+          let temp1 = winnerPlayerIndex_R : rem Get winner’s character index
           if temp1 = 0 then let temp2 = PlayerCharacter[0]
           if temp1 = 1 then let temp2 = PlayerCharacter[1]
           if temp1 = 2 then let temp2 = PlayerCharacter[2]
@@ -65,7 +65,7 @@ BeginWinnerAnnouncement
           let temp1 = CharacterThemeSongIndices[temp2] : rem   song ID constants)
           
           rem Start winner’s character theme song
-          gosub StartMusic bank16
+          gosub StartMusic bank1
           
           return
 

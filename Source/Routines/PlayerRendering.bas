@@ -138,7 +138,7 @@ RenderMissile0P3
           missile0x = missileX[2]
           missile0y = missileY_R[2]
           ENAM0 = 1
-          NUSIZ0 = missileNUSIZ[2]
+          NUSIZ0 = missileNUSIZ_R[2]
           let temp5 = playerCharacter[2] : rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[temp5]
           
@@ -157,7 +157,7 @@ RenderMissile1P4Active
           missile1x = missileX[3]
           missile1y = missileY_R[3]
           ENAM1 = 1
-          NUSIZ1 = missileNUSIZ[3]
+          NUSIZ1 = missileNUSIZ_R[3]
           let temp5 = playerCharacter[3] : rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[temp5]
           return
@@ -178,7 +178,7 @@ RenderMissile0P1
           missile0x = missileX[0]
           missile0y = missileY_R[0]
           ENAM0 = 1
-          NUSIZ0 = missileNUSIZ[0]
+          NUSIZ0 = missileNUSIZ_R[0]
           let temp5 = playerCharacter[0] : rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[temp5]
           
@@ -197,7 +197,7 @@ RenderMissile1P2Active
           missile1x = missileX[1]
           missile1y = missileY_R[1]
           ENAM1 = 1
-          NUSIZ1 = missileNUSIZ[1]
+          NUSIZ1 = missileNUSIZ_R[1]
           let temp5 = playerCharacter[1] : rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[temp5]
           return
@@ -221,7 +221,7 @@ RenderMissile0P1_2P
           missile0x = missileX[0]
           missile0y = missileY_R[0]
           ENAM0 = 1
-          NUSIZ0 = missileNUSIZ[0]
+          NUSIZ0 = missileNUSIZ_R[0]
           let temp5 = playerCharacter[0] : rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[temp5]
           
@@ -242,7 +242,7 @@ RenderMissile1P2_2PActive
           missile1x = missileX[1]
           missile1y = missileY_R[1]
           ENAM1 = 1
-          NUSIZ1 = missileNUSIZ[1]
+          NUSIZ1 = missileNUSIZ_R[1]
           let temp5 = playerCharacter[1] : rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[temp5]
           return

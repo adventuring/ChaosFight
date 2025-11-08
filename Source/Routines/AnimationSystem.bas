@@ -296,7 +296,7 @@ UpdateSprite
           rem SCRAM read: Read from r081
           rem NOTE: US_SEPARATOR const added to work around compiler bug
           let temp2 = currentAnimationFrame_R[currentPlayer] : rem   where dim entries concatenate with subsequent constants
-          let temp3 = currentAnimationSeq[currentPlayer]
+          let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           gosub LoadPlayerSprite bank10
           
@@ -337,7 +337,7 @@ SetPlayerAnimation
           rem Constraints: None
           if temp2 >= AnimationSequenceCount then return
           
-          let currentAnimationSeq[currentPlayer] = temp2
+          let currentAnimationSeq_W[currentPlayer] = temp2
           let currentAnimationFrame_W[currentPlayer] = 0 : rem SCRAM write: Write to w081
           rem Start at first frame
           let animationCounter_W[currentPlayer] = 0 : rem SCRAM write: Write to w077
@@ -348,7 +348,7 @@ SetPlayerAnimation
           rem   currentAnimationSeq
           rem Set up parameters for LoadPlayerSprite
           let temp2 = 0 : rem SCRAM read: Read from r081 (we just wrote 0, so this is 0)
-          let temp3 = currentAnimationSeq[currentPlayer]
+          let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
           gosub LoadPlayerSprite bank10
           
@@ -374,7 +374,7 @@ GetCurrentAnimationAction
           rem
           rem OUTPUT: temp2 = current animation action (0-15)
           rem EFFECTS: None (read-only query)
-          let temp2 = currentAnimationSeq[currentPlayer]
+          let temp2 = currentAnimationSeq_R[currentPlayer]
           return
 
 InitializeAnimationSystem
@@ -471,7 +471,7 @@ IsPlayerWalking
           rem OUTPUT: temp2 = 1 if walking, 0 if not
           rem EFFECTS: None (read-only query)
           let temp2 = 0 : rem Use temp2 directly to avoid batariBASIC alias resolution issues
-          if ActionWalking = currentAnimationSeq[currentPlayer] then let temp2 = 1
+          if ActionWalking = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
           return
 
 IsPlayerAttacking
@@ -482,8 +482,8 @@ IsPlayerAttacking
           rem OUTPUT: temp2 = 1 if attacking, 0 if not
           rem EFFECTS: None (read-only query)
           let temp2 = 0
-          if ActionAttackWindup > currentAnimationSeq[currentPlayer] then goto NotAttacking
-          if ActionAttackRecovery < currentAnimationSeq[currentPlayer] then goto NotAttacking
+          if ActionAttackWindup > currentAnimationSeq_R[currentPlayer] then goto NotAttacking
+          if ActionAttackRecovery < currentAnimationSeq_R[currentPlayer] then goto NotAttacking
           let temp2 = 1
 NotAttacking
           return
@@ -496,7 +496,7 @@ IsPlayerHit
           rem OUTPUT: temp2 = 1 if hit, 0 if not
           rem EFFECTS: None (read-only query)
           let temp2 = 0
-          if ActionHit = currentAnimationSeq[currentPlayer] then let temp2 = 1
+          if ActionHit = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
           return
 
 IsPlayerJumping
@@ -513,8 +513,8 @@ IsPlayerJumping
           rem OUTPUT: temp2 = 1 if jumping, 0 if not
           rem EFFECTS: None (read-only query)
           let temp2 = 0 : rem Use temp2 directly to avoid batariBASIC alias resolution issues
-          if ActionJumping = currentAnimationSeq[currentPlayer] then let temp2 = 1
-          if ActionFalling = currentAnimationSeq[currentPlayer] then let temp2 = 1
+          if ActionJumping = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
+          if ActionFalling = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
           return
 
 HandleAnimationTransition
@@ -525,7 +525,7 @@ HandleAnimationTransition
           rem Input: currentPlayer = player index (0-3)
           rem Uses: currentAnimationSeq[currentPlayer] to determine
           rem transition
-          let temp1 = currentAnimationSeq[currentPlayer] : rem Get current action
+          let temp1 = currentAnimationSeq_R[currentPlayer] : rem Get current action
           if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation : rem Guard against invalid action values
           
           on temp1 goto TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionToIdle TransitionHandleFallBack TransitionToFallen TransitionLoopAnimation TransitionToIdle TransitionHandleJump TransitionLoopAnimation TransitionToIdle HandleAttackTransition HandleAttackTransition HandleAttackTransition
@@ -573,7 +573,7 @@ TransitionHandleFallBack_HitWall
           rem Character-specific attack transitions based on patterns
           
 HandleAttackTransition
-          let temp1 = currentAnimationSeq[currentPlayer] : rem Branch by attack phase
+          let temp1 = currentAnimationSeq_R[currentPlayer] : rem Branch by attack phase
           
           if ActionAttackWindup = temp1 then goto HandleWindupEnd
           if ActionAttackExecute = temp1 then goto HandleExecuteEnd

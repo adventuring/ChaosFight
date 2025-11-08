@@ -288,7 +288,7 @@ HCSF_HandleRandom
           rem HandleCharacterSelectFire
           rem Random selection initiated - will be handled by
           rem CharacterSelectHandleRandomRolls
-          if temp4 then randomSelectFlags[temp1] = $80 else randomSelectFlags[temp1] = 0 : rem Store handicap flag if down was held
+          if temp4 then randomSelectFlags_W[temp1] = $80 else randomSelectFlags_W[temp1] = 0 : rem Store handicap flag if down was held
           let temp1 = SoundMenuSelect : rem Play selection sound
           gosub PlaySoundEffect bank15
           rem Fall through - character will stay as RandomCharacter
@@ -470,52 +470,52 @@ CharacterSelectRollPlayer0
           let temp2 = rand & 31 : rem Roll 5-bit random: rand & 31 (0-31)
           if temp2 > MaxCharacter then goto CharacterSelectRollsDone : rem If > 15, stay as RandomCharacter and retry next frame
           let playerCharacter[0] = temp2 : rem Valid! Set character and lock with normal or handicap
-          if randomSelectFlags[0] then goto CharacterSelectLockPlayer0Handicap
+          if randomSelectFlags_R[0] then goto CharacterSelectLockPlayer0Handicap
           let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto CharacterSelectLockPlayer0Done
 CharacterSelectLockPlayer0Handicap
           let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 CharacterSelectLockPlayer0Done
-          let randomSelectFlags[0] = 0
+          let randomSelectFlags_W[0] = 0
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer1
           let temp2 = rand & 31
           if temp2 > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[1] = temp2
-          if randomSelectFlags[1] then goto CharacterSelectLockPlayer1Handicap
+          if randomSelectFlags_R[1] then goto CharacterSelectLockPlayer1Handicap
           let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto CharacterSelectLockPlayer1Done
 CharacterSelectLockPlayer1Handicap
           let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 CharacterSelectLockPlayer1Done
-          let randomSelectFlags[1] = 0
+          let randomSelectFlags_W[1] = 0
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer2
           let temp2 = rand & 31
           if temp2 > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[2] = temp2
-          if randomSelectFlags[2] then goto CharacterSelectLockPlayer2Handicap
+          if randomSelectFlags_R[2] then goto CharacterSelectLockPlayer2Handicap
           let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto CharacterSelectLockPlayer2Done
 CharacterSelectLockPlayer2Handicap
           let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 CharacterSelectLockPlayer2Done
-          let randomSelectFlags[2] = 0
+          let randomSelectFlags_W[2] = 0
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer3
           let temp2 = rand & 31
           if temp2 > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[3] = temp2
-          if randomSelectFlags[3] then goto CharacterSelectLockPlayer3Handicap
+          if randomSelectFlags_R[3] then goto CharacterSelectLockPlayer3Handicap
           let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
           goto CharacterSelectLockPlayer3Done
 CharacterSelectLockPlayer3Handicap
           let temp1 = 3 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
 CharacterSelectLockPlayer3Done
-          let randomSelectFlags[3] = 0
+          let randomSelectFlags_W[3] = 0
           
 CharacterSelectRollsDone
           return
@@ -838,9 +838,9 @@ SelectLoadSprite
           rem characterSelectPlayerAnimationFrame has animation frame counter
           rem   (0-7)
           rem Map to proper animation action: 0=idle (ActionIdle=1),
-          if characterSelectPlayerAnimationSequence[temp6] then goto SelectLoadWalkingSprite : rem 1=walk (ActionWalking=3)
+          if characterSelectPlayerAnimationSequence_R[temp6] then goto SelectLoadWalkingSprite : rem 1=walk (ActionWalking=3)
           
-          let temp2 = characterSelectPlayerAnimationFrame[temp6] : rem Idle animation
+          let temp2 = characterSelectPlayerAnimationFrame_R[temp6] : rem Idle animation
           rem frame
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
           let temp3 = 1 : rem temp3=action, temp4=player
@@ -870,7 +870,7 @@ SelectLoadSpecialSpriteCall
           goto SelectLoadSpriteColor : rem Special sprites don’t need animation handling, go to color
           
 SelectLoadWalkingSprite
-          let temp2 = characterSelectPlayerAnimationSequence[temp6] : rem Walking animation
+          let temp2 = characterSelectPlayerAnimationSequence_R[temp6] : rem Walking animation
           let temp3 = 3 : rem Use sequence counter as frame (0-3 for 4-frame walk)
           let temp4 = temp6 : rem ActionWalking = 3
           gosub LocateCharacterArt bank14
@@ -984,7 +984,7 @@ SDN_Player3
           let temp1 = 4
           
 SDN_DrawDigit
-          gosub DrawDigit bank1
+          gosub DrawDigit bank16
           return
 
 SelectSetPlayerColorUnlocked
@@ -1085,22 +1085,23 @@ SelectUpdatePlayerAnimation
           rem Update animation for a single player
           rem
           rem Input: playerIndex = player index (0-3)
-          let characterSelectPlayerAnimationFrame[temp1] = characterSelectPlayerAnimationFrame[temp1] + 1 : rem Increment frame counter
+          let temp2 = characterSelectPlayerAnimationFrame_R[temp1] + 1 : rem Increment frame counter
+          let characterSelectPlayerAnimationFrame_W[temp1] = temp2
           
           rem Check if it’s time to advance frame (every 6 frames for
-          if characterSelectPlayerAnimationFrame[temp1] >= AnimationFrameDelay then goto SelectAdvanceAnimationFrame : rem   10fps at 60fps)
+          if characterSelectPlayerAnimationFrame_R[temp1] >= AnimationFrameDelay then goto SelectAdvanceAnimationFrame : rem   10fps at 60fps)
           return
           
 SelectAdvanceAnimationFrame
-          let characterSelectPlayerAnimationFrame[temp1] = 0 : rem Reset frame counter
+          let characterSelectPlayerAnimationFrame_W[temp1] = 0 : rem Reset frame counter
           
-          if !characterSelectPlayerAnimationSequence[temp1] then goto SelectAdvanceIdleAnimation : rem Check current animation sequence
+          if !characterSelectPlayerAnimationSequence_R[temp1] then goto SelectAdvanceIdleAnimation : rem Check current animation sequence
           rem Walking animation: cycle through 4 frames (0-3)
-          let temp2 = (characterSelectPlayerAnimationSequence[temp1] + 1) & 3 : rem Use bit 0-1 of sequence counter
-          let characterSelectPlayerAnimationSequence[temp1] = temp2
+          let temp2 = (characterSelectPlayerAnimationSequence_R[temp1] + 1) & 3 : rem Use bit 0-1 of sequence counter
+          let characterSelectPlayerAnimationSequence_W[temp1] = temp2
           
-          if characterSelectPlayerAnimationSequence[temp1] then return : rem After 4 walk frames (frame 3→0), switch to idle
-          let characterSelectPlayerAnimationSequence[temp1] = 0 : rem Switch back to idle after walk cycle
+          if characterSelectPlayerAnimationSequence_R[temp1] then return : rem After 4 walk frames (frame 3→0), switch to idle
+          let characterSelectPlayerAnimationSequence_W[temp1] = 0 : rem Switch back to idle after walk cycle
           
           rem Toggle to walk sequence after idle
           goto SelectAnimationWaitForToggle : rem Just set sequence flag to 1 (walk) for next cycle
@@ -1112,7 +1113,7 @@ SelectAdvanceIdleAnimation
           if frame & 63 then return : rem Every 60 frames (10 idle animations), toggle to walk
           rem Check every 64 frames roughly
           
-          let characterSelectPlayerAnimationSequence[temp1] = 1 : rem Toggle to walk
+          let characterSelectPlayerAnimationSequence_W[temp1] = 1 : rem Toggle to walk
           rem Start walking
           return
           

@@ -58,7 +58,7 @@ CheckAllPlayerEliminations
           rem Count remaining players and check game end (inline
           gosub CountRemainingPlayers : rem   CheckGameEndCondition)
           rem Game ends when 1 or fewer players remain
-          if playersRemaining <= 1 then gosub FindWinner : let gameEndTimer = 180 : let systemFlags = systemFlags | SystemFlagGameStateEnding : return
+          if playersRemaining_R <= 1 then gosub FindWinner : let gameEndTimer_W = 180 : let systemFlags = systemFlags | SystemFlagGameStateEnding : return
           
 
 CheckPlayerElimination
@@ -133,8 +133,9 @@ CheckPlayerElimination
           if currentPlayer = 3 then gosub UpdatePlayers34ActiveFlag
 UpdatePlayers34Done
           
-          let eliminationCounter = eliminationCounter + 1 : rem Record elimination order
-          let eliminationOrder[currentPlayer] = eliminationCounter
+          let temp2 = eliminationCounter_R + 1 : rem Record elimination order
+          let eliminationCounter_W = temp2
+          let eliminationOrder_W[currentPlayer] = temp2
           
           rem Trigger elimination effects
           goto TriggerEliminationEffects : rem tail call
@@ -162,7 +163,7 @@ TriggerEliminationEffects
           
           rem Set elimination visual effect timer
           let temp2 = 30 : rem This could trigger screen flash, particle effects, etc.
-          let eliminationEffectTimer[currentPlayer] = temp2 : rem 30 frames of elimination effect
+          let eliminationEffectTimer_W[currentPlayer] = temp2 : rem 30 frames of elimination effect
           
           rem Hide player sprite immediately
           if currentPlayer = 0 then player0x = 200 : rem Inline HideEliminatedPlayerSprite
@@ -265,17 +266,17 @@ FindWinner
           rem Output: winnerPlayerIndex (0-3, 255 if all eliminated)
           rem Mutates: temp2, currentPlayer, winnerPlayerIndex
           rem Calls: IsPlayerEliminated, FindLastEliminated (if needed)
-          let winnerPlayerIndex = 255 : rem Find the player who is not eliminated
+          let winnerPlayerIndex_W = 255 : rem Find the player who is not eliminated
           rem Invalid initially
           
           for currentPlayer = 0 to 3 : rem Check each player using FOR loop
               gosub IsPlayerEliminated
               let temp2 = temp2
-              if !temp2 then let winnerPlayerIndex = currentPlayer
+              if !temp2 then let winnerPlayerIndex_W = currentPlayer
           next
           
           rem If no winner found (all eliminated), pick last eliminated
-          if winnerPlayerIndex = 255 then goto FindLastEliminated : rem tail call
+          if winnerPlayerIndex_R = 255 then goto FindLastEliminated : rem tail call
 
 FindLastEliminated
           rem
@@ -284,12 +285,12 @@ FindLastEliminated
           rem Output: winnerPlayerIndex updated to last eliminated player
           rem Mutates: temp4, currentPlayer, winnerPlayerIndex
           let temp4 = 0    
-          let winnerPlayerIndex = 0 : rem Highest elimination order found
+          let winnerPlayerIndex_W = 0 : rem Highest elimination order found
           rem Default winner
           
           for currentPlayer = 0 to 3 : rem Check each player elimination order using FOR loop
-              let temp4 = eliminationOrder[currentPlayer]
-              if temp4 > temp4 then let temp4 = temp4 : let winnerPlayerIndex = currentPlayer
+              let temp4 = eliminationOrder_R[currentPlayer]
+              if temp4 > temp4 then let temp4 = temp4 : let winnerPlayerIndex_W = currentPlayer
           next
           
 UpdatePlayers34ActiveFlag

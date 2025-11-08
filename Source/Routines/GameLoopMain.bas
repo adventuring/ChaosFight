@@ -58,7 +58,7 @@ GameMainLoop
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+
           gosub ReadEnhancedButtons : rem   II/III)
           
-          gosub HandleConsoleSwitches bank14 : rem Handle console switches (in Bank 1)
+          gosub HandleConsoleSwitches bank14 : rem Handle console switches (in Bank 14)
 
           gosub InputHandleAllPlayers bank13 : rem Handle all player input (with Quadtari multiplexing) (in Bank 13)
 
@@ -125,8 +125,8 @@ CheckGameEndTransition
           rem
           rem Constraints: Must be colocated with GameMainLoop,
           rem TransitionToWinner, GameEndCheckDone
-          if gameEndTimer > 0 then let gameEndTimer = gameEndTimer - 1 : rem Decrement game end timer
-          if gameEndTimer = 0 then TransitionToWinner : rem When timer reaches 0, transition to winner announcement
+          if gameEndTimer_R > 0 then let gameEndTimer_W = gameEndTimer_R - 1 : rem Decrement game end timer
+          if gameEndTimer_R = 0 then TransitionToWinner : rem When timer reaches 0, transition to winner announcement
           goto GameEndCheckDone
 TransitionToWinner
           rem Transition to winner announcement mode

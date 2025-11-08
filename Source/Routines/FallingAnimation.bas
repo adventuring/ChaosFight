@@ -275,7 +275,7 @@ MovePlayerToTarget
           let temp6 = playerY[temp1]
           
           if temp5 >= temp2 then CalcDeltaXRight : rem Calculate distances to target
-          let yDistance = temp2 - temp5
+          let yDistance_W = temp2 - temp5
           goto DeltaXDone
 CalcDeltaXRight
           rem Calculate delta X when current X >= target X
@@ -288,7 +288,7 @@ CalcDeltaXRight
           rem Mutates: yDistance
           rem
           rem Called Routines: None
-          let yDistance = temp5 - temp2 : rem Constraints: Must be colocated with MovePlayerToTarget, DeltaXDone
+          let yDistance_W = temp5 - temp2 : rem Constraints: Must be colocated with MovePlayerToTarget, DeltaXDone
 DeltaXDone
           rem Delta X calculation complete
           rem
@@ -303,7 +303,7 @@ DeltaXDone
           rem Constraints: Must be colocated with MovePlayerToTarget
           
           if temp6 >= temp3 then CalcDeltaYDown
-          let rowYPosition = temp3 - temp6
+          let rowYPosition_W = temp3 - temp6
           goto DeltaYDone
 CalcDeltaYDown
           rem Calculate delta Y when current Y >= target Y
@@ -316,7 +316,7 @@ CalcDeltaYDown
           rem Mutates: rowYPosition
           rem
           rem Called Routines: None
-          let rowYPosition = temp6 - temp3 : rem Constraints: Must be colocated with MovePlayerToTarget, DeltaYDone
+          let rowYPosition_W = temp6 - temp3 : rem Constraints: Must be colocated with MovePlayerToTarget, DeltaYDone
 DeltaYDone
           rem Delta Y calculation complete
           rem
@@ -330,7 +330,7 @@ DeltaYDone
           rem
           rem Constraints: Must be colocated with MovePlayerToTarget
           
-          if yDistance <= 1 && rowYPosition <= 1 then AtTarget : rem Check if already at target (within 1 pixel)
+          if yDistance_R <= 1 && rowYPosition_R <= 1 then AtTarget : rem Check if already at target (within 1 pixel)
           
           rem Move toward target (horizontal first, then vertical)
           if temp5 < temp2 then MoveRight : rem Move horizontally if not at target X

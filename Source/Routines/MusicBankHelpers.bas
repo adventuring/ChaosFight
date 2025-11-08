@@ -2,42 +2,28 @@
           rem ChaosFight - Source/Routines/MusicBankHelpers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-          rem SONGS BANK HELPER FUNCTIONS (bank 16)
+          rem SONGS BANK HELPER FUNCTIONS (bank 1)
           rem These functions access song data tables and streams in
-          rem   Bank 16
+          rem   Bank 1 (primary symbols use “1” suffix; SongPointers1.bas
+          rem   provides legacy aliases for the historical “16” labels)
           
 LoadSongPointer
-          rem Lookup SongPointerL/H for Bank 16 songs.
-          rem Input: temp1 = song ID (0 or 3-28), SongPointersL16[]/SongPointersH16[]
+          rem Lookup SongPointerL/H for Bank 1 songs.
+          rem Input: temp1 = song ID (4-28), SongPointers1L[]/SongPointers1H[]
           rem Output: SongPointerL/SongPointerH updated (points to Song_Voice0 stream)
           rem Mutates: temp1-temp2, SongPointerL, SongPointerH
-          rem Constraints: Songs 1-2 live in Bank 15; returns SongPointerH = 0 if out of range
+          rem Constraints: Songs 0-3 live in Bank 15; returns SongPointerH = 0 if out of range
           if temp1 > 28 then goto LSP_InvalidSong
-          rem Check if song 1 or 2 (not in this bank)
-          if temp1 = 1 then goto LSP_InvalidSong
-          if temp1 = 2 then goto LSP_InvalidSong
-          rem Calculate compact index: if songID = 0 then index = 0,
-          rem else index = songID - 2
-          if temp1 = 0 then LSP_IndexZero
-          let temp2 = temp1 - 2
-          goto LSP_Lookup
-LSP_IndexZero
-          rem Helper: Set index to 0 for song 0
-          rem
-          rem Input: None
-          rem
-          rem Output: temp2 set to 0
-          rem
-          rem Mutates: temp2 (local variable) = index (set to 0)
-          rem
-          rem Called Routines: None
-          let temp2 = 0 : rem Constraints: Internal helper for LoadSongPointer, only called for song 0
+          rem Check if songs handled by other banks (0-3)
+          if temp1 < 4 then goto LSP_InvalidSong
+          rem Calculate compact index: songID - 4 (song 4 → 0)
+          let temp2 = temp1 - 4
 LSP_Lookup
           rem Helper: Lookup pointer from tables
           rem
           rem Input: temp2 (local variable) = table index,
-          rem SongPointersL16[], SongPointersH16[] (global data tables)
-          rem = song pointer tables
+          rem SongPointers1L[], SongPointers1H[] (global data tables)
+          rem = song pointer tables (residing in Bank 1)
           rem
           rem Output: SongPointerL, SongPointerH set from tables
           rem
@@ -47,8 +33,8 @@ LSP_Lookup
           rem Called Routines: None
           rem
           rem Constraints: Internal helper for LoadSongPointer
-          let SongPointerL = SongPointersL16[temp2] : rem Use array access to lookup pointer
-          let SongPointerH = SongPointersH16[temp2]
+          let SongPointerL = SongPointers1L[temp2] : rem Use array access to lookup pointer
+          let SongPointerH = SongPointers1H[temp2]
           return
 
 LSP_InvalidSong
@@ -56,19 +42,19 @@ LSP_InvalidSong
           return
           
 LoadSongVoice1Pointer
-          rem Lookup Voice 1 song pointer from tables (Bank 16 songs)
+          rem Lookup Voice 1 song pointer from tables (Bank 1 songs)
           rem
-          rem Input: temp1 = song ID (Bank 16 songs: 0, 3-28)
+          rem Input: temp1 = song ID (Bank 1 songs: 4-28)
           rem
           rem Output: SongPointerL, SongPointerH = pointer to
           rem   Song_Voice1 stream
           rem Index mapping: song 0 → index 0, songs 3-28 → indices 1-26
-          rem Lookup Voice 1 song pointer from tables (Bank 16 songs: 0,
+          rem Lookup Voice 1 song pointer from tables (Bank 1 songs: 0,
           rem 3-28)
           rem
-          rem Input: temp1 = song ID (Bank 16 songs: 0, 3-28),
-          rem SongPointersSecondL16[], SongPointersSecondH16[] (global
-          rem data tables) = Voice 1 song pointer tables
+          rem Input: temp1 = song ID (Bank 1 songs: 0, 3-28),
+          rem SongPointers1SecondL[], SongPointers1SecondH[] (global
+          rem data tables) = Voice 1 song pointer tables (Bank 1)
           rem
           rem Output: SongPointerL, SongPointerH = pointer to
           rem Song_Voice1 stream
@@ -79,39 +65,21 @@ LoadSongVoice1Pointer
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Only songs 0, 3-28 are in Bank 16. Songs 1-2
-          rem are in Bank 15. Index mapping: song 0 → index 0, songs
-          rem 3-28 → indices 1-26. Returns SongPointerH = 0 if song not
+          rem Constraints: Only songs 4-28 are in Bank 1. Songs 0-3
+          rem are in Bank 15. Index mapping: song 4 → index 0, songs
+          rem 5-28 → indices 1-24. Returns SongPointerH = 0 if song not
           rem in this bank
-          rem Bounds check: Only songs 0, 3-28 are in Bank 16
+          rem Bounds check: Only songs 4-28 are in Bank 1
           if temp1 > 28 then goto LSV1P_InvalidSong
-          rem Check if song 1 or 2 (not in this bank)
-          if temp1 = 1 then goto LSV1P_InvalidSong
-          if temp1 = 2 then goto LSV1P_InvalidSong
-          rem Calculate compact index: if songID = 0 then index = 0,
-          rem else index = songID - 2
-          if temp1 = 0 then LSV1P_IndexZero
-          let temp2 = temp1 - 2
-          goto LSV1P_Lookup
-LSV1P_IndexZero
-          rem Helper: Set index to 0 for song 0
-          rem
-          rem Input: None
-          rem
-          rem Output: temp2 set to 0
-          rem
-          rem Mutates: temp2 (local variable) = index (set to 0)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for LoadSongVoice1Pointer,
-          rem only called for song 0
-          let temp2 = 0
+          rem Check if songs handled by other banks (0-3)
+          if temp1 < 4 then goto LSV1P_InvalidSong
+          rem Calculate compact index: songID - 4 (song 4 → 0)
+          let temp2 = temp1 - 4
 LSV1P_Lookup
           rem Helper: Lookup Voice 1 pointer from tables
           rem
           rem Input: temp2 (local variable) = table index,
-          rem SongPointersSecondL16[], SongPointersSecondH16[] (global
+          rem SongPointers1SecondL[], SongPointers1SecondH[] (global
           rem data tables) = Voice 1 song pointer tables
           rem
           rem Output: SongPointerL, SongPointerH set from Voice 1 tables
@@ -122,8 +90,8 @@ LSV1P_Lookup
           rem Called Routines: None
           rem
           rem Constraints: Internal helper for LoadSongVoice1Pointer
-          let SongPointerL = SongPointersSecondL16[temp2] : rem Use array access to lookup Voice 1 pointer directly
-          let SongPointerH = SongPointersSecondH16[temp2]
+          let SongPointerL = SongPointers1SecondL[temp2] : rem Use array access to lookup Voice 1 pointer directly
+          let SongPointerH = SongPointers1SecondH[temp2]
           return
 
 LSV1P_InvalidSong
@@ -173,16 +141,16 @@ end
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           let temp6 = temp2 & %11110000 : rem   AUDCV
           let temp6 = temp6 / 16
-          let MusicVoice0TargetAUDV = temp2 & %00001111
+          let MusicVoice0TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope
-          let MusicVoice0TotalFrames = temp4 + temp5
+          let MusicVoice0TotalFrames_W = temp4 + temp5
           
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice0)
           AUDC0 = temp6
           AUDF0 = temp3
-          AUDV0 = MusicVoice0TargetAUDV
+          AUDV0 = MusicVoice0TargetAUDV_R
           
           let musicVoice0Frame_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
           
@@ -266,16 +234,16 @@ end
           
           let temp6 = temp2 & %11110000 : rem Extract AUDC and AUDV
           let temp6 = temp6 / 16
-          let MusicVoice1TargetAUDV = temp2 & %00001111
+          let MusicVoice1TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope
-          let MusicVoice1TotalFrames = temp4 + temp5
+          let MusicVoice1TotalFrames_W = temp4 + temp5
           
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice1)
           AUDC1 = temp6
           AUDF1 = temp3
-          AUDV1 = MusicVoice1TargetAUDV
+          AUDV1 = MusicVoice1TargetAUDV_R
           
           let musicVoice1Frame_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
           

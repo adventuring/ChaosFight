@@ -511,8 +511,7 @@ HFCM_CheckLeftCollision
           if pfread(temp3, temp6) then let temp5 = 1
           if temp5 = 1 then goto HFCM_CheckRightMovement
           rem Blocked, cannot move left
-          let temp4 = temp4 + 16 : rem Also check bottom row (feet)
-          let temp2 = temp4
+          let temp2 = temp4 + 16 : rem Also check bottom row (feet)
           gosub DivideByPfrowheight
           let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveLeftOK
@@ -521,8 +520,7 @@ HFCM_CheckLeftCollision
           if temp5 = 1 then goto HFCM_CheckRightMovement
 HFCM_MoveLeftOK
           rem Blocked at bottom too
-          let playerVelocityX[temp1] = 255 : rem Apply leftward velocity impulse (double-width sprite: 16px width)
-          rem -1 in 8-bit twos complement: 256 - 1 = 255
+          let playerVelocityX[temp1] = $ff : rem Apply leftward velocity impulse (double-width sprite: 16px width)
           let playerVelocityXL[temp1] = 0
           rem Preserve facing during hurt/recovery states (knockback, hitstun)
           gosub ShouldPreserveFacing
@@ -709,7 +707,7 @@ InputSkipLeftPortJump
           if !joy0fire then InputSkipLeftPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipLeftPortAttack
           let temp4 = PlayerCharacter[temp1]
-          gosub DispatchCharacterAttack
+          gosub DispatchCharacterAttack bank9
 InputSkipLeftPortAttack
           
           
@@ -833,49 +831,37 @@ DoneUpInputHandlingRight
           let temp4 = PlayerCharacter[temp1] : rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank14
 InputSkipRightPortJump
-
-          
-
           gosub HandleGuardInput : rem Process down/guard input
-          
-          
+
           rem Process attack input
           rem Use cached animation state - block attack input during
           rem attack
           rem animations (states 13-15)
           if temp2 >= 13 then InputSkipRightPortAttack
           rem Block attack input during attack windup/execute/recovery
-          let temp2 = PlayerState[temp1] & 2 : rem Check if player is guarding - guard blocks attacks
+          let temp2 = PlayerState[temp1] & 2 PlayerStateBitGuarding
           if temp2 then InputSkipRightPortAttack
           rem Guarding - block attack input
           if !joy1fire then InputSkipRightPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipRightPortAttack
           let temp4 = PlayerCharacter[temp1]
-          gosub DispatchCharacterAttack
+          gosub DispatchCharacterAttack bank9
 InputSkipRightPortAttack
-          
-          
           return
 
+HandlePauseInput
           rem
           rem Pause Button Handling With Debouncing
           rem Handles SELECT switch and Joy2b+ Button III with proper
           rem   debouncing
           rem Uses PauseButtonPrev for debouncing state
-          
-HandlePauseInput
           let temp1 = 0 : rem Check SELECT switch (always available)
           if switchselect then temp1 = 1
           
           rem Check Joy2b+ Button III (INPT1 for Player 1, INPT3 for
           rem Player 2)
-          if LeftPortJoy2bPlus then CheckJoy2bButtons
-          if RightPortJoy2bPlus then CheckJoy2bButtons
-          goto Joy2bPauseDone
-CheckJoy2bButtons
-          if !INPT1{7} then temp1 = 1 
-          rem Player 1 Button III
-          if !INPT3{7} then temp1 = 1
+          if LeftPortJoy2bPlus then if !INPT1{7} then temp1 = 1
+          if RightPortJoy2bPlus then if !INPT3{7} then temp1 = 1
 Joy2bPauseDone
           rem Player 2 Button III
           

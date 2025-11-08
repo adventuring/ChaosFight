@@ -18,7 +18,8 @@ SetAdminScreenLayout
           rem Mutates: pfrowheight (set to 8), pfrows (set to 32)
           rem
           rem Called Routines: None
-          let pfrowheight = 8 : rem Constraints: Called from setup routines for admin screens
+          rem Constraints: Called from setup routines for admin screens
+          let pfrowheight = 8
           let pfrows = 32
           return
 
@@ -33,7 +34,8 @@ SetGameScreenLayout
           rem Mutates: pfrowheight (set to 16), pfrows (set to 8)
           rem
           rem Called Routines: None
-          let pfrowheight = 16 : rem Constraints: Called from BeginGameLoop for gameplay screen
+          rem Constraints: Called from BeginGameLoop for gameplay screen
+          let pfrowheight = 16
           let pfrows = 8
           return
 

@@ -118,8 +118,7 @@ UpdatePlayerAnimation
           
           rem Increment this sprite 10fps animation counter (NOT global
           rem   frame counter)
-          rem SCRAM read-modify-write: Read from r077, modify, write to
-          rem w077
+          rem SCRAM read-modify-write: animationCounter_R → animationCounter_W
           let temp4 = animationCounter_R[currentPlayer] + 1
           let animationCounter_W[currentPlayer] = temp4
           
@@ -152,8 +151,7 @@ AdvanceFrame
           rem Advance to next frame in current animation action
           rem Frame is from sprite 10fps counter
           rem   (currentAnimationFrame), not global frame
-          rem SCRAM read-modify-write: Read from r081, modify, write to
-          rem   w081
+          rem SCRAM read-modify-write: currentAnimationFrame_R → currentAnimationFrame_W
           let temp4 = currentAnimationFrame_R[currentPlayer]
           let temp4 = 1 + temp4
           let currentAnimationFrame_W[currentPlayer] = temp4
@@ -197,8 +195,7 @@ AdvanceAnimationFrame
           rem Advance to next frame in current animation action
           rem Frame is from sprite 10fps counter
           rem   (currentAnimationFrame), not global frame
-          rem SCRAM read-modify-write: Read from r081, modify, write to
-          rem w081
+          rem SCRAM read-modify-write: currentAnimationFrame_R → currentAnimationFrame_W
           let temp4 = currentAnimationFrame_R[currentPlayer]
           let temp4 = 1 + temp4
           let currentAnimationFrame_W[currentPlayer] = temp4
@@ -312,9 +309,11 @@ SetPlayerAnimation
           if temp2 >= AnimationSequenceCount then return
           
           let currentAnimationSeq_W[currentPlayer] = temp2
-          let currentAnimationFrame_W[currentPlayer] = 0 : rem SCRAM write: Write to w081
+          rem SCRAM write to currentAnimationFrame_W
+          let currentAnimationFrame_W[currentPlayer] = 0
           rem Start at first frame
-          let animationCounter_W[currentPlayer] = 0 : rem SCRAM write: Write to w077
+          rem SCRAM write to animationCounter_W
+          let animationCounter_W[currentPlayer] = 0
           rem Reset animation counter
           
           rem Update character sprite immediately
@@ -506,7 +505,8 @@ HandleAnimationTransition
           on temp1 goto TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionToIdle TransitionHandleFallBack TransitionToFallen TransitionLoopAnimation TransitionToIdle TransitionHandleJump TransitionLoopAnimation TransitionToIdle HandleAttackTransition HandleAttackTransition HandleAttackTransition
 
 TransitionLoopAnimation
-          let currentAnimationFrame_W[currentPlayer] = 0 : rem SCRAM write: Write to w081
+          rem SCRAM write to currentAnimationFrame_W
+          let currentAnimationFrame_W[currentPlayer] = 0
           return
 
 TransitionToIdle

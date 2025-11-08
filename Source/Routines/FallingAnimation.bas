@@ -75,7 +75,8 @@ Player1TargetDone
           rem Mutates: None
           rem
           rem Called Routines: None
-          let temp3 = 24 : rem Constraints: Must be colocated with FallingAnimation1
+          rem Constraints: Must be colocated with FallingAnimation1
+          let temp3 = 24
           gosub MovePlayerToTarget
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer1Move
@@ -124,7 +125,8 @@ Player2TargetDone
           rem Mutates: None
           rem
           rem Called Routines: None
-          let temp3 = 24 : rem Constraints: Must be colocated with FallingAnimation1
+          rem Constraints: Must be colocated with FallingAnimation1
+          let temp3 = 24
           gosub MovePlayerToTarget
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer2Move
@@ -276,7 +278,8 @@ CalcDeltaXRight
           rem Mutates: yDistance
           rem
           rem Called Routines: None
-          let yDistance_W = temp5 - temp2 : rem Constraints: Must be colocated with MovePlayerToTarget, DeltaXDone
+          rem Constraints: Must be colocated with MovePlayerToTarget, DeltaXDone
+          let yDistance_W = temp5 - temp2
 DeltaXDone
           rem Delta X calculation complete
           rem
@@ -304,7 +307,8 @@ CalcDeltaYDown
           rem Mutates: rowYPosition
           rem
           rem Called Routines: None
-          let rowYPosition_W = temp6 - temp3 : rem Constraints: Must be colocated with MovePlayerToTarget, DeltaYDone
+          rem Constraints: Must be colocated with MovePlayerToTarget, DeltaYDone
+          let rowYPosition_W = temp6 - temp3
 DeltaYDone
           rem Delta Y calculation complete
           rem
@@ -339,7 +343,8 @@ MoveRight
           rem Mutates: playerX[temp1]
           rem
           rem Called Routines: None
-          let playerX[temp1] = playerX[temp1] + fallSpeed : rem Constraints: Must be colocated with MovePlayerToTarget, HorizontalDone
+          rem Constraints: Must be colocated with MovePlayerToTarget, HorizontalDone
+          let playerX[temp1] = playerX[temp1] + fallSpeed
           rem Clamp to target if overshot
           if playerX[temp1] > temp2 then let playerX[temp1] = temp2
           goto HorizontalDone
@@ -355,7 +360,8 @@ MoveLeft
           rem Mutates: playerX[temp1]
           rem
           rem Called Routines: None
-          let playerX[temp1] = playerX[temp1] - fallSpeed : rem Constraints: Must be colocated with MovePlayerToTarget, HorizontalDone
+          rem Constraints: Must be colocated with MovePlayerToTarget, HorizontalDone
+          let playerX[temp1] = playerX[temp1] - fallSpeed
           rem Clamp to target if overshot
           if playerX[temp1] < temp2 then let playerX[temp1] = temp2
 HorizontalDone
@@ -388,7 +394,8 @@ MoveDown
           rem Mutates: playerY[temp1]
           rem
           rem Called Routines: None
-          let playerY[temp1] = playerY[temp1] + fallSpeed : rem Constraints: Must be colocated with MovePlayerToTarget, VerticalDone
+          rem Constraints: Must be colocated with MovePlayerToTarget, VerticalDone
+          let playerY[temp1] = playerY[temp1] + fallSpeed
           rem Clamp to target if overshot
           if playerY[temp1] > temp3 then let playerY[temp1] = temp3
           goto VerticalDone
@@ -404,7 +411,8 @@ MoveUp
           rem Mutates: playerY[temp1]
           rem
           rem Called Routines: None
-          let playerY[temp1] = playerY[temp1] - fallSpeed : rem Constraints: Must be colocated with MovePlayerToTarget, VerticalDone
+          rem Constraints: Must be colocated with MovePlayerToTarget, VerticalDone
+          let playerY[temp1] = playerY[temp1] - fallSpeed
           rem Clamp to target if overshot
           if playerY[temp1] < temp3 then let playerY[temp1] = temp3
 VerticalDone
@@ -438,7 +446,8 @@ AtTarget
           rem Mutates: temp4 (set to 1)
           rem
           rem Called Routines: None
-          let temp4 = 1 : rem Constraints: Must be colocated with MovePlayerToTarget
+          rem Constraints: Must be colocated with MovePlayerToTarget
+          let temp4 = 1
           return
           
 NudgePlayerFromPlayfield
@@ -560,7 +569,8 @@ NudgeRight
           rem Mutates: playerX[temp1]
           rem
           rem Called Routines: None
-          let playerX[temp1] = playerX[temp1] + 1 : rem Constraints: Must be colocated with NudgePlayerFromPlayfield, NudgeHorizontalDone
+          rem Constraints: Must be colocated with NudgePlayerFromPlayfield, NudgeHorizontalDone
+          let playerX[temp1] = playerX[temp1] + 1
           goto NudgeHorizontalDone
 NudgeLeft
           rem Nudge player left 1 pixel
@@ -572,7 +582,8 @@ NudgeLeft
           rem Mutates: playerX[temp1]
           rem
           rem Called Routines: None
-          let playerX[temp1] = playerX[temp1] - 1 : rem Constraints: Must be colocated with NudgePlayerFromPlayfield, NudgeHorizontalDone
+          rem Constraints: Must be colocated with NudgePlayerFromPlayfield, NudgeHorizontalDone
+          let playerX[temp1] = playerX[temp1] - 1
 NudgeHorizontalDone
           rem Horizontal nudge complete
           rem
@@ -627,7 +638,8 @@ NudgeDown
           rem Mutates: playerY[temp1]
           rem
           rem Called Routines: None
-          let playerY[temp1] = playerY[temp1] + 1 : rem Constraints: Must be colocated with NudgePlayerFromPlayfield
+          rem Constraints: Must be colocated with NudgePlayerFromPlayfield
+          let playerY[temp1] = playerY[temp1] + 1
           return
 NudgeUp
           rem Nudge player up 1 pixel
@@ -639,5 +651,6 @@ NudgeUp
           rem Mutates: playerY[temp1]
           rem
           rem Called Routines: None
-          let playerY[temp1] = playerY[temp1] - 1 : rem Constraints: Must be colocated with NudgePlayerFromPlayfield
+          rem Constraints: Must be colocated with NudgePlayerFromPlayfield
+          let playerY[temp1] = playerY[temp1] - 1
           return

@@ -32,28 +32,20 @@ ApplyGuardFlashing
           let temp3 = frame & 3 : rem Flash every 4 frames for visible effect
           if temp3 >= 2 then goto GuardNormalPhase
           rem Flash phase - set light cyan color
-          rem Set color based on player index (COLUP0/1/2/3)
+          rem Optimized: Apply guard flash color with computed assignment
           let temp4 = ColCyan(12) : rem Bright cyan guard flash (SECAM maps to cyan)
-          if temp1 = 0 then goto ApplyGuardFlashColor0
-          rem Apply color to appropriate player register
-          if temp1 = 1 then goto ApplyGuardFlashColor1
-          if temp1 = 2 then goto ApplyGuardFlashColor2
-          if temp1 = 3 then goto ApplyGuardFlashColor3
+          on temp1 goto GuardFlash0 GuardFlash1 GuardFlash2 GuardFlash3
           return
-
-ApplyGuardFlashColor0
+GuardFlash0
           COLUP0 = temp4
           return
-
-ApplyGuardFlashColor1
+GuardFlash1
           _COLUP1 = temp4
           return
-
-ApplyGuardFlashColor2
+GuardFlash2
           COLUP2 = temp4
           return
-
-ApplyGuardFlashColor3
+GuardFlash3
           COLUP3 = temp4
           return
 
@@ -176,16 +168,11 @@ UpdateGuardTimers
           rem
           rem Constraints: Tail call to UpdateSingleGuardTimer for
           rem player 3
-          rem Should be called from main game loop
-          rem Update guard timers for all players (duration and cooldown)
-          let temp1 = 0 : rem clears guard state and starts cooldown when guard expires
-          gosub UpdateSingleGuardTimer
-          let temp1 = 1
-          gosub UpdateSingleGuardTimer
-          let temp1 = 2
-          gosub UpdateSingleGuardTimer
-          let temp1 = 3
-          goto UpdateSingleGuardTimer : rem tail call
+          rem Optimized: Loop through all players instead of individual calls
+          for temp1 = 0 to 3
+            gosub UpdateSingleGuardTimer
+          next
+          return
 
 UpdateSingleGuardTimer
           rem Update guard timer or cooldown for a single player

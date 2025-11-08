@@ -58,7 +58,8 @@ CheckBoundaryCollisions
           rem Handle RandomArena (use proper RNG)
           if temp3 = RandomArena then let temp3 = rand : let temp3 = temp3 & 15
           
-          let temp1 = 0 : rem Player 0 - boundaries
+          rem Player 0 - boundaries
+          let temp1 = 0
           rem Horizontal wrap (player 0): wrap when leaving playable area margins
           if playerX[0] < PlayerLeftWrapThreshold then let playerX[0] = PlayerRightEdge : let playerSubpixelX_W[0] = PlayerRightEdge : let playerSubpixelX_WL[0] = 0
           if playerX[0] > PlayerRightWrapThreshold then let playerX[0] = PlayerLeftEdge : let playerSubpixelX_W[0] = PlayerLeftEdge : let playerSubpixelX_WL[0] = 0
@@ -66,7 +67,8 @@ CheckBoundaryCollisions
           if playerY[0] < 20 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
           if playerY[0] > 80 then let playerY[0] = 80 : let playerSubpixelY_W[0] = 80 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
           
-          let temp1 = 1 : rem Player 1 - boundaries
+          rem Player 1 - boundaries
+          let temp1 = 1
           rem Horizontal wrap (player 1): wrap when leaving playable area margins
           if playerX[1] < PlayerLeftWrapThreshold then let playerX[1] = PlayerRightEdge : let playerSubpixelX_W[1] = PlayerRightEdge : let playerSubpixelX_WL[1] = 0
           if playerX[1] > PlayerRightWrapThreshold then let playerX[1] = PlayerLeftEdge : let playerSubpixelX_W[1] = PlayerLeftEdge : let playerSubpixelX_WL[1] = 0
@@ -138,14 +140,20 @@ CheckPlayfieldCollisionAllDirections
           rem positions. Uses CharacterHeights table for proper hitbox
           rem detection. Inline division by pfrowheight (8 or 16) using
           rem bit shifts
-          let temp2 = playerX[currentPlayer] : rem Get player position and character info
-          let temp3 = playerY[currentPlayer] : rem X position (save original)
-          let temp4 = playerCharacter[currentPlayer] : rem Y position
-          let temp5 = CharacterHeights[temp4] : rem Character index
+          rem Get player position and character info
+          let temp2 = playerX[currentPlayer]
+          rem Store player Y position (save original)
+          let temp3 = playerY[currentPlayer]
+          rem Load character index for current player
+          let temp4 = playerCharacter[currentPlayer]
+          rem Fetch character height from CharacterHeights table
+          let temp5 = CharacterHeights[temp4]
           rem Character height
           
-          let temp6 = temp2 : rem Convert X position to playfield column (0-31)
-          let temp6 = temp6 - ScreenInsetX : rem Save original X in temp6
+          rem Convert X position to playfield column (0-31)
+          let temp6 = temp2
+          rem Save original X in temp6 after removing screen inset
+          let temp6 = temp6 - ScreenInsetX
           rem Divide by 4 using bit shift (2 right shifts)
           asm
             lsr temp6
@@ -159,7 +167,8 @@ end
           
           rem Convert Y position to playfield row (0-pfrows-1)
           rem Divide by pfrowheight using helper
-          let temp2 = temp3 : rem DivideByPfrowheight is in FallDamage.bas, need to find which bank
+          rem Inline DivideByPfrowheight logic from FallDamage.bas
+          let temp2 = temp3
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8
           rem pfrowheight is 16, divide by 16 (4 right shifts)
@@ -230,10 +239,12 @@ DBPF_InlineDivideBy8_1
             lsr temp2
 end
 DBPF_InlineDivideDone_1
-          let rowCounter_W = playfieldRow_R + temp2 : rem temp2 = (temp5 / 2) / pfrowheight
+          rem temp2 now contains (temp5 / 2) / pfrowheight
+          let rowCounter_W = playfieldRow_R + temp2
           if rowCounter_R >= pfrows then goto PFCheckRight
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockLeft
-          let temp2 = temp5 : rem Check feet position (bottom of sprite)
+          rem Check feet position (bottom of sprite)
+          let temp2 = temp5
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8_2
           rem pfrowheight is 16, divide by 16 (4 right shifts)
@@ -252,7 +263,8 @@ DBPF_InlineDivideBy8_2
             lsr temp2
 end
 DBPF_InlineDivideDone_2
-          let rowCounter_W = playfieldRow_R + temp2 : rem temp2 = temp5 / pfrowheight
+          rem temp2 now contains temp5 / pfrowheight
+          let rowCounter_W = playfieldRow_R + temp2
           if rowCounter_R >= pfrows then goto PFCheckRight
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockLeft
           
@@ -264,7 +276,8 @@ PFBlockLeft
           rem ≥ 128 are negative)
           if playerVelocityX[currentPlayer] & $80 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
-          let rowYPosition_W = temp6 + 1 : rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
+          rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
+          let rowYPosition_W = temp6 + 1
           asm
             lda rowYPosition_W
             asl
@@ -321,9 +334,11 @@ DBPF_InlineDivideBy8_6
             lsr temp2
 end
 DBPF_InlineDivideDone_6
-          let rowCounter_W = playfieldRow + temp2 : rem temp2 = (temp5 / 2) / pfrowheight
+          rem temp2 now contains (temp5 / 2) / pfrowheight
+          let rowCounter_W = playfieldRow + temp2
           if rowCounter_R >= pfrows then goto PFCheckUp
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockRight
+          rem Reset temp2 to character height for feet check
           let temp2 = temp5
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8_7
@@ -343,7 +358,8 @@ DBPF_InlineDivideBy8_7
             lsr temp2
 end
 DBPF_InlineDivideDone_7
-          let rowCounter_W = playfieldRow + temp2 : rem temp2 = temp5 / pfrowheight
+          rem temp2 now contains temp5 / pfrowheight
+          let rowCounter_W = playfieldRow + temp2
           if rowCounter_R >= pfrows then goto PFCheckUp
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockRight
           
@@ -353,7 +369,8 @@ PFBlockRight
           rem Block rightward movement: zero X velocity if positive
           if playerVelocityX[currentPlayer] > 0 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
-          let rowYPosition_W = temp6 - 1 : rem Multiply (temp6 - 1) by 4 using bit shift (2 left shifts)
+          rem Multiply (temp6 - 1) by 4 using bit shift (2 left shifts)
+          let rowYPosition_W = temp6 - 1
           asm
             lda rowYPosition_W
             asl a
@@ -402,7 +419,8 @@ PFBlockUp
           rem ≥ 128 are negative)
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
-          let rowYPosition_W = playfieldRow + 1 : rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
+          rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
+          let rowYPosition_W = playfieldRow + 1
           rem Check if pfrowheight is 8 or 16
           if pfrowheight = 8 then goto DBPF_MultiplyBy8
           rem pfrowheight is 16, multiply by 16 (4 left shifts)
@@ -434,7 +452,8 @@ PFCheckDown
           rem   but verify)
           rem Check if player feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we
-          let temp2 = temp5 : rem   verify here
+          rem Verify feet position using character height
+          let temp2 = temp5
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8_5
           rem pfrowheight is 16, divide by 16 (4 right shifts)
@@ -524,13 +543,15 @@ CheckAllPlayerCollisions
           rem characters push lighter ones more). Approximates division
           rem using bit shifts
           rem Loop through all player pairs to check collisions
-          let temp1 = 0 : rem Pair (i, j) where i < j to avoid checking same pair twice
+          rem Pair (i, j) where i < j to avoid checking same pair twice
+          let temp1 = 0
           rem Player 1 index
           
 CollisionOuterLoop
           rem Check if player 1 is active
           if temp1 >= 2 then CollisionCheckP1Active
-          goto CollisionInnerLoop : rem Players 0-1 always active
+          rem Players 0-1 always active
+          goto CollisionInnerLoop
           
 CollisionCheckP1Active
           if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextOuter
@@ -547,7 +568,8 @@ CollisionCheckPair
           rem Check if player 2 is active
           
           if temp2 >= 2 then CollisionCheckP2Active
-          goto CollisionCheckDistance : rem Players 0-1 always active
+          rem Players 0-1 always active
+          goto CollisionCheckDistance
           
 CollisionCheckP2Active
           if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextInner
@@ -571,12 +593,12 @@ CalcCollisionDistanceRight
 CollisionDistanceDone
           if temp3 >= PlayerCollisionDistance then goto CollisionNextInner
           
-          let temp4 = playerCharacter[temp1] : rem Calculate Y distance using CharacterHeights table
+          rem Load character indices for both players
+          let temp4 = playerCharacter[temp1]
           let temp5 = playerCharacter[temp2]
+          rem Fetch full heights for both players
           let characterHeight = CharacterHeights[temp4]
-          rem Player1 height (temporarily store in characterHeight, will
-          let halfHeight1 = CharacterHeights[temp5] : rem   be overwritten)
-          rem Player2 height (temporarily store, will calculate half)
+          let halfHeight1 = CharacterHeights[temp5]
           
           rem Calculate Y distance
           
@@ -604,13 +626,16 @@ CollisionYDistanceDone
             sta halfHeight2
 end
           rem Player1 half height
-          let totalHeight = halfHeight1 + halfHeight2 : rem Player2 half height (re-read from table)
+          rem Sum half heights to determine overlap threshold
+          let totalHeight = halfHeight1 + halfHeight2
           if yDistance >= totalHeight then goto CollisionNextInner
           
           rem
           rem Momentum Transfer Based On Weight
-          let characterWeight = CharacterWeights[temp4] : rem Get character weights from CharacterWeights table
-          let halfHeight2 = CharacterWeights[temp5] : rem Player1 weight (temporarily store, will be overwritten)
+          rem Get character weights from CharacterWeights table
+          let characterWeight = CharacterWeights[temp4]
+          rem Reuse halfHeight2 scratch to hold player 2 weight
+          let halfHeight2 = CharacterWeights[temp5]
           rem Player2 weight (temporarily store)
           
           rem Calculate separation direction (left/right)
@@ -621,8 +646,8 @@ end
           rem   left
           rem Apply impulse based on weight difference
           rem Heavier character pushes lighter one more
-          rem Formula: impulse = (weight_difference / total_weight) *
-          let totalWeight = characterWeight + halfHeight2 : rem   separation_speed
+          rem Formula: impulse = (weight_difference / total_weight) * separation_speed
+          let totalWeight = characterWeight + halfHeight2
           rem Total weight (halfHeight2 contains Player2 weight here)
           if totalWeight = 0 then goto CollisionNextInner
           rem Avoid division by zero
@@ -631,12 +656,15 @@ end
           
           if characterWeight >= halfHeight2 then CalcWeightDiff1Heavier
           let weightDifference = halfHeight2 - characterWeight
-          let impulseStrength = weightDifference : rem Player2 is heavier
-          goto ApplyImpulseRight : rem Impulse strength (proportional to weight difference)
+          rem Player2 is heavier
+          let impulseStrength = weightDifference
+          rem Impulse strength proportional to weight difference
+          goto ApplyImpulseRight
           
 CalcWeightDiff1Heavier
           let weightDifference = characterWeight - halfHeight2
-          let impulseStrength = weightDifference : rem Player1 is heavier
+          rem Player1 is heavier
+          let impulseStrength = weightDifference
           rem Impulse strength
           
 ApplyImpulseRight
@@ -717,7 +745,8 @@ ApproxDivDone_1
           rem Cap at 4 pixels/frame
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           
-          let playerVelocityXL[temp1] = 0 : rem Also zero subpixel velocities when applying impulse
+          rem Also zero subpixel velocities when applying impulse
+          let playerVelocityXL[temp1] = 0
           let playerVelocityXL[temp2] = 0
           
           goto CollisionNextInner
@@ -800,10 +829,12 @@ CollisionSepLeft
           rem Player1 is left of Player2 - push Player1 left, Player2
           rem   right
           rem Same logic but reversed directions
-          rem Re-read weights (characterWeight and halfHeight2 were used
-          let characterWeight = CharacterWeights[temp4] : rem   for heights)
-          let halfHeight2 = CharacterWeights[temp5] : rem Player1 weight
-          let totalWeight = characterWeight + halfHeight2 : rem Player2 weight
+          rem Re-read weights (characterWeight and halfHeight2 were used earlier for heights)
+          let characterWeight = CharacterWeights[temp4]
+          rem Player1 weight
+          let halfHeight2 = CharacterWeights[temp5]
+          rem Player2 weight
+          let totalWeight = characterWeight + halfHeight2
           if totalWeight = 0 then goto CollisionNextInner
           
           if characterWeight >= halfHeight2 then CalcWeightDiff1HeavierLeft

@@ -1,71 +1,78 @@
-MainLoop
           rem ChaosFight - Source/Routines/MainLoop.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem Centralized RESET handling - check before any mode
-          rem dispatch
-          rem RESET must work from any screen/state (title, gameplay,
-          rem   pause, preludes, win/lose, menus)
-          rem
-          rem Input: switchreset (hardware) = reset switch state
-          rem        gameMode (global) = current game mode (0-7)
-          rem
-          rem Output: Dispatches to mode-specific handlers
-          rem
-          rem Mutates: None (dispatcher only)
-          rem
-          rem Called Routines: WarmStart (bank11), PublisherPreludeMain
-          rem (bank9),
-          rem   AuthorPrelude (bank9), TitleScreenMain (bank9),
-          rem   CharacterSelectInputEntry (bank10), FallingAnimation1
-          rem   (bank12),
-          rem   ArenaSelect1 (bank12), GameMainLoop (bank11),
-          rem   WinnerAnnouncement (bank12), UpdateMusic (bank1),
-          rem   titledrawscreen (bank9)
-          rem
-          rem Constraints: Must be colocated with MainLoopContinue,
-          rem MainLoopDrawScreen
-          if switchreset then gosub WarmStart bank11 : goto MainLoopContinue : rem Entry point for entire game loop
-          
-          if gameMode = 0 then gosub PublisherPreludeMain bank9 : goto MainLoopContinue
-          if gameMode = 1 then gosub AuthorPrelude bank9 : goto MainLoopContinue
-          if gameMode = 2 then gosub TitleScreenMain bank9 : goto MainLoopContinue
-          if gameMode = 3 then gosub CharacterSelectInputEntry bank6 : goto MainLoopContinue
-          if gameMode = 4 then gosub FallingAnimation1 bank12 : goto MainLoopContinue
-          if gameMode = 5 then gosub ArenaSelect1 bank12 : goto MainLoopContinue
-          if gameMode = 6 then gosub GameMainLoop bank11 : goto MainLoopContinue
-          gosub WinnerAnnouncement bank12
+MainLoop
+          rem Dispatches game modes and handles reset entry point
+          rem Inputs: switchreset (hardware), gameMode (global 0-7)
+          rem Outputs: Dispatches to mode-specific handlers
+          rem Mutates: None; dispatcher only
+          rem Calls: WarmStart bank11, PublisherPreludeMain bank9, AuthorPrelude bank9,
+          rem        TitleScreenMain bank9, CharacterSelectInputEntry bank6,
+          rem        FallingAnimation1 bank12, ArenaSelect1 bank12,
+          rem        GameMainLoop bank11, WinnerAnnouncement bank12,
+          rem        UpdateMusic bank1, titledrawscreen bank9
+          rem Constraints: Must remain colocated with MainLoopContinue/MainLoopDrawScreen
+
+          rem Entry point for entire game loop
+          if switchreset then gosub WarmStart bank11 : goto MainLoopContinue
+
+          let temp1 = gameMode + 1
+          on temp1 gosub MainLoopModePublisherPrelude, MainLoopModeAuthorPrelude, MainLoopModeTitleScreen, MainLoopModeCharacterSelect, MainLoopModeFallingAnimation, MainLoopModeArenaSelect, MainLoopModeGameMain, MainLoopModeWinnerAnnouncement
+          goto MainLoopContinue
+
+MainLoopModePublisherPrelude
+          rem tail call
+          goto PublisherPreludeMain bank9
+
+MainLoopModeAuthorPrelude
+          rem tail call
+          goto AuthorPrelude bank9
+
+MainLoopModeTitleScreen
+          rem tail call
+          goto TitleScreenMain bank9
+
+MainLoopModeCharacterSelect
+          rem tail call
+          goto CharacterSelectInputEntry bank6
+
+MainLoopModeFallingAnimation
+          rem tail call
+          goto FallingAnimation1 bank12
+
+MainLoopModeArenaSelect
+          rem tail call
+          goto ArenaSelect1 bank12
+
+MainLoopModeGameMain
+          rem tail call
+          goto GameMainLoop bank11
+
+MainLoopModeWinnerAnnouncement
+          rem tail call
+          goto WinnerAnnouncement bank12
 MainLoopContinue
-          rem Call music handler for preludes, title screen, and winner
-          rem   screen
-          rem
-          rem Input: gameMode (global) = current game mode (0-7)
-          rem
-          rem Output: Dispatches to MainLoopDrawScreen
-          rem
-          rem Mutates: None (dispatcher only)
-          rem
-          rem Called Routines: UpdateMusic (bank1) - accesses music
-          rem state variables
-          if gameMode < 3 then gosub UpdateMusic bank1 : goto MainLoopDrawScreen : rem Constraints: Must be colocated with MainLoop, MainLoopDrawScreen
-          if gameMode = 7 then gosub UpdateMusic bank1 : goto MainLoopDrawScreen
+          rem Routes audio updates after per-mode execution
+          rem Inputs: gameMode (global 0-7)
+          rem Outputs: Falls through to MainLoopDrawScreen
+          rem Mutates: None; dispatcher only
+          rem Calls: UpdateMusic bank1; colocated with MainLoop/MainLoopDrawScreen
+          rem Notes: Modes 3-6 handle audio updates in their own routines
+
+          if gameMode < 3 then goto MainLoopContinueUpdateMusic
+          if gameMode = 7 then goto MainLoopContinueUpdateMusic
+          goto MainLoopDrawScreen
+
+MainLoopContinueUpdateMusic
+          gosub UpdateMusic bank1
 MainLoopDrawScreen
-          rem Other modes (3-6) don’t need audio updates here - handled
-          rem   in their subroutines
-          rem Admin screens (0-2) use titlescreen kernel, others use
-          rem   standard drawscreen
-          rem
-          rem Input: gameMode (global) = current game mode (0-7)
-          rem
-          rem Output: Screen rendered via titledrawscreen or drawscreen
-          rem
-          rem Mutates: Screen state (TIA registers, playfield, sprites)
-          rem
-          rem Called Routines: titledrawscreen (bank9) - accesses title
-          rem screen state
-          rem
-          rem Constraints: Must be colocated with MainLoop,
-          rem MainLoopContinue
-          rem              Entry point for entire game loop
-          if gameMode < 3 then gosub titledrawscreen bank9 else drawscreen : rem Titlescreen graphics and kernel are in Bank 9
+          rem Renders the appropriate screen for the current game mode
+          rem Inputs: gameMode (global 0-7)
+          rem Outputs: Screen rendered via titledrawscreen or drawscreen
+          rem Mutates: TIA registers, playfield, sprite state
+          rem Calls: titledrawscreen bank9 (title screens); colocated with MainLoop
+          rem Notes: Modes 3-6 funnel through mode-specific draw logic
+
+          rem Titlescreen graphics and kernel reside in bank9
+          if gameMode < 3 then gosub titledrawscreen bank9 else drawscreen
           goto MainLoop

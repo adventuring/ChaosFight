@@ -13,14 +13,8 @@ DispatchCharacterJump
           if temp4 < 8 then on temp4 goto Character16Jump Character17Jump Character18Jump Character19Jump Character20Jump Character21Jump Character22Jump Character23Jump
           if temp4 < 8 then return
           let temp4 = temp4 - 8
-          if temp4 = 0 then goto Character24Jump
-          if temp4 = 1 then goto Character25Jump
-          if temp4 = 2 then goto Character26Jump
-          if temp4 = 3 then goto Character27Jump
-          if temp4 = 4 then goto Character28Jump
-          if temp4 = 5 then goto Character29Jump
-          if temp4 = 6 then goto Character30Jump
-          if temp4 = 7 then goto ShamoneJump
+          if temp4 < 8 then on temp4 goto Character24Jump Character25Jump Character26Jump Character27Jump Character28Jump Character29Jump Character30Jump ShamoneJump
+          if temp4 < 8 then return
           return
 
 DispatchCharacterDown
@@ -34,14 +28,8 @@ DispatchCharacterDown
           if temp4 < 8 then on temp4 goto Character16Down Character17Down Character18Down Character19Down Character20Down Character21Down Character22Down Character23Down
           if temp4 < 8 then return
           let temp4 = temp4 - 8
-          if temp4 = 0 then goto Character24Down
-          if temp4 = 1 then goto Character25Down
-          if temp4 = 2 then goto Character26Down
-          if temp4 = 3 then goto Character27Down
-          if temp4 = 4 then goto Character28Down
-          if temp4 = 5 then goto Character29Down
-          if temp4 = 6 then goto Character30Down
-          if temp4 = 7 then goto ShamoneDown
+          if temp4 < 8 then on temp4 goto Character24Down Character25Down Character26Down Character27Down Character28Down Character29Down Character30Down ShamoneDown
+          if temp4 < 8 then return
           return
 
 BernieJump

@@ -595,47 +595,19 @@ HandleWindupEnd
           goto WindupDispatchBank3
 
 WindupDispatchBank0
-          if temp1 = 0 then goto Character0_Windup
-          if temp1 = 1 then goto Character1_Windup
-          if temp1 = 2 then goto Character2_Windup
-          if temp1 = 3 then goto Character3_Windup
-          if temp1 = 4 then goto Character4_Windup
-          if temp1 = 5 then goto Character5_Windup
-          if temp1 = 6 then goto Character6_Windup
-          if temp1 = 7 then goto Character7_Windup
+          on temp1 goto Character0_Windup Character1_Windup Character2_Windup Character3_Windup Character4_Windup Character5_Windup Character6_Windup Character7_Windup
           goto DoneWindupDispatch
 
 WindupDispatchBank1
-          if temp1 = 0 then goto Character8_Windup
-          if temp1 = 1 then goto Character9_Windup
-          if temp1 = 2 then goto Character10_Windup
-          if temp1 = 3 then goto Character11_Windup
-          if temp1 = 4 then goto Character12_Windup
-          if temp1 = 5 then goto Character13_Windup
-          if temp1 = 6 then goto Character14_Windup
-          if temp1 = 7 then goto Character15_Windup
+          on temp1 goto Character8_Windup Character9_Windup Character10_Windup Character11_Windup Character12_Windup Character13_Windup Character14_Windup Character15_Windup
           goto DoneWindupDispatch
 
 WindupDispatchBank2
-          if temp1 = 0 then goto Character16_Windup
-          if temp1 = 1 then goto Character17_Windup
-          if temp1 = 2 then goto Character18_Windup
-          if temp1 = 3 then goto Character19_Windup
-          if temp1 = 4 then goto Character20_Windup
-          if temp1 = 5 then goto Character21_Windup
-          if temp1 = 6 then goto Character22_Windup
-          if temp1 = 7 then goto Character23_Windup
+          on temp1 goto Character16_Windup Character17_Windup Character18_Windup Character19_Windup Character20_Windup Character21_Windup Character22_Windup Character23_Windup
           goto DoneWindupDispatch
 
 WindupDispatchBank3
-          if temp1 = 0 then goto Character24_Windup
-          if temp1 = 1 then goto Character25_Windup
-          if temp1 = 2 then goto Character26_Windup
-          if temp1 = 3 then goto Character27_Windup
-          if temp1 = 4 then goto Character28_Windup
-          if temp1 = 5 then goto Character29_Windup
-          if temp1 = 6 then goto Character30_Windup
-          if temp1 = 7 then goto Character15_Windup
+          on temp1 goto Character24_Windup Character25_Windup Character26_Windup Character27_Windup Character28_Windup Character29_Windup Character30_Windup Character15_Windup
           goto DoneWindupDispatch
 DoneWindupDispatch
           
@@ -704,47 +676,19 @@ HandleExecuteEnd
           goto ExecuteDispatchBank3
 
 ExecuteDispatchBank0
-          if temp1 = 0 then goto Character0_Execute
-          if temp1 = 1 then goto Character1_Execute
-          if temp1 = 2 then goto Character2_Execute
-          if temp1 = 3 then goto Character3_Execute
-          if temp1 = 4 then goto Character4_Execute
-          if temp1 = 5 then goto Character5_Execute
-          if temp1 = 6 then goto Character6_Execute
-          if temp1 = 7 then goto Character7_Execute
+          on temp1 goto Character0_Execute Character1_Execute Character2_Execute Character3_Execute Character4_Execute Character5_Execute Character6_Execute Character7_Execute
           goto DoneExecuteDispatch
 
 ExecuteDispatchBank1
-          if temp1 = 0 then goto Character8_Execute
-          if temp1 = 1 then goto Character9_Execute
-          if temp1 = 2 then goto Character10_Execute
-          if temp1 = 3 then goto Character11_Execute
-          if temp1 = 4 then goto Character12_Execute
-          if temp1 = 5 then goto Character13_Execute
-          if temp1 = 6 then goto Character14_Execute
-          if temp1 = 7 then goto Character15_Execute
+          on temp1 goto Character8_Execute Character9_Execute Character10_Execute Character11_Execute Character12_Execute Character13_Execute Character14_Execute Character15_Execute
           goto DoneExecuteDispatch
 
 ExecuteDispatchBank2
-          if temp1 = 0 then goto Character16_Execute
-          if temp1 = 1 then goto Character17_Execute
-          if temp1 = 2 then goto Character18_Execute
-          if temp1 = 3 then goto Character19_Execute
-          if temp1 = 4 then goto Character20_Execute
-          if temp1 = 5 then goto Character21_Execute
-          if temp1 = 6 then goto Character22_Execute
-          if temp1 = 7 then goto Character23_Execute
+          on temp1 goto Character16_Execute Character17_Execute Character18_Execute Character19_Execute Character20_Execute Character21_Execute Character22_Execute Character23_Execute
           goto DoneExecuteDispatch
 
 ExecuteDispatchBank3
-          if temp1 = 0 then goto Character24_Execute
-          if temp1 = 1 then goto Character25_Execute
-          if temp1 = 2 then goto Character26_Execute
-          if temp1 = 3 then goto Character27_Execute
-          if temp1 = 4 then goto Character28_Execute
-          if temp1 = 5 then goto Character29_Execute
-          if temp1 = 6 then goto Character30_Execute
-          if temp1 = 7 then goto Character15_Execute
+          on temp1 goto Character24_Execute Character25_Execute Character26_Execute Character27_Execute Character28_Execute Character29_Execute Character30_Execute Character15_Execute
           goto DoneExecuteDispatch
 DoneExecuteDispatch
           

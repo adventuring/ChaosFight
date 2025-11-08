@@ -265,14 +265,8 @@ DispatchCharacterAttack
           if temp4 < 8 then on temp4 goto gotoCharacter16Attack gotoCharacter17Attack gotoCharacter18Attack gotoCharacter19Attack gotoCharacter20Attack gotoCharacter21Attack gotoCharacter22Attack gotoCharacter23Attack
           if temp4 < 8 then return
           let temp4 = temp4 - 8
-          if temp4 = 0 then goto gotoCharacter24Attack
-          if temp4 = 1 then goto gotoCharacter25Attack
-          if temp4 = 2 then goto gotoCharacter26Attack
-          if temp4 = 3 then goto gotoCharacter27Attack
-          if temp4 = 4 then goto gotoCharacter28Attack
-          if temp4 = 5 then goto gotoCharacter29Attack
-          if temp4 = 6 then goto gotoCharacter30Attack
-          if temp4 = 7 then goto gotoShamoneAttack
+          if temp4 < 8 then on temp4 goto gotoCharacter24Attack gotoCharacter25Attack gotoCharacter26Attack gotoCharacter27Attack gotoCharacter28Attack gotoCharacter29Attack gotoCharacter30Attack gotoShamoneAttack
+          if temp4 < 8 then return
           return
           
 gotoBernieAttack

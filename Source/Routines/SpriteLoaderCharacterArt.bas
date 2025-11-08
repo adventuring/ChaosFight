@@ -1,9 +1,8 @@
-LocateCharacterArt
           rem ChaosFight - Source/Routines/SpriteLoaderCharacterArt.bas
-          rem
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+LocateCharacterArt
           rem batariBASIC wrapper for character art location with bank
-          rem   switching
           rem Character Art Location Wrapper
           rem Wrapper that determines correct bank and switches to it
           rem
@@ -53,7 +52,8 @@ LocateCharacterArt
           rem   calculated per bank
           
           rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4,
-          if temp1 < 8 then LoadFromBank2 : rem 24-31=Bank5
+          rem 24-31=Bank5
+          if temp1 < 8 then LoadFromBank2
           if temp1 < 16 then LoadFromBank3
           if temp1 < 24 then goto LoadFromBank4
           goto LoadFromBank5

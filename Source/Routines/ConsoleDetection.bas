@@ -1,5 +1,3 @@
-ConsoleDetHW
-          rem
           rem ChaosFight - Source/Routines/ConsoleDetection.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Console Detection
@@ -18,6 +16,8 @@ ConsoleDetHW
           rem system = 2600 // game was loaded from Harmony menu on a
           rem   2600
           rem Main console detection routine
+
+ConsoleDetHW
           rem Detect whether running on Atari 2600 or 7800 console
           rem
           rem Input: $D0, $D1 (hardware registers) = console detection
@@ -46,7 +46,9 @@ ConsoleDetHW
           temp1 = $D0
           if temp1 = 0 then CheckFlashed
           
-          if !(temp1 = ConsoleDetectD0) then goto Is2600 : rem Check if $D0 = $2C (7800 indicator)
+          rem Check if $D0 = $2C (7800 indicator)
+          
+          if !(temp1 = ConsoleDetectD0) then goto Is2600
           
           rem Check $D1 value for 7800 confirmation
           temp1 = $D1
@@ -123,7 +125,8 @@ CheckConsoleFeatures
           rem
           rem Constraints: Must be colocated with Done7800Features,
           rem ConsoleFeaturesDone
-          if !(systemFlags & SystemFlag7800) then Done7800Features : rem Check if running on 7800 (bit 7 of systemFlags)
+          rem Check if running on 7800 (bit 7 of systemFlags)
+          if !(systemFlags & SystemFlag7800) then Done7800Features
           
           rem 7800-specific features
           rem Note: 7800 pause button handling is implemented in

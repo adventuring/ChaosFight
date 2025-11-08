@@ -111,12 +111,12 @@ LoadSpecialSprite
           rem Output: Appropriate player sprite pointer set to special
           rem   sprite data
           rem         player0-3height set to 16
-          rem         SCRAM w000-w063 written (sprite data copied to
-          rem         RAM)
+          rem         SCRAM PlayerFrameBuffer_W[0-63] written (sprite data
+          rem         copied to RAM)
           rem
           rem Mutates: temp6 (read only), temp3 (read only)
-          rem           w000-w015, w016-w031, w032-w047, w048-w063
-          rem           (SCRAM)
+          rem           PlayerFrameBuffer_W[0-15], [16-31], [32-47],
+          rem           [48-63] (SCRAM)
           rem           player0height, player1height, player2height,
           rem           player3height
           rem
@@ -159,10 +159,10 @@ LoadQuestionMarkSpriteP0
           ; function)
           ;        QuestionMarkSprite (ROM data) = source sprite data
           ;
-          ; Output: w000-w015 (SCRAM) = sprite data copied
+          ; Output: PlayerFrameBuffer_W[0-15] (SCRAM) = sprite data copied
           ;         player0height = 16
           ;
-          ; Mutates: w000-w015 (SCRAM write port), player0height
+          ; Mutates: PlayerFrameBuffer_W[0-15] (SCRAM write port), player0height
           ;
           ; Called Routines: None (uses inline assembly)
           ;
@@ -171,13 +171,13 @@ LoadQuestionMarkSpriteP0
           ;              Depends on InitializeSpritePointers setting
           ;              pointers
           ; Copy QuestionMarkSprite data from ROM to RAM buffer
-          ; (w000-w015)
+          ; (PlayerFrameBuffer_W[0-15])
           ; Pointers already initialized to RAM addresses by
           ; InitializeSpritePointers
             ldy #15
 .CopyLoop:
             lda QuestionMarkSprite,y
-            sta w000,y
+            sta PlayerFrameBuffer_W,y
             dey
             bpl .CopyLoop
 end
@@ -186,12 +186,12 @@ end
           
 LoadQuestionMarkSpriteP1
           rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem (w016-w031)
+          rem (PlayerFrameBuffer_W[16-31])
           asm
             ldy #15
 .CopyLoop:
             lda QuestionMarkSprite,y
-            sta w016,y
+            sta PlayerFrameBuffer_W+16,y
             dey
             bpl .CopyLoop
 end
@@ -200,12 +200,12 @@ end
           
 LoadQuestionMarkSpriteP2
           rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem (w032-w047)
+          rem (PlayerFrameBuffer_W[32-47])
           asm
             ldy #15
 .CopyLoop:
             lda QuestionMarkSprite,y
-            sta w032,y
+            sta PlayerFrameBuffer_W+32,y
             dey
             bpl .CopyLoop
 end
@@ -214,12 +214,12 @@ end
           
 LoadQuestionMarkSpriteP3
           rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem (w048-w063)
+          rem (PlayerFrameBuffer_W[48-63])
           asm
             ldy #15
 .CopyLoop:
             lda QuestionMarkSprite,y
-            sta w048,y
+            sta PlayerFrameBuffer_W+48,y
             dey
             bpl .CopyLoop
 end
@@ -251,22 +251,22 @@ LoadCPUSpriteP0
           ; rem function)
           ; rem        CPUSprite (ROM data) = source sprite data
           ; rem
-          ; rem Output: w000-w015 (SCRAM) = sprite data copied
+          ; rem Output: PlayerFrameBuffer_W[0-15] (SCRAM) = sprite data copied
           ; rem         player0height = 16
           ; rem
-          ; rem Mutates: w000-w015 (SCRAM write port), player0height
+          ; rem Mutates: PlayerFrameBuffer_W[0-15] (SCRAM write port), player0height
           ; rem
           ; rem Called Routines: None (uses inline assembly)
           ; rem
           ; rem Constraints: Must be colocated with LoadCPUSprite
           ; rem              Depends on CPUSprite ROM data
-          ; rem Copy CPUSprite data from ROM to RAM buffer (w000-w015)
+          ; rem Copy CPUSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[0-15])
           ; rem Pointers already initialized to RAM addresses by
           ; rem InitializeSpritePointers
             ldy #15
 .CopyLoop:
             lda CPUSprite,y
-            sta w000,y
+            sta PlayerFrameBuffer_W,y
             dey
             bpl .CopyLoop
 end
@@ -274,12 +274,12 @@ end
           return
           
 LoadCPUSpriteP1
-          rem Copy CPUSprite data from ROM to RAM buffer (w016-w031)
+          rem Copy CPUSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[16-31])
           asm
             ldy #15
 .CopyLoop:
             lda CPUSprite,y
-            sta w016,y
+            sta PlayerFrameBuffer_W+16,y
             dey
             bpl .CopyLoop
 end
@@ -287,12 +287,12 @@ end
           return
           
 LoadCPUSpriteP2
-          rem Copy CPUSprite data from ROM to RAM buffer (w032-w047)
+          rem Copy CPUSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[32-47])
           asm
             ldy #15
 .CopyLoop:
             lda CPUSprite,y
-            sta w032,y
+            sta PlayerFrameBuffer_W+32,y
             dey
             bpl .CopyLoop
 end
@@ -300,12 +300,12 @@ end
           return
           
 LoadCPUSpriteP3
-          rem Copy CPUSprite data from ROM to RAM buffer (w048-w063)
+          rem Copy CPUSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[48-63])
           asm
             ldy #15
 .CopyLoop:
             lda CPUSprite,y
-            sta w048,y
+            sta PlayerFrameBuffer_W+48,y
             dey
             bpl .CopyLoop
 end
@@ -337,22 +337,22 @@ LoadNoSpriteP0
           ; rem function)
           ; rem        NoSprite (ROM data) = source sprite data
           ; rem
-          ; rem Output: w000-w015 (SCRAM) = sprite data copied
+          ; rem Output: PlayerFrameBuffer_W[0-15] (SCRAM) = sprite data copied
           ; rem         player0height = 16
           ; rem
-          ; rem Mutates: w000-w015 (SCRAM write port), player0height
+          ; rem Mutates: PlayerFrameBuffer_W[0-15] (SCRAM write port), player0height
           ; rem
           ; rem Called Routines: None (uses inline assembly)
           ; rem
           ; rem Constraints: Must be colocated with LoadNoSprite
           ; rem              Depends on NoSprite ROM data
-          ; rem Copy NoSprite data from ROM to RAM buffer (w000-w015)
+          ; rem Copy NoSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[0-15])
           ; rem Pointers already initialized to RAM addresses by
           ; rem InitializeSpritePointers
             ldy #15
 .CopyLoop:
             lda NoSprite,y
-            sta w000,y
+            sta PlayerFrameBuffer_W,y
             dey
             bpl .CopyLoop
 end
@@ -360,12 +360,12 @@ end
           return
           
 LoadNoSpriteP1
-          rem Copy NoSprite data from ROM to RAM buffer (w016-w031)
+          rem Copy NoSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[16-31])
           asm
             ldy #15
 .CopyLoop:
             lda NoSprite,y
-            sta w016,y
+            sta PlayerFrameBuffer_W+16,y
             dey
             bpl .CopyLoop
 end
@@ -373,12 +373,12 @@ end
           return
           
 LoadNoSpriteP2
-          rem Copy NoSprite data from ROM to RAM buffer (w032-w047)
+          rem Copy NoSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[32-47])
           asm
             ldy #15
 .CopyLoop:
             lda NoSprite,y
-            sta w032,y
+            sta PlayerFrameBuffer_W+32,y
             dey
             bpl .CopyLoop
 end
@@ -386,12 +386,12 @@ end
           return
           
 LoadNoSpriteP3
-          rem Copy NoSprite data from ROM to RAM buffer (w048-w063)
+          rem Copy NoSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[48-63])
           asm
             ldy #15
 .CopyLoop:
             lda NoSprite,y
-            sta w048,y
+            sta PlayerFrameBuffer_W+48,y
             dey
             bpl .CopyLoop
 end

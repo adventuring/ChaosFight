@@ -677,7 +677,7 @@ Mike Saarna (aka @dfn{RevEng}) (Titlescreen Kernel for batariBasic)
 @item
 Zephyr Pocock (Grizzards, Phantasia; for additional art and music)
 @item
-Philip ``Splendidnut'' Blackman (batariBasic assistance)
+Philip ``Splendidnut'' Blackman (batariBasic wizardry and cheering section)
 @item
 James Earl O'Brian and Tanya O'Brian, and Darcy and Aerlan (ZeroPage Homebrew)
 @item

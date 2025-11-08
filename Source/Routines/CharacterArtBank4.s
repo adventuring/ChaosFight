@@ -157,10 +157,10 @@ SetPlayerCharacterArtBank4
     ; Copy sprite data from ROM to RAM buffer
     ; Source: ROM address in temp4/temp5
     ; Destination depends on player number (now in temp6):
-    ;   Player 0 -> w000-w015 (r000-r015)
-    ;   Player 1 -> w016-w031 (r016-r031)
-    ;   Player 2 -> w032-w047 (r032-r047)
-    ;   Player 3 -> w048-w063 (r048-r063)
+    ;   Player 0 -> PlayerFrameBuffer_W[0-15] (r000-r015)
+    ;   Player 1 -> PlayerFrameBuffer_W[16-31] (r016-r031)
+    ;   Player 2 -> PlayerFrameBuffer_W[32-47] (r032-r047)
+    ;   Player 3 -> PlayerFrameBuffer_W[48-63] (r048-r063)
     
     ; Set up destination pointer based on player number (in temp6)
     ; Save player number to stack before using it
@@ -169,61 +169,61 @@ SetPlayerCharacterArtBank4
     ; Determine destination base address based on player
     cmp #0
     bne .CheckPlayer1Copy
-    ; Player 0: Copy to w000-w015 (absolute address $F000)
+    ; Player 0: Copy to PlayerFrameBuffer_W[0-15] (absolute address $F000)
     jmp .CopyPlayer0
 .CheckPlayer1Copy
     cmp #1
     bne .CheckPlayer2Copy
-    ; Player 1: Copy to w016-w031 (absolute address $F010)
+    ; Player 1: Copy to PlayerFrameBuffer_W[16-31] (absolute address $F010)
     jmp .CopyPlayer1
 .CheckPlayer2Copy
     cmp #2
     bne .CopyPlayer3
-    ; Player 2: Copy to w032-w047 (absolute address $F020)
+    ; Player 2: Copy to PlayerFrameBuffer_W[32-47] (absolute address $F020)
     jmp .CopyPlayer2
 .CopyPlayer3
-    ; Player 3: Copy to w048-w063 (absolute address $F030)
+    ; Player 3: Copy to PlayerFrameBuffer_W[48-63] (absolute address $F030)
     jmp .CopyPlayer3Data
     
 .CopyPlayer0
-    ; Copy 16 bytes from ROM (temp4/temp5) to w000-w015
+    ; Copy 16 bytes from ROM (temp4/temp5) to PlayerFrameBuffer_W[0-15]
     ldy #0
 .CopyLoop0
     lda (temp4),y       ; Read from ROM (indirect addressing via temp4/temp5)
-    sta w000,y          ; Write to SCRAM (absolute indexed addressing)
+    sta PlayerFrameBuffer_W,y          ; Write to SCRAM (absolute indexed addressing)
     iny
     cpy #16
     bne .CopyLoop0
     jmp .SetHeight
     
 .CopyPlayer1
-    ; Copy 16 bytes from ROM (temp4/temp5) to w016-w031
+    ; Copy 16 bytes from ROM (temp4/temp5) to PlayerFrameBuffer_W[16-31]
     ldy #0
 .CopyLoop1
     lda (temp4),y       ; Read from ROM
-    sta w016,y          ; Write to SCRAM
+    sta PlayerFrameBuffer_W+16,y       ; Write to SCRAM
     iny
     cpy #16
     bne .CopyLoop1
     jmp .SetHeight
     
 .CopyPlayer2
-    ; Copy 16 bytes from ROM (temp4/temp5) to w032-w047
+    ; Copy 16 bytes from ROM (temp4/temp5) to PlayerFrameBuffer_W[32-47]
     ldy #0
 .CopyLoop2
     lda (temp4),y       ; Read from ROM
-    sta w032,y          ; Write to SCRAM
+    sta PlayerFrameBuffer_W+32,y       ; Write to SCRAM
     iny
     cpy #16
     bne .CopyLoop2
     jmp .SetHeight
     
 .CopyPlayer3Data
-    ; Copy 16 bytes from ROM (temp4/temp5) to w048-w063
+    ; Copy 16 bytes from ROM (temp4/temp5) to PlayerFrameBuffer_W[48-63]
     ldy #0
 .CopyLoop3
     lda (temp4),y       ; Read from ROM
-    sta w048,y          ; Write to SCRAM
+    sta PlayerFrameBuffer_W+48,y       ; Write to SCRAM
     iny
     cpy #16
     bne .CopyLoop3

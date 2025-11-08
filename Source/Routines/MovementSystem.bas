@@ -73,12 +73,12 @@ UpdatePlayerMovementSingle
           goto XNoCarry
 XCarry
           let playerSubpixelX_WL[currentPlayer] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
-          rem SCRAM RMW: r049 → w049
+          rem SCRAM RMW: playerSubpixelX_R → playerSubpixelX_W
           let temp4 = playerSubpixelX_R[currentPlayer]
           let temp4 = temp4 + 1
           let playerSubpixelX_W[currentPlayer] = temp4
 XNoCarry
-          rem SCRAM RMW: r049 → w049 (apply integer velocity)
+          rem SCRAM RMW: playerSubpixelX_R → playerSubpixelX_W (apply integer velocity)
           let temp4 = playerSubpixelX_R[currentPlayer]
           let temp4 = temp4 + playerVelocityX[currentPlayer]
           let playerSubpixelX_W[currentPlayer] = temp4
@@ -98,12 +98,12 @@ XNoCarry
           goto YNoCarry
 YCarry
           let playerSubpixelY_WL[currentPlayer] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
-          rem SCRAM RMW: r057 → w057
+          rem SCRAM RMW: playerSubpixelY_R → playerSubpixelY_W
           let temp4 = playerSubpixelY_R[currentPlayer]
           let temp4 = temp4 + 1
           let playerSubpixelY_W[currentPlayer] = temp4
 YNoCarry
-          rem SCRAM RMW: r057 → w057 (apply integer velocity)
+          rem SCRAM RMW: playerSubpixelY_R → playerSubpixelY_W (apply integer velocity)
           let temp4 = playerSubpixelY_R[currentPlayer]
           let temp4 = temp4 + playerVelocityY[currentPlayer]
           let playerSubpixelY_W[currentPlayer] = temp4
@@ -132,10 +132,10 @@ SetPlayerPosition
           rem Mutates: playerX[], playerY[], playerSubpixelX_W/WL[], playerSubpixelY_W/WL[]
           rem Constraints: None
           let playerX[temp1] = temp2
-          let playerSubpixelX_W[temp1] = temp2 : rem SCRAM write: Write to w049
+          let playerSubpixelX_W[temp1] = temp2 : rem SCRAM write to playerSubpixelX_W
           let playerSubpixelX_WL[temp1] = 0
           let playerY[temp1] = temp3
-          let playerSubpixelY_W[temp1] = temp3 : rem SCRAM write: Write to w057
+          let playerSubpixelY_W[temp1] = temp3 : rem SCRAM write to playerSubpixelY_W
           let playerSubpixelY_WL[temp1] = 0
           return
 
@@ -306,7 +306,7 @@ ConstrainToScreen
           rem Mutates: playerX[], playerY[], playerSubpixelX_W/WL[], playerSubpixelY_W/WL[]
           rem Constraints: X bounds PlayerLeftEdge..PlayerRightEdge, Y bounds 20-80
           rem Constrain X position using screen boundary constants
-          rem SCRAM write: Write to w049
+          rem SCRAM write to playerSubpixelX_W
           if playerX[temp1] < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge
           if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_W[temp1] = PlayerLeftEdge
           if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_WL[temp1] = 0
@@ -315,7 +315,7 @@ ConstrainToScreen
           if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_WL[temp1] = 0
           
           rem Constrain Y position (20 to 80 for screen bounds)
-          rem SCRAM write: Write to w057
+          rem SCRAM write to playerSubpixelY_W
           if playerY[temp1] < 20 then let playerY[temp1] = 20
           if playerY[temp1] < 20 then let playerSubpixelY_W[temp1] = 20
           if playerY[temp1] < 20 then let playerSubpixelY_WL[temp1] = 0

@@ -798,11 +798,19 @@
           
           dim rowYPosition_W = w094
           dim rowYPosition_R = r094
-          rem Y position of playfield row (used in gravity calculations)
+          rem Game Mode: Y position of playfield row (used in gravity calculations)
+          dim winScreenCandidateOrder_W = w094
+          dim winScreenCandidateOrder_R = r094
+          rem Admin Mode: Winner screen elimination order candidate
+          rem (shares rowYPosition RAM in Admin Mode)
           
           dim rowCounter_W = w095
           dim rowCounter_R = r095
-          rem Loop counter for row calculations
+          rem Game Mode: Loop counter for row calculations
+          dim winScreenThirdPlaceOrder_W = w095
+          dim winScreenThirdPlaceOrder_R = r095
+          rem Admin Mode: Winner screen third-place elimination order
+          rem (shares rowCounter RAM in Admin Mode)
           
           dim characterHeight_W = w096
           dim characterHeight_R = r096

@@ -1,3 +1,49 @@
+DispatchCharacterJump
+          rem
+          rem Shared Character Dispatch Subroutines
+          rem Dispatches jump handlers per character index (0-31)
+          rem
+          rem Input: temp4 = character type (0-31)
+          if temp4 < 8 then on temp4 goto BernieJump CurlerJump DragonetJump ZoeRyenJump FatTonyJump MegaxJump HarpyJump KnightGuyJump : rem MethHound (31) uses ShamoneJump handler
+          if temp4 < 8 then return
+          let temp4 = temp4 - 8
+          if temp4 < 8 then on temp4 goto FrootyJump NefertemJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
+          if temp4 < 8 then return
+          let temp4 = temp4 - 8
+          if temp4 < 8 then on temp4 goto Character16Jump Character17Jump Character18Jump Character19Jump Character20Jump Character21Jump Character22Jump Character23Jump
+          if temp4 < 8 then return
+          let temp4 = temp4 - 8
+          if temp4 = 0 then goto Character24Jump
+          if temp4 = 1 then goto Character25Jump
+          if temp4 = 2 then goto Character26Jump
+          if temp4 = 3 then goto Character27Jump
+          if temp4 = 4 then goto Character28Jump
+          if temp4 = 5 then goto Character29Jump
+          if temp4 = 6 then goto Character30Jump
+          if temp4 = 7 then goto ShamoneJump
+          return
+
+DispatchCharacterDown
+          rem Dispatch to character-specific down handler (0-31)
+          if temp4 < 8 then on temp4 goto BernieDown CurlerDown DragonetDown ZoeRyenDown FatTonyDown MegaxDown HarpyDown KnightGuyDown : rem MethHound (31) uses ShamoneDown handler
+          if temp4 < 8 then return
+          let temp4 = temp4 - 8
+          if temp4 < 8 then on temp4 goto FrootyDown NefertemDown NinjishGuyDown PorkChopDown RadishGoblinDown RoboTitoDown UrsuloDown ShamoneDown
+          if temp4 < 8 then return
+          let temp4 = temp4 - 8
+          if temp4 < 8 then on temp4 goto Character16Down Character17Down Character18Down Character19Down Character20Down Character21Down Character22Down Character23Down
+          if temp4 < 8 then return
+          let temp4 = temp4 - 8
+          if temp4 = 0 then goto Character24Down
+          if temp4 = 1 then goto Character25Down
+          if temp4 = 2 then goto Character26Down
+          if temp4 = 3 then goto Character27Down
+          if temp4 = 4 then goto Character28Down
+          if temp4 = 5 then goto Character29Down
+          if temp4 = 6 then goto Character30Down
+          if temp4 = 7 then goto ShamoneDown
+          return
+
 BernieJump
           rem
           rem ChaosFight - Source/Routines/CharacterControls.bas
@@ -30,7 +76,7 @@ BernieJump
           rem Constraints: Only effective on single-row platforms; bottom row wraps if clear
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
-          gosub ConvertPlayerXToPlayfieldColumn
+          gosub ConvertPlayerXToPlayfieldColumn bank13
           
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
@@ -142,7 +188,7 @@ DragonetJump
           rem move if already at top row
           rem Fly up with playfield collision check
           rem Check collision before moving - use shared coordinate conversion
-          gosub ConvertPlayerXToPlayfieldColumn
+          gosub ConvertPlayerXToPlayfieldColumn bank13
           
           let temp3 = playerY[temp1] : rem Check row above player (top of sprite)
           let temp4 = temp3 / pfrowheight
@@ -1229,8 +1275,8 @@ StandardGuard
           rem playerState[], playerTimers[] (global arrays) = player
           rem states and timers (via StartGuard)
           rem
-          rem Called Routines: CheckGuardCooldown (bank11) - checks
-          rem guard cooldown, StartGuard (bank11) - activates guard
+          rem Called Routines: CheckGuardCooldown (bank14) - checks
+          rem guard cooldown, StartGuard (bank14) - activates guard
           rem
           rem Constraints: Flying characters (Frooty=8, Dragon of
           rem Storms=2, Harpy=6) cannot guard. Guard blocked if in

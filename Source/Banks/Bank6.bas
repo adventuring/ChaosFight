@@ -6,6 +6,7 @@
           
           rem Character selection routines
 #include "Source/Routines/CharacterSelect.bas"
+#include "Source/Routines/CharacterSelectMain.bas"
 #include "Source/Routines/CharacterData.bas"
           
           rem Combat system moved from Bank 11

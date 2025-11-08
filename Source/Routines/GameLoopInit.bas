@@ -54,7 +54,7 @@ BeginGameLoop
           rem         NUSIZ0, _NUSIZ1, NUSIZ2, NUSIZ3, frame, sprite
           rem         pointers, screen layout
           rem
-          rem Called Routines: InitializeSpritePointers (bank10) - sets
+          rem Called Routines: InitializeSpritePointers (bank12) - sets
           rem sprite pointer addresses,
           rem   SetGameScreenLayout (bank8) - sets screen layout,
           rem   GetPlayerLocked (bank14) - accesses player lock state,
@@ -67,7 +67,7 @@ BeginGameLoop
           rem              PlayerHealthSet (all called via goto)
           rem              Entry point for game loop initialization
           rem Initialize sprite pointers to RAM addresses
-          gosub InitializeSpritePointers bank10 : rem Ensure pointers are set before loading any sprite data
+          gosub InitializeSpritePointers bank12 : rem Ensure pointers are set before loading any sprite data
           
           gosub SetGameScreenLayout bank8 : rem Set screen layout for gameplay (32×8 game layout)
           rem SuperChip variables var0-var15 available in gameplay

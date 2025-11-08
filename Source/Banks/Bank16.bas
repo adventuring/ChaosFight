@@ -4,7 +4,6 @@
           bank 16
           
           rem Data segment (loaded before any routines)
-#include "Source/Data/CharacterTables.bas"
 #include "Source/Data/SpecialSprites.bas"
 #include "Source/Data/Arenas.bas"
 
@@ -13,7 +12,6 @@
           rem bankswitching. Titlescreen graphics and kernel moved to
           rem Bank 9 (only used during title screens)
 
-#include "Source/Common/CharacterDefinitions.bas"
 #include "Source/Routines/FontRendering.bas"
 #include "Source/Routines/ArenaLoader.bas"
 #include "Source/Routines/MainLoop.bas"

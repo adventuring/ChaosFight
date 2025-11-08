@@ -253,59 +253,6 @@ InputSkipPlayer4Input
           rem Switch back to even frame
           return
 
-DispatchCharacterJump
-          rem
-          rem Shared Character Dispatch Subroutines
-          rem These subroutines replace duplicate dispatch blocks
-          rem throughout
-          rem   the input handlers
-          rem
-          rem INPUT: temp4 = character type (0-31)
-          rem
-          rem OUTPUT: Dispatches to appropriate character-specific
-          rem routine
-          
-          rem Dispatch to character-specific jump handler (0-31)
-          if temp4 < 8 then on temp4 goto BernieJump CurlerJump DragonetJump ZoeRyenJump FatTonyJump MegaxJump HarpyJump KnightGuyJump : rem MethHound (31) uses ShamoneJump handler
-          if temp4 < 8 then return
-          let temp4 = temp4 - 8
-          if temp4 < 8 then on temp4 goto FrootyJump NefertemJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
-          if temp4 < 8 then return
-          let temp4 = temp4 - 8
-          if temp4 < 8 then on temp4 goto Character16Jump Character17Jump Character18Jump Character19Jump Character20Jump Character21Jump Character22Jump Character23Jump
-          if temp4 < 8 then return
-          let temp4 = temp4 - 8
-          if temp4 = 0 then goto Character24Jump
-          if temp4 = 1 then goto Character25Jump
-          if temp4 = 2 then goto Character26Jump
-          if temp4 = 3 then goto Character27Jump
-          if temp4 = 4 then goto Character28Jump
-          if temp4 = 5 then goto Character29Jump
-          if temp4 = 6 then goto Character30Jump
-          if temp4 = 7 then goto ShamoneJump
-          return
-          
-DispatchCharacterDown
-          rem Dispatch to character-specific down handler (0-31)
-          if temp4 < 8 then on temp4 goto BernieDown CurlerDown DragonetDown ZoeRyenDown FatTonyDown MegaxDown HarpyDown KnightGuyDown : rem MethHound (31) uses ShamoneDown handler
-          if temp4 < 8 then return
-          let temp4 = temp4 - 8
-          if temp4 < 8 then on temp4 goto FrootyDown NefertemDown NinjishGuyDown PorkChopDown RadishGoblinDown RoboTitoDown UrsuloDown ShamoneDown
-          if temp4 < 8 then return
-          let temp4 = temp4 - 8
-          if temp4 < 8 then on temp4 goto Character16Down Character17Down Character18Down Character19Down Character20Down Character21Down Character22Down Character23Down
-          if temp4 < 8 then return
-          let temp4 = temp4 - 8
-          if temp4 = 0 then goto Character24Down
-          if temp4 = 1 then goto Character25Down
-          if temp4 = 2 then goto Character26Down
-          if temp4 = 3 then goto Character27Down
-          if temp4 = 4 then goto Character28Down
-          if temp4 = 5 then goto Character29Down
-          if temp4 = 6 then goto Character30Down
-          if temp4 = 7 then goto ShamoneDown
-          return
-          
 DispatchCharacterAttack
           rem Dispatch to character-specific attack handler (0-31)
           rem MethHound (31) uses ShamoneAttack handler
@@ -495,7 +442,7 @@ HGI_CheckJoy0
           if !joy0down then goto HGI_CheckGuardRelease : rem Players 0,2 use joy0
 HGI_HandleDownPressed
           let temp4 = PlayerCharacter[temp1] : rem DOWN pressed - dispatch to character-specific down handler
-          gosub DispatchCharacterDown
+          gosub DispatchCharacterDown bank14
           return
 HGI_CheckGuardRelease
           let temp2 = PlayerState[temp1] & 2 : rem DOWN released - check for early guard release
@@ -662,11 +609,11 @@ IHLP_DoneFlyingLeftRight
           
 BernieFallThrough
           rem Bernie UP input handled in BernieJump routine (fall
-          gosub BernieJump : rem   through 1-row floors)
+          gosub BernieJump bank14 : rem   through 1-row floors)
           goto DoneJumpInput
           
 HarpyFlap
-          gosub HarpyJump : rem Harpy UP input handled in HarpyJump routine (flap to fly)
+          gosub HarpyJump bank14 : rem Harpy UP input handled in HarpyJump routine (flap to fly)
           goto DoneJumpInput
           
 NormalJumpInput
@@ -700,7 +647,7 @@ DoneUpInputHandling
           rem Use cached animation state - block jump during attack
           if temp2 >= 13 then InputSkipLeftPortJump : rem   animations (states 13-15)
           let temp4 = PlayerCharacter[temp1] : rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump
+          gosub DispatchCharacterJump bank14
 InputSkipLeftPortJump
 
           
@@ -791,11 +738,11 @@ IHRP_DoneFlyingLeftRight
           
 BernieFallThroughRight
           rem Bernie UP input handled in BernieJump routine (fall
-          gosub BernieJump : rem   through 1-row floors)
+          gosub BernieJump bank14 : rem   through 1-row floors)
           goto DoneJumpInputRight
           
 HarpyFlapRight
-          gosub HarpyJump : rem Harpy UP input handled in HarpyJump routine (flap to fly)
+          gosub HarpyJump bank14 : rem Harpy UP input handled in HarpyJump routine (flap to fly)
           goto DoneJumpInputRight
           
 NormalJumpInputRight
@@ -830,7 +777,7 @@ DoneUpInputHandlingRight
           rem Use cached animation state - block jump during attack
           if temp2 >= 13 then InputSkipRightPortJump : rem   animations (states 13-15)
           let temp4 = PlayerCharacter[temp1] : rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump
+          gosub DispatchCharacterJump bank14
 InputSkipRightPortJump
 
           

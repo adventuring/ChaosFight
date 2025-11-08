@@ -35,13 +35,13 @@ GameMainLoop
           rem
           rem Called Routines: ReadEnhancedButtons,
           rem HandleConsoleSwitches (bank14),
-          rem   InputHandleAllPlayers (bank13), UpdateGuardTimers,
+          rem   InputHandleAllPlayers (bank13), UpdateGuardTimers (bank14),
           rem   UpdateCharacterAnimations (bank11),
           rem   UpdatePlayerMovement (bank13), PhysicsApplyGravity (bank8),
-          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank9),
-          rem   CheckBoundaryCollisions (bank9),
-          rem   CheckPlayfieldCollisionAllDirections (bank9),
-          rem   CheckAllPlayerCollisions (bank9),
+          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank8),
+          rem   CheckBoundaryCollisions (bank8),
+          rem   CheckPlayfieldCollisionAllDirections (bank8),
+          rem   CheckAllPlayerCollisions (bank8),
           rem   CheckAllPlayerEliminations,
           rem   UpdateAllMissiles (bank7),
           rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank8),
@@ -62,7 +62,7 @@ GameMainLoop
 
           gosub InputHandleAllPlayers bank13 : rem Handle all player input (with Quadtari multiplexing) (in Bank 13)
 
-          gosub UpdateGuardTimers : rem Update guard timers (duration and cooldown)
+          gosub UpdateGuardTimers bank14 : rem Update guard timers (duration and cooldown)
 
           gosub UpdateCharacterAnimations bank11 : rem Update animation system (10fps character animation) (in Bank 11)
           
@@ -72,17 +72,17 @@ GameMainLoop
           
           gosub ApplyMomentumAndRecovery bank8 : rem Apply momentum and recovery effects (in Bank 8)
 
-          gosub ApplySpecialMovement bank9 : rem Apply special movement physics (Bernie wrap, etc.) (in Bank 9)
+          gosub ApplySpecialMovement bank8 : rem Apply special movement physics (Bernie wrap, etc.) (in Bank 8)
 
-          gosub CheckBoundaryCollisions bank9 : rem Check boundary collisions (in Bank 9)
+          gosub CheckBoundaryCollisions bank8 : rem Check boundary collisions (in Bank 8)
 
           rem Check playfield collisions (walls, ceilings, ground) for
-          for currentPlayer = 0 to 1 : rem   all players (in Bank 9)
-              gosub CheckPlayfieldCollisionAllDirections bank9
+          for currentPlayer = 0 to 1 : rem   all players (in Bank 8)
+              gosub CheckPlayfieldCollisionAllDirections bank8
           next
           if controllerStatus & SetQuadtariDetected = 0 then goto GameMainLoopQuadtariSkip
           for currentPlayer = 2 to 3
-              gosub CheckPlayfieldCollisionAllDirections bank9
+              gosub CheckPlayfieldCollisionAllDirections bank8
           next
 GameMainLoopQuadtariSkip
           rem Skip 4-player collision checks (not in 4-player mode)
@@ -97,7 +97,7 @@ GameMainLoopQuadtariSkip
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-          gosub CheckAllPlayerCollisions bank9 : rem Check multi-player collisions (in Bank 9)
+          gosub CheckAllPlayerCollisions bank8 : rem Check multi-player collisions (in Bank 8)
 
           gosub CheckAllPlayerEliminations : rem Check for player eliminations
           
@@ -125,8 +125,8 @@ CheckGameEndTransition
           rem
           rem Constraints: Must be colocated with GameMainLoop,
           rem TransitionToWinner, GameEndCheckDone
-          if gameEndTimer_R > 0 then let gameEndTimer_W = gameEndTimer_R - 1 : rem Decrement game end timer
           if gameEndTimer_R = 0 then TransitionToWinner : rem When timer reaches 0, transition to winner announcement
+          let gameEndTimer_W = gameEndTimer_R - 1 : rem Decrement game end timer
           goto GameEndCheckDone
 TransitionToWinner
           rem Transition to winner announcement mode

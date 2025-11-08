@@ -13,9 +13,11 @@
           
           rem Physics and rendering routines moved from Bank 11
           rem PlayerPhysics.bas split into two files to reduce bank size
-          rem PlayerPhysicsCollisions.bas moved to Bank 9 (collision
-          rem detection)
+          rem Collision handling colocated with gravity/rendering for
+          rem   tighter coupling
           rem AnimationSystem.bas moved to Bank 11 (character
           rem animations)
 #include "Source/Routines/PlayerPhysicsGravity.bas"
 #include "Source/Routines/PlayerRendering.bas"
+#include "Source/Routines/PlayerPhysicsCollisions.bas"
+#include "Source/Routines/SpecialMovement.bas"

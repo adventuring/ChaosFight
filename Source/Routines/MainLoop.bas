@@ -30,7 +30,7 @@ MainLoop
           if gameMode = 0 then gosub PublisherPreludeMain bank9 : goto MainLoopContinue
           if gameMode = 1 then gosub AuthorPrelude bank9 : goto MainLoopContinue
           if gameMode = 2 then gosub TitleScreenMain bank9 : goto MainLoopContinue
-          if gameMode = 3 then gosub CharacterSelectInputEntry bank10 : goto MainLoopContinue
+          if gameMode = 3 then gosub CharacterSelectInputEntry bank6 : goto MainLoopContinue
           if gameMode = 4 then gosub FallingAnimation1 bank12 : goto MainLoopContinue
           if gameMode = 5 then gosub ArenaSelect1 bank12 : goto MainLoopContinue
           if gameMode = 6 then gosub GameMainLoop bank11 : goto MainLoopContinue

@@ -17,12 +17,6 @@
 #include "Source/Routines/BeginAttractMode.bas"
 #include "Source/Routines/AttractMode.bas"
           
-          rem Special movement routines moved from Bank 11
-#include "Source/Routines/SpecialMovement.bas"
-          
-          rem Physics collision detection moved from Bank 8
-#include "Source/Routines/PlayerPhysicsCollisions.bas"
-
           asm
           ; rem Titlescreen graphics and kernel (moved from Bank 1)
           ; rem Titlescreen graphics for admin screens (48×42 bitmaps)

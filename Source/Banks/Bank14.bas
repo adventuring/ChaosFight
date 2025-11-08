@@ -20,3 +20,7 @@
           
           rem Player locked helpers
 #include "Source/Routines/PlayerLockedHelpers.bas"
+
+          rem Character-specific control handlers and guard effects
+#include "Source/Routines/CharacterControls.bas"
+#include "Source/Routines/GuardEffects.bas"

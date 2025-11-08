@@ -299,7 +299,7 @@ CharacterSelectSkipQuadtariReadyInline
 
 CharacterSelectDrawScreen
           rem Draw character selection screen via shared renderer
-          gosub bank10 SelectDrawScreen
+          gosub bank6 SelectDrawScreen
           return
 
 CharacterSelectDrawScreenLegacy
@@ -514,7 +514,7 @@ SelectDrawPlayer3Border
           return
 CharacterSelectDrawNumber
           rem Draw number indicator via shared renderer
-          gosub bank10 SelectDrawNumber
+          gosub bank6 SelectDrawNumber
           return
 
 CharacterSelectDrawNumberLegacy

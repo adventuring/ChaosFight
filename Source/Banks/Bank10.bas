@@ -5,11 +5,6 @@
            
 #include "Source/Data/PlayerColorTables.bas"
 
-#include "Source/Routines/CharacterSelectMain.bas"
- 
 #include "Source/Routines/SpriteLoader.bas"
           rem SpriteLoaderCharacterArt.bas moved to Bank 14
-
-#include "Source/Routines/SpritePointerInit.bas"
-          rem Sprite pointer initialization for RAM-based sprite system
 

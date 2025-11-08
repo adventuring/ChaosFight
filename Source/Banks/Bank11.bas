@@ -15,8 +15,8 @@
           rem   PlayerInput.bas -> Bank 13
           rem   MovementSystem.bas -> Bank 13
           rem   PlayerPhysicsGravity.bas -> Bank 8
-          rem   PlayerPhysicsCollisions.bas -> Bank 9
+          rem   PlayerPhysicsCollisions.bas -> Bank 8
           rem   PlayerRendering.bas -> Bank 8
           rem   AnimationSystem.bas -> Bank 11 (moved from Bank 8)
-          rem   SpecialMovement.bas -> Bank 9
+          rem   SpecialMovement.bas -> Bank 8
           rem   ConsoleHandling.bas -> Bank 14

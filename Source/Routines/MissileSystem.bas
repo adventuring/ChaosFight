@@ -346,12 +346,14 @@ GravityDone
           rem Divide by 64 using bit shift (6 right shifts) - derived
           rem   from CurlingFrictionCoefficient
           asm
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
+            lda velocityCalculation_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta velocityCalculation_W
 end
           let missileVelocityXCalc_W = missileVelocityXCalc_R - velocityCalculation_R : rem Reduce by 1/64 (1.56% - ice-like friction)
           goto FrictionApply
@@ -360,12 +362,14 @@ FrictionNegative
           rem Divide by 64 using bit shift (6 right shifts) - derived
           rem   from CurlingFrictionCoefficient
           asm
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
-            lsr velocityCalculation_W
+            lda velocityCalculation_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta velocityCalculation_W
 end
           let missileVelocityXCalc_W = missileVelocityXCalc_R + velocityCalculation_R : rem Reduce by 1/64 (1.56% - ice-like friction)
 FrictionApply
@@ -974,8 +978,10 @@ WeightBasedKnockbackScale
           rem Multiply by 4 (KnockbackImpulse = 4) using left shift 2
           rem   bits
           asm
-            asl impulseStrength_W
-            asl impulseStrength_W
+            lda impulseStrength_R
+            asl
+            asl
+            sta impulseStrength_W
 end
           rem Divide by 100 - inlined for performance (fast
           let temp2 = impulseStrength_R : rem   approximation for values 0-255)

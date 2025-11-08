@@ -518,10 +518,12 @@ end
           rem Use 4 shifts for safety (works for both 8 and 16, may be
           let playfieldRow_W = temp5 : rem   off by 1 for 8 but acceptable for simple nudge)
           asm
-            lsr playfieldRow_W
-            lsr playfieldRow_W
-            lsr playfieldRow_W
-            lsr playfieldRow_W
+            lda playfieldRow_R
+            lsr
+            lsr
+            lsr
+            lsr
+            sta playfieldRow_W
 end
           if playfieldRow_R >= pfrows then let playfieldRow_W = pfrows - 1
           rem Check for wraparound: if division resulted in value ≥ 128

@@ -107,7 +107,8 @@ SetSprite0
           rem Mutates: player0x, player0y, COLUP0 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player0x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player0x = temp2
           let player0y = temp3
           let COLUP0 = temp4
           goto LoadPlayerDigit : rem tail call
@@ -121,7 +122,8 @@ SetSprite1
           rem Mutates: player1x, player1y, _COLUP1 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player1x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player1x = temp2
           let player1y = temp3
           let _COLUP1 = temp4
           goto LoadPlayerDigit : rem tail call
@@ -135,7 +137,8 @@ SetSprite2
           rem Mutates: player2x, player2y, COLUP2 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player2x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player2x = temp2
           let player2y = temp3
           let COLUP2 = temp4
           goto LoadPlayerDigit : rem tail call
@@ -149,7 +152,8 @@ SetSprite3
           rem Mutates: player3x, player3y, COLUP3 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player3x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player3x = temp2
           let player3y = temp3
           let COLUP3 = temp4
           goto LoadPlayerDigit : rem tail call
@@ -163,7 +167,8 @@ SetSprite4
           rem Mutates: player4x, player4y, COLUP4 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player4x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player4x = temp2
           let player4y = temp3
           let COLUP4 = temp4
           goto LoadPlayerDigit : rem tail call
@@ -177,7 +182,8 @@ SetSprite5
           rem Mutates: player5x, player5y, COLUP5 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player5x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player5x = temp2
           let player5y = temp3
           let COLUP5 = temp4
           goto LoadPlayerDigit : rem tail call

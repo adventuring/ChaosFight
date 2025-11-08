@@ -1,11 +1,10 @@
-GameMainLoop
-          rem
           rem ChaosFight - Source/Routines/GameLoopMain.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Game Loop - Main Loop
           rem Main gameplay loop that orchestrates all game systems.
           rem Called every frame during active gameplay.
           rem SEQUENCE PER FRAME:
+GameMainLoop
           rem   1. Handle console switches (pause, reset, color)
           rem   2. Handle player input via PlayerInput.bas
           rem   3. Apply physics (gravity, momentum, collisions)
@@ -107,7 +106,8 @@ GameMainLoopQuadtariSkip
           rem   ending,
           rem systemFlags bit 3 (SystemFlagGameStateEnding) means game
           rem is
-          if systemFlags & SystemFlagGameStateEnding then CheckGameEndTransition : rem   gameEndTimer counts down
+          rem gameEndTimer counts down
+          if systemFlags & SystemFlagGameStateEnding then CheckGameEndTransition
           goto GameEndCheckDone
 CheckGameEndTransition
           rem Check if game end timer should transition to winner screen
@@ -125,7 +125,8 @@ CheckGameEndTransition
           rem
           rem Constraints: Must be colocated with GameMainLoop,
           rem TransitionToWinner, GameEndCheckDone
-          if gameEndTimer_R = 0 then TransitionToWinner : rem When timer reaches 0, transition to winner announcement
+          rem When timer reaches 0, transition to winner announcement
+          if gameEndTimer_R = 0 then TransitionToWinner
           let gameEndTimer_W = gameEndTimer_R - 1 : rem Decrement game end timer
           goto GameEndCheckDone
 TransitionToWinner

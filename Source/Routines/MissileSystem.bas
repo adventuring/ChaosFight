@@ -125,20 +125,10 @@ SpawnMissile
           if temp4 = 0 then let temp6  = 0 - temp6
           let missileVelocityX[temp1] = temp6 : rem Apply facing direction (left = negative)
           
-          rem Initialize NUSIZ tracking from missile width
-          rem NUSIZ bits 4-6: 00=1x, 01=2x, 10=4x (multiplied by 16:
-          rem 0x00, 0x10, 0x20)
+          rem Optimized: Calculate NUSIZ value with formula instead of if-chain
+          rem NUSIZ bits 4-6: width 1=0x00, 2=0x10, 4=0x20 → (width-1)*16
           let temp2 = CharacterMissileWidths[temp5]
-          rem Convert width to NUSIZ value (width 1=0x00, 2=0x10,
-          rem 4=0x20) - inlined for performance
-          if temp2 = 1 then let missileNUSIZ_W[temp1] = 0 : goto SM_NUSIZDone
-          rem 1x size (NUSIZ bits 4-6 = 00)
-          if temp2 = 2 then let missileNUSIZ_W[temp1] = 16 : goto SM_NUSIZDone
-          rem 2x size (NUSIZ bits 4-6 = 01, value = 0x10 = 16)
-          if temp2 = 4 then let missileNUSIZ_W[temp1] = 32 : goto SM_NUSIZDone
-          rem 4x size (NUSIZ bits 4-6 = 10, value = 0x20 = 32)
-          let missileNUSIZ_W[temp1] = 0 : rem Default to 1x if width not recognized
-SM_NUSIZDone
+          let missileNUSIZ_W[temp1] = (temp2 - 1) * 16
           
           let temp6  = CharacterMissileMomentumY[temp5]
           rem Get Y velocity
@@ -212,14 +202,11 @@ UpdateAllMissiles
           rem Called Routines: UpdateOneMissile (for each player 0-3)
           rem
           rem Constraints: None
-          let temp1  = 0 : rem Check each player missile
-          gosub UpdateOneMissile
-          let temp1  = 1
-          gosub UpdateOneMissile
-          let temp1  = 2
-          gosub UpdateOneMissile
-          let temp1  = 3
-          goto UpdateOneMissile : rem tail call
+          rem Optimized: Loop through all player missiles instead of individual calls
+          for temp1 = 0 to 3
+            gosub UpdateOneMissile
+          next
+          return
 
 UpdateOneMissile
           rem

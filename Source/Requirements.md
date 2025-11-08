@@ -1,10 +1,14 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # ChaosFight 25 - Minimum Viable Product Requirements
 
 ## Cold Start Initialization
 
 Upon cold start:
+
 - Console detection (2600 vs 7800) runs first, before any code modifies $D0/$D1
 Then continues into warm start:
+
 - Common and admin vars are cleared
 - Hardware registers are set up (TIA colors, audio)
 - Controller detection (Mega Drive/Genesis, Joy2b+, or Quadtari) is performed
@@ -27,6 +31,7 @@ Stick to these rules and the codebase reads like a chic gossip column instead of
 ## Game Reset Behavior
 
 In any mode, pressing Game Reset causes an instant hard reboot:
+
 - Calls WarmStart to clear all vars and reinitialize hardware registers
 - System state is completely reset
 
@@ -43,8 +48,9 @@ In any mode, pressing Game Reset causes an instant hard reboot:
 ## Admin Mode Controller Redetection
 
 In any admin modes (title, preambles, arena select):
+
 - Pressing Game Select causes controller redetection
-- Toggling Color/B&W switch causes controller redetection  
+- Toggling Color/B&W switch causes controller redetection
 - Pause button (on 7800) causes controller redetection
 
 ---
@@ -52,6 +58,7 @@ In any admin modes (title, preambles, arena select):
 ## Publisher Prelude (formerly Publisher Preamble)
 
 Displays two 48×42 px images with row-by-row color:
+
 - AtariAge Logo
 - AtariAge Text
 - Both centered on black screen
@@ -89,6 +96,7 @@ Attract mode forms an endless wait loop. For now, Attract mode handler simply ju
 ## Character Select
 
 ### Overview
+
 Players select their fighters from 16 available characters (0-15).
 Supports 2-player (standard ports) and 4-player (Quadtari adapter) modes.
 Once all active players have locked in their selections, proceed to Arena Select.
@@ -96,25 +104,30 @@ Once all active players have locked in their selections, proceed to Arena Select
 Players 2 (and if present) 3 & 4 start "locked in" to "CPU" and "NO" and "NO" and unlock on any action.
 
 ### Controller Support
+
 - **2-player mode**: Left port (Player 1), Right port (Player 2)
-- **4-player mode (Quadtari detected)**: 
+- **4-player mode (Quadtari detected)**:
   - Even frames: Left port = Player 1, Right port = Player 2
   - Odd frames: Left port = Player 3, Right port = Player 4
 - Controller detection runs on entry to Character Select screen
 
 ### Input Handling
+
 - **Left/Right**: Cycle through 16 characters (0-15), wraps from 15→0 or 0→15
   (but when wrapping, presents "?" (Random) and either "CPU" or "NO" (Player
   2, depending on player 3/4 state) or "NO" (player 3 or 4). Player 1 has
   only "?" and the 16 characters (NumCharacters)
+
 - **Fire/B/I button**: Lock in current character selection
 - **Up**: Unlock current selection (returns to browsing)
 - **Down**: Hold to prepare for handicapping. Character shows "recovering
   from a hard fall" animation while held.
+
 - **Down + Fire/B/I button**: Lock in with handicap (75% health instead of
   100%; character remains in "recovering from a hard fall" state visually
 
 ### Character Selection States
+
 - **playerCharacter[0-3]**: Current character index being browsed (0-15, or 255 for "NO")
 
 Player 1 options: ? or 0 ↔ MaxCharacterID
@@ -122,6 +135,7 @@ Player 1 options: ? or 0 ↔ MaxCharacterID
 Player 3/4 options: NO or ? or 0 ↔ MaxCharacterID
 
 Player 2: ? or 0 ↔ MaxCharacterID and
+
 - if either of Player 3 or Player 4 is not "NO" then "NO" is an option
 - otherwise (no player 3/4) then "CPU" is the other option
 
@@ -133,27 +147,33 @@ Player 2: ? or 0 ↔ MaxCharacterID and
   - 3 = Locked in handicap mode = PlayerLockedNormal | PlayerHandicapped
 
 ### Visual Display
+
 - Display character preview with idle animation
 - Show lock status for each player --- if locked, character color is player
   color; if unlocked, character color is white.
+
 - Display no sprite (blank) for players 3/4 if no Quadtari detected
 - Display character sprites in screen quadrants
 
 ### Progression Logic
+
 - All players must lock in some selection to proceed, but player 2 (and 3/4,
   when present) start locked, so player must take some action to switch
   their characters from "CPU" or "NO" setting.
+
 - "?" characters auto-select random character (once locked in)
 - "CPU" selects a random character (when everyone else is locked in)
 - Once all players locked in, transition to Arena Select
 
 ### Sound Effects
+
 - Menu navigation sound (SoundMenuNavigate) on left/right movement
 - Menu selection sound (SoundMenuSelect) on lock/unlock
 - No background music (some admin screens may use music, but Character Select
   uses sound effects instead)
 
 ### Special Cases
+
 - All navigation should use menu sound effects, not gameplay sounds
 
 ---
@@ -170,6 +190,7 @@ Player 2: ? or 0 ↔ MaxCharacterID and
 - Game Select switch pressed: return to Character Select
 - Up to four locked-in player graphics remain on screen (blank if no player
   or locked in at "NO")
+
 - "CPU" or "?" already have random character selected
 - Digits appear in center, white-on-black, use virtual sprites 5-6
 
@@ -192,6 +213,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 ## Game Mode
 
 ### Initialization
+
 - Call BeginGameLoop before entering Game Mode:
   - Initialize player positions from Falling In animation final positions
   - Set player facing directions (alternating: P1 right, P2 left, P3 right, P4 left)
@@ -203,6 +225,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
   - Load arena data
 
 ### Playfield and Colors
+
 - Set Playfield and pfcolors:
   - **Color mode + NTSC/PAL**: color-per-row (different colors for each playfield row)
   - **B&W or SECAM**: white COLUPF (single color for entire playfield)
@@ -210,11 +233,14 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - Color data defined per arena in area data files (pfcolors)
 
 ### Game Cycle (Per Frame)
+
 1. **Console Switch Handling**: Check select, reset, color/B&W/pause, right
    difficulty (if CPU running player 2)
+
 2. **Player Input**: Handle all player inputs (with Quadtari multiplexing if 4-player)
    **CPU Input**: Allow CPU players to contribute by controlling their own
    sprite
+
 3. **Animation System**: Update character animations (10fps animation rate, 8-frame sequences)
 4. **Movement System**: Update player movement (full 60fps movement rate)
 5. **Physics**: Apply gravity (character-specific, some characters ignore gravity)
@@ -232,6 +258,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 17. **Screen Draw**: Render complete frame
 
 ### Player Actions
+
 - **Walk Left/Right**: Horizontal movement based on character weight
 - **Jump**: Vertical movement, character-specific jump heights based on weight
 - **Guard**: Block incoming attacks, reduces damage (stick Down)
@@ -241,6 +268,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - Button III toggles game paused state, so does Game Select.
 
 ### Physics Systems
+
 - **Gravity**: Affects most characters (Frooty and Dragon of Storms ignore gravity - can fly)
 - **Weight Effects**:
   - Heavier characters: Lower jumps, slower movement, more knockback resistance
@@ -249,6 +277,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - **Recovery/Hitstun**: Frames of vulnerability after being hit
 
 ### Combat System
+
 - **Melee Attacks**: Close-range attacks with character-specific ranges
 - **Ranged Attacks**: Projectile attacks with character-specific properties
 - **Hit Detection**: AABB (axis-aligned bounding box) collision detection
@@ -256,16 +285,17 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
 - **Damage**: Character-specific base damage modified by weight, attack type
 
 #### Damage Application Process
-When a player takes damage from any source:
-1. **Hurt Animation**: Player begins "hurt" animation (ActionHit = 5)
+
+1. **Hurt Animation**: Player enters the hurt state with knockback applied
 2. **Recovery Frames**: Player enters recovery frames count (damage / 2, clamped 10-30 frames)
 3. **Color Dimming**: Player color dims during recovery (or magenta on SECAM TV standard)
-4. **Health Check**: 
+4. **Health Check**:
    - If player health ≥ damage amount: Decrement health by damage amount
    - If player health < damage amount: Player dies (instantly vanishes)
 5. **Death Handling**: Dead players instantly vanish (sprite hidden, elimination effects triggered)
 
 ### Missile System
+
 - **Missile Types**: Character-specific projectiles (size, trajectory, lifetime)
 - **Movement**: Horizontal, vertical, or ballistic arcs
 - **Collision**: Hit players, background, or both based on missile flags
@@ -276,6 +306,7 @@ When a player takes damage from any source:
   - **Separate heights**: Each player's missile height is set correctly when multiplexing (P1/P3 and P2/P4 can have different heights)
 
 #### Character Attack Types and Missile Dimensions
+
 - **Bernie**: Melee only - "Ground Thump" area-of-effect attack hits both left and right simultaneously, shoving enemies away rapidly (no missile)
 - **Curler**: Ranged - 4×4 pixel wide, tall ground-based projectile
 - **Dragon of Storms**: Ranged - 2×2 pixel standard projectile with ballistic arc (gravity)
@@ -316,11 +347,13 @@ Per-character missile spawn offsets are defined in `CharacterDefinitions.bas`:
 These offsets guarantee that missiles spawn at artist-authored positions; adjusting a single character’s values will not affect others.
 
 ### Game End Condition
+
 - Game ends when only one player remains (all others eliminated)
 - Eliminated players: Health reached 0, marked in playersEliminated bit flags
 - Transition to Winner Screen after last elimination
 
 ### Sound Effects (During Gameplay)
+
 - Attack hit sounds
 - Guard block sounds
 - Jump sounds
@@ -329,18 +362,21 @@ These offsets guarantee that missiles spawn at artist-authored positions; adjust
 - No background music (gameplay uses SFX only)
 
 ### Console Switches (During Game Mode)
+
 - **Game Reset**: Instant hard reboot (calls WarmStart)
 - **Game Select**: toggles pause
 - **Color/B&W Switch**: in "Color" position (PAL/NTSC only) pfcolors are
   per-row, in "B&W" position the arena is white-on-black. Does not affect
   players' colors.
+
 - **Pause Input**: Toggle pause state
   - **Select Switch**: Pressing Select toggles pause on/off
   - **Joy2b+ Button III**: Pressing Button III on Joy2b+ controllers (left or right port) toggles pause on/off
-- **7800 Pause Button Behavior**: 
+- **7800 Pause Button Behavior**:
   - On 7800, the pause button is a momentary contact switch that occupies the same hardware pin as the 2600 Color/B&W switch
-  - On 2600: Color/B&W switch is binary (color position vs B&W position) - determines if playfield uses color-per-row 
+  - On 2600: Color/B&W switch is binary (color position vs B&W position) - determines if playfield uses color-per-row
     or single-white color
+
   - On 7800: Pause button is momentary toggle - each press toggles between White-only mode and Color-Per-Row (pfcolor) mode
   - This affects ONLY the playfield color rendering, not pause state
   - Uses colorBWOverride variable to track toggle state
@@ -359,7 +395,7 @@ These offsets guarantee that missiles spawn at artist-authored positions; adjust
 - If a 3- or 4-player game, all but the last player
   appear. The winner (last man standing) appears in the top-center.
   The runner-up (last eliminated) appears at the mid-left.
-  The second runner-up (next-to-last eliminated) appears at the 
+  The second runner-up (next-to-last eliminated) appears at the
   mid-right.
   The last place (if 4 players) appears at the bottom-left.
 
@@ -394,6 +430,7 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
 | Shamone | 65 lbs (29.5 kg) | 35 | Medium-light |
 
 **Weight Effects**:
+
 - Jump height (higher weight = lower jump)
 - Movement speed (higher weight = slower)
 - Momentum (higher weight = more momentum when moving)
@@ -401,12 +438,13 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
 - Melee force (higher weight = more damage/knockback to opponents)
 
 ### Character 0: Bernie
+
 - **Weight**: 10 lbs (4.5 kg) - Game Unit: 5
 - **Attack Type**: Melee (hits BOTH DIRECTIONS - dual-direction AOE)
 - **Missile**: None (melee only, 4-frame lifetime for visual)
 - **Special Moves**:
   - No jumping
-  - **Fall abilities**: 
+  - **Fall abilities**:
     - Wraps from bottom to top of screen when falling off
     - Fall damage immunity
     - Can fall through 1-row floors when pressing UP (used for platform navigation)
@@ -414,21 +452,23 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Ground thump affects enemies to either side (dual-direction AOE attack)
 
 ### Character 1: Curling Sweeper
+
 - **Weight**: 190 lbs (86.2 kg) - Game Unit: 53
 - **Attack Type**: Ranged
 - **Missile**: 4×2 pixels curling stone (from character's feet)
-- **Missile Properties**: 
+- **Missile Properties**:
   - Emission height: 14 pixels (from feet)
   - Momentum X: 6 pixels/frame (horizontal)
   - Momentum Y: 0 (slides along ground)
   - Flags: HitBackground|HitPlayer|Gravity|Bounce|Friction (ice physics)
   - Lifetime: 255 frames (until collision)
-- **Special Moves**: 
+- **Special Moves**:
   - **Ice physics**: Curling stone slides along ground level with ice physics (smooth sliding motion)
   - Great for hitting low targets
   - Projectile spawns at character's feet and slides horizontally across floor
 
 ### Character 2: Dragon of Storms
+
 - **Weight**: 3500 lbs (1588 kg) - Game Unit: 100
 - **Attack Type**: Ranged
 - **Missile**: 2×2 pixels, ballistic arc (parabolic trajectory)
@@ -438,12 +478,13 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Momentum Y: -4 pixels/frame (upward arc)
   - Flags: HitBackground
   - Lifetime: 255 frames (until collision)
-- **Special Moves**: 
+- **Special Moves**:
   - **Flying character**: No gravity, can fly freely (similar to Frooty)
   - Projectile travels in parabolic arc, excellent for hitting enemies at different heights
   - Aerial mobility with full flight control
 
 ### Character 3: Zoe Ryen
+
 - **Weight**: 145 lbs (65.8 kg) - Game Unit: 48
 - **Attack Type**: Ranged
 - **Missile**: Laser blaster (2×2 pixels, horizontal arrowshot)
@@ -453,12 +494,13 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Momentum Y: 0 (horizontal only)
   - Flags: None
   - Lifetime: 255 frames (until collision)
-- **Special Moves**: 
+- **Special Moves**:
   - **Laser blaster**: Fires long, thin laser that travels horizontally across entire screen
   - High jumps
   - Fast horizontal laser projectile for long-range combat
 
 ### Character 4: Fat Tony
+
 - **Weight**: 240 lbs (108.9 kg) - Game Unit: 57
 - **Attack Type**: Ranged
 - **Missile**: Magic ring lasers (2×2 pixels, arrowshot)
@@ -469,12 +511,13 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Flags: None
   - Lifetime: 255 frames (until collision)
   - Force: 4
-- **Special Moves**: 
+- **Special Moves**:
   - **Laser ring**: Magic ring shoots laser projectiles
   - Geography expert
   - Magic ring wielder (laser ring weapon)
 
 ### Character 5: Megax
+
 - **Weight**: 3500 lbs (1588 kg) - Game Unit: 100
 - **Attack Type**: Ranged
 - **Missile**: Fire breath (4×2 pixels, ballistic arc)
@@ -487,6 +530,7 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
 - **Special Moves**: Giant monster-eating powerhouse, biggest and most powerful known, breathes fire
 
 ### Character 6: Harpy
+
 - **Weight**: 30 lbs (13.6 kg) - Game Unit: 23
 - **Attack Type**: Ranged (diagonal downward swoop)
 - **Missile**: 0×0 (uses character sprite during swoop - no visible missile)
@@ -496,22 +540,24 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Momentum Y: 4 pixels/frame (downward)
   - Flags: None
   - Lifetime: 5 frames (swoop duration)
-- **Special Moves**: 
+- **Special Moves**:
   - **Flight pattern**: Can "fly" by repeatedly pressing UP (flap to maintain altitude)
   - **Attack pattern**: Swoop attack - moves diagonally down while attacking (5-frame lifetime)
   - Diagonal downward swoop combines movement and attack in single motion
   - Character sprite itself becomes the attack during swoop animation
 
 ### Character 7: Knight Guy
+
 - **Weight**: 250 lbs (113.4 kg) - Game Unit: 57
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 6-frame lifetime - longest melee duration)
-- **Special Moves**: 
+- **Special Moves**:
   - **Sword**: Melee weapon is a sword
   - Armored fighter with powerful sword attacks
   - Longest melee attack duration (6 frames)
 
 ### Character 8: Frooty
+
 - **Weight**: 120 lbs (54.4 kg) - Game Unit: 45
 - **Attack Type**: Ranged
 - **Missile**: 2×2 pixels, ballistic arc (lollipop sparkle)
@@ -521,7 +567,7 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Momentum Y: -5 pixels/frame (upward arc)
   - Flags: HitBackground
   - Lifetime: 255 frames (until collision)
-- **Special Moves**: 
+- **Special Moves**:
   - **Flying character**: FREE FLIGHT - Use UP/DOWN to move vertically (no guard action)
   - No gravity, full vertical flight control
   - Cannot guard (pressing DOWN makes her fly down instead)
@@ -529,42 +575,47 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Complete aerial mobility like Dragon of Storms
 
 ### Character 9: Nefertem
+
 - **Weight**: 440 lbs (199.6 kg) - Game Unit: 66
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 5-frame lifetime)
 - **Special Moves**: Loyalist to the High Council, feline reflexes
 
 ### Character 10: Ninjish Guy
+
 - **Weight**: 130 lbs (59.0 kg) - Game Unit: 47
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 4-frame lifetime)
-- **Special Moves**: 
+- **Special Moves**:
   - Highest jumps
   - Fastest movement
   - 50% fall damage reduction
   - Ninja mobility with melee attacks
 
 ### Character 11: Pork Chop
+
 - **Weight**: 250 lbs (113.4 kg) - Game Unit: 57
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 4-frame lifetime)
 - **Special Moves**: Standard heavy melee fighter
 
 ### Character 12: Radish Goblin
+
 - **Weight**: 50 lbs (22.7 kg) - Game Unit: 31
 - **Attack Type**: Melee (bouncing bite attacks)
 - **Missile**: None (melee only, 3-frame lifetime)
-- **Special Moves**: 
+- **Special Moves**:
   - Highest jumps
   - Fastest movement
   - Lowest health
   - Bounces when moving
 
 ### Character 13: Robo Tito
+
 - **Weight**: 300 lbs (136.1 kg) - Game Unit: 60
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 5-frame lifetime)
-- **Special Moves**: 
+- **Special Moves**:
   - No jumping
   - Stretches vertically to ceiling (press UP to stretch and grab ceiling)
   - Can move left/right along ceiling
@@ -573,23 +624,26 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
   - Vulnerable entire length to collisions
 
 ### Character 14: Ursulo
+
 - **Weight**: 220 lbs (100 kg) - Game Unit: 55
 - **Attack Type**: Melee (claw swipe)
 - **Missile**: None (melee only, 5-frame lifetime)
 - **Missile Properties**:
   - No missile (0×0) - melee attack uses character sprite
   - Changed from ranged to melee (claw swipe attack)
-- **Special Moves**: 
+- **Special Moves**:
   - Strongest throw
   - Melee claw swipe attack
 
 ### Character 15: Shamone
+
 - **Weight**: 65 lbs (29.5 kg) - Game Unit: 35
 - **Attack Type**: Melee
 - **Missile**: None (melee only, 4-frame lifetime)
-- **Special Moves**: 
+- **Special Moves**:
   - Special upward attack/jump: When attacking, simultaneously jumps upward while performing
     mel\e'e attack
+
   - Form switching: Pressing UP switches between Shamone (character 15) and Meth Hound (character 31)
   - Garden protector from Ducks Away
 - **Form Switching Details**:
@@ -604,6 +658,7 @@ All weights use a logarithmic scale mapping real-world weights to game units (5-
 ## Terminology Standardization
 
 Standardize on "Arena" consistently (not "Level" or "Map"):
+
 - MaxArenaID = 15 (supporting 16 arenas, displayed as "01" through "16")
 - Use "Arena Select" not "Level Select"
 - Use "SelectedArena" not "SelectedLevel"
@@ -614,11 +669,14 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
 - Reserve 1 full bank for music
 - Bank 1 now hosts the music system (StartMusic/UpdateMusic, song tables for
   songs 4-28, build info)
+
 - Bank 15 holds the low-ID themes (songs 0-3: Bernie, EXO, OCascadia,
   Revontuli) alongside the shared sound-effect tables
+
 - Bank 16 carries MainLoop, drawscreen, ArenaLoader, FontRendering, and the
   `game` entry point because the multisprite kernel insists the hot loop lives
   in the final bank
+
 - Reserve 4 banks for character art (2,3,4,5)
 - Reserve slots for 32 characters and 32 arenas
 
@@ -633,4 +691,3 @@ SuperChip RAM (SCRAM) variables have separate read (`r000`-`r127`) and write (`w
 - Code must explicitly use the appropriate port for each operation
 
 **Rationale**: SCRAM has separate read/write ports. Using convenience aliases makes it unclear which port is accessed, which can lead to bugs where writes are attempted via read ports or reads via write ports. Explicit `_R`/`_W` usage makes the code intent clear and prevents errors.
-

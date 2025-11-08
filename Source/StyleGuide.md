@@ -1,7 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
 # ChaosFight Coding Style Guide
 
-**Version**: 1.0  
-**Last Updated**: 2025  
+**Version**: 1.0
+**Last Updated**: 2025
 **Copyright © 2025 Interworldly Adventuring, LLC.**
 
 This document defines the coding standards for the ChaosFight project. All code must conform to these standards to ensure consistency, maintainability, and clarity.
@@ -28,11 +29,13 @@ This document defines the coding standards for the ChaosFight project. All code 
 ### PascalCase
 
 Use **PascalCase** for:
+
 - **Labels/Routines**: `LoadCharacterSprite`, `ApplyDamage`, `CheckPlayerElimination`
 - **Constants**: `MaxCharacter`, `RandomArena`, `ColIndigo(14)`
 - **Enums**: `ActionStanding`, `ActionWalking`, `ModeGame`, `ModeCharacterSelect`
 
 **Examples:**
+
 ```basic
 LoadCharacterSprite
           rem Load sprite data for a character
@@ -49,6 +52,7 @@ const RandomArena = 255
 **DO NOT use abbreviations** in names except for subroutine-local variable prefixes (see [Subroutine-Local Variables](#subroutine-local-variables) below).
 
 **Forbidden:**
+
 ```basic
 const SpritePtr = 0          ; Use: SpritePointer
 CharacterSpritePtrLoBank2    ; Use: CharacterSpriteBank2L
@@ -62,6 +66,7 @@ CharacterSpritePtrHiBank2    ; Use: CharacterSpriteBank2H
 When using pairs of tables or variables for high-byte/low-byte values, use a final **`H`** or **`L`** to distinguish them.
 
 **Correct:**
+
 ```basic
 CharacterSpriteBank2L        ; Low byte table
 CharacterSpriteBank2H        ; High byte table
@@ -70,6 +75,7 @@ musicVoice0PointerH          ; High byte pointer
 ```
 
 **Forbidden:**
+
 ```basic
 CharacterSpriteLBank2        ; "L" is not final
 CharacterSpriteLoBank2       ; Never use "Lo" for "low"
@@ -83,10 +89,12 @@ CharacterSpritePtrHiBank2    ; Redundant "Ptr" + wrong suffix
 ### camelCase
 
 Use **camelCase** for:
+
 - **Zero-page variables** (standard RAM): `gameState`, `playerX`, `playerCharacter[0]`, `playerHealth`
 - **Built-in variables**: `temp1`, `temp2`, `qtcontroller`, `frame` (already lowercase)
 
 **Examples:**
+
 ```basic
 dim gameState = g
 dim playerX = var0
@@ -96,17 +104,20 @@ dim playerCharacter = j
 ### camelCase_R and camelCase_W
 
 Use **camelCase_R** and **camelCase_W** suffixes for:
+
 - **SCRAM (SuperChip RAM) variables**: Separate read and write ports
 
 **CRITICAL**: SCRAM variables have separate read (`r000`-`r127`) and write (`w000`-`w127`) ports that map to the same physical 128-byte RAM. All SCRAM variable declarations **MUST** include both `_R` and `_W` variants.
 
 **Examples:**
+
 ```basic
 dim selectedArena_W = w014
 dim selectedArena_R = r014
 ```
 
 **Forbidden:**
+
 ```basic
 dim selectedArena = w014  ; "Convenience alias" not acceptable
 dim selectedArena = w014  ; ERROR: Missing _R/_W variants
@@ -121,11 +132,13 @@ dim selectedArena = w014  ; ERROR: Missing _R/_W variants
 ### Built-in Variables
 
 **DO NOT** use `LET` for built-in batariBASIC variables:
+
 - TIA registers: `player0x`, `player0y`, `COLUP0`, `NUSIZ0`, `pf0`-`pf11`, `VBLANK`, etc.
 - Built-in variables: `temp1`-`temp6`, `frame`, `qtcontroller`
 - Hardware registers: `joy0up`, `joy0down`, `joy0fire`, `INPT0`, etc.
 
 **Correct:**
+
 ```basic
 player0x = 56
 player0y = 40
@@ -138,11 +151,13 @@ frame = 0
 ### User-Defined Variables
 
 **MUST** use `LET` statement for all user-defined variable assignments:
+
 - Game state: `gameState`, `playerHealth[]`, `selectedArena`, etc.
 - Temporary calculations: All intermediate values
 - Arrays and tables: Any user-defined data structures
 
 **Correct:**
+
 ```basic
 let selectedArena = selectedArena - 1
 let gameState = 1
@@ -151,6 +166,7 @@ let colorBWOverride = colorBWOverride ^ 1
 ```
 
 **Incorrect:**
+
 ```basic
 selectedArena = selectedArena - 1  ; ERROR: Missing let
 gameState = 1  ; ERROR: Missing let
@@ -167,12 +183,14 @@ gameState = 1  ; ERROR: Missing let
 ### Global Variables and Temps
 
 Subroutines communicate via:
+
 - **Global variables**: Shared state (e.g., `playerX[]`, `playerHealth[]`, `gameState`)
 - **temp1-temp6**: Temporary storage for parameter passing and scratch space
 
 Can also use "static" subroutine-specific variables with global extent.
 
 **Examples:**
+
 ```basic
 rem Input: temp1 = character index, temp2 = animation frame
 rem        temp3 = player number
@@ -187,6 +205,7 @@ LoadCharacterSprite
 ### Subroutine-Local Variables
 
 Subroutine-local temporary variables should be:
+
 - **Dimmed** at the start of the subroutine
 - **Namespaced** with subroutine initials (abbreviations): `XX_varName`
 - **Mapped** to `temp1`-`temp6` or other appropriate variables
@@ -194,6 +213,7 @@ Subroutine-local temporary variables should be:
 **Important**: Use **abbreviated routine names** (2-4 letters) as prefixes, not full routine names. This keeps variable names concise and readable.
 
 **Example:**
+
 ```basic
 SpawnMissile
           dim SM_playerIndex = temp1
@@ -211,8 +231,8 @@ UpdatePlayerAnimation
 ```
 
 **Pattern**: `[RoutineAbbreviation]_[descriptiveName]`
+
 - ✅ `UPA_animCounterRead` (UpdatePlayerAnimation → UPA)
-- ❌ `UpdatePlayerAnimation_animCounterRead` (too verbose)
 
 **Note**: This is the **only exception** to the "no abbreviations" rule. Subroutine-local variable prefixes may use abbreviations to keep names manageable, but all other names (labels, constants, global variables, etc.) must use full words.
 
@@ -227,6 +247,7 @@ UpdatePlayerAnimation
 **MUST use right single quotes (`'`) instead of straight apostrophes (`'`) in `rem` comments** - the C preprocessor (`cpp`) treats straight apostrophes as string delimiters, causing compilation warnings. Right single quotes are typographically correct and do not trigger preprocessor warnings.
 
 **Correct:**
+
 ```basic
 rem Check for negative velocity using two's complement
 rem It's important to note that this uses two's complement
@@ -236,6 +257,7 @@ rem Character's weight affects fall damage
 ```
 
 **Incorrect:**
+
 ```basic
 rem Check for negative velocity using two's complement  ; Wrong:
 rem straight apostrophe causes cpp warnings
@@ -254,6 +276,7 @@ rem apostrophe causes cpp warnings
 **All remarks/comments MUST NOT exceed 72 columns** for readability, consistency, and compatibility with various display formats.
 
 **Examples:**
+
 ```basic
 rem This is a short remark that fits within 72 columns
 
@@ -266,6 +289,7 @@ rem   and should be split across multiple lines
 Every subroutine **MUST** place its documentation comments **immediately after the label**. The label comes first on column 0, followed directly by the documentation block. Within the documentation block, insert a blank remark line (`rem` with no trailing text) between major sections to improve readability.
 
 Every documentation block **MUST** describe:
+
 - **Input**: Parameters (via temp variables or globals), including all variables read
 - **Output**: Return values or state changes
 - **Mutates**: All variables modified, including `temp1`-`temp6` when modified
@@ -273,6 +297,7 @@ Every documentation block **MUST** describe:
 - **Constraints**: Colocation requirements, cross-bank access limitations, entry point status
 
 **Format:**
+
 ```basic
 LoadCharacterSprite
           rem Load sprite data for a character based on character index
@@ -299,6 +324,7 @@ LoadCharacterSprite
 ```
 
 **Minimal acceptable format:**
+
 ```basic
 ApplyDamage
           rem Apply damage from attacker to defender
@@ -323,6 +349,7 @@ ApplyDamage
 ### File Headers
 
 All source files should begin with:
+
 ```basic
           rem ChaosFight - Source/Path/To/File.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
@@ -340,10 +367,12 @@ All source files should begin with:
 - **Inline very small subroutines** directly into calling code when appropriate
 
 **Acceptable grouping examples:**
+
 - `SpriteLoader.bas`: Contains multiple sprite loading functions (`LoadCharacterSprite`, `LoadSpecialSprite`, `LoadPlayerSprite`, etc.) - all related to sprite loading
 - `MissileSystem.bas`: Contains missile management functions (`SpawnMissile`, `UpdateMissiles`, `DeactivateMissile`) - all related to missile system
 
 **Split when:**
+
 - File exceeds ~500 lines
 - Subroutines are independent and may be modified separately
 - Subroutines are in different banks
@@ -360,10 +389,12 @@ All source files should begin with:
 ### Zero-Page (Standard RAM)
 
 Use **zero-page variables** (standard RAM: `var0`-`var47`, `a`-`z`) for:
+
 - **Variables accessed every frame**: Physics variables, player positions, game state
 - **Performance-critical data**: Variables used in tight loops or hot paths
 
 **Examples:**
+
 ```basic
 dim playerX = var0          ; Accessed every frame for rendering
 dim playerVelocityX = var20  ; Accessed every frame for physics
@@ -373,10 +404,12 @@ dim gameState = g           ; Accessed every frame for state machine
 ### SCRAM (SuperChip RAM)
 
 Use **SCRAM variables** (`r000`-`r127`/`w000`-`w127`) for:
+
 - **Less-frequently-accessed variables**: Animation counters (updated at 10fps, not 60fps), elimination timers, music state
 - **Low-frequency data**: Variables accessed only on specific screens or events
 
 **Examples:**
+
 ```basic
 dim animationCounter_W = w077  ; Updated at 10fps, not every frame
 dim winScreenTimer_W = w044    ; Only accessed on winner screen
@@ -388,10 +421,12 @@ dim selectedArena_W = w014     ; Only accessed during arena select
 ### No Redimming
 
 **DO NOT** "redim" variables (reuse the same memory location for different purposes) except:
+
 - **Admin Mode vs Game Mode**: Variables can be redimmed between these two contexts (documented in `Variables.bas`)
 - **Example**: `var24`-`var27` used for arena select in Admin Mode, `playerVelocityXL` in Game Mode
 
 **Forbidden:**
+
 ```basic
 dim temp1 = var10  ; Used for player index
 dim temp2 = var10  ; ERROR: Redim in same context
@@ -406,6 +441,7 @@ dim temp2 = var10  ; ERROR: Redim in same context
 Use **at least 10 spaces** for indentation of code blocks within subroutines.
 
 **Correct:**
+
 ```basic
 LoadCharacterSprite
           dim LCS_characterIndex = temp1
@@ -416,6 +452,7 @@ LoadCharacterSprite
 ```
 
 **Incorrect:**
+
 ```basic
 LoadCharacterSprite
          dim LCS_characterIndex = temp1  ; ERROR: Only 9 spaces
@@ -429,6 +466,7 @@ LoadCharacterSprite
 - **Remarks** use 10 spaces
 
 **Example:**
+
 ```basic
 LoadCharacterSprite
           rem Load sprite data for a character
@@ -449,6 +487,7 @@ LoadCharacterSprite
   contents are indented 4 spaces more than their beginning/ending
 
 **Example:**
+
 ```basic
           for currentPlayer = 0 to 3
               for someValue = 0 to 100
@@ -492,6 +531,7 @@ end
 ```
 
 ### Assembly Accumulator Shifts
+
 If you write `asl a`, `lsr a`, `rol a`, or `ror a`, you deserve the unresolved symbol storm you’re about to get. DASM reads that trailing `a` as the batariBASIC zero-page alias, not the accumulator, and the build detonates. Use the bare opcodes (`asl`, `lsr`, `rol`, `ror`) and quit pretending the assembler will read your mind.
 
 ### batariBASIC Include Files (.inc)
@@ -507,12 +547,14 @@ Use **`includesfile`** (batariBASIC directive) for batariBASIC include files:
 **CRITICAL**: All constants, data tables, and labels (except subroutine labels) **MUST** be defined lexically prior to their use. This ensures the compiler can resolve references correctly.
 
 **What must be defined before use:**
+
 - ✅ **Constants**: `const MaxCharacter = 15` must appear before `if characterIndex > MaxCharacter`
 - ✅ **Data tables**: `data CharacterColors` must appear before `let color = CharacterColors[index]`
 - ✅ **Labels** (non-subroutine): Jump targets, data labels, etc. must be defined before use
 - ❌ **Subroutine labels**: Subroutine labels can be called via `gosub` or `goto` without prior definition (forward references are allowed)
 
 **Correct (constants defined before use):**
+
 ```basic
 const MaxCharacter = 15
 const RandomArena = 255
@@ -523,6 +565,7 @@ ProcessCharacter
 ```
 
 **Incorrect (constant used before definition):**
+
 ```basic
 ProcessCharacter
           if characterIndex > MaxCharacter then InvalidCharacter  ; ERROR: MaxCharacter not yet defined
@@ -532,6 +575,7 @@ const MaxCharacter = 15  ; Too late - already used above
 ```
 
 **Correct (data table defined before use):**
+
 ```basic
 data CharacterColors
 $0E, $0C, $0A, $08
@@ -543,6 +587,7 @@ LoadCharacterColor
 ```
 
 **Incorrect (data table used before definition):**
+
 ```basic
 LoadCharacterColor
           let color = CharacterColors[characterIndex]  ; ERROR: CharacterColors not yet defined
@@ -554,6 +599,7 @@ end
 ```
 
 **Correct (subroutine forward reference allowed):**
+
 ```basic
 ProcessInput
           gosub ValidateInput  ; OK: subroutine forward reference allowed
@@ -568,11 +614,16 @@ ValidateInput
 
 ### Summary
 
-| File Type | Directive | Example |
-|-----------|-----------|---------|
-| `.bas`, `.h` | `#include` | `#include "Source/Common/Constants.bas"` |
-| `.s` | `include` (in `asm` block) | `asm`<br>`include "file.s"`<br>`end` |
-| `.inc` | `includesfile` | `includesfile multisprite_superchip.inc` |
+- `.bas`, `.h`: Use `#include`, for example `#include "Source/Common/Constants.bas"`.
+- `.s`: Use `include` within `asm` blocks:
+
+  ```basic
+  asm
+  include "file.s"
+  end
+  ```
+
+- `.inc`: Use `includesfile`, for example `includesfile multisprite_superchip.inc`.
 
 ---
 
@@ -583,6 +634,7 @@ ValidateInput
 batariBASIC uses **line-based IF/THEN**, not block syntax. All IF/THEN statements must be single-line commands.
 
 **Correct:**
+
 ```basic
 if selectedArena = RandomArena then DisplayRandomArena
 if joy0fire then ArenaSelectConfirm
@@ -590,6 +642,7 @@ if !LCS_isValid then goto LoadSpecialSprite
 ```
 
 **Incorrect (block syntax):**
+
 ```basic
 if selectedArena = RandomArena then
     DisplayRandomArena
@@ -599,7 +652,7 @@ end if
 
 **Never bounce through a label just to run a one-liner.** Patterns like the following waste a branch and should be collapsed so the work happens directly in the `then` clause:
 
-```
+```basic
 if CONDITION then goto SomeLabel
 goto SkipLabel
 SomeLabel
@@ -609,7 +662,7 @@ SkipLabel
 
 Refactor to:
 
-```
+```basic
 if CONDITION then let flag = 1
 ```
 
@@ -620,6 +673,7 @@ If the label performs more than a one-liner, factor it into a proper subroutine 
 When a subroutine ends with `gosub` immediately followed by `return`, optimize to a tail call using `goto`:
 
 **Before (inefficient):**
+
 ```basic
 LoadPlayer0Sprite
           gosub LoadCharacterSprite
@@ -627,6 +681,7 @@ LoadPlayer0Sprite
 ```
 
 **After (optimized):**
+
 ```basic
 LoadPlayer0Sprite
           rem tail call
@@ -642,6 +697,7 @@ This cannot be used when the "gosub" is to a cross-bank routine.
 When reviewing code, check for:
 
 ### ✅ Naming Conventions
+
 - [ ] Labels use PascalCase
 - [ ] Constants use PascalCase
 - [ ] Variables use camelCase
@@ -649,26 +705,31 @@ When reviewing code, check for:
 - [ ] Subroutine-local variables use `XX_varName` pattern
 
 ### ✅ Variable Assignments
+
 - [ ] User-defined variables use `LET` statement
 - [ ] Built-in variables do NOT use `LET` (use `=` directly)
 - [ ] No assignments to built-in variables with `LET`
 
 ### ✅ Documentation
+
 - [ ] All subroutines have documentation comments
 - [ ] Documentation describes input, output, and side effects
 - [ ] File headers include copyright notice
 
 ### ✅ Memory Management
+
 - [ ] Zero-page variables are used for frequently-accessed data
 - [ ] SCRAM variables are used for less-frequently-accessed data
 - [ ] No inappropriate redimming (except admin vs game mode)
 
 ### ✅ Indentation
+
 - [ ] Code blocks use exactly 10 spaces
 - [ ] Labels start at column 0
 - [ ] Consistent indentation throughout file
 
 ### ✅ Includes
+
 - [ ] `.bas`/`.h` files use `#include`
 - [ ] `.s` files use `#include` in `asm` blocks
 - [ ] `.inc` files use `includesfile`
@@ -678,6 +739,7 @@ When reviewing code, check for:
 - [ ] Subroutine labels can be forward-referenced (exception)
 
 ### ✅ Control Flow
+
 - [ ] IF/THEN statements are line-based (not blocks)
 - [ ] Tail calls optimized where appropriate
 
@@ -704,14 +766,14 @@ ProcessPlayerInput
           dim PPI_playerIndex = temp1
           dim PPI_inputFlags = temp2
           dim PPI_isMoving = temp3
-          
+
           rem Check if player is moving
           LET PPI_isMoving = PPI_inputFlags & InputFlagLeft
           if PPI_isMoving then UpdatePlayerMovement
-          
+
           rem Check if player is jumping
           if PPI_inputFlags & InputFlagUp then UpdatePlayerJump
-          
+
           return
 
 UpdatePlayerMovement
@@ -750,5 +812,4 @@ If you have questions about these standards or encounter edge cases not covered 
 
 ---
 
-**End of Style Guide**
-
+## End of Style Guide

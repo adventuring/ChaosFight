@@ -270,7 +270,8 @@ HCSF_HandleHandicap
           rem
           rem Called Routines: SetPlayerLocked (bank14),
           rem PlaySoundEffect (bank15)
-          let temp3 = temp1 : rem Constraints: Must be colocated with HandleCharacterSelectFire
+          rem Constraints: Must be colocated with HandleCharacterSelectFire
+          let temp3 = temp1
           let temp1 = temp3
           let temp2 = PlayerHandicapped
           gosub SetPlayerLocked bank14

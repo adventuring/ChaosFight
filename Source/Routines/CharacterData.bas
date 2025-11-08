@@ -1,5 +1,3 @@
-GetCharacterWeight
-          rem
           rem ChaosFight - Source/Routines/CharacterData.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Character Data Lookup Routines
@@ -7,7 +5,8 @@ GetCharacterWeight
           rem
           rem All character data is defined in CharacterDefinitions.bas and
           rem accessed through these optimized lookup routines.
-          rem
+
+GetCharacterWeight
           rem Return the character’s weight.
           rem Input: temp1 = character index (0-MaxCharacter)
           rem Output: temp2 = character weight
@@ -103,7 +102,9 @@ GetCharacterDamage
           let temp3  = CharacterWeights[temp1]
           rem Get weight
           
-          if temp3 <= 15 then temp2  = 12 : goto GetCharacterDamageEnd : rem Calculate damage based on weight class
+          rem Calculate damage based on weight class
+          
+          if temp3 <= 15 then temp2  = 12 : goto GetCharacterDamageEnd
           if temp3 <= 25 then temp2  = 18 : goto GetCharacterDamageEnd
           let temp2  = 22
 GetCharacterDamageEnd

@@ -321,7 +321,9 @@ CharacterSelectHandleTwoPlayers
           rem temp3 = player offset (0 or 2)
 
           rem Check if second player should be active (Quadtari)
-          let temp4 = (temp3 = 0) || (controllerStatus & SetQuadtariDetected)
+          temp4 = 0
+          if temp3 = 0 then temp4 = 255
+          if controllerStatus & SetQuadtariDetected then temp4 = 255
 
           rem Handle Player 1/3 input (joy0)
           if joy0left then let temp1 = temp3 : let temp2 = 0 : gosub HandleCharacterSelectCycle

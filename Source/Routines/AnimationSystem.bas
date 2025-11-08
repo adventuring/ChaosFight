@@ -1,51 +1,24 @@
-UpdateCharacterAnimations
           rem ChaosFight - Source/Routines/AnimationSystem.bas
-          rem
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem 10fps character animation system with platform-specific
-          rem   timing
-          rem Animation System Routines
-          rem Update character animations for all players
-          rem Called every frame to manage 10fps animation timing
-          rem Update character animations for all players (10fps timing)
-          rem
-          rem Input: controllerStatus (global) = controller detection
-          rem state
-          rem        currentPlayer (global) = player index (set inline)
-          rem        animationCounter_R[] (global SCRAM array) =
-          rem        per-sprite animation counters
-          rem        currentAnimationFrame_R[] (global SCRAM array) =
-          rem        current animation frames
-          rem        currentAnimationSeq[] (global array) = current
-          rem        animation sequences
-          rem        playersEliminated_R (global SCRAM) = eliminated
-          rem        players bitmask
-          rem
-          rem Output: animationCounter_W[] updated,
-          rem currentAnimationFrame_W[] updated,
-          rem         player sprites updated via UpdatePlayerAnimation
-          rem
-          rem Mutates: currentPlayer (set to 0-3), animationCounter_W[],
-          rem currentAnimationFrame_W[],
-          rem         player sprite pointers (via UpdatePlayerAnimation)
-          rem
-          rem Called Routines: UpdatePlayerAnimation - accesses
-          rem currentPlayer, animationCounter_R/W,
-          rem   currentAnimationFrame_R/W, currentAnimationSeq,
-          rem   playersEliminated_R,
-          rem   LoadPlayerSprite (bank10)
-          rem
-          rem Constraints: Must be colocated with
-          rem AnimationUpdatePlayer3, AnimationSkipPlayer3 (called via
-          rem goto)
-          rem              Called every frame from game loop
+
+UpdateCharacterAnimations
+          rem Drives the 10fps animation system for every active player
+          rem Inputs: controllerStatus (global), currentPlayer (global scratch)
+          rem         animationCounter_R[] (SCRAM), currentAnimationFrame_R[],
+          rem         currentAnimationSeq[], playersEliminated_R (SCRAM)
+          rem Outputs: animationCounter_W[], currentAnimationFrame_W[], player sprite state
+          rem Mutates: currentPlayer (0-3), animationCounter_W[], currentAnimationFrame_W[]
+          rem Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank10)
+          rem Constraints: Must remain colocated with AnimationUpdatePlayer3/AnimationSkipPlayer3
+
           rem Update animation for each active player
           let currentPlayer = 0 : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 1
           let currentPlayer = 1 : rem Player index (0-3)
           gosub UpdatePlayerAnimation
-          if controllerStatus & SetQuadtariDetected then goto AnimationUpdatePlayer3 : rem Player 2
+          rem Handle Quadtari-enabled extra players
+          if controllerStatus & SetQuadtariDetected then goto AnimationUpdatePlayer3
           goto AnimationSkipPlayer3
 AnimationUpdatePlayer3
           rem Update Player 3 and 4 animations (4-player mode only)
@@ -150,8 +123,8 @@ UpdatePlayerAnimation
           let temp4 = animationCounter_R[currentPlayer] + 1
           let animationCounter_W[currentPlayer] = temp4
           
-          rem Check if time to advance animation frame (every
-          if temp4 >= AnimationFrameDelay then goto AdvanceFrame : rem   AnimationFrameDelay frames)
+          rem Check if time to advance animation frame (every AnimationFrameDelay frames)
+          if temp4 >= AnimationFrameDelay then goto AdvanceFrame
           goto DoneAdvance
 AdvanceFrame
           rem Advance animation frame (counter reached threshold)
@@ -232,7 +205,8 @@ AdvanceAnimationFrame
           
           rem Check if we have completed the current action (8 frames
           rem   per action)
-          if temp4 >= FramesPerSequence then goto HandleFrame7Transition : rem Use temp variable from increment (temp4)
+          rem Use temp4 (pre-incremented frame value) to detect sequence wrap
+          if temp4 >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
           
 HandleFrame7Transition
@@ -526,7 +500,8 @@ HandleAnimationTransition
           rem Uses: currentAnimationSeq[currentPlayer] to determine
           rem transition
           let temp1 = currentAnimationSeq_R[currentPlayer] : rem Get current action
-          if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation : rem Guard against invalid action values
+          rem Guard against invalid action values
+          if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation
           
           on temp1 goto TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionToIdle TransitionHandleFallBack TransitionToFallen TransitionLoopAnimation TransitionToIdle TransitionHandleJump TransitionLoopAnimation TransitionToIdle HandleAttackTransition HandleAttackTransition HandleAttackTransition
 
@@ -561,7 +536,8 @@ TransitionHandleFallBack
           let temp5 = temp5 / 4
           let temp6 = playerY[currentPlayer] : rem Convert player Y position to playfield row (0-7)
           let temp6 = temp6 / 8
-          if pfread(temp5, temp6) then TransitionHandleFallBack_HitWall : rem Check if player hit a wall (playfield pixel is set)
+          rem Check if player hit a wall (playfield pixel is set)
+          if pfread(temp5, temp6) then TransitionHandleFallBack_HitWall
           let temp2 = ActionFallen : rem No wall collision, transition to fallen
           goto SetPlayerAnimation : rem tail call
 TransitionHandleFallBack_HitWall
@@ -586,30 +562,8 @@ HandleWindupEnd
           let temp1 = playerCharacter[currentPlayer] : rem Get character ID
           rem Dispatch to character-specific windup handler (0-31)
           rem MethHound (31) uses Character15_Windup (Shamone) handler
-          if temp1 < 8 then goto WindupDispatchBank0
-          let temp1 = temp1 - 8
-          if temp1 < 8 then goto WindupDispatchBank1
-          let temp1 = temp1 - 8
-          if temp1 < 8 then goto WindupDispatchBank2
-          let temp1 = temp1 - 8
-          goto WindupDispatchBank3
-
-WindupDispatchBank0
-          on temp1 goto Character0_Windup Character1_Windup Character2_Windup Character3_Windup Character4_Windup Character5_Windup Character6_Windup Character7_Windup
-          goto DoneWindupDispatch
-
-WindupDispatchBank1
-          on temp1 goto Character8_Windup Character9_Windup Character10_Windup Character11_Windup Character12_Windup Character13_Windup Character14_Windup Character15_Windup
-          goto DoneWindupDispatch
-
-WindupDispatchBank2
-          on temp1 goto Character16_Windup Character17_Windup Character18_Windup Character19_Windup Character20_Windup Character21_Windup Character22_Windup Character23_Windup
-          goto DoneWindupDispatch
-
-WindupDispatchBank3
-          on temp1 goto Character24_Windup Character25_Windup Character26_Windup Character27_Windup Character28_Windup Character29_Windup Character30_Windup Character15_Windup
-          goto DoneWindupDispatch
-DoneWindupDispatch
+          if temp1 >= 32 then return
+          on temp1 goto Character0_Windup Character1_Windup Character2_Windup Character3_Windup Character4_Windup Character5_Windup Character6_Windup Character7_Windup Character8_Windup Character9_Windup Character10_Windup Character11_Windup Character12_Windup Character13_Windup Character14_Windup Character15_Windup Character16_Windup Character17_Windup Character18_Windup Character19_Windup Character20_Windup Character21_Windup Character22_Windup Character23_Windup Character24_Windup Character25_Windup Character26_Windup Character27_Windup Character28_Windup Character29_Windup Character30_Windup Character15_Windup
           
 Character0_Windup
           rem Bernie: no windup used, Execute only
@@ -667,30 +621,8 @@ HandleExecuteEnd
           let temp1 = playerCharacter[currentPlayer] : rem Character-specific execute→next transitions
           rem Dispatch to character-specific execute handler (0-31)
           rem MethHound (31) uses Character15_Execute (Shamone) handler
-          if temp1 < 8 then goto ExecuteDispatchBank0
-          let temp1 = temp1 - 8
-          if temp1 < 8 then goto ExecuteDispatchBank1
-          let temp1 = temp1 - 8
-          if temp1 < 8 then goto ExecuteDispatchBank2
-          let temp1 = temp1 - 8
-          goto ExecuteDispatchBank3
-
-ExecuteDispatchBank0
-          on temp1 goto Character0_Execute Character1_Execute Character2_Execute Character3_Execute Character4_Execute Character5_Execute Character6_Execute Character7_Execute
-          goto DoneExecuteDispatch
-
-ExecuteDispatchBank1
-          on temp1 goto Character8_Execute Character9_Execute Character10_Execute Character11_Execute Character12_Execute Character13_Execute Character14_Execute Character15_Execute
-          goto DoneExecuteDispatch
-
-ExecuteDispatchBank2
-          on temp1 goto Character16_Execute Character17_Execute Character18_Execute Character19_Execute Character20_Execute Character21_Execute Character22_Execute Character23_Execute
-          goto DoneExecuteDispatch
-
-ExecuteDispatchBank3
-          on temp1 goto Character24_Execute Character25_Execute Character26_Execute Character27_Execute Character28_Execute Character29_Execute Character30_Execute Character15_Execute
-          goto DoneExecuteDispatch
-DoneExecuteDispatch
+          if temp1 >= 32 then return
+          on temp1 goto Character0_Execute Character1_Execute Character2_Execute Character3_Execute Character4_Execute Character5_Execute Character6_Execute Character7_Execute Character8_Execute Character9_Execute Character10_Execute Character11_Execute Character12_Execute Character13_Execute Character14_Execute Character15_Execute Character16_Execute Character17_Execute Character18_Execute Character19_Execute Character20_Execute Character21_Execute Character22_Execute Character23_Execute Character24_Execute Character25_Execute Character26_Execute Character27_Execute Character28_Execute Character29_Execute Character30_Execute Character15_Execute
           
 Character0_Execute
           let temp2 = ActionIdle : rem Bernie: Execute → Idle

@@ -66,14 +66,16 @@ ShouldPreserveFacing
           rem
           rem Constraints: Must be colocated with SPF_PreserveYes,
           rem SPF_PreserveNo (called via goto)
-          if (playerState[temp1] & 8) then SPF_PreserveYes : rem Check recovery/hitstun flag (bit 3)
+          rem Check recovery/hitstun flag (bit 3)
+          if (playerState[temp1] & 8) then SPF_PreserveYes
           rem Bit 3 set = in recovery, preserve facing
           
           rem Check animation state for hurt states (5-9)
           rem ActionHit=5, ActionFallBack=6, ActionFallDown=7,
           gosub GetPlayerAnimationState : rem ActionFallen=8, ActionRecovering=9
           if temp2 < 5 then SPF_PreserveNo
-          if temp2 > 9 then SPF_PreserveNo : rem Animation state < 5, allow facing update
+          rem Animation state < 5, allow facing update
+          if temp2 > 9 then SPF_PreserveNo
           rem Animation state > 9, allow facing update
           
 SPF_PreserveYes
@@ -210,7 +212,8 @@ InputHandleQuadtariPlayers
           rem InputSkipPlayer3Input,
           rem InputSkipPlayer4Input
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and
-          if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input : rem   alive)
+          rem alive)
+          if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input
           if playerCharacter[2] = NoCharacter then InputSkipPlayer3Input
           let currentPlayer = 2 : gosub IsPlayerAlive
           if temp2 = 0 then InputSkipPlayer3Input
@@ -227,7 +230,8 @@ InputSkipPlayer3Input
           rem Mutates: None
           rem
           rem Called Routines: None
-          if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input : rem Constraints: Must be colocated with InputHandleQuadtariPlayers
+          rem Constraints: Must be colocated with InputHandleQuadtariPlayers
+          if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input
           if playerCharacter[3] = NoCharacter then InputSkipPlayer4Input
           let currentPlayer = 3 : gosub IsPlayerAlive
           if temp2 = 0 then InputSkipPlayer4Input
@@ -256,17 +260,9 @@ InputSkipPlayer4Input
 DispatchCharacterAttack
           rem Dispatch to character-specific attack handler (0-31)
           rem MethHound (31) uses ShamoneAttack handler
-          if temp4 < 8 then on temp4 goto gotoBernieAttack gotoCurlerAttack gotoDragonetAttack gotoZoeRyenAttack gotoFatTonyAttack gotoMegaxAttack gotoHarpyAttack gotoKnightGuyAttack : rem Use trampoline labels for cross-bank references (Bank 11)
-          if temp4 < 8 then return
-          let temp4 = temp4 - 8
-          if temp4 < 8 then on temp4 goto gotoFrootyAttack gotoNefertemAttack gotoNinjishGuyAttack gotoPorkChopAttack gotoRadishGoblinAttack gotoRoboTitoAttack gotoUrsuloAttack gotoShamoneAttack
-          if temp4 < 8 then return
-          let temp4 = temp4 - 8
-          if temp4 < 8 then on temp4 goto gotoCharacter16Attack gotoCharacter17Attack gotoCharacter18Attack gotoCharacter19Attack gotoCharacter20Attack gotoCharacter21Attack gotoCharacter22Attack gotoCharacter23Attack
-          if temp4 < 8 then return
-          let temp4 = temp4 - 8
-          if temp4 < 8 then on temp4 goto gotoCharacter24Attack gotoCharacter25Attack gotoCharacter26Attack gotoCharacter27Attack gotoCharacter28Attack gotoCharacter29Attack gotoCharacter30Attack gotoShamoneAttack
-          if temp4 < 8 then return
+          rem Use trampoline labels for cross-bank references (Bank 11)
+          if temp4 >= 32 then return
+          on temp4 goto gotoBernieAttack gotoCurlerAttack gotoDragonetAttack gotoZoeRyenAttack gotoFatTonyAttack gotoMegaxAttack gotoHarpyAttack gotoKnightGuyAttack gotoFrootyAttack gotoNefertemAttack gotoNinjishGuyAttack gotoPorkChopAttack gotoRadishGoblinAttack gotoRoboTitoAttack gotoUrsuloAttack gotoShamoneAttack gotoCharacter16Attack gotoCharacter17Attack gotoCharacter18Attack gotoCharacter19Attack gotoCharacter20Attack gotoCharacter21Attack gotoCharacter22Attack gotoCharacter23Attack gotoCharacter24Attack gotoCharacter25Attack gotoCharacter26Attack gotoCharacter27Attack gotoCharacter28Attack gotoCharacter29Attack gotoCharacter30Attack gotoShamoneAttack
           return
           
 gotoBernieAttack
@@ -381,41 +377,51 @@ CheckEnhancedJumpButton
           rem OUTPUT: temp3 = 1 if jump button pressed, 0 otherwise
           rem Uses: INPT0 for players 0,2; INPT2 for players 1,3
           let temp3 = 0 : rem Initialize to no jump
-          if temp1 = 0 then CEJB_CheckPlayer0 : rem Player 0 or 2: Check INPT0
+          rem Player 0 or 2: Check INPT0
+          if temp1 = 0 then CEJB_CheckPlayer0
           if temp1 = 2 then CEJB_CheckPlayer3
-          if temp1 = 1 then CEJB_CheckPlayer2 : rem Player 1 or 3: Check INPT2
+          rem Player 1 or 3: Check INPT2
+          if temp1 = 1 then CEJB_CheckPlayer2
           if temp1 = 3 then CEJB_CheckPlayer4
           goto CEJB_Done
 CEJB_CheckPlayer0
-          if !ControllerStatus{0} then CEJB_CheckPlayer0Joy2bPlus : rem Player 0: Check Genesis controller
+          rem Player 0: Check Genesis controller
+          if !ControllerStatus{0} then CEJB_CheckPlayer0Joy2bPlus
           if !INPT0{7} then let temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer0Joy2bPlus
-          if !ControllerStatus{1} then CEJB_Done : rem Player 0: Check Joy2b+ controller
+          rem Player 0: Check Joy2b+ controller
+          if !ControllerStatus{1} then CEJB_Done
           if !INPT0{7} then let temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer3
-          if !ControllerStatus{0} then CEJB_CheckPlayer3Joy2bPlus : rem Player 3: Check Genesis controller
+          rem Player 3: Check Genesis controller
+          if !ControllerStatus{0} then CEJB_CheckPlayer3Joy2bPlus
           if !INPT0{7} then let temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer3Joy2bPlus
-          if !ControllerStatus{1} then CEJB_Done : rem Player 3: Check Joy2b+ controller
+          rem Player 3: Check Joy2b+ controller
+          if !ControllerStatus{1} then CEJB_Done
           if !INPT0{7} then let temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer2
-          if !(ControllerStatus & $04) then CEJB_CheckPlayer2Joy2bPlus : rem Player 2: Check Genesis controller
+          rem Player 2: Check Genesis controller
+          if !(ControllerStatus & $04) then CEJB_CheckPlayer2Joy2bPlus
           if !(INPT2 & $80) then let temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer2Joy2bPlus
-          if !(ControllerStatus & $08) then CEJB_Done : rem Player 2: Check Joy2b+ controller
+          rem Player 2: Check Joy2b+ controller
+          if !(ControllerStatus & $08) then CEJB_Done
           if !(INPT2 & $80) then let temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer4
-          if !RightPortGenesis then CEJB_CheckPlayer4Joy2bPlus : rem Player 4: Check Genesis controller
+          rem Player 4: Check Genesis controller
+          if !RightPortGenesis then CEJB_CheckPlayer4Joy2bPlus
           if !INPT2{7} then let temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer4Joy2bPlus
-          if !RightPortJoy2bPlus then CEJB_Done : rem Player 4: Check Joy2b+ controller
+          rem Player 4: Check Joy2b+ controller
+          if !RightPortJoy2bPlus then CEJB_Done
           if !INPT2{7} then let temp3 = 1
 CEJB_Done
           return
@@ -428,12 +434,15 @@ HandleGuardInput
           rem INPUT: temp1 = player index (0-3)
           rem Uses: joy0down for players 0,2; joy1down for players 1,3
           rem Determine which joy port to use based on player index
-          if temp1 = 0 then HGI_CheckJoy0 : rem Players 0,2 use joy0; Players 1,3 use joy1
+          rem Players 0,2 use joy0; Players 1,3 use joy1
+          if temp1 = 0 then HGI_CheckJoy0
           if temp1 = 2 then HGI_CheckJoy0
-          if !joy1down then goto HGI_CheckGuardRelease : rem Players 1,3 use joy1
+          rem Players 1,3 use joy1
+          if !joy1down then goto HGI_CheckGuardRelease
           goto HGI_HandleDownPressed
 HGI_CheckJoy0
-          if !joy0down then goto HGI_CheckGuardRelease : rem Players 0,2 use joy0
+          rem Players 0,2 use joy0
+          if !joy0down then goto HGI_CheckGuardRelease
 HGI_HandleDownPressed
           let temp4 = PlayerCharacter[temp1] : rem DOWN pressed - dispatch to character-specific down handler
           gosub DispatchCharacterDown bank14
@@ -459,8 +468,10 @@ ConvertPlayerXToPlayfieldColumn
           let temp2 = PlayerX[temp1] : rem Convert player position to playfield coordinates
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
-          if temp2 > 31 then let temp2 = 31 : rem pfColumn = playfield column
-          if temp2 & $80 then let temp2 = 0 : rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          rem pfColumn = playfield column
+          if temp2 > 31 then let temp2 = 31
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if temp2 & $80 then let temp2 = 0
           return
 
 HandleFlyingCharacterMovement
@@ -474,17 +485,22 @@ HandleFlyingCharacterMovement
           rem joy1left/joy1right
           rem for players 1,3
           rem Determine which joy port to use based on player index
-          if temp1 = 0 then HFCM_UseJoy0 : rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
+          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
+          if temp1 = 0 then HFCM_UseJoy0
           if temp1 = 2 then HFCM_UseJoy0
-          if joy1left then HFCM_CheckLeftCollision : rem Players 1,3 use joy1
+          rem Players 1,3 use joy1
+          if joy1left then HFCM_CheckLeftCollision
           goto HFCM_CheckRightMovement
 HFCM_UseJoy0
-          if joy0left then HFCM_CheckLeftCollision : rem Players 0,2 use joy0
+          rem Players 0,2 use joy0
+          if joy0left then HFCM_CheckLeftCollision
           goto HFCM_CheckRightMovement
 HFCM_CheckLeftCollision
           gosub ConvertPlayerXToPlayfieldColumn : rem Convert player position to playfield coordinates
 
-          if temp2 <= 0 then goto HFCM_CheckRightMovement : rem Check column to the left
+          rem Check column to the left
+
+          if temp2 <= 0 then goto HFCM_CheckRightMovement
           let temp3 = temp2 - 1 : rem Already at left edge
           rem checkColumn = column to the left
           let temp4 = PlayerY[temp1] : rem Check player current row (check both top and bottom of sprite)
@@ -492,14 +508,16 @@ HFCM_CheckLeftCollision
           gosub DivideByPfrowheight
           let temp6 = temp2
           rem pfRow = top row
-          if pfread(temp3, temp6) then goto HFCM_CheckRightMovement : rem Check if blocked in current row
+          rem Check if blocked in current row
+          if pfread(temp3, temp6) then goto HFCM_CheckRightMovement
           rem Blocked, cannot move left
           let temp4 = temp4 + 16 : rem Also check bottom row (feet)
           let temp2 = temp4
           gosub DivideByPfrowheight
           let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveLeftOK
-          if pfread(temp3, temp6) then goto HFCM_CheckRightMovement : rem Do not check if beyond screen
+          rem Do not check if beyond screen
+          if pfread(temp3, temp6) then goto HFCM_CheckRightMovement
 HFCM_MoveLeftOK
           rem Blocked at bottom too
           let playerVelocityX[temp1] = 255 : rem Apply leftward velocity impulse (double-width sprite: 16px width)
@@ -509,16 +527,21 @@ HFCM_MoveLeftOK
           gosub ShouldPreserveFacing
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
 HFCM_CheckRightMovement
-          if temp1 = 0 then HFCM_CheckRightJoy0 : rem Determine which joy port to use for right movement
+          rem Determine which joy port to use for right movement
+          if temp1 = 0 then HFCM_CheckRightJoy0
           if temp1 = 2 then HFCM_CheckRightJoy0
-          if !joy1right then goto HFCM_DoneFlyingMovement : rem Players 1,3 use joy1
+          rem Players 1,3 use joy1
+          if !joy1right then goto HFCM_DoneFlyingMovement
           goto HFCM_DoRightMovement
 HFCM_CheckRightJoy0
-          if !joy0right then goto HFCM_DoneFlyingMovement : rem Players 0,2 use joy0
+          rem Players 0,2 use joy0
+          if !joy0right then goto HFCM_DoneFlyingMovement
 HFCM_DoRightMovement
           gosub ConvertPlayerXToPlayfieldColumn : rem Convert player position to playfield coordinates
 
-          if temp2 >= 31 then goto HFCM_DoneFlyingMovement : rem Check column to the right
+          rem Check column to the right
+
+          if temp2 >= 31 then goto HFCM_DoneFlyingMovement
           let temp3 = temp2 + 1 : rem Already at right edge
           rem checkColumn = column to the right
           let temp4 = PlayerY[temp1] : rem Check player current row (check both top and bottom of sprite)
@@ -526,14 +549,16 @@ HFCM_DoRightMovement
           gosub DivideByPfrowheight
           let temp6 = temp2
           rem pfRow = top row
-          if pfread(temp3, temp6) then goto HFCM_DoneFlyingMovement : rem Check if blocked in current row
+          rem Check if blocked in current row
+          if pfread(temp3, temp6) then goto HFCM_DoneFlyingMovement
           rem Blocked, cannot move right
           let temp4 = temp4 + 16 : rem Also check bottom row (feet)
           let temp2 = temp4
           gosub DivideByPfrowheight
           let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveRightOK
-          if pfread(temp3, temp6) then goto HFCM_DoneFlyingMovement : rem Do not check if beyond screen
+          rem Do not check if beyond screen
+          if pfread(temp3, temp6) then goto HFCM_DoneFlyingMovement
 HFCM_MoveRightOK
           rem Blocked at bottom too
           let playerVelocityX[temp1] = 1 : rem Apply rightward velocity impulse
@@ -573,7 +598,8 @@ InputHandleLeftPortPlayer
           gosub ShouldPreserveFacing
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
 IHLP_DoneLeftMovement
-          if !joy0right then goto IHLP_DoneRightMovement : rem Right movement: set positive velocity
+          rem Right movement: set positive velocity
+          if !joy0right then goto IHLP_DoneRightMovement
           let playerVelocityX[temp1] = 1
           let playerVelocityXL[temp1] = 0
           gosub ShouldPreserveFacing
@@ -588,16 +614,22 @@ IHLP_DoneFlyingLeftRight
           rem Process UP input for character-specific behaviors
           rem - Shamone/MethHound: form switching (15 <-> 31)
           rem - Bernie: fall through 1-row floors
-          if !joy0up then goto DoneUpInputHandling : rem - Harpy: flap to fly (Character 6)
+          rem - Harpy: flap to fly (Character 6)
+          if !joy0up then goto DoneUpInputHandling
           
           rem Check Shamone form switching first (Character 15 <-> 31)
           if PlayerCharacter[temp1] = 15 then let PlayerCharacter[temp1] = 31 : goto DoneJumpInput
-          if PlayerCharacter[temp1] = 31 then let PlayerCharacter[temp1] = 15 : goto DoneJumpInput : rem Switch Shamone -> MethHound
+          rem Switch Shamone -> MethHound
+          if PlayerCharacter[temp1] = 31 then let PlayerCharacter[temp1] = 15 : goto DoneJumpInput
           rem Switch MethHound -> Shamone
           
-          if PlayerCharacter[temp1] = 0 then BernieFallThrough : rem Check Bernie fall-through (Character 0)
+          rem Check Bernie fall-through (Character 0)
           
-          if PlayerCharacter[temp1] = 6 then HarpyFlap : rem Check Harpy flap (Character 6)
+          if PlayerCharacter[temp1] = 0 then BernieFallThrough
+          
+          rem Check Harpy flap (Character 6)
+          
+          if PlayerCharacter[temp1] = 6 then HarpyFlap
           
           goto NormalJumpInput : rem For all other characters, UP is jump
           
@@ -626,7 +658,8 @@ DoneUpInputHandling
           rem Note: For Bernie, UP is fall-through, so jump via enhanced
           rem   buttons only
           rem Note: For Harpy, UP is flap, so jump via enhanced buttons
-          if PlayerCharacter[temp1] = 15 then goto ShamoneJumpCheckEnhanced : rem   only
+          rem only
+          if PlayerCharacter[temp1] = 15 then goto ShamoneJumpCheckEnhanced
           if PlayerCharacter[temp1] = 31 then goto ShamoneJumpCheckEnhanced
           if PlayerCharacter[temp1] = 0 then goto ShamoneJumpCheckEnhanced
           if PlayerCharacter[temp1] = 6 then goto ShamoneJumpCheckEnhanced
@@ -639,7 +672,8 @@ DoneUpInputHandling
           if temp3 = 0 then InputSkipLeftPortJump
           if (PlayerState[temp1] & 4) then InputSkipLeftPortJump
           rem Use cached animation state - block jump during attack
-          if temp2 >= 13 then InputSkipLeftPortJump : rem   animations (states 13-15)
+          rem animations (states 13-15)
+          if temp2 >= 13 then InputSkipLeftPortJump
           let temp4 = PlayerCharacter[temp1] : rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank14
 InputSkipLeftPortJump
@@ -653,11 +687,13 @@ InputSkipLeftPortJump
           rem Map MethHound (31) to ShamoneAttack handler
           rem Use cached animation state - block attack input during
           rem attack
-          if temp2 >= 13 then InputSkipLeftPortAttack : rem   animations (states 13-15)
+          rem animations (states 13-15)
+          if temp2 >= 13 then InputSkipLeftPortAttack
           rem Block attack input during attack windup/execute/recovery
           let temp2 = PlayerState[temp1] & 2 : rem Check if player is guarding - guard blocks attacks
           if temp2 then InputSkipLeftPortAttack
-          if !joy0fire then InputSkipLeftPortAttack : rem Guarding - block attack input
+          rem Guarding - block attack input
+          if !joy0fire then InputSkipLeftPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipLeftPortAttack
           let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack
@@ -689,7 +725,9 @@ InputHandleRightPortPlayer
           if temp5 = 8 then IHRP_FlyingMovement
           if temp5 = 2 then IHRP_FlyingMovement
           
-          if !joy1left then goto IHRP_DoneLeftMovement : rem Standard horizontal movement (no collision check)
+          rem Standard horizontal movement (no collision check)
+          
+          if !joy1left then goto IHRP_DoneLeftMovement
           let playerVelocityX[temp1] = 255 : rem Apply leftward velocity impulse
           rem -1 in 8-bit twos complement: 256 - 1 = 255
           let playerVelocityXL[temp1] = 0
@@ -717,16 +755,22 @@ IHRP_DoneFlyingLeftRight
           rem   port)
           rem - Shamone/MethHound: form switching (15 <-> 31)
           rem - Bernie: fall through 1-row floors
-          if !joy1up then goto DoneUpInputHandlingRight : rem - Harpy: flap to fly (Character 6)
+          rem - Harpy: flap to fly (Character 6)
+          if !joy1up then goto DoneUpInputHandlingRight
           
           rem Check Shamone form switching first (Character 15 <-> 31)
           if PlayerCharacter[temp1] = 15 then let PlayerCharacter[temp1] = 31 : goto DoneJumpInputRight
-          if PlayerCharacter[temp1] = 31 then let PlayerCharacter[temp1] = 15 : goto DoneJumpInputRight : rem Switch Shamone -> MethHound
+          rem Switch Shamone -> MethHound
+          if PlayerCharacter[temp1] = 31 then let PlayerCharacter[temp1] = 15 : goto DoneJumpInputRight
           rem Switch MethHound -> Shamone
           
-          if PlayerCharacter[temp1] = 0 then BernieFallThroughRight : rem Check Bernie fall-through (Character 0)
+          rem Check Bernie fall-through (Character 0)
           
-          if PlayerCharacter[temp1] = 6 then HarpyFlapRight : rem Check Harpy flap (Character 6)
+          if PlayerCharacter[temp1] = 0 then BernieFallThroughRight
+          
+          rem Check Harpy flap (Character 6)
+          
+          if PlayerCharacter[temp1] = 6 then HarpyFlapRight
           
           goto NormalJumpInputRight : rem For all other characters, UP is jump
           
@@ -755,7 +799,8 @@ DoneUpInputHandlingRight
           rem Note: For Bernie, UP is fall-through, so jump via enhanced
           rem   buttons only
           rem Note: For Harpy, UP is flap, so jump via enhanced buttons
-          if PlayerCharacter[temp1] = 15 then goto ShamoneJumpCheckEnhancedRight : rem   only
+          rem only
+          if PlayerCharacter[temp1] = 15 then goto ShamoneJumpCheckEnhancedRight
           if PlayerCharacter[temp1] = 31 then goto ShamoneJumpCheckEnhancedRight
           if PlayerCharacter[temp1] = 0 then goto ShamoneJumpCheckEnhancedRight
           if PlayerCharacter[temp1] = 6 then goto ShamoneJumpCheckEnhancedRight
@@ -766,10 +811,12 @@ DoneUpInputHandlingRight
           
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as
-          if temp3 = 0 then InputSkipRightPortJump : rem   Shamone)
+          rem Shamone)
+          if temp3 = 0 then InputSkipRightPortJump
           if (PlayerState[temp1] & 4) then InputSkipRightPortJump
           rem Use cached animation state - block jump during attack
-          if temp2 >= 13 then InputSkipRightPortJump : rem   animations (states 13-15)
+          rem animations (states 13-15)
+          if temp2 >= 13 then InputSkipRightPortJump
           let temp4 = PlayerCharacter[temp1] : rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank14
 InputSkipRightPortJump
@@ -782,11 +829,13 @@ InputSkipRightPortJump
           rem Process attack input
           rem Use cached animation state - block attack input during
           rem attack
-          if temp2 >= 13 then InputSkipRightPortAttack : rem   animations (states 13-15)
+          rem animations (states 13-15)
+          if temp2 >= 13 then InputSkipRightPortAttack
           rem Block attack input during attack windup/execute/recovery
           let temp2 = PlayerState[temp1] & 2 : rem Check if player is guarding - guard blocks attacks
           if temp2 then InputSkipRightPortAttack
-          if !joy1fire then InputSkipRightPortAttack : rem Guarding - block attack input
+          rem Guarding - block attack input
+          if !joy1fire then InputSkipRightPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipRightPortAttack
           let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack
@@ -806,17 +855,20 @@ HandlePauseInput
           if switchselect then temp1 = 1
           
           rem Check Joy2b+ Button III (INPT1 for Player 1, INPT3 for
-          if LeftPortJoy2bPlus then CheckJoy2bButtons : rem   Player 2)
+          rem Player 2)
+          if LeftPortJoy2bPlus then CheckJoy2bButtons
           if RightPortJoy2bPlus then CheckJoy2bButtons
           goto Joy2bPauseDone
 CheckJoy2bButtons
           if !INPT1{7} then temp1 = 1 
-          if !INPT3{7} then temp1 = 1 : rem Player 1 Button III
+          rem Player 1 Button III
+          if !INPT3{7} then temp1 = 1
 Joy2bPauseDone
           rem Player 2 Button III
           
           rem Debounce: only toggle if button just pressed (was 0, now
-          if temp1 = 0 then DonePauseToggle : rem   1)
+          rem 1)
+          if temp1 = 0 then DonePauseToggle
           if PauseButtonPrev then DonePauseToggle
           let GameState  = GameState ^ 1
 DonePauseToggle

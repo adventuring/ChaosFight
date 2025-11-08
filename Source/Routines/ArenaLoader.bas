@@ -111,18 +111,6 @@ end
           goto LoadArenaColorsColor
 LoadArenaColorsColor
           rem Load arena color table pointer based on arena index
-          rem
-          rem Input: temp1 (temp1) = arena index (0-31),
-          rem ArenaColorPointerL[], ArenaColorPointerH[] (global data
-          rem tables) = color pointers
-          rem
-          rem Output: pfcolortable set to ArenaNColors
-          rem
-          rem Mutates: pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: temp1 must already be in 0-31 range
           asm
             ldx temp1
             lda ArenaColorPointerL,x
@@ -134,18 +122,7 @@ end
 
 LoadArenaColorsBW
           asm
-          ;; Load B&W color table (all arenas use same white colors)
-          ;;
-          ;; Input: ArenaColorsBW (global data table) = B&W color table
-          ;;
-          ;; Output: pfcolortable set to ArenaColorsBW
-          ;;
-          ;; Mutates: pfcolortable (TIA register) = color table pointer
-          ;;
-          ;; Called Routines: None
-          ;;
-          ;; Constraints: None
-          ;; All arenas use the same B&W colors (all white)
+          ;; Load B&W color table - all arenas use same white colors
           ;; Set pfcolortable pointer to ArenaColorsBW
             lda #<ArenaColorsBW
             sta pfcolortable

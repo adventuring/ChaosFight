@@ -125,12 +125,11 @@ Player1PauseDone
 DonePlayer1Pause
           
           
-          let temp2 = 1 
+          let temp2 = 1
           gosub CheckEnhancedPause : rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause
           gosub DetectControllers bank14 : rem Re-detect controllers when Select is pressed
-          if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused
-          if !(systemFlags & SystemFlagGameStatePaused) then Player2PauseDone
+          if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player2PauseDone
           rem Debounce - wait for button release (drawscreen called by
@@ -222,35 +221,16 @@ DisplayPausedScreen
           temp3 = 14 
           rem Color (white)
           
-          rem Draw each character of PAUSED
-          rem P
-          temp4 = 25 
-          gosub DrawCharacter : rem ASCII P
-          temp1 = temp1 + 6
-          
-          rem A
-          temp4 = 10 
-          gosub DrawCharacter : rem ASCII A
-          temp1 = temp1 + 6
-          
-          rem U
-          temp4 = 30 
-          gosub DrawCharacter : rem ASCII U
-          temp1 = temp1 + 6
-          
-          rem S
-          temp4 = 28 
-          gosub DrawCharacter : rem ASCII S
-          temp1 = temp1 + 6
-          
-          rem E
-          temp4 = 14 
-          gosub DrawCharacter : rem ASCII E
-          temp1 = temp1 + 6
-          
-          rem D
-          temp4 = 13 
-          rem ASCII D
-          goto DrawCharacter : rem tail call
+          rem Draw PAUSED text using loop
+          data paused_letters
+          25, 10, 30, 28, 14, 13
+          end
+
+          for temp5 = 0 to 5
+            temp4 = paused_letters[temp5]
+            gosub DrawCharacter
+            temp1 = temp1 + 6
+          next
+          return
           
 

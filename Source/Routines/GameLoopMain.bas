@@ -93,7 +93,7 @@ GameMainLoopQuadtariSkip
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-          gosub CheckAllPlayerCollisions bank8 : rem Check multi-player collisions (moved to Bank 8)
+          gosub CheckAllPlayerCollisions bank11 : rem Check multi-player collisions (in Bank 11)
 
           gosub CheckAllPlayerEliminations : rem Check for player eliminations
           

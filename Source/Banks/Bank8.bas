@@ -22,5 +22,3 @@
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/SpecialMovement.bas"
 
-          rem Moved from Bank 11 for space optimization
-#include "Source/Routines/PlayerCollisionResolution.bas"

@@ -1,8 +1,9 @@
-BernieAttack
-          rem
           rem ChaosFight - Source/Routines/CharacterAttacks.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Character-specific Attack Subroutines
+
+BernieAttack
+          rem Executes Bernie’s ground-thump area attack
           rem Each character has a unique attack subroutine that:
           rem 1. Calls either PerformMeleeAttack or PerformRangedAttack
           rem   2. Sets the appropriate animation state
@@ -180,7 +181,8 @@ HarpyAttack
           
           rem Set diagonal velocity at 45° angle (4 pixels/frame
           rem   horizontal, 4 pixels/frame vertical)
-          if temp2 = 0 then HarpySetLeftVelocity : rem Horizontal: 4 pixels/frame in facing direction
+          rem Horizontal: 4 pixels/frame in facing direction
+          if temp2 = 0 then HarpySetLeftVelocity
           let temp4 = 4 : rem Facing right: positive X velocity
           goto HarpySetVerticalVelocity
 HarpySetLeftVelocity

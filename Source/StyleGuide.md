@@ -491,6 +491,9 @@ wrapped in `asm` blocks:
 end
 ```
 
+### Assembly Accumulator Shifts
+If you write `asl a`, `lsr a`, `rol a`, or `ror a`, you deserve the unresolved symbol storm you’re about to get. DASM reads that trailing `a` as the batariBASIC zero-page alias, not the accumulator, and the build detonates. Use the bare opcodes (`asl`, `lsr`, `rol`, `ror`) and quit pretending the assembler will read your mind.
+
 ### batariBASIC Include Files (.inc)
 
 Use **`includesfile`** (batariBASIC directive) for batariBASIC include files:

@@ -83,11 +83,7 @@ Player1TargetDone
           rem
           rem Called Routines: None
           let temp3 = 24 : rem Constraints: Must be colocated with FallingAnimation1
-          let temp1 = temp1 : rem Target Y (row 2)
-          let temp2 = temp2
-          let temp3 = temp3
           gosub MovePlayerToTarget
-          let temp4 = temp4
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer1Move
           rem reached = 1 if reached target
@@ -133,11 +129,7 @@ Player2TargetDone
           rem
           rem Called Routines: None
           let temp3 = 24 : rem Constraints: Must be colocated with FallingAnimation1
-          let temp1 = temp1 : rem Target Y (row 2)
-          let temp2 = temp2
-          let temp3 = temp3
           gosub MovePlayerToTarget
-          let temp4 = temp4
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer2Move
           rem Player 2 movement complete (skipped if not active)
@@ -157,11 +149,7 @@ DonePlayer2Move
           let temp1 = 2
           let temp2 = 64 : rem 4-player mode: target X = 64
           let temp3 = 24
-          let temp1 = temp1 : rem Target Y (row 2)
-          let temp2 = temp2
-          let temp3 = temp3
           gosub MovePlayerToTarget
-          let temp4 = temp4
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer3Move
           rem Player 3 movement complete (skipped if not in 4-player
@@ -182,11 +170,7 @@ DonePlayer3Move
           let temp1 = 3
           let temp2 = 96 : rem 4-player mode: target X = 96
           let temp3 = 24
-          let temp1 = temp1 : rem Target Y (row 2)
-          let temp2 = temp2
-          let temp3 = temp3
           gosub MovePlayerToTarget
-          let temp4 = temp4
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer4Move
           rem Player 4 movement complete (skipped if not in 4-player
@@ -548,8 +532,6 @@ NudgeFromPF
           rem Constraints: Must be colocated with
           rem NudgePlayerFromPlayfield
           rem Nudge horizontally toward target first
-          let temp2 = temp2 : rem Get targetX from parent function (preserved in temp2)
-          let temp3 = temp3
           if temp4 < temp2 then NudgeRight
           if temp4 > temp2 then NudgeLeft
           goto NudgeHorizontalDone

@@ -247,7 +247,6 @@ IsPlayerAlive
           rem Mutates: temp2, temp3
           rem Calls: IsPlayerEliminated
           gosub IsPlayerEliminated : rem Check elimination flag first
-          let temp2 = temp2
           if temp2 then return 
           rem Already eliminated
           
@@ -271,7 +270,6 @@ FindWinner
           
           for currentPlayer = 0 to 3 : rem Check each player using FOR loop
               gosub IsPlayerEliminated
-              let temp2 = temp2
               if !temp2 then let winnerPlayerIndex_W = currentPlayer
           next
           
@@ -290,7 +288,7 @@ FindLastEliminated
           
           for currentPlayer = 0 to 3 : rem Check each player elimination order using FOR loop
               let temp4 = eliminationOrder_R[currentPlayer]
-              if temp4 > temp4 then let temp4 = temp4 : let winnerPlayerIndex_W = currentPlayer
+              if temp4 > temp4 then let winnerPlayerIndex_W = currentPlayer
           next
           
 UpdatePlayers34ActiveFlag

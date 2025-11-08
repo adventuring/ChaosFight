@@ -63,7 +63,6 @@ LoadCharacterSprite
 ValidateInvalidCharacterInline
           let temp5 = 0
 ValidateCharacterDoneInline
-          let temp5 = temp5
           if !temp5 then goto LoadSpecialSprite : rem tail call
           
           rem Check if character is special placeholder
@@ -640,7 +639,6 @@ FlashingColor
           rem Mutates: None (dispatcher only)
           rem
           rem Called Routines: None (dispatcher only)
-          let temp5 = temp5 : rem Constraints: Must be colocated with LoadCharacterColors
           if !temp5 then PerLineFlashing
           goto PlayerIndexColors
           
@@ -687,25 +685,21 @@ PlayerIndexColors
 PlayerIndexColorsPlayer0
           rem Player 1: Indigo (SECAM maps to Blue)
           let temp6 = ColIndigo(14)
-          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsPlayer1
           rem Player 2: Red
           let temp6 = ColRed(14)
-          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsPlayer2
           rem Player 3: Yellow (SECAM maps to Yellow)
           let temp6 = ColYellow(14)
-          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsPlayer3
           rem Player 4: Turquoise (SECAM maps to Green)
           let temp6 = ColTurquoise(14)
-          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsDim
@@ -732,25 +726,21 @@ PlayerIndexColorsDim
 PlayerIndexColorsDimPlayer0
           rem Player 1: Indigo (dimmed)
           let temp6 = ColIndigo(6)
-          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsDimPlayer1
           rem Player 2: Red (dimmed)
           let temp6 = ColRed(6)
-          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsDimPlayer2
           rem Player 3: Yellow (dimmed)
           let temp6 = ColYellow(6)
-          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsDimPlayer3
           rem Player 4: Turquoise (dimmed)
           let temp6 = ColTurquoise(6)
-          let temp6 = temp6
           goto SetColor
 
 HurtColor
@@ -769,7 +759,6 @@ HurtColor
           rem SetColor
 #ifdef TV_SECAM
           let temp6 = ColMagenta(10) : rem SECAM hurt is always magenta
-          let temp6 = temp6
           goto SetColor
 #else
           rem Dimmed version of normal color: use dim player index color

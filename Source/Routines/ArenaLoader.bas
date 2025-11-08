@@ -190,9 +190,6 @@ ReloadArenaColors
           if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           
 ReloadArenaColorsDispatch
-          let temp1 = temp1 : rem Set up for LoadArenaColorsColor/LoadArenaColorsBW
-          let temp2 = temp2
-          
           if temp2 then goto LoadArenaColorsBW : rem Use existing LoadArena color functions (identical behavior)
           goto LoadArenaColorsColor
 

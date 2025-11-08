@@ -393,7 +393,6 @@ DWS_GetBWMode
           let temp2 = 0 : rem   caller)
           if switchbw then let temp2 = 1
           if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
-          let temp2 = temp2
           return
 
 DWS_LoadBWColors

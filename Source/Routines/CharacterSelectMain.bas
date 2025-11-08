@@ -167,7 +167,6 @@ HCSC_CycleDone
           rem
           rem Called Routines: SetPlayerLocked (bank14),
           rem PlaySoundEffect (bank15)
-          let temp1 = temp1 : rem Constraints: Must be colocated with HandleCharacterSelectCycle
           let playerCharacter[temp1] = temp1
           let temp2 = PlayerLockedUnlocked
           gosub SetPlayerLocked bank14
@@ -854,7 +853,6 @@ SelectLoadSpecialSprite
           rem CPUCharacter (254) -> SpriteCPU (1)
           rem RandomCharacter (253) -> SpriteQuestionMark (0)
           rem temp1 still contains character index from SelectLoadSprite
-          let temp1 = temp1 : rem temp6 still contains player number saved (temp6)
           let temp3 = temp6 : rem Character index already in temp1
           if temp1 = NoCharacter then let temp6 = SpriteNo : goto SelectLoadSpecialSpriteCall : rem Player number saved in temp6
           if temp1 = CPUCharacter then let temp6 = SpriteCPU : goto SelectLoadSpecialSpriteCall

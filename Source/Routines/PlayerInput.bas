@@ -72,7 +72,6 @@ ShouldPreserveFacing
           rem Check animation state for hurt states (5-9)
           rem ActionHit=5, ActionFallBack=6, ActionFallDown=7,
           gosub GetPlayerAnimationState : rem ActionFallen=8, ActionRecovering=9
-          let temp2 = temp2
           if temp2 < 5 then SPF_PreserveNo
           if temp2 > 9 then SPF_PreserveNo : rem Animation state < 5, allow facing update
           rem Animation state > 9, allow facing update
@@ -137,7 +136,6 @@ InputHandleAllPlayers
           
           rem Even frame: Handle Players 1 & 2 - only if alive  
           let currentPlayer = 0 : gosub IsPlayerAlive
-          let temp2 = temp2
           if temp2 = 0 then InputSkipPlayer0Input
           if (PlayerState[0] & 8) then InputSkipPlayer0Input
           let temp1 = 0 : gosub InputHandleLeftPortPlayer
@@ -156,7 +154,6 @@ InputSkipPlayer0Input
           rem Constraints: Must be colocated with InputHandleAllPlayers
           
           let currentPlayer = 1 : gosub IsPlayerAlive
-          let temp2 = temp2
           if temp2 = 0 then InputSkipPlayer1Input
           if (PlayerState[1] & 8) then InputSkipPlayer1Input
           goto InputHandlePlayer1
@@ -216,7 +213,6 @@ InputHandleQuadtariPlayers
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input : rem   alive)
           if playerCharacter[2] = NoCharacter then InputSkipPlayer3Input
           let currentPlayer = 2 : gosub IsPlayerAlive
-          let temp2 = temp2
           if temp2 = 0 then InputSkipPlayer3Input
           if (PlayerState[2] & 8) then InputSkipPlayer3Input
           let temp1 = 2 : gosub InputHandleLeftPortPlayer
@@ -234,7 +230,6 @@ InputSkipPlayer3Input
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input : rem Constraints: Must be colocated with InputHandleQuadtariPlayers
           if playerCharacter[3] = NoCharacter then InputSkipPlayer4Input
           let currentPlayer = 3 : gosub IsPlayerAlive
-          let temp2 = temp2
           if temp2 = 0 then InputSkipPlayer4Input
           if (PlayerState[3] & 8) then InputSkipPlayer4Input
           let temp1 = 3 : gosub InputHandleRightPortPlayer
@@ -617,7 +612,6 @@ InputHandleLeftPortPlayer
           rem Cache animation state at start (used for movement, jump,
           rem and attack checks)
           gosub GetPlayerAnimationState : rem   block movement during attack animations (states 13-15)
-          let temp2 = temp2
           if temp2 >= 13 then DoneLeftPortMovement
           rem Block movement during attack windup/execute/recovery
           
@@ -701,7 +695,6 @@ DoneUpInputHandling
 
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as
-          let temp3 = temp3 : rem   Shamone)
           if temp3 = 0 then InputSkipLeftPortJump
           if (PlayerState[temp1] & 4) then InputSkipLeftPortJump
           rem Use cached animation state - block jump during attack
@@ -741,7 +734,6 @@ InputHandleRightPortPlayer
           rem Cache animation state at start (used for movement, jump,
           rem and attack checks)
           gosub GetPlayerAnimationState : rem   block movement during attack animations (states 13-15)
-          let temp2 = temp2
           if temp2 >= 13 then DoneRightPortMovement
           rem Block movement during attack windup/execute/recovery
           

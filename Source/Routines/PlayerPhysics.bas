@@ -117,7 +117,6 @@ GravityCheckRoboTitoDone
           let playfieldColumn_W = temp2 : rem   it for gravityRate
           let temp2 = gravityRate_R : rem Save playfieldColumn temporarily
           gosub AddVelocitySubpixelY
-          let temp2 = temp2
           rem Restore playfieldColumn
           
           rem Apply terminal velocity cap (prevents infinite
@@ -129,7 +128,6 @@ GravityCheckRoboTitoDone
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
           gosub ConvertPlayerXToPlayfieldColumn
-          let temp2 = temp2
           
           rem Calculate row where player feet are (bottom of sprite)
           let temp3 = playerY[temp1] + PlayerSpriteHeight : rem Feet are at playerY + PlayerSpriteHeight (16 pixels)

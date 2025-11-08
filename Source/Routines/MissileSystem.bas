@@ -110,7 +110,6 @@ SpawnMissile
           rem Bit 0 = P1, Bit 1 = P2, Bit 2 = P3, Bit 3 = P4
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           gosub GetPlayerMissileBitFlag
-          let temp6 = temp6
           let missileActive  = missileActive | temp6
           
           let missileLifetimeValue_W = CharacterMissileLifetime[temp5] : rem Initialize lifetime counter from character data table
@@ -159,7 +158,6 @@ HarpyCheckDiveVelocity
           rem
           rem Constraints: Internal helper for SpawnMissile, only called
           rem for Harpy (character 6)
-          let temp6 = temp6
           if (characterStateFlags_R[temp1] & 4) then HarpyBoostDiveVelocity
           goto VelocityDone
 HarpyBoostDiveVelocity
@@ -185,7 +183,6 @@ HarpyBoostDiveVelocity
             sta velocityCalculation_W
 end
           let temp6 = temp6 + velocityCalculation_R
-          let temp6 = temp6
 VelocityDone
           let missileVelocityY[temp1] = temp6
           
@@ -277,7 +274,6 @@ UpdateOneMissile
           rem velocity by 25%
           rem Check if this missile is active
           gosub GetPlayerMissileBitFlag
-          let temp6 = temp6
           let temp4  = missileActive & temp6
           if temp4  = 0 then return
           rem Not active, skip

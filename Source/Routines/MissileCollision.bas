@@ -196,11 +196,9 @@ CheckAOECollision
           let temp6 = playerState[temp1] & PlayerStateBitFacing : rem Normal character: Check only facing direction
           if temp6 = 0 then CheckAOELeftDirection
           gosub CheckAOEDirection_Right
-          let temp4 = temp4
           return
 CheckAOELeftDirection
           gosub CheckAOEDirection_Left
-          let temp4 = temp4
           return
           
 CheckBernieAOE

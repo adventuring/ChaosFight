@@ -111,12 +111,12 @@ ArenaSelectSkipRight
           asm
             lda temp2
             sta temp3
-            asl a
-            asl a
-            asl a
+            asl
+            asl
+            asl
             clc
             adc temp3
-            asl a
+            asl
             sta temp3
 end
           let temp4 = temp1 - temp3 : rem multiplier = tensDigit * 10

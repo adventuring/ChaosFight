@@ -185,8 +185,8 @@ CheckMult4
 CheckMult5
             ; rem For 5: multiply by 4 + add original
             lda temp4
-            asl a
-            asl a
+            asl
+            asl
             clc
             adc temp4
             sta temp4
@@ -447,20 +447,20 @@ DivideBy20
           ; rem OUTPUT: A register = quotient (result in temp2)
           ; rem Uses 18 bytes, 32 cycles
             lda temp2
-            lsr a
-            lsr a
+            lsr
+            lsr
             sta temp6
-            lsr a
+            lsr
             adc temp6
             ror
-            lsr a
-            lsr a
+            lsr
+            lsr
             adc temp6
             ror
             adc temp6
             ror
-            lsr a
-            lsr a
+            lsr
+            lsr
             sta temp2
 end
           return

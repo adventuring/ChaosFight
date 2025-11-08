@@ -1,21 +1,19 @@
-UpdateCharacterParade
-          rem
           rem ChaosFight - Source/Routines/TitleCharacterParade.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+UpdateCharacterParade
           rem Title Screen Character Parade
-          rem Manages the animated character parade that runs across the
-          rem bottom of the title screen after 5 seconds (when copyright
-          rem   disappears).
+          rem Manages the animated character parade that runs across the bottom of the title screen after 5 seconds (when copyright disappears).
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   titleParadeTimer - Frame counter (increments each frame)
-          rem titleParadeCharacter - Current character index (0-MaxCharacter)
+          rem   titleParadeCharacter - Current character index (0-MaxCharacter)
           rem   titleParadeX - X position of parade character
           rem   titleParadeActive - Boolean: parade currently running
           rem TIMING:
           rem   - Parade starts after ~4 seconds (250 frames at 60fps)
           rem   - Each character moves at 2 pixels/frame (left to right)
           rem   - 1 second pause (60 frames) between characters
-          rem - Characters chosen randomly from NumCharacters available
+          rem   - Characters chosen randomly from NumCharacters available
           rem CHARACTER INDICES:
           rem 0=Bernie, 1=Curler, 2=Dragon of Storms, 3=EXO, 4=FatTony,
           rem   5=Grizzard,

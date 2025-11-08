@@ -69,9 +69,12 @@ StartNewParadeCharacter
           rem         titleParadeActive (set to 1)
           rem
           rem Called Routines: None
-          let titleParadeCharacter = rand & MaxCharacter : rem Constraints: Must be colocated with UpdateCharacterParade
-          let titleParadeX = 246 : rem Random character 0-MaxCharacter
-          let titleParadeActive = 1 : rem Start off-screen left
+          rem Constraints: Must be colocated with UpdateCharacterParade
+          let titleParadeCharacter = rand & MaxCharacter
+          rem Random character 0-MaxCharacter
+          let titleParadeX = 246
+          rem Start off-screen left
+          let titleParadeActive = 1
           return
           
 MoveParadeCharacter
@@ -85,7 +88,8 @@ MoveParadeCharacter
           rem Mutates: titleParadeX (incremented by 2)
           rem
           rem Called Routines: None (dispatcher only)
-          let titleParadeX = titleParadeX + 2 : rem Constraints: Must be colocated with UpdateCharacterParade, ParadeCharacterLeft
+          rem Constraints: Must be colocated with UpdateCharacterParade, ParadeCharacterLeft
+          let titleParadeX = titleParadeX + 2
           rem Move 2 pixels per frame
           
           if titleParadeX > 170 then ParadeCharacterLeft : rem Check if character has left screen
@@ -104,7 +108,8 @@ ParadeCharacterLeft
           rem (decremented by 60)
           rem
           rem Called Routines: None
-          let titleParadeActive = 0 : rem Constraints: Must be colocated with UpdateCharacterParade
+          rem Constraints: Must be colocated with UpdateCharacterParade
+          let titleParadeActive = 0
           let titleParadeTimer = titleParadeTimer - 60 
           rem Reset timer for next character
           return

@@ -99,7 +99,9 @@ BernieCheckBottomWrap
           rem   is below it
           let temp4 = 0 : rem Check if top row (row 0) is clear for wrapping
           rem topRow = top row (row 0)
-          if pfread(temp2, temp4) then return
+          let temp5 = 0 : rem Track pfread result (1 = top row blocked)
+          if pfread(temp2, temp4) then let temp5 = 1
+          if temp5 = 1 then return
           rem Top row is blocked, cannot wrap
           
           rem Top row is clear - wrap to top
@@ -162,7 +164,9 @@ DragonetJump
           if temp4 <= 0 then return
           let temp4 = temp4 - 1 : rem Already at top row
           rem Check if playfield pixel is clear
-          if pfread(temp2, temp4) then return
+          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          if pfread(temp2, temp4) then let temp5 = 1
+          if temp5 = 1 then return
           rem Blocked, cannot move up
           
           let playerVelocityY[temp1] = 254 : rem Clear above - apply upward velocity impulse
@@ -392,7 +396,9 @@ FrootyJump
           if temp4 <= 0 then return
           let temp4 = temp4 - 1 : rem Already at top row
           rem Check if playfield pixel is clear
-          if pfread(temp2, temp4) then return
+          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          if pfread(temp2, temp4) then let temp5 = 1
+          if temp5 = 1 then return
           rem Blocked, cannot move up
           
           let playerVelocityY[temp1] = 254 : rem Clear above - apply upward velocity impulse
@@ -810,7 +816,9 @@ DragonetDown
           if temp4 >= pfrows then return
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
-          if pfread(temp2, temp4) then return
+          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          if pfread(temp2, temp4) then let temp5 = 1
+          if temp5 = 1 then return
           rem Blocked, cannot move down
           
           let playerVelocityY[temp1] = 2 : rem Clear below - apply downward velocity impulse
@@ -906,7 +914,9 @@ HarpyNormalDown
           if temp4 >= pfrows then return
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
-          if pfread(temp2, temp4) then return
+          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          if pfread(temp2, temp4) then let temp5 = 1
+          if temp5 = 1 then return
           rem Blocked, cannot move down
           
           let playerVelocityY[temp1] = 2 : rem Clear below - apply downward velocity impulse
@@ -959,7 +969,9 @@ FrootyDown
           if temp4 >= pfrows then return
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
-          if pfread(temp2, temp4) then return
+          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          if pfread(temp2, temp4) then let temp5 = 1
+          if temp5 = 1 then return
           rem Blocked, cannot move down
           
           let playerVelocityY[temp1] = 2 : rem Clear below - apply downward velocity impulse

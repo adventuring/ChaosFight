@@ -135,7 +135,8 @@ DWS_UpdateSecond
           rem temp5
           rem
           rem Called Routines: None
-          let w095 = temp5 : rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
+          rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
+          let w095 = temp5
           let temp4 = temp3
           let temp5 = r094
           let temp3 = temp1
@@ -169,7 +170,8 @@ DWS_RankNext
           rem Mutates: temp1 (incremented)
           rem
           rem Called Routines: None
-          let temp1 = temp1 + 1 : rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
+          rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
+          let temp1 = temp1 + 1
           if temp1 < 4 then goto DWS_RankLoop
           
           rem Position characters based on playersRemaining
@@ -200,7 +202,8 @@ DWS_Position1Player
           rem
           rem Called Routines: LoadCharacterSprite (bank10) - loads
           rem character sprite
-          let playerX[0] = 80 : rem Constraints: Must be colocated with DisplayWinScreen
+          rem Constraints: Must be colocated with DisplayWinScreen
+          let playerX[0] = 80
           let playerY[0] = 192
           let currentCharacter = playerCharacter[temp2] : rem Load winner sprite
           let LCS_animationFrame = 0

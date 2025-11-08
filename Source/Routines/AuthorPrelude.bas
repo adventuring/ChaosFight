@@ -1,7 +1,8 @@
-AuthorPrelude
-          rem
           rem ChaosFight - Source/Routines/AuthorPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+AuthorPrelude
+          rem Displays the Interworldly author logo/artwork with music.
           rem Author Prelude Screen
           rem Displays the Interworldly author logo/artwork with music.
           rem This is the second screen shown at cold start.
@@ -48,15 +49,20 @@ AuthorPrelude
           rem   bitmap display
           
           rem Check for button press on any controller to skip
-          if joy0fire then AuthorPreludeComplete : rem Use skip-over pattern to avoid complex || operator issues
+          rem Use skip-over pattern to avoid complex || operator issues
+          if joy0fire then AuthorPreludeComplete
           if joy1fire then AuthorPreludeComplete
           
-          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete : rem Check Quadtari controllers if detected (inline to avoid label)
+          rem Check Quadtari controllers if detected (inline to avoid label)
+          
+          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete
           if controllerStatus & SetQuadtariDetected then if !INPT2{7} then AuthorPreludeComplete
           
           gosub UpdateMusic bank1
 
-          if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete : rem Auto-advance after music completes + 0.5s
+          rem Auto-advance after music completes + 0.5s
+
+          if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
 
           let preambleTimer = preambleTimer + 1
 

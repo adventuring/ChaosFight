@@ -47,5 +47,9 @@ similar without explicit permission.
 
 - Edits to Skyline-Tool are permitted if new facilities are needed.
 - All Skyline-Tool edits require unit tests.
-- No edits to Tools (batariBASIC, dasm) are permitted.
+
+ - Edits to batariBASIC are permitted only to relax restrictions (e.g. buffer length limits)
+   or to cure legitimate bugs. Each patch must be split into its own commit with a
+   detailed commit message that clearly identifies the reason and concisely describes the
+   implemented work-around or fix.
 

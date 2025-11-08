@@ -1,13 +1,11 @@
-ApplySpecialMovement
-          rem
           rem ChaosFight - Source/Routines/SpecialMovement.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+ApplySpecialMovement
           rem Special Movement Physics
-          rem Per-frame physics updates for characters with special
-          rem   movement.
-          rem Called every frame after input handling to apply
-          rem   character-specific
-          rem physics that are not handled by standard movement/gravity.
+          rem Per-frame physics updates for characters with special movement.
+          rem Called every frame after input handling to apply character-specific
+          rem physics not handled by standard movement/gravity.
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   playerCharacter[0-3] - Character type indices
           rem   playerX[0-3], playerY[0-3] - Position
@@ -39,17 +37,21 @@ ApplySpecialMovement
           rem Player 0 - Frooty (8) and Dragon of Storms (2) skip gravity
           temp4 = playerCharacter[0]
           if temp4 = 8 then ApplySpecialMovementP1
-          if temp4 = 2 then ApplySpecialMovementP1 : rem Frooty: no gravity (free flight)
+          rem Frooty: no gravity (free flight)
+          if temp4 = 2 then ApplySpecialMovementP1
 ApplySpecialMovementP1
           rem Player 1 - Frooty (8) and Dragon of Storms (2) skip gravity
           temp4 = playerCharacter[1]
           if temp4 = 8 then ApplySpecialMovementP2
-          if temp4 = 2 then ApplySpecialMovementP2 : rem Frooty: no gravity (free flight)
+          rem Frooty: no gravity (free flight)
+          if temp4 = 2 then ApplySpecialMovementP2
 ApplySpecialMovementP2
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 8 then ApplySpecialMovementP3 : rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 8 then ApplySpecialMovementP3
           if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 2 then ApplySpecialMovementP3
 ApplySpecialMovementP3
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 8 then return : rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 8 then return
           if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 2 then return
           rem Player 3 - Frooty (8) and Dragon of Storms (2) skip gravity
           return
@@ -81,8 +83,10 @@ ApplyPlayerSpecialMovement
           
           rem Frooty (8) and Dragon of Storms (2) - free flight (no
           rem   gravity)
-          if temp4 = 8 then return : rem These characters skip gravity entirely
-          if temp4 = 2 then return : rem Frooty: no gravity (free flight)
+          rem These characters skip gravity entirely
+          if temp4 = 8 then return
+          rem Frooty: no gravity (free flight)
+          if temp4 = 2 then return
           rem Dragon of Storms: no gravity (free flight)
           
           rem All other characters use standard physics

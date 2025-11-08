@@ -145,12 +145,6 @@ DrawParadeCharacter
           temp5 = 0
           gosub LoadCharacterColors bank10
           
-          rem Draw running animation for parade character
-          goto DrawParadeCharacterSprite bank9 : rem tail call
-          
-
-
-
 DrawParadeCharacterSprite
           rem
           rem Draw Parade Character Sprite

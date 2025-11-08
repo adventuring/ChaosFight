@@ -5,7 +5,9 @@
 **Last Updated**: 2025
 **Copyright © 2025 Interworldly Adventuring, LLC.**
 
-This document defines the coding standards for the ChaosFight project. All code must conform to these standards to ensure consistency, maintainability, and clarity.
+This document defines the coding standards for the ChaosFight project.
+All code must conform to these standards to ensure consistency,
+maintainability, and clarity.
 
 ---
 
@@ -30,9 +32,11 @@ This document defines the coding standards for the ChaosFight project. All code 
 
 Use **PascalCase** for:
 
-- **Labels/Routines**: `LoadCharacterSprite`, `ApplyDamage`, `CheckPlayerElimination`
+- **Labels/Routines**: `LoadCharacterSprite`, `ApplyDamage`,
+  `CheckPlayerElimination`
 - **Constants**: `MaxCharacter`, `RandomArena`, `ColIndigo(14)`
-- **Enums**: `ActionStanding`, `ActionWalking`, `ModeGame`, `ModeCharacterSelect`
+- **Enums**: `ActionStanding`, `ActionWalking`, `ModeGame`,
+  `ModeCharacterSelect`
 
 **Examples:**
 
@@ -49,7 +53,9 @@ const RandomArena = 255
 
 ### Abbreviations
 
-**DO NOT use abbreviations** in names except for subroutine-local variable prefixes (see [Subroutine-Local Variables](#subroutine-local-variables) below).
+**DO NOT use abbreviations** in names except for subroutine-local
+variable prefixes (see [Subroutine-Local Variables](#subroutine-local-
+variables) below).
 
 **Forbidden:**
 
@@ -59,11 +65,13 @@ CharacterSpritePtrLoBank2    ; Use: CharacterSpriteBank2L
 CharacterSpritePtrHiBank2    ; Use: CharacterSpriteBank2H
 ```
 
-**Rationale**: Abbreviations reduce clarity and make code harder to understand. Fully spelled names are more readable and self-documenting.
+**Rationale**: Abbreviations reduce clarity and make code harder to
+understand. Fully spelled names are more readable and self-documenting.
 
 ### High/Low Byte Suffixes
 
-When using pairs of tables or variables for high-byte/low-byte values, use a final **`H`** or **`L`** to distinguish them.
+When using pairs of tables or variables for high-byte/low-byte values,
+use a final **`H`** or **`L`** to distinguish them.
 
 **Correct:**
 
@@ -84,14 +92,18 @@ CharacterSpritePtrLoBank2    ; Redundant "Ptr" + wrong suffix
 CharacterSpritePtrHiBank2    ; Redundant "Ptr" + wrong suffix
 ```
 
-**Note**: `H`/`L` as the final character of a variable name is acceptable, but never use "Hi" for "high" or "Lo" for "low" as separate words.
+**Note**: `H`/`L` as the final character of a variable name is
+acceptable, but never use "Hi" for "high" or "Lo" for "low" as separate
+words.
 
 ### camelCase
 
 Use **camelCase** for:
 
-- **Zero-page variables** (standard RAM): `gameState`, `playerX`, `playerCharacter[0]`, `playerHealth`
-- **Built-in variables**: `temp1`, `temp2`, `qtcontroller`, `frame` (already lowercase)
+- **Zero-page variables** (standard RAM): `gameState`, `playerX`,
+  `playerCharacter[0]`, `playerHealth`
+- **Built-in variables**: `temp1`, `temp2`, `qtcontroller`, `frame`
+  (already lowercase)
 
 **Examples:**
 
@@ -107,7 +119,10 @@ Use **camelCase_R** and **camelCase_W** suffixes for:
 
 - **SCRAM (SuperChip RAM) variables**: Separate read and write ports
 
-**CRITICAL**: SCRAM variables have separate read (`r000`-`r127`) and write (`w000`-`w127`) ports that map to the same physical 128-byte RAM. All SCRAM variable declarations **MUST** include both `_R` and `_W` variants.
+**CRITICAL**: SCRAM variables have separate read (`r000`-`r127`) and
+write (`w000`-`w127`) ports that map to the same physical 128-byte RAM.
+All SCRAM variable declarations **MUST** include both `_R` and `_W`
+variants.
 
 **Examples:**
 
@@ -123,7 +138,10 @@ dim selectedArena = w014  ; "Convenience alias" not acceptable
 dim selectedArena = w014  ; ERROR: Missing _R/_W variants
 ```
 
-**Rationale**: SCRAM has separate read/write ports. Using convenience aliases without explicit `_R`/`_W` makes it unclear which port is accessed, which can lead to bugs where writes are attempted via read ports or reads via write ports.
+**Rationale**: SCRAM has separate read/write ports. Using convenience
+aliases without explicit `_R`/`_W` makes it unclear which port is
+accessed, which can lead to bugs where writes are attempted via read
+ports or reads via write ports.
 
 ---
 
@@ -133,7 +151,8 @@ dim selectedArena = w014  ; ERROR: Missing _R/_W variants
 
 **DO NOT** use `LET` for built-in batariBASIC variables:
 
-- TIA registers: `player0x`, `player0y`, `COLUP0`, `NUSIZ0`, `pf0`-`pf11`, `VBLANK`, etc.
+- TIA registers: `player0x`, `player0y`, `COLUP0`, `NUSIZ0`,
+  `pf0`-`pf11`, `VBLANK`, etc.
 - Built-in variables: `temp1`-`temp6`, `frame`, `qtcontroller`
 - Hardware registers: `joy0up`, `joy0down`, `joy0fire`, `INPT0`, etc.
 
@@ -172,9 +191,13 @@ selectedArena = selectedArena - 1  ; ERROR: Missing let
 gameState = 1  ; ERROR: Missing let
 ```
 
-**Note**: All batariBASIC keywords (`let`, `goto`, `gosub`, `dim`, `if`, `then`, `return`, `rem`, `asm`, `end`, `data`, `const`) must be lowercase.
+**Note**: All batariBASIC keywords (`let`, `goto`, `gosub`, `dim`, `if`,
+`then`, `return`, `rem`, `asm`, `end`, `data`, `const`) must be
+lowercase.
 
-**Rationale**: The `LET` keyword distinguishes user-defined variables from built-in system variables, improving code clarity and making assignments explicit.
+**Rationale**: The `LET` keyword distinguishes user-defined variables
+from built-in system variables, improving code clarity and making
+assignments explicit.
 
 ---
 
@@ -184,8 +207,10 @@ gameState = 1  ; ERROR: Missing let
 
 Subroutines communicate via:
 
-- **Global variables**: Shared state (e.g., `playerX[]`, `playerHealth[]`, `gameState`)
-- **temp1-temp6**: Temporary storage for parameter passing and scratch space
+- **Global variables**: Shared state (e.g., `playerX[]`,
+  `playerHealth[]`, `gameState`)
+- **temp1-temp6**: Temporary storage for parameter passing and scratch
+  space
 
 Can also use "static" subroutine-specific variables with global extent.
 
@@ -210,7 +235,9 @@ Subroutine-local temporary variables should be:
 - **Namespaced** with subroutine initials (abbreviations): `XX_varName`
 - **Mapped** to `temp1`-`temp6` or other appropriate variables
 
-**Important**: Use **abbreviated routine names** (2-4 letters) as prefixes, not full routine names. This keeps variable names concise and readable.
+**Important**: Use **abbreviated routine names** (2-4 letters) as
+prefixes, not full routine names. This keeps variable names concise and
+readable.
 
 **Example:**
 
@@ -234,9 +261,18 @@ UpdatePlayerAnimation
 
 - ✅ `UPA_animCounterRead` (UpdatePlayerAnimation → UPA)
 
-**Note**: This is the **only exception** to the "no abbreviations" rule. Subroutine-local variable prefixes may use abbreviations to keep names manageable, but all other names (labels, constants, global variables, etc.) must use full words.
+**Note**: This is the **only exception** to the "no abbreviations" rule.
+Subroutine-local variable prefixes may use abbreviations to keep names
+manageable, but all other names (labels, constants, global variables,
+etc.) must use full words.
 
-**CRITICAL - Cross-Bank Access**: Variables with numeric prefixes (subroutine-local variables using the `XX_varName` pattern) are **local to their bank** and **will NOT be available cross-bank at all without a separate label for it**. If a subroutine needs to access a local variable from another bank, that variable must be exposed via a separate label or passed through global variables (`temp1`-`temp6` or other globals).
+**CRITICAL - Cross-Bank Access**: Variables with numeric prefixes
+(subroutine-local variables using the `XX_varName` pattern) are **local
+to their bank** and **will NOT be available cross-bank at all without a
+separate label for it**. If a subroutine needs to access a local
+variable from another bank, that variable must be exposed via a separate
+label or passed through global variables (`temp1`-`temp6` or other
+globals).
 
 ---
 
@@ -244,7 +280,11 @@ UpdatePlayerAnimation
 
 ### Apostrophes in Remarks
 
-**MUST use right single quotes (`'`) instead of straight apostrophes (`'`) in `rem` comments** - the C preprocessor (`cpp`) treats straight apostrophes as string delimiters, causing compilation warnings. Right single quotes are typographically correct and do not trigger preprocessor warnings.
+**MUST use right single quotes (`'`) instead of straight apostrophes
+(`'`) in `rem` comments** - the C preprocessor (`cpp`) treats straight
+apostrophes as string delimiters, causing compilation warnings. Right
+single quotes are typographically correct and do not trigger
+preprocessor warnings.
 
 **Correct:**
 
@@ -269,11 +309,17 @@ rem Other screens' minikernels should have window=0  ; Wrong: straight
 rem apostrophe causes cpp warnings
 ```
 
-**Rationale**: The C preprocessor parses all comments and treats straight apostrophes (`'`) as potential string delimiters, causing compilation warnings. Right single quotes (`'`, U+2019) are the typographically correct character for apostrophes in English text and do not trigger preprocessor warnings. Always use right single quotes for contractions and possessives in remarks.
+**Rationale**: The C preprocessor parses all comments and treats
+straight apostrophes (`'`) as potential string delimiters, causing
+compilation warnings. Right single quotes (`'`, U+2019) are the
+typographically correct character for apostrophes in English text and do
+not trigger preprocessor warnings. Always use right single quotes for
+contractions and possessives in remarks.
 
 ### Remark Length
 
-**All remarks/comments MUST NOT exceed 72 columns** for readability, consistency, and compatibility with various display formats.
+**All remarks/comments MUST NOT exceed 72 columns** for readability,
+consistency, and compatibility with various display formats.
 
 **Examples:**
 
@@ -286,15 +332,22 @@ rem   and should be split across multiple lines
 
 ### Subroutine Documentation
 
-Every subroutine **MUST** place its documentation comments **immediately after the label**. The label comes first on column 0, followed directly by the documentation block. Within the documentation block, insert a blank remark line (`rem` with no trailing text) between major sections to improve readability.
+Every subroutine **MUST** place its documentation comments **immediately
+after the label**. The label comes first on column 0, followed directly
+by the documentation block. Within the documentation block, insert a
+blank remark line (`rem` with no trailing text) between major sections
+to improve readability.
 
 Every documentation block **MUST** describe:
 
-- **Input**: Parameters (via temp variables or globals), including all variables read
+- **Input**: Parameters (via temp variables or globals), including all
+  variables read
 - **Output**: Return values or state changes
-- **Mutates**: All variables modified, including `temp1`-`temp6` when modified
+- **Mutates**: All variables modified, including `temp1`-`temp6` when
+  modified
 - **Called Routines**: Subroutines called and their variable access
-- **Constraints**: Colocation requirements, cross-bank access limitations, entry point status
+- **Constraints**: Colocation requirements, cross-bank access
+  limitations, entry point status
 
 **Format:**
 
@@ -344,7 +397,12 @@ ApplyDamage
           rem Constraints: None
 ```
 
-**CRITICAL - Cross-Bank Variable Access**: When documenting subroutines, note that variables with numeric prefixes (subroutine-local variables using the `XX_varName` pattern) are **local to their bank** and **will NOT be available cross-bank at all without a separate label for it**. Document this in the **Constraints** section if a subroutine uses local variables that might need cross-bank access.
+**CRITICAL - Cross-Bank Variable Access**: When documenting subroutines,
+note that variables with numeric prefixes (subroutine-local variables
+using the `XX_varName` pattern) are **local to their bank** and **will
+NOT be available cross-bank at all without a separate label for it**.
+Document this in the **Constraints** section if a subroutine uses local
+variables that might need cross-bank access.
 
 ### File Headers
 
@@ -362,14 +420,22 @@ All source files should begin with:
 ### File Size and Structure
 
 - **Break down files into manageable sizes**
-- **Ideally one subroutine per file** for very large or frequently-modified subroutines
-- **Group related subroutines** in the same file when they are tightly coupled (e.g., `SpriteLoader.bas` contains multiple sprite loading functions)
-- **Inline very small subroutines** directly into calling code when appropriate
+- **Ideally one subroutine per file** for very large or frequently-
+  modified subroutines
+- **Group related subroutines** in the same file when they are tightly
+  coupled (e.g., `SpriteLoader.bas` contains multiple sprite loading
+  functions)
+- **Inline very small subroutines** directly into calling code when
+  appropriate
 
 **Acceptable grouping examples:**
 
-- `SpriteLoader.bas`: Contains multiple sprite loading functions (`LoadCharacterSprite`, `LoadSpecialSprite`, `LoadPlayerSprite`, etc.) - all related to sprite loading
-- `MissileSystem.bas`: Contains missile management functions (`SpawnMissile`, `UpdateMissiles`, `DeactivateMissile`) - all related to missile system
+- `SpriteLoader.bas`: Contains multiple sprite loading functions
+  (`LoadCharacterSprite`, `LoadSpecialSprite`, `LoadPlayerSprite`, etc.)
+  - all related to sprite loading
+- `MissileSystem.bas`: Contains missile management functions
+  (`SpawnMissile`, `UpdateMissiles`, `DeactivateMissile`) - all related
+  to missile system
 
 **Split when:**
 
@@ -379,8 +445,10 @@ All source files should begin with:
 
 ### File Naming
 
-- Use **PascalCase** for file names: `SpriteLoader.bas`, `MissileSystem.bas`
-- Match file name to primary subroutine or functionality: `LoadArena.bas` for `LoadArena` subroutine
+- Use **PascalCase** for file names: `SpriteLoader.bas`,
+  `MissileSystem.bas`
+- Match file name to primary subroutine or functionality:
+  `LoadArena.bas` for `LoadArena` subroutine
 
 ---
 
@@ -390,8 +458,10 @@ All source files should begin with:
 
 Use **zero-page variables** (standard RAM: `var0`-`var47`, `a`-`z`) for:
 
-- **Variables accessed every frame**: Physics variables, player positions, game state
-- **Performance-critical data**: Variables used in tight loops or hot paths
+- **Variables accessed every frame**: Physics variables, player
+  positions, game state
+- **Performance-critical data**: Variables used in tight loops or hot
+  paths
 
 **Examples:**
 
@@ -405,8 +475,10 @@ dim gameState = g           ; Accessed every frame for state machine
 
 Use **SCRAM variables** (`r000`-`r127`/`w000`-`w127`) for:
 
-- **Less-frequently-accessed variables**: Animation counters (updated at 10fps, not 60fps), elimination timers, music state
-- **Low-frequency data**: Variables accessed only on specific screens or events
+- **Less-frequently-accessed variables**: Animation counters (updated at
+  10fps, not 60fps), elimination timers, music state
+- **Low-frequency data**: Variables accessed only on specific screens or
+  events
 
 **Examples:**
 
@@ -416,14 +488,19 @@ dim winScreenTimer_W = w044    ; Only accessed on winner screen
 dim selectedArena_W = w014     ; Only accessed during arena select
 ```
 
-**Rationale**: Zero-page access is faster (2 bytes, 3 cycles) than SCRAM access (3 bytes, 4-5 cycles). Reserve zero-page for variables accessed every frame.
+**Rationale**: Zero-page access is faster (2 bytes, 3 cycles) than SCRAM
+access (3 bytes, 4-5 cycles). Reserve zero-page for variables accessed
+every frame.
 
 ### No Redimming
 
-**DO NOT** "redim" variables (reuse the same memory location for different purposes) except:
+**DO NOT** "redim" variables (reuse the same memory location for
+different purposes) except:
 
-- **Admin Mode vs Game Mode**: Variables can be redimmed between these two contexts (documented in `Variables.bas`)
-- **Example**: `var24`-`var27` used for arena select in Admin Mode, `playerVelocityXL` in Game Mode
+- **Admin Mode vs Game Mode**: Variables can be redimmed between these
+  two contexts (documented in `Variables.bas`)
+- **Example**: `var24`-`var27` used for arena select in Admin Mode,
+  `playerVelocityXL` in Game Mode
 
 **Forbidden:**
 
@@ -438,7 +515,8 @@ dim temp2 = var10  ; ERROR: Redim in same context
 
 ### Code Blocks
 
-Use **at least 10 spaces** for indentation of code blocks within subroutines.
+Use **at least 10 spaces** for indentation of code blocks within
+subroutines.
 
 **Correct:**
 
@@ -532,11 +610,16 @@ end
 
 ### Assembly Accumulator Shifts
 
-If you write `asl a`, `lsr a`, `rol a`, or `ror a`, you deserve the unresolved symbol storm you’re about to get. DASM reads that trailing `a` as the batariBASIC zero-page alias, not the accumulator, and the build detonates. Use the bare opcodes (`asl`, `lsr`, `rol`, `ror`) and quit pretending the assembler will read your mind.
+If you write `asl a`, `lsr a`, `rol a`, or `ror a`, you deserve the
+unresolved symbol storm you’re about to get. DASM reads that trailing
+`a` as the batariBASIC zero-page alias, not the accumulator, and the
+build detonates. Use the bare opcodes (`asl`, `lsr`, `rol`, `ror`) and
+quit pretending the assembler will read your mind.
 
 ### batariBASIC Include Files (.inc)
 
-Use **`includesfile`** (batariBASIC directive) for batariBASIC include files:
+Use **`includesfile`** (batariBASIC directive) for batariBASIC include
+files:
 
 ```basic
           includesfile multisprite_superchip.inc
@@ -544,14 +627,20 @@ Use **`includesfile`** (batariBASIC directive) for batariBASIC include files:
 
 ### Lexical Order Requirements
 
-**CRITICAL**: All constants, data tables, and labels (except subroutine labels) **MUST** be defined lexically prior to their use. This ensures the compiler can resolve references correctly.
+**CRITICAL**: All constants, data tables, and labels (except subroutine
+labels) **MUST** be defined lexically prior to their use. This ensures
+the compiler can resolve references correctly.
 
 **What must be defined before use:**
 
-- ✅ **Constants**: `const MaxCharacter = 15` must appear before `if characterIndex > MaxCharacter`
-- ✅ **Data tables**: `data CharacterColors` must appear before `let color = CharacterColors[index]`
-- ✅ **Labels** (non-subroutine): Jump targets, data labels, etc. must be defined before use
-- ❌ **Subroutine labels**: Subroutine labels can be called via `gosub` or `goto` without prior definition (forward references are allowed)
+- ✅ **Constants**: `const MaxCharacter = 15` must appear before `if
+  characterIndex > MaxCharacter`
+- ✅ **Data tables**: `data CharacterColors` must appear before `let
+  color = CharacterColors[index]`
+- ✅ **Labels** (non-subroutine): Jump targets, data labels, etc. must be
+  defined before use
+- ❌ **Subroutine labels**: Subroutine labels can be called via `gosub`
+  or `goto` without prior definition (forward references are allowed)
 
 **Correct (constants defined before use):**
 
@@ -610,11 +699,15 @@ ValidateInput
           return
 ```
 
-**Rationale**: batariBASIC requires constants, data tables, and non-subroutine labels to be defined before use because it performs a single-pass compilation. Subroutine labels are an exception because `gosub` and `goto` can resolve forward references to subroutines.
+**Rationale**: batariBASIC requires constants, data tables, and non-
+subroutine labels to be defined before use because it performs a single-
+pass compilation. Subroutine labels are an exception because `gosub` and
+`goto` can resolve forward references to subroutines.
 
 ### Summary
 
-- `.bas`, `.h`: Use `#include`, for example `#include "Source/Common/Constants.bas"`.
+- `.bas`, `.h`: Use `#include`, for example `#include
+  "Source/Common/Constants.bas"`.
 - `.s`: Use `include` within `asm` blocks:
 
   ```basic
@@ -623,7 +716,8 @@ ValidateInput
   end
   ```
 
-- `.inc`: Use `includesfile`, for example `includesfile multisprite_superchip.inc`.
+- `.inc`: Use `includesfile`, for example `includesfile
+  multisprite_superchip.inc`.
 
 ---
 
@@ -631,7 +725,8 @@ ValidateInput
 
 ### IF/THEN Statements
 
-batariBASIC uses **line-based IF/THEN**, not block syntax. All IF/THEN statements must be single-line commands.
+batariBASIC uses **line-based IF/THEN**, not block syntax. All IF/THEN
+statements must be single-line commands.
 
 **Correct:**
 
@@ -650,7 +745,9 @@ if selectedArena = RandomArena then
 end if
 ```
 
-**Never bounce through a label just to run a one-liner.** Patterns like the following waste a branch and should be collapsed so the work happens directly in the `then` clause:
+**Never bounce through a label just to run a one-liner.** Patterns like
+the following waste a branch and should be collapsed so the work happens
+directly in the `then` clause:
 
 ```basic
 if CONDITION then goto SomeLabel
@@ -666,11 +763,14 @@ Refactor to:
 if CONDITION then let flag = 1
 ```
 
-If the label performs more than a one-liner, factor it into a proper subroutine or early `return`; do not leave a dummy detour just to hide a single assignment.
+If the label performs more than a one-liner, factor it into a proper
+subroutine or early `return`; do not leave a dummy detour just to hide a
+single assignment.
 
 ### Tail Call Optimization
 
-When a subroutine ends with `gosub` immediately followed by `return`, optimize to a tail call using `goto`:
+When a subroutine ends with `gosub` immediately followed by `return`,
+optimize to a tail call using `goto`:
 
 **Before (inefficient):**
 
@@ -798,7 +898,8 @@ UpdatePlayerJump
 
 ## Questions and Clarifications
 
-If you have questions about these standards or encounter edge cases not covered here:
+If you have questions about these standards or encounter edge cases not
+covered here:
 
 1. **Check Requirements.md** for project-specific requirements
 2. **Review existing code** for consistent patterns
@@ -808,7 +909,8 @@ If you have questions about these standards or encounter edge cases not covered 
 
 ## Version History
 
-- **1.0** (2025): Initial style guide creation based on code review and Requirements.md
+- **1.0** (2025): Initial style guide creation based on code review and
+  Requirements.md
 
 ---
 

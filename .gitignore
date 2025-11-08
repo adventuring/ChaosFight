@@ -51,3 +51,4 @@ dumper-*.lisp
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+.cursor/plans

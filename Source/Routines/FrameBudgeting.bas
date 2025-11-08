@@ -1,13 +1,12 @@
           rem ChaosFight - Source/Routines/FrameBudgeting.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem Frame Budgeting System
-          rem Manages expensive operations across multiple frames to
-          rem   ensure
-          rem game logic never exceeds the overscan period.
-          rem The Atari 2600 has very limited processing time per frame:
-          rem   - Vertical blank: ~37 scanlines (~2400 cycles)
 
 UpdateFramePhase
+          rem Frame Budgeting System
+          rem Manages expensive operations across multiple frames to
+          rem ensure game logic never exceeds the overscan period.
+          rem The Atari 2600 has very limited processing time per frame:
+          rem   - Vertical blank: ~37 scanlines (~2400 cycles)
           rem   - Overscan: ~30 scanlines (~1950 cycles)
           rem Expensive operations that must be budgeted:
           rem 1. Health bar rendering (32 pfpixel calls × 4 players =

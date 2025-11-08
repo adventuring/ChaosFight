@@ -1,25 +1,15 @@
-FallingAnimation1
-          rem
-          rem ChaosFight - Source/Routines/FallingAnimation1.bas
+          rem ChaosFight - Source/Routines/FallingAnimation.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Falling In Animation - Per-frame Loop
-          rem
-          rem Per-frame falling animation that moves players from
-          rem   quadrants
-          rem to their row 2 starting positions.
-          rem Called from MainLoop each frame (gameMode 4).
-          rem
-          rem FLOW:
+          rem Moves players from quadrant staging positions to arena row 2.
+
+FallingAnimation1
+          rem Moves active players from quadrant spawn points to row 2 starting positions
+          rem Called each frame while gameMode = ModeFallingAnimation1
+          rem Flow:
           rem   1. Move each active player toward their target position
-          rem   2. Check if all players have reached their targets
-          rem   3. When complete, transition to Game Mode
-          rem TARGET POSITIONS (row 2, Y=24):
-          rem   2-player: P1 at (53, 24), P2 at (107, 24)
-          rem 4-player: P1 at (32, 24), P3 at (64, 24), P4 at (96, 24),
-          rem   P2 at (128, 24)
-          rem Per-frame falling animation that moves players from
-          rem quadrants to row 2 positions
-          rem
+          rem   2. Track completion count
+          rem   3. Transition to game mode when all players arrive
           rem Input: playerCharacter[] (global array) = character selections
           rem        controllerStatus (global) = controller detection
           rem        state
@@ -52,10 +42,13 @@ FallingAnimation1
           let fallFrame = fallFrame + 1 : rem Update animation frame
           if fallFrame > 3 then let fallFrame = 0
           
-          if playerCharacter[0] = NoCharacter then DonePlayer1Move : rem Move Player 1 from quadrant to target (if active)
+          rem Move Player 1 from quadrant to target (if active)
+          
+          if playerCharacter[0] = NoCharacter then DonePlayer1Move
           rem playerIndex = 0 (player index), targetX = target X,
           let temp1 = 0 : rem targetY = target Y (24)
-          if controllerStatus & SetQuadtariDetected then Player1Target4P : rem Check if 4-player mode for target X
+          rem Check if 4-player mode for target X
+          if controllerStatus & SetQuadtariDetected then Player1Target4P
           let temp2 = 53 : rem 2-player mode: target X = 53
           goto Player1TargetDone
 Player1Target4P
@@ -99,9 +92,12 @@ DonePlayer1Move
           rem
           rem Constraints: Must be colocated with FallingAnimation1
           
-          if playerCharacter[1] = NoCharacter then DonePlayer2Move : rem Move Player 2 from quadrant to target (if active)
+          rem Move Player 2 from quadrant to target (if active)
+          
+          if playerCharacter[1] = NoCharacter then DonePlayer2Move
           let temp1 = 1
-          if controllerStatus & SetQuadtariDetected then Player2Target4P : rem Check if 4-player mode for target X
+          rem Check if 4-player mode for target X
+          if controllerStatus & SetQuadtariDetected then Player2Target4P
           let temp2 = 107 : rem 2-player mode: target X = 107
           goto Player2TargetDone
 Player2Target4P
@@ -144,7 +140,9 @@ DonePlayer2Move
           rem
           rem Constraints: Must be colocated with FallingAnimation1
           
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Move : rem Move Player 3 from quadrant to target (if active)
+          rem Move Player 3 from quadrant to target (if active)
+          
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Move
           if playerCharacter[2] = NoCharacter then DonePlayer3Move
           let temp1 = 2
           let temp2 = 64 : rem 4-player mode: target X = 64
@@ -165,7 +163,9 @@ DonePlayer3Move
           rem
           rem Constraints: Must be colocated with FallingAnimation1
           
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Move : rem Move Player 4 from quadrant to target (if active)
+          rem Move Player 4 from quadrant to target (if active)
+          
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Move
           if playerCharacter[3] = NoCharacter then DonePlayer4Move
           let temp1 = 3
           let temp2 = 96 : rem 4-player mode: target X = 96
@@ -186,7 +186,9 @@ DonePlayer4Move
           rem
           rem Constraints: Must be colocated with FallingAnimation1
           
-          if fallComplete >= activePlayers then FallingComplete1 : rem Check if all players have reached their targets
+          rem Check if all players have reached their targets
+          
+          if fallComplete >= activePlayers then FallingComplete1
           
           rem Set sprite positions and load character sprites
           rem   dynamically
@@ -258,7 +260,9 @@ MovePlayerToTarget
           let temp5 = playerX[temp1] : rem Get current position
           let temp6 = playerY[temp1]
           
-          if temp5 >= temp2 then CalcDeltaXRight : rem Calculate distances to target
+          rem Calculate distances to target
+          
+          if temp5 >= temp2 then CalcDeltaXRight
           let yDistance_W = temp2 - temp5
           goto DeltaXDone
 CalcDeltaXRight
@@ -314,10 +318,13 @@ DeltaYDone
           rem
           rem Constraints: Must be colocated with MovePlayerToTarget
           
-          if yDistance_R <= 1 && rowYPosition_R <= 1 then AtTarget : rem Check if already at target (within 1 pixel)
+          rem Check if already at target (within 1 pixel)
+          
+          if yDistance_R <= 1 && rowYPosition_R <= 1 then AtTarget
           
           rem Move toward target (horizontal first, then vertical)
-          if temp5 < temp2 then MoveRight : rem Move horizontally if not at target X
+          rem Move horizontally if not at target X
+          if temp5 < temp2 then MoveRight
           if temp5 > temp2 then MoveLeft
           goto HorizontalDone
 MoveRight
@@ -333,7 +340,8 @@ MoveRight
           rem
           rem Called Routines: None
           let playerX[temp1] = playerX[temp1] + fallSpeed : rem Constraints: Must be colocated with MovePlayerToTarget, HorizontalDone
-          if playerX[temp1] > temp2 then let playerX[temp1] = temp2 : rem Clamp to target if overshot
+          rem Clamp to target if overshot
+          if playerX[temp1] > temp2 then let playerX[temp1] = temp2
           goto HorizontalDone
 MoveLeft
           rem Move player left toward target
@@ -348,7 +356,8 @@ MoveLeft
           rem
           rem Called Routines: None
           let playerX[temp1] = playerX[temp1] - fallSpeed : rem Constraints: Must be colocated with MovePlayerToTarget, HorizontalDone
-          if playerX[temp1] < temp2 then let playerX[temp1] = temp2 : rem Clamp to target if overshot
+          rem Clamp to target if overshot
+          if playerX[temp1] < temp2 then let playerX[temp1] = temp2
 HorizontalDone
           rem Horizontal movement complete
           rem
@@ -362,7 +371,9 @@ HorizontalDone
           rem
           rem Constraints: Must be colocated with MovePlayerToTarget
           
-          if temp6 < temp3 then MoveDown : rem Move vertically if not at target Y
+          rem Move vertically if not at target Y
+          
+          if temp6 < temp3 then MoveDown
           if temp6 > temp3 then MoveUp
           goto VerticalDone
 MoveDown
@@ -378,7 +389,8 @@ MoveDown
           rem
           rem Called Routines: None
           let playerY[temp1] = playerY[temp1] + fallSpeed : rem Constraints: Must be colocated with MovePlayerToTarget, VerticalDone
-          if playerY[temp1] > temp3 then let playerY[temp1] = temp3 : rem Clamp to target if overshot
+          rem Clamp to target if overshot
+          if playerY[temp1] > temp3 then let playerY[temp1] = temp3
           goto VerticalDone
 MoveUp
           rem Move player up toward target
@@ -393,7 +405,8 @@ MoveUp
           rem
           rem Called Routines: None
           let playerY[temp1] = playerY[temp1] - fallSpeed : rem Constraints: Must be colocated with MovePlayerToTarget, VerticalDone
-          if playerY[temp1] < temp3 then let playerY[temp1] = temp3 : rem Clamp to target if overshot
+          rem Clamp to target if overshot
+          if playerY[temp1] < temp3 then let playerY[temp1] = temp3
 VerticalDone
           rem Vertical movement complete
           rem
@@ -483,7 +496,8 @@ NudgePlayerFromPlayfield
             lsr temp6
 end
           rem Clamp column to valid range
-          if temp6 & $80 then let temp6 = 0 : rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if temp6 & $80 then let temp6 = 0
           if temp6 > 31 then let temp6 = 31
           
           rem Convert Y position to playfield row (divide by
@@ -508,7 +522,8 @@ end
           if playfieldRow_R & $80 then let playfieldRow_W = 0
           
           rem Check collision at player position (simple single-point
-          if pfread(temp6, playfieldRow_R) then NudgeFromPF : rem   check)
+          rem check)
+          if pfread(temp6, playfieldRow_R) then NudgeFromPF
           
           return
           rem No collision, return
@@ -580,7 +595,8 @@ NudgeHorizontalDone
             lsr temp6
 end
           rem   result ≥ 128
-          if temp6 & $80 then let temp6 = 0 : rem Check for wraparound: if subtraction wrapped negative,
+          rem Check for wraparound: if subtraction wrapped negative,
+          if temp6 & $80 then let temp6 = 0
           if temp6 > 31 then let temp6 = 31
           
           if pfread(temp6, playfieldRow_R) then NudgeVertical
@@ -597,7 +613,8 @@ NudgeVertical
           rem Mutates: None (dispatcher only)
           rem
           rem Called Routines: None (dispatcher only)
-          if temp5 < temp3 then NudgeDown : rem Constraints: Must be colocated with NudgePlayerFromPlayfield
+          rem Constraints: Must be colocated with NudgePlayerFromPlayfield
+          if temp5 < temp3 then NudgeDown
           if temp5 > temp3 then NudgeUp
           return
 NudgeDown

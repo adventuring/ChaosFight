@@ -41,8 +41,8 @@ StartMusic
           rem call via goto) - starts first notes
           rem
           rem Constraints: Songs in Bank 15: Bernie (0), OCascadia (1),
-          rem Revontuli (2). All other songs (3-28) in Bank 1. Routes to
-          rem correct bank based on song ID
+          rem Revontuli (2), EXO (3). All other songs (4-28) in Bank 1.
+          rem Routes to correct bank based on song ID
           rem Stop any current music
           AUDV0 = 0
           AUDV1 = 0
@@ -53,11 +53,10 @@ StartMusic
           
           rem Lookup song pointer from appropriate bank (Bank15 or
           rem Bank1)
-          rem Songs in Bank 15: Bernie (0), OCascadia (1), Revontuli (2)
-          rem Songs in Bank 1: All other songs (3-28)
-          if temp1 = 0 then goto LoadSongFromBank15 : rem Route to correct bank based on song ID
-          if temp1 = 1 then goto LoadSongFromBank15
-          if temp1 = 2 then goto LoadSongFromBank15
+          rem Songs in Bank 15: Bernie (0), OCascadia (1), Revontuli (2),
+          rem EXO (3)
+          rem Songs in Bank 1: All other songs (4-28)
+          if temp1 < 4 then goto LoadSongFromBank15 : rem Route to correct bank based on song ID
           gosub LoadSongPointer bank1 : rem Song in Bank 1
           gosub LoadSongVoice1Pointer bank1
           goto LoadSongPointersDone
@@ -77,7 +76,7 @@ LoadSongFromBank15
           rem 1 pointer
           rem
           rem Constraints: Internal helper for StartMusic, only called
-          rem for songs 0-2
+          rem for songs 0-3
           gosub LoadSongPointer bank15 : rem Song in Bank 15
           gosub LoadSongVoice1Pointer bank15
 LoadSongPointersDone

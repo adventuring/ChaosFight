@@ -77,5 +77,5 @@ ColdStart
           
           rem Step 6: Jump to MainLoop (in Bank 16)
           rem MainLoop will handle the game mode dispatch and frame
-          goto MainLoop bank1 : rem   rendering
+          goto MainLoop bank16 : rem   rendering
 

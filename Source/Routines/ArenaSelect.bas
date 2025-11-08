@@ -1,8 +1,8 @@
-ArenaSelect1
-ArenaSelect1Loop
-          rem
           rem ChaosFight - Source/Routines/ArenaSelect.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+ArenaSelect1
+ArenaSelect1Loop
           rem Arena Select - Per-frame Loop
           rem Handles the arena carousel (1-32 plus random) each frame.
           rem Called from MainLoop when gameMode = ModeArenaSelect.
@@ -45,15 +45,21 @@ ArenaSelect1Loop
           rem              from MainLoop)
           gosub ArenaSelectUpdateAnimations : rem Update character idle animations
           gosub ArenaSelectDrawCharacters : rem Draw locked-in player characters
-          if switchselect then ReturnToCharacterSelect : rem Check Game Select switch - return to Character Select
+          rem Check Game Select switch - return to Character Select
+          if switchselect then ReturnToCharacterSelect
           
           rem Check fire button hold detection (1 second to return to
           let temp1 = 0 : rem   Character Select)
-          if joy0fire then let temp1 = 1 : rem Check Player 1 fire button
-          if joy1fire then let temp1 = 1 : rem Check Player 2 fire button
-          if controllerStatus & SetQuadtariDetected then CheckQuadtariFireHold : rem Check Quadtari players (3 & 4) if active
+          rem Check Player 1 fire button
+          if joy0fire then let temp1 = 1
+          rem Check Player 2 fire button
+          if joy1fire then let temp1 = 1
+          rem Check Quadtari players (3 & 4) if active
+          if controllerStatus & SetQuadtariDetected then CheckQuadtariFireHold
           
-          if temp1 then goto IncrementFireHold : rem If fire button held, increment timer
+          rem If fire button held, increment timer
+          
+          if temp1 then goto IncrementFireHold
           let fireHoldTimer_W = 0 : rem Fire released, reset timer
           goto FireHoldCheckDone
           
@@ -61,10 +67,13 @@ IncrementFireHold
           let temp2 = fireHoldTimer_R
           let temp2 = temp2 + 1
           let fireHoldTimer_W = temp2
-          if temp2 >= 60 then goto ReturnToCharacterSelect : rem 60 frames = 1 second @ 60fps
+          rem 60 frames = 1 second @ 60fps
+          if temp2 >= 60 then goto ReturnToCharacterSelect
 FireHoldCheckDone
           
-          if joy0left then ArenaSelectLeft : rem Handle LEFT/RIGHT navigation for arena selection
+          rem Handle LEFT/RIGHT navigation for arena selection
+          
+          if joy0left then ArenaSelectLeft
           goto ArenaSelectSkipLeft
 ArenaSelectLeft
           rem Decrement arena, wrap from 0 to RandomArena (255)
@@ -82,12 +91,14 @@ ArenaSelectSkipLeft
           goto ArenaSelectSkipRight
 ArenaSelectRight
           rem Increment arena, wrap from MaxArenaID to 0, then to
-          if selectedArena_R = MaxArenaID then let selectedArena_W = RandomArena : goto ArenaSelectRightSound : rem RandomArena
+          rem RandomArena
+          if selectedArena_R = MaxArenaID then let selectedArena_W = RandomArena : goto ArenaSelectRightSound
           if selectedArena_R = RandomArena then let selectedArena_W = 0 : goto ArenaSelectRightSound
           let temp2 = selectedArena_R
           let temp2 = temp2 + 1
           let selectedArena_W = temp2
-          if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0 : rem Wrap from 255 to 0 if needed
+          rem Wrap from 255 to 0 if needed
+          if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
 ArenaSelectRightSound
           let temp1 = SoundMenuNavigate : rem Play navigation sound
           gosub PlaySoundEffect bank15
@@ -99,7 +110,8 @@ ArenaSelectSkipRight
           rem Position: center of screen (X=80 for tens, X=88 for ones,
           rem   Y=20)
           rem Note: Tens digit only shown for arenas 10-32 (tensDigit >
-          if selectedArena_R = RandomArena then DisplayRandomArena : rem   0)
+          rem 0)
+          if selectedArena_R = RandomArena then DisplayRandomArena
           
           rem Display arena number (selectedArena + 1 = 1-32)
           rem Convert to two-digit display: tens and ones
@@ -123,7 +135,8 @@ end
           rem onesDigit = ones digit (0-9)
           
           rem Draw tens digit (player4) - only if tensDigit > 0 (for
-          if temp2 > 0 then DrawTensDigit : rem   arenas 10-32)
+          rem arenas 10-32)
+          if temp2 > 0 then DrawTensDigit
           goto DoneTensDigit
 DrawTensDigit
           let temp1 = temp2
@@ -161,7 +174,9 @@ DisplayRandomArena
           
 DisplayDone
           
-          if joy0fire then ArenaSelectConfirm : rem Handle fire button press (confirm selection, start game)
+          rem Handle fire button press (confirm selection, start game)
+          
+          if joy0fire then ArenaSelectConfirm
           goto ArenaSelectSkipConfirm
 ArenaSelectConfirm
           let temp1 = SoundMenuSelect : rem Play selection sound
@@ -186,8 +201,10 @@ CheckQuadtariFireHold
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelect1 (called via goto)
-          if !INPT0{7} then let temp1 = 1 : rem Check Player 3 and 4 fire buttons (Quadtari)
-          if !INPT2{7} then let temp1 = 1 : rem Player 3 fire button (left port, odd frame)
+          rem Check Player 3 and 4 fire buttons (Quadtari)
+          if !INPT0{7} then let temp1 = 1
+          rem Player 3 fire button (left port, odd frame)
+          if !INPT2{7} then let temp1 = 1
           rem Player 4 fire button (right port, odd frame)
           return
 
@@ -251,7 +268,9 @@ ArenaSelectUpdateAnimations
           rem Each player updates independently with simple frame
           rem   counter
           
-          if playerCharacter[0] = NoCharacter then ArenaSelectSkipPlayer0Animation : rem Update Player 1 animation (if character selected)
+          rem Update Player 1 animation (if character selected)
+          
+          if playerCharacter[0] = NoCharacter then ArenaSelectSkipPlayer0Animation
           if playerCharacter[0] = CPUCharacter then ArenaSelectSkipPlayer0Animation
           if playerCharacter[0] = RandomCharacter then ArenaSelectSkipPlayer0Animation
           let temp1 = 0 : rem RandomCharacter = 253
@@ -270,7 +289,8 @@ ArenaSelectSkipPlayer0Animation
           rem
           rem Constraints: Must be colocated with
           rem ArenaSelectUpdateAnimations
-          if playerCharacter[1] = NoCharacter then ArenaSelectSkipPlayer1Animation : rem Update Player 2 animation (if character selected)
+          rem Update Player 2 animation (if character selected)
+          if playerCharacter[1] = NoCharacter then ArenaSelectSkipPlayer1Animation
           if playerCharacter[1] = CPUCharacter then ArenaSelectSkipPlayer1Animation
           if playerCharacter[1] = RandomCharacter then ArenaSelectSkipPlayer1Animation
           let temp1 = 1
@@ -290,7 +310,8 @@ ArenaSelectSkipPlayer1Animation
           rem Constraints: Must be colocated with
           rem ArenaSelectUpdateAnimations
           rem Update Player 3 animation (if Quadtari and character
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation : rem   selected)
+          rem selected)
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation
           if playerCharacter[2] = NoCharacter then ArenaSelectSkipPlayer2Animation
           if playerCharacter[2] = CPUCharacter then ArenaSelectSkipPlayer2Animation
           if playerCharacter[2] = RandomCharacter then ArenaSelectSkipPlayer2Animation
@@ -312,7 +333,8 @@ ArenaSelectSkipPlayer2Animation
           rem Constraints: Must be colocated with
           rem ArenaSelectUpdateAnimations
           rem Update Player 4 animation (if Quadtari and character
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation : rem   selected)
+          rem selected)
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation
           if playerCharacter[3] = NoCharacter then ArenaSelectSkipPlayer23Animation
           if playerCharacter[3] = CPUCharacter then ArenaSelectSkipPlayer23Animation
           if playerCharacter[3] = RandomCharacter then ArenaSelectSkipPlayer23Animation
@@ -396,7 +418,8 @@ ArenaSelectDrawCharacters
           rem   screen
           
           rem Playfield defined by ArenaSelect data; no per-frame register writes
-          if playerCharacter[0] = NoCharacter then ArenaSelectSkipDrawP0 : rem Draw Player 1 character (top left) if selected
+          rem Draw Player 1 character (top left) if selected
+          if playerCharacter[0] = NoCharacter then ArenaSelectSkipDrawP0
           if playerCharacter[0] = CPUCharacter then ArenaSelectSkipDrawP0
           if playerCharacter[0] = RandomCharacter then ArenaSelectSkipDrawP0
           player0x = 56 : player0y = 40
@@ -416,7 +439,8 @@ ArenaSelectSkipDrawP0
           rem
           rem Constraints: Must be colocated with
           rem ArenaSelectDrawCharacters
-          if playerCharacter[1] = NoCharacter then ArenaSelectSkipDrawP1 : rem Draw Player 2 character (top right) if selected
+          rem Draw Player 2 character (top right) if selected
+          if playerCharacter[1] = NoCharacter then ArenaSelectSkipDrawP1
           if playerCharacter[1] = CPUCharacter then ArenaSelectSkipDrawP1
           if playerCharacter[1] = RandomCharacter then ArenaSelectSkipDrawP1
           player1x = 104 : player1y = 40
@@ -437,7 +461,8 @@ ArenaSelectSkipDrawP1
           rem Constraints: Must be colocated with
           rem ArenaSelectDrawCharacters
           rem Draw Player 3 character (bottom left) if Quadtari and
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23 : rem   selected
+          rem selected
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23
           if playerCharacter[2] = NoCharacter then ArenaSelectSkipDrawP2
           if playerCharacter[2] = CPUCharacter then ArenaSelectSkipDrawP2
           if playerCharacter[2] = RandomCharacter then ArenaSelectSkipDrawP2
@@ -460,7 +485,8 @@ ArenaSelectSkipDrawP2
           rem Constraints: Must be colocated with
           rem ArenaSelectDrawCharacters
           rem Draw Player 4 character (bottom right) if Quadtari and
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23 : rem   selected
+          rem selected
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23
           if playerCharacter[3] = NoCharacter then ArenaSelectSkipDrawP23
           if playerCharacter[3] = CPUCharacter then ArenaSelectSkipDrawP23
           if playerCharacter[3] = RandomCharacter then ArenaSelectSkipDrawP23
@@ -508,7 +534,9 @@ ArenaSelectDrawPlayerSprite
           rem Input: playerIndex = player index (0-3)
           rem Uses playerCharacter[0-3] and player positions set by caller
           
-          if temp1 = 0 then let temp1 = playerCharacter[0] : rem Get character index based on player
+          rem Get character index based on player
+          
+          if temp1 = 0 then let temp1 = playerCharacter[0]
           if temp1 = 1 then let temp1 = playerCharacter[1]
           if temp1 = 2 then let temp1 = playerCharacter[2]
           if temp1 = 3 then let temp1 = playerCharacter[3]

@@ -1,7 +1,7 @@
-GetPlayerLocked
-          rem
           rem ChaosFight - Source/Routines/PlayerLockedHelpers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+GetPlayerLocked
           rem Player Locked Helper Functions
           rem Helper functions to access bit-packed playerLocked
           rem variable
@@ -24,7 +24,8 @@ GetPlayerLocked
           rem Player 0: bits 0-1 (shift right 0, mask %00000011)
           rem Player 1: bits 2-3 (shift right 2, mask %00000011)
           rem Player 2: bits 4-5 (shift right 4, mask %00000011)
-          if temp1 = 0 then GPL_ExtractBits0 : rem Player 3: bits 6-7 (shift right 6, mask %00000011)
+          rem Player 3: bits 6-7 (shift right 6, mask %00000011)
+          if temp1 = 0 then GPL_ExtractBits0
           if temp1 = 1 then GPL_ExtractBits2
           if temp1 = 2 then GPL_ExtractBits4
           if temp1 = 3 then GPL_ExtractBits6
@@ -85,7 +86,8 @@ SetPlayerLocked
           rem Player 0: clear bits 0-1 (mask %11111100)
           rem Player 1: clear bits 2-3 (mask %11110011)
           rem Player 2: clear bits 4-5 (mask %11001111)
-          if temp1 = 0 then SPL_ClearBits0 : rem Player 3: clear bits 6-7 (mask %00111111)
+          rem Player 3: clear bits 6-7 (mask %00111111)
+          if temp1 = 0 then SPL_ClearBits0
           if temp1 = 1 then SPL_ClearBits2
           if temp1 = 2 then SPL_ClearBits4
           if temp1 = 3 then SPL_ClearBits6

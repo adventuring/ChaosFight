@@ -273,6 +273,7 @@ GuardTimerExpired
           rem playerTimers_W[] (set to GuardTimerMaxFrames)
           rem
           rem Called Routines: None
-          let playerState[temp1] = playerState[temp1] & MaskClearGuard : rem Constraints: Must be colocated with UpdateSingleGuardTimer, UpdateGuardTimerActive
+          rem Constraints: Must be colocated with UpdateSingleGuardTimer, UpdateGuardTimerActive
+          let playerState[temp1] = playerState[temp1] & MaskClearGuard
           let playerTimers_W[temp1] = GuardTimerMaxFrames : rem Start cooldown timer (same duration as guard)
           return

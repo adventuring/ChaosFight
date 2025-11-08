@@ -158,10 +158,9 @@ GravityCheckRoboTitoDone
           rem Beyond playfield bounds, check if at bottom
           
           rem Check if playfield pixel exists in row below feet
-          
-          if !pfread(temp2, temp5) then goto GravityNextPlayer
-          rem No ground pixel found, continue falling
-          
+          let temp3 = 0 : rem Track pfread result (1 = ground pixel set)
+          if pfread(temp2, temp5) then let temp3 = 1
+          if temp3 = 0 then goto GravityNextPlayer
           rem Ground detected! Stop falling and clamp position to ground
           let playerVelocityY[temp1] = 0 : rem Zero Y velocity (stop falling)
           let playerVelocityYL[temp1] = 0

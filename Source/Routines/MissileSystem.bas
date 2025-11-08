@@ -740,13 +740,8 @@ MissileSysPF
           
           rem Check if playfield pixel is set
           let temp4 = 0 : rem pfread can only be used in if/then conditionals
-          if pfread(temp6, temp3) then goto MissileHitPlayfield
+          if pfread(temp6, temp3) then let temp4 = 1 : return
           rem Default: no collision detected
-          return
-
-MissileHitPlayfield
-          rem pfread detected a solid playfield pixel
-          let temp4 = 1
           return
 
 Div5Compute

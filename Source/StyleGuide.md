@@ -78,8 +78,8 @@ use a final **`H`** or **`L`** to distinguish them.
 ```basic
 CharacterSpriteBank2L        ; Low byte table
 CharacterSpriteBank2H        ; High byte table
-musicVoice0PointerL          ; Low byte pointer
-musicVoice0PointerH          ; High byte pointer
+SongPointers1L               ; Low byte lookup table
+SongPointers1H               ; High byte lookup table
 ```
 
 **Forbidden:**
@@ -95,6 +95,21 @@ CharacterSpritePtrHiBank2    ; Redundant "Ptr" + wrong suffix
 **Note**: `H`/`L` as the final character of a variable name is
 acceptable, but never use "Hi" for "high" or "Lo" for "low" as separate
 words.
+
+### 16-bit Variables
+
+Declare every 16-bit variable with batariBASIC’s dot syntax so the low and
+high bytes share a single symbolic name:
+
+```basic
+dim songPointer = var39.var40
+dim musicVoice0StartPointer_W = w067.w068
+dim soundPointer = y.z
+```
+
+Do **not** create separate variables for the low and high bytes of the same
+16-bit value. Use 16-bit arithmetic (`let songPointer = songPointer + 4`)
+instead of manual carry propagation.
 
 ### camelCase
 

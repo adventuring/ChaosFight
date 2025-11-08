@@ -469,17 +469,9 @@ MissileCollPF
           rem Convert X pixel to playfield column (160/32 ≈ 5)
           
           rem Check if playfield pixel is set at missile position
-          if pfread(temp6, temp3) then goto MissileCollisionPlayfieldHit
+          let temp4 = 0 : rem Assume clear until pfread says otherwise
+          if pfread(temp6, temp3) then let temp4 = 1 : return
           rem pfread(column, row) returns 0 if clear, non-zero if set
-          rem Hit playfield
-
-          let temp4 = 0 
           rem Clear
-          
-          
-          return
-
-MissileCollisionPlayfieldHit
-          let temp4 = 1
           return
 

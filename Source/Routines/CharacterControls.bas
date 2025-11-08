@@ -54,8 +54,9 @@ BernieJump
           rem feetRow = row directly below player feet
           
           rem Check if there is solid ground directly below feet
-          
-          if !pfread(temp2, temp6) then return
+          let temp4 = 0 : rem Track pfread result (1 = ground present)
+          if pfread(temp2, temp6) then let temp4 = 1
+          if temp4 = 0 then return
           rem No floor directly below feet, cannot fall through
           
           rem Floor exists directly below feet, check if it is only 1
@@ -68,7 +69,9 @@ BernieJump
           
           let temp4 = temp6 + 1 : rem Normal case: Check row below that (feetRow + 1)
           rem checkRow = row below the floor row
-          if pfread(temp2, temp4) then return
+          let temp5 = 0 : rem Track pfread result (1 = floor continues)
+          if pfread(temp2, temp4) then let temp5 = 1
+          if temp5 = 1 then return
           rem Floor is 2+ rows deep, cannot fall through
           
           rem Floor is only 1 row deep - allow fall through

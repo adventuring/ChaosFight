@@ -189,39 +189,18 @@
           
           rem Music System Pointers (Admin Mode: gameMode 0-2, 7)
           rem NOTE: Music only runs in Admin Mode, so safe to use
-          dim songPointerL = var39 : rem   var39-var44
-          dim songPointerH = var40
-          rem Song data pointer low/high bytes (in Songs bank) - zero
-          dim musicVoice0PointerL = var41 : rem   page
-          dim musicVoice0PointerH = var42
-          rem Voice 0 stream position low/high bytes (high byte = 0
-          dim musicVoice1PointerL = var43 : rem   means inactive) - zero page
-          dim musicVoice1PointerH = var44
-          rem Voice 1 stream position low/high bytes (high byte = 0
-          rem   means inactive) - zero page
+          dim songPointer = var39.var40 : rem Song data pointer (16-bit zero page word)
+          rem Music system uses songPointer for Bank 1 voice streams (shared with soundPointer scratch)
+          dim musicVoice0Pointer = var41.var42 : rem Voice 0 stream pointer (shared with soundEffectPointer)
+          dim musicVoice1Pointer = var43.var44 : rem Voice 1 stream pointer (shared with soundEffectPointer1)
+          rem Both music voice pointers live in zero page to allow `(pointer),y` addressing
           
           rem Sound Effect System Pointers (Game Mode: gameMode 6)
-          rem NOTE: Must avoid var40 (currentAnimationSeq) and var44
-          rem   (playerAttackCooldown[0])
-          rem Uses var39, var41 (shared with Music), y,z,var45,var46
-          rem Voice 0: var39+var41 (shared), SCRAM for high bytes
-          dim soundPointerL = var39 : rem Voice 1: var45+var46 for pointers (zero page)
-          dim soundPointerH_W = w048
-          dim soundPointerH_R = r048
-          rem Sound data pointer low/high bytes (in Sounds bank) - low
-          rem byte
-          rem   in zero page (var39), high byte in SCRAM (w048/r048)
-          dim soundEffectPointerL = var41 : rem   Moved to SCRAM to avoid conflict with characterSelectAnimationIndex (y)
-          dim soundEffectPointerH_W = w066
-          dim soundEffectPointerH_R = r066
-          rem Sound effect Voice 0 stream position low/high bytes (high
-          rem   byte = 0 means inactive) - low byte in zero page
-          rem   (var41),
-          rem   high byte in SCRAM (w066/r066)
-          dim soundEffectPointer1L = var45 : rem   Moved to SCRAM to avoid conflict with characterSelectAnimationFrame (z)
-          dim soundEffectPointer1H = var46
-          rem Sound effect Voice 1 stream position low/high bytes (high
-          rem   byte = 0 means inactive) - zero page
+          rem   Sound system reuses music voice zero-page words; music takes priority
+          dim soundPointer = y.z : rem Scratch pointer populated by LoadSoundPointer (zero page helper)
+          dim soundEffectPointer = var41.var42 : rem Voice 0 active sound effect pointer (shares ZP with musicVoice0Pointer)
+          dim soundEffectPointer1 = var45.var46 : rem Voice 1 active sound effect pointer
+          rem soundEffectPointer* words are zero page to support `(pointer),y` addressing during playback
           
           rem MUSIC/SOUND FRAME COUNTERS - SCRAM (not pointers, can be
           rem   in SCRAM)
@@ -245,14 +224,10 @@
           dim currentSongID_W = w066 : rem   PlayerFrameBuffer (w000-w063)
           dim currentSongID_R = r066
           rem Current playing song ID (used to check if Chaotica for
-          dim musicVoice0StartPointerL_W = w067 : rem   looping)
-          dim musicVoice0StartPointerL_R = r067
-          dim musicVoice0StartPointerH_W = w068
-          dim musicVoice0StartPointerH_R = r068
-          dim musicVoice1StartPointerL_W = w069 : rem Initial Voice 0 pointer for looping (Chaotica only)
-          dim musicVoice1StartPointerL_R = r069
-          dim musicVoice1StartPointerH_W = w070
-          dim musicVoice1StartPointerH_R = r070
+          dim musicVoice0StartPointer_W = w067.w068 : rem Initial Voice 0 pointer for looping (Chaotica only)
+          dim musicVoice0StartPointer_R = r067.r068
+          dim musicVoice1StartPointer_W = w069.w070
+          dim musicVoice1StartPointer_R = r069.r070
           rem OPTIMIZED: Moved from w030/w033-w035 to w067-w070 to free
           rem   space for PlayerFrameBuffer
           rem Initial Voice 1 pointer for looping (Chaotica only)

@@ -8,66 +8,55 @@
           rem   provides legacy aliases for the historical “16” labels)
           
 LoadSongPointer
-          rem Lookup SongPointerL/H for Bank 1 songs.
+          rem Lookup 16-bit song pointer for Bank 1 songs.
           rem Input: temp1 = song ID (4-28), SongPointers1L[]/SongPointers1H[]
-          rem Output: SongPointerL/SongPointerH updated (points to Song_Voice0 stream)
-          rem Mutates: temp1-temp2, SongPointerL, SongPointerH
-          rem Constraints: Songs 0-3 live in Bank 15; returns SongPointerH = 0 if out of range
+          rem Output: songPointer updated (points to Song_Voice0 stream)
+          rem Mutates: temp1-temp2, songPointer
+          rem Constraints: Songs 0-3 live in Bank 15; returns songPointer = 0 if out of range
           if temp1 > 28 then goto LSP_InvalidSong
           rem Check if songs handled by other banks (0-3)
           if temp1 < 4 then goto LSP_InvalidSong
           rem Calculate compact index: songID - 4 (song 4 → 0)
           let temp2 = temp1 - 4
 LSP_Lookup
-          rem Helper: Lookup pointer from tables
+          rem Helper: Lookup pointer from tables and combine into 16-bit value
           rem
           rem Input: temp2 (local variable) = table index,
           rem SongPointers1L[], SongPointers1H[] (global data tables)
           rem = song pointer tables (residing in Bank 1)
           rem
-          rem Output: SongPointerL, SongPointerH set from tables
+          rem Output: songPointer set from tables
           rem
-          rem Mutates: SongPointerL, SongPointerH (global) = song
-          rem pointer (set from tables)
+          rem Mutates: songPointer (global 16-bit) = song pointer (set from tables)
           rem
           rem Called Routines: None
           rem
           rem Constraints: Internal helper for LoadSongPointer
-          let SongPointerL = SongPointers1L[temp2] : rem Use array access to lookup pointer
-          let SongPointerH = SongPointers1H[temp2]
+          let songPointer = SongPointers1H[temp2]
+          let songPointer = songPointer * 256
+          let songPointer = songPointer + SongPointers1L[temp2]
           return
 
 LSP_InvalidSong
-          let SongPointerH = 0
+          let songPointer = 0
           return
           
 LoadSongVoice1Pointer
           rem Lookup Voice 1 song pointer from tables (Bank 1 songs)
           rem
-          rem Input: temp1 = song ID (Bank 1 songs: 4-28)
-          rem
-          rem Output: SongPointerL, SongPointerH = pointer to
-          rem   Song_Voice1 stream
-          rem Index mapping: song 0 → index 0, songs 3-28 → indices 1-26
-          rem Lookup Voice 1 song pointer from tables (Bank 1 songs: 0,
-          rem 3-28)
-          rem
-          rem Input: temp1 = song ID (Bank 1 songs: 0, 3-28),
+          rem Input: temp1 = song ID (Bank 1 songs: 4-28),
           rem SongPointers1SecondL[], SongPointers1SecondH[] (global
           rem data tables) = Voice 1 song pointer tables (Bank 1)
           rem
-          rem Output: SongPointerL, SongPointerH = pointer to
-          rem Song_Voice1 stream
+          rem Output: songPointer = pointer to Song_Voice1 stream
           rem
-          rem Mutates: temp1-temp2 (used for calculations),
-          rem SongPointerL, SongPointerH (global) = song pointer (set
-          rem from Voice 1 tables)
+          rem Mutates: temp1-temp2 (used for calculations), songPointer
           rem
           rem Called Routines: None
           rem
           rem Constraints: Only songs 4-28 are in Bank 1. Songs 0-3
           rem are in Bank 15. Index mapping: song 4 → index 0, songs
-          rem 5-28 → indices 1-24. Returns SongPointerH = 0 if song not
+          rem 5-28 → indices 1-24. Returns songPointer = 0 if song not
           rem in this bank
           rem Bounds check: Only songs 4-28 are in Bank 1
           if temp1 > 28 then goto LSV1P_InvalidSong
@@ -82,25 +71,25 @@ LSV1P_Lookup
           rem SongPointers1SecondL[], SongPointers1SecondH[] (global
           rem data tables) = Voice 1 song pointer tables
           rem
-          rem Output: SongPointerL, SongPointerH set from Voice 1 tables
+          rem Output: songPointer set from Voice 1 tables
           rem
-          rem Mutates: SongPointerL, SongPointerH (global) = song
-          rem pointer (set from Voice 1 tables)
+          rem Mutates: songPointer (global 16-bit) = song pointer (set from Voice 1 tables)
           rem
           rem Called Routines: None
           rem
           rem Constraints: Internal helper for LoadSongVoice1Pointer
-          let SongPointerL = SongPointers1SecondL[temp2] : rem Use array access to lookup Voice 1 pointer directly
-          let SongPointerH = SongPointers1SecondH[temp2]
+          let songPointer = SongPointers1SecondH[temp2]
+          let songPointer = songPointer * 256
+          let songPointer = songPointer + SongPointers1SecondL[temp2]
           return
 
 LSV1P_InvalidSong
-          let SongPointerH = 0
+          let songPointer = 0
           return
           
 LoadMusicNote0
           rem Load next note from Voice 0 stream (assembly pointer access).
-          rem Input: musicVoice0PointerL/H (global) = current Song_Voice0 pointer
+          rem Input: musicVoice0Pointer (global 16-bit) = current Song_Voice0 pointer
           rem Output: Updates AUDC0/AUDF0/AUDV0, stores envelope parameters, advances pointer
           rem
           rem Mutates: temp2-temp6 (used for calculations), AUDC0,
@@ -108,8 +97,7 @@ LoadMusicNote0
           rem MusicVoice0TargetAUDV, MusicVoice0TotalFrames (global) =
           rem envelope parameters (stored), musicVoice0Frame_W (global
           rem SCRAM) = frame counter (set to Duration + Delay),
-          rem musicVoice0PointerL, musicVoice0PointerH (global) = voice
-          rem pointer (advanced by 4 bytes)
+          rem musicVoice0Pointer (global 16-bit) = voice pointer (advanced by 4 bytes)
           rem
           rem Called Routines: LoadMusicNote0EndOfTrack - handles end of
           rem track
@@ -122,16 +110,16 @@ LoadMusicNote0
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
-            lda (musicVoice0PointerL),y  ; Load AUDCV
+            lda (musicVoice0Pointer),y  ; Load AUDCV
             sta temp2
             iny
-            lda (musicVoice0PointerL),y  ; Load AUDF
+            lda (musicVoice0Pointer),y  ; Load AUDF
             sta temp3
             iny
-            lda (musicVoice0PointerL),y  ; Load Duration
+            lda (musicVoice0Pointer),y  ; Load Duration
             sta temp4
             iny
-            lda (musicVoice0PointerL),y  ; Load Delay
+            lda (musicVoice0Pointer),y  ; Load Delay
             sta temp5
 end
           
@@ -155,10 +143,7 @@ end
           let musicVoice0Frame_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          rem Reuse temp2 (temp2 no longer needed) for pointer
-          let temp2 = musicVoice0PointerL : rem   calculation
-          let musicVoice0PointerL = temp2 + 4
-          if musicVoice0PointerL < temp2 then let musicVoice0PointerH = musicVoice0PointerH + 1
+          let musicVoice0Pointer = musicVoice0Pointer + 4
           
           return
           
@@ -169,7 +154,7 @@ LoadMusicNote0EndOfTrack
           rem
           rem Output: Voice 0 marked as inactive, volume zeroed
           rem
-          rem Mutates: musicVoice0PointerH (global) = voice pointer (set
+          rem Mutates: musicVoice0Pointer (global 16-bit) = voice pointer (set
           rem to 0), AUDV0 (TIA register) = sound volume (set to 0)
           rem
           rem Called Routines: None
@@ -181,16 +166,14 @@ LoadMusicNote0EndOfTrack
           rem 0)
           rem   (Chaotica
           rem Loop will be handled in UpdateMusic when both voices end
-          let musicVoice0PointerH = 0 : rem   only)
+          let musicVoice0Pointer = 0 : rem   only)
           AUDV0 = 0
           return
           
 LoadMusicNote1
-          rem Load next note from Voice 1 stream
-          rem Load next note from Voice 1 stream using assembly for
-          rem pointer access
+          rem Load next note from Voice 1 stream using assembly for pointer access
           rem
-          rem Input: musicVoice1PointerL, musicVoice1PointerH (global) =
+          rem Input: musicVoice1Pointer (global 16-bit) =
           rem pointer to current note in Song_Voice1 stream
           rem
           rem Output: TIA registers updated (AUDC1, AUDF1, AUDV1),
@@ -202,8 +185,7 @@ LoadMusicNote1
           rem MusicVoice1TargetAUDV, MusicVoice1TotalFrames (global) =
           rem envelope parameters (stored), musicVoice1Frame_W (global
           rem SCRAM) = frame counter (set to Duration + Delay),
-          rem musicVoice1PointerL, musicVoice1PointerH (global) = voice
-          rem pointer (advanced by 4 bytes)
+          rem musicVoice1Pointer (global 16-bit) = voice pointer (advanced by 4 bytes)
           rem
           rem Called Routines: LoadMusicNote1EndOfTrack - handles end of
           rem track
@@ -216,16 +198,16 @@ LoadMusicNote1
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
-            lda (musicVoice1PointerL),y  ; Load AUDCV
+            lda (musicVoice1Pointer),y  ; Load AUDCV
             sta temp2
             iny
-            lda (musicVoice1PointerL),y  ; Load AUDF
+            lda (musicVoice1Pointer),y  ; Load AUDF
             sta temp3
             iny
-            lda (musicVoice1PointerL),y  ; Load Duration
+            lda (musicVoice1Pointer),y  ; Load Duration
             sta temp4
             iny
-            lda (musicVoice1PointerL),y  ; Load Delay
+            lda (musicVoice1Pointer),y  ; Load Delay
             sta temp5
 end
           
@@ -248,10 +230,7 @@ end
           let musicVoice1Frame_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes
-          rem Reuse temp2 (temp2 no longer needed) for pointer
-          let temp2 = musicVoice1PointerL : rem   calculation
-          let musicVoice1PointerL = temp2 + 4
-          if musicVoice1PointerL < temp2 then let musicVoice1PointerH = musicVoice1PointerH + 1
+          let musicVoice1Pointer = musicVoice1Pointer + 4
           
           return
           
@@ -262,7 +241,7 @@ LoadMusicNote1EndOfTrack
           rem
           rem Output: Voice 1 marked as inactive, volume zeroed
           rem
-          rem Mutates: musicVoice1PointerH (global) = voice pointer (set
+          rem Mutates: musicVoice1Pointer (global 16-bit) = voice pointer (set
           rem to 0), AUDV1 (TIA register) = sound volume (set to 0)
           rem
           rem Called Routines: None
@@ -274,6 +253,6 @@ LoadMusicNote1EndOfTrack
           rem 0)
           rem   (Chaotica
           rem Loop will be handled in UpdateMusic when both voices end
-          let musicVoice1PointerH = 0 : rem   only)
+          let musicVoice1Pointer = 0 : rem   only)
           AUDV1 = 0
           return

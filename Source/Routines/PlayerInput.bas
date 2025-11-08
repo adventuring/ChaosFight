@@ -488,13 +488,7 @@ HandleFlyingCharacterMovement
           rem Uses: joy0left/joy0right for players 0,2;
           rem joy1left/joy1right
           rem for players 1,3
-          rem Determine which joy port to use based on player index
-          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
-          if temp1 = 0 then HFCM_UseJoy0
-          if temp1 = 2 then HFCM_UseJoy0
-          rem Players 1,3 use joy1
-          if joy1left then HFCM_CheckLeftCollision
-          goto HFCM_CheckRightMovement
+          goto HFCM_Start
 HFCM_UseJoy0
           rem Players 0,2 use joy0
           if joy0left then HFCM_CheckLeftCollision
@@ -513,7 +507,9 @@ HFCM_CheckLeftCollision
           let temp6 = temp2
           rem pfRow = top row
           rem Check if blocked in current row
-          if pfread(temp3, temp6) then goto HFCM_CheckRightMovement
+          let temp5 = 0 : rem Reset left-collision flag
+          if pfread(temp3, temp6) then let temp5 = 1
+          if temp5 = 1 then goto HFCM_CheckRightMovement
           rem Blocked, cannot move left
           let temp4 = temp4 + 16 : rem Also check bottom row (feet)
           let temp2 = temp4
@@ -521,7 +517,8 @@ HFCM_CheckLeftCollision
           let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveLeftOK
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then goto HFCM_CheckRightMovement
+          if pfread(temp3, temp6) then let temp5 = 1
+          if temp5 = 1 then goto HFCM_CheckRightMovement
 HFCM_MoveLeftOK
           rem Blocked at bottom too
           let playerVelocityX[temp1] = 255 : rem Apply leftward velocity impulse (double-width sprite: 16px width)
@@ -554,7 +551,9 @@ HFCM_DoRightMovement
           let temp6 = temp2
           rem pfRow = top row
           rem Check if blocked in current row
-          if pfread(temp3, temp6) then goto HFCM_DoneFlyingMovement
+          let temp5 = 0 : rem Reset right-collision flag
+          if pfread(temp3, temp6) then let temp5 = 1
+          if temp5 = 1 then goto HFCM_DoneFlyingMovement
           rem Blocked, cannot move right
           let temp4 = temp4 + 16 : rem Also check bottom row (feet)
           let temp2 = temp4
@@ -562,7 +561,8 @@ HFCM_DoRightMovement
           let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveRightOK
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then goto HFCM_DoneFlyingMovement
+          if pfread(temp3, temp6) then let temp5 = 1
+          if temp5 = 1 then goto HFCM_DoneFlyingMovement
 HFCM_MoveRightOK
           rem Blocked at bottom too
           let playerVelocityX[temp1] = 1 : rem Apply rightward velocity impulse
@@ -572,6 +572,15 @@ HFCM_MoveRightOK
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
 HFCM_DoneFlyingMovement
           return
+
+HFCM_Start
+          rem Determine which joy port to use based on player index
+          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
+          if temp1 = 0 then HFCM_UseJoy0
+          if temp1 = 2 then HFCM_UseJoy0
+          rem Players 1,3 use joy1
+          if joy1left then HFCM_CheckLeftCollision
+          goto HFCM_CheckRightMovement
 
 InputHandleLeftPortPlayer
           rem

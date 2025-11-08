@@ -211,8 +211,9 @@ DBPF_InlineDivideDone
           rem Out of bounds, skip
           
           rem Check head position (top of sprite)
-          
-          if pfread(playfieldColumn_R, playfieldRow_R) then goto PFBlockLeft
+          let temp4 = 0 : rem Reset left-collision flag
+          if pfread(playfieldColumn_R, playfieldRow_R) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockLeft
           rem Check middle position
           rem Calculate (temp5 / 2) / pfrowheight
           asm
@@ -242,7 +243,8 @@ DBPF_InlineDivideDone_1
           rem temp2 now contains (temp5 / 2) / pfrowheight
           let rowCounter_W = playfieldRow_R + temp2
           if rowCounter_R >= pfrows then goto PFCheckRight
-          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockLeft
+          if pfread(playfieldColumn_R, rowCounter_R) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockLeft
           rem Check feet position (bottom of sprite)
           let temp2 = temp5
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
@@ -266,7 +268,8 @@ DBPF_InlineDivideDone_2
           rem temp2 now contains temp5 / pfrowheight
           let rowCounter_W = playfieldRow_R + temp2
           if rowCounter_R >= pfrows then goto PFCheckRight
-          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockLeft
+          if pfread(playfieldColumn_R, rowCounter_R) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockLeft
           
           goto PFCheckRight
           
@@ -307,8 +310,9 @@ PFCheckRight
           rem Out of bounds, skip
           
           rem Check head, middle, and feet positions
-          
-          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockRight
+          let temp4 = 0 : rem Reset right-collision flag
+          if pfread(playfieldColumn_R, playfieldRow) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockRight
           rem Calculate (temp5 / 2) / pfrowheight
           asm
             lda temp5
@@ -337,7 +341,8 @@ DBPF_InlineDivideDone_6
           rem temp2 now contains (temp5 / 2) / pfrowheight
           let rowCounter_W = playfieldRow + temp2
           if rowCounter_R >= pfrows then goto PFCheckUp
-          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockRight
+          if pfread(playfieldColumn_R, rowCounter_R) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockRight
           rem Reset temp2 to character height for feet check
           let temp2 = temp5
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
@@ -361,7 +366,8 @@ DBPF_InlineDivideDone_7
           rem temp2 now contains temp5 / pfrowheight
           let rowCounter_W = playfieldRow + temp2
           if rowCounter_R >= pfrows then goto PFCheckUp
-          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockRight
+          if pfread(playfieldColumn_R, rowCounter_R) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockRight
           
           goto PFCheckUp
           
@@ -399,17 +405,20 @@ PFCheckUp
           if rowCounter_R & $80 then goto PFCheckDown
           
           rem Check center column (temp6)
-          
-          if pfread(temp6, rowCounter_R) then goto PFBlockUp
+          let temp4 = 0 : rem Reset upward-collision flag
+          if pfread(temp6, rowCounter_R) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockUp
           rem Check left edge column
           if temp6 = 0 then goto PFCheckUp_CheckRight
           let playfieldColumn_W = temp6 - 1
-          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockUp
+          if pfread(playfieldColumn_R, rowCounter_R) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockUp
 PFCheckUp_CheckRight
           rem Check right edge column
           if temp6 >= 31 then goto PFCheckDown
           let playfieldColumn_W = temp6 + 1
-          if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockUp
+          if pfread(playfieldColumn_R, rowCounter_R) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockUp
           
           goto PFCheckDown
           
@@ -448,6 +457,15 @@ DBPF_MultiplyDone
           if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_WL[currentPlayer] = 0
           
 PFCheckDown
+          goto PFCheckDown_Body
+PFBlockDown
+          rem Block downward movement: zero Y velocity if positive
+          rem This should already be handled in PhysicsApplyGravity, but
+          rem enforce here too
+          if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
+          return
+
+PFCheckDown_Body
           rem CHECK DOWN COLLISION (GROUND - already handled in gravity,
           rem   but verify)
           rem Check if player feet have a playfield pixel below
@@ -482,23 +500,19 @@ DBPF_InlineDivideDone_5
           if playfieldRow >= pfrows then return
           
           rem Check center, left, and right columns below feet
-          
-          if pfread(temp6, playfieldRow) then goto PFBlockDown
+          let temp4 = 0 : rem Reset downward-collision flag
+          if pfread(temp6, playfieldRow) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockDown
           if temp6 = 0 then goto PFCheckDown_CheckRight
           let playfieldColumn_W = temp6 - 1
-          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockDown
+          if pfread(playfieldColumn_R, playfieldRow) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockDown
 PFCheckDown_CheckRight
           if temp6 >= 31 then return
           let playfieldColumn_W = temp6 + 1
-          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockDown
+          if pfread(playfieldColumn_R, playfieldRow) then let temp4 = 1
+          if temp4 = 1 then goto PFBlockDown
           
-          return
-          
-PFBlockDown
-          rem Block downward movement: zero Y velocity if positive
-          rem This should already be handled in PhysicsApplyGravity, but
-          rem enforce here too
-          if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           return
 
 CheckAllPlayerCollisions

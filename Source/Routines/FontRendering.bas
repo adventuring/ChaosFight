@@ -86,12 +86,14 @@ DrawDigit
           rem
           rem Constraints: Must be colocated with SetSprite0-5,
           rem LoadPlayerDigit (all called via goto)
-          if temp1 > 15 then let temp1 = 15 : rem Clamp digit value to 0-15
+          rem Clamp digit value to 0-15
+          if temp1 > 15 then let temp1 = 15
           
           let temp6 = temp1 * 16 : rem Calculate data offset: digit * 16 (16 bytes per digit)
           
           rem Set sprite position and color based on spriteSelect
-          if temp5 > 5 then let temp5 = 0 : rem Clamp spriteSelect to valid range (0-5)
+          rem Clamp spriteSelect to valid range (0-5)
+          if temp5 > 5 then let temp5 = 0
           rem Preserve spriteSelect in temp5 for LoadPlayerDigit
           on temp5 goto SetSprite0 SetSprite1 SetSprite2 SetSprite3 SetSprite4 SetSprite5
           
@@ -202,10 +204,12 @@ LoadPlayerDigit
           rem
           rem Constraints: Must be colocated with LoadSprite0Ptr-5Ptr
           rem (all called via on/goto)
-          if temp6 > 240 then let temp6 = 240 : rem Clamp digit offset to valid range (0-240 for digits 0-15)
+          rem Clamp digit offset to valid range (0-240 for digits 0-15)
+          if temp6 > 240 then let temp6 = 240
           rem Dispatch to sprite-specific pointer loader based on
           rem spriteSelect
-          if temp5 > 5 then let temp5 = 0 : rem   (still in temp5 from DrawDigit)
+          rem (still in temp5 from DrawDigit)
+          if temp5 > 5 then let temp5 = 0
           on temp5 goto LoadSprite0Ptr LoadSprite1Ptr LoadSprite2Ptr LoadSprite3Ptr LoadSprite4Ptr LoadSprite5Ptr
           
 LoadSprite0Ptr

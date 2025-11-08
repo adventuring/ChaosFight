@@ -619,7 +619,7 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
 - Bank 16 carries MainLoop, drawscreen, ArenaLoader, FontRendering, and the
   `game` entry point because the multisprite kernel insists the hot loop lives
   in the final bank
-- Reserve 4 banks for character art
+- Reserve 4 banks for character art (2,3,4,5)
 - Reserve slots for 32 characters and 32 arenas
 
 ## SCRAM Variable Access Rules

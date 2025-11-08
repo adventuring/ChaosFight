@@ -181,7 +181,7 @@ LoadQuestionMarkSpriteP0
             sta w000,y
             dey
             bpl .CopyLoop
-          end
+end
           player0height = 16
           return
           
@@ -195,7 +195,7 @@ LoadQuestionMarkSpriteP1
             sta w016,y
             dey
             bpl .CopyLoop
-          end
+end
           player1height = 16
           return
           
@@ -209,7 +209,7 @@ LoadQuestionMarkSpriteP2
             sta w032,y
             dey
             bpl .CopyLoop
-          end
+end
           player2height = 16
           return
           
@@ -223,7 +223,7 @@ LoadQuestionMarkSpriteP3
             sta w048,y
             dey
             bpl .CopyLoop
-          end
+end
           player3height = 16
           return
           
@@ -270,7 +270,7 @@ LoadCPUSpriteP0
             sta w000,y
             dey
             bpl .CopyLoop
-          end
+end
           player0height = 16
           return
           
@@ -283,7 +283,7 @@ LoadCPUSpriteP1
             sta w016,y
             dey
             bpl .CopyLoop
-          end
+end
           player1height = 16
           return
           
@@ -296,7 +296,7 @@ LoadCPUSpriteP2
             sta w032,y
             dey
             bpl .CopyLoop
-          end
+end
           player2height = 16
           return
           
@@ -309,7 +309,7 @@ LoadCPUSpriteP3
             sta w048,y
             dey
             bpl .CopyLoop
-          end
+end
           player3height = 16
           return
           
@@ -356,7 +356,7 @@ LoadNoSpriteP0
             sta w000,y
             dey
             bpl .CopyLoop
-          end
+end
           player0height = 16
           return
           
@@ -369,7 +369,7 @@ LoadNoSpriteP1
             sta w016,y
             dey
             bpl .CopyLoop
-          end
+end
           player1height = 16
           return
           
@@ -382,7 +382,7 @@ LoadNoSpriteP2
             sta w032,y
             dey
             bpl .CopyLoop
-          end
+end
           player2height = 16
           return
           
@@ -395,7 +395,7 @@ LoadNoSpriteP3
             sta w048,y
             dey
             bpl .CopyLoop
-          end
+end
           player3height = 16
           return
 

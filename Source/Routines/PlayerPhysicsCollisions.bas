@@ -158,7 +158,7 @@ end
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone
 DBPF_InlineDivideBy8
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -166,7 +166,7 @@ DBPF_InlineDivideBy8
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone
           let playfieldRow = temp2
           if playfieldRow >= pfrows then let playfieldRow = pfrows - 1 : rem playfieldRow = playfield row
@@ -189,12 +189,12 @@ DBPF_InlineDivideDone
           if playfieldColumn_R & $80 then goto PFCheckRight : rem Check for wraparound: if temp6 was 0, playfieldColumn wraps to 255 (≥ 128)
           rem Out of bounds, skip
           
-          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockLeft : rem Check head position (top of sprite)
+          if pfread(playfieldColumn_R, playfieldRow_R) then goto PFBlockLeft : rem Check head position (top of sprite)
           rem Check middle position
           rem Calculate (temp5 / 2) / pfrowheight
           asm
             lda temp5
-            lsr a
+            lsr
             sta temp2
 end
           rem temp2 = temp5 / 2
@@ -205,7 +205,7 @@ end
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_1
 DBPF_InlineDivideBy8_1
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -213,9 +213,9 @@ DBPF_InlineDivideBy8_1
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_1
-          let rowCounter_W = playfieldRow + temp2 : rem temp2 = (temp5 / 2) / pfrowheight
+          let rowCounter_W = playfieldRow_R + temp2 : rem temp2 = (temp5 / 2) / pfrowheight
           if rowCounter_R >= pfrows then goto PFCheckRight
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockLeft
           let temp2 = temp5 : rem Check feet position (bottom of sprite)
@@ -226,7 +226,7 @@ DBPF_InlineDivideDone_1
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_2
 DBPF_InlineDivideBy8_2
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -234,9 +234,9 @@ DBPF_InlineDivideBy8_2
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_2
-          let rowCounter_W = playfieldRow + temp2 : rem temp2 = temp5 / pfrowheight
+          let rowCounter_W = playfieldRow_R + temp2 : rem temp2 = temp5 / pfrowheight
           if rowCounter_R >= pfrows then goto PFCheckRight
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockLeft
           
@@ -251,8 +251,8 @@ PFBlockLeft
           let rowYPosition_W = temp6 + 1 : rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
           asm
             lda rowYPosition_W
-            asl a
-            asl a
+            asl
+            asl
             clc
             adc #ScreenInsetX
             sta rowYPosition_W
@@ -290,7 +290,7 @@ end
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_6
 DBPF_InlineDivideBy8_6
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -298,7 +298,7 @@ DBPF_InlineDivideBy8_6
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_6
           let rowCounter_W = playfieldRow + temp2 : rem temp2 = (temp5 / 2) / pfrowheight
           if rowCounter_R >= pfrows then goto PFCheckUp
@@ -311,7 +311,7 @@ DBPF_InlineDivideDone_6
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_7
 DBPF_InlineDivideBy8_7
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -319,7 +319,7 @@ DBPF_InlineDivideBy8_7
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_7
           let rowCounter_W = playfieldRow + temp2 : rem temp2 = temp5 / pfrowheight
           if rowCounter_R >= pfrows then goto PFCheckUp
@@ -413,7 +413,7 @@ PFCheckDown
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_5
 DBPF_InlineDivideBy8_5
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -421,7 +421,7 @@ DBPF_InlineDivideBy8_5
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_5
           let rowCounter_W = playfieldRow + temp2
           if rowCounter_R >= pfrows then return : rem Row at player feet (rowCounter)

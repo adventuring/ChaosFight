@@ -181,9 +181,9 @@ HarpyBoostDiveVelocity
           rem Divide by 2 using bit shift
           asm
             lda temp6
-            lsr a
+            lsr
             sta velocityCalculation_W
-          end
+end
           let temp6 = temp6 + velocityCalculation_R
           let temp6 = temp6
 VelocityDone
@@ -441,7 +441,7 @@ GuardBounceFromCollision
           asm
             lsr temp2
             lsr temp2
-          end
+end
           let velocityCalculation_W = temp2
           let temp6  = temp6 - velocityCalculation_R
           let missileVelocityX[temp1] = temp6 : rem Reduce bounce velocity by 25%
@@ -539,7 +539,6 @@ HandleMegaxMissile
             lsr temp6
             lsr temp6
 end
-          
           rem If animation state is not ActionAttackExecute (14), attack
           rem is complete
           rem   deactivate
@@ -602,7 +601,6 @@ HandleKnightGuyMissile
             lsr temp6
             lsr temp6
 end
-          
           if temp6 = 14 then KnightGuyAttackActive : rem If animation state is not ActionAttackExecute (14), attack is complete
           goto DeactivateMissile : rem Attack complete - deactivate missile
           
@@ -908,7 +906,7 @@ HarpyCheckDive
           let temp2 = temp6
           asm
             lsr temp2
-          end
+end
           let velocityCalculation_W = temp2
           let temp6 = temp6 + velocityCalculation_R
 DiveCheckDone

@@ -5,10 +5,8 @@
 
 #include "Source/Routines/GameLoopInit.bas"
 #include "Source/Routines/GameLoopMain.bas"
-#include "Source/Routines/PerformMeleeAttack.bas"
-#include "Source/Routines/PerformRangedAttack.bas"
-#include "Source/Routines/CharacterAttacks.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+#include "Source/Routines/PlayerCollisionResolution.bas"
 #include "Source/Routines/AnimationSystem.bas"
           rem Routines moved to other banks:
           rem   Combat.bas -> Bank 6

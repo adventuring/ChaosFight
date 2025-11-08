@@ -161,6 +161,6 @@ DrawParadeCharacterSprite
           temp2 = titleParadeTimer & 7
           temp3 = ActionWalking
           temp4 = 0
-          gosub LocateCharacterArt bank14
+          gosub LocateCharacterArt bank10
           return
 

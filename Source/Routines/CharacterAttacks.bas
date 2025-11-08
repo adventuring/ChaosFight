@@ -42,9 +42,9 @@ BernieAttack
           rem Set animation state (PerformMeleeAttack also sets it, but
           rem we need it set first)
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
-          gosub PerformMeleeAttack : rem Attack in facing direction
+          gosub PerformMeleeAttack bank9 : rem Attack in facing direction
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing : rem Flip facing (XOR with bit 0)
-          gosub PerformMeleeAttack : rem Attack in opposite direction
+          gosub PerformMeleeAttack bank9 : rem Attack in opposite direction
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing : rem Restore original facing (XOR again to flip back)
           return
 
@@ -71,7 +71,8 @@ CurlerAttack
           rem attack, spawns projectile
           rem
           rem Constraints: Tail call to PerformRangedAttack
-          goto PerformRangedAttack : rem Ranged attack (ground-based)
+          gosub PerformRangedAttack bank9 : rem Ranged attack (ground-based)
+          return
 
 DragonetAttack
           rem Dragonet (Character 2) - Ranged attack (fireballs that arc
@@ -88,7 +89,9 @@ DragonetAttack
           rem attack, spawns projectile
           rem
           rem Constraints: Tail call to PerformRangedAttack
-          goto PerformRangedAttack : rem Ranged attack (fireballs that arc downwards)
+          gosub PerformRangedAttack bank9 : rem Ranged attack (fireballs that arc downwards)
+          return
+          return
 
 ZoeRyenAttack
           rem ZoeRyen (Character 3) - Ranged attack
@@ -104,7 +107,9 @@ ZoeRyenAttack
           rem attack, spawns projectile
           rem
           rem Constraints: Tail call to PerformRangedAttack
-          goto PerformRangedAttack : rem Ranged attack
+          gosub PerformRangedAttack bank9 : rem Ranged attack
+          return
+          return
 
 FatTonyAttack
           rem FatTony (Character 4) - Ranged attack (magic ring lasers)
@@ -120,7 +125,9 @@ FatTonyAttack
           rem attack, spawns projectile
           rem
           rem Constraints: Tail call to PerformRangedAttack
-          goto PerformRangedAttack : rem Ranged attack (magic ring lasers)
+          gosub PerformRangedAttack bank9 : rem Ranged attack (magic ring lasers)
+          return
+          return
 
 MegaxAttack
           rem Megax (Character 5) - Melee attack (fire breath visual -
@@ -137,7 +144,8 @@ MegaxAttack
           rem attack, spawns missile
           rem
           rem Constraints: Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack : rem Melee attack (fire breath visual - missile stays stationary)
+          gosub PerformMeleeAttack bank9 : rem Melee attack (fire breath visual - missile stays stationary)
+          return
 
 HarpyAttack
           rem
@@ -276,7 +284,8 @@ KnightGuyAttack
           rem executes melee attack, spawns missile
           rem
           rem Constraints: Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack : rem Melee attack (sword visual - missile moves away then returns)
+          gosub PerformMeleeAttack bank9 : rem Melee attack (sword visual - missile moves away then returns)
+          return
 
 FrootyAttack
           rem Frooty (Character 8) - Ranged attack (magical sparkles
@@ -293,7 +302,9 @@ FrootyAttack
           rem - executes ranged attack, spawns projectile
           rem
           rem Constraints: Tail call to PerformRangedAttack
-          goto PerformRangedAttack : rem Ranged attack (magical sparkles from lollipop)
+          gosub PerformRangedAttack bank9 : rem Ranged attack (magical sparkles from lollipop)
+          return
+          return
 
 NefertemAttack
           rem Nefertem (Character 9) - Melee attack
@@ -309,7 +320,8 @@ NefertemAttack
           rem executes melee attack, spawns missile
           rem
           rem Constraints: Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack : rem Melee attack
+          gosub PerformMeleeAttack bank9 : rem Melee attack
+          return
 
 NinjishGuyAttack
           rem NinjishGuy (Character 10) - Ranged attack (small bullet)
@@ -325,7 +337,9 @@ NinjishGuyAttack
           rem - executes ranged attack, spawns projectile
           rem
           rem Constraints: Tail call to PerformRangedAttack
-          goto PerformRangedAttack : rem Ranged attack (small bullet)
+          gosub PerformRangedAttack bank9 : rem Ranged attack (small bullet)
+          return
+          return
 
 PorkChopAttack
           rem PorkChop (Character 11) - Melee attack
@@ -341,7 +355,8 @@ PorkChopAttack
           rem executes melee attack, spawns missile
           rem
           rem Constraints: Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack : rem Melee attack
+          gosub PerformMeleeAttack bank9 : rem Melee attack
+          return
 
 RadishGoblinAttack
           rem RadishGoblin (Character 12) - Melee attack
@@ -357,7 +372,8 @@ RadishGoblinAttack
           rem executes melee attack, spawns missile
           rem
           rem Constraints: Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack : rem Melee attack
+          gosub PerformMeleeAttack bank9 : rem Melee attack
+          return
 
 RoboTitoAttack
           rem RoboTito (Character 13) - Melee attack
@@ -373,7 +389,8 @@ RoboTitoAttack
           rem executes melee attack, spawns missile
           rem
           rem Constraints: Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack : rem Melee attack
+          gosub PerformMeleeAttack bank9 : rem Melee attack
+          return
 
 UrsuloAttack
           rem Ursulo (Character 14) - Melee attack (claw swipe)
@@ -389,7 +406,8 @@ UrsuloAttack
           rem executes melee attack, spawns missile
           rem
           rem Constraints: Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack : rem Melee attack (claw swipe)
+          gosub PerformMeleeAttack bank9 : rem Melee attack (claw swipe)
+          return
 
 ShamoneAttack
           rem Shamone (Character 15) - Special attack: jumps while
@@ -417,7 +435,8 @@ ShamoneAttack
           let playerY[temp1] = playerY[temp1] - 11 : rem First, execute the jump
           let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping : rem Light character, good jump
           rem Set jumping flag
-          goto PerformMeleeAttack : rem Then execute the attack (PerformMeleeAttack sets animation state)
+          gosub PerformMeleeAttack bank9 : rem Then execute the attack (PerformMeleeAttack sets animation state)
+          return
 
           rem
           rem Character Attack Dispatcher

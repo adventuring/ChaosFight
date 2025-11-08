@@ -16,6 +16,10 @@
 #include "Source/Routines/TitleCharacterParade.bas"
 #include "Source/Routines/BeginAttractMode.bas"
 #include "Source/Routines/AttractMode.bas"
+#include "Source/Routines/PlayerLockedHelpers.bas"
+#include "Source/Routines/CharacterAttacks.bas"
+#include "Source/Routines/PerformMeleeAttack.bas"
+#include "Source/Routines/PerformRangedAttack.bas"
           
           asm
           ; rem Titlescreen graphics and kernel (moved from Bank 1)

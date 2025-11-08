@@ -39,12 +39,12 @@ LoadCharacterSprite
           rem
           rem Output: Sprite data loaded into appropriate player
           rem register
-          rem         via LocateCharacterArt (bank14)
+          rem         via LocateCharacterArt (bank10)
           rem
           rem Mutates: temp1, temp2, temp3, temp4 (passed to
           rem LocateCharacterArt)
           rem
-          rem Called Routines: LocateCharacterArt (bank14) accesses:
+          rem Called Routines: LocateCharacterArt (bank10) accesses:
           rem   - temp1, temp2, temp3, temp4, temp5, temp6
           rem   - Sets player sprite pointers via
           rem   SetPlayerCharacterArtBankX
@@ -96,7 +96,7 @@ ValidateCharacterDoneInline
           rem animation action/sequence 0 = idle
           rem playerNumberAlt already has player number from caller
           let temp1 = currentCharacter : rem Set temp variables for cross-bank call
-          gosub LocateCharacterArt bank14
+          gosub LocateCharacterArt bank10
           return
 
 LoadSpecialSprite
@@ -414,12 +414,12 @@ LoadPlayerSprite
           rem Note: Frame is relative to sprite own 10fps counter, NOT
           rem   global frame counter
           rem
-          rem Output: Sprite data loaded via LocateCharacterArt (bank14)
+          rem Output: Sprite data loaded via LocateCharacterArt (bank10)
           rem
           rem Mutates: currentCharacter (global), temp1 (passed to
           rem LocateCharacterArt)
           rem
-          rem Called Routines: LocateCharacterArt (bank14) - see
+          rem Called Routines: LocateCharacterArt (bank10) - see
           rem LoadCharacterSprite
           rem
           rem Constraints: Must be colocated with
@@ -441,12 +441,12 @@ LoadPlayerSpriteDispatch
           rem        temp3 = animation action (0-15)
           rem        temp4 = player number (0-3)
           rem
-          rem Output: Sprite data loaded via LocateCharacterArt (bank14)
+          rem Output: Sprite data loaded via LocateCharacterArt (bank10)
           rem
           rem Mutates: temp1 (set from currentCharacter, passed to
           rem LocateCharacterArt)
           rem
-          rem Called Routines: LocateCharacterArt (bank14) - see
+          rem Called Routines: LocateCharacterArt (bank10) - see
           rem LoadCharacterSprite
           rem
           rem Constraints: Must be colocated with LoadPlayerSprite
@@ -457,7 +457,7 @@ LoadPlayerSpriteDispatch
           rem Set temp1 from currentCharacter (already set from
           rem playerCharacter[currentPlayer])
           let temp1 = currentCharacter
-          gosub LocateCharacterArt bank14
+          gosub LocateCharacterArt bank10
           return
 
 LoadPlayer0Sprite

@@ -17,7 +17,7 @@
           rem   tighter coupling
           rem AnimationSystem.bas moved to Bank 11 (character
           rem animations)
+          rem PlayerRendering.bas moved to Bank 10 (sprite rendering)
 #include "Source/Routines/PlayerPhysicsGravity.bas"
-#include "Source/Routines/PlayerRendering.bas"
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/SpecialMovement.bas"

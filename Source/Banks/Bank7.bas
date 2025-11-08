@@ -5,4 +5,5 @@
 
 #include "Source/Routines/MissileSystem.bas"
 #include "Source/Routines/MissileCollision.bas"
+#include "Source/Routines/Combat.bas"
 

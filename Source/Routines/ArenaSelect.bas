@@ -404,7 +404,7 @@ ArenaSelectDrawCharacters
           rem
           rem Called Routines: ArenaSelectDrawPlayerSprite - accesses
           rem character selections, frame,
-          rem   LocateCharacterArt (bank14) - accesses character art
+          rem   LocateCharacterArt (bank10) - accesses character art
           rem   data,
           rem   LoadCharacterColors (bank10) - accesses color tables
           rem
@@ -527,7 +527,7 @@ ArenaSelectDrawPlayerSprite
           rem         COLUP0-COLUP3 (via LoadCharacterColors),
           rem         temp1-temp5 (LoadCharacterColors parameters)
           rem
-          rem Called Routines: LocateCharacterArt (bank14) - accesses
+          rem Called Routines: LocateCharacterArt (bank10) - accesses
           rem character art data, temp1-temp4,
           rem   LoadCharacterColors (bank10) - accesses color tables
           rem Constraints: Must be colocated with ArenaSelectDrawCharacters
@@ -550,7 +550,7 @@ ArenaSelectDrawPlayerSprite
           rem Load character sprite using art location system
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
           rem temp3=action, temp4=player
-          gosub LocateCharacterArt bank14
+          gosub LocateCharacterArt bank10
           
           rem Set character color based on player number
           rem LoadCharacterColors expects: temp1=character, temp2=hurt, temp3=player, temp4=flashing, temp5=mode

@@ -43,7 +43,7 @@ GameMainLoop
           rem   CheckAllPlayerCollisions (bank8),
           rem   CheckAllPlayerEliminations,
           rem   UpdateAllMissiles (bank7),
-          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank8),
+          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank10),
           rem   DisplayHealth (bank8), UpdatePlayer12HealthBars (bank8),
           rem   UpdatePlayer34HealthBars (bank8), UpdateSoundEffect
           rem   (bank15)
@@ -96,7 +96,7 @@ GameMainLoopQuadtariSkip
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-          gosub CheckAllPlayerCollisions bank8 : rem Check multi-player collisions (in Bank 8)
+          gosub CheckAllPlayerCollisions bank11 : rem Check multi-player collisions (in Bank 11)
 
           gosub CheckAllPlayerEliminations : rem Check for player eliminations
           
@@ -169,7 +169,7 @@ GameEndCheckDone
           rem gosub SetSpritePositions 
           rem Replaced by UpdatePlayerMovement
 
-          gosub SetPlayerSprites bank8 : rem Set sprite graphics (in Bank 8)
+          gosub SetPlayerSprites bank10 : rem Set sprite graphics (in Bank 10)
 
           gosub DisplayHealth bank8 : rem Display health information
           

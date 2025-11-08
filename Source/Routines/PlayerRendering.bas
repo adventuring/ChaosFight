@@ -1,7 +1,7 @@
-SetSpritePositions
-          rem
           rem ChaosFight - Source/Routines/PlayerRendering.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+SetSpritePositions
           rem Player Sprite Rendering
           rem Handles sprite positioning, colors, and graphics for all
           rem   players.
@@ -80,14 +80,18 @@ SetSpritePositions
           rem Missiles are available for projectiles since participants
           rem   use proper sprites
           
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Position : rem Set Participant 3 position (array [2] → P2 sprite)
+          rem Set Participant 3 position (array [2] → P2 sprite)
+          
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Position
           if playerCharacter[2] = NoCharacter then goto DonePlayer3Position
           if ! playerHealth[2] then goto DonePlayer3Position
           let player2x = playerX[2]
           let player2y = playerY[2]
 DonePlayer3Position
           
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Position : rem Set Participant 4 position (array [3] → P3 sprite)
+          rem Set Participant 4 position (array [3] → P3 sprite)
+          
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Position
           if playerCharacter[3] = NoCharacter then goto DonePlayer4Position
           if ! playerHealth[3] then goto DonePlayer4Position
           let player3x = playerX[3]
@@ -115,7 +119,8 @@ DonePlayer4Position
           rem Use this flag instead of QuadtariDetected for missile
           rem   multiplexing
           rem because we only need to multiplex when participants 3 or 4
-          if !(controllerStatus & SetPlayers34Active) then goto RenderMissiles2Player : rem   are actually in the game
+          rem are actually in the game
+          if !(controllerStatus & SetPlayers34Active) then goto RenderMissiles2Player
           
           rem 4-player mode: Use frame multiplexing
           let temp6 = frame & 1 : rem Shared temp5 for character type lookups in this code path
@@ -511,7 +516,9 @@ end
           rem No color inheritance issues with proper multisprite
           rem   implementation
           
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Sprite : rem Set Player 3 color and sprite (if active)
+          rem Set Player 3 color and sprite (if active)
+          
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Sprite
           if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
           if ! playerHealth[2] then goto DonePlayer3Sprite
           
@@ -552,7 +559,9 @@ end
           
 DonePlayer3Sprite
 
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Sprite : rem Set Player 4 color and sprite (if active)
+          rem Set Player 4 color and sprite (if active)
+
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Sprite
           if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
           if ! playerHealth[3] then goto DonePlayer4Sprite
           
@@ -625,7 +634,8 @@ DisplayHealth
           rem and selected
           rem Flash Participant 1 sprite (array [0], P0) if health is
           rem   low (but not during recovery)
-          if playerHealth[0] >= 25 then goto DoneParticipant1Flash : rem Use skip-over pattern to avoid complex || operator
+          rem Use skip-over pattern to avoid complex || operator
+          if playerHealth[0] >= 25 then goto DoneParticipant1Flash
           if playerRecoveryFrames[0] = 0 then FlashParticipant1
           goto DoneParticipant1Flash
 FlashParticipant1
@@ -635,14 +645,17 @@ DoneParticipant1Flash
 
           rem Flash Participant 2 sprite (array [1], P1) if health is
           rem   low
-          if playerHealth[1] >= 25 then goto DoneParticipant2Flash : rem Use skip-over pattern to avoid complex || operator
+          rem Use skip-over pattern to avoid complex || operator
+          if playerHealth[1] >= 25 then goto DoneParticipant2Flash
           if playerRecoveryFrames[1] = 0 then FlashParticipant2
           goto DoneParticipant2Flash
 FlashParticipant2
           if frame & 8 then player1x = 200
 DoneParticipant2Flash
 
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Flash : rem Flash Player 3 sprite if health is low (but alive)
+          rem Flash Player 3 sprite if health is low (but alive)
+
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Flash
           if playerCharacter[2] = NoCharacter then goto DonePlayer3Flash
           if ! playerHealth[2] then goto DonePlayer3Flash
           if playerHealth[2] >= 25 then goto DonePlayer3Flash
@@ -653,7 +666,9 @@ FlashPlayer3
 DonePlayer3Flash
           rem Player 3 uses player2 sprite
 
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Flash : rem Flash Player 4 sprite if health is low (but alive)
+          rem Flash Player 4 sprite if health is low (but alive)
+
+          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Flash
           if playerCharacter[3] = NoCharacter then goto DonePlayer4Flash
           if ! playerHealth[3] then goto DonePlayer4Flash
           if playerHealth[3] >= 25 then goto DonePlayer4Flash

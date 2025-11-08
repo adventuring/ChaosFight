@@ -65,7 +65,7 @@ CharacterSelectLoop
           rem playerLocked state, temp1, temp2 (passed to
           rem SetPlayerLocked)
           rem
-          rem Called Routines: SetPlayerLocked (bank14) - accesses
+          rem Called Routines: SetPlayerLocked (bank10) - accesses
           rem playerLocked state
           rem
           rem Constraints: Must be colocated with Player1LeftSelectionQ,
@@ -92,7 +92,7 @@ CharacterSelectLoop
 
 Player1LeftSelectionQ
           if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = MaxCharacter
-          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
           
 Player1LeftSelectionSkip
           if joy0right then let playerCharacter[0] = playerCharacter[0] + 1 : goto Player1RightSelectionQ
@@ -100,17 +100,17 @@ Player1LeftSelectionSkip
 
 Player1RightSelectionQ
           if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = 0
-          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerCharacter[0] > MaxCharacter then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
           
 Player1RightSelectionSkip
-          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
           rem Unlock by moving up
           if joy0down then SelectStick0FireQ
           goto SelectStick0Down
 
 SelectStick0FireQ
           if joy0fire then SelectStick0Down
-          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
           
 SelectStick0Down
           rem Unlock by moving down (without fire)
@@ -119,11 +119,11 @@ SelectStick0Down
 
 Player1LockSelection
           if joy0down then Player1HandicapSelection
-          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
+          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
           goto Player1LockSelectionDone : rem Locked normal (100% health)
 
 Player1HandicapSelection
-          let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
+          let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
 Player1LockSelectionDone
           rem Locked with handicap (75% health)
 
@@ -133,16 +133,16 @@ Player1LockSelectionDone
 
 Player2LeftSelectionQ
           if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = MaxCharacter
-          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 Player2LeftSelectionSkip
           if joy1right then let playerCharacter[1] = playerCharacter[1] + 1 : goto Player2RightSelectionQ
           goto Player2RightSelectionSkip
 
 Player2RightSelectionQ
           if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = 0
-          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 Player2RightSelectionSkip
-          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
           rem Unlock by moving up
           if joy1down then SelectStick1FireQ
 
@@ -151,7 +151,7 @@ Player2RightSelectionSkip
 SelectStick1FireQ
           if joy1fire then SelectStick1Down
 
-          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 SelectStick1Down
           rem Unlock by moving down (without fire)
           if joy1fire then SelectStick1DownQ
@@ -159,9 +159,9 @@ SelectStick1Down
           goto SelectStick1EvenFrameSkip
 
 SelectStick1DownQ
-          if joy1down then let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14 : goto Player2LockSelectionDone
+          if joy1down then let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9 : goto Player2LockSelectionDone
 
-          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14 : rem Locked with handicap (75% health)
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9 : rem Locked with handicap (75% health)
 Player2LockSelectionDone 
           rem Locked normal (100% health)
 
@@ -182,7 +182,7 @@ CharacterSelectHandlePlayer3
 
 Player3LeftSelectionQ
           if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = MaxCharacter
-          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 Player3LeftSelectionSkip
           if joy0right then let playerCharacter[2] = playerCharacter[2] + 1 : goto Player3RightSelectionQ
 
@@ -190,9 +190,9 @@ Player3LeftSelectionSkip
 
 Player3RightSelectionQ
           if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = 0
-          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 Player3RightSelectionSkip
-          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
           rem Unlock by moving up
           if joy0down then SelectStick0FirePlayer3Q
 
@@ -200,7 +200,7 @@ Player3RightSelectionSkip
 
 SelectStick0FirePlayer3Q
           if joy0fire then SelectStick0DownPlayer3
-          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 SelectStick0DownPlayer3
           rem Unlock by moving down (without fire)
           if joy0fire then SelectStick0DownPlayer3Q
@@ -210,11 +210,11 @@ SelectStick0DownPlayer3
 SelectStick0DownPlayer3Q
           if joy0down then Player3HandicapSelection
 
-          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
           goto Player3LockSelectionDone : rem Locked normal (100% health)
 
 Player3HandicapSelection
-          let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
+          let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
 Player3LockSelectionDone
           rem Locked with handicap (75% health)
 
@@ -229,15 +229,15 @@ CharacterSelectHandlePlayer4
           goto Player4LeftSelectionSkip
 Player4LeftSelectionQ
           if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = MaxCharacter
-          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 Player4LeftSelectionSkip
           if joy1right then let playerCharacter[3] = playerCharacter[3] + 1 : goto Player4RightSelectionQ
           goto Player4RightSelectionSkip
 Player4RightSelectionQ
           if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = 0
-          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 Player4RightSelectionSkip
-          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
           rem Unlock by moving up
           if joy1down then SelectStick1FirePlayer4Q
 
@@ -246,7 +246,7 @@ Player4RightSelectionSkip
 SelectStick1FirePlayer4Q
           if joy1fire then SelectStick1DownPlayer4
 
-          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
+          let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 SelectStick1DownPlayer4
           rem Unlock by moving down (without fire)
           if joy1fire then SelectStick1DownPlayer4Q
@@ -256,11 +256,11 @@ SelectStick1DownPlayer4
 SelectStick1DownPlayer4Q
           if joy1down then Player4HandicapSelection
 
-          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank14
+          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
           goto Player4LockSelectionDone : rem Locked normal (100% health)
 
 Player4HandicapSelection
-          let temp1 = 3 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank14
+          let temp1 = 3 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
 Player4LockSelectionDone
           rem Locked with handicap (75% health)
           
@@ -278,23 +278,23 @@ CharacterSelectHandleComplete
 
           rem Count locked players
 
-          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
-          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
           goto CharacterSelectSkipQuadtariPlayersInline
           
 CharacterSelectQuadtariPlayersInline
-          let temp1 = 2 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
-          let temp1 = 3 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
 CharacterSelectSkipQuadtariPlayersInline
           rem Check if enough players are ready
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
 
           rem Need at least 1 player ready for 2-player mode
-          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then goto CharacterSelectCompleted
+          let temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then goto CharacterSelectCompleted
 
-          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then goto CharacterSelectCompleted
+          let temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto CharacterSelectCompleted
 
           goto CharacterSelectSkipQuadtariReadyInline
           
@@ -313,7 +313,7 @@ CharacterSelectSkipQuadtariReadyInline
 
 CharacterSelectDrawScreen
           rem Draw character selection screen via shared renderer
-          gosub bank6 SelectDrawScreen
+          gosub SelectDrawScreen bank10
           return
 
 CharacterSelectDrawScreenLegacy
@@ -331,31 +331,25 @@ LegacyCharacterSelectDrawScreenBody
           rem        player0-3x, player0-3y (TIA registers) = sprite
           rem        positions (set by caller or inline)
           rem
-          rem Output: player sprites drawn, numbers drawn
+          rem Output: player sprites drawn
           rem
           rem Mutates: player0-3x, player0-3y (TIA registers),
-          rem         player sprite pointers (via CharacterSelectDrawSprite),
-          rem         playfield data (via CharacterSelectDrawNumber)
+          rem         player sprite pointers (via CharacterSelectDrawSprite)
           rem
           rem Called Routines: CharacterSelectDrawSprite - accesses playerCharacter[],
-          rem draws character sprites,
-          rem   CharacterSelectDrawNumber - draws player number indicators
+          rem draws character sprites
           rem
           rem Constraints: Must be colocated with CharacterSelectDrawPlayer3, CharacterSelectSkipPlayer3Draw,
           rem CharacterSelectDrawPlayer4, CharacterSelectSkipPlayer4Draw
           rem              (all called via goto)
-          rem Draw Player 1 selection (top left) with number
+          rem Draw Player 1 selection (top left)
           player0x = 56
           player0y = 40 
           gosub CharacterSelectDrawSprite : rem Adjusted for 16px left margin (40+16)
 
-          gosub CharacterSelectDrawNumber : rem Draw 1 indicator below Player 1 using playfield
-
-          let player1x = 104 : rem Draw Player 2 selection (top right) with number
+          let player1x = 104 : rem Draw Player 2 selection (top right)
           let player1y = 40
           gosub CharacterSelectDrawSprite : rem Adjusted for 16px margins (120-16)
-
-          gosub CharacterSelectDrawNumber : rem Draw 2 indicator below Player 2 using playfield
 
           rem Draw Player 3 selection (bottom left) if Quadtari detected
 
@@ -369,20 +363,17 @@ CharacterSelectDrawPlayer3
           rem        player0x, player0y (TIA registers) = sprite
           rem        position (set inline)
           rem
-          rem Output: Player 3 sprite drawn, number indicator drawn
+          rem Output: Player 3 sprite drawn
           rem
-          rem Mutates: player sprite pointers (via CharacterSelectDrawSprite),
-          rem playfield data (via CharacterSelectDrawNumber)
+          rem Mutates: player sprite pointers (via CharacterSelectDrawSprite)
           rem
-          rem Called Routines: CharacterSelectDrawSprite, CharacterSelectDrawNumber
+          rem Called Routines: CharacterSelectDrawSprite
           rem
           rem Constraints: Must be colocated with CharacterSelectDrawScreen,
           rem CharacterSelectSkipPlayer3Draw
           player0x = 56
           player0y = 80 
           gosub CharacterSelectDrawSprite : rem Adjusted for 16px left margin
-
-          gosub CharacterSelectDrawNumber : rem Draw 3 indicator below Player 3 using playfield
 
           rem Draw Player 4 selection (bottom right) if Quadtari
           rem detected
@@ -396,18 +387,15 @@ CharacterSelectDrawPlayer4
           rem        player1x, player1y (TIA registers) = sprite
           rem        position (set inline)
           rem
-          rem Output: Player 4 sprite drawn, number indicator drawn
+          rem Output: Player 4 sprite drawn
           rem
-          rem Mutates: player sprite pointers (via CharacterSelectDrawSprite),
-          rem playfield data (via CharacterSelectDrawNumber)
+          rem Mutates: player sprite pointers (via CharacterSelectDrawSprite)
           rem
-          rem Called Routines: CharacterSelectDrawSprite, CharacterSelectDrawNumber
+          rem Called Routines: CharacterSelectDrawSprite
           rem Constraints: Must be colocated with CharacterSelectDrawScreen, CharacterSelectSkipPlayer4Draw
           let player1x = 104
           let player1y = 80
           gosub CharacterSelectDrawSprite : rem Adjusted for 16px margins
-
-          gosub CharacterSelectDrawNumber : rem Draw 4 indicator below Player 4 using playfield
 CharacterSelectSkipPlayer3Draw
 CharacterSelectSkipPlayer4Draw
 
@@ -427,13 +415,13 @@ CharacterSelectDrawLocks
           rem (TIA registers) = playfield registers (bits set for
           rem borders)
           rem
-          rem Called Routines: GetPlayerLocked (bank14) - gets lock
+          rem Called Routines: GetPlayerLocked (bank10) - gets lock
           rem state for each player
           rem
           rem Constraints: Players 3/4 only checked if Quadtari
           rem detected. Borders drawn using playfield bits
           rem Draw playfield blocks around locked characters
-          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then CharacterSelectDrawPlayer1Border
+          let temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then CharacterSelectDrawPlayer1Border
           goto CharacterSelectSkipPlayer1Border
 CharacterSelectDrawPlayer1Border
 CharacterSelectSkipPlayer1Border
@@ -452,7 +440,7 @@ CharacterSelectSkipPlayer1Border
           rem when Player 1 is locked
           rem Draw border around Player 1
 
-          let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then CharacterSelectDrawPlayer2Border
+          let temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then CharacterSelectDrawPlayer2Border
           goto CharacterSelectSkipPlayer2Border
 CharacterSelectDrawPlayer2Border
 CharacterSelectSkipPlayer2Border
@@ -485,12 +473,12 @@ SelectCheckPlayer2Lock
           rem (TIA registers) = playfield registers (via
           rem SelectDrawPlayer2Border)
           rem
-          rem Called Routines: GetPlayerLocked (bank14) - gets lock
+          rem Called Routines: GetPlayerLocked (bank10) - gets lock
           rem state, SelectDrawPlayer2Border - draws border
           rem
           rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem if Quadtari detected
-          let temp1 = 2 : gosub GetPlayerLocked bank14 : if temp2 then SelectDrawPlayer2Border
+          let temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then SelectDrawPlayer2Border
           rem Continue to Player 3 check
 SelectDrawPlayer2Border 
           rem Helper: Draw border around Player 3
@@ -522,18 +510,14 @@ SelectCheckPlayer3Lock
           rem (TIA registers) = playfield registers (via
           rem SelectDrawPlayer3Border)
           rem
-          rem Called Routines: GetPlayerLocked (bank14) - gets lock
+          rem Called Routines: GetPlayerLocked (bank10) - gets lock
           rem state, SelectDrawPlayer3Border - draws border
           rem
           rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem if Quadtari detected
-          let temp1 = 3 : gosub GetPlayerLocked bank14 : if temp2 then SelectDrawPlayer3Border
+          let temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then SelectDrawPlayer3Border
           return
 SelectDrawPlayer3Border 
-          return
-CharacterSelectDrawNumber
-          rem Draw number indicator via shared renderer
-          gosub bank6 SelectDrawNumber
           return
 
 CharacterSelectDrawNumberLegacy

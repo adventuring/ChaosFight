@@ -36,7 +36,8 @@ SetPublisherWindowValues
           rem titlescreenWindow3, titlescreenWindow4
           rem
           rem Called Routines: None
-          let titlescreenWindow1 = 42  ; AtariAge logo visible : rem Constraints: None
+          rem Constraints: None
+          let titlescreenWindow1 = 42  ; AtariAge logo visible
           let titlescreenWindow2 = 42  ; AtariAgeText visible
           let titlescreenWindow3 = 0   ; ChaosFight hidden
           let titlescreenWindow4 = 0   ; BRP hidden
@@ -58,7 +59,8 @@ SetAuthorWindowValues
           rem titlescreenWindow3, titlescreenWindow4
           rem
           rem Called Routines: None
-          let titlescreenWindow1 = 0   ; AtariAge logo hidden : rem Constraints: None
+          rem Constraints: None
+          let titlescreenWindow1 = 0   ; AtariAge logo hidden
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
           let titlescreenWindow3 = 0   ; ChaosFight hidden
           let titlescreenWindow4 = 42  ; BRP visible
@@ -80,7 +82,8 @@ SetTitleWindowValues
           rem titlescreenWindow3, titlescreenWindow4
           rem
           rem Called Routines: None
-          let titlescreenWindow1 = 0   ; AtariAge logo hidden : rem Constraints: None
+          rem Constraints: None
+          let titlescreenWindow1 = 0   ; AtariAge logo hidden
           let titlescreenWindow2 = 0   ; AtariAgeText hidden
           let titlescreenWindow3 = 42  ; ChaosFight visible
           let titlescreenWindow4 = 0   ; Interworldly hidden

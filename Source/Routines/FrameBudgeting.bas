@@ -40,7 +40,8 @@ UpdateFramePhase
           rem Mutates: FramePhase (set to frame & 3)
           rem
           rem Called Routines: None
-          let FramePhase = frame & 3 : rem Constraints: Called once per frame at the start of game loop
+          rem Constraints: Called once per frame at the start of game loop
+          let FramePhase = frame & 3
           rem Cycle 0, 1, 2, 3, 0, 1, 2, 3...
           return
 

@@ -118,23 +118,13 @@ HandleRoboTitoStretchMissileHit
           rem   ActionFalling
           rem MaskPlayerStateFlags masks bits 0-3, set bits 4-7 to
           
-          let temp2 = roboTitoCanStretch_R : rem Clear stretch permission flag
-          let temp3 = temp1 : rem Load current flags
-          rem Calculate bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp3 = 0 then HRTSMH_ClearBit0
-          if temp3 = 1 then HRTSMH_ClearBit1
-          if temp3 = 2 then HRTSMH_ClearBit2
-          let temp2 = temp2 & 247 : rem Player 3: clear bit 3
-          goto HRTSMH_PermissionCleared : rem 247 = $F7 = clear bit 3
-HRTSMH_ClearBit0
-          let temp2 = temp2 & 254 : rem Player 0: clear bit 0
-          goto HRTSMH_PermissionCleared : rem 254 = $FE = clear bit 0
-HRTSMH_ClearBit1
-          let temp2 = temp2 & 253 : rem Player 1: clear bit 1
-          goto HRTSMH_PermissionCleared : rem 253 = $FD = clear bit 1
-HRTSMH_ClearBit2
-          let temp2 = temp2 & 251 : rem Player 2: clear bit 2
-HRTSMH_PermissionCleared
+          rem Optimized: Clear stretch permission flag with formula
+          let temp2 = roboTitoCanStretch_R
+          let temp3 = 1
+          for temp4 = 0 to temp1 - 1
+            let temp3 = temp3 * 2
+          next
+          let temp2 = temp2 & (255 - temp3) : rem Clear the appropriate bit
           rem 251 = $FB = clear bit 2
           let roboTitoCanStretch_W = temp2
           rem Store cleared permission flags

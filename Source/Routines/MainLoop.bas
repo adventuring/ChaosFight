@@ -16,8 +16,15 @@ MainLoop
           rem Entry point for entire game loop
           if switchreset then gosub WarmStart bank11 : goto MainLoopContinue
 
-          let temp1 = gameMode
-          on temp1 gosub MainLoopModePublisherPrelude, MainLoopModeAuthorPrelude, MainLoopModeTitleScreen, MainLoopModeCharacterSelect, MainLoopModeFallingAnimation, MainLoopModeArenaSelect, MainLoopModeGameMain, MainLoopModeWinnerAnnouncement
+          rem Optimized: Replace on...gosub with if-else for space
+          if gameMode = 0 then gosub MainLoopModePublisherPrelude
+          if gameMode = 1 then gosub MainLoopModeAuthorPrelude
+          if gameMode = 2 then gosub MainLoopModeTitleScreen
+          if gameMode = 3 then gosub MainLoopModeCharacterSelect
+          if gameMode = 4 then gosub MainLoopModeFallingAnimation
+          if gameMode = 5 then gosub MainLoopModeArenaSelect
+          if gameMode = 6 then gosub MainLoopModeGameMain
+          if gameMode = 7 then gosub MainLoopModeWinnerAnnouncement
           goto MainLoopContinue
 
 MainLoopModePublisherPrelude

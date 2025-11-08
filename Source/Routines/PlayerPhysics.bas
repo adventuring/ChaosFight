@@ -410,7 +410,7 @@ rem Function moved to PlayerPhysicsCollisions.bas; call via `gosub CheckPlayfiel
 
           rem Check Multi-player Collisions
           rem
-rem Function moved to PlayerCollisionResolution.bas; call via `gosub CheckAllPlayerCollisions bank11`.
+rem Function moved to PlayerCollisionResolution.bas; call via `gosub CheckAllPlayerCollisions bank8`.
 
           rem Divide By Pfrowheight Helper
 

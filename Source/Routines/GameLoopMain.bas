@@ -75,12 +75,9 @@ GameMainLoop
 
           gosub CheckBoundaryCollisions bank8 : rem Check boundary collisions (in Bank 8)
 
-          rem Check playfield collisions (walls, ceilings, ground) for
-          for currentPlayer = 0 to 1 : rem   all players (in Bank 8)
-              gosub CheckPlayfieldCollisionAllDirections bank8
-          next
-          if controllerStatus & SetQuadtariDetected = 0 then goto GameMainLoopQuadtariSkip
-          for currentPlayer = 2 to 3
+          rem Optimized: Single loop for playfield collisions (walls, ceilings, ground)
+          for currentPlayer = 0 to 3
+              if currentPlayer >= 2 && !(controllerStatus & SetQuadtariDetected) then goto GameMainLoopQuadtariSkip
               gosub CheckPlayfieldCollisionAllDirections bank8
           next
 GameMainLoopQuadtariSkip
@@ -96,7 +93,7 @@ GameMainLoopQuadtariSkip
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-          gosub CheckAllPlayerCollisions bank11 : rem Check multi-player collisions (in Bank 11)
+          gosub CheckAllPlayerCollisions bank8 : rem Check multi-player collisions (moved to Bank 8)
 
           gosub CheckAllPlayerEliminations : rem Check for player eliminations
           

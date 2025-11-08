@@ -128,13 +128,11 @@ InitPositionsDone
           
           rem Initialize player health (apply handicap if selected)
           rem PlayerLocked value: 0=unlocked, 1=normal (100% health),
-          for currentPlayer = 0 to 3 : rem 2=handicap (75% health)
+          rem Optimized: Simplified player health initialization
+          for currentPlayer = 0 to 3
               let GPL_playerIndex = currentPlayer
               gosub GetPlayerLocked bank9
-              if GPL_lockedState = PlayerHandicapped then let PlayerHealth[currentPlayer] = PlayerHealthHandicap
-              if GPL_lockedState = PlayerHandicapped then goto PlayerHealthSet
-              let PlayerHealth[currentPlayer] = PlayerHealthMax
-PlayerHealthSet
+              if GPL_lockedState = PlayerHandicapped then let PlayerHealth[currentPlayer] = PlayerHealthHandicap else let PlayerHealth[currentPlayer] = PlayerHealthMax
           next
           
           for currentPlayer = 0 to 3 : rem Initialize player timers
@@ -147,14 +145,9 @@ PlayerHealthSet
               let playerDamage_W[currentPlayer] = 22
           next
           
-          rem Update Players34Active flag based on character selections
-          rem Flag is used for missile multiplexing (only multiplex when
-          let ControllerStatus  = ControllerStatus & ClearPlayers34Active : rem   players 3 or 4 are active)
-          rem Clear flag first
-          if !(playerCharacter[2] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
-          rem Set if Player 3 selected
-          if !(playerCharacter[3] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
-          rem Set if Player 4 selected
+          rem Optimized: Set Players34Active flag based on character selections
+          let ControllerStatus = ControllerStatus & ClearPlayers34Active
+          if !(playerCharacter[2] = NoCharacter) || !(playerCharacter[3] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
 
           rem Initialize missiles
           rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 =

@@ -169,11 +169,9 @@ CheckColorBWToggle
           rem controller detection state
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           
-          rem Check if Color/B&W switch state has changed
+          rem Optimized: Check Color/B&W switch state change directly
           temp6 = switchbw
-          let temp1 = 0
           if temp6 = colorBWPrevious_R then DoneSwitchChange
-          let temp1 = 1
           gosub DetectControllers bank14
           let colorBWPrevious_W = switchbw
 DoneSwitchChange

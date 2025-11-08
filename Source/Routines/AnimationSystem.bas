@@ -463,15 +463,7 @@ IsPlayerJumping
           return
 
 HandleAnimationTransition
-          rem
-          rem Animation Transition Handling
-          rem Handle frame 7 completion and transition to next action
-          rem
-          rem Input: currentPlayer = player index (0-3)
-          rem Uses: currentAnimationSeq[currentPlayer] to determine
-          rem transition
-          let temp1 = currentAnimationSeq_R[currentPlayer] : rem Get current action
-          rem Guard against invalid action values
+          let temp1 = currentAnimationSeq_R[currentPlayer]
           if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation
           
           on temp1 goto TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionToIdle TransitionHandleFallBack TransitionToFallen TransitionLoopAnimation TransitionToIdle TransitionHandleJump TransitionLoopAnimation TransitionToIdle HandleAttackTransition HandleAttackTransition HandleAttackTransition
@@ -521,29 +513,18 @@ TransitionHandleFallBack_HitWall
           rem Character-specific attack transitions based on patterns
           
 HandleAttackTransition
-          let temp1 = currentAnimationSeq_R[currentPlayer] : rem Branch by attack phase
-          
+          let temp1 = currentAnimationSeq_R[currentPlayer]
           if ActionAttackWindup = temp1 then goto HandleWindupEnd
           if ActionAttackExecute = temp1 then goto HandleExecuteEnd
           if ActionAttackRecovery = temp1 then goto HandleRecoveryEnd
           return
-          
-HandleWindupEnd
-          rem Character-specific windup→next transitions
-          rem Most characters skip windup (go directly to Execute)
-          let temp1 = playerCharacter[currentPlayer] : rem Get character ID
-          rem Dispatch to character-specific windup handler (0-31)
-          rem MethHound (31) mirrors Shamone’s handler (WindupNoOp)
-          if temp1 >= 32 then return
 
-          rem Optimized: Group characters with identical behavior
-          rem WindupToRecovery: Curler (1)
+HandleWindupEnd
+          let temp1 = playerCharacter[currentPlayer]
+          if temp1 >= 32 then return
           if temp1 = 1 then goto WindupToRecovery
-          rem WindupToExecute: FatTony(4), Megax(5), Nefertem(9), PorkChop(11)
           if temp1 = 4 || temp1 = 5 || temp1 = 9 || temp1 = 11 then goto WindupToExecute
-          rem PlaceholderWindup: Characters 16-30
           if temp1 >= 16 && temp1 <= 30 then goto PlaceholderWindup
-          rem WindupNoOp: All others (0,2,3,6,7,8,10,12,13,14,15,31)
 
 WindupNoOp
           return
@@ -562,19 +543,11 @@ PlaceholderWindup
           return
 
 HandleExecuteEnd
-          let temp1 = playerCharacter[currentPlayer] : rem Character-specific execute→next transitions
-          rem Dispatch to character-specific execute handler (0-31)
-          rem MethHound (31) mirrors Shamone’s handler (ExecuteToIdle)
+          let temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return
-
-          rem Optimized: Group characters with identical behavior
-          rem ExecuteNoOp: Curler (1)
           if temp1 = 1 then goto ExecuteNoOp
-          rem ExecuteToRecovery: FatTony(4), PorkChop(11)
           if temp1 = 4 || temp1 = 11 then goto ExecuteToRecovery
-          rem HarpyExecute: Harpy (6)
           if temp1 = 6 then goto HarpyExecute
-          rem ExecuteToIdle: All others (0,2,3,5,7,8,9,10,12,13,14,15,16-31)
           
 ExecuteToIdle
           let temp2 = ActionIdle

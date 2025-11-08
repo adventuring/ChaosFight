@@ -20,7 +20,10 @@
 #include "Source/Routines/CharacterAttacks.bas"
 #include "Source/Routines/PerformMeleeAttack.bas"
 #include "Source/Routines/PerformRangedAttack.bas"
-          
+
+rem Moved from Bank 11 for space optimization
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+
           asm
           ; rem Titlescreen graphics and kernel (moved from Bank 1)
           ; rem Titlescreen graphics for admin screens (48×42 bitmaps)

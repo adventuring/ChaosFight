@@ -89,13 +89,10 @@
           rem currentAnimationFrame, currentAnimationSeq) moved to SCRAM
           rem to free zero-page space (var24-var31, var33-var36) for
           rem   frequently-accessed physics variables
-          rem - a,b,c,d: Fall animation vars (Admin Mode) or MissileX
-          rem   (Game Mode)
-          rem - w-z: Animation vars (Admin Mode) or Missile velocities
-          rem   (Game Mode)
-          rem - e: console7800Detected (COMMON) - missileLifetime moved
-          rem
-          rem   to SCRAM w045 to avoid conflict
+          rem - a,b,c,d: Fall animation vars (Admin Mode) or MissileX (Game Mode)
+          rem - w-z: Animation vars (Admin Mode) or missile velocities (Game Mode)
+          rem - e: console7800Detected (COMMON); missileLifetime moved to SCRAM w045
+          rem        to avoid conflict
           rem - selectedArena: Moved from w to w014 (SCRAM) to avoid
           rem   redim conflict
           
@@ -115,19 +112,12 @@
           
           rem COMMON VARS - Standard RAM (a-z) - Sorted Alphabetically
 
-          dim currentPlayer = c : rem Current iteration variables (used in loops across routines)
-          rem Current player index (0-3) for iteration loops
-          rem Set before calling functions that operate on a single
-          rem player
-          rem Used extensively in AnimationSystem, PlayerElimination,
-          dim currentCharacter = n : rem   MovementSystem, and other routines
-          rem Current character index (0-31) for character-specific
-          rem operations
-          rem Set from playerCharacter[currentPlayer] before character
-          rem operations
-          rem Used in SpriteLoader, character-specific logic, etc.
-          rem Reduces temp variable pressure by eliminating parameter
-          rem passing
+          dim currentPlayer = c : rem Current player index (0-3) for iteration loops
+          rem Set before calling per-player routines such as AnimationSystem or PlayerElimination
+          rem Keeps temp registers free by acting as shared loop state
+          dim currentCharacter = n : rem Current character index (0-31) for character logic
+          rem Loaded from playerCharacter[currentPlayer] prior to use to reduce temp reassignments
+          rem Used across SpriteLoader and other character-specific routines
           
           dim gameMode = p : rem Game state and system flags (consolidated to save RAM)
           dim systemFlags = f : rem Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
@@ -187,22 +177,20 @@
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
           
-          rem Console switch handling (used in both Admin Mode and Game
-          rem   Mode)
+          rem Console switch handling (used in both Admin Mode and Game Mode)
           rem OPTIMIZED: Moved from w008 to w012 to free space for
           dim colorBWPrevious_W = w012 : rem   PlayerFrameBuffer (w000-w063)
           dim colorBWPrevious_R = r012
           
-          rem Arena selection (COMMON - used in both Admin and Game
-          rem   Mode)
+          rem Arena selection (COMMON - used in both Admin and Game Mode)
           rem NOTE: Must be in SCRAM since w is REDIMMED between
           rem   Admin/Game modes
           rem NOTE: w010 is used by harpyFlightEnergy array, so using
           dim selectedArena_W = w014 : rem   w014 instead
           dim selectedArena_R = r014
           
-          rem Arena Select fire button hold timer (COMMON - used in
-          dim fireHoldTimer_W = w015 : rem   Admin Mode)
+          rem Arena Select fire button hold timer (COMMON - used in Admin Mode)
+          dim fireHoldTimer_W = w015 : rem   Admin Mode timer
           dim fireHoldTimer_R = r015
           
           rem
@@ -289,17 +277,16 @@
           rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
           dim MusicVoice0TargetAUDV_W = w071 : rem   Admin and Game Mode never run simultaneously
           dim MusicVoice0TargetAUDV_R = r071
-          rem Target AUDV value from note data (for envelope
-          dim MusicVoice1TargetAUDV_W = w072 : rem   calculation)
+          rem Target AUDV value from note data (envelope calculation)
+          dim MusicVoice1TargetAUDV_W = w072 : rem   envelope calculation target
           dim MusicVoice1TargetAUDV_R = r072
-          rem Target AUDV value from note data (for envelope
-          dim MusicVoice0TotalFrames_W = w073 : rem   calculation)
+          rem Total frames (Duration + Delay) captured when the note loaded (voice 0)
+          dim MusicVoice0TotalFrames_W = w073 : rem   envelope duration tracking
           dim MusicVoice0TotalFrames_R = r073
-          rem Total frames (Duration + Delay) when note was loaded (for
-          dim MusicVoice1TotalFrames_W = w074 : rem   envelope calculation)
+          rem Total frames (Duration + Delay) captured when the note loaded (voice 1)
+          dim MusicVoice1TotalFrames_W = w074 : rem   envelope duration tracking
           dim MusicVoice1TotalFrames_R = r074
-          rem Total frames (Duration + Delay) when note was loaded (for
-          rem   envelope calculation)
+          rem Note: Duration + Delay precomputes total sustain time for envelope math
           
           rem Sound Effect System Frame Counters (SCRAM - used in Game
           dim soundEffectFrame_W = w046 : rem   Mode)
@@ -780,14 +767,10 @@
           
           rem NOTE: var0-3 used by playerX (core gameplay, cannot redim)
           rem NOTE: var4-7 used by playerY (core gameplay, cannot redim)
-          rem NOTE: var8-11 used by playerState (core gameplay, cannot
-          rem   redim)
-          rem NOTE: var12-15 used by playerHealth (core gameplay, cannot
-          rem   redim)
-          rem NOTE: var16-19 used by playerRecoveryFrames (core
-          rem   gameplay, cannot redim)
-          rem NOTE: var20-23 used by playerVelocityX (core gameplay,
-          rem   cannot redim)
+          rem NOTE: var8-11 used by playerState (core gameplay, cannot redim)
+          rem NOTE: var12-15 used by playerHealth (core gameplay, cannot redim)
+          rem NOTE: var16-19 used by playerRecoveryFrames (core gameplay, cannot redim)
+          rem NOTE: var20-23 used by playerVelocityX (core gameplay, cannot redim)
           
           rem GAME: Subpixel position and velocity system - IMPLEMENTED
           rem   using batariBASIC 8.8 fixed-point
@@ -851,18 +834,15 @@
           
           dim halfHeight1_W = w099
           dim halfHeight1_R = r099
-          rem Half height of first player for collision overlap
-          rem   calculation
+          rem Half height of first player for collision overlap calculation
           
           dim halfHeight2_W = w100
           dim halfHeight2_R = r100
-          rem Half height of second player for collision overlap
-          rem   calculation
+          rem Half height of second player for collision overlap calculation
           
           dim totalHeight_W = w101
           dim totalHeight_R = r101
-          rem Total height for collision overlap check (halfHeight1 +
-          rem   halfHeight2)
+          rem Total height for collision overlap check (halfHeight1 + halfHeight2)
           
           dim totalWeight_W = w102
           dim totalWeight_R = r102

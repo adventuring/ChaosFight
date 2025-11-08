@@ -76,8 +76,8 @@ ApplyPlayerSpecialMovement
           rem Mutates: temp4 (used for character type lookup)
           rem
           rem Called Routines: None
-          dim APSM_playerIndex = temp1 : rem Constraints: None
-          temp4 = playerCharacter[APSM_playerIndex]
+          rem Constraints: None
+          temp4 = playerCharacter[temp1]
           
           rem Bernie (0) - screen wrap handled in
           rem   CheckBoundaryCollisions

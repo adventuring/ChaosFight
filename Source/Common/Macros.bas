@@ -2,11 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Macros
-
-
-          rem MACROS
-
-
+          rem All macro implementations removed in favor of subroutines.
           rem Note: Array accessor macros removed - use subroutines from
           rem   ArrayAccessors.bas instead
           

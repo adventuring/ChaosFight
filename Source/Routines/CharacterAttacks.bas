@@ -13,9 +13,7 @@ BernieAttack
           rem All other needed data (X, Y, facing direction, etc.) is
           rem   looked up
           rem from the player arrays using temp1 as the index
-          rem Bernie (character 0) - Ground Thump (area-of-effect)
-          rem Bernie (Character 0) - Ground Thump (Area-of-Effect)
-          rem attack
+          rem Bernie (character 0) - Ground Thump area-of-effect attack
           rem
           rem Input: temp1 = attacker player index (0-3)
           rem        playerState[] (global array) = player state flags
@@ -36,18 +34,17 @@ BernieAttack
           rem
           rem Called Routines: PerformMeleeAttack - executes melee
           rem attack, spawns missile
-          dim BA_attackerIndex = temp1 : rem Constraints: None
-          dim BA_originalFacing = temp3
+          rem Constraints: None
           rem Area-of-effect attack: hits both left AND right
           rem simultaneously
-          let BA_originalFacing = playerState[BA_attackerIndex] & PlayerStateBitFacing : rem Save original facing direction
+          let temp3 = playerState[temp1] & PlayerStateBitFacing : rem Save original facing direction
           rem Set animation state (PerformMeleeAttack also sets it, but
           rem we need it set first)
-          let playerState[BA_attackerIndex] = (playerState[BA_attackerIndex] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           gosub PerformMeleeAttack : rem Attack in facing direction
-          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] ^ PlayerStateBitFacing : rem Flip facing (XOR with bit 0)
+          let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing : rem Flip facing (XOR with bit 0)
           gosub PerformMeleeAttack : rem Attack in opposite direction
-          let playerState[BA_attackerIndex] = playerState[BA_attackerIndex] ^ PlayerStateBitFacing : rem Restore original facing (XOR again to flip back)
+          let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing : rem Restore original facing (XOR again to flip back)
           return
 
 CurlerAttack
@@ -143,14 +140,9 @@ MegaxAttack
 
 HarpyAttack
           rem
-          rem Harpy (character 6) - Diagonal Downward Swoop Attack
-          rem Harpy attack moves the character itself in a 45° rapid
-          rem   downward swoop
-          rem Attack hitbox is below the character during the swoop
-          rem 5-frame duration for the swoop attack visual
-          rem No missile is spawned - character movement IS the attack
-          rem Harpy (Character 6) - Diagonal Downward Swoop Attack
-          rem
+          rem Harpy (character 6) - Diagonal downward swoop attack
+          rem Attack moves the character along a 45° downward path; the sprite acts
+          rem   as the hitbox for the 5-frame swoop animation.
           rem Input: temp1 = attacker player index (0-3)
           rem        playerState[] (global array) = player state flags
           rem        characterStateFlags_R[] (global SCRAM array) =
@@ -177,11 +169,6 @@ HarpyAttack
           rem
           rem Constraints: Must be colocated with HarpySetLeftVelocity,
           rem HarpySetVerticalVelocity (called via goto)
-          dim HA_playerIndex = temp1
-          dim HA_facing = temp2
-          dim HA_velocityX = temp4
-          dim HA_velocityY = temp3
-          dim HA_stateFlags = temp5
           
           rem Set attack animation state
           rem Use temp1 directly for indexed addressing (batariBASIC
@@ -189,36 +176,36 @@ HarpyAttack
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
           
-          let HA_facing = playerState[temp1] & PlayerStateBitFacing : rem Get facing direction (bit 0: 0=left, 1=right)
+          let temp2 = playerState[temp1] & PlayerStateBitFacing : rem Get facing direction (bit 0: 0=left, 1=right)
           
           rem Set diagonal velocity at 45° angle (4 pixels/frame
           rem   horizontal, 4 pixels/frame vertical)
-          if HA_facing = 0 then HarpySetLeftVelocity : rem Horizontal: 4 pixels/frame in facing direction
-          let HA_velocityX = 4 : rem Facing right: positive X velocity
+          if temp2 = 0 then HarpySetLeftVelocity : rem Horizontal: 4 pixels/frame in facing direction
+          let temp4 = 4 : rem Facing right: positive X velocity
           goto HarpySetVerticalVelocity
 HarpySetLeftVelocity
           rem Set left-facing velocity for Harpy swoop
           rem
           rem Input: None (called from HarpyAttack)
           rem
-          rem Output: HA_velocityX set to 252 (-4 in signed 8-bit)
+          rem Output: temp4 set to 252 (-4 in signed 8-bit)
           rem
-          rem Mutates: temp4 (HA_velocityX set to 252)
+          rem Mutates: temp4 (temp4 set to 252)
           rem
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with HarpyAttack,
           rem HarpySetVerticalVelocity
           rem Facing left: negative X velocity (252 = -4 in signed
-          let HA_velocityX = 252 : rem   8-bit)
+          let temp4 = 252 : rem   8-bit)
 HarpySetVerticalVelocity
           rem Set vertical velocity for Harpy swoop
           rem
           rem Input: None (called from HarpyAttack)
           rem
-          rem Output: HA_velocityY set to 4, player velocity arrays set
+          rem Output: temp3 set to 4, player velocity arrays set
           rem
-          rem Mutates: temp3 (HA_velocityY set to 4), playerVelocityX[],
+          rem Mutates: temp3 (temp3 set to 4), playerVelocityX[],
           rem playerVelocityXL[],
           rem         playerVelocityY[], playerVelocityYL[],
           rem         playerState[], characterStateFlags_W[]
@@ -228,15 +215,15 @@ HarpySetVerticalVelocity
           rem Constraints: Must be colocated with HarpyAttack,
           rem HarpySetLeftVelocity
           rem Vertical: 4 pixels/frame downward (positive Y = down)
-          let HA_velocityY = 4
+          let temp3 = 4
           
           rem Set player velocity for diagonal swoop (45° angle:
           rem   4px/frame X, 4px/frame Y) - inlined for performance
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-          let playerVelocityX[temp1] = HA_velocityX
+          let playerVelocityX[temp1] = temp4
           let playerVelocityXL[temp1] = 0
-          let playerVelocityY[temp1] = HA_velocityY
+          let playerVelocityY[temp1] = temp3
           let playerVelocityYL[temp1] = 0
           
           rem Set jumping state so character can move vertically during
@@ -255,8 +242,8 @@ HarpySetVerticalVelocity
           rem Fix RMW: Read from _R, modify, write to _W
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-          let HA_stateFlags = characterStateFlags_R[temp1] | 4
-          let characterStateFlags_W[temp1] = HA_stateFlags
+          let temp5 = characterStateFlags_R[temp1] | 4
+          let characterStateFlags_W[temp1] = temp5
           
           rem Attack behavior:
           rem - Character moves diagonally down at 45° (4px/frame X,

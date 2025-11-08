@@ -31,12 +31,11 @@ LoadArena
           rem Called Routines: GetBWMode - determines B&W mode,
           rem LoadRandomArena (if random selected), LoadArenaByIndex -
           rem loads arena data
-          dim LA_arenaIndex = temp1 : rem Constraints: None
-          dim LA_bwMode = temp2
+          rem Constraints: None
           
           if selectedArena_R = RandomArena then LoadRandomArena : rem Handle random arena selection
           
-          let LA_arenaIndex = selectedArena_R : rem Get arena index (0-15)
+          let temp1 = selectedArena_R : rem Get arena index (0-15)
           
           gosub GetBWMode : rem Load playfield and colors
           goto LoadArenaByIndex
@@ -49,9 +48,9 @@ GetBWMode
           rem (global) = system flags (bit 6 =
           rem SystemFlagColorBWOverride)
           rem
-          rem Output: LA_bwMode (temp2) = B&W mode (1=B&W, 0=Color)
+          rem Output: temp2 (temp2) = B&W mode (1=B&W, 0=Color)
           rem
-          rem Mutates: temp2 (LA_bwMode return value)
+          rem Mutates: temp2 (temp2 return value)
           rem
           rem Called Routines: None
           rem
@@ -61,22 +60,22 @@ GetBWMode
           rem   Color mode
           rem systemFlags bit 6 (SystemFlagColorBWOverride) = 1 means
           rem B&W override
-          let LA_bwMode = switchbw : rem   (from 7800 pause button)
-          if systemFlags & SystemFlagColorBWOverride then let LA_bwMode = 1
+          let temp2 = switchbw : rem   (from 7800 pause button)
+          if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           return
 
 LoadArenaByIndex
           rem Load arena playfield and colors by index
           rem
-          rem Input: LA_arenaIndex (temp1) = arena index (0-31),
-          rem LA_bwMode (temp2) = B&W mode (1=B&W, 0=Color),
+          rem Input: temp1 (temp1) = arena index (0-31),
+          rem temp2 (temp2) = B&W mode (1=B&W, 0=Color),
           rem ArenaPF1PointerL[], ArenaPF1PointerH[],
           rem ArenaPF2PointerL[], ArenaPF2PointerH[] (global data
           rem tables) = playfield pointers
           rem
           rem Output: Arena playfield and colors loaded
           rem
-          rem Mutates: temp1 (LA_arenaIndex validated), PF1pointer,
+          rem Mutates: temp1 (temp1 validated), PF1pointer,
           rem PF2pointer (TIA registers) = playfield pointers,
           rem pfcolortable (TIA register) = color table pointer (via
           rem color loaders)
@@ -90,11 +89,11 @@ LoadArenaByIndex
           rem Validate arena index (0-31 supported by pointer tables)
           rem Note: Only 0-15 are selectable (MaxArenaID), but tables
           rem support 0-31
-          if LA_arenaIndex > 31 then let LA_arenaIndex = 0
+          if temp1 > 31 then let temp1 = 0
           
           rem Load playfield pointers from tables using index
           asm
-            ldx LA_arenaIndex
+            ldx temp1
             lda ArenaPF1PointerL,x
             sta PF1pointer
             lda ArenaPF1PointerH,x
@@ -105,14 +104,14 @@ LoadArenaByIndex
             sta PF2pointer+1
 end
           
-          if LA_bwMode then LoadArenaColorsBW : rem Load colors based on B&W mode
+          if temp2 then LoadArenaColorsBW : rem Load colors based on B&W mode
           goto LoadArenaColorsColor
 
 LoadArenaColorsColor
           rem Dispatch to arena-specific color loader based on arena
           rem index (0-31)
           rem
-          rem Input: LA_arenaIndex (temp1) = arena index (0-31)
+          rem Input: temp1 (temp1) = arena index (0-31)
           rem
           rem Output: Arena color table loaded via dispatch to
           rem LoadArenaXColors
@@ -125,19 +124,19 @@ LoadArenaColorsColor
           rem (dispatched based on arena index)
           rem
           rem Constraints: None
-          dim LACC_tempIndex = temp3 : rem Dispatch to color loader based on arena index (0-31)
-          let LACC_tempIndex = LA_arenaIndex
-          if LACC_tempIndex >= 32 then let LACC_tempIndex = 0
-          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena0Colors LoadArena1Colors LoadArena2Colors LoadArena3Colors LoadArena4Colors LoadArena5Colors LoadArena6Colors LoadArena7Colors : rem Dispatch to arena 0-7
-          if LACC_tempIndex < 8 then goto DoneArenaColorLoad
-          let LACC_tempIndex = LACC_tempIndex - 8 : rem Dispatch to arena 8-15
-          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena8Colors LoadArena9Colors LoadArena10Colors LoadArena11Colors LoadArena12Colors LoadArena13Colors LoadArena14Colors LoadArena15Colors
-          if LACC_tempIndex < 8 then goto DoneArenaColorLoad
-          let LACC_tempIndex = LACC_tempIndex - 8 : rem Dispatch to arena 16-23
-          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena16Colors LoadArena17Colors LoadArena18Colors LoadArena19Colors LoadArena20Colors LoadArena21Colors LoadArena22Colors LoadArena23Colors
-          if LACC_tempIndex < 8 then goto DoneArenaColorLoad
-          let LACC_tempIndex = LACC_tempIndex - 8 : rem Dispatch to arena 24-31
-          if LACC_tempIndex < 8 then on LACC_tempIndex goto LoadArena24Colors LoadArena25Colors LoadArena26Colors LoadArena27Colors LoadArena28Colors LoadArena29Colors LoadArena30Colors LoadArena31Colors
+          rem Dispatch to color loader based on arena index (0-31)
+          let temp3 = temp1
+          if temp3 >= 32 then let temp3 = 0
+          if temp3 < 8 then on temp3 goto LoadArena0Colors LoadArena1Colors LoadArena2Colors LoadArena3Colors LoadArena4Colors LoadArena5Colors LoadArena6Colors LoadArena7Colors : rem Dispatch to arena 0-7
+          if temp3 < 8 then goto DoneArenaColorLoad
+          let temp3 = temp3 - 8 : rem Dispatch to arena 8-15
+          if temp3 < 8 then on temp3 goto LoadArena8Colors LoadArena9Colors LoadArena10Colors LoadArena11Colors LoadArena12Colors LoadArena13Colors LoadArena14Colors LoadArena15Colors
+          if temp3 < 8 then goto DoneArenaColorLoad
+          let temp3 = temp3 - 8 : rem Dispatch to arena 16-23
+          if temp3 < 8 then on temp3 goto LoadArena16Colors LoadArena17Colors LoadArena18Colors LoadArena19Colors LoadArena20Colors LoadArena21Colors LoadArena22Colors LoadArena23Colors
+          if temp3 < 8 then goto DoneArenaColorLoad
+          let temp3 = temp3 - 8 : rem Dispatch to arena 24-31
+          if temp3 < 8 then on temp3 goto LoadArena24Colors LoadArena25Colors LoadArena26Colors LoadArena27Colors LoadArena28Colors LoadArena29Colors LoadArena30Colors LoadArena31Colors
 DoneArenaColorLoad
           return
 
@@ -171,7 +170,7 @@ LoadRandomArena
           rem
           rem Output: Random arena loaded via LoadArenaByIndex
           rem
-          rem Mutates: temp1 (LA_arenaIndex set to random value), rand
+          rem Mutates: temp1 (temp1 set to random value), rand
           rem (global) = random number generator state
           rem
           rem Called Routines: LoadArenaByIndex (tail call) - loads
@@ -179,8 +178,8 @@ LoadRandomArena
           rem
           rem Constraints: None
           rem Select random arena (0-15) using proper RNG
-          let LA_arenaIndex = rand : rem Get random value (0-255)
-          let LA_arenaIndex = LA_arenaIndex & 15 : rem Mask to 0-15 range
+          let temp1 = rand : rem Get random value (0-255)
+          let temp1 = temp1 & 15 : rem Mask to 0-15 range
           goto LoadArenaByIndex
 
 LoadArena0Colors
@@ -892,9 +891,9 @@ ReloadArenaColors
           if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           
 ReloadArenaColorsDispatch
-          let LA_arenaIndex = temp1 : rem Set up for LoadArenaColorsColor/LoadArenaColorsBW
-          let LA_bwMode = temp2
+          let temp1 = temp1 : rem Set up for LoadArenaColorsColor/LoadArenaColorsBW
+          let temp2 = temp2
           
-          if LA_bwMode then goto LoadArenaColorsBW : rem Use existing LoadArena color functions (identical behavior)
+          if temp2 then goto LoadArenaColorsBW : rem Use existing LoadArena color functions (identical behavior)
           goto LoadArenaColorsColor
 

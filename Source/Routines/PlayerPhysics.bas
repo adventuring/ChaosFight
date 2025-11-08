@@ -70,33 +70,28 @@ PhysicsApplyGravity
           rem Constraints: Frooty (8) and Dragon of Storms (2) skip
           rem gravity entirely. RoboTito (13) skips gravity when latched
           rem to ceiling
-          dim PAG_playerIndex = temp1
-          dim PAG_playfieldColumn = temp2
-          dim PAG_feetY = temp3
-          dim PAG_feetRow = temp4
-          dim PAG_characterType = temp6
-          let PAG_playerIndex = 0 : rem Loop through all players (0-3)
+          let temp1 = 0 : rem Loop through all players (0-3)
 GravityLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
-          if PAG_playerIndex < 2 then GravityCheckCharacter : rem   Quadtari)
+          if temp1 < 2 then GravityCheckCharacter : rem   Quadtari)
           if !(controllerStatus & SetQuadtariDetected) then goto GravityNextPlayer : rem Players 0-1 always active
-          if PAG_playerIndex = 2 && selectedCharacter3_R = 255 then goto GravityNextPlayer
-          if PAG_playerIndex = 3 && selectedCharacter4_R = 255 then goto GravityNextPlayer
+          if temp1 = 2 && selectedCharacter3_R = 255 then goto GravityNextPlayer
+          if temp1 = 3 && selectedCharacter4_R = 255 then goto GravityNextPlayer
           
 GravityCheckCharacter
-          let PAG_characterType = playerCharacter[PAG_playerIndex]
+          let temp6 = playerCharacter[temp1]
           
           rem Skip gravity for characters that do not have it
-          if PAG_characterType = CharacterFrooty then goto GravityNextPlayer : rem Frooty (8): Permanent flight, no gravity
+          if temp6 = CharacterFrooty then goto GravityNextPlayer : rem Frooty (8): Permanent flight, no gravity
           rem Dragon of Storms (2): Permanent flight, no gravity
-          if PAG_characterType = CharacterDragonOfStorms then goto GravityNextPlayer : rem   (hovering/flying like Frooty)
+          if temp6 = CharacterDragonOfStorms then goto GravityNextPlayer : rem   (hovering/flying like Frooty)
           
-          if PAG_characterType <> CharacterRoboTito then goto GravityCheckRoboTitoDone : rem RoboTito (13): Skip gravity when latched to ceiling
-          if (characterStateFlags_R[PAG_playerIndex] & 1) then goto GravityNextPlayer
+          if temp6 <> CharacterRoboTito then goto GravityCheckRoboTitoDone : rem RoboTito (13): Skip gravity when latched to ceiling
+          if (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
 GravityCheckRoboTitoDone
           rem Latched to ceiling (bit 0 set), skip gravity
           
-          if !(playerState[PAG_playerIndex] & PlayerStateBitJumping) then goto GravityNextPlayer : rem If NOT jumping, skip gravity (player is on ground)
+          if !(playerState[temp1] & PlayerStateBitJumping) then goto GravityNextPlayer : rem If NOT jumping, skip gravity (player is on ground)
           
           rem Initialize or get vertical velocity (using temp variable)
           rem Note: Vertical velocity is not persistent - we will track
@@ -111,7 +106,7 @@ GravityCheckRoboTitoDone
           rem   (8.8 fixed-point subpixel)
           rem Uses tunable constants from Constants.bas for easy
           let gravityRate_W = GravityNormal : rem   adjustment
-          if PAG_characterType = CharacterHarpy then let gravityRate_W = GravityReduced : rem Default gravity acceleration (normal rate)
+          if temp6 = CharacterHarpy then let gravityRate_W = GravityReduced : rem Default gravity acceleration (normal rate)
           rem Harpy: reduced gravity rate
           
           rem Apply gravity acceleration to velocity subpixel part (adds
@@ -119,51 +114,50 @@ GravityCheckRoboTitoDone
           rem playerIndex already set, gravityRate is gravity strength
           rem   in subpixel (low byte)
           rem AddVelocitySubpixelY expects temp2, so save temp2 and use
-          let playfieldColumn_W = PAG_playfieldColumn : rem   it for gravityRate
+          let playfieldColumn_W = temp2 : rem   it for gravityRate
           let temp2 = gravityRate_R : rem Save playfieldColumn temporarily
           gosub AddVelocitySubpixelY
-          let PAG_playfieldColumn = temp2
+          let temp2 = temp2
           rem Restore playfieldColumn
           
           rem Apply terminal velocity cap (prevents infinite
           rem   acceleration)
           rem Check if velocity exceeds terminal velocity (positive =
-          if playerVelocityY[PAG_playerIndex] > TerminalVelocity then let playerVelocityY[PAG_playerIndex] = TerminalVelocity : let playerVelocityYL[PAG_playerIndex] = 0 : rem downward)
+          if playerVelocityY[temp1] > TerminalVelocity then let playerVelocityY[temp1] = TerminalVelocity : let playerVelocityYL[temp1] = 0 : rem downward)
           
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
           gosub ConvertPlayerXToPlayfieldColumn
-          let PAG_playfieldColumn = temp2
+          let temp2 = temp2
           
           rem Calculate row where player feet are (bottom of sprite)
-          let PAG_feetY = playerY[PAG_playerIndex] + PlayerSpriteHeight : rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
-          let temp2 = PAG_feetY : rem Divide by pfrowheight using helper
+          let temp3 = playerY[temp1] + PlayerSpriteHeight : rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
+          let temp2 = temp3 : rem Divide by pfrowheight using helper
           gosub DivideByPfrowheight
-          let PAG_feetRow = temp2
+          let temp4 = temp2
           rem feetRow = row where feet are
           
-          dim PAG_rowBelow = temp5
           rem Check if there is a playfield pixel in the row below the
           rem   feet
-          if PAG_feetRow >= pfrows then goto GravityNextPlayer : rem If feet are in row N, check row N+1 for ground
+          if temp4 >= pfrows then goto GravityNextPlayer : rem If feet are in row N, check row N+1 for ground
           rem Feet are at or below bottom of playfield, continue falling
           
-          let PAG_rowBelow = PAG_feetRow + 1
-          if PAG_rowBelow >= pfrows then goto GravityCheckBottom : rem rowBelow = row below feet
+          let temp5 = temp4 + 1
+          if temp5 >= pfrows then goto GravityCheckBottom : rem rowBelow = row below feet
           rem Beyond playfield bounds, check if at bottom
           
-          if !pfread(PAG_playfieldColumn, PAG_rowBelow) then goto GravityNextPlayer : rem Check if playfield pixel exists in row below feet
+          if !pfread(temp2, temp5) then goto GravityNextPlayer : rem Check if playfield pixel exists in row below feet
           rem No ground pixel found, continue falling
           
           rem Ground detected! Stop falling and clamp position to ground
-          let playerVelocityY[PAG_playerIndex] = 0 : rem Zero Y velocity (stop falling)
-          let playerVelocityYL[PAG_playerIndex] = 0
+          let playerVelocityY[temp1] = 0 : rem Zero Y velocity (stop falling)
+          let playerVelocityYL[temp1] = 0
           
           rem Calculate Y position for top of ground row using repeated
           rem   addition
           let rowYPosition_W = 0 : rem Loop to add pfrowheight to rowYPosition, rowBelow times
-          let rowCounter_W = PAG_rowBelow
+          let rowCounter_W = temp5
           if rowCounter_R = 0 then goto GravityRowCalcDone
 GravityRowCalcLoop
           let rowYPosition_W = rowYPosition_R + pfrowheight
@@ -172,21 +166,21 @@ GravityRowCalcLoop
 GravityRowCalcDone
           rem rowYPosition now contains rowBelow * pfrowheight (Y
           rem   position of top of ground row)
-          let playerY[PAG_playerIndex] = rowYPosition_R - PlayerSpriteHeight : rem Clamp playerY so feet are at top of ground row
-          let playerSubpixelY_W[PAG_playerIndex] = playerY[PAG_playerIndex] : rem Also sync subpixel position
-          let playerSubpixelY_WL[PAG_playerIndex] = 0
+          let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight : rem Clamp playerY so feet are at top of ground row
+          let playerSubpixelY_W[temp1] = playerY[temp1] : rem Also sync subpixel position
+          let playerSubpixelY_WL[temp1] = 0
           
-          let playerState[PAG_playerIndex] = playerState[PAG_playerIndex] & (255 - PlayerStateBitJumping) : rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping) : rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           rem Clear bit 2 (jumping flag)
           
-          if PAG_characterType = CharacterRoboTito then PAG_SetRoboTitoStretchPermission : rem If RoboTito, set stretch permission on landing
+          if temp6 = CharacterRoboTito then PAG_SetRoboTitoStretchPermission : rem If RoboTito, set stretch permission on landing
           goto GravityNextPlayer
           
 PAG_SetRoboTitoStretchPermission
           rem Set RoboTito stretch permission on landing (allows
           rem stretching again)
           rem
-          rem Input: PAGSRTSP_playerIndex (temp1) = player index (0-3),
+          rem Input: temp1 (temp1) = player index (0-3),
           rem roboTitoCanStretch_R (global SCRAM) = stretch permission
           rem flags, BitMask[] (global data table) = bit masks
           rem
@@ -200,20 +194,18 @@ PAG_SetRoboTitoStretchPermission
           rem stretch missile heights
           rem
           rem Called Routines: None
-          dim PAGSRTSP_playerIndex = temp1 : rem Constraints: Only called for RoboTito character on landing
-          dim PAGSRTSP_flags = temp2
-          dim PAGSRTSP_bitMask = temp3
-          let PAGSRTSP_flags = roboTitoCanStretch_R : rem Set stretch permission bit for this player using BitMask array lookup
-          let PAGSRTSP_bitMask = BitMask[PAGSRTSP_playerIndex] : rem Load current flags
-          let PAGSRTSP_flags = PAGSRTSP_flags | PAGSRTSP_bitMask : rem Get bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
-          let roboTitoCanStretch_W = PAGSRTSP_flags : rem Set bit for this player
+          rem Constraints: Only called for RoboTito character on landing
+          let temp2 = roboTitoCanStretch_R : rem Set stretch permission bit for this player using BitMask array lookup
+          let temp3 = BitMask[temp1] : rem Load current flags
+          let temp2 = temp2 | temp3 : rem Get bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
+          let roboTitoCanStretch_W = temp2 : rem Set bit for this player
           rem Store updated permission flags
-          let missileStretchHeight_W[PAGSRTSP_playerIndex] = 0 : rem Clear stretch missile height on landing (not stretching)
+          let missileStretchHeight_W[temp1] = 0 : rem Clear stretch missile height on landing (not stretching)
           return
           
 GravityCheckBottom
           rem At bottom of playfield - treat as ground if feet are at
-          if PAG_feetRow < pfrows - 1 then goto GravityNextPlayer : rem   bottom row
+          if temp4 < pfrows - 1 then goto GravityNextPlayer : rem   bottom row
           rem Not at bottom row yet
           
           rem Bottom row is always ground - clamp to bottom
@@ -229,7 +221,7 @@ GravityBottomCalcDone
           let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight
           let playerState[temp1] = playerState[temp1] & NOT 4
           
-          if PAG_characterType = CharacterRoboTito then PAG_SetRoboTitoStretchPermission : rem If RoboTito, set stretch permission on landing at bottom
+          if temp6 = CharacterRoboTito then PAG_SetRoboTitoStretchPermission : rem If RoboTito, set stretch permission on landing at bottom
           
 GravityNextPlayer
           let temp1 = temp1 + 1 : rem Move to next player
@@ -267,38 +259,38 @@ ApplyMomentumAndRecovery
           rem (decayed)
           rem
           rem Called Routines: None
-          dim AMAR_playerIndex = temp1 : rem Constraints: None
-          let AMAR_playerIndex = 0 : rem Loop through all players (0-3)
+          rem Constraints: None
+          let temp1 = 0 : rem Loop through all players (0-3)
 MomentumRecoveryLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
-          if AMAR_playerIndex < 2 then MomentumRecoveryProcess : rem   Quadtari)
+          if temp1 < 2 then MomentumRecoveryProcess : rem   Quadtari)
           if !(controllerStatus & SetQuadtariDetected) then goto MomentumRecoveryNext : rem Players 0-1 always active
-          if AMAR_playerIndex = 2 && selectedCharacter3_R = 255 then goto MomentumRecoveryNext
-          if AMAR_playerIndex = 3 && selectedCharacter4_R = 255 then goto MomentumRecoveryNext
+          if temp1 = 2 && selectedCharacter3_R = 255 then goto MomentumRecoveryNext
+          if temp1 = 3 && selectedCharacter4_R = 255 then goto MomentumRecoveryNext
           
 MomentumRecoveryProcess
           rem Decrement recovery frames (velocity is applied by
-          if playerRecoveryFrames[AMAR_playerIndex] > 0 then let playerRecoveryFrames[AMAR_playerIndex] = playerRecoveryFrames[AMAR_playerIndex] - 1 : rem   UpdatePlayerMovement)
+          if playerRecoveryFrames[temp1] > 0 then let playerRecoveryFrames[temp1] = playerRecoveryFrames[temp1] - 1 : rem   UpdatePlayerMovement)
           
-          if playerRecoveryFrames[AMAR_playerIndex] > 0 then let playerState[AMAR_playerIndex] = playerState[AMAR_playerIndex] | PlayerStateBitRecovery : rem Synchronize playerState bit 3 with recovery frames
-          if ! playerRecoveryFrames[AMAR_playerIndex] then let playerState[AMAR_playerIndex] = playerState[AMAR_playerIndex] & (255 - PlayerStateBitRecovery) : rem Set bit 3 (recovery flag) when recovery frames > 0
+          if playerRecoveryFrames[temp1] > 0 then let playerState[temp1] = playerState[temp1] | PlayerStateBitRecovery : rem Synchronize playerState bit 3 with recovery frames
+          if ! playerRecoveryFrames[temp1] then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitRecovery) : rem Set bit 3 (recovery flag) when recovery frames > 0
           rem Clear bit 3 (recovery flag) when recovery frames = 0
           
-          if ! playerRecoveryFrames[AMAR_playerIndex] then goto MomentumRecoveryNext : rem Decay velocity if recovery frames active
+          if ! playerRecoveryFrames[temp1] then goto MomentumRecoveryNext : rem Decay velocity if recovery frames active
           rem Velocity decay during recovery (knockback slows down over
-          if playerVelocityX[AMAR_playerIndex] <= 0 then MomentumRecoveryDecayNegative : rem   time)
-          let playerVelocityX[AMAR_playerIndex] = playerVelocityX[AMAR_playerIndex] - 1 : rem Positive velocity: decay by 1
-          if playerVelocityX[AMAR_playerIndex] = 0 then let playerVelocityXL[AMAR_playerIndex] = 0 : rem Also decay subpixel if integer velocity is zero
+          if playerVelocityX[temp1] <= 0 then MomentumRecoveryDecayNegative : rem   time)
+          let playerVelocityX[temp1] = playerVelocityX[temp1] - 1 : rem Positive velocity: decay by 1
+          if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0 : rem Also decay subpixel if integer velocity is zero
           goto MomentumRecoveryNext
 MomentumRecoveryDecayNegative
-          if playerVelocityX[AMAR_playerIndex] >= 0 then goto MomentumRecoveryNext
+          if playerVelocityX[temp1] >= 0 then goto MomentumRecoveryNext
           rem Negative velocity: decay by 1 (add 1 to make less
-          let playerVelocityX[AMAR_playerIndex] = playerVelocityX[AMAR_playerIndex] + 1 : rem   negative)
-          if playerVelocityX[AMAR_playerIndex] = 0 then let playerVelocityXL[AMAR_playerIndex] = 0 : rem Also decay subpixel if integer velocity is zero
+          let playerVelocityX[temp1] = playerVelocityX[temp1] + 1 : rem   negative)
+          if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0 : rem Also decay subpixel if integer velocity is zero
           
 MomentumRecoveryNext
-          let AMAR_playerIndex = AMAR_playerIndex + 1 : rem Next player
-          if AMAR_playerIndex < 4 then goto MomentumRecoveryLoop
+          let temp1 = temp1 + 1 : rem Next player
+          if temp1 < 4 then goto MomentumRecoveryLoop
           
           return
 
@@ -336,48 +328,46 @@ CheckBoundaryCollisions
           rem < 10 wraps to 150, X > 150 wraps to 10). Vertical
           rem boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped
           rem to 80)
-          dim CBC_playerIndex = temp1
-          dim CBC_characterType = temp2
-          let CBC_playerIndex = 0 : rem Loop through all players (0-3)
+          let temp1 = 0 : rem Loop through all players (0-3)
 BoundaryLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
-          if CBC_playerIndex < 2 then BoundaryCheckBounds : rem   Quadtari)
+          if temp1 < 2 then BoundaryCheckBounds : rem   Quadtari)
           if !(controllerStatus & SetQuadtariDetected) then goto BoundaryNextPlayer : rem Players 0-1 always active
-          if CBC_playerIndex = 2 && selectedCharacter3_R = 255 then goto BoundaryNextPlayer
-          if CBC_playerIndex = 3 && selectedCharacter4_R = 255 then goto BoundaryNextPlayer
+          if temp1 = 2 && selectedCharacter3_R = 255 then goto BoundaryNextPlayer
+          if temp1 = 3 && selectedCharacter4_R = 255 then goto BoundaryNextPlayer
           
 BoundaryCheckBounds
           rem All arenas support horizontal wrap-around for players
           rem   (except where walls stop it)
-          dim CBC_arenaIndex = temp3 : rem Handle RandomArena by checking selected arena
-          let CBC_arenaIndex = selectedArena_R
+          rem Handle RandomArena by checking selected arena
+          let temp3 = selectedArena_R
           rem Handle RandomArena (use proper random number generator)
-          if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = rand : let CBC_arenaIndex = CBC_arenaIndex & 15
+          if temp3 = RandomArena then let temp3 = rand : let temp3 = temp3 & 15
           
           rem All arenas: wrap horizontally (walls may block
           rem wrap-around)
-          if playerX[CBC_playerIndex] < 10 then let playerX[CBC_playerIndex] = 150 : rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
-          if playerX[CBC_playerIndex] < 10 then let playerSubpixelX_W[CBC_playerIndex] = 150
-          if playerX[CBC_playerIndex] < 10 then let playerSubpixelX_WL[CBC_playerIndex] = 0
-          if playerX[CBC_playerIndex] > 150 then let playerX[CBC_playerIndex] = 10
-          if playerX[CBC_playerIndex] > 150 then let playerSubpixelX_W[CBC_playerIndex] = 10
-          if playerX[CBC_playerIndex] > 150 then let playerSubpixelX_WL[CBC_playerIndex] = 0
+          if playerX[temp1] < 10 then let playerX[temp1] = 150 : rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
+          if playerX[temp1] < 10 then let playerSubpixelX_W[temp1] = 150
+          if playerX[temp1] < 10 then let playerSubpixelX_WL[temp1] = 0
+          if playerX[temp1] > 150 then let playerX[temp1] = 10
+          if playerX[temp1] > 150 then let playerSubpixelX_W[temp1] = 10
+          if playerX[temp1] > 150 then let playerSubpixelX_WL[temp1] = 0
           
           rem Y position: clamp to screen boundaries (no vertical wrap)
-          if playerY[CBC_playerIndex] < 20 then let playerY[CBC_playerIndex] = 20 : rem Top boundary: clamp to prevent going above screen
-          if playerY[CBC_playerIndex] < 20 then let playerSubpixelY_W[CBC_playerIndex] = 20
-          if playerY[CBC_playerIndex] < 20 then let playerSubpixelY_WL[CBC_playerIndex] = 0
-          if playerY[CBC_playerIndex] < 20 then let playerVelocityY[CBC_playerIndex] = 0
-          if playerY[CBC_playerIndex] < 20 then let playerVelocityYL[CBC_playerIndex] = 0
-          if playerY[CBC_playerIndex] > 80 then let playerY[CBC_playerIndex] = 80 : rem Bottom boundary: clamp to prevent going below screen
-          if playerY[CBC_playerIndex] > 80 then let playerSubpixelY_W[CBC_playerIndex] = 80
-          if playerY[CBC_playerIndex] > 80 then let playerSubpixelY_WL[CBC_playerIndex] = 0
-          if playerY[CBC_playerIndex] > 80 then let playerVelocityY[CBC_playerIndex] = 0
-          if playerY[CBC_playerIndex] > 80 then let playerVelocityYL[CBC_playerIndex] = 0
+          if playerY[temp1] < 20 then let playerY[temp1] = 20 : rem Top boundary: clamp to prevent going above screen
+          if playerY[temp1] < 20 then let playerSubpixelY_W[temp1] = 20
+          if playerY[temp1] < 20 then let playerSubpixelY_WL[temp1] = 0
+          if playerY[temp1] < 20 then let playerVelocityY[temp1] = 0
+          if playerY[temp1] < 20 then let playerVelocityYL[temp1] = 0
+          if playerY[temp1] > 80 then let playerY[temp1] = 80 : rem Bottom boundary: clamp to prevent going below screen
+          if playerY[temp1] > 80 then let playerSubpixelY_W[temp1] = 80
+          if playerY[temp1] > 80 then let playerSubpixelY_WL[temp1] = 0
+          if playerY[temp1] > 80 then let playerVelocityY[temp1] = 0
+          if playerY[temp1] > 80 then let playerVelocityYL[temp1] = 0
 
 BoundaryNextPlayer
-          let CBC_playerIndex = CBC_playerIndex + 1 : rem Move to next player
-          if CBC_playerIndex < 4 then goto BoundaryLoop
+          let temp1 = temp1 + 1 : rem Move to next player
+          if temp1 < 4 then goto BoundaryLoop
           
           return
 

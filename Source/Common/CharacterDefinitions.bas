@@ -211,12 +211,12 @@ GetMissileFlagsSub
           rem     1, 2, 1, 2, 1, 2, 1, 2     ; 2 frames
           rem     4, 5, 6, 7, 4, 5, 6, 7     ; 4 frames
           rem     1, 2, 3, 4, 5, 6, 7, 8     ; 8 frames
-          rem    end
+          rem    end             ; terminate animation table
 
           rem 2. Graphics data (16 bytes bitmap):
           rem    data Character0Graphics
           rem     %01110010, %11010011, ...  ; 16 bytes bitmap data
-          rem    end
+          rem    end             ; terminate bitmap table
 
           rem 3. Frame compaction:
           rem    - Duplicate frames: compact into single frame reference

@@ -30,10 +30,9 @@ LoadSoundPointer
           rem
           rem Constraints: Only 10 sounds (0-9) available. Returns
           rem soundPointerH_W = 0 if sound ID out of bounds
-          dim LSP_soundID = temp1
-          if LSP_soundID > 9 then let soundPointerH_W = 0 : return : rem Bounds check: only 10 sounds (0-9)
-          let SoundPointerL = SoundPointersL[LSP_soundID] : rem Use array access to lookup pointer
-          let soundPointerH_W = SoundPointersH[LSP_soundID]
+          if temp1 > 9 then let soundPointerH_W = 0 : return : rem Bounds check: only 10 sounds (0-9)
+          let SoundPointerL = SoundPointersL[temp1] : rem Use array access to lookup pointer
+          let soundPointerH_W = SoundPointersH[temp1]
           return
           
 LoadSoundNote
@@ -68,44 +67,39 @@ LoadSoundNote
           rem bits) and AUDV (lower 4 bits) from AUDCV. End of sound
           rem marked by Duration = 0 (sets soundEffectPointerH_W = 0 and
           rem AUDV0 = 0). Uses Voice 0 for sound effects
-          dim LSN_audcv = temp2
-          dim LSN_audf = temp3
-          dim LSN_duration = temp4
-          dim LSN_delay = temp5
-          dim LSN_audc = temp6
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
             lda (SoundEffectPointerL),y  ; Load AUDCV
-            sta LSN_audcv
+            sta temp2
             iny
             lda (SoundEffectPointerL),y  ; Load AUDF
-            sta LSN_audf
+            sta temp3
             iny
             lda (SoundEffectPointerL),y  ; Load Duration
-            sta LSN_duration
+            sta temp4
             iny
             lda (SoundEffectPointerL),y  ; Load Delay
-            sta LSN_delay
+            sta temp5
 end
           
           rem Check for end of sound (Duration = 0)
-          if LSN_duration = 0 then let soundEffectPointerH_W = 0 : AUDV0 = 0 : return
+          if temp4 = 0 then let soundEffectPointerH_W = 0 : AUDV0 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          let LSN_audc = LSN_audcv & %11110000 : rem   AUDCV
-          let LSN_audc = LSN_audc / 16
-          let soundEffectID_W = LSN_audcv & %00001111
+          let temp6 = temp2 & %11110000 : rem   AUDCV
+          let temp6 = temp6 / 16
+          let soundEffectID_W = temp2 & %00001111
           
           rem Write to TIA registers (use Voice 0 for sound effects)
-          AUDC0 = LSN_audc
-          AUDF0 = LSN_audf
+          AUDC0 = temp6
+          AUDF0 = temp3
           AUDV0 = soundEffectID_R
           
-          let soundEffectFrame_W = LSN_duration + LSN_delay : rem Set frame counter = Duration + Delay
+          let soundEffectFrame_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          rem Reuse temp2 (LSN_audcv no longer needed) for pointer
+          rem Reuse temp2 (temp2 no longer needed) for pointer
           rem   calculation
           let temp2 = SoundEffectPointerL : rem Fix RMW: Read from _R, modify, write to _W
           let SoundEffectPointerL = temp2 + 4
@@ -144,44 +138,39 @@ LoadSoundNote1
           rem bits) and AUDV (lower 4 bits) from AUDCV. End of sound
           rem marked by Duration = 0 (sets soundEffectPointer1H = 0 and
           rem AUDV1 = 0). Uses Voice 1 for sound effects
-          dim LSN1_audcv = temp2
-          dim LSN1_audf = temp3
-          dim LSN1_duration = temp4
-          dim LSN1_delay = temp5
-          dim LSN1_audc = temp6
           asm
             ; Load 4 bytes from stream[pointer]
             ldy #0
             lda (soundEffectPointer1L),y  ; Load AUDCV
-            sta LSN1_audcv
+            sta temp2
             iny
             lda (soundEffectPointer1L),y  ; Load AUDF
-            sta LSN1_audf
+            sta temp3
             iny
             lda (soundEffectPointer1L),y  ; Load Duration
-            sta LSN1_duration
+            sta temp4
             iny
             lda (soundEffectPointer1L),y  ; Load Delay
-            sta LSN1_delay
+            sta temp5
 end
           
           rem Check for end of sound (Duration = 0)
-          if LSN1_duration = 0 then let soundEffectPointer1H = 0 : AUDV1 = 0 : return
+          if temp4 = 0 then let soundEffectPointer1H = 0 : AUDV1 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          let LSN1_audc = LSN1_audcv & %11110000 : rem   AUDCV
-          let LSN1_audc = LSN1_audc / 16
-          let soundEffectID_W = LSN1_audcv & %00001111
+          let temp6 = temp2 & %11110000 : rem   AUDCV
+          let temp6 = temp6 / 16
+          let soundEffectID_W = temp2 & %00001111
           
           rem Write to TIA registers (use Voice 1 for sound effects)
-          AUDC1 = LSN1_audc
-          AUDF1 = LSN1_audf
+          AUDC1 = temp6
+          AUDF1 = temp3
           AUDV1 = soundEffectID_R
           
-          let soundEffectFrame1_W = LSN1_duration + LSN1_delay : rem Set frame counter = Duration + Delay
+          let soundEffectFrame1_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-          rem Reuse temp2 (LSN1_audcv no longer needed) for pointer
+          rem Reuse temp2 (temp2 no longer needed) for pointer
           let temp2 = soundEffectPointer1L : rem   calculation
           let soundEffectPointer1L = temp2 + 4
           if soundEffectPointer1L < temp2 then let soundEffectPointer1H = soundEffectPointer1H + 1

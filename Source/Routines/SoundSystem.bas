@@ -45,7 +45,6 @@ PlaySoundEffect
           rem Constraints: Music takes priority (no sounds if music
           rem active). No queuing - sound forgotten if both voices busy.
           rem Voice 0 tried first, Voice 1 as fallback
-          dim PSE_soundID = temp1
           if musicVoice0PointerH then return : rem Check if music is active (music takes priority)
           if musicVoice1PointerH then return
           

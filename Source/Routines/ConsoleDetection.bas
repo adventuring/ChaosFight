@@ -108,10 +108,9 @@ Is2600
           
           rem
           rem Console Feature Detection
-          rem Check for console-specific features after detection
+          rem Entry point after base detection; applies console-specific features.
           
 CheckConsoleFeatures
-          rem Check for console-specific features after detection
           rem
           rem Input: systemFlags (global) = system flags (SystemFlag7800
           rem indicates 7800)

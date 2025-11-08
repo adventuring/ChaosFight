@@ -71,8 +71,8 @@ CheckPlayerElimination
           rem variable)
           rem
           rem MUTATES:
-          rem   temp2 = CPE_isEliminated / CPE_health (reused, internal)
-          rem   temp6 = CPE_bitMask (internal)
+          rem   temp2 = temp2 / temp2 (reused, internal)
+          rem   temp6 = temp6 (internal)
           rem WARNING: temp2 and temp6 are mutated during execution. Do
           rem not
           rem   use these temp variables after calling this subroutine.
@@ -110,21 +110,18 @@ CheckPlayerElimination
           rem Constraints: WARNING - temp2 and temp6 are mutated during
           rem execution. Do not use these temp variables after calling
           rem this subroutine.
-          dim CPE_bitMask = temp6
-          dim CPE_isEliminated = temp2
-          dim CPE_health = temp2
-          let CPE_bitMask = BitMask[currentPlayer] : rem Skip if already eliminated
-          let CPE_isEliminated = CPE_bitMask & playersEliminated_R : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if CPE_isEliminated then return 
+          let temp6 = BitMask[currentPlayer] : rem Skip if already eliminated
+          let temp2 = temp6 & playersEliminated_R : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp2 then return 
           rem Already eliminated
           
-          let CPE_health = playerHealth[currentPlayer] : rem Check if health has reached 0
+          let temp2 = playerHealth[currentPlayer] : rem Check if health has reached 0
           
-          if CPE_health then return 
+          if temp2 then return 
           rem Still alive
           
           rem Player health reached 0 - eliminate them
-          let CPE_eliminatedFlags = playersEliminated_R | CPE_bitMask : rem Fix RMW: Read from _R, modify, write to _W
+          let CPE_eliminatedFlags = playersEliminated_R | temp6 : rem Fix RMW: Read from _R, modify, write to _W
           let playersEliminated_W = CPE_eliminatedFlags
           
           rem Update Players34Active flag if Player 3 or 4 was
@@ -145,21 +142,10 @@ UpdatePlayers34Done
 
 TriggerEliminationEffects
           rem
-          rem Trigger Elimination Effects
-          rem Visual and audio effects when player is eliminated.
-          rem
-          rem INPUT: currentPlayer = eliminated player index (0-3)
-          rem (global variable)
-          rem Visual and audio effects when player is eliminated
-          rem
-          rem Input: currentPlayer (global) = eliminated player index
-          rem (0-3), SoundPlayerEliminated (global constant) =
-          rem elimination sound ID
-          rem
-          rem Output: Elimination sound played, visual effect timer set,
-          rem sprite hidden, missiles deactivated
-          rem
-          rem Mutates: temp2 (used for effect timer), temp5 (used for
+          rem Trigger elimination audio/visual effects for currentPlayer.
+          rem Input: currentPlayer (0-3), SoundPlayerEliminated
+          rem Output: Plays sound, configures effect timer, hides sprite, deactivates missiles
+          rem Mutates: temp2, temp5, eliminationTimer[], playerState[], playerX/Y[]
           rem sound ID), player0x, player1x, player2x, player3x (TIA
           rem registers) = sprite positions moved off-screen,
           rem eliminationEffectTimer[] (global array) = effect timers,
@@ -169,15 +155,14 @@ TriggerEliminationEffects
           rem Called Routines: PlaySoundEffect (bank15) - plays
           rem elimination sound, DeactivatePlayerMissiles (tail call) -
           rem removes player missiles
-          dim TEE_soundId = temp5 : rem Constraints: None
-          dim TEE_effectTimer = temp2
-          let TEE_soundId = SoundPlayerEliminated : rem Play elimination sound effect
-          let PSE_soundID = TEE_soundId
+          rem Constraints: None
+          let temp5 = SoundPlayerEliminated : rem Play elimination sound effect
+          let PSE_soundID = temp5
           gosub PlaySoundEffect bank15 : rem PlaySoundEffect expects temp1 (PSE_soundID alias)
           
           rem Set elimination visual effect timer
-          let TEE_effectTimer = 30 : rem This could trigger screen flash, particle effects, etc.
-          let eliminationEffectTimer[currentPlayer] = TEE_effectTimer : rem 30 frames of elimination effect
+          let temp2 = 30 : rem This could trigger screen flash, particle effects, etc.
+          let eliminationEffectTimer[currentPlayer] = temp2 : rem 30 frames of elimination effect
           
           rem Hide player sprite immediately
           if currentPlayer = 0 then player0x = 200 : rem Inline HideEliminatedPlayerSprite
@@ -203,98 +188,50 @@ DeactivatePlayerMissiles
           rem NOTE: This function is now inlined in
           rem
           rem Deactivate Player Missiles
-          rem Remove any active missiles belonging to eliminated player.
-          rem
-          rem INPUT: currentPlayer = player index (0-3) (global
-          rem variable)
-          rem Remove any active missiles belonging to eliminated player
-          rem
-          rem Input: currentPlayer (global) = player index (0-3),
-          rem missileActive (global) = missile active flags
-          rem
-          rem Output: Missile active flag cleared for specified player
-          rem
-          rem Mutates: temp6 (used for bit mask calculation),
-          rem missileActive (global) = missile active flags
-          rem
-          rem Called Routines: None
-          dim DPM_bitMask = temp6 : rem Constraints: None
-          dim DPM_invertedMask = temp6
+          rem Input: currentPlayer (0-3), missileActive flags
+          rem Output: Clears this player's missile bit
+          rem Mutates: temp6, missileActive
           rem Clear missile active bit for this player
-          if currentPlayer = 0 then let DPM_bitMask = 1 : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if currentPlayer = 1 then let DPM_bitMask = 2
-          if currentPlayer = 2 then let DPM_bitMask = 4
-          if currentPlayer = 3 then let DPM_bitMask = 8
-          let DPM_invertedMask = 255 - DPM_bitMask 
-          let missileActive = missileActive & DPM_invertedMask : rem Invert bits for AND mask
+          if currentPlayer = 0 then let temp6 = 1 : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if currentPlayer = 1 then let temp6 = 2
+          if currentPlayer = 2 then let temp6 = 4
+          if currentPlayer = 3 then let temp6 = 8
+          let temp6 = 255 - temp6 
+          let missileActive = missileActive & temp6 : rem Invert bits for AND mask
           
           return
 
 CountRemainingPlayers
           rem
           rem Count Remaining Players
-          rem Count how many players are still alive.
-          rem
-          rem OUTPUT: temp1 = number of remaining players
-          rem Count how many players are still alive (not eliminated)
-          rem
-          rem Input: playersEliminated_R (global SCRAM) = elimination
-          rem flags, PlayerEliminatedPlayer0-3 (global constants) =
-          rem elimination bit masks
-          rem
-          rem Output: playersRemaining (global) = number of remaining
-          rem players, temp1 = count (return value)
-          rem
-          rem Mutates: temp1 (used for count), playersRemaining (global)
-          rem = count of remaining players
-          rem
-          rem Called Routines: None
-          dim CRP_count = temp1 : rem Constraints: None
-          let CRP_count = 0 
+          rem Input: playersEliminated_R (SCRAM flags), PlayerEliminatedPlayer0-3 masks
+          rem Output: playersRemaining (global) and temp1 updated with alive player count
+          rem Mutates: temp1, playersRemaining
+          let temp1 = 0 
           rem Counter
           
-          if !(PlayerEliminatedPlayer0 & playersEliminated_R) then let CRP_count = 1 + CRP_count : rem Check each player
-          if !(PlayerEliminatedPlayer1 & playersEliminated_R) then let CRP_count = 1 + CRP_count : rem Player 1
-          if !(PlayerEliminatedPlayer2 & playersEliminated_R) then let CRP_count = 1 + CRP_count : rem Player 2
-          if !(PlayerEliminatedPlayer3 & playersEliminated_R) then let CRP_count = 1 + CRP_count : rem Player 3
+          if !(PlayerEliminatedPlayer0 & playersEliminated_R) then let temp1 = 1 + temp1 : rem Check each player
+          if !(PlayerEliminatedPlayer1 & playersEliminated_R) then let temp1 = 1 + temp1 : rem Player 1
+          if !(PlayerEliminatedPlayer2 & playersEliminated_R) then let temp1 = 1 + temp1 : rem Player 2
+          if !(PlayerEliminatedPlayer3 & playersEliminated_R) then let temp1 = 1 + temp1 : rem Player 3
           rem Player 4
           
-          let playersRemaining_W = CRP_count
+          let playersRemaining_W = temp1
           return
 
 IsPlayerEliminated
           rem
-          rem Check Game End Condition
-          rem
-          rem Check if game should end (1 or 0 players remaining).
           rem Is Player Eliminated
-          rem Check if specified player is eliminated.
-          rem
-          rem INPUT: currentPlayer = player index (0-3) (global
-          rem variable)
-          rem
-          rem OUTPUT: temp2 = 1 if eliminated, 0 if alive
-          rem Check if specified player is eliminated
-          rem
-          rem Input: currentPlayer (global) = player index (0-3),
-          rem playersEliminated_R (global SCRAM) = elimination flags,
-          rem PlayerEliminatedPlayer0-3 (global constants) = elimination
-          rem bit masks
-          rem
+          rem Input: currentPlayer (0-3), playersEliminated_R, PlayerEliminatedPlayer0-3 masks
           rem Output: temp2 = 1 if eliminated, 0 if alive
-          rem
-          rem Mutates: temp2 (return value), temp6 (used for bit mask)
-          rem
-          rem Called Routines: None
-          dim IPE_bitMask = temp6 : rem Constraints: None
-          dim IPE_isEliminated = temp2
-          if currentPlayer = 0 then let IPE_bitMask = PlayerEliminatedPlayer0 : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if currentPlayer = 1 then let IPE_bitMask = PlayerEliminatedPlayer1
-          if currentPlayer = 2 then let IPE_bitMask = PlayerEliminatedPlayer2
-          if currentPlayer = 3 then let IPE_bitMask = PlayerEliminatedPlayer3
-          let IPE_isEliminated = IPE_bitMask & playersEliminated_R
-          if IPE_isEliminated then let IPE_isEliminated = 1 : goto IsEliminatedDone
-          let IPE_isEliminated = 0
+          rem Mutates: temp2, temp6
+          if currentPlayer = 0 then let temp6 = PlayerEliminatedPlayer0 : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if currentPlayer = 1 then let temp6 = PlayerEliminatedPlayer1
+          if currentPlayer = 2 then let temp6 = PlayerEliminatedPlayer2
+          if currentPlayer = 3 then let temp6 = PlayerEliminatedPlayer3
+          let temp2 = temp6 & playersEliminated_R
+          if temp2 then let temp2 = 1 : goto IsEliminatedDone
+          let temp2 = 0
 IsEliminatedDone
           return
 
@@ -304,67 +241,37 @@ IsPlayerAlive
           rem Check if specified player is alive (not eliminated AND
           rem   health > 0).
           rem
-          rem INPUT: currentPlayer = player index (0-3) (global
-          rem variable)
-          rem
-          rem OUTPUT: temp2 = 1 if alive, 0 if eliminated/dead
-          rem Check if specified player is alive (not eliminated AND
-          rem health > 0)
-          rem
-          rem Input: currentPlayer (global) = player index (0-3),
-          rem playerHealth[] (global array) = player health values,
-          rem playersEliminated_R (global SCRAM) = elimination flags
-          rem
+          rem Input: currentPlayer (0-3), playerHealth[], playersEliminated_R
           rem Output: temp2 = 1 if alive, 0 if eliminated/dead
-          rem
-          rem Mutates: temp2 (return value, reused for isEliminated and
-          rem isAlive), temp3 (used for health check)
-          rem
-          rem Called Routines: IsPlayerEliminated - checks elimination
-          rem flag
-          dim IPA_isEliminated = temp2 : rem Constraints: None
-          dim IPA_health = temp3
-          dim IPA_isAlive = temp2
+          rem Mutates: temp2, temp3
+          rem Calls: IsPlayerEliminated
           gosub IsPlayerEliminated : rem Check elimination flag first
-          let IPA_isEliminated = temp2
-          if IPA_isEliminated then return 
+          let temp2 = temp2
+          if temp2 then return 
           rem Already eliminated
           
-          let IPA_health = playerHealth[currentPlayer] : rem Check health
+          let temp3 = playerHealth[currentPlayer] : rem Check health
           
-          let IPA_isAlive = 0 
-          if IPA_health > 0 then let IPA_isAlive = 1 : rem Default: not alive
+          let temp2 = 0 
+          if temp3 > 0 then let temp2 = 1 : rem Default: not alive
           rem Alive if health > 0
           return
 
 FindWinner
           rem
           rem Find Winner
-          rem Identify the winning player (last one standing).
-          rem Identify the winning player (last one standing)
-          rem
-          rem Input: currentPlayer (global loop variable),
-          rem playersEliminated_R (global SCRAM) = elimination flags,
-          rem eliminationOrder[] (global array) = elimination order
-          rem
-          rem Output: winnerPlayerIndex (global) = winning player index
-          rem (0-3) or 255 if all eliminated
-          rem
-          rem Mutates: temp2 (used for isEliminated check),
-          rem currentPlayer (global loop variable), winnerPlayerIndex
-          rem (global) = winner index
-          rem
-          rem Called Routines: IsPlayerEliminated - checks each player
-          rem elimination status, FindLastEliminated (tail call) - if no
-          rem winner found
-          dim FW_isEliminated = temp2 : rem Constraints: None
+          rem Identify the last standing player.
+          rem Input: currentPlayer (loop), playersEliminated_R, eliminationOrder[]
+          rem Output: winnerPlayerIndex (0-3, 255 if all eliminated)
+          rem Mutates: temp2, currentPlayer, winnerPlayerIndex
+          rem Calls: IsPlayerEliminated, FindLastEliminated (if needed)
           let winnerPlayerIndex = 255 : rem Find the player who is not eliminated
           rem Invalid initially
           
           for currentPlayer = 0 to 3 : rem Check each player using FOR loop
               gosub IsPlayerEliminated
-              let FW_isEliminated = temp2
-              if !FW_isEliminated then let winnerPlayerIndex = currentPlayer
+              let temp2 = temp2
+              if !temp2 then let winnerPlayerIndex = currentPlayer
           next
           
           rem If no winner found (all eliminated), pick last eliminated
@@ -372,61 +279,24 @@ FindWinner
 
 FindLastEliminated
           rem
-          rem Find Last Eliminated
-          rem Find player who was eliminated most recently (highest
-          rem   elimination order).
-          rem Find player who was eliminated most recently (highest
-          rem elimination order)
-          rem
-          rem Input: currentPlayer (global loop variable),
-          rem eliminationOrder[] (global array) = elimination order
-          rem
-          rem Output: winnerPlayerIndex (global) = player with highest
-          rem elimination order (last eliminated)
-          rem
-          rem Mutates: temp4 (used for order comparison), currentPlayer
-          rem (global loop variable), winnerPlayerIndex (global) =
-          rem winner index
-          rem
-          rem Called Routines: None
-          dim FLE_highestOrder = temp4 : rem Constraints: None
-          dim FLE_currentOrder = temp4
-          let FLE_highestOrder = 0    
+          rem Find player eliminated most recently (highest elimination order).
+          rem Input: currentPlayer loop variable, eliminationOrder[]
+          rem Output: winnerPlayerIndex updated to last eliminated player
+          rem Mutates: temp4, currentPlayer, winnerPlayerIndex
+          let temp4 = 0    
           let winnerPlayerIndex = 0 : rem Highest elimination order found
           rem Default winner
           
           for currentPlayer = 0 to 3 : rem Check each player elimination order using FOR loop
-              let FLE_currentOrder = eliminationOrder[currentPlayer]
-              if FLE_currentOrder > FLE_highestOrder then let FLE_highestOrder = FLE_currentOrder : let winnerPlayerIndex = currentPlayer
+              let temp4 = eliminationOrder[currentPlayer]
+              if temp4 > temp4 then let temp4 = temp4 : let winnerPlayerIndex = currentPlayer
           next
           
 UpdatePlayers34ActiveFlag
-          rem
-          rem UPDATE PLAYERS 3/4 ACTIVE FLAG
-          rem Updates the Players34Active flag based on whether players
-          rem   3 or 4
-          rem are selected and not eliminated. Used for missile
-          rem   multiplexing.
-          rem Updates the Players34Active flag based on whether players
-          rem 3 or 4 are selected and not eliminated
-          rem
-          rem Input: selectedCharacter3_R, selectedCharacter4_R (global SCRAM) =
-          rem player 3/4 character selections, playersEliminated_R
-          rem (global SCRAM) = elimination flags,
-          rem PlayerEliminatedPlayer2, PlayerEliminatedPlayer3 (global
-          rem constants) = elimination bit masks, controllerStatus
-          rem (global) = controller state
-          rem
-          rem Output: controllerStatus (global) = controller state with
-          rem Players34Active flag updated
-          rem
-          rem Mutates: controllerStatus (global) = controller state
-          rem flags
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Used for missile multiplexing - flag
-          rem indicates if players 3/4 need missile updates
+          rem Update Players34Active flag when players 3/4 are present.
+          rem Input: selectedCharacter3_R/4_R, playersEliminated_R,
+          rem        PlayerEliminatedPlayer2/3 masks, controllerStatus
+          rem Output: controllerStatus updated with Players34Active flag
           let controllerStatus = controllerStatus & ClearPlayers34Active : rem Clear flag first
           
           if 255 = selectedCharacter3_R then CheckPlayer4ActiveFlag : rem Check if Player 3 is active (selected and not eliminated)

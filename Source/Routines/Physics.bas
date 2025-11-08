@@ -54,18 +54,9 @@ HandleWallCollision
           return
 
 CheckLeftWallCollision
-          rem Check if player hit left wall and needs weight-based
-          rem   bounce
-          rem
-          rem Input: player index (in temp1)
-          rem Check if player hit left wall and needs weight-based
-          rem bounce
-          rem
-          rem Input: temp1 = player index (0-3), playerX[] (global
-          rem array) = player X positions, playerCharacter[] (global array) =
-          rem character types, playerVelocityX[] (global array) = X
-          rem velocities, CharacterWeights[] (global data table) =
-          rem character weights
+          rem Check if player hit left wall; apply weight-based bounce.
+          rem Input: temp1 = player index (0-3), playerX[], playerCharacter[],
+          rem        playerVelocityX[], CharacterWeights[]
           rem
           rem Output: Player bounced if hit left wall (X < 10), position
           rem clamped to 10 if still out of bounds
@@ -84,18 +75,9 @@ CheckLeftWallCollision
           return
 
 CheckRightWallCollision
-          rem Check if player hit right wall and needs weight-based
-          rem   bounce
-          rem
-          rem Input: player index (in temp1)
-          rem Check if player hit right wall and needs weight-based
-          rem bounce
-          rem
-          rem Input: temp1 = player index (0-3), playerX[] (global
-          rem array) = player X positions, playerCharacter[] (global array) =
-          rem character types, playerVelocityX[] (global array) = X
-          rem velocities, CharacterWeights[] (global data table) =
-          rem character weights
+          rem Check if player hit right wall; apply weight-based bounce.
+          rem Input: temp1 = player index (0-3), playerX[], playerCharacter[],
+          rem        playerVelocityX[], CharacterWeights[]
           rem
           rem Output: Player bounced if hit right wall (X > 150),
           rem position clamped to 150 if still out of bounds

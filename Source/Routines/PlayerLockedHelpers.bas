@@ -31,39 +31,37 @@ GetPlayerLocked
           rem extraction)
           rem
           rem Called Routines: None
-          dim GPL_playerIndex = temp1 : rem Constraints: None
-          dim GPL_lockedState = temp2
-          dim GPL_playerLocked = temp3
-          let GPL_playerLocked = playerLocked
+          rem Constraints: None
+          let temp3 = playerLocked
           
           rem Extract 2 bits for this player
           rem Player 0: bits 0-1 (shift right 0, mask %00000011)
           rem Player 1: bits 2-3 (shift right 2, mask %00000011)
           rem Player 2: bits 4-5 (shift right 4, mask %00000011)
-          if GPL_playerIndex = 0 then GPL_ExtractBits0 : rem Player 3: bits 6-7 (shift right 6, mask %00000011)
-          if GPL_playerIndex = 1 then GPL_ExtractBits2
-          if GPL_playerIndex = 2 then GPL_ExtractBits4
-          if GPL_playerIndex = 3 then GPL_ExtractBits6
-          let GPL_lockedState = 0 : rem Invalid index, return 0
+          if temp1 = 0 then GPL_ExtractBits0 : rem Player 3: bits 6-7 (shift right 6, mask %00000011)
+          if temp1 = 1 then GPL_ExtractBits2
+          if temp1 = 2 then GPL_ExtractBits4
+          if temp1 = 3 then GPL_ExtractBits6
+          let temp2 = 0 : rem Invalid index, return 0
           goto GPL_Done
           
 GPL_ExtractBits0
-          let GPL_lockedState = GPL_playerLocked & 3 : rem Player 0: bits 0-1
+          let temp2 = temp3 & 3 : rem Player 0: bits 0-1
           goto GPL_Done
           
 GPL_ExtractBits2
-          let GPL_lockedState = GPL_playerLocked / 4 : rem Player 1: bits 2-3
-          let GPL_lockedState = GPL_lockedState & 3
+          let temp2 = temp3 / 4 : rem Player 1: bits 2-3
+          let temp2 = temp2 & 3
           goto GPL_Done
           
 GPL_ExtractBits4
-          let GPL_lockedState = GPL_playerLocked / 16 : rem Player 2: bits 4-5
-          let GPL_lockedState = GPL_lockedState & 3
+          let temp2 = temp3 / 16 : rem Player 2: bits 4-5
+          let temp2 = temp2 & 3
           goto GPL_Done
           
 GPL_ExtractBits6
-          let GPL_lockedState = GPL_playerLocked / 64 : rem Player 3: bits 6-7
-          let GPL_lockedState = GPL_lockedState & 3
+          let temp2 = temp3 / 64 : rem Player 3: bits 6-7
+          let temp2 = temp2 & 3
           goto GPL_Done
           
 GPL_Done
@@ -93,54 +91,50 @@ SetPlayerLocked
           rem manipulation)
           rem
           rem Called Routines: None
-          dim SPL_playerIndex = temp1 : rem Constraints: None
-          dim SPL_lockedState = temp2
-          dim SPL_playerLocked = temp3
-          dim SPL_mask = temp4
-          dim SPL_cleared = temp5
+          rem Constraints: None
           
-          let SPL_playerLocked = playerLocked : rem Get current playerLocked value
+          let temp3 = playerLocked : rem Get current playerLocked value
           
           rem Clear the 2 bits for this player
           rem Player 0: clear bits 0-1 (mask %11111100)
           rem Player 1: clear bits 2-3 (mask %11110011)
           rem Player 2: clear bits 4-5 (mask %11001111)
-          if SPL_playerIndex = 0 then SPL_ClearBits0 : rem Player 3: clear bits 6-7 (mask %00111111)
-          if SPL_playerIndex = 1 then SPL_ClearBits2
-          if SPL_playerIndex = 2 then SPL_ClearBits4
-          if SPL_playerIndex = 3 then SPL_ClearBits6
+          if temp1 = 0 then SPL_ClearBits0 : rem Player 3: clear bits 6-7 (mask %00111111)
+          if temp1 = 1 then SPL_ClearBits2
+          if temp1 = 2 then SPL_ClearBits4
+          if temp1 = 3 then SPL_ClearBits6
           return
           rem Invalid index, return
           
 SPL_ClearBits0
           rem Player 0: clear bits 0-1 (mask %11111100 = 252)
-          let SPL_mask = 252
-          let SPL_cleared = SPL_playerLocked & SPL_mask
-          let SPL_cleared = SPL_cleared | SPL_lockedState
+          let temp4 = 252
+          let temp5 = temp3 & temp4
+          let temp5 = temp5 | temp2
           goto SPL_Update
           
 SPL_ClearBits2
           rem Player 1: clear bits 2-3 (mask %11110011 = 243)
-          let SPL_mask = 243
-          let SPL_cleared = SPL_playerLocked & SPL_mask
-          let SPL_cleared = SPL_cleared | (SPL_lockedState * 4)
+          let temp4 = 243
+          let temp5 = temp3 & temp4
+          let temp5 = temp5 | (temp2 * 4)
           goto SPL_Update
           
 SPL_ClearBits4
           rem Player 2: clear bits 4-5 (mask %11001111 = 207)
-          let SPL_mask = 207
-          let SPL_cleared = SPL_playerLocked & SPL_mask
-          let SPL_cleared = SPL_cleared | (SPL_lockedState * 16)
+          let temp4 = 207
+          let temp5 = temp3 & temp4
+          let temp5 = temp5 | (temp2 * 16)
           goto SPL_Update
           
 SPL_ClearBits6
           rem Player 3: clear bits 6-7 (mask %00111111 = 63)
-          let SPL_mask = 63
-          let SPL_cleared = SPL_playerLocked & SPL_mask
-          let SPL_cleared = SPL_cleared | (SPL_lockedState * 64)
+          let temp4 = 63
+          let temp5 = temp3 & temp4
+          let temp5 = temp5 | (temp2 * 64)
           goto SPL_Update
           
 SPL_Update
-          let playerLocked = SPL_cleared
+          let playerLocked = temp5
           return
 

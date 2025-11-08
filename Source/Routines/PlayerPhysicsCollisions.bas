@@ -51,35 +51,33 @@ CheckBoundaryCollisions
           rem boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped
           rem to 80). Players 3/4 only checked if Quadtari detected and
           rem selected
-          dim CBC_playerIndex = temp1
-          dim CBC_characterType = temp2
           rem Loop through all players (0-3) - fully inlined to avoid
           rem labels
-          dim CBC_arenaIndex = temp3 : rem Handle RandomArena by checking selected arena (shared for all players)
-          let CBC_arenaIndex = selectedArena_R
-          if CBC_arenaIndex = RandomArena then let CBC_arenaIndex = rand : let CBC_arenaIndex = CBC_arenaIndex & 15 : rem Handle RandomArena (use proper RNG)
+          rem Handle RandomArena by checking selected arena (shared for all players)
+          let temp3 = selectedArena_R
+          if temp3 = RandomArena then let temp3 = rand : let temp3 = temp3 & 15 : rem Handle RandomArena (use proper RNG)
           
-          let CBC_playerIndex = 0 : rem Player 0 - boundaries
+          let temp1 = 0 : rem Player 0 - boundaries
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
           if playerX[0] < 10 then let playerX[0] = 150 : let playerSubpixelX_W[0] = 150 : let playerSubpixelX_WL[0] = 0
           if playerX[0] > 150 then let playerX[0] = 10 : let playerSubpixelX_W[0] = 10 : let playerSubpixelX_WL[0] = 0
           if playerY[0] < 20 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0 : rem Y clamp: top 20, bottom 80
           if playerY[0] > 80 then let playerY[0] = 80 : let playerSubpixelY_W[0] = 80 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
           
-          let CBC_playerIndex = 1 : rem Player 1 - boundaries
+          let temp1 = 1 : rem Player 1 - boundaries
           rem Horizontal wrap: X < 10 wraps to 150, X > 150 wraps to 10
           if playerX[1] < 10 then let playerX[1] = 150 : let playerSubpixelX_W[1] = 150 : let playerSubpixelX_WL[1] = 0
           if playerX[1] > 150 then let playerX[1] = 10 : let playerSubpixelX_W[1] = 10 : let playerSubpixelX_WL[1] = 0
           if playerY[1] < 20 then let playerY[1] = 20 : let playerSubpixelY_W[1] = 20 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0 : rem Y clamp: top 20, bottom 80
           if playerY[1] > 80 then let playerY[1] = 80 : let playerSubpixelY_W[1] = 80 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
           
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then let CBC_playerIndex = 2 : rem Player 2 - boundaries (if Quadtari and active) - inline nested ifs
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then let temp1 = 2 : rem Player 2 - boundaries (if Quadtari and active) - inline nested ifs
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerX[2] < 10 then let playerX[2] = 150 : let playerSubpixelX_W[2] = 150 : let playerSubpixelX_WL[2] = 0
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerX[2] > 150 then let playerX[2] = 10 : let playerSubpixelX_W[2] = 10 : let playerSubpixelX_WL[2] = 0
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerY[2] > 80 then let playerY[2] = 80 : let playerSubpixelY_W[2] = 80 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
           
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then let CBC_playerIndex = 3 : rem Player 3 - boundaries (if Quadtari and active) - inline nested ifs
+          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then let temp1 = 3 : rem Player 3 - boundaries (if Quadtari and active) - inline nested ifs
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerX[3] < 10 then let playerX[3] = 150 : let playerSubpixelX_W[3] = 150 : let playerSubpixelX_WL[3] = 0
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerX[3] > 150 then let playerX[3] = 10 : let playerSubpixelX_W[3] = 10 : let playerSubpixelX_WL[3] = 0
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0

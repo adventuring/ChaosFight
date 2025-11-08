@@ -19,8 +19,3 @@
 #include "Source/Common/Enums.bas"
 #include "Source/Common/Macros.bas"
 #include "Source/Common/Variables.bas"
-
-          rem Restore batariBASIC base equates so generated assembly resolves var0-var47, pf tables, etc.
-          asm
-          include "2600basic.h"
-          end

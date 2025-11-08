@@ -30,35 +30,14 @@ UpdatePlayerMovement
           rem 2. Adds the high bytes (plus carry from low byte addition)
           rem This eliminates the need for manual carry checking and
           rem   propagation.
-          rem Update player movement for all active players
-          rem Called every frame to update subpixel positions
-          rem Update player movement for all active players
-          rem
-          rem Input: currentPlayer (global) = player index (set inline)
-          rem        QuadtariDetected (global) = Quadtari detection flag
-          rem        playerHealth[] (global array) = player health
-          rem        values
-          rem        playerSubpixelX_W[], playerSubpixelX_WL[],
-          rem        playerSubpixelY_W[], playerSubpixelY_WL[] (global
-          rem        SCRAM arrays) = subpixel positions
-          rem        playerVelocityX[], playerVelocityXL[],
-          rem        playerVelocityY[], playerVelocityYL[] (global
-          rem        arrays) = velocities
-          rem        playerX[], playerY[] (global arrays) = integer
-          rem        positions
-          rem
-          rem Output: Player positions updated for all active players
-          rem
-          rem Mutates: currentPlayer (set to 0-3), player positions and
-          rem subpixel positions (via UpdatePlayerMovementSingle)
-          rem
-          rem Called Routines: UpdatePlayerMovementSingle - updates
-          rem movement for one player
-          rem
-          rem Constraints: Must be colocated with
-          rem UpdatePlayerMovementQuadtariSkip (called via goto)
-          rem              Called every frame to update subpixel
-          rem              positions
+          rem Update all active players each frame (integer + subpixel positions).
+          rem Input: currentPlayer (global scratch), QuadtariDetected,
+          rem        playerHealth[], playerSubpixelX/Y (SCRAM arrays),
+          rem        playerVelocityX/Y, playerX[], playerY[]
+          rem Output: Player positions updated for every active player
+          rem Mutates: currentPlayer, player positions (via UpdatePlayerMovementSingle)
+          rem Called Routines: UpdatePlayerMovementSingle
+          rem Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (goto target)
           for currentPlayer = 0 to 1 : rem Update movement for each active player
               gosub UpdatePlayerMovementSingle
           next
@@ -69,71 +48,15 @@ UpdatePlayerMovement
 UpdatePlayerMovementQuadtariSkip
           return
 UpdatePlayerMovementSingle
-          rem Skip Players 2-3 movement update (2-player mode only,
-          rem label only)
-          rem
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with UpdatePlayerMovement
-          rem
-          rem Update movement for a specific player
-          rem
-          rem Input: currentPlayer = player index (0-3) (global
-          rem variable)
-          rem Applies velocity to position with subpixel precision
-          rem batariBASIC automatically handles carry from fractional to
-          rem   integer parts
-          rem
-          rem MUTATES:
-          rem
-          rem   temp2 = UPS_sum16 low byte (16-bit accumulator)
-          rem   temp3 = UPS_sum16 high byte (16-bit accumulator)
-          rem   temp4 = temp4 (internal SCRAM
-          rem   read-modify-write)
-          rem WARNING: temp2, temp3, and temp4 are mutated during
-          rem execution.
-          rem   Do not use these temp variables after calling this
-          rem   subroutine.
-          rem
-          rem EFFECTS:
-          rem   Modifies playerX[], playerY[], playerSubpixelX_W[],
-          rem   playerSubpixelY_W[]
-          rem Update movement for a specific player (applies velocity to
-          rem position with subpixel precision)
-          rem
+          rem Move one player using 8.8 fixed-point velocity integration.
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        playerHealth[] (global array) = player health
-          rem        values
-          rem        playerSubpixelX_W[], playerSubpixelX_WL[],
-          rem        playerSubpixelY_W[], playerSubpixelY_WL[] (global
-          rem        SCRAM arrays) = subpixel positions
-          rem        playerVelocityX[], playerVelocityXL[],
-          rem        playerVelocityY[], playerVelocityYL[] (global
-          rem        arrays) = velocities
-          rem        playerX[], playerY[] (global arrays) = integer
-          rem        positions
-          rem
-          rem Output: Player positions updated (integer and subpixel)
-          rem
-          rem Mutates: temp2, temp3, temp4 (used for calculations),
-          rem playerSubpixelX_W[], playerSubpixelX_WL[],
-          rem         playerSubpixelY_W[], playerSubpixelY_WL[],
-          rem         playerX[], playerY[]
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with XCarry, XNoCarry,
-          rem YCarry, YNoCarry (called via goto)
-          rem              WARNING: temp2, temp3, and temp4 are mutated
-          rem              during execution. Do not use these temp
-          rem              variables after calling this subroutine.
-          dim UPS_sum16 = temp2.temp3 : rem 16-bit accumulator for proper carry detection
+          rem        playerHealth[], playerSubpixelX/Y (SCRAM),
+          rem        playerVelocityX/Y, playerX[], playerY[]
+          rem Output: playerX[]/playerY[] updated (integer + subpixel)
+          rem Mutates: temp2-temp4, playerSubpixelX/Y, playerX[], playerY[]
+          rem Constraints: Must be colocated with XCarry/XNoCarry/YCarry/YNoCarry
+          rem Notes: temp2-temp4 are clobbered; caller must not reuse them afterward.
+          rem 16-bit accumulator for proper carry detection
           if playerHealth[currentPlayer] = 0 then return : rem Skip if player is eliminated
           
           rem
@@ -141,264 +64,127 @@ UpdatePlayerMovementSingle
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem Use 16-bit accumulator to detect carry properly
           rem temp2 = low byte, temp3 = high byte (carry flag)
-          let UPS_sum16 = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
+          let temp2.temp3 = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
           if temp3 > 0 then XCarry
           rem No carry: temp3 = 0, use low byte directly
           let playerSubpixelX_WL[currentPlayer] = temp2
           goto XNoCarry
 XCarry
           let playerSubpixelX_WL[currentPlayer] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
-          rem SCRAM read-modify-write: Read from r049, modify, write to
-          rem w049
+          rem SCRAM RMW: r049 → w049
           let temp4 = playerSubpixelX_R[currentPlayer]
           let temp4 = temp4 + 1
           let playerSubpixelX_W[currentPlayer] = temp4
 XNoCarry
-          rem SCRAM read-modify-write: Read from r049, modify, write to
-          rem w049
+          rem SCRAM RMW: r049 → w049 (apply integer velocity)
           let temp4 = playerSubpixelX_R[currentPlayer]
           let temp4 = temp4 + playerVelocityX[currentPlayer]
           let playerSubpixelX_W[currentPlayer] = temp4
           
-          rem Sync integer position for rendering (high byte is the
-          let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer] : rem   integer part)
+          rem Sync integer position for rendering (high byte is the integer part)
+          let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
           
           rem
           rem Apply Y Velocity To Y Position
           rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
           rem Use 16-bit accumulator to detect carry properly
           rem temp2 = low byte, temp3 = high byte (carry flag)
-          let UPS_sum16 = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]
+          let temp2.temp3 = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]
           if temp3 > 0 then YCarry
           rem No carry: temp3 = 0, use low byte directly
           let playerSubpixelY_WL[currentPlayer] = temp2
           goto YNoCarry
 YCarry
           let playerSubpixelY_WL[currentPlayer] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
-          rem SCRAM read-modify-write: Read from r057, modify, write to
-          rem w057
+          rem SCRAM RMW: r057 → w057
           let temp4 = playerSubpixelY_R[currentPlayer]
           let temp4 = temp4 + 1
           let playerSubpixelY_W[currentPlayer] = temp4
 YNoCarry
-          rem SCRAM read-modify-write: Read from r057, modify, write to
-          rem w057
+          rem SCRAM RMW: r057 → w057 (apply integer velocity)
           let temp4 = playerSubpixelY_R[currentPlayer]
           let temp4 = temp4 + playerVelocityY[currentPlayer]
           let playerSubpixelY_W[currentPlayer] = temp4
           
-          rem Sync integer position for rendering (high byte is the
-          let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer] : rem   integer part)
+          rem Sync integer position for rendering (high byte is the integer part)
+          let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
           
           return
 
 SetPlayerVelocity
-          rem Set player velocity (integer parts only, subpixel parts
-          rem   set to 0)
-          rem
-          rem Input: temp1 = player index (0-3), temp2 = X velocity
-          rem   (integer), temp3 = Y velocity (integer)
-          rem Set player velocity (integer parts only, subpixel parts
-          rem set to 0)
-          rem
-          rem Input: temp1 = player index (0-3), temp2 = X velocity
-          rem (integer), temp3 = Y velocity (integer)
-          rem        playerVelocityX[], playerVelocityXL[],
-          rem        playerVelocityY[], playerVelocityYL[] (global
-          rem        arrays) = velocities
-          rem
-          rem Output: Player velocities set (integer parts only,
-          rem subpixel parts set to 0)
-          rem
-          rem Mutates: playerVelocityX[], playerVelocityXL[],
-          rem playerVelocityY[], playerVelocityYL[]
-          rem
-          rem Called Routines: None
-          dim SPV_playerIndex = temp1 : rem Constraints: None
-          dim SPV_velocityX = temp2
-          dim SPV_velocityY = temp3
-          let playerVelocityX[SPV_playerIndex] = SPV_velocityX
-          let playerVelocityXL[SPV_playerIndex] = 0
-          let playerVelocityY[SPV_playerIndex] = SPV_velocityY
-          let playerVelocityYL[SPV_playerIndex] = 0
+          rem Set player velocity (integer component, reset subpixels).
+          rem Input: temp1 = player index (0-3), temp2 = X velocity, temp3 = Y velocity
+          rem Output: playerVelocityX/Y updated (low bytes cleared)
+          rem Mutates: playerVelocityX[], playerVelocityXL[], playerVelocityY[], playerVelocityYL[]
+          rem Constraints: None
+          let playerVelocityX[temp1] = temp2
+          let playerVelocityXL[temp1] = 0
+          let playerVelocityY[temp1] = temp3
+          let playerVelocityYL[temp1] = 0
           return
 
 SetPlayerPosition
-          rem Set player position (integer parts only, subpixel parts
-          rem   set to 0)
-          rem
-          rem Input: temp1 = player index (0-3), temp2 = X position
-          rem   (integer), temp3 = Y position (integer)
-          rem Set player position (integer parts only, subpixel parts
-          rem set to 0)
-          rem
-          rem Input: temp1 = player index (0-3), temp2 = X position
-          rem (integer), temp3 = Y position (integer)
-          rem        playerX[], playerY[] (global arrays) = integer
-          rem        positions
-          rem        playerSubpixelX_W[], playerSubpixelX_WL[],
-          rem        playerSubpixelY_W[], playerSubpixelY_WL[] (global
-          rem        SCRAM arrays) = subpixel positions
-          rem
-          rem Output: Player positions set (integer and subpixel parts
-          rem set)
-          rem
-          rem Mutates: playerX[], playerY[], playerSubpixelX_W[],
-          rem playerSubpixelX_WL[],
-          rem         playerSubpixelY_W[], playerSubpixelY_WL[]
-          rem
-          rem Called Routines: None
-          dim SPP_playerIndex = temp1 : rem Constraints: None
-          dim SPP_positionX = temp2
-          dim SPP_positionY = temp3
-          let playerX[SPP_playerIndex] = SPP_positionX
-          let playerSubpixelX_W[SPP_playerIndex] = SPP_positionX : rem SCRAM write: Write to w049
-          let playerSubpixelX_WL[SPP_playerIndex] = 0
-          let playerY[SPP_playerIndex] = SPP_positionY
-          let playerSubpixelY_W[SPP_playerIndex] = SPP_positionY : rem SCRAM write: Write to w057
-          let playerSubpixelY_WL[SPP_playerIndex] = 0
+          rem Set player position (integer coordinates, subpixels cleared).
+          rem Input: temp1 = player index (0-3), temp2 = X position, temp3 = Y position
+          rem Output: playerX/Y and subpixel buffers updated
+          rem Mutates: playerX[], playerY[], playerSubpixelX_W/WL[], playerSubpixelY_W/WL[]
+          rem Constraints: None
+          let playerX[temp1] = temp2
+          let playerSubpixelX_W[temp1] = temp2 : rem SCRAM write: Write to w049
+          let playerSubpixelX_WL[temp1] = 0
+          let playerY[temp1] = temp3
+          let playerSubpixelY_W[temp1] = temp3 : rem SCRAM write: Write to w057
+          let playerSubpixelY_WL[temp1] = 0
           return
 
 GetPlayerPosition
-          rem
-          rem Get player position (integer parts only)
-          rem
-          rem Input: currentPlayer = player index (0-3) (global
-          rem variable)
-          rem
-          rem Output: temp2 = X position, temp3 = Y position →
-          rem   GPP_positionX, GPP_positionY
-          rem
-          rem MUTATES:
-          rem   temp2 = GPP_positionX (return value: X position)
-          rem   temp3 = GPP_positionY (return value: Y position)
-          rem WARNING: Callers should read from
-          rem GPP_positionX/GPP_positionY
-          rem   aliases, not temp2/temp3 directly.
-          rem Get player position (integer parts only)
-          rem
+          rem Get player position (integer components only).
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        playerX[], playerY[] (global arrays) = integer
-          rem        positions
-          rem
           rem Output: temp2 = X position, temp3 = Y position
-          rem
-          rem Mutates: temp2, temp3 (set to position values)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: WARNING: Callers should read from
-          rem GPP_positionX/GPP_positionY aliases, not temp2/temp3
-          rem directly.
-          dim GPP_positionX = temp2
-          dim GPP_positionY = temp3
-          let GPP_positionX = playerX[currentPlayer]
-          let GPP_positionY = playerY[currentPlayer]
+          rem Mutates: temp2, temp3
+          rem Constraints: Callers should consume the values immediately; temps are volatile.
+          let temp2 = playerX[currentPlayer]
+          let temp3 = playerY[currentPlayer]
           return
 
 GetPlayerVelocity
-          rem
-          rem Get player velocity (integer parts only)
-          rem
-          rem Input: currentPlayer = player index (0-3) (global
-          rem variable)
-          rem
-          rem Output: temp2 = X velocity, temp3 = Y velocity →
-          rem   GPV_velocityX, GPV_velocityY
-          rem
-          rem MUTATES:
-          rem   temp2 = GPV_velocityX (return value: X velocity)
-          rem   temp3 = GPV_velocityY (return value: Y velocity)
-          rem WARNING: Callers should read from
-          rem GPV_velocityX/GPV_velocityY
-          rem   aliases, not temp2/temp3 directly.
-          rem Get player velocity (integer parts only)
-          rem
+          rem Get player velocity (integer components only).
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        playerVelocityX[], playerVelocityY[] (global
-          rem        arrays) = velocities
-          rem
+          rem        playerVelocityX[], playerVelocityY[] (global arrays)
           rem Output: temp2 = X velocity, temp3 = Y velocity
-          rem
-          rem Mutates: temp2, temp3 (set to velocity values)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: WARNING: Callers should read from
-          rem GPV_velocityX/GPV_velocityY aliases, not temp2/temp3
-          rem directly.
-          dim GPV_velocityX = temp2
-          dim GPV_velocityY = temp3
-          let GPV_velocityX = playerVelocityX[currentPlayer]
-          let GPV_velocityY = playerVelocityY[currentPlayer]
+          rem Mutates: temp2, temp3
+          rem Constraints: Callers should use the values immediately; temps are volatile.
+          let temp2 = playerVelocityX[currentPlayer]
+          let temp3 = playerVelocityY[currentPlayer]
           return
 
 MovementApplyGravity
-          rem Apply gravity to player velocity (adds to Y velocity)
-          rem
-          rem Input: temp1 = player index (0-3), temp2 = gravity
-          rem   strength (integer, positive = downward)
-          rem NOTE: For subpixel gravity, call AddVelocitySubpixelY
-          rem   separately
-          rem Apply gravity to player velocity (adds to Y velocity,
-          rem integer part only)
-          rem
-          rem Input: temp1 = player index (0-3), temp2 = gravity
-          rem strength (integer, positive = downward), playerVelocityY[]
-          rem (global array) = Y velocities
-          rem
-          rem Output: Y velocity increased by gravity strength
-          rem
-          rem Mutates: playerVelocityY[] (global array) = Y velocity
-          rem (incremented)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Integer gravity only. For subpixel gravity,
-          rem call AddVelocitySubpixelY separately
-          dim MAG_playerIndex = temp1
-          dim MAG_gravityStrength = temp2
-          let playerVelocityY[MAG_playerIndex] = playerVelocityY[MAG_playerIndex] + MAG_gravityStrength
+          rem Apply gravity to player velocity (integer component only).
+          rem Input: temp1 = player index (0-3), temp2 = gravity strength (integer, positive downward)
+          rem Output: playerVelocityY[] incremented by gravity strength
+          rem Mutates: playerVelocityY[]
+          rem Constraints: For subpixel gravity, call AddVelocitySubpixelY separately
+          let playerVelocityY[temp1] = playerVelocityY[temp1] + temp2
           return
 
 AddVelocitySubpixelY
-          rem Add to Y velocity subpixel part (for fractional gravity)
-          rem
-          rem Input: temp1 = player index (0-3), temp2 = subpixel amount
-          rem   to add (0-255)
-          rem If overflow occurs (>255), carry to integer part
-          rem Add to Y velocity subpixel part (for fractional gravity)
-          rem
-          rem Input: temp1 = player index (0-3), temp2 = subpixel amount
-          rem to add (0-255), playerVelocityY[], playerVelocityYL[]
-          rem (global arrays) = Y velocities
-          rem
-          rem Output: Y velocity subpixel part incremented, integer part
-          rem incremented if overflow occurs
-          rem
-          rem Mutates: temp2-temp4 (used for calculations),
-          rem playerVelocityY[], playerVelocityYL[] (global arrays) = Y
-          rem velocities (subpixel incremented, integer incremented on
-          rem carry)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: If overflow occurs (>255), carry to integer
-          rem part. Uses 16-bit accumulator for proper carry detection
-          dim AVSY_playerIndex = temp1
-          dim AVSY_subpixelAmount = temp2
-          dim AVSY_subpixelAmountSaved = temp4 : rem Save subpixel amount before using temp2 for accumulator
-          let AVSY_subpixelAmountSaved = AVSY_subpixelAmount
-          dim AVSY_sum16 = temp2.temp3 : rem 16-bit accumulator for proper carry detection
-          let AVSY_sum16 = playerVelocityYL[AVSY_playerIndex] + AVSY_subpixelAmountSaved : rem Use saved amount in accumulator
+          rem Add fractional gravity to Y velocity (subpixel component).
+          rem Input: temp1 = player index (0-3), temp2 = subpixel amount (0-255)
+          rem Output: playerVelocityYL[] incremented; playerVelocityY[] increments on carry
+          rem Mutates: temp2-temp4, playerVelocityY[], playerVelocityYL[]
+          rem Constraints: Uses 16-bit accumulator; carry promotes to integer component
+          rem Save subpixel amount before using temp2 for accumulator
+          let temp4 = temp2
+          rem 16-bit accumulator for proper carry detection
+          let temp2.temp3 = playerVelocityYL[temp1] + temp4 : rem Use saved amount in accumulator
           if temp3 > 0 then VelocityYCarry
           rem No carry: temp3 = 0, use low byte directly
-          let playerVelocityYL[AVSY_playerIndex] = temp2
+          let playerVelocityYL[temp1] = temp2
           return
 VelocityYCarry
           rem Helper: Handles carry from subpixel to integer part
           rem
-          rem Input: temp2 = wrapped low byte, AVSY_playerIndex = player
+          rem Input: temp2 = wrapped low byte, temp1 = player
           rem index, playerVelocityY[] (global array) = Y velocities
           rem
           rem Output: Subpixel part set, integer part incremented
@@ -411,40 +197,24 @@ VelocityYCarry
           rem
           rem Constraints: Internal helper for AddVelocitySubpixelY,
           rem only called when carry detected
-          let playerVelocityYL[AVSY_playerIndex] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
-          let playerVelocityY[AVSY_playerIndex] = playerVelocityY[AVSY_playerIndex] + 1
+          let playerVelocityYL[temp1] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
+          let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
           return
 
 ApplyFriction
-          rem Apply friction to player X velocity (simple approximation)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem NOTE: Simple decrement approach for 8-bit CPU
-          rem Apply friction to player X velocity (simple approximation
-          rem using decrement/increment)
-          rem
-          rem Input: temp1 = player index (0-3), playerVelocityX[],
-          rem playerVelocityXL[] (global arrays) = X velocities
-          rem
-          rem Output: X velocity reduced by 1 (positive velocities
-          rem decremented, negative velocities incremented), subpixel
-          rem zeroed if velocity reaches zero
-          rem
-          rem Mutates: playerVelocityX[], playerVelocityXL[] (global
-          rem arrays) = X velocities (reduced by 1, subpixel zeroed if
-          rem zero)
-          rem
-          rem Called Routines: None
+          rem Apply friction to player X velocity (simple decrement/increment).
+          rem Input: temp1 = player index (0-3), playerVelocityX[], playerVelocityXL[]
+          rem Output: X velocity reduced by 1 toward zero; subpixel cleared when velocity hits zero
+          rem Mutates: playerVelocityX[], playerVelocityXL[]
           rem
           rem Constraints: Simple decrement approach for 8-bit CPU.
           rem Positive velocities (>0 and not negative) decremented,
           rem negative velocities (≥128 in two’s complement) incremented
-          dim AF_playerIndex = temp1
-          if playerVelocityX[AF_playerIndex] > 0 && !(playerVelocityX[AF_playerIndex] & $80) then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] - 1
+          if playerVelocityX[temp1] > 0 && !(playerVelocityX[temp1] & $80) then let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
           rem Check for negative velocity using twos complement (values
           rem ≥ 128 are negative)
-          if playerVelocityX[AF_playerIndex] & $80 then let playerVelocityX[AF_playerIndex] = playerVelocityX[AF_playerIndex] + 1
-          if playerVelocityX[AF_playerIndex] = 0 then let playerVelocityXL[AF_playerIndex] = 0 : rem Also zero subpixel if velocity reaches zero
+          if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
+          if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0 : rem Also zero subpixel if velocity reaches zero
           return
 
 CheckPlayerCollision
@@ -453,24 +223,18 @@ CheckPlayerCollision
           rem Check collision between two players using integer
           rem   positions
           rem
-          rem Input: temp1 = player 1 index → CPC_player1Index
-          rem        temp2 = player 2 index → CPC_player2Index
+          rem Input: temp1 = player 1 index → temp1
+          rem        temp2 = player 2 index → temp2
           rem
           rem Output: temp3 = 1 if collision, 0 if not →
-          rem CPC_collisionResult
+          rem temp3
           rem NOTE: Uses integer positions only (subpixel ignored for
           rem   collision)
           rem
           rem MUTATES:
-          rem   temp3 = CPC_collisionResult (return value: 1 if
-          rem   collision, 0 if not)
+          rem   temp3 = temp3 (return value: 1 if collision, 0 if not)
           rem   temp4-temp13 = Used internally for calculations
-          rem   alias, not
-          rem WARNING: Callers should read from CPC_collisionResult
-          rem   execution.
-          rem temp3 directly. All temp4-temp13 are mutated during
-          rem Check collision between two players using integer
-          rem positions (subpixel ignored)
+          rem WARNING: Callers should read temp3 immediately; helper mutates temps for calculations.
           rem
           rem Input: temp1 = player 1 index (0-3), temp2 = player 2
           rem index (0-3), playerX[], playerY[] (global arrays) = player
@@ -486,106 +250,72 @@ CheckPlayerCollision
           rem
           rem Constraints: Uses integer positions only (subpixel ignored
           rem for collision). Checks X collision (16 pixel width) and Y
-          rem collision (using CharacterHeights table). WARNING: Callers
-          rem should read from CPC_collisionResult alias, not temp3
-          rem directly. Uses temp1-temp9 (temp4-7 reused after X/Y
-          rem checks)
-          dim CPC_player1Index = temp1
-          dim CPC_player2Index = temp2
-          dim CPC_collisionResult = temp3
-          dim CPC_tempPrimary = temp4
-          dim CPC_tempSecondary = temp5
-          dim CPC_tempDelta = temp6
+          rem collision (using CharacterHeights table). WARNING: temp3 is mutated during the routine; callers must read it immediately.
+          rem Uses temp1-temp9 (temp4-7 reused after X/Y checks)
 
           rem Load player X positions into temporaries
-          let CPC_tempPrimary = playerX[CPC_player1Index]
-          let CPC_tempSecondary = playerX[CPC_player2Index]
+          let temp4 = playerX[temp1]
+          let temp5 = playerX[temp2]
 
           rem Calculate absolute X distance between players
-          if CPC_tempPrimary >= CPC_tempSecondary then CalcXDistanceRight : rem Primary holds player1 X initially
-          let CPC_tempDelta = CPC_tempSecondary - CPC_tempPrimary
+          if temp4 >= temp5 then CalcXDistanceRight : rem Primary holds player1 X initially
+          let temp6 = temp5 - temp4
           goto XDistanceDone
 CalcXDistanceRight
-          let CPC_tempDelta = CPC_tempPrimary - CPC_tempSecondary
+          let temp6 = temp4 - temp5
 XDistanceDone
-          if CPC_tempDelta >= PlayerSpriteWidth then NoCollision
+          if temp6 >= PlayerSpriteWidth then NoCollision
 
           rem Load player Y positions (reuse temporaries)
-          let CPC_tempPrimary = playerY[CPC_player1Index]
-          let CPC_tempSecondary = playerY[CPC_player2Index]
+          let temp4 = playerY[temp1]
+          let temp5 = playerY[temp2]
 
           rem Fetch character half-height values using shared SCRAM scratch variables
-          let characterIndex_W = playerCharacter[CPC_player1Index]
+          let characterIndex_W = playerCharacter[temp1]
           let characterHeight_W = CharacterHeights[characterIndex_R]
           let halfHeight1_W = characterHeight_R / 2
 
-          let characterIndex_W = playerCharacter[CPC_player2Index]
+          let characterIndex_W = playerCharacter[temp2]
           let characterHeight_W = CharacterHeights[characterIndex_R]
           let halfHeight2_W = characterHeight_R / 2
 
           rem Compute absolute Y distance between player centers
-          if CPC_tempPrimary >= CPC_tempSecondary then CalcYDistanceDown
-          let CPC_tempDelta = CPC_tempSecondary - CPC_tempPrimary
+          if temp4 >= temp5 then CalcYDistanceDown
+          let temp6 = temp5 - temp4
           goto YDistanceDone
 CalcYDistanceDown
-          let CPC_tempDelta = CPC_tempPrimary - CPC_tempSecondary
+          let temp6 = temp4 - temp5
 YDistanceDone
           let totalHeight_W = halfHeight1_R + halfHeight2_R
-          if CPC_tempDelta >= totalHeight_R then NoCollision
+          if temp6 >= totalHeight_R then NoCollision
 
-          let CPC_collisionResult = 1 : rem Collision detected
+          let temp3 = 1 : rem Collision detected
           return
-          rem Return value set in alias (temp3 is set but use alias
-          rem instead)
-          
+
 NoCollision
-          let CPC_collisionResult = 0
-          rem   instead)
+          let temp3 = 0
           return
 ConstrainToScreen
-          rem Return value set in alias (temp3 is set but use alias
-          rem
-          rem Movement Constraints
-          rem Constrain player to screen bounds
-          rem
+          rem Clamp player position to on-screen bounds and clear subpixels at edges.
           rem Input: temp1 = player index (0-3)
-          rem Clamps integer positions and zeros subpixel parts at
-          rem   boundaries
-          rem Constrain player to screen bounds (clamps integer
-          rem positions and zeros subpixel parts at boundaries)
-          rem
-          rem Input: temp1 = player index (0-3), playerX[], playerY[]
-          rem (global arrays) = integer positions, playerSubpixelX_W[],
-          rem playerSubpixelX_WL[], playerSubpixelY_W[],
-          rem playerSubpixelY_WL[] (global SCRAM arrays) = subpixel
-          rem positions
-          rem
-          rem Output: Player positions clamped to screen bounds (X:
-          rem 10-150, Y: 20-80), subpixel parts zeroed at boundaries
-          rem
-          rem Mutates: playerX[], playerY[] (global arrays) = integer
-          rem positions (clamped), playerSubpixelX_W[],
-          rem playerSubpixelX_WL[], playerSubpixelY_W[],
-          rem playerSubpixelY_WL[] (global SCRAM arrays) = subpixel
-          rem positions (set to clamped values, low bytes zeroed)
-          rem
-          rem Called Routines: None
-          dim CTS_playerIndex = temp1 : rem Constraints: X bounds: 10-150, Y bounds: 20-80
+          rem Output: playerX/Y constrained to 10-150 (X) and 20-80 (Y); subpixels zeroed at clamps
+          rem Mutates: playerX[], playerY[], playerSubpixelX_W/WL[], playerSubpixelY_W/WL[]
+          rem Constraints: X bounds 10-150, Y bounds 20-80
           rem Constrain X position (10 to 150 for screen bounds)
-          if playerX[CTS_playerIndex] < 10 then let playerX[CTS_playerIndex] = 10 : rem SCRAM write: Write to w049
-          if playerX[CTS_playerIndex] < 10 then let playerSubpixelX_W[CTS_playerIndex] = 10
-          if playerX[CTS_playerIndex] < 10 then let playerSubpixelX_WL[CTS_playerIndex] = 0
-          if playerX[CTS_playerIndex] > 150 then let playerX[CTS_playerIndex] = 150
-          if playerX[CTS_playerIndex] > 150 then let playerSubpixelX_W[CTS_playerIndex] = 150
-          if playerX[CTS_playerIndex] > 150 then let playerSubpixelX_WL[CTS_playerIndex] = 0
+          if playerX[temp1] < 10 then let playerX[temp1] = 10 : rem SCRAM write: Write to w049
+          if playerX[temp1] < 10 then let playerSubpixelX_W[temp1] = 10
+          if playerX[temp1] < 10 then let playerSubpixelX_WL[temp1] = 0
+          if playerX[temp1] > 150 then let playerX[temp1] = 150
+          if playerX[temp1] > 150 then let playerSubpixelX_W[temp1] = 150
+          if playerX[temp1] > 150 then let playerSubpixelX_WL[temp1] = 0
           
           rem Constrain Y position (20 to 80 for screen bounds)
-          if playerY[CTS_playerIndex] < 20 then let playerY[CTS_playerIndex] = 20 : rem SCRAM write: Write to w057
-          if playerY[CTS_playerIndex] < 20 then let playerSubpixelY_W[CTS_playerIndex] = 20
-          if playerY[CTS_playerIndex] < 20 then let playerSubpixelY_WL[CTS_playerIndex] = 0
-          if playerY[CTS_playerIndex] > 80 then let playerY[CTS_playerIndex] = 80
-          if playerY[CTS_playerIndex] > 80 then let playerSubpixelY_W[CTS_playerIndex] = 80
-          if playerY[CTS_playerIndex] > 80 then let playerSubpixelY_WL[CTS_playerIndex] = 0
+          if playerY[temp1] < 20 then let playerY[temp1] = 20 : rem SCRAM write: Write to w057
+          if playerY[temp1] < 20 then let playerSubpixelY_W[temp1] = 20
+          if playerY[temp1] < 20 then let playerSubpixelY_WL[temp1] = 0
+          if playerY[temp1] > 80 then let playerY[temp1] = 80
+          if playerY[temp1] > 80 then let playerSubpixelY_W[temp1] = 80
+          if playerY[temp1] > 80 then let playerSubpixelY_WL[temp1] = 0
           
           return
 
@@ -617,37 +347,32 @@ InitializeMovementSystem
           rem
           rem Constraints: Initializes all 4 players to same position
           rem (center of screen). All velocities set to zero
-          dim IMS_playerIndex = temp1
-          dim IMS_positionX = temp2
-          dim IMS_positionY = temp3
-          dim IMS_velocityX = temp2
-          dim IMS_velocityY = temp3
           rem Initialize all players to center of screen - inlined for
-          let IMS_positionX = 80 : rem   performance
-          let IMS_positionY = 100
-          let playerX[0] = IMS_positionX : rem Player 0
-          let playerSubpixelX_W[0] = IMS_positionX
+          let temp2 = 80 : rem   performance
+          let temp3 = 100
+          let playerX[0] = temp2 : rem Player 0
+          let playerSubpixelX_W[0] = temp2
           let playerSubpixelX_WL[0] = 0
-          let playerY[0] = IMS_positionY
-          let playerSubpixelY_W[0] = IMS_positionY
+          let playerY[0] = temp3
+          let playerSubpixelY_W[0] = temp3
           let playerSubpixelY_WL[0] = 0
-          let playerX[1] = IMS_positionX : rem Player 1
-          let playerSubpixelX_W[1] = IMS_positionX
+          let playerX[1] = temp2 : rem Player 1
+          let playerSubpixelX_W[1] = temp2
           let playerSubpixelX_WL[1] = 0
-          let playerY[1] = IMS_positionY
-          let playerSubpixelY_W[1] = IMS_positionY
+          let playerY[1] = temp3
+          let playerSubpixelY_W[1] = temp3
           let playerSubpixelY_WL[1] = 0
-          let playerX[2] = IMS_positionX : rem Player 2
-          let playerSubpixelX_W[2] = IMS_positionX
+          let playerX[2] = temp2 : rem Player 2
+          let playerSubpixelX_W[2] = temp2
           let playerSubpixelX_WL[2] = 0
-          let playerY[2] = IMS_positionY
-          let playerSubpixelY_W[2] = IMS_positionY
+          let playerY[2] = temp3
+          let playerSubpixelY_W[2] = temp3
           let playerSubpixelY_WL[2] = 0
-          let playerX[3] = IMS_positionX : rem Player 3
-          let playerSubpixelX_W[3] = IMS_positionX
+          let playerX[3] = temp2 : rem Player 3
+          let playerSubpixelX_W[3] = temp2
           let playerSubpixelX_WL[3] = 0
-          let playerY[3] = IMS_positionY
-          let playerSubpixelY_W[3] = IMS_positionY
+          let playerY[3] = temp3
+          let playerSubpixelY_W[3] = temp3
           let playerSubpixelY_WL[3] = 0
           
           rem Initialize velocities to zero - inlined for performance

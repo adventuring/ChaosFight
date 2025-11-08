@@ -54,32 +54,26 @@ LoadCharacterSprite
           rem (called via goto)
           rem              Must be in same file as special sprite
           rem              loaders
-          dim LCS_animationFrame = temp2
-          dim LCS_playerNumber = temp3
-          dim LCS_animationAction = temp3
-          dim LCS_playerNumberAlt = temp4
-          dim LCS_isValid = temp5
-          dim LCS_spriteIndex = temp6
           rem Validate character index
-          dim VCI_isValid = temp5 : rem Inline ValidateCharacterIndex
+          rem Inline ValidateCharacterIndex
           rem Check if character index is within valid range
           if currentCharacter > MaxCharacter then ValidateInvalidCharacterInline : rem   (0-MaxCharacter for current implementation)
-          let VCI_isValid = 1
+          let temp5 = 1
           goto ValidateCharacterDoneInline
 ValidateInvalidCharacterInline
-          let VCI_isValid = 0
+          let temp5 = 0
 ValidateCharacterDoneInline
-          let LCS_isValid = VCI_isValid
-          if !LCS_isValid then goto LoadSpecialSprite : rem tail call
+          let temp5 = temp5
+          if !temp5 then goto LoadSpecialSprite : rem tail call
           
           rem Check if character is special placeholder
-          if currentCharacter = 255 then let LCS_spriteIndex = SpriteNo : goto LoadSpecialSprite : rem tail call
+          if currentCharacter = 255 then let temp6 = SpriteNo : goto LoadSpecialSprite : rem tail call
           rem NoCharacter = 255
           
-          if currentCharacter = 254 then let LCS_spriteIndex = SpriteCPU : goto LoadSpecialSprite : rem tail call
+          if currentCharacter = 254 then let temp6 = SpriteCPU : goto LoadSpecialSprite : rem tail call
           rem CPUCharacter = 254
           
-          if currentCharacter = 253 then let LCS_spriteIndex = SpriteQuestionMark : goto LoadSpecialSprite : rem tail call
+          if currentCharacter = 253 then let temp6 = SpriteQuestionMark : goto LoadSpecialSprite : rem tail call
           rem RandomCharacter = 253
           
           rem Use character art location system for sprite loading
@@ -96,10 +90,10 @@ ValidateCharacterDoneInline
           
           rem Check if player number in temp3 or temp4
           rem If temp4 is not set (0 and caller might have used temp3),
-          if !LCS_playerNumberAlt then let LCS_playerNumberAlt = LCS_playerNumber : rem   copy from temp3
+          if !temp4 then let temp4 = temp3 : rem   copy from temp3
           
           rem Move player number to temp4 and set temp3 to animation
-          let LCS_animationAction = 0 : rem action (0=idle)
+          let temp3 = 0 : rem action (0=idle)
           rem animation action/sequence 0 = idle
           rem playerNumberAlt already has player number from caller
           let temp1 = currentCharacter : rem Set temp variables for cross-bank call
@@ -134,11 +128,10 @@ LoadSpecialSprite
           rem (called from it)
           rem              Must be in same file as QuestionMark/CPU/No
           rem              sprite loaders
-          dim LSS_spriteIndex = temp6 : rem Depends on QuestionMarkSprite, CPUSprite, NoSprite data
-          dim LSS_playerNumber = temp3
-          if !LSS_spriteIndex then goto LoadQuestionMarkSprite : rem Set sprite pointer based on sprite index
-          if LSS_spriteIndex = 1 then goto LoadCPUSprite
-          if LSS_spriteIndex = 2 then goto LoadNoSprite
+          rem Depends on QuestionMarkSprite, CPUSprite, NoSprite data
+          if !temp6 then goto LoadQuestionMarkSprite : rem Set sprite pointer based on sprite index
+          if temp6 = 1 then goto LoadCPUSprite
+          if temp6 = 2 then goto LoadNoSprite
           goto LoadQuestionMarkSprite : rem Invalid sprite index, default to question mark
           
 LoadQuestionMarkSprite
@@ -432,16 +425,12 @@ LoadPlayerSprite
           rem
           rem Constraints: Must be colocated with
           rem LoadPlayerSpriteDispatch (called via goto)
-          dim LPS_playerNumber = temp4
           rem Get character index for this player from playerCharacter array
           rem Use currentPlayer global variable (set by caller)
           let currentCharacter = playerCharacter[currentPlayer] : rem Set currentCharacter from playerCharacter[currentPlayer]
           goto LoadPlayerSpriteDispatch
           
 LoadPlayerSpriteDispatch
-          dim LPSD_animationFrame = temp2
-          dim LPSD_animationAction = temp3
-          dim LPSD_playerNumber = temp4
           rem currentCharacter = character index (global variable),
           rem animationFrame =
           rem   frame (10fps counter), animationAction = action,
@@ -479,7 +468,6 @@ LoadPlayer0Sprite
           rem These functions contain the actual player graphics
           rem   commands
           
-          dim LP0S_playerNumber = temp3
           rem Use art location system for player 0 sprite loading
           rem
           rem Input: currentCharacter (global) = character index (must
@@ -500,12 +488,11 @@ LoadPlayer0Sprite
           rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
-          let LP0S_playerNumber = 0 : rem playerNumber = player number (0)
+          let temp3 = 0 : rem playerNumber = player number (0)
           rem Use LoadCharacterSprite which handles LocateCharacterArt
           goto LoadCharacterSprite : rem tail call
           
 LoadPlayer1Sprite
-          dim LP1S_playerNumber = temp3
           rem Use art location system for player 1 sprite loading
           rem
           rem Input: currentCharacter (global) = character index (must
@@ -526,12 +513,11 @@ LoadPlayer1Sprite
           rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
-          let LP1S_playerNumber = 1 : rem playerNumber = player number (1)
+          let temp3 = 1 : rem playerNumber = player number (1)
           rem Use LoadCharacterSprite which handles LocateCharacterArt
           goto LoadCharacterSprite : rem tail call
           
 LoadPlayer2Sprite
-          dim LP2S_playerNumber = temp3
           rem Use art location system for player 2 sprite loading
           rem
           rem Input: currentCharacter (global) = character index (must
@@ -552,12 +538,11 @@ LoadPlayer2Sprite
           rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
-          let LP2S_playerNumber = 2 : rem playerNumber = player number (2)
+          let temp3 = 2 : rem playerNumber = player number (2)
           rem Use LoadCharacterSprite which handles LocateCharacterArt
           goto LoadCharacterSprite : rem tail call
           
 LoadPlayer3Sprite
-          dim LP3S_playerNumber = temp3
           rem Use art location system for player 3 sprite loading
           rem
           rem Input: currentCharacter (global) = character index (must
@@ -578,7 +563,7 @@ LoadPlayer3Sprite
           rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
-          let LP3S_playerNumber = 3 : rem playerNumber = player number (3)
+          let temp3 = 3 : rem playerNumber = player number (3)
           rem Use LoadCharacterSprite which handles LocateCharacterArt
           goto LoadCharacterSprite : rem tail call
 
@@ -616,18 +601,12 @@ LoadCharacterColors
           rem              HurtColor, SetColor (all called via goto)
           rem WARNING: temp6 is mutated during execution. Do not use
           rem temp6
-          dim LoadCharacterColors_isHurt = temp2 : rem after calling this subroutine.
-          dim LoadCharacterColors_playerNumber = temp3
-          dim LoadCharacterColors_isFlashing = temp4
-          dim LoadCharacterColors_flashingMode = temp5
-          dim LoadCharacterColors_color = temp6
-          if LoadCharacterColors_isHurt then goto HurtColor : rem Highest priority: hurt state
+          rem after calling this subroutine.
+          if temp2 then goto HurtColor : rem Highest priority: hurt state
 
-          if LoadCharacterColors_isFlashing then FlashingColor : rem Next priority: flashing state
+          if temp4 then FlashingColor : rem Next priority: flashing state
 
 NormalColor
-          dim NormalColor_color = temp6
-          dim NormalColor_playerNumber = temp3
           rem Calculate normal (non-hurt, non-flashing) player color
           rem
           rem Input: temp3 = player number (0-3, from
@@ -661,7 +640,7 @@ FlashingColor
           rem Mutates: None (dispatcher only)
           rem
           rem Called Routines: None (dispatcher only)
-          let temp5 = LoadCharacterColors_flashingMode : rem Constraints: Must be colocated with LoadCharacterColors
+          let temp5 = temp5 : rem Constraints: Must be colocated with LoadCharacterColors
           if !temp5 then PerLineFlashing
           goto PlayerIndexColors
           
@@ -700,33 +679,33 @@ PlayerIndexColors
           rem Solid player index colors (bright)
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
-          if !LoadCharacterColors_playerNumber then goto PlayerIndexColorsPlayer0
-          if LoadCharacterColors_playerNumber = 1 then goto PlayerIndexColorsPlayer1
-          if LoadCharacterColors_playerNumber = 2 then goto PlayerIndexColorsPlayer2
+          if !temp3 then goto PlayerIndexColorsPlayer0
+          if temp3 = 1 then goto PlayerIndexColorsPlayer1
+          if temp3 = 2 then goto PlayerIndexColorsPlayer2
           goto PlayerIndexColorsPlayer3
 
 PlayerIndexColorsPlayer0
           rem Player 1: Indigo (SECAM maps to Blue)
           let temp6 = ColIndigo(14)
-          let LoadCharacterColors_color = temp6
+          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsPlayer1
           rem Player 2: Red
           let temp6 = ColRed(14)
-          let LoadCharacterColors_color = temp6
+          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsPlayer2
           rem Player 3: Yellow (SECAM maps to Yellow)
           let temp6 = ColYellow(14)
-          let LoadCharacterColors_color = temp6
+          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsPlayer3
           rem Player 4: Turquoise (SECAM maps to Green)
           let temp6 = ColTurquoise(14)
-          let LoadCharacterColors_color = temp6
+          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsDim
@@ -745,33 +724,33 @@ PlayerIndexColorsDim
           rem SetColor
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
-          if !LoadCharacterColors_playerNumber then goto PlayerIndexColorsDimPlayer0
-          if LoadCharacterColors_playerNumber = 1 then goto PlayerIndexColorsDimPlayer1
-          if LoadCharacterColors_playerNumber = 2 then goto PlayerIndexColorsDimPlayer2
+          if !temp3 then goto PlayerIndexColorsDimPlayer0
+          if temp3 = 1 then goto PlayerIndexColorsDimPlayer1
+          if temp3 = 2 then goto PlayerIndexColorsDimPlayer2
           goto PlayerIndexColorsDimPlayer3
 
 PlayerIndexColorsDimPlayer0
           rem Player 1: Indigo (dimmed)
           let temp6 = ColIndigo(6)
-          let LoadCharacterColors_color = temp6
+          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsDimPlayer1
           rem Player 2: Red (dimmed)
           let temp6 = ColRed(6)
-          let LoadCharacterColors_color = temp6
+          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsDimPlayer2
           rem Player 3: Yellow (dimmed)
           let temp6 = ColYellow(6)
-          let LoadCharacterColors_color = temp6
+          let temp6 = temp6
           goto SetColor
 
 PlayerIndexColorsDimPlayer3
           rem Player 4: Turquoise (dimmed)
           let temp6 = ColTurquoise(6)
-          let LoadCharacterColors_color = temp6
+          let temp6 = temp6
           goto SetColor
 
 HurtColor
@@ -790,7 +769,7 @@ HurtColor
           rem SetColor
 #ifdef TV_SECAM
           let temp6 = ColMagenta(10) : rem SECAM hurt is always magenta
-          let LoadCharacterColors_color = temp6
+          let temp6 = temp6
           goto SetColor
 #else
           rem Dimmed version of normal color: use dim player index color
@@ -815,10 +794,10 @@ SetColor
           rem Constraints: Must be colocated with LoadCharacterColors
           rem Use temp6 directly instead of alias to avoid symbol
           rem conflict
-          rem LoadCharacterColors_color already contains the color from
+          rem temp6 already contains the color from
           rem   previous code paths
-          if !LoadCharacterColors_playerNumber then let COLUP0 = temp6 : return
-          if LoadCharacterColors_playerNumber = 1 then let _COLUP1 = temp6 : return
-          if LoadCharacterColors_playerNumber = 2 then let COLUP2 = temp6 : return
+          if !temp3 then let COLUP0 = temp6 : return
+          if temp3 = 1 then let _COLUP1 = temp6 : return
+          if temp3 = 2 then let COLUP2 = temp6 : return
           let COLUP3 = temp6
           return

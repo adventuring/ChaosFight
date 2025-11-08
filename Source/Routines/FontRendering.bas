@@ -86,121 +86,107 @@ DrawDigit
           rem
           rem Constraints: Must be colocated with SetSprite0-5,
           rem LoadPlayerDigit (all called via goto)
-          dim DD_digit = temp1
-          dim DD_xPos = temp2
-          dim DD_yPos = temp3
-          dim DD_color = temp4
-          dim DD_spriteSelect = temp5
-          dim DD_digitOffset = temp6
-          if DD_digit > 15 then let DD_digit = 15 : rem Clamp digit value to 0-15
+          if temp1 > 15 then let temp1 = 15 : rem Clamp digit value to 0-15
           
-          let DD_digitOffset = DD_digit * 16 : rem Calculate data offset: digit * 16 (16 bytes per digit)
+          let temp6 = temp1 * 16 : rem Calculate data offset: digit * 16 (16 bytes per digit)
           
           rem Set sprite position and color based on spriteSelect
-          if DD_spriteSelect > 5 then let DD_spriteSelect = 0 : rem Clamp spriteSelect to valid range (0-5)
+          if temp5 > 5 then let temp5 = 0 : rem Clamp spriteSelect to valid range (0-5)
           rem Preserve spriteSelect in temp5 for LoadPlayerDigit
-          on DD_spriteSelect goto SetSprite0 SetSprite1 SetSprite2 SetSprite3 SetSprite4 SetSprite5
+          on temp5 goto SetSprite0 SetSprite1 SetSprite2 SetSprite3 SetSprite4 SetSprite5
           
 SetSprite0
           rem Set Player 0 sprite position and color
           rem
-          rem Input: DD_xPos, DD_yPos, DD_color (from DrawDigit)
+          rem Input: temp2, temp3, temp4 (from DrawDigit)
           rem
           rem Output: player0x, player0y, COLUP0 set
           rem
           rem Mutates: player0x, player0y, COLUP0 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player0x = DD_xPos : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
-          let player0y = DD_yPos
-          let COLUP0 = DD_color
+          let player0x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player0y = temp3
+          let COLUP0 = temp4
           goto LoadPlayerDigit : rem tail call
 SetSprite1
           rem Set Player 1 sprite position and color
           rem
-          rem Input: DD_xPos, DD_yPos, DD_color (from DrawDigit)
+          rem Input: temp2, temp3, temp4 (from DrawDigit)
           rem
           rem Output: player1x, player1y, _COLUP1 set
           rem
           rem Mutates: player1x, player1y, _COLUP1 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player1x = DD_xPos : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
-          let player1y = DD_yPos
-          let _COLUP1 = DD_color
+          let player1x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player1y = temp3
+          let _COLUP1 = temp4
           goto LoadPlayerDigit : rem tail call
 SetSprite2
           rem Set Player 2 sprite position and color
           rem
-          rem Input: DD_xPos, DD_yPos, DD_color (from DrawDigit)
+          rem Input: temp2, temp3, temp4 (from DrawDigit)
           rem
           rem Output: player2x, player2y, COLUP2 set
           rem
           rem Mutates: player2x, player2y, COLUP2 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player2x = DD_xPos : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
-          let player2y = DD_yPos
-          let COLUP2 = DD_color
+          let player2x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player2y = temp3
+          let COLUP2 = temp4
           goto LoadPlayerDigit : rem tail call
 SetSprite3
           rem Set Player 3 sprite position and color
           rem
-          rem Input: DD_xPos, DD_yPos, DD_color (from DrawDigit)
+          rem Input: temp2, temp3, temp4 (from DrawDigit)
           rem
           rem Output: player3x, player3y, COLUP3 set
           rem
           rem Mutates: player3x, player3y, COLUP3 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player3x = DD_xPos : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
-          let player3y = DD_yPos
-          let COLUP3 = DD_color
+          let player3x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player3y = temp3
+          let COLUP3 = temp4
           goto LoadPlayerDigit : rem tail call
 SetSprite4
           rem Set Player 4 sprite position and color
           rem
-          rem Input: DD_xPos, DD_yPos, DD_color (from DrawDigit)
+          rem Input: temp2, temp3, temp4 (from DrawDigit)
           rem
           rem Output: player4x, player4y, COLUP4 set
           rem
           rem Mutates: player4x, player4y, COLUP4 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player4x = DD_xPos : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
-          let player4y = DD_yPos
-          let COLUP4 = DD_color
+          let player4x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player4y = temp3
+          let COLUP4 = temp4
           goto LoadPlayerDigit : rem tail call
 SetSprite5
           rem Set Player 5 sprite position and color
           rem
-          rem Input: DD_xPos, DD_yPos, DD_color (from DrawDigit)
+          rem Input: temp2, temp3, temp4 (from DrawDigit)
           rem
           rem Output: player5x, player5y, COLUP5 set
           rem
           rem Mutates: player5x, player5y, COLUP5 (TIA registers)
           rem
           rem Called Routines: None (tail call to LoadPlayerDigit)
-          let player5x = DD_xPos : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
-          let player5y = DD_yPos
-          let COLUP5 = DD_color
+          let player5x = temp2 : rem Constraints: Must be colocated with DrawDigit, LoadPlayerDigit
+          let player5y = temp3
+          let COLUP5 = temp4
           goto LoadPlayerDigit : rem tail call
 
 LoadPlayerDigit
           rem
           rem Load Digit Data Into Sprites
-          rem Consolidated generic loader that dispatches to
-          rem sprite-specific
-          rem   pointer assignment based on spriteSelect
-          rem
-          rem INPUT: temp5 = spriteSelect (0-5), temp6 = digitOffset
-          rem Uses spriteSelect from previous DrawDigit call (stored in
-          rem DD_spriteSelect)
-          rem   but we need to preserve it in temp5
-          rem Consolidated generic loader that dispatches to
-          rem sprite-specific pointer assignment
-          rem
+          rem Consolidated loader that dispatches pointer assignment based on spriteSelect.
           rem Input: temp5 = spriteSelect (0-5), temp6 = digitOffset
+          rem Uses spriteSelect from previous DrawDigit call (stored in temp5),
+          rem   but we need to preserve it in temp5
           rem        FontData (ROM constant) = font data array base
           rem        address
           rem
@@ -216,19 +202,17 @@ LoadPlayerDigit
           rem
           rem Constraints: Must be colocated with LoadSprite0Ptr-5Ptr
           rem (all called via on/goto)
-          dim LPD_digitOffset = temp6
-          dim LPD_spriteSelect = temp5
-          if LPD_digitOffset > 240 then let LPD_digitOffset = 240 : rem Clamp digit offset to valid range (0-240 for digits 0-15)
+          if temp6 > 240 then let temp6 = 240 : rem Clamp digit offset to valid range (0-240 for digits 0-15)
           rem Dispatch to sprite-specific pointer loader based on
           rem spriteSelect
-          if LPD_spriteSelect > 5 then let LPD_spriteSelect = 0 : rem   (still in temp5 from DrawDigit)
-          on LPD_spriteSelect goto LoadSprite0Ptr LoadSprite1Ptr LoadSprite2Ptr LoadSprite3Ptr LoadSprite4Ptr LoadSprite5Ptr
+          if temp5 > 5 then let temp5 = 0 : rem   (still in temp5 from DrawDigit)
+          on temp5 goto LoadSprite0Ptr LoadSprite1Ptr LoadSprite2Ptr LoadSprite3Ptr LoadSprite4Ptr LoadSprite5Ptr
           
 LoadSprite0Ptr
           asm
           ; Load Player 0 sprite pointer to font data
           ;
-          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; Input: temp6 (from LoadPlayerDigit), FontData
           ; (ROM constant)
           ;
           ; Output: player0pointerlo/hi set, player0height set to 16
@@ -241,7 +225,7 @@ LoadSprite0Ptr
           ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
-            adc LPD_digitOffset
+            adc temp6
             sta player0pointerlo
             lda # >FontData
             adc #0
@@ -254,7 +238,7 @@ LoadSprite1Ptr
           asm
           ; Load Player 1 sprite pointer to font data
           ;
-          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; Input: temp6 (from LoadPlayerDigit), FontData
           ; (ROM constant)
           ;
           ; Output: player1pointerlo/hi set, player1height set to 16
@@ -267,7 +251,7 @@ LoadSprite1Ptr
           ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
-            adc LPD_digitOffset
+            adc temp6
             sta player1pointerlo
             lda # >FontData
             adc #0
@@ -280,7 +264,7 @@ LoadSprite2Ptr
           asm
           ; Load Player 2 sprite pointer to font data
           ;
-          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; Input: temp6 (from LoadPlayerDigit), FontData
           ; (ROM constant)
           ;
           ; Output: player2pointerlo/hi set, player2height set to 16
@@ -293,7 +277,7 @@ LoadSprite2Ptr
           ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
-            adc LPD_digitOffset
+            adc temp6
             sta player2pointerlo
             lda # >FontData
             adc #0
@@ -306,7 +290,7 @@ LoadSprite3Ptr
           asm
           ; Load Player 3 sprite pointer to font data
           ;
-          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; Input: temp6 (from LoadPlayerDigit), FontData
           ; (ROM constant)
           ;
           ; Output: player3pointerlo/hi set, player3height set to 16
@@ -319,7 +303,7 @@ LoadSprite3Ptr
           ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
-            adc LPD_digitOffset
+            adc temp6
             sta player3pointerlo
             lda # >FontData
             adc #0
@@ -332,7 +316,7 @@ LoadSprite4Ptr
           asm
           ; Load Player 4 sprite pointer to font data
           ;
-          ; Input: LPD_digitOffset (from LoadPlayerDigit), FontData
+          ; Input: temp6 (from LoadPlayerDigit), FontData
           ; (ROM constant)
           ;
           ; Output: player4pointerlo/hi set, player4height set to 16
@@ -345,7 +329,7 @@ LoadSprite4Ptr
           ; Constraints: Must be colocated with LoadPlayerDigit
             lda # <FontData
             clc
-            adc LPD_digitOffset
+            adc temp6
             sta player4pointerlo
             lda # >FontData
             adc #0
@@ -358,7 +342,7 @@ LoadSprite5Ptr
           asm
             lda # <FontData
             clc
-            adc LPD_digitOffset
+            adc temp6
             sta player5pointerlo
             lda # >FontData
             adc #0

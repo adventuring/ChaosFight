@@ -48,10 +48,10 @@ HandleCharacterSelectCycle
           rem        joy0left, joy0right, joy1left, joy1right (hardware)
           rem        = joystick states
           rem
-          rem Output: playerCharacter[HCSC_playerIndex] updated, playerLocked
+          rem Output: playerCharacter[temp1] updated, playerLocked
           rem state set to unlocked
           rem
-          rem Mutates: playerCharacter[HCSC_playerIndex] (cycled),
+          rem Mutates: playerCharacter[temp1] (cycled),
           rem playerLocked state (set to unlocked),
           rem         temp1, temp2, temp3 (passed to helper routines)
           rem
@@ -64,20 +64,16 @@ HandleCharacterSelectCycle
           rem HCSC_CheckJoy0Left,
           rem              HCSC_CheckJoy1Left, HCSC_DoCycle,
           rem              HCSC_CycleLeft, HCSC_CycleDone
-          dim HCSC_playerIndex = temp1 : rem              (all called via goto)
-          dim HCSC_direction = temp2
-          dim HCSC_playerNumber = temp3
-          dim HCSC_characterIndex = temp1
-          dim HCSC_soundId = temp1
-          if HCSC_playerIndex = 0 then HCSC_CheckJoy0 : rem Determine which joy port to use
-          if HCSC_playerIndex = 2 then HCSC_CheckJoy0
-          if HCSC_direction = 0 then HCSC_CheckJoy1Left : rem Players 1,3 use joy1
+          rem (all called via goto)
+          if temp1 = 0 then HCSC_CheckJoy0 : rem Determine which joy port to use
+          if temp1 = 2 then HCSC_CheckJoy0
+          if temp2 = 0 then HCSC_CheckJoy1Left : rem Players 1,3 use joy1
           if !joy1right then return
           goto HCSC_DoCycle
 HCSC_CheckJoy0
           rem Check joy0 for players 0,2
           rem
-          rem Input: HCSC_playerIndex, HCSC_direction (from
+          rem Input: temp1, temp2 (from
           rem HandleCharacterSelectCycle)
           rem        joy0left, joy0right (hardware) = joystick states
           rem
@@ -89,7 +85,7 @@ HCSC_CheckJoy0
           rem
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectCycle
-          if HCSC_direction = 0 then HCSC_CheckJoy0Left : rem Players 0,2 use joy0
+          if temp2 = 0 then HCSC_CheckJoy0Left : rem Players 0,2 use joy0
           if !joy0right then return
           goto HCSC_DoCycle
 HCSC_CheckJoy0Left
@@ -119,15 +115,15 @@ HCSC_CheckJoy1Left
 HCSC_DoCycle
           rem Perform character cycling
           rem
-          rem Input: HCSC_playerIndex, HCSC_direction (from
+          rem Input: temp1, temp2 (from
           rem HandleCharacterSelectCycle)
           rem        playerCharacter[] (global array) = current character
           rem        selections
           rem
-          rem Output: playerCharacter[HCSC_playerIndex] cycled, playerLocked
+          rem Output: playerCharacter[temp1] cycled, playerLocked
           rem state set to unlocked
           rem
-          rem Mutates: playerCharacter[HCSC_playerIndex], playerLocked state,
+          rem Mutates: playerCharacter[temp1], playerLocked state,
           rem temp1, temp2, temp3
           rem
           rem Called Routines: CycleCharacterLeft, CycleCharacterRight,
@@ -136,9 +132,9 @@ HCSC_DoCycle
           rem
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectCycle, HCSC_CycleLeft, HCSC_CycleDone
-          let HCSC_characterIndex = playerCharacter[HCSC_playerIndex] : rem Get current character index
-          let HCSC_playerNumber = HCSC_playerIndex
-          if HCSC_direction = 0 then HCSC_CycleLeft : rem Cycle based on direction
+          let temp1 = playerCharacter[temp1] : rem Get current character index
+          let temp3 = temp1
+          if temp2 = 0 then HCSC_CycleLeft : rem Cycle based on direction
           gosub CycleCharacterRight
           goto HCSC_CycleDone
 HCSC_CycleLeft
@@ -159,46 +155,36 @@ HCSC_CycleLeft
 HCSC_CycleDone
           rem Character cycling complete
           rem
-          rem Input: HCSC_characterIndex, HCSC_playerIndex (from
+          rem Input: temp1, temp1 (from
           rem HandleCharacterSelectCycle)
           rem        temp1 (from CycleCharacterLeft/Right)
           rem
-          rem Output: playerCharacter[HCSC_playerIndex] updated, playerLocked
+          rem Output: playerCharacter[temp1] updated, playerLocked
           rem state set to unlocked
           rem
-          rem Mutates: playerCharacter[HCSC_playerIndex], playerLocked state,
+          rem Mutates: playerCharacter[temp1], playerLocked state,
           rem temp1, temp2
           rem
           rem Called Routines: SetPlayerLocked (bank14),
           rem PlaySoundEffect (bank15)
-          let HCSC_characterIndex = temp1 : rem Constraints: Must be colocated with HandleCharacterSelectCycle
-          let playerCharacter[HCSC_playerIndex] = HCSC_characterIndex
+          let temp1 = temp1 : rem Constraints: Must be colocated with HandleCharacterSelectCycle
+          let playerCharacter[temp1] = temp1
           let temp2 = PlayerLockedUnlocked
           gosub SetPlayerLocked bank14
-          let HCSC_soundId = SoundMenuNavigate : rem Play navigation sound
+          let temp1 = SoundMenuNavigate : rem Play navigation sound
           gosub PlaySoundEffect bank15
           return
           
 HandleCharacterSelectFire
           rem Handle fire input (selection)
           rem
-          rem INPUT: temp1 = player index (0-3)
-          rem Uses: joy0fire/joy0down for players 0,2; joy1fire/joy1down
-          rem for players 1,3
-          rem
-          rem OUTPUT: Updates playerLocked and plays sound
           rem Handle fire input (selection) for a player
           rem
           rem Input: temp1 = player index (0-3)
-          rem        playerCharacter[] (global array) = current character
-          rem        selections
-          rem        joy0fire, joy0down, joy1fire, joy1down (hardware) =
-          rem        joystick states
-          rem        randomSelectFlags[] (global array) = random
-          rem        selection flags
-          rem
-          rem Output: playerLocked state updated, randomSelectFlags[]
-          rem updated if random selected
+          rem        joy0fire/joy0down (players 0,2) or joy1fire/joy1down (players 1,3)
+          rem        playerCharacter[] (global array) = current character selections
+          rem        randomSelectFlags[] (global array) = random selection flags
+          rem Output: playerLocked state updated, randomSelectFlags[] updated if random selected
           rem
           rem Mutates: playerLocked state (set to normal or handicap),
           rem randomSelectFlags[] (if random),
@@ -211,38 +197,34 @@ HandleCharacterSelectFire
           rem
           rem Constraints: Must be colocated with HCSF_CheckJoy0,
           rem HCSF_HandleFire,
-          dim HCSF_playerIndex = temp1 : rem              HCSF_HandleHandicap, HCSF_HandleRandom (all called via goto)
-          dim HCSF_soundId = temp1
-          dim HCSF_playerNumber = temp3
-          dim HCSF_joyFire = temp2
-          dim HCSF_joyDown = temp4
-          if HCSF_playerIndex = 0 then HCSF_CheckJoy0 : rem Determine which joy port to use
-          if HCSF_playerIndex = 2 then HCSF_CheckJoy0
+          rem HCSF_HandleHandicap, HCSF_HandleRandom (all called via goto)
+          if temp1 = 0 then HCSF_CheckJoy0 : rem Determine which joy port to use
+          if temp1 = 2 then HCSF_CheckJoy0
           if !joy1fire then return : rem Players 1,3 use joy1
-          let HCSF_joyFire = 1
-          if joy1down then let HCSF_joyDown = 1 else let HCSF_joyDown = 0
+          let temp2 = 1
+          if joy1down then let temp4 = 1 else let temp4 = 0
           goto HCSF_HandleFire
 HCSF_CheckJoy0
           rem Check joy0 for players 0,2
           rem
-          rem Input: HCSF_playerIndex (from HandleCharacterSelectFire)
+          rem Input: temp1 (from HandleCharacterSelectFire)
           rem        joy0fire, joy0down (hardware) = joystick states
           rem
           rem Output: Dispatches to HCSF_HandleFire or returns
           rem
-          rem Mutates: HCSF_joyFire, HCSF_joyDown
+          rem Mutates: temp2, temp4
           rem
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectFire
           if !joy0fire then return : rem Players 0,2 use joy0
-          let HCSF_joyFire = 1
-          if joy0down then let HCSF_joyDown = 1 else let HCSF_joyDown = 0
+          let temp2 = 1
+          if joy0down then let temp4 = 1 else let temp4 = 0
 HCSF_HandleFire
           rem Handle fire button press
           rem
-          rem Input: HCSF_playerIndex, HCSF_joyDown (from
+          rem Input: temp1, temp4 (from
           rem HandleCharacterSelectFire)
           rem        playerCharacter[] (global array) = current character
           rem        selections
@@ -258,20 +240,20 @@ HCSF_HandleFire
           rem
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectFire
-          if playerCharacter[HCSF_playerIndex] = RandomCharacter then HCSF_HandleRandom : rem Check if RandomCharacter selected
+          if playerCharacter[temp1] = RandomCharacter then HCSF_HandleRandom : rem Check if RandomCharacter selected
           rem Check for handicap mode (down+fire = 75% health)
-          if HCSF_joyDown then HCSF_HandleHandicap
-          let HCSF_playerNumber = HCSF_playerIndex
-          let temp1 = HCSF_playerNumber
+          if temp4 then HCSF_HandleHandicap
+          let temp3 = temp1
+          let temp1 = temp3
           let temp2 = PlayerLockedNormal
           gosub SetPlayerLocked bank14
-          let HCSF_soundId = SoundMenuSelect : rem Play selection sound
+          let temp1 = SoundMenuSelect : rem Play selection sound
           gosub PlaySoundEffect bank15
           return
 HCSF_HandleHandicap
           rem Handle handicap mode selection (75% health)
           rem
-          rem Input: HCSF_playerIndex (from HandleCharacterSelectFire)
+          rem Input: temp1 (from HandleCharacterSelectFire)
           rem
           rem Output: playerLocked state set to handicap
           rem
@@ -279,25 +261,25 @@ HCSF_HandleHandicap
           rem
           rem Called Routines: SetPlayerLocked (bank14),
           rem PlaySoundEffect (bank15)
-          let HCSF_playerNumber = HCSF_playerIndex : rem Constraints: Must be colocated with HandleCharacterSelectFire
-          let temp1 = HCSF_playerNumber
+          let temp3 = temp1 : rem Constraints: Must be colocated with HandleCharacterSelectFire
+          let temp1 = temp3
           let temp2 = PlayerHandicapped
           gosub SetPlayerLocked bank14
-          let HCSF_soundId = SoundMenuSelect : rem Play selection sound
+          let temp1 = SoundMenuSelect : rem Play selection sound
           gosub PlaySoundEffect bank15
           return
 HCSF_HandleRandom
           rem Handle random character selection
           rem
-          rem Input: HCSF_playerIndex, HCSF_joyDown (from
+          rem Input: temp1, temp4 (from
           rem HandleCharacterSelectFire)
           rem        randomSelectFlags[] (global array) = random
           rem        selection flags
           rem
-          rem Output: randomSelectFlags[HCSF_playerIndex] set, selection
+          rem Output: randomSelectFlags[temp1] set, selection
           rem sound played
           rem
-          rem Mutates: randomSelectFlags[HCSF_playerIndex] (set to $80
+          rem Mutates: randomSelectFlags[temp1] (set to $80
           rem if handicap, 0 otherwise)
           rem
           rem Called Routines: PlaySoundEffect (bank15)
@@ -306,8 +288,8 @@ HCSF_HandleRandom
           rem HandleCharacterSelectFire
           rem Random selection initiated - will be handled by
           rem CharacterSelectHandleRandomRolls
-          if HCSF_joyDown then randomSelectFlags[HCSF_playerIndex] = $80 else randomSelectFlags[HCSF_playerIndex] = 0 : rem Store handicap flag if down was held
-          let HCSF_soundId = SoundMenuSelect : rem Play selection sound
+          if temp4 then randomSelectFlags[temp1] = $80 else randomSelectFlags[temp1] = 0 : rem Store handicap flag if down was held
+          let temp1 = SoundMenuSelect : rem Play selection sound
           gosub PlaySoundEffect bank15
           rem Fall through - character will stay as RandomCharacter
           rem until roll succeeds
@@ -602,8 +584,7 @@ CycleCharacterLeft
           rem
           rem Input: temp1 = playerCharacter value, temp2 = direction
           rem   (0=left, 1=right), temp3 = player number
-          dim CCL_characterIndex = temp1 : rem Output: temp1 = new playerCharacter value
-          dim CCL_playerNumber = temp3
+          rem Output: temp1 = new playerCharacter value
           rem Decrement character with special value wraparound
           rem P1: RandomCharacter(253) ↔ 0 ↔ 15 ↔ RandomCharacter
           rem P2: CPUCharacter(254) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔
@@ -611,15 +592,15 @@ CycleCharacterLeft
           rem P3/P4: NoCharacter(255) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔
           rem   NoCharacter
           
-          if CCL_characterIndex = RandomCharacter then goto CycleFromRandom
+          if temp1 = RandomCharacter then goto CycleFromRandom
           rem Check if we’re at a special value
-          if CCL_characterIndex = CPUCharacter then goto CycleFromCPU
-          if CCL_characterIndex = NoCharacter then goto CycleFromNO
+          if temp1 = CPUCharacter then goto CycleFromCPU
+          if temp1 = NoCharacter then goto CycleFromNO
           
           rem Normal character (0-15): decrement
           rem Check if we’re at 0 before decrementing (need to wrap to
-          if !CCL_characterIndex then goto CharacterSelectLeftWrapCheck : rem   special)
-          let CCL_characterIndex = CCL_characterIndex - 1
+          if !temp1 then goto CharacterSelectLeftWrapCheck : rem   special)
+          let temp1 = temp1 - 1
           return
           
 CharacterSelectLeftWrapCheck
@@ -837,22 +818,15 @@ SelectDeterminePlayerP1
           goto SelectDrawSpriteDone
           
 SelectLoadSprite
-          dim SLS_playerNumber = temp3
-          dim SLS_playerNumberSaved = temp6
-          dim SLS_characterIndex = temp1
-          dim SLS_animationFrame = temp2
-          dim SLS_animationAction = temp3
-          dim SLS_playerNumberForArt = temp4
-          dim SLS_spriteIndex = temp6
-          if SLS_playerNumber > 3 then goto SelectDrawSpriteDone : rem Load sprite for determined player
-          let SLS_playerNumberSaved = SLS_playerNumber
-          let SLS_characterIndex = playerCharacter[SLS_playerNumberSaved] : rem Save player number
+          if temp3 > 3 then goto SelectDrawSpriteDone : rem Load sprite for determined player
+          let temp6 = temp3
+          let temp1 = playerCharacter[temp6] : rem Save player number
           
           rem Check for special characters (?, CPU, NO) before normal
           rem art loading
-          if SLS_characterIndex = NoCharacter then goto SelectLoadSpecialSprite : rem Special characters don’t animate, so handle them separately
-          if SLS_characterIndex = CPUCharacter then goto SelectLoadSpecialSprite : rem NoCharacter = 255
-          if SLS_characterIndex = RandomCharacter then goto SelectLoadSpecialSprite : rem CPUCharacter = 254
+          if temp1 = NoCharacter then goto SelectLoadSpecialSprite : rem Special characters don’t animate, so handle them separately
+          if temp1 = CPUCharacter then goto SelectLoadSpecialSprite : rem NoCharacter = 255
+          if temp1 = RandomCharacter then goto SelectLoadSpecialSprite : rem CPUCharacter = 254
           rem RandomCharacter = 253
           
           rem Normal character - use animation state
@@ -862,13 +836,13 @@ SelectLoadSprite
           rem characterSelectPlayerAnimationFrame has animation frame counter
           rem   (0-7)
           rem Map to proper animation action: 0=idle (ActionIdle=1),
-          if characterSelectPlayerAnimationSequence[SLS_playerNumberSaved] then goto SelectLoadWalkingSprite : rem 1=walk (ActionWalking=3)
+          if characterSelectPlayerAnimationSequence[temp6] then goto SelectLoadWalkingSprite : rem 1=walk (ActionWalking=3)
           
-          let SLS_animationFrame = characterSelectPlayerAnimationFrame[SLS_playerNumberSaved] : rem Idle animation
+          let temp2 = characterSelectPlayerAnimationFrame[temp6] : rem Idle animation
           rem frame
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
-          let SLS_animationAction = 1 : rem temp3=action, temp4=player
-          let SLS_playerNumberForArt = SLS_playerNumberSaved : rem ActionIdle = 1
+          let temp3 = 1 : rem temp3=action, temp4=player
+          let temp4 = temp6 : rem ActionIdle = 1
           gosub LocateCharacterArt bank14
           goto SelectLoadSpriteColor
           
@@ -878,7 +852,7 @@ SelectLoadSpecialSprite
           rem CPUCharacter (254) -> SpriteCPU (1)
           rem RandomCharacter (253) -> SpriteQuestionMark (0)
           rem temp1 still contains character index from SelectLoadSprite
-          let temp1 = temp1 : rem temp6 still contains player number saved (SLS_playerNumberSaved)
+          let temp1 = temp1 : rem temp6 still contains player number saved (temp6)
           let temp3 = temp6 : rem Character index already in temp1
           if temp1 = NoCharacter then let temp6 = SpriteNo : goto SelectLoadSpecialSpriteCall : rem Player number saved in temp6
           if temp1 = CPUCharacter then let temp6 = SpriteCPU : goto SelectLoadSpecialSpriteCall
@@ -894,9 +868,9 @@ SelectLoadSpecialSpriteCall
           goto SelectLoadSpriteColor : rem Special sprites don’t need animation handling, go to color
           
 SelectLoadWalkingSprite
-          let temp2 = characterSelectPlayerAnimationSequence[SLS_playerNumberSaved] : rem Walking animation
+          let temp2 = characterSelectPlayerAnimationSequence[temp6] : rem Walking animation
           let temp3 = 3 : rem Use sequence counter as frame (0-3 for 4-frame walk)
-          let temp4 = SLS_playerNumberSaved : rem ActionWalking = 3
+          let temp4 = temp6 : rem ActionWalking = 3
           gosub LocateCharacterArt bank14
           
 SelectLoadSpriteColor

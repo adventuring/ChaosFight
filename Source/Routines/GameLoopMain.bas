@@ -37,17 +37,14 @@ GameMainLoop
           rem HandleConsoleSwitches (bank14),
           rem   InputHandleAllPlayers (bank13), UpdateGuardTimers,
           rem   UpdateCharacterAnimations (bank11),
-          rem   UpdatePlayerMovement (bank13), PhysicsApplyGravity
-          rem   (bank8),
-          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement
-          rem   (bank9),
+          rem   UpdatePlayerMovement (bank13), PhysicsApplyGravity (bank8),
+          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank9),
           rem   CheckBoundaryCollisions (bank9),
           rem   CheckPlayfieldCollisionAllDirections (bank9),
           rem   CheckAllPlayerCollisions (bank9),
           rem   CheckAllPlayerEliminations,
           rem   UpdateAllMissiles (bank7),
-          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites
-          rem   (bank8),
+          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank8),
           rem   DisplayHealth (bank8), UpdatePlayer12HealthBars (bank8),
           rem   UpdatePlayer34HealthBars (bank8), UpdateSoundEffect
           rem   (bank15)

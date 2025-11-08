@@ -150,11 +150,10 @@ DonePlayer2Pause
           return
 
           rem
-          rem Color/b&w Switch Change Detection
-          rem Re-detect controllers when Color/B&W switch is toggled
+          rem Color/B&W switch change detection (triggers controller re-detect)
           
 CheckColorBWToggle
-          rem Re-detect controllers when Color/B&W switch is toggled
+          rem Check switch state and trigger DetectControllers when it flips
           rem
           rem Input: switchbw (hardware) = Color/B&W switch state
           rem        colorBWPrevious_R (global SCRAM) = previous
@@ -169,14 +168,13 @@ CheckColorBWToggle
           rem
           rem Called Routines: DetectControllers (bank14) - accesses
           rem controller detection state
-          dim CCBT_switchChanged = temp1 : rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
-          dim CCBT_overrideChanged = temp2
+          rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           
           rem Check if Color/B&W switch state has changed
           temp6 = switchbw
-          let CCBT_switchChanged = 0
+          let temp1 = 0
           if temp6 = colorBWPrevious_R then DoneSwitchChange
-          let CCBT_switchChanged = 1
+          let temp1 = 1
           gosub DetectControllers bank14
           let colorBWPrevious_W = switchbw
 DoneSwitchChange
@@ -203,7 +201,7 @@ DoneSwitchChange
           rem   value
           rem   variable.
           
-          if CCBT_switchChanged then ReloadArenaColorsNow : rem Reload arena colors if switch or override changed
+          if temp1 then ReloadArenaColorsNow : rem Reload arena colors if switch or override changed
           rem Note: colorBWOverride check handled in
           rem Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)

@@ -43,7 +43,6 @@ StartMusic
           rem Constraints: Songs in Bank 15: OCascadia (1), Revontuli
           rem (2). All other songs (0, 3-28) in Bank 16. Routes to
           rem correct bank based on song ID
-          dim SM_songID = temp1
           rem Stop any current music
           AUDV0 = 0
           AUDV1 = 0
@@ -56,8 +55,8 @@ StartMusic
           rem Bank16)
           rem Songs in Bank 15: OCascadia (1), Revontuli (2)
           rem Songs in Bank 16: All other songs (0, 3-28)
-          if SM_songID = 1 then goto LoadSongFromBank15 : rem Route to correct bank based on song ID
-          if SM_songID = 2 then goto LoadSongFromBank15
+          if temp1 = 1 then goto LoadSongFromBank15 : rem Route to correct bank based on song ID
+          if temp1 = 2 then goto LoadSongFromBank15
           gosub LoadSongPointer bank16 : rem Song in Bank 16
           gosub LoadSongVoice1Pointer bank16
           goto LoadSongPointersDone
@@ -119,7 +118,7 @@ LoadSongPointersDone
           let musicVoice1StartPointerL_W = songPointerL : rem Store initial Voice 1 pointer for looping (Chaotica only)
           let musicVoice1StartPointerH_W = songPointerH
           
-          let currentSongID_W = SM_songID : rem Store current song ID for looping check
+          let currentSongID_W = temp1 : rem Store current song ID for looping check
           
           let musicVoice0Frame_W = 1 : rem Initialize frame counters to trigger first note load
           let musicVoice1Frame_W = 1
@@ -220,46 +219,18 @@ CalculateMusicVoiceEnvelope
           rem update
           rem
           rem Shared Music Voice Envelope Calculation
-          rem Calculates envelope (attack/decay/sustain) for a music
-          rem voice
-          rem
-          rem INPUT: temp1 = voice number (0 or 1)
-          rem
-          rem OUTPUT: Sets AUDV0 or AUDV1 based on voice
-          rem Uses voice-specific variables based on temp1
-          rem Calculates envelope (attack/decay/sustain) for a music
-          rem voice
-          rem
-          rem Input: temp1 = voice number (0 or 1),
-          rem MusicVoice0TotalFrames, MusicVoice1TotalFrames (global) =
-          rem total frames, musicVoice0Frame_R, musicVoice1Frame_R
-          rem (global SCRAM) = frame counters, MusicVoice0TargetAUDV,
-          rem MusicVoice1TargetAUDV (global) = target volumes,
-          rem NoteAttackFrames, NoteDecayFrames (global constants) =
-          rem envelope constants
-          rem
-          rem Output: Sets AUDV0 or AUDV1 based on voice and envelope
-          rem phase
-          rem
-          rem Mutates: temp1-temp6 (used for calculations), AUDV0, AUDV1
-          rem (TIA registers) = sound volumes (set based on envelope)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Uses voice-specific variables based on temp1.
-          rem Attack phase: first NoteAttackFrames frames. Decay phase:
+          rem Input: temp1 = voice number (0 or 1)
+          rem        MusicVoiceXTotalFrames, musicVoiceXFrame_R, MusicVoiceXTargetAUDV,
+          rem        NoteAttackFrames, NoteDecayFrames (indexed by voice)
+          rem Output: AUDV0 or AUDV1 set per envelope phase
+          rem Mutates: temp1-temp6, AUDV0, AUDV1
+          rem Constraints: Voice-specific data selected via temp1. Attack phase = first NoteAttackFrames frames,
           rem last NoteDecayFrames frames. Sustain phase: uses target
           rem AUDV. Clamps AUDV to 0-15
-          dim CMVE_voice = temp1
-          dim CMVE_totalFrames = temp2
-          dim CMVE_frameCounter = temp3
-          dim CMVE_framesElapsed = temp4
-          dim CMVE_targetAUDV = temp5
-          dim CMVE_audv = temp6
-          if CMVE_voice = 0 then CMVE_GetVoice0Vars : rem Get voice-specific variables
-          let CMVE_totalFrames = MusicVoice1TotalFrames : rem Voice 1
-          let CMVE_frameCounter = musicVoice1Frame_R
-          let CMVE_targetAUDV = MusicVoice1TargetAUDV
+          if temp1 = 0 then CMVE_GetVoice0Vars : rem Get voice-specific variables
+          let temp2 = MusicVoice1TotalFrames : rem Voice 1
+          let temp3 = musicVoice1Frame_R
+          let temp5 = MusicVoice1TargetAUDV
           goto CMVE_CalcElapsed
 CMVE_GetVoice0Vars
           rem Helper: Gets Voice 0 specific variables
@@ -270,49 +241,49 @@ CMVE_GetVoice0Vars
           rem
           rem Output: Voice 0 variables loaded
           rem
-          rem Mutates: CMVE_totalFrames, CMVE_frameCounter,
-          rem CMVE_targetAUDV (local variables)
+          rem Mutates: temp2, temp3,
+          rem temp5 (local variables)
           rem
           rem Called Routines: None
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope, only called for voice 0
-          let CMVE_totalFrames = MusicVoice0TotalFrames : rem Voice 0
-          let CMVE_frameCounter = musicVoice0Frame_R
-          let CMVE_targetAUDV = MusicVoice0TargetAUDV
+          let temp2 = MusicVoice0TotalFrames : rem Voice 0
+          let temp3 = musicVoice0Frame_R
+          let temp5 = MusicVoice0TargetAUDV
 CMVE_CalcElapsed
           rem Helper: Calculates frames elapsed and determines envelope
           rem phase
           rem
-          rem Input: CMVE_totalFrames, CMVE_frameCounter,
-          rem CMVE_targetAUDV (local variables), NoteAttackFrames,
+          rem Input: temp2, temp3,
+          rem temp5 (local variables), NoteAttackFrames,
           rem NoteDecayFrames (global constants)
           rem
           rem Output: Envelope phase determined, appropriate phase
           rem handler called
           rem
-          rem Mutates: CMVE_framesElapsed (local variable)
+          rem Mutates: temp4 (local variable)
           rem
           rem Called Routines: CMVE_ApplyAttack - applies attack
           rem envelope, CMVE_ApplyDecay - applies decay envelope
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope
-          let CMVE_framesElapsed = CMVE_totalFrames - CMVE_frameCounter : rem Calculate frames elapsed = TotalFrames - FrameCounter
-          if CMVE_framesElapsed < NoteAttackFrames then CMVE_ApplyAttack : rem Check if in attack phase (first NoteAttackFrames frames)
-          if CMVE_frameCounter <= NoteDecayFrames then CMVE_ApplyDecay : rem Check if in decay phase (last NoteDecayFrames frames)
+          let temp4 = temp2 - temp3 : rem Calculate frames elapsed = TotalFrames - FrameCounter
+          if temp4 < NoteAttackFrames then CMVE_ApplyAttack : rem Check if in attack phase (first NoteAttackFrames frames)
+          if temp3 <= NoteDecayFrames then CMVE_ApplyDecay : rem Check if in decay phase (last NoteDecayFrames frames)
           rem Sustain phase - use target AUDV (already set)
           return
 CMVE_ApplyAttack
           rem Helper: Applies attack envelope (ramps up volume)
           rem
-          rem Input: CMVE_targetAUDV, CMVE_framesElapsed (local
-          rem variables), CMVE_voice (local variable), NoteAttackFrames
+          rem Input: temp5, temp4 (local
+          rem variables), temp1 (local variable), NoteAttackFrames
           rem (global constant)
           rem
           rem Output: AUDV set based on attack phase
           rem
-          rem Mutates: CMVE_audv (local variable), AUDV0, AUDV1 (TIA
+          rem Mutates: temp6 (local variable), AUDV0, AUDV1 (TIA
           rem registers) = sound volumes
           rem
           rem Called Routines: CMVE_SetAUDV0 - sets AUDV0
@@ -321,18 +292,18 @@ CMVE_ApplyAttack
           rem CalculateMusicVoiceEnvelope, only called in attack phase.
           rem Formula: AUDV = Target - NoteAttackFrames + frames_elapsed
           rem Attack: AUDV = Target - NoteAttackFrames + frames_elapsed
-          let CMVE_audv = CMVE_targetAUDV
-          let CMVE_audv = CMVE_audv - NoteAttackFrames
-          let CMVE_audv = CMVE_audv + CMVE_framesElapsed
-          if CMVE_audv & $80 then let CMVE_audv = 0 : rem Check for wraparound: clamp to 0 if negative
-          if CMVE_audv > 15 then let CMVE_audv = 15
-          if CMVE_voice = 0 then CMVE_SetAUDV0 : rem Set voice-specific AUDV
-          let AUDV1 = CMVE_audv
+          let temp6 = temp5
+          let temp6 = temp6 - NoteAttackFrames
+          let temp6 = temp6 + temp4
+          if temp6 & $80 then let temp6 = 0 : rem Check for wraparound: clamp to 0 if negative
+          if temp6 > 15 then let temp6 = 15
+          if temp1 = 0 then CMVE_SetAUDV0 : rem Set voice-specific AUDV
+          let AUDV1 = temp6
           return
 CMVE_SetAUDV0
           rem Helper: Sets AUDV0 for Voice 0
           rem
-          rem Input: CMVE_audv (local variable)
+          rem Input: temp6 (local variable)
           rem
           rem Output: AUDV0 set
           rem
@@ -342,60 +313,42 @@ CMVE_SetAUDV0
           rem
           rem Constraints: Internal helper for CMVE_ApplyAttack and
           rem CMVE_ApplyDecay, only called for voice 0
-          let AUDV0 = CMVE_audv
+          let AUDV0 = temp6
           return
 CMVE_ApplyDecay
           rem Helper: Applies decay envelope (ramps down volume)
           rem
-          rem Input: CMVE_targetAUDV, CMVE_frameCounter (local
-          rem variables), CMVE_voice (local variable), NoteDecayFrames
+          rem Input: temp5, temp3 (local
+          rem variables), temp1 (local variable), NoteDecayFrames
           rem (global constant)
           rem
           rem Output: AUDV set based on decay phase
           rem
-          rem Mutates: CMVE_audv (local variable), AUDV0, AUDV1 (TIA
+          rem Mutates: temp6 (local variable), AUDV0, AUDV1 (TIA
           rem registers) = sound volumes
           rem
           rem Called Routines: CMVE_SetAUDV0 - sets AUDV0
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope, only called in decay phase.
-          rem Formula: AUDV = Target - (NoteDecayFrames - FrameCounter +
-          rem 1)
-          rem Decay: AUDV = Target - (NoteDecayFrames - FrameCounter +
-          rem 1)
-          let CMVE_audv = CMVE_targetAUDV
-          let CMVE_audv = CMVE_audv - NoteDecayFrames
-          let CMVE_audv = CMVE_audv + CMVE_frameCounter
-          let CMVE_audv = CMVE_audv - 1
-          if CMVE_audv & $80 then let CMVE_audv = 0 : rem Check for wraparound: clamp to 0 if negative
-          if CMVE_audv > 15 then let CMVE_audv = 15
-          if CMVE_voice = 0 then CMVE_SetAUDV0 : rem Set voice-specific AUDV
-          let AUDV1 = CMVE_audv
+          rem Formula: AUDV = Target - (NoteDecayFrames - FrameCounter + 1)
+          let temp6 = temp5
+          let temp6 = temp6 - NoteDecayFrames
+          let temp6 = temp6 + temp3
+          let temp6 = temp6 - 1
+          if temp6 & $80 then let temp6 = 0 : rem Check for wraparound: clamp to 0 if negative
+          if temp6 > 15 then let temp6 = 15
+          if temp1 = 0 then CMVE_SetAUDV0 : rem Set voice-specific AUDV
+          let AUDV1 = temp6
           return
 
 UpdateMusicVoice0
           rem
-          rem Updatemusicvoice0 - Update Voice 0 Playback
-          rem Applies envelope (attack/decay), decrements frame counter,
-          rem   loads new note when counter reaches 0
-          rem Update Voice 0 playback (applies envelope, decrements
-          rem frame counter, loads new note when counter reaches 0)
-          rem
-          rem Input: musicVoice0Frame_R (global SCRAM) = frame counter,
-          rem musicVoice0PointerL, musicVoice0PointerH (global) = voice
-          rem pointer, currentSongID_R (global SCRAM) = current song ID,
-          rem MusicVoice0TotalFrames, MusicVoice0TargetAUDV (global) =
-          rem envelope parameters, NoteAttackFrames, NoteDecayFrames
-          rem (global constants) = envelope constants
-          rem
-          rem Output: Envelope applied, frame counter decremented, next
-          rem note loaded when counter reaches 0
-          rem
-          rem Mutates: temp1 (used for voice number), MS_frameCount
-          rem (global) = frame count calculation, musicVoice0Frame_W
-          rem (global SCRAM) = frame counter (decremented),
-          rem musicVoice0PointerL, musicVoice0PointerH (global) = voice
+          rem Update Voice 0 playback (envelope, frame counter, note stepping).
+          rem Input: musicVoice0Frame_R, musicVoice0PointerL/H, currentSongID_R,
+          rem        MusicVoice0TotalFrames/TargetAUDV, NoteAttackFrames, NoteDecayFrames
+          rem Output: Envelope applied, frame counter decremented, next note loaded when counter hits 0
+          rem Mutates: temp1, MS_frameCount, musicVoice0Frame_W, musicVoice0PointerL/H
           rem pointer (advanced via LoadMusicNote0), AUDC0, AUDF0, AUDV0
           rem (TIA registers) = sound registers (updated via
           rem LoadMusicNote0 and CalculateMusicVoiceEnvelope)

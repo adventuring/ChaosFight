@@ -139,19 +139,19 @@ UpdatePlayerAnimation
           rem Constraints: Must be colocated with AdvanceFrame,
           rem DoneAdvance, HandleFrame7Transition,
           rem              UpdateSprite (all called via goto)
-          dim UPA_eliminatedMask = temp4 : rem Skip if player is eliminated - use BitMask array lookup
-          let UPA_eliminatedMask = BitMask[currentPlayer]
-          if playersEliminated_R & UPA_eliminatedMask then return
+          rem Skip if player is eliminated - use BitMask array lookup
+          let temp4 = BitMask[currentPlayer]
+          if playersEliminated_R & temp4 then return
           
           rem Increment this sprite 10fps animation counter (NOT global
           rem   frame counter)
           rem SCRAM read-modify-write: Read from r077, modify, write to
-          dim UPA_animCounterRead = temp4 : rem   w077
-          let UPA_animCounterRead = animationCounter_R[currentPlayer] + 1
-          let animationCounter_W[currentPlayer] = UPA_animCounterRead
+          rem w077
+          let temp4 = animationCounter_R[currentPlayer] + 1
+          let animationCounter_W[currentPlayer] = temp4
           
           rem Check if time to advance animation frame (every
-          if UPA_animCounterRead >= AnimationFrameDelay then goto AdvanceFrame : rem   AnimationFrameDelay frames)
+          if temp4 >= AnimationFrameDelay then goto AdvanceFrame : rem   AnimationFrameDelay frames)
           goto DoneAdvance
 AdvanceFrame
           rem Advance animation frame (counter reached threshold)
@@ -181,16 +181,15 @@ AdvanceFrame
           rem   (currentAnimationFrame), not global frame
           rem SCRAM read-modify-write: Read from r081, modify, write to
           rem   w081
-          dim UPA_animFrameRead = temp4
-          let UPA_animFrameRead = currentAnimationFrame_R[currentPlayer]
-          let UPA_animFrameRead = 1 + UPA_animFrameRead
-          let currentAnimationFrame_W[currentPlayer] = UPA_animFrameRead
+          let temp4 = currentAnimationFrame_R[currentPlayer]
+          let temp4 = 1 + temp4
+          let currentAnimationFrame_W[currentPlayer] = temp4
           
           rem Check if we have completed the current action (8 frames
           rem   per action)
           rem Use temp variable from previous increment
-          rem   (UPA_animFrameRead)
-          if UPA_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition
+          rem   (temp4)
+          if temp4 >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
 DoneAdvance
           return
@@ -226,14 +225,14 @@ AdvanceAnimationFrame
           rem Frame is from sprite 10fps counter
           rem   (currentAnimationFrame), not global frame
           rem SCRAM read-modify-write: Read from r081, modify, write to
-          dim AAF_animFrameRead = temp4 : rem   w081
-          let AAF_animFrameRead = currentAnimationFrame_R[currentPlayer]
-          let AAF_animFrameRead = 1 + AAF_animFrameRead
-          let currentAnimationFrame_W[currentPlayer] = AAF_animFrameRead
+          rem w081
+          let temp4 = currentAnimationFrame_R[currentPlayer]
+          let temp4 = 1 + temp4
+          let currentAnimationFrame_W[currentPlayer] = temp4
           
           rem Check if we have completed the current action (8 frames
           rem   per action)
-          if AAF_animFrameRead >= FramesPerSequence then goto HandleFrame7Transition : rem Use temp variable from increment (AAF_animFrameRead)
+          if temp4 >= FramesPerSequence then goto HandleFrame7Transition : rem Use temp variable from increment (temp4)
           goto UpdateSprite
           
 HandleFrame7Transition
@@ -277,9 +276,6 @@ UpdateSprite
           rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
           rem AdvanceAnimationFrame, HandleFrame7Transition
-          dim US_animationFrame = temp2
-          dim US_animationAction = temp3
-          dim US_playerNumber = temp4
           const US_SEPARATOR = 0
           rem Update character sprite with current animation frame and
           rem   action
@@ -299,9 +295,9 @@ UpdateSprite
           rem   (currentAnimationFrame), not global frame counter
           rem SCRAM read: Read from r081
           rem NOTE: US_SEPARATOR const added to work around compiler bug
-          let US_animationFrame = currentAnimationFrame_R[currentPlayer] : rem   where dim entries concatenate with subsequent constants
-          let US_animationAction = currentAnimationSeq[currentPlayer]
-          let US_playerNumber = currentPlayer
+          let temp2 = currentAnimationFrame_R[currentPlayer] : rem   where dim entries concatenate with subsequent constants
+          let temp3 = currentAnimationSeq[currentPlayer]
+          let temp4 = currentPlayer
           gosub LoadPlayerSprite bank10
           
           return
@@ -338,13 +334,10 @@ SetPlayerAnimation
           rem
           rem Called Routines: LoadPlayerSprite (bank10) - loads
           rem character sprite graphics
-          dim SPA_animationAction = temp2 : rem Constraints: None
-          dim SPA_animationFrame = temp2
-          dim SPA_animationSeq = temp3
-          dim SPA_playerNumber = temp4
-          if SPA_animationAction >= AnimationSequenceCount then return
+          rem Constraints: None
+          if temp2 >= AnimationSequenceCount then return
           
-          let currentAnimationSeq[currentPlayer] = SPA_animationAction
+          let currentAnimationSeq[currentPlayer] = temp2
           let currentAnimationFrame_W[currentPlayer] = 0 : rem SCRAM write: Write to w081
           rem Start at first frame
           let animationCounter_W[currentPlayer] = 0 : rem SCRAM write: Write to w077
@@ -354,32 +347,20 @@ SetPlayerAnimation
           rem Frame is from this sprite 10fps counter, action from
           rem   currentAnimationSeq
           rem Set up parameters for LoadPlayerSprite
-          let SPA_animationFrame = 0 : rem SCRAM read: Read from r081 (we just wrote 0, so this is 0)
-          let SPA_animationSeq = currentAnimationSeq[currentPlayer]
-          let SPA_playerNumber = currentPlayer
+          let temp2 = 0 : rem SCRAM read: Read from r081 (we just wrote 0, so this is 0)
+          let temp3 = currentAnimationSeq[currentPlayer]
+          let temp4 = currentPlayer
           gosub LoadPlayerSprite bank10
           
           return
 
 GetCurrentAnimationFrame
-          rem Get current animation frame for a player
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem
-          rem OUTPUT: temp2 = current animation frame (0-7)
-          rem
-          rem EFFECTS: None (read-only query)
-          rem Get current animation frame for a player (read-only query)
+          rem Return the current animation frame for currentPlayer.
           rem
           rem Input: currentPlayer (global) = player index (0-3)
-          rem        currentAnimationFrame_R[] (global SCRAM array) =
-          rem        current animation frames
-          rem
+          rem        currentAnimationFrame_R[] (SCRAM) = stored frame values
           rem Output: temp2 = current animation frame (0-7)
-          rem
           rem Mutates: temp2 (set to current frame)
-          rem
-          rem Called Routines: None
           rem Constraints: None
           let temp2 = currentAnimationFrame_R[currentPlayer] : rem SCRAM read: Read from r081
           return
@@ -789,28 +770,26 @@ Character5_Execute
           let temp2 = ActionIdle : rem Megax: Execute → Idle (fire breath during Execute)
           goto SetPlayerAnimation : rem tail call
 Character6_Execute
-          dim C6E_animationAction = temp2
-          dim C6E_playerIndex = temp1
           rem Harpy: Execute → Idle
           rem Clear dive flag and stop diagonal movement when attack
           rem   completes
-          let C6E_playerIndex = currentPlayer : rem Also apply upward wing flap momentum after swoop attack
+          let temp1 = currentPlayer : rem Also apply upward wing flap momentum after swoop attack
           rem Clear dive flag (bit 4 in characterStateFlags)
-          let C6E_stateFlags = 239 & characterStateFlags_R[C6E_playerIndex] : rem Fix RMW: Read from _R, modify, write to _W
-          let characterStateFlags_W[C6E_playerIndex] = C6E_stateFlags
+          let C6E_stateFlags = 239 & characterStateFlags_R[temp1] : rem Fix RMW: Read from _R, modify, write to _W
+          let characterStateFlags_W[temp1] = C6E_stateFlags
           rem Clear bit 4 (239 = 0xEF = ~0x10)
-          let playerVelocityX[C6E_playerIndex] = 0 : rem Stop horizontal velocity (zero X velocity)
-          let playerVelocityXL[C6E_playerIndex] = 0
+          let playerVelocityX[temp1] = 0 : rem Stop horizontal velocity (zero X velocity)
+          let playerVelocityXL[temp1] = 0
           rem Apply upward wing flap momentum after swoop attack
           rem   (equivalent to HarpyJump)
           rem Same as normal flap: -2 pixels/frame upward (254 in twos
-          let playerVelocityY[C6E_playerIndex] = 254 : rem   complement)
+          let playerVelocityY[temp1] = 254 : rem   complement)
           rem -2 in 8-bit twos complement: 256 - 2 = 254
-          let playerVelocityYL[C6E_playerIndex] = 0
+          let playerVelocityYL[temp1] = 0
           rem Keep jumping flag set to allow vertical movement
-          rem playerState[C6E_playerIndex] bit 2 (jumping) already set
+          rem playerState[temp1] bit 2 (jumping) already set
           rem   from attack, keep it
-          let C6E_animationAction = ActionIdle : rem Transition to Idle
+          let temp2 = ActionIdle : rem Transition to Idle
           goto SetPlayerAnimation : rem tail call
 Character7_Execute
           let temp2 = ActionIdle : rem Knight Guy: Execute → Idle (sword during Execute)
@@ -845,124 +824,113 @@ Character15_Execute
           rem These characters are not yet implemented and use standard
           rem   behaviors (Execute → Idle, no Windup)
 
+          rem Windup routines return immediately; execute handlers drop back to Idle.
+
 Character16_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character17_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character18_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character19_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character20_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character21_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character22_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character23_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character24_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character25_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character26_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character27_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character28_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character29_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
 Character30_Windup
-          rem Placeholder: no windup used, Execute only
           return
 
+          rem Execute handlers fall back to Idle until placeholder characters are implemented.
+
 Character16_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character17_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character18_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character19_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character20_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character21_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character22_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character23_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character24_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character25_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character26_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character27_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character28_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character29_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 Character30_Execute
-          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 HandleRecoveryEnd

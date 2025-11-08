@@ -31,11 +31,7 @@ UpdateFramePhase
           rem CollisionCheckPair - Which collision pair to check this
           rem   frame
           rem Update Frame Phase
-          rem Updates the frame phase counter (0-3) used to schedule
-          rem   operations.
-          rem Called once per frame at the start of game loop.
-          rem Updates the frame phase counter (0-3) used to schedule
-          rem operations
+          rem Updates FramePhase (0-3) once per frame to schedule multi-frame operations.
           rem
           rem Input: frame (global) = global frame counter
           rem
@@ -51,16 +47,10 @@ UpdateFramePhase
 
           rem
           rem Budget Health Bar Rendering
-          rem Instead of drawing all 4 health bars every frame, draw
-          rem   only one
-          rem player health bar per frame. This reduces pfpixel
-          rem   operations
-          rem from 128 per frame to 32 per frame (4× reduction).
+          rem Draw only one player health bar per frame (down from four) to cut pfpixel work by 75%.
 
 BudgetedHealthBarUpdate
-          rem USES: FramePhase (0-3) to determine which player to update
-          rem Instead of drawing all 4 health bars every frame, draw
-          rem only one player health bar per frame
+          rem Uses FramePhase (0-3) to determine which player health bar to refresh each frame.
           rem
           rem Input: FramePhase (global) = frame phase counter (0-3)
           rem        controllerStatus (global) = controller detection
@@ -171,7 +161,7 @@ UpdateHealthBarPlayer0
           rem
           rem Called Routines: DrawHealthBarRow0 (bank8) - draws Player
           rem 1 health bar row
-          dim temp6 = temp6 : rem Constraints: None
+          rem Constraints: None
           let temp6 = playerHealth[0] / 3
           if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           COLUPF = ColBlue(12)
@@ -218,7 +208,7 @@ UpdateHealthBarPlayer2
           rem
           rem Called Routines: DrawHealthBarRow2 (bank8) - draws Player
           rem 3 health bar row
-          dim temp6 = temp6 : rem Constraints: None
+          rem Constraints: None
           let temp6 = playerHealth[2] / 3
           if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           COLUPF = ColYellow(12)
@@ -242,7 +232,7 @@ UpdateHealthBarPlayer3
           rem
           rem Called Routines: DrawHealthBarRow3 (bank8) - draws Player
           rem 4 health bar row
-          dim temp6 = temp6 : rem Constraints: None
+          rem Constraints: None
           let temp6 = playerHealth[3] / 3
           if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           COLUPF = ColGreen(12)

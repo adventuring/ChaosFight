@@ -393,15 +393,12 @@ CharacterSelectDrawPlayer4
 CharacterSelectSkipPlayer3Draw
 CharacterSelectSkipPlayer4Draw
 
-          rem Draw locked status indicators (playfield blocks framing
-          rem   characters)
+          rem Tail call into CharacterSelectDrawLocks to render lock borders
           goto CharacterSelectDrawLocks : rem tail call
 
 
 CharacterSelectDrawLocks
-          rem Draw locked status indicators
-          rem Draw locked status indicators (playfield blocks framing
-          rem locked characters)
+          rem Draw locked status indicators (playfield blocks framing locked characters)
           rem
           rem Input: playerLocked (global) = player lock states,
           rem controllerStatus (global) = controller detection state
@@ -1034,18 +1031,10 @@ CharacterSelectQuadtariAbsent
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for CharacterSelectDetectQuadtari, only
-          rem called when Quadtari not detected. Does NOT clear
-          rem controllerStatus - monotonic detection (upgrades only).
-          rem Only DetectControllers (called via SELECT) can update
-          rem controller status
-          rem Quadtari not detected in this detection cycle
-          rem NOTE: Do NOT clear controllerStatus - monotonic detection
-          rem   (upgrades only)
-          rem If Quadtari was previously detected, it remains detected
-          rem   (monotonic state machine)
-          rem Only DetectControllers (called via SELECT) can update
-          rem   controller status
+          rem Constraints: Helper for CharacterSelectDetectQuadtari; only executes when Quadtari
+          rem   is absent. Monotonic detection means controllerStatus is never cleared here.
+          rem   DetectControllers (SELECT handler) is the sole routine that upgrades controller
+          rem   status flags.
           
 CharacterSelectQuadtariDetected
           rem Helper: Quadtari detected - set detection flag

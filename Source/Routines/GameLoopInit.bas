@@ -120,11 +120,11 @@ InitPositionsDone
           rem
           rem Constraints: Must be colocated with BeginGameLoop
           
-          let PlayerState[0] = 1 : rem Initialize player states (facing direction)
-          let PlayerState[1] = 0 : rem Player 1 facing right
-          let PlayerState[2] = 1 : rem Player 2 facing left
-          let PlayerState[3] = 0 : rem Player 3 facing right
-          rem Player 4 facing left
+          rem Initialize player states (facing direction)
+          let PlayerState[0] = 0 : rem Player 1 facing right
+          let PlayerState[1] = 1 : rem Player 2 facing left
+          let PlayerState[2] = 0 : rem Player 3 facing right
+          let PlayerState[3] = 1 : rem Player 4 facing left
           
           rem Initialize player health (apply handicap if selected)
           rem PlayerLocked value: 0=unlocked, 1=normal (100% health),

@@ -80,13 +80,11 @@ CtrlDetPads
           rem Constraints: Monotonic state machine - only allows
           rem upgrades, never downgrades. Quadtari takes priority over
           rem Genesis/Joy2B+
-          dim CDP_existingStatus = temp1
-          dim CDP_newStatus = temp2
           
           rem Save existing controller capabilities (monotonic - never
-          let CDP_existingStatus = controllerStatus : rem   downgrade)
+          let temp1 = controllerStatus : rem   downgrade)
           
-          let CDP_newStatus = 0 : rem Perform fresh detection into temporary variable
+          let temp2 = 0 : rem Perform fresh detection into temporary variable
 #ifndef TV_SECAM
           let systemFlags = systemFlags & ClearSystemFlagColorBWOverride
           let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
@@ -113,14 +111,14 @@ CDP_NoQuadtari
           goto CDP_CheckGenesis : rem (Don’t clear existing Quadtari - monotonic upgrade only)
 
 CDP_QuadtariFound
-          let CDP_newStatus = CDP_newStatus | SetQuadtariDetected : rem Quadtari detected - set flag in new status
+          let temp2 = temp2 | SetQuadtariDetected : rem Quadtari detected - set flag in new status
           goto CDP_MergeStatus : rem Quadtari takes priority - skip Genesis/Joy2B+ detection
 
 CDP_CheckGenesis
           rem Check for Genesis controller (only if Quadtari not already
           rem   detected)
           rem If Quadtari was previously detected, skip all other
-          if CDP_existingStatus & SetQuadtariDetected then CDP_MergeStatus : rem   detection
+          if temp1 & SetQuadtariDetected then CDP_MergeStatus : rem   detection
           
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
           rem Method: Ground paddle ports via VBLANK, wait a frame,
@@ -129,17 +127,17 @@ CDP_CheckGenesis
           
           rem Detect Joy2b+ controllers (if no Genesis detected)
           rem Skip Joy2B+ detection if Genesis already exists (existing
-          if CDP_existingStatus & SetLeftPortGenesis then CDP_MergeStatus : rem   or newly detected)
-          if CDP_existingStatus & SetRightPortGenesis then CDP_MergeStatus
-          if CDP_newStatus & SetLeftPortGenesis then CDP_MergeStatus
-          if CDP_newStatus & SetRightPortGenesis then CDP_MergeStatus
+          if temp1 & SetLeftPortGenesis then CDP_MergeStatus : rem   or newly detected)
+          if temp1 & SetRightPortGenesis then CDP_MergeStatus
+          if temp2 & SetLeftPortGenesis then CDP_MergeStatus
+          if temp2 & SetRightPortGenesis then CDP_MergeStatus
           gosub CDP_DetectJoy2bPlus
 
 CDP_MergeStatus
           rem Merge new detections with existing capabilities (monotonic
           rem   upgrade)
           rem OR new status with existing - this ensures upgrades only,
-          let controllerStatus = CDP_existingStatus | CDP_newStatus : rem   never downgrades
+          let controllerStatus = temp1 | temp2 : rem   never downgrades
           
           return
           
@@ -149,14 +147,14 @@ CDP_DetectGenesis
           rem Detect Genesis/MegaDrive controllers by grounding paddle
           rem ports and checking levels
           rem
-          rem Input: CDP_newStatus (temp2) = new detection status,
+          rem Input: temp2 (temp2) = new detection status,
           rem INPT0-3 (hardware registers) = paddle port states, VBLANK
           rem (TIA register) = vertical blank register
           rem
-          rem Output: CDP_newStatus (temp2) = updated with Genesis
+          rem Output: temp2 (temp2) = updated with Genesis
           rem detection flags (SetLeftPortGenesis, SetRightPortGenesis)
           rem
-          rem Mutates: temp2 (CDP_newStatus updated), VBLANK (TIA
+          rem Mutates: temp2 (temp2 updated), VBLANK (TIA
           rem register) = temporarily set to ground ports, drawscreen
           rem called multiple times
           rem
@@ -182,14 +180,14 @@ CDP_DetectGenesis
           if !INPT0{7} then CDP_NoGenesisLeft : rem Check INPT0 - Genesis controllers pull HIGH when idle
           if !INPT1{7} then CDP_NoGenesisLeft
           
-          let CDP_newStatus = CDP_newStatus | SetLeftPortGenesis : rem Genesis detected on left port
+          let temp2 = temp2 | SetLeftPortGenesis : rem Genesis detected on left port
           rem Set LeftPortGenesis bit
           
 CDP_NoGenesisLeft
           if !INPT2{7} then CDP_NoGenesisRight : rem Check INPT2 - Genesis controllers pull HIGH when idle
           if !INPT3{7} then CDP_NoGenesisRight
           
-          let CDP_newStatus = CDP_newStatus | SetRightPortGenesis : rem Genesis detected on right port
+          let temp2 = temp2 | SetRightPortGenesis : rem Genesis detected on right port
           rem Set RightPortGenesis bit
           
 CDP_NoGenesisRight
@@ -201,15 +199,15 @@ CDP_DetectJoy2bPlus
           rem Detect Joy2b+ enhanced controllers by checking paddle port
           rem states
           rem
-          rem Input: CDP_existingStatus (temp1) = existing controller
-          rem status, CDP_newStatus (temp2) = new detection status,
+          rem Input: temp1 (temp1) = existing controller
+          rem status, temp2 (temp2) = new detection status,
           rem INPT0-5 (hardware registers) = paddle port states
           rem
-          rem Output: CDP_newStatus (temp2) = updated with Joy2b+
+          rem Output: temp2 (temp2) = updated with Joy2b+
           rem detection flags (SetLeftPortJoy2bPlus,
           rem SetRightPortJoy2bPlus)
           rem
-          rem Mutates: temp2 (CDP_newStatus updated)
+          rem Mutates: temp2 (temp2 updated)
           rem
           rem Called Routines: None
           rem
@@ -218,10 +216,10 @@ CDP_DetectJoy2bPlus
           rem Only check if no Genesis controllers detected (existing or
           rem   newly detected)
           rem This check is redundant since caller already checks, but
-          if CDP_existingStatus & SetLeftPortGenesis then return : rem   kept for safety
-          if CDP_existingStatus & SetRightPortGenesis then return
-          if CDP_newStatus & SetLeftPortGenesis then return
-          if CDP_newStatus & SetRightPortGenesis then return
+          if temp1 & SetLeftPortGenesis then return : rem   kept for safety
+          if temp1 & SetRightPortGenesis then return
+          if temp2 & SetLeftPortGenesis then return
+          if temp2 & SetRightPortGenesis then return
           
           rem Joy2b+ controllers pull all three paddle ports HIGH when
           rem   idle
@@ -229,7 +227,7 @@ CDP_DetectJoy2bPlus
           if !INPT1{7} then CDP_NoJoy2Left
           if !INPT4{7} then CDP_NoJoy2Left
           
-          let CDP_newStatus = CDP_newStatus | SetLeftPortJoy2bPlus : rem Joy2b+ detected on left port
+          let temp2 = temp2 | SetLeftPortJoy2bPlus : rem Joy2b+ detected on left port
           rem Set LeftPortJoy2bPlus bit
           
 CDP_NoJoy2Left
@@ -237,7 +235,7 @@ CDP_NoJoy2Left
           if !INPT3{7} then CDP_NoJoy2Right
           if !INPT5{7} then CDP_NoJoy2Right
           
-          let CDP_newStatus = CDP_newStatus | SetRightPortJoy2bPlus : rem Joy2b+ detected on right port
+          let temp2 = temp2 | SetRightPortJoy2bPlus : rem Joy2b+ detected on right port
           rem Set RightPortJoy2bPlus bit
           
 CDP_NoJoy2Right

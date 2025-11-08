@@ -1,4 +1,3 @@
-CtrlDetConsole
           rem ChaosFight - Source/Routines/ControllerDetection.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem CONTROLLER HARDWARE SUPPORT:
@@ -10,6 +9,8 @@ CtrlDetConsole
           rem   require different reading
           rem Console and controller detection for 7800, Quadtari,
           rem   Genesis, Joy2b+
+
+CtrlDetConsole
           rem 7800 detection method based on Grizzards by Bruce-Robert
           rem
           rem   Pocock
@@ -97,12 +98,16 @@ CtrlDetPads
           rem Left side: INPT0 LOW + INPT1 HIGH, or Right side: INPT2
           rem   LOW + INPT3 HIGH
           
-          if INPT0{7} then CDP_CheckRightSide : rem Check left side controllers (INPT0/INPT1)
+          rem Check left side controllers (INPT0/INPT1)
+          
+          if INPT0{7} then CDP_CheckRightSide
           if !INPT1{7} then CDP_CheckRightSide
           goto CDP_QuadtariFound
 CDP_CheckRightSide
           
-          if INPT2{7} then CDP_NoQuadtari : rem Check right side controllers (INPT2/INPT3)
+          rem Check right side controllers (INPT2/INPT3)
+          
+          if INPT2{7} then CDP_NoQuadtari
           if !INPT3{7} then CDP_NoQuadtari
           goto CDP_QuadtariFound
 CDP_NoQuadtari
@@ -118,7 +123,8 @@ CDP_CheckGenesis
           rem Check for Genesis controller (only if Quadtari not already
           rem   detected)
           rem If Quadtari was previously detected, skip all other
-          if temp1 & SetQuadtariDetected then CDP_MergeStatus : rem   detection
+          rem detection
+          if temp1 & SetQuadtariDetected then CDP_MergeStatus
           
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
           rem Method: Ground paddle ports via VBLANK, wait a frame,
@@ -127,7 +133,8 @@ CDP_CheckGenesis
           
           rem Detect Joy2b+ controllers (if no Genesis detected)
           rem Skip Joy2B+ detection if Genesis already exists (existing
-          if temp1 & SetLeftPortGenesis then CDP_MergeStatus : rem   or newly detected)
+          rem or newly detected)
+          if temp1 & SetLeftPortGenesis then CDP_MergeStatus
           if temp1 & SetRightPortGenesis then CDP_MergeStatus
           if temp2 & SetLeftPortGenesis then CDP_MergeStatus
           if temp2 & SetRightPortGenesis then CDP_MergeStatus
@@ -177,14 +184,17 @@ CDP_DetectGenesis
           rem Restore normal VBLANK
           VBLANK = $00
           
-          if !INPT0{7} then CDP_NoGenesisLeft : rem Check INPT0 - Genesis controllers pull HIGH when idle
+          rem Check INPT0 - Genesis controllers pull HIGH when idle
+          
+          if !INPT0{7} then CDP_NoGenesisLeft
           if !INPT1{7} then CDP_NoGenesisLeft
           
           let temp2 = temp2 | SetLeftPortGenesis : rem Genesis detected on left port
           rem Set LeftPortGenesis bit
           
 CDP_NoGenesisLeft
-          if !INPT2{7} then CDP_NoGenesisRight : rem Check INPT2 - Genesis controllers pull HIGH when idle
+          rem Check INPT2 - Genesis controllers pull HIGH when idle
+          if !INPT2{7} then CDP_NoGenesisRight
           if !INPT3{7} then CDP_NoGenesisRight
           
           let temp2 = temp2 | SetRightPortGenesis : rem Genesis detected on right port
@@ -216,14 +226,16 @@ CDP_DetectJoy2bPlus
           rem Only check if no Genesis controllers detected (existing or
           rem   newly detected)
           rem This check is redundant since caller already checks, but
-          if temp1 & SetLeftPortGenesis then return : rem   kept for safety
+          rem kept for safety
+          if temp1 & SetLeftPortGenesis then return
           if temp1 & SetRightPortGenesis then return
           if temp2 & SetLeftPortGenesis then return
           if temp2 & SetRightPortGenesis then return
           
           rem Joy2b+ controllers pull all three paddle ports HIGH when
           rem   idle
-          if !INPT0{7} then CDP_NoJoy2Left : rem Check left port (INPT0, INPT1, INPT4)
+          rem Check left port (INPT0, INPT1, INPT4)
+          if !INPT0{7} then CDP_NoJoy2Left
           if !INPT1{7} then CDP_NoJoy2Left
           if !INPT4{7} then CDP_NoJoy2Left
           
@@ -231,7 +243,8 @@ CDP_DetectJoy2bPlus
           rem Set LeftPortJoy2bPlus bit
           
 CDP_NoJoy2Left
-          if !INPT2{7} then CDP_NoJoy2Right : rem Check right port (INPT2, INPT3, INPT5)
+          rem Check right port (INPT2, INPT3, INPT5)
+          if !INPT2{7} then CDP_NoJoy2Right
           if !INPT3{7} then CDP_NoJoy2Right
           if !INPT5{7} then CDP_NoJoy2Right
           
@@ -279,14 +292,17 @@ CtrlGenesisA
           rem Restore normal VBLANK
           VBLANK = $00
           
-          if !INPT0{7} then NoGenesisLeft : rem Check INPT0 - Genesis controllers pull HIGH when idle
+          rem Check INPT0 - Genesis controllers pull HIGH when idle
+          
+          if !INPT0{7} then NoGenesisLeft
           if !INPT1{7} then NoGenesisLeft
           
           let controllerStatus = controllerStatus | SetLeftPortGenesis : rem Genesis detected on left port
           rem Set LeftPortGenesis bit
           
 NoGenesisLeft
-          if !INPT2{7} then NoGenesisRight : rem Check INPT2 - Genesis controllers pull HIGH when idle
+          rem Check INPT2 - Genesis controllers pull HIGH when idle
+          if !INPT2{7} then NoGenesisRight
           if !INPT3{7} then NoGenesisRight
           
           let controllerStatus = controllerStatus | SetRightPortGenesis : rem Genesis detected on right port
@@ -315,7 +331,8 @@ CtrlJoy2A
           rem Constraints: None
           rem Joy2b+ controllers pull all three paddle ports HIGH when
           rem   idle
-          if !INPT0{7} then NoJoy2Left : rem Check left port (INPT0, INPT1, INPT4)
+          rem Check left port (INPT0, INPT1, INPT4)
+          if !INPT0{7} then NoJoy2Left
           if !INPT1{7} then NoJoy2Left
           if !INPT4{7} then NoJoy2Left
           
@@ -323,7 +340,8 @@ CtrlJoy2A
           rem Set LeftPortJoy2bPlus bit
           
 NoJoy2Left
-          if !INPT2{7} then NoJoy2Right : rem Check right port (INPT2, INPT3, INPT5)
+          rem Check right port (INPT2, INPT3, INPT5)
+          if !INPT2{7} then NoJoy2Right
           if !INPT3{7} then NoJoy2Right
           if !INPT5{7} then NoJoy2Right
           
@@ -364,15 +382,20 @@ CtrlGenesisB
           rem Wait for next frame top
           drawscreen
           
-          if !INPT0{7} then NoLeftGenesis : rem Check INPT0 - Genesis pulls HIGH when idle
+          rem Check INPT0 - Genesis pulls HIGH when idle
           
-          if !INPT1{7} then NoLeftGenesis : rem Check INPT1 - Genesis pulls HIGH when idle
+          if !INPT0{7} then NoLeftGenesis
+          
+          rem Check INPT1 - Genesis pulls HIGH when idle
+          
+          if !INPT1{7} then NoLeftGenesis
           
           let controllerStatus = controllerStatus | SetLeftPortGenesis : rem Genesis detected on left port
           goto CheckRightGenesis
           
 NoLeftGenesis
-          if !INPT2{7} then NoRightGenesis : rem Check right port (INPT2/INPT3) for Genesis
+          rem Check right port (INPT2/INPT3) for Genesis
+          if !INPT2{7} then NoRightGenesis
           if !INPT3{7} then NoRightGenesis
           
           let controllerStatus = controllerStatus | SetRightPortGenesis : rem Genesis detected on right port
@@ -408,7 +431,8 @@ CtrlJoy2B
           rem
           rem Constraints: Only checks if no Genesis controllers
           rem detected
-          if LeftPortGenesis then return : rem Only check if no Genesis controllers detected
+          rem Only check if no Genesis controllers detected
+          if LeftPortGenesis then return
           if RightPortGenesis then return
           
           rem Ground paddle ports again for Joy2b+ detection
@@ -416,7 +440,9 @@ CtrlJoy2B
           drawscreen
           drawscreen
           
-          if !INPT0{7} then CheckRightJoy2 : rem Check left port for Joy2b+ (INPT0, INPT1, INPT4)
+          rem Check left port for Joy2b+ (INPT0, INPT1, INPT4)
+          
+          if !INPT0{7} then CheckRightJoy2
           if !INPT1{7} then CheckRightJoy2
           if !INPT4{7} then CheckRightJoy2
           
@@ -424,7 +450,8 @@ CtrlJoy2B
           goto Joy2PlusDone
           
 CheckRightJoy2
-          if !INPT2{7} then Joy2PlusDone : rem Check right port for Joy2b+ (INPT2, INPT3, INPT5)
+          rem Check right port for Joy2b+ (INPT2, INPT3, INPT5)
+          if !INPT2{7} then Joy2PlusDone
           if !INPT3{7} then Joy2PlusDone
           if !INPT5{7} then Joy2PlusDone
           
@@ -508,10 +535,12 @@ UpdateQuadIn
           rem ReadPlayers34 (if odd frame)
           rem
           rem Constraints: Only runs if Quadtari detected
-          if !QuadtariDetected then return : rem Only run if Quadtari detected
+          rem Only run if Quadtari detected
+          if !QuadtariDetected then return
           
           rem Alternate between reading players 1-2 and players 3-4
-          if qtcontroller then ReadPlayers34 : rem Use qtcontroller to determine which pair to read
+          rem Use qtcontroller to determine which pair to read
+          if qtcontroller then ReadPlayers34
           goto ReadPlayers12
 
 ReadPlayers12

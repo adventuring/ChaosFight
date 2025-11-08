@@ -83,14 +83,14 @@ CharacterSpritePtrHiBank2    ; Redundant "Ptr" + wrong suffix
 ### camelCase
 
 Use **camelCase** for:
-- **Zero-page variables** (standard RAM): `gameState`, `playerX`, `selectedCharacter1`, `playerHealth`
+- **Zero-page variables** (standard RAM): `gameState`, `playerX`, `playerCharacter[0]`, `playerHealth`
 - **Built-in variables**: `temp1`, `temp2`, `qtcontroller`, `frame` (already lowercase)
 
 **Examples:**
 ```basic
 dim gameState = g
 dim playerX = var0
-dim selectedCharacter1 = s
+dim playerCharacter = j
 ```
 
 ### camelCase_R and camelCase_W

@@ -15,7 +15,7 @@ Then continues into warm start:
 ## Naming Conventions
 
 - Built-in batariBasic identifiers (temp1-temp6, joy0up, frame, and their hardware frenemies) stay lowercase because they were here before we moved in.
-- User-defined variables flaunt camelCase (`gameState`, `playerX`, `selectedCharacter1`) so we can spot our handiwork instantly.
+- User-defined variables flaunt camelCase (`gameState`, `playerX`, `playerCharacter[0]`) so we can spot our handiwork instantly.
 - Constants, enums, labels, and routines work the PascalCase runway (`MaxCharacter`, `ActionStanding`, `LoadCharacterSprite`) to telegraph their importance.
 - TIA registers (`player0x`, `COLUP0`, `pf0`-`pf2`, etc.) keep their canonical lowercase spellings—do not “improve” them.
 - Never `dim` a built-in variable; batariBasic already reserved their seats and will throw shade if you double-book them.
@@ -197,7 +197,7 @@ Note: Bernie can use the same "high as I can be without being in a brick" logic 
   - Set player facing directions (alternating: P1 right, P2 left, P3 right, P4 left)
   - Apply handicap if selected (playerLocked[0-3] & PlayerCharacterHandicapped → 75% health, else 100%)
   - Initialize player states, timers, momentum
-  - Load character types from selectedCharacter[0-3] variables
+  - Load character types from playerCharacter[0-3] array
   - Initialize missiles and projectiles
   - Set frame counter and game state
   - Load arena data

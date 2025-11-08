@@ -9,18 +9,17 @@ BeginFallingAnimation
           rem   initializes state.
           rem
           rem Quadrant positions:
-          rem   - Top-left: Player 1 (selectedCharacter1)
-          rem   - Top-right: Player 2 (selectedCharacter2_R)
-          rem   - Bottom-left: Player 3 (selectedCharacter3_R, if active)
-          rem   - Bottom-right: Player 4 (selectedCharacter4_R, if active)
+          rem   - Top-left: Player 1 (playerCharacter[0])
+          rem   - Top-right: Player 2 (playerCharacter[1])
+          rem   - Bottom-left: Player 3 (playerCharacter[2], if active)
+          rem   - Bottom-right: Player 4 (playerCharacter[3], if active)
           rem After animation completes, players will be at row 2
           rem   positions
           rem and transition to Game Mode.
           rem Setup routine for Falling In animation - sets players in
           rem quadrant starting positions
           rem
-          rem Input: selectedCharacter1, selectedCharacter2_R, selectedCharacter3_R,
-          rem selectedCharacter4_R (global) = character selections
+          rem Input: playerCharacter[] (global array) = character selections
           rem        controllerStatus (global) = controller detection
           rem        state
           rem
@@ -55,7 +54,7 @@ BeginFallingAnimation
           let COLUBK = ColGray(0) : rem Set background color
           
           rem Initialize player positions in quadrants
-          if selectedCharacter1 = NoCharacter then DonePlayer1Init : rem Player 1: Top-left quadrant (unless NO)
+          if playerCharacter[0] = NoCharacter then DonePlayer1Init : rem Player 1: Top-left quadrant (unless NO)
           let playerX[0] = 16
           let playerY[0] = 8 : rem Top-left X position
           let activePlayers = activePlayers + 1 : rem Top-left Y position (near top)
@@ -72,7 +71,7 @@ DonePlayer1Init
           rem
           rem Constraints: Must be colocated with BeginFallingAnimation
           
-          if selectedCharacter2_R = NoCharacter then DonePlayer2Init : rem Player 2: Top-right quadrant (unless NO)
+          if playerCharacter[1] = NoCharacter then DonePlayer2Init : rem Player 2: Top-right quadrant (unless NO)
           let playerX[1] = 144
           let playerY[1] = 8 : rem Top-right X position
           let activePlayers = activePlayers + 1 : rem Top-right Y position (near top)
@@ -90,7 +89,7 @@ DonePlayer2Init
           rem Constraints: Must be colocated with BeginFallingAnimation
           
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Init : rem Player 3: Bottom-left quadrant (if Quadtari and not NO)
-          if selectedCharacter3_R = NoCharacter then DonePlayer3Init
+          if playerCharacter[2] = NoCharacter then DonePlayer3Init
           let playerX[2] = 16
           let playerY[2] = 80 : rem Bottom-left X position
           let activePlayers = activePlayers + 1 : rem Bottom-left Y position (near bottom)
@@ -109,7 +108,7 @@ DonePlayer3Init
           rem Constraints: Must be colocated with BeginFallingAnimation
           
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Init : rem Player 4: Bottom-right quadrant (if Quadtari and not NO)
-          if selectedCharacter4_R = NoCharacter then DonePlayer4Init
+          if playerCharacter[3] = NoCharacter then DonePlayer4Init
           let playerX[3] = 144
           let playerY[3] = 80 : rem Bottom-right X position
           let activePlayers = activePlayers + 1 : rem Bottom-right Y position (near bottom)

@@ -71,7 +71,7 @@
           
           rem Common Vars (needed in both contexts):
           rem   - playerCharacter[0-3], playerLocked[0-3]
-          rem   - selectedCharacter1-4, selectedArena
+          rem   - playerCharacter[0-3], selectedArena
           rem   - QuadtariDetected
           rem   - temp1-4, qtcontroller, frame (built-ins)
           
@@ -735,8 +735,6 @@
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode variables - safe since Admin
           rem   and Game Mode never run simultaneously
-          rem NOTE: Also REDIMMED with selectedCharacter2/3/4 (w084-w086) -
-          rem   selectedCharacter* are read once at game start before Admin
           dim characterSelectPlayerAnimationSequence_W = w080 : rem   character select animation runs again, so safe overlap
           dim characterSelectPlayerAnimationSequence_R = r080
           rem

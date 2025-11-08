@@ -15,7 +15,7 @@ PhysicsApplyGravity
           rem   remaining
           rem
           rem   QuadtariDetected - Whether 4-player mode active
-          rem   selectedCharacter3_R, selectedCharacter4_R - Player 3/4 selections
+          rem   playerCharacter[] - Player 3/4 selections
           rem   playerCharacter[0-3] - Character type indices
           rem Apply Gravity
           rem Applies gravity acceleration to jumping players.
@@ -35,7 +35,7 @@ PhysicsApplyGravity
           rem playerY[] (global arrays) = player positions,
           rem playerVelocityY[], playerVelocityYL[] (global arrays) =
           rem vertical velocity, controllerStatus (global) = controller
-          rem state, selectedCharacter3_R, selectedCharacter4_R (global SCRAM) =
+          rem state, playerCharacter[] (global array) =
           rem player 3/4 selections, characterStateFlags_R[] (global
           rem SCRAM array) = character state flags, gravityRate (global)
           rem = gravity acceleration rate, GravityNormal,
@@ -75,8 +75,8 @@ GravityLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
           if temp1 < 2 then GravityCheckCharacter : rem   Quadtari)
           if !(controllerStatus & SetQuadtariDetected) then goto GravityNextPlayer : rem Players 0-1 always active
-          if temp1 = 2 && selectedCharacter3_R = 255 then goto GravityNextPlayer
-          if temp1 = 3 && selectedCharacter4_R = 255 then goto GravityNextPlayer
+          if temp1 = 2 && playerCharacter[2] = NoCharacter then goto GravityNextPlayer
+          if temp1 = 3 && playerCharacter[3] = NoCharacter then goto GravityNextPlayer
           
 GravityCheckCharacter
           let temp6 = playerCharacter[temp1]
@@ -243,7 +243,7 @@ ApplyMomentumAndRecovery
           rem frame counts, playerVelocityX[], playerVelocityXL[]
           rem (global arrays) = horizontal velocity, playerState[]
           rem (global array) = player states, controllerStatus (global)
-          rem = controller state, selectedCharacter3_R, selectedCharacter4_R
+          rem = controller state, playerCharacter[] selections
           rem (global SCRAM) = player 3/4 selections,
           rem PlayerStateBitRecovery (global constant) = recovery flag
           rem bit
@@ -265,8 +265,8 @@ MomentumRecoveryLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
           if temp1 < 2 then MomentumRecoveryProcess : rem   Quadtari)
           if !(controllerStatus & SetQuadtariDetected) then goto MomentumRecoveryNext : rem Players 0-1 always active
-          if temp1 = 2 && selectedCharacter3_R = 255 then goto MomentumRecoveryNext
-          if temp1 = 3 && selectedCharacter4_R = 255 then goto MomentumRecoveryNext
+          if temp1 = 2 && playerCharacter[2] = NoCharacter then goto MomentumRecoveryNext
+          if temp1 = 3 && playerCharacter[3] = NoCharacter then goto MomentumRecoveryNext
           
 MomentumRecoveryProcess
           rem Decrement recovery frames (velocity is applied by

@@ -88,7 +88,8 @@ SPF_PreserveYes
           rem Mutates: temp3 (set to 1)
           rem
           rem Called Routines: None
-          let temp3 = 1 : rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveNo
+          rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveNo
+          let temp3 = 1
           return
           
 SPF_PreserveNo
@@ -101,7 +102,8 @@ SPF_PreserveNo
           rem Mutates: temp3 (set to 0)
           rem
           rem Called Routines: None
-          let temp3 = 0 : rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveYes
+          rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveYes
+          let temp3 = 0
           return
 
 InputHandleAllPlayers
@@ -174,7 +176,9 @@ InputHandlePlayer1
           rem
           rem Called Routines: InputHandleRightPortPlayer - handles
           rem right port player input
-          let temp1 = 1 : gosub InputHandleRightPortPlayer : rem Constraints: Must be colocated with InputHandleAllPlayers, InputSkipPlayer1Input
+          rem Constraints: Must be colocated with InputHandleAllPlayers, InputSkipPlayer1Input
+          let temp1 = 1
+          gosub InputHandleRightPortPlayer
 InputSkipPlayer1Input
           rem Player 1 uses Joy1
           return

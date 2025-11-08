@@ -88,7 +88,8 @@ PlayerDies
           rem Called Routines: CheckPlayerElimination - handles player
           rem elimination,
           rem   PlayDamageSound - plays damage sound effect
-          let playerHealth[defenderID] = 0 : rem Constraints: Must be colocated with ApplyDamage, PlayDamageSound
+          rem Constraints: Must be colocated with ApplyDamage, PlayDamageSound
+          let playerHealth[defenderID] = 0
           
           rem Trigger elimination immediately (instantly vanish)
           rem CheckPlayerElimination will hide sprite and handle
@@ -164,7 +165,8 @@ NoHit
           rem Mutates: hit (set to 0)
           rem
           rem Called Routines: None
-          let hit = 0 : rem Constraints: Must be colocated with CheckAttackHit
+          rem Constraints: Must be colocated with CheckAttackHit
+          let hit = 0
           return
 
 CalculateAttackHitbox
@@ -322,7 +324,8 @@ ProjectileHitbox
           rem (set to 0)
           rem
           rem Called Routines: None
-          let cachedHitboxLeft_W = 0 : rem Constraints: Must be colocated with CalculateAttackHitbox
+          rem Constraints: Must be colocated with CalculateAttackHitbox
+          let cachedHitboxLeft_W = 0
           let cachedHitboxRight_W = 0
           let cachedHitboxTop_W = 0
           let cachedHitboxBottom_W = 0
@@ -341,7 +344,8 @@ AreaHitbox
           rem (set to 0)
           rem
           rem Called Routines: None
-          let cachedHitboxLeft_W = 0 : rem Constraints: Must be colocated with CalculateAttackHitbox
+          rem Constraints: Must be colocated with CalculateAttackHitbox
+          let cachedHitboxLeft_W = 0
           let cachedHitboxRight_W = 0
           let cachedHitboxTop_W = 0
           let cachedHitboxBottom_W = 0

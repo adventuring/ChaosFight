@@ -220,7 +220,8 @@ ReturnToCharacterSelect
           rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
-          let fireHoldTimer_W = 0 : rem Constraints: Must be colocated with ArenaSelect1
+          rem Constraints: Must be colocated with ArenaSelect1
+          let fireHoldTimer_W = 0
           let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
           return
@@ -236,7 +237,8 @@ StartGame1
           rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
-          let gameMode = ModeGame : rem Constraints: Must be colocated with ArenaSelect1
+          rem Constraints: Must be colocated with ArenaSelect1
+          let gameMode = ModeGame
           gosub ChangeGameMode bank14
           return
 

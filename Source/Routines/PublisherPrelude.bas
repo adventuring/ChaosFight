@@ -89,7 +89,8 @@ PublisherPreludeComplete
           rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
-          let gameMode = ModeAuthorPrelude : rem Constraints: Must be colocated with PublisherPreludeMain
+          rem Constraints: Must be colocated with PublisherPreludeMain
+          let gameMode = ModeAuthorPrelude
           gosub ChangeGameMode bank14
           return
 

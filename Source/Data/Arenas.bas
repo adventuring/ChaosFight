@@ -61,11 +61,11 @@ end
 
 Arena2Playfield
           playfield:
+          XXXXX...........
           X...............
-          X...............
-          X...........XXXX
-          X...........XXXX
-          X...........XXXX
+          ................
+          ................
+          XXXXX.......XXXX
           X...............
           X...............
           XXXXXXXXXXXXXXXX
@@ -601,7 +601,27 @@ end
 end
 
           rem
-          rem Arena Pointer Tables
+          rem Arena Color Pointer Tables
+          rem Color pointer lookup tables for efficient arena loading
+          rem Format: 32 entries (indices 0-31) for Arena0-Arena31
+          rem Note: All arenas reference their color tables directly.
+
+          data ArenaColorPointerL
+            <Arena0Colors, <Arena1Colors, <Arena2Colors, <Arena3Colors, <Arena4Colors, <Arena5Colors, <Arena6Colors, <Arena7Colors,
+            <Arena8Colors, <Arena9Colors, <Arena10Colors, <Arena11Colors, <Arena12Colors, <Arena13Colors, <Arena14Colors, <Arena15Colors,
+            <Arena16Colors, <Arena17Colors, <Arena18Colors, <Arena19Colors, <Arena20Colors, <Arena21Colors, <Arena22Colors, <Arena23Colors,
+            <Arena24Colors, <Arena25Colors, <Arena26Colors, <Arena27Colors, <Arena28Colors, <Arena29Colors, <Arena30Colors, <Arena31Colors
+end
+
+          data ArenaColorPointerH
+            >Arena0Colors, >Arena1Colors, >Arena2Colors, >Arena3Colors, >Arena4Colors, >Arena5Colors, >Arena6Colors, >Arena7Colors,
+            >Arena8Colors, >Arena9Colors, >Arena10Colors, >Arena11Colors, >Arena12Colors, >Arena13Colors, >Arena14Colors, >Arena15Colors,
+            >Arena16Colors, >Arena17Colors, >Arena18Colors, >Arena19Colors, >Arena20Colors, >Arena21Colors, >Arena22Colors, >Arena23Colors,
+            >Arena24Colors, >Arena25Colors, >Arena26Colors, >Arena27Colors, >Arena28Colors, >Arena29Colors, >Arena30Colors, >Arena31Colors
+end
+
+          rem
+          rem Arena Playfield Pointer Tables
           rem Playfield pointer lookup tables for efficient arena
           rem loading
           rem Format: 32 entries (indices 0-31) for Arena0-Arena31

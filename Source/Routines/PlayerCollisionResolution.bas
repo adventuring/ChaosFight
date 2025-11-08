@@ -30,19 +30,13 @@ CollisionCheckP2Active
 CollisionCheckDistance
           if playerHealth[temp1] = 0 then goto CollisionNextInner
           if playerHealth[temp2] = 0 then goto CollisionNextInner
+          rem Optimized: Calculate absolute X distance directly
           let temp3 = playerX[temp2] - playerX[temp1]
-          if playerX[temp1] >= playerX[temp2] then CalcCollisionDistanceRight
-          goto CollisionDistanceDone
-CalcCollisionDistanceRight
-          let temp3 = playerX[temp1] - playerX[temp2]
-CollisionDistanceDone
+          if temp3 < 0 then let temp3 = 0 - temp3
           if temp3 >= PlayerCollisionDistance then goto CollisionNextInner
+          rem Optimized: Calculate absolute Y distance directly
           let temp4 = playerY[temp2] - playerY[temp1]
-          if playerY[temp1] >= playerY[temp2] then CalcCollisionYDistanceDown
-          goto CollisionYDistanceDone
-CalcCollisionYDistanceDown
-          let temp4 = playerY[temp1] - playerY[temp2]
-CollisionYDistanceDone
+          if temp4 < 0 then let temp4 = 0 - temp4
           let characterHeight_W = CharacterHeights[temp1]
           let halfHeight1_W = characterHeight_R >> 1
           let characterHeight_W = CharacterHeights[temp2]

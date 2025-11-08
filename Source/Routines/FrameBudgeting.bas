@@ -1,5 +1,3 @@
-UpdateFramePhase
-          rem
           rem ChaosFight - Source/Routines/FrameBudgeting.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Frame Budgeting System
@@ -8,6 +6,8 @@ UpdateFramePhase
           rem game logic never exceeds the overscan period.
           rem The Atari 2600 has very limited processing time per frame:
           rem   - Vertical blank: ~37 scanlines (~2400 cycles)
+
+UpdateFramePhase
           rem   - Overscan: ~30 scanlines (~1950 cycles)
           rem Expensive operations that must be budgeted:
           rem 1. Health bar rendering (32 pfpixel calls × 4 players =
@@ -78,8 +78,10 @@ BudgetedHealthBarUpdate
           rem              UpdateHealthBarPlayer0-3
           rem              (all called via goto or gosub)
           rem Determine which player to update based on frame phase
-          if FramePhase = 0 then UpdateHealthBarPlayer0 : rem tail call
-          if FramePhase = 1 then UpdateHealthBarPlayer1 : rem tail call
+          rem tail call
+          if FramePhase = 0 then UpdateHealthBarPlayer0
+          rem tail call
+          if FramePhase = 1 then UpdateHealthBarPlayer1
           if FramePhase = 2 then CheckPlayer2HealthUpdate
           goto DonePlayer2HealthUpdate
 CheckPlayer2HealthUpdate
@@ -95,7 +97,8 @@ CheckPlayer2HealthUpdate
           rem
           rem Called Routines: UpdateHealthBarPlayer2 (bank8) - updates
           rem Player 3 health bar
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate : rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
+          rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate
           if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
           gosub UpdateHealthBarPlayer2 bank8
           return
@@ -109,7 +112,8 @@ DonePlayer2HealthUpdate
           rem Mutates: None
           rem
           rem Called Routines: None
-          if FramePhase = 3 then CheckPlayer3HealthUpdate : rem Constraints: Must be colocated with BudgetedHealthBarUpdate
+          rem Constraints: Must be colocated with BudgetedHealthBarUpdate
+          if FramePhase = 3 then CheckPlayer3HealthUpdate
           goto DonePlayer3HealthUpdate
 CheckPlayer3HealthUpdate
           rem Check if Player 4 health bar should be updated (4-player
@@ -124,7 +128,8 @@ CheckPlayer3HealthUpdate
           rem
           rem Called Routines: UpdateHealthBarPlayer3 (bank8) - updates
           rem Player 4 health bar
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate : rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
+          rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
+          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate
           if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
           gosub UpdateHealthBarPlayer3 bank8
           return
@@ -259,9 +264,13 @@ BudgetedCollisionCheck
           rem   Frame 3: Pairs 0, 1 (repeat)
           gosub CheckCollisionP1vsP2 : rem Always check P1 vs P2 (most important)
           
-          if !(controllerStatus & SetQuadtariDetected) then return : rem Skip other checks if not Quadtari
+          rem Skip other checks if not Quadtari
           
-          if FramePhase = 0 then CheckPhase0Collisions : rem Check additional pairs based on frame phase
+          if !(controllerStatus & SetQuadtariDetected) then return
+          
+          rem Check additional pairs based on frame phase
+          
+          if FramePhase = 0 then CheckPhase0Collisions
           if FramePhase = 1 then CheckPhase1Collisions
           goto DonePhase0And1Collisions
 CheckPhase0Collisions
@@ -291,7 +300,8 @@ DoneFramePhaseChecks
           return
 
 CheckCollisionP1vsP2
-          if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff : rem Individual collision check routines
+          rem Individual collision check routines
+          if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
           let temp2 = playerX[1] - playerX[0]
           goto DoneCalcP1vsP2Diff
 CalcP1vsP2AbsDiff
@@ -300,7 +310,8 @@ DoneCalcP1vsP2Diff
           if temp2 >= CollisionSeparationDistance then DonePlayerSeparation
           
           rem Separate players based on their relative positions
-          if playerX[0] < playerX[1] then SeparateP0Left : rem If P0 is left of P1, move P0 left and P1 right
+          rem If P0 is left of P1, move P0 left and P1 right
+          if playerX[0] < playerX[1] then SeparateP0Left
           
           let playerX[0] = playerX[0] + 1 : rem Else P0 is right of P1, move P0 right and P1 left
           let playerX[1] = playerX[1] - 1

@@ -26,16 +26,6 @@
           rem P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise (SECAM maps to
           rem   Green)
 
-          rem Player Colors - Light versions for normal state
-          data PlayerColorsLight
-              ColIndigo(14), ColRed(14), ColYellow(14), ColTurquoise(14)
-end
-
-          rem Player Colors - Dark versions for hurt state
-          data PlayerColorsDark
-              ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
-end
-
 LoadCharacterSprite
           rem SPRITE LOADING FUNCTIONS
           rem Load sprite data for a character based on character index

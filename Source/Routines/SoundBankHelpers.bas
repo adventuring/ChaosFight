@@ -6,8 +6,6 @@
           rem These functions access sound data tables and streams in
           rem   Bank 15
           
-          #include "Source/Data/SoundPointers.bas"
-          
 LoadSoundPointer
           rem Lookup sound pointer from tables
           rem

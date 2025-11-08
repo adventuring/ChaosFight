@@ -7,42 +7,30 @@
           rem   Bank 15
           rem Duplicate of MusicBankHelpers.bas but for Bank 15 songs
           
-          #include "Source/Data/SongPointers15.bas"
-          
 LoadSongPointer
-          rem Lookup song pointer from tables (Bank 15 songs)
-          rem
-          rem Input: temp1 = song ID (Bank 15 songs: 1-2 only)
-          rem
-          rem Output: SongPointerL, SongPointerH = pointer to
-          rem   Song_Voice0 stream
-          rem Index mapping: song 1 → index 0, song 2 → index 1
           rem Lookup song pointer from tables (Bank 15 songs: 1-2 only)
           rem
           rem Input: temp1 = song ID (Bank 15 songs: 1-2 only),
-          rem SongPointersL15[], SongPointersH15[] (global data tables)
-          rem = song pointer tables
+          rem        SongPointersL15[], SongPointersH15[] = pointer tables
           rem
-          rem Output: SongPointerL, SongPointerH = pointer to
-          rem Song_Voice0 stream
+          rem Output: SongPointerL, SongPointerH = pointer to Song_Voice0 stream
           rem
-          rem Mutates: temp1-temp2 (used for calculations),
-          rem SongPointerL, SongPointerH (global) = song pointer (set
-          rem from tables)
+          rem Mutates: temp1-temp2, SongPointerL, SongPointerH
           rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Only songs 1-2 are in Bank 15. Index mapping:
-          rem song 1 → index 0, song 2 → index 1. Returns SongPointerH =
-          rem 0 if song not in this bank
+          rem Constraints: Only songs 1-2 live in Bank 15. Index mapping:
+          rem song 1 → index 0, song 2 → index 1. Returns SongPointerH = 0 if song not in this bank.
           dim LSP_songID = temp1
-          rem Bounds check: Only songs 1-2 are in Bank 15
-          if LSP_songID < 1 then let SongPointerH = 0 : return
-          if LSP_songID > 2 then let SongPointerH = 0 : return
+          rem Bounds check: only songs 1-2 reside in Bank 15
+          if LSP_songID < 1 then goto LSP15_InvalidSong
+          if LSP_songID > 2 then goto LSP15_InvalidSong
           dim LSP_index = temp2 : rem Calculate compact index: songID - 1 (song 1→0, song 2→1)
           let LSP_index = LSP_songID - 1
           let SongPointerL = SongPointersL15[LSP_index] : rem Use array access to lookup pointer
           let SongPointerH = SongPointersH15[LSP_index]
+          return
+
+LSP15_InvalidSong
+          let SongPointerH = 0
           return
           
 LoadSongVoice1Pointer

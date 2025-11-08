@@ -6,8 +6,6 @@
           rem These functions access song data tables and streams in
           rem   Bank 16
           
-          #include "Source/Data/SongPointers16.bas"
-          
 LoadSongPointer
           rem Lookup song pointer from tables (Bank 16 songs)
           rem

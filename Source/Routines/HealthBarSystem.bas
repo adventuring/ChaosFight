@@ -20,17 +20,6 @@
           rem Bit pattern table for 0-8 pixels (right-aligned fill)
           rem 0 pixels = %00000000, 1 pixel = %00000001, ..., 8 pixels =
           rem   %11111111
-          data HealthBarPatterns
-              %00000000
-              %00000001
-              %00000011
-              %00000111
-              %00001111
-              %00011111
-              %00111111
-              %01111111
-              %11111111
-end
 
 UpdatePlayer1HealthBar
           rem

@@ -5,7 +5,7 @@
           
 #include "Source/Data/SongPointers16.bas"
 
-           rem Music system - dedicated 3.5kiB bank for compiled samples
+          rem Music system - dedicated 3.5kiB bank for compiled samples
 #include "Source/Routines/MusicSystem.bas"
           
           rem

@@ -4,7 +4,7 @@
           rem batariBASIC automatically defines constants like
           rem bankswitch, multisprite,
           rem superchip, etc. based on set kernel and set romsize
-          rem commands below.
+          rem commands configured in AssemblyConfig.bas.
           rem These constants are written to 2600basic_variable_redefs.h
           rem which is
           rem included by multispritesuperchipheader.asm before the
@@ -14,20 +14,8 @@
 
 #include "Source/Common/AssemblyConfig.bas"
 
-          rem includesfile must execute before any set statements so batariBASIC
-          rem keeps multispritesuperchipheader.asm (which pulls in superchip.h)
-          includesfile multisprite_superchip.inc
-
-          set kernel multisprite
-          set kernel_options playercolors player1colors pfcolors
-          set romsize 64kSC
-          set optimization size
-          rem Enable smartbranching; filter-smartbranch converts bB v1.9 guards to DASM .if/.else/.endif syntax
-          set smartbranching on
-
 #include "Source/Common/Colors.h"
 #include "Source/Common/Constants.bas"
 #include "Source/Common/Enums.bas"
-#include "Source/Common/CharacterDefinitions.bas"
 #include "Source/Common/Macros.bas"
 #include "Source/Common/Variables.bas"

@@ -5,9 +5,10 @@
           rem See LICENSE file for full terms
 
 #define TV_SECAM
+
+#include "Source/Common/Preamble.bas"
+
           const TVStandard = SECAM
           rem batariBASIC lacks SECAM timing keyword; use PAL timing with SECAM defines
           set tv pal
-
-#include "Source/Common/Preamble.bas"
 #include "Source/Banks/Banks.bas"

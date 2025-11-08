@@ -5,10 +5,11 @@
           rem See LICENSE file for full terms
 
 #define TV_NTSC
+
+#include "Source/Common/Preamble.bas"
+
           const TVStandard = NTSC
           set tv ntsc
- 
-#include "Source/Common/Preamble.bas"
 #include "Source/Banks/Banks.bas"
 
 

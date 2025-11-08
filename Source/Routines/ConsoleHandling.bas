@@ -165,7 +165,7 @@ CheckColorBWToggle
           rem switchbw read),
           rem         colorBWPrevious_W (updated if switch changed)
           rem
-          rem Called Routines: DetectControllers (bank6) - accesses
+          rem Called Routines: DetectControllers (bank14) - accesses
           rem controller detection state
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           

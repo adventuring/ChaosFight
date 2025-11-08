@@ -1,11 +1,11 @@
           rem ChaosFight - Source/Routines/MissileCollision.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+CheckAllMissileCollisions
           rem Missile Collision System
           rem Handles all collision detection for missiles and
           rem   area-of-effect attacks.
           rem COLLISION TYPES:
-
-CheckAllMissileCollisions
           rem 1. Missile-to-Player: Visible missiles (ranged or melee
           rem   visuals)
           rem 2. AOE-to-Player: Melee attacks with no visible missile

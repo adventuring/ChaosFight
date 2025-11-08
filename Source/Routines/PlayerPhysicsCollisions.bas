@@ -696,7 +696,7 @@ ApplyImpulseRight
             lda impulseStrength_R
             asl
             sta impulseStrength_W
-          end
+end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           rem totalWeight ranges 10-200, use closest power-of-2
@@ -712,7 +712,7 @@ ApplyImpulseRight
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1
 ApproxDivBy32_1
           asm
@@ -723,7 +723,7 @@ ApproxDivBy32_1
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1
 ApproxDivBy64_1
           asm
@@ -735,7 +735,7 @@ ApproxDivBy64_1
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1
 ApproxDivBy128_1
           asm
@@ -748,7 +748,7 @@ ApproxDivBy128_1
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
 ApproxDivDone_1
           rem Scale impulse by weight ratio (0-2 pixels/frame)
           if impulseStrength_R = 0 then let impulseStrength_W = 1
@@ -783,7 +783,7 @@ ApplyImpulse1Heavier
             lda impulseStrength_R
             asl
             sta impulseStrength_W
-          end
+end
           rem Approximate division by totalWeight using bit-shift
           rem approximation
           if totalWeight_R >= 128 then goto ApproxDivBy128_2
@@ -797,7 +797,7 @@ ApplyImpulse1Heavier
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_2
 ApproxDivBy32_2
           asm
@@ -808,7 +808,7 @@ ApproxDivBy32_2
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_2
 ApproxDivBy64_2
           asm
@@ -820,7 +820,7 @@ ApproxDivBy64_2
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_2
 ApproxDivBy128_2
           asm
@@ -833,7 +833,7 @@ ApproxDivBy128_2
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
 ApproxDivDone_2
           rem Scale impulse by weight ratio
           if impulseStrength_R = 0 then let impulseStrength_W = 1
@@ -887,7 +887,7 @@ ApplyImpulseLeft
             lda impulseStrength_R
             asl
             sta impulseStrength_W
-          end
+end
           rem Approximate division by totalWeight using bit-shift
           rem approximation
           if totalWeight_R >= 128 then goto ApproxDivBy128_3
@@ -901,7 +901,7 @@ ApplyImpulseLeft
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_3
 ApproxDivBy32_3
           asm
@@ -912,7 +912,7 @@ ApproxDivBy32_3
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_3
 ApproxDivBy64_3
           asm
@@ -924,7 +924,7 @@ ApproxDivBy64_3
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_3
 ApproxDivBy128_3
           asm
@@ -937,7 +937,7 @@ ApproxDivBy128_3
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
 ApproxDivDone_3
           if impulseStrength_R = 0 then let impulseStrength_W = 1
           
@@ -963,7 +963,7 @@ ApplyImpulse1HeavierLeft
             lda impulseStrength_R
             asl
             sta impulseStrength_W
-          end
+end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           rem totalWeight ranges 10-200, use closest power-of-2
@@ -985,7 +985,7 @@ ApproxDivBy128_1Heavier
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1Heavier
 ApproxDivBy64_1Heavier
           asm
@@ -997,7 +997,7 @@ ApproxDivBy64_1Heavier
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1Heavier
 ApproxDivBy32_1Heavier
           asm
@@ -1008,7 +1008,7 @@ ApproxDivBy32_1Heavier
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1Heavier
 ApproxDivBy16_1Heavier
           asm
@@ -1018,7 +1018,7 @@ ApproxDivBy16_1Heavier
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1Heavier
 ApproxDivBy8_1Heavier
           asm
@@ -1027,7 +1027,7 @@ ApproxDivBy8_1Heavier
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
 ApproxDivDone_1Heavier
           if impulseStrength_R = 0 then let impulseStrength_W = 1
           

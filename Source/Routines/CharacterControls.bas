@@ -10,7 +10,15 @@ DispatchCharacterJump
           rem Constraints: Index 31 uses ShamoneJump; 16-30 default to StandardJump
 
           if temp4 >= 32 then return
-          on temp4 goto BernieJump CurlerJump DragonetJump ZoeRyenJump FatTonyJump MegaxJump HarpyJump KnightGuyJump FrootyJump NefertemJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump StandardJump ShamoneJump
+
+          rem Optimized: Group characters with identical jump behavior
+          rem StandardJump: Characters 16-30
+          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
+          rem ShamoneJump: Character 31 (MethHound mirrors Shamone)
+          if temp4 = 31 then goto ShamoneJump
+
+          rem Unique jump handlers: Characters 0-15
+          on temp4 goto BernieJump CurlerJump DragonetJump ZoeRyenJump FatTonyJump MegaxJump HarpyJump KnightGuyJump FrootyJump NefertemJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
           return
 
 DispatchCharacterDown
@@ -22,7 +30,14 @@ DispatchCharacterDown
           rem Constraints: Index 31 mirrors Shamone; unmapped indices use StandardGuard
 
           if temp4 >= 32 then return
-          on temp4 goto StandardGuard StandardGuard DragonetDown StandardGuard StandardGuard StandardGuard HarpyDown StandardGuard FrootyDown StandardGuard StandardGuard StandardGuard StandardGuard RoboTitoDown StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard StandardGuard
+
+          rem Optimized: Group characters with identical down/guard behavior
+          rem Special handlers: DragonetDown(2), HarpyDown(6), FrootyDown(8), RoboTitoDown(13)
+          if temp4 = 2 then goto DragonetDown
+          if temp4 = 6 then goto HarpyDown
+          if temp4 = 8 then goto FrootyDown
+          if temp4 = 13 then goto RoboTitoDown
+          rem StandardGuard: All others (0,1,3,4,5,7,9,10,11,12,14,15,16-31)
           return
 
 BernieJump

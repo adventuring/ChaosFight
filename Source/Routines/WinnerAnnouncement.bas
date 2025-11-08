@@ -1,18 +1,17 @@
-WinnerAnnouncement
           rem ChaosFight - Source/Routines/WinnerAnnouncement.bas
           rem Winner announcement mode main loop wrapper
 
+WinnerAnnouncement
           rem Winner announcement mode main loop entry point
           rem
           rem Input: None (called from MainLoop)
           rem
           rem Output: Dispatches to WinnerAnnouncementLoop
           rem
-          rem Mutates: None (dispatcher only)
+          rem Mutates: None
           rem
-          rem Called Routines: None (dispatcher only)
-          rem
-          rem Constraints: Must be colocated with WinnerAnnouncementLoop
+          rem Called Routines: WinnerAnnouncementLoop (bank9) - renders winner screen
+          rem Constraints: Must be colocated with WinnerAnnouncementLoop (called via goto)
           goto WinnerAnnouncementLoop : rem              Entry point for winner announcement mode
 
 WinnerAnnouncementLoop

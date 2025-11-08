@@ -546,8 +546,10 @@ units (5-100 range):
   - **Fall abilities**:
     - Wraps from bottom to top of screen when falling off
     - Fall damage immunity
-    - Can fall through 1-row floors when pressing UP (used for platform navigation)
-    - Uses "high as I can be without being in a brick" logic when resetting at top
+    - Can fall through 1-row floors when pressing UP (used for platform
+      navigation)
+    - Uses "high as I can be without being in a brick" logic when
+      resetting at top
   - Ground thump affects enemies to either side (dual-direction AOE
     attack)
 

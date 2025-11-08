@@ -120,9 +120,8 @@ CheckFallDamage
           rem   base_damage_multiplier
           rem Base damage multiplier: 2 (so 1 extra velocity = 2 base
           let temp4 = temp2 - temp3 : rem   damage)
-          rem Multiply by 2 using bit shift left
-          asl temp4
-          rem temp4 = temp4 * 2
+          rem Multiply by 2 to double the base damage
+          let temp4 = temp4 * 2
           
           rem Apply weight-based damage multiplier: the bigger they
           rem   are, the harder they fall
@@ -196,11 +195,8 @@ end
           rem   multiplier applied)
           
           rem Apply damage reduction for characters with fall damage
-          if temp5 = CharacterNinjishGuy then lsr temp4 : rem   resistance (after weight multiplier)
-          rem Ninjish Guy: 1/2 damage (divide by 2 using bit shift
-          if temp5 = CharacterRoboTito then lsr temp4 : rem   right)
-          rem Robo Tito: 1/2 damage (divide by 2 using bit shift
-          rem   right)
+          if temp5 = CharacterNinjishGuy then let temp4 = temp4 / 2 : rem Ninjish Guy halves damage after weight multiplier
+          if temp5 = CharacterRoboTito then let temp4 = temp4 / 2 : rem Robo Tito halves damage after weight multiplier
           
           if temp4 > 50 then let temp4 = 50 : rem Cap maximum fall damage at 50
           
@@ -212,8 +208,8 @@ end
           rem Set recovery frames (proportional to damage, min 10, max
           rem   30)
           let temp2 = temp4 : rem Use temp2 for recovery frames calculation
-          lsr temp2
-          if temp2 < 10 then let temp2 = 10 : rem Divide by 2 using bit shift right
+          let temp2 = temp2 / 2
+          if temp2 < 10 then let temp2 = 10 : rem Divide by 2 using BASIC division
           if temp2 > 30 then let temp2 = 30
           let recoveryFramesCalc_W = temp2
           let playerRecoveryFrames[temp1] = temp2
@@ -562,8 +558,8 @@ CalculateFallDistanceNormal
 end
           rem temp2 = v² / 4
           
-          if temp5 = CharacterNinjishGuy then asl temp2 : rem Apply Ninjish Guy bonus (can fall farther)
-          rem Multiply by 2 using bit shift left
+          if temp5 = CharacterNinjishGuy then let temp2 = temp2 * 2 : rem Apply Ninjish Guy bonus (can fall farther)
+          rem Multiply by 2 using BASIC multiplication
           
           return
 

@@ -31,9 +31,11 @@ HandleWallCollision
           rem 2. Ensures at least 1 pixel/frame velocity if was moving
           rem Get character type for this player using direct array
           rem   access
-          let temp4 = playerCharacter[temp1] : rem temp1 contains player index (0-3)
+          rem temp1 contains player index (0-3)
+          let temp4 = playerCharacter[temp1]
           
-          let temp3 = CharacterWeights[temp4] : rem Get character weight using direct array access
+          rem Get character weight using direct array access
+          let temp3 = CharacterWeights[temp4]
           
           rem Weight is now in temp3 (0-40)
           rem Calculate bounce coefficient: higher weight = lower bounce
@@ -43,14 +45,16 @@ HandleWallCollision
           rem Example weights: 12 (light) = 44 bounce, 40 (heavy) = 30
           rem   bounce
           
-          let temp4 = playerVelocityX[temp1] : rem Get player velocity using direct array access
+          rem Get player velocity using direct array access
+          let temp4 = playerVelocityX[temp1]
           
           rem Calculate bounced velocity: velocity = velocity * bounce /
           rem   50
           rem Using integer math: velocity = (velocity * bounce) / 50
           let temp2 = temp4 * (50 - temp3 / 2) / 50
           if temp2 = 0 && temp4 then let temp2 = 1
-          let playerVelocityX[temp1] = temp2 : rem Ensure at least 1 if was moving
+          rem Ensure at least 1 if was moving
+          let playerVelocityX[temp1] = temp2
           return
 
 CheckLeftWallCollision

@@ -92,7 +92,8 @@ Is7800
           rem Mutates: systemFlags (SystemFlag7800 set)
           rem
           rem Called Routines: None
-          let systemFlags = systemFlags | SystemFlag7800 : rem Constraints: Must be colocated with ConsoleDetHW
+          rem Constraints: Must be colocated with ConsoleDetHW
+          let systemFlags = systemFlags | SystemFlag7800
           return
           
 Is2600
@@ -105,7 +106,8 @@ Is2600
           rem Mutates: systemFlags (SystemFlag7800 cleared)
           rem
           rem Called Routines: None
-          let systemFlags = systemFlags & ClearSystemFlag7800 : rem Constraints: Must be colocated with ConsoleDetHW
+          rem Constraints: Must be colocated with ConsoleDetHW
+          let systemFlags = systemFlags & ClearSystemFlag7800
           return
           
           rem

@@ -561,103 +561,84 @@ HandleWindupEnd
           rem Most characters skip windup (go directly to Execute)
           let temp1 = playerCharacter[currentPlayer] : rem Get character ID
           rem Dispatch to character-specific windup handler (0-31)
-          rem MethHound (31) uses Character15_Windup (Shamone) handler
+          rem MethHound (31) mirrors Shamone’s handler (WindupNoOp)
           if temp1 >= 32 then return
-          if temp1 < 16 then goto HandleWindupEnd_DispatchLow
-          temp4 = temp1 - 16
-          on temp4 goto Character16_Windup Character17_Windup Character18_Windup Character19_Windup Character20_Windup Character21_Windup Character22_Windup Character23_Windup Character24_Windup Character25_Windup Character26_Windup Character27_Windup Character28_Windup Character29_Windup Character30_Windup Character15_Windup
+          rem Index → routine mapping (grouped by identical behaviour)
+          rem  0 Bernie           → WindupNoOp
+          rem  1 Curler           → WindupToRecovery
+          rem  2 DragonOfStorms   → WindupNoOp
+          rem  3 ZoeRyen          → WindupNoOp
+          rem  4 FatTony          → WindupToExecute
+          rem  5 Megax            → WindupToExecute
+          rem  6 Harpy            → WindupNoOp
+          rem  7 KnightGuy        → WindupNoOp
+          rem  8 Frooty           → WindupNoOp
+          rem  9 Nefertem         → WindupToExecute
+          rem 10 NinjishGuy       → WindupNoOp
+          rem 11 PorkChop         → WindupToExecute
+          rem 12 RadishGoblin     → WindupNoOp
+          rem 13 RoboTito         → WindupNoOp
+          rem 14 Ursulo           → WindupNoOp
+          rem 15 Shamone          → WindupNoOp
+          rem 16-30 Placeholder   → PlaceholderWindup
+          rem 31 MethHound        → WindupNoOp (shares Shamone’s behaviour)
+          on temp1 goto WindupNoOp WindupToRecovery WindupNoOp WindupNoOp WindupToExecute WindupToExecute WindupNoOp WindupNoOp WindupNoOp WindupToExecute WindupNoOp WindupToExecute WindupNoOp WindupNoOp WindupNoOp WindupNoOp PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup WindupNoOp
+
+WindupNoOp
           return
-HandleWindupEnd_DispatchLow
-          on temp1 goto Character0_Windup Character1_Windup Character2_Windup Character3_Windup Character4_Windup Character5_Windup Character6_Windup Character7_Windup Character8_Windup Character9_Windup Character10_Windup Character11_Windup Character12_Windup Character13_Windup Character14_Windup Character15_Windup
-          return
-          
-Character0_Windup
-          rem Bernie: no windup used, Execute only
-          return
-Character1_Windup
-          rem Curler: Windup → Recovery
-          rem NOTE: Curling stone missile spawning handled by
-          rem CurlerAttack
-          let temp2 = ActionAttackRecovery : rem   (calls PerformRangedAttack) in CharacterAttacks.bas
+
+WindupToRecovery
+          rem Curler: Windup → Recovery (PerformRangedAttack in CharacterAttacks.bas)
+          let temp2 = ActionAttackRecovery
           goto SetPlayerAnimation : rem tail call
-Character2_Windup
-          rem Dragon of Storms: Execute only
-          return
-Character3_Windup
-          rem Zoe Ryen: Execute only
-          return
-Character4_Windup
-          let temp2 = ActionAttackExecute : rem Fat Tony: Windup → Execute
+
+WindupToExecute
+          rem FatTony, Megax, Nefertem, PorkChop jump straight into Execute
+          let temp2 = ActionAttackExecute
           goto SetPlayerAnimation : rem tail call
-Character5_Windup
-          let temp2 = ActionAttackExecute : rem Megax: Windup → Execute
-          goto SetPlayerAnimation : rem tail call
-Character6_Windup
-          rem Harpy: Execute only
-          return
-Character7_Windup
-          rem Knight Guy: Execute only
-          return
-Character8_Windup
-          rem Frooty: Execute only
-          return
-Character9_Windup
-          let temp2 = ActionAttackExecute : rem Nefertem: Windup → Execute
-          goto SetPlayerAnimation : rem tail call
-Character10_Windup
-          rem Ninjish Guy: Execute only
-          return
-Character11_Windup
-          let temp2 = ActionAttackExecute : rem Pork Chop: Windup → Execute
-          goto SetPlayerAnimation : rem tail call
-Character12_Windup
-          rem Radish Goblin: Execute only
-          return
-Character13_Windup
-          rem Robo Tito: Execute only
-          return
-Character14_Windup
-          rem Ursulo: Execute only
-          return
-Character15_Windup
-          rem Shamone: Execute only
+
+PlaceholderWindup
           return
 
 HandleExecuteEnd
           let temp1 = playerCharacter[currentPlayer] : rem Character-specific execute→next transitions
           rem Dispatch to character-specific execute handler (0-31)
-          rem MethHound (31) uses Character15_Execute (Shamone) handler
+          rem MethHound (31) mirrors Shamone’s handler (ExecuteToIdle)
           if temp1 >= 32 then return
-          if temp1 < 16 then goto HandleExecuteEnd_DispatchLow
-          temp4 = temp1 - 16
-          on temp4 goto Character16_Execute Character17_Execute Character18_Execute Character19_Execute Character20_Execute Character21_Execute Character22_Execute Character23_Execute Character24_Execute Character25_Execute Character26_Execute Character27_Execute Character28_Execute Character29_Execute Character30_Execute Character15_Execute
-          return
-HandleExecuteEnd_DispatchLow
-          on temp1 goto Character0_Execute Character1_Execute Character2_Execute Character3_Execute Character4_Execute Character5_Execute Character6_Execute Character7_Execute Character8_Execute Character9_Execute Character10_Execute Character11_Execute Character12_Execute Character13_Execute Character14_Execute Character15_Execute
-          return
+          rem Index → routine mapping (grouped by identical behaviour)
+          rem  0 Bernie           → ExecuteToIdle
+          rem  1 Curler           → ExecuteNoOp
+          rem  2 DragonOfStorms   → ExecuteToIdle
+          rem  3 ZoeRyen          → ExecuteToIdle
+          rem  4 FatTony          → ExecuteToRecovery
+          rem  5 Megax            → ExecuteToIdle
+          rem  6 Harpy            → HarpyExecute
+          rem  7 KnightGuy        → ExecuteToIdle
+          rem  8 Frooty           → ExecuteToIdle
+          rem  9 Nefertem         → ExecuteToIdle
+          rem 10 NinjishGuy       → ExecuteToIdle
+          rem 11 PorkChop         → ExecuteToRecovery
+          rem 12 RadishGoblin     → ExecuteToIdle
+          rem 13 RoboTito         → ExecuteToIdle
+          rem 14 Ursulo           → ExecuteToIdle
+          rem 15 Shamone          → ExecuteToIdle
+          rem 16-30 Placeholder   → ExecuteToIdle
+          rem 31 MethHound        → ExecuteToIdle (shares Shamone’s behaviour)
+          on temp1 goto ExecuteToIdle ExecuteNoOp ExecuteToIdle ExecuteToIdle ExecuteToRecovery ExecuteToIdle HarpyExecute ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToRecovery ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle
           
-Character0_Execute
-          let temp2 = ActionIdle : rem Bernie: Execute → Idle
+ExecuteToIdle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
-Character1_Execute
-          rem Curler: no Execute used
+
+ExecuteNoOp
           return
-Character2_Execute
-          let temp2 = ActionIdle : rem Dragon of Storms: Execute → Idle
+
+ExecuteToRecovery
+          rem FatTony and PorkChop fall into recovery after Execute phase
+          let temp2 = ActionAttackRecovery
           goto SetPlayerAnimation : rem tail call
-Character3_Execute
-          let temp2 = ActionIdle : rem Zoe Ryen: Execute → Idle
-          goto SetPlayerAnimation : rem tail call
-Character4_Execute
-          rem Fat Tony: Execute → Recovery
-          rem   FatTonyAttack
-          rem NOTE: Laser bullet missile spawning handled by
-          let temp2 = ActionAttackRecovery : rem   (calls PerformRangedAttack) in CharacterAttacks.bas
-          goto SetPlayerAnimation : rem tail call
-Character5_Execute
-          let temp2 = ActionIdle : rem Megax: Execute → Idle (fire breath during Execute)
-          goto SetPlayerAnimation : rem tail call
-Character6_Execute
+
+HarpyExecute
           rem Harpy: Execute → Idle
           rem Clear dive flag and stop diagonal movement when attack
           rem   completes
@@ -679,147 +660,11 @@ Character6_Execute
           rem   from attack, keep it
           let temp2 = ActionIdle : rem Transition to Idle
           goto SetPlayerAnimation : rem tail call
-Character7_Execute
-          let temp2 = ActionIdle : rem Knight Guy: Execute → Idle (sword during Execute)
-          goto SetPlayerAnimation : rem tail call
-Character8_Execute
-          let temp2 = ActionIdle : rem Frooty: Execute → Idle
-          goto SetPlayerAnimation : rem tail call
-Character9_Execute
-          let temp2 = ActionIdle : rem Nefertem: Execute → Idle
-          goto SetPlayerAnimation : rem tail call
-Character10_Execute
-          let temp2 = ActionIdle : rem Ninjish Guy: Execute → Idle
-          goto SetPlayerAnimation : rem tail call
-Character11_Execute
-          let temp2 = ActionAttackRecovery : rem Pork Chop: Execute → Recovery
-          goto SetPlayerAnimation : rem tail call
-Character12_Execute
-          let temp2 = ActionIdle : rem Radish Goblin: Execute → Idle
-          goto SetPlayerAnimation : rem tail call
-Character13_Execute
-          let temp2 = ActionIdle : rem Robo Tito: Execute → Idle
-          goto SetPlayerAnimation : rem tail call
-Character14_Execute
-          let temp2 = ActionIdle : rem Ursulo: Execute → Idle
-          goto SetPlayerAnimation : rem tail call
-Character15_Execute
-          let temp2 = ActionIdle : rem Shamone: Execute → Idle
-          goto SetPlayerAnimation : rem tail call
-
           rem
           rem PLACEHOLDER CHARACTER ANIMATION HANDLERS (16-30)
-          rem These characters are not yet implemented and use standard
-          rem   behaviors (Execute → Idle, no Windup)
-
-          rem Windup routines return immediately; execute handlers drop back to Idle.
-
-Character16_Windup
-          return
-
-Character17_Windup
-          return
-
-Character18_Windup
-          return
-
-Character19_Windup
-          return
-
-Character20_Windup
-          return
-
-Character21_Windup
-          return
-
-Character22_Windup
-          return
-
-Character23_Windup
-          return
-
-Character24_Windup
-          return
-
-Character25_Windup
-          return
-
-Character26_Windup
-          return
-
-Character27_Windup
-          return
-
-Character28_Windup
-          return
-
-Character29_Windup
-          return
-
-Character30_Windup
-          return
-
-          rem Execute handlers fall back to Idle until placeholder characters are implemented.
-
-Character16_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character17_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character18_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character19_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character20_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character21_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character22_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character23_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character24_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character25_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character26_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character27_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character28_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character29_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
-
-Character30_Execute
-          let temp2 = ActionIdle
-          goto SetPlayerAnimation : rem tail call
+          rem Placeholder indices share PlaceholderWindup (return) and
+          rem ExecuteToIdle to keep the table dense until bespoke logic
+          rem arrives.
 
 HandleRecoveryEnd
           let temp2 = ActionIdle : rem All characters: Recovery → Idle

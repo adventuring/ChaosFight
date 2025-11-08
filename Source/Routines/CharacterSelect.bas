@@ -402,7 +402,8 @@ CharacterSelectDrawPlayer4
           rem playfield data (via CharacterSelectDrawNumber)
           rem
           rem Called Routines: CharacterSelectDrawSprite, CharacterSelectDrawNumber
-          let player1x = 104 : rem Constraints: Must be colocated with CharacterSelectDrawScreen, CharacterSelectSkipPlayer4Draw
+          rem Constraints: Must be colocated with CharacterSelectDrawScreen, CharacterSelectSkipPlayer4Draw
+          let player1x = 104
           let player1y = 80
           gosub CharacterSelectDrawSprite : rem Adjusted for 16px margins
 
@@ -894,7 +895,8 @@ CharacterSelectColorBlackWhite
           rem ColGrey(14))
           rem
           rem Called Routines: None
-          let COLUP0  = ColGrey(14) : rem Constraints: Internal helper for CharacterSelectColorNormal, only called in B&W mode
+          rem Constraints: Internal helper for CharacterSelectColorNormal, only called in B&W mode
+          let COLUP0  = ColGrey(14)
 CharacterSelectColorDone
           rem Bright grey (B&W)
           

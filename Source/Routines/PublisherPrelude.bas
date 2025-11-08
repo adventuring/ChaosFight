@@ -1,12 +1,10 @@
-PublisherPreludeMain
-          rem
           rem ChaosFight - Source/Routines/PublisherPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+PublisherPreludeMain
           rem Publisher Prelude Screen - Per-frame Loop
-          rem
           rem Per-frame publisher prelude display and input handling.
           rem Called from MainLoop each frame (gameMode 0).
-          rem
           rem Setup is handled by BeginPublisherPrelude in
           rem   ChangeGameMode.bas.
           rem This function processes one frame and returns.
@@ -55,15 +53,20 @@ PublisherPreludeMain
           rem   bitmap display
           
           rem Check for button press on any controller to skip
-          if joy0fire then PublisherPreludeComplete : rem Use skip-over pattern to avoid complex || operator issues
+          rem Use skip-over pattern to avoid complex || operator issues
+          if joy0fire then PublisherPreludeComplete
           if joy1fire then PublisherPreludeComplete
           
-          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then PublisherPreludeComplete : rem Check Quadtari controllers if detected (inline to avoid label)
+          rem Check Quadtari controllers if detected (inline to avoid label)
+          
+          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then PublisherPreludeComplete
           if controllerStatus & SetQuadtariDetected then if !INPT2{7} then PublisherPreludeComplete
           
           rem Music update handled by MainLoop after per-frame logic
           
-          if preambleTimer > 30 && musicPlaying = 0 then PublisherPreludeComplete : rem Auto-advance after music completes + 0.5s
+          rem Auto-advance after music completes + 0.5s
+          
+          if preambleTimer > 30 && musicPlaying = 0 then PublisherPreludeComplete
 
           let preambleTimer = preambleTimer + 1
           

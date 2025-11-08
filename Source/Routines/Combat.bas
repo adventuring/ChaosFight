@@ -1,8 +1,7 @@
-ApplyDamage
-          rem
           rem ChaosFight - Source/Routines/Combat.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
+ApplyDamage
           rem Apply damage from attacker to defender
           rem Inputs: attackerID, defenderID (must be set before
           rem   calling)
@@ -42,13 +41,17 @@ ApplyDamage
           rem PlayDamageSound (called via goto)
           
           let temp1 = playerDamage_R[attackerID] - playerDamage_R[defenderID] : rem Calculate damage (considering defender state)
-          if temp1 < 1 then let temp1 = 1 : rem Minimum damage
+          rem Minimum damage
+          if temp1 < 1 then let temp1 = 1
 
           let temp2 = playerHealth[defenderID] : rem Check if player will die from this damage
           let temp3 = 0
-          if temp2 < temp1 then let temp3 = 1 : rem Will die
+          rem Will die
+          if temp2 < temp1 then let temp3 = 1
           
-          if temp3 then goto PlayerDies : rem If player will die, instantly vanish (eliminate)
+          rem If player will die, instantly vanish (eliminate)
+          
+          if temp3 then goto PlayerDies
           
           let playerHealth[defenderID] = temp2 - temp1 : rem Player survives - apply damage and enter hurt state
           
@@ -138,7 +141,8 @@ CheckAttackHit
           rem Overlap occurs when: defender_right > cachedHitboxLeft_R AND
           rem   defender_left < cachedHitboxRight_R
           rem AND defender_bottom > hitboxTop AND defender_top <
-          if playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit : rem   hitboxBottom
+          rem hitboxBottom
+          if playerX[defenderID] + PlayerSpriteWidth <= cachedHitboxLeft_R then NoHit
           rem Defender right edge <= hitbox left edge (no overlap)
           if playerX[defenderID] >= cachedHitboxRight_R then NoHit
           rem Defender left edge >= hitbox right edge (no overlap)
@@ -377,9 +381,12 @@ ProcessAttackerAttacks
           rem Hitbox values are already written into cachedHitbox*_W via aliasing
           
           for defenderID = 0 to 3 : rem Attack each defender
-              if defenderID = attackerID then NextDefender : rem Skip if defender is attacker
+              rem Skip if defender is attacker
+              if defenderID = attackerID then NextDefender
           
-              if playerHealth[defenderID] <= 0 then NextDefender : rem Skip if defender is dead
+              rem Skip if defender is dead
+          
+              if playerHealth[defenderID] <= 0 then NextDefender
           
               gosub CheckAttackHit : rem Check if attack hits (uses cached hitbox)
               if hit then gosub ApplyDamage
@@ -419,7 +426,8 @@ ProcessAllAttacks
           rem Constraints: Must be colocated with NextAttacker (called
           rem via next). Skips dead attackers
           for attackerID = 0 to 3
-              if playerHealth[attackerID] <= 0 then NextAttacker : rem Skip if attacker is dead
+              rem Skip if attacker is dead
+              if playerHealth[attackerID] <= 0 then NextAttacker
           
               gosub ProcessAttackerAttacks
           

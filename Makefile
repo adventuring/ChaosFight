@@ -22,6 +22,8 @@ BB_OPTIMIZE = bin/optimize
 DASM = bin/dasm
 BB_FILTER = bin/bbfilter
 POSTINC = $(abspath Tools/batariBASIC)
+PATH := $(abspath bin):$(PATH)
+export PATH
 DASM = bin/dasm
 STELLA = stella
 # -i taken out for now from gimp
@@ -40,23 +42,33 @@ bin/zx7mini:	SkylineTool/zx7mini/zx7mini.c | bin/
 	chmod +x bin/zx7mini
 
 # batariBASIC tool links
+# Explicitly mark upstream tool binaries as fixed files so GNU make
+# doesn’t try to regenerate them with the built-in “.sh →” implicit rule
+Tools/batariBASIC/2600basic \
+Tools/batariBASIC/preprocess \
+Tools/batariBASIC/postprocess \
+Tools/batariBASIC/optimize \
+Tools/batariBASIC/bbfilter \
+Tools/batariBASIC/dasm.Linux.x64:
+	@:
+
 bin/preprocess: Tools/batariBASIC/preprocess | bin/
-	ln -sf ../Tools/batariBASIC/preprocess bin/preprocess
+	ln -sf "$(abspath $<)" "$@"
 
 bin/postprocess: Tools/batariBASIC/postprocess | bin/
-	ln -sf ../Tools/batariBASIC/postprocess bin/postprocess
+	ln -sf "$(abspath $<)" "$@"
 
 bin/optimize: Tools/batariBASIC/optimize | bin/
-	ln -sf ../Tools/batariBASIC/optimize bin/optimize
+	ln -sf "$(abspath $<)" "$@"
 
 bin/2600basic: Tools/batariBASIC/2600basic | bin/
-	ln -sf ../Tools/batariBASIC/2600basic bin/2600basic
+	ln -sf "$(abspath $<)" "$@"
 
 bin/bbfilter: Tools/batariBASIC/bbfilter | bin/
-	ln -sf ../Tools/batariBASIC/bbfilter bin/bbfilter
+	ln -sf "$(abspath $<)" "$@"
 
 bin/dasm: Tools/batariBASIC/dasm.Linux.x64 | bin/
-	ln -sf ../Tools/batariBASIC/dasm.Linux.x64 bin/dasm
+	ln -sf "$(abspath $<)" "$@"
 
 skyline-tool:	bin/skyline-tool
 
@@ -529,6 +541,8 @@ clean:
 	rm -f Source/Songs/*.midi
 	rm -f $(GAME)*.aux $(GAME)*.cp $(GAME)*.cps $(GAME)*.toc $(GAME)*.log
 	git submodule foreach git clean --force
+	rm -f bin/2600basic bin/preprocess bin/postprocess bin/optimize \
+		bin/bbfilter bin/dasm bin/buildapp bin/skyline-tool bin/zx7mini
 
 quickclean:
 	rm -rf Dist Object

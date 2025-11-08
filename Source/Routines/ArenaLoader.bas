@@ -33,7 +33,9 @@ LoadArena
           rem loads arena data
           rem Constraints: None
           
-          if selectedArena_R = RandomArena then LoadRandomArena : rem Handle random arena selection
+          rem Handle random arena selection
+          
+          if selectedArena_R = RandomArena then LoadRandomArena
           
           let temp1 = selectedArena_R : rem Get arena index (0-15)
           
@@ -103,7 +105,9 @@ LoadArenaByIndex
             sta PF2pointer+1
 end
           
-          if temp2 then goto LoadArenaColorsBW : rem Tail-call B&W color loader
+          rem Tail-call B&W color loader
+          
+          if temp2 then goto LoadArenaColorsBW
           goto LoadArenaColorsColor
 LoadArenaColorsColor
           rem Load arena color table pointer based on arena index
@@ -183,13 +187,15 @@ ReloadArenaColors
           rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
           
           let temp1 = selectedArena_R : rem Get current arena index
-          if temp1 = RandomArena then let temp1 = rand & 31 : rem Handle random arena (use stored random selection)
+          rem Handle random arena (use stored random selection)
+          if temp1 = RandomArena then let temp1 = rand & 31
           
           rem Get B&W mode state (same logic as GetBWMode)
           let temp2 = switchbw : rem Check switchbw and colorBWOverride
           if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           
 ReloadArenaColorsDispatch
-          if temp2 then goto LoadArenaColorsBW : rem Use existing LoadArena color functions (identical behavior)
+          rem Use existing LoadArena color functions (identical behavior)
+          if temp2 then goto LoadArenaColorsBW
           goto LoadArenaColorsColor
 

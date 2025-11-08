@@ -563,7 +563,13 @@ HandleWindupEnd
           rem Dispatch to character-specific windup handler (0-31)
           rem MethHound (31) uses Character15_Windup (Shamone) handler
           if temp1 >= 32 then return
-          on temp1 goto Character0_Windup Character1_Windup Character2_Windup Character3_Windup Character4_Windup Character5_Windup Character6_Windup Character7_Windup Character8_Windup Character9_Windup Character10_Windup Character11_Windup Character12_Windup Character13_Windup Character14_Windup Character15_Windup Character16_Windup Character17_Windup Character18_Windup Character19_Windup Character20_Windup Character21_Windup Character22_Windup Character23_Windup Character24_Windup Character25_Windup Character26_Windup Character27_Windup Character28_Windup Character29_Windup Character30_Windup Character15_Windup
+          if temp1 < 16 then goto HandleWindupEnd_DispatchLow
+          temp4 = temp1 - 16
+          on temp4 goto Character16_Windup Character17_Windup Character18_Windup Character19_Windup Character20_Windup Character21_Windup Character22_Windup Character23_Windup Character24_Windup Character25_Windup Character26_Windup Character27_Windup Character28_Windup Character29_Windup Character30_Windup Character15_Windup
+          return
+HandleWindupEnd_DispatchLow
+          on temp1 goto Character0_Windup Character1_Windup Character2_Windup Character3_Windup Character4_Windup Character5_Windup Character6_Windup Character7_Windup Character8_Windup Character9_Windup Character10_Windup Character11_Windup Character12_Windup Character13_Windup Character14_Windup Character15_Windup
+          return
           
 Character0_Windup
           rem Bernie: no windup used, Execute only
@@ -622,7 +628,13 @@ HandleExecuteEnd
           rem Dispatch to character-specific execute handler (0-31)
           rem MethHound (31) uses Character15_Execute (Shamone) handler
           if temp1 >= 32 then return
-          on temp1 goto Character0_Execute Character1_Execute Character2_Execute Character3_Execute Character4_Execute Character5_Execute Character6_Execute Character7_Execute Character8_Execute Character9_Execute Character10_Execute Character11_Execute Character12_Execute Character13_Execute Character14_Execute Character15_Execute Character16_Execute Character17_Execute Character18_Execute Character19_Execute Character20_Execute Character21_Execute Character22_Execute Character23_Execute Character24_Execute Character25_Execute Character26_Execute Character27_Execute Character28_Execute Character29_Execute Character30_Execute Character15_Execute
+          if temp1 < 16 then goto HandleExecuteEnd_DispatchLow
+          temp4 = temp1 - 16
+          on temp4 goto Character16_Execute Character17_Execute Character18_Execute Character19_Execute Character20_Execute Character21_Execute Character22_Execute Character23_Execute Character24_Execute Character25_Execute Character26_Execute Character27_Execute Character28_Execute Character29_Execute Character30_Execute Character15_Execute
+          return
+HandleExecuteEnd_DispatchLow
+          on temp1 goto Character0_Execute Character1_Execute Character2_Execute Character3_Execute Character4_Execute Character5_Execute Character6_Execute Character7_Execute Character8_Execute Character9_Execute Character10_Execute Character11_Execute Character12_Execute Character13_Execute Character14_Execute Character15_Execute
+          return
           
 Character0_Execute
           let temp2 = ActionIdle : rem Bernie: Execute → Idle

@@ -279,7 +279,7 @@ PFBlockLeft
           rem Multiply (temp6 + 1) by 4 using bit shift (2 left shifts)
           let rowYPosition_W = temp6 + 1
           asm
-            lda rowYPosition_W
+            lda rowYPosition_R
             asl
             asl
             clc
@@ -372,7 +372,7 @@ PFBlockRight
           rem Multiply (temp6 - 1) by 4 using bit shift (2 left shifts)
           let rowYPosition_W = temp6 - 1
           asm
-            lda rowYPosition_W
+            lda rowYPosition_R
             asl a
             asl a
             clc
@@ -425,7 +425,7 @@ PFBlockUp
           if pfrowheight = 8 then goto DBPF_MultiplyBy8
           rem pfrowheight is 16, multiply by 16 (4 left shifts)
           asm
-            lda rowYPosition_W
+            lda rowYPosition_R
             asl a
             asl a
             asl a
@@ -436,7 +436,7 @@ end
 DBPF_MultiplyBy8
           rem pfrowheight is 8, multiply by 8 (3 left shifts)
           asm
-            lda rowYPosition_W
+            lda rowYPosition_R
             asl a
             asl a
             asl a
@@ -597,45 +597,45 @@ CollisionDistanceDone
           let temp4 = playerCharacter[temp1]
           let temp5 = playerCharacter[temp2]
           rem Fetch full heights for both players
-          let characterHeight = CharacterHeights[temp4]
-          let halfHeight1 = CharacterHeights[temp5]
+          let characterHeight_W = CharacterHeights[temp4]
+          let halfHeight1_W = CharacterHeights[temp5]
           
           rem Calculate Y distance
           
           if playerY[temp1] >= playerY[temp2] then CalcCollisionYDistanceDown
-          let yDistance = playerY[temp2] - playerY[temp1]
+          let yDistance_W = playerY[temp2] - playerY[temp1]
           goto CollisionYDistanceDone
           
 CalcCollisionYDistanceDown
-          let yDistance = playerY[temp1] - playerY[temp2]
+          let yDistance_W = playerY[temp1] - playerY[temp2]
           
 CollisionYDistanceDone
           rem Check if Y overlap (sum of half-heights)
           rem Calculate half-heights
           rem Divide by 2 using bit shift
           asm
-            lda characterHeight
+            lda characterHeight_R
             lsr a
-            sta halfHeight1
+            sta halfHeight1_W
             lda CharacterHeights
             clc
             adc temp5
             tax
             lda CharacterHeights,x
             lsr a
-            sta halfHeight2
+            sta halfHeight2_W
 end
           rem Player1 half height
           rem Sum half heights to determine overlap threshold
-          let totalHeight = halfHeight1 + halfHeight2
-          if yDistance >= totalHeight then goto CollisionNextInner
+          let totalHeight_W = halfHeight1_R + halfHeight2_R
+          if yDistance_R >= totalHeight_R then goto CollisionNextInner
           
           rem
           rem Momentum Transfer Based On Weight
           rem Get character weights from CharacterWeights table
-          let characterWeight = CharacterWeights[temp4]
+          let characterWeight_W = CharacterWeights[temp4]
           rem Reuse halfHeight2 scratch to hold player 2 weight
-          let halfHeight2 = CharacterWeights[temp5]
+          let halfHeight2_W = CharacterWeights[temp5]
           rem Player2 weight (temporarily store)
           
           rem Calculate separation direction (left/right)
@@ -647,101 +647,110 @@ end
           rem Apply impulse based on weight difference
           rem Heavier character pushes lighter one more
           rem Formula: impulse = (weight_difference / total_weight) * separation_speed
-          let totalWeight = characterWeight + halfHeight2
+          let totalWeight_W = characterWeight_R + halfHeight2_R
           rem Total weight (halfHeight2 contains Player2 weight here)
-          if totalWeight = 0 then goto CollisionNextInner
+          if totalWeight_R = 0 then goto CollisionNextInner
           rem Avoid division by zero
           
           rem Calculate weight difference
           
-          if characterWeight >= halfHeight2 then CalcWeightDiff1Heavier
-          let weightDifference = halfHeight2 - characterWeight
+          if characterWeight_R >= halfHeight2_R then CalcWeightDiff1Heavier
+          let weightDifference_W = halfHeight2_R - characterWeight_R
           rem Player2 is heavier
-          let impulseStrength = weightDifference
+          let impulseStrength_W = weightDifference_R
           rem Impulse strength proportional to weight difference
           goto ApplyImpulseRight
           
 CalcWeightDiff1Heavier
-          let weightDifference = characterWeight - halfHeight2
+          let weightDifference_W = characterWeight_R - halfHeight2_R
           rem Player1 is heavier
-          let impulseStrength = weightDifference
+          let impulseStrength_W = weightDifference_R
           rem Impulse strength
           
 ApplyImpulseRight
           rem Apply impulses: heavier player pushes lighter one
           rem Separation speed: 1 pixel/frame minimum
-          if characterWeight >= halfHeight2 then ApplyImpulse1Heavier
+          if characterWeight_R >= halfHeight2_R then ApplyImpulse1Heavier
           
           rem Player2 is heavier - push Player1 left (negative X),
           rem   Player2 right (positive X)
           rem Impulse proportional to weight difference
           rem Multiply by 2 using bit shift, then approximate division
           rem   by totalWeight
+          rem SuperChip reminder: load via *_R, mutate in accumulator, store back via *_W to avoid RMW on write-only ports
           asm
-            lda impulseStrength
-            asl a
-            sta impulseStrength
-end
+            lda impulseStrength_R
+            asl
+            sta impulseStrength_W
+          end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           rem totalWeight ranges 10-200, use closest power-of-2
           rem approximation
-          if totalWeight >= 128 then goto ApproxDivBy128_1
-          if totalWeight >= 64 then goto ApproxDivBy64_1
-          if totalWeight >= 32 then goto ApproxDivBy32_1
+          if totalWeight_R >= 128 then goto ApproxDivBy128_1
+          if totalWeight_R >= 64 then goto ApproxDivBy64_1
+          if totalWeight_R >= 32 then goto ApproxDivBy32_1
           rem Default: divide by 16 (approximation for 10-31)
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_1
 ApproxDivBy32_1
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_1
 ApproxDivBy64_1
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_1
 ApproxDivBy128_1
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
 ApproxDivDone_1
           rem Scale impulse by weight ratio (0-2 pixels/frame)
-          if impulseStrength = 0 then impulseStrength = 1
+          if impulseStrength_R = 0 then let impulseStrength_W = 1
           rem Minimum 1 pixel/frame
           
           rem Apply to Player1 velocity (push left)
           rem Check if velocity > -4 (in twos complement: values <= 252
           rem   are >= -4)
           rem -4 in twos complement = 256 - 4 = 252
-          if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
+          if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength_R
           rem Cap at -4 pixels/frame (252 in twos complement)
           if playerVelocityX[temp1] > 252 then let playerVelocityX[temp1] = 252
           
           rem Apply to Player2 velocity (push right)
           
-          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
+          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength_R
           rem Cap at 4 pixels/frame
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           
@@ -757,66 +766,74 @@ ApplyImpulse1Heavier
           rem Multiply by 2 using bit shift, then approximate division
           rem   by totalWeight
           asm
-            lda impulseStrength
-            asl a
-            sta impulseStrength
-end
+            lda impulseStrength_R
+            asl
+            sta impulseStrength_W
+          end
           rem Approximate division by totalWeight using bit-shift
           rem approximation
-          if totalWeight >= 128 then goto ApproxDivBy128_2
-          if totalWeight >= 64 then goto ApproxDivBy64_2
-          if totalWeight >= 32 then goto ApproxDivBy32_2
+          if totalWeight_R >= 128 then goto ApproxDivBy128_2
+          if totalWeight_R >= 64 then goto ApproxDivBy64_2
+          if totalWeight_R >= 32 then goto ApproxDivBy32_2
           rem Default: divide by 16
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_2
 ApproxDivBy32_2
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_2
 ApproxDivBy64_2
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_2
 ApproxDivBy128_2
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
 ApproxDivDone_2
           rem Scale impulse by weight ratio
-          if impulseStrength = 0 then impulseStrength = 1
+          if impulseStrength_R = 0 then let impulseStrength_W = 1
           
           rem Apply to Player1 velocity (push right)
           
-          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
+          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength_R
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
           
           rem Apply to Player2 velocity (push left)
           rem Check if velocity > -4 (in twos complement: values <= 252
           rem   are >= -4)
           rem -4 in twos complement = 256 - 4 = 252
-          if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
+          if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength_R
           rem Cap at -4 pixels/frame (252 in twos complement)
           if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
           
@@ -830,85 +847,93 @@ CollisionSepLeft
           rem   right
           rem Same logic but reversed directions
           rem Re-read weights (characterWeight and halfHeight2 were used earlier for heights)
-          let characterWeight = CharacterWeights[temp4]
+          let characterWeight_W = CharacterWeights[temp4]
           rem Player1 weight
-          let halfHeight2 = CharacterWeights[temp5]
+          let halfHeight2_W = CharacterWeights[temp5]
           rem Player2 weight
-          let totalWeight = characterWeight + halfHeight2
-          if totalWeight = 0 then goto CollisionNextInner
+          let totalWeight_W = characterWeight_R + halfHeight2_R
+          if totalWeight_R = 0 then goto CollisionNextInner
           
-          if characterWeight >= halfHeight2 then CalcWeightDiff1HeavierLeft
-          let weightDifference = halfHeight2 - characterWeight
-          let impulseStrength = weightDifference
+          if characterWeight_R >= halfHeight2_R then CalcWeightDiff1HeavierLeft
+          let weightDifference_W = halfHeight2_R - characterWeight_R
+          let impulseStrength_W = weightDifference_R
           goto ApplyImpulseLeft
           
 CalcWeightDiff1HeavierLeft
-          let weightDifference = characterWeight - halfHeight2
-          let impulseStrength = weightDifference
+          let weightDifference_W = characterWeight_R - halfHeight2_R
+          let impulseStrength_W = weightDifference_R
           
 ApplyImpulseLeft
-          if characterWeight >= halfHeight2 then ApplyImpulse1HeavierLeft
+          if characterWeight_R >= halfHeight2_R then ApplyImpulse1HeavierLeft
           
           rem Player2 is heavier - push Player1 left, Player2 right
           rem Multiply by 2 using bit shift, then approximate division
           rem   by totalWeight
           asm
-            lda impulseStrength
-            asl a
-            sta impulseStrength
-end
+            lda impulseStrength_R
+            asl
+            sta impulseStrength_W
+          end
           rem Approximate division by totalWeight using bit-shift
           rem approximation
-          if totalWeight >= 128 then goto ApproxDivBy128_3
-          if totalWeight >= 64 then goto ApproxDivBy64_3
-          if totalWeight >= 32 then goto ApproxDivBy32_3
+          if totalWeight_R >= 128 then goto ApproxDivBy128_3
+          if totalWeight_R >= 64 then goto ApproxDivBy64_3
+          if totalWeight_R >= 32 then goto ApproxDivBy32_3
           rem Default: divide by 16
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_3
 ApproxDivBy32_3
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_3
 ApproxDivBy64_3
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_3
 ApproxDivBy128_3
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
 ApproxDivDone_3
-          if impulseStrength = 0 then impulseStrength = 1
+          if impulseStrength_R = 0 then let impulseStrength_W = 1
           
           rem Check if velocity > -4 (in twos complement: values <= 252
           rem   are >= -4)
           rem -4 in twos complement = 256 - 4 = 252
-          if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
+          if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength_R
           rem Cap at -4 pixels/frame (252 in twos complement)
           if playerVelocityX[temp1] > 252 then let playerVelocityX[temp1] = 252
-          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
+          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength_R
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           
           let playerVelocityXL[temp1] = 0
@@ -921,71 +946,83 @@ ApplyImpulse1HeavierLeft
           rem Multiply by 2 using bit shift, then approximate division
           rem   by totalWeight
           asm
-            asl impulseStrength
-end
+            lda impulseStrength_R
+            asl
+            sta impulseStrength_W
+          end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           rem totalWeight ranges 10-200, use closest power-of-2
           rem approximation
-          if totalWeight >= 128 then goto ApproxDivBy128_1Heavier
-          if totalWeight >= 64 then goto ApproxDivBy64_1Heavier
-          if totalWeight >= 32 then goto ApproxDivBy32_1Heavier
-          if totalWeight >= 16 then goto ApproxDivBy16_1Heavier
-          if totalWeight >= 8 then goto ApproxDivBy8_1Heavier
+          if totalWeight_R >= 128 then goto ApproxDivBy128_1Heavier
+          if totalWeight_R >= 64 then goto ApproxDivBy64_1Heavier
+          if totalWeight_R >= 32 then goto ApproxDivBy32_1Heavier
+          if totalWeight_R >= 16 then goto ApproxDivBy16_1Heavier
+          if totalWeight_R >= 8 then goto ApproxDivBy8_1Heavier
           goto ApproxDivDone_1Heavier
 ApproxDivBy128_1Heavier
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_1Heavier
 ApproxDivBy64_1Heavier
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_1Heavier
 ApproxDivBy32_1Heavier
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_1Heavier
 ApproxDivBy16_1Heavier
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
           goto ApproxDivDone_1Heavier
 ApproxDivBy8_1Heavier
           asm
-            lsr impulseStrength
-            lsr impulseStrength
-            lsr impulseStrength
-end
+            lda impulseStrength_R
+            lsr
+            lsr
+            lsr
+            sta impulseStrength_W
+          end
 ApproxDivDone_1Heavier
-          if impulseStrength = 0 then impulseStrength = 1
+          if impulseStrength_R = 0 then let impulseStrength_W = 1
           
-          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
+          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength_R
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
           rem Check if velocity > -4 (in twos complement: values <= 252
           rem   are >= -4)
           rem -4 in twos complement = 256 - 4 = 252
-          if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
+          if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength_R
           rem Cap at -4 pixels/frame (252 in twos complement)
           if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
           

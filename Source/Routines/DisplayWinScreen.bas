@@ -1,16 +1,13 @@
-DisplayWinScreen
-          rem
           rem ChaosFight - Source/Routines/DisplayWinScreen.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem Display Win Screen
-          rem
-          rem Displays the winner screen with fixed playfield pattern and up to three characters.
-          rem Called from WinnerAnnouncement.bas per-frame loop. Layout:
+DisplayWinScreen
+          rem Displays the winner podium with character sprites
+          rem Layout:
           rem   - Fixed playfield pattern (podium/platform design)
           rem   - 1 player: Winner centered on podium
           rem   - 2 players: Winner centered, runner-up on left platform
-          rem - 3+ players: Winner centered high, 2nd on left, 3rd on right
-          rem
+          rem   - 3+ players: Winner centered high, 2nd on left, 3rd on right
+          rem Called from WinnerAnnouncement per-frame loop
           rem Input: playersRemaining_R (global SCRAM) = number of
           rem players remaining
           rem        winnerPlayerIndex_R (global SCRAM) = winner player
@@ -115,11 +112,14 @@ DWS_RankLoop
           rem
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_UpdateSecond, DWS_CheckThird, DWS_RankNext
-          if temp1 = temp2 then DWS_RankNext : rem Skip if this is the winner
+          rem Skip if this is the winner
+          if temp1 = temp2 then DWS_RankNext
           
           let w094 = eliminationOrder_R[temp1] : rem Get this player’s elimination order (SCRAM read)
           
-          if r094 > temp5 then DWS_UpdateSecond : rem Check if this is 2nd place (higher order than current 2nd)
+          rem Check if this is 2nd place (higher order than current 2nd)
+          
+          if r094 > temp5 then DWS_UpdateSecond
           goto DWS_CheckThird
           
 DWS_UpdateSecond
@@ -178,7 +178,9 @@ DWS_RankNext
           rem 3+ players: Winner centered high (X=80, Y=row 16), 2nd
           rem   left (X=40), 3rd right (X=120)
           
-          if temp1 = 1 then DWS_Position1Player : rem Position winner (always centered)
+          rem Position winner (always centered)
+          
+          if temp1 = 1 then DWS_Position1Player
           if temp1 = 2 then DWS_Position2Players
           goto DWS_Position3Players
           
@@ -235,7 +237,9 @@ DWS_Position2Players
           let LCS_playerNumber = 0
           gosub LoadCharacterSprite bank10
           
-          if temp3 = 255 then DWS_Hide2Player : rem Runner-up (P1) - only if valid
+          rem Runner-up (P1) - only if valid
+          
+          if temp3 = 255 then DWS_Hide2Player
           let playerX[1] = 40
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
@@ -301,7 +305,9 @@ DWS_Position3Players
           let LCS_playerNumber = 0
           gosub LoadCharacterSprite bank10
           
-          if temp3 = 255 then DWS_Hide3Player2 : rem 2nd place (P1) - left platform
+          rem 2nd place (P1) - left platform
+          
+          if temp3 = 255 then DWS_Hide3Player2
           let playerX[1] = 40
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
@@ -336,7 +342,9 @@ DWS_Hide3Player2Done
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
           
-          if temp4 = 255 then DWS_Hide3Player3 : rem 3rd place (P2) - right platform
+          rem 3rd place (P2) - right platform
+          
+          if temp4 = 255 then DWS_Hide3Player3
           let playerX[2] = 120
           let playerY[2] = 192
           let currentCharacter = playerCharacter[temp4]

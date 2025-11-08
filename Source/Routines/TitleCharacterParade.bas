@@ -160,6 +160,7 @@ DrawParadeCharacterSprite
           rem Input: titleParadeTimer (animation timing), currentCharacter
           rem Output: Player 0 sprite data populated in SCRAM buffers
           temp1 = currentCharacter
+          rem Use default walking animation for parade march
           temp2 = titleParadeTimer & 7
           temp3 = ActionWalking
           temp4 = 0

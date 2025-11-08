@@ -178,9 +178,9 @@ GuardCooldownBlocked
           rem Mutates: temp2 (set to 0)
           rem
           rem Called Routines: None
-          dim GCBD_guardAllowed = temp2 : rem Constraints: Must be colocated with CheckGuardCooldown
+          rem Constraints: Must be colocated with CheckGuardCooldown
           rem Currently guarding or in cooldown - not allowed to start
-          let GCBD_guardAllowed = 0 : rem   new guard
+          let temp2 = 0 : rem   new guard
           return
 
 StartGuard

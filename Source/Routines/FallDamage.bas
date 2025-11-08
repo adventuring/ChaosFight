@@ -485,16 +485,16 @@ DivideBy100
           rem INPUT: temp2 = dividend
           rem
           rem OUTPUT: temp2 = quotient (0, 1, or 2)
-          dim DB100_dividend = temp2 : rem Fast approximation for values 0-255
-          if DB100_dividend > 200 then goto DivideBy100Two
-          if DB100_dividend > 100 then goto DivideBy100One
-          let DB100_dividend = 0
+          rem Fast approximation for values 0-255
+          if temp2 > 200 then goto DivideBy100Two
+          if temp2 > 100 then goto DivideBy100One
+          let temp2 = 0
           return
 DivideBy100One
-          let DB100_dividend = 1
+          let temp2 = 1
           return
 DivideBy100Two
-          let DB100_dividend = 2
+          let temp2 = 2
           return
 
 DivideByPfrowheight
@@ -507,22 +507,21 @@ DivideByPfrowheight
           rem pfrowheight is either 8 (admin) or 16 (game), both powers
           rem   of 2
           rem Uses conditional bit shifts based on runtime value
-          dim DBPF_value = temp2
           if pfrowheight = 8 then DBPF_DivideBy8 : rem Check if pfrowheight is 8 or 16
           rem pfrowheight is 16, divide by 16 (4 right shifts)
           asm
-            lsr DBPF_value
-            lsr DBPF_value
-            lsr DBPF_value
-            lsr DBPF_value
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
 end
           return
 DBPF_DivideBy8
           rem pfrowheight is 8, divide by 8 (3 right shifts)
           asm
-            lsr DBPF_value
-            lsr DBPF_value
-            lsr DBPF_value
+            lsr temp2
+            lsr temp2
+            lsr temp2
 end
           return
           

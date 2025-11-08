@@ -171,9 +171,9 @@ UpdateHealthBarPlayer0
           rem
           rem Called Routines: DrawHealthBarRow0 (bank8) - draws Player
           rem 1 health bar row
-          dim FB_healthBarLength = temp6 : rem Constraints: None
-          let FB_healthBarLength = playerHealth[0] / 3
-          if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
+          dim temp6 = temp6 : rem Constraints: None
+          let temp6 = playerHealth[0] / 3
+          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           COLUPF = ColBlue(12)
           gosub DrawHealthBarRow0 bank8
           return
@@ -194,9 +194,9 @@ UpdateHealthBarPlayer1
           rem
           rem Called Routines: DrawHealthBarRow1 (bank8) - draws Player
           rem 2 health bar row
-          dim FB_healthBarLength = temp6 : rem Constraints: None
-          let FB_healthBarLength = playerHealth[1] / 3
-          if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
+          rem Constraints: None
+          let temp6 = playerHealth[1] / 3
+          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           COLUPF = ColRed(12)
           gosub DrawHealthBarRow1 bank8
           return
@@ -218,9 +218,9 @@ UpdateHealthBarPlayer2
           rem
           rem Called Routines: DrawHealthBarRow2 (bank8) - draws Player
           rem 3 health bar row
-          dim FB_healthBarLength = temp6 : rem Constraints: None
-          let FB_healthBarLength = playerHealth[2] / 3
-          if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
+          dim temp6 = temp6 : rem Constraints: None
+          let temp6 = playerHealth[2] / 3
+          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           COLUPF = ColYellow(12)
           gosub DrawHealthBarRow2 bank8
           return
@@ -242,9 +242,9 @@ UpdateHealthBarPlayer3
           rem
           rem Called Routines: DrawHealthBarRow3 (bank8) - draws Player
           rem 4 health bar row
-          dim FB_healthBarLength = temp6 : rem Constraints: None
-          let FB_healthBarLength = playerHealth[3] / 3
-          if FB_healthBarLength > HealthBarMaxLength then let FB_healthBarLength = HealthBarMaxLength
+          dim temp6 = temp6 : rem Constraints: None
+          let temp6 = playerHealth[3] / 3
+          if temp6 > HealthBarMaxLength then let temp6 = HealthBarMaxLength
           COLUPF = ColGreen(12)
           gosub DrawHealthBarRow3 bank8
           return

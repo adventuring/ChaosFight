@@ -13,7 +13,7 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundAttackHit.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
+          rem PAL and SECAM reuse the PAL data set
 #include "Source/Generated/Sound.SoundAttackHit.PAL.bas"
 #endif
           
@@ -21,7 +21,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundGuardBlock.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Sound.SoundGuardBlock.PAL.bas"
 #endif
           
@@ -29,7 +28,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundJump.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Sound.SoundJump.PAL.bas"
 #endif
           
@@ -37,7 +35,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundPlayerEliminated.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Sound.SoundPlayerEliminated.PAL.bas"
 #endif
           
@@ -45,7 +42,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundMenuNavigate.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Sound.SoundMenuNavigate.PAL.bas"
 #endif
           
@@ -53,7 +49,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundMenuSelect.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Sound.SoundMenuSelect.PAL.bas"
 #endif
           
@@ -61,7 +56,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundSpecialMove.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Sound.SoundSpecialMove.PAL.bas"
 #endif
           
@@ -69,7 +63,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundPowerup.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Sound.SoundPowerup.PAL.bas"
 #endif
           
@@ -77,7 +70,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundLandingSafe.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Sound.SoundLandingSafe.PAL.bas"
 #endif
           
@@ -85,7 +77,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Sound.SoundLandingDamage.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Sound.SoundLandingDamage.PAL.bas"
 #endif
 
@@ -98,7 +89,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Song.OCascadia.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Song.OCascadia.PAL.bas"
 #endif
           
@@ -106,7 +96,6 @@
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Revontuli.NTSC.bas"
 #else
-          rem PAL or SECAM: Use PAL version for both
 #include "Source/Generated/Song.Revontuli.PAL.bas"
 #endif
 

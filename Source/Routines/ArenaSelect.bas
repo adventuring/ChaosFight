@@ -82,43 +82,38 @@ ArenaSelect1Loop
           goto FireHoldCheckDone
           
 IncrementFireHold
-          dim LS_timer = temp2
-          let LS_timer = fireHoldTimer_R
-          let LS_timer = LS_timer + 1
-          let fireHoldTimer_W = LS_timer
-          if LS_timer >= 60 then goto ReturnToCharacterSelect : rem 60 frames = 1 second @ 60fps
+          let temp2 = fireHoldTimer_R
+          let temp2 = temp2 + 1
+          let fireHoldTimer_W = temp2
+          if temp2 >= 60 then goto ReturnToCharacterSelect : rem 60 frames = 1 second @ 60fps
 FireHoldCheckDone
           
           if joy0left then ArenaSelectLeft : rem Handle LEFT/RIGHT navigation for arena selection
           goto ArenaSelectSkipLeft
 ArenaSelectLeft
-          dim ASL_soundId = temp1
           rem Decrement arena, wrap from 0 to RandomArena (255)
           if selectedArena_R = 0 then let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
           if selectedArena_R = RandomArena then let selectedArena_W = MaxArenaID : goto ArenaSelectLeftSound
-          dim ASL_arena = temp2
-          let ASL_arena = selectedArena_R
-          let ASL_arena = ASL_arena - 1
-          let selectedArena_W = ASL_arena
+          let temp2 = selectedArena_R
+          let temp2 = temp2 - 1
+          let selectedArena_W = temp2
 ArenaSelectLeftSound
-          let ASL_soundId = SoundMenuNavigate : rem Play navigation sound
+          let temp1 = SoundMenuNavigate : rem Play navigation sound
           gosub PlaySoundEffect bank15
 ArenaSelectSkipLeft
           
           if joy0right then ArenaSelectRight
           goto ArenaSelectSkipRight
 ArenaSelectRight
-          dim ASR_soundId = temp1
           rem Increment arena, wrap from MaxArenaID to 0, then to
           if selectedArena_R = MaxArenaID then let selectedArena_W = RandomArena : goto ArenaSelectRightSound : rem RandomArena
           if selectedArena_R = RandomArena then let selectedArena_W = 0 : goto ArenaSelectRightSound
-          dim ASR_arena = temp2
-          let ASR_arena = selectedArena_R
-          let ASR_arena = ASR_arena + 1
-          let selectedArena_W = ASR_arena
+          let temp2 = selectedArena_R
+          let temp2 = temp2 + 1
+          let selectedArena_W = temp2
           if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0 : rem Wrap from 255 to 0 if needed
 ArenaSelectRightSound
-          let ASR_soundId = SoundMenuNavigate : rem Play navigation sound
+          let temp1 = SoundMenuNavigate : rem Play navigation sound
           gosub PlaySoundEffect bank15
 ArenaSelectSkipRight
           
@@ -173,23 +168,18 @@ DoneTensDigit
           goto DisplayDone
           
 DisplayRandomArena
-          dim DRA_digit = temp1
-          dim DRA_xPos = temp2
-          dim DRA_yPos = temp3
-          dim DRA_color = temp4
-          dim DRA_spriteSelect = temp5
           rem Display ?? for random arena
           rem Use player4 and player5 for two question marks
-          let DRA_digit = 10 : rem Question mark is digit 10 (hex A) in font
-          let DRA_xPos = 80 : rem Question mark digit
-          let DRA_yPos = 20 : rem X position for first ?
-          let DRA_color = ColGrey(14) : rem Y position
-          let DRA_spriteSelect = 4 : rem White
+          let temp1 = 10 : rem Question mark is digit 10 (hex A) in font
+          let temp2 = 80 : rem Question mark digit
+          let temp3 = 20 : rem X position for first ?
+          let temp4 = ColGrey(14) : rem Y position
+          let temp5 = 4 : rem White
           rem Use player4
           gosub DrawDigit bank1
           
-          let DRA_xPos = 88 : rem Second question mark
-          let DRA_spriteSelect = 5 : rem X position for second ?
+          let temp2 = 88 : rem Second question mark
+          let temp5 = 5 : rem X position for second ?
           rem Use player5
           gosub DrawDigit bank1
           
@@ -198,8 +188,7 @@ DisplayDone
           if joy0fire then ArenaSelectConfirm : rem Handle fire button press (confirm selection, start game)
           goto ArenaSelectSkipConfirm
 ArenaSelectConfirm
-          dim ASC_soundId = temp1
-          let ASC_soundId = SoundMenuSelect : rem Play selection sound
+          let temp1 = SoundMenuSelect : rem Play selection sound
           gosub PlaySoundEffect bank15
           goto StartGame1 : rem tail call
 ArenaSelectSkipConfirm
@@ -220,9 +209,9 @@ CheckQuadtariFireHold
           rem Mutates: temp1 (fire pressed flag)
           rem
           rem Called Routines: None
-          dim CQFH_firePressed = temp1 : rem Constraints: Must be colocated with ArenaSelect1 (called via goto)
-          if !INPT0{7} then let CQFH_firePressed = 1 : rem Check Player 3 and 4 fire buttons (Quadtari)
-          if !INPT2{7} then let CQFH_firePressed = 1 : rem Player 3 fire button (left port, odd frame)
+          rem Constraints: Must be colocated with ArenaSelect1 (called via goto)
+          if !INPT0{7} then let temp1 = 1 : rem Check Player 3 and 4 fire buttons (Quadtari)
+          if !INPT2{7} then let temp1 = 1 : rem Player 3 fire button (left port, odd frame)
           rem Player 4 fire button (right port, odd frame)
           return
 

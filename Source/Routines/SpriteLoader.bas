@@ -142,7 +142,6 @@ LoadSpecialSprite
           goto LoadQuestionMarkSprite : rem Invalid sprite index, default to question mark
           
 LoadQuestionMarkSprite
-          dim LQMS_playerNumber = temp3
           rem Set pointer to QuestionMarkSprite data
           rem
           rem Input: temp3 = player number (0-3)
@@ -155,9 +154,9 @@ LoadQuestionMarkSprite
           rem
           rem Constraints: Must be colocated with
           rem LoadQuestionMarkSpriteP0-P3
-          if !LQMS_playerNumber then goto LoadQuestionMarkSpriteP0 : rem Use skip-over pattern to avoid complex compound statements
-          if LQMS_playerNumber = 1 then goto LoadQuestionMarkSpriteP1
-          if LQMS_playerNumber = 2 then goto LoadQuestionMarkSpriteP2
+          if !temp3 then goto LoadQuestionMarkSpriteP0 : rem Use skip-over pattern to avoid complex compound statements
+          if temp3 = 1 then goto LoadQuestionMarkSpriteP1
+          if temp3 = 2 then goto LoadQuestionMarkSpriteP2
           goto LoadQuestionMarkSpriteP3
           
 LoadQuestionMarkSpriteP0
@@ -236,7 +235,6 @@ LoadQuestionMarkSpriteP3
           return
           
 LoadCPUSprite
-          dim LCS2_playerNumber = temp3
           rem Set pointer to CPUSprite data
           rem
           rem Input: temp3 = player number (0-3)
@@ -248,9 +246,9 @@ LoadCPUSprite
           rem Called Routines: None (dispatcher only)
           rem
           rem Constraints: Must be colocated with LoadCPUSpriteP0-P3
-          if !LCS2_playerNumber then LoadCPUSpriteP0 : rem Use skip-over pattern to avoid complex compound statements
-          if LCS2_playerNumber = 1 then LoadCPUSpriteP1
-          if LCS2_playerNumber = 2 then goto LoadCPUSpriteP2
+          if !temp3 then LoadCPUSpriteP0 : rem Use skip-over pattern to avoid complex compound statements
+          if temp3 = 1 then LoadCPUSpriteP1
+          if temp3 = 2 then goto LoadCPUSpriteP2
           goto LoadCPUSpriteP3
           
 LoadCPUSpriteP0
@@ -323,7 +321,6 @@ LoadCPUSpriteP3
           return
           
 LoadNoSprite
-          dim LNS_playerNumber = temp3
           rem Set pointer to NoSprite data
           rem
           rem Input: temp3 = player number (0-3)
@@ -335,9 +332,9 @@ LoadNoSprite
           rem Called Routines: None (dispatcher only)
           rem
           rem Constraints: Must be colocated with LoadNoSpriteP0-P3
-          if !LNS_playerNumber then LoadNoSpriteP0 : rem Use skip-over pattern to avoid complex compound statements
-          if LNS_playerNumber = 1 then LoadNoSpriteP1
-          if LNS_playerNumber = 2 then goto LoadNoSpriteP2
+          if !temp3 then LoadNoSpriteP0 : rem Use skip-over pattern to avoid complex compound statements
+          if temp3 = 1 then LoadNoSpriteP1
+          if temp3 = 2 then goto LoadNoSpriteP2
           goto LoadNoSpriteP3
           
 LoadNoSpriteP0
@@ -654,7 +651,6 @@ NormalColor
           goto PlayerIndexColors : rem   character tables are wired
 
 FlashingColor
-          dim FlashingColor_flashingMode = temp5
           rem Flashing mode selection
           rem
           rem Input: temp5 = flashing mode (0=frame-based,
@@ -665,12 +661,11 @@ FlashingColor
           rem Mutates: None (dispatcher only)
           rem
           rem Called Routines: None (dispatcher only)
-          let FlashingColor_flashingMode = LoadCharacterColors_flashingMode : rem Constraints: Must be colocated with LoadCharacterColors
-          if !FlashingColor_flashingMode then PerLineFlashing
+          let temp5 = LoadCharacterColors_flashingMode : rem Constraints: Must be colocated with LoadCharacterColors
+          if !temp5 then PerLineFlashing
           goto PlayerIndexColors
           
 PerLineFlashing
-          dim PerLineFlashing_color = temp6
           rem Frame-based flashing (not per-line - players use solid
           rem   colors)
           rem
@@ -701,7 +696,7 @@ PlayerIndexColors
           rem Mutates: temp6 (color value)
           rem
           rem Called Routines: None (dispatcher only)
-          dim PlayerIndexColors_color = temp6 : rem Constraints: Must be colocated with LoadCharacterColors, SetColor
+          rem Constraints: Must be colocated with LoadCharacterColors, SetColor
           rem Solid player index colors (bright)
           rem Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
           rem   4=Turquoise (SECAM maps to Green)
@@ -712,30 +707,29 @@ PlayerIndexColors
 
 PlayerIndexColorsPlayer0
           rem Player 1: Indigo (SECAM maps to Blue)
-          let PlayerIndexColors_color = ColIndigo(14)
-          let LoadCharacterColors_color = PlayerIndexColors_color
+          let temp6 = ColIndigo(14)
+          let LoadCharacterColors_color = temp6
           goto SetColor
 
 PlayerIndexColorsPlayer1
           rem Player 2: Red
-          let PlayerIndexColors_color = ColRed(14)
-          let LoadCharacterColors_color = PlayerIndexColors_color
+          let temp6 = ColRed(14)
+          let LoadCharacterColors_color = temp6
           goto SetColor
 
 PlayerIndexColorsPlayer2
           rem Player 3: Yellow (SECAM maps to Yellow)
-          let PlayerIndexColors_color = ColYellow(14)
-          let LoadCharacterColors_color = PlayerIndexColors_color
+          let temp6 = ColYellow(14)
+          let LoadCharacterColors_color = temp6
           goto SetColor
 
 PlayerIndexColorsPlayer3
           rem Player 4: Turquoise (SECAM maps to Green)
-          let PlayerIndexColors_color = ColTurquoise(14)
-          let LoadCharacterColors_color = PlayerIndexColors_color
+          let temp6 = ColTurquoise(14)
+          let LoadCharacterColors_color = temp6
           goto SetColor
 
 PlayerIndexColorsDim
-          dim PlayerIndexColorsDim_color = temp6
           rem Dimmed player index colors
           rem
           rem Input: temp3 = player number (0-3, from
@@ -758,30 +752,29 @@ PlayerIndexColorsDim
 
 PlayerIndexColorsDimPlayer0
           rem Player 1: Indigo (dimmed)
-          let PlayerIndexColorsDim_color = ColIndigo(6)
-          let LoadCharacterColors_color = PlayerIndexColorsDim_color
+          let temp6 = ColIndigo(6)
+          let LoadCharacterColors_color = temp6
           goto SetColor
 
 PlayerIndexColorsDimPlayer1
           rem Player 2: Red (dimmed)
-          let PlayerIndexColorsDim_color = ColRed(6)
-          let LoadCharacterColors_color = PlayerIndexColorsDim_color
+          let temp6 = ColRed(6)
+          let LoadCharacterColors_color = temp6
           goto SetColor
 
 PlayerIndexColorsDimPlayer2
           rem Player 3: Yellow (dimmed)
-          let PlayerIndexColorsDim_color = ColYellow(6)
-          let LoadCharacterColors_color = PlayerIndexColorsDim_color
+          let temp6 = ColYellow(6)
+          let LoadCharacterColors_color = temp6
           goto SetColor
 
 PlayerIndexColorsDimPlayer3
           rem Player 4: Turquoise (dimmed)
-          let PlayerIndexColorsDim_color = ColTurquoise(6)
-          let LoadCharacterColors_color = PlayerIndexColorsDim_color
+          let temp6 = ColTurquoise(6)
+          let LoadCharacterColors_color = temp6
           goto SetColor
 
 HurtColor
-          dim HurtColor_color = temp6
           rem Calculate hurt state player color
           rem
           rem Input: temp3 = player number (0-3, from
@@ -796,8 +789,8 @@ HurtColor
           rem Constraints: Must be colocated with LoadCharacterColors,
           rem SetColor
 #ifdef TV_SECAM
-          let HurtColor_color = ColMagenta(10) : rem SECAM hurt is always magenta
-          let LoadCharacterColors_color = HurtColor_color
+          let temp6 = ColMagenta(10) : rem SECAM hurt is always magenta
+          let LoadCharacterColors_color = temp6
           goto SetColor
 #else
           rem Dimmed version of normal color: use dim player index color

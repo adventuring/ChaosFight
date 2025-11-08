@@ -178,35 +178,33 @@ HarpyCheckDiveVelocity
           rem
           rem Constraints: Internal helper for SpawnMissile, only called
           rem for Harpy (character 6)
-          dim HCDV_velocityCalc = temp6
-          let HCDV_velocityCalc = SM_velocityCalc
+          let temp6 = SM_velocityCalc
           if (characterStateFlags_R[SM_playerIndex] & 4) then HarpyBoostDiveVelocity
           goto VelocityDone
 HarpyBoostDiveVelocity
           rem Helper: Increases Harpy downward velocity by 50% for dive
           rem attacks
           rem
-          rem Input: HCDV_velocityCalc = base velocity
+          rem Input: temp6 = base velocity
           rem
           rem Output: Velocity increased by 50% (velocity + velocity/2)
           rem
-          rem Mutates: HCDV_velocityCalc, SM_velocityCalc (velocity
+          rem Mutates: temp6, SM_velocityCalc (velocity
           rem values)
           rem
           rem Called Routines: None
           rem
           rem Constraints: Internal helper for HarpyCheckDiveVelocity,
           rem only called when dive mode active
-          dim HBDV_halfVelocity = velocityCalculation
           rem Increase downward velocity by 50% for dive attacks
           rem Divide by 2 using bit shift
           asm
-            lda HCDV_velocityCalc
+            lda temp6
             lsr a
-            sta HBDV_halfVelocity
+            sta velocityCalculation
 end
-          let HCDV_velocityCalc = HCDV_velocityCalc + HBDV_halfVelocity
-          let SM_velocityCalc = HCDV_velocityCalc
+          let temp6 = temp6 + velocityCalculation
+          let SM_velocityCalc = temp6
 VelocityDone
           let missileVelocityY[SM_playerIndex] = SM_velocityCalc
           

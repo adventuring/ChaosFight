@@ -94,7 +94,7 @@ UpdatePlayerMovementSingle
           rem
           rem   temp2 = UPS_sum16 low byte (16-bit accumulator)
           rem   temp3 = UPS_sum16 high byte (16-bit accumulator)
-          rem   temp4 = UPS_subpixelXRead (internal SCRAM
+          rem   temp4 = temp4 (internal SCRAM
           rem   read-modify-write)
           rem WARNING: temp2, temp3, and temp4 are mutated during
           rem execution.
@@ -149,16 +149,16 @@ UpdatePlayerMovementSingle
 XCarry
           let playerSubpixelX_WL[currentPlayer] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
           rem SCRAM read-modify-write: Read from r049, modify, write to
-          dim UPS_subpixelXRead = temp4 : rem   w049
-          let UPS_subpixelXRead = playerSubpixelX_R[currentPlayer]
-          let UPS_subpixelXRead = UPS_subpixelXRead + 1
-          let playerSubpixelX_W[currentPlayer] = UPS_subpixelXRead
+          rem w049
+          let temp4 = playerSubpixelX_R[currentPlayer]
+          let temp4 = temp4 + 1
+          let playerSubpixelX_W[currentPlayer] = temp4
 XNoCarry
           rem SCRAM read-modify-write: Read from r049, modify, write to
-          dim UPS_subpixelXRead = temp4 : rem   w049
-          let UPS_subpixelXRead = playerSubpixelX_R[currentPlayer]
-          let UPS_subpixelXRead = UPS_subpixelXRead + playerVelocityX[currentPlayer]
-          let playerSubpixelX_W[currentPlayer] = UPS_subpixelXRead
+          rem w049
+          let temp4 = playerSubpixelX_R[currentPlayer]
+          let temp4 = temp4 + playerVelocityX[currentPlayer]
+          let playerSubpixelX_W[currentPlayer] = temp4
           
           rem Sync integer position for rendering (high byte is the
           let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer] : rem   integer part)
@@ -176,16 +176,16 @@ XNoCarry
 YCarry
           let playerSubpixelY_WL[currentPlayer] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
           rem SCRAM read-modify-write: Read from r057, modify, write to
-          dim UPS_subpixelYRead = temp4 : rem   w057
-          let UPS_subpixelYRead = playerSubpixelY_R[currentPlayer]
-          let UPS_subpixelYRead = UPS_subpixelYRead + 1
-          let playerSubpixelY_W[currentPlayer] = UPS_subpixelYRead
+          rem w057
+          let temp4 = playerSubpixelY_R[currentPlayer]
+          let temp4 = temp4 + 1
+          let playerSubpixelY_W[currentPlayer] = temp4
 YNoCarry
           rem SCRAM read-modify-write: Read from r057, modify, write to
-          dim UPS_subpixelYRead = temp4 : rem   w057
-          let UPS_subpixelYRead = playerSubpixelY_R[currentPlayer]
-          let UPS_subpixelYRead = UPS_subpixelYRead + playerVelocityY[currentPlayer]
-          let playerSubpixelY_W[currentPlayer] = UPS_subpixelYRead
+          rem w057
+          let temp4 = playerSubpixelY_R[currentPlayer]
+          let temp4 = temp4 + playerVelocityY[currentPlayer]
+          let playerSubpixelY_W[currentPlayer] = temp4
           
           rem Sync integer position for rendering (high byte is the
           let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer] : rem   integer part)

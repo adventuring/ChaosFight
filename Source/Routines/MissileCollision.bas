@@ -231,19 +231,18 @@ CheckAOELeftDirection
           return
           
 CheckBernieAOE
-          dim CBA_hitPlayer = temp4
           rem Bernie: Check right direction first
           gosub CheckAOEDirection_Right
-          let CBA_hitPlayer = temp4
+
           rem If hit found (hitPlayer != 255), return early
           rem Use skip-over pattern: if hitPlayer = 255, skip to left
-          if CBA_hitPlayer = 255 then CheckBernieAOELeft : rem   check
+          if temp4 = 255 then CheckBernieAOELeft : rem   check
           return
           
 CheckBernieAOELeft
           rem Check left direction
           gosub CheckAOEDirection_Left
-          let temp4 = temp4
+
           return
 
 CheckAOEDirection_Right

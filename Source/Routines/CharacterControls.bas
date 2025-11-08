@@ -336,10 +336,10 @@ HarpyFlapRecord
           rem (global SCRAM array) = last flap frame (updated)
           rem
           rem Called Routines: None
-          dim HFR_playerIndex = temp1 : rem Constraints: Internal helper for HarpyJump, only called after flap check
-          if harpyFlightEnergy_R[HFR_playerIndex] > 0 then let harpyFlightEnergy_W[HFR_playerIndex] = harpyFlightEnergy_R[HFR_playerIndex] - 1 : rem Decrement flight energy on each flap
+          rem Constraints: Internal helper for HarpyJump, only called after flap check
+          if harpyFlightEnergy_R[temp1] > 0 then let harpyFlightEnergy_W[temp1] = harpyFlightEnergy_R[temp1] - 1 : rem Decrement flight energy on each flap
           
-          let harpyLastFlapFrame_W[HFR_playerIndex] = frame : rem Record current frame as last flap time
+          let harpyLastFlapFrame_W[temp1] = frame : rem Record current frame as last flap time
           
           return
 
@@ -934,10 +934,10 @@ HarpySetDive
           rem character state flags (dive mode set)
           rem
           rem Called Routines: None
-          dim HSD_playerIndex = temp1 : rem Constraints: Internal helper for HarpyDown, only called when airborne
+          rem Constraints: Internal helper for HarpyDown, only called when airborne
           rem Set dive mode flag for increased damage and normal gravity
-          let HSD_stateFlags = characterStateFlags_R[HSD_playerIndex] | 4 : rem Fix RMW: Read from _R, modify, write to _W
-          let characterStateFlags_W[HSD_playerIndex] = HSD_stateFlags
+          let HSD_stateFlags = characterStateFlags_R[temp1] | 4 : rem Fix RMW: Read from _R, modify, write to _W
+          let characterStateFlags_W[temp1] = HSD_stateFlags
 HarpyNormalDown
           rem Set bit 2 (dive mode)
           rem Helper: Handles Harpy flying down with collision check

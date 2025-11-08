@@ -40,10 +40,10 @@ UpdateCharacterAnimations
           rem goto)
           rem              Called every frame from game loop
           rem Update animation for each active player
-          let currentPlayer = 0  : rem Player index (0-3)
+          let currentPlayer = 0 : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 1
-          let currentPlayer = 1  : rem Player index (0-3)
+          let currentPlayer = 1 : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           if controllerStatus & SetQuadtariDetected then goto AnimationUpdatePlayer3 : rem Player 2
           goto AnimationSkipPlayer3
@@ -66,10 +66,10 @@ AnimationUpdatePlayer3
           rem
           rem Constraints: Must be colocated with
           rem UpdateCharacterAnimations, AnimationSkipPlayer3
-          let currentPlayer = 2  : rem Player index (0-3)
+          let currentPlayer = 2 : rem Player index (0-3)
           gosub UpdatePlayerAnimation
           rem Player 3
-          let currentPlayer = 3  : rem Player index (0-3)
+          let currentPlayer = 3 : rem Player index (0-3)
           gosub UpdatePlayerAnimation
 AnimationSkipPlayer3
           rem Player 4
@@ -380,8 +380,8 @@ GetCurrentAnimationFrame
           rem Mutates: temp2 (set to current frame)
           rem
           rem Called Routines: None
-          dim GCAF_currentFrame = temp2 : rem Constraints: None
-          let GCAF_currentFrame = currentAnimationFrame_R[currentPlayer] : rem SCRAM read: Read from r081
+          rem Constraints: None
+          let temp2 = currentAnimationFrame_R[currentPlayer] : rem SCRAM read: Read from r081
           return
 
 GetCurrentAnimationAction
@@ -392,8 +392,8 @@ GetCurrentAnimationAction
           rem   from array)
           rem
           rem OUTPUT: temp2 = current animation action (0-15)
-          dim GCAA_currentAction = temp2 : rem EFFECTS: None (read-only query)
-          let GCAA_currentAction = currentAnimationSeq[currentPlayer]
+          rem EFFECTS: None (read-only query)
+          let temp2 = currentAnimationSeq[currentPlayer]
           return
 
 InitializeAnimationSystem
@@ -405,9 +405,9 @@ InitializeAnimationSystem
           rem OUTPUT: None
           rem
           rem EFFECTS: Sets all players (0-3) to idle animation state
-          dim IAS_animationAction = temp2 : rem (ActionIdle)
+          rem (ActionIdle)
           let currentPlayer = 0 : rem Initialize all players to idle animation
-          let IAS_animationAction = ActionIdle
+          let temp2 = ActionIdle
           gosub SetPlayerAnimation
           let currentPlayer = 1
           gosub SetPlayerAnimation
@@ -424,8 +424,8 @@ SetWalkingAnimation
           rem INPUT: currentPlayer = player index (0-3)
           rem
           rem OUTPUT: None
-          dim SWA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionWalking state
-          let SWA_animationAction = ActionWalking
+          rem EFFECTS: Changes player animation to ActionWalking state
+          let temp2 = ActionWalking
           goto SetPlayerAnimation : rem tail call
 
 SetIdleAnimation
@@ -434,8 +434,8 @@ SetIdleAnimation
           rem INPUT: currentPlayer = player index (0-3)
           rem
           rem OUTPUT: None
-          dim SIA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionIdle state
-          let SIA_animationAction = ActionIdle
+          rem EFFECTS: Changes player animation to ActionIdle state
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 SetAttackAnimation
@@ -446,8 +446,8 @@ SetAttackAnimation
           rem OUTPUT: None
           rem
           rem EFFECTS: Changes player animation to ActionAttackWindup
-          dim SAA_animationAction = temp2 : rem state
-          let SAA_animationAction = ActionAttackWindup
+          rem state
+          let temp2 = ActionAttackWindup
           goto SetPlayerAnimation : rem tail call
 
 SetHitAnimation
@@ -456,8 +456,8 @@ SetHitAnimation
           rem INPUT: currentPlayer = player index (0-3)
           rem
           rem OUTPUT: None
-          dim SHA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionHit state
-          let SHA_animationAction = ActionHit
+          rem EFFECTS: Changes player animation to ActionHit state
+          let temp2 = ActionHit
           goto SetPlayerAnimation : rem tail call
 
 SetJumpingAnimation
@@ -466,8 +466,8 @@ SetJumpingAnimation
           rem INPUT: currentPlayer = player index (0-3)
           rem
           rem OUTPUT: None
-          dim SJA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionJumping state
-          let SJA_animationAction = ActionJumping
+          rem EFFECTS: Changes player animation to ActionJumping state
+          let temp2 = ActionJumping
           goto SetPlayerAnimation : rem tail call
 
 SetFallingAnimation
@@ -476,8 +476,8 @@ SetFallingAnimation
           rem INPUT: currentPlayer = player index (0-3)
           rem
           rem OUTPUT: None
-          dim SFA_animationAction = temp2 : rem EFFECTS: Changes player animation to ActionFalling state
-          let SFA_animationAction = ActionFalling
+          rem EFFECTS: Changes player animation to ActionFalling state
+          let temp2 = ActionFalling
           goto SetPlayerAnimation : rem tail call
 
 IsPlayerWalking
@@ -488,7 +488,7 @@ IsPlayerWalking
           rem INPUT: currentPlayer = player index (0-3)
           rem
           rem OUTPUT: temp2 = 1 if walking, 0 if not
-          dim IPW_isWalking = temp2 : rem EFFECTS: None (read-only query)
+          rem EFFECTS: None (read-only query)
           let temp2 = 0 : rem Use temp2 directly to avoid batariBASIC alias resolution issues
           if ActionWalking = currentAnimationSeq[currentPlayer] then let temp2 = 1
           return
@@ -499,11 +499,11 @@ IsPlayerAttacking
           rem INPUT: currentPlayer = player index (0-3)
           rem
           rem OUTPUT: temp2 = 1 if attacking, 0 if not
-          dim IPA_isAttacking = temp2 : rem EFFECTS: None (read-only query)
-          let IPA_isAttacking = 0
+          rem EFFECTS: None (read-only query)
+          let temp2 = 0
           if ActionAttackWindup > currentAnimationSeq[currentPlayer] then goto NotAttacking
           if ActionAttackRecovery < currentAnimationSeq[currentPlayer] then goto NotAttacking
-          let IPA_isAttacking = 1
+          let temp2 = 1
 NotAttacking
           return
 
@@ -513,9 +513,9 @@ IsPlayerHit
           rem INPUT: currentPlayer = player index (0-3)
           rem
           rem OUTPUT: temp2 = 1 if hit, 0 if not
-          dim IPH_isHit = temp2 : rem EFFECTS: None (read-only query)
-          let IPH_isHit = 0
-          if ActionHit = currentAnimationSeq[currentPlayer] then let IPH_isHit = 1
+          rem EFFECTS: None (read-only query)
+          let temp2 = 0
+          if ActionHit = currentAnimationSeq[currentPlayer] then let temp2 = 1
           return
 
 IsPlayerJumping
@@ -530,7 +530,7 @@ IsPlayerJumping
           rem INPUT: currentPlayer = player index (0-3)
           rem
           rem OUTPUT: temp2 = 1 if jumping, 0 if not
-          dim IPJ_isJumping = temp2 : rem EFFECTS: None (read-only query)
+          rem EFFECTS: None (read-only query)
           let temp2 = 0 : rem Use temp2 directly to avoid batariBASIC alias resolution issues
           if ActionJumping = currentAnimationSeq[currentPlayer] then let temp2 = 1
           if ActionFalling = currentAnimationSeq[currentPlayer] then let temp2 = 1
@@ -543,55 +543,48 @@ HandleAnimationTransition
           rem
           rem Input: currentPlayer = player index (0-3)
           rem Uses: currentAnimationSeq[currentPlayer] to determine
-          dim HAT_currentAction = temp1 : rem transition
-          dim HAT_animationAction = temp2
-          let HAT_currentAction = currentAnimationSeq[currentPlayer] : rem Get current action
-          if ActionAttackRecovery < HAT_currentAction then goto TransitionLoopAnimation : rem Guard against invalid action values
+          rem transition
+          let temp1 = currentAnimationSeq[currentPlayer] : rem Get current action
+          if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation : rem Guard against invalid action values
           
-          on HAT_currentAction goto TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionToIdle TransitionHandleFallBack TransitionToFallen TransitionLoopAnimation TransitionToIdle TransitionHandleJump TransitionLoopAnimation TransitionToIdle HandleAttackTransition HandleAttackTransition HandleAttackTransition
+          on temp1 goto TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionLoopAnimation TransitionToIdle TransitionHandleFallBack TransitionToFallen TransitionLoopAnimation TransitionToIdle TransitionHandleJump TransitionLoopAnimation TransitionToIdle HandleAttackTransition HandleAttackTransition HandleAttackTransition
 
 TransitionLoopAnimation
           let currentAnimationFrame_W[currentPlayer] = 0 : rem SCRAM write: Write to w081
           return
 
 TransitionToIdle
-          dim TTI_animationAction = temp2
-          let TTI_animationAction = ActionIdle
+          let temp2 = ActionIdle
           goto SetPlayerAnimation : rem tail call
 
 TransitionToFallen
-          dim TTF_animationAction = temp2
-          let TTF_animationAction = ActionFallen
+          let temp2 = ActionFallen
           goto SetPlayerAnimation : rem tail call
 
 TransitionHandleJump
-          dim THJ_animationAction = temp2
           rem Stay on frame 7 until Y velocity goes negative
           rem Check if player is falling (positive Y velocity =
           rem downward)
           if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
-          let THJ_animationAction = ActionJumping : rem Still ascending (negative or zero Y velocity), stay in jump
+          let temp2 = ActionJumping : rem Still ascending (negative or zero Y velocity), stay in jump
           goto SetPlayerAnimation : rem tail call
 TransitionHandleJump_TransitionToFalling
-          let THJ_animationAction = ActionFalling : rem Falling (positive Y velocity), transition to falling
+          let temp2 = ActionFalling : rem Falling (positive Y velocity), transition to falling
           goto SetPlayerAnimation : rem tail call
 
 TransitionHandleFallBack
-          dim THFB_animationAction = temp2
-          dim THFB_pfColumn = temp5
-          dim THFB_pfRow = temp6
           rem Check wall collision using pfread
           rem If hit wall: goto idle, else: goto fallen
-          let THFB_pfColumn = playerX[currentPlayer] : rem Convert player X position to playfield column (0-31)
-          let THFB_pfColumn = THFB_pfColumn - ScreenInsetX
-          let THFB_pfColumn = THFB_pfColumn / 4
-          let THFB_pfRow = playerY[currentPlayer] : rem Convert player Y position to playfield row (0-7)
-          let THFB_pfRow = THFB_pfRow / 8
-          if pfread(THFB_pfColumn, THFB_pfRow) then TransitionHandleFallBack_HitWall : rem Check if player hit a wall (playfield pixel is set)
-          let THFB_animationAction = ActionFallen : rem No wall collision, transition to fallen
+          let temp5 = playerX[currentPlayer] : rem Convert player X position to playfield column (0-31)
+          let temp5 = temp5 - ScreenInsetX
+          let temp5 = temp5 / 4
+          let temp6 = playerY[currentPlayer] : rem Convert player Y position to playfield row (0-7)
+          let temp6 = temp6 / 8
+          if pfread(temp5, temp6) then TransitionHandleFallBack_HitWall : rem Check if player hit a wall (playfield pixel is set)
+          let temp2 = ActionFallen : rem No wall collision, transition to fallen
           goto SetPlayerAnimation : rem tail call
 TransitionHandleFallBack_HitWall
-          let THFB_animationAction = ActionIdle : rem Hit wall, transition to idle
+          let temp2 = ActionIdle : rem Hit wall, transition to idle
           goto SetPlayerAnimation : rem tail call
 
           rem
@@ -599,20 +592,17 @@ TransitionHandleFallBack_HitWall
           rem Character-specific attack transitions based on patterns
           
 HandleAttackTransition
-          dim HAT2_currentAction = temp1
-          let HAT2_currentAction = currentAnimationSeq[currentPlayer] : rem Branch by attack phase
+          let temp1 = currentAnimationSeq[currentPlayer] : rem Branch by attack phase
           
-          if ActionAttackWindup = HAT2_currentAction then goto HandleWindupEnd
-          if ActionAttackExecute = HAT2_currentAction then goto HandleExecuteEnd
-          if ActionAttackRecovery = HAT2_currentAction then goto HandleRecoveryEnd
+          if ActionAttackWindup = temp1 then goto HandleWindupEnd
+          if ActionAttackExecute = temp1 then goto HandleExecuteEnd
+          if ActionAttackRecovery = temp1 then goto HandleRecoveryEnd
           return
           
 HandleWindupEnd
-          dim HWE_characterType = temp1
-          dim HWE_animationAction = temp2
           rem Character-specific windup→next transitions
           rem Most characters skip windup (go directly to Execute)
-          let HWE_characterType = playerCharacter[currentPlayer] : rem Get character ID
+          let temp1 = playerCharacter[currentPlayer] : rem Get character ID
           rem Dispatch to character-specific windup handler (0-31)
           rem MethHound (31) uses Character15_Windup (Shamone) handler
           if temp1 < 8 then goto WindupDispatchBank0
@@ -672,11 +662,10 @@ Character0_Windup
           rem Bernie: no windup used, Execute only
           return
 Character1_Windup
-          dim C1W_animationAction = temp2
           rem Curler: Windup → Recovery
           rem NOTE: Curling stone missile spawning handled by
           rem CurlerAttack
-          let C1W_animationAction = ActionAttackRecovery : rem   (calls PerformRangedAttack) in CharacterAttacks.bas
+          let temp2 = ActionAttackRecovery : rem   (calls PerformRangedAttack) in CharacterAttacks.bas
           goto SetPlayerAnimation : rem tail call
 Character2_Windup
           rem Dragon of Storms: Execute only
@@ -685,12 +674,10 @@ Character3_Windup
           rem Zoe Ryen: Execute only
           return
 Character4_Windup
-          dim C4W_animationAction = temp2
-          let C4W_animationAction = ActionAttackExecute : rem Fat Tony: Windup → Execute
+          let temp2 = ActionAttackExecute : rem Fat Tony: Windup → Execute
           goto SetPlayerAnimation : rem tail call
 Character5_Windup
-          dim C5W_animationAction = temp2
-          let C5W_animationAction = ActionAttackExecute : rem Megax: Windup → Execute
+          let temp2 = ActionAttackExecute : rem Megax: Windup → Execute
           goto SetPlayerAnimation : rem tail call
 Character6_Windup
           rem Harpy: Execute only
@@ -702,15 +689,13 @@ Character8_Windup
           rem Frooty: Execute only
           return
 Character9_Windup
-          dim C9W_animationAction = temp2
-          let C9W_animationAction = ActionAttackExecute : rem Nefertem: Windup → Execute
+          let temp2 = ActionAttackExecute : rem Nefertem: Windup → Execute
           goto SetPlayerAnimation : rem tail call
 Character10_Windup
           rem Ninjish Guy: Execute only
           return
 Character11_Windup
-          dim C11W_animationAction = temp2
-          let C11W_animationAction = ActionAttackExecute : rem Pork Chop: Windup → Execute
+          let temp2 = ActionAttackExecute : rem Pork Chop: Windup → Execute
           goto SetPlayerAnimation : rem tail call
 Character12_Windup
           rem Radish Goblin: Execute only
@@ -726,9 +711,7 @@ Character15_Windup
           return
 
 HandleExecuteEnd
-          dim HEE_characterType = temp1
-          dim HEE_animationAction = temp2
-          let HEE_characterType = playerCharacter[currentPlayer] : rem Character-specific execute→next transitions
+          let temp1 = playerCharacter[currentPlayer] : rem Character-specific execute→next transitions
           rem Dispatch to character-specific execute handler (0-31)
           rem MethHound (31) uses Character15_Execute (Shamone) handler
           if temp1 < 8 then goto ExecuteDispatchBank0
@@ -785,30 +768,25 @@ ExecuteDispatchBank3
 DoneExecuteDispatch
           
 Character0_Execute
-          dim C0E_animationAction = temp2
-          let C0E_animationAction = ActionIdle : rem Bernie: Execute → Idle
+          let temp2 = ActionIdle : rem Bernie: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 Character1_Execute
           rem Curler: no Execute used
           return
 Character2_Execute
-          dim C2E_animationAction = temp2
-          let C2E_animationAction = ActionIdle : rem Dragon of Storms: Execute → Idle
+          let temp2 = ActionIdle : rem Dragon of Storms: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 Character3_Execute
-          dim C3E_animationAction = temp2
-          let C3E_animationAction = ActionIdle : rem Zoe Ryen: Execute → Idle
+          let temp2 = ActionIdle : rem Zoe Ryen: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 Character4_Execute
-          dim C4E_animationAction = temp2
           rem Fat Tony: Execute → Recovery
           rem   FatTonyAttack
           rem NOTE: Laser bullet missile spawning handled by
-          let C4E_animationAction = ActionAttackRecovery : rem   (calls PerformRangedAttack) in CharacterAttacks.bas
+          let temp2 = ActionAttackRecovery : rem   (calls PerformRangedAttack) in CharacterAttacks.bas
           goto SetPlayerAnimation : rem tail call
 Character5_Execute
-          dim C5E_animationAction = temp2
-          let C5E_animationAction = ActionIdle : rem Megax: Execute → Idle (fire breath during Execute)
+          let temp2 = ActionIdle : rem Megax: Execute → Idle (fire breath during Execute)
           goto SetPlayerAnimation : rem tail call
 Character6_Execute
           dim C6E_animationAction = temp2
@@ -835,40 +813,31 @@ Character6_Execute
           let C6E_animationAction = ActionIdle : rem Transition to Idle
           goto SetPlayerAnimation : rem tail call
 Character7_Execute
-          dim C7E_animationAction = temp2
-          let C7E_animationAction = ActionIdle : rem Knight Guy: Execute → Idle (sword during Execute)
+          let temp2 = ActionIdle : rem Knight Guy: Execute → Idle (sword during Execute)
           goto SetPlayerAnimation : rem tail call
 Character8_Execute
-          dim C8E_animationAction = temp2
-          let C8E_animationAction = ActionIdle : rem Frooty: Execute → Idle
+          let temp2 = ActionIdle : rem Frooty: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 Character9_Execute
-          dim C9E_animationAction = temp2
-          let C9E_animationAction = ActionIdle : rem Nefertem: Execute → Idle
+          let temp2 = ActionIdle : rem Nefertem: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 Character10_Execute
-          dim C10E_animationAction = temp2
-          let C10E_animationAction = ActionIdle : rem Ninjish Guy: Execute → Idle
+          let temp2 = ActionIdle : rem Ninjish Guy: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 Character11_Execute
-          dim C11E_animationAction = temp2
-          let C11E_animationAction = ActionAttackRecovery : rem Pork Chop: Execute → Recovery
+          let temp2 = ActionAttackRecovery : rem Pork Chop: Execute → Recovery
           goto SetPlayerAnimation : rem tail call
 Character12_Execute
-          dim C12E_animationAction = temp2
-          let C12E_animationAction = ActionIdle : rem Radish Goblin: Execute → Idle
+          let temp2 = ActionIdle : rem Radish Goblin: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 Character13_Execute
-          dim C13E_animationAction = temp2
-          let C13E_animationAction = ActionIdle : rem Robo Tito: Execute → Idle
+          let temp2 = ActionIdle : rem Robo Tito: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 Character14_Execute
-          dim C14E_animationAction = temp2
-          let C14E_animationAction = ActionIdle : rem Ursulo: Execute → Idle
+          let temp2 = ActionIdle : rem Ursulo: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 Character15_Execute
-          dim C15E_animationAction = temp2
-          let C15E_animationAction = ActionIdle : rem Shamone: Execute → Idle
+          let temp2 = ActionIdle : rem Shamone: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
           rem
@@ -937,81 +906,65 @@ Character30_Windup
           return
 
 Character16_Execute
-          dim C16E_animationAction = temp2
-          let C16E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character17_Execute
-          dim C17E_animationAction = temp2
-          let C17E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character18_Execute
-          dim C18E_animationAction = temp2
-          let C18E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character19_Execute
-          dim C19E_animationAction = temp2
-          let C19E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character20_Execute
-          dim C20E_animationAction = temp2
-          let C20E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character21_Execute
-          dim C21E_animationAction = temp2
-          let C21E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character22_Execute
-          dim C22E_animationAction = temp2
-          let C22E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character23_Execute
-          dim C23E_animationAction = temp2
-          let C23E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character24_Execute
-          dim C24E_animationAction = temp2
-          let C24E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character25_Execute
-          dim C25E_animationAction = temp2
-          let C25E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character26_Execute
-          dim C26E_animationAction = temp2
-          let C26E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character27_Execute
-          dim C27E_animationAction = temp2
-          let C27E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character28_Execute
-          dim C28E_animationAction = temp2
-          let C28E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character29_Execute
-          dim C29E_animationAction = temp2
-          let C29E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 Character30_Execute
-          dim C30E_animationAction = temp2
-          let C30E_animationAction = ActionIdle : rem Placeholder: Execute → Idle
+          let temp2 = ActionIdle : rem Placeholder: Execute → Idle
           goto SetPlayerAnimation : rem tail call
 
 HandleRecoveryEnd
-          dim HRE_animationAction = temp2
-          let HRE_animationAction = ActionIdle : rem All characters: Recovery → Idle
+          let temp2 = ActionIdle : rem All characters: Recovery → Idle
           goto SetPlayerAnimation : rem tail call

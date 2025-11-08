@@ -19,14 +19,13 @@ LoadSongPointer
           rem
           rem Constraints: Only songs 1-2 live in Bank 15. Index mapping:
           rem song 1 → index 0, song 2 → index 1. Returns SongPointerH = 0 if song not in this bank.
-          dim LSP_songID = temp1
           rem Bounds check: only songs 1-2 reside in Bank 15
-          if LSP_songID < 1 then goto LSP15_InvalidSong
-          if LSP_songID > 2 then goto LSP15_InvalidSong
-          dim LSP_index = temp2 : rem Calculate compact index: songID - 1 (song 1→0, song 2→1)
-          let LSP_index = LSP_songID - 1
-          let SongPointerL = SongPointersL15[LSP_index] : rem Use array access to lookup pointer
-          let SongPointerH = SongPointersH15[LSP_index]
+          if temp1 < 1 then goto LSP15_InvalidSong
+          if temp1 > 2 then goto LSP15_InvalidSong
+          rem Calculate compact index: songID - 1 (song 1→0, song 2→1)
+          let temp2 = temp1 - 1
+          let SongPointerL = SongPointersL15[temp2] : rem Use array access to lookup pointer
+          let SongPointerH = SongPointersH15[temp2]
           return
 
 LSP15_InvalidSong

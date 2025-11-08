@@ -56,10 +56,10 @@ DrawDigit
           rem EXAMPLE USAGE:
           rem   rem Draw level A (10) in white on left using player0
           rem temp1 = 10 : temp2 = 40 : temp3 = 20 : temp4 = ColGrey(14)
-          rem   : temp5 = 0 : gosub DrawDigit
+          rem : temp5 = 0 : gosub DrawDigit
           rem   rem Draw player 2 in red on right using player1
           rem temp1 = 2 : temp2 = 120 : temp3 = 20 : temp4 = ColRed(14)
-          rem   : temp5 = 1 : gosub DrawDigit
+          rem : temp5 = 1 : gosub DrawDigit
           rem Draws a single hexadecimal digit (0-F) at specified
           rem position
           rem
@@ -378,32 +378,26 @@ DrawPlayerNumber
           rem   temp3 = Y position
           rem   temp5 = sprite select (0=player0, 1=player1)
           rem Player colors are looked up from a table.
-          dim DPN_playerIndex = temp1
-          dim DPN_playerDigit = temp1
-          dim DPN_xPos = temp2
-          dim DPN_yPos = temp3
-          dim DPN_playerColor = temp4
-          dim DPN_spriteSelect = temp5
-          let DPN_playerDigit = DPN_playerIndex + 1 : rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
+          let temp1 = temp1 + 1 : rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
           
           rem Look up player color
           if temp1 > 3 then temp1 = 3
           on temp1 goto SetP1Color SetP2Color SetP3Color SetP4Color
           
 SetP1Color
-          let DPN_playerColor = ColIndigo(14)
+          let temp4 = ColIndigo(14)
           goto DrawPlayerDigitNow : rem Indigo
           
 SetP2Color
-          let DPN_playerColor = ColRed(14)
+          let temp4 = ColRed(14)
           goto DrawPlayerDigitNow : rem Red
           
 SetP3Color
-          let DPN_playerColor = ColYellow(14)
+          let temp4 = ColYellow(14)
           goto DrawPlayerDigitNow : rem Yellow
           
 SetP4Color
-          let DPN_playerColor = ColTurquoise(14)
+          let temp4 = ColTurquoise(14)
           rem Turquoise (SECAM macro maps to Cyan)
           goto DrawPlayerDigitNow
           
@@ -420,11 +414,7 @@ DrawArenaNumber
           rem   temp2 = X position
           rem   temp3 = Y position
           rem temp5 = sprite select (0=player0, 1=player1, 2=player2,
-          dim DLN_arenaNumber = temp1 : rem 3=player3, 4=player4, 5=player5)
-          dim DLN_xPos = temp2
-          dim DLN_yPos = temp3
-          dim DLN_color = temp4
-          dim DLN_spriteSelect = temp5
-          let DLN_color = ColGrey(14)
+          rem 3=player3, 4=player4, 5=player5)
+          let temp4 = ColGrey(14)
           rem White
           goto DrawDigit : rem tail call

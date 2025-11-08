@@ -882,19 +882,18 @@ end
 ReloadArenaColors
           rem Reload arena colors based on current Color/B&W switch
           rem state
-          dim RAC_arenaIndex = temp1 : rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
-          dim RAC_bwMode = temp2
+          rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
           
-          let RAC_arenaIndex = selectedArena_R : rem Get current arena index
-          if RAC_arenaIndex = RandomArena then let RAC_arenaIndex = rand & 31 : rem Handle random arena (use stored random selection)
+          let temp1 = selectedArena_R : rem Get current arena index
+          if temp1 = RandomArena then let temp1 = rand & 31 : rem Handle random arena (use stored random selection)
           
           rem Get B&W mode state (same logic as GetBWMode)
-          let RAC_bwMode = switchbw : rem Check switchbw and colorBWOverride
-          if systemFlags & SystemFlagColorBWOverride then let RAC_bwMode = 1
+          let temp2 = switchbw : rem Check switchbw and colorBWOverride
+          if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           
 ReloadArenaColorsDispatch
-          let LA_arenaIndex = RAC_arenaIndex : rem Set up for LoadArenaColorsColor/LoadArenaColorsBW
-          let LA_bwMode = RAC_bwMode
+          let LA_arenaIndex = temp1 : rem Set up for LoadArenaColorsColor/LoadArenaColorsBW
+          let LA_bwMode = temp2
           
           if LA_bwMode then goto LoadArenaColorsBW : rem Use existing LoadArena color functions (identical behavior)
           goto LoadArenaColorsColor

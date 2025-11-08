@@ -217,6 +217,14 @@
           const PlayerSpriteHalfWidth = 8 : rem Half-width of player sprite used in AABB checks
           const PlayerSpriteHeight = 16 : rem Player sprite height used in AABB checks
           const PlayerSpriteWidth = 16 : rem Player sprite width used in AABB checks
+          const ScreenWidth = 160 : rem Total hardware screen width in pixels
+          const ScreenLeftMargin = 16 : rem Left margin reserved for off-playfield area
+          const ScreenRightMargin = 16 : rem Right margin reserved for off-playfield area
+          const PlayerLeftEdge = ScreenLeftMargin : rem Leftmost X position for a player sprite
+          const PlayerRightEdge = ScreenWidth - ScreenRightMargin - PlayerSpriteWidth : rem Rightmost X position for a player sprite
+          const PlayerWrapOvershoot = PlayerSpriteHalfWidth : rem Allow sprites to move partially off-screen before wrapping
+          const PlayerLeftWrapThreshold = PlayerLeftEdge - PlayerWrapOvershoot : rem X value that triggers wrap-around from left edge
+          const PlayerRightWrapThreshold = PlayerRightEdge + PlayerWrapOvershoot : rem X value that triggers wrap-around from right edge
           const PlayerCollisionDistance = 16 : rem Collision detection distance (sprite width in pixels)
           const MissileDefaultHeight = 1 : rem Default missile height when AOE (0) is reported
           const MissileMaxHeight = 8 : rem Cap for missile height (TIA limit)

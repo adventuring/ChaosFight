@@ -1,7 +1,7 @@
-UpdatePlayerMovement
           rem ChaosFight - Source/Routines/MovementSystem.bas
-          rem
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+UpdatePlayerMovement
           rem 8.8 fixed-point movement system using batariBASIC built-in
           rem   support
           rem Movement System Routines
@@ -41,7 +41,8 @@ UpdatePlayerMovement
           for currentPlayer = 0 to 1 : rem Update movement for each active player
               gosub UpdatePlayerMovementSingle
           next
-          if QuadtariDetected = 0 then goto UpdatePlayerMovementQuadtariSkip : rem Players 2-3 only if Quadtari detected
+          rem Players 2-3 only if Quadtari detected
+          if QuadtariDetected = 0 then goto UpdatePlayerMovementQuadtariSkip
           for currentPlayer = 2 to 3
               gosub UpdatePlayerMovementSingle
           next
@@ -57,7 +58,8 @@ UpdatePlayerMovementSingle
           rem Constraints: Must be colocated with XCarry/XNoCarry/YCarry/YNoCarry
           rem Notes: temp2-temp4 are clobbered; caller must not reuse them afterward.
           rem 16-bit accumulator for proper carry detection
-          if playerHealth[currentPlayer] = 0 then return : rem Skip if player is eliminated
+          rem Skip if player is eliminated
+          if playerHealth[currentPlayer] = 0 then return
           
           rem
           rem Apply X Velocity To X Position
@@ -214,7 +216,8 @@ ApplyFriction
           rem Check for negative velocity using twos complement (values
           rem ≥ 128 are negative)
           if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
-          if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0 : rem Also zero subpixel if velocity reaches zero
+          rem Also zero subpixel if velocity reaches zero
+          if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
           return
 
 CheckPlayerCollision
@@ -258,7 +261,8 @@ CheckPlayerCollision
           let temp5 = playerX[temp2]
 
           rem Calculate absolute X distance between players
-          if temp4 >= temp5 then CalcXDistanceRight : rem Primary holds player1 X initially
+          rem Primary holds player1 X initially
+          if temp4 >= temp5 then CalcXDistanceRight
           let temp6 = temp5 - temp4
           goto XDistanceDone
 CalcXDistanceRight
@@ -298,19 +302,21 @@ NoCollision
 ConstrainToScreen
           rem Clamp player position to on-screen bounds and clear subpixels at edges.
           rem Input: temp1 = player index (0-3)
-          rem Output: playerX/Y constrained to 10-150 (X) and 20-80 (Y); subpixels zeroed at clamps
+          rem Output: playerX/Y constrained to PlayerLeftEdge..PlayerRightEdge (X) and 20-80 (Y); subpixels zeroed at clamps
           rem Mutates: playerX[], playerY[], playerSubpixelX_W/WL[], playerSubpixelY_W/WL[]
-          rem Constraints: X bounds 10-150, Y bounds 20-80
-          rem Constrain X position (10 to 150 for screen bounds)
-          if playerX[temp1] < 10 then let playerX[temp1] = 10 : rem SCRAM write: Write to w049
-          if playerX[temp1] < 10 then let playerSubpixelX_W[temp1] = 10
-          if playerX[temp1] < 10 then let playerSubpixelX_WL[temp1] = 0
-          if playerX[temp1] > 150 then let playerX[temp1] = 150
-          if playerX[temp1] > 150 then let playerSubpixelX_W[temp1] = 150
-          if playerX[temp1] > 150 then let playerSubpixelX_WL[temp1] = 0
+          rem Constraints: X bounds PlayerLeftEdge..PlayerRightEdge, Y bounds 20-80
+          rem Constrain X position using screen boundary constants
+          rem SCRAM write: Write to w049
+          if playerX[temp1] < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge
+          if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_W[temp1] = PlayerLeftEdge
+          if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_WL[temp1] = 0
+          if playerX[temp1] > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
+          if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_W[temp1] = PlayerRightEdge
+          if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_WL[temp1] = 0
           
           rem Constrain Y position (20 to 80 for screen bounds)
-          if playerY[temp1] < 20 then let playerY[temp1] = 20 : rem SCRAM write: Write to w057
+          rem SCRAM write: Write to w057
+          if playerY[temp1] < 20 then let playerY[temp1] = 20
           if playerY[temp1] < 20 then let playerSubpixelY_W[temp1] = 20
           if playerY[temp1] < 20 then let playerSubpixelY_WL[temp1] = 0
           if playerY[temp1] > 80 then let playerY[temp1] = 80

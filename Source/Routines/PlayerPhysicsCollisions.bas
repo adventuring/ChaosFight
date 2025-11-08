@@ -1,7 +1,7 @@
-CheckBoundaryCollisions
-          rem
           rem ChaosFight - Source/Routines/PlayerPhysicsCollisions.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+CheckBoundaryCollisions
           rem Player Physics - Collisions
           rem Handles boundary, playfield, and player-to-player
           rem collisions.
@@ -46,7 +46,8 @@ CheckBoundaryCollisions
           rem Called Routines: None
           rem
           rem Constraints: All arenas support horizontal wrap-around (X
-          rem < 10 wraps to 150, X > 150 wraps to 10). Vertical
+          rem < PlayerLeftWrapThreshold wraps to PlayerRightEdge, X >
+          rem PlayerRightWrapThreshold wraps to PlayerLeftEdge). Vertical
           rem boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped
           rem to 80). Players 3/4 only checked if Quadtari detected and
           rem selected
@@ -54,31 +55,38 @@ CheckBoundaryCollisions
           rem labels
           rem Handle RandomArena by checking selected arena (shared for all players)
           let temp3 = selectedArena_R
-          if temp3 = RandomArena then let temp3 = rand : let temp3 = temp3 & 15 : rem Handle RandomArena (use proper RNG)
+          rem Handle RandomArena (use proper RNG)
+          if temp3 = RandomArena then let temp3 = rand : let temp3 = temp3 & 15
           
           let temp1 = 0 : rem Player 0 - boundaries
-          rem Horizontal wrap (player 0): X < 10 wraps to 150, X > 150 wraps to 10
-          if playerX[0] < 10 then let playerX[0] = 150 : let playerSubpixelX_W[0] = 150 : let playerSubpixelX_WL[0] = 0
-          if playerX[0] > 150 then let playerX[0] = 10 : let playerSubpixelX_W[0] = 10 : let playerSubpixelX_WL[0] = 0
-          if playerY[0] < 20 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0 : rem Y clamp: top 20, bottom 80
+          rem Horizontal wrap (player 0): wrap when leaving playable area margins
+          if playerX[0] < PlayerLeftWrapThreshold then let playerX[0] = PlayerRightEdge : let playerSubpixelX_W[0] = PlayerRightEdge : let playerSubpixelX_WL[0] = 0
+          if playerX[0] > PlayerRightWrapThreshold then let playerX[0] = PlayerLeftEdge : let playerSubpixelX_W[0] = PlayerLeftEdge : let playerSubpixelX_WL[0] = 0
+          rem Y clamp: top 20, bottom 80
+          if playerY[0] < 20 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
           if playerY[0] > 80 then let playerY[0] = 80 : let playerSubpixelY_W[0] = 80 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
           
           let temp1 = 1 : rem Player 1 - boundaries
-          rem Horizontal wrap (player 1): X < 10 wraps to 150, X > 150 wraps to 10
-          if playerX[1] < 10 then let playerX[1] = 150 : let playerSubpixelX_W[1] = 150 : let playerSubpixelX_WL[1] = 0
-          if playerX[1] > 150 then let playerX[1] = 10 : let playerSubpixelX_W[1] = 10 : let playerSubpixelX_WL[1] = 0
-          if playerY[1] < 20 then let playerY[1] = 20 : let playerSubpixelY_W[1] = 20 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0 : rem Y clamp: top 20, bottom 80
+          rem Horizontal wrap (player 1): wrap when leaving playable area margins
+          if playerX[1] < PlayerLeftWrapThreshold then let playerX[1] = PlayerRightEdge : let playerSubpixelX_W[1] = PlayerRightEdge : let playerSubpixelX_WL[1] = 0
+          if playerX[1] > PlayerRightWrapThreshold then let playerX[1] = PlayerLeftEdge : let playerSubpixelX_W[1] = PlayerLeftEdge : let playerSubpixelX_WL[1] = 0
+          rem Y clamp: top 20, bottom 80
+          if playerY[1] < 20 then let playerY[1] = 20 : let playerSubpixelY_W[1] = 20 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
           if playerY[1] > 80 then let playerY[1] = 80 : let playerSubpixelY_W[1] = 80 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
           
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then let temp1 = 2 : rem Player 2 - boundaries (if Quadtari and active) - inline nested ifs
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerX[2] < 10 then let playerX[2] = 150 : let playerSubpixelX_W[2] = 150 : let playerSubpixelX_WL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerX[2] > 150 then let playerX[2] = 10 : let playerSubpixelX_W[2] = 10 : let playerSubpixelX_WL[2] = 0
+          rem Player 2 - boundaries (if Quadtari and active) - inline nested ifs
+          
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then let temp1 = 2
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerX[2] < PlayerLeftWrapThreshold then let playerX[2] = PlayerRightEdge : let playerSubpixelX_W[2] = PlayerRightEdge : let playerSubpixelX_WL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerX[2] > PlayerRightWrapThreshold then let playerX[2] = PlayerLeftEdge : let playerSubpixelX_W[2] = PlayerLeftEdge : let playerSubpixelX_WL[2] = 0
           if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
           if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerY[2] > 80 then let playerY[2] = 80 : let playerSubpixelY_W[2] = 80 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
           
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then let temp1 = 3 : rem Player 3 - boundaries (if Quadtari and active) - inline nested ifs
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerX[3] < 10 then let playerX[3] = 150 : let playerSubpixelX_W[3] = 150 : let playerSubpixelX_WL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerX[3] > 150 then let playerX[3] = 10 : let playerSubpixelX_W[3] = 10 : let playerSubpixelX_WL[3] = 0
+          rem Player 3 - boundaries (if Quadtari and active) - inline nested ifs
+          
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then let temp1 = 3
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerX[3] < PlayerLeftWrapThreshold then let playerX[3] = PlayerRightEdge : let playerSubpixelX_W[3] = PlayerRightEdge : let playerSubpixelX_WL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerX[3] > PlayerRightWrapThreshold then let playerX[3] = PlayerLeftEdge : let playerSubpixelX_W[3] = PlayerLeftEdge : let playerSubpixelX_WL[3] = 0
           if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
           if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerY[3] > 80 then let playerY[3] = 80 : let playerSubpixelY_W[3] = 80 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
           
@@ -145,13 +153,15 @@ CheckPlayfieldCollisionAllDirections
 end
           rem temp6 = playfield column (0-31)
           rem Clamp column to valid range
-          if temp6 & $80 then let temp6 = 0 : rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
+          if temp6 & $80 then let temp6 = 0
           if temp6 > 31 then let temp6 = 31
           
           rem Convert Y position to playfield row (0-pfrows-1)
           rem Divide by pfrowheight using helper
           let temp2 = temp3 : rem DivideByPfrowheight is in FallDamage.bas, need to find which bank
-          if pfrowheight = 8 then DBPF_InlineDivideBy8 : rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          if pfrowheight = 8 then DBPF_InlineDivideBy8
           rem pfrowheight is 16, divide by 16 (4 right shifts)
           asm
             lsr temp2
@@ -169,7 +179,8 @@ DBPF_InlineDivideBy8
 end
 DBPF_InlineDivideDone
           let playfieldRow = temp2
-          if playfieldRow >= pfrows then let playfieldRow = pfrows - 1 : rem playfieldRow = playfield row
+          rem playfieldRow = playfield row
+          if playfieldRow >= pfrows then let playfieldRow = pfrows - 1
           rem Check for wraparound: if division resulted in value ≥ 128
           rem (negative), clamp to 0
           if playfieldRow & $80 then let playfieldRow = 0
@@ -186,10 +197,13 @@ DBPF_InlineDivideDone
           
           let playfieldColumn_W = temp6 - 1
           rem Column to the left (playfieldColumn)
-          if playfieldColumn_R & $80 then goto PFCheckRight : rem Check for wraparound: if temp6 was 0, playfieldColumn wraps to 255 (≥ 128)
+          rem Check for wraparound: if temp6 was 0, playfieldColumn wraps to 255 (≥ 128)
+          if playfieldColumn_R & $80 then goto PFCheckRight
           rem Out of bounds, skip
           
-          if pfread(playfieldColumn_R, playfieldRow_R) then goto PFBlockLeft : rem Check head position (top of sprite)
+          rem Check head position (top of sprite)
+          
+          if pfread(playfieldColumn_R, playfieldRow_R) then goto PFBlockLeft
           rem Check middle position
           rem Calculate (temp5 / 2) / pfrowheight
           asm
@@ -198,7 +212,8 @@ DBPF_InlineDivideDone
             sta temp2
 end
           rem temp2 = temp5 / 2
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_1 : rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          if pfrowheight = 8 then DBPF_InlineDivideBy8_1
           rem pfrowheight is 16, divide by 16 (4 right shifts)
           asm
             lsr temp2
@@ -219,7 +234,8 @@ DBPF_InlineDivideDone_1
           if rowCounter_R >= pfrows then goto PFCheckRight
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockLeft
           let temp2 = temp5 : rem Check feet position (bottom of sprite)
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_2 : rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          if pfrowheight = 8 then DBPF_InlineDivideBy8_2
           rem pfrowheight is 16, divide by 16 (4 right shifts)
           asm
             lsr temp2
@@ -258,7 +274,8 @@ PFBlockLeft
             sta rowYPosition_W
 end
           rem Reuse rowYPosition for X position clamp (not actually Y,
-          if playerX[currentPlayer] < rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R : rem   but same pattern)
+          rem but same pattern)
+          if playerX[currentPlayer] < rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R
           if playerX[currentPlayer] < rowYPosition_R then let playerSubpixelX_W[currentPlayer] = rowYPosition_R
           if playerX[currentPlayer] < rowYPosition_R then let playerSubpixelX_WL[currentPlayer] = 0
           
@@ -272,10 +289,13 @@ PFCheckRight
           rem At right edge of screen, skip check
           
           let playfieldColumn_W = temp6 + 4
-          if playfieldColumn_R > 31 then goto PFCheckUp : rem Column to the right of player right edge (playfieldColumn)
+          rem Column to the right of player right edge (playfieldColumn)
+          if playfieldColumn_R > 31 then goto PFCheckUp
           rem Out of bounds, skip
           
-          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockRight : rem Check head, middle, and feet positions
+          rem Check head, middle, and feet positions
+          
+          if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockRight
           rem Calculate (temp5 / 2) / pfrowheight
           asm
             lda temp5
@@ -283,7 +303,8 @@ PFCheckRight
             sta temp2
 end
           rem temp2 = temp5 / 2
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_6 : rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          if pfrowheight = 8 then DBPF_InlineDivideBy8_6
           rem pfrowheight is 16, divide by 16 (4 right shifts)
           asm
             lsr temp2
@@ -304,7 +325,8 @@ DBPF_InlineDivideDone_6
           if rowCounter_R >= pfrows then goto PFCheckUp
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockRight
           let temp2 = temp5
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_7 : rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          if pfrowheight = 8 then DBPF_InlineDivideBy8_7
           rem pfrowheight is 16, divide by 16 (4 right shifts)
           asm
             lsr temp2
@@ -341,14 +363,16 @@ PFBlockRight
             sta rowYPosition_W
 end
           rem Reuse rowYPosition for X position clamp (not actually Y,
-          if playerX[currentPlayer] > rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R : rem   but same pattern)
+          rem but same pattern)
+          if playerX[currentPlayer] > rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R
           if playerX[currentPlayer] > rowYPosition_R then let playerSubpixelX_W[currentPlayer] = rowYPosition_R
           if playerX[currentPlayer] > rowYPosition_R then let playerSubpixelX_WL[currentPlayer] = 0
           
 PFCheckUp
           rem
           rem Check Up Collision
-          if playfieldRow = 0 then goto PFCheckDown : rem Check if player head has a playfield pixel above
+          rem Check if player head has a playfield pixel above
+          if playfieldRow = 0 then goto PFCheckDown
           rem At top of screen, skip check
           
           let rowCounter_W = playfieldRow - 1
@@ -357,12 +381,16 @@ PFCheckUp
           rem wraps to 255 (≥ 128)
           if rowCounter_R & $80 then goto PFCheckDown
           
-          if pfread(temp6, rowCounter_R) then goto PFBlockUp : rem Check center column (temp6)
-          if temp6 = 0 then goto PFCheckUp_CheckRight : rem Check left edge column
+          rem Check center column (temp6)
+          
+          if pfread(temp6, rowCounter_R) then goto PFBlockUp
+          rem Check left edge column
+          if temp6 = 0 then goto PFCheckUp_CheckRight
           let playfieldColumn_W = temp6 - 1
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockUp
 PFCheckUp_CheckRight
-          if temp6 >= 31 then goto PFCheckDown : rem Check right edge column
+          rem Check right edge column
+          if temp6 >= 31 then goto PFCheckDown
           let playfieldColumn_W = temp6 + 1
           if pfread(playfieldColumn_R, rowCounter_R) then goto PFBlockUp
           
@@ -375,7 +403,8 @@ PFBlockUp
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
           let rowYPosition_W = playfieldRow + 1 : rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
-          if pfrowheight = 8 then goto DBPF_MultiplyBy8 : rem Check if pfrowheight is 8 or 16
+          rem Check if pfrowheight is 8 or 16
+          if pfrowheight = 8 then goto DBPF_MultiplyBy8
           rem pfrowheight is 16, multiply by 16 (4 left shifts)
           asm
             lda rowYPosition_W
@@ -406,7 +435,8 @@ PFCheckDown
           rem Check if player feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we
           let temp2 = temp5 : rem   verify here
-          if pfrowheight = 8 then DBPF_InlineDivideBy8_5 : rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          rem Inline division: pfrowheight is 8 or 16 (powers of 2)
+          if pfrowheight = 8 then DBPF_InlineDivideBy8_5
           rem pfrowheight is 16, divide by 16 (4 right shifts)
           asm
             lsr temp2
@@ -424,13 +454,17 @@ DBPF_InlineDivideBy8_5
 end
 DBPF_InlineDivideDone_5
           let rowCounter_W = playfieldRow + temp2
-          if rowCounter_R >= pfrows then return : rem Row at player feet (rowCounter)
+          rem Row at player feet (rowCounter)
+          if rowCounter_R >= pfrows then return
           
           let playfieldRow = rowCounter_R + 1
           rem Row below feet (playfieldRow - temporarily reuse for this
-          if playfieldRow >= pfrows then return : rem   check)
+          rem check)
+          if playfieldRow >= pfrows then return
           
-          if pfread(temp6, playfieldRow) then goto PFBlockDown : rem Check center, left, and right columns below feet
+          rem Check center, left, and right columns below feet
+          
+          if pfread(temp6, playfieldRow) then goto PFBlockDown
           if temp6 = 0 then goto PFCheckDown_CheckRight
           let playfieldColumn_W = temp6 - 1
           if pfread(playfieldColumn_R, playfieldRow) then goto PFBlockDown
@@ -444,7 +478,8 @@ PFCheckDown_CheckRight
 PFBlockDown
           rem Block downward movement: zero Y velocity if positive
           rem This should already be handled in PhysicsApplyGravity, but
-          if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0 : rem enforce here too
+          rem enforce here too
+          if playerVelocityY[currentPlayer] > 0 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           return
 
 CheckAllPlayerCollisions
@@ -493,7 +528,8 @@ CheckAllPlayerCollisions
           rem Player 1 index
           
 CollisionOuterLoop
-          if temp1 >= 2 then CollisionCheckP1Active : rem Check if player 1 is active
+          rem Check if player 1 is active
+          if temp1 >= 2 then CollisionCheckP1Active
           goto CollisionInnerLoop : rem Players 0-1 always active
           
 CollisionCheckP1Active
@@ -508,7 +544,9 @@ CollisionInnerLoop
 CollisionCheckPair
           if temp2 >= 4 then goto CollisionNextOuter
           
-          if temp2 >= 2 then CollisionCheckP2Active : rem Check if player 2 is active
+          rem Check if player 2 is active
+          
+          if temp2 >= 2 then CollisionCheckP2Active
           goto CollisionCheckDistance : rem Players 0-1 always active
           
 CollisionCheckP2Active
@@ -517,10 +555,13 @@ CollisionCheckP2Active
           if temp2 = 3 && playerCharacter[3] = NoCharacter then goto CollisionNextInner
           
 CollisionCheckDistance
-          if playerHealth[temp1] = 0 then goto CollisionNextInner : rem Skip if either player is eliminated
+          rem Skip if either player is eliminated
+          if playerHealth[temp1] = 0 then goto CollisionNextInner
           if playerHealth[temp2] = 0 then goto CollisionNextInner
           
-          if playerX[temp1] >= playerX[temp2] then CalcCollisionDistanceRight : rem Calculate X distance between players
+          rem Calculate X distance between players
+          
+          if playerX[temp1] >= playerX[temp2] then CalcCollisionDistanceRight
           let temp3 = playerX[temp2] - playerX[temp1]
           goto CollisionDistanceDone
           
@@ -537,7 +578,9 @@ CollisionDistanceDone
           let halfHeight1 = CharacterHeights[temp5] : rem   be overwritten)
           rem Player2 height (temporarily store, will calculate half)
           
-          if playerY[temp1] >= playerY[temp2] then CalcCollisionYDistanceDown : rem Calculate Y distance
+          rem Calculate Y distance
+          
+          if playerY[temp1] >= playerY[temp2] then CalcCollisionYDistanceDown
           let yDistance = playerY[temp2] - playerY[temp1]
           goto CollisionYDistanceDone
           
@@ -570,7 +613,9 @@ end
           let halfHeight2 = CharacterWeights[temp5] : rem Player1 weight (temporarily store, will be overwritten)
           rem Player2 weight (temporarily store)
           
-          if playerX[temp1] < playerX[temp2] then CollisionSepLeft : rem Calculate separation direction (left/right)
+          rem Calculate separation direction (left/right)
+          
+          if playerX[temp1] < playerX[temp2] then CollisionSepLeft
           
           rem Player1 is right of Player2 - push Player1 right, Player2
           rem   left
@@ -578,10 +623,13 @@ end
           rem Heavier character pushes lighter one more
           rem Formula: impulse = (weight_difference / total_weight) *
           let totalWeight = characterWeight + halfHeight2 : rem   separation_speed
-          if totalWeight = 0 then goto CollisionNextInner : rem Total weight (halfHeight2 contains Player2 weight here)
+          rem Total weight (halfHeight2 contains Player2 weight here)
+          if totalWeight = 0 then goto CollisionNextInner
           rem Avoid division by zero
           
-          if characterWeight >= halfHeight2 then CalcWeightDiff1Heavier : rem Calculate weight difference
+          rem Calculate weight difference
+          
+          if characterWeight >= halfHeight2 then CalcWeightDiff1Heavier
           let weightDifference = halfHeight2 - characterWeight
           let impulseStrength = weightDifference : rem Player2 is heavier
           goto ApplyImpulseRight : rem Impulse strength (proportional to weight difference)
@@ -593,7 +641,8 @@ CalcWeightDiff1Heavier
           
 ApplyImpulseRight
           rem Apply impulses: heavier player pushes lighter one
-          if characterWeight >= halfHeight2 then ApplyImpulse1Heavier : rem Separation speed: 1 pixel/frame minimum
+          rem Separation speed: 1 pixel/frame minimum
+          if characterWeight >= halfHeight2 then ApplyImpulse1Heavier
           
           rem Player2 is heavier - push Player1 left (negative X),
           rem   Player2 right (positive X)
@@ -608,7 +657,8 @@ end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           rem totalWeight ranges 10-200, use closest power-of-2
-          if totalWeight >= 128 then goto ApproxDivBy128_1 : rem   approximation
+          rem approximation
+          if totalWeight >= 128 then goto ApproxDivBy128_1
           if totalWeight >= 64 then goto ApproxDivBy64_1
           if totalWeight >= 32 then goto ApproxDivBy32_1
           rem Default: divide by 16 (approximation for 10-31)
@@ -649,7 +699,8 @@ ApproxDivBy128_1
             lsr impulseStrength
 end
 ApproxDivDone_1
-          if impulseStrength = 0 then impulseStrength = 1 : rem Scale impulse by weight ratio (0-2 pixels/frame)
+          rem Scale impulse by weight ratio (0-2 pixels/frame)
+          if impulseStrength = 0 then impulseStrength = 1
           rem Minimum 1 pixel/frame
           
           rem Apply to Player1 velocity (push left)
@@ -657,10 +708,14 @@ ApproxDivDone_1
           rem   are >= -4)
           rem -4 in twos complement = 256 - 4 = 252
           if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
-          if playerVelocityX[temp1] > 252 then let playerVelocityX[temp1] = 252 : rem Cap at -4 pixels/frame (252 in twos complement)
+          rem Cap at -4 pixels/frame (252 in twos complement)
+          if playerVelocityX[temp1] > 252 then let playerVelocityX[temp1] = 252
           
-          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength : rem Apply to Player2 velocity (push right)
-          if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4 : rem Cap at 4 pixels/frame
+          rem Apply to Player2 velocity (push right)
+          
+          if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
+          rem Cap at 4 pixels/frame
+          if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           
           let playerVelocityXL[temp1] = 0 : rem Also zero subpixel velocities when applying impulse
           let playerVelocityXL[temp2] = 0
@@ -678,7 +733,8 @@ ApplyImpulse1Heavier
             sta impulseStrength
 end
           rem Approximate division by totalWeight using bit-shift
-          if totalWeight >= 128 then goto ApproxDivBy128_2 : rem   approximation
+          rem approximation
+          if totalWeight >= 128 then goto ApproxDivBy128_2
           if totalWeight >= 64 then goto ApproxDivBy64_2
           if totalWeight >= 32 then goto ApproxDivBy32_2
           rem Default: divide by 16
@@ -719,9 +775,12 @@ ApproxDivBy128_2
             lsr impulseStrength
 end
 ApproxDivDone_2
-          if impulseStrength = 0 then impulseStrength = 1 : rem Scale impulse by weight ratio
+          rem Scale impulse by weight ratio
+          if impulseStrength = 0 then impulseStrength = 1
           
-          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength : rem Apply to Player1 velocity (push right)
+          rem Apply to Player1 velocity (push right)
+          
+          if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength
           if playerVelocityX[temp1] > 4 then let playerVelocityX[temp1] = 4
           
           rem Apply to Player2 velocity (push left)
@@ -729,7 +788,8 @@ ApproxDivDone_2
           rem   are >= -4)
           rem -4 in twos complement = 256 - 4 = 252
           if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
-          if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252 : rem Cap at -4 pixels/frame (252 in twos complement)
+          rem Cap at -4 pixels/frame (252 in twos complement)
+          if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
           
           let playerVelocityXL[temp1] = 0
           let playerVelocityXL[temp2] = 0
@@ -767,7 +827,8 @@ ApplyImpulseLeft
             sta impulseStrength
 end
           rem Approximate division by totalWeight using bit-shift
-          if totalWeight >= 128 then goto ApproxDivBy128_3 : rem   approximation
+          rem approximation
+          if totalWeight >= 128 then goto ApproxDivBy128_3
           if totalWeight >= 64 then goto ApproxDivBy64_3
           if totalWeight >= 32 then goto ApproxDivBy32_3
           rem Default: divide by 16
@@ -814,7 +875,8 @@ ApproxDivDone_3
           rem   are >= -4)
           rem -4 in twos complement = 256 - 4 = 252
           if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength
-          if playerVelocityX[temp1] > 252 then let playerVelocityX[temp1] = 252 : rem Cap at -4 pixels/frame (252 in twos complement)
+          rem Cap at -4 pixels/frame (252 in twos complement)
+          if playerVelocityX[temp1] > 252 then let playerVelocityX[temp1] = 252
           if playerVelocityX[temp2] < 4 then let playerVelocityX[temp2] = playerVelocityX[temp2] + impulseStrength
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           
@@ -833,7 +895,8 @@ end
           rem Approximate division by totalWeight using bit-shift
           rem   approximation
           rem totalWeight ranges 10-200, use closest power-of-2
-          if totalWeight >= 128 then goto ApproxDivBy128_1Heavier : rem   approximation
+          rem approximation
+          if totalWeight >= 128 then goto ApproxDivBy128_1Heavier
           if totalWeight >= 64 then goto ApproxDivBy64_1Heavier
           if totalWeight >= 32 then goto ApproxDivBy32_1Heavier
           if totalWeight >= 16 then goto ApproxDivBy16_1Heavier
@@ -892,7 +955,8 @@ ApproxDivDone_1Heavier
           rem   are >= -4)
           rem -4 in twos complement = 256 - 4 = 252
           if playerVelocityX[temp2] <= 252 then let playerVelocityX[temp2] = playerVelocityX[temp2] - impulseStrength
-          if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252 : rem Cap at -4 pixels/frame (252 in twos complement)
+          rem Cap at -4 pixels/frame (252 in twos complement)
+          if playerVelocityX[temp2] > 252 then let playerVelocityX[temp2] = 252
           
           let playerVelocityXL[temp1] = 0
           let playerVelocityXL[temp2] = 0

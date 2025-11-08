@@ -58,20 +58,20 @@ CheckLeftWallCollision
           rem Input: temp1 = player index (0-3), playerX[], playerCharacter[],
           rem        playerVelocityX[], CharacterWeights[]
           rem
-          rem Output: Player bounced if hit left wall (X < 10), position
-          rem clamped to 10 if still out of bounds
+          rem Output: Player bounced if hit left wall (X < PlayerLeftEdge),
+          rem position clamped to PlayerLeftEdge if still out of bounds
           rem
           rem Mutates: temp4 (used for calculations), playerX[] (global
-          rem array) = player X position (clamped to 10 if needed),
+          rem array) = player X position (clamped to PlayerLeftEdge if needed),
           rem playerVelocityX[] (global array) = X velocity (adjusted
           rem via HandleWallCollision)
           rem
           rem Called Routines: HandleWallCollision - applies
           rem weight-based bounce
           rem
-          rem Constraints: Left wall boundary is X = 10
+          rem Constraints: Left wall boundary is X = PlayerLeftEdge
           let temp4 = playerX[temp1]
-          if temp4 < 10 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 < 10 then let playerX[temp1] = 10
+          if temp4 < PlayerLeftEdge then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge
           return
 
 CheckRightWallCollision
@@ -79,20 +79,20 @@ CheckRightWallCollision
           rem Input: temp1 = player index (0-3), playerX[], playerCharacter[],
           rem        playerVelocityX[], CharacterWeights[]
           rem
-          rem Output: Player bounced if hit right wall (X > 150),
-          rem position clamped to 150 if still out of bounds
+          rem Output: Player bounced if hit right wall (X > PlayerRightEdge),
+          rem position clamped to PlayerRightEdge if still out of bounds
           rem
           rem Mutates: temp4 (used for calculations), playerX[] (global
-          rem array) = player X position (clamped to 150 if needed),
+          rem array) = player X position (clamped to PlayerRightEdge if needed),
           rem playerVelocityX[] (global array) = X velocity (adjusted
           rem via HandleWallCollision)
           rem
           rem Called Routines: HandleWallCollision - applies
           rem weight-based bounce
           rem
-          rem Constraints: Right wall boundary is X = 150
+          rem Constraints: Right wall boundary is X = PlayerRightEdge
           let temp4 = playerX[temp1]
-          if temp4 > 150 then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 > 150 then let playerX[temp1] = 150
+          if temp4 > PlayerRightEdge then gosub HandleWallCollision : let temp4 = playerX[temp1] : if temp4 > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
           return
 
           rem

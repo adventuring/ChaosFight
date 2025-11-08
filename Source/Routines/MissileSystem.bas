@@ -391,13 +391,10 @@ FrictionDone
           let temp2  = missileX[temp1] : rem Get missile X/Y position (read from _R port)
           let temp3  = missileY_R[temp1]
           
-          rem Wrap around horizontally: X < 10 wraps to 150, X > 150
-          rem wraps
-          rem   to 10
-          rem Match player wrap-around behavior (same boundaries: 10-150)
-          if temp2 < 10 then let temp2 = 150 : let missileX[temp1] = 150
+          rem Wrap around horizontally using shared player thresholds
+          if temp2 < PlayerLeftWrapThreshold then let temp2 = PlayerRightEdge : let missileX[temp1] = PlayerRightEdge
           rem Off left edge, wrap to right
-          if temp2 > 150 then let temp2 = 10 : let missileX[temp1] = 10
+          if temp2 > PlayerRightWrapThreshold then let temp2 = PlayerLeftEdge : let missileX[temp1] = PlayerLeftEdge
           rem Off right edge, wrap to left
           
           rem Check vertical bounds (deactivate if off top/bottom, like

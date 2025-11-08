@@ -78,7 +78,8 @@ BeginGameLoop
           rem   (96), P2 at 4/5 (128)
           rem All players start at second row from top (Y=24, center of
           rem   row 1)
-          if ControllerStatus & SetQuadtariDetected then Init4PlayerPositions : rem Check if 4-player mode (Quadtari detected)
+          rem Check if 4-player mode (Quadtari detected)
+          if ControllerStatus & SetQuadtariDetected then Init4PlayerPositions
           
           let PlayerX[0] = 53 : PlayerY[0] = 24 : rem 2-player mode positions
           let PlayerX[1] = 107 : PlayerY[1] = 24
@@ -149,8 +150,10 @@ PlayerHealthSet
           rem Update Players34Active flag based on character selections
           rem Flag is used for missile multiplexing (only multiplex when
           let ControllerStatus  = ControllerStatus & ClearPlayers34Active : rem   players 3 or 4 are active)
-          if !(playerCharacter[2] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Clear flag first
-          if !(playerCharacter[3] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Set if Player 3 selected
+          rem Clear flag first
+          if !(playerCharacter[2] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
+          rem Set if Player 3 selected
+          if !(playerCharacter[3] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
           rem Set if Player 4 selected
 
           rem Initialize missiles

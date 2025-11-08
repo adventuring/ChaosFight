@@ -1,7 +1,7 @@
-StartMusic
-          rem
           rem ChaosFight - Source/Routines/MusicSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+StartMusic
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation
           rem Music system for publisher/author/title/winner screens
           rem   (gameMode 0-2, 7)
@@ -56,7 +56,8 @@ StartMusic
           rem Songs in Bank 15: Bernie (0), OCascadia (1), Revontuli (2),
           rem EXO (3)
           rem Songs in Bank 1: All other songs (4-28)
-          if temp1 < 4 then goto LoadSongFromBank15 : rem Route to correct bank based on song ID
+          rem Route to correct bank based on song ID
+          if temp1 < 4 then goto LoadSongFromBank15
           gosub LoadSongPointer bank1 : rem Song in Bank 1
           gosub LoadSongVoice1Pointer bank1
           goto LoadSongPointersDone
@@ -158,17 +159,23 @@ UpdateMusic
           rem Constraints: Called every frame from MainLoop for gameMode
           rem 0-2, 7. Only Chaotica (song ID 26) loops - other songs
           rem stop when both voices end
-          if musicVoice0PointerH then gosub UpdateMusicVoice0 : rem Update Voice 0 if active
+          rem Update Voice 0 if active
+          if musicVoice0PointerH then gosub UpdateMusicVoice0
           
-          if musicVoice1PointerH then gosub UpdateMusicVoice1 : rem Update Voice 1 if active
+          rem Update Voice 1 if active
+          
+          if musicVoice1PointerH then gosub UpdateMusicVoice1
           
           rem Check if both voices have ended (both pointerH = 0) and
           rem song is
           rem   Chaotica (26) for looping
-          if musicVoice0PointerH then MusicUpdateDone : rem Only Chaotica loops - other songs stop when both voices end
-          if musicVoice1PointerH then MusicUpdateDone : rem Voice 0 still active, no reset needed
+          rem Only Chaotica loops - other songs stop when both voices end
+          if musicVoice0PointerH then MusicUpdateDone
+          rem Voice 0 still active, no reset needed
+          if musicVoice1PointerH then MusicUpdateDone
           rem Voice 1 still active, no reset needed
-          if currentSongID_R = 26 then IsChaotica : rem Both voices inactive - check if Chaotica (song ID 26)
+          rem Both voices inactive - check if Chaotica (song ID 26)
+          if currentSongID_R = 26 then IsChaotica
           goto MusicUpdateDone
 IsChaotica
           rem Not Chaotica - stop playback (no loop)
@@ -227,7 +234,8 @@ CalculateMusicVoiceEnvelope
           rem Constraints: Voice-specific data selected via temp1. Attack phase = first NoteAttackFrames frames,
           rem last NoteDecayFrames frames. Sustain phase: uses target
           rem AUDV. Clamps AUDV to 0-15
-          if temp1 = 0 then CMVE_GetVoice0Vars : rem Get voice-specific variables
+          rem Get voice-specific variables
+          if temp1 = 0 then CMVE_GetVoice0Vars
           let temp2 = MusicVoice1TotalFrames_R : rem Voice 1
           let temp3 = musicVoice1Frame_R
           let temp5 = MusicVoice1TargetAUDV_R
@@ -270,8 +278,10 @@ CMVE_CalcElapsed
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope
           let temp4 = temp2 - temp3 : rem Calculate frames elapsed = TotalFrames - FrameCounter
-          if temp4 < NoteAttackFrames then CMVE_ApplyAttack : rem Check if in attack phase (first NoteAttackFrames frames)
-          if temp3 <= NoteDecayFrames then CMVE_ApplyDecay : rem Check if in decay phase (last NoteDecayFrames frames)
+          rem Check if in attack phase (first NoteAttackFrames frames)
+          if temp4 < NoteAttackFrames then CMVE_ApplyAttack
+          rem Check if in decay phase (last NoteDecayFrames frames)
+          if temp3 <= NoteDecayFrames then CMVE_ApplyDecay
           rem Sustain phase - use target AUDV (already set)
           return
 CMVE_ApplyAttack
@@ -295,9 +305,11 @@ CMVE_ApplyAttack
           let temp6 = temp5
           let temp6 = temp6 - NoteAttackFrames
           let temp6 = temp6 + temp4
-          if temp6 & $80 then let temp6 = 0 : rem Check for wraparound: clamp to 0 if negative
+          rem Check for wraparound: clamp to 0 if negative
+          if temp6 & $80 then let temp6 = 0
           if temp6 > 15 then let temp6 = 15
-          if temp1 = 0 then CMVE_SetAUDV0 : rem Set voice-specific AUDV
+          rem Set voice-specific AUDV
+          if temp1 = 0 then CMVE_SetAUDV0
           let AUDV1 = temp6
           return
 CMVE_SetAUDV0
@@ -336,9 +348,11 @@ CMVE_ApplyDecay
           let temp6 = temp6 - NoteDecayFrames
           let temp6 = temp6 + temp3
           let temp6 = temp6 - 1
-          if temp6 & $80 then let temp6 = 0 : rem Check for wraparound: clamp to 0 if negative
+          rem Check for wraparound: clamp to 0 if negative
+          if temp6 & $80 then let temp6 = 0
           if temp6 > 15 then let temp6 = 15
-          if temp1 = 0 then CMVE_SetAUDV0 : rem Set voice-specific AUDV
+          rem Set voice-specific AUDV
+          if temp1 = 0 then CMVE_SetAUDV0
           let AUDV1 = temp6
           return
 

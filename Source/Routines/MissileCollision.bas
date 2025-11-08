@@ -1,11 +1,11 @@
-CheckAllMissileCollisions
-          rem
           rem ChaosFight - Source/Routines/MissileCollision.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Missile Collision System
           rem Handles all collision detection for missiles and
           rem   area-of-effect attacks.
           rem COLLISION TYPES:
+
+CheckAllMissileCollisions
           rem 1. Missile-to-Player: Visible missiles (ranged or melee
           rem   visuals)
           rem 2. AOE-to-Player: Melee attacks with no visible missile
@@ -32,7 +32,8 @@ CheckAllMissileCollisions
           rem missile, CheckAOECollision (goto) - if AOE attack
           rem Constraints: None
           rem First, check if this player has an active missile
-          if temp1 = 0 then let temp6 = 1 : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp1 = 0 then let temp6 = 1
           if temp1 = 1 then let temp6 = 2
           if temp1 = 2 then let temp6 = 4
           if temp1 = 3 then let temp6 = 8
@@ -109,7 +110,9 @@ CheckVisibleMissileCollision
           let temp4 = 255 : rem Check collision with each player (except owner)
           rem Default: no hit
           
-          if temp1 = 0 then DoneSecondPlayer0 : rem Check Player 1 (index 0)
+          rem Check Player 1 (index 0)
+          
+          if temp1 = 0 then DoneSecondPlayer0
           if playerHealth[0] = 0 then DoneSecondPlayer0
           if temp2 >= playerX[0] + PlayerSpriteHalfWidth then DoneSecondPlayer0
           if temp2 + temp6 <= playerX[0] then DoneSecondPlayer0
@@ -119,7 +122,9 @@ CheckVisibleMissileCollision
           return
 DoneSecondPlayer0
           
-          if temp1 = 1 then DoneSecondPlayer1 : rem Check Player 2 (index 1)
+          rem Check Player 2 (index 1)
+          
+          if temp1 = 1 then DoneSecondPlayer1
           if playerHealth[1] = 0 then DoneSecondPlayer1
           if temp2 >= playerX[1] + PlayerSpriteHalfWidth then DoneSecondPlayer1
           if temp2 + temp6 <= playerX[1] then DoneSecondPlayer1
@@ -129,7 +134,9 @@ DoneSecondPlayer0
           return
 DoneSecondPlayer1
           
-          if temp1 = 2 then DoneSecondPlayer2 : rem Check Player 3 (index 2)
+          rem Check Player 3 (index 2)
+          
+          if temp1 = 2 then DoneSecondPlayer2
           if playerHealth[2] = 0 then DoneSecondPlayer2
           if temp2 >= playerX[2] + PlayerSpriteHalfWidth then DoneSecondPlayer2
           if temp2 + temp6 <= playerX[2] then DoneSecondPlayer2
@@ -139,7 +146,9 @@ DoneSecondPlayer1
           return
 DoneSecondPlayer2
           
-          if temp1 = 3 then DoneSecondPlayer3 : rem Check Player 4 (index 3)
+          rem Check Player 4 (index 3)
+          
+          if temp1 = 3 then DoneSecondPlayer3
           if playerHealth[3] = 0 then DoneSecondPlayer3
           if temp2 >= playerX[3] + PlayerSpriteHalfWidth then DoneSecondPlayer3
           if temp2 + temp6 <= playerX[3] then DoneSecondPlayer3
@@ -191,7 +200,8 @@ CheckAOECollision
           
           rem Check if this is Bernie (character 0)
           rem Bernie attacks both left AND right, so check both
-          if temp5 = 0 then CheckBernieAOE : rem   directions
+          rem directions
+          if temp5 = 0 then CheckBernieAOE
           
           let temp6 = playerState[temp1] & PlayerStateBitFacing : rem Normal character: Check only facing direction
           if temp6 = 0 then CheckAOELeftDirection
@@ -207,7 +217,8 @@ CheckBernieAOE
 
           rem If hit found (hitPlayer != 255), return early
           rem Use skip-over pattern: if hitPlayer = 255, skip to left
-          if temp4 = 255 then CheckBernieAOELeft : rem   check
+          rem check
+          if temp4 = 255 then CheckBernieAOELeft
           return
           
 CheckBernieAOELeft
@@ -266,17 +277,23 @@ CheckAOEDirection_Right
           let temp4 = 255 : rem Check each player (except attacker)
           
           rem Check Player 1 (players are 16px wide - double-width
-          if temp1 = 0 then DoneAOEPlayer0 : rem   NUSIZ)
+          rem NUSIZ)
+          if temp1 = 0 then DoneAOEPlayer0
           if playerHealth[0] = 0 then DoneAOEPlayer0
           if temp2 >= playerX[0] + 16 then DoneAOEPlayer0
-          if temp2 + temp6 <= playerX[0] then DoneAOEPlayer0 : rem AOE left edge past player right edge
-          if temp3 >= playerY[0] + 16 then DoneAOEPlayer0 : rem AOE right edge before player left edge
-          if temp3 + temp3 <= playerY[0] then DoneAOEPlayer0 : rem AOE top edge past player bottom edge
+          rem AOE left edge past player right edge
+          if temp2 + temp6 <= playerX[0] then DoneAOEPlayer0
+          rem AOE right edge before player left edge
+          if temp3 >= playerY[0] + 16 then DoneAOEPlayer0
+          rem AOE top edge past player bottom edge
+          if temp3 + temp3 <= playerY[0] then DoneAOEPlayer0
           let temp4 = 0 : rem AOE bottom edge before player top edge
           return
 DoneAOEPlayer0
           
-          if temp1 = 1 then DoneAOEPlayer1 : rem Check Player 2
+          rem Check Player 2
+          
+          if temp1 = 1 then DoneAOEPlayer1
           if playerHealth[1] = 0 then DoneAOEPlayer1
           if temp2 >= playerX[1] + 16 then DoneAOEPlayer1
           if temp2 + temp6 <= playerX[1] then DoneAOEPlayer1
@@ -286,7 +303,9 @@ DoneAOEPlayer0
           return
 DoneAOEPlayer1
           
-          if temp1 = 2 then DoneAOEPlayer2 : rem Check Player 3
+          rem Check Player 3
+          
+          if temp1 = 2 then DoneAOEPlayer2
           if playerHealth[2] = 0 then DoneAOEPlayer2
           if temp2 >= playerX[2] + 16 then DoneAOEPlayer2
           if temp2 + temp6 <= playerX[2] then DoneAOEPlayer2
@@ -296,7 +315,9 @@ DoneAOEPlayer1
           return
 DoneAOEPlayer2
           
-          if temp1 = 3 then DoneAOEPlayer3 : rem Check Player 4
+          rem Check Player 4
+          
+          if temp1 = 3 then DoneAOEPlayer3
           if playerHealth[3] = 0 then DoneAOEPlayer3
           if temp2 >= playerX[3] + 16 then DoneAOEPlayer3
           if temp2 + temp6 <= playerX[3] then DoneAOEPlayer3
@@ -361,17 +382,23 @@ CheckAOEDirection_Left
           let temp4 = 255 : rem Check each player (except attacker)
           
           rem Check Player 1 (players are 16px wide - double-width
-          if temp1 = 0 then CheckPlayer2 : rem   NUSIZ)
+          rem NUSIZ)
+          if temp1 = 0 then CheckPlayer2
           if playerHealth[0] = 0 then CheckPlayer2
           if temp2 >= playerX[0] + 16 then CheckPlayer2
-          if temp2 + temp6 <= playerX[0] then CheckPlayer2 : rem AOE left edge past player right edge
-          if temp3 >= playerY[0] + 16 then CheckPlayer2 : rem AOE right edge before player left edge
-          if temp3 + temp3 <= playerY[0] then CheckPlayer2 : rem AOE top edge past player bottom edge
+          rem AOE left edge past player right edge
+          if temp2 + temp6 <= playerX[0] then CheckPlayer2
+          rem AOE right edge before player left edge
+          if temp3 >= playerY[0] + 16 then CheckPlayer2
+          rem AOE top edge past player bottom edge
+          if temp3 + temp3 <= playerY[0] then CheckPlayer2
           let temp4 = 0 : rem AOE bottom edge before player top edge
           return
 CheckPlayer2
           
-          if temp1 = 1 then DoneThirdPlayer1 : rem Check Player 2
+          rem Check Player 2
+          
+          if temp1 = 1 then DoneThirdPlayer1
           if playerHealth[1] = 0 then DoneThirdPlayer1
           if temp2 >= playerX[1] + 16 then DoneThirdPlayer1
           if temp2 + temp6 <= playerX[1] then DoneThirdPlayer1
@@ -381,7 +408,9 @@ CheckPlayer2
           return
 DoneThirdPlayer1
           
-          if temp1 = 2 then DoneThirdPlayer2 : rem Check Player 3
+          rem Check Player 3
+          
+          if temp1 = 2 then DoneThirdPlayer2
           if playerHealth[2] = 0 then DoneThirdPlayer2
           if temp2 >= playerX[2] + 16 then DoneThirdPlayer2
           if temp2 + temp6 <= playerX[2] then DoneThirdPlayer2
@@ -391,7 +420,9 @@ DoneThirdPlayer1
           return
 DoneThirdPlayer2
           
-          if temp1 = 3 then DoneThirdPlayer3 : rem Check Player 4
+          rem Check Player 4
+          
+          if temp1 = 3 then DoneThirdPlayer3
           if playerHealth[3] = 0 then DoneThirdPlayer3
           if temp2 >= playerX[3] + 16 then DoneThirdPlayer3
           if temp2 + temp6 <= playerX[3] then DoneThirdPlayer3

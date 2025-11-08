@@ -1,7 +1,7 @@
-CheckAllPlayerEliminations
-          rem
           rem ChaosFight - Source/Routines/PlayerElimination.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+CheckAllPlayerEliminations
           rem Player Elimination System
           rem Handles player elimination when health reaches 0, game end
           rem   conditions,
@@ -166,10 +166,13 @@ TriggerEliminationEffects
           let eliminationEffectTimer_W[currentPlayer] = temp2 : rem 30 frames of elimination effect
           
           rem Hide player sprite immediately
-          if currentPlayer = 0 then player0x = 200 : rem Inline HideEliminatedPlayerSprite
-          if currentPlayer = 1 then player1x = 200 : rem Off-screen
+          rem Inline HideEliminatedPlayerSprite
+          if currentPlayer = 0 then player0x = 200
+          rem Off-screen
+          if currentPlayer = 1 then player1x = 200
           if currentPlayer = 2 then player2x = 200 
-          if currentPlayer = 3 then player3x = 200 : rem Player 3 uses player2 sprite (multisprite)
+          rem Player 3 uses player2 sprite (multisprite)
+          if currentPlayer = 3 then player3x = 200
           rem Player 4 uses player3 sprite (multisprite)
           
           rem Stop any active missiles for this player
@@ -193,7 +196,8 @@ DeactivatePlayerMissiles
           rem Output: Clears this player's missile bit
           rem Mutates: temp6, missileActive
           rem Clear missile active bit for this player
-          if currentPlayer = 0 then let temp6 = 1 : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if currentPlayer = 0 then let temp6 = 1
           if currentPlayer = 1 then let temp6 = 2
           if currentPlayer = 2 then let temp6 = 4
           if currentPlayer = 3 then let temp6 = 8
@@ -211,10 +215,15 @@ CountRemainingPlayers
           let temp1 = 0 
           rem Counter
           
-          if !(PlayerEliminatedPlayer0 & playersEliminated_R) then let temp1 = 1 + temp1 : rem Check each player
-          if !(PlayerEliminatedPlayer1 & playersEliminated_R) then let temp1 = 1 + temp1 : rem Player 1
-          if !(PlayerEliminatedPlayer2 & playersEliminated_R) then let temp1 = 1 + temp1 : rem Player 2
-          if !(PlayerEliminatedPlayer3 & playersEliminated_R) then let temp1 = 1 + temp1 : rem Player 3
+          rem Check each player
+          
+          if !(PlayerEliminatedPlayer0 & playersEliminated_R) then let temp1 = 1 + temp1
+          rem Player 1
+          if !(PlayerEliminatedPlayer1 & playersEliminated_R) then let temp1 = 1 + temp1
+          rem Player 2
+          if !(PlayerEliminatedPlayer2 & playersEliminated_R) then let temp1 = 1 + temp1
+          rem Player 3
+          if !(PlayerEliminatedPlayer3 & playersEliminated_R) then let temp1 = 1 + temp1
           rem Player 4
           
           let playersRemaining_W = temp1
@@ -226,7 +235,8 @@ IsPlayerEliminated
           rem Input: currentPlayer (0-3), playersEliminated_R, PlayerEliminatedPlayer0-3 masks
           rem Output: temp2 = 1 if eliminated, 0 if alive
           rem Mutates: temp2, temp6
-          if currentPlayer = 0 then let temp6 = PlayerEliminatedPlayer0 : rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if currentPlayer = 0 then let temp6 = PlayerEliminatedPlayer0
           if currentPlayer = 1 then let temp6 = PlayerEliminatedPlayer1
           if currentPlayer = 2 then let temp6 = PlayerEliminatedPlayer2
           if currentPlayer = 3 then let temp6 = PlayerEliminatedPlayer3
@@ -253,7 +263,8 @@ IsPlayerAlive
           let temp3 = playerHealth[currentPlayer] : rem Check health
           
           let temp2 = 0 
-          if temp3 > 0 then let temp2 = 1 : rem Default: not alive
+          rem Default: not alive
+          if temp3 > 0 then let temp2 = 1
           rem Alive if health > 0
           return
 
@@ -274,7 +285,8 @@ FindWinner
           next
           
           rem If no winner found (all eliminated), pick last eliminated
-          if winnerPlayerIndex_R = 255 then goto FindLastEliminated : rem tail call
+          rem tail call
+          if winnerPlayerIndex_R = 255 then goto FindLastEliminated
 
 FindLastEliminated
           rem
@@ -298,12 +310,15 @@ UpdatePlayers34ActiveFlag
           rem Output: controllerStatus updated with Players34Active flag
           let controllerStatus = controllerStatus & ClearPlayers34Active : rem Clear flag first
           
-          if playerCharacter[2] = NoCharacter then CheckPlayer4ActiveFlag : rem Check if Player 3 is active (selected and not eliminated)
+          rem Check if Player 3 is active (selected and not eliminated)
+          
+          if playerCharacter[2] = NoCharacter then CheckPlayer4ActiveFlag
           if PlayerEliminatedPlayer2 & playersEliminated_R then CheckPlayer4ActiveFlag
           let controllerStatus = controllerStatus | SetPlayers34Active : rem Player 3 is active
           
 CheckPlayer4ActiveFlag
-          if playerCharacter[3] = NoCharacter then UpdatePlayers34ActiveDone : rem Check if Player 4 is active (selected and not eliminated)
+          rem Check if Player 4 is active (selected and not eliminated)
+          if playerCharacter[3] = NoCharacter then UpdatePlayers34ActiveDone
           if PlayerEliminatedPlayer3 & playersEliminated_R then UpdatePlayers34ActiveDone
           let controllerStatus = controllerStatus | SetPlayers34Active : rem Player 4 is active
           

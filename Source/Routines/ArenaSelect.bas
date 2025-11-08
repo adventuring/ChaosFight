@@ -16,8 +16,7 @@ ArenaSelect1Loop
           rem        joy0left, joy0right (hardware) = navigation button states
           rem        switchselect (hardware) = game select switch
           rem        INPT0, INPT2 (hardware) = Quadtari fire button states
-          rem        selectedCharacter1, selectedCharacter2_R,
-          rem        selectedCharacter3_R, selectedCharacter4_R (global) = character selections
+          rem        playerCharacter[] (global array) = character selections
           rem        frame (global) = frame counter
           rem
           rem Output: Dispatches to ReturnToCharacterSelect, StartGame1, or returns
@@ -230,8 +229,7 @@ StartGame1
 ArenaSelectUpdateAnimations
           rem Update idle animations for all selected characters
           rem
-          rem Input: selectedCharacter1, selectedCharacter2_R, selectedCharacter3_R,
-          rem selectedCharacter4_R (global) = character selections
+          rem Input: playerCharacter[] (global array) = character selections
           rem        controllerStatus (global) = controller detection
           rem        state
           rem        frame (global) = frame counter
@@ -253,9 +251,9 @@ ArenaSelectUpdateAnimations
           rem Each player updates independently with simple frame
           rem   counter
           
-          if selectedCharacter1 = 255 then ArenaSelectSkipPlayer0Animation : rem Update Player 1 animation (if character selected)
-          if selectedCharacter1 = 254 then ArenaSelectSkipPlayer0Animation : rem NoCharacter = 255
-          if selectedCharacter1 = 253 then ArenaSelectSkipPlayer0Animation : rem CPUCharacter = 254
+          if playerCharacter[0] = NoCharacter then ArenaSelectSkipPlayer0Animation : rem Update Player 1 animation (if character selected)
+          if playerCharacter[0] = CPUCharacter then ArenaSelectSkipPlayer0Animation
+          if playerCharacter[0] = RandomCharacter then ArenaSelectSkipPlayer0Animation
           let temp1 = 0 : rem RandomCharacter = 253
           gosub ArenaSelectUpdatePlayerAnimation
           
@@ -272,9 +270,9 @@ ArenaSelectSkipPlayer0Animation
           rem
           rem Constraints: Must be colocated with
           rem ArenaSelectUpdateAnimations
-          if selectedCharacter2_R = 255 then ArenaSelectSkipPlayer1Animation : rem Update Player 2 animation (if character selected)
-          if selectedCharacter2_R = 254 then ArenaSelectSkipPlayer1Animation
-          if selectedCharacter2_R = 253 then ArenaSelectSkipPlayer1Animation
+          if playerCharacter[1] = NoCharacter then ArenaSelectSkipPlayer1Animation : rem Update Player 2 animation (if character selected)
+          if playerCharacter[1] = CPUCharacter then ArenaSelectSkipPlayer1Animation
+          if playerCharacter[1] = RandomCharacter then ArenaSelectSkipPlayer1Animation
           let temp1 = 1
           gosub ArenaSelectUpdatePlayerAnimation
           
@@ -293,9 +291,9 @@ ArenaSelectSkipPlayer1Animation
           rem ArenaSelectUpdateAnimations
           rem Update Player 3 animation (if Quadtari and character
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation : rem   selected)
-          if selectedCharacter3_R = 255 then ArenaSelectSkipPlayer2Animation
-          if selectedCharacter3_R = 254 then ArenaSelectSkipPlayer2Animation
-          if selectedCharacter3_R = 253 then ArenaSelectSkipPlayer2Animation
+          if playerCharacter[2] = NoCharacter then ArenaSelectSkipPlayer2Animation
+          if playerCharacter[2] = CPUCharacter then ArenaSelectSkipPlayer2Animation
+          if playerCharacter[2] = RandomCharacter then ArenaSelectSkipPlayer2Animation
           let temp1 = 2
           gosub ArenaSelectUpdatePlayerAnimation
           
@@ -315,9 +313,9 @@ ArenaSelectSkipPlayer2Animation
           rem ArenaSelectUpdateAnimations
           rem Update Player 4 animation (if Quadtari and character
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation : rem   selected)
-          if selectedCharacter4_R = 255 then ArenaSelectSkipPlayer23Animation
-          if selectedCharacter4_R = 254 then ArenaSelectSkipPlayer23Animation
-          if selectedCharacter4_R = 253 then ArenaSelectSkipPlayer23Animation
+          if playerCharacter[3] = NoCharacter then ArenaSelectSkipPlayer23Animation
+          if playerCharacter[3] = CPUCharacter then ArenaSelectSkipPlayer23Animation
+          if playerCharacter[3] = RandomCharacter then ArenaSelectSkipPlayer23Animation
           let temp1 = 3
           gosub ArenaSelectUpdatePlayerAnimation
           
@@ -368,8 +366,7 @@ ArenaSelectDrawCharacters
           rem Draw all selected characters at their character select
           rem positions
           rem
-          rem Input: selectedCharacter1, selectedCharacter2_R, selectedCharacter3_R,
-          rem selectedCharacter4_R (global) = character selections
+          rem Input: playerCharacter[] (global array) = character selections
           rem        controllerStatus (global) = controller detection
           rem        state
           rem        frame (global) = frame counter
@@ -399,9 +396,9 @@ ArenaSelectDrawCharacters
           rem   screen
           
           rem Playfield defined by ArenaSelect data; no per-frame register writes
-          if selectedCharacter1 = 255 then ArenaSelectSkipDrawP0 : rem Draw Player 1 character (top left) if selected
-          if selectedCharacter1 = 254 then ArenaSelectSkipDrawP0
-          if selectedCharacter1 = 253 then ArenaSelectSkipDrawP0
+          if playerCharacter[0] = NoCharacter then ArenaSelectSkipDrawP0 : rem Draw Player 1 character (top left) if selected
+          if playerCharacter[0] = CPUCharacter then ArenaSelectSkipDrawP0
+          if playerCharacter[0] = RandomCharacter then ArenaSelectSkipDrawP0
           player0x = 56 : player0y = 40
           let temp1 = 0
           gosub ArenaSelectDrawPlayerSprite
@@ -419,9 +416,9 @@ ArenaSelectSkipDrawP0
           rem
           rem Constraints: Must be colocated with
           rem ArenaSelectDrawCharacters
-          if selectedCharacter2_R = 255 then ArenaSelectSkipDrawP1 : rem Draw Player 2 character (top right) if selected
-          if selectedCharacter2_R = 254 then ArenaSelectSkipDrawP1
-          if selectedCharacter2_R = 253 then ArenaSelectSkipDrawP1
+          if playerCharacter[1] = NoCharacter then ArenaSelectSkipDrawP1 : rem Draw Player 2 character (top right) if selected
+          if playerCharacter[1] = CPUCharacter then ArenaSelectSkipDrawP1
+          if playerCharacter[1] = RandomCharacter then ArenaSelectSkipDrawP1
           player1x = 104 : player1y = 40
           let temp1 = 1
           gosub ArenaSelectDrawPlayerSprite
@@ -441,9 +438,9 @@ ArenaSelectSkipDrawP1
           rem ArenaSelectDrawCharacters
           rem Draw Player 3 character (bottom left) if Quadtari and
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23 : rem   selected
-          if selectedCharacter3_R = 255 then ArenaSelectSkipDrawP2
-          if selectedCharacter3_R = 254 then ArenaSelectSkipDrawP2
-          if selectedCharacter3_R = 253 then ArenaSelectSkipDrawP2
+          if playerCharacter[2] = NoCharacter then ArenaSelectSkipDrawP2
+          if playerCharacter[2] = CPUCharacter then ArenaSelectSkipDrawP2
+          if playerCharacter[2] = RandomCharacter then ArenaSelectSkipDrawP2
           player2x = 56 : player2y = 80
           let temp1 = 2
           gosub ArenaSelectDrawPlayerSprite
@@ -464,9 +461,9 @@ ArenaSelectSkipDrawP2
           rem ArenaSelectDrawCharacters
           rem Draw Player 4 character (bottom right) if Quadtari and
           if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23 : rem   selected
-          if selectedCharacter4_R = 255 then ArenaSelectSkipDrawP23
-          if selectedCharacter4_R = 254 then ArenaSelectSkipDrawP23
-          if selectedCharacter4_R = 253 then ArenaSelectSkipDrawP23
+          if playerCharacter[3] = NoCharacter then ArenaSelectSkipDrawP23
+          if playerCharacter[3] = CPUCharacter then ArenaSelectSkipDrawP23
+          if playerCharacter[3] = RandomCharacter then ArenaSelectSkipDrawP23
           player3x = 104 : player3y = 80
           let temp1 = 3
           gosub ArenaSelectDrawPlayerSprite
@@ -489,8 +486,7 @@ ArenaSelectDrawPlayerSprite
           rem Draw character sprite for specified player
           rem
           rem Input: temp1 = player index (0-3)
-          rem        selectedCharacter1, selectedCharacter2_R, selectedCharacter3_R,
-          rem        selectedCharacter4_R (global) = character selections
+          rem        playerCharacter[] (global array) = character selections
           rem        frame (global) = frame counter
           rem        player0-3x, player0-3y (TIA registers) = sprite
           rem        positions (set by caller)
@@ -510,12 +506,12 @@ ArenaSelectDrawPlayerSprite
           rem Draw character sprite for specified player
           rem
           rem Input: playerIndex = player index (0-3)
-          rem Uses selectedCharacter1-4 and player positions set by caller
+          rem Uses playerCharacter[0-3] and player positions set by caller
           
-          if temp1 = 0 then let temp1 = selectedCharacter1 : rem Get character index based on player
-          if temp1 = 1 then let temp1 = selectedCharacter2_R
-          if temp1 = 2 then let temp1 = selectedCharacter3_R
-          if temp1 = 3 then let temp1 = selectedCharacter4_R
+          if temp1 = 0 then let temp1 = playerCharacter[0] : rem Get character index based on player
+          if temp1 = 1 then let temp1 = playerCharacter[1]
+          if temp1 = 2 then let temp1 = playerCharacter[2]
+          if temp1 = 3 then let temp1 = playerCharacter[3]
           
           let temp3 = 1 : rem Use idle animation (action 1 = ActionIdle)
           let temp2 = frame & 7 : rem Simple frame counter cycles 0-7

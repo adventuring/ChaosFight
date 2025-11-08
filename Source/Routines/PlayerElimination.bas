@@ -294,17 +294,17 @@ FindLastEliminated
           
 UpdatePlayers34ActiveFlag
           rem Update Players34Active flag when players 3/4 are present.
-          rem Input: selectedCharacter3_R/4_R, playersEliminated_R,
+          rem Input: playerCharacter[] (global array), playersEliminated_R,
           rem        PlayerEliminatedPlayer2/3 masks, controllerStatus
           rem Output: controllerStatus updated with Players34Active flag
           let controllerStatus = controllerStatus & ClearPlayers34Active : rem Clear flag first
           
-          if 255 = selectedCharacter3_R then CheckPlayer4ActiveFlag : rem Check if Player 3 is active (selected and not eliminated)
+          if playerCharacter[2] = NoCharacter then CheckPlayer4ActiveFlag : rem Check if Player 3 is active (selected and not eliminated)
           if PlayerEliminatedPlayer2 & playersEliminated_R then CheckPlayer4ActiveFlag
           let controllerStatus = controllerStatus | SetPlayers34Active : rem Player 3 is active
           
 CheckPlayer4ActiveFlag
-          if 255 = selectedCharacter4_R then UpdatePlayers34ActiveDone : rem Check if Player 4 is active (selected and not eliminated)
+          if playerCharacter[3] = NoCharacter then UpdatePlayers34ActiveDone : rem Check if Player 4 is active (selected and not eliminated)
           if PlayerEliminatedPlayer3 & playersEliminated_R then UpdatePlayers34ActiveDone
           let controllerStatus = controllerStatus | SetPlayers34Active : rem Player 4 is active
           

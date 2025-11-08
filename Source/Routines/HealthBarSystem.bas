@@ -214,8 +214,8 @@ UpdatePlayer34HealthBars
           rem Get Player 3 health (0-100), clamp to 99
           rem Use $AA (bad BCD displays as AA) if inactive
           let temp1 = playerHealth[2]
-          rem (selectedCharacter = 255) or eliminated
-          if selectedCharacter3_R = 255 then goto P3UseAA
+          rem (playerCharacter = NoCharacter) or eliminated
+          if playerCharacter[2] = NoCharacter then goto P3UseAA
           rem Check if Player 3 is eliminated (bit 2 of playersEliminated = 4)
           let temp3 = playersEliminated_R & PlayerEliminatedPlayer2
           if temp3 then goto P3UseAA
@@ -245,8 +245,8 @@ P4GetHealth
           rem Get Player 4 health (0-100), clamp to 99
           rem Use $AA (bad BCD displays as AA) if inactive
           let temp2 = playerHealth[3]
-          rem (selectedCharacter = 255) or eliminated
-          if selectedCharacter4_R = 255 then goto P4UseAA
+          rem (playerCharacter = NoCharacter) or eliminated
+          if playerCharacter[3] = NoCharacter then goto P4UseAA
           rem Check if Player 4 is eliminated (bit 3 of playersEliminated = 8)
           let temp3 = playersEliminated_R & PlayerEliminatedPlayer3
           if temp3 then goto P4UseAA

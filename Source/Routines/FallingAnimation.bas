@@ -20,8 +20,7 @@ FallingAnimation1
           rem Per-frame falling animation that moves players from
           rem quadrants to row 2 positions
           rem
-          rem Input: selectedCharacter1, selectedCharacter2, selectedCharacter3_R,
-          rem selectedCharacter4_R (global) = character selections
+          rem Input: playerCharacter[] (global array) = character selections
           rem        controllerStatus (global) = controller detection
           rem        state
           rem        fallFrame (global) = animation frame counter
@@ -53,7 +52,7 @@ FallingAnimation1
           let fallFrame = fallFrame + 1 : rem Update animation frame
           if fallFrame > 3 then let fallFrame = 0
           
-          if selectedCharacter1 = NoCharacter then DonePlayer1Move : rem Move Player 1 from quadrant to target (if active)
+          if playerCharacter[0] = NoCharacter then DonePlayer1Move : rem Move Player 1 from quadrant to target (if active)
           rem playerIndex = 0 (player index), targetX = target X,
           let temp1 = 0 : rem targetY = target Y (24)
           if controllerStatus & SetQuadtariDetected then Player1Target4P : rem Check if 4-player mode for target X
@@ -104,7 +103,7 @@ DonePlayer1Move
           rem
           rem Constraints: Must be colocated with FallingAnimation1
           
-          if selectedCharacter2_R = NoCharacter then DonePlayer2Move : rem Move Player 2 from quadrant to target (if active)
+          if playerCharacter[1] = NoCharacter then DonePlayer2Move : rem Move Player 2 from quadrant to target (if active)
           let temp1 = 1
           if controllerStatus & SetQuadtariDetected then Player2Target4P : rem Check if 4-player mode for target X
           let temp2 = 107 : rem 2-player mode: target X = 107
@@ -154,7 +153,7 @@ DonePlayer2Move
           rem Constraints: Must be colocated with FallingAnimation1
           
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Move : rem Move Player 3 from quadrant to target (if active)
-          if selectedCharacter3_R = NoCharacter then DonePlayer3Move
+          if playerCharacter[2] = NoCharacter then DonePlayer3Move
           let temp1 = 2
           let temp2 = 64 : rem 4-player mode: target X = 64
           let temp3 = 24
@@ -179,7 +178,7 @@ DonePlayer3Move
           rem Constraints: Must be colocated with FallingAnimation1
           
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Move : rem Move Player 4 from quadrant to target (if active)
-          if selectedCharacter4_R = NoCharacter then DonePlayer4Move
+          if playerCharacter[3] = NoCharacter then DonePlayer4Move
           let temp1 = 3
           let temp2 = 96 : rem 4-player mode: target X = 96
           let temp3 = 24
@@ -240,42 +239,12 @@ FallingComplete1
           return
           
 MovePlayerToTarget
-          rem
-          rem Move Player To Target Position
-          rem
-          rem Moves a player from their current position toward target
-          rem   (X, Y).
-          rem Handles both horizontal and vertical movement.
-          rem
-          rem INPUT:
-          rem   temp1 = player index (0-3) → temp1
-          rem   temp2 = target X position → temp2
-          rem   temp3 = target Y position → temp3
-          rem
-          rem OUTPUT:
-          rem   temp4 = 1 if reached target, 0 if still moving →
-          rem   temp4
-          rem
-          rem MUTATES:
-          rem   moving)
-          rem temp4 = temp4 (return value: 1 if reached, 0 if
-          rem
-          rem   temp5, temp6 = Internal calculations (do not use after
-          rem   call)
-          rem   temp4
-          rem WARNING: temp4 holds the result and is volatile. Do not reuse temp5 or temp6 after calling this subroutine.
-          rem
-          rem EFFECTS:
-          rem   Updates playerX[temp1] and
-          rem   playerY[temp1]
-          rem   toward target
-          rem Moves a player from their current position toward target
-          rem (X, Y)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem        temp2 = target X position
-          rem        temp3 = target Y position
-          rem        playerX[] (global array) = current player X positions
+          rem Move player toward target (X, Y) using subpixel motion.
+          rem Input: temp1 = player index (0-3), temp2 = target X, temp3 = target Y
+          rem        playerX[]/playerY[] current positions
+          rem Output: temp4 = 1 if target reached, 0 if still moving
+          rem Mutates: temp4-6 (temp4 carries result; temp5/temp6 scratch)
+          rem Effects: Updates playerX[] and playerY[] to approach target
           rem        playerY[] (global array) = current player Y positions
           rem        fallSpeed (global) = movement speed per frame
           rem

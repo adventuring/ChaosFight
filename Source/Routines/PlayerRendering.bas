@@ -27,7 +27,7 @@ SetSpritePositions
           rem
           rem   bit 1=P1, bit 2=P2, bit 3=P3)
           rem   missileX[0-3], missileY[0-3] - Projectile positions
-          rem   QuadtariDetected, selectedCharacter3_R, selectedCharacter4_R
+          rem   controllerStatus flags (SetQuadtariDetected, SetPlayers34Active)
           rem Set Sprite Positions
           rem Update hardware sprite position registers for all active players and missiles.
           rem
@@ -37,8 +37,7 @@ SetSpritePositions
           rem positions, missileActive (global) = missile active flags,
           rem playerCharacter[] (global array) = character types,
           rem controllerStatus (global) = controller state,
-          rem selectedCharacter3_R, selectedCharacter4_R (global SCRAM) = player
-          rem 3/4 selections, playerHealth[] (global array) = player
+          rem playerHealth[] (global array) = player
           rem health, frame (global) = frame counter, missileNUSIZ[]
           rem (global array) = missile size registers,
           rem CharacterMissileHeights[] (global data table) = missile
@@ -82,14 +81,14 @@ SetSpritePositions
           rem   use proper sprites
           
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Position : rem Set Participant 3 position (array [2] → P2 sprite)
-          if selectedCharacter3_R = 255 then goto DonePlayer3Position
+          if playerCharacter[2] = NoCharacter then goto DonePlayer3Position
           if ! playerHealth[2] then goto DonePlayer3Position
           let player2x = playerX[2]
           let player2y = playerY[2]
 DonePlayer3Position
           
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Position : rem Set Participant 4 position (array [3] → P3 sprite)
-          if selectedCharacter4_R = 255 then goto DonePlayer4Position
+          if playerCharacter[3] = NoCharacter then goto DonePlayer4Position
           if ! playerHealth[3] then goto DonePlayer4Position
           let player3x = playerX[3]
           let player3y = playerY[3]
@@ -417,8 +416,7 @@ SetPlayerSprites
           rem playerRecoveryFrames[] (global array) = recovery frame
           rem counts, playerState[] (global array) = player states,
           rem controllerStatus (global) = controller state,
-          rem selectedCharacter3_R, selectedCharacter4_R (global SCRAM) = player
-          rem 3/4 selections, playerHealth[] (global array) = player
+          rem playerHealth[] (global array) = player
           rem health, currentCharacter (global) = character index for
           rem sprite loading
           rem
@@ -514,7 +512,7 @@ end
           rem   implementation
           
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Sprite : rem Set Player 3 color and sprite (if active)
-          if selectedCharacter3_R = 255 then goto DonePlayer3Sprite
+          if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
           if ! playerHealth[2] then goto DonePlayer3Sprite
           
           rem Use LoadCharacterColors for consistent color handling
@@ -555,7 +553,7 @@ end
 DonePlayer3Sprite
 
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Sprite : rem Set Player 4 color and sprite (if active)
-          if selectedCharacter4_R = 255 then goto DonePlayer4Sprite
+          if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
           if ! playerHealth[3] then goto DonePlayer4Sprite
           
           rem Use LoadCharacterColors for consistent color handling
@@ -610,8 +608,8 @@ DisplayHealth
           rem Input: playerHealth[] (global array) = player health
           rem values, playerRecoveryFrames[] (global array) = recovery
           rem frame counts, controllerStatus (global) = controller
-          rem state, selectedCharacter3_R, selectedCharacter4_R (global SCRAM) =
-          rem player 3/4 selections, frame (global) = frame counter
+          rem state, playerCharacter[] (global array) = selections,
+          rem frame (global) = frame counter
           rem
           rem Output: Sprites flashed (hidden) when health < 25 and not
           rem in recovery
@@ -645,7 +643,7 @@ FlashParticipant2
 DoneParticipant2Flash
 
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Flash : rem Flash Player 3 sprite if health is low (but alive)
-          if selectedCharacter3_R = 255 then goto DonePlayer3Flash
+          if playerCharacter[2] = NoCharacter then goto DonePlayer3Flash
           if ! playerHealth[2] then goto DonePlayer3Flash
           if playerHealth[2] >= 25 then goto DonePlayer3Flash
           if playerRecoveryFrames[2] = 0 then FlashPlayer3
@@ -656,7 +654,7 @@ DonePlayer3Flash
           rem Player 3 uses player2 sprite
 
           if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Flash : rem Flash Player 4 sprite if health is low (but alive)
-          if selectedCharacter4_R = 255 then goto DonePlayer4Flash
+          if playerCharacter[3] = NoCharacter then goto DonePlayer4Flash
           if ! playerHealth[3] then goto DonePlayer4Flash
           if playerHealth[3] >= 25 then goto DonePlayer4Flash
           if playerRecoveryFrames[3] = 0 then FlashPlayer4

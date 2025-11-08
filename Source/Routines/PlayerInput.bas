@@ -112,8 +112,7 @@ InputHandleAllPlayers
           rem (0=P1/P2, 1=P3/P4)
           rem        ControllerStatus (global) = controller detection
           rem        state
-          rem        selectedCharacter3_R, selectedCharacter4_R (global SCRAM) =
-          rem        character selections
+          rem        playerCharacter[] (global array) = character selections
           rem        PlayerState[] (global array) = player state flags
           rem
           rem Output: Input processed for active players, qtcontroller
@@ -195,8 +194,7 @@ InputHandleQuadtariPlayers
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and
           rem alive)
           rem
-          rem Input: ControllerStatus (global), selectedCharacter3_R,
-          rem selectedCharacter4_R (global SCRAM),
+          rem Input: ControllerStatus (global), playerCharacter[] (global array),
           rem        PlayerState[] (global array)
           rem
           rem Output: Input processed for Players 3 & 4 if conditions
@@ -216,7 +214,7 @@ InputHandleQuadtariPlayers
           rem InputSkipPlayer4Input
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input : rem   alive)
-          if selectedCharacter3_R = 0 then InputSkipPlayer3Input
+          if playerCharacter[2] = NoCharacter then InputSkipPlayer3Input
           let currentPlayer = 2 : gosub IsPlayerAlive
           let temp2 = temp2
           if temp2 = 0 then InputSkipPlayer3Input
@@ -234,7 +232,7 @@ InputSkipPlayer3Input
           rem
           rem Called Routines: None
           if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input : rem Constraints: Must be colocated with InputHandleQuadtariPlayers
-          if selectedCharacter4_R = 0 then InputSkipPlayer4Input
+          if playerCharacter[3] = NoCharacter then InputSkipPlayer4Input
           let currentPlayer = 3 : gosub IsPlayerAlive
           let temp2 = temp2
           if temp2 = 0 then InputSkipPlayer4Input

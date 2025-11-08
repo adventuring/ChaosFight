@@ -160,20 +160,6 @@
           rem NOTE: Use helper functions GetPlayerLocked/SetPlayerLocked
           rem to access
           rem   (see Source/Routines/PlayerLockedHelpers.bas)
-          dim selectedCharacter1 = s : rem Previously used 4 bytes (n,o,p,q) - now consolidated to 1 byte (e)
-          rem selectedCharacter2, selectedCharacter3, and selectedCharacter4 moved to
-          rem   SuperChip RAM to avoid conflicts
-          rem OPTIMIZED: Moved from w001-w003 to w084-w086 to free space
-          rem   for PlayerFrameBuffer (w000-w063)
-          rem NOTE: These are REDIMMED with Admin Mode character select anim
-          rem   variables - safe since selectedCharacter* are only read once
-          rem   at
-          dim selectedCharacter2_W = w084 : rem   game start (BeginGameLoop), then copied to PlayerCharacter array
-          dim selectedCharacter2_R = r084
-          dim selectedCharacter3_W = w085
-          dim selectedCharacter3_R = r085
-          dim selectedCharacter4_W = w086
-          dim selectedCharacter4_R = r086
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
           

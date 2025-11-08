@@ -121,75 +121,30 @@ DrawParadeCharacter
           rem via DrawParadeCharacterSprite
           rem
           rem Mutates: player0x, player0y (TIA registers), COLUP0 (TIA
-          rem color register),
-          rem         temp1 (used for random color selection)
+          rem color register via LoadCharacterColors),
+          rem         temp1-temp5 (LoadCharacterColors parameters)
           rem
           rem Called Routines: DrawParadeCharacterSprite (bank9) - draws
           rem character sprite
           rem
-          rem Constraints: Must be colocated with
-          rem SetParadeColor4PlayerInline,
-          rem              SetParadeColor4PlayerLastInline (all called
-          rem              via goto)
+          rem Constraints: Must be colocated with DrawParadeCharacterSprite
+          rem              (tail call)
           rem Position character at bottom (y=80) and current X position
           player0x = titleParadeX
           player0y = 80
           
-          rem Set character color based on character type (inline
-          rem   SetParadeCharacterColor)
-          rem Randomize color for visual variety
-          rem Without Quadtari: Randomly alternate indigo/red (lum=12)
-          rem With Quadtari: Randomly select from indigo, red, yellow,
-          if controllerStatus & SetQuadtariDetected then SetParadeColor4PlayerInline : rem green (lum=12)
-          rem 2-player mode: Randomly choose indigo or red
-          temp1 = rand & 1
-          if temp1 then COLUP0 = ColRed(12)
-          if !temp1 then COLUP0 = ColIndigo(12)
-          rem Draw running animation for parade character
-          goto DrawParadeCharacterSprite bank9 : rem tail call
+          rem Always face right while marching across the title screen
+          REFP0 = PlayerStateBitFacing
           
-SetParadeColor4PlayerInline
-          rem 4-player mode: Randomly choose from all 4 player colors
-          rem
-          rem Input: rand (global) = random number generator
-          rem
-          rem Output: COLUP0 set to random player color, dispatches to
-          rem SetParadeColor4PlayerLastInline or
-          rem DrawParadeCharacterSprite
-          rem
-          rem Mutates: temp1 (random color selection), COLUP0 (TIA color
-          rem register)
-          rem
-          rem Called Routines: None (dispatcher only, tail call to
-          rem DrawParadeCharacterSprite)
-          rem
-          rem Constraints: Must be colocated with DrawParadeCharacter,
-          rem SetParadeColor4PlayerLastInline
-          temp1 = rand & 3
-          if temp1 = 0 then COLUP0 = ColIndigo(12)
-          if temp1 = 1 then COLUP0 = ColRed(12)
-          if temp1 = 2 then COLUP0 = ColYellow(12)
-          if temp1 = 3 then SetParadeColor4PlayerLastInline
-          rem Draw running animation for parade character
-          goto DrawParadeCharacterSprite bank9 : rem tail call
+          rem Load parade character colors using standard color loader
+          let currentCharacter = titleParadeCharacter
+          temp1 = currentCharacter
+          temp2 = 0
+          temp3 = 0
+          temp4 = 0
+          temp5 = 0
+          gosub LoadCharacterColors bank10
           
-SetParadeColor4PlayerLastInline
-          rem Set Player 4 color (Turquoise/Green depending on TV
-          rem standard)
-          rem
-          rem Input: None (called from SetParadeColor4PlayerInline)
-          rem
-          rem Output: COLUP0 set to Player 4 color
-          rem
-          rem Mutates: COLUP0 (TIA color register)
-          rem
-          rem Called Routines: None (tail call to
-          rem DrawParadeCharacterSprite)
-          rem
-          rem Constraints: Must be colocated with DrawParadeCharacter,
-          rem SetParadeColor4PlayerInline
-          COLUP0 = ColTurquoise(12)
-          rem Player 4: Turquoise (SECAM macro maps to Cyan)
           rem Draw running animation for parade character
           goto DrawParadeCharacterSprite bank9 : rem tail call
           
@@ -199,49 +154,15 @@ SetParadeColor4PlayerLastInline
 DrawParadeCharacterSprite
           rem
           rem Draw Parade Character Sprite
-          rem Renders running animation sprite with alternating leg
-          rem   positions
+          rem Load actual character artwork for the parade sprite using
+          rem the character art system.
           rem
-          rem INPUT: titleParadeTimer (for animation frame selection)
-          rem Render running animation sprite with alternating leg positions.
-          rem Input: titleParadeTimer (frame counter)
-          rem Output: player0 sprite data updated from inline frames
-          if (titleParadeTimer & 8) then DrawParadeFrame1 : rem Simple running animation with alternating leg positions
-          rem Frame 2 - right leg forward
-                    player0:
-                    %00011000
-                    %00111100
-                    %01111110
-                    %00011000
-                    %00011000
-                    %00011000
-                    %00011000
-                    %00011000
-end
-          return
-DrawParadeFrame1
-                    player0:
-          rem Frame 1 - left leg forward
-          rem
-          rem Input: None (called from DrawParadeCharacterSprite)
-          rem
-          rem Output: player0 sprite data set to frame 1
-          rem
-          rem Mutates: player0 sprite data (set via inline sprite
-          rem definition)
-          rem
-          rem Called Routines: None (uses inline sprite data)
-          rem
-          rem Constraints: Must be colocated with
-          rem DrawParadeCharacterSprite
-                    %00011000
-                    %00111100
-                    %01111110
-                    %00011000
-                    %00011000
-                    %00011000
-                    %00011000
-                    %00011000
-end
+          rem Input: titleParadeTimer (animation timing), currentCharacter
+          rem Output: Player 0 sprite data populated in SCRAM buffers
+          temp1 = currentCharacter
+          temp2 = titleParadeTimer & 7
+          temp3 = ActionWalking
+          temp4 = 0
+          gosub LocateCharacterArt bank14
           return
 

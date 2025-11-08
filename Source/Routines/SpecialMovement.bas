@@ -25,7 +25,7 @@ ApplySpecialMovement
           rem
           rem Input: playerCharacter[] (global array) = character types,
           rem controllerStatus (global) = Quadtari detection,
-          rem selectedCharacter3_R, selectedCharacter4_R (global SCRAM) = player
+          rem playerCharacter[] (global array) = player selections
           rem 3/4 selections
           rem
           rem Output: Special movement applied (currently no-op,
@@ -46,11 +46,11 @@ ApplySpecialMovementP1
           if temp4 = 8 then ApplySpecialMovementP2
           if temp4 = 2 then ApplySpecialMovementP2 : rem Frooty: no gravity (free flight)
 ApplySpecialMovementP2
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerCharacter[2] = 8 then ApplySpecialMovementP3 : rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerCharacter[2] = 2 then ApplySpecialMovementP3
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 8 then ApplySpecialMovementP3 : rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 2 then ApplySpecialMovementP3
 ApplySpecialMovementP3
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerCharacter[3] = 8 then return : rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-          if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerCharacter[3] = 2 then return
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 8 then return : rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 2 then return
           rem Player 3 - Frooty (8) and Dragon of Storms (2) skip gravity
           return
 

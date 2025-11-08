@@ -1,11 +1,11 @@
-PlaySoundEffect
-          rem
           rem ChaosFight - Source/Routines/SoundSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+PlaySoundEffect
           rem SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
           rem Sound effects for gameplay (gameMode 6)
           rem Uses interleaved 4-byte streams: AUDCV, AUDF, Duration,
-          rem   Delay
+          rem Delay
           rem AUDCV = (AUDC << 4) | AUDV (packed into single byte)
           rem
           rem High byte of pointer = 0 indicates sound inactive
@@ -45,12 +45,15 @@ PlaySoundEffect
           rem Constraints: Music takes priority (no sounds if music
           rem active). No queuing - sound forgotten if both voices busy.
           rem Voice 0 tried first, Voice 1 as fallback
-          if musicVoice0PointerH then return : rem Check if music is active (music takes priority)
+          rem Check if music is active (music takes priority)
+          if musicVoice0PointerH then return
           if musicVoice1PointerH then return
           
           gosub LoadSoundPointer bank15 : rem Lookup sound pointer from Sounds bank (Bank15)
           
-          if soundEffectPointerH_R then TryVoice1 : rem Try Voice 0 first
+          rem Try Voice 0 first
+          
+          if soundEffectPointerH_R then TryVoice1
           
           let SoundEffectPointerL = soundPointerL : rem Voice 0 is free - use it
           let soundEffectPointerH_W = soundPointerH_R
@@ -74,7 +77,8 @@ TryVoice1
           rem
           rem Constraints: Internal helper for PlaySoundEffect, only
           rem called when Voice 0 is busy
-          if soundEffectPointer1H then return : rem Try Voice 1
+          rem Try Voice 1
+          if soundEffectPointer1H then return
           
           let soundEffectPointer1L = soundPointerL : rem Voice 1 is free - use it
           let soundEffectPointer1H = soundPointerH_R
@@ -104,9 +108,12 @@ UpdateSoundEffect
           rem
           rem Constraints: Called every frame from MainLoop for gameMode
           rem 6. Only updates voices if active (high byte != 0)
-          if soundEffectPointerH_R then gosub UpdateSoundEffectVoice0 : rem Update Voice 0
+          rem Update Voice 0
+          if soundEffectPointerH_R then gosub UpdateSoundEffectVoice0
           
-          if soundEffectPointer1H then gosub UpdateSoundEffectVoice1 : rem Update Voice 1
+          rem Update Voice 1
+          
+          if soundEffectPointer1H then gosub UpdateSoundEffectVoice1
           return
           
           

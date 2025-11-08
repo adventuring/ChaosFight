@@ -7,4 +7,7 @@
           rem Character selection routines
 #include "Source/Routines/CharacterSelectMain.bas"
 #include "Source/Routines/CharacterData.bas"
+
+rem Console detection moved from Bank 14 for space optimization
+#include "Source/Routines/ConsoleDetection.bas"
           

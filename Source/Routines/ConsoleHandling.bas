@@ -115,7 +115,7 @@ HandleConsoleSwitches
           let temp2 = 0 : rem   mode
           gosub CheckEnhancedPause : rem Check Player 1 buttons
           if !temp1 then DonePlayer1Pause
-          gosub DetectControllers bank10 : rem Re-detect controllers when Select is pressed
+          gosub DetectControllers bank14 : rem Re-detect controllers when Select is pressed
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
@@ -128,7 +128,7 @@ DonePlayer1Pause
           let temp2 = 1 
           gosub CheckEnhancedPause : rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause
-          gosub DetectControllers bank10 : rem Re-detect controllers when Select is pressed
+          gosub DetectControllers bank14 : rem Re-detect controllers when Select is pressed
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused
           if !(systemFlags & SystemFlagGameStatePaused) then Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
@@ -165,7 +165,7 @@ CheckColorBWToggle
           rem switchbw read),
           rem         colorBWPrevious_W (updated if switch changed)
           rem
-          rem Called Routines: DetectControllers (bank14) - accesses
+          rem Called Routines: DetectControllers (bank6) - accesses
           rem controller detection state
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           
@@ -174,7 +174,7 @@ CheckColorBWToggle
           let temp1 = 0
           if temp6 = colorBWPrevious_R then DoneSwitchChange
           let temp1 = 1
-          gosub DetectControllers bank10
+          gosub DetectControllers bank14
           let colorBWPrevious_W = switchbw
 DoneSwitchChange
           rem Color/B&W switch change check complete (label only, no

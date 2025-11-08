@@ -7,8 +7,7 @@
           rem calls
           rem These are called before/after drawscreen, not during it
           
-          rem Console detection and handling
-#include "Source/Routines/ConsoleDetection.bas"
+          rem Console detection moved to Bank 6 for space optimization
 #include "Source/Routines/ControllerDetection.bas"
 #include "Source/Routines/ConsoleHandling.bas"
           

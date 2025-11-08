@@ -43,4 +43,9 @@ similar without explicit permission.
 - Written for players, not developers
 - Must be kept up-to-date with code changes
 
+## Scope
+
+- Edits to Skyline-Tool are permitted if new facilities are needed.
+- All Skyline-Tool edits require unit tests.
+- No edits to Tools (batariBASIC, dasm) are permitted.
 

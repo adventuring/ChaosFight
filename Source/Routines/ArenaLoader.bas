@@ -8,8 +8,8 @@
           rem Handles Color/B&W switch: switchbw=1 (B&W/white),
           rem   switchbw=0 (Color/row colors)
           rem SECAM always uses B&W mode regardless of switch.
-
-#include "Source/Data/Arenas.bas"
+          rem NOTE: Arena data tables are provided by the bank that
+          rem includes this file (Bank1 includes Source/Data/Arenas.bas).
 
 LoadArena
           rem Load arena playfield data and colors based on

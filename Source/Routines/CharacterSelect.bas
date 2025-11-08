@@ -1,10 +1,9 @@
-CharacterSelectEntry
-          rem ChaosFight - Source/Routines/CharacterSelectEntry.bas
+          rem ChaosFight - Source/Routines/CharacterSelect.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem PlayerLockedHelpers.bas moved to Bank 14
-
-          rem Initialize character select screen state
+CharacterSelectEntry
+          rem Initializes character select screen state
+          rem Notes: PlayerLockedHelpers.bas moved to Bank 14
           rem
           rem Input: None (entry point)
           rem
@@ -105,7 +104,8 @@ Player1RightSelectionQ
           
 Player1RightSelectionSkip
           if joy0up then let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
-          if joy0down then SelectStick0FireQ : rem Unlock by moving up
+          rem Unlock by moving up
+          if joy0down then SelectStick0FireQ
           goto SelectStick0Down
 
 SelectStick0FireQ
@@ -113,7 +113,8 @@ SelectStick0FireQ
           let temp1 = 0 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
           
 SelectStick0Down
-          if joy0fire then Player1LockSelection : rem Unlock by moving down (without fire)
+          rem Unlock by moving down (without fire)
+          if joy0fire then Player1LockSelection
           goto Player1LockSelectionDone
 
 Player1LockSelection
@@ -142,7 +143,8 @@ Player2RightSelectionQ
           if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 Player2RightSelectionSkip
           if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
-          if joy1down then SelectStick1FireQ : rem Unlock by moving up
+          rem Unlock by moving up
+          if joy1down then SelectStick1FireQ
 
           goto SelectStick1Down
 
@@ -151,7 +153,8 @@ SelectStick1FireQ
 
           let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 SelectStick1Down
-          if joy1fire then SelectStick1DownQ : rem Unlock by moving down (without fire)
+          rem Unlock by moving down (without fire)
+          if joy1fire then SelectStick1DownQ
 
           goto SelectStick1EvenFrameSkip
 
@@ -167,7 +170,8 @@ SelectStick1EvenFrameSkip
           goto CharacterSelectHandleComplete
 
 CharacterSelectHandleQuadtari
-          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer3 : rem Handle Player 3 input (joy0 on odd frames, Quadtari only)
+          rem Handle Player 3 input (joy0 on odd frames, Quadtari only)
+          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer3
 
           goto CharacterSelectSkipPlayer3
 
@@ -189,7 +193,8 @@ Player3RightSelectionQ
           if playerCharacter[2] > MaxCharacter then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 Player3RightSelectionSkip
           if joy0up then let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
-          if joy0down then SelectStick0FirePlayer3Q : rem Unlock by moving up
+          rem Unlock by moving up
+          if joy0down then SelectStick0FirePlayer3Q
 
           goto SelectStick0DownPlayer3
 
@@ -197,7 +202,8 @@ SelectStick0FirePlayer3Q
           if joy0fire then SelectStick0DownPlayer3
           let temp1 = 2 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 SelectStick0DownPlayer3
-          if joy0fire then SelectStick0DownPlayer3Q : rem Unlock by moving down (without fire)
+          rem Unlock by moving down (without fire)
+          if joy0fire then SelectStick0DownPlayer3Q
 
           goto Player3LockSelectionDone
 
@@ -212,7 +218,9 @@ Player3HandicapSelection
 Player3LockSelectionDone
           rem Locked with handicap (75% health)
 
-          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer4 : rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
+          rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
+
+          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer4
 
           goto CharacterSelectSkipPlayer4
 
@@ -230,7 +238,8 @@ Player4RightSelectionQ
           if playerCharacter[3] > MaxCharacter then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 Player4RightSelectionSkip
           if joy1up then let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
-          if joy1down then SelectStick1FirePlayer4Q : rem Unlock by moving up
+          rem Unlock by moving up
+          if joy1down then SelectStick1FirePlayer4Q
 
           goto SelectStick1DownPlayer4
 
@@ -239,7 +248,8 @@ SelectStick1FirePlayer4Q
 
           let temp1 = 3 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank14
 SelectStick1DownPlayer4
-          if joy1fire then SelectStick1DownPlayer4Q : rem Unlock by moving down (without fire)
+          rem Unlock by moving down (without fire)
+          if joy1fire then SelectStick1DownPlayer4Q
 
           goto SelectStick1OddFrameSkip
 
@@ -266,7 +276,9 @@ CharacterSelectHandleComplete
           rem Check if all players are ready to start (inline
           let readyCount  = 0 : rem   SelAllReady)
 
-          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1 : rem Count locked players
+          rem Count locked players
+
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
           let temp1 = 1 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
@@ -276,7 +288,8 @@ CharacterSelectQuadtariPlayersInline
           let temp1 = 2 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
           let temp1 = 3 : gosub GetPlayerLocked bank14 : if temp2 then let readyCount = readyCount + 1
 CharacterSelectSkipQuadtariPlayersInline
-          if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline : rem Check if enough players are ready
+          rem Check if enough players are ready
+          if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
 
           rem Need at least 1 player ready for 2-player mode
           let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then goto CharacterSelectCompleted
@@ -286,7 +299,8 @@ CharacterSelectSkipQuadtariPlayersInline
           goto CharacterSelectSkipQuadtariReadyInline
           
 CharacterSelectQuadtariReadyInline
-          if readyCount>= 2 then goto CharacterSelectCompleted : rem Need at least 2 players ready for 4-player mode
+          rem Need at least 2 players ready for 4-player mode
+          if readyCount>= 2 then goto CharacterSelectCompleted
 CharacterSelectSkipQuadtariReadyInline
 
           gosub CharacterSelectDrawScreen : rem Draw character selection screen
@@ -343,7 +357,9 @@ LegacyCharacterSelectDrawScreenBody
 
           gosub CharacterSelectDrawNumber : rem Draw 2 indicator below Player 2 using playfield
 
-          if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer3 : rem Draw Player 3 selection (bottom left) if Quadtari detected
+          rem Draw Player 3 selection (bottom left) if Quadtari detected
+
+          if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer3
           goto CharacterSelectSkipPlayer3Draw
 CharacterSelectDrawPlayer3
           rem Draw Player 3 character sprite and number
@@ -369,7 +385,8 @@ CharacterSelectDrawPlayer3
           gosub CharacterSelectDrawNumber : rem Draw 3 indicator below Player 3 using playfield
 
           rem Draw Player 4 selection (bottom right) if Quadtari
-          if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer4 : rem   detected
+          rem detected
+          if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer4
           goto CharacterSelectSkipPlayer4Draw
 CharacterSelectDrawPlayer4
           rem Draw Player 4 character sprite and number
@@ -414,7 +431,8 @@ CharacterSelectDrawLocks
           rem
           rem Constraints: Players 3/4 only checked if Quadtari
           rem detected. Borders drawn using playfield bits
-          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then CharacterSelectDrawPlayer1Border : rem Draw playfield blocks around locked characters
+          rem Draw playfield blocks around locked characters
+          let temp1 = 0 : gosub GetPlayerLocked bank14 : if temp2 then CharacterSelectDrawPlayer1Border
           goto CharacterSelectSkipPlayer1Border
 CharacterSelectDrawPlayer1Border
 CharacterSelectSkipPlayer1Border
@@ -558,7 +576,9 @@ LegacyCharacterSelectDrawNumberBody
           rem using playfield pixels in a simple digit pattern
           rem Player numbers are determined by position in the grid
 
-          if player0x  = 56 then Player1TopRowQ : rem Player 1 (top left) - draw 1
+          rem Player 1 (top left) - draw 1
+
+          if player0x  = 56 then Player1TopRowQ
           goto DonePlayer0Check1
 Player1TopRowQ
           if player0y  = 40 then Player1DrawTopDigit
@@ -566,7 +586,9 @@ Player1TopRowQ
 Player1DrawTopDigit 
           return
 
-          if player1x  = 104 then Player2TopRowQ : rem Player 2 (top right) - draw 2
+          rem Player 2 (top right) - draw 2
+
+          if player1x  = 104 then Player2TopRowQ
           goto DonePlayer1Check1
 Player2TopRowQ
           if player1y  = 40 then Player2DrawTopDigit
@@ -574,7 +596,9 @@ Player2TopRowQ
 Player2DrawTopDigit 
           return
 
-          if player0x  = 56 then Player1BottomRowQ : rem Player 3 (bottom left) - draw 3
+          rem Player 3 (bottom left) - draw 3
+
+          if player0x  = 56 then Player1BottomRowQ
           goto DonePlayer0Check2
 Player1BottomRowQ
           if player0y  = 80 then Player1DrawBottomDigit
@@ -582,7 +606,9 @@ Player1BottomRowQ
 Player1DrawBottomDigit 
           return
 
-          if player1x  = 104 then Player2BottomRowQ : rem Player 4 (bottom right) - draw 4
+          rem Player 4 (bottom right) - draw 4
+
+          if player1x  = 104 then Player2BottomRowQ
           goto DonePlayer1Check2
 Player2BottomRowQ
           if player1y  = 80 then Player2DrawBottomDigit
@@ -630,13 +656,19 @@ CharacterSelectUpdateAnimation
           rem   pose (animation state 9)
           let HandicapMode  = 0 : rem HandicapMode is defined in Variables.bas as variable i
           
-          if qtcontroller then goto DoneEvenFrameCheck : rem Check each player for DOWN held (even frame for P1/P2)
+          rem Check each player for DOWN held (even frame for P1/P2)
+          
+          if qtcontroller then goto DoneEvenFrameCheck
                     if joy0down then let HandicapMode  = HandicapMode | 1
-          if joy1down then let HandicapMode  = HandicapMode | 2 : rem P1 handicap flag
+          rem P1 handicap flag
+          if joy1down then let HandicapMode  = HandicapMode | 2
           rem P2 handicap flag
           
           
-          if qtcontroller then CharacterSelectQuadtariHandicap : rem Check each player for DOWN held (odd frame for P3/P4)
+          rem Check each player for DOWN held (odd frame for P3/P4)
+          
+          
+          if qtcontroller then CharacterSelectQuadtariHandicap
           goto DoneOddFrameCheck
 CharacterSelectQuadtariHandicap
           rem Helper: Check Players 3/4 for DOWN held (odd frame)
@@ -651,7 +683,8 @@ CharacterSelectQuadtariHandicap
           rem set)
           rem
           rem Called Routines: None
-          if controllerStatus & SetQuadtariDetected then CharacterSelectOddFrame : rem Constraints: Internal helper for CharacterSelectUpdateAnimation, only called on odd frames
+          rem Constraints: Internal helper for CharacterSelectUpdateAnimation, only called on odd frames
+          if controllerStatus & SetQuadtariDetected then CharacterSelectOddFrame
           goto DoneOddFrameCheck
 CharacterSelectOddFrame 
           rem Helper: Check Players 3/4 DOWN states
@@ -669,12 +702,14 @@ CharacterSelectOddFrame
           rem Constraints: Internal helper for CharacterSelectQuadtariHandicap, only called
           rem if Quadtari detected
                     if joy0down then let HandicapMode  = HandicapMode | 4
-          if joy1down then let HandicapMode  = HandicapMode | 8 : rem P3 handicap flag
+          rem P3 handicap flag
+          if joy1down then let HandicapMode  = HandicapMode | 8
           rem P4 handicap flag
           
           
           rem If any player is holding down, set animation to recovery
-          if HandicapMode then CharacterSelectHandleHandicap : rem   pose
+          rem pose
+          if HandicapMode then CharacterSelectHandleHandicap
           goto SelectAnimationNormal
 CharacterSelectHandleHandicap
           rem Helper: Freeze animation in recovery pose for handicap
@@ -732,7 +767,8 @@ SelectAnimationNormal
 SelectAnimationReset
           let characterSelectAnimationTimer  = 0
           let characterSelectAnimationState  = rand & 3 : rem Randomly choose new animation state
-          if characterSelectAnimationState > 2 then let characterSelectAnimationState  = 0 : rem 0-3: idle, running, attacking, special
+          rem 0-3: idle, running, attacking, special
+          if characterSelectAnimationState > 2 then let characterSelectAnimationState  = 0
           let characterSelectAnimationFrame  = 0 : rem Keep to 0-2 range
           let characterSelectCharacterIndex  = characterSelectCharacterIndex + 1 : rem Cycle through characters for variety
           if characterSelectCharacterIndex > MaxCharacter then let characterSelectCharacterIndex  = 0
@@ -793,11 +829,16 @@ CharacterSelectDrawSprite
           rem Use animation state as hurt simulation for demo
           
           if !(temp1 = 2) then CharacterSelectColorNormal
-          if switchbw then CharacterSelectHurtBlackWhite : rem Hurt state - dimmer colors
-          if characterSelectPlayer = 1 then COLUP0  = ColIndigo(6) : rem Player color but dimmer
-          if characterSelectPlayer = 2 then COLUP0  = ColRed(6) : rem Dark indigo (Player 1)
-          if characterSelectPlayer = 3 then COLUP0  = ColYellow(6) : rem Dark red (Player 2)
-          if characterSelectPlayer = 4 then COLUP0  = ColGreen(6) : rem Dark yellow (Player 3)
+          rem Hurt state - dimmer colors
+          if switchbw then CharacterSelectHurtBlackWhite
+          rem Player color but dimmer
+          if characterSelectPlayer = 1 then COLUP0  = ColIndigo(6)
+          rem Dark indigo (Player 1)
+          if characterSelectPlayer = 2 then COLUP0  = ColRed(6)
+          rem Dark red (Player 2)
+          if characterSelectPlayer = 3 then COLUP0  = ColYellow(6)
+          rem Dark yellow (Player 3)
+          if characterSelectPlayer = 4 then COLUP0  = ColGreen(6)
           goto CharacterSelectColorDone : rem Dark green
 CharacterSelectHurtBlackWhite
           rem Helper: Set hurt color for B&W mode
@@ -831,11 +872,16 @@ CharacterSelectColorNormal
           rem
           rem Constraints: Internal helper for CharacterSelectDrawSprite, only
           rem called in normal state
-          if switchbw then CharacterSelectColorBlackWhite : rem Normal state - bright colors
-          if characterSelectPlayer = 1 then COLUP0  = ColIndigo(12) : rem Player color - bright
-          if characterSelectPlayer = 2 then COLUP0  = ColRed(12) : rem Bright indigo (Player 1)
-          if characterSelectPlayer = 3 then COLUP0  = ColYellow(12) : rem Bright red (Player 2)
-          if characterSelectPlayer = 4 then COLUP0  = ColGreen(12) : rem Bright yellow (Player 3)
+          rem Normal state - bright colors
+          if switchbw then CharacterSelectColorBlackWhite
+          rem Player color - bright
+          if characterSelectPlayer = 1 then COLUP0  = ColIndigo(12)
+          rem Bright indigo (Player 1)
+          if characterSelectPlayer = 2 then COLUP0  = ColRed(12)
+          rem Bright red (Player 2)
+          if characterSelectPlayer = 3 then COLUP0  = ColYellow(12)
+          rem Bright yellow (Player 3)
+          if characterSelectPlayer = 4 then COLUP0  = ColGreen(12)
           goto CharacterSelectColorDone : rem Bright green
 CharacterSelectColorBlackWhite
           rem Helper: Set normal color for B&W mode
@@ -853,7 +899,8 @@ CharacterSelectColorDone
           rem Bright grey (B&W)
           
           rem Draw different sprite patterns based on animation state
-          if characterSelectAnimationState = ActionStanding then SelectAnimationIdle : rem   and frame
+          rem and frame
+          if characterSelectAnimationState = ActionStanding then SelectAnimationIdle
           if characterSelectAnimationState = ActionWalking then SelectAnimationRun
           if characterSelectAnimationState = ActionAttackWindup then SelectAnimationAttack
           goto SelectAnimationDone
@@ -886,7 +933,8 @@ SelectAnimationRun
           rem Constraints: Internal helper for CharacterSelectDrawSprite, only
           rem called for ActionWalking. Frames 0,2,4,6 = right leg
           rem forward, frames 1,3,5,7 = left leg forward
-          if characterSelectAnimationFrame & 1 then CharacterSelectLeftLeg : rem Running animation - alternating leg positions
+          rem Running animation - alternating leg positions
+          if characterSelectAnimationFrame & 1 then CharacterSelectLeftLeg
           goto SelectAnimationDone : rem Frame 0,2,4,6 - right leg forward
 CharacterSelectLeftLeg
           rem Helper: Set left leg forward pattern for running
@@ -918,7 +966,8 @@ SelectAnimationAttack
           rem Constraints: Internal helper for SelectDrawSprite, only
           rem called for ActionAttackWindup. Frames 0-3 = windup, frames
           rem 4-7 = attack
-          if characterSelectAnimationFrame < 4 then SelectWindup : rem Attacking animation - arm extended
+          rem Attacking animation - arm extended
+          if characterSelectAnimationFrame < 4 then SelectWindup
           goto SelectAnimationDone : rem Attack frames - arm forward
 SelectWindup
           rem Helper: Set windup pattern for attack
@@ -958,7 +1007,8 @@ CharacterSelectCompleted
           rem right (bit 0 = 1)
           rem Character selection complete
           rem Initialize facing bit (bit 0) for all selected players
-          if playerCharacter[0] = NoCharacter then SkipCharacter1FacingSel : rem (default: face right = 1)
+          rem (default: face right = 1)
+          if playerCharacter[0] = NoCharacter then SkipCharacter1FacingSel
           let playerState[0] = playerState[0] | 1
 SkipCharacter1FacingSel
           if playerCharacter[1] = NoCharacter then SkipCharacter2FacingSel
@@ -1000,11 +1050,17 @@ CharacterSelectDetectQuadtari
           rem Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH)
           rem   AND Right (INPT2 LOW, INPT3 HIGH)
           
-          if INPT0{7} then CharacterSelectQuadtariAbsent : rem Check left side: if INPT0 is HIGH then not detected
-          if !INPT1{7} then CharacterSelectQuadtariAbsent : rem Check left side: if INPT1 is LOW then not detected
+          rem Check left side: if INPT0 is HIGH then not detected
           
-          if INPT2{7} then CharacterSelectQuadtariAbsent : rem Check right side: if INPT2 is HIGH then not detected
-          if !INPT3{7} then CharacterSelectQuadtariAbsent : rem Check right side: if INPT3 is LOW then not detected
+          if INPT0{7} then CharacterSelectQuadtariAbsent
+          rem Check left side: if INPT1 is LOW then not detected
+          if !INPT1{7} then CharacterSelectQuadtariAbsent
+          
+          rem Check right side: if INPT2 is HIGH then not detected
+          
+          if INPT2{7} then CharacterSelectQuadtariAbsent
+          rem Check right side: if INPT3 is LOW then not detected
+          if !INPT3{7} then CharacterSelectQuadtariAbsent
           
           goto CharacterSelectQuadtariDetected : rem All checks passed - Quadtari detected
 

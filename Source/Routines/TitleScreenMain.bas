@@ -43,10 +43,12 @@ TitleScreenMain
           rem              Called from MainLoop each frame (gameMode 2)
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
-          if joy0fire then TitleScreenComplete : rem Use skip-over pattern to avoid complex || operator issues
+          rem Use skip-over pattern to avoid complex || operator issues
+          if joy0fire then TitleScreenComplete
           if joy1fire then TitleScreenComplete
           
-          if 0 = (controllerStatus & SetQuadtariDetected) then TitleSkipQuad : rem Check Quadtari controllers (Players 3 & 4 if active)
+          rem Check Quadtari controllers (Players 3 & 4 if active)
+          if 0 = (controllerStatus & SetQuadtariDetected) then TitleSkipQuad
           if !INPT0{7} then TitleScreenComplete
           if !INPT2{7} then TitleScreenComplete
 TitleSkipQuad
@@ -62,9 +64,11 @@ TitleSkipQuad
           rem
           rem Constraints: Must be colocated with TitleScreenMain
           
-          gosub UpdateCharacterParade bank9 : rem Update character parade animation
+          rem Update character parade animation
+          gosub UpdateCharacterParade bank9
           
-          gosub DrawTitleScreen bank9 : rem Draw title screen
+          rem Draw title screen
+          gosub DrawTitleScreen bank9
           
           rem Draw screen with titlescreen kernel minikernel
           rem (titlescreen graphics in Bank 9)
@@ -86,6 +90,7 @@ TitleScreenComplete
           rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
-          let gameMode = ModeCharacterSelect : rem Constraints: Must be colocated with TitleScreenMain
+          rem Constraints: Must be colocated with TitleScreenMain
+          let gameMode = ModeCharacterSelect
           gosub ChangeGameMode bank14
           return

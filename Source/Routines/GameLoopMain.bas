@@ -140,7 +140,8 @@ TransitionToWinner
           rem
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
-          let gameMode = ModeWinner : rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
+          rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
+          let gameMode = ModeWinner
           gosub ChangeGameMode bank14
           return
 GameEndCheckDone

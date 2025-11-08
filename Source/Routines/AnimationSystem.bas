@@ -11,41 +11,13 @@ UpdateCharacterAnimations
           rem Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank10)
           rem Constraints: Must remain colocated with AnimationUpdatePlayer3/AnimationSkipPlayer3
 
-          rem Update animation for each active player
-          let currentPlayer = 0 : rem Player index (0-3)
-          gosub UpdatePlayerAnimation
-          rem Player 1
-          let currentPlayer = 1 : rem Player index (0-3)
-          gosub UpdatePlayerAnimation
-          rem Handle Quadtari-enabled extra players
-          if controllerStatus & SetQuadtariDetected then goto AnimationUpdatePlayer3
-          goto AnimationSkipPlayer3
-AnimationUpdatePlayer3
-          rem Update Player 3 and 4 animations (4-player mode only)
-          rem
-          rem Input: currentPlayer (global) = player index (set inline)
-          rem
-          rem Output: Player 3 and 4 animations updated
-          rem
-          rem Mutates: currentPlayer (set to 2, then 3),
-          rem animationCounter_W[], currentAnimationFrame_W[],
-          rem         player sprite pointers (via UpdatePlayerAnimation)
-          rem
-          rem Called Routines: UpdatePlayerAnimation - accesses
-          rem currentPlayer, animationCounter_R/W,
-          rem   currentAnimationFrame_R/W, currentAnimationSeq,
-          rem   playersEliminated_R,
-          rem   LoadPlayerSprite (bank10)
-          rem
-          rem Constraints: Must be colocated with
-          rem UpdateCharacterAnimations, AnimationSkipPlayer3
-          let currentPlayer = 2 : rem Player index (0-3)
-          gosub UpdatePlayerAnimation
-          rem Player 3
-          let currentPlayer = 3 : rem Player index (0-3)
-          gosub UpdatePlayerAnimation
+          rem Optimized: Loop through all players instead of individual calls
+          for currentPlayer = 0 to 3
+            rem Skip players 2-3 if Quadtari not detected (2-player mode)
+            if currentPlayer >= 2 && !(controllerStatus & SetQuadtariDetected) then goto AnimationSkipPlayer3
+            gosub UpdatePlayerAnimation
+          next
 AnimationSkipPlayer3
-          rem Player 4
           return
 UpdatePlayerAnimation
           rem Skip Player 3/4 animations (2-player mode only, label
@@ -563,26 +535,15 @@ HandleWindupEnd
           rem Dispatch to character-specific windup handler (0-31)
           rem MethHound (31) mirrors Shamone’s handler (WindupNoOp)
           if temp1 >= 32 then return
-          rem Index → routine mapping (grouped by identical behaviour)
-          rem  0 Bernie           → WindupNoOp
-          rem  1 Curler           → WindupToRecovery
-          rem  2 DragonOfStorms   → WindupNoOp
-          rem  3 ZoeRyen          → WindupNoOp
-          rem  4 FatTony          → WindupToExecute
-          rem  5 Megax            → WindupToExecute
-          rem  6 Harpy            → WindupNoOp
-          rem  7 KnightGuy        → WindupNoOp
-          rem  8 Frooty           → WindupNoOp
-          rem  9 Nefertem         → WindupToExecute
-          rem 10 NinjishGuy       → WindupNoOp
-          rem 11 PorkChop         → WindupToExecute
-          rem 12 RadishGoblin     → WindupNoOp
-          rem 13 RoboTito         → WindupNoOp
-          rem 14 Ursulo           → WindupNoOp
-          rem 15 Shamone          → WindupNoOp
-          rem 16-30 Placeholder   → PlaceholderWindup
-          rem 31 MethHound        → WindupNoOp (shares Shamone’s behaviour)
-          on temp1 goto WindupNoOp WindupToRecovery WindupNoOp WindupNoOp WindupToExecute WindupToExecute WindupNoOp WindupNoOp WindupNoOp WindupToExecute WindupNoOp WindupToExecute WindupNoOp WindupNoOp WindupNoOp WindupNoOp PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup PlaceholderWindup WindupNoOp
+
+          rem Optimized: Group characters with identical behavior
+          rem WindupToRecovery: Curler (1)
+          if temp1 = 1 then goto WindupToRecovery
+          rem WindupToExecute: FatTony(4), Megax(5), Nefertem(9), PorkChop(11)
+          if temp1 = 4 || temp1 = 5 || temp1 = 9 || temp1 = 11 then goto WindupToExecute
+          rem PlaceholderWindup: Characters 16-30
+          if temp1 >= 16 && temp1 <= 30 then goto PlaceholderWindup
+          rem WindupNoOp: All others (0,2,3,6,7,8,10,12,13,14,15,31)
 
 WindupNoOp
           return
@@ -605,26 +566,15 @@ HandleExecuteEnd
           rem Dispatch to character-specific execute handler (0-31)
           rem MethHound (31) mirrors Shamone’s handler (ExecuteToIdle)
           if temp1 >= 32 then return
-          rem Index → routine mapping (grouped by identical behaviour)
-          rem  0 Bernie           → ExecuteToIdle
-          rem  1 Curler           → ExecuteNoOp
-          rem  2 DragonOfStorms   → ExecuteToIdle
-          rem  3 ZoeRyen          → ExecuteToIdle
-          rem  4 FatTony          → ExecuteToRecovery
-          rem  5 Megax            → ExecuteToIdle
-          rem  6 Harpy            → HarpyExecute
-          rem  7 KnightGuy        → ExecuteToIdle
-          rem  8 Frooty           → ExecuteToIdle
-          rem  9 Nefertem         → ExecuteToIdle
-          rem 10 NinjishGuy       → ExecuteToIdle
-          rem 11 PorkChop         → ExecuteToRecovery
-          rem 12 RadishGoblin     → ExecuteToIdle
-          rem 13 RoboTito         → ExecuteToIdle
-          rem 14 Ursulo           → ExecuteToIdle
-          rem 15 Shamone          → ExecuteToIdle
-          rem 16-30 Placeholder   → ExecuteToIdle
-          rem 31 MethHound        → ExecuteToIdle (shares Shamone’s behaviour)
-          on temp1 goto ExecuteToIdle ExecuteNoOp ExecuteToIdle ExecuteToIdle ExecuteToRecovery ExecuteToIdle HarpyExecute ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToRecovery ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle ExecuteToIdle
+
+          rem Optimized: Group characters with identical behavior
+          rem ExecuteNoOp: Curler (1)
+          if temp1 = 1 then goto ExecuteNoOp
+          rem ExecuteToRecovery: FatTony(4), PorkChop(11)
+          if temp1 = 4 || temp1 = 11 then goto ExecuteToRecovery
+          rem HarpyExecute: Harpy (6)
+          if temp1 = 6 then goto HarpyExecute
+          rem ExecuteToIdle: All others (0,2,3,5,7,8,9,10,12,13,14,15,16-31)
           
 ExecuteToIdle
           let temp2 = ActionIdle

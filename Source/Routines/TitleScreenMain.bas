@@ -1,15 +1,12 @@
-TitleScreenMain
-          rem
           rem ChaosFight - Source/Routines/TitleScreenMain.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+TitleScreenMain
           rem Title Screen - Per-frame Loop
-          rem
           rem Per-frame title screen display and input handling.
           rem Called from MainLoop each frame (gameMode 2).
-          rem Dispatches to other modules for character parade and
-          rem   rendering.
-          rem Setup is handled by BeginTitleScreen (called from
-          rem   ChangeGameMode)
+          rem Dispatches to other modules for character parade and rendering.
+          rem Setup is handled by BeginTitleScreen (called from ChangeGameMode)
           rem This function processes one frame and returns.
           rem AVAILABLE VARIABLES (from Variables.bas):
           rem   titleParadeTimer - Frame counter for parade timing

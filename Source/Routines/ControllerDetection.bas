@@ -461,27 +461,31 @@ Check7800Pause
           rem
           rem Constraints: Only processes on 7800 console
           rem (SystemFlag7800 set), not available on SECAM
-          if !(systemFlags & SystemFlag7800) then return : rem Only process if running on 7800 (bit 7 of systemFlags)
+          rem Only process if running on 7800 (bit 7 of systemFlags)
+          if !(systemFlags & SystemFlag7800) then return
           
           rem 7800 Pause button detection via Color/B&W switch
           rem On 7800, Color/B&W switch becomes momentary pause button
           
 #ifndef TV_SECAM
-          rem Check if pause button just pressed (use switchbw for
-          if switchbw then PauseNotPressed : rem   Color/B&W switch)
+          rem Check if pause button just pressed (use switchbw for Color/B&W switch)
+          if switchbw then PauseNotPressed
           
-          if !(systemFlags & SystemFlagPauseButtonPrev) then return : rem Button is pressed (low)
+          rem Button is pressed (low)
+          if !(systemFlags & SystemFlagPauseButtonPrev) then return
           
-          let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev : rem Button just pressed! Toggle Color/B&W override (bit 6)
+          rem Button just pressed! Toggle Color/B&W override (bit 6)
+          let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
           if systemFlags & SystemFlagColorBWOverride then let systemFlags = systemFlags & ClearSystemFlagColorBWOverride : goto ToggleBWDone
           let systemFlags = systemFlags | SystemFlagColorBWOverride
 ToggleBWDone
           rem XOR to toggle 0<->1 (done via if/else above)
           
-          gosub ReloadArenaColors bank14 : rem Reload arena colors with new override state
-          
-          return
+          rem Reload arena colors with new override state
+          gosub ReloadArenaColors bank14
 #endif
+
+          return
 
           rem
           rem Quadtari Multiplexing

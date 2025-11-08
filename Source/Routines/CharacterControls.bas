@@ -31,7 +31,6 @@ BernieJump
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
           gosub ConvertPlayerXToPlayfieldColumn
-          let temp2 = temp2
           
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
@@ -144,7 +143,6 @@ DragonetJump
           rem Fly up with playfield collision check
           rem Check collision before moving - use shared coordinate conversion
           gosub ConvertPlayerXToPlayfieldColumn
-          let temp2 = temp2
           
           let temp3 = playerY[temp1] : rem Check row above player (top of sprite)
           let temp4 = temp3 / pfrowheight
@@ -501,39 +499,49 @@ RoboTitoJump
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Requires grounded state and stretch
-          rem permission. Cannot stretch if already latched. Stretch
-          rem height clamped to 1-80 scanlines
+          rem Constraints: Requires grounded state and stretch permission.
+          rem Cannot stretch if already latched. Stretch height clamped to 1-80 scanlines.
           rem RoboTito ceiling-stretch mechanic
-          if (characterStateFlags_R[temp1] & 1) then return : rem Check if already latched to ceiling
-          rem Already latched, ignore UP input
-          
+          rem Check if already latched to ceiling
+          if (characterStateFlags_R[temp1] & 1) then return
           rem Check if grounded and stretch is allowed
-          if (playerState[temp1] & 4) then RoboTitoCannotStretch : rem Must be grounded (not jumping/falling) to stretch
+          if (playerState[temp1] & 4) then RoboTitoCannotStretch
           rem Not grounded (jumping flag set), cannot stretch
           
-          let temp2 = roboTitoCanStretch_R : rem Check stretch permission flag (must be grounded)
-          let temp3 = temp1 : rem Load bit-packed flags
-          if temp3 = 0 then RTJ_CheckBit0 : rem Calculate bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
+          rem Check stretch permission flag (must be grounded)
+          let temp2 = roboTitoCanStretch_R
+          rem Load bit-packed flags
+          let temp3 = temp1
+          rem Calculate bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
+          if temp3 = 0 then RTJ_CheckBit0
           if temp3 = 1 then RTJ_CheckBit1
           if temp3 = 2 then RTJ_CheckBit2
-          let temp3 = temp2 & 8 : rem Player 3: bit 3
+          rem Player 3: bit 3
+          let temp3 = temp2 & 8
           if !temp3 then RoboTitoCannotStretch
-          goto RoboTitoCanStretch : rem Bit 3 not set, cannot stretch
+          rem Bit 3 not set, cannot stretch
+          goto RoboTitoCanStretch
 RTJ_CheckBit0
-          let temp3 = temp2 & 1 : rem Player 0: bit 0
+          rem Player 0: bit 0
+          let temp3 = temp2 & 1
           if !temp3 then RoboTitoCannotStretch
-          goto RoboTitoCanStretch : rem Bit 0 not set, cannot stretch
+          rem Bit 0 not set, cannot stretch
+          goto RoboTitoCanStretch
 RTJ_CheckBit1
-          let temp3 = temp2 & 2 : rem Player 1: bit 1
+          rem Player 1: bit 1
+          let temp3 = temp2 & 2
           if !temp3 then RoboTitoCannotStretch
-          goto RoboTitoCanStretch : rem Bit 1 not set, cannot stretch
+          rem Bit 1 not set, cannot stretch
+          goto RoboTitoCanStretch
 RTJ_CheckBit2
-          let temp3 = temp2 & 4 : rem Player 2: bit 2
+          rem Player 2: bit 2
+          let temp3 = temp2 & 4
           if !temp3 then RoboTitoCannotStretch
-          goto RoboTitoCanStretch : rem Bit 2 not set, cannot stretch
+          rem Bit 2 not set, cannot stretch
+          goto RoboTitoCanStretch
 RoboTitoCannotStretch
-          let missileStretchHeight_W[temp1] = 0 : rem Cannot stretch - clear missile height and return
+          rem Cannot stretch - clear missile height and return
+          let missileStretchHeight_W[temp1] = 0
           return
 RoboTitoCanStretch
           goto RoboTitoStretching : rem Grounded and permission granted - allow stretching
@@ -1240,7 +1248,6 @@ StandardGuard
           
           rem Check if guard is allowed (not in cooldown)
           gosub CheckGuardCooldown
-          let temp2 = temp2
           if temp2 = 0 then return
           rem Guard blocked by cooldown
           

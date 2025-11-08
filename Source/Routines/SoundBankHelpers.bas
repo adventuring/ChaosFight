@@ -30,9 +30,13 @@ LoadSoundPointer
           rem
           rem Constraints: Only 10 sounds (0-9) available. Returns
           rem soundPointerH_W = 0 if sound ID out of bounds
-          if temp1 > 9 then let soundPointerH_W = 0 : return : rem Bounds check: only 10 sounds (0-9)
+          if temp1 > 9 then goto LoadSoundPointerOutOfRange : rem Bounds check: only 10 sounds (0-9)
           let SoundPointerL = SoundPointersL[temp1] : rem Use array access to lookup pointer
           let soundPointerH_W = SoundPointersH[temp1]
+          goto LoadSoundPointerReturn
+LoadSoundPointerOutOfRange
+          let soundPointerH_W = 0 : rem Out of range - mark sound pointer inactive
+LoadSoundPointerReturn
           return
           
 LoadSoundNote

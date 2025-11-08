@@ -170,7 +170,7 @@ CheckMult3
             bne CheckMult4
             ; rem Multiply by 3: damage * 2 + damage
             lda temp4
-            asl a
+            asl
             clc
             adc temp4
             sta temp4

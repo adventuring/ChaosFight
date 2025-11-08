@@ -13,7 +13,7 @@ BeginAuthorPrelude
           rem Mutates: preambleTimer (set to 0), COLUBK (TIA register),
           rem temp1 (passed to StartMusic)
           rem
-          rem Called Routines: StartMusic (bank16) - starts Interworldly
+          rem Called Routines: StartMusic (bank1) - starts Interworldly
           rem music,
           rem   SetAuthorWindowValues (bank12) - sets window values
           rem
@@ -29,7 +29,7 @@ BeginAuthorPrelude
           
           rem Start Interworldly music
           temp1 = MusicInterworldly
-          gosub StartMusic bank16
+          gosub StartMusic bank1
           
           gosub SetAuthorWindowValues bank12 : rem Set window values for Author screen (Interworldly only)
           

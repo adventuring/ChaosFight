@@ -28,7 +28,7 @@ BeginPublisherPrelude
           rem Mutates: preambleTimer (set to 0), COLUBK (TIA register),
           rem temp1 (passed to StartMusic)
           rem
-          rem Called Routines: StartMusic (bank16) - starts AtariToday
+          rem Called Routines: StartMusic (bank1) - starts AtariToday
           rem music
           rem
           rem Constraints: Called from ChangeGameMode when transitioning

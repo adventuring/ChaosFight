@@ -60,7 +60,7 @@ BeginGameLoop
           rem   GetPlayerLocked (bank14) - accesses player lock state,
           rem   InitializeHealthBars (bank8) - initializes health bar
           rem   state,
-          rem   LoadArena (bank1) - loads arena data
+          rem   LoadArena (bank16) - loads arena data
           rem
           rem Constraints: Must be colocated with Init4PlayerPositions,
           rem InitPositionsDone,
@@ -198,7 +198,7 @@ PlayerHealthSet
 
           gosub InitializeHealthBars bank8 : rem Initialize health bars
 
-          gosub LoadArena bank1 : rem Load arena data
+          gosub LoadArena bank16 : rem Load arena data
 
           return
           rem Gameplay state initialized - return to ChangeGameMode

@@ -37,7 +37,7 @@ AuthorPrelude
           rem
           rem Mutates: preambleTimer (incremented)
           rem
-          rem Called Routines: UpdateMusic (bank16) - accesses music
+          rem Called Routines: UpdateMusic (bank1) - accesses music
           rem state variables
           rem
           rem Constraints: Must be colocated with AuthorPreludeComplete
@@ -54,7 +54,7 @@ AuthorPrelude
           if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete : rem Check Quadtari controllers if detected (inline to avoid label)
           if controllerStatus & SetQuadtariDetected then if !INPT2{7} then AuthorPreludeComplete
           
-          gosub UpdateMusic bank16
+          gosub UpdateMusic bank1
 
           if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete : rem Auto-advance after music completes + 0.5s
 

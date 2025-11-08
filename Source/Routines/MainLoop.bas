@@ -20,7 +20,7 @@ MainLoop
           rem   CharacterSelectInputEntry (bank10), FallingAnimation1
           rem   (bank12),
           rem   ArenaSelect1 (bank12), GameMainLoop (bank11),
-          rem   WinnerAnnouncement (bank12), UpdateMusic (bank16),
+          rem   WinnerAnnouncement (bank12), UpdateMusic (bank1),
           rem   titledrawscreen (bank9)
           rem
           rem Constraints: Must be colocated with MainLoopContinue,
@@ -45,10 +45,10 @@ MainLoopContinue
           rem
           rem Mutates: None (dispatcher only)
           rem
-          rem Called Routines: UpdateMusic (bank16) - accesses music
+          rem Called Routines: UpdateMusic (bank1) - accesses music
           rem state variables
-          if gameMode < 3 then gosub UpdateMusic bank16 : goto MainLoopDrawScreen : rem Constraints: Must be colocated with MainLoop, MainLoopDrawScreen
-          if gameMode = 7 then gosub UpdateMusic bank16 : goto MainLoopDrawScreen
+          if gameMode < 3 then gosub UpdateMusic bank1 : goto MainLoopDrawScreen : rem Constraints: Must be colocated with MainLoop, MainLoopDrawScreen
+          if gameMode = 7 then gosub UpdateMusic bank1 : goto MainLoopDrawScreen
 MainLoopDrawScreen
           rem Other modes (3-6) don’t need audio updates here - handled
           rem   in their subroutines

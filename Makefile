@@ -170,6 +170,7 @@ MUSIC_NAMES = AtariToday Interworldly Chaotica
 # Character 16: Character16Theme (placeholder)
 # Characters 17-30: Character*Theme (placeholders for future characters)
 # Character 31 (MethHound): DucksAway (reuses DucksAway from character 15)
+# Bank allocation: Bernie/OCascadia/Revontuli/EXO sit in Bank 15, the rest live in Bank 1
 GAME_THEME_SONGS = Bernie OCascadia Revontuli EXO Grizzards MagicalFairyForce Bolero LowRes RoboTito SongOfTheBear DucksAway \
 	Character16Theme Character17Theme Character18Theme Character19Theme Character20Theme Character21Theme Character22Theme Character23Theme \
 	Character24Theme Character25Theme Character26Theme Character27Theme Character28Theme Character29Theme Character30Theme

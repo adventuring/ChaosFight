@@ -17,7 +17,7 @@ BeginTitleScreen
           rem         COLUBK (TIA register), temp1 (passed to
           rem         StartMusic)
           rem
-          rem Called Routines: StartMusic (bank16) - starts title music,
+          rem Called Routines: StartMusic (bank1) - starts title music,
           rem   SetTitleWindowValues (bank12) - sets window values
           rem
           rem Constraints: Called from ChangeGameMode when transitioning
@@ -32,7 +32,7 @@ BeginTitleScreen
           COLUBK = ColGray(0)
           
           let temp1 = MusicChaotica : rem Start Chaotica title music
-          gosub StartMusic bank16
+          gosub StartMusic bank1
           
           gosub SetTitleWindowValues bank12 : rem Set window values for Title screen (ChaosFight only)
           

@@ -1,13 +1,12 @@
-DrawTitleScreen
-          rem
           rem ChaosFight - Source/Routines/TitleScreenRender.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+DrawTitleScreen
           rem Title Screen Rendering
           rem Render the title screen using a 48×42 bitmap generated from Source/Art/ChaosFight.xcf
           rem and included as Source/Generated/Art.ChaosFight.s
           rem BITMAP CONFIGURATION:
-          rem - Size: 48×42 pixels (displayed as 48×84 scanlines in
-          rem   double-height mode)
+          rem - Size: 48×42 pixels (displayed as 48×84 scanlines in double-height mode)
           rem   - Uses titlescreen kernel minikernel for display
           rem - Color-per-line support (84 color values, 42 × 2 for
           rem   double-height)

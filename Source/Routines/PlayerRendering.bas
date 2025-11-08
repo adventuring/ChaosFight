@@ -29,10 +29,7 @@ SetSpritePositions
           rem   missileX[0-3], missileY[0-3] - Projectile positions
           rem   QuadtariDetected, selectedCharacter3_R, selectedCharacter4_R
           rem Set Sprite Positions
-          rem Updates hardware sprite position registers for all active
-          rem   entities.
-          rem Updates hardware sprite position registers for all active
-          rem entities (players and missiles)
+          rem Update hardware sprite position registers for all active players and missiles.
           rem
           rem Input: playerX[], playerY[] (global arrays) = player
           rem positions, missileX[] (global array) = missile X

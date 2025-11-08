@@ -396,7 +396,6 @@ CS_HandlePlayer1Fire
 
 CharacterSelectHandleQuadtari
           if !(controllerStatus & SetQuadtariDetected) then CS_SkipPlayer3 : rem Handle Player 3 input (joy0 on odd frames)
-          if selectedCharacter3_R = 0 then CS_SkipPlayer3
           if joy0left then CS_HandlePlayer3Left
           if joy0right then CS_HandlePlayer3Right
           rem Use skip-over pattern to avoid complex || operator
@@ -407,7 +406,6 @@ CS_Player3LockClearDone
 CS_SkipPlayer3
           
           if !(controllerStatus & SetQuadtariDetected) then CS_SkipPlayer4 : rem Handle Player 4 input (joy1 on odd frames)
-          if selectedCharacter4_R = 0 then CS_SkipPlayer4
           if joy1left then CS_HandlePlayer4Left
           if joy1right then CS_HandlePlayer4Right
           rem Use skip-over pattern to avoid complex || operator
@@ -553,22 +551,26 @@ CharacterSelectReadyDone
           return
 
 CharacterSelectFinish
-          let selectedCharacter1 = playerCharacter[0] : rem Store final selections
-          let selectedCharacter2_W = playerCharacter[1]
-          let selectedCharacter3_W = playerCharacter[2]
-          let selectedCharacter4_W = playerCharacter[3]
-          
+          rem Finalize selections and transition to falling animation
+          rem
+          rem Input: playerCharacter[] (global array) = character selections,
+          rem        playerState[] (global array) = facing flags per player
+          rem
+          rem Output: Facing bit set for each active player,
+          rem         gameMode set to ModeFallingAnimation
+          rem
+          rem Mutates: playerState[], gameMode
           rem Initialize facing bit (bit 0) for all selected players
-          if selectedCharacter1 = NoCharacter then SkipCharacter1Facing : rem (default: face right = 1)
+          if playerCharacter[0] = NoCharacter then SkipCharacter1Facing : rem (default: face right = 1)
           let playerState[0] = playerState[0] | 1
 SkipCharacter1Facing
-          if selectedCharacter2_R = NoCharacter then SkipCharacter2Facing
+          if playerCharacter[1] = NoCharacter then SkipCharacter2Facing
           let playerState[1] = playerState[1] | 1
 SkipCharacter2Facing
-          if selectedCharacter3_R = NoCharacter then SkipCharacter3Facing
+          if playerCharacter[2] = NoCharacter then SkipCharacter3Facing
           let playerState[2] = playerState[2] | 1
 SkipCharacter3Facing
-          if selectedCharacter4_R = NoCharacter then SkipCharacter4Facing
+          if playerCharacter[3] = NoCharacter then SkipCharacter4Facing
           let playerState[3] = playerState[3] | 1
 SkipCharacter4Facing
           

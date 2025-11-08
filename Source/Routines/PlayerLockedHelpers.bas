@@ -12,23 +12,9 @@ GetPlayerLocked
           rem   Bits 4-5: Player 2
           rem   Bits 6-7: Player 3
           rem Get Player Locked State
-          rem Gets the locked state for a specific player
-          rem
-          rem INPUT: temp1 = player index (0-3)
-          rem
-          rem OUTPUT: temp2 = locked state (0=unlocked, 1=normal,
-          rem 2=handicap)
-          rem Get the locked state for a specific player from bit-packed
-          rem playerLocked variable
-          rem
-          rem Input: temp1 = player index (0-3), playerLocked (global) =
-          rem bit-packed locked states
-          rem
-          rem Output: temp2 = locked state (0=unlocked, 1=normal,
-          rem 2=handicap)
-          rem
-          rem Mutates: temp2 (return value), temp3 (used for bit
-          rem extraction)
+          rem Input: temp1 = player index (0-3), playerLocked (bit-packed)
+          rem Output: temp2 = locked state (0=unlocked, 1=normal, 2=handicap)
+          rem Mutates: temp2, temp3
           rem
           rem Called Routines: None
           rem Constraints: None

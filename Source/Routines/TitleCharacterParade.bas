@@ -114,20 +114,8 @@ ParadeCharacterLeft
 DrawParadeCharacter
           rem
           rem Draw Parade Character
-          rem Renders the current parade character at bottom of screen
-          rem INPUT VARIABLES:
-          rem   titleParadeCharacter - Character index (0-MaxCharacter)
-          rem   titleParadeX - X position on screen
-          rem USES:
-          rem   player0x, player0y - Sprite position
-          rem   COLUP0 - Sprite color
-          rem Renders the current parade character at bottom of screen
-          rem
-          rem Input: titleParadeX (global) = X position of parade
-          rem character
-          rem        controllerStatus (global) = controller detection
-          rem        state
-          rem        rand (global) = random number generator
+          rem Render the current parade character at the bottom of the screen.
+          rem Input: titleParadeCharacter, titleParadeX, controllerStatus, rand
           rem
           rem Output: player0x, player0y set, COLUP0 set, sprite drawn
           rem via DrawParadeCharacterSprite
@@ -215,24 +203,9 @@ DrawParadeCharacterSprite
           rem   positions
           rem
           rem INPUT: titleParadeTimer (for animation frame selection)
-          rem USES: player0 sprite data
-          rem Renders running animation sprite with alternating leg
-          rem positions
-          rem
-          rem Input: titleParadeTimer (global) = frame counter (for
-          rem animation frame selection)
-          rem
-          rem Output: player0 sprite data set to running animation frame
-          rem
-          rem Mutates: player0 sprite data (set via inline sprite
-          rem definition)
-          rem
-          rem Called Routines: None (uses inline sprite data)
-          rem
-          rem Constraints: Must be colocated with DrawParadeFrame1
-          rem (called via goto)
-          rem              Called from DrawParadeCharacter (bank9)
-          rem Draw running animation sprite for parade character
+          rem Render running animation sprite with alternating leg positions.
+          rem Input: titleParadeTimer (frame counter)
+          rem Output: player0 sprite data updated from inline frames
           if (titleParadeTimer & 8) then DrawParadeFrame1 : rem Simple running animation with alternating leg positions
           rem Frame 2 - right leg forward
                     player0:

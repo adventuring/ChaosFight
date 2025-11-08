@@ -33,15 +33,14 @@ BeginGameLoop
           rem
           rem Input: ControllerStatus (global) = controller detection
           rem state
-          rem        SelectedCharacter1, SelectedCharacter2, selectedCharacter3_R,
-          rem        selectedCharacter4_R (global) = character selections
+          rem        playerCharacter[] (global array) = character selections
           rem        PlayerLocked[] (global array) = lock states for
           rem        handicap calculation
           rem
           rem Output: All game state initialized for gameplay
           rem
           rem Mutates: PlayerX[], PlayerY[], PlayerState[],
-          rem PlayerHealth[], PlayerCharacter[],
+          rem PlayerHealth[], playerCharacter[],
           rem         PlayerTimers[], playerVelocityX[],
           rem         playerVelocitySubpixelX[],
           rem         playerVelocitySubpixelY[], playerSubpixelX[],
@@ -136,44 +135,22 @@ InitPositionsDone
               let PlayerHealth[currentPlayer] = PlayerHealthMax
 PlayerHealthSet
           next
-          rem Skip to next player after setting health
-          rem
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with BeginGameLoop
           
           for currentPlayer = 0 to 3 : rem Initialize player timers
               let playerTimers_W[currentPlayer] = 0
-          next
-          
-          for currentPlayer = 0 to 3 : rem Initialize player velocity
               let playerVelocityX[currentPlayer] = 0
               let playerVelocitySubpixelX[currentPlayer] = 0
               let playerVelocitySubpixelY[currentPlayer] = 0
               let playerSubpixelX_W[currentPlayer] = 0
               let playerSubpixelY_W[currentPlayer] = 0
-          next
-          
-          for currentPlayer = 0 to 3 : rem Initialize player damage values
               let playerDamage_W[currentPlayer] = 22
           next
           
-          let PlayerCharacter[0] = SelectedCharacter1 : rem Set character types from character select
-          let PlayerCharacter[1] = SelectedCharacter2
-          let PlayerCharacter[2] = selectedCharacter3_R
-          let PlayerCharacter[3] = selectedCharacter4_R
-
           rem Update Players34Active flag based on character selections
           rem Flag is used for missile multiplexing (only multiplex when
           let ControllerStatus  = ControllerStatus & ClearPlayers34Active : rem   players 3 or 4 are active)
-          if !(SelectedCharacter3 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Clear flag first
-          if !(SelectedCharacter4 = 255) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Set if Player 3 selected
+          if !(playerCharacter[2] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Clear flag first
+          if !(playerCharacter[3] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active : rem Set if Player 3 selected
           rem Set if Player 4 selected
 
           rem Initialize missiles
@@ -197,10 +174,10 @@ PlayerHealthSet
           let winScreenTimer_W = 0 : rem No rank being displayed
           rem Reset win screen timer
 
-          if !(SelectedCharacter1 = 255) then let playersRemaining_W = playersRemaining_R + 1 : rem Count initial players
-          if !(SelectedCharacter2 = 255) then let playersRemaining_W = playersRemaining_R + 1
-          if !(selectedCharacter3_R = 255) then let playersRemaining_W = playersRemaining_R + 1
-          if !(selectedCharacter4_R = 255) then let playersRemaining_W = playersRemaining_R + 1
+          if !(playerCharacter[0] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1 : rem Count initial players
+          if !(playerCharacter[1] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1
+          if !(playerCharacter[2] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1
+          if !(playerCharacter[3] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1
 
           rem Frame counter is automatically initialized and incremented
           rem by batariBASIC kernel

@@ -36,22 +36,9 @@ LoadSoundPointer
           return
           
 LoadSoundNote
-          rem Load next note from sound effect stream using assembly for
-          rem   pointer access
-          rem
-          rem Input: SoundEffectPointerL/H points to current note in
-          rem   Sound_Voice0 stream
-          rem
-          rem Output: Updates TIA registers, advances pointer, sets
-          rem   SoundEffectFrame
-          rem Load next note from sound effect stream using assembly for
-          rem pointer access (Voice 0)
-          rem
-          rem Input: SoundEffectPointerL, soundEffectPointerH_R (global
-          rem SCRAM) = pointer to current note in Sound_Voice0 stream
-          rem
-          rem Output: TIA registers updated (AUDC0, AUDF0, AUDV0),
-          rem pointer advanced by 4 bytes, SoundEffectFrame set
+          rem Load next sound-effect note (assembly pointer access, Voice 0).
+          rem Input: SoundEffectPointerL/H (global SCRAM) = current note pointer
+          rem Output: Updates AUDC0/AUDF0/AUDV0, advances pointer, sets SoundEffectFrame
           rem
           rem Mutates: temp2-temp6 (used for calculations), AUDC0,
           rem AUDF0, AUDV0 (TIA registers) = sound registers (updated),

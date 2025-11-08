@@ -942,18 +942,13 @@ CharacterSelectCompleted
           rem and initializes facing directions)
           rem
           rem Input: playerCharacter[] (global array) = current character
-          rem selections, selectedCharacter1, selectedCharacter2_R,
-          rem selectedCharacter3_R, selectedCharacter4_R (global SCRAM) = stored
           rem selections, playerState[] (global array) = player states,
           rem NoCharacter (global constant) = no character constant
           rem
           rem Output: Selected characters stored, facing directions
           rem initialized (default: face right = 1)
           rem
-          rem Mutates: selectedCharacter1 (global) = player 1 selection
-          rem (set), selectedCharacter2_W, selectedCharacter3_W, selectedCharacter4_W
-          rem (global SCRAM) = player 2-4 selections (set),
-          rem playerState[] (global array) = player states (facing bit
+          rem Mutates: playerState[] (global array) = player states (facing bit
           rem set for selected players)
           rem
           rem Called Routines: None
@@ -962,22 +957,17 @@ CharacterSelectCompleted
           rem character selections (not NoCharacter). Default facing:
           rem right (bit 0 = 1)
           rem Character selection complete
-          let selectedCharacter1  = playerCharacter[0] : rem Store selected characters for use in game
-          let selectedCharacter2_W  = playerCharacter[1]
-          let selectedCharacter3_W  = playerCharacter[2]
-          let selectedCharacter4_W  = playerCharacter[3]
-          
           rem Initialize facing bit (bit 0) for all selected players
-          if selectedCharacter1 = NoCharacter then SkipCharacter1FacingSel : rem (default: face right = 1)
+          if playerCharacter[0] = NoCharacter then SkipCharacter1FacingSel : rem (default: face right = 1)
           let playerState[0] = playerState[0] | 1
 SkipCharacter1FacingSel
-          if selectedCharacter2_R = NoCharacter then SkipCharacter2FacingSel
+          if playerCharacter[1] = NoCharacter then SkipCharacter2FacingSel
           let playerState[1] = playerState[1] | 1
 SkipCharacter2FacingSel
-          if selectedCharacter3_R = NoCharacter then SkipCharacter3FacingSel
+          if playerCharacter[2] = NoCharacter then SkipCharacter3FacingSel
           let playerState[2] = playerState[2] | 1
 SkipCharacter3FacingSel
-          if selectedCharacter4_R = NoCharacter then SkipCharacter4FacingSel
+          if playerCharacter[3] = NoCharacter then SkipCharacter4FacingSel
           let playerState[3] = playerState[3] | 1
 SkipCharacter4FacingSel
 

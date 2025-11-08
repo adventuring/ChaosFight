@@ -36,27 +36,22 @@ ApplySpecialMovement
           rem Called Routines: None
           rem
           rem Constraints: None
-          rem Player 0 - Frooty (8) and Dragon of Storms (2) skip
-          rem gravity
+          rem Player 0 - Frooty (8) and Dragon of Storms (2) skip gravity
           temp4 = playerCharacter[0]
           if temp4 = 8 then ApplySpecialMovementP1
           if temp4 = 2 then ApplySpecialMovementP1 : rem Frooty: no gravity (free flight)
 ApplySpecialMovementP1
-          rem Dragon of Storms: no gravity (free flight)
-          rem Player 1 - Frooty (8) and Dragon of Storms (2) skip
-          rem gravity
+          rem Player 1 - Frooty (8) and Dragon of Storms (2) skip gravity
           temp4 = playerCharacter[1]
           if temp4 = 8 then ApplySpecialMovementP2
           if temp4 = 2 then ApplySpecialMovementP2 : rem Frooty: no gravity (free flight)
 ApplySpecialMovementP2
-          rem Dragon of Storms: no gravity (free flight)
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerCharacter[2] = 8 then ApplySpecialMovementP3 : rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter3_R = 255) then if playerCharacter[2] = 2 then ApplySpecialMovementP3
 ApplySpecialMovementP3
-          rem Dragon of Storms: no gravity (free flight)
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerCharacter[3] = 8 then return : rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
           if controllerStatus & SetQuadtariDetected then if !(selectedCharacter4_R = 255) then if playerCharacter[3] = 2 then return
-          rem Dragon of Storms: no gravity (free flight)
+          rem Player 3 - Frooty (8) and Dragon of Storms (2) skip gravity
           return
 
 ApplyPlayerSpecialMovement

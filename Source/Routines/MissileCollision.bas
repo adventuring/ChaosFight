@@ -31,12 +31,12 @@ CheckAllMissileCollisions
           rem CheckVisibleMissileCollision (tail call) - if visible
           rem missile, CheckAOECollision (goto) - if AOE attack
           rem Constraints: None
-          rem First, check if this player has an active missile
-          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp1 = 0 then let temp6 = 1
-          if temp1 = 1 then let temp6 = 2
-          if temp1 = 2 then let temp6 = 4
-          if temp1 = 3 then let temp6 = 8
+          rem Optimized: Calculate missile active bit flag with formula
+          rem Bit flag: 1 << temp1 (1, 2, 4, 8 for players 0, 1, 2, 3)
+          let temp6 = 1
+          for temp4 = 0 to temp1 - 1
+            let temp6 = temp6 * 2
+          next
           let temp4 = missileActive & temp6
           if temp4 = 0 then return 
           rem No active missile
@@ -107,57 +107,19 @@ CheckVisibleMissileCollision
           rem   Top:    missileY
           rem   Bottom: missileY + missileHeight
           
-          let temp4 = 255 : rem Check collision with each player (except owner)
-          rem Default: no hit
-          
-          rem Check Player 1 (index 0)
-          
-          if temp1 = 0 then DoneSecondPlayer0
-          if playerHealth[0] = 0 then DoneSecondPlayer0
-          if temp2 >= playerX[0] + PlayerSpriteHalfWidth then DoneSecondPlayer0
-          if temp2 + temp6 <= playerX[0] then DoneSecondPlayer0
-          if temp3 >= playerY[0] + PlayerSpriteHeight then DoneSecondPlayer0
-          if temp3 + temp3 <= playerY[0] then DoneSecondPlayer0
-          let temp4 = 0
-          return
-DoneSecondPlayer0
-          
-          rem Check Player 2 (index 1)
-          
-          if temp1 = 1 then DoneSecondPlayer1
-          if playerHealth[1] = 0 then DoneSecondPlayer1
-          if temp2 >= playerX[1] + PlayerSpriteHalfWidth then DoneSecondPlayer1
-          if temp2 + temp6 <= playerX[1] then DoneSecondPlayer1
-          if temp3 >= playerY[1] + PlayerSpriteHeight then DoneSecondPlayer1
-          if temp3 + temp3 <= playerY[1] then DoneSecondPlayer1
-          let temp4 = 1
-          return
-DoneSecondPlayer1
-          
-          rem Check Player 3 (index 2)
-          
-          if temp1 = 2 then DoneSecondPlayer2
-          if playerHealth[2] = 0 then DoneSecondPlayer2
-          if temp2 >= playerX[2] + PlayerSpriteHalfWidth then DoneSecondPlayer2
-          if temp2 + temp6 <= playerX[2] then DoneSecondPlayer2
-          if temp3 >= playerY[2] + PlayerSpriteHeight then DoneSecondPlayer2
-          if temp3 + temp3 <= playerY[2] then DoneSecondPlayer2
-          let temp4 = 2
-          return
-DoneSecondPlayer2
-          
-          rem Check Player 4 (index 3)
-          
-          if temp1 = 3 then DoneSecondPlayer3
-          if playerHealth[3] = 0 then DoneSecondPlayer3
-          if temp2 >= playerX[3] + PlayerSpriteHalfWidth then DoneSecondPlayer3
-          if temp2 + temp6 <= playerX[3] then DoneSecondPlayer3
-          if temp3 >= playerY[3] + PlayerSpriteHeight then DoneSecondPlayer3
-          if temp3 + temp3 <= playerY[3] then DoneSecondPlayer3
-          let temp4 = 3
-          return
-DoneSecondPlayer3
-          
+          rem Optimized: Loop through all players to check collisions instead of individual blocks
+          let temp4 = 255 : rem Default: no hit
+          for temp5 = 0 to 3
+            if temp5 = temp1 then goto NextPlayerCheck : rem Skip owner
+            if playerHealth[temp5] = 0 then goto NextPlayerCheck : rem Skip dead players
+            if temp2 >= playerX[temp5] + PlayerSpriteHalfWidth then goto NextPlayerCheck
+            if temp2 + temp6 <= playerX[temp5] then goto NextPlayerCheck
+            if temp3 >= playerY[temp5] + PlayerSpriteHeight then goto NextPlayerCheck
+            if temp3 + temp3 <= playerY[temp5] then goto NextPlayerCheck
+            let temp4 = temp5 : rem Hit detected!
+            return
+NextPlayerCheck
+          next
           return
 
 CheckAOECollision

@@ -1,129 +1,34 @@
-          rem ChaosFight - Source/Routines/ControllerDetection.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem CONTROLLER HARDWARE SUPPORT:
-          rem - CX-40 Joystick: Standard 2600 joystick
-          rem - Genesis 3-Button: Enhanced controller with Button C
-          rem - Joy2b+ Enhanced: Enhanced controller with Buttons II/III
-          rem - Quadtari 4-Player: Frame multiplexing for 4 players
-          rem - Buttons II/III (Joy2b+) use paddle ports INPT0-3,
-          rem   require different reading
-          rem Console and controller detection for 7800, Quadtari,
-          rem   Genesis, Joy2b+
+          rem ControllerDetection.bas - Console and controller detection
 
 CtrlDetConsole
-          rem 7800 detection method based on Grizzards by Bruce-Robert
-          rem
-          rem   Pocock
-          rem Genesis detection method based on Grizzards by
-          rem   Bruce-Robert Pocock
-          rem Console Detection (7800 Vs 2600)
-          rem Detect if running on Atari 7800 for enhanced features
-          rem Method: Check magic bytes in $D0/$D1 set by BIOS
-          rem Detect console type (7800 vs 2600) and fall through to
-          rem controller detection
-          rem
-          rem Input: None (reads hardware registers $D0/$D1)
-          rem
-          rem Output: Console type detected, controller detection
-          rem initiated
-          rem
-          rem Mutates: Console detection state (via ConsoleDetHW)
-          rem
-          rem Called Routines: ConsoleDetHW - detects console hardware
-          rem type
-          rem
-          rem Constraints: Falls through to CtrlDetPads after console
-          rem detection
-          rem Atari 7800 BIOS sets $D0=$2C and $D1=$A9 when loading
-          rem   cartridge
-          rem Check these before any other detection to avoid corrupting
-          rem   values
-          
-          rem Call proper console detection routine
-          rem ConsoleDetection.bas is included in same bank, so direct
-          gosub ConsoleDetHW : 
-          rem   call
+          rem Console detection (7800 vs 2600) - calls ConsoleDetHW
+          gosub ConsoleDetHW
           
           rem
           rem Fall through to controller detection
 
-          rem Controller Detection (monotonic - Upgrades Only)
-          rem Re-detect controllers each time Game Select pressed or
-          rem   title reached
-          rem MONOTONIC STATE MACHINE: Only allows upgrades, never
-          rem   downgrades
-          rem - Once Quadtari is detected, it can never be downgraded
-          rem - Once Genesis/Joy2B+ is detected, it can only be upgraded
-          rem   to Quadtari
-          rem - Standard joysticks can be upgraded to Genesis/Joy2B+ or
-          rem   Quadtari
-          rem Note: Genesis/Joy2b+ detection is contrary to Quadtari
-          
 CtrlDetPads
-          rem Re-detect controllers with monotonic upgrade (only
-          rem upgrades, never downgrades)
-          rem
-          rem Input: controllerStatus (global) = existing controller
-          rem capabilities, INPT0-5 (hardware registers) = paddle port
-          rem states, systemFlags (global) = system flags
-          rem
-          rem Output: controllerStatus (global) = updated controller
-          rem capabilities (upgraded only)
-          rem
-          rem Mutates: temp1-temp2 (used for status tracking),
-          rem controllerStatus (global) = controller capabilities,
-          rem systemFlags (global) = system flags (clears
-          rem ColorBWOverride and PauseButtonPrev on non-SECAM)
-          rem
-          rem Called Routines: CDP_DetectGenesis - detects Genesis
-          rem controllers, CDP_DetectJoy2bPlus - detects Joy2b+
-          rem controllers
-          rem
-          rem Constraints: Monotonic state machine - only allows
-          rem upgrades, never downgrades. Quadtari takes priority over
-          rem Genesis/Joy2B+
-          
-          rem Save existing controller capabilities (monotonic - never
-          let temp1 = controllerStatus : 
-          rem   downgrade)
-          
-          let temp2 = 0 : 
-          rem Perform fresh detection into temporary variable
+          rem Re-detect controllers (monotonic upgrade only)
+          let temp1 = controllerStatus
+          let temp2 = 0
 #ifndef TV_SECAM
           let systemFlags = systemFlags & ClearSystemFlagColorBWOverride
           let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
 #endif
-          
-          rem Check for Quadtari (4 joysticks via multiplexing)
-          rem CANONICAL METHOD: Check INPT0-3 paddle ports for Quadtari
-          rem   signature
-          rem Quadtari presents specific button patterns on paddle ports
-          rem Left side: INPT0 LOW + INPT1 HIGH, or Right side: INPT2
-          rem   LOW + INPT3 HIGH
-          
-          rem Check left side controllers (INPT0/INPT1)
-          
+          rem Check for Quadtari
           if INPT0{7} then CDP_CheckRightSide
           if !INPT1{7} then CDP_CheckRightSide
           goto CDP_QuadtariFound
 CDP_CheckRightSide
-          
-          rem Check right side controllers (INPT2/INPT3)
-          
           if INPT2{7} then CDP_NoQuadtari
           if !INPT3{7} then CDP_NoQuadtari
           goto CDP_QuadtariFound
 CDP_NoQuadtari
-          
-          rem Quadtari not detected in this detection cycle
-          goto CDP_CheckGenesis : 
-          rem (Don’t clear existing Quadtari - monotonic upgrade only)
+          goto CDP_CheckGenesis
 
 CDP_QuadtariFound
-          let temp2 = temp2 | SetQuadtariDetected : 
-          rem Quadtari detected - set flag in new status
-          goto CDP_MergeStatus : 
-          rem Quadtari takes priority - skip Genesis/Joy2B+ detection
+          let temp2 = temp2 | SetQuadtariDetected
+          goto CDP_MergeStatus
 
 CDP_CheckGenesis
           rem Check for Genesis controller (only if Quadtari not already

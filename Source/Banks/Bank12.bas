@@ -8,6 +8,9 @@
 #include "Source/Data/CharacterTables.bas"
           rem Data tables for winner screen layouts, theme mapping, and character lookup tables
 
+#include "Source/Routines/CharacterData.bas"
+          rem Character data lookup functions
+
 #include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/FallingAnimation.bas"
 #include "Source/Routines/BeginArenaSelect.bas"

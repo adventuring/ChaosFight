@@ -38,9 +38,9 @@ CollisionCheckDistance
           let temp4 = playerY[temp2] - playerY[temp1]
           if temp4 < 0 then let temp4 = 0 - temp4
           let characterHeight_W = CharacterHeights[temp1]
-          let halfHeight1_W = characterHeight_R >> 1
+          let halfHeight1_W = characterHeight_R / 2
           let characterHeight_W = CharacterHeights[temp2]
-          let halfHeight2_W = characterHeight_R >> 1
+          let halfHeight2_W = characterHeight_R / 2
           let totalHeight_W = halfHeight1_R + halfHeight2_R
           if totalHeight_R = 0 then goto CollisionNextInner
           if temp4 >= totalHeight_R then goto CollisionNextInner

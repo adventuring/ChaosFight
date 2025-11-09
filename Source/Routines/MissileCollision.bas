@@ -47,7 +47,7 @@ CheckAllMissileCollisions
           rem Check if this is a visible missile or AOE attack
           rem Read missile width from character data (in Bank 6)
           let temp1 = temp5
-          gosub GetMissileWidth bank6
+          gosub GetMissileWidth bank12
           let temp6 = temp2 
           rem Missile width (0 = AOE, >0 = visible missile)
 
@@ -96,11 +96,11 @@ CheckVisibleMissileCollision
           rem Get character type from player
           rem Use characterType as index (preserve attackerIndex)
           let temp1 = temp5
-          gosub GetMissileWidth bank6
+          gosub GetMissileWidth bank12
           let temp6 = temp2 
           rem Missile width (temp2 now contains width)
           let temp1 = temp5
-          gosub GetMissileHeight bank6
+          gosub GetMissileHeight bank12
           let temp3 = temp2 
           rem Missile height (temp2 now contains height)
           rem Restore missileX/Y after width/height lookup

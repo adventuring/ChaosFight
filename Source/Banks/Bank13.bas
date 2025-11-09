@@ -10,7 +10,9 @@
           
           rem Input routines moved from Bank 11
 #include "Source/Routines/PlayerInput.bas"
-          rem Movement routines moved to Bank 6 for space optimization
+
+          rem Character selection routines moved for space optimization
+#include "Source/Routines/CharacterSelectMain.bas"
           rem CharacterControls.bas contains character-specific jump and
           rem down handlers
           rem   referenced by PlayerInput.bas via on...goto statements

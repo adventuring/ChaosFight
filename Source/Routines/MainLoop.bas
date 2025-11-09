@@ -41,7 +41,7 @@ MainLoopModeTitleScreen
 
 MainLoopModeCharacterSelect
           rem tail call
-          goto CharacterSelectInputEntry bank6
+          goto CharacterSelectInputEntry bank13
 
 MainLoopModeFallingAnimation
           rem tail call

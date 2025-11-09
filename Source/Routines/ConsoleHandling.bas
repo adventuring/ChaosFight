@@ -1,29 +1,6 @@
-          rem ChaosFight - Source/Routines/ConsoleHandling.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
-          rem Console Switch Handling
-          rem Handles Atari 2600 console switches during gameplay.
-          rem SWITCHES:
-          rem   switchreset - Game Reset → return to publisher prelude
-          rem   switchselect - Game Select → toggle pause
-          rem   switchbw - Color/B&W → handled in rendering
-          rem
+          rem ConsoleHandling.bas - Console switch handling
 WarmStart
           rem Warm Start / Reset Handler
-          rem AVAILABLE VARIABLES:
-          rem   play, 1=paused
-          rem systemFlags - Bit 4 (SystemFlagGameStatePaused): 0=normal
-          rem
-          rem Handles game reset from any screen/state.
-          rem Clears critical state variables and reinitializes hardware
-          rem   registers.
-          rem Called when RESET button is pressed.
-          rem
-          rem EFFECTS:
-          rem   - Clears game state variables
-          rem   - Reinitializes TIA color and audio registers
-          rem   - Resets gameMode to ModePublisherPrelude
-          rem   - Calls ChangeGameMode to transition to startup sequence
-          rem Handles game reset from any screen/state
           rem
           rem Input: None (called from MainLoop on RESET)
           rem
@@ -80,38 +57,6 @@ WarmStart
 
 HandleConsoleSwitches
           rem Main console switch handler
-          rem NOTE: RESET is now handled in MainLoop via centralized
-          rem   WarmStart call
-          rem This function only handles pause/select switches
-          rem Handle console switches during gameplay (pause/select,
-          rem Color/B&W, 7800 pause)
-          rem
-          rem Input: switchselect (hardware) = Game Select switch state
-          rem        switchbw (hardware) = Color/B&W switch state
-          rem        systemFlags (global) = system flags
-          rem        (SystemFlagGameStatePaused)
-          rem        temp2 (parameter) = player index for
-          rem        CheckEnhancedPause (0 or 1)
-          rem
-          rem Output: systemFlags updated (pause state toggled),
-          rem DetectControllers called if Select pressed
-          rem
-          rem Mutates: systemFlags (pause state toggled), temp1, temp2
-          rem (passed to CheckEnhancedPause),
-          rem         colorBWPrevious_W (updated via CheckColorBWToggle)
-          rem
-          rem Called Routines: CheckEnhancedPause - accesses controller
-          rem state, temp2,
-          rem   DetectControllers (bank14) - accesses controller
-          rem   detection state,
-          rem   CheckColorBWToggle - accesses switchbw,
-          rem   colorBWPrevious_R,
-          rem   Check7800PauseButton - accesses 7800 pause button state
-          rem
-          rem Constraints: Must be colocated with DonePlayer1Pause,
-          rem Player1PauseDone,
-          rem              DonePlayer2Pause, Player2PauseDone (all
-          rem              called via goto)
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
           let temp2 = 0 : 

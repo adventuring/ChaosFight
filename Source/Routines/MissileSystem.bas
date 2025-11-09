@@ -294,7 +294,7 @@ UpdateOneMissile
           rem Read missile flags from character data
           let temp1  = temp5 : 
           rem Get character index
-          gosub GetMissileFlags bank6 : 
+          gosub GetMissileFlags bank12 : 
           rem Use temp1 for flags lookup (temp1 will be overwritten)
           let temp5  = temp2
           rem Store flags
@@ -430,7 +430,7 @@ FrictionDone
           let temp5 = playerCharacter[temp1] : 
           rem   position above)
           let temp1 = temp5
-          gosub GetMissileFlags bank6
+          gosub GetMissileFlags bank12
           let temp5 = temp2
           rem temp5 now contains missile flags again
           rem Restore player index for MissileCollPF

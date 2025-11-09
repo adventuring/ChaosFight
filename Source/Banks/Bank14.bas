@@ -18,5 +18,10 @@
 #include "Source/Routines/BeginAttractMode.bas"
 #include "Source/Routines/AttractMode.bas"
 #include "Source/Routines/MovementSystem.bas"
+#include "Source/Routines/GuardEffects.bas"
+#include "Source/Routines/BeginFallingAnimation.bas"
+#include "Source/Routines/ConsoleDetection.bas"
+#include "Source/Routines/SpritePointerInit.bas"
+#include "Source/Routines/ArenaReloadUtils.bas"
 #include "Source/Routines/CharacterControlsJump.bas"
 

@@ -17,3 +17,4 @@
 #include "Source/Routines/WinnerAnnouncement.bas"
 #include "Source/Common/CharacterDefinitions.bas"
 #include "Source/Routines/TitlescreenWindowControl.bas"
+#include "Source/Routines/SpriteLoader.bas"

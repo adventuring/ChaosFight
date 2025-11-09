@@ -269,46 +269,46 @@ DispatchCharacterAttack
           return
 GotoBernieAttack
           rem
-          rem ATTACK TRAMPOLINE FUNCTIONS (bank 11 →
+          rem ATTACK TRAMPOLINE FUNCTIONS (bank 13 →
           rem Characterattacks.bas)
-          rem Local trampoline labels that jump to Bank 11 attack
+          rem Local trampoline labels that jump to Bank 10 attack
           rem handlers
           rem This allows on/goto to work with cross-bank references
 
-          goto BernieAttack bank9
+          goto BernieAttack bank10
 
 GotoCurlerAttack
-          goto CurlerAttack bank9
+          goto CurlerAttack bank10
 
 GotoDragonOfStormsAttack
-          goto DragonOfStormsAttack bank9
+          goto DragonOfStormsAttack bank10
 
 GotoZoeRyenAttack
-          goto ZoeRyenAttack bank9
+          goto ZoeRyenAttack bank10
 
 GotoFatTonyAttack
-          goto FatTonyAttack bank9
+          goto FatTonyAttack bank10
 
 GotoMegaxAttack
-          goto MegaxAttack bank9
+          goto MegaxAttack bank10
 
 GotoHarpyAttack
-          goto HarpyAttack bank9
+          goto HarpyAttack bank10
 
 GotoKnightGuyAttack
-          goto KnightGuyAttack bank9
+          goto KnightGuyAttack bank10
 
 GotoFrootyAttack
-          goto FrootyAttack bank9
+          goto FrootyAttack bank10
 
 GotoNefertemAttack
-          goto NefertemAttack bank9
+          goto NefertemAttack bank10
 
 GotoNinjishGuyAttack
-          goto NinjishGuyAttack bank9
+          goto NinjishGuyAttack bank10
 
 GotoPorkChopAttack
-          goto PorkChopAttack bank9
+          goto PorkChopAttack bank10
           goto CEJB_Done
 CEJB_CheckPlayer2Joy2bPlus
           rem Player 2: Check Joy2b+ controller

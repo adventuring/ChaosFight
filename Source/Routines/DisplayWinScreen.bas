@@ -38,7 +38,7 @@ DisplayWinScreen
           rem         temp1-temp6 plus SCRAM scratch (used for ranking calculations),
           rem         temp2
           rem
-          rem Called Routines: SetGameScreenLayout (bank8) - sets
+          rem Called Routines: SetGameScreenLayout (bank7) - sets
           rem screen layout,
           rem   DWS_GetBWMode - accesses switchbw, systemFlags,
           rem   DWS_LoadBWColors, DWS_LoadColorColors - set color table
@@ -57,7 +57,7 @@ DisplayWinScreen
           rem              gosub)
           rem Called from WinnerAnnouncement per-frame loop
           
-          gosub SetGameScreenLayout bank8
+          gosub SetGameScreenLayout bank7
           rem Set screen layout (32×8 for character display)
           
           rem Load winner screen playfield pattern

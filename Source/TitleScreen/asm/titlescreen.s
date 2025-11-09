@@ -86,7 +86,7 @@ bmp_48x2_3_height = bmp_48x2_3_height
 bmp_48x2_3_window = bmp_48x2_3_window
 bmp_48x2_3_values = bmp_48x2_3_values
 
-	include "TitleScreen/asm/48x2_generic_kernel.s"
+	; include "TitleScreen/asm/48x2_generic_kernel.s"
 
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 

@@ -34,7 +34,7 @@ BeginFallingAnimation
           rem         COLUBK (TIA register), playerX[0-3], playerY[0-3]
           rem         (set for active players)
           rem
-          rem Called Routines: SetGameScreenLayout (bank8) - sets screen
+          rem Called Routines: SetGameScreenLayout (bank7) - sets screen
           rem layout
           rem
           rem Constraints: Must be colocated with DonePlayer1Init,
@@ -49,7 +49,7 @@ BeginFallingAnimation
           let fallComplete = 0
           let activePlayers = 0
           
-          gosub SetGameScreenLayout bank8
+          gosub SetGameScreenLayout bank7
           rem Set game screen layout (32×8 for playfield scanning)
           
           COLUBK = ColGray(0)

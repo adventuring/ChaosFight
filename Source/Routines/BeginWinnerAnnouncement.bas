@@ -28,7 +28,7 @@ BeginWinnerAnnouncement
           rem         displayRank (set to 0),
           rem         temp1, temp2 (used for character/song lookup)
           rem
-          rem Called Routines: SetGameScreenLayout (bank8) - sets
+          rem Called Routines: SetGameScreenLayout (bank7) - sets
           rem screen layout,
           rem   StartMusic (bank1) - starts winner’s character theme
           rem   song
@@ -42,7 +42,7 @@ BeginWinnerAnnouncement
           rem winnerPlayerIndex should already be set by game end logic
           rem   (FindWinner in PlayerElimination.bas)
           
-          gosub SetGameScreenLayout bank8
+          gosub SetGameScreenLayout bank7
           rem Set screen layout (32×8 for character display)
           
           rem Set background color (B&W safe)

@@ -29,7 +29,7 @@ BeginArenaSelect
           rem         SetGameScreenLayout),
           rem         COLUBK (TIA register)
           rem
-          rem Called Routines: SetGameScreenLayout (bank8) - sets
+          rem Called Routines: SetGameScreenLayout (bank7) - sets
           rem screen layout
           rem
           rem Constraints: Called from ChangeGameMode when entering
@@ -41,7 +41,7 @@ BeginArenaSelect
           rem Initialize fire hold timer (for returning to Character
           rem   Select)
           
-          gosub SetGameScreenLayout bank8
+          gosub SetGameScreenLayout bank7
           rem Set screen layout (32×8 for character display)
           
           COLUBK = ColGray(0)

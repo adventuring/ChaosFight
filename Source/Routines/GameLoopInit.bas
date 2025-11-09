@@ -54,9 +54,9 @@ BeginGameLoop
           rem
           rem Called Routines: InitializeSpritePointers (bank14) - sets
           rem sprite pointer addresses,
-          rem   SetGameScreenLayout (bank8) - sets screen layout,
+          rem   SetGameScreenLayout (bank7) - sets screen layout,
           rem   GetPlayerLocked (bank10) - accesses player lock state,
-          rem   InitializeHealthBars (bank8) - initializes health bar
+          rem   InitializeHealthBars (bank7) - initializes health bar
           rem   state,
           rem   LoadArena (bank16) - loads arena data
           rem
@@ -68,7 +68,7 @@ BeginGameLoop
           gosub InitializeSpritePointers bank14
           rem Ensure pointers are set before loading any sprite data
           
-          gosub SetGameScreenLayout bank8
+          gosub SetGameScreenLayout bank7
           rem Set screen layout for gameplay (32×8 game layout)
           rem SuperChip variables var0-var15 available in gameplay
           
@@ -214,7 +214,7 @@ PlayerHealthInitDone
           NUSIZ3 = 5
           rem Player 3 (Player 4) - multisprite kernel
 
-          gosub InitializeHealthBars bank8
+          gosub InitializeHealthBars bank7
           rem Initialize health bars
 
           gosub LoadArena bank1

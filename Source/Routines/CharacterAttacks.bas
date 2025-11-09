@@ -44,11 +44,11 @@ BernieAttack
           rem we need it set first)
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Attack in facing direction
-          gosub PerformMeleeAttack bank9
+          gosub PerformMeleeAttack bank10
           rem Flip facing (XOR with bit 0)
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
           rem Attack in opposite direction
-          gosub PerformMeleeAttack bank9
+          gosub PerformMeleeAttack bank10
           rem Restore original facing (XOR again to flip back)
           let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
           return
@@ -77,7 +77,7 @@ CurlerAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (ground-based)
-          goto PerformRangedAttack bank9
+          goto PerformRangedAttack bank10
 
 DragonOfStormsAttack
           rem Dragon of Storms (Character 2) - Ranged attack (fireballs that arc
@@ -95,7 +95,7 @@ DragonOfStormsAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (fireballs that arc downwards)
-          goto PerformRangedAttack bank9
+          goto PerformRangedAttack bank10
 
 ZoeRyenAttack
           rem ZoeRyen (Character 3) - Ranged attack
@@ -112,7 +112,7 @@ ZoeRyenAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack
-          goto PerformRangedAttack bank9
+          goto PerformRangedAttack bank10
 
 FatTonyAttack
           rem FatTony (Character 4) - Ranged attack (magic ring lasers)
@@ -129,7 +129,7 @@ FatTonyAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (magic ring lasers)
-          goto PerformRangedAttack bank9
+          goto PerformRangedAttack bank10
 
 MegaxAttack
           rem Megax (Character 5) - Melee attack (fire breath visual -
@@ -147,7 +147,7 @@ MegaxAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (fire breath visual - missile stays stationary)
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 HarpyAttack
           rem
@@ -278,7 +278,7 @@ KnightGuyAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (sword visual - missile moves away then returns)
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 FrootyAttack
           rem Frooty (Character 8) - Ranged attack (magical sparkles
@@ -296,7 +296,7 @@ FrootyAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (magical sparkles from lollipop)
-          goto PerformRangedAttack bank9
+          goto PerformRangedAttack bank10
 
 NefertemAttack
           rem Nefertem (Character 9) - Melee attack
@@ -313,7 +313,7 @@ NefertemAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 NinjishGuyAttack
           rem NinjishGuy (Character 10) - Ranged attack (small bullet)
@@ -330,7 +330,7 @@ NinjishGuyAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (small bullet)
-          goto PerformRangedAttack bank9
+          goto PerformRangedAttack bank10
 
 PorkChopAttack
           rem PorkChop (Character 11) - Melee attack
@@ -347,7 +347,7 @@ PorkChopAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 RadishGoblinAttack
           rem RadishGoblin (Character 12) - Melee attack
@@ -364,7 +364,7 @@ RadishGoblinAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 RoboTitoAttack
           rem RoboTito (Character 13) - Melee attack
@@ -381,7 +381,7 @@ RoboTitoAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 UrsuloAttack
           rem Ursulo (Character 14) - Melee attack (claw swipe)
@@ -398,7 +398,7 @@ UrsuloAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (claw swipe)
-          gosub PerformMeleeAttack bank9
+          gosub PerformMeleeAttack bank10
           return
 
 ShamoneAttack
@@ -430,7 +430,7 @@ ShamoneAttack
           rem Light character, good jump
           rem Set jumping flag
           rem Then execute the attack (PerformMeleeAttack sets animation state)
-          gosub PerformMeleeAttack bank9
+          gosub PerformMeleeAttack bank10
           return
 
 Character17Attack
@@ -447,75 +447,75 @@ Character17Attack
           rem executes melee attack, spawns missile
           rem
           rem Constraints: Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character16Attack
           rem Character 16 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character18Attack
           rem Character 18 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character19Attack
           rem Character 19 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character20Attack
           rem Character 20 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character21Attack
           rem Character 21 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character22Attack
           rem Character 22 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character23Attack
           rem Character 23 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character24Attack
           rem Character 24 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character25Attack
           rem Character 25 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character26Attack
           rem Character 26 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character27Attack
           rem Character 27 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character28Attack
           rem Character 28 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character29Attack
           rem Character 29 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 
 Character30Attack
           rem Character 30 - Placeholder melee attack
           rem Tail call to PerformMeleeAttack
-          goto PerformMeleeAttack bank9
+          goto PerformMeleeAttack bank10
 

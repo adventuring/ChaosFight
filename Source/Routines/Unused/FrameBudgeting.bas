@@ -444,7 +444,7 @@ BudgetedMissileCollisionCheck
           rem BitMask[playerIndex] (1, 2, 4, 8)
           let temp6 = BitMask[temp1]
           let temp4 = missileActive & temp6
-          if temp4 then gosub CheckAllMissileCollisions bank8
+          if temp4 then gosub CheckAllMissileCollisions bank7
           return
           
 BudgetedMissileCollisionCheck2P
@@ -455,6 +455,6 @@ BudgetedMissileCollisionCheck2P
           let temp6 = BitMask[temp1]
           rem Calculate bit flag using O(1) array lookup:
           let temp4 = missileActive & temp6
-          if temp4 then gosub CheckAllMissileCollisions bank8
+          if temp4 then gosub CheckAllMissileCollisions bank7
           return
 

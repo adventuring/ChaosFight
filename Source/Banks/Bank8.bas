@@ -3,7 +3,7 @@
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Physics system (gravity, movement, special abilities) + screen layout +
-          rem   health bars + main loop dispatcher
+          rem   health bars
 
           bank 8
  
@@ -26,5 +26,4 @@
 #include "Source/Routines/PlayerPhysics.bas"
 #include "Source/Routines/SpecialMovement.bas"
 #include "Source/Routines/PlayerLockedHelpers.bas"
-#include "Source/Routines/MainLoop.bas"
 

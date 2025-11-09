@@ -148,7 +148,7 @@ game: \
 MANUAL_PDF = Dist/$(GAME)$(GAMEYEAR).pdf
 MANUAL_HTML = Dist/$(GAME)$(GAMEYEAR).html
 
-doc: $(MANUAL_PDF) $(MANUAL_HTML)
+doc: $(MANUAL_PDF) $(MANUAL_HTML) | Object/
 
 # Character sprite sheet names (32 characters: 16 main + 16 future)
 CHARACTER_NAMES = \

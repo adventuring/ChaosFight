@@ -150,6 +150,7 @@
           rem Include helper functions (must be in bank to access
           rem   bank-local symbols)
 #include "Source/Routines/MusicBankHelpers15.bas"
+#include "Source/Routines/CharacterControls.bas"
 
 
 

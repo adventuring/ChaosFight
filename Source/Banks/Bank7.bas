@@ -10,8 +10,6 @@
 #include "Source/Data/HealthBarPatterns.bas"
 #include "Source/Routines/MissileSystem.bas"
 #include "Source/Routines/Combat.bas"
-#include "Source/Routines/AnimationSystem.bas"
-#include "Source/Data/PlayerColorTables.bas"
 #include "Source/Routines/ScreenLayout.bas"
 #include "Source/Routines/HealthBarSystem.bas"
 

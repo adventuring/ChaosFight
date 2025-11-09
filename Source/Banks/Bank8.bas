@@ -22,4 +22,6 @@
 #include "Source/Routines/PlayerLockedHelpers.bas"
 #include "Source/Routines/MissileCollision.bas"
 #include "Source/Routines/ConsoleHandling.bas"
+#include "Source/Routines/AnimationSystem.bas"
+#include "Source/Data/PlayerColorTables.bas"
 

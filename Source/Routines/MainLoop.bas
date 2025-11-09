@@ -6,11 +6,11 @@ MainLoop
           rem Inputs: switchreset (hardware), gameMode (global 0-7)
           rem Outputs: Dispatches to mode-specific handlers
           rem Mutates: None; dispatcher only
-          rem Calls: WarmStart bank11, PublisherPreludeMain bank9, AuthorPrelude bank9,
-          rem        TitleScreenMain bank9, CharacterSelectInputEntry bank6,
+          rem Calls: WarmStart bank13, PublisherPreludeMain bank12, AuthorPrelude bank12,
+          rem        TitleScreenMain bank12, CharacterSelectInputEntry bank6,
           rem        FallingAnimation1 bank12, ArenaSelect1 bank12,
           rem        GameMainLoop bank11, WinnerAnnouncement bank12,
-          rem        UpdateMusic bank1, titledrawscreen bank9
+          rem        UpdateMusic bank1, titledrawscreen bank12
           rem Constraints: Must remain colocated with MainLoopContinue/MainLoopDrawScreen
 
           rem Entry point for entire game loop
@@ -22,15 +22,15 @@ MainLoop
 
 MainLoopModePublisherPrelude
           rem tail call
-          goto PublisherPreludeMain bank9
+          goto PublisherPreludeMain bank12
 
 MainLoopModeAuthorPrelude
           rem tail call
-          goto AuthorPrelude bank9
+          goto AuthorPrelude bank12
 
 MainLoopModeTitleScreen
           rem tail call
-          goto TitleScreenMain bank9
+          goto TitleScreenMain bank12
 
 MainLoopModeCharacterSelect
           rem tail call
@@ -70,10 +70,10 @@ MainLoopDrawScreen
           rem Inputs: gameMode (global 0-7)
           rem Outputs: Screen rendered via titledrawscreen or drawscreen
           rem Mutates: TIA registers, playfield, sprite state
-          rem Calls: titledrawscreen bank9 (title screens); colocated with MainLoop
+          rem Calls: titledrawscreen bank12 (title screens); colocated with MainLoop
           rem Notes: Modes 3-6 funnel through mode-specific draw logic
 
-          rem Titlescreen graphics and kernel reside in bank9
-          if gameMode < 3 then gosub DrawTitleScreen bank9
+          rem Titlescreen graphics and kernel reside in bank12
+          if gameMode < 3 then gosub DrawTitleScreen bank12
           if gameMode >= 3 then drawscreen
           goto MainLoop

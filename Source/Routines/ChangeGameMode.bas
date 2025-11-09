@@ -36,10 +36,10 @@ SetupPublisherPrelude
           rem Mutates: Publisher prelude state variables (via
           rem BeginPublisherPrelude)
           rem
-          rem Called Routines: BeginPublisherPrelude (bank9) - accesses
+          rem Called Routines: BeginPublisherPrelude (bank12) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginPublisherPrelude bank9
+          gosub BeginPublisherPrelude bank12
           return
           
 SetupAuthorPrelude
@@ -52,10 +52,10 @@ SetupAuthorPrelude
           rem Mutates: Author prelude state variables (via
           rem BeginAuthorPrelude)
           rem
-          rem Called Routines: BeginAuthorPrelude (bank9) - accesses
+          rem Called Routines: BeginAuthorPrelude (bank12) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginAuthorPrelude bank9
+          gosub BeginAuthorPrelude bank12
           return
           
 SetupTitle
@@ -68,10 +68,10 @@ SetupTitle
           rem Mutates: Title screen state variables (via
           rem BeginTitleScreen)
           rem
-          rem Called Routines: BeginTitleScreen (bank9) - accesses title
+          rem Called Routines: BeginTitleScreen (bank12) - accesses title
           rem screen state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginTitleScreen bank9
+          gosub BeginTitleScreen bank12
           return
           
 SetupCharacterSelect
@@ -165,8 +165,8 @@ SetupAttract
           rem Mutates: Attract mode state variables (via
           rem BeginAttractMode)
           rem
-          rem Called Routines: BeginAttractMode (bank9) - accesses
+          rem Called Routines: BeginAttractMode (bank12) - accesses
           rem attract mode state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginAttractMode bank9
+          gosub BeginAttractMode bank12
           return

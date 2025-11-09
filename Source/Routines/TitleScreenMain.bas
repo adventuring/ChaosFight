@@ -33,10 +33,10 @@ TitleScreenMain
           rem
           rem Mutates: None (dispatcher only)
           rem
-          rem Called Routines: UpdateCharacterParade (bank9) - accesses
+          rem Called Routines: UpdateCharacterParade (bank12) - accesses
           rem parade state,
-          rem   DrawTitleScreen (bank9) - accesses title screen state,
-          rem   titledrawscreen bank9 - accesses title screen graphics
+          rem   DrawTitleScreen (bank12) - accesses title screen state,
+          rem   titledrawscreen bank12 - accesses title screen graphics
           rem
           rem Constraints: Must be colocated with TitleSkipQuad,
           rem TitleScreenComplete
@@ -65,13 +65,13 @@ TitleDoneQuad
           rem Constraints: Must be colocated with TitleScreenMain
           
           rem Update character parade animation
-          gosub UpdateCharacterParade bank9
-          
+          gosub UpdateCharacterParade bank12
+
           rem Draw title screen
-          gosub DrawTitleScreen bank9
-          
+          gosub DrawTitleScreen bank12
+
           rem Draw screen with titlescreen kernel minikernel
-          rem (titlescreen graphics in Bank 9)
+          rem (titlescreen graphics in Bank 12)
           rem Note: MainLoop calls titledrawscreen, so this is only
           rem reached if called directly
           gosub DrawTitleScreen

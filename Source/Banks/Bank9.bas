@@ -31,6 +31,9 @@ end
 #include "Source/Data/CharacterThemeSongIndices.bas"
 #include "Source/Data/CharacterDataTables.bas"
 #include "Source/Data/CharacterPhysicsTables.bas"
+#include "Source/Routines/DisplayWinScreen.bas"
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+
           rem these may be relocated anywhere, if needed.
 #include "Source/Routines/BeginAttractMode.bas"
 #include "Source/Routines/AttractMode.bas"

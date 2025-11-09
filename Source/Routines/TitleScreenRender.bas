@@ -25,7 +25,7 @@ DrawTitleScreen
           rem Mutates: player0x, player0y, player1x, player1y (cleared
           rem to 0)
           rem
-          rem Called Routines: DrawParadeCharacter (bank9) - if
+          rem Called Routines: DrawParadeCharacter (bank12) - if
           rem titleParadeActive set
           rem
           rem Constraints: None
@@ -50,7 +50,7 @@ DrawTitleScreen
           rem Title screen: bmp_48x2_3_window = 42, others = 0
           
           rem Draw character parade if active
-          if titleParadeActive then gosub DrawParadeCharacter bank9
+          if titleParadeActive then gosub DrawParadeCharacter bank12
 
           rem Call titlescreen kernel to render the bitmap
           asm

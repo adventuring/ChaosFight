@@ -1,6 +1,9 @@
           rem ChaosFight - Source/Routines/PlayerPhysicsGravity.bas
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
+          rem Disable smart branching optimization to prevent label mismatch errors
+          rem smartbranching off
+
 PhysicsApplyGravity
           rem Player Physics - Gravity And Momentum
           rem Handles gravity, momentum, and recovery for all players.
@@ -341,6 +344,9 @@ MomentumRecoveryNext
           let temp1 = temp1 + 1
           rem Next player
           if temp1 < 4 then goto MomentumRecoveryLoop
-          
+
+          rem Re-enable smart branching optimization
+          rem smartbranching on
+
           return
 

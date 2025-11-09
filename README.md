@@ -50,12 +50,12 @@ See `Source/Common/Variables.bas` for complete memory layout.
 - **Bank 8**: Physics system (gravity, movement, special abilities) + screen layout + health bars + main loop dispatcher
 - **Bank 10**: Sprite rendering (character art loader, player rendering, elimination) + character attacks system
 - **Bank 11**: Gameplay loop (init/main/collision resolution/animation) + attack support data
-- **Bank 12**: Character data system (definitions, cycles, falling animation, fall damage)
+- **Bank 12**: Character data system + Titlescreen system (definitions, cycles, falling animation, titlescreen graphics/kernel)
 - **Bank 13**: Input system (movement, player input, guard effects)
 - **Bank 14**: Console handling (detection, controllers, game mode transitions, character controls)
 
 ### Special Purpose Banks
-- **Bank 9**: Titlescreen system (graphics assets, titlescreen kernel, preambles, attract mode, winner/data tables)
+- **Bank 9**: Winner/data tables
 - **Bank 16**: Arenas + drawscreen (main loop, arena data/loader, special sprites, numbers font, font rendering)
 
 ## Execution Flow

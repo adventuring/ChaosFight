@@ -51,6 +51,12 @@ DrawTitleScreen
           
           rem Draw character parade if active
           if titleParadeActive then gosub DrawParadeCharacter bank9
+
+          rem Call titlescreen kernel to render the bitmap
+          asm
+            jsr titledrawscreen
+          end
+
           return
 
           rem

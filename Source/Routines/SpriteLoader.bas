@@ -176,7 +176,7 @@ LoadSpecialSprite
           asm
 ; Set sprite pointer based on sprite index
           end
-          if temp6 = 1 then goto LoadCPUSprite
+          if temp6 = 1 then LoadCPUSprite
           if temp6 = 2 then goto LoadNoSprite
           goto LoadQuestionMarkSprite
           asm
@@ -198,12 +198,12 @@ LoadQuestionMarkSprite
 ; Constraints: Must be colocated with
 ; LoadQuestionMarkSpriteP0-P3
           end
-          if !temp3 then goto LoadQuestionMarkSpriteP0
+          if !temp3 then LoadQuestionMarkSpriteP0
           asm
 ; Use skip-over pattern to avoid complex compound statements
           end
-          if temp3 = 1 then goto LoadQuestionMarkSpriteP1
-          if temp3 = 2 then goto LoadQuestionMarkSpriteP2
+          if temp3 = 1 then LoadQuestionMarkSpriteP1
+          if temp3 = 2 then LoadQuestionMarkSpriteP2
           goto LoadQuestionMarkSpriteP3
           
 LoadQuestionMarkSpriteP0
@@ -295,12 +295,12 @@ LoadCPUSprite
 ;
 ; Constraints: Must be colocated with LoadCPUSpriteP0-P3
           end
-          if !temp3 then goto LoadCPUSpriteP0
+          if !temp3 then LoadCPUSpriteP0
           asm
 ; Use skip-over pattern to avoid complex compound statements
           end
-          if temp3 = 1 then goto LoadCPUSpriteP1
-          if temp3 = 2 then goto LoadCPUSpriteP2
+          if temp3 = 1 then LoadCPUSpriteP1
+          if temp3 = 2 then LoadCPUSpriteP2
           goto LoadCPUSpriteP3
           
 LoadCPUSpriteP0
@@ -388,12 +388,12 @@ LoadNoSprite
 ;
 ; Constraints: Must be colocated with LoadNoSpriteP0-P3
           end
-          if !temp3 then goto LoadNoSpriteP0
+          if !temp3 then LoadNoSpriteP0
           asm
 ; Use skip-over pattern to avoid complex compound statements
           end
-          if temp3 = 1 then goto LoadNoSpriteP1
-          if temp3 = 2 then goto LoadNoSpriteP2
+          if temp3 = 1 then LoadNoSpriteP1
+          if temp3 = 2 then LoadNoSpriteP2
           goto LoadNoSpriteP3
           
 LoadNoSpriteP0
@@ -725,7 +725,7 @@ LoadCharacterColors
 ; Highest priority: hurt state
           end
 
-          if temp4 then goto FlashingColor
+          if temp4 then FlashingColor
           asm
 ; Next priority: flashing state
           end
@@ -750,9 +750,9 @@ NormalColor
           end
           if (systemFlags & SystemFlagColorBWOverride)
 #ifdef TV_SECAM
-            goto PlayerIndexColors
+            PlayerIndexColors
 #endif
-            goto PlayerIndexColors
+            PlayerIndexColors
           asm
 ; NTSC/PAL: Use character-specific colors
           end
@@ -773,8 +773,8 @@ FlashingColor
 ;        temp3 = player number (0-3)
 ;        systemFlags (global) = B&W override flag
           end
-          if temp5 = 0 then goto PerLineFlashing
-          goto PlayerIndexColors
+          if temp5 = 0 then PerLineFlashing
+          PlayerIndexColors
           
 PerLineFlashing
           asm
@@ -795,7 +795,7 @@ PerLineFlashing
 ; Constraints: Must be colocated with LoadCharacterColors
 ; Use alternating bright/dim player index colors by frame
           end
-          if frame & 8 then goto PlayerIndexColors
+          if frame & 8 then PlayerIndexColors
           asm
 ; Use character color when frame bit 3 is clear
           end
@@ -932,7 +932,7 @@ HurtColor
 ; Dimmed version of normal color
 ; First get the normal color, then dim it
           end
-          if (systemFlags & SystemFlagColorBWOverride) then goto PlayerIndexColorsDim
+          if (systemFlags & SystemFlagColorBWOverride) then PlayerIndexColorsDim
           asm
 ; NTSC/PAL: dim the character color
           end

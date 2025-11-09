@@ -2,6 +2,7 @@
           rem ChaosFight - Source/Routines/ArenaLoader.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
+LoadArena
           rem Arena Loader
           rem Loads arena playfield data and colors based on
           rem   selectedArena.
@@ -10,8 +11,7 @@
           rem SECAM always uses B&W mode regardless of switch.
           rem NOTE: Arena data tables are provided by the bank that
           rem includes this file (Bank1 includes Source/Data/Arenas.bas).
-
-LoadArena
+          rem
           rem Load arena playfield data and colors based on
           rem selectedArena
           rem
@@ -71,13 +71,13 @@ LoadArenaByIndex
           rem Load playfield pointers from tables using index
           asm
             ldx temp1
-            lda ArenaPF1PointerL,x
+            lda ArenaPF1PointerL, x
             sta PF1pointer
-            lda ArenaPF1PointerH,x
+            lda ArenaPF1PointerH, x
             sta PF1pointer+1
-            lda ArenaPF2PointerL,x
+            lda ArenaPF2PointerL, x
             sta PF2pointer
-            lda ArenaPF2PointerH,x
+            lda ArenaPF2PointerH, x
             sta PF2pointer+1
 end
           
@@ -87,9 +87,9 @@ LoadArenaColorsColor
           rem Load arena color table pointer based on arena index
           asm
             ldx temp1
-            lda ArenaColorPointerL,x
+            lda ArenaColorPointerL, x
             sta pfcolortable
-            lda ArenaColorPointerH,x
+            lda ArenaColorPointerH, x
             sta pfcolortable+1
 end
           return

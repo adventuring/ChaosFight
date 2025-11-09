@@ -1,5 +1,3 @@
-<!-- markdownlint-disable-file MD013 -->
-
 # ChaosFight 25 - Minimum Viable Product Requirements
 
 ## Cold Start Initialization
@@ -424,15 +422,21 @@ Per-character missile spawn offsets are defined in
 | Fat Tony (4) | +18 | −6 | +7 | Magic ray (shares offsets with Zoe, tuned independently) |
 | Megax (5) | +17 | −5 | +4 | Fire breath anchored near mouth (stationary) |
 | Harpy (6) | — | — | — | No missile |
-| Knight Guy (7) | +8 | +8 | +10 | Sword swing handled via `HandleKnightGuyMissile`; starts at −2px overlap and animates out to +1px gap |
+| Knight Guy (7) | +8 | +8 | +10 | Sword swing handled via `HandleKnightGuyMissile` |
 | Frooty (8) | +20 | −5 | +6 | Sparkle projectile with 4px horizontal gap |
 | Nefertem (9) | — | — | — | No missile |
 | Ninjish Guy (10) | +20 | −6 | +9 | Shuriken spawns 4px ahead |
 | Pork Chop (11) | — | — | — | Melee only |
 | Radish Goblin (12) | — | — | — | Melee only |
-| Robo Tito (13) | +6 | +6 | +16 | Trunk drops vertically, occupying pixels 6–9 beneath sprite, ending 1px above ground |
+| Robo Tito (13) | +6 | +6 | +16 | Trunk drops vertically |
 | Ursulo (14) | — | — | — | Melee only |
 | Shamone (15) | — | — | — | Melee only |
+
+Knight Guy's sword starts at −2px overlap and animates out to +1px gap,
+then back.
+
+Robo Tito's trunk occupies pixels x=6–9 beneath sprite, ending 1px above
+ground.new
 
 These offsets guarantee that missiles spawn at artist-authored
 positions; adjusting a single character’s values will not affect others.

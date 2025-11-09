@@ -36,7 +36,7 @@ GameMainLoop
           rem HandleConsoleSwitches (bank14),
           rem   InputHandleAllPlayers (bank13), UpdateGuardTimers (bank14),
           rem   UpdateCharacterAnimations (bank11),
-          rem   UpdatePlayerMovement (bank13), PhysicsApplyGravity (bank8),
+          rem   UpdatePlayerMovement (bank3), PhysicsApplyGravity (bank8),
           rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank8),
           rem   CheckBoundaryCollisions (bank8),
           rem   CheckPlayfieldCollisionAllDirections (bank8),
@@ -58,8 +58,8 @@ GameMainLoop
           gosub ReadEnhancedButtons
           rem   II/III)
           
-          gosub HandleConsoleSwitches bank14 :
-          rem Handle console switches (in Bank 14)
+          gosub HandleConsoleSwitches bank13 :
+          rem Handle console switches (in Bank 13)
 
           rem Check if game is paused - skip movement/physics/animation if so
           if systemFlags & SystemFlagGameStatePaused then goto GameMainLoopPaused

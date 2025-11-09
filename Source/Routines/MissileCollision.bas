@@ -26,7 +26,7 @@ CheckAllMissileCollisions
           rem Output: temp4 = hit player index (0-3) if hit, 0 if no hit
           rem Mutates: temp1-temp6, temp4
           rem
-          rem Called Routines: GetMissileWidth (bank6) - gets missile
+          rem Called Routines: GetMissileWidth (bank12) - gets missile
           rem width to determine if AOE or visible,
           rem CheckVisibleMissileCollision (tail call) - if visible
           rem missile, CheckAOECollision (goto) - if AOE attack
@@ -84,8 +84,8 @@ CheckVisibleMissileCollision
           rem Mutates: temp1-temp6 (used for calculations), temp4
           rem (return value)
           rem
-          rem Called Routines: GetMissileWidth (bank6) - gets missile
-          rem width, GetMissileHeight (bank6) - gets missile height
+          rem Called Routines: GetMissileWidth (bank12) - gets missile
+          rem width, GetMissileHeight (bank12) - gets missile height
           rem Constraints: None
           let temp2 = missileX[temp1]
           rem Get missile X/Y position

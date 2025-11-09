@@ -258,7 +258,7 @@ UpdateOneMissile
           rem (global) = sound effect ID (via guard bounce)
           rem
           rem Called Routines: GetPlayerMissileBitFlag - calculates bit
-          rem flag, GetMissileFlags (bank6) - gets missile flags,
+          rem flag, GetMissileFlags (bank12) - gets missile flags,
           rem HandleMegaxMissile - handles Megax stationary missile,
           rem HandleKnightGuyMissile - handles Knight Guy sword swing,
           rem MissileCollPF (bank7) - checks playfield collision,

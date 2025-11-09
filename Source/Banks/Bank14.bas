@@ -10,11 +10,10 @@
           rem Console detection and handling
 #include "Source/Routines/ConsoleDetection.bas"
 #include "Source/Routines/ControllerDetection.bas"
-#include "Source/Routines/ConsoleHandling.bas"
           
           rem Game mode transitions
 #include "Source/Routines/ChangeGameMode.bas"
           
           rem Player locked helpers
 #include "Source/Routines/CharacterControls.bas"
-#include "Source/Routines/GuardEffects.bas"
+

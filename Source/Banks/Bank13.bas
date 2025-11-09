@@ -4,6 +4,6 @@
           bank 13
 
 #include "Source/Routines/ColdStart.bas"
-#include "Source/Routines/PlayerInput.bas"
-#include "Source/Routines/MovementSystem.bas"
+#include "Source/Routines/GuardEffects.bas"
+#include "Source/Routines/ConsoleHandling.bas"
 

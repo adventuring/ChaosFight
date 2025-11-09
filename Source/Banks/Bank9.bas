@@ -33,7 +33,6 @@ end
 #include "Source/Data/CharacterPhysicsTables.bas"
 #include "Source/Routines/DisplayWinScreen.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
-#include "Source/Routines/FontRendering.bas"
 
           rem these may be relocated anywhere, if needed.
 #include "Source/Routines/BeginAttractMode.bas"

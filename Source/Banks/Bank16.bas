@@ -13,4 +13,5 @@
 #include "Source/Data/CPUSprite.bas"
 #include "Source/Data/NoSprite.bas"
 #include "Source/Generated/Numbers.bas"
+#include "Source/Routines/FontRendering.bas"
 

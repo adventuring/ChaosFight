@@ -347,7 +347,7 @@ HGI_CheckJoy0
 HGI_HandleDownPressed
           let temp4 = PlayerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler
-          gosub DispatchCharacterDown bank14
+          gosub DispatchCharacterDown bank13
           return
 HGI_CheckGuardRelease
           let temp2 = PlayerState[temp1] & 2

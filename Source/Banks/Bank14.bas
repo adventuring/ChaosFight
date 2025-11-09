@@ -11,12 +11,7 @@
           rem calls
           rem These are called before/after drawscreen, not during it
           
-          rem Console detection and handling
-#include "Source/Routines/ConsoleDetection.bas"
-#include "Source/Routines/ControllerDetection.bas"
-          
-          rem Game mode transitions
-#include "Source/Routines/ChangeGameMode.bas"
+          rem Console detection and handling moved to Bank 13
           
           rem Player locked helpers
 #include "Source/Routines/ColdStart.bas"
@@ -24,5 +19,5 @@
 #include "Source/Routines/AttractMode.bas"
 #include "Source/Routines/MovementSystem.bas"
 #include "Source/Routines/PlayerInput.bas"
-#include "Source/Routines/CharacterControls.bas"
+#include "Source/Routines/CharacterControlsJump.bas"
 

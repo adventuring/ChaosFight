@@ -10,4 +10,8 @@
 #include "Source/Routines/SpritePointerInit.bas"
 #include "Source/Routines/ArenaReloadUtils.bas"
 #include "Source/Routines/BeginFallingAnimation.bas"
+#include "Source/Routines/ConsoleDetection.bas"
+#include "Source/Routines/ControllerDetection.bas"
+#include "Source/Routines/ChangeGameMode.bas"
+#include "Source/Routines/CharacterControlsDown.bas"
 

@@ -78,7 +78,7 @@ FireHoldCheckDone
           rem Handle LEFT/RIGHT navigation for arena selection
           
           if joy0left then ArenaSelectLeft
-          goto ArenaSelectSkipLeft
+          goto ArenaSelectDoneLeft
 ArenaSelectLeft
           rem Decrement arena, wrap from 0 to RandomArena (255)
           if selectedArena_R = 0 then let selectedArena_W = RandomArena : goto ArenaSelectLeftSound
@@ -90,10 +90,10 @@ ArenaSelectLeftSound
           let temp1 = SoundMenuNavigate
           rem Play navigation sound
           gosub PlaySoundEffect bank15
-ArenaSelectSkipLeft
+ArenaSelectDoneLeft
           
           if joy0right then ArenaSelectRight
-          goto ArenaSelectSkipRight
+          goto ArenaSelectDoneRight
 ArenaSelectRight
           rem Increment arena, wrap from MaxArenaID to 0, then to
           rem RandomArena
@@ -108,7 +108,7 @@ ArenaSelectRightSound
           let temp1 = SoundMenuNavigate
           rem Play navigation sound
           gosub PlaySoundEffect bank15
-ArenaSelectSkipRight
+ArenaSelectDoneRight
           
           rem Display arena number ( 1-32) or ?? (random)
           rem Display using player4 (tens digit) and player5 (ones
@@ -194,14 +194,14 @@ DisplayDone
           rem Handle fire button press (confirm selection, start game)
           
           if joy0fire then ArenaSelectConfirm
-          goto ArenaSelectSkipConfirm
+          goto ArenaSelectDoneConfirm
 ArenaSelectConfirm
           let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
           goto StartGame1
           rem tail call
-ArenaSelectSkipConfirm
+ArenaSelectDoneConfirm
           
           rem drawscreen called by MainLoop
           return
@@ -291,14 +291,14 @@ ArenaSelectUpdateAnimations
           
           rem Update Player 1 animation (if character selected)
           
-          if playerCharacter[0] = NoCharacter then ArenaSelectSkipPlayer0Animation
-          if playerCharacter[0] = CPUCharacter then ArenaSelectSkipPlayer0Animation
-          if playerCharacter[0] = RandomCharacter then ArenaSelectSkipPlayer0Animation
+          if playerCharacter[0] = NoCharacter then ArenaSelectDonePlayer0Animation
+          if playerCharacter[0] = CPUCharacter then ArenaSelectDonePlayer0Animation
+          if playerCharacter[0] = RandomCharacter then ArenaSelectDonePlayer0Animation
           let temp1 = 0
           rem RandomCharacter = 253
           gosub ArenaSelectUpdatePlayerAnimation
-          
-ArenaSelectSkipPlayer0Animation
+
+ArenaSelectDonePlayer0Animation
           rem Skip Player 1 animation update (not selected)
           rem
           rem Input: None (label only, no execution)
@@ -312,13 +312,13 @@ ArenaSelectSkipPlayer0Animation
           rem Constraints: Must be colocated with
           rem ArenaSelectUpdateAnimations
           rem Update Player 2 animation (if character selected)
-          if playerCharacter[1] = NoCharacter then ArenaSelectSkipPlayer1Animation
-          if playerCharacter[1] = CPUCharacter then ArenaSelectSkipPlayer1Animation
-          if playerCharacter[1] = RandomCharacter then ArenaSelectSkipPlayer1Animation
+          if playerCharacter[1] = NoCharacter then ArenaSelectDonePlayer1Animation
+          if playerCharacter[1] = CPUCharacter then ArenaSelectDonePlayer1Animation
+          if playerCharacter[1] = RandomCharacter then ArenaSelectDonePlayer1Animation
           let temp1 = 1
           gosub ArenaSelectUpdatePlayerAnimation
-          
-ArenaSelectSkipPlayer1Animation
+
+ArenaSelectDonePlayer1Animation
           rem Skip Player 2 animation update (not selected)
           rem
           rem Input: None (label only, no execution)
@@ -333,14 +333,14 @@ ArenaSelectSkipPlayer1Animation
           rem ArenaSelectUpdateAnimations
           rem Update Player 3 animation (if Quadtari and character
           rem selected)
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation
-          if playerCharacter[2] = NoCharacter then ArenaSelectSkipPlayer2Animation
-          if playerCharacter[2] = CPUCharacter then ArenaSelectSkipPlayer2Animation
-          if playerCharacter[2] = RandomCharacter then ArenaSelectSkipPlayer2Animation
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectDonePlayer23Animation
+          if playerCharacter[2] = NoCharacter then ArenaSelectDonePlayer2Animation
+          if playerCharacter[2] = CPUCharacter then ArenaSelectDonePlayer2Animation
+          if playerCharacter[2] = RandomCharacter then ArenaSelectDonePlayer2Animation
           let temp1 = 2
           gosub ArenaSelectUpdatePlayerAnimation
-          
-ArenaSelectSkipPlayer2Animation
+
+ArenaSelectDonePlayer2Animation
           rem Skip Player 3 animation update (not in 4-player mode or
           rem not selected)
           rem
@@ -356,14 +356,14 @@ ArenaSelectSkipPlayer2Animation
           rem ArenaSelectUpdateAnimations
           rem Update Player 4 animation (if Quadtari and character
           rem selected)
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipPlayer23Animation
-          if playerCharacter[3] = NoCharacter then ArenaSelectSkipPlayer23Animation
-          if playerCharacter[3] = CPUCharacter then ArenaSelectSkipPlayer23Animation
-          if playerCharacter[3] = RandomCharacter then ArenaSelectSkipPlayer23Animation
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectDonePlayer23Animation
+          if playerCharacter[3] = NoCharacter then ArenaSelectDonePlayer23Animation
+          if playerCharacter[3] = CPUCharacter then ArenaSelectDonePlayer23Animation
+          if playerCharacter[3] = RandomCharacter then ArenaSelectDonePlayer23Animation
           let temp1 = 3
           gosub ArenaSelectUpdatePlayerAnimation
-          
-ArenaSelectSkipPlayer23Animation
+
+ArenaSelectDonePlayer23Animation
           rem Skip Player 3/4 animation updates (not in 4-player mode or
           rem not selected)
           return
@@ -441,14 +441,14 @@ ArenaSelectDrawCharacters
           
           rem Playfield defined by ArenaSelect data; no per-frame register writes
           rem Draw Player 1 character (top left) if selected
-          if playerCharacter[0] = NoCharacter then ArenaSelectSkipDrawP0
-          if playerCharacter[0] = CPUCharacter then ArenaSelectSkipDrawP0
-          if playerCharacter[0] = RandomCharacter then ArenaSelectSkipDrawP0
+          if playerCharacter[0] = NoCharacter then ArenaSelectDoneDrawP0
+          if playerCharacter[0] = CPUCharacter then ArenaSelectDoneDrawP0
+          if playerCharacter[0] = RandomCharacter then ArenaSelectDoneDrawP0
           player0x = 56 : player0y = 40
           let temp1 = 0
           gosub ArenaSelectDrawPlayerSprite
-          
-ArenaSelectSkipDrawP0
+
+ArenaSelectDoneDrawP0
           rem Skip Player 1 character drawing (not selected)
           rem
           rem Input: None (label only, no execution)
@@ -462,14 +462,14 @@ ArenaSelectSkipDrawP0
           rem Constraints: Must be colocated with
           rem ArenaSelectDrawCharacters
           rem Draw Player 2 character (top right) if selected
-          if playerCharacter[1] = NoCharacter then ArenaSelectSkipDrawP1
-          if playerCharacter[1] = CPUCharacter then ArenaSelectSkipDrawP1
-          if playerCharacter[1] = RandomCharacter then ArenaSelectSkipDrawP1
+          if playerCharacter[1] = NoCharacter then ArenaSelectDoneDrawP1
+          if playerCharacter[1] = CPUCharacter then ArenaSelectDoneDrawP1
+          if playerCharacter[1] = RandomCharacter then ArenaSelectDoneDrawP1
           player1x = 104 : player1y = 40
           let temp1 = 1
           gosub ArenaSelectDrawPlayerSprite
-          
-ArenaSelectSkipDrawP1
+
+ArenaSelectDoneDrawP1
           rem Skip Player 2 character drawing (not selected)
           rem
           rem Input: None (label only, no execution)
@@ -484,15 +484,15 @@ ArenaSelectSkipDrawP1
           rem ArenaSelectDrawCharacters
           rem Draw Player 3 character (bottom left) if Quadtari and
           rem selected
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23
-          if playerCharacter[2] = NoCharacter then ArenaSelectSkipDrawP2
-          if playerCharacter[2] = CPUCharacter then ArenaSelectSkipDrawP2
-          if playerCharacter[2] = RandomCharacter then ArenaSelectSkipDrawP2
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectDoneDrawP23
+          if playerCharacter[2] = NoCharacter then ArenaSelectDoneDrawP2
+          if playerCharacter[2] = CPUCharacter then ArenaSelectDoneDrawP2
+          if playerCharacter[2] = RandomCharacter then ArenaSelectDoneDrawP2
           player2x = 56 : player2y = 80
           let temp1 = 2
           gosub ArenaSelectDrawPlayerSprite
-          
-ArenaSelectSkipDrawP2
+
+ArenaSelectDoneDrawP2
           rem Skip Player 3 character drawing (not in 4-player mode or
           rem not selected)
           rem
@@ -508,15 +508,15 @@ ArenaSelectSkipDrawP2
           rem ArenaSelectDrawCharacters
           rem Draw Player 4 character (bottom right) if Quadtari and
           rem selected
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectSkipDrawP23
-          if playerCharacter[3] = NoCharacter then ArenaSelectSkipDrawP23
-          if playerCharacter[3] = CPUCharacter then ArenaSelectSkipDrawP23
-          if playerCharacter[3] = RandomCharacter then ArenaSelectSkipDrawP23
+          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectDoneDrawP23
+          if playerCharacter[3] = NoCharacter then ArenaSelectDoneDrawP23
+          if playerCharacter[3] = CPUCharacter then ArenaSelectDoneDrawP23
+          if playerCharacter[3] = RandomCharacter then ArenaSelectDoneDrawP23
           player3x = 104 : player3y = 80
           let temp1 = 3
           gosub ArenaSelectDrawPlayerSprite
-          
-ArenaSelectSkipDrawP23
+
+ArenaSelectDoneDrawP23
           rem Skip Player 3/4 character drawing (not in 4-player mode or
           rem not selected)
           return

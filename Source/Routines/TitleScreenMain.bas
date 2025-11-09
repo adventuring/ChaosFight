@@ -48,10 +48,10 @@ TitleScreenMain
           if joy1fire then TitleScreenComplete
           
           rem Check Quadtari controllers (Players 3 & 4 if active)
-          if 0 = (controllerStatus & SetQuadtariDetected) then TitleSkipQuad
+          if 0 = (controllerStatus & SetQuadtariDetected) then TitleDoneQuad
           if !INPT0{7} then TitleScreenComplete
           if !INPT2{7} then TitleScreenComplete
-TitleSkipQuad
+TitleDoneQuad
           rem Skip Quadtari controller check (not in 4-player mode)
           rem
           rem Input: None (label only, no execution)

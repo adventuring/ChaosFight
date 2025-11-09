@@ -195,8 +195,8 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz
-	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
-		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
+	if [ -x ~/AppImages/MuseScore*.appimage ]; then \
+		~/AppImages/MuseScore*.appimage --export-to $@ $<; \
 	elif which mscore; then \
 		mscore --export-to $@ $<; \
 	else \
@@ -204,8 +204,8 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 	fi
 
 %.flac: %.mscz
-	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
-		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \		
+	if [ -x ~/AppImages/MuseScore*.appimage ]; then \
+		~/AppImages/MuseScore*.appimage --export-to $@ $<; \
 	elif which mscore; then \
 		mscore --export-to $@ $<; \
 	else \
@@ -213,8 +213,8 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 	fi
 
 %.ogg: %.mscz
-	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
-		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
+	if [ -x ~/AppImages/MuseScore*.appimage ]; then \
+		~/AppImages/MuseScore*.appimage --export-to $@ $<; \
 	elif which mscore; then \
 		mscore --export-to $@ $<; \
 	else \
@@ -222,8 +222,8 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 	fi
 
 %.pdf: %.mscz
-	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
-		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
+	if [ -x ~/AppImages/MuseScore*.appimage ]; then \
+		~/AppImages/MuseScore*.appimage --export-to $@ $<; \
 	elif which mscore; then \
 		mscore --export-to $@ $<; \
 	else \

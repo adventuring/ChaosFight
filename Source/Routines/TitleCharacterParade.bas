@@ -48,15 +48,15 @@ UpdateCharacterParade
           let titleParadeTimer = titleParadeTimer + 1 : 
           rem Increment parade timer
           
-          if titleParadeTimer < TitleParadeDelayFrames then return : 
           rem Start parade after ~4 seconds (250 frames at 60fps)
+          if titleParadeTimer < TitleParadeDelayFrames then return
           
-          if !titleParadeActive then StartNewParadeCharacter : 
           rem Check if we need to start a new character
-          
-          if titleParadeActive then MoveParadeCharacter : 
+          if !titleParadeActive then StartNewParadeCharacter : 
+
           rem Move character across screen (if active)
-          
+          if titleParadeActive then MoveParadeCharacter : 
+
           return
           
 StartNewParadeCharacter

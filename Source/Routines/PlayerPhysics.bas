@@ -428,14 +428,4 @@ BoundaryNextPlayer
           
           return
 
-          rem
-          rem Check Playfield Collision All Directions
-          rem
-rem Function moved to PlayerPhysicsCollisions.bas; call via `gosub CheckPlayfieldCollisionAllDirections bank8`.
-
-          rem Check Multi-player Collisions
-          rem
-rem Function moved to PlayerCollisionResolution.bas; call via `gosub CheckAllPlayerCollisions bank11`.
-
-          rem Divide By Pfrowheight Helper
 

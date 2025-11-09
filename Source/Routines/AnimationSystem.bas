@@ -243,7 +243,7 @@ UpdateSprite
           rem   where dim entries concatenate with subsequent constants
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
-          gosub LoadPlayerSprite bank10
+          gosub LoadPlayerSprite bank16
           
           return
 
@@ -298,7 +298,7 @@ SetPlayerAnimation
           rem SCRAM read: Read from r081 (we just wrote 0, so this is 0)
           let temp3 = currentAnimationSeq_R[currentPlayer]
           let temp4 = currentPlayer
-          gosub LoadPlayerSprite bank10
+          gosub LoadPlayerSprite bank16
           
           return
 

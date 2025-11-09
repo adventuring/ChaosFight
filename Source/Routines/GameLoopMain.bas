@@ -91,8 +91,8 @@ GameMainLoop
           gosub ReadEnhancedButtons
           rem   II/III)
           
-          gosub HandleConsoleSwitches bank13 :
-          rem Handle console switches (in Bank 13)
+          gosub HandleConsoleSwitches bank7 :
+          rem Handle console switches (in Bank 7)
 
           rem Check if game is paused - skip movement/physics/animation if so
           if systemFlags & SystemFlagGameStatePaused then goto GameMainLoopPaused
@@ -103,11 +103,11 @@ GameMainLoop
           gosub UpdateGuardTimers bank13
           rem Update guard timers (duration and cooldown)
 
-          gosub UpdateCharacterAnimations bank11
+          gosub UpdateCharacterAnimations
           rem Update animation system (10fps character animation) (in Bank 11)
           
-          gosub UpdatePlayerMovement bank3 :
-          rem Update movement system (full frame rate movement) (in Bank 3)
+          gosub UpdatePlayerMovement bank13 :
+          rem Update movement system (full frame rate movement) (in Bank 13)
 
           gosub PhysicsApplyGravity bank8
           rem Apply gravity and physics (in Bank 8)
@@ -139,7 +139,7 @@ GameMainLoopQuadtariSkip
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-          gosub CheckAllPlayerCollisions bank11
+          gosub CheckAllPlayerCollisions
           rem Check multi-player collisions (in Bank 11)
 
           gosub CheckAllPlayerEliminations bank10
@@ -211,7 +211,7 @@ GameEndCheckDone
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
-          gosub CheckRoboTitoStretchMissileCollisions
+          gosub CheckRoboTitoStretchMissileCollisions bank10
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)

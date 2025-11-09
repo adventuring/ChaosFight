@@ -58,51 +58,50 @@ GotoShamoneAttack
           goto ShamoneAttack bank9
           
 GotoCharacter16Attack
-          rem Character 16-23 attack handlers (future characters)
-          goto Character16Attack bank9
+          rem Character 16-30 attack handlers (placeholder characters - basic melee)
+          goto PerformMeleeAttack bank11
 
 GotoCharacter17Attack
-          goto Character17Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter18Attack
-          goto Character18Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter19Attack
-          goto Character19Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter20Attack
-          goto Character20Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter21Attack
-          goto Character21Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter22Attack
-          goto Character22Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter23Attack
-          goto Character23Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter24Attack
-          rem Character 24-30 attack handlers (future characters)
-          goto Character24Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter25Attack
-          goto Character25Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter26Attack
-          goto Character26Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter27Attack
-          goto Character27Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter28Attack
-          goto Character28Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter29Attack
-          goto Character29Attack bank9
+          goto PerformMeleeAttack bank11
 
 GotoCharacter30Attack
-          goto Character30Attack bank9
+          goto PerformMeleeAttack bank11
 
 CheckEnhancedJumpButton
           rem

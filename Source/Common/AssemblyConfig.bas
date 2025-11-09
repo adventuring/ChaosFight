@@ -8,7 +8,7 @@
           set kernel multisprite
           set kernel_options playercolors player1colors pfcolors
           set romsize 64kSC
-          set optimization size
+          set optimization size, noinlinedata
           rem Enable smartbranching; filter-smartbranch converts bB v1.9 guards to DASM .if/.else/.endif syntax
           set smartbranching on
 

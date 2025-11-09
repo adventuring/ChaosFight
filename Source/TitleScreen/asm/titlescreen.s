@@ -3,7 +3,7 @@
  include "TitleScreen/titlescreen_layout.s"
 
 TitleScreenDrawScreen:
-.titledrawscreen
+titledrawscreen
 title_eat_overscan
  	;bB runs in overscan. Wait for the overscan to run out...
 	clc

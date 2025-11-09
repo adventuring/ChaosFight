@@ -18,19 +18,21 @@ CRTSMC_PlayerLoop
           rem Check if player is RoboTito and stretching
           if playerCharacter[temp1] = CharacterRoboTito then CRTSMC_IsRoboTito
           goto CRTSMC_NextPlayer
+
 CRTSMC_IsRoboTito
-          rem Not RoboTito, skip
+          rem Player is RoboTito, check stretching state
           rem Check if stretching (not latched, ActionJumping animation
           rem = 10)
+          rem Latched to ceiling, no stretch missile
           if (characterStateFlags_R[temp1] & 1) then CRTSMC_NextPlayer
           let playerStateTemp_W = playerState[temp1]
-          rem Latched to ceiling, no stretch missile
-          let playerStateTemp_W = playerStateTemp_R & 240
-          let playerStateTemp_W = playerStateTemp_R / 16
           rem Mask bits 4-7 (animation state)
+          let playerStateTemp_W = playerStateTemp_R & 240
           rem Shift right by 4 to get animation state
+          let playerStateTemp_W = playerStateTemp_R / 16
           if playerStateTemp_R = 10 then CRTSMC_IsStretching
           goto CRTSMC_NextPlayer
+
 CRTSMC_IsStretching
           rem Not in stretching animation, no stretch missile
           
@@ -77,9 +79,10 @@ CRTSMC_CheckOtherPlayer
           temp5 = temp6
           rem Collision detected! Handle stretch missile hit
           gosub HandleRoboTitoStretchMissileHit
+
           goto CRTSMC_NextPlayer
+
           rem After handling hit, skip remaining players for this RoboTito
-          
 CRTSMC_SkipSelf
           temp6 = temp6 + 1
           if temp6 < 4 then CRTSMC_CheckOtherPlayer

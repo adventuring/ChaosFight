@@ -154,7 +154,7 @@ DrawTensDigit
           let temp4 = ColGrey(14)
           let temp5 = 4
           rem Use player4 for tens digit
-          gosub DrawDigit bank11
+          gosub DrawDigit bank16
 DoneTensDigit
           
           let temp1 = temp4
@@ -162,7 +162,7 @@ DoneTensDigit
           let temp2 = 88
           let temp5 = 5
           rem Use player5 for ones digit
-          gosub DrawDigit bank11
+          gosub DrawDigit bank16
           
           goto DisplayDone
           
@@ -180,14 +180,14 @@ DisplayRandomArena
           let temp5 = 4
           rem White
           rem Use player4
-          gosub DrawDigit bank11
+          gosub DrawDigit bank16
           
           let temp2 = 88
           rem Second question mark
           let temp5 = 5
           rem X position for second ?
           rem Use player5
-          gosub DrawDigit bank11
+          gosub DrawDigit bank16
           
 DisplayDone
           

@@ -15,9 +15,6 @@
 #include "Source/Generated/Harpy.bas"
 #include "Source/Generated/KnightGuy.bas"
 
-          rem Character selection render routines moved from Bank 13 for space optimization
-#include "Source/Routines/CharacterSelectRender.bas"
-
           asm
           ; rem Character art lookup routines for Bank 2 (characters 0-7
           ; rem   and 16-23)

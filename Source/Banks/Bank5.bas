@@ -15,10 +15,6 @@
 #include "Source/Generated/Character30.bas"
 #include "Source/Generated/MethHound.bas"
           
-          rem Character selection and input routines moved for space optimization
-#include "Source/Routines/CharacterSelectMain.bas"
-#include "Source/Routines/PlayerInput.bas"
-
           asm
           ; rem Character art lookup routines for Bank 5 (characters
           ; rem   24-31)

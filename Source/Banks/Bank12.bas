@@ -6,11 +6,7 @@
 #include "Source/Data/WinnerScreen.bas"
 #include "Source/Data/CharacterThemeSongIndices.bas"
 #include "Source/Data/CharacterTables.bas"
-          rem Data tables for winner screen layouts, theme mapping, and character lookup tables
-
 #include "Source/Routines/CharacterData.bas"
-          rem Character data lookup functions
-
 #include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/FallingAnimation.bas"
 #include "Source/Routines/BeginArenaSelect.bas"
@@ -18,11 +14,6 @@
 #include "Source/Routines/BeginWinnerAnnouncement.bas"
 #include "Source/Routines/WinnerAnnouncement.bas"
 #include "Source/Routines/DisplayWinScreen.bas"
-          
 #include "Source/Common/CharacterDefinitions.bas"
-          rem DisplayWinScreen function for winner screen with fixed
-          rem   playfield and 1-3 characters
 #include "Source/Routines/TitlescreenWindowControl.bas"
-          rem Titlescreen kernel window control for per-screen bitmap
-          rem   display
 #include "Source/Routines/SpritePointerInit.bas"

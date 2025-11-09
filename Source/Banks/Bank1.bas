@@ -3,9 +3,21 @@
 
           bank 1
 
-#include "Source/Data/SongPointers1.bas"
-          
           rem
+          rem Build Info - Version Tracking And Attribution
+          rem Build date in year.julian format (e.g., 2025.256)
+          rem Game URL: https://interworldly.com/games/ChaosFight
+          rem These strings are embedded in the ROM right up front
+          rem Note: Strings are defined in BuildInfo.s and included with
+          rem   bare "include" directive (not #include) to avoid C
+          rem   preprocessor quoting issues
+
+          asm
+          include "../Common/BuildInfo.s"
+end
+
+#include "Source/Data/SongPointers1.bas"
+
           rem Song Data (Bank 1)
           rem Song IDs hosted here: 4-28 (character themes plus admin screen music)
           rem Songs 0-3 reside in Bank 15
@@ -170,19 +182,3 @@
           
           rem Songs bank helper functions (require bank-local symbols)
 #include "Source/Routines/MusicBankHelpers.bas"
-          
-          rem
-          rem Build Info - Version Tracking And Attribution
-          rem Build date in year.julian format (e.g., 2025.256)
-          rem Game URL: https://interworldly.com/games/ChaosFight
-          rem These strings are embedded in the ROM after the end of
-          rem   real code
-          rem Note: Strings are defined in BuildInfo.s and included with
-          rem   bare "include" directive (not #include) to avoid C
-          rem   preprocessor
-          rem   quote issues
-          
-          asm
-          include "../Common/BuildInfo.s"
-end
-

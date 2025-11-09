@@ -10,7 +10,7 @@ MainLoop
           rem        TitleScreenMain bank9, CharacterSelectInputEntry bank6,
           rem        FallingAnimation1 bank12, ArenaSelect1 bank12,
           rem        GameMainLoop bank11, WinnerAnnouncement bank12,
-          rem        UpdateMusic bank1, titledrawscreen bank9
+          rem        UpdateMusic bank1, titledrawscreen bank2
           rem Constraints: Must remain colocated with MainLoopContinue/MainLoopDrawScreen
 
           rem Entry point for entire game loop
@@ -81,5 +81,5 @@ MainLoopDrawScreen
           rem Notes: Modes 3-6 funnel through mode-specific draw logic
 
           rem Titlescreen graphics and kernel reside in bank9
-          if gameMode < 3 then gosub titledrawscreen bank9 else drawscreen
+          if gameMode < 3 then gosub titledrawscreen bank2 else drawscreen
           goto MainLoop

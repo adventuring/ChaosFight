@@ -20,3 +20,21 @@
           ; rem   and 16-23)
 #include "Source/Routines/CharacterArtBank2.s"
 end
+
+          rem Titlescreen graphics and kernel (moved from Bank 9 to resolve overflow)
+          asm
+#include "Source/Generated/Art.AtariAge.s"
+end
+          asm
+#include "Source/Generated/Art.AtariAgeText.s"
+end
+          asm
+#include "Source/Generated/Art.ChaosFight.s"
+end
+          asm
+#include "Source/Generated/Art.Author.s"
+end
+
+          asm
+#include "Source/TitleScreen/asm/titlescreen.s"
+end

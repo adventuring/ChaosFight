@@ -113,7 +113,6 @@ GetCharacterDamage
           if temp3 <= 25 then temp2  = 18 : goto GetCharacterDamageEnd
           let temp2  = 22
 GetCharacterDamageEnd
-          rem Heavy characters
           return          
 GetMissileWidth
           rem Return missile width from CharacterMissileWidths[temp1].

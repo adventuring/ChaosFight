@@ -125,7 +125,7 @@ CheckVisibleMissileCollision
             if temp3 + temp3 <= playerY[temp5] then goto NextPlayerCheck
             let temp4 = temp5
           rem Hit detected!
-            return
+          return
 NextPlayerCheck
           next
           return

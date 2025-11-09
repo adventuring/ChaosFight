@@ -28,7 +28,7 @@ LoadArena
           rem pointers, pfcolortable (TIA register) = color table
           rem pointer
           rem
-          rem Called Routines: GetBWMode - determines B&W mode,
+          rem Called Routines: DWS_GetBWMode (bank12) - determines B&W mode,
           rem LoadRandomArena (if random selected), LoadArenaByIndex -
           rem loads arena data
           rem Constraints: None
@@ -40,34 +40,9 @@ LoadArena
           let temp1 = selectedArena_R
           rem Get arena index (0-15)
           
-          gosub GetBWMode
+          gosub DWS_GetBWMode bank12
           rem Load playfield and colors
           goto LoadArenaByIndex
-
-GetBWMode
-          rem Check if B&W mode is active
-          rem SECAM: Always B&W mode
-          rem
-          rem Input: switchbw (global) = B&W switch state, systemFlags
-          rem (global) = system flags (bit 6 =
-          rem SystemFlagColorBWOverride)
-          rem
-          rem Output: temp2 (temp2) = B&W mode (1=B&W, 0=Color)
-          rem
-          rem Mutates: temp2 (temp2 return value)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Applies to all TV standards
-          rem Check switchbw and colorBWOverride
-          rem switchbw = 1 means B&W mode (white), switchbw = 0 means
-          rem   Color mode
-          rem systemFlags bit 6 (SystemFlagColorBWOverride) = 1 means
-          rem B&W override
-          let temp2 = switchbw
-          rem   (from 7800 pause button)
-          if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
-          return
 
 LoadArenaByIndex
           rem Load arena playfield and colors by index
@@ -163,23 +138,10 @@ LoadRandomArena
           rem Color/B&W switch state. Called when switch changes during
           rem   gameplay.
 
-ReloadArenaColors
           rem Reload arena colors based on current Color/B&W switch
           rem state
           rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
           
-          let temp1 = selectedArena_R
-          rem Get current arena index
-          rem Handle random arena (use stored random selection)
-          if temp1 = RandomArena then let temp1 = rand & 31
           
-          rem Get B&W mode state (same logic as GetBWMode)
-          let temp2 = switchbw
-          rem Check switchbw and colorBWOverride
-          if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           
-ReloadArenaColorsDispatch
-          rem Use existing LoadArena color functions (identical behavior)
-          if temp2 then goto LoadArenaColorsBW
-          goto LoadArenaColorsColor
 

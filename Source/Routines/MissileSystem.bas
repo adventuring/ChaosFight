@@ -445,7 +445,7 @@ PlayfieldCollisionDone
           rem No bounce - deactivate on background hit
           
           rem Check collision with players
-          gosub CheckAllMissileCollisions bank7
+          gosub CheckAllMissileCollisions bank8
           rem This handles both visible missiles and AOE attacks
           rem Check if hit was found (temp4 != MissileHitNotFound)
           if temp4 = MissileHitNotFound then MissileSystemNoHit

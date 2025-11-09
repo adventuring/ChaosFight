@@ -52,7 +52,7 @@ BeginGameLoop
           rem         NUSIZ0, _NUSIZ1, NUSIZ2, NUSIZ3, frame, sprite
           rem         pointers, screen layout
           rem
-          rem Called Routines: InitializeSpritePointers (bank12) - sets
+          rem Called Routines: InitializeSpritePointers (bank14) - sets
           rem sprite pointer addresses,
           rem   SetGameScreenLayout (bank8) - sets screen layout,
           rem   GetPlayerLocked (bank10) - accesses player lock state,
@@ -65,7 +65,7 @@ BeginGameLoop
           rem              PlayerHealthSet (all called via goto)
           rem              Entry point for game loop initialization
           rem Initialize sprite pointers to RAM addresses
-          gosub InitializeSpritePointers bank12
+          gosub InitializeSpritePointers bank14
           rem Ensure pointers are set before loading any sprite data
           
           gosub SetGameScreenLayout bank8
@@ -217,7 +217,7 @@ PlayerHealthInitDone
           gosub InitializeHealthBars bank8
           rem Initialize health bars
 
-          gosub LoadArena bank6
+          gosub LoadArena bank12
           rem Load arena data
 
           return

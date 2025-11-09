@@ -132,7 +132,7 @@ HCSC_DoCycle
           rem Get current character index
           let temp3 = temp1
           rem Cycle based on direction
-          gosub CycleCharacterLeft bank11
+          gosub CycleCharacterLeft bank12
 HCSC_CycleDone
           rem Character cycling complete
           rem

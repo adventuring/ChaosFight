@@ -72,7 +72,7 @@ CharacterSelectLoop
           rem playerLocked state, temp1, temp2 (passed to
           rem SetPlayerLocked)
           rem
-          rem Called Routines: SetPlayerLocked (bank10) - accesses
+          rem Called Routines: SetPlayerLocked (bank9) - accesses
           rem playerLocked state
           rem
           rem Constraints: Must be colocated with Player1LeftSelectionQ,
@@ -329,7 +329,7 @@ CharacterSelectSkipQuadtariReadyInline
 
 CharacterSelectDrawScreen
           rem Draw character selection screen via shared renderer
-          gosub SelectDrawScreen bank10
+          gosub SelectDrawScreen bank6
           return
 
 CharacterSelectDrawScreenLegacy

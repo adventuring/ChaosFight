@@ -132,5 +132,7 @@
           rem   bank-local symbols)
 #include "Source/Routines/MusicBankHelpers15.bas"
 
+#include "Source/Routines/PlayerPhysicsCollisions.bas"
+
 
 

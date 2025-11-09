@@ -19,7 +19,6 @@
           rem animations)
           rem PlayerRendering.bas moved to Bank 10 (sprite rendering)
 #include "Source/Routines/PlayerPhysicsGravity.bas"
-#include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/SpecialMovement.bas"
-#include "Source/Routines/AnimationHelpers.bas"
+#include "Source/Routines/MissileCollision.bas"
 

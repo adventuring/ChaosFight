@@ -202,7 +202,7 @@ GameEndCheckDone
           
           rem Frame counter is automatically incremented by batariBASIC
           rem kernel
-
+          
 GameMainLoopPaused
           rem Game is paused - skip all movement/physics/animation updates
           rem but still allow console switch handling for unpause

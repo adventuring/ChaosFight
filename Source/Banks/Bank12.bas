@@ -5,8 +5,10 @@
  
 #include "Source/Data/WinnerScreen.bas"
 #include "Source/Data/CharacterThemeSongIndices.bas"
-#include "Source/Data/CharacterTables.bas"
+#include "Source/Data/CharacterDataTables.bas"
+#include "Source/Data/CharacterPhysicsTables.bas"
 #include "Source/Routines/CharacterData.bas"
+#include "Source/Routines/CharacterCycleUtils.bas"
 #include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/FallingAnimation.bas"
 #include "Source/Routines/BeginArenaSelect.bas"

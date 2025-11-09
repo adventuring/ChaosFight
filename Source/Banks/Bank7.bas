@@ -3,7 +3,7 @@
 
           bank 7
 
+#include "Source/Data/CharacterMissileTables.bas"
 #include "Source/Routines/MissileSystem.bas"
-#include "Source/Routines/MissileCollision.bas"
 #include "Source/Routines/Combat.bas"
 

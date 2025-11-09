@@ -16,4 +16,7 @@
           
           rem Player locked helpers
 #include "Source/Routines/CharacterControls.bas"
+#include "Source/Routines/ArenaReloadUtils.bas"
+#include "Source/Routines/SpritePointerInit.bas"
+#include "Source/Routines/AnimationHelpers.bas"
 

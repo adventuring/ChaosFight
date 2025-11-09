@@ -631,7 +631,7 @@ InputSkipLeftPortJump
           if !joy0fire then InputSkipLeftPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipLeftPortAttack
           let temp4 = PlayerCharacter[temp1]
-          gosub DispatchCharacterAttack bank9
+          gosub DispatchCharacterAttack bank10
 InputSkipLeftPortAttack
           
           
@@ -782,7 +782,7 @@ InputSkipRightPortJump
           if !joy1fire then InputSkipRightPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipRightPortAttack
           let temp4 = PlayerCharacter[temp1]
-          gosub DispatchCharacterAttack bank9
+          gosub DispatchCharacterAttack bank10
 InputSkipRightPortAttack
           return
 

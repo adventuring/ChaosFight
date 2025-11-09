@@ -66,6 +66,11 @@
           rem Fall distance value for infinite (characters immune to
           rem   fall damage)
 
+          const Bank15MaxSongID = 5
+          rem Highest song ID stored in Bank 15 music bank
+          const Bank1MinSongID = 6
+          rem Lowest song ID stored in Bank 1 music bank
+
           const TitleParadeDelayFrames = 250
           rem Title screen parade starts after ~4.17 seconds (fits in 8-bit timer)
           
@@ -329,7 +334,7 @@
           rem Byte-safe top-wrap detection threshold
 
           rem Music Constants
-          rem Main game songs (0-4)
+          rem Main game songs (0-Bank15MaxSongID)
           rem Song indices match SongPointers.bas (29 songs total: 0-28)
           rem Songs 0-25: Character theme songs in character ID order
           rem   (skipping duplicates)

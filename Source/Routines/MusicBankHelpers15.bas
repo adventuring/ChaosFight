@@ -8,20 +8,20 @@
           rem Duplicate of MusicBankHelpers.bas but for Bank 15 songs
           
 LoadSongPointer
-          rem Lookup song pointer from tables (Bank 15 songs: 0-3)
+          rem Lookup song pointer from tables (Bank 15 songs: 0-Bank15MaxSongID)
           rem
-          rem Input: temp1 = song ID (Bank 15 songs: 0-3),
+          rem Input: temp1 = song ID (Bank 15 songs: 0-Bank15MaxSongID),
           rem        SongPointers2L[], SongPointers2H[] = pointer tables
           rem
           rem Output: songPointer = pointer to Song_Voice0 stream
           rem
           rem Mutates: temp1-temp2, songPointer
           rem
-          rem Constraints: Only songs 0-3 live in Bank 15. Index mapping:
+          rem Constraints: Only songs 0-Bank15MaxSongID live in Bank 15. Index mapping:
           rem song ID maps directly (index = songID). Returns songPointer = 0 if song not in this bank.
-          rem Bounds check: only songs 0-3 reside in Bank 15
+          rem Bounds check: only songs 0-Bank15MaxSongID reside in Bank 15
           if temp1 < 0 then goto LSP15_InvalidSong
-          if temp1 > 3 then goto LSP15_InvalidSong
+          if temp1 > Bank15MaxSongID then goto LSP15_InvalidSong
           rem Calculate compact index: index = songID
           temp2 = temp1
           let songPointer = SongPointers2H[temp2]
@@ -36,7 +36,7 @@ LSP15_InvalidSong
 LoadSongVoice1Pointer
           rem Lookup Voice 1 song pointer from tables (Bank 15 songs)
           rem
-          rem Input: temp1 = song ID (Bank 15 songs: 0-3),
+          rem Input: temp1 = song ID (Bank 15 songs: 0-Bank15MaxSongID),
           rem SongPointers2SecondL[], SongPointers2SecondH[] (global
           rem data tables) = Voice 1 song pointer tables
           rem
@@ -46,11 +46,11 @@ LoadSongVoice1Pointer
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Only songs 0-3 are in Bank 15. Index mapping:
+          rem Constraints: Only songs 0-Bank15MaxSongID are in Bank 15. Index mapping:
           rem song ID maps directly (index = songID). Returns songPointer = 0 if song not in this bank
-          rem Bounds check: Only songs 0-3 are in Bank 15
+          rem Bounds check: Only songs 0-Bank15MaxSongID are in Bank 15
           if temp1 < 0 then let songPointer = 0 : return
-          if temp1 > 3 then let songPointer = 0 : return
+          if temp1 > Bank15MaxSongID then let songPointer = 0 : return
           rem Calculate compact index: index = songID
           temp2 = temp1
           let songPointer = SongPointers2SecondH[temp2]

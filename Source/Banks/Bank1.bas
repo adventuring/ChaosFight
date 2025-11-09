@@ -19,22 +19,10 @@ end
 #include "Source/Data/SongPointers1.bas"
 
           rem Song Data (Bank 1)
-          rem Song IDs hosted here: 4-28 (character themes plus admin screen music)
-          rem Songs 0-3 reside in Bank 15
+          rem Song IDs hosted here: Bank1MinSongID-28 (currently 6-28) - character themes plus admin screen music
+          rem Songs 0-Bank15MaxSongID reside in Bank 15
 
-          rem Character theme songs (IDs 4-25)
-
-#ifdef TV_NTSC
-#include "Source/Generated/Song.Grizzards.NTSC.bas"
-#else
-#include "Source/Generated/Song.Grizzards.PAL.bas"
-#endif
-
-#ifdef TV_NTSC
-#include "Source/Generated/Song.MagicalFairyForce.NTSC.bas"
-#else
-#include "Source/Generated/Song.MagicalFairyForce.PAL.bas"
-#endif
+          rem Character theme songs (IDs Bank1MinSongID-25)
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Bolero.NTSC.bas"

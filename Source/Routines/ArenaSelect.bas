@@ -43,13 +43,16 @@ ArenaSelect1Loop
           rem              called via goto)
           rem              Entry point for arena select mode (called
           rem              from MainLoop)
-          gosub ArenaSelectUpdateAnimations : rem Update character idle animations
-          gosub ArenaSelectDrawCharacters : rem Draw locked-in player characters
+          gosub ArenaSelectUpdateAnimations : 
+          rem Update character idle animations
+          gosub ArenaSelectDrawCharacters : 
+          rem Draw locked-in player characters
           rem Check Game Select switch - return to Character Select
           if switchselect then ReturnToCharacterSelect
           
           rem Check fire button hold detection (1 second to return to
-          let temp1 = 0 : rem   Character Select)
+          let temp1 = 0 : 
+          rem   Character Select)
           rem Check Player 1 fire button
           if joy0fire then let temp1 = 1
           rem Check Player 2 fire button
@@ -60,7 +63,8 @@ ArenaSelect1Loop
           rem If fire button held, increment timer
           
           if temp1 then goto IncrementFireHold
-          let fireHoldTimer_W = 0 : rem Fire released, reset timer
+          let fireHoldTimer_W = 0 : 
+          rem Fire released, reset timer
           goto FireHoldCheckDone
           
 IncrementFireHold
@@ -83,7 +87,8 @@ ArenaSelectLeft
           let temp2 = temp2 - 1
           let selectedArena_W = temp2
 ArenaSelectLeftSound
-          let temp1 = SoundMenuNavigate : rem Play navigation sound
+          let temp1 = SoundMenuNavigate : 
+          rem Play navigation sound
           gosub PlaySoundEffect bank15
 ArenaSelectSkipLeft
           
@@ -100,7 +105,8 @@ ArenaSelectRight
           rem Wrap from 255 to 0 if needed
           if selectedArena_R > MaxArenaID && selectedArena_R < RandomArena then let selectedArena_W = 0
 ArenaSelectRightSound
-          let temp1 = SoundMenuNavigate : rem Play navigation sound
+          let temp1 = SoundMenuNavigate : 
+          rem Play navigation sound
           gosub PlaySoundEffect bank15
 ArenaSelectSkipRight
           
@@ -116,9 +122,11 @@ ArenaSelectSkipRight
           rem Display arena number (selectedArena + 1 = 1-32)
           rem Convert to two-digit display: tens and ones
           rem Supports up to 32 arenas (tens digit: blank for 1-9, 1 for
-          let temp1 = selectedArena_R + 1 : rem   10-19, 2 for 20-29, 3 for 30-32)
+          let temp1 = selectedArena_R + 1 : 
+          rem   10-19, 2 for 20-29, 3 for 30-32)
           rem arenaNumber = arena number (1-32)
-          let temp2 = temp1 / 10 : rem Calculate tens digit
+          let temp2 = temp1 / 10 : 
+          rem Calculate tens digit
           rem Calculate ones digit using optimized assembly
           asm
             lda temp2
@@ -131,7 +139,8 @@ ArenaSelectSkipRight
             asl
             sta temp3
 end
-          let temp4 = temp1 - temp3 : rem multiplier = tensDigit * 10
+          let temp4 = temp1 - temp3 : 
+          rem multiplier = tensDigit * 10
           rem onesDigit = ones digit (0-9)
           
           rem Draw tens digit (player4) - only if tensDigit > 0 (for
@@ -148,7 +157,8 @@ DrawTensDigit
           gosub DrawDigit bank16
 DoneTensDigit
           
-          let temp1 = temp4 : rem Draw ones digit (player5)
+          let temp1 = temp4 : 
+          rem Draw ones digit (player5)
           let temp2 = 88
           let temp5 = 5
           rem Use player5 for ones digit
@@ -159,16 +169,23 @@ DoneTensDigit
 DisplayRandomArena
           rem Display ?? for random arena
           rem Use player4 and player5 for two question marks
-          let temp1 = 10 : rem Question mark is digit 10 (hex A) in font
-          let temp2 = 80 : rem Question mark digit
-          let temp3 = 20 : rem X position for first ?
-          let temp4 = ColGrey(14) : rem Y position
-          let temp5 = 4 : rem White
+          let temp1 = 10 : 
+          rem Question mark is digit 10 (hex A) in font
+          let temp2 = 80 : 
+          rem Question mark digit
+          let temp3 = 20 : 
+          rem X position for first ?
+          let temp4 = ColGrey(14) : 
+          rem Y position
+          let temp5 = 4 : 
+          rem White
           rem Use player4
           gosub DrawDigit bank16
           
-          let temp2 = 88 : rem Second question mark
-          let temp5 = 5 : rem X position for second ?
+          let temp2 = 88 : 
+          rem Second question mark
+          let temp5 = 5 : 
+          rem X position for second ?
           rem Use player5
           gosub DrawDigit bank16
           
@@ -179,9 +196,11 @@ DisplayDone
           if joy0fire then ArenaSelectConfirm
           goto ArenaSelectSkipConfirm
 ArenaSelectConfirm
-          let temp1 = SoundMenuSelect : rem Play selection sound
+          let temp1 = SoundMenuSelect : 
+          rem Play selection sound
           gosub PlaySoundEffect bank15
-          goto StartGame1 : rem tail call
+          goto StartGame1 : 
+          rem tail call
 ArenaSelectSkipConfirm
           
           rem drawscreen called by MainLoop
@@ -275,7 +294,8 @@ ArenaSelectUpdateAnimations
           if playerCharacter[0] = NoCharacter then ArenaSelectSkipPlayer0Animation
           if playerCharacter[0] = CPUCharacter then ArenaSelectSkipPlayer0Animation
           if playerCharacter[0] = RandomCharacter then ArenaSelectSkipPlayer0Animation
-          let temp1 = 0 : rem RandomCharacter = 253
+          let temp1 = 0 : 
+          rem RandomCharacter = 253
           gosub ArenaSelectUpdatePlayerAnimation
           
 ArenaSelectSkipPlayer0Animation
@@ -543,9 +563,12 @@ ArenaSelectDrawPlayerSprite
           if temp1 = 2 then let temp1 = playerCharacter[2]
           if temp1 = 3 then let temp1 = playerCharacter[3]
           
-          let temp3 = 1 : rem Use idle animation (action 1 = ActionIdle)
-          let temp2 = frame & 7 : rem Simple frame counter cycles 0-7
-          let temp4 = temp1 : rem Player number for art system
+          let temp3 = 1 : 
+          rem Use idle animation (action 1 = ActionIdle)
+          let temp2 = frame & 7 : 
+          rem Simple frame counter cycles 0-7
+          let temp4 = temp1 : 
+          rem Player number for art system
           
           rem Load character sprite using art location system
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
@@ -554,10 +577,14 @@ ArenaSelectDrawPlayerSprite
           
           rem Set character color based on player number
           rem LoadCharacterColors expects: temp1=character, temp2=hurt, temp3=player, temp4=flashing, temp5=mode
-          let temp2 = 0 : rem Not hurt
-          let temp3 = temp4 : rem Player number routed into color loader
-          let temp4 = 0 : rem Not flashing
-          let temp5 = 0 : rem Frame-based flashing disabled
+          let temp2 = 0 : 
+          rem Not hurt
+          let temp3 = temp4 : 
+          rem Player number routed into color loader
+          let temp4 = 0 : 
+          rem Not flashing
+          let temp5 = 0 : 
+          rem Frame-based flashing disabled
           gosub LoadCharacterColors bank10
           
           return

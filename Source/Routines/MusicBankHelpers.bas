@@ -127,7 +127,8 @@ end
           if temp4 = 0 then LoadMusicNote0EndOfTrack
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          let temp6 = temp2 & %11110000 : rem   AUDCV
+          let temp6 = temp2 & %11110000 : 
+          rem   AUDCV
           let temp6 = temp6 / 16
           let MusicVoice0TargetAUDV_W = temp2 & %00001111
           
@@ -140,7 +141,8 @@ end
           AUDF0 = temp3
           AUDV0 = MusicVoice0TargetAUDV_R
           
-          let musicVoice0Frame_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
+          let musicVoice0Frame_W = temp4 + temp5 : 
+          rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
           let musicVoice0Pointer = musicVoice0Pointer + 4
@@ -166,7 +168,8 @@ LoadMusicNote0EndOfTrack
           rem 0)
           rem   (Chaotica
           rem Loop will be handled in UpdateMusic when both voices end
-          let musicVoice0Pointer = 0 : rem   only)
+          let musicVoice0Pointer = 0 : 
+          rem   only)
           AUDV0 = 0
           return
           
@@ -214,7 +217,8 @@ end
           rem Check for end of track (Duration = 0)
           if temp4 = 0 then LoadMusicNote1EndOfTrack
           
-          let temp6 = temp2 & %11110000 : rem Extract AUDC and AUDV
+          let temp6 = temp2 & %11110000 : 
+          rem Extract AUDC and AUDV
           let temp6 = temp6 / 16
           let MusicVoice1TargetAUDV_W = temp2 & %00001111
           
@@ -227,7 +231,8 @@ end
           AUDF1 = temp3
           AUDV1 = MusicVoice1TargetAUDV_R
           
-          let musicVoice1Frame_W = temp4 + temp5 : rem Set frame counter = Duration + Delay
+          let musicVoice1Frame_W = temp4 + temp5 : 
+          rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes
           let musicVoice1Pointer = musicVoice1Pointer + 4
@@ -253,6 +258,7 @@ LoadMusicNote1EndOfTrack
           rem 0)
           rem   (Chaotica
           rem Loop will be handled in UpdateMusic when both voices end
-          let musicVoice1Pointer = 0 : rem   only)
+          let musicVoice1Pointer = 0 : 
+          rem   only)
           AUDV1 = 0
           return

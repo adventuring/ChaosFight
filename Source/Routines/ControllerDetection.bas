@@ -41,7 +41,8 @@ CtrlDetConsole
           
           rem Call proper console detection routine
           rem ConsoleDetection.bas is included in same bank, so direct
-          gosub ConsoleDetHW : rem   call
+          gosub ConsoleDetHW : 
+          rem   call
           
           rem
           rem Fall through to controller detection
@@ -83,9 +84,11 @@ CtrlDetPads
           rem Genesis/Joy2B+
           
           rem Save existing controller capabilities (monotonic - never
-          let temp1 = controllerStatus : rem   downgrade)
+          let temp1 = controllerStatus : 
+          rem   downgrade)
           
-          let temp2 = 0 : rem Perform fresh detection into temporary variable
+          let temp2 = 0 : 
+          rem Perform fresh detection into temporary variable
 #ifndef TV_SECAM
           let systemFlags = systemFlags & ClearSystemFlagColorBWOverride
           let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
@@ -113,11 +116,14 @@ CDP_CheckRightSide
 CDP_NoQuadtari
           
           rem Quadtari not detected in this detection cycle
-          goto CDP_CheckGenesis : rem (Don’t clear existing Quadtari - monotonic upgrade only)
+          goto CDP_CheckGenesis : 
+          rem (Don’t clear existing Quadtari - monotonic upgrade only)
 
 CDP_QuadtariFound
-          let temp2 = temp2 | SetQuadtariDetected : rem Quadtari detected - set flag in new status
-          goto CDP_MergeStatus : rem Quadtari takes priority - skip Genesis/Joy2B+ detection
+          let temp2 = temp2 | SetQuadtariDetected : 
+          rem Quadtari detected - set flag in new status
+          goto CDP_MergeStatus : 
+          rem Quadtari takes priority - skip Genesis/Joy2B+ detection
 
 CDP_CheckGenesis
           rem Check for Genesis controller (only if Quadtari not already
@@ -129,7 +135,8 @@ CDP_CheckGenesis
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
           rem Method: Ground paddle ports via VBLANK, wait a frame,
           rem   check levels
-          gosub CDP_DetectGenesis : rem Detect Genesis/MegaDrive controllers using correct method
+          gosub CDP_DetectGenesis : 
+          rem Detect Genesis/MegaDrive controllers using correct method
           
           rem Detect Joy2b+ controllers (if no Genesis detected)
           rem Skip Joy2B+ detection if Genesis already exists (existing
@@ -144,7 +151,8 @@ CDP_MergeStatus
           rem Merge new detections with existing capabilities (monotonic
           rem   upgrade)
           rem OR new status with existing - this ensures upgrades only,
-          let controllerStatus = temp1 | temp2 : rem   never downgrades
+          let controllerStatus = temp1 | temp2 : 
+          rem   never downgrades
           
           return
           
@@ -189,7 +197,8 @@ CDP_DetectGenesis
           if !INPT0{7} then CDP_NoGenesisLeft
           if !INPT1{7} then CDP_NoGenesisLeft
           
-          let temp2 = temp2 | SetLeftPortGenesis : rem Genesis detected on left port
+          let temp2 = temp2 | SetLeftPortGenesis : 
+          rem Genesis detected on left port
           rem Set LeftPortGenesis bit
           
 CDP_NoGenesisLeft
@@ -197,7 +206,8 @@ CDP_NoGenesisLeft
           if !INPT2{7} then CDP_NoGenesisRight
           if !INPT3{7} then CDP_NoGenesisRight
           
-          let temp2 = temp2 | SetRightPortGenesis : rem Genesis detected on right port
+          let temp2 = temp2 | SetRightPortGenesis : 
+          rem Genesis detected on right port
           rem Set RightPortGenesis bit
           
 CDP_NoGenesisRight
@@ -239,7 +249,8 @@ CDP_DetectJoy2bPlus
           if !INPT1{7} then CDP_NoJoy2Left
           if !INPT4{7} then CDP_NoJoy2Left
           
-          let temp2 = temp2 | SetLeftPortJoy2bPlus : rem Joy2b+ detected on left port
+          let temp2 = temp2 | SetLeftPortJoy2bPlus : 
+          rem Joy2b+ detected on left port
           rem Set LeftPortJoy2bPlus bit
           
 CDP_NoJoy2Left
@@ -248,7 +259,8 @@ CDP_NoJoy2Left
           if !INPT3{7} then CDP_NoJoy2Right
           if !INPT5{7} then CDP_NoJoy2Right
           
-          let temp2 = temp2 | SetRightPortJoy2bPlus : rem Joy2b+ detected on right port
+          let temp2 = temp2 | SetRightPortJoy2bPlus : 
+          rem Joy2b+ detected on right port
           rem Set RightPortJoy2bPlus bit
           
 CDP_NoJoy2Right
@@ -297,7 +309,8 @@ CtrlGenesisA
           if !INPT0{7} then NoGenesisLeft
           if !INPT1{7} then NoGenesisLeft
           
-          let controllerStatus = controllerStatus | SetLeftPortGenesis : rem Genesis detected on left port
+          let controllerStatus = controllerStatus | SetLeftPortGenesis : 
+          rem Genesis detected on left port
           rem Set LeftPortGenesis bit
           
 NoGenesisLeft
@@ -305,7 +318,8 @@ NoGenesisLeft
           if !INPT2{7} then NoGenesisRight
           if !INPT3{7} then NoGenesisRight
           
-          let controllerStatus = controllerStatus | SetRightPortGenesis : rem Genesis detected on right port
+          let controllerStatus = controllerStatus | SetRightPortGenesis : 
+          rem Genesis detected on right port
           rem Set RightPortGenesis bit
           
 NoGenesisRight
@@ -336,7 +350,8 @@ CtrlJoy2A
           if !INPT1{7} then NoJoy2Left
           if !INPT4{7} then NoJoy2Left
           
-          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus : rem Joy2b+ detected on left port
+          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus : 
+          rem Joy2b+ detected on left port
           rem Set LeftPortJoy2bPlus bit
           
 NoJoy2Left
@@ -345,7 +360,8 @@ NoJoy2Left
           if !INPT3{7} then NoJoy2Right
           if !INPT5{7} then NoJoy2Right
           
-          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus : rem Joy2b+ detected on right port
+          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus : 
+          rem Joy2b+ detected on right port
           rem Set RightPortJoy2bPlus bit
           
 NoJoy2Right
@@ -390,7 +406,8 @@ CtrlGenesisB
           
           if !INPT1{7} then NoLeftGenesis
           
-          let controllerStatus = controllerStatus | SetLeftPortGenesis : rem Genesis detected on left port
+          let controllerStatus = controllerStatus | SetLeftPortGenesis : 
+          rem Genesis detected on left port
           goto CheckRightGenesis
           
 NoLeftGenesis
@@ -398,7 +415,8 @@ NoLeftGenesis
           if !INPT2{7} then NoRightGenesis
           if !INPT3{7} then NoRightGenesis
           
-          let controllerStatus = controllerStatus | SetRightPortGenesis : rem Genesis detected on right port
+          let controllerStatus = controllerStatus | SetRightPortGenesis : 
+          rem Genesis detected on right port
           goto GenesisDetDone
           
 NoRightGenesis
@@ -446,7 +464,8 @@ CtrlJoy2B
           if !INPT1{7} then CheckRightJoy2
           if !INPT4{7} then CheckRightJoy2
           
-          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus : rem Joy2b+ detected on left port
+          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus : 
+          rem Joy2b+ detected on left port
           goto Joy2PlusDone
           
 CheckRightJoy2
@@ -455,7 +474,8 @@ CheckRightJoy2
           if !INPT3{7} then Joy2PlusDone
           if !INPT5{7} then Joy2PlusDone
           
-          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus : rem Joy2b+ detected on right port
+          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus : 
+          rem Joy2b+ detected on right port
           
 Joy2PlusDone
           rem Restore normal VBLANK
@@ -589,7 +609,8 @@ ReadPlayers34
           rem   correct
 
 PauseNotPressed
-          let systemFlags = systemFlags | SystemFlagPauseButtonPrev : rem Button not pressed, update previous state (set bit 5)
+          let systemFlags = systemFlags | SystemFlagPauseButtonPrev : 
+          rem Button not pressed, update previous state (set bit 5)
           return
 
 DetectControllers
@@ -616,5 +637,6 @@ DetectControllers
           rem controller detection
           rem
           rem Constraints: None
-          goto CtrlDetPads : rem tail call
+          goto CtrlDetPads : 
+          rem tail call
 

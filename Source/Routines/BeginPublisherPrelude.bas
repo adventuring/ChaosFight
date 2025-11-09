@@ -34,14 +34,16 @@ BeginPublisherPrelude
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModePublisherPrelude
           rem              Tail call to StartMusic
-          let preambleTimer = 0 : rem Initialize prelude timer
+          let preambleTimer = 0 : 
+          rem Initialize prelude timer
           
           rem Set background color
           COLUBK = ColGray(0)
           
           rem Start AtariToday music
           temp1 = MusicAtariToday
-          goto StartMusic : rem tail call
+          goto StartMusic : 
+          rem tail call
 
 
 

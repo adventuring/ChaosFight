@@ -15,11 +15,9 @@
 #include "Source/Generated/Harpy.bas"
 #include "Source/Generated/KnightGuy.bas"
 
+#include "Source/Routines/MissileCollision.bas"
+
           asm
           ;; Character art lookup routines for Bank 2 (characters 0-7)
 #include "Source/Routines/CharacterArtBank2.s"
 end
-
-          rem RoboTito stretch missile collision detection
-          rem Moved from Bank 9 for space optimization
-#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"

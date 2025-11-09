@@ -2,10 +2,9 @@
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
           bank 6
-          
-#include "Source/Routines/CharacterData.bas"
+
+          rem Character select routines
 #include "Source/Routines/CharacterSelectMain.bas"
 #include "Source/Routines/CharacterSelectRender.bas"
-#include "Source/Routines/PlayerLockedHelpers.bas"
-#include "Source/Routines/MainLoop.bas"
-          
+
+

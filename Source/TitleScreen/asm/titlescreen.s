@@ -72,11 +72,20 @@ title_playfield
 
 	; Unused 48x1 kernels removed - only 48x2_1, 48x2_2, 48x2_3 are used
 
-	; Include all title screen kernels unconditionally
-	include "TitleScreen/asm/48x2_1_kernel.s"
-	include "TitleScreen/asm/48x2_2_kernel.s"
-	include "TitleScreen/asm/48x2_3_kernel.s"
-	include "TitleScreen/asm/48x2_4_kernel.s"
+	ifconst mk_48x2_1_on
+		include "TitleScreen/asm/48x2_1_kernel.s"
+	endif ;mk_48x2_1_on
+
+	ifconst mk_48x2_2_on
+		include "TitleScreen/asm/48x2_2_kernel.s"
+	endif ;mk_48x2_2_on
+
+	ifconst mk_48x2_3_on
+		include "TitleScreen/asm/48x2_3_kernel.s"
+	endif ;mk_48x2_3_on
+	ifconst mk_48x2_4_on
+		include "TitleScreen/asm/48x2_4_kernel.s"
+	endif ;mk_48x2_4_on
 
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 
@@ -122,7 +131,7 @@ TitleScreenFixPlayerHeights:
 	RETURN
 
 	; Unused image files removed: 48x1_*, 48x2_5-8, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
-	; Note: Bitmap image data is now included from generated Art.*.s files in Bank1.bas
+	; Note: Bitmap image data is now included from generated Art.*.s files in Bank9
 	; The TitleScreen/48x2_N_image.s files are NOT included here to avoid duplicate definitions
 	; ifconst mk_48x2_1_on
 	;	include "TitleScreen/48x2_1_image.s"

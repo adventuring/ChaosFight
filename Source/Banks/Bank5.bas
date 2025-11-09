@@ -14,12 +14,15 @@
 #include "Source/Generated/Character29.bas"
 #include "Source/Generated/Character30.bas"
 #include "Source/Generated/MethHound.bas"
-          
+
+#include "Source/Routines/PlayerInput.bas"
+
           asm
           ; rem Character art lookup routines for Bank 5 (characters
           ; rem   24-31)
 #include "Source/Routines/CharacterArtBank5.s"
 end
+
 
           rem batariBASIC auto-generates _length constants for data
           rem blocks

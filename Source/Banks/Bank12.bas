@@ -10,7 +10,6 @@
 #include "Source/Routines/CharacterData.bas"
 #include "Source/Routines/CharacterCycleUtils.bas"
 #include "Source/Routines/BeginFallingAnimation.bas"
-#include "Source/Routines/FallingAnimation.bas"
 #include "Source/Routines/FallDamage.bas"
 #include "Source/Routines/BeginArenaSelect.bas"
 #include "Source/Routines/ArenaSelect.bas"

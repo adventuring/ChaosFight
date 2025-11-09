@@ -74,7 +74,7 @@ TitleDoneQuad
           rem (titlescreen graphics in Bank 9)
           rem Note: MainLoop calls titledrawscreen, so this is only
           rem reached if called directly
-          gosub TitleScreenThunk bank1
+          gosub DrawTitleScreen
           
           return
 

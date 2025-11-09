@@ -14,7 +14,10 @@
 #include "Source/Generated/Character21.bas"
 #include "Source/Generated/Character22.bas"
 #include "Source/Generated/Character23.bas"
-          
+
+#include "Source/Routines/FallingAnimation.bas"
+#include "Source/Routines/CharacterData.bas"
+
           asm
           ; rem Character art lookup routines for Bank 4 (characters
           ; rem   16-23)

@@ -6,4 +6,4 @@
 	url = https://github.com/dasm-assembler/dasm
 [submodule "SkylineTool"]
 	path = SkylineTool
-	url = https://github.com/brpocock/skyline-tool
+	url = git@github.com:brpocock/skyline-tool

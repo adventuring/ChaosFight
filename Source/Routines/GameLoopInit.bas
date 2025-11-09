@@ -219,7 +219,7 @@ PlayerHealthInitDone
           gosub InitializeHealthBars bank8
           rem Initialize health bars
 
-          gosub LoadArena bank16
+          gosub LoadArena bank6
           rem Load arena data
 
           return

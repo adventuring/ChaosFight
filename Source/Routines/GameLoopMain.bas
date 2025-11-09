@@ -109,7 +109,7 @@ GameMainLoopQuadtariSkip
           gosub CheckAllPlayerCollisions bank11
           rem Check multi-player collisions (in Bank 11)
 
-          gosub CheckAllPlayerEliminations
+          gosub CheckAllPlayerEliminations bank6
           rem Check for player eliminations
           
           gosub UpdateAllMissiles bank7

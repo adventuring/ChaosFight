@@ -7,7 +7,6 @@
 #include "Source/Routines/GameLoopMain.bas"
 #include "Source/Routines/PlayerCollisionResolution.bas"
 #include "Source/Routines/AnimationSystem.bas"
-#include "Source/Routines/PlayerElimination.bas"
           rem Routines moved to other banks:
           rem   Combat.bas -> Bank 6
           rem   PlayerInput.bas -> Bank 13

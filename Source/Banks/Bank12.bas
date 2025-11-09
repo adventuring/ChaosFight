@@ -17,4 +17,3 @@
 #include "Source/Common/CharacterDefinitions.bas"
 #include "Source/Routines/TitlescreenWindowControl.bas"
 #include "Source/Routines/SpritePointerInit.bas"
-#include "Source/Routines/CharacterSelectRender.bas"

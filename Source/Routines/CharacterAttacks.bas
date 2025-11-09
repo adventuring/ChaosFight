@@ -198,10 +198,11 @@ HarpyAttack
           rem Set diagonal velocity at 45° angle (4 pixels/frame
           rem   horizontal, 4 pixels/frame vertical)
           rem Horizontal: 4 pixels/frame in facing direction
-          rem Use arithmetic to avoid conditional jumps: 4 - (4 * 2 * temp2)
-          rem When temp2=0 (left): 4 - 0 = 4, but we want 252, so adjust
-          rem When temp2=1 (right): 4 - 8 = -4 (252 in unsigned)
-          temp4 = 4 - (8 * temp2)
+          rem Use arithmetic to avoid conditional jumps
+          rem When temp2=0 (left): want 252 (-4), when temp2=1 (right): want 4
+          rem Formula: 252 + (4 * temp2) - (256 * temp2) = 252 + 4*temp2*(1-64)
+          rem Simpler: (252 * (1 - temp2)) + (4 * temp2)
+          temp4 = 252 - (248 * temp2)
 HarpySetLeftVelocity
           rem Label for documentation - velocity already set above
           rem Constraints: Must be colocated with HarpyAttack,

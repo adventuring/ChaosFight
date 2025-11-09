@@ -148,7 +148,7 @@ GravityCheckRoboTitoDone
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
           let temp2 = temp3
           rem Divide by pfrowheight using helper
-          gosub DivideByPfrowheight
+          gosub DivideByPfrowheight bank7
           let temp4 = temp2
           rem feetRow = row where feet are
           

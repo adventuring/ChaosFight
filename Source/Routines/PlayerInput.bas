@@ -407,7 +407,7 @@ HFCM_CheckLeftCollision
           let temp4 = PlayerY[temp1]
           rem Check player current row (check both top and bottom of sprite)
           let temp2 = temp4
-          gosub DivideByPfrowheight
+          gosub DivideByPfrowheight bank7
           let temp6 = temp2
           rem pfRow = top row
           rem Check if blocked in current row
@@ -418,7 +418,7 @@ HFCM_CheckLeftCollision
           rem Blocked, cannot move left
           let temp2 = temp4 + 16
           rem Also check bottom row (feet)
-          gosub DivideByPfrowheight
+          gosub DivideByPfrowheight bank7
           let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveLeftOK
           rem Do not check if beyond screen
@@ -455,7 +455,7 @@ HFCM_DoRightMovement
           let temp4 = PlayerY[temp1]
           rem Check player current row (check both top and bottom of sprite)
           let temp2 = temp4
-          gosub DivideByPfrowheight
+          gosub DivideByPfrowheight bank7
           let temp6 = temp2
           rem pfRow = top row
           rem Check if blocked in current row
@@ -467,7 +467,7 @@ HFCM_DoRightMovement
           let temp4 = temp4 + 16
           rem Also check bottom row (feet)
           let temp2 = temp4
-          gosub DivideByPfrowheight
+          gosub DivideByPfrowheight bank7
           let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveRightOK
           rem Do not check if beyond screen

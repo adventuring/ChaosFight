@@ -102,7 +102,7 @@ PlayerDies
           rem CheckPlayerElimination will hide sprite and handle
           let currentPlayer = defenderID
           rem   elimination effects
-          gosub CheckPlayerElimination
+          gosub CheckPlayerElimination bank10
           
           rem Sound effect
           goto PlayDamageSound

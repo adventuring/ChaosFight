@@ -1124,11 +1124,9 @@ CharacterSelectQuadtariDetected
           rem Player color lookup tables for character select
           rem Indexed by characterSelectPlayer (1-4, so index 0 unused)
           data CharacterSelectHurtColors
-          0, $36, $46, $16, $C6
-          rem Unused, Indigo(6), Red(6), Yellow(6), Green(6)
-          end
+          0, Indigo(6), Red(6), Yellow(6), Green(6)
+end
 
           data CharacterSelectNormalColors
-          0, $3C, $4C, $1C, $CC
-          rem Unused, Indigo(12), Red(12), Yellow(12), Green(12)
-          end
+          0, Indigo(12), Red(12), Yellow(12), Green(12)
+end

@@ -29,7 +29,7 @@ BeginAuthorPrelude
           COLUBK = ColGray(0)
           
           rem Start Interworldly music
-          temp1 = MusicInterworldly
+          let temp1 = MusicInterworldly
           gosub StartMusic bank1
           
           gosub SetAuthorWindowValues bank12

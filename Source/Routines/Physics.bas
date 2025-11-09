@@ -32,10 +32,10 @@ HandleWallCollision
           rem Get character type for this player using direct array
           rem   access
           rem temp1 contains player index (0-3)
-          temp4 = playerCharacter[temp1]
+          let temp4 = playerCharacter[temp1]
           
           rem Get character weight using direct array access
-          temp3 = CharacterWeights[temp4]
+          let temp3 = CharacterWeights[temp4]
           
           rem Weight is now in temp3 (0-40)
           rem Calculate bounce coefficient: higher weight = lower bounce
@@ -46,12 +46,12 @@ HandleWallCollision
           rem   bounce
           
           rem Get player velocity using direct array access
-          temp4 = playerVelocityX[temp1]
+          let temp4 = playerVelocityX[temp1]
           
           rem Calculate bounced velocity: velocity = velocity * bounce /
           rem   50
           rem Using integer math: velocity = (velocity * bounce) / 50
-          temp2 = temp4 * (50 - temp3 / 2) / 50
+          let temp2 = temp4 * (50 - temp3 / 2) / 50
           if temp2 = 0 && temp4 then temp2 = 1
           rem Ensure at least 1 if was moving
           let playerVelocityX[temp1] = temp2
@@ -74,7 +74,7 @@ CheckLeftWallCollision
           rem weight-based bounce
           rem
           rem Constraints: Left wall boundary is X = PlayerLeftEdge
-          temp4 = playerX[temp1]
+          let temp4 = playerX[temp1]
           if temp4 < PlayerLeftEdge then gosub HandleWallCollision : temp4 = playerX[temp1] : if temp4 < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge
           return
 
@@ -95,7 +95,7 @@ CheckRightWallCollision
           rem weight-based bounce
           rem
           rem Constraints: Right wall boundary is X = PlayerRightEdge
-          temp4 = playerX[temp1]
+          let temp4 = playerX[temp1]
           if temp4 > PlayerRightEdge then gosub HandleWallCollision : temp4 = playerX[temp1] : if temp4 > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
           return
 

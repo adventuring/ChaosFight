@@ -146,11 +146,11 @@ DrawParadeCharacter
           
           rem Load parade character colors using standard color loader
           let currentCharacter = titleParadeCharacter
-          temp1 = currentCharacter
-          temp2 = 0
-          temp3 = 0
-          temp4 = 0
-          temp5 = 0
+          let temp1 = currentCharacter
+          let temp2 = 0
+          let temp3 = 0
+          let temp4 = 0
+          let temp5 = 0
           gosub LoadCharacterColors bank10
           
 DrawParadeCharacterSprite
@@ -161,11 +161,11 @@ DrawParadeCharacterSprite
           rem
           rem Input: titleParadeTimer (animation timing), currentCharacter
           rem Output: Player 0 sprite data populated in SCRAM buffers
-          temp1 = currentCharacter
+          let temp1 = currentCharacter
           rem Use default walking animation for parade march
-          temp2 = titleParadeTimer & 7
-          temp3 = ActionWalking
-          temp4 = 0
+          let temp2 = titleParadeTimer & 7
+          let temp3 = ActionWalking
+          let temp4 = 0
           gosub LocateCharacterArt bank10
           return
 

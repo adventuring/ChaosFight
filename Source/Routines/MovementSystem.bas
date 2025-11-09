@@ -76,13 +76,13 @@ XCarry
           let playerSubpixelX_WL[currentPlayer] = temp2
           rem Carry detected: temp3 > 0, extract wrapped low byte
           rem SCRAM RMW: playerSubpixelX_R → playerSubpixelX_W
-          temp4 = playerSubpixelX_R[currentPlayer]
-          temp4 = temp4 + 1
+          let temp4 = playerSubpixelX_R[currentPlayer]
+          let temp4 = temp4 + 1
           let playerSubpixelX_W[currentPlayer] = temp4
 XNoCarry
           rem SCRAM RMW: playerSubpixelX_R → playerSubpixelX_W (apply integer velocity)
-          temp4 = playerSubpixelX_R[currentPlayer]
-          temp4 = temp4 + playerVelocityX[currentPlayer]
+          let temp4 = playerSubpixelX_R[currentPlayer]
+          let temp4 = temp4 + playerVelocityX[currentPlayer]
           let playerSubpixelX_W[currentPlayer] = temp4
           
           rem Sync integer position for rendering (high byte is the integer part)
@@ -102,13 +102,13 @@ YCarry
           let playerSubpixelY_WL[currentPlayer] = temp2
           rem Carry detected: temp3 > 0, extract wrapped low byte
           rem SCRAM RMW: playerSubpixelY_R → playerSubpixelY_W
-          temp4 = playerSubpixelY_R[currentPlayer]
-          temp4 = temp4 + 1
+          let temp4 = playerSubpixelY_R[currentPlayer]
+          let temp4 = temp4 + 1
           let playerSubpixelY_W[currentPlayer] = temp4
 YNoCarry
           rem SCRAM RMW: playerSubpixelY_R → playerSubpixelY_W (apply integer velocity)
-          temp4 = playerSubpixelY_R[currentPlayer]
-          temp4 = temp4 + playerVelocityY[currentPlayer]
+          let temp4 = playerSubpixelY_R[currentPlayer]
+          let temp4 = temp4 + playerVelocityY[currentPlayer]
           let playerSubpixelY_W[currentPlayer] = temp4
           
           rem Sync integer position for rendering (high byte is the integer part)
@@ -150,8 +150,8 @@ GetPlayerPosition
           rem Output: temp2 = X position, temp3 = Y position
           rem Mutates: temp2, temp3
           rem Constraints: Callers should consume the values immediately; temps are volatile.
-          temp2 = playerX[currentPlayer]
-          temp3 = playerY[currentPlayer]
+          let temp2 = playerX[currentPlayer]
+          let temp3 = playerY[currentPlayer]
           return
 
 GetPlayerVelocity
@@ -161,8 +161,8 @@ GetPlayerVelocity
           rem Output: temp2 = X velocity, temp3 = Y velocity
           rem Mutates: temp2, temp3
           rem Constraints: Callers should use the values immediately; temps are volatile.
-          temp2 = playerVelocityX[currentPlayer]
-          temp3 = playerVelocityY[currentPlayer]
+          let temp2 = playerVelocityX[currentPlayer]
+          let temp3 = playerVelocityY[currentPlayer]
           return
 
 MovementApplyGravity
@@ -181,7 +181,7 @@ AddVelocitySubpixelY
           rem Mutates: temp2-temp4, playerVelocityY[], playerVelocityYL[]
           rem Constraints: Uses 16-bit accumulator; carry promotes to integer component
           rem Save subpixel amount before using temp2 for accumulator
-          temp4 = temp2
+          let temp4 = temp2
           rem 16-bit accumulator for proper carry detection
           let temp2.temp3 = playerVelocityYL[temp1] + temp4
           rem Use saved amount in accumulator
@@ -264,22 +264,22 @@ CheckPlayerCollision
           rem Uses temp1-temp9 (temp4-7 reused after X/Y checks)
 
           rem Load player X positions into temporaries
-          temp4 = playerX[temp1]
-          temp5 = playerX[temp2]
+          let temp4 = playerX[temp1]
+          let temp5 = playerX[temp2]
 
           rem Calculate absolute X distance between players
           rem Primary holds player1 X initially
           if temp4 >= temp5 then CalcXDistanceRight
-          temp6 = temp5 - temp4
+          let temp6 = temp5 - temp4
           goto XDistanceDone
 CalcXDistanceRight
-          temp6 = temp4 - temp5
+          let temp6 = temp4 - temp5
 XDistanceDone
           if temp6 >= PlayerSpriteWidth then NoCollision
 
           rem Load player Y positions (reuse temporaries)
-          temp4 = playerY[temp1]
-          temp5 = playerY[temp2]
+          let temp4 = playerY[temp1]
+          let temp5 = playerY[temp2]
 
           rem Fetch character half-height values using shared SCRAM scratch variables
           let characterIndex_W = playerCharacter[temp1]
@@ -292,20 +292,20 @@ XDistanceDone
 
           rem Compute absolute Y distance between player centers
           if temp4 >= temp5 then CalcYDistanceDown
-          temp6 = temp5 - temp4
+          let temp6 = temp5 - temp4
           goto YDistanceDone
 CalcYDistanceDown
-          temp6 = temp4 - temp5
+          let temp6 = temp4 - temp5
 YDistanceDone
           let totalHeight_W = halfHeight1_R + halfHeight2_R
           if temp6 >= totalHeight_R then NoCollision
 
-          temp3 = 1
+          let temp3 = 1
           rem Collision detected
           return
 
 NoCollision
-          temp3 = 0
+          let temp3 = 0
           return
 ConstrainToScreen
           rem Clamp player position to on-screen bounds and clear subpixels at edges.
@@ -362,9 +362,9 @@ InitializeMovementSystem
           rem Constraints: Initializes all 4 players to same position
           rem (center of screen). All velocities set to zero
           rem Initialize all players to center of screen - inlined for
-          temp2 = 80
+          let temp2 = 80
           rem   performance
-          temp3 = 100
+          let temp3 = 100
           let playerX[0] = temp2
           rem Player 0
           let playerSubpixelX_W[0] = temp2

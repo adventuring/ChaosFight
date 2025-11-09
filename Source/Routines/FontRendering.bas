@@ -87,7 +87,7 @@ DrawDigit
           rem Clamp digit value to 0-15
           if temp1 > 15 then temp1 = 15
           
-          temp6 = temp1 * 16
+          let temp6 = temp1 * 16
           rem Calculate data offset: digit * 16 (16 bytes per digit)
           
           rem Set sprite position and color based on spriteSelect
@@ -211,7 +211,7 @@ DrawPlayerNumber
           rem   temp3 = Y position
           rem   temp5 = sprite select (0=player0, 1=player1)
           rem Player colors are looked up from a table.
-          temp1 = temp1 + 1
+          let temp1 = temp1 + 1
           rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
           
           rem Look up player color
@@ -219,22 +219,22 @@ DrawPlayerNumber
           on temp1 goto SetP1Color SetP2Color SetP3Color SetP4Color
           
 SetP1Color
-          temp4 = ColIndigo(14)
+          let temp4 = ColIndigo(14)
           goto DrawPlayerDigitNow
           rem Indigo
           
 SetP2Color
-          temp4 = ColRed(14)
+          let temp4 = ColRed(14)
           goto DrawPlayerDigitNow
           rem Red
           
 SetP3Color
-          temp4 = ColYellow(14)
+          let temp4 = ColYellow(14)
           goto DrawPlayerDigitNow
           rem Yellow
           
 SetP4Color
-          temp4 = ColTurquoise(14)
+          let temp4 = ColTurquoise(14)
           rem Turquoise (SECAM macro maps to Cyan)
           goto DrawPlayerDigitNow
           
@@ -253,7 +253,7 @@ DrawArenaNumber
           rem   temp3 = Y position
           rem temp5 = sprite select (0=player0, 1=player1, 2=player2,
           rem 3=player3, 4=player4, 5=player5)
-          temp4 = ColGrey(14)
+          let temp4 = ColGrey(14)
           rem White
           goto DrawDigit
           rem tail call

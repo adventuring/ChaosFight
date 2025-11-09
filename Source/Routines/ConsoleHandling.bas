@@ -59,7 +59,7 @@ HandleConsoleSwitches
           rem Main console switch handler
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
-          temp2 = 0
+          let temp2 = 0
           rem   mode
           gosub CheckEnhancedPause
           rem Check Player 1 buttons
@@ -75,7 +75,7 @@ Player1PauseDone
 DonePlayer1Pause
           
           
-          temp2 = 1
+          let temp2 = 1
           gosub CheckEnhancedPause
           rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause
@@ -123,7 +123,7 @@ CheckColorBWToggle
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           
           rem Optimized: Check Color/B&W switch state change directly
-          temp6 = switchbw
+          let temp6 = switchbw
           if temp6 = colorBWPrevious_R then DoneSwitchChange
           gosub DetectControllers bank14
           let colorBWPrevious_W = switchbw

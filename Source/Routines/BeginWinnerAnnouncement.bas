@@ -58,7 +58,7 @@ BeginWinnerAnnouncement
           let displayRank_W = 0
           rem   DisplayWinScreen if implemented)
           
-          temp1 = winnerPlayerIndex_R
+          let temp1 = winnerPlayerIndex_R
           rem Get winner’s character index
           if temp1 = 0 then temp2 = PlayerCharacter[0]
           if temp1 = 1 then temp2 = PlayerCharacter[1]
@@ -66,7 +66,7 @@ BeginWinnerAnnouncement
           if temp1 = 3 then temp2 = PlayerCharacter[3]
           
           rem Look up full song ID from mapping table (table contains
-          temp1 = CharacterThemeSongIndices[temp2]
+          let temp1 = CharacterThemeSongIndices[temp2]
           rem   song ID constants)
           
           rem Start winner’s character theme song

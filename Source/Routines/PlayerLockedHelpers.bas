@@ -18,13 +18,13 @@ GetPlayerLocked
           rem
           rem Called Routines: None
           rem Constraints: None
-          temp3 = playerLocked
+          let temp3 = playerLocked
 
           rem Extract 2 bits for this player using computed shift
           rem Shift amount = player_index * 2
-          temp2 = temp1 * 2
-          temp3 = temp3 / (2 ^ temp2)
-          temp2 = temp3 & 3
+          let temp2 = temp1 * 2
+          let temp3 = temp3 / (2 ^ temp2)
+          let temp2 = temp3 & 3
 
           rem Invalid index check (temp1 should be 0-3)
           rem Restructure to avoid forward jumps that cause bank address issues
@@ -63,22 +63,22 @@ SetPlayerLocked
           if temp1 < 0 then return
           if temp1 > 3 then return
 
-          temp3 = playerLocked
+          let temp3 = playerLocked
           rem Get current playerLocked value
 
           rem Compute mask and shift value based on player index
           rem Shift amount = player_index * 2
-          temp4 = temp1 * 2
+          let temp4 = temp1 * 2
 
           rem Create mask to clear the 2 bits for this player
           rem Mask = ~(3 << shift) & 255
-          temp5 = 3 * (2 ^ temp4)
-          temp5 = temp5 ^ 255  ; XOR with 255 gives bitwise NOT
-          temp5 = temp3 & temp5 ; Clear the bits
+          let temp5 = 3 * (2 ^ temp4)
+          let temp5 = temp5 ^ 255  ; XOR with 255 gives bitwise NOT
+          let temp5 = temp3 & temp5 ; Clear the bits
 
           rem Set the new value
-          temp4 = temp2 * (2 ^ (temp1 * 2))
-          temp5 = temp5 | temp4
+          let temp4 = temp2 * (2 ^ (temp1 * 2))
+          let temp5 = temp5 | temp4
 
           let playerLocked = temp5
           return

@@ -128,9 +128,9 @@ HCSC_DoCycle
           rem   PlaySoundEffect (bank15)
           rem
           rem Constraints: Must be colocated with
-          temp1 = playerCharacter[temp1]
+          let temp1 = playerCharacter[temp1]
           rem Get current character index
-          temp3 = temp1
+          let temp3 = temp1
           rem Cycle based on direction
           gosub CycleCharacterLeft bank12
 HCSC_CycleDone
@@ -149,9 +149,9 @@ HCSC_CycleDone
           rem Called Routines: SetPlayerLocked (bank10),
           rem PlaySoundEffect (bank15)
           let playerCharacter[temp1] = temp1
-          temp2 = PlayerLockedUnlocked
+          let temp2 = PlayerLockedUnlocked
           gosub SetPlayerLocked bank9
-          temp1 = SoundMenuNavigate
+          let temp1 = SoundMenuNavigate
           rem Play navigation sound
           gosub PlaySoundEffect bank15
           return
@@ -184,7 +184,7 @@ HandleCharacterSelectFire
           if temp1 = 2 then HCSF_CheckJoy0
           rem Players 1,3 use joy1
           if !joy1fire then return
-          temp2 = 1
+          let temp2 = 1
           if joy1down then temp4 = 1 else temp4 = 0
           goto HCSF_HandleFire
 HCSF_CheckJoy0
@@ -203,7 +203,7 @@ HCSF_CheckJoy0
           rem HandleCharacterSelectFire
           rem Players 0,2 use joy0
           if !joy0fire then return
-          temp2 = 1
+          let temp2 = 1
           if joy0down then temp4 = 1 else temp4 = 0
 HCSF_HandleFire
           rem Handle fire button press
@@ -228,11 +228,11 @@ HCSF_HandleFire
           if playerCharacter[temp1] = RandomCharacter then HCSF_HandleRandom
           rem Check for handicap mode (down+fire = 75% health)
           if temp4 then HCSF_HandleHandicap
-          temp3 = temp1
-          temp1 = temp3
-          temp2 = PlayerLockedNormal
+          let temp3 = temp1
+          let temp1 = temp3
+          let temp2 = PlayerLockedNormal
           gosub SetPlayerLocked bank9
-          temp1 = SoundMenuSelect
+          let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
           return
@@ -248,11 +248,11 @@ HCSF_HandleHandicap
           rem Called Routines: SetPlayerLocked (bank10),
           rem PlaySoundEffect (bank15)
           rem Constraints: Must be colocated with HandleCharacterSelectFire
-          temp3 = temp1
-          temp1 = temp3
-          temp2 = PlayerHandicapped
+          let temp3 = temp1
+          let temp1 = temp3
+          let temp2 = PlayerHandicapped
           gosub SetPlayerLocked bank9
-          temp1 = SoundMenuSelect
+          let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
           return
@@ -278,7 +278,7 @@ HCSF_HandleRandom
           rem CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if temp4 then randomSelectFlags_W[temp1] = $80 else randomSelectFlags_W[temp1] = 0
-          temp1 = SoundMenuSelect
+          let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
           rem Fall through - character will stay as RandomCharacter
@@ -289,7 +289,7 @@ CharacterSelectInputEntry
           gosub CharacterSelectCheckControllerRescan bank10
 
           rem Consolidated input handling with Quadtari multiplexing
-          temp3 = qtcontroller * 2
+          let temp3 = qtcontroller * 2
           rem Player offset: 0=P1/P2, 2=P3/P4
           gosub CharacterSelectHandleTwoPlayers
 
@@ -301,7 +301,7 @@ CharacterSelectHandleTwoPlayers
           rem temp3 = player offset (0 or 2)
 
           rem Check if second player should be active (Quadtari)
-          temp4 = 0
+          let temp4 = 0
           if temp3 = 0 then temp4 = 255
           if controllerStatus & SetQuadtariDetected then temp4 = 255
 
@@ -373,56 +373,56 @@ CharacterSelectCheckRollQuadtari
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer0
-          temp2 = rand & 31
+          let temp2 = rand & 31
           rem Roll 5-bit random: rand & 31 (0-31)
           rem If > 15, stay as RandomCharacter and retry next frame
           if temp2 > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[0] = temp2
           rem Valid! Set character and lock with normal or handicap
           if randomSelectFlags_R[0] then goto CharacterSelectLockPlayer0Handicap
-          temp1 = 0 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
+          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
           goto CharacterSelectLockPlayer0Done
 CharacterSelectLockPlayer0Handicap
-          temp1 = 0 : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
+          let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
 CharacterSelectLockPlayer0Done
           let randomSelectFlags_W[0] = 0
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer1
-          temp2 = rand & 31
+          let temp2 = rand & 31
           if temp2 > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[1] = temp2
           if randomSelectFlags_R[1] then goto CharacterSelectLockPlayer1Handicap
-          temp1 = 1 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
           goto CharacterSelectLockPlayer1Done
 CharacterSelectLockPlayer1Handicap
-          temp1 = 1 : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
+          let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
 CharacterSelectLockPlayer1Done
           let randomSelectFlags_W[1] = 0
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer2
-          temp2 = rand & 31
+          let temp2 = rand & 31
           if temp2 > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[2] = temp2
           if randomSelectFlags_R[2] then goto CharacterSelectLockPlayer2Handicap
-          temp1 = 2 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
+          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
           goto CharacterSelectLockPlayer2Done
 CharacterSelectLockPlayer2Handicap
-          temp1 = 2 : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
+          let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
 CharacterSelectLockPlayer2Done
           let randomSelectFlags_W[2] = 0
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer3
-          temp2 = rand & 31
+          let temp2 = rand & 31
           if temp2 > MaxCharacter then goto CharacterSelectRollsDone
           let playerCharacter[3] = temp2
           if randomSelectFlags_R[3] then goto CharacterSelectLockPlayer3Handicap
-          temp1 = 3 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
+          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
           goto CharacterSelectLockPlayer3Done
 CharacterSelectLockPlayer3Handicap
-          temp1 = 3 : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
+          let temp1 = 3 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
 CharacterSelectLockPlayer3Done
           let randomSelectFlags_W[3] = 0
           
@@ -435,9 +435,9 @@ CharacterSelectCheckReady
           rem 2-player mode: P1 must be locked AND (P2 locked OR P2 on
           rem CPU)
           if controllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
-          temp1 = 0 : gosub GetPlayerLocked bank9 : if !temp2 then goto CharacterSelectReadyDone
+          let temp1 = 0 : gosub GetPlayerLocked bank9 : if !temp2 then goto CharacterSelectReadyDone
           rem P1 is locked, check P2
-          temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto CharacterSelectFinish
+          let temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto CharacterSelectFinish
           rem P2 not locked, check if on CPU
           if playerCharacter[1] = CPUCharacter then goto CharacterSelectFinish
           goto CharacterSelectReadyDone
@@ -447,21 +447,21 @@ CharacterSelectQuadtariReady
           let readyCount = 0
           rem   CPU/NO)
           rem Count P1 ready
-          temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then readyCount = readyCount + 1
-          temp1 = 0 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[0] = CPUCharacter then readyCount = readyCount + 1
-          temp1 = 0 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[0] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[0] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[0] = NoCharacter then readyCount = readyCount + 1
           rem Count P2 ready
-          temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then readyCount = readyCount + 1
-          temp1 = 1 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[1] = CPUCharacter then readyCount = readyCount + 1
-          temp1 = 1 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[1] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[1] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[1] = NoCharacter then readyCount = readyCount + 1
           rem Count P3 ready
-          temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then readyCount = readyCount + 1
-          temp1 = 2 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[2] = CPUCharacter then readyCount = readyCount + 1
-          temp1 = 2 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[2] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[2] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[2] = NoCharacter then readyCount = readyCount + 1
           rem Count P4 ready
-          temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then readyCount = readyCount + 1
-          temp1 = 3 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[3] = CPUCharacter then readyCount = readyCount + 1
-          temp1 = 3 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[3] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[3] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank9 : if !temp2 && playerCharacter[3] = NoCharacter then readyCount = readyCount + 1
           if readyCount >= 2 then goto CharacterSelectFinish
           
 CharacterSelectReadyDone
@@ -498,7 +498,7 @@ SkipCharacter4Facing
           return
 
 CycleRightFromNO
-          temp1 = 0
+          let temp1 = 0
           rem NoCharacter(255) goes to 0
           return
           

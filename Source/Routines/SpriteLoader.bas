@@ -78,10 +78,10 @@ LoadCharacterSprite
           asm
 ;   (0-MaxCharacter for current implementation)
           end
-          temp5 = 1
+          let temp5 = 1
           goto ValidateCharacterDoneInline
 ValidateInvalidCharacterInline
-          temp5 = 0
+          let temp5 = 0
 ValidateCharacterDoneInline
           if !temp5 then goto LoadSpecialSprite
           asm
@@ -135,13 +135,13 @@ ValidateCharacterDoneInline
 ;
 ; Move player number to temp4 and set temp3 to animation
           end
-          temp3 = 0
+          let temp3 = 0
           asm
 ; action (0=idle)
 ; animation action/sequence 0 = idle
 ; playerNumberAlt already has player number from caller
           end
-          temp1 = currentCharacter
+          let temp1 = currentCharacter
           asm
 ; Set temp variables for cross-bank call
           end
@@ -541,7 +541,7 @@ LoadPlayerSpriteDispatch
 ; Set temp1 from currentCharacter (already set from
 ; playerCharacter[currentPlayer])
           end
-          temp1 = currentCharacter
+          let temp1 = currentCharacter
           gosub LocateCharacterArt bank10
           return
 
@@ -574,7 +574,7 @@ LoadPlayer0Sprite
 ; temp1 = character index, temp2 = animation frame already
 ;   set
           end
-          temp3 = 0
+          let temp3 = 0
           asm
 ; playerNumber = player number (0)
 ; Use LoadCharacterSprite which handles LocateCharacterArt
@@ -607,7 +607,7 @@ LoadPlayer1Sprite
 ; temp1 = character index, temp2 = animation frame already
 ;   set
           end
-          temp3 = 1
+          let temp3 = 1
           asm
 ; playerNumber = player number (1)
 ; Use LoadCharacterSprite which handles LocateCharacterArt
@@ -640,7 +640,7 @@ LoadPlayer2Sprite
 ; temp1 = character index, temp2 = animation frame already
 ;   set
           end
-          temp3 = 2
+          let temp3 = 2
           asm
 ; playerNumber = player number (2)
 ; Use LoadCharacterSprite which handles LocateCharacterArt
@@ -673,7 +673,7 @@ LoadPlayer3Sprite
 ; temp1 = character index, temp2 = animation frame already
 ;   set
           end
-          temp3 = 3
+          let temp3 = 3
           asm
 ; playerNumber = player number (3)
 ; Use LoadCharacterSprite which handles LocateCharacterArt
@@ -764,10 +764,10 @@ NormalColor
 ; NTSC/PAL: Use character-specific colors
           end
 #ifdef TV_NTSC
-          temp6 = CharacterColorsNTSC[temp1]
+          let temp6 = CharacterColorsNTSC[temp1]
 #endif
 #ifdef TV_PAL
-          temp6 = CharacterColorsPAL[temp1]
+          let temp6 = CharacterColorsPAL[temp1]
 #endif
           goto SetColor
 
@@ -807,10 +807,10 @@ PerLineFlashing
 ; Use character color when frame bit 3 is clear
           end
 #ifdef TV_NTSC
-          temp6 = CharacterColorsNTSC[temp1]
+          let temp6 = CharacterColorsNTSC[temp1]
 #endif
 #ifdef TV_PAL
-          temp6 = CharacterColorsPAL[temp1]
+          let temp6 = CharacterColorsPAL[temp1]
 #endif
           goto SetColor
           
@@ -840,28 +840,28 @@ PlayerIndexColorsPlayer0
           asm
 ; Player 1: Indigo (SECAM maps to Blue)
           end
-          temp6 = ColIndigo(12)
+          let temp6 = ColIndigo(12)
           goto SetColor
 
 PlayerIndexColorsPlayer1
           asm
 ; Player 2: Red
           end
-          temp6 = ColRed(12)
+          let temp6 = ColRed(12)
           goto SetColor
 
 PlayerIndexColorsPlayer2
           asm
 ; Player 3: Yellow (SECAM maps to Yellow)
           end
-          temp6 = ColYellow(12)
+          let temp6 = ColYellow(12)
           goto SetColor
 
 PlayerIndexColorsPlayer3
           asm
 ; Player 4: Turquoise (SECAM maps to Green)
           end
-          temp6 = ColTurquoise(12)
+          let temp6 = ColTurquoise(12)
           goto SetColor
 
 PlayerIndexColorsDim
@@ -891,28 +891,28 @@ PlayerIndexColorsDimPlayer0
           asm
 ; Player 1: Indigo (dimmed)
           end
-          temp6 = ColIndigo(6)
+          let temp6 = ColIndigo(6)
           goto SetColor
 
 PlayerIndexColorsDimPlayer1
           asm
 ; Player 2: Red (dimmed)
           end
-          temp6 = ColRed(6)
+          let temp6 = ColRed(6)
           goto SetColor
 
 PlayerIndexColorsDimPlayer2
           asm
 ; Player 3: Yellow (dimmed)
           end
-          temp6 = ColYellow(6)
+          let temp6 = ColYellow(6)
           goto SetColor
 
 PlayerIndexColorsDimPlayer3
           asm
 ; Player 4: Turquoise (dimmed)
           end
-          temp6 = ColTurquoise(6)
+          let temp6 = ColTurquoise(6)
           goto SetColor
 
 HurtColor
@@ -932,7 +932,7 @@ HurtColor
 ; SetColor
           end
 #ifdef TV_SECAM
-          temp6 = ColMagenta(10)
+          let temp6 = ColMagenta(10)
           goto SetColor
 #else
           asm
@@ -944,10 +944,10 @@ HurtColor
 ; NTSC/PAL: dim the character color
           end
 #ifdef TV_NTSC
-          temp6 = CharacterColorsNTSC[temp1] - 6
+          let temp6 = CharacterColorsNTSC[temp1] - 6
 #endif
 #ifdef TV_PAL
-          temp6 = CharacterColorsPAL[temp1] - 6
+          let temp6 = CharacterColorsPAL[temp1] - 6
 #endif
           if temp6 < 0 then temp6 = 0
           goto SetColor

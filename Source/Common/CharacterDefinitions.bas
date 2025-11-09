@@ -95,7 +95,7 @@ GetCharacterWeightSub
           rem Called Routines: None
           rem
           rem Constraints: Must share bank with CharacterWeights data
-          temp4 = CharacterWeights(temp1)
+          let temp4 = CharacterWeights(temp1)
           return
 
 GetCharacterAttackTypeSub
@@ -110,17 +110,17 @@ GetCharacterAttackTypeSub
           rem Called Routines: None
           rem
           rem Constraints: CharacterAttackTypes table must share bank
-          temp3 = temp1 / 8
-          temp2 = temp1 & 7
-          temp4 = CharacterAttackTypes[temp3]
-          temp5 = temp2
+          let temp3 = temp1 / 8
+          let temp2 = temp1 & 7
+          let temp4 = CharacterAttackTypes[temp3]
+          let temp5 = temp2
 GetCharacterAttackTypeSubShiftLoop
           if temp5 = 0 then goto GetCharacterAttackTypeSubShiftDone
-          temp4 = temp4 / 2
-          temp5 = temp5 - 1
+          let temp4 = temp4 / 2
+          let temp5 = temp5 - 1
           goto GetCharacterAttackTypeSubShiftLoop
 GetCharacterAttackTypeSubShiftDone
-          temp4 = temp4 & 1
+          let temp4 = temp4 & 1
           return
 
 GetMissileDimsSub
@@ -135,8 +135,8 @@ GetMissileDimsSub
           rem Called Routines: None
           rem
           rem Constraints: Must share bank with missile dimension tables
-          temp3 = CharacterMissileWidths(temp1)
-          temp4 = CharacterMissileHeights(temp1)
+          let temp3 = CharacterMissileWidths(temp1)
+          let temp4 = CharacterMissileHeights(temp1)
           return
 
 GetMissileEmissionHeightSub
@@ -151,7 +151,7 @@ GetMissileEmissionHeightSub
           rem Called Routines: None
           rem
           rem Constraints: Table access requires same bank residency
-          temp4 = CharacterMissileEmissionHeights(temp1)
+          let temp4 = CharacterMissileEmissionHeights(temp1)
           return
 
 GetMissileMomentumXSub
@@ -166,7 +166,7 @@ GetMissileMomentumXSub
           rem Called Routines: None
           rem
           rem Constraints: Shares bank with CharacterMissileMomentumX
-          temp4 = CharacterMissileMomentumX(temp1)
+          let temp4 = CharacterMissileMomentumX(temp1)
           return
 
 GetMissileMomentumYSub
@@ -181,7 +181,7 @@ GetMissileMomentumYSub
           rem Called Routines: None
           rem
           rem Constraints: Shares bank with CharacterMissileMomentumY
-          temp4 = CharacterMissileMomentumY(temp1)
+          let temp4 = CharacterMissileMomentumY(temp1)
           return
 
 GetMissileFlagsSub
@@ -196,7 +196,7 @@ GetMissileFlagsSub
           rem Called Routines: None
           rem
           rem Constraints: Shares bank with CharacterMissileFlags table
-          temp4 = CharacterMissileFlags(temp1)
+          let temp4 = CharacterMissileFlags(temp1)
           return
 
           rem

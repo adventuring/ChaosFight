@@ -148,9 +148,9 @@ Player2LeftSelectionSkip
 
 Player2RightSelectionQ
           if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = 0
-          if playerCharacter[1] > MaxCharacter then temp1 = 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
 Player2RightSelectionSkip
-          if joy1up then temp1 = 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
           rem Unlock by moving up
           if joy1down then SelectStick1FireQ
 
@@ -278,8 +278,8 @@ Player4LockSelectionDone
           
           qtcontroller = 0
           rem Switch back to even frame mode for next iteration
-CharacterSelectSkipPlayer3
-CharacterSelectSkipPlayer4
+CharacterSelectDonePlayer3
+CharacterSelectDonePlayer4
 SelectStick1OddFrameSkip
 
 CharacterSelectHandleComplete
@@ -297,12 +297,12 @@ CharacterSelectHandleComplete
           temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
-          goto CharacterSelectSkipQuadtariPlayersInline
-          
+          goto CharacterSelectDoneQuadtariPlayersInline
+
 CharacterSelectQuadtariPlayersInline
           temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
           temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
-CharacterSelectSkipQuadtariPlayersInline
+CharacterSelectDoneQuadtariPlayersInline
           rem Check if enough players are ready
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
 
@@ -590,8 +590,9 @@ LegacyCharacterSelectDrawNumberBody
 Player1TopRowQ
           if player0y  = 40 then Player1DrawTopDigit
           goto DonePlayer0Check1
-Player1DrawTopDigit 
+Player1DrawTopDigit
           return
+DonePlayer0Check1
 
           rem Player 2 (top right) - draw 2
 
@@ -600,8 +601,9 @@ Player1DrawTopDigit
 Player2TopRowQ
           if player1y  = 40 then Player2DrawTopDigit
           goto DonePlayer1Check1
-Player2DrawTopDigit 
+Player2DrawTopDigit
           return
+DonePlayer1Check1
 
           rem Player 3 (bottom left) - draw 3
 
@@ -610,8 +612,9 @@ Player2DrawTopDigit
 Player1BottomRowQ
           if player0y  = 80 then Player1DrawBottomDigit
           goto DonePlayer0Check2
-Player1DrawBottomDigit 
+Player1DrawBottomDigit
           return
+DonePlayer0Check2
 
           rem Player 4 (bottom right) - draw 4
 
@@ -620,8 +623,9 @@ Player1DrawBottomDigit
 Player2BottomRowQ
           if player1y  = 80 then Player2DrawBottomDigit
           goto DonePlayer1Check2
-Player2DrawBottomDigit 
+Player2DrawBottomDigit
           return
+DonePlayer1Check2
           return
 
 CharacterSelectUpdateAnimation
@@ -671,8 +675,8 @@ CharacterSelectUpdateAnimation
           rem P1 handicap flag
           if joy1down then let HandicapMode  = HandicapMode | 2
           rem P2 handicap flag
-          
-          
+DoneEvenFrameCheck
+
           rem Check each player for DOWN held (odd frame for P3/P4)
           
           
@@ -713,8 +717,8 @@ CharacterSelectOddFrame
           rem P3 handicap flag
           if joy1down then let HandicapMode  = HandicapMode | 8
           rem P4 handicap flag
-          
-          
+DoneOddFrameCheck
+
           rem If any player is holding down, set animation to recovery
           rem pose
           if HandicapMode then CharacterSelectHandleHandicap
@@ -1122,7 +1126,9 @@ CharacterSelectQuadtariDetected
           data CharacterSelectHurtColors
           0, $36, $46, $16, $C6
           rem Unused, Indigo(6), Red(6), Yellow(6), Green(6)
+          end
 
           data CharacterSelectNormalColors
           0, $3C, $4C, $1C, $CC
           rem Unused, Indigo(12), Red(12), Yellow(12), Green(12)
+          end

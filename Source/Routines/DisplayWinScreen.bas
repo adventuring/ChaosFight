@@ -77,11 +77,11 @@ end
           rem Load playfield colors based on B&W mode
           if temp2 then gosub DWS_LoadBWColors else gosub DWS_LoadColorColors
           
-          temp1 = playersRemaining_R
+          let temp1 = playersRemaining_R
           rem Get players remaining count (SCRAM read)
           
           rem Get winner index (already set by FindWinner, SCRAM read)
-          temp2 = winnerPlayerIndex_R
+          let temp2 = winnerPlayerIndex_R
           rem Read after DWS_GetBWMode to avoid temp2 conflict
           
           rem Calculate rankings from eliminationOrder
@@ -89,13 +89,13 @@ end
           rem 2nd place = highest eliminationOrder (last eliminated)
           rem 3rd place = second highest eliminationOrder
           
-          temp3 = 255
+          let temp3 = 255
           rem Find 2nd and 3rd place rankings
-          temp4 = 255
-          temp5 = 0
+          let temp4 = 255
+          let temp5 = 0
           let winScreenThirdPlaceOrder_W = 0
           
-          temp1 = 0
+          let temp1 = 0
           rem Check all players for ranking
 DWS_RankLoop
           rem Ranking loop - check all players for 2nd and 3rd place
@@ -144,9 +144,9 @@ DWS_UpdateSecond
           rem Called Routines: None
           rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
           let winScreenThirdPlaceOrder_W = temp5
-          temp4 = temp3
-          temp5 = winScreenCandidateOrder_R
-          temp3 = temp1
+          let temp4 = temp3
+          let temp5 = winScreenCandidateOrder_R
+          let temp3 = temp1
           goto DWS_RankNext
           
 DWS_CheckThird
@@ -179,7 +179,7 @@ DWS_RankNext
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
-          temp1 = temp1 + 1
+          let temp1 = temp1 + 1
           if temp1 < 4 then goto DWS_RankLoop
           
           rem Position characters based on playersRemaining
@@ -417,7 +417,7 @@ DWS_GetBWMode
           rem   (ColorBWOverride) can force B&W
           rem switchbw=1 means B&W mode, systemFlags bit 6
           rem Uses temp2 for temp2 (temp2 saved by
-          temp2 = 0
+          let temp2 = 0
           rem   caller)
           if switchbw then temp2 = 1
           if systemFlags & SystemFlagColorBWOverride then temp2 = 1

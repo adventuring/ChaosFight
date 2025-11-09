@@ -47,11 +47,11 @@ FallingAnimation1
           
           if playerCharacter[0] = NoCharacter then DonePlayer1Move
           rem playerIndex = 0 (player index), targetX = target X,
-          temp1 = 0
+          let temp1 = 0
           rem targetY = target Y (24)
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player1Target4P
-          temp2 = 53
+          let temp2 = 53
           rem 2-player mode: target X = 53
           goto Player1TargetDone
 Player1Target4P
@@ -67,7 +67,7 @@ Player1Target4P
           rem
           rem Constraints: Must be colocated with FallingAnimation1,
           rem Player1TargetDone
-          temp2 = 32
+          let temp2 = 32
           rem 4-player mode: target X = 32
 Player1TargetDone
           rem Player 1 target calculation complete
@@ -80,7 +80,7 @@ Player1TargetDone
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with FallingAnimation1
-          temp3 = 24
+          let temp3 = 24
           gosub MovePlayerToTarget
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer1Move
@@ -100,10 +100,10 @@ DonePlayer1Move
           rem Move Player 2 from quadrant to target (if active)
           
           if playerCharacter[1] = NoCharacter then DonePlayer2Move
-          temp1 = 1
+          let temp1 = 1
           rem Check if 4-player mode for target X
           if controllerStatus & SetQuadtariDetected then Player2Target4P
-          temp2 = 107
+          let temp2 = 107
           rem 2-player mode: target X = 107
           goto Player2TargetDone
 Player2Target4P
@@ -119,7 +119,7 @@ Player2Target4P
           rem
           rem Constraints: Must be colocated with FallingAnimation1,
           rem Player2TargetDone
-          temp2 = 128
+          let temp2 = 128
           rem 4-player mode: target X = 128
 Player2TargetDone
           rem Player 2 target calculation complete
@@ -132,7 +132,7 @@ Player2TargetDone
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with FallingAnimation1
-          temp3 = 24
+          let temp3 = 24
           gosub MovePlayerToTarget
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer2Move
@@ -152,10 +152,10 @@ DonePlayer2Move
           
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Move
           if playerCharacter[2] = NoCharacter then DonePlayer3Move
-          temp1 = 2
-          temp2 = 64
+          let temp1 = 2
+          let temp2 = 64
           rem 4-player mode: target X = 64
-          temp3 = 24
+          let temp3 = 24
           gosub MovePlayerToTarget
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer3Move
@@ -176,10 +176,10 @@ DonePlayer3Move
           
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Move
           if playerCharacter[3] = NoCharacter then DonePlayer4Move
-          temp1 = 3
-          temp2 = 96
+          let temp1 = 3
+          let temp2 = 96
           rem 4-player mode: target X = 96
-          temp3 = 24
+          let temp3 = 24
           gosub MovePlayerToTarget
           if temp4 then let fallComplete = fallComplete + 1
 DonePlayer4Move
@@ -270,9 +270,9 @@ MovePlayerToTarget
           rem Reuse yDistance SCRAM variable for delta X
           rem Reuse rowYPosition SCRAM variable for delta Y
           
-          temp5 = playerX[temp1]
+          let temp5 = playerX[temp1]
           rem Get current position
-          temp6 = playerY[temp1]
+          let temp6 = playerY[temp1]
           
           rem Calculate distances to target
           
@@ -443,11 +443,11 @@ VerticalDone
           gosub NudgePlayerFromPlayfield
           rem Check playfield collision and nudge if needed
           
-          temp5 = playerX[temp1]
+          let temp5 = playerX[temp1]
           rem Check if reached target after movement
-          temp6 = playerY[temp1]
+          let temp6 = playerY[temp1]
           if temp5 = temp2 && temp6 = temp3 then AtTarget
-          temp4 = 0
+          let temp4 = 0
           return
           
 AtTarget
@@ -461,7 +461,7 @@ AtTarget
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with MovePlayerToTarget
-          temp4 = 1
+          let temp4 = 1
           return
           
 NudgePlayerFromPlayfield
@@ -509,13 +509,13 @@ NudgePlayerFromPlayfield
           rem              NudgeDown, NudgeUp (all called via goto)
           rem Called from MovePlayerToTarget
           
-          temp4 = playerX[temp1]
+          let temp4 = playerX[temp1]
           rem Get current position
-          temp5 = playerY[temp1]
+          let temp5 = playerY[temp1]
           
-          temp6 = temp4
+          let temp6 = temp4
           rem Convert X position to playfield column (0-31)
-          temp6 = temp6 - ScreenInsetX
+          let temp6 = temp6 - ScreenInsetX
           asm
             lsr temp6
             lsr temp6
@@ -617,10 +617,10 @@ NudgeHorizontalDone
           rem Constraints: Must be colocated with
           rem NudgePlayerFromPlayfield
           
-          temp4 = playerX[temp1]
+          let temp4 = playerX[temp1]
           rem If still colliding, nudge vertically toward target
-          temp6 = temp4
-          temp6 = temp6 - ScreenInsetX
+          let temp6 = temp4
+          let temp6 = temp6 - ScreenInsetX
           asm
             lsr temp6
             lsr temp6

@@ -41,7 +41,7 @@ BeginPublisherPrelude
           COLUBK = ColGray(0)
           
           rem Start AtariToday music
-          temp1 = MusicAtariToday
+          let temp1 = MusicAtariToday
           goto StartMusic bank1
           rem tail call
 

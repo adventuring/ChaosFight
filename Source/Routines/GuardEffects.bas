@@ -25,17 +25,17 @@ ApplyGuardFlashing
           rem frames 2-3 = normal). SECAM uses ColCyan(6), NTSC/PAL uses
           rem ColCyan(12). Only applies if player is guarding (bit 1
           rem set)
-          temp2 = playerState[temp1] & 2
+          let temp2 = playerState[temp1] & 2
           rem Check if player is guarding
           if !temp2 then return 
           rem Not guarding
           
-          temp3 = frame & 3
+          let temp3 = frame & 3
           rem Flash every 4 frames for visible effect
           if temp3 >= 2 then goto GuardNormalPhase
           rem Flash phase - set light cyan color
           rem Optimized: Apply guard flash color with computed assignment
-          temp4 = ColCyan(12)
+          let temp4 = ColCyan(12)
           rem Bright cyan guard flash (SECAM maps to cyan)
           on temp1 goto GuardFlash0 GuardFlash1 GuardFlash2 GuardFlash3
           return
@@ -88,7 +88,7 @@ RestoreNormalPlayerColor
           rem Called Routines: None (colors handled by
           rem LoadCharacterColors)
           rem Constraints: None
-          temp4 = playerCharacter[temp1]
+          let temp4 = playerCharacter[temp1]
           rem Get character type for this player
           
           return
@@ -108,17 +108,17 @@ CheckGuardCooldown
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with GuardCooldownBlocked (called via goto)
-          temp3 = playerState[temp1] & 2
+          let temp3 = playerState[temp1] & 2
           rem Check if player is currently guarding
           if temp3 then GuardCooldownBlocked
           
           rem Check cooldown timer (stored in playerTimers array)
-          temp3 = playerTimers_R[temp1]
+          let temp3 = playerTimers_R[temp1]
           rem playerTimers stores frames remaining in cooldown
           
           if temp3 > 0 then GuardCooldownBlocked
           
-          temp2 = 1
+          let temp2 = 1
           rem Cooldown expired, guard allowed
           return
 
@@ -135,7 +135,7 @@ GuardCooldownBlocked
           rem Called Routines: None
           rem Constraints: Must be colocated with CheckGuardCooldown
           rem Currently guarding or in cooldown - not allowed to start
-          temp2 = 0
+          let temp2 = 0
           rem   new guard
           return
 
@@ -221,15 +221,15 @@ UpdateSingleGuardTimer
           rem EFFECTS: If guarding: decrements guard duration timer,
           rem   clears guard and starts cooldown when expired
           rem If not guarding: decrements cooldown timer (if active)
-          temp2 = playerState[temp1] & 2
+          let temp2 = playerState[temp1] & 2
           rem Check if player is guarding
           if temp2 then UpdateGuardTimerActive
           
           rem Player not guarding - decrement cooldown timer
-          temp3 = playerTimers_R[temp1]
+          let temp3 = playerTimers_R[temp1]
           rem Fix RMW: Read from _R, modify, write to _W
           if temp3 = 0 then return
-          temp3 = temp3 - 1
+          let temp3 = temp3 - 1
           rem No cooldown active
           let playerTimers_W[temp1] = temp3
           return
@@ -248,13 +248,13 @@ UpdateGuardTimerActive
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateSingleGuardTimer, GuardTimerExpired
-          temp3 = playerTimers_R[temp1]
+          let temp3 = playerTimers_R[temp1]
           rem Player is guarding - decrement guard duration timer
           if temp3 = 0 then GuardTimerExpired
           rem Guard timer already expired (shouldn’t happen, but safety
           rem   check)
           
-          temp3 = temp3 - 1
+          let temp3 = temp3 - 1
           rem Decrement guard duration timer
           let playerTimers_W[temp1] = temp3
           if temp3 = 0 then GuardTimerExpired

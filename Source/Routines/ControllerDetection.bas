@@ -9,8 +9,8 @@ CtrlDetConsole
 
 CtrlDetPads
           rem Re-detect controllers (monotonic upgrade only)
-          temp1 = controllerStatus
-          temp2 = 0
+          let temp1 = controllerStatus
+          let temp2 = 0
 #ifndef TV_SECAM
           let systemFlags = systemFlags & ClearSystemFlagColorBWOverride
           let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
@@ -27,7 +27,7 @@ CDP_NoQuadtari
           goto CDP_CheckGenesis
 
 CDP_QuadtariFound
-          temp2 = temp2 | SetQuadtariDetected
+          let temp2 = temp2 | SetQuadtariDetected
           goto CDP_MergeStatus
 
 CDP_CheckGenesis
@@ -102,7 +102,7 @@ CDP_DetectGenesis
           if !INPT0{7} then CDP_NoGenesisLeft
           if !INPT1{7} then CDP_NoGenesisLeft
           
-          temp2 = temp2 | SetLeftPortGenesis
+          let temp2 = temp2 | SetLeftPortGenesis
           rem Genesis detected on left port
           rem Set LeftPortGenesis bit
           
@@ -111,7 +111,7 @@ CDP_NoGenesisLeft
           if !INPT2{7} then CDP_NoGenesisRight
           if !INPT3{7} then CDP_NoGenesisRight
           
-          temp2 = temp2 | SetRightPortGenesis
+          let temp2 = temp2 | SetRightPortGenesis
           rem Genesis detected on right port
           rem Set RightPortGenesis bit
           
@@ -154,7 +154,7 @@ CDP_DetectJoy2bPlus
           if !INPT1{7} then CDP_NoJoy2Left
           if !INPT4{7} then CDP_NoJoy2Left
           
-          temp2 = temp2 | SetLeftPortJoy2bPlus
+          let temp2 = temp2 | SetLeftPortJoy2bPlus
           rem Joy2b+ detected on left port
           rem Set LeftPortJoy2bPlus bit
           
@@ -164,7 +164,7 @@ CDP_NoJoy2Left
           if !INPT3{7} then CDP_NoJoy2Right
           if !INPT5{7} then CDP_NoJoy2Right
           
-          temp2 = temp2 | SetRightPortJoy2bPlus
+          let temp2 = temp2 | SetRightPortJoy2bPlus
           rem Joy2b+ detected on right port
           rem Set RightPortJoy2bPlus bit
           

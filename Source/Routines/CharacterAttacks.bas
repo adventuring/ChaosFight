@@ -188,14 +188,14 @@ HarpyAttack
           rem Set animation state 14 (attack execution)
 
           rem Get facing direction (bit 0: 0=left, 1=right)
-          temp2 = playerState[temp1] & PlayerStateBitFacing
+          let temp2 = playerState[temp1] & PlayerStateBitFacing
           
           rem Set diagonal velocity at 45° angle (4 pixels/frame
           rem   horizontal, 4 pixels/frame vertical)
           rem Horizontal: 4 pixels/frame in facing direction
           rem Use explicit assignment to dodge unsupported multiply op
           rem When temp2=0 (left): want 252 (-4), when temp2≠0 (right): want 4
-          temp4 = 252
+          let temp4 = 252
           if temp2 then temp4 = 4
 HarpySetLeftVelocity
           rem Label for documentation - velocity already set above
@@ -218,7 +218,7 @@ HarpySetVerticalVelocity
           rem Constraints: Must be colocated with HarpyAttack,
           rem HarpySetLeftVelocity
           rem Vertical: 4 pixels/frame downward (positive Y = down)
-          temp3 = 4
+          let temp3 = 4
           
           rem Set player velocity for diagonal swoop (45° angle:
           rem   4px/frame X, 4px/frame Y) - inlined for performance
@@ -245,7 +245,7 @@ HarpySetVerticalVelocity
           rem Fix RMW: Read from _R, modify, write to _W
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-          temp5 = characterStateFlags_R[temp1] | 4
+          let temp5 = characterStateFlags_R[temp1] | 4
           let characterStateFlags_W[temp1] = temp5
           
           rem Attack behavior:

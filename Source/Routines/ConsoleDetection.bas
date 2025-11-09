@@ -44,7 +44,7 @@ ConsoleDetHW
           rem Assume 2600 console initially
           
           rem Check $D0 value
-          temp1 = $D0
+          let temp1 = $D0
           if temp1 = 0 then CheckFlashed
           
           rem Check if $D0 = $2C (7800 indicator)
@@ -52,7 +52,7 @@ ConsoleDetHW
           if !(temp1 = ConsoleDetectD0) then goto Is2600
           
           rem Check $D1 value for 7800 confirmation
-          temp1 = $D1
+          let temp1 = $D1
           if !(temp1 = ConsoleDetectD1) then goto Is2600
           
           goto Is7800
@@ -74,12 +74,12 @@ CheckFlashed
           rem Constraints: Must be colocated with ConsoleDetHW, Is7800,
           rem Is2600
           rem Check if $D1 is also $00 (flashed game)
-          temp1 = $D1
+          let temp1 = $D1
           if temp1 then Is2600
           
           rem Both $D0 and $D1 are $00 - check $80 for CDFJ driver
           rem   result
-          temp1 = $80
+          let temp1 = $80
           if temp1 = 0 then Is2600
           
           goto Is7800

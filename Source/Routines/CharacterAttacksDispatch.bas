@@ -113,7 +113,7 @@ CheckEnhancedJumpButton
           rem
           rem OUTPUT: temp3 = 1 if jump button pressed, 0 otherwise
           rem Uses: INPT0 for players 0,2; INPT2 for players 1,3
-          temp3 = 0
+          let temp3 = 0
           rem Initialize to no jump
           rem Player 0 or 2: Check INPT0
           if temp1 = 0 then CEJB_CheckPlayer0

@@ -17,7 +17,7 @@ LoadSongPointer
           rem Check if songs handled by other banks (0-Bank15MaxSongID)
           if temp1 < Bank1MinSongID then goto LSP_InvalidSong
           rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
-          temp2 = temp1 - Bank1MinSongID
+          let temp2 = temp1 - Bank1MinSongID
 LSP_Lookup
           rem Helper: Lookup pointer from tables and combine into 16-bit value
           rem
@@ -63,7 +63,7 @@ LoadSongVoice1Pointer
           rem Check if songs handled by other banks (0-Bank15MaxSongID)
           if temp1 < Bank1MinSongID then goto LSV1P_InvalidSong
           rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
-          temp2 = temp1 - Bank1MinSongID
+          let temp2 = temp1 - Bank1MinSongID
 LSV1P_Lookup
           rem Helper: Lookup Voice 1 pointer from tables
           rem
@@ -127,9 +127,9 @@ end
           if temp4 = 0 then LoadMusicNote0EndOfTrack
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          temp6 = temp2 & %11110000
+          let temp6 = temp2 & %11110000
           rem   AUDCV
-          temp6 = temp6 / 16
+          let temp6 = temp6 / 16
           let MusicVoice0TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope
@@ -217,9 +217,9 @@ end
           rem Check for end of track (Duration = 0)
           if temp4 = 0 then LoadMusicNote1EndOfTrack
           
-          temp6 = temp2 & %11110000
+          let temp6 = temp2 & %11110000
           rem Extract AUDC and AUDV
-          temp6 = temp6 / 16
+          let temp6 = temp6 / 16
           let MusicVoice1TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope

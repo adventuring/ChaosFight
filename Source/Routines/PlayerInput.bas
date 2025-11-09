@@ -38,8 +38,8 @@ GetPlayerAnimationState
           rem Animation State Helper
           rem Input: temp1 = player index (0-3), playerState[]
           rem Output: temp2 = animation state (bits 4-7 of playerState)
-          temp2 = playerState[temp1] & 240
-          temp2 = temp2 / 16
+          let temp2 = playerState[temp1] & 240
+          let temp2 = temp2 / 16
           rem Mask bits 4-7 (value 240 = %11110000)
           rem Shift right by 4 (divide by 16) to get animation state
           rem   (0-15)
@@ -91,7 +91,7 @@ SPF_PreserveYes
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveNo
-          temp3 = 1
+          let temp3 = 1
           return
           
 SPF_PreserveNo
@@ -105,7 +105,7 @@ SPF_PreserveNo
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveYes
-          temp3 = 0
+          let temp3 = 0
           return
 
 InputHandleAllPlayers
@@ -144,7 +144,7 @@ InputHandleAllPlayers
           let currentPlayer = 0 : gosub IsPlayerAlive
           if temp2 = 0 then InputSkipPlayer0Input
           if (PlayerState[0] & 8) then InputSkipPlayer0Input
-          temp1 = 0 : gosub InputHandleLeftPortPlayer
+          let temp1 = 0 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer0Input
           rem Skip Player 0 input (label only, no execution)
@@ -179,7 +179,7 @@ InputHandlePlayer1
           rem Called Routines: InputHandleRightPortPlayer - handles
           rem right port player input
           rem Constraints: Must be colocated with InputHandleAllPlayers, InputSkipPlayer1Input
-          temp1 = 1
+          let temp1 = 1
           gosub InputHandleRightPortPlayer
 InputSkipPlayer1Input
           rem Player 1 uses Joy1
@@ -224,7 +224,7 @@ InputHandleQuadtariPlayers
           let currentPlayer = 2 : gosub IsPlayerAlive
           if temp2 = 0 then InputSkipPlayer3Input
           if (PlayerState[2] & 8) then InputSkipPlayer3Input
-          temp1 = 2 : gosub InputHandleLeftPortPlayer
+          let temp1 = 2 : gosub InputHandleLeftPortPlayer
           
 InputSkipPlayer3Input
           rem Skip Player 3 input (label only, no execution)
@@ -242,7 +242,7 @@ InputSkipPlayer3Input
           let currentPlayer = 3 : gosub IsPlayerAlive
           if temp2 = 0 then InputSkipPlayer4Input
           if (PlayerState[3] & 8) then InputSkipPlayer4Input
-          temp1 = 3 : gosub InputHandleRightPortPlayer
+          let temp1 = 3 : gosub InputHandleRightPortPlayer
           
 InputSkipPlayer4Input
           rem Skip Player 4 input (label only, no execution)
@@ -345,12 +345,12 @@ HGI_CheckJoy0
           rem Players 0,2 use joy0
           if !joy0down then goto HGI_CheckGuardRelease
 HGI_HandleDownPressed
-          temp4 = PlayerCharacter[temp1]
+          let temp4 = PlayerCharacter[temp1]
           rem DOWN pressed - dispatch to character-specific down handler
           gosub DispatchCharacterDown bank14
           return
 HGI_CheckGuardRelease
-          temp2 = PlayerState[temp1] & 2
+          let temp2 = PlayerState[temp1] & 2
           rem DOWN released - check for early guard release
           if !temp2 then return
           rem Not guarding, nothing to do
@@ -369,10 +369,10 @@ ConvertPlayerXToPlayfieldColumn
           rem
           rem OUTPUT: temp2 = playfield column (0-31)
           rem MUTATES: temp2 (return value)
-          temp2 = PlayerX[temp1]
+          let temp2 = PlayerX[temp1]
           rem Convert player position to playfield coordinates
-          temp2 = temp2 - ScreenInsetX
-          temp2 = temp2 / 4
+          let temp2 = temp2 - ScreenInsetX
+          let temp2 = temp2 / 4
           rem pfColumn = playfield column
           if temp2 > 31 then temp2 = 31
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
@@ -401,25 +401,25 @@ HFCM_CheckLeftCollision
           rem Check column to the left
 
           if temp2 <= 0 then goto HFCM_CheckRightMovement
-          temp3 = temp2 - 1
+          let temp3 = temp2 - 1
           rem Already at left edge
           rem checkColumn = column to the left
-          temp4 = PlayerY[temp1]
+          let temp4 = PlayerY[temp1]
           rem Check player current row (check both top and bottom of sprite)
-          temp2 = temp4
+          let temp2 = temp4
           gosub DivideByPfrowheight
-          temp6 = temp2
+          let temp6 = temp2
           rem pfRow = top row
           rem Check if blocked in current row
-          temp5 = 0
+          let temp5 = 0
           rem Reset left-collision flag
           if pfread(temp3, temp6) then temp5 = 1
           if temp5 = 1 then goto HFCM_CheckRightMovement
           rem Blocked, cannot move left
-          temp2 = temp4 + 16
+          let temp2 = temp4 + 16
           rem Also check bottom row (feet)
           gosub DivideByPfrowheight
-          temp6 = temp2
+          let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveLeftOK
           rem Do not check if beyond screen
           if pfread(temp3, temp6) then temp5 = 1
@@ -449,26 +449,26 @@ HFCM_DoRightMovement
           rem Check column to the right
 
           if temp2 >= 31 then goto HFCM_DoneFlyingMovement
-          temp3 = temp2 + 1
+          let temp3 = temp2 + 1
           rem Already at right edge
           rem checkColumn = column to the right
-          temp4 = PlayerY[temp1]
+          let temp4 = PlayerY[temp1]
           rem Check player current row (check both top and bottom of sprite)
-          temp2 = temp4
+          let temp2 = temp4
           gosub DivideByPfrowheight
-          temp6 = temp2
+          let temp6 = temp2
           rem pfRow = top row
           rem Check if blocked in current row
-          temp5 = 0
+          let temp5 = 0
           rem Reset right-collision flag
           if pfread(temp3, temp6) then temp5 = 1
           if temp5 = 1 then goto HFCM_DoneFlyingMovement
           rem Blocked, cannot move right
-          temp4 = temp4 + 16
+          let temp4 = temp4 + 16
           rem Also check bottom row (feet)
-          temp2 = temp4
+          let temp2 = temp4
           gosub DivideByPfrowheight
-          temp6 = temp2
+          let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveRightOK
           rem Do not check if beyond screen
           if pfread(temp3, temp6) then temp5 = 1
@@ -509,7 +509,7 @@ InputHandleLeftPortPlayer
           rem Process left/right movement (with playfield collision for
           rem   flying characters)
           rem Frooty (8) and Dragon of Storms (2) need collision checks
-          temp5 = PlayerCharacter[temp1]
+          let temp5 = PlayerCharacter[temp1]
           rem   for horizontal movement
           if temp5 = 8 then IHLP_FlyingMovement
           if temp5 = 2 then IHLP_FlyingMovement
@@ -572,13 +572,13 @@ HarpyFlap
           goto DoneJumpInput
           
 NormalJumpInput
-          temp3 = 1
+          let temp3 = 1
           rem Process jump input (UP + enhanced buttons)
           goto DoneUpInputHandling
           rem Jump pressed flag (UP pressed)
           
 DoneJumpInput
-          temp3 = 0 
+          let temp3 = 0 
           rem No jump (UP used for special ability)
           
 DoneUpInputHandling
@@ -606,7 +606,7 @@ DoneUpInputHandling
           rem Use cached animation state - block jump during attack
           rem animations (states 13-15)
           if temp2 >= 13 then InputSkipLeftPortJump
-          temp4 = PlayerCharacter[temp1]
+          let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank14
 InputSkipLeftPortJump
@@ -624,13 +624,13 @@ InputSkipLeftPortJump
           rem animations (states 13-15)
           if temp2 >= 13 then InputSkipLeftPortAttack
           rem Block attack input during attack windup/execute/recovery
-          temp2 = PlayerState[temp1] & 2
+          let temp2 = PlayerState[temp1] & 2
           rem Check if player is guarding - guard blocks attacks
           if temp2 then InputSkipLeftPortAttack
           rem Guarding - block attack input
           if !joy0fire then InputSkipLeftPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipLeftPortAttack
-          temp4 = PlayerCharacter[temp1]
+          let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack bank10
 InputSkipLeftPortAttack
           
@@ -652,13 +652,13 @@ InputHandleRightPortPlayer
           
           rem Process left/right movement (with playfield collision for
           rem   flying characters)
-          temp6 = PlayerState[temp1] & 2
+          let temp6 = PlayerState[temp1] & 2
           rem Check if player is guarding - guard blocks movement
           if temp6 then DoneRightPortMovement
           rem Guarding - block movement
           
           rem Frooty (8) and Dragon of Storms (2) need collision checks
-          temp5 = PlayerCharacter[temp1]
+          let temp5 = PlayerCharacter[temp1]
           rem   for horizontal movement
           if temp5 = 8 then IHRP_FlyingMovement
           if temp5 = 2 then IHRP_FlyingMovement
@@ -727,13 +727,13 @@ HarpyFlapRight
           goto DoneJumpInputRight
           
 NormalJumpInputRight
-          temp3 = 1
+          let temp3 = 1
           rem Process jump input (UP + enhanced buttons)
           goto DoneUpInputHandlingRight
           rem Jump pressed flag (UP pressed)
           
 DoneJumpInputRight
-          temp3 = 0 
+          let temp3 = 0 
           rem No jump (UP used for special ability)
           
 DoneUpInputHandlingRight
@@ -763,7 +763,7 @@ DoneUpInputHandlingRight
           rem Use cached animation state - block jump during attack
           rem animations (states 13-15)
           if temp2 >= 13 then InputSkipRightPortJump
-          temp4 = PlayerCharacter[temp1]
+          let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank14
 InputSkipRightPortJump
@@ -776,12 +776,12 @@ InputSkipRightPortJump
           rem animations (states 13-15)
           if temp2 >= 13 then InputSkipRightPortAttack
           rem Block attack input during attack windup/execute/recovery
-          temp2 = PlayerState[temp1] & 2 PlayerStateBitGuarding
+          let temp2 = PlayerState[temp1] & 2 PlayerStateBitGuarding
           if temp2 then InputSkipRightPortAttack
           rem Guarding - block attack input
           if !joy1fire then InputSkipRightPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipRightPortAttack
-          temp4 = PlayerCharacter[temp1]
+          let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack bank10
 InputSkipRightPortAttack
           return
@@ -792,7 +792,7 @@ HandlePauseInput
           rem Handles SELECT switch and Joy2b+ Button III with proper
           rem   debouncing
           rem Uses PauseButtonPrev for debouncing state
-          temp1 = 0
+          let temp1 = 0
           rem Check SELECT switch (always available)
           if switchselect then temp1 = 1
           

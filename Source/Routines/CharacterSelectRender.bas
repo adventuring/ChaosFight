@@ -22,7 +22,7 @@ SelectDrawScreenDone
 
 SelectDrawSprite
           rem Draw character sprite based on current position and playerCharacter
-          temp3 = 255
+          let temp3 = 255
           if player0x = 56 then goto SelectDeterminePlayerP0
           if player1x = 104 then goto SelectDeterminePlayerP1
           goto SelectDrawSpriteDone
@@ -36,40 +36,40 @@ SelectDeterminePlayerP1
           goto SelectDrawSpriteDone
 SelectLoadSprite
           if temp3 > 3 then goto SelectDrawSpriteDone
-          temp6 = temp3
-          temp1 = playerCharacter[temp6]
+          let temp6 = temp3
+          let temp1 = playerCharacter[temp6]
           if temp1 = NoCharacter then goto SelectLoadSpecialSprite
           if temp1 = CPUCharacter then goto SelectLoadSpecialSprite
           if temp1 = RandomCharacter then goto SelectLoadSpecialSprite
           if characterSelectPlayerAnimationSequence_R[temp6] then goto SelectLoadWalkingSprite
-          temp2 = characterSelectPlayerAnimationFrame_R[temp6]
-          temp3 = 1
-          temp4 = temp6
+          let temp2 = characterSelectPlayerAnimationFrame_R[temp6]
+          let temp3 = 1
+          let temp4 = temp6
           gosub LocateCharacterArt bank10
           goto SelectLoadSpriteColor
 SelectLoadSpecialSprite
-          temp3 = temp6
+          let temp3 = temp6
           if temp1 = NoCharacter then temp6 = SpriteNo : goto SelectLoadSpecialSpriteCall
           if temp1 = CPUCharacter then temp6 = SpriteCPU : goto SelectLoadSpecialSpriteCall
-          temp6 = SpriteQuestionMark
+          let temp6 = SpriteQuestionMark
 SelectLoadSpecialSpriteCall
           gosub LoadSpecialSprite bank10
           goto SelectLoadSpriteColor
 SelectLoadWalkingSprite
-          temp2 = characterSelectPlayerAnimationSequence_R[temp6]
-          temp3 = 3
-          temp4 = temp6
+          let temp2 = characterSelectPlayerAnimationSequence_R[temp6]
+          let temp3 = 3
+          let temp4 = temp6
           gosub LocateCharacterArt bank10
 SelectLoadSpriteColor
-          temp1 = playerCharacter[temp6]
-          temp2 = 0
-          temp3 = temp6
-          temp4 = 0
+          let temp1 = playerCharacter[temp6]
+          let temp2 = 0
+          let temp3 = temp6
+          let temp4 = 0
           gosub LoadCharacterColors bank10
-          temp1 = temp6
+          let temp1 = temp6
           gosub GetPlayerLocked bank9
-          temp5 = temp2
-          temp3 = temp6
+          let temp5 = temp2
+          let temp3 = temp6
           if !temp5 then goto SelectApplyUnlockedColor
           if temp5 = PlayerHandicapped then goto SelectApplyHandicapColor
 SelectDrawSpriteDone
@@ -118,46 +118,46 @@ SelectSetPlayerColorHandicap3
 
 SelectUpdateAnimations
           rem Update character select animations for all players
-          temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer0Animation
+          let temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer0Animation
           if playerCharacter[0] = CPUCharacter then goto SelectSkipPlayer0Animation
           if playerCharacter[0] = NoCharacter then goto SelectSkipPlayer0Animation
           if playerCharacter[0] = RandomCharacter then goto SelectSkipPlayer0Animation
-          temp1 = 0
+          let temp1 = 0
           gosub SelectUpdatePlayerAnimation
 SelectSkipPlayer0Animation
-          temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer1Animation
+          let temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer1Animation
           if playerCharacter[1] = CPUCharacter then goto SelectSkipPlayer1Animation
           if playerCharacter[1] = NoCharacter then goto SelectSkipPlayer1Animation
           if playerCharacter[1] = RandomCharacter then goto SelectSkipPlayer1Animation
-          temp1 = 1
+          let temp1 = 1
           gosub SelectUpdatePlayerAnimation
 SelectSkipPlayer1Animation
           if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Animation
-          temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer2Animation
+          let temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer2Animation
           if playerCharacter[2] = NoCharacter then goto SelectSkipPlayer2Animation
           if playerCharacter[2] = RandomCharacter then goto SelectSkipPlayer2Animation
-          temp1 = 2
+          let temp1 = 2
           gosub SelectUpdatePlayerAnimation
 SelectSkipPlayer2Animation
           if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Animation
-          temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer23Animation
+          let temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer23Animation
           if playerCharacter[3] = NoCharacter then goto SelectSkipPlayer23Animation
           if playerCharacter[3] = RandomCharacter then goto SelectSkipPlayer23Animation
-          temp1 = 3
+          let temp1 = 3
           gosub SelectUpdatePlayerAnimation
 SelectSkipPlayer23Animation
           return
 
 SelectUpdatePlayerAnimation
           rem Update animation for a single player
-          temp2 = characterSelectPlayerAnimationFrame_R[temp1] + 1
+          let temp2 = characterSelectPlayerAnimationFrame_R[temp1] + 1
           let characterSelectPlayerAnimationFrame_W[temp1] = temp2
           if characterSelectPlayerAnimationFrame_R[temp1] >= AnimationFrameDelay then goto SelectAdvanceAnimationFrame
           return
 SelectAdvanceAnimationFrame
           let characterSelectPlayerAnimationFrame_W[temp1] = 0
           if !characterSelectPlayerAnimationSequence_R[temp1] then goto SelectAdvanceIdleAnimation
-          temp2 = (characterSelectPlayerAnimationSequence_R[temp1] + 1) & 3
+          let temp2 = (characterSelectPlayerAnimationSequence_R[temp1] + 1) & 3
           let characterSelectPlayerAnimationSequence_W[temp1] = temp2
           if characterSelectPlayerAnimationSequence_R[temp1] then return
           let characterSelectPlayerAnimationSequence_W[temp1] = 0
@@ -172,7 +172,7 @@ SelectAnimationWaitForToggle
 CharacterSelectCheckControllerRescan
           rem Re-detect controllers on Select/Pause/ColorB&W toggle
           if switchselect then goto CharacterSelectDoRescan
-          temp6 = switchbw
+          let temp6 = switchbw
           if temp6 = colorBWPrevious_R then goto CharacterSelectRescanDone
           gosub DetectControllers bank14
           let colorBWPrevious_W = switchbw

@@ -164,7 +164,7 @@ UpdateHealthBarPlayer0
           rem Called Routines: DrawHealthBarRow0 (bank8) - draws Player
           rem 1 health bar row
           rem Constraints: None
-          temp6 = playerHealth[0] / 3
+          let temp6 = playerHealth[0] / 3
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColBlue(12)
           gosub DrawHealthBarRow0 bank8
@@ -187,7 +187,7 @@ UpdateHealthBarPlayer1
           rem Called Routines: DrawHealthBarRow1 (bank8) - draws Player
           rem 2 health bar row
           rem Constraints: None
-          temp6 = playerHealth[1] / 3
+          let temp6 = playerHealth[1] / 3
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColRed(12)
           gosub DrawHealthBarRow1 bank8
@@ -211,7 +211,7 @@ UpdateHealthBarPlayer2
           rem Called Routines: DrawHealthBarRow2 (bank8) - draws Player
           rem 3 health bar row
           rem Constraints: None
-          temp6 = playerHealth[2] / 3
+          let temp6 = playerHealth[2] / 3
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColYellow(12)
           gosub DrawHealthBarRow2 bank8
@@ -235,7 +235,7 @@ UpdateHealthBarPlayer3
           rem Called Routines: DrawHealthBarRow3 (bank8) - draws Player
           rem 4 health bar row
           rem Constraints: None
-          temp6 = playerHealth[3] / 3
+          let temp6 = playerHealth[3] / 3
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGreen(12)
           gosub DrawHealthBarRow3 bank8
@@ -303,10 +303,10 @@ DoneFramePhaseChecks
 CheckCollisionP1vsP2
           rem Individual collision check routines
           if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
-          temp2 = playerX[1] - playerX[0]
+          let temp2 = playerX[1] - playerX[0]
           goto DoneCalcP1vsP2Diff
 CalcP1vsP2AbsDiff
-          temp2 = playerX[0] - playerX[1]
+          let temp2 = playerX[0] - playerX[1]
 DoneCalcP1vsP2Diff
           if temp2 >= CollisionSeparationDistance then DonePlayerSeparation
           
@@ -328,10 +328,10 @@ DonePlayerSeparation
 
 CheckCollisionP1vsP3
           if playerX[0] >= playerX[2] then CalcP1vsP3AbsDiff
-          temp2 = playerX[2] - playerX[0]
+          let temp2 = playerX[2] - playerX[0]
           goto DoneCalcP1vsP3Diff
 CalcP1vsP3AbsDiff
-          temp2 = playerX[0] - playerX[2]
+          let temp2 = playerX[0] - playerX[2]
 DoneCalcP1vsP3Diff
           if temp2 < 16 then CheckCollisionP1vsP3Aux
           return
@@ -346,10 +346,10 @@ CheckCollisionP1vsP3Aux
 
 CheckCollisionP1vsP4
           if playerX[0] >= playerX[3] then CalcP1vsP4AbsDiff
-          temp2 = playerX[3] - playerX[0]
+          let temp2 = playerX[3] - playerX[0]
           goto DoneCalcP1vsP4Diff
 CalcP1vsP4AbsDiff
-          temp2 = playerX[0] - playerX[3]
+          let temp2 = playerX[0] - playerX[3]
 DoneCalcP1vsP4Diff
           if temp2 < 16 then CheckCollisionP1vsP4Aux
           return
@@ -364,10 +364,10 @@ CheckCollisionP1vsP4Aux
 
 CheckCollisionP2vsP3
           if playerX[1] >= playerX[2] then CalcP2vsP3AbsDiff
-          temp2 = playerX[2] - playerX[1]
+          let temp2 = playerX[2] - playerX[1]
           goto DoneCalcP2vsP3Diff
 CalcP2vsP3AbsDiff
-          temp2 = playerX[1] - playerX[2]
+          let temp2 = playerX[1] - playerX[2]
 DoneCalcP2vsP3Diff
           if temp2 < 16 then CheckCollisionP2vsP3Aux
           return
@@ -382,10 +382,10 @@ CheckCollisionP2vsP3Aux
 
 CheckCollisionP2vsP4
           if playerX[1] >= playerX[3] then CalcP2vsP4AbsDiff
-          temp2 = playerX[3] - playerX[1]
+          let temp2 = playerX[3] - playerX[1]
           goto DoneCalcP2vsP4Diff
 CalcP2vsP4AbsDiff
-          temp2 = playerX[1] - playerX[3]
+          let temp2 = playerX[1] - playerX[3]
 DoneCalcP2vsP4Diff
           if temp2 < 16 then CheckCollisionP2vsP4Aux
           return
@@ -400,10 +400,10 @@ CheckCollisionP2vsP4Aux
 
 CheckCollisionP3vsP4
           if playerX[2] >= playerX[3] then CalcP3vsP4AbsDiff
-          temp2 = playerX[3] - playerX[2]
+          let temp2 = playerX[3] - playerX[2]
           goto DoneCalcP3vsP4Diff
 CalcP3vsP4AbsDiff
-          temp2 = playerX[2] - playerX[3]
+          let temp2 = playerX[2] - playerX[3]
 DoneCalcP3vsP4Diff
           if temp2 < 16 then CheckCollisionP3vsP4Aux
           return
@@ -437,24 +437,24 @@ BudgetedMissileCollisionCheck
           
           if !(controllerStatus & SetQuadtariDetected) then BudgetedMissileCollisionCheck2P
           
-          temp1 = FramePhase
+          let temp1 = FramePhase
           rem 4-player mode: check one missile per frame
           rem FramePhase 0-3 maps to Game Players 0-3
           rem Calculate bit flag using O(1) array lookup:
           rem BitMask[playerIndex] (1, 2, 4, 8)
-          temp6 = BitMask[temp1]
-          temp4 = missileActive & temp6
+          let temp6 = BitMask[temp1]
+          let temp4 = missileActive & temp6
           if temp4 then gosub CheckAllMissileCollisions bank8
           return
           
 BudgetedMissileCollisionCheck2P
-          temp1 = frame & 1
+          let temp1 = frame & 1
           rem Simple 2-player mode: alternate missiles
           rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
           rem   BitMask[playerIndex] (1, 2, 4, 8)
-          temp6 = BitMask[temp1]
+          let temp6 = BitMask[temp1]
           rem Calculate bit flag using O(1) array lookup:
-          temp4 = missileActive & temp6
+          let temp4 = missileActive & temp6
           if temp4 then gosub CheckAllMissileCollisions bank8
           return
 

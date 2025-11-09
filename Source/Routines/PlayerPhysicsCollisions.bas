@@ -54,12 +54,12 @@ CheckBoundaryCollisions
           rem Loop through all players (0-3) - fully inlined to avoid
           rem labels
           rem Handle RandomArena by checking selected arena (shared for all players)
-          temp3 = selectedArena_R
+          let temp3 = selectedArena_R
           rem Handle RandomArena (use proper RNG)
           if temp3 = RandomArena then temp3 = rand : temp3 = temp3 & 15
           
           rem Player 0 - boundaries
-          temp1 = 0
+          let temp1 = 0
           rem Horizontal wrap (player 0): wrap when leaving playable area margins
           if playerX[0] < PlayerLeftWrapThreshold then let playerX[0] = PlayerRightEdge : let playerSubpixelX_W[0] = PlayerRightEdge : let playerSubpixelX_WL[0] = 0
           if playerX[0] > PlayerRightWrapThreshold then let playerX[0] = PlayerLeftEdge : let playerSubpixelX_W[0] = PlayerLeftEdge : let playerSubpixelX_WL[0] = 0
@@ -68,7 +68,7 @@ CheckBoundaryCollisions
           if playerY[0] > 80 then let playerY[0] = 80 : let playerSubpixelY_W[0] = 80 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
           
           rem Player 1 - boundaries
-          temp1 = 1
+          let temp1 = 1
           rem Horizontal wrap (player 1): wrap when leaving playable area margins
           if playerX[1] < PlayerLeftWrapThreshold then let playerX[1] = PlayerRightEdge : let playerSubpixelX_W[1] = PlayerRightEdge : let playerSubpixelX_WL[1] = 0
           if playerX[1] > PlayerRightWrapThreshold then let playerX[1] = PlayerLeftEdge : let playerSubpixelX_W[1] = PlayerLeftEdge : let playerSubpixelX_WL[1] = 0
@@ -141,19 +141,19 @@ CheckPlayfieldCollisionAllDirections
           rem detection. Inline division by pfrowheight (8 or 16) using
           rem bit shifts
           rem Get player position and character info
-          temp2 = playerX[currentPlayer]
+          let temp2 = playerX[currentPlayer]
           rem Store player Y position (save original)
-          temp3 = playerY[currentPlayer]
+          let temp3 = playerY[currentPlayer]
           rem Load character index for current player
-          temp4 = playerCharacter[currentPlayer]
+          let temp4 = playerCharacter[currentPlayer]
           rem Fetch character height from CharacterHeights table
-          temp5 = CharacterHeights[temp4]
+          let temp5 = CharacterHeights[temp4]
           rem Character height
           
           rem Convert X position to playfield column (0-31)
-          temp6 = temp2
+          let temp6 = temp2
           rem Save original X in temp6 after removing screen inset
-          temp6 = temp6 - ScreenInsetX
+          let temp6 = temp6 - ScreenInsetX
           rem Divide by 4 using bit shift (2 right shifts)
           asm
             lsr temp6
@@ -168,7 +168,7 @@ end
           rem Convert Y position to playfield row (0-pfrows-1)
           rem Divide by pfrowheight using helper
           rem Inline DivideByPfrowheight logic from FallDamage.bas
-          temp2 = temp3
+          let temp2 = temp3
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8
           rem pfrowheight is 16, divide by 16 (4 right shifts)
@@ -211,7 +211,7 @@ DBPF_InlineDivideDone
           rem Out of bounds, skip
           
           rem Check head position (top of sprite)
-          temp4 = 0
+          let temp4 = 0
           rem Reset left-collision flag
           if pfread(playfieldColumn_R, playfieldRow_R) then temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
@@ -247,7 +247,7 @@ DBPF_InlineDivideDone_1
           if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
           rem Check feet position (bottom of sprite)
-          temp2 = temp5
+          let temp2 = temp5
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8_2
           rem pfrowheight is 16, divide by 16 (4 right shifts)
@@ -311,7 +311,7 @@ PFCheckRight
           rem Out of bounds, skip
           
           rem Check head, middle, and feet positions
-          temp4 = 0
+          let temp4 = 0
           rem Reset right-collision flag
           if pfread(playfieldColumn_R, playfieldRow) then temp4 = 1
           if temp4 = 1 then goto PFBlockRight
@@ -346,7 +346,7 @@ DBPF_InlineDivideDone_6
           if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
           if temp4 = 1 then goto PFBlockRight
           rem Reset temp2 to character height for feet check
-          temp2 = temp5
+          let temp2 = temp5
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8_7
           rem pfrowheight is 16, divide by 16 (4 right shifts)
@@ -407,7 +407,7 @@ PFCheckUp
           if rowCounter_R & $80 then goto PFCheckDown
           
           rem Check center column (temp6)
-          temp4 = 0
+          let temp4 = 0
           rem Reset upward-collision flag
           if pfread(temp6, rowCounter_R) then temp4 = 1
           if temp4 = 1 then goto PFBlockUp
@@ -474,7 +474,7 @@ PFCheckDown_Body
           rem Check if player feet have a playfield pixel below
           rem This is primarily handled in PhysicsApplyGravity, but we
           rem Verify feet position using character height
-          temp2 = temp5
+          let temp2 = temp5
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8_5
           rem pfrowheight is 16, divide by 16 (4 right shifts)
@@ -503,7 +503,7 @@ DBPF_InlineDivideDone_5
           if playfieldRow >= pfrows then return
           
           rem Check center, left, and right columns below feet
-          temp4 = 0
+          let temp4 = 0
           rem Reset downward-collision flag
           if pfread(temp6, playfieldRow) then temp4 = 1
           if temp4 = 1 then goto PFBlockDown

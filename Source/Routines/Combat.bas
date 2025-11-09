@@ -40,14 +40,14 @@ ApplyDamage
           rem Constraints: Must be colocated with PlayerDies,
           rem PlayDamageSound (called via goto)
           
-          temp1 = playerDamage_R[attackerID] - playerDamage_R[defenderID]
+          let temp1 = playerDamage_R[attackerID] - playerDamage_R[defenderID]
           rem Calculate damage (considering defender state)
           rem Minimum damage
           if temp1 < 1 then temp1 = 1
 
-          temp2 = playerHealth[defenderID]
+          let temp2 = playerHealth[defenderID]
           rem Check if player will die from this damage
-          temp3 = 0
+          let temp3 = 0
           rem Will die
           if temp2 < temp1 then temp3 = 1
           
@@ -60,10 +60,10 @@ ApplyDamage
           
           let currentPlayer = defenderID
           rem Set hurt animation (ActionHit = 5)
-          temp2 = ActionHit
+          let temp2 = ActionHit
           gosub SetPlayerAnimation bank11
           
-          temp4 = temp1 / 2
+          let temp4 = temp1 / 2
           rem Calculate recovery frames (damage / 2, clamped 10-30)
           if temp4 < 10 then temp4 = 10
           if temp4 > 30 then temp4 = 30
@@ -198,7 +198,7 @@ CalculateAttackHitbox
           rem Use temporary variable to avoid compiler bug with array
           rem indexing
           rem in on statement
-          temp1 = PlayerAttackType[attackerID]
+          let temp1 = PlayerAttackType[attackerID]
           if temp1 = 0 then goto MeleeHitbox
           if temp1 = 1 then goto ProjectileHitbox
           if temp1 = 2 then goto AreaHitbox
@@ -223,7 +223,7 @@ MeleeHitbox
           rem Use temporary variable to avoid compiler bug with array
           rem indexing
           rem in on statement
-          temp2 = PlayerFacing[attackerID]
+          let temp2 = PlayerFacing[attackerID]
           if temp2 = 0 then goto FacingRight
           if temp2 = 1 then goto FacingLeft
           if temp2 = 2 then goto FacingUp
@@ -497,7 +497,7 @@ PlayDamageSound
           rem Called Routines: PlaySoundEffect (bank15) - plays sound
           rem effect
           rem Constraints: None
-          temp1 = SoundAttackHit
+          let temp1 = SoundAttackHit
           gosub PlaySoundEffect bank15
           return
 

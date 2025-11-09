@@ -70,9 +70,9 @@ end
           if temp4 = 0 then let soundEffectPointer = 0 : AUDV0 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          temp6 = temp2 & %11110000
+          let temp6 = temp2 & %11110000
           rem   AUDCV
-          temp6 = temp6 / 16
+          let temp6 = temp6 / 16
           let soundEffectID_W = temp2 & %00001111
           
           rem Write to TIA registers (use Voice 0 for sound effects)
@@ -130,9 +130,9 @@ end
           if temp4 = 0 then let soundEffectPointer1 = 0 : AUDV1 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          temp6 = temp2 & %11110000
+          let temp6 = temp2 & %11110000
           rem   AUDCV
-          temp6 = temp6 / 16
+          let temp6 = temp6 / 16
           let soundEffectID_W = temp2 & %00001111
           
           rem Write to TIA registers (use Voice 1 for sound effects)

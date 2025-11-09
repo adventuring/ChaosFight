@@ -35,13 +35,13 @@ ApplySpecialMovement
           rem
           rem Constraints: None
           rem Player 0 - Frooty (8) and Dragon of Storms (2) skip gravity
-          temp4 = playerCharacter[0]
+          let temp4 = playerCharacter[0]
           if temp4 = 8 then ApplySpecialMovementP1
           rem Frooty: no gravity (free flight)
           if temp4 = 2 then ApplySpecialMovementP1
 ApplySpecialMovementP1
           rem Player 1 - Frooty (8) and Dragon of Storms (2) skip gravity
-          temp4 = playerCharacter[1]
+          let temp4 = playerCharacter[1]
           if temp4 = 8 then ApplySpecialMovementP2
           rem Frooty: no gravity (free flight)
           if temp4 = 2 then ApplySpecialMovementP2
@@ -74,7 +74,7 @@ ApplyPlayerSpecialMovement
           rem
           rem Called Routines: None
           rem Constraints: None
-          temp4 = playerCharacter[temp1]
+          let temp4 = playerCharacter[temp1]
           
           rem Bernie (0) - screen wrap handled in
           rem   CheckBoundaryCollisions

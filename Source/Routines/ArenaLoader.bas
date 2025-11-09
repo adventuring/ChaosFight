@@ -37,7 +37,7 @@ LoadArena
           
           if selectedArena_R = RandomArena then LoadRandomArena
           
-          temp1 = selectedArena_R
+          let temp1 = selectedArena_R
           rem Get arena index (0-15)
           
           gosub DWS_GetBWMode bank12
@@ -122,8 +122,8 @@ LoadRandomArena
           rem Constraints: None
           rem Select random arena (0-31) using proper RNG
           rem Get random value (0-255)
-          temp1 = rand
-          temp1 = temp1 & 31
+          let temp1 = rand
+          let temp1 = temp1 & 31
           if temp1 > MaxArenaID then LoadRandomArena
           goto LoadArenaByIndex
 

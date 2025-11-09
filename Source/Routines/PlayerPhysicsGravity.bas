@@ -70,7 +70,7 @@ PhysicsApplyGravity
           rem Constraints: Frooty (8) and Dragon of Storms (2) skip
           rem gravity entirely. RoboTito (13) skips gravity when latched
           rem to ceiling
-          temp1 = 0
+          let temp1 = 0
           rem Loop through all players (0-3)
 GravityLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
@@ -82,7 +82,7 @@ GravityLoop
           if temp1 = 3 && playerCharacter[3] = NoCharacter then goto GravityNextPlayer
           
 GravityCheckCharacter
-          temp6 = playerCharacter[temp1]
+          let temp6 = playerCharacter[temp1]
           
           rem Skip gravity for characters that do not have it
           rem Frooty (8): Permanent flight, no gravity
@@ -127,7 +127,7 @@ GravityCheckRoboTitoDone
           rem AddVelocitySubpixelY expects temp2, so save temp2 and use
           let playfieldColumn_W = temp2
           rem   it for gravityRate
-          temp2 = gravityRate_R
+          let temp2 = gravityRate_R
           rem Save playfieldColumn temporarily
           gosub AddVelocitySubpixelY bank13
           rem Restore playfieldColumn
@@ -144,12 +144,12 @@ GravityCheckRoboTitoDone
           gosub ConvertPlayerXToPlayfieldColumn bank13
           
           rem Calculate row where player feet are (bottom of sprite)
-          temp3 = playerY[temp1] + PlayerSpriteHeight
+          let temp3 = playerY[temp1] + PlayerSpriteHeight
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
-          temp2 = temp3
+          let temp2 = temp3
           rem Divide by pfrowheight using helper
           gosub DivideByPfrowheight
-          temp4 = temp2
+          let temp4 = temp2
           rem feetRow = row where feet are
           
           rem Check if there is a playfield pixel in the row below the
@@ -158,13 +158,13 @@ GravityCheckRoboTitoDone
           if temp4 >= pfrows then goto GravityNextPlayer
           rem Feet are at or below bottom of playfield, continue falling
           
-          temp5 = temp4 + 1
+          let temp5 = temp4 + 1
           rem rowBelow = row below feet
           if temp5 >= pfrows then goto GravityCheckBottom
           rem Beyond playfield bounds, check if at bottom
           
           rem Check if playfield pixel exists in row below feet
-          temp3 = 0
+          let temp3 = 0
           rem Track pfread result (1 = ground pixel set)
           if pfread(temp2, temp5) then temp3 = 1
           if temp3 = 0 then goto GravityNextPlayer
@@ -220,11 +220,11 @@ PAG_SetRoboTitoStretchPermission
           rem
           rem Called Routines: None
           rem Constraints: Only called for RoboTito character on landing
-          temp2 = roboTitoCanStretch_R
+          let temp2 = roboTitoCanStretch_R
           rem Set stretch permission bit for this player using BitMask array lookup
-          temp3 = BitMask[temp1]
+          let temp3 = BitMask[temp1]
           rem Load current flags
-          temp2 = temp2 | temp3
+          let temp2 = temp2 | temp3
           rem Get bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
           let roboTitoCanStretch_W = temp2
           rem Set bit for this player
@@ -258,7 +258,7 @@ GravityBottomCalcDone
           if temp6 = CharacterRoboTito then PAG_SetRoboTitoStretchPermission
           
 GravityNextPlayer
-          temp1 = temp1 + 1
+          let temp1 = temp1 + 1
           rem Move to next player
           if temp1 < 4 then goto GravityLoop
           
@@ -295,7 +295,7 @@ ApplyMomentumAndRecovery
           rem
           rem Called Routines: None
           rem Constraints: None
-          temp1 = 0
+          let temp1 = 0
           rem Loop through all players (0-3)
 MomentumRecoveryLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
@@ -338,7 +338,7 @@ MomentumRecoveryDecayNegative
           if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
           
 MomentumRecoveryNext
-          temp1 = temp1 + 1
+          let temp1 = temp1 + 1
           rem Next player
           if temp1 < 4 then goto MomentumRecoveryLoop
           

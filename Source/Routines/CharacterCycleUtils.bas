@@ -2,11 +2,11 @@
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Character cycling utility functions moved for bank optimization
           if temp3 = 1 then goto SelectP2LeftWrap
-          temp1 = NoCharacter
+          let temp1 = NoCharacter
           return
 
 CSLWrapPlayer0Left
-          temp1 = RandomCharacter
+          let temp1 = RandomCharacter
           return
           
 SelectP2LeftWrap
@@ -15,17 +15,17 @@ SelectP2LeftWrap
           rem both NO)
           rem Check if P3 or P4 are NOT both NO
           if playerCharacter[2] = NoCharacter then goto CheckP4_LeftWrap
-          temp1 = NoCharacter
+          let temp1 = NoCharacter
           return
 SelectP2LeftWrapCPU
-          temp1 = CPUCharacter
+          let temp1 = CPUCharacter
           return
 CheckP4_LeftWrap
           if playerCharacter[3] = NoCharacter then goto BothNO_LeftWrap
-          temp1 = NoCharacter
+          let temp1 = NoCharacter
           return
 BothNO_LeftWrap
-          temp1 = CPUCharacter
+          let temp1 = CPUCharacter
           rem Both P3 and P4 are NO, so P2 wraps to CPU
           return
           
@@ -39,12 +39,12 @@ CycleFromRandom
           rem P1 or P3/P4: Random left goes to NO (P3/P4) or 15 (P1)
           if temp3 = 0 then goto CycleFromRandomPlayer0
           rem P1 → 15
-          temp1 = NoCharacter
+          let temp1 = NoCharacter
           rem P3/P4 → NO
           return
 
 CycleFromRandomPlayer0
-          temp1 = MaxCharacter
+          let temp1 = MaxCharacter
           return
           
 SelectP2LeftFromRandom
@@ -52,18 +52,18 @@ SelectP2LeftFromRandom
           if !(controllerStatus & SetQuadtariDetected) then goto SelectP2LeftFromRandomMax
           rem Check if P3 or P4 are NOT both NO
           if playerCharacter[2] = NoCharacter then CheckP4_LeftFromRandom
-          temp1 = NoCharacter
+          let temp1 = NoCharacter
           return
 
 SelectP2LeftFromRandomMax
-          temp1 = MaxCharacter
+          let temp1 = MaxCharacter
           return
 CheckP4_LeftFromRandom
           if playerCharacter[3] = NoCharacter then BothNO_LeftFromRandom
-          temp1 = NoCharacter
+          let temp1 = NoCharacter
           return
 BothNO_LeftFromRandom
-          temp1 = MaxCharacter
+          let temp1 = MaxCharacter
           rem Both P3 and P4 are NO, so NO not available, go to 15
           return
           
@@ -77,7 +77,7 @@ CycleFromCPU
           rem   is after Random
           rem The cycle is: ... Random → CPU → Random ...
           rem So left from CPU should go to Random (we already have
-          temp1 = RandomCharacter
+          let temp1 = RandomCharacter
           rem   this)
           return
           
@@ -88,12 +88,12 @@ CycleFromNO
           rem For left cycle (decrement): P2 goes from NO to CPU
           if temp3 = 1 then goto CycleFromNOPlayer2
           rem P2 left from NO → CPU
-          temp1 = RandomCharacter
+          let temp1 = RandomCharacter
           rem P3/P4: NO → Random
           return
 
 CycleFromNOPlayer2
-          temp1 = CPUCharacter
+          let temp1 = CPUCharacter
           return
           
 CycleCharacterRight

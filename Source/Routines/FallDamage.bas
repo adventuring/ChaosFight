@@ -11,7 +11,7 @@ CheckFallDamage
           rem Calls: GetCharacterWeight, PlaySoundEffect (bank15)
           rem Constraints: Must remain colocated with fall-damage helpers that reuse temp scratch bytes
 
-          temp5 = playerCharacter[temp1]
+          let temp5 = playerCharacter[temp1]
           rem Get character type for this player
           
           rem Check for fall damage immunity
@@ -25,17 +25,17 @@ CheckFallDamage
           rem Dragon of Storms: no gravity, no falling (hovering/flying
           rem   like Frooty)
           
-          temp1 = temp5
+          let temp1 = temp5
           rem Get character weight from data table
           gosub GetCharacterWeight
           rem Character type as index
-          temp6 = temp2 
+          let temp6 = temp2 
           rem Store weight
           
           rem Calculate safe fall velocity threshold
           rem Formula: safe_velocity = 120 / weight
           rem Use lookup table to avoid variable division
-          temp3 = SafeFallVelocityThresholds[temp5]
+          let temp3 = SafeFallVelocityThresholds[temp5]
           rem Pre-computed values in SafeFallVelocityThresholds table
           rem Safe fall velocity threshold
           
@@ -54,10 +54,10 @@ CheckFallDamage
           rem Base damage = (velocity - safe_velocity) *
           rem   base_damage_multiplier
           rem Base damage multiplier: 2 (so 1 extra velocity = 2 base
-          temp4 = temp2 - temp3
+          let temp4 = temp2 - temp3
           rem   damage)
           rem Multiply by 2 to double the base damage
-          temp4 = temp4 * 2
+          let temp4 = temp4 * 2
           
           rem Apply weight-based damage multiplier: the bigger they
           rem   are, the harder they fall
@@ -67,7 +67,7 @@ CheckFallDamage
           rem Using integer math: damage = damage * (weight / 20)
           rem Use lookup table for weight/20, then multiply by damage
           rem temp2 = weight / 20 from lookup table
-          temp2 = WeightDividedBy20[temp5]
+          let temp2 = WeightDividedBy20[temp5]
           rem Multiply damage by (weight / 20) using assembly
           rem Use Mul macro pattern: if multiplier is 0-15, use
           rem   optimized assembly
@@ -148,9 +148,9 @@ end
           
           rem Set recovery frames (proportional to damage, min 10, max
           rem   30)
-          temp2 = temp4
+          let temp2 = temp4
           rem Use temp2 for recovery frames calculation
-          temp2 = temp2 / 2
+          let temp2 = temp2 / 2
           rem Divide by 2 using BASIC division
           if temp2 < 10 then temp2 = 10
           if temp2 > 30 then temp2 = 30
@@ -168,15 +168,15 @@ end
           rem   [7:animation][4:attacking][2:jumping]
           rem   [1:guarding][0:facing]
           rem Set bits 7-5 to 9 (recovering animation)
-          temp2 = playerState[temp1] & MaskPlayerStateLower
+          let temp2 = playerState[temp1] & MaskPlayerStateLower
           rem Use temp2 for state manipulation
-          temp2 = temp2 | MaskAnimationRecovering
+          let temp2 = temp2 | MaskAnimationRecovering
           rem Keep lower 5 bits
           let playerStateTemp_W = temp2
           let playerState[temp1] = temp2
           rem Set animation to 9 (1001 in bits 7-4)
           
-          temp1 = SoundLandingDamage
+          let temp1 = SoundLandingDamage
           rem Play fall damage sound effect
           gosub PlaySoundEffect bank15
           
@@ -215,7 +215,7 @@ FallDamageApplyGravity
           rem
           rem Called Routines: None
           rem Constraints: None
-          temp5 = playerCharacter[temp1]
+          let temp5 = playerCharacter[temp1]
           rem Get character type
           
           rem Check for no-gravity characters
@@ -226,13 +226,13 @@ FallDamageApplyGravity
           rem Dragon of Storms: no gravity (hovering/flying like Frooty)
           
           rem Check for reduced gravity characters
-          temp6 = 2
+          let temp6 = 2
           rem Harpy (6): 1/2 gravity when falling
           rem Default gravity: 2 pixels/frame²
           if temp5 = CharacterHarpy then temp6 = 1
           rem Harpy: reduced gravity
           
-          temp2 = temp2 + temp6
+          let temp2 = temp2 + temp6
           rem Apply gravity acceleration
           
           rem Cap at terminal velocity (uses tunable constant from
@@ -275,7 +275,7 @@ CheckGroundCollision
           rem Constraints: Tail call to CheckFallDamage
           rem              Should be called AFTER vertical position
           rem              update but BEFORE momentum is cleared
-          temp3 = playerY[temp1]
+          let temp3 = playerY[temp1]
           rem Get player Y position
           
           rem Check if player is at or below ground level
@@ -315,7 +315,7 @@ HandleFrootyVertical
           rem   Frooty)
           rem This should be called from PlayerInput.bas when processing
           rem joystick up/down for Frooty.
-          temp5 = playerCharacter[temp1]
+          let temp5 = playerCharacter[temp1]
           rem Check character type to confirm
           if !(temp5 = CharacterFrooty) then return 
           rem Not Frooty
@@ -353,12 +353,12 @@ HandleHarpySwoopAttack
           rem
           rem OUTPUT:
           rem Sets player momentum for diagonal downward swoop
-          temp5 = playerCharacter[temp1]
+          let temp5 = playerCharacter[temp1]
           rem Check character type to confirm
           if !(temp5 = CharacterHarpy) then return 
           rem Not Harpy
           
-          temp6 = playerState[temp1] & PlayerStateBitFacing
+          let temp6 = playerState[temp1] & PlayerStateBitFacing
           rem Get facing direction from playerState bit 0
           
           rem Set diagonal momentum at ~45° angle
@@ -382,9 +382,9 @@ SetVerticalMomentum
           
           rem Set animation state to swooping attack
           rem This could be animation state 10 or special attack
-          temp6 = playerState[temp1] & MaskPlayerStateLower
+          let temp6 = playerState[temp1] & MaskPlayerStateLower
           rem   animation
-          temp6 = temp6 | MaskAnimationFalling 
+          let temp6 = temp6 | MaskAnimationFalling 
           let playerState[temp1] = temp6
           rem Animation state 10
           
@@ -439,13 +439,13 @@ DivideBy100
           rem Fast approximation for values 0-255
           if temp2 > 200 then goto DivideBy100Two
           if temp2 > 100 then goto DivideBy100One
-          temp2 = 0
+          let temp2 = 0
           return
 DivideBy100One
-          temp2 = 1
+          let temp2 = 1
           return
 DivideBy100Two
-          temp2 = 2
+          let temp2 = 2
           return
 
 DivideByPfrowheight
@@ -490,7 +490,7 @@ CalculateSafeFallDistance
           rem OUTPUT:
           rem   temp2 = safe fall distance in pixels
           rem Get character type and weight
-          temp5 = playerCharacter[temp1]
+          let temp5 = playerCharacter[temp1]
           
           rem Check for fall damage immunity
           
@@ -504,19 +504,19 @@ CalculateSafeFallDistance
           goto CalculateFallDistanceNormal
           rem Dragon of Storms: no falling (hovering/flying like Frooty)
 SetInfiniteFallDistance
-          temp2 = InfiniteFallDistance
+          let temp2 = InfiniteFallDistance
           return
 CalculateFallDistanceNormal
           
           rem Get character weight
-          temp1 = temp5 
+          let temp1 = temp5 
           gosub GetCharacterWeight
           rem Character type as index
-          temp6 = temp2 
+          let temp6 = temp2 
           rem Store weight
           
           rem Calculate safe fall velocity (from CheckFallDamage logic)
-          temp3 = SafeFallVelocityThresholds[temp5]
+          let temp3 = SafeFallVelocityThresholds[temp5]
           rem Use lookup table to avoid variable division
           rem temp3 = Safe velocity threshold
           
@@ -526,8 +526,8 @@ CalculateFallDistanceNormal
           rem With g = 2: d = v² / 4
           rem Square temp3 using lookup table (temp3 is 1-24)
           rem SquareTable is 0-indexed, so index = temp3 - 1
-          temp4 = temp3 - 1
-          temp2 = SquareTable[temp4]
+          let temp4 = temp3 - 1
+          let temp2 = SquareTable[temp4]
           rem temp4 = index into SquareTable (0-23)
           rem temp2 = temp3 * temp3 (v²)
           rem Divide by 4 using bit shift right twice

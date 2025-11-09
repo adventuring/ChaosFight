@@ -679,25 +679,32 @@ LoadPlayer3Sprite
 
 
 
+          rem Character color tables for NTSC
+          data CharacterColorsNTSC
+            $0E, $1C, $28, $44, $1A, $86, $1C, $2A, $3A, $C6, $16, $46, $2C, $66, $36, $56
+          end
+
+          rem Character color tables for PAL (adjusted for PAL color encoding)
+          data CharacterColorsPAL
+            $0E, $2C, $38, $54, $2A, $96, $2C, $3A, $4A, $D6, $26, $56, $3C, $76, $46, $66
+          end
 
 LoadCharacterColors
           asm
-; Load player color based on TV standard, B&W, hurt, and
+; Load character color based on TV standard, B&W, hurt, and
 ;   flashing states
 ;
-; Input: temp2 = hurt state (0/1)
+; Input: temp1 = character index (0-15)
+;        temp2 = hurt state (0/1)
 ;        temp3 = player number (0-3)
 ;        temp4 = flashing state (0/1)
-;        temp5 = flashing mode (0=frame-based,
-;        1=player-index)
+;        temp5 = flashing mode (0=per-line, 1=player-index)
 ;        frame (global) = frame counter for flashing
 ;        systemFlags (global) = system flags including B&W
 ;        override
 ;
 ; Output: Appropriate COLUP0/COLUP1/COLUP2/COLUP3 updated
-; Note: Colors are per-player, not per-character. Players
-; use
-;   solid colors only (no per-line coloring)
+; Note: Colors are per-character on NTSC/PAL, per-player on B&W/SECAM
 ;
 ; Mutates: temp6 (color calculation, internal use)
 ;           COLUP0, COLUP1, COLUP2, COLUP3 (TIA registers)
@@ -741,39 +748,32 @@ NormalColor
 ; Constraints: Must be colocated with LoadCharacterColors
 ; Determine effective B&W override locally; if enabled, use
           end
-          if systemFlags & SystemFlagColorBWOverride then goto PlayerIndexColors
+          if (systemFlags & SystemFlagColorBWOverride)
+#ifdef TV_SECAM
+            goto PlayerIndexColors
+#endif
+            goto PlayerIndexColors
           asm
-;   player colors
+; NTSC/PAL: Use character-specific colors
           end
-
-          asm
-; NTSC/PAL: Character-specific colors would be used here
-;   when tables exist
-; Placeholder: fall back to player index colors until
-          end
-          goto PlayerIndexColors
-          asm
-;   character tables are wired
-          end
+#ifdef TV_NTSC
+          temp6 = CharacterColorsNTSC[temp1]
+#endif
+#ifdef TV_PAL
+          temp6 = CharacterColorsPAL[temp1]
+#endif
+          goto SetColor
 
 FlashingColor
           asm
 ; Flashing mode selection
 ;
-; Input: temp5 = flashing mode (0=frame-based,
-; 1=player-index)
+; Input: temp5 = flashing mode (0=per-line, 1=player-index)
+;        temp1 = character index (0-15)
+;        temp3 = player number (0-3)
+;        systemFlags (global) = B&W override flag
           end
-          asm
-;
-; Output: Dispatches to PerLineFlashing or PlayerIndexColors
-;
-; Mutates: None (dispatcher only)
-          end
-          asm
-;
-; Called Routines: None (dispatcher only)
-          end
-          if !temp5 then goto PerLineFlashing
+          if temp5 = 0 then goto PerLineFlashing
           goto PlayerIndexColors
           
 PerLineFlashing

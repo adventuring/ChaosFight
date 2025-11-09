@@ -178,3 +178,5 @@ TitleScreenThunk
             jsr titledrawscreen
 end
           return
+#include "Source/Data/Arenas.bas"
+#include "Source/Routines/ArenaLoader.bas"

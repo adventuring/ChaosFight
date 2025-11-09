@@ -557,18 +557,20 @@ ArenaSelectDrawPlayerSprite
           rem Uses playerCharacter[0-3] and player positions set by caller
           
           rem Get character index based on player
-          
+          let temp6 = temp1
+          rem Preserve player index in temp6
+
           if temp1 = 0 then temp1 = playerCharacter[0]
           if temp1 = 1 then temp1 = playerCharacter[1]
           if temp1 = 2 then temp1 = playerCharacter[2]
           if temp1 = 3 then temp1 = playerCharacter[3]
-          
+
           let temp3 = 1
           rem Use idle animation (action 1 = ActionIdle)
           let temp2 = frame & 7
           rem Simple frame counter cycles 0-7
-          let temp4 = temp1
-          rem Player number for art system
+          let temp4 = temp6
+          rem Player number for art system (temp6 = original player index)
           
           rem Load character sprite using art location system
           rem LocateCharacterArt expects: temp1=char, temp2=frame,

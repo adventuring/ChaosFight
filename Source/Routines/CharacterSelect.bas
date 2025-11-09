@@ -99,7 +99,7 @@ CharacterSelectLoop
 
 Player1LeftSelectionQ
           if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = MaxCharacter
-          if playerCharacter[0] > MaxCharacter then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if playerCharacter[0] > MaxCharacter then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           
 Player1LeftSelectionSkip
           if joy0right then let playerCharacter[0] = playerCharacter[0] + 1 : goto Player1RightSelectionQ
@@ -107,17 +107,17 @@ Player1LeftSelectionSkip
 
 Player1RightSelectionQ
           if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = 0
-          if playerCharacter[0] > MaxCharacter then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if playerCharacter[0] > MaxCharacter then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           
 Player1RightSelectionSkip
-          if joy0up then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if joy0up then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy0down then SelectStick0FireQ
           goto SelectStick0Down
 
 SelectStick0FireQ
           if joy0fire then SelectStick0Down
-          temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           
 SelectStick0Down
           rem Unlock by moving down (without fire)
@@ -126,12 +126,12 @@ SelectStick0Down
 
 Player1LockSelection
           if joy0down then Player1HandicapSelection
-          temp1 = 0 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
+          temp1 = 0 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           goto Player1LockSelectionDone
           rem Locked normal (100% health)
 
 Player1HandicapSelection
-          temp1 = 0 : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
+          temp1 = 0 : temp2 = PlayerHandicapped : gosub SetPlayerLocked
 Player1LockSelectionDone
           rem Locked with handicap (75% health)
 
@@ -141,16 +141,16 @@ Player1LockSelectionDone
 
 Player2LeftSelectionQ
           if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = MaxCharacter
-          if playerCharacter[1] > MaxCharacter then temp1 = 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if playerCharacter[1] > MaxCharacter then temp1 = 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 Player2LeftSelectionSkip
           if joy1right then let playerCharacter[1] = playerCharacter[1] + 1 : goto Player2RightSelectionQ
           goto Player2RightSelectionSkip
 
 Player2RightSelectionQ
           if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = 0
-          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 Player2RightSelectionSkip
-          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy1down then SelectStick1FireQ
 
@@ -159,7 +159,7 @@ Player2RightSelectionSkip
 SelectStick1FireQ
           if joy1fire then SelectStick1Down
 
-          temp1 = 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          temp1 = 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelectStick1Down
           rem Unlock by moving down (without fire)
           if joy1fire then SelectStick1DownQ
@@ -167,9 +167,9 @@ SelectStick1Down
           goto SelectStick1EvenFrameSkip
 
 SelectStick1DownQ
-          if joy1down then temp1 = 1 : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9 : goto Player2LockSelectionDone
+          if joy1down then temp1 = 1 : temp2 = PlayerHandicapped : gosub SetPlayerLocked : goto Player2LockSelectionDone
 
-          temp1 = 1 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
+          temp1 = 1 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           rem Locked with handicap (75% health)
 Player2LockSelectionDone 
           rem Locked normal (100% health)
@@ -192,7 +192,7 @@ CharacterSelectHandlePlayer3
 
 Player3LeftSelectionQ
           if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = MaxCharacter
-          if playerCharacter[2] > MaxCharacter then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if playerCharacter[2] > MaxCharacter then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 Player3LeftSelectionSkip
           if joy0right then let playerCharacter[2] = playerCharacter[2] + 1 : goto Player3RightSelectionQ
 
@@ -200,9 +200,9 @@ Player3LeftSelectionSkip
 
 Player3RightSelectionQ
           if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = 0
-          if playerCharacter[2] > MaxCharacter then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if playerCharacter[2] > MaxCharacter then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 Player3RightSelectionSkip
-          if joy0up then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if joy0up then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy0down then SelectStick0FirePlayer3Q
 
@@ -210,7 +210,7 @@ Player3RightSelectionSkip
 
 SelectStick0FirePlayer3Q
           if joy0fire then SelectStick0DownPlayer3
-          temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelectStick0DownPlayer3
           rem Unlock by moving down (without fire)
           if joy0fire then SelectStick0DownPlayer3Q
@@ -220,12 +220,12 @@ SelectStick0DownPlayer3
 SelectStick0DownPlayer3Q
           if joy0down then Player3HandicapSelection
 
-          temp1 = 2 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
+          temp1 = 2 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           goto Player3LockSelectionDone
           rem Locked normal (100% health)
 
 Player3HandicapSelection
-          temp1 = 2 : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
+          temp1 = 2 : temp2 = PlayerHandicapped : gosub SetPlayerLocked
 Player3LockSelectionDone
           rem Locked with handicap (75% health)
 
@@ -240,15 +240,15 @@ CharacterSelectHandlePlayer4
           goto Player4LeftSelectionSkip
 Player4LeftSelectionQ
           if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = MaxCharacter
-          if playerCharacter[3] > MaxCharacter then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if playerCharacter[3] > MaxCharacter then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 Player4LeftSelectionSkip
           if joy1right then let playerCharacter[3] = playerCharacter[3] + 1 : goto Player4RightSelectionQ
           goto Player4RightSelectionSkip
 Player4RightSelectionQ
           if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = 0
-          if playerCharacter[3] > MaxCharacter then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if playerCharacter[3] > MaxCharacter then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 Player4RightSelectionSkip
-          if joy1up then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          if joy1up then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy1down then SelectStick1FirePlayer4Q
 
@@ -257,7 +257,7 @@ Player4RightSelectionSkip
 SelectStick1FirePlayer4Q
           if joy1fire then SelectStick1DownPlayer4
 
-          temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank9
+          temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 SelectStick1DownPlayer4
           rem Unlock by moving down (without fire)
           if joy1fire then SelectStick1DownPlayer4Q
@@ -267,12 +267,12 @@ SelectStick1DownPlayer4
 SelectStick1DownPlayer4Q
           if joy1down then Player4HandicapSelection
 
-          temp1 = 3 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
+          temp1 = 3 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           goto Player4LockSelectionDone
           rem Locked normal (100% health)
 
 Player4HandicapSelection
-          temp1 = 3 : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9
+          temp1 = 3 : temp2 = PlayerHandicapped : gosub SetPlayerLocked
 Player4LockSelectionDone
           rem Locked with handicap (75% health)
           
@@ -293,23 +293,23 @@ CharacterSelectHandleComplete
 
           rem Count locked players
 
-          temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
-          temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
+          temp1 = 0 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          temp1 = 1 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
           goto CharacterSelectDoneQuadtariPlayersInline
 
 CharacterSelectQuadtariPlayersInline
-          temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
-          temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then let readyCount = readyCount + 1
+          temp1 = 2 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          temp1 = 3 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
 CharacterSelectDoneQuadtariPlayersInline
           rem Check if enough players are ready
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
 
           rem Need at least 1 player ready for 2-player mode
-          temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then goto CharacterSelectCompleted
+          temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
 
-          temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto CharacterSelectCompleted
+          temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
 
           goto CharacterSelectDoneQuadtariReadyInline
 
@@ -443,7 +443,7 @@ CharacterSelectDrawLocks
           rem Constraints: Players 3/4 only checked if Quadtari
           rem detected. Borders drawn using playfield bits
           rem Draw playfield blocks around locked characters
-          temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then CharacterSelectDrawPlayer1Border
+          temp1 = 0 : gosub GetPlayerLocked : if temp2 then CharacterSelectDrawPlayer1Border
           goto CharacterSelectDonePlayer1Border
 CharacterSelectDrawPlayer1Border
 CharacterSelectDonePlayer1Border
@@ -462,7 +462,7 @@ CharacterSelectDonePlayer1Border
           rem when Player 1 is locked
           rem Draw border around Player 1
 
-          temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then CharacterSelectDrawPlayer2Border
+          temp1 = 1 : gosub GetPlayerLocked : if temp2 then CharacterSelectDrawPlayer2Border
           goto CharacterSelectDonePlayer2Border
 CharacterSelectDrawPlayer2Border
 CharacterSelectDonePlayer2Border
@@ -500,7 +500,7 @@ SelectCheckPlayer2Lock
           rem
           rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem if Quadtari detected
-          temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then SelectDrawPlayer2Border
+          temp1 = 2 : gosub GetPlayerLocked : if temp2 then SelectDrawPlayer2Border
           rem Continue to Player 3 check
 SelectDrawPlayer2Border 
           rem Helper: Draw border around Player 3
@@ -537,7 +537,7 @@ SelectCheckPlayer3Lock
           rem
           rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem if Quadtari detected
-          temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then SelectDrawPlayer3Border
+          temp1 = 3 : gosub GetPlayerLocked : if temp2 then SelectDrawPlayer3Border
           return
 SelectDrawPlayer3Border 
           return

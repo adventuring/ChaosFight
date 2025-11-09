@@ -6,5 +6,6 @@
 #include "Source/Routines/CharacterData.bas"
 #include "Source/Routines/CharacterSelectMain.bas"
 #include "Source/Routines/CharacterSelectRender.bas"
+#include "Source/Routines/PlayerLockedHelpers.bas"
 #include "Source/Routines/MainLoop.bas"
           

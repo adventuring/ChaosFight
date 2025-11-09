@@ -19,8 +19,8 @@
           rem All arenas use the same B&W colors (all white)
 
           data ArenaColorsBW
-            $0E, $0E, $0E, $0E,
-            $0E, $0E, $0E, $0E
+            14, 14, 14, 14,
+            14, 14, 14, 14
 end
 
 Arena0Playfield
@@ -55,8 +55,8 @@ Arena1Playfield
 end
 
           data Arena1Colors
-            ColTurquoise(4), ColTurquoise(4), ColTurquoise(6), ColTurquoise(4)
-            ColTurquoise(6), ColTurquoise(4), ColTurquoise(4), ColTurquoise(2)
+            4, 4, 6, 4
+            6, 4, 4, 2
 end
 
 Arena2Playfield
@@ -72,8 +72,8 @@ Arena2Playfield
 end
 
           data Arena2Colors
-            ColTurquoise(4), ColTurquoise(4), ColTurquoise(6), ColTurquoise(4)
-            ColTurquoise(6), ColTurquoise(4), ColTurquoise(4), ColTurquoise(2)
+            4, 4, 6, 4
+            6, 4, 4, 2
 end
 
 Arena3Playfield
@@ -89,8 +89,8 @@ Arena3Playfield
 end
 
           data Arena3Colors
-            ColSeafoam(2), ColSeafoam(2), ColSeafoam(4), ColSeafoam(4)
-            ColSeafoam(4), ColSeafoam(2), ColSeafoam(2), ColSeafoam(6)
+            2, 2, 4, 4
+            4, 2, 2, 6
 end
 
 Arena4Playfield
@@ -106,8 +106,8 @@ Arena4Playfield
 end
 
           data Arena4Colors
-            ColYellow(12), ColYellow(12), ColYellow(12), ColYellow(14)
-            ColYellow(14), ColYellow(12), ColYellow(12), ColYellow(12)
+            12, 12, 12, 14
+            14, 12, 12, 12
 end
 
 Arena5Playfield
@@ -123,8 +123,8 @@ Arena5Playfield
 end
 
           data Arena5Colors
-            ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(4)
-            ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(4)
+            4, 4, 4, 4
+            4, 4, 4, 4
 end
 
 Arena6Playfield
@@ -141,8 +141,8 @@ Arena6Playfield
 end
 
           data Arena6Colors
-            ColRed(2), ColRed(4), ColRed(2), ColRed(6)
-            ColRed(2), ColRed(4), ColRed(2), ColRed(8)
+            2, 4, 2, 6
+            2, 4, 2, 8
 end
 
 Arena7Playfield
@@ -159,8 +159,8 @@ Arena7Playfield
 end
 
           data Arena7Colors
-            ColGold(2), ColGold(2), ColGold(2), ColGold(4)
-            ColGold(2), ColGold(4), ColGold(2), ColGold(6)
+            2, 2, 2, 4
+            2, 4, 2, 6
 end
 
 Arena8Playfield
@@ -176,8 +176,8 @@ Arena8Playfield
 end
 
           data Arena8Colors
-            ColPurple(2), ColPurple(4), ColPurple(6), ColPurple(4)
-            ColPurple(6), ColPurple(4), ColPurple(6), ColPurple(2)
+            2, 4, 6, 4
+            6, 4, 6, 2
 end
 
 Arena9Playfield
@@ -193,8 +193,8 @@ Arena9Playfield
 end
 
           data Arena9Colors
-            ColRed(2), ColRed(4), ColRed(6), ColRed(4)
-            ColRed(4), ColRed(6), ColRed(4), ColRed(2)
+            2, 4, 6, 4
+            4, 6, 4, 2
 end
 
 Arena10Playfield
@@ -212,8 +212,8 @@ Arena10Playfield
 end
 
           data Arena10Colors
-            ColCyan(4), ColCyan(2), ColCyan(6), ColCyan(2)
-            ColCyan(4), ColCyan(2), ColCyan(2), ColCyan(8)
+            4, 2, 6, 2
+            4, 2, 2, 8
 end
 
 
@@ -232,8 +232,8 @@ Arena11Playfield
 end
 
           data Arena11Colors
-            ColGreen(2), ColGreen(4), ColGreen(4), ColGreen(6)
-            ColGreen(6), ColGreen(2), ColGreen(2), ColGreen(8)
+            2, 4, 4, 6
+            6, 2, 2, 8
 end
 
 Arena12Playfield
@@ -250,8 +250,8 @@ Arena12Playfield
 end
 
           data Arena12Colors
-            ColBrown(12), ColBrown(12), ColBrown(14), ColBrown(14)
-            ColBrown(14), ColBrown(12), ColBrown(12), ColBrown(12)
+            12, 12, 14, 14
+            14, 12, 12, 12
 end
 
 Arena13Playfield
@@ -269,8 +269,8 @@ Arena13Playfield
 end
 
           data Arena13Colors
-            ColTurquoise(4), ColTurquoise(4), ColTurquoise(6), ColTurquoise(2)
-            ColTurquoise(2), ColTurquoise(6), ColTurquoise(4), ColTurquoise(4)
+            4, 4, 6, 2
+            2, 6, 4, 4
 end
 
 Arena14Playfield
@@ -288,8 +288,8 @@ Arena14Playfield
 end
 
           data Arena14Colors
-            ColMagenta(2), ColMagenta(0), ColMagenta(4), ColMagenta(0)
-            ColMagenta(2), ColMagenta(0), ColMagenta(4), ColMagenta(8)
+            2, 0, 4, 0
+            2, 0, 4, 8
 end
 
 Arena15Playfield
@@ -326,8 +326,8 @@ Arena16Playfield
 end
 
           data Arena16Colors
-            ColIndigo(2), ColIndigo(4), ColIndigo(6), ColIndigo(4)
-            ColIndigo(6), ColIndigo(4), ColIndigo(6), ColIndigo(8)
+            2, 4, 6, 4
+            6, 4, 6, 8
 end
 
 Arena17Playfield
@@ -344,8 +344,8 @@ Arena17Playfield
 end
 
           data Arena17Colors
-            ColGreen(2), ColGreen(4), ColGreen(6), ColGreen(4)
-            ColGreen(6), ColGreen(4), ColGreen(2), ColGreen(8)
+            2, 4, 6, 4
+            6, 4, 2, 8
 end
 
 Arena18Playfield
@@ -362,8 +362,8 @@ Arena18Playfield
 end
 
           data Arena18Colors
-            ColTeal(12), ColTeal(12), ColTeal(12), ColTeal(14)
-            ColTeal(14), ColTeal(12), ColTeal(12), ColTeal(12)
+            12, 12, 12, 14
+            14, 12, 12, 12
 end
 
 Arena19Playfield
@@ -380,8 +380,8 @@ Arena19Playfield
 end
 
           data Arena19Colors
-            ColRed(2), ColRed(2), ColRed(0), ColRed(2)
-            ColRed(2), ColRed(0), ColRed(2), ColRed(4)
+            2, 2, 0, 2
+            2, 0, 2, 4
 end
 
 Arena20Playfield
@@ -398,8 +398,8 @@ Arena20Playfield
 end
 
           data Arena20Colors
-            ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(6)
-            ColBlue(6), ColBlue(8), ColBlue(8), ColBlue(2)
+            4, 4, 4, 6
+            6, 8, 8, 2
 end
 
 Arena21Playfield
@@ -416,8 +416,8 @@ Arena21Playfield
 end
 
           data Arena21Colors
-            ColBrown(4), ColBrown(4), ColBrown(6), ColBrown(6)
-            ColBrown(4), ColBrown(4), ColBrown(6), ColBrown(6)
+            4, 4, 6, 6
+            4, 4, 6, 6
 end
 
 Arena22Playfield
@@ -434,8 +434,8 @@ Arena22Playfield
 end
 
           data Arena22Colors
-            ColRed(4), ColRed(4), ColRed(4), ColRed(4)
-            ColRed(4), ColRed(4), ColRed(4), ColRed(6)
+            4, 4, 4, 4
+            4, 4, 4, 6
 end
 
 Arena23Playfield
@@ -452,8 +452,8 @@ Arena23Playfield
 end
 
           data Arena23Colors
-            ColCyan(2), ColCyan(4), ColCyan(4), ColCyan(2)
-            ColCyan(4), ColCyan(4), ColCyan(2), ColCyan(6)
+            2, 4, 4, 2
+            4, 4, 2, 6
 end
 
 Arena24Playfield
@@ -470,8 +470,8 @@ Arena24Playfield
 end
 
           data Arena24Colors
-            ColGrey(4), ColGrey(4), ColGrey(4), ColGrey(6)
-            ColGrey(6), ColGrey(4), ColGrey(4), ColGrey(4)
+            4, 4, 4, 6
+            6, 4, 4, 4
 end
 
 Arena25Playfield
@@ -488,8 +488,8 @@ Arena25Playfield
 end
 
           data Arena25Colors
-            ColPurple(2), ColPurple(4), ColPurple(6), ColPurple(8)
-            ColPurple(8), ColPurple(6), ColPurple(4), ColPurple(2)
+            2, 4, 6, 8
+            8, 6, 4, 2
 end
 
 Arena26Playfield
@@ -506,8 +506,8 @@ Arena26Playfield
 end
 
           data Arena26Colors
-            ColOrange(2), ColOrange(2), ColOrange(0), ColOrange(4)
-            ColOrange(4), ColOrange(0), ColOrange(2), ColOrange(2)
+            2, 2, 0, 4
+            4, 0, 2, 2
 end
 
 Arena27Playfield
@@ -524,8 +524,8 @@ Arena27Playfield
 end
 
           data Arena27Colors
-            ColYellow(2), ColYellow(4), ColYellow(6), ColYellow(8)
-            ColYellow(8), ColYellow(6), ColYellow(4), ColYellow(2)
+            2, 4, 6, 8
+            8, 6, 4, 2
 end
 
 Arena28Playfield
@@ -542,8 +542,8 @@ Arena28Playfield
 end
 
           data Arena28Colors
-            ColGreen(2), ColGreen(4), ColGreen(6), ColGreen(8)
-            ColGreen(8), ColGreen(6), ColGreen(4), ColGreen(2)
+            2, 4, 6, 8
+            8, 6, 4, 2
 end
 
 Arena29Playfield
@@ -560,8 +560,8 @@ Arena29Playfield
 end
 
           data Arena29Colors
-            ColMagenta(2), ColMagenta(4), ColMagenta(6), ColMagenta(4)
-            ColMagenta(4), ColMagenta(6), ColMagenta(4), ColMagenta(2)
+            2, 4, 6, 4
+            4, 6, 4, 2
 end
 
 Arena30Playfield
@@ -596,8 +596,8 @@ Arena31Playfield
 end
 
           data Arena31Colors
-            ColGrey(2), ColGrey(4), ColGrey(4), ColGrey(6)
-            ColGrey(4), ColGrey(4), ColGrey(6), ColGrey(8)
+            2, 4, 4, 6
+            4, 4, 6, 8
 end
 
           rem

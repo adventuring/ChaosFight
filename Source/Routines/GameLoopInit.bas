@@ -140,7 +140,7 @@ InitPositionsDone
           rem Optimized: Simplified player health initialization
           for currentPlayer = 0 to 3
               let GPL_playerIndex = currentPlayer
-              gosub GetPlayerLocked bank9
+              gosub GetPlayerLocked
               if GPL_lockedState = PlayerHandicapped then let PlayerHealth[currentPlayer] = PlayerHealthHandicap : goto PlayerHealthInitDone
               let PlayerHealth[currentPlayer] = PlayerHealthMax
 PlayerHealthInitDone
@@ -217,7 +217,7 @@ PlayerHealthInitDone
           gosub InitializeHealthBars bank8
           rem Initialize health bars
 
-          gosub LoadArena bank12
+          gosub LoadArena bank1
           rem Load arena data
 
           return

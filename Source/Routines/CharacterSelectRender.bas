@@ -67,7 +67,7 @@ SelectLoadSpriteColor
           let temp4 = 0
           gosub LoadCharacterColors bank10
           let temp1 = temp6
-          gosub GetPlayerLocked bank9
+          gosub GetPlayerLocked
           let temp5 = temp2
           let temp3 = temp6
           if !temp5 then goto SelectApplyUnlockedColor
@@ -118,14 +118,14 @@ SelectSetPlayerColorHandicap3
 
 SelectUpdateAnimations
           rem Update character select animations for all players
-          let temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectDonePlayer0Animation
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer0Animation
           if playerCharacter[0] = CPUCharacter then goto SelectDonePlayer0Animation
           if playerCharacter[0] = NoCharacter then goto SelectDonePlayer0Animation
           if playerCharacter[0] = RandomCharacter then goto SelectDonePlayer0Animation
           let temp1 = 0
           gosub SelectUpdatePlayerAnimation
 SelectDonePlayer0Animation
-          let temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectDonePlayer1Animation
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer1Animation
           if playerCharacter[1] = CPUCharacter then goto SelectDonePlayer1Animation
           if playerCharacter[1] = NoCharacter then goto SelectDonePlayer1Animation
           if playerCharacter[1] = RandomCharacter then goto SelectDonePlayer1Animation
@@ -133,14 +133,14 @@ SelectDonePlayer0Animation
           gosub SelectUpdatePlayerAnimation
 SelectDonePlayer1Animation
           if !(controllerStatus & SetQuadtariDetected) then goto SelectDonePlayer23Animation
-          let temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectDonePlayer2Animation
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer2Animation
           if playerCharacter[2] = NoCharacter then goto SelectDonePlayer2Animation
           if playerCharacter[2] = RandomCharacter then goto SelectDonePlayer2Animation
           let temp1 = 2
           gosub SelectUpdatePlayerAnimation
 SelectDonePlayer2Animation
           if !(controllerStatus & SetQuadtariDetected) then goto SelectDonePlayer23Animation
-          let temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectDonePlayer23Animation
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer23Animation
           if playerCharacter[3] = NoCharacter then goto SelectDonePlayer23Animation
           if playerCharacter[3] = RandomCharacter then goto SelectDonePlayer23Animation
           let temp1 = 3

@@ -4,6 +4,112 @@
           rem Arena playfield data (not generated - edit manually)
           rem Arena Data - Pure Data Format
           rem
+          rem Color constants (NTSC values)
+          const ColGrey_14 = $0E
+          const ColOrange_2 = $32
+          const ColOrange_4 = $34
+          const ColOrange_6 = $36
+          const ColOrange_8 = $38
+          const ColOrange_10 = $3A
+          const ColOrange_12 = $3C
+          const ColOrange_14 = $3E
+          const ColOrange_0 = $30
+          const ColTurquoise_2 = $A2
+          const ColTurquoise_4 = $A4
+          const ColTurquoise_6 = $A6
+          const ColTurquoise_8 = $A8
+          const ColTurquoise_10 = $AA
+          const ColTurquoise_12 = $AC
+          const ColTurquoise_14 = $AE
+          const ColTurquoise_0 = $A0
+          const ColSeafoam_2 = $C2
+          const ColSeafoam_4 = $C4
+          const ColSeafoam_6 = $C6
+          const ColSeafoam_8 = $C8
+          const ColSeafoam_10 = $CA
+          const ColSeafoam_12 = $CC
+          const ColSeafoam_14 = $CE
+          const ColSeafoam_0 = $C0
+          const ColYellow_12 = $1C
+          const ColYellow_14 = $1E
+          const ColYellow_0 = $10
+          const ColBlue_4 = $84
+          const ColBlue_6 = $86
+          const ColBlue_8 = $88
+          const ColBlue_10 = $8A
+          const ColBlue_12 = $8C
+          const ColBlue_14 = $8E
+          const ColBlue_0 = $80
+          const ColRed_2 = $42
+          const ColRed_4 = $44
+          const ColRed_6 = $46
+          const ColRed_8 = $48
+          const ColRed_10 = $4A
+          const ColRed_12 = $4C
+          const ColRed_14 = $4E
+          const ColRed_0 = $40
+          const ColGold_2 = $22
+          const ColGold_4 = $24
+          const ColGold_6 = $26
+          const ColGold_8 = $28
+          const ColGold_10 = $2A
+          const ColGold_12 = $2C
+          const ColGold_14 = $2E
+          const ColGold_0 = $20
+          const ColPurple_2 = $62
+          const ColPurple_4 = $64
+          const ColPurple_6 = $66
+          const ColPurple_8 = $68
+          const ColPurple_10 = $6A
+          const ColPurple_12 = $6C
+          const ColPurple_14 = $6E
+          const ColPurple_0 = $60
+          const ColCyan_2 = $B2
+          const ColCyan_4 = $B4
+          const ColCyan_6 = $B6
+          const ColCyan_8 = $B8
+          const ColCyan_10 = $BA
+          const ColCyan_12 = $BC
+          const ColCyan_14 = $BE
+          const ColCyan_0 = $B0
+          const ColGreen_2 = $D2
+          const ColGreen_4 = $D4
+          const ColGreen_6 = $D6
+          const ColGreen_8 = $D8
+          const ColGreen_10 = $DA
+          const ColGreen_12 = $DC
+          const ColGreen_14 = $DE
+          const ColGreen_0 = $D0
+          const ColBrown_12 = $2C
+          const ColBrown_14 = $2E
+          const ColBrown_0 = $20
+          const ColMagenta_2 = $72
+          const ColMagenta_4 = $74
+          const ColMagenta_6 = $76
+          const ColMagenta_8 = $78
+          const ColMagenta_10 = $7A
+          const ColMagenta_12 = $7C
+          const ColMagenta_14 = $7E
+          const ColMagenta_0 = $70
+          const ColSpringGreen_2 = $E2
+          const ColSpringGreen_4 = $E4
+          const ColSpringGreen_6 = $E6
+          const ColSpringGreen_8 = $E8
+          const ColSpringGreen_10 = $EA
+          const ColSpringGreen_12 = $EC
+          const ColSpringGreen_14 = $EE
+          const ColSpringGreen_0 = $E0
+          const ColIndigo_2 = $82
+          const ColIndigo_4 = $84
+          const ColIndigo_6 = $86
+          const ColIndigo_8 = $88
+          const ColIndigo_10 = $8A
+          const ColIndigo_12 = $8C
+          const ColIndigo_14 = $8E
+          const ColIndigo_0 = $80
+          const ColTeal_12 = $BC
+          const ColTeal_14 = $BE
+          const ColTeal_0 = $B0
           rem Game arenas: 16 pixels wide (left half) mirrored, 8 rows
           rem   high (pfres=8)
           rem Memory constraint: 8 rows × 4 bytes = 32 bytes
@@ -19,14 +125,14 @@
           rem All arenas use the same B&W colors (all white)
 
           data ArenaColorsBW
-            $0E, $0E, $0E, $0E,
-            $0E, $0E, $0E, $0E
+            ColGrey_14, ColGrey_14, ColGrey_14, ColGrey_14,
+            ColGrey_14, ColGrey_14, ColGrey_14, ColGrey_14
 end
 
-Arena0Playfield
+# ArenaPlayfield
           rem
           rem Arena Playfields (32 Arenas: Indices 0-31)
-          playfield:
+# playfield:
           XXXXXXXXXXXXXXXX
           X...............
           X...............
@@ -38,12 +144,12 @@ Arena0Playfield
 end
 
           data Arena0Colors
-            $32, $34, $36, $38
-            $3A, $3C, $3E, $30
+            ColOrange_2, ColOrange_4, ColOrange_6, ColOrange_8
+            ColOrange_10, ColOrange_12, ColOrange_14, ColOrange_0
 end
 
-Arena1Playfield
-          playfield:
+# ArenaPlayfield
+# playfield:
           X...............
           X...............
           X.......XXXXXXXX
@@ -59,8 +165,8 @@ end
             ColTurquoise(6), ColTurquoise(4), ColTurquoise(4), ColTurquoise(2)
 end
 
-Arena2Playfield
-          playfield:
+# ArenaPlayfield
+# playfield:
           XXXXX...........
           X...............
           ................
@@ -76,8 +182,8 @@ end
             ColTurquoise(6), ColTurquoise(4), ColTurquoise(4), ColTurquoise(2)
 end
 
-Arena3Playfield
-          playfield:
+# ArenaPlayfield
+# playfield:
           X...............
           X...............
           X...........XXXX
@@ -93,8 +199,8 @@ end
             ColSeafoam(4), ColSeafoam(2), ColSeafoam(2), ColSeafoam(6)
 end
 
-Arena4Playfield
-          playfield:
+# ArenaPlayfield
+# playfield:
           ................
           ................
           ................
@@ -110,8 +216,8 @@ end
             ColYellow(14), ColYellow(12), ColYellow(12), ColYellow(12)
 end
 
-Arena5Playfield
-          playfield:
+# ArenaPlayfield
+# playfield:
           XXXXXX..........
           XXXX............
           XX..............
@@ -127,9 +233,9 @@ end
             ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(4)
 end
 
-Arena6Playfield
+# ArenaPlayfield
           rem Arena 6: Multi-Platform (multiple small platforms)
-          playfield:
+# playfield:
           X...............
           X.XXXXXX........
           X...............
@@ -145,9 +251,9 @@ end
             ColRed(2), ColRed(4), ColRed(2), ColRed(8)
 end
 
-Arena7Playfield
+# ArenaPlayfield
           rem Arena 7: The Gauntlet (maze-like walls)
-          playfield:
+# playfield:
           X......XXXX.....
           X......XXXX.....
           X...............
@@ -163,8 +269,8 @@ end
             ColGold(2), ColGold(4), ColGold(2), ColGold(6)
 end
 
-Arena8Playfield
-          playfield:
+# ArenaPlayfield
+# playfield:
           XXXXXXXXXXXXXXXX
           X...............
           X...XXXX........
@@ -180,8 +286,8 @@ end
             ColPurple(6), ColPurple(4), ColPurple(6), ColPurple(2)
 end
 
-Arena9Playfield
-          playfield:
+# ArenaPlayfield
+# playfield:
           XXXXXXXXXXXXXXXX
           X...............
           X.XXXX....XXXX..
@@ -197,10 +303,10 @@ end
             ColRed(4), ColRed(6), ColRed(4), ColRed(2)
 end
 
-Arena10Playfield
+# ArenaPlayfield
           rem Arena 10: Sky Battlefield (variant of Arena 2 with
           rem   elevated platforms)
-          playfield:
+# playfield:
           X...XXXXXXXX....
           X...............
           XXXXXX....XXXXXX
@@ -217,10 +323,10 @@ end
 end
 
 
-Arena11Playfield
+# ArenaPlayfield
           rem Arena 11: Floating Platforms (variant of Arena 3 with four
           rem   floating blocks when mirrored)
-          playfield:
+# playfield:
           X...............
           X.XXXX....XXXX..
           X.XXXX....XXXX..
@@ -236,9 +342,9 @@ end
             ColGreen(6), ColGreen(2), ColGreen(2), ColGreen(8)
 end
 
-Arena12Playfield
+# ArenaPlayfield
           rem Arena 12: The Chasm (variant of Arena 4 with wider bridge)
-          playfield:
+# playfield:
           ................
           ................
           ..XXXXXXXXXXXX..
@@ -254,10 +360,10 @@ end
             ColBrown(14), ColBrown(12), ColBrown(12), ColBrown(12)
 end
 
-Arena13Playfield
+# ArenaPlayfield
           rem Arena 13: Fortress Walls (variant of Arena 5 with
           rem   symmetrical corners)
-          playfield:
+# playfield:
           XXX..XXXXXXX..XX
           XX....XXXX....XX
           X......XX......X
@@ -273,10 +379,10 @@ end
             ColTurquoise(2), ColTurquoise(6), ColTurquoise(4), ColTurquoise(4)
 end
 
-Arena14Playfield
+# ArenaPlayfield
           rem Arena 14: Floating Islands (variant of Arena 6 with more
           rem   platforms)
-          playfield:
+# playfield:
           X.XX..XX..XX..XX.
           X...............
           X.XXXX....XXXX..
@@ -292,10 +398,10 @@ end
             ColMagenta(2), ColMagenta(0), ColMagenta(4), ColMagenta(8)
 end
 
-Arena15Playfield
+# ArenaPlayfield
           rem Arena 15: The Labyrinth (variant of Arena 7 with more
           rem   complex maze)
-          playfield:
+# playfield:
           XX..XXXX..XX..XX
           XX...............
           ....XX....XX....
@@ -311,10 +417,10 @@ end
             ColSpringGreen(6), ColSpringGreen(4), ColSpringGreen(2), ColSpringGreen(8)
 end
 
-Arena16Playfield
+# ArenaPlayfield
           rem Arena 16: Danger Zone (variant of Arena 8 with alternating
           rem   obstacles)
-          playfield:
+# playfield:
           XX.X.X.X.X.X.X.X
           X...............
           XX.X.X.X.X.X.X.X
@@ -330,9 +436,9 @@ end
             ColIndigo(6), ColIndigo(4), ColIndigo(6), ColIndigo(8)
 end
 
-Arena17Playfield
+# ArenaPlayfield
           rem Arena 17: The Spire (vertical tower platforms)
-          playfield:
+# playfield:
           XXXXXXXXXXXXXXXX
           X...............
           X......XX.......
@@ -348,9 +454,9 @@ end
             ColGreen(6), ColGreen(4), ColGreen(2), ColGreen(8)
 end
 
-Arena18Playfield
+# ArenaPlayfield
           rem Arena 18: The Bridge (wide center platform)
-          playfield:
+# playfield:
           ................
           ................
           ................
@@ -366,9 +472,9 @@ end
             ColTeal(14), ColTeal(12), ColTeal(12), ColTeal(12)
 end
 
-Arena19Playfield
+# ArenaPlayfield
           rem Arena 19: The Pits (narrow platforms with gaps)
-          playfield:
+# playfield:
           XXXX........XXXX
           XXXX........XXXX
           ................
@@ -384,9 +490,9 @@ end
             ColRed(2), ColRed(0), ColRed(2), ColRed(4)
 end
 
-Arena20Playfield
+# ArenaPlayfield
           rem Arena 20: The Stairs (stepped platforms)
-          playfield:
+# playfield:
           XXXXXXXXXXXXXXXX
           XXXX............
           XXXX............
@@ -402,9 +508,9 @@ end
             ColBlue(6), ColBlue(8), ColBlue(8), ColBlue(2)
 end
 
-Arena21Playfield
+# ArenaPlayfield
           rem Arena 21: The Grid (checkerboard pattern)
-          playfield:
+# playfield:
           XX..XX..XX..XX..
           XX..XX..XX..XX..
           ..XX..XX..XX..XX
@@ -420,9 +526,9 @@ end
             ColBrown(4), ColBrown(4), ColBrown(6), ColBrown(6)
 end
 
-Arena22Playfield
+# ArenaPlayfield
           rem Arena 22: The Columns (vertical pillars)
-          playfield:
+# playfield:
           X..X..X..X..X..X
           X..X..X..X..X..X
           X..X..X..X..X..X
@@ -438,9 +544,9 @@ end
             ColRed(4), ColRed(4), ColRed(4), ColRed(6)
 end
 
-Arena23Playfield
+# ArenaPlayfield
           rem Arena 23: The Waves (curved platforms)
-          playfield:
+# playfield:
           XXXXXXXXXXXXXXXX
           XXXX............
           XXXX............
@@ -456,9 +562,9 @@ end
             ColCyan(4), ColCyan(4), ColCyan(2), ColCyan(6)
 end
 
-Arena24Playfield
+# ArenaPlayfield
           rem Arena 24: The Cross (cross-shaped platform)
-          playfield:
+# playfield:
           XXXX....XXXX....
           XXXX....XXXX....
           XXXX....XXXX....
@@ -474,9 +580,9 @@ end
             ColGrey(6), ColGrey(4), ColGrey(4), ColGrey(4)
 end
 
-Arena25Playfield
+# ArenaPlayfield
           rem Arena 25: The Maze (complex wall pattern)
-          playfield:
+# playfield:
           XXXXXXXXXXXXXXXX
           X......X......X
           X.XXXX.X.XXXX.X
@@ -492,9 +598,9 @@ end
             ColPurple(8), ColPurple(6), ColPurple(4), ColPurple(2)
 end
 
-Arena26Playfield
+# ArenaPlayfield
           rem Arena 26: The Islands (scattered platforms)
-          playfield:
+# playfield:
           XX............XX
           XX............XX
           ................
@@ -510,9 +616,9 @@ end
             ColOrange(4), ColOrange(0), ColOrange(2), ColOrange(2)
 end
 
-Arena27Playfield
+# ArenaPlayfield
           rem Arena 27: The Rings (concentric platforms)
-          playfield:
+# playfield:
           XXXXXXXXXXXXXXXX
           X..............X
           X.XXXXXXXXXXXX.X
@@ -528,9 +634,9 @@ end
             ColYellow(8), ColYellow(6), ColYellow(4), ColYellow(2)
 end
 
-Arena28Playfield
+# ArenaPlayfield
           rem Arena 28: The Slopes (diagonal platforms)
-          playfield:
+# playfield:
           XXXXXXXXXXXXXXXX
           .XXXXXXXXXXXXXX.
           ..XXXXXXXXXXXX..
@@ -546,9 +652,9 @@ end
             ColGreen(8), ColGreen(6), ColGreen(4), ColGreen(2)
 end
 
-Arena29Playfield
+# ArenaPlayfield
           rem Arena 29: The Zigzag (zigzag pattern)
-          playfield:
+# playfield:
           XXXX........XXXX
           ..XXXX....XXXX..
           ....XXXXXX......
@@ -564,9 +670,9 @@ end
             ColMagenta(4), ColMagenta(6), ColMagenta(4), ColMagenta(2)
 end
 
-Arena30Playfield
+# ArenaPlayfield
           rem Arena 30: The Ladder (vertical rungs)
-          playfield:
+# playfield:
           X..X..X..X..X..X
           X..X..X..X..X..X
           X..X..X..X..X..X
@@ -582,9 +688,9 @@ end
             ColSpringGreen(4), ColSpringGreen(4), ColSpringGreen(4), ColSpringGreen(6)
 end
 
-Arena31Playfield
+# ArenaPlayfield
           rem Arena 31: The Final Battle (complex multi-platform)
-          playfield:
+# playfield:
           XXXXXXXXXXXXXXXX
           X.XX..XX..XX.XX.X
           X.XX..XX..XX.XX.X

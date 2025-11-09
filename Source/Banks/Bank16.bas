@@ -3,6 +3,5 @@
 
           bank 16
 
-#include "Source/Data/Arenas.bas"
-#include "Source/Routines/ArenaLoader.bas"
+
 

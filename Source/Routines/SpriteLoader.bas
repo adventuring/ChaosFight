@@ -732,7 +732,7 @@ LoadCharacterColors
 ; Highest priority: hurt state
           end
 
-          if temp4 then FlashingColor
+          if temp4 then goto FlashingColor
           asm
 ; Next priority: flashing state
           end
@@ -755,11 +755,10 @@ NormalColor
 ; Constraints: Must be colocated with LoadCharacterColors
 ; Determine effective B&W override locally; if enabled, use
           end
-          if (systemFlags & SystemFlagColorBWOverride)
+          if (systemFlags & SystemFlagColorBWOverride) then PlayerIndexColors
 #ifdef TV_SECAM
-            PlayerIndexColors
-#endif
-            PlayerIndexColors
+          PlayerIndexColors
+#else
           asm
 ; NTSC/PAL: Use character-specific colors
           end
@@ -768,6 +767,7 @@ NormalColor
 #endif
 #ifdef TV_PAL
           let temp6 = CharacterColorsPAL[temp1]
+#endif
 #endif
           goto SetColor
 

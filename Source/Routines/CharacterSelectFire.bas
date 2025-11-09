@@ -77,7 +77,7 @@ HCSF_HandleFire
           let temp3 = temp1
           let temp1 = temp3
           let temp2 = PlayerLockedNormal
-          gosub SetPlayerLocked bank9
+          gosub SetPlayerLocked
           let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
@@ -97,7 +97,7 @@ HCSF_HandleHandicap
           let temp3 = temp1
           let temp1 = temp3
           let temp2 = PlayerHandicapped
-          gosub SetPlayerLocked bank9
+          gosub SetPlayerLocked
           let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15

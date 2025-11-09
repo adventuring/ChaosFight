@@ -24,11 +24,11 @@ GetPlayerLocked
           if temp1 > 3 then temp2 = 0 : return
 
           rem Extract 2 bits for this player
-          rem Use bit shift operations compatible with batariBASIC
+          rem Use division and masking operations compatible with batariBASIC
           if temp1 = 0 then temp2 = playerLocked & 3 : return
-          if temp1 = 1 then temp2 = (playerLocked >> 2) & 3 : return
-          if temp1 = 2 then temp2 = (playerLocked >> 4) & 3 : return
-          if temp1 = 3 then temp2 = (playerLocked >> 6) & 3 : return
+          if temp1 = 1 then temp2 = (playerLocked / 4) & 3 : return
+          if temp1 = 2 then temp2 = (playerLocked / 16) & 3 : return
+          if temp1 = 3 then temp2 = (playerLocked / 64) & 3 : return
 
           return
 
@@ -62,11 +62,11 @@ SetPlayerLocked
           if temp1 > 3 then return
 
           rem Clear the 2 bits for this player and set the new value
-          rem Use bit operations compatible with batariBASIC
+          rem Use masking operations compatible with batariBASIC
           if temp1 = 0 then playerLocked = (playerLocked & 252) | temp2 : return
-          if temp1 = 1 then playerLocked = (playerLocked & 243) | (temp2 << 2) : return
-          if temp1 = 2 then playerLocked = (playerLocked & 207) | (temp2 << 4) : return
-          if temp1 = 3 then playerLocked = (playerLocked & 63) | (temp2 << 6) : return
+          if temp1 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4) : return
+          if temp1 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return
+          if temp1 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return
 
           return
 

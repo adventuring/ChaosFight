@@ -95,7 +95,7 @@ DonePlayer2Pause
           
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
-          goto Check7800Pause
+          goto Check7800Pause bank14
           rem tail call
 #endif
 

@@ -442,16 +442,14 @@
           rem NOTE: pfrowheight and pfrows are set at runtime by
           rem   ScreenLayout.bas
           rem These are NOT constants - they are runtime variables
-          rem pfrowheight: pixels per row (8 for admin, 16 for game)
-          rem pfrows: number of rows (32 for admin, 8 for game)
+          rem pfrowheight: pixels per row (always 16)
+          rem pfrows: number of rows (always 8)
           rem pfread: built-in batariBASIC function to read playfield
           rem   pixel
           rem These are documented here for reference but cannot be
           rem   consted
 
           rem SCREEN LAYOUT CONSTANTS
-          const GameScreenPfRowHeight = 16
-          const GameScreenPfRows = 8
-          const AdminScreenPfRowHeight = 8
-          const AdminScreenPfRows = 32
+          const ScreenPfRowHeight = 16
+          const ScreenPfRows = 8
 

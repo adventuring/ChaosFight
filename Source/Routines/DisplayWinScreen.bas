@@ -28,7 +28,7 @@ DisplayWinScreen
           rem colors loaded, player sprites positioned and loaded
           rem
           rem Mutates: pfrowheight, pfrows (set via
-          rem SetAdminScreenLayout),
+          rem SetGameScreenLayout),
           rem         PF1pointer, PF2pointer (playfield pointers, set
           rem         via inline assembly),
           rem         pfcolortable (playfield color table pointer, set
@@ -38,7 +38,7 @@ DisplayWinScreen
           rem         temp1-temp6 plus SCRAM scratch (used for ranking calculations),
           rem         temp2
           rem
-          rem Called Routines: SetAdminScreenLayout (bank8) - sets
+          rem Called Routines: SetGameScreenLayout (bank8) - sets
           rem screen layout,
           rem   DWS_GetBWMode - accesses switchbw, systemFlags,
           rem   DWS_LoadBWColors, DWS_LoadColorColors - set color table
@@ -57,8 +57,8 @@ DisplayWinScreen
           rem              gosub)
           rem Called from WinnerAnnouncement per-frame loop
           
-          gosub SetAdminScreenLayout bank8
-          rem Set admin screen layout (32×32 for character display)
+          gosub SetGameScreenLayout bank8
+          rem Set screen layout (32×8 for character display)
           
           rem Load winner screen playfield pattern
           rem Set playfield pointers to WinnerScreenPlayfield data

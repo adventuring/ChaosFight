@@ -26,10 +26,10 @@ BeginArenaSelect
           rem Mutates: selectedArena_W (set to 0), fireHoldTimer_W (set
           rem to 0),
           rem         pfrowheight, pfrows (set via
-          rem         SetAdminScreenLayout),
+          rem         SetGameScreenLayout),
           rem         COLUBK (TIA register)
           rem
-          rem Called Routines: SetAdminScreenLayout (bank8) - sets
+          rem Called Routines: SetGameScreenLayout (bank8) - sets
           rem screen layout
           rem
           rem Constraints: Called from ChangeGameMode when entering
@@ -41,8 +41,8 @@ BeginArenaSelect
           rem Initialize fire hold timer (for returning to Character
           rem   Select)
           
-          gosub SetAdminScreenLayout bank8
-          rem Set admin screen layout (32×32 for character display)
+          gosub SetGameScreenLayout bank8
+          rem Set screen layout (32×8 for character display)
           
           COLUBK = ColGray(0)
           rem Set background color (B&W safe)

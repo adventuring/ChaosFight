@@ -23,12 +23,12 @@ BeginWinnerAnnouncement
           rem         music started with winner’s character theme
           rem
           rem Mutates: pfrowheight, pfrows (set via
-          rem SetAdminScreenLayout),
+          rem SetGameScreenLayout),
           rem         COLUBK (TIA register), winScreenTimer (set to 0),
           rem         displayRank (set to 0),
           rem         temp1, temp2 (used for character/song lookup)
           rem
-          rem Called Routines: SetAdminScreenLayout (bank8) - sets
+          rem Called Routines: SetGameScreenLayout (bank8) - sets
           rem screen layout,
           rem   StartMusic (bank1) - starts winner’s character theme
           rem   song
@@ -42,8 +42,8 @@ BeginWinnerAnnouncement
           rem winnerPlayerIndex should already be set by game end logic
           rem   (FindWinner in PlayerElimination.bas)
           
-          gosub SetAdminScreenLayout bank8
-          rem Set admin screen layout (32×32 for character display)
+          gosub SetGameScreenLayout bank8
+          rem Set screen layout (32×8 for character display)
           
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)

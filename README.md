@@ -33,20 +33,30 @@ See `Source/Common/Variables.bas` for complete memory layout.
 
 ## Bank Organization (64KB Cartridge)
 
-- **Bank 1**: Core systems, controller detection, main loop dispatcher, titlescreen kernel
-- **Bank 2**: Character sprite data (characters 0-7)
-- **Bank 3**: Character sprite data (characters 8-15)
-- **Bank 4**: Character sprite data (characters 16-23, placeholders)
-- **Bank 5**: Character sprite data (characters 24-31), character selection system
-- **Bank 6**: Missile system, collision detection
-- **Bank 7**: Player physics, movement, special abilities
-- **Bank 8**: Combat system, damage, health bars
-- **Bank 9**: Title sequence, preambles (publisher/author), attract mode
-- **Bank 10**: Character selection input handling
-- **Bank 11**: Main gameplay loop, player input, rendering, console handling
-- **Bank 12**: Arena select, falling animation, winner announcement
-- **Bank 13**: Game mode transitions
-- **Bank 14-16**: Audio system (music, sound effects)
+### Asset Banks (Separate Memory Budget)
+**Music/Sound Assets:**
+- **Bank 1**: Character theme songs (IDs 6-28) - Bolero, LowRes, RoboTito, SongOfTheBear, DucksAway, Character16-30 themes
+- **Bank 15**: Sound effects + character theme songs (IDs 0-5) - Bernie, OCascadia, Revontuli, EXO, Grizzards, MagicalFairyForce
+
+**Character Art Assets:**
+- **Bank 2**: Character sprites (0-7) - Bernie, Curler, DragonOfStorms, ZoeRyen, FatTony, Megax, Harpy, KnightGuy
+- **Bank 3**: Character sprites (8-15) - Frooty, Nefertem, NinjishGuy, PorkChop, RadishGoblin, RoboTito, Ursulo, Shamone
+- **Bank 4**: Character sprites (16-23) - Character16-23 (placeholders)
+- **Bank 5**: Character sprites (24-31) - Character24-30, MethHound
+
+### General Code Banks (8 Banks - Shared Memory Budget)
+- **Bank 6**: Character selection (main/render)
+- **Bank 7**: Missile system (tables, physics, collision) + combat system
+- **Bank 8**: Physics system (gravity, movement, special abilities) + screen layout + health bars + main loop dispatcher
+- **Bank 10**: Sprite rendering (character art loader, player rendering, elimination) + character attacks system
+- **Bank 11**: Gameplay loop (init/main/collision resolution/animation) + attack support data
+- **Bank 12**: Character data system (definitions, cycles, falling animation, fall damage)
+- **Bank 13**: Input system (movement, player input, guard effects)
+- **Bank 14**: Console handling (detection, controllers, game mode transitions, character controls)
+
+### Special Purpose Banks
+- **Bank 9**: Titlescreen system (graphics assets, titlescreen kernel, preambles, attract mode, winner/data tables)
+- **Bank 16**: Arenas + drawscreen (main loop, arena data/loader, special sprites, numbers font, font rendering)
 
 ## Execution Flow
 

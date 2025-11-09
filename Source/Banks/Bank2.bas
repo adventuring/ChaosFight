@@ -1,5 +1,9 @@
           rem ChaosFight - Source/Banks/Bank2.bas
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem
+          rem ASSET BANK: Character Art Assets (separate memory budget)
+          rem Character sprites (0-7): Bernie, Curler, DragonOfStorms, ZoeRyen,
+          rem   FatTony, Megax, Harpy, KnightGuy + MissileCollision routine
 
           bank 2
 
@@ -14,8 +18,6 @@
 #include "Source/Generated/Megax.bas"
 #include "Source/Generated/Harpy.bas"
 #include "Source/Generated/KnightGuy.bas"
-
-#include "Source/Routines/MissileCollision.bas"
 
           asm
           ;; Character art lookup routines for Bank 2 (characters 0-7)

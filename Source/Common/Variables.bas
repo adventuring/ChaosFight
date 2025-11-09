@@ -717,6 +717,16 @@
           rem   Bit 3: Player 3
           rem Set to 1 when RoboTito lands on ground, cleared when hit
           rem or
+
+          dim enhancedButtonStates_W = w123
+          dim enhancedButtonStates_R = r123
+          rem Enhanced controller button states (Genesis Button C, Joy2B+
+          rem Button II)
+          rem Bit-packed: 1 bit per player (1=pressed, 0=released)
+          rem Bit 0: Player 0 enhanced button, Bit 1: Player 1, Bit 2:
+          rem Player 2,
+          rem   Bit 3: Player 3
+          rem Updated at start of each game loop frame
           rem   stretching upward
 
           dim harpyFlightEnergy_W = w009

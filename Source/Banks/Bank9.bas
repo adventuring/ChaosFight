@@ -1,5 +1,9 @@
           rem ChaosFight - Source/Banks/Bank9.bas
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem
+          rem SPECIAL PURPOSE BANK: Titlescreen System
+          rem Graphics assets, titlescreen kernel, preambles, attract mode,
+          rem   winner screen data, character data tables
 
           bank 9
 
@@ -22,6 +26,13 @@ end
 #include "Source/Routines/TitleScreenMain.bas"
 #include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/TitleCharacterParade.bas"
+
+#include "Source/Data/WinnerScreen.bas"
+#include "Source/Data/CharacterThemeSongIndices.bas"
+#include "Source/Data/CharacterDataTables.bas"
+#include "Source/Data/CharacterPhysicsTables.bas"
+#include "Source/Routines/DisplayWinScreen.bas"
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 
           rem these may be relocated anywhere, if needed.
 #include "Source/Routines/BeginAttractMode.bas"

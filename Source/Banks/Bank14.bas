@@ -1,5 +1,9 @@
           rem ChaosFight - Source/Banks/Bank14.bas
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem
+          rem GENERAL CODE BANK (shared memory budget - 8 banks total)
+          rem Console handling (detection, controllers, game mode transitions,
+          rem   character controls, startup routines)
 
           bank 14
 
@@ -18,4 +22,5 @@
 #include "Source/Routines/CharacterControls.bas"
 #include "Source/Routines/ArenaReloadUtils.bas"
 #include "Source/Routines/SpritePointerInit.bas"
+#include "Source/Routines/ColdStart.bas"
 

@@ -1,8 +1,11 @@
           rem ChaosFight - Source/Banks/Bank4.bas
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem
+          rem ASSET BANK: Character Art Assets (separate memory budget)
+          rem Character sprites (16-23): Character16-23 (placeholders) + FallingAnimation routine
 
           bank 4
-          
+
           rem Bank 4 dedicated to character art only - leave room for
           rem   animation frames
           rem Character sprite data for characters 16-23
@@ -14,9 +17,6 @@
 #include "Source/Generated/Character21.bas"
 #include "Source/Generated/Character22.bas"
 #include "Source/Generated/Character23.bas"
-
-#include "Source/Routines/FallingAnimation.bas"
-#include "Source/Routines/CharacterData.bas"
 
           asm
           ; rem Character art lookup routines for Bank 4 (characters

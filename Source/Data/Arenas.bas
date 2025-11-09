@@ -19,8 +19,8 @@
           rem All arenas use the same B&W colors (all white)
 
           data ArenaColorsBW
-            $0E, $0E, $0E, $0E,
-            $0E, $0E, $0E, $0E
+            ColGrey(14), ColGrey(14), ColGrey(14), ColGrey(14),
+            ColGrey(14), ColGrey(14), ColGrey(14), ColGrey(14)
 end
 
 Arena0Playfield
@@ -38,8 +38,8 @@ Arena0Playfield
 end
 
           data Arena0Colors
-            $32, $34, $36, $38
-            $3A, $3C, $3E, $30
+            ColOrange(2), ColOrange(4), ColOrange(6), ColOrange(8)
+            ColOrange(10), ColOrange(12), ColOrange(14), ColOrange(0)
 end
 
 Arena1Playfield

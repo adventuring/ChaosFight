@@ -1,8 +1,11 @@
           rem ChaosFight - Source/Banks/Bank5.bas
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem
+          rem ASSET BANK: Character Art Assets (separate memory budget)
+          rem Character sprites (24-31): Character24-30, MethHound + PlayerInput routine
 
           bank 5
-          
+
           rem Bank 5 dedicated to character art only - leave room for
           rem   animation frames
           rem Character sprite data for characters 24-31
@@ -15,16 +18,6 @@
 #include "Source/Generated/Character30.bas"
 #include "Source/Generated/MethHound.bas"
 
-#include "Source/Routines/PlayerInput.bas"
-
           asm
-          ; rem Character art lookup routines for Bank 5 (characters
-          ; rem   24-31)
 #include "Source/Routines/CharacterArtBank5.s"
 end
-
-
-          rem batariBASIC auto-generates _length constants for data
-          rem blocks
-          rem Manual calculations removed - let batariBASIC handle them
-          rem to avoid unresolved local label issues

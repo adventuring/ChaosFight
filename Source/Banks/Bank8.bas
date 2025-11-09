@@ -1,5 +1,9 @@
           rem ChaosFight - Source/Banks/Bank8.bas
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem
+          rem GENERAL CODE BANK (shared memory budget - 8 banks total)
+          rem Physics system (gravity, movement, special abilities) + screen layout +
+          rem   health bars + main loop dispatcher
 
           bank 8
  

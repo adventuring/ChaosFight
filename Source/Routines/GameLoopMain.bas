@@ -4,6 +4,39 @@
           rem Main gameplay loop that orchestrates all game systems.
           rem Called every frame during active gameplay.
           rem SEQUENCE PER FRAME:
+
+ReadEnhancedButtons
+          rem Read enhanced controller buttons (Genesis Button C, Joy2B+ Button II)
+          rem Stores button states in enhancedButtonStates for use throughout the frame
+          rem
+          rem Input: controllerStatus (global) = controller capabilities,
+          rem INPT0-3 (hardware) = paddle port states
+          rem
+          rem Output: enhancedButtonStates_W = bit-packed button states
+          rem (Bit 0=P0, Bit 1=P1, Bit 2=P2, Bit 3=P3)
+          rem
+          rem Mutates: enhancedButtonStates_W, temp1 (used for calculations)
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must be called early in game loop before input processing
+          let temp1 = 0
+
+          rem Player 0 & 2 (INPT0) - Genesis/Joy2b+
+          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 1
+          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
+          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 4
+          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 4
+
+          rem Player 1 & 3 (INPT2) - Genesis/Joy2b+
+          if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = temp1 | 2
+          if controllerStatus & SetRightPortJoy2bPlus then if !(INPT2 & $80) then let temp1 = temp1 | 2
+          if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = temp1 | 8
+          if controllerStatus & SetRightPortJoy2bPlus then if !(INPT2 & $80) then let temp1 = temp1 | 8
+
+          let enhancedButtonStates_W = temp1
+          return
+
 GameMainLoop
           rem   1. Handle console switches (pause, reset, color)
           rem   2. Handle player input via PlayerInput.bas
@@ -178,7 +211,7 @@ GameEndCheckDone
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
-          gosub CheckRoboTitoStretchMissileCollisions bank2
+          gosub CheckRoboTitoStretchMissileCollisions
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)

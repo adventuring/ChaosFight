@@ -1,5 +1,9 @@
           rem ChaosFight - Source/Banks/Bank15.bas
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem
+          rem ASSET BANK: Music/Sound Assets (separate memory budget)
+          rem Sound effects + character theme songs (IDs 0-5): Bernie, OCascadia,
+          rem   Revontuli, EXO, Grizzards, MagicalFairyForce
 
           bank 15
 

@@ -7,13 +7,14 @@
 
 ReadEnhancedButtons
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+ Button II)
+          rem Only players 1-2 can have enhanced controllers (players 3-4 require Quadtari)
           rem Stores button states in enhancedButtonStates for use throughout the frame
           rem
           rem Input: controllerStatus (global) = controller capabilities,
           rem INPT0-3 (hardware) = paddle port states
           rem
           rem Output: enhancedButtonStates_W = bit-packed button states
-          rem (Bit 0=P0, Bit 1=P1, Bit 2=P2, Bit 3=P3)
+          rem (Bit 0=P1, Bit 1=P2, Bits 2-3=always 0)
           rem
           rem Mutates: enhancedButtonStates_W, temp1 (used for calculations)
           rem
@@ -22,17 +23,16 @@ ReadEnhancedButtons
           rem Constraints: Must be called early in game loop before input processing
           let temp1 = 0
 
-          rem Player 0 & 2 (INPT0) - Genesis/Joy2b+
+          rem Player 1 (INPT0) - Genesis/Joy2b+ Button C/II
           if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 1
           if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
-          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 4
-          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 4
 
-          rem Player 1 & 3 (INPT2) - Genesis/Joy2b+
+          rem Player 2 (INPT2) - Genesis/Joy2b+ Button C/II
           if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = temp1 | 2
           if controllerStatus & SetRightPortJoy2bPlus then if !(INPT2 & $80) then let temp1 = temp1 | 2
-          if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = temp1 | 8
-          if controllerStatus & SetRightPortJoy2bPlus then if !(INPT2 & $80) then let temp1 = temp1 | 8
+
+          rem Players 3-4 cannot have enhanced controllers (require Quadtari)
+          rem Bits 2-3 remain 0
 
           let enhancedButtonStates_W = temp1
           return

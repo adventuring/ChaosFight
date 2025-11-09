@@ -102,13 +102,15 @@ DonePlayer2Pause
           return
 
 CheckEnhancedPause
-          rem Check if enhanced pause buttons are pressed for the specified player
-          rem Used for Joy2B+ Button III and Genesis Button C pause functionality
+          rem Check if pause buttons are pressed (console Game Select switch or enhanced controller buttons)
+          rem Game Select switch (always) + Joy2B+ Button III (INPT1/INPT3) or Genesis Button C (INPT0/INPT2)
           rem
           rem Input: temp2 = player index (0=Player 1, 1=Player 2)
-          rem        enhancedButtonStates_R = current enhanced button states
+          rem        controllerStatus (global) = controller capabilities
+          rem        switchselect (hardware) = Game Select switch
+          rem        INPT0-3 (hardware) = paddle port states
           rem
-          rem Output: temp1 = 1 if enhanced pause button pressed, 0 otherwise
+          rem Output: temp1 = 1 if any pause button pressed, 0 otherwise
           rem
           rem Mutates: temp1
           rem
@@ -118,20 +120,26 @@ CheckEnhancedPause
           let temp1 = 0
           rem Default to no pause button pressed
 
-          rem Check the appropriate bit in enhancedButtonStates based on temp2
-          rem temp2=0: Player 1 (bit 1), temp2=1: Player 2 (bit 2)
+          rem Always check Game Select switch first (works with any controller)
+          if switchselect then let temp1 = 1 : return
+
+          rem Then check enhanced pause buttons for the specified player
+          rem Joy2B+ Button III uses different registers than Button II/C
+
           if temp2 = 0 then goto CEP_CheckPlayer1
           if temp2 = 1 then goto CEP_CheckPlayer2
           return
 
 CEP_CheckPlayer1
-          rem Check Player 1 enhanced button (bit 1)
-          if enhancedButtonStates_R & 2 then let temp1 = 1
+          rem Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
+          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
+          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
           return
 
 CEP_CheckPlayer2
-          rem Check Player 2 enhanced button (bit 2)
-          if enhancedButtonStates_R & 4 then let temp1 = 1
+          rem Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
+          if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = 1
+          if controllerStatus & SetRightPortJoy2bPlus then if !(INPT3 & $80) then let temp1 = 1
           return
 
           rem

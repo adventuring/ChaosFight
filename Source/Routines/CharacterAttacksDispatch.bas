@@ -108,19 +108,21 @@ CheckEnhancedJumpButton
           rem
           rem Shared Enhanced Button Check
           rem Checks Genesis/Joy2b+ Button C/II for jump input
+          rem Only players 1-2 can have enhanced controllers (players 3-4 require Quadtari)
           rem
           rem INPUT: temp1 = player index (0-3)
           rem
           rem OUTPUT: temp3 = 1 if jump button pressed, 0 otherwise
-          rem Uses: INPT0 for players 0,2; INPT2 for players 1,3
+          rem Uses: INPT0 for players 0; INPT2 for players 1
+          rem Players 2-3 cannot have enhanced controllers
           let temp3 = 0
           rem Initialize to no jump
-          rem Player 0 or 2: Check INPT0
+
+          rem Only players 0-1 can have enhanced controllers
+          rem Players 2-3 (Quadtari players) cannot have enhanced controllers
           if temp1 = 0 then CEJB_CheckPlayer0
-          if temp1 = 2 then CEJB_CheckPlayer3
-          rem Player 1 or 3: Check INPT2
           if temp1 = 1 then CEJB_CheckPlayer2
-          if temp1 = 3 then CEJB_CheckPlayer4
+          rem Players 2-3 skip enhanced controller checks
           goto CEJB_Done
 CEJB_CheckPlayer0
           rem Player 0: Check Genesis controller
@@ -132,17 +134,16 @@ CEJB_CheckPlayer0Joy2bPlus
           if !ControllerStatus{1} then CEJB_Done
           if !INPT0{7} then temp3 = 1
           goto CEJB_Done
-CEJB_CheckPlayer3
-          rem Player 3: Check Genesis controller
-          if !ControllerStatus{0} then CEJB_CheckPlayer3Joy2bPlus
-          if !INPT0{7} then temp3 = 1
-          goto CEJB_Done
-CEJB_CheckPlayer3Joy2bPlus
-          rem Player 3: Check Joy2b+ controller
-          if !ControllerStatus{1} then CEJB_Done
-          if !INPT0{7} then temp3 = 1
-          goto CEJB_Done
 CEJB_CheckPlayer2
-          rem Player 2: Check Genesis controller
+          rem Player 1: Check Genesis controller
           if !(ControllerStatus & $04) then CEJB_CheckPlayer2Joy2bPlus
           if !(INPT2 & $80) then temp3 = 1
+          goto CEJB_Done
+CEJB_CheckPlayer2Joy2bPlus
+          rem Player 1: Check Joy2b+ controller
+          if !(ControllerStatus & $08) then CEJB_Done
+          if !(INPT2 & $80) then temp3 = 1
+          goto CEJB_Done
+CEJB_Done
+          rem Enhanced jump button check complete
+          return

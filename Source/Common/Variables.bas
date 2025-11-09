@@ -722,10 +722,10 @@
           dim enhancedButtonStates_R = r123
           rem Enhanced controller button states (Genesis Button C, Joy2B+
           rem Button II)
-          rem Bit-packed: 1 bit per player (1=pressed, 0=released)
-          rem Bit 0: Player 0 enhanced button, Bit 1: Player 1, Bit 2:
-          rem Player 2,
-          rem   Bit 3: Player 3
+          rem Only players 1-2 can have enhanced controllers (players 3-4 require Quadtari)
+          rem Bit-packed: 1 bit per eligible player (1=pressed, 0=released)
+          rem Bit 0: Player 1 enhanced button, Bit 1: Player 2 enhanced button
+          rem Bits 2-3: Always 0 (players 3-4 cannot have enhanced controllers)
           rem Updated at start of each game loop frame
           rem   stretching upward
 

@@ -195,8 +195,8 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 
 # Convert MuseScore to MIDI
 %.midi: %.mscz
-	if [ -x ~/Software/MuseScore*.AppImage ]; then \
-		~/Software/MuseScore*.AppImage --export-to $@ $<; \
+	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
+		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
 	elif which mscore; then \
 		mscore --export-to $@ $<; \
 	else \
@@ -204,8 +204,8 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 	fi
 
 %.flac: %.mscz
-	if [ -x ~/Software/MuseScore*.AppImage ]; then \
-		
+	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
+		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \		
 	elif which mscore; then \
 		mscore --export-to $@ $<; \
 	else \
@@ -213,8 +213,8 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 	fi
 
 %.ogg: %.mscz
-	if [ -x ~/Software/MuseScore*.AppImage ]; then \
-		~/Software/MuseScore*.AppImage --export-to $@ $<; \
+	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
+		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
 	elif which mscore; then \
 		mscore --export-to $@ $<; \
 	else \
@@ -222,8 +222,8 @@ SOUND_NAMES = SoundAttackHit SoundGuardBlock SoundJump SoundPlayerEliminated \
 	fi
 
 %.pdf: %.mscz
-	if [ -x ~/Software/MuseScore*.AppImage ]; then \
-		~/Software/MuseScore*.AppImage --export-to $@ $<; \
+	if [ -x ~/AppImages/MuseScore*.AppImage ]; then \
+		~/AppImages/MuseScore*.AppImage --export-to $@ $<; \
 	elif which mscore; then \
 		mscore --export-to $@ $<; \
 	else \
@@ -318,8 +318,33 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/
 # Convert 48×42 PNG to titlescreen kernel assembly format
 # Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height
 # These are bitmaps for the titlescreen kernel minikernels, not playfield data
-# PNG files are generated from XCF via %.png: %.xcf pattern rule
-# Explicit PNG+XCF dependencies ensure proper build ordering in parallel builds
+# PNG files are built from XCF via the %.png: %.xcf pattern rule (line 180)
+# Explicit PNG→XCF dependencies ensure XCF→PNG conversion happens first
+# These use the pattern rule %.png: %.xcf (line 239) to generate PNGs from XCFs
+Source/Art/AtariAge.png: Source/Art/AtariAge.xcf | Source/Art/
+	@echo "Generating PNG from XCF: $@..."
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
+
+Source/Art/AtariAgeText.png: Source/Art/AtariAgeText.xcf | Source/Art/
+	@echo "Generating PNG from XCF: $@..."
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
+
+Source/Art/BRP.png: Source/Art/BRP.xcf | Source/Art/
+	@echo "Generating PNG from XCF: $@..."
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
+
+Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf | Source/Art/
+	@echo "Generating PNG from XCF: $@..."
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
+
+Source/Art/Numbers.png: Source/Art/Numbers.xcf | Source/Art/
+	@echo "Generating PNG from XCF: $@..."
+	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
+	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule

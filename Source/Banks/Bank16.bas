@@ -6,5 +6,5 @@
 #include "Source/Data/SpecialSprites.bas"
 #include "Source/Data/Arenas.bas"
 #include "Source/Routines/FontRendering.bas"
-#include "Source/Routines/MainLoop.bas"
+#include "Source/Routines/ArenaLoader.bas"
 

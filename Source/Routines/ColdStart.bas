@@ -79,8 +79,8 @@ ColdStart
           rem ChangeGameMode calls SetupPublisherPrelude and sets up
           rem   music
           
-          rem Step 6: Jump to MainLoop (in Bank 16)
+          rem Step 6: Jump to MainLoop (in Bank 6)
           rem MainLoop will handle the game mode dispatch and frame
-          goto MainLoop bank16
+          goto MainLoop bank6
           rem   rendering
 

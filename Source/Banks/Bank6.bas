@@ -7,6 +7,5 @@
 #include "Source/Routines/CharacterSelectMain.bas"
 #include "Source/Routines/PlayerElimination.bas"
 #include "Source/Routines/CharacterSelectRender.bas"
-#include "Source/Routines/ArenaLoader.bas"
 #include "Source/Routines/MainLoop.bas"
           

@@ -63,14 +63,6 @@ HandleCharacterSelectCycle
           rem Constraints: Must be colocated with HCSC_CheckJoy0,
           rem HCSC_CheckJoy0Left,
           rem              HCSC_CheckJoy1Left, HCSC_DoCycle,
-          rem              HCSC_CycleLeft, HCSC_CycleDone
-          rem (all called via goto)
-          rem Determine which joy port to use
-          if temp1 = 0 then HCSC_CheckJoy0
-          if temp1 = 2 then HCSC_CheckJoy0
-          rem Players 1,3 use joy1
-          if temp2 = 0 then HCSC_CheckJoy1Left
-          if !joy1right then return
           goto HCSC_DoCycle
 HCSC_CheckJoy0
           rem Check joy0 for players 0,2
@@ -136,29 +128,11 @@ HCSC_DoCycle
           rem   PlaySoundEffect (bank15)
           rem
           rem Constraints: Must be colocated with
-          rem HandleCharacterSelectCycle, HCSC_CycleLeft, HCSC_CycleDone
           let temp1 = playerCharacter[temp1]
           rem Get current character index
           let temp3 = temp1
           rem Cycle based on direction
-          if temp2 = 0 then HCSC_CycleLeft
-          gosub CycleCharacterRight
-          goto HCSC_CycleDone
-HCSC_CycleLeft
-          rem Cycle character left
-          rem
-          rem Input: temp1, temp3 (from HCSC_DoCycle)
-          rem
-          rem Output: temp1 updated with cycled character index
-          rem
-          rem Mutates: temp1 (cycled character index)
-          rem
-          rem Called Routines: CycleCharacterLeft - accesses
-          rem playerCharacter[]
-          rem
-          rem Constraints: Must be colocated with
-          rem HandleCharacterSelectCycle, HCSC_DoCycle, HCSC_CycleDone
-          gosub CycleCharacterLeft
+          gosub CycleCharacterLeft bank11
 HCSC_CycleDone
           rem Character cycling complete
           rem
@@ -523,210 +497,6 @@ SkipCharacter4Facing
           gosub ChangeGameMode bank14
           return
 
-CycleCharacterLeft
-          rem
-          rem Character Cycling Helpers
-          rem Handle wraparound cycling for characters with special
-          rem   values
-          rem
-          rem Input: temp1 = playerCharacter value, temp2 = direction
-          rem   (0=left, 1=right), temp3 = player number
-          rem Output: temp1 = new playerCharacter value
-          rem Decrement character with special value wraparound
-          rem P1: RandomCharacter(253) ↔ 0 ↔ 15 ↔ RandomCharacter
-          rem P2: CPUCharacter(254) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔
-          rem   CPUCharacter
-          rem P3/P4: NoCharacter(255) ↔ 0 ↔ 15 ↔ RandomCharacter(253) ↔
-          rem   NoCharacter
-          
-          if temp1 = RandomCharacter then goto CycleFromRandom
-          rem Check if we’re at a special value
-          if temp1 = CPUCharacter then goto CycleFromCPU
-          if temp1 = NoCharacter then goto CycleFromNO
-          
-          rem Normal character (0-15): decrement
-          rem Check if we’re at 0 before decrementing (need to wrap to
-          rem special)
-          if !temp1 then goto CharacterSelectLeftWrapCheck
-          let temp1 = temp1 - 1
-          return
-          
-CharacterSelectLeftWrapCheck
-          if temp3 = 0 then goto CSLWrapPlayer0Left
-          rem After 0, wrap to player-specific special character
-          if temp3 = 1 then goto SelectP2LeftWrap
-          let temp1 = NoCharacter
-          return
-
-CSLWrapPlayer0Left
-          let temp1 = RandomCharacter
-          return
-          
-SelectP2LeftWrap
-          rem P2: Check if NO is available (if Quadtari and P3 or P4 not
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectP2LeftWrapCPU
-          rem both NO)
-          rem Check if P3 or P4 are NOT both NO
-          if playerCharacter[2] = NoCharacter then goto CheckP4_LeftWrap
-          let temp1 = NoCharacter
-          return
-SelectP2LeftWrapCPU
-          let temp1 = CPUCharacter
-          return
-CheckP4_LeftWrap
-          if playerCharacter[3] = NoCharacter then goto BothNO_LeftWrap
-          let temp1 = NoCharacter
-          return
-BothNO_LeftWrap
-          let temp1 = CPUCharacter
-          rem Both P3 and P4 are NO, so P2 wraps to CPU
-          return
-          
-CycleFromRandom
-          rem RandomCharacter(253) left cycle: direction-dependent
-          rem P1: ... Random → 15 → 14 → ...
-          rem P2: ... Random → NO (if available) → CPU OR Random → 15
-          rem P3/P4: Random → NO
-          rem Check if this is P2 with NO available
-          if temp3 = 1 then goto SelectP2LeftFromRandom
-          rem P1 or P3/P4: Random left goes to NO (P3/P4) or 15 (P1)
-          if temp3 = 0 then goto CycleFromRandomPlayer0
-          rem P1 → 15
-          let temp1 = NoCharacter
-          rem P3/P4 → NO
-          return
-
-CycleFromRandomPlayer0
-          let temp1 = MaxCharacter
-          return
-          
-SelectP2LeftFromRandom
-          rem P2 left from Random: Check if NO is available
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectP2LeftFromRandomMax
-          rem Check if P3 or P4 are NOT both NO
-          if playerCharacter[2] = NoCharacter then CheckP4_LeftFromRandom
-          let temp1 = NoCharacter
-          return
-
-SelectP2LeftFromRandomMax
-          let temp1 = MaxCharacter
-          return
-CheckP4_LeftFromRandom
-          if playerCharacter[3] = NoCharacter then BothNO_LeftFromRandom
-          let temp1 = NoCharacter
-          return
-BothNO_LeftFromRandom
-          let temp1 = MaxCharacter
-          rem Both P3 and P4 are NO, so NO not available, go to 15
-          return
-          
-CycleFromCPU
-          rem CPUCharacter(254) left cycle: goes to RandomCharacter(253)
-          rem   for all players
-          rem For P2, this is the left direction from CPU
-          rem P2 left from CPU: if NO available, NO → Random, else
-          rem   Random
-          rem Actually, left from CPU means we’re decrementing, so CPU
-          rem   is after Random
-          rem The cycle is: ... Random → CPU → Random ...
-          rem So left from CPU should go to Random (we already have
-          let temp1 = RandomCharacter
-          rem   this)
-          return
-          
-CycleFromNO
-          rem NoCharacter(255) left cycle: direction-dependent
-          rem P2 with NO available: NO → CPU (left), NO → Random (right)
-          rem P3/P4: NO → Random (both directions since NO is start/end)
-          rem For left cycle (decrement): P2 goes from NO to CPU
-          if temp3 = 1 then goto CycleFromNOPlayer2
-          rem P2 left from NO → CPU
-          let temp1 = RandomCharacter
-          rem P3/P4: NO → Random
-          return
-
-CycleFromNOPlayer2
-          let temp1 = CPUCharacter
-          return
-          
-CycleCharacterRight
-          if temp1 = RandomCharacter then goto CycleRightFromRandom
-          rem Increment character with special value wraparound
-          if temp1 = CPUCharacter then goto CycleRightFromCPU
-          if temp1 = NoCharacter then goto CycleRightFromNO
-          
-          let temp1 = temp1 + 1
-          rem Normal character (0-15): increment
-          rem Check if we went past 15 (wrap to RandomCharacter)
-          if temp1 > MaxCharacter then goto CharacterSelectRightWrapCheck
-          return
-          
-CharacterSelectRightWrapCheck
-          let temp1 = RandomCharacter
-          rem After 15, go to RandomCharacter instead of wrapping to 0
-          return
-          
-CycleRightFromRandom
-          if temp3 = 0 then goto CycleRightFromRandomPlayer0
-          rem RandomCharacter(253) goes to special for each player
-          if temp3 = 1 then goto SelectP2RightFromRandom
-          let temp1 = NoCharacter
-          return
-
-CycleRightFromRandomPlayer0
-          let temp1 = 0
-          return
-          
-SelectP2RightFromRandom
-          rem P2: Check if NO is available (if Quadtari and P3 or P4 not
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectP2RightFromRandomCPU
-          rem both NO)
-          rem Check if P3 or P4 are NOT both NO
-          if playerCharacter[2] = NoCharacter then goto CheckP4_RightFromRandom
-          let temp1 = NoCharacter
-          return
-SelectP2RightFromRandomCPU
-          let temp1 = CPUCharacter
-          return
-CheckP4_RightFromRandom
-          if playerCharacter[3] = NoCharacter then goto BothNO_RightFromRandom
-          let temp1 = NoCharacter
-          return
-BothNO_RightFromRandom
-          let temp1 = CPUCharacter
-          rem Both P3 and P4 are NO, so P2 goes to CPU
-          return
-          
-CycleRightFromCPU
-          rem CPUCharacter(254) wraps based on player
-          rem P1: CPU → Random → ...
-          rem P2: CPU → NO (if available) → Random → ... OR CPU → Random
-          rem P3/P4: Should not reach CPU, but handle gracefully
-          if temp3 = 1 then goto SelectP2RightFromCPU
-          goto CycleRightFromCPUDone
-SelectP2RightFromCPU
-          rem P2 from CPU: Check if NO is available
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectP2RightFromCPURandom
-          rem Check if P3 or P4 are NOT both NO
-          if playerCharacter[2] = NoCharacter then goto CheckP4_RightFromCPU
-          let temp1 = NoCharacter
-          return
-SelectP2RightFromCPURandom
-          let temp1 = RandomCharacter
-          return
-CheckP4_RightFromCPU
-          if playerCharacter[3] = NoCharacter then goto BothNO_RightFromCPU
-          let temp1 = NoCharacter
-          return
-BothNO_RightFromCPU
-          let temp1 = RandomCharacter
-          rem Both P3 and P4 are NO, so skip NO and go to Random
-          return
-CycleRightFromCPUDone
-          let temp1 = RandomCharacter
-          rem Default for P1 or other players (not P2)
-          return
-          
 CycleRightFromNO
           let temp1 = 0
           rem NoCharacter(255) goes to 0

@@ -21,4 +21,5 @@
 #include "Source/Routines/PlayerPhysicsGravity.bas"
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/SpecialMovement.bas"
+#include "Source/Routines/AnimationHelpers.bas"
 

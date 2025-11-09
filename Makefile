@@ -300,8 +300,8 @@ $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Sou
 
 # Generate character sprite files from PNG using chaos character compiler
 # PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
-# Explicitly depend on both PNG and XCF to ensure proper build ordering
-$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png bin/skyline-tool | Source/Generated/
+# Explicitly depend on both PNG and XCF to ensure proper build ordering in parallel builds
+$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas): Source/Generated/%.bas: Source/Art/%.png Source/Art/%.xcf bin/skyline-tool | Source/Generated/
 	@echo "Generating character sprite data for $*..."
 	bin/skyline-tool compile-chaos-character "$@" "$(filter %.png,$^)"
 
@@ -318,33 +318,8 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/
 # Convert 48×42 PNG to titlescreen kernel assembly format
 # Uses compile-batari-48px with titlescreen-kernel-p flag for color-per-line + double-height
 # These are bitmaps for the titlescreen kernel minikernels, not playfield data
-# PNG files are built from XCF via the %.png: %.xcf pattern rule (line 180)
-# Explicit PNG→XCF dependencies ensure XCF→PNG conversion happens first
-# These use the pattern rule %.png: %.xcf (line 239) to generate PNGs from XCFs
-Source/Art/AtariAge.png: Source/Art/AtariAge.xcf | Source/Art/
-	@echo "Generating PNG from XCF: $@..."
-	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
-
-Source/Art/AtariAgeText.png: Source/Art/AtariAgeText.xcf | Source/Art/
-	@echo "Generating PNG from XCF: $@..."
-	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
-
-Source/Art/BRP.png: Source/Art/BRP.xcf | Source/Art/
-	@echo "Generating PNG from XCF: $@..."
-	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
-
-Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf | Source/Art/
-	@echo "Generating PNG from XCF: $@..."
-	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
-
-Source/Art/Numbers.png: Source/Art/Numbers.xcf | Source/Art/
-	@echo "Generating PNG from XCF: $@..."
-	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
+# PNG files are generated from XCF via %.png: %.xcf pattern rule
+# Explicit PNG+XCF dependencies ensure proper build ordering in parallel builds
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule

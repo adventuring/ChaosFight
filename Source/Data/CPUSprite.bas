@@ -1,8 +1,5 @@
-          asm
-; ChaosFight - Source/Data/CPUSprite.bas
-; Copyright (c) 2025 Interworldly Adventuring, LLC.
-          end
-
+          rem ChaosFight - Source/Data/CPUSprite.bas
+          rem Special sprite placeholder for CPU-controlled player slots
           data CPUSprite
             %11111001
             %11110110
@@ -20,4 +17,4 @@
             %01111111
             %01111111
             %10001111
-          end
+end

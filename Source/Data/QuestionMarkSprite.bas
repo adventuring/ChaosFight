@@ -1,13 +1,6 @@
-          asm
-; ChaosFight - Source/Data/QuestionMarkSprite.bas
-; Copyright (c) 2025 Interworldly Adventuring, LLC.
-;
-; Special Sprites - Hard-coded Data
-; Special sprites for character selection placeholders
-; Used when no character is selected or for CPU players
-; 8x16 pixels, white on black
-          end
-
+          rem ChaosFight - Source/Data/QuestionMarkSprite.bas
+          rem Special sprite placeholder for character selection
+          rem Represents the question mark icon (8x16 pixels, white on black)
           data QuestionMarkSprite
             %00000000
             %00000000
@@ -25,4 +18,4 @@
             %10000001
             %10000001
             %01111110
-          end
+end

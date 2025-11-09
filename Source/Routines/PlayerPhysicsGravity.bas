@@ -258,7 +258,7 @@ GravityBottomCalcDone
           
           rem If RoboTito, set stretch permission on landing at bottom
           
-          if temp6 = CharacterRoboTito then PAG_SetRoboTitoStretchPermission
+          if temp6 = CharacterRoboTito then goto PAG_SetRoboTitoStretchPermission
           
 GravityNextPlayer
           let temp1 = temp1 + 1

@@ -350,52 +350,6 @@ InitializeAnimationSystem
 
 
 
-SetAttackAnimation
-          rem Set attack animation for a player
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem
-          rem OUTPUT: None
-          rem
-          rem EFFECTS: Changes player animation to ActionAttackWindup
-          rem state
-          temp2 = ActionAttackWindup
-          goto SetPlayerAnimation
-          rem tail call
-
-SetHitAnimation
-          rem Set hit animation for a player
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem
-          rem OUTPUT: None
-          rem EFFECTS: Changes player animation to ActionHit state
-          temp2 = ActionHit
-          goto SetPlayerAnimation
-          rem tail call
-
-SetJumpingAnimation
-          rem Set jumping animation for a player
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem
-          rem OUTPUT: None
-          rem EFFECTS: Changes player animation to ActionJumping state
-          temp2 = ActionJumping
-          goto SetPlayerAnimation
-          rem tail call
-
-SetFallingAnimation
-          rem Set falling animation for a player
-          rem
-          rem INPUT: currentPlayer = player index (0-3)
-          rem
-          rem OUTPUT: None
-          rem EFFECTS: Changes player animation to ActionFalling state
-          temp2 = ActionFalling
-          goto SetPlayerAnimation
-          rem tail call
-
 IsPlayerWalking
           rem
           rem Animation State Queries
@@ -526,52 +480,34 @@ HandleAttackTransition
 HandleWindupEnd
           temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return
-          if temp1 = 1 then WindupToRecovery
-          if temp1 = 4 then WindupToExecute
-          if temp1 = 5 then WindupToExecute
-          if temp1 = 9 then WindupToExecute
-          if temp1 = 11 then WindupToExecute
-          if temp1 >= 16 && temp1 <= 30 then goto PlaceholderWindup
-WindupNoOp
-          return
-
-WindupToRecovery
-          rem Curler: Windup → Recovery (PerformRangedAttack in CharacterAttacks.bas)
-          temp2 = ActionAttackRecovery
+          if temp1 >= 16 then goto PlaceholderWindup
+          
+          temp2 = 255
+          rem Curler: Windup → Recovery
+          if temp1 = 1 then temp2 = ActionAttackRecovery
+          rem FatTony, Megax, Nefertem, PorkChop: Windup → Execute
+          if temp1 = 4 then temp2 = ActionAttackExecute
+          if temp1 = 5 then temp2 = ActionAttackExecute
+          if temp1 = 9 then temp2 = ActionAttackExecute
+          if temp1 = 11 then temp2 = ActionAttackExecute
+          rem No matching transition: leave animation unchanged
+          if temp2 = 255 then return
           goto SetPlayerAnimation
-          rem tail call
-
-WindupToExecute
-          rem FatTony, Megax, Nefertem, PorkChop jump straight into Execute
-          temp2 = ActionAttackExecute
-          goto SetPlayerAnimation
-          rem tail call
-
+          
 PlaceholderWindup
+          if temp1 <= 30 then return
           return
 
 HandleExecuteEnd
           temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return
-          if temp1 = 1 then goto ExecuteNoOp
-          rem Use skip-over pattern to avoid complex || operator issues
-          if temp1 = 4 then goto ExecuteToRecovery
-          if temp1 = 11 then goto ExecuteToRecovery
           if temp1 = 6 then goto HarpyExecute
-          
-ExecuteToIdle
+          if temp1 = 1 then return
           temp2 = ActionIdle
-          goto SetPlayerAnimation
-          rem tail call
-
-ExecuteNoOp
-          return
-
-ExecuteToRecovery
           rem FatTony and PorkChop fall into recovery after Execute phase
-          temp2 = ActionAttackRecovery
+          if temp1 = 4 then temp2 = ActionAttackRecovery
+          if temp1 = 11 then temp2 = ActionAttackRecovery
           goto SetPlayerAnimation
-          rem tail call
 
 HarpyExecute
           rem Harpy: Execute → Idle

@@ -33,5 +33,3 @@ WinnerScreenColorsColor
           ColGold(2)
           ColGold(2)
 end
-
-

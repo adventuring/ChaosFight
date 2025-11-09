@@ -790,10 +790,11 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
 - Reserve 1 full bank for music
 - Bank 1 now hosts the music system (StartMusic/UpdateMusic, song tables
   for
-  songs 4-28, build info)
+  songs 6-28, build info)
 
-- Bank 15 holds the low-ID themes (songs 0-3: Bernie, EXO, OCascadia,
-  Revontuli) alongside the shared sound-effect tables
+- Bank 15 holds the low-ID themes (songs 0-5: Bernie, EXO, OCascadia,
+  Revontuli, Grizzards, MagicalFairyForce) alongside the shared sound-effect
+  tables
 
 - Bank 16 carries MainLoop, drawscreen, ArenaLoader, FontRendering, and
   the

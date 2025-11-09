@@ -9,15 +9,15 @@
           
 LoadSongPointer
           rem Lookup 16-bit song pointer for Bank 1 songs.
-          rem Input: temp1 = song ID (4-28), SongPointers1L[]/SongPointers1H[]
+          rem Input: temp1 = song ID (Bank1MinSongID-28), SongPointers1L[]/SongPointers1H[]
           rem Output: songPointer updated (points to Song_Voice0 stream)
           rem Mutates: temp1-temp2, songPointer
-          rem Constraints: Songs 0-3 live in Bank 15; returns songPointer = 0 if out of range
+          rem Constraints: Songs 0-Bank15MaxSongID live in Bank 15; returns songPointer = 0 if out of range
           if temp1 > 28 then goto LSP_InvalidSong
-          rem Check if songs handled by other banks (0-3)
-          if temp1 < 4 then goto LSP_InvalidSong
-          rem Calculate compact index: songID - 4 (song 4 → 0)
-          temp2 = temp1 - 4
+          rem Check if songs handled by other banks (0-Bank15MaxSongID)
+          if temp1 < Bank1MinSongID then goto LSP_InvalidSong
+          rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
+          temp2 = temp1 - Bank1MinSongID
 LSP_Lookup
           rem Helper: Lookup pointer from tables and combine into 16-bit value
           rem
@@ -44,7 +44,7 @@ LSP_InvalidSong
 LoadSongVoice1Pointer
           rem Lookup Voice 1 song pointer from tables (Bank 1 songs)
           rem
-          rem Input: temp1 = song ID (Bank 1 songs: 4-28),
+          rem Input: temp1 = song ID (Bank 1 songs: Bank1MinSongID-28),
           rem SongPointers1SecondL[], SongPointers1SecondH[] (global
           rem data tables) = Voice 1 song pointer tables (Bank 1)
           rem
@@ -54,16 +54,16 @@ LoadSongVoice1Pointer
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Only songs 4-28 are in Bank 1. Songs 0-3
-          rem are in Bank 15. Index mapping: song 4 → index 0, songs
-          rem 5-28 → indices 1-24. Returns songPointer = 0 if song not
+          rem Constraints: Only songs Bank1MinSongID-28 are in Bank 1. Songs 0-Bank15MaxSongID
+          rem are in Bank 15. Index mapping: song Bank1MinSongID → index 0, songs
+          rem (Bank1MinSongID+1)-28 → indices 1-23. Returns songPointer = 0 if song not
           rem in this bank
-          rem Bounds check: Only songs 4-28 are in Bank 1
+          rem Bounds check: Only songs Bank1MinSongID-28 are in Bank 1
           if temp1 > 28 then goto LSV1P_InvalidSong
-          rem Check if songs handled by other banks (0-3)
-          if temp1 < 4 then goto LSV1P_InvalidSong
-          rem Calculate compact index: songID - 4 (song 4 → 0)
-          temp2 = temp1 - 4
+          rem Check if songs handled by other banks (0-Bank15MaxSongID)
+          if temp1 < Bank1MinSongID then goto LSV1P_InvalidSong
+          rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
+          temp2 = temp1 - Bank1MinSongID
 LSV1P_Lookup
           rem Helper: Lookup Voice 1 pointer from tables
           rem

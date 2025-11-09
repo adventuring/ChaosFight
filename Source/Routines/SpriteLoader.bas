@@ -8,9 +8,16 @@
 ; MULTI-BANK SPRITE LOADING SYSTEM
 ;
 ; Loads character sprite data and colors from multiple banks
-; Supports up to 32 characters (0-31) across 4 banks
-; Current implementation: NumCharacters characters
-;   (0-MaxCharacter) in 2 banks
+; Supports up to 32 characters (0-31) across 4 character-art
+;   banks:
+;     Bank 2 → Characters 0-7 (Bernie through KnightGuy)
+;     Bank 3 → Characters 8-15 (Frooty through Shamone)
+;     Bank 4 → Characters 16-23 (expansion slots)
+;     Bank 5 → Characters 24-31 (expansion slots + MethHound)
+; Selection logic still respects NumCharacters=16
+;   (MaxCharacter=15) in Source/Common/Constants.bas, so the
+;   front-end only iterates characters 0-15 even though the
+;   loader keeps all four banks on speed dial.
 ; Special sprites: QuestionMark, CPU, No for special
 ;   selections.
 ;

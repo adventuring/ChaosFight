@@ -121,8 +121,8 @@ LoadRandomArena
           rem
           rem Constraints: None
           rem Select random arena (0-31) using proper RNG
-          temp1 = rand
           rem Get random value (0-255)
+          temp1 = rand
           temp1 = temp1 & 31
           if temp1 > MaxArenaID then LoadRandomArena
           goto LoadArenaByIndex

@@ -658,7 +658,7 @@ games, for which we want to give thanks:
 
 @itemize
 @item
-Ryan Witmer (Magical Fairy Force, Rob 'N' Banks, RealSports Curling)
+Ryan Witmer (Magical Fairy Force, Rob 'N' Banks, RealSports Curling; graphics from Magical Fairy Force and Ratcatcher)
 @item
 Lewis ``Muddyfunster'' Hill (EXO, Bernie and the Tower of Doom)
 @item
@@ -666,7 +666,7 @@ Blake ``SmittyB'' Smith (Ducks Away)
 @item
 Vladimir ``vhzc'' Zúñiga (Game of the Bear, Knight Guy, Ninjish Guy)
 @item
-Todd ``Revontulli'' Furmanski (Dragon's Cache, Harpy's Curse)
+Todd ``Revontulli'' Furmanski (Dragon's Cache, Harpy's Curse; graphics and music from Harpy's Curse and Dragon's Descent)
 @end itemize
 
 @itemize @bullet
@@ -676,6 +676,8 @@ Fred @dfn{batari} Quimby (batariBasic compiler)
 Mike Saarna (aka @dfn{RevEng}) (Titlescreen Kernel for batariBasic)
 @item
 Zephyr Pocock (Grizzards, Phantasia; for additional art and music)
+@item
+Lloyd Vivola ("O! Cascadia" - Cascadian anthem)
 @item
 Philip ``Splendidnut'' Blackman (batariBasic assistance)
 @item

@@ -16,25 +16,10 @@
 #include "Source/Generated/KnightGuy.bas"
 
           asm
-          ; rem Character art lookup routines for Bank 2 (characters 0-7
-          ; rem   and 16-23)
+          ;; Character art lookup routines for Bank 2 (characters 0-7)
 #include "Source/Routines/CharacterArtBank2.s"
 end
 
-          rem Titlescreen graphics and kernel (moved from Bank 9 to resolve overflow)
-          asm
-#include "Source/Generated/Art.AtariAge.s"
-end
-          asm
-#include "Source/Generated/Art.AtariAgeText.s"
-end
-          asm
-#include "Source/Generated/Art.ChaosFight.s"
-end
-          asm
-#include "Source/Generated/Art.Author.s"
-end
-
-          asm
-#include "Source/TitleScreen/asm/titlescreen.s"
-end
+          rem RoboTito stretch missile collision detection
+          rem Moved from Bank 9 for space optimization
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"

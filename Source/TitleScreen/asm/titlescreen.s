@@ -2,7 +2,6 @@
  include "TitleScreen/asm/layoutmacros.s"
  include "TitleScreen/titlescreen_layout.s"
 
-TitleScreenDrawScreen:
 titledrawscreen
 title_eat_overscan
  	;bB runs in overscan. Wait for the overscan to run out...
@@ -73,20 +72,11 @@ title_playfield
 
 	; Unused 48x1 kernels removed - only 48x2_1, 48x2_2, 48x2_3 are used
 
-	ifconst mk_48x2_1_on
-		include "TitleScreen/asm/48x2_1_kernel.s"
-	endif ;mk_48x2_1_on
-
-	ifconst mk_48x2_2_on
-		include "TitleScreen/asm/48x2_2_kernel.s"
-	endif ;mk_48x2_2_on
-
-	ifconst mk_48x2_3_on
-		include "TitleScreen/asm/48x2_3_kernel.s"
-	endif ;mk_48x2_3_on
-	ifconst mk_48x2_4_on
-		include "TitleScreen/asm/48x2_4_kernel.s"
-	endif ;mk_48x2_4_on
+	; Include all title screen kernels unconditionally
+	include "TitleScreen/asm/48x2_1_kernel.s"
+	include "TitleScreen/asm/48x2_2_kernel.s"
+	include "TitleScreen/asm/48x2_3_kernel.s"
+	include "TitleScreen/asm/48x2_4_kernel.s"
 
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 
@@ -164,3 +154,5 @@ TitleScreenFixPlayerHeights:
 	endif ;mk_player_on
 
 
+
+	RETURN

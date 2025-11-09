@@ -182,3 +182,11 @@ end
           
           rem Songs bank helper functions (require bank-local symbols)
 #include "Source/Routines/MusicBankHelpers.bas"
+
+          rem Title screen code (data is auto-included by batariBASIC)
+TitleScreenThunk
+          asm
+#include "Source/TitleScreen/asm/titlescreen.s"
+            jsr titledrawscreen
+end
+          return

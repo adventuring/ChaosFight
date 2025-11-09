@@ -10,21 +10,14 @@ MainLoop
           rem        TitleScreenMain bank9, CharacterSelectInputEntry bank6,
           rem        FallingAnimation1 bank12, ArenaSelect1 bank12,
           rem        GameMainLoop bank11, WinnerAnnouncement bank12,
-          rem        UpdateMusic bank1, titledrawscreen bank2
+          rem        UpdateMusic bank1, titledrawscreen bank9
           rem Constraints: Must remain colocated with MainLoopContinue/MainLoopDrawScreen
 
           rem Entry point for entire game loop
           if switchreset then gosub WarmStart bank13 : goto MainLoopContinue
 
-          rem Optimized: Replace on...gosub with if-else for space
-          if gameMode = 0 then gosub MainLoopModePublisherPrelude
-          if gameMode = 1 then gosub MainLoopModeAuthorPrelude
-          if gameMode = 2 then gosub MainLoopModeTitleScreen
-          if gameMode = 3 then gosub MainLoopModeCharacterSelect
-          if gameMode = 4 then gosub MainLoopModeFallingAnimation
-          if gameMode = 5 then gosub MainLoopModeArenaSelect
-          if gameMode = 6 then gosub MainLoopModeGameMain
-          if gameMode = 7 then gosub MainLoopModeWinnerAnnouncement
+          rem Optimized: Use on/gosub for space efficiency
+          on gameMode gosub MainLoopModePublisherPrelude MainLoopModeAuthorPrelude MainLoopModeTitleScreen MainLoopModeCharacterSelect MainLoopModeFallingAnimation MainLoopModeArenaSelect MainLoopModeGameMain MainLoopModeWinnerAnnouncement
           goto MainLoopContinue
 
 MainLoopModePublisherPrelude
@@ -81,5 +74,6 @@ MainLoopDrawScreen
           rem Notes: Modes 3-6 funnel through mode-specific draw logic
 
           rem Titlescreen graphics and kernel reside in bank9
-          if gameMode < 3 then gosub titledrawscreen bank2 else drawscreen
+          if gameMode < 3 then gosub TitleScreenThunk bank1
+          if gameMode >= 3 then drawscreen
           goto MainLoop

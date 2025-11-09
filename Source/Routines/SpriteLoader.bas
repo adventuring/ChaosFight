@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/SpriteLoader.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           const CPUSprite_length = 16
           const NoSprite_length = 16

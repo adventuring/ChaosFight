@@ -417,7 +417,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas: Source/Platform/SECAM.bas \
 	cpp -P -I. -ISource -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 # Bank file dependencies - each bank explicitly depends on the files it includes
-Source/Banks/Bank1.bas: Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.BRP.s
+Source/Banks/Bank1.bas:
 
 Source/Banks/Bank2.bas: Source/Generated/Bernie.bas Source/Generated/Curler.bas Source/Generated/DragonOfStorms.bas Source/Generated/ZoeRyen.bas Source/Generated/FatTony.bas Source/Generated/Megax.bas Source/Generated/Harpy.bas Source/Generated/KnightGuy.bas
 

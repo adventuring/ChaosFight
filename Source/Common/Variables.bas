@@ -409,17 +409,9 @@
           rem Player data arrays using batariBasic array syntax
           dim playerX = var0
           rem playerX[0-3] = player1X, player2X, player3X, player4X
-          dim player1X = var0
-          dim player2X = var1
-          dim player3X = var2
-          dim player4X = var3
-          
+
           dim playerY = var4
           rem playerY[0-3] = player1Y, player2Y, player3Y, player4Y
-          dim player1Y = var4
-          dim player2Y = var5
-          dim player3Y = var6
-          dim player4Y = var7
           
           rem playerState[0-3] = player1State, player2State,
           rem   player3State, player4State
@@ -434,35 +426,19 @@
           rem   Bit 3: Recovery (hitstun)
           dim playerState = var8
           rem   Bits 4-7: Animation state (0-15)
-          dim player1State = var8
-          dim player2State = var9
-          dim player3State = var10
-          dim player4State = var11
           
           rem playerHealth[0-3] = player1Health, player2Health,
           dim playerHealth = var12
           rem   player3Health, player4Health
-          dim player1Health = var12
-          dim player2Health = var13
-          dim player3Health = var14
-          dim player4Health = var15
 
           rem playerRecoveryFrames[0-3] - Recovery/hitstun frame
           dim playerRecoveryFrames = var16
           rem   counters
-          dim player1RecoveryFrames = var16
-          dim player2RecoveryFrames = var17
-          dim player3RecoveryFrames = var18
-          dim player4RecoveryFrames = var19
           
           rem playerVelocityX[0-3] = 8.8 fixed-point X velocity
           rem High byte (integer part) in zero-page for fast access
           dim playerVelocityX = var20
           rem   every frame
-          dim player1VelocityX = var20
-          dim player2VelocityX = var21
-          dim player3VelocityX = var22
-          dim player4VelocityX = var23
           dim playerVelocityXL = var24
           rem High bytes (integer part) in zero-page var20-var23
           rem Low bytes (fractional part) in zero-page var24-var27

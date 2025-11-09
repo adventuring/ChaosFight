@@ -28,14 +28,14 @@ CRTSMC_IsRoboTito
           if temp5 then CRTSMC_NextPlayer
           let playerStateTemp_W = playerState[temp1]
           rem Mask bits 4-7 (animation state)
-          let playerStateTemp_W = playerStateTemp_R & 240
+          let playerStateTemp_W = playerStateTemp_W & MaskPlayerStateAnimation
           rem Shift right by 4 to get animation state
-          let playerStateTemp_W = playerStateTemp_R / 16
-          if playerStateTemp_R = 10 then CRTSMC_IsStretching
+          let playerStateTemp_W = playerStateTemp_W / 16
+          if playerStateTemp_W = 10 then CRTSMC_IsStretching
           goto CRTSMC_NextPlayer
 
 CRTSMC_IsStretching
-          rem Not in stretching animation, no stretch missile
+          rem In stretching animation, check for stretch missile
           
           temp2 = missileStretchHeight_R[temp1]
           rem Check if stretch missile has height > 0
@@ -124,25 +124,22 @@ HandleRoboTitoStretchMissileHit
           rem Vanish stretch missile (set height to 0)
           
           rem Set RoboTito to free fall
-          let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           rem Set jumping flag (bit 2) to enable gravity
           let playerVelocityY[temp1] = TerminalVelocity
           rem Set terminal velocity downward
           let playerVelocityYL[temp1] = 0
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
+          playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
           rem Set falling animation (ActionFalling = 11)
           rem   ActionFalling
           rem MaskPlayerStateFlags masks bits 0-3, set bits 4-7 to
           
-          rem Optimized: Clear stretch permission flag with formula
+          rem Clear stretch permission flag for this player
           temp2 = roboTitoCanStretch_R
           temp3 = 1
-          for temp4 = 0 to temp1 - 1
-            temp3 = temp3 * 2
-          next
+          if temp1 > 0 then for temp4 = 1 to temp1 : temp3 = temp3 * 2 : next
           temp2 = temp2 & (255 - temp3)
           rem Clear the appropriate bit
-          rem 251 = $FB = clear bit 2
           let roboTitoCanStretch_W = temp2
           rem Store cleared permission flags
           

@@ -10,7 +10,7 @@ MainLoop
           rem        TitleScreenMain bank9, CharacterSelectInputEntry bank6,
           rem        FallingAnimation1 bank12, ArenaSelect1 bank12,
           rem        GameMainLoop bank11, WinnerAnnouncement bank12,
-          rem        UpdateMusic bank1, titledrawscreen bank12
+          rem        UpdateMusic bank1, titledrawscreen bank9
           rem Constraints: Must remain colocated with MainLoopContinue/MainLoopDrawScreen
 
           rem Entry point for entire game loop

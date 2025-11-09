@@ -22,8 +22,6 @@
           rem AnimationSystem.bas moved to Bank 11 (character
           rem animations)
           rem PlayerRendering.bas moved to Bank 10 (sprite rendering)
-#include "Source/Routines/PlayerPhysicsGravity.bas"
-#include "Source/Routines/PlayerPhysics.bas"
-#include "Source/Routines/SpecialMovement.bas"
 #include "Source/Routines/PlayerLockedHelpers.bas"
+#include "Source/Routines/CharacterAttacks.bas"
 

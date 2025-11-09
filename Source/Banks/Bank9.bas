@@ -17,11 +17,5 @@
 #include "Source/TitleScreen/asm/titlescreen.s"
 end
 
-          rem Core Title Screen assets (graphics data, kernel, and render function)
 #include "Source/Routines/TitleScreenRender.bas"
 
-#include "Source/Routines/BeginTitleScreen.bas"
-#include "Source/Routines/TitleScreenMain.bas"
-#include "Source/Routines/TitleCharacterParade.bas"
-
-          rem these may be relocated anywhere, if needed.

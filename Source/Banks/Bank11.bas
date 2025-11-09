@@ -12,5 +12,8 @@
 #include "Source/Routines/AnimationSystem.bas"
 #include "Source/Data/PlayerColorTables.bas"
 #include "Source/Routines/PerformMeleeAttack.bas"
+#include "Source/Routines/PlayerPhysicsGravity.bas"
+#include "Source/Routines/PlayerPhysics.bas"
+#include "Source/Routines/SpecialMovement.bas"
 
 

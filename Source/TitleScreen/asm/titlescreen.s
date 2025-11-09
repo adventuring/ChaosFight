@@ -32,9 +32,7 @@ title_do_vertical_sync
 titleframe = missile0x
         inc titleframe ; increment the frame counter
 
-	ifconst .title_vblank
-	jsr .title_vblank
-	endif
+	; Removed unused .title_vblank conditional
 
 title_vblank_loop
 	lda INTIM
@@ -146,21 +144,7 @@ TitleScreenFixPlayerHeights:
 	;	include "TitleScreen/48x2_4_image.s"
 	; endif
 
-	ifconst mk_player_on
-		include "TitleScreen/player_image.s"
-	endif
-
-	ifconst mk_score_on
-		include "TitleScreen/score_image.s"
-	endif
-
-	ifconst mk_gameselect_on
-		include "TitleScreen/gameselect_image.s"
-	endif
-
-	ifconst mk_player_on
-		include "TitleScreen/asm/player_kernel.s"
-	endif ;mk_player_on
+	; Removed unused player, score, and gameselect minikernels
 
 
 

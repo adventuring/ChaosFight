@@ -17,8 +17,9 @@
 	; Title screen: Shows only 48x2_3 (ChaosFight) - window=42
 	; Each screen activates only its minikernel by setting height/window = 0 for others
 	; OR: Use conditional layout based on GameMode variable
-	draw_48x2_1
-	draw_48x2_2
+	; Removed draw_48x2_1 and draw_48x2_2 - only ChaosFight title screen is used
+	; draw_48x2_1
+	; draw_48x2_2
 	draw_48x2_3
  ENDM
 

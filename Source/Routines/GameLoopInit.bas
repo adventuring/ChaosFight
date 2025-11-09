@@ -1,8 +1,6 @@
           rem ChaosFight - Source/Routines/GameLoopInit.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           
-#include "Source/Routines/PlayerLockedHelpers.bas"
-          
           rem
           rem Game Loop Initialization
           rem Initializes all game state for the main gameplay loop.

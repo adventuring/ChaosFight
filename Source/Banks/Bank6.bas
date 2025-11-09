@@ -3,9 +3,8 @@
 
           bank 6
           
+#include "Source/Data/SpecialSprites.bas"
 #include "Source/Routines/CharacterData.bas"
 #include "Source/Routines/CharacterSelectMain.bas"
-#include "Source/Routines/PlayerElimination.bas"
 #include "Source/Routines/CharacterSelectRender.bas"
-#include "Source/Routines/MainLoop.bas"
           

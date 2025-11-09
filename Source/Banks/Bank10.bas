@@ -7,5 +7,6 @@
 #include "Source/Routines/SpriteLoader.bas"
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 #include "Source/Routines/PlayerRendering.bas"
+#include "Source/Routines/PlayerElimination.bas"
 #include "Source/Routines/CharacterAttacksDispatch.bas"
 

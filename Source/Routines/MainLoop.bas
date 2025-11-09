@@ -7,7 +7,7 @@ MainLoop
           rem Outputs: Dispatches to mode-specific handlers
           rem Mutates: None; dispatcher only
           rem Calls: WarmStart bank13, PublisherPreludeMain bank14, AuthorPrelude bank14,
-          rem        TitleScreenMain bank12, CharacterSelectInputEntry bank6,
+          rem        TitleScreenMain bank9, CharacterSelectInputEntry bank6,
           rem        FallingAnimation1 bank12, ArenaSelect1 bank12,
           rem        GameMainLoop bank11, WinnerAnnouncement bank12,
           rem        UpdateMusic bank1, titledrawscreen bank12
@@ -30,7 +30,7 @@ MainLoopModeAuthorPrelude
 
 MainLoopModeTitleScreen
           rem tail call
-          goto TitleScreenMain bank12
+          goto TitleScreenMain bank9
 
 MainLoopModeCharacterSelect
           rem tail call
@@ -70,10 +70,10 @@ MainLoopDrawScreen
           rem Inputs: gameMode (global 0-7)
           rem Outputs: Screen rendered via titledrawscreen or drawscreen
           rem Mutates: TIA registers, playfield, sprite state
-          rem Calls: titledrawscreen bank12 (title screens); colocated with MainLoop
+          rem Calls: titledrawscreen bank9 (title screens); colocated with MainLoop
           rem Notes: Modes 3-6 funnel through mode-specific draw logic
 
-          rem Titlescreen graphics and kernel reside in bank12
-          if gameMode < 3 then gosub DrawTitleScreen bank12
+          rem Titlescreen graphics and kernel reside in bank9
+          if gameMode < 3 then gosub DrawTitleScreen bank9
           if gameMode >= 3 then drawscreen
           goto MainLoop

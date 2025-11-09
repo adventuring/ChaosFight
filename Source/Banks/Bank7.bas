@@ -10,4 +10,5 @@
 #include "Source/Routines/MissileSystem.bas"
 #include "Source/Routines/Combat.bas"
 #include "Source/Routines/ConsoleHandling.bas"
+#include "Source/Routines/CharacterAttacks.bas"
 

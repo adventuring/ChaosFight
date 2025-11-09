@@ -7,15 +7,8 @@
 
           bank 12
 
-          rem Titlescreen assets and kernel
-          asm
-#include "Source/Generated/Art.AtariAge.s"
-#include "Source/Generated/Art.AtariAgeText.s"
-#include "Source/Generated/Art.Author.s"
-#include "Source/Generated/Art.ChaosFight.s"
-#include "Source/TitleScreen/asm/titlescreen.s"
-end
- 
+          rem Titlescreen assets are in Bank 9 - this bank contains only logic
+
 #include "Source/Routines/CharacterData.bas"
 #include "Source/Routines/CharacterCycleUtils.bas"
 #include "Source/Routines/BeginFallingAnimation.bas"
@@ -29,6 +22,7 @@ end
 #include "Source/Routines/DisplayWinScreen.bas"
 #include "Source/Common/CharacterDefinitions.bas"
 #include "Source/Routines/TitlescreenWindowControl.bas"
+#include "Source/Routines/PlayerElimination.bas"
 #include "Source/Data/CharacterThemeSongIndices.bas"
 #include "Source/Data/CharacterDataTables.bas"
 #include "Source/Data/CharacterPhysicsTables.bas"
@@ -37,7 +31,3 @@ end
 #include "Source/Routines/PublisherPrelude.bas"
 #include "Source/Routines/BeginAuthorPrelude.bas"
 #include "Source/Routines/AuthorPrelude.bas"
-#include "Source/Routines/BeginTitleScreen.bas"
-#include "Source/Routines/TitleScreenMain.bas"
-#include "Source/Routines/TitleScreenRender.bas"
-#include "Source/Routines/TitleCharacterParade.bas"

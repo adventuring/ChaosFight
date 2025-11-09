@@ -77,8 +77,7 @@ CurlerAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (ground-based)
-          gosub PerformRangedAttack bank9
-          return
+          goto PerformRangedAttack bank9
 
 DragonOfStormsAttack
           rem Dragon of Storms (Character 2) - Ranged attack (fireballs that arc
@@ -96,8 +95,7 @@ DragonOfStormsAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (fireballs that arc downwards)
-          gosub PerformRangedAttack bank9
-          return
+          goto PerformRangedAttack bank9
 
 ZoeRyenAttack
           rem ZoeRyen (Character 3) - Ranged attack
@@ -114,8 +112,7 @@ ZoeRyenAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack
-          gosub PerformRangedAttack bank9
-          return
+          goto PerformRangedAttack bank9
 
 FatTonyAttack
           rem FatTony (Character 4) - Ranged attack (magic ring lasers)
@@ -132,8 +129,7 @@ FatTonyAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (magic ring lasers)
-          gosub PerformRangedAttack bank9
-          return
+          goto PerformRangedAttack bank9
 
 MegaxAttack
           rem Megax (Character 5) - Melee attack (fire breath visual -
@@ -151,8 +147,7 @@ MegaxAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (fire breath visual - missile stays stationary)
-          gosub PerformMeleeAttack bank9
-          return
+          goto PerformMeleeAttack bank9
 
 HarpyAttack
           rem
@@ -284,8 +279,7 @@ KnightGuyAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (sword visual - missile moves away then returns)
-          gosub PerformMeleeAttack bank9
-          return
+          goto PerformMeleeAttack bank9
 
 FrootyAttack
           rem Frooty (Character 8) - Ranged attack (magical sparkles
@@ -303,8 +297,7 @@ FrootyAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (magical sparkles from lollipop)
-          gosub PerformRangedAttack bank9
-          return
+          goto PerformRangedAttack bank9
 
 NefertemAttack
           rem Nefertem (Character 9) - Melee attack
@@ -321,8 +314,7 @@ NefertemAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
-          gosub PerformMeleeAttack bank9
-          return
+          goto PerformMeleeAttack bank9
 
 NinjishGuyAttack
           rem NinjishGuy (Character 10) - Ranged attack (small bullet)
@@ -339,8 +331,7 @@ NinjishGuyAttack
           rem
           rem Constraints: Tail call to PerformRangedAttack
           rem Ranged attack (small bullet)
-          gosub PerformRangedAttack bank9
-          return
+          goto PerformRangedAttack bank9
 
 PorkChopAttack
           rem PorkChop (Character 11) - Melee attack
@@ -357,8 +348,7 @@ PorkChopAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
-          gosub PerformMeleeAttack bank9
-          return
+          goto PerformMeleeAttack bank9
 
 RadishGoblinAttack
           rem RadishGoblin (Character 12) - Melee attack
@@ -375,8 +365,7 @@ RadishGoblinAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
-          gosub PerformMeleeAttack bank9
-          return
+          goto PerformMeleeAttack bank9
 
 RoboTitoAttack
           rem RoboTito (Character 13) - Melee attack
@@ -393,8 +382,7 @@ RoboTitoAttack
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack
-          gosub PerformMeleeAttack bank9
-          return
+          goto PerformMeleeAttack bank9
 
 UrsuloAttack
           rem Ursulo (Character 14) - Melee attack (claw swipe)

@@ -795,11 +795,17 @@ PerLineFlashing
 ; Constraints: Must be colocated with LoadCharacterColors
 ; Use alternating bright/dim player index colors by frame
           end
-          if frame & 8 then PlayerIndexColorsDim
+          if frame & 8 then goto PlayerIndexColors
           asm
-;   bit
+; Use character color when frame bit 3 is clear
           end
-          goto PlayerIndexColors
+#ifdef TV_NTSC
+          temp6 = CharacterColorsNTSC[temp1]
+#endif
+#ifdef TV_PAL
+          temp6 = CharacterColorsPAL[temp1]
+#endif
+          goto SetColor
           
 PlayerIndexColors
           asm
@@ -920,19 +926,24 @@ HurtColor
           end
 #ifdef TV_SECAM
           temp6 = ColMagenta(10)
-          asm
-; SECAM hurt is always magenta
-          end
           goto SetColor
 #else
           asm
-; Dimmed version of normal color: use dim player index color
+; Dimmed version of normal color
+; First get the normal color, then dim it
           end
-          goto PlayerIndexColorsDim
+          if (systemFlags & SystemFlagColorBWOverride) then goto PlayerIndexColorsDim
           asm
-;   as fallback
+; NTSC/PAL: dim the character color
           end
+#ifdef TV_NTSC
+          temp6 = CharacterColorsNTSC[temp1] - 6
 #endif
+#ifdef TV_PAL
+          temp6 = CharacterColorsPAL[temp1] - 6
+#endif
+          if temp6 < 0 then temp6 = 0
+          goto SetColor
           
 SetColor
           asm

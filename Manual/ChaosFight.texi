@@ -666,7 +666,7 @@ Blake ``SmittyB'' Smith (Ducks Away)
 @item
 Vladimir ``vhzc'' Zúñiga (Game of the Bear, Knight Guy, Ninjish Guy)
 @item
-Todd ``Revontulli'' Furmanski (Dragon's Cache, Dragon's Havoc, Dragon's Descent; graphics and music from Dragon's Descent)
+Todd ``Revontuli'' Furmanski (Dragon's Cache, Dragon's Havoc, Dragon's Descent; graphics and music from Dragon's Descent)
 @end itemize
 
 @itemize @bullet

@@ -18,6 +18,5 @@
 #include "Source/Routines/BeginAttractMode.bas"
 #include "Source/Routines/AttractMode.bas"
 #include "Source/Routines/MovementSystem.bas"
-#include "Source/Routines/PlayerInput.bas"
 #include "Source/Routines/CharacterControlsJump.bas"
 

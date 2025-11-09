@@ -73,8 +73,8 @@ GameMainLoop
           gosub UpdateCharacterAnimations bank11 : 
           rem Update animation system (10fps character animation) (in Bank 11)
           
-          gosub UpdatePlayerMovement bank13 : 
-          rem Update movement system (full frame rate movement) (in Bank 13)
+          gosub UpdatePlayerMovement bank6 :
+          rem Update movement system (full frame rate movement) (moved to Bank 6)
 
           gosub PhysicsApplyGravity bank8 : 
           rem Apply gravity and physics (in Bank 8)

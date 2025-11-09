@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterControls.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 DispatchCharacterJump
           rem Dispatches character-specific jump handlers via ON...GOTO

@@ -449,3 +449,9 @@
           rem These are documented here for reference but cannot be
           rem   consted
 
+          rem SCREEN LAYOUT CONSTANTS
+          const GameScreenPfRowHeight = 16
+          const GameScreenPfRows = 8
+          const AdminScreenPfRowHeight = 8
+          const AdminScreenPfRows = 32
+

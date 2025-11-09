@@ -65,7 +65,7 @@ end
 #include "Source/Generated/Art.ChaosFight.s"
 end
           asm
-#include "Source/Generated/Art.BRP.s"
+#include "Source/Generated/Art.Author.s"
 end
           
           asm

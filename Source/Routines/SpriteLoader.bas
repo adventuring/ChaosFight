@@ -814,7 +814,7 @@ PlayerIndexColors
 ;
 ; Called Routines: None (dispatcher only)
 ; Constraints: Must be colocated with LoadCharacterColors, SetColor
-; Solid player index colors (bright)
+; Solid player index colors (bright, luminance 12)
 ; Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
 ;   4=Turquoise (SECAM maps to Green)
           end
@@ -827,28 +827,28 @@ PlayerIndexColorsPlayer0
           asm
 ; Player 1: Indigo (SECAM maps to Blue)
           end
-          temp6 = ColIndigo(14)
+          temp6 = ColIndigo(12)
           goto SetColor
 
 PlayerIndexColorsPlayer1
           asm
 ; Player 2: Red
           end
-          temp6 = ColRed(14)
+          temp6 = ColRed(12)
           goto SetColor
 
 PlayerIndexColorsPlayer2
           asm
 ; Player 3: Yellow (SECAM maps to Yellow)
           end
-          temp6 = ColYellow(14)
+          temp6 = ColYellow(12)
           goto SetColor
 
 PlayerIndexColorsPlayer3
           asm
 ; Player 4: Turquoise (SECAM maps to Green)
           end
-          temp6 = ColTurquoise(14)
+          temp6 = ColTurquoise(12)
           goto SetColor
 
 PlayerIndexColorsDim
@@ -867,7 +867,7 @@ PlayerIndexColorsDim
 ; Constraints: Must be colocated with LoadCharacterColors,
 ; SetColor
 ; Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
-;   4=Turquoise (SECAM maps to Green)
+;   4=Turquoise (SECAM maps to Green, dimmed to luminance 6)
           end
           if !temp3 then goto PlayerIndexColorsDimPlayer0
           if temp3 = 1 then goto PlayerIndexColorsDimPlayer1

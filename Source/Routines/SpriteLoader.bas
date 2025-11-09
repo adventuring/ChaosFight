@@ -698,20 +698,14 @@ LoadPlayer3Sprite
 
 LoadCharacterColors
           asm
-; Load character color based on TV standard, B&W, hurt, and
-;   flashing states
+; Load character color based on TV standard and hurt state
 ;
-; Input: temp1 = character index (0-15)
+; Input: temp1 = character index (0-15, used only on NTSC/PAL)
 ;        temp2 = hurt state (0/1)
 ;        temp3 = player number (0-3)
-;        temp4 = flashing state (0/1)
-;        temp5 = flashing mode (0=per-line, 1=player-index)
-;        frame (global) = frame counter for flashing
-;        systemFlags (global) = system flags including B&W
-;        override
 ;
 ; Output: Appropriate COLUP0/COLUP1/COLUP2/COLUP3 updated
-; Note: Colors are per-character on NTSC/PAL, per-player on B&W/SECAM
+; Note: Colors are per-character on NTSC/PAL, per-player on SECAM
 ;
 ; Mutates: temp6 (color calculation, internal use)
 ;           COLUP0, COLUP1, COLUP2, COLUP3 (TIA registers)
@@ -719,9 +713,7 @@ LoadCharacterColors
 ; Called Routines: None (all logic inline)
 ;
 ; Constraints: Must be colocated with NormalColor,
-; FlashingColor,
-;              PerLineFlashing, PlayerIndexColors,
-;              PlayerIndexColorsDim,
+;              PlayerIndexColors, PlayerIndexColorsDim,
 ;              HurtColor, SetColor (all called via goto)
 ; WARNING: temp6 is mutated during execution. Do not use
 ; temp6
@@ -730,11 +722,6 @@ LoadCharacterColors
           if temp2 then goto HurtColor
           asm
 ; Highest priority: hurt state
-          end
-
-          if temp4 then goto FlashingColor
-          asm
-; Next priority: flashing state
           end
 
 NormalColor
@@ -753,9 +740,7 @@ NormalColor
 ; Called Routines: None (dispatcher only)
 ;
 ; Constraints: Must be colocated with LoadCharacterColors
-; Determine effective B&W override locally; if enabled, use
           end
-          if (systemFlags & SystemFlagColorBWOverride) then PlayerIndexColors
 #ifdef TV_SECAM
           PlayerIndexColors
 #else
@@ -771,49 +756,6 @@ NormalColor
 #endif
           goto SetColor
 
-FlashingColor
-          asm
-; Flashing mode selection
-;
-; Input: temp5 = flashing mode (0=per-line, 1=player-index)
-;        temp1 = character index (0-15)
-;        temp3 = player number (0-3)
-;        systemFlags (global) = B&W override flag
-          end
-          if temp5 = 0 then PerLineFlashing
-          PlayerIndexColors
-          
-PerLineFlashing
-          asm
-; Frame-based flashing (not per-line - players use solid
-;   colors)
-;
-; Input: frame (global) = frame counter for flashing
-;        temp3 = player number (0-3, from
-;        LoadCharacterColors)
-;
-; Output: Dispatches to PlayerIndexColorsDim or
-; PlayerIndexColors
-;
-; Mutates: None (dispatcher only)
-;
-; Called Routines: None (dispatcher only)
-;
-; Constraints: Must be colocated with LoadCharacterColors
-; Use alternating bright/dim player index colors by frame
-          end
-          if frame & 8 then PlayerIndexColors
-          asm
-; Use character color when frame bit 3 is clear
-          end
-#ifdef TV_NTSC
-          let temp6 = CharacterColorsNTSC[temp1]
-#endif
-#ifdef TV_PAL
-          let temp6 = CharacterColorsPAL[temp1]
-#endif
-          goto SetColor
-          
 PlayerIndexColors
           asm
 ; Calculate bright player index colors
@@ -932,25 +874,10 @@ HurtColor
 ; SetColor
           end
 #ifdef TV_SECAM
-          let temp6 = ColMagenta(10)
+          let temp6 = ColMagenta(14)
           goto SetColor
 #else
-          asm
-; Dimmed version of normal color
-; First get the normal color, then dim it
-          end
-          if (systemFlags & SystemFlagColorBWOverride) then PlayerIndexColorsDim
-          asm
-; NTSC/PAL: dim the character color
-          end
-#ifdef TV_NTSC
-          let temp6 = CharacterColorsNTSC[temp1] - 6
-#endif
-#ifdef TV_PAL
-          let temp6 = CharacterColorsPAL[temp1] - 6
-#endif
-          if temp6 < 0 then temp6 = 0
-          goto SetColor
+          PlayerIndexColorsDim
 #endif
 
 SetColor

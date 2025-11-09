@@ -554,7 +554,9 @@ HandleExecuteEnd
           temp1 = playerCharacter[currentPlayer]
           if temp1 >= 32 then return
           if temp1 = 1 then goto ExecuteNoOp
-          if temp1 = 4 || temp1 = 11 then goto ExecuteToRecovery
+          rem Use skip-over pattern to avoid complex || operator issues
+          if temp1 = 4 then goto ExecuteToRecovery
+          if temp1 = 11 then goto ExecuteToRecovery
           if temp1 = 6 then goto HarpyExecute
           
 ExecuteToIdle

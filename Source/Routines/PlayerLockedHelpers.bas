@@ -27,7 +27,9 @@ GetPlayerLocked
           temp2 = temp3 & 3
 
           rem Invalid index check (temp1 should be 0-3)
-          if temp1 < 0 || temp1 > 3 then temp2 = 0
+          rem Restructure to avoid forward jumps that cause bank address issues
+          if temp1 < 0 then temp2 = 0 : return
+          if temp1 > 3 then temp2 = 0 : return
           return
 
 SetPlayerLocked
@@ -57,7 +59,9 @@ SetPlayerLocked
           rem Constraints: None
 
           rem Invalid index check (temp1 should be 0-3)
-          if temp1 < 0 || temp1 > 3 then return
+          rem Restructure to avoid forward jumps that cause bank address issues
+          if temp1 < 0 then return
+          if temp1 > 3 then return
 
           temp3 = playerLocked
           rem Get current playerLocked value

@@ -198,26 +198,14 @@ HarpyAttack
           rem Set diagonal velocity at 45° angle (4 pixels/frame
           rem   horizontal, 4 pixels/frame vertical)
           rem Horizontal: 4 pixels/frame in facing direction
-          if temp2 = 0 then HarpySetLeftVelocity
-          rem Facing right: positive X velocity
-          temp4 = 4
-          goto HarpySetVerticalVelocity
+          rem Use arithmetic to avoid conditional jumps: 4 - (4 * 2 * temp2)
+          rem When temp2=0 (left): 4 - 0 = 4, but we want 252, so adjust
+          rem When temp2=1 (right): 4 - 8 = -4 (252 in unsigned)
+          temp4 = 4 - (8 * temp2)
 HarpySetLeftVelocity
-          rem Set left-facing velocity for Harpy swoop
-          rem
-          rem Input: None (called from HarpyAttack)
-          rem
-          rem Output: temp4 set to 252 (-4 in signed 8-bit)
-          rem
-          rem Mutates: temp4 (temp4 set to 252)
-          rem
-          rem Called Routines: None
-          rem
+          rem Label for documentation - velocity already set above
           rem Constraints: Must be colocated with HarpyAttack,
           rem HarpySetVerticalVelocity
-          rem Facing left: negative X velocity (252 = -4 in signed
-          rem   8-bit)
-          temp4 = 252
 HarpySetVerticalVelocity
           rem Set vertical velocity for Harpy swoop
           rem

@@ -25,9 +25,13 @@ end
 #include "Source/Routines/ArenaSelect.bas"
 #include "Source/Routines/BeginWinnerAnnouncement.bas"
 #include "Source/Routines/WinnerAnnouncement.bas"
+#include "Source/Data/WinnerScreen.bas"
 #include "Source/Routines/DisplayWinScreen.bas"
 #include "Source/Common/CharacterDefinitions.bas"
 #include "Source/Routines/TitlescreenWindowControl.bas"
+#include "Source/Data/CharacterThemeSongIndices.bas"
+#include "Source/Data/CharacterDataTables.bas"
+#include "Source/Data/CharacterPhysicsTables.bas"
 
 #include "Source/Routines/BeginPublisherPrelude.bas"
 #include "Source/Routines/PublisherPrelude.bas"

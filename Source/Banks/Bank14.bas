@@ -23,4 +23,10 @@
 #include "Source/Routines/ArenaReloadUtils.bas"
 #include "Source/Routines/SpritePointerInit.bas"
 #include "Source/Routines/ColdStart.bas"
+#include "Source/Routines/BeginPublisherPrelude.bas"
+#include "Source/Routines/PublisherPrelude.bas"
+#include "Source/Routines/BeginAuthorPrelude.bas"
+#include "Source/Routines/AuthorPrelude.bas"
+#include "Source/Routines/BeginAttractMode.bas"
+#include "Source/Routines/AttractMode.bas"
 

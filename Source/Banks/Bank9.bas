@@ -17,23 +17,11 @@
 #include "Source/TitleScreen/asm/titlescreen.s"
 end
 
-          rem These are still Title Screen routines and must be here too
-#include "Source/Routines/BeginPublisherPrelude.bas"
-#include "Source/Routines/PublisherPrelude.bas"
-#include "Source/Routines/BeginAuthorPrelude.bas"
-#include "Source/Routines/AuthorPrelude.bas"
+          rem Core Title Screen routines (graphics access)
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/TitleScreenMain.bas"
 #include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/TitleCharacterParade.bas"
 
-#include "Source/Data/WinnerScreen.bas"
-#include "Source/Data/CharacterThemeSongIndices.bas"
-#include "Source/Data/CharacterDataTables.bas"
-#include "Source/Data/CharacterPhysicsTables.bas"
-#include "Source/Routines/DisplayWinScreen.bas"
-#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 
           rem these may be relocated anywhere, if needed.
-#include "Source/Routines/BeginAttractMode.bas"
-#include "Source/Routines/AttractMode.bas"

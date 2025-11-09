@@ -6,7 +6,7 @@ MainLoop
           rem Inputs: switchreset (hardware), gameMode (global 0-7)
           rem Outputs: Dispatches to mode-specific handlers
           rem Mutates: None; dispatcher only
-          rem Calls: WarmStart bank13, PublisherPreludeMain bank12, AuthorPrelude bank12,
+          rem Calls: WarmStart bank13, PublisherPreludeMain bank14, AuthorPrelude bank14,
           rem        TitleScreenMain bank12, CharacterSelectInputEntry bank6,
           rem        FallingAnimation1 bank12, ArenaSelect1 bank12,
           rem        GameMainLoop bank11, WinnerAnnouncement bank12,
@@ -22,11 +22,11 @@ MainLoop
 
 MainLoopModePublisherPrelude
           rem tail call
-          goto PublisherPreludeMain bank12
+          goto PublisherPreludeMain bank14
 
 MainLoopModeAuthorPrelude
           rem tail call
-          goto AuthorPrelude bank12
+          goto AuthorPrelude bank14
 
 MainLoopModeTitleScreen
           rem tail call

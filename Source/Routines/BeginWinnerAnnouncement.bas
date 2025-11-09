@@ -1,7 +1,7 @@
 BeginWinnerAnnouncement
           rem
           rem ChaosFight - Source/Routines/BeginWinnerAnnouncement.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem BEGIN WINNER ANNOUNCEMENT - Setup Routine
           rem Setup routine for Winner Announcement mode. Sets initial
           rem   state only.
@@ -58,15 +58,15 @@ BeginWinnerAnnouncement
           let displayRank_W = 0
           rem   DisplayWinScreen if implemented)
           
-          let temp1 = winnerPlayerIndex_R
+          temp1 = winnerPlayerIndex_R
           rem Get winner’s character index
-          if temp1 = 0 then let temp2 = PlayerCharacter[0]
-          if temp1 = 1 then let temp2 = PlayerCharacter[1]
-          if temp1 = 2 then let temp2 = PlayerCharacter[2]
-          if temp1 = 3 then let temp2 = PlayerCharacter[3]
+          if temp1 = 0 then temp2 = PlayerCharacter[0]
+          if temp1 = 1 then temp2 = PlayerCharacter[1]
+          if temp1 = 2 then temp2 = PlayerCharacter[2]
+          if temp1 = 3 then temp2 = PlayerCharacter[3]
           
           rem Look up full song ID from mapping table (table contains
-          let temp1 = CharacterThemeSongIndices[temp2]
+          temp1 = CharacterThemeSongIndices[temp2]
           rem   song ID constants)
           
           rem Start winner’s character theme song

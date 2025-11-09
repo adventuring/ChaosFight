@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/AuthorPrelude.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
 AuthorPrelude
           rem Displays the Interworldly author logo/artwork with music.

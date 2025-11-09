@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/Combat.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
 ApplyDamage
           rem Apply damage from attacker to defender
@@ -40,16 +40,16 @@ ApplyDamage
           rem Constraints: Must be colocated with PlayerDies,
           rem PlayDamageSound (called via goto)
           
-          let temp1 = playerDamage_R[attackerID] - playerDamage_R[defenderID]
+          temp1 = playerDamage_R[attackerID] - playerDamage_R[defenderID]
           rem Calculate damage (considering defender state)
           rem Minimum damage
-          if temp1 < 1 then let temp1 = 1
+          if temp1 < 1 then temp1 = 1
 
-          let temp2 = playerHealth[defenderID]
+          temp2 = playerHealth[defenderID]
           rem Check if player will die from this damage
-          let temp3 = 0
+          temp3 = 0
           rem Will die
-          if temp2 < temp1 then let temp3 = 1
+          if temp2 < temp1 then temp3 = 1
           
           rem If player will die, instantly vanish (eliminate)
           
@@ -60,13 +60,13 @@ ApplyDamage
           
           let currentPlayer = defenderID
           rem Set hurt animation (ActionHit = 5)
-          let temp2 = ActionHit
+          temp2 = ActionHit
           gosub SetPlayerAnimation bank11
           
-          let temp4 = temp1 / 2
+          temp4 = temp1 / 2
           rem Calculate recovery frames (damage / 2, clamped 10-30)
-          if temp4 < 10 then let temp4 = 10
-          if temp4 > 30 then let temp4 = 30
+          if temp4 < 10 then temp4 = 10
+          if temp4 > 30 then temp4 = 30
           let playerRecoveryFrames[defenderID] = temp4
           
           rem Set playerState bit 3 (recovery flag) when recovery frames
@@ -198,7 +198,7 @@ CalculateAttackHitbox
           rem Use temporary variable to avoid compiler bug with array
           rem indexing
           rem in on statement
-          let temp1 = PlayerAttackType[attackerID]
+          temp1 = PlayerAttackType[attackerID]
           if temp1 = 0 then goto MeleeHitbox
           if temp1 = 1 then goto ProjectileHitbox
           if temp1 = 2 then goto AreaHitbox
@@ -223,7 +223,7 @@ MeleeHitbox
           rem Use temporary variable to avoid compiler bug with array
           rem indexing
           rem in on statement
-          let temp2 = PlayerFacing[attackerID]
+          temp2 = PlayerFacing[attackerID]
           if temp2 = 0 then goto FacingRight
           if temp2 = 1 then goto FacingLeft
           if temp2 = 2 then goto FacingUp
@@ -497,7 +497,7 @@ PlayDamageSound
           rem Called Routines: PlaySoundEffect (bank15) - plays sound
           rem effect
           rem Constraints: None
-          let temp1 = SoundAttackHit
+          temp1 = SoundAttackHit
           gosub PlaySoundEffect bank15
           return
 

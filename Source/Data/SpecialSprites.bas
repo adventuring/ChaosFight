@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Data/SpecialSprites.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
           rem Special Sprites - Hard-coded Data
           rem Special sprites for character selection placeholders

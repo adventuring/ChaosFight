@@ -1,7 +1,7 @@
 AttractMode
           rem
           rem ChaosFight - Source/Routines/AttractMode.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem ATTRACT MODE LOOP - Called From Mainloop Each Frame
           rem
           rem This is the main loop that runs each frame during Attract

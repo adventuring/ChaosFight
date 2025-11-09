@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CheckRoboTitoStretchMissileCollisions.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
 CheckRoboTitoStretchMissileCollisions
           rem Detects RoboTito stretch missile hits against other players
@@ -11,7 +11,7 @@ CheckRoboTitoStretchMissileCollisions
           rem Calls: HandleRoboTitoStretchMissileHit
           rem Constraints: None
 
-          let temp1 = 0
+          temp1 = 0
           rem Loop through all players
           
 CRTSMC_PlayerLoop
@@ -34,20 +34,20 @@ CRTSMC_IsRoboTito
 CRTSMC_IsStretching
           rem Not in stretching animation, no stretch missile
           
-          let temp2 = missileStretchHeight_R[temp1]
+          temp2 = missileStretchHeight_R[temp1]
           rem Check if stretch missile has height > 0
           if temp2 <= 0 then CRTSMC_NextPlayer
           rem No stretch missile, skip
           
-          let temp3 = playerX[temp1]
+          temp3 = playerX[temp1]
           rem Get stretch missile position (at player position)
-          let temp4 = playerY[temp1]
+          temp4 = playerY[temp1]
           
           rem Check collision with other players
           rem Missile extends from playerY down by stretchHeight
           rem Bounding box: X = missileX, Y = missileY, Width = 1
           rem (missile width),
-          let temp6 = 0
+          temp6 = 0
           rem Height = stretchHeight
           
 CRTSMC_CheckOtherPlayer
@@ -74,18 +74,18 @@ CRTSMC_CheckOtherPlayer
           if temp4 + temp2 <= playerY[temp6] then CRTSMC_SkipSelf
           rem Missile bottom edge <= player top edge, no collision
           
-          let temp5 = temp6
+          temp5 = temp6
           rem Collision detected! Handle stretch missile hit
           gosub HandleRoboTitoStretchMissileHit
           goto CRTSMC_NextPlayer
           rem After handling hit, skip remaining players for this RoboTito
           
 CRTSMC_SkipSelf
-          let temp6 = temp6 + 1
+          temp6 = temp6 + 1
           if temp6 < 4 then CRTSMC_CheckOtherPlayer
           
 CRTSMC_NextPlayer
-          let temp1 = temp1 + 1
+          temp1 = temp1 + 1
           if temp1 < 4 then CRTSMC_PlayerLoop
           
           return
@@ -131,20 +131,20 @@ HandleRoboTitoStretchMissileHit
           rem MaskPlayerStateFlags masks bits 0-3, set bits 4-7 to
           
           rem Optimized: Clear stretch permission flag with formula
-          let temp2 = roboTitoCanStretch_R
-          let temp3 = 1
+          temp2 = roboTitoCanStretch_R
+          temp3 = 1
           for temp4 = 0 to temp1 - 1
-            let temp3 = temp3 * 2
+            temp3 = temp3 * 2
           next
-          let temp2 = temp2 & (255 - temp3)
+          temp2 = temp2 & (255 - temp3)
           rem Clear the appropriate bit
           rem 251 = $FB = clear bit 2
           let roboTitoCanStretch_W = temp2
           rem Store cleared permission flags
           
-          let temp3 = characterStateFlags_R[temp1]
+          temp3 = characterStateFlags_R[temp1]
           rem Clear latched flag if set (falling from ceiling)
-          let temp3 = temp3 & 254
+          temp3 = temp3 & 254
           let characterStateFlags_W[temp1] = temp3
           rem Clear bit 0 (latched flag)
           

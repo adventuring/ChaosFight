@@ -113,7 +113,7 @@ CheckEnhancedJumpButton
           rem
           rem OUTPUT: temp3 = 1 if jump button pressed, 0 otherwise
           rem Uses: INPT0 for players 0,2; INPT2 for players 1,3
-          let temp3 = 0
+          temp3 = 0
           rem Initialize to no jump
           rem Player 0 or 2: Check INPT0
           if temp1 = 0 then CEJB_CheckPlayer0
@@ -125,24 +125,24 @@ CheckEnhancedJumpButton
 CEJB_CheckPlayer0
           rem Player 0: Check Genesis controller
           if !ControllerStatus{0} then CEJB_CheckPlayer0Joy2bPlus
-          if !INPT0{7} then let temp3 = 1
+          if !INPT0{7} then temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer0Joy2bPlus
           rem Player 0: Check Joy2b+ controller
           if !ControllerStatus{1} then CEJB_Done
-          if !INPT0{7} then let temp3 = 1
+          if !INPT0{7} then temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer3
           rem Player 3: Check Genesis controller
           if !ControllerStatus{0} then CEJB_CheckPlayer3Joy2bPlus
-          if !INPT0{7} then let temp3 = 1
+          if !INPT0{7} then temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer3Joy2bPlus
           rem Player 3: Check Joy2b+ controller
           if !ControllerStatus{1} then CEJB_Done
-          if !INPT0{7} then let temp3 = 1
+          if !INPT0{7} then temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer2
           rem Player 2: Check Genesis controller
           if !(ControllerStatus & $04) then CEJB_CheckPlayer2Joy2bPlus
-          if !(INPT2 & $80) then let temp3 = 1
+          if !(INPT2 & $80) then temp3 = 1

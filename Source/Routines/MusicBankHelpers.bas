@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Routines/MusicBankHelpers.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           
           rem SONGS BANK HELPER FUNCTIONS (bank 1)
           rem These functions access song data tables and streams in
@@ -17,7 +17,7 @@ LoadSongPointer
           rem Check if songs handled by other banks (0-3)
           if temp1 < 4 then goto LSP_InvalidSong
           rem Calculate compact index: songID - 4 (song 4 → 0)
-          let temp2 = temp1 - 4
+          temp2 = temp1 - 4
 LSP_Lookup
           rem Helper: Lookup pointer from tables and combine into 16-bit value
           rem
@@ -63,7 +63,7 @@ LoadSongVoice1Pointer
           rem Check if songs handled by other banks (0-3)
           if temp1 < 4 then goto LSV1P_InvalidSong
           rem Calculate compact index: songID - 4 (song 4 → 0)
-          let temp2 = temp1 - 4
+          temp2 = temp1 - 4
 LSV1P_Lookup
           rem Helper: Lookup Voice 1 pointer from tables
           rem
@@ -127,9 +127,9 @@ end
           if temp4 = 0 then LoadMusicNote0EndOfTrack
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          let temp6 = temp2 & %11110000
+          temp6 = temp2 & %11110000
           rem   AUDCV
-          let temp6 = temp6 / 16
+          temp6 = temp6 / 16
           let MusicVoice0TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope
@@ -217,9 +217,9 @@ end
           rem Check for end of track (Duration = 0)
           if temp4 = 0 then LoadMusicNote1EndOfTrack
           
-          let temp6 = temp2 & %11110000
+          temp6 = temp2 & %11110000
           rem Extract AUDC and AUDV
-          let temp6 = temp6 / 16
+          temp6 = temp6 / 16
           let MusicVoice1TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope

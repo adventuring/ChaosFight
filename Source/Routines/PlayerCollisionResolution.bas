@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/PlayerCollisionResolution.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
 CheckAllPlayerCollisions
           rem Check Multi-player Collisions
@@ -7,8 +7,8 @@ CheckAllPlayerCollisions
           rem separation and applying impulse forces based on character
           rem weights. Supports up to four players (Quadtari) with
           rem dynamic activation.
-          if !(controllerStatus & SetQuadtariDetected) then let temp6 = 2 else let temp6 = 4
-          let temp1 = 0
+          if !(controllerStatus & SetQuadtariDetected) then temp6 = 2 else temp6 = 4
+          temp1 = 0
 CollisionOuterLoop
           if temp1 >= temp6 then return
           if temp1 >= 2 then CollisionCheckP1Active
@@ -18,7 +18,7 @@ CollisionCheckP1Active
           if temp1 = 2 && playerCharacter[2] = NoCharacter then goto CollisionNextOuter
           if temp1 = 3 && playerCharacter[3] = NoCharacter then goto CollisionNextOuter
 CollisionInnerLoop
-          let temp2 = temp1 + 1
+          temp2 = temp1 + 1
 CollisionCheckPair
           if temp2 >= temp6 then goto CollisionNextOuter
           if temp2 >= 2 then CollisionCheckP2Active
@@ -31,12 +31,12 @@ CollisionCheckDistance
           if playerHealth[temp1] = 0 then goto CollisionNextInner
           if playerHealth[temp2] = 0 then goto CollisionNextInner
           rem Optimized: Calculate absolute X distance directly
-          let temp3 = playerX[temp2] - playerX[temp1]
-          if temp3 < 0 then let temp3 = 0 - temp3
+          temp3 = playerX[temp2] - playerX[temp1]
+          if temp3 < 0 then temp3 = 0 - temp3
           if temp3 >= PlayerCollisionDistance then goto CollisionNextInner
           rem Optimized: Calculate absolute Y distance directly
-          let temp4 = playerY[temp2] - playerY[temp1]
-          if temp4 < 0 then let temp4 = 0 - temp4
+          temp4 = playerY[temp2] - playerY[temp1]
+          if temp4 < 0 then temp4 = 0 - temp4
           let characterHeight_W = CharacterHeights[temp1]
           let halfHeight1_W = characterHeight_R / 2
           let characterHeight_W = CharacterHeights[temp2]
@@ -306,9 +306,9 @@ ApproxDivDone
           let playerVelocityXL[temp2] = 0
           goto CollisionNextInner
 CollisionNextInner
-          let temp2 = temp2 + 1
+          temp2 = temp2 + 1
           goto CollisionCheckPair
 CollisionNextOuter
-          let temp1 = temp1 + 1
+          temp1 = temp1 + 1
           if temp1 < temp6 then goto CollisionOuterLoop
           return

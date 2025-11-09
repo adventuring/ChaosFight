@@ -247,4 +247,4 @@ make all
 
 ---
 
-**ChaosFight** - © 2025 Interworldly Adventuring, LLC.
+**ChaosFight** - (c) 2025 Interworldly Adventuring, LLC.

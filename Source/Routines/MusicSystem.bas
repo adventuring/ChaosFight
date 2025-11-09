@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/MusicSystem.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
 StartMusic
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation
@@ -228,10 +228,10 @@ CalculateMusicVoiceEnvelope
           rem AUDV. Clamps AUDV to 0-15
           rem Get voice-specific variables
           if temp1 = 0 then CMVE_GetVoice0Vars
-          let temp2 = MusicVoice1TotalFrames_R
+          temp2 = MusicVoice1TotalFrames_R
           rem Voice 1
-          let temp3 = musicVoice1Frame_R
-          let temp5 = MusicVoice1TargetAUDV_R
+          temp3 = musicVoice1Frame_R
+          temp5 = MusicVoice1TargetAUDV_R
           goto CMVE_CalcElapsed
 CMVE_GetVoice0Vars
           rem Helper: Gets Voice 0 specific variables
@@ -249,10 +249,10 @@ CMVE_GetVoice0Vars
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope, only called for voice 0
-          let temp2 = MusicVoice0TotalFrames_R
+          temp2 = MusicVoice0TotalFrames_R
           rem Voice 0
-          let temp3 = musicVoice0Frame_R
-          let temp5 = MusicVoice0TargetAUDV_R
+          temp3 = musicVoice0Frame_R
+          temp5 = MusicVoice0TargetAUDV_R
 CMVE_CalcElapsed
           rem Helper: Calculates frames elapsed and determines envelope
           rem phase
@@ -271,7 +271,7 @@ CMVE_CalcElapsed
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope
-          let temp4 = temp2 - temp3
+          temp4 = temp2 - temp3
           rem Calculate frames elapsed = TotalFrames - FrameCounter
           rem Check if in attack phase (first NoteAttackFrames frames)
           if temp4 < NoteAttackFrames then CMVE_ApplyAttack
@@ -297,12 +297,12 @@ CMVE_ApplyAttack
           rem CalculateMusicVoiceEnvelope, only called in attack phase.
           rem Formula: AUDV = Target - NoteAttackFrames + frames_elapsed
           rem Attack: AUDV = Target - NoteAttackFrames + frames_elapsed
-          let temp6 = temp5
-          let temp6 = temp6 - NoteAttackFrames
-          let temp6 = temp6 + temp4
+          temp6 = temp5
+          temp6 = temp6 - NoteAttackFrames
+          temp6 = temp6 + temp4
           rem Check for wraparound: clamp to 0 if negative
-          if temp6 & $80 then let temp6 = 0
-          if temp6 > 15 then let temp6 = 15
+          if temp6 & $80 then temp6 = 0
+          if temp6 > 15 then temp6 = 15
           rem Set voice-specific AUDV
           if temp1 = 0 then CMVE_SetAUDV0
           let AUDV1 = temp6
@@ -339,13 +339,13 @@ CMVE_ApplyDecay
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope, only called in decay phase.
           rem Formula: AUDV = Target - (NoteDecayFrames - FrameCounter + 1)
-          let temp6 = temp5
-          let temp6 = temp6 - NoteDecayFrames
-          let temp6 = temp6 + temp3
-          let temp6 = temp6 - 1
+          temp6 = temp5
+          temp6 = temp6 - NoteDecayFrames
+          temp6 = temp6 + temp3
+          temp6 = temp6 - 1
           rem Check for wraparound: clamp to 0 if negative
-          if temp6 & $80 then let temp6 = 0
-          if temp6 > 15 then let temp6 = 15
+          if temp6 & $80 then temp6 = 0
+          if temp6 > 15 then temp6 = 15
           rem Set voice-specific AUDV
           if temp1 = 0 then CMVE_SetAUDV0
           let AUDV1 = temp6
@@ -370,7 +370,7 @@ UpdateMusicVoice0
           rem Constraints: Uses Voice 0 (AUDC0, AUDF0, AUDV0). Songs 0-3
           rem in Bank 15, all others in Bank 1. Routes to correct bank
           rem based on currentSongID_R
-          let temp1 = 0
+          temp1 = 0
           rem Apply envelope using shared calculation
           gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter
@@ -421,7 +421,7 @@ UpdateMusicVoice1
           rem Constraints: Uses Voice 1 (AUDC1, AUDF1, AUDV1). Songs 0-3
           rem in Bank 15, all others in Bank 1. Routes to correct bank
           rem based on currentSongID_R
-          let temp1 = 1
+          temp1 = 1
           rem Apply envelope using shared calculation
           gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter

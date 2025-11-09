@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterData.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Character Data Lookup Routines
           rem Provides O(1) lookups for character properties.
           rem
@@ -12,7 +12,7 @@ GetCharacterWeight
           rem Output: temp2 = character weight
           rem Mutates: temp2 (return value)
           rem Constraints: None
-          let temp2  = CharacterWeights[temp1]
+          temp2 = CharacterWeights[temp1]
           rem Use direct array access for O(1) lookup
           return
 
@@ -22,7 +22,7 @@ GetCharacterAttackType
           rem Output: temp2 = attack type (0=melee, 1=ranged)
           rem Mutates: temp2 (result register - attack type)
           rem Constraints: None (table lookup - attack type)
-          let temp2  = CharacterAttackTypes[temp1]
+          temp2 = CharacterAttackTypes[temp1]
           rem Use direct array access for O(1) lookup
           return
 
@@ -32,7 +32,7 @@ GetCharacterMissileHeight
           rem Output: temp2 = missile height slot
           rem Mutates: temp2 (result register - missile height slot)
           rem Constraints: None (table lookup - missile height)
-          let temp2  = CharacterMissileHeights[temp1]
+          temp2 = CharacterMissileHeights[temp1]
           rem Use direct array access for O(1) lookup
           return
 
@@ -42,7 +42,7 @@ GetCharacterMissileMaxX
           rem Output: temp2 = missile max X range
           rem Mutates: temp2 (result register - missile max X)
           rem Constraints: None (table lookup - missile max X)
-          let temp2  = CharacterMissileMaxX[temp1]
+          temp2 = CharacterMissileMaxX[temp1]
           rem Use direct array access for O(1) lookup
           return
 
@@ -52,7 +52,7 @@ GetCharacterMissileMaxY
           rem Output: temp2 = missile max Y range
           rem Mutates: temp2 (result register - missile max Y)
           rem Constraints: None (table lookup - missile max Y)
-          let temp2  = CharacterMissileMaxY[temp1]
+          temp2 = CharacterMissileMaxY[temp1]
           rem Use direct array access for O(1) lookup
           return
 
@@ -62,7 +62,7 @@ IsCharacterRanged
           rem Output: temp2 = 1 if ranged, 0 if melee
           rem Mutates: temp2 (return value - ranged flag)
           rem Constraints: None (direct lookup - ranged flag)
-          let temp2  = CharacterAttackTypes[temp1]
+          temp2 = CharacterAttackTypes[temp1]
           return
 
 IsCharacterMelee
@@ -71,8 +71,8 @@ IsCharacterMelee
           rem Output: temp2 = 1 if melee, 0 if ranged
           rem Mutates: temp2 (return value - melee flag)
           rem Constraints: None (direct lookup - melee flag)
-          let temp2  = CharacterAttackTypes[temp1]
-          let temp2  = temp2 ^ 1
+          temp2 = CharacterAttackTypes[temp1]
+          temp2 = temp2 ^ 1
           rem XOR to flip 0<->1
           return
 
@@ -104,14 +104,14 @@ GetCharacterDamage
           rem Medium characters: 15-20 damage  
           rem Heavy characters: 20-25 damage
           
-          let temp3  = CharacterWeights[temp1]
+          temp3 = CharacterWeights[temp1]
           rem Get weight
           
           rem Calculate damage based on weight class
           
           if temp3 <= 15 then temp2  = 12 : goto GetCharacterDamageEnd
           if temp3 <= 25 then temp2  = 18 : goto GetCharacterDamageEnd
-          let temp2  = 22
+          temp2 = 22
 GetCharacterDamageEnd
           return          
 GetMissileWidth
@@ -120,7 +120,7 @@ GetMissileWidth
           rem Output: temp2 = missile width
           rem Mutates: temp2 (return value - missile width)
           rem Constraints: None (table lookup - missile width)
-          let temp2  = CharacterMissileWidths[temp1]
+          temp2 = CharacterMissileWidths[temp1]
           return
           
 GetMissileHeight
@@ -129,7 +129,7 @@ GetMissileHeight
           rem Output: temp2 = missile height
           rem Mutates: temp2 (return value - missile height)
           rem Constraints: None (table lookup - missile height)
-          let temp2  = CharacterMissileHeights[temp1]
+          temp2 = CharacterMissileHeights[temp1]
           return
           
 GetMissileFlags
@@ -138,7 +138,7 @@ GetMissileFlags
           rem Output: temp2 = missile flags
           rem Mutates: temp2 (return value - missile flags)
           rem Constraints: None (table lookup - missile flags)
-          let temp2  = CharacterMissileFlags[temp1]
+          temp2 = CharacterMissileFlags[temp1]
           return
           
 GetMissileMomentumX
@@ -147,7 +147,7 @@ GetMissileMomentumX
           rem Output: temp2 = missile momentum X
           rem Mutates: temp2 (return value - missile momentum X)
           rem Constraints: None (table lookup - missile momentum X)
-          let temp2  = CharacterMissileMomentumX[temp1]
+          temp2 = CharacterMissileMomentumX[temp1]
           return
           
 GetMissileMomentumY
@@ -156,5 +156,5 @@ GetMissileMomentumY
           rem Output: temp2 = missile momentum Y
           rem Mutates: temp2 (return value - missile momentum Y)
           rem Constraints: None (table lookup - missile momentum Y)
-          let temp2  = CharacterMissileMomentumY[temp1]
+          temp2 = CharacterMissileMomentumY[temp1]
           return

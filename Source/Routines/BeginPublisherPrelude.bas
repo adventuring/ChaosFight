@@ -1,7 +1,7 @@
 BeginPublisherPrelude
           rem
           rem ChaosFight - Source/Routines/BeginPublisherPrelude.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Begin Publisher Prelude - Setup Routine
           rem
           rem Initializes state for Publisher Prelude screen (gameMode
@@ -42,7 +42,7 @@ BeginPublisherPrelude
           
           rem Start AtariToday music
           temp1 = MusicAtariToday
-          goto StartMusic
+          goto StartMusic bank1
           rem tail call
 
 

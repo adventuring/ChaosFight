@@ -1,7 +1,7 @@
 SetAdminScreenLayout
           rem
           rem ChaosFight - Source/Routines/ScreenLayout.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Dynamic screen layout switching for admin vs game screens
           rem Screen Layout Switching System
           rem Admin screens (title, character select): 32×32 virtual
@@ -19,8 +19,8 @@ SetAdminScreenLayout
           rem
           rem Called Routines: None
           rem Constraints: Called from setup routines for admin screens
-          let pfrowheight = 8
-          let pfrows = 32
+          pfrowheight = 8
+          pfrows = 32
           return
 
 SetGameScreenLayout
@@ -35,8 +35,8 @@ SetGameScreenLayout
           rem
           rem Called Routines: None
           rem Constraints: Called from BeginGameLoop for gameplay screen
-          let pfrowheight = 16
-          let pfrows = 8
+          pfrowheight = 16
+          pfrows = 8
           return
 
 GetScreenLayoutInfo

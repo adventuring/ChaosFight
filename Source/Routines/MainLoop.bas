@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/MainLoop.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
 MainLoop
           rem Dispatches game modes and handles reset entry point
@@ -14,7 +14,7 @@ MainLoop
           rem Constraints: Must remain colocated with MainLoopContinue/MainLoopDrawScreen
 
           rem Entry point for entire game loop
-          if switchreset then gosub WarmStart bank11 : goto MainLoopContinue
+          if switchreset then gosub WarmStart bank13 : goto MainLoopContinue
 
           rem Optimized: Replace on...gosub with if-else for space
           if gameMode = 0 then gosub MainLoopModePublisherPrelude

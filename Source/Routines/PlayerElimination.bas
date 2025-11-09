@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/PlayerElimination.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
 CheckAllPlayerEliminations
           rem Player Elimination System
@@ -116,14 +116,14 @@ CheckPlayerElimination
           rem Constraints: WARNING - temp2 and temp6 are mutated during
           rem execution. Do not use these temp variables after calling
           rem this subroutine.
-          let temp6 = BitMask[currentPlayer]
+          temp6 = BitMask[currentPlayer]
           rem Skip if already eliminated
-          let temp2 = temp6 & playersEliminated_R
+          temp2 = temp6 & playersEliminated_R
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           if temp2 then return 
           rem Already eliminated
           
-          let temp2 = playerHealth[currentPlayer]
+          temp2 = playerHealth[currentPlayer]
           rem Check if health has reached 0
           
           if temp2 then return 
@@ -143,7 +143,7 @@ CheckPlayerElimination
           if currentPlayer = 3 then gosub UpdatePlayers34ActiveFlag
 UpdatePlayers34Done
           
-          let temp2 = eliminationCounter_R + 1
+          temp2 = eliminationCounter_R + 1
           rem Record elimination order
           let eliminationCounter_W = temp2
           let eliminationOrder_W[currentPlayer] = temp2
@@ -169,14 +169,14 @@ TriggerEliminationEffects
           rem elimination sound, DeactivatePlayerMissiles (tail call) -
           rem removes player missiles
           rem Constraints: None
-          let temp5 = SoundPlayerEliminated
+          temp5 = SoundPlayerEliminated
           rem Play elimination sound effect
           let PSE_soundID = temp5
           gosub PlaySoundEffect bank15
           rem PlaySoundEffect expects temp1 (PSE_soundID alias)
           
           rem Set elimination visual effect timer
-          let temp2 = 30
+          temp2 = 30
           rem This could trigger screen flash, particle effects, etc.
           let eliminationEffectTimer_W[currentPlayer] = temp2
           rem 30 frames of elimination effect
@@ -223,14 +223,14 @@ CountRemainingPlayers
           rem Input: playersEliminated_R (SCRAM flags), PlayerEliminatedPlayer0-3 masks
           rem Output: playersRemaining (global) and temp1 updated with alive player count
           rem Mutates: temp1, playersRemaining
-          let temp1 = 0 
+          temp1 = 0 
           rem Counter
           
           rem Check each player
-          if !(PlayerEliminatedPlayer0 & playersEliminated_R) then let temp1 = 1 + temp1
-          if !(PlayerEliminatedPlayer1 & playersEliminated_R) then let temp1 = 1 + temp1
-          if !(PlayerEliminatedPlayer2 & playersEliminated_R) then let temp1 = 1 + temp1
-          if !(PlayerEliminatedPlayer3 & playersEliminated_R) then let temp1 = 1 + temp1
+          if !(PlayerEliminatedPlayer0 & playersEliminated_R) then temp1 = 1 + temp1
+          if !(PlayerEliminatedPlayer1 & playersEliminated_R) then temp1 = 1 + temp1
+          if !(PlayerEliminatedPlayer2 & playersEliminated_R) then temp1 = 1 + temp1
+          if !(PlayerEliminatedPlayer3 & playersEliminated_R) then temp1 = 1 + temp1
           
           let playersRemaining_W = temp1
           return
@@ -241,10 +241,10 @@ IsPlayerEliminated
           rem Input: currentPlayer (0-3), playersEliminated_R, PlayerEliminatedPlayer0-3 masks
           rem Output: temp2 = 1 if eliminated, 0 if alive
           rem Mutates: temp2, temp6
-          let temp6 = BitMask[currentPlayer]
-          let temp2 = temp6 & playersEliminated_R
-          if temp2 then let temp2 = 1 : goto IsEliminatedDone
-          let temp2 = 0
+          temp6 = BitMask[currentPlayer]
+          temp2 = temp6 & playersEliminated_R
+          if temp2 then temp2 = 1 : goto IsEliminatedDone
+          temp2 = 0
 IsEliminatedDone
           return
 
@@ -263,12 +263,12 @@ IsPlayerAlive
           if temp2 then return 
           rem Already eliminated
           
-          let temp3 = playerHealth[currentPlayer]
+          temp3 = playerHealth[currentPlayer]
           rem Check health
           
-          let temp2 = 0 
+          temp2 = 0 
           rem Default: not alive
-          if temp3 > 0 then let temp2 = 1
+          if temp3 > 0 then temp2 = 1
           rem Alive if health > 0
           return
 
@@ -300,14 +300,14 @@ FindLastEliminated
           rem Input: currentPlayer loop variable, eliminationOrder[]
           rem Output: winnerPlayerIndex updated to last eliminated player
           rem Mutates: temp4, currentPlayer, winnerPlayerIndex
-          let temp4 = 0    
+          temp4 = 0    
           let winnerPlayerIndex_W = 0
           rem Highest elimination order found
           rem Default winner
           
           for currentPlayer = 0 to 3
           rem Check each player elimination order using FOR loop
-              let temp4 = eliminationOrder_R[currentPlayer]
+              temp4 = eliminationOrder_R[currentPlayer]
               if temp4 > temp4 then let winnerPlayerIndex_W = currentPlayer
           next
           

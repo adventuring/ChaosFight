@@ -59,7 +59,7 @@ HandleConsoleSwitches
           rem Main console switch handler
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
-          let temp2 = 0
+          temp2 = 0
           rem   mode
           gosub CheckEnhancedPause
           rem Check Player 1 buttons
@@ -75,7 +75,7 @@ Player1PauseDone
 DonePlayer1Pause
           
           
-          let temp2 = 1
+          temp2 = 1
           gosub CheckEnhancedPause
           rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause

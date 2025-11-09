@@ -1,7 +1,7 @@
 BeginArenaSelect
           rem
           rem ChaosFight - Source/Routines/BeginArenaSelect.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Begin Arena Select
           rem
           rem Setup routine for Arena Select screen.
@@ -44,7 +44,7 @@ BeginArenaSelect
           gosub SetAdminScreenLayout bank8
           rem Set admin screen layout (32×32 for character display)
           
-          let COLUBK = ColGray(0)
+          COLUBK = ColGray(0)
           rem Set background color (B&W safe)
           
           rem Playfield layout is static; ArenaSelect renders via playfield data

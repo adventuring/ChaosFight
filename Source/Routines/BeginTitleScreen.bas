@@ -1,6 +1,6 @@
 BeginTitleScreen
           rem ChaosFight - Source/Routines/BeginTitleScreen.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
           rem Setup routine for Title Screen. Sets initial state only.
 
@@ -32,7 +32,7 @@ BeginTitleScreen
           rem Set background color
           COLUBK = ColGray(0)
           
-          let temp1 = MusicChaotica
+          temp1 = MusicChaotica
           rem Start Chaotica title music
           gosub StartMusic bank1
           

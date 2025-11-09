@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Platform/PAL.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Licensed under Creative Commons Attribution-NonCommercial
           rem   4.0 International
           rem See LICENSE file for full terms

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Bank1.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
           bank 1
 

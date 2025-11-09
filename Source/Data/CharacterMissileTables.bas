@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Data/CharacterMissileTables.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem
           rem Character missile data tables for Bank 7.
 

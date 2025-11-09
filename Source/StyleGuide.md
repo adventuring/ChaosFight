@@ -3,7 +3,7 @@
 
 **Version**: 1.0
 **Last Updated**: 2025
-**Copyright © 2025 Interworldly Adventuring, LLC.**
+**Copyright (c) 2025 Interworldly Adventuring, LLC.**
 
 This document defines the coding standards for the ChaosFight project.
 All code must conform to these standards to ensure consistency,
@@ -266,15 +266,15 @@ SpawnMissile
           return
 
 UpdatePlayerAnimation
-          dim UPA_animCounterRead = temp4
-          dim UPA_animFrameRead = temp2
+          dim UPA_animationCounterRead = temp4
+          dim UPA_animationFrameRead = temp2
           rem ... subroutine body ...
           return
 ```
 
 **Pattern**: `[RoutineAbbreviation]_[descriptiveName]`
 
-- ✅ `UPA_animCounterRead` (UpdatePlayerAnimation → UPA)
+- ✅ `UPA_animationCounterRead` (UpdatePlayerAnimation → UPA)
 
 **Note**: This is the **only exception** to the "no abbreviations" rule.
 Subroutine-local variable prefixes may use abbreviations to keep names
@@ -425,7 +425,7 @@ All source files should begin with:
 
 ```basic
           rem ChaosFight - Source/Path/To/File.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 ```
 
 ---
@@ -866,7 +866,7 @@ When reviewing code, check for:
 
 ```basic
           rem ChaosFight - Source/Routines/Example.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
           rem =========================================================
           rem EXAMPLE SUBROUTINE

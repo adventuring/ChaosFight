@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Common/AssemblyConfig.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
           rem includesfile must run before any set statements so batariBASIC keeps
           rem multispritesuperchipheader.asm (which pulls in superchip.h)

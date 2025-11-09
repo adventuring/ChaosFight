@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterAttacks.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Character-specific Attack Subroutines
 
 BernieAttack
@@ -193,14 +193,14 @@ HarpyAttack
           rem Set animation state 14 (attack execution)
 
           rem Get facing direction (bit 0: 0=left, 1=right)
-          let temp2 = playerState[temp1] & PlayerStateBitFacing
+          temp2 = playerState[temp1] & PlayerStateBitFacing
           
           rem Set diagonal velocity at 45° angle (4 pixels/frame
           rem   horizontal, 4 pixels/frame vertical)
           rem Horizontal: 4 pixels/frame in facing direction
           if temp2 = 0 then HarpySetLeftVelocity
           rem Facing right: positive X velocity
-          let temp4 = 4
+          temp4 = 4
           goto HarpySetVerticalVelocity
 HarpySetLeftVelocity
           rem Set left-facing velocity for Harpy swoop
@@ -217,7 +217,7 @@ HarpySetLeftVelocity
           rem HarpySetVerticalVelocity
           rem Facing left: negative X velocity (252 = -4 in signed
           rem   8-bit)
-          let temp4 = 252
+          temp4 = 252
 HarpySetVerticalVelocity
           rem Set vertical velocity for Harpy swoop
           rem
@@ -235,7 +235,7 @@ HarpySetVerticalVelocity
           rem Constraints: Must be colocated with HarpyAttack,
           rem HarpySetLeftVelocity
           rem Vertical: 4 pixels/frame downward (positive Y = down)
-          let temp3 = 4
+          temp3 = 4
           
           rem Set player velocity for diagonal swoop (45° angle:
           rem   4px/frame X, 4px/frame Y) - inlined for performance
@@ -262,7 +262,7 @@ HarpySetVerticalVelocity
           rem Fix RMW: Read from _R, modify, write to _W
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-          let temp5 = characterStateFlags_R[temp1] | 4
+          temp5 = characterStateFlags_R[temp1] | 4
           let characterStateFlags_W[temp1] = temp5
           
           rem Attack behavior:
@@ -473,9 +473,73 @@ Character17Attack
           rem Constraints: Tail call to PerformMeleeAttack
           goto PerformMeleeAttack bank9
 
-          rem
-          rem Character Attack Dispatcher
-          rem NOTE: DispatchCharacterAttack is defined in
-          rem PlayerInput.bas
-          rem   to avoid duplication. This file contains only the
-          rem   character-specific attack implementations.
+Character16Attack
+          rem Character 16 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character18Attack
+          rem Character 18 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character19Attack
+          rem Character 19 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character20Attack
+          rem Character 20 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character21Attack
+          rem Character 21 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character22Attack
+          rem Character 22 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character23Attack
+          rem Character 23 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character24Attack
+          rem Character 24 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character25Attack
+          rem Character 25 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character26Attack
+          rem Character 26 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character27Attack
+          rem Character 27 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character28Attack
+          rem Character 28 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character29Attack
+          rem Character 29 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+
+Character30Attack
+          rem Character 30 - Placeholder melee attack
+          rem Tail call to PerformMeleeAttack
+          goto PerformMeleeAttack bank9
+

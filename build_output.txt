@@ -1,0 +1,456 @@
+cd Object && > 2600basic_variable_redefs.h && bB=/home/brpocock/Projects/ChaosFight/Tools/batariBASIC timeout 90 ../bin/2600basic -i /home/brpocock/Projects/ChaosFight/Tools/batariBASIC -r 2600basic_variable_redefs.h < ../Source/Generated/ChaosFight25.NTSC.preprocessed.bas > ChaosFight25.bB.NTSC.s
+batari Basic v1.9 (c)2025
+2600 Basic compilation complete.
+cd Object/NTSC && ln -sf ../ChaosFight25.bB.NTSC.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../Source/Generated/ChaosFight25.NTSC.s
+Fixing include paths in generated assembly for DASM...
+cd Object && ../bin/dasm ../Source/Generated/ChaosFight25.NTSC.s -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/ChaosFight25.NTSC.lst -s../Dist/ChaosFight25.NTSC.sym -o../Dist/ChaosFight25.NTSC.a26
+--- Unresolved Symbol List
+aux2                     0000 ????         (R )
+0.skipL016107            0000 ????         (R )
+var7                     0000 ????         (R )
+0.skipL017106            0000 ????         (R )
+0.skipL016143            0000 ????         (R )
+0.skipL017115            0000 ????         (R )
+0.skipL016071            0000 ????         (R )
+0.skipL017124            0000 ????         (R )
+0.skipL017052            0000 ????         (R )
+0.skipL017133            0000 ????         (R )
+0.skipL017142            0000 ????         (R )
+titleParadeTimer         0000 ????         (R )
+Sound_SoundGuardBlock_length fffffffffffe2eb0 ????             
+player2State             0000 ????             
+Arena15Colors_length     fffffffffffe090f ????             
+Arena24Colors_length     fffffffffffe081c ????             
+playerVelocityXL         0000 ????         (R )
+mk_player_on             0000 ????         (R )
+4.Character18Attack      0000 ????         (R )
+4.Character27Attack      0000 ????         (R )
+4.SetPlayerCharacterArtBank5 0000 ????         (R )
+playerVelocitySubpixelX  0000 ????         (R )
+missile1height           0000 ????         (R )
+0.skipL03255             0000 ????         (R )
+0.skipL03273             0000 ????         (R )
+CPUSprite_length         ffffffffffff4eea ????             
+Arena6Colors_length      fffffffffffe0a02 ????             
+var16                    0000 ????         (R )
+var25                    0000 ????         (R )
+var34                    0000 ????         (R )
+var43                    0000 ????         (R )
+CPE_eliminatedFlags      0000 ????         (R )
+CharacterMissileHeights_length ffffffffffff2ed7 ????             
+ArenaColorPointerH_length fffffffffffe0731 ????             
+MeleeAttack              0000 ????         (R )
+Song_Bernie_Voice0_length fffffffffffe2de1 ????             
+pfrows                   0000 ????         (R )
+0.skipL016045            0000 ????         (R )
+var8                     0000 ????         (R )
+0.skipL016054            0000 ????         (R )
+0.skipL016144            0000 ????         (R )
+Arena0Playfield          0000 ????         (R )
+0.skipL017062            0000 ????         (R )
+4.MainLoop               0000 ????         (R )
+0.skipL017080            0000 ????         (R )
+player3State             0000 ????             
+playerVelocityYL         0000 ????         (R )
+Arena16Colors_length     fffffffffffe08f4 ????             
+Arena25Colors_length     fffffffffffe0801 ????             
+4.Character19Attack      0000 ????         (R )
+4.Character28Attack      0000 ????         (R )
+4.StartMusic             0000 ????         (R )
+playerVelocitySubpixelY  0000 ????         (R )
+0.skipL03265             0000 ????         (R )
+Arena7Colors_length      fffffffffffe09e7 ????             
+var17                    0000 ????         (R )
+var26                    0000 ????         (R )
+var35                    0000 ????         (R )
+var44                    0000 ????         (R )
+CharacterMissileFlags_length ffffffffffff2e19 ????             
+NOT                      0000 ????         (R )
+4.DrawDigit              0000 ????         (R )
+4.title_vblank           0000 ????         (R )
+Song_Bernie_Voice1_length fffffffffffe2d62 ????             
+0.skipL016046            0000 ????         (R )
+var9                     0000 ????         (R )
+0.skipL016055            0000 ????         (R )
+0.skipL016136            0000 ????         (R )
+Arena10Playfield         0000 ????         (R )
+0.skipL017072            0000 ????         (R )
+0.skipL017162            0000 ????         (R )
+Arena1Playfield          0000 ????         (R )
+CharacterMissileSpawnOffsetRight_length ffffffffffff2e65 ????             
+characterSelectCharacterIndex 0000 ????             
+SongPointers2SecondH_length fffffffffffe2ece ????             
+player4State             0000 ????             
+playfieldRow             0000 ????         (R )
+FontData_length          fffffffffffea1c5 ????             
+Arena17Colors_length     fffffffffffe08d9 ????             
+Arena26Colors_length     fffffffffffe07e6 ????             
+4.Character29Attack      0000 ????         (R )
+0.skipL03257             0000 ????         (R )
+CharacterMissileMaxX_length ffffffffffff2ec4 ????             
+0.skipL03275             0000 ????         (R )
+NO_ILLEGAL_OPCODES       0000 ????         (R )
+Arena8Colors_length      fffffffffffe09cc ????             
+pfread                   0000 ????         (R )
+var18                    0000 ????         (R )
+PlayerColorsDark_length  fffffffffffecef6 ????             
+var27                    0000 ????         (R )
+var36                    0000 ????         (R )
+var45                    0000 ????         (R )
+DPC_kernel_options       0000 ????         (R )
+pfscore                  0000 ????         (R )
+MissileActive            0000 ????         (R )
+musicTimer               0000 ????             
+CharacterMissileForce_length ffffffffffff2e9e ????             
+0.skipL016119            0000 ????         (R )
+0.skipL016137            0000 ????         (R )
+0.skipL017109            0000 ????         (R )
+0.skipL016065            0000 ????         (R )
+0.skipL017118            0000 ????         (R )
+0.skipL017127            0000 ????         (R )
+0.skipL016083            0000 ????         (R )
+0.skipL017136            0000 ????         (R )
+0.skipL017064            0000 ????         (R )
+0.skipL017145            0000 ????         (R )
+0.skipL017154            0000 ????         (R )
+0.skipL017163            0000 ????         (R )
+0.skipL017091            0000 ????         (R )
+4.ReadEnhancedButtons    0000 ????         (R )
+Arena11Playfield         0000 ????         (R )
+Arena20Playfield         0000 ????         (R )
+Arena2Playfield          0000 ????         (R )
+CharacterMissileLifetime_length ffffffffffff2e8b ????             
+PlayerHealth             0000 ????         (R )
+ArenaColorsBW_length     fffffffffffe0abf ????             
+Arena18Colors_length     fffffffffffe08be ????             
+Arena27Colors_length     fffffffffffe07cb ????             
+debugscore               0000 ????         (R )
+0.skipL03249             0000 ????         (R )
+0.skipL03267             0000 ????         (R )
+arenaPreviewData         0000 ????             
+CharacterMissileMaxY_length ffffffffffff2eb1 ????             
+0.skipL04716             0000 ????         (R )
+playerSubpixelX_WL       0000 ????         (R )
+Arena9Colors_length      fffffffffffe09b1 ????             
+var19                    0000 ????         (R )
+var28                    0000 ????         (R )
+var37                    0000 ????         (R )
+var46                    0000 ????         (R )
+BUILD_DATE_STRING        0000 ????         (R )
+playerHealth             0000 ????         (R )
+MS_frameCount            0000 ????         (R )
+WinnerScreenColorsColor  0000 ????         (R )
+0.skipL016129            0000 ????         (R )
+0.skipL016057            0000 ????         (R )
+0.skipL017056            0000 ????         (R )
+0.skipL017074            0000 ????         (R )
+0.skipL017155            0000 ????         (R )
+0.skipL017164            0000 ????         (R )
+Arena12Playfield         0000 ????         (R )
+Arena21Playfield         0000 ????         (R )
+Arena30Playfield         0000 ????         (R )
+Arena3Playfield          0000 ????         (R )
+MS_frameCount1           0000 ????         (R )
+Song_OCascadia_Voice0_length fffffffffffe2d47 ????             
+Arena19Colors_length     fffffffffffe08a3 ????             
+Arena28Colors_length     fffffffffffe07b0 ????             
+0.skipL03259             0000 ????         (R )
+playerSubpixelY_WL       0000 ????         (R )
+var29                    0000 ????         (R )
+var38                    0000 ????         (R )
+4.CheckEnhancedPause     0000 ????         (R )
+playerVelocityX          0000 ????         (R )
+Song_Revontuli_Voice0_length fffffffffffe2cb9 ????             
+player1Health            0000 ????             
+Sound_SoundPowerup_length fffffffffffe2e26 ????             
+ArenaColorPointerL_length fffffffffffe0754 ????             
+0.skipL016058            0000 ????         (R )
+0.skipL017066            0000 ????         (R )
+0.skipL017084            0000 ????         (R )
+0.skipL017165            0000 ????         (R )
+Arena13Playfield         0000 ????         (R )
+Arena22Playfield         0000 ????         (R )
+Arena31Playfield         0000 ????         (R )
+Arena4Playfield          0000 ????         (R )
+PlayerFacing             0000 ????         (R )
+player1VelocityX         0000 ????             
+Song_OCascadia_Voice1_length fffffffffffe2cd8 ????             
+musicPlaying             0000 ????         (R )
+hit                      0000 ????         (R )
+0.skipL03269             0000 ????         (R )
+Arena29Colors_length     fffffffffffe0795 ????             
+GPL_lockedState          0000 ????         (R )
+NoSprite_length          ffffffffffff4ed7 ????             
+4.CycleRightFromRandom   0000 ????         (R )
+var39                    0000 ????         (R )
+playerX                  0000 ????         (R )
+playerVelocityY          0000 ????         (R )
+player2Health            0000 ????             
+Song_Revontuli_Voice1_length fffffffffffe2c96 ????             
+PlayerX                  0000 ????         (R )
+0.skipL016077            0000 ????         (R )
+0.skipL017058            0000 ????         (R )
+0.skipL017139            0000 ????         (R )
+0.skipL016095            0000 ????         (R )
+0.skipL017148            0000 ????         (R )
+0.skipL017076            0000 ????         (R )
+mul8                     0000 ????         (R )
+musicPosition            0000 ????             
+SoundPointersH_length    fffffffffffe2ef0 ????             
+Arena14Playfield         0000 ????         (R )
+Arena23Playfield         0000 ????         (R )
+Arena5Playfield          0000 ????         (R )
+player2VelocityX         0000 ????             
+SongPointers2SecondL_length fffffffffffe2ed5 ????             
+MaskClearGuard           0000 ????         (R )
+SongPointers2H_length    fffffffffffe2edc ????             
+player1X                 0000 ????             
+Sound_SoundMenuNavigate_length fffffffffffe2e6b ????             
+4.UpdateMusic            0000 ????         (R )
+playerY                  0000 ????         (R )
+pfwidth                  0000 ????         (R )
+player3Health            0000 ????             
+PlayerY                  0000 ????         (R )
+arenaConfirmTimer        0000 ????             
+pfrowheight              0000 ????         (R )
+GPL_playerIndex          0000 ????         (R )
+0.skipL017095            0000 ????         (R )
+Sound_SoundMenuSelect_length fffffffffffe2e54 ????             
+font                     0000 ????         (R )
+Arena15Playfield         0000 ????         (R )
+Arena24Playfield         0000 ????         (R )
+Arena6Playfield          0000 ????         (R )
+player3VelocityX         0000 ????             
+arenaCursorPos           0000 ????             
+LCS_playerNumber         0000 ????         (R )
+soundEffectPointer       0000 ????         (R )
+CharacterThemeSongIndices_length fffffffffffe8edf ????             
+CharacterMissileWidths_length ffffffffffff2eea ????             
+PlayerAttackType         0000 ????         (R )
+player1Y                 0000 ????             
+PauseButtonPrev          0000 ????         (R )
+player2X                 0000 ????             
+WinScreenAutoAdvanceFrames 0000 ????         (R )
+mincycles                0000 ????         (R )
+player4Health            0000 ????             
+titleParadeX             0000 ????         (R )
+CharacterMissileEmissionHeights_length ffffffffffff2e78 ????             
+soundEffectPointer1      0000 ????         (R )
+0.skipL017069            0000 ????         (R )
+0.skipL017087            0000 ????         (R )
+draw_bmp_48x2_X          0000 ????         (R )
+Arena16Playfield         0000 ????         (R )
+musicVoice0Pointer       0000 ????         (R )
+Arena25Playfield         0000 ????         (R )
+Arena7Playfield          0000 ????         (R )
+player4VelocityX         0000 ????             
+Song_EXO_Voice0_length   fffffffffffe2c8b ????             
+ControllerStatus         0000 ????         (R )
+songPointer              0000 ????         (R )
+GuardTimerMaxFrames      0000 ????         (R )
+player2Y                 0000 ????             
+player3X                 0000 ????             
+ArenaPF1PointerH_length  fffffffffffe06eb ????             
+PlayerColorsLight_length fffffffffffecefd ????             
+FASTFETCH                0000 ????         (R )
+0.skipL010150            0000 ????         (R )
+0.skipL010160            0000 ????         (R )
+var0                     0000 ????         (R )
+0.skipL016089            0000 ????         (R )
+preambleTimer            0000 ????         (R )
+preambleState            0000 ????             
+4.Character20Attack      0000 ????         (R )
+SS_frameCount            0000 ????         (R )
+screenheight             0000 ????         (R )
+musicVoice1Pointer       0000 ????         (R )
+Arena17Playfield         0000 ????         (R )
+Arena26Playfield         0000 ????         (R )
+Arena8Playfield          0000 ????         (R )
+RTLVD_stateFlags         0000 ????         (R )
+Song_EXO_Voice1_length   fffffffffffe2c0c ????             
+4.Check7800PauseButton   0000 ????         (R )
+0.skipL07287             0000 ????         (R )
+qtcontroller             0000 ????         (R )
+RangedAttack             0000 ????         (R )
+player3Y                 0000 ????             
+player4X                 0000 ????             
+4.DivideByPfrowheight    0000 ????         (R )
+ArenaPF2PointerH_length  fffffffffffe06a5 ????             
+CharacterWeights_length  ffffffffffff2efd ????             
+noscore                  0000 ????         (R )
+0.skipL010151            0000 ????         (R )
+4.CycleCharacterLeft     0000 ????         (R )
+0.skipL016101            0000 ????         (R )
+var1                     0000 ????         (R )
+CharacterHeights_length  fffffffffffe8ebc ????             
+HarpyFlapCooldownFrames  0000 ????         (R )
+Arena0Colors_length      fffffffffffe0aa4 ????             
+4.Character21Attack      0000 ????         (R )
+4.Character30Attack      0000 ????         (R )
+playerAttackCooldown     0000 ????             
+SoundPointersL_length    fffffffffffe2efd ????             
+Arena18Playfield         0000 ????         (R )
+Arena27Playfield         0000 ????         (R )
+Arena9Playfield          0000 ????         (R )
+playerRecoveryFrames     0000 ????         (R )
+SS_frameCount1           0000 ????         (R )
+characterSelectPlayer    0000 ????             
+0.skipL07288             0000 ????         (R )
+defenderID               0000 ????         (R )
+var10                    0000 ????         (R )
+Sound_SoundSpecialMove_length fffffffffffe2e3d ????             
+player4Y                 0000 ????             
+SongPointers2L_length    fffffffffffe2ee3 ????             
+NoteDecayFrames          0000 ????         (R )
+SquareTable_length       fffffffffffe8e5d ????             
+PlayerCharacter          0000 ????         (R )
+0.skipL010143            0000 ????         (R )
+0.skipL010153            0000 ????         (R )
+0.skipL010162            0000 ????         (R )
+Arena10Colors_length     fffffffffffe0996 ????             
+4.ShamoneJumpCheckEnhancedRight 0000 ????         (R )
+var2                     0000 ????         (R )
+frame                    0000 ????         (R )
+0.skipL017099            0000 ????         (R )
+QuestionMarkSprite_length ffffffffffff4efd ????             
+C6E_stateFlags           0000 ????         (R )
+Arena1Colors_length      fffffffffffe0a89 ????             
+4.Character22Attack      0000 ????         (R )
+Arena19Playfield         0000 ????         (R )
+Arena28Playfield         0000 ????         (R )
+bmp_48x2_1_index         0000 ????         (R )
+titlescreenWindow1       0000 ????         (R )
+0.skipL02503             0000 ????         (R )
+ROM2k                    0000 ????         (R )
+switchbw                 0000 ????         (R )
+titleParadeActive        0000 ????         (R )
+Sound_SoundPlayerEliminated_length fffffffffffe2e82 ????             
+var11                    0000 ????         (R )
+var20                    0000 ????         (R )
+GameState                0000 ????         (R )
+vblank_bB_code           0000 ????         (R )
+CharacterAttackTypes_length fffffffffffe8ea9 ????             
+div8                     0000 ????         (R )
+player1RecoveryFrames    0000 ????             
+HSD_stateFlags           0000 ????         (R )
+titleParadeCharacter     0000 ????         (R )
+player2RecoveryFrames    0000 ????             
+rand16                   0000 ????         (R )
+var3                     0000 ????         (R )
+0.skipL016130            0000 ????         (R )
+Arena11Colors_length     fffffffffffe097b ????             
+Arena20Colors_length     fffffffffffe0888 ????             
+4.CheckRightGenesis      0000 ????         (R )
+BitMask_length           ffffffffffff2e06 ????             
+attackerID               0000 ????         (R )
+LCS_animationFrame       0000 ????         (R )
+4.Character23Attack      0000 ????         (R )
+Arena2Colors_length      fffffffffffe0a6e ????             
+Arena29Playfield         0000 ????         (R )
+bmp_48x2_2_index         0000 ????         (R )
+titlescreenWindow2       0000 ????         (R )
+0.skipL02504             0000 ????         (R )
+mk_48x2_4_on             0000 ????         (R )
+0.skipL03251             0000 ????         (R )
+var12                    0000 ????         (R )
+var21                    0000 ????         (R )
+NoteAttackFrames         0000 ????         (R )
+var30                    0000 ????         (R )
+ArenaPF1PointerL_length  fffffffffffe070e ????             
+ArenaPF2PointerL_length  fffffffffffe06c8 ????             
+0.skipL010164            0000 ????         (R )
+0.skipL010092            0000 ????         (R )
+0.skipL016113            0000 ????         (R )
+var4                     0000 ????         (R )
+0.skipL017103            0000 ????         (R )
+0.skipL017112            0000 ????         (R )
+0.skipL017121            0000 ????         (R )
+0.skipL017130            0000 ????         (R )
+player3RecoveryFrames    0000 ????             
+Arena12Colors_length     fffffffffffe0960 ????             
+Arena21Colors_length     fffffffffffe086d ????             
+Arena30Colors_length     fffffffffffe077a ????             
+WinnerScreenPlayfield    0000 ????         (R )
+arenaScrollOffset        0000 ????             
+mk_gameselect_on         0000 ????         (R )
+4.Character24Attack      0000 ????         (R )
+Arena3Colors_length      fffffffffffe0a53 ????             
+4.SetPlayerCharacterArtBank2 0000 ????         (R )
+titlescreenWindow3       0000 ????         (R )
+0.skipL02505             0000 ????         (R )
+bmp_48x2_3_index         0000 ????         (R )
+0.skipL03261             0000 ????         (R )
+PlayerANDMask_length     fffffffffffec40b ????             
+4.ShamoneJumpCheckEnhanced 0000 ????         (R )
+pfcolortable             0000 ????         (R )
+var13                    0000 ????         (R )
+var22                    0000 ????         (R )
+var31                    0000 ????         (R )
+var40                    0000 ????         (R )
+CharacterAOEOffsets_length fffffffffffe8e96 ????             
+PSE_soundID              0000 ????         (R )
+PXE                      0000 ????         (R )
+HealthBarPatterns_length ffffffffffff0efd ????             
+minikernel               0000 ????         (R )
+var5                     0000 ????         (R )
+0.skipL016150            0000 ????         (R )
+CharacterMissileMomentumX_length ffffffffffff2e3f ????             
+PlayerState              0000 ????         (R )
+player4RecoveryFrames    0000 ????             
+Arena13Colors_length     fffffffffffe0945 ????             
+Arena22Colors_length     fffffffffffe0852 ????             
+Arena31Colors_length     fffffffffffe075f ????             
+RandomCharacter          0000 ????         (R )
+4.Character16Attack      0000 ????         (R )
+4.Character25Attack      0000 ????         (R )
+Sound_SoundLandingSafe_length fffffffffffe2e0f ????             
+4.SetPlayerCharacterArtBank3 0000 ????         (R )
+Arena4Colors_length      fffffffffffe0a38 ????             
+WinnerScreenColorsBW     0000 ????         (R )
+titlescreenWindow4       0000 ????         (R )
+playerState              0000 ????         (R )
+0.skipL03253             0000 ????         (R )
+0.skipL03271             0000 ????         (R )
+Sound_SoundJump_length   fffffffffffe2e99 ????             
+0.skipL08939             0000 ????         (R )
+var14                    0000 ????         (R )
+var23                    0000 ????         (R )
+var32                    0000 ????         (R )
+var41                    0000 ????         (R )
+SafeFallVelocityThresholds_length fffffffffffe8e83 ????             
+Sound_SoundLandingDamage_length fffffffffffe2df8 ????             
+var6                     0000 ????         (R )
+CharacterMissileSpawnOffsetLeft_length ffffffffffff2e52 ????             
+0.skipL016151            0000 ????         (R )
+0.skipL017060            0000 ????         (R )
+CharacterMissileMomentumY_length ffffffffffff2e2c ????             
+WeightDividedBy20_length fffffffffffe8e70 ????             
+player1State             0000 ????             
+Arena14Colors_length     fffffffffffe092a ????             
+Arena23Colors_length     fffffffffffe0837 ????             
+Sound_SoundAttackHit_length fffffffffffe2ec7 ????             
+mk_score_on              0000 ????         (R )
+4.Character26Attack      0000 ????         (R )
+4.SetPlayerCharacterArtBank4 0000 ????         (R )
+missile0height           0000 ????         (R )
+Arena5Colors_length      fffffffffffe0a1d ????             
+0.skipL03263             0000 ????         (R )
+var15                    0000 ????         (R )
+var24                    0000 ????         (R )
+var33                    0000 ????         (R )
+var42                    0000 ????         (R )
+HJ_stateFlags            0000 ????         (R )
+player9height            0000 ????         (R )
+temp2.temp3              0000 ????         (R )
+RTL_stateFlags           0000 ????         (R )
+--- 438 Unresolved Symbols
+
+   208 bytes of ROM space left in bank 1
+   2312 bytes of ROM space left in bank 2
+   2296 bytes of ROM space left in bank 3
+   2392 bytes of ROM space left in bank 4
+   2392 bytes of ROM space left in bank 5
+   281 bytes of ROM space left in bank 6
+   958 bytes of ROM space left in bank 7
+   1102 bytes of ROM space left in bank 8
+   76 bytes of ROM space left in bank 9

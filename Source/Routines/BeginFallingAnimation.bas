@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/BeginFallingAnimation.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Begin Falling Animation
 
 BeginFallingAnimation
@@ -52,7 +52,7 @@ BeginFallingAnimation
           gosub SetGameScreenLayout bank8
           rem Set game screen layout (32×8 for playfield scanning)
           
-          let COLUBK = ColGray(0)
+          COLUBK = ColGray(0)
           rem Set background color
           
           rem Initialize player positions in quadrants

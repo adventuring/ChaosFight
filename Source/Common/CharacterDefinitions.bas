@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Common/CharacterDefinitions.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
           rem Character Definitions
           rem Each character definition includes:

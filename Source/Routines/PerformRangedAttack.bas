@@ -1,7 +1,7 @@
 PerformRangedAttack
           rem
           rem ChaosFight - Source/Routines/PerformRangedAttack.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Perform Ranged Attack
           rem Executes a ranged attack for the specified player.
           rem Spawns a projectile missile that travels across the

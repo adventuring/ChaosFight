@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Routines/ArenaLoader.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           
 LoadArena
           rem Arena Loader
@@ -37,7 +37,7 @@ LoadArena
           
           if selectedArena_R = RandomArena then LoadRandomArena
           
-          let temp1 = selectedArena_R
+          temp1 = selectedArena_R
           rem Get arena index (0-15)
           
           gosub DWS_GetBWMode bank12
@@ -66,7 +66,7 @@ LoadArenaByIndex
           rem Validate arena index (0-31 supported by pointer tables)
           rem Note: Only 0-15 are selectable (MaxArenaID), but tables
           rem support 0-31
-          if temp1 > 31 then let temp1 = 0
+          if temp1 > 31 then temp1 = 0
           
           rem Load playfield pointers from tables using index
           asm
@@ -121,9 +121,9 @@ LoadRandomArena
           rem
           rem Constraints: None
           rem Select random arena (0-31) using proper RNG
-          let temp1 = rand
+          temp1 = rand
           rem Get random value (0-255)
-          let temp1 = temp1 & 31
+          temp1 = temp1 & 31
           if temp1 > MaxArenaID then LoadRandomArena
           goto LoadArenaByIndex
 

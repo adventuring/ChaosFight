@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/AnimationHelpers.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Small animation helper functions moved for bank optimization
 
 SetIdleAnimation
@@ -9,7 +9,7 @@ SetIdleAnimation
           rem
           rem OUTPUT: None
           rem EFFECTS: Changes player animation to ActionIdle state
-          let temp2 = ActionIdle
+          temp2 = ActionIdle
           gosub SetPlayerAnimation bank11
           return
 SetWalkingAnimation
@@ -21,7 +21,7 @@ SetWalkingAnimation
           rem
           rem OUTPUT: None
           rem EFFECTS: Changes player animation to ActionWalking state
-          let temp2 = ActionWalking
+          temp2 = ActionWalking
           gosub SetPlayerAnimation bank11
           return
 

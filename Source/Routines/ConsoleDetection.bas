@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/ConsoleDetection.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Console Detection
           rem Detects whether running on Atari 2600 or 7800 console
           rem Based on DetectConsole.s assembly implementation

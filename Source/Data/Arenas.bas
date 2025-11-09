@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Data/Arenas.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem Arena playfield data (not generated - edit manually)
           rem Arena Data - Pure Data Format
           rem

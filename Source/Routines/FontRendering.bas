@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Routines/FontRendering.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           
           rem FONT RENDERING - HEX DIGITS 0-f
           rem Renders 8×16 pixel hexadecimal digits (0-9, A-F) for:
@@ -85,15 +85,15 @@ DrawDigit
           rem Constraints: Must be colocated with SetSprite0-5,
           rem LoadPlayerDigit (all called via goto)
           rem Clamp digit value to 0-15
-          if temp1 > 15 then let temp1 = 15
+          if temp1 > 15 then temp1 = 15
           
-          let temp6 = temp1 * 16
+          temp6 = temp1 * 16
           rem Calculate data offset: digit * 16 (16 bytes per digit)
           
           rem Set sprite position and color based on spriteSelect
           rem Clamp spriteSelect to valid range (4-5 only)
-          if temp5 < 4 then let temp5 = 4
-          if temp5 > 5 then let temp5 = 4
+          if temp5 < 4 then temp5 = 4
+          if temp5 > 5 then temp5 = 4
           rem Preserve spriteSelect in temp5 for LoadPlayerDigit
           if temp5 = 4 then goto SetSprite4 else goto SetSprite5
           
@@ -153,12 +153,12 @@ LoadPlayerDigit
           rem Constraints: Must be colocated with LoadSprite4Ptr-5Ptr
           rem (all called via on/goto)
           rem Clamp digit offset to valid range (0-240 for digits 0-15)
-          if temp6 > 240 then let temp6 = 240
+          if temp6 > 240 then temp6 = 240
           rem Dispatch to sprite-specific pointer loader based on
           rem spriteSelect
           rem (still in temp5 from DrawDigit)
-          if temp5 < 4 then let temp5 = 4
-          if temp5 > 5 then let temp5 = 4
+          if temp5 < 4 then temp5 = 4
+          if temp5 > 5 then temp5 = 4
           if temp5 = 4 then goto LoadSprite4Ptr else goto LoadSprite5Ptr
           
 LoadSprite4Ptr
@@ -211,7 +211,7 @@ DrawPlayerNumber
           rem   temp3 = Y position
           rem   temp5 = sprite select (0=player0, 1=player1)
           rem Player colors are looked up from a table.
-          let temp1 = temp1 + 1
+          temp1 = temp1 + 1
           rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
           
           rem Look up player color
@@ -219,22 +219,22 @@ DrawPlayerNumber
           on temp1 goto SetP1Color SetP2Color SetP3Color SetP4Color
           
 SetP1Color
-          let temp4 = ColIndigo(14)
+          temp4 = ColIndigo(14)
           goto DrawPlayerDigitNow
           rem Indigo
           
 SetP2Color
-          let temp4 = ColRed(14)
+          temp4 = ColRed(14)
           goto DrawPlayerDigitNow
           rem Red
           
 SetP3Color
-          let temp4 = ColYellow(14)
+          temp4 = ColYellow(14)
           goto DrawPlayerDigitNow
           rem Yellow
           
 SetP4Color
-          let temp4 = ColTurquoise(14)
+          temp4 = ColTurquoise(14)
           rem Turquoise (SECAM macro maps to Cyan)
           goto DrawPlayerDigitNow
           
@@ -253,7 +253,7 @@ DrawArenaNumber
           rem   temp3 = Y position
           rem temp5 = sprite select (0=player0, 1=player1, 2=player2,
           rem 3=player3, 4=player4, 5=player5)
-          let temp4 = ColGrey(14)
+          temp4 = ColGrey(14)
           rem White
           goto DrawDigit
           rem tail call

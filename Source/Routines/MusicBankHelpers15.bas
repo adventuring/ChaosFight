@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Routines/MusicBankHelpers15.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           
           rem Songs Bank Helper Functions (bank 15)
           rem These functions access song data tables and streams in
@@ -23,7 +23,7 @@ LoadSongPointer
           if temp1 < 0 then goto LSP15_InvalidSong
           if temp1 > 3 then goto LSP15_InvalidSong
           rem Calculate compact index: index = songID
-          let temp2 = temp1
+          temp2 = temp1
           let songPointer = SongPointers2H[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers2L[temp2]
@@ -52,7 +52,7 @@ LoadSongVoice1Pointer
           if temp1 < 0 then let songPointer = 0 : return
           if temp1 > 3 then let songPointer = 0 : return
           rem Calculate compact index: index = songID
-          let temp2 = temp1
+          temp2 = temp1
           let songPointer = SongPointers2SecondH[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers2SecondL[temp2]
@@ -98,9 +98,9 @@ end
           if temp4 = 0 then LoadMusicNote0EndOfTrack
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-          let temp6 = temp2 & %11110000
+          temp6 = temp2 & %11110000
           rem   AUDCV
-          let temp6 = temp6 / 16
+          temp6 = temp6 / 16
           let MusicVoice0TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope
@@ -188,9 +188,9 @@ end
           rem Check for end of track (Duration = 0)
           if temp4 = 0 then LoadMusicNote1EndOfTrack
           
-          let temp6 = temp2 & %11110000
+          temp6 = temp2 & %11110000
           rem Extract AUDC and AUDV
-          let temp6 = temp6 / 16
+          temp6 = temp6 / 16
           let MusicVoice1TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope

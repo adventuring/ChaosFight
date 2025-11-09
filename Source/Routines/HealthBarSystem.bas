@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/HealthBarSystem.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
 
           rem HEALTH BAR SYSTEM USING PFSCORE
 
@@ -41,30 +41,30 @@ UpdatePlayer1HealthBar
           rem Clamp health to valid range
           rem Note: < 0 check removed - unsigned bytes cannot be
           rem negative
-          if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
+          if temp1 > PlayerHealthMax then temp1 = PlayerHealthMax
           
           rem Compare health against thresholds starting from 83
           rem   downward
           rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2
           rem   pixels, 0-11 = 0 pixels
-          let temp2 = 0
+          temp2 = 0
           rem patternIndex will hold the pattern index (0-8)
           
           rem Check thresholds from highest (83) to lowest (11)
           rem 84-100 = 8 pixels
-          if temp1 > 83 then let temp2 = 8 : goto P1SetPattern
+          if temp1 > 83 then temp2 = 8 : goto P1SetPattern
           rem 72-83 = 7 pixels
-          if temp1 > 71 then let temp2 = 7 : goto P1SetPattern
+          if temp1 > 71 then temp2 = 7 : goto P1SetPattern
           rem 60-71 = 6 pixels
-          if temp1 > 59 then let temp2 = 6 : goto P1SetPattern
+          if temp1 > 59 then temp2 = 6 : goto P1SetPattern
           rem 48-59 = 5 pixels
-          if temp1 > 47 then let temp2 = 5 : goto P1SetPattern
+          if temp1 > 47 then temp2 = 5 : goto P1SetPattern
           rem 36-47 = 4 pixels
-          if temp1 > 35 then let temp2 = 4 : goto P1SetPattern
+          if temp1 > 35 then temp2 = 4 : goto P1SetPattern
           rem 24-35 = 3 pixels
-          if temp1 > 23 then let temp2 = 3 : goto P1SetPattern
+          if temp1 > 23 then temp2 = 3 : goto P1SetPattern
           rem 12-23 = 2 pixels
-          if temp1 > 11 then let temp2 = 2 : goto P1SetPattern
+          if temp1 > 11 then temp2 = 2 : goto P1SetPattern
           rem 0-11 = 0 pixels (patternIndex already 0)
           
 P1SetPattern
@@ -83,7 +83,7 @@ P1SetPattern
           rem Look up bit pattern from table using patternIndex as index
           rem Note: HealthBarPatterns is in same bank (Bank 8) as this
           rem function, so no bank prefix needed
-          let temp3 = HealthBarPatterns[temp2]
+          temp3 = HealthBarPatterns[temp2]
           
           let pfscore1 = temp3
           rem Set pfscore1 to health bar pattern
@@ -109,30 +109,30 @@ UpdatePlayer2HealthBar
           rem Clamp health to valid range
           rem Note: < 0 check removed - unsigned bytes cannot be
           rem negative
-          if temp1 > PlayerHealthMax then let temp1 = PlayerHealthMax
+          if temp1 > PlayerHealthMax then temp1 = PlayerHealthMax
           
           rem Compare health against thresholds starting from 83
           rem   downward
           rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2
           rem   pixels, 0-11 = 0 pixels
-          let temp2 = 0
+          temp2 = 0
           rem patternIndex will hold the pattern index (0-8)
           
           rem Check thresholds from highest (83) to lowest (11)
           rem 84-100 = 8 pixels
-          if temp1 > 83 then let temp2 = 8 : goto P2SetPattern
+          if temp1 > 83 then temp2 = 8 : goto P2SetPattern
           rem 72-83 = 7 pixels
-          if temp1 > 71 then let temp2 = 7 : goto P2SetPattern
+          if temp1 > 71 then temp2 = 7 : goto P2SetPattern
           rem 60-71 = 6 pixels
-          if temp1 > 59 then let temp2 = 6 : goto P2SetPattern
+          if temp1 > 59 then temp2 = 6 : goto P2SetPattern
           rem 48-59 = 5 pixels
-          if temp1 > 47 then let temp2 = 5 : goto P2SetPattern
+          if temp1 > 47 then temp2 = 5 : goto P2SetPattern
           rem 36-47 = 4 pixels
-          if temp1 > 35 then let temp2 = 4 : goto P2SetPattern
+          if temp1 > 35 then temp2 = 4 : goto P2SetPattern
           rem 24-35 = 3 pixels
-          if temp1 > 23 then let temp2 = 3 : goto P2SetPattern
+          if temp1 > 23 then temp2 = 3 : goto P2SetPattern
           rem 12-23 = 2 pixels
-          if temp1 > 11 then let temp2 = 2 : goto P2SetPattern
+          if temp1 > 11 then temp2 = 2 : goto P2SetPattern
           rem 0-11 = 0 pixels (patternIndex already 0)
           
 P2SetPattern
@@ -151,7 +151,7 @@ P2SetPattern
           rem Look up bit pattern from table using patternIndex as index
           rem Note: HealthBarPatterns is in same bank (Bank 8) as this
           rem function, so no bank prefix needed
-          let temp3 = HealthBarPatterns[temp2]
+          temp3 = HealthBarPatterns[temp2]
           
           let pfscore2 = temp3
           rem Set pfscore2 to health bar pattern
@@ -179,11 +179,11 @@ UpdatePlayer12HealthBars
           rem   UpdatePlayer2HealthBar - accesses temp1,
           rem   HealthBarPatterns
           rem Constraints: Tail call to UpdatePlayer2HealthBar
-          let temp1 = playerHealth[0]
+          temp1 = playerHealth[0]
           rem Update P1 health bar
           gosub UpdatePlayer1HealthBar
           
-          let temp1 = playerHealth[1]
+          temp1 = playerHealth[1]
           rem Update P2 health bar
           goto UpdatePlayer2HealthBar
           rem tail call
@@ -207,7 +207,7 @@ InitializeHealthBars
           rem   UpdatePlayer2HealthBar - accesses temp1,
           rem   HealthBarPatterns
           rem Constraints: Tail call to UpdatePlayer2HealthBar
-          let temp1 = PlayerHealthMax
+          temp1 = PlayerHealthMax
           rem Set initial health bars to full (100%)
           gosub UpdatePlayer1HealthBar
           rem tail call
@@ -236,63 +236,63 @@ UpdatePlayer34HealthBars
           
           rem Get Player 3 health (0-100), clamp to 99
           rem Use $AA (bad BCD displays as AA) if inactive
-          let temp1 = playerHealth[2]
+          temp1 = playerHealth[2]
           rem (playerCharacter = NoCharacter) or eliminated
           if playerCharacter[2] = NoCharacter then goto P3UseAA
           rem Check if Player 3 is eliminated (bit 2 of playersEliminated = 4)
-          let temp3 = playersEliminated_R & PlayerEliminatedPlayer2
+          temp3 = playersEliminated_R & PlayerEliminatedPlayer2
           if temp3 then goto P3UseAA
-          if PlayerHealthMax - 1 < temp1 then let temp1 = PlayerHealthMax - 1
+          if PlayerHealthMax - 1 < temp1 then temp1 = PlayerHealthMax - 1
           rem Clamp health to valid range
           goto P3ConvertHealth
           
 P3UseAA
           rem Player 3 inactive/eliminated - use $AA (bad BCD displays as AA)
-          let temp4 = $AA
+          temp4 = $AA
           goto P4GetHealth
           
 P3ConvertHealth
           rem Convert Player 3 health to packed BCD (00-99)
-          let temp6 = 0
+          temp6 = 0
 P3ConvertLoop
           if temp1 < 10 then goto P3Finalize
-          let temp1 = temp1 - 10
-          let temp6 = temp6 + 1
+          temp1 = temp1 - 10
+          temp6 = temp6 + 1
           goto P3ConvertLoop
 P3Finalize
-          let temp4 = temp6 * 16
-          let temp4 = temp4 + temp1
+          temp4 = temp6 * 16
+          temp4 = temp4 + temp1
           rem p3BCD now contains P3 health as BCD (e.g., $75 for 75)
           
 P4GetHealth
           rem Get Player 4 health (0-100), clamp to 99
           rem Use $AA (bad BCD displays as AA) if inactive
-          let temp2 = playerHealth[3]
+          temp2 = playerHealth[3]
           rem (playerCharacter = NoCharacter) or eliminated
           if playerCharacter[3] = NoCharacter then goto P4UseAA
           rem Check if Player 4 is eliminated (bit 3 of playersEliminated = 8)
-          let temp3 = playersEliminated_R & PlayerEliminatedPlayer3
+          temp3 = playersEliminated_R & PlayerEliminatedPlayer3
           if temp3 then goto P4UseAA
-          if temp2 > 99 then let temp2 = 99
+          if temp2 > 99 then temp2 = 99
           rem Clamp health to valid range
           goto P4ConvertHealth
           
 P4UseAA
           rem Player 4 inactive/eliminated - use $AA (bad BCD displays as AA)
-          let temp5 = $AA
+          temp5 = $AA
           goto SetScoreBytes
           
 P4ConvertHealth
           rem Convert Player 4 health to packed BCD (00-99)
-          let temp6 = 0
+          temp6 = 0
 P4ConvertLoop
           if temp2 < 10 then goto P4Finalize
-          let temp2 = temp2 - 10
-          let temp6 = temp6 + 1
+          temp2 = temp2 - 10
+          temp6 = temp6 + 1
           goto P4ConvertLoop
 P4Finalize
-          let temp5 = temp6 * 16
-          let temp5 = temp5 + temp2
+          temp5 = temp6 * 16
+          temp5 = temp5 + temp2
           rem p4BCD now contains P4 health as BCD (e.g., $50 for 50)
           
 SetScoreBytes

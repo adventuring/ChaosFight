@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Data/Common/CharacterTables.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
+          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           rem
           rem Character data tables used across multiple banks.
           rem Included from Source/Common/CharacterDefinitions.bas prior to any bank code.

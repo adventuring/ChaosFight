@@ -34,14 +34,18 @@ BeginArenaSelect
           rem
           rem Constraints: Called from ChangeGameMode when entering
           rem arena select mode (gameMode 5)
-          let selectedArena_W = 0 : rem Initialize arena selection state
-          let fireHoldTimer_W = 0 : rem Start at arena 1 (0-indexed, displays as 1)
+          let selectedArena_W = 0 : 
+          rem Initialize arena selection state
+          let fireHoldTimer_W = 0 : 
+          rem Start at arena 1 (0-indexed, displays as 1)
           rem Initialize fire hold timer (for returning to Character
           rem   Select)
           
-          gosub SetAdminScreenLayout bank8 : rem Set admin screen layout (32×32 for character display)
+          gosub SetAdminScreenLayout bank8 : 
+          rem Set admin screen layout (32×32 for character display)
           
-          let COLUBK = ColGray(0) : rem Set background color (B&W safe)
+          let COLUBK = ColGray(0) : 
+          rem Set background color (B&W safe)
           
           rem Playfield layout is static; ArenaSelect renders via playfield data
           return

@@ -70,7 +70,8 @@ PhysicsApplyGravity
           rem Constraints: Frooty (8) and Dragon of Storms (2) skip
           rem gravity entirely. RoboTito (13) skips gravity when latched
           rem to ceiling
-          let temp1 = 0 : rem Loop through all players (0-3)
+          let temp1 = 0 : 
+          rem Loop through all players (0-3)
 GravityLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
           rem Quadtari)
@@ -113,7 +114,8 @@ GravityCheckRoboTitoDone
           rem Determine gravity acceleration rate based on character
           rem   (8.8 fixed-point subpixel)
           rem Uses tunable constants from Constants.bas for easy
-          let gravityRate_W = GravityNormal : rem   adjustment
+          let gravityRate_W = GravityNormal : 
+          rem   adjustment
           rem Default gravity acceleration (normal rate)
           if temp6 = CharacterHarpy then let gravityRate_W = GravityReduced
           rem Harpy: reduced gravity rate
@@ -123,8 +125,10 @@ GravityCheckRoboTitoDone
           rem playerIndex already set, gravityRate is gravity strength
           rem   in subpixel (low byte)
           rem AddVelocitySubpixelY expects temp2, so save temp2 and use
-          let playfieldColumn_W = temp2 : rem   it for gravityRate
-          let temp2 = gravityRate_R : rem Save playfieldColumn temporarily
+          let playfieldColumn_W = temp2 : 
+          rem   it for gravityRate
+          let temp2 = gravityRate_R : 
+          rem Save playfieldColumn temporarily
           gosub AddVelocitySubpixelY
           rem Restore playfieldColumn
           
@@ -140,8 +144,10 @@ GravityCheckRoboTitoDone
           gosub ConvertPlayerXToPlayfieldColumn
           
           rem Calculate row where player feet are (bottom of sprite)
-          let temp3 = playerY[temp1] + PlayerSpriteHeight : rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
-          let temp2 = temp3 : rem Divide by pfrowheight using helper
+          let temp3 = playerY[temp1] + PlayerSpriteHeight : 
+          rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
+          let temp2 = temp3 : 
+          rem Divide by pfrowheight using helper
           gosub DivideByPfrowheight
           let temp4 = temp2
           rem feetRow = row where feet are
@@ -158,16 +164,19 @@ GravityCheckRoboTitoDone
           rem Beyond playfield bounds, check if at bottom
           
           rem Check if playfield pixel exists in row below feet
-          let temp3 = 0 : rem Track pfread result (1 = ground pixel set)
+          let temp3 = 0 : 
+          rem Track pfread result (1 = ground pixel set)
           if pfread(temp2, temp5) then let temp3 = 1
           if temp3 = 0 then goto GravityNextPlayer
           rem Ground detected! Stop falling and clamp position to ground
-          let playerVelocityY[temp1] = 0 : rem Zero Y velocity (stop falling)
+          let playerVelocityY[temp1] = 0 : 
+          rem Zero Y velocity (stop falling)
           let playerVelocityYL[temp1] = 0
           
           rem Calculate Y position for top of ground row using repeated
           rem   addition
-          let rowYPosition_W = 0 : rem Loop to add pfrowheight to rowYPosition, rowBelow times
+          let rowYPosition_W = 0 : 
+          rem Loop to add pfrowheight to rowYPosition, rowBelow times
           let rowCounter_W = temp5
           if rowCounter_R = 0 then goto GravityRowCalcDone
 GravityRowCalcLoop
@@ -177,11 +186,14 @@ GravityRowCalcLoop
 GravityRowCalcDone
           rem rowYPosition now contains rowBelow * pfrowheight (Y
           rem   position of top of ground row)
-          let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight : rem Clamp playerY so feet are at top of ground row
-          let playerSubpixelY_W[temp1] = playerY[temp1] : rem Also sync subpixel position
+          let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight : 
+          rem Clamp playerY so feet are at top of ground row
+          let playerSubpixelY_W[temp1] = playerY[temp1] : 
+          rem Also sync subpixel position
           let playerSubpixelY_WL[temp1] = 0
           
-          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping) : rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping) : 
+          rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           rem Clear bit 2 (jumping flag)
           
           rem If RoboTito, set stretch permission on landing
@@ -208,12 +220,17 @@ PAG_SetRoboTitoStretchPermission
           rem
           rem Called Routines: None
           rem Constraints: Only called for RoboTito character on landing
-          let temp2 = roboTitoCanStretch_R : rem Set stretch permission bit for this player using BitMask array lookup
-          let temp3 = BitMask[temp1] : rem Load current flags
-          let temp2 = temp2 | temp3 : rem Get bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
-          let roboTitoCanStretch_W = temp2 : rem Set bit for this player
+          let temp2 = roboTitoCanStretch_R : 
+          rem Set stretch permission bit for this player using BitMask array lookup
+          let temp3 = BitMask[temp1] : 
+          rem Load current flags
+          let temp2 = temp2 | temp3 : 
+          rem Get bit mask: 1, 2, 4, 8 for players 0, 1, 2, 3
+          let roboTitoCanStretch_W = temp2 : 
+          rem Set bit for this player
           rem Store updated permission flags
-          let missileStretchHeight_W[temp1] = 0 : rem Clear stretch missile height on landing (not stretching)
+          let missileStretchHeight_W[temp1] = 0 : 
+          rem Clear stretch missile height on landing (not stretching)
           return
           
 GravityCheckBottom
@@ -224,7 +241,8 @@ GravityCheckBottom
           
           rem Bottom row is always ground - clamp to bottom
           rem Calculate (pfrows - 1) * pfrowheight using repeated
-          let rowYPosition_W = 0 : rem   addition
+          let rowYPosition_W = 0 : 
+          rem   addition
           let rowCounter_W = pfrows - 1
           if rowCounter_R = 0 then goto GravityBottomCalcDone
 GravityBottomCalcLoop
@@ -240,7 +258,8 @@ GravityBottomCalcDone
           if temp6 = CharacterRoboTito then PAG_SetRoboTitoStretchPermission
           
 GravityNextPlayer
-          let temp1 = temp1 + 1 : rem Move to next player
+          let temp1 = temp1 + 1 : 
+          rem Move to next player
           if temp1 < 4 then goto GravityLoop
           
           return
@@ -276,7 +295,8 @@ ApplyMomentumAndRecovery
           rem
           rem Called Routines: None
           rem Constraints: None
-          let temp1 = 0 : rem Loop through all players (0-3)
+          let temp1 = 0 : 
+          rem Loop through all players (0-3)
 MomentumRecoveryLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
           rem Quadtari)
@@ -304,19 +324,22 @@ MomentumRecoveryProcess
           rem Velocity decay during recovery (knockback slows down over
           rem time)
           if playerVelocityX[temp1] <= 0 then MomentumRecoveryDecayNegative
-          let playerVelocityX[temp1] = playerVelocityX[temp1] - 1 : rem Positive velocity: decay by 1
+          let playerVelocityX[temp1] = playerVelocityX[temp1] - 1 : 
+          rem Positive velocity: decay by 1
           rem Also decay subpixel if integer velocity is zero
           if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
           goto MomentumRecoveryNext
 MomentumRecoveryDecayNegative
           if playerVelocityX[temp1] >= 0 then goto MomentumRecoveryNext
           rem Negative velocity: decay by 1 (add 1 to make less
-          let playerVelocityX[temp1] = playerVelocityX[temp1] + 1 : rem   negative)
+          let playerVelocityX[temp1] = playerVelocityX[temp1] + 1 : 
+          rem   negative)
           rem Also decay subpixel if integer velocity is zero
           if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
           
 MomentumRecoveryNext
-          let temp1 = temp1 + 1 : rem Next player
+          let temp1 = temp1 + 1 : 
+          rem Next player
           if temp1 < 4 then goto MomentumRecoveryLoop
           
           return
@@ -355,7 +378,8 @@ CheckBoundaryCollisions
           rem PlayerRightWrapThreshold wraps to PlayerLeftEdge). Vertical
           rem boundaries clamped (Y < 20 clamped to 20, Y > 80 clamped
           rem to 80)
-          let temp1 = 0 : rem Loop through all players (0-3)
+          let temp1 = 0 : 
+          rem Loop through all players (0-3)
 BoundaryLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
           rem Quadtari)
@@ -398,7 +422,8 @@ BoundaryCheckBounds
           if playerY[temp1] > 80 then let playerVelocityYL[temp1] = 0
 
 BoundaryNextPlayer
-          let temp1 = temp1 + 1 : rem Move to next player
+          let temp1 = temp1 + 1 : 
+          rem Move to next player
           if temp1 < 4 then goto BoundaryLoop
           
           return
@@ -410,7 +435,7 @@ rem Function moved to PlayerPhysicsCollisions.bas; call via `gosub CheckPlayfiel
 
           rem Check Multi-player Collisions
           rem
-rem Function moved to PlayerCollisionResolution.bas; call via `gosub CheckAllPlayerCollisions bank8`.
+rem Function moved to PlayerCollisionResolution.bas; call via `gosub CheckAllPlayerCollisions bank11`.
 
           rem Divide By Pfrowheight Helper
 

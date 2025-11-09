@@ -37,9 +37,11 @@ LoadArena
           
           if selectedArena_R = RandomArena then LoadRandomArena
           
-          let temp1 = selectedArena_R : rem Get arena index (0-15)
+          let temp1 = selectedArena_R : 
+          rem Get arena index (0-15)
           
-          gosub GetBWMode : rem Load playfield and colors
+          gosub GetBWMode : 
+          rem Load playfield and colors
           goto LoadArenaByIndex
 
 GetBWMode
@@ -62,7 +64,8 @@ GetBWMode
           rem   Color mode
           rem systemFlags bit 6 (SystemFlagColorBWOverride) = 1 means
           rem B&W override
-          let temp2 = switchbw : rem   (from 7800 pause button)
+          let temp2 = switchbw : 
+          rem   (from 7800 pause button)
           if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           return
 
@@ -147,8 +150,10 @@ LoadRandomArena
           rem
           rem Constraints: None
           rem Select random arena (0-15) using proper RNG
-          let temp1 = rand : rem Get random value (0-255)
-          let temp1 = temp1 & 15 : rem Mask to 0-15 range
+          let temp1 = rand : 
+          rem Get random value (0-255)
+          let temp1 = temp1 & 15 : 
+          rem Mask to 0-15 range
           goto LoadArenaByIndex
 
           rem
@@ -163,12 +168,14 @@ ReloadArenaColors
           rem state
           rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
           
-          let temp1 = selectedArena_R : rem Get current arena index
+          let temp1 = selectedArena_R : 
+          rem Get current arena index
           rem Handle random arena (use stored random selection)
           if temp1 = RandomArena then let temp1 = rand & 31
           
           rem Get B&W mode state (same logic as GetBWMode)
-          let temp2 = switchbw : rem Check switchbw and colorBWOverride
+          let temp2 = switchbw : 
+          rem Check switchbw and colorBWOverride
           if systemFlags & SystemFlagColorBWOverride then let temp2 = 1
           
 ReloadArenaColorsDispatch

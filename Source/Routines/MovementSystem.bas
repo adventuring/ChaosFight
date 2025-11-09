@@ -38,7 +38,8 @@ UpdatePlayerMovement
           rem Mutates: currentPlayer, player positions (via UpdatePlayerMovementSingle)
           rem Called Routines: UpdatePlayerMovementSingle
           rem Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (goto target)
-          for currentPlayer = 0 to 1 : rem Update movement for each active player
+          for currentPlayer = 0 to 1 : 
+          rem Update movement for each active player
               gosub UpdatePlayerMovementSingle
           next
           rem Players 2-3 only if Quadtari detected
@@ -72,7 +73,8 @@ UpdatePlayerMovementSingle
           let playerSubpixelX_WL[currentPlayer] = temp2
           goto XNoCarry
 XCarry
-          let playerSubpixelX_WL[currentPlayer] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
+          let playerSubpixelX_WL[currentPlayer] = temp2 : 
+          rem Carry detected: temp3 > 0, extract wrapped low byte
           rem SCRAM RMW: playerSubpixelX_R → playerSubpixelX_W
           let temp4 = playerSubpixelX_R[currentPlayer]
           let temp4 = temp4 + 1
@@ -97,7 +99,8 @@ XNoCarry
           let playerSubpixelY_WL[currentPlayer] = temp2
           goto YNoCarry
 YCarry
-          let playerSubpixelY_WL[currentPlayer] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
+          let playerSubpixelY_WL[currentPlayer] = temp2 : 
+          rem Carry detected: temp3 > 0, extract wrapped low byte
           rem SCRAM RMW: playerSubpixelY_R → playerSubpixelY_W
           let temp4 = playerSubpixelY_R[currentPlayer]
           let temp4 = temp4 + 1
@@ -132,10 +135,12 @@ SetPlayerPosition
           rem Mutates: playerX[], playerY[], playerSubpixelX_W/WL[], playerSubpixelY_W/WL[]
           rem Constraints: None
           let playerX[temp1] = temp2
-          let playerSubpixelX_W[temp1] = temp2 : rem SCRAM write to playerSubpixelX_W
+          let playerSubpixelX_W[temp1] = temp2 : 
+          rem SCRAM write to playerSubpixelX_W
           let playerSubpixelX_WL[temp1] = 0
           let playerY[temp1] = temp3
-          let playerSubpixelY_W[temp1] = temp3 : rem SCRAM write to playerSubpixelY_W
+          let playerSubpixelY_W[temp1] = temp3 : 
+          rem SCRAM write to playerSubpixelY_W
           let playerSubpixelY_WL[temp1] = 0
           return
 
@@ -178,7 +183,8 @@ AddVelocitySubpixelY
           rem Save subpixel amount before using temp2 for accumulator
           let temp4 = temp2
           rem 16-bit accumulator for proper carry detection
-          let temp2.temp3 = playerVelocityYL[temp1] + temp4 : rem Use saved amount in accumulator
+          let temp2.temp3 = playerVelocityYL[temp1] + temp4 : 
+          rem Use saved amount in accumulator
           if temp3 > 0 then VelocityYCarry
           rem No carry: temp3 = 0, use low byte directly
           let playerVelocityYL[temp1] = temp2
@@ -199,7 +205,8 @@ VelocityYCarry
           rem
           rem Constraints: Internal helper for AddVelocitySubpixelY,
           rem only called when carry detected
-          let playerVelocityYL[temp1] = temp2 : rem Carry detected: temp3 > 0, extract wrapped low byte
+          let playerVelocityYL[temp1] = temp2 : 
+          rem Carry detected: temp3 > 0, extract wrapped low byte
           let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
           return
 
@@ -293,7 +300,8 @@ YDistanceDone
           let totalHeight_W = halfHeight1_R + halfHeight2_R
           if temp6 >= totalHeight_R then NoCollision
 
-          let temp3 = 1 : rem Collision detected
+          let temp3 = 1 : 
+          rem Collision detected
           return
 
 NoCollision
@@ -354,27 +362,32 @@ InitializeMovementSystem
           rem Constraints: Initializes all 4 players to same position
           rem (center of screen). All velocities set to zero
           rem Initialize all players to center of screen - inlined for
-          let temp2 = 80 : rem   performance
+          let temp2 = 80 : 
+          rem   performance
           let temp3 = 100
-          let playerX[0] = temp2 : rem Player 0
+          let playerX[0] = temp2 : 
+          rem Player 0
           let playerSubpixelX_W[0] = temp2
           let playerSubpixelX_WL[0] = 0
           let playerY[0] = temp3
           let playerSubpixelY_W[0] = temp3
           let playerSubpixelY_WL[0] = 0
-          let playerX[1] = temp2 : rem Player 1
+          let playerX[1] = temp2 : 
+          rem Player 1
           let playerSubpixelX_W[1] = temp2
           let playerSubpixelX_WL[1] = 0
           let playerY[1] = temp3
           let playerSubpixelY_W[1] = temp3
           let playerSubpixelY_WL[1] = 0
-          let playerX[2] = temp2 : rem Player 2
+          let playerX[2] = temp2 : 
+          rem Player 2
           let playerSubpixelX_W[2] = temp2
           let playerSubpixelX_WL[2] = 0
           let playerY[2] = temp3
           let playerSubpixelY_W[2] = temp3
           let playerSubpixelY_WL[2] = 0
-          let playerX[3] = temp2 : rem Player 3
+          let playerX[3] = temp2 : 
+          rem Player 3
           let playerSubpixelX_W[3] = temp2
           let playerSubpixelX_WL[3] = 0
           let playerY[3] = temp3
@@ -382,19 +395,23 @@ InitializeMovementSystem
           let playerSubpixelY_WL[3] = 0
           
           rem Initialize velocities to zero - inlined for performance
-          let playerVelocityX[0] = 0 : rem Player 0
+          let playerVelocityX[0] = 0 : 
+          rem Player 0
           let playerVelocityXL[0] = 0
           let playerVelocityY[0] = 0
           let playerVelocityYL[0] = 0
-          let playerVelocityX[1] = 0 : rem Player 1
+          let playerVelocityX[1] = 0 : 
+          rem Player 1
           let playerVelocityXL[1] = 0
           let playerVelocityY[1] = 0
           let playerVelocityYL[1] = 0
-          let playerVelocityX[2] = 0 : rem Player 2
+          let playerVelocityX[2] = 0 : 
+          rem Player 2
           let playerVelocityXL[2] = 0
           let playerVelocityY[2] = 0
           let playerVelocityYL[2] = 0
-          let playerVelocityX[3] = 0 : rem Player 3
+          let playerVelocityX[3] = 0 : 
+          rem Player 3
           let playerVelocityXL[3] = 0
           let playerVelocityY[3] = 0
           let playerVelocityYL[3] = 0
@@ -402,7 +419,8 @@ InitializeMovementSystem
           
 
           let playerVelocityYL[2] = 0
-          let playerVelocityX[3] = 0 : rem Player 3
+          let playerVelocityX[3] = 0 : 
+          rem Player 3
           let playerVelocityXL[3] = 0
           let playerVelocityY[3] = 0
           let playerVelocityYL[3] = 0

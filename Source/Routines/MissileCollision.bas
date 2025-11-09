@@ -41,7 +41,8 @@ CheckAllMissileCollisions
           if temp4 = 0 then return 
           rem No active missile
           
-          let temp5 = playerCharacter[temp1] : rem Get character type to determine missile properties
+          let temp5 = playerCharacter[temp1] : 
+          rem Get character type to determine missile properties
           
           rem Check if this is a visible missile or AOE attack
           rem Read missile width from character data (in Bank 6)
@@ -51,7 +52,8 @@ CheckAllMissileCollisions
           rem Missile width (0 = AOE, >0 = visible missile)
 
           if temp6 = 0 then goto CheckAOECollision
-          goto CheckVisibleMissileCollision : rem tail call
+          goto CheckVisibleMissileCollision : 
+          rem tail call
           
 
 CheckVisibleMissileCollision
@@ -85,11 +87,13 @@ CheckVisibleMissileCollision
           rem Called Routines: GetMissileWidth (bank6) - gets missile
           rem width, GetMissileHeight (bank6) - gets missile height
           rem Constraints: None
-          let temp2 = missileX[temp1] : rem Get missile X/Y position
+          let temp2 = missileX[temp1] : 
+          rem Get missile X/Y position
           let temp3 = missileY_R[temp1]
           
           rem Get missile size from character data (in Bank 6)
-          let temp5 = playerCharacter[temp1] : rem Get character type from player
+          let temp5 = playerCharacter[temp1] : 
+          rem Get character type from player
           rem Use characterType as index (preserve attackerIndex)
           let temp1 = temp5
           gosub GetMissileWidth bank6
@@ -108,15 +112,19 @@ CheckVisibleMissileCollision
           rem   Bottom: missileY + missileHeight
           
           rem Optimized: Loop through all players to check collisions instead of individual blocks
-          let temp4 = 255 : rem Default: no hit
+          let temp4 = 255 : 
+          rem Default: no hit
           for temp5 = 0 to 3
-            if temp5 = temp1 then goto NextPlayerCheck : rem Skip owner
-            if playerHealth[temp5] = 0 then goto NextPlayerCheck : rem Skip dead players
+            if temp5 = temp1 then goto NextPlayerCheck : 
+          rem Skip owner
+            if playerHealth[temp5] = 0 then goto NextPlayerCheck : 
+          rem Skip dead players
             if temp2 >= playerX[temp5] + PlayerSpriteHalfWidth then goto NextPlayerCheck
             if temp2 + temp6 <= playerX[temp5] then goto NextPlayerCheck
             if temp3 >= playerY[temp5] + PlayerSpriteHeight then goto NextPlayerCheck
             if temp3 + temp3 <= playerY[temp5] then goto NextPlayerCheck
-            let temp4 = temp5 : rem Hit detected!
+            let temp4 = temp5 : 
+          rem Hit detected!
             return
 NextPlayerCheck
           next
@@ -158,14 +166,16 @@ CheckAOECollision
           rem AOE collision facing left, CheckBernieAOE - special case
           rem for Bernie (hits both directions)
           rem Constraints: Bernie (character 0) hits both left AND right simultaneously
-          let temp5 = playerCharacter[temp1] : rem Get attacker character type
+          let temp5 = playerCharacter[temp1] : 
+          rem Get attacker character type
           
           rem Check if this is Bernie (character 0)
           rem Bernie attacks both left AND right, so check both
           rem directions
           if temp5 = 0 then CheckBernieAOE
           
-          let temp6 = playerState[temp1] & PlayerStateBitFacing : rem Normal character: Check only facing direction
+          let temp6 = playerState[temp1] & PlayerStateBitFacing : 
+          rem Normal character: Check only facing direction
           if temp6 = 0 then CheckAOELeftDirection
           gosub CheckAOEDirection_Right
           return
@@ -217,17 +227,20 @@ CheckAOEDirection_Right
           rem
           rem Called Routines: None
           rem Constraints: None
-          let temp2 = playerX[temp1] : rem Get attacker position
+          let temp2 = playerX[temp1] : 
+          rem Get attacker position
           let temp3 = playerY[temp1]
           
           rem Calculate AOE bounds
           rem Read AOE offset from character data
-          let temp5 = playerCharacter[temp1] : rem Get character-specific AOE offset
+          let temp5 = playerCharacter[temp1] : 
+          rem Get character-specific AOE offset
           let aoeOffset_W = CharacterAOEOffsets[temp5]
           rem AOE_X = playerX + offset (facing right formula)
           let temp2 = temp2 + aoeOffset_R
           let temp6 = 8 
-          let temp3 = 16 : rem AOE width
+          let temp3 = 16 : 
+          rem AOE width
           rem AOE height
           
           rem AOE bounding box:
@@ -236,7 +249,8 @@ CheckAOEDirection_Right
           rem   Top:    playerY
           rem   Bottom: playerY + aoeHeight
           
-          let temp4 = 255 : rem Check each player (except attacker)
+          let temp4 = 255 : 
+          rem Check each player (except attacker)
           
           rem Check Player 1 (players are 16px wide - double-width
           rem NUSIZ)
@@ -249,7 +263,8 @@ CheckAOEDirection_Right
           if temp3 >= playerY[0] + 16 then DoneAOEPlayer0
           rem AOE top edge past player bottom edge
           if temp3 + temp3 <= playerY[0] then DoneAOEPlayer0
-          let temp4 = 0 : rem AOE bottom edge before player top edge
+          let temp4 = 0 : 
+          rem AOE bottom edge before player top edge
           return
 DoneAOEPlayer0
           
@@ -319,21 +334,25 @@ CheckAOEDirection_Left
           rem
           rem Called Routines: None
           rem Constraints: None
-          let temp2 = playerX[temp1] : rem Get attacker position
+          let temp2 = playerX[temp1] : 
+          rem Get attacker position
           let temp3 = playerY[temp1]
           
           rem Calculate AOE bounds for facing left
           rem Read AOE offset from character data
-          let temp5 = playerCharacter[temp1] : rem Get character-specific AOE offset
+          let temp5 = playerCharacter[temp1] : 
+          rem Get character-specific AOE offset
           let aoeOffset_W = CharacterAOEOffsets[temp5]
           rem AOE_X = playerX + 7 - offset (facing left formula)
           let temp2 = temp2 + PlayerSpriteWidth - 1 - aoeOffset_R
           let temp6 = 8 
-          let temp3 = 16 : rem AOE width
+          let temp3 = 16 : 
+          rem AOE width
           rem AOE height
           
           rem AOE extends to the left, so AOE goes from (aoeX -
-          let temp2 = temp2 - temp6 : rem   aoeWidth) to aoeX
+          let temp2 = temp2 - temp6 : 
+          rem   aoeWidth) to aoeX
           
           rem AOE bounding box:
           rem   Left:   aoeX
@@ -341,7 +360,8 @@ CheckAOEDirection_Left
           rem   Top:    playerY
           rem   Bottom: playerY + aoeHeight
           
-          let temp4 = 255 : rem Check each player (except attacker)
+          let temp4 = 255 : 
+          rem Check each player (except attacker)
           
           rem Check Player 1 (players are 16px wide - double-width
           rem NUSIZ)
@@ -354,7 +374,8 @@ CheckAOEDirection_Left
           if temp3 >= playerY[0] + 16 then CheckPlayer2
           rem AOE top edge past player bottom edge
           if temp3 + temp3 <= playerY[0] then CheckPlayer2
-          let temp4 = 0 : rem AOE bottom edge before player top edge
+          let temp4 = 0 : 
+          rem AOE bottom edge before player top edge
           return
 CheckPlayer2
           
@@ -423,15 +444,18 @@ MissileCollPF
           rem Called Routines: None
           rem
           rem Constraints: None
-          let temp2 = missileX[temp1] : rem Get missile X/Y position
+          let temp2 = missileX[temp1] : 
+          rem Get missile X/Y position
           let temp3 = missileY_R[temp1]
           
           rem Convert X to playfield coordinates
-          let temp6 = temp2 / 5 : rem Playfield is 32 pixels wide (doubled to 160 screen pixels)
+          let temp6 = temp2 / 5 : 
+          rem Playfield is 32 pixels wide (doubled to 160 screen pixels)
           rem Convert X pixel to playfield column (160/32 ≈ 5)
           
           rem Check if playfield pixel is set at missile position
-          let temp4 = 0 : rem Assume clear until pfread says otherwise
+          let temp4 = 0 : 
+          rem Assume clear until pfread says otherwise
           if pfread(temp6, temp3) then let temp4 = 1 : return
           rem pfread(column, row) returns 0 if clear, non-zero if set
           rem Clear

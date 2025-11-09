@@ -1,11 +1,13 @@
           rem Chaos Fight Source/Common/Enums.bas
           rem Copyright 2025 Interworldly Adventuring, LLC
 
-          const NTSC = 1 : rem TV Standards
+          const NTSC = 1 : 
+          rem TV Standards
           const PAL = 2
           const SECAM = 3
 
-          const ModePublisherPrelude = 0 : rem Game Modes
+          const ModePublisherPrelude = 0 : 
+          rem Game Modes
           const ModeAuthorPrelude = 1
           const ModeTitle = 2
           const ModeCharacterSelect = 3
@@ -95,7 +97,8 @@
           const MissileFlagFriction = 16
           rem Bit 4: Apply friction physics (curling stone deceleration)
           
-          const MissileFlagHitBoth = 3 : rem Combined flags for common combinations
+          const MissileFlagHitBoth = 3 : 
+          rem Combined flags for common combinations
           rem Bits 0-1: Hit both background and players (%00000011)
           
           const MissileFlagHitBackgroundAndGravity = 5

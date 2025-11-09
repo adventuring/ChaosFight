@@ -18,7 +18,22 @@ DispatchCharacterJump
           if temp4 = 31 then goto ShamoneJump
 
           rem Unique jump handlers: Characters 0-15
-          on temp4 goto BernieJump CurlerJump DragonetJump ZoeRyenJump FatTonyJump MegaxJump HarpyJump KnightGuyJump FrootyJump NefertemJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
+          if temp4 = 0 then goto BernieJump
+          if temp4 = 1 then goto CurlerJump
+          if temp4 = 2 then goto DragonOfStormsJump
+          if temp4 = 3 then goto ZoeRyenJump
+          if temp4 = 4 then goto FatTonyJump
+          if temp4 = 5 then goto MegaxJump
+          if temp4 = 6 then goto HarpyJump
+          if temp4 = 7 then goto KnightGuyJump
+          if temp4 = 8 then goto FrootyJump
+          if temp4 = 9 then goto NefertemJump
+          if temp4 = 10 then goto NinjishGuyJump
+          if temp4 = 11 then goto PorkChopJump
+          if temp4 = 12 then goto RadishGoblinJump
+          if temp4 = 13 then goto RoboTitoJump
+          if temp4 = 14 then goto UrsuloJump
+          if temp4 = 15 then goto ShamoneJump
           return
 
 DispatchCharacterDown
@@ -26,14 +41,14 @@ DispatchCharacterDown
           rem Inputs: temp4 = character index (0-31)
           rem Outputs: None; branches to handler or returns
           rem Mutates: None
-          rem Calls: StandardGuard, DragonetDown, HarpyDown, RoboTitoDown
+          rem Calls: StandardGuard, DragonOfStormsDown, HarpyDown, RoboTitoDown
           rem Constraints: Index 31 mirrors Shamone; unmapped indices use StandardGuard
 
           if temp4 >= 32 then return
 
           rem Optimized: Group characters with identical down/guard behavior
-          rem Special handlers: DragonetDown(2), HarpyDown(6), FrootyDown(8), RoboTitoDown(13)
-          if temp4 = 2 then goto DragonetDown
+          rem Special handlers: DragonOfStormsDown(2), HarpyDown(6), FrootyDown(8), RoboTitoDown(13)
+          if temp4 = 2 then goto DragonOfStormsDown
           if temp4 = 6 then goto HarpyDown
           if temp4 = 8 then goto FrootyDown
           if temp4 = 13 then goto RoboTitoDown
@@ -54,7 +69,8 @@ BernieJump
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
           rem For pfres=8: pfrowheight = 16 pixels per row
-          let temp3 = playerY[temp1] : rem Row = playerY[playerIndex] / pfrowheight
+          let temp3 = playerY[temp1] : 
+          rem Row = playerY[playerIndex] / pfrowheight
           let temp4 = temp3 / pfrowheight
           rem currentRow = row player sprite bottom is in (0-7 for
           rem   pfres=8)
@@ -64,12 +80,15 @@ BernieJump
           rem Bernie feet are visually at bottom of 16px sprite, so
           rem   check row below
           rem Feet are at playerY + 16, so row = (playerY + 16) /
-          let temp5 = temp3 + 16 : rem   pfrowheight
-          let temp6 = temp5 / pfrowheight : rem feetY = feet Y position in pixels
+          let temp5 = temp3 + 16 : 
+          rem   pfrowheight
+          let temp6 = temp5 / pfrowheight : 
+          rem feetY = feet Y position in pixels
           rem feetRow = row directly below player feet
           
           rem Check if there is solid ground directly below feet
-          let temp4 = 0 : rem Track pfread result (1 = ground present)
+          let temp4 = 0 : 
+          rem Track pfread result (1 = ground present)
           if pfread(temp2, temp6) then let temp4 = 1
           if temp4 = 0 then return
           rem No floor directly below feet, cannot fall through
@@ -82,16 +101,19 @@ BernieJump
           if temp6 >= pfrows - 1 then BernieCheckBottomWrap
           rem At or beyond bottom row, check wrap
           
-          let temp4 = temp6 + 1 : rem Normal case: Check row below that (feetRow + 1)
+          let temp4 = temp6 + 1 : 
+          rem Normal case: Check row below that (feetRow + 1)
           rem checkRow = row below the floor row
-          let temp5 = 0 : rem Track pfread result (1 = floor continues)
+          let temp5 = 0 : 
+          rem Track pfread result (1 = floor continues)
           if pfread(temp2, temp4) then let temp5 = 1
           if temp5 = 1 then return
           rem Floor is 2+ rows deep, cannot fall through
           
           rem Floor is only 1 row deep - allow fall through
           rem Move Bernie down by 1 pixel per frame while UP is held
-          let playerY[temp1] = playerY[temp1] + 1 : rem This allows him to pass through the 1-row platform
+          let playerY[temp1] = playerY[temp1] + 1 : 
+          rem This allows him to pass through the 1-row platform
           return 
           
 BernieCheckBottomWrap
@@ -112,9 +134,11 @@ BernieCheckBottomWrap
           rem   through
           rem Bottom row is always considered 1 row deep since nothing
           rem   is below it
-          let temp4 = 0 : rem Check if top row (row 0) is clear for wrapping
+          let temp4 = 0 : 
+          rem Check if top row (row 0) is clear for wrapping
           rem topRow = top row (row 0)
-          let temp5 = 0 : rem Track pfread result (1 = top row blocked)
+          let temp5 = 0 : 
+          rem Track pfread result (1 = top row blocked)
           if pfread(temp2, temp4) then let temp5 = 1
           if temp5 = 1 then return
           rem Top row is blocked, cannot wrap
@@ -142,9 +166,10 @@ CurlerJump
           rem Called Routines: StandardJump (tail call via goto)
           rem
           rem Constraints: None
-          goto StandardJump : rem tail call
+          goto StandardJump : 
+          rem tail call
 
-DragonetJump
+DragonOfStormsJump
           rem DRAGON OF STORMS (2) - FREE FLIGHT (vertical movement)
           rem Dragon of Storms can fly up/down freely
           rem
@@ -172,19 +197,23 @@ DragonetJump
           rem Check collision before moving - use shared coordinate conversion
           gosub ConvertPlayerXToPlayfieldColumn bank13
           
-          let temp3 = playerY[temp1] : rem Check row above player (top of sprite)
+          let temp3 = playerY[temp1] : 
+          rem Check row above player (top of sprite)
           let temp4 = temp3 / pfrowheight
           rem currentRow = current row
           rem Check row above (currentRow - 1), but only if not at top
           if temp4 <= 0 then return
-          let temp4 = temp4 - 1 : rem Already at top row
+          let temp4 = temp4 - 1 : 
+          rem Already at top row
           rem Check if playfield pixel is clear
-          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          let temp5 = 0 : 
+          rem Track pfread result (1 = blocked)
           if pfread(temp2, temp4) then let temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move up
           
-          let playerVelocityY[temp1] = 254 : rem Clear above - apply upward velocity impulse
+          let playerVelocityY[temp1] = 254 : 
+          rem Clear above - apply upward velocity impulse
           rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -207,7 +236,8 @@ ZoeRyenJump
           rem
           rem Constraints: None
           rem Apply upward velocity impulse (lighter character, higher
-          let playerVelocityY[temp1] = 244 : rem   jump)
+          let playerVelocityY[temp1] = 244 : 
+          rem   jump)
           rem -12 in 8-bit two’s complement: 256 - 12 = 244
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -229,7 +259,8 @@ FatTonyJump
           rem
           rem Constraints: None
           rem Apply upward velocity impulse (heavier character, lower
-          let playerVelocityY[temp1] = 248 : rem   jump)
+          let playerVelocityY[temp1] = 248 : 
+          rem   jump)
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -249,7 +280,8 @@ MegaxJump
           rem Called Routines: StandardJump (tail call via goto)
           rem
           rem Constraints: None
-          goto StandardJump : rem tail call
+          goto StandardJump : 
+          rem tail call
 
 HarpyJump
           rem HARPY (6) - FLAP TO FLY (UP input to flap)
@@ -292,7 +324,8 @@ HarpyJump
           rem No energy remaining, cannot flap
           
           rem Check flap cooldown: must wait for 1.5 flaps/second (40
-          let temp2 = frame - harpyLastFlapFrame_R[temp1] : rem   frames at 60fps)
+          let temp2 = frame - harpyLastFlapFrame_R[temp1] : 
+          rem   frames at 60fps)
           rem Calculate frames since last flap
           if temp2 > 127 then let temp2 = 127
           rem Clamp to prevent underflow (max safe value for 8-bit)
@@ -311,13 +344,15 @@ HarpyJump
           rem To maintain height, flap impulse must counteract: -2.0
           rem   px/frame (upward)
           rem Using -2 px/frame (254 in two’s complement) for stable
-          let playerVelocityY[temp1] = 254 : rem   hover with 1.5 flaps/second
+          let playerVelocityY[temp1] = 254 : 
+          rem   hover with 1.5 flaps/second
           rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping/flying bit for animation
           rem Set flight mode flag for slow gravity
-          let HJ_stateFlags = characterStateFlags_R[temp1] | 2 : rem Fix RMW: Read from _R, modify, write to _W
+          let HJ_stateFlags = characterStateFlags_R[temp1] | 2 : 
+          rem Fix RMW: Read from _R, modify, write to _W
           let characterStateFlags_W[temp1] = HJ_stateFlags
           rem Set bit 1 (flight mode)
           
@@ -339,7 +374,8 @@ HarpyFlapRecord
           rem Decrement flight energy on each flap
           if harpyFlightEnergy_R[temp1] > 0 then let harpyFlightEnergy_W[temp1] = harpyFlightEnergy_R[temp1] - 1
           
-          let harpyLastFlapFrame_W[temp1] = frame : rem Record current frame as last flap time
+          let harpyLastFlapFrame_W[temp1] = frame : 
+          rem Record current frame as last flap time
           
           return
 
@@ -359,7 +395,8 @@ KnightGuyJump
           rem
           rem Constraints: None
           rem Apply upward velocity impulse (heavier character, lower
-          let playerVelocityY[temp1] = 248 : rem   jump)
+          let playerVelocityY[temp1] = 248 : 
+          rem   jump)
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -396,7 +433,8 @@ FrootyJump
           rem move if already at top row. Uses inline coordinate
           rem conversion (not shared subroutine)
           rem Fly up with playfield collision check
-          let temp2 = playerX[temp1] : rem Check collision before moving
+          let temp2 = playerX[temp1] : 
+          rem Check collision before moving
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
@@ -404,19 +442,23 @@ FrootyJump
           if temp2 & $80 then let temp2 = 0
           if temp2 > 31 then let temp2 = 31
           
-          let temp3 = playerY[temp1] : rem Check row above player (top of sprite)
+          let temp3 = playerY[temp1] : 
+          rem Check row above player (top of sprite)
           let temp4 = temp3 / pfrowheight
           rem currentRow = current row
           rem Check row above (currentRow - 1), but only if not at top
           if temp4 <= 0 then return
-          let temp4 = temp4 - 1 : rem Already at top row
+          let temp4 = temp4 - 1 : 
+          rem Already at top row
           rem Check if playfield pixel is clear
-          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          let temp5 = 0 : 
+          rem Track pfread result (1 = blocked)
           if pfread(temp2, temp4) then let temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move up
           
-          let playerVelocityY[temp1] = 254 : rem Clear above - apply upward velocity impulse
+          let playerVelocityY[temp1] = 254 : 
+          rem Clear above - apply upward velocity impulse
           rem -2 in 8-bit two’s complement: 256 - 2 = 254
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -437,7 +479,8 @@ NefertemJump
           rem Called Routines: StandardJump (tail call via goto)
           rem
           rem Constraints: None
-          goto StandardJump : rem tail call
+          goto StandardJump : 
+          rem tail call
 
 NinjishGuyJump
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
@@ -456,7 +499,8 @@ NinjishGuyJump
           rem
           rem Constraints: None
           rem Apply upward velocity impulse (very light character,
-          let playerVelocityY[temp1] = 243 : rem   highest jump)
+          let playerVelocityY[temp1] = 243 : 
+          rem   highest jump)
           rem -13 in 8-bit two’s complement: 256 - 13 = 243
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -478,7 +522,8 @@ PorkChopJump
           rem
           rem Constraints: None
           rem Apply upward velocity impulse (heavy character, lower
-          let playerVelocityY[temp1] = 248 : rem   jump)
+          let playerVelocityY[temp1] = 248 : 
+          rem   jump)
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -501,7 +546,8 @@ RadishGoblinJump
           rem
           rem Constraints: None
           rem Apply upward velocity impulse (very light character,
-          let playerVelocityY[temp1] = 243 : rem   highest jump)
+          let playerVelocityY[temp1] = 243 : 
+          rem   highest jump)
           rem -13 in 8-bit two’s complement: 256 - 13 = 243
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -587,7 +633,8 @@ RoboTitoCannotStretch
           let missileStretchHeight_W[temp1] = 0
           return
 RoboTitoCanStretch
-          goto RoboTitoStretching : rem Grounded and permission granted - allow stretching
+          goto RoboTitoStretching : 
+          rem Grounded and permission granted - allow stretching
           
 RoboTitoStretching
           rem Helper: Sets stretching animation and calculates stretch
@@ -614,37 +661,49 @@ RoboTitoStretching
           rem
           rem Constraints: Internal helper for RoboTitoJump, only called
           rem when stretch allowed
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted : rem Set stretching animation (repurposed ActionJumping = 10)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted : 
+          rem Set stretching animation (repurposed ActionJumping = 10)
           
           rem Calculate and set missile stretch height
           rem Ground level: Use ScreenBottom (192) as ground Y position
-          let temp2 = ScreenBottom : rem Note: Y coordinate increases downward (0=top, 192=bottom)
-          let temp3 = playerY[temp1] : rem Calculate height: playerY - groundY (extends downward from player)
+          let temp2 = ScreenBottom : 
+          rem Note: Y coordinate increases downward (0=top, 192=bottom)
+          let temp3 = playerY[temp1] : 
+          rem Calculate height: playerY - groundY (extends downward from player)
           let temp3 = temp3 - temp2
           rem Clamp height to reasonable maximum (80 scanlines)
           if temp3 > 80 then let temp3 = 80
           rem Ensure minimum height of 1 scanline
           if temp3 < 1 then let temp3 = 1
-          let missileStretchHeight_W[temp1] = temp3 : rem Store stretch height
+          let missileStretchHeight_W[temp1] = temp3 : 
+          rem Store stretch height
           
           rem Clear stretch permission (stretching upward, cannot
           rem stretch again until grounded)
-          let temp4 = temp1 : rem Calculate bit mask and clear bit
+          let temp4 = temp1 : 
+          rem Calculate bit mask and clear bit
           let temp5 = roboTitoCanStretch_R
           rem Load current flags
           if temp4 = 0 then RTS_ClearBit0
           if temp4 = 1 then RTS_ClearBit1
           if temp4 = 2 then RTS_ClearBit2
-          let temp5 = temp5 & 247 : rem Player 3: clear bit 3
-          goto RTS_StretchPermissionCleared : rem 247 = $F7 = clear bit 3
+          let temp5 = temp5 & 247 : 
+          rem Player 3: clear bit 3
+          goto RTS_StretchPermissionCleared : 
+          rem 247 = $F7 = clear bit 3
 RTS_ClearBit0
-          let temp5 = temp5 & 254 : rem Player 0: clear bit 0
-          goto RTS_StretchPermissionCleared : rem 254 = $FE = clear bit 0
+          let temp5 = temp5 & 254 : 
+          rem Player 0: clear bit 0
+          goto RTS_StretchPermissionCleared : 
+          rem 254 = $FE = clear bit 0
 RTS_ClearBit1
-          let temp5 = temp5 & 253 : rem Player 1: clear bit 1
-          goto RTS_StretchPermissionCleared : rem 253 = $FD = clear bit 1
+          let temp5 = temp5 & 253 : 
+          rem Player 1: clear bit 1
+          goto RTS_StretchPermissionCleared : 
+          rem 253 = $FD = clear bit 1
 RTS_ClearBit2
-          let temp5 = temp5 & 251 : rem Player 2: clear bit 2
+          let temp5 = temp5 & 251 : 
+          rem Player 2: clear bit 2
 RTS_StretchPermissionCleared
           rem 251 = $FB = clear bit 2
           let roboTitoCanStretch_W = temp5
@@ -684,21 +743,24 @@ RoboTitoCheckCeiling
           rem
           rem Constraints: Internal helper for RoboTitoJump, only called
           rem when at top of screen
-          let temp2 = playerX[temp1] : rem Check if ceiling contact using playfield collision
+          let temp2 = playerX[temp1] : 
+          rem Check if ceiling contact using playfield collision
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp2 & $80 then let temp2 = 0
           if temp2 > 31 then let temp2 = 31
           
-          let temp3 = playerY[temp1] : rem Check row above player for ceiling
+          let temp3 = playerY[temp1] : 
+          rem Check row above player for ceiling
           if temp3 <= 0 then RoboTitoLatch
           let temp4 = temp3 / pfrowheight
           if temp4 <= 0 then RoboTitoLatch
           let temp4 = temp4 - 1
           if pfread(temp2, temp4) then RoboTitoLatch
           
-          let playerY[temp1] = playerY[temp1] - 3 : rem No ceiling contact, continue stretching
+          let playerY[temp1] = playerY[temp1] - 3 : 
+          rem No ceiling contact, continue stretching
           return
           
 RoboTitoLatch
@@ -728,17 +790,21 @@ RoboTitoLatch
           rem Constraints: Internal helper for RoboTitoCheckCeiling,
           rem only called on ceiling contact
           rem Ceiling contact detected - latch to ceiling
-          let RTL_stateFlags = characterStateFlags_R[temp1] | 1 : rem Fix RMW: Read from _R, modify, write to _W
+          let RTL_stateFlags = characterStateFlags_R[temp1] | 1 : 
+          rem Fix RMW: Read from _R, modify, write to _W
           let characterStateFlags_W[temp1] = RTL_stateFlags
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted : rem Set latched bit
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted : 
+          rem Set latched bit
           rem Set hanging animation (ActionJumping = 10, repurposed for
           rem hanging)
           
-          let temp2 = missileStretchHeight_R[temp1] : rem Rapidly reduce missile height to 0 over 2-3 frames
+          let temp2 = missileStretchHeight_R[temp1] : 
+          rem Rapidly reduce missile height to 0 over 2-3 frames
           if temp2 <= 0 then RTL_HeightCleared
           rem Reduce by 25 scanlines per frame
           if temp2 > 25 then RTL_ReduceHeight
-          let missileStretchHeight_W[temp1] = 0 : rem Less than 25 remaining, set to 0
+          let missileStretchHeight_W[temp1] = 0 : 
+          rem Less than 25 remaining, set to 0
           goto RTL_HeightCleared
 RTL_ReduceHeight
           let temp2 = temp2 - 25
@@ -762,7 +828,8 @@ UrsuloJump
           rem
           rem Constraints: None
           rem Apply upward velocity impulse (heavy character, lower
-          let playerVelocityY[temp1] = 248 : rem   jump)
+          let playerVelocityY[temp1] = 248 : 
+          rem   jump)
           rem -8 in 8-bit two’s complement: 256 - 8 = 248
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -783,13 +850,14 @@ ShamoneJump
           rem Called Routines: None
           rem
           rem Constraints: None
-          let playerVelocityY[temp1] = 245 : rem Apply upward velocity impulse (light character, good jump)
+          let playerVelocityY[temp1] = 245 : 
+          rem Apply upward velocity impulse (light character, good jump)
           rem -11 in 8-bit two’s complement: 256 - 11 = 245
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
           rem DOWN BUTTON HANDLERS (Called via on goto from PlayerInput)
-DragonetDown
+DragonOfStormsDown
           rem DRAGON OF STORMS (2) - FLY DOWN (no guard action)
           rem Dragon of Storms flies down instead of guarding
           rem
@@ -815,7 +883,8 @@ DragonetDown
           rem move if already at bottom. Uses inline coordinate
           rem conversion (not shared subroutine)
           rem Fly down with playfield collision check
-          let temp2 = playerX[temp1] : rem Check collision before moving
+          let temp2 = playerX[temp1] : 
+          rem Check collision before moving
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
@@ -823,21 +892,26 @@ DragonetDown
           if temp2 & $80 then let temp2 = 0
           if temp2 > 31 then let temp2 = 31
           
-          let temp3 = playerY[temp1] : rem Check row below player (feet at bottom of sprite)
+          let temp3 = playerY[temp1] : 
+          rem Check row below player (feet at bottom of sprite)
           let temp3 = temp3 + 16
-          let temp4 = temp3 / pfrowheight : rem feetY = feet Y position
+          let temp4 = temp3 / pfrowheight : 
+          rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
           if temp4 >= pfrows then return
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
-          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          let temp5 = 0 : 
+          rem Track pfread result (1 = blocked)
           if pfread(temp2, temp4) then let temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move down
           
-          let playerVelocityY[temp1] = 2 : rem Clear below - apply downward velocity impulse
-          let playerVelocityYL[temp1] = 0 : rem +2 pixels/frame downward
+          let playerVelocityY[temp1] = 2 : 
+          rem Clear below - apply downward velocity impulse
+          let playerVelocityYL[temp1] = 0 : 
+          rem +2 pixels/frame downward
           let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
           return
@@ -875,9 +949,11 @@ HarpyDown
           rem conversion (not shared subroutine)
           rem Check if Harpy is airborne and set dive mode
           if (playerState[temp1] & 4) then HarpySetDive
-          let temp2 = playerY[temp1] : rem Jumping bit set, airborne
+          let temp2 = playerY[temp1] : 
+          rem Jumping bit set, airborne
           if temp2 < 60 then HarpySetDive
-          goto HarpyNormalDown : rem Above ground level, airborne
+          goto HarpyNormalDown : 
+          rem Above ground level, airborne
 HarpySetDive
           rem Helper: Sets dive mode flag for Harpy when airborne
           rem
@@ -892,7 +968,8 @@ HarpySetDive
           rem Called Routines: None
           rem Constraints: Internal helper for HarpyDown, only called when airborne
           rem Set dive mode flag for increased damage and normal gravity
-          let HSD_stateFlags = characterStateFlags_R[temp1] | 4 : rem Fix RMW: Read from _R, modify, write to _W
+          let HSD_stateFlags = characterStateFlags_R[temp1] | 4 : 
+          rem Fix RMW: Read from _R, modify, write to _W
           let characterStateFlags_W[temp1] = HSD_stateFlags
 HarpyNormalDown
           rem Set bit 2 (dive mode)
@@ -913,7 +990,8 @@ HarpyNormalDown
           rem Called Routines: None
           rem Constraints: Internal helper for HarpyDown, handles downward movement
           rem Fly down with playfield collision check
-          let temp2 = playerX[temp1] : rem Check collision before moving
+          let temp2 = playerX[temp1] : 
+          rem Check collision before moving
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
@@ -921,21 +999,26 @@ HarpyNormalDown
           if temp2 & $80 then let temp2 = 0
           if temp2 > 31 then let temp2 = 31
           
-          let temp3 = playerY[temp1] : rem Check row below player (feet at bottom of sprite)
+          let temp3 = playerY[temp1] : 
+          rem Check row below player (feet at bottom of sprite)
           let temp3 = temp3 + 16
-          let temp4 = temp3 / pfrowheight : rem feetY = feet Y position
+          let temp4 = temp3 / pfrowheight : 
+          rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
           if temp4 >= pfrows then return
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
-          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          let temp5 = 0 : 
+          rem Track pfread result (1 = blocked)
           if pfread(temp2, temp4) then let temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move down
           
-          let playerVelocityY[temp1] = 2 : rem Clear below - apply downward velocity impulse
-          let playerVelocityYL[temp1] = 0 : rem +2 pixels/frame downward
+          let playerVelocityY[temp1] = 2 : 
+          rem Clear below - apply downward velocity impulse
+          let playerVelocityYL[temp1] = 0 : 
+          rem +2 pixels/frame downward
           let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
           return
@@ -967,7 +1050,8 @@ FrootyDown
           rem move if already at bottom. Uses inline coordinate
           rem conversion (not shared subroutine)
           rem Fly down with playfield collision check
-          let temp2 = playerX[temp1] : rem Check collision before moving
+          let temp2 = playerX[temp1] : 
+          rem Check collision before moving
           let temp2 = temp2 - ScreenInsetX
           let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
@@ -976,21 +1060,26 @@ FrootyDown
           if temp2 & $80 then let temp2 = 0
           if temp2 > 31 then let temp2 = 31
           
-          let temp3 = playerY[temp1] : rem Check row below player (feet at bottom of sprite)
+          let temp3 = playerY[temp1] : 
+          rem Check row below player (feet at bottom of sprite)
           let temp3 = temp3 + 16
-          let temp4 = temp3 / pfrowheight : rem feetY = feet Y position
+          let temp4 = temp3 / pfrowheight : 
+          rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
           if temp4 >= pfrows then return
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
-          let temp5 = 0 : rem Track pfread result (1 = blocked)
+          let temp5 = 0 : 
+          rem Track pfread result (1 = blocked)
           if pfread(temp2, temp4) then let temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move down
           
-          let playerVelocityY[temp1] = 2 : rem Clear below - apply downward velocity impulse
-          let playerVelocityYL[temp1] = 0 : rem +2 pixels/frame downward
+          let playerVelocityY[temp1] = 2 : 
+          rem Clear below - apply downward velocity impulse
+          let playerVelocityYL[temp1] = 0 : 
+          rem +2 pixels/frame downward
           let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
           return
@@ -1029,7 +1118,8 @@ RoboTitoDown
           rem RoboTito voluntary drop from ceiling
           rem Check if latched to ceiling
           if !(characterStateFlags_R[temp1] & 1) then RoboTitoNotLatched
-          goto RoboTitoNotLatched : rem Not latched, proceed to guard
+          goto RoboTitoNotLatched : 
+          rem Not latched, proceed to guard
           
 RoboTitoVoluntaryDrop
           rem Helper: Releases RoboTito from ceiling on DOWN press
@@ -1057,11 +1147,14 @@ RoboTitoVoluntaryDrop
           rem Constraints: Internal helper for RoboTitoDown, only called
           rem when latched to ceiling
           rem Release from ceiling on DOWN press
-          let RTLVD_stateFlags = characterStateFlags_R[temp1] & (255 - PlayerStateBitFacing) : rem Fix RMW: Read from _R, modify, write to _W
+          let RTLVD_stateFlags = characterStateFlags_R[temp1] & (255 - PlayerStateBitFacing) : 
+          rem Fix RMW: Read from _R, modify, write to _W
           let characterStateFlags_W[temp1] = RTLVD_stateFlags
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted : rem Clear latched bit (bit 0)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted : 
+          rem Clear latched bit (bit 0)
           rem Set falling animation
-          let missileStretchHeight_W[temp1] = 0 : rem Clear stretch missile height when dropping
+          let missileStretchHeight_W[temp1] = 0 : 
+          rem Clear stretch missile height when dropping
           return
           
 RoboTitoNotLatched
@@ -1077,7 +1170,8 @@ RoboTitoNotLatched
           rem
           rem Constraints: Internal helper for RoboTitoDown, only called
           rem when not latched
-          goto StandardGuard : rem Not latched, use standard guard
+          goto StandardGuard : 
+          rem Not latched, use standard guard
 
 StandardJump
           rem
@@ -1101,7 +1195,8 @@ StandardJump
           rem
           rem Constraints: None
           rem Apply upward velocity impulse (input applies impulse to
-          let playerVelocityY[temp1] = 246 : rem   rigid body)
+          let playerVelocityY[temp1] = 246 : 
+          rem   rigid body)
           rem -10 in 8-bit two’s complement: 256 - 10 = 246
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
@@ -1156,7 +1251,8 @@ StandardGuard
           rem Guard blocked by cooldown
           
           rem Start guard with proper timing
-          goto StartGuard : rem tail call
+          goto StartGuard : 
+          rem tail call
           rem StartGuard sets guard bit and duration timer
           
           rem Set guard visual effect (flashing cyan)

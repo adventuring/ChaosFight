@@ -29,9 +29,11 @@ PerformRangedAttack
           rem missile
           rem
           rem Constraints: None
-          gosub SpawnMissile bank7 : rem Spawn projectile missile for this attack
+          gosub SpawnMissile bank7 : 
+          rem Spawn projectile missile for this attack
           
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted : rem Set animation state to attacking
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted : 
+          rem Set animation state to attacking
           rem Set animation state 14 (attack execution)
           
           return

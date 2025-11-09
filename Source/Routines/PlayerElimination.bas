@@ -57,11 +57,15 @@ CheckAllPlayerEliminations
           next
           
           rem Count remaining players and check game end (inline
-          gosub CountRemainingPlayers
           rem   CheckGameEndCondition)
+          gosub CountRemainingPlayers
           rem Game ends when 1 or fewer players remain
-          if playersRemaining_R <= 1 then gosub FindWinner : let gameEndTimer_W = 180 : let systemFlags = systemFlags | SystemFlagGameStateEnding : return
+          if playersRemaining_R = 0 then CheckPlayerElimination
           
+          gosub FindWinner
+          let gameEndTimer_W = 180
+          let systemFlags = systemFlags | SystemFlagGameStateEnding
+          return
 
 CheckPlayerElimination
           rem
@@ -223,7 +227,6 @@ CountRemainingPlayers
           rem Counter
           
           rem Check each player
-          
           if !(PlayerEliminatedPlayer0 & playersEliminated_R) then let temp1 = 1 + temp1
           if !(PlayerEliminatedPlayer1 & playersEliminated_R) then let temp1 = 1 + temp1
           if !(PlayerEliminatedPlayer2 & playersEliminated_R) then let temp1 = 1 + temp1
@@ -329,11 +332,10 @@ CheckPlayer4ActiveFlag
           if PlayerEliminatedPlayer3 & playersEliminated_R then UpdatePlayers34ActiveDone
           let controllerStatus = controllerStatus | SetPlayers34Active
           rem Player 4 is active
-          
 UpdatePlayers34ActiveDone
           return
 
           rem AND masks to clear player missile bits (inverted BitMask values)
           data PlayerANDMask
           $FE, $FD, $FB, $F7
-          end
+end

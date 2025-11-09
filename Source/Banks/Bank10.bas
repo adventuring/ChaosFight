@@ -5,7 +5,7 @@
            
 #include "Source/Data/PlayerColorTables.bas"
 #include "Source/Routines/SpriteLoader.bas"
-#include "Source/Routines/CharacterSelectRender.bas"
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 #include "Source/Routines/PlayerRendering.bas"
+#include "Source/Routines/CharacterAttacksDispatch.bas"
 

@@ -3,6 +3,6 @@
 
           bank 6
           
-#include "Source/Routines/CharacterSelectMain.bas"
 #include "Source/Routines/CharacterData.bas"
+#include "Source/Routines/CharacterSelectMain.bas"
           

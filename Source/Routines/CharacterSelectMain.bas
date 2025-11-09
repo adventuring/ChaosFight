@@ -353,10 +353,10 @@ CharacterSelectInputComplete
           gosub CharacterSelectHandleRandomRolls
           rem Handle random character re-rolls if any players need it
           
-          gosub SelectUpdateAnimations bank10
+          gosub SelectUpdateAnimations bank6
           rem Update character select animations
           rem Draw selection screen
-          gosub SelectDrawScreen bank10
+          gosub SelectDrawScreen bank6
           rem Draw character selection screen
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
           goto CharacterSelectSkipQuadtariPlayersInline
@@ -364,21 +364,21 @@ CharacterSelectInputComplete
 CharacterSelectQuadtariPlayersInline
           rem Draw Player 3 selection (bottom left)
           player0x = 56 : player0y = 80
-          gosub SelectDrawSprite bank10
+          gosub SelectDrawSprite bank6
           
           rem Draw Player 4 selection (bottom right)
           player1x = 104 : player1y = 80
-          gosub SelectDrawSprite bank10
+          gosub SelectDrawSprite bank6
           goto CharacterSelectInputComplete
 
 CharacterSelectSkipQuadtariPlayersInline
           rem Draw Player 1 selection (top left)
           player0x = 56 : player0y = 40
-          gosub SelectDrawSprite bank10
+          gosub SelectDrawSprite bank6
           
           rem Draw Player 2 selection (top right)
           player1x = 104 : player1y = 40
-          gosub SelectDrawSprite bank10
+          gosub SelectDrawSprite bank6
           
           return
 

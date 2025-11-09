@@ -143,7 +143,9 @@ InitPositionsDone
           for currentPlayer = 0 to 3
               let GPL_playerIndex = currentPlayer
               gosub GetPlayerLocked bank9
-              if GPL_lockedState = PlayerHandicapped then let PlayerHealth[currentPlayer] = PlayerHealthHandicap else let PlayerHealth[currentPlayer] = PlayerHealthMax
+              if GPL_lockedState = PlayerHandicapped then let PlayerHealth[currentPlayer] = PlayerHealthHandicap : goto PlayerHealthInitDone
+              let PlayerHealth[currentPlayer] = PlayerHealthMax
+PlayerHealthInitDone
           next
           
           for currentPlayer = 0 to 3

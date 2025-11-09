@@ -15,5 +15,6 @@
 #include "Source/Routines/ArenaSelect.bas"
 #include "Source/Routines/BeginWinnerAnnouncement.bas"
 #include "Source/Routines/WinnerAnnouncement.bas"
+#include "Source/Routines/DisplayWinScreen.bas"
 #include "Source/Common/CharacterDefinitions.bas"
 #include "Source/Routines/TitlescreenWindowControl.bas"

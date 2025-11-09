@@ -12,5 +12,6 @@
 #include "Source/Routines/CharacterAttacksDispatch.bas"
 #include "Source/Routines/CharacterAttacks.bas"
 #include "Source/Routines/PerformRangedAttack.bas"
+#include "Source/Routines/PerformMeleeAttack.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 

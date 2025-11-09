@@ -9,5 +9,6 @@
           rem Character select routines
 #include "Source/Routines/CharacterSelectMain.bas"
 #include "Source/Routines/CharacterSelectRender.bas"
+#include "Source/Routines/CharacterControls.bas"
 
 

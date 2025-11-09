@@ -20,3 +20,7 @@ end
 #include "Source/Routines/TitleScreenMain.bas"
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/TitleCharacterParade.bas"
+#include "Source/Data/WinnerScreen.bas"
+#include "Source/Data/CharacterThemeSongIndices.bas"
+#include "Source/Data/CharacterDataTables.bas"
+#include "Source/Data/CharacterPhysicsTables.bas"

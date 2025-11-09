@@ -8,12 +8,9 @@
           bank 8
  
           rem Data segment
-#include "Source/Data/HealthBarPatterns.bas"
 
           rem NOTE: VisualEffects.bas was phased out - damage indicators
           rem   now handled in Combat.bas and MissileSystem.bas
-#include "Source/Routines/ScreenLayout.bas"
-#include "Source/Routines/HealthBarSystem.bas"
           
           rem Physics and rendering routines moved from Bank 11
           rem PlayerPhysics.bas split into two files to reduce bank size

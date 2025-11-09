@@ -1,6 +1,6 @@
 [submodule "Tools/batariBASIC"]
 	path = Tools/batariBASIC
-	url = https://github.com/batari-Basic/batari-Basic
+	url = git@github.com:adventuring/batari-Basic
 [submodule "Tools/dasm"]
 	path = Tools/dasm
 	url = https://github.com/dasm-assembler/dasm

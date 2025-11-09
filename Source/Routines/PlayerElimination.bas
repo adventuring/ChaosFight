@@ -193,6 +193,7 @@ TriggerEliminationEffects
           
 
           return
+
 DeactivatePlayerMissiles
           rem
           rem Hide Eliminated Player Sprite
@@ -206,18 +207,10 @@ DeactivatePlayerMissiles
           rem
           rem Deactivate Player Missiles
           rem Input: currentPlayer (0-3), missileActive flags
-          rem Output: Clears this player's missile bit
-          rem Mutates: temp6, missileActive
+          rem Output: Clears this player’s missile bit
+          rem Mutates: missileActive
           rem Clear missile active bit for this player
-          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if currentPlayer = 0 then let temp6 = 1
-          if currentPlayer = 1 then let temp6 = 2
-          if currentPlayer = 2 then let temp6 = 4
-          if currentPlayer = 3 then let temp6 = 8
-          let temp6 = 255 - temp6 
-          let missileActive = missileActive & temp6
-          rem Invert bits for AND mask
-          
+          let missileActive = missileActive & PlayerANDMask[currentPlayer]
           return
 
 CountRemainingPlayers
@@ -232,13 +225,9 @@ CountRemainingPlayers
           rem Check each player
           
           if !(PlayerEliminatedPlayer0 & playersEliminated_R) then let temp1 = 1 + temp1
-          rem Player 1
           if !(PlayerEliminatedPlayer1 & playersEliminated_R) then let temp1 = 1 + temp1
-          rem Player 2
           if !(PlayerEliminatedPlayer2 & playersEliminated_R) then let temp1 = 1 + temp1
-          rem Player 3
           if !(PlayerEliminatedPlayer3 & playersEliminated_R) then let temp1 = 1 + temp1
-          rem Player 4
           
           let playersRemaining_W = temp1
           return
@@ -249,11 +238,7 @@ IsPlayerEliminated
           rem Input: currentPlayer (0-3), playersEliminated_R, PlayerEliminatedPlayer0-3 masks
           rem Output: temp2 = 1 if eliminated, 0 if alive
           rem Mutates: temp2, temp6
-          rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if currentPlayer = 0 then let temp6 = PlayerEliminatedPlayer0
-          if currentPlayer = 1 then let temp6 = PlayerEliminatedPlayer1
-          if currentPlayer = 2 then let temp6 = PlayerEliminatedPlayer2
-          if currentPlayer = 3 then let temp6 = PlayerEliminatedPlayer3
+          let temp6 = BitMask[currentPlayer]
           let temp2 = temp6 & playersEliminated_R
           if temp2 then let temp2 = 1 : goto IsEliminatedDone
           let temp2 = 0
@@ -347,3 +332,8 @@ CheckPlayer4ActiveFlag
           
 UpdatePlayers34ActiveDone
           return
+
+          rem AND masks to clear player missile bits (inverted BitMask values)
+          data PlayerANDMask
+          $FE, $FD, $FB, $F7
+          end

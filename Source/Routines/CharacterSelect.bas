@@ -846,16 +846,9 @@ CharacterSelectDrawSprite
           if !(temp1 = 2) then CharacterSelectColorNormal
           rem Hurt state - dimmer colors
           if switchbw then CharacterSelectHurtBlackWhite
-          rem Player color but dimmer
-          if characterSelectPlayer = 1 then COLUP0  = ColIndigo(6)
-          rem Dark indigo (Player 1)
-          if characterSelectPlayer = 2 then COLUP0  = ColRed(6)
-          rem Dark red (Player 2)
-          if characterSelectPlayer = 3 then COLUP0  = ColYellow(6)
-          rem Dark yellow (Player 3)
-          if characterSelectPlayer = 4 then COLUP0  = ColGreen(6)
+          rem Player color but dimmer - use lookup table
+          let COLUP0 = CharacterSelectHurtColors[characterSelectPlayer]
           goto CharacterSelectColorDone
-          rem Dark green
 CharacterSelectHurtBlackWhite
           rem Helper: Set hurt color for B&W mode
           rem
@@ -891,16 +884,9 @@ CharacterSelectColorNormal
           rem called in normal state
           rem Normal state - bright colors
           if switchbw then CharacterSelectColorBlackWhite
-          rem Player color - bright
-          if characterSelectPlayer = 1 then COLUP0  = ColIndigo(12)
-          rem Bright indigo (Player 1)
-          if characterSelectPlayer = 2 then COLUP0  = ColRed(12)
-          rem Bright red (Player 2)
-          if characterSelectPlayer = 3 then COLUP0  = ColYellow(12)
-          rem Bright yellow (Player 3)
-          if characterSelectPlayer = 4 then COLUP0  = ColGreen(12)
+          rem Player color - bright - use lookup table
+          let COLUP0 = CharacterSelectNormalColors[characterSelectPlayer]
           goto CharacterSelectColorDone
-          rem Bright green
 CharacterSelectColorBlackWhite
           rem Helper: Set normal color for B&W mode
           rem
@@ -1130,3 +1116,13 @@ CharacterSelectQuadtariDetected
           let controllerStatus  = controllerStatus | SetQuadtariDetected
           rem OR merge ensures upgrades only, never downgrades
           return
+
+          rem Player color lookup tables for character select
+          rem Indexed by characterSelectPlayer (1-4, so index 0 unused)
+          data CharacterSelectHurtColors
+          0, $36, $46, $16, $C6
+          rem Unused, Indigo(6), Red(6), Yellow(6), Green(6)
+
+          data CharacterSelectNormalColors
+          0, $3C, $4C, $1C, $CC
+          rem Unused, Indigo(12), Red(12), Yellow(12), Green(12)

@@ -803,9 +803,9 @@ SetColor
           rem        temp3 = player number (0-3, from
           rem        LoadCharacterColors)
           rem
-          rem Output: COLUP0, COLUP1, COLUP2, or COLUP3 updated
+          rem Output: COLUP0, _COLUP1, COLUP2, or COLUP3 updated
           rem
-          rem Mutates: COLUP0, COLUP1, COLUP2, COLUP3 (TIA registers)
+          rem Mutates: COLUP0, _COLUP1, COLUP2, COLUP3 (TIA registers)
           rem
           rem Called Routines: None
           rem
@@ -814,8 +814,9 @@ SetColor
           rem conflict
           rem temp6 already contains the color from
           rem   previous code paths
-          if !temp3 then let COLUP0 = temp6 : return
-          if temp3 = 1 then let _COLUP1 = temp6 : return
-          if temp3 = 2 then let COLUP2 = temp6 : return
-          let COLUP3 = temp6
+          if temp3 = 0 then COLUP0 = temp6 : goto SetColorDone
+          if temp3 = 1 then _COLUP1 = temp6 : goto SetColorDone
+          if temp3 = 2 then COLUP2 = temp6 : goto SetColorDone
+          COLUP3 = temp6
+SetColorDone
           return

@@ -479,18 +479,18 @@ CharacterSelectFinish
           rem Mutates: playerState[], gameMode
           rem Initialize facing bit (bit 0) for all selected players
           rem (default: face right = 1)
-          if playerCharacter[0] = NoCharacter then SkipCharacter1Facing
+          if playerCharacter[0] = NoCharacter then DoneCharacter1Facing
           let playerState[0] = playerState[0] | 1
-SkipCharacter1Facing
-          if playerCharacter[1] = NoCharacter then SkipCharacter2Facing
+DoneCharacter1Facing
+          if playerCharacter[1] = NoCharacter then DoneCharacter2Facing
           let playerState[1] = playerState[1] | 1
-SkipCharacter2Facing
-          if playerCharacter[2] = NoCharacter then SkipCharacter3Facing
+DoneCharacter2Facing
+          if playerCharacter[2] = NoCharacter then DoneCharacter3Facing
           let playerState[2] = playerState[2] | 1
-SkipCharacter3Facing
-          if playerCharacter[3] = NoCharacter then SkipCharacter4Facing
+DoneCharacter3Facing
+          if playerCharacter[3] = NoCharacter then DoneCharacter4Facing
           let playerState[3] = playerState[3] | 1
-SkipCharacter4Facing
+DoneCharacter4Facing
           
           let gameMode = ModeFallingAnimation
           rem Transition to falling animation

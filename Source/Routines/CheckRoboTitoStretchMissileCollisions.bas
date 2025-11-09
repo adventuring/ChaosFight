@@ -55,12 +55,12 @@ CRTSMC_IsStretching
           
 CRTSMC_CheckOtherPlayer
           rem Skip self
-          if temp6 = temp1 then CRTSMC_SkipSelf
-          
+          if temp6 = temp1 then CRTSMC_DoneSelf
+
           rem Skip eliminated players
-          
-          if playerHealth[temp6] = 0 then CRTSMC_SkipSelf
-          
+
+          if playerHealth[temp6] = 0 then CRTSMC_DoneSelf
+
           rem AABB collision check
           rem Missile left/right: missileX to missileX+1 (missile width
           rem = 1)
@@ -68,15 +68,15 @@ CRTSMC_CheckOtherPlayer
           rem Player left/right: playerX to
           rem playerX+PlayerSpriteHalfWidth*2
           rem Player top/bottom: playerY to playerY+PlayerSpriteHeight
-          if temp3 >= playerX[temp6] + PlayerSpriteHalfWidth then CRTSMC_SkipSelf
+          if temp3 >= playerX[temp6] + PlayerSpriteHalfWidth then CRTSMC_DoneSelf
           rem Missile left edge >= player right edge, no collision
-          if temp3 + 1 <= playerX[temp6] then CRTSMC_SkipSelf
+          if temp3 + 1 <= playerX[temp6] then CRTSMC_DoneSelf
           rem Missile right edge <= player left edge, no collision
-          if temp4 >= playerY[temp6] + PlayerSpriteHeight then CRTSMC_SkipSelf
+          if temp4 >= playerY[temp6] + PlayerSpriteHeight then CRTSMC_DoneSelf
           rem Missile top edge >= player bottom edge, no collision
-          if temp4 + temp2 <= playerY[temp6] then CRTSMC_SkipSelf
+          if temp4 + temp2 <= playerY[temp6] then CRTSMC_DoneSelf
           rem Missile bottom edge <= player top edge, no collision
-          
+
           let temp5 = temp6
           rem Collision detected! Handle stretch missile hit
           gosub HandleRoboTitoStretchMissileHit
@@ -84,7 +84,7 @@ CRTSMC_CheckOtherPlayer
           goto CRTSMC_NextPlayer
 
           rem After handling hit, skip remaining players for this RoboTito
-CRTSMC_SkipSelf
+CRTSMC_DoneSelf
           let temp6 = temp6 + 1
           if temp6 < 4 then CRTSMC_CheckOtherPlayer
           

@@ -142,11 +142,11 @@ InputHandleAllPlayers
           
           rem Even frame: Handle Players 1 & 2 - only if alive  
           let currentPlayer = 0 : gosub IsPlayerAlive
-          if temp2 = 0 then InputSkipPlayer0Input
-          if (PlayerState[0] & 8) then InputSkipPlayer0Input
+          if temp2 = 0 then InputDonePlayer0Input
+          if (PlayerState[0] & 8) then InputDonePlayer0Input
           let temp1 = 0 : gosub InputHandleLeftPortPlayer
-          
-InputSkipPlayer0Input
+
+InputDonePlayer0Input
           rem Skip Player 0 input (label only, no execution)
           rem
           rem Input: None (label only, no execution)
@@ -160,12 +160,12 @@ InputSkipPlayer0Input
           rem Constraints: Must be colocated with InputHandleAllPlayers
           
           let currentPlayer = 1 : gosub IsPlayerAlive
-          if temp2 = 0 then InputSkipPlayer1Input
-          if (PlayerState[1] & 8) then InputSkipPlayer1Input
+          if temp2 = 0 then InputDonePlayer1Input
+          if (PlayerState[1] & 8) then InputDonePlayer1Input
           goto InputHandlePlayer1
-          
-          goto InputSkipPlayer1Input
-          
+
+          goto InputDonePlayer1Input
+
 InputHandlePlayer1
           rem Handle Player 1 input (right port)
           rem
@@ -181,7 +181,7 @@ InputHandlePlayer1
           rem Constraints: Must be colocated with InputHandleAllPlayers, InputSkipPlayer1Input
           let temp1 = 1
           gosub InputHandleRightPortPlayer
-InputSkipPlayer1Input
+InputDonePlayer1Input
           rem Player 1 uses Joy1
           return
 InputHandleQuadtariPlayers
@@ -219,14 +219,14 @@ InputHandleQuadtariPlayers
           rem InputSkipPlayer4Input
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and
           rem alive)
-          if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer3Input
-          if playerCharacter[2] = NoCharacter then InputSkipPlayer3Input
+          if !(ControllerStatus & SetQuadtariDetected) then InputDonePlayer3Input
+          if playerCharacter[2] = NoCharacter then InputDonePlayer3Input
           let currentPlayer = 2 : gosub IsPlayerAlive
-          if temp2 = 0 then InputSkipPlayer3Input
-          if (PlayerState[2] & 8) then InputSkipPlayer3Input
+          if temp2 = 0 then InputDonePlayer3Input
+          if (PlayerState[2] & 8) then InputDonePlayer3Input
           let temp1 = 2 : gosub InputHandleLeftPortPlayer
-          
-InputSkipPlayer3Input
+
+InputDonePlayer3Input
           rem Skip Player 3 input (label only, no execution)
           rem
           rem Input: None (label only, no execution)
@@ -237,14 +237,14 @@ InputSkipPlayer3Input
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with InputHandleQuadtariPlayers
-          if !(ControllerStatus & SetQuadtariDetected) then InputSkipPlayer4Input
-          if playerCharacter[3] = NoCharacter then InputSkipPlayer4Input
+          if !(ControllerStatus & SetQuadtariDetected) then InputDonePlayer4Input
+          if playerCharacter[3] = NoCharacter then InputDonePlayer4Input
           let currentPlayer = 3 : gosub IsPlayerAlive
-          if temp2 = 0 then InputSkipPlayer4Input
-          if (PlayerState[3] & 8) then InputSkipPlayer4Input
+          if temp2 = 0 then InputDonePlayer4Input
+          if (PlayerState[3] & 8) then InputDonePlayer4Input
           let temp1 = 3 : gosub InputHandleRightPortPlayer
-          
-InputSkipPlayer4Input
+
+InputDonePlayer4Input
           rem Skip Player 4 input (label only, no execution)
           rem
           rem Input: None (label only, no execution)
@@ -601,15 +601,15 @@ DoneUpInputHandling
 
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as
-          if temp3 = 0 then InputSkipLeftPortJump
-          if (PlayerState[temp1] & 4) then InputSkipLeftPortJump
+          if temp3 = 0 then InputDoneLeftPortJump
+          if (PlayerState[temp1] & 4) then InputDoneLeftPortJump
           rem Use cached animation state - block jump during attack
           rem animations (states 13-15)
-          if temp2 >= 13 then InputSkipLeftPortJump
+          if temp2 >= 13 then InputDoneLeftPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank14
-InputSkipLeftPortJump
+InputDoneLeftPortJump
 
           
 
@@ -622,17 +622,17 @@ InputSkipLeftPortJump
           rem Use cached animation state - block attack input during
           rem attack
           rem animations (states 13-15)
-          if temp2 >= 13 then InputSkipLeftPortAttack
+          if temp2 >= 13 then InputDoneLeftPortAttack
           rem Block attack input during attack windup/execute/recovery
           let temp2 = PlayerState[temp1] & 2
           rem Check if player is guarding - guard blocks attacks
-          if temp2 then InputSkipLeftPortAttack
+          if temp2 then InputDoneLeftPortAttack
           rem Guarding - block attack input
-          if !joy0fire then InputSkipLeftPortAttack
-          if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipLeftPortAttack
+          if !joy0fire then InputDoneLeftPortAttack
+          if (PlayerState[temp1] & PlayerStateBitFacing) then InputDoneLeftPortAttack
           let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack bank10
-InputSkipLeftPortAttack
+InputDoneLeftPortAttack
           
           
           return
@@ -758,15 +758,15 @@ DoneUpInputHandlingRight
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as
           rem Shamone)
-          if temp3 = 0 then InputSkipRightPortJump
-          if (PlayerState[temp1] & 4) then InputSkipRightPortJump
+          if temp3 = 0 then InputDoneRightPortJump
+          if (PlayerState[temp1] & 4) then InputDoneRightPortJump
           rem Use cached animation state - block jump during attack
           rem animations (states 13-15)
-          if temp2 >= 13 then InputSkipRightPortJump
+          if temp2 >= 13 then InputDoneRightPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank14
-InputSkipRightPortJump
+InputDoneRightPortJump
           gosub HandleGuardInput
           rem Process down/guard input
 
@@ -774,16 +774,16 @@ InputSkipRightPortJump
           rem Use cached animation state - block attack input during
           rem attack
           rem animations (states 13-15)
-          if temp2 >= 13 then InputSkipRightPortAttack
+          if temp2 >= 13 then InputDoneRightPortAttack
           rem Block attack input during attack windup/execute/recovery
           let temp2 = PlayerState[temp1] & 2 PlayerStateBitGuarding
-          if temp2 then InputSkipRightPortAttack
+          if temp2 then InputDoneRightPortAttack
           rem Guarding - block attack input
-          if !joy1fire then InputSkipRightPortAttack
-          if (PlayerState[temp1] & PlayerStateBitFacing) then InputSkipRightPortAttack
+          if !joy1fire then InputDoneRightPortAttack
+          if (PlayerState[temp1] & PlayerStateBitFacing) then InputDoneRightPortAttack
           let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack bank10
-InputSkipRightPortAttack
+InputDoneRightPortAttack
           return
 
 HandlePauseInput

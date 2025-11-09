@@ -868,54 +868,54 @@ CheckMissilePlayerCollision
           
           rem Check Player 1 (index 0)
           
-          if temp1  = 0 then MissileSkipPlayer0
-          if playerHealth[0] = 0 then MissileSkipPlayer0
-          if temp2>= playerX[0] + PlayerSpriteHalfWidth then MissileSkipPlayer0
-          if temp2 + MissileAABBSize<= playerX[0] then MissileSkipPlayer0
-          if temp3>= playerY[0] + PlayerSpriteHeight then MissileSkipPlayer0
-          if temp3 + MissileAABBSize<= playerY[0] then MissileSkipPlayer0
+          if temp1  = 0 then MissileDonePlayer0
+          if playerHealth[0] = 0 then MissileDonePlayer0
+          if temp2>= playerX[0] + PlayerSpriteHalfWidth then MissileDonePlayer0
+          if temp2 + MissileAABBSize<= playerX[0] then MissileDonePlayer0
+          if temp3>= playerY[0] + PlayerSpriteHeight then MissileDonePlayer0
+          if temp3 + MissileAABBSize<= playerY[0] then MissileDonePlayer0
           let temp4 = 0
           goto MissileCollisionReturn
-MissileSkipPlayer0
+MissileDonePlayer0
           rem Hit Player 1
           
           rem Check Player 2 (index 1)
           
-          if temp1  = 1 then MissileSkipPlayer1
-          if playerHealth[1] = 0 then MissileSkipPlayer1
-          if temp2>= playerX[1] + PlayerSpriteHalfWidth then MissileSkipPlayer1
-          if temp2 + MissileAABBSize<= playerX[1] then MissileSkipPlayer1
-          if temp3>= playerY[1] + PlayerSpriteHeight then MissileSkipPlayer1
-          if temp3 + MissileAABBSize<= playerY[1] then MissileSkipPlayer1
+          if temp1  = 1 then MissileDonePlayer1
+          if playerHealth[1] = 0 then MissileDonePlayer1
+          if temp2>= playerX[1] + PlayerSpriteHalfWidth then MissileDonePlayer1
+          if temp2 + MissileAABBSize<= playerX[1] then MissileDonePlayer1
+          if temp3>= playerY[1] + PlayerSpriteHeight then MissileDonePlayer1
+          if temp3 + MissileAABBSize<= playerY[1] then MissileDonePlayer1
           let temp4 = 1
           goto MissileCollisionReturn
-MissileSkipPlayer1
+MissileDonePlayer1
           rem Hit Player 2
           
           rem Check Player 3 (index 2)
           
-          if temp1  = 2 then MissileSkipPlayer2
-          if playerHealth[2] = 0 then MissileSkipPlayer2
-          if temp2>= playerX[2] + PlayerSpriteHalfWidth then MissileSkipPlayer2
-          if temp2 + MissileAABBSize<= playerX[2] then MissileSkipPlayer2
-          if temp3>= playerY[2] + PlayerSpriteHeight then MissileSkipPlayer2
-          if temp3 + MissileAABBSize<= playerY[2] then MissileSkipPlayer2
+          if temp1  = 2 then MissileDonePlayer2
+          if playerHealth[2] = 0 then MissileDonePlayer2
+          if temp2>= playerX[2] + PlayerSpriteHalfWidth then MissileDonePlayer2
+          if temp2 + MissileAABBSize<= playerX[2] then MissileDonePlayer2
+          if temp3>= playerY[2] + PlayerSpriteHeight then MissileDonePlayer2
+          if temp3 + MissileAABBSize<= playerY[2] then MissileDonePlayer2
           let temp4 = 2
           goto MissileCollisionReturn
-MissileSkipPlayer2
+MissileDonePlayer2
           rem Hit Player 3
           
           rem Check Player 4 (index 3)
           
-          if temp1  = 3 then MissileSkipPlayer3
-          if playerHealth[3] = 0 then MissileSkipPlayer3
-          if temp2>= playerX[3] + PlayerSpriteHalfWidth then MissileSkipPlayer3
-          if temp2 + MissileAABBSize<= playerX[3] then MissileSkipPlayer3
-          if temp3>= playerY[3] + PlayerSpriteHeight then MissileSkipPlayer3
-          if temp3 + MissileAABBSize<= playerY[3] then MissileSkipPlayer3
+          if temp1  = 3 then MissileDonePlayer3
+          if playerHealth[3] = 0 then MissileDonePlayer3
+          if temp2>= playerX[3] + PlayerSpriteHalfWidth then MissileDonePlayer3
+          if temp2 + MissileAABBSize<= playerX[3] then MissileDonePlayer3
+          if temp3>= playerY[3] + PlayerSpriteHeight then MissileDonePlayer3
+          if temp3 + MissileAABBSize<= playerY[3] then MissileDonePlayer3
           let temp4 = 3
           goto MissileCollisionReturn
-MissileSkipPlayer3
+MissileDonePlayer3
           rem Hit Player 4
           
 MissileCollisionReturn

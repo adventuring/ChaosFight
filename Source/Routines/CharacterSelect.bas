@@ -311,12 +311,12 @@ CharacterSelectDoneQuadtariPlayersInline
 
           temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto CharacterSelectCompleted
 
-          goto CharacterSelectSkipQuadtariReadyInline
-          
+          goto CharacterSelectDoneQuadtariReadyInline
+
 CharacterSelectQuadtariReadyInline
           rem Need at least 2 players ready for 4-player mode
           if readyCount>= 2 then goto CharacterSelectCompleted
-CharacterSelectSkipQuadtariReadyInline
+CharacterSelectDoneQuadtariReadyInline
 
           gosub CharacterSelectDrawScreen
           rem Draw character selection screen
@@ -373,7 +373,7 @@ LegacyCharacterSelectDrawScreenBody
           rem Draw Player 3 selection (bottom left) if Quadtari detected
 
           if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer3
-          goto CharacterSelectSkipPlayer3Draw
+          goto CharacterSelectDonePlayer3Draw
 CharacterSelectDrawPlayer3
           rem Draw Player 3 character sprite and number
           rem
@@ -398,7 +398,7 @@ CharacterSelectDrawPlayer3
           rem Draw Player 4 selection (bottom right) if Quadtari
           rem detected
           if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer4
-          goto CharacterSelectSkipPlayer4Draw
+          goto CharacterSelectDonePlayer4Draw
 CharacterSelectDrawPlayer4
           rem Draw Player 4 character sprite and number
           rem
@@ -417,8 +417,8 @@ CharacterSelectDrawPlayer4
           player1y = 80
           gosub CharacterSelectDrawSprite
           rem Adjusted for 16px margins
-CharacterSelectSkipPlayer3Draw
-CharacterSelectSkipPlayer4Draw
+CharacterSelectDonePlayer3Draw
+CharacterSelectDonePlayer4Draw
 
           rem Tail call into CharacterSelectDrawLocks to render lock borders
           goto CharacterSelectDrawLocks
@@ -444,9 +444,9 @@ CharacterSelectDrawLocks
           rem detected. Borders drawn using playfield bits
           rem Draw playfield blocks around locked characters
           temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then CharacterSelectDrawPlayer1Border
-          goto CharacterSelectSkipPlayer1Border
+          goto CharacterSelectDonePlayer1Border
 CharacterSelectDrawPlayer1Border
-CharacterSelectSkipPlayer1Border
+CharacterSelectDonePlayer1Border
           rem Helper: Draw border around Player 1
           rem
           rem Input: legacy playfield registers (unused)
@@ -463,9 +463,9 @@ CharacterSelectSkipPlayer1Border
           rem Draw border around Player 1
 
           temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then CharacterSelectDrawPlayer2Border
-          goto CharacterSelectSkipPlayer2Border
+          goto CharacterSelectDonePlayer2Border
 CharacterSelectDrawPlayer2Border
-CharacterSelectSkipPlayer2Border
+CharacterSelectDonePlayer2Border
           rem Helper: Draw border around Player 2
           rem
           rem Input: legacy playfield registers (unused)
@@ -1022,18 +1022,18 @@ CharacterSelectCompleted
           rem Character selection complete
           rem Initialize facing bit (bit 0) for all selected players
           rem (default: face right = 1)
-          if playerCharacter[0] = NoCharacter then SkipCharacter1FacingSel
+          if playerCharacter[0] = NoCharacter then DoneCharacter1FacingSel
           let playerState[0] = playerState[0] | 1
-SkipCharacter1FacingSel
-          if playerCharacter[1] = NoCharacter then SkipCharacter2FacingSel
+DoneCharacter1FacingSel
+          if playerCharacter[1] = NoCharacter then DoneCharacter2FacingSel
           let playerState[1] = playerState[1] | 1
-SkipCharacter2FacingSel
-          if playerCharacter[2] = NoCharacter then SkipCharacter3FacingSel
+DoneCharacter2FacingSel
+          if playerCharacter[2] = NoCharacter then DoneCharacter3FacingSel
           let playerState[2] = playerState[2] | 1
-SkipCharacter3FacingSel
-          if playerCharacter[3] = NoCharacter then SkipCharacter4FacingSel
+DoneCharacter3FacingSel
+          if playerCharacter[3] = NoCharacter then DoneCharacter4FacingSel
           let playerState[3] = playerState[3] | 1
-SkipCharacter4FacingSel
+DoneCharacter4FacingSel
 
           rem Proceed to falling animation
           return

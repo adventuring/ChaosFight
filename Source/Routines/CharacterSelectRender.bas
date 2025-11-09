@@ -118,34 +118,34 @@ SelectSetPlayerColorHandicap3
 
 SelectUpdateAnimations
           rem Update character select animations for all players
-          let temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer0Animation
-          if playerCharacter[0] = CPUCharacter then goto SelectSkipPlayer0Animation
-          if playerCharacter[0] = NoCharacter then goto SelectSkipPlayer0Animation
-          if playerCharacter[0] = RandomCharacter then goto SelectSkipPlayer0Animation
+          let temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectDonePlayer0Animation
+          if playerCharacter[0] = CPUCharacter then goto SelectDonePlayer0Animation
+          if playerCharacter[0] = NoCharacter then goto SelectDonePlayer0Animation
+          if playerCharacter[0] = RandomCharacter then goto SelectDonePlayer0Animation
           let temp1 = 0
           gosub SelectUpdatePlayerAnimation
-SelectSkipPlayer0Animation
-          let temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer1Animation
-          if playerCharacter[1] = CPUCharacter then goto SelectSkipPlayer1Animation
-          if playerCharacter[1] = NoCharacter then goto SelectSkipPlayer1Animation
-          if playerCharacter[1] = RandomCharacter then goto SelectSkipPlayer1Animation
+SelectDonePlayer0Animation
+          let temp1 = 1 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectDonePlayer1Animation
+          if playerCharacter[1] = CPUCharacter then goto SelectDonePlayer1Animation
+          if playerCharacter[1] = NoCharacter then goto SelectDonePlayer1Animation
+          if playerCharacter[1] = RandomCharacter then goto SelectDonePlayer1Animation
           let temp1 = 1
           gosub SelectUpdatePlayerAnimation
-SelectSkipPlayer1Animation
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Animation
-          let temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer2Animation
-          if playerCharacter[2] = NoCharacter then goto SelectSkipPlayer2Animation
-          if playerCharacter[2] = RandomCharacter then goto SelectSkipPlayer2Animation
+SelectDonePlayer1Animation
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectDonePlayer23Animation
+          let temp1 = 2 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectDonePlayer2Animation
+          if playerCharacter[2] = NoCharacter then goto SelectDonePlayer2Animation
+          if playerCharacter[2] = RandomCharacter then goto SelectDonePlayer2Animation
           let temp1 = 2
           gosub SelectUpdatePlayerAnimation
-SelectSkipPlayer2Animation
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectSkipPlayer23Animation
-          let temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectSkipPlayer23Animation
-          if playerCharacter[3] = NoCharacter then goto SelectSkipPlayer23Animation
-          if playerCharacter[3] = RandomCharacter then goto SelectSkipPlayer23Animation
+SelectDonePlayer2Animation
+          if !(controllerStatus & SetQuadtariDetected) then goto SelectDonePlayer23Animation
+          let temp1 = 3 : gosub GetPlayerLocked bank9 : if temp2 then goto SelectDonePlayer23Animation
+          if playerCharacter[3] = NoCharacter then goto SelectDonePlayer23Animation
+          if playerCharacter[3] = RandomCharacter then goto SelectDonePlayer23Animation
           let temp1 = 3
           gosub SelectUpdatePlayerAnimation
-SelectSkipPlayer23Animation
+SelectDonePlayer23Animation
           return
 
 SelectUpdatePlayerAnimation

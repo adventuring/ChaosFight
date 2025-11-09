@@ -295,11 +295,11 @@ LoadCPUSprite
 ;
 ; Constraints: Must be colocated with LoadCPUSpriteP0-P3
           end
-          if !temp3 then LoadCPUSpriteP0
+          if !temp3 then goto LoadCPUSpriteP0
           asm
 ; Use skip-over pattern to avoid complex compound statements
           end
-          if temp3 = 1 then LoadCPUSpriteP1
+          if temp3 = 1 then goto LoadCPUSpriteP1
           if temp3 = 2 then goto LoadCPUSpriteP2
           goto LoadCPUSpriteP3
           
@@ -388,11 +388,11 @@ LoadNoSprite
 ;
 ; Constraints: Must be colocated with LoadNoSpriteP0-P3
           end
-          if !temp3 then LoadNoSpriteP0
+          if !temp3 then goto LoadNoSpriteP0
           asm
 ; Use skip-over pattern to avoid complex compound statements
           end
-          if temp3 = 1 then LoadNoSpriteP1
+          if temp3 = 1 then goto LoadNoSpriteP1
           if temp3 = 2 then goto LoadNoSpriteP2
           goto LoadNoSpriteP3
           
@@ -718,7 +718,7 @@ LoadCharacterColors
 ; Highest priority: hurt state
           end
 
-          if temp4 then FlashingColor
+          if temp4 then goto FlashingColor
           asm
 ; Next priority: flashing state
           end
@@ -741,7 +741,7 @@ NormalColor
 ; Constraints: Must be colocated with LoadCharacterColors
 ; Determine effective B&W override locally; if enabled, use
           end
-          if systemFlags & SystemFlagColorBWOverride then PlayerIndexColors
+          if systemFlags & SystemFlagColorBWOverride then goto PlayerIndexColors
           asm
 ;   player colors
           end
@@ -773,7 +773,7 @@ FlashingColor
 ;
 ; Called Routines: None (dispatcher only)
           end
-          if !temp5 then PerLineFlashing
+          if !temp5 then goto PerLineFlashing
           goto PlayerIndexColors
           
 PerLineFlashing

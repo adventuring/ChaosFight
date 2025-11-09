@@ -610,32 +610,34 @@ RoboTitoJump
           if !temp3 then RoboTitoCannotStretch
           rem Bit 3 not set, cannot stretch
           goto RoboTitoCanStretch
+
 RTJ_CheckBit0
           rem Player 0: bit 0
           let temp3 = temp2 & 1
           if !temp3 then RoboTitoCannotStretch
           rem Bit 0 not set, cannot stretch
           goto RoboTitoCanStretch
+
 RTJ_CheckBit1
           rem Player 1: bit 1
           let temp3 = temp2 & 2
           if !temp3 then RoboTitoCannotStretch
           rem Bit 1 not set, cannot stretch
           goto RoboTitoCanStretch
+
 RTJ_CheckBit2
           rem Player 2: bit 2
           let temp3 = temp2 & 4
           if !temp3 then RoboTitoCannotStretch
           rem Bit 2 not set, cannot stretch
           goto RoboTitoCanStretch
+
 RoboTitoCannotStretch
           rem Cannot stretch - clear missile height and return
           let missileStretchHeight_W[temp1] = 0
           return
+
 RoboTitoCanStretch
-          goto RoboTitoStretching
-          rem Grounded and permission granted - allow stretching
-          
 RoboTitoStretching
           rem Helper: Sets stretching animation and calculates stretch
           rem height
@@ -665,9 +667,50 @@ RoboTitoStretching
           rem Set stretching animation (repurposed ActionJumping = 10)
           
           rem Calculate and set missile stretch height
-          rem Ground level: Use ScreenBottom (192) as ground Y position
+          rem Ground level search:
+          let temp2 = playerY[currentPlayer] + 16
+          rem Start search from feet position (player bottom + 16 pixels)
+
+          rem Convert player X position to playfield column for pfread
+          gosub ConvertPlayerXToPlayfieldColumn bank13
+          let temp4 = temp2
+          rem temp4 = playfield column from subroutine
+
+          rem Convert starting Y position to playfield row
+          let temp2 = playerY[currentPlayer] + 16
+          rem Restore starting Y position (overwritten by subroutine)
+          let temp5 = temp2 / pfrowheight
+          rem temp5 = starting row for ground search
+
+          rem Search downward from starting row until we find ground
+GroundSearchLoop
+          rem Check if we've reached bottom of playfield
+          if temp5 >= pfrows then goto GroundSearchBottom
+          rem Beyond playfield, use screen bottom as ground
+
+          rem Check if playfield pixel is set in current row
+          let temp6 = 0
+          if pfread(temp4, temp5) then let temp6 = 1
+          if temp6 = 1 then goto GroundFound
+          rem Ground pixel found in this row
+
+          rem Move to next row down
+          let temp5 = temp5 + 1
+          goto GroundSearchLoop
+
+GroundFound
+          rem Convert found row back to Y coordinate
+          rem temp2 = row * pfrowheight
+          let temp2 = temp5 * pfrowheight
+          goto GroundSearchDone
+
+GroundSearchBottom
+          rem Reached bottom of playfield, use screen bottom
           let temp2 = ScreenBottom
-          rem Note: Y coordinate increases downward (0=top, 192=bottom)
+          goto GroundSearchDone
+
+GroundSearchDone
+          rem temp2 now contains ground Y position
           let temp3 = playerY[temp1]
           rem Calculate height: playerY - groundY (extends downward from player)
           let temp3 = temp3 - temp2

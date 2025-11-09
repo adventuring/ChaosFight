@@ -41,8 +41,6 @@ LoadArena
           rem Get arena index (0-15)
           
           gosub DWS_GetBWMode bank12
-          rem Load playfield and colors
-          goto LoadArenaByIndex
 
 LoadArenaByIndex
           rem Load arena playfield and colors by index
@@ -84,9 +82,7 @@ LoadArenaByIndex
 end
           
           rem Tail-call B&W color loader
-          
           if temp2 then goto LoadArenaColorsBW
-          goto LoadArenaColorsColor
 LoadArenaColorsColor
           rem Load arena color table pointer based on arena index
           asm
@@ -110,7 +106,7 @@ end
           return
 
 LoadRandomArena
-          rem Select random arena (0-15) using proper random number
+          rem Select random arena (0-31) using proper random number
           rem generator
           rem
           rem Input: rand (global) = random number generator
@@ -124,24 +120,13 @@ LoadRandomArena
           rem selected random arena
           rem
           rem Constraints: None
-          rem Select random arena (0-15) using proper RNG
+          rem Select random arena (0-31) using proper RNG
           let temp1 = rand
           rem Get random value (0-255)
-          let temp1 = temp1 & 15
-          rem Mask to 0-15 range
+          let temp1 = temp1 & 31
+          if temp1 > MaxArenaID then LoadRandomArena
           goto LoadArenaByIndex
 
-          rem
-          rem Reload Arena Colors
-          rem Reloads only the arena colors (not playfield) based on
-          rem   current
-          rem Color/B&W switch state. Called when switch changes during
-          rem   gameplay.
-
-          rem Reload arena colors based on current Color/B&W switch
-          rem state
-          rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
-          
           
           
 

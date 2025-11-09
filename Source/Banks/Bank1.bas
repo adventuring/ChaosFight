@@ -162,21 +162,6 @@ end
 #else
 #include "Source/Generated/Song.Interworldly.PAL.bas"
 #endif
-          
-          rem
-          rem Music System Code (must follow data)
-          rem Music system - dedicated 3.5kiB bank for compiled samples
-#include "Source/Routines/MusicSystem.bas"
-          
-          rem Songs bank helper functions (require bank-local symbols)
-#include "Source/Routines/MusicBankHelpers.bas"
 
-          rem Title screen code (data is auto-included by batariBASIC)
-TitleScreenThunk
-          asm
-#include "Source/TitleScreen/asm/titlescreen.s"
-            jsr titledrawscreen
-end
-          return
-#include "Source/Data/Arenas.bas"
-#include "Source/Routines/ArenaLoader.bas"
+#include "Source/Routines/MusicSystem.bas"
+#include "Source/Routines/MusicBankHelpers.bas"

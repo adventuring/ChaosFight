@@ -4,12 +4,12 @@
           bank 10
            
 #include "Source/Data/PlayerColorTables.bas"
-#include "Source/Data/QuestionMarkSprite.bas"
-#include "Source/Data/CPUSprite.bas"
-#include "Source/Data/NoSprite.bas"
-#include "Source/Routines/SpriteLoader.bas"
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 #include "Source/Routines/PlayerRendering.bas"
 #include "Source/Routines/PlayerElimination.bas"
 #include "Source/Routines/CharacterAttacksDispatch.bas"
+#include "Source/Routines/CharacterAttacks.bas"
+#include "Source/Routines/PerformMeleeAttack.bas"
+#include "Source/Routines/PerformRangedAttack.bas"
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 

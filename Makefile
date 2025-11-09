@@ -289,7 +289,7 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Character sprites are compiled using compile-chaos-character
-# Special sprites (QuestionMark, CPU, No) are hard-coded in Source/Data/SpecialSprites.bas
+# Special sprites (QuestionMark, CPU, No) are hard-coded in individual files
 
 # Explicit PNG dependencies for character sprites (ensures PNG generation from XCF)
 # Use pattern rule to ensure PNG is generated from XCF before .bas compilation
@@ -384,7 +384,7 @@ Source/Generated/Font.bas: Source/Art/Font.png | Source/Generated/
 # Bitmap .s files must exist before cpp runs, so they need PNG dependencies.
 Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
+	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
 	Source/Generated/Numbers.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Author.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
@@ -395,7 +395,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas: Source/Platform/NTSC.bas \
 
 Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
+	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
 	Source/Generated/Numbers.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Author.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
@@ -407,7 +407,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas: Source/Platform/PAL.bas \
 # SECAM build uses PAL music/sound files via conditional includes in Bank15/16.bas
 Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
-	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas \
+	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
 	Source/Generated/Numbers.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Author.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
@@ -427,7 +427,7 @@ Source/Banks/Bank4.bas: Source/Generated/Character16.bas Source/Generated/Charac
 
 Source/Banks/Bank5.bas: Source/Generated/Character24.bas Source/Generated/Character25.bas Source/Generated/Character26.bas Source/Generated/Character27.bas Source/Generated/Character28.bas Source/Generated/Character29.bas Source/Generated/Character30.bas Source/Generated/MethHound.bas
 
-Source/Banks/Bank12.bas: Source/Generated/Numbers.bas
+Source/Banks/Bank16.bas: Source/Generated/Numbers.bas
 
 # Shared dependencies for all TV standards
 BUILD_DEPS = $(ALL_SOURCES) \
@@ -437,13 +437,13 @@ BUILD_DEPS = $(ALL_SOURCES) \
 	Source/Banks/Bank4.bas \
 	Source/Banks/Bank5.bas \
 	Source/Banks/Bank12.bas \
+	Source/Banks/Bank16.bas \
 	Source/Banks/Banks.bas \
 	Source/Common/Colors.h \
 	Source/Common/Constants.bas \
 	Source/Common/Macros.bas \
 	Source/Common/Preamble.bas \
 	Source/Common/Variables.bas \
-	Source/Data/SpecialSprites.bas \
 	Source/Routines/ColdStart.bas \
 	Source/Routines/ControllerDetection.bas \
 	Source/Routines/FallingAnimation.bas \

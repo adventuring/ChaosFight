@@ -57,7 +57,7 @@ DisplayWinScreen
           rem              gosub)
           rem Called from WinnerAnnouncement per-frame loop
           
-          gosub SetAdminScreenLayout bank8 : 
+          gosub SetAdminScreenLayout bank8
           rem Set admin screen layout (32×32 for character display)
           
           rem Load winner screen playfield pattern
@@ -73,15 +73,15 @@ DisplayWinScreen
           sta PF2pointer+1
 end
           
-          gosub DWS_GetBWMode : 
+          gosub DWS_GetBWMode
           rem Load playfield colors based on B&W mode
           if temp2 then gosub DWS_LoadBWColors else gosub DWS_LoadColorColors
           
-          let temp1 = playersRemaining_R : 
+          let temp1 = playersRemaining_R
           rem Get players remaining count (SCRAM read)
           
           rem Get winner index (already set by FindWinner, SCRAM read)
-          let temp2 = winnerPlayerIndex_R : 
+          let temp2 = winnerPlayerIndex_R
           rem Read after DWS_GetBWMode to avoid temp2 conflict
           
           rem Calculate rankings from eliminationOrder
@@ -89,13 +89,13 @@ end
           rem 2nd place = highest eliminationOrder (last eliminated)
           rem 3rd place = second highest eliminationOrder
           
-          let temp3 = 255 : 
+          let temp3 = 255
           rem Find 2nd and 3rd place rankings
           let temp4 = 255
           let temp5 = 0
           let winScreenThirdPlaceOrder_W = 0
           
-          let temp1 = 0 : 
+          let temp1 = 0
           rem Check all players for ranking
 DWS_RankLoop
           rem Ranking loop - check all players for 2nd and 3rd place
@@ -213,14 +213,14 @@ DWS_Position1Player
           rem Constraints: Must be colocated with DisplayWinScreen
           let playerX[0] = 80
           let playerY[0] = 192
-          let currentCharacter = playerCharacter[temp2] : 
+          let currentCharacter = playerCharacter[temp2]
           rem Load winner sprite
           let LCS_animationFrame = 0
-          let LCS_playerNumber = 0 : 
+          let LCS_playerNumber = 0
           rem Animation frame 0 (idle)
-          gosub LoadCharacterSprite bank10 : 
+          gosub LoadCharacterSprite bank10
           rem Player 0
-          let playerX[1] = 0 : 
+          let playerX[1] = 0
           rem Hide other players
           let playerX[2] = 0
           let playerX[3] = 0
@@ -245,7 +245,7 @@ DWS_Position2Players
           rem
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_Hide2Player, DWS_Hide2PlayerDone
-          let playerX[0] = 80 : 
+          let playerX[0] = 80
           rem Winner (P0)
           let playerY[0] = 192
           let currentCharacter = playerCharacter[temp2]
@@ -289,7 +289,7 @@ DWS_Hide2PlayerDone
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
-          let playerX[2] = 0 : 
+          let playerX[2] = 0
           rem Hide unused players
           let playerX[3] = 0
           return
@@ -314,7 +314,7 @@ DWS_Position3Players
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_Hide3Player2, DWS_Hide3Player2Done,
           rem              DWS_Hide3Player3, DWS_Hide3Player3Done
-          let playerX[0] = 80 : 
+          let playerX[0] = 80
           rem Winner (P0) - higher platform
           let playerY[0] = 128
           rem Row 16 = 128 pixels (16 * 8)
@@ -396,7 +396,7 @@ DWS_Hide3Player3Done
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
-          let playerX[3] = 0 : 
+          let playerX[3] = 0
           rem Hide unused player
           return
           
@@ -417,7 +417,7 @@ DWS_GetBWMode
           rem   (ColorBWOverride) can force B&W
           rem switchbw=1 means B&W mode, systemFlags bit 6
           rem Uses temp2 for temp2 (temp2 saved by
-          let temp2 = 0 : 
+          let temp2 = 0
           rem   caller)
           if switchbw then let temp2 = 1
           if systemFlags & SystemFlagColorBWOverride then let temp2 = 1

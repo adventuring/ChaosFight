@@ -15,6 +15,9 @@
 #include "Source/Generated/Character22.bas"
 #include "Source/Generated/Character23.bas"
           
+          rem Player input routines moved from Bank 13 for space optimization
+#include "Source/Routines/PlayerInput.bas"
+
           asm
           ; rem Character art lookup routines for Bank 4 (characters
           ; rem   16-23)

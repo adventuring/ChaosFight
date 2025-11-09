@@ -47,7 +47,7 @@ UpdatePlayer1HealthBar
           rem   downward
           rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2
           rem   pixels, 0-11 = 0 pixels
-          let temp2 = 0 : 
+          let temp2 = 0
           rem patternIndex will hold the pattern index (0-8)
           
           rem Check thresholds from highest (83) to lowest (11)
@@ -85,7 +85,7 @@ P1SetPattern
           rem function, so no bank prefix needed
           let temp3 = HealthBarPatterns[temp2]
           
-          let pfscore1 = temp3 : 
+          let pfscore1 = temp3
           rem Set pfscore1 to health bar pattern
           
           return
@@ -115,7 +115,7 @@ UpdatePlayer2HealthBar
           rem   downward
           rem 84-100 = 8 pixels, 72-83 = 7 pixels, ..., 12-23 = 2
           rem   pixels, 0-11 = 0 pixels
-          let temp2 = 0 : 
+          let temp2 = 0
           rem patternIndex will hold the pattern index (0-8)
           
           rem Check thresholds from highest (83) to lowest (11)
@@ -153,7 +153,7 @@ P2SetPattern
           rem function, so no bank prefix needed
           let temp3 = HealthBarPatterns[temp2]
           
-          let pfscore2 = temp3 : 
+          let pfscore2 = temp3
           rem Set pfscore2 to health bar pattern
           
           return
@@ -179,13 +179,13 @@ UpdatePlayer12HealthBars
           rem   UpdatePlayer2HealthBar - accesses temp1,
           rem   HealthBarPatterns
           rem Constraints: Tail call to UpdatePlayer2HealthBar
-          let temp1 = playerHealth[0] : 
+          let temp1 = playerHealth[0]
           rem Update P1 health bar
           gosub UpdatePlayer1HealthBar
           
-          let temp1 = playerHealth[1] : 
+          let temp1 = playerHealth[1]
           rem Update P2 health bar
-          goto UpdatePlayer2HealthBar : 
+          goto UpdatePlayer2HealthBar
           rem tail call
           
           
@@ -329,7 +329,7 @@ end
           rem   support
           rem For now, set to white (Neutral color)
           rem TODO: Investigate if multisprite kernel supports separate
-          let scorecolor = ColGrey(14) : 
+          let scorecolor = ColGrey(14)
           rem   left/right score colors (Issue #600)
           
           return
@@ -351,7 +351,7 @@ DisplayCF2025
             STA score+2
 end
           
-          let scorecolor = ColGrey(14) : 
+          let scorecolor = ColGrey(14)
           rem Set score color to white
           
           return

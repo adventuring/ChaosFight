@@ -262,7 +262,7 @@ BudgetedCollisionCheck
           rem   Frame 1: Pairs 2, 3 (P1 vs P4, P2 vs P3)
           rem   Frame 2: Pairs 4, 5 (P2 vs P4, P3 vs P4)
           rem   Frame 3: Pairs 0, 1 (repeat)
-          gosub CheckCollisionP1vsP2 : 
+          gosub CheckCollisionP1vsP2
           rem Always check P1 vs P2 (most important)
           
           rem Skip other checks if not Quadtari
@@ -314,7 +314,7 @@ DoneCalcP1vsP2Diff
           rem If P0 is left of P1, move P0 left and P1 right
           if playerX[0] < playerX[1] then SeparateP0Left
           
-          let playerX[0] = playerX[0] + 1 : 
+          let playerX[0] = playerX[0] + 1
           rem Else P0 is right of P1, move P0 right and P1 left
           let playerX[1] = playerX[1] - 1
           goto DonePlayerSeparation
@@ -437,7 +437,7 @@ BudgetedMissileCollisionCheck
           
           if !(controllerStatus & SetQuadtariDetected) then BudgetedMissileCollisionCheck2P
           
-          let temp1 = FramePhase : 
+          let temp1 = FramePhase
           rem 4-player mode: check one missile per frame
           rem FramePhase 0-3 maps to Game Players 0-3
           rem Calculate bit flag using O(1) array lookup:
@@ -448,11 +448,11 @@ BudgetedMissileCollisionCheck
           return
           
 BudgetedMissileCollisionCheck2P
-          let temp1 = frame & 1 : 
+          let temp1 = frame & 1
           rem Simple 2-player mode: alternate missiles
           rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
           rem   BitMask[playerIndex] (1, 2, 4, 8)
-          let temp6 = BitMask[temp1] : 
+          let temp6 = BitMask[temp1]
           rem Calculate bit flag using O(1) array lookup:
           let temp4 = missileActive & temp6
           if temp4 then gosub CheckAllMissileCollisions bank7

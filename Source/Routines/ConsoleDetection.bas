@@ -40,7 +40,7 @@ ConsoleDetHW
           rem              registers
           rem              Entry point for console detection (called
           rem              from ColdStart)
-          let systemFlags = systemFlags & ClearSystemFlag7800 : 
+          let systemFlags = systemFlags & ClearSystemFlag7800
           rem Assume 2600 console initially
           
           rem Check $D0 value
@@ -55,7 +55,7 @@ ConsoleDetHW
           temp1 = $D1
           if !(temp1 = ConsoleDetectD1) then goto Is2600
           
-          goto Is7800 : 
+          goto Is7800
           rem 7800 detected: $D0=$2C and $D1=$A9
           
 CheckFlashed
@@ -82,7 +82,7 @@ CheckFlashed
           temp1 = $80
           if temp1 = 0 then Is2600
           
-          goto Is7800 : 
+          goto Is7800
           rem CDFJ driver detected 7800
           
 Is7800
@@ -139,7 +139,7 @@ CheckConsoleFeatures
           rem   from ConsoleHandling.bas during the game loop
           rem Note: Controller detection works for both 2600 and 7800
           rem   via ControllerDetection.bas (DetectControllers)
-          goto ConsoleFeaturesDone : 
+          goto ConsoleFeaturesDone
           rem   No console-specific initialization needed
           
 Done7800Features

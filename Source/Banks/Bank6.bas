@@ -3,5 +3,4 @@
 
           bank 6
 
-rem Bank 6 is now empty - all routines moved to other banks
           

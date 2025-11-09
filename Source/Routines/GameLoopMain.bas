@@ -55,7 +55,7 @@ GameMainLoop
           rem              Entry point for main gameplay loop (called
           rem              from MainLoop)
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+
-          gosub ReadEnhancedButtons : 
+          gosub ReadEnhancedButtons
           rem   II/III)
           
           gosub HandleConsoleSwitches bank14 :
@@ -67,25 +67,25 @@ GameMainLoop
           gosub InputHandleAllPlayers bank13 :
           rem Handle all player input (with Quadtari multiplexing) (in Bank 13)
 
-          gosub UpdateGuardTimers bank14 : 
+          gosub UpdateGuardTimers bank14
           rem Update guard timers (duration and cooldown)
 
-          gosub UpdateCharacterAnimations bank11 : 
+          gosub UpdateCharacterAnimations bank11
           rem Update animation system (10fps character animation) (in Bank 11)
           
-          gosub UpdatePlayerMovement bank10 :
-          rem Update movement system (full frame rate movement) (moved to Bank 10)
+          gosub UpdatePlayerMovement bank3 :
+          rem Update movement system (full frame rate movement) (in Bank 3)
 
-          gosub PhysicsApplyGravity bank8 : 
+          gosub PhysicsApplyGravity bank8
           rem Apply gravity and physics (in Bank 8)
           
-          gosub ApplyMomentumAndRecovery bank8 : 
+          gosub ApplyMomentumAndRecovery bank8
           rem Apply momentum and recovery effects (in Bank 8)
 
-          gosub ApplySpecialMovement bank8 : 
+          gosub ApplySpecialMovement bank8
           rem Apply special movement physics (Bernie wrap, etc.) (in Bank 8)
 
-          gosub CheckBoundaryCollisions bank8 : 
+          gosub CheckBoundaryCollisions bank8
           rem Check boundary collisions (in Bank 8)
 
           rem Optimized: Single loop for playfield collisions (walls, ceilings, ground)
@@ -106,13 +106,13 @@ GameMainLoopQuadtariSkip
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-          gosub CheckAllPlayerCollisions bank11 : 
+          gosub CheckAllPlayerCollisions bank11
           rem Check multi-player collisions (in Bank 11)
 
-          gosub CheckAllPlayerEliminations : 
+          gosub CheckAllPlayerEliminations
           rem Check for player eliminations
           
-          gosub UpdateAllMissiles bank7 : 
+          gosub UpdateAllMissiles bank7
           rem Update missiles (in Bank 7)
           
           rem Check if game should end and transition to winner screen
@@ -140,7 +140,7 @@ CheckGameEndTransition
           rem TransitionToWinner, GameEndCheckDone
           rem When timer reaches 0, transition to winner announcement
           if gameEndTimer_R = 0 then TransitionToWinner
-          let gameEndTimer_W = gameEndTimer_R - 1 : 
+          let gameEndTimer_W = gameEndTimer_R - 1
           rem Decrement game end timer
           goto GameEndCheckDone
 TransitionToWinner
@@ -171,33 +171,33 @@ GameEndCheckDone
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-          gosub UpdateAllMissiles bank7 : 
+          gosub UpdateAllMissiles bank7
           rem Update missiles (in Bank 7)
 
           rem Check missile collisions (in Bank 7) - handled internally
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
-          gosub CheckRoboTitoStretchMissileCollisions : 
+          gosub CheckRoboTitoStretchMissileCollisions
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)
           rem gosub SetSpritePositions 
           rem Replaced by UpdatePlayerMovement
 
-          gosub SetPlayerSprites bank10 : 
+          gosub SetPlayerSprites bank10
           rem Set sprite graphics (in Bank 10)
 
-          gosub DisplayHealth bank8 : 
+          gosub DisplayHealth bank8
           rem Display health information
           
-          gosub UpdatePlayer12HealthBars bank8 : 
+          gosub UpdatePlayer12HealthBars bank8
           rem Update P1/P2 health bars using pfscore system
           
-          gosub UpdatePlayer34HealthBars bank8 : 
+          gosub UpdatePlayer34HealthBars bank8
           rem Update P3/P4 health bars using playfield system
           
-          gosub UpdateSoundEffect bank15 : 
+          gosub UpdateSoundEffect bank15
           rem Update sound effects (game mode 6 only)
           
           rem Frame counter is automatically incremented by batariBASIC

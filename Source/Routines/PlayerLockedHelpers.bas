@@ -29,29 +29,29 @@ GetPlayerLocked
           if temp1 = 1 then GPL_ExtractBits2
           if temp1 = 2 then GPL_ExtractBits4
           if temp1 = 3 then GPL_ExtractBits6
-          let temp2 = 0 : 
+          let temp2 = 0
           rem Invalid index, return 0
           goto GPL_Done
           
 GPL_ExtractBits0
-          let temp2 = temp3 & 3 : 
+          let temp2 = temp3 & 3
           rem Player 0: bits 0-1
           goto GPL_Done
           
 GPL_ExtractBits2
-          let temp2 = temp3 / 4 : 
+          let temp2 = temp3 / 4
           rem Player 1: bits 2-3
           let temp2 = temp2 & 3
           goto GPL_Done
           
 GPL_ExtractBits4
-          let temp2 = temp3 / 16 : 
+          let temp2 = temp3 / 16
           rem Player 2: bits 4-5
           let temp2 = temp2 & 3
           goto GPL_Done
           
 GPL_ExtractBits6
-          let temp2 = temp3 / 64 : 
+          let temp2 = temp3 / 64
           rem Player 3: bits 6-7
           let temp2 = temp2 & 3
           goto GPL_Done
@@ -85,7 +85,7 @@ SetPlayerLocked
           rem Called Routines: None
           rem Constraints: None
           
-          let temp3 = playerLocked : 
+          let temp3 = playerLocked
           rem Get current playerLocked value
           
           rem Clear the 2 bits for this player

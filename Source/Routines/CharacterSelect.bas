@@ -23,30 +23,30 @@ CharacterSelectEntry
           rem initialization
           rem              Must be colocated with CharacterSelectLoop (called
           rem              via goto)
-          let playerCharacter[0] = 0 : 
+          let playerCharacter[0] = 0
           rem Initialize character selections
           let playerCharacter[1] = 0
           let playerCharacter[2] = 0
           let playerCharacter[3] = 0
-          let playerLocked = 0 : 
+          let playerLocked = 0
           rem Initialize playerLocked (bit-packed, all unlocked)
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
           rem   detection (upgrades only)
           rem Controller detection is handled by DetectControllers with
           rem   monotonic state machine
           
-          let characterSelectAnimationTimer  = 0 : 
+          let characterSelectAnimationTimer  = 0
           rem Initialize character select animations
           let characterSelectAnimationState  = 0
-          let characterSelectCharacterIndex  = 0 : 
+          let characterSelectCharacterIndex  = 0
           rem Start with idle animation
-          let characterSelectAnimationFrame  = 0 : 
+          let characterSelectAnimationFrame  = 0
           rem Start with first character
 
-          gosub CharacterSelectDetectQuadtari : 
+          gosub CharacterSelectDetectQuadtari
           rem Check for Quadtari adapter
 
-          let COLUBK  = ColGray(0) : 
+          let COLUBK  = ColGray(0)
           rem Set background color (B&W safe)
           rem Always black background
 
@@ -127,7 +127,7 @@ SelectStick0Down
 Player1LockSelection
           if joy0down then Player1HandicapSelection
           let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
-          goto Player1LockSelectionDone : 
+          goto Player1LockSelectionDone
           rem Locked normal (100% health)
 
 Player1HandicapSelection
@@ -169,13 +169,13 @@ SelectStick1Down
 SelectStick1DownQ
           if joy1down then let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank9 : goto Player2LockSelectionDone
 
-          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9 : 
+          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
           rem Locked with handicap (75% health)
 Player2LockSelectionDone 
           rem Locked normal (100% health)
 
 SelectStick1EvenFrameSkip
-          let qtcontroller  = 1 : 
+          let qtcontroller  = 1
           rem Switch to odd frame mode for next iteration
           goto CharacterSelectHandleComplete
 
@@ -221,7 +221,7 @@ SelectStick0DownPlayer3Q
           if joy0down then Player3HandicapSelection
 
           let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
-          goto Player3LockSelectionDone : 
+          goto Player3LockSelectionDone
           rem Locked normal (100% health)
 
 Player3HandicapSelection
@@ -268,7 +268,7 @@ SelectStick1DownPlayer4Q
           if joy1down then Player4HandicapSelection
 
           let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
-          goto Player4LockSelectionDone : 
+          goto Player4LockSelectionDone
           rem Locked normal (100% health)
 
 Player4HandicapSelection
@@ -276,7 +276,7 @@ Player4HandicapSelection
 Player4LockSelectionDone
           rem Locked with handicap (75% health)
           
-          let qtcontroller  = 0 : 
+          let qtcontroller  = 0
           rem Switch back to even frame mode for next iteration
 CharacterSelectSkipPlayer3
 CharacterSelectSkipPlayer4
@@ -284,11 +284,11 @@ SelectStick1OddFrameSkip
 
 CharacterSelectHandleComplete
 
-          gosub CharacterSelectUpdateAnimation : 
+          gosub CharacterSelectUpdateAnimation
           rem Update character select animations
 
           rem Check if all players are ready to start (inline
-          let readyCount  = 0 : 
+          let readyCount  = 0
           rem   SelAllReady)
 
           rem Count locked players
@@ -318,7 +318,7 @@ CharacterSelectQuadtariReadyInline
           if readyCount>= 2 then goto CharacterSelectCompleted
 CharacterSelectSkipQuadtariReadyInline
 
-          gosub CharacterSelectDrawScreen : 
+          gosub CharacterSelectDrawScreen
           rem Draw character selection screen
 
           rem drawscreen called by MainLoop
@@ -361,13 +361,13 @@ LegacyCharacterSelectDrawScreenBody
           rem Draw Player 1 selection (top left)
           player0x = 56
           player0y = 40 
-          gosub CharacterSelectDrawSprite : 
+          gosub CharacterSelectDrawSprite
           rem Adjusted for 16px left margin (40+16)
 
-          let player1x = 104 : 
+          let player1x = 104
           rem Draw Player 2 selection (top right)
           let player1y = 40
-          gosub CharacterSelectDrawSprite : 
+          gosub CharacterSelectDrawSprite
           rem Adjusted for 16px margins (120-16)
 
           rem Draw Player 3 selection (bottom left) if Quadtari detected
@@ -392,7 +392,7 @@ CharacterSelectDrawPlayer3
           rem CharacterSelectSkipPlayer3Draw
           player0x = 56
           player0y = 80 
-          gosub CharacterSelectDrawSprite : 
+          gosub CharacterSelectDrawSprite
           rem Adjusted for 16px left margin
 
           rem Draw Player 4 selection (bottom right) if Quadtari
@@ -415,13 +415,13 @@ CharacterSelectDrawPlayer4
           rem Constraints: Must be colocated with CharacterSelectDrawScreen, CharacterSelectSkipPlayer4Draw
           let player1x = 104
           let player1y = 80
-          gosub CharacterSelectDrawSprite : 
+          gosub CharacterSelectDrawSprite
           rem Adjusted for 16px margins
 CharacterSelectSkipPlayer3Draw
 CharacterSelectSkipPlayer4Draw
 
           rem Tail call into CharacterSelectDrawLocks to render lock borders
-          goto CharacterSelectDrawLocks : 
+          goto CharacterSelectDrawLocks
           rem tail call
 
 
@@ -661,7 +661,7 @@ CharacterSelectUpdateAnimation
           rem Check if any player is holding DOWN (for handicap preview)
           rem If so, freeze their character in recovery from far fall
           rem   pose (animation state 9)
-          let HandicapMode  = 0 : 
+          let HandicapMode  = 0
           rem HandicapMode is defined in Variables.bas as variable i
           
           rem Check each player for DOWN held (even frame for P1/P2)
@@ -738,7 +738,7 @@ CharacterSelectHandleHandicap
           rem called when HandicapMode is set. Animation frozen (timer
           rem not updated)
           let characterSelectAnimationState = ActionRecovering
-          let characterSelectAnimationFrame  = 0 : 
+          let characterSelectAnimationFrame  = 0
           rem Animation state 9 = Recovering to standing
           rem First frame of recovery animation
           rem Do not update timer or frame - freeze the animation
@@ -769,24 +769,24 @@ SelectAnimationNormal
           rem every 60 frames (1 second) with random selection (0-2)
           rem Normal animation updates (only when no handicap mode
           rem   active)
-          let characterSelectAnimationTimer  = characterSelectAnimationTimer + 1 : 
+          let characterSelectAnimationTimer  = characterSelectAnimationTimer + 1
           rem Increment animation timer
           
           rem Change animation state every 60 frames (1 second at 60fps)
           if characterSelectAnimationTimer <= FramesPerSecond then goto SelectAnimationAdvance
 SelectAnimationReset
           let characterSelectAnimationTimer  = 0
-          let characterSelectAnimationState  = rand & 3 : 
+          let characterSelectAnimationState  = rand & 3
           rem Randomly choose new animation state
           rem 0-3: idle, running, attacking, special
           if characterSelectAnimationState > 2 then let characterSelectAnimationState  = 0
-          let characterSelectAnimationFrame  = 0 : 
+          let characterSelectAnimationFrame  = 0
           rem Keep to 0-2 range
-          let characterSelectCharacterIndex  = characterSelectCharacterIndex + 1 : 
+          let characterSelectCharacterIndex  = characterSelectCharacterIndex + 1
           rem Cycle through characters for variety
           if characterSelectCharacterIndex > MaxCharacter then let characterSelectCharacterIndex  = 0
 SelectAnimationAdvance
-          let characterSelectAnimationFrame  = characterSelectAnimationFrame + 1 : 
+          let characterSelectAnimationFrame  = characterSelectAnimationFrame + 1
           rem Update animation frame within current state
           if characterSelectAnimationFrame <= 7 then return
           let characterSelectAnimationFrame  = 0
@@ -839,7 +839,7 @@ CharacterSelectDrawSprite
           rem Hurt state uses same color but dimmer luminance
           
           rem Check if character is in hurt/recovery state
-          let temp1  = characterSelectAnimationState : 
+          let temp1  = characterSelectAnimationState
           rem For character select, we will use a simple hurt simulation
           rem Use animation state as hurt simulation for demo
           
@@ -854,7 +854,7 @@ CharacterSelectDrawSprite
           if characterSelectPlayer = 3 then COLUP0  = ColYellow(6)
           rem Dark yellow (Player 3)
           if characterSelectPlayer = 4 then COLUP0  = ColGreen(6)
-          goto CharacterSelectColorDone : 
+          goto CharacterSelectColorDone
           rem Dark green
 CharacterSelectHurtBlackWhite
           rem Helper: Set hurt color for B&W mode
@@ -871,7 +871,7 @@ CharacterSelectHurtBlackWhite
           rem Constraints: Internal helper for SelectDrawSprite, only
           rem called in hurt state and B&W mode
           let COLUP0  = ColGrey(6)
-          goto CharacterSelectColorDone : 
+          goto CharacterSelectColorDone
           rem Dark grey for hurt (B&W)
 CharacterSelectColorNormal
           rem Helper: Set normal color (bright)
@@ -899,7 +899,7 @@ CharacterSelectColorNormal
           if characterSelectPlayer = 3 then COLUP0  = ColYellow(12)
           rem Bright yellow (Player 3)
           if characterSelectPlayer = 4 then COLUP0  = ColGreen(12)
-          goto CharacterSelectColorDone : 
+          goto CharacterSelectColorDone
           rem Bright green
 CharacterSelectColorBlackWhite
           rem Helper: Set normal color for B&W mode
@@ -936,7 +936,7 @@ SelectAnimationIdle
           rem
           rem Constraints: Internal helper for CharacterSelectDrawSprite, only
           rem called for ActionStanding
-          goto SelectAnimationDone : 
+          goto SelectAnimationDone
           rem Idle animation - simple standing pose
 SelectAnimationRun
           rem Helper: Draw running animation (alternating leg positions)
@@ -955,7 +955,7 @@ SelectAnimationRun
           rem forward, frames 1,3,5,7 = left leg forward
           rem Running animation - alternating leg positions
           if characterSelectAnimationFrame & 1 then CharacterSelectLeftLeg
-          goto SelectAnimationDone : 
+          goto SelectAnimationDone
           rem Frame 0,2,4,6 - right leg forward
 CharacterSelectLeftLeg
           rem Helper: Set left leg forward pattern for running
@@ -971,7 +971,7 @@ CharacterSelectLeftLeg
           rem
           rem Constraints: Internal helper for SelectAnimationRun, only called
           rem for odd frames (1,3,5,7)
-          goto SelectAnimationDone : 
+          goto SelectAnimationDone
           rem Frame 1,3,5,7 - left leg forward
 SelectAnimationAttack
           rem Helper: Draw attacking animation (arm extended)
@@ -990,7 +990,7 @@ SelectAnimationAttack
           rem 4-7 = attack
           rem Attacking animation - arm extended
           if characterSelectAnimationFrame < 4 then SelectWindup
-          goto SelectAnimationDone : 
+          goto SelectAnimationDone
           rem Attack frames - arm forward
 SelectWindup
           rem Helper: Set windup pattern for attack
@@ -1005,7 +1005,7 @@ SelectWindup
           rem
           rem Constraints: Internal helper for SelectAnimationAttack, only
           rem called for frames 0-3
-          goto SelectAnimationDone : 
+          goto SelectAnimationDone
           rem Windup frames - arm back
 SelectAnimationDone
           return
@@ -1086,7 +1086,7 @@ CharacterSelectDetectQuadtari
           rem Check right side: if INPT3 is LOW then not detected
           if !INPT3{7} then CharacterSelectQuadtariAbsent
           
-          goto CharacterSelectQuadtariDetected : 
+          goto CharacterSelectQuadtariDetected
           rem All checks passed - Quadtari detected
 
 CharacterSelectQuadtariAbsent
@@ -1127,6 +1127,6 @@ CharacterSelectQuadtariDetected
           rem downgrades)
           rem Quadtari detected - use monotonic merge to preserve
           rem   existing capabilities
-          let controllerStatus  = controllerStatus | SetQuadtariDetected : 
+          let controllerStatus  = controllerStatus | SetQuadtariDetected
           rem OR merge ensures upgrades only, never downgrades
           return

@@ -43,25 +43,25 @@ BeginFallingAnimation
           rem              via goto)
           rem              Called from ChangeGameMode when entering
           rem              falling animation mode
-          let fallFrame = 0 : 
+          let fallFrame = 0
           rem Initialize animation state
           let fallSpeed = 2
           let fallComplete = 0
           let activePlayers = 0
           
-          gosub SetGameScreenLayout bank8 : 
+          gosub SetGameScreenLayout bank8
           rem Set game screen layout (32×8 for playfield scanning)
           
-          let COLUBK = ColGray(0) : 
+          let COLUBK = ColGray(0)
           rem Set background color
           
           rem Initialize player positions in quadrants
           rem Player 1: Top-left quadrant (unless NO)
           if playerCharacter[0] = NoCharacter then DonePlayer1Init
           let playerX[0] = 16
-          let playerY[0] = 8 : 
+          let playerY[0] = 8
           rem Top-left X position
-          let activePlayers = activePlayers + 1 : 
+          let activePlayers = activePlayers + 1
           rem Top-left Y position (near top)
 DonePlayer1Init
           rem Player 1 initialization complete (skipped if not active)
@@ -80,9 +80,9 @@ DonePlayer1Init
           
           if playerCharacter[1] = NoCharacter then DonePlayer2Init
           let playerX[1] = 144
-          let playerY[1] = 8 : 
+          let playerY[1] = 8
           rem Top-right X position
-          let activePlayers = activePlayers + 1 : 
+          let activePlayers = activePlayers + 1
           rem Top-right Y position (near top)
 DonePlayer2Init
           rem Player 2 initialization complete (skipped if not active)
@@ -102,9 +102,9 @@ DonePlayer2Init
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Init
           if playerCharacter[2] = NoCharacter then DonePlayer3Init
           let playerX[2] = 16
-          let playerY[2] = 80 : 
+          let playerY[2] = 80
           rem Bottom-left X position
-          let activePlayers = activePlayers + 1 : 
+          let activePlayers = activePlayers + 1
           rem Bottom-left Y position (near bottom)
 DonePlayer3Init
           rem Player 3 initialization complete (skipped if not in
@@ -125,9 +125,9 @@ DonePlayer3Init
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Init
           if playerCharacter[3] = NoCharacter then DonePlayer4Init
           let playerX[3] = 144
-          let playerY[3] = 80 : 
+          let playerY[3] = 80
           rem Bottom-right X position
-          let activePlayers = activePlayers + 1 : 
+          let activePlayers = activePlayers + 1
           rem Bottom-right Y position (near bottom)
 DonePlayer4Init
           return

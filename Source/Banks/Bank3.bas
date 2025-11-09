@@ -15,6 +15,9 @@
 #include "Source/Generated/Ursulo.bas"
 #include "Source/Generated/Shamone.bas"
 
+          rem Movement system moved from Bank 10 for space optimization
+#include "Source/Routines/MovementSystem.bas"
+
           asm
           ; rem Character art lookup routines for Bank 3 (characters 8-15
           ; rem   and 24-31)

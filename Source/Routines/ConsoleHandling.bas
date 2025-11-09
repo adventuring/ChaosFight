@@ -19,7 +19,7 @@ WarmStart
           rem
           rem Constraints: Entry point for warm start/reset (called from
           rem MainLoop)
-          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused : 
+          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           rem Step 1: Clear critical game state variables
           rem Clear paused flag (0 = normal, not paused, not ending)
           rem Frame counter is automatically managed by batariBASIC
@@ -47,7 +47,7 @@ WarmStart
           ENAM1 = 0
           ENABL = 0
           
-          let gameMode = ModePublisherPrelude : 
+          let gameMode = ModePublisherPrelude
           rem Step 5: Reset game mode to startup sequence
           gosub ChangeGameMode bank14
           
@@ -59,12 +59,12 @@ HandleConsoleSwitches
           rem Main console switch handler
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
-          let temp2 = 0 : 
+          let temp2 = 0
           rem   mode
-          gosub CheckEnhancedPause : 
+          gosub CheckEnhancedPause
           rem Check Player 1 buttons
           if !temp1 then DonePlayer1Pause
-          gosub DetectControllers bank14 : 
+          gosub DetectControllers bank14
           rem Re-detect controllers when Select is pressed
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
@@ -76,10 +76,10 @@ DonePlayer1Pause
           
           
           let temp2 = 1
-          gosub CheckEnhancedPause : 
+          gosub CheckEnhancedPause
           rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause
-          gosub DetectControllers bank14 : 
+          gosub DetectControllers bank14
           rem Re-detect controllers when Select is pressed
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
@@ -90,12 +90,12 @@ Player2PauseDone
 DonePlayer2Pause
           
 
-          gosub CheckColorBWToggle : 
+          gosub CheckColorBWToggle
           rem Color/B&W switch - re-detect controllers when toggled
           
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
-          goto Check7800PauseButton : 
+          goto Check7800PauseButton
           rem tail call
 #endif
 
@@ -161,6 +161,6 @@ DoneSwitchChange
           return
 
 ReloadArenaColorsNow
-          gosub ReloadArenaColors bank14 : 
+          gosub ReloadArenaColors bank14
           rem Reload arena colors with current switch state
           return

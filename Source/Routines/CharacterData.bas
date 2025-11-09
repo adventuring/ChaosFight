@@ -12,7 +12,7 @@ GetCharacterWeight
           rem Output: temp2 = character weight
           rem Mutates: temp2 (return value)
           rem Constraints: None
-          let temp2  = CharacterWeights[temp1] : 
+          let temp2  = CharacterWeights[temp1]
           rem Use direct array access for O(1) lookup
           return
 
@@ -22,7 +22,7 @@ GetCharacterAttackType
           rem Output: temp2 = attack type (0=melee, 1=ranged)
           rem Mutates: temp2 (result register - attack type)
           rem Constraints: None (table lookup - attack type)
-          let temp2  = CharacterAttackTypes[temp1] : 
+          let temp2  = CharacterAttackTypes[temp1]
           rem Use direct array access for O(1) lookup
           return
 
@@ -32,7 +32,7 @@ GetCharacterMissileHeight
           rem Output: temp2 = missile height slot
           rem Mutates: temp2 (result register - missile height slot)
           rem Constraints: None (table lookup - missile height)
-          let temp2  = CharacterMissileHeights[temp1] : 
+          let temp2  = CharacterMissileHeights[temp1]
           rem Use direct array access for O(1) lookup
           return
 
@@ -42,7 +42,7 @@ GetCharacterMissileMaxX
           rem Output: temp2 = missile max X range
           rem Mutates: temp2 (result register - missile max X)
           rem Constraints: None (table lookup - missile max X)
-          let temp2  = CharacterMissileMaxX[temp1] : 
+          let temp2  = CharacterMissileMaxX[temp1]
           rem Use direct array access for O(1) lookup
           return
 
@@ -52,7 +52,7 @@ GetCharacterMissileMaxY
           rem Output: temp2 = missile max Y range
           rem Mutates: temp2 (result register - missile max Y)
           rem Constraints: None (table lookup - missile max Y)
-          let temp2  = CharacterMissileMaxY[temp1] : 
+          let temp2  = CharacterMissileMaxY[temp1]
           rem Use direct array access for O(1) lookup
           return
 

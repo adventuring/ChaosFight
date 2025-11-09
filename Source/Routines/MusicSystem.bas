@@ -55,7 +55,7 @@ StartMusic
           rem Songs in Bank 1: All other songs (4-28)
           rem Route to correct bank based on song ID
           if temp1 < 4 then goto LoadSongFromBank15
-          gosub LoadSongPointer bank1 : 
+          gosub LoadSongPointer bank1
           rem Song in Bank 1
           gosub LoadSongVoice1Pointer bank1
           goto LoadSongPointersDone
@@ -75,7 +75,7 @@ LoadSongFromBank15
           rem
           rem Constraints: Internal helper for StartMusic, only called
           rem for songs 0-3
-          gosub LoadSongPointer bank15 : 
+          gosub LoadSongPointer bank15
           rem Song in Bank 15
           gosub LoadSongVoice1Pointer bank15
 LoadSongPointersDone
@@ -99,26 +99,26 @@ LoadSongPointersDone
           rem Constraints: Internal helper for StartMusic, completes
           rem setup after pointer loading
           rem LoadSongPointer populated songPointer (16-bit)
-          let musicVoice0Pointer = songPointer : 
+          let musicVoice0Pointer = songPointer
           rem Set Voice 0 pointer to song start (Song_Voice0 stream)
-          let musicVoice0StartPointer_W = songPointer : 
+          let musicVoice0StartPointer_W = songPointer
           rem Store initial pointers for looping (Chaotica only)
           
           rem LoadSongVoice1Pointer already called above
           rem LoadSongVoice1Pointer reused songPointer (16-bit) for Voice 1
           let musicVoice1Pointer = songPointer
-          let musicVoice1StartPointer_W = songPointer : 
+          let musicVoice1StartPointer_W = songPointer
           rem Store initial Voice 1 pointer for looping (Chaotica only)
           
-          let currentSongID_W = temp1 : 
+          let currentSongID_W = temp1
           rem Store current song ID for looping check
           
-          let musicVoice0Frame_W = 1 : 
+          let musicVoice0Frame_W = 1
           rem Initialize frame counters to trigger first note load
           let musicVoice1Frame_W = 1
           
           rem Start first notes
-          goto UpdateMusic : 
+          goto UpdateMusic
           rem tail call
 
 UpdateMusic
@@ -191,15 +191,15 @@ IsChaotica
           rem when both voices ended and song is Chaotica (26)
           rem Both voices ended and song is Chaotica - reset to song
           rem head
-          let musicVoice0Pointer = musicVoice0StartPointer_R : 
+          let musicVoice0Pointer = musicVoice0StartPointer_R
           rem Reset Voice 0 pointer to start
-          let musicVoice1Pointer = musicVoice1StartPointer_R : 
+          let musicVoice1Pointer = musicVoice1StartPointer_R
           rem Reset Voice 1 pointer to start
-          let musicVoice0Frame_W = 1 : 
+          let musicVoice0Frame_W = 1
           rem Initialize frame counters to trigger first note load
           let musicVoice1Frame_W = 1
           rem Tail call to reload first notes
-          goto UpdateMusic : 
+          goto UpdateMusic
           rem tail call
 MusicUpdateDone
           return
@@ -228,7 +228,7 @@ CalculateMusicVoiceEnvelope
           rem AUDV. Clamps AUDV to 0-15
           rem Get voice-specific variables
           if temp1 = 0 then CMVE_GetVoice0Vars
-          let temp2 = MusicVoice1TotalFrames_R : 
+          let temp2 = MusicVoice1TotalFrames_R
           rem Voice 1
           let temp3 = musicVoice1Frame_R
           let temp5 = MusicVoice1TargetAUDV_R
@@ -249,7 +249,7 @@ CMVE_GetVoice0Vars
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope, only called for voice 0
-          let temp2 = MusicVoice0TotalFrames_R : 
+          let temp2 = MusicVoice0TotalFrames_R
           rem Voice 0
           let temp3 = musicVoice0Frame_R
           let temp5 = MusicVoice0TargetAUDV_R
@@ -271,7 +271,7 @@ CMVE_CalcElapsed
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope
-          let temp4 = temp2 - temp3 : 
+          let temp4 = temp2 - temp3
           rem Calculate frames elapsed = TotalFrames - FrameCounter
           rem Check if in attack phase (first NoteAttackFrames frames)
           if temp4 < NoteAttackFrames then CMVE_ApplyAttack
@@ -370,11 +370,11 @@ UpdateMusicVoice0
           rem Constraints: Uses Voice 0 (AUDC0, AUDF0, AUDV0). Songs 0-3
           rem in Bank 15, all others in Bank 1. Routes to correct bank
           rem based on currentSongID_R
-          let temp1 = 0 : 
+          let temp1 = 0
           rem Apply envelope using shared calculation
           gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter
-          let MS_frameCount = musicVoice0Frame_R - 1 : 
+          let MS_frameCount = musicVoice0Frame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
           let musicVoice0Frame_W = MS_frameCount
           if MS_frameCount then return
@@ -383,7 +383,7 @@ UpdateMusicVoice0
           rem Check which bank this song is in (Bank 15: songs 0-3, Bank
           rem 1: others)
           if currentSongID_R < 4 then gosub LoadMusicNote0 bank15 : return
-          gosub LoadMusicNote0 bank1 : 
+          gosub LoadMusicNote0 bank1
           rem Song in Bank 1
           return
 
@@ -421,11 +421,11 @@ UpdateMusicVoice1
           rem Constraints: Uses Voice 1 (AUDC1, AUDF1, AUDV1). Songs 0-3
           rem in Bank 15, all others in Bank 1. Routes to correct bank
           rem based on currentSongID_R
-          let temp1 = 1 : 
+          let temp1 = 1
           rem Apply envelope using shared calculation
           gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter
-          let MS_frameCount1 = musicVoice1Frame_R - 1 : 
+          let MS_frameCount1 = musicVoice1Frame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
           let musicVoice1Frame_W = MS_frameCount1
           if MS_frameCount1 then return
@@ -434,7 +434,7 @@ UpdateMusicVoice1
           rem Check which bank this song is in (Bank 15: songs 0-3, Bank
           rem 1: others)
           if currentSongID_R < 4 then gosub LoadMusicNote1 bank15 : return
-          gosub LoadMusicNote1 bank1 : 
+          gosub LoadMusicNote1 bank1
           rem Song in Bank 1
           return
 
@@ -465,7 +465,7 @@ StopMusic
           let musicVoice0Pointer = 0
           let musicVoice1Pointer = 0
           
-          let musicVoice0Frame_W = 0 : 
+          let musicVoice0Frame_W = 0
           rem Reset frame counters
           let musicVoice1Frame_W = 0
           return

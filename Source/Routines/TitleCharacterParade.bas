@@ -45,17 +45,17 @@ UpdateCharacterParade
           rem StartNewParadeCharacter, MoveParadeCharacter,
           rem              ParadeCharacterLeft (all called via goto)
           rem              Called every frame from TitleScreenMain
-          let titleParadeTimer = titleParadeTimer + 1 : 
+          let titleParadeTimer = titleParadeTimer + 1
           rem Increment parade timer
           
           rem Start parade after ~4 seconds (250 frames at 60fps)
           if titleParadeTimer < TitleParadeDelayFrames then return
           
           rem Check if we need to start a new character
-          if !titleParadeActive then StartNewParadeCharacter : 
+          if !titleParadeActive then StartNewParadeCharacter
 
           rem Move character across screen (if active)
-          if titleParadeActive then MoveParadeCharacter : 
+          if titleParadeActive then MoveParadeCharacter
 
           return
           
@@ -96,7 +96,7 @@ MoveParadeCharacter
           let titleParadeX = titleParadeX + 2
           rem Move 2 pixels per frame
           
-          if titleParadeX > 170 then ParadeCharacterLeft : 
+          if titleParadeX > 170 then ParadeCharacterLeft
           rem Check if character has left screen
           return
           

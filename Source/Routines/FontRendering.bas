@@ -89,7 +89,7 @@ DrawDigit
           rem Clamp digit value to 0-15
           if temp1 > 15 then let temp1 = 15
           
-          let temp6 = temp1 * 16 : 
+          let temp6 = temp1 * 16
           rem Calculate data offset: digit * 16 (16 bytes per digit)
           
           rem Set sprite position and color based on spriteSelect
@@ -112,7 +112,7 @@ SetSprite0
           let player0x = temp2
           let player0y = temp3
           let COLUP0 = temp4
-          goto LoadPlayerDigit : 
+          goto LoadPlayerDigit
           rem tail call
 SetSprite1
           rem Set Player 1 sprite position and color
@@ -128,7 +128,7 @@ SetSprite1
           let player1x = temp2
           let player1y = temp3
           let _COLUP1 = temp4
-          goto LoadPlayerDigit : 
+          goto LoadPlayerDigit
           rem tail call
 SetSprite2
           rem Set Player 2 sprite position and color
@@ -144,7 +144,7 @@ SetSprite2
           let player2x = temp2
           let player2y = temp3
           let COLUP2 = temp4
-          goto LoadPlayerDigit : 
+          goto LoadPlayerDigit
           rem tail call
 SetSprite3
           rem Set Player 3 sprite position and color
@@ -160,7 +160,7 @@ SetSprite3
           let player3x = temp2
           let player3y = temp3
           let COLUP3 = temp4
-          goto LoadPlayerDigit : 
+          goto LoadPlayerDigit
           rem tail call
 SetSprite4
           rem Set Player 4 sprite position and color
@@ -176,7 +176,7 @@ SetSprite4
           let player4x = temp2
           let player4y = temp3
           let COLUP4 = temp4
-          goto LoadPlayerDigit : 
+          goto LoadPlayerDigit
           rem tail call
 SetSprite5
           rem Set Player 5 sprite position and color
@@ -192,7 +192,7 @@ SetSprite5
           let player5x = temp2
           let player5y = temp3
           let COLUP5 = temp4
-          goto LoadPlayerDigit : 
+          goto LoadPlayerDigit
           rem tail call
 
 LoadPlayerDigit
@@ -379,7 +379,7 @@ DrawPlayerNumber
           rem   temp3 = Y position
           rem   temp5 = sprite select (0=player0, 1=player1)
           rem Player colors are looked up from a table.
-          let temp1 = temp1 + 1 : 
+          let temp1 = temp1 + 1
           rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
           
           rem Look up player color
@@ -388,17 +388,17 @@ DrawPlayerNumber
           
 SetP1Color
           let temp4 = ColIndigo(14)
-          goto DrawPlayerDigitNow : 
+          goto DrawPlayerDigitNow
           rem Indigo
           
 SetP2Color
           let temp4 = ColRed(14)
-          goto DrawPlayerDigitNow : 
+          goto DrawPlayerDigitNow
           rem Red
           
 SetP3Color
           let temp4 = ColYellow(14)
-          goto DrawPlayerDigitNow : 
+          goto DrawPlayerDigitNow
           rem Yellow
           
 SetP4Color
@@ -408,7 +408,7 @@ SetP4Color
           
 DrawPlayerDigitNow
           rem Set up parameters for DrawDigit
-          goto DrawDigit : 
+          goto DrawDigit
           rem tail call
 
 DrawArenaNumber
@@ -423,5 +423,5 @@ DrawArenaNumber
           rem 3=player3, 4=player4, 5=player5)
           let temp4 = ColGrey(14)
           rem White
-          goto DrawDigit : 
+          goto DrawDigit
           rem tail call

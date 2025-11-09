@@ -448,9 +448,9 @@ ShamoneAttack
           rem
           rem Constraints: None
           rem Special attack: jumps while attacking simultaneously
-          let playerY[temp1] = playerY[temp1] - 11 : 
+          let playerY[temp1] = playerY[temp1] - 11
           rem First, execute the jump
-          let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping : 
+          let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           rem Light character, good jump
           rem Set jumping flag
           rem Then execute the attack (PerformMeleeAttack sets animation state)

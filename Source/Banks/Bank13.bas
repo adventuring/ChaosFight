@@ -8,11 +8,8 @@
 #include "Source/Routines/ColdStart.bas"
           rem ChangeGameMode.bas and MainLoop.bas moved to Bank 14
           
-          rem Input routines moved from Bank 11
-#include "Source/Routines/PlayerInput.bas"
-
-          rem Character selection routines moved for space optimization
-#include "Source/Routines/CharacterSelectMain.bas"
+          rem Input routines moved to Bank 4 for space optimization
+          rem Character selection routines moved to Bank 2 for space optimization
           rem CharacterControls.bas contains character-specific jump and
           rem down handlers
           rem   referenced by PlayerInput.bas via on...goto statements

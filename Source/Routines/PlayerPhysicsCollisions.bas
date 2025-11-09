@@ -211,7 +211,7 @@ DBPF_InlineDivideDone
           rem Out of bounds, skip
           
           rem Check head position (top of sprite)
-          let temp4 = 0 : 
+          let temp4 = 0
           rem Reset left-collision flag
           if pfread(playfieldColumn_R, playfieldRow_R) then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
@@ -311,7 +311,7 @@ PFCheckRight
           rem Out of bounds, skip
           
           rem Check head, middle, and feet positions
-          let temp4 = 0 : 
+          let temp4 = 0
           rem Reset right-collision flag
           if pfread(playfieldColumn_R, playfieldRow) then let temp4 = 1
           if temp4 = 1 then goto PFBlockRight
@@ -407,7 +407,7 @@ PFCheckUp
           if rowCounter_R & $80 then goto PFCheckDown
           
           rem Check center column (temp6)
-          let temp4 = 0 : 
+          let temp4 = 0
           rem Reset upward-collision flag
           if pfread(temp6, rowCounter_R) then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
@@ -503,7 +503,7 @@ DBPF_InlineDivideDone_5
           if playfieldRow >= pfrows then return
           
           rem Check center, left, and right columns below feet
-          let temp4 = 0 : 
+          let temp4 = 0
           rem Reset downward-collision flag
           if pfread(temp6, playfieldRow) then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown

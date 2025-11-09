@@ -137,7 +137,7 @@ HCSC_DoCycle
           rem
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectCycle, HCSC_CycleLeft, HCSC_CycleDone
-          let temp1 = playerCharacter[temp1] : 
+          let temp1 = playerCharacter[temp1]
           rem Get current character index
           let temp3 = temp1
           rem Cycle based on direction
@@ -177,7 +177,7 @@ HCSC_CycleDone
           let playerCharacter[temp1] = temp1
           let temp2 = PlayerLockedUnlocked
           gosub SetPlayerLocked bank9
-          let temp1 = SoundMenuNavigate : 
+          let temp1 = SoundMenuNavigate
           rem Play navigation sound
           gosub PlaySoundEffect bank15
           return
@@ -258,7 +258,7 @@ HCSF_HandleFire
           let temp1 = temp3
           let temp2 = PlayerLockedNormal
           gosub SetPlayerLocked bank9
-          let temp1 = SoundMenuSelect : 
+          let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
           return
@@ -278,7 +278,7 @@ HCSF_HandleHandicap
           let temp1 = temp3
           let temp2 = PlayerHandicapped
           gosub SetPlayerLocked bank9
-          let temp1 = SoundMenuSelect : 
+          let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
           return
@@ -304,7 +304,7 @@ HCSF_HandleRandom
           rem CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
           if temp4 then randomSelectFlags_W[temp1] = $80 else randomSelectFlags_W[temp1] = 0
-          let temp1 = SoundMenuSelect : 
+          let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
           rem Fall through - character will stay as RandomCharacter
@@ -315,7 +315,7 @@ CharacterSelectInputEntry
           gosub CharacterSelectCheckControllerRescan bank10
 
           rem Consolidated input handling with Quadtari multiplexing
-          let temp3 = qtcontroller * 2 : 
+          let temp3 = qtcontroller * 2
           rem Player offset: 0=P1/P2, 2=P3/P4
           gosub CharacterSelectHandleTwoPlayers
 
@@ -350,13 +350,13 @@ CharacterSelectHandleTwoPlayers
 
 
 CharacterSelectInputComplete
-          gosub CharacterSelectHandleRandomRolls : 
+          gosub CharacterSelectHandleRandomRolls
           rem Handle random character re-rolls if any players need it
           
-          gosub SelectUpdateAnimations bank10 : 
+          gosub SelectUpdateAnimations bank10
           rem Update character select animations
           rem Draw selection screen
-          gosub SelectDrawScreen bank10 : 
+          gosub SelectDrawScreen bank10
           rem Draw character selection screen
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
           goto CharacterSelectSkipQuadtariPlayersInline
@@ -399,11 +399,11 @@ CharacterSelectCheckRollQuadtari
           goto CharacterSelectRollsDone
           
 CharacterSelectRollPlayer0
-          let temp2 = rand & 31 : 
+          let temp2 = rand & 31
           rem Roll 5-bit random: rand & 31 (0-31)
           rem If > 15, stay as RandomCharacter and retry next frame
           if temp2 > MaxCharacter then goto CharacterSelectRollsDone
-          let playerCharacter[0] = temp2 : 
+          let playerCharacter[0] = temp2
           rem Valid! Set character and lock with normal or handicap
           if randomSelectFlags_R[0] then goto CharacterSelectLockPlayer0Handicap
           let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank9
@@ -470,7 +470,7 @@ CharacterSelectCheckReady
           
 CharacterSelectQuadtariReady
           rem 4-player mode: Count players who are ready (locked OR on
-          let readyCount = 0 : 
+          let readyCount = 0
           rem   CPU/NO)
           rem Count P1 ready
           let temp1 = 0 : gosub GetPlayerLocked bank9 : if temp2 then readyCount = readyCount + 1
@@ -518,7 +518,7 @@ SkipCharacter3Facing
           let playerState[3] = playerState[3] | 1
 SkipCharacter4Facing
           
-          let gameMode = ModeFallingAnimation : 
+          let gameMode = ModeFallingAnimation
           rem Transition to falling animation
           gosub ChangeGameMode bank14
           return
@@ -578,7 +578,7 @@ CheckP4_LeftWrap
           let temp1 = NoCharacter
           return
 BothNO_LeftWrap
-          let temp1 = CPUCharacter : 
+          let temp1 = CPUCharacter
           rem Both P3 and P4 are NO, so P2 wraps to CPU
           return
           
@@ -592,7 +592,7 @@ CycleFromRandom
           rem P1 or P3/P4: Random left goes to NO (P3/P4) or 15 (P1)
           if temp3 = 0 then goto CycleFromRandomPlayer0
           rem P1 → 15
-          let temp1 = NoCharacter : 
+          let temp1 = NoCharacter
           rem P3/P4 → NO
           return
 
@@ -616,7 +616,7 @@ CheckP4_LeftFromRandom
           let temp1 = NoCharacter
           return
 BothNO_LeftFromRandom
-          let temp1 = MaxCharacter : 
+          let temp1 = MaxCharacter
           rem Both P3 and P4 are NO, so NO not available, go to 15
           return
           
@@ -630,7 +630,7 @@ CycleFromCPU
           rem   is after Random
           rem The cycle is: ... Random → CPU → Random ...
           rem So left from CPU should go to Random (we already have
-          let temp1 = RandomCharacter : 
+          let temp1 = RandomCharacter
           rem   this)
           return
           
@@ -641,7 +641,7 @@ CycleFromNO
           rem For left cycle (decrement): P2 goes from NO to CPU
           if temp3 = 1 then goto CycleFromNOPlayer2
           rem P2 left from NO → CPU
-          let temp1 = RandomCharacter : 
+          let temp1 = RandomCharacter
           rem P3/P4: NO → Random
           return
 
@@ -655,14 +655,14 @@ CycleCharacterRight
           if temp1 = CPUCharacter then goto CycleRightFromCPU
           if temp1 = NoCharacter then goto CycleRightFromNO
           
-          let temp1 = temp1 + 1 : 
+          let temp1 = temp1 + 1
           rem Normal character (0-15): increment
           rem Check if we went past 15 (wrap to RandomCharacter)
           if temp1 > MaxCharacter then goto CharacterSelectRightWrapCheck
           return
           
 CharacterSelectRightWrapCheck
-          let temp1 = RandomCharacter : 
+          let temp1 = RandomCharacter
           rem After 15, go to RandomCharacter instead of wrapping to 0
           return
           
@@ -693,7 +693,7 @@ CheckP4_RightFromRandom
           let temp1 = NoCharacter
           return
 BothNO_RightFromRandom
-          let temp1 = CPUCharacter : 
+          let temp1 = CPUCharacter
           rem Both P3 and P4 are NO, so P2 goes to CPU
           return
           
@@ -719,16 +719,16 @@ CheckP4_RightFromCPU
           let temp1 = NoCharacter
           return
 BothNO_RightFromCPU
-          let temp1 = RandomCharacter : 
+          let temp1 = RandomCharacter
           rem Both P3 and P4 are NO, so skip NO and go to Random
           return
 CycleRightFromCPUDone
-          let temp1 = RandomCharacter : 
+          let temp1 = RandomCharacter
           rem Default for P1 or other players (not P2)
           return
           
 CycleRightFromNO
-          let temp1 = 0 : 
+          let temp1 = 0
           rem NoCharacter(255) goes to 0
           return
           

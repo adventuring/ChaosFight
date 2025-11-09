@@ -57,26 +57,26 @@ LoadCharacterSprite
           rem Validate character index
           rem Inline ValidateCharacterIndex
           rem Check if character index is within valid range
-          if currentCharacter > MaxCharacter then ValidateInvalidCharacterInline : 
+          if currentCharacter > MaxCharacter then ValidateInvalidCharacterInline
           rem   (0-MaxCharacter for current implementation)
           let temp5 = 1
           goto ValidateCharacterDoneInline
 ValidateInvalidCharacterInline
           let temp5 = 0
 ValidateCharacterDoneInline
-          if !temp5 then goto LoadSpecialSprite : 
+          if !temp5 then goto LoadSpecialSprite
           rem tail call
           
           rem Check if character is special placeholder
-          if currentCharacter = 255 then let temp6 = SpriteNo : goto LoadSpecialSprite : 
+          if currentCharacter = 255 then let temp6 = SpriteNo : goto LoadSpecialSprite
           rem tail call
           rem NoCharacter = 255
           
-          if currentCharacter = 254 then let temp6 = SpriteCPU : goto LoadSpecialSprite : 
+          if currentCharacter = 254 then let temp6 = SpriteCPU : goto LoadSpecialSprite
           rem tail call
           rem CPUCharacter = 254
           
-          if currentCharacter = 253 then let temp6 = SpriteQuestionMark : goto LoadSpecialSprite : 
+          if currentCharacter = 253 then let temp6 = SpriteQuestionMark : goto LoadSpecialSprite
           rem tail call
           rem RandomCharacter = 253
           
@@ -94,15 +94,15 @@ ValidateCharacterDoneInline
           
           rem Check if player number in temp3 or temp4
           rem If temp4 is not set (0 and caller might have used temp3),
-          if !temp4 then let temp4 = temp3 : 
+          if !temp4 then let temp4 = temp3
           rem   copy from temp3
           
           rem Move player number to temp4 and set temp3 to animation
-          let temp3 = 0 : 
+          let temp3 = 0
           rem action (0=idle)
           rem animation action/sequence 0 = idle
           rem playerNumberAlt already has player number from caller
-          let temp1 = currentCharacter : 
+          let temp1 = currentCharacter
           rem Set temp variables for cross-bank call
           gosub LocateCharacterArt bank10
           return
@@ -136,11 +136,11 @@ LoadSpecialSprite
           rem              Must be in same file as QuestionMark/CPU/No
           rem              sprite loaders
           rem Depends on QuestionMarkSprite, CPUSprite, NoSprite data
-          if !temp6 then goto LoadQuestionMarkSprite : 
+          if !temp6 then goto LoadQuestionMarkSprite
           rem Set sprite pointer based on sprite index
           if temp6 = 1 then goto LoadCPUSprite
           if temp6 = 2 then goto LoadNoSprite
-          goto LoadQuestionMarkSprite : 
+          goto LoadQuestionMarkSprite
           rem Invalid sprite index, default to question mark
           
 LoadQuestionMarkSprite
@@ -156,7 +156,7 @@ LoadQuestionMarkSprite
           rem
           rem Constraints: Must be colocated with
           rem LoadQuestionMarkSpriteP0-P3
-          if !temp3 then goto LoadQuestionMarkSpriteP0 : 
+          if !temp3 then goto LoadQuestionMarkSpriteP0
           rem Use skip-over pattern to avoid complex compound statements
           if temp3 = 1 then goto LoadQuestionMarkSpriteP1
           if temp3 = 2 then goto LoadQuestionMarkSpriteP2
@@ -249,7 +249,7 @@ LoadCPUSprite
           rem Called Routines: None (dispatcher only)
           rem
           rem Constraints: Must be colocated with LoadCPUSpriteP0-P3
-          if !temp3 then LoadCPUSpriteP0 : 
+          if !temp3 then LoadCPUSpriteP0
           rem Use skip-over pattern to avoid complex compound statements
           if temp3 = 1 then LoadCPUSpriteP1
           if temp3 = 2 then goto LoadCPUSpriteP2
@@ -336,7 +336,7 @@ LoadNoSprite
           rem Called Routines: None (dispatcher only)
           rem
           rem Constraints: Must be colocated with LoadNoSpriteP0-P3
-          if !temp3 then LoadNoSpriteP0 : 
+          if !temp3 then LoadNoSpriteP0
           rem Use skip-over pattern to avoid complex compound statements
           if temp3 = 1 then LoadNoSpriteP1
           if temp3 = 2 then goto LoadNoSpriteP2
@@ -439,7 +439,7 @@ LoadPlayerSprite
           rem LoadPlayerSpriteDispatch (called via goto)
           rem Get character index for this player from playerCharacter array
           rem Use currentPlayer global variable (set by caller)
-          let currentCharacter = playerCharacter[currentPlayer] : 
+          let currentCharacter = playerCharacter[currentPlayer]
           rem Set currentCharacter from playerCharacter[currentPlayer]
           goto LoadPlayerSpriteDispatch
           
@@ -501,10 +501,10 @@ LoadPlayer0Sprite
           rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
-          let temp3 = 0 : 
+          let temp3 = 0
           rem playerNumber = player number (0)
           rem Use LoadCharacterSprite which handles LocateCharacterArt
-          goto LoadCharacterSprite : 
+          goto LoadCharacterSprite
           rem tail call
           
 LoadPlayer1Sprite
@@ -528,10 +528,10 @@ LoadPlayer1Sprite
           rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
-          let temp3 = 1 : 
+          let temp3 = 1
           rem playerNumber = player number (1)
           rem Use LoadCharacterSprite which handles LocateCharacterArt
-          goto LoadCharacterSprite : 
+          goto LoadCharacterSprite
           rem tail call
           
 LoadPlayer2Sprite
@@ -555,10 +555,10 @@ LoadPlayer2Sprite
           rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
-          let temp3 = 2 : 
+          let temp3 = 2
           rem playerNumber = player number (2)
           rem Use LoadCharacterSprite which handles LocateCharacterArt
-          goto LoadCharacterSprite : 
+          goto LoadCharacterSprite
           rem tail call
           
 LoadPlayer3Sprite
@@ -582,10 +582,10 @@ LoadPlayer3Sprite
           rem              file)
           rem temp1 = character index, temp2 = animation frame already
           rem   set
-          let temp3 = 3 : 
+          let temp3 = 3
           rem playerNumber = player number (3)
           rem Use LoadCharacterSprite which handles LocateCharacterArt
-          goto LoadCharacterSprite : 
+          goto LoadCharacterSprite
           rem tail call
 
 
@@ -623,10 +623,10 @@ LoadCharacterColors
           rem WARNING: temp6 is mutated during execution. Do not use
           rem temp6
           rem after calling this subroutine.
-          if temp2 then goto HurtColor : 
+          if temp2 then goto HurtColor
           rem Highest priority: hurt state
 
-          if temp4 then FlashingColor : 
+          if temp4 then FlashingColor
           rem Next priority: flashing state
 
 NormalColor
@@ -645,13 +645,13 @@ NormalColor
           rem
           rem Constraints: Must be colocated with LoadCharacterColors
           rem Determine effective B&W override locally; if enabled, use
-          if systemFlags & SystemFlagColorBWOverride then PlayerIndexColors : 
+          if systemFlags & SystemFlagColorBWOverride then PlayerIndexColors
           rem   player colors
 
           rem NTSC/PAL: Character-specific colors would be used here
           rem   when tables exist
           rem Placeholder: fall back to player index colors until
-          goto PlayerIndexColors : 
+          goto PlayerIndexColors
           rem   character tables are wired
 
 FlashingColor
@@ -685,7 +685,7 @@ PerLineFlashing
           rem
           rem Constraints: Must be colocated with LoadCharacterColors
           rem Use alternating bright/dim player index colors by frame
-          if frame & 8 then PlayerIndexColorsDim : 
+          if frame & 8 then PlayerIndexColorsDim
           rem   bit
           goto PlayerIndexColors
           
@@ -785,12 +785,12 @@ HurtColor
           rem Constraints: Must be colocated with LoadCharacterColors,
           rem SetColor
 #ifdef TV_SECAM
-          let temp6 = ColMagenta(10) : 
+          let temp6 = ColMagenta(10)
           rem SECAM hurt is always magenta
           goto SetColor
 #else
           rem Dimmed version of normal color: use dim player index color
-          goto PlayerIndexColorsDim : 
+          goto PlayerIndexColorsDim
           rem   as fallback
 #endif
           

@@ -123,7 +123,7 @@ DonePlayer4Position
           if !(controllerStatus & SetPlayers34Active) then goto RenderMissiles2Player
           
           rem 4-player mode: Use frame multiplexing
-          let temp6 = frame & 1 : 
+          let temp6 = frame & 1
           rem Shared temp5 for character type lookups in this code path
           rem 0 = even frame (Participants 1-2), 1 = odd frame
           rem   (Participants 3-4)
@@ -134,13 +134,13 @@ DonePlayer4Position
           rem Participant 3 missile (array [2], bit 2) → missile0
           ENAM0 = 0
           missile0height = 0
-          let temp4 = missileActive & 4 : 
+          let temp4 = missileActive & 4
           rem Clear missile height first
           if temp4 then goto RenderMissile0P3
-          gosub RenderRoboTitoStretchMissile0 : 
+          gosub RenderRoboTitoStretchMissile0
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM0 remains 0 (no blank
-          goto RenderMissile1P4 : 
+          goto RenderMissile1P4
           rem   missile)
 RenderMissile0P3
           rem Set missile 0 position and size for Participant 3
@@ -148,7 +148,7 @@ RenderMissile0P3
           missile0y = missileY_R[2]
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ_R[2]
-          let temp5 = playerCharacter[2] : 
+          let temp5 = playerCharacter[2]
           rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[temp5]
           
@@ -156,10 +156,10 @@ RenderMissile1P4
           rem Participant 4 missile (array [3], bit 3) → missile1
           ENAM1 = 0
           missile1height = 0
-          let temp4 = missileActive & 8 : 
+          let temp4 = missileActive & 8
           rem Clear missile height first
           if temp4 then goto RenderMissile1P4Active
-          gosub RenderRoboTitoStretchMissile1 : 
+          gosub RenderRoboTitoStretchMissile1
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM1 remains 0 (no blank
           rem   missile)
@@ -170,7 +170,7 @@ RenderMissile1P4Active
           missile1y = missileY_R[3]
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ_R[3]
-          let temp5 = playerCharacter[3] : 
+          let temp5 = playerCharacter[3]
           rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[temp5]
           return
@@ -181,13 +181,13 @@ RenderMissilesEvenFrame
           rem Participant 1 missile (array [0], bit 0) → missile0
           ENAM0 = 0 
           missile0height = 0
-          let temp4 = missileActive & 1 : 
+          let temp4 = missileActive & 1
           rem Clear missile height first
           if temp4 then goto RenderMissile0P1
-          gosub RenderRoboTitoStretchMissile0 : 
+          gosub RenderRoboTitoStretchMissile0
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM0 remains 0 (no blank
-          goto RenderMissile1P2 : 
+          goto RenderMissile1P2
           rem   missile)
 RenderMissile0P1
           rem Set missile 0 position and size for Participant 1
@@ -195,7 +195,7 @@ RenderMissile0P1
           missile0y = missileY_R[0]
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ_R[0]
-          let temp5 = playerCharacter[0] : 
+          let temp5 = playerCharacter[0]
           rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[temp5]
           
@@ -203,10 +203,10 @@ RenderMissile1P2
           rem Participant 2 missile (array [1], bit 1) → missile1
           ENAM1 = 0 
           missile1height = 0
-          let temp4 = missileActive & 2 : 
+          let temp4 = missileActive & 2
           rem Clear missile height first
           if temp4 then goto RenderMissile1P2Active
-          gosub RenderRoboTitoStretchMissile1 : 
+          gosub RenderRoboTitoStretchMissile1
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM1 remains 0 (no blank
           rem   missile)
@@ -217,7 +217,7 @@ RenderMissile1P2Active
           missile1y = missileY_R[1]
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ_R[1]
-          let temp5 = playerCharacter[1] : 
+          let temp5 = playerCharacter[1]
           rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[temp5]
           return
@@ -229,13 +229,13 @@ RenderMissiles2Player
           rem Participant 1 (array [0]) missile (missile0, P0 sprite)
           ENAM0 = 0 
           missile0height = 0
-          let temp4 = missileActive & 1 : 
+          let temp4 = missileActive & 1
           rem Clear missile height first
           if temp4 then goto RenderMissile0P1_2P
-          gosub RenderRoboTitoStretchMissile0 : 
+          gosub RenderRoboTitoStretchMissile0
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM0 remains 0 (no blank
-          goto RenderMissile1P2_2P : 
+          goto RenderMissile1P2_2P
           rem   missile)
 RenderMissile0P1_2P
           rem Set missile 0 position and size for Participant 1
@@ -245,7 +245,7 @@ RenderMissile0P1_2P
           missile0y = missileY_R[0]
           ENAM0 = 1
           NUSIZ0 = missileNUSIZ_R[0]
-          let temp5 = playerCharacter[0] : 
+          let temp5 = playerCharacter[0]
           rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[temp5]
           
@@ -253,10 +253,10 @@ RenderMissile1P2_2P
           rem Participant 2 (array [1]) missile (missile1, P1 sprite)
           ENAM1 = 0 
           missile1height = 0
-          let temp4 = missileActive & 2 : 
+          let temp4 = missileActive & 2
           rem Clear missile height first
           if temp4 then goto RenderMissile1P2_2PActive
-          gosub RenderRoboTitoStretchMissile1 : 
+          gosub RenderRoboTitoStretchMissile1
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM1 remains 0 (no blank
           rem   missile)
@@ -269,7 +269,7 @@ RenderMissile1P2_2PActive
           missile1y = missileY_R[1]
           ENAM1 = 1
           NUSIZ1 = missileNUSIZ_R[1]
-          let temp5 = playerCharacter[1] : 
+          let temp5 = playerCharacter[1]
           rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[temp5]
           return
@@ -467,16 +467,16 @@ SetPlayerSprites
           rem rendered if Quadtari detected and selected
           rem Set Player 1 color and sprite
           rem Use LoadCharacterColors for consistent color handling
-          let temp1 = playerCharacter[0] : 
+          let temp1 = playerCharacter[0]
           rem   across TV modes
-          let temp2 = 0 : 
+          let temp2 = 0
           rem Hurt flag (0 = okay)
           if playerRecoveryFrames[0] > 0 then let temp2 = 1
-          let temp3 = 0 : 
+          let temp3 = 0
           rem Player number
-          let temp4 = 0 : 
+          let temp4 = 0
           rem Not flashing
-          let temp5 = 0 : 
+          let temp5 = 0
           rem Frame-based flashing disabled
           gosub LoadCharacterColors bank10
           goto Player1ColorDone
@@ -491,11 +491,11 @@ Player1ColorDone
             sta REFP0
 end
 
-          let currentCharacter = playerCharacter[0] : 
+          let currentCharacter = playerCharacter[0]
           rem Load sprite data from character definition
-          let temp2 = 0 : 
+          let temp2 = 0
           rem Character index
-          let temp3 = 0 : 
+          let temp3 = 0
           rem Animation frame (0=idle, 1=running)
           rem Player number (0=Player 1)
           rem temp2, temp3 already set above (animation frame and player number)
@@ -505,16 +505,16 @@ end
           rem Use LoadCharacterColors for consistent color handling
           rem   across TV modes
           rem NOTE: Multisprite kernel requires _COLUP1 (with
-          let temp1 = playerCharacter[1] : 
+          let temp1 = playerCharacter[1]
           rem   underscore) for Player 2 virtual sprite
-          let temp2 = 0 : 
+          let temp2 = 0
           rem Hurt flag
           if playerRecoveryFrames[1] > 0 then let temp2 = 1
-          let temp3 = 1 : 
+          let temp3 = 1
           rem Player number
-          let temp4 = 0 : 
+          let temp4 = 0
           rem Not flashing
-          let temp5 = 0 : 
+          let temp5 = 0
           rem Frame-based flashing disabled
           gosub LoadCharacterColors bank10
           goto Player2ColorDone
@@ -539,11 +539,11 @@ Player2ColorDone
 .Player2ReflectionDone
 end
 
-          let currentCharacter = playerCharacter[1] : 
+          let currentCharacter = playerCharacter[1]
           rem Load sprite data from character definition
-          let temp2 = 0 : 
+          let temp2 = 0
           rem Character index
-          let temp3 = 1 : 
+          let temp3 = 1
           rem Animation frame (0=idle, 1=running)
           rem Player number (1=Player 2)
           rem temp2, temp3 already set above (animation frame and player number)
@@ -561,16 +561,16 @@ end
           if ! playerHealth[2] then goto DonePlayer3Sprite
           
           rem Use LoadCharacterColors for consistent color handling
-          let temp1 = playerCharacter[2] : 
+          let temp1 = playerCharacter[2]
           rem   across TV modes
-          let temp2 = 0 : 
+          let temp2 = 0
           rem Hurt flag
           if playerRecoveryFrames[2] > 0 then let temp2 = 1
-          let temp3 = 2 : 
+          let temp3 = 2
           rem Player number
-          let temp4 = 0 : 
+          let temp4 = 0
           rem Not flashing
-          let temp5 = 0 : 
+          let temp5 = 0
           rem Frame-based flashing disabled
           gosub LoadCharacterColors bank10
           goto Player3ColorDone
@@ -593,11 +593,11 @@ Player3ColorDone
 .Player3ReflectionDone
 end
 
-          let currentCharacter = playerCharacter[2] : 
+          let currentCharacter = playerCharacter[2]
           rem Load sprite data from character definition
-          let temp2 = 0 : 
+          let temp2 = 0
           rem Character index
-          let temp3 = 2 : 
+          let temp3 = 2
           rem Animation frame (0=idle, 1=running)
           rem Player number (2=Player 3)
           rem temp2, temp3 already set above (animation frame and player number)
@@ -614,16 +614,16 @@ DonePlayer3Sprite
           rem Use LoadCharacterColors for consistent color handling
           rem   across TV modes
           rem Player 4: Turquoise (SECAM maps to Green), hurt handled by
-          let temp1 = playerCharacter[3] : 
+          let temp1 = playerCharacter[3]
           rem   LoadCharacterColors
-          let temp2 = 0 : 
+          let temp2 = 0
           rem Hurt flag
           if playerRecoveryFrames[3] > 0 then let temp2 = 1
-          let temp3 = 3 : 
+          let temp3 = 3
           rem Player number
-          let temp4 = 0 : 
+          let temp4 = 0
           rem Not flashing
-          let temp5 = 0 : 
+          let temp5 = 0
           rem Frame-based flashing disabled
           gosub LoadCharacterColors bank10
           goto Player4ColorDone
@@ -646,11 +646,11 @@ Player4ColorDone
 .Player4ReflectionDone
 end
 
-          let currentCharacter = playerCharacter[3] : 
+          let currentCharacter = playerCharacter[3]
           rem Load sprite data from character definition
-          let temp2 = 0 : 
+          let temp2 = 0
           rem Character index
-          let temp3 = 3 : 
+          let temp3 = 3
           rem Animation frame (0=idle, 1=running)
           rem Player number (3=Player 4)
           rem temp2, temp3 already set above (animation frame and player number)

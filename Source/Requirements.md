@@ -792,8 +792,9 @@ Standardize on "Arena" consistently (not "Level" or "Map"):
   for
   songs 6-28, build info)
 
-- Bank 15 holds the low-ID themes (songs 0-4: Bernie, EXO, OCascadia,
-  Revontuli, Grizzards) alongside the shared sound-effect tables
+- Bank 15 holds the low-ID themes (songs 0-5: Bernie, EXO, OCascadia,
+  Revontuli, Grizzards, MagicalFairyForce) alongside the shared sound-effect
+  tables
 
 - Bank 16 carries MainLoop, drawscreen, ArenaLoader, FontRendering, and
   the

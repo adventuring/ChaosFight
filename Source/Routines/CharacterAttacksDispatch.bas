@@ -46,16 +46,16 @@ DispatchCharacterAttack
           
 
 GotoRadishGoblinAttack
-          goto RadishGoblinAttack bank9
+          goto RadishGoblinAttack bank10
 
 GotoRoboTitoAttack
-          goto RoboTitoAttack bank9
+          goto RoboTitoAttack bank10
 
 GotoUrsuloAttack
-          goto UrsuloAttack bank9
+          goto UrsuloAttack bank10
 
 GotoShamoneAttack
-          goto ShamoneAttack bank9
+          goto ShamoneAttack bank10
           
 GotoCharacter16Attack
           rem Character 16-30 attack handlers (placeholder characters - basic melee)

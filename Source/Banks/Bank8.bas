@@ -23,4 +23,6 @@
           rem animations)
           rem PlayerRendering.bas moved to Bank 10 (sprite rendering)
 #include "Source/Routines/PlayerLockedHelpers.bas"
+#include "Source/Routines/MissileCollision.bas"
+#include "Source/Routines/ConsoleHandling.bas"
 

@@ -10,6 +10,7 @@
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 #include "Source/Routines/PlayerRendering.bas"
 #include "Source/Routines/CharacterAttacksDispatch.bas"
+#include "Source/Routines/CharacterAttacks.bas"
 #include "Source/Routines/PerformRangedAttack.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 

@@ -20,12 +20,7 @@ title_do_vertical_sync
 	sta WSYNC ;one line with VSYNC
 	sta VSYNC ;turn off VSYNC
 
-        ;lda #42+128
-	ifnconst vblank_time
- 	lda #42+128
- 	else
- 	lda #vblank_time+128
- 	endif
+	lda #42+128
 
 	sta TIM64T
 
@@ -68,22 +63,30 @@ title_playfield
  include "TitleScreen/asm/position48.s"
  include "TitleScreen/titlescreen_color.s"
 
-	; Unused 48x1 kernels removed - only 48x2_1, 48x2_2, 48x2_3 are used
+	; Unused 48x1 kernels removed - only 48x2_3 is used
 
-	ifconst mk_48x2_1_on
-		include "TitleScreen/asm/48x2_1_kernel.s"
-	endif ;mk_48x2_1_on
+	; Create aliases for generic bitmap kernel
+bmp_48x2_0_colors = bmp_48x2_1_colors
+bmp_48x2_0_height = bmp_48x2_1_height
+bmp_48x2_0_window = bmp_48x2_1_window
+bmp_48x2_0_values = bmp_48x2_1_values
 
-	ifconst mk_48x2_2_on
-		include "TitleScreen/asm/48x2_2_kernel.s"
-	endif ;mk_48x2_2_on
+bmp_48x2_1_colors = bmp_48x2_1_colors
+bmp_48x2_1_height = bmp_48x2_1_height
+bmp_48x2_1_window = bmp_48x2_1_window
+bmp_48x2_1_values = bmp_48x2_1_values
 
-	ifconst mk_48x2_3_on
-		include "TitleScreen/asm/48x2_3_kernel.s"
-	endif ;mk_48x2_3_on
-	ifconst mk_48x2_4_on
-		include "TitleScreen/asm/48x2_4_kernel.s"
-	endif ;mk_48x2_4_on
+bmp_48x2_2_colors = bmp_48x2_2_colors
+bmp_48x2_2_height = bmp_48x2_2_height
+bmp_48x2_2_window = bmp_48x2_2_window
+bmp_48x2_2_values = bmp_48x2_2_values
+
+bmp_48x2_3_colors = bmp_48x2_3_colors
+bmp_48x2_3_height = bmp_48x2_3_height
+bmp_48x2_3_window = bmp_48x2_3_window
+bmp_48x2_3_values = bmp_48x2_3_values
+
+	include "TitleScreen/asm/48x2_generic_kernel.s"
 
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 
@@ -101,11 +104,7 @@ PFWAIT
         sta WSYNC
 
 OVERSCAN
- 	ifnconst overscan_time
- 	lda #34+128
- 	else
- 	lda #overscan_time+128-5
- 	endif
+	lda #34+128
 	sta TIM64T
 
 	;fix height variables we borrowed

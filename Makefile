@@ -133,17 +133,9 @@ Dist/:
 game: \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Dist/$(GAME)$(GAMEYEAR).NTSC.a26 \
-	Dist/$(GAME)$(GAMEYEAR).PAL.a26 \
-	Dist/$(GAME)$(GAMEYEAR).SECAM.a26 \
 	Dist/$(GAME)$(GAMEYEAR).NTSC.sym \
-	Dist/$(GAME)$(GAMEYEAR).PAL.sym \
-	Dist/$(GAME)$(GAMEYEAR).SECAM.sym \
 	Dist/$(GAME)$(GAMEYEAR).NTSC.lst \
-	Dist/$(GAME)$(GAMEYEAR).PAL.lst \
-	Dist/$(GAME)$(GAMEYEAR).SECAM.lst \
-	Dist/$(GAME)$(GAMEYEAR).NTSC.pro \
-	Dist/$(GAME)$(GAMEYEAR).PAL.pro \
-	Dist/$(GAME)$(GAMEYEAR).SECAM.pro
+	Dist/$(GAME)$(GAMEYEAR).NTSC.pro
 
 MANUAL_PDF = Dist/$(GAME)$(GAMEYEAR).pdf
 MANUAL_HTML = Dist/$(GAME)$(GAMEYEAR).html

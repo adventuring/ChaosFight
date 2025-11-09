@@ -400,6 +400,7 @@
           rem 0=hidden, 42=visible
           rem ADMIN: Runtime window value for bmp_48x2_4 (BRP)
           rem   - 0=hidden, 42=visible
+          dim bmp_index = var24
           
           rem GAME MODE VARIABLES (may be re-used in Admin Mode for
           rem   other purposes)

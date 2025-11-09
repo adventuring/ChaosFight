@@ -30,6 +30,3 @@
 #include "Source/Routines/PublisherPrelude.bas"
 #include "Source/Routines/BeginAuthorPrelude.bas"
 #include "Source/Routines/AuthorPrelude.bas"
-#include "Source/Routines/BeginTitleScreen.bas"
-#include "Source/Routines/TitleScreenMain.bas"
-#include "Source/Routines/TitleCharacterParade.bas"

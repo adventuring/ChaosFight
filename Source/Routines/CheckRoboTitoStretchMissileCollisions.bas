@@ -24,7 +24,8 @@ CRTSMC_IsRoboTito
           rem Check if stretching (not latched, ActionJumping animation
           rem = 10)
           rem Latched to ceiling, no stretch missile
-          if (characterStateFlags_R[temp1] & 1) then CRTSMC_NextPlayer
+          temp5 = characterStateFlags_R[temp1] & 1
+          if temp5 then CRTSMC_NextPlayer
           let playerStateTemp_W = playerState[temp1]
           rem Mask bits 4-7 (animation state)
           let playerStateTemp_W = playerStateTemp_R & 240

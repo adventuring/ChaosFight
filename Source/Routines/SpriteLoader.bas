@@ -944,7 +944,8 @@ HurtColor
 #endif
           if temp6 < 0 then temp6 = 0
           goto SetColor
-          
+#endif
+
 SetColor
           asm
 ; Set color based on player index (multisprite kernel

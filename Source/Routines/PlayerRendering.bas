@@ -467,18 +467,16 @@ SetPlayerSprites
           rem rendered if Quadtari detected and selected
           rem Set Player 1 color and sprite
           rem Use LoadCharacterColors for consistent color handling
-          let temp1 = playerCharacter[0]
-          rem   across TV modes
-          let temp2 = 0
-          rem Hurt flag (0 = okay)
-          if playerRecoveryFrames[0] > 0 then temp2 = 1
+          rem Player index
+          let temp1 = 0
+          rem Hurt flag (non-zero = recovering)
+          let temp2 = playerRecoveryFrames[0]
+          rem Guard flag (0 = not guarding)
           let temp3 = 0
-          rem Player number
-          let temp4 = 0
-          rem Not flashing
-          let temp5 = 0
-          rem Frame-based flashing disabled
+          let temp4 = playerState[0] & PlayerStateBitGuarding
+          if temp4 then temp3 = 1
           gosub LoadCharacterColors bank16
+          COLUP0 = temp6
           goto Player1ColorDone
           
 Player1ColorDone
@@ -505,20 +503,17 @@ end
           rem Use LoadCharacterColors for consistent color handling
           rem   across TV modes
           rem NOTE: Multi-sprite kernel requires _COLUP1 (with
-          let temp1 = playerCharacter[1]
-          rem   underscore) for Player 2 virtual sprite
-          let temp2 = 0
-          rem Hurt flag
-          if playerRecoveryFrames[1] > 0 then temp2 = 1
-          let temp3 = 1
-          rem Player number
-          let temp4 = 0
-          rem Not flashing
-          let temp5 = 0
-          rem Frame-based flashing disabled
+          rem Player index
+          let temp1 = 1
+          rem Hurt flag (non-zero = recovering)
+          let temp2 = playerRecoveryFrames[1]
+          rem Guard flag (0 = not guarding)
+          let temp3 = 0
+          let temp4 = playerState[1] & PlayerStateBitGuarding
+          if temp4 then temp3 = 1
           gosub LoadCharacterColors bank16
-          goto Player2ColorDone
-          
+          _COLUP1 = temp6
+
 Player2ColorDone
 
           rem Set sprite reflection based on facing direction
@@ -561,18 +556,16 @@ end
           if ! playerHealth[2] then goto DonePlayer3Sprite
           
           rem Use LoadCharacterColors for consistent color handling
-          let temp1 = playerCharacter[2]
-          rem   across TV modes
-          let temp2 = 0
-          rem Hurt flag
-          if playerRecoveryFrames[2] > 0 then temp2 = 1
-          let temp3 = 2
-          rem Player number
-          let temp4 = 0
-          rem Not flashing
-          let temp5 = 0
-          rem Frame-based flashing disabled
+          rem Player index
+          let temp1 = 2
+          rem Hurt flag (non-zero = recovering)
+          let temp2 = playerRecoveryFrames[2]
+          rem Guard flag (0 = not guarding)
+          let temp3 = 0
+          let temp4 = playerState[2] & PlayerStateBitGuarding
+          if temp4 then temp3 = 1
           gosub LoadCharacterColors bank16
+          COLUP2 = temp6
           goto Player3ColorDone
           
 Player3ColorDone
@@ -614,18 +607,16 @@ DonePlayer3Sprite
           rem Use LoadCharacterColors for consistent color handling
           rem   across TV modes
           rem Player 4: Turquoise (SECAM maps to Green), hurt handled by
-          let temp1 = playerCharacter[3]
-          rem   LoadCharacterColors
-          let temp2 = 0
-          rem Hurt flag
-          if playerRecoveryFrames[3] > 0 then temp2 = 1
-          let temp3 = 3
-          rem Player number
-          let temp4 = 0
-          rem Not flashing
-          let temp5 = 0
-          rem Frame-based flashing disabled
+          rem Player index
+          let temp1 = 3
+          rem Hurt flag (non-zero = recovering)
+          let temp2 = playerRecoveryFrames[3]
+          rem Guard flag (0 = not guarding)
+          let temp3 = 0
+          let temp4 = playerState[3] & PlayerStateBitGuarding
+          if temp4 then temp3 = 1
           gosub LoadCharacterColors bank16
+          COLUP3 = temp6
           goto Player4ColorDone
           
 Player4ColorDone

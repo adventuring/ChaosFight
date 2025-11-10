@@ -61,15 +61,16 @@ SelectLoadWalkingSprite
           let temp4 = temp6
           gosub LocateCharacterArt bank10
 SelectLoadSpriteColor
-          let temp1 = playerCharacter[temp6]
+          let temp7 = temp6
+          let temp1 = temp7
           let temp2 = 0
-          let temp3 = temp6
-          let temp4 = 0
+          let temp3 = 0
           gosub LoadCharacterColors bank16
-          let temp1 = temp6
+          gosub SelectApplyPlayerColor
+          let temp1 = temp7
           gosub GetPlayerLocked
           let temp5 = temp2
-          let temp3 = temp6
+          let temp3 = temp7
           if !temp5 then goto SelectApplyUnlockedColor
           if temp5 = PlayerHandicapped then goto SelectApplyHandicapColor
 SelectDrawSpriteDone
@@ -80,6 +81,23 @@ SelectApplyUnlockedColor
 SelectApplyHandicapColor
           gosub SelectSetPlayerColorHandicap
           goto SelectDrawSpriteDone
+
+SelectApplyPlayerColor
+          rem Apply base color returned in temp6 to the appropriate sprite register
+          on temp7 goto SelectApplyPlayerColor0 SelectApplyPlayerColor1 SelectApplyPlayerColor2 SelectApplyPlayerColor3
+SelectApplyPlayerColor0
+          COLUP0 = temp6
+          goto SelectApplyPlayerColorDone
+SelectApplyPlayerColor1
+          _COLUP1 = temp6
+          goto SelectApplyPlayerColorDone
+SelectApplyPlayerColor2
+          COLUP2 = temp6
+          goto SelectApplyPlayerColorDone
+SelectApplyPlayerColor3
+          COLUP3 = temp6
+SelectApplyPlayerColorDone
+          return
 
 
 SelectSetPlayerColorUnlocked

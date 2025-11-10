@@ -55,9 +55,8 @@ UpdateCharacterParade
           if !titleParadeActive then StartNewParadeCharacter
 
           rem Move character across screen (if active)
-          if titleParadeActive then MoveParadeCharacter
-
-          return
+          goto MoveParadeCharacter
+       return
           
 StartNewParadeCharacter
           rem Start new character parade
@@ -144,14 +143,8 @@ DrawParadeCharacter
           rem Always face right while marching across the title screen
           REFP0 = PlayerStateBitFacing
           
-          rem Load parade character colors using standard color loader
-          let currentCharacter = titleParadeCharacter
-          let temp1 = currentCharacter
-          let temp2 = 0
-          let temp3 = 0
-          let temp4 = 0
-          let temp5 = 0
-          gosub LoadCharacterColors bank16
+          rem no need to calculate, we know the color for the parade character is gray
+          COLUP0 = ColGray(12)
           
 DrawParadeCharacterSprite
           rem
@@ -161,8 +154,8 @@ DrawParadeCharacterSprite
           rem
           rem Input: titleParadeTimer (animation timing), currentCharacter
           rem Output: Player 0 sprite data populated in SCRAM buffers
-          let temp1 = currentCharacter
           rem Use default walking animation for parade march
+          let temp1 = titleParadeCharacter
           let temp2 = titleParadeTimer & 7
           let temp3 = ActionWalking
           let temp4 = 0

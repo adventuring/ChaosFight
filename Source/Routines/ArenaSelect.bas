@@ -560,20 +560,20 @@ ArenaSelectDrawPlayerSprite
           rem Uses playerCharacter[0-3] and player positions set by caller
           
           rem Get character index based on player
-          let temp6 = temp1
           rem Preserve player index in temp6
+          let temp6 = temp1
 
           if temp1 = 0 then temp1 = playerCharacter[0]
           if temp1 = 1 then temp1 = playerCharacter[1]
           if temp1 = 2 then temp1 = playerCharacter[2]
           if temp1 = 3 then temp1 = playerCharacter[3]
 
-          let temp3 = 1
           rem Use idle animation (action 1 = ActionIdle)
-          let temp2 = frame & 7
+          let temp3 = 1
           rem Simple frame counter cycles 0-7
-          let temp4 = temp6
+          let temp2 = frame & 7
           rem Player number for art system (temp6 = original player index)
+          let temp4 = temp6
           
           rem Load character sprite using art location system
           rem LocateCharacterArt expects: temp1=char, temp2=frame,
@@ -581,15 +581,18 @@ ArenaSelectDrawPlayerSprite
           gosub LocateCharacterArt bank10
           
           rem Set character color based on player number
-          rem LoadCharacterColors expects: temp1=character, temp2=hurt, temp3=player, temp4=flashing, temp5=mode
-          let temp2 = 0
+          rem LoadCharacterColors expects: temp1=player, temp2=hurt, temp3=guarding
+          let temp7 = temp6
+          let temp1 = temp7
           rem Not hurt
-          let temp3 = temp4
-          rem Player number routed into color loader
-          let temp4 = 0
-          rem Not flashing
-          let temp5 = 0
-          rem Frame-based flashing disabled
+          let temp2 = 0
+          rem Not guarding
+          let temp3 = 0
           gosub LoadCharacterColors bank16
+          
+          if temp7 = 0 then COLUP0 = temp6
+          if temp7 = 1 then _COLUP1 = temp6
+          if temp7 = 2 then COLUP2 = temp6
+          if temp7 = 3 then COLUP3 = temp6  
           
           return

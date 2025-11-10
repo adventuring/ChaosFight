@@ -97,7 +97,27 @@ Per-frame sequence:
 
 Frame budgeting distributes expensive operations (health bars, multi-player collisions) across multiple frames.
 
-## Key Systems
+## Sprite System
+
+### Supported Sprite Configurations
+
+The game supports these sprite configurations per player:
+
+- **P0** (Player 1): `character` | `?`
+- **P1** (Player 2): `character` | `CPU` | `No` | `?`
+- **P2** (Player 3): `character` | `No` | `?`
+- **P3** (Player 4): `character` | `No` | `?`
+- **P4** (Arena Select): `digit` | `blank`
+- **P5** (Arena Select): `digit` | `?`
+
+**Notes:**
+- `character`: Full character sprite with animations
+- `?`: Question mark glyph sprite
+- `CPU`: CPU indicator sprite (Player 2 only)
+- `No`: "No" text sprite (Players 2-4, not Player 1)
+- `digit`: Numeric digits for arena selection
+- `blank`: Empty/cleared sprite
+- P4 and P5 are used only during arena selection
 
 ### Controller System (`Source/Routines/ControllerDetection.bas`)
 - Auto-detects: CX-40, Genesis 3-button, Joy2B+, Quadtari

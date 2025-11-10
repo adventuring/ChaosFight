@@ -15,7 +15,6 @@
 
           rem Then — general code. must stay in this bank, but
           rem some sections may be vunerable to relocation if needed.
-#include "Source/Routines/ArenaLoader.bas"
 #include "Source/Routines/MainLoop.bas"
 #include "Source/Routines/SpriteLoader.bas"
 #include "Source/Routines/FontRendering.bas"

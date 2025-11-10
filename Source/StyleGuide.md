@@ -787,20 +787,14 @@ single assignment.
 When a subroutine ends with `gosub` immediately followed by `return`,
 optimize to a tail call using `goto`:
 
-**Before (inefficient):**
+**Current (optimized):**
 
 ```basic
-LoadPlayer0Sprite
-          gosub LoadCharacterSprite
-          return
-```
-
-**After (optimized):**
-
-```basic
-LoadPlayer0Sprite
-          rem tail call
-          goto LoadCharacterSprite
+LoadPlayerSprite
+          rem Generic sprite loading for any player
+          rem Input: currentCharacter, temp2=frame, temp3=player, temp4=action
+          rem Uses bank10 art system for all players
+          goto LoadPlayerSpriteDispatch
 ```
 
 This cannot be used when the "gosub" is to a cross-bank routine.

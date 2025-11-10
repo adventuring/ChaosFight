@@ -4,80 +4,42 @@
           const CPUSprite_length = 16
           const NoSprite_length = 16
 
-          asm
-; MULTI-BANK SPRITE LOADING SYSTEM
-;
-; Loads character sprite data and colors from multiple banks
-; Supports up to 32 characters (0-31) across 4 character-art
-;   banks:
-;     Bank 2 → Characters 0-7 (Bernie through KnightGuy)
-;     Bank 3 → Characters 8-15 (Frooty through Shamone)
-;     Bank 4 → Characters 16-23 (expansion slots)
-;     Bank 5 → Characters 24-31 (expansion slots + MethHound)
-; Selection logic still respects NumCharacters=16
-;   (MaxCharacter=15) in Source/Common/Constants.bas, so the
-;   front-end only iterates characters 0-15 even though the
-;   loader keeps all four banks on speed dial.
-; Special sprites: QuestionMark, CPU, No for special
-;   selections.
-;
-;
-; MULTI-BANK SPRITE LOADING FUNCTIONS
+          rem Player color tables for indexed lookup
+          data PlayerColors12
+          ColIndigo(12), ColRed(12), ColYellow(12), ColTurquoise(12)
+          end
+
+          data PlayerColors6
+          ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
           end
 
           asm
-; Loads sprites from appropriate bank based on character
-;   index
+; SUPPORTED SPRITE CONFIGURATIONS:
+; P0 = character | ?
+; P1 = character | CPU | No | ?
+; P2 = character | No | ?
+; P3 = character | No | ?
+; P4 = digit | blank (arena select only)
+; P5 = digit | ? (arena select only)
 ;
-; Handles special sprites (QuestionMark, CPU, No) for
-;   placeholders
-;
-;
-; Solid Player Color Tables
-; Solid color tables for P1-P4 normal and hurt states
-; P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise (SECAM maps to
-;   Green)
-          end
+; Multi-bank sprite loading system - supports 32 characters across 4 banks
+end
 
 LoadCharacterSprite
           asm
-; SPRITE LOADING FUNCTIONS
-; Load sprite data for a character based on character index
-;
-; Input: currentCharacter (global) = character index (0-31)
-;        temp2 = animation frame (0-7)
-;        temp3 = player number (0-3), may be in temp4
-;        instead
-;        MaxCharacter (constant) = maximum valid character
-;        index
-;
-; Output: Sprite data loaded into appropriate player
-; register
-;         via LocateCharacterArt (bank10)
-;
-; Mutates: temp1, temp2, temp3, temp4 (passed to
-; LocateCharacterArt)
-;
-; Called Routines: LocateCharacterArt (bank10) accesses:
-;   - temp1, temp2, temp3, temp4, temp5, temp6
-;   - Sets player sprite pointers via
-;   SetPlayerCharacterArtBankX
-;   - Modifies player0-3pointerlo/hi, player0-3height
-;
-; Constraints: Must be colocated with LoadSpecialSprite
-; (called via goto)
-;              Must be in same file as special sprite
-;              loaders
-          end
+; Load character sprite data - calls LocateCharacterArt (bank10)
+; Input: currentCharacter, temp2=frame, temp3=player
+; Output: Sprite loaded via bank10 routines
+end
           asm
 ; Validate character index
 ; Inline ValidateCharacterIndex
 ; Check if character index is within valid range
-          end
+end
           if currentCharacter > MaxCharacter then ValidateInvalidCharacterInline
           asm
 ;   (0-MaxCharacter for current implementation)
-          end
+end
           let temp5 = 1
           goto ValidateCharacterDoneInline
 ValidateInvalidCharacterInline
@@ -86,32 +48,32 @@ ValidateCharacterDoneInline
           if !temp5 then goto LoadSpecialSprite
           asm
 ; tail call
-          end
+end
 
           asm
 ; Check if character is special placeholder
-          end
+end
           if currentCharacter = 255 then temp6 = SpriteNo : goto LoadSpecialSprite
           asm
 ; tail call
 ; NoCharacter = 255
-          end
+end
 
           if currentCharacter = 254 then temp6 = SpriteCPU : goto LoadSpecialSprite
           asm
 ; tail call
 ; CPUCharacter = 254
-          end
+end
 
           if currentCharacter = 253 then temp6 = SpriteQuestionMark : goto LoadSpecialSprite
           asm
 ; tail call
 ; RandomCharacter = 253
-          end
+end
 
           asm
 ; Use character art location system for sprite loading
-          end
+end
           asm
 ;
 ; Input: currentCharacter = character index (global
@@ -123,28 +85,28 @@ ValidateCharacterDoneInline
 ;   select
 ; LocateCharacterArt expects: temp1=char, temp2=frame,
 ;   temp3=action, temp4=player
-          end
+end
 
           asm
 ; Check if player number in temp3 or temp4
 ; If temp4 is not set (0 and caller might have used temp3),
-          end
+end
           if !temp4 then temp4 = temp3
           asm
 ;   copy from temp3
 ;
 ; Move player number to temp4 and set temp3 to animation
-          end
+end
           let temp3 = 0
           asm
 ; action (0=idle)
 ; animation action/sequence 0 = idle
 ; playerNumberAlt already has player number from caller
-          end
+end
           let temp1 = currentCharacter
           asm
 ; Set temp variables for cross-bank call
-          end
+end
           gosub LocateCharacterArt bank10
           return
 
@@ -170,7 +132,7 @@ CopyQuestionMark
             sta PlayerFrameBuffer_W,y
             dey
             bpl .CopyQuestionLoop
-          end
+end
           goto SetPlayerHeight
 
 CopyCPU
@@ -181,7 +143,7 @@ CopyCPU
             sta PlayerFrameBuffer_W,y
             dey
             bpl .CopyCPULoop
-          end
+end
           goto SetPlayerHeight
 
 CopyNo
@@ -198,7 +160,7 @@ CopyNoP1
             sta PlayerFrameBuffer_W+16,y
             dey
             bpl .CopyNoP1Loop
-          end
+end
           goto SetPlayerHeight
 
 CopyNoP2
@@ -209,7 +171,7 @@ CopyNoP2
             sta PlayerFrameBuffer_W+32,y
             dey
             bpl .CopyNoP2Loop
-          end
+end
           goto SetPlayerHeight
 
 CopyNoP3
@@ -220,7 +182,7 @@ CopyNoP3
             sta PlayerFrameBuffer_W+48,y
             dey
             bpl .CopyNoP3Loop
-          end
+end
           goto SetPlayerHeight
 
 SetPlayerHeight
@@ -232,71 +194,44 @@ SetPlayerHeight
 
 LoadSpecialSprite
           asm
-;
-; Load Special Sprite
-; Loads special placeholder sprites (QuestionMark, CPU, No)
-;
-; Input: temp6 = sprite index (SpriteQuestionMark=0,
-;   SpriteCPU=1, SpriteNo=2)
-;        temp3 = player number (0-3)
-;
-; Output: Appropriate player sprite pointer set to special
-;   sprite data
-;         player0-3height set to 16
-;         SCRAM PlayerFrameBuffer_W[0-63] written (sprite data
-;         copied to RAM)
-;
-; Mutates: temp6 (read only), temp3 (read only)
-;           PlayerFrameBuffer_W[0-15], [16-31], [32-47],
-;           [48-63] (SCRAM)
-;           player0height, player1height, player2height,
-;           player3height
-;
-; Called Routines: None (uses inline assembly to copy sprite
-; data)
-;
-; Constraints: Must be colocated with LoadCharacterSprite
-; (called from it)
-;              Must be in same file as QuestionMark/CPU/No
-;              sprite loaders
-;              Player/sprite restrictions:
-;              - QuestionMark: players 0-3
-;              - CPU: player 2 only
-;              - No: players 1-3 only (not player 0)
-; Depends on QuestionMarkSprite, CPUSprite, NoSprite data
-          end
+; Load special sprites (QuestionMark/CPU/No) to RAM buffers
+; Input: temp6=sprite type, temp3=player
+; Output: Sprite copied to player buffer, height set to 16
+end
 
-          rem Validate sprite/player combination
-          if temp6 = 1 then goto ValidateCPU  ; CPU sprite
-          if temp6 = 2 then goto ValidateNo   ; No sprite
-          goto LoadQuestionMarkSprite        ; QuestionMark sprite (no restrictions)
+          rem Dispatch based on player number
+          on temp3 goto P0Load, P1Load, P2Load, P3Load, P5Load, P5Load
 
-ValidateCPU
-          if temp3 = 2 then goto LoadCPUSprite
-          goto LoadQuestionMarkSprite  ; Invalid combination, default to ?
+P0Load
+          rem P0: Only QuestionMark
+          let temp4 = 0  ; QuestionMark
+          goto CopySpecialSpriteToPlayer
 
-ValidateNo
-          if temp3 >= 1 && temp3 <= 3 then goto LoadNoSprite
-          goto LoadQuestionMarkSprite  ; Invalid combination, default to ?
-          
-LoadQuestionMarkSprite
-          rem Load QuestionMark sprite for any player
-          rem Input: temp3 = player number (0-3)
-          rem Output: Sprite loaded and height set
-          let temp4 = 0  ; QuestionMark sprite type
+P1Load
+          rem P1: QuestionMark/CPU/No
+          let temp4 = temp6  ; temp6 = 0,1,2 directly maps to sprite types
           goto CopySpecialSpriteToPlayer
-LoadCPUSprite
-          rem Load CPU sprite for any player
-          rem Input: temp3 = player number (0-3)
-          rem Output: Sprite loaded and height set
-          let temp4 = 1  ; CPU sprite type
-          goto CopySpecialSpriteToPlayer
-LoadNoSprite
-          rem Load No sprite for any player
-          rem Input: temp3 = player number (1-3, validated)
-          rem Output: Sprite loaded and height set
-          let temp4 = 2  ; No sprite type
-          goto CopySpecialSpriteToPlayer
+
+P2Load
+          rem P2: QuestionMark/No
+          if temp6 = 2 then let temp4 = 2 : goto CopySpecialSpriteToPlayer  ; No
+          let temp4 = 0 : goto CopySpecialSpriteToPlayer                    ; QuestionMark
+
+P3Load
+          rem P3: QuestionMark/No
+          if temp6 = 2 then let temp4 = 2 : goto CopySpecialSpriteToPlayer  ; No
+          let temp4 = 0 : goto CopySpecialSpriteToPlayer                    ; QuestionMark
+
+P5Load
+          rem P5: Direct ROM pointer to QuestionMark
+          asm
+            lda #<QuestionMarkSprite
+            sta player5pointer
+            lda #>QuestionMarkSprite
+            sta player5pointer+1
+end
+          player5height = 16
+          return
 LoadPlayerSprite
           asm
 ;
@@ -324,218 +259,39 @@ LoadPlayerSprite
 ;
 ; Constraints: Must be colocated with
 ; LoadPlayerSpriteDispatch (called via goto)
-          end
+end
           asm
 ; Get character index for this player from playerCharacter array
 ; Use currentPlayer global variable (set by caller)
-          end
+end
           let currentCharacter = playerCharacter[currentPlayer]
           asm
 ; Set currentCharacter from playerCharacter[currentPlayer]
-          end
+end
           goto LoadPlayerSpriteDispatch
           
 LoadPlayerSpriteDispatch
           asm
-; currentCharacter = character index (global variable),
-; animationFrame =
-;   frame (10fps counter), animationAction = action,
-;   playerNumber = player
-;
-; Input: currentCharacter (global) = character index
-; (already set)
-;        temp2 = animation frame (0-7)
-;        temp3 = animation action (0-15)
-;        temp4 = player number (0-3)
-;
-; Output: Sprite data loaded via LocateCharacterArt (bank10)
-;
-; Mutates: temp1 (set from currentCharacter, passed to
-; LocateCharacterArt)
-;
-; Called Routines: LocateCharacterArt (bank10) - see
-; LoadCharacterSprite
-;
-; Constraints: Must be colocated with LoadPlayerSprite
-; (called from it)
-          end
+; Load player sprite via bank10 art system
+; Input: currentCharacter, temp2=frame, temp3=action, temp4=player
+; Output: Sprite loaded via LocateCharacterArt (bank10)
+end
           asm
 ; Call character art location system (in bank14)
 ; LocateCharacterArt expects: temp1=char, temp2=frame,
 ;   temp3=action, temp4=player
 ; Set temp1 from currentCharacter (already set from
 ; playerCharacter[currentPlayer])
-          end
+end
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank10
           return
 
-LoadPlayer0Sprite
-          asm
-;
-; LOAD PLAYER SPRITES (legacy Player-specific Functions)
-; Load sprite data into specific player registers
-; These functions contain the actual player graphics
-;   commands
-;
-; Use art location system for player 0 sprite loading
-;
-; Input: currentCharacter (global) = character index (must
-; be set)
-;        temp2 = animation frame (0-7, must be set by
-;        caller)
-;
-; Output: Sprite data loaded via LoadCharacterSprite
-;
-; Mutates: temp3 (set to 0, passed to LoadCharacterSprite)
-;
-; Called Routines: LoadCharacterSprite - see its
-; documentation
-;
-; Constraints: Must be colocated with LoadCharacterSprite
-; (tail call)
-;              Only reachable via gosub/goto (could be own
-;              file)
-; temp1 = character index, temp2 = animation frame already
-;   set
-          end
-          let temp3 = 0
-          asm
-; playerNumber = player number (0)
-; Use LoadCharacterSprite which handles LocateCharacterArt
-          end
-          goto LoadCharacterSprite
-          asm
-; tail call
-          end
-
-LoadPlayer1Sprite
-          asm
-; Use art location system for player 1 sprite loading
-;
-; Input: currentCharacter (global) = character index (must
-; be set)
-;        temp2 = animation frame (0-7, must be set by
-;        caller)
-;
-; Output: Sprite data loaded via LoadCharacterSprite
-;
-; Mutates: temp3 (set to 1, passed to LoadCharacterSprite)
-;
-; Called Routines: LoadCharacterSprite - see its
-; documentation
-;
-; Constraints: Must be colocated with LoadCharacterSprite
-; (tail call)
-;              Only reachable via gosub/goto (could be own
-;              file)
-; temp1 = character index, temp2 = animation frame already
-;   set
-          end
-          let temp3 = 1
-          asm
-; playerNumber = player number (1)
-; Use LoadCharacterSprite which handles LocateCharacterArt
-          end
-          goto LoadCharacterSprite
-          asm
-; tail call
-          end
-          
-LoadPlayer2Sprite
-          asm
-; Use art location system for player 2 sprite loading
-;
-; Input: currentCharacter (global) = character index (must
-; be set)
-;        temp2 = animation frame (0-7, must be set by
-;        caller)
-;
-; Output: Sprite data loaded via LoadCharacterSprite
-;
-; Mutates: temp3 (set to 2, passed to LoadCharacterSprite)
-;
-; Called Routines: LoadCharacterSprite - see its
-; documentation
-;
-; Constraints: Must be colocated with LoadCharacterSprite
-; (tail call)
-;              Only reachable via gosub/goto (could be own
-;              file)
-; temp1 = character index, temp2 = animation frame already
-;   set
-          end
-          let temp3 = 2
-          asm
-; playerNumber = player number (2)
-; Use LoadCharacterSprite which handles LocateCharacterArt
-          end
-          goto LoadCharacterSprite
-          asm
-; tail call
-          end
-          
-LoadPlayer3Sprite
-          asm
-; Use art location system for player 3 sprite loading
-;
-; Input: currentCharacter (global) = character index (must
-; be set)
-;        temp2 = animation frame (0-7, must be set by
-;        caller)
-;
-; Output: Sprite data loaded via LoadCharacterSprite
-;
-; Mutates: temp3 (set to 3, passed to LoadCharacterSprite)
-;
-; Called Routines: LoadCharacterSprite - see its
-; documentation
-;
-; Constraints: Must be colocated with LoadCharacterSprite
-; (tail call)
-;              Only reachable via gosub/goto (could be own
-;              file)
-; temp1 = character index, temp2 = animation frame already
-;   set
-          end
-          let temp3 = 3
-          asm
-; playerNumber = player number (3)
-; Use LoadCharacterSprite which handles LocateCharacterArt
-          end
-          goto LoadCharacterSprite
-          asm
-; tail call
-          end
-
-
-
-
-          rem Character color tables for NTSC
-          data CharacterColorsNTSC
-            $0E, $1C, $28, $44, $1A, $86, $1C, $2A, $3A, $C6, $16, $46, $2C, $66, $36, $56
-          end
-
-          rem Character color tables for PAL (adjusted for PAL color encoding)
-          data CharacterColorsPAL
-            $0E, $2C, $38, $54, $2A, $96, $2C, $3A, $4A, $D6, $26, $56, $3C, $76, $46, $66
-          end
-
 LoadCharacterColors
           asm
 ; Load character color based on TV standard and hurt state
-;
-; Input: temp1 = character index (0-15, used only on NTSC/PAL)
-;        temp2 = hurt state (0/1)
-;        temp3 = player number (0-3)
-;
-; Output: Appropriate COLUP0/COLUP1/COLUP2/COLUP3 updated
-; Note: Colors are per-character on NTSC/PAL, per-player on SECAM
-;
-; Mutates: temp6 (color calculation, internal use)
-;           COLUP0, COLUP1, COLUP2, COLUP3 (TIA registers)
-;
-; Called Routines: None (all logic inline)
+; Input: temp1=char, temp2=hurt, temp3=player
+; Output: Sets COLUP0-3 based on TV standard (char colors on NTSC/PAL, player colors on SECAM)
 ;
 ; Constraints: Must be colocated with NormalColor,
 ;              PlayerIndexColors, PlayerIndexColorsDim,
@@ -543,35 +299,22 @@ LoadCharacterColors
 ; WARNING: temp6 is mutated during execution. Do not use
 ; temp6
 ; after calling this subroutine.
-          end
+end
           if temp2 then goto HurtColor
           asm
 ; Highest priority: hurt state
-          end
+end
 
 NormalColor
           asm
-; Calculate normal (non-hurt, non-flashing) player color
-;
-; Input: temp3 = player number (0-3, from
-; LoadCharacterColors)
-;        systemFlags (global) = system flags including B&W
-;        override
-;
-; Output: Dispatches to PlayerIndexColors
-;
-; Mutates: None (dispatcher only)
-;
-; Called Routines: None (dispatcher only)
-;
-; Constraints: Must be colocated with LoadCharacterColors
-          end
+; Normal color dispatch - character colors (NTSC/PAL) or player colors (SECAM)
+end
 #ifdef TV_SECAM
           PlayerIndexColors
 #else
           asm
 ; NTSC/PAL: Use character-specific colors
-          end
+end
 #ifdef TV_NTSC
           let temp6 = CharacterColorsNTSC[temp1]
 #endif
@@ -583,150 +326,38 @@ NormalColor
 
 PlayerIndexColors
           asm
-; Calculate bright player index colors
-;
-; Input: temp3 = player number (0-3, from
-; LoadCharacterColors)
-;
-; Output: temp6 = color value, dispatches to SetColor
-;
-; Mutates: temp6 (color value)
-;
-; Called Routines: None (dispatcher only)
-; Constraints: Must be colocated with LoadCharacterColors, SetColor
-; Solid player index colors (bright, luminance 12)
-; Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
-;   4=Turquoise (SECAM maps to Green)
-          end
-          if !temp3 then goto PlayerIndexColorsPlayer0
-          if temp3 = 1 then goto PlayerIndexColorsPlayer1
-          if temp3 = 2 then goto PlayerIndexColorsPlayer2
-          goto PlayerIndexColorsPlayer3
-
-PlayerIndexColorsPlayer0
-          asm
-; Player 1: Indigo (SECAM maps to Blue)
-          end
-          let temp6 = ColIndigo(12)
-          goto SetColor
-
-PlayerIndexColorsPlayer1
-          asm
-; Player 2: Red
-          end
-          let temp6 = ColRed(12)
-          goto SetColor
-
-PlayerIndexColorsPlayer2
-          asm
-; Player 3: Yellow (SECAM maps to Yellow)
-          end
-          let temp6 = ColYellow(12)
-          goto SetColor
-
-PlayerIndexColorsPlayer3
-          asm
-; Player 4: Turquoise (SECAM maps to Green)
-          end
-          let temp6 = ColTurquoise(12)
+; Bright player colors (luminance 12) - table lookup
+; P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise
+end
+          let temp6 = PlayerColors12[temp3]
           goto SetColor
 
 PlayerIndexColorsDim
           asm
-; Dimmed player index colors
-;
-; Input: temp3 = player number (0-3, from
-; LoadCharacterColors)
-;
-; Output: temp6 = dimmed color value, dispatches to SetColor
-;
-; Mutates: temp6 (color value)
-;
-; Called Routines: None (dispatcher only)
-;
-; Constraints: Must be colocated with LoadCharacterColors,
-; SetColor
-; Player 1=Indigo, Player 2=Red, Player 3=Yellow, Player
-;   4=Turquoise (SECAM maps to Green, dimmed to luminance 6)
-          end
-          if !temp3 then goto PlayerIndexColorsDimPlayer0
-          if temp3 = 1 then goto PlayerIndexColorsDimPlayer1
-          if temp3 = 2 then goto PlayerIndexColorsDimPlayer2
-          goto PlayerIndexColorsDimPlayer3
-
-PlayerIndexColorsDimPlayer0
-          asm
-; Player 1: Indigo (dimmed)
-          end
-          let temp6 = ColIndigo(6)
-          goto SetColor
-
-PlayerIndexColorsDimPlayer1
-          asm
-; Player 2: Red (dimmed)
-          end
-          let temp6 = ColRed(6)
-          goto SetColor
-
-PlayerIndexColorsDimPlayer2
-          asm
-; Player 3: Yellow (dimmed)
-          end
-          let temp6 = ColYellow(6)
-          goto SetColor
-
-PlayerIndexColorsDimPlayer3
-          asm
-; Player 4: Turquoise (dimmed)
-          end
-          let temp6 = ColTurquoise(6)
+; Dimmed player colors (luminance 6) - table lookup
+; P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise
+end
+          let temp6 = PlayerColors6[temp3]
           goto SetColor
 
 HurtColor
           asm
-; Calculate hurt state player color
-;
-; Input: temp3 = player number (0-3, from
-; LoadCharacterColors)
-;
-; Output: temp6 = hurt color value, dispatches to SetColor
-;
-; Mutates: temp6 (color value)
-;
-; Called Routines: None (dispatcher only)
-;
-; Constraints: Must be colocated with LoadCharacterColors,
-; SetColor
-          end
+; Hurt state colors - magenta (SECAM) or dimmed player colors (NTSC/PAL)
+end
 #ifdef TV_SECAM
           let temp6 = ColMagenta(14)
           goto SetColor
 #else
-          PlayerIndexColorsDim
+          let temp6 = PlayerColors6[temp3]
+          goto SetColor
 #endif
 
 SetColor
           asm
-; Set color based on player index (multisprite kernel
-;   supports COLUP2/COLUP3)
-;
-; Input: temp6 = color value (from previous color
-; calculation)
-;        temp3 = player number (0-3, from
-;        LoadCharacterColors)
-;
-; Output: COLUP0, _COLUP1, COLUP2, or COLUP3 updated
-;
-; Mutates: COLUP0, _COLUP1, COLUP2, COLUP3 (TIA registers)
-;
-; Called Routines: None
-;
-; Constraints: Must be colocated with LoadCharacterColors
-; Use temp6 directly instead of alias to avoid symbol
-; conflict
-; temp6 already contains the color from
-;   previous code paths
-          end
+; Set player color register based on player number
+; Input: temp6=color, temp3=player
+; Output: Sets COLUP0-3 appropriately
+end
           if temp3 = 0 then COLUP0 = temp6 : goto SetColorDone
           if temp3 = 1 then _COLUP1 = temp6 : goto SetColorDone
           if temp3 = 2 then COLUP2 = temp6 : goto SetColorDone

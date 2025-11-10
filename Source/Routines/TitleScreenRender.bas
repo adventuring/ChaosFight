@@ -55,7 +55,7 @@ DrawTitleScreen
           rem Call titlescreen kernel to render the bitmap
           asm
             jsr titledrawscreen
-          end
+end
 
           return
 

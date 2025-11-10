@@ -576,15 +576,15 @@ help:
 # Generate Stella .pro files
 Dist/$(GAME)$(GAMEYEAR).NTSC.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 	sed $< -e s/@@TV@@/NTSC/g \
-		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).NTSC.a26 | cut -d\  -f3)/g > $@
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).NTSC.a26 | cut -d\  -f1)/g > $@
 
 Dist/$(GAME)$(GAMEYEAR).PAL.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(GAMEYEAR).PAL.a26
 	sed $< -e s/@@TV@@/PAL/g \
-		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).PAL.a26 | cut -d\  -f3)/g > $@
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).PAL.a26 | cut -d\  -f1)/g > $@
 
 Dist/$(GAME)$(GAMEYEAR).SECAM.pro: Source/$(GAME)$(GAMEYEAR).pro Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 	sed $< -e s/@@TV@@/SECAM/g \
-		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).SECAM.a26 | cut -d\  -f3)/g > $@
+		-e s/@@MD5@@/$$(md5sum Dist/$(GAME)$(GAMEYEAR).SECAM.a26 | cut -d\  -f1)/g > $@
 
 Dist/$(GAME)$(GAMEYEAR).%.$(RELEASE_TAG).zip: Dist/$(GAME)$(GAMEYEAR).%.a26 Dist/$(GAME)$(GAMEYEAR).%.pro $(MANUAL_PDF) | Dist/
 	@echo "Packaging $* release $(RELEASE_TAG)..."

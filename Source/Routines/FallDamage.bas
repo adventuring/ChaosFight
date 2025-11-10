@@ -437,15 +437,9 @@ DivideBy100
           rem
           rem OUTPUT: temp2 = quotient (0, 1, or 2)
           rem Fast approximation for values 0-255
-          if temp2 > 200 then goto DivideBy100Two
-          if temp2 > 100 then goto DivideBy100One
+          if temp2 > 200 then let temp2 = 2 : return
+          if temp2 > 100 then let temp2 = 1 : return
           let temp2 = 0
-          return
-DivideBy100One
-          let temp2 = 1
-          return
-DivideBy100Two
-          let temp2 = 2
           return
 
 DivideByPfrowheight

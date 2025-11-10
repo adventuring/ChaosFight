@@ -56,7 +56,7 @@ StartMusic
           if temp1 < Bank1MinSongID then goto LoadSongFromBank15
           gosub LoadSongPointer bank1
           rem Song in Bank 1
-          gosub LoadSongVoice1Pointer bank1
+          gosub LoadSongVoice1Pointer
           goto LoadSongPointersDone
 LoadSongFromBank15
           rem Helper: Loads song pointers from Bank 15

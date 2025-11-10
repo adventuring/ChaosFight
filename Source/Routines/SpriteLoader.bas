@@ -17,41 +17,6 @@
 ; Multi-bank sprite loading system - supports 32 characters across 4 banks
 end
 
-LoadSpecialSprite
-          asm
-; Load special sprites (QuestionMark/CPU/No) to RAM buffers
-; Input: temp6=sprite type, temp3=player
-; Output: Sprite copied to player buffer, height set to 16
-end
-
-          rem Dispatch based on player number
-          on temp3 goto P0Load, P1Load, P2Load, P3Load, P5Load, P5Load
-
-P0Load
-          rem P0: Only QuestionMark
-          let temp4 = 0  : gosub CopyGlyphToPlayer bank16 : return
-
-P1Load
-          rem P1: QuestionMark/CPU/No
-          let temp4 = temp6 : gosub CopyGlyphToPlayer bank16 : return
-
-P2Load
-          rem P2: QuestionMark/No
-          if temp6 = 2 then let temp4 = 2 : gosub CopyGlyphToPlayer bank16 : return
-          let temp4 = 0 : gosub CopyGlyphToPlayer bank16 : return
-
-P3Load
-          rem P3: QuestionMark/No
-          if temp6 = 2 then let temp4 = 2 : gosub CopyGlyphToPlayer bank16 : return
-          let temp4 = 0 : gosub CopyGlyphToPlayer bank16 : return
-
-P5Load
-          rem P5: Point to font glyph for QuestionMark
-          let temp1 = GlyphQuestionMark
-          let temp3 = 5
-          gosub SetPlayerGlyphFromFont bank16
-          return
-
 LoadCharacterSprite
           asm
 ; Load character sprite data - calls LocateCharacterArt (bank10)
@@ -63,15 +28,15 @@ end
           asm
 ; Check if character is special placeholder
 end
-          if currentCharacter = NoCharacter then temp6 = SpriteNo : gosub LoadSpecialSprite : return
+          if currentCharacter = NoCharacter then temp4 = SpriteNo : gosub CopyGlyphToPlayer bank16 : return
 
-          if currentCharacter = 254 then temp6 = SpriteCPU : gosub LoadSpecialSprite : return
+          if currentCharacter = 254 then temp4 = SpriteCPU : gosub CopyGlyphToPlayer bank16 : return
           asm
 ; tail call
 ; CPUCharacter = 254
 end
 
-          if currentCharacter = RandomCharacter then temp6 = SpriteQuestionMark : gosub LoadSpecialSprite : return
+          if currentCharacter = RandomCharacter then temp4 = SpriteQuestionMark : gosub CopyGlyphToPlayer bank16 : return
           rem  Use character art location system for sprite loading
           asm
 ;

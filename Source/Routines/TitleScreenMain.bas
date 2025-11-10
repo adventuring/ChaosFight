@@ -33,9 +33,9 @@ TitleScreenMain
           rem
           rem Mutates: None (dispatcher only)
           rem
-          rem Called Routines: UpdateCharacterParade (bank12) - accesses
+          rem Called Routines: UpdateCharacterParade (bank14) - accesses
           rem parade state,
-          rem   DrawTitleScreen (bank8) - accesses title screen state,
+          rem   DrawTitleScreen (bank9) - accesses title screen state,
           rem   titledrawscreen bank9 - accesses title screen graphics
           rem
           rem Constraints: Must be colocated with TitleSkipQuad,
@@ -65,7 +65,7 @@ TitleDoneQuad
           rem Constraints: Must be colocated with TitleScreenMain
           
           rem Update character parade animation
-          gosub UpdateCharacterParade bank9
+          gosub UpdateCharacterParade bank14
 
           rem Draw title screen
           gosub DrawTitleScreen bank9

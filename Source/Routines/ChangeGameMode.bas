@@ -68,10 +68,10 @@ SetupTitle
           rem Mutates: Title screen state variables (via
           rem BeginTitleScreen)
           rem
-          rem Called Routines: BeginTitleScreen (bank12) - accesses title
+          rem Called Routines: BeginTitleScreen (bank14) - accesses title
           rem screen state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginTitleScreen bank12
+          gosub BeginTitleScreen bank14
           return
           
 SetupCharacterSelect

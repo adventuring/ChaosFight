@@ -14,5 +14,8 @@
 #include "Source/Routines/PlayerElimination.bas"
 #include "Source/Routines/ArenaReloadUtils.bas"
 #include "Source/Routines/BeginArenaSelect.bas"
-#include "Source/Routines/Combat.bas"
+#include "Source/Routines/BeginFallingAnimation.bas"
+#include "Source/Routines/MovePlayerToTarget.bas"
+#include "Source/Routines/WinnerAnnouncement.bas"
+#include "Source/Routines/BeginWinnerAnnouncement.bas"
 

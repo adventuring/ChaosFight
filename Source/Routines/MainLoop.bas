@@ -7,7 +7,7 @@ MainLoop
           rem Outputs: Dispatches to mode-specific handlers
           rem Mutates: None; dispatcher only
           rem Calls: WarmStart bank13, PublisherPreludeMain bank14, AuthorPrelude bank14,
-          rem        TitleScreenMain bank9, CharacterSelectInputEntry bank6,
+          rem        TitleScreenMain bank14, CharacterSelectInputEntry bank9,
           rem        FallingAnimation1 bank12, ArenaSelect1 bank14,
           rem        GameMainLoop bank11, WinnerAnnouncement bank12,
           rem        UpdateMusic bank1, titledrawscreen bank9
@@ -31,11 +31,11 @@ MainLoopModeAuthorPrelude
 
 MainLoopModeTitleScreen
           rem tail call
-          goto TitleScreenMain bank9
+          goto TitleScreenMain bank14
 
 MainLoopModeCharacterSelect
           rem tail call
-          goto CharacterSelectInputEntry bank6
+          goto CharacterSelectInputEntry bank9
 
 MainLoopModeFallingAnimation
           rem tail call

@@ -133,6 +133,8 @@
 #include "Source/Data/SoundPointers.bas"
 #include "Source/Data/SongPointers2.bas"
 
+#include "Source/Routines/DisplayWinScreen.bas"
+
           rem Sounds Bank Helper Functions And Data
           rem These functions access sound data tables and streams in
           rem   this bank

@@ -29,7 +29,7 @@ WinnerAnnouncementLoop
           rem
           rem Mutates: WinScreenTimer (incremented)
           rem
-          rem Called Routines: DisplayWinScreen (bank12) - accesses
+          rem Called Routines: DisplayWinScreen (bank15) - accesses
           rem winner screen state
           rem
           rem Constraints: Must be colocated with WinnerAnnouncement,
@@ -44,7 +44,7 @@ WinnerAnnouncementLoop
           if winScreenTimer_R > WinScreenAutoAdvanceFrames then WinnerAdvanceToCharacterSelect
           
           rem Display win screen and continue loop
-          gosub DisplayWinScreen bank12
+          gosub DisplayWinScreen bank15
           rem drawscreen called by MainLoop
           return
           goto WinnerAnnouncementLoop

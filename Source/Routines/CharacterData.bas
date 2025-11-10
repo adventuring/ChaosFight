@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterData.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Character Data Lookup Routines
           rem Provides O(1) lookups for character properties.
           rem

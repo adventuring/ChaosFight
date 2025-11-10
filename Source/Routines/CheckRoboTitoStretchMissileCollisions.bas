@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CheckRoboTitoStretchMissileCollisions.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CheckRoboTitoStretchMissileCollisions
           rem Detects RoboTito stretch missile hits against other players

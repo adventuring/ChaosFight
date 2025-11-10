@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterSelect.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CharacterSelectEntry
           rem Initializes character select screen state

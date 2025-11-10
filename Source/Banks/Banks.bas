@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Banks.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Bank 1: Sounds & Music 1
 

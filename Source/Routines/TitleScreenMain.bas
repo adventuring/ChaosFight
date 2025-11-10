@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/TitleScreenMain.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 TitleScreenMain
           rem Title Screen - Per-frame Loop

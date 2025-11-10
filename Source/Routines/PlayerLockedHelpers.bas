@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/PlayerLockedHelpers.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 GetPlayerLocked
           rem Player Locked Helper Functions

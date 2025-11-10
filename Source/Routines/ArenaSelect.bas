@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/ArenaSelect.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 ArenaSelect1
 ArenaSelect1Loop

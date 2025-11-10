@@ -1,7 +1,7 @@
 HandleCharacterSelectCycle
           rem ChaosFight - Source/Routines/CharacterSelectMain.bas
           rem
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem PlayerLockedHelpers.bas moved to Bank 1
           rem Character Select - Per-frame Loop
           rem

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Data/SongPointers2.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem Song Pointer Data Tables - Bank 2
           rem Compact pointer lookup tables for songs stored in Bank 15

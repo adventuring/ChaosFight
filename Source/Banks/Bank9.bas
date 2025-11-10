@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Bank9.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem SPECIAL PURPOSE BANK: Titlescreen System
           rem Graphics assets, titlescreen kernel, preambles, attract mode,

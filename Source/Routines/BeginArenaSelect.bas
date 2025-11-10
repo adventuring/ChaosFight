@@ -1,7 +1,7 @@
 BeginArenaSelect
           rem
           rem ChaosFight - Source/Routines/BeginArenaSelect.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Begin Arena Select
           rem
           rem Setup routine for Arena Select screen.

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Common/Preamble.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem batariBASIC automatically defines constants like
           rem bankswitch, multisprite,

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/TitleCharacterParade.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 UpdateCharacterParade
           rem Title Screen Character Parade

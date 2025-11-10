@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Routines/FontRendering.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           
           rem ARENA DIGIT RENDERING - P4/P5 only
           rem Renders arena selection numbers using player sprites 4 and 5
@@ -66,8 +66,9 @@ DrawArenaNumber
           rem INPUT: temp1 = arena number (1-32)
           rem OUTPUT: Arena number displayed using P4/P5 sprites
           rem
-          let temp6 = ArenaTens[temp1]
-          let temp7 = ArenaOnes[temp1]
+          let temp6 = ArenaBCD[temp1] & $f0 
+          let temp6 = temp6 / $10
+          let temp7 = ArenaBCD[temp1] & $0f 
           rem Always draw both digits
           let temp1 = temp6
           let temp5 = 4  : gosub DrawArenaDigit bank16
@@ -77,15 +78,9 @@ DrawArenaNumber
 
           rem Lookup tables to replace division and modulo by 10
           rem Index 0..32 inclusive
-          data ArenaTens
-            $e, $e, $e, $e, $e, $e, $e, $e, $e,
-            1,1,1,1,1,1,1,1,1,1,
-            2,2,2,2,2,2,2,2,2,2,
-            3,3,3
-end
-          data ArenaOnes
-            1,2,3,4,5,6,7,8,9,
-            0,1,2,3,4,5,6,7,8,9,
-            0,1,2,3,4,5,6,7,8,9,
-            0,1,2
+          data ArenaBCD
+                 $e1, $e2, $e3, $e4, $e5, $e6, $e7, $e8, $e9,
+            $10, $11, $12, $13, $14, $15, $16, $17, $18, $19,
+            $20, $21, $22, $23, $24, $25, $26, $27, $28, $29,
+            $30, $31, $32
 end

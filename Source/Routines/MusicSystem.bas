@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/MusicSystem.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 StartMusic
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation

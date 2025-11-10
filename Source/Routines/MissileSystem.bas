@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/MissileSystem.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem MISSILE SYSTEM - 4-player MISSILE MANAGEMENT
           rem Manages up to 4 simultaneous missiles/attack visuals (one
           rem   per player).

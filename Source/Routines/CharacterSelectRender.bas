@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterSelectRender.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 SelectDrawScreen
           rem Character Select drawing (sprites and HUD)

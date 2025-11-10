@@ -1,7 +1,7 @@
 ApplyGuardFlashing
           rem
           rem ChaosFight - Source/Routines/GuardEffects.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Guard Visual Effects System
           rem Implements guard flashing visual feedback as specified in
           rem   manual:

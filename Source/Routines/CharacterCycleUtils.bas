@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterCycleUtils.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Character cycling utility functions moved for bank optimization
           if temp3 = 1 then goto SelectP2LeftWrap
           let temp1 = NoCharacter

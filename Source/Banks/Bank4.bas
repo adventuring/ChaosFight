@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Banks/Bank4.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem ASSET BANK: Character Art Assets (separate memory budget)
           rem Character sprites (16-23): Character16-23 (placeholders) + FallingAnimation routine

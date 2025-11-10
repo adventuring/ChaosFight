@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/MainLoop.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 MainLoop
           rem Dispatches game modes and handles reset entry point

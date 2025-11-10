@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/DisplayWinScreen.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 DisplayWinScreen
           rem Displays the winner podium with character sprites
           rem Layout:

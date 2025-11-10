@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/PlayerElimination.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CheckAllPlayerEliminations
           rem Player Elimination System

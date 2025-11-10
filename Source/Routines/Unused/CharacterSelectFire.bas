@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/CharacterSelectFire.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Character select fire handling moved for bank optimization
 
 HandleCharacterSelectFire

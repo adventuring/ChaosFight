@@ -1,7 +1,7 @@
 SetPublisherWindowValues
           rem
           rem ChaosFight - Source/Routines/TitlescreenWindowControl.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Titlescreen Window Control
           rem
           rem Screen-specific window value initialization for

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/PlayerPhysicsCollisions.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CheckBoundaryCollisions
           rem Player Physics - Collisions

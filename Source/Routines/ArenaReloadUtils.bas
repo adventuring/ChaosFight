@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/ArenaReloadUtils.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Arena color reloading utilities moved for bank optimization
 
 ReloadArenaColors

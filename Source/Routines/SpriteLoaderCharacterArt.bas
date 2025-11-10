@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/SpriteLoaderCharacterArt.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 LocateCharacterArt
           rem batariBASIC wrapper for character art location with bank

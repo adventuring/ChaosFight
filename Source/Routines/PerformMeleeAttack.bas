@@ -1,7 +1,7 @@
 PerformMeleeAttack
           rem
           rem ChaosFight - Source/Routines/PerformMeleeAttack.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Perform Melee Attack
           rem Executes a melee attack for the specified player.
           rem Spawns a brief missile visual (sword, fist, etc.) and

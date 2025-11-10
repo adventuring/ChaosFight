@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/AnimationSystem.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 UpdateCharacterAnimations
           rem Drives the 10fps animation system for every active player

@@ -1,7 +1,7 @@
 GetPlayerAnimationState
           rem
           rem ChaosFight - Source/Routines/PlayerInput.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Player Input Handling
           rem All input handling for the four players, with
           rem   character-specific

@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Common/Macros.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Macros
           rem All macro implementations removed in favor of subroutines.

@@ -1,7 +1,7 @@
 HandleWallCollision
           rem
           rem ChaosFight - Source/Routines/Physics.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem PHYSICS SYSTEM - Weight-based Wall Collisions And Movement
           rem Handle weight-based wall collision for a player
           rem

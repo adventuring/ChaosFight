@@ -1,5 +1,5 @@
           rem ChaosFight - Source/Routines/SpecialMovement.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 ApplySpecialMovement
           rem Special Movement Physics

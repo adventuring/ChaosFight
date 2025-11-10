@@ -1,6 +1,6 @@
           rem
           rem ChaosFight - Source/Data/WinnerScreen.bas
-          rem Copyright (c) 2025 Interworldly Adventuring, LLC.
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Winner screen playfield data (pfres=8, 8 rows)
 
           rem Winner Screen Playfield Data

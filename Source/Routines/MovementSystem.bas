@@ -389,12 +389,4 @@ InitializeMovementSystem
           let playerVelocityYL[3] = 0
           return
           
-
-          let playerVelocityYL[2] = 0
-          let playerVelocityX[3] = 0
-          rem Player 3
-          let playerVelocityXL[3] = 0
-          let playerVelocityY[3] = 0
-          let playerVelocityYL[3] = 0
-          return
           

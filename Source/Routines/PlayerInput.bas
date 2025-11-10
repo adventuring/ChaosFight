@@ -255,6 +255,8 @@ HandleGuardInput
           rem INPUT: temp1 = player index (0-3)
           rem Uses: joy0down for players 0,2; joy1down for players 1,3
           rem Determine which joy port to use based on player index
+          rem Frooty (8) cannot guard
+          if PlayerCharacter[temp1] = 8 then return
           rem Players 0,2 use joy0; Players 1,3 use joy1
           if temp1 = 0 then HGI_CheckJoy0
           if temp1 = 2 then HGI_CheckJoy0
@@ -309,6 +311,7 @@ HandleFlyingCharacterMovement
           rem Uses: joy0left/joy0right for players 0,2;
           rem joy1left/joy1right
           rem for players 1,3
+          let temp5 = PlayerCharacter[temp1]
           rem Determine which joy port to use based on player index
           rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
           if temp1 & 2 = 0 then HFCM_UseJoy0
@@ -351,9 +354,19 @@ HFCM_CheckLeftCollision
           if temp5 = 1 then goto HFCM_CheckRightMovement
 HFCM_MoveLeftOK
           rem Blocked at bottom too
+          if temp5 = 8 then goto HFCM_LeftMomentumApply
+          if temp5 = 2 then goto HFCM_LeftDirectApply
+          rem Default (should not hit): apply -1
           let playerVelocityX[temp1] = $ff
-          rem Apply leftward velocity impulse (double-width sprite: 16px width)
           let playerVelocityXL[temp1] = 0
+          goto HFCM_LeftApplyDone
+HFCM_LeftMomentumApply
+          let playerVelocityX[temp1] = playerVelocityX[temp1] - CharacterMovementSpeed[temp5]
+          let playerVelocityXL[temp1] = 0
+          goto HFCM_LeftApplyDone
+HFCM_LeftDirectApply
+          let playerX[temp1] = playerX[temp1] - CharacterMovementSpeed[temp5]
+HFCM_LeftApplyDone
           rem Preserve facing during hurt/recovery states (knockback, hitstun)
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes1
@@ -410,9 +423,19 @@ HFCM_DoRightMovement
           if temp5 = 1 then return
 HFCM_MoveRightOK
           rem Blocked at bottom too
+          if temp5 = 8 then goto HFCM_RightMomentumApply
+          if temp5 = 2 then goto HFCM_RightDirectApply
+          rem Default (should not hit): apply +1
           let playerVelocityX[temp1] = 1
-          rem Apply rightward velocity impulse
           let playerVelocityXL[temp1] = 0
+          goto HFCM_RightApplyDone
+HFCM_RightMomentumApply
+          let playerVelocityX[temp1] = playerVelocityX[temp1] + CharacterMovementSpeed[temp5]
+          let playerVelocityXL[temp1] = 0
+          goto HFCM_RightApplyDone
+HFCM_RightDirectApply
+          let playerX[temp1] = playerX[temp1] + CharacterMovementSpeed[temp5]
+HFCM_RightApplyDone
           rem Preserve facing during hurt/recovery states while processing right movement
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes2
@@ -426,6 +449,22 @@ SPF_InlineNo2
           let temp3 = 0
 SPF_InlineDone2
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
+          rem Vertical control for flying characters: UP/DOWN
+          if temp1 & 2 = 0 then HFCM_VertJoy0
+          if joy1up then HFCM_VertUp
+          if joy1down then HFCM_VertDown
+          return
+HFCM_VertJoy0
+          if joy0up then HFCM_VertUp
+          if joy0down then HFCM_VertDown
+          return
+HFCM_VertUp
+          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] - CharacterMovementSpeed[temp5] : return
+          if temp5 = 2 then let playerY[temp1] = playerY[temp1] - CharacterMovementSpeed[temp5] : return
+          return
+HFCM_VertDown
+          if temp5 = 8 then let playerVelocityY[temp1] = playerVelocityY[temp1] + CharacterMovementSpeed[temp5] : return
+          if temp5 = 2 then let playerY[temp1] = playerY[temp1] + CharacterMovementSpeed[temp5] : return
           return
 
 InputHandleLeftPortPlayerFunction
@@ -454,8 +493,20 @@ InputHandleLeftPortPlayerFunction
           rem Left movement: set negative velocity (255 in 8-bit twos
           rem complement = -1)
           if !joy0left then goto IHLP_DoneLeftMovement
-          let playerVelocityX[temp1] = 255
+          if PlayerCharacter[temp1] = 8 then goto IHLP_LeftMomentum0
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let temp2 = 0
+          let temp2 = temp2 - temp6
+          let playerVelocityX[temp1] = temp2
           let playerVelocityXL[temp1] = 0
+          goto IHLP_AfterLeftSet0
+IHLP_LeftMomentum0
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          let playerVelocityXL[temp1] = 0
+IHLP_AfterLeftSet0
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes3
           gosub GetPlayerAnimationStateFunction
@@ -471,8 +522,18 @@ SPF_InlineDone3
 IHLP_DoneLeftMovement
           rem Right movement: set positive velocity
           if !joy0right then goto IHLP_DoneRightMovement
-          let playerVelocityX[temp1] = 1
+          if PlayerCharacter[temp1] = 8 then goto IHLP_RightMomentum0
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerVelocityX[temp1] = temp6
           let playerVelocityXL[temp1] = 0
+          goto IHLP_AfterRightSet0
+IHLP_RightMomentum0
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
+          let playerVelocityXL[temp1] = 0
+IHLP_AfterRightSet0
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes4
           gosub GetPlayerAnimationStateFunction
@@ -504,6 +565,9 @@ IHLP_DoneFlyingLeftRight
           if PlayerCharacter[temp1] = 31 then let PlayerCharacter[temp1] = 15 : goto DoneJumpInput
           rem Switch MethHound -> Shamone
           
+          rem Robo Tito (13): Hold UP to ascend; auto-latch on ceiling contact
+          if PlayerCharacter[temp1] = 13 then RoboTitoAscendLeft
+          
           rem Check Bernie fall-through (Character 0)
           
           if PlayerCharacter[temp1] = 0 then BernieFallThrough
@@ -526,6 +590,25 @@ HarpyFlap
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
           goto DoneJumpInput
           
+RoboTitoAscendLeft
+          rem Ascend toward ceiling
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerY[temp1] = playerY[temp1] - temp6
+          rem Compute playfield column
+          gosub ConvertPlayerXToPlayfieldColumn
+          rem Compute head row and check ceiling contact
+          let temp2 = playerY[temp1]
+          gosub DivideByPfrowheight bank7
+          if temp2 = 0 then goto RoboTitoLatchLeft
+          let temp3 = temp2 - 1
+          if pfread(temp2, temp3) then RoboTitoLatchLeft
+          rem Clear latch if DOWN pressed
+          if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          goto DoneJumpInput
+RoboTitoLatchLeft
+          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
+          goto DoneJumpInput
 NormalJumpInput
           let temp3 = 1
           rem Process jump input (UP + enhanced buttons)
@@ -557,13 +640,25 @@ ShamoneJumpCheckEnhanced
           rem Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
 
           rem Execute jump if pressed and not already jumping
+          rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
+          if PlayerCharacter[temp1] = 15 then if temp3 then let PlayerCharacter[temp1] = 31 : goto InputDoneLeftPortJump
+          if PlayerCharacter[temp1] = 31 then if temp3 then let PlayerCharacter[temp1] = 15 : goto InputDoneLeftPortJump
           if temp3 = 0 then InputDoneLeftPortJump
+          rem Allow Zoe (3) a single mid-air double-jump
+          if PlayerCharacter[temp1] = 3 then goto LeftZoeEnhancedCheck
           if (PlayerState[temp1] & 4) then InputDoneLeftPortJump
+          goto LeftEnhancedJumpProceed
+LeftZoeEnhancedCheck
+          let temp6 = 0
+          if (PlayerState[temp1] & 4) then temp6 = 1
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then InputDoneLeftPortJump
+LeftEnhancedJumpProceed
           rem Use cached animation state - block jump during attack animations (states 13-15)
           if temp2 >= 13 then InputDoneLeftPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank13
+          if PlayerCharacter[temp1] = 3 then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
           goto InputDoneLeftPortJump
 
 SkipEnhancedJumpCheck
@@ -573,13 +668,22 @@ SkipEnhancedJumpCheck
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as
           if temp3 = 0 then InputDoneLeftPortJump
+          rem Allow Zoe (3) a single mid-air double-jump
+          if PlayerCharacter[temp1] = 3 then goto LeftZoeStdJumpCheck
           if (PlayerState[temp1] & 4) then InputDoneLeftPortJump
+          goto LeftStdJumpProceed
+LeftZoeStdJumpCheck
+          let temp6 = 0
+          if (PlayerState[temp1] & 4) then temp6 = 1
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then InputDoneLeftPortJump
+LeftStdJumpProceed
           rem Use cached animation state - block jump during attack
           rem animations (states 13-15)
           if temp2 >= 13 then InputDoneLeftPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank13
+          if PlayerCharacter[temp1] = 3 then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 InputDoneLeftPortJump
 
           
@@ -637,10 +741,20 @@ InputHandleRightPortPlayerFunction
           rem Standard horizontal movement (no collision check)
           
           if !joy1left then goto IHRP_DoneLeftMovement
-          let playerVelocityX[temp1] = 255
-          rem Apply leftward velocity impulse
-          rem -1 in 8-bit twos complement: 256 - 1 = 255
+          if PlayerCharacter[temp1] = 8 then goto IHRP_LeftMomentum1
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let temp2 = 0
+          let temp2 = temp2 - temp6
+          let playerVelocityX[temp1] = temp2
           let playerVelocityXL[temp1] = 0
+          goto IHRP_AfterLeftSet1
+IHRP_LeftMomentum1
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerVelocityX[temp1] = playerVelocityX[temp1] - temp6
+          let playerVelocityXL[temp1] = 0
+IHRP_AfterLeftSet1
           rem Preserve facing during hurt/recovery states while processing right movement
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes5
@@ -657,9 +771,19 @@ SPF_InlineDone5
 IHRP_DoneLeftMovement
           
           if !joy1right then goto IHRP_DoneRightMovement
-          let playerVelocityX[temp1] = 1
+          if PlayerCharacter[temp1] = 8 then goto IHRP_RightMomentum1
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerVelocityX[temp1] = temp6
           rem Apply rightward velocity impulse
           let playerVelocityXL[temp1] = 0
+          goto IHRP_AfterRightSet1
+IHRP_RightMomentum1
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerVelocityX[temp1] = playerVelocityX[temp1] + temp6
+          let playerVelocityXL[temp1] = 0
+IHRP_AfterRightSet1
           rem Preserve facing during hurt/recovery states (knockback, hitstun)
           rem Inline ShouldPreserveFacing logic
           if (playerState[temp1] & 8) then goto SPF_InlineYes6
@@ -695,6 +819,9 @@ IHRP_DoneFlyingLeftRight
           if PlayerCharacter[temp1] = 31 then let PlayerCharacter[temp1] = 15 : goto DoneJumpInputRight
           rem Switch MethHound -> Shamone
           
+          rem Robo Tito (13): Hold UP to ascend; auto-latch on ceiling contact
+          if PlayerCharacter[temp1] = 13 then RoboTitoAscendRight
+          
           rem Check Bernie fall-through (Character 0)
           
           if PlayerCharacter[temp1] = 0 then BernieFallThroughRight
@@ -717,6 +844,25 @@ HarpyFlapRight
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
           goto DoneJumpInputRight
           
+RoboTitoAscendRight
+          rem Ascend toward ceiling (right port)
+          let temp6 = PlayerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerY[temp1] = playerY[temp1] - temp6
+          rem Compute playfield column
+          gosub ConvertPlayerXToPlayfieldColumn
+          rem Compute head row and check ceiling contact
+          let temp2 = playerY[temp1]
+          gosub DivideByPfrowheight bank7
+          if temp2 = 0 then goto RoboTitoLatchRight
+          let temp3 = temp2 - 1
+          if pfread(temp2, temp3) then RoboTitoLatchRight
+          rem Clear latch if DOWN pressed
+          if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          goto DoneJumpInputRight
+RoboTitoLatchRight
+          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
+          goto DoneJumpInputRight
 NormalJumpInputRight
           let temp3 = 1
           rem Process jump input (UP + enhanced buttons)
@@ -748,13 +894,25 @@ ShamoneJumpCheckEnhancedRight
           rem Check Genesis/Joy2b+ Button C/II for JUMP for any character, identical to UP
 
           rem Execute jump if pressed and not already jumping
+          rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
+          if PlayerCharacter[temp1] = 15 then if temp3 then let PlayerCharacter[temp1] = 31 : goto InputDoneRightPortJump
+          if PlayerCharacter[temp1] = 31 then if temp3 then let PlayerCharacter[temp1] = 15 : goto InputDoneRightPortJump
           if temp3 = 0 then InputDoneRightPortJump
+          rem Allow Zoe (3) a single mid-air double-jump
+          if PlayerCharacter[temp1] = 3 then goto RightZoeEnhancedCheck
           if (PlayerState[temp1] & 4) then InputDoneRightPortJump
+          goto RightEnhancedJumpProceed
+RightZoeEnhancedCheck
+          let temp6 = 0
+          if (PlayerState[temp1] & 4) then temp6 = 1
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then InputDoneRightPortJump
+RightEnhancedJumpProceed
           rem Use cached animation state - block jump during attack animations (states 13-15)
           if temp2 >= 13 then InputDoneRightPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank13
+          if PlayerCharacter[temp1] = 3 then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
           goto InputDoneRightPortJump
 
 SkipEnhancedJumpCheckRight
@@ -766,7 +924,15 @@ SkipEnhancedJumpCheckRight
           rem Handle MethHound jump (character 31 uses same jump as
           rem Shamone)
           if temp3 = 0 then InputDoneRightPortJump
+          rem Allow Zoe (3) a single mid-air double-jump
+          if PlayerCharacter[temp1] = 3 then goto RightZoeStdJumpCheck
           if (PlayerState[temp1] & 4) then InputDoneRightPortJump
+          goto RightStdJumpProceed
+RightZoeStdJumpCheck
+          let temp6 = 0
+          if (PlayerState[temp1] & 4) then temp6 = 1
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then InputDoneRightPortJump
+RightStdJumpProceed
           rem Use cached animation state - block jump during attack
           rem animations (states 13-15)
           if temp2 >= 13 then InputDoneRightPortJump

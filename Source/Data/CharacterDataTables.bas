@@ -21,3 +21,11 @@ end
           data CharacterAOEOffsets
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
+
+          rem Per-character movement speeds (pixels/frame or momentum units)
+          rem Index 0-15: Bernie, Curler, Dragon, Zoe, FatTony, Megax, Harpy, Knight,
+          rem                Frooty, Nefertem, Ninjish, PorkChop, Radish, RoboTito, Ursulo, Shamone
+          data CharacterMovementSpeed
+            1, 1, 2, 2, 1, 1, 2, 1,
+            2, 1, 2, 1, 2, 1, 1, 2
+end

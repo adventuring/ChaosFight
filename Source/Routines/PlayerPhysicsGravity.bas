@@ -191,6 +191,9 @@ GravityRowCalcDone
           rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           rem Clear bit 2 (jumping flag)
           
+          rem Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
+          if temp6 = 3 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
+          
           rem If RoboTito, set stretch permission on landing
           
           if temp6 <> CharacterRoboTito then goto GravityNextPlayer
@@ -247,6 +250,8 @@ GravityBottomCalcLoop
 GravityBottomCalcDone
           let playerY[temp1] = rowYPosition_R - PlayerSpriteHeight
           let playerState[temp1] = playerState[temp1] & NOT 4
+          rem Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
+          if temp6 = 3 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
           
           rem If RoboTito, set stretch permission on landing at bottom
           

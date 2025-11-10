@@ -1,10 +1,7 @@
           rem ChaosFight - Source/Common/AssemblyConfig.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem includesfile must run before any set statements so batariBASIC keeps
-          rem multispritesuperchipheader.asm (which pulls in superchip.h)
-          includesfile multisprite_superchip.inc
-
+          rem Standard multisprite kernel setup
           set kernel multisprite
           set kernel_options pfcolors  ; required for playfield color tables
           set romsize 64kSC

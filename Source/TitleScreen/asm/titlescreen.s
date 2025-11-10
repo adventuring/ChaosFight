@@ -58,10 +58,17 @@ title_playfield
 
 	titlescreenlayout
 
-	jmp PFWAIT ; kernel is done. Finish off the screen
+PFWAIT
+        lda INTIM
+        bne PFWAIT
+        sta WSYNC
 
- include "TitleScreen/asm/position48.s"
- include "TitleScreen/titlescreen_color.s"
+OVERSCAN
+	lda #34+128
+	sta TIM64T
+
+	include "TitleScreen/asm/position48.s"
+	include "TitleScreen/titlescreen_color.s"
 
 	; Unused 48x1 kernels removed - only 48x2_3 is used
 
@@ -97,11 +104,6 @@ bmp_48x2_3_values = bmp_48x2_3_values
 	ifconst mk_gameselect_on
 		include "TitleScreen/asm/gameselect_kernel.s"
 	endif ;mk_gameselect_on
-
-PFWAIT
-        lda INTIM 
-        bne PFWAIT
-        sta WSYNC
 
 OVERSCAN
 	lda #34+128

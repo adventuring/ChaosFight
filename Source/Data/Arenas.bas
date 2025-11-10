@@ -131,7 +131,7 @@ Arena6Playfield
           rem Arena 6: Multi-Platform (multiple small platforms)
           playfield:
           X...............
-          X.XXXXXX........
+          X..XXXXX........
           X...............
           X.....XXXX......
           X...............
@@ -150,8 +150,8 @@ Arena7Playfield
           playfield:
           X......XXXX.....
           X......XXXX.....
-          X...............
-          XXXXXXXX........
+          XXX.............
+          ................
           ................
           XXXXXXXX........
           X...............
@@ -586,11 +586,11 @@ Arena31Playfield
           rem Arena 31: The Final Battle (complex multi-platform)
           playfield:
           XXXXXXXXXXXXXXXX
-          X.XX..XX..XX.XX.X
-          X.XX..XX..XX.XX.X
+          X.XX..XX..XX.XX.
+          X.XX..XX..XX.XX.
           X..............X
-          X.XX..XX..XX.XX.X
-          X.XX..XX..XX.XX.X
+          X.XX..XX..XX.XX.
+          X.XX..XX..XX.XX.
           X..............X
           XXXXXXXXXXXXXXXX
 end
@@ -606,26 +606,12 @@ end
           rem Format: 32 entries (indices 0-31) for Arena0-Arena31
           rem Note: All arenas reference their color tables directly.
 
-          data ArenaColorPointerL
-            <Arena0Colors, <Arena1Colors, <Arena2Colors, <Arena3Colors, <Arena4Colors, <Arena5Colors, <Arena6Colors, <Arena7Colors,
-            <Arena8Colors, <Arena9Colors, <Arena10Colors, <Arena11Colors, <Arena12Colors, <Arena13Colors, <Arena14Colors, <Arena15Colors,
-            <Arena16Colors, <Arena17Colors, <Arena18Colors, <Arena19Colors, <Arena20Colors, <Arena21Colors, <Arena22Colors, <Arena23Colors,
-            <Arena24Colors, <Arena25Colors, <Arena26Colors, <Arena27Colors, <Arena28Colors, <Arena29Colors, <Arena30Colors, <Arena31Colors
-end
-
-          data ArenaColorPointerH
-            >Arena0Colors, >Arena1Colors, >Arena2Colors, >Arena3Colors, >Arena4Colors, >Arena5Colors, >Arena6Colors, >Arena7Colors,
-            >Arena8Colors, >Arena9Colors, >Arena10Colors, >Arena11Colors, >Arena12Colors, >Arena13Colors, >Arena14Colors, >Arena15Colors,
-            >Arena16Colors, >Arena17Colors, >Arena18Colors, >Arena19Colors, >Arena20Colors, >Arena21Colors, >Arena22Colors, >Arena23Colors,
-            >Arena24Colors, >Arena25Colors, >Arena26Colors, >Arena27Colors, >Arena28Colors, >Arena29Colors, >Arena30Colors, >Arena31Colors
-end
 
           rem
           rem Arena Playfield Pointer Tables
           rem Playfield pointer lookup tables for efficient arena
           rem loading
           rem Format: 32 entries (indices 0-31) for Arena0-Arena31
-          rem Note: PF1 and PF2 both point to the same ArenaNPlayfield
 
           data ArenaPF1PointerL
             <Arena0Playfield, <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield,
@@ -640,18 +626,5 @@ end
             >Arena16Playfield, >Arena17Playfield, >Arena18Playfield, >Arena19Playfield, >Arena20Playfield, >Arena21Playfield, >Arena22Playfield, >Arena23Playfield,
             >Arena24Playfield, >Arena25Playfield, >Arena26Playfield, >Arena27Playfield, >Arena28Playfield, >Arena29Playfield, >Arena30Playfield, >Arena31Playfield
 end
-
-          data ArenaPF2PointerL
-            <Arena0Playfield, <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield,
-            <Arena8Playfield, <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield,
-            <Arena16Playfield, <Arena17Playfield, <Arena18Playfield, <Arena19Playfield, <Arena20Playfield, <Arena21Playfield, <Arena22Playfield, <Arena23Playfield,
-            <Arena24Playfield, <Arena25Playfield, <Arena26Playfield, <Arena27Playfield, <Arena28Playfield, <Arena29Playfield, <Arena30Playfield, <Arena31Playfield
-end
-
-          data ArenaPF2PointerH
-            >Arena0Playfield, >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield,
-            >Arena8Playfield, >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield,
-            >Arena16Playfield, >Arena17Playfield, >Arena18Playfield, >Arena19Playfield, >Arena20Playfield, >Arena21Playfield, >Arena22Playfield, >Arena23Playfield,
-            >Arena24Playfield, >Arena25Playfield, >Arena26Playfield, >Arena27Playfield, >Arena28Playfield, >Arena29Playfield, >Arena30Playfield, >Arena31Playfield
-end
+ 
 

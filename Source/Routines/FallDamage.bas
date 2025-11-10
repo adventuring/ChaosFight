@@ -27,7 +27,7 @@ CheckFallDamage
           
           let temp1 = temp5
           rem Get character weight from data table
-          gosub GetCharacterWeight bank12
+          gosub GetCharacterWeight bank7
           rem Character type as index
           let temp6 = temp2 
           rem Store weight
@@ -504,7 +504,7 @@ CalculateFallDistanceNormal
           
           rem Get character weight
           let temp1 = temp5
-          gosub GetCharacterWeight bank12
+          gosub GetCharacterWeight bank7
           rem Character type as index
           let temp6 = temp2 
           rem Store weight

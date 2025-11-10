@@ -21,33 +21,8 @@ end
 #include "Source/Routines/TitleScreenMain.bas"
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/TitleCharacterParade.bas"
-#include "Source/Routines/FontRendering.bas"
 #include "Source/Data/WinnerScreen.bas"
 #include "Source/Data/CharacterThemeSongIndices.bas"
 #include "Source/Data/CharacterDataTables.bas"
 #include "Source/Data/CharacterPhysicsTables.bas"
 #include "Source/Routines/FallDamage.bas"
-
-rem Define missing draw_bmp_48x2_func for titlescreen minikernels
-asm
-draw_bmp_48x2_func
-	; Generic 48x2 bitmap display kernel
-	; This is called by the individual minikernels
-	ldx aux2
-	beq draw_bmp_48x2_func_done
-
-draw_bmp_48x2_func_loop
-	lda (aux5),y
-	sta wsync
-	sta GRP0
-	lda (aux4),y
-	sta COLUP0
-	lda (aux3),y
-	sta COLUP1
-	dey
-	dex
-	bne draw_bmp_48x2_func_loop
-
-draw_bmp_48x2_func_done
-	rts
-end

@@ -127,8 +127,8 @@ HCSF_HandleRandom
           rem Random selection initiated - will be handled by
           rem CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
-          if temp4 then randomSelectFlags_W[temp1] = $80 : goto UnusedSkip3
-          randomSelectFlags_W[temp1] = 0
+          if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto UnusedSkip3
+          let randomSelectFlags_W[temp1] = 0
 UnusedSkip3
           let temp1 = SoundMenuSelect
           rem Play selection sound

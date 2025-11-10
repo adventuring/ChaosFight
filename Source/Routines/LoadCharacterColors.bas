@@ -4,13 +4,13 @@
 
 LoadCharacterColors
           asm
-; Load character color based on TV standard and hurt state
-; Input: temp1=char, temp2=hurt, temp3=player
-; Output: Sets COLUP0-3 based on TV standard (char colors on NTSC/PAL, player colors on SECAM)
-; WARNING: temp6 is mutated during execution. Do not use temp6 after calling this subroutine.
+; Load character color based on hurt state
+; Input: temp2=hurt state (0-1), temp3=player number (0-3)
+; Output: Sets COLUP0-3 based on hurt state (dimmed colors when hurt)
+; TODO: Implement full TV standard support, flashing states, character-specific colors
 end
 
-          ; Determine color based on hurt state
+          rem Determine color based on hurt state
           if temp2 = 0 then temp6 = PlayerColors12[temp3] : goto SetColorLabel
           temp6 = PlayerColors6[temp3]
 

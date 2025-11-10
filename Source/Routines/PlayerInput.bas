@@ -45,69 +45,6 @@ GetPlayerAnimationStateFunction
           rem   (0-15)
           return
 
-ShouldPreserveFacing
-          rem
-          rem Check If Facing Should Be Preserved
-          rem Returns 1 if facing should be preserved (during
-          rem   hurt/recovery states),
-          rem 0 if facing can be updated normally.
-          rem Preserves facing during: recovery/hitstun (bit 3) OR hurt
-          rem   animation states (5-9)
-          rem
-          rem INPUT: temp1 = player index (0-3)
-          rem
-          rem OUTPUT: temp3 = 1 if facing should be preserved, 0 if can
-          rem   update
-          rem
-          rem Uses temp2 to check recovery/hurt states.
-          rem Input: temp1 = player index (0-3), playerState[]
-          rem Output: temp3 = 1 if facing locked, 0 otherwise
-          rem Mutates: temp2, temp3
-          rem Calls: GetPlayerAnimationStateFunction
-          rem
-          rem Constraints: Must be colocated with SPF_PreserveYes,
-          rem SPF_PreserveNo (called via goto)
-          rem Check recovery/hitstun flag (bit 3)
-          if (playerState[temp1] & 8) then SPF_PreserveYes
-          rem Bit 3 set = in recovery, preserve facing
-          
-          rem Check animation state for hurt states (5-9)
-          rem ActionHit=5, ActionFallBack=6, ActionFallDown=7,
-          gosub GetPlayerAnimationStateFunction
-          rem ActionFallen=8, ActionRecovering=9
-          if temp2 < 5 then SPF_PreserveNo
-          rem Animation state < 5, allow facing update
-          if temp2 > 9 then SPF_PreserveNo
-          rem Animation state > 9, allow facing update
-          
-SPF_PreserveYes
-          rem In hurt/recovery state, preserve facing
-          rem
-          rem Input: None (called from ShouldPreserveFacing)
-          rem
-          rem Output: temp3 set to 1
-          rem
-          rem Mutates: temp3 (set to 1)
-          rem
-          rem Called Routines: None
-          rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveNo
-          let temp3 = 1
-          return
-          
-SPF_PreserveNo
-          rem Not in hurt/recovery state, allow facing update
-          rem
-          rem Input: None (called from ShouldPreserveFacing)
-          rem
-          rem Output: temp3 set to 0
-          rem
-          rem Mutates: temp3 (set to 0)
-          rem
-          rem Called Routines: None
-          rem Constraints: Must be colocated with ShouldPreserveFacing, SPF_PreserveYes
-          let temp3 = 0
-          return
-
 InputHandleAllPlayers
           rem Main input handler for all players
           rem Main input handler for all players with Quadtari
@@ -372,7 +309,12 @@ HandleFlyingCharacterMovement
           rem Uses: joy0left/joy0right for players 0,2;
           rem joy1left/joy1right
           rem for players 1,3
-          goto HFCM_Start
+          rem Determine which joy port to use based on player index
+          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
+          if temp1 & 2 = 0 then HFCM_UseJoy0
+          rem Players 1,3 use joy1
+          if joy1left then HFCM_CheckLeftCollision
+          goto HFCM_CheckRightMovement
 HFCM_UseJoy0
           rem Players 0,2 use joy0
           if joy0left then HFCM_CheckLeftCollision
@@ -413,7 +355,17 @@ HFCM_MoveLeftOK
           rem Apply leftward velocity impulse (double-width sprite: 16px width)
           let playerVelocityXL[temp1] = 0
           rem Preserve facing during hurt/recovery states (knockback, hitstun)
-          gosub ShouldPreserveFacing
+          rem Inline ShouldPreserveFacing logic
+          if (playerState[temp1] & 8) then goto SPF_InlineYes1
+          gosub GetPlayerAnimationStateFunction
+          if temp2 < 5 then goto SPF_InlineNo1
+          if temp2 > 9 then goto SPF_InlineNo1
+SPF_InlineYes1
+          let temp3 = 1
+          goto SPF_InlineDone1
+SPF_InlineNo1
+          let temp3 = 0
+SPF_InlineDone1
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
 HFCM_CheckRightMovement
           rem Determine which joy port to use for right movement
@@ -462,18 +414,19 @@ HFCM_MoveRightOK
           rem Apply rightward velocity impulse
           let playerVelocityXL[temp1] = 0
           rem Preserve facing during hurt/recovery states while processing right movement
-          gosub ShouldPreserveFacing
+          rem Inline ShouldPreserveFacing logic
+          if (playerState[temp1] & 8) then goto SPF_InlineYes2
+          gosub GetPlayerAnimationStateFunction
+          if temp2 < 5 then goto SPF_InlineNo2
+          if temp2 > 9 then goto SPF_InlineNo2
+SPF_InlineYes2
+          let temp3 = 1
+          goto SPF_InlineDone2
+SPF_InlineNo2
+          let temp3 = 0
+SPF_InlineDone2
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
           return
-
-HFCM_Start
-          rem Determine which joy port to use based on player index
-          rem Players 0,2 use joy0 (left port); Players 1,3 use joy1 (right port)
-          if temp1 = 0 then HFCM_UseJoy0
-          if temp1 = 2 then HFCM_UseJoy0
-          rem Players 1,3 use joy1
-          if joy1left then HFCM_CheckLeftCollision
-          goto HFCM_CheckRightMovement
 
 InputHandleLeftPortPlayerFunction
           rem
@@ -503,14 +456,34 @@ InputHandleLeftPortPlayerFunction
           if !joy0left then goto IHLP_DoneLeftMovement
           let playerVelocityX[temp1] = 255
           let playerVelocityXL[temp1] = 0
-          gosub ShouldPreserveFacing
+          rem Inline ShouldPreserveFacing logic
+          if (playerState[temp1] & 8) then goto SPF_InlineYes3
+          gosub GetPlayerAnimationStateFunction
+          if temp2 < 5 then goto SPF_InlineNo3
+          if temp2 > 9 then goto SPF_InlineNo3
+SPF_InlineYes3
+          let temp3 = 1
+          goto SPF_InlineDone3
+SPF_InlineNo3
+          let temp3 = 0
+SPF_InlineDone3
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
 IHLP_DoneLeftMovement
           rem Right movement: set positive velocity
           if !joy0right then goto IHLP_DoneRightMovement
           let playerVelocityX[temp1] = 1
           let playerVelocityXL[temp1] = 0
-          gosub ShouldPreserveFacing
+          rem Inline ShouldPreserveFacing logic
+          if (playerState[temp1] & 8) then goto SPF_InlineYes4
+          gosub GetPlayerAnimationStateFunction
+          if temp2 < 5 then goto SPF_InlineNo4
+          if temp2 > 9 then goto SPF_InlineNo4
+SPF_InlineYes4
+          let temp3 = 1
+          goto SPF_InlineDone4
+SPF_InlineNo4
+          let temp3 = 0
+SPF_InlineDone4
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
 IHLP_DoneRightMovement
           goto IHLP_DoneFlyingLeftRight
@@ -577,7 +550,23 @@ DoneUpInputHandling
           if PlayerCharacter[temp1] = 0 then goto ShamoneJumpCheckEnhanced
           if PlayerCharacter[temp1] = 6 then goto ShamoneJumpCheckEnhanced
           rem Bernie and Harpy also use enhanced buttons for jump
-          
+
+          goto SkipEnhancedJumpCheck
+ShamoneJumpCheckEnhanced
+          gosub CheckEnhancedJumpButton
+          rem Check Genesis/Joy2b+ Button C/II for alternative UP for any characters
+
+          rem Execute jump if pressed and not already jumping
+          if temp3 = 0 then InputDoneLeftPortJump
+          if (PlayerState[temp1] & 4) then InputDoneLeftPortJump
+          rem Use cached animation state - block jump during attack animations (states 13-15)
+          if temp2 >= 13 then InputDoneLeftPortJump
+          let temp4 = PlayerCharacter[temp1]
+          rem Block jump during attack windup/execute/recovery
+          gosub DispatchCharacterJump bank14
+          goto InputDoneLeftPortJump
+
+SkipEnhancedJumpCheck
           gosub CheckEnhancedJumpButton
           rem Check Genesis/Joy2b+ Button C/II
 
@@ -653,7 +642,17 @@ InputHandleRightPortPlayerFunction
           rem -1 in 8-bit twos complement: 256 - 1 = 255
           let playerVelocityXL[temp1] = 0
           rem Preserve facing during hurt/recovery states while processing right movement
-          gosub ShouldPreserveFacing
+          rem Inline ShouldPreserveFacing logic
+          if (playerState[temp1] & 8) then goto SPF_InlineYes5
+          gosub GetPlayerAnimationStateFunction
+          if temp2 < 5 then goto SPF_InlineNo5
+          if temp2 > 9 then goto SPF_InlineNo5
+SPF_InlineYes5
+          let temp3 = 1
+          goto SPF_InlineDone5
+SPF_InlineNo5
+          let temp3 = 0
+SPF_InlineDone5
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
 IHRP_DoneLeftMovement
           
@@ -662,7 +661,17 @@ IHRP_DoneLeftMovement
           rem Apply rightward velocity impulse
           let playerVelocityXL[temp1] = 0
           rem Preserve facing during hurt/recovery states (knockback, hitstun)
-          gosub ShouldPreserveFacing
+          rem Inline ShouldPreserveFacing logic
+          if (playerState[temp1] & 8) then goto SPF_InlineYes6
+          gosub GetPlayerAnimationStateFunction
+          if temp2 < 5 then goto SPF_InlineNo6
+          if temp2 > 9 then goto SPF_InlineNo6
+SPF_InlineYes6
+          let temp3 = 1
+          goto SPF_InlineDone6
+SPF_InlineNo6
+          let temp3 = 0
+SPF_InlineDone6
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
 IHRP_DoneRightMovement
           goto IHRP_DoneFlyingLeftRight
@@ -732,7 +741,23 @@ DoneUpInputHandlingRight
           if PlayerCharacter[temp1] = 0 then goto ShamoneJumpCheckEnhancedRight
           if PlayerCharacter[temp1] = 6 then goto ShamoneJumpCheckEnhancedRight
           rem Bernie and Harpy also use enhanced buttons for jump
-          
+
+          goto SkipEnhancedJumpCheckRight
+ShamoneJumpCheckEnhancedRight
+          gosub CheckEnhancedJumpButton
+          rem Check Genesis/Joy2b+ Button C/II for JUMP for any character, identical to UP
+
+          rem Execute jump if pressed and not already jumping
+          if temp3 = 0 then InputDoneRightPortJump
+          if (PlayerState[temp1] & 4) then InputDoneRightPortJump
+          rem Use cached animation state - block jump during attack animations (states 13-15)
+          if temp2 >= 13 then InputDoneRightPortJump
+          let temp4 = PlayerCharacter[temp1]
+          rem Block jump during attack windup/execute/recovery
+          gosub DispatchCharacterJump bank14
+          goto InputDoneRightPortJump
+
+SkipEnhancedJumpCheckRight
           gosub CheckEnhancedJumpButton
           rem Check Genesis/Joy2b+ Button C/II
           rem temp3 already set by CheckEnhancedJumpButton

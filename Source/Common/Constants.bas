@@ -173,7 +173,9 @@
           rem ActionFalling (11) << 4 = 176 (0xB0)
           
           const HighBit = $80
+          const TRUE = $80
           rem High bit constants for input testing
+          rem Boolean TRUE value (high bit set)
           const PaddleLeftButton = 0
           rem Bit 7: high bit for testing input states
           const PaddleRightButton = 2

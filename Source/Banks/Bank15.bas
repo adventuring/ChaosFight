@@ -151,11 +151,6 @@
           rem   bank-local symbols)
 #include "Source/Routines/MusicBankHelpers15.bas"
 
-rem Font data and rendering (moved from Bank16 to save space for arenas)
-#include "Source/Generated/Numbers.bas"
-#include "Source/Routines/FontRendering.bas"
-#include "Source/Routines/SetPlayerGlyphFromFont.bas"
-
 
 
 

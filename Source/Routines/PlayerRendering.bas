@@ -504,7 +504,7 @@ end
           rem Set Player 2 color and sprite
           rem Use LoadCharacterColors for consistent color handling
           rem   across TV modes
-          rem NOTE: Multisprite kernel requires _COLUP1 (with
+          rem NOTE: Multi-sprite kernel requires _COLUP1 (with
           let temp1 = playerCharacter[1]
           rem   underscore) for Player 2 virtual sprite
           let temp2 = 0
@@ -522,7 +522,7 @@ end
 Player2ColorDone
 
           rem Set sprite reflection based on facing direction
-          rem NOTE: Multisprite kernel requires _NUSIZ1 (not NewNUSIZ+1)
+          rem NOTE: Multi-sprite kernel requires _NUSIZ1 (not NewNUSIZ+1)
           rem   for Player 2 virtual sprite
           rem NUSIZ reflection uses bit 6 - preserve other bits (size,
           rem   etc.)

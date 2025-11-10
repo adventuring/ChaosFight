@@ -25,6 +25,3 @@
 #include "Source/Routines/AnimationSystem.bas"
 #include "Source/Data/PlayerColorTables.bas"
 
-rem Arena data for arenas 24-31
-#include "Source/Data/Arenas24-31.bas"
-

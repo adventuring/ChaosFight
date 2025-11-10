@@ -127,21 +127,29 @@ NudgeHorizontalDone
 NudgeRight
           rem Check if nudging right avoids collision
           rem Input: temp1 = player, originalPlayerX_W = original X, originalPlayerY_W = original Y
-          rem Output: playerX adjusted if no collision detected
+          rem Output: playerX adjusted if collision detected
           let playerX[temp1] = originalPlayerX_W + 1
-          rem Basic collision check - revert if we hit a wall
-          rem For now, just allow the nudge (no collision detection)
+          if collision(playerX[temp1], originalPlayerY_W) then let playerX[temp1] = originalPlayerX_W
           return
 
 NudgeLeft
           rem Check if nudging left avoids collision
           rem Input: temp1 = player, originalPlayerX_W = original X, originalPlayerY_W = original Y
-          rem Output: playerX adjusted if no collision detected
+          rem Output: playerX adjusted if collision detected
           let playerX[temp1] = originalPlayerX_W - 1
-          rem Basic collision check - revert if we hit a wall
-          rem For now, just allow the nudge (no collision detection)
+          if collision(playerX[temp1], originalPlayerY_W) then let playerX[temp1] = originalPlayerX_W
           return
 
 NudgeVertical
-          rem Vertical nudging (placeholder for future use - not implemented)
+          rem Vertical nudging (placeholder for future use)
+          gosub NudgeDown
+          gosub NudgeUp
+          return
+
+NudgeDown
+          rem Check downward nudge (placeholder)
+          return
+
+NudgeUp  
+          rem Check upward nudge (placeholder)
           return

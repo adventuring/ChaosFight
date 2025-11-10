@@ -12,5 +12,5 @@ end
           if temp4 = 0 then temp1 = GlyphQuestionMark
           if temp4 = 1 then temp1 = GlyphCPU
           if temp4 = 2 then temp1 = GlyphNo
-          gosub SetPlayerGlyphFromFont bank15
+          gosub SetPlayerGlyphFromFont bank16
           return

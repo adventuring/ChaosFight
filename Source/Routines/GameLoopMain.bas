@@ -97,8 +97,8 @@ GameMainLoop
           rem Check if game is paused - skip movement/physics/animation if so
           if systemFlags & SystemFlagGameStatePaused then goto GameMainLoopPaused
 
-          gosub InputHandleAllPlayers bank13 :
-          rem Handle all player input (with Quadtari multiplexing) (in Bank 13)
+          gosub InputHandleAllPlayers bank5 :
+          rem Handle all player input (with Quadtari multiplexing) (in Bank 5)
 
           gosub UpdateGuardTimers bank13
           rem Update guard timers (duration and cooldown)

@@ -24,4 +24,5 @@
 #include "Source/Routines/PublisherPrelude.bas"
 #include "Source/Routines/BeginAuthorPrelude.bas"
 #include "Source/Routines/AuthorPrelude.bas"
+#include "Source/Routines/MovePlayerToTarget.bas"
 

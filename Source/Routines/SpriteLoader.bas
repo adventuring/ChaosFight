@@ -292,98 +292,11 @@ LoadCPUSprite
           let temp4 = 1  ; CPU sprite type
           goto CopySpecialSpriteToPlayer
 LoadNoSprite
-          asm
-; Set pointer to NoSprite data
-;
-; Input: temp3 = player number (0-3)
-;
-; Output: Dispatches to player-specific loader
-;
-; Mutates: None (dispatcher only)
-;
-; Called Routines: None (dispatcher only)
-          end
-          asm
-;
-; Constraints: Must be colocated with LoadNoSpriteP0-P3
-          end
-          if !temp3 then LoadNoSpriteP0
-          asm
-; Use skip-over pattern to avoid complex compound statements
-          end
-          if temp3 = 1 then LoadNoSpriteP1
-          if temp3 = 2 then LoadNoSpriteP2
-          goto LoadNoSpriteP3
-          
-LoadNoSpriteP0
-          asm
-          ; rem Copy NoSprite data from ROM to RAM buffer
-          ; rem
-          ; rem Input: temp3 = player number (0, read but not used in this
-          ; rem function)
-          ; rem        NoSprite (ROM data) = source sprite data
-          ; rem
-          ; rem Output: PlayerFrameBuffer_W[0-15] (SCRAM) = sprite data copied
-          ; rem         player0height = 16
-          ; rem
-          ; rem Mutates: PlayerFrameBuffer_W[0-15] (SCRAM write port), player0height
-          ; rem
-          ; rem Called Routines: None (uses inline assembly)
-          ; rem
-          ; rem Constraints: Must be colocated with LoadNoSprite
-          ; rem              Depends on NoSprite ROM data
-          ; rem Copy NoSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[0-15])
-          ; rem Pointers already initialized to RAM addresses by
-          ; rem InitializeSpritePointers
-            ldy #15
-.CopyLoop:
-            lda NoSprite,y
-            sta PlayerFrameBuffer_W,y
-            dey
-            bpl .CopyLoop
-end
-          player0height = 16
-          return
-          
-LoadNoSpriteP1
-          rem Copy NoSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[16-31])
-          asm
-            ldy #15
-.CopyLoop:
-            lda NoSprite,y
-            sta PlayerFrameBuffer_W+16,y
-            dey
-            bpl .CopyLoop
-end
-          player1height = 16
-          return
-          
-LoadNoSpriteP2
-          rem Copy NoSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[32-47])
-          asm
-            ldy #15
-.CopyLoop:
-            lda NoSprite,y
-            sta PlayerFrameBuffer_W+32,y
-            dey
-            bpl .CopyLoop
-end
-          player2height = 16
-          return
-          
-LoadNoSpriteP3
-          rem Copy NoSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[48-63])
-          asm
-            ldy #15
-.CopyLoop:
-            lda NoSprite,y
-            sta PlayerFrameBuffer_W+48,y
-            dey
-            bpl .CopyLoop
-end
-          player3height = 16
-          return
-
+          rem Load No sprite for any player
+          rem Input: temp3 = player number (1-3, validated)
+          rem Output: Sprite loaded and height set
+          let temp4 = 2  ; No sprite type
+          goto CopySpecialSpriteToPlayer
 LoadPlayerSprite
           asm
 ;

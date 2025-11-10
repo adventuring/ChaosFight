@@ -8,7 +8,7 @@ title_eat_overscan
 	clc
 	lda INTIM
 	bmi title_eat_overscan
-	jmp title_do_vertical_sync
+	; fall through to title_do_vertical_sync
 
 title_do_vertical_sync
 	lda #2

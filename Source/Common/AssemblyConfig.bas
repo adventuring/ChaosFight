@@ -7,7 +7,7 @@
 
           rem Force multisprite=2 for drawscreen bank switching (includesfile bypasses set kernel)
           const multisprite = 2
-          rem set kernel_options playercolors player1colors pfcolors  ; conflicts with includesfile
+          set kernel_options pfcolors  ; required for playfield color tables
           set romsize 64kSC
           set optimization size
           set optimization noinlinedata

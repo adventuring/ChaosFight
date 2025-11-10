@@ -28,15 +28,15 @@ end
           asm
 ; Check if character is special placeholder
 end
-          if currentCharacter = NoCharacter then temp6 = SpriteNo : goto LoadSpecialSprite
+          if currentCharacter = NoCharacter then temp6 = SpriteNo : gosub LoadSpecialSprite : return
 
-          if currentCharacter = 254 then temp6 = SpriteCPU : goto LoadSpecialSprite
+          if currentCharacter = 254 then temp6 = SpriteCPU : gosub LoadSpecialSprite : return
           asm
 ; tail call
 ; CPUCharacter = 254
 end
 
-          if currentCharacter = RandomCharacter then temp6 = SpriteQuestionMark : goto LoadSpecialSprite
+          if currentCharacter = RandomCharacter then temp6 = SpriteQuestionMark : gosub LoadSpecialSprite : return
           rem  Use character art location system for sprite loading
           asm
 ;

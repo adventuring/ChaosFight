@@ -8,7 +8,6 @@
 
           rem First — data. Must come first. Cannot be moved.
 #include "Source/Data/Arenas.bas"
-#include "Source/Generated/Numbers.bas"
 #include "Source/Data/PlayerColors.bas"
 #include "Source/Routines/ArenaLoader.bas"
 #include "Source/Routines/LoadArenaByIndex.bas"
@@ -17,6 +16,4 @@
 #include "Source/Routines/CopyGlyphToPlayer.bas"
 #include "Source/Routines/MovePlayerToTarget.bas"
 #include "Source/Routines/LoadCharacterColors.bas"
-#include "Source/Routines/SetPlayerGlyphFromFont.bas"
-#include "Source/Routines/FontRendering.bas"
 

@@ -11,7 +11,8 @@ LoadCharacterColors
 end
 
           ; Determine color based on hurt state
-          if temp2 = 0 then temp6 = PlayerColors12[temp3] else temp6 = PlayerColors6[temp3]
+          if temp2 = 0 then temp6 = PlayerColors12[temp3] : goto SetColorLabel
+          temp6 = PlayerColors6[temp3]
 
 SetColorLabel
           ; Set the appropriate color register

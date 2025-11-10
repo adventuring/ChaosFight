@@ -153,23 +153,14 @@ end
           asm
 ; Set currentCharacter from playerCharacter[currentPlayer]
 end
-          goto LoadPlayerSpriteDispatch
-          
-LoadPlayerSpriteDispatch
-          asm
-; Load player sprite via bank10 art system
-; Input: currentCharacter, temp2=frame, temp3=action, temp4=player
-; Output: Sprite loaded via LocateCharacterArt (bank10)
-end
-          asm
-; Call character art location system (in bank14)
-; LocateCharacterArt expects: temp1=char, temp2=frame,
-;   temp3=action, temp4=player
-; Set temp1 from currentCharacter (already set from
-; playerCharacter[currentPlayer])
-end
+          rem Inline dispatch to save size (same-bank)
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank10
+          return
+          
+LoadPlayerSpriteDispatch
+          rem removed (was a small shim); callers now use inline block above
+          rem (label kept only if referenced by generated code)
           return
 
 LoadCharacterColors

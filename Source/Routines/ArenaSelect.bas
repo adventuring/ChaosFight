@@ -149,9 +149,10 @@ end
           goto DoneTensDigit
 DrawTensDigit
           let temp1 = temp2
-          let temp2 = 80
-          let temp3 = 20
-          let temp4 = ColGrey(14)
+          rem Set P4 fixed position and color (arena digits)
+          player4x = 80
+          player4y = 20
+          let COLUP4 = ColGrey(14)
           let temp5 = 4
           rem Use player4 for tens digit
           gosub DrawDigit bank16
@@ -159,7 +160,10 @@ DoneTensDigit
           
           let temp1 = temp4
           rem Draw ones digit (player5)
-          let temp2 = 88
+          rem Set P5 fixed position and color (arena digits)
+          player5x = 88
+          player5y = 20
+          let COLUP5 = ColGrey(14)
           let temp5 = 5
           rem Use player5 for ones digit
           gosub DrawDigit bank16
@@ -171,21 +175,20 @@ DisplayRandomArena
           rem Use player4 and player5 for two question marks
           let temp1 = 10
           rem Question mark is digit 10 (hex A) in font
-          let temp2 = 80
-          rem Question mark digit
-          let temp3 = 20
-          rem X position for first ?
-          let temp4 = ColGrey(14)
-          rem Y position
+          rem First question mark: set P4 fixed position/color
+          player4x = 80
+          player4y = 20
+          let COLUP4 = ColGrey(14)
           let temp5 = 4
           rem White
           rem Use player4
           gosub DrawDigit bank16
           
-          let temp2 = 88
-          rem Second question mark
+          rem Second question mark: set P5 fixed position/color
+          player5x = 88
+          player5y = 20
+          let COLUP5 = ColGrey(14)
           let temp5 = 5
-          rem X position for second ?
           rem Use player5
           gosub DrawDigit bank16
           

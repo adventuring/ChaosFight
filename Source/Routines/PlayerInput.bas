@@ -309,23 +309,6 @@ GotoNinjishGuyAttack
 
 GotoPorkChopAttack
           goto PorkChopAttack bank10
-          goto CEJB_Done
-CEJB_CheckPlayer2Joy2bPlus
-          rem Player 2: Check Joy2b+ controller
-          if !(ControllerStatus & $08) then CEJB_Done
-          if !(INPT2 & $80) then temp3 = 1
-          goto CEJB_Done
-CEJB_CheckPlayer4
-          rem Player 4: Check Genesis controller
-          if !RightPortGenesis then CEJB_CheckPlayer4Joy2bPlus
-          if !INPT2{7} then temp3 = 1
-          goto CEJB_Done
-CEJB_CheckPlayer4Joy2bPlus
-          rem Player 4: Check Joy2b+ controller
-          if !RightPortJoy2bPlus then CEJB_Done
-          if !INPT2{7} then temp3 = 1
-CEJB_Done
-          return
 
 HandleGuardInput
           rem

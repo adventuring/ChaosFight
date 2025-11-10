@@ -148,6 +148,88 @@ ValidateCharacterDoneInline
           gosub LocateCharacterArt bank10
           return
 
+CopySpecialSpriteToPlayer
+          rem Generic function to copy special sprite data to player buffer
+          rem Input: temp3 = player number (0-3)
+          rem        temp4 = sprite type (0=QuestionMark, 1=CPU, 2=No)
+          rem Output: Sprite data copied to appropriate player buffer
+          rem         Player height set to 16
+
+          rem Calculate buffer offset: player * 16
+          temp5 = temp3 * 16
+
+          if temp4 = 0 then goto CopyQuestionMark
+          if temp4 = 1 then goto CopyCPU
+          goto CopyNo
+
+CopyQuestionMark
+          asm
+            ldy #15
+.CopyQuestionLoop:
+            lda QuestionMarkSprite,y
+            sta PlayerFrameBuffer_W,y
+            dey
+            bpl .CopyQuestionLoop
+          end
+          goto SetPlayerHeight
+
+CopyCPU
+          asm
+            ldy #15
+.CopyCPULoop:
+            lda CPUSprite,y
+            sta PlayerFrameBuffer_W,y
+            dey
+            bpl .CopyCPULoop
+          end
+          goto SetPlayerHeight
+
+CopyNo
+          rem will never be player 1
+          if temp3 = 1 then goto CopyNoP1
+          if temp3 = 2 then goto CopyNoP2
+          goto CopyNoP3
+
+CopyNoP1
+          asm
+            ldy #15
+.CopyNoP1Loop:
+            lda NoSprite,y
+            sta PlayerFrameBuffer_W+16,y
+            dey
+            bpl .CopyNoP1Loop
+          end
+          goto SetPlayerHeight
+
+CopyNoP2
+          asm
+            ldy #15
+.CopyNoP2Loop:
+            lda NoSprite,y
+            sta PlayerFrameBuffer_W+32,y
+            dey
+            bpl .CopyNoP2Loop
+          end
+          goto SetPlayerHeight
+
+CopyNoP3
+          asm
+            ldy #15
+.CopyNoP3Loop:
+            lda NoSprite,y
+            sta PlayerFrameBuffer_W+48,y
+            dey
+            bpl .CopyNoP3Loop
+          end
+          goto SetPlayerHeight
+
+SetPlayerHeight
+          if temp3 = 0 then player0height = 16
+          if temp3 = 1 then player1height = 16
+          if temp3 = 2 then player2height = 16
+          if temp3 = 3 then player3height = 16
+          return
+
 LoadSpecialSprite
           asm
 ;
@@ -177,208 +259,38 @@ LoadSpecialSprite
 ; (called from it)
 ;              Must be in same file as QuestionMark/CPU/No
 ;              sprite loaders
+;              Player/sprite restrictions:
+;              - QuestionMark: players 0-3
+;              - CPU: player 2 only
+;              - No: players 1-3 only (not player 0)
 ; Depends on QuestionMarkSprite, CPUSprite, NoSprite data
           end
-          if !temp6 then goto LoadQuestionMarkSprite
-          asm
-; Set sprite pointer based on sprite index
-          end
-          if temp6 = 1 then LoadCPUSprite
-          if temp6 = 2 then goto LoadNoSprite
-          goto LoadQuestionMarkSprite
-          asm
-; Invalid sprite index, default to question mark
-          end
+
+          rem Validate sprite/player combination
+          if temp6 = 1 then goto ValidateCPU  ; CPU sprite
+          if temp6 = 2 then goto ValidateNo   ; No sprite
+          goto LoadQuestionMarkSprite        ; QuestionMark sprite (no restrictions)
+
+ValidateCPU
+          if temp3 = 2 then goto LoadCPUSprite
+          goto LoadQuestionMarkSprite  ; Invalid combination, default to ?
+
+ValidateNo
+          if temp3 >= 1 && temp3 <= 3 then goto LoadNoSprite
+          goto LoadQuestionMarkSprite  ; Invalid combination, default to ?
           
 LoadQuestionMarkSprite
-          asm
-; Set pointer to QuestionMarkSprite data
-;
-; Input: temp3 = player number (0-3)
-;
-; Output: Dispatches to player-specific loader
-;
-; Mutates: None (dispatcher only)
-;
-; Called Routines: None (dispatcher only)
-;
-; Constraints: Must be colocated with
-; LoadQuestionMarkSpriteP0-P3
-          end
-          if !temp3 then LoadQuestionMarkSpriteP0
-          asm
-; Use skip-over pattern to avoid complex compound statements
-          end
-          if temp3 = 1 then LoadQuestionMarkSpriteP1
-          if temp3 = 2 then LoadQuestionMarkSpriteP2
-          goto LoadQuestionMarkSpriteP3
-          
-LoadQuestionMarkSpriteP0
-          asm
-          ; Copy QuestionMarkSprite data from ROM to RAM buffer
-          ;
-          ; Input: temp3 = player number (0, read but not used in this
-          ; function)
-          ;        QuestionMarkSprite (ROM data) = source sprite data
-          ;
-          ; Output: PlayerFrameBuffer_W[0-15] (SCRAM) = sprite data copied
-          ;         player0height = 16
-          ;
-          ; Mutates: PlayerFrameBuffer_W[0-15] (SCRAM write port), player0height
-          ;
-          ; Called Routines: None (uses inline assembly)
-          ;
-          ; Constraints: Must be colocated with LoadQuestionMarkSprite
-          ;              Depends on QuestionMarkSprite ROM data
-          ;              Depends on InitializeSpritePointers setting
-          ;              pointers
-          ; Copy QuestionMarkSprite data from ROM to RAM buffer
-          ; (PlayerFrameBuffer_W[0-15])
-          ; Pointers already initialized to RAM addresses by
-          ; InitializeSpritePointers
-            ldy #15
-.CopyLoop:
-            lda QuestionMarkSprite,y
-            sta PlayerFrameBuffer_W,y
-            dey
-            bpl .CopyLoop
-end
-          player0height = 16
-          return
-          
-LoadQuestionMarkSpriteP1
-          asm
-; Copy QuestionMarkSprite data from ROM to RAM buffer
-; (PlayerFrameBuffer_W[16-31])
-            ldy #15
-.CopyLoop:
-            lda QuestionMarkSprite,y
-            sta PlayerFrameBuffer_W+16,y
-            dey
-            bpl .CopyLoop
-end
-          player1height = 16
-          return
-          
-LoadQuestionMarkSpriteP2
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem (PlayerFrameBuffer_W[32-47])
-          asm
-            ldy #15
-.CopyLoop:
-            lda QuestionMarkSprite,y
-            sta PlayerFrameBuffer_W+32,y
-            dey
-            bpl .CopyLoop
-end
-          player2height = 16
-          return
-          
-LoadQuestionMarkSpriteP3
-          rem Copy QuestionMarkSprite data from ROM to RAM buffer
-          rem (PlayerFrameBuffer_W[48-63])
-          asm
-            ldy #15
-.CopyLoop:
-            lda QuestionMarkSprite,y
-            sta PlayerFrameBuffer_W+48,y
-            dey
-            bpl .CopyLoop
-end
-          player3height = 16
-          return
-          
+          rem Load QuestionMark sprite for any player
+          rem Input: temp3 = player number (0-3)
+          rem Output: Sprite loaded and height set
+          let temp4 = 0  ; QuestionMark sprite type
+          goto CopySpecialSpriteToPlayer
 LoadCPUSprite
-          asm
-; Set pointer to CPUSprite data
-;
-; Input: temp3 = player number (0-3)
-;
-; Output: Dispatches to player-specific loader
-;
-; Mutates: None (dispatcher only)
-;
-; Called Routines: None (dispatcher only)
-;
-; Constraints: Must be colocated with LoadCPUSpriteP0-P3
-          end
-          if !temp3 then LoadCPUSpriteP0
-          asm
-; Use skip-over pattern to avoid complex compound statements
-          end
-          if temp3 = 1 then LoadCPUSpriteP1
-          if temp3 = 2 then LoadCPUSpriteP2
-          goto LoadCPUSpriteP3
-          
-LoadCPUSpriteP0
-          asm
-          ; rem Copy CPUSprite data from ROM to RAM buffer
-          ; rem
-          ; rem Input: temp3 = player number (0, read but not used in this
-          ; rem function)
-          ; rem        CPUSprite (ROM data) = source sprite data
-          ; rem
-          ; rem Output: PlayerFrameBuffer_W[0-15] (SCRAM) = sprite data copied
-          ; rem         player0height = 16
-          ; rem
-          ; rem Mutates: PlayerFrameBuffer_W[0-15] (SCRAM write port), player0height
-          ; rem
-          ; rem Called Routines: None (uses inline assembly)
-          ; rem
-          ; rem Constraints: Must be colocated with LoadCPUSprite
-          ; rem              Depends on CPUSprite ROM data
-          ; rem Copy CPUSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[0-15])
-          ; rem Pointers already initialized to RAM addresses by
-          ; rem InitializeSpritePointers
-            ldy #15
-.CopyLoop:
-            lda CPUSprite,y
-            sta PlayerFrameBuffer_W,y
-            dey
-            bpl .CopyLoop
-end
-          player0height = 16
-          return
-          
-LoadCPUSpriteP1
-          rem Copy CPUSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[16-31])
-          asm
-            ldy #15
-.CopyLoop:
-            lda CPUSprite,y
-            sta PlayerFrameBuffer_W+16,y
-            dey
-            bpl .CopyLoop
-end
-          player1height = 16
-          return
-          
-LoadCPUSpriteP2
-          rem Copy CPUSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[32-47])
-          asm
-            ldy #15
-.CopyLoop:
-            lda CPUSprite,y
-            sta PlayerFrameBuffer_W+32,y
-            dey
-            bpl .CopyLoop
-end
-          player2height = 16
-          return
-          
-LoadCPUSpriteP3
-          rem Copy CPUSprite data from ROM to RAM buffer (PlayerFrameBuffer_W[48-63])
-          asm
-            ldy #15
-.CopyLoop:
-            lda CPUSprite,y
-            sta PlayerFrameBuffer_W+48,y
-            dey
-            bpl .CopyLoop
-end
-          player3height = 16
-          return
-          
+          rem Load CPU sprite for any player
+          rem Input: temp3 = player number (0-3)
+          rem Output: Sprite loaded and height set
+          let temp4 = 1  ; CPU sprite type
+          goto CopySpecialSpriteToPlayer
 LoadNoSprite
           asm
 ; Set pointer to NoSprite data

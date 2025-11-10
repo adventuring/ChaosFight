@@ -106,13 +106,15 @@ CharacterSelectLoop
 
 Player1LockSelection
           if joy0down then Player1HandicapSelection
-          temp1 = 0 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
+          let temp2 = PlayerLockedNormal
           goto Player1LockSelectionDone
           rem Locked normal (100% health)
 
 Player1HandicapSelection
-          temp1 = 0 : temp2 = PlayerHandicapped : gosub SetPlayerLocked
+          let temp2 = PlayerHandicapped 
 Player1LockSelectionDone
+          let temp1 = currentPlayer
+          gosub SetPlayerLocked
 DonePlayer1
 
           rem Handle Player 2 input (joy1 on even frames)
@@ -129,13 +131,15 @@ DonePlayer1
 
 Player2LockSelection
           if joy1down then Player2HandicapSelection
-          temp1 = currentPlayer : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
+          let temp2 = PlayerLockedNormal
           goto Player2LockSelectionDone
           rem Locked normal (100% health)
 
 Player2HandicapSelection
-          temp1 = currentPlayer : temp2 = PlayerHandicapped : gosub SetPlayerLocked
+          let temp2 = PlayerHandicapped 
 Player2LockSelectionDone
+          let temp1 = currentPlayer
+          gosub SetPlayerLocked
 DonePlayer2
           qtcontroller = 1
           rem Switch to odd frame mode for next iteration
@@ -161,14 +165,15 @@ CharacterSelectHandlePlayer3
 
 Player3LockSelection
           if joy0down then Player3HandicapSelection
-          temp1 = currentPlayer : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
+          let temp2 = PlayerLockedNormal
           goto Player3LockSelectionDone
-          rem Locked normal (100% health)
-
+          
 Player3HandicapSelection
-          temp1 = currentPlayer : temp2 = PlayerHandicapped : gosub SetPlayerLocked
+          let temp2 = PlayerHandicapped 
+          
 Player3LockSelectionDone
-          rem Locked with handicap (75% health)
+          let temp1 = currentPlayer
+          gosub SetPlayerLocked
 DonePlayer3
 
           rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
@@ -191,13 +196,15 @@ CharacterSelectHandlePlayer4
 
 Player4LockSelection
           if joy1down then Player4HandicapSelection
-          temp1 = currentPlayer : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
+          let temp2 = PlayerLockedNormal
           goto Player4LockSelectionDone
           rem Locked normal (100% health)
 
 Player4HandicapSelection
-          temp1 = currentPlayer : temp2 = PlayerHandicapped : gosub SetPlayerLocked
+          let temp2 = PlayerHandicapped 
 Player4LockSelectionDone
+          let temp1 = currentPlayer
+          gosub SetPlayerLocked
           rem Locked with handicap (75% health)
 DonePlayer4
           

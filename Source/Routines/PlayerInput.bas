@@ -420,18 +420,18 @@ HFCM_CheckRightMovement
           if temp1 = 0 then HFCM_CheckRightJoy0
           if temp1 = 2 then HFCM_CheckRightJoy0
           rem Players 1,3 use joy1
-          if !joy1right then goto HFCM_DoneFlyingMovement
+          if !joy1right then return
           goto HFCM_DoRightMovement
 HFCM_CheckRightJoy0
           rem Players 0,2 use joy0
-          if !joy0right then goto HFCM_DoneFlyingMovement
+          if !joy0right then return
 HFCM_DoRightMovement
           gosub ConvertPlayerXToPlayfieldColumn
           rem Convert player position to playfield coordinates
 
           rem Check column to the right
 
-          if temp2 >= 31 then goto HFCM_DoneFlyingMovement
+          if temp2 >= 31 then return
           let temp3 = temp2 + 1
           rem Already at right edge
           rem checkColumn = column to the right
@@ -445,7 +445,7 @@ HFCM_DoRightMovement
           let temp5 = 0
           rem Reset right-collision flag
           if pfread(temp3, temp6) then temp5 = 1
-          if temp5 = 1 then goto HFCM_DoneFlyingMovement
+          if temp5 = 1 then return
           rem Blocked, cannot move right
           let temp4 = temp4 + 16
           rem Also check bottom row (feet)
@@ -455,7 +455,7 @@ HFCM_DoRightMovement
           if temp6 >= pfrows then goto HFCM_MoveRightOK
           rem Do not check if beyond screen
           if pfread(temp3, temp6) then temp5 = 1
-          if temp5 = 1 then goto HFCM_DoneFlyingMovement
+          if temp5 = 1 then return
 HFCM_MoveRightOK
           rem Blocked at bottom too
           let playerVelocityX[temp1] = 1
@@ -464,7 +464,6 @@ HFCM_MoveRightOK
           rem Preserve facing during hurt/recovery states while processing right movement
           gosub ShouldPreserveFacing
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
-HFCM_DoneFlyingMovement
           return
 
 HFCM_Start

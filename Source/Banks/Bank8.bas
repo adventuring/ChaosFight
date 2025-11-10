@@ -24,5 +24,4 @@
 #include "Source/Routines/ConsoleHandling.bas"
 #include "Source/Routines/AnimationSystem.bas"
 #include "Source/Data/PlayerColorTables.bas"
-#include "Source/Generated/Numbers.bas"
 

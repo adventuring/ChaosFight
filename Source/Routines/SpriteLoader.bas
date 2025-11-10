@@ -1,8 +1,7 @@
           rem ChaosFight - Source/Routines/SpriteLoader.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          const CPUSprite_length = 16
-          const NoSprite_length = 16
+          rem Special sprite lengths no longer needed (font-driven)
 
           rem Player color tables for indexed lookup
           data PlayerColors12
@@ -31,24 +30,7 @@ LoadCharacterSprite
 ; Input: currentCharacter, temp2=frame, temp3=player
 ; Output: Sprite loaded via bank10 routines
 end
-          asm
-; Validate character index
-; Inline ValidateCharacterIndex
-; Check if character index is within valid range
-end
-          if currentCharacter > MaxCharacter then ValidateInvalidCharacterInline
-          asm
-;   (0-MaxCharacter for current implementation)
-end
-          let temp5 = 1
-          goto ValidateCharacterDoneInline
-ValidateInvalidCharacterInline
-          let temp5 = 0
-ValidateCharacterDoneInline
-          if !temp5 then goto LoadSpecialSprite
-          asm
-; tail call
-end
+          rem Inputs are trusted in internal context; skip range validation
 
           asm
 ; Check if character is special placeholder
@@ -111,85 +93,14 @@ end
           return
 
 CopySpecialSpriteToPlayer
-          rem Generic function to copy special sprite data to player buffer
           rem Input: temp3 = player number (0-3)
           rem        temp4 = sprite type (0=QuestionMark, 1=CPU, 2=No)
-          rem Output: Sprite data copied to appropriate player buffer
-          rem         Player height set to 16
-
-          rem Calculate buffer offset: player * 16
-          temp5 = temp3 * 16
-
-          if temp4 = 0 then goto CopyQuestionMark
-          if temp4 = 1 then goto CopyCPU
-          goto CopyNo
-
-CopyQuestionMark
-          asm
-            ldy #15
-.CopyQuestionLoop:
-            lda QuestionMarkSprite,y
-            sta PlayerFrameBuffer_W,y
-            dey
-            bpl .CopyQuestionLoop
-end
-          goto SetPlayerHeight
-
-CopyCPU
-          asm
-            ldy #15
-.CopyCPULoop:
-            lda CPUSprite,y
-            sta PlayerFrameBuffer_W,y
-            dey
-            bpl .CopyCPULoop
-end
-          goto SetPlayerHeight
-
-CopyNo
-          rem will never be player 1
-          if temp3 = 1 then goto CopyNoP1
-          if temp3 = 2 then goto CopyNoP2
-          goto CopyNoP3
-
-CopyNoP1
-          asm
-            ldy #15
-.CopyNoP1Loop:
-            lda NoSprite,y
-            sta PlayerFrameBuffer_W+16,y
-            dey
-            bpl .CopyNoP1Loop
-end
-          goto SetPlayerHeight
-
-CopyNoP2
-          asm
-            ldy #15
-.CopyNoP2Loop:
-            lda NoSprite,y
-            sta PlayerFrameBuffer_W+32,y
-            dey
-            bpl .CopyNoP2Loop
-end
-          goto SetPlayerHeight
-
-CopyNoP3
-          asm
-            ldy #15
-.CopyNoP3Loop:
-            lda NoSprite,y
-            sta PlayerFrameBuffer_W+48,y
-            dey
-            bpl .CopyNoP3Loop
-end
-          goto SetPlayerHeight
-
-SetPlayerHeight
-          if temp3 = 0 then player0height = 16
-          if temp3 = 1 then player1height = 16
-          if temp3 = 2 then player2height = 16
-          if temp3 = 3 then player3height = 16
+          rem Output: Sprite data loaded from unified font
+          if temp4 = 0 then temp1 = GlyphQuestionMark : goto _CopyFromFont
+          if temp4 = 1 then temp1 = GlyphCPU : goto _CopyFromFont
+          temp1 = GlyphNo
+_CopyFromFont
+          gosub SetPlayerGlyphFromFont bank16
           return
 
 LoadSpecialSprite
@@ -204,33 +115,27 @@ end
 
 P0Load
           rem P0: Only QuestionMark
-          let temp4 = 0  ; QuestionMark
-          goto CopySpecialSpriteToPlayer
+          let temp4 = 0  : goto CopySpecialSpriteToPlayer
 
 P1Load
           rem P1: QuestionMark/CPU/No
-          let temp4 = temp6  ; temp6 = 0,1,2 directly maps to sprite types
-          goto CopySpecialSpriteToPlayer
+          let temp4 = temp6 : goto CopySpecialSpriteToPlayer
 
 P2Load
           rem P2: QuestionMark/No
-          if temp6 = 2 then let temp4 = 2 : goto CopySpecialSpriteToPlayer  ; No
-          let temp4 = 0 : goto CopySpecialSpriteToPlayer                    ; QuestionMark
+          if temp6 = 2 then let temp4 = 2 : goto CopySpecialSpriteToPlayer
+          let temp4 = 0 : goto CopySpecialSpriteToPlayer
 
 P3Load
           rem P3: QuestionMark/No
-          if temp6 = 2 then let temp4 = 2 : goto CopySpecialSpriteToPlayer  ; No
-          let temp4 = 0 : goto CopySpecialSpriteToPlayer                    ; QuestionMark
+          if temp6 = 2 then let temp4 = 2 : goto CopySpecialSpriteToPlayer
+          let temp4 = 0 : goto CopySpecialSpriteToPlayer
 
 P5Load
-          rem P5: Direct ROM pointer to QuestionMark
-          asm
-            lda #<QuestionMarkSprite
-            sta player5pointer
-            lda #>QuestionMarkSprite
-            sta player5pointer+1
-end
-          player5height = 16
+          rem P5: Point to font glyph for QuestionMark
+          let temp1 = GlyphQuestionMark
+          let temp3 = 5
+          gosub SetPlayerGlyphFromFont bank16
           return
 LoadPlayerSprite
           asm

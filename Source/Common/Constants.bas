@@ -97,6 +97,16 @@
           const SpriteCPU = 1
           const SpriteNo = 2
           
+          rem Unified font glyph indices (Source/Generated/Numbers.bas FontData)
+          rem 0-9: digits "0"-"9"
+          rem A: "?" (question mark), B: "No", C: "C", D: "CPU", E: " " (blank), F: "F"
+          const GlyphQuestionMark = 10
+          const GlyphNo = 11
+          const GlyphC = 12
+          const GlyphCPU = 13
+          const GlyphBlank = 14
+          const GlyphF = 15
+          
           const PlayerStateFacing = 3
           rem playerState bit position constants
           rem Bit 3: 0=left, 1=right (matches REFP0 bit 3 for direct

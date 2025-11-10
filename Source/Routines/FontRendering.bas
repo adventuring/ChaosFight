@@ -37,9 +37,6 @@ DrawArenaDigit
           rem Clamp digit value to 0-15
           if temp1 > 15 then temp1 = 15
 
-          let temp6 = temp1 * 16
-          rem Calculate data offset: digit * 16 (16 bytes per digit)
-
           rem Set fixed arena positions and white color
           if temp5 = 4 then goto SetArenaSprite4 else goto SetArenaSprite5
 
@@ -62,38 +59,10 @@ LoadArenaPlayerDigit
           rem Load Arena Digit Data Into P4/P5 Sprites
           rem Simplified for arena digits: always P4 or P5, temp6 = digitOffset
           rem
-          rem Input: temp5 = sprite (4 or 5), temp6 = digitOffset
-          rem Output: player4/5pointerlo/hi set, player4/5height set to 16
-          rem
-          rem Clamp digit offset to valid range (0-240 for digits 0-15)
-          if temp6 > 240 then temp6 = 240
-
-          if temp5 = 4 then goto LoadArenaSprite4Ptr else goto LoadArenaSprite5Ptr
-
-LoadArenaSprite4Ptr
-          asm
-            lda # <FontData
-            clc
-            adc temp6
-            sta player4pointerlo
-            lda # >FontData
-            adc #0
-            sta player4pointerhi
-end
-          let player4height = 16
-          return
-
-LoadArenaSprite5Ptr
-          asm
-            lda # <FontData
-            clc
-            adc temp6
-            sta player5pointerlo
-            lda # >FontData
-            adc #0
-            sta player5pointerhi
-end
-          let player5height = 16
+          rem Input: temp5 = sprite (4 or 5), temp1 = glyph index (0-15)
+          rem Output: player4/5 pointer set via bank16 helper, height=16
+          if temp5 = 4 then temp3 = 4 else temp3 = 5
+          gosub SetPlayerGlyphFromFont bank16
           return
 
 DrawArenaNumber
@@ -104,24 +73,29 @@ DrawArenaNumber
           rem INPUT: temp1 = arena number (1-32)
           rem OUTPUT: Arena number displayed using P4/P5 sprites
           rem
-          rem Calculate tens and ones digits
-          let temp6 = temp1 / 10  ; Tens digit (0-3)
-          let temp7 = temp1 - (temp6 * 10)  ; Ones digit (0-9)
-          rem
-          rem Tens digit (P4) - only shown for arenas 10-32
-          if temp6 > 0 then DrawArenaTensDigit
-          rem Ones digit (P5) - always shown
-          let temp1 = temp7
-          goto DrawArenaOnesDigit
-
-DrawArenaTensDigit
+          rem Clamp and compute tens/ones via lookup tables (tables contain leading space)
+          if temp1 > 32 then temp1 = 32
+          if temp1 < 1 then temp1 = 1
+          let temp6 = ArenaTens[temp1]
+          let temp7 = ArenaOnes[temp1]
+          rem Always draw both digits
           let temp1 = temp6
-          let temp5 = 4  ; P4 for tens digit
-          gosub DrawArenaDigit bank16
-          rem Fall through to ones digit
-
-DrawArenaOnesDigit
+          let temp5 = 4  : gosub DrawArenaDigit bank16
           let temp1 = temp7
-          let temp5 = 5  ; P5 for ones digit
-          goto DrawArenaDigit
+          let temp5 = 5  : goto DrawArenaDigit
           rem tail call
+
+          rem Lookup tables to replace division and modulo by 10
+          rem Index 0..32 inclusive
+          data ArenaTens
+            $e, $e, $e, $e, $e, $e, $e, $e, $e,
+            1,1,1,1,1,1,1,1,1,1,
+            2,2,2,2,2,2,2,2,2,2,
+            3,3,3
+end
+          data ArenaOnes
+            1,2,3,4,5,6,7,8,9,
+            0,1,2,3,4,5,6,7,8,9,
+            0,1,2,3,4,5,6,7,8,9,
+            0,1,2
+end

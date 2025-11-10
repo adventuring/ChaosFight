@@ -185,6 +185,13 @@ Player 2: ? or 0 ↔ MaxCharacterID and
 - Display no sprite (blank) for players 3/4 if no Quadtari detected
 - Display character sprites in screen quadrants
 
+### Font and Special Sprites
+
+- Special UI glyphs ("?", "CPU", "No", blank, "C", "F") are sourced from the unified font `Source/Generated/Numbers.bas` (`FontData`):
+  - Indices 0–9: digits "0"–"9"
+  - Indices 10–15: A="?", B="No", C="C", D="CPU", E=" " (blank), F="F"
+- Sprite loader and font renderer access these via bank 16 helpers (`ComputeFontOffset`, `SetPlayerGlyphFromFont`). No separate special-sprite data files are included.
+
 ### Progression Logic
 
 - All players must lock in some selection to proceed, but player 2 (and

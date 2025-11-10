@@ -6,7 +6,7 @@
           rem All character data is defined in CharacterMissileTables.bas and
           rem accessed through these optimized lookup routines.
 
-GetCharacterWeight
+GetCharacterWeightValue
           rem Return the character’s weight.
           rem Input: temp1 = character index (0-MaxCharacter)
           rem Output: temp2 = character weight

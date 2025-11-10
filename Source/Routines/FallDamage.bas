@@ -8,7 +8,7 @@ CheckFallDamage
           rem         SafeFallVelocityThresholds[], WeightDividedBy20[]
           rem Outputs: playerHealth[] reduced, playerRecoveryFrames[] set, playerState[] updated, landing SFX queued
           rem Mutates: temp1-temp6, oldHealthValue, recoveryFramesCalc, playerStateTemp
-          rem Calls: GetCharacterWeight, PlaySoundEffect (bank15)
+          rem Calls: GetCharacterWeightValue, PlaySoundEffect (bank15)
           rem Constraints: Must remain colocated with fall-damage helpers that reuse temp scratch bytes
 
           let temp5 = playerCharacter[temp1]
@@ -27,7 +27,7 @@ CheckFallDamage
           
           let temp1 = temp5
           rem Get character weight from data table
-          gosub GetCharacterWeight bank7
+          gosub GetCharacterWeightValue bank7
           rem Character type as index
           let temp6 = temp2 
           rem Store weight
@@ -504,7 +504,7 @@ CalculateFallDistanceNormal
           
           rem Get character weight
           let temp1 = temp5
-          gosub GetCharacterWeight bank7
+          gosub GetCharacterWeightValue bank7
           rem Character type as index
           let temp6 = temp2 
           rem Store weight

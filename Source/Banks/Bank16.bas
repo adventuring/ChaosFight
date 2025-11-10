@@ -6,9 +6,6 @@
 
           bank 16
 
-          rem Include multisprite kernel assembly for drawscreen access to SetupP1Subroutine
-          include "Tools/batariBASIC/includes/multisprite_kernel.asm"
-
           rem First — data. Must come first. Cannot be moved.
 #include "Source/Data/Arenas.bas"
 #include "Source/Generated/Numbers.bas"
@@ -19,4 +16,7 @@
 #include "Source/Routines/CopyGlyphToPlayer.bas"
 #include "Source/Routines/SetPlayerGlyphFromFont.bas"
 #include "Source/Routines/FontRendering.bas"
+
+rem Include multisprite kernel assembly for drawscreen access to SetupP1Subroutine
+include "Tools/batariBASIC/includes/multisprite_kernel.asm"
 

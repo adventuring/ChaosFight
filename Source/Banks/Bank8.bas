@@ -8,20 +8,14 @@
           bank 8
  
           rem Data segment
-
-          rem NOTE: VisualEffects.bas was phased out - damage indicators
-          rem   now handled in Combat.bas and MissileSystem.bas
-          
-          rem Physics and rendering routines moved from Bank 11
-          rem PlayerPhysics.bas split into two files to reduce bank size
-          rem Collision handling colocated with gravity/rendering for
-          rem   tighter coupling
-          rem AnimationSystem.bas moved to Bank 11 (character
-          rem animations)
-          rem PlayerRendering.bas moved to Bank 10 (sprite rendering)
-#include "Source/Routines/PlayerLockedHelpers.bas"
-#include "Source/Routines/MissileCollision.bas"
-#include "Source/Routines/ConsoleHandling.bas"
-#include "Source/Routines/AnimationSystem.bas"
 #include "Source/Data/PlayerColorTables.bas"
+
+          rem Code segment
+#include "Source/Routines/PlayerLockedHelpers.bas"
+#include "Source/Routines/ConsoleHandling.bas"
+#include "Source/Routines/PlayerElimination.bas"
+#include "Source/Routines/PlayerPhysicsGravity.bas"
+#include "Source/Routines/MovementSystem.bas"
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+#include "Source/Routines/HealthBarSystem.bas"
 

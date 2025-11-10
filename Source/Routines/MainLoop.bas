@@ -8,7 +8,7 @@ MainLoop
           rem Mutates: None; dispatcher only
           rem Calls: WarmStart bank13, PublisherPreludeMain bank14, AuthorPrelude bank14,
           rem        TitleScreenMain bank9, CharacterSelectInputEntry bank6,
-          rem        FallingAnimation1 bank12, ArenaSelect1 bank12,
+          rem        FallingAnimation1 bank12, ArenaSelect1 bank14,
           rem        GameMainLoop bank11, WinnerAnnouncement bank12,
           rem        UpdateMusic bank1, titledrawscreen bank9
           rem Constraints: Must remain colocated with MainLoopDrawScreen
@@ -43,7 +43,7 @@ MainLoopModeFallingAnimation
 
 MainLoopModeArenaSelect
           rem tail call
-          goto ArenaSelect1 bank12
+          goto ArenaSelect1 bank14
 
 MainLoopModeGameMain
           rem tail call

@@ -10,7 +10,7 @@
 #include "Source/Data/Arenas.bas"
 #include "Source/Generated/Numbers.bas"
 #include "Source/Data/PlayerColors.bas"
-#include "Source/Data/CharacterColors.bas"
+          rem Second — routines locked to that data. Cannot be moved.
 #include "Source/Routines/ArenaLoader.bas"
 #include "Source/Routines/LoadArenaByIndex.bas"
 #include "Source/Routines/MainLoop.bas"

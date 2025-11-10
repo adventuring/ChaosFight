@@ -68,67 +68,16 @@ CheckFallDamage
           rem Use lookup table for weight/20, then multiply by damage
           rem temp2 = weight / 20 from lookup table
           let temp2 = WeightDividedBy20[temp5]
-          rem Multiply damage by (weight / 20) using assembly
-          rem Use Mul macro pattern: if multiplier is 0-15, use
-          rem   optimized assembly
-          rem For small multipliers (0-15), use lookup table or bit
-          rem   shifts
-          rem For larger multipliers, use assembly multiplication
-          asm
-          ; rem   routine
-            lda temp2
-            beq MultiplyDone
-            ; rem Multiplier is non-zero, multiply temp4 by temp2
-            ; rem Use optimized multiplication based on multiplier value
-            ; rem For multiplier = 1: no change
-            ; rem For multiplier = 2: asl once
-            ; rem For multiplier = 3: asl + add original
-            ; rem For multiplier = 4: asl twice
-            ; rem For multiplier = 5: asl twice + add original
-          ; rem For now, use simple approach: multiply using repeated
-          ; rem   addition
-          ; rem But wait - user said no repeated addition! Use lookup
-          ; rem   table instead
-          ; rem Actually, we can use a lookup table for common damage
-          ; rem   values
-            ; rem Or use assembly with optimized multiplication
-            ; rem Check multiplier value and use appropriate method
-            cmp #1
-            beq MultiplyDone
-            cmp #2
-            bne CheckMult3
-            ; rem Multiply by 2: shift left once
-            asl temp4
-            jmp MultiplyDone
-CheckMult3
-            cmp #3
-            bne CheckMult4
-            ; rem Multiply by 3: damage * 2 + damage
-            lda temp4
-            asl
-            clc
-            adc temp4
-            sta temp4
-            jmp MultiplyDone
-CheckMult4
-            cmp #4
-            bne CheckMult5
-            ; rem Multiply by 4: shift left twice
-            asl temp4
-            asl temp4
-            jmp MultiplyDone
-CheckMult5
-            ; rem For 5: multiply by 4 + add original
-            lda temp4
-            asl
-            asl
-            clc
-            adc temp4
-            sta temp4
+          rem Apply weight-based damage multiplier using optimized BASIC
+          rem temp2 = weight / 20 from lookup table (0-5 range)
+          if temp2 = 0 then goto MultiplyDone
+          if temp2 = 1 then goto MultiplyDone
+          if temp2 = 2 then let temp4 = temp4 * 2 : goto MultiplyDone
+          if temp2 = 3 then let temp4 = temp4 * 3 : goto MultiplyDone
+          if temp2 = 4 then let temp4 = temp4 * 4 : goto MultiplyDone
+          if temp2 = 5 then let temp4 = temp4 * 5 : goto MultiplyDone
 MultiplyDone
-end
-          rem temp4 = damage * (weight / 20) (weight-based
-          rem   multiplier applied)
+          rem temp4 = damage * (weight / 20) (weight-based multiplier applied)
           
           rem Apply damage reduction for characters with fall damage
           rem Ninjish Guy halves damage after weight multiplier

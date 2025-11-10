@@ -17,23 +17,8 @@ DispatchCharacterJump
           rem ShamoneJump: Character 31 (MethHound mirrors Shamone)
           if temp4 = 31 then goto ShamoneJump
 
-          rem Unique jump handlers: Characters 0-15
-          if temp4 = 0 then goto BernieJump
-          if temp4 = 1 then goto CurlerJump
-          if temp4 = 2 then goto DragonOfStormsJump
-          if temp4 = 3 then goto ZoeRyenJump
-          if temp4 = 4 then goto FatTonyJump
-          if temp4 = 5 then goto MegaxJump
-          if temp4 = 6 then goto HarpyJump
-          if temp4 = 7 then goto KnightGuyJump
-          if temp4 = 8 then goto FrootyJump
-          if temp4 = 9 then goto NefertemJump
-          if temp4 = 10 then goto NinjishGuyJump
-          if temp4 = 11 then goto PorkChopJump
-          if temp4 = 12 then goto RadishGoblinJump
-          if temp4 = 13 then goto RoboTitoJump
-          if temp4 = 14 then goto UrsuloJump
-          if temp4 = 15 then goto ShamoneJump
+          rem Unique jump handlers: Characters 0-15 (optimized dispatch)
+          on temp4 goto BernieJump CurlerJump DragonOfStormsJump ZoeRyenJump FatTonyJump MegaxJump HarpyJump KnightGuyJump FrootyJump NefertemJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
           return
 
 DispatchCharacterDown
@@ -64,7 +49,7 @@ BernieJump
           rem Constraints: Only triggers if floor is exactly one row deep
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
-          gosub ConvertPlayerXToPlayfieldColumn bank13
+          gosub ConvertPlayerXToPlayfieldColumn bank8
           
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
@@ -195,7 +180,7 @@ DragonOfStormsJump
           rem move if already at top row
           rem Fly up with playfield collision check
           rem Check collision before moving - use shared coordinate conversion
-          gosub ConvertPlayerXToPlayfieldColumn bank13
+          gosub ConvertPlayerXToPlayfieldColumn bank8
           
           let temp3 = playerY[temp1]
           rem Check row above player (top of sprite)
@@ -671,7 +656,7 @@ RoboTitoStretching
           rem Start search from feet position (player bottom + 16 pixels)
 
           rem Convert player X position to playfield column for pfread
-          gosub ConvertPlayerXToPlayfieldColumn bank13
+          gosub ConvertPlayerXToPlayfieldColumn bank8
           let temp4 = temp2
           rem temp4 = playfield column from subroutine
 

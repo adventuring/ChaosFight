@@ -10,19 +10,8 @@
           rem Titlescreen assets are in Bank 9 - this bank contains only logic
 
 #include "Source/Routines/CharacterData.bas"
-#include "Source/Routines/CharacterCycleUtils.bas"
-#include "Source/Routines/FallingAnimation.bas"
-#include "Source/Routines/BeginArenaSelect.bas"
-#include "Source/Routines/ArenaSelect.bas"
-#include "Source/Routines/BeginWinnerAnnouncement.bas"
-#include "Source/Routines/WinnerAnnouncement.bas"
-#include "Source/Routines/DisplayWinScreen.bas"
-#include "Source/Common/CharacterDefinitions.bas"
-#include "Source/Routines/TitlescreenWindowControl.bas"
-
-#include "Source/Routines/BeginPublisherPrelude.bas"
-#include "Source/Routines/PublisherPrelude.bas"
-#include "Source/Routines/BeginAuthorPrelude.bas"
-#include "Source/Routines/AuthorPrelude.bas"
-#include "Source/Routines/MovePlayerToTarget.bas"
+#include "Source/Routines/PerformRangedAttack.bas"
+#include "Source/Routines/AnimationSystem.bas"
+#include "Source/Routines/MissileSystem.bas"
+#include "Source/Routines/PlayerElimination.bas"
 

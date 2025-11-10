@@ -214,7 +214,7 @@ PlayerHealthInitDone
           NUSIZ3 = 5
           rem Player 3 (Player 4) - multisprite kernel
 
-          gosub InitializeHealthBars bank7
+          gosub InitializeHealthBars bank8
           rem Initialize health bars
 
           gosub LoadArena bank16

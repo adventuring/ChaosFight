@@ -127,29 +127,72 @@ NudgeHorizontalDone
 NudgeRight
           rem Check if nudging right avoids collision
           rem Input: temp1 = player, originalPlayerX_W = original X, originalPlayerY_W = original Y
-          rem Output: playerX adjusted if collision detected
+          rem Output: playerX adjusted if no collision detected
           let playerX[temp1] = originalPlayerX_W + 1
-          if collision(playerX[temp1], originalPlayerY_W) then let playerX[temp1] = originalPlayerX_W
+
+          rem Check for collision at new position
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          let temp2 = temp2 / 4
+          rem temp2 = playfield column
+          if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
+          rem Handle wraparound
+
+          let temp3 = originalPlayerY_W
+          let temp4 = temp3
+          gosub DivideByPfrowheight bank7
+          let temp5 = temp2
+          rem temp5 = top row
+
+          let temp6 = 0
+          rem Reset collision flag
+          if pfread(temp2, temp5) then temp6 = 1
+
+          rem Check bottom row too
+          let temp3 = temp3 + 16
+          let temp4 = temp3
+          gosub DivideByPfrowheight bank7
+          let temp5 = temp2
+          if temp5 < pfrows then if pfread(temp2, temp5) then temp6 = 1
+
+          rem If collision detected, revert position
+          if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
           return
 
 NudgeLeft
           rem Check if nudging left avoids collision
           rem Input: temp1 = player, originalPlayerX_W = original X, originalPlayerY_W = original Y
-          rem Output: playerX adjusted if collision detected
+          rem Output: playerX adjusted if no collision detected
           let playerX[temp1] = originalPlayerX_W - 1
-          if collision(playerX[temp1], originalPlayerY_W) then let playerX[temp1] = originalPlayerX_W
+
+          rem Check for collision at new position
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          let temp2 = temp2 / 4
+          rem temp2 = playfield column
+          if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
+          rem Handle wraparound
+
+          let temp3 = originalPlayerY_W
+          let temp4 = temp3
+          gosub DivideByPfrowheight bank7
+          let temp5 = temp2
+          rem temp5 = top row
+
+          let temp6 = 0
+          rem Reset collision flag
+          if pfread(temp2, temp5) then temp6 = 1
+
+          rem Check bottom row too
+          let temp3 = temp3 + 16
+          let temp4 = temp3
+          gosub DivideByPfrowheight bank7
+          let temp5 = temp2
+          if temp5 < pfrows then if pfread(temp2, temp5) then temp6 = 1
+
+          rem If collision detected, revert position
+          if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
           return
 
-NudgeVertical
-          rem Vertical nudging (placeholder for future use)
-          gosub NudgeDown
-          gosub NudgeUp
-          return
-
-NudgeDown
-          rem Check downward nudge (placeholder)
-          return
-
-NudgeUp  
-          rem Check upward nudge (placeholder)
-          return

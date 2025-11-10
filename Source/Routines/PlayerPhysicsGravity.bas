@@ -95,11 +95,7 @@ GravityCheckCharacter
           if temp6 = CharacterDragonOfStorms then goto GravityNextPlayer
           
           rem RoboTito (13): Skip gravity when latched to ceiling
-          
-          if temp6 <> CharacterRoboTito then goto GravityCheckRoboTitoDone
-          if (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
-GravityCheckRoboTitoDone
-          rem Latched to ceiling (bit 0 set), skip gravity
+          if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
           
           rem If NOT jumping, skip gravity (player is on ground)
           
@@ -123,17 +119,11 @@ GravityCheckRoboTitoDone
           if temp6 = CharacterHarpy then let gravityRate_W = GravityReduced
           rem Harpy: reduced gravity rate
           
-          rem Apply gravity acceleration to velocity subpixel part (adds
-          rem   to Y velocity, positive = downward)
-          rem playerIndex already set, gravityRate is gravity strength
-          rem   in subpixel (low byte)
-          rem AddVelocitySubpixelY expects temp2, so save temp2 and use
-          let playfieldColumn_W = temp2
-          rem   it for gravityRate
-          let temp2 = gravityRate_R
-          rem Save playfieldColumn temporarily
-          gosub AddVelocitySubpixelY bank13
-          rem Restore playfieldColumn
+          rem Apply gravity acceleration to velocity subpixel part
+          rem Use optimized inline addition instead of subroutine call
+          let temp2.temp3 = playerVelocityYL[temp1] + gravityRate_R
+          let playerVelocityYL[temp1] = temp2
+          if temp3 > 0 then let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
           
           rem Apply terminal velocity cap (prevents infinite
           rem   acceleration)
@@ -144,7 +134,7 @@ GravityCheckRoboTitoDone
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
-          gosub ConvertPlayerXToPlayfieldColumn bank13
+          gosub ConvertPlayerXToPlayfieldColumn bank8
           
           rem Calculate row where player feet are (bottom of sprite)
           let temp3 = playerY[temp1] + PlayerSpriteHeight

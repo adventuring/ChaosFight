@@ -8,7 +8,7 @@ UpdateCharacterAnimations
           rem         currentAnimationSeq[], playersEliminated_R (SCRAM)
           rem Outputs: animationCounter_W[], currentAnimationFrame_W[], player sprite state
           rem Mutates: currentPlayer (0-3), animationCounter_W[], currentAnimationFrame_W[]
-          rem Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank10)
+          rem Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank16)
           rem Constraints: Must remain colocated with AnimationUpdatePlayer3/AnimationSkipPlayer3
 
           rem Optimized: Loop through all players instead of individual calls
@@ -215,7 +215,7 @@ UpdateSprite
           rem Mutates: temp2, temp3, temp4 (passed to LoadPlayerSprite),
           rem player sprite pointers (via LoadPlayerSprite)
           rem
-          rem Called Routines: LoadPlayerSprite (bank10) - loads
+          rem Called Routines: LoadPlayerSprite (bank16) - loads
           rem character sprite graphics
           rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
@@ -277,7 +277,7 @@ SetPlayerAnimation
           rem         temp4 (passed to LoadPlayerSprite),
           rem         player sprite pointers (via LoadPlayerSprite)
           rem
-          rem Called Routines: LoadPlayerSprite (bank10) - loads
+          rem Called Routines: LoadPlayerSprite (bank16) - loads
           rem character sprite graphics
           rem Constraints: None
           if temp2 >= AnimationSequenceCount then return

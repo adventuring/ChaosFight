@@ -14,14 +14,9 @@
           rem Console detection and handling moved to Bank 13
           
           rem Player locked helpers
-#include "Source/Routines/ColdStart.bas"
-#include "Source/Routines/BeginAttractMode.bas"
-#include "Source/Routines/AttractMode.bas"
-#include "Source/Routines/MovementSystem.bas"
-#include "Source/Routines/GuardEffects.bas"
-#include "Source/Routines/BeginFallingAnimation.bas"
-#include "Source/Routines/ConsoleDetection.bas"
-#include "Source/Routines/SpritePointerInit.bas"
-#include "Source/Routines/ArenaReloadUtils.bas"
-#include "Source/Routines/CharacterControlsJump.bas"
+#include "Source/Routines/BeginTitleScreen.bas"
+#include "Source/Routines/ChangeGameMode.bas"
+#include "Source/Routines/BeginAuthorPrelude.bas"
+#include "Source/Routines/ArenaSelect.bas"
+#include "Source/Routines/AnimationSystem.bas"
 

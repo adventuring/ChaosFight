@@ -62,56 +62,28 @@ UpdatePlayerMovementSingle
           rem Skip if player is eliminated
           if playerHealth[currentPlayer] = 0 then return
           
-          rem
-          rem Apply X Velocity To X Position
-          rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
-          rem Use 16-bit accumulator to detect carry properly
-          rem temp2 = low byte, temp3 = high byte (carry flag)
+          rem Apply X Velocity To X Position (8.8 fixed-point)
+          rem Use batariBASIC’s built-in 16-bit addition for carry detection
           let temp2.temp3 = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
-          if temp3 > 0 then XCarry
-          rem No carry: temp3 = 0, use low byte directly
           let playerSubpixelX_WL[currentPlayer] = temp2
-          goto XNoCarry
-XCarry
-          let playerSubpixelX_WL[currentPlayer] = temp2
-          rem Carry detected: temp3 > 0, extract wrapped low byte
-          rem SCRAM RMW: playerSubpixelX_R → playerSubpixelX_W
-          let temp4 = playerSubpixelX_R[currentPlayer]
-          let temp4 = temp4 + 1
-          let playerSubpixelX_W[currentPlayer] = temp4
-XNoCarry
-          rem SCRAM RMW: playerSubpixelX_R → playerSubpixelX_W (apply integer velocity)
-          let temp4 = playerSubpixelX_R[currentPlayer]
-          let temp4 = temp4 + playerVelocityX[currentPlayer]
-          let playerSubpixelX_W[currentPlayer] = temp4
-          
-          rem Sync integer position for rendering (high byte is the integer part)
+          if temp3 > 0 then let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
+
+          rem Apply integer velocity component
+          let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
+
+          rem Sync integer position for rendering
           let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
           
-          rem
-          rem Apply Y Velocity To Y Position
-          rem Add 8.8 fixed-point velocity to 8.8 fixed-point position
-          rem Use 16-bit accumulator to detect carry properly
-          rem temp2 = low byte, temp3 = high byte (carry flag)
+          rem Apply Y Velocity To Y Position (8.8 fixed-point)
+          rem Use batariBASIC’s built-in 16-bit addition for carry detection
           let temp2.temp3 = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]
-          if temp3 > 0 then YCarry
-          rem No carry: temp3 = 0, use low byte directly
           let playerSubpixelY_WL[currentPlayer] = temp2
-          goto YNoCarry
-YCarry
-          let playerSubpixelY_WL[currentPlayer] = temp2
-          rem Carry detected: temp3 > 0, extract wrapped low byte
-          rem SCRAM RMW: playerSubpixelY_R → playerSubpixelY_W
-          let temp4 = playerSubpixelY_R[currentPlayer]
-          let temp4 = temp4 + 1
-          let playerSubpixelY_W[currentPlayer] = temp4
-YNoCarry
-          rem SCRAM RMW: playerSubpixelY_R → playerSubpixelY_W (apply integer velocity)
-          let temp4 = playerSubpixelY_R[currentPlayer]
-          let temp4 = temp4 + playerVelocityY[currentPlayer]
-          let playerSubpixelY_W[currentPlayer] = temp4
-          
-          rem Sync integer position for rendering (high byte is the integer part)
+          if temp3 > 0 then let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1
+
+          rem Apply integer velocity component
+          let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + playerVelocityY[currentPlayer]
+
+          rem Sync integer position for rendering
           let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
           
           return

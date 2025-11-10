@@ -499,7 +499,7 @@ end
           rem Animation frame (0=idle, 1=running)
           rem Player number (0=Player 1)
           rem temp2, temp3 already set above (animation frame and player number)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
 
           rem Set Player 2 color and sprite
           rem Use LoadCharacterColors for consistent color handling
@@ -547,7 +547,7 @@ end
           rem Animation frame (0=idle, 1=running)
           rem Player number (1=Player 2)
           rem temp2, temp3 already set above (animation frame and player number)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
           rem Players 3 & 4 have independent COLUP2/COLUP3 registers
@@ -601,7 +601,7 @@ end
           rem Animation frame (0=idle, 1=running)
           rem Player number (2=Player 3)
           rem temp2, temp3 already set above (animation frame and player number)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
           
 DonePlayer3Sprite
 
@@ -654,7 +654,7 @@ end
           rem Animation frame (0=idle, 1=running)
           rem Player number (3=Player 4)
           rem temp2, temp3 already set above (animation frame and player number)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
           
 DonePlayer4Sprite
           

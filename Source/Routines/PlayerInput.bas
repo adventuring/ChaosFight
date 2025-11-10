@@ -517,12 +517,12 @@ IHLP_DoneFlyingLeftRight
           
 BernieFallThrough
           rem Bernie UP input handled in BernieJump routine (fall
-          gosub BernieJump bank14
+          gosub BernieJump bank13
           rem   through 1-row floors)
           goto DoneJumpInput
           
 HarpyFlap
-          gosub HarpyJump bank14
+          gosub HarpyJump bank13
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
           goto DoneJumpInput
           
@@ -563,7 +563,7 @@ ShamoneJumpCheckEnhanced
           if temp2 >= 13 then InputDoneLeftPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump bank14
+          gosub DispatchCharacterJump bank13
           goto InputDoneLeftPortJump
 
 SkipEnhancedJumpCheck
@@ -579,7 +579,7 @@ SkipEnhancedJumpCheck
           if temp2 >= 13 then InputDoneLeftPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump bank14
+          gosub DispatchCharacterJump bank13
 InputDoneLeftPortJump
 
           
@@ -708,12 +708,12 @@ IHRP_DoneFlyingLeftRight
           
 BernieFallThroughRight
           rem Bernie UP input handled in BernieJump routine (fall
-          gosub BernieJump bank14
+          gosub BernieJump bank13
           rem   through 1-row floors)
           goto DoneJumpInputRight
           
 HarpyFlapRight
-          gosub HarpyJump bank14
+          gosub HarpyJump bank13
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
           goto DoneJumpInputRight
           
@@ -754,7 +754,7 @@ ShamoneJumpCheckEnhancedRight
           if temp2 >= 13 then InputDoneRightPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump bank14
+          gosub DispatchCharacterJump bank13
           goto InputDoneRightPortJump
 
 SkipEnhancedJumpCheckRight
@@ -772,7 +772,7 @@ SkipEnhancedJumpCheckRight
           if temp2 >= 13 then InputDoneRightPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump bank14
+          gosub DispatchCharacterJump bank13
 InputDoneRightPortJump
           gosub HandleGuardInput
           rem Process down/guard input

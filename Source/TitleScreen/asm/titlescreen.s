@@ -8,7 +8,7 @@ title_eat_overscan
 	clc
 	lda INTIM
 	bmi title_eat_overscan
-	; fall through to title_do_vertical_sync
+	jmp title_do_vertical_sync
 
 title_do_vertical_sync
 	lda #2
@@ -58,17 +58,10 @@ title_playfield
 
 	titlescreenlayout
 
-PFWAIT
-        lda INTIM
-        bne PFWAIT
-        sta WSYNC
+	jmp PFWAIT ; kernel is done. Finish off the screen
 
-OVERSCAN
-	lda #34+128
-	sta TIM64T
-
-	include "TitleScreen/asm/position48.s"
-	include "TitleScreen/titlescreen_color.s"
+ include "TitleScreen/asm/position48.s"
+ include "TitleScreen/titlescreen_color.s"
 
 	; Unused 48x1 kernels removed - only 48x2_3 is used
 
@@ -104,6 +97,11 @@ bmp_48x2_3_values = bmp_48x2_3_values
 	ifconst mk_gameselect_on
 		include "TitleScreen/asm/gameselect_kernel.s"
 	endif ;mk_gameselect_on
+
+PFWAIT
+        lda INTIM 
+        bne PFWAIT
+        sta WSYNC
 
 OVERSCAN
 	lda #34+128

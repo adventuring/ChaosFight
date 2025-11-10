@@ -43,7 +43,43 @@ DispatchCharacterAttack
           if temp4 = 31 then goto GotoShamoneAttack
 
           return
-          
+
+
+GotoBernieAttack
+          goto BernieAttack bank10
+
+GotoCurlerAttack
+          goto CurlerAttack bank10
+
+GotoDragonOfStormsAttack
+          goto DragonOfStormsAttack bank10
+
+GotoZoeRyenAttack
+          goto ZoeRyenAttack bank10
+
+GotoFatTonyAttack
+          goto FatTonyAttack bank10
+
+GotoMegaxAttack
+          goto MegaxAttack bank10
+
+GotoHarpyAttack
+          goto HarpyAttack bank10
+
+GotoKnightGuyAttack
+          goto KnightGuyAttack bank10
+
+GotoFrootyAttack
+          goto FrootyAttack bank10
+
+GotoNefertemAttack
+          goto NefertemAttack bank10
+
+GotoNinjishGuyAttack
+          goto NinjishGuyAttack bank10
+
+GotoPorkChopAttack
+          goto PorkChopAttack bank10
 
 GotoRadishGoblinAttack
           goto RadishGoblinAttack bank10
@@ -59,49 +95,49 @@ GotoShamoneAttack
           
 GotoCharacter16Attack
           rem Character 16-30 attack handlers (placeholder characters - basic melee)
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter17Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter18Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter19Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter20Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter21Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter22Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter23Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter24Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter25Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter26Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter27Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter28Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter29Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 GotoCharacter30Attack
-          goto PerformMeleeAttack bank11
+          goto PerformMeleeAttack bank13
 
 CheckEnhancedJumpButton
           rem

@@ -67,7 +67,7 @@ GameMainLoop
           rem
           rem Called Routines: ReadEnhancedButtons,
           rem HandleConsoleSwitches (bank13),
-          rem   InputHandleAllPlayers (bank13), UpdateGuardTimers (bank13),
+          rem   InputHandleAllPlayers (bank8), UpdateGuardTimers (bank13),
           rem   UpdateCharacterAnimations (bank11),
           rem   UpdatePlayerMovement (bank3), PhysicsApplyGravity (bank8),
           rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank8),
@@ -97,8 +97,8 @@ GameMainLoop
           rem Check if game is paused - skip movement/physics/animation if so
           if systemFlags & SystemFlagGameStatePaused then goto GameMainLoopPaused
 
-          gosub InputHandleAllPlayers bank5 :
-          rem Handle all player input (with Quadtari multiplexing) (in Bank 5)
+          gosub InputHandleAllPlayers bank8 :
+          rem Handle all player input (with Quadtari multiplexing) (in Bank 8)
 
           gosub UpdateGuardTimers bank13
           rem Update guard timers (duration and cooldown)
@@ -106,11 +106,11 @@ GameMainLoop
           gosub UpdateCharacterAnimations
           rem Update animation system (10fps character animation) (in Bank 11)
           
-          gosub UpdatePlayerMovement bank13 :
-          rem Update movement system (full frame rate movement) (in Bank 13)
+          gosub UpdatePlayerMovement bank8 :
+          rem Update movement system (full frame rate movement) (in Bank 11)
 
           gosub PhysicsApplyGravity bank8
-          rem Apply gravity and physics (in Bank 8)
+          rem Apply gravity and physics (in Bank 11)
           
           gosub ApplyMomentumAndRecovery bank8
           rem Apply momentum and recovery effects (in Bank 8)
@@ -211,7 +211,7 @@ GameEndCheckDone
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
-          gosub CheckRoboTitoStretchMissileCollisions bank10
+          gosub CheckRoboTitoStretchMissileCollisions bank8
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)

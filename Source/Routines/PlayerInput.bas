@@ -1,4 +1,4 @@
-GetPlayerAnimationState
+GetPlayerAnimationStateFunction
           rem
           rem ChaosFight - Source/Routines/PlayerInput.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
@@ -63,7 +63,7 @@ ShouldPreserveFacing
           rem Input: temp1 = player index (0-3), playerState[]
           rem Output: temp3 = 1 if facing locked, 0 otherwise
           rem Mutates: temp2, temp3
-          rem Calls: GetPlayerAnimationState
+          rem Calls: GetPlayerAnimationStateFunction
           rem
           rem Constraints: Must be colocated with SPF_PreserveYes,
           rem SPF_PreserveNo (called via goto)
@@ -73,7 +73,7 @@ ShouldPreserveFacing
           
           rem Check animation state for hurt states (5-9)
           rem ActionHit=5, ActionFallBack=6, ActionFallDown=7,
-          gosub GetPlayerAnimationState
+          gosub GetPlayerAnimationStateFunction
           rem ActionFallen=8, ActionRecovering=9
           if temp2 < 5 then SPF_PreserveNo
           rem Animation state < 5, allow facing update
@@ -483,7 +483,7 @@ InputHandleLeftPortPlayer
           rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
           rem Cache animation state at start (used for movement, jump,
           rem and attack checks)
-          gosub GetPlayerAnimationState
+          gosub GetPlayerAnimationStateFunction
           rem   block movement during attack animations (states 13-15)
           if temp2 >= 13 then DoneLeftPortMovement
           rem Block movement during attack windup/execute/recovery
@@ -627,7 +627,7 @@ InputHandleRightPortPlayer
           rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
           rem Cache animation state at start (used for movement, jump,
           rem and attack checks)
-          gosub GetPlayerAnimationState
+          gosub GetPlayerAnimationStateFunction
           rem   block movement during attack animations (states 13-15)
           if temp2 >= 13 then DoneRightPortMovement
           rem Block movement during attack windup/execute/recovery

@@ -33,27 +33,21 @@
 DrawArenaDigit
           rem INPUT: temp1 = digit value (0-15), temp5 = sprite (4 or 5)
           rem OUTPUT: Digit drawn to P4 or P5 at arena positions, white
-          rem
-          rem Clamp digit value to 0-15
-          if temp1 > 15 then temp1 = 15
 
           rem Set fixed arena positions and white color
-          if temp5 = 4 then goto SetArenaSprite4 else goto SetArenaSprite5
+          if temp5 = 5 then goto SetArenaSprite5
 
 SetArenaSprite4
           let player4x = ArenaDigitX
           let player4y = ArenaDigitY
           let COLUP4 = ArenaDigitColor
           goto LoadArenaPlayerDigit
-          rem tail call
 
 SetArenaSprite5
           let player5x = ArenaOnesDigitX
           let player5y = ArenaDigitY
           let COLUP5 = ArenaDigitColor
-          goto LoadArenaPlayerDigit
-          rem tail call
-
+          rem fall through
 LoadArenaPlayerDigit
           rem
           rem Load Arena Digit Data Into P4/P5 Sprites
@@ -61,7 +55,6 @@ LoadArenaPlayerDigit
           rem
           rem Input: temp5 = sprite (4 or 5), temp1 = glyph index (0-15)
           rem Output: player4/5 pointer set via bank16 helper, height=16
-          if temp5 = 4 then temp3 = 4 else temp3 = 5
           gosub SetPlayerGlyphFromFont bank16
           return
 
@@ -73,9 +66,6 @@ DrawArenaNumber
           rem INPUT: temp1 = arena number (1-32)
           rem OUTPUT: Arena number displayed using P4/P5 sprites
           rem
-          rem Clamp and compute tens/ones via lookup tables (tables contain leading space)
-          if temp1 > 32 then temp1 = 32
-          if temp1 < 1 then temp1 = 1
           let temp6 = ArenaTens[temp1]
           let temp7 = ArenaOnes[temp1]
           rem Always draw both digits

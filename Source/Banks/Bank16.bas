@@ -31,8 +31,23 @@ SetPlayerGlyphFromFont
             sta temp5
 end
           
-          rem Dispatch based on player
-          on temp3 goto SetP0, SetP1, SetP2, SetP3, SetP4, SetP5
+          rem Player 0 handled specially; others via indexed stores
+          if temp3 = 0 then SetP0
+SetP1to5
+          asm
+            ldy temp3
+            dey
+            lda temp4
+            sta player1pointerlo,y
+            lda temp5
+            sta player1pointerhi,y
+end
+          if temp3 = 1 then player1height = 16 : return
+          if temp3 = 2 then player2height = 16 : return
+          if temp3 = 3 then player3height = 16 : return
+          if temp3 = 4 then player4height = 16 : return
+          player5height = 16
+          return
 
 SetP0
           asm
@@ -44,61 +59,7 @@ end
           let player0height = 16
           return
 
-SetP1
-          asm
-            lda temp4
-            sta player1pointerlo
-            lda temp5
-            sta player1pointerhi
-end
-          let player1height = 16
-          return
-
-SetP2
-          asm
-            lda temp4
-            sta player2pointerlo
-            lda temp5
-            sta player2pointerhi
-end
-          let player2height = 16
-          return
-
-SetP3
-          asm
-            lda temp4
-            sta player3pointerlo
-            lda temp5
-            sta player3pointerhi
-end
-          let player3height = 16
-          return
-
-SetP4
-          asm
-            lda # <FontData
-            clc
-            adc temp6
-            sta player4pointerlo
-            lda # >FontData
-            adc #0
-            sta player4pointerhi
-end
-          let player4height = 16
-          return
-
-SetP5
-          asm
-            lda # <FontData
-            clc
-            adc temp6
-            sta player5pointerlo
-            lda # >FontData
-            adc #0
-            sta player5pointerhi
-end
-          let player5height = 16
-          return
+          
 
           rem Then — general code. must stay in this bank, but
           rem some sections may be vunerable to relocation if needed.

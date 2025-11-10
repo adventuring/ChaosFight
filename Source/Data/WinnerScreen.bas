@@ -23,7 +23,7 @@ WinnerScreenPlayfield
 end
 
 WinnerScreenColorsColor
-          pfcolors:
+          data
           ColGold(14)
           ColGold(12)
           ColGold(10)

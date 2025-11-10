@@ -164,12 +164,13 @@ ports or reads via write ports.
 
 ### Built-in Variables
 
-**DO NOT** use `LET` for built-in batariBASIC variables:
+**DO NOT** use `LET` for hardware register shadow variables:
 
 - TIA registers: `player0x`, `player0y`, `COLUP0`, `NUSIZ0`,
   `pf0`-`pf11`, `VBLANK`, etc.
-- Built-in variables: `temp1`-`temp6`, `frame`, `qtcontroller`
 - Hardware registers: `joy0up`, `joy0down`, `joy0fire`, `INPT0`, etc.
+- Kernel control registers exposed as variables (`switchbw`, `rand`, etc.)
+  that the batariBASIC runtime treats as device or kernel state.
 
 **Correct:**
 
@@ -178,8 +179,8 @@ player0x = 56
 player0y = 40
 COLUP0 = ColBlue(14)
 VBLANK = VBlankGroundINPT0123
-temp2 = 0
 frame = 0
+qtcontroller = 0
 ```
 
 ### User-Defined Variables
@@ -187,7 +188,7 @@ frame = 0
 **MUST** use `LET` statement for all user-defined variable assignments:
 
 - Game state: `gameState`, `playerHealth[]`, `selectedArena`, etc.
-- Temporary calculations: All intermediate values
+- Temporary calculations: All intermediate values (including `temp1`-`temp6`)
 - Arrays and tables: Any user-defined data structures
 
 **Correct:**

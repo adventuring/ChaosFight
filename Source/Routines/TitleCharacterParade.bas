@@ -72,7 +72,9 @@ StartNewParadeCharacter
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateCharacterParade
-          let titleParadeCharacter = rand & MaxCharacter
+Roll
+          let titleParadeCharacter = rand & $1f
+          if titleParadeCharacter > MaxCharacter then Roll
           rem Random character 0-MaxCharacter
           let titleParadeX = 246
           rem Start off-screen left
@@ -99,21 +101,21 @@ MoveParadeCharacter
           return
           
 ParadeCharacterLeft
-          rem Character has left - wait 1 second (60 frames) before next
+          rem Character has left - wait 1 second (FramesPerSecond frames) before next
           rem
           rem Input: titleParadeTimer, titleParadeActive (from
           rem UpdateCharacterParade)
           rem
           rem Output: titleParadeActive set to 0, titleParadeTimer
-          rem decremented by 60
+          rem decremented by FramesPerSecond
           rem
           rem Mutates: titleParadeActive (set to 0), titleParadeTimer
-          rem (decremented by 60)
+          rem (decremented by FramesPerSecond)
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateCharacterParade
           let titleParadeActive = 0
-          let titleParadeTimer = titleParadeTimer - 60 
+          let titleParadeTimer = titleParadeTimer - FramesPerSecond
           rem Reset timer for next character
           return
 

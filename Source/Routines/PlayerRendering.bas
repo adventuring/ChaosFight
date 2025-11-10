@@ -455,7 +455,7 @@ SetPlayerSprites
           rem REFP0 (TIA register) = player 0 reflection, _NUSIZ1,
           rem NewNUSIZ+2, NewNUSIZ+3 (TIA registers) = player sprite
           rem reflections, player sprite pointers (via
-          rem LoadCharacterSprite), temp1-temp5 (LoadCharacterColors parameters) = color
+          rem LoadCharacterSprite), currentPlayer/temp2-temp3 (LoadCharacterColors parameters) = color
           rem loading parameters
           rem
           rem Called Routines: LoadCharacterColors (bank16) - loads
@@ -468,7 +468,7 @@ SetPlayerSprites
           rem Set Player 1 color and sprite
           rem Use LoadCharacterColors for consistent color handling
           rem Player index
-          let temp1 = 0
+          let currentPlayer = 0
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[0]
           rem Guard flag (0 = not guarding)
@@ -491,12 +491,10 @@ end
 
           let currentCharacter = playerCharacter[0]
           rem Load sprite data from character definition
-          let temp2 = 0
-          rem Character index
-          let temp3 = 0
-          rem Animation frame (0=idle, 1=running)
-          rem Player number (0=Player 1)
-          rem temp2, temp3 already set above (animation frame and player number)
+          temp2 = 0
+          rem Animation frame (0 = idle)
+          temp3 = 0
+          rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
 
           rem Set Player 2 color and sprite
@@ -504,7 +502,7 @@ end
           rem   across TV modes
           rem NOTE: Multi-sprite kernel requires _COLUP1 (with
           rem Player index
-          let temp1 = 1
+          let currentPlayer = 1
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[1]
           rem Guard flag (0 = not guarding)
@@ -536,12 +534,10 @@ end
 
           let currentCharacter = playerCharacter[1]
           rem Load sprite data from character definition
-          let temp2 = 0
-          rem Character index
-          let temp3 = 1
-          rem Animation frame (0=idle, 1=running)
-          rem Player number (1=Player 2)
-          rem temp2, temp3 already set above (animation frame and player number)
+          temp2 = 0
+          rem Animation frame (0 = idle)
+          temp3 = 0
+          rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
 
           rem Set colors for Players 3 & 4 (multisprite kernel)
@@ -557,7 +553,7 @@ end
           
           rem Use LoadCharacterColors for consistent color handling
           rem Player index
-          let temp1 = 2
+          let currentPlayer = 2
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[2]
           rem Guard flag (0 = not guarding)
@@ -588,12 +584,10 @@ end
 
           let currentCharacter = playerCharacter[2]
           rem Load sprite data from character definition
-          let temp2 = 0
-          rem Character index
-          let temp3 = 2
-          rem Animation frame (0=idle, 1=running)
-          rem Player number (2=Player 3)
-          rem temp2, temp3 already set above (animation frame and player number)
+          temp2 = 0
+          rem Animation frame (0 = idle)
+          temp3 = 0
+          rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
           
 DonePlayer3Sprite
@@ -608,7 +602,7 @@ DonePlayer3Sprite
           rem   across TV modes
           rem Player 4: Turquoise (SECAM maps to Green), hurt handled by
           rem Player index
-          let temp1 = 3
+          let currentPlayer = 3
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[3]
           rem Guard flag (0 = not guarding)
@@ -639,12 +633,10 @@ end
 
           let currentCharacter = playerCharacter[3]
           rem Load sprite data from character definition
-          let temp2 = 0
-          rem Character index
-          let temp3 = 3
-          rem Animation frame (0=idle, 1=running)
-          rem Player number (3=Player 4)
-          rem temp2, temp3 already set above (animation frame and player number)
+          temp2 = 0
+          rem Animation frame (0 = idle)
+          temp3 = 0
+          rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
           
 DonePlayer4Sprite

@@ -37,36 +37,37 @@ SetPlayerLocked
           rem Set Player Locked State
           rem Sets the locked state for a specific player
           rem
-          rem INPUT: temp1 = player index (0-3)
-          rem         temp2 = locked state (0=unlocked, 1=normal,
-          rem         2=handicap)
-          rem
-          rem OUTPUT: playerLocked variable updated
-          rem Set the locked state for a specific player in bit-packed
-          rem playerLocked variable
-          rem
-          rem Input: temp1 = player index (0-3), temp2 = locked state
-          rem (0=unlocked, 1=normal, 2=handicap), playerLocked (global)
-          rem = current bit-packed locked states
-          rem
+          rem Input: currentPlayer (global) = player index (0-3)
+          rem        temp1 (fallback) = player index (0-3) when
+          rem        currentPlayer is out of range
+          rem        temp2 = locked state (0=unlocked, 1=normal,
+          rem        2=handicap)
           rem Output: playerLocked (global) updated with new state for
-          rem specified player
-          rem
-          rem Mutates: playerLocked (global)
-          rem
+          rem        specified player
+          rem Mutates: playerLocked (global), currentPlayer (global)
           rem Called Routines: None
-          rem Constraints: None
+          rem Constraints: currentPlayer preferred; temp1 retained for
+          rem        legacy callers
 
-          rem Invalid index check (temp1 should be 0-3)
-          if temp1 < 0 then return
-          if temp1 > 3 then return
+          rem Determine player index from currentPlayer when valid
+          temp3 = currentPlayer
+          if temp3 < 0 then goto SetPlayerLockedUseTemp
+          if temp3 > 3 then goto SetPlayerLockedUseTemp
+          goto SetPlayerLockedApply
+
+SetPlayerLockedUseTemp
+          temp3 = temp1
+          if temp3 < 0 then return
+          if temp3 > 3 then return
+
+SetPlayerLockedApply
+          let currentPlayer = temp3
 
           rem Clear the 2 bits for this player and set the new value
-          rem Use masking operations compatible with batariBASIC
-          if temp1 = 0 then playerLocked = (playerLocked & 252) | temp2 : return
-          if temp1 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4) : return
-          if temp1 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return
-          if temp1 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return
+          if temp3 = 0 then playerLocked = (playerLocked & 252) | temp2 : return
+          if temp3 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4) : return
+          if temp3 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return
+          if temp3 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return
 
           return
 

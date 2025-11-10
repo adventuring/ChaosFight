@@ -76,11 +76,13 @@ CharacterSelectLoop
           rem playerLocked state
           rem
           rem Constraints: Must be colocated with SelectStickLeft,
-          rem SelectStickRight, SelectStick0FireQ, SelectStick0Down,
-          rem Player1LockSelection, Player1HandicapSelection,
-          rem Player1LockSelectionDone, SelectStick1FireQ,
-          rem SelectStick1Down, SelectStick1DownQ, Player2LockSelectionDone,
-          rem SelectStick1EvenFrameSkip, CharacterSelectHandleQuadtari
+          rem SelectStickRight, Player1LockSelection,
+          rem Player1HandicapSelection, Player1LockSelectionDone,
+          rem Player2LockSelection, Player2HandicapSelection,
+          rem Player2LockSelectionDone, Player3LockSelection,
+          rem Player3HandicapSelection, Player3LockSelectionDone,
+          rem Player4LockSelection, Player4HandicapSelection,
+          rem Player4LockSelectionDone, CharacterSelectHandleQuadtari
           rem              Entry point for character select screen loop
           rem Quadtari controller multiplexing:
           rem On even frames (qtcontroller=0): handle controllers 0 and
@@ -91,25 +93,16 @@ CharacterSelectLoop
           if qtcontroller then goto CharacterSelectHandleQuadtari
           
           rem Handle Player 1 input (joy0 on even frames)
-          if joy0left then let currentPlayer = 0
+          let currentPlayer = 0
+          
           if joy0left then gosub SelectStickLeft
-
-          if joy0right then let currentPlayer = 0
           if joy0right then gosub SelectStickRight
 
-          if joy0up then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
-          if joy0down then SelectStick0FireQ
-          goto SelectStick0Down
+          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-SelectStick0FireQ
-          if joy0fire then SelectStick0Down
-          temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          
-SelectStick0Down
-          rem Unlock by moving down (without fire)
           if joy0fire then Player1LockSelection
-          goto Player1LockSelectionDone
+          goto DonePlayer1
 
 Player1LockSelection
           if joy0down then Player1HandicapSelection
@@ -120,40 +113,30 @@ Player1LockSelection
 Player1HandicapSelection
           temp1 = 0 : temp2 = PlayerHandicapped : gosub SetPlayerLocked
 Player1LockSelectionDone
-          rem Locked with handicap (75% health)
+DonePlayer1
 
           rem Handle Player 2 input (joy1 on even frames)
-          if joy1left then let currentPlayer = 1
+          let currentPlayer = 1
+          
           if joy1left then gosub SelectStickLeft
-
-          if joy1right then let currentPlayer = 1
           if joy1right then gosub SelectStickRight
 
-          if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
-          if joy1down then SelectStick1FireQ
+          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-          goto SelectStick1Down
+          if joy1fire then Player2LockSelection
+          goto DonePlayer2
 
-SelectStick1FireQ
-          if joy1fire then SelectStick1Down
-
-          temp1 = 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-SelectStick1Down
-          rem Unlock by moving down (without fire)
-          if joy1fire then SelectStick1DownQ
-
-          goto SelectStick1EvenFrameSkip
-
-SelectStick1DownQ
-          if joy1down then temp1 = 1 : temp2 = PlayerHandicapped : gosub SetPlayerLocked : goto Player2LockSelectionDone
-
-          temp1 = 1 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
-          rem Locked with handicap (75% health)
-Player2LockSelectionDone 
+Player2LockSelection
+          if joy1down then Player2HandicapSelection
+          temp1 = currentPlayer : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
+          goto Player2LockSelectionDone
           rem Locked normal (100% health)
 
-SelectStick1EvenFrameSkip
+Player2HandicapSelection
+          temp1 = currentPlayer : temp2 = PlayerHandicapped : gosub SetPlayerLocked
+Player2LockSelectionDone
+DonePlayer2
           qtcontroller = 1
           rem Switch to odd frame mode for next iteration
           goto CharacterSelectHandleComplete
@@ -165,38 +148,28 @@ CharacterSelectHandleQuadtari
           goto CharacterSelectSkipPlayer3
 
 CharacterSelectHandlePlayer3
-          if joy0left then let currentPlayer = 2
+          let currentPlayer = 2
+          
           if joy0left then gosub SelectStickLeft
-
-          if joy0right then let currentPlayer = 2
           if joy0right then gosub SelectStickRight
 
-          if joy0up then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
-          if joy0down then SelectStick0FirePlayer3Q
+          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-          goto SelectStick0DownPlayer3
+          if joy0fire then Player3LockSelection
+          goto DonePlayer3
 
-SelectStick0FirePlayer3Q
-          if joy0fire then SelectStick0DownPlayer3
-          temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-SelectStick0DownPlayer3
-          rem Unlock by moving down (without fire)
-          if joy0fire then SelectStick0DownPlayer3Q
-
-          goto Player3LockSelectionDone
-
-SelectStick0DownPlayer3Q
+Player3LockSelection
           if joy0down then Player3HandicapSelection
-
-          temp1 = 2 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
+          temp1 = currentPlayer : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           goto Player3LockSelectionDone
           rem Locked normal (100% health)
 
 Player3HandicapSelection
-          temp1 = 2 : temp2 = PlayerHandicapped : gosub SetPlayerLocked
+          temp1 = currentPlayer : temp2 = PlayerHandicapped : gosub SetPlayerLocked
 Player3LockSelectionDone
           rem Locked with handicap (75% health)
+DonePlayer3
 
           rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
 
@@ -205,39 +178,28 @@ Player3LockSelectionDone
           goto CharacterSelectSkipPlayer4
 
 CharacterSelectHandlePlayer4
-          if joy1left then let currentPlayer = 3
+          let currentPlayer = 3
+          
           if joy1left then gosub SelectStickLeft
-
-          if joy1right then let currentPlayer = 3
           if joy1right then gosub SelectStickRight
 
-          if joy1up then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
-          if joy1down then SelectStick1FirePlayer4Q
+          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-          goto SelectStick1DownPlayer4
+          if joy1fire then Player4LockSelection
+          goto DonePlayer4
 
-SelectStick1FirePlayer4Q
-          if joy1fire then SelectStick1DownPlayer4
-
-          temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-SelectStick1DownPlayer4
-          rem Unlock by moving down (without fire)
-          if joy1fire then SelectStick1DownPlayer4Q
-
-          goto SelectStick1OddFrameSkip
-
-SelectStick1DownPlayer4Q
+Player4LockSelection
           if joy1down then Player4HandicapSelection
-
-          temp1 = 3 : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
+          temp1 = currentPlayer : temp2 = PlayerLockedNormal : gosub SetPlayerLocked
           goto Player4LockSelectionDone
           rem Locked normal (100% health)
 
 Player4HandicapSelection
-          temp1 = 3 : temp2 = PlayerHandicapped : gosub SetPlayerLocked
+          temp1 = currentPlayer : temp2 = PlayerHandicapped : gosub SetPlayerLocked
 Player4LockSelectionDone
           rem Locked with handicap (75% health)
+DonePlayer4
           
           qtcontroller = 0
           rem Switch back to even frame mode for next iteration

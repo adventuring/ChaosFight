@@ -129,7 +129,8 @@ DrawParadeCharacter
           rem via DrawParadeCharacterSprite
           rem
           rem Mutates: player0x, player0y (TIA registers),
-          rem         COLUP0 (TIA register), temp1-temp4 (LocateCharacterArt parameters)
+          rem         COLUP0 (TIA register), currentCharacter, currentPlayer,
+          rem         temp2-temp3 (LoadCharacterSprite parameters)
           rem
           rem Called Routines: DrawParadeCharacterSprite (bank9) - draws
           rem character sprite
@@ -143,7 +144,7 @@ DrawParadeCharacter
           rem Always face right while marching across the title screen
           REFP0 = PlayerStateBitFacing
           
-          rem Parade render uses fixed bright gray to match title art palette
+          rem Parade render uses fixed white color
           COLUP0 = ColGray(12)
           
 DrawParadeCharacterSprite
@@ -152,13 +153,13 @@ DrawParadeCharacterSprite
           rem Load actual character artwork for the parade sprite using
           rem the character art system.
           rem
-          rem Input: titleParadeTimer (animation timing), currentCharacter
+          rem Input: titleParadeTimer (animation timing), titleParadeCharacter
           rem Output: Player 0 sprite data populated in SCRAM buffers
-          rem Use default walking animation for parade march
-          let temp1 = titleParadeCharacter
-          let temp2 = titleParadeTimer & 7
-          let temp3 = ActionWalking
-          let temp4 = 0
-          gosub LocateCharacterArt bank10
+          rem Uses default walking animation for parade march
+          let currentCharacter = titleParadeCharacter
+          let currentPlayer = 0
+          temp2 = titleParadeTimer & 7
+          temp3 = ActionWalking
+          gosub LoadCharacterSprite bank16
           return
 

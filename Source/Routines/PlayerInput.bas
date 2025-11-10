@@ -473,6 +473,7 @@ InputHandleLeftPortPlayerFunction
           rem
           rem INPUT: temp1 = player index (0 or 2)
           rem USES: joy0left, joy0right, joy0up, joy0down, joy0fire
+          let currentPlayer = temp1
           rem Cache animation state at start (used for movement, jump,
           rem and attack checks)
           gosub GetPlayerAnimationStateFunction
@@ -718,6 +719,7 @@ InputHandleRightPortPlayerFunction
           rem
           rem INPUT: temp1 = player index (1 or 3)
           rem USES: joy1left, joy1right, joy1up, joy1down, joy1fire
+          let currentPlayer = temp1
           rem Cache animation state at start (used for movement, jump,
           rem and attack checks)
           gosub GetPlayerAnimationStateFunction

@@ -22,55 +22,45 @@ SelectDrawScreenDone
 
 SelectDrawSprite
           rem Draw character sprite based on current position and playerCharacter
-          let temp3 = 255
+          let currentPlayer = 255
           if player0x = 56 then goto SelectDeterminePlayerP0
           if player1x = 104 then goto SelectDeterminePlayerP1
           goto SelectDrawSpriteDone
 SelectDeterminePlayerP0
-          if player0y = 40 then temp3 = 0 : goto SelectLoadSprite
-          if player0y = 80 then temp3 = 2 : goto SelectLoadSprite
+          if player0y = 40 then let currentPlayer = 0 : goto SelectLoadSprite
+          if player0y = 80 then let currentPlayer = 2 : goto SelectLoadSprite
           goto SelectDrawSpriteDone
 SelectDeterminePlayerP1
-          if player1y = 40 then temp3 = 1 : goto SelectLoadSprite
-          if player1y = 80 then temp3 = 3 : goto SelectLoadSprite
+          if player1y = 40 then let currentPlayer = 1 : goto SelectLoadSprite
+          if player1y = 80 then let currentPlayer = 3 : goto SelectLoadSprite
           goto SelectDrawSpriteDone
 SelectLoadSprite
-          if temp3 > 3 then goto SelectDrawSpriteDone
-          let temp6 = temp3
-          let temp1 = playerCharacter[temp6]
-          if temp1 = NoCharacter then goto SelectLoadSpecialSprite
-          if temp1 = CPUCharacter then goto SelectLoadSpecialSprite
-          if temp1 = RandomCharacter then goto SelectLoadSpecialSprite
-          if characterSelectPlayerAnimationSequence_R[temp6] then goto SelectLoadWalkingSprite
-          let temp2 = characterSelectPlayerAnimationFrame_R[temp6]
-          let temp3 = 1
-          let temp4 = temp6
-          gosub LocateCharacterArt bank10
-          goto SelectLoadSpriteColor
-SelectLoadSpecialSprite
-          let temp3 = temp6
-          if temp1 = NoCharacter then temp6 = SpriteNo : goto SelectLoadSpecialSpriteCall
-          if temp1 = CPUCharacter then temp6 = SpriteCPU : goto SelectLoadSpecialSpriteCall
-          let temp6 = SpriteQuestionMark
-SelectLoadSpecialSpriteCall
-          let temp4 = temp6  : gosub CopyGlyphToPlayer bank16
-          goto SelectLoadSpriteColor
+          if currentPlayer > 3 then goto SelectDrawSpriteDone
+          let currentCharacter = playerCharacter[currentPlayer]
+          if currentCharacter = NoCharacter then goto SelectUseDefaultAnimation
+          if currentCharacter = CPUCharacter then goto SelectUseDefaultAnimation
+          if currentCharacter = RandomCharacter then goto SelectUseDefaultAnimation
+          if characterSelectPlayerAnimationSequence_R[currentPlayer] then goto SelectLoadWalkingSprite
+          temp2 = characterSelectPlayerAnimationFrame_R[currentPlayer]
+          temp3 = ActionIdle
+          goto SelectInvokeSpriteLoad
 SelectLoadWalkingSprite
-          let temp2 = characterSelectPlayerAnimationSequence_R[temp6]
-          let temp3 = 3
-          let temp4 = temp6
-          gosub LocateCharacterArt bank10
+          temp2 = characterSelectPlayerAnimationSequence_R[currentPlayer]
+          temp3 = ActionWalking
+          goto SelectInvokeSpriteLoad
+SelectUseDefaultAnimation
+          temp2 = 0
+          temp3 = ActionIdle
+SelectInvokeSpriteLoad
+          gosub LoadCharacterSprite bank16
 SelectLoadSpriteColor
-          let temp7 = temp6
-          let temp1 = temp7
-          let temp2 = 0
-          let temp3 = 0
+          temp2 = 0
+          temp3 = 0
           gosub LoadCharacterColors bank16
           gosub SelectApplyPlayerColor
-          let temp1 = temp7
+          let temp1 = currentPlayer
           gosub GetPlayerLocked
-          let temp5 = temp2
-          let temp3 = temp7
+          temp5 = temp2
           if !temp5 then goto SelectApplyUnlockedColor
           if temp5 = PlayerHandicapped then goto SelectApplyHandicapColor
 SelectDrawSpriteDone
@@ -84,53 +74,26 @@ SelectApplyHandicapColor
 
 SelectApplyPlayerColor
           rem Apply base color returned in temp6 to the appropriate sprite register
-          on temp7 goto SelectApplyPlayerColor0 SelectApplyPlayerColor1 SelectApplyPlayerColor2 SelectApplyPlayerColor3
-SelectApplyPlayerColor0
-          COLUP0 = temp6
-          goto SelectApplyPlayerColorDone
-SelectApplyPlayerColor1
-          _COLUP1 = temp6
-          goto SelectApplyPlayerColorDone
-SelectApplyPlayerColor2
-          COLUP2 = temp6
-          goto SelectApplyPlayerColorDone
-SelectApplyPlayerColor3
+          if currentPlayer = 0 then COLUP0 = temp6 : return
+          if currentPlayer = 1 then _COLUP1 = temp6 : return
+          if currentPlayer = 2 then COLUP2 = temp6 : return
           COLUP3 = temp6
-SelectApplyPlayerColorDone
           return
 
 
 SelectSetPlayerColorUnlocked
           rem Override sprite color to indicate unlocked state (white)
-          if temp3 > 3 then temp3 = 3
-          on temp3 goto SelectSetPlayerColorUnlocked0 SelectSetPlayerColorUnlocked1 SelectSetPlayerColorUnlocked2 SelectSetPlayerColorUnlocked3
-SelectSetPlayerColorUnlocked0
-          COLUP0 = ColGrey(14)
-          return
-SelectSetPlayerColorUnlocked1
-          _COLUP1 = ColGrey(14)
-          return
-SelectSetPlayerColorUnlocked2
-          COLUP2 = ColGrey(14)
-          return
-SelectSetPlayerColorUnlocked3
+          if currentPlayer = 0 then COLUP0 = ColGrey(14) : return
+          if currentPlayer = 1 then _COLUP1 = ColGrey(14) : return
+          if currentPlayer = 2 then COLUP2 = ColGrey(14) : return
           COLUP3 = ColGrey(14)
           return
 
 SelectSetPlayerColorHandicap
           rem Override sprite color to indicate handicap lock (dim player color)
-          if temp3 > 3 then temp3 = 3
-          on temp3 goto SelectSetPlayerColorHandicap0 SelectSetPlayerColorHandicap1 SelectSetPlayerColorHandicap2 SelectSetPlayerColorHandicap3
-SelectSetPlayerColorHandicap0
-          COLUP0 = ColIndigo(6)
-          return
-SelectSetPlayerColorHandicap1
-          _COLUP1 = ColRed(6)
-          return
-SelectSetPlayerColorHandicap2
-          COLUP2 = ColYellow(6)
-          return
-SelectSetPlayerColorHandicap3
+          if currentPlayer = 0 then COLUP0 = ColIndigo(6) : return
+          if currentPlayer = 1 then _COLUP1 = ColRed(6) : return
+          if currentPlayer = 2 then COLUP2 = ColYellow(6) : return
           COLUP3 = ColTurquoise(6)
           return
 

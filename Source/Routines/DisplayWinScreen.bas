@@ -207,8 +207,8 @@ DWS_Position1Player
           rem
           rem Mutates: playerX[0-3], playerY[0] (TIA registers), player
           rem sprite pointers (via LoadCharacterSprite),
-          rem         currentCharacter, LCS_animationFrame,
-          rem         LCS_playerNumber (passed to LoadCharacterSprite)
+          rem         currentCharacter, currentPlayer,
+          rem         temp2-temp3 (passed to LoadCharacterSprite)
           rem
           rem Called Routines: LoadCharacterSprite (bank10) - loads
           rem character sprite
@@ -217,9 +217,11 @@ DWS_Position1Player
           let playerY[0] = 192
           let currentCharacter = playerCharacter[temp2]
           rem Load winner sprite
-          let LCS_animationFrame = 0
-          let LCS_playerNumber = 0
+          let currentPlayer = 0
+          temp2 = 0
           rem Animation frame 0 (idle)
+          temp3 = 0
+          rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank10
           rem Player 0
           let playerX[1] = 0
@@ -239,8 +241,8 @@ DWS_Position2Players
           rem
           rem Mutates: playerX[0-3], playerY[0-1] (TIA registers),
           rem player sprite pointers (via LoadCharacterSprite),
-          rem         currentCharacter, LCS_animationFrame,
-          rem         LCS_playerNumber (passed to LoadCharacterSprite)
+          rem         currentCharacter, currentPlayer,
+          rem         temp2-temp3 (passed to LoadCharacterSprite)
           rem
           rem Called Routines: LoadCharacterSprite (bank10) - loads
           rem character sprites
@@ -251,8 +253,11 @@ DWS_Position2Players
           rem Winner (P0)
           let playerY[0] = 192
           let currentCharacter = playerCharacter[temp2]
-          let LCS_animationFrame = 0
-          let LCS_playerNumber = 0
+          let currentPlayer = 0
+          temp2 = 0
+          rem Animation frame 0 (idle)
+          temp3 = 0
+          rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank10
           
           rem Runner-up (P1) - only if valid
@@ -261,8 +266,11 @@ DWS_Position2Players
           let playerX[1] = 40
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
-          let LCS_animationFrame = 0
-          let LCS_playerNumber = 1
+          let currentPlayer = 1
+          temp2 = 0
+          rem Animation frame 0 (idle)
+          temp3 = 0
+          rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank10
           goto DWS_Hide2PlayerDone
 DWS_Hide2Player
@@ -307,8 +315,8 @@ DWS_Position3Players
           rem
           rem Mutates: playerX[0-3], playerY[0-2] (TIA registers),
           rem player sprite pointers (via LoadCharacterSprite),
-          rem         currentCharacter, LCS_animationFrame,
-          rem         LCS_playerNumber (passed to LoadCharacterSprite)
+          rem         currentCharacter, currentPlayer,
+          rem         temp2-temp3 (passed to LoadCharacterSprite)
           rem
           rem Called Routines: LoadCharacterSprite (bank10) - loads
           rem character sprites
@@ -321,8 +329,11 @@ DWS_Position3Players
           let playerY[0] = 128
           rem Row 16 = 128 pixels (16 * 8)
           let currentCharacter = playerCharacter[temp2]
-          let LCS_animationFrame = 0
-          let LCS_playerNumber = 0
+          let currentPlayer = 0
+          temp2 = 0
+          rem Animation frame 0 (idle)
+          temp3 = 0
+          rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank10
           
           rem 2nd place (P1) - left platform
@@ -331,8 +342,11 @@ DWS_Position3Players
           let playerX[1] = 40
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
-          let LCS_animationFrame = 0
-          let LCS_playerNumber = 1
+          let currentPlayer = 1
+          temp2 = 0
+          rem Animation frame 0 (idle)
+          temp3 = 0
+          rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank10
           goto DWS_Hide3Player2Done
 DWS_Hide3Player2
@@ -368,8 +382,11 @@ DWS_Hide3Player2Done
           let playerX[2] = 120
           let playerY[2] = 192
           let currentCharacter = playerCharacter[temp4]
-          let LCS_animationFrame = 0
-          let LCS_playerNumber = 2
+          let currentPlayer = 2
+          temp2 = 0
+          rem Animation frame 0 (idle)
+          temp3 = 0
+          rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank10
           goto DWS_Hide3Player3Done
 DWS_Hide3Player3

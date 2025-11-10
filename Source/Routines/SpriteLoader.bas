@@ -18,58 +18,37 @@
 end
 
 LoadCharacterSprite
-          asm
-; Load character sprite data - calls LocateCharacterArt (bank10)
-; Input: currentCharacter, temp2=frame, temp3=player
-; Output: Sprite loaded via bank10 routines
-end
+          rem Load character sprite data - calls LocateCharacterArt (bank10)
+          rem Input: currentCharacter (global), currentPlayer (global)
+          rem        temp2 = animation frame (0-7), temp3 = animation action (0-15)
+          rem Output: Sprite loaded via bank10 routines
           rem Inputs are trusted in internal context; skip range validation
 
-          asm
-; Check if character is special placeholder
-end
-          if currentCharacter = NoCharacter then temp4 = SpriteNo : gosub CopyGlyphToPlayer bank16 : return
+          if currentCharacter = NoCharacter then goto LCS_CopyNoGlyph
+          if currentCharacter = CPUCharacter then goto LCS_CopyCPUGlyph
+          if currentCharacter = RandomCharacter then goto LCS_CopyQuestionGlyph
 
-          if currentCharacter = 254 then temp4 = SpriteCPU : gosub CopyGlyphToPlayer bank16 : return
-          asm
-; tail call
-; CPUCharacter = 254
-end
-
-          if currentCharacter = RandomCharacter then temp4 = SpriteQuestionMark : gosub CopyGlyphToPlayer bank16 : return
-          rem  Use character art location system for sprite loading
-          asm
-;
-; Input: currentCharacter = character index (global
-; variable), animationFrame =
-;   animation frame
-; playerNumber = player number OR playerNumberAlt = player
-;   number (caller provides)
-; Default to animation sequence 0 (idle) for character
-;   select
-; LocateCharacterArt expects: temp1=char, temp2=frame,
-;   temp3=action, temp4=player
-;
-; Check if player number in temp3 or temp4
-; If temp4 is not set (0 and caller might have used temp3),
-end
-          if !temp4 then temp4 = temp3
-          asm
-;   copy from temp3
-;
-; Move player number to temp4 and set temp3 to animation
-end
-          let temp3 = 0
-          asm
-; action (0=idle)
-; animation action/sequence 0 = idle
-; playerNumberAlt already has player number from caller
-end
-          let temp1 = currentCharacter
-          asm
-; Set temp variables for cross-bank call
-end
+          temp4 = currentPlayer
+          temp1 = currentCharacter
           gosub LocateCharacterArt bank10
+          return
+
+LCS_CopyNoGlyph
+          temp3 = currentPlayer
+          temp4 = SpriteNo
+          gosub CopyGlyphToPlayer bank16
+          return
+
+LCS_CopyCPUGlyph
+          temp3 = currentPlayer
+          temp4 = SpriteCPU
+          gosub CopyGlyphToPlayer bank16
+          return
+
+LCS_CopyQuestionGlyph
+          temp3 = currentPlayer
+          temp4 = SpriteQuestionMark
+          gosub CopyGlyphToPlayer bank16
           return
 
 LoadPlayerSprite

@@ -426,8 +426,7 @@ ArenaSelectDrawCharacters
           rem
           rem Called Routines: ArenaSelectDrawPlayerSprite - accesses
           rem character selections, frame,
-          rem   LocateCharacterArt (bank10) - accesses character art
-          rem   data,
+          rem   LoadCharacterSprite (bank16) - loads character art data,
           rem   LoadCharacterColors (bank16) - accesses color tables
           rem
           rem Constraints: Must be colocated with ArenaSelectSkipDrawP0,
@@ -447,7 +446,7 @@ ArenaSelectDrawCharacters
           if playerCharacter[0] = CPUCharacter then ArenaSelectDoneDrawP0
           if playerCharacter[0] = RandomCharacter then ArenaSelectDoneDrawP0
           player0x = 56 : player0y = 40
-          let temp1 = 0
+          let currentPlayer = 0
           gosub ArenaSelectDrawPlayerSprite
 
 ArenaSelectDoneDrawP0
@@ -468,7 +467,7 @@ ArenaSelectDoneDrawP0
           if playerCharacter[1] = CPUCharacter then ArenaSelectDoneDrawP1
           if playerCharacter[1] = RandomCharacter then ArenaSelectDoneDrawP1
           player1x = 104 : player1y = 40
-          let temp1 = 1
+          let currentPlayer = 1
           gosub ArenaSelectDrawPlayerSprite
 
 ArenaSelectDoneDrawP1
@@ -491,7 +490,7 @@ ArenaSelectDoneDrawP1
           if playerCharacter[2] = CPUCharacter then ArenaSelectDoneDrawP2
           if playerCharacter[2] = RandomCharacter then ArenaSelectDoneDrawP2
           player2x = 56 : player2y = 80
-          let temp1 = 2
+          let currentPlayer = 2
           gosub ArenaSelectDrawPlayerSprite
 
 ArenaSelectDoneDrawP2
@@ -515,7 +514,7 @@ ArenaSelectDoneDrawP2
           if playerCharacter[3] = CPUCharacter then ArenaSelectDoneDrawP23
           if playerCharacter[3] = RandomCharacter then ArenaSelectDoneDrawP23
           player3x = 104 : player3y = 80
-          let temp1 = 3
+          let currentPlayer = 3
           gosub ArenaSelectDrawPlayerSprite
 
 ArenaSelectDoneDrawP23
@@ -535,63 +534,46 @@ ArenaSelectDrawPlayerSprite
           rem ArenaSelectDrawCharacters
           rem Draw character sprite for specified player
           rem
-          rem Input: temp1 = player index (0-3)
+          rem Input: currentPlayer (global) = player index (0-3)
           rem        playerCharacter[] (global array) = character selections
           rem        frame (global) = frame counter
           rem        player0-3x, player0-3y (TIA registers) = sprite
           rem        positions (set by caller)
           rem
-          rem Output: Player sprite pointer set via LocateCharacterArt,
+          rem Output: Player sprite pointer set via LoadCharacterSprite,
           rem COLUP0-COLUP3 set via LoadCharacterColors
           rem
-          rem Mutates: temp1-temp4 (passed to LocateCharacterArt),
-          rem player sprite pointers (via LocateCharacterArt),
-          rem         COLUP0-COLUP3 (via LoadCharacterColors),
-          rem         temp1-temp5 (LoadCharacterColors parameters)
+          rem Mutates: currentCharacter (global), temp2-temp3
+          rem         (LoadCharacterSprite / LoadCharacterColors parameters),
+          rem         player sprite pointers, COLUP0-COLUP3
           rem
-          rem Called Routines: LocateCharacterArt (bank10) - accesses
-          rem character art data, temp1-temp4,
+          rem Called Routines: LoadCharacterSprite (bank16) - loads
+          rem character art data,
           rem   LoadCharacterColors (bank16) - accesses color tables
           rem Constraints: Must be colocated with ArenaSelectDrawCharacters
           rem Draw character sprite for specified player
           rem
-          rem Input: playerIndex = player index (0-3)
           rem Uses playerCharacter[0-3] and player positions set by caller
           
-          rem Get character index based on player
-          rem Preserve player index in temp6
-          let temp6 = temp1
-
-          if temp1 = 0 then temp1 = playerCharacter[0]
-          if temp1 = 1 then temp1 = playerCharacter[1]
-          if temp1 = 2 then temp1 = playerCharacter[2]
-          if temp1 = 3 then temp1 = playerCharacter[3]
-
-          rem Use idle animation (action 1 = ActionIdle)
-          let temp3 = 1
+          rem Load character data for current player
+          let currentCharacter = playerCharacter[currentPlayer]
+          rem Use idle animation (ActionIdle)
+          temp3 = ActionIdle
           rem Simple frame counter cycles 0-7
-          let temp2 = frame & 7
-          rem Player number for art system (temp6 = original player index)
-          let temp4 = temp6
-          
-          rem Load character sprite using art location system
-          rem LocateCharacterArt expects: temp1=char, temp2=frame,
-          rem temp3=action, temp4=player
-          gosub LocateCharacterArt bank10
+          temp2 = frame & 7
+          gosub LoadCharacterSprite bank16
           
           rem Set character color based on player number
-          rem LoadCharacterColors expects: temp1=player, temp2=hurt, temp3=guarding
-          let temp7 = temp6
-          let temp1 = temp7
+          rem LoadCharacterColors expects: currentPlayer, temp2=hurt, temp3=guarding
           rem Not hurt
-          let temp2 = 0
+          temp2 = 0
           rem Not guarding
-          let temp3 = 0
+          temp3 = 0
           gosub LoadCharacterColors bank16
           
-          if temp7 = 0 then COLUP0 = temp6
-          if temp7 = 1 then _COLUP1 = temp6
-          if temp7 = 2 then COLUP2 = temp6
-          if temp7 = 3 then COLUP3 = temp6  
+          if currentPlayer = 0 then COLUP0 = temp6
+          if currentPlayer = 1 then _COLUP1 = temp6
+          if currentPlayer = 2 then COLUP2 = temp6
+          if currentPlayer = 3 then COLUP3 = temp6  
           
           return

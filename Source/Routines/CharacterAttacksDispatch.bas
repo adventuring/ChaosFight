@@ -103,7 +103,7 @@ CheckEnhancedJumpButton
           rem Checks Genesis/Joy2b+ Button C/II for jump input
           rem Only players 1-2 can have enhanced controllers (players 3-4 require Quadtari)
           rem
-          rem INPUT: temp1 = player index (0-3)
+          rem INPUT: currentPlayer (global) = player index (0-3)
           rem
           rem OUTPUT: temp3 = 1 if jump button pressed, 0 otherwise
           rem Uses: INPT0 for players 0; INPT2 for players 1
@@ -113,8 +113,8 @@ CheckEnhancedJumpButton
 
           rem Only players 0-1 can have enhanced controllers
           rem Players 2-3 (Quadtari players) cannot have enhanced controllers
-          if temp1 = 0 then CEJB_CheckPlayer0
-          if temp1 = 1 then CEJB_CheckPlayer2
+          if currentPlayer = 0 then CEJB_CheckPlayer0
+          if currentPlayer = 1 then CEJB_CheckPlayer2
           rem Players 2-3 skip enhanced controller checks
           goto CEJB_Done
 CEJB_CheckPlayer0

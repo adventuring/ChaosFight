@@ -256,10 +256,10 @@
           rem OPTIMIZED: Moved from w036-w039 to w071-w074 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
+          rem Admin and Game Mode never run simultaneously
           dim MusicVoice0TargetAUDV_W = w071
-          rem   Admin and Game Mode never run simultaneously
-          dim MusicVoice0TargetAUDV_R = r071
           rem Target AUDV value from note data (envelope calculation)
+          dim MusicVoice0TargetAUDV_R = r071
           dim MusicVoice1TargetAUDV_W = w072
           rem   envelope calculation target
           dim MusicVoice1TargetAUDV_R = r072

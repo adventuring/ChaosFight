@@ -17,6 +17,7 @@
 #include "Source/TitleScreen/asm/titlescreen.s"
 end
 
+#include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/TitleScreenMain.bas"
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/TitleCharacterParade.bas"

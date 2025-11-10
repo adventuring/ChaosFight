@@ -56,7 +56,6 @@ UpdateCharacterParade
 
           rem Move character across screen (if active)
           goto MoveParadeCharacter
-       return
           
 StartNewParadeCharacter
           rem Start new character parade
@@ -127,9 +126,8 @@ DrawParadeCharacter
           rem Output: player0x, player0y set, COLUP0 set, sprite drawn
           rem via DrawParadeCharacterSprite
           rem
-          rem Mutates: player0x, player0y (TIA registers), COLUP0 (TIA
-          rem color register via LoadCharacterColors),
-          rem         temp1-temp5 (LoadCharacterColors parameters)
+          rem Mutates: player0x, player0y (TIA registers),
+          rem         COLUP0 (TIA register), temp1-temp4 (LocateCharacterArt parameters)
           rem
           rem Called Routines: DrawParadeCharacterSprite (bank9) - draws
           rem character sprite
@@ -143,7 +141,7 @@ DrawParadeCharacter
           rem Always face right while marching across the title screen
           REFP0 = PlayerStateBitFacing
           
-          rem no need to calculate, we know the color for the parade character is gray
+          rem Parade render uses fixed bright gray to match title art palette
           COLUP0 = ColGray(12)
           
 DrawParadeCharacterSprite

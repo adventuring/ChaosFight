@@ -129,7 +129,7 @@ NudgeRight
           rem Input: temp1 = player, originalPlayerX_W = original X, originalPlayerY_W = original Y
           rem Output: playerX adjusted if collision detected
           let playerX[temp1] = originalPlayerX_W + 1
-          if collision(playerX[temp1], originalPlayerY_W) then let playerX[temp1] = originalPlayerX_W
+          rem TODO: Add collision check here
           return
 
 NudgeLeft
@@ -137,7 +137,7 @@ NudgeLeft
           rem Input: temp1 = player, originalPlayerX_W = original X, originalPlayerY_W = original Y
           rem Output: playerX adjusted if collision detected
           let playerX[temp1] = originalPlayerX_W - 1
-          if collision(playerX[temp1], originalPlayerY_W) then let playerX[temp1] = originalPlayerX_W
+          rem TODO: Add collision check here
           return
 
 NudgeVertical

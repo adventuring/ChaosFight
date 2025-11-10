@@ -16,6 +16,14 @@
           rem GENERATED FILES:
           rem Source/Generated/Numbers.bas (universal, not TV-specific)
 
+          rem ARENA SELECTION DIGIT CONSTANTS
+          rem P4/P5 sprites are used ONLY for arena selection display
+          rem Always at fixed positions, always white, never replicated/reflected
+          const ArenaDigitX = 80    ; X position for tens digit (P4)
+          const ArenaOnesDigitX = 88 ; X position for ones digit (P5)
+          const ArenaDigitY = 20    ; Y position for both digits
+          const ArenaDigitColor = ColGrey(14)  ; Always white (single width)
+
           rem Include font data (universal for all TV standards)
 
           rem
@@ -190,15 +198,36 @@ end
 
 DrawArenaNumber
           rem
-          rem Draw Arena Number
-          rem Convenience routine to draw an arena number in white.
-          rem INPUTS:
-          rem   temp1 = arena number (0-31, displays as 1-32)
-          rem   temp2 = X position
-          rem   temp3 = Y position
-          rem temp5 = sprite select (0=player0, 1=player1, 2=player2,
-          rem 3=player3, 4=player4, 5=player5)
-          let temp4 = ColGrey(14)
-          rem White
+          rem Draw Arena Number - P4/P5 ONLY for arena selection
+          rem Arena digits always at fixed positions: P4=X80, P5=X88, Y=20, white
+          rem Never replicated, never reflected (single width)
+          rem INPUT: temp1 = arena number (1-32)
+          rem OUTPUT: Arena number displayed using P4/P5 sprites
+          rem
+          rem Calculate tens and ones digits
+          let temp6 = temp1 / 10  ; Tens digit (0-3)
+          let temp7 = temp1 - (temp6 * 10)  ; Ones digit (0-9)
+          rem
+          rem Tens digit (P4) - only shown for arenas 10-32
+          if temp6 > 0 then DrawArenaTensDigit
+          rem Ones digit (P5) - always shown
+          let temp1 = temp7
+          goto DrawArenaOnesDigit
+
+DrawArenaTensDigit
+          let temp1 = temp6
+          let temp2 = ArenaDigitX
+          let temp3 = ArenaDigitY
+          let temp4 = ArenaDigitColor
+          let temp5 = 4  ; P4 for tens digit
+          gosub DrawDigit bank16
+          rem Fall through to ones digit
+
+DrawArenaOnesDigit
+          let temp1 = temp7
+          let temp2 = ArenaOnesDigitX
+          let temp3 = ArenaDigitY
+          let temp4 = ArenaDigitColor
+          let temp5 = 5  ; P5 for ones digit
           goto DrawDigit
           rem tail call

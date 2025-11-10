@@ -151,7 +151,7 @@ DrawParadeCharacter
           let temp3 = 0
           let temp4 = 0
           let temp5 = 0
-          gosub LoadCharacterColors bank10
+          gosub LoadCharacterColors bank16
           
 DrawParadeCharacterSprite
           rem

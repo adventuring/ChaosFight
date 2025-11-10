@@ -458,7 +458,7 @@ SetPlayerSprites
           rem LoadCharacterSprite), temp1-temp5 (LoadCharacterColors parameters) = color
           rem loading parameters
           rem
-          rem Called Routines: LoadCharacterColors (bank10) - loads
+          rem Called Routines: LoadCharacterColors (bank16) - loads
           rem player colors, LoadCharacterSprite (bank10) - loads sprite
           rem graphics
           rem
@@ -478,7 +478,7 @@ SetPlayerSprites
           rem Not flashing
           let temp5 = 0
           rem Frame-based flashing disabled
-          gosub LoadCharacterColors bank10
+          gosub LoadCharacterColors bank16
           goto Player1ColorDone
           
 Player1ColorDone
@@ -516,7 +516,7 @@ end
           rem Not flashing
           let temp5 = 0
           rem Frame-based flashing disabled
-          gosub LoadCharacterColors bank10
+          gosub LoadCharacterColors bank16
           goto Player2ColorDone
           
 Player2ColorDone
@@ -572,7 +572,7 @@ end
           rem Not flashing
           let temp5 = 0
           rem Frame-based flashing disabled
-          gosub LoadCharacterColors bank10
+          gosub LoadCharacterColors bank16
           goto Player3ColorDone
           
 Player3ColorDone
@@ -625,7 +625,7 @@ DonePlayer3Sprite
           rem Not flashing
           let temp5 = 0
           rem Frame-based flashing disabled
-          gosub LoadCharacterColors bank10
+          gosub LoadCharacterColors bank16
           goto Player4ColorDone
           
 Player4ColorDone

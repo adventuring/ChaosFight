@@ -168,50 +168,23 @@ LoadCharacterColors
 ; Load character color based on TV standard and hurt state
 ; Input: temp1=char, temp2=hurt, temp3=player
 ; Output: Sets COLUP0-3 based on TV standard (char colors on NTSC/PAL, player colors on SECAM)
-;
-; Constraints: Must be colocated with NormalColor,
-;              PlayerIndexColors, PlayerIndexColorsDim,
-;              HurtColor, SetColor (all called via goto)
-; WARNING: temp6 is mutated during execution. Do not use
-; temp6
-; after calling this subroutine.
-end
-          if temp2 then goto HurtColor
-          asm
-; Highest priority: hurt state
+; WARNING: temp6 is mutated during execution. Do not use temp6 after calling this subroutine.
 end
 
-NormalColor
-PlayerIndexColors
-          asm
-; Bright player colors (luminance 12) - table lookup
-; P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise
-end
-          let temp6 = PlayerColors12[temp3]
-          goto SetColor
+          ; Determine color based on hurt state
+          if temp2 = 0 then let temp6 = PlayerColors12[temp3] : goto SetColor
 
-PlayerIndexColorsDim
-HurtColor
-          asm
-; Hurt state colors - magenta (SECAM) or dimmed player colors (NTSC/PAL)
-end
+          ; Hurt state: magenta (SECAM) or dimmed player colors (NTSC/PAL)
 #ifdef TV_SECAM
           let temp6 = ColMagenta(14)
-          goto SetColor
 #else
           let temp6 = PlayerColors6[temp3]
-          goto SetColor
 #endif
 
 SetColor
-          asm
-; Set player color register based on player number
-; Input: temp6=color, temp3=player
-; Output: Sets COLUP0-3 appropriately
-end
-          if temp3 = 0 then COLUP0 = temp6 : goto SetColorDone
-          if temp3 = 1 then _COLUP1 = temp6 : goto SetColorDone
-          if temp3 = 2 then COLUP2 = temp6 : goto SetColorDone
+          ; Set the appropriate color register
+          if temp3 = 0 then COLUP0 = temp6 : return
+          if temp3 = 1 then _COLUP1 = temp6 : return
+          if temp3 = 2 then COLUP2 = temp6 : return
           COLUP3 = temp6
-SetColorDone
           return

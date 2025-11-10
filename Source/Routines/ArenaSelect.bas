@@ -429,7 +429,7 @@ ArenaSelectDrawCharacters
           rem character selections, frame,
           rem   LocateCharacterArt (bank10) - accesses character art
           rem   data,
-          rem   LoadCharacterColors (bank10) - accesses color tables
+          rem   LoadCharacterColors (bank16) - accesses color tables
           rem
           rem Constraints: Must be colocated with ArenaSelectSkipDrawP0,
           rem ArenaSelectSkipDrawP1,
@@ -552,7 +552,7 @@ ArenaSelectDrawPlayerSprite
           rem
           rem Called Routines: LocateCharacterArt (bank10) - accesses
           rem character art data, temp1-temp4,
-          rem   LoadCharacterColors (bank10) - accesses color tables
+          rem   LoadCharacterColors (bank16) - accesses color tables
           rem Constraints: Must be colocated with ArenaSelectDrawCharacters
           rem Draw character sprite for specified player
           rem
@@ -590,6 +590,6 @@ ArenaSelectDrawPlayerSprite
           rem Not flashing
           let temp5 = 0
           rem Frame-based flashing disabled
-          gosub LoadCharacterColors bank10
+          gosub LoadCharacterColors bank16
           
           return

@@ -99,30 +99,22 @@ end
           rem Tail-call B&W color loader
           if temp2 then goto LoadArenaColorsBW
 LoadArenaColorsColor
-          rem Load arena color table pointer based on arena index
+          rem Load arena color table pointer from contiguous ArenaColors table
+          rem Since colors are now contiguous: ArenaColors + (arena_index * 8)
           asm
-            ; pfcolortable = Arena0Colors + (temp1 << 3)
-            ; Compute low_offset = (temp1 << 3)
+            ; Compute color_offset = temp1 << 3 (temp1 * 8)
             lda temp1
             asl
             asl
             asl
             sta temp4
-            ; Compute high_offset = temp1 >> 5
-            lda temp1
-            lsr
-            lsr
-            lsr
-            lsr
-            lsr
-            sta temp5
-            ; Add to base address with carry
-            lda #<Arena0Colors
+            ; Add to ArenaColors base address
+            lda #<ArenaColors
             clc
             adc temp4
             sta pfcolortable
-            lda #>Arena0Colors
-            adc temp5
+            lda #>ArenaColors
+            adc #0
             sta pfcolortable+1
 end
           return

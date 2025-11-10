@@ -65,7 +65,7 @@ SelectLoadSpriteColor
           let temp2 = 0
           let temp3 = temp6
           let temp4 = 0
-          gosub LoadCharacterColors bank10
+          gosub LoadCharacterColors bank16
           let temp1 = temp6
           gosub GetPlayerLocked
           let temp5 = temp2

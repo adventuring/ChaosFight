@@ -11,6 +11,7 @@
 #include "Source/Generated/Numbers.bas"
 #include "Source/Data/PlayerColors.bas"
 #include "Source/Routines/ArenaLoader.bas"
+#include "Source/Routines/LoadArenaByIndex.bas"
 #include "Source/Routines/MainLoop.bas"
 #include "Source/Routines/SpriteLoader.bas"
 #include "Source/Routines/CopyGlyphToPlayer.bas"
@@ -18,7 +19,4 @@
 #include "Source/Routines/LoadCharacterColors.bas"
 #include "Source/Routines/SetPlayerGlyphFromFont.bas"
 #include "Source/Routines/FontRendering.bas"
-
-rem Include multisprite kernel assembly for drawscreen access to SetupP1Subroutine
-includesfile "Tools/batariBASIC/includes/multisprite_kernel.asm"
 

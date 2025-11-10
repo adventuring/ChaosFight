@@ -42,62 +42,6 @@ LoadArena
           
           gosub DWS_GetBWMode bank12
 
-LoadArenaByIndex
-          rem Load arena playfield and colors by index
-          rem
-          rem Input: temp1 (temp1) = arena index (0-31),
-          rem temp2 (temp2) = B&W mode (1=B&W, 0=Color),
-          rem ArenaPF1PointerL[], ArenaPF1PointerH[] (global data
-          rem tables) = playfield pointers (PF2 mirrors PF1),
-          rem ArenaColorPointerL[], ArenaColorPointerH[] (global data
-          rem tables) = color pointers
-          rem
-          rem Output: Arena playfield and colors loaded
-          rem
-          rem Mutates: temp1 (temp1 validated), PF1pointer,
-          rem PF2pointer (TIA registers) = playfield pointers,
-          rem pfcolortable (TIA register) = color table pointer
-          rem
-          rem Called Routines: LoadArenaColorsBW (if B&W mode),
-          rem LoadArenaColorsColor (if Color mode)
-          rem
-          rem Constraints: Arena index validated to 0-31 range
-          rem Validate arena index (0-31 supported by pointer tables)
-          rem Note: Only 0-15 are selectable (MaxArenaID), but tables
-          rem support 0-31
-          if temp1 > 31 then temp1 = 0
-          
-          rem Load playfield pointers from tables using index (compute PF2 from PF1)
-          asm
-            ldx temp1
-            lda ArenaPF1PointerL, x
-            sta PF1pointer
-            lda ArenaPF1PointerH, x
-            sta PF1pointer+1
-            ; PF2pointer = PF1pointer + 8, aligned so PF2 8-byte block does not cross a page
-            lda PF1pointer
-            clc
-            adc #8
-            sta PF2pointer
-            ; Test if (PF1_low + 16) crosses page; if so, align PF2 to next page (low=0, high+1)
-            clc
-            adc #8
-            bcc .NoAlignPF2
-            lda #0
-            sta PF2pointer
-            lda PF1pointer+1
-            clc
-            adc #1
-            sta PF2pointer+1
-            jmp .PF2Done
-.NoAlignPF2
-            lda PF1pointer+1
-            sta PF2pointer+1
-.PF2Done
-end
-          
-          rem Tail-call B&W color loader
-          if temp2 then goto LoadArenaColorsBWLabel
 LoadArenaColorsColor
           rem Load arena color table pointer from contiguous ArenaColors table
           rem Since colors are now contiguous: ArenaColors + (arena_index * 8)
@@ -150,7 +94,7 @@ LoadRandomArena
           let temp1 = rand
           let temp1 = temp1 & 31
           if temp1 > MaxArenaID then LoadRandomArena
-          ; fall through to LoadArenaByIndex
+          gosub LoadArenaByIndex
 
 
           

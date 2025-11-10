@@ -73,7 +73,7 @@ MainLoopDrawScreen
           rem Calls: titledrawscreen bank9 (title screens); colocated with MainLoop
           rem Notes: Modes 3-6 funnel through mode-specific draw logic
 
-          rem Titlescreen graphics and kernel reside in bank9, render in bank8
-          if gameMode < 3 then gosub DrawTitleScreen bank8
+          rem Titlescreen graphics and kernel reside in bank9
+          if gameMode < 3 then gosub DrawTitleScreen bank9
           if gameMode >= 3 then drawscreen
           goto MainLoop

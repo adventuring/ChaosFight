@@ -308,9 +308,9 @@ HarpyJump
           if harpyFlightEnergy_R[temp1] = 0 then return
           rem No energy remaining, cannot flap
           
-          rem Check flap cooldown: must wait for 1.5 flaps/second (40
+          rem Check flap cooldown: enforce HarpyFlapCooldownFrames between flaps
           let temp2 = frame - harpyLastFlapFrame_R[temp1]
-          rem   frames at 60fps)
+          rem   FramesPerSecond-derived cooldown
           rem Calculate frames since last flap
           if temp2 > 127 then temp2 = 127
           rem Clamp to prevent underflow (max safe value for 8-bit)
@@ -323,11 +323,9 @@ HarpyJump
           rem Already at top, cannot flap higher but still record
           
           rem Flap upward - apply upward velocity impulse
-          rem Gravity is 0.05 px/frame² for Harpy (reduced). Over 40
-          rem   frames, gravity accumulates:
-          rem   velocity_change = 0.05 * 40 = 2.0 px/frame (downward)
-          rem To maintain height, flap impulse must counteract: -2.0
-          rem   px/frame (upward)
+          rem Gravity is 0.05 px/frame² for Harpy (reduced). Over the cooldown window,
+          rem   gravity accumulates to roughly 2.0 px/frame (downward)
+          rem To maintain height, flap impulse must counteract with -2.0
           rem Using -2 px/frame (254 in two’s complement) for stable
           let playerVelocityY[temp1] = 254
           rem   hover with 1.5 flaps/second

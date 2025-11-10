@@ -50,9 +50,9 @@ BeginWinnerAnnouncement
           
           rem Initialize win screen timer (starts at 0, increments each
           rem   frame)
-          rem Auto-advance after WinScreenAutoAdvanceFrames (600 frames
+          rem Auto-advance after WinScreenAutoAdvanceFrames frames
           let winScreenTimer_W = 0
-          rem = 10 seconds at 60fps)
+          rem (10 seconds at current TV standard)
           
           rem Initialize display rank (starts at 0, may be updated by
           let displayRank_W = 0

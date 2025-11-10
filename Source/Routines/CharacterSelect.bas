@@ -75,15 +75,12 @@ CharacterSelectLoop
           rem Called Routines: SetPlayerLocked (bank9) - accesses
           rem playerLocked state
           rem
-          rem Constraints: Must be colocated with Player1LeftSelectionQ,
-          rem Player1LeftSelectionSkip, Player1RightSelectionQ, Player1RightSelectionSkip,
-          rem              SelectStick0FireQ, SelectStick0Down, Player1LockSelection,
-          rem              Player1HandicapSelection, Player1LockSelectionDone,
-          rem              Player2LeftSelectionQ, Player2LeftSelectionSkip, Player2RightSelectionQ,
-          rem              Player2RightSelectionSkip,
-          rem              SelectStick1FireQ, SelectStick1Down, SelectStick1DownQ,
-          rem              Player2LockSelectionDone, SelectStick1EvenFrameSkip,
-          rem              CharacterSelectHandleQuadtari (all called via goto)
+          rem Constraints: Must be colocated with SelectStickLeft,
+          rem SelectStickRight, SelectStick0FireQ, SelectStick0Down,
+          rem Player1LockSelection, Player1HandicapSelection,
+          rem Player1LockSelectionDone, SelectStick1FireQ,
+          rem SelectStick1Down, SelectStick1DownQ, Player2LockSelectionDone,
+          rem SelectStick1EvenFrameSkip, CharacterSelectHandleQuadtari
           rem              Entry point for character select screen loop
           rem Quadtari controller multiplexing:
           rem On even frames (qtcontroller=0): handle controllers 0 and
@@ -94,22 +91,12 @@ CharacterSelectLoop
           if qtcontroller then goto CharacterSelectHandleQuadtari
           
           rem Handle Player 1 input (joy0 on even frames)
-          if joy0left then let playerCharacter[0] = playerCharacter[0] - 1 : goto Player1LeftSelectionQ
-          goto Player1LeftSelectionSkip
+          if joy0left then let currentPlayer = 0
+          if joy0left then gosub SelectStickLeft
 
-Player1LeftSelectionQ
-          if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = MaxCharacter
-          if playerCharacter[0] > MaxCharacter then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          
-Player1LeftSelectionSkip
-          if joy0right then let playerCharacter[0] = playerCharacter[0] + 1 : goto Player1RightSelectionQ
-          goto Player1RightSelectionSkip
+          if joy0right then let currentPlayer = 0
+          if joy0right then gosub SelectStickRight
 
-Player1RightSelectionQ
-          if playerCharacter[0] > MaxCharacter then let playerCharacter[0] = 0
-          if playerCharacter[0] > MaxCharacter then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          
-Player1RightSelectionSkip
           if joy0up then temp1 = 0 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy0down then SelectStick0FireQ
@@ -136,20 +123,12 @@ Player1LockSelectionDone
           rem Locked with handicap (75% health)
 
           rem Handle Player 2 input (joy1 on even frames)
-          if joy1left then let playerCharacter[1] = playerCharacter[1] - 1 : goto Player2LeftSelectionQ
-          goto Player2LeftSelectionSkip
+          if joy1left then let currentPlayer = 1
+          if joy1left then gosub SelectStickLeft
 
-Player2LeftSelectionQ
-          if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = MaxCharacter
-          if playerCharacter[1] > MaxCharacter then temp1 = 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-Player2LeftSelectionSkip
-          if joy1right then let playerCharacter[1] = playerCharacter[1] + 1 : goto Player2RightSelectionQ
-          goto Player2RightSelectionSkip
+          if joy1right then let currentPlayer = 1
+          if joy1right then gosub SelectStickRight
 
-Player2RightSelectionQ
-          if playerCharacter[1] > MaxCharacter then let playerCharacter[1] = 0
-          if playerCharacter[1] > MaxCharacter then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-Player2RightSelectionSkip
           if joy1up then let temp1 = 1 : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy1down then SelectStick1FireQ
@@ -186,22 +165,12 @@ CharacterSelectHandleQuadtari
           goto CharacterSelectSkipPlayer3
 
 CharacterSelectHandlePlayer3
-          if joy0left then let playerCharacter[2] = playerCharacter[2] - 1 : goto Player3LeftSelectionQ
+          if joy0left then let currentPlayer = 2
+          if joy0left then gosub SelectStickLeft
 
-          goto Player3LeftSelectionSkip
+          if joy0right then let currentPlayer = 2
+          if joy0right then gosub SelectStickRight
 
-Player3LeftSelectionQ
-          if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = MaxCharacter
-          if playerCharacter[2] > MaxCharacter then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-Player3LeftSelectionSkip
-          if joy0right then let playerCharacter[2] = playerCharacter[2] + 1 : goto Player3RightSelectionQ
-
-          goto Player3RightSelectionSkip
-
-Player3RightSelectionQ
-          if playerCharacter[2] > MaxCharacter then let playerCharacter[2] = 0
-          if playerCharacter[2] > MaxCharacter then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-Player3RightSelectionSkip
           if joy0up then temp1 = 2 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy0down then SelectStick0FirePlayer3Q
@@ -236,18 +205,12 @@ Player3LockSelectionDone
           goto CharacterSelectSkipPlayer4
 
 CharacterSelectHandlePlayer4
-          if joy1left then let playerCharacter[3] = playerCharacter[3] - 1 : goto Player4LeftSelectionQ
-          goto Player4LeftSelectionSkip
-Player4LeftSelectionQ
-          if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = MaxCharacter
-          if playerCharacter[3] > MaxCharacter then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-Player4LeftSelectionSkip
-          if joy1right then let playerCharacter[3] = playerCharacter[3] + 1 : goto Player4RightSelectionQ
-          goto Player4RightSelectionSkip
-Player4RightSelectionQ
-          if playerCharacter[3] > MaxCharacter then let playerCharacter[3] = 0
-          if playerCharacter[3] > MaxCharacter then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-Player4RightSelectionSkip
+          if joy1left then let currentPlayer = 3
+          if joy1left then gosub SelectStickLeft
+
+          if joy1right then let currentPlayer = 3
+          if joy1right then gosub SelectStickRight
+
           if joy1up then temp1 = 3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           rem Unlock by moving up
           if joy1down then SelectStick1FirePlayer4Q
@@ -281,6 +244,38 @@ Player4LockSelectionDone
 CharacterSelectDonePlayer3
 CharacterSelectDonePlayer4
 SelectStick1OddFrameSkip
+
+SelectStickLeft
+          rem Handle stick-left navigation for the active player
+          rem
+          rem Input: currentPlayer (global) = player index (0-3)
+          rem        playerCharacter[] (global) = browsing selections
+          rem Output: playerCharacter[currentPlayer] decremented with wrap
+          rem        to MaxCharacter, lock state cleared on wrap
+          rem Mutates: playerCharacter[], temp1, temp2, playerLocked (via
+          rem        SetPlayerLocked)
+          rem Called Routines: SetPlayerLocked (bank9)
+          rem Constraints: currentPlayer must be set by caller
+          let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
+          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
+          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          return
+
+SelectStickRight
+          rem Handle stick-right navigation for the active player
+          rem
+          rem Input: currentPlayer (global) = player index (0-3)
+          rem        playerCharacter[] (global) = browsing selections
+          rem Output: playerCharacter[currentPlayer] incremented with wrap
+          rem        to 0, lock state cleared on wrap
+          rem Mutates: playerCharacter[], temp1, temp2, playerLocked (via
+          rem        SetPlayerLocked)
+          rem Called Routines: SetPlayerLocked (bank9)
+          rem Constraints: currentPlayer must be set by caller
+          let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
+          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
+          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          return
 
 CharacterSelectHandleComplete
 
@@ -659,7 +654,7 @@ CharacterSelectUpdateAnimation
           rem
           rem Constraints: Handicap preview freezes animation in
           rem recovery pose (ActionRecovering=9) when any player holds
-          rem DOWN. Normal animation cycles every 60 frames (1 second)
+          rem DOWN. Normal animation cycles every FramesPerSecond frames (1 second)
           rem with random state selection (0-2: idle, running,
           rem attacking). 8-frame animation cycles
           rem Check if any player is holding DOWN (for handicap preview)
@@ -761,7 +756,7 @@ SelectAnimationNormal
           rem
           rem Mutates: characterSelectAnimationTimer (global) = animation timer
           rem (incremented or reset), characterSelectAnimationState (global) =
-          rem animation state (random 0-2 every 60 frames),
+          rem animation state (random 0-2 every FramesPerSecond frames),
           rem characterSelectCharacterIndex (global) = character index (cycled),
           rem characterSelectAnimationFrame (global) = animation frame
           rem (incremented, wraps at 8)
@@ -770,13 +765,13 @@ SelectAnimationNormal
           rem
           rem Constraints: Internal helper for CharacterSelectUpdateAnimation, only
           rem called when no handicap preview. Changes animation state
-          rem every 60 frames (1 second) with random selection (0-2)
+          rem every FramesPerSecond frames (1 second) with random selection (0-2)
           rem Normal animation updates (only when no handicap mode
           rem   active)
           let characterSelectAnimationTimer  = characterSelectAnimationTimer + 1
           rem Increment animation timer
           
-          rem Change animation state every 60 frames (1 second at 60fps)
+          rem Change animation state every FramesPerSecond frames (1 second at current TV standard)
           if characterSelectAnimationTimer <= FramesPerSecond then goto SelectAnimationAdvance
 SelectAnimationReset
           let characterSelectAnimationTimer  = 0

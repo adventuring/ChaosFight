@@ -8,7 +8,7 @@ ApplyGuardFlashing
           rem - Character flashes light cyan ColCyan(12) in NTSC/PAL
           rem - Character flashes Cyan in SECAM
           rem
-          rem - Guard lasts maximum 1 second (60 frames)
+          rem - Guard lasts maximum 1 second (GuardTimerMaxFrames frames)
           rem - Guard cannot be used again for 1 second after previous
           rem   use
           rem Apply guard flashing effect (light cyan for NTSC/PAL, cyan for SECAM).
@@ -158,8 +158,7 @@ StartGuard
           let playerState[temp1] = playerState[temp1] | 2
           rem Set guard bit in playerState
           
-          rem Set guard duration timer (platform-specific: 60 frames
-          rem   NTSC, 50 frames PAL/SECAM)
+          rem Set guard duration timer using GuardTimerMaxFrames (TV-standard aware)
           rem Store guard duration timer in playerTimers array
           rem This timer will be decremented each frame until it reaches 0
           let playerTimers_W[temp1] = GuardTimerMaxFrames

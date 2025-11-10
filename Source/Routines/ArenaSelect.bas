@@ -71,8 +71,8 @@ IncrementFireHold
           let temp2 = fireHoldTimer_R
           let temp2 = temp2 + 1
           let fireHoldTimer_W = temp2
-          rem 60 frames = 1 second @ 60fps
-          if temp2 >= 60 then goto ReturnToCharacterSelect
+          rem FramesPerSecond frames = 1 second at current TV standard
+          if temp2 >= FramesPerSecond then goto ReturnToCharacterSelect
 FireHoldCheckDone
           
           rem Handle LEFT/RIGHT navigation for arena selection
@@ -395,8 +395,7 @@ ArenaSelectUpdatePlayerAnimation
           rem
           rem Constraints: Must be colocated with
           rem ArenaSelectUpdateAnimations
-          rem Simple frame counter that cycles every 60 frames (1 second
-          rem   at 60fps)
+          rem Simple frame counter that cycles every FramesPerSecond frames (1 second)
           rem Increment frame counter (stored in arenaSelectAnimationFrame
           rem   array)
           rem For now, use a simple counter that wraps every 8 frames
@@ -404,7 +403,7 @@ ArenaSelectUpdatePlayerAnimation
           rem   arenaSelectAnimationFrame[playerIndex] array
           rem For simplicity, just cycle through frames 0-7 for idle
           rem   animation
-          rem Frame updates every 8 frames (7.5fps at 60fps)
+          rem Frame updates every 8 frames (FramesPerSecond / 8 fps)
           let temp2 = frame & 7
           rem Simple frame-based animation (cycles every 8 frames)
           return

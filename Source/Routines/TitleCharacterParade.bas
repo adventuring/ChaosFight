@@ -10,9 +10,9 @@ UpdateCharacterParade
           rem   titleParadeX - X position of parade character
           rem   titleParadeActive - Boolean: parade currently running
           rem TIMING:
-          rem   - Parade starts after ~4 seconds (250 frames at 60fps)
+          rem   - Parade starts after ~4 seconds (TitleParadeDelayFrames frames, TV-dependent)
           rem   - Each character moves at 2 pixels/frame (left to right)
-          rem   - 1 second pause (60 frames) between characters
+          rem   - 1 second pause (FramesPerSecond frames) between characters
           rem   - Characters chosen randomly from NumCharacters available
           rem CHARACTER INDICES:
           rem 0=Bernie, 1=Curler, 2=Dragon of Storms, 3=EXO, 4=FatTony,
@@ -48,7 +48,7 @@ UpdateCharacterParade
           let titleParadeTimer = titleParadeTimer + 1
           rem Increment parade timer
           
-          rem Start parade after ~4 seconds (250 frames at 60fps)
+          rem Start parade after ~4 seconds (TitleParadeDelayFrames frames)
           if titleParadeTimer < TitleParadeDelayFrames then return
           
           rem Check if we need to start a new character

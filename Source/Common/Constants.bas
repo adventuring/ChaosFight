@@ -71,9 +71,6 @@
           const Bank1MinSongID = 6
           rem Lowest song ID stored in Bank 1 music bank
 
-          const TitleParadeDelayFrames = 250
-          rem Title screen parade starts after ~4.17 seconds (fits in 8-bit timer)
-          
           const CharacterBernie = 0
           rem Character ID constants
           const CharacterCurler = 1
@@ -420,6 +417,14 @@
           rem 60fps / 10fps = 6 frames
           const FramesPerSecond = 60
           rem 60fps movement updates
+          const TitleParadeDelayFrames = 240
+          rem Parade starts after ~4 seconds at 60fps
+          const WinScreenAutoAdvanceFrames = 600
+          rem Winner screen auto-advance after 10 seconds
+          const GuardTimerMaxFrames = 60
+          rem Guard duration capped at 1 second
+          const HarpyFlapCooldownFrames = 40
+          rem ~0.66 seconds between Harpy flaps (1.5 flaps/sec)
 #endif
 
 #ifdef TV_PAL  
@@ -428,6 +433,14 @@
           rem 50fps / 10fps = 5 frames
           const FramesPerSecond = 50
           rem 50fps movement updates
+          const TitleParadeDelayFrames = 200
+          rem Parade starts after ~4 seconds at 50fps
+          const WinScreenAutoAdvanceFrames = 500
+          rem Winner screen auto-advance after 10 seconds
+          const GuardTimerMaxFrames = 50
+          rem Guard duration capped at 1 second
+          const HarpyFlapCooldownFrames = 33
+          rem ~0.66 seconds between Harpy flaps (1.5 flaps/sec)
 #endif
 
 #ifdef TV_SECAM
@@ -436,6 +449,14 @@
           const MovementFrameRate = 50
           const FramesPerSecond = 50
           rem 50fps movement updates
+          const TitleParadeDelayFrames = 200
+          rem Parade starts after ~4 seconds at 50fps
+          const WinScreenAutoAdvanceFrames = 500
+          rem Winner screen auto-advance after 10 seconds
+          const GuardTimerMaxFrames = 50
+          rem Guard duration capped at 1 second
+          const HarpyFlapCooldownFrames = 33
+          rem ~0.66 seconds between Harpy flaps (1.5 flaps/sec)
 #endif
 
           const AnimationSequenceCount = 16

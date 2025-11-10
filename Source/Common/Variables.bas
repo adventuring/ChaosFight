@@ -737,7 +737,7 @@
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 flight energy remaining (4
           rem   bytes: w009-w012)
           rem Decrements on each flap, resets on landing, maximum value
-          rem   60 (1 second at 60fps)
+          rem   FramesPerSecond (1 second at current TV standard)
           rem Array accessible as harpyFlightEnergy[0] through
           rem   harpyFlightEnergy[3]
           
@@ -789,7 +789,7 @@
           rem   character select animation runs again, so safe overlap
           dim characterSelectPlayerAnimationSequence_R = r080
           rem
-          rem Bit 0: 0=idle, 1=walk. Toggles every 60 frames
+          rem Bit 0: 0=idle, 1=walk. Toggles every FramesPerSecond frames
           rem Array accessible as characterSelectPlayerAnimationSequence[0] through
           rem   characterSelectPlayerAnimationSequence[3]
 

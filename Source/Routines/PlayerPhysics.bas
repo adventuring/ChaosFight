@@ -180,12 +180,14 @@ PhysicsApplyGravity
 GravityLoop
           rem Check if player is active (P1/P2 always active, P3/P4 need
           rem Quadtari)
-          if temp1 < 2 then GravityCheckCharacter
+          if temp1 >= 2 then goto GravityPlayerCheck
+          goto GravityCheckCharacter
+GravityPlayerCheck
           rem Players 0-1 always active
           if !(controllerStatus & SetQuadtariDetected) then goto GravityNextPlayer
           if temp1 = 2 && playerCharacter[2] = NoCharacter then goto GravityNextPlayer
           if temp1 = 3 && playerCharacter[3] = NoCharacter then goto GravityNextPlayer
-          
+
 GravityCheckCharacter
           let temp6 = playerCharacter[temp1]
           
@@ -293,9 +295,7 @@ GravityRowCalcDone
           
           rem If RoboTito, set stretch permission on landing
           
-          if temp6 = CharacterRoboTito then PAG_SetRoboTitoStretchPermission
-          goto GravityNextPlayer
-          
+          if temp6 <> CharacterRoboTito then goto GravityNextPlayer
 PAG_SetRoboTitoStretchPermission
           rem Set RoboTito stretch permission on landing (allows
           rem stretching again)

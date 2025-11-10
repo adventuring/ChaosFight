@@ -9,7 +9,11 @@
 #include "Source/Data/CharacterMissileTables.bas"
 #include "Source/Routines/CharacterMissileData.bas"
 #include "Source/Data/HealthBarPatterns.bas"
-#include "Source/Routines/Combat.bas"
 #include "Source/Routines/ScreenLayout.bas"
+#include "Source/Routines/CharacterAttacksDispatch.bas"
+#include "Source/Routines/PerformRangedAttack.bas"
+#include "Source/Routines/PerformMeleeAttack.bas"
+#include "Source/Routines/SpecialMovement.bas"
+#include "Source/Routines/FrameBudgeting.bas"
 #include "Source/Routines/MissileCollision.bas"
 

@@ -8,6 +8,6 @@
           bank 10
            
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
-#include "Source/Routines/PlayerRendering.bas"
 #include "Source/Routines/CharacterAttacks.bas"
+#include "Source/Routines/PlayerPhysicsCollisions.bas"
 

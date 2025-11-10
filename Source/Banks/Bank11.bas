@@ -9,5 +9,6 @@
 #include "Source/Routines/GameLoopInit.bas"
 #include "Source/Routines/GameLoopMain.bas"
 #include "Source/Routines/PlayerCollisionResolution.bas"
+#include "Source/Routines/AnimationSystem.bas"
 
 

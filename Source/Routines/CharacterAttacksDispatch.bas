@@ -93,51 +93,9 @@ GotoUrsuloAttack
 GotoShamoneAttack
           goto ShamoneAttack bank10
           
-GotoCharacter16Attack
-          rem Character 16-30 attack handlers (placeholder characters - basic melee)
-          goto PerformMeleeAttack bank13
 
-GotoCharacter17Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter18Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter19Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter20Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter21Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter22Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter23Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter24Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter25Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter26Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter27Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter28Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter29Attack
-          goto PerformMeleeAttack bank13
-
-GotoCharacter30Attack
-          goto PerformMeleeAttack bank13
+GotoMeleeAttack
+          goto PerformMeleeAttack bank7
 
 CheckEnhancedJumpButton
           rem
@@ -160,23 +118,25 @@ CheckEnhancedJumpButton
           rem Players 2-3 skip enhanced controller checks
           goto CEJB_Done
 CEJB_CheckPlayer0
-          rem Player 0: Check Genesis controller
+          rem Player 0: Check Genesis controller first
           if !ControllerStatus{0} then CEJB_CheckPlayer0Joy2bPlus
-          if !INPT0{7} then temp3 = 1
-          goto CEJB_Done
+          goto CEJB_ReadButton0
 CEJB_CheckPlayer0Joy2bPlus
-          rem Player 0: Check Joy2b+ controller
+          rem Player 0: Check Joy2b+ controller (fallback)
           if !ControllerStatus{1} then CEJB_Done
+CEJB_ReadButton0
+          rem Shared button read for Player 0 enhanced controllers (Button C/II)
           if !INPT0{7} then temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer2
-          rem Player 1: Check Genesis controller
+          rem Player 1: Check Genesis controller first
           if !(ControllerStatus & $04) then CEJB_CheckPlayer2Joy2bPlus
-          if !(INPT2 & $80) then temp3 = 1
-          goto CEJB_Done
+          goto CEJB_ReadButton2
 CEJB_CheckPlayer2Joy2bPlus
-          rem Player 1: Check Joy2b+ controller
+          rem Player 1: Check Joy2b+ controller (fallback)
           if !(ControllerStatus & $08) then CEJB_Done
+CEJB_ReadButton2
+          rem Shared button read for Player 1 enhanced controllers (Button C/II)
           if !(INPT2 & $80) then temp3 = 1
           goto CEJB_Done
 CEJB_Done

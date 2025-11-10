@@ -530,11 +530,6 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/TitleScreenMain.bas \
 	Source/Routines/TitleScreenRender.bas \
 	Source/Routines/TitlescreenWindowControl.bas \
-	Source/Routines/Unused/CharacterSelect.bas \
-	Source/Routines/Unused/CharacterSelectFire.bas \
-	Source/Routines/Unused/FrameBudgeting.bas \
-	Source/Routines/Unused/Physics.bas \
-	Source/Routines/Unused/PlayerPhysicsCollisions.bas \
 	Source/Routines/WinnerAnnouncement.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \

@@ -6,10 +6,10 @@
 
           bank 13
 
-#include "Source/Routines/PerformRangedAttack.bas"
-#include "Source/Routines/PerformMeleeAttack.bas"
-#include "Source/Routines/SpecialMovement.bas"
 #include "Source/Routines/CharacterControlsDown.bas"
 #include "Source/Routines/GuardEffects.bas"
 #include "Source/Routines/ConsoleHandling.bas"
+#include "Source/Routines/MovePlayerToTarget.bas"
+#include "Source/Routines/ArenaSelect.bas"
+#include "Source/Routines/PlayerPhysics.bas"
 

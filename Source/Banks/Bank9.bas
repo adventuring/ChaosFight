@@ -19,7 +19,9 @@ end
 
 #include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/TitleScreenMain.bas"
-#include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/TitleCharacterParade.bas"
 #include "Source/Routines/AttractMode.bas"
+#include "Source/Routines/TitlescreenWindowControl.bas"
+#include "Source/Routines/FallDamage.bas"
+#include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/CharacterControlsJump.bas"

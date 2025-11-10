@@ -47,12 +47,12 @@ ColdStart
           rem
           rem Constraints: Must be entry point for cold start (called
           rem from Bank1)
-          gosub ConsoleDetHW bank1 : 
+          gosub ConsoleDetHW : 
           rem              Only reachable via goto from Bank1 startup code
           
           rem Step 2: Initialize sprite pointers to RAM addresses
           rem Must be done before any sprite loading to ensure pointers
-          gosub InitializeSpritePointers bank14
+          gosub InitializeSpritePointers bank16
           rem   point to SCRAM buffers instead of ROM
           
           rem Step 3: Initialize TIA color registers to safe defaults

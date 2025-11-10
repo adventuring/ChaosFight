@@ -15,8 +15,13 @@
           
           rem Player locked helpers
 #include "Source/Routines/BeginTitleScreen.bas"
+#include "Source/Routines/ControllerDetection.bas"
+#include "Source/Routines/ConsoleDetection.bas"
 #include "Source/Routines/ChangeGameMode.bas"
 #include "Source/Routines/BeginAuthorPrelude.bas"
-#include "Source/Routines/ArenaSelect.bas"
-#include "Source/Routines/AnimationSystem.bas"
+#include "Source/Routines/WinnerAnnouncement.bas"
+#include "Source/Routines/BeginWinnerAnnouncement.bas"
+#include "Source/Routines/DisplayWinScreen.bas"
+#include "Source/Routines/ColdStart.bas"
+#include "Source/Routines/CharacterSelectMain.bas"
 

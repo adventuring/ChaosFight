@@ -12,10 +12,9 @@
 
           rem Code segment
 #include "Source/Routines/PlayerLockedHelpers.bas"
-#include "Source/Routines/ConsoleHandling.bas"
-#include "Source/Routines/PlayerElimination.bas"
 #include "Source/Routines/PlayerPhysicsGravity.bas"
 #include "Source/Routines/MovementSystem.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 #include "Source/Routines/HealthBarSystem.bas"
+#include "Source/Routines/Physics.bas"
 

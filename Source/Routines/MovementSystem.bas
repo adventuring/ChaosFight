@@ -253,7 +253,7 @@ CheckPlayerCollision
           rem
           rem Output: temp3 = 1 if collision, 0 if not
           rem
-          rem Mutates: temp3-temp9 (used for calculations, temp4-7
+          rem Mutates: temp3-temp6 (used for calculations, temp4-5
           rem reused after X/Y checks)
           rem
           rem Called Routines: None
@@ -261,7 +261,7 @@ CheckPlayerCollision
           rem Constraints: Uses integer positions only (subpixel ignored
           rem for collision). Checks X collision (16 pixel width) and Y
           rem collision (using CharacterHeights table). WARNING: temp3 is mutated during the routine; callers must read it immediately.
-          rem Uses temp1-temp9 (temp4-7 reused after X/Y checks)
+          rem Uses temp1-temp6 (temp4-5 reused after X/Y checks)
 
           rem Load player X positions into temporaries
           let temp4 = playerX[temp1]

@@ -897,8 +897,20 @@
           
           dim impulseStrength_W = w104
           dim impulseStrength_R = r104
-          rem Calculated impulse strength for momentum transfer
-          
+          rem Impulse strength for knockback momentum calculation
+
+          dim originalPlayerX_W = w114
+          dim originalPlayerX_R = r114
+          rem Original player X position for collision checking and nudging
+
+          dim originalPlayerY_W = w115
+          dim originalPlayerY_R = r115
+          rem Original player Y position for collision checking and nudging
+
+          dim distanceUp_W = w116
+          dim distanceUp_R = r116
+          rem Distance to move player upward toward target
+
           dim gravityRate_W = w105
           dim gravityRate_R = r105
           rem Gravity acceleration rate (normal or reduced)

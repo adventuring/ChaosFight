@@ -31,7 +31,9 @@ HandleCharacterSelectFire
           rem Players 1,3 use joy1
           if !joy1fire then return
           let temp2 = 1
-          if joy1down then temp4 = 1 else temp4 = 0
+          if joy1down then temp4 = 1 : goto UnusedSkip1
+          temp4 = 0
+UnusedSkip1
           goto HCSF_HandleFire
 HCSF_CheckJoy0
           rem Check joy0 for players 0,2
@@ -50,7 +52,9 @@ HCSF_CheckJoy0
           rem Players 0,2 use joy0
           if !joy0fire then return
           let temp2 = 1
-          if joy0down then temp4 = 1 else temp4 = 0
+          if joy0down then temp4 = 1 : goto UnusedSkip2
+          temp4 = 0
+UnusedSkip2
 HCSF_HandleFire
           rem Handle fire button press
           rem
@@ -123,7 +127,9 @@ HCSF_HandleRandom
           rem Random selection initiated - will be handled by
           rem CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
-          if temp4 then randomSelectFlags_W[temp1] = $80 else randomSelectFlags_W[temp1] = 0
+          if temp4 then randomSelectFlags_W[temp1] = $80 : goto UnusedSkip3
+          randomSelectFlags_W[temp1] = 0
+UnusedSkip3
           let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15

@@ -75,7 +75,9 @@ end
           
           gosub DWS_GetBWMode
           rem Load playfield colors based on B&W mode
-          if temp2 then gosub DWS_LoadBWColors else gosub DWS_LoadColorColors
+          if temp2 then gosub DWS_LoadBWColors : goto DisplaySkipElse
+          gosub DWS_LoadColorColors
+DisplaySkipElse
           
           let temp1 = playersRemaining_R
           rem Get players remaining count (SCRAM read)

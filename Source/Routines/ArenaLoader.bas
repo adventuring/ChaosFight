@@ -97,7 +97,7 @@ LoadArenaByIndex
 end
           
           rem Tail-call B&W color loader
-          if temp2 then goto LoadArenaColorsBW
+          if temp2 then goto LoadArenaColorsBWLabel
 LoadArenaColorsColor
           rem Load arena color table pointer from contiguous ArenaColors table
           rem Since colors are now contiguous: ArenaColors + (arena_index * 8)
@@ -119,7 +119,7 @@ LoadArenaColorsColor
 end
           return
 
-LoadArenaColorsBW
+LoadArenaColorsBWLabel
           asm
           ;; Load B&W color table - all arenas use same white colors
           ;; Set pfcolortable pointer to ArenaColorsBW

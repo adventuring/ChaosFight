@@ -17,6 +17,41 @@
 ; Multi-bank sprite loading system - supports 32 characters across 4 banks
 end
 
+LoadSpecialSprite
+          asm
+; Load special sprites (QuestionMark/CPU/No) to RAM buffers
+; Input: temp6=sprite type, temp3=player
+; Output: Sprite copied to player buffer, height set to 16
+end
+
+          rem Dispatch based on player number
+          on temp3 goto P0Load, P1Load, P2Load, P3Load, P5Load, P5Load
+
+P0Load
+          rem P0: Only QuestionMark
+          let temp4 = 0  : gosub CopyGlyphToPlayer bank16 : return
+
+P1Load
+          rem P1: QuestionMark/CPU/No
+          let temp4 = temp6 : gosub CopyGlyphToPlayer bank16 : return
+
+P2Load
+          rem P2: QuestionMark/No
+          if temp6 = 2 then let temp4 = 2 : gosub CopyGlyphToPlayer bank16 : return
+          let temp4 = 0 : gosub CopyGlyphToPlayer bank16 : return
+
+P3Load
+          rem P3: QuestionMark/No
+          if temp6 = 2 then let temp4 = 2 : gosub CopyGlyphToPlayer bank16 : return
+          let temp4 = 0 : gosub CopyGlyphToPlayer bank16 : return
+
+P5Load
+          rem P5: Point to font glyph for QuestionMark
+          let temp1 = GlyphQuestionMark
+          let temp3 = 5
+          gosub SetPlayerGlyphFromFont bank16
+          return
+
 LoadCharacterSprite
           asm
 ; Load character sprite data - calls LocateCharacterArt (bank10)
@@ -72,51 +107,6 @@ end
           gosub LocateCharacterArt bank10
           return
 
-CopyGlyphToPlayer
-          rem Input: temp3 = player number (0-3)
-          rem        temp4 = sprite type (0=QuestionMark, 1=CPU, 2=No)
-          rem Output: Sprite data loaded from unified font
-          if temp4 = 0 then temp1 = GlyphQuestionMark : goto _CopyFromFont
-          if temp4 = 1 then temp1 = GlyphCPU : goto _CopyFromFont
-          temp1 = GlyphNo
-_CopyFromFont
-          gosub SetPlayerGlyphFromFont bank16
-          return
-
-LoadSpecialSprite
-          asm
-; Load special sprites (QuestionMark/CPU/No) to RAM buffers
-; Input: temp6=sprite type, temp3=player
-; Output: Sprite copied to player buffer, height set to 16
-end
-
-          rem Dispatch based on player number
-          on temp3 goto P0Load, P1Load, P2Load, P3Load, P5Load, P5Load
-
-P0Load
-          rem P0: Only QuestionMark
-          let temp4 = 0  : goto CopyGlyphToPlayer
-
-P1Load
-          rem P1: QuestionMark/CPU/No
-          let temp4 = temp6 : goto CopyGlyphToPlayer
-
-P2Load
-          rem P2: QuestionMark/No
-          if temp6 = 2 then let temp4 = 2 : goto CopyGlyphToPlayer
-          let temp4 = 0 : goto CopyGlyphToPlayer
-
-P3Load
-          rem P3: QuestionMark/No
-          if temp6 = 2 then let temp4 = 2 : goto CopyGlyphToPlayer
-          let temp4 = 0 : goto CopyGlyphToPlayer
-
-P5Load
-          rem P5: Point to font glyph for QuestionMark
-          let temp1 = GlyphQuestionMark
-          let temp3 = 5
-          gosub SetPlayerGlyphFromFont bank16
-          return
 LoadPlayerSprite
           asm
 ;

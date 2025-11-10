@@ -53,7 +53,7 @@ SelectLoadSpecialSprite
           if temp1 = CPUCharacter then temp6 = SpriteCPU : goto SelectLoadSpecialSpriteCall
           let temp6 = SpriteQuestionMark
 SelectLoadSpecialSpriteCall
-          gosub LoadSpecialSprite bank16
+          let temp4 = temp6  : gosub CopyGlyphToPlayer bank16
           goto SelectLoadSpriteColor
 SelectLoadWalkingSprite
           let temp2 = characterSelectPlayerAnimationSequence_R[temp6]

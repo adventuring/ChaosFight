@@ -67,7 +67,7 @@ bmp_48x2_4_pointersetup
   endif
         sta PF2
 
- 	jmp draw_bmp_48x2_X
+ 	jmp draw_bmp_48x2_func
 	
 bmp_48x2_4_values
         .word (bmp_48x2_4_00+#bmp_48x2_4_height-#bmp_48x2_4_window)

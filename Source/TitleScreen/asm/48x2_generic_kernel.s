@@ -45,4 +45,4 @@ bmp_48x2_3_pointersetup
 	sta PF1
 	sta PF2
 
- 	jmp draw_bmp_48x2_X
+ 	jmp draw_bmp_48x2_func

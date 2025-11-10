@@ -3,6 +3,7 @@
 
           rem Standard multisprite kernel setup
           set kernel multisprite
+          const multisprite = 2  ; Override to enable bank-switched drawscreen
           set kernel_options pfcolors  ; required for playfield color tables
           set romsize 64kSC
           set optimization size

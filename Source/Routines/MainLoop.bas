@@ -56,15 +56,10 @@ MainLoopContinue
           rem Inputs: gameMode (global 0-7)
           rem Outputs: Falls through to MainLoopDrawScreen
           rem Mutates: None; dispatcher only
-          rem Calls: UpdateMusic bank1; colocated with MainLoop/MainLoopDrawScreen
+          rem Calls: UpdateMusic bank1 (for modes < 3 and mode 7); colocated with MainLoop/MainLoopDrawScreen
           rem Notes: Modes 3-6 handle audio updates in their own routines
 
-          if gameMode < 3 then goto MainLoopContinueUpdateMusicLabel
-          if gameMode = 7 then goto MainLoopContinueUpdateMusicLabel
-          goto MainLoopDrawScreen
-
-MainLoopContinueUpdateMusicLabel
-          gosub UpdateMusic bank1
+          if gameMode < 3 || gameMode = 7 then gosub UpdateMusic bank1
 MainLoopDrawScreen
           rem Renders the appropriate screen for the current game mode
           rem Inputs: gameMode (global 0-7)

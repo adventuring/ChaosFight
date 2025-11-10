@@ -388,12 +388,12 @@ StandardGuard
           rem Harpy cannot guard
           
           rem Check if guard is allowed (not in cooldown)
-          gosub CheckGuardCooldown
+          gosub CheckGuardCooldown bank14
           if temp2 = 0 then return
           rem Guard blocked by cooldown
           
           rem Start guard with proper timing
-          goto StartGuard
+          goto StartGuard bank14
           rem tail call
           rem StartGuard sets guard bit and duration timer
           

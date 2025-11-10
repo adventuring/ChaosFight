@@ -129,7 +129,7 @@ InputHandleAllPlayers
           rem
           rem Called Routines: IsPlayerAlive - checks if player is
           rem alive,
-          rem   InputHandleLeftPortPlayer, InputHandleRightPortPlayer -
+          rem   InputHandleLeftPortPlayerFunction, InputHandleRightPortPlayerFunction -
           rem   handle input for left/right port players
           rem
           rem Constraints: Must be colocated with InputSkipPlayer0Input,
@@ -144,7 +144,7 @@ InputHandleAllPlayers
           let currentPlayer = 0 : gosub IsPlayerAlive
           if temp2 = 0 then InputDonePlayer0Input
           if (PlayerState[0] & 8) then InputDonePlayer0Input
-          let temp1 = 0 : gosub InputHandleLeftPortPlayer
+          let temp1 = 0 : gosub InputHandleLeftPortPlayerFunction
 
 InputDonePlayer0Input
           rem Skip Player 0 input (label only, no execution)
@@ -174,13 +174,13 @@ InputHandlePlayer1
           rem Output: Player 1 input processed
           rem
           rem Mutates: temp1 (set to 1), player state (via
-          rem InputHandleRightPortPlayer)
+          rem InputHandleRightPortPlayerFunction)
           rem
-          rem Called Routines: InputHandleRightPortPlayer - handles
+          rem Called Routines: InputHandleRightPortPlayerFunction - handles
           rem right port player input
           rem Constraints: Must be colocated with InputHandleAllPlayers, InputSkipPlayer1Input
           let temp1 = 1
-          gosub InputHandleRightPortPlayer
+          gosub InputHandleRightPortPlayerFunction
 InputDonePlayer1Input
           rem Player 1 uses Joy1
           return
@@ -211,7 +211,7 @@ InputHandleQuadtariPlayers
           rem
           rem Called Routines: IsPlayerAlive - checks if player is
           rem alive,
-          rem   InputHandleLeftPortPlayer, InputHandleRightPortPlayer -
+          rem   InputHandleLeftPortPlayerFunction, InputHandleRightPortPlayerFunction -
           rem   handle input for left/right port players
           rem
           rem Constraints: Must be colocated with InputHandleAllPlayers,
@@ -224,7 +224,7 @@ InputHandleQuadtariPlayers
           let currentPlayer = 2 : gosub IsPlayerAlive
           if temp2 = 0 then InputDonePlayer3Input
           if (PlayerState[2] & 8) then InputDonePlayer3Input
-          let temp1 = 2 : gosub InputHandleLeftPortPlayer
+          let temp1 = 2 : gosub InputHandleLeftPortPlayerFunction
 
 InputDonePlayer3Input
           rem Skip Player 3 input (label only, no execution)
@@ -242,7 +242,7 @@ InputDonePlayer3Input
           let currentPlayer = 3 : gosub IsPlayerAlive
           if temp2 = 0 then InputDonePlayer4Input
           if (PlayerState[3] & 8) then InputDonePlayer4Input
-          let temp1 = 3 : gosub InputHandleRightPortPlayer
+          let temp1 = 3 : gosub InputHandleRightPortPlayerFunction
 
 InputDonePlayer4Input
           rem Skip Player 4 input (label only, no execution)
@@ -475,7 +475,7 @@ HFCM_Start
           if joy1left then HFCM_CheckLeftCollision
           goto HFCM_CheckRightMovement
 
-InputHandleLeftPortPlayer
+InputHandleLeftPortPlayerFunction
           rem
           rem LEFT PORT PLAYER INPUT HANDLER (joy0 - Players 1 & 3)
           rem
@@ -619,7 +619,7 @@ InputDoneLeftPortAttack
           
           return
 
-InputHandleRightPortPlayer
+InputHandleRightPortPlayerFunction
           rem
           rem RIGHT PORT PLAYER INPUT HANDLER (joy1 - Players 2 & 4)
           rem

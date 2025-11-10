@@ -14,9 +14,11 @@
 #include "Source/Routines/MainLoop.bas"
 #include "Source/Routines/SpriteLoader.bas"
 #include "Source/Routines/CopyGlyphToPlayer.bas"
+#include "Source/Routines/MovePlayerToTarget.bas"
+#include "Source/Routines/LoadCharacterColors.bas"
 #include "Source/Routines/SetPlayerGlyphFromFont.bas"
 #include "Source/Routines/FontRendering.bas"
 
 rem Include multisprite kernel assembly for drawscreen access to SetupP1Subroutine
-include "Tools/batariBASIC/includes/multisprite_kernel.asm"
+includesfile "Tools/batariBASIC/includes/multisprite_kernel.asm"
 

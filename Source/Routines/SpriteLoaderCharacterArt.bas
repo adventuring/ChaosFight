@@ -39,9 +39,9 @@ LocateCharacterArt
           rem   - These routines access character frame maps and sprite
           rem   data in their banks
           rem
-          rem Constraints: Must be colocated with LoadFromBank2,
-          rem LoadFromBank3, LoadFromBank4,
-          rem              LoadFromBank5 (all called via goto)
+          rem Constraints: Must be colocated with Bank2Dispatch,
+          rem Bank3Dispatch, Bank4Dispatch,
+          rem              Bank5Dispatch (all called via goto)
           rem Characters 0-7: Bank 2 (bank-relative 0-7)
           rem Characters 8-15: Bank 3 (bank-relative 0-7)
           rem Characters 16-23: Bank 4 (bank-relative 0-7)
@@ -54,12 +54,12 @@ LocateCharacterArt
           
           rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4,
           rem 24-31=Bank5
-          if temp1 < 8 then LoadFromBank2
-          if temp1 < 16 then LoadFromBank3
-          if temp1 < 24 then goto LoadFromBank4
-          goto LoadFromBank5
-          
-LoadFromBank2
+          if temp1 < 8 then goto Bank2Dispatch
+          if temp1 < 16 then goto Bank3Dispatch
+          if temp1 < 24 then goto Bank4Dispatch
+          goto Bank5Dispatch
+
+Bank2Dispatch
           rem Load character art from Bank 2
           rem
           rem Input: temp1 = character index (0-7), temp2 = animation
@@ -88,7 +88,7 @@ LoadFromBank2
           rem temp3=action, temp5=player
           return
           
-LoadFromBank3
+Bank3Dispatch
           rem Load character art from Bank 3
           rem
           rem Input: temp1 = character index (8-15), temp2 = animation
@@ -117,7 +117,7 @@ LoadFromBank3
           rem temp3=action, temp5=player
           return
           
-LoadFromBank4
+Bank4Dispatch
           rem Load character art from Bank 4
           rem
           rem Input: temp1 = character index (16-23), temp2 = animation
@@ -146,7 +146,7 @@ LoadFromBank4
           rem temp3=action, temp5=player
           return
           
-LoadFromBank5
+Bank5Dispatch
           rem Load character art from Bank 5
           rem
           rem Input: temp1 = character index (24-31), temp2 = animation

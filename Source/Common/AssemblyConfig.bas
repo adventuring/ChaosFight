@@ -5,7 +5,8 @@
           rem multispritesuperchipheader.asm (which pulls in superchip.h)
           includesfile multisprite_superchip.inc
 
-          set kernel multisprite
+          rem Force multisprite=2 for drawscreen bank switching (includesfile bypasses set kernel)
+          const multisprite = 2
           set kernel_options playercolors player1colors pfcolors
           set romsize 64kSC
           set optimization size

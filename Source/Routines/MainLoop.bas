@@ -11,14 +11,15 @@ MainLoop
           rem        FallingAnimation1 bank12, ArenaSelect1 bank12,
           rem        GameMainLoop bank11, WinnerAnnouncement bank12,
           rem        UpdateMusic bank1, titledrawscreen bank9
-          rem Constraints: Must remain colocated with MainLoopContinue/MainLoopDrawScreen
+          rem Constraints: Must remain colocated with MainLoopDrawScreen
 
           rem Entry point for entire game loop
-          if switchreset then gosub WarmStart bank13 : goto MainLoopContinue
+          if switchreset then gosub WarmStart bank13
+          ; fall through to continue
 
           rem Optimized: Use on/gosub for space efficiency
           on gameMode gosub MainLoopModePublisherPrelude MainLoopModeAuthorPrelude MainLoopModeTitleScreen MainLoopModeCharacterSelect MainLoopModeFallingAnimation MainLoopModeArenaSelect MainLoopModeGameMain MainLoopModeWinnerAnnouncement
-          goto MainLoopContinue
+          ; fall through to continue
 
 MainLoopModePublisherPrelude
           rem tail call

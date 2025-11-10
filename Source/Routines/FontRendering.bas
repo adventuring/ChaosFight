@@ -2,9 +2,8 @@
           rem ChaosFight - Source/Routines/FontRendering.bas
           rem Copyright (c) 2025 Interworldly Adventuring, LLC.
           
-          rem FONT RENDERING - HEX DIGITS 0-f
+          rem FONT RENDERING - HEX DIGITS 0-F
           rem Renders 8×16 pixel hexadecimal digits (0-9, A-F) for:
-          rem   - Player numbers (1-4) in player colors
           rem   - Arena selection (0-9) in white
           rem   - Scores and timers
 
@@ -17,21 +16,14 @@
           rem GENERATED FILES:
           rem Source/Generated/Numbers.bas (universal, not TV-specific)
 
-          rem PLAYER COLORS (match character selection/health bars):
-          rem   Player 1: Indigo (ColIndigo(14))
-          rem   Player 2: Red   (ColRed(14))
-          rem   Player 3: Yellow (ColYellow(14))
-          rem Player 4: Turquoise (ColTurquoise(14), SECAM maps to
-          rem   Green)
-
           rem Include font data (universal for all TV standards)
 
           rem
           rem Draw Digit - Data-driven Version
           rem Draws a single hexadecimal digit (0-F) at specified
           rem   position.
-          rem Supports rendering to player0, player1, player2, player3,
-          rem   player4, or player5 for simultaneous digits.
+          rem Supports rendering to any player sprite (0-5) for
+          rem   simultaneous digits.
 
           rem INPUTS:
           rem   temp1 = digit value (0-15)
@@ -45,11 +37,7 @@
 
           rem COLORS:
           rem   ColGrey(14) = White (arena select)
-          rem   ColIndigo(14) = Indigo (Player 1)
-          rem   ColRed(14) = Red (Player 2)
-          rem   ColYellow(14) = Yellow (Player 3)
-          rem ColTurquoise(14) = Turquoise (Player 4, SECAM maps to
-          rem   Green)
+          rem   Other colors available for custom digit rendering
 
 DrawDigit
           rem EXAMPLE USAGE:
@@ -199,49 +187,6 @@ LoadSprite5Ptr
 end
           let player5height = 16
           return
-
-DrawPlayerNumber
-          rem
-          rem Draw Player Number
-          rem Convenience routine to draw a player number in their
-          rem   color.
-          rem INPUTS:
-          rem   temp1 = player index (0-3)
-          rem   temp2 = X position
-          rem   temp3 = Y position
-          rem   temp5 = sprite select (0=player0, 1=player1)
-          rem Player colors are looked up from a table.
-          let temp1 = temp1 + 1
-          rem Convert player index to digit (0→1, 1→2, 2→3, 3→4)
-          
-          rem Look up player color
-          if temp1 > 3 then temp1 = 3
-          on temp1 goto SetP1Color SetP2Color SetP3Color SetP4Color
-          
-SetP1Color
-          let temp4 = ColIndigo(14)
-          goto DrawPlayerDigitNow
-          rem Indigo
-          
-SetP2Color
-          let temp4 = ColRed(14)
-          goto DrawPlayerDigitNow
-          rem Red
-          
-SetP3Color
-          let temp4 = ColYellow(14)
-          goto DrawPlayerDigitNow
-          rem Yellow
-          
-SetP4Color
-          let temp4 = ColTurquoise(14)
-          rem Turquoise (SECAM macro maps to Cyan)
-          goto DrawPlayerDigitNow
-          
-DrawPlayerDigitNow
-          rem Set up parameters for DrawDigit
-          goto DrawDigit
-          rem tail call
 
 DrawArenaNumber
           rem

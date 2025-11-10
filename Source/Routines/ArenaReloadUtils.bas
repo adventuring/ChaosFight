@@ -19,6 +19,6 @@ ReloadArenaColors
           
 ReloadArenaColorsDispatch
           rem Use existing LoadArena color functions (identical behavior)
-          if temp2 then goto LoadArenaColorsBW bank6
-          goto LoadArenaColorsColor bank6
+          if temp2 then goto LoadArenaColorsBW bank16
+          goto LoadArenaColorsColor bank16
 

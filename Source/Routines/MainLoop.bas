@@ -59,11 +59,11 @@ MainLoopContinue
           rem Calls: UpdateMusic bank1; colocated with MainLoop/MainLoopDrawScreen
           rem Notes: Modes 3-6 handle audio updates in their own routines
 
-          if gameMode < 3 then goto MainLoopContinueUpdateMusic
-          if gameMode = 7 then goto MainLoopContinueUpdateMusic
+          if gameMode < 3 then goto MainLoopContinueUpdateMusicLabel
+          if gameMode = 7 then goto MainLoopContinueUpdateMusicLabel
           goto MainLoopDrawScreen
 
-MainLoopContinueUpdateMusic
+MainLoopContinueUpdateMusicLabel
           gosub UpdateMusic bank1
 MainLoopDrawScreen
           rem Renders the appropriate screen for the current game mode

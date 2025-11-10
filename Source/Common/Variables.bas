@@ -258,11 +258,12 @@
           rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
           rem Admin and Game Mode never run simultaneously
           dim MusicVoice0TargetAUDV_W = w071
-          rem Target AUDV value from note data (envelope calculation)
+          rem   Admin and Game Mode never run simultaneously
           dim MusicVoice0TargetAUDV_R = r071
+          rem Target AUDV value from note data (envelope calculation)
+          dim MusicVoice1TargetAUDV_R = r072
           dim MusicVoice1TargetAUDV_W = w072
           rem   envelope calculation target
-          dim MusicVoice1TargetAUDV_R = r072
           rem Total frames (Duration + Delay) captured when the note loaded (voice 0)
           dim MusicVoice0TotalFrames_W = w073
           rem   envelope duration tracking

@@ -72,7 +72,7 @@ end
           gosub LocateCharacterArt bank10
           return
 
-CopySpecialSpriteToPlayer
+CopyGlyphToPlayer
           rem Input: temp3 = player number (0-3)
           rem        temp4 = sprite type (0=QuestionMark, 1=CPU, 2=No)
           rem Output: Sprite data loaded from unified font
@@ -95,21 +95,21 @@ end
 
 P0Load
           rem P0: Only QuestionMark
-          let temp4 = 0  : goto CopySpecialSpriteToPlayer
+          let temp4 = 0  : goto CopyGlyphToPlayer
 
 P1Load
           rem P1: QuestionMark/CPU/No
-          let temp4 = temp6 : goto CopySpecialSpriteToPlayer
+          let temp4 = temp6 : goto CopyGlyphToPlayer
 
 P2Load
           rem P2: QuestionMark/No
-          if temp6 = 2 then let temp4 = 2 : goto CopySpecialSpriteToPlayer
-          let temp4 = 0 : goto CopySpecialSpriteToPlayer
+          if temp6 = 2 then let temp4 = 2 : goto CopyGlyphToPlayer
+          let temp4 = 0 : goto CopyGlyphToPlayer
 
 P3Load
           rem P3: QuestionMark/No
-          if temp6 = 2 then let temp4 = 2 : goto CopySpecialSpriteToPlayer
-          let temp4 = 0 : goto CopySpecialSpriteToPlayer
+          if temp6 = 2 then let temp4 = 2 : goto CopyGlyphToPlayer
+          let temp4 = 0 : goto CopyGlyphToPlayer
 
 P5Load
           rem P5: Point to font glyph for QuestionMark

@@ -7,7 +7,7 @@
 
           rem Force multisprite=2 for drawscreen bank switching (includesfile bypasses set kernel)
           const multisprite = 2
-          set kernel_options playercolors player1colors pfcolors
+          set kernel_options playercolors player1colors
           set romsize 64kSC
           set optimization size
           set optimization noinlinedata

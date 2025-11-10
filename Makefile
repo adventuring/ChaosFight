@@ -421,41 +421,127 @@ Source/Banks/Bank5.bas: Source/Generated/Character24.bas Source/Generated/Charac
 Source/Banks/Bank16.bas: Source/Generated/Numbers.bas
 
 # Shared dependencies for all TV standards
-BUILD_DEPS = $(ALL_SOURCES) \
+BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Banks/Bank1.bas \
 	Source/Banks/Bank2.bas \
 	Source/Banks/Bank3.bas \
 	Source/Banks/Bank4.bas \
 	Source/Banks/Bank5.bas \
+	Source/Banks/Bank6.bas \
+	Source/Banks/Bank7.bas \
+	Source/Banks/Bank8.bas \
+	Source/Banks/Bank9.bas \
+	Source/Banks/Bank10.bas \
+	Source/Banks/Bank11.bas \
 	Source/Banks/Bank12.bas \
+	Source/Banks/Bank13.bas \
+	Source/Banks/Bank14.bas \
+	Source/Banks/Bank15.bas \
 	Source/Banks/Bank16.bas \
 	Source/Banks/Banks.bas \
+	Source/Common/AssemblyConfig.bas \
+	Source/Common/CharacterDefinitions.bas \
 	Source/Common/Colors.h \
 	Source/Common/Constants.bas \
+	Source/Common/Enums.bas \
 	Source/Common/Macros.bas \
 	Source/Common/Preamble.bas \
 	Source/Common/Variables.bas \
+	Source/Data/Arenas.bas \
+	Source/Data/CharacterDataTables.bas \
+	Source/Data/CharacterMissileTables.bas \
+	Source/Data/CharacterPhysicsTables.bas \
+	Source/Data/CPUSprite.bas \
+	Source/Data/HealthBarPatterns.bas \
+	Source/Data/NoSprite.bas \
+	Source/Data/PlayerColors.bas \
+	Source/Data/PlayerColorTables.bas \
+	Source/Data/QuestionMarkSprite.bas \
+	Source/Data/SongPointers1.bas \
+	Source/Data/SongPointers2.bas \
+	Source/Data/SoundPointers.bas \
+	Source/Data/WinnerScreen.bas \
+	Source/Platform/NTSC.bas \
+	Source/Platform/PAL.bas \
+	Source/Platform/SECAM.bas \
+	Source/Routines/AnimationSystem.bas \
+	Source/Routines/ArenaLoader.bas \
+	Source/Routines/ArenaReloadUtils.bas \
+	Source/Routines/ArenaSelect.bas \
+	Source/Routines/AttractMode.bas \
+	Source/Routines/AuthorPrelude.bas \
+	Source/Routines/BeginArenaSelect.bas \
+	Source/Routines/BeginAttractMode.bas \
+	Source/Routines/BeginAuthorPrelude.bas \
+	Source/Routines/BeginFallingAnimation.bas \
+	Source/Routines/BeginPublisherPrelude.bas \
+	Source/Routines/BeginTitleScreen.bas \
+	Source/Routines/BeginWinnerAnnouncement.bas \
+	Source/Routines/ChangeGameMode.bas \
+	Source/Routines/CharacterAttacks.bas \
+	Source/Routines/CharacterAttacksDispatch.bas \
+	Source/Routines/CharacterControlsDown.bas \
+	Source/Routines/CharacterControlsJump.bas \
+	Source/Routines/CharacterCycleUtils.bas \
+	Source/Routines/CharacterData.bas \
+	Source/Routines/CharacterSelectMain.bas \
+	Source/Routines/CharacterSelectRender.bas \
+	Source/Routines/CheckRoboTitoStretchMissileCollisions.bas \
 	Source/Routines/ColdStart.bas \
+	Source/Routines/Combat.bas \
+	Source/Routines/ConsoleDetection.bas \
+	Source/Routines/ConsoleHandling.bas \
 	Source/Routines/ControllerDetection.bas \
+	Source/Routines/CopyGlyphToPlayer.bas \
+	Source/Routines/DisplayWinScreen.bas \
+	Source/Routines/FallDamage.bas \
 	Source/Routines/FallingAnimation.bas \
+	Source/Routines/FontRendering.bas \
 	Source/Routines/GameLoopInit.bas \
 	Source/Routines/GameLoopMain.bas \
+	Source/Routines/GuardEffects.bas \
 	Source/Routines/HealthBarSystem.bas \
-	Source/Routines/ArenaSelect.bas \
 	Source/Routines/MainLoop.bas \
+	Source/Routines/MissileCollision.bas \
+	Source/Routines/MissileSystem.bas \
+	Source/Routines/MovementSystem.bas \
+	Source/Routines/MusicBankHelpers15.bas \
+	Source/Routines/MusicBankHelpers.bas \
 	Source/Routines/MusicSystem.bas \
+	Source/Routines/PerformMeleeAttack.bas \
+	Source/Routines/PerformRangedAttack.bas \
+	Source/Routines/PlayerCollisionResolution.bas \
+	Source/Routines/PlayerElimination.bas \
+	Source/Routines/PlayerInput.bas \
+	Source/Routines/PlayerLockedHelpers.bas \
+	Source/Routines/PlayerPhysics.bas \
+	Source/Routines/PlayerPhysicsGravity.bas \
+	Source/Routines/PlayerRendering.bas \
+	Source/Routines/PublisherPrelude.bas \
 	Source/Routines/ScreenLayout.bas \
+	Source/Routines/SetPlayerGlyphFromFont.bas \
+	Source/Routines/SoundBankHelpers.bas \
 	Source/Routines/SoundSystem.bas \
+	Source/Routines/SpecialMovement.bas \
 	Source/Routines/SpriteLoader.bas \
+	Source/Routines/SpriteLoaderCharacterArt.bas \
+	Source/Routines/SpritePointerInit.bas \
+	Source/Routines/TitleCharacterParade.bas \
+	Source/Routines/TitleScreenMain.bas \
+	Source/Routines/TitleScreenRender.bas \
+	Source/Routines/TitlescreenWindowControl.bas \
+	Source/Routines/Unused/CharacterSelect.bas \
+	Source/Routines/Unused/CharacterSelectFire.bas \
+	Source/Routines/Unused/FrameBudgeting.bas \
+	Source/Routines/Unused/Physics.bas \
+	Source/Routines/Unused/PlayerPhysicsCollisions.bas \
+	Source/Routines/WinnerAnnouncement.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)
-	# Note: SECAM uses PAL music/sound files via conditional includes in Bank15/16.bas
-
-# Step 1: Preprocess .bas → .preprocessed.bas
+	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas)\
 # Explicitly depend on character and bitmap PNG files to ensure they are generated
 Source/Generated/$(GAME)$(GAMEYEAR).NTSC.preprocessed.bas: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas $(BUILD_DEPS) \
 	$(CHARACTER_PNG) $(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \

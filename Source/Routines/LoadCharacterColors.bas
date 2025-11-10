@@ -11,14 +11,7 @@ LoadCharacterColors
 end
 
           ; Determine color based on hurt state
-          if temp2 = 0 then let temp6 = PlayerColors12[temp3] : goto SetColorLabel
-
-          ; Hurt state: magenta (SECAM) or dimmed player colors (NTSC/PAL)
-#ifdef TV_SECAM
-          let temp6 = ColMagenta(14)
-#else
-          let temp6 = PlayerColors6[temp3]
-#endif
+          if temp2 = 0 then temp6 = PlayerColors12[temp3] else temp6 = PlayerColors6[temp3]
 
 SetColorLabel
           ; Set the appropriate color register

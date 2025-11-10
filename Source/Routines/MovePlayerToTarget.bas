@@ -141,15 +141,5 @@ NudgeLeft
           return
 
 NudgeVertical
-          rem Vertical nudging (placeholder for future use)
-          gosub NudgeDown
-          gosub NudgeUp
-          return
-
-NudgeDown
-          rem Check downward nudge (placeholder)
-          return
-
-NudgeUp  
-          rem Check upward nudge (placeholder)
+          rem Vertical nudging (placeholder for future use - not implemented)
           return

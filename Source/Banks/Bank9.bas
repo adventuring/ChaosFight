@@ -24,5 +24,4 @@ end
 #include "Source/Data/CharacterThemeSongIndices.bas"
 #include "Source/Data/CharacterDataTables.bas"
 #include "Source/Data/CharacterPhysicsTables.bas"
-#include "Source/Routines/FallingAnimation.bas"
 #include "Source/Routines/FallDamage.bas"

@@ -102,22 +102,27 @@ LoadArenaColorsColor
           rem Load arena color table pointer based on arena index
           asm
             ; pfcolortable = Arena0Colors + (temp1 << 3)
-            ; Compute (temp1 << 3) into A (low) and X (high via ROLs)
+            ; Compute low_offset = (temp1 << 3)
             lda temp1
-            ldx #0
             asl
-            rol x
             asl
-            rol x
             asl
-            rol x
-            ; Add low byte to base low
+            sta temp4
+            ; Compute high_offset = temp1 >> 5
+            lda temp1
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sta temp5
+            ; Add to base address with carry
+            lda #<Arena0Colors
             clc
-            adc #<Arena0Colors
+            adc temp4
             sta pfcolortable
-            ; Add high nibble (X) and carry to base high
-            txa
-            adc #>Arena0Colors
+            lda #>Arena0Colors
+            adc temp5
             sta pfcolortable+1
 end
           return

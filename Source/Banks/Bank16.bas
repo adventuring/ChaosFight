@@ -41,12 +41,9 @@ SetP1to5
             sta player1pointerlo,y
             lda temp5
             sta player1pointerhi,y
+            lda #$10
+            sta player1height,y
 end
-          if temp3 = 1 then player1height = 16 : return
-          if temp3 = 2 then player2height = 16 : return
-          if temp3 = 3 then player3height = 16 : return
-          if temp3 = 4 then player4height = 16 : return
-          player5height = 16
           return
 
 SetP0

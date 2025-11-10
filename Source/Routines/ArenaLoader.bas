@@ -150,8 +150,8 @@ LoadRandomArena
           let temp1 = rand
           let temp1 = temp1 & 31
           if temp1 > MaxArenaID then LoadRandomArena
-          goto LoadArenaByIndex
+          ; fall through to LoadArenaByIndex
 
-          
+
           
 

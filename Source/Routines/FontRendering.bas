@@ -18,24 +18,40 @@
           rem ARENA SELECTION DIGIT CONSTANTS
           rem P4/P5 sprites are used ONLY for arena selection display
           rem Always at fixed positions, always white, never replicated/reflected
-          const ArenaDigitX = 80    ; X position for tens digit (P4)
-          const ArenaOnesDigitX = 88 ; X position for ones digit (P5)
-          const ArenaDigitY = 20    ; Y position for both digits
+          const ArenaDigitX = $48     ; X position for tens digit (P4)
+          const ArenaOnesDigitX = $58 ; X position for ones digit (P5)
+          const ArenaDigitY = 20      ; Y position for both digits
           const ArenaDigitColor = ColGrey(14)  ; Always white (single width)
 
           rem Include font data (universal for all TV standards)
 
+
+DrawArenaNumber
+          rem
+          rem Draw Arena Number - P4/P5 ONLY for arena selection
+          rem Arena digits always at fixed positions: P4=X80, P5=X88, Y=20, white
+          rem Never replicated, never reflected (single width)
+          rem INPUT: temp1 = arena number (1-32)
+          rem OUTPUT: Arena number displayed using P4/P5 sprites
+          rem
+          let temp6 = ArenaBCD[temp1] & $f0 
+          let temp6 = temp6 / $10
+          let temp7 = ArenaBCD[temp1] & $0f 
+          rem Always draw both digits
+          let temp1 = temp6
+          let temp5 = 4  : gosub DrawArenaDigit
+          let temp1 = temp7
+          let temp5 = 5  : goto DrawArenaDigit
+DrawArenaDigit
           rem
           rem Draw Arena Digit - P4/P5 only, fixed positions, white
           rem Simplified for arena selection: always P4/P5, always white,
           rem always at ArenaDigitX/Y positions
-
-DrawArenaDigit
           rem INPUT: temp1 = digit value (0-15), temp5 = sprite (4 or 5)
           rem OUTPUT: Digit drawn to P4 or P5 at arena positions, white
 
           rem Set fixed arena positions and white color
-          if temp5 = 5 then goto SetArenaSprite5
+          if temp5 = 5 then SetArenaSprite5
 
 SetArenaSprite4
           let player4x = ArenaDigitX
@@ -57,24 +73,6 @@ LoadArenaPlayerDigit
           rem Output: player4/5 pointer set via bank16 helper, height=16
           gosub SetPlayerGlyphFromFont bank16
           return
-
-DrawArenaNumber
-          rem
-          rem Draw Arena Number - P4/P5 ONLY for arena selection
-          rem Arena digits always at fixed positions: P4=X80, P5=X88, Y=20, white
-          rem Never replicated, never reflected (single width)
-          rem INPUT: temp1 = arena number (1-32)
-          rem OUTPUT: Arena number displayed using P4/P5 sprites
-          rem
-          let temp6 = ArenaBCD[temp1] & $f0 
-          let temp6 = temp6 / $10
-          let temp7 = ArenaBCD[temp1] & $0f 
-          rem Always draw both digits
-          let temp1 = temp6
-          let temp5 = 4  : gosub DrawArenaDigit bank16
-          let temp1 = temp7
-          let temp5 = 5  : goto DrawArenaDigit
-          rem tail call
 
           rem Lookup tables to replace division and modulo by 10
           rem Index 0..32 inclusive

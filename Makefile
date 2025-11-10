@@ -24,7 +24,6 @@ BB_FILTER = bin/bbfilter
 POSTINC = $(abspath Tools/batariBASIC)
 PATH := $(abspath bin):$(PATH)
 export PATH
-DASM = bin/dasm
 STELLA = stella
 # -i taken out for now from gimp
 GIMP = gimp --batch-interpreter plug-in-script-fu-eval -c --no-shm

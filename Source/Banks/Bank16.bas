@@ -9,6 +9,7 @@
           rem First — data. Must come first. Cannot be moved.
 #include "Source/Data/Arenas.bas"
 #include "Source/Generated/Numbers.bas"
+#include "Source/Data/PlayerColors.bas"
 #include "Source/Routines/ArenaLoader.bas"
 #include "Source/Routines/MainLoop.bas"
 #include "Source/Routines/SpriteLoader.bas"

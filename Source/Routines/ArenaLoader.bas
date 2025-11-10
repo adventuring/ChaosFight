@@ -47,11 +47,10 @@ LoadArenaByIndex
           rem
           rem Input: temp1 (temp1) = arena index (0-31),
           rem temp2 (temp2) = B&W mode (1=B&W, 0=Color),
-          rem ArenaPF1PointerL[], ArenaPF1PointerH[],
-          rem ArenaPF2PointerL[], ArenaPF2PointerH[] (global data
-          rem tables) = playfield pointers, ArenaColorPointerL[],
-          rem ArenaColorPointerH[] (global data tables) = color
-          rem pointers
+          rem ArenaPF1PointerL[], ArenaPF1PointerH[] (global data
+          rem tables) = playfield pointers (PF2 mirrors PF1),
+          rem ArenaColorPointerL[], ArenaColorPointerH[] (global data
+          rem tables) = color pointers
           rem
           rem Output: Arena playfield and colors loaded
           rem
@@ -68,17 +67,33 @@ LoadArenaByIndex
           rem support 0-31
           if temp1 > 31 then temp1 = 0
           
-          rem Load playfield pointers from tables using index
+          rem Load playfield pointers from tables using index (compute PF2 from PF1)
           asm
             ldx temp1
             lda ArenaPF1PointerL, x
             sta PF1pointer
             lda ArenaPF1PointerH, x
             sta PF1pointer+1
-            lda ArenaPF2PointerL, x
+            ; PF2pointer = PF1pointer + 8, aligned so PF2 8-byte block does not cross a page
+            lda PF1pointer
+            clc
+            adc #8
             sta PF2pointer
-            lda ArenaPF2PointerH, x
+            ; Test if (PF1_low + 16) crosses page; if so, align PF2 to next page (low=0, high+1)
+            clc
+            adc #8
+            bcc .NoAlignPF2
+            lda #0
+            sta PF2pointer
+            lda PF1pointer+1
+            clc
+            adc #1
             sta PF2pointer+1
+            jmp .PF2Done
+.NoAlignPF2
+            lda PF1pointer+1
+            sta PF2pointer+1
+.PF2Done
 end
           
           rem Tail-call B&W color loader
@@ -86,10 +101,23 @@ end
 LoadArenaColorsColor
           rem Load arena color table pointer based on arena index
           asm
-            ldx temp1
-            lda ArenaColorPointerL, x
+            ; pfcolortable = Arena0Colors + (temp1 << 3)
+            ; Compute (temp1 << 3) into A (low) and X (high via ROLs)
+            lda temp1
+            ldx #0
+            asl
+            rol x
+            asl
+            rol x
+            asl
+            rol x
+            ; Add low byte to base low
+            clc
+            adc #<Arena0Colors
             sta pfcolortable
-            lda ArenaColorPointerH, x
+            ; Add high nibble (X) and carry to base high
+            txa
+            adc #>Arena0Colors
             sta pfcolortable+1
 end
           return

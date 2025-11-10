@@ -3,14 +3,7 @@
 
           rem Special sprite lengths no longer needed (font-driven)
 
-          rem Player color tables for indexed lookup
-          data PlayerColors12
-          ColIndigo(12), ColRed(12), ColYellow(12), ColTurquoise(12)
-          end
-
-          data PlayerColors6
-          ColIndigo(6), ColRed(6), ColYellow(6), ColTurquoise(6)
-          end
+          rem Player color tables moved to Source/Data/PlayerColors.bas
 
           asm
 ; SUPPORTED SPRITE CONFIGURATIONS:
@@ -35,11 +28,7 @@ end
           asm
 ; Check if character is special placeholder
 end
-          if currentCharacter = 255 then temp6 = SpriteNo : goto LoadSpecialSprite
-          asm
-; tail call
-; NoCharacter = 255
-end
+          if currentCharacter = NoCharacter then temp6 = SpriteNo : goto LoadSpecialSprite
 
           if currentCharacter = 254 then temp6 = SpriteCPU : goto LoadSpecialSprite
           asm
@@ -47,15 +36,8 @@ end
 ; CPUCharacter = 254
 end
 
-          if currentCharacter = 253 then temp6 = SpriteQuestionMark : goto LoadSpecialSprite
-          asm
-; tail call
-; RandomCharacter = 253
-end
-
-          asm
-; Use character art location system for sprite loading
-end
+          if currentCharacter = RandomCharacter then temp6 = SpriteQuestionMark : goto LoadSpecialSprite
+          rem  Use character art location system for sprite loading
           asm
 ;
 ; Input: currentCharacter = character index (global
@@ -67,9 +49,7 @@ end
 ;   select
 ; LocateCharacterArt expects: temp1=char, temp2=frame,
 ;   temp3=action, temp4=player
-end
-
-          asm
+;
 ; Check if player number in temp3 or temp4
 ; If temp4 is not set (0 and caller might have used temp3),
 end
@@ -211,24 +191,6 @@ end
 end
 
 NormalColor
-          asm
-; Normal color dispatch - character colors (NTSC/PAL) or player colors (SECAM)
-end
-#ifdef TV_SECAM
-          PlayerIndexColors
-#else
-          asm
-; NTSC/PAL: Use character-specific colors
-end
-#ifdef TV_NTSC
-          let temp6 = CharacterColorsNTSC[temp1]
-#endif
-#ifdef TV_PAL
-          let temp6 = CharacterColorsPAL[temp1]
-#endif
-#endif
-          goto SetColor
-
 PlayerIndexColors
           asm
 ; Bright player colors (luminance 12) - table lookup
@@ -238,13 +200,6 @@ end
           goto SetColor
 
 PlayerIndexColorsDim
-          asm
-; Dimmed player colors (luminance 6) - table lookup
-; P1=Indigo, P2=Red, P3=Yellow, P4=Turquoise
-end
-          let temp6 = PlayerColors6[temp3]
-          goto SetColor
-
 HurtColor
           asm
 ; Hurt state colors - magenta (SECAM) or dimmed player colors (NTSC/PAL)

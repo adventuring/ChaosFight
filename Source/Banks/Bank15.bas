@@ -133,6 +133,7 @@
 #include "Source/Data/SoundPointers.bas"
 #include "Source/Data/SongPointers2.bas"
 
+#include "Source/Data/WinnerScreen.bas"
 #include "Source/Routines/DisplayWinScreen.bas"
 
           rem Sounds Bank Helper Functions And Data

@@ -22,14 +22,7 @@ WinnerScreenPlayfield
             XXXXXXXXXXXXXXXX
 end
 
+          asm
 WinnerScreenColorsColor
-          data
-          ColGold(14)
-          ColGold(12)
-          ColGold(10)
-          ColGold(8)
-          ColGold(6)
-          ColGold(4)
-          ColGold(2)
-          ColGold(2)
+    .byte $fe, $fc, $fa, $f8, $f6, $f4, $f2, $f2
 end

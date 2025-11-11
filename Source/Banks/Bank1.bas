@@ -13,11 +13,9 @@
           rem Game URL: https://interworldly.com/games/ChaosFight
           rem These strings are embedded in the ROM right up front
           rem Note: Strings are defined in BuildInfo.s and included with
-          rem   bare "include" directive (not #include) to avoid C
-          rem   preprocessor quoting issues
-
+          rem   #include inside asm so the build date macros expand before assembly
           asm
-          include "../Common/BuildInfo.s"
+          #include "Source/Common/BuildInfo.s"
 end
 
 #include "Source/Data/SongPointers1.bas"

@@ -1,6 +1,10 @@
           rem ChaosFight - Source/Routines/SoundSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+          rem Local sound-system scratch aliases (temp registers for frame countdowns)
+          dim SS_frameCount = temp4
+          dim SS_frameCount1 = temp5
+
 PlaySoundEffect
           rem SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
           rem Sound effects for gameplay (gameMode 6)

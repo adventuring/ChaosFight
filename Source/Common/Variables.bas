@@ -485,17 +485,9 @@
           dim playerSubpixelY_R = r072
           dim playerSubpixelY_RL = r076
           
-          rem Physics helper: shared 16-bit accumulator (low=temp2, high=temp3)
+          rem Shared 16-bit accumulator for subpixel math (temp2 = low byte, temp3 = high byte)
           dim subpixelAccumulator = temp2.temp3
           
-          rem Sound system scratch aliases (temp registers for frame countdown)
-          dim SS_frameCount = temp4
-          dim SS_frameCount1 = temp5
-
-          rem Music system scratch aliases (temp registers for frame countdown)
-          dim MS_frameCount = temp4
-          dim MS_frameCount1 = temp5
-
           rem GAME MODE - Standard RAM (var24-var47) - sorted
           rem   numerically
           

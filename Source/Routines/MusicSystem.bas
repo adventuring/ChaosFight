@@ -1,6 +1,10 @@
           rem ChaosFight - Source/Routines/MusicSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+          rem Local music-system scratch aliases (temp registers for frame countdowns)
+          dim MS_frameCount = temp4
+          dim MS_frameCount1 = temp5
+
 StartMusic
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation
           rem Music system for publisher/author/title/winner screens

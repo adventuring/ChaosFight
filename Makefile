@@ -482,7 +482,6 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/CharacterAttacksDispatch.bas \
 	Source/Routines/CharacterControlsDown.bas \
 	Source/Routines/CharacterControlsJump.bas \
-	Source/Routines/CharacterCycleUtils.bas \
 	Source/Routines/CharacterData.bas \
 	Source/Routines/CharacterSelectMain.bas \
 	Source/Routines/CharacterSelectRender.bas \

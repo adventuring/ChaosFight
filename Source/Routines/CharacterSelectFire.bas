@@ -18,7 +18,7 @@ HandleCharacterSelectFire
           rem         temp1, temp2, temp3, temp4 (passed to helper
           rem         routines)
           rem
-          rem Called Routines: SetPlayerLocked (bank10) - accesses
+          rem Called Routines: SetPlayerLocked (bank6) - accesses
           rem playerLocked state,
           rem   PlaySoundEffect (bank15) - plays selection sound
           rem
@@ -67,7 +67,7 @@ HCSF_HandleFire
           rem Mutates: playerLocked state, randomSelectFlags[] (if
           rem random)
           rem
-          rem Called Routines: SetPlayerLocked (bank10),
+          rem Called Routines: SetPlayerLocked (bank6),
           rem PlaySoundEffect (bank15)
           rem
           rem Constraints: Must be colocated with
@@ -93,7 +93,7 @@ HCSF_HandleHandicap
           rem
           rem Mutates: playerLocked state (set to handicap)
           rem
-          rem Called Routines: SetPlayerLocked (bank10),
+          rem Called Routines: SetPlayerLocked (bank6),
           rem PlaySoundEffect (bank15)
           rem Constraints: Must be colocated with HandleCharacterSelectFire
           let temp3 = temp1

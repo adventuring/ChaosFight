@@ -3,7 +3,7 @@
 
 CharacterSelectEntry
           rem Initializes character select screen state
-          rem Notes: PlayerLockedHelpers.bas moved to Bank 14
+          rem Notes: PlayerLockedHelpers.bas resides in Bank 6
           rem
           rem Input: None (entry point)
           rem
@@ -72,7 +72,7 @@ CharacterSelectLoop
           rem playerLocked state, temp1, temp2 (passed to
           rem SetPlayerLocked)
           rem
-          rem Called Routines: SetPlayerLocked (bank9) - accesses
+          rem Called Routines: SetPlayerLocked (bank6) - accesses
           rem playerLocked state
           rem
           rem Constraints: Must be colocated with SelectStickLeft,
@@ -223,7 +223,7 @@ SelectStickLeft
           rem        to MaxCharacter, lock state cleared on wrap
           rem Mutates: playerCharacter[], temp1, temp2, playerLocked (via
           rem        SetPlayerLocked)
-          rem Called Routines: SetPlayerLocked (bank9)
+          rem Called Routines: SetPlayerLocked (bank6)
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
@@ -239,7 +239,7 @@ SelectStickRight
           rem        to 0, lock state cleared on wrap
           rem Mutates: playerCharacter[], temp1, temp2, playerLocked (via
           rem        SetPlayerLocked)
-          rem Called Routines: SetPlayerLocked (bank9)
+          rem Called Routines: SetPlayerLocked (bank6)
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0

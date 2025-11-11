@@ -7,6 +7,7 @@
           bank 6
 
           rem Character select routines
+#include "Source/Routines/PlayerLockedHelpers.bas"
 #include "Source/Routines/CharacterSelectRender.bas"
 #include "Source/Routines/CharacterSelectFire.bas"
 #include "Source/Routines/CharacterSelect.bas"

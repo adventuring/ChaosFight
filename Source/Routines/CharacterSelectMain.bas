@@ -56,7 +56,7 @@
           rem
           rem Called Routines: CycleCharacterLeft, CycleCharacterRight -
           rem access playerCharacter[],
-          rem   SetPlayerLocked (bank10) - accesses playerLocked state,
+          rem   SetPlayerLocked (bank6) - accesses playerLocked state,
           rem   PlaySoundEffect (bank15) - plays navigation sound
           rem
           rem Constraints: Must be colocated with HCSC_CheckJoy0,
@@ -122,7 +122,7 @@ HandleCharacterSelectCycle
           rem temp1, temp2, temp3
           rem
           rem Called Routines: CycleCharacterLeft, CycleCharacterRight,
-          rem SetPlayerLocked (bank10),
+          rem SetPlayerLocked (bank6),
           rem   PlaySoundEffect (bank15)
           rem
           rem Constraints: Must be colocated with
@@ -202,12 +202,12 @@ HCSC_CycleDone
           rem Mutates: playerCharacter[temp1], playerLocked state,
           rem temp1, temp2
           rem
-          rem Called Routines: SetPlayerLocked (bank10),
+          rem Called Routines: SetPlayerLocked (bank6),
           rem PlaySoundEffect (bank15)
           let playerCharacter[temp3] = temp1
           let temp2 = PlayerLockedUnlocked
           let temp1 = temp3
-          gosub SetPlayerLocked
+          gosub SetPlayerLocked bank6
           let temp1 = SoundMenuNavigate
           rem Play navigation sound
           gosub PlaySoundEffect bank15
@@ -229,7 +229,7 @@ HandleCharacterSelectFire
           rem         temp1, temp2, temp3, temp4 (passed to helper
           rem         routines)
           rem
-          rem Called Routines: SetPlayerLocked (bank10) - accesses
+          rem Called Routines: SetPlayerLocked (bank6) - accesses
           rem playerLocked state,
           rem   PlaySoundEffect (bank15) - plays selection sound
           rem
@@ -278,7 +278,7 @@ HCSF_HandleFire
           rem Mutates: playerLocked state, randomSelectFlags[] (if
           rem random)
           rem
-          rem Called Routines: SetPlayerLocked (bank10),
+          rem Called Routines: SetPlayerLocked (bank6),
           rem PlaySoundEffect (bank15)
           rem
           rem Constraints: Must be colocated with
@@ -290,7 +290,7 @@ HCSF_HandleFire
           let temp3 = temp1
           let temp1 = temp3
           let temp2 = PlayerLockedNormal
-          gosub SetPlayerLocked
+          gosub SetPlayerLocked bank6
           let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
@@ -304,13 +304,13 @@ HCSF_HandleHandicap
           rem
           rem Mutates: playerLocked state (set to handicap)
           rem
-          rem Called Routines: SetPlayerLocked (bank10),
+          rem Called Routines: SetPlayerLocked (bank6),
           rem PlaySoundEffect (bank15)
           rem Constraints: Must be colocated with HandleCharacterSelectFire
           let temp3 = temp1
           let temp1 = temp3
           let temp2 = PlayerHandicapped
-          gosub SetPlayerLocked
+          gosub SetPlayerLocked bank6
           let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15
@@ -369,16 +369,16 @@ CharacterSelectHandleTwoPlayers
           rem Handle Player 1/3 input (joy0)
           if joy0left then temp1 = temp3 : temp2 = 0 : gosub HandleCharacterSelectCycle
           if joy0right then temp1 = temp3 : temp2 = 1 : gosub HandleCharacterSelectCycle
-          if joy0up then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          if joy0down then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy0up then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if joy0down then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           if joy0fire then temp1 = temp3 : gosub HandleCharacterSelectFire
 
           rem Handle Player 2/4 input (joy1) - only if active
           if !temp4 then return
           if joy1left then temp1 = temp3 + 1 : temp2 = 0 : gosub HandleCharacterSelectCycle
           if joy1right then temp1 = temp3 + 1 : temp2 = 1 : gosub HandleCharacterSelectCycle
-          if joy1up then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-          if joy1down then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy1up then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
+          if joy1down then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           if joy1fire then temp1 = temp3 + 1 : gosub HandleCharacterSelectFire
           return
           
@@ -426,10 +426,10 @@ CharacterSelectRollRandomPlayer
           let playerCharacter[currentPlayer] = temp2
           rem Valid! Set character and lock with normal or handicap
           if randomSelectFlags_R[currentPlayer] then goto CharacterSelectRollRandomPlayerHandicap
-          let temp1 = currentPlayer : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
+          let temp1 = currentPlayer : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
           goto CharacterSelectRollRandomPlayerLockDone
 CharacterSelectRollRandomPlayerHandicap
-          let temp1 = currentPlayer : let temp2 = PlayerHandicapped : gosub SetPlayerLocked
+          let temp1 = currentPlayer : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank6
 CharacterSelectRollRandomPlayerLockDone
           let randomSelectFlags_W[currentPlayer] = 0
           return
@@ -443,9 +443,9 @@ CharacterSelectCheckReady
           rem 2-player mode: P1 must be locked AND (P2 locked OR P2 on
           rem CPU)
           if controllerStatus & SetQuadtariDetected then goto CharacterSelectQuadtariReady
-          let temp1 = 0 : gosub GetPlayerLocked : if !temp2 then goto CharacterSelectReadyDone
+          let temp1 = 0 : gosub GetPlayerLocked bank6 : if !temp2 then goto CharacterSelectReadyDone
           rem P1 is locked, check P2
-          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectFinish
+          let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then goto CharacterSelectFinish
           rem P2 not locked, check if on CPU
           if playerCharacter[1] = CPUCharacter then goto CharacterSelectFinish
           goto CharacterSelectReadyDone
@@ -455,21 +455,21 @@ CharacterSelectQuadtariReady
           let readyCount = 0
           rem   CPU/NO)
           rem Count P1 ready
-          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then readyCount = readyCount + 1
-          let temp1 = 0 : gosub GetPlayerLocked : if !temp2 && playerCharacter[0] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 0 : gosub GetPlayerLocked : if !temp2 && playerCharacter[0] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank6 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[0] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[0] = NoCharacter then readyCount = readyCount + 1
           rem Count P2 ready
-          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then readyCount = readyCount + 1
-          let temp1 = 1 : gosub GetPlayerLocked : if !temp2 && playerCharacter[1] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 1 : gosub GetPlayerLocked : if !temp2 && playerCharacter[1] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank6 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[1] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[1] = NoCharacter then readyCount = readyCount + 1
           rem Count P3 ready
-          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then readyCount = readyCount + 1
-          let temp1 = 2 : gosub GetPlayerLocked : if !temp2 && playerCharacter[2] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 2 : gosub GetPlayerLocked : if !temp2 && playerCharacter[2] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank6 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[2] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[2] = NoCharacter then readyCount = readyCount + 1
           rem Count P4 ready
-          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then readyCount = readyCount + 1
-          let temp1 = 3 : gosub GetPlayerLocked : if !temp2 && playerCharacter[3] = CPUCharacter then readyCount = readyCount + 1
-          let temp1 = 3 : gosub GetPlayerLocked : if !temp2 && playerCharacter[3] = NoCharacter then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank6 : if temp2 then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[3] = CPUCharacter then readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[3] = NoCharacter then readyCount = readyCount + 1
           if readyCount >= 2 then goto CharacterSelectFinish
           
 CharacterSelectReadyDone

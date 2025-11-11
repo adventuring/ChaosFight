@@ -55,7 +55,7 @@ BeginGameLoop
           rem Called Routines: InitializeSpritePointers (bank14) - sets
           rem sprite pointer addresses,
           rem   SetGameScreenLayout (bank7) - sets screen layout,
-          rem   GetPlayerLocked (bank10) - accesses player lock state,
+          rem   GetPlayerLocked (bank6) - accesses player lock state,
           rem   InitializeHealthBars (bank7) - initializes health bar
           rem   state,
           rem   LoadArena (bank16) - loads arena data
@@ -140,7 +140,7 @@ InitPositionsDone
           rem Optimized: Simplified player health initialization
           for currentPlayer = 0 to 3
               let GPL_playerIndex = currentPlayer
-              gosub GetPlayerLocked
+              gosub GetPlayerLocked bank6
               if GPL_lockedState = PlayerHandicapped then let playerHealth[currentPlayer] = PlayerHealthHandicap : goto PlayerHealthInitDone
               let playerHealth[currentPlayer] = PlayerHealthMax
 PlayerHealthInitDone

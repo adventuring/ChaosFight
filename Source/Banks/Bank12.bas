@@ -2,7 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
-          rem Character data system (definitions, cycles, falling animation, fall damage) +
+          rem Character data system (definitions, cycles, fall damage) +
           rem Titlescreen graphics and kernel
 
           bank 12
@@ -14,7 +14,6 @@
 #include "Source/Routines/PlayerElimination.bas"
 #include "Source/Routines/ArenaReloadUtils.bas"
 #include "Source/Routines/BeginArenaSelect.bas"
-#include "Source/Routines/BeginFallingAnimation.bas"
 #include "Source/Routines/MovePlayerToTarget.bas"
 #include "Source/Routines/WinnerAnnouncement.bas"
 #include "Source/Routines/BeginWinnerAnnouncement.bas"

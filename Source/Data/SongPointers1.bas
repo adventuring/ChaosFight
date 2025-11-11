@@ -9,7 +9,7 @@
           rem Index mapping: song Bank1MinSongID → index 0, song N → index (N - Bank1MinSongID)
           
           data SongPointers1L
-            <Song_Bolero_Voice0, <Song_LowRes_Voice0, <Song_RoboTito_Voice0,
+            <Song_LowRes_Voice0, <Song_RoboTito_Voice0,
             <Song_SongOfTheBear_Voice0, <Song_DucksAway_Voice0,
             <Song_Character16Theme_Voice0, <Song_Character17Theme_Voice0, <Song_Character18Theme_Voice0, <Song_Character19Theme_Voice0,
             <Song_Character20Theme_Voice0, <Song_Character21Theme_Voice0, <Song_Character22Theme_Voice0, <Song_Character23Theme_Voice0,
@@ -18,7 +18,7 @@
             <Song_AtariToday_Voice0, <Song_Interworldly_Voice0
 end
           data SongPointers1H
-            >Song_Bolero_Voice0, >Song_LowRes_Voice0, >Song_RoboTito_Voice0,
+            >Song_LowRes_Voice0, >Song_RoboTito_Voice0,
             >Song_SongOfTheBear_Voice0, >Song_DucksAway_Voice0,
             >Song_Character16Theme_Voice0, >Song_Character17Theme_Voice0, >Song_Character18Theme_Voice0, >Song_Character19Theme_Voice0,
             >Song_Character20Theme_Voice0, >Song_Character21Theme_Voice0, >Song_Character22Theme_Voice0, >Song_Character23Theme_Voice0,
@@ -29,7 +29,7 @@ end
           
           rem Voice 1 stream pointer lookup tables for Bank 1
           data SongPointers1SecondL
-            <Song_Bolero_Voice1, <Song_LowRes_Voice1, <Song_RoboTito_Voice1,
+            <Song_LowRes_Voice1, <Song_RoboTito_Voice1,
             <Song_SongOfTheBear_Voice1, <Song_DucksAway_Voice1,
             <Song_Character16Theme_Voice1, <Song_Character17Theme_Voice1, <Song_Character18Theme_Voice1, <Song_Character19Theme_Voice1,
             <Song_Character20Theme_Voice1, <Song_Character21Theme_Voice1, <Song_Character22Theme_Voice1, <Song_Character23Theme_Voice1,
@@ -38,7 +38,7 @@ end
             <Song_AtariToday_Voice1, <Song_Interworldly_Voice1
 end
           data SongPointers1SecondH
-            >Song_Bolero_Voice1, >Song_LowRes_Voice1, >Song_RoboTito_Voice1,
+            >Song_LowRes_Voice1, >Song_RoboTito_Voice1,
             >Song_SongOfTheBear_Voice1, >Song_DucksAway_Voice1,
             >Song_Character16Theme_Voice0, >Song_Character17Theme_Voice1, >Song_Character18Theme_Voice1, >Song_Character19Theme_Voice1,
             >Song_Character20Theme_Voice1, >Song_Character21Theme_Voice1, >Song_Character22Theme_Voice1, >Song_Character23Theme_Voice1,

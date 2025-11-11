@@ -99,10 +99,10 @@ SetupFallingAnimation
           rem Mutates: Falling animation state variables (via
           rem BeginFallingAnimation)
           rem
-          rem Called Routines: BeginFallingAnimation (bank12) - accesses
+          rem Called Routines: BeginFallingAnimation (bank6) - accesses
           rem animation state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub bank12 BeginFallingAnimation
+          gosub bank6 BeginFallingAnimation
           return
           
 SetupArenaSelect

@@ -61,9 +61,9 @@
           const InfiniteFallDistance = 255
 
           rem Highest song ID stored in Bank 15 music bank
-          const Bank15MaxSongID = 5
+          const Bank15MaxSongID = 6
           rem Lowest song ID stored in Bank 1 music bank
-          const Bank1MinSongID = 6
+          const Bank1MinSongID = Bank15MaxSongID + 1
 
           rem Character ID constants
           const CharacterBernie = 0

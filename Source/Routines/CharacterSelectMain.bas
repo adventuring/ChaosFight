@@ -217,11 +217,12 @@ CharacterSelectInputEntry
           gosub CharacterSelectCheckControllerRescan bank6
 
           rem Consolidated input handling with Quadtari multiplexing
-          let temp3 = qtcontroller * 2
+          let temp3 = 0
+          if controllerStatus & SetQuadtariDetected then let temp3 = qtcontroller * 2
           rem Player offset: 0=P1/P2, 2=P3/P4
           gosub CharacterSelectHandleTwoPlayers
 
-          qtcontroller = qtcontroller ^ 1
+          if controllerStatus & SetQuadtariDetected then qtcontroller = qtcontroller ^ 1 else qtcontroller = 0
           goto CharacterSelectInputComplete
 
 CharacterSelectHandleTwoPlayers
@@ -233,11 +234,12 @@ CharacterSelectHandleTwoPlayers
           if temp3 = 0 then temp4 = 255
           if controllerStatus & SetQuadtariDetected then temp4 = 255
 
+          if temp3 >= 2 && !(controllerStatus & SetQuadtariDetected) then return
+
           rem Handle Player 1/3 input (joy0)
           if joy0left then temp1 = temp3 : temp2 = 0 : gosub HandleCharacterSelectCycle
           if joy0right then temp1 = temp3 : temp2 = 1 : gosub HandleCharacterSelectCycle
           if joy0up then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
-          if joy0down then temp1 = temp3 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           rem NOTE: DASM raises "Label mismatch" if multiple banks re-include HandleCharacterSelectFire
           if joy0fire then temp1 = temp3 : gosub HandleCharacterSelectFire bank6
 
@@ -246,7 +248,6 @@ CharacterSelectHandleTwoPlayers
           if joy1left then temp1 = temp3 + 1 : temp2 = 0 : gosub HandleCharacterSelectCycle
           if joy1right then temp1 = temp3 + 1 : temp2 = 1 : gosub HandleCharacterSelectCycle
           if joy1up then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
-          if joy1down then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           if joy1fire then temp1 = temp3 + 1 : gosub HandleCharacterSelectFire bank6
           return
           

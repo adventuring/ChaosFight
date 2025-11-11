@@ -488,7 +488,7 @@
           rem Shared 16-bit accumulator for subpixel math (temp2 = low byte, temp3 = high byte)
           dim subpixelAccumulator = temp2.temp3
           
-          rem GAME MODE - Standard RAM (var24-var47) - sorted
+          rem GAME MODE - Zero-page RAM (var24-var47) - sorted
           rem   numerically
           
           rem Game Mode: Animation system variables (moved to SCRAM -
@@ -552,7 +552,7 @@
           rem
           rem Game Mode: Win screen display timer (SCRAM)
           
-          rem GAME MODE - Standard RAM (a-z) - Sorted Alphabetically
+          rem GAME MODE - Zero page RAM (a-z) - Sorted Alphabetically
           
           rem Game Mode: Missile active flags - bit-packed into single
           rem   byte (standard RAM)

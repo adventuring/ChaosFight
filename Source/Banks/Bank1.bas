@@ -13,7 +13,7 @@
           rem Game URL: https://interworldly.com/games/ChaosFight
           rem These strings are embedded in the ROM right up front
           rem Note: Strings are defined in BuildInfo.s and included with
-          rem   #include inside asm so the build date macros expand before assembly
+          rem   ♯include inside asm so the build date macros expand before assembly
           asm
           #include "Source/Common/BuildInfo.s"
 end

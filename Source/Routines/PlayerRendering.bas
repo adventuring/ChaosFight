@@ -434,8 +434,7 @@ SetPlayerSprites
           rem
           rem Set Player Sprites
           rem Sets colors and graphics for all player sprites.
-          rem Colors change based on hurt state and color/B&W switch.
-          rem On 7800, Pause button can override Color/B&W setting.
+          rem Colors depend on hurt and guard state only (player-index palettes).
           rem Sets colors and graphics for all player sprites with hurt
           rem state and facing direction handling
           rem
@@ -450,13 +449,13 @@ SetPlayerSprites
           rem Output: All player sprite colors and graphics set, sprite
           rem reflections set based on facing direction
           rem
-          rem Mutates: temp1-temp4 (used for calculations), COLUP0,
+          rem Mutates: temp1-temp3 (color parameter packing), COLUP0,
           rem COLUP1, COLUP2, COLUP3 (TIA registers) = player colors,
           rem REFP0 (TIA register) = player 0 reflection, _NUSIZ1,
           rem NewNUSIZ+2, NewNUSIZ+3 (TIA registers) = player sprite
           rem reflections, player sprite pointers (via
-          rem LoadCharacterSprite), currentPlayer/temp2-temp3 (LoadCharacterColors parameters) = color
-          rem loading parameters
+          rem LoadCharacterSprite), currentPlayer + temp2-temp3 (LoadCharacterColors parameters) = color
+          rem loading parameters (hurt flag, guard flag)
           rem
           rem Called Routines: LoadCharacterColors (bank16) - loads
           rem player colors, LoadCharacterSprite (bank10) - loads sprite
@@ -471,7 +470,7 @@ SetPlayerSprites
           let currentPlayer = 0
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[0]
-          rem Guard flag (0 = not guarding)
+          rem Guard flag (non-zero = guarding)
           let temp3 = playerState[0] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           COLUP0 = temp6
@@ -495,13 +494,12 @@ end
 
           rem Set Player 2 color and sprite
           rem Use LoadCharacterColors for consistent color handling
-          rem   across TV modes
           rem NOTE: Multi-sprite kernel requires _COLUP1 (with
           rem Player index
           let currentPlayer = 1
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[1]
-          rem Guard flag (0 = not guarding)
+          rem Guard flag (non-zero = guarding)
           let temp3 = playerState[1] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           _COLUP1 = temp6
@@ -550,7 +548,7 @@ end
           let currentPlayer = 2
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[2]
-          rem Guard flag (0 = not guarding)
+          rem Guard flag (non-zero = guarding)
           let temp3 = playerState[2] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           COLUP2 = temp6
@@ -591,13 +589,12 @@ DonePlayer3Sprite
           if ! playerHealth[3] then goto DonePlayer4Sprite
           
           rem Use LoadCharacterColors for consistent color handling
-          rem   across TV modes
-          rem Player 4: Turquoise (SECAM maps to Green), hurt handled by
+          rem Player 4: Turquoise (player index color), hurt handled by
           rem Player index
           let currentPlayer = 3
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[3]
-          rem Guard flag (0 = not guarding)
+          rem Guard flag (non-zero = guarding)
           let temp3 = playerState[3] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           COLUP3 = temp6

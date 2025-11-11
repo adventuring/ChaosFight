@@ -52,7 +52,7 @@ ColdStart
           
           rem Step 2: Initialize sprite pointers to RAM addresses
           rem Must be done before any sprite loading to ensure pointers
-          gosub InitializeSpritePointers bank16
+          gosub InitializeSpritePointers bank14
           rem   point to SCRAM buffers instead of ROM
           
           rem Step 3: Initialize TIA color registers to safe defaults

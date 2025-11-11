@@ -6,20 +6,59 @@ LoadArenaByIndex
           rem Load arena data by index into playfield RAM
           rem Input: temp1 = arena index (0-31)
           rem Output: Playfield RAM loaded with arena data
-          rem Mutates: PF1pointer, PF2pointer, temp variables
+          rem Mutates: PF1pointer, PF2pointer, temp2-temp5
           rem Constraints: PF0pointer remains glued to the status bar layout
+          rem             Arena playfield data stored sequentially: PF1|PF2 (8 bytes each)
 
-          rem Look up playfield loader entry points via pointer tables
+          rem Calculate arena data pointer: Arena0Playfield + (arena_index × 24)
+          rem Each arena stores 16 bytes of playfield data followed by 8 bytes of row colors (16 + 8 = 24)
           asm
-            ldx temp1
-            lda ArenaPF1PointerL,x
-            sta PF1pointer
-            lda ArenaPF1PointerH,x
-            sta PF1pointer+1
+            ; Compute arena offset = (arena_index × 16) + (arena_index × 8)
+            lda temp1
+            sta temp2
+            lda #0
+            sta temp3
 
-            lda ArenaPF2PointerL,x
+            ldx #4
+.MultiplyBy16
+            asl temp2
+            rol temp3
+            dex
+            bne .MultiplyBy16
+
+            lda temp1
+            sta temp4
+            lda #0
+            sta temp5
+            ldx #3
+.MultiplyBy8
+            asl temp4
+            rol temp5
+            dex
+            bne .MultiplyBy8
+
+            lda temp2
+            clc
+            adc temp4
+            sta temp2
+            lda temp3
+            adc temp5
+            sta temp3
+
+            ; Add base address
+            lda #<.Arena0Playfield
+            clc
+            adc temp2
+            sta temp4
+            lda #>.Arena0Playfield
+            adc temp3
+            sta temp5
+
+            lda temp4
+            sta PF1pointer
             sta PF2pointer
-            lda ArenaPF2PointerH,x
+            lda temp5
+            sta PF1pointer+1
             sta PF2pointer+1
 end
           return

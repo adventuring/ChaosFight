@@ -346,69 +346,38 @@ CharacterSelectInputComplete
           
 CharacterSelectHandleRandomRolls
           rem Check each player for pending random roll
-          if playerCharacter[0] = RandomCharacter then goto CharacterSelectRollPlayer0
-          if playerCharacter[1] = RandomCharacter then goto CharacterSelectRollPlayer1
-          if controllerStatus & SetQuadtariDetected then goto CharacterSelectCheckRollQuadtari
+          let temp1 = 1
+          if controllerStatus & SetQuadtariDetected then let temp1 = 3
+          for currentPlayer = 0 to temp1
+              if playerCharacter[currentPlayer] = RandomCharacter then gosub CharacterSelectRollRandomPlayer
+          next
           goto CharacterSelectRollsDone
-          
-CharacterSelectCheckRollQuadtari
-          if playerCharacter[2] = RandomCharacter then goto CharacterSelectRollPlayer2
-          if playerCharacter[3] = RandomCharacter then goto CharacterSelectRollPlayer3
-          goto CharacterSelectRollsDone
-          
-CharacterSelectRollPlayer0
+
+CharacterSelectRollRandomPlayer
+          rem Handle random character roll for the current player’s slot.
+          rem
+          rem Input: currentPlayer (global) = player index (0-3)
+          rem        randomSelectFlags_R[] (SCRAM, read port) = handicap flags
+          rem Output: playerCharacter[currentPlayer] updated when roll succeeds
+          rem
+          rem Mutates: temp1-temp2, playerCharacter[], randomSelectFlags_W[],
+          rem           playerLocked[] via SetPlayerLocked
+          rem
+          rem Called Routines: SetPlayerLocked
           let temp2 = rand & 31
           rem Roll 5-bit random: rand & 31 (0-31)
-          rem If > 15, stay as RandomCharacter and retry next frame
-          if temp2 > MaxCharacter then goto CharacterSelectRollsDone
-          let playerCharacter[0] = temp2
+          rem If > MaxCharacter, stay as RandomCharacter and retry next frame
+          if temp2 > MaxCharacter then return
+          let playerCharacter[currentPlayer] = temp2
           rem Valid! Set character and lock with normal or handicap
-          if randomSelectFlags_R[0] then goto CharacterSelectLockPlayer0Handicap
-          let temp1 = 0 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
-          goto CharacterSelectLockPlayer0Done
-CharacterSelectLockPlayer0Handicap
-          let temp1 = 0 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked
-CharacterSelectLockPlayer0Done
-          let randomSelectFlags_W[0] = 0
-          goto CharacterSelectRollsDone
-          
-CharacterSelectRollPlayer1
-          let temp2 = rand & 31
-          if temp2 > MaxCharacter then goto CharacterSelectRollsDone
-          let playerCharacter[1] = temp2
-          if randomSelectFlags_R[1] then goto CharacterSelectLockPlayer1Handicap
-          let temp1 = 1 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
-          goto CharacterSelectLockPlayer1Done
-CharacterSelectLockPlayer1Handicap
-          let temp1 = 1 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked
-CharacterSelectLockPlayer1Done
-          let randomSelectFlags_W[1] = 0
-          goto CharacterSelectRollsDone
-          
-CharacterSelectRollPlayer2
-          let temp2 = rand & 31
-          if temp2 > MaxCharacter then goto CharacterSelectRollsDone
-          let playerCharacter[2] = temp2
-          if randomSelectFlags_R[2] then goto CharacterSelectLockPlayer2Handicap
-          let temp1 = 2 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
-          goto CharacterSelectLockPlayer2Done
-CharacterSelectLockPlayer2Handicap
-          let temp1 = 2 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked
-CharacterSelectLockPlayer2Done
-          let randomSelectFlags_W[2] = 0
-          goto CharacterSelectRollsDone
-          
-CharacterSelectRollPlayer3
-          let temp2 = rand & 31
-          if temp2 > MaxCharacter then goto CharacterSelectRollsDone
-          let playerCharacter[3] = temp2
-          if randomSelectFlags_R[3] then goto CharacterSelectLockPlayer3Handicap
-          let temp1 = 3 : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
-          goto CharacterSelectLockPlayer3Done
-CharacterSelectLockPlayer3Handicap
-          let temp1 = 3 : let temp2 = PlayerHandicapped : gosub SetPlayerLocked
-CharacterSelectLockPlayer3Done
-          let randomSelectFlags_W[3] = 0
+          if randomSelectFlags_R[currentPlayer] then goto CharacterSelectRollRandomPlayerHandicap
+          let temp1 = currentPlayer : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked
+          goto CharacterSelectRollRandomPlayerLockDone
+CharacterSelectRollRandomPlayerHandicap
+          let temp1 = currentPlayer : let temp2 = PlayerHandicapped : gosub SetPlayerLocked
+CharacterSelectRollRandomPlayerLockDone
+          let randomSelectFlags_W[currentPlayer] = 0
+          return
           
 CharacterSelectRollsDone
           return

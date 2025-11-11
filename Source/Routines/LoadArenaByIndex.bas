@@ -64,19 +64,5 @@ LoadArenaByIndex
             lda PF1pointer+1
             adc #0
             sta PF2pointer+1
-
-            ; Check if PF2 crosses page boundary
-            bcc .NoAlignPF2
-            lda #0
-            sta PF2pointer
-            lda PF1pointer+1
-            clc
-            adc #1
-            sta PF2pointer+1
-            jmp .PF2Done
-.NoAlignPF2
-            lda PF1pointer+1
-            sta PF2pointer+1
-.PF2Done
 end
           return

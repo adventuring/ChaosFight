@@ -253,7 +253,7 @@ ApproxDivBy32_2
             lsr
             sta impulseStrength_W
 end
-          goto ApproxDivDone_2
+          rem fall through to ApproxDivDone_2
 ApproxDivDone_2
           if impulseStrength_R = 0 then let impulseStrength_W = 1
           if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength_R
@@ -306,7 +306,7 @@ ApproxDivDone
           if playerVelocityX[temp2] > 4 then let playerVelocityX[temp2] = 4
           let playerVelocityXL[temp1] = 0
           let playerVelocityXL[temp2] = 0
-          goto CollisionNextInner
+          rem fall through to CollisionNextInner
 CollisionNextInner
           let temp2 = temp2 + 1
           goto CollisionCheckPair

@@ -227,71 +227,27 @@ FrootyDown
           return
 
 RoboTitoDown
-          rem ROBO TITO (13) - GUARD
-          rem RoboTito drops from ceiling on DOWN press, or guards if
-          rem not latched
-          rem
-          rem Input: temp1 = player index (0-3), characterStateFlags_R[]
-          rem (global SCRAM array) = character state flags,
-          rem playerState[] (global array) = player states,
-          rem missileStretchHeight_R[] (global SCRAM array) = stretch
-          rem missile heights, MaskPlayerStateFlags,
-          rem ActionFallingShifted (global constants) = state mask and
-          rem animation value, PlayerStateBitFacing (global constant) =
-          rem facing bit mask
-          rem
-          rem Output: RoboTito drops from ceiling if latched, or
-          rem standard guard applied if not latched
-          rem
-          rem Mutates: temp1 (used for calculations),
-          rem characterStateFlags_W[] (global SCRAM array) = character
-          rem state flags (latched bit cleared if dropping),
-          rem playerState[] (global array) = player states
-          rem (ActionFalling set if dropping), missileStretchHeight_W[]
-          rem (global SCRAM array) = stretch missile heights (cleared if
-          rem dropping), playerState[], playerTimers[] (via
-          rem StandardGuard if not latched)
-          rem
-          rem Called Routines: StandardGuard (tail call via goto if not
-          rem latched)
-          rem
-          rem Constraints: If latched to ceiling, DOWN causes voluntary
-          rem drop. If not latched, DOWN triggers standard guard
-          rem RoboTito voluntary drop from ceiling
-          rem Check if latched to ceiling
-          if !(characterStateFlags_R[temp1] & 1) then RoboTitoNotLatched
-          goto RoboTitoNotLatched
-          rem Not latched, proceed to guard
+          rem ROBO TITO (13) - DOWN: Drops if latched, else guards
+          rem Voluntary drop from ceiling if latched; otherwise standard guard
+          rem Input: temp1 = player index
+          rem Output: Drop (cleared latched bit, falling state) or guard
+          rem Mutates: temp2 (drop flag), characterStateFlags_W[], playerState[],
+          rem missileStretchHeight_W[]
+          rem Calls: StandardGuard if not latched via dispatcher helper
+          rem If latched, drop; else guard
+          let temp2 = 0
+          if !(characterStateFlags_R[temp1] & 1) then RoboTitoInitiateDrop
+          rem Not latched, dispatcher will fall through to StandardGuard
+          return
+RoboTitoInitiateDrop
+          let temp2 = 1
+          rem Signal dispatcher to skip guard after voluntary drop
+          rem fall through to RoboTitoVoluntaryDrop
           
 RoboTitoVoluntaryDrop
-          rem Helper: Releases RoboTito from ceiling on DOWN press
-          rem
-          rem Input: temp1 = player index, characterStateFlags_R[]
-          rem (global SCRAM array) = character state flags,
-          rem playerState[] (global array) = player states,
-          rem missileStretchHeight_R[] (global SCRAM array) = stretch
-          rem missile heights, MaskPlayerStateFlags,
-          rem ActionFallingShifted (global constants) = state mask and
-          rem animation value, PlayerStateBitFacing (global constant) =
-          rem facing bit mask
-          rem
-          rem Output: RoboTito released from ceiling, falling animation
-          rem set, stretch height cleared
-          rem
-          rem Mutates: characterStateFlags_W[] (global SCRAM array) =
-          rem character state flags (latched bit cleared), playerState[]
-          rem (global array) = player states (ActionFalling set),
-          rem missileStretchHeight_W[] (global SCRAM array) = stretch
-          rem missile heights (cleared)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for RoboTitoDown, only called
-          rem when latched to ceiling
-          rem Release from ceiling on DOWN press
-          let RTLVD_stateFlags = characterStateFlags_R[temp1] & (255 - PlayerStateBitFacing)
+          rem RoboTito drops from ceiling on DOWN; clears latched bit, sets falling, resets stretch height
           rem Fix RMW: Read from _R, modify, write to _W
-          let characterStateFlags_W[temp1] = RTLVD_stateFlags
+          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
           rem Clear latched bit (bit 0)
           rem Set falling animation
@@ -299,22 +255,6 @@ RoboTitoVoluntaryDrop
           rem Clear stretch missile height when dropping
           return
           
-RoboTitoNotLatched
-          rem Helper: Routes to standard guard if not latched
-          rem
-          rem Input: temp1 = player index
-          rem
-          rem Output: Standard guard applied
-          rem
-          rem Mutates: playerState[], playerTimers[] (via StandardGuard)
-          rem
-          rem Called Routines: StandardGuard (tail call via goto)
-          rem
-          rem Constraints: Internal helper for RoboTitoDown, only called
-          rem when not latched
-          goto StandardGuard
-          rem Not latched, use standard guard
-
 StandardJump
           rem
           rem Standard Behaviors
@@ -356,7 +296,7 @@ StandardGuard
           rem NOTE: Flying characters (Frooty, Dragon of Storms, Harpy)
           rem   cannot guard
           rem Standard guard behavior used by most characters (blocks
-          rem attacks, visual flashing)
+          rem attacks, forces cyan guard tint)
           rem
           rem Input: temp1 = player index (0-3), playerCharacter[] (global
           rem array) = character types
@@ -380,25 +320,14 @@ StandardGuard
           rem Dragon of Storms (2): DOWN = fly down (no gravity)
           rem Harpy (6): DOWN = fly down (reduced gravity)
           let temp4 = playerCharacter[temp1]
-          if temp4 = 8 then return
-          rem Frooty cannot guard
-          if temp4 = 2 then return
-          rem Dragon of Storms cannot guard
-          if temp4 = 6 then return
-          rem Harpy cannot guard
+          if temp4 = CharacterFrooty then return
+          if temp4 = CharacterDragonOfStorms then return
+          if temp4 = CharacterHarpy then return
           
           rem Check if guard is allowed (not in cooldown)
           gosub CheckGuardCooldown bank14
           if temp2 = 0 then return
           rem Guard blocked by cooldown
-          
-          rem Start guard with proper timing
+
           goto StartGuard bank14
-          rem tail call
-          rem StartGuard sets guard bit and duration timer
-          
-          rem Set guard visual effect (flashing cyan)
-          rem Character flashes light cyan ColCyan(12) in NTSC/PAL, Cyan
-          rem   in SECAM
-          rem This will be checked in sprite rendering routines
 

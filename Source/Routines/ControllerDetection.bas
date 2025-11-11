@@ -9,6 +9,10 @@ CtrlDetConsole
 
 CtrlDetPads
           rem Re-detect controllers (monotonic upgrade only)
+          rem Public entry point used by console handling and character select flows
+          rem Input: controllerStatus (global) = existing capabilities, INPT0-5 = paddle port states
+          rem Output: controllerStatus updated with any newly detected capabilities
+          rem Constraints: Upgrades only – never clears previously detected hardware
           let temp1 = controllerStatus
           let temp2 = 0
 #ifndef TV_SECAM
@@ -20,11 +24,9 @@ CtrlDetPads
           if !INPT1{7} then CDP_CheckRightSide
           goto CDP_QuadtariFound
 CDP_CheckRightSide
-          if INPT2{7} then CDP_NoQuadtari
-          if !INPT3{7} then CDP_NoQuadtari
-          goto CDP_QuadtariFound
-CDP_NoQuadtari
-          goto CDP_CheckGenesis
+          if INPT2{7} then goto CDP_CheckGenesis
+          if !INPT3{7} then goto CDP_CheckGenesis
+          rem fall through to CDP_QuadtariFound
 
 CDP_QuadtariFound
           let temp2 = temp2 | SetQuadtariDetected
@@ -466,7 +468,7 @@ UpdateQuadIn
           rem Alternate between reading players 1-2 and players 3-4
           rem Use qtcontroller to determine which pair to read
           if qtcontroller then ReadPlayers34
-          goto ReadPlayers12
+          rem fall through to ReadPlayers12
 
 ReadPlayers12
           return
@@ -517,31 +519,4 @@ PauseNotPressed
           let systemFlags = systemFlags | SystemFlagPauseButtonPrev
           rem Button not pressed, update previous state (set bit 5)
           return
-
-DetectControllers
-          rem
-          rem Detect Controllers (public Wrapper)
-          rem Public wrapper for controller detection called from
-          rem   ConsoleHandling
-          rem Gates detection behind SELECT button or menu flow
-          rem Uses monotonic detection (upgrades only, never downgrades)
-          rem Main entry point for controller detection (tail call to
-          rem CtrlDetPads)
-          rem
-          rem Input: controllerStatus (global) = existing controller
-          rem capabilities, INPT0-5 (hardware registers) = paddle port
-          rem states
-          rem
-          rem Output: controllerStatus (global) = updated controller
-          rem capabilities
-          rem
-          rem Mutates: controllerStatus (global) = controller
-          rem capabilities (via CtrlDetPads)
-          rem
-          rem Called Routines: CtrlDetPads (tail call) - performs actual
-          rem controller detection
-          rem
-          rem Constraints: None
-          goto CtrlDetPads
-          rem tail call
 

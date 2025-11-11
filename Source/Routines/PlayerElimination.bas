@@ -292,7 +292,8 @@ FindWinner
           
           rem If no winner found (all eliminated), pick last eliminated
           rem tail call
-          if winnerPlayerIndex_R = 255 then goto FindLastEliminated
+          if winnerPlayerIndex_R <> 255 then return
+          rem fall through to FindLastEliminated
 
 FindLastEliminated
           rem

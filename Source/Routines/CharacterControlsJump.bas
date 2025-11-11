@@ -18,7 +18,7 @@ DispatchCharacterJump
           if temp4 = 31 then goto ShamoneJump
 
           rem Unique jump handlers: Characters 0-15 (optimized dispatch)
-          on temp4 goto BernieJump CurlerJump DragonOfStormsJump ZoeRyenJump FatTonyJump MegaxJump HarpyJump KnightGuyJump FrootyJump NefertemJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
+          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
           return
 
 DispatchCharacterDown
@@ -36,9 +36,15 @@ DispatchCharacterDown
           if temp4 = 2 then goto DragonOfStormsDown
           if temp4 = 6 then goto HarpyDown
           if temp4 = 8 then goto FrootyDown
-          if temp4 = 13 then goto RoboTitoDown
+          if temp4 = 13 then goto DCD_HandleRoboTitoDown
           rem StandardGuard: All others (0,1,3,4,5,7,9,10,11,12,14,15,16-31)
-          return
+          goto StandardGuard
+
+DCD_HandleRoboTitoDown
+          rem Internal: RoboTito drop vs guard dispatch helper
+          gosub RoboTitoDown
+          if temp2 = 1 then return
+          goto StandardGuard
 
 BernieJump
           rem Handles Bernie’s UP input: drop through single-row platforms
@@ -133,26 +139,6 @@ BernieCheckBottomWrap
           rem playerY at top row = 0 * pfrowheight = 0
           let playerY[temp1] = 0
           return
-
-CurlerJump
-          rem CURLER (1) - STANDARD JUMP
-          rem
-          rem INPUT: temp1 = player index
-          rem USES: playerY[temp1], playerState[temp1]
-          rem Standard jump behavior (tail call to StandardJump)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Standard jump applied
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[],
-          rem playerState[] (via StandardJump)
-          rem
-          rem Called Routines: StandardJump (tail call via goto)
-          rem
-          rem Constraints: None
-          goto StandardJump
-          rem tail call
 
 DragonOfStormsJump
           rem DRAGON OF STORMS (2) - FREE FLIGHT (vertical movement)
@@ -250,23 +236,6 @@ FatTonyJump
           let playerVelocityYL[temp1] = 0
           let playerState[temp1] = playerState[temp1] | 4
           return
-
-MegaxJump
-          rem MEGAX (5) - STANDARD JUMP
-          rem Standard jump behavior (tail call to StandardJump)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Standard jump applied
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[],
-          rem playerState[] (via StandardJump)
-          rem
-          rem Called Routines: StandardJump (tail call via goto)
-          rem
-          rem Constraints: None
-          goto StandardJump
-          rem tail call
 
 HarpyJump
           rem HARPY (6) - FLAP TO FLY (UP input to flap)
@@ -447,23 +416,6 @@ FrootyJump
           let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping flag for animation
           return
-
-NefertemJump
-          rem NEFERTEM (9) - STANDARD JUMP
-          rem Standard jump behavior (tail call to StandardJump)
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem
-          rem Output: Standard jump applied
-          rem
-          rem Mutates: playerVelocityY[], playerVelocityYL[],
-          rem playerState[] (via StandardJump)
-          rem
-          rem Called Routines: StandardJump (tail call via goto)
-          rem
-          rem Constraints: None
-          goto StandardJump
-          rem tail call
 
 NinjishGuyJump
           rem NINJISH GUY (10) - STANDARD JUMP (very light, high jump)
@@ -689,7 +641,7 @@ GroundFound
 GroundSearchBottom
           rem Reached bottom of playfield, use screen bottom
           let temp2 = ScreenBottom
-          goto GroundSearchDone
+          rem fall through to GroundSearchDone
 
 GroundSearchDone
           rem temp2 now contains ground Y position

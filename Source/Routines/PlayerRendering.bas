@@ -554,7 +554,7 @@ end
           let temp3 = playerState[2] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           COLUP2 = temp6
-          goto Player3ColorDone
+          rem fall through to Player3ColorDone
           
 Player3ColorDone
 

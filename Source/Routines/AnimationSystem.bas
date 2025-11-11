@@ -197,7 +197,7 @@ HandleFrame7Transition
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
           rem AdvanceAnimationFrame, UpdateSprite
           gosub HandleAnimationTransition
-          goto UpdateSprite
+          rem fall through to UpdateSprite
           
 UpdateSprite
           rem Update character sprite with current animation frame and

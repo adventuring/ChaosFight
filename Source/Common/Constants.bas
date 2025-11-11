@@ -3,13 +3,14 @@
 
           const GameVersionMajor=0
           const GameVersionMinor=1
-          const BuildYear=BUILD_YEAR
-          const BuildDay=BUILD_DAY
+          
           rem Build year (4 digits, e.g. 2025, set by Makefile)
+          const BuildYear=BUILD_YEAR
           rem Build day in julian day format (1-366, set by Makefile)
+          const BuildDay=BUILD_DAY
+          
           rem Game URL: https://interworldly.com/games/ChaosFight
           const NumArenas=16
-          rem URL stored as comment for attribution
           const MaxArenaID=1
           const RandomArena=255
           const RecoveryFrameCount=8
@@ -25,54 +26,46 @@
           rem Realistic Earth gravity would be 4410 px/frame² (too high
           rem   for gameplay!)
           rem Normal gravity acceleration (0.1 px/frame²)
-          rem Value: 0.1 * 256 = 25.6 ≈ 26 (in low byte of 8.8
+          rem Value: 0.1 * 256 = 25.6 ≈ 26 (in low byte of 8.8 fixed-point)
           const GravityNormal = 26
-          rem   fixed-point)
           
           rem Reduced gravity acceleration (0.05 px/frame²) for Harpy
-          rem Value: 0.05 * 256 = 12.8 ≈ 13 (in low byte of 8.8
+          rem Value: 0.05 * 256 = 12.8 ≈ 13 (in low byte of 8.8 fixed-point)
           const GravityReduced = 13
-          rem   fixed-point)
           
-          rem Terminal velocity cap (maximum downward fall speed in
-          rem   px/frame)
-          const TerminalVelocity = 8
+          rem Terminal velocity cap (maximum downward fall speed in px/frame)
           rem Prevents infinite acceleration from gravity
+          const TerminalVelocity = 8
           
           rem Character system constants
-          rem Note: Only 16 characters are selectable (0-15), but code
-          rem   handles up to 32 characters (0-31) including
-          rem   non-selectable
+          rem Only 16 characters are selectable (0-15), but code handles up to 32 entries (0-31)
+          rem Number of character slots in generated data
           const NumCharacters=16
-          rem   characters like MethHound (31)
-          const MaxCharacter = 15
-          rem Number of selectable characters
-          const NoCharacter = 255
           rem Maximum selectable character ID (NumCharacters - 1)
+          const MaxCharacter = 15
+          rem Sentinel for “no character selected” state
+          const NoCharacter = 255
+          rem Sentinel for CPU-controlled selection
           const CPUCharacter = 254
-          rem No character selected ($FF)
-          rem CPU player character ($FE)
           
           const MissileLifetimeInfinite = 255
           rem Sentinel and special value constants
-          rem Missile lifetime value for infinite (until collision, no
-          const MissileHitNotFound = 255
-          rem   decrement)
-          const MaxByteValue = 255
+          rem Missile lifetime value for infinite (until collision, no decrement)
+          const MissileLifetimeInfinite = 255
           rem Sentinel value indicating no hit found in collision checks
-          rem Maximum 8-bit value ($FF), used for two’s complement
+          const MissileHitNotFound = 255
+          rem Maximum 8-bit value ($FF), used for two’s complement operations
+          const MaxByteValue = 255
+          rem Fall distance value for infinite (characters immune to fall damage)
           const InfiniteFallDistance = 255
-          rem   operations
-          rem Fall distance value for infinite (characters immune to
-          rem   fall damage)
 
-          const Bank15MaxSongID = 5
           rem Highest song ID stored in Bank 15 music bank
-          const Bank1MinSongID = 6
+          const Bank15MaxSongID = 5
           rem Lowest song ID stored in Bank 1 music bank
+          const Bank1MinSongID = 6
 
-          const CharacterBernie = 0
           rem Character ID constants
+          const CharacterBernie = 0
           const CharacterCurler = 1
           const CharacterDragonOfStorms = 2
           const CharacterZoeRyen = 3
@@ -89,8 +82,8 @@
           const CharacterUrsulo = 14
           const CharacterShamone = 15
 
-          const SpriteQuestionMark = 0
           rem Special sprite constants for SpecialSpritePointers table
+          const SpriteQuestionMark = 0
           const SpriteCPU = 1
           const SpriteNo = 2
           
@@ -104,20 +97,19 @@
           const GlyphBlank = 14
           const GlyphF = 15
           
-          const PlayerStateFacing = 3
           rem playerState bit position constants
-          rem Bit 3: 0=left, 1=right (matches REFP0 bit 3 for direct
-          rem copy)
-          const PlayerStateGuarding = 1
-          const PlayerStateJumping = 2
+          rem Bit 3: 0=left, 1=right (matches REFP0 bit 3 for direct copy)
+          const PlayerStateFacing = 3
           rem Bit 1: 1=guarding
-          const PlayerStateRecovery = 0
+          const PlayerStateGuarding = 1
           rem Bit 2: 1=jumping
-          const PlayerStateAttacking = 4
+          const PlayerStateJumping = 2
           rem Bit 0: 1=in recovery/hitstun
-          const PlayerStateAnimation = 7
+          const PlayerStateRecovery = 0
           rem Bit 4: 1=attacking
+          const PlayerStateAttacking = 4
           rem Bits 7-5: animation state (3 bits)
+          const PlayerStateAnimation = 7
           
           rem Bit mask constants for PlayerState bit operations
           rem Use with: PlayerState[index] = PlayerState[index] & (255 -

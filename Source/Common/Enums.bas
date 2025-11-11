@@ -1,13 +1,13 @@
           rem Chaos Fight Source/Common/Enums.bas
           rem Copyright 2025 Interworldly Adventuring, LLC
 
-          const NTSC = 1
           rem TV Standards
+          const NTSC = 1
           const PAL = 2
           const SECAM = 3
 
-          const ModePublisherPrelude = 0
           rem Game Modes
+          const ModePublisherPrelude = 0
           const ModeAuthorPrelude = 1
           const ModeTitle = 2
           const ModeCharacterSelect = 3
@@ -23,53 +23,53 @@
           rem Used for character animation sequences
           rem Each action has up to 8 frames (0-7)
           
-          const ActionStanding = 0
           rem Standing still (facing right)
+          const ActionStanding = 0
           
-          const ActionIdle = 1
           rem Idle (resting)
+          const ActionIdle = 1
           
-          const ActionGuarding = 2
           rem Standing still guarding
+          const ActionGuarding = 2
           
-          const ActionWalking = 3
           rem Walking/running
+          const ActionWalking = 3
           
-          const ActionStopping = 4
           rem Coming to stop
+          const ActionStopping = 4
           
-          const ActionHit = 5
           rem Taking a hit
+          const ActionHit = 5
           
-          const ActionFallBack = 6
           rem Falling backwards
+          const ActionFallBack = 6
           
-          const ActionFallDown = 7
           rem Falling down
+          const ActionFallDown = 7
           
-          const ActionFallen = 8
           rem Fallen down
+          const ActionFallen = 8
           
-          const ActionRecovering = 9
           rem Recovering to standing
+          const ActionRecovering = 9
           
-          const ActionJumping = 10
           rem Jumping
+          const ActionJumping = 10
           
-          const ActionFalling = 11
           rem Falling after jump
+          const ActionFalling = 11
           
-          const ActionLanding = 12
           rem Landing
+          const ActionLanding = 12
           
-          const ActionAttackWindup = 13
           rem Attack windup
+          const ActionAttackWindup = 13
           
-          const ActionAttackExecute = 14
           rem Attack execution
+          const ActionAttackExecute = 14
           
-          const ActionAttackRecovery = 15
           rem Attack recovery
+          const ActionAttackRecovery = 15
 
           rem NOTE: RoboTito repurposes existing animation states:
           rem
@@ -81,31 +81,27 @@
           rem Bit flags for missile behavior (CharacterMissileFlags)
           rem Used for checking missile interaction properties
           
+          rem Bit 0: Hit background (1=hit and disappear, 0=pass through)
           const MissileFlagHitBackground = 1
-          rem Bit 0: Hit background (1=hit and disappear, 0=pass
-          rem   through)
           
-          const MissileFlagHitPlayer = 2
           rem Bit 1: Hit player (2=hit and disappear, 0=pass through)
+          const MissileFlagHitPlayer = 2
           
-          const MissileFlagGravity = 4
           rem Bit 2: Apply gravity (4=affected by gravity, 0=no gravity)
+          const MissileFlagGravity = 4
           
-          const MissileFlagBounce = 8
           rem Bit 3: Bounce off walls (8=bounce, 0=stop/hit)
+          const MissileFlagBounce = 8
           
-          const MissileFlagFriction = 16
           rem Bit 4: Apply friction physics (curling stone deceleration)
+          const MissileFlagFriction = 16
           
+          rem Combined flags for common combinations (bits 0-1)
           const MissileFlagHitBoth = 3
-          rem Combined flags for common combinations
-          rem Bits 0-1: Hit both background and players (%00000011)
           
+          rem Bits 0 and 2 set: HitBackground|Gravity = 1+4 = 5 (%00000101)
           const MissileFlagHitBackgroundAndGravity = 5
-          rem Bits 0,2: HitBackground|Gravity = 1+4 = 5 (%00000101) for
-          rem   ballistic arcs
           
+          rem Bits 0-4 set: HitBackground|HitPlayer|Gravity|Bounce|Friction
           const MissileFlagCurlerFull = 31
-          rem Bits 0-4: HitBackground|HitPlayer|Gravity|Bounce|Friction
-          rem   = 1+2+4+8+16 = 31 (%00011111)
 

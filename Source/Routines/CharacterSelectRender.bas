@@ -3,6 +3,7 @@
 
 SelectDrawScreen
           rem Character Select drawing (sprites and HUD)
+          rem Shared preview renderer used by Character Select and Arena Select flows
           rem Playfield layout is static; no runtime register writes
           let temp1 = 0
           gosub SelectRenderPlayerPreview

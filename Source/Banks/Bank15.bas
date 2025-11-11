@@ -137,21 +137,8 @@
 #include "Source/Routines/DisplayWinScreen.bas"
 
           rem Sounds Bank Helper Functions And Data
-          rem These functions access sound data tables and streams in
-          rem   this bank
-          rem Include helper functions (must be in bank to access
-          rem   bank-local symbols)
 #include "Source/Routines/SoundBankHelpers.bas"
-
-          rem Sound effects system - dedicated 3.5kiB bank for compiled
-          rem   samples
 #include "Source/Routines/SoundSystem.bas"
-
-          rem Music Bank Helper Functions (bank 15)
-          rem Duplicate music player helpers for Bank 15 songs
-          rem Songs in Bank 15: OCascadia (1), Revontuli (2)
-          rem Include helper functions (must be in bank to access
-          rem   bank-local symbols)
 #include "Source/Routines/MusicBankHelpers15.bas"
 
 

@@ -487,9 +487,9 @@ end
 
           let currentCharacter = playerCharacter[0]
           rem Load sprite data from character definition
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame (0 = idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
 
@@ -609,10 +609,10 @@ Player4ColorDone
           rem   etc.)
           asm
             lda NewNUSIZ+3
-            and #NUSIZMaskReflection
+            and # NUSIZMaskReflection
             sta NewNUSIZ+3
             lda playerState+3
-            and #PlayerStateBitFacing
+            and # PlayerStateBitFacing
             beq .Player4ReflectionDone
             lda NewNUSIZ+3
             ora #PlayerStateBitFacingNUSIZ

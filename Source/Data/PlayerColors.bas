@@ -7,7 +7,7 @@
           ColIndigo(12), ColRed(12), ColYellow(12), ColTurquoise(12)
 end
 #ifdef TV_SECAM
-          data PlayerColors8
+          data PlayerColors6
           ColMagenta(8), ColMagenta(8), ColMagenta(8), ColMagenta(8)
 end
 #else

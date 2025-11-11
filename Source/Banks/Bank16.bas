@@ -20,7 +20,6 @@
 #include "Source/Routines/SetPlayerGlyphFromFont.bas"
 #include "Source/Routines/FontRendering.bas"
           rem None of these modules above may be moved to other banks.
-          
 
           rem these modules may be moved
 #include "Source/Routines/FallingAnimation.bas"

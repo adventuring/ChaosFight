@@ -63,30 +63,21 @@ title_playfield
  include "TitleScreen/asm/position48.s"
  include "TitleScreen/titlescreen_color.s"
 
-	; Unused 48x1 kernels removed - only 48x2_3 is used
+	; Unused 48x1 kernels removed - only 48x2 bitmaps are active
 
-	; Create aliases for generic bitmap kernel
+	; Load per-bitmap pointer tables and wrappers
+ include "TitleScreen/asm/48x2_1_kernel.s"
+ include "TitleScreen/asm/48x2_2_kernel.s"
+ include "TitleScreen/asm/48x2_3_kernel.s"
+ include "TitleScreen/asm/48x2_4_kernel.s"
+
+	; Legacy alias: slot 0 reuses AtariAge logo data (slot 1)
 bmp_48x2_0_colors = bmp_48x2_1_colors
 bmp_48x2_0_height = bmp_48x2_1_height
 bmp_48x2_0_window = bmp_48x2_1_window
 bmp_48x2_0_values = bmp_48x2_1_values
 
-bmp_48x2_1_colors = bmp_48x2_1_colors
-bmp_48x2_1_height = bmp_48x2_1_height
-bmp_48x2_1_window = bmp_48x2_1_window
-bmp_48x2_1_values = bmp_48x2_1_values
-
-bmp_48x2_2_colors = bmp_48x2_2_colors
-bmp_48x2_2_height = bmp_48x2_2_height
-bmp_48x2_2_window = bmp_48x2_2_window
-bmp_48x2_2_values = bmp_48x2_2_values
-
-bmp_48x2_3_colors = bmp_48x2_3_colors
-bmp_48x2_3_height = bmp_48x2_3_height
-bmp_48x2_3_window = bmp_48x2_3_window
-bmp_48x2_3_values = bmp_48x2_3_values
-
-	include "TitleScreen/asm/48x2_generic_kernel.s"
+ include "TitleScreen/asm/draw_bmp_48x2_X.s"
 
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 

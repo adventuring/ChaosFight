@@ -2,7 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem ASSET BANK: Music/Sound Assets (separate memory budget)
-          rem Character theme songs (IDs 6-28): Bolero, LowRes, RoboTito, SongOfTheBear,
+          rem Character theme songs (IDs 6-28): LowRes, RoboTito, SongOfTheBear,
           rem   DucksAway, Character16-30 themes
 
           bank 1
@@ -23,16 +23,10 @@ end
 #include "Source/Data/SongPointers1.bas"
 
           rem Song Data (Bank 1)
-          rem Song IDs hosted here: Bank1MinSongID-28 (currently 6-28) - character themes plus admin screen music
+          rem Song IDs hosted here: Bank1MinSongID-28 (currently 7-28) - character themes plus admin screen music
           rem Songs 0-Bank15MaxSongID reside in Bank 15
 
           rem Character theme songs (IDs Bank1MinSongID-25)
-
-#ifdef TV_NTSC
-#include "Source/Generated/Song.Bolero.NTSC.bas"
-#else
-#include "Source/Generated/Song.Bolero.PAL.bas"
-#endif
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.LowRes.NTSC.bas"

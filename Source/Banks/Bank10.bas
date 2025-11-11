@@ -9,6 +9,7 @@
            
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 #include "Source/Routines/CharacterAttacks.bas"
+#include "Source/Routines/GuardEffects.bas"
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/FallingAnimation.bas"
 

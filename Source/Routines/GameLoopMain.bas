@@ -67,7 +67,7 @@ GameMainLoop
           rem
           rem Called Routines: ReadEnhancedButtons,
           rem HandleConsoleSwitches (bank13),
-          rem   InputHandleAllPlayers (bank8), UpdateGuardTimers (bank8),
+          rem   InputHandleAllPlayers (bank8), UpdateGuardTimers (bank10),
           rem   UpdateCharacterAnimations (bank11),
           rem   UpdatePlayerMovement (bank8), PhysicsApplyGravity (bank8),
           rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank7),
@@ -100,7 +100,7 @@ GameMainLoop
           gosub InputHandleAllPlayers bank8 :
           rem Handle all player input (with Quadtari multiplexing) (in Bank 8)
 
-          gosub UpdateGuardTimers bank8
+          gosub UpdateGuardTimers bank10
           rem Update guard timers (duration and cooldown)
 
           gosub UpdateCharacterAnimations

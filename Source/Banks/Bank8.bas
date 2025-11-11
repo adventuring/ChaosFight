@@ -11,7 +11,6 @@
 #include "Source/Routines/PlayerPhysicsGravity.bas"
 #include "Source/Routines/MovementSystem.bas"
 #include "Source/Routines/FallDamage.bas"
-#include "Source/Routines/GuardEffects.bas"
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 #include "Source/Routines/HealthBarSystem.bas"
 #include "Source/Routines/Physics.bas"

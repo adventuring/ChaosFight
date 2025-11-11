@@ -3,11 +3,12 @@
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Sprite rendering (character art loader, player rendering, elimination) +
-          rem   character attacks system
+          rem   character attacks system and falling animation controller
 
           bank 10
            
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 #include "Source/Routines/CharacterAttacks.bas"
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
+#include "Source/Routines/FallingAnimation.bas"
 

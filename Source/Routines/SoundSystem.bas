@@ -129,7 +129,7 @@ UpdateSoundEffectVoice0
           rem Output: Frame counter decremented, next note loaded when
           rem counter reaches 0, voice freed when sound ends
           rem
-          rem Mutates: SS_frameCount (global) = frame count calculation,
+          rem Mutates: SS_frameCount (alias temp4) = frame count calculation,
           rem soundEffectFrame_W (global SCRAM) = frame counter
           rem (decremented), soundEffectPointer (global 16-bit) = sound pointer (advanced by 4 bytes),
           rem AUDC0, AUDF0, AUDV0 (TIA registers) = sound registers
@@ -173,7 +173,7 @@ UpdateSoundEffectVoice1
           rem Output: Frame counter decremented, next note loaded when
           rem counter reaches 0, voice freed when sound ends
           rem
-          rem Mutates: SS_frameCount1 (global) = frame count
+          rem Mutates: SS_frameCount1 (alias temp5) = frame count
           rem calculation, soundEffectFrame1_W (global SCRAM) = frame
           rem counter (decremented), soundEffectPointer1 (global 16-bit) =
           rem sound pointer (advanced by 4 bytes), AUDC1, AUDF1, AUDV1 (TIA registers)

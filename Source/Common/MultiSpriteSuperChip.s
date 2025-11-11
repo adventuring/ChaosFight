@@ -3,31 +3,6 @@
 ; so DASM receives a single, consistent definition set.
 ; Licensed under CC0 to match upstream batariBASIC headers.
 
-include "vcs.h"
-include "macro.h"
-include "2600basic.h"
-include "multisprite.h"
-include "superchip.h"
-
-; Bank boundary definitions for 64K SuperChip ROM (16 banks x 4K each)
-; Each bank has 32 bytes reserved for bankswitching code at the end
-BANK1_END = $1FC0
-BANK2_END = $2FC0
-BANK3_END = $3FC0
-BANK4_END = $4FC0
-BANK5_END = $5FC0
-BANK6_END = $6FC0
-BANK7_END = $7FC0
-BANK8_END = $8FC0
-BANK9_END = $9FC0
-BANK10_END = $AFC0
-BANK11_END = $BFC0
-BANK12_END = $CFC0
-BANK13_END = $DFC0
-BANK14_END = $EFC0
-BANK15_END = $FFC0
-BANK16_END = $10FC0  ; Special case for bank 16
-
 ; --- Multisprite workspace remapping ----------------------------------------
 ; Re-apply the multisprite kernel layout using SET so symbols from 2600basic.h
 ; are reassigned without triggering EQU conflicts under modern DASM.
@@ -216,30 +191,4 @@ stack1            SET $F6
 stack2            SET $F7
 stack3            SET $F8
 stack4            SET $F9
-
-; --- Bankswitch padding / overflow check (mirrors original header) ----------
-ifconst bankswitch
-  if bankswitch == 8
-     ORG $1000
-     RORG $D000
-  endif
-  if bankswitch == 16
-     ORG $1000
-     RORG $9000
-  endif
-  if bankswitch == 32
-     ORG $1000
-     RORG $1000
-  endif
-  if bankswitch == 64
-     ORG $1000
-     RORG $1000
-  endif
-else
-  ORG $F000
-endif
-
-repeat 256
-.byte $ff
-repend
 

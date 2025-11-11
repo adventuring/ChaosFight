@@ -137,6 +137,7 @@
           rem Bit mask for preserving PlayerState flags (bits 0-3) while
           rem clearing animation state (bits 4-7)
           const MaskPlayerStateFlags = 15
+          const MaskPlayerStateLower = 31
           const MaskPlayerStateAnimation = 240
           rem Mask to preserve bits 0-3 (flags) and clear bits 4-7
           rem (animation state): $0F = %00001111
@@ -161,6 +162,10 @@
           const ActionFalling = 11
           const ActionFallingShifted = 176
           rem ActionFalling (11) << 4 = 176 (0xB0)
+          const MaskAnimationRecovering = 144
+          rem ActionRecovering (9) << 4 = 144 (0x90)
+          const MaskAnimationFalling = 176
+          rem Alias for ActionFallingShifted (0xB0) for clarity in masks
           
           const HighBit = $80
           const TRUE = $80

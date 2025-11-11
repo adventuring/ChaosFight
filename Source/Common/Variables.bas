@@ -368,6 +368,12 @@
           rem ADMIN: Parade active flag (REDIMMED - Game Mode uses var36
           rem   for currentAnimationSeq[3])
           dim titleParadeActive = var36
+          asm
+titleParadeTimer = var33
+titleParadeCharacter = var34
+titleParadeX = var35
+titleParadeActive = var36
+          end
           
           rem ADMIN: Titlescreen kernel window values (runtime control)
           rem Runtime window values for titlescreen kernel minikernels

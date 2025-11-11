@@ -40,8 +40,8 @@ BeginGameLoop
           rem Mutates: PlayerX[], PlayerY[], PlayerState[],
           rem PlayerHealth[], playerCharacter[],
           rem         PlayerTimers[], playerVelocityX[],
-          rem         playerVelocitySubpixelX[],
-          rem         playerVelocitySubpixelY[], playerSubpixelX[],
+          rem         playerVelocityXL[],
+          rem         playerVelocityYL[], playerSubpixelX[],
           rem         playerSubpixelY[],
           rem         PlayerDamage[], ControllerStatus, MissileActive,
           rem         PlayersEliminated,
@@ -150,8 +150,8 @@ PlayerHealthInitDone
           rem Initialize player timers
               let playerTimers_W[currentPlayer] = 0
               let playerVelocityX[currentPlayer] = 0
-              let playerVelocitySubpixelX[currentPlayer] = 0
-              let playerVelocitySubpixelY[currentPlayer] = 0
+              let playerVelocityXL[currentPlayer] = 0
+              let playerVelocityYL[currentPlayer] = 0
               let playerSubpixelX_W[currentPlayer] = 0
               let playerSubpixelY_W[currentPlayer] = 0
               let playerDamage_W[currentPlayer] = 22

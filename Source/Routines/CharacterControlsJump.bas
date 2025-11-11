@@ -46,16 +46,33 @@ DCD_HandleRoboTitoDown
           if temp2 = 1 then return
           goto StandardGuard
 
+CCJ_ConvertPlayerXToPlayfieldColumn
+          rem Convert player X position to playfield column for jump routines
+          rem
+          rem Input: temp1 = player index (0-3)
+          rem
+          rem Output: temp2 = playfield column (0-31)
+          rem
+          rem Mutates: temp2 (used as return value)
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must reside in bank 13 with jump handlers
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          let temp2 = temp2 / 4
+          return
+
 BernieJump
           rem Handles Bernie’s UP input: drop through single-row platforms
           rem Inputs: temp1 = player index, playerX[], playerY[], playerState[]
           rem Outputs: Updates playerY[] when falling through; may wrap to top row
           rem Mutates: temp1-temp6, playerY[]
-          rem Calls: ConvertPlayerXToPlayfieldColumn bank13, BernieCheckBottomWrap
+          rem Calls: CCJ_ConvertPlayerXToPlayfieldColumn, BernieCheckBottomWrap
           rem Constraints: Only triggers if floor is exactly one row deep
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
-          gosub ConvertPlayerXToPlayfieldColumn bank8
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn
           
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
@@ -159,14 +176,14 @@ DragonOfStormsJump
           rem vertical velocity, playerState[] (global array) = player
           rem states (jumping flag set)
           rem
-          rem Called Routines: ConvertPlayerXToPlayfieldColumn (bank13)
+          rem Called Routines: CCJ_ConvertPlayerXToPlayfieldColumn
           rem - converts player X to playfield column
           rem
           rem Constraints: Only moves up if row above is clear. Cannot
           rem move if already at top row
           rem Fly up with playfield collision check
           rem Check collision before moving - use shared coordinate conversion
-          gosub ConvertPlayerXToPlayfieldColumn bank8
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn
           
           let temp3 = playerY[temp1]
           rem Check row above player (top of sprite)
@@ -259,7 +276,7 @@ HarpyJump
           rem Output: Upward velocity applied if energy available and
           rem cooldown expired, flight mode flag set, energy decremented
           rem
-          rem Mutates: temp1-temp2 (used for calculations),
+          rem Mutates: temp1-temp3 (used for calculations),
           rem playerVelocityY[], playerVelocityYL[] (global arrays) =
           rem vertical velocity, playerState[] (global array) = player
           rem states (jumping flag set), characterStateFlags_W[] (global
@@ -273,6 +290,7 @@ HarpyJump
           rem Constraints: Requires flight energy > 0 and cooldown
           rem expired. Cannot flap if already at top of screen (but
           rem still records flap)
+          dim HJ_stateFlags = temp3
           rem Check if flight energy depleted
           if harpyFlightEnergy_R[temp1] = 0 then return
           rem No energy remaining, cannot flap
@@ -606,7 +624,7 @@ RoboTitoStretching
           rem Start search from feet position (player bottom + 16 pixels)
 
           rem Convert player X position to playfield column for pfread
-          gosub ConvertPlayerXToPlayfieldColumn bank8
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn
           let temp4 = temp2
           rem temp4 = playfield column from subroutine
 
@@ -755,7 +773,7 @@ RoboTitoLatch
           rem Output: RoboTito latched to ceiling, hanging animation
           rem set, stretch height cleared
           rem
-          rem Mutates: temp1-temp2 (used for calculations),
+          rem Mutates: temp1-temp2, temp5 (used for calculations),
           rem characterStateFlags_W[] (global SCRAM array) = character
           rem state flags (latched bit set), playerState[] (global
           rem array) = player states (ActionJumping set),
@@ -766,6 +784,7 @@ RoboTitoLatch
           rem
           rem Constraints: Internal helper for RoboTitoCheckCeiling,
           rem only called on ceiling contact
+          dim RTL_stateFlags = temp5
           rem Ceiling contact detected - latch to ceiling
           let RTL_stateFlags = characterStateFlags_R[temp1] | 1
           rem Fix RMW: Read from _R, modify, write to _W

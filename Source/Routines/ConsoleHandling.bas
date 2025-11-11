@@ -164,10 +164,11 @@ CheckColorBWToggle
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           
           rem Optimized: Check Color/B&W switch state change directly
-          let temp6 = switchbw
+          let temp6 = 0
+          if switchbw then let temp6 = 1
           if temp6 = colorBWPrevious_R then DoneSwitchChange
           gosub CtrlDetPads bank14
-          let colorBWPrevious_W = switchbw
+          let colorBWPrevious_W = temp6
 DoneSwitchChange
           rem Color/B&W switch change check complete (label only, no
           rem execution)

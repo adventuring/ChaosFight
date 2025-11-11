@@ -100,7 +100,7 @@ CheckPlayer2HealthUpdate
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate
           if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
-          gosub UpdateHealthBarPlayer2 bank8
+          gosub UpdateHealthBarPlayer2
           return
 DonePlayer2HealthUpdate
           rem Player 2 health update check complete (label only)
@@ -131,7 +131,7 @@ CheckPlayer3HealthUpdate
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
           if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate
           if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
-          gosub UpdateHealthBarPlayer3 bank8
+          gosub UpdateHealthBarPlayer3
           return
 DonePlayer3HealthUpdate
           return

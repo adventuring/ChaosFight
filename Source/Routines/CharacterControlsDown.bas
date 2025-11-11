@@ -104,12 +104,13 @@ HarpySetDive
           rem
           rem Output: Dive mode flag set (bit 2)
           rem
-          rem Mutates: characterStateFlags_W[] (global SCRAM array) =
-          rem character state flags (dive mode set)
+          rem Mutates: temp5 (scratch), characterStateFlags_W[] (global
+          rem SCRAM array) = character state flags (dive mode set)
           rem
           rem Called Routines: None
           rem Constraints: Internal helper for HarpyDown, only called when airborne
           rem Set dive mode flag for increased damage and normal gravity
+          dim HSD_stateFlags = temp5
           let HSD_stateFlags = characterStateFlags_R[temp1] | 4
           rem Fix RMW: Read from _R, modify, write to _W
           let characterStateFlags_W[temp1] = HSD_stateFlags

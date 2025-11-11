@@ -485,17 +485,17 @@ end
           rem Format: 32 entries (indices 0-31) for Arena0-Arena31
 
           data ArenaPF1PointerL
-            <Arena0Playfield, <Arena1Playfield, <Arena2Playfield, <Arena3Playfield, <Arena4Playfield, <Arena5Playfield, <Arena6Playfield, <Arena7Playfield,
-            <Arena8Playfield, <Arena9Playfield, <Arena10Playfield, <Arena11Playfield, <Arena12Playfield, <Arena13Playfield, <Arena14Playfield, <Arena15Playfield,
-            <Arena16Playfield, <Arena17Playfield, <Arena18Playfield, <Arena19Playfield, <Arena20Playfield, <Arena21Playfield, <Arena22Playfield, <Arena23Playfield,
-            <Arena24Playfield, <Arena25Playfield, <Arena26Playfield, <Arena27Playfield, <Arena28Playfield, <Arena29Playfield, <Arena30Playfield, <Arena31Playfield
+            <.Arena0Playfield, <.Arena1Playfield, <.Arena2Playfield, <.Arena3Playfield, <.Arena4Playfield, <.Arena5Playfield, <.Arena6Playfield, <.Arena7Playfield,
+            <.Arena8Playfield, <.Arena9Playfield, <.Arena10Playfield, <.Arena11Playfield, <.Arena12Playfield, <.Arena13Playfield, <.Arena14Playfield, <.Arena15Playfield,
+            <.Arena16Playfield, <.Arena17Playfield, <.Arena18Playfield, <.Arena19Playfield, <.Arena20Playfield, <.Arena21Playfield, <.Arena22Playfield, <.Arena23Playfield,
+            <.Arena24Playfield, <.Arena25Playfield, <.Arena26Playfield, <.Arena27Playfield, <.Arena28Playfield, <.Arena29Playfield, <.Arena30Playfield, <.Arena31Playfield
 end
 
           data ArenaPF1PointerH
-            >Arena0Playfield, >Arena1Playfield, >Arena2Playfield, >Arena3Playfield, >Arena4Playfield, >Arena5Playfield, >Arena6Playfield, >Arena7Playfield,
-            >Arena8Playfield, >Arena9Playfield, >Arena10Playfield, >Arena11Playfield, >Arena12Playfield, >Arena13Playfield, >Arena14Playfield, >Arena15Playfield,
-            >Arena16Playfield, >Arena17Playfield, >Arena18Playfield, >Arena19Playfield, >Arena20Playfield, >Arena21Playfield, >Arena22Playfield, >Arena23Playfield,
-            >Arena24Playfield, >Arena25Playfield, >Arena26Playfield, >Arena27Playfield, >Arena28Playfield, >Arena29Playfield, >Arena30Playfield, >Arena31Playfield
+            >.Arena0Playfield, >.Arena1Playfield, >.Arena2Playfield, >.Arena3Playfield, >.Arena4Playfield, >.Arena5Playfield, >.Arena6Playfield, >.Arena7Playfield,
+            >.Arena8Playfield, >.Arena9Playfield, >.Arena10Playfield, >.Arena11Playfield, >.Arena12Playfield, >.Arena13Playfield, >.Arena14Playfield, >.Arena15Playfield,
+            >.Arena16Playfield, >.Arena17Playfield, >.Arena18Playfield, >.Arena19Playfield, >.Arena20Playfield, >.Arena21Playfield, >.Arena22Playfield, >.Arena23Playfield,
+            >.Arena24Playfield, >.Arena25Playfield, >.Arena26Playfield, >.Arena27Playfield, >.Arena28Playfield, >.Arena29Playfield, >.Arena30Playfield, >.Arena31Playfield
 end
  
 

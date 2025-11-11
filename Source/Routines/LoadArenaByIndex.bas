@@ -30,11 +30,11 @@ LoadArenaByIndex
             sta temp3
 
             ; Add base address
-            lda #<Arena0Playfield
+            lda #<.Arena0Playfield
             clc
             adc temp2
             sta PF0pointer
-            lda #>Arena0Playfield
+            lda #>.Arena0Playfield
             adc temp3
             sta PF0pointer+1
 

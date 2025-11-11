@@ -19,3 +19,6 @@
 #include "Source/Common/Enums.bas"
 #include "Source/Common/Macros.bas"
 #include "Source/Common/Variables.bas"
+
+          rem Now that romsize is set, include the kernel header
+          includesfile multisprite_superchip.inc

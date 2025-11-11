@@ -1,9 +1,7 @@
           rem ChaosFight - Source/Common/AssemblyConfig.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem includesfile must run before any set statements so batariBASIC keeps
-          rem multispritesuperchipheader.asm (which pulls in superchip.h)
-          includesfile multisprite_superchip.inc
+          rem Configuration for kernel, romsize, and other batariBASIC settings
 
           const multisprite = 2  ; Override to enable bank-switched drawscreen
           set kernel_options playercolors player1colors pfcolors  ; required for color tables

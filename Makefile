@@ -513,7 +513,6 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/PlayerElimination.bas \
 	Source/Routines/PlayerInput.bas \
 	Source/Routines/PlayerLockedHelpers.bas \
-	Source/Routines/PlayerPhysics.bas \
 	Source/Routines/PlayerPhysicsGravity.bas \
 	Source/Routines/PlayerRendering.bas \
 	Source/Routines/PublisherPrelude.bas \

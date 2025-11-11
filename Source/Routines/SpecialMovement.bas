@@ -79,7 +79,7 @@ ApplyPlayerSpecialMovement
           rem Bernie (0) - screen wrap handled in
           rem   CheckBoundaryCollisions
           rem Falling off bottom respawns at top, handled in
-          rem   PlayerPhysics.bas
+          rem   PlayerPhysicsGravity.bas
           
           rem Frooty (8) and Dragon of Storms (2) - free flight (no
           rem   gravity)

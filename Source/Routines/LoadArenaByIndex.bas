@@ -9,24 +9,34 @@ LoadArenaByIndex
           rem Mutates: PF0-PF2 pointers, temp variables
 
           rem Calculate arena data pointer: Arena0Playfield + (arena_index * 96)
-          rem Each arena is 96 bytes: 3 PF rows * 32 bytes each
+          rem Each arena is 96 bytes: 8 PF rows * 2 bytes each + 8 bytes for color data
           asm
+            ; Compute arena offset = arena_index * 96 (96 = 32 * 3)
             lda temp1
-            asl  ; *2
-            asl  ; *4
-            asl  ; *8
-            asl  ; *16
-            asl  ; *32
-            asl  ; *64
-            clc
-            adc temp1  ; Add original for *65
-            asl  ; *130
-            asl  ; *260
             sta temp2
-
-            ; High byte calculation
             lda #0
-            rol  ; Carry from asl
+            sta temp3
+            ldx #5
+.MultiplyBy32
+            asl temp2
+            rol temp3
+            dex
+            bne .MultiplyBy32
+
+            lda temp2
+            sta temp4
+            lda temp3
+            sta temp5
+
+            asl temp4
+            rol temp5
+
+            clc
+            lda temp2
+            adc temp4
+            sta temp2
+            lda temp3
+            adc temp5
             sta temp3
 
             ; Add base address

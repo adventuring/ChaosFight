@@ -345,6 +345,7 @@ ArenaSelectDoneDrawP1
           rem ArenaSelectDrawCharacters
           rem Draw Player 3 character (bottom left) if Quadtari and
           rem selected
+          rem No Quadtari detected; park lower previews off-screen via shared helper
           if !(controllerStatus & SetQuadtariDetected) then gosub SelectHideLowerPlayerPreviews bank6 : goto ArenaSelectDoneDrawP23
           if playerCharacter[2] = NoCharacter then ArenaSelectDoneDrawP2
           if playerCharacter[2] = CPUCharacter then ArenaSelectDoneDrawP2

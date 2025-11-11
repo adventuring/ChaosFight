@@ -123,7 +123,7 @@ GravityCheckCharacter
           
           rem Apply gravity acceleration to velocity subpixel part
           rem Use optimized inline addition instead of subroutine call
-          let temp2.temp3 = playerVelocityYL[temp1] + gravityRate_R
+          let subpixelAccumulator = playerVelocityYL[temp1] + gravityRate_R
           let playerVelocityYL[temp1] = temp2
           if temp3 > 0 then let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
           

@@ -472,13 +472,9 @@ SetPlayerSprites
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[0]
           rem Guard flag (0 = not guarding)
-          let temp3 = 0
-          let temp4 = playerState[0] & PlayerStateBitGuarding
-          if temp4 then temp3 = 1
+          let temp3 = playerState[0] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           COLUP0 = temp6
-          goto Player1ColorDone
-          
 Player1ColorDone
 
           rem Set sprite reflection based on facing direction (bit 3:
@@ -506,9 +502,7 @@ end
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[1]
           rem Guard flag (0 = not guarding)
-          let temp3 = 0
-          let temp4 = playerState[1] & PlayerStateBitGuarding
-          if temp4 then temp3 = 1
+          let temp3 = playerState[1] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           _COLUP1 = temp6
 
@@ -557,9 +551,7 @@ end
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[2]
           rem Guard flag (0 = not guarding)
-          let temp3 = 0
-          let temp4 = playerState[2] & PlayerStateBitGuarding
-          if temp4 then temp3 = 1
+          let temp3 = playerState[2] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           COLUP2 = temp6
           goto Player3ColorDone
@@ -606,12 +598,9 @@ DonePlayer3Sprite
           rem Hurt flag (non-zero = recovering)
           let temp2 = playerRecoveryFrames[3]
           rem Guard flag (0 = not guarding)
-          let temp3 = 0
-          let temp4 = playerState[3] & PlayerStateBitGuarding
-          if temp4 then temp3 = 1
+          let temp3 = playerState[3] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           COLUP3 = temp6
-          goto Player4ColorDone
           
 Player4ColorDone
 

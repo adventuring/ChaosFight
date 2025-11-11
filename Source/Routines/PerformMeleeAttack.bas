@@ -25,11 +25,11 @@ PerformMeleeAttack
           rem ActionAttackExecuteShifted),
           rem         missile state (via SpawnMissile)
           rem
-          rem Called Routines: SpawnMissile (bank7) - spawns missile
+          rem Called Routines: SpawnMissile (bank12) - spawns missile
           rem visual for attack
           rem
           rem Constraints: None
-          gosub SpawnMissile bank7
+          gosub SpawnMissile bank12
           rem Spawn missile visual for this attack
           
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted

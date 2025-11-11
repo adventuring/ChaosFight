@@ -26,7 +26,7 @@ CheckAllMissileCollisions
           rem Output: temp4 = hit player index (0-3) if hit, 0 if no hit
           rem Mutates: temp1-temp6, temp4
           rem
-          rem Called Routines: GetMissileWidth (bank12) - gets missile
+          rem Called Routines: GetMissileWidth (bank7) - gets missile
           rem width to determine if AOE or visible,
           rem CheckVisibleMissileCollision (tail call) - if visible
           rem missile, CheckAOECollision (goto) - if AOE attack
@@ -47,7 +47,7 @@ CheckAllMissileCollisions
           rem Check if this is a visible missile or AOE attack
           rem Read missile width from character data (in Bank 6)
           let temp1 = temp5
-          gosub GetMissileWidth bank12
+          gosub GetMissileWidth bank7
           let temp6 = temp2 
           rem Missile width (0 = AOE, >0 = visible missile)
 

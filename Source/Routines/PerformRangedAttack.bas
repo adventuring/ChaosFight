@@ -25,11 +25,11 @@ PerformRangedAttack
           rem ActionAttackExecuteShifted),
           rem         missile state (via SpawnMissile)
           rem
-          rem Called Routines: SpawnMissile (bank7) - spawns projectile
+          rem Called Routines: SpawnMissile (bank12) - spawns projectile
           rem missile
           rem
           rem Constraints: None
-          gosub SpawnMissile bank7
+          gosub SpawnMissile bank12
           rem Spawn projectile missile for this attack
           
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted

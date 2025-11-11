@@ -258,7 +258,7 @@ UpdateOneMissile
           rem (global) = sound effect ID (via guard bounce)
           rem
           rem Called Routines: GetPlayerMissileBitFlag - calculates bit
-          rem flag, GetMissileFlags (bank12) - gets missile flags,
+          rem flag, GetMissileFlags (bank7) - gets missile flags,
           rem HandleMegaxMissile - handles Megax stationary missile,
           rem HandleKnightGuyMissile - handles Knight Guy sword swing,
           rem MissileCollPF (bank7) - checks playfield collision,
@@ -294,7 +294,7 @@ UpdateOneMissile
           rem Read missile flags from character data
           let temp1 = temp5
           rem Get character index
-          gosub GetMissileFlags bank12
+          gosub GetMissileFlags bank7
           rem Use temp1 for flags lookup (temp1 will be overwritten)
           let temp5 = temp2
           rem Store flags
@@ -430,7 +430,7 @@ FrictionDone
           let temp5 = playerCharacter[temp1]
           rem   position above)
           let temp1 = temp5
-          gosub GetMissileFlags bank12
+          gosub GetMissileFlags bank7
           let temp5 = temp2
           rem temp5 now contains missile flags again
           rem Restore player index for MissileCollPF

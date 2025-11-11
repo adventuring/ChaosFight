@@ -41,7 +41,7 @@ PublisherPreludeMain
           rem
           rem Mutates: preambleTimer (incremented)
           rem
-          rem Called Routines: SetPublisherWindowValues (bank12) -
+          rem Called Routines: SetPublisherWindowValues (bank14) -
           rem accesses window state
           rem
           rem Constraints: Must be colocated with
@@ -71,7 +71,7 @@ PublisherPreludeMain
           let preambleTimer = preambleTimer + 1
           
           rem Set window values for Publisher screen (AtariAge logo +
-          gosub SetPublisherWindowValues bank12
+          gosub SetPublisherWindowValues bank14
           rem   AtariAge text)
           
           rem Drawing handled by MainLoop (titledrawscreen for admin

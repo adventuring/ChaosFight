@@ -18,7 +18,7 @@ BeginTitleScreen
           rem         StartMusic)
           rem
           rem Called Routines: StartMusic (bank1) - starts title music,
-          rem   SetTitleWindowValues (bank12) - sets window values
+          rem   SetTitleWindowValues (bank14) - sets window values
           rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModeTitle
@@ -36,7 +36,7 @@ BeginTitleScreen
           rem Start Chaotica title music
           gosub StartMusic bank1
           
-          gosub SetTitleWindowValues bank12
+          gosub SetTitleWindowValues bank14
           rem Set window values for Title screen (ChaosFight only)
           
           rem Note: Bitmap data is loaded automatically by titlescreen

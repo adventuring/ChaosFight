@@ -6,10 +6,10 @@ ColdStart
           rem Cold Start Initialization
           rem
           rem Proper cold start initialization sequence for batariBASIC.
-          rem Called from Bank1 via goto ColdStart bank13 - this is
+          rem Called from Bank1 via goto ColdStart bank14 - this is
           rem   the
           rem correct stanza format (Bank1 jumps to ColdStart in
-          rem   Bank13).
+          rem   Bank14).
           rem
           rem batariBASIC’s startup.asm include handles:
           rem   - RAM clearing (all RAM set to 0)

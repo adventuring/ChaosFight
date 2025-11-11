@@ -210,7 +210,7 @@ DWS_Position1Player
           rem         currentCharacter, currentPlayer,
           rem         temp2-temp3 (passed to LoadCharacterSprite)
           rem
-          rem Called Routines: LoadCharacterSprite (bank10) - loads
+          rem Called Routines: LoadCharacterSprite (bank16) - loads
           rem character sprite
           rem Constraints: Must be colocated with DisplayWinScreen
           let playerX[0] = 80
@@ -222,7 +222,7 @@ DWS_Position1Player
           rem Animation frame 0 (idle)
           temp3 = 0
           rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
           rem Player 0
           let playerX[1] = 0
           rem Hide other players
@@ -244,7 +244,7 @@ DWS_Position2Players
           rem         currentCharacter, currentPlayer,
           rem         temp2-temp3 (passed to LoadCharacterSprite)
           rem
-          rem Called Routines: LoadCharacterSprite (bank10) - loads
+          rem Called Routines: LoadCharacterSprite (bank16) - loads
           rem character sprites
           rem
           rem Constraints: Must be colocated with DisplayWinScreen,
@@ -258,7 +258,7 @@ DWS_Position2Players
           rem Animation frame 0 (idle)
           temp3 = 0
           rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
           
           rem Runner-up (P1) - only if valid
           
@@ -271,7 +271,7 @@ DWS_Position2Players
           rem Animation frame 0 (idle)
           temp3 = 0
           rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
           goto DWS_Hide2PlayerDone
 DWS_Hide2Player
           rem Hide Player 2 (no runner-up)
@@ -318,7 +318,7 @@ DWS_Position3Players
           rem         currentCharacter, currentPlayer,
           rem         temp2-temp3 (passed to LoadCharacterSprite)
           rem
-          rem Called Routines: LoadCharacterSprite (bank10) - loads
+          rem Called Routines: LoadCharacterSprite (bank16) - loads
           rem character sprites
           rem
           rem Constraints: Must be colocated with DisplayWinScreen,
@@ -334,7 +334,7 @@ DWS_Position3Players
           rem Animation frame 0 (idle)
           temp3 = 0
           rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
           
           rem 2nd place (P1) - left platform
           
@@ -347,7 +347,7 @@ DWS_Position3Players
           rem Animation frame 0 (idle)
           temp3 = 0
           rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
           goto DWS_Hide3Player2Done
 DWS_Hide3Player2
           rem Hide Player 2 (no 2nd place)
@@ -387,7 +387,7 @@ DWS_Hide3Player2Done
           rem Animation frame 0 (idle)
           temp3 = 0
           rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank10
+          gosub LoadCharacterSprite bank16
           goto DWS_Hide3Player3Done
 DWS_Hide3Player3
           rem Hide Player 3 (no 3rd place)

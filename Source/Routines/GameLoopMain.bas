@@ -67,17 +67,17 @@ GameMainLoop
           rem
           rem Called Routines: ReadEnhancedButtons,
           rem HandleConsoleSwitches (bank13),
-          rem   InputHandleAllPlayers (bank8), UpdateGuardTimers (bank13),
+          rem   InputHandleAllPlayers (bank8), UpdateGuardTimers (bank8),
           rem   UpdateCharacterAnimations (bank11),
-          rem   UpdatePlayerMovement (bank3), PhysicsApplyGravity (bank8),
-          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank8),
-          rem   CheckBoundaryCollisions (bank8),
-          rem   CheckPlayfieldCollisionAllDirections (bank8),
+          rem   UpdatePlayerMovement (bank8), PhysicsApplyGravity (bank8),
+          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank7),
+          rem   CheckBoundaryCollisions (bank10),
+          rem   CheckPlayfieldCollisionAllDirections (bank10),
           rem   CheckAllPlayerCollisions (bank8),
           rem   CheckAllPlayerEliminations,
-          rem   UpdateAllMissiles (bank7),
-          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank10),
-          rem   DisplayHealth (bank8), UpdatePlayer12HealthBars (bank8),
+          rem   UpdateAllMissiles (bank12),
+          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank6),
+          rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank8),
           rem   UpdatePlayer34HealthBars (bank8), UpdateSoundEffect
           rem   (bank15)
           rem
@@ -91,8 +91,8 @@ GameMainLoop
           gosub ReadEnhancedButtons
           rem   II/III)
           
-          gosub HandleConsoleSwitches bank7 :
-          rem Handle console switches (in Bank 7)
+          gosub HandleConsoleSwitches bank13 :
+          rem Handle console switches (in Bank 13)
 
           rem Check if game is paused - skip movement/physics/animation if so
           if systemFlags & SystemFlagGameStatePaused then goto GameMainLoopPaused
@@ -100,7 +100,7 @@ GameMainLoop
           gosub InputHandleAllPlayers bank8 :
           rem Handle all player input (with Quadtari multiplexing) (in Bank 8)
 
-          gosub UpdateGuardTimers bank13
+          gosub UpdateGuardTimers bank8
           rem Update guard timers (duration and cooldown)
 
           gosub UpdateCharacterAnimations
@@ -115,16 +115,16 @@ GameMainLoop
           gosub ApplyMomentumAndRecovery bank8
           rem Apply momentum and recovery effects (in Bank 8)
 
-          gosub ApplySpecialMovement bank8
-          rem Apply special movement physics (Bernie wrap, etc.) (in Bank 8)
+          gosub ApplySpecialMovement bank7
+          rem Apply special movement physics (Bernie wrap, etc.) (in Bank 7)
 
-          gosub CheckBoundaryCollisions bank8
-          rem Check boundary collisions (in Bank 8)
+          gosub CheckBoundaryCollisions bank10
+          rem Check boundary collisions (in Bank 10)
 
           rem Optimized: Single loop for playfield collisions (walls, ceilings, ground)
           for currentPlayer = 0 to 3
               if currentPlayer >= 2 && !(controllerStatus & SetQuadtariDetected) then goto GameMainLoopQuadtariSkip
-              gosub CheckPlayfieldCollisionAllDirections bank8
+              gosub CheckPlayfieldCollisionAllDirections bank10
           next
 GameMainLoopQuadtariSkip
           rem Skip 4-player collision checks (not in 4-player mode)
@@ -145,8 +145,8 @@ GameMainLoopQuadtariSkip
           gosub CheckAllPlayerEliminations bank12
           rem Check for player eliminations
           
-          gosub UpdateAllMissiles bank7
-          rem Update missiles (in Bank 7)
+          gosub UpdateAllMissiles bank12
+          rem Update missiles (in Bank 12)
           
           rem Check if game should end and transition to winner screen
           rem   ending,
@@ -204,8 +204,8 @@ GameEndCheckDone
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-          gosub UpdateAllMissiles bank7
-          rem Update missiles (in Bank 7)
+          gosub UpdateAllMissiles bank12
+          rem Update missiles (in Bank 12)
 
           rem Check missile collisions (in Bank 7) - handled internally
           rem   by UpdateAllMissiles
@@ -218,11 +218,11 @@ GameEndCheckDone
           rem gosub SetSpritePositions 
           rem Replaced by UpdatePlayerMovement
 
-          gosub SetPlayerSprites bank10
-          rem Set sprite graphics (in Bank 10)
+          gosub SetPlayerSprites bank6
+          rem Set sprite graphics (in Bank 6)
 
-          gosub DisplayHealth bank8
-          rem Display health information
+          gosub DisplayHealth bank6
+          rem Display health information (in Bank 6)
           
           gosub UpdatePlayer12HealthBars bank8
           rem Update P1/P2 health bars using pfscore system

@@ -141,7 +141,7 @@ NudgeRight
 
           let temp3 = originalPlayerY_W
           let temp4 = temp3
-          gosub DivideByPfrowheight bank7
+          gosub DivideByPfrowheight bank8
           let temp5 = temp2
           rem temp5 = top row
 
@@ -152,7 +152,7 @@ NudgeRight
           rem Check bottom row too
           let temp3 = temp3 + 16
           let temp4 = temp3
-          gosub DivideByPfrowheight bank7
+          gosub DivideByPfrowheight bank8
           let temp5 = temp2
           if temp5 < pfrows then if pfread(temp2, temp5) then temp6 = 1
 
@@ -177,7 +177,7 @@ NudgeLeft
 
           let temp3 = originalPlayerY_W
           let temp4 = temp3
-          gosub DivideByPfrowheight bank7
+          gosub DivideByPfrowheight bank8
           let temp5 = temp2
           rem temp5 = top row
 
@@ -188,7 +188,7 @@ NudgeLeft
           rem Check bottom row too
           let temp3 = temp3 + 16
           let temp4 = temp3
-          gosub DivideByPfrowheight bank7
+          gosub DivideByPfrowheight bank8
           let temp5 = temp2
           if temp5 < pfrows then if pfread(temp2, temp5) then temp6 = 1
 

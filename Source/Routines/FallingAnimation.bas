@@ -27,8 +27,8 @@ FallingAnimation1
           rem
           rem Called Routines: MovePlayerToTarget - accesses player
           rem positions, target positions,
-          rem   SetSpritePositions (bank10) - accesses player positions,
-          rem   SetPlayerSprites (bank10) - accesses character sprites,
+          rem   SetSpritePositions (bank6) - accesses player positions,
+          rem   SetPlayerSprites (bank6) - accesses character sprites,
           rem   BeginGameLoop (bank11) - initializes game state,
           rem   ChangeGameMode (bank14) - accesses game mode state
           rem
@@ -203,9 +203,9 @@ DonePlayer4Move
           rem Set sprite positions and load character sprites
           rem   dynamically
           rem Use dynamic sprite setting instead of relying on player
-          gosub SetSpritePositions bank10
+          gosub SetSpritePositions bank6
           rem   declarations
-          gosub SetPlayerSprites bank10
+          gosub SetPlayerSprites bank6
           
           rem drawscreen called by MainLoop
           return

@@ -231,7 +231,7 @@ CheckGroundCollision
           rem Stop vertical momentum
           rem Note: This assumes vertical momentum is being tracked
           rem In current implementation, this might need integration
-          rem with PlayerPhysics.bas
+          rem with PlayerPhysicsGravity.bas
           
           rem Check collision with platforms/playfield
           rem This is handled by the main collision detection system
@@ -315,7 +315,7 @@ SetVerticalMomentum
           
           rem Set downward momentum (using temp variable for now)
           rem Integrate with vertical momentum system
-          rem This is handled by PlayerPhysics.bas
+          rem This is handled by PlayerPhysicsGravity.bas
           rem This needs to override normal gravity temporarily
           rem Suggest adding PlayerMomentumY variable or state flag
           
@@ -329,7 +329,7 @@ SetVerticalMomentum
           
           rem Spawn melee attack missile for swoop hit detection
           let temp1 = currentPlayer
-          gosub SpawnMissile bank7
+          gosub SpawnMissile bank12
           
           return
 

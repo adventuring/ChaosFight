@@ -214,7 +214,7 @@ HCSC_CycleDone
           return
           
 CharacterSelectInputEntry
-          gosub CharacterSelectCheckControllerRescan bank10
+          gosub CharacterSelectCheckControllerRescan bank6
 
           rem Consolidated input handling with Quadtari multiplexing
           let temp3 = qtcontroller * 2

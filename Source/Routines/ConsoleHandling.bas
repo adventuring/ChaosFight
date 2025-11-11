@@ -203,6 +203,6 @@ DoneSwitchChange
           return
 
 ReloadArenaColorsNow
-          gosub ReloadArenaColors bank14
+          gosub ReloadArenaColors bank12
           rem Reload arena colors with current switch state
           return

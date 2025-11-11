@@ -28,7 +28,7 @@ LoadArena
           rem pointers, pfcolortable (TIA register) = color table
           rem pointer
           rem
-          rem Called Routines: DWS_GetBWMode (bank12) - determines B&W mode,
+          rem Called Routines: DWS_GetBWMode (bank15) - determines B&W mode,
           rem LoadRandomArena (if random selected), LoadArenaByIndex -
           rem loads arena data
           rem Constraints: None
@@ -40,7 +40,7 @@ LoadArena
           let temp1 = selectedArena_R
           rem Get arena index (0-15)
           
-          gosub DWS_GetBWMode bank12
+          gosub DWS_GetBWMode bank15
 
 LoadArenaColorsColor
           rem Load arena color table pointer from contiguous ArenaColors table

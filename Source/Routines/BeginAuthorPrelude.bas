@@ -15,7 +15,7 @@ BeginAuthorPrelude
           rem
           rem Called Routines: StartMusic (bank1) - starts Interworldly
           rem music,
-          rem   SetAuthorWindowValues (bank12) - sets window values
+          rem   SetAuthorWindowValues (bank14) - sets window values
           rem
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModeAuthorPrelude
@@ -32,7 +32,7 @@ BeginAuthorPrelude
           let temp1 = MusicInterworldly
           gosub StartMusic bank1
           
-          gosub SetAuthorWindowValues bank12
+          gosub SetAuthorWindowValues bank14
           rem Set window values for Author screen (Interworldly only)
           
           rem Note: Bitmap data is loaded automatically by titlescreen

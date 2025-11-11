@@ -23,24 +23,28 @@ LoadArena
           rem
           rem Output: Arena playfield and colors loaded
           rem
-          rem Mutates: temp1 (used for arena index), temp2 (used for B&W
-          rem mode), PF1pointer, PF2pointer (TIA registers) = playfield
-          rem pointers, pfcolortable (TIA register) = color table
-          rem pointer
+          rem Mutates: temp1 (arena index), temp2 (B&W scratch), temp6
+          rem (B&W flag), PF1pointer, PF2pointer (TIA registers) =
+          rem playfield pointers, pfcolortable (TIA register) = color
+          rem table pointer
           rem
-          rem Called Routines: DWS_GetBWMode (bank15) - determines B&W mode,
-          rem LoadRandomArena (if random selected), LoadArenaByIndex -
-          rem loads arena data
+          rem Called Routines: DWS_GetBWMode (bank15), LoadArenaRandom,
+          rem LoadArenaByIndex (bank16)
           rem Constraints: None
           
           rem Handle random arena selection
           
-          if selectedArena_R = RandomArena then LoadRandomArena
+          if selectedArena_R = RandomArena then LoadArenaRandom
           
           let temp1 = selectedArena_R
           rem Get arena index (0-15)
           
+LoadArenaDispatch
           gosub DWS_GetBWMode bank15
+          let temp6 = temp2
+          gosub LoadArenaByIndex
+          if temp6 then goto LoadArenaColorsBWLabel
+          goto LoadArenaColorsColor
 
 LoadArenaColorsColor
           rem Load arena color table pointer from contiguous ArenaColors table
@@ -74,7 +78,7 @@ LoadArenaColorsBWLabel
 end
           return
 
-LoadRandomArena
+LoadArenaRandom
           rem Select random arena (0-31) using proper random number
           rem generator
           rem
@@ -93,9 +97,5 @@ LoadRandomArena
           rem Get random value (0-255)
           let temp1 = rand
           let temp1 = temp1 & 31
-          if temp1 > MaxArenaID then LoadRandomArena
-          gosub LoadArenaByIndex
-
-
-          
-
+          if temp1 > MaxArenaID then LoadArenaRandom
+          goto LoadArenaDispatch

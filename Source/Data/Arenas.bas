@@ -25,6 +25,8 @@ end
 
           rem Contiguous color tables for all arenas (0-31)
 
+          
+
 Arena0Playfield
           rem
           rem Arena Playfields (32 Arenas: Indices 0-31)
@@ -38,6 +40,11 @@ Arena0Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena0Colors
+          data
+            ColBrown(2), ColBrown(4), ColBrown(6), ColBrown(8), ColBrown(10), ColBrown(12), ColBrown(14), ColBrown(0)
+end
+
 
 Arena1Playfield
           playfield:
@@ -50,6 +57,11 @@ Arena1Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena1Colors
+          data
+            ColTurquoise(4), ColTurquoise(4), ColTurquoise(6), ColTurquoise(4), ColTurquoise(6), ColTurquoise(4), ColTurquoise(4), ColTurquoise(2)
+end
+
 
 Arena2Playfield
           playfield:
@@ -62,6 +74,11 @@ Arena2Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena2Colors
+          data
+            ColTurquoise(4), ColTurquoise(4), ColTurquoise(6), ColTurquoise(4), ColTurquoise(6), ColTurquoise(4), ColTurquoise(4), ColTurquoise(2)
+end
+
 
 Arena3Playfield
           playfield:
@@ -74,6 +91,11 @@ Arena3Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena3Colors
+          data
+            ColSeafoam(2), ColSeafoam(2), ColSeafoam(4), ColSeafoam(4), ColSeafoam(4), ColSeafoam(2), ColSeafoam(2), ColSeafoam(6)
+end
+
 
 
 Arena4Playfield
@@ -87,6 +109,11 @@ Arena4Playfield
           ................
           ................
 end
+Arena4Colors
+          data
+            ColYellow(12), ColYellow(12), ColYellow(12), ColYellow(14), ColYellow(14), ColYellow(12), ColYellow(12), ColYellow(12)
+end
+
 
 
 Arena5Playfield
@@ -100,6 +127,11 @@ Arena5Playfield
           XXXX............
           XXXXXXXXXXXXXXXX
 end
+Arena5Colors
+          data
+            ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(4)
+end
+
 
 
 Arena6Playfield
@@ -114,6 +146,11 @@ Arena6Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena6Colors
+          data
+            ColRed(2), ColRed(4), ColRed(2), ColRed(6), ColRed(2), ColRed(4), ColRed(2), ColRed(8)
+end
+
 
 
 Arena7Playfield
@@ -128,6 +165,11 @@ Arena7Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena7Colors
+          data
+            ColGold(2), ColGold(2), ColGold(2), ColGold(4), ColGold(2), ColGold(4), ColGold(2), ColGold(6)
+end
+
 
 
 Arena8Playfield
@@ -141,6 +183,11 @@ Arena8Playfield
           X...XXXX........
           XXXXXXXXXXXXXXXX
 end
+Arena8Colors
+          data
+            ColPurple(2), ColPurple(4), ColPurple(6), ColPurple(4), ColPurple(6), ColPurple(4), ColPurple(6), ColPurple(2)
+end
+
 
 
 Arena9Playfield
@@ -154,6 +201,11 @@ Arena9Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena9Colors
+          data
+            ColRed(2), ColRed(4), ColRed(6), ColRed(4), ColRed(4), ColRed(6), ColRed(4), ColRed(2)
+end
+
 
 
 Arena10Playfield
@@ -169,8 +221,13 @@ Arena10Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena10Colors
+          data
+            ColCyan(4), ColCyan(2), ColCyan(6), ColCyan(2), ColCyan(4), ColCyan(2), ColCyan(2), ColCyan(8)
+end
 
 
+          rem Arena color/playfield pointers computed at runtime to save ROM
 
 Arena11Playfield
           rem Arena 11: Floating Platforms (variant of Arena 3 with four
@@ -185,6 +242,11 @@ Arena11Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena11Colors
+          data
+            ColGreen(2), ColGreen(4), ColGreen(4), ColGreen(6), ColGreen(6), ColGreen(2), ColGreen(2), ColGreen(8)
+end
+
 
 
 Arena12Playfield
@@ -199,6 +261,11 @@ Arena12Playfield
           ................
           ................
 end
+Arena12Colors
+          data
+            ColBrown(12), ColBrown(12), ColBrown(14), ColBrown(14), ColBrown(14), ColBrown(12), ColBrown(12), ColBrown(12)
+end
+
 
 
 Arena13Playfield
@@ -214,6 +281,11 @@ Arena13Playfield
           XX....XXXX....XX
           XXX..XXXXXXX..XX
 end
+Arena13Colors
+          data
+            ColTurquoise(4), ColTurquoise(4), ColTurquoise(6), ColTurquoise(2), ColTurquoise(2), ColTurquoise(6), ColTurquoise(4), ColTurquoise(4)
+end
+
 
 
 Arena14Playfield
@@ -229,6 +301,11 @@ Arena14Playfield
           X.XXXX....XXXX..
           XXXXXXXXXXXXXXXX
 end
+Arena14Colors
+          data
+            ColMagenta(2), ColMagenta(0), ColMagenta(4), ColMagenta(0), ColMagenta(2), ColMagenta(0), ColMagenta(4), ColMagenta(8)
+end
+
 
 
 Arena15Playfield
@@ -244,6 +321,11 @@ Arena15Playfield
           ......XX....XX..
           XXXX..XXXX..XXXX
 end
+Arena15Colors
+          data
+            ColSpringGreen(2), ColSpringGreen(2), ColSpringGreen(4), ColSpringGreen(6), ColSpringGreen(6), ColSpringGreen(4), ColSpringGreen(2), ColSpringGreen(8)
+end
+
 
 
 Arena16Playfield
@@ -259,6 +341,11 @@ Arena16Playfield
           XX.X.X.X.X.X.X.X
           XX.X.X.X.X.X.X.X
 end
+Arena16Colors
+          data
+            ColIndigo(2), ColIndigo(4), ColIndigo(6), ColIndigo(4), ColIndigo(6), ColIndigo(4), ColIndigo(6), ColIndigo(8)
+end
+
 
 
 Arena17Playfield
@@ -273,6 +360,11 @@ Arena17Playfield
           X......XX.......
           XXXXXXXXXXXXXXXX
 end
+Arena17Colors
+          data
+            ColGreen(2), ColGreen(4), ColGreen(6), ColGreen(4), ColGreen(6), ColGreen(4), ColGreen(2), ColGreen(8)
+end
+
 
 
 Arena18Playfield
@@ -287,6 +379,11 @@ Arena18Playfield
           ................
           ................
 end
+Arena18Colors
+          data
+            ColTeal(12), ColTeal(12), ColTeal(12), ColTeal(14), ColTeal(14), ColTeal(12), ColTeal(12), ColTeal(12)
+end
+
 
 
 Arena19Playfield
@@ -301,6 +398,11 @@ Arena19Playfield
           XXXX........XXXX
           XXXX........XXXX
 end
+Arena19Colors
+          data
+            ColRed(2), ColRed(2), ColRed(0), ColRed(2), ColRed(2), ColRed(0), ColRed(2), ColRed(4)
+end
+
 
 
 Arena20Playfield
@@ -315,6 +417,11 @@ Arena20Playfield
           X...............
           XXXXXXXXXXXXXXXX
 end
+Arena20Colors
+          data
+            ColBlue(4), ColBlue(4), ColBlue(4), ColBlue(6), ColBlue(6), ColBlue(8), ColBlue(8), ColBlue(2)
+end
+
 
 
 Arena21Playfield
@@ -329,6 +436,11 @@ Arena21Playfield
           ..XX..XX..XX..XX
           ..XX..XX..XX..XX
 end
+Arena21Colors
+          data
+            ColBrown(4), ColBrown(4), ColBrown(6), ColBrown(6), ColBrown(4), ColBrown(4), ColBrown(6), ColBrown(6)
+end
+
 
 
 Arena22Playfield
@@ -343,6 +455,11 @@ Arena22Playfield
           X..X..X..X..X..X
           X..X..X..X..X..X
 end
+Arena22Colors
+          data
+            ColRed(4), ColRed(4), ColRed(4), ColRed(4), ColRed(4), ColRed(4), ColRed(4), ColRed(6)
+end
+
 
 
 Arena23Playfield
@@ -357,6 +474,11 @@ Arena23Playfield
           XXXXXXXXXXXXXXXX
           XXXXXXXXXXXXXXXX
 end
+Arena23Colors
+          data
+            ColCyan(2), ColCyan(4), ColCyan(4), ColCyan(2), ColCyan(4), ColCyan(4), ColCyan(2), ColCyan(6)
+end
+
 
 
 Arena24Playfield
@@ -371,6 +493,11 @@ Arena24Playfield
           XXXX....XXXX....
           XXXX....XXXX....
 end
+Arena24Colors
+          data
+            ColGrey(4), ColGrey(4), ColGrey(4), ColGrey(6), ColGrey(6), ColGrey(4), ColGrey(4), ColGrey(4)
+end
+
 
 
 Arena25Playfield
@@ -385,6 +512,11 @@ Arena25Playfield
           X......X......X
           XXXXXXXXXXXXXXXX
 end
+Arena25Colors
+          data
+            ColPurple(2), ColPurple(4), ColPurple(6), ColPurple(8), ColPurple(8), ColPurple(6), ColPurple(4), ColPurple(2)
+end
+
 
 
 Arena26Playfield
@@ -399,6 +531,11 @@ Arena26Playfield
           XX............XX
           XX............XX
 end
+Arena26Colors
+          data
+            ColOrange(2), ColOrange(2), ColOrange(0), ColOrange(4), ColOrange(4), ColOrange(0), ColOrange(2), ColOrange(2)
+end
+
 
 
 Arena27Playfield
@@ -413,6 +550,11 @@ Arena27Playfield
           X..............X
           XXXXXXXXXXXXXXXX
 end
+Arena27Colors
+          data
+            ColYellow(2), ColYellow(4), ColYellow(6), ColYellow(8), ColYellow(8), ColYellow(6), ColYellow(4), ColYellow(2)
+end
+
 
 
 Arena28Playfield
@@ -427,6 +569,11 @@ Arena28Playfield
           .XXXXXXXXXXXXXX.
           XXXXXXXXXXXXXXXX
 end
+Arena28Colors
+          data
+            ColGreen(2), ColGreen(4), ColGreen(6), ColGreen(8), ColGreen(8), ColGreen(6), ColGreen(4), ColGreen(2)
+end
+
 
 
 Arena29Playfield
@@ -441,6 +588,11 @@ Arena29Playfield
           ..XXXX....XXXX..
           XXXX........XXXX
 end
+Arena29Colors
+          data
+            ColMagenta(2), ColMagenta(4), ColMagenta(6), ColMagenta(4), ColMagenta(4), ColMagenta(6), ColMagenta(4), ColMagenta(2)
+end
+
 
 
 Arena30Playfield
@@ -455,6 +607,11 @@ Arena30Playfield
           X..X..X..X..X..X
           X..X..X..X..X..X
 end
+Arena30Colors
+          data
+            ColSpringGreen(4), ColSpringGreen(4), ColSpringGreen(4), ColSpringGreen(4), ColSpringGreen(4), ColSpringGreen(4), ColSpringGreen(4), ColSpringGreen(6)
+end
+
 
 
 Arena31Playfield
@@ -469,33 +626,8 @@ Arena31Playfield
           X..............X
           XXXXXXXXXXXXXXXX
 end
-
-
-          rem
-          rem Arena Color Pointer Tables
-          rem Color pointer lookup tables for efficient arena loading
-          rem Format: 32 entries (indices 0-31) for Arena0-Arena31
-          rem Note: All arenas reference their color tables directly.
-
-
-          rem
-          rem Arena Playfield Pointer Tables
-          rem Playfield pointer lookup tables for efficient arena
-          rem loading
-          rem Format: 32 entries (indices 0-31) for Arena0-Arena31
-
-          data ArenaPF1PointerL
-            <.Arena0Playfield, <.Arena1Playfield, <.Arena2Playfield, <.Arena3Playfield, <.Arena4Playfield, <.Arena5Playfield, <.Arena6Playfield, <.Arena7Playfield,
-            <.Arena8Playfield, <.Arena9Playfield, <.Arena10Playfield, <.Arena11Playfield, <.Arena12Playfield, <.Arena13Playfield, <.Arena14Playfield, <.Arena15Playfield,
-            <.Arena16Playfield, <.Arena17Playfield, <.Arena18Playfield, <.Arena19Playfield, <.Arena20Playfield, <.Arena21Playfield, <.Arena22Playfield, <.Arena23Playfield,
-            <.Arena24Playfield, <.Arena25Playfield, <.Arena26Playfield, <.Arena27Playfield, <.Arena28Playfield, <.Arena29Playfield, <.Arena30Playfield, <.Arena31Playfield
+Arena31Colors
+          data
+            ColGrey(2), ColGrey(4), ColGrey(4), ColGrey(6), ColGrey(4), ColGrey(4), ColGrey(6), ColGrey(8)
 end
-
-          data ArenaPF1PointerH
-            >.Arena0Playfield, >.Arena1Playfield, >.Arena2Playfield, >.Arena3Playfield, >.Arena4Playfield, >.Arena5Playfield, >.Arena6Playfield, >.Arena7Playfield,
-            >.Arena8Playfield, >.Arena9Playfield, >.Arena10Playfield, >.Arena11Playfield, >.Arena12Playfield, >.Arena13Playfield, >.Arena14Playfield, >.Arena15Playfield,
-            >.Arena16Playfield, >.Arena17Playfield, >.Arena18Playfield, >.Arena19Playfield, >.Arena20Playfield, >.Arena21Playfield, >.Arena22Playfield, >.Arena23Playfield,
-            >.Arena24Playfield, >.Arena25Playfield, >.Arena26Playfield, >.Arena27Playfield, >.Arena28Playfield, >.Arena29Playfield, >.Arena30Playfield, >.Arena31Playfield
-end
- 
 

@@ -69,6 +69,4 @@ LoadArenaByIndex
             sta PF2pointer+1
 .PF2Done
 end
-          
-          rem Tail-call B&W color loader
-          if temp2 then goto LoadArenaColorsBWLabel
+          return

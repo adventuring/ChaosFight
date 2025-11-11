@@ -81,12 +81,12 @@ BeginGameLoop
           rem Check if 4-player mode (Quadtari detected)
           if ControllerStatus & SetQuadtariDetected then Init4PlayerPositions
           
-          let PlayerX[0] = 53 : PlayerY[0] = 24
+          let playerX[0] = 53 : PlayerY[0] = 24
           rem 2-player mode positions
-          let PlayerX[1] = 107 : PlayerY[1] = 24
-          let PlayerX[2] = 53 : PlayerY[2] = 24
+          let playerX[1] = 107 : PlayerY[1] = 24
+          let playerX[2] = 53 : PlayerY[2] = 24
           rem Players 3 & 4 use same as P1/P2 if not in 4-player mode
-          let PlayerX[3] = 107 : PlayerY[3] = 24
+          let playerX[3] = 107 : PlayerY[3] = 24
           goto InitPositionsDone
           
 Init4PlayerPositions
@@ -102,13 +102,13 @@ Init4PlayerPositions
           rem
           rem Constraints: Must be colocated with BeginGameLoop,
           rem InitPositionsDone
-          let PlayerX[0] = 32 : PlayerY[0] = 24
+          let playerX[0] = 32 : PlayerY[0] = 24
           rem 4-player mode positions
-          let PlayerX[2] = 64 : PlayerY[2] = 24
+          let playerX[2] = 64 : PlayerY[2] = 24
           rem Player 1: 1/5 width
-          let PlayerX[3] = 96 : PlayerY[3] = 24
+          let playerX[3] = 96 : PlayerY[3] = 24
           rem Player 3: 2/5 width
-          let PlayerX[1] = 128 : PlayerY[1] = 24
+          let playerX[1] = 128 : PlayerY[1] = 24
           rem Player 4: 3/5 width
           rem Player 2: 4/5 width
           
@@ -126,13 +126,13 @@ InitPositionsDone
           rem Constraints: Must be colocated with BeginGameLoop
           
           rem Initialize player states (facing direction)
-          let PlayerState[0] = 0
+          let playerState[0] = 0
           rem Player 1 facing right
-          let PlayerState[1] = 1
+          let playerState[1] = 1
           rem Player 2 facing left
-          let PlayerState[2] = 0
+          let playerState[2] = 0
           rem Player 3 facing right
-          let PlayerState[3] = 1
+          let playerState[3] = 1
           rem Player 4 facing left
           
           rem Initialize player health (apply handicap if selected)
@@ -141,8 +141,8 @@ InitPositionsDone
           for currentPlayer = 0 to 3
               let GPL_playerIndex = currentPlayer
               gosub GetPlayerLocked
-              if GPL_lockedState = PlayerHandicapped then let PlayerHealth[currentPlayer] = PlayerHealthHandicap : goto PlayerHealthInitDone
-              let PlayerHealth[currentPlayer] = PlayerHealthMax
+              if GPL_lockedState = PlayerHandicapped then let playerHealth[currentPlayer] = PlayerHealthHandicap : goto PlayerHealthInitDone
+              let playerHealth[currentPlayer] = PlayerHealthMax
 PlayerHealthInitDone
           next
           

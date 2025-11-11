@@ -779,19 +779,19 @@
           rem Array accessible as characterSelectPlayerAnimationFrame[0] through
           rem   characterSelectPlayerAnimationFrame[3]
           
-          rem ADMIN: Character select animation sequence flags (SCRAM -
-          rem   used in character select)
+          rem ADMIN: Character select animation timers (SCRAM - used in
+          rem   character select)
           rem OPTIMIZED: Moved from w032-w035 to w080-w083 to free space
           rem   for PlayerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode variables - safe since Admin
           rem   and Game Mode never run simultaneously
-          dim characterSelectPlayerAnimationSequence_W = w080
+          dim characterSelectPlayerAnimationTimer_W = w080
           rem   character select animation runs again, so safe overlap
-          dim characterSelectPlayerAnimationSequence_R = r080
-          rem
-          rem Bit 0: 0=idle, 1=walk. Toggles every FramesPerSecond frames
-          rem Array accessible as characterSelectPlayerAnimationSequence[0] through
-          rem   characterSelectPlayerAnimationSequence[3]
+          dim characterSelectPlayerAnimationTimer_R = r080
+          rem Animation frame delay accumulators (counts output frames
+          rem   until AnimationFrameDelay)
+          rem Array accessible as characterSelectPlayerAnimationTimer[0] through
+          rem   characterSelectPlayerAnimationTimer[3]
 
           rem TODO / FUTURE EXPANSION
           

@@ -99,7 +99,7 @@ CharacterSelectLoop
           if joy0right then gosub SelectStickRight
 
           rem Unlock by moving up
-          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy0up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
           if joy0fire then Player1LockSelection
           goto DonePlayer1
@@ -124,7 +124,7 @@ DonePlayer1
           if joy1right then gosub SelectStickRight
 
           rem Unlock by moving up
-          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy1up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
           if joy1fire then Player2LockSelection
           goto DonePlayer2
@@ -158,7 +158,7 @@ CharacterSelectHandlePlayer3
           if joy0right then gosub SelectStickRight
 
           rem Unlock by moving up
-          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy0up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
           if joy0fire then Player3LockSelection
           goto DonePlayer3
@@ -189,7 +189,7 @@ CharacterSelectHandlePlayer4
           if joy1right then gosub SelectStickRight
 
           rem Unlock by moving up
-          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy1up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
           if joy1fire then Player4LockSelection
           goto DonePlayer4
@@ -257,23 +257,23 @@ CharacterSelectHandleComplete
 
           rem Count locked players
 
-          temp1 = 0 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
-          temp1 = 1 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
           goto CharacterSelectDoneQuadtariPlayersInline
 
 CharacterSelectQuadtariPlayersInline
-          temp1 = 2 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
-          temp1 = 3 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
 CharacterSelectDoneQuadtariPlayersInline
           rem Check if enough players are ready
           if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
 
           rem Need at least 1 player ready for 2-player mode
-          temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
 
-          temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
 
           goto CharacterSelectDoneQuadtariReadyInline
 
@@ -407,7 +407,7 @@ CharacterSelectDrawLocks
           rem Constraints: Players 3/4 only checked if Quadtari
           rem detected. Borders drawn using playfield bits
           rem Draw playfield blocks around locked characters
-          temp1 = 0 : gosub GetPlayerLocked : if temp2 then CharacterSelectDrawPlayer1Border
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then CharacterSelectDrawPlayer1Border
           goto CharacterSelectDonePlayer1Border
 CharacterSelectDrawPlayer1Border
 CharacterSelectDonePlayer1Border
@@ -426,7 +426,7 @@ CharacterSelectDonePlayer1Border
           rem when Player 1 is locked
           rem Draw border around Player 1
 
-          temp1 = 1 : gosub GetPlayerLocked : if temp2 then CharacterSelectDrawPlayer2Border
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then CharacterSelectDrawPlayer2Border
           goto CharacterSelectDonePlayer2Border
 CharacterSelectDrawPlayer2Border
 CharacterSelectDonePlayer2Border
@@ -464,7 +464,7 @@ SelectCheckPlayer2Lock
           rem
           rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem if Quadtari detected
-          temp1 = 2 : gosub GetPlayerLocked : if temp2 then SelectDrawPlayer2Border
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then SelectDrawPlayer2Border
           rem Continue to Player 3 check
 SelectDrawPlayer2Border 
           rem Helper: Draw border around Player 3
@@ -501,7 +501,7 @@ SelectCheckPlayer3Lock
           rem
           rem Constraints: Internal helper for CharacterSelectDrawLocks, only called
           rem if Quadtari detected
-          temp1 = 3 : gosub GetPlayerLocked : if temp2 then SelectDrawPlayer3Border
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then SelectDrawPlayer3Border
           return
 SelectDrawPlayer3Border 
           return
@@ -807,7 +807,7 @@ CharacterSelectDrawSprite
           rem Hurt state uses same color but dimmer luminance
           
           rem Check if character is in hurt/recovery state
-          temp1 = characterSelectAnimationState
+          let temp1 = characterSelectAnimationState
           rem For character select, we will use a simple hurt simulation
           rem Use animation state as hurt simulation for demo
           

@@ -4,75 +4,90 @@
 SelectDrawScreen
           rem Character Select drawing (sprites and HUD)
           rem Playfield layout is static; no runtime register writes
-          rem Draw Player 1 selection (top left)
-          player0x = 56 : player0y = 40
-          gosub SelectDrawSprite
-          rem Draw Player 2 selection (top right)
-          player1x = 104 : player1y = 40
-          gosub SelectDrawSprite
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectDrawScreenDone
-          rem Draw Player 3 selection (bottom left)
-          player0x = 56 : player0y = 80
-          gosub SelectDrawSprite
-          rem Draw Player 4 selection (bottom right)
-          player1x = 104 : player1y = 80
-          gosub SelectDrawSprite
+          let temp1 = 0
+          gosub SelectRenderPlayerPreview
+          let temp1 = 1
+          gosub SelectRenderPlayerPreview
+          if controllerStatus & SetQuadtariDetected then goto SelectDrawLowerPlayers
+          gosub SelectHideLowerPlayerPreviews
+          goto SelectDrawScreenDone
+SelectDrawLowerPlayers
+          let temp1 = 2
+          gosub SelectRenderPlayerPreview
+          let temp1 = 3
+          gosub SelectRenderPlayerPreview
 SelectDrawScreenDone
           return
 
-SelectDrawSprite
-          rem Draw character sprite based on current position and playerCharacter
-          let currentPlayer = 255
-          if player0x = 56 then goto SelectDeterminePlayerP0
-          if player1x = 104 then goto SelectDeterminePlayerP1
-          goto SelectDrawSpriteDone
-SelectDeterminePlayerP0
-          if player0y = 40 then let currentPlayer = 0 : goto SelectLoadSprite
-          if player0y = 80 then let currentPlayer = 2 : goto SelectLoadSprite
-          goto SelectDrawSpriteDone
-SelectDeterminePlayerP1
-          if player1y = 40 then let currentPlayer = 1 : goto SelectLoadSprite
-          if player1y = 80 then let currentPlayer = 3 : goto SelectLoadSprite
-          goto SelectDrawSpriteDone
-SelectLoadSprite
-          if currentPlayer > 3 then goto SelectDrawSpriteDone
-          let currentCharacter = playerCharacter[currentPlayer]
-          if currentCharacter = NoCharacter then goto SelectUseDefaultAnimation
-          if currentCharacter = CPUCharacter then goto SelectUseDefaultAnimation
-          if currentCharacter = RandomCharacter then goto SelectUseDefaultAnimation
-          if characterSelectPlayerAnimationSequence_R[currentPlayer] then goto SelectLoadWalkingSprite
-          temp2 = characterSelectPlayerAnimationFrame_R[currentPlayer]
-          temp3 = ActionIdle
-          goto SelectInvokeSpriteLoad
-SelectLoadWalkingSprite
-          temp2 = characterSelectPlayerAnimationSequence_R[currentPlayer]
-          temp3 = ActionWalking
-          goto SelectInvokeSpriteLoad
-SelectUseDefaultAnimation
-          temp2 = 0
-          temp3 = ActionIdle
-SelectInvokeSpriteLoad
-          gosub LoadCharacterSprite bank16
-SelectLoadSpriteColor
-          temp2 = 0
-          temp3 = 0
-          gosub LoadCharacterColors bank16
-          gosub SelectApplyPlayerColor
+SelectRenderPlayerPreview
+          rem Draw character preview for the specified player and apply lock tinting
+          gosub PlayerPreviewSetPosition
+          gosub RenderPlayerPreview
           let temp1 = currentPlayer
           gosub GetPlayerLocked
           temp5 = temp2
-          if !temp5 then goto SelectApplyUnlockedColor
-          if temp5 = PlayerHandicapped then goto SelectApplyHandicapColor
-SelectDrawSpriteDone
+          if !temp5 then gosub SelectSetPlayerColorUnlocked : return
+          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return
           return
-SelectApplyUnlockedColor
-          gosub SelectSetPlayerColorUnlocked
-          goto SelectDrawSpriteDone
-SelectApplyHandicapColor
-          gosub SelectSetPlayerColorHandicap
-          goto SelectDrawSpriteDone
 
-SelectApplyPlayerColor
+PlayerPreviewSetPosition
+          rem Position player preview sprites in the four select quadrants
+          if temp1 = 0 then goto PlayerPreviewSetPositionP0
+          if temp1 = 1 then goto PlayerPreviewSetPositionP1
+          if temp1 = 2 then goto PlayerPreviewSetPositionP2
+          goto PlayerPreviewSetPositionP3
+PlayerPreviewSetPositionP0
+          player0x = 56
+          player0y = 40
+          return
+PlayerPreviewSetPositionP1
+          player1x = 104
+          player1y = 40
+          return
+PlayerPreviewSetPositionP2
+          player2x = 56
+          player2y = 80
+          return
+PlayerPreviewSetPositionP3
+          player3x = 104
+          player3y = 80
+          return
+
+SelectHideLowerPlayerPreviews
+          rem Move lower-player previews off-screen when Quadtari is absent
+          player2x = 200
+          player2y = 200
+          player3x = 200
+          player3y = 200
+          return
+
+RenderPlayerPreview
+          rem Load preview sprite and base color for admin screens
+          let currentPlayer = temp1
+          let currentCharacter = playerCharacter[currentPlayer]
+          if currentCharacter = NoCharacter then goto RenderPlayerPreviewDefault
+          if currentCharacter = CPUCharacter then goto RenderPlayerPreviewDefault
+          if currentCharacter = RandomCharacter then goto RenderPlayerPreviewDefault
+          temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]
+          let temp1 = currentPlayer
+          gosub GetPlayerLocked
+          temp5 = temp2
+          temp2 = temp4
+          temp3 = ActionIdle
+          if temp5 = PlayerHandicapped then temp3 = ActionFallen
+          goto RenderPlayerPreviewInvoke
+RenderPlayerPreviewDefault
+          temp2 = 0
+          temp3 = ActionIdle
+RenderPlayerPreviewInvoke
+          gosub LoadCharacterSprite bank16
+          temp2 = 0
+          temp3 = 0
+          gosub LoadCharacterColors bank16
+          gosub PlayerPreviewApplyColor
+          return
+
+PlayerPreviewApplyColor
           rem Apply base color returned in temp6 to the appropriate sprite register
           if currentPlayer = 0 then COLUP0 = temp6 : return
           if currentPlayer = 1 then _COLUP1 = temp6 : return
@@ -130,24 +145,28 @@ SelectDonePlayer23Animation
           return
 
 SelectUpdatePlayerAnimation
-          rem Update animation for a single player
-          let temp2 = characterSelectPlayerAnimationFrame_R[temp1] + 1
-          let characterSelectPlayerAnimationFrame_W[temp1] = temp2
-          if characterSelectPlayerAnimationFrame_R[temp1] >= AnimationFrameDelay then goto SelectAdvanceAnimationFrame
-          return
-SelectAdvanceAnimationFrame
-          let characterSelectPlayerAnimationFrame_W[temp1] = 0
-          if !characterSelectPlayerAnimationSequence_R[temp1] then goto SelectAdvanceIdleAnimation
-          let temp2 = (characterSelectPlayerAnimationSequence_R[temp1] + 1) & 3
-          let characterSelectPlayerAnimationSequence_W[temp1] = temp2
-          if characterSelectPlayerAnimationSequence_R[temp1] then return
-          let characterSelectPlayerAnimationSequence_W[temp1] = 0
-          goto SelectAnimationWaitForToggle
-SelectAdvanceIdleAnimation
-          if frame & 63 then return
-          let characterSelectPlayerAnimationSequence_W[temp1] = 1
-          return
-SelectAnimationWaitForToggle
+          rem Update character select animation counters for one player
+          rem
+          rem Input: temp1 = player index (0-3)
+          rem        characterSelectPlayerAnimationTimer_R[] = accumulated
+          rem        output-frame counts
+          rem        characterSelectPlayerAnimationFrame_R[] = sprite
+          rem        frame index (0-7)
+          rem
+          rem Output: characterSelectPlayerAnimationFrame_W[temp1] advanced
+          rem        when timer reaches AnimationFrameDelay
+          rem
+          rem Mutates: temp2, temp3, characterSelectPlayerAnimationTimer_W[],
+          rem        characterSelectPlayerAnimationFrame_W[]
+          rem
+          rem Called Routines: None
+          rem Constraints: Admin-only usage sharing SCRAM with game mode
+          let temp2 = characterSelectPlayerAnimationTimer_R[temp1] + 1
+          let characterSelectPlayerAnimationTimer_W[temp1] = temp2
+          if temp2 < AnimationFrameDelay then return
+          let characterSelectPlayerAnimationTimer_W[temp1] = 0
+          let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
+          let characterSelectPlayerAnimationFrame_W[temp1] = temp3
           return
 
 CharacterSelectCheckControllerRescan

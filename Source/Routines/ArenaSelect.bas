@@ -25,7 +25,7 @@ ArenaSelect1Loop
           rem fireHoldTimer_W (incremented/reset),
           rem         gameMode (set to ModeCharacterSelect or ModeGame)
           rem
-          rem Called Routines: ArenaSelectUpdateAnimations - accesses
+          rem Called Routines: SelectUpdateAnimations (bank6) - accesses
           rem character selections, frame,
           rem   ArenaSelectDrawCharacters - accesses character
           rem   selections, player positions,
@@ -43,7 +43,7 @@ ArenaSelect1Loop
           rem              called via goto)
           rem              Entry point for arena select mode (called
           rem              from MainLoop)
-          gosub ArenaSelectUpdateAnimations
+          gosub SelectUpdateAnimations bank6
           rem Update character idle animations
           gosub ArenaSelectDrawCharacters
           rem Draw locked-in player characters
@@ -267,146 +267,6 @@ StartGame1
           rem
           rem Character Display And Animation
           
-ArenaSelectUpdateAnimations
-          rem Update idle animations for all selected characters
-          rem
-          rem Input: playerCharacter[] (global array) = character selections
-          rem        controllerStatus (global) = controller detection
-          rem        state
-          rem        frame (global) = frame counter
-          rem
-          rem Output: None (updates animation state via
-          rem ArenaSelectUpdatePlayerAnimation)
-          rem
-          rem Mutates: None (no persistent state updates)
-          rem
-          rem Called Routines: ArenaSelectUpdatePlayerAnimation - accesses
-          rem frame counter
-          rem
-          rem Constraints: Must be colocated with
-          rem ArenaSelectSkipPlayer0Animation, ArenaSelectSkipPlayer1Animation,
-          rem              ArenaSelectSkipPlayer2Animation,
-          rem              ArenaSelectSkipPlayer23Animation,
-          rem ArenaSelectUpdatePlayerAnimation (all called via goto)
-          rem Update idle animations for all selected characters
-          rem Each player updates independently with simple frame
-          rem   counter
-          
-          rem Update Player 1 animation (if character selected)
-          
-          if playerCharacter[0] = NoCharacter then ArenaSelectDonePlayer0Animation
-          if playerCharacter[0] = CPUCharacter then ArenaSelectDonePlayer0Animation
-          if playerCharacter[0] = RandomCharacter then ArenaSelectDonePlayer0Animation
-          let temp1 = 0
-          rem RandomCharacter = 253
-          gosub ArenaSelectUpdatePlayerAnimation
-
-ArenaSelectDonePlayer0Animation
-          rem Skip Player 1 animation update (not selected)
-          rem
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with
-          rem ArenaSelectUpdateAnimations
-          rem Update Player 2 animation (if character selected)
-          if playerCharacter[1] = NoCharacter then ArenaSelectDonePlayer1Animation
-          if playerCharacter[1] = CPUCharacter then ArenaSelectDonePlayer1Animation
-          if playerCharacter[1] = RandomCharacter then ArenaSelectDonePlayer1Animation
-          let temp1 = 1
-          gosub ArenaSelectUpdatePlayerAnimation
-
-ArenaSelectDonePlayer1Animation
-          rem Skip Player 2 animation update (not selected)
-          rem
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with
-          rem ArenaSelectUpdateAnimations
-          rem Update Player 3 animation (if Quadtari and character
-          rem selected)
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectDonePlayer23Animation
-          if playerCharacter[2] = NoCharacter then ArenaSelectDonePlayer2Animation
-          if playerCharacter[2] = CPUCharacter then ArenaSelectDonePlayer2Animation
-          if playerCharacter[2] = RandomCharacter then ArenaSelectDonePlayer2Animation
-          let temp1 = 2
-          gosub ArenaSelectUpdatePlayerAnimation
-
-ArenaSelectDonePlayer2Animation
-          rem Skip Player 3 animation update (not in 4-player mode or
-          rem not selected)
-          rem
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with
-          rem ArenaSelectUpdateAnimations
-          rem Update Player 4 animation (if Quadtari and character
-          rem selected)
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectDonePlayer23Animation
-          if playerCharacter[3] = NoCharacter then ArenaSelectDonePlayer23Animation
-          if playerCharacter[3] = CPUCharacter then ArenaSelectDonePlayer23Animation
-          if playerCharacter[3] = RandomCharacter then ArenaSelectDonePlayer23Animation
-          let temp1 = 3
-          gosub ArenaSelectUpdatePlayerAnimation
-
-ArenaSelectDonePlayer23Animation
-          rem Skip Player 3/4 animation updates (not in 4-player mode or
-          rem not selected)
-          return
-ArenaSelectUpdatePlayerAnimation
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with
-          rem ArenaSelectUpdateAnimations
-          rem Update idle animation frame for a single player
-          rem
-          rem Input: temp1 = player index (0-3)
-          rem        frame (global) = frame counter
-          rem
-          rem Output: None (no persistent state updates, animation frame
-          rem calculated from frame counter)
-          rem
-          rem Mutates: temp2 (internal calculation)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with
-          rem ArenaSelectUpdateAnimations
-          rem Simple frame counter that cycles every FramesPerSecond frames (1 second)
-          rem Increment frame counter (stored in arenaSelectAnimationFrame
-          rem   array)
-          rem For now, use a simple counter that wraps every 8 frames
-          rem In the future, this could use
-          rem   arenaSelectAnimationFrame[playerIndex] array
-          rem For simplicity, just cycle through frames 0-7 for idle
-          rem   animation
-          rem Frame updates every 8 frames (FramesPerSecond / 8 fps)
-          let temp2 = frame & 7
-          rem Simple frame-based animation (cycles every 8 frames)
-          return
           
 ArenaSelectDrawCharacters
           rem Draw all selected characters at their character select
@@ -418,16 +278,16 @@ ArenaSelectDrawCharacters
           rem        frame (global) = frame counter
           rem
           rem Output: player0-3x, player0-3y (TIA registers) set,
-          rem sprites loaded via ArenaSelectDrawPlayerSprite
+          rem sprites loaded via RenderPlayerPreview (bank6)
           rem
           rem Mutates: player0-3x, player0-3y (TIA registers),
           rem         player sprite pointers (via LocateCharacterArt),
-          rem         COLUP0-COLUP3 (via LoadCharacterColors)
+          rem         COLUP0-COLUP3 (via PlayerPreviewApplyColor bank6)
           rem
-          rem Called Routines: ArenaSelectDrawPlayerSprite - accesses
-          rem character selections, frame,
-          rem   LoadCharacterSprite (bank16) - loads character art data,
-          rem   LoadCharacterColors (bank16) - accesses color tables
+          rem Called Routines: PlayerPreviewSetPosition (bank6) - sets
+          rem sprite coordinates,
+          rem   RenderPlayerPreview (bank6) - loads sprite graphics and
+          rem   base colors
           rem
           rem Constraints: Must be colocated with ArenaSelectSkipDrawP0,
           rem ArenaSelectSkipDrawP1,
@@ -445,9 +305,9 @@ ArenaSelectDrawCharacters
           if playerCharacter[0] = NoCharacter then ArenaSelectDoneDrawP0
           if playerCharacter[0] = CPUCharacter then ArenaSelectDoneDrawP0
           if playerCharacter[0] = RandomCharacter then ArenaSelectDoneDrawP0
-          player0x = 56 : player0y = 40
-          let currentPlayer = 0
-          gosub ArenaSelectDrawPlayerSprite
+          let temp1 = 0
+          gosub PlayerPreviewSetPosition bank6
+          gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP0
           rem Skip Player 1 character drawing (not selected)
@@ -466,9 +326,9 @@ ArenaSelectDoneDrawP0
           if playerCharacter[1] = NoCharacter then ArenaSelectDoneDrawP1
           if playerCharacter[1] = CPUCharacter then ArenaSelectDoneDrawP1
           if playerCharacter[1] = RandomCharacter then ArenaSelectDoneDrawP1
-          player1x = 104 : player1y = 40
-          let currentPlayer = 1
-          gosub ArenaSelectDrawPlayerSprite
+          let temp1 = 1
+          gosub PlayerPreviewSetPosition bank6
+          gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP1
           rem Skip Player 2 character drawing (not selected)
@@ -485,13 +345,13 @@ ArenaSelectDoneDrawP1
           rem ArenaSelectDrawCharacters
           rem Draw Player 3 character (bottom left) if Quadtari and
           rem selected
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectDoneDrawP23
+          if !(controllerStatus & SetQuadtariDetected) then gosub SelectHideLowerPlayerPreviews bank6 : goto ArenaSelectDoneDrawP23
           if playerCharacter[2] = NoCharacter then ArenaSelectDoneDrawP2
           if playerCharacter[2] = CPUCharacter then ArenaSelectDoneDrawP2
           if playerCharacter[2] = RandomCharacter then ArenaSelectDoneDrawP2
-          player2x = 56 : player2y = 80
-          let currentPlayer = 2
-          gosub ArenaSelectDrawPlayerSprite
+          let temp1 = 2
+          gosub PlayerPreviewSetPosition bank6
+          gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP2
           rem Skip Player 3 character drawing (not in 4-player mode or
@@ -513,67 +373,11 @@ ArenaSelectDoneDrawP2
           if playerCharacter[3] = NoCharacter then ArenaSelectDoneDrawP23
           if playerCharacter[3] = CPUCharacter then ArenaSelectDoneDrawP23
           if playerCharacter[3] = RandomCharacter then ArenaSelectDoneDrawP23
-          player3x = 104 : player3y = 80
-          let currentPlayer = 3
-          gosub ArenaSelectDrawPlayerSprite
+          let temp1 = 3
+          gosub PlayerPreviewSetPosition bank6
+          gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP23
           rem Skip Player 3/4 character drawing (not in 4-player mode or
           rem not selected)
-          return
-ArenaSelectDrawPlayerSprite
-          rem Input: None (label only, no execution)
-          rem
-          rem Output: None (label only)
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with
-          rem ArenaSelectDrawCharacters
-          rem Draw character sprite for specified player
-          rem
-          rem Input: currentPlayer (global) = player index (0-3)
-          rem        playerCharacter[] (global array) = character selections
-          rem        frame (global) = frame counter
-          rem        player0-3x, player0-3y (TIA registers) = sprite
-          rem        positions (set by caller)
-          rem
-          rem Output: Player sprite pointer set via LoadCharacterSprite,
-          rem COLUP0-COLUP3 set via LoadCharacterColors
-          rem
-          rem Mutates: currentCharacter (global), temp2-temp3
-          rem         (LoadCharacterSprite / LoadCharacterColors parameters),
-          rem         player sprite pointers, COLUP0-COLUP3
-          rem
-          rem Called Routines: LoadCharacterSprite (bank16) - loads
-          rem character art data,
-          rem   LoadCharacterColors (bank16) - accesses color tables
-          rem Constraints: Must be colocated with ArenaSelectDrawCharacters
-          rem Draw character sprite for specified player
-          rem
-          rem Uses playerCharacter[0-3] and player positions set by caller
-          
-          rem Load character data for current player
-          let currentCharacter = playerCharacter[currentPlayer]
-          rem Use idle animation (ActionIdle)
-          temp3 = ActionIdle
-          rem Simple frame counter cycles 0-7
-          temp2 = frame & 7
-          gosub LoadCharacterSprite bank16
-          
-          rem Set character color based on player number
-          rem LoadCharacterColors expects: currentPlayer, temp2=hurt, temp3=guarding
-          rem Not hurt
-          temp2 = 0
-          rem Not guarding
-          temp3 = 0
-          gosub LoadCharacterColors bank16
-          
-          if currentPlayer = 0 then COLUP0 = temp6
-          if currentPlayer = 1 then _COLUP1 = temp6
-          if currentPlayer = 2 then COLUP2 = temp6
-          if currentPlayer = 3 then COLUP3 = temp6  
-          
           return

@@ -120,6 +120,10 @@
           dim currentPlayer = c
           dim currentCharacter = n
           
+          rem Combat system attacker/defender indices (reused every frame)
+          dim attackerID = o
+          dim defenderID = q
+          
           rem Game state and system flags (consolidated to save RAM)
           rem Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
           rem System flags (packed byte):
@@ -140,13 +144,8 @@
           dim controllerStatus = h
           
           rem Character selection results (set during ADMIN, read during GAME)
-          rem Player damage values: [0]=P1, [1]=P2, [2]=P3, [3]=P4 using j,k,l,m
-          rem (4 bytes: w067-w070) - SCRAM for low-frequency access
+          rem Player-character selection (0-31) cached across contexts
           dim playerCharacter = j
-          rem Player damage lookup (write port)
-          dim playerDamage_W = w067
-          rem Player damage lookup (read port mirrors write port layout)
-          dim playerDamage_R = r067
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
           rem Array accessible as playerLocked[0] through playerLocked[3]
@@ -461,11 +460,13 @@
           dim playerSubpixelX_W = w064
           rem Game Mode: 8.8 fixed-point X position (8 bytes) - SCRAM
           rem   w064-w071 (write), r064-r071 (read)
-          rem Array accessible as playerSubpixelX_W[0-3] and
-          rem   playerSubpixelX_WL[0-3] (write ports)
-          rem Array accessible as playerSubpixelX_R[0-3] and
-          rem   playerSubpixelX_RL[0-3] (read ports)
+          rem Array accessible as playerSubpixelX_W[0-3] (high bytes) and
+          rem   playerSubpixelX_WL[0-3] (low bytes) (write ports)
+          rem Array accessible as playerSubpixelX_R[0-3] (high bytes) and
+          rem   playerSubpixelX_RL[0-3] (low bytes) (read ports)
+          dim playerSubpixelX_WL = w068
           dim playerSubpixelX_R = r064
+          dim playerSubpixelX_RL = r068
           
           rem playerSubpixelY[0-3] = 8.8 fixed-point Y position
           rem Uses w072-w079 to leave w057-w064 for shared Admin/Game allocations
@@ -476,11 +477,13 @@
           dim playerSubpixelY_W = w072
           rem Game Mode: 8.8 fixed-point Y position (8 bytes) - SCRAM
           rem   w072-w079 (write), r072-r079 (read)
-          rem Array accessible as playerSubpixelY_W[0-3] and
-          rem   playerSubpixelY_WL[0-3] (write ports)
-          rem Array accessible as playerSubpixelY_R[0-3] and
-          rem   playerSubpixelY_RL[0-3] (read ports)
+          rem Array accessible as playerSubpixelY_W[0-3] (high bytes) and
+          rem   playerSubpixelY_WL[0-3] (low bytes) (write ports)
+          rem Array accessible as playerSubpixelY_R[0-3] (high bytes) and
+          rem   playerSubpixelY_RL[0-3] (low bytes) (read ports)
+          dim playerSubpixelY_WL = w076
           dim playerSubpixelY_R = r072
+          dim playerSubpixelY_RL = r076
           
           rem GAME MODE - Standard RAM (var24-var47) - sorted
           rem   numerically
@@ -779,11 +782,6 @@
           dim characterSelectPlayerAnimationTimer_R = r080
 
           rem TODO / FUTURE EXPANSION
-          
-          rem Note: playerDamage[0-3] now properly allocated in SCRAM
-          rem   (w067-w070) - see Common Vars section above
-          rem Allocated here to avoid conflict with playerSubpixelX[0-3]
-          rem playerSubpixelX
           
           rem NOTE: var0-3 used by playerX (core gameplay, cannot redim)
           rem NOTE: var4-7 used by playerY (core gameplay, cannot redim)

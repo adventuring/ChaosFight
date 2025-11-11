@@ -936,7 +936,6 @@ HandleMissileHit
           rem Input: temp1 = attacker player index (0-3, missile owner),
           rem temp4 = defender player index (0-3, hit player),
           rem playerCharacter[] (global array) = character types,
-          rem playerDamage[] (global array) = damage values,
           rem characterStateFlags_R[] (global SCRAM array) = character
           rem state flags (for Harpy dive mode), missileX[] (global
           rem array) = missile X positions, playerX[], playerY[] (global
@@ -957,7 +956,8 @@ HandleMissileHit
           rem player states (recovery flag set), soundEffectID (global)
           rem = sound effect ID
           rem
-          rem Called Routines: PlaySoundEffect (bank15) - plays hit
+          rem Called Routines: GetCharacterDamage (bank7) - obtains base
+          rem damage per character, PlaySoundEffect (bank15) - plays hit
           rem sound
           rem
           rem Constraints: Harpy dive mode increases damage by 50%.
@@ -968,8 +968,12 @@ HandleMissileHit
           rem Get character type for damage calculation
           
           rem Apply damage from attacker to defender
-          let temp6 = playerDamage_R[temp1]
-          rem Use playerDamage array for base damage amount
+          let temp3 = temp1
+          let temp1 = temp5
+          gosub GetCharacterDamage bank7
+          let temp6 = temp2
+          let temp1 = temp3
+          rem Base damage derived from character definition
           
           rem Apply dive damage bonus for Harpy
           

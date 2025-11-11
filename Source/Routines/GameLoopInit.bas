@@ -154,7 +154,6 @@ PlayerHealthInitDone
               let playerVelocityYL[currentPlayer] = 0
               let playerSubpixelX_W[currentPlayer] = 0
               let playerSubpixelY_W[currentPlayer] = 0
-              let playerDamage_W[currentPlayer] = 22
           next
           
           rem Optimized: Set Players34Active flag based on character selections

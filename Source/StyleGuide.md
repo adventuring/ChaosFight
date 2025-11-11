@@ -399,7 +399,7 @@ ApplyDamage
           rem Apply damage from attacker to defender
           rem
           rem Input: attackerID (global), defenderID (global),
-          rem playerDamage[] (global array)
+          rem        playerCharacter[] (global array)
           rem
           rem Output: Damage applied, recovery frames set, health
           rem decremented
@@ -407,8 +407,9 @@ ApplyDamage
           rem Mutates: temp1-temp4 (used for calculations),
           rem playerHealth[], playerRecoveryFrames[]
           rem
-          rem Called Routines: SetPlayerAnimation (bank11),
-          rem CheckPlayerElimination, PlayDamageSound
+          rem Called Routines: GetCharacterDamage (bank7),
+          rem SetPlayerAnimation (bank11), CheckPlayerElimination,
+          rem PlayDamageSound
           rem
           rem Constraints: None
 ```

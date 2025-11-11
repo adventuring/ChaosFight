@@ -16,7 +16,6 @@ ApplyDamage
           rem
           rem Input: attackerID (global) = attacker player index
           rem        defenderID (global) = defender player index
-          rem        playerDamage[] (global array) = player damage values
           rem        playerHealth[] (global array) = player health values
           rem        ActionHit (constant) = hurt animation action
           rem
@@ -32,15 +31,20 @@ ApplyDamage
           rem         currentPlayer (set to defenderID), temp2 (passed
           rem         to SetPlayerAnimation)
           rem
-          rem Called Routines: SetPlayerAnimation (bank11) - sets hurt
-          rem animation,
-          rem   CheckPlayerElimination - handles player elimination,
-          rem   PlayDamageSound - plays damage sound effect
+          rem Called Routines: GetCharacterDamage (bank7) - obtains base
+          rem   damage per character, SetPlayerAnimation (bank11) - sets
+          rem   hurt animation, CheckPlayerElimination - handles player
+          rem   elimination, PlayDamageSound - plays damage sound effect
           rem
           rem Constraints: Must be colocated with PlayerDies,
           rem PlayDamageSound (called via goto)
           
-          let temp1 = playerDamage_R[attackerID] - playerDamage_R[defenderID]
+          let temp1 = playerCharacter[attackerID]
+          gosub GetCharacterDamage bank7
+          let temp4 = temp2
+          let temp1 = playerCharacter[defenderID]
+          gosub GetCharacterDamage bank7
+          let temp1 = temp4 - temp2
           rem Calculate damage (considering defender state)
           rem Minimum damage
           if temp1 < 1 then temp1 = 1

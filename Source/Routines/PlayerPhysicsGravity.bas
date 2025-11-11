@@ -264,6 +264,9 @@ GravityNextPlayer
           
           return
 
+          rem Research 2025-11-11: Keeping this routine bank8-only after dasm shrieked about
+          rem   duplicate .MomentumRecoveryNext labels trying to walk past $10000. One copy
+          rem   is plenty; see Issue #875 if you’re tempted to clone it again.
 ApplyMomentumAndRecovery
           rem
           rem Apply Momentum And Recovery

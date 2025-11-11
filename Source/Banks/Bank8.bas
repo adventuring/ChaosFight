@@ -8,7 +8,7 @@
           bank 8
 
           rem Code segment
-#include "Source/Routines/PlayerPhysicsGravity.bas"
+#include "Source/Routines/PlayerPhysics.bas"
 #include "Source/Routines/MovementSystem.bas"
 #include "Source/Routines/FallDamage.bas"
 #include "Source/Routines/GuardEffects.bas"

@@ -84,8 +84,8 @@ CheckVisibleMissileCollision
           rem Mutates: temp1-temp6 (used for calculations), temp4
           rem (return value)
           rem
-          rem Called Routines: GetMissileWidth (bank12) - gets missile
-          rem width, GetMissileHeight (bank12) - gets missile height
+          rem Called Routines: GetMissileWidth - gets missile width,
+          rem GetMissileHeight - gets missile height
           rem Constraints: None
           let temp2 = missileX[temp1]
           rem Get missile X/Y position
@@ -96,11 +96,11 @@ CheckVisibleMissileCollision
           rem Get character type from player
           rem Use characterType as index (preserve attackerIndex)
           let temp1 = temp5
-          gosub GetMissileWidth bank12
+          gosub GetMissileWidth
           let temp6 = temp2 
           rem Missile width (temp2 now contains width)
           let temp1 = temp5
-          gosub GetMissileHeight bank12
+          gosub GetMissileHeight
           let temp3 = temp2 
           rem Missile height (temp2 now contains height)
           rem Restore missileX/Y after width/height lookup

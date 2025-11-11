@@ -33,8 +33,8 @@ StartMusic
           rem 1)
           rem
           rem Called Routines: LoadSongPointer (bank15 or bank1) -
-          rem looks up song pointer, LoadSongVoice1Pointer (bank15 or
-          rem bank1) - calculates Voice 1 pointer, UpdateMusic (tail
+          rem looks up song pointer, LoadSongVoice1PointerBank15 or
+          rem LoadSongVoice1PointerBank1 - calculates Voice 1 pointer, UpdateMusic (tail
           rem call via goto) - starts first notes
           rem
           rem Constraints: Songs in Bank 15: Bernie (0), OCascadia (1),
@@ -56,7 +56,7 @@ StartMusic
           if temp1 < Bank1MinSongID then goto LoadSongFromBank15
           gosub LoadSongPointer bank1
           rem Song in Bank 1
-          gosub LoadSongVoice1Pointer
+          gosub LoadSongVoice1PointerBank1
           goto LoadSongPointersDone
 LoadSongFromBank15
           rem Helper: Loads song pointers from Bank 15
@@ -66,17 +66,17 @@ LoadSongFromBank15
           rem Output: Song pointers loaded from Bank 15
           rem
           rem Mutates: songPointer (global 16-bit) via LoadSongPointer and
-          rem LoadSongVoice1Pointer
+          rem LoadSongVoice1PointerBank15
           rem
           rem Called Routines: LoadSongPointer (bank15) - looks up song
-          rem pointer, LoadSongVoice1Pointer (bank15) - calculates Voice
+          rem pointer, LoadSongVoice1PointerBank15 (bank15) - calculates Voice
           rem 1 pointer
           rem
           rem Constraints: Internal helper for StartMusic, only called
           rem for songs 0-Bank15MaxSongID
           gosub LoadSongPointer bank15
           rem Song in Bank 15
-          gosub LoadSongVoice1Pointer bank15
+          gosub LoadSongVoice1PointerBank15 bank15
 LoadSongPointersDone
           rem Helper: Completes song pointer setup after loading
           rem
@@ -103,8 +103,8 @@ LoadSongPointersDone
           let musicVoice0StartPointer_W = songPointer
           rem Store initial pointers for looping (Chaotica only)
           
-          rem LoadSongVoice1Pointer already called above
-          rem LoadSongVoice1Pointer reused songPointer (16-bit) for Voice 1
+          rem LoadSongVoice1PointerBank1/15 already called above
+          rem Voice 1 loader reused songPointer (16-bit) for Voice 1
           let musicVoice1Pointer = songPointer
           let musicVoice1StartPointer_W = songPointer
           rem Store initial Voice 1 pointer for looping (Chaotica only)

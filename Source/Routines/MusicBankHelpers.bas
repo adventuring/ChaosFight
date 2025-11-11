@@ -41,7 +41,7 @@ LSP_InvalidSong
           let songPointer = 0
           return
           
-LoadSongVoice1Pointer
+LoadSongVoice1PointerBank1
           rem Lookup Voice 1 song pointer from tables (Bank 1 songs)
           rem
           rem Input: temp1 = song ID (Bank 1 songs: Bank1MinSongID-28),
@@ -77,7 +77,7 @@ LSV1P_Lookup
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Internal helper for LoadSongVoice1Pointer
+          rem Constraints: Internal helper for LoadSongVoice1PointerBank1
           let songPointer = SongPointers1SecondH[temp2]
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers1SecondL[temp2]

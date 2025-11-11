@@ -33,7 +33,7 @@ LSP15_InvalidSong
           let songPointer = 0
           return
           
-LoadSongVoice1Pointer
+LoadSongVoice1PointerBank15
           rem Lookup Voice 1 song pointer from tables (Bank 15 songs)
           rem
           rem Input: temp1 = song ID (Bank 15 songs: 0-Bank15MaxSongID),

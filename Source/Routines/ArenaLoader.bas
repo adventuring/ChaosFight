@@ -47,23 +47,28 @@ LoadArenaDispatch
           goto LoadArenaColorsColor
 
 LoadArenaColorsColor
-          rem Load arena color table pointer from contiguous Arena0Colors table
-          rem Since colors are contiguous: Arena0Colors + (arena_index * 8)
+          rem Load arena color table pointer using stride calculation
           asm
-            ; Compute color_offset = temp1 << 3 (temp1 * 8)
-            lda temp1
-            asl
-            asl
-            asl
-            sta temp4
-            ; Add to Arena0Colors base address
-            lda #<.Arena0Colors
-            clc
-            adc temp4
+            lda #<Arena0Colors
             sta pfcolortable
-            lda #>.Arena0Colors
-            adc #0
+            lda #>Arena0Colors
             sta pfcolortable+1
+
+            ldx temp1
+            beq .SetArenaColorPointerDone
+
+.AdvanceArenaColorPointer
+            clc
+            lda pfcolortable
+            adc #<(Arena1Colors - Arena0Colors)
+            sta pfcolortable
+            lda pfcolortable+1
+            adc #>(Arena1Colors - Arena0Colors)
+            sta pfcolortable+1
+            dex
+            bne .AdvanceArenaColorPointer
+
+.SetArenaColorPointerDone
 end
           return
 

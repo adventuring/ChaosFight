@@ -56,9 +56,7 @@ PlayerPreviewSetPositionP3
 
 SelectHideLowerPlayerPreviews
           rem Move lower-player previews off-screen when Quadtari is absent
-          player2x = 200
           player2y = 200
-          player3x = 200
           player3y = 200
           return
 
@@ -84,18 +82,13 @@ RenderPlayerPreviewInvoke
           gosub LoadCharacterSprite bank16
           temp2 = 0
           temp3 = 0
-          gosub LoadCharacterColors bank16
-          gosub PlayerPreviewApplyColor
-          return
-
 PlayerPreviewApplyColor
           rem Apply base color returned in temp6 to the appropriate sprite register
-          if currentPlayer = 0 then COLUP0 = temp6 : return
-          if currentPlayer = 1 then _COLUP1 = temp6 : return
-          if currentPlayer = 2 then COLUP2 = temp6 : return
-          COLUP3 = temp6
+          if currentPlayer = 0 then COLUP0 = ColIndigo(12) : return
+          if currentPlayer = 1 then _COLUP1 = ColRed(12) : return
+          if currentPlayer = 2 then COLUP2 = ColYellow(12) : return
+          COLUP3 = ColTurquoise(12)
           return
-
 
 SelectSetPlayerColorUnlocked
           rem Override sprite color to indicate unlocked state (white)
@@ -175,10 +168,10 @@ CharacterSelectCheckControllerRescan
           if switchselect then goto CharacterSelectDoRescan
           let temp6 = switchbw
           if temp6 = colorBWPrevious_R then goto CharacterSelectRescanDone
-          gosub DetectControllers bank14
+          gosub CtrlDetPads bank14
           let colorBWPrevious_W = switchbw
           goto CharacterSelectRescanDone
 CharacterSelectDoRescan
-          gosub DetectControllers bank14
+          gosub CtrlDetPads bank14
 CharacterSelectRescanDone
           return

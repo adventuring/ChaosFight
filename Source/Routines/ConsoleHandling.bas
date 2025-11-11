@@ -64,7 +64,7 @@ HandleConsoleSwitches
           gosub CheckEnhancedPause
           rem Check Player 1 buttons
           if !temp1 then DonePlayer1Pause
-          gosub DetectControllers bank14
+          gosub CtrlDetPads bank14
           rem Re-detect controllers when Select is pressed
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
@@ -79,7 +79,7 @@ DonePlayer1Pause
           gosub CheckEnhancedPause
           rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause
-          gosub DetectControllers bank14
+          gosub CtrlDetPads bank14
           rem Re-detect controllers when Select is pressed
           if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
@@ -146,27 +146,27 @@ CEP_CheckPlayer2
           rem Color/B&W switch change detection (triggers controller re-detect)
 
 CheckColorBWToggle
-          rem Check switch state and trigger DetectControllers when it flips
+          rem Check switch state and trigger CtrlDetPads when it flips
           rem
           rem Input: switchbw (hardware) = Color/B&W switch state
           rem        colorBWPrevious_R (global SCRAM) = previous
           rem        Color/B&W switch state
           rem
-          rem Output: colorBWPrevious_W updated, DetectControllers
+          rem Output: colorBWPrevious_W updated, CtrlDetPads
           rem called if switch changed
           rem
           rem Mutates: temp1 (switch changed flag), temp6 (used for
           rem switchbw read),
           rem         colorBWPrevious_W (updated if switch changed)
           rem
-          rem Called Routines: DetectControllers (bank14) - accesses
+          rem Called Routines: CtrlDetPads (bank14) - accesses
           rem controller detection state
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           
           rem Optimized: Check Color/B&W switch state change directly
           let temp6 = switchbw
           if temp6 = colorBWPrevious_R then DoneSwitchChange
-          gosub DetectControllers bank14
+          gosub CtrlDetPads bank14
           let colorBWPrevious_W = switchbw
 DoneSwitchChange
           rem Color/B&W switch change check complete (label only, no

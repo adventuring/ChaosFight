@@ -1,101 +1,52 @@
 DispatchCharacterAttack
           rem Dispatch to character-specific attack handler (0-31)
           rem MethHound (31) uses ShamoneAttack handler
-          rem Use trampoline labels for cross-bank references (Bank 11)
+          rem Direct cross-bank gotos route to character-specific logic or the
+          rem shared PerformMeleeAttack/PerformRangedAttack helpers
           if temp4 >= 32 then return
 
           rem Characters 0-15: Implemented attacks
-          if temp4 = 0 then goto GotoBernieAttack
-          if temp4 = 1 then goto GotoCurlerAttack
-          if temp4 = 2 then goto GotoDragonOfStormsAttack
-          if temp4 = 3 then goto GotoZoeRyenAttack
-          if temp4 = 4 then goto GotoFatTonyAttack
-          if temp4 = 5 then goto GotoMegaxAttack
-          if temp4 = 6 then goto GotoHarpyAttack
-          if temp4 = 7 then goto GotoKnightGuyAttack
-          if temp4 = 8 then goto GotoFrootyAttack
-          if temp4 = 9 then goto GotoNefertemAttack
-          if temp4 = 10 then goto GotoNinjishGuyAttack
-          if temp4 = 11 then goto GotoPorkChopAttack
-          if temp4 = 12 then goto GotoRadishGoblinAttack
-          if temp4 = 13 then goto GotoRoboTitoAttack
-          if temp4 = 14 then goto GotoUrsuloAttack
-          if temp4 = 15 then goto GotoShamoneAttack
+          rem Bernie (0): dual-direction ground thump
+          if temp4 = 0 then goto BernieAttack bank10
+          rem Curler (1): ranged curling stone along ground
+          if temp4 = 1 then goto PerformRangedAttack bank7
+          rem Dragon of Storms (2): ranged ballistic fireball
+          if temp4 = 2 then goto PerformRangedAttack bank7
+          rem Zoe Ryen (3): rapid laser blast
+          if temp4 = 3 then goto PerformRangedAttack bank7
+          rem Fat Tony (4): stationary magic ring laser
+          if temp4 = 4 then goto PerformRangedAttack bank7
+          rem Megax (5): heavy melee breath strike (generic melee tables)
+          if temp4 = 5 then goto PerformMeleeAttack bank7
+          rem Harpy (6): diagonal swoop attack
+          if temp4 = 6 then goto HarpyAttack bank10
+          rem Knight Guy (7): sword melee swing
+          if temp4 = 7 then goto PerformMeleeAttack bank7
+          rem Frooty (8): ranged sparkle projectile
+          if temp4 = 8 then goto PerformRangedAttack bank7
+          rem Nefertem (9): melee paw strike
+          if temp4 = 9 then goto PerformMeleeAttack bank7
+          rem Ninjish Guy (10): ranged shuriken
+          if temp4 = 10 then goto PerformRangedAttack bank7
+          rem Pork Chop (11): melee
+          if temp4 = 11 then goto PerformMeleeAttack bank7
+          rem Radish Goblin (12): melee bite lunge
+          if temp4 = 12 then goto PerformMeleeAttack bank7
+          rem Robo Tito (13): melee trunk slam
+          if temp4 = 13 then goto PerformMeleeAttack bank7
+          rem Ursulo (14): claw swipe with melee tables
+          if temp4 = 14 then goto UrsuloAttack bank10
+          rem Shamone (15): jump + melee special
+          if temp4 = 15 then goto ShamoneAttack bank10
 
           rem Characters 16-30: Placeholder attacks (basic melee)
-          if temp4 = 16 then goto GotoCharacter16Attack
-          if temp4 = 17 then goto GotoCharacter17Attack
-          if temp4 = 18 then goto GotoCharacter18Attack
-          if temp4 = 19 then goto GotoCharacter19Attack
-          if temp4 = 20 then goto GotoCharacter20Attack
-          if temp4 = 21 then goto GotoCharacter21Attack
-          if temp4 = 22 then goto GotoCharacter22Attack
-          if temp4 = 23 then goto GotoCharacter23Attack
-          if temp4 = 24 then goto GotoCharacter24Attack
-          if temp4 = 25 then goto GotoCharacter25Attack
-          if temp4 = 26 then goto GotoCharacter26Attack
-          if temp4 = 27 then goto GotoCharacter27Attack
-          if temp4 = 28 then goto GotoCharacter28Attack
-          if temp4 = 29 then goto GotoCharacter29Attack
-          if temp4 = 30 then goto GotoCharacter30Attack
+          rem Characters 16-30: placeholder melee entries
+          if temp4 >= 16 && temp4 <= 30 then goto PerformMeleeAttack bank7
 
           rem Character 31: MethHound uses ShamoneAttack handler
-          if temp4 = 31 then goto GotoShamoneAttack
+          if temp4 = 31 then goto ShamoneAttack bank10
 
           return
-
-
-GotoBernieAttack
-          goto BernieAttack bank10
-
-GotoCurlerAttack
-          goto CurlerAttack bank10
-
-GotoDragonOfStormsAttack
-          goto DragonOfStormsAttack bank10
-
-GotoZoeRyenAttack
-          goto ZoeRyenAttack bank10
-
-GotoFatTonyAttack
-          goto FatTonyAttack bank10
-
-GotoMegaxAttack
-          goto MegaxAttack bank10
-
-GotoHarpyAttack
-          goto HarpyAttack bank10
-
-GotoKnightGuyAttack
-          goto KnightGuyAttack bank10
-
-GotoFrootyAttack
-          goto FrootyAttack bank10
-
-GotoNefertemAttack
-          goto NefertemAttack bank10
-
-GotoNinjishGuyAttack
-          goto NinjishGuyAttack bank10
-
-GotoPorkChopAttack
-          goto PorkChopAttack bank10
-
-GotoRadishGoblinAttack
-          goto RadishGoblinAttack bank10
-
-GotoRoboTitoAttack
-          goto RoboTitoAttack bank10
-
-GotoUrsuloAttack
-          goto UrsuloAttack bank10
-
-GotoShamoneAttack
-          goto ShamoneAttack bank10
-          
-
-GotoMeleeAttack
-          goto PerformMeleeAttack bank7
 
 CheckEnhancedJumpButton
           rem

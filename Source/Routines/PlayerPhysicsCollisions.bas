@@ -401,14 +401,14 @@ PFCheckUp
           rem
           rem Check Up Collision
           rem Check if player head has a playfield pixel above
-          if playfieldRow = 0 then goto PFCheckDown
+          if playfieldRow = 0 then goto PFCheckDown_Body
           rem At top of screen, skip check
           
           let rowCounter_W = playfieldRow - 1
           rem Row above player head (rowCounter)
           rem Check for wraparound: if playfieldRow was 0, rowCounter
           rem wraps to 255 (≥ 128)
-          if rowCounter_R & $80 then goto PFCheckDown
+          if rowCounter_R & $80 then goto PFCheckDown_Body
           
           rem Check center column (temp6)
           let temp4 = 0
@@ -422,12 +422,12 @@ PFCheckUp
           if temp4 = 1 then goto PFBlockUp
 PFCheckUp_CheckRight
           rem Check right edge column
-          if temp6 >= 31 then goto PFCheckDown
+          if temp6 >= 31 then goto PFCheckDown_Body
           let playfieldColumn_W = temp6 + 1
           if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
           if temp4 = 1 then goto PFBlockUp
           
-          goto PFCheckDown
+          goto PFCheckDown_Body
           
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
@@ -462,9 +462,6 @@ DBPF_MultiplyDone
           if playerY[currentPlayer] < rowYPosition_R then let playerY[currentPlayer] = rowYPosition_R
           if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_W[currentPlayer] = rowYPosition_R
           if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_WL[currentPlayer] = 0
-          
-PFCheckDown
-          goto PFCheckDown_Body
 PFBlockDown
           rem Block downward movement: zero Y velocity if positive
           rem This should already be handled in PhysicsApplyGravity, but

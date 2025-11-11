@@ -9,7 +9,6 @@
           rem Character select routines
 #include "Source/Routines/CharacterSelectRender.bas"
 #include "Source/Routines/CharacterSelectFire.bas"
-#include "Source/Routines/CharacterCycleUtils.bas"
 #include "Source/Routines/CharacterSelect.bas"
 #include "Source/Routines/PlayerRendering.bas"
 

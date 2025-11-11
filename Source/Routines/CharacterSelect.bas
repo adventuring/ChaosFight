@@ -32,7 +32,7 @@ CharacterSelectEntry
           rem Initialize playerLocked (bit-packed, all unlocked)
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
           rem   detection (upgrades only)
-          rem Controller detection is handled by DetectControllers with
+          rem Controller detection is handled by CtrlDetPads with
           rem   monotonic state machine
           
           let characterSelectAnimationTimer  = 0
@@ -337,7 +337,7 @@ LegacyCharacterSelectDrawScreenBody
           rem Draw Player 3 selection (bottom left) if Quadtari detected
 
           if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer3
-          goto CharacterSelectDonePlayer3Draw
+          goto CharacterSelectDrawLocks
 CharacterSelectDrawPlayer3
           rem Draw Player 3 character sprite and number
           rem
@@ -362,7 +362,7 @@ CharacterSelectDrawPlayer3
           rem Draw Player 4 selection (bottom right) if Quadtari
           rem detected
           if controllerStatus & SetQuadtariDetected then CharacterSelectDrawPlayer4
-          goto CharacterSelectDonePlayer4Draw
+          goto CharacterSelectDrawLocks
 CharacterSelectDrawPlayer4
           rem Draw Player 4 character sprite and number
           rem
@@ -381,9 +381,6 @@ CharacterSelectDrawPlayer4
           player1y = 80
           gosub CharacterSelectDrawSprite
           rem Adjusted for 16px margins
-CharacterSelectDonePlayer3Draw
-CharacterSelectDonePlayer4Draw
-
           rem Tail call into CharacterSelectDrawLocks to render lock borders
           goto CharacterSelectDrawLocks
           rem tail call
@@ -811,87 +808,13 @@ CharacterSelectDrawSprite
           rem For character select, we will use a simple hurt simulation
           rem Use animation state as hurt simulation for demo
           
-          if !(temp1 = 2) then CharacterSelectColorNormal
-          rem Hurt state - dimmer colors
-          if switchbw then CharacterSelectHurtBlackWhite
-          rem Player color but dimmer - use lookup table
-          COLUP0 = CharacterSelectHurtColors[characterSelectPlayer]
-          goto CharacterSelectColorDone
-CharacterSelectHurtBlackWhite
-          rem Helper: Set hurt color for B&W mode
-          rem
-          rem Input: None
-          rem
-          rem Output: COLUP0 set to dark grey
-          rem
-          rem Mutates: COLUP0 (TIA register) = player color (set to
-          rem ColGrey(6))
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for SelectDrawSprite, only
-          rem called in hurt state and B&W mode
-          COLUP0 = ColGrey(6)
-          goto CharacterSelectColorDone
-          rem Dark grey for hurt (B&W)
-CharacterSelectColorNormal
-          rem Helper: Set normal color (bright)
-          rem
-          rem Input: characterSelectPlayer (global) = player number, switchbw
-          rem (global) = B&W switch state
-          rem
-          rem Output: COLUP0 set to bright player color or bright grey
-          rem (B&W)
-          rem
-          rem Mutates: COLUP0 (TIA register) = player color (set to
-          rem bright color)
-          rem
-          rem Called Routines: CharacterSelectColorBlackWhite - sets B&W color
-          rem
-          rem Constraints: Internal helper for CharacterSelectDrawSprite, only
-          rem called in normal state
-          rem Normal state - bright colors
-          if switchbw then CharacterSelectColorBlackWhite
-          rem Player color - bright - use lookup table
-          COLUP0 = CharacterSelectNormalColors[characterSelectPlayer]
-          goto CharacterSelectColorDone
-CharacterSelectColorBlackWhite
-          rem Helper: Set normal color for B&W mode
-          rem
-          rem Input: None
-          rem
-          rem Output: COLUP0 set to bright grey
-          rem
-          rem Mutates: COLUP0 (TIA register) = player color (set to
-          rem ColGrey(14))
-          rem
-          rem Called Routines: None
-          rem Constraints: Internal helper for CharacterSelectColorNormal, only called in B&W mode
-          COLUP0 = ColGrey(14)
-CharacterSelectColorDone
-          rem Bright grey (B&W)
           
           rem Draw different sprite patterns based on animation state
           rem and frame
-          if characterSelectAnimationState = ActionStanding then SelectAnimationIdle
+          if characterSelectAnimationState = ActionStanding then goto SelectAnimationDone
           if characterSelectAnimationState = ActionWalking then SelectAnimationRun
           if characterSelectAnimationState = ActionAttackWindup then SelectAnimationAttack
           goto SelectAnimationDone
-SelectAnimationIdle
-          rem Helper: Draw idle animation (standing pose)
-          rem
-          rem Input: None
-          rem
-          rem Output: Idle sprite pattern set
-          rem
-          rem Mutates: Player sprite graphics (set to idle pattern)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for CharacterSelectDrawSprite, only
-          rem called for ActionStanding
-          goto SelectAnimationDone
-          rem Idle animation - simple standing pose
 SelectAnimationRun
           rem Helper: Draw running animation (alternating leg positions)
           rem
@@ -908,25 +831,9 @@ SelectAnimationRun
           rem called for ActionWalking. Frames 0,2,4,6 = right leg
           rem forward, frames 1,3,5,7 = left leg forward
           rem Running animation - alternating leg positions
-          if characterSelectAnimationFrame & 1 then CharacterSelectLeftLeg
+          if characterSelectAnimationFrame & 1 then goto SelectAnimationDone
           goto SelectAnimationDone
           rem Frame 0,2,4,6 - right leg forward
-CharacterSelectLeftLeg
-          rem Helper: Set left leg forward pattern for running
-          rem
-          rem Input: None
-          rem
-          rem Output: Left leg forward sprite pattern set
-          rem
-          rem Mutates: Player sprite graphics (set to left leg forward
-          rem pattern)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for SelectAnimationRun, only called
-          rem for odd frames (1,3,5,7)
-          goto SelectAnimationDone
-          rem Frame 1,3,5,7 - left leg forward
 SelectAnimationAttack
           rem Helper: Draw attacking animation (arm extended)
           rem
@@ -943,24 +850,9 @@ SelectAnimationAttack
           rem called for ActionAttackWindup. Frames 0-3 = windup, frames
           rem 4-7 = attack
           rem Attacking animation - arm extended
-          if characterSelectAnimationFrame < 4 then SelectWindup
+          if characterSelectAnimationFrame < 4 then goto SelectAnimationDone
           goto SelectAnimationDone
           rem Attack frames - arm forward
-SelectWindup
-          rem Helper: Set windup pattern for attack
-          rem
-          rem Input: None
-          rem
-          rem Output: Windup sprite pattern set
-          rem
-          rem Mutates: Player sprite graphics (set to windup pattern)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Internal helper for SelectAnimationAttack, only
-          rem called for frames 0-3
-          goto SelectAnimationDone
-          rem Windup frames - arm back
 SelectAnimationDone
           return
 
@@ -1058,7 +950,7 @@ CharacterSelectQuadtariAbsent
           rem
           rem Constraints: Helper for CharacterSelectDetectQuadtari; only executes when Quadtari
           rem   is absent. Monotonic detection means controllerStatus is never cleared here.
-          rem   DetectControllers (SELECT handler) is the sole routine that upgrades controller
+          rem   CtrlDetPads (SELECT handler) is the sole routine that upgrades controller
           rem   status flags.
           
 CharacterSelectQuadtariDetected
@@ -1084,13 +976,3 @@ CharacterSelectQuadtariDetected
           let controllerStatus  = controllerStatus | SetQuadtariDetected
           rem OR merge ensures upgrades only, never downgrades
           return
-
-          rem Player color lookup tables for character select
-          rem Indexed by characterSelectPlayer (1-4, so index 0 unused)
-          data CharacterSelectHurtColors
-          0, Indigo(6), Red(6), Yellow(6), Green(6)
-end
-
-          data CharacterSelectNormalColors
-          0, Indigo(12), Red(12), Yellow(12), Green(12)
-end

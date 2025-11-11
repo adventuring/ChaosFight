@@ -1,4 +1,3 @@
-HandleCharacterSelectCycle
           rem ChaosFight - Source/Routines/CharacterSelectMain.bas
           rem
           rem Copyright © 2025 Interworldly Adventuring, LLC.
@@ -62,8 +61,7 @@ HandleCharacterSelectCycle
           rem
           rem Constraints: Must be colocated with HCSC_CheckJoy0,
           rem HCSC_CheckJoy0Left,
-          rem              HCSC_CheckJoy1Left, HCSC_DoCycle,
-          goto HCSC_DoCycle
+          rem              HCSC_CheckJoy1Left, HandleCharacterSelectCycle
 HCSC_CheckJoy0
           rem Check joy0 for players 0,2
           rem
@@ -71,7 +69,7 @@ HCSC_CheckJoy0
           rem HandleCharacterSelectCycle)
           rem        joy0left, joy0right (hardware) = joystick states
           rem
-          rem Output: Dispatches to HCSC_CheckJoy0Left or HCSC_DoCycle
+          rem Output: Dispatches to HCSC_CheckJoy0Left or HandleCharacterSelectCycle
           rem
           rem Mutates: None (dispatcher only)
           rem
@@ -82,13 +80,13 @@ HCSC_CheckJoy0
           rem Players 0,2 use joy0
           if temp2 = 0 then HCSC_CheckJoy0Left
           if !joy0right then return
-          goto HCSC_DoCycle
+          goto HandleCharacterSelectCycle
 HCSC_CheckJoy0Left
           rem Check joy0 left button
           rem
           rem Input: joy0left (hardware) = joystick state
           rem
-          rem Output: Returns if not pressed, continues to HCSC_DoCycle
+          rem Output: Returns if not pressed, continues to HandleCharacterSelectCycle
           rem if pressed
           rem
           rem Mutates: None
@@ -101,7 +99,7 @@ HCSC_CheckJoy1Left
           rem
           rem Input: joy1left (hardware) = joystick state
           rem
-          rem Output: Returns if not pressed, continues to HCSC_DoCycle
+          rem Output: Returns if not pressed, continues to HandleCharacterSelectCycle
           rem if pressed
           rem
           rem Mutates: None
@@ -109,7 +107,7 @@ HCSC_CheckJoy1Left
           rem Called Routines: None
           rem Constraints: Must be colocated with HandleCharacterSelectCycle
           if !joy1left then return
-HCSC_DoCycle
+HandleCharacterSelectCycle
           rem Perform character cycling
           rem
           rem Input: temp1, temp2 (from
@@ -128,11 +126,69 @@ HCSC_DoCycle
           rem   PlaySoundEffect (bank15)
           rem
           rem Constraints: Must be colocated with
-          let temp1 = playerCharacter[temp1]
-          rem Get current character index
-          let temp3 = temp1
-          rem Cycle based on direction
-          gosub CycleCharacterLeft bank12
+          let temp4 = temp1
+          rem Preserve player index for updates and lock handling
+          let temp1 = playerCharacter[temp4]
+          rem Load current character selection
+          let temp3 = temp4
+          rem temp3 stores the player index for inline cycling logic
+          if temp2 = 0 then goto HCSC_CycleLeft
+          goto HCSC_CycleRight
+HCSC_CycleLeft
+          rem Handle stick-left navigation with ordered wrap logic
+          if temp1 = RandomCharacter then goto HCSC_LeftFromRandom
+          if temp1 = NoCharacter then goto HCSC_LeftFromNo
+          if temp1 = CPUCharacter then goto HCSC_LeftFromCPU
+          if temp1 = 0 then goto HCSC_LeftFromZero
+          let temp1 = temp1 - 1
+          goto HCSC_CycleDone
+HCSC_LeftFromRandom
+          if temp3 = 0 then let temp1 = MaxCharacter : goto HCSC_CycleDone
+          if temp3 = 1 then gosub HCSC_GetPlayer2Tail : let temp1 = temp6 : goto HCSC_CycleDone
+          let temp1 = NoCharacter
+          goto HCSC_CycleDone
+HCSC_LeftFromNo
+          let temp1 = MaxCharacter
+          goto HCSC_CycleDone
+HCSC_LeftFromCPU
+          let temp1 = MaxCharacter
+          goto HCSC_CycleDone
+HCSC_LeftFromZero
+          let temp1 = RandomCharacter
+          goto HCSC_CycleDone
+HCSC_CycleRight
+          rem Handle stick-right navigation with ordered wrap logic
+          if temp1 = RandomCharacter then goto HCSC_RightFromRandom
+          if temp1 = NoCharacter then goto HCSC_RightFromNo
+          if temp1 = CPUCharacter then goto HCSC_RightFromCPU
+          if temp1 = MaxCharacter then goto HCSC_RightFromMax
+          let temp1 = temp1 + 1
+          goto HCSC_CycleDone
+HCSC_RightFromRandom
+          let temp1 = 0
+          goto HCSC_CycleDone
+HCSC_RightFromNo
+          let temp1 = RandomCharacter
+          goto HCSC_CycleDone
+HCSC_RightFromCPU
+          let temp1 = RandomCharacter
+          goto HCSC_CycleDone
+HCSC_RightFromMax
+          if temp3 = 0 then let temp1 = RandomCharacter : goto HCSC_CycleDone
+          if temp3 = 1 then gosub HCSC_GetPlayer2Tail : let temp1 = temp6 : goto HCSC_CycleDone
+          let temp1 = NoCharacter
+          goto HCSC_CycleDone
+HCSC_GetPlayer2Tail
+          rem Determine whether Player 2 wraps to CPU or NO
+          let temp6 = CPUCharacter
+          if playerCharacter[2] = NoCharacter then goto HCSC_P2TailCheckP4
+          let temp6 = NoCharacter
+          goto HCSC_P2TailDone
+HCSC_P2TailCheckP4
+          if playerCharacter[3] = NoCharacter then goto HCSC_P2TailDone
+          let temp6 = NoCharacter
+HCSC_P2TailDone
+          return
 HCSC_CycleDone
           rem Character cycling complete
           rem
@@ -148,8 +204,9 @@ HCSC_CycleDone
           rem
           rem Called Routines: SetPlayerLocked (bank10),
           rem PlaySoundEffect (bank15)
-          let playerCharacter[temp1] = temp1
+          let playerCharacter[temp3] = temp1
           let temp2 = PlayerLockedUnlocked
+          let temp1 = temp3
           gosub SetPlayerLocked
           let temp1 = SoundMenuNavigate
           rem Play navigation sound
@@ -185,9 +242,8 @@ HandleCharacterSelectFire
           rem Players 1,3 use joy1
           if !joy1fire then return
           let temp2 = 1
-          if joy1down then temp4 = 1 : goto CharSelSkip1
+          if joy1down then temp4 = 1 : goto HCSF_HandleFire
           temp4 = 0
-CharSelSkip1
           goto HCSF_HandleFire
 HCSF_CheckJoy0
           rem Check joy0 for players 0,2
@@ -206,9 +262,8 @@ HCSF_CheckJoy0
           rem Players 0,2 use joy0
           if !joy0fire then return
           let temp2 = 1
-          if joy0down then temp4 = 1 : goto CharSelSkip2
+          if joy0down then temp4 = 1 : goto HCSF_HandleFire
           temp4 = 0
-CharSelSkip2
 HCSF_HandleFire
           rem Handle fire button press
           rem
@@ -281,9 +336,9 @@ HCSF_HandleRandom
           rem Random selection initiated - will be handled by
           rem CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
-          if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto CharSelSkip3
+          if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto CS_HandleRandomSound
           let randomSelectFlags_W[temp1] = 0
-CharSelSkip3
+CS_HandleRandomSound
           let temp1 = SoundMenuSelect
           rem Play selection sound
           gosub PlaySoundEffect bank15

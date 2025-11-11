@@ -43,6 +43,7 @@
           const NumCharacters=16
           rem Maximum selectable character ID (NumCharacters - 1)
           const MaxCharacter = 15
+          const RandomCharacter = 253
           rem Sentinel for “no character selected” state
           const NoCharacter = 255
           rem Sentinel for CPU-controlled selection

@@ -1,97 +1,54 @@
-ApplyGuardFlashing
-          rem
           rem ChaosFight - Source/Routines/GuardEffects.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Guard Visual Effects System
-          rem Implements guard flashing visual feedback as specified in
-          rem   manual:
-          rem - Character flashes light cyan ColCyan(12) in NTSC/PAL
-          rem - Character flashes Cyan in SECAM
+
+
+ApplyGuardColor
+          rem Apply guard color effect (light cyan for NTSC/PAL, cyan for SECAM)
+          rem while a player is actively guarding.
           rem
-          rem - Guard lasts maximum 1 second (GuardTimerMaxFrames frames)
-          rem - Guard cannot be used again for 1 second after previous
-          rem   use
-          rem Apply guard flashing effect (light cyan for NTSC/PAL, cyan for SECAM).
-          rem Input: temp1 = player index (0-3) for color restoration
+          rem Input: temp1 = player index (0-3)
           rem        playerState[] (global) = player state flags (bit 1 = guarding)
-          rem        frame (global) = frame counter
-          rem Output: Player color alternates between cyan flash and normal palette
-          rem Mutates: temp1-temp4, COLUP0, COLUP1, COLUP2, COLUP3
           rem
-          rem Called Routines: GuardNormalPhase (tail call via goto) -
-          rem restores normal color
+          rem Output: Player color forced to ColCyan(12) while guarding
+          rem Mutates: temp1-temp2, COLUP0, _COLUP1, COLUP2, COLUP3
           rem
-          rem Constraints: Flash every 4 frames (frames 0-1 = flash,
-          rem frames 2-3 = normal). SECAM uses ColCyan(6), NTSC/PAL uses
-          rem ColCyan(12). Only applies if player is guarding (bit 1
-          rem set)
+          rem Called Routines: None
+          rem
+          rem Constraints: Must remain colocated with GuardColor0-GuardColor3 jump table
           let temp2 = playerState[temp1] & 2
           rem Check if player is guarding
           if !temp2 then return 
           rem Not guarding
           
-          let temp3 = frame & 3
-          rem Flash every 4 frames for visible effect
-          if temp3 >= 2 then goto GuardNormalPhase
-          rem Flash phase - set light cyan color
-          rem Optimized: Apply guard flash color with computed assignment
-          let temp4 = ColCyan(12)
-          rem Bright cyan guard flash (SECAM maps to cyan)
-          on temp1 goto GuardFlash0 GuardFlash1 GuardFlash2 GuardFlash3
+          rem set light cyan color
+          rem Optimized: Apply guard color with computed assignment
+          on temp1 goto GuardColor0 GuardColor1 GuardColor2 GuardColor3
+GuardColor0
+          COLUP0 = ColCyan(12)
           return
-GuardFlash0
-          COLUP0 = temp4
+GuardColor1
+          _COLUP1 = ColCyan(12)
           return
-GuardFlash1
-          _COLUP1 = temp4
+GuardColor2
+          COLUP2 = ColCyan(12)
           return
-GuardFlash2
-          COLUP2 = temp4
+GuardColor3
+          COLUP3 = ColCyan(12)
           return
-GuardFlash3
-          COLUP3 = temp4
-          return
-
-GuardNormalPhase
-          rem Helper: Normal phase - restore normal player colors
-          rem
-          rem Input: temp1 = player index (0-3), playerCharacter[] (global
-          rem array) = player character selections
-          rem
-          rem Output: Normal player colors restored
-          rem
-          rem Mutates: None (colors restored by
-          rem RestoreNormalPlayerColor)
-          rem
-          rem Called Routines: RestoreNormalPlayerColor (tail call via
-          rem goto) - restores normal colors
-          rem
-          rem Constraints: Internal helper for ApplyGuardFlashing, only
-          rem called during normal phase (frames 2-3)
-          rem Normal phase - restore normal player colors
-          goto RestoreNormalPlayerColor
-          rem tail call
 
 RestoreNormalPlayerColor
+          rem Provide shared entry point for restoring normal player colors
+          rem after guard tinting. Color reload executed by rendering code.
           rem
-          rem Restore Normal Player Color
-          rem Reset player palette after guard flashing.
-          rem Input: temp1 = player index (0-3) requesting guard
-          rem        playerCharacter[] (global array) = player character
-          rem        selections
+          rem Input: temp1 = player index (0-3)
           rem
-          rem Output: None (colors restored by LoadCharacterColors in
-          rem PlayerRendering.bas)
+          rem Output: None
           rem
-          rem Mutates: None (colors already set by LoadCharacterColors)
-          rem
-          rem Called Routines: None (colors handled by
-          rem LoadCharacterColors)
-          rem Constraints: None
+          rem Mutates: temp4 (loads character index for downstream routines)
           let temp4 = playerCharacter[temp1]
-          rem Get character type for this player
-          
           return
+
 
 CheckGuardCooldown
           rem

@@ -7,7 +7,7 @@ DisplayWinScreen
           rem   - 1 player: Winner centered on podium
           rem   - 2 players: Winner centered, runner-up on left platform
           rem   - 3+ players: Winner centered high, 2nd on left, 3rd on right
-          rem Called from WinnerAnnouncement per-frame loop
+          rem Called from WinnerAnnouncementLoop per-frame loop
           rem Input: playersRemaining_R (global SCRAM) = number of
           rem players remaining
           rem        winnerPlayerIndex_R (global SCRAM) = winner player
@@ -55,7 +55,7 @@ DisplayWinScreen
           rem              DWS_GetBWMode, DWS_LoadBWColors,
           rem              DWS_LoadColorColors (all called via goto or
           rem              gosub)
-          rem Called from WinnerAnnouncement per-frame loop
+          rem Called from WinnerAnnouncementLoop per-frame loop
           
           gosub SetGameScreenLayout bank7
           rem Set screen layout (32×8 for character display)

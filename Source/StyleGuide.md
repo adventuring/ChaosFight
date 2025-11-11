@@ -164,7 +164,7 @@ ports or reads via write ports.
 
 ### Built-in Variables
 
-**DO NOT** use `LET` for hardware register shadow variables:
+**DO NOT** use `let` for hardware register shadow variables:
 
 - TIA registers: `player0x`, `player0y`, `COLUP0`, `NUSIZ0`,
   `pf0`-`pf11`, `VBLANK`, etc.

@@ -1,19 +1,5 @@
           rem ChaosFight - Source/Routines/WinnerAnnouncement.bas
-          rem Winner announcement mode main loop wrapper
-
-WinnerAnnouncement
-          rem Winner announcement mode main loop entry point
-          rem
-          rem Input: None (called from MainLoop)
-          rem
-          rem Output: Dispatches to WinnerAnnouncementLoop
-          rem
-          rem Mutates: None
-          rem
-          rem Called Routines: WinnerAnnouncementLoop (bank9) - renders winner screen
-          rem Constraints: Must be colocated with WinnerAnnouncementLoop (called via goto)
-          rem Entry point for winner announcement mode
-          goto WinnerAnnouncementLoop
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 WinnerAnnouncementLoop
           rem Winner announcement mode per-frame loop
@@ -25,8 +11,7 @@ WinnerAnnouncementLoop
           rem Called Routines: DisplayWinScreen (bank15) - accesses
           rem winner screen state
           rem
-          rem Constraints: Must be colocated with WinnerAnnouncement,
-          rem WinnerAdvanceToCharacterSelect
+          rem Constraints: Must be colocated with WinnerAdvanceToCharacterSelect
           rem Check for button press to advance immediately
           if joy0fire then WinnerAdvanceToCharacterSelect
           if joy1fire then WinnerAdvanceToCharacterSelect
@@ -36,7 +21,6 @@ WinnerAnnouncementLoop
           gosub DisplayWinScreen bank15
           rem drawscreen called by MainLoop
           return
-          goto WinnerAnnouncementLoop
 
 WinnerAdvanceToCharacterSelect
           rem Transition to title screen (per issue #483 requirement)

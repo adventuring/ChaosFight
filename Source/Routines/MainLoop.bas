@@ -9,7 +9,7 @@ MainLoop
           rem Calls: WarmStart bank13, PublisherPreludeMain bank14, AuthorPrelude bank14,
           rem        TitleScreenMain bank14, CharacterSelectInputEntry bank9,
           rem        FallingAnimation1 bank12, ArenaSelect1 bank14,
-          rem        GameMainLoop bank11, WinnerAnnouncement bank12,
+          rem        GameMainLoop bank11, WinnerAnnouncementLoop bank12,
           rem        UpdateMusic bank1, titledrawscreen bank9
           rem Constraints: Must remain colocated with MainLoopDrawScreen
 
@@ -51,7 +51,7 @@ MainLoopModeGameMain
 
 MainLoopModeWinnerAnnouncement
           rem tail call
-          goto WinnerAnnouncement bank12
+          goto WinnerAnnouncementLoop bank12
 MainLoopContinue
           rem Routes audio updates after per-mode execution
           rem Inputs: gameMode (global 0-7)

@@ -175,24 +175,3 @@ Bank5Dispatch
           rem temp3=action, temp5=player
           return
           
-SetPlayerCharacterArt
-          rem
-          rem SET PLAYER CHARACTER ART (bataribasic Interface)
-          rem Convenience function that calls LocateCharacterArt
-          rem
-          rem Input: temp1 = character index, temp2 = animation frame
-          rem        temp3 = action, temp4 = player number
-          rem
-          rem Output: Player sprite pointer set via LocateCharacterArt
-          rem
-          rem Mutates: See LocateCharacterArt
-          rem
-          rem Called Routines: LocateCharacterArt (tail call)
-          rem
-          rem Constraints: Must be colocated with LocateCharacterArt
-          rem (tail call)
-          rem              Only reachable via gosub/goto (could be own
-          rem              file)
-          goto LocateCharacterArt
-          rem tail call
-

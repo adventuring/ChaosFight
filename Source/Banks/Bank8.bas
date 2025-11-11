@@ -6,9 +6,6 @@
           rem   health bars
 
           bank 8
- 
-          rem Data segment
-#include "Source/Data/PlayerColorTables.bas"
 
           rem Code segment
 #include "Source/Routines/PlayerPhysicsGravity.bas"

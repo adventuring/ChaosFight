@@ -200,53 +200,6 @@ InputDonePlayer4Input
           rem Switch back to even frame
           return
 
-DispatchCharacterAttack
-          rem Dispatch to character-specific attack handler
-          gosub DispatchCharacterAttack bank10
-          return
-GotoBernieAttack
-          rem
-          rem ATTACK TRAMPOLINE FUNCTIONS (bank 13 →
-          rem Characterattacks.bas)
-          rem Local trampoline labels that jump to Bank 10 attack
-          rem handlers
-          rem This allows on/goto to work with cross-bank references
-
-          goto BernieAttack bank10
-
-GotoCurlerAttack
-          goto CurlerAttack bank10
-
-GotoDragonOfStormsAttack
-          goto DragonOfStormsAttack bank10
-
-GotoZoeRyenAttack
-          goto ZoeRyenAttack bank10
-
-GotoFatTonyAttack
-          goto FatTonyAttack bank10
-
-GotoMegaxAttack
-          goto MegaxAttack bank10
-
-GotoHarpyAttack
-          goto HarpyAttack bank10
-
-GotoKnightGuyAttack
-          goto KnightGuyAttack bank10
-
-GotoFrootyAttack
-          goto FrootyAttack bank10
-
-GotoNefertemAttack
-          goto NefertemAttack bank10
-
-GotoNinjishGuyAttack
-          goto NinjishGuyAttack bank10
-
-GotoPorkChopAttack
-          goto PorkChopAttack bank10
-
 HandleGuardInput
           rem
           rem Shared Guard Input Handling
@@ -522,7 +475,7 @@ SPF_InlineDone3
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
 IHLP_DoneLeftMovement
           rem Right movement: set positive velocity
-          if !joy0right then goto IHLP_DoneRightMovement
+          if !joy0right then goto IHLP_DoneFlyingLeftRight
           if PlayerCharacter[temp1] = 8 then goto IHLP_RightMomentum0
           let temp6 = PlayerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]
@@ -547,8 +500,7 @@ SPF_InlineNo4
           let temp3 = 0
 SPF_InlineDone4
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
-IHLP_DoneRightMovement
-          goto IHLP_DoneFlyingLeftRight
+          rem Right movement complete
 DoneLeftPortMovement
 IHLP_FlyingMovement
           gosub HandleFlyingCharacterMovement
@@ -707,7 +659,7 @@ InputDoneLeftPortJump
           if !joy0fire then InputDoneLeftPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputDoneLeftPortAttack
           let temp4 = PlayerCharacter[temp1]
-          gosub DispatchCharacterAttack bank10
+          gosub DispatchCharacterAttack bank7
 InputDoneLeftPortAttack
           
           
@@ -772,7 +724,7 @@ SPF_InlineDone5
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
 IHRP_DoneLeftMovement
           
-          if !joy1right then goto IHRP_DoneRightMovement
+          if !joy1right then goto IHRP_DoneFlyingLeftRight
           if PlayerCharacter[temp1] = 8 then goto IHRP_RightMomentum1
           let temp6 = PlayerCharacter[temp1]
           let temp6 = CharacterMovementSpeed[temp6]
@@ -799,8 +751,7 @@ SPF_InlineNo6
           let temp3 = 0
 SPF_InlineDone6
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
-IHRP_DoneRightMovement
-          goto IHRP_DoneFlyingLeftRight
+          rem Right movement complete (right port)
           
 DoneRightPortMovement
 IHRP_FlyingMovement
@@ -957,7 +908,7 @@ InputDoneRightPortJump
           if !joy1fire then InputDoneRightPortAttack
           if (PlayerState[temp1] & PlayerStateBitFacing) then InputDoneRightPortAttack
           let temp4 = PlayerCharacter[temp1]
-          gosub DispatchCharacterAttack bank10
+          gosub DispatchCharacterAttack bank7
 InputDoneRightPortAttack
           return
 

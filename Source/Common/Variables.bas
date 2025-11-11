@@ -543,8 +543,6 @@
           dim displayRank_W = w043
           dim displayRank_R = r043
           rem Game Mode: Current rank being displayed (1-4) (SCRAM)
-          dim winScreenTimer_W = w044
-          dim winScreenTimer_R = r044
           rem
           rem Game Mode: Win screen display timer (SCRAM)
           

@@ -47,7 +47,7 @@ BeginGameLoop
           rem         PlayersEliminated,
           rem         PlayersRemaining, GameEndTimer,
           rem         EliminationCounter, EliminationOrder[],
-          rem         WinnerPlayerIndex, DisplayRank, WinScreenTimer,
+          rem         WinnerPlayerIndex, DisplayRank,
           rem         GameState,
           rem         NUSIZ0, _NUSIZ1, NUSIZ2, NUSIZ3, frame, sprite
           rem         pointers, screen layout

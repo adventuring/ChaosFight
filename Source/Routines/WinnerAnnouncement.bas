@@ -20,14 +20,7 @@ WinnerAnnouncementLoop
           rem
           rem Input: joy0fire, joy1fire (hardware) = button states
           rem        switchselect (hardware) = select switch state
-          rem        WinScreenTimer (global) = frame counter
-          rem        WinScreenAutoAdvanceFrames (constant) =
-          rem        auto-advance threshold
-          rem
-          rem Output: Dispatches to WinnerAdvanceToCharacterSelect or
-          rem returns
-          rem
-          rem Mutates: WinScreenTimer (incremented)
+          rem Output: Dispatches to WinnerAdvanceToCharacterSelect or returns
           rem
           rem Called Routines: DisplayWinScreen (bank15) - accesses
           rem winner screen state
@@ -38,10 +31,6 @@ WinnerAnnouncementLoop
           if joy0fire then WinnerAdvanceToCharacterSelect
           if joy1fire then WinnerAdvanceToCharacterSelect
           if switchselect then WinnerAdvanceToCharacterSelect
-          
-          rem Auto-advance after 10 seconds (WinScreenAutoAdvanceFrames frames)
-          let winScreenTimer_W = winScreenTimer_R + 1
-          if winScreenTimer_R > WinScreenAutoAdvanceFrames then WinnerAdvanceToCharacterSelect
           
           rem Display win screen and continue loop
           gosub DisplayWinScreen bank15

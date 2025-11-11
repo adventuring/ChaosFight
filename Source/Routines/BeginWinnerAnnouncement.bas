@@ -18,13 +18,12 @@ BeginWinnerAnnouncement
           rem        CharacterThemeSongIndices[] (global array) =
           rem        character theme song mapping
           rem
-          rem Output: screen layout set, COLUBK set, winScreenTimer
-          rem initialized, displayRank initialized,
+          rem Output: screen layout set, COLUBK set, displayRank initialized,
           rem         music started with winner’s character theme
           rem
           rem Mutates: pfrowheight, pfrows (set via
           rem SetGameScreenLayout),
-          rem         COLUBK (TIA register), winScreenTimer (set to 0),
+          rem         COLUBK (TIA register),
           rem         displayRank (set to 0),
           rem         temp1, temp2 (used for character/song lookup)
           rem
@@ -47,12 +46,6 @@ BeginWinnerAnnouncement
           
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)
-          
-          rem Initialize win screen timer (starts at 0, increments each
-          rem   frame)
-          rem Auto-advance after WinScreenAutoAdvanceFrames frames
-          let winScreenTimer_W = 0
-          rem (10 seconds at current TV standard)
           
           rem Initialize display rank (starts at 0, may be updated by
           let displayRank_W = 0

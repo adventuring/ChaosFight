@@ -39,27 +39,23 @@ CRTSMC_IsStretching
           
           let temp2 = missileStretchHeight_R[temp1]
           rem Check if stretch missile has height > 0
-          if temp2 <= 0 then CRTSMC_NextPlayer
-          rem No stretch missile, skip
-          
-          let temp3 = playerX[temp1]
-          rem Get stretch missile position (at player position)
-          let temp4 = playerY[temp1]
+          if !temp2 then CRTSMC_NextPlayer
+
+          let temp3 = playerX[temp1] + 7
+          let temp4 = playerY[temp1] + 16
           
           rem Check collision with other players
           rem Missile extends from playerY down by stretchHeight
-          rem Bounding box: X = missileX, Y = missileY, Width = 1
-          rem (missile width),
+          rem Bounding box: X = missileX, Y = missileY, Width = 4, Height = stretchHeight
           let temp6 = 0
-          rem Height = stretchHeight
-          
+
 CRTSMC_CheckOtherPlayer
           rem Skip self
           if temp6 = temp1 then CRTSMC_DoneSelf
 
           rem Skip eliminated players
 
-          if playerHealth[temp6] = 0 then CRTSMC_DoneSelf
+          if !playerHealth[temp6] then CRTSMC_DoneSelf
 
           rem AABB collision check
           rem Missile left/right: missileX to missileX+1 (missile width
@@ -125,14 +121,7 @@ HandleRoboTitoStretchMissileHit
           
           rem Set RoboTito to free fall
           playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
-          rem Set jumping flag (bit 2) to enable gravity
-          let playerVelocityY[temp1] = TerminalVelocity
-          rem Set terminal velocity downward
-          let playerVelocityYL[temp1] = 0
           playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
-          rem Set falling animation (ActionFalling = 11)
-          rem   ActionFalling
-          rem MaskPlayerStateFlags masks bits 0-3, set bits 4-7 to
           
           rem Clear stretch permission flag for this player
           let temp2 = roboTitoCanStretch_R

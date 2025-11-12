@@ -178,6 +178,8 @@ pfscore          EQU 1    ; Enable playfield score feature
 noscore          EQU 0    ; Enable score display (health bars)
 
 ROM2k            EQU 0    ; 64K ROM (not 2K)
+NO_ILLEGAL_OPCODES EQU 0 ; Allow illegal opcodes for optimization
+NOT              EQU $FF ; Bitwise NOT mask (all bits set)
 
 playfieldRow     EQU $5C  ; Playfield row variable (user-defined)
 

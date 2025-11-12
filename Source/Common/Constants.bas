@@ -344,6 +344,8 @@
           rem Byte-safe top-wrap detection threshold
 
           rem Music Constants
+          const NoteAttackFrames = 4
+          const NoteDecayFrames = 8
           rem Main game songs (0-Bank15MaxSongID)
           rem Song indices match SongPointers.bas (29 songs total: 0-28)
           rem Songs 0-25: Character theme songs in character ID order

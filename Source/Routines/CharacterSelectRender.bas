@@ -108,8 +108,8 @@ SelectSetPlayerColorHandicap
 
 SelectUpdateAnimations
           asm
-          SelectUpdateAnimations = .SelectUpdateAnimations
-          end
+.SelectUpdateAnimations
+end
           rem Update character select animations for all players
           let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer0Animation
           if playerCharacter[0] = CPUCharacter then goto SelectDonePlayer0Animation

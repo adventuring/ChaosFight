@@ -66,7 +66,7 @@ ApplyImpulseRight
             lda impulseStrength_R
             asl
             sta impulseStrength_W
-          end
+end
           if totalWeight_R >= 128 then goto ApproxDivBy128_1
           if totalWeight_R >= 64 then goto ApproxDivBy64_1
           if totalWeight_R >= 32 then goto ApproxDivBy32_1
@@ -77,7 +77,7 @@ ApplyImpulseRight
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1
 ApproxDivBy32_1
           asm
@@ -88,7 +88,7 @@ ApproxDivBy32_1
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1
 ApproxDivBy64_1
           asm
@@ -100,7 +100,7 @@ ApproxDivBy64_1
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_1
 ApproxDivBy128_1
           asm
@@ -113,7 +113,7 @@ ApproxDivBy128_1
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
 ApproxDivDone_1
           if impulseStrength_R = 0 then let impulseStrength_W = 1
           if playerVelocityX[temp1] < 4 then let playerVelocityX[temp1] = playerVelocityX[temp1] + impulseStrength_R
@@ -141,7 +141,7 @@ ApplyImpulseLeft
             lda impulseStrength_R
             asl
             sta impulseStrength_W
-          end
+end
           if totalWeight_R >= 128 then goto ApproxDivBy128_3
           if totalWeight_R >= 64 then goto ApproxDivBy64_3
           if totalWeight_R >= 32 then goto ApproxDivBy32_3
@@ -152,7 +152,7 @@ ApplyImpulseLeft
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_3
 ApproxDivBy32_3
           asm
@@ -163,7 +163,7 @@ ApproxDivBy32_3
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_3
 ApproxDivBy64_3
           asm
@@ -175,7 +175,7 @@ ApproxDivBy64_3
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_3
 ApproxDivBy128_3
           asm
@@ -188,7 +188,7 @@ ApproxDivBy128_3
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
 ApproxDivDone_3
           if impulseStrength_R = 0 then let impulseStrength_W = 1
           if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength_R
@@ -229,7 +229,7 @@ ApproxDivBy128_2
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_2
 ApproxDivBy64_2
           asm
@@ -241,7 +241,7 @@ ApproxDivBy64_2
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone_2
 ApproxDivBy32_2
           asm
@@ -252,7 +252,7 @@ ApproxDivBy32_2
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           rem fall through to ApproxDivDone_2
 ApproxDivDone_2
           if impulseStrength_R = 0 then let impulseStrength_W = 1
@@ -272,7 +272,7 @@ ApproxDivBy32
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone
 ApproxDivBy64
           asm
@@ -284,7 +284,7 @@ ApproxDivBy64
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
           goto ApproxDivDone
 ApproxDivBy128
           asm
@@ -297,7 +297,7 @@ ApproxDivBy128
             lsr
             lsr
             sta impulseStrength_W
-          end
+end
 ApproxDivDone
           if impulseStrength_R = 0 then let impulseStrength_W = 1
           if playerVelocityX[temp1] <= 252 then let playerVelocityX[temp1] = playerVelocityX[temp1] - impulseStrength_R

@@ -208,7 +208,7 @@ CheckBernieAOELeft
           CheckBernieAOELeft = .CheckBernieAOELeft
           CheckRoboTitoStretchMissileCollisions = .CheckRoboTitoStretchMissileCollisions
           MissileCollPF = .MissileCollPF
-          end
+end
 
 CheckAOEDirection_Right
           rem

@@ -64,7 +64,7 @@ LoadSoundNote
             iny
             lda (soundEffectPointer),y  ; Load Delay
             sta temp5
-          end
+end
 
           rem Check for end of sound (Duration = 0)
           if temp4 = 0 then let soundEffectPointer = 0 : AUDV0 = 0 : return
@@ -124,7 +124,7 @@ LoadSoundNote1
             iny
             lda (soundEffectPointer1),y  ; Load Delay
             sta temp5
-          end
+end
 
           rem Check for end of sound (Duration = 0)
           if temp4 = 0 then let soundEffectPointer1 = 0 : AUDV1 = 0 : return
@@ -150,4 +150,4 @@ LoadSoundNote1
 
           asm
           LoadSoundNote1 = .LoadSoundNote1
-          end
+end

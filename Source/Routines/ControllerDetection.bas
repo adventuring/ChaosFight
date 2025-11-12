@@ -523,5 +523,5 @@ PauseNotPressed
 
           asm
           DetectPads = .DetectPads
-          end
+end
 

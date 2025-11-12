@@ -4,7 +4,7 @@
 UpdatePlayerMovement
           asm
           UpdatePlayerMovement = .UpdatePlayerMovement
-          end
+end
           rem 8.8 fixed-point movement system using batariBASIC built-in
           rem   support
           rem Movement System Routines

@@ -366,7 +366,7 @@ DivideBy20
             lsr
             lsr
             sta temp2
-          end
+end
           return
 
 DivideBy100
@@ -399,7 +399,7 @@ DivideByPfrowheight
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           return
 DBPF_DivideBy8
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -407,7 +407,7 @@ DBPF_DivideBy8
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           return
 
 CalculateSafeFallDistance
@@ -461,7 +461,7 @@ CalculateFallDistanceNormal
           asm
             lsr temp2
             lsr temp2
-          end
+end
           rem temp2 = v² / 4
 
           rem Apply Ninjish Guy bonus (can fall farther)

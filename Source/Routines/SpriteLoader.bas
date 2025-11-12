@@ -15,7 +15,7 @@
 ; P5 = digit | ? (arena select only)
 ;
 ; Multi-bank sprite loading system - supports 32 characters across 4 banks
-          end
+end
 
 LoadCharacterSprite
           rem Load character sprite data - calls LocateCharacterArt (bank10)
@@ -52,7 +52,7 @@ LCS_CopyQuestionGlyph
           return
           asm
           LoadCharacterSprite = .LoadCharacterSprite
-          end
+end
 
 LoadPlayerSprite
           asm
@@ -81,22 +81,22 @@ LoadPlayerSprite
 ;
 ; Constraints: Must be colocated with
 ; LoadPlayerSpriteDispatch (called via goto)
-          end
+end
           asm
 ; Get character index for this player from playerCharacter array
 ; Use currentPlayer global variable (set by caller)
-          end
+end
           let currentCharacter = playerCharacter[currentPlayer]
           asm
 ; Set currentCharacter from playerCharacter[currentPlayer]
-          end
+end
           rem Inline dispatch to save size (same-bank)
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank10
           return
           asm
           LoadPlayerSprite = .LoadPlayerSprite
-          end
+end
 
 LoadPlayerSpriteDispatch
           rem removed (was a small shim); callers now use inline block above

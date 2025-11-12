@@ -47,7 +47,7 @@ ConsoleDetHW
           asm
           lda $D0
           sta temp1
-          end
+end
           if temp1 = 0 then goto CheckFlashed
 
           rem Check if $D0 = $2C (7800 indicator)
@@ -58,7 +58,7 @@ ConsoleDetHW
           asm
           lda $D1
           sta temp1
-          end
+end
           if (temp1 = ConsoleDetectD1) = 0 then goto Is2600
 
           goto Is7800
@@ -83,7 +83,7 @@ CheckFlashed
           asm
           lda $D1
           sta temp1
-          end
+end
           if temp1 then goto Is2600
 
           rem Both $D0 and $D1 are $00 - check $80 for CDFJ driver
@@ -91,7 +91,7 @@ CheckFlashed
           asm
           lda $80
           sta temp1
-          end
+end
           if temp1 = 0 then goto Is2600
 
           goto Is7800

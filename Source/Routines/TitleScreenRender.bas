@@ -55,14 +55,14 @@ DrawTitleScreen
           rem Call titlescreen kernel to render the bitmap
           asm
             jsr titledrawscreen
-          end
+end
 
           return
 
           asm
           DrawTitleScreen = .DrawTitleScreen
           LoadTitleBitmap = .LoadTitleBitmap
-          end
+end
 
           rem
           rem Load Title Bitmap

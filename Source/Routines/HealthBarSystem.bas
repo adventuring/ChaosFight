@@ -192,7 +192,7 @@ UpdatePlayer12HealthBars
 InitializeHealthBars
           asm
 InitializeHealthBars
-          end
+end
           rem Initialize health bars at game start
           rem Initialize health bars at game start - set to full (100%)
           rem
@@ -322,7 +322,7 @@ SetScoreBytes
             STA score+1
             LDA temp5
             STA score+2
-          end
+end
 
           rem Set score colors for score mode
           rem Left side (Player 3): indigo, Right side (Player 4): red
@@ -352,7 +352,7 @@ DisplayCF2025
             STA score+1
             LDA # $25
             STA score+2
-          end
+end
 
           let scorecolor = ColGrey(14)
           rem Set score color to white

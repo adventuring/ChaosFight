@@ -350,9 +350,9 @@ UpdatePlayers34ActiveDone
           UpdatePlayers34ActiveFlag = .UpdatePlayers34ActiveFlag
           CheckPlayer4ActiveFlag = .CheckPlayer4ActiveFlag
           UpdatePlayers34ActiveDone = .UpdatePlayers34ActiveDone
-          end
+end
 
           rem AND masks to clear player missile bits (inverted BitMask values)
           data PlayerANDMask
           $FE, $FD, $FB, $F7
-          end
+end

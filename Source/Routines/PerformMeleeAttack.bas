@@ -44,4 +44,4 @@ PerformMeleeAttack
           return
           asm
           PerformMeleeAttack = .PerformMeleeAttack
-          end
+end

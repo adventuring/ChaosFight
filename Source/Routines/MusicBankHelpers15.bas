@@ -92,7 +92,7 @@ LoadMusicNote0
             iny
             lda (musicVoice0Pointer),y  ; Load Delay
             sta temp5
-          end
+end
 
           rem Check for end of track (Duration = 0)
           if temp4 = 0 then LoadMusicNote0EndOfTrack
@@ -183,7 +183,7 @@ LoadMusicNote1
             iny
             lda (musicVoice1Pointer),y  ; Load Delay
             sta temp5
-          end
+end
 
           rem Check for end of track (Duration = 0)
           if temp4 = 0 then LoadMusicNote1EndOfTrack

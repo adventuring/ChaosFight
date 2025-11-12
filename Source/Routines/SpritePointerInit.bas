@@ -68,7 +68,7 @@ InitializeSpritePointers
             sta player3pointerlo  ; Player 3 pointer low byte
             lda #$F0              ; High byte (SCRAM read port)
             sta player3pointerhi  ; Player 3 pointer high byte
-          end
+end
 
           rem Note: Kernel will adjust these pointers for Y offsets
           rem automatically

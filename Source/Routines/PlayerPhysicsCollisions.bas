@@ -162,7 +162,7 @@ CheckPlayfieldCollisionAllDirections
           asm
             lsr temp6
             lsr temp6
-          end
+end
           rem temp6 = playfield column (0-31)
           rem Clamp column to valid range
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
@@ -181,7 +181,7 @@ CheckPlayfieldCollisionAllDirections
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone
 DBPF_InlineDivideBy8
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -189,7 +189,7 @@ DBPF_InlineDivideBy8
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone
           let playfieldRow = temp2
           rem playfieldRow = playfield row
@@ -225,7 +225,7 @@ DBPF_InlineDivideDone
             lda temp5
             lsr
             sta temp2
-          end
+end
           rem temp2 = temp5 / 2
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8_1
@@ -235,7 +235,7 @@ DBPF_InlineDivideDone
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_1
 DBPF_InlineDivideBy8_1
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -243,7 +243,7 @@ DBPF_InlineDivideBy8_1
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_1
           rem temp2 now contains (temp5 / 2) / pfrowheight
           let rowCounter_W = playfieldRow_R + temp2
@@ -260,7 +260,7 @@ DBPF_InlineDivideDone_1
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_2
 DBPF_InlineDivideBy8_2
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -268,7 +268,7 @@ DBPF_InlineDivideBy8_2
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_2
           rem temp2 now contains temp5 / pfrowheight
           let rowCounter_W = playfieldRow_R + temp2
@@ -293,7 +293,7 @@ PFBlockLeft
             clc
             adc #ScreenInsetX
             sta rowYPosition_W
-          end
+end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           rem but same pattern)
           if playerX[currentPlayer] < rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R
@@ -324,7 +324,7 @@ PFCheckRight
             lda temp5
             lsr a
             sta temp2
-          end
+end
           rem temp2 = temp5 / 2
           rem Inline division: pfrowheight is 8 or 16 (powers of 2)
           if pfrowheight = 8 then DBPF_InlineDivideBy8_6
@@ -334,7 +334,7 @@ PFCheckRight
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_6
 DBPF_InlineDivideBy8_6
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -342,7 +342,7 @@ DBPF_InlineDivideBy8_6
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_6
           rem temp2 now contains (temp5 / 2) / pfrowheight
           let rowCounter_W = playfieldRow + temp2
@@ -359,7 +359,7 @@ DBPF_InlineDivideDone_6
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_7
 DBPF_InlineDivideBy8_7
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -367,7 +367,7 @@ DBPF_InlineDivideBy8_7
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_7
           rem temp2 now contains temp5 / pfrowheight
           let rowCounter_W = playfieldRow + temp2
@@ -390,7 +390,7 @@ PFBlockRight
             clc
             adc #ScreenInsetX
             sta rowYPosition_W
-          end
+end
           rem Reuse rowYPosition for X position clamp (not actually Y,
           rem but same pattern)
           if playerX[currentPlayer] > rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R
@@ -447,7 +447,7 @@ PFBlockUp
             asl a
             asl a
             sta rowYPosition_W
-          end
+end
           goto DBPF_MultiplyDone
 DBPF_MultiplyBy8
           rem pfrowheight is 8, multiply by 8 (3 left shifts)
@@ -457,7 +457,7 @@ DBPF_MultiplyBy8
             asl a
             asl a
             sta rowYPosition_W
-          end
+end
 DBPF_MultiplyDone
           if playerY[currentPlayer] < rowYPosition_R then let playerY[currentPlayer] = rowYPosition_R
           if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_W[currentPlayer] = rowYPosition_R
@@ -484,7 +484,7 @@ PFCheckDown_Body
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
           goto DBPF_InlineDivideDone_5
 DBPF_InlineDivideBy8_5
           rem pfrowheight is 8, divide by 8 (3 right shifts)
@@ -492,7 +492,7 @@ DBPF_InlineDivideBy8_5
             lsr temp2
             lsr temp2
             lsr temp2
-          end
+end
 DBPF_InlineDivideDone_5
           let rowCounter_W = playfieldRow + temp2
           rem Row at player feet (rowCounter)
@@ -528,5 +528,5 @@ CheckPlayfieldCollisionUpDone
           CheckPlayfieldCollisionAllDirections = .CheckPlayfieldCollisionAllDirections
           ConvertPlayerXToPlayfieldColumn = .ConvertPlayerXToPlayfieldColumn
           DivideByPfrowheight = .DivideByPfrowheight
-          end
+end
 

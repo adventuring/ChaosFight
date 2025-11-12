@@ -15,4 +15,4 @@ SetGameScreenLayout
           return
           asm
           SetGameScreenLayout = .SetGameScreenLayout
-          end
+end

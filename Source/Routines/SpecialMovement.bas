@@ -93,4 +93,4 @@ ApplyPlayerSpecialMovement
           return
           asm
           ApplySpecialMovement = .ApplySpecialMovement
-          end
+end

@@ -184,7 +184,7 @@ HarpyBoostDiveVelocity
             lda temp6
             lsr
             sta velocityCalculation_W
-          end
+end
           let temp6 = temp6 + velocityCalculation_R
 VelocityDone
           let missileVelocityY[temp1] = temp6
@@ -194,7 +194,7 @@ VelocityDone
 UpdateAllMissiles
           asm
           UpdateAllMissiles = .UpdateAllMissiles
-          end
+end
           rem
           rem Update All Missiles
           rem Called once per frame to update all active missiles.
@@ -360,7 +360,7 @@ GravityDone
             lsr
             lsr
             sta velocityCalculation_W
-          end
+end
           let missileVelocityXCalc_W = missileVelocityXCalc_R - velocityCalculation_R
           rem Reduce by 1/64 (1.56% - ice-like friction)
           goto FrictionApply
@@ -378,7 +378,7 @@ FrictionNegative
             lsr
             lsr
             sta velocityCalculation_W
-          end
+end
           let missileVelocityXCalc_W = missileVelocityXCalc_R + velocityCalculation_R
           rem Reduce by 1/64 (1.56% - ice-like friction)
 FrictionApply
@@ -478,7 +478,7 @@ GuardBounceFromCollision
           asm
             lsr temp2
             lsr temp2
-          end
+end
           let velocityCalculation_W = temp2
           let temp6 = temp6 - velocityCalculation_R
           let missileVelocityX[temp1] = temp6
@@ -589,7 +589,7 @@ HandleMegaxMissile
             lsr temp6
             lsr temp6
             lsr temp6
-          end
+end
           rem If animation state is not ActionAttackExecute (14), attack
           rem is complete
           rem   deactivate
@@ -655,7 +655,7 @@ HandleKnightGuyMissile
             lsr temp6
             lsr temp6
             lsr temp6
-          end
+end
           rem If animation state is not ActionAttackExecute (14), attack is complete
           if temp6 = 14 then KnightGuyAttackActive
           goto DeactivateMissile
@@ -991,7 +991,7 @@ HarpyCheckDive
           let temp2 = temp6
           asm
             lsr temp2
-          end
+end
           let velocityCalculation_W = temp2
           let temp6 = temp6 + velocityCalculation_R
 DiveCheckDone
@@ -1045,7 +1045,7 @@ WeightBasedKnockbackScale
             asl
             asl
             sta impulseStrength_W
-          end
+end
           rem Divide by 100 - inlined for performance (fast
           let temp2 = impulseStrength_R
           rem   approximation for values 0-255)
@@ -1142,7 +1142,7 @@ HandleMissileBounce
           rem mode
           asm
             lsr temp2
-          end
+end
           let missileVelocityXCalc_W = missileVelocityXCalc_R - temp2
 BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc_R

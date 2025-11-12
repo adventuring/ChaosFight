@@ -39,5 +39,5 @@ PerformRangedAttack
           return
           asm
           PerformRangedAttack = .PerformRangedAttack
-          end
+end
 

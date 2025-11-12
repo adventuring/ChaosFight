@@ -5,7 +5,7 @@ SetSpritePositions
           asm
           SetSpritePositions = .SetSpritePositions
 
-          end
+end
           rem Player Sprite Rendering
           rem Handles sprite positioning, colors, and graphics for all
           rem   players.
@@ -438,7 +438,7 @@ SetPlayerSprites
           asm
 .SetPlayerSprites
 
-          end
+end
           rem
           rem Set Player Sprites
           rem Sets colors and graphics for all player sprites.
@@ -491,7 +491,7 @@ Player1ColorDone
             and #PlayerStateBitFacing
             sta REFP0
 
-          end
+end
 
           let currentCharacter = playerCharacter[0]
           rem Load sprite data from character definition
@@ -532,7 +532,7 @@ Player2ColorDone
           sta _NUSIZ1
 .Player2ReflectionDone
 
-          end
+end
 
           let currentCharacter = playerCharacter[1]
           rem Load sprite data from character definition
@@ -581,7 +581,7 @@ Player3ColorDone
             sta NewNUSIZ+2
 .Player3ReflectionDone
 
-          end
+end
 
           let currentCharacter = playerCharacter[2]
           rem Load sprite data from character definition
@@ -627,7 +627,7 @@ Player4ColorDone
             sta NewNUSIZ+3
 .Player4ReflectionDone
 
-          end
+end
 
           let currentCharacter = playerCharacter[3]
           rem Load sprite data from character definition

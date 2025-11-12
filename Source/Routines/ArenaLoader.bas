@@ -69,7 +69,7 @@ LoadArenaColorsColor
             bne .AdvanceArenaColorPointer
 
 .SetArenaColorPointerDone
-          end
+end
           return
 
 LoadArenaColorsBWLabel
@@ -80,7 +80,7 @@ LoadArenaColorsBWLabel
             sta pfcolortable
             lda #>ArenaColorsBW
             sta pfcolortable+1
-          end
+end
           return
 
 LoadArenaRandom

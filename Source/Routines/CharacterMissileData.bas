@@ -100,4 +100,4 @@ GetMissileMomentumY
           GetCharacterMissileMaxY = .GetCharacterMissileMaxY
           GetMissileMomentumX = .GetMissileMomentumX
           GetMissileMomentumY = .GetMissileMomentumY
-          end
+end

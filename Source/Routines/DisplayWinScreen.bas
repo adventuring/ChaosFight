@@ -71,7 +71,7 @@ DisplayWinScreen
           sta PF2pointer
           lda #>WinnerScreenPlayfield
           sta PF2pointer+1
-          end
+end
 
           gosub DWS_GetBWMode
           rem Load playfield colors based on B&W mode
@@ -462,7 +462,7 @@ DWS_LoadBWColors
             sta pfcolortable
             lda #>WinnerScreenColorsBW
             sta pfcolortable+1
-          end
+end
           return
 
 DWS_LoadColorColors
@@ -486,6 +486,6 @@ DWS_LoadColorColors
             sta pfcolortable
             lda #>WinnerScreenColorsColor
             sta pfcolortable+1
-          end
+end
           return
 

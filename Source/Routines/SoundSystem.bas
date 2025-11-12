@@ -90,7 +90,7 @@ TryVoice1
 UpdateSoundEffect
           asm
           UpdateSoundEffect = .UpdateSoundEffect
-          end
+end
           rem UpdateSoundEffect - Update sound effect playback each
           rem   frame
           rem Called every frame from MainLoop for gameMode 6

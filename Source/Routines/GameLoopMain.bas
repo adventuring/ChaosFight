@@ -120,7 +120,12 @@ GameMainLoop
 
           rem Optimized: Single loop for playfield collisions (walls, ceilings, ground)
           for currentPlayer = 0 to 3
-          if currentPlayer >= 2 && !(controllerStatus & SetQuadtariDetected) then goto GameMainLoopQuadtariSkip
+          if currentPlayer >= 2 then goto CheckQuadtariSkip
+          goto ProcessCollision
+CheckQuadtariSkip
+          if controllerStatus & SetQuadtariDetected then goto ProcessCollision
+          goto GameMainLoopQuadtariSkip
+ProcessCollision
           gosub CheckPlayfieldCollisionAllDirections bank10
           next
 GameMainLoopQuadtariSkip

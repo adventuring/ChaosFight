@@ -90,3 +90,14 @@ GetMissileMomentumY
           rem Constraints: None (table lookup - missile momentum Y)
           let temp2 = CharacterMissileMomentumY[temp1]
           return
+          asm
+GetMissileWidth = .GetMissileWidth
+GetMissileHeight = .GetMissileHeight
+GetMissileFlags = .GetMissileFlags
+GetCharacterWeightValue = .GetCharacterWeightValue
+GetCharacterMissileHeight = .GetCharacterMissileHeight
+GetCharacterMissileMaxX = .GetCharacterMissileMaxX
+GetCharacterMissileMaxY = .GetCharacterMissileMaxY
+GetMissileMomentumX = .GetMissileMomentumX
+GetMissileMomentumY = .GetMissileMomentumY
+end

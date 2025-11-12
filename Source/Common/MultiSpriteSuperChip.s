@@ -72,6 +72,7 @@ player2height    EQU $B2
 player3height    EQU $B3
 player4height    EQU $B4
 player5height    EQU $B5
+player9height    EQU $BC
 PF1temp1         EQU $B6
 PF1temp2         EQU $B7
 PF2temp1         EQU $B8
@@ -173,6 +174,11 @@ var46            EQU $D2
 var47            EQU $D3
 pfrowheight      EQU $D4
 pfrows           EQU $D5
+pfscore          EQU 1    ; Enable playfield score feature
+noscore          EQU 0    ; Enable score display (health bars)
+
+minikernel                    ; Titlescreen minikernel subroutine
+        rts
 
 A                EQU $D7
 a                EQU $D7
@@ -496,9 +502,6 @@ vblank_bB_code                    ; Dummy - not used in this game
         rts
 
 switchbw        EQU $0282         ; Console switches register (SWCHB)
-
-        ; Global exports for batariBASIC entry points
-        GLOBAL start
 
         ; Screen dimensions
 screenheight     EQU 192          ; NTSC screen height

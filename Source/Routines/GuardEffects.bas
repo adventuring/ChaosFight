@@ -239,4 +239,4 @@ GuardTimerExpired
 
           asm
 StartGuard = .StartGuard
-          end
+end

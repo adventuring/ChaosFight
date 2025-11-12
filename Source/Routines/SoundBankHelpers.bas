@@ -147,3 +147,7 @@ end
           let soundEffectPointer1 = soundEffectPointer1 + 4
           
           return
+
+          asm
+LoadSoundNote1 = .LoadSoundNote1
+          end

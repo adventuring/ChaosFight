@@ -1,0 +1,237 @@
+cpp -P -I. -ISource -DBUILD_YEAR=2025 -DBUILD_DAY=315 -DBUILD_DATE_STRING=\"2025.315\" -Wno-trigraphs -Wno-format Source/Platform/NTSC.bas > Source/Generated/ChaosFight25.NTSC.bas
+bin/preprocess < Source/Generated/ChaosFight25.NTSC.bas > Source/Generated/ChaosFight25.NTSC.preprocessed.bas
+cd Object && > 2600basic_variable_redefs.h && bB=/home/brpocock/Projects/ChaosFight/Tools/batariBASIC timeout 300 ../bin/2600basic -i /home/brpocock/Projects/ChaosFight/Tools/batariBASIC -r 2600basic_variable_redefs.h < ../Source/Generated/ChaosFight25.NTSC.preprocessed.bas > ChaosFight25.bB.NTSC.s
+batari Basic v1.9 (c)2025
+2600 Basic compilation complete.
+mkdir -p Object/NTSC/
+cd Object/NTSC && ln -sf ../ChaosFight25.bB.NTSC.s bB.asm && ln -sf ../includes.bB includes.bB && ../../bin/postprocess -i ../../Tools/batariBASIC | ../../bin/optimize > ../../Source/Generated/ChaosFight25.NTSC.s
+User-defined ../../Source/Common/MultiSpriteSuperChip.s found in current directory
+mkdir -p Dist/
+Fixing include paths in generated assembly for DASM...
+cd Object && ../bin/dasm ../Source/Generated/ChaosFight25.NTSC.s -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/ChaosFight25.NTSC.lst -s../Dist/ChaosFight25.NTSC.sym -o../Dist/ChaosFight25.NTSC.a26
+INFO: Label 'GetCharacterDamage' changed from $f80f to $f83d
+INFO: Label 'PerformRangedAttack' changed from $f42d to $f439
+INFO: Label 'PerformMeleeAttack' changed from $f452 to $f45e
+INFO: Label 'ApplySpecialMovement' changed from $f477 to $f483
+INFO: Label 'CheckAllMissileCollisions' changed from $f90c to $f962
+INFO: Label 'CheckVisibleMissileCollision' changed from $f95c to $f9b2
+INFO: Label 'CheckAOECollision' changed from $f9f9 to $fa4f
+INFO: Label 'CheckBernieAOE' changed from $fa13 to $fa6d
+INFO: Label 'CheckBernieAOELeft' changed from $fa1b to $fa77
+INFO: Label 'UpdatePlayer12HealthBars' changed from $fc5a to $fc7f
+INFO: Label 'UpdatePlayer34HealthBars' changed from $fc76 to $fc9b
+INFO: Label 'DrawHealthBarRow0' changed from $fd64 to $fd89
+INFO: Label 'DrawHealthBarRow1' changed from $fd65 to $fd8a
+INFO: Label 'DrawHealthBarRow2' changed from $fd66 to $fd8b
+INFO: Label 'DrawHealthBarRow3' changed from $fd67 to $fd8c
+INFO: Label 'DisplayHealth' changed from $fccc to $fd0a
+INFO: Label 'StartGuard' changed from $f300 to $f304
+INFO: Label 'CheckBoundaryCollisions' changed from $f36a to $f374
+INFO: Label 'CheckPlayfieldCollisionAllDirections' changed from $f6cc to $f6d6
+INFO: Label 'DivideByPfrowheight' changed from $f9e5 to $f9f1
+INFO: Label 'CheckAllPlayerEliminations' changed from $f82d to $f885
+INFO: Label 'CheckPlayerElimination' changed from $f851 to $f8ab
+INFO: Label 'UpdatePlayers34Done' changed from $f890 to $f8ea
+INFO: Label 'TriggerEliminationEffects' changed from $f8a7 to $f901
+INFO: Label 'DeactivatePlayerMissiles' changed from $f8fc to $f956
+INFO: Label 'CountRemainingPlayers' changed from $f906 to $f960
+INFO: Label 'IsPlayerEliminated' changed from $f948 to $f9a2
+INFO: Label 'IsPlayerAlive' changed from $f966 to $f9c0
+INFO: Label 'FindWinner' changed from $f983 to $f9dd
+INFO: Label 'FindLastEliminated' changed from $f9ab to $fa05
+INFO: Label 'UpdatePlayers34ActiveFlag' changed from $f9d2 to $fa2c
+INFO: Label 'CheckPlayer4ActiveFlag' changed from $f9e9 to $fa47
+INFO: Label 'UpdatePlayers34ActiveDone' changed from $f9fa to $fa5c
+INFO: Label 'ReloadArenaColors' changed from $f9ff to $fa61
+INFO: Label 'ReloadArenaColorsDispatch' changed from $fa35 to $fa97
+INFO: Label 'CheckAllMissileCollisions' changed from $f962 to $f965
+INFO: Label 'CheckVisibleMissileCollision' changed from $f9b2 to $f9b5
+INFO: Label 'CheckAOECollision' changed from $fa4f to $fa52
+INFO: Label 'CheckAOEDirection_Right' changed from $fa1f to $fa7b
+INFO: Label 'CheckAOEDirection_Left' changed from $fb60 to $fbef
+INFO: Label 'CheckBernieAOE' changed from $fa6d to $fa70
+INFO: Label 'CheckBernieAOELeft' changed from $fa77 to $fa7a
+INFO: Label 'CheckRoboTitoStretchMissileCollisions' changed from $fa54 to $fa62
+INFO: Label 'MissileCollPF' changed from $fcae to $fd9a
+INFO: Label 'CheckAOEDirection_Right' changed from $fa7b to $fa7e
+INFO: Label 'MissileCollPF' changed from $fd9a to $fd6d
+--- Unresolved Symbol List
+4.ConsoleDetHW           0000 ????         (R )
+LoadSongVoice1PointerBank15 0000 ????         (R )
+NOT                      0000 ????         (R )
+ConvertPlayerXToPlayfieldColumn 0000 ????             
+LoadArenaColorsBWLabel   0000 ????         (R )
+NO_ILLEGAL_OPCODES       0000 ????         (R )
+DPC_kernel_options       0000 ????         (R )
+UrsuloAttack             0000 ????         (R )
+MissileActive            0000 ????         (R )
+BS_jsr                   0000 ????         (R )
+4.ConvertPlayerXToPlayfieldColumn 0000 ????         (R )
+HealthBarMaxLength       0000 ????         (R )
+ShamoneAttack            0000 ????         (R )
+gamenumber               0000 ????         (R )
+SetPlayerSprites         0000 ????         (R )
+BS_return                0000 ????         (R )
+DisplayWinScreen         0000 ????         (R )
+LoadPlayerSprite         0000 ????         (R )
+LoadCharacterSprite      0000 ????         (R )
+bmp_gameselect_CHAR0     0000 ????         (R )
+InputHandleAllPlayers    0000 ????         (R )
+UpdateAllMissiles        0000 ????         (R )
+GPL_lockedState          0000 ????         (R )
+ChangeGameMode           0000 ????         (R )
+CheckFlashed             0000 ????         (R )
+mul8                     0000 ????         (R )
+bmp_gameselect_CHAR1     0000 ????         (R )
+bmp_gameselect_color     0000 ????         (R )
+SetTitleWindowValues     0000 ????         (R )
+CharacterThemeSongIndices 0000 ????         (R )
+SelectUpdateAnimations   0000 ????         (R )
+MaskClearGuard           0000 ????         (R )
+4.CharacterSelectSkipPlayer3 0000 ????         (R )
+CheckGuardCooldown       0000 ????         (R )
+PlayerY                  0000 ????         (R )
+GPL_playerIndex          0000 ????         (R )
+LoadMusicNote0           0000 ????         (R )
+bmp_gameselect_CHAR2     0000 ????         (R )
+draw_bmp_48x1_X          0000 ????         (R )
+LoadArena                0000 ????         (R )
+4.CharacterSelectSkipPlayer4 0000 ????         (R )
+LoadMusicNote1           0000 ????         (R )
+bmp_gameselect_CHAR3     0000 ????         (R )
+LoadSongPointer          0000 ????         (R )
+ControllerStatus         0000 ????         (R )
+DrawParadeCharacter      0000 ????         (R )
+LoadArenaColorsColor     0000 ????         (R )
+FASTFETCH                0000 ????         (R )
+SquareTable              0000 ????         (R )
+UpdateSoundEffect        0000 ????         (R )
+HandleConsoleSwitches    0000 ????         (R )
+CharacterHeights         0000 ????         (R )
+BeginGameLoop            0000 ????         (R )
+randomize                0000 ????         (R )
+UpdateGuardTimers        0000 ????         (R )
+CharacterAttackTypes     0000 ????         (R )
+ApplyMomentumAndRecovery 0000 ????         (R )
+NoteDecayFrames          0000 ????         (R )
+PlayerCharacter          0000 ????         (R )
+frame                    0000 ????         (R )
+score_kernel_fade        0000 ????         (R )
+bmp_48x2_1_index         0000 ????         (R )
+UpdatePlayerMovement     0000 ????         (R )
+ROM2k                    0000 ????         (R )
+GameState                0000 ????         (R )
+SetSpritePositions       0000 ????         (R )
+SetPlayerLocked          0000 ????         (R )
+div8                     0000 ????         (R )
+Check7800Pause           0000 ????         (R )
+font_gameselect_img      0000 ????         (R )
+bmp_48x2_2_index         0000 ????         (R )
+HarpyAttack              0000 ????         (R )
+scorefade                0000 ????         (R )
+FramePhase               0000 ????         (R )
+NoteAttackFrames         0000 ????         (R )
+CharacterAOEOffsets      0000 ????         (R )
+PlaySoundEffect          0000 ????         (R )
+CollisionSeparationDistance 0000 ????         (R )
+InitializeSpritePointers 0000 ????         (R )
+bmp_48x2_3_index         0000 ????         (R )
+SafeFallVelocityThresholds 0000 ????         (R )
+BernieAttack             0000 ????         (R )
+PXE                      0000 ????         (R )
+drawscreen               0000 ????         (R )
+WeightDividedBy20        0000 ????         (R )
+MovePlayerToTarget       0000 ????         (R )
+start                    0000 ????         (R )
+bmp_48x2_4_index         0000 ????         (R )
+SelectDrawScreen         0000 ????         (R )
+StartMusic               0000 ????         (R )
+SpawnMissile             0000 ????         (R )
+GetPlayerLocked          0000 ????         (R )
+then                     0000 ????         (R )
+LoadCharacterColors      0000 ????         (R )
+PhysicsApplyGravity      0000 ????         (R )
+HandleCharacterSelectFire 0000 ????         (R )
+--- 96 Unresolved Symbols
+
+   909 bytes of ROM space left in bank 1
+  used= 2867  of $0EC0
+   2060 bytes of ROM space left in bank 2
+  used= 1716  of $0EC0
+   2044 bytes of ROM space left in bank 3
+  used= 1732  of $0EC0
+   2140 bytes of ROM space left in bank 4
+  used= 1636  of $0EC0
+   2140 bytes of ROM space left in bank 5
+  used= 1636  of $0EC0
+   255 bytes of ROM space left in bank 6
+  used= 3521  of $0EC0
+   256 bytes of ROM space left in bank 7
+  used= 3520  of $0EC0
+   307 bytes of ROM space left in bank 8
+  used= 3469  of $0EC0
+   3701 bytes of ROM space left in bank 9
+  used= 75  of $0EC0
+   302 bytes of ROM space left in bank 10
+  used= 3474  of $0EC0
+   217 bytes of ROM space left in bank 11
+  used= 3559  of $0EC0
+   167 bytes of ROM space left in bank 12
+  used= 3609  of $0EC0
+   914 bytes of ROM space left in bank 13
+  used= 2862  of $0EC0
+
+../Source/Generated/ChaosFight25.NTSC.s (29914): error: Unknown Mnemonic 'bmp_48x2_1_index'.
+../Source/Generated/ChaosFight25.NTSC.s (29916): error: Unknown Mnemonic 'bmp_48x2_2_index'.
+../Source/Generated/ChaosFight25.NTSC.s (29918): error: Unknown Mnemonic 'bmp_48x2_3_index'.
+../Source/Generated/ChaosFight25.NTSC.s (29920): error: Unknown Mnemonic 'bmp_48x2_4_index'.
+../Source/Generated/ChaosFight25.NTSC.s (29922): error: Unknown Mnemonic 'scorefade'.
+../Source/Generated/ChaosFight25.NTSC.s (29924): error: Unknown Mnemonic 'score_kernel_fade'.
+../Source/Generated/ChaosFight25.NTSC.s (53771): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53773): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53775): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53777): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53779): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53781): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53783): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53785): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53787): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53789): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53791): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53793): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53795): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53797): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53799): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53801): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53803): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53805): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53809): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53811): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53813): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53815): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53817): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53819): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53821): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53823): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53825): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53827): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53829): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53831): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53833): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53835): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53837): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53839): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53841): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53843): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53845): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53847): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53849): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53851): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53853): error: Unknown Mnemonic 'let'.
+../Source/Generated/ChaosFight25.NTSC.s (53855): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53857): error: Unknown Mnemonic 'rem'.
+../Source/Generated/ChaosFight25.NTSC.s (53859): error: Unknown Mnemonic 'let'.
+../Source/Generated/ChaosFight25.NTSC.s (53861): error: Syntax Error 'temp1 = 0 then CheckFlashed'.
+
+Fatal assembly error: Source is not resolvable.
+make: *** [Makefile:590: Dist/ChaosFight25.NTSC.a26] Error 3

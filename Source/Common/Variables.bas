@@ -984,6 +984,9 @@
           rem Animation system temporary (used in AnimationSystem.bas)
           dim C6E_stateFlags = var45
 
+          rem Sound effect parameter alias (used in PlayerElimination.bas)
+          dim PSE_soundID = temp1
+
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM
           rem   to free zero-page space

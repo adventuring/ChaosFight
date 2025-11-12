@@ -182,6 +182,23 @@ playfieldRow     EQU $5C  ; Playfield row variable (user-defined)
 pfread                        ; Playfield read function
         rts
 
+miniscoretable   EQU $0000  ; Score minikernel table (dummy)
+
+mul8                          ; 8-bit multiplication function
+        rts
+
+gamenumber        EQU $00    ; Game number for gameselect minikernel
+
+draw_bmp_48x1_X             ; 48x1 bitmap display function
+        rts
+
+; Gameselect minikernel data
+bmp_gameselect_CHAR0 EQU $00
+bmp_gameselect_CHAR1 EQU $00
+bmp_gameselect_CHAR2 EQU $00
+bmp_gameselect_CHAR3 EQU $00
+bmp_gameselect_color EQU $00
+
 minikernel                    ; Titlescreen minikernel subroutine
         rts
 

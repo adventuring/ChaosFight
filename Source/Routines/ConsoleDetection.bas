@@ -44,7 +44,7 @@ ConsoleDetHW
           rem Assume 2600 console initially
           
           rem Check $D0 value
-          let temp1 = $D0
+          let temp1 = peek($D0)
           if temp1 = 0 then CheckFlashed
           
           rem Check if $D0 = $2C (7800 indicator)

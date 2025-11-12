@@ -155,7 +155,7 @@ DrawTensDigit
           let COLUP4 = ColGrey(14)
           let temp3 = 4
           rem Use player4 for tens digit
-          gosub SetFontGlyph bank16
+          gosub SetGlyph bank16
 SkipTens
 
           let temp1 = temp4
@@ -166,9 +166,9 @@ SkipTens
           let COLUP5 = ColGrey(14)
           let temp3 = 5
           rem Use player5 for ones digit
-gosub SetFontGlyph bank16
+          gosub SetGlyph bank16
 
-goto DisplayDone
+          goto DisplayDone
 
 DisplayRandomArena
           rem Display ?? for random arena
@@ -182,7 +182,7 @@ DisplayRandomArena
           let temp3 = 4
           rem White
           rem Use player4
-gosub SetFontGlyph bank16
+          gosub SetGlyph bank16
 
           rem Second question mark: set P5 fixed position/color
           let player5x = 88
@@ -190,14 +190,14 @@ gosub SetFontGlyph bank16
           let COLUP5 = ColGrey(14)
           let temp3 = 5
           rem Use player5
-gosub SetFontGlyph bank16
+          gosub SetGlyph bank16
 
 DisplayDone
 
           rem Handle fire button press (confirm selection, start game)
 
           if joy0fire then ArenaSelectConfirm
-goto ArenaSelectDoneConfirm
+          goto ArenaSelectDoneConfirm
 ArenaSelectConfirm
           let temp1 = SoundMenuSelect
           rem Play selection sound
@@ -207,8 +207,8 @@ ArenaSelectConfirm
 ArenaSelectDoneConfirm
 
           rem drawscreen called by MainLoop
-return
-goto ArenaSelect1Loop
+          return
+          goto ArenaSelect1Loop
 
 CheckQuadtariFireHold
           rem Check Player 3 and 4 fire buttons (Quadtari)
@@ -228,7 +228,7 @@ CheckQuadtariFireHold
           rem Player 3 fire button (left port, odd frame)
           if !INPT2{7} then let temp1 = 1
           rem Player 4 fire button (right port, odd frame)
-return
+          return
 
 ReturnToCharacterSelect
           rem Return to Character Select screen
@@ -306,8 +306,8 @@ ArenaSelectDrawCharacters
           if playerCharacter[0] = CPUCharacter then ArenaSelectDoneDrawP0
           if playerCharacter[0] = RandomCharacter then ArenaSelectDoneDrawP0
           let temp1 = 0
-gosub PlayerPreviewSetPosition bank6
-gosub RenderPlayerPreview bank6
+          gosub PlayerPreviewSetPosition bank6
+          gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP0
           rem Skip Player 1 character drawing (not selected)
@@ -327,8 +327,8 @@ ArenaSelectDoneDrawP0
           if playerCharacter[1] = CPUCharacter then ArenaSelectDoneDrawP1
           if playerCharacter[1] = RandomCharacter then ArenaSelectDoneDrawP1
           let temp1 = 1
-gosub PlayerPreviewSetPosition bank6
-gosub RenderPlayerPreview bank6
+          gosub PlayerPreviewSetPosition bank6
+          gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP1
           rem Skip Player 2 character drawing (not selected)
@@ -351,8 +351,8 @@ ArenaSelectDoneDrawP1
           if playerCharacter[2] = CPUCharacter then ArenaSelectDoneDrawP2
           if playerCharacter[2] = RandomCharacter then ArenaSelectDoneDrawP2
           let temp1 = 2
-gosub PlayerPreviewSetPosition bank6
-gosub RenderPlayerPreview bank6
+          gosub PlayerPreviewSetPosition bank6
+          gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP2
           rem Skip Player 3 character drawing (not in 4-player mode or
@@ -375,10 +375,10 @@ ArenaSelectDoneDrawP2
           if playerCharacter[3] = CPUCharacter then ArenaSelectDoneDrawP23
           if playerCharacter[3] = RandomCharacter then ArenaSelectDoneDrawP23
           let temp1 = 3
-gosub PlayerPreviewSetPosition bank6
-gosub RenderPlayerPreview bank6
+          gosub PlayerPreviewSetPosition bank6
+          gosub RenderPlayerPreview bank6
 
 ArenaSelectDoneDrawP23
           rem Skip Player 3/4 character drawing (not in 4-player mode or
           rem not selected)
-return
+          return

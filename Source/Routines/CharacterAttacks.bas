@@ -193,6 +193,9 @@ UrsuloAttack
           return
 
 ShamoneAttack
+          asm
+          ShamoneAttack = .ShamoneAttack
+          end
           rem Shamone (Character 15) - Special attack: jumps while
           rem attacking simultaneously
           rem

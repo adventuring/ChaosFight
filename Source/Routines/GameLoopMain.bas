@@ -70,7 +70,7 @@ GameMainLoop
           rem   InputHandleAllPlayers (bank8), UpdateGuardTimers (bank10),
           rem   UpdateCharacterAnimations (bank11),
           rem   UpdatePlayerMovement (bank8), PhysicsApplyGravity (bank8),
-          rem   ApplyMomentumAndRecovery (bank8), ApplySpecialMovement (bank7),
+          rem   ApplyMomentumAndRecovery (bank8),
           rem   CheckBoundaryCollisions (bank10),
           rem   CheckPlayfieldCollisionAllDirections (bank10),
           rem   CheckAllPlayerCollisions (bank8),
@@ -114,9 +114,6 @@ GameMainLoop
 
           gosub ApplyMomentumAndRecovery bank8
           rem Apply momentum and recovery effects (in Bank 8)
-
-          gosub ApplySpecialMovement bank7
-          rem Apply special movement physics (Bernie wrap, etc.) (in Bank 7)
 
           gosub CheckBoundaryCollisions bank10
           rem Check boundary collisions (in Bank 10)

@@ -12,7 +12,6 @@
 #include "Source/Routines/CharacterAttacksDispatch.bas"
 #include "Source/Routines/PerformRangedAttack.bas"
 #include "Source/Routines/PerformMeleeAttack.bas"
-#include "Source/Routines/SpecialMovement.bas"
 #include "Source/Routines/FrameBudgeting.bas"
 #include "Source/Routines/MissileCollision.bas"
 

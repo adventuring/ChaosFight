@@ -147,7 +147,7 @@ end
           rem arenas 10-32)
           if temp2 > 0 then goto DrawTens
           goto SkipTens
-DrawTens
+          DrawTens
           let temp1 = temp2
           rem Set P4 fixed position and color (arena digits)
           let player4x = 80
@@ -156,7 +156,7 @@ DrawTens
           let temp3 = 4
           rem Use player4 for tens digit
           gosub SetPlayerGlyphFromFont bank16
-SkipTens
+          SkipTens
 
           let temp1 = temp4
           rem Draw ones digit (player5)

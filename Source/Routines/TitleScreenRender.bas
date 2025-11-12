@@ -59,6 +59,11 @@ end
 
           return
 
+          asm
+DrawTitleScreen = .DrawTitleScreen
+LoadTitleBitmap = .LoadTitleBitmap
+end
+
           rem
           rem Load Title Bitmap
           rem Loads the ChaosFight title bitmap data for titlescreen

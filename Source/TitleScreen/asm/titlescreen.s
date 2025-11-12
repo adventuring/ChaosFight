@@ -12,10 +12,10 @@ bmp_48x2_3_index_value
 bmp_48x2_4_index_value
           BYTE 0
 
-bmp_48x2_1_index = bmp_48x2_1_index_value
-bmp_48x2_2_index = bmp_48x2_2_index_value
-bmp_48x2_3_index = bmp_48x2_3_index_value
-bmp_48x2_4_index = bmp_48x2_4_index_value
+bmp_48x2_1_index SET bmp_48x2_1_index_value
+bmp_48x2_2_index SET bmp_48x2_2_index_value
+bmp_48x2_3_index SET bmp_48x2_3_index_value
+bmp_48x2_4_index SET bmp_48x2_4_index_value
  scorefade equ 0
  score_kernel_fade equ 0
 

@@ -31,7 +31,7 @@ ApplyDamage
           rem         currentPlayer (set to defenderID), temp2 (passed
           rem         to SetPlayerAnimation)
           rem
-          rem Called Routines: GetCharacterDamage (bank7) - obtains base
+          rem Called Routines: GetCharacterDamage (bank6) - obtains base
           rem   damage per character, SetPlayerAnimation (bank11) - sets
           rem   hurt animation, CheckPlayerElimination - handles player
           rem   elimination, PlayDamageSound - plays damage sound effect
@@ -40,10 +40,10 @@ ApplyDamage
           rem PlayDamageSound (called via goto)
           
           let temp1 = playerCharacter[attackerID]
-          gosub GetCharacterDamage bank7
+          gosub GetCharacterDamage bank6
           let temp4 = temp2
           let temp1 = playerCharacter[defenderID]
-          gosub GetCharacterDamage bank7
+          gosub GetCharacterDamage bank6
           let temp1 = temp4 - temp2
           rem Calculate damage (considering defender state)
           rem Minimum damage

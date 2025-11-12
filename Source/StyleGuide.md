@@ -407,7 +407,7 @@ ApplyDamage
           rem Mutates: temp1-temp4 (used for calculations),
           rem playerHealth[], playerRecoveryFrames[]
           rem
-          rem Called Routines: GetCharacterDamage (bank7),
+          rem Called Routines: GetCharacterDamage (bank6),
           rem SetPlayerAnimation (bank11), CheckPlayerElimination,
           rem PlayDamageSound
           rem

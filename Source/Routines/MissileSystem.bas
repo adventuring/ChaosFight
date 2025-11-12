@@ -956,7 +956,7 @@ HandleMissileHit
           rem player states (recovery flag set), soundEffectID (global)
           rem = sound effect ID
           rem
-          rem Called Routines: GetCharacterDamage (bank7) - obtains base
+          rem Called Routines: GetCharacterDamage (bank6) - obtains base
           rem damage per character, PlaySoundEffect (bank15) - plays hit
           rem sound
           rem
@@ -970,7 +970,7 @@ HandleMissileHit
           rem Apply damage from attacker to defender
           let temp3 = temp1
           let temp1 = temp5
-          gosub GetCharacterDamage bank7
+          gosub GetCharacterDamage bank6
           let temp6 = temp2
           let temp1 = temp3
           rem Base damage derived from character definition

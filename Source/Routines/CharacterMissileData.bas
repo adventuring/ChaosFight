@@ -46,44 +46,6 @@ GetCharacterMissileMaxY
           rem Use direct array access for O(1) lookup
           return
 
-GetCharacterDamage
-          rem
-          rem Get Character Damage
-          rem Get base damage value for character attacks.
-          rem
-          rem INPUT: temp1 = character index (0-MaxCharacter)
-          rem
-          rem OUTPUT: temp2 = base damage value
-          rem Get base damage value for character attacks based on
-          rem weight class
-          rem
-          rem Input: temp1 = character index (0-MaxCharacter),
-          rem CharacterWeights[] (global data table) = character weights
-          rem
-          rem Output: temp2 = base damage value (12=light, 18=medium,
-          rem 22=heavy)
-          rem
-          rem Mutates: temp2 (return value), temp3 (used for weight
-          rem lookup)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: None
-          rem Base damage varies by character type and weight
-          rem Light characters: 10-15 damage
-          rem Medium characters: 15-20 damage  
-          rem Heavy characters: 20-25 damage
-          
-          let temp3 = CharacterWeights[temp1]
-          rem Get weight
-          
-          rem Calculate damage based on weight class
-          
-          if temp3 <= 15 then temp2  = 12 : goto GetCharacterDamageEnd
-          if temp3 <= 25 then temp2  = 18 : goto GetCharacterDamageEnd
-          let temp2 = 22
-GetCharacterDamageEnd
-          return          
 GetMissileWidth
           rem Return missile width from CharacterMissileWidths[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileHeights lookup)

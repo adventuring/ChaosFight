@@ -9,7 +9,7 @@ UpdateCharacterAnimations
           rem Outputs: animationCounter_W[], currentAnimationFrame_W[], player sprite state
           rem Mutates: currentPlayer (0-3), animationCounter_W[], currentAnimationFrame_W[]
           rem Calls: UpdatePlayerAnimation (bank10), LoadPlayerSprite (bank16)
-          rem Constraints: Must remain colocated with AnimationUpdatePlayer3/AnimationSkipPlayer3
+          rem Constraints: None
 
           rem Optimized: Loop through all players instead of individual calls
           for currentPlayer = 0 to 3
@@ -18,13 +18,12 @@ UpdateCharacterAnimations
             goto AnimationProcessPlayer
 CheckQuadtari
             if controllerStatus & SetQuadtariDetected then goto AnimationProcessPlayer
-            goto AnimationSkipPlayer
+            goto AnimationNextPlayer
 AnimationProcessPlayer
             gosub UpdatePlayerAnimation
-AnimationSkipPlayer
+AnimationNextPlayer
+            rem Continue to next player
           next
-AnimationSkipPlayer3
-return
 UpdatePlayerAnimation
           rem Skip Player 3/4 animations (2-player mode only, label
           rem only)
@@ -141,7 +140,7 @@ AdvanceFrame
           if temp4 >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
 DoneAdvance
-return
+          return
 AdvanceAnimationFrame
           rem Animation counter not at threshold (label only, no
           rem execution)
@@ -429,37 +428,37 @@ TransitionHandleJump
           rem Stay on frame 7 until Y velocity goes negative
           rem Check if player is falling (positive Y velocity =
           rem downward)
-if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
-let temp2 = ActionJumping
+          if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
+          let temp2 = ActionJumping
           rem Still ascending (negative or zero Y velocity), stay in jump
-goto SetPlayerAnimation
+          goto SetPlayerAnimation
           rem tail call
 TransitionHandleJump_TransitionToFalling
-let temp2 = ActionFalling
+          let temp2 = ActionFalling
           rem Falling (positive Y velocity), transition to falling
-goto SetPlayerAnimation
+          goto SetPlayerAnimation
           rem tail call
 
 TransitionHandleFallBack
           rem Check wall collision using pfread
           rem If hit wall: goto idle, else: goto fallen
-let temp5 = playerX[currentPlayer]
+          let temp5 = playerX[currentPlayer]
           rem Convert player X position to playfield column (0-31)
-let temp5 = temp5 - ScreenInsetX
-let temp5 = temp5 / 4
-let temp6 = playerY[currentPlayer]
+          let temp5 = temp5 - ScreenInsetX
+          let temp5 = temp5 / 4
+          let temp6 = playerY[currentPlayer]
           rem Convert player Y position to playfield row (0-7)
-let temp6 = temp6 / 8
+          let temp6 = temp6 / 8
           rem Check if player hit a wall (playfield pixel is set)
-if pfread(temp5, temp6) then TransitionHandleFallBack_HitWall
-let temp2 = ActionFallen
+          if pfread(temp5, temp6) then TransitionHandleFallBack_HitWall
+          let temp2 = ActionFallen
           rem No wall collision, transition to fallen
-goto SetPlayerAnimation
+          goto SetPlayerAnimation
           rem tail call
 TransitionHandleFallBack_HitWall
-let temp2 = ActionIdle
+          let temp2 = ActionIdle
           rem Hit wall, transition to idle
-goto SetPlayerAnimation
+          goto SetPlayerAnimation
           rem tail call
 
           rem
@@ -467,18 +466,18 @@ goto SetPlayerAnimation
           rem Character-specific attack transitions based on patterns
 
 HandleAttackTransition
-let temp1 = currentAnimationSeq_R[currentPlayer]
-if ActionAttackWindup = temp1 then goto HandleWindupEnd
-if ActionAttackExecute = temp1 then goto HandleExecuteEnd
-if ActionAttackRecovery = temp1 then goto HandleRecoveryEnd
-return
+          let temp1 = currentAnimationSeq_R[currentPlayer]
+          if ActionAttackWindup = temp1 then goto HandleWindupEnd
+          if ActionAttackExecute = temp1 then goto HandleExecuteEnd
+          if ActionAttackRecovery = temp1 then goto HandleRecoveryEnd
+          return
 
 HandleWindupEnd
-let temp1 = playerCharacter[currentPlayer]
-if temp1 >= 32 then return
-if temp1 >= 16 then goto PlaceholderWindup
+          let temp1 = playerCharacter[currentPlayer]
+          if temp1 >= 32 then return
+          if temp1 >= 16 then goto PlaceholderWindup
 
-let temp2 = 255
+          let temp2 = 255
           rem Curler: Windup → Recovery
           if temp1 = 1 then let temp2 = ActionAttackRecovery
           rem FatTony, Megax, Nefertem, PorkChop: Windup → Execute
@@ -540,7 +539,7 @@ HarpyExecute
           rem arrives.
 
 HandleRecoveryEnd
-let temp2 = ActionIdle
+          let temp2 = ActionIdle
           rem All characters: Recovery → Idle
-goto SetPlayerAnimation
+          goto SetPlayerAnimation
           rem tail call

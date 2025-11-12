@@ -52,14 +52,14 @@ end
 
           rem Check if $D0 = $2C (7800 indicator)
 
-          if (temp1 = ConsoleDetectD0) = 0 then goto Is2600
+          if temp1 <> ConsoleDetectD0 then goto Is2600
 
           rem Check $D1 value for 7800 confirmation
           asm
           lda $D1
           sta temp1
 end
-          if (temp1 = ConsoleDetectD1) = 0 then goto Is2600
+          if temp1 <> ConsoleDetectD1 then goto Is2600
 
           goto Is7800
           rem 7800 detected: $D0=$2C and $D1=$A9

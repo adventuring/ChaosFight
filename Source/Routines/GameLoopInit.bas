@@ -158,8 +158,12 @@ PlayerHealthInitDone
 
           rem Optimized: Set Players34Active flag based on character selections
           let ControllerStatus = ControllerStatus & ClearPlayers34Active
-          if (playerCharacter[2] = NoCharacter) = 0 then let ControllerStatus = ControllerStatus | SetPlayers34Active
-          if (playerCharacter[3] = NoCharacter) = 0 then let ControllerStatus = ControllerStatus | SetPlayers34Active
+          if playerCharacter[2] = NoCharacter then goto skip_activation2
+          let ControllerStatus = ControllerStatus | SetPlayers34Active
+skip_activation2
+          if playerCharacter[3] = NoCharacter then goto skip_activation3
+          let ControllerStatus = ControllerStatus | SetPlayers34Active
+skip_activation3
 
           rem Initialize missiles
           rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 =
@@ -191,9 +195,9 @@ PlayerHealthInitDone
           rem Reset win screen timer
 
           rem Count additional human/CPU players beyond Player 1
-          if (playerCharacter[1] = NoCharacter) = 0 then let playersRemaining_W = playersRemaining_R + 1
-          if (playerCharacter[2] = NoCharacter) = 0 then let playersRemaining_W = playersRemaining_R + 1
-          if (playerCharacter[3] = NoCharacter) = 0 then let playersRemaining_W = playersRemaining_R + 1
+          if playerCharacter[1] <> NoCharacter then let playersRemaining_W = playersRemaining_R + 1
+          if playerCharacter[2] <> NoCharacter then let playersRemaining_W = playersRemaining_R + 1
+          if playerCharacter[3] <> NoCharacter then let playersRemaining_W = playersRemaining_R + 1
 
           rem Frame counter is automatically initialized and incremented
           rem by batariBASIC kernel

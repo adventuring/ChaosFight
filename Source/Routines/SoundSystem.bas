@@ -1,9 +1,7 @@
           rem ChaosFight - Source/Routines/SoundSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem Local sound-system scratch aliases (temp registers for frame countdowns)
-dim SS_frameCount = temp4
-dim SS_frameCount1 = temp5
+          rem Local sound-system scratch variables (using built-in temp4/temp5)
 
 PlaySoundEffect
           rem SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
@@ -136,7 +134,7 @@ UpdateSoundEffectVoice0
           rem Output: Frame counter decremented, next note loaded when
           rem counter reaches 0, voice freed when sound ends
           rem
-          rem Mutates: SS_frameCount (alias temp4) = frame count calculation,
+          rem Mutates: temp4 = frame count calculation,
           rem soundEffectFrame_W (global SCRAM) = frame counter
           rem (decremented), soundEffectPointer (global 16-bit) = sound pointer (advanced by 4 bytes),
           rem AUDC0, AUDF0, AUDV0 (TIA registers) = sound registers
@@ -150,10 +148,10 @@ UpdateSoundEffectVoice0
           rem LoadSoundNote handles end-of-sound by setting
           rem soundEffectPointer = 0 and AUDV0 = 0
           rem Decrement frame counter
-let SS_frameCount = soundEffectFrame_R - 1
+let temp4 = soundEffectFrame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
-let soundEffectFrame_W = SS_frameCount
-if SS_frameCount then return
+let soundEffectFrame_W = temp4
+if temp4 then return
           
 gosub LoadSoundNote bank15
           rem Frame counter reached 0 - load next note from Sounds bank
@@ -180,7 +178,7 @@ UpdateSoundEffectVoice1
           rem Output: Frame counter decremented, next note loaded when
           rem counter reaches 0, voice freed when sound ends
           rem
-          rem Mutates: SS_frameCount1 (alias temp5) = frame count
+          rem Mutates: temp5 = frame count
           rem calculation, soundEffectFrame1_W (global SCRAM) = frame
           rem counter (decremented), soundEffectPointer1 (global 16-bit) =
           rem sound pointer (advanced by 4 bytes), AUDC1, AUDF1, AUDV1 (TIA registers)
@@ -194,10 +192,10 @@ UpdateSoundEffectVoice1
           rem LoadSoundNote1 handles end-of-sound by setting
           rem soundEffectPointer1 = 0 and AUDV1 = 0
           rem Decrement frame counter
-let SS_frameCount1 = soundEffectFrame1_R - 1
+let temp5 = soundEffectFrame1_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
-let soundEffectFrame1_W = SS_frameCount1
-if SS_frameCount1 then return
+let soundEffectFrame1_W = temp5
+if temp5 then return
           
 gosub LoadSoundNote1 bank15
           rem Frame counter reached 0 - load next note from Sounds bank

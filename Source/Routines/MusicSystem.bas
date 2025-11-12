@@ -1,9 +1,7 @@
           rem ChaosFight - Source/Routines/MusicSystem.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-          rem Local music-system scratch aliases (temp registers for frame countdowns)
-dim MS_frameCount = temp4
-dim MS_frameCount1 = temp5
+          rem Local music-system scratch variables (using built-in temp4/temp5)
 
 StartMusic
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation
@@ -360,7 +358,7 @@ UpdateMusicVoice0
           rem Input: musicVoice0Frame_R, musicVoice0Pointer (16-bit), currentSongID_R,
           rem        MusicVoice0TotalFrames/TargetAUDV, NoteAttackFrames, NoteDecayFrames
           rem Output: Envelope applied, frame counter decremented, next note loaded when counter hits 0
-          rem Mutates: temp1, MS_frameCount, musicVoice0Frame_W, musicVoice0Pointer
+          rem Mutates: temp1, temp4, musicVoice0Frame_W, musicVoice0Pointer
           rem pointer (advanced via LoadMusicNote0), AUDC0, AUDF0, AUDV0
           rem (TIA registers) = sound registers (updated via
           rem LoadMusicNote0 and CalculateMusicVoiceEnvelope)
@@ -377,10 +375,10 @@ let temp1 = 0
           rem Apply envelope using shared calculation
 gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter
-let MS_frameCount = musicVoice0Frame_R - 1
+let temp4 = musicVoice0Frame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
-let musicVoice0Frame_W = MS_frameCount
-if MS_frameCount then return
+let musicVoice0Frame_W = temp4
+if temp4 then return
           rem Frame counter reached 0 - load next note from appropriate
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank
@@ -408,7 +406,7 @@ UpdateMusicVoice1
           rem Output: Envelope applied, frame counter decremented, next
           rem note loaded when counter reaches 0
           rem
-          rem Mutates: temp1 (used for voice number), MS_frameCount1
+          rem Mutates: temp1 (used for voice number), temp5
           rem (global) = frame count calculation, musicVoice1Frame_W
           rem (global SCRAM) = frame counter (decremented),
           rem musicVoice1Pointer (global 16-bit) = voice
@@ -428,10 +426,10 @@ let temp1 = 1
           rem Apply envelope using shared calculation
 gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter
-let MS_frameCount1 = musicVoice1Frame_R - 1
+let temp5 = musicVoice1Frame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
-let musicVoice1Frame_W = MS_frameCount1
-if MS_frameCount1 then return
+let musicVoice1Frame_W = temp5
+if temp5 then return
           rem Frame counter reached 0 - load next note from appropriate
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank

@@ -178,7 +178,29 @@ pfscore          EQU 1    ; Enable playfield score feature
 noscore          EQU 0    ; Enable score display (health bars)
 
 ROM2k            EQU 0    ; 64K ROM (not 2K)
+PXE              EQU 0    ; PXE kernel mode (not used)
+debugcycles      EQU 0    ; Debug cycle counter (disabled)
+interlaced       EQU 0    ; Interlaced display mode (disabled)
+shakescreen      EQU 0    ; Screen shake effect (disabled)
+vblank_time      EQU 43   ; VBLANK timing for NTSC (43 cycles)
+scorefade        EQU 0    ; Score fading effect (disabled)
 NO_ILLEGAL_OPCODES EQU 0 ; Allow illegal opcodes for optimization
+DPC_kernel_options EQU 0
+debugscore       EQU 0
+legacy           EQU 0
+readpaddle       EQU 0
+backgroundchange EQU 0
+font             EQU 0
+mincycles        EQU 232
+pfcenter         EQU 0
+FASTFETCH        EQU 0
+qtcontroller     EQU 0
+minikernel       EQU 0
+bankswitch_hotspot EQU 0
+vertical_reflect EQU 1
+no_blank_lines   EQU 0
+PFmaskvalue      EQU 0
+overscan_time    EQU 0
 NOT              EQU $FF ; Bitwise NOT mask (all bits set)
 
 playfieldRow     EQU $5C  ; Playfield row variable (user-defined)

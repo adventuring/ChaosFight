@@ -1,26 +1,26 @@
-          rem ChaosFight - Source/Common/AssemblyConfig.bas
-          rem Copyright © 2025 Interworldly Adventuring, LLC.
-
-          rem Configuration for kernel, romsize, and other batariBASIC settings
-
-          const multisprite = 2  ; Override to enable bank-switched drawscreen
-          set kernel_options playercolors player1colors pfcolors  ; required for color tables
-          set romsize 64kSC
-          set optimization size
-          set optimization noinlinedata
-          rem Enable smartbranching; filter-smartbranch converts bB v1.9 guards to DASM .if/.else/.endif syntax
-          set smartbranching on
-
-          rem Assembly configuration symbols for batariBASIC-generated code
-          rem These are included at the top of the generated assembly file
-          rem Bankswitching configuration
-          rem Note: batariBASIC automatically defines bankswitch from set romsize,
-          const bankswitch = 64
-          rem   but we explicitly define it here to ensure it’s available in assembler
-          rem EF bankswitching (64KiB with SuperChip RAM)
-
-          rem Kernel configuration
-          rem Note: Most of these are automatically defined by batariBASIC based on
-          const pfres = 8
-          rem   set kernel and set romsize commands, but pfres must be defined manually
-          rem Playfield resolution: 8 rows (fixed for all playfields)
+const multisprite = 2  ; Override to enable bank-switched drawscreen
+const bankswitch = 64
+const pfres = 8
+const PXE = 0
+const debugcycles = 0
+const interlaced = 0
+const shakescreen = 0
+const vblank_time = 43
+const scorefade = 0
+const NO_ILLEGAL_OPCODES = 0
+const DPC_kernel_options = 0
+const debugscore = 0
+const legacy = 0
+const readpaddle = 0
+const backgroundchange = 0
+const font = 0
+const mincycles = 232
+const pfcenter = 0
+const FASTFETCH = 0
+const qtcontroller = 0
+const minikernel = 0
+const bankswitch_hotspot = $1FE0
+const vertical_reflect = 0
+const no_blank_lines = 0
+const PFmaskvalue = 0
+const overscan_time = 37

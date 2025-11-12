@@ -171,9 +171,9 @@ TriggerEliminationEffects
           rem Constraints: None
 let temp5 = SoundPlayerEliminated
           rem Play elimination sound effect
-let PSE_soundID = temp5
+let temp1 = temp5
 gosub PlaySoundEffect bank15
-          rem PlaySoundEffect expects temp1 (PSE_soundID alias)
+          rem PlaySoundEffect expects temp1 = sound ID
           
           rem Set elimination visual effect timer
 let temp2 = 30

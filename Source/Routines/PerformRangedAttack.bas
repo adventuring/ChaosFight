@@ -37,4 +37,7 @@ PerformRangedAttack
           rem Set animation state 14 (attack execution)
           
           return
+          asm
+PerformRangedAttack = .PerformRangedAttack
+end
 

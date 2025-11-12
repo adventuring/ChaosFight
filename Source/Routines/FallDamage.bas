@@ -255,7 +255,7 @@ HandleFrootyVertical
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if !(currentCharacter = CharacterFrooty) hen return
+          if currentCharacter <> CharacterFrooty then return
           rem Not Frooty
 
           rem Get joystick state
@@ -294,7 +294,7 @@ HandleHarpySwoopAttack
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if !(currentCharacter = CharacterHarpy) then return 
+          if currentCharacter <> CharacterHarpy then return 
           rem Not Harpy
 
           let temp6 = playerState[currentPlayer] & PlayerStateBitFacing

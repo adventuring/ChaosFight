@@ -2,6 +2,8 @@
 ; The upstream multisprite definitions are included separately.
 ; Licensed under CC0 to match upstream batariBASIC headers.
 
+; Issue #930: Ensure every SuperChip SCRAM port symbol is exported here so
+; cross-bank routines rely on one authoritative header.
  include "2600basic_variable_redefs.h"
 
 ; ChaosFight combined multisprite + superchip header.

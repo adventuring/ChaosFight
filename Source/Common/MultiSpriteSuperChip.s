@@ -1,211 +1,382 @@
 ; ChaosFight combined multisprite + superchip header.
 ; Provides the 2600basic variable map alongside the multisprite kernel aliases
-; so DASM receives a single, consistent definition set.
+; so DASM receives a single, consistent definition set without pulling in the
+; upstream multisprite.h or superchip.h files.
 ; Licensed under CC0 to match upstream batariBASIC headers.
 ;
-; --- Helper macro -----------------------------------------------------------
-; Guarantee that every symbol is exported to the DASM symbol table while still
-; permitting reassignment when upstream headers predefine it.
+; --- Multisprite workspace remapping ----------------------------------------
 ;
-        MAC   MS_ASSIGN 
-           ifnconst {1}
-{1}     = {2}
+missile0x        EQU $80
+missile1x        EQU $81
+ballx            EQU $82
+SpriteIndex      EQU $83
+player0x         EQU $84
+NewSpriteX       EQU $85
+player1x         EQU $85
+player2x         EQU $86
+player3x         EQU $87
+player4x         EQU $88
+player5x         EQU $89
+objecty          EQU $8A
+missile0y        EQU $8A
+missile1y        EQU $8B
+bally            EQU $8C
+player0y         EQU $8D
+NewSpriteY       EQU $8E
+player1y         EQU $8E
+player2y         EQU $8F
+player3y         EQU $90
+player4y         EQU $91
+player5y         EQU $92
+NewNUSIZ         EQU $93
+_NUSIZ1          EQU $93
+NUSIZ2           EQU $94
+NUSIZ3           EQU $95
+NUSIZ4           EQU $96
+NUSIZ5           EQU $97
+NewCOLUP1        EQU $98
+_COLUP1          EQU $98
+COLUP2           EQU $99
+COLUP3           EQU $9A
+COLUP4           EQU $9B
+COLUP5           EQU $9C
+SpriteGfxIndex   EQU $9D
+player0pointer   EQU $A2
+player0pointerlo EQU $A2
+player0pointerhi EQU $A3
+P0Top            EQU $CF
+P0Bottom         EQU $A4
+P1Bottom         EQU $A5
+player1pointerlo EQU $A6
+player2pointerlo EQU $A7
+player3pointerlo EQU $A8
+player4pointerlo EQU $A9
+player5pointerlo EQU $AA
+player1pointerhi EQU $AB
+player2pointerhi EQU $AC
+player3pointerhi EQU $AD
+player4pointerhi EQU $AE
+player5pointerhi EQU $AF
+player0height    EQU $B0
+spriteheight     EQU $B1
+player1height    EQU $B1
+player2height    EQU $B2
+player3height    EQU $B3
+player4height    EQU $B4
+player5height    EQU $B5
+PF1temp1         EQU $B6
+PF1temp2         EQU $B7
+PF2temp1         EQU $B8
+PF2temp2         EQU $B9
+pfpixelheight    EQU $BA
+playfield        EQU $BB
+PF1pointer       EQU $BB
+PF2pointer       EQU $BD
+statusbarlength  EQU $BF
+aux3             EQU $BF
+lifecolor        EQU $C0
+pfscorecolor     EQU $C0
+aux4             EQU $C0
+playfieldpos     EQU $C3
+RepoLine         EQU $CE
+pfheight         EQU $C4
+scorepointers    EQU $C5
+P1display        EQU $CC
+lifepointer      EQU $C1
+lives            EQU $C2
+pfscore1         EQU $C1
+pfscore2         EQU $C2
+aux5             EQU $C1
+aux6             EQU $C2
+temp1            EQU $CB
+temp2            EQU $CC
+temp3            EQU $CD
+temp4            EQU $CE
+temp5            EQU $CF
+temp6            EQU $D0
+temp7            EQU $D1
+score            EQU $D2
+scorecolor       EQU $D5
+rand             EQU $D6
+spritesort       EQU $F1
+spritesort2      EQU $F2
+spritesort3      EQU $F3
+spritesort4      EQU $F4
+spritesort5      EQU $F5
+stack1           EQU $F6
+stack2           EQU $F7
+stack3           EQU $F8
+stack4           EQU $F9
+;
+; --- Superchip RAM mapping --------------------------------------------------
+;
+write_RAM        EQU $F000
+wRAM             EQU $F000
+w000             EQU $F000
+w001             EQU $F001
+w002             EQU $F002
+w003             EQU $F003
+w004             EQU $F004
+w005             EQU $F005
+w006             EQU $F006
+w007             EQU $F007
+w008             EQU $F008
+w009             EQU $F009
+w010             EQU $F00A
+w011             EQU $F00B
+w012             EQU $F00C
+w013             EQU $F00D
+w014             EQU $F00E
+w015             EQU $F00F
+w016             EQU $F010
+w017             EQU $F011
+w018             EQU $F012
+w019             EQU $F013
+w020             EQU $F014
+w021             EQU $F015
+w022             EQU $F016
+w023             EQU $F017
+w024             EQU $F018
+w025             EQU $F019
+w026             EQU $F01A
+w027             EQU $F01B
+w028             EQU $F01C
+w029             EQU $F01D
+w030             EQU $F01E
+w031             EQU $F01F
+w032             EQU $F020
+w033             EQU $F021
+w034             EQU $F022
+w035             EQU $F023
+w036             EQU $F024
+w037             EQU $F025
+w038             EQU $F026
+w039             EQU $F027
+w040             EQU $F028
+w041             EQU $F029
+w042             EQU $F02A
+w043             EQU $F02B
+w044             EQU $F02C
+w045             EQU $F02D
+w046             EQU $F02E
+w047             EQU $F02F
+w048             EQU $F030
+w049             EQU $F031
+w050             EQU $F032
+w051             EQU $F033
+w052             EQU $F034
+w053             EQU $F035
+w054             EQU $F036
+w055             EQU $F037
+w056             EQU $F038
+w057             EQU $F039
+w058             EQU $F03A
+w059             EQU $F03B
+w060             EQU $F03C
+w061             EQU $F03D
+w062             EQU $F03E
+w063             EQU $F03F
+w064             EQU $F040
+w065             EQU $F041
+w066             EQU $F042
+w067             EQU $F043
+w068             EQU $F044
+w069             EQU $F045
+w070             EQU $F046
+w071             EQU $F047
+w072             EQU $F048
+w073             EQU $F049
+w074             EQU $F04A
+w075             EQU $F04B
+w076             EQU $F04C
+w077             EQU $F04D
+w078             EQU $F04E
+w079             EQU $F04F
+w080             EQU $F050
+w081             EQU $F051
+w082             EQU $F052
+w083             EQU $F053
+w084             EQU $F054
+w085             EQU $F055
+w086             EQU $F056
+w087             EQU $F057
+w088             EQU $F058
+w089             EQU $F059
+w090             EQU $F05A
+w091             EQU $F05B
+w092             EQU $F05C
+w093             EQU $F05D
+w094             EQU $F05E
+w095             EQU $F05F
+w096             EQU $F060
+w097             EQU $F061
+w098             EQU $F062
+w099             EQU $F063
+w100             EQU $F064
+w101             EQU $F065
+w102             EQU $F066
+w103             EQU $F067
+w104             EQU $F068
+w105             EQU $F069
+w106             EQU $F06A
+w107             EQU $F06B
+w108             EQU $F06C
+w109             EQU $F06D
+w110             EQU $F06E
+w111             EQU $F06F
+w112             EQU $F070
+w113             EQU $F071
+w114             EQU $F072
+w115             EQU $F073
+w116             EQU $F074
+w117             EQU $F075
+w118             EQU $F076
+w119             EQU $F077
+w120             EQU $F078
+w121             EQU $F079
+w122             EQU $F07A
+w123             EQU $F07B
+w124             EQU $F07C
+w125             EQU $F07D
+w126             EQU $F07E
+w127             EQU $F07F
+read_RAM         EQU $F080
+rRAM             EQU $F080
+r000             EQU $F080
+r001             EQU $F081
+r002             EQU $F082
+r003             EQU $F083
+r004             EQU $F084
+r005             EQU $F085
+r006             EQU $F086
+r007             EQU $F087
+r008             EQU $F088
+r009             EQU $F089
+r010             EQU $F08A
+r011             EQU $F08B
+r012             EQU $F08C
+r013             EQU $F08D
+r014             EQU $F08E
+r015             EQU $F08F
+r016             EQU $F090
+r017             EQU $F091
+r018             EQU $F092
+r019             EQU $F093
+r020             EQU $F094
+r021             EQU $F095
+r022             EQU $F096
+r023             EQU $F097
+r024             EQU $F098
+r025             EQU $F099
+r026             EQU $F09A
+r027             EQU $F09B
+r028             EQU $F09C
+r029             EQU $F09D
+r030             EQU $F09E
+r031             EQU $F09F
+r032             EQU $F0A0
+r033             EQU $F0A1
+r034             EQU $F0A2
+r035             EQU $F0A3
+r036             EQU $F0A4
+r037             EQU $F0A5
+r038             EQU $F0A6
+r039             EQU $F0A7
+r040             EQU $F0A8
+r041             EQU $F0A9
+r042             EQU $F0AA
+r043             EQU $F0AB
+r044             EQU $F0AC
+r045             EQU $F0AD
+r046             EQU $F0AE
+r047             EQU $F0AF
+r048             EQU $F0B0
+r049             EQU $F0B1
+r050             EQU $F0B2
+r051             EQU $F0B3
+r052             EQU $F0B4
+r053             EQU $F0B5
+r054             EQU $F0B6
+r055             EQU $F0B7
+r056             EQU $F0B8
+r057             EQU $F0B9
+r058             EQU $F0BA
+r059             EQU $F0BB
+r060             EQU $F0BC
+r061             EQU $F0BD
+r062             EQU $F0BE
+r063             EQU $F0BF
+r064             EQU $F0C0
+r065             EQU $F0C1
+r066             EQU $F0C2
+r067             EQU $F0C3
+r068             EQU $F0C4
+r069             EQU $F0C5
+r070             EQU $F0C6
+r071             EQU $F0C7
+r072             EQU $F0C8
+r073             EQU $F0C9
+r074             EQU $F0CA
+r075             EQU $F0CB
+r076             EQU $F0CC
+r077             EQU $F0CD
+r078             EQU $F0CE
+r079             EQU $F0CF
+r080             EQU $F0D0
+r081             EQU $F0D1
+r082             EQU $F0D2
+r083             EQU $F0D3
+r084             EQU $F0D4
+r085             EQU $F0D5
+r086             EQU $F0D6
+r087             EQU $F0D7
+r088             EQU $F0D8
+r089             EQU $F0D9
+r090             EQU $F0DA
+r091             EQU $F0DB
+r092             EQU $F0DC
+r093             EQU $F0DD
+r094             EQU $F0DE
+r095             EQU $F0DF
+r096             EQU $F0E0
+r097             EQU $F0E1
+r098             EQU $F0E2
+r099             EQU $F0E3
+r100             EQU $F0E4
+r101             EQU $F0E5
+r102             EQU $F0E6
+r103             EQU $F0E7
+r104             EQU $F0E8
+r105             EQU $F0E9
+r106             EQU $F0EA
+r107             EQU $F0EB
+r108             EQU $F0EC
+r109             EQU $F0ED
+r110             EQU $F0EE
+r111             EQU $F0EF
+r112             EQU $F0F0
+r113             EQU $F0F1
+r114             EQU $F0F2
+r115             EQU $F0F3
+r116             EQU $F0F4
+r117             EQU $F0F5
+r118             EQU $F0F6
+r119             EQU $F0F7
+r120             EQU $F0F8
+r121             EQU $F0F9
+r122             EQU $F0FA
+r123             EQU $F0FB
+r124             EQU $F0FC
+r125             EQU $F0FD
+r126             EQU $F0FE
+r127             EQU $F0FF
+;
+; --- Kernel helper macros ---------------------------------------------------
+;
+        MAC   RETURN
+           ifnconst bankswitch
+             rts
            else
-{1}     SET {2}
+             jmp BS_return
            endif
         ENDM
-;
-; --- Multisprite workspace remapping ----------------------------------------
-; Re-apply the multisprite kernel layout while keeping symbols exported.
-;
-  MS_ASSIGN  missile0x        $80
-  MS_ASSIGN  missile1x        $81
-  MS_ASSIGN  ballx            $82
-
-; multisprite bookkeeping (5 bytes per sprite set)
-  MS_ASSIGN  SpriteIndex      $83
-
-  MS_ASSIGN  player0x         $84
-; X position for multiplexed sprites
-  MS_ASSIGN  NewSpriteX       $85
-  MS_ASSIGN  player1x         $85
-  MS_ASSIGN  player2x         $86
-  MS_ASSIGN  player3x         $87
-  MS_ASSIGN  player4x         $88
-  MS_ASSIGN  player5x         $89
-
-  MS_ASSIGN  objecty          $8A
-  MS_ASSIGN  missile0y        $8A
-  MS_ASSIGN  missile1y        $8B
-  MS_ASSIGN  bally            $8C
-
-  MS_ASSIGN  player0y         $8D
-; Y position for multiplexed sprites
-  MS_ASSIGN  NewSpriteY       $8E
-  MS_ASSIGN  player1y         $8E
-  MS_ASSIGN  player2y         $8F
-  MS_ASSIGN  player3y         $90
-  MS_ASSIGN  player4y         $91
-  MS_ASSIGN  player5y         $92
-
-  MS_ASSIGN  NewNUSIZ         $93
-  MS_ASSIGN  _NUSIZ1          $93
-  MS_ASSIGN  NUSIZ2           $94
-  MS_ASSIGN  NUSIZ3           $95
-  MS_ASSIGN  NUSIZ4           $96
-  MS_ASSIGN  NUSIZ5           $97
-
-  MS_ASSIGN  NewCOLUP1        $98
-  MS_ASSIGN  _COLUP1          $98
-  MS_ASSIGN  COLUP2           $99
-  MS_ASSIGN  COLUP3           $9A
-  MS_ASSIGN  COLUP4           $9B
-  MS_ASSIGN  COLUP5           $9C
-
-  MS_ASSIGN  SpriteGfxIndex   $9D
-
-  MS_ASSIGN  player0pointer   $A2
-  MS_ASSIGN  player0pointerlo $A2
-  MS_ASSIGN  player0pointerhi $A3
-
-; P0Top = temp5 in original kernel; use a hard value to avoid dasm issues.
-  MS_ASSIGN  P0Top            $CF
-  MS_ASSIGN  P0Bottom         $A4
-  MS_ASSIGN  P1Bottom         $A5
-
-  MS_ASSIGN  player1pointerlo $A6
-  MS_ASSIGN  player2pointerlo $A7
-  MS_ASSIGN  player3pointerlo $A8
-  MS_ASSIGN  player4pointerlo $A9
-  MS_ASSIGN  player5pointerlo $AA
-
-  MS_ASSIGN  player1pointerhi $AB
-  MS_ASSIGN  player2pointerhi $AC
-  MS_ASSIGN  player3pointerhi $AD
-  MS_ASSIGN  player4pointerhi $AE
-  MS_ASSIGN  player5pointerhi $AF
-
-  MS_ASSIGN  player0height    $B0
-; heights of multiplexed player sprite
-  MS_ASSIGN  spriteheight     $B1
-  MS_ASSIGN  player1height    $B1
-  MS_ASSIGN  player2height    $B2
-  MS_ASSIGN  player3height    $B3
-  MS_ASSIGN  player4height    $B4
-  MS_ASSIGN  player5height    $B5
-
-  MS_ASSIGN  PF1temp1         $B6
-  MS_ASSIGN  PF1temp2         $B7
-  MS_ASSIGN  PF2temp1         $B8
-  MS_ASSIGN  PF2temp2         $B9
-
-  MS_ASSIGN  pfpixelheight    $BA
-
-; playfield pointers now reference sprite data
-  MS_ASSIGN  playfield        $BB
-  MS_ASSIGN  PF1pointer       $BB
-  MS_ASSIGN  PF2pointer       $BD
-
-  MS_ASSIGN  statusbarlength  $BF
-  MS_ASSIGN  aux3             $BF
-
-  MS_ASSIGN  lifecolor        $C0
-  MS_ASSIGN  pfscorecolor     $C0
-  MS_ASSIGN  aux4             $C0
-
-; P1display reused for kernel bookkeeping (hard-coded to avoid dasm issues)
-  MS_ASSIGN  P1display        $CC
-  MS_ASSIGN  lifepointer      $C1
-  MS_ASSIGN  lives            $C2
-  MS_ASSIGN  pfscore1         $C1
-  MS_ASSIGN  pfscore2         $C2
-  MS_ASSIGN  aux5             $C1
-  MS_ASSIGN  aux6             $C2
-
-  MS_ASSIGN  playfieldpos     $C3
-
-; RepoLine reused for multisprite bookkeeping
-  MS_ASSIGN  RepoLine         $CE
-
-  MS_ASSIGN  pfheight         $C4
-  MS_ASSIGN  scorepointers    $C5
-
-; kernel temps are relocated for multisprite
-  MS_ASSIGN  temp1            $CB
-  MS_ASSIGN  temp2            $CC
-  MS_ASSIGN  temp3            $CD
-  MS_ASSIGN  temp4            $CE
-  MS_ASSIGN  temp5            $CF
-  MS_ASSIGN  temp6            $D0
-; used to aid in bankswitching
-  MS_ASSIGN  temp7            $D1
-
-  MS_ASSIGN  score            $D2
-; relocated to preserve kernel workspace
-  MS_ASSIGN  scorecolor       $D5
-  MS_ASSIGN  rand             $D6
-
-  MS_ASSIGN  A                $D7
-  MS_ASSIGN  a                $D7
-  MS_ASSIGN  B                $D8
-  MS_ASSIGN  b                $D8
-  MS_ASSIGN  C                $D9
-  MS_ASSIGN  c                $D9
-  MS_ASSIGN  D                $DA
-  MS_ASSIGN  d                $DA
-  MS_ASSIGN  E                $DB
-  MS_ASSIGN  e                $DB
-  MS_ASSIGN  F                $DC
-  MS_ASSIGN  f                $DC
-  MS_ASSIGN  G                $DD
-  MS_ASSIGN  g                $DD
-  MS_ASSIGN  H                $DE
-  MS_ASSIGN  h                $DE
-  MS_ASSIGN  I                $DF
-  MS_ASSIGN  i                $DF
-  MS_ASSIGN  J                $E0
-  MS_ASSIGN  j                $E0
-  MS_ASSIGN  K                $E1
-  MS_ASSIGN  k                $E1
-  MS_ASSIGN  L                $E2
-  MS_ASSIGN  l                $E2
-  MS_ASSIGN  M                $E3
-  MS_ASSIGN  m                $E3
-  MS_ASSIGN  N                $E4
-  MS_ASSIGN  n                $E4
-  MS_ASSIGN  O                $E5
-  MS_ASSIGN  o                $E5
-  MS_ASSIGN  P                $E6
-  MS_ASSIGN  p                $E6
-  MS_ASSIGN  Q                $E7
-  MS_ASSIGN  q                $E7
-  MS_ASSIGN  R                $E8
-  MS_ASSIGN  r                $E8
-  MS_ASSIGN  S                $E9
-  MS_ASSIGN  s                $E9
-  MS_ASSIGN  T                $EA
-  MS_ASSIGN  t                $EA
-  MS_ASSIGN  U                $EB
-  MS_ASSIGN  u                $EB
-  MS_ASSIGN  V                $EC
-  MS_ASSIGN  v                $EC
-  MS_ASSIGN  W                $ED
-  MS_ASSIGN  w                $ED
-  MS_ASSIGN  X                $EE
-  MS_ASSIGN  x                $EE
-  MS_ASSIGN  Y                $EF
-  MS_ASSIGN  y                $EF
-  MS_ASSIGN  Z                $F0
-  MS_ASSIGN  z                $F0
-
-  MS_ASSIGN  spritesort       $F1
-  MS_ASSIGN  spritesort2      $F2
-  MS_ASSIGN  spritesort3      $F3
-  MS_ASSIGN  spritesort4      $F4
-  MS_ASSIGN  spritesort5      $F5
-
-  MS_ASSIGN  stack1           $F6
-  MS_ASSIGN  stack2           $F7
-  MS_ASSIGN  stack3           $F8
-  MS_ASSIGN  stack4           $F9
-

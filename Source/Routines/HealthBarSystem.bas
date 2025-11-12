@@ -190,6 +190,9 @@ UpdatePlayer12HealthBars
           
           
 InitializeHealthBars
+          asm
+InitializeHealthBars
+end
           rem Initialize health bars at game start
           rem Initialize health bars at game start - set to full (100%)
           rem

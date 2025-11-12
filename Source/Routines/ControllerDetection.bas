@@ -317,6 +317,7 @@ CtrlGenesisB
           rem Genesis detected on left port
           goto CheckRightGenesis
           
+CheckRightGenesis
 NoLeftGenesis
           rem Check right port (INPT2/INPT3) for Genesis
           if !INPT2{7} then NoRightGenesis

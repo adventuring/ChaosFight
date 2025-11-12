@@ -255,7 +255,7 @@ HandleFrootyVertical
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if (currentCharacter = CharacterFrooty) = 0 then return
+          if !(currentCharacter = CharacterFrooty) hen return
           rem Not Frooty
 
           rem Get joystick state

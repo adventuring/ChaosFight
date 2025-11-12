@@ -398,8 +398,8 @@
           rem playerX[0-3] = player1X, player2X, player3X, player4X
           dim playerX = var0
 
-          rem playerY[0-3] = player1Y, player2Y, player3Y, player4Y
-          dim playerY = var4
+          rem PlayerY[0-3] = player1Y, player2Y, player3Y, player4Y
+          dim PlayerY = var4
           
           rem playerState[0-3] = player1State, player2State,
           rem   player3State, player4State
@@ -418,6 +418,9 @@
           rem playerHealth[0-3] = player1Health, player2Health,
           rem   player3Health, player4Health
           dim playerHealth = var12
+
+          rem PlayerCharacter[0-3] - Character type indices (0-MaxCharacter)
+          dim PlayerCharacter = var48
 
           rem playerRecoveryFrames[0-3] - Recovery/hitstun frame
           rem   counters

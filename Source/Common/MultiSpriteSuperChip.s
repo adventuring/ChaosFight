@@ -177,6 +177,8 @@ pfrows           EQU $D5
 pfscore          EQU 1    ; Enable playfield score feature
 noscore          EQU 0    ; Enable score display (health bars)
 
+ROM2k            EQU 0    ; 64K ROM (not 2K)
+
 playfieldRow     EQU $5C  ; Playfield row variable (user-defined)
 
 pfread                        ; Playfield read function

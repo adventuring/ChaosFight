@@ -42,3 +42,6 @@ PerformMeleeAttack
           rem For now, collision will be handled in UpdateAllMissiles
           
           return
+          asm
+PerformMeleeAttack = .PerformMeleeAttack
+end

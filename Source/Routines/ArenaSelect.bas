@@ -145,24 +145,24 @@ end
 
           rem Draw tens digit (player4) - only if tensDigit > 0 (for
           rem arenas 10-32)
-          if temp2 > 0 then DrawTensDigit
-          goto DoneTensDigit
-          DrawTensDigit
+          if temp2 > 0 then goto DrawTens
+          goto SkipTens
+DrawTens
           let temp1 = temp2
           rem Set P4 fixed position and color (arena digits)
-          player4x = 80
-          player4y = 20
+          let player4x = 80
+          let player4y = 20
           let COLUP4 = ColGrey(14)
           let temp3 = 4
           rem Use player4 for tens digit
           gosub SetPlayerGlyphFromFont bank16
-          DoneTensDigit
+SkipTens
 
           let temp1 = temp4
           rem Draw ones digit (player5)
           rem Set P5 fixed position and color (arena digits)
-          player5x = 88
-          player5y = 20
+          let player5x = 88
+          let player5y = 20
           let COLUP5 = ColGrey(14)
           let temp3 = 5
           rem Use player5 for ones digit
@@ -176,8 +176,8 @@ DisplayRandomArena
           let temp1 = 10
           rem Question mark is digit 10 (hex A) in font
           rem First question mark: set P4 fixed position/color
-          player4x = 80
-          player4y = 20
+          let player4x = 80
+          let player4y = 20
           let COLUP4 = ColGrey(14)
           let temp3 = 4
           rem White
@@ -185,8 +185,8 @@ DisplayRandomArena
 gosub SetPlayerGlyphFromFont bank16
 
           rem Second question mark: set P5 fixed position/color
-          player5x = 88
-          player5y = 20
+          let player5x = 88
+          let player5y = 20
           let COLUP5 = ColGrey(14)
           let temp3 = 5
           rem Use player5

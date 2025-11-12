@@ -63,20 +63,20 @@ CheckBoundaryCollisions
           rem Horizontal wrap (player 0): wrap when leaving playable area margins
           if playerX[0] < PlayerLeftWrapThreshold then let playerX[0] = PlayerRightEdge : let playerSubpixelX_W[0] = PlayerRightEdge : let playerSubpixelX_WL[0] = 0
           if playerX[0] > PlayerRightWrapThreshold then let playerX[0] = PlayerLeftEdge : let playerSubpixelX_W[0] = PlayerLeftEdge : let playerSubpixelX_WL[0] = 0
-          rem Y clamp: top 20, bottom 80
+          rem Y clamp: top 20 only (allow falling below bottom)
           if playerY[0] < 20 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
-          if playerY[0] > 80 then if playerCharacter[0] = 0 then if playerVelocityY[0] > 0 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0
-          if playerY[0] > 80 then let playerY[0] = 80 : let playerSubpixelY_W[0] = 80 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
+          rem Check for screen bottom elimination/wrap
+          if playerY[0] > ScreenBottom then if playerCharacter[0] = CharacterBernie then let playerY[0] = 0 : let playerSubpixelY_W[0] = 0 : let playerSubpixelY_WL[0] = 0 else let playerHealth[0] = 0 : let currentPlayer = 0 : gosub CheckPlayerElimination bank12
 
           rem Player 1 - boundaries
           let temp1 = 1
           rem Horizontal wrap (player 1): wrap when leaving playable area margins
           if playerX[1] < PlayerLeftWrapThreshold then let playerX[1] = PlayerRightEdge : let playerSubpixelX_W[1] = PlayerRightEdge : let playerSubpixelX_WL[1] = 0
           if playerX[1] > PlayerRightWrapThreshold then let playerX[1] = PlayerLeftEdge : let playerSubpixelX_W[1] = PlayerLeftEdge : let playerSubpixelX_WL[1] = 0
-          rem Y clamp: top 20, bottom 80
+          rem Y clamp: top 20 only (allow falling below bottom)
           if playerY[1] < 20 then let playerY[1] = 20 : let playerSubpixelY_W[1] = 20 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
-          if playerY[1] > 80 then if playerCharacter[1] = 0 then if playerVelocityY[1] > 0 then let playerY[1] = 20 : let playerSubpixelY_W[1] = 20 : let playerSubpixelY_WL[1] = 0
-          if playerY[1] > 80 then let playerY[1] = 80 : let playerSubpixelY_W[1] = 80 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
+          rem Check for screen bottom elimination/wrap
+          if playerY[1] > ScreenBottom then if playerCharacter[1] = CharacterBernie then let playerY[1] = 0 : let playerSubpixelY_W[1] = 0 : let playerSubpixelY_WL[1] = 0 else let playerHealth[1] = 0 : let currentPlayer = 1 : gosub CheckPlayerElimination bank12
 
           rem Player 2 - boundaries (if Quadtari and active) - inline nested ifs
 
@@ -84,8 +84,8 @@ CheckBoundaryCollisions
           if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerX[2] < PlayerLeftWrapThreshold then let playerX[2] = PlayerRightEdge : let playerSubpixelX_W[2] = PlayerRightEdge : let playerSubpixelX_WL[2] = 0
           if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerX[2] > PlayerRightWrapThreshold then let playerX[2] = PlayerLeftEdge : let playerSubpixelX_W[2] = PlayerLeftEdge : let playerSubpixelX_WL[2] = 0
           if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerY[2] > 80 then if playerCharacter[2] = 0 then if playerVelocityY[2] > 0 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerY[2] > 80 then let playerY[2] = 80 : let playerSubpixelY_W[2] = 80 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
+          rem Check for screen bottom elimination/wrap
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerY[2] > ScreenBottom then if playerCharacter[2] = CharacterBernie then let playerY[2] = 0 : let playerSubpixelY_W[2] = 0 : let playerSubpixelY_WL[2] = 0 else let playerHealth[2] = 0 : let currentPlayer = 2 : gosub CheckPlayerElimination bank12
 
           rem Player 3 - boundaries (if Quadtari and active) - inline nested ifs
 
@@ -93,8 +93,8 @@ CheckBoundaryCollisions
           if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerX[3] < PlayerLeftWrapThreshold then let playerX[3] = PlayerRightEdge : let playerSubpixelX_W[3] = PlayerRightEdge : let playerSubpixelX_WL[3] = 0
           if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerX[3] > PlayerRightWrapThreshold then let playerX[3] = PlayerLeftEdge : let playerSubpixelX_W[3] = PlayerLeftEdge : let playerSubpixelX_WL[3] = 0
           if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerY[3] > 80 then if playerCharacter[3] = 0 then if playerVelocityY[3] > 0 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerY[3] > 80 then let playerY[3] = 80 : let playerSubpixelY_W[3] = 80 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
+          rem Check for screen bottom elimination/wrap
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerY[3] > ScreenBottom then if playerCharacter[3] = CharacterBernie then let playerY[3] = 0 : let playerSubpixelY_W[3] = 0 : let playerSubpixelY_WL[3] = 0 else let playerHealth[3] = 0 : let currentPlayer = 3 : gosub CheckPlayerElimination bank12
 
           return
 

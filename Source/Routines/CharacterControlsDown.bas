@@ -33,7 +33,7 @@ DragonOfStormsDown
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
-          
+
           let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
           let temp3 = temp3 + 16
@@ -49,7 +49,7 @@ DragonOfStormsDown
           if pfread(temp2, temp4) then temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move down
-          
+
           let playerVelocityY[temp1] = 2
           rem Clear below - apply downward velocity impulse
           let playerVelocityYL[temp1] = 0
@@ -141,7 +141,7 @@ HarpyNormalDown
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
-          
+
           let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
           let temp3 = temp3 + 16
@@ -157,7 +157,7 @@ HarpyNormalDown
           if pfread(temp2, temp4) then temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move down
-          
+
           let playerVelocityY[temp1] = 2
           rem Clear below - apply downward velocity impulse
           let playerVelocityYL[temp1] = 0
@@ -202,7 +202,7 @@ FrootyDown
           rem Check for wraparound: if subtraction wrapped negative,
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
-          
+
           let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
           let temp3 = temp3 + 16
@@ -218,7 +218,7 @@ FrootyDown
           if pfread(temp2, temp4) then temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move down
-          
+
           let playerVelocityY[temp1] = 2
           rem Clear below - apply downward velocity impulse
           let playerVelocityYL[temp1] = 0
@@ -237,14 +237,14 @@ RoboTitoDown
           rem Calls: StandardGuard if not latched via dispatcher helper
           rem If latched, drop; else guard
           let temp2 = 0
-          if !(characterStateFlags_R[temp1] & 1) then RoboTitoInitiateDrop
+          if (characterStateFlags_R[temp1] & 1) = 0 then RoboTitoInitiateDrop
           rem Not latched, dispatcher will fall through to StandardGuard
           return
 RoboTitoInitiateDrop
           let temp2 = 1
           rem Signal dispatcher to skip guard after voluntary drop
           rem fall through to RoboTitoVoluntaryDrop
-          
+
 RoboTitoVoluntaryDrop
           rem RoboTito drops from ceiling on DOWN; clears latched bit, sets falling, resets stretch height
           rem Fix RMW: Read from _R, modify, write to _W
@@ -255,7 +255,7 @@ RoboTitoVoluntaryDrop
           let missileStretchHeight_W[temp1] = 0
           rem Clear stretch missile height when dropping
           return
-          
+
 StandardJump
           rem
           rem Standard Behaviors
@@ -324,7 +324,7 @@ StandardGuard
           if temp4 = CharacterFrooty then return
           if temp4 = CharacterDragonOfStorms then return
           if temp4 = CharacterHarpy then return
-          
+
           rem Check if guard is allowed (not in cooldown)
           gosub CheckGuardCooldown bank10
           if temp2 = 0 then return

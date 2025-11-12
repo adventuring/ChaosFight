@@ -36,34 +36,34 @@ BeginWinnerAnnouncement
           rem to ModeWinner
           rem              winnerPlayerIndex must be set by game end
           rem              logic (FindWinner in PlayerElimination.bas)
-          
+
           rem Initialize Winner Announcement mode
           rem winnerPlayerIndex should already be set by game end logic
           rem   (FindWinner in PlayerElimination.bas)
-          
+
           gosub SetGameScreenLayout bank7
           rem Set screen layout (32×8 for character display)
-          
+
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)
-          
+
           rem Initialize display rank (starts at 0, may be updated by
           let displayRank_W = 0
           rem   DisplayWinScreen if implemented)
-          
+
           let temp1 = winnerPlayerIndex_R
           rem Get winner’s character index
           if temp1 = 0 then temp2 = PlayerCharacter[0]
           if temp1 = 1 then temp2 = PlayerCharacter[1]
           if temp1 = 2 then temp2 = PlayerCharacter[2]
           if temp1 = 3 then temp2 = PlayerCharacter[3]
-          
+
           rem Look up full song ID from mapping table (table contains
           let temp1 = CharacterThemeSongIndices[temp2]
           rem   song ID constants)
-          
+
           rem Start winner’s character theme song
           gosub StartMusic bank1
-          
+
           return
 

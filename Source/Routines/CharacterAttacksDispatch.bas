@@ -81,14 +81,14 @@ CEJB_CheckPlayer0Joy2bPlus
           goto CEJB_ReadButton0
 CEJB_CheckPlayer2
           rem Player 1: Check Genesis controller first
-          if !(ControllerStatus & $04) then CEJB_CheckPlayer2Joy2bPlus
+          if (ControllerStatus & $04) = 0 then CEJB_CheckPlayer2Joy2bPlus
 CEJB_ReadButton2
           rem Shared button read for Player 1 enhanced controllers (Button C/II)
-          if !(INPT2 & $80) then temp3 = 1
+          if (INPT2 & $80) = 0 then temp3 = 1
           goto CEJB_Done
 CEJB_CheckPlayer2Joy2bPlus
           rem Player 1: Check Joy2b+ controller (fallback)
-          if !(ControllerStatus & $08) then CEJB_Done
+          if (ControllerStatus & $08) = 0 then CEJB_Done
           goto CEJB_ReadButton2
 CEJB_Done
           rem Enhanced jump button check complete

@@ -38,7 +38,7 @@ ApplyDamage
           rem
           rem Constraints: Must be colocated with PlayerDies,
           rem PlayDamageSound (called via goto)
-          
+
           let temp1 = playerCharacter[attackerID]
           gosub GetCharacterDamage bank6
           let temp4 = temp2
@@ -54,33 +54,33 @@ ApplyDamage
           let temp3 = 0
           rem Will die
           if temp2 < temp1 then temp3 = 1
-          
+
           rem If player will die, instantly vanish (eliminate)
-          
+
           if temp3 then goto PlayerDies
-          
+
           let playerHealth[defenderID] = temp2 - temp1
           rem Player survives - apply damage and enter hurt state
-          
+
           let currentPlayer = defenderID
           rem Set hurt animation (ActionHit = 5)
           let temp2 = ActionHit
           gosub SetPlayerAnimation bank11
-          
+
           let temp4 = temp1 / 2
           rem Calculate recovery frames (damage / 2, clamped 10-30)
           if temp4 < 10 then temp4 = 10
           if temp4 > 30 then temp4 = 30
           let playerRecoveryFrames[defenderID] = temp4
-          
+
           rem Set playerState bit 3 (recovery flag) when recovery frames
           let playerState[defenderID] = playerState[defenderID] | 8
           rem   are set
-          
+
           rem Sound effect
           goto PlayDamageSound
           rem tail call
-          
+
 
 PlayerDies
           rem Player dies - instantly vanish
@@ -101,17 +101,17 @@ PlayerDies
           rem   PlayDamageSound - plays damage sound effect
           rem Constraints: Must be colocated with ApplyDamage, PlayDamageSound
           let playerHealth[defenderID] = 0
-          
+
           rem Trigger elimination immediately (instantly vanish)
           rem CheckPlayerElimination will hide sprite and handle
           let currentPlayer = defenderID
           rem   elimination effects
           gosub CheckPlayerElimination bank12
-          
+
           rem Sound effect
           goto PlayDamageSound
           rem tail call
-          
+
 
 CheckAttackHit
           rem Check if attack hits defender
@@ -164,11 +164,11 @@ CheckAttackHit
           rem Defender bottom edge <= hitbox top edge (no overlap)
           if playerY[defenderID] >= cachedHitboxBottom_R then NoHit
           rem Defender top edge >= hitbox bottom edge (no overlap)
-          
+
           let hit = 1
           rem All bounds checked - defender is inside hitbox
           return
-   
+
 NoHit
           rem Defender is outside hitbox bounds
           rem
@@ -206,7 +206,7 @@ CalculateAttackHitbox
           if temp1 = 0 then goto MeleeHitbox
           if temp1 = 1 then goto ProjectileHitbox
           if temp1 = 2 then goto AreaHitbox
-          
+
 MeleeHitbox
           rem Melee hitbox extends PlayerSpriteWidth pixels in facing
           rem direction
@@ -232,7 +232,7 @@ MeleeHitbox
           if temp2 = 1 then goto FacingLeft
           if temp2 = 2 then goto FacingUp
           if temp2 = 3 then goto FacingDown
-          
+
 FacingRight
           rem Hitbox extends 16 pixels forward from sprite right edge
           rem
@@ -256,7 +256,7 @@ FacingRight
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
           return
-          
+
 FacingLeft
           rem Hitbox extends 16 pixels forward from sprite left edge
           rem
@@ -280,7 +280,7 @@ FacingLeft
           let cachedHitboxTop_W = playerY[attackerID]
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight
           return
-          
+
 FacingUp
           rem Hitbox extends 16 pixels upward from sprite top edge
           rem
@@ -304,7 +304,7 @@ FacingUp
           let cachedHitboxTop_W = playerY[attackerID] - PlayerSpriteHeight
           let cachedHitboxBottom_W = playerY[attackerID]
           return
-          
+
 FacingDown
           rem Hitbox extends 16 pixels downward from sprite bottom edge
           rem
@@ -328,7 +328,7 @@ FacingDown
           let cachedHitboxTop_W = playerY[attackerID] + PlayerSpriteHeight
           let cachedHitboxBottom_W = playerY[attackerID] + PlayerSpriteHeight + PlayerSpriteHeight
           return
-          
+
 ProjectileHitbox
           rem Projectile hitbox is at current missile position (to be
           rem implemented)
@@ -348,7 +348,7 @@ ProjectileHitbox
           let cachedHitboxTop_W = 0
           let cachedHitboxBottom_W = 0
           return
-          
+
 AreaHitbox
           rem Area hitbox covers radius around attacker (to be
           rem implemented)
@@ -402,20 +402,20 @@ ProcessAttackerAttacks
           gosub CalculateAttackHitbox
           rem   defenders)
           rem Hitbox values are already written into cachedHitbox*_W via aliasing
-          
+
           for defenderID = 0 to 3
           rem Attack each defender
               rem Skip if defender is attacker
           if defenderID = attackerID then NextDefender
-          
+
               rem Skip if defender is dead
-          
+
           if playerHealth[defenderID] <= 0 then NextDefender
-          
+
           gosub CheckAttackHit
           rem Check if attack hits (uses cached hitbox)
           if hit then gosub ApplyDamage
-          
+
 NextDefender
           next
           rem Helper: End of defender loop iteration (label only)
@@ -453,9 +453,9 @@ ProcessAllAttacks
           for attackerID = 0 to 3
               rem Skip if attacker is dead
           if playerHealth[attackerID] <= 0 then NextAttacker
-          
+
           gosub ProcessAttackerAttacks
-          
+
 NextAttacker
           next
           rem Helper: End of attacker loop iteration (label only)

@@ -28,8 +28,8 @@ ReadEnhancedButtons
           if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
 
           rem Player 2 (INPT2) - Genesis/Joy2b+ Button C/II
-          if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = temp1 | 2
-          if controllerStatus & SetRightPortJoy2bPlus then if !(INPT2 & $80) then let temp1 = temp1 | 2
+          if controllerStatus & SetRightPortGenesis then if (INPT2 & $80) = 0 then let temp1 = temp1 | 2
+          if controllerStatus & SetRightPortJoy2bPlus then if (INPT2 & $80) = 0 then let temp1 = temp1 | 2
 
           rem Players 3-4 cannot have enhanced controllers (require Quadtari)
           rem Bits 2-3 remain 0
@@ -90,7 +90,7 @@ GameMainLoop
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+
           gosub ReadEnhancedButtons
           rem   II/III)
-          
+
           gosub HandleConsoleSwitches bank13 :
           rem Handle console switches (in Bank 13)
 
@@ -105,13 +105,13 @@ GameMainLoop
 
           gosub UpdateCharacterAnimations
           rem Update animation system (10fps character animation) (in Bank 11)
-          
+
           gosub UpdatePlayerMovement bank8 :
           rem Update movement system (full frame rate movement) (in Bank 11)
 
           gosub PhysicsApplyGravity bank8
           rem Apply gravity and physics (in Bank 11)
-          
+
           gosub ApplyMomentumAndRecovery bank8
           rem Apply momentum and recovery effects (in Bank 8)
 
@@ -144,10 +144,10 @@ GameMainLoopQuadtariSkip
 
           gosub CheckAllPlayerEliminations bank12
           rem Check for player eliminations
-          
+
           gosub UpdateAllMissiles bank12
           rem Update missiles (in Bank 12)
-          
+
           rem Check if game should end and transition to winner screen
           rem   ending,
           rem systemFlags bit 3 (SystemFlagGameStateEnding) means game
@@ -215,7 +215,7 @@ GameEndCheckDone
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)
-          rem gosub SetSpritePositions 
+          rem gosub SetSpritePositions
           rem Replaced by UpdatePlayerMovement
 
           gosub SetPlayerSprites bank6
@@ -223,19 +223,19 @@ GameEndCheckDone
 
           gosub DisplayHealth bank6
           rem Display health information (in Bank 6)
-          
+
           gosub UpdatePlayer12HealthBars bank8
           rem Update P1/P2 health bars using pfscore system
-          
+
           gosub UpdatePlayer34HealthBars bank8
           rem Update P3/P4 health bars using playfield system
-          
+
           gosub UpdateSoundEffect bank15
           rem Update sound effects (game mode 6 only)
-          
+
           rem Frame counter is automatically incremented by batariBASIC
           rem kernel
-          
+
 GameMainLoopPaused
           rem Game is paused - skip all movement/physics/animation updates
           rem but still allow console switch handling for unpause

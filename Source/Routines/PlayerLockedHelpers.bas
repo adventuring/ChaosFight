@@ -21,19 +21,14 @@ GetPlayerLocked
 
           rem Invalid index check (temp1 should be 0-3)
           rem if temp1 < 0 then temp2 = 0 : return
-          if temp1 > 3 then temp2 = 0
-          if temp1 > 3 then return
+          if temp1 > 3 then temp2 = 0 : return
 
           rem Extract 2 bits for this player
           rem Use division and masking operations compatible with batariBASIC
-          if temp1 = 0 then temp2 = playerLocked & 3
-          if temp1 = 0 then return
-          if temp1 = 1 then temp2 = (playerLocked / 4) & 3
-          if temp1 = 1 then return
-          if temp1 = 2 then temp2 = (playerLocked / 16) & 3
-          if temp1 = 2 then return
-          if temp1 = 3 then temp2 = (playerLocked / 64) & 3
-          if temp1 = 3 then return
+          if temp1 = 0 then temp2 = playerLocked & 3 : return
+          if temp1 = 1 then temp2 = (playerLocked / 4) & 3 : return
+          if temp1 = 2 then temp2 = (playerLocked / 16) & 3 : return
+          if temp1 = 3 then temp2 = (playerLocked / 64) & 3 : return
 
           return
 
@@ -70,14 +65,10 @@ SetPlayerLockedApply
           let currentPlayer = temp3
 
           rem Clear the 2 bits for this player and set the new value
-          if temp3 = 0 then playerLocked = (playerLocked & 252) | temp2
-          if temp3 = 0 then return
-          if temp3 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4)
-          if temp3 = 1 then return
-          if temp3 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16)
-          if temp3 = 2 then return
-          if temp3 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64)
-          if temp3 = 3 then return
+          if temp3 = 0 then playerLocked = (playerLocked & 252) | temp2 : return
+          if temp3 = 1 then playerLocked = (playerLocked & 243) | (temp2 * 4) : return
+          if temp3 = 2 then playerLocked = (playerLocked & 207) | (temp2 * 16) : return
+          if temp3 = 3 then playerLocked = (playerLocked & 63) | (temp2 * 64) : return
 
           return
 

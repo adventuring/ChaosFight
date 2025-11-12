@@ -28,7 +28,7 @@ SetPlayerGlyphFromFont
             adc #0
             sta temp5
           end
-          
+
           rem Player 0 handled specially; others via indexed stores
           if temp3 = 0 then SetP0
 SetP1to5

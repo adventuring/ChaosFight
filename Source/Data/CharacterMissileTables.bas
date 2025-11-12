@@ -14,7 +14,7 @@ end
             0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end
 
-          rem Missile heights per character  
+          rem Missile heights per character
           data CharacterMissileHeights
             0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end

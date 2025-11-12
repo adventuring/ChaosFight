@@ -45,7 +45,7 @@ UpdatePlayerMovement
           gosub UpdatePlayerMovementSingle
           next
           rem Players 2-3 only if Quadtari detected
-          if !(controllerStatus & SetQuadtariDetected) then goto UpdatePlayerMovementQuadtariSkip
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto UpdatePlayerMovementQuadtariSkip
           for currentPlayer = 2 to 3
           gosub UpdatePlayerMovementSingle
           next
@@ -63,7 +63,7 @@ UpdatePlayerMovementSingle
           rem 16-bit accumulator for proper carry detection
           rem Skip if player is eliminated
           if playerHealth[currentPlayer] = 0 then return
-          
+
           rem Apply X Velocity To X Position (8.8 fixed-point)
           rem Use batariBASIC’s built-in 16-bit addition for carry detection
           let subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
@@ -75,7 +75,7 @@ UpdatePlayerMovementSingle
 
           rem Sync integer position for rendering
           let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
-          
+
           rem Apply Y Velocity To Y Position (8.8 fixed-point)
           rem Use batariBASIC’s built-in 16-bit addition for carry detection
           let subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]
@@ -87,7 +87,7 @@ UpdatePlayerMovementSingle
 
           rem Sync integer position for rendering
           let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
-          
+
           return
 
 SetPlayerVelocity
@@ -295,7 +295,7 @@ ConstrainToScreen
           if playerX[temp1] > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
           if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_W[temp1] = PlayerRightEdge
           if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_WL[temp1] = 0
-          
+
           rem Constrain Y position (20 to 80 for screen bounds)
           rem SCRAM write to playerSubpixelY_W
           if playerY[temp1] < 20 then let playerY[temp1] = 20
@@ -304,7 +304,7 @@ ConstrainToScreen
           if playerY[temp1] > 80 then let playerY[temp1] = 80
           if playerY[temp1] > 80 then let playerSubpixelY_W[temp1] = 80
           if playerY[temp1] > 80 then let playerSubpixelY_WL[temp1] = 0
-          
+
           return
 
           rem
@@ -367,7 +367,7 @@ InitializeMovementSystem
           let playerY[3] = temp3
           let playerSubpixelY_W[3] = temp3
           let playerSubpixelY_WL[3] = 0
-          
+
           rem Initialize velocities to zero - inlined for performance
           let playerVelocityX[0] = 0
           rem Player 0
@@ -390,5 +390,5 @@ InitializeMovementSystem
           let playerVelocityY[3] = 0
           let playerVelocityYL[3] = 0
           return
-          
-          
+
+

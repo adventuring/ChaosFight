@@ -24,7 +24,7 @@ WarmStart
           rem Clear paused flag (0 = normal, not paused, not ending)
           rem Frame counter is automatically managed by batariBASIC
           rem kernel
-          
+
           rem Step 2: Reinitialize TIA color registers to safe defaults
           rem Match ColdStart initialization for consistency
           COLUBK = ColGray(0)
@@ -35,22 +35,22 @@ WarmStart
           rem Player 0: bright blue
           _COLUP1 = ColRed(14)
           rem Player 1: bright red (multisprite kernel requires _COLUP1)
-          
+
           rem Step 3: Initialize audio channels (silent on reset)
           AUDC0 = 0
           AUDV0 = 0
           AUDC1 = 0
           AUDV1 = 0
-          
+
           rem Step 4: Clear sprite enable registers
           ENAM0 = 0
           ENAM1 = 0
           ENABL = 0
-          
+
           let gameMode = ModePublisherPrelude
           rem Step 5: Reset game mode to startup sequence
           gosub ChangeGameMode bank14
-          
+
           return
           rem Reset complete - return to MainLoop which will dispatch to
           rem   new mode
@@ -66,33 +66,33 @@ HandleConsoleSwitches
           if !temp1 then DonePlayer1Pause
           gosub CtrlDetPads bank14
           rem Re-detect controllers when Select is pressed
-          if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
+          if (systemFlags & SystemFlagGameStatePaused) = 0 then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
           rem Debounce - wait for button release (drawscreen called by
           rem MainLoop)
           return
 DonePlayer1Pause
-          
-          
+
+
           let temp2 = 1
           gosub CheckEnhancedPause
           rem Check Player 2 buttons
           if !temp1 then DonePlayer2Pause
           gosub CtrlDetPads bank14
           rem Re-detect controllers when Select is pressed
-          if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
+          if (systemFlags & SystemFlagGameStatePaused) = 0 then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
           let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player2PauseDone
           rem Debounce - wait for button release (drawscreen called by
           rem MainLoop)
           return
 DonePlayer2Pause
-          
+
 
           gosub CheckColorBWToggle
           rem Color/B&W switch - re-detect controllers when toggled
-          
+
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
           goto Check7800Pause bank14
@@ -138,8 +138,8 @@ CEP_CheckPlayer1
 
 CEP_CheckPlayer2
           rem Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
-          if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = 1
-          if controllerStatus & SetRightPortJoy2bPlus then if !(INPT3 & $80) then let temp1 = 1
+          if controllerStatus & SetRightPortGenesis then if (INPT2 & $80) = 0 then let temp1 = 1
+          if controllerStatus & SetRightPortJoy2bPlus then if (INPT3 & $80) = 0 then let temp1 = 1
           return
 
           rem
@@ -162,7 +162,7 @@ CheckColorBWToggle
           rem Called Routines: CtrlDetPads (bank14) - accesses
           rem controller detection state
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
-          
+
           rem Optimized: Check Color/B&W switch state change directly
           let temp6 = 0
           if switchbw then let temp6 = 1
@@ -192,14 +192,14 @@ DoneSwitchChange
           rem   not continuously. If needed, we could add a previous
           rem   value
           rem   variable.
-          
+
           rem Reload arena colors if switch or override changed
-          
+
           if temp1 then ReloadArenaColorsNow
           rem Note: colorBWOverride check handled in
           rem Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)
-          
+
           return
 
 ReloadArenaColorsNow

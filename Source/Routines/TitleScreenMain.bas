@@ -46,7 +46,7 @@ TitleScreenMain
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then TitleScreenComplete
           if joy1fire then TitleScreenComplete
-          
+
           rem Check Quadtari controllers (Players 3 & 4 if active)
           if 0 = (controllerStatus & SetQuadtariDetected) then TitleDoneQuad
           if !INPT0{7} then TitleScreenComplete
@@ -63,7 +63,7 @@ TitleDoneQuad
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with TitleScreenMain
-          
+
           rem Update character parade animation
           gosub UpdateCharacterParade bank14
 
@@ -75,7 +75,7 @@ TitleDoneQuad
           rem Note: MainLoop calls titledrawscreen, so this is only
           rem reached if called directly
           gosub DrawTitleScreen bank9
-          
+
           return
 
 TitleScreenComplete

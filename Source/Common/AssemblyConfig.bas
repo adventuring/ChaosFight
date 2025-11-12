@@ -4,7 +4,7 @@
           rem Configuration for kernel, romsize, and other batariBASIC settings
 
           const multisprite = 2
-          set kernel_options playercolors player1colors pfcolors 
+          set kernel_options playercolors player1colors pfcolors
           set romsize 64kSC
           set optimization size
           set optimization noinlinedata

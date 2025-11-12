@@ -48,13 +48,13 @@ BeginFallingAnimation
           let fallSpeed = 2
           let fallComplete = 0
           let activePlayers = 0
-          
+
           gosub SetGameScreenLayout bank7
           rem Set game screen layout (32×8 for playfield scanning)
-          
+
           COLUBK = ColGray(0)
           rem Set background color
-          
+
           rem Initialize player positions in quadrants
           rem Player 1: Top-left quadrant (unless NO)
           if playerCharacter[0] = NoCharacter then DonePlayer1Init
@@ -75,9 +75,9 @@ DonePlayer1Init
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with BeginFallingAnimation
-          
+
           rem Player 2: Top-right quadrant (unless NO)
-          
+
           if playerCharacter[1] = NoCharacter then DonePlayer2Init
           let playerX[1] = 144
           let playerY[1] = 8
@@ -96,10 +96,10 @@ DonePlayer2Init
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with BeginFallingAnimation
-          
+
           rem Player 3: Bottom-left quadrant (if Quadtari and not NO)
-          
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Init
+
+          if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer3Init
           if playerCharacter[2] = NoCharacter then DonePlayer3Init
           let playerX[2] = 16
           let playerY[2] = 80
@@ -119,10 +119,10 @@ DonePlayer3Init
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with BeginFallingAnimation
-          
+
           rem Player 4: Bottom-right quadrant (if Quadtari and not NO)
-          
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Init
+
+          if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer4Init
           if playerCharacter[3] = NoCharacter then DonePlayer4Init
           let playerX[3] = 144
           let playerY[3] = 80
@@ -143,6 +143,6 @@ DonePlayer4Init
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with BeginFallingAnimation
-          
+
 
 

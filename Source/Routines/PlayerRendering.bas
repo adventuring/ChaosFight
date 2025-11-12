@@ -83,25 +83,25 @@ SetSpritePositions
           rem   COLUP3)
           rem Missiles are available for projectiles since participants
           rem   use proper sprites
-          
+
           rem Set Participant 3 position (array [2] → P2 sprite)
-          
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Position
+
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer3Position
           if playerCharacter[2] = NoCharacter then goto DonePlayer3Position
           if ! playerHealth[2] then goto DonePlayer3Position
           player2x = playerX[2]
           player2y = playerY[2]
 DonePlayer3Position
-          
+
           rem Set Participant 4 position (array [3] → P3 sprite)
-          
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Position
+
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer4Position
           if playerCharacter[3] = NoCharacter then goto DonePlayer4Position
           if ! playerHealth[3] then goto DonePlayer4Position
           player3x = playerX[3]
           player3y = playerY[3]
 DonePlayer4Position
-          
+
 
           rem Set missile positions for projectiles
           rem Hardware missiles: missile0 and missile1 (only 2 physical
@@ -117,23 +117,23 @@ DonePlayer4Position
           rem Use missileActive bit flags: bit 0 = Participant 1, bit 1
           rem   = Participant 2, bit 2 = Participant 3, bit 3 =
           rem   Participant 4
-          
+
           rem Check if participants 3 or 4 are active (selected and not
           rem   eliminated)
           rem Use this flag instead of QuadtariDetected for missile
           rem   multiplexing
           rem because we only need to multiplex when participants 3 or 4
           rem are actually in the game
-          if !(controllerStatus & SetPlayers34Active) then goto RenderMissiles2Player
-          
+          if (controllerStatus & SetPlayers34Active) = 0 then goto RenderMissiles2Player
+
           rem 4-player mode: Use frame multiplexing
           let temp6 = frame & 1
           rem Shared temp5 for character type lookups in this code path
           rem 0 = even frame (Participants 1-2), 1 = odd frame
           rem   (Participants 3-4)
-          
+
           if temp6 = 0 then goto RenderMissilesEvenFrame
-          
+
                     rem Odd frame: Render Participants 3-4 missiles
           rem Participant 3 missile (array [2], bit 2) → missile0
           ENAM0 = 0
@@ -155,7 +155,7 @@ RenderMissile0P3
           let temp5 = playerCharacter[2]
           rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[temp5]
-          
+
 RenderMissile1P4
           rem Participant 4 missile (array [3], bit 3) → missile1
           ENAM1 = 0
@@ -178,12 +178,12 @@ RenderMissile1P4Active
           rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[temp5]
           return
-          
+
 RenderMissilesEvenFrame
           rem Shared temp5 for character type lookups in this code path
                     rem Even frame: Render Participants 1-2 missiles
           rem Participant 1 missile (array [0], bit 0) → missile0
-          ENAM0 = 0 
+          ENAM0 = 0
           missile0height = 0
           let temp4 = missileActive & 1
           rem Clear missile height first
@@ -202,10 +202,10 @@ RenderMissile0P1
           let temp5 = playerCharacter[0]
           rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[temp5]
-          
+
 RenderMissile1P2
           rem Participant 2 missile (array [1], bit 1) → missile1
-          ENAM1 = 0 
+          ENAM1 = 0
           missile1height = 0
           let temp4 = missileActive & 2
           rem Clear missile height first
@@ -225,13 +225,13 @@ RenderMissile1P2Active
           rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[temp5]
           return
-          
+
 RenderMissiles2Player
           rem Shared temp5 for character type lookups in this code path
           rem 2-player mode: No multiplexing needed, assign missiles
           rem   directly
           rem Participant 1 (array [0]) missile (missile0, P0 sprite)
-          ENAM0 = 0 
+          ENAM0 = 0
           missile0height = 0
           let temp4 = missileActive & 1
           rem Clear missile height first
@@ -252,10 +252,10 @@ RenderMissile0P1_2P
           let temp5 = playerCharacter[0]
           rem Set missile height from character data (Issue #595)
           missile0height = CharacterMissileHeights[temp5]
-          
+
 RenderMissile1P2_2P
           rem Participant 2 (array [1]) missile (missile1, P1 sprite)
-          ENAM1 = 0 
+          ENAM1 = 0
           missile1height = 0
           let temp4 = missileActive & 2
           rem Clear missile height first
@@ -277,7 +277,7 @@ RenderMissile1P2_2PActive
           rem Set missile height from character data (Issue #595)
           missile1height = CharacterMissileHeights[temp5]
           return
-          
+
 RenderRoboTitoStretchMissile0
           rem
           rem Render Robotito Stretch Missiles
@@ -285,7 +285,7 @@ RenderRoboTitoStretchMissile0
           rem missiles
           rem Only rendered if player is RoboTito, stretching upward
           rem   (not latched), and no projectile missile active
-          
+
           rem Renders RoboTito stretch visual missile for missile0 (only
           rem if RoboTito, stretching, and no projectile missile)
           rem
@@ -313,7 +313,7 @@ RenderRoboTitoStretchMissile0
           rem stretching upward (not latched, ActionJumping=10), and
           rem stretch height > 0. Frame multiplexing determines which
           rem player uses missile0
-          if !(controllerStatus & SetPlayers34Active) then RRTM_CheckPlayer0
+          if (controllerStatus & SetPlayers34Active) = 0 then RRTM_CheckPlayer0
           rem Determine which player uses missile0 based on frame parity
           let temp4 = frame & 1
           rem 2-player mode: Player 0 uses missile0
@@ -349,7 +349,7 @@ RRTM_IsStretching
           rem Get stretch height and render if > 0
           if temp3 <= 0 then return
           rem No height, no stretch missile
-          
+
           rem Render stretch missile: position at player, set height
           missile0x = playerX[temp1]
           missile0y = playerY[temp1]
@@ -358,7 +358,7 @@ RRTM_IsStretching
           NUSIZ0 = 0
           rem 1x size (NUSIZ bits 4-6 = 00)
           return
-          
+
 RenderRoboTitoStretchMissile1
           rem Renders RoboTito stretch visual missile for missile1 (only
           rem if RoboTito, stretching, and no projectile missile)
@@ -387,7 +387,7 @@ RenderRoboTitoStretchMissile1
           rem stretching upward (not latched, ActionJumping=10), and
           rem stretch height > 0. Frame multiplexing determines which
           rem player uses missile1
-          if !(controllerStatus & SetPlayers34Active) then RRTM1_CheckPlayer1
+          if (controllerStatus & SetPlayers34Active) = 0 then RRTM1_CheckPlayer1
           rem Determine which player uses missile1 based on frame parity
           let temp4 = frame & 1
           rem 2-player mode: Player 1 uses missile1
@@ -419,12 +419,12 @@ RRTM1_IsRoboTito
 RRTM1_IsStretching
           rem Not in stretching animation (ActionJumping = 10), no
           rem   stretch missile
-          
+
           let temp3 = missileStretchHeight_R[temp1]
           rem Get stretch height and render if > 0
           if temp3 <= 0 then return
           rem No height, no stretch missile
-          
+
           rem Render stretch missile: position at player, set height
           missile1x = playerX[temp1]
           missile1y = playerY[temp1]
@@ -546,13 +546,13 @@ Player2ColorDone
           rem Players 3 & 4 have independent COLUP2/COLUP3 registers
           rem No color inheritance issues with proper multisprite
           rem   implementation
-          
+
           rem Set Player 3 color and sprite (if active)
-          
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Sprite
+
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer3Sprite
           if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
           if ! playerHealth[2] then goto DonePlayer3Sprite
-          
+
           rem Use LoadCharacterColors for consistent color handling
           rem Player index
           let currentPlayer = 2
@@ -563,7 +563,7 @@ Player2ColorDone
           gosub LoadCharacterColors bank16
           COLUP2 = temp6
           rem fall through to Player3ColorDone
-          
+
 Player3ColorDone
 
           rem Set sprite reflection based on facing direction
@@ -590,15 +590,15 @@ Player3ColorDone
           let temp3 = 0
           rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
-          
+
 DonePlayer3Sprite
 
           rem Set Player 4 color and sprite (if active)
 
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Sprite
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer4Sprite
           if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
           if ! playerHealth[3] then goto DonePlayer4Sprite
-          
+
           rem Use LoadCharacterColors for consistent color handling
           rem Player 4: Turquoise (player index color), hurt handled by
           rem Player index
@@ -609,7 +609,7 @@ DonePlayer3Sprite
           let temp3 = playerState[3] & PlayerStateBitGuarding
           gosub LoadCharacterColors bank16
           COLUP3 = temp6
-          
+
 Player4ColorDone
 
           rem Set sprite reflection based on facing direction
@@ -636,9 +636,9 @@ Player4ColorDone
           let temp3 = 0
           rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
-          
+
 DonePlayer4Sprite
-          
+
           return
 
 DisplayHealth
@@ -674,7 +674,7 @@ DisplayHealth
           if playerRecoveryFrames[0] = 0 then FlashParticipant1
           goto DoneParticipant1Flash
 FlashParticipant1
-          if frame & 8 then player0x = 200 
+          if frame & 8 then player0x = 200
 DoneParticipant1Flash
           rem Hide P0 sprite
 
@@ -690,29 +690,29 @@ DoneParticipant2Flash
 
           rem Flash Player 3 sprite if health is low (but alive)
 
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer3Flash
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer3Flash
           if playerCharacter[2] = NoCharacter then goto DonePlayer3Flash
           if ! playerHealth[2] then goto DonePlayer3Flash
           if playerHealth[2] >= 25 then goto DonePlayer3Flash
           if playerRecoveryFrames[2] = 0 then FlashPlayer3
           goto DonePlayer3Flash
 FlashPlayer3
-          if frame & 8 then player2x = 200 
+          if frame & 8 then player2x = 200
 DonePlayer3Flash
           rem Player 3 uses player2 sprite
 
           rem Flash Player 4 sprite if health is low (but alive)
 
-          if !(controllerStatus & SetQuadtariDetected) then goto DonePlayer4Flash
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer4Flash
           if playerCharacter[3] = NoCharacter then goto DonePlayer4Flash
           if ! playerHealth[3] then goto DonePlayer4Flash
           if playerHealth[3] >= 25 then goto DonePlayer4Flash
           if playerRecoveryFrames[3] = 0 then FlashPlayer4
           goto DonePlayer4Flash
 FlashPlayer4
-          if frame & 8 then player3x = 200 
+          if frame & 8 then player3x = 200
 DonePlayer4Flash
           rem Player 4 uses player3 sprite
-          
+
           return
 

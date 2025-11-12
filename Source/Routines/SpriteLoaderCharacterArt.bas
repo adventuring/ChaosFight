@@ -46,12 +46,12 @@ LocateCharacterArt
           rem Characters 8-15: Bank 3 (bank-relative 0-7)
           rem Characters 16-23: Bank 4 (bank-relative 0-7)
           rem Characters 24-31: Bank 5 (bank-relative 0-7)
-          
+
           let temp6 = temp1
           rem Save original character index in temp6
           rem temp6 = bank-relative character index (0-7) - will be
           rem   calculated per bank
-          
+
           rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4,
           rem 24-31=Bank5
           if temp1 < 8 then goto Bank2Dispatch
@@ -87,7 +87,7 @@ Bank2Dispatch
           gosub SetPlayerCharacterArtBank2 bank2
           rem temp3=action, temp5=player
           return
-          
+
 Bank3Dispatch
           rem Load character art from Bank 3
           rem
@@ -116,7 +116,7 @@ Bank3Dispatch
           gosub SetPlayerCharacterArtBank3 bank3
           rem temp3=action, temp5=player
           return
-          
+
 Bank4Dispatch
           rem Load character art from Bank 4
           rem
@@ -145,7 +145,7 @@ Bank4Dispatch
           gosub SetPlayerCharacterArtBank4 bank4
           rem temp3=action, temp5=player
           return
-          
+
 Bank5Dispatch
           rem Load character art from Bank 5
           rem
@@ -174,4 +174,4 @@ Bank5Dispatch
           gosub SetPlayerCharacterArtBank5 bank5
           rem temp3=action, temp5=player
           return
-          
+

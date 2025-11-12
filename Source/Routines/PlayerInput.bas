@@ -76,8 +76,8 @@ InputHandleAllPlayers
           rem              InputSkipPlayer3Input,
           rem InputSkipPlayer4Input (all called via goto or gosub)
           if qtcontroller then goto InputHandleQuadtariPlayers
-          
-          rem Even frame: Handle Players 1 & 2 - only if alive  
+
+          rem Even frame: Handle Players 1 & 2 - only if alive
           let currentPlayer = 0 : gosub IsPlayerAlive
           if temp2 = 0 then InputDonePlayer0Input
           if (PlayerState[0] & 8) then InputDonePlayer0Input
@@ -95,7 +95,7 @@ InputDonePlayer0Input
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with InputHandleAllPlayers
-          
+
           let currentPlayer = 1 : gosub IsPlayerAlive
           if temp2 = 0 then InputDonePlayer1Input
           if (PlayerState[1] & 8) then InputDonePlayer1Input
@@ -156,7 +156,7 @@ InputHandleQuadtariPlayers
           rem InputSkipPlayer4Input
           rem Odd frame: Handle Players 3 & 4 (if Quadtari detected and
           rem alive)
-          if !(ControllerStatus & SetQuadtariDetected) then InputDonePlayer3Input
+          if (ControllerStatus & SetQuadtariDetected) = 0 then InputDonePlayer3Input
           if playerCharacter[2] = NoCharacter then InputDonePlayer3Input
           let currentPlayer = 2 : gosub IsPlayerAlive
           if temp2 = 0 then InputDonePlayer3Input
@@ -174,7 +174,7 @@ InputDonePlayer3Input
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with InputHandleQuadtariPlayers
-          if !(ControllerStatus & SetQuadtariDetected) then InputDonePlayer4Input
+          if (ControllerStatus & SetQuadtariDetected) = 0 then InputDonePlayer4Input
           if playerCharacter[3] = NoCharacter then InputDonePlayer4Input
           let currentPlayer = 3 : gosub IsPlayerAlive
           if temp2 = 0 then InputDonePlayer4Input
@@ -194,9 +194,9 @@ InputDonePlayer4Input
           rem
           rem Constraints: Must be colocated with
           rem InputHandleQuadtariPlayers
-          
-          
-          qtcontroller = 0 
+
+
+          qtcontroller = 0
           rem Switch back to even frame
           return
 
@@ -433,7 +433,7 @@ InputHandleLeftPortPlayerFunction
           rem   block movement during attack animations (states 13-15)
           if temp2 >= 13 then DoneLeftPortMovement
           rem Block movement during attack windup/execute/recovery
-          
+
           rem Process left/right movement (with playfield collision for
           rem   flying characters)
           rem Frooty (8) and Dragon of Storms (2) need collision checks
@@ -441,7 +441,7 @@ InputHandleLeftPortPlayerFunction
           rem   for horizontal movement
           if temp5 = 8 then IHLP_FlyingMovement
           if temp5 = 2 then IHLP_FlyingMovement
-          
+
           rem Standard horizontal movement (modifies velocity, not
           rem position)
           rem Left movement: set negative velocity (255 in 8-bit twos
@@ -511,38 +511,38 @@ IHLP_DoneFlyingLeftRight
           rem - Bernie: fall through 1-row floors
           rem - Harpy: flap to fly (Character 6)
           if !joy0up then goto DoneUpInputHandling
-          
+
           rem Check Shamone form switching first (Character 15 <-> 31)
           if PlayerCharacter[temp1] = 15 then let PlayerCharacter[temp1] = 31 : goto DoneJumpInput
           rem Switch Shamone -> MethHound
           if PlayerCharacter[temp1] = 31 then let PlayerCharacter[temp1] = 15 : goto DoneJumpInput
           rem Switch MethHound -> Shamone
-          
+
           rem Robo Tito (13): Hold UP to ascend; auto-latch on ceiling contact
           if PlayerCharacter[temp1] = 13 then RoboTitoAscendLeft
-          
+
           rem Check Bernie fall-through (Character 0)
-          
+
           if PlayerCharacter[temp1] = 0 then BernieFallThrough
-          
+
           rem Check Harpy flap (Character 6)
-          
+
           if PlayerCharacter[temp1] = 6 then HarpyFlap
-          
+
           goto NormalJumpInput
           rem For all other characters, UP is jump
-          
+
 BernieFallThrough
           rem Bernie UP input handled in BernieJump routine (fall
           gosub BernieJump bank13
           rem   through 1-row floors)
           goto DoneJumpInput
-          
+
 HarpyFlap
           gosub HarpyJump bank13
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
           goto DoneJumpInput
-          
+
 RoboTitoAscendLeft
           rem Ascend toward ceiling
           let temp6 = PlayerCharacter[temp1]
@@ -567,11 +567,11 @@ NormalJumpInput
           rem Process jump input (UP + enhanced buttons)
           goto DoneUpInputHandling
           rem Jump pressed flag (UP pressed)
-          
+
 DoneJumpInput
-          let temp3 = 0 
+          let temp3 = 0
           rem No jump (UP used for special ability)
-          
+
 DoneUpInputHandling
           rem Process jump input from enhanced buttons (Genesis/Joy2b+
           rem   Button C/II)
@@ -639,12 +639,12 @@ LeftStdJumpProceed
           if PlayerCharacter[temp1] = 3 then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 InputDoneLeftPortJump
 
-          
+
 
           gosub HandleGuardInput
           rem Process down/guard input
-          
-          
+
+
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
           rem Use cached animation state - block attack input during
@@ -661,8 +661,8 @@ InputDoneLeftPortJump
           let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack bank7
 InputDoneLeftPortAttack
-          
-          
+
+
           return
 
 InputHandleRightPortPlayerFunction
@@ -678,22 +678,22 @@ InputHandleRightPortPlayerFunction
           rem   block movement during attack animations (states 13-15)
           if temp2 >= 13 then DoneRightPortMovement
           rem Block movement during attack windup/execute/recovery
-          
+
           rem Process left/right movement (with playfield collision for
           rem   flying characters)
           let temp6 = PlayerState[temp1] & 2
           rem Check if player is guarding - guard blocks movement
           if temp6 then DoneRightPortMovement
           rem Guarding - block movement
-          
+
           rem Frooty (8) and Dragon of Storms (2) need collision checks
           let temp5 = PlayerCharacter[temp1]
           rem   for horizontal movement
           if temp5 = 8 then IHRP_FlyingMovement
           if temp5 = 2 then IHRP_FlyingMovement
-          
+
           rem Standard horizontal movement (no collision check)
-          
+
           if !joy1left then goto IHRP_DoneLeftMovement
           if PlayerCharacter[temp1] = 8 then goto IHRP_LeftMomentum1
           let temp6 = PlayerCharacter[temp1]
@@ -723,7 +723,7 @@ SPF_InlineNo5
 SPF_InlineDone5
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
 IHRP_DoneLeftMovement
-          
+
           if !joy1right then goto IHRP_DoneFlyingLeftRight
           if PlayerCharacter[temp1] = 8 then goto IHRP_RightMomentum1
           let temp6 = PlayerCharacter[temp1]
@@ -752,12 +752,12 @@ SPF_InlineNo6
 SPF_InlineDone6
           if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
           rem Right movement complete (right port)
-          
+
 DoneRightPortMovement
 IHRP_FlyingMovement
           gosub HandleFlyingCharacterMovement
 IHRP_DoneFlyingLeftRight
-          
+
 
           rem Process UP input for character-specific behaviors (right
           rem   port)
@@ -765,38 +765,38 @@ IHRP_DoneFlyingLeftRight
           rem - Bernie: fall through 1-row floors
           rem - Harpy: flap to fly (Character 6)
           if !joy1up then goto DoneUpInputHandlingRight
-          
+
           rem Check Shamone form switching first (Character 15 <-> 31)
           if PlayerCharacter[temp1] = 15 then let PlayerCharacter[temp1] = 31 : goto DoneJumpInputRight
           rem Switch Shamone -> MethHound
           if PlayerCharacter[temp1] = 31 then let PlayerCharacter[temp1] = 15 : goto DoneJumpInputRight
           rem Switch MethHound -> Shamone
-          
+
           rem Robo Tito (13): Hold UP to ascend; auto-latch on ceiling contact
           if PlayerCharacter[temp1] = 13 then RoboTitoAscendRight
-          
+
           rem Check Bernie fall-through (Character 0)
-          
+
           if PlayerCharacter[temp1] = 0 then BernieFallThroughRight
-          
+
           rem Check Harpy flap (Character 6)
-          
+
           if PlayerCharacter[temp1] = 6 then HarpyFlapRight
-          
+
           goto NormalJumpInputRight
           rem For all other characters, UP is jump
-          
+
 BernieFallThroughRight
           rem Bernie UP input handled in BernieJump routine (fall
           gosub BernieJump bank13
           rem   through 1-row floors)
           goto DoneJumpInputRight
-          
+
 HarpyFlapRight
           gosub HarpyJump bank13
           rem Harpy UP input handled in HarpyJump routine (flap to fly)
           goto DoneJumpInputRight
-          
+
 RoboTitoAscendRight
           rem Ascend toward ceiling (right port)
           let temp6 = PlayerCharacter[temp1]
@@ -821,11 +821,11 @@ NormalJumpInputRight
           rem Process jump input (UP + enhanced buttons)
           goto DoneUpInputHandlingRight
           rem Jump pressed flag (UP pressed)
-          
+
 DoneJumpInputRight
-          let temp3 = 0 
+          let temp3 = 0
           rem No jump (UP used for special ability)
-          
+
 DoneUpInputHandlingRight
           rem Process jump input from enhanced buttons (Genesis/Joy2b+
           rem   Button C/II)
@@ -872,7 +872,7 @@ SkipEnhancedJumpCheckRight
           gosub CheckEnhancedJumpButton
           rem Check Genesis/Joy2b+ Button C/II
           rem temp3 already set by CheckEnhancedJumpButton
-          
+
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as
           rem Shamone)
@@ -921,14 +921,14 @@ HandlePauseInput
           let temp1 = 0
           rem Check SELECT switch (always available)
           if switchselect then temp1 = 1
-          
+
           rem Check Joy2b+ Button III (INPT1 for Player 1, INPT3 for
           rem Player 2)
           if LeftPortJoy2bPlus then if !INPT1{7} then temp1 = 1
           if RightPortJoy2bPlus then if !INPT3{7} then temp1 = 1
 Joy2bPauseDone
           rem Player 2 Button III
-          
+
           rem Debounce: only toggle if button just pressed (was 0, now
           rem 1)
           if temp1 = 0 then DonePauseToggle
@@ -936,11 +936,11 @@ Joy2bPauseDone
           let GameState  = GameState ^ 1
 DonePauseToggle
           rem Toggle pause (0<->1)
-          
-          
+
+
           let PauseButtonPrev  = temp1
           rem Update previous button state for next frame
-          
+
           return
 
           rem OLD INDIVIDUAL PLAYER HANDLERS - REPLACED BY GENERIC

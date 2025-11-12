@@ -13,9 +13,9 @@ CheckFallDamage
 
           let currentCharacter = playerCharacter[currentPlayer]
           rem Get character type for this player
-          
+
           rem Check for fall damage immunity
-          
+
           if currentCharacter = CharacterBernie then return
           rem Bernie: immune
           rem Robo Tito: reduced fall damage (handled after damage calculation)
@@ -24,25 +24,25 @@ CheckFallDamage
           if currentCharacter = CharacterDragonOfStorms then return
           rem Dragon of Storms: no gravity, no falling (hovering/flying
           rem   like Frooty)
-          
+
           rem Calculate safe fall velocity threshold
           rem Formula: safe_velocity = 120 / weight
           rem Use lookup table to avoid variable division
           let temp3 = SafeFallVelocityThresholds[currentCharacter]
           rem Pre-computed values in SafeFallVelocityThresholds table
           rem Safe fall velocity threshold
-          
+
           rem Check if fall velocity exceeds safe threshold
-          
+
           if temp2 <= temp3 then return
           rem Safe landing, no damage
-          
+
           rem Check if player is guarding - guard does NOT block fall
           rem   damage
           rem Guard only blocks attack damage (missiles, AOE), not
           rem   environmental damage
           rem Fall damage is environmental, so guard does not protect
-          
+
           rem Calculate fall damage
           rem Base damage = (velocity - safe_velocity) *
           rem   base_damage_multiplier
@@ -51,7 +51,7 @@ CheckFallDamage
           rem   damage)
           rem Multiply by 2 to double the base damage
           let temp4 = temp4 * 2
-          
+
           rem Apply weight-based damage multiplier: the bigger they
           rem   are, the harder they fall
           rem Heavy characters take more damage for the same impact
@@ -65,23 +65,23 @@ CheckFallDamage
           rem temp2 = weight / 20 from lookup table (0-5 range)
           if temp2 > 1 then let temp4 = temp4 * temp2
           rem temp4 = damage * (weight / 20) (weight-based multiplier applied)
-          
+
           rem Apply damage reduction for characters with fall damage
           rem Ninjish Guy halves damage after weight multiplier
           if currentCharacter = CharacterNinjishGuy then let temp4 = temp4 / 2
           rem Robo Tito halves damage after weight multiplier
           if currentCharacter = CharacterRoboTito then let temp4 = temp4 / 2
-          
+
           rem Cap maximum fall damage at 50
-          
+
           if temp4 > 50 then let temp4 = 50
-          
+
           rem Apply fall damage (byte-safe clamp)
           let oldHealthValue_W = playerHealth[currentPlayer]
           rem Use oldHealthValue for byte-safe clamp check
           let playerHealth[currentPlayer] = playerHealth[currentPlayer] - temp4
           if playerHealth[currentPlayer] > oldHealthValue_R then let playerHealth[currentPlayer] = 0
-          
+
           rem Set recovery frames (proportional to damage, min 10, max
           rem   30)
           let temp2 = temp4
@@ -92,11 +92,11 @@ CheckFallDamage
           if temp2 > 30 then let temp2 = 30
           let recoveryFramesCalc_W = temp2
           let playerRecoveryFrames[currentPlayer] = temp2
-          
+
           let playerState[currentPlayer] = playerState[currentPlayer] | 8
           rem Synchronize playerState bit 3 with recovery frames
           rem Set bit 3 (recovery flag) when recovery frames are set
-          
+
           rem Set animation state to recovering from fall
           rem This is animation state 9 in the character animation
           rem   sequences
@@ -111,16 +111,16 @@ CheckFallDamage
           let playerStateTemp_W = temp2
           let playerState[currentPlayer] = temp2
           rem Set animation to 9 (1001 in bits 7-4)
-          
+
           let temp1 = SoundLandingDamage
           rem Play fall damage sound effect
           gosub PlaySoundEffect bank15
-          
+
           rem Trigger color shift to darker shade (damage visual
           rem   feedback)
           rem This is handled by PlayerRendering.bas using
           rem   playerRecoveryFrames
-          
+
           return
 
 FallDamageApplyGravity
@@ -152,28 +152,28 @@ FallDamageApplyGravity
           rem Constraints: None
           let currentCharacter = playerCharacter[currentPlayer]
           rem Get character type
-          
+
           rem Check for no-gravity characters
-          
+
           if currentCharacter = CharacterFrooty then return
           rem Frooty: no gravity
           if currentCharacter = CharacterDragonOfStorms then return
           rem Dragon of Storms: no gravity (hovering/flying like Frooty)
-          
+
           rem Check for reduced gravity characters
           let temp6 = 2
           rem Harpy (6): 1/2 gravity when falling
           rem Default gravity: 2 pixels/frame²
           if currentCharacter = CharacterHarpy then let temp6 = 1
           rem Harpy: reduced gravity
-          
+
           let temp2 = temp2 + temp6
           rem Apply gravity acceleration
-          
+
           rem Cap at terminal velocity (uses tunable constant from
           rem Constants.bas)
           if temp2 > TerminalVelocity then temp2 = TerminalVelocity
-          
+
           return
 
 CheckGroundCollision
@@ -214,31 +214,31 @@ CheckGroundCollision
           let currentCharacter = playerCharacter[currentPlayer]
           let temp3 = playerY[currentPlayer]
           rem Get player Y position
-          
+
           rem Check if player is at or below ground level
           rem Ground level is at Y = 176 (bottom of playfield, leaving
           if temp3 < 176 then return
           rem Player hit ground (room for sprite)
           let playerY[currentPlayer] = 176
           rem Clamp position to ground
-          
+
           if temp2 <= 0 then return
           rem Check fall damage if moving downward
           rem momentum contains downward velocity
           goto CheckFallDamage
           rem tail call
-          
+
           rem Stop vertical momentum
           rem Note: This assumes vertical momentum is being tracked
           rem In current implementation, this might need integration
           rem with PlayerPhysicsGravity.bas
-          
+
           rem Check collision with platforms/playfield
           rem This is handled by the main collision detection system
           rem Use pfread to detect solid ground beneath player
           rem Convert player X/Y to playfield coordinates
           rem If standing on platform, perform same landing logic
-          
+
           return
 
 HandleFrootyVertical
@@ -255,19 +255,19 @@ HandleFrootyVertical
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if !(currentCharacter = CharacterFrooty) then return
+          if (currentCharacter = CharacterFrooty) = 0 then return
           rem Not Frooty
-          
+
           rem Get joystick state
           rem This needs to be integrated with PlayerInput.bas
           rem Fall damage calculation based on character weight
-          
+
           rem If joyup pressed: move up
           rem playerY[currentPlayer] = playerY[currentPlayer] - 2
-          
+
           rem If joydown pressed: move down (replaces guard action)
           rem playerY[currentPlayer] = playerY[currentPlayer] + 2
-          
+
           rem Clamp to screen bounds
           rem Byte-safe clamp: if wrapped below 0, the new value will
           let oldHealthValue_W = playerY[currentPlayer]
@@ -276,7 +276,7 @@ HandleFrootyVertical
           rem actually health, but same pattern)
           if playerY[currentPlayer] > oldHealthValue_R then let playerY[currentPlayer] = 0
           if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
-          
+
           return
 
 HandleHarpySwoopAttack
@@ -294,12 +294,12 @@ HandleHarpySwoopAttack
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if !(currentCharacter = CharacterHarpy) then return
+          if (currentCharacter = CharacterHarpy) = 0 then return
           rem Not Harpy
-          
+
           let temp6 = playerState[currentPlayer] & PlayerStateBitFacing
           rem Get facing direction from playerState bit 0
-          
+
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
@@ -312,25 +312,25 @@ SetHorizontalMomentumRight
           let playerVelocityX[currentPlayer] = 4
           rem Facing right: set positive momentum
 SetVerticalMomentum
-          
+
           rem Set downward momentum (using temp variable for now)
           rem Integrate with vertical momentum system
           rem This is handled by PlayerPhysicsGravity.bas
           rem This needs to override normal gravity temporarily
           rem Suggest adding PlayerMomentumY variable or state flag
-          
+
           rem Set animation state to swooping attack
           rem This could be animation state 10 or special attack
           let temp6 = playerState[currentPlayer] & MaskPlayerStateLower
           rem   animation
-          let temp6 = temp6 | MaskAnimationFalling 
+          let temp6 = temp6 | MaskAnimationFalling
           let playerState[currentPlayer] = temp6
           rem Animation state 10
-          
+
           rem Spawn melee attack missile for swoop hit detection
           let temp1 = currentPlayer
           gosub SpawnMissile bank12
-          
+
           return
 
 DivideBy20
@@ -369,7 +369,7 @@ DivideBy20
             sta temp2
           end
           return
-          
+
 DivideBy100
           rem DivideBy100: compute floor(temp2 / 100) using range check
           rem
@@ -410,7 +410,7 @@ DBPF_DivideBy8
             lsr temp2
           end
           return
-          
+
 CalculateSafeFallDistance
           rem
           rem Calculate Safe Fall Distance
@@ -426,9 +426,9 @@ CalculateSafeFallDistance
           rem Get character type and weight
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
-          
+
           rem Check for fall damage immunity
-          
+
           if currentCharacter = CharacterBernie then goto SetInfiniteFallDistance
           rem Bernie: infinite
           if currentCharacter = CharacterRoboTito then goto SetInfiniteFallDistance
@@ -442,12 +442,12 @@ SetInfiniteFallDistance
           let temp2 = InfiniteFallDistance
           return
 CalculateFallDistanceNormal
-          
+
           rem Calculate safe fall velocity (from CheckFallDamage logic)
           let temp3 = SafeFallVelocityThresholds[currentCharacter]
           rem Use lookup table to avoid variable division
           rem temp3 = Safe velocity threshold
-          
+
           rem Convert velocity to distance
           rem Using kinematic equation: v² = 2 * g * d
           rem Rearranged: d = v² / (2 * g)
@@ -464,11 +464,11 @@ CalculateFallDistanceNormal
             lsr temp2
           end
           rem temp2 = v² / 4
-          
+
           rem Apply Ninjish Guy bonus (can fall farther)
-          
+
           if currentCharacter = CharacterNinjishGuy then let temp2 = temp2 * 2
           rem Multiply by 2 using BASIC multiplication
-          
+
           return
 

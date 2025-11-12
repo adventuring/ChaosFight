@@ -42,7 +42,7 @@ SetPublisherWindowValues
           let titlescreenWindow3 = 0   ; ChaosFight hidden
           let titlescreenWindow4 = 0   ; BRP hidden
           return
-          
+
 SetAuthorWindowValues
           rem Initialize window values for Author screen
           rem Shows: BRP (slot 4)
@@ -65,7 +65,7 @@ SetAuthorWindowValues
           let titlescreenWindow3 = 0   ; ChaosFight hidden
           let titlescreenWindow4 = 42  ; BRP visible
           return
-          
+
 SetTitleWindowValues
           asm
           SetTitleWindowValues = .SetTitleWindowValues

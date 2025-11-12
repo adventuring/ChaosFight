@@ -118,7 +118,7 @@ ArenaSelectDoneRight
           rem Note: Tens digit only shown for arenas 10-32 (tensDigit >
           rem 0)
           if selectedArena_R = RandomArena then DisplayRandomArena
-          
+
           rem Display arena number (selectedArena + 1 = 1-32)
           rem Convert to two-digit display: tens and ones
           rem Supports up to 32 arenas (tens digit: blank for 1-9, 1 for
@@ -142,7 +142,7 @@ end
           let temp4 = temp1 - temp3
           rem multiplier = tensDigit * 10
           rem onesDigit = ones digit (0-9)
-          
+
           rem Draw tens digit (player4) - only if tensDigit > 0 (for
           rem arenas 10-32)
           if temp2 > 0 then DrawTensDigit
@@ -157,7 +157,7 @@ DrawTensDigit
           rem Use player4 for tens digit
 gosub SetPlayerGlyphFromFont bank16
 DoneTensDigit
-          
+
           let temp1 = temp4
           rem Draw ones digit (player5)
           rem Set P5 fixed position and color (arena digits)
@@ -167,9 +167,9 @@ DoneTensDigit
           let temp3 = 5
           rem Use player5 for ones digit
 gosub SetPlayerGlyphFromFont bank16
-          
+
 goto DisplayDone
-          
+
 DisplayRandomArena
           rem Display ?? for random arena
           rem Use player4 and player5 for two question marks
@@ -183,7 +183,7 @@ DisplayRandomArena
           rem White
           rem Use player4
 gosub SetPlayerGlyphFromFont bank16
-          
+
           rem Second question mark: set P5 fixed position/color
           player5x = 88
           player5y = 20
@@ -191,11 +191,11 @@ gosub SetPlayerGlyphFromFont bank16
           let temp3 = 5
           rem Use player5
 gosub SetPlayerGlyphFromFont bank16
-          
+
 DisplayDone
-          
+
           rem Handle fire button press (confirm selection, start game)
-          
+
           if joy0fire then ArenaSelectConfirm
 goto ArenaSelectDoneConfirm
 ArenaSelectConfirm
@@ -205,7 +205,7 @@ gosub PlaySoundEffect bank15
 goto StartGame1
           rem tail call
 ArenaSelectDoneConfirm
-          
+
           rem drawscreen called by MainLoop
 return
 goto ArenaSelect1Loop
@@ -266,8 +266,8 @@ return
 
           rem
           rem Character Display And Animation
-          
-          
+
+
 ArenaSelectDrawCharacters
           rem Draw all selected characters at their character select
           rem positions
@@ -299,7 +299,7 @@ ArenaSelectDrawCharacters
           rem   positions
           rem Characters remain in same positions as character select
           rem   screen
-          
+
           rem Playfield defined by ArenaSelect data; no per-frame register writes
           rem Draw Player 1 character (top left) if selected
           if playerCharacter[0] = NoCharacter then ArenaSelectDoneDrawP0
@@ -346,7 +346,7 @@ ArenaSelectDoneDrawP1
           rem Draw Player 3 character (bottom left) if Quadtari and
           rem selected
           rem No Quadtari detected; park lower previews off-screen via shared helper
-          if !(controllerStatus & SetQuadtariDetected) then gosub SelectHideLowerPlayerPreviews bank6 : goto ArenaSelectDoneDrawP23
+          if (controllerStatus & SetQuadtariDetected) = 0 then gosub SelectHideLowerPlayerPreviews bank6 : goto ArenaSelectDoneDrawP23
           if playerCharacter[2] = NoCharacter then ArenaSelectDoneDrawP2
           if playerCharacter[2] = CPUCharacter then ArenaSelectDoneDrawP2
           if playerCharacter[2] = RandomCharacter then ArenaSelectDoneDrawP2
@@ -370,7 +370,7 @@ ArenaSelectDoneDrawP2
           rem ArenaSelectDrawCharacters
           rem Draw Player 4 character (bottom right) if Quadtari and
           rem selected
-          if !(controllerStatus & SetQuadtariDetected) then ArenaSelectDoneDrawP23
+          if (controllerStatus & SetQuadtariDetected) = 0 then ArenaSelectDoneDrawP23
           if playerCharacter[3] = NoCharacter then ArenaSelectDoneDrawP23
           if playerCharacter[3] = CPUCharacter then ArenaSelectDoneDrawP23
           if playerCharacter[3] = RandomCharacter then ArenaSelectDoneDrawP23

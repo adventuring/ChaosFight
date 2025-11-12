@@ -57,7 +57,7 @@ CheckBoundaryCollisions
           let temp3 = selectedArena_R
           rem Handle RandomArena (use proper RNG)
           if temp3 = RandomArena then temp3 = rand : temp3 = temp3 & 15
-          
+
           rem Player 0 - boundaries
           let temp1 = 0
           rem Horizontal wrap (player 0): wrap when leaving playable area margins
@@ -67,7 +67,7 @@ CheckBoundaryCollisions
           if playerY[0] < 20 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
           if playerY[0] > 80 then if playerCharacter[0] = 0 then if playerVelocityY[0] > 0 then let playerY[0] = 20 : let playerSubpixelY_W[0] = 20 : let playerSubpixelY_WL[0] = 0
           if playerY[0] > 80 then let playerY[0] = 80 : let playerSubpixelY_W[0] = 80 : let playerSubpixelY_WL[0] = 0 : let playerVelocityY[0] = 0 : let playerVelocityYL[0] = 0
-          
+
           rem Player 1 - boundaries
           let temp1 = 1
           rem Horizontal wrap (player 1): wrap when leaving playable area margins
@@ -77,25 +77,25 @@ CheckBoundaryCollisions
           if playerY[1] < 20 then let playerY[1] = 20 : let playerSubpixelY_W[1] = 20 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
           if playerY[1] > 80 then if playerCharacter[1] = 0 then if playerVelocityY[1] > 0 then let playerY[1] = 20 : let playerSubpixelY_W[1] = 20 : let playerSubpixelY_WL[1] = 0
           if playerY[1] > 80 then let playerY[1] = 80 : let playerSubpixelY_W[1] = 80 : let playerSubpixelY_WL[1] = 0 : let playerVelocityY[1] = 0 : let playerVelocityYL[1] = 0
-          
+
           rem Player 2 - boundaries (if Quadtari and active) - inline nested ifs
-          
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then temp1 = 2
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerX[2] < PlayerLeftWrapThreshold then let playerX[2] = PlayerRightEdge : let playerSubpixelX_W[2] = PlayerRightEdge : let playerSubpixelX_WL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerX[2] > PlayerRightWrapThreshold then let playerX[2] = PlayerLeftEdge : let playerSubpixelX_W[2] = PlayerLeftEdge : let playerSubpixelX_WL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerY[2] > 80 then if playerCharacter[2] = 0 then if playerVelocityY[2] > 0 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerY[2] > 80 then let playerY[2] = 80 : let playerSubpixelY_W[2] = 80 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
-          
+
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then temp1 = 2
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerX[2] < PlayerLeftWrapThreshold then let playerX[2] = PlayerRightEdge : let playerSubpixelX_W[2] = PlayerRightEdge : let playerSubpixelX_WL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerX[2] > PlayerRightWrapThreshold then let playerX[2] = PlayerLeftEdge : let playerSubpixelX_W[2] = PlayerLeftEdge : let playerSubpixelX_WL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerY[2] > 80 then if playerCharacter[2] = 0 then if playerVelocityY[2] > 0 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerY[2] > 80 then let playerY[2] = 80 : let playerSubpixelY_W[2] = 80 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
+
           rem Player 3 - boundaries (if Quadtari and active) - inline nested ifs
-          
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then temp1 = 3
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerX[3] < PlayerLeftWrapThreshold then let playerX[3] = PlayerRightEdge : let playerSubpixelX_W[3] = PlayerRightEdge : let playerSubpixelX_WL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerX[3] > PlayerRightWrapThreshold then let playerX[3] = PlayerLeftEdge : let playerSubpixelX_W[3] = PlayerLeftEdge : let playerSubpixelX_WL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerY[3] > 80 then if playerCharacter[3] = 0 then if playerVelocityY[3] > 0 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerY[3] > 80 then let playerY[3] = 80 : let playerSubpixelY_W[3] = 80 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
-          
+
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then temp1 = 3
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerX[3] < PlayerLeftWrapThreshold then let playerX[3] = PlayerRightEdge : let playerSubpixelX_W[3] = PlayerRightEdge : let playerSubpixelX_WL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerX[3] > PlayerRightWrapThreshold then let playerX[3] = PlayerLeftEdge : let playerSubpixelX_W[3] = PlayerLeftEdge : let playerSubpixelX_WL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerY[3] > 80 then if playerCharacter[3] = 0 then if playerVelocityY[3] > 0 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerY[3] > 80 then let playerY[3] = 80 : let playerSubpixelY_W[3] = 80 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
+
           return
 
 CheckPlayfieldCollisionAllDirections
@@ -153,7 +153,7 @@ CheckPlayfieldCollisionAllDirections
           rem Fetch character height from CharacterHeights table
           let temp5 = CharacterHeights[temp4]
           rem Character height
-          
+
           rem Convert X position to playfield column (0-31)
           let temp6 = temp2
           rem Save original X in temp6 after removing screen inset
@@ -168,7 +168,7 @@ CheckPlayfieldCollisionAllDirections
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp6 & $80 then temp6 = 0
           if temp6 > 31 then temp6 = 31
-          
+
           rem Convert Y position to playfield row (0-pfrows-1)
           rem Divide by pfrowheight using helper
           rem Inline DivideByPfrowheight logic from FallDamage.bas
@@ -197,7 +197,7 @@ DBPF_InlineDivideDone
           rem Check for wraparound: if division resulted in value ≥ 128
           rem (negative), clamp to 0
           if playfieldRow & $80 then let playfieldRow = 0
-          
+
           rem
           rem Check Left Collision
           rem Check if player left edge (temp6 column) has a playfield
@@ -207,13 +207,13 @@ DBPF_InlineDivideDone
           rem 0)
           if temp6 = 0 then goto PFCheckRight
           rem At left edge of screen, skip check
-          
+
           let playfieldColumn_W = temp6 - 1
           rem Column to the left (playfieldColumn)
           rem Check for wraparound: if temp6 was 0, playfieldColumn wraps to 255 (≥ 128)
           if playfieldColumn_R & $80 then goto PFCheckRight
           rem Out of bounds, skip
-          
+
           rem Check head position (top of sprite)
           let temp4 = 0
           rem Reset left-collision flag
@@ -275,9 +275,9 @@ DBPF_InlineDivideDone_2
           if rowCounter_R >= pfrows then goto PFCheckRight
           if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
-          
+
           goto PFCheckRight
-          
+
 PFBlockLeft
           rem Block leftward movement: zero X velocity if negative
           rem Check for negative velocity using twos complement (values
@@ -299,7 +299,7 @@ PFBlockLeft
           if playerX[currentPlayer] < rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R
           if playerX[currentPlayer] < rowYPosition_R then let playerSubpixelX_W[currentPlayer] = rowYPosition_R
           if playerX[currentPlayer] < rowYPosition_R then let playerSubpixelX_WL[currentPlayer] = 0
-          
+
 PFCheckRight
           rem
           rem Check Right Collision
@@ -308,12 +308,12 @@ PFCheckRight
           rem   edge is at temp6 + 4 columns (16px / 4px per column = 4)
           if temp6 >= 31 then goto PFCheckUp
           rem At right edge of screen, skip check
-          
+
           let playfieldColumn_W = temp6 + 4
           rem Column to the right of player right edge (playfieldColumn)
           if playfieldColumn_R > 31 then goto PFCheckUp
           rem Out of bounds, skip
-          
+
           rem Check head, middle, and feet positions
           let temp4 = 0
           rem Reset right-collision flag
@@ -374,9 +374,9 @@ DBPF_InlineDivideDone_7
           if rowCounter_R >= pfrows then goto PFCheckUp
           if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
           if temp4 = 1 then goto PFBlockRight
-          
+
           goto PFCheckUp
-          
+
 PFBlockRight
           rem Block rightward movement: zero X velocity if positive
           if playerVelocityX[currentPlayer] > 0 then let playerVelocityX[currentPlayer] = 0 : let playerVelocityXL[currentPlayer] = 0
@@ -396,20 +396,20 @@ PFBlockRight
           if playerX[currentPlayer] > rowYPosition_R then let playerX[currentPlayer] = rowYPosition_R
           if playerX[currentPlayer] > rowYPosition_R then let playerSubpixelX_W[currentPlayer] = rowYPosition_R
           if playerX[currentPlayer] > rowYPosition_R then let playerSubpixelX_WL[currentPlayer] = 0
-          
+
 PFCheckUp
           rem
           rem Check Up Collision
           rem Check if player head has a playfield pixel above
           if playfieldRow = 0 then goto PFCheckDown_Body
           rem At top of screen, skip check
-          
+
           let rowCounter_W = playfieldRow - 1
           rem Row above player head (rowCounter)
           rem Check for wraparound: if playfieldRow was 0, rowCounter
           rem wraps to 255 (≥ 128)
           if rowCounter_R & $80 then goto PFCheckDown_Body
-          
+
           rem Check center column (temp6)
           let temp4 = 0
           rem Reset upward-collision flag
@@ -426,9 +426,9 @@ PFCheckUp_CheckRight
           let playfieldColumn_W = temp6 + 1
           if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
           if temp4 = 1 then goto PFBlockUp
-          
+
           goto PFCheckDown_Body
-          
+
 PFBlockUp
           rem Block upward movement: zero Y velocity if negative
           rem Check for negative velocity using twos complement (values
@@ -497,12 +497,12 @@ DBPF_InlineDivideDone_5
           let rowCounter_W = playfieldRow + temp2
           rem Row at player feet (rowCounter)
           if rowCounter_R >= pfrows then return
-          
+
           let playfieldRow = rowCounter_R + 1
           rem Row below feet (playfieldRow - temporarily reuse for this
           rem check)
           if playfieldRow >= pfrows then return
-          
+
           rem Check center, left, and right columns below feet
           let temp4 = 0
           rem Reset downward-collision flag
@@ -517,7 +517,7 @@ PFCheckDown_CheckRight
           let playfieldColumn_W = temp6 + 1
           if pfread(playfieldColumn_R, playfieldRow) then temp4 = 1
           if temp4 = 1 then goto PFBlockDown
-          
+
           return
 
 CheckPlayfieldCollisionUpDone

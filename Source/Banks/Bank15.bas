@@ -12,7 +12,7 @@
           rem Note: Pointer tables must be updated with actual addresses
           rem   after compilation
           rem Songs stored in Bank 15: IDs 0-Bank15MaxSongID (currently Bernie, OCascadia, Revontuli, EXO, Grizzards, MagicalFairyForce, Bolero)
-          
+
           rem Song 0: Bernie (Bernie’s theme)
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Bernie.NTSC.bas"

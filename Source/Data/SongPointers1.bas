@@ -1,7 +1,7 @@
           rem
           rem ChaosFight - Source/Data/SongPointers1.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
+
           rem Song Pointer Data Tables - Bank 1
           rem Compact pointer lookup tables for songs stored in Bank 1
           rem Format: data SongPointers1L, SongPointers1H (23 entries)
@@ -26,7 +26,7 @@ end
             >Song_Character28Theme_Voice0, >Song_Character29Theme_Voice0, >Song_Character30Theme_Voice0, >Song_Chaotica_Voice0,
             >Song_AtariToday_Voice0, >Song_Interworldly_Voice0
 end
-          
+
           rem Voice 1 stream pointer lookup tables for Bank 1
           data SongPointers1SecondL
             <Song_LowRes_Voice1, <Song_RoboTito_Voice1,

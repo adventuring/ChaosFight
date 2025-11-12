@@ -1,7 +1,7 @@
           rem
           rem ChaosFight - Source/Routines/FontRendering.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
+
           rem ARENA DIGIT RENDERING - P4/P5 only
           rem Renders arena selection numbers using player sprites 4 and 5
           rem Always at fixed positions (X=80,88 Y=20), always white
@@ -17,4 +17,4 @@
 
           rem Bank 16 exposes only SetPlayerGlyphFromFont for arena digits
           rem Callers must set temp1 = glyph (0-15) and temp3 = sprite (4 or 5)
-         
+

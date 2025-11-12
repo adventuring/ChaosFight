@@ -47,17 +47,17 @@ AuthorPrelude
           rem   via includes
           rem No explicit loading needed - titlescreen kernel handles
           rem   bitmap display
-          
+
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then AuthorPreludeComplete
           if joy1fire then AuthorPreludeComplete
-          
+
           rem Check Quadtari controllers if detected (inline to avoid label)
-          
+
           if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete
           if controllerStatus & SetQuadtariDetected then if !INPT2{7} then AuthorPreludeComplete
-          
+
           gosub UpdateMusic bank1
 
           rem Auto-advance after music completes + 0.5s

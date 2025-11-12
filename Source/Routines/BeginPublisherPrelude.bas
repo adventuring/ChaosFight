@@ -36,10 +36,10 @@ BeginPublisherPrelude
           rem              Tail call to StartMusic
           let preambleTimer = 0
           rem Initialize prelude timer
-          
+
           rem Set background color
           COLUBK = ColGray(0)
-          
+
           rem Start AtariToday music
           let temp1 = MusicAtariToday
           goto StartMusic bank1

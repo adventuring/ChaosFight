@@ -56,10 +56,10 @@ DisplayWinScreen
           rem              DWS_LoadColorColors (all called via goto or
           rem              gosub)
           rem Called from WinnerAnnouncementLoop per-frame loop
-          
+
           gosub SetGameScreenLayout bank7
           rem Set screen layout (32×8 for character display)
-          
+
           rem Load winner screen playfield pattern
           rem Set playfield pointers to WinnerScreenPlayfield data
           asm
@@ -72,31 +72,31 @@ DisplayWinScreen
           lda #>WinnerScreenPlayfield
           sta PF2pointer+1
           end
-          
+
           gosub DWS_GetBWMode
           rem Load playfield colors based on B&W mode
           if temp2 then gosub DWS_LoadBWColors : goto DisplaySkipElse
           gosub DWS_LoadColorColors
 DisplaySkipElse
-          
+
           let temp1 = playersRemaining_R
           rem Get players remaining count (SCRAM read)
-          
+
           rem Get winner index (already set by FindWinner, SCRAM read)
           let temp2 = winnerPlayerIndex_R
           rem Read after DWS_GetBWMode to avoid temp2 conflict
-          
+
           rem Calculate rankings from eliminationOrder
           rem Winner = not eliminated (already have winnerPlayerIndex)
           rem 2nd place = highest eliminationOrder (last eliminated)
           rem 3rd place = second highest eliminationOrder
-          
+
           let temp3 = 255
           rem Find 2nd and 3rd place rankings
           let temp4 = 255
           let temp5 = 0
           let winScreenThirdPlaceOrder_W = 0
-          
+
           let temp1 = 0
           rem Check all players for ranking
 DWS_RankLoop
@@ -122,15 +122,15 @@ DWS_RankLoop
           rem DWS_UpdateSecond, DWS_CheckThird, DWS_RankNext
           rem Skip if this is the winner
           if temp1 = temp2 then DWS_RankNext
-          
+
           rem Get this player’s elimination order (SCRAM read)
           let winScreenCandidateOrder_W = eliminationOrder_R[temp1]
-          
+
           rem Check if this is 2nd place (higher order than current 2nd)
-          
+
           if winScreenCandidateOrder_R > temp5 then DWS_UpdateSecond
           goto DWS_CheckThird
-          
+
 DWS_UpdateSecond
           rem Move current 2nd to 3rd, then update 2nd
           rem
@@ -150,7 +150,7 @@ DWS_UpdateSecond
           let temp5 = winScreenCandidateOrder_R
           let temp3 = temp1
           goto DWS_RankNext
-          
+
 DWS_CheckThird
           rem Check if this is 3rd place (higher order than current 3rd,
           rem but lower than 2nd)
@@ -168,7 +168,7 @@ DWS_CheckThird
           rem Constraints: Must be colocated with DisplayWinScreen,
           rem DWS_RankLoop, DWS_RankNext
           if winScreenCandidateOrder_R > winScreenThirdPlaceOrder_R then let winScreenThirdPlaceOrder_W = winScreenCandidateOrder_R : temp4 = temp1
-          
+
 DWS_RankNext
           rem Ranking loop continuation
           rem
@@ -183,19 +183,19 @@ DWS_RankNext
           rem Constraints: Must be colocated with DisplayWinScreen, DWS_RankLoop
           let temp1 = temp1 + 1
           if temp1 < 4 then goto DWS_RankLoop
-          
+
           rem Position characters based on playersRemaining
           rem 1 player: Winner centered (X=80, Y=row 24 = 192 pixels)
           rem 2 players: Winner centered (X=80), Runner-up left (X=40)
           rem 3+ players: Winner centered high (X=80, Y=row 16), 2nd
           rem   left (X=40), 3rd right (X=120)
-          
+
           rem Position winner (always centered)
-          
+
           if temp1 = 1 then DWS_Position1Player
           if temp1 = 2 then DWS_Position2Players
           goto DWS_Position3Players
-          
+
 DWS_Position1Player
           rem 1 player: Winner centered on podium
           rem
@@ -229,7 +229,7 @@ DWS_Position1Player
           let playerX[2] = 0
           let playerX[3] = 0
           return
-          
+
 DWS_Position2Players
           rem 2 players: Winner centered, runner-up left
           rem
@@ -259,9 +259,9 @@ DWS_Position2Players
           let temp3 = 0
           rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank16
-          
+
           rem Runner-up (P1) - only if valid
-          
+
           if temp3 = 255 then DWS_Hide2Player
           let playerX[1] = 40
           let playerY[1] = 192
@@ -303,7 +303,7 @@ DWS_Hide2PlayerDone
           rem Hide unused players
           let playerX[3] = 0
           return
-          
+
 DWS_Position3Players
           rem 3+ players: Winner centered high, 2nd left, 3rd right
           rem
@@ -335,9 +335,9 @@ DWS_Position3Players
           let temp3 = 0
           rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank16
-          
+
           rem 2nd place (P1) - left platform
-          
+
           if temp3 = 255 then DWS_Hide3Player2
           let playerX[1] = 40
           let playerY[1] = 192
@@ -375,9 +375,9 @@ DWS_Hide3Player2Done
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
-          
+
           rem 3rd place (P2) - right platform
-          
+
           if temp4 = 255 then DWS_Hide3Player3
           let playerX[2] = 120
           let playerY[2] = 192
@@ -418,7 +418,7 @@ DWS_Hide3Player3Done
           let playerX[3] = 0
           rem Hide unused player
           return
-          
+
 DWS_GetBWMode
           rem Check if B&W mode is active
           rem

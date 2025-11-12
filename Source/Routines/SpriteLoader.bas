@@ -97,7 +97,7 @@ LoadPlayerSprite
           asm
           LoadPlayerSprite = .LoadPlayerSprite
           end
-          
+
 LoadPlayerSpriteDispatch
           rem removed (was a small shim); callers now use inline block above
           rem (label kept only if referenced by generated code)

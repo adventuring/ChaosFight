@@ -1,12 +1,12 @@
           rem
           rem ChaosFight - Source/Routines/MusicBankHelpers15.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
+
           rem Songs Bank Helper Functions (bank 15)
           rem These functions access song data tables and streams in
           rem   Bank 15
           rem Duplicate of MusicBankHelpers.bas but for Bank 15 songs
-          
+
 LoadSongPointer
           rem Lookup song pointer from tables (Bank 15 songs: 0-Bank15MaxSongID)
           rem
@@ -32,7 +32,7 @@ LoadSongPointer
 LSP15_InvalidSong
           let songPointer = 0
           return
-          
+
 LoadSongVoice1PointerBank15
           rem Lookup Voice 1 song pointer from tables (Bank 15 songs)
           rem
@@ -57,7 +57,7 @@ LoadSongVoice1PointerBank15
           let songPointer = songPointer * 256
           let songPointer = songPointer + SongPointers2SecondL[temp2]
           return
-          
+
 LoadMusicNote0
           rem Load next note from Voice 0 stream (Bank 15, assembly pointer access).
           rem Input: musicVoice0Pointer (global 16-bit) = current Song_Voice0 pointer
@@ -93,33 +93,33 @@ LoadMusicNote0
             lda (musicVoice0Pointer),y  ; Load Delay
             sta temp5
           end
-          
+
           rem Check for end of track (Duration = 0)
           if temp4 = 0 then LoadMusicNote0EndOfTrack
-          
+
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           let temp6 = temp2 & %11110000
           rem   AUDCV
           let temp6 = temp6 / 16
           let MusicVoice0TargetAUDV_W = temp2 & %00001111
-          
+
           rem Store target AUDV and total frames for envelope
           let MusicVoice0TotalFrames_W = temp4 + temp5
-          
+
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice0)
           AUDC0 = temp6
           AUDF0 = temp3
           AUDV0 = MusicVoice0TargetAUDV_R
-          
+
           let musicVoice0Frame_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
-          
+
           rem Advance pointer by 4 bytes (16-bit addition)
           let musicVoice0Pointer = musicVoice0Pointer + 4
-          
+
           return
-          
+
 LoadMusicNote0EndOfTrack
           rem Helper: Handle end of track for Voice 0 (Bank 15)
           rem
@@ -143,7 +143,7 @@ LoadMusicNote0EndOfTrack
           rem   only)
           AUDV0 = 0
           return
-          
+
 LoadMusicNote1
           rem Load next note from Voice 1 stream using assembly for pointer access (Bank 15)
           rem
@@ -184,32 +184,32 @@ LoadMusicNote1
             lda (musicVoice1Pointer),y  ; Load Delay
             sta temp5
           end
-          
+
           rem Check for end of track (Duration = 0)
           if temp4 = 0 then LoadMusicNote1EndOfTrack
-          
+
           let temp6 = temp2 & %11110000
           rem Extract AUDC and AUDV
           let temp6 = temp6 / 16
           let MusicVoice1TargetAUDV_W = temp2 & %00001111
-          
+
           rem Store target AUDV and total frames for envelope
           let MusicVoice1TotalFrames_W = temp4 + temp5
-          
+
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice1)
           AUDC1 = temp6
           AUDF1 = temp3
           AUDV1 = MusicVoice1TargetAUDV_R
-          
+
           let musicVoice1Frame_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
-          
+
           rem Advance pointer by 4 bytes
           let musicVoice1Pointer = musicVoice1Pointer + 4
-          
+
           return
-          
+
 LoadMusicNote1EndOfTrack
           rem Helper: Handle end of track for Voice 1 (Bank 15)
           rem

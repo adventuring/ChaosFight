@@ -47,16 +47,16 @@ UpdateCharacterParade
           rem              Called every frame from TitleScreenMain
           let titleParadeTimer = titleParadeTimer + 1
           rem Increment parade timer
-          
+
           rem Start parade after ~4 seconds (TitleParadeDelayFrames frames)
           if titleParadeTimer < TitleParadeDelayFrames then return
-          
+
           rem Check if we need to start a new character
           if !titleParadeActive then StartNewParadeCharacter
 
           rem Move character across screen (if active)
           goto MoveParadeCharacter
-          
+
 StartNewParadeCharacter
           rem Start new character parade
           rem
@@ -80,7 +80,7 @@ Roll
           rem Start off-screen left
           let titleParadeActive = 1
           return
-          
+
 MoveParadeCharacter
           rem Move character across screen
           rem
@@ -95,11 +95,11 @@ MoveParadeCharacter
           rem Constraints: Must be colocated with UpdateCharacterParade, ParadeCharacterLeft
           let titleParadeX = titleParadeX + 2
           rem Move 2 pixels per frame
-          
+
           if titleParadeX > 170 then ParadeCharacterLeft
           rem Check if character has left screen
           return
-          
+
 ParadeCharacterLeft
           rem Character has left - wait 1 second (FramesPerSecond frames) before next
           rem
@@ -140,13 +140,13 @@ DrawParadeCharacter
           rem Position character at bottom (y=80) and current X position
           player0x = titleParadeX
           player0y = 80
-          
+
           rem Always face right while marching across the title screen
           REFP0 = PlayerStateBitFacing
-          
+
           rem Parade render uses fixed white color
           COLUP0 = ColGray(12)
-          
+
 DrawParadeCharacterSprite
           rem
           rem Draw Parade Character Sprite

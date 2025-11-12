@@ -34,7 +34,7 @@ CharacterSelectEntry
           rem   detection (upgrades only)
           rem Controller detection is handled by CtrlDetPads with
           rem   monotonic state machine
-          
+
           let characterSelectAnimationTimer  = 0
           rem Initialize character select animations
           let characterSelectAnimationState  = 0
@@ -89,12 +89,12 @@ CharacterSelectLoop
           rem   1
           rem On odd frames (qtcontroller=1): handle controllers 2 and 3
           rem   (if Quadtari detected)
-          
+
           if qtcontroller then goto CharacterSelectHandleQuadtari
-          
+
           rem Handle Player 1 input (joy0 on even frames)
           let currentPlayer = 0
-          
+
           if joy0left then gosub SelectStickLeft
           if joy0right then gosub SelectStickRight
 
@@ -111,7 +111,7 @@ Player1LockSelection
           rem Locked normal (100% health)
 
 Player1HandicapSelection
-          let temp2 = PlayerHandicapped 
+          let temp2 = PlayerHandicapped
 Player1LockSelectionDone
           let temp1 = currentPlayer
           gosub SetPlayerLocked
@@ -119,7 +119,7 @@ DonePlayer1
 
           rem Handle Player 2 input (joy1 on even frames)
           let currentPlayer = 1
-          
+
           if joy1left then gosub SelectStickLeft
           if joy1right then gosub SelectStickRight
 
@@ -136,7 +136,7 @@ Player2LockSelection
           rem Locked normal (100% health)
 
 Player2HandicapSelection
-          let temp2 = PlayerHandicapped 
+          let temp2 = PlayerHandicapped
 Player2LockSelectionDone
           let temp1 = currentPlayer
           gosub SetPlayerLocked
@@ -153,7 +153,7 @@ CharacterSelectHandleQuadtari
 
 CharacterSelectHandlePlayer3
           let currentPlayer = 2
-          
+
           if joy0left then gosub SelectStickLeft
           if joy0right then gosub SelectStickRight
 
@@ -167,10 +167,10 @@ Player3LockSelection
           if joy0down then Player3HandicapSelection
           let temp2 = PlayerLockedNormal
           goto Player3LockSelectionDone
-          
+
 Player3HandicapSelection
-          let temp2 = PlayerHandicapped 
-          
+          let temp2 = PlayerHandicapped
+
 Player3LockSelectionDone
           let temp1 = currentPlayer
           gosub SetPlayerLocked
@@ -184,7 +184,7 @@ DonePlayer3
 
 CharacterSelectHandlePlayer4
           let currentPlayer = 3
-          
+
           if joy1left then gosub SelectStickLeft
           if joy1right then gosub SelectStickRight
 
@@ -201,13 +201,13 @@ Player4LockSelection
           rem Locked normal (100% health)
 
 Player4HandicapSelection
-          let temp2 = PlayerHandicapped 
+          let temp2 = PlayerHandicapped
 Player4LockSelectionDone
           let temp1 = currentPlayer
           gosub SetPlayerLocked
           rem Locked with handicap (75% health)
 DonePlayer4
-          
+
           qtcontroller = 0
           rem Switch back to even frame mode for next iteration
 CharacterSelectDonePlayer3
@@ -356,19 +356,19 @@ CharacterSelectDetectQuadtari
           rem CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
           rem Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH)
           rem   AND Right (INPT2 LOW, INPT3 HIGH)
-          
+
           rem Check left side: if INPT0 is HIGH then not detected
-          
+
           if INPT0{7} then CharacterSelectQuadtariAbsent
           rem Check left side: if INPT1 is LOW then not detected
           if !INPT1{7} then CharacterSelectQuadtariAbsent
-          
+
           rem Check right side: if INPT2 is HIGH then not detected
-          
+
           if INPT2{7} then CharacterSelectQuadtariAbsent
           rem Check right side: if INPT3 is LOW then not detected
           if !INPT3{7} then CharacterSelectQuadtariAbsent
-          
+
           goto CharacterSelectQuadtariDetected
           rem All checks passed - Quadtari detected
 
@@ -389,7 +389,7 @@ CharacterSelectQuadtariAbsent
           rem   is absent. Monotonic detection means controllerStatus is never cleared here.
           rem   CtrlDetPads (SELECT handler) is the sole routine that upgrades controller
           rem   status flags.
-          
+
 CharacterSelectQuadtariDetected
           rem Helper: Quadtari detected - set detection flag
           rem

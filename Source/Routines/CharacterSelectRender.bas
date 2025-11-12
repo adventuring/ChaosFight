@@ -10,8 +10,8 @@ SelectDrawScreen
           let temp1 = 1
           gosub SelectRenderPlayerPreview
           if controllerStatus & SetQuadtariDetected then goto SelectDrawLowerPlayers
-gosub SelectHideLowerPlayerPreviews
-goto SelectDrawScreenDone
+          gosub SelectHideLowerPlayerPreviews
+          goto SelectDrawScreenDone
 SelectDrawLowerPlayers
           let temp1 = 2
           gosub SelectRenderPlayerPreview
@@ -38,7 +38,7 @@ PlayerPreviewSetPosition
           if temp1 = 0 then goto PlayerPreviewSetPositionP0
           if temp1 = 1 then goto PlayerPreviewSetPositionP1
           if temp1 = 2 then goto PlayerPreviewSetPositionP2
-goto PlayerPreviewSetPositionP3
+          goto PlayerPreviewSetPositionP3
 PlayerPreviewSetPositionP0
           player0x = 56
           player0y = 40
@@ -71,17 +71,17 @@ RenderPlayerPreview
           if currentCharacter = RandomCharacter then goto RenderPlayerPreviewDefault
           let temp4 = characterSelectPlayerAnimationFrame_R[currentPlayer]
           let temp1 = currentPlayer
-gosub GetPlayerLocked
+          gosub GetPlayerLocked
           let temp5 = temp2
           let temp2 = temp4
           let temp3 = ActionIdle
           if temp5 = PlayerHandicapped then temp3 = ActionFallen
-goto RenderPlayerPreviewInvoke
+          goto RenderPlayerPreviewInvoke
 RenderPlayerPreviewDefault
           let temp2 = 0
           let temp3 = ActionIdle
 RenderPlayerPreviewInvoke
-gosub LoadCharacterSprite bank16
+          gosub LoadCharacterSprite bank16
           let temp2 = 0
           let temp3 = 0
 PlayerPreviewApplyColor
@@ -184,11 +184,11 @@ CharacterSelectCheckControllerRescan
           if switchselect then goto CharacterSelectDoRescan
           let temp6 = switchbw
           if temp6 = colorBWPrevious_R then goto CharacterSelectRescanDone
-gosub CtrlDetPads bank14
+          gosub CtrlDetPads bank14
           let colorBWPrevious_W = switchbw
-goto CharacterSelectRescanDone
+          goto CharacterSelectRescanDone
 CharacterSelectDoRescan
-gosub CtrlDetPads bank14
+          gosub CtrlDetPads bank14
 CharacterSelectRescanDone
           return
 

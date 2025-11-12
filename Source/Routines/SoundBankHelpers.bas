@@ -1,10 +1,10 @@
           rem ChaosFight - Source/Routines/SoundBankHelpers.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
+
           rem Sounds Bank Helper Functions
           rem These functions access sound data tables and streams in
           rem   Bank 15
-          
+
 LoadSoundPointer
           rem Lookup sound pointer from tables (Bank 15 sounds: 0-9)
           rem
@@ -31,7 +31,7 @@ LoadSoundPointerOutOfRange
           rem Out of range - mark sound pointer inactive
 LoadSoundPointerReturn
           return
-          
+
 LoadSoundNote
           rem Load next sound-effect note (assembly pointer access, Voice 0).
           rem Input: soundEffectPointer (global 16-bit) = current note pointer
@@ -65,29 +65,29 @@ LoadSoundNote
             lda (soundEffectPointer),y  ; Load Delay
             sta temp5
           end
-          
+
           rem Check for end of sound (Duration = 0)
           if temp4 = 0 then let soundEffectPointer = 0 : AUDV0 = 0 : return
-          
+
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           let temp6 = temp2 & %11110000
           rem   AUDCV
           let temp6 = temp6 / 16
           let soundEffectID_W = temp2 & %00001111
-          
+
           rem Write to TIA registers (use Voice 0 for sound effects)
           AUDC0 = temp6
           AUDF0 = temp3
           AUDV0 = soundEffectID_R
-          
+
           let soundEffectFrame_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
-          
+
           rem Advance pointer by 4 bytes (16-bit addition)
           let soundEffectPointer = soundEffectPointer + 4
-          
+
           return
-          
+
 LoadSoundNote1
           rem Load next note from sound effect stream for Voice 1
           rem
@@ -125,27 +125,27 @@ LoadSoundNote1
             lda (soundEffectPointer1),y  ; Load Delay
             sta temp5
           end
-          
+
           rem Check for end of sound (Duration = 0)
           if temp4 = 0 then let soundEffectPointer1 = 0 : AUDV1 = 0 : return
-          
+
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
           let temp6 = temp2 & %11110000
           rem   AUDCV
           let temp6 = temp6 / 16
           let soundEffectID_W = temp2 & %00001111
-          
+
           rem Write to TIA registers (use Voice 1 for sound effects)
           AUDC1 = temp6
           AUDF1 = temp3
           AUDV1 = soundEffectID_R
-          
+
           let soundEffectFrame1_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
-          
+
           rem Advance pointer by 4 bytes (16-bit addition)
           let soundEffectPointer1 = soundEffectPointer1 + 4
-          
+
           return
 
           asm

@@ -212,7 +212,7 @@ HCSC_CycleDone
           rem Play navigation sound
           gosub PlaySoundEffect bank15
           return
-          
+
 CharacterSelectInputEntry
           gosub CharacterSelectCheckControllerRescan bank6
 
@@ -250,13 +250,13 @@ CharacterSelectHandleTwoPlayers
           if joy1up then temp1 = temp3 + 1 : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked bank6
           if joy1fire then temp1 = temp3 + 1 : gosub HandleCharacterSelectFire bank6
           return
-          
+
 
 
 CharacterSelectInputComplete
           gosub CharacterSelectHandleRandomRolls
           rem Handle random character re-rolls if any players need it
-          
+
           gosub SelectUpdateAnimations bank6
           rem Update character select animations
           rem Draw selection screen
@@ -267,7 +267,7 @@ CharacterSelectInputComplete
           rem
           rem Random Character Roll Handler
           rem Re-roll random selections until valid (0-15), then lock
-          
+
 CharacterSelectHandleRandomRolls
           rem Check each player for pending random roll
           let temp1 = 1
@@ -302,7 +302,7 @@ CharacterSelectRollRandomPlayerHandicap
 CharacterSelectRollRandomPlayerLockDone
           let randomSelectFlags_W[currentPlayer] = 0
           return
-          
+
 CharacterSelectRollsDone
           return
 
@@ -318,7 +318,7 @@ CharacterSelectCheckReady
           rem P2 not locked, check if on CPU
           if playerCharacter[1] = CPUCharacter then goto CharacterSelectFinish
           goto CharacterSelectReadyDone
-          
+
 CharacterSelectQuadtariReady
           rem 4-player mode: Count players who are ready (locked OR on
           let readyCount = 0
@@ -340,7 +340,7 @@ CharacterSelectQuadtariReady
           let temp1 = 3 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[3] = CPUCharacter then readyCount = readyCount + 1
           let temp1 = 3 : gosub GetPlayerLocked bank6 : if !temp2 && playerCharacter[3] = NoCharacter then readyCount = readyCount + 1
           if readyCount >= 2 then goto CharacterSelectFinish
-          
+
 CharacterSelectReadyDone
           return
 
@@ -368,7 +368,7 @@ DoneCharacter3Facing
           if playerCharacter[3] = NoCharacter then DoneCharacter4Facing
           let playerState[3] = playerState[3] | 1
 DoneCharacter4Facing
-          
+
           let gameMode = ModeFallingAnimation
           rem Transition to falling animation
           gosub ChangeGameMode bank14
@@ -378,6 +378,6 @@ CycleRightFromNO
           let temp1 = 0
           rem NoCharacter(255) goes to 0
           return
-          
+
           rem Animation helpers moved to CharacterSelectRender.bas (bank 10)
 

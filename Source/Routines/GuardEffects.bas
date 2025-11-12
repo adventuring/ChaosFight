@@ -20,7 +20,7 @@ ApplyGuardColor
           rem Check if player is guarding
           if !temp2 then return
           rem Not guarding
-          
+
           rem set light cyan color
           rem Optimized: Apply guard color with computed assignment
           on temp1 goto GuardColor0 GuardColor1 GuardColor2 GuardColor3
@@ -68,13 +68,13 @@ CheckGuardCooldown
           let temp3 = playerState[temp1] & 2
           rem Check if player is currently guarding
           if temp3 then GuardCooldownBlocked
-          
+
           rem Check cooldown timer (stored in playerTimers array)
           let temp3 = playerTimers_R[temp1]
           rem playerTimers stores frames remaining in cooldown
-          
+
           if temp3 > 0 then GuardCooldownBlocked
-          
+
           let temp2 = 1
           rem Cooldown expired, guard allowed
           return
@@ -114,12 +114,12 @@ StartGuard
           rem Constraints: None
           let playerState[temp1] = playerState[temp1] | 2
           rem Set guard bit in playerState
-          
+
           rem Set guard duration timer using GuardTimerMaxFrames (TV-standard aware)
           rem Store guard duration timer in playerTimers array
           rem This timer will be decremented each frame until it reaches 0
           let playerTimers_W[temp1] = GuardTimerMaxFrames
-          
+
           return
 
 UpdateGuardTimers
@@ -183,7 +183,7 @@ UpdateSingleGuardTimer
           let temp2 = playerState[temp1] & 2
           rem Check if player is guarding
           if temp2 then UpdateGuardTimerActive
-          
+
           rem Player not guarding - decrement cooldown timer
           let temp3 = playerTimers_R[temp1]
           rem Fix RMW: Read from _R, modify, write to _W
@@ -212,7 +212,7 @@ UpdateGuardTimerActive
           if temp3 = 0 then GuardTimerExpired
           rem Guard timer already expired (shouldn’t happen, but safety
           rem   check)
-          
+
           let temp3 = temp3 - 1
           rem Decrement guard duration timer
           let playerTimers_W[temp1] = temp3

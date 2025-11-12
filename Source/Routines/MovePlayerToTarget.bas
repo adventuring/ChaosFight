@@ -9,7 +9,7 @@ MovePlayerToTarget
           rem        temp3 = target Y position
           rem Output: Player moved closer to target, or at target
           rem Mutates: playerX[], playerY[], temp4-temp6, distanceUp_W
-          
+
           rem Calculate X distances
           gosub CalcDeltaXRight
           gosub CalcDeltaXLeft
@@ -25,7 +25,7 @@ MovePlayerToTarget
           rem Then move in Y direction
           if temp6 > 0 then gosub MoveDown
           if distanceUp_W > 0 then gosub MoveUp
-          
+
           rem Check if at target
           gosub AtTarget
           return
@@ -41,7 +41,7 @@ DeltaXDone
 
 CalcDeltaYDown
           rem Calculate Y distance downward
-          rem Input: temp1 = player, temp3 = target Y  
+          rem Input: temp1 = player, temp3 = target Y
           rem Output: temp6 = distance down (0 if at or above target)
           let temp6 = temp3 - playerY[temp1]
           if temp6 < 0 then temp6 = 0
@@ -115,11 +115,11 @@ NudgeFromPF
           rem Output: Player nudged right/left based on collision
           let originalPlayerX_W = playerX[temp1]
           let originalPlayerY_W = playerY[temp1]
-          
+
           rem Check right nudge needed
           gosub NudgeRight
-          
-          rem Check left nudge needed  
+
+          rem Check left nudge needed
           gosub NudgeLeft
 NudgeHorizontalDone
           return

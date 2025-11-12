@@ -1,6 +1,6 @@
           rem ChaosFight - Source/Routines/GameLoopInit.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
+
           rem
           rem Game Loop Initialization
           rem Initializes all game state for the main gameplay loop.
@@ -67,11 +67,11 @@ BeginGameLoop
           rem Initialize sprite pointers to RAM addresses
           gosub InitializeSpritePointers bank14
           rem Ensure pointers are set before loading any sprite data
-          
+
           gosub SetGameScreenLayout bank7
           rem Set screen layout for gameplay (32×8 game layout)
           rem SuperChip variables var0-var15 available in gameplay
-          
+
           rem Initialize player positions
           rem 2-Player Game: P1 at 1/3 width (53), P2 at 2/3 width (107)
           rem 4-Player Game: P1 at 1/5 (32), P3 at 2/5 (64), P4 at 3/5
@@ -80,7 +80,7 @@ BeginGameLoop
           rem   row 1)
           rem Check if 4-player mode (Quadtari detected)
           if ControllerStatus & SetQuadtariDetected then Init4PlayerPositions
-          
+
           let playerX[0] = 53 : PlayerY[0] = 24
           rem 2-player mode positions
           let playerX[1] = 107 : PlayerY[1] = 24
@@ -88,7 +88,7 @@ BeginGameLoop
           rem Players 3 & 4 use same as P1/P2 if not in 4-player mode
           let playerX[3] = 107 : PlayerY[3] = 24
           goto InitPositionsDone
-          
+
 Init4PlayerPositions
           rem Initialize player positions for 4-player mode
           rem
@@ -111,7 +111,7 @@ Init4PlayerPositions
           let playerX[1] = 128 : PlayerY[1] = 24
           rem Player 4: 3/5 width
           rem Player 2: 4/5 width
-          
+
 InitPositionsDone
           rem Player positions initialization complete
           rem
@@ -124,7 +124,7 @@ InitPositionsDone
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with BeginGameLoop
-          
+
           rem Initialize player states (facing direction)
           let playerState[0] = 0
           rem Player 1 facing right
@@ -134,7 +134,7 @@ InitPositionsDone
           rem Player 3 facing right
           let playerState[3] = 1
           rem Player 4 facing left
-          
+
           rem Initialize player health (apply handicap if selected)
           rem PlayerLocked value: 0=unlocked, 1=normal (100% health),
           rem Optimized: Simplified player health initialization
@@ -145,7 +145,7 @@ InitPositionsDone
           let playerHealth[currentPlayer] = PlayerHealthMax
 PlayerHealthInitDone
           next
-          
+
           for currentPlayer = 0 to 3
           rem Initialize player timers
           let playerTimers_W[currentPlayer] = 0
@@ -155,11 +155,11 @@ PlayerHealthInitDone
           let playerSubpixelX_W[currentPlayer] = 0
           let playerSubpixelY_W[currentPlayer] = 0
           next
-          
+
           rem Optimized: Set Players34Active flag based on character selections
           let ControllerStatus = ControllerStatus & ClearPlayers34Active
-          if !(playerCharacter[2] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
-          if !(playerCharacter[3] = NoCharacter) then let ControllerStatus = ControllerStatus | SetPlayers34Active
+          if (playerCharacter[2] = NoCharacter) = 0 then let ControllerStatus = ControllerStatus | SetPlayers34Active
+          if (playerCharacter[3] = NoCharacter) = 0 then let ControllerStatus = ControllerStatus | SetPlayers34Active
 
           rem Initialize missiles
           rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 =
@@ -175,13 +175,13 @@ PlayerHealthInitDone
           let eliminationCounter_W = 0
           rem No game end countdown
           rem Reset elimination order counter
-          
+
           let eliminationOrder_W[0] = 0
           rem Initialize elimination order tracking
           let eliminationOrder_W[1] = 0
           let eliminationOrder_W[2] = 0
           let eliminationOrder_W[3] = 0
-          
+
           let winnerPlayerIndex_W = 255
           rem Initialize win screen variables
           let displayRank_W = 0
@@ -191,9 +191,9 @@ PlayerHealthInitDone
           rem Reset win screen timer
 
           rem Count additional human/CPU players beyond Player 1
-          if !(playerCharacter[1] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1
-          if !(playerCharacter[2] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1
-          if !(playerCharacter[3] = NoCharacter) then let playersRemaining_W = playersRemaining_R + 1
+          if (playerCharacter[1] = NoCharacter) = 0 then let playersRemaining_W = playersRemaining_R + 1
+          if (playerCharacter[2] = NoCharacter) = 0 then let playersRemaining_W = playersRemaining_R + 1
+          if (playerCharacter[3] = NoCharacter) = 0 then let playersRemaining_W = playersRemaining_R + 1
 
           rem Frame counter is automatically initialized and incremented
           rem by batariBASIC kernel
@@ -201,7 +201,7 @@ PlayerHealthInitDone
           let GameState  = 0
           rem Initialize game state
           rem 0 = normal play, 1 = paused, 2 = game ending
-          
+
           rem Initialize player sprite NUSIZ registers (double width)
           rem NUSIZ = 5: double width, single copy
           NUSIZ0 = 5

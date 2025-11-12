@@ -45,11 +45,11 @@ StartMusic
           rem Stop any current music
           AUDV0 = 0
           AUDV1 = 0
-          
+
           rem Clear voice pointers (high byte = 0 means inactive)
           let musicVoice0Pointer = 0
           let musicVoice1Pointer = 0
-          
+
           rem Lookup song pointer from appropriate bank (Bank15 or
           rem Bank1)
           rem Songs in Bank 15: IDs 0-Bank15MaxSongID
@@ -104,20 +104,20 @@ LoadSongPointersDone
           rem Set Voice 0 pointer to song start (Song_Voice0 stream)
           let musicVoice0StartPointer_W = songPointer
           rem Store initial pointers for looping (Chaotica only)
-          
+
           rem LoadSongVoice1PointerBank1/15 already called above
           rem Voice 1 loader reused songPointer (16-bit) for Voice 1
           let musicVoice1Pointer = songPointer
           let musicVoice1StartPointer_W = songPointer
           rem Store initial Voice 1 pointer for looping (Chaotica only)
-          
+
           let currentSongID_W = temp1
           rem Store current song ID for looping check
-          
+
           let musicVoice0Frame_W = 1
           rem Initialize frame counters to trigger first note load
           let musicVoice1Frame_W = 1
-          
+
           rem Start first notes
           goto UpdateMusic
           rem tail call
@@ -154,11 +154,11 @@ UpdateMusic
           rem stop when both voices end
           rem Update Voice 0 if active
           if musicVoice0Pointer then gosub UpdateMusicVoice0
-          
+
           rem Update Voice 1 if active
-          
+
           if musicVoice1Pointer then gosub UpdateMusicVoice1
-          
+
           rem Check if both voices have ended (both pointerH = 0) and
           rem song is
           rem   Chaotica (26) for looping
@@ -461,11 +461,11 @@ StopMusic
           rem Zero TIA volumes
           AUDV0 = 0
           AUDV1 = 0
-          
+
           rem Clear voice pointers (high byte = 0 means inactive)
           let musicVoice0Pointer = 0
           let musicVoice1Pointer = 0
-          
+
           let musicVoice0Frame_W = 0
           rem Reset frame counters
           let musicVoice1Frame_W = 0

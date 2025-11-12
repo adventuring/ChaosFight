@@ -16,7 +16,7 @@ WinnerAnnouncementLoop
           if joy0fire then WinnerAdvanceToCharacterSelect
           if joy1fire then WinnerAdvanceToCharacterSelect
           if switchselect then WinnerAdvanceToCharacterSelect
-          
+
           rem Display win screen and continue loop
           gosub DisplayWinScreen bank15
           rem drawscreen called by MainLoop

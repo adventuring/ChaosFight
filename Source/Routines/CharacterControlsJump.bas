@@ -73,7 +73,7 @@ BernieJump
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
           gosub CCJ_ConvertPlayerXToPlayfieldColumn
-          
+
           rem Convert player Y position to playfield row
           rem Player Y is bottom-left of sprite (top of sprite visually)
           rem For pfres=8: pfrowheight = 16 pixels per row
@@ -82,7 +82,7 @@ BernieJump
           let temp4 = temp3 / pfrowheight
           rem currentRow = row player sprite bottom is in (0-7 for
           rem   pfres=8)
-          
+
           rem Check if Bernie is standing ON a floor (row below feet is
           rem   solid)
           rem Bernie feet are visually at bottom of 16px sprite, so
@@ -93,14 +93,14 @@ BernieJump
           let temp6 = temp5 / pfrowheight
           rem feetY = feet Y position in pixels
           rem feetRow = row directly below player feet
-          
+
           rem Check if there is solid ground directly below feet
           let temp4 = 0
           rem Track pfread result (1 = ground present)
           if pfread(temp2, temp6) then temp4 = 1
           if temp4 = 0 then return
           rem No floor directly below feet, cannot fall through
-          
+
           rem Floor exists directly below feet, check if it is only 1
           rem   row deep
           rem Special case: if at bottom row (pfrows - 1), check top row
@@ -108,7 +108,7 @@ BernieJump
           rem For pfres=8: pfrows = 8, so bottom row is 7
           if temp6 >= pfrows - 1 then BernieCheckBottomWrap
           rem At or beyond bottom row, check wrap
-          
+
           let temp4 = temp6 + 1
           rem Normal case: Check row below that (feetRow + 1)
           rem checkRow = row below the floor row
@@ -117,12 +117,12 @@ BernieJump
           if pfread(temp2, temp4) then temp5 = 1
           if temp5 = 1 then return
           rem Floor is 2+ rows deep, cannot fall through
-          
+
           rem Floor is only 1 row deep - allow fall through
           rem Move Bernie down by 1 pixel per frame while UP is held
           let playerY[temp1] = playerY[temp1] + 1
           rem This allows him to pass through the 1-row platform
-return
+          return
 
 BernieCheckBottomWrap
           rem Helper: Handles Bernie fall-through at bottom row by
@@ -150,7 +150,7 @@ BernieCheckBottomWrap
           if pfread(temp2, temp4) then temp5 = 1
           if temp5 = 1 then return
           rem Top row is blocked, cannot wrap
-          
+
           rem Top row is clear - wrap to top
           rem Set Bernie Y position to top of screen (row 0)
           rem playerY at top row = 0 * pfrowheight = 0
@@ -184,7 +184,7 @@ DragonOfStormsJump
           rem Fly up with playfield collision check
           rem Check collision before moving - use shared coordinate conversion
           gosub CCJ_ConvertPlayerXToPlayfieldColumn
-          
+
           let temp3 = playerY[temp1]
           rem Check row above player (top of sprite)
           let temp4 = temp3 / pfrowheight
@@ -199,7 +199,7 @@ DragonOfStormsJump
           if pfread(temp2, temp4) then temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move up
-          
+
           let playerVelocityY[temp1] = 254
           rem Clear above - apply upward velocity impulse
           rem -2 in 8-bit two’s complement: 256 - 2 = 254
@@ -294,7 +294,7 @@ HarpyJump
           rem Check if flight energy depleted
           if harpyFlightEnergy_R[temp1] = 0 then return
           rem No energy remaining, cannot flap
-          
+
           rem Check flap cooldown: enforce HarpyFlapCooldownFrames between flaps
           let temp2 = frame - harpyLastFlapFrame_R[temp1]
           rem   FramesPerSecond-derived cooldown
@@ -303,12 +303,12 @@ HarpyJump
           rem Clamp to prevent underflow (max safe value for 8-bit)
           if temp2 < HarpyFlapCooldownFrames then return
           rem Cooldown not expired, cannot flap yet
-          
+
           rem Check screen bounds - do not go above top
-          
+
           if playerY[temp1] <= 5 then HarpyFlapRecord
           rem Already at top, cannot flap higher but still record
-          
+
           rem Flap upward - apply upward velocity impulse
           rem Gravity is 0.05 px/frame² for Harpy (reduced). Over the cooldown window,
           rem   gravity accumulates to roughly 2.0 px/frame (downward)
@@ -325,7 +325,7 @@ HarpyJump
           rem Fix RMW: Read from _R, modify, write to _W
           let characterStateFlags_W[temp1] = HJ_stateFlags
           rem Set bit 1 (flight mode)
-          
+
 HarpyFlapRecord
           rem Helper: Records flap and decrements flight energy
           rem
@@ -343,10 +343,10 @@ HarpyFlapRecord
           rem Constraints: Internal helper for HarpyJump, only called after flap check
           rem Decrement flight energy on each flap
           if harpyFlightEnergy_R[temp1] > 0 then let harpyFlightEnergy_W[temp1] = harpyFlightEnergy_R[temp1] - 1
-          
+
           let harpyLastFlapFrame_W[temp1] = frame
           rem Record current frame as last flap time
-          
+
           return
 
 KnightGuyJump
@@ -411,7 +411,7 @@ FrootyJump
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
-          
+
           let temp3 = playerY[temp1]
           rem Check row above player (top of sprite)
           let temp4 = temp3 / pfrowheight
@@ -426,7 +426,7 @@ FrootyJump
           if pfread(temp2, temp4) then temp5 = 1
           if temp5 = 1 then return
           rem Blocked, cannot move up
-          
+
           let playerVelocityY[temp1] = 254
           rem Clear above - apply upward velocity impulse
           rem -2 in 8-bit two’s complement: 256 - 2 = 254
@@ -549,7 +549,7 @@ RoboTitoJump
           rem Check if grounded and stretch is allowed
           if (playerState[temp1] & 4) then RoboTitoCannotStretch
           rem Not grounded (jumping flag set), cannot stretch
-          
+
           rem Check stretch permission flag (must be grounded)
           let temp2 = roboTitoCanStretch_R
           rem Load bit-packed flags
@@ -618,7 +618,7 @@ RoboTitoStretching
           rem when stretch allowed
           let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionJumpingShifted
           rem Set stretching animation (repurposed ActionJumping = 10)
-          
+
           rem Calculate and set missile stretch height
           rem Ground level search:
           rem Start search from feet position (player bottom + 16 pixels)
@@ -672,7 +672,7 @@ GroundSearchDone
           if temp3 < 1 then temp3 = 1
           let missileStretchHeight_W[temp1] = temp3
           rem Store stretch height
-          
+
           rem Clear stretch permission (stretching upward, cannot
           rem stretch again until grounded)
           let temp4 = temp1
@@ -703,13 +703,13 @@ RTS_StretchPermissionCleared
           rem 251 = $FB = clear bit 2
           let roboTitoCanStretch_W = temp5
           rem Store cleared permission flags
-          
+
           rem Move upward 3 pixels per frame
-          
+
           if playerY[temp1] <= 5 then RoboTitoCheckCeiling
           let playerY[temp1] = playerY[temp1] - 3
           return
-          
+
 RoboTitoCheckCeiling
           rem Helper: Checks for ceiling contact and latches if detected
           rem
@@ -745,7 +745,7 @@ RoboTitoCheckCeiling
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp2 & $80 then temp2 = 0
           if temp2 > 31 then temp2 = 31
-          
+
           let temp3 = playerY[temp1]
           rem Check row above player for ceiling
           if temp3 <= 0 then RoboTitoLatch
@@ -753,11 +753,11 @@ RoboTitoCheckCeiling
           if temp4 <= 0 then RoboTitoLatch
           let temp4 = temp4 - 1
           if pfread(temp2, temp4) then RoboTitoLatch
-          
+
           let playerY[temp1] = playerY[temp1] - 3
           rem No ceiling contact, continue stretching
           return
-          
+
 RoboTitoLatch
           rem Helper: Latches RoboTito to ceiling and clears stretch
           rem height
@@ -793,7 +793,7 @@ RoboTitoLatch
           rem Set latched bit
           rem Set hanging animation (ActionJumping = 10, repurposed for
           rem hanging)
-          
+
           let temp2 = missileStretchHeight_R[temp1]
           rem Rapidly reduce missile height to 0 over 2-3 frames
           if temp2 <= 0 then RTL_HeightCleared

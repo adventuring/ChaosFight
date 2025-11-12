@@ -54,7 +54,7 @@ GetMissileWidth
           rem Constraints: None (table lookup - missile width)
           let temp2 = CharacterMissileWidths[temp1]
           return
-          
+
 GetMissileHeight
           rem Return missile height from CharacterMissileHeights[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileFlags lookup)
@@ -63,7 +63,7 @@ GetMissileHeight
           rem Constraints: None (table lookup - missile height)
           let temp2 = CharacterMissileHeights[temp1]
           return
-          
+
 GetMissileFlags
           rem Return missile flags from CharacterMissileFlags[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMomentumX lookup)
@@ -72,7 +72,7 @@ GetMissileFlags
           rem Constraints: None (table lookup - missile flags)
           let temp2 = CharacterMissileFlags[temp1]
           return
-          
+
 GetMissileMomentumX
           rem Return missile horizontal momentum from CharacterMissileMomentumX[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMomentumY lookup)
@@ -81,7 +81,7 @@ GetMissileMomentumX
           rem Constraints: None (table lookup - missile momentum X)
           let temp2 = CharacterMissileMomentumX[temp1]
           return
-          
+
 GetMissileMomentumY
           rem Return missile vertical momentum from CharacterMissileMomentumY[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter)

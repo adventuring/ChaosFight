@@ -98,7 +98,7 @@ CheckPlayer2HealthUpdate
           rem Called Routines: UpdateHealthBarPlayer2 (bank8) - updates
           rem Player 3 health bar
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate
+          if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer2HealthUpdate
           if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
           gosub UpdateHealthBarPlayer2
           return
@@ -129,7 +129,7 @@ CheckPlayer3HealthUpdate
           rem Called Routines: UpdateHealthBarPlayer3 (bank8) - updates
           rem Player 4 health bar
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate
+          if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer3HealthUpdate
           if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
           gosub UpdateHealthBarPlayer3
           return
@@ -264,13 +264,13 @@ BudgetedCollisionCheck
           rem   Frame 3: Pairs 0, 1 (repeat)
           gosub CheckCollisionP1vsP2
           rem Always check P1 vs P2 (most important)
-          
+
           rem Skip other checks if not Quadtari
-          
-          if !(controllerStatus & SetQuadtariDetected) then return
-          
+
+          if (controllerStatus & SetQuadtariDetected) = 0 then return
+
           rem Check additional pairs based on frame phase
-          
+
           if FramePhase = 0 then CheckPhase0Collisions
           if FramePhase = 1 then CheckPhase1Collisions
           goto DonePhase0And1Collisions
@@ -309,11 +309,11 @@ CalcP1vsP2AbsDiff
           let temp2 = playerX[0] - playerX[1]
 DoneCalcP1vsP2Diff
           if temp2 >= CollisionSeparationDistance then DonePlayerSeparation
-          
+
           rem Separate players based on their relative positions
           rem If P0 is left of P1, move P0 left and P1 right
           if playerX[0] < playerX[1] then SeparateP0Left
-          
+
           let playerX[0] = playerX[0] + 1
           rem Else P0 is right of P1, move P0 right and P1 left
           let playerX[1] = playerX[1] - 1
@@ -323,7 +323,7 @@ SeparateP0Left
           let playerX[0] = playerX[0] - 1
           let playerX[1] = playerX[1] + 1
 DonePlayerSeparation
-          
+
           return
 
 CheckCollisionP1vsP3
@@ -434,9 +434,9 @@ BudgetedMissileCollisionCheck
           rem   Player 1, bit 2 = Player 2, bit 3 = Player 3
           rem Use CheckAllMissileCollisions from MissileCollision.bas
           rem   which checks one player missile
-          
-          if !(controllerStatus & SetQuadtariDetected) then BudgetedMissileCollisionCheck2P
-          
+
+          if (controllerStatus & SetQuadtariDetected) = 0 then BudgetedMissileCollisionCheck2P
+
           let temp1 = FramePhase
           rem 4-player mode: check one missile per frame
           rem FramePhase 0-3 maps to Game Players 0-3
@@ -446,7 +446,7 @@ BudgetedMissileCollisionCheck
           let temp4 = missileActive & temp6
           if temp4 then gosub CheckAllMissileCollisions bank7
           return
-          
+
 BudgetedMissileCollisionCheck2P
           let temp1 = frame & 1
           rem Simple 2-player mode: alternate missiles

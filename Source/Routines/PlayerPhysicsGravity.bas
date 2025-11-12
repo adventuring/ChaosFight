@@ -82,27 +82,27 @@ GravityLoop
           goto GravityCheckCharacter
 GravityPlayerCheck
           rem Players 0-1 always active
-          if !(controllerStatus & SetQuadtariDetected) then goto GravityNextPlayer
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto GravityNextPlayer
           if temp1 = 2 && playerCharacter[2] = NoCharacter then goto GravityNextPlayer
           if temp1 = 3 && playerCharacter[3] = NoCharacter then goto GravityNextPlayer
 
 GravityCheckCharacter
           let temp6 = playerCharacter[temp1]
-          
+
           rem Skip gravity for characters that do not have it
           rem Frooty (8): Permanent flight, no gravity
           if temp6 = CharacterFrooty then goto GravityNextPlayer
           rem Dragon of Storms (2): Permanent flight, no gravity
           rem (hovering/flying like Frooty)
           if temp6 = CharacterDragonOfStorms then goto GravityNextPlayer
-          
+
           rem RoboTito (13): Skip gravity when latched to ceiling
           if temp6 = CharacterRoboTito && (characterStateFlags_R[temp1] & 1) then goto GravityNextPlayer
-          
+
           rem If NOT jumping, skip gravity (player is on ground)
-          
-          if !(playerState[temp1] & PlayerStateBitJumping) then goto GravityNextPlayer
-          
+
+          if (playerState[temp1] & PlayerStateBitJumping) = 0 then goto GravityNextPlayer
+
           rem Initialize or get vertical velocity (using temp variable)
           rem Note: Vertical velocity is not persistent - we will track
           rem it
@@ -111,7 +111,7 @@ GravityCheckCharacter
           rem   position
           rem TODO: Consider implementing persistent vertical velocity
           rem   tracking (Issue #599)
-          
+
           rem Determine gravity acceleration rate based on character
           rem   (8.8 fixed-point subpixel)
           rem Uses tunable constants from Constants.bas for easy
@@ -120,24 +120,24 @@ GravityCheckCharacter
           rem Default gravity acceleration (normal rate)
           if temp6 = CharacterHarpy then let gravityRate_W = GravityReduced
           rem Harpy: reduced gravity rate
-          
+
           rem Apply gravity acceleration to velocity subpixel part
           rem Use optimized inline addition instead of subroutine call
           let subpixelAccumulator = playerVelocityYL[temp1] + gravityRate_R
           let playerVelocityYL[temp1] = temp2
           if temp3 > 0 then let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
-          
+
           rem Apply terminal velocity cap (prevents infinite
           rem   acceleration)
           rem Check if velocity exceeds terminal velocity (positive =
           rem downward)
           if playerVelocityY[temp1] > TerminalVelocity then let playerVelocityY[temp1] = TerminalVelocity : let playerVelocityYL[temp1] = 0
-          
+
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
           gosub ConvertPlayerXToPlayfieldColumn bank8
-          
+
           rem Calculate row where player feet are (bottom of sprite)
           let temp3 = playerY[temp1] + PlayerSpriteHeight
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
@@ -146,18 +146,18 @@ GravityCheckCharacter
           gosub DivideByPfrowheight bank8
           let temp4 = temp2
           rem feetRow = row where feet are
-          
+
           rem Check if there is a playfield pixel in the row below the
           rem   feet
           rem If feet are in row N, check row N+1 for ground
           if temp4 >= pfrows then goto GravityNextPlayer
           rem Feet are at or below bottom of playfield, continue falling
-          
+
           let temp5 = temp4 + 1
           rem rowBelow = row below feet
           if temp5 >= pfrows then goto GravityCheckBottom
           rem Beyond playfield bounds, check if at bottom
-          
+
           rem Check if playfield pixel exists in row below feet
           let temp3 = 0
           rem Track pfread result (1 = ground pixel set)
@@ -167,7 +167,7 @@ GravityCheckCharacter
           let playerVelocityY[temp1] = 0
           rem Zero Y velocity (stop falling)
           let playerVelocityYL[temp1] = 0
-          
+
           rem Calculate Y position for top of ground row using repeated
           rem   addition
           let rowYPosition_W = 0
@@ -186,16 +186,16 @@ GravityRowCalcDone
           let playerSubpixelY_W[temp1] = playerY[temp1]
           rem Also sync subpixel position
           let playerSubpixelY_WL[temp1] = 0
-          
+
           let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitJumping)
           rem Clear jumping flag (bit 2, not bit 4 - fix bit number)
           rem Clear bit 2 (jumping flag)
-          
+
           rem Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
           if temp6 = 3 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
-          
+
           rem If RoboTito, set stretch permission on landing
-          
+
           if temp6 <> CharacterRoboTito then goto GravityNextPlayer
           rem fall through to PAG_SetRoboTitoStretchPermission
 
@@ -230,13 +230,13 @@ PAG_SetRoboTitoStretchPermission
           let missileStretchHeight_W[temp1] = 0
           rem Clear stretch missile height on landing (not stretching)
           return
-          
+
 GravityCheckBottom
           rem At bottom of playfield - treat as ground if feet are at
           rem bottom row
           if temp4 < pfrows - 1 then goto GravityNextPlayer
           rem Not at bottom row yet
-          
+
           rem Bottom row is always ground - clamp to bottom
           rem Calculate (pfrows - 1) * pfrowheight using repeated
           let rowYPosition_W = 0
@@ -252,16 +252,16 @@ GravityBottomCalcDone
           let playerState[temp1] = playerState[temp1] & NOT 4
           rem Clear Zoe’s double-jump used flag on landing (bit 3 in characterStateFlags for this player)
           if temp6 = 3 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 8)
-          
+
           rem If RoboTito, set stretch permission on landing at bottom
-          
+
           if temp6 = CharacterRoboTito then goto PAG_SetRoboTitoStretchPermission
-          
+
 GravityNextPlayer
           let temp1 = temp1 + 1
           rem Move to next player
           if temp1 < 4 then goto GravityLoop
-          
+
           return
 
           rem Research 2025-11-11: Keeping this routine bank8-only after dasm shrieked about
@@ -305,24 +305,24 @@ MomentumRecoveryLoop
           rem Quadtari)
           if temp1 < 2 then MomentumRecoveryProcess
           rem Players 0-1 always active
-          if !(controllerStatus & SetQuadtariDetected) then goto MomentumRecoveryNext
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto MomentumRecoveryNext
           if temp1 = 2 && playerCharacter[2] = NoCharacter then goto MomentumRecoveryNext
           if temp1 = 3 && playerCharacter[3] = NoCharacter then goto MomentumRecoveryNext
-          
+
 MomentumRecoveryProcess
           rem Decrement recovery frames (velocity is applied by
           rem UpdatePlayerMovement)
           if playerRecoveryFrames[temp1] > 0 then let playerRecoveryFrames[temp1] = playerRecoveryFrames[temp1] - 1
-          
+
           rem Synchronize playerState bit 3 with recovery frames
-          
+
           if playerRecoveryFrames[temp1] > 0 then let playerState[temp1] = playerState[temp1] | PlayerStateBitRecovery
           rem Set bit 3 (recovery flag) when recovery frames > 0
           if ! playerRecoveryFrames[temp1] then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitRecovery)
           rem Clear bit 3 (recovery flag) when recovery frames = 0
-          
+
           rem Decay velocity if recovery frames active
-          
+
           if ! playerRecoveryFrames[temp1] then goto MomentumRecoveryNext
           rem Velocity decay during recovery (knockback slows down over
           rem time)
@@ -339,7 +339,7 @@ MomentumRecoveryDecayNegative
           rem   negative)
           rem Also decay subpixel if integer velocity is zero
           if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
-          
+
 MomentumRecoveryNext
           let temp1 = temp1 + 1
           rem Next player

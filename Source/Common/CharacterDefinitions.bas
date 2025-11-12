@@ -68,7 +68,7 @@ GetCharacterWeightSub
           rem   bitmap set
           rem Format examples:
           rem   1 frame:  (1, 1, 1, 1, 1, 1, 1, 1)
-          rem   2 frames: (1, 2, 1, 2, 1, 2, 1, 2)  
+          rem   2 frames: (1, 2, 1, 2, 1, 2, 1, 2)
           rem   4 frames: (1, 2, 3, 4, 1, 2, 3, 4)
           rem   8 frames: (1, 2, 3, 4, 5, 6, 7, 8)
           rem Animation frame reference tables (NumCharacters characters

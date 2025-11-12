@@ -51,29 +51,29 @@ PublisherPreludeMain
           rem   via includes
           rem No explicit loading needed - titlescreen kernel handles
           rem   bitmap display
-          
+
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then PublisherPreludeComplete
           if joy1fire then PublisherPreludeComplete
-          
+
           rem Check Quadtari controllers if detected (inline to avoid label)
-          
+
           if controllerStatus & SetQuadtariDetected then if !INPT0{7} then PublisherPreludeComplete
           if controllerStatus & SetQuadtariDetected then if !INPT2{7} then PublisherPreludeComplete
-          
+
           rem Music update handled by MainLoop after per-frame logic
-          
+
           rem Auto-advance after music completes + 0.5s
-          
+
           if preambleTimer > 30 && musicPlaying = 0 then PublisherPreludeComplete
 
           let preambleTimer = preambleTimer + 1
-          
+
           rem Set window values for Publisher screen (AtariAge logo +
           gosub SetPublisherWindowValues bank14
           rem   AtariAge text)
-          
+
           rem Drawing handled by MainLoop (titledrawscreen for admin
           rem   screens)
           return

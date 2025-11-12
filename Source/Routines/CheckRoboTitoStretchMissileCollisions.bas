@@ -13,7 +13,7 @@ CheckRoboTitoStretchMissileCollisions
 
           let temp1 = 0
           rem Loop through all players
-          
+
 CRTSMC_PlayerLoop
           rem Check if player is RoboTito and stretching
           if playerCharacter[temp1] = CharacterRoboTito then CRTSMC_IsRoboTito
@@ -36,14 +36,14 @@ CRTSMC_IsRoboTito
 
 CRTSMC_IsStretching
           rem In stretching animation, check for stretch missile
-          
+
           let temp2 = missileStretchHeight_R[temp1]
           rem Check if stretch missile has height > 0
           if !temp2 then CRTSMC_NextPlayer
 
           let temp3 = playerX[temp1] + 7
           let temp4 = playerY[temp1] + 16
-          
+
           rem Check collision with other players
           rem Missile extends from playerY down by stretchHeight
           rem Bounding box: X = missileX, Y = missileY, Width = 4, Height = stretchHeight
@@ -83,13 +83,13 @@ CRTSMC_CheckOtherPlayer
 CRTSMC_DoneSelf
           let temp6 = temp6 + 1
           if temp6 < 4 then CRTSMC_CheckOtherPlayer
-          
+
 CRTSMC_NextPlayer
           let temp1 = temp1 + 1
           if temp1 < 4 then CRTSMC_PlayerLoop
-          
+
           return
-          
+
 HandleRoboTitoStretchMissileHit
           rem Resolves stretch missile collisions and resets stretch state
           rem Inputs: temp1 = RoboTito player index, temp5 = hit player index
@@ -118,11 +118,11 @@ HandleRoboTitoStretchMissileHit
           rem Constraints: None
           let missileStretchHeight_W[temp1] = 0
           rem Vanish stretch missile (set height to 0)
-          
+
           rem Set RoboTito to free fall
           playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
-          
+
           rem Clear stretch permission flag for this player
           let temp2 = roboTitoCanStretch_R
           let temp3 = 1
@@ -131,12 +131,12 @@ HandleRoboTitoStretchMissileHit
           rem Clear the appropriate bit
           let roboTitoCanStretch_W = temp2
           rem Store cleared permission flags
-          
+
           let temp3 = characterStateFlags_R[temp1]
           rem Clear latched flag if set (falling from ceiling)
           let temp3 = temp3 & 254
           let characterStateFlags_W[temp1] = temp3
           rem Clear bit 0 (latched flag)
-          
+
           return
 

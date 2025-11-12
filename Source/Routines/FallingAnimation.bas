@@ -42,9 +42,9 @@ FallingAnimation1
           let fallFrame = fallFrame + 1
           rem Update animation frame
           if fallFrame > 3 then let fallFrame = 0
-          
+
           rem Move Player 1 from quadrant to target (if active)
-          
+
           if playerCharacter[0] = NoCharacter then DonePlayer1Move
           rem playerIndex = 0 (player index), targetX = target X,
           let temp1 = 0
@@ -96,9 +96,9 @@ DonePlayer1Move
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with FallingAnimation1
-          
+
           rem Move Player 2 from quadrant to target (if active)
-          
+
           if playerCharacter[1] = NoCharacter then DonePlayer2Move
           let temp1 = 1
           rem Check if 4-player mode for target X
@@ -147,10 +147,10 @@ DonePlayer2Move
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with FallingAnimation1
-          
+
           rem Move Player 3 from quadrant to target (if active)
-          
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3Move
+
+          if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer3Move
           if playerCharacter[2] = NoCharacter then DonePlayer3Move
           let temp1 = 2
           let temp2 = 64
@@ -171,10 +171,10 @@ DonePlayer3Move
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with FallingAnimation1
-          
+
           rem Move Player 4 from quadrant to target (if active)
-          
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer4Move
+
+          if (controllerStatus & SetQuadtariDetected) = 0 then DonePlayer4Move
           if playerCharacter[3] = NoCharacter then DonePlayer4Move
           let temp1 = 3
           let temp2 = 96
@@ -195,22 +195,22 @@ DonePlayer4Move
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with FallingAnimation1
-          
+
           rem Check if all players have reached their targets
-          
+
           if fallComplete >= activePlayers then FallingComplete1
-          
+
           rem Set sprite positions and load character sprites
           rem   dynamically
           rem Use dynamic sprite setting instead of relying on player
           gosub SetSpritePositions bank6
           rem   declarations
           gosub SetPlayerSprites bank6
-          
+
           rem drawscreen called by MainLoop
           return
           goto FallingAnimation1
-          
+
 FallingComplete1
           rem All players have reached row 2 positions
           rem
@@ -236,4 +236,4 @@ FallingComplete1
           rem Transition to Game Mode
           gosub ChangeGameMode bank14
           return
-          
+

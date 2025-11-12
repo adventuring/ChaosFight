@@ -42,28 +42,28 @@ ConsoleDetHW
           rem              from ColdStart)
           let systemFlags = systemFlags & ClearSystemFlag7800
           rem Assume 2600 console initially
-          
+
           rem Check $D0 value
           asm
           lda $D0
           sta temp1
           end
           if temp1 = 0 then goto CheckFlashed
-          
+
           rem Check if $D0 = $2C (7800 indicator)
-          
-          if !(temp1 = ConsoleDetectD0) then goto Is2600
-          
+
+          if (temp1 = ConsoleDetectD0) = 0 then goto Is2600
+
           rem Check $D1 value for 7800 confirmation
           asm
           lda $D1
           sta temp1
           end
-          if !(temp1 = ConsoleDetectD1) then goto Is2600
-          
+          if (temp1 = ConsoleDetectD1) = 0 then goto Is2600
+
           goto Is7800
           rem 7800 detected: $D0=$2C and $D1=$A9
-          
+
 CheckFlashed
           rem Check if game was flashed to Harmony/Melody (both $D0 and
           rem $D1 are $00)
@@ -85,7 +85,7 @@ CheckFlashed
           sta temp1
           end
           if temp1 then goto Is2600
-          
+
           rem Both $D0 and $D1 are $00 - check $80 for CDFJ driver
           rem   result
           asm
@@ -93,10 +93,10 @@ CheckFlashed
           sta temp1
           end
           if temp1 = 0 then goto Is2600
-          
+
           goto Is7800
           rem CDFJ driver detected 7800
-          
+
 Is7800
           rem 7800 console detected
           rem
@@ -110,7 +110,7 @@ Is7800
           rem Constraints: Must be colocated with ConsoleDetHW
           let systemFlags = systemFlags | SystemFlag7800
           return
-          
+
 Is2600
           rem 2600 console detected
           rem
@@ -124,11 +124,11 @@ Is2600
           rem Constraints: Must be colocated with ConsoleDetHW
           let systemFlags = systemFlags & ClearSystemFlag7800
           return
-          
+
           rem
           rem Console Feature Detection
           rem Entry point after base detection; applies console-specific features.
-          
+
 CheckConsoleFeatures
           rem
           rem Input: systemFlags (global) = system flags (SystemFlag7800
@@ -143,8 +143,8 @@ CheckConsoleFeatures
           rem Constraints: Must be colocated with Done7800Features,
           rem ConsoleFeaturesDone
           rem Check if running on 7800 (bit 7 of systemFlags)
-          if !(systemFlags & SystemFlag7800) then Done7800Features
-          
+          if (systemFlags & SystemFlag7800) = 0 then Done7800Features
+
           rem 7800-specific features
           rem Note: 7800 pause button handling is implemented in
           rem   ControllerDetection.bas (Check7800Pause) and called
@@ -153,7 +153,7 @@ CheckConsoleFeatures
           rem   via ControllerDetection.bas (CtrlDetPads)
           goto ConsoleFeaturesDone
           rem   No console-specific initialization needed
-          
+
 Done7800Features
 ConsoleFeaturesDone
           rem 2600-specific features (label only, no execution)

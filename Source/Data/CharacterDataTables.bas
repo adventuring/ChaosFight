@@ -19,7 +19,7 @@ end
 
           rem Area-of-effect offsets
           data CharacterAOEOffsets
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Per-character movement speeds (pixels/frame or momentum units)

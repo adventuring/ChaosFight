@@ -7,7 +7,7 @@ CheckAllPlayerCollisions
           rem separation and applying impulse forces based on character
           rem weights. Supports up to four players (Quadtari) with
           rem dynamic activation.
-          if !(controllerStatus & SetQuadtariDetected) then temp6 = 2 : goto CollisionSkipElse
+          if (controllerStatus & SetQuadtariDetected) = 0 then temp6 = 2 : goto CollisionSkipElse
           let temp6 = 4
 CollisionSkipElse
           let temp1 = 0
@@ -16,7 +16,7 @@ CollisionOuterLoop
           if temp1 >= 2 then CollisionCheckP1Active
           goto CollisionInnerLoop
 CollisionCheckP1Active
-          if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextOuter
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto CollisionNextOuter
           if temp1 = 2 && playerCharacter[2] = NoCharacter then goto CollisionNextOuter
           if temp1 = 3 && playerCharacter[3] = NoCharacter then goto CollisionNextOuter
 CollisionInnerLoop
@@ -26,7 +26,7 @@ CollisionCheckPair
           if temp2 >= 2 then CollisionCheckP2Active
           goto CollisionCheckDistance
 CollisionCheckP2Active
-          if !(controllerStatus & SetQuadtariDetected) then goto CollisionNextInner
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto CollisionNextInner
           if temp2 = 2 && playerCharacter[2] = NoCharacter then goto CollisionNextInner
           if temp2 = 3 && playerCharacter[3] = NoCharacter then goto CollisionNextInner
 CollisionCheckDistance

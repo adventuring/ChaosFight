@@ -25,7 +25,7 @@ ChangeGameMode
           rem Optimized: Use on...goto instead of if-else chain
           on gameMode goto SetupPublisherPrelude SetupAuthorPrelude SetupTitle SetupCharacterSelect SetupFallingAnimation SetupArenaSelect SetupGame SetupWinner SetupAttract
           return
-          
+
 SetupPublisherPrelude
           rem Setup Publisher Prelude mode
           rem
@@ -41,7 +41,7 @@ SetupPublisherPrelude
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginPublisherPrelude bank14
           return
-          
+
 SetupAuthorPrelude
           rem Setup Author Prelude mode
           rem
@@ -57,7 +57,7 @@ SetupAuthorPrelude
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginAuthorPrelude bank14
           return
-          
+
 SetupTitle
           rem Setup Title Screen mode
           rem
@@ -73,7 +73,7 @@ SetupTitle
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginTitleScreen bank14
           return
-          
+
 SetupCharacterSelect
           return
 SetupFallingAnimation
@@ -104,7 +104,7 @@ SetupFallingAnimation
           rem Constraints: Must be colocated with ChangeGameMode
           gosub BeginFallingAnimation bank6
           return
-          
+
 SetupArenaSelect
           rem Setup Arena Select mode
           rem

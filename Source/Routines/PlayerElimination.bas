@@ -55,13 +55,13 @@ CheckAllPlayerEliminations
           rem Check each player for elimination using FOR loop
           gosub CheckPlayerElimination
           next
-          
+
           rem Count remaining players and check game end (inline
           rem   CheckGameEndCondition)
           gosub CountRemainingPlayers
           rem Game ends when 1 or fewer players remain
           if playersRemaining_R = 0 then CheckPlayerElimination
-          
+
           gosub FindWinner
           let gameEndTimer_W = 180
           let systemFlags = systemFlags | SystemFlagGameStateEnding
@@ -122,18 +122,18 @@ CheckPlayerElimination
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           if temp2 then return
           rem Already eliminated
-          
+
           let temp2 = playerHealth[currentPlayer]
           rem Check if health has reached 0
-          
+
           if temp2 then return
           rem Still alive
-          
+
           rem Player health reached 0 - eliminate them
           let CPE_eliminatedFlags = playersEliminated_R | temp6
           rem Fix RMW: Read from _R, modify, write to _W
           let playersEliminated_W = CPE_eliminatedFlags
-          
+
           rem Update Players34Active flag if Player 3 or 4 was
           rem   eliminated
           rem Only clear flag if both players 3 and 4 are eliminated or
@@ -142,16 +142,16 @@ CheckPlayerElimination
           if currentPlayer = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
           if currentPlayer = 3 then gosub UpdatePlayers34ActiveFlag
 UpdatePlayers34Done
-          
+
           let temp2 = eliminationCounter_R + 1
           rem Record elimination order
           let eliminationCounter_W = temp2
           let eliminationOrder_W[currentPlayer] = temp2
-          
+
           rem Trigger elimination effects
           goto TriggerEliminationEffects
           rem tail call
-          
+
 
 TriggerEliminationEffects
           rem
@@ -174,27 +174,27 @@ TriggerEliminationEffects
           let temp1 = temp5
           gosub PlaySoundEffect bank15
           rem PlaySoundEffect expects temp1 = sound ID
-          
+
           rem Set elimination visual effect timer
           let temp2 = 30
           rem This could trigger screen flash, particle effects, etc.
           let eliminationEffectTimer_W[currentPlayer] = temp2
           rem 30 frames of elimination effect
-          
+
           rem Hide player sprite immediately
           rem Inline HideEliminatedPlayerSprite
           if currentPlayer = 0 then player0x = 200
           rem Off-screen
           if currentPlayer = 1 then player1x = 200
-          if currentPlayer = 2 then player2x = 200 
+          if currentPlayer = 2 then player2x = 200
           rem Player 3 uses player2 sprite (multisprite)
           if currentPlayer = 3 then player3x = 200
           rem Player 4 uses player3 sprite (multisprite)
-          
+
           rem Stop any active missiles for this player
           goto DeactivatePlayerMissiles
           rem tail call
-          
+
 
           return
 
@@ -223,15 +223,15 @@ CountRemainingPlayers
           rem Input: playersEliminated_R (SCRAM flags), PlayerEliminatedPlayer0-3 masks
           rem Output: playersRemaining (global) and temp1 updated with alive player count
           rem Mutates: temp1, playersRemaining
-          let temp1 = 0 
+          let temp1 = 0
           rem Counter
-          
+
           rem Check each player
-          if !(PlayerEliminatedPlayer0 & playersEliminated_R) then temp1 = 1 + temp1
-          if !(PlayerEliminatedPlayer1 & playersEliminated_R) then temp1 = 1 + temp1
-          if !(PlayerEliminatedPlayer2 & playersEliminated_R) then temp1 = 1 + temp1
-          if !(PlayerEliminatedPlayer3 & playersEliminated_R) then temp1 = 1 + temp1
-          
+          if (PlayerEliminatedPlayer0 & playersEliminated_R) = 0 then temp1 = 1 + temp1
+          if (PlayerEliminatedPlayer1 & playersEliminated_R) = 0 then temp1 = 1 + temp1
+          if (PlayerEliminatedPlayer2 & playersEliminated_R) = 0 then temp1 = 1 + temp1
+          if (PlayerEliminatedPlayer3 & playersEliminated_R) = 0 then temp1 = 1 + temp1
+
           let playersRemaining_W = temp1
           return
 
@@ -262,11 +262,11 @@ IsPlayerAlive
           rem Check elimination flag first
           if temp2 then return
           rem Already eliminated
-          
+
           let temp3 = playerHealth[currentPlayer]
           rem Check health
-          
-          let temp2 = 0 
+
+          let temp2 = 0
           rem Default: not alive
           if temp3 > 0 then temp2 = 1
           rem Alive if health > 0
@@ -283,13 +283,13 @@ FindWinner
           let winnerPlayerIndex_W = 255
           rem Find the player who is not eliminated
           rem Invalid initially
-          
+
           for currentPlayer = 0 to 3
           rem Check each player using FOR loop
           gosub IsPlayerEliminated
           if !temp2 then let winnerPlayerIndex_W = currentPlayer
           next
-          
+
           rem If no winner found (all eliminated), pick last eliminated
           rem tail call
           if winnerPlayerIndex_R = 255 then goto FindLastEliminated
@@ -301,17 +301,17 @@ FindLastEliminated
           rem Input: currentPlayer loop variable, eliminationOrder[]
           rem Output: winnerPlayerIndex updated to last eliminated player
           rem Mutates: temp4, currentPlayer, winnerPlayerIndex
-          let temp4 = 0    
+          let temp4 = 0
           let winnerPlayerIndex_W = 0
           rem Highest elimination order found
           rem Default winner
-          
+
           for currentPlayer = 0 to 3
           rem Check each player elimination order using FOR loop
           let temp4 = eliminationOrder_R[currentPlayer]
           if temp4 > temp4 then let winnerPlayerIndex_W = currentPlayer
           next
-          
+
 UpdatePlayers34ActiveFlag
           rem Update Players34Active flag when players 3/4 are present.
           rem Input: playerCharacter[] (global array), playersEliminated_R,
@@ -319,14 +319,14 @@ UpdatePlayers34ActiveFlag
           rem Output: controllerStatus updated with Players34Active flag
           let controllerStatus = controllerStatus & ClearPlayers34Active
           rem Clear flag first
-          
+
           rem Check if Player 3 is active (selected and not eliminated)
-          
+
           if playerCharacter[2] = NoCharacter then CheckPlayer4ActiveFlag
           if PlayerEliminatedPlayer2 & playersEliminated_R then CheckPlayer4ActiveFlag
           let controllerStatus = controllerStatus | SetPlayers34Active
           rem Player 3 is active
-          
+
 CheckPlayer4ActiveFlag
           rem Check if Player 4 is active (selected and not eliminated)
           if playerCharacter[3] = NoCharacter then UpdatePlayers34ActiveDone

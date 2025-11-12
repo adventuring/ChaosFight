@@ -29,7 +29,7 @@ BeginAttractMode
           rem Initialize Attract Mode
           rem Set background color (B&W safe)
           COLUBK = ColGray(0)
-          
+
           return
           rem Reset title screen timers for next cycle
           rem titleParadeTimer will be reset when we return to title

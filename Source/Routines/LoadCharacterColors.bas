@@ -4,7 +4,7 @@
 
 LoadCharacterColors
           rem Load player colors based on guard and hurt state.
-          rem Player colors are fixed per player index: 
+          rem Player colors are fixed per player index:
           rem   Player 0 → Indigo, Player 1 → Red, Player 2 → Yellow, Player 3 → Turquoise.
           rem Guarding always forces light cyan, regardless of TV mode.
           rem Hurt state dims to luminance 6 (PlayerColors6) except SECAM, which uses magenta.
@@ -21,14 +21,14 @@ LoadCharacterColors
           rem Called Routines: None
           rem
           rem Constraints: Must remain in bank16 with PlayerColors tables
-          
+
           if temp3 then goto LCC_GuardColor
           if temp2 then goto LCC_HurtColor
-          
+
 LCC_NormalColor
           let temp6 = PlayerColors12[currentPlayer]
           return
-          
+
 LCC_HurtColor
 #ifdef TV_SECAM
           let temp6 = ColMagenta(12)
@@ -36,7 +36,7 @@ LCC_HurtColor
           let temp6 = PlayerColors6[currentPlayer]
 #endif
           return
-          
+
 LCC_GuardColor
           let temp6 = ColCyan(12)
           return

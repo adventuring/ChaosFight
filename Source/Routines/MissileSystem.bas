@@ -92,16 +92,16 @@ SpawnMissile
           rem dive mode increases downward velocity by 50%
           let temp5 = playerCharacter[temp1]
           rem Get character type for this player
-          
+
           let temp6 = CharacterMissileEmissionHeights[temp5]
           rem Read missile emission height from character data table
-          
+
           rem Calculate initial missile position based on player
           rem   position and facing
           rem Facing is stored in playerState bit 0: 0=left, 1=right
           let temp4 = playerState[temp1] & PlayerStateBitFacing
           rem Get facing direction
-          
+
           let missileX[temp1] = playerX[temp1]
           rem Set missile position using array access (write to _W port)
           let missileY_W[temp1] = playerY[temp1] + temp6
@@ -109,21 +109,21 @@ SpawnMissile
           rem Facing left, spawn left
           if temp4 = 1 then let missileX[temp1] = missileX[temp1] + CharacterMissileSpawnOffsetRight[temp5]
           rem Facing right, spawn right
-          
+
           rem Set active bit for this player missile
           rem Bit 0 = P1, Bit 1 = P2, Bit 2 = P3, Bit 3 = P4
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
           gosub GetPlayerMissileBitFlag
           let missileActive  = missileActive | temp6
-          
+
           let missileLifetimeValue_W = CharacterMissileLifetime[temp5]
           rem Initialize lifetime counter from character data table
-          
+
           rem Store lifetime in player-specific variable
           rem Using individual variables for each player missile
           let missileLifetime_W[temp1] = missileLifetimeValue_R
           rem   lifetime
-          
+
           rem Initialize velocity from character data for friction
           let temp6 = CharacterMissileMomentumX[temp5]
           rem   physics
@@ -131,17 +131,17 @@ SpawnMissile
           if temp4 = 0 then temp6 = 0 - temp6
           let missileVelocityX[temp1] = temp6
           rem Apply facing direction (left = negative)
-          
+
           rem Optimized: Calculate NUSIZ value with formula instead of if-chain
           rem NUSIZ bits 4-6: width 1=0x00, 2=0x10, 4=0x20 → (width-1)*16
           let temp2 = CharacterMissileWidths[temp5]
           let missileNUSIZ_W[temp1] = (temp2 - 1) * 16
-          
+
           let temp6 = CharacterMissileMomentumY[temp5]
           rem Get Y velocity
-          
+
           rem Apply Harpy dive velocity bonus if in dive mode
-          
+
           if temp5 = 6 then HarpyCheckDiveVelocity
           goto VelocityDone
 HarpyCheckDiveVelocity
@@ -188,7 +188,7 @@ HarpyBoostDiveVelocity
           let temp6 = temp6 + velocityCalculation_R
 VelocityDone
           let missileVelocityY[temp1] = temp6
-          
+
           return
 
 UpdateAllMissiles
@@ -280,19 +280,19 @@ UpdateOneMissile
           let temp4 = missileActive & temp6
           if temp4  = 0 then return
           rem Not active, skip
-          
+
           rem Preserve player index since GetMissileFlags uses temp1
           rem Use temp6 temporarily to save player index (temp6 is used
           let temp6 = temp1
           rem   for bit flags)
           rem Save player index temporarily
-          
+
           let temp2 = missileVelocityX[temp1]
           rem Get current velocities from stored arrays
           let temp3 = missileVelocityY[temp1]
           rem X velocity (already facing-adjusted from spawn)
           rem Y velocity
-          
+
           let temp5 = playerCharacter[temp1]
           rem Read missile flags from character data
           let temp1 = temp5
@@ -301,36 +301,36 @@ UpdateOneMissile
           rem Use temp1 for flags lookup (temp1 will be overwritten)
           let temp5 = temp2
           rem Store flags
-          
+
           let temp1 = temp6
           rem Restore player index and get flags back
           rem Restore player index
-          
+
           rem Special handling for Megax (character 5): stationary fire
           rem breath visual
           rem Megax missile stays adjacent to player during attack, no movement
           if temp5 = CharacterMegax then goto HandleMegaxMissile
-          
+
           rem Special handling for Knight Guy (character 7): sword swing
           rem visual
           rem Knight Guy missile appears overlapping, moves away, returns, then vanishes
           if temp5 = CharacterKnightGuy then goto HandleKnightGuyMissile
-          
+
           rem Apply gravity if flag is set
-          
-          if !(temp5 & MissileFlagGravity) then GravityDone
+
+          if (temp5 & MissileFlagGravity) = 0 then GravityDone
           let temp3 = temp3 + GravityPerFrame
           let missileVelocityY[temp1] = temp3
           rem Add gravity (1 pixel/frame down)
 GravityDone
           rem Update stored Y velocity
-          
+
           rem Apply friction if flag is set (curling stone deceleration
           rem with coefficient)
-          if !(temp5 & MissileFlagFriction) then FrictionDone
+          if (temp5 & MissileFlagFriction) = 0 then FrictionDone
           let missileVelocityXCalc_W = missileVelocityX[temp1]
           rem Get current X velocity
-          
+
           rem Apply ice-like friction: reduce by
           rem   CurlingFrictionCoefficient/256 per frame
           rem CurlingFrictionCoefficient = 4 (Q8 fixed-point: 4/256 =
@@ -339,7 +339,7 @@ GravityDone
           rem CurlingFrictionCoefficient) = velocity / 64
           if missileVelocityXCalc_R = 0 then FrictionDone
           rem Zero velocity, no friction to apply
-          
+
           rem Calculate friction reduction (velocity / 64, approximates
           let velocityCalculation_W = missileVelocityXCalc_R
           rem   1.56% reduction)
@@ -392,27 +392,27 @@ FrictionApply
           let missileVelocityX[temp1] = missileVelocityXCalc_R
           rem Update stored X velocity with friction applied
 FrictionDone
-          
+
           rem Update missile position
           let missileX[temp1] = missileX[temp1] + temp2
           rem Read-Modify-Write: Read from _R, modify, write to _W
           let temp4 = missileY_R[temp1]
           let temp4 = temp4 + temp3
           let missileY_W[temp1] = temp4
-          
+
           rem Check screen bounds and wrap around horizontally
           rem Missiles wrap around horizontally like players (all
           rem arenas)
           let temp2 = missileX[temp1]
           rem Get missile X/Y position (read from _R port)
           let temp3 = missileY_R[temp1]
-          
+
           rem Wrap around horizontally using shared player thresholds
           if temp2 < PlayerLeftWrapThreshold then temp2 = PlayerRightEdge : let missileX[temp1] = PlayerRightEdge
           rem Off left edge, wrap to right
           if temp2 > PlayerRightWrapThreshold then temp2 = PlayerLeftEdge : let missileX[temp1] = PlayerLeftEdge
           rem Off right edge, wrap to left
-          
+
           rem Check vertical bounds (deactivate if off top/bottom, like
           let temp4 = 0
           rem   players are clamped)
@@ -427,7 +427,7 @@ FrictionDone
           rem Off top, deactivate
           if temp4 then goto DeactivateMissile
           rem Off-screen vertically, deactivate
-          
+
           rem Check collision with playfield if flag is set
           rem Reload missile flags (temp5 was overwritten with Y
           let temp5 = playerCharacter[temp1]
@@ -437,7 +437,7 @@ FrictionDone
           let temp5 = temp2
           rem temp5 now contains missile flags again
           rem Restore player index for MissileCollPF
-          if !(temp5 & MissileFlagHitBackground) then PlayfieldCollisionDone
+          if (temp5 & MissileFlagHitBackground) = 0 then PlayfieldCollisionDone
           gosub MissileCollPF bank7
           if !temp4 then PlayfieldCollisionDone
           rem Collision detected - check if should bounce or deactivate
@@ -446,13 +446,13 @@ FrictionDone
           goto DeactivateMissile
 PlayfieldCollisionDone
           rem No bounce - deactivate on background hit
-          
+
           rem Check collision with players
           gosub CheckAllMissileCollisions bank7
           rem This handles both visible missiles and AOE attacks
           rem Check if hit was found (temp4 != MissileHitNotFound)
           if temp4 = MissileHitNotFound then MissileSystemNoHit
-          
+
           rem Check if hit player is guarding before handling hit
           let temp6 = playerState[temp4] & 2
           rem temp4 contains hit player index
@@ -464,7 +464,7 @@ GuardBounceFromCollision
           let soundEffectID_W = SoundGuardBlock
           rem Play guard sound
           gosub PlaySoundEffect bank15
-          
+
           rem Bounce the missile: invert X velocity and apply friction
           let temp6 = missileVelocityX[temp1]
           rem   damping
@@ -483,11 +483,11 @@ GuardBounceFromCollision
           let temp6 = temp6 - velocityCalculation_R
           let missileVelocityX[temp1] = temp6
           rem Reduce bounce velocity by 25%
-          
+
           rem Continue without deactivating - missile bounces and
           goto MissileSystemNoHit
           rem   continues
-          
+
 HandleMissileDamage
           gosub HandleMissileHit
           rem HandleMissileHit applies damage and effects
@@ -495,11 +495,11 @@ HandleMissileDamage
           rem tail call
 MissileSystemNoHit
           rem Missile disappears after hitting player
-          
+
           rem Decrement lifetime counter and check expiration
           let missileLifetimeValue_W = missileLifetime_R[temp1]
           rem Retrieve current lifetime for this missile
-          
+
           rem Decrement if not set to infinite (infinite until
           rem collision)
           if missileLifetimeValue_R = MissileLifetimeInfinite then MissileUpdateComplete
@@ -508,7 +508,7 @@ MissileSystemNoHit
           if missileLifetimeValue_R = 0 then goto DeactivateMissile
           let missileLifetime_W[temp1] = missileLifetimeValue_R
 MissileUpdateComplete
-          
+
           return
 
 HandleMissileBounceTail
@@ -551,13 +551,13 @@ HandleMegaxMissile
           rem Constraints: Megax missile stays adjacent to player with
           rem zero velocity. Deactivates when animation state !=
           rem ActionAttackExecute (14)
-          
+
           let temp4 = playerState[temp1] & PlayerStateBitFacing
           rem Get facing direction (bit 0: 0=left, 1=right)
-          
+
           let temp5 = CharacterMissileEmissionHeights[temp5]
           rem Get emission height from character data
-          
+
           rem Lock missile position to player position (adjacent, no
           rem movement)
           let temp2 = playerX[temp1]
@@ -566,18 +566,18 @@ HandleMegaxMissile
           rem Facing left, spawn left
           if temp4 = 1 then temp2 = temp2 + CharacterMissileSpawnOffsetRight[temp5]
           rem Facing right, spawn right
-          
+
           let temp3 = playerY[temp1] + temp5
           rem Calculate Y position (player Y + emission height)
-          
+
           let missileX[temp1] = temp2
           rem Update missile position (locked to player)
           let missileY_W[temp1] = temp3
-          
+
           let missileVelocityX[temp1] = 0
           rem Zero velocities to prevent any movement
           let missileVelocityY[temp1] = 0
-          
+
           rem Check if attack animation is complete
           rem Animation state is in bits 4-7 of playerState
           rem ActionAttackExecute = 14 (0xE)
@@ -597,7 +597,7 @@ HandleMegaxMissile
           if temp6 = 14 then MegaxMissileActive
           goto DeactivateMissile
           rem Attack complete - deactivate missile
-          
+
 MegaxMissileActive
           rem Attack still active - missile stays visible
           rem Skip normal movement and collision checks
@@ -639,13 +639,13 @@ HandleKnightGuyMissile
           rem Constraints: Knight Guy missile swings out 1-4 pixels
           rem (frames 0-3) then returns (frames 4-7). Deactivates when
           rem animation state != ActionAttackExecute (14)
-          
+
           let temp4 = playerState[temp1] & PlayerStateBitFacing
           rem Get facing direction (bit 0: 0=left, 1=right)
-          
+
           let temp5 = CharacterMissileEmissionHeights[temp5]
           rem Get emission height from character data
-          
+
           rem Check if attack animation is complete
           let temp6 = playerState[temp1]
           rem Extract animation state (bits 4-7)
@@ -660,12 +660,12 @@ HandleKnightGuyMissile
           if temp6 = 14 then KnightGuyAttackActive
           goto DeactivateMissile
           rem Attack complete - deactivate missile
-          
+
 KnightGuyAttackActive
           rem Get current animation frame within Execute sequence (0-7)
           let velocityCalculation_W = currentAnimationFrame_R[temp1]
           rem Read from SCRAM and calculate offset immediately
-          
+
           rem Calculate sword swing offset based on animation frame
           rem Frames 0-3: Move away from player (sword swing out)
           rem Frames 4-7: Return to start (sword swing back)
@@ -677,13 +677,13 @@ KnightGuyAttackActive
           rem pixel, Frame 7: 0 pixels
           let velocityCalculation_W = 7 - velocityCalculation_R
           goto KnightGuySetPosition
-          
+
 KnightGuySwingOut
           rem Frames 0-3: Moving away from player
           rem Calculate swing offset: (frame + 1) pixels
           let velocityCalculation_W = velocityCalculation_R + 1
           rem Frame 0: 1 pixel, Frame 1: 2 pixels, Frame 2: 3 pixels, Frame 3: 4 pixels
-          
+
 KnightGuySetPosition
           rem Calculate base X position (partially overlapping player)
           rem Start position: player X + 8 pixels (halfway through
@@ -691,32 +691,32 @@ KnightGuySetPosition
           let temp2 = playerX[temp1] + 8
           rem Then apply swing offset in facing direction
           rem Base position: center of player sprite
-          
+
           rem Apply swing offset in facing direction
-          
+
           if temp4 = 0 then KnightGuySwingLeft
           let temp2 = temp2 + velocityCalculation_R
           rem Facing right: move right (positive offset)
           goto KnightGuySetY
-          
+
 KnightGuySwingLeft
           let temp2 = temp2 - velocityCalculation_R
           rem Facing left: move left (negative offset)
-          
+
 KnightGuySetY
           let temp3 = playerY[temp1] + temp5
           rem Calculate Y position (player Y + emission height)
-          
+
           let missileX[temp1] = temp2
           rem Update missile position
           let missileY_W[temp1] = temp3
-          
+
           rem Zero velocities to prevent projectile movement
           rem   frame
           let missileVelocityX[temp1] = 0
           rem Position is updated directly each frame based on animation
           let missileVelocityY[temp1] = 0
-          
+
           rem Skip normal movement and collision checks
           return
 
@@ -778,7 +778,7 @@ MissileSysPF
           let temp2 = missileX[temp1]
           rem Get missile X/Y position (read from _R port)
           let temp3 = missileY_R[temp1]
-          
+
           rem Convert X/Y to playfield coordinates
           rem Playfield is 32 pixels wide (doubled to 160), 192 pixels
           rem   tall
@@ -788,7 +788,7 @@ MissileSysPF
           rem Convert X pixel to playfield column (160/32 = 5)
           rem temp3 is already in pixel coordinates, pfread will handle
           rem   it
-          
+
           rem Check if playfield pixel is set
           let temp4 = 0
           rem pfread can only be used in if/then conditionals
@@ -858,19 +858,19 @@ CheckMissilePlayerCollision
           let temp2 = missileX[temp1]
           rem Get missile X/Y position (read from _R port)
           let temp3 = missileY_R[temp1]
-          
+
           rem Missile bounding box
           rem temp2 = missile left, temp2+MissileAABBSize = missile
           rem   right
           rem temp3 = missile top, temp3+MissileAABBSize = missile
           rem   bottom
-          
+
           let temp4 = MissileHitNotFound
           rem Check collision with each player (except owner)
           rem Default: no hit
-          
+
           rem Check Player 1 (index 0)
-          
+
           if temp1  = 0 then MissileDonePlayer0
           if playerHealth[0] = 0 then MissileDonePlayer0
           if temp2>= playerX[0] + PlayerSpriteHalfWidth then MissileDonePlayer0
@@ -881,9 +881,9 @@ CheckMissilePlayerCollision
           goto MissileCollisionReturn
 MissileDonePlayer0
           rem Hit Player 1
-          
+
           rem Check Player 2 (index 1)
-          
+
           if temp1  = 1 then MissileDonePlayer1
           if playerHealth[1] = 0 then MissileDonePlayer1
           if temp2>= playerX[1] + PlayerSpriteHalfWidth then MissileDonePlayer1
@@ -894,9 +894,9 @@ MissileDonePlayer0
           goto MissileCollisionReturn
 MissileDonePlayer1
           rem Hit Player 2
-          
+
           rem Check Player 3 (index 2)
-          
+
           if temp1  = 2 then MissileDonePlayer2
           if playerHealth[2] = 0 then MissileDonePlayer2
           if temp2>= playerX[2] + PlayerSpriteHalfWidth then MissileDonePlayer2
@@ -907,9 +907,9 @@ MissileDonePlayer1
           goto MissileCollisionReturn
 MissileDonePlayer2
           rem Hit Player 3
-          
+
           rem Check Player 4 (index 3)
-          
+
           if temp1  = 3 then MissileDonePlayer3
           if playerHealth[3] = 0 then MissileDonePlayer3
           if temp2>= playerX[3] + PlayerSpriteHalfWidth then MissileDonePlayer3
@@ -920,7 +920,7 @@ MissileDonePlayer2
           goto MissileCollisionReturn
 MissileDonePlayer3
           rem Hit Player 4
-          
+
 MissileCollisionReturn
           return
 
@@ -969,7 +969,7 @@ HandleMissileHit
           rem characters
           let temp5 = playerCharacter[temp1]
           rem Get character type for damage calculation
-          
+
           rem Apply damage from attacker to defender
           let temp3 = temp1
           let temp1 = temp5
@@ -977,14 +977,14 @@ HandleMissileHit
           let temp6 = temp2
           let temp1 = temp3
           rem Base damage derived from character definition
-          
+
           rem Apply dive damage bonus for Harpy
-          
+
           if temp5 = 6 then HarpyCheckDive
           goto DiveCheckDone
 HarpyCheckDive
           rem Check if Harpy is in dive mode
-          if !(characterStateFlags_R[temp1] & 4) then DiveCheckDone
+          if (characterStateFlags_R[temp1] & 4) = 0 then DiveCheckDone
           rem Not diving, skip bonus
           rem Apply 1.5x damage for diving attacks (temp6 + temp6/2 =
           rem   1.5 * temp6)
@@ -995,22 +995,22 @@ HarpyCheckDive
           let velocityCalculation_W = temp2
           let temp6 = temp6 + velocityCalculation_R
 DiveCheckDone
-          
+
           rem Guard check is now handled before HandleMissileHit is
           rem   called
           rem This function only handles damage application
-          
+
           let oldHealthValue_W = playerHealth[temp4]
           rem Apply damage
           let playerHealth[temp4] = playerHealth[temp4] - temp6
           if playerHealth[temp4] > oldHealthValue_R then let playerHealth[temp4] = 0
-          
+
           rem Apply knockback (weight-based scaling - heavier characters
           rem   resist more)
           rem Calculate direction: if missile moving right, push
           let temp2 = missileX[temp1]
           rem   defender right
-          
+
           rem Calculate weight-based knockback scaling
           rem Heavier characters resist knockback more (max weight =
           let characterWeight_W = playerCharacter[temp4]
@@ -1069,23 +1069,23 @@ KnockbackRight
           let playerVelocityXL[temp4] = 0
 KnockbackDone
           rem Zero subpixel when applying knockback impulse
-          
+
           let playerRecoveryFrames[temp4] = HitstunFrames
           rem Set recovery/hitstun frames
           rem 10 frames of hitstun
-          
+
           let playerState[temp4] = playerState[temp4] | 8
           rem Synchronize playerState bit 3 with recovery frames
           rem Set bit 3 (recovery flag) when recovery frames are set
-          
+
           let temp1 = SoundAttackHit
           rem Play hit sound effect
           gosub PlaySoundEffect bank15
-          
+
           rem Spawn damage indicator visual
           rem NOTE: VisualEffects.bas was phased out - damage indicators
           rem   handled inline
-          
+
           return
 
 HandleMissileBounce
@@ -1125,10 +1125,10 @@ HandleMissileBounce
           rem tempCalc = 255 - velocity
           rem velocity = (255 - velocity) + 1 = 256 - velocity (twos
           rem complement)
-          
+
           rem Apply friction damping if friction flag is set
-          
-          if !(temp5 & MissileFlagFriction) then BounceDone
+
+          if (temp5 & MissileFlagFriction) = 0 then BounceDone
           rem Reduce velocity by half (bit shift right by 1)
           rem Use bit shift instead of division to avoid complexity
           rem issues
@@ -1146,7 +1146,7 @@ HandleMissileBounce
           let missileVelocityXCalc_W = missileVelocityXCalc_R - temp2
 BounceDone
           let missileVelocityX[temp1] = missileVelocityXCalc_R
-          
+
           rem Continue bouncing (do not deactivate)
           return
 

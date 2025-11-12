@@ -9,9 +9,9 @@
           rem Routines moved from Bank 1 - not needed for drawscreen
           rem calls
           rem These are called before/after drawscreen, not during it
-          
+
           rem Console detection and handling moved to Bank 13
-          
+
           rem Player locked helpers
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/BeginPublisherPrelude.bas"

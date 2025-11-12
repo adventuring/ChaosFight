@@ -89,16 +89,16 @@ HarpyAttack
           rem
           rem Constraints: Must be colocated with HarpySetLeftVelocity,
           rem HarpySetVerticalVelocity (called via goto)
-          
+
           rem Set attack animation state
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Set animation state 14 (attack execution)
 
           rem Get facing direction (bit 0: 0=left, 1=right)
           let temp2 = playerState[temp1] & PlayerStateBitFacing
-          
+
           rem Set diagonal velocity at 45° angle (4 pixels/frame
           rem   horizontal, 4 pixels/frame vertical)
           rem Horizontal: 4 pixels/frame in facing direction
@@ -128,7 +128,7 @@ HarpySetVerticalVelocity
           rem HarpySetLeftVelocity
           rem Vertical: 4 pixels/frame downward (positive Y = down)
           let temp3 = 4
-          
+
           rem Set player velocity for diagonal swoop (45° angle:
           rem   4px/frame X, 4px/frame Y) - inlined for performance
           rem Use temp1 directly for indexed addressing (batariBASIC
@@ -137,7 +137,7 @@ HarpySetVerticalVelocity
           let playerVelocityXL[temp1] = 0
           let playerVelocityY[temp1] = temp3
           let playerVelocityYL[temp1] = 0
-          
+
           rem Set jumping state so character can move vertically during
           rem   swoop
           rem This allows vertical movement without being on ground
@@ -145,7 +145,7 @@ HarpySetVerticalVelocity
           rem does not resolve dim aliases)
           let playerState[temp1] = playerState[temp1] | 4
           rem Set bit 2 (jumping flag)
-          
+
           rem Set swoop attack flag for collision detection
           rem Bit 2 = swoop active (used to extend hitbox below
           rem   character during swoop)
@@ -156,7 +156,7 @@ HarpySetVerticalVelocity
           rem does not resolve dim aliases)
           let temp5 = characterStateFlags_R[temp1] | 4
           let characterStateFlags_W[temp1] = temp5
-          
+
           rem Attack behavior:
           rem - Character moves diagonally down at 45° (4px/frame X,
           rem   4px/frame Y)
@@ -168,7 +168,7 @@ HarpySetVerticalVelocity
           rem - No missile spawned - character movement IS the attack
           rem - Hit players are damaged and pushed (knockback handled by
           rem   collision system)
-          
+
           return
 
 UrsuloAttack

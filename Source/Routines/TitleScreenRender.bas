@@ -33,7 +33,7 @@ DrawTitleScreen
           player0y = 0
           player1x = 0
           player1y = 0
-          
+
           rem Load title screen bitmap data
           rem Inline LoadTitleBitmap (configure titlescreen kernel
           rem   bitmap)
@@ -48,7 +48,7 @@ DrawTitleScreen
           rem   (bmp_48x2_3_window, etc.)
           rem These are set as constants in the .s image files
           rem Title screen: bmp_48x2_3_window = 42, others = 0
-          
+
           rem Draw character parade if active
           if titleParadeActive then gosub DrawParadeCharacter bank14
 
@@ -98,5 +98,5 @@ LoadTitleBitmap
           rem   (bmp_48x2_3_window, etc.)
               rem These are set as constants in the .s image files
           rem Title screen: bmp_48x2_3_window = 42, others = 0
-          
+
 

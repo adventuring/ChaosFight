@@ -26,7 +26,7 @@
 end
           rem
           rem Arena Playfields (32 Arenas: Indices 0-31)
-          
+
 Arena0Playfield
           playfield:
           XXXXXXXXXXXXXXXX

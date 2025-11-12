@@ -1,7 +1,7 @@
           rem
           rem ChaosFight - Source/Routines/ArenaLoader.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-          
+
 LoadArena
           rem Arena Loader
           rem Loads arena playfield data and colors based on

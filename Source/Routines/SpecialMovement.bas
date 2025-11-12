@@ -47,12 +47,12 @@ ApplySpecialMovementP1
           if temp4 = 2 then ApplySpecialMovementP2
 ApplySpecialMovementP2
           rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 8 then ApplySpecialMovementP3
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 2 then ApplySpecialMovementP3
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerCharacter[2] = 8 then ApplySpecialMovementP3
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerCharacter[2] = 2 then ApplySpecialMovementP3
 ApplySpecialMovementP3
           rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 8 then return
-          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 2 then return
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerCharacter[3] = 8 then return
+          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerCharacter[3] = 2 then return
           rem Player 3 - Frooty (8) and Dragon of Storms (2) skip gravity
           return
 
@@ -75,12 +75,12 @@ ApplyPlayerSpecialMovement
           rem Called Routines: None
           rem Constraints: None
           let temp4 = playerCharacter[temp1]
-          
+
           rem Bernie (0) - screen wrap handled in
           rem   CheckBoundaryCollisions
           rem Falling off bottom respawns at top, handled in
           rem   PlayerPhysicsGravity.bas
-          
+
           rem Frooty (8) and Dragon of Storms (2) - free flight (no
           rem   gravity)
           rem These characters skip gravity entirely
@@ -88,7 +88,7 @@ ApplyPlayerSpecialMovement
           rem Frooty: no gravity (free flight)
           if temp4 = 2 then return
           rem Dragon of Storms: no gravity (free flight)
-          
+
           rem All other characters use standard physics
           return
           asm

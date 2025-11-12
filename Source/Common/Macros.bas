@@ -5,7 +5,7 @@
           rem All macro implementations removed in favor of subroutines.
           rem Note: Array accessor macros removed - use subroutines from
           rem   ArrayAccessors.bas instead
-          
+
 
           rem PACKED DATA ACCESSOR MACROS
 

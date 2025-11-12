@@ -177,7 +177,7 @@ AdvanceAnimationFrame
           rem Use temp4 (pre-incremented frame value) to detect sequence wrap
           if temp4 >= FramesPerSequence then goto HandleFrame7Transition
           goto UpdateSprite
-          
+
 HandleFrame7Transition
           rem Frame 7 completed, handle action-specific transitions
           rem
@@ -197,7 +197,7 @@ HandleFrame7Transition
           rem AdvanceAnimationFrame, UpdateSprite
           gosub HandleAnimationTransition
           rem fall through to UpdateSprite
-          
+
 UpdateSprite
           rem Update character sprite with current animation frame and
           rem action

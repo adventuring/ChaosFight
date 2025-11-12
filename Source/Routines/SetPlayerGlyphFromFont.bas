@@ -12,45 +12,46 @@
           rem   - Glyphs are packed consecutively in FontData (16 bytes per glyph)
           rem   - P0 handled separately; P1-P5 use indexed stores
           rem   - Must be included in bank 16 to preserve kernel locality
-rem SetPlayerGlyphFromFont
-          rem asm
-          rem   lda temp1
-          rem   asl
-          rem   asl
-          rem   asl
-          rem   asl
-          rem   sta temp6
-          rem   ; Compute ROM pointer to glyph into temp4/temp5
-          rem   clc
-          rem   adc # <FontDataPtr
-          rem   sta temp4
-          rem   lda #0
-          rem   adc # >FontDataPtr
-          rem   sta temp5
-          rem end
+SetPlayerGlyphFromFont
+          asm
+            lda temp1
+            asl
+            asl
+            asl
+            asl
+            sta temp6
+            ; Compute ROM pointer to glyph into temp4/temp5
+            lda # <FontDataPtr
+            clc
+            adc temp6
+            sta temp4
+            lda # >FontDataPtr
+            adc #0
+            sta temp5
+          end
 
-          rem rem Player 0 handled specially; others via indexed stores
-          rem if temp3 = 0 then SetP0
-rem SetP1to5
-          rem asm
-          rem   ldy temp3
-          rem   lda temp4
-          rem   sta player1pointerlo-1,y
-          rem   lda temp5
-          rem   sta player1pointerhi-1,y
-          rem   lda #$10
-          rem   sta player1height-1,y
-          rem end
-          rem return
+          rem Player 0 handled specially; others via indexed stores
+          if temp3 = 0 then SetP0
+SetP1to5
+          asm
+            ldy temp3
+            lda temp4
+            sta player1pointerlo-1,y
+            lda temp5
+            sta player1pointerhi-1,y
+            lda #$10
+            sta player1height-1,y
+          end
+          return
 
-rem SetP0
-          rem asm
-          rem   lda temp4
-          rem   sta player0pointerlo
-          rem   lda temp5
-          rem   sta player0pointerhi
-          rem end
-          rem let player0height = 16
-          rem return
+SetP0
+          asm
+            lda temp4
+            sta player0pointerlo
+            lda temp5
+            sta player0pointerhi
+          end
+          let player0height = 16
+          return
 
 

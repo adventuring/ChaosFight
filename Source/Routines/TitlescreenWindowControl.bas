@@ -67,6 +67,9 @@ SetAuthorWindowValues
           return
           
 SetTitleWindowValues
+          asm
+          SetTitleWindowValues = .SetTitleWindowValues
+          end
           rem Initialize window values for Title screen
           rem Shows: ChaosFight (bmp_48x2_3) only
           rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText

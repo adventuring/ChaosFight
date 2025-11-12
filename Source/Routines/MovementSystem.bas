@@ -46,7 +46,7 @@ UpdatePlayerMovement
               gosub UpdatePlayerMovementSingle
           next
           rem Players 2-3 only if Quadtari detected
-          if QuadtariDetected = 0 then goto UpdatePlayerMovementQuadtariSkip
+          if !(controllerStatus & SetQuadtariDetected) then goto UpdatePlayerMovementQuadtariSkip
           for currentPlayer = 2 to 3
               gosub UpdatePlayerMovementSingle
           next

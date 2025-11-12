@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 SetSpritePositions
+          asm
+          SetSpritePositions = .SetSpritePositions
+          end
           rem Player Sprite Rendering
           rem Handles sprite positioning, colors, and graphics for all
           rem   players.
@@ -431,6 +434,9 @@ RRTM1_IsStretching
           return
 
 SetPlayerSprites
+          asm
+          SetPlayerSprites = .SetPlayerSprites
+          end
           rem
           rem Set Player Sprites
           rem Sets colors and graphics for all player sprites.

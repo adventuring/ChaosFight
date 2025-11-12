@@ -14,8 +14,14 @@ UpdateCharacterAnimations
           rem Optimized: Loop through all players instead of individual calls
           for currentPlayer = 0 to 3
             rem Skip players 2-3 if Quadtari not detected (2-player mode)
-            if currentPlayer >= 2 && !(controllerStatus & SetQuadtariDetected) then goto AnimationSkipPlayer3
+            if currentPlayer >= 2 then goto CheckQuadtari
+            goto AnimationProcessPlayer
+CheckQuadtari
+            if controllerStatus & SetQuadtariDetected then goto AnimationProcessPlayer
+            goto AnimationSkipPlayer
+AnimationProcessPlayer
             gosub UpdatePlayerAnimation
+AnimationSkipPlayer
           next
 AnimationSkipPlayer3
 return

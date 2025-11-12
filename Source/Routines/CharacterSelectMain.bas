@@ -234,7 +234,10 @@ CharacterSelectHandleTwoPlayers
           if temp3 = 0 then temp4 = 255
           if controllerStatus & SetQuadtariDetected then temp4 = 255
 
-          if temp3 >= 2 && !(controllerStatus & SetQuadtariDetected) then return
+          if temp3 < 2 then goto ProcessPlayerInput
+          if controllerStatus & SetQuadtariDetected then goto ProcessPlayerInput
+          return
+ProcessPlayerInput
 
           rem Handle Player 1/3 input (joy0)
           if joy0left then temp1 = temp3 : temp2 = 0 : gosub HandleCharacterSelectCycle

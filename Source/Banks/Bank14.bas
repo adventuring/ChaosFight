@@ -5,7 +5,6 @@
           rem Console handling (detection, controllers, game mode transitions,
           rem   character controls, startup routines)
 
-          bank 14
 
           rem Routines moved from Bank 1 - not needed for drawscreen
           rem calls

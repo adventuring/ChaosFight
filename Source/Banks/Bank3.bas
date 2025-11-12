@@ -5,7 +5,6 @@
           rem Character sprites (8-15): Frooty, Nefertem, NinjishGuy, PorkChop,
           rem   RadishGoblin, RoboTito, Ursulo, Shamone + PlayerRendering routine
 
-          bank 3
 
           rem Character sprite data for characters 8-15
           rem Bank 3 dedicated to character art only - leave room for

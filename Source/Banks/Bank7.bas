@@ -4,7 +4,6 @@
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Missile system (tables, physics, collision) + combat system
 
-          bank 7
 
 #include "Source/Data/CharacterMissileTables.bas"
 #include "Source/Routines/CharacterMissileData.bas"

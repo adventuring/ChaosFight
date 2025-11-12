@@ -219,7 +219,7 @@ UpdateSprite
           rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
           rem AdvanceAnimationFrame, HandleFrame7Transition
-          const US_SEPARATOR = 0
+const US_SEPARATOR = 0
           rem Update character sprite with current animation frame and
           rem   action
           rem
@@ -334,19 +334,12 @@ InitializeAnimationSystem
           rem
           rem EFFECTS: Sets all players (0-3) to idle animation state
           rem (ActionIdle)
-          let currentPlayer = 0
           rem Initialize all players to idle animation
           let temp2 = ActionIdle
-          gosub SetPlayerAnimation
-          let currentPlayer = 1
-          gosub SetPlayerAnimation
-          let currentPlayer = 2
-          gosub SetPlayerAnimation
-          let currentPlayer = 3
-          goto SetPlayerAnimation
-          rem tail call
-
-
+          for currentPlayer = 0 to 3
+            gosub SetPlayerAnimation
+          next
+          return
 
 IsPlayerWalking
           rem
@@ -358,7 +351,6 @@ IsPlayerWalking
           rem OUTPUT: temp2 = 1 if walking, 0 if not
           rem EFFECTS: None (read-only query)
           let temp2 = 0
-          rem Use temp2 directly to avoid batariBASIC alias resolution issues
           if ActionWalking = currentAnimationSeq_R[currentPlayer] then temp2 = 1
           return
 
@@ -431,13 +423,13 @@ TransitionHandleJump
           rem Stay on frame 7 until Y velocity goes negative
           rem Check if player is falling (positive Y velocity =
           rem downward)
-          if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
-          let temp2 = ActionJumping
+if 0 < playerVelocityY[currentPlayer] then TransitionHandleJump_TransitionToFalling
+let temp2 = ActionJumping
           rem Still ascending (negative or zero Y velocity), stay in jump
 goto SetPlayerAnimation
           rem tail call
 TransitionHandleJump_TransitionToFalling
-          let temp2 = ActionFalling
+let temp2 = ActionFalling
           rem Falling (positive Y velocity), transition to falling
 goto SetPlayerAnimation
           rem tail call
@@ -445,21 +437,21 @@ goto SetPlayerAnimation
 TransitionHandleFallBack
           rem Check wall collision using pfread
           rem If hit wall: goto idle, else: goto fallen
-          let temp5 = playerX[currentPlayer]
+let temp5 = playerX[currentPlayer]
           rem Convert player X position to playfield column (0-31)
-          let temp5 = temp5 - ScreenInsetX
-          let temp5 = temp5 / 4
-          let temp6 = playerY[currentPlayer]
+let temp5 = temp5 - ScreenInsetX
+let temp5 = temp5 / 4
+let temp6 = playerY[currentPlayer]
           rem Convert player Y position to playfield row (0-7)
-          let temp6 = temp6 / 8
+let temp6 = temp6 / 8
           rem Check if player hit a wall (playfield pixel is set)
-          if pfread(temp5, temp6) then TransitionHandleFallBack_HitWall
-          let temp2 = ActionFallen
+if pfread(temp5, temp6) then TransitionHandleFallBack_HitWall
+let temp2 = ActionFallen
           rem No wall collision, transition to fallen
 goto SetPlayerAnimation
           rem tail call
 TransitionHandleFallBack_HitWall
-          let temp2 = ActionIdle
+let temp2 = ActionIdle
           rem Hit wall, transition to idle
 goto SetPlayerAnimation
           rem tail call
@@ -469,69 +461,69 @@ goto SetPlayerAnimation
           rem Character-specific attack transitions based on patterns
 
 HandleAttackTransition
-          let temp1 = currentAnimationSeq_R[currentPlayer]
-          if ActionAttackWindup = temp1 then goto HandleWindupEnd
-          if ActionAttackExecute = temp1 then goto HandleExecuteEnd
-          if ActionAttackRecovery = temp1 then goto HandleRecoveryEnd
+let temp1 = currentAnimationSeq_R[currentPlayer]
+if ActionAttackWindup = temp1 then goto HandleWindupEnd
+if ActionAttackExecute = temp1 then goto HandleExecuteEnd
+if ActionAttackRecovery = temp1 then goto HandleRecoveryEnd
 return
 
 HandleWindupEnd
-          let temp1 = playerCharacter[currentPlayer]
-          if temp1 >= 32 then return
-          if temp1 >= 16 then goto PlaceholderWindup
+let temp1 = playerCharacter[currentPlayer]
+if temp1 >= 32 then return
+if temp1 >= 16 then goto PlaceholderWindup
 
-          let temp2 = 255
+let temp2 = 255
           rem Curler: Windup → Recovery
-          if temp1 = 1 then temp2 = ActionAttackRecovery
+if temp1 = 1 then temp2 = ActionAttackRecovery
           rem FatTony, Megax, Nefertem, PorkChop: Windup → Execute
-          if temp1 = 4 then temp2 = ActionAttackExecute
-          if temp1 = 5 then temp2 = ActionAttackExecute
-          if temp1 = 9 then temp2 = ActionAttackExecute
-          if temp1 = 11 then temp2 = ActionAttackExecute
+if temp1 = 4 then temp2 = ActionAttackExecute
+if temp1 = 5 then temp2 = ActionAttackExecute
+if temp1 = 9 then temp2 = ActionAttackExecute
+if temp1 = 11 then temp2 = ActionAttackExecute
           rem No matching transition: leave animation unchanged
-          if temp2 = 255 then return
+if temp2 = 255 then return
 goto SetPlayerAnimation
 
 PlaceholderWindup
-          if temp1 <= 30 then return
+if temp1 <= 30 then return
 return
 
 HandleExecuteEnd
-          let temp1 = playerCharacter[currentPlayer]
-          if temp1 >= 32 then return
-          if temp1 = 6 then goto HarpyExecute
-          if temp1 = 1 then return
-          let temp2 = ActionIdle
+let temp1 = playerCharacter[currentPlayer]
+if temp1 >= 32 then return
+if temp1 = 6 then goto HarpyExecute
+if temp1 = 1 then return
+let temp2 = ActionIdle
           rem FatTony and PorkChop fall into recovery after Execute phase
-          if temp1 = 4 then temp2 = ActionAttackRecovery
-          if temp1 = 11 then temp2 = ActionAttackRecovery
+if temp1 = 4 then temp2 = ActionAttackRecovery
+if temp1 = 11 then temp2 = ActionAttackRecovery
 goto SetPlayerAnimation
 
 HarpyExecute
           rem Harpy: Execute → Idle
           rem Clear dive flag and stop diagonal movement when attack
           rem   completes
-          let temp1 = currentPlayer
+let temp1 = currentPlayer
           rem Also apply upward wing flap momentum after swoop attack
           rem Clear dive flag (bit 4 in characterStateFlags)
-          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
           rem Fix RMW: Read from _R, modify, write to _W
-          let characterStateFlags_W[temp1] = C6E_stateFlags
+let characterStateFlags_W[temp1] = C6E_stateFlags
           rem Clear bit 4 (239 = 0xEF = ~0x10)
-          let playerVelocityX[temp1] = 0
+let playerVelocityX[temp1] = 0
           rem Stop horizontal velocity (zero X velocity)
-          let playerVelocityXL[temp1] = 0
+let playerVelocityXL[temp1] = 0
           rem Apply upward wing flap momentum after swoop attack
           rem   (equivalent to HarpyJump)
           rem Same as normal flap: -2 pixels/frame upward (254 in twos
-          let playerVelocityY[temp1] = 254
+let playerVelocityY[temp1] = 254
           rem   complement)
           rem -2 in 8-bit twos complement: 256 - 2 = 254
-          let playerVelocityYL[temp1] = 0
+let playerVelocityYL[temp1] = 0
           rem Keep jumping flag set to allow vertical movement
           rem playerState[temp1] bit 2 (jumping) already set
           rem   from attack, keep it
-          let temp2 = ActionIdle
+let temp2 = ActionIdle
           rem Transition to Idle
 goto SetPlayerAnimation
           rem tail call
@@ -542,7 +534,7 @@ goto SetPlayerAnimation
           rem arrives.
 
 HandleRecoveryEnd
-          let temp2 = ActionIdle
+let temp2 = ActionIdle
           rem All characters: Recovery → Idle
 goto SetPlayerAnimation
           rem tail call

@@ -5,7 +5,6 @@
           rem Character theme songs (IDs 6-28): LowRes, RoboTito, SongOfTheBear,
           rem   DucksAway, Character16-30 themes
 
-          bank 1
 
           rem
           rem Build Info - Version Tracking And Attribution

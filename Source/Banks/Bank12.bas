@@ -5,7 +5,6 @@
           rem Character data system (definitions, cycles, fall damage) +
           rem Titlescreen graphics and kernel
 
-          bank 12
 
           rem Titlescreen assets are in Bank 9 - this bank contains only logic
 

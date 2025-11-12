@@ -9,6 +9,7 @@
 #include "Source/Common/Preamble.bas"
 
           const TVStandard = NTSC
+          set tv ntsc
 #include "Source/Banks/Banks.bas"
 
 

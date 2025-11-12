@@ -4,7 +4,6 @@
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Character selection system (main/render)
 
-          bank 6
 
           rem Character select routines
 #include "Source/Routines/PlayerLockedHelpers.bas"

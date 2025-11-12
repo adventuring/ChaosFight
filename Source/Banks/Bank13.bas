@@ -4,7 +4,6 @@
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Input system (movement, player input, guard effects)
 
-          bank 13
 
 #include "Source/Routines/CharacterControlsDown.bas"
 #include "Source/Routines/ConsoleHandling.bas"

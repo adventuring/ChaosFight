@@ -26,18 +26,18 @@ LoadCharacterColors
           if temp2 then goto LCC_HurtColor
           
 LCC_NormalColor
-          temp6 = PlayerColors12[currentPlayer]
+          let temp6 = PlayerColors12[currentPlayer]
           return
           
 LCC_HurtColor
 #ifdef TV_SECAM
-          temp6 = ColMagenta(12)
+          let temp6 = ColMagenta(12)
 #else
-          temp6 = PlayerColors6[currentPlayer]
+          let temp6 = PlayerColors6[currentPlayer]
 #endif
           return
           
 LCC_GuardColor
-          temp6 = ColCyan(12)
+          let temp6 = ColCyan(12)
           return
 

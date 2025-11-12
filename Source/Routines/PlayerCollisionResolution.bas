@@ -8,7 +8,7 @@ CheckAllPlayerCollisions
           rem weights. Supports up to four players (Quadtari) with
           rem dynamic activation.
           if !(controllerStatus & SetQuadtariDetected) then temp6 = 2 : goto CollisionSkipElse
-          temp6 = 4
+          let temp6 = 4
 CollisionSkipElse
           let temp1 = 0
 CollisionOuterLoop

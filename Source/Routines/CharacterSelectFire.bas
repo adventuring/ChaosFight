@@ -32,7 +32,7 @@ HandleCharacterSelectFire
           if !joy1fire then return
           let temp2 = 1
           if joy1down then temp4 = 1 : goto HCSF_HandleFire
-          temp4 = 0
+          let temp4 = 0
           goto HCSF_HandleFire
 HCSF_CheckJoy0
           rem Check joy0 for players 0,2
@@ -52,7 +52,7 @@ HCSF_CheckJoy0
           if !joy0fire then return
           let temp2 = 1
           if joy0down then temp4 = 1 : goto HCSF_HandleFire
-          temp4 = 0
+          let temp4 = 0
 HCSF_HandleFire
           rem Handle fire button press
           rem

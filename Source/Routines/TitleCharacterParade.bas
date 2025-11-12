@@ -158,8 +158,8 @@ DrawParadeCharacterSprite
           rem Uses default walking animation for parade march
           let currentCharacter = titleParadeCharacter
           let currentPlayer = 0
-          temp2 = titleParadeTimer & 7
-          temp3 = ActionWalking
+          let temp2 = titleParadeTimer & 7
+          let temp3 = ActionWalking
           gosub LoadCharacterSprite bank16
           return
 

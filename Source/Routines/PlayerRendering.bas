@@ -536,9 +536,9 @@ Player2ColorDone
 
           let currentCharacter = playerCharacter[1]
           rem Load sprite data from character definition
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame (0 = idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
 
@@ -585,9 +585,9 @@ Player3ColorDone
 
           let currentCharacter = playerCharacter[2]
           rem Load sprite data from character definition
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame (0 = idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
           
@@ -631,9 +631,9 @@ Player4ColorDone
 
           let currentCharacter = playerCharacter[3]
           rem Load sprite data from character definition
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame (0 = idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action (0 = idle)
           gosub LoadCharacterSprite bank16
           

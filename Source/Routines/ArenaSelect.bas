@@ -54,9 +54,9 @@ ArenaSelect1Loop
           let temp1 = 0
           rem   Character Select)
           rem Check Player 1 fire button
-          if joy0fire then temp1 = 1
+          if joy0fire then let temp1 = 1
           rem Check Player 2 fire button
-          if joy1fire then temp1 = 1
+          if joy1fire then let temp1 = 1
           rem Check Quadtari players (3 & 4) if active
           if controllerStatus & SetQuadtariDetected then CheckQuadtariFireHold
 
@@ -224,9 +224,9 @@ CheckQuadtariFireHold
           rem Called Routines: None
           rem Constraints: Must be colocated with ArenaSelect1 (called via goto)
           rem Check Player 3 and 4 fire buttons (Quadtari)
-          if !INPT0{7} then temp1 = 1
+          if !INPT0{7} then let temp1 = 1
           rem Player 3 fire button (left port, odd frame)
-          if !INPT2{7} then temp1 = 1
+          if !INPT2{7} then let temp1 = 1
           rem Player 4 fire button (right port, odd frame)
 return
 

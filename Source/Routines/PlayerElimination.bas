@@ -120,13 +120,13 @@ CheckPlayerElimination
           rem Skip if already eliminated
           let temp2 = temp6 & playersEliminated_R
           rem Calculate bit flag: 1, 2, 4, 8 for players 0, 1, 2, 3
-          if temp2 then return 
+          if temp2 then return
           rem Already eliminated
           
           let temp2 = playerHealth[currentPlayer]
           rem Check if health has reached 0
           
-          if temp2 then return 
+          if temp2 then return
           rem Still alive
           
           rem Player health reached 0 - eliminate them
@@ -260,7 +260,7 @@ IsPlayerAlive
           rem Calls: IsPlayerEliminated
           gosub IsPlayerEliminated
           rem Check elimination flag first
-          if temp2 then return 
+          if temp2 then return
           rem Already eliminated
           
           let temp3 = playerHealth[currentPlayer]

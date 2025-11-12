@@ -122,8 +122,8 @@ BernieJump
           rem Move Bernie down by 1 pixel per frame while UP is held
           let playerY[temp1] = playerY[temp1] + 1
           rem This allows him to pass through the 1-row platform
-return 
-          
+return
+
 BernieCheckBottomWrap
           rem Helper: Handles Bernie fall-through at bottom row by
           rem wrapping to top if clear

@@ -28,26 +28,26 @@ LoadCharacterSprite
           if currentCharacter = CPUCharacter then goto LCS_CopyCPUGlyph
           if currentCharacter = RandomCharacter then goto LCS_CopyQuestionGlyph
 
-          temp4 = currentPlayer
-          temp1 = currentCharacter
+          let temp4 = currentPlayer
+          let temp1 = currentCharacter
           gosub LocateCharacterArt bank10
           return
 
 LCS_CopyNoGlyph
-          temp3 = currentPlayer
-          temp4 = SpriteNo
+          let temp3 = currentPlayer
+          let temp4 = SpriteNo
           gosub CopyGlyphToPlayer bank16
           return
 
 LCS_CopyCPUGlyph
-          temp3 = currentPlayer
-          temp4 = SpriteCPU
+          let temp3 = currentPlayer
+          let temp4 = SpriteCPU
           gosub CopyGlyphToPlayer bank16
           return
 
 LCS_CopyQuestionGlyph
-          temp3 = currentPlayer
-          temp4 = SpriteQuestionMark
+          let temp3 = currentPlayer
+          let temp4 = SpriteQuestionMark
           gosub CopyGlyphToPlayer bank16
           return
           asm

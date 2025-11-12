@@ -218,9 +218,9 @@ DWS_Position1Player
           let currentCharacter = playerCharacter[temp2]
           rem Load winner sprite
           let currentPlayer = 0
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame 0 (idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank16
           rem Player 0
@@ -254,9 +254,9 @@ DWS_Position2Players
           let playerY[0] = 192
           let currentCharacter = playerCharacter[temp2]
           let currentPlayer = 0
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame 0 (idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank16
           
@@ -267,9 +267,9 @@ DWS_Position2Players
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
           let currentPlayer = 1
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame 0 (idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank16
           goto DWS_Hide2PlayerDone
@@ -330,9 +330,9 @@ DWS_Position3Players
           rem Row 16 = 128 pixels (16 * 8)
           let currentCharacter = playerCharacter[temp2]
           let currentPlayer = 0
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame 0 (idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank16
           
@@ -343,9 +343,9 @@ DWS_Position3Players
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
           let currentPlayer = 1
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame 0 (idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank16
           goto DWS_Hide3Player2Done
@@ -383,9 +383,9 @@ DWS_Hide3Player2Done
           let playerY[2] = 192
           let currentCharacter = playerCharacter[temp4]
           let currentPlayer = 2
-          temp2 = 0
+          let temp2 = 0
           rem Animation frame 0 (idle)
-          temp3 = 0
+          let temp3 = 0
           rem Animation action 0 (idle)
           gosub LoadCharacterSprite bank16
           goto DWS_Hide3Player3Done

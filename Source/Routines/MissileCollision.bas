@@ -38,7 +38,7 @@ CheckAllMissileCollisions
           let temp6 = temp6 * 2
           next
           let temp4 = missileActive & temp6
-          if temp4 = 0 then return 
+          if temp4 = 0 then return
           rem No active missile
           
           let temp5 = playerCharacter[temp1]

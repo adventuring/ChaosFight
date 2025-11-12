@@ -18,7 +18,7 @@ ApplyGuardColor
           rem Constraints: Must remain colocated with GuardColor0-GuardColor3 jump table
           let temp2 = playerState[temp1] & 2
           rem Check if player is guarding
-          if !temp2 then return 
+          if !temp2 then return
           rem Not guarding
           
           rem set light cyan color

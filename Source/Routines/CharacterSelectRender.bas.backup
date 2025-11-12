@@ -6,32 +6,32 @@ SelectDrawScreen
           rem Shared preview renderer used by Character Select and Arena Select flows
           rem Playfield layout is static; no runtime register writes
           let temp1 = 0
-          gosub SelectRenderPlayerPreview
+gosub SelectRenderPlayerPreview
           let temp1 = 1
-          gosub SelectRenderPlayerPreview
+gosub SelectRenderPlayerPreview
           if controllerStatus & SetQuadtariDetected then goto SelectDrawLowerPlayers
 gosub SelectHideLowerPlayerPreviews
 goto SelectDrawScreenDone
 SelectDrawLowerPlayers
           let temp1 = 2
-          gosub SelectRenderPlayerPreview
+gosub SelectRenderPlayerPreview
           let temp1 = 3
-          gosub SelectRenderPlayerPreview
+gosub SelectRenderPlayerPreview
 SelectDrawScreenDone
-          return
+return
 
 SelectRenderPlayerPreview
           rem Draw character preview for the specified player and apply lock tinting
-          gosub PlayerPreviewSetPosition
-          gosub RenderPlayerPreview
+gosub PlayerPreviewSetPosition
+gosub RenderPlayerPreview
           let temp1 = currentPlayer
-          gosub GetPlayerLocked
+gosub GetPlayerLocked
           let temp5 = temp2
           if !temp5 then gosub SelectSetPlayerColorUnlocked
           if !temp5 then return
           if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap
           if temp5 = PlayerHandicapped then return
-          return
+return
 
 PlayerPreviewSetPosition
           rem Position player preview sprites in the four select quadrants
@@ -42,25 +42,25 @@ goto PlayerPreviewSetPositionP3
 PlayerPreviewSetPositionP0
           player0x = 56
           player0y = 40
-          return
+return
 PlayerPreviewSetPositionP1
           player1x = 104
           player1y = 40
-          return
+return
 PlayerPreviewSetPositionP2
           player2x = 56
           player2y = 80
-          return
+return
 PlayerPreviewSetPositionP3
           player3x = 104
           player3y = 80
-          return
+return
 
 SelectHideLowerPlayerPreviews
           rem Move lower-player previews off-screen when Quadtari is absent
           player2y = 200
           player3y = 200
-          return
+return
 
 RenderPlayerPreview
           rem Load preview sprite and base color for admin screens
@@ -93,7 +93,7 @@ PlayerPreviewApplyColor
           if currentPlayer = 2 then COLUP2 = ColYellow(12)
           if currentPlayer = 2 then return
           COLUP3 = ColTurquoise(12)
-          return
+return
 
 SelectSetPlayerColorUnlocked
           rem Override sprite color to indicate unlocked state (white)
@@ -104,7 +104,7 @@ SelectSetPlayerColorUnlocked
           if currentPlayer = 2 then COLUP2 = ColGrey(14)
           if currentPlayer = 2 then return
           COLUP3 = ColGrey(14)
-          return
+return
 
 SelectSetPlayerColorHandicap
           rem Override sprite color to indicate handicap lock (dim player color)
@@ -115,7 +115,7 @@ SelectSetPlayerColorHandicap
           if currentPlayer = 2 then COLUP2 = ColYellow(6)
           if currentPlayer = 2 then return
           COLUP3 = ColTurquoise(6)
-          return
+return
 
 SelectUpdateAnimations
           asm
@@ -138,21 +138,25 @@ SelectDonePlayer0Animation
           let temp1 = 1
           gosub SelectUpdatePlayerAnimation
 SelectDonePlayer1Animation
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectDonePlayer23Animation
-          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer2Animation
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto SelectDonePlayer23AnimationLabel
+          let temp1 = 2
+          rem gosub GetPlayerLocked
+          rem if temp2 then goto SelectDonePlayer2Animation
           if playerCharacter[2] = NoCharacter then goto SelectDonePlayer2Animation
           if playerCharacter[2] = RandomCharacter then goto SelectDonePlayer2Animation
           let temp1 = 2
           gosub SelectUpdatePlayerAnimation
 SelectDonePlayer2Animation
-          if !(controllerStatus & SetQuadtariDetected) then goto SelectDonePlayer23Animation
-          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer23Animation
-          if playerCharacter[3] = NoCharacter then goto SelectDonePlayer23Animation
-          if playerCharacter[3] = RandomCharacter then goto SelectDonePlayer23Animation
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto SelectDonePlayer23AnimationLabel
+          let temp1 = 3
+          rem gosub GetPlayerLocked
+          rem if temp2 then goto SelectDonePlayer23AnimationLabel
+          if playerCharacter[3] = NoCharacter then goto SelectDonePlayer23AnimationLabel
+          if playerCharacter[3] = RandomCharacter then goto SelectDonePlayer23AnimationLabel
           let temp1 = 3
           gosub SelectUpdatePlayerAnimation
-SelectDonePlayer23Animation
-          return
+SelectDonePlayer23AnimationLabel
+rem return
 
 SelectUpdatePlayerAnimation
           rem Update character select animation counters for one player
@@ -177,7 +181,7 @@ SelectUpdatePlayerAnimation
           let characterSelectPlayerAnimationTimer_W[temp1] = 0
           let temp3 = (characterSelectPlayerAnimationFrame_R[temp1] + 1) & 7
           let characterSelectPlayerAnimationFrame_W[temp1] = temp3
-          return
+return
 
 CharacterSelectCheckControllerRescan
           rem Re-detect controllers on Select/Pause/ColorB&W toggle
@@ -190,7 +194,7 @@ goto CharacterSelectRescanDone
 CharacterSelectDoRescan
 gosub CtrlDetPads bank14
 CharacterSelectRescanDone
-          return
+return
 
           asm
           PlayerPreviewSetPosition = .PlayerPreviewSetPosition

@@ -11,57 +11,57 @@ end
 
           rem Missile widths per character
           data CharacterMissileWidths
-             0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+            0, 4, 2, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Missile heights per character  
           data CharacterMissileHeights
-             0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+            0, 4, 2, 1, 1, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Missile maximum X travel
           data CharacterMissileMaxX
-             4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
+            4, 8, 6, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Missile maximum Y travel
           data CharacterMissileMaxY
-             4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
+            4, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Missile force
           data CharacterMissileForce
-             4, 6, 4, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
+            4, 6, 4, 6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Missile lifetime
           data CharacterMissileLifetime
-             8, 16, 12, 12, 12, 12, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0
+            8, 16, 12, 12, 12, 12, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Missile emission heights
           data CharacterMissileEmissionHeights
-             8, 8, 8, 8, 8, 8, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0
+            8, 8, 8, 8, 8, 8, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Missile spawn offsets (facing right)
           data CharacterMissileSpawnOffsetRight
-             0, 17, 18, 18, 18, 17, 0, 8, 20, 0, 20, 0, 0, 6, 0, 0
+            0, 17, 18, 18, 18, 17, 0, 8, 20, 0, 20, 0, 0, 6, 0, 0
 end
 
           rem Missile spawn offsets (facing left, two’s complement)
           data CharacterMissileSpawnOffsetLeft
-             0, 251, 252, 250, 250, 251, 0, 8, 251, 0, 250, 0, 0, 6, 0, 0
+            0, 251, 252, 250, 250, 251, 0, 8, 251, 0, 250, 0, 0, 6, 0, 0
 end
 
           rem Missile horizontal momentum
           data CharacterMissileMomentumX
-             5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 0, 0
+            5, 6, 4, 6, 0, 0, 5, 8, 6, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Missile vertical momentum
           data CharacterMissileMomentumY
-             0, 0, -4, 0, 0, 0, 4, 0, -5, 0, 0, 0, 0, 0, 0, 0
+            0, 0, -4, 0, 0, 0, 4, 0, -5, 0, 0, 0, 0, 0, 0, 0
 end
 
           rem Missile behaviour flags

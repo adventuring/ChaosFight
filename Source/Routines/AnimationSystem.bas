@@ -351,7 +351,7 @@ IsPlayerWalking
           rem OUTPUT: temp2 = 1 if walking, 0 if not
           rem EFFECTS: None (read-only query)
           let temp2 = 0
-          if ActionWalking = currentAnimationSeq_R[currentPlayer] then temp2 = 1
+          if ActionWalking = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
           return
 
 IsPlayerAttacking
@@ -376,7 +376,7 @@ IsPlayerHit
           rem OUTPUT: temp2 = 1 if hit, 0 if not
           rem EFFECTS: None (read-only query)
           let temp2 = 0
-          if ActionHit = currentAnimationSeq_R[currentPlayer] then temp2 = 1
+          if ActionHit = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
           return
 
 IsPlayerJumping
@@ -394,8 +394,8 @@ IsPlayerJumping
           rem EFFECTS: None (read-only query)
           let temp2 = 0
           rem Use temp2 directly to avoid batariBASIC alias resolution issues
-          if ActionJumping = currentAnimationSeq_R[currentPlayer] then temp2 = 1
-          if ActionFalling = currentAnimationSeq_R[currentPlayer] then temp2 = 1
+          if ActionJumping = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
+          if ActionFalling = currentAnimationSeq_R[currentPlayer] then let temp2 = 1
           return
 
 HandleAnimationTransition
@@ -474,12 +474,12 @@ if temp1 >= 16 then goto PlaceholderWindup
 
 let temp2 = 255
           rem Curler: Windup → Recovery
-if temp1 = 1 then temp2 = ActionAttackRecovery
+if temp1 = 1 then let temp2 = ActionAttackRecovery
           rem FatTony, Megax, Nefertem, PorkChop: Windup → Execute
-if temp1 = 4 then temp2 = ActionAttackExecute
-if temp1 = 5 then temp2 = ActionAttackExecute
-if temp1 = 9 then temp2 = ActionAttackExecute
-if temp1 = 11 then temp2 = ActionAttackExecute
+if temp1 = 4 then let temp2 = ActionAttackExecute
+if temp1 = 5 then let temp2 = ActionAttackExecute
+if temp1 = 9 then let temp2 = ActionAttackExecute
+if temp1 = 11 then let temp2 = ActionAttackExecute
           rem No matching transition: leave animation unchanged
 if temp2 = 255 then return
 goto SetPlayerAnimation
@@ -495,8 +495,8 @@ if temp1 = 6 then goto HarpyExecute
 if temp1 = 1 then return
 let temp2 = ActionIdle
           rem FatTony and PorkChop fall into recovery after Execute phase
-if temp1 = 4 then temp2 = ActionAttackRecovery
-if temp1 = 11 then temp2 = ActionAttackRecovery
+if temp1 = 4 then let temp2 = ActionAttackRecovery
+if temp1 = 11 then let temp2 = ActionAttackRecovery
 goto SetPlayerAnimation
 
 HarpyExecute

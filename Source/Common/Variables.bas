@@ -977,7 +977,10 @@
           rem ProcessAttackerAttacks uses them.
           rem   Since they’re immediately copied (no-op since aliased),
           rem   this is safe.
-          
+
+          rem Hit detection flag (used in Combat.bas)
+          dim hit = var46
+
           rem       Total: 16 bytes zero-page + 16 bytes SCRAM
           rem Animation vars (var24-var31, var33-var36) moved to SCRAM
           rem   to free zero-page space

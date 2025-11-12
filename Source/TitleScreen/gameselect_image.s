@@ -49,6 +49,7 @@ bmp_gameselect_CHAR3
  	align 256
  endif
 
+	GLOBAL font_gameselect_img
 font_gameselect_img
 	.byte %00111100
 	.byte %01100110

@@ -180,6 +180,29 @@ noscore          EQU 0    ; Enable score display (health bars)
 minikernel                    ; Titlescreen minikernel subroutine
         rts
 
+mk_score_on      EQU 1    ; Enable score minikernel
+mk_gameselect_on EQU 1    ; Enable gameselect minikernel
+
+mincycles        EQU $E8  ; Minimum cycles variable
+
+font             EQU 0    ; Default font style
+
+debugscore       EQU 0    ; Disable debug score display
+
+; Titlescreen minikernel colors
+bmp_48x2_1_background EQU $00
+bmp_48x2_2_background EQU $00
+bmp_48x2_3_background EQU $00
+bmp_48x2_4_background EQU $00
+bmp_48x2_1_PF1 EQU $00
+bmp_48x2_1_PF2 EQU $00
+bmp_48x2_2_PF1 EQU $00
+bmp_48x2_2_PF2 EQU $00
+bmp_48x2_3_PF1 EQU $00
+bmp_48x2_3_PF2 EQU $00
+bmp_48x2_4_PF1 EQU $00
+bmp_48x2_4_PF2 EQU $00
+
 A                EQU $D7
 a                EQU $D7
 B                EQU $D8

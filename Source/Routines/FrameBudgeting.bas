@@ -79,11 +79,17 @@ BudgetedHealthBarUpdate
           rem              (all called via goto or gosub)
           rem Determine which player to update based on frame phase
           rem tail call
-          if FramePhase = 0 then UpdateHealthBarPlayer0
+          if FramePhase = 0 then goto BudgetedHealthBarPlayer0
           rem tail call
-          if FramePhase = 1 then UpdateHealthBarPlayer1
+          if FramePhase = 1 then goto BudgetedHealthBarPlayer1
           if FramePhase = 2 then CheckPlayer2HealthUpdate
           goto DonePlayer2HealthUpdate
+BudgetedHealthBarPlayer0
+          rem Local trampoline so branch stays in range; tail-calls target
+          goto UpdateHealthBarPlayer0
+BudgetedHealthBarPlayer1
+          rem Local trampoline so branch stays in range; tail-calls target
+          goto UpdateHealthBarPlayer1
 CheckPlayer2HealthUpdate
           rem Check if Player 3 health bar should be updated (4-player
           rem mode, active player)

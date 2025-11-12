@@ -60,5 +60,5 @@ LoadArenaByIndex
             lda temp5
             sta PF1pointer+1
             sta PF2pointer+1
-end
-return
+          end
+          return

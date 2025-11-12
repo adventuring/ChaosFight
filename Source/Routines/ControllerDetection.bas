@@ -2,7 +2,7 @@
 
 CtrlDetConsole
           rem Console detection (7800 vs 2600) - calls ConsoleDetHW
-gosub ConsoleDetHW
+          gosub ConsoleDetHW
           
           rem
           rem Fall through to controller detection
@@ -13,55 +13,55 @@ CtrlDetPads
           rem Input: controllerStatus (global) = existing capabilities, INPT0-5 = paddle port states
           rem Output: controllerStatus updated with any newly detected capabilities
           rem Constraints: Upgrades only – never clears previously detected hardware
-let temp1 = controllerStatus
-let temp2 = 0
+          let temp1 = controllerStatus
+          let temp2 = 0
 #ifndef TV_SECAM
-let systemFlags = systemFlags & ClearSystemFlagColorBWOverride
-let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
+          let systemFlags = systemFlags & ClearSystemFlagColorBWOverride
+          let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
 #endif
           rem Check for Quadtari
-if INPT0{7} then CDP_CheckRightSide
-if !INPT1{7} then CDP_CheckRightSide
-goto CDP_QuadtariFound
+          if INPT0{7} then CDP_CheckRightSide
+          if !INPT1{7} then CDP_CheckRightSide
+          goto CDP_QuadtariFound
 CDP_CheckRightSide
-if INPT2{7} then goto CDP_CheckGenesis
-if !INPT3{7} then goto CDP_CheckGenesis
+          if INPT2{7} then goto CDP_CheckGenesis
+          if !INPT3{7} then goto CDP_CheckGenesis
           rem fall through to CDP_QuadtariFound
 
 CDP_QuadtariFound
-let temp2 = temp2 | SetQuadtariDetected
-goto CDP_MergeStatus
+          let temp2 = temp2 | SetQuadtariDetected
+          goto CDP_MergeStatus
 
 CDP_CheckGenesis
           rem Check for Genesis controller (only if Quadtari not already
           rem   detected)
           rem If Quadtari was previously detected, skip all other
           rem detection
-if temp1 & SetQuadtariDetected then CDP_MergeStatus
+          if temp1 & SetQuadtariDetected then CDP_MergeStatus
           
           rem Genesis controllers pull INPT0 and INPT1 HIGH when idle
           rem Method: Ground paddle ports via VBLANK, wait a frame,
           rem   check levels
-gosub CDP_DetectGenesis
+          gosub CDP_DetectGenesis
           rem Detect Genesis/MegaDrive controllers using correct method
           
           rem Detect Joy2b+ controllers (if no Genesis detected)
           rem Skip Joy2B+ detection if Genesis already exists (existing
           rem or newly detected)
-if temp1 & SetLeftPortGenesis then CDP_MergeStatus
-if temp1 & SetRightPortGenesis then CDP_MergeStatus
-if temp2 & SetLeftPortGenesis then CDP_MergeStatus
-if temp2 & SetRightPortGenesis then CDP_MergeStatus
-gosub CDP_DetectJoy2bPlus
+          if temp1 & SetLeftPortGenesis then CDP_MergeStatus
+          if temp1 & SetRightPortGenesis then CDP_MergeStatus
+          if temp2 & SetLeftPortGenesis then CDP_MergeStatus
+          if temp2 & SetRightPortGenesis then CDP_MergeStatus
+          gosub CDP_DetectJoy2bPlus
 
 CDP_MergeStatus
           rem Merge new detections with existing capabilities (monotonic
           rem   upgrade)
           rem OR new status with existing - this ensures upgrades only,
-let controllerStatus = temp1 | temp2
+          let controllerStatus = temp1 | temp2
           rem   never downgrades
           
-return
+          return
           
 CDP_DetectGenesis
           rem
@@ -101,24 +101,24 @@ CDP_DetectGenesis
           
           rem Check INPT0 - Genesis controllers pull HIGH when idle
           
-if !INPT0{7} then CDP_NoGenesisLeft
-if !INPT1{7} then CDP_NoGenesisLeft
+          if !INPT0{7} then CDP_NoGenesisLeft
+          if !INPT1{7} then CDP_NoGenesisLeft
           
-let temp2 = temp2 | SetLeftPortGenesis
+          let temp2 = temp2 | SetLeftPortGenesis
           rem Genesis detected on left port
           rem Set LeftPortGenesis bit
           
 CDP_NoGenesisLeft
           rem Check INPT2 - Genesis controllers pull HIGH when idle
-if !INPT2{7} then CDP_NoGenesisRight
-if !INPT3{7} then CDP_NoGenesisRight
+          if !INPT2{7} then CDP_NoGenesisRight
+          if !INPT3{7} then CDP_NoGenesisRight
           
-let temp2 = temp2 | SetRightPortGenesis
+          let temp2 = temp2 | SetRightPortGenesis
           rem Genesis detected on right port
           rem Set RightPortGenesis bit
           
 CDP_NoGenesisRight
-return
+          return
           
 CDP_DetectJoy2bPlus
           rem
@@ -144,34 +144,34 @@ CDP_DetectJoy2bPlus
           rem   newly detected)
           rem This check is redundant since caller already checks, but
           rem kept for safety
-if temp1 & SetLeftPortGenesis then return
-if temp1 & SetRightPortGenesis then return
-if temp2 & SetLeftPortGenesis then return
-if temp2 & SetRightPortGenesis then return
+          if temp1 & SetLeftPortGenesis then return
+          if temp1 & SetRightPortGenesis then return
+          if temp2 & SetLeftPortGenesis then return
+          if temp2 & SetRightPortGenesis then return
           
           rem Joy2b+ controllers pull all three paddle ports HIGH when
           rem   idle
           rem Check left port (INPT0, INPT1, INPT4)
-if !INPT0{7} then CDP_NoJoy2Left
-if !INPT1{7} then CDP_NoJoy2Left
-if !INPT4{7} then CDP_NoJoy2Left
+          if !INPT0{7} then CDP_NoJoy2Left
+          if !INPT1{7} then CDP_NoJoy2Left
+          if !INPT4{7} then CDP_NoJoy2Left
           
-let temp2 = temp2 | SetLeftPortJoy2bPlus
+          let temp2 = temp2 | SetLeftPortJoy2bPlus
           rem Joy2b+ detected on left port
           rem Set LeftPortJoy2bPlus bit
           
 CDP_NoJoy2Left
           rem Check right port (INPT2, INPT3, INPT5)
-if !INPT2{7} then CDP_NoJoy2Right
-if !INPT3{7} then CDP_NoJoy2Right
-if !INPT5{7} then CDP_NoJoy2Right
+          if !INPT2{7} then CDP_NoJoy2Right
+          if !INPT3{7} then CDP_NoJoy2Right
+          if !INPT5{7} then CDP_NoJoy2Right
           
-let temp2 = temp2 | SetRightPortJoy2bPlus
+          let temp2 = temp2 | SetRightPortJoy2bPlus
           rem Joy2b+ detected on right port
           rem Set RightPortJoy2bPlus bit
           
 CDP_NoJoy2Right
-return
+          return
           
 
 CtrlGenesisA
@@ -213,24 +213,24 @@ CtrlGenesisA
           
           rem Check INPT0 - Genesis controllers pull HIGH when idle
           
-if !INPT0{7} then NoGenesisLeft
-if !INPT1{7} then NoGenesisLeft
+          if !INPT0{7} then NoGenesisLeft
+          if !INPT1{7} then NoGenesisLeft
           
-let controllerStatus = controllerStatus | SetLeftPortGenesis
+          let controllerStatus = controllerStatus | SetLeftPortGenesis
           rem Genesis detected on left port
           rem Set LeftPortGenesis bit
           
 NoGenesisLeft
           rem Check INPT2 - Genesis controllers pull HIGH when idle
-if !INPT2{7} then NoGenesisRight
-if !INPT3{7} then NoGenesisRight
+          if !INPT2{7} then NoGenesisRight
+          if !INPT3{7} then NoGenesisRight
           
-let controllerStatus = controllerStatus | SetRightPortGenesis
+          let controllerStatus = controllerStatus | SetRightPortGenesis
           rem Genesis detected on right port
           rem Set RightPortGenesis bit
           
 NoGenesisRight
-return
+          return
 
 CtrlJoy2A
           rem
@@ -253,26 +253,26 @@ CtrlJoy2A
           rem Joy2b+ controllers pull all three paddle ports HIGH when
           rem   idle
           rem Check left port (INPT0, INPT1, INPT4)
-if !INPT0{7} then NoJoy2Left
-if !INPT1{7} then NoJoy2Left
-if !INPT4{7} then NoJoy2Left
+          if !INPT0{7} then NoJoy2Left
+          if !INPT1{7} then NoJoy2Left
+          if !INPT4{7} then NoJoy2Left
           
-let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
           rem Joy2b+ detected on left port
           rem Set LeftPortJoy2bPlus bit
           
 NoJoy2Left
           rem Check right port (INPT2, INPT3, INPT5)
-if !INPT2{7} then NoJoy2Right
-if !INPT3{7} then NoJoy2Right
-if !INPT5{7} then NoJoy2Right
+          if !INPT2{7} then NoJoy2Right
+          if !INPT3{7} then NoJoy2Right
+          if !INPT5{7} then NoJoy2Right
           
-let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
           rem Joy2b+ detected on right port
           rem Set RightPortJoy2bPlus bit
           
 NoJoy2Right
-return
+          return
 
 CtrlGenesisB
           rem
@@ -307,31 +307,31 @@ CtrlGenesisB
           
           rem Check INPT0 - Genesis pulls HIGH when idle
           
-if !INPT0{7} then NoLeftGenesis
+          if !INPT0{7} then NoLeftGenesis
           
           rem Check INPT1 - Genesis pulls HIGH when idle
           
-if !INPT1{7} then NoLeftGenesis
+          if !INPT1{7} then NoLeftGenesis
           
-let controllerStatus = controllerStatus | SetLeftPortGenesis
+          let controllerStatus = controllerStatus | SetLeftPortGenesis
           rem Genesis detected on left port
-goto CheckRightGenesis
+          goto CheckRightGenesis
           
 CheckRightGenesis
 NoLeftGenesis
           rem Check right port (INPT2/INPT3) for Genesis
-if !INPT2{7} then NoRightGenesis
-if !INPT3{7} then NoRightGenesis
+          if !INPT2{7} then NoRightGenesis
+          if !INPT3{7} then NoRightGenesis
           
-let controllerStatus = controllerStatus | SetRightPortGenesis
+          let controllerStatus = controllerStatus | SetRightPortGenesis
           rem Genesis detected on right port
-goto GenesisDetDone
+          goto GenesisDetDone
           
 NoRightGenesis
 GenesisDetDone
           rem Restore normal VBLANK
           VBLANK = $00
-return
+          return
 
 CtrlJoy2B
           rem
@@ -358,8 +358,8 @@ CtrlJoy2B
           rem Constraints: Only checks if no Genesis controllers
           rem detected
           rem Only check if no Genesis controllers detected
-if LeftPortGenesis then return
-if RightPortGenesis then return
+          if LeftPortGenesis then return
+          if RightPortGenesis then return
           
           rem Ground paddle ports again for Joy2b+ detection
           VBLANK = VBlankGroundINPT0123
@@ -368,27 +368,27 @@ if RightPortGenesis then return
           
           rem Check left port for Joy2b+ (INPT0, INPT1, INPT4)
           
-if !INPT0{7} then CheckRightJoy2
-if !INPT1{7} then CheckRightJoy2
-if !INPT4{7} then CheckRightJoy2
+          if !INPT0{7} then CheckRightJoy2
+          if !INPT1{7} then CheckRightJoy2
+          if !INPT4{7} then CheckRightJoy2
           
-let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetLeftPortJoy2bPlus
           rem Joy2b+ detected on left port
-goto Joy2PlusDone
+          goto Joy2PlusDone
           
 CheckRightJoy2
           rem Check right port for Joy2b+ (INPT2, INPT3, INPT5)
-if !INPT2{7} then Joy2PlusDone
-if !INPT3{7} then Joy2PlusDone
-if !INPT5{7} then Joy2PlusDone
+          if !INPT2{7} then Joy2PlusDone
+          if !INPT3{7} then Joy2PlusDone
+          if !INPT5{7} then Joy2PlusDone
           
-let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
+          let controllerStatus = controllerStatus | SetRightPortJoy2bPlus
           rem Joy2b+ detected on right port
           
 Joy2PlusDone
           rem Restore normal VBLANK
           VBLANK = $00
-return
+          return
 
           rem
           rem 7800 Pause Button Handler
@@ -417,30 +417,30 @@ Check7800Pause
           rem Constraints: Only processes on 7800 console
           rem (SystemFlag7800 set), not available on SECAM
           rem Only process if running on 7800 (bit 7 of systemFlags)
-if !(systemFlags & SystemFlag7800) then return
+          if !(systemFlags & SystemFlag7800) then return
           
           rem 7800 Pause button detection via Color/B&W switch
           rem On 7800, Color/B&W switch becomes momentary pause button
           
 #ifndef TV_SECAM
           rem Check if pause button just pressed (use switchbw for Color/B&W switch)
-if switchbw then PauseNotPressed
+          if switchbw then PauseNotPressed
           
           rem Button is pressed (low)
-if !(systemFlags & SystemFlagPauseButtonPrev) then return
+          if !(systemFlags & SystemFlagPauseButtonPrev) then return
           
           rem Button just pressed! Toggle Color/B&W override (bit 6)
-let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
-if systemFlags & SystemFlagColorBWOverride then let systemFlags = systemFlags & ClearSystemFlagColorBWOverride : goto ToggleBWDone
-let systemFlags = systemFlags | SystemFlagColorBWOverride
+          let systemFlags = systemFlags & ClearSystemFlagPauseButtonPrev
+          if systemFlags & SystemFlagColorBWOverride then let systemFlags = systemFlags & ClearSystemFlagColorBWOverride : goto ToggleBWDone
+          let systemFlags = systemFlags | SystemFlagColorBWOverride
 ToggleBWDone
           rem XOR to toggle 0<->1 (done via if/else above)
           
           rem Reload arena colors with new override state
-gosub ReloadArenaColors bank12
+          gosub ReloadArenaColors bank12
 #endif
 
-return
+          return
 
           rem
           rem Quadtari Multiplexing
@@ -464,15 +464,15 @@ UpdateQuadIn
           rem
           rem Constraints: Only runs if Quadtari detected
           rem Only run if Quadtari detected
-if !QuadtariDetected then return
+          if !QuadtariDetected then return
           
           rem Alternate between reading players 1-2 and players 3-4
           rem Use qtcontroller to determine which pair to read
-if qtcontroller then ReadPlayers34
+          if qtcontroller then ReadPlayers34
           rem fall through to ReadPlayers12
 
 ReadPlayers12
-return
+          return
           rem Read players 1 & 2 (even frames, qtcontroller=0)
           rem
           rem Input: qtcontroller (global) = multiplexing state (0 for
@@ -494,7 +494,7 @@ return
           rem   correct
 
 ReadPlayers34
-return
+          return
           rem Read players 3 & 4 (odd frames, qtcontroller=1)
           rem
           rem Input: qtcontroller (global) = multiplexing state (1 for
@@ -517,11 +517,11 @@ return
           rem   correct
 
 PauseNotPressed
-let systemFlags = systemFlags | SystemFlagPauseButtonPrev
+          let systemFlags = systemFlags | SystemFlagPauseButtonPrev
           rem Button not pressed, update previous state (set bit 5)
-return
+          return
 
           asm
-CtrlDetPads = .CtrlDetPads
-end
+          CtrlDetPads = .CtrlDetPads
+          end
 

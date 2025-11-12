@@ -21,16 +21,16 @@ LoadSoundPointer
           rem Constraints: Only 10 sounds (0-9) available. Returns
           rem soundPointer = 0 if sound ID out of bounds
           rem Bounds check: only 10 sounds (0-9)
-if temp1 > 9 then goto LoadSoundPointerOutOfRange
-let soundPointer = SoundPointersH[temp1]
-let soundPointer = soundPointer * 256
-let soundPointer = soundPointer + SoundPointersL[temp1]
-goto LoadSoundPointerReturn
+          if temp1 > 9 then goto LoadSoundPointerOutOfRange
+          let soundPointer = SoundPointersH[temp1]
+          let soundPointer = soundPointer * 256
+          let soundPointer = soundPointer + SoundPointersL[temp1]
+          goto LoadSoundPointerReturn
 LoadSoundPointerOutOfRange
-let soundPointer = 0
+          let soundPointer = 0
           rem Out of range - mark sound pointer inactive
 LoadSoundPointerReturn
-return
+          return
           
 LoadSoundNote
           rem Load next sound-effect note (assembly pointer access, Voice 0).
@@ -64,29 +64,29 @@ LoadSoundNote
             iny
             lda (soundEffectPointer),y  ; Load Delay
             sta temp5
-end
+          end
           
           rem Check for end of sound (Duration = 0)
-if temp4 = 0 then let soundEffectPointer = 0 : AUDV0 = 0 : return
+          if temp4 = 0 then let soundEffectPointer = 0 : AUDV0 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-let temp6 = temp2 & %11110000
+          let temp6 = temp2 & %11110000
           rem   AUDCV
-let temp6 = temp6 / 16
-let soundEffectID_W = temp2 & %00001111
+          let temp6 = temp6 / 16
+          let soundEffectID_W = temp2 & %00001111
           
           rem Write to TIA registers (use Voice 0 for sound effects)
           AUDC0 = temp6
           AUDF0 = temp3
           AUDV0 = soundEffectID_R
           
-let soundEffectFrame_W = temp4 + temp5
+          let soundEffectFrame_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-let soundEffectPointer = soundEffectPointer + 4
+          let soundEffectPointer = soundEffectPointer + 4
           
-return
+          return
           
 LoadSoundNote1
           rem Load next note from sound effect stream for Voice 1
@@ -124,30 +124,30 @@ LoadSoundNote1
             iny
             lda (soundEffectPointer1),y  ; Load Delay
             sta temp5
-end
+          end
           
           rem Check for end of sound (Duration = 0)
-if temp4 = 0 then let soundEffectPointer1 = 0 : AUDV1 = 0 : return
+          if temp4 = 0 then let soundEffectPointer1 = 0 : AUDV1 = 0 : return
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-let temp6 = temp2 & %11110000
+          let temp6 = temp2 & %11110000
           rem   AUDCV
-let temp6 = temp6 / 16
-let soundEffectID_W = temp2 & %00001111
+          let temp6 = temp6 / 16
+          let soundEffectID_W = temp2 & %00001111
           
           rem Write to TIA registers (use Voice 1 for sound effects)
           AUDC1 = temp6
           AUDF1 = temp3
           AUDV1 = soundEffectID_R
           
-let soundEffectFrame1_W = temp4 + temp5
+          let soundEffectFrame1_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-let soundEffectPointer1 = soundEffectPointer1 + 4
+          let soundEffectPointer1 = soundEffectPointer1 + 4
           
-return
+          return
 
           asm
-LoadSoundNote1 = .LoadSoundNote1
-end
+          LoadSoundNote1 = .LoadSoundNote1
+          end

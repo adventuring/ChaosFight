@@ -47,17 +47,17 @@ LocateCharacterArt
           rem Characters 16-23: Bank 4 (bank-relative 0-7)
           rem Characters 24-31: Bank 5 (bank-relative 0-7)
           
-let temp6 = temp1
+          let temp6 = temp1
           rem Save original character index in temp6
           rem temp6 = bank-relative character index (0-7) - will be
           rem   calculated per bank
           
           rem Check which bank: 0-7=Bank2, 8-15=Bank3, 16-23=Bank4,
           rem 24-31=Bank5
-if temp1 < 8 then goto Bank2Dispatch
-if temp1 < 16 then goto Bank3Dispatch
-if temp1 < 24 then goto Bank4Dispatch
-goto Bank5Dispatch
+          if temp1 < 8 then goto Bank2Dispatch
+          if temp1 < 16 then goto Bank3Dispatch
+          if temp1 < 24 then goto Bank4Dispatch
+          goto Bank5Dispatch
 
 Bank2Dispatch
           rem Load character art from Bank 2
@@ -77,16 +77,16 @@ Bank2Dispatch
           rem
           rem Constraints: Must be colocated with LocateCharacterArt
           rem Bank 2: Characters 0-7
-let temp6 = temp1
+          let temp6 = temp1
           rem Bank-relative index is same as character index (0-7)
           rem temp6 = bank-relative index (0-7)
           rem temp2 = animation frame, temp3 = action
-let temp5 = temp4
+          let temp5 = temp4
           rem Copy player number to temp5 for bank routine
           rem Bank routine expects: temp6=char, temp2=frame,
-gosub SetPlayerCharacterArtBank2 bank2
+          gosub SetPlayerCharacterArtBank2 bank2
           rem temp3=action, temp5=player
-return
+          return
           
 Bank3Dispatch
           rem Load character art from Bank 3
@@ -106,16 +106,16 @@ Bank3Dispatch
           rem
           rem Constraints: Must be colocated with LocateCharacterArt
           rem Bank 3: Characters 8-15
-let temp6 = temp1 - 8
+          let temp6 = temp1 - 8
           rem Calculate bank-relative index: character index - 8
           rem temp6 = bank-relative index (0-7)
           rem temp2 = animation frame, temp3 = action
-let temp5 = temp4
+          let temp5 = temp4
           rem Copy player number to temp5 for bank routine
           rem Bank routine expects: temp6=char, temp2=frame,
-gosub SetPlayerCharacterArtBank3 bank3
+          gosub SetPlayerCharacterArtBank3 bank3
           rem temp3=action, temp5=player
-return
+          return
           
 Bank4Dispatch
           rem Load character art from Bank 4
@@ -135,16 +135,16 @@ Bank4Dispatch
           rem
           rem Constraints: Must be colocated with LocateCharacterArt
           rem Bank 4: Characters 16-23
-let temp6 = temp1 - 16
+          let temp6 = temp1 - 16
           rem Calculate bank-relative index: character index - 16
           rem temp6 = bank-relative index (0-7)
           rem temp2 = animation frame, temp3 = action
-let temp5 = temp4
+          let temp5 = temp4
           rem Copy player number to temp5 for bank routine
           rem Bank routine expects: temp6=char, temp2=frame,
-gosub SetPlayerCharacterArtBank4 bank4
+          gosub SetPlayerCharacterArtBank4 bank4
           rem temp3=action, temp5=player
-return
+          return
           
 Bank5Dispatch
           rem Load character art from Bank 5
@@ -164,14 +164,14 @@ Bank5Dispatch
           rem
           rem Constraints: Must be colocated with LocateCharacterArt
           rem Bank 5: Characters 24-31
-let temp6 = temp1 - 24
+          let temp6 = temp1 - 24
           rem Calculate bank-relative index: character index - 24
           rem temp6 = bank-relative index (0-7)
           rem temp2 = animation frame, temp3 = action
-let temp5 = temp4
+          let temp5 = temp4
           rem Copy player number to temp5 for bank routine
           rem Bank routine expects: temp6=char, temp2=frame,
-gosub SetPlayerCharacterArtBank5 bank5
+          gosub SetPlayerCharacterArtBank5 bank5
           rem temp3=action, temp5=player
-return
+          return
           

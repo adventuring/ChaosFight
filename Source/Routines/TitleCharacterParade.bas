@@ -45,17 +45,17 @@ UpdateCharacterParade
           rem StartNewParadeCharacter, MoveParadeCharacter,
           rem              ParadeCharacterLeft (all called via goto)
           rem              Called every frame from TitleScreenMain
-let titleParadeTimer = titleParadeTimer + 1
+          let titleParadeTimer = titleParadeTimer + 1
           rem Increment parade timer
           
           rem Start parade after ~4 seconds (TitleParadeDelayFrames frames)
-if titleParadeTimer < TitleParadeDelayFrames then return
+          if titleParadeTimer < TitleParadeDelayFrames then return
           
           rem Check if we need to start a new character
-if !titleParadeActive then StartNewParadeCharacter
+          if !titleParadeActive then StartNewParadeCharacter
 
           rem Move character across screen (if active)
-goto MoveParadeCharacter
+          goto MoveParadeCharacter
           
 StartNewParadeCharacter
           rem Start new character parade
@@ -73,13 +73,13 @@ StartNewParadeCharacter
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateCharacterParade
 Roll
-let titleParadeCharacter = rand & $1f
-if titleParadeCharacter > MaxCharacter then Roll
+          let titleParadeCharacter = rand & $1f
+          if titleParadeCharacter > MaxCharacter then Roll
           rem Random character 0-MaxCharacter
-let titleParadeX = 246
+          let titleParadeX = 246
           rem Start off-screen left
-let titleParadeActive = 1
-return
+          let titleParadeActive = 1
+          return
           
 MoveParadeCharacter
           rem Move character across screen
@@ -93,12 +93,12 @@ MoveParadeCharacter
           rem
           rem Called Routines: None (dispatcher only)
           rem Constraints: Must be colocated with UpdateCharacterParade, ParadeCharacterLeft
-let titleParadeX = titleParadeX + 2
+          let titleParadeX = titleParadeX + 2
           rem Move 2 pixels per frame
           
-if titleParadeX > 170 then ParadeCharacterLeft
+          if titleParadeX > 170 then ParadeCharacterLeft
           rem Check if character has left screen
-return
+          return
           
 ParadeCharacterLeft
           rem Character has left - wait 1 second (FramesPerSecond frames) before next
@@ -114,10 +114,10 @@ ParadeCharacterLeft
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateCharacterParade
-let titleParadeActive = 0
-let titleParadeTimer = titleParadeTimer - FramesPerSecond
+          let titleParadeActive = 0
+          let titleParadeTimer = titleParadeTimer - FramesPerSecond
           rem Reset timer for next character
-return
+          return
 
 DrawParadeCharacter
           rem
@@ -156,10 +156,10 @@ DrawParadeCharacterSprite
           rem Input: titleParadeTimer (animation timing), titleParadeCharacter
           rem Output: Player 0 sprite data populated in SCRAM buffers
           rem Uses default walking animation for parade march
-let currentCharacter = titleParadeCharacter
-let currentPlayer = 0
+          let currentCharacter = titleParadeCharacter
+          let currentPlayer = 0
           temp2 = titleParadeTimer & 7
           temp3 = ActionWalking
-gosub LoadCharacterSprite bank16
-return
+          gosub LoadCharacterSprite bank16
+          return
 

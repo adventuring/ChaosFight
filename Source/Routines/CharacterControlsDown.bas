@@ -25,38 +25,38 @@ DragonOfStormsDown
           rem move if already at bottom. Uses inline coordinate
           rem conversion (not shared subroutine)
           rem Fly down with playfield collision check
-let temp2 = playerX[temp1]
+          let temp2 = playerX[temp1]
           rem Check collision before moving
-let temp2 = temp2 - ScreenInsetX
-let temp2 = temp2 / 4
+          let temp2 = temp2 - ScreenInsetX
+          let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
-if temp2 & $80 then temp2 = 0
-if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
+          if temp2 > 31 then temp2 = 31
           
-let temp3 = playerY[temp1]
+          let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
-let temp3 = temp3 + 16
-let temp4 = temp3 / pfrowheight
+          let temp3 = temp3 + 16
+          let temp4 = temp3 / pfrowheight
           rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
-if temp4 >= pfrows then return
+          if temp4 >= pfrows then return
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
-let temp5 = 0
+          let temp5 = 0
           rem Track pfread result (1 = blocked)
-if pfread(temp2, temp4) then temp5 = 1
-if temp5 = 1 then return
+          if pfread(temp2, temp4) then temp5 = 1
+          if temp5 = 1 then return
           rem Blocked, cannot move down
           
-let playerVelocityY[temp1] = 2
+          let playerVelocityY[temp1] = 2
           rem Clear below - apply downward velocity impulse
-let playerVelocityYL[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           rem +2 pixels/frame downward
-let playerState[temp1] = playerState[temp1] & !2
+          let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
-return
+          return
 
 HarpyDown
           rem HARPY (6) - FLY DOWN (no guard action)
@@ -90,11 +90,11 @@ HarpyDown
           rem (jumping flag set or Y < 60). Uses inline coordinate
           rem conversion (not shared subroutine)
           rem Check if Harpy is airborne and set dive mode
-if (playerState[temp1] & 4) then HarpySetDive
-let temp2 = playerY[temp1]
+          if (playerState[temp1] & 4) then HarpySetDive
+          let temp2 = playerY[temp1]
           rem Jumping bit set, airborne
-if temp2 < 60 then HarpySetDive
-goto HarpyNormalDown
+          if temp2 < 60 then HarpySetDive
+          goto HarpyNormalDown
           rem Above ground level, airborne
 HarpySetDive
           rem Helper: Sets dive mode flag for Harpy when airborne
@@ -110,10 +110,10 @@ HarpySetDive
           rem Called Routines: None
           rem Constraints: Internal helper for HarpyDown, only called when airborne
           rem Set dive mode flag for increased damage and normal gravity
-dim HSD_stateFlags = temp5
-let HSD_stateFlags = characterStateFlags_R[temp1] | 4
+          dim HSD_stateFlags = temp5
+          let HSD_stateFlags = characterStateFlags_R[temp1] | 4
           rem Fix RMW: Read from _R, modify, write to _W
-let characterStateFlags_W[temp1] = HSD_stateFlags
+          let characterStateFlags_W[temp1] = HSD_stateFlags
 HarpyNormalDown
           rem Set bit 2 (dive mode)
           rem Helper: Handles Harpy flying down with collision check
@@ -133,38 +133,38 @@ HarpyNormalDown
           rem Called Routines: None
           rem Constraints: Internal helper for HarpyDown, handles downward movement
           rem Fly down with playfield collision check
-let temp2 = playerX[temp1]
+          let temp2 = playerX[temp1]
           rem Check collision before moving
-let temp2 = temp2 - ScreenInsetX
-let temp2 = temp2 / 4
+          let temp2 = temp2 - ScreenInsetX
+          let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
-if temp2 & $80 then temp2 = 0
-if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
+          if temp2 > 31 then temp2 = 31
           
-let temp3 = playerY[temp1]
+          let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
-let temp3 = temp3 + 16
-let temp4 = temp3 / pfrowheight
+          let temp3 = temp3 + 16
+          let temp4 = temp3 / pfrowheight
           rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
-if temp4 >= pfrows then return
+          if temp4 >= pfrows then return
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
-let temp5 = 0
+          let temp5 = 0
           rem Track pfread result (1 = blocked)
-if pfread(temp2, temp4) then temp5 = 1
-if temp5 = 1 then return
+          if pfread(temp2, temp4) then temp5 = 1
+          if temp5 = 1 then return
           rem Blocked, cannot move down
           
-let playerVelocityY[temp1] = 2
+          let playerVelocityY[temp1] = 2
           rem Clear below - apply downward velocity impulse
-let playerVelocityYL[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           rem +2 pixels/frame downward
-let playerState[temp1] = playerState[temp1] & !2
+          let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
-return
+          return
 
 FrootyDown
           rem FROOTY (8) - FLY DOWN (no guard action)
@@ -193,39 +193,39 @@ FrootyDown
           rem move if already at bottom. Uses inline coordinate
           rem conversion (not shared subroutine)
           rem Fly down with playfield collision check
-let temp2 = playerX[temp1]
+          let temp2 = playerX[temp1]
           rem Check collision before moving
-let temp2 = temp2 - ScreenInsetX
-let temp2 = temp2 / 4
+          let temp2 = temp2 - ScreenInsetX
+          let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
           rem   result ≥ 128
           rem Check for wraparound: if subtraction wrapped negative,
-if temp2 & $80 then temp2 = 0
-if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
+          if temp2 > 31 then temp2 = 31
           
-let temp3 = playerY[temp1]
+          let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
-let temp3 = temp3 + 16
-let temp4 = temp3 / pfrowheight
+          let temp3 = temp3 + 16
+          let temp4 = temp3 / pfrowheight
           rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
-if temp4 >= pfrows then return
+          if temp4 >= pfrows then return
           rem At bottom, cannot move down
           rem Check if playfield pixel is clear
-let temp5 = 0
+          let temp5 = 0
           rem Track pfread result (1 = blocked)
-if pfread(temp2, temp4) then temp5 = 1
-if temp5 = 1 then return
+          if pfread(temp2, temp4) then temp5 = 1
+          if temp5 = 1 then return
           rem Blocked, cannot move down
           
-let playerVelocityY[temp1] = 2
+          let playerVelocityY[temp1] = 2
           rem Clear below - apply downward velocity impulse
-let playerVelocityYL[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           rem +2 pixels/frame downward
-let playerState[temp1] = playerState[temp1] & !2
+          let playerState[temp1] = playerState[temp1] & !2
           rem Ensure guard bit clear
-return
+          return
 
 RoboTitoDown
           rem ROBO TITO (13) - DOWN: Drops if latched, else guards
@@ -236,25 +236,25 @@ RoboTitoDown
           rem missileStretchHeight_W[]
           rem Calls: StandardGuard if not latched via dispatcher helper
           rem If latched, drop; else guard
-let temp2 = 0
-if !(characterStateFlags_R[temp1] & 1) then RoboTitoInitiateDrop
+          let temp2 = 0
+          if !(characterStateFlags_R[temp1] & 1) then RoboTitoInitiateDrop
           rem Not latched, dispatcher will fall through to StandardGuard
-return
+          return
 RoboTitoInitiateDrop
-let temp2 = 1
+          let temp2 = 1
           rem Signal dispatcher to skip guard after voluntary drop
           rem fall through to RoboTitoVoluntaryDrop
           
 RoboTitoVoluntaryDrop
           rem RoboTito drops from ceiling on DOWN; clears latched bit, sets falling, resets stretch height
           rem Fix RMW: Read from _R, modify, write to _W
-let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
-let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
+          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & ($ff ^ PlayerStateBitFacing)
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionFallingShifted
           rem Clear latched bit (bit 0)
           rem Set falling animation
-let missileStretchHeight_W[temp1] = 0
+          let missileStretchHeight_W[temp1] = 0
           rem Clear stretch missile height when dropping
-return
+          return
           
 StandardJump
           rem
@@ -278,13 +278,13 @@ StandardJump
           rem
           rem Constraints: None
           rem Apply upward velocity impulse (input applies impulse to
-let playerVelocityY[temp1] = 246
+          let playerVelocityY[temp1] = 246
           rem   rigid body)
           rem -10 in 8-bit two’s complement: 256 - 10 = 246
-let playerVelocityYL[temp1] = 0
-let playerState[temp1] = playerState[temp1] | 4
+          let playerVelocityYL[temp1] = 0
+          let playerState[temp1] = playerState[temp1] | 4
           rem Set jumping bit
-return
+          return
 
 StandardGuard
           rem Standard guard behavior
@@ -320,15 +320,15 @@ StandardGuard
           rem Frooty (8): DOWN = fly down (no gravity)
           rem Dragon of Storms (2): DOWN = fly down (no gravity)
           rem Harpy (6): DOWN = fly down (reduced gravity)
-let temp4 = playerCharacter[temp1]
-if temp4 = CharacterFrooty then return
-if temp4 = CharacterDragonOfStorms then return
-if temp4 = CharacterHarpy then return
+          let temp4 = playerCharacter[temp1]
+          if temp4 = CharacterFrooty then return
+          if temp4 = CharacterDragonOfStorms then return
+          if temp4 = CharacterHarpy then return
           
           rem Check if guard is allowed (not in cooldown)
-gosub CheckGuardCooldown bank10
-if temp2 = 0 then return
+          gosub CheckGuardCooldown bank10
+          if temp2 = 0 then return
           rem Guard blocked by cooldown
 
-goto StartGuard bank10
+          goto StartGuard bank10
 

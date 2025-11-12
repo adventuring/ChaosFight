@@ -14,7 +14,7 @@ MainLoop
           rem Constraints: Must remain colocated with MainLoopDrawScreen
 
           rem Entry point for entire game loop
-if switchreset then gosub WarmStart bank13
+          if switchreset then gosub WarmStart bank13
           ; fall through to continue
 
           rem Optimized: Use on/gosub for space efficiency
@@ -23,35 +23,35 @@ if switchreset then gosub WarmStart bank13
 
 MainLoopModePublisherPrelude
           rem tail call
-goto PublisherPreludeMain bank14
+          goto PublisherPreludeMain bank14
 
 MainLoopModeAuthorPrelude
           rem tail call
-goto AuthorPrelude bank14
+          goto AuthorPrelude bank14
 
 MainLoopModeTitleScreen
           rem tail call
-goto TitleScreenMain bank14
+          goto TitleScreenMain bank14
 
 MainLoopModeCharacterSelect
           rem tail call
-goto CharacterSelectInputEntry bank9
+          goto CharacterSelectInputEntry bank9
 
 MainLoopModeFallingAnimation
           rem tail call
-goto FallingAnimation1 bank10
+          goto FallingAnimation1 bank10
 
 MainLoopModeArenaSelect
           rem tail call
-goto ArenaSelect1 bank14
+          goto ArenaSelect1 bank14
 
 MainLoopModeGameMain
           rem tail call
-goto GameMainLoop bank11
+          goto GameMainLoop bank11
 
 MainLoopModeWinnerAnnouncement
           rem tail call
-goto WinnerAnnouncementLoop bank12
+          goto WinnerAnnouncementLoop bank12
 MainLoopContinue
           rem Routes audio updates after per-mode execution
           rem Inputs: gameMode (global 0-7)
@@ -61,8 +61,8 @@ MainLoopContinue
           rem Notes: Modes 3-6 handle audio updates in their own routines
 
           rem Check if music update is needed for game modes < 3 or mode 7
-if gameMode < 3 then goto UpdateMusic bank1
-if gameMode = 7 then goto UpdateMusic bank1
+          if gameMode < 3 then goto UpdateMusic bank1
+          if gameMode = 7 then goto UpdateMusic bank1
 SkipMusicUpdate
 MainLoopDrawScreen
           rem Renders the appropriate screen for the current game mode
@@ -73,6 +73,6 @@ MainLoopDrawScreen
           rem Notes: Modes 3-6 funnel through mode-specific draw logic
 
           rem Titlescreen graphics and kernel reside in bank9
-if gameMode < 3 then gosub DrawTitleScreen bank9
-if gameMode >= 3 then drawscreen
-goto MainLoop
+          if gameMode < 3 then gosub DrawTitleScreen bank9
+          if gameMode >= 3 then drawscreen
+          goto MainLoop

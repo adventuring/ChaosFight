@@ -13,11 +13,11 @@ LoadSongPointer
           rem Output: songPointer updated (points to Song_Voice0 stream)
           rem Mutates: temp1-temp2, songPointer
           rem Constraints: Songs 0-Bank15MaxSongID live in Bank 15; returns songPointer = 0 if out of range
-if temp1 > 28 then goto LSP_InvalidSong
+          if temp1 > 28 then goto LSP_InvalidSong
           rem Check if songs handled by other banks (0-Bank15MaxSongID)
-if temp1 < Bank1MinSongID then goto LSP_InvalidSong
+          if temp1 < Bank1MinSongID then goto LSP_InvalidSong
           rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
-let temp2 = temp1 - Bank1MinSongID
+          let temp2 = temp1 - Bank1MinSongID
 LSP_Lookup
           rem Helper: Lookup pointer from tables and combine into 16-bit value
           rem
@@ -32,14 +32,14 @@ LSP_Lookup
           rem Called Routines: None
           rem
           rem Constraints: Internal helper for LoadSongPointer
-let songPointer = SongPointers1H[temp2]
-let songPointer = songPointer * 256
-let songPointer = songPointer + SongPointers1L[temp2]
-return
+          let songPointer = SongPointers1H[temp2]
+          let songPointer = songPointer * 256
+          let songPointer = songPointer + SongPointers1L[temp2]
+          return
 
 LSP_InvalidSong
-let songPointer = 0
-return
+          let songPointer = 0
+          return
           
 LoadSongVoice1PointerBank1
           rem Lookup Voice 1 song pointer from tables (Bank 1 songs)
@@ -59,11 +59,11 @@ LoadSongVoice1PointerBank1
           rem (Bank1MinSongID+1)-28 → indices 1-23. Returns songPointer = 0 if song not
           rem in this bank
           rem Bounds check: Only songs Bank1MinSongID-28 are in Bank 1
-if temp1 > 28 then goto LSV1P_InvalidSong
+          if temp1 > 28 then goto LSV1P_InvalidSong
           rem Check if songs handled by other banks (0-Bank15MaxSongID)
-if temp1 < Bank1MinSongID then goto LSV1P_InvalidSong
+          if temp1 < Bank1MinSongID then goto LSV1P_InvalidSong
           rem Calculate compact index: songID - Bank1MinSongID (song Bank1MinSongID → 0)
-let temp2 = temp1 - Bank1MinSongID
+          let temp2 = temp1 - Bank1MinSongID
 LSV1P_Lookup
           rem Helper: Lookup Voice 1 pointer from tables
           rem
@@ -78,14 +78,14 @@ LSV1P_Lookup
           rem Called Routines: None
           rem
           rem Constraints: Internal helper for LoadSongVoice1PointerBank1
-let songPointer = SongPointers1SecondH[temp2]
-let songPointer = songPointer * 256
-let songPointer = songPointer + SongPointers1SecondL[temp2]
-return
+          let songPointer = SongPointers1SecondH[temp2]
+          let songPointer = songPointer * 256
+          let songPointer = songPointer + SongPointers1SecondL[temp2]
+          return
 
 LSV1P_InvalidSong
-let songPointer = 0
-return
+          let songPointer = 0
+          return
           
 LoadMusicNote0
           rem Load next note from Voice 0 stream (assembly pointer access).
@@ -121,19 +121,19 @@ LoadMusicNote0
             iny
             lda (musicVoice0Pointer),y  ; Load Delay
             sta temp5
-end
+          end
           
           rem Check for end of track (Duration = 0)
-if temp4 = 0 then LoadMusicNote0EndOfTrack
+          if temp4 = 0 then LoadMusicNote0EndOfTrack
           
           rem Extract AUDC (upper 4 bits) and AUDV (lower 4 bits) from
-let temp6 = temp2 & %11110000
+          let temp6 = temp2 & %11110000
           rem   AUDCV
-let temp6 = temp6 / 16
-let MusicVoice0TargetAUDV_W = temp2 & %00001111
+          let temp6 = temp6 / 16
+          let MusicVoice0TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope
-let MusicVoice0TotalFrames_W = temp4 + temp5
+          let MusicVoice0TotalFrames_W = temp4 + temp5
           
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice0)
@@ -141,13 +141,13 @@ let MusicVoice0TotalFrames_W = temp4 + temp5
           AUDF0 = temp3
           AUDV0 = MusicVoice0TargetAUDV_R
           
-let musicVoice0Frame_W = temp4 + temp5
+          let musicVoice0Frame_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes (16-bit addition)
-let musicVoice0Pointer = musicVoice0Pointer + 4
+          let musicVoice0Pointer = musicVoice0Pointer + 4
           
-return
+          return
           
 LoadMusicNote0EndOfTrack
           rem Helper: Handle end of track for Voice 0
@@ -168,10 +168,10 @@ LoadMusicNote0EndOfTrack
           rem 0)
           rem   (Chaotica
           rem Loop will be handled in UpdateMusic when both voices end
-let musicVoice0Pointer = 0
+          let musicVoice0Pointer = 0
           rem   only)
           AUDV0 = 0
-return
+          return
           
 LoadMusicNote1
           rem Load next note from Voice 1 stream using assembly for pointer access
@@ -212,18 +212,18 @@ LoadMusicNote1
             iny
             lda (musicVoice1Pointer),y  ; Load Delay
             sta temp5
-end
+          end
           
           rem Check for end of track (Duration = 0)
-if temp4 = 0 then LoadMusicNote1EndOfTrack
+          if temp4 = 0 then LoadMusicNote1EndOfTrack
           
-let temp6 = temp2 & %11110000
+          let temp6 = temp2 & %11110000
           rem Extract AUDC and AUDV
-let temp6 = temp6 / 16
-let MusicVoice1TargetAUDV_W = temp2 & %00001111
+          let temp6 = temp6 / 16
+          let MusicVoice1TargetAUDV_W = temp2 & %00001111
           
           rem Store target AUDV and total frames for envelope
-let MusicVoice1TotalFrames_W = temp4 + temp5
+          let MusicVoice1TotalFrames_W = temp4 + temp5
           
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice1)
@@ -231,13 +231,13 @@ let MusicVoice1TotalFrames_W = temp4 + temp5
           AUDF1 = temp3
           AUDV1 = MusicVoice1TargetAUDV_R
           
-let musicVoice1Frame_W = temp4 + temp5
+          let musicVoice1Frame_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
           
           rem Advance pointer by 4 bytes
-let musicVoice1Pointer = musicVoice1Pointer + 4
+          let musicVoice1Pointer = musicVoice1Pointer + 4
           
-return
+          return
           
 LoadMusicNote1EndOfTrack
           rem Helper: Handle end of track for Voice 1
@@ -258,7 +258,7 @@ LoadMusicNote1EndOfTrack
           rem 0)
           rem   (Chaotica
           rem Loop will be handled in UpdateMusic when both voices end
-let musicVoice1Pointer = 0
+          let musicVoice1Pointer = 0
           rem   only)
           AUDV1 = 0
-return
+          return

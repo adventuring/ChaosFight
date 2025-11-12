@@ -13,14 +13,14 @@ WinnerAnnouncementLoop
           rem
           rem Constraints: Must be colocated with WinnerAdvanceToCharacterSelect
           rem Check for button press to advance immediately
-if joy0fire then WinnerAdvanceToCharacterSelect
-if joy1fire then WinnerAdvanceToCharacterSelect
-if switchselect then WinnerAdvanceToCharacterSelect
+          if joy0fire then WinnerAdvanceToCharacterSelect
+          if joy1fire then WinnerAdvanceToCharacterSelect
+          if switchselect then WinnerAdvanceToCharacterSelect
           
           rem Display win screen and continue loop
-gosub DisplayWinScreen bank15
+          gosub DisplayWinScreen bank15
           rem drawscreen called by MainLoop
-return
+          return
 
 WinnerAdvanceToCharacterSelect
           rem Transition to title screen (per issue #483 requirement)
@@ -34,8 +34,8 @@ WinnerAdvanceToCharacterSelect
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
           rem Constraints: Must be colocated with WinnerAnnouncementLoop
-let gameMode = ModeTitle
-gosub ChangeGameMode bank14
-return
+          let gameMode = ModeTitle
+          gosub ChangeGameMode bank14
+          return
 
 

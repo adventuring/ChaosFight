@@ -25,21 +25,21 @@ BeginTitleScreen
           rem Initialize Title Screen mode
           rem Note: pfres is defined globally in AssemblyConfig.bas
           
-let titleParadeTimer = 0
+          let titleParadeTimer = 0
           rem Initialize title parade state
-let titleParadeActive = 0
+          let titleParadeActive = 0
           
           rem Set background color
           COLUBK = ColGray(0)
           
-let temp1 = MusicChaotica
+          let temp1 = MusicChaotica
           rem Start Chaotica title music
-gosub StartMusic bank1
+          gosub StartMusic bank1
           
-gosub SetTitleWindowValues bank14
+          gosub SetTitleWindowValues bank14
           rem Set window values for Title screen (ChaosFight only)
           
           rem Note: Bitmap data is loaded automatically by titlescreen
           rem   kernel via includes
           
-return
+          return

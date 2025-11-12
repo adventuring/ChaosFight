@@ -35,26 +35,26 @@ ApplySpecialMovement
           rem
           rem Constraints: None
           rem Player 0 - Frooty (8) and Dragon of Storms (2) skip gravity
-let temp4 = playerCharacter[0]
-if temp4 = 8 then ApplySpecialMovementP1
+          let temp4 = playerCharacter[0]
+          if temp4 = 8 then ApplySpecialMovementP1
           rem Frooty: no gravity (free flight)
-if temp4 = 2 then ApplySpecialMovementP1
+          if temp4 = 2 then ApplySpecialMovementP1
 ApplySpecialMovementP1
           rem Player 1 - Frooty (8) and Dragon of Storms (2) skip gravity
-let temp4 = playerCharacter[1]
-if temp4 = 8 then ApplySpecialMovementP2
+          let temp4 = playerCharacter[1]
+          if temp4 = 8 then ApplySpecialMovementP2
           rem Frooty: no gravity (free flight)
-if temp4 = 2 then ApplySpecialMovementP2
+          if temp4 = 2 then ApplySpecialMovementP2
 ApplySpecialMovementP2
           rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 8 then ApplySpecialMovementP3
-if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 2 then ApplySpecialMovementP3
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 8 then ApplySpecialMovementP3
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[2] = NoCharacter) then if playerCharacter[2] = 2 then ApplySpecialMovementP3
 ApplySpecialMovementP3
           rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 8 then return
-if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 2 then return
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 8 then return
+          if controllerStatus & SetQuadtariDetected then if !(playerCharacter[3] = NoCharacter) then if playerCharacter[3] = 2 then return
           rem Player 3 - Frooty (8) and Dragon of Storms (2) skip gravity
-return
+          return
 
 ApplyPlayerSpecialMovement
           rem
@@ -74,7 +74,7 @@ ApplyPlayerSpecialMovement
           rem
           rem Called Routines: None
           rem Constraints: None
-let temp4 = playerCharacter[temp1]
+          let temp4 = playerCharacter[temp1]
           
           rem Bernie (0) - screen wrap handled in
           rem   CheckBoundaryCollisions
@@ -84,13 +84,13 @@ let temp4 = playerCharacter[temp1]
           rem Frooty (8) and Dragon of Storms (2) - free flight (no
           rem   gravity)
           rem These characters skip gravity entirely
-if temp4 = 8 then return
+          if temp4 = 8 then return
           rem Frooty: no gravity (free flight)
-if temp4 = 2 then return
+          if temp4 = 2 then return
           rem Dragon of Storms: no gravity (free flight)
           
           rem All other characters use standard physics
-return
+          return
           asm
-ApplySpecialMovement = .ApplySpecialMovement
-end
+          ApplySpecialMovement = .ApplySpecialMovement
+          end

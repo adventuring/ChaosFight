@@ -4,7 +4,7 @@
 UpdatePlayerMovement
           asm
           UpdatePlayerMovement = .UpdatePlayerMovement
-end
+          end
           rem 8.8 fixed-point movement system using batariBASIC built-in
           rem   support
           rem Movement System Routines
@@ -41,16 +41,16 @@ end
           rem Mutates: currentPlayer, player positions (via UpdatePlayerMovementSingle)
           rem Called Routines: UpdatePlayerMovementSingle
           rem Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (goto target)
-for currentPlayer = 0 to 1
-gosub UpdatePlayerMovementSingle
-next
+          for currentPlayer = 0 to 1
+          gosub UpdatePlayerMovementSingle
+          next
           rem Players 2-3 only if Quadtari detected
-if !(controllerStatus & SetQuadtariDetected) then goto UpdatePlayerMovementQuadtariSkip
-for currentPlayer = 2 to 3
-gosub UpdatePlayerMovementSingle
-next
+          if !(controllerStatus & SetQuadtariDetected) then goto UpdatePlayerMovementQuadtariSkip
+          for currentPlayer = 2 to 3
+          gosub UpdatePlayerMovementSingle
+          next
 UpdatePlayerMovementQuadtariSkip
-return
+          return
 UpdatePlayerMovementSingle
           rem Move one player using 8.8 fixed-point velocity integration.
           rem Input: currentPlayer (global) = player index (0-3)
@@ -62,33 +62,33 @@ UpdatePlayerMovementSingle
           rem Notes: temp2-temp4 are clobbered; caller must not reuse them afterward.
           rem 16-bit accumulator for proper carry detection
           rem Skip if player is eliminated
-if playerHealth[currentPlayer] = 0 then return
+          if playerHealth[currentPlayer] = 0 then return
           
           rem Apply X Velocity To X Position (8.8 fixed-point)
           rem Use batariBASIC’s built-in 16-bit addition for carry detection
-let subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
-let playerSubpixelX_WL[currentPlayer] = temp2
-if temp3 > 0 then let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
+          let subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
+          let playerSubpixelX_WL[currentPlayer] = temp2
+          if temp3 > 0 then let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
 
           rem Apply integer velocity component
-let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
+          let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + playerVelocityX[currentPlayer]
 
           rem Sync integer position for rendering
-let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
+          let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
           
           rem Apply Y Velocity To Y Position (8.8 fixed-point)
           rem Use batariBASIC’s built-in 16-bit addition for carry detection
-let subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]
-let playerSubpixelY_WL[currentPlayer] = temp2
-if temp3 > 0 then let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1
+          let subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]
+          let playerSubpixelY_WL[currentPlayer] = temp2
+          if temp3 > 0 then let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1
 
           rem Apply integer velocity component
-let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + playerVelocityY[currentPlayer]
+          let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + playerVelocityY[currentPlayer]
 
           rem Sync integer position for rendering
-let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
+          let playerY[currentPlayer] = playerSubpixelY_R[currentPlayer]
           
-return
+          return
 
 SetPlayerVelocity
           rem Set player velocity (integer component, reset subpixels).
@@ -96,11 +96,11 @@ SetPlayerVelocity
           rem Output: playerVelocityX/Y updated (low bytes cleared)
           rem Mutates: playerVelocityX[], playerVelocityXL[], playerVelocityY[], playerVelocityYL[]
           rem Constraints: None
-let playerVelocityX[temp1] = temp2
-let playerVelocityXL[temp1] = 0
-let playerVelocityY[temp1] = temp3
-let playerVelocityYL[temp1] = 0
-return
+          let playerVelocityX[temp1] = temp2
+          let playerVelocityXL[temp1] = 0
+          let playerVelocityY[temp1] = temp3
+          let playerVelocityYL[temp1] = 0
+          return
 
 SetPlayerPosition
           rem Set player position (integer coordinates, subpixels cleared).
@@ -108,15 +108,15 @@ SetPlayerPosition
           rem Output: playerX/Y and subpixel buffers updated
           rem Mutates: playerX[], playerY[], playerSubpixelX_W/WL[], playerSubpixelY_W/WL[]
           rem Constraints: None
-let playerX[temp1] = temp2
-let playerSubpixelX_W[temp1] = temp2
+          let playerX[temp1] = temp2
+          let playerSubpixelX_W[temp1] = temp2
           rem SCRAM write to playerSubpixelX_W
-let playerSubpixelX_WL[temp1] = 0
-let playerY[temp1] = temp3
-let playerSubpixelY_W[temp1] = temp3
+          let playerSubpixelX_WL[temp1] = 0
+          let playerY[temp1] = temp3
+          let playerSubpixelY_W[temp1] = temp3
           rem SCRAM write to playerSubpixelY_W
-let playerSubpixelY_WL[temp1] = 0
-return
+          let playerSubpixelY_WL[temp1] = 0
+          return
 
 GetPlayerPosition
           rem Get player position (integer components only).
@@ -124,9 +124,9 @@ GetPlayerPosition
           rem Output: temp2 = X position, temp3 = Y position
           rem Mutates: temp2, temp3
           rem Constraints: Callers should consume the values immediately; temps are volatile.
-let temp2 = playerX[currentPlayer]
-let temp3 = playerY[currentPlayer]
-return
+          let temp2 = playerX[currentPlayer]
+          let temp3 = playerY[currentPlayer]
+          return
 
 GetPlayerVelocity
           rem Get player velocity (integer components only).
@@ -135,9 +135,9 @@ GetPlayerVelocity
           rem Output: temp2 = X velocity, temp3 = Y velocity
           rem Mutates: temp2, temp3
           rem Constraints: Callers should use the values immediately; temps are volatile.
-let temp2 = playerVelocityX[currentPlayer]
-let temp3 = playerVelocityY[currentPlayer]
-return
+          let temp2 = playerVelocityX[currentPlayer]
+          let temp3 = playerVelocityY[currentPlayer]
+          return
 
 MovementApplyGravity
           rem Apply gravity to player velocity (integer component only).
@@ -145,8 +145,8 @@ MovementApplyGravity
           rem Output: playerVelocityY[] incremented by gravity strength
           rem Mutates: playerVelocityY[]
           rem Constraints: For subpixel gravity, call AddVelocitySubpixelY separately
-let playerVelocityY[temp1] = playerVelocityY[temp1] + temp2
-return
+          let playerVelocityY[temp1] = playerVelocityY[temp1] + temp2
+          return
 
 AddVelocitySubpixelY
           rem Add fractional gravity to Y velocity (subpixel component).
@@ -155,14 +155,14 @@ AddVelocitySubpixelY
           rem Mutates: temp2-temp4, playerVelocityY[], playerVelocityYL[]
           rem Constraints: Uses 16-bit accumulator; carry promotes to integer component
           rem Save subpixel amount before using temp2 for accumulator
-let temp4 = temp2
+          let temp4 = temp2
           rem 16-bit accumulator for proper carry detection
-let subpixelAccumulator = playerVelocityYL[temp1] + temp4
+          let subpixelAccumulator = playerVelocityYL[temp1] + temp4
           rem Use saved amount in accumulator
-if temp3 > 0 then VelocityYCarry
+          if temp3 > 0 then VelocityYCarry
           rem No carry: temp3 = 0, use low byte directly
-let playerVelocityYL[temp1] = temp2
-return
+          let playerVelocityYL[temp1] = temp2
+          return
 VelocityYCarry
           rem Helper: Handles carry from subpixel to integer part
           rem
@@ -179,10 +179,10 @@ VelocityYCarry
           rem
           rem Constraints: Internal helper for AddVelocitySubpixelY,
           rem only called when carry detected
-let playerVelocityYL[temp1] = temp2
+          let playerVelocityYL[temp1] = temp2
           rem Carry detected: temp3 > 0, extract wrapped low byte
-let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
-return
+          let playerVelocityY[temp1] = playerVelocityY[temp1] + 1
+          return
 
 ApplyFriction
           rem Apply friction to player X velocity (simple decrement/increment).
@@ -193,13 +193,13 @@ ApplyFriction
           rem Constraints: Simple decrement approach for 8-bit CPU.
           rem Positive velocities (>0 and not negative) decremented,
           rem negative velocities (≥128 in two’s complement) incremented
-if playerVelocityX[temp1] > 0 && !(playerVelocityX[temp1] & $80) then let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
+          if playerVelocityX[temp1] > 0 && !(playerVelocityX[temp1] & $80) then let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
           rem Check for negative velocity using twos complement (values
           rem ≥ 128 are negative)
-if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
+          if playerVelocityX[temp1] & $80 then let playerVelocityX[temp1] = playerVelocityX[temp1] + 1
           rem Also zero subpixel if velocity reaches zero
-if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
-return
+          if playerVelocityX[temp1] = 0 then let playerVelocityXL[temp1] = 0
+          return
 
 CheckPlayerCollision
           rem
@@ -238,49 +238,49 @@ CheckPlayerCollision
           rem Uses temp1-temp6 (temp4-5 reused after X/Y checks)
 
           rem Load player X positions into temporaries
-let temp4 = playerX[temp1]
-let temp5 = playerX[temp2]
+          let temp4 = playerX[temp1]
+          let temp5 = playerX[temp2]
 
           rem Calculate absolute X distance between players
           rem Primary holds player1 X initially
-if temp4 >= temp5 then CalcXDistanceRight
-let temp6 = temp5 - temp4
-goto XDistanceDone
+          if temp4 >= temp5 then CalcXDistanceRight
+          let temp6 = temp5 - temp4
+          goto XDistanceDone
 CalcXDistanceRight
-let temp6 = temp4 - temp5
+          let temp6 = temp4 - temp5
 XDistanceDone
-if temp6 >= PlayerSpriteWidth then NoCollision
+          if temp6 >= PlayerSpriteWidth then NoCollision
 
           rem Load player Y positions (reuse temporaries)
-let temp4 = playerY[temp1]
-let temp5 = playerY[temp2]
+          let temp4 = playerY[temp1]
+          let temp5 = playerY[temp2]
 
           rem Fetch character half-height values using shared SCRAM scratch variables
-let characterIndex_W = playerCharacter[temp1]
-let characterHeight_W = CharacterHeights[characterIndex_R]
-let halfHeight1_W = characterHeight_R / 2
+          let characterIndex_W = playerCharacter[temp1]
+          let characterHeight_W = CharacterHeights[characterIndex_R]
+          let halfHeight1_W = characterHeight_R / 2
 
-let characterIndex_W = playerCharacter[temp2]
-let characterHeight_W = CharacterHeights[characterIndex_R]
-let halfHeight2_W = characterHeight_R / 2
+          let characterIndex_W = playerCharacter[temp2]
+          let characterHeight_W = CharacterHeights[characterIndex_R]
+          let halfHeight2_W = characterHeight_R / 2
 
           rem Compute absolute Y distance between player centers
-if temp4 >= temp5 then CalcYDistanceDown
-let temp6 = temp5 - temp4
-goto YDistanceDone
+          if temp4 >= temp5 then CalcYDistanceDown
+          let temp6 = temp5 - temp4
+          goto YDistanceDone
 CalcYDistanceDown
-let temp6 = temp4 - temp5
+          let temp6 = temp4 - temp5
 YDistanceDone
-let totalHeight_W = halfHeight1_R + halfHeight2_R
-if temp6 >= totalHeight_R then NoCollision
+          let totalHeight_W = halfHeight1_R + halfHeight2_R
+          if temp6 >= totalHeight_R then NoCollision
 
-let temp3 = 1
+          let temp3 = 1
           rem Collision detected
-return
+          return
 
 NoCollision
-let temp3 = 0
-return
+          let temp3 = 0
+          return
 ConstrainToScreen
           rem Clamp player position to on-screen bounds and clear subpixels at edges.
           rem Input: temp1 = player index (0-3)
@@ -289,23 +289,23 @@ ConstrainToScreen
           rem Constraints: X bounds PlayerLeftEdge..PlayerRightEdge, Y bounds 20-80
           rem Constrain X position using screen boundary constants
           rem SCRAM write to playerSubpixelX_W
-if playerX[temp1] < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge
-if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_W[temp1] = PlayerLeftEdge
-if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_WL[temp1] = 0
-if playerX[temp1] > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
-if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_W[temp1] = PlayerRightEdge
-if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_WL[temp1] = 0
+          if playerX[temp1] < PlayerLeftEdge then let playerX[temp1] = PlayerLeftEdge
+          if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_W[temp1] = PlayerLeftEdge
+          if playerX[temp1] < PlayerLeftEdge then let playerSubpixelX_WL[temp1] = 0
+          if playerX[temp1] > PlayerRightEdge then let playerX[temp1] = PlayerRightEdge
+          if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_W[temp1] = PlayerRightEdge
+          if playerX[temp1] > PlayerRightEdge then let playerSubpixelX_WL[temp1] = 0
           
           rem Constrain Y position (20 to 80 for screen bounds)
           rem SCRAM write to playerSubpixelY_W
-if playerY[temp1] < 20 then let playerY[temp1] = 20
-if playerY[temp1] < 20 then let playerSubpixelY_W[temp1] = 20
-if playerY[temp1] < 20 then let playerSubpixelY_WL[temp1] = 0
-if playerY[temp1] > 80 then let playerY[temp1] = 80
-if playerY[temp1] > 80 then let playerSubpixelY_W[temp1] = 80
-if playerY[temp1] > 80 then let playerSubpixelY_WL[temp1] = 0
+          if playerY[temp1] < 20 then let playerY[temp1] = 20
+          if playerY[temp1] < 20 then let playerSubpixelY_W[temp1] = 20
+          if playerY[temp1] < 20 then let playerSubpixelY_WL[temp1] = 0
+          if playerY[temp1] > 80 then let playerY[temp1] = 80
+          if playerY[temp1] > 80 then let playerSubpixelY_W[temp1] = 80
+          if playerY[temp1] > 80 then let playerSubpixelY_WL[temp1] = 0
           
-return
+          return
 
           rem
           rem Initialization
@@ -336,59 +336,59 @@ InitializeMovementSystem
           rem Constraints: Initializes all 4 players to same position
           rem (center of screen). All velocities set to zero
           rem Initialize all players to center of screen - inlined for
-let temp2 = 80
+          let temp2 = 80
           rem   performance
-let temp3 = 100
-let playerX[0] = temp2
+          let temp3 = 100
+          let playerX[0] = temp2
           rem Player 0
-let playerSubpixelX_W[0] = temp2
-let playerSubpixelX_WL[0] = 0
-let playerY[0] = temp3
-let playerSubpixelY_W[0] = temp3
-let playerSubpixelY_WL[0] = 0
-let playerX[1] = temp2
+          let playerSubpixelX_W[0] = temp2
+          let playerSubpixelX_WL[0] = 0
+          let playerY[0] = temp3
+          let playerSubpixelY_W[0] = temp3
+          let playerSubpixelY_WL[0] = 0
+          let playerX[1] = temp2
           rem Player 1
-let playerSubpixelX_W[1] = temp2
-let playerSubpixelX_WL[1] = 0
-let playerY[1] = temp3
-let playerSubpixelY_W[1] = temp3
-let playerSubpixelY_WL[1] = 0
-let playerX[2] = temp2
+          let playerSubpixelX_W[1] = temp2
+          let playerSubpixelX_WL[1] = 0
+          let playerY[1] = temp3
+          let playerSubpixelY_W[1] = temp3
+          let playerSubpixelY_WL[1] = 0
+          let playerX[2] = temp2
           rem Player 2
-let playerSubpixelX_W[2] = temp2
-let playerSubpixelX_WL[2] = 0
-let playerY[2] = temp3
-let playerSubpixelY_W[2] = temp3
-let playerSubpixelY_WL[2] = 0
-let playerX[3] = temp2
+          let playerSubpixelX_W[2] = temp2
+          let playerSubpixelX_WL[2] = 0
+          let playerY[2] = temp3
+          let playerSubpixelY_W[2] = temp3
+          let playerSubpixelY_WL[2] = 0
+          let playerX[3] = temp2
           rem Player 3
-let playerSubpixelX_W[3] = temp2
-let playerSubpixelX_WL[3] = 0
-let playerY[3] = temp3
-let playerSubpixelY_W[3] = temp3
-let playerSubpixelY_WL[3] = 0
+          let playerSubpixelX_W[3] = temp2
+          let playerSubpixelX_WL[3] = 0
+          let playerY[3] = temp3
+          let playerSubpixelY_W[3] = temp3
+          let playerSubpixelY_WL[3] = 0
           
           rem Initialize velocities to zero - inlined for performance
-let playerVelocityX[0] = 0
+          let playerVelocityX[0] = 0
           rem Player 0
-let playerVelocityXL[0] = 0
-let playerVelocityY[0] = 0
-let playerVelocityYL[0] = 0
-let playerVelocityX[1] = 0
+          let playerVelocityXL[0] = 0
+          let playerVelocityY[0] = 0
+          let playerVelocityYL[0] = 0
+          let playerVelocityX[1] = 0
           rem Player 1
-let playerVelocityXL[1] = 0
-let playerVelocityY[1] = 0
-let playerVelocityYL[1] = 0
-let playerVelocityX[2] = 0
+          let playerVelocityXL[1] = 0
+          let playerVelocityY[1] = 0
+          let playerVelocityYL[1] = 0
+          let playerVelocityX[2] = 0
           rem Player 2
-let playerVelocityXL[2] = 0
-let playerVelocityY[2] = 0
-let playerVelocityYL[2] = 0
-let playerVelocityX[3] = 0
+          let playerVelocityXL[2] = 0
+          let playerVelocityY[2] = 0
+          let playerVelocityYL[2] = 0
+          let playerVelocityX[3] = 0
           rem Player 3
-let playerVelocityXL[3] = 0
-let playerVelocityY[3] = 0
-let playerVelocityYL[3] = 0
-return
+          let playerVelocityXL[3] = 0
+          let playerVelocityY[3] = 0
+          let playerVelocityYL[3] = 0
+          return
           
           

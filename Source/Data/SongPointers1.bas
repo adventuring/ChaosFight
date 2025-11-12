@@ -7,7 +7,7 @@
           rem Format: data SongPointers1L, SongPointers1H (23 entries)
           rem Songs in Bank 1: Song IDs Bank1MinSongID-28 (character themes plus admin music)
           rem Index mapping: song Bank1MinSongID → index 0, song N → index (N - Bank1MinSongID)
-          
+
           data SongPointers1L
             <Song_LowRes_Voice0, <Song_RoboTito_Voice0,
             <Song_SongOfTheBear_Voice0, <Song_DucksAway_Voice0,

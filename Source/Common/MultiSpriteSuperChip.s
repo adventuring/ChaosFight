@@ -16,11 +16,11 @@ player1x         EQU $85
 player2x         EQU $86
 player3x         EQU $87
 player4x         EQU $88
-player5x         EQU $89
+player5x         EQU $89 
 objecty          EQU $8A
 missile0y        EQU $8A
 missile1y        EQU $8B
-missile1height   EQU $87
+missile1height   EQU $A4
 player1color     EQU $87
 bally            EQU $8C
 player0y         EQU $8D
@@ -30,7 +30,7 @@ player2y         EQU $8F
 player3y         EQU $90
 player4y         EQU $91
 player5y         EQU $92
-missile0height   EQU $90
+missile0height   EQU $A5
 ballheight       EQU $92
 currentpaddle    EQU $90
 paddle           EQU $91

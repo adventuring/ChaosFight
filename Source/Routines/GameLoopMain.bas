@@ -21,21 +21,21 @@ ReadEnhancedButtons
           rem Called Routines: None
           rem
           rem Constraints: Must be called early in game loop before input processing
-let temp1 = 0
+          let temp1 = 0
 
           rem Player 1 (INPT0) - Genesis/Joy2b+ Button C/II
-if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 1
-if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
+          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = temp1 | 1
+          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT0{7} then let temp1 = temp1 | 1
 
           rem Player 2 (INPT2) - Genesis/Joy2b+ Button C/II
-if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = temp1 | 2
-if controllerStatus & SetRightPortJoy2bPlus then if !(INPT2 & $80) then let temp1 = temp1 | 2
+          if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = temp1 | 2
+          if controllerStatus & SetRightPortJoy2bPlus then if !(INPT2 & $80) then let temp1 = temp1 | 2
 
           rem Players 3-4 cannot have enhanced controllers (require Quadtari)
           rem Bits 2-3 remain 0
 
-let enhancedButtonStates_W = temp1
-return
+          let enhancedButtonStates_W = temp1
+          return
 
 GameMainLoop
           rem   1. Handle console switches (pause, reset, color)
@@ -88,44 +88,44 @@ GameMainLoop
           rem              Entry point for main gameplay loop (called
           rem              from MainLoop)
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+
-gosub ReadEnhancedButtons
+          gosub ReadEnhancedButtons
           rem   II/III)
           
-gosub HandleConsoleSwitches bank13 :
+          gosub HandleConsoleSwitches bank13 :
           rem Handle console switches (in Bank 13)
 
           rem Check if game is paused - skip movement/physics/animation if so
-if systemFlags & SystemFlagGameStatePaused then goto GameMainLoopPaused
+          if systemFlags & SystemFlagGameStatePaused then goto GameMainLoopPaused
 
-gosub InputHandleAllPlayers bank8 :
+          gosub InputHandleAllPlayers bank8 :
           rem Handle all player input (with Quadtari multiplexing) (in Bank 8)
 
-gosub UpdateGuardTimers bank10
+          gosub UpdateGuardTimers bank10
           rem Update guard timers (duration and cooldown)
 
-gosub UpdateCharacterAnimations
+          gosub UpdateCharacterAnimations
           rem Update animation system (10fps character animation) (in Bank 11)
           
-gosub UpdatePlayerMovement bank8 :
+          gosub UpdatePlayerMovement bank8 :
           rem Update movement system (full frame rate movement) (in Bank 11)
 
-gosub PhysicsApplyGravity bank8
+          gosub PhysicsApplyGravity bank8
           rem Apply gravity and physics (in Bank 11)
           
-gosub ApplyMomentumAndRecovery bank8
+          gosub ApplyMomentumAndRecovery bank8
           rem Apply momentum and recovery effects (in Bank 8)
 
-gosub ApplySpecialMovement bank7
+          gosub ApplySpecialMovement bank7
           rem Apply special movement physics (Bernie wrap, etc.) (in Bank 7)
 
-gosub CheckBoundaryCollisions bank10
+          gosub CheckBoundaryCollisions bank10
           rem Check boundary collisions (in Bank 10)
 
           rem Optimized: Single loop for playfield collisions (walls, ceilings, ground)
-for currentPlayer = 0 to 3
-if currentPlayer >= 2 && !(controllerStatus & SetQuadtariDetected) then goto GameMainLoopQuadtariSkip
-gosub CheckPlayfieldCollisionAllDirections bank10
-next
+          for currentPlayer = 0 to 3
+          if currentPlayer >= 2 && !(controllerStatus & SetQuadtariDetected) then goto GameMainLoopQuadtariSkip
+          gosub CheckPlayfieldCollisionAllDirections bank10
+          next
 GameMainLoopQuadtariSkip
           rem Skip 4-player collision checks (not in 4-player mode)
           rem
@@ -139,13 +139,13 @@ GameMainLoopQuadtariSkip
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-gosub CheckAllPlayerCollisions
+          gosub CheckAllPlayerCollisions
           rem Check multi-player collisions (in Bank 11)
 
-gosub CheckAllPlayerEliminations bank12
+          gosub CheckAllPlayerEliminations bank12
           rem Check for player eliminations
           
-gosub UpdateAllMissiles bank12
+          gosub UpdateAllMissiles bank12
           rem Update missiles (in Bank 12)
           
           rem Check if game should end and transition to winner screen
@@ -153,8 +153,8 @@ gosub UpdateAllMissiles bank12
           rem systemFlags bit 3 (SystemFlagGameStateEnding) means game
           rem is
           rem gameEndTimer counts down
-if systemFlags & SystemFlagGameStateEnding then CheckGameEndTransition
-goto GameEndCheckDone
+          if systemFlags & SystemFlagGameStateEnding then CheckGameEndTransition
+          goto GameEndCheckDone
 CheckGameEndTransition
           rem Check if game end timer should transition to winner screen
           rem
@@ -172,10 +172,10 @@ CheckGameEndTransition
           rem Constraints: Must be colocated with GameMainLoop,
           rem TransitionToWinner, GameEndCheckDone
           rem When timer reaches 0, transition to winner announcement
-if gameEndTimer_R = 0 then TransitionToWinner
-let gameEndTimer_W = gameEndTimer_R - 1
+          if gameEndTimer_R = 0 then TransitionToWinner
+          let gameEndTimer_W = gameEndTimer_R - 1
           rem Decrement game end timer
-goto GameEndCheckDone
+          goto GameEndCheckDone
 TransitionToWinner
           rem Transition to winner announcement mode
           rem
@@ -188,9 +188,9 @@ TransitionToWinner
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
           rem Constraints: Must be colocated with GameMainLoop, CheckGameEndTransition
-let gameMode = ModeWinner
-gosub ChangeGameMode bank14
-return
+          let gameMode = ModeWinner
+          gosub ChangeGameMode bank14
+          return
 GameEndCheckDone
           rem Game end check complete
           rem
@@ -204,33 +204,33 @@ GameEndCheckDone
           rem
           rem Constraints: Must be colocated with GameMainLoop
 
-gosub UpdateAllMissiles bank12
+          gosub UpdateAllMissiles bank12
           rem Update missiles (in Bank 12)
 
           rem Check missile collisions (in Bank 7) - handled internally
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
-gosub CheckRoboTitoStretchMissileCollisions bank8
+          gosub CheckRoboTitoStretchMissileCollisions bank8
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)
           rem gosub SetSpritePositions 
           rem Replaced by UpdatePlayerMovement
 
-gosub SetPlayerSprites bank6
+          gosub SetPlayerSprites bank6
           rem Set sprite graphics (in Bank 6)
 
-gosub DisplayHealth bank6
+          gosub DisplayHealth bank6
           rem Display health information (in Bank 6)
           
-gosub UpdatePlayer12HealthBars bank8
+          gosub UpdatePlayer12HealthBars bank8
           rem Update P1/P2 health bars using pfscore system
           
-gosub UpdatePlayer34HealthBars bank8
+          gosub UpdatePlayer34HealthBars bank8
           rem Update P3/P4 health bars using playfield system
           
-gosub UpdateSoundEffect bank15
+          gosub UpdateSoundEffect bank15
           rem Update sound effects (game mode 6 only)
           
           rem Frame counter is automatically incremented by batariBASIC
@@ -239,5 +239,5 @@ gosub UpdateSoundEffect bank15
 GameMainLoopPaused
           rem Game is paused - skip all movement/physics/animation updates
           rem but still allow console switch handling for unpause
-return
+          return
 

@@ -47,19 +47,19 @@ StartMusic
           AUDV1 = 0
           
           rem Clear voice pointers (high byte = 0 means inactive)
-let musicVoice0Pointer = 0
-let musicVoice1Pointer = 0
+          let musicVoice0Pointer = 0
+          let musicVoice1Pointer = 0
           
           rem Lookup song pointer from appropriate bank (Bank15 or
           rem Bank1)
           rem Songs in Bank 15: IDs 0-Bank15MaxSongID
           rem Songs in Bank 1: All other songs (Bank1MinSongID-28)
           rem Route to correct bank based on song ID
-if temp1 < Bank1MinSongID then goto LoadSongFromBank15
-gosub LoadSongPointer bank1
+          if temp1 < Bank1MinSongID then goto LoadSongFromBank15
+          gosub LoadSongPointer bank1
           rem Song in Bank 1
-gosub LoadSongVoice1PointerBank1
-goto LoadSongPointersDone
+          gosub LoadSongVoice1PointerBank1
+          goto LoadSongPointersDone
 LoadSongFromBank15
           rem Helper: Loads song pointers from Bank 15
           rem
@@ -76,9 +76,9 @@ LoadSongFromBank15
           rem
           rem Constraints: Internal helper for StartMusic, only called
           rem for songs 0-Bank15MaxSongID
-gosub LoadSongPointer bank15
+          gosub LoadSongPointer bank15
           rem Song in Bank 15
-gosub LoadSongVoice1PointerBank15 bank15
+          gosub LoadSongVoice1PointerBank15 bank15
 LoadSongPointersDone
           rem Helper: Completes song pointer setup after loading
           rem
@@ -100,26 +100,26 @@ LoadSongPointersDone
           rem Constraints: Internal helper for StartMusic, completes
           rem setup after pointer loading
           rem LoadSongPointer populated songPointer (16-bit)
-let musicVoice0Pointer = songPointer
+          let musicVoice0Pointer = songPointer
           rem Set Voice 0 pointer to song start (Song_Voice0 stream)
-let musicVoice0StartPointer_W = songPointer
+          let musicVoice0StartPointer_W = songPointer
           rem Store initial pointers for looping (Chaotica only)
           
           rem LoadSongVoice1PointerBank1/15 already called above
           rem Voice 1 loader reused songPointer (16-bit) for Voice 1
-let musicVoice1Pointer = songPointer
-let musicVoice1StartPointer_W = songPointer
+          let musicVoice1Pointer = songPointer
+          let musicVoice1StartPointer_W = songPointer
           rem Store initial Voice 1 pointer for looping (Chaotica only)
           
-let currentSongID_W = temp1
+          let currentSongID_W = temp1
           rem Store current song ID for looping check
           
-let musicVoice0Frame_W = 1
+          let musicVoice0Frame_W = 1
           rem Initialize frame counters to trigger first note load
-let musicVoice1Frame_W = 1
+          let musicVoice1Frame_W = 1
           
           rem Start first notes
-goto UpdateMusic
+          goto UpdateMusic
           rem tail call
 
 UpdateMusic
@@ -153,23 +153,23 @@ UpdateMusic
           rem 0-2, 7. Only Chaotica (song ID 26) loops - other songs
           rem stop when both voices end
           rem Update Voice 0 if active
-if musicVoice0Pointer then gosub UpdateMusicVoice0
+          if musicVoice0Pointer then gosub UpdateMusicVoice0
           
           rem Update Voice 1 if active
           
-if musicVoice1Pointer then gosub UpdateMusicVoice1
+          if musicVoice1Pointer then gosub UpdateMusicVoice1
           
           rem Check if both voices have ended (both pointerH = 0) and
           rem song is
           rem   Chaotica (26) for looping
           rem Only Chaotica loops - other songs stop when both voices end
-if musicVoice0Pointer then goto MusicUpdateDone
+          if musicVoice0Pointer then goto MusicUpdateDone
           rem Voice 0 still active, no reset needed
-if musicVoice1Pointer then goto MusicUpdateDone
+          if musicVoice1Pointer then goto MusicUpdateDone
           rem Voice 1 still active, no reset needed
           rem Both voices inactive - check if Chaotica (song ID 26)
-if currentSongID_R = 26 then goto IsChaotica
-goto MusicUpdateDone
+          if currentSongID_R = 26 then goto IsChaotica
+          goto MusicUpdateDone
 IsChaotica
           rem Not Chaotica - stop playback (no loop)
           rem Helper: Resets Chaotica to song head when both voices end
@@ -192,18 +192,18 @@ IsChaotica
           rem when both voices ended and song is Chaotica (26)
           rem Both voices ended and song is Chaotica - reset to song
           rem head
-let musicVoice0Pointer = musicVoice0StartPointer_R
+          let musicVoice0Pointer = musicVoice0StartPointer_R
           rem Reset Voice 0 pointer to start
-let musicVoice1Pointer = musicVoice1StartPointer_R
+          let musicVoice1Pointer = musicVoice1StartPointer_R
           rem Reset Voice 1 pointer to start
-let musicVoice0Frame_W = 1
+          let musicVoice0Frame_W = 1
           rem Initialize frame counters to trigger first note load
-let musicVoice1Frame_W = 1
+          let musicVoice1Frame_W = 1
           rem Tail call to reload first notes
-goto UpdateMusic
+          goto UpdateMusic
           rem tail call
 MusicUpdateDone
-return
+          return
 CalculateMusicVoiceEnvelope
           rem Helper: End of UpdateMusic (label only)
           rem
@@ -228,12 +228,12 @@ CalculateMusicVoiceEnvelope
           rem last NoteDecayFrames frames. Sustain phase: uses target
           rem AUDV. Clamps AUDV to 0-15
           rem Get voice-specific variables
-if temp1 = 0 then CMVE_GetVoice0Vars
-let temp2 = MusicVoice1TotalFrames_R
+          if temp1 = 0 then CMVE_GetVoice0Vars
+          let temp2 = MusicVoice1TotalFrames_R
           rem Voice 1
-let temp3 = musicVoice1Frame_R
-let temp5 = MusicVoice1TargetAUDV_R
-goto CMVE_CalcElapsed
+          let temp3 = musicVoice1Frame_R
+          let temp5 = MusicVoice1TargetAUDV_R
+          goto CMVE_CalcElapsed
 CMVE_GetVoice0Vars
           rem Helper: Gets Voice 0 specific variables
           rem
@@ -250,10 +250,10 @@ CMVE_GetVoice0Vars
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope, only called for voice 0
-let temp2 = MusicVoice0TotalFrames_R
+          let temp2 = MusicVoice0TotalFrames_R
           rem Voice 0
-let temp3 = musicVoice0Frame_R
-let temp5 = MusicVoice0TargetAUDV_R
+          let temp3 = musicVoice0Frame_R
+          let temp5 = MusicVoice0TargetAUDV_R
 CMVE_CalcElapsed
           rem Helper: Calculates frames elapsed and determines envelope
           rem phase
@@ -272,14 +272,14 @@ CMVE_CalcElapsed
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope
-let temp4 = temp2 - temp3
+          let temp4 = temp2 - temp3
           rem Calculate frames elapsed = TotalFrames - FrameCounter
           rem Check if in attack phase (first NoteAttackFrames frames)
-if temp4 < NoteAttackFrames then CMVE_ApplyAttack
+          if temp4 < NoteAttackFrames then CMVE_ApplyAttack
           rem Check if in decay phase (last NoteDecayFrames frames)
-if temp3 <= NoteDecayFrames then CMVE_ApplyDecay
+          if temp3 <= NoteDecayFrames then CMVE_ApplyDecay
           rem Sustain phase - use target AUDV (already set)
-return
+          return
 CMVE_ApplyAttack
           rem Helper: Applies attack envelope (ramps up volume)
           rem
@@ -298,16 +298,16 @@ CMVE_ApplyAttack
           rem CalculateMusicVoiceEnvelope, only called in attack phase.
           rem Formula: AUDV = Target - NoteAttackFrames + frames_elapsed
           rem Attack: AUDV = Target - NoteAttackFrames + frames_elapsed
-let temp6 = temp5
-let temp6 = temp6 - NoteAttackFrames
-let temp6 = temp6 + temp4
+          let temp6 = temp5
+          let temp6 = temp6 - NoteAttackFrames
+          let temp6 = temp6 + temp4
           rem Check for wraparound: clamp to 0 if negative
-if temp6 & $80 then temp6 = 0
-if temp6 > 15 then temp6 = 15
+          if temp6 & $80 then temp6 = 0
+          if temp6 > 15 then temp6 = 15
           rem Set voice-specific AUDV
-if temp1 = 0 then CMVE_SetAUDV0
-let AUDV1 = temp6
-return
+          if temp1 = 0 then CMVE_SetAUDV0
+          let AUDV1 = temp6
+          return
 CMVE_SetAUDV0
           rem Helper: Sets AUDV0 for Voice 0
           rem
@@ -321,8 +321,8 @@ CMVE_SetAUDV0
           rem
           rem Constraints: Internal helper for CMVE_ApplyAttack and
           rem CMVE_ApplyDecay, only called for voice 0
-let AUDV0 = temp6
-return
+          let AUDV0 = temp6
+          return
 CMVE_ApplyDecay
           rem Helper: Applies decay envelope (ramps down volume)
           rem
@@ -340,17 +340,17 @@ CMVE_ApplyDecay
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope, only called in decay phase.
           rem Formula: AUDV = Target - (NoteDecayFrames - FrameCounter + 1)
-let temp6 = temp5
-let temp6 = temp6 - NoteDecayFrames
-let temp6 = temp6 + temp3
-let temp6 = temp6 - 1
+          let temp6 = temp5
+          let temp6 = temp6 - NoteDecayFrames
+          let temp6 = temp6 + temp3
+          let temp6 = temp6 - 1
           rem Check for wraparound: clamp to 0 if negative
-if temp6 & $80 then temp6 = 0
-if temp6 > 15 then temp6 = 15
+          if temp6 & $80 then temp6 = 0
+          if temp6 > 15 then temp6 = 15
           rem Set voice-specific AUDV
-if temp1 = 0 then CMVE_SetAUDV0
-let AUDV1 = temp6
-return
+          if temp1 = 0 then CMVE_SetAUDV0
+          let AUDV1 = temp6
+          return
 
 UpdateMusicVoice0
           rem
@@ -371,22 +371,22 @@ UpdateMusicVoice0
           rem Constraints: Uses Voice 0 (AUDC0, AUDF0, AUDV0). Songs 0-Bank15MaxSongID
           rem in Bank 15, all others in Bank 1. Routes to correct bank
           rem based on currentSongID_R
-let temp1 = 0
+          let temp1 = 0
           rem Apply envelope using shared calculation
-gosub CalculateMusicVoiceEnvelope
+          gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter
-let temp4 = musicVoice0Frame_R - 1
+          let temp4 = musicVoice0Frame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
-let musicVoice0Frame_W = temp4
-if temp4 then return
+          let musicVoice0Frame_W = temp4
+          if temp4 then return
           rem Frame counter reached 0 - load next note from appropriate
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank
           rem 1: others)
-if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0 bank15 : return
-gosub LoadMusicNote0 bank1
+          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0 bank15 : return
+          gosub LoadMusicNote0 bank1
           rem Song in Bank 1
-return
+          return
 
 UpdateMusicVoice1
           rem
@@ -422,22 +422,22 @@ UpdateMusicVoice1
           rem Constraints: Uses Voice 1 (AUDC1, AUDF1, AUDV1). Songs 0-Bank15MaxSongID
           rem in Bank 15, all others in Bank 1. Routes to correct bank
           rem based on currentSongID_R
-let temp1 = 1
+          let temp1 = 1
           rem Apply envelope using shared calculation
-gosub CalculateMusicVoiceEnvelope
+          gosub CalculateMusicVoiceEnvelope
           rem Decrement frame counter
-let temp5 = musicVoice1Frame_R - 1
+          let temp5 = musicVoice1Frame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
-let musicVoice1Frame_W = temp5
-if temp5 then return
+          let musicVoice1Frame_W = temp5
+          if temp5 then return
           rem Frame counter reached 0 - load next note from appropriate
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank
           rem 1: others)
-if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1 bank15 : return
-gosub LoadMusicNote1 bank1
+          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1 bank15 : return
+          gosub LoadMusicNote1 bank1
           rem Song in Bank 1
-return
+          return
 
 StopMusic
           rem
@@ -463,10 +463,10 @@ StopMusic
           AUDV1 = 0
           
           rem Clear voice pointers (high byte = 0 means inactive)
-let musicVoice0Pointer = 0
-let musicVoice1Pointer = 0
+          let musicVoice0Pointer = 0
+          let musicVoice1Pointer = 0
           
-let musicVoice0Frame_W = 0
+          let musicVoice0Frame_W = 0
           rem Reset frame counters
-let musicVoice1Frame_W = 0
-return
+          let musicVoice1Frame_W = 0
+          return

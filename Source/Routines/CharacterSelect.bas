@@ -23,27 +23,27 @@ CharacterSelectEntry
           rem initialization
           rem              Must be colocated with CharacterSelectLoop (called
           rem              via goto)
-let playerCharacter[0] = 0
+          let playerCharacter[0] = 0
           rem Initialize character selections
-let playerCharacter[1] = 0
-let playerCharacter[2] = 0
-let playerCharacter[3] = 0
-let playerLocked = 0
+          let playerCharacter[1] = 0
+          let playerCharacter[2] = 0
+          let playerCharacter[3] = 0
+          let playerLocked = 0
           rem Initialize playerLocked (bit-packed, all unlocked)
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
           rem   detection (upgrades only)
           rem Controller detection is handled by CtrlDetPads with
           rem   monotonic state machine
           
-let characterSelectAnimationTimer  = 0
+          let characterSelectAnimationTimer  = 0
           rem Initialize character select animations
-let characterSelectAnimationState  = 0
-let characterSelectCharacterIndex  = 0
+          let characterSelectAnimationState  = 0
+          let characterSelectCharacterIndex  = 0
           rem Start with idle animation
-let characterSelectAnimationFrame  = 0
+          let characterSelectAnimationFrame  = 0
           rem Start with first character
 
-gosub CharacterSelectDetectQuadtari
+          gosub CharacterSelectDetectQuadtari
           rem Check for Quadtari adapter
 
           COLUBK = ColGray(0)
@@ -90,121 +90,121 @@ CharacterSelectLoop
           rem On odd frames (qtcontroller=1): handle controllers 2 and 3
           rem   (if Quadtari detected)
           
-if qtcontroller then goto CharacterSelectHandleQuadtari
+          if qtcontroller then goto CharacterSelectHandleQuadtari
           
           rem Handle Player 1 input (joy0 on even frames)
-let currentPlayer = 0
+          let currentPlayer = 0
           
-if joy0left then gosub SelectStickLeft
-if joy0right then gosub SelectStickRight
+          if joy0left then gosub SelectStickLeft
+          if joy0right then gosub SelectStickRight
 
           rem Unlock by moving up
-if joy0up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy0up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-if joy0fire then Player1LockSelection
-goto DonePlayer1
+          if joy0fire then Player1LockSelection
+          goto DonePlayer1
 
 Player1LockSelection
-if joy0down then Player1HandicapSelection
-let temp2 = PlayerLockedNormal
-goto Player1LockSelectionDone
+          if joy0down then Player1HandicapSelection
+          let temp2 = PlayerLockedNormal
+          goto Player1LockSelectionDone
           rem Locked normal (100% health)
 
 Player1HandicapSelection
-let temp2 = PlayerHandicapped 
+          let temp2 = PlayerHandicapped 
 Player1LockSelectionDone
-let temp1 = currentPlayer
-gosub SetPlayerLocked
+          let temp1 = currentPlayer
+          gosub SetPlayerLocked
 DonePlayer1
 
           rem Handle Player 2 input (joy1 on even frames)
-let currentPlayer = 1
+          let currentPlayer = 1
           
-if joy1left then gosub SelectStickLeft
-if joy1right then gosub SelectStickRight
+          if joy1left then gosub SelectStickLeft
+          if joy1right then gosub SelectStickRight
 
           rem Unlock by moving up
-if joy1up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy1up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-if joy1fire then Player2LockSelection
-goto DonePlayer2
+          if joy1fire then Player2LockSelection
+          goto DonePlayer2
 
 Player2LockSelection
-if joy1down then Player2HandicapSelection
-let temp2 = PlayerLockedNormal
-goto Player2LockSelectionDone
+          if joy1down then Player2HandicapSelection
+          let temp2 = PlayerLockedNormal
+          goto Player2LockSelectionDone
           rem Locked normal (100% health)
 
 Player2HandicapSelection
-let temp2 = PlayerHandicapped 
+          let temp2 = PlayerHandicapped 
 Player2LockSelectionDone
-let temp1 = currentPlayer
-gosub SetPlayerLocked
+          let temp1 = currentPlayer
+          gosub SetPlayerLocked
 DonePlayer2
           qtcontroller = 1
           rem Switch to odd frame mode for next iteration
-goto CharacterSelectHandleComplete
+          goto CharacterSelectHandleComplete
 
 CharacterSelectHandleQuadtari
           rem Handle Player 3 input (joy0 on odd frames, Quadtari only)
-if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer3
+          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer3
 
-goto CharacterSelectSkipPlayer3
+          goto CharacterSelectSkipPlayer3
 
 CharacterSelectHandlePlayer3
-let currentPlayer = 2
+          let currentPlayer = 2
           
-if joy0left then gosub SelectStickLeft
-if joy0right then gosub SelectStickRight
+          if joy0left then gosub SelectStickLeft
+          if joy0right then gosub SelectStickRight
 
           rem Unlock by moving up
-if joy0up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy0up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-if joy0fire then Player3LockSelection
-goto DonePlayer3
+          if joy0fire then Player3LockSelection
+          goto DonePlayer3
 
 Player3LockSelection
-if joy0down then Player3HandicapSelection
-let temp2 = PlayerLockedNormal
-goto Player3LockSelectionDone
+          if joy0down then Player3HandicapSelection
+          let temp2 = PlayerLockedNormal
+          goto Player3LockSelectionDone
           
 Player3HandicapSelection
-let temp2 = PlayerHandicapped 
+          let temp2 = PlayerHandicapped 
           
 Player3LockSelectionDone
-let temp1 = currentPlayer
-gosub SetPlayerLocked
+          let temp1 = currentPlayer
+          gosub SetPlayerLocked
 DonePlayer3
 
           rem Handle Player 4 input (joy1 on odd frames, Quadtari only)
 
-if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer4
+          if controllerStatus & SetQuadtariDetected then CharacterSelectHandlePlayer4
 
-goto CharacterSelectSkipPlayer4
+          goto CharacterSelectSkipPlayer4
 
 CharacterSelectHandlePlayer4
-let currentPlayer = 3
+          let currentPlayer = 3
           
-if joy1left then gosub SelectStickLeft
-if joy1right then gosub SelectStickRight
+          if joy1left then gosub SelectStickLeft
+          if joy1right then gosub SelectStickRight
 
           rem Unlock by moving up
-if joy1up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy1up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-if joy1fire then Player4LockSelection
-goto DonePlayer4
+          if joy1fire then Player4LockSelection
+          goto DonePlayer4
 
 Player4LockSelection
-if joy1down then Player4HandicapSelection
-let temp2 = PlayerLockedNormal
-goto Player4LockSelectionDone
+          if joy1down then Player4HandicapSelection
+          let temp2 = PlayerLockedNormal
+          goto Player4LockSelectionDone
           rem Locked normal (100% health)
 
 Player4HandicapSelection
-let temp2 = PlayerHandicapped 
+          let temp2 = PlayerHandicapped 
 Player4LockSelectionDone
-let temp1 = currentPlayer
-gosub SetPlayerLocked
+          let temp1 = currentPlayer
+          gosub SetPlayerLocked
           rem Locked with handicap (75% health)
 DonePlayer4
           
@@ -225,10 +225,10 @@ SelectStickLeft
           rem        SetPlayerLocked)
           rem Called Routines: SetPlayerLocked (bank6)
           rem Constraints: currentPlayer must be set by caller
-let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
-if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
-if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-return
+          let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
+          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
+          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          return
 
 SelectStickRight
           rem Handle stick-right navigation for the active player
@@ -241,57 +241,57 @@ SelectStickRight
           rem        SetPlayerLocked)
           rem Called Routines: SetPlayerLocked (bank6)
           rem Constraints: currentPlayer must be set by caller
-let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
-if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
-if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
-return
+          let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
+          if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
+          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          return
 
 CharacterSelectHandleComplete
 
           rem Check if all players are ready to start (inline
-let readyCount  = 0
+          let readyCount  = 0
           rem   SelAllReady)
 
           rem Count locked players
 
-let temp1 = 0 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
-let temp1 = 1 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
-if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariPlayersInline
 
-goto CharacterSelectDoneQuadtariPlayersInline
+          goto CharacterSelectDoneQuadtariPlayersInline
 
 CharacterSelectQuadtariPlayersInline
-let temp1 = 2 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
-let temp1 = 3 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 2 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
+          let temp1 = 3 : gosub GetPlayerLocked : if temp2 then let readyCount = readyCount + 1
 CharacterSelectDoneQuadtariPlayersInline
           rem Check if enough players are ready
-if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
+          if controllerStatus & SetQuadtariDetected then CharacterSelectQuadtariReadyInline
 
           rem Need at least 1 player ready for 2-player mode
-let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
+          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
 
-let temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
+          let temp1 = 1 : gosub GetPlayerLocked : if temp2 then goto CharacterSelectCompleted
 
-goto CharacterSelectDoneQuadtariReadyInline
+          goto CharacterSelectDoneQuadtariReadyInline
 
 CharacterSelectQuadtariReadyInline
           rem Need at least 2 players ready for 4-player mode
-if readyCount>= 2 then goto CharacterSelectCompleted
+          if readyCount>= 2 then goto CharacterSelectCompleted
 CharacterSelectDoneQuadtariReadyInline
 
-gosub CharacterSelectDrawScreen
+          gosub CharacterSelectDrawScreen
           rem Draw character selection screen
 
           rem drawscreen called by MainLoop
-return
-goto CharacterSelectLoop
+          return
+          goto CharacterSelectLoop
 
 
 
 CharacterSelectDrawScreen
           rem Draw character selection screen via shared renderer
-gosub SelectDrawScreen bank6
-return
+          gosub SelectDrawScreen bank6
+          return
 
 CharacterSelectCompleted
           rem Character selection complete (stores selected characters
@@ -315,21 +315,21 @@ CharacterSelectCompleted
           rem Character selection complete
           rem Initialize facing bit (bit 0) for all selected players
           rem (default: face right = 1)
-if playerCharacter[0] = NoCharacter then DoneCharacter1FacingSel
-let playerState[0] = playerState[0] | 1
+          if playerCharacter[0] = NoCharacter then DoneCharacter1FacingSel
+          let playerState[0] = playerState[0] | 1
 DoneCharacter1FacingSel
-if playerCharacter[1] = NoCharacter then DoneCharacter2FacingSel
-let playerState[1] = playerState[1] | 1
+          if playerCharacter[1] = NoCharacter then DoneCharacter2FacingSel
+          let playerState[1] = playerState[1] | 1
 DoneCharacter2FacingSel
-if playerCharacter[2] = NoCharacter then DoneCharacter3FacingSel
-let playerState[2] = playerState[2] | 1
+          if playerCharacter[2] = NoCharacter then DoneCharacter3FacingSel
+          let playerState[2] = playerState[2] | 1
 DoneCharacter3FacingSel
-if playerCharacter[3] = NoCharacter then DoneCharacter4FacingSel
-let playerState[3] = playerState[3] | 1
+          if playerCharacter[3] = NoCharacter then DoneCharacter4FacingSel
+          let playerState[3] = playerState[3] | 1
 DoneCharacter4FacingSel
 
           rem Proceed to falling animation
-return
+          return
 
 CharacterSelectDetectQuadtari
           rem Detect Quadtari adapter
@@ -359,21 +359,21 @@ CharacterSelectDetectQuadtari
           
           rem Check left side: if INPT0 is HIGH then not detected
           
-if INPT0{7} then CharacterSelectQuadtariAbsent
+          if INPT0{7} then CharacterSelectQuadtariAbsent
           rem Check left side: if INPT1 is LOW then not detected
-if !INPT1{7} then CharacterSelectQuadtariAbsent
+          if !INPT1{7} then CharacterSelectQuadtariAbsent
           
           rem Check right side: if INPT2 is HIGH then not detected
           
-if INPT2{7} then CharacterSelectQuadtariAbsent
+          if INPT2{7} then CharacterSelectQuadtariAbsent
           rem Check right side: if INPT3 is LOW then not detected
-if !INPT3{7} then CharacterSelectQuadtariAbsent
+          if !INPT3{7} then CharacterSelectQuadtariAbsent
           
-goto CharacterSelectQuadtariDetected
+          goto CharacterSelectQuadtariDetected
           rem All checks passed - Quadtari detected
 
 CharacterSelectQuadtariAbsent
-return
+          return
           rem Helper: Quadtari not detected in this detection cycle
           rem
           rem Input: None
@@ -410,6 +410,6 @@ CharacterSelectQuadtariDetected
           rem downgrades)
           rem Quadtari detected - use monotonic merge to preserve
           rem   existing capabilities
-let controllerStatus  = controllerStatus | SetQuadtariDetected
+          let controllerStatus  = controllerStatus | SetQuadtariDetected
           rem OR merge ensures upgrades only, never downgrades
-return
+          return

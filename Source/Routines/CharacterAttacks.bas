@@ -39,19 +39,19 @@ BernieAttack
           rem Area-of-effect attack: hits both left AND right
           rem simultaneously
           rem Save original facing direction
-let temp3 = playerState[temp1] & PlayerStateBitFacing
+          let temp3 = playerState[temp1] & PlayerStateBitFacing
           rem Set animation state (PerformMeleeAttack also sets it, but
           rem we need it set first)
-let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Attack in facing direction
-gosub PerformMeleeAttack bank7
+          gosub PerformMeleeAttack bank7
           rem Flip facing (XOR with bit 0)
-let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
+          let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
           rem Attack in opposite direction
-gosub PerformMeleeAttack bank7
+          gosub PerformMeleeAttack bank7
           rem Restore original facing (XOR again to flip back)
-let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
-return
+          let playerState[temp1] = playerState[temp1] ^ PlayerStateBitFacing
+          return
 
           rem NOTE: Characters with simple melee or ranged attacks now dispatch
           rem directly to PerformMeleeAttack or PerformRangedAttack from
@@ -93,19 +93,19 @@ HarpyAttack
           rem Set attack animation state
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
+          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted 
           rem Set animation state 14 (attack execution)
 
           rem Get facing direction (bit 0: 0=left, 1=right)
-let temp2 = playerState[temp1] & PlayerStateBitFacing
+          let temp2 = playerState[temp1] & PlayerStateBitFacing
           
           rem Set diagonal velocity at 45° angle (4 pixels/frame
           rem   horizontal, 4 pixels/frame vertical)
           rem Horizontal: 4 pixels/frame in facing direction
           rem Use explicit assignment to dodge unsupported multiply op
           rem When temp2=0 (left): want 252 (-4), when temp2≠0 (right): want 4
-let temp4 = 252
-if temp2 then temp4 = 4
+          let temp4 = 252
+          if temp2 then temp4 = 4
 HarpySetLeftVelocity
           rem Label for documentation - velocity already set above
           rem Constraints: Must be colocated with HarpyAttack,
@@ -127,23 +127,23 @@ HarpySetVerticalVelocity
           rem Constraints: Must be colocated with HarpyAttack,
           rem HarpySetLeftVelocity
           rem Vertical: 4 pixels/frame downward (positive Y = down)
-let temp3 = 4
+          let temp3 = 4
           
           rem Set player velocity for diagonal swoop (45° angle:
           rem   4px/frame X, 4px/frame Y) - inlined for performance
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-let playerVelocityX[temp1] = temp4
-let playerVelocityXL[temp1] = 0
-let playerVelocityY[temp1] = temp3
-let playerVelocityYL[temp1] = 0
+          let playerVelocityX[temp1] = temp4
+          let playerVelocityXL[temp1] = 0
+          let playerVelocityY[temp1] = temp3
+          let playerVelocityYL[temp1] = 0
           
           rem Set jumping state so character can move vertically during
           rem   swoop
           rem This allows vertical movement without being on ground
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-let playerState[temp1] = playerState[temp1] | 4
+          let playerState[temp1] = playerState[temp1] | 4
           rem Set bit 2 (jumping flag)
           
           rem Set swoop attack flag for collision detection
@@ -154,8 +154,8 @@ let playerState[temp1] = playerState[temp1] | 4
           rem Fix RMW: Read from _R, modify, write to _W
           rem Use temp1 directly for indexed addressing (batariBASIC
           rem does not resolve dim aliases)
-let temp5 = characterStateFlags_R[temp1] | 4
-let characterStateFlags_W[temp1] = temp5
+          let temp5 = characterStateFlags_R[temp1] | 4
+          let characterStateFlags_W[temp1] = temp5
           
           rem Attack behavior:
           rem - Character moves diagonally down at 45° (4px/frame X,
@@ -169,7 +169,7 @@ let characterStateFlags_W[temp1] = temp5
           rem - Hit players are damaged and pushed (knockback handled by
           rem   collision system)
           
-return
+          return
 
 UrsuloAttack
           asm
@@ -189,8 +189,8 @@ end
           rem
           rem Constraints: Tail call to PerformMeleeAttack
           rem Melee attack (claw swipe)
-gosub PerformMeleeAttack bank7
-return
+          gosub PerformMeleeAttack bank7
+          return
 
 ShamoneAttack
           asm
@@ -218,12 +218,12 @@ end
           rem
           rem Constraints: None
           rem Special attack: jumps while attacking simultaneously
-let playerY[temp1] = playerY[temp1] - 11
+          let playerY[temp1] = playerY[temp1] - 11
           rem First, execute the jump
-let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
+          let playerState[temp1] = playerState[temp1] | PlayerStateBitJumping
           rem Light character, good jump
           rem Set jumping flag
           rem Then execute the attack (PerformMeleeAttack sets animation state)
-gosub PerformMeleeAttack bank7
-return
+          gosub PerformMeleeAttack bank7
+          return
 

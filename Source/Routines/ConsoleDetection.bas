@@ -40,28 +40,28 @@ ConsoleDetHW
           rem              registers
           rem              Entry point for console detection (called
           rem              from ColdStart)
-let systemFlags = systemFlags & ClearSystemFlag7800
+          let systemFlags = systemFlags & ClearSystemFlag7800
           rem Assume 2600 console initially
           
           rem Check $D0 value
           asm
           lda $D0
           sta temp1
-end
-if temp1 = 0 then goto CheckFlashed
+          end
+          if temp1 = 0 then goto CheckFlashed
           
           rem Check if $D0 = $2C (7800 indicator)
           
-if !(temp1 = ConsoleDetectD0) then goto Is2600
+          if !(temp1 = ConsoleDetectD0) then goto Is2600
           
           rem Check $D1 value for 7800 confirmation
           asm
           lda $D1
           sta temp1
-end
-if !(temp1 = ConsoleDetectD1) then goto Is2600
+          end
+          if !(temp1 = ConsoleDetectD1) then goto Is2600
           
-goto Is7800
+          goto Is7800
           rem 7800 detected: $D0=$2C and $D1=$A9
           
 CheckFlashed
@@ -83,18 +83,18 @@ CheckFlashed
           asm
           lda $D1
           sta temp1
-end
-if temp1 then goto Is2600
+          end
+          if temp1 then goto Is2600
           
           rem Both $D0 and $D1 are $00 - check $80 for CDFJ driver
           rem   result
           asm
           lda $80
           sta temp1
-end
-if temp1 = 0 then goto Is2600
+          end
+          if temp1 = 0 then goto Is2600
           
-goto Is7800
+          goto Is7800
           rem CDFJ driver detected 7800
           
 Is7800
@@ -108,8 +108,8 @@ Is7800
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with ConsoleDetHW
-let systemFlags = systemFlags | SystemFlag7800
-return
+          let systemFlags = systemFlags | SystemFlag7800
+          return
           
 Is2600
           rem 2600 console detected
@@ -122,8 +122,8 @@ Is2600
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with ConsoleDetHW
-let systemFlags = systemFlags & ClearSystemFlag7800
-return
+          let systemFlags = systemFlags & ClearSystemFlag7800
+          return
           
           rem
           rem Console Feature Detection
@@ -143,7 +143,7 @@ CheckConsoleFeatures
           rem Constraints: Must be colocated with Done7800Features,
           rem ConsoleFeaturesDone
           rem Check if running on 7800 (bit 7 of systemFlags)
-if !(systemFlags & SystemFlag7800) then Done7800Features
+          if !(systemFlags & SystemFlag7800) then Done7800Features
           
           rem 7800-specific features
           rem Note: 7800 pause button handling is implemented in
@@ -151,7 +151,7 @@ if !(systemFlags & SystemFlag7800) then Done7800Features
           rem   from ConsoleHandling.bas during the game loop
           rem Note: Controller detection works for both 2600 and 7800
           rem   via ControllerDetection.bas (CtrlDetPads)
-goto ConsoleFeaturesDone
+          goto ConsoleFeaturesDone
           rem   No console-specific initialization needed
           
 Done7800Features
@@ -171,7 +171,7 @@ ConsoleFeaturesDone
           rem Note: Controller detection works for both 2600 and 7800
           rem   via ControllerDetection.bas (CtrlDetPads)
           rem   No console-specific initialization needed
-return
+          return
           rem Console features check complete (label only, no execution)
           rem
           rem Input: None (label only, no execution)

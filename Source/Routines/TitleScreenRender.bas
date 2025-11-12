@@ -50,19 +50,19 @@ DrawTitleScreen
           rem Title screen: bmp_48x2_3_window = 42, others = 0
           
           rem Draw character parade if active
-if titleParadeActive then gosub DrawParadeCharacter bank14
+          if titleParadeActive then gosub DrawParadeCharacter bank14
 
           rem Call titlescreen kernel to render the bitmap
           asm
             jsr titledrawscreen
-end
+          end
 
-return
+          return
 
           asm
-DrawTitleScreen = .DrawTitleScreen
-LoadTitleBitmap = .LoadTitleBitmap
-end
+          DrawTitleScreen = .DrawTitleScreen
+          LoadTitleBitmap = .LoadTitleBitmap
+          end
 
           rem
           rem Load Title Bitmap
@@ -74,7 +74,7 @@ end
           rem - BitmapChaosFightColors: 84 color values (double-height)
 
 LoadTitleBitmap
-return
+          return
           rem Configure titlescreen kernel to show Title (ChaosFight)
           rem   bitmap
           rem Uses 48x2_3 minikernel - set window/height via assembly

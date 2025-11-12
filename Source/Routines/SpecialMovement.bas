@@ -47,12 +47,18 @@ ApplySpecialMovementP1
           if temp4 = 2 then ApplySpecialMovementP2
 ApplySpecialMovementP2
           rem Player 2 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerCharacter[2] = 8 then ApplySpecialMovementP3
-          if controllerStatus & SetQuadtariDetected then if (playerCharacter[2] = NoCharacter) = 0 then if playerCharacter[2] = 2 then ApplySpecialMovementP3
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto SkipP2Checks
+          if playerCharacter[2] = NoCharacter then goto SkipP2Checks
+          if playerCharacter[2] = 8 then goto ApplySpecialMovementP3
+          if playerCharacter[2] = 2 then goto ApplySpecialMovementP3
+SkipP2Checks
 ApplySpecialMovementP3
           rem Player 3 (if Quadtari) - Frooty (8) and Dragon of Storms (2) skip gravity
-          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerCharacter[3] = 8 then return
-          if controllerStatus & SetQuadtariDetected then if (playerCharacter[3] = NoCharacter) = 0 then if playerCharacter[3] = 2 then return
+          if (controllerStatus & SetQuadtariDetected) = 0 then goto SkipP3Checks
+          if playerCharacter[3] = NoCharacter then goto SkipP3Checks
+          if playerCharacter[3] = 8 then return
+          if playerCharacter[3] = 2 then return
+SkipP3Checks
           rem Player 3 - Frooty (8) and Dragon of Storms (2) skip gravity
           return
 

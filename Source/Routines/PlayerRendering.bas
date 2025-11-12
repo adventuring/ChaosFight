@@ -3,7 +3,8 @@
 
 SetSpritePositions
           asm
-.SetSpritePositions
+          SetSpritePositions = .SetSpritePositions
+
 end
           rem Player Sprite Rendering
           rem Handles sprite positioning, colors, and graphics for all
@@ -435,8 +436,9 @@ RRTM1_IsStretching
 
 SetPlayerSprites
           asm
-          SetPlayerSprites = .SetPlayerSprites
-          end
+.SetPlayerSprites
+
+end
           rem
           rem Set Player Sprites
           rem Sets colors and graphics for all player sprites.
@@ -488,6 +490,7 @@ Player1ColorDone
             lda playerState
             and #PlayerStateBitFacing
             sta REFP0
+
 end
 
           let currentCharacter = playerCharacter[0]
@@ -528,6 +531,7 @@ Player2ColorDone
           ora #PlayerStateBitFacingNUSIZ
           sta _NUSIZ1
 .Player2ReflectionDone
+
 end
 
           let currentCharacter = playerCharacter[1]
@@ -576,6 +580,7 @@ Player3ColorDone
             ora #PlayerStateBitFacingNUSIZ
             sta NewNUSIZ+2
 .Player3ReflectionDone
+
 end
 
           let currentCharacter = playerCharacter[2]
@@ -621,6 +626,7 @@ Player4ColorDone
             ora #PlayerStateBitFacingNUSIZ
             sta NewNUSIZ+3
 .Player4ReflectionDone
+
 end
 
           let currentCharacter = playerCharacter[3]

@@ -27,8 +27,10 @@ SelectRenderPlayerPreview
           let temp1 = currentPlayer
           gosub GetPlayerLocked
           temp5 = temp2
-          if !temp5 then gosub SelectSetPlayerColorUnlocked : return
-          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap : return
+          if !temp5 then gosub SelectSetPlayerColorUnlocked
+          if !temp5 then return
+          if temp5 = PlayerHandicapped then gosub SelectSetPlayerColorHandicap
+          if temp5 = PlayerHandicapped then return
           return
 
 PlayerPreviewSetPosition
@@ -117,8 +119,9 @@ SelectSetPlayerColorHandicap
 
 SelectUpdateAnimations
           asm
-.SelectUpdateAnimations
-end
+          asm
+          SelectUpdateAnimations = .SelectUpdateAnimations
+          end
           rem Update character select animations for all players
           let temp1 = 0
           gosub GetPlayerLocked
@@ -195,4 +198,5 @@ PlayerPreviewSetPosition = .PlayerPreviewSetPosition
 RenderPlayerPreview = .RenderPlayerPreview
 SelectHideLowerPlayerPreviews = .SelectHideLowerPlayerPreviews
 CharacterSelectCheckControllerRescan = .CharacterSelectCheckControllerRescan
+
 end

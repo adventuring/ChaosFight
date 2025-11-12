@@ -32,7 +32,7 @@ CharacterSelectEntry
           rem Initialize playerLocked (bit-packed, all unlocked)
           rem NOTE: Do NOT clear controllerStatus flags here - monotonic
           rem   detection (upgrades only)
-          rem Controller detection is handled by CtrlDetPads with
+          rem Controller detection is handled by DetectPads with
           rem   monotonic state machine
 
           let characterSelectAnimationTimer  = 0
@@ -387,7 +387,7 @@ CharacterSelectQuadtariAbsent
           rem
           rem Constraints: Helper for CharacterSelectDetectQuadtari; only executes when Quadtari
           rem   is absent. Monotonic detection means controllerStatus is never cleared here.
-          rem   CtrlDetPads (SELECT handler) is the sole routine that upgrades controller
+          rem   DetectPads (SELECT handler) is the sole routine that upgrades controller
           rem   status flags.
 
 CharacterSelectQuadtariDetected

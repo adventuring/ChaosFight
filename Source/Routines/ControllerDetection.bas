@@ -7,7 +7,7 @@ CtrlDetConsole
           rem
           rem Fall through to controller detection
 
-CtrlDetPads
+DetectPads
           rem Re-detect controllers (monotonic upgrade only)
           rem Public entry point used by console handling and character select flows
           rem Input: controllerStatus (global) = existing capabilities, INPT0-5 = paddle port states
@@ -522,6 +522,6 @@ PauseNotPressed
           return
 
           asm
-          CtrlDetPads = .CtrlDetPads
+          DetectPads = .DetectPads
           end
 

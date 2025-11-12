@@ -150,7 +150,7 @@ CheckConsoleFeatures
           rem   ControllerDetection.bas (Check7800Pause) and called
           rem   from ConsoleHandling.bas during the game loop
           rem Note: Controller detection works for both 2600 and 7800
-          rem   via ControllerDetection.bas (CtrlDetPads)
+          rem   via ControllerDetection.bas (DetectPads)
           goto ConsoleFeaturesDone
           rem   No console-specific initialization needed
 
@@ -169,7 +169,7 @@ ConsoleFeaturesDone
           rem Constraints: Must be colocated with CheckConsoleFeatures
           rem 2600-specific features
           rem Note: Controller detection works for both 2600 and 7800
-          rem   via ControllerDetection.bas (CtrlDetPads)
+          rem   via ControllerDetection.bas (DetectPads)
           rem   No console-specific initialization needed
           return
           rem Console features check complete (label only, no execution)

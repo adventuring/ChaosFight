@@ -184,11 +184,11 @@ CharacterSelectCheckControllerRescan
           if switchselect then goto CharacterSelectDoRescan
           let temp6 = switchbw
           if temp6 = colorBWPrevious_R then goto CharacterSelectRescanDone
-          gosub CtrlDetPads bank14
+          gosub DetectPads bank14
           let colorBWPrevious_W = switchbw
           goto CharacterSelectRescanDone
 CharacterSelectDoRescan
-          gosub CtrlDetPads bank14
+          gosub DetectPads bank14
 CharacterSelectRescanDone
           return
 

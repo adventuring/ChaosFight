@@ -518,6 +518,8 @@
           rem NOTE: var37-var40 used for playerAttackCooldown (Game
           rem   Mode), var37-var38 used for characterSelect (Admin Mode)
           dim playerAttackCooldown = var37
+          rem Scratch: playersEliminated_R | BitMask[currentPlayer] (PlayerElimination)
+          dim CPE_eliminatedFlags = var47
           
           rem Game Mode: Additional game state variables (moved to SCRAM
           rem   - less performance critical)

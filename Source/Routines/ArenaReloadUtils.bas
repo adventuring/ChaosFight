@@ -22,3 +22,8 @@ ReloadArenaColorsDispatch
           if temp2 then goto LoadArenaColorsBWLabel bank16
           goto LoadArenaColorsColor bank16
 
+          asm
+ReloadArenaColors = .ReloadArenaColors
+ReloadArenaColorsDispatch = .ReloadArenaColorsDispatch
+end
+

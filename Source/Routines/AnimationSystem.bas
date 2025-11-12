@@ -474,12 +474,12 @@ if temp1 >= 16 then goto PlaceholderWindup
 
 let temp2 = 255
           rem Curler: Windup → Recovery
-if temp1 = 1 then let temp2 = ActionAttackRecovery
+          if temp1 = 1 then let temp2 = ActionAttackRecovery
           rem FatTony, Megax, Nefertem, PorkChop: Windup → Execute
-if temp1 = 4 then let temp2 = ActionAttackExecute
-if temp1 = 5 then let temp2 = ActionAttackExecute
-if temp1 = 9 then let temp2 = ActionAttackExecute
-if temp1 = 11 then let temp2 = ActionAttackExecute
+          if temp1 = 4 then let temp2 = ActionAttackExecute
+          if temp1 = 5 then let temp2 = ActionAttackExecute
+          if temp1 = 9 then let temp2 = ActionAttackExecute
+          if temp1 = 11 then let temp2 = ActionAttackExecute
           rem No matching transition: leave animation unchanged
           if temp2 = 255 then return
           goto SetPlayerAnimation

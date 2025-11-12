@@ -47,12 +47,12 @@ ColdStart
           rem
           rem Constraints: Must be entry point for cold start (called
           rem from Bank1)
-          gosub ConsoleDetHW : 
+gosub ConsoleDetHW : 
           rem              Only reachable via goto from Bank1 startup code
           
           rem Step 2: Initialize sprite pointers to RAM addresses
           rem Must be done before any sprite loading to ensure pointers
-          gosub InitializeSpritePointers bank14
+gosub InitializeSpritePointers bank14
           rem   point to SCRAM buffers instead of ROM
           
           rem Step 3: Initialize TIA color registers to safe defaults
@@ -73,14 +73,14 @@ ColdStart
           AUDV1 = 0
           
           rem Step 5: Initialize game state and transition to first mode
-          let gameMode = ModePublisherPrelude : 
+let gameMode = ModePublisherPrelude : 
           rem Set initial game mode (Publisher Prelude)
-          gosub ChangeGameMode bank14
+gosub ChangeGameMode bank14
           rem ChangeGameMode calls SetupPublisherPrelude and sets up
           rem   music
           
           rem Step 6: Jump to MainLoop (in Bank 16)
           rem MainLoop will handle the game mode dispatch and frame
-          goto MainLoop bank16
+goto MainLoop bank16
           rem   rendering
 

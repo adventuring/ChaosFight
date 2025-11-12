@@ -22,12 +22,12 @@ LoadCharacterColors
           rem
           rem Constraints: Must remain in bank16 with PlayerColors tables
           
-          if temp3 then goto LCC_GuardColor
-          if temp2 then goto LCC_HurtColor
+if temp3 then goto LCC_GuardColor
+if temp2 then goto LCC_HurtColor
           
 LCC_NormalColor
           temp6 = PlayerColors12[currentPlayer]
-          return
+return
           
 LCC_HurtColor
 #ifdef TV_SECAM
@@ -35,9 +35,9 @@ LCC_HurtColor
 #else
           temp6 = PlayerColors6[currentPlayer]
 #endif
-          return
+return
           
 LCC_GuardColor
           temp6 = ColCyan(12)
-          return
+return
 

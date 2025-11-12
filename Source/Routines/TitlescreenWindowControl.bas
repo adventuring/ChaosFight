@@ -37,11 +37,11 @@ SetPublisherWindowValues
           rem
           rem Called Routines: None
           rem Constraints: None
-          let titlescreenWindow1 = 42  ; AtariAge logo visible
-          let titlescreenWindow2 = 42  ; AtariAgeText visible
-          let titlescreenWindow3 = 0   ; ChaosFight hidden
-          let titlescreenWindow4 = 0   ; BRP hidden
-          return
+let titlescreenWindow1 = 42  ; AtariAge logo visible
+let titlescreenWindow2 = 42  ; AtariAgeText visible
+let titlescreenWindow3 = 0   ; ChaosFight hidden
+let titlescreenWindow4 = 0   ; BRP hidden
+return
           
 SetAuthorWindowValues
           rem Initialize window values for Author screen
@@ -60,16 +60,16 @@ SetAuthorWindowValues
           rem
           rem Called Routines: None
           rem Constraints: None
-          let titlescreenWindow1 = 0   ; AtariAge logo hidden
-          let titlescreenWindow2 = 0   ; AtariAgeText hidden
-          let titlescreenWindow3 = 0   ; ChaosFight hidden
-          let titlescreenWindow4 = 42  ; BRP visible
-          return
+let titlescreenWindow1 = 0   ; AtariAge logo hidden
+let titlescreenWindow2 = 0   ; AtariAgeText hidden
+let titlescreenWindow3 = 0   ; ChaosFight hidden
+let titlescreenWindow4 = 42  ; BRP visible
+return
           
 SetTitleWindowValues
           asm
           SetTitleWindowValues = .SetTitleWindowValues
-          end
+end
           rem Initialize window values for Title screen
           rem Shows: ChaosFight (bmp_48x2_3) only
           rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText
@@ -86,9 +86,9 @@ SetTitleWindowValues
           rem
           rem Called Routines: None
           rem Constraints: None
-          let titlescreenWindow1 = 0   ; AtariAge logo hidden
-          let titlescreenWindow2 = 0   ; AtariAgeText hidden
-          let titlescreenWindow3 = 42  ; ChaosFight visible
-          let titlescreenWindow4 = 0   ; Interworldly hidden
-          return
+let titlescreenWindow1 = 0   ; AtariAge logo hidden
+let titlescreenWindow2 = 0   ; AtariAgeText hidden
+let titlescreenWindow3 = 42  ; ChaosFight visible
+let titlescreenWindow4 = 0   ; Interworldly hidden
+return
 

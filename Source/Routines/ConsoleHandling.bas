@@ -19,7 +19,7 @@ WarmStart
           rem
           rem Constraints: Entry point for warm start/reset (called from
           rem MainLoop)
-          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
+let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
           rem Step 1: Clear critical game state variables
           rem Clear paused flag (0 = normal, not paused, not ending)
           rem Frame counter is automatically managed by batariBASIC
@@ -47,11 +47,11 @@ WarmStart
           ENAM1 = 0
           ENABL = 0
           
-          let gameMode = ModePublisherPrelude
+let gameMode = ModePublisherPrelude
           rem Step 5: Reset game mode to startup sequence
-          gosub ChangeGameMode bank14
+gosub ChangeGameMode bank14
           
-          return
+return
           rem Reset complete - return to MainLoop which will dispatch to
           rem   new mode
 
@@ -59,47 +59,47 @@ HandleConsoleSwitches
           rem Main console switch handler
 
           rem Game Select switch or Joy2B+ Button III - toggle pause
-          let temp2 = 0
+let temp2 = 0
           rem   mode
-          gosub CheckEnhancedPause
+gosub CheckEnhancedPause
           rem Check Player 1 buttons
-          if !temp1 then DonePlayer1Pause
-          gosub CtrlDetPads bank14
+if !temp1 then DonePlayer1Pause
+gosub CtrlDetPads bank14
           rem Re-detect controllers when Select is pressed
-          if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
-          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
+if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused:goto Player1PauseDone
+let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player1PauseDone
           rem Debounce - wait for button release (drawscreen called by
           rem MainLoop)
-          return
+return
 DonePlayer1Pause
           
           
-          let temp2 = 1
-          gosub CheckEnhancedPause
+let temp2 = 1
+gosub CheckEnhancedPause
           rem Check Player 2 buttons
-          if !temp1 then DonePlayer2Pause
-          gosub CtrlDetPads bank14
+if !temp1 then DonePlayer2Pause
+gosub CtrlDetPads bank14
           rem Re-detect controllers when Select is pressed
-          if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
-          let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
+if !(systemFlags & SystemFlagGameStatePaused) then let systemFlags = systemFlags | SystemFlagGameStatePaused : goto Player2PauseDone
+let systemFlags = systemFlags & ClearSystemFlagGameStatePaused
 Player2PauseDone
           rem Debounce - wait for button release (drawscreen called by
           rem MainLoop)
-          return
+return
 DonePlayer2Pause
           
 
-          gosub CheckColorBWToggle
+gosub CheckColorBWToggle
           rem Color/B&W switch - re-detect controllers when toggled
           
 #ifndef TV_SECAM
           rem 7800 Pause button - toggle Color/B&W mode (not in SECAM)
-          goto Check7800Pause bank14
+goto Check7800Pause bank14
           rem tail call
 #endif
 
-          return
+return
 
 CheckEnhancedPause
           rem Check if pause buttons are pressed (console Game Select switch or enhanced controller buttons)
@@ -117,30 +117,30 @@ CheckEnhancedPause
           rem Called Routines: None
           rem
           rem Constraints: None
-          let temp1 = 0
+let temp1 = 0
           rem Default to no pause button pressed
 
           rem Always check Game Select switch first (works with any controller)
-          if switchselect then let temp1 = 1 : return
+if switchselect then let temp1 = 1 : return
 
           rem Then check enhanced pause buttons for the specified player
           rem Joy2B+ Button III uses different registers than Button II/C
 
-          if temp2 = 0 then goto CEP_CheckPlayer1
-          if temp2 = 1 then goto CEP_CheckPlayer2
-          return
+if temp2 = 0 then goto CEP_CheckPlayer1
+if temp2 = 1 then goto CEP_CheckPlayer2
+return
 
 CEP_CheckPlayer1
           rem Player 1: Check Genesis Button C (INPT0) or Joy2B+ Button III (INPT1)
-          if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
-          if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
-          return
+if controllerStatus & SetLeftPortGenesis then if !INPT0{7} then let temp1 = 1
+if controllerStatus & SetLeftPortJoy2bPlus then if !INPT1{7} then let temp1 = 1
+return
 
 CEP_CheckPlayer2
           rem Player 2: Check Genesis Button C (INPT2) or Joy2B+ Button III (INPT3)
-          if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = 1
-          if controllerStatus & SetRightPortJoy2bPlus then if !(INPT3 & $80) then let temp1 = 1
-          return
+if controllerStatus & SetRightPortGenesis then if !(INPT2 & $80) then let temp1 = 1
+if controllerStatus & SetRightPortJoy2bPlus then if !(INPT3 & $80) then let temp1 = 1
+return
 
           rem
           rem Color/B&W switch change detection (triggers controller re-detect)
@@ -164,11 +164,11 @@ CheckColorBWToggle
           rem Constraints: Must be colocated with DoneSwitchChange (called via goto)
           
           rem Optimized: Check Color/B&W switch state change directly
-          let temp6 = 0
-          if switchbw then let temp6 = 1
-          if temp6 = colorBWPrevious_R then DoneSwitchChange
-          gosub CtrlDetPads bank14
-          let colorBWPrevious_W = temp6
+let temp6 = 0
+if switchbw then let temp6 = 1
+if temp6 = colorBWPrevious_R then DoneSwitchChange
+gosub CtrlDetPads bank14
+let colorBWPrevious_W = temp6
 DoneSwitchChange
           rem Color/B&W switch change check complete (label only, no
           rem execution)
@@ -195,14 +195,14 @@ DoneSwitchChange
           
           rem Reload arena colors if switch or override changed
           
-          if temp1 then ReloadArenaColorsNow
+if temp1 then ReloadArenaColorsNow
           rem Note: colorBWOverride check handled in
           rem Check7800PauseButton
           rem   (NTSC/PAL only, not SECAM)
           
-          return
+return
 
 ReloadArenaColorsNow
-          gosub ReloadArenaColors bank12
+gosub ReloadArenaColors bank12
           rem Reload arena colors with current switch state
-          return
+return

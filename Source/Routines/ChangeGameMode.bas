@@ -24,7 +24,7 @@ ChangeGameMode
           rem (called via if...goto)
           rem Optimized: Use on...goto instead of if-else chain
           on gameMode goto SetupPublisherPrelude SetupAuthorPrelude SetupTitle SetupCharacterSelect SetupFallingAnimation SetupArenaSelect SetupGame SetupWinner SetupAttract
-          return
+return
           
 SetupPublisherPrelude
           rem Setup Publisher Prelude mode
@@ -39,8 +39,8 @@ SetupPublisherPrelude
           rem Called Routines: BeginPublisherPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginPublisherPrelude bank14
-          return
+gosub BeginPublisherPrelude bank14
+return
           
 SetupAuthorPrelude
           rem Setup Author Prelude mode
@@ -55,8 +55,8 @@ SetupAuthorPrelude
           rem Called Routines: BeginAuthorPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginAuthorPrelude bank14
-          return
+gosub BeginAuthorPrelude bank14
+return
           
 SetupTitle
           rem Setup Title Screen mode
@@ -71,11 +71,11 @@ SetupTitle
           rem Called Routines: BeginTitleScreen (bank14) - accesses title
           rem screen state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginTitleScreen bank14
-          return
+gosub BeginTitleScreen bank14
+return
           
 SetupCharacterSelect
-          return
+return
 SetupFallingAnimation
           rem Character select uses its own internal flow
           rem No separate Begin function needed - setup is handled
@@ -102,8 +102,8 @@ SetupFallingAnimation
           rem Called Routines: BeginFallingAnimation (bank6) - accesses
           rem animation state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginFallingAnimation bank6
-          return
+gosub BeginFallingAnimation bank6
+return
           
 SetupArenaSelect
           rem Setup Arena Select mode
@@ -118,8 +118,8 @@ SetupArenaSelect
           rem Called Routines: BeginArenaSelect (bank12) - accesses
           rem arena select state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginArenaSelect bank12
-          return
+gosub BeginArenaSelect bank12
+return
 
 SetupGame
           rem Setup Game mode
@@ -136,8 +136,8 @@ SetupGame
           rem Constraints: Must be colocated with ChangeGameMode
           rem BeginGameLoop resets gameplay state and returns
           rem MainLoop will dispatch to GameMainLoop when gameMode = ModeGame
-          gosub BeginGameLoop bank11
-          return
+gosub BeginGameLoop bank11
+return
 
 SetupWinner
           rem Setup Winner Announcement mode
@@ -152,8 +152,8 @@ SetupWinner
           rem Called Routines: BeginWinnerAnnouncement (bank12) -
           rem accesses winner state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginWinnerAnnouncement bank12
-          return
+gosub BeginWinnerAnnouncement bank12
+return
 
 SetupAttract
           rem Setup Attract Mode
@@ -168,5 +168,5 @@ SetupAttract
           rem Called Routines: BeginAttractMode (bank14) - accesses
           rem attract mode state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub BeginAttractMode bank14
-          return
+gosub BeginAttractMode bank14
+return

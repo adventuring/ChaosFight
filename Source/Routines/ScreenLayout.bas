@@ -12,7 +12,7 @@ SetGameScreenLayout
           rem Constraints: Called for all screen layouts
           pfrowheight = ScreenPfRowHeight
           pfrows = ScreenPfRows
-          return
+return
           asm
 SetGameScreenLayout = .SetGameScreenLayout
 end

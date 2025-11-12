@@ -16,9 +16,9 @@ ApplyGuardColor
           rem Called Routines: None
           rem
           rem Constraints: Must remain colocated with GuardColor0-GuardColor3 jump table
-          let temp2 = playerState[temp1] & 2
+let temp2 = playerState[temp1] & 2
           rem Check if player is guarding
-          if !temp2 then return 
+if !temp2 then return 
           rem Not guarding
           
           rem set light cyan color
@@ -26,16 +26,16 @@ ApplyGuardColor
           on temp1 goto GuardColor0 GuardColor1 GuardColor2 GuardColor3
 GuardColor0
           COLUP0 = ColCyan(12)
-          return
+return
 GuardColor1
           _COLUP1 = ColCyan(12)
-          return
+return
 GuardColor2
           COLUP2 = ColCyan(12)
-          return
+return
 GuardColor3
           COLUP3 = ColCyan(12)
-          return
+return
 
 RestoreNormalPlayerColor
           rem Provide shared entry point for restoring normal player colors
@@ -46,8 +46,8 @@ RestoreNormalPlayerColor
           rem Output: None
           rem
           rem Mutates: temp4 (loads character index for downstream routines)
-          let temp4 = playerCharacter[temp1]
-          return
+let temp4 = playerCharacter[temp1]
+return
 
 
 CheckGuardCooldown
@@ -65,19 +65,19 @@ CheckGuardCooldown
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with GuardCooldownBlocked (called via goto)
-          let temp3 = playerState[temp1] & 2
+let temp3 = playerState[temp1] & 2
           rem Check if player is currently guarding
-          if temp3 then GuardCooldownBlocked
+if temp3 then GuardCooldownBlocked
           
           rem Check cooldown timer (stored in playerTimers array)
-          let temp3 = playerTimers_R[temp1]
+let temp3 = playerTimers_R[temp1]
           rem playerTimers stores frames remaining in cooldown
           
-          if temp3 > 0 then GuardCooldownBlocked
+if temp3 > 0 then GuardCooldownBlocked
           
-          let temp2 = 1
+let temp2 = 1
           rem Cooldown expired, guard allowed
-          return
+return
 
 GuardCooldownBlocked
           rem Currently guarding or in cooldown - not allowed to start
@@ -92,9 +92,9 @@ GuardCooldownBlocked
           rem Called Routines: None
           rem Constraints: Must be colocated with CheckGuardCooldown
           rem Currently guarding or in cooldown - not allowed to start
-          let temp2 = 0
+let temp2 = 0
           rem   new guard
-          return
+return
 
 StartGuard
           rem
@@ -112,20 +112,20 @@ StartGuard
           rem
           rem Called Routines: None
           rem Constraints: None
-          let playerState[temp1] = playerState[temp1] | 2
+let playerState[temp1] = playerState[temp1] | 2
           rem Set guard bit in playerState
           
           rem Set guard duration timer using GuardTimerMaxFrames (TV-standard aware)
           rem Store guard duration timer in playerTimers array
           rem This timer will be decremented each frame until it reaches 0
-          let playerTimers_W[temp1] = GuardTimerMaxFrames
+let playerTimers_W[temp1] = GuardTimerMaxFrames
           
-          return
+return
 
 UpdateGuardTimers
           asm
           UpdateGuardTimers = .UpdateGuardTimers
-          end
+end
           rem
           rem Update guard duration and cooldown timers each frame (invoked from main loop).
           rem Input: None
@@ -138,10 +138,10 @@ UpdateGuardTimers
           rem Constraints: Tail call to UpdateSingleGuardTimer for
           rem player 3
           rem Optimized: Loop through all players instead of individual calls
-          for temp1 = 0 to 3
-            gosub UpdateSingleGuardTimer
-          next
-          return
+for temp1 = 0 to 3
+gosub UpdateSingleGuardTimer
+next
+return
 
 UpdateSingleGuardTimer
           rem Update guard timer or cooldown for a single player
@@ -180,18 +180,18 @@ UpdateSingleGuardTimer
           rem EFFECTS: If guarding: decrements guard duration timer,
           rem   clears guard and starts cooldown when expired
           rem If not guarding: decrements cooldown timer (if active)
-          let temp2 = playerState[temp1] & 2
+let temp2 = playerState[temp1] & 2
           rem Check if player is guarding
-          if temp2 then UpdateGuardTimerActive
+if temp2 then UpdateGuardTimerActive
           
           rem Player not guarding - decrement cooldown timer
-          let temp3 = playerTimers_R[temp1]
+let temp3 = playerTimers_R[temp1]
           rem Fix RMW: Read from _R, modify, write to _W
-          if temp3 = 0 then return
-          let temp3 = temp3 - 1
+if temp3 = 0 then return
+let temp3 = temp3 - 1
           rem No cooldown active
-          let playerTimers_W[temp1] = temp3
-          return
+let playerTimers_W[temp1] = temp3
+return
 
 UpdateGuardTimerActive
           rem Player is guarding - decrement guard duration timer
@@ -207,17 +207,17 @@ UpdateGuardTimerActive
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateSingleGuardTimer, GuardTimerExpired
-          let temp3 = playerTimers_R[temp1]
+let temp3 = playerTimers_R[temp1]
           rem Player is guarding - decrement guard duration timer
-          if temp3 = 0 then GuardTimerExpired
+if temp3 = 0 then GuardTimerExpired
           rem Guard timer already expired (shouldn’t happen, but safety
           rem   check)
           
-          let temp3 = temp3 - 1
+let temp3 = temp3 - 1
           rem Decrement guard duration timer
-          let playerTimers_W[temp1] = temp3
-          if temp3 = 0 then GuardTimerExpired
-          return
+let playerTimers_W[temp1] = temp3
+if temp3 = 0 then GuardTimerExpired
+return
 
 GuardTimerExpired
           rem Guard duration expired - clear guard bit and start
@@ -235,10 +235,10 @@ GuardTimerExpired
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with UpdateSingleGuardTimer, UpdateGuardTimerActive
-          let playerState[temp1] = playerState[temp1] & MaskClearGuard
+let playerState[temp1] = playerState[temp1] & MaskClearGuard
           rem Start cooldown timer (same duration as guard)
-          let playerTimers_W[temp1] = GuardTimerMaxFrames
-          return
+let playerTimers_W[temp1] = GuardTimerMaxFrames
+return
 
           asm
 StartGuard = .StartGuard

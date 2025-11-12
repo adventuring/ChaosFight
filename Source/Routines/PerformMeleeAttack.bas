@@ -29,10 +29,10 @@ PerformMeleeAttack
           rem visual for attack
           rem
           rem Constraints: None
-          gosub SpawnMissile bank12
+gosub SpawnMissile bank12
           rem Spawn missile visual for this attack
           
-          let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
+let playerState[temp1] = (playerState[temp1] & MaskPlayerStateFlags) | ActionAttackExecuteShifted
           rem Set animation state to attacking
           rem Set animation state 14 (attack execution)
           
@@ -41,7 +41,7 @@ PerformMeleeAttack
           rem This is handled by the main collision detection system
           rem For now, collision will be handled in UpdateAllMissiles
           
-          return
+return
           asm
 PerformMeleeAttack = .PerformMeleeAttack
 end

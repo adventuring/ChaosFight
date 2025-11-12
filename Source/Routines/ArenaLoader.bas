@@ -34,17 +34,17 @@ LoadArena
           
           rem Handle random arena selection
           
-          if selectedArena_R = RandomArena then LoadArenaRandom
+if selectedArena_R = RandomArena then LoadArenaRandom
           
-          let temp1 = selectedArena_R
+let temp1 = selectedArena_R
           rem Get arena index (0-15)
           
 LoadArenaDispatch
-          gosub DWS_GetBWMode bank15
-          let temp6 = temp2
-          gosub LoadArenaByIndex
-          if temp6 then goto LoadArenaColorsBWLabel
-          goto LoadArenaColorsColor
+gosub DWS_GetBWMode bank15
+let temp6 = temp2
+gosub LoadArenaByIndex
+if temp6 then goto LoadArenaColorsBWLabel
+goto LoadArenaColorsColor
 
 LoadArenaColorsColor
           rem Load arena color table pointer using stride calculation
@@ -70,7 +70,7 @@ LoadArenaColorsColor
 
 .SetArenaColorPointerDone
 end
-          return
+return
 
 LoadArenaColorsBWLabel
           asm
@@ -81,7 +81,7 @@ LoadArenaColorsBWLabel
             lda #>ArenaColorsBW
             sta pfcolortable+1
 end
-          return
+return
 
 LoadArenaRandom
           rem Select random arena (0-31) using proper random number
@@ -100,7 +100,7 @@ LoadArenaRandom
           rem Constraints: None
           rem Select random arena (0-31) using proper RNG
           rem Get random value (0-255)
-          let temp1 = rand
-          let temp1 = temp1 & 31
-          if temp1 > MaxArenaID then LoadArenaRandom
-          goto LoadArenaDispatch
+let temp1 = rand
+let temp1 = temp1 & 31
+if temp1 > MaxArenaID then LoadArenaRandom
+goto LoadArenaDispatch

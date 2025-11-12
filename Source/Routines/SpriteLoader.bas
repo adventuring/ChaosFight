@@ -24,32 +24,32 @@ LoadCharacterSprite
           rem Output: Sprite loaded via bank10 routines
           rem Inputs are trusted in internal context; skip range validation
 
-          if currentCharacter = NoCharacter then goto LCS_CopyNoGlyph
-          if currentCharacter = CPUCharacter then goto LCS_CopyCPUGlyph
-          if currentCharacter = RandomCharacter then goto LCS_CopyQuestionGlyph
+if currentCharacter = NoCharacter then goto LCS_CopyNoGlyph
+if currentCharacter = CPUCharacter then goto LCS_CopyCPUGlyph
+if currentCharacter = RandomCharacter then goto LCS_CopyQuestionGlyph
 
           temp4 = currentPlayer
           temp1 = currentCharacter
-          gosub LocateCharacterArt bank10
-          return
+gosub LocateCharacterArt bank10
+return
 
 LCS_CopyNoGlyph
           temp3 = currentPlayer
           temp4 = SpriteNo
-          gosub CopyGlyphToPlayer bank16
-          return
+gosub CopyGlyphToPlayer bank16
+return
 
 LCS_CopyCPUGlyph
           temp3 = currentPlayer
           temp4 = SpriteCPU
-          gosub CopyGlyphToPlayer bank16
-          return
+gosub CopyGlyphToPlayer bank16
+return
 
 LCS_CopyQuestionGlyph
           temp3 = currentPlayer
           temp4 = SpriteQuestionMark
-          gosub CopyGlyphToPlayer bank16
-          return
+gosub CopyGlyphToPlayer bank16
+return
           asm
 LoadCharacterSprite = .LoadCharacterSprite
 end
@@ -86,14 +86,14 @@ end
 ; Get character index for this player from playerCharacter array
 ; Use currentPlayer global variable (set by caller)
 end
-          let currentCharacter = playerCharacter[currentPlayer]
+let currentCharacter = playerCharacter[currentPlayer]
           asm
 ; Set currentCharacter from playerCharacter[currentPlayer]
 end
           rem Inline dispatch to save size (same-bank)
-          let temp1 = currentCharacter
-          gosub LocateCharacterArt bank10
-          return
+let temp1 = currentCharacter
+gosub LocateCharacterArt bank10
+return
           asm
 LoadPlayerSprite = .LoadPlayerSprite
 end
@@ -101,5 +101,5 @@ end
 LoadPlayerSpriteDispatch
           rem removed (was a small shim); callers now use inline block above
           rem (label kept only if referenced by generated code)
-          return
+return
 

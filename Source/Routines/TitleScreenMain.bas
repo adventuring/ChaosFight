@@ -44,13 +44,13 @@ TitleScreenMain
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
           rem Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then TitleScreenComplete
-          if joy1fire then TitleScreenComplete
+if joy0fire then TitleScreenComplete
+if joy1fire then TitleScreenComplete
           
           rem Check Quadtari controllers (Players 3 & 4 if active)
-          if 0 = (controllerStatus & SetQuadtariDetected) then TitleDoneQuad
-          if !INPT0{7} then TitleScreenComplete
-          if !INPT2{7} then TitleScreenComplete
+if 0 = (controllerStatus & SetQuadtariDetected) then TitleDoneQuad
+if !INPT0{7} then TitleScreenComplete
+if !INPT2{7} then TitleScreenComplete
 TitleDoneQuad
           rem Skip Quadtari controller check (not in 4-player mode)
           rem
@@ -65,18 +65,18 @@ TitleDoneQuad
           rem Constraints: Must be colocated with TitleScreenMain
           
           rem Update character parade animation
-          gosub UpdateCharacterParade bank14
+gosub UpdateCharacterParade bank14
 
           rem Draw title screen
-          gosub DrawTitleScreen bank9
+gosub DrawTitleScreen bank9
 
           rem Draw screen with titlescreen kernel minikernel
           rem (titlescreen system in Bank 9)
           rem Note: MainLoop calls titledrawscreen, so this is only
           rem reached if called directly
-          gosub DrawTitleScreen bank9
+gosub DrawTitleScreen bank9
           
-          return
+return
 
 TitleScreenComplete
           rem Transition to character select
@@ -91,6 +91,6 @@ TitleScreenComplete
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
           rem Constraints: Must be colocated with TitleScreenMain
-          let gameMode = ModeCharacterSelect
-          gosub ChangeGameMode bank14
-          return
+let gameMode = ModeCharacterSelect
+gosub ChangeGameMode bank14
+return

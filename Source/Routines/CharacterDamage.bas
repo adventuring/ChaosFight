@@ -17,15 +17,15 @@ GetCharacterDamage
           rem Medium characters: 16-25 weight units
           rem Heavy characters: 26+ weight units
 
-          let temp3 = CharacterWeights[temp1]
+let temp3 = CharacterWeights[temp1]
           rem Retrieve weight for character
 
           rem Calculate damage based on weight class thresholds
-          if temp3 <= 15 then temp2 = 12 : goto GetCharacterDamageEnd
-          if temp3 <= 25 then temp2 = 18 : goto GetCharacterDamageEnd
-          let temp2 = 22
+if temp3 <= 15 then temp2 = 12 : goto GetCharacterDamageEnd
+if temp3 <= 25 then temp2 = 18 : goto GetCharacterDamageEnd
+let temp2 = 22
 GetCharacterDamageEnd
-          return
+return
 
           asm
 GetCharacterDamage = .GetCharacterDamage

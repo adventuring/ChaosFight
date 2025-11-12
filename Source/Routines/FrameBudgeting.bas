@@ -41,9 +41,9 @@ UpdateFramePhase
           rem
           rem Called Routines: None
           rem Constraints: Called once per frame at the start of game loop
-          let FramePhase = frame & 3
+let FramePhase = frame & 3
           rem Cycle 0, 1, 2, 3, 0, 1, 2, 3...
-          return
+return
 
           rem
           rem Budget Health Bar Rendering
@@ -79,11 +79,11 @@ BudgetedHealthBarUpdate
           rem              (all called via goto or gosub)
           rem Determine which player to update based on frame phase
           rem tail call
-          if FramePhase = 0 then UpdateHealthBarPlayer0
+if FramePhase = 0 then UpdateHealthBarPlayer0
           rem tail call
-          if FramePhase = 1 then UpdateHealthBarPlayer1
-          if FramePhase = 2 then CheckPlayer2HealthUpdate
-          goto DonePlayer2HealthUpdate
+if FramePhase = 1 then UpdateHealthBarPlayer1
+if FramePhase = 2 then CheckPlayer2HealthUpdate
+goto DonePlayer2HealthUpdate
 CheckPlayer2HealthUpdate
           rem Check if Player 3 health bar should be updated (4-player
           rem mode, active player)
@@ -98,10 +98,10 @@ CheckPlayer2HealthUpdate
           rem Called Routines: UpdateHealthBarPlayer2 (bank8) - updates
           rem Player 3 health bar
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer2HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate
-          if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
-          gosub UpdateHealthBarPlayer2
-          return
+if !(controllerStatus & SetQuadtariDetected) then DonePlayer2HealthUpdate
+if playerCharacter[2] = NoCharacter then DonePlayer2HealthUpdate
+gosub UpdateHealthBarPlayer2
+return
 DonePlayer2HealthUpdate
           rem Player 2 health update check complete (label only)
           rem
@@ -113,8 +113,8 @@ DonePlayer2HealthUpdate
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate
-          if FramePhase = 3 then CheckPlayer3HealthUpdate
-          goto DonePlayer3HealthUpdate
+if FramePhase = 3 then CheckPlayer3HealthUpdate
+goto DonePlayer3HealthUpdate
 CheckPlayer3HealthUpdate
           rem Check if Player 4 health bar should be updated (4-player
           rem mode, active player)
@@ -129,12 +129,12 @@ CheckPlayer3HealthUpdate
           rem Called Routines: UpdateHealthBarPlayer3 (bank8) - updates
           rem Player 4 health bar
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate, DonePlayer3HealthUpdate
-          if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate
-          if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
-          gosub UpdateHealthBarPlayer3
-          return
+if !(controllerStatus & SetQuadtariDetected) then DonePlayer3HealthUpdate
+if playerCharacter[3] = NoCharacter then DonePlayer3HealthUpdate
+gosub UpdateHealthBarPlayer3
+return
 DonePlayer3HealthUpdate
-          return
+return
 UpdateHealthBarPlayer0
           rem Player 3 health update check complete (label only)
           rem
@@ -164,11 +164,11 @@ UpdateHealthBarPlayer0
           rem Called Routines: DrawHealthBarRow0 (bank8) - draws Player
           rem 1 health bar row
           rem Constraints: None
-          let temp6 = playerHealth[0] / 3
-          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
+let temp6 = playerHealth[0] / 3
+if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColBlue(12)
-          gosub DrawHealthBarRow0 bank8
-          return
+gosub DrawHealthBarRow0 bank8
+return
 
 UpdateHealthBarPlayer1
           rem Update Player 2 health bar
@@ -187,11 +187,11 @@ UpdateHealthBarPlayer1
           rem Called Routines: DrawHealthBarRow1 (bank8) - draws Player
           rem 2 health bar row
           rem Constraints: None
-          let temp6 = playerHealth[1] / 3
-          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
+let temp6 = playerHealth[1] / 3
+if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColRed(12)
-          gosub DrawHealthBarRow1 bank8
-          return
+gosub DrawHealthBarRow1 bank8
+return
 
 UpdateHealthBarPlayer2
           rem Update Player 3 health bar
@@ -211,11 +211,11 @@ UpdateHealthBarPlayer2
           rem Called Routines: DrawHealthBarRow2 (bank8) - draws Player
           rem 3 health bar row
           rem Constraints: None
-          let temp6 = playerHealth[2] / 3
-          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
+let temp6 = playerHealth[2] / 3
+if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColYellow(12)
-          gosub DrawHealthBarRow2 bank8
-          return
+gosub DrawHealthBarRow2 bank8
+return
 
 UpdateHealthBarPlayer3
           rem Update Player 4 health bar
@@ -235,11 +235,11 @@ UpdateHealthBarPlayer3
           rem Called Routines: DrawHealthBarRow3 (bank8) - draws Player
           rem 4 health bar row
           rem Constraints: None
-          let temp6 = playerHealth[3] / 3
-          if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
+let temp6 = playerHealth[3] / 3
+if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGreen(12)
-          gosub DrawHealthBarRow3 bank8
-          return
+gosub DrawHealthBarRow3 bank8
+return
 
           rem
           rem Budget Collision Detection
@@ -262,159 +262,159 @@ BudgetedCollisionCheck
           rem   Frame 1: Pairs 2, 3 (P1 vs P4, P2 vs P3)
           rem   Frame 2: Pairs 4, 5 (P2 vs P4, P3 vs P4)
           rem   Frame 3: Pairs 0, 1 (repeat)
-          gosub CheckCollisionP1vsP2
+gosub CheckCollisionP1vsP2
           rem Always check P1 vs P2 (most important)
           
           rem Skip other checks if not Quadtari
           
-          if !(controllerStatus & SetQuadtariDetected) then return
+if !(controllerStatus & SetQuadtariDetected) then return
           
           rem Check additional pairs based on frame phase
           
-          if FramePhase = 0 then CheckPhase0Collisions
-          if FramePhase = 1 then CheckPhase1Collisions
-          goto DonePhase0And1Collisions
+if FramePhase = 0 then CheckPhase0Collisions
+if FramePhase = 1 then CheckPhase1Collisions
+goto DonePhase0And1Collisions
 CheckPhase0Collisions
-          if playerCharacter[2] = NoCharacter then DoneFramePhaseChecks
-          gosub CheckCollisionP1vsP3
-          goto DoneFramePhaseChecks
+if playerCharacter[2] = NoCharacter then DoneFramePhaseChecks
+gosub CheckCollisionP1vsP3
+goto DoneFramePhaseChecks
 CheckPhase1Collisions
-          if playerCharacter[3] = NoCharacter then CheckPhase1P3
-          gosub CheckCollisionP1vsP4
+if playerCharacter[3] = NoCharacter then CheckPhase1P3
+gosub CheckCollisionP1vsP4
 CheckPhase1P3
-          if playerCharacter[2] = NoCharacter then DoneFramePhaseChecks
-          gosub CheckCollisionP2vsP3
-          goto DoneFramePhaseChecks
+if playerCharacter[2] = NoCharacter then DoneFramePhaseChecks
+gosub CheckCollisionP2vsP3
+goto DoneFramePhaseChecks
 DonePhase0And1Collisions
-          if FramePhase = 2 then CheckPhase2Collisions
-          goto DonePhase2Collisions
+if FramePhase = 2 then CheckPhase2Collisions
+goto DonePhase2Collisions
 CheckPhase2Collisions
-          if playerCharacter[3] = NoCharacter then DoneCheckP2vsP4
-          gosub CheckCollisionP2vsP4
+if playerCharacter[3] = NoCharacter then DoneCheckP2vsP4
+gosub CheckCollisionP2vsP4
 DoneCheckP2vsP4
-          if playerCharacter[2] = NoCharacter then DoneCheckP3vsP4
-          if playerCharacter[3] = NoCharacter then DoneCheckP3vsP4
-          gosub CheckCollisionP3vsP4
+if playerCharacter[2] = NoCharacter then DoneCheckP3vsP4
+if playerCharacter[3] = NoCharacter then DoneCheckP3vsP4
+gosub CheckCollisionP3vsP4
 DoneCheckP3vsP4
 DonePhase2Collisions
 DoneFramePhaseChecks
-          return
+return
 
 CheckCollisionP1vsP2
           rem Individual collision check routines
-          if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
-          let temp2 = playerX[1] - playerX[0]
-          goto DoneCalcP1vsP2Diff
+if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
+let temp2 = playerX[1] - playerX[0]
+goto DoneCalcP1vsP2Diff
 CalcP1vsP2AbsDiff
-          let temp2 = playerX[0] - playerX[1]
+let temp2 = playerX[0] - playerX[1]
 DoneCalcP1vsP2Diff
-          if temp2 >= CollisionSeparationDistance then DonePlayerSeparation
+if temp2 >= CollisionSeparationDistance then DonePlayerSeparation
           
           rem Separate players based on their relative positions
           rem If P0 is left of P1, move P0 left and P1 right
-          if playerX[0] < playerX[1] then SeparateP0Left
+if playerX[0] < playerX[1] then SeparateP0Left
           
-          let playerX[0] = playerX[0] + 1
+let playerX[0] = playerX[0] + 1
           rem Else P0 is right of P1, move P0 right and P1 left
-          let playerX[1] = playerX[1] - 1
-          goto DonePlayerSeparation
+let playerX[1] = playerX[1] - 1
+goto DonePlayerSeparation
 
 SeparateP0Left
-          let playerX[0] = playerX[0] - 1
-          let playerX[1] = playerX[1] + 1
+let playerX[0] = playerX[0] - 1
+let playerX[1] = playerX[1] + 1
 DonePlayerSeparation
           
-          return
+return
 
 CheckCollisionP1vsP3
-          if playerX[0] >= playerX[2] then CalcP1vsP3AbsDiff
-          let temp2 = playerX[2] - playerX[0]
-          goto DoneCalcP1vsP3Diff
+if playerX[0] >= playerX[2] then CalcP1vsP3AbsDiff
+let temp2 = playerX[2] - playerX[0]
+goto DoneCalcP1vsP3Diff
 CalcP1vsP3AbsDiff
-          let temp2 = playerX[0] - playerX[2]
+let temp2 = playerX[0] - playerX[2]
 DoneCalcP1vsP3Diff
-          if temp2 < 16 then CheckCollisionP1vsP3Aux
-          return
+if temp2 < 16 then CheckCollisionP1vsP3Aux
+return
 
 CheckCollisionP1vsP3Aux
-          if playerX[0] < playerX[2] then let playerX[0] = playerX[0] - 1
-          if playerX[0] < playerX[2] then let playerX[2] = playerX[2] + 1
-          if playerX[0] < playerX[2] then return
-          let playerX[0] = playerX[0] + 1
-          let playerX[2] = playerX[2] - 1
-          return
+if playerX[0] < playerX[2] then let playerX[0] = playerX[0] - 1
+if playerX[0] < playerX[2] then let playerX[2] = playerX[2] + 1
+if playerX[0] < playerX[2] then return
+let playerX[0] = playerX[0] + 1
+let playerX[2] = playerX[2] - 1
+return
 
 CheckCollisionP1vsP4
-          if playerX[0] >= playerX[3] then CalcP1vsP4AbsDiff
-          let temp2 = playerX[3] - playerX[0]
-          goto DoneCalcP1vsP4Diff
+if playerX[0] >= playerX[3] then CalcP1vsP4AbsDiff
+let temp2 = playerX[3] - playerX[0]
+goto DoneCalcP1vsP4Diff
 CalcP1vsP4AbsDiff
-          let temp2 = playerX[0] - playerX[3]
+let temp2 = playerX[0] - playerX[3]
 DoneCalcP1vsP4Diff
-          if temp2 < 16 then CheckCollisionP1vsP4Aux
-          return
+if temp2 < 16 then CheckCollisionP1vsP4Aux
+return
 
 CheckCollisionP1vsP4Aux
-          if playerX[0] < playerX[3] then let playerX[0] = playerX[0] - 1
-          if playerX[0] < playerX[3] then let playerX[3] = playerX[3] + 1
-          if playerX[0] < playerX[3] then return
-          let playerX[0] = playerX[0] + 1
-          let playerX[3] = playerX[3] - 1
-          return
+if playerX[0] < playerX[3] then let playerX[0] = playerX[0] - 1
+if playerX[0] < playerX[3] then let playerX[3] = playerX[3] + 1
+if playerX[0] < playerX[3] then return
+let playerX[0] = playerX[0] + 1
+let playerX[3] = playerX[3] - 1
+return
 
 CheckCollisionP2vsP3
-          if playerX[1] >= playerX[2] then CalcP2vsP3AbsDiff
-          let temp2 = playerX[2] - playerX[1]
-          goto DoneCalcP2vsP3Diff
+if playerX[1] >= playerX[2] then CalcP2vsP3AbsDiff
+let temp2 = playerX[2] - playerX[1]
+goto DoneCalcP2vsP3Diff
 CalcP2vsP3AbsDiff
-          let temp2 = playerX[1] - playerX[2]
+let temp2 = playerX[1] - playerX[2]
 DoneCalcP2vsP3Diff
-          if temp2 < 16 then CheckCollisionP2vsP3Aux
-          return
+if temp2 < 16 then CheckCollisionP2vsP3Aux
+return
 
 CheckCollisionP2vsP3Aux
-          if playerX[1] < playerX[2] then let playerX[1] = playerX[1] - 1
-          if playerX[1] < playerX[2] then let playerX[2] = playerX[2] + 1
-          if playerX[1] < playerX[2] then return
-          let playerX[1] = playerX[1] + 1
-          let playerX[2] = playerX[2] - 1
-          return
+if playerX[1] < playerX[2] then let playerX[1] = playerX[1] - 1
+if playerX[1] < playerX[2] then let playerX[2] = playerX[2] + 1
+if playerX[1] < playerX[2] then return
+let playerX[1] = playerX[1] + 1
+let playerX[2] = playerX[2] - 1
+return
 
 CheckCollisionP2vsP4
-          if playerX[1] >= playerX[3] then CalcP2vsP4AbsDiff
-          let temp2 = playerX[3] - playerX[1]
-          goto DoneCalcP2vsP4Diff
+if playerX[1] >= playerX[3] then CalcP2vsP4AbsDiff
+let temp2 = playerX[3] - playerX[1]
+goto DoneCalcP2vsP4Diff
 CalcP2vsP4AbsDiff
-          let temp2 = playerX[1] - playerX[3]
+let temp2 = playerX[1] - playerX[3]
 DoneCalcP2vsP4Diff
-          if temp2 < 16 then CheckCollisionP2vsP4Aux
-          return
+if temp2 < 16 then CheckCollisionP2vsP4Aux
+return
 
 CheckCollisionP2vsP4Aux
-          if playerX[1] < playerX[3] then let playerX[1] = playerX[1] - 1
-          if playerX[1] < playerX[3] then let playerX[3] = playerX[3] + 1
-          if playerX[1] < playerX[3] then return
-          let playerX[1] = playerX[1] + 1
-          let playerX[3] = playerX[3] - 1
-          return
+if playerX[1] < playerX[3] then let playerX[1] = playerX[1] - 1
+if playerX[1] < playerX[3] then let playerX[3] = playerX[3] + 1
+if playerX[1] < playerX[3] then return
+let playerX[1] = playerX[1] + 1
+let playerX[3] = playerX[3] - 1
+return
 
 CheckCollisionP3vsP4
-          if playerX[2] >= playerX[3] then CalcP3vsP4AbsDiff
-          let temp2 = playerX[3] - playerX[2]
-          goto DoneCalcP3vsP4Diff
+if playerX[2] >= playerX[3] then CalcP3vsP4AbsDiff
+let temp2 = playerX[3] - playerX[2]
+goto DoneCalcP3vsP4Diff
 CalcP3vsP4AbsDiff
-          let temp2 = playerX[2] - playerX[3]
+let temp2 = playerX[2] - playerX[3]
 DoneCalcP3vsP4Diff
-          if temp2 < 16 then CheckCollisionP3vsP4Aux
-          return
+if temp2 < 16 then CheckCollisionP3vsP4Aux
+return
 
 CheckCollisionP3vsP4Aux
-          if playerX[2] < playerX[3] then let playerX[2] = playerX[2] - 1
-          if playerX[2] < playerX[3] then let playerX[3] = playerX[3] + 1
-          if playerX[2] < playerX[3] then return
-          let playerX[2] = playerX[2] + 1
-          let playerX[3] = playerX[3] - 1
-          return
+if playerX[2] < playerX[3] then let playerX[2] = playerX[2] - 1
+if playerX[2] < playerX[3] then let playerX[3] = playerX[3] + 1
+if playerX[2] < playerX[3] then return
+let playerX[2] = playerX[2] + 1
+let playerX[3] = playerX[3] - 1
+return
 
           rem
           rem Budget Missile Collision Detection
@@ -435,26 +435,26 @@ BudgetedMissileCollisionCheck
           rem Use CheckAllMissileCollisions from MissileCollision.bas
           rem   which checks one player missile
           
-          if !(controllerStatus & SetQuadtariDetected) then BudgetedMissileCollisionCheck2P
+if !(controllerStatus & SetQuadtariDetected) then BudgetedMissileCollisionCheck2P
           
-          let temp1 = FramePhase
+let temp1 = FramePhase
           rem 4-player mode: check one missile per frame
           rem FramePhase 0-3 maps to Game Players 0-3
           rem Calculate bit flag using O(1) array lookup:
           rem BitMask[playerIndex] (1, 2, 4, 8)
-          let temp6 = BitMask[temp1]
-          let temp4 = missileActive & temp6
-          if temp4 then gosub CheckAllMissileCollisions bank7
-          return
+let temp6 = BitMask[temp1]
+let temp4 = missileActive & temp6
+if temp4 then gosub CheckAllMissileCollisions bank7
+return
           
 BudgetedMissileCollisionCheck2P
-          let temp1 = frame & 1
+let temp1 = frame & 1
           rem Simple 2-player mode: alternate missiles
           rem Use frame bit to alternate: 0 = Player 0, 1 = Player 1
           rem   BitMask[playerIndex] (1, 2, 4, 8)
-          let temp6 = BitMask[temp1]
+let temp6 = BitMask[temp1]
           rem Calculate bit flag using O(1) array lookup:
-          let temp4 = missileActive & temp6
-          if temp4 then gosub CheckAllMissileCollisions bank7
-          return
+let temp4 = missileActive & temp6
+if temp4 then gosub CheckAllMissileCollisions bank7
+return
 

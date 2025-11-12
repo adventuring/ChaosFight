@@ -11,30 +11,30 @@ CheckFallDamage
           rem Calls: PlaySoundEffect (bank15)
           rem Constraints: Must remain colocated with fall-damage helpers that reuse temp scratch bytes
 
-          let currentCharacter = playerCharacter[currentPlayer]
+let currentCharacter = playerCharacter[currentPlayer]
           rem Get character type for this player
           
           rem Check for fall damage immunity
           
-          if currentCharacter = CharacterBernie then return
+if currentCharacter = CharacterBernie then return
           rem Bernie: immune
           rem Robo Tito: reduced fall damage (handled after damage calculation)
-          if currentCharacter = CharacterFrooty then return
+if currentCharacter = CharacterFrooty then return
           rem Frooty: no gravity, no falling
-          if currentCharacter = CharacterDragonOfStorms then return
+if currentCharacter = CharacterDragonOfStorms then return
           rem Dragon of Storms: no gravity, no falling (hovering/flying
           rem   like Frooty)
           
           rem Calculate safe fall velocity threshold
           rem Formula: safe_velocity = 120 / weight
           rem Use lookup table to avoid variable division
-          let temp3 = SafeFallVelocityThresholds[currentCharacter]
+let temp3 = SafeFallVelocityThresholds[currentCharacter]
           rem Pre-computed values in SafeFallVelocityThresholds table
           rem Safe fall velocity threshold
           
           rem Check if fall velocity exceeds safe threshold
           
-          if temp2 <= temp3 then return
+if temp2 <= temp3 then return
           rem Safe landing, no damage
           
           rem Check if player is guarding - guard does NOT block fall
@@ -47,10 +47,10 @@ CheckFallDamage
           rem Base damage = (velocity - safe_velocity) *
           rem   base_damage_multiplier
           rem Base damage multiplier: 2 (so 1 extra velocity = 2 base
-          let temp4 = temp2 - temp3
+let temp4 = temp2 - temp3
           rem   damage)
           rem Multiply by 2 to double the base damage
-          let temp4 = temp4 * 2
+let temp4 = temp4 * 2
           
           rem Apply weight-based damage multiplier: the bigger they
           rem   are, the harder they fall
@@ -60,40 +60,40 @@ CheckFallDamage
           rem Using integer math: damage = damage * (weight / 20)
           rem Use lookup table for weight/20, then multiply by damage
           rem temp2 = weight / 20 from lookup table
-          let temp2 = WeightDividedBy20[currentCharacter]
+let temp2 = WeightDividedBy20[currentCharacter]
           rem Apply weight-based damage multiplier using optimized BASIC
           rem temp2 = weight / 20 from lookup table (0-5 range)
-          if temp2 > 1 then let temp4 = temp4 * temp2
+if temp2 > 1 then let temp4 = temp4 * temp2
           rem temp4 = damage * (weight / 20) (weight-based multiplier applied)
           
           rem Apply damage reduction for characters with fall damage
           rem Ninjish Guy halves damage after weight multiplier
-          if currentCharacter = CharacterNinjishGuy then let temp4 = temp4 / 2
+if currentCharacter = CharacterNinjishGuy then let temp4 = temp4 / 2
           rem Robo Tito halves damage after weight multiplier
-          if currentCharacter = CharacterRoboTito then let temp4 = temp4 / 2
+if currentCharacter = CharacterRoboTito then let temp4 = temp4 / 2
           
           rem Cap maximum fall damage at 50
           
-          if temp4 > 50 then let temp4 = 50
+if temp4 > 50 then let temp4 = 50
           
           rem Apply fall damage (byte-safe clamp)
-          let oldHealthValue_W = playerHealth[currentPlayer]
+let oldHealthValue_W = playerHealth[currentPlayer]
           rem Use oldHealthValue for byte-safe clamp check
-          let playerHealth[currentPlayer] = playerHealth[currentPlayer] - temp4
-          if playerHealth[currentPlayer] > oldHealthValue_R then let playerHealth[currentPlayer] = 0
+let playerHealth[currentPlayer] = playerHealth[currentPlayer] - temp4
+if playerHealth[currentPlayer] > oldHealthValue_R then let playerHealth[currentPlayer] = 0
           
           rem Set recovery frames (proportional to damage, min 10, max
           rem   30)
-          let temp2 = temp4
+let temp2 = temp4
           rem Use temp2 for recovery frames calculation
-          let temp2 = temp2 / 2
+let temp2 = temp2 / 2
           rem Divide by 2 using BASIC division
-          if temp2 < 10 then let temp2 = 10
-          if temp2 > 30 then let temp2 = 30
-          let recoveryFramesCalc_W = temp2
-          let playerRecoveryFrames[currentPlayer] = temp2
+if temp2 < 10 then let temp2 = 10
+if temp2 > 30 then let temp2 = 30
+let recoveryFramesCalc_W = temp2
+let playerRecoveryFrames[currentPlayer] = temp2
           
-          let playerState[currentPlayer] = playerState[currentPlayer] | 8
+let playerState[currentPlayer] = playerState[currentPlayer] | 8
           rem Synchronize playerState bit 3 with recovery frames
           rem Set bit 3 (recovery flag) when recovery frames are set
           
@@ -104,24 +104,24 @@ CheckFallDamage
           rem   [7:animation][4:attacking][2:jumping]
           rem   [1:guarding][0:facing]
           rem Set bits 7-5 to 9 (recovering animation)
-          let temp2 = playerState[currentPlayer] & MaskPlayerStateLower
+let temp2 = playerState[currentPlayer] & MaskPlayerStateLower
           rem Use temp2 for state manipulation
-          let temp2 = temp2 | MaskAnimationRecovering
+let temp2 = temp2 | MaskAnimationRecovering
           rem Keep lower 5 bits
-          let playerStateTemp_W = temp2
-          let playerState[currentPlayer] = temp2
+let playerStateTemp_W = temp2
+let playerState[currentPlayer] = temp2
           rem Set animation to 9 (1001 in bits 7-4)
           
-          let temp1 = SoundLandingDamage
+let temp1 = SoundLandingDamage
           rem Play fall damage sound effect
-          gosub PlaySoundEffect bank15
+gosub PlaySoundEffect bank15
           
           rem Trigger color shift to darker shade (damage visual
           rem   feedback)
           rem This is handled by PlayerRendering.bas using
           rem   playerRecoveryFrames
           
-          return
+return
 
 FallDamageApplyGravity
           rem
@@ -150,31 +150,31 @@ FallDamageApplyGravity
           rem
           rem Called Routines: None
           rem Constraints: None
-          let currentCharacter = playerCharacter[currentPlayer]
+let currentCharacter = playerCharacter[currentPlayer]
           rem Get character type
           
           rem Check for no-gravity characters
           
-          if currentCharacter = CharacterFrooty then return
+if currentCharacter = CharacterFrooty then return
           rem Frooty: no gravity
-          if currentCharacter = CharacterDragonOfStorms then return
+if currentCharacter = CharacterDragonOfStorms then return
           rem Dragon of Storms: no gravity (hovering/flying like Frooty)
           
           rem Check for reduced gravity characters
-          let temp6 = 2
+let temp6 = 2
           rem Harpy (6): 1/2 gravity when falling
           rem Default gravity: 2 pixels/frame²
-          if currentCharacter = CharacterHarpy then let temp6 = 1
+if currentCharacter = CharacterHarpy then let temp6 = 1
           rem Harpy: reduced gravity
           
-          let temp2 = temp2 + temp6
+let temp2 = temp2 + temp6
           rem Apply gravity acceleration
           
           rem Cap at terminal velocity (uses tunable constant from
           rem Constants.bas)
-          if temp2 > TerminalVelocity then temp2 = TerminalVelocity
+if temp2 > TerminalVelocity then temp2 = TerminalVelocity
           
-          return
+return
 
 CheckGroundCollision
           rem
@@ -210,22 +210,22 @@ CheckGroundCollision
           rem Constraints: Tail call to CheckFallDamage
           rem              Should be called AFTER vertical position
           rem              update but BEFORE momentum is cleared
-          let currentPlayer = temp1
-          let currentCharacter = playerCharacter[currentPlayer]
-          let temp3 = playerY[currentPlayer]
+let currentPlayer = temp1
+let currentCharacter = playerCharacter[currentPlayer]
+let temp3 = playerY[currentPlayer]
           rem Get player Y position
           
           rem Check if player is at or below ground level
           rem Ground level is at Y = 176 (bottom of playfield, leaving
-          if temp3 < 176 then return
+if temp3 < 176 then return
           rem Player hit ground (room for sprite)
-          let playerY[currentPlayer] = 176
+let playerY[currentPlayer] = 176
           rem Clamp position to ground
           
-          if temp2 <= 0 then return
+if temp2 <= 0 then return
           rem Check fall damage if moving downward
           rem momentum contains downward velocity
-          goto CheckFallDamage
+goto CheckFallDamage
           rem tail call
           
           rem Stop vertical momentum
@@ -239,7 +239,7 @@ CheckGroundCollision
           rem Convert player X/Y to playfield coordinates
           rem If standing on platform, perform same landing logic
           
-          return
+return
 
 HandleFrootyVertical
           rem
@@ -252,10 +252,10 @@ HandleFrootyVertical
           rem   Frooty)
           rem This should be called from PlayerInput.bas when processing
           rem joystick up/down for Frooty.
-          let currentPlayer = temp1
-          let currentCharacter = playerCharacter[currentPlayer]
+let currentPlayer = temp1
+let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if !(currentCharacter = CharacterFrooty) then return 
+if !(currentCharacter = CharacterFrooty) then return 
           rem Not Frooty
           
           rem Get joystick state
@@ -270,14 +270,14 @@ HandleFrootyVertical
           
           rem Clamp to screen bounds
           rem Byte-safe clamp: if wrapped below 0, the new value will
-          let oldHealthValue_W = playerY[currentPlayer]
+let oldHealthValue_W = playerY[currentPlayer]
           rem   exceed the old
           rem Reuse oldHealthValue for byte-safe clamp check (not
           rem actually health, but same pattern)
-          if playerY[currentPlayer] > oldHealthValue_R then let playerY[currentPlayer] = 0
-          if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
+if playerY[currentPlayer] > oldHealthValue_R then let playerY[currentPlayer] = 0
+if playerY[currentPlayer] > 176 then let playerY[currentPlayer] = 176
           
-          return
+return
 
 HandleHarpySwoopAttack
           rem
@@ -291,25 +291,25 @@ HandleHarpySwoopAttack
           rem
           rem OUTPUT:
           rem Sets player momentum for diagonal downward swoop
-          let currentPlayer = temp1
-          let currentCharacter = playerCharacter[currentPlayer]
+let currentPlayer = temp1
+let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if !(currentCharacter = CharacterHarpy) then return 
+if !(currentCharacter = CharacterHarpy) then return 
           rem Not Harpy
           
-          let temp6 = playerState[currentPlayer] & PlayerStateBitFacing
+let temp6 = playerState[currentPlayer] & PlayerStateBitFacing
           rem Get facing direction from playerState bit 0
           
           rem Set diagonal momentum at ~45° angle
           rem Horizontal: 4 pixels/frame (in facing direction)
           rem Vertical: 4 pixels/frame (downward)
-          if temp6 = 0 then SetHorizontalMomentumRight
+if temp6 = 0 then SetHorizontalMomentumRight
           rem Facing left: set negative momentum (252 = -4 in signed
-          let playerVelocityX[currentPlayer] = 252
+let playerVelocityX[currentPlayer] = 252
           rem   8-bit)
-          goto SetVerticalMomentum
+goto SetVerticalMomentum
 SetHorizontalMomentumRight
-          let playerVelocityX[currentPlayer] = 4
+let playerVelocityX[currentPlayer] = 4
           rem Facing right: set positive momentum
 SetVerticalMomentum
           
@@ -321,17 +321,17 @@ SetVerticalMomentum
           
           rem Set animation state to swooping attack
           rem This could be animation state 10 or special attack
-          let temp6 = playerState[currentPlayer] & MaskPlayerStateLower
+let temp6 = playerState[currentPlayer] & MaskPlayerStateLower
           rem   animation
-          let temp6 = temp6 | MaskAnimationFalling 
-          let playerState[currentPlayer] = temp6
+let temp6 = temp6 | MaskAnimationFalling 
+let playerState[currentPlayer] = temp6
           rem Animation state 10
           
           rem Spawn melee attack missile for swoop hit detection
-          let temp1 = currentPlayer
-          gosub SpawnMissile bank12
+let temp1 = currentPlayer
+gosub SpawnMissile bank12
           
-          return
+return
 
 DivideBy20
           rem
@@ -368,7 +368,7 @@ DivideBy20
             lsr
             sta temp2
 end
-          return
+return
           
 DivideBy100
           rem DivideBy100: compute floor(temp2 / 100) using range check
@@ -377,10 +377,10 @@ DivideBy100
           rem
           rem OUTPUT: temp2 = quotient (0, 1, or 2)
           rem Fast approximation for values 0-255
-          if temp2 > 200 then let temp2 = 2 : return
-          if temp2 > 100 then let temp2 = 1 : return
-          let temp2 = 0
-          return
+if temp2 > 200 then let temp2 = 2 : return
+if temp2 > 100 then let temp2 = 1 : return
+let temp2 = 0
+return
 
 DivideByPfrowheight
           rem DivideByPfrowheight: compute value / pfrowheight using bit
@@ -393,7 +393,7 @@ DivideByPfrowheight
           rem   of 2
           rem Uses conditional bit shifts based on runtime value
           rem Check if pfrowheight is 8 or 16
-          if pfrowheight = 8 then DBPF_DivideBy8
+if pfrowheight = 8 then DBPF_DivideBy8
           rem pfrowheight is 16, divide by 16 (4 right shifts)
           asm
             lsr temp2
@@ -401,7 +401,7 @@ DivideByPfrowheight
             lsr temp2
             lsr temp2
 end
-          return
+return
 DBPF_DivideBy8
           rem pfrowheight is 8, divide by 8 (3 right shifts)
           asm
@@ -409,7 +409,7 @@ DBPF_DivideBy8
             lsr temp2
             lsr temp2
 end
-          return
+return
           
 CalculateSafeFallDistance
           rem
@@ -424,27 +424,27 @@ CalculateSafeFallDistance
           rem OUTPUT:
           rem   temp2 = safe fall distance in pixels
           rem Get character type and weight
-          let currentPlayer = temp1
-          let currentCharacter = playerCharacter[currentPlayer]
+let currentPlayer = temp1
+let currentCharacter = playerCharacter[currentPlayer]
           
           rem Check for fall damage immunity
           
-          if currentCharacter = CharacterBernie then goto SetInfiniteFallDistance
+if currentCharacter = CharacterBernie then goto SetInfiniteFallDistance
           rem Bernie: infinite
-          if currentCharacter = CharacterRoboTito then goto SetInfiniteFallDistance
+if currentCharacter = CharacterRoboTito then goto SetInfiniteFallDistance
           rem Robo Tito: infinite
-          if currentCharacter = CharacterFrooty then goto SetInfiniteFallDistance
+if currentCharacter = CharacterFrooty then goto SetInfiniteFallDistance
           rem Frooty: no falling
-          if currentCharacter = CharacterDragonOfStorms then goto SetInfiniteFallDistance
-          goto CalculateFallDistanceNormal
+if currentCharacter = CharacterDragonOfStorms then goto SetInfiniteFallDistance
+goto CalculateFallDistanceNormal
           rem Dragon of Storms: no falling (hovering/flying like Frooty)
 SetInfiniteFallDistance
-          let temp2 = InfiniteFallDistance
-          return
+let temp2 = InfiniteFallDistance
+return
 CalculateFallDistanceNormal
           
           rem Calculate safe fall velocity (from CheckFallDamage logic)
-          let temp3 = SafeFallVelocityThresholds[currentCharacter]
+let temp3 = SafeFallVelocityThresholds[currentCharacter]
           rem Use lookup table to avoid variable division
           rem temp3 = Safe velocity threshold
           
@@ -454,8 +454,8 @@ CalculateFallDistanceNormal
           rem With g = 2: d = v² / 4
           rem Square temp3 using lookup table (temp3 is 1-24)
           rem SquareTable is 0-indexed, so index = temp3 - 1
-          let temp4 = temp3 - 1
-          let temp2 = SquareTable[temp4]
+let temp4 = temp3 - 1
+let temp2 = SquareTable[temp4]
           rem temp4 = index into SquareTable (0-23)
           rem temp2 = temp3 * temp3 (v²)
           rem Divide by 4 using bit shift right twice
@@ -467,8 +467,8 @@ end
           
           rem Apply Ninjish Guy bonus (can fall farther)
           
-          if currentCharacter = CharacterNinjishGuy then let temp2 = temp2 * 2
+if currentCharacter = CharacterNinjishGuy then let temp2 = temp2 * 2
           rem Multiply by 2 using BASIC multiplication
           
-          return
+return
 

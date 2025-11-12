@@ -50,23 +50,23 @@ AuthorPrelude
           
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then AuthorPreludeComplete
-          if joy1fire then AuthorPreludeComplete
+if joy0fire then AuthorPreludeComplete
+if joy1fire then AuthorPreludeComplete
           
           rem Check Quadtari controllers if detected (inline to avoid label)
           
-          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete
-          if controllerStatus & SetQuadtariDetected then if !INPT2{7} then AuthorPreludeComplete
+if controllerStatus & SetQuadtariDetected then if !INPT0{7} then AuthorPreludeComplete
+if controllerStatus & SetQuadtariDetected then if !INPT2{7} then AuthorPreludeComplete
           
-          gosub UpdateMusic bank1
+gosub UpdateMusic bank1
 
           rem Auto-advance after music completes + 0.5s
 
-          if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
+if preambleTimer > 30 && musicPlaying = 0 then AuthorPreludeComplete
 
-          let preambleTimer = preambleTimer + 1
+let preambleTimer = preambleTimer + 1
 
-          return
+return
 
 AuthorPreludeComplete
           rem Transition to Title Screen mode
@@ -80,9 +80,9 @@ AuthorPreludeComplete
           rem Called Routines: ChangeGameMode (bank14) - accesses game
           rem mode state
           rem Constraints: Must be colocated with AuthorPrelude
-          let gameMode = ModeTitle
-          gosub ChangeGameMode bank14
-          return
+let gameMode = ModeTitle
+gosub ChangeGameMode bank14
+return
 
           rem
           rem Bitmap Loading

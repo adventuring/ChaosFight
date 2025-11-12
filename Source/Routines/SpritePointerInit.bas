@@ -75,5 +75,5 @@ end
           rem The kernel existing pointer adjustment logic works
           rem perfectly with RAM
           rem   addresses. No kernel modifications needed!
-          return
+return
 

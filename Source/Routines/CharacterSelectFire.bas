@@ -26,14 +26,14 @@ HandleCharacterSelectFire
           rem HCSF_HandleFire,
           rem HCSF_HandleHandicap, HCSF_HandleRandom (all called via goto)
           rem Determine which joy port to use
-          if temp1 = 0 then HCSF_CheckJoy0
-          if temp1 = 2 then HCSF_CheckJoy0
+if temp1 = 0 then HCSF_CheckJoy0
+if temp1 = 2 then HCSF_CheckJoy0
           rem Players 1,3 use joy1
-          if !joy1fire then return
-          let temp2 = 1
-          if joy1down then temp4 = 1 : goto HCSF_HandleFire
+if !joy1fire then return
+let temp2 = 1
+if joy1down then temp4 = 1 : goto HCSF_HandleFire
           temp4 = 0
-          goto HCSF_HandleFire
+goto HCSF_HandleFire
 HCSF_CheckJoy0
           rem Check joy0 for players 0,2
           rem
@@ -49,9 +49,9 @@ HCSF_CheckJoy0
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectFire
           rem Players 0,2 use joy0
-          if !joy0fire then return
-          let temp2 = 1
-          if joy0down then temp4 = 1 : goto HCSF_HandleFire
+if !joy0fire then return
+let temp2 = 1
+if joy0down then temp4 = 1 : goto HCSF_HandleFire
           temp4 = 0
 HCSF_HandleFire
           rem Handle fire button press
@@ -73,17 +73,17 @@ HCSF_HandleFire
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectFire
           rem Check if RandomCharacter selected
-          if playerCharacter[temp1] = RandomCharacter then gosub HCSF_HandleRandom
+if playerCharacter[temp1] = RandomCharacter then gosub HCSF_HandleRandom
           rem Check for handicap mode (down+fire = 75% health)
-          if temp4 then HCSF_HandleHandicap
-          let temp3 = temp1
-          let temp1 = temp3
-          let temp2 = PlayerLockedNormal
-          gosub SetPlayerLocked
-          let temp1 = SoundMenuSelect
+if temp4 then HCSF_HandleHandicap
+let temp3 = temp1
+let temp1 = temp3
+let temp2 = PlayerLockedNormal
+gosub SetPlayerLocked
+let temp1 = SoundMenuSelect
           rem Play selection sound
-          gosub PlaySoundEffect bank15
-          return
+gosub PlaySoundEffect bank15
+return
 HCSF_HandleHandicap
           rem Handle handicap mode selection (75% health)
           rem
@@ -96,14 +96,14 @@ HCSF_HandleHandicap
           rem Called Routines: SetPlayerLocked (bank6),
           rem PlaySoundEffect (bank15)
           rem Constraints: Must be colocated with HandleCharacterSelectFire
-          let temp3 = temp1
-          let temp1 = temp3
-          let temp2 = PlayerHandicapped
-          gosub SetPlayerLocked
-          let temp1 = SoundMenuSelect
+let temp3 = temp1
+let temp1 = temp3
+let temp2 = PlayerHandicapped
+gosub SetPlayerLocked
+let temp1 = SoundMenuSelect
           rem Play selection sound
-          gosub PlaySoundEffect bank15
-          return
+gosub PlaySoundEffect bank15
+return
 HCSF_HandleRandom
           rem Handle random character selection
           rem
@@ -125,13 +125,13 @@ HCSF_HandleRandom
           rem Random selection initiated - will be handled by
           rem CharacterSelectHandleRandomRolls
           rem Store handicap flag if down was held
-          if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto HCSF_HandleRandomSound
-          let randomSelectFlags_W[temp1] = 0
+if temp4 then let randomSelectFlags_W[temp1] = TRUE : goto HCSF_HandleRandomSound
+let randomSelectFlags_W[temp1] = 0
 HCSF_HandleRandomSound
-          let temp1 = SoundMenuSelect
+let temp1 = SoundMenuSelect
           rem Play selection sound
-          gosub PlaySoundEffect bank15
+gosub PlaySoundEffect bank15
           rem Fall through - character will stay as RandomCharacter
           rem until roll succeeds
-          return
+return
 

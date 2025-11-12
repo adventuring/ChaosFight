@@ -2,8 +2,8 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
           rem Local sound-system scratch aliases (temp registers for frame countdowns)
-          dim SS_frameCount = temp4
-          dim SS_frameCount1 = temp5
+dim SS_frameCount = temp4
+dim SS_frameCount1 = temp5
 
 PlaySoundEffect
           rem SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
@@ -48,20 +48,20 @@ PlaySoundEffect
           rem active). No queuing - sound forgotten if both voices busy.
           rem Voice 0 tried first, Voice 1 as fallback
           rem Check if music is active (music takes priority)
-          if musicVoice0Pointer then return
-          if musicVoice1Pointer then return
+if musicVoice0Pointer then return
+if musicVoice1Pointer then return
           
-          gosub LoadSoundPointer bank15
+gosub LoadSoundPointer bank15
           rem Lookup sound pointer from Sounds bank (Bank15)
           
           rem Try Voice 0 first
           
-          if soundEffectPointer then TryVoice1
+if soundEffectPointer then TryVoice1
           
-          let soundEffectPointer = soundPointer
+let soundEffectPointer = soundPointer
           rem Voice 0 is free - use it
-          let soundEffectFrame_W = 1
-          goto UpdateSoundEffectVoice0
+let soundEffectFrame_W = 1
+goto UpdateSoundEffectVoice0
           rem tail call
           
 TryVoice1
@@ -81,18 +81,18 @@ TryVoice1
           rem Constraints: Internal helper for PlaySoundEffect, only
           rem called when Voice 0 is busy
           rem Try Voice 1
-          if soundEffectPointer1 then return
+if soundEffectPointer1 then return
           
-          let soundEffectPointer1 = soundPointer
+let soundEffectPointer1 = soundPointer
           rem Voice 1 is free - use it
-          let soundEffectFrame1_W = 1
-          goto UpdateSoundEffectVoice1
+let soundEffectFrame1_W = 1
+goto UpdateSoundEffectVoice1
           rem tail call
 
 UpdateSoundEffect
           asm
           UpdateSoundEffect = .UpdateSoundEffect
-          end
+end
           rem UpdateSoundEffect - Update sound effect playback each
           rem   frame
           rem Called every frame from MainLoop for gameMode 6
@@ -116,12 +116,12 @@ UpdateSoundEffect
           rem Constraints: Called every frame from MainLoop for gameMode
           rem 6. Only updates voices if active (high byte != 0)
           rem Update Voice 0
-          if soundEffectPointer then gosub UpdateSoundEffectVoice0
+if soundEffectPointer then gosub UpdateSoundEffectVoice0
           
           rem Update Voice 1
           
-          if soundEffectPointer1 then gosub UpdateSoundEffectVoice1
-          return
+if soundEffectPointer1 then gosub UpdateSoundEffectVoice1
+return
           
           
 UpdateSoundEffectVoice0
@@ -150,12 +150,12 @@ UpdateSoundEffectVoice0
           rem LoadSoundNote handles end-of-sound by setting
           rem soundEffectPointer = 0 and AUDV0 = 0
           rem Decrement frame counter
-          let SS_frameCount = soundEffectFrame_R - 1
+let SS_frameCount = soundEffectFrame_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
-          let soundEffectFrame_W = SS_frameCount
-          if SS_frameCount then return
+let soundEffectFrame_W = SS_frameCount
+if SS_frameCount then return
           
-          gosub LoadSoundNote bank15
+gosub LoadSoundNote bank15
           rem Frame counter reached 0 - load next note from Sounds bank
           rem LoadSoundNote will:
           rem - Load 4-byte note from Sound_Voice0[pointer]: AUDCV,
@@ -166,7 +166,7 @@ UpdateSoundEffectVoice0
           rem   - Advance SoundEffectPointer by 4 bytes
           rem - Handle end-of-sound: set soundEffectPointer = 0, AUDV0
           rem   = 0, free voice
-          return
+return
           
 UpdateSoundEffectVoice1
           rem
@@ -194,12 +194,12 @@ UpdateSoundEffectVoice1
           rem LoadSoundNote1 handles end-of-sound by setting
           rem soundEffectPointer1 = 0 and AUDV1 = 0
           rem Decrement frame counter
-          let SS_frameCount1 = soundEffectFrame1_R - 1
+let SS_frameCount1 = soundEffectFrame1_R - 1
           rem Fix RMW: Read from _R, modify, write to _W
-          let soundEffectFrame1_W = SS_frameCount1
-          if SS_frameCount1 then return
+let soundEffectFrame1_W = SS_frameCount1
+if SS_frameCount1 then return
           
-          gosub LoadSoundNote1 bank15
+gosub LoadSoundNote1 bank15
           rem Frame counter reached 0 - load next note from Sounds bank
           rem LoadSoundNote1 will:
           rem - Load 4-byte note from Sound_Voice0[pointer]: AUDCV,
@@ -210,7 +210,7 @@ UpdateSoundEffectVoice1
           rem   - Advance SoundEffectPointer1 by 4 bytes
           rem - Handle end-of-sound: set soundEffectPointer1 = 0, AUDV1
           rem   = 0, free voice
-          return
+return
 
 StopSoundEffects
           rem
@@ -236,10 +236,10 @@ StopSoundEffects
           AUDV1 = 0
           
           rem Clear sound pointers (high byte = 0 means inactive)
-          let soundEffectPointer = 0
-          let soundEffectPointer1 = 0
+let soundEffectPointer = 0
+let soundEffectPointer1 = 0
           
-          let soundEffectFrame_W = 0
+let soundEffectFrame_W = 0
           rem Reset frame counters
-          let soundEffectFrame1_W = 0
-          return
+let soundEffectFrame1_W = 0
+return

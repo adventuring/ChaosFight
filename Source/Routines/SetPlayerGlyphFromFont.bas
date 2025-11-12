@@ -30,7 +30,7 @@ SetPlayerGlyphFromFont
 end
           
           rem Player 0 handled specially; others via indexed stores
-          if temp3 = 0 then SetP0
+if temp3 = 0 then SetP0
 SetP1to5
           asm
             ldy temp3
@@ -41,7 +41,7 @@ SetP1to5
             lda #$10
             sta player1height-1,y
 end
-          return
+return
 
 SetP0
           asm
@@ -50,7 +50,7 @@ SetP0
             lda temp5
             sta player0pointerhi
 end
-          let player0height = 16
-          return
+let player0height = 16
+return
 
 

@@ -26,32 +26,32 @@ SetGlyph
           goto SetP5
 
 SetP0
-          player0pointer = FontData + temp4
+          player0pointer = FontData
           player0height = 16
           return
 
 SetP1
-          player1pointer = FontData + temp4
+          player1pointer = FontData
           player1height = 16
           return
 
 SetP2
-          player2pointer = FontData + temp4
+          player2pointer = FontData
           player2height = 16
           return
 
 SetP3
-          player3pointer = FontData + temp4
+          player3pointer = FontData
           player3height = 16
           return
 
 SetP4
-          player4pointer = FontData + temp4
+          player4pointer = FontData
           player4height = 16
           return
 
 SetP5
-          player5pointer = FontData + temp4
+          player5pointer = FontData
           player5height = 16
           return
 

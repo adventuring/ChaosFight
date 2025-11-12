@@ -361,7 +361,7 @@ Source/Art/Map-%.png: Source/Art/Map-%.xcf | Source/Art/
 	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
 
 # Convert PNG font to batariBASIC data
-Source/Generated/Font.bas: Source/Art/Font.png | Source/Generated/
+Source/Generated/Font.bas: Source/Art/Font.png bin/skyline-tool | Source/Generated/
 	@echo "Converting font $< to $@ for NTSC..."
 	bin/skyline-tool compile-8x16-font "$<" > "$@" 
 

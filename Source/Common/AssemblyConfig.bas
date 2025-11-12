@@ -14,9 +14,7 @@
           rem Assembly configuration symbols for batariBASIC-generated code
           rem These are included at the top of the generated assembly file
           rem Bankswitching configuration
-          rem Note: batariBASIC automatically defines bankswitch from set romsize,
-          const bankswitch = 64
-          rem   but we explicitly define it here to ensure it’s available in assembler
+          rem Note: batariBASIC automatically defines bankswitch from set romsize
           rem EF bankswitching (64KiB with SuperChip RAM)
 
           rem Kernel configuration

@@ -302,11 +302,9 @@
   MS_ASSIGN  pfcenter, 0
   MS_ASSIGN  FASTFETCH, 0
   MS_ASSIGN  minikernel, 0
-  MS_ASSIGN  bankswitch_hotspot, 0
   MS_ASSIGN  vertical_reflect, 1
   MS_ASSIGN  no_blank_lines, 0
   MS_ASSIGN  PFmaskvalue, 0
-  MS_ASSIGN  overscan_time, 0
   MS_ASSIGN  NOT, $FF
   MS_ASSIGN  playfieldRow, $5C
   MS_ASSIGN  miniscoretable, $0000

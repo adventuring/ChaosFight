@@ -143,8 +143,8 @@ HCSC_CycleLeft
           let temp1 = temp1 - 1
           goto HCSC_CycleDone
 HCSC_LeftFromRandom
-          if temp3 = 0 then let temp1 = MaxCharacter : goto HCSC_CycleDone
-          if temp3 = 1 then gosub HCSC_GetPlayer2Tail : let temp1 = temp6 : goto HCSC_CycleDone
+          if temp3 = 0 then temp1 = MaxCharacter : goto HCSC_CycleDone
+          if temp3 = 1 then gosub HCSC_GetPlayer2Tail : temp1 = temp6 : goto HCSC_CycleDone
           let temp1 = NoCharacter
           goto HCSC_CycleDone
 HCSC_LeftFromNo
@@ -174,8 +174,8 @@ HCSC_RightFromCPU
           let temp1 = RandomCharacter
           goto HCSC_CycleDone
 HCSC_RightFromMax
-          if temp3 = 0 then let temp1 = RandomCharacter : goto HCSC_CycleDone
-          if temp3 = 1 then gosub HCSC_GetPlayer2Tail : let temp1 = temp6 : goto HCSC_CycleDone
+          if temp3 = 0 then temp1 = RandomCharacter : goto HCSC_CycleDone
+          if temp3 = 1 then gosub HCSC_GetPlayer2Tail : temp1 = temp6 : goto HCSC_CycleDone
           let temp1 = NoCharacter
           goto HCSC_CycleDone
 HCSC_GetPlayer2Tail
@@ -218,7 +218,7 @@ CharacterSelectInputEntry
 
           rem Consolidated input handling with Quadtari multiplexing
           let temp3 = 0
-          if controllerStatus & SetQuadtariDetected then let temp3 = qtcontroller * 2
+          if controllerStatus & SetQuadtariDetected then temp3 = qtcontroller * 2
           rem Player offset: 0=P1/P2, 2=P3/P4
           gosub CharacterSelectHandleTwoPlayers
 
@@ -271,7 +271,7 @@ CharacterSelectInputComplete
 CharacterSelectHandleRandomRolls
           rem Check each player for pending random roll
           let temp1 = 1
-          if controllerStatus & SetQuadtariDetected then let temp1 = 3
+          if controllerStatus & SetQuadtariDetected then temp1 = 3
           for currentPlayer = 0 to temp1
           if playerCharacter[currentPlayer] = RandomCharacter then gosub CharacterSelectRollRandomPlayer
           next
@@ -295,10 +295,10 @@ CharacterSelectRollRandomPlayer
           let playerCharacter[currentPlayer] = temp2
           rem Valid! Set character and lock with normal or handicap
           if randomSelectFlags_R[currentPlayer] then goto CharacterSelectRollRandomPlayerHandicap
-          let temp1 = currentPlayer : let temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
+          let temp1 = currentPlayer : temp2 = PlayerLockedNormal : gosub SetPlayerLocked bank6
           goto CharacterSelectRollRandomPlayerLockDone
 CharacterSelectRollRandomPlayerHandicap
-          let temp1 = currentPlayer : let temp2 = PlayerHandicapped : gosub SetPlayerLocked bank6
+          let temp1 = currentPlayer : temp2 = PlayerHandicapped : gosub SetPlayerLocked bank6
 CharacterSelectRollRandomPlayerLockDone
           let randomSelectFlags_W[currentPlayer] = 0
           return

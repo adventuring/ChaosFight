@@ -63,18 +63,18 @@ CheckFallDamage
           let temp2 = WeightDividedBy20[currentCharacter]
           rem Apply weight-based damage multiplier using optimized BASIC
           rem temp2 = weight / 20 from lookup table (0-5 range)
-          if temp2 > 1 then let temp4 = temp4 * temp2
+          if temp2 > 1 then temp4 = temp4 * temp2
           rem temp4 = damage * (weight / 20) (weight-based multiplier applied)
 
           rem Apply damage reduction for characters with fall damage
           rem Ninjish Guy halves damage after weight multiplier
-          if currentCharacter = CharacterNinjishGuy then let temp4 = temp4 / 2
+          if currentCharacter = CharacterNinjishGuy then temp4 = temp4 / 2
           rem Robo Tito halves damage after weight multiplier
-          if currentCharacter = CharacterRoboTito then let temp4 = temp4 / 2
+          if currentCharacter = CharacterRoboTito then temp4 = temp4 / 2
 
           rem Cap maximum fall damage at 50
 
-          if temp4 > 50 then let temp4 = 50
+          if temp4 > 50 then temp4 = 50
 
           rem Apply fall damage (byte-safe clamp)
           let oldHealthValue_W = playerHealth[currentPlayer]
@@ -88,8 +88,8 @@ CheckFallDamage
           rem Use temp2 for recovery frames calculation
           let temp2 = temp2 / 2
           rem Divide by 2 using BASIC division
-          if temp2 < 10 then let temp2 = 10
-          if temp2 > 30 then let temp2 = 30
+          if temp2 < 10 then temp2 = 10
+          if temp2 > 30 then temp2 = 30
           let recoveryFramesCalc_W = temp2
           let playerRecoveryFrames[currentPlayer] = temp2
 
@@ -164,7 +164,7 @@ FallDamageApplyGravity
           let temp6 = 2
           rem Harpy (6): 1/2 gravity when falling
           rem Default gravity: 2 pixels/frame²
-          if currentCharacter = CharacterHarpy then let temp6 = 1
+          if currentCharacter = CharacterHarpy then temp6 = 1
           rem Harpy: reduced gravity
 
           let temp2 = temp2 + temp6
@@ -294,7 +294,7 @@ HandleHarpySwoopAttack
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if (currentCharacter = CharacterHarpy) = 0 then return
+          if !(currentCharacter = CharacterHarpy) then return 
           rem Not Harpy
 
           let temp6 = playerState[currentPlayer] & PlayerStateBitFacing
@@ -377,8 +377,8 @@ DivideBy100
           rem
           rem OUTPUT: temp2 = quotient (0, 1, or 2)
           rem Fast approximation for values 0-255
-          if temp2 > 200 then let temp2 = 2 : return
-          if temp2 > 100 then let temp2 = 1 : return
+          if temp2 > 200 then temp2 = 2 : return
+          if temp2 > 100 then temp2 = 1 : return
           let temp2 = 0
           return
 
@@ -467,7 +467,7 @@ CalculateFallDistanceNormal
 
           rem Apply Ninjish Guy bonus (can fall farther)
 
-          if currentCharacter = CharacterNinjishGuy then let temp2 = temp2 * 2
+          if currentCharacter = CharacterNinjishGuy then temp2 = temp2 * 2
           rem Multiply by 2 using BASIC multiplication
 
           return

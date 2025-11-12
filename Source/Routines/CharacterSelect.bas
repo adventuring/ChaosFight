@@ -99,7 +99,7 @@ CharacterSelectLoop
           if joy0right then gosub SelectStickRight
 
           rem Unlock by moving up
-          if joy0up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
           if joy0fire then Player1LockSelection
           goto DonePlayer1
@@ -124,7 +124,7 @@ DonePlayer1
           if joy1right then gosub SelectStickRight
 
           rem Unlock by moving up
-          if joy1up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
           if joy1fire then Player2LockSelection
           goto DonePlayer2
@@ -158,7 +158,7 @@ CharacterSelectHandlePlayer3
           if joy0right then gosub SelectStickRight
 
           rem Unlock by moving up
-          if joy0up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
           if joy0fire then Player3LockSelection
           goto DonePlayer3
@@ -189,7 +189,7 @@ CharacterSelectHandlePlayer4
           if joy1right then gosub SelectStickRight
 
           rem Unlock by moving up
-          if joy1up then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
           if joy1fire then Player4LockSelection
           goto DonePlayer4
@@ -227,7 +227,7 @@ SelectStickLeft
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] - 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = MaxCharacter
-          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           return
 
 SelectStickRight
@@ -243,7 +243,7 @@ SelectStickRight
           rem Constraints: currentPlayer must be set by caller
           let playerCharacter[currentPlayer] = playerCharacter[currentPlayer] + 1
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
-          if playerCharacter[currentPlayer] > MaxCharacter then let temp1 = currentPlayer : let temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
+          if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           return
 
 CharacterSelectHandleComplete

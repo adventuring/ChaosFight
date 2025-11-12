@@ -192,6 +192,9 @@ VelocityDone
           return
 
 UpdateAllMissiles
+          asm
+          UpdateAllMissiles = .UpdateAllMissiles
+          end
           rem
           rem Update All Missiles
           rem Called once per frame to update all active missiles.

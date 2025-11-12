@@ -123,6 +123,9 @@ StartGuard
           return
 
 UpdateGuardTimers
+          asm
+          UpdateGuardTimers = .UpdateGuardTimers
+          end
           rem
           rem Update guard duration and cooldown timers each frame (invoked from main loop).
           rem Input: None

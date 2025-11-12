@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 UpdatePlayerMovement
+          asm
+          UpdatePlayerMovement = .UpdatePlayerMovement
+          end
           rem 8.8 fixed-point movement system using batariBASIC built-in
           rem   support
           rem Movement System Routines

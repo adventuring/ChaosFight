@@ -90,6 +90,9 @@ TryVoice1
           rem tail call
 
 UpdateSoundEffect
+          asm
+          UpdateSoundEffect = .UpdateSoundEffect
+          end
           rem UpdateSoundEffect - Update sound effect playback each
           rem   frame
           rem Called every frame from MainLoop for gameMode 6

@@ -172,6 +172,9 @@ HarpySetVerticalVelocity
           return
 
 UrsuloAttack
+          asm
+          UrsuloAttack = .UrsuloAttack
+          end
           rem Ursulo (Character 14) - Melee attack (claw swipe)
           rem
           rem Input: temp1 = attacker player index (0-3)

@@ -520,7 +520,6 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/SetPlayerGlyphFromFont.bas \
 	Source/Routines/SoundBankHelpers.bas \
 	Source/Routines/SoundSystem.bas \
-	Source/Routines/SpecialMovement.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/SpriteLoaderCharacterArt.bas \
 	Source/Routines/SpritePointerInit.bas \

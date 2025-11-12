@@ -177,6 +177,11 @@ pfrows           EQU $D5
 pfscore          EQU 1    ; Enable playfield score feature
 noscore          EQU 0    ; Enable score display (health bars)
 
+playfieldRow     EQU $5C  ; Playfield row variable (user-defined)
+
+pfread                        ; Playfield read function
+        rts
+
 minikernel                    ; Titlescreen minikernel subroutine
         rts
 

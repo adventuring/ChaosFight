@@ -2,6 +2,12 @@
  include "TitleScreen/asm/layoutmacros.s"
  include "TitleScreen/titlescreen_layout.s.backup"
 
+ ; Optional bitmap index offsets (default to 0)
+ bmp_48x2_1_index = 0
+ bmp_48x2_2_index = 0
+ bmp_48x2_3_index = 0
+ bmp_48x2_4_index = 0
+
 titledrawscreen
 title_eat_overscan
  	;bB runs in overscan. Wait for the overscan to run out...

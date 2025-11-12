@@ -521,3 +521,7 @@ PauseNotPressed
           rem Button not pressed, update previous state (set bit 5)
           return
 
+          asm
+CtrlDetPads = .CtrlDetPads
+          end
+

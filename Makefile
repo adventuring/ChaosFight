@@ -42,7 +42,7 @@ bin/zx7mini:	SkylineTool/zx7mini/zx7mini.c | bin/
 
 # batariBASIC tool links
 # Explicitly mark upstream tool binaries as fixed files so GNU make
-# doesn’t try to regenerate them with the built-in “.sh →” implicit rule
+# doesn't try to regenerate them with the built-in ".sh →" implicit rule
 Tools/batariBASIC/2600basic \
 Tools/batariBASIC/preprocess \
 Tools/batariBASIC/postprocess \
@@ -52,22 +52,28 @@ Tools/batariBASIC/dasm.Linux.x64:
 	@:
 
 bin/preprocess: Tools/batariBASIC/preprocess | bin/
-	ln -sf "$(abspath $<)" "$@"
+	cp "$<" "$@"
+	chmod +x "$@"
 
 bin/postprocess: Tools/batariBASIC/postprocess | bin/
-	ln -sf "$(abspath $<)" "$@"
+	cp "$<" "$@"
+	chmod +x "$@"
 
 bin/optimize: Tools/batariBASIC/optimize | bin/
-	ln -sf "$(abspath $<)" "$@"
+	cp "$<" "$@"
+	chmod +x "$@"
 
 bin/2600basic: Tools/batariBASIC/2600basic | bin/
-	ln -sf "$(abspath $<)" "$@"
+	cp "$<" "$@"
+	chmod +x "$@"
 
 bin/bbfilter: Tools/batariBASIC/bbfilter | bin/
-	ln -sf "$(abspath $<)" "$@"
+	cp "$<" "$@"
+	chmod +x "$@"
 
 bin/dasm: Tools/batariBASIC/dasm.Linux.x64 | bin/
-	ln -sf "$(abspath $<)" "$@"
+	cp "$<" "$@"
+	chmod +x "$@"
 
 skyline-tool:	bin/skyline-tool
 

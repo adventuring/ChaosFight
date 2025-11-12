@@ -481,51 +481,51 @@ if temp1 = 5 then let temp2 = ActionAttackExecute
 if temp1 = 9 then let temp2 = ActionAttackExecute
 if temp1 = 11 then let temp2 = ActionAttackExecute
           rem No matching transition: leave animation unchanged
-if temp2 = 255 then return
-goto SetPlayerAnimation
+          if temp2 = 255 then return
+          goto SetPlayerAnimation
 
 PlaceholderWindup
-if temp1 <= 30 then return
-return
+          if temp1 <= 30 then return
+          return
 
 HandleExecuteEnd
-let temp1 = playerCharacter[currentPlayer]
-if temp1 >= 32 then return
-if temp1 = 6 then goto HarpyExecute
-if temp1 = 1 then return
-let temp2 = ActionIdle
+          let temp1 = playerCharacter[currentPlayer]
+          if temp1 >= 32 then return
+          if temp1 = 6 then goto HarpyExecute
+          if temp1 = 1 then return
+          let temp2 = ActionIdle
           rem FatTony and PorkChop fall into recovery after Execute phase
-if temp1 = 4 then let temp2 = ActionAttackRecovery
-if temp1 = 11 then let temp2 = ActionAttackRecovery
-goto SetPlayerAnimation
+          if temp1 = 4 then let temp2 = ActionAttackRecovery
+          if temp1 = 11 then let temp2 = ActionAttackRecovery
+          goto SetPlayerAnimation
 
 HarpyExecute
           rem Harpy: Execute → Idle
           rem Clear dive flag and stop diagonal movement when attack
           rem   completes
-let temp1 = currentPlayer
+          let temp1 = currentPlayer
           rem Also apply upward wing flap momentum after swoop attack
           rem Clear dive flag (bit 4 in characterStateFlags)
-let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
+          let C6E_stateFlags = 239 & characterStateFlags_R[temp1]
           rem Fix RMW: Read from _R, modify, write to _W
-let characterStateFlags_W[temp1] = C6E_stateFlags
+          let characterStateFlags_W[temp1] = C6E_stateFlags
           rem Clear bit 4 (239 = 0xEF = ~0x10)
-let playerVelocityX[temp1] = 0
+          let playerVelocityX[temp1] = 0
           rem Stop horizontal velocity (zero X velocity)
-let playerVelocityXL[temp1] = 0
+          let playerVelocityXL[temp1] = 0
           rem Apply upward wing flap momentum after swoop attack
           rem   (equivalent to HarpyJump)
           rem Same as normal flap: -2 pixels/frame upward (254 in twos
-let playerVelocityY[temp1] = 254
+          let playerVelocityY[temp1] = 254
           rem   complement)
           rem -2 in 8-bit twos complement: 256 - 2 = 254
-let playerVelocityYL[temp1] = 0
+          let playerVelocityYL[temp1] = 0
           rem Keep jumping flag set to allow vertical movement
           rem playerState[temp1] bit 2 (jumping) already set
           rem   from attack, keep it
-let temp2 = ActionIdle
+          let temp2 = ActionIdle
           rem Transition to Idle
-goto SetPlayerAnimation
+          goto SetPlayerAnimation
           rem tail call
           rem
           rem PLACEHOLDER CHARACTER ANIMATION HANDLERS (16-30)

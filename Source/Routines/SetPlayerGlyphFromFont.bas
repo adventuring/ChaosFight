@@ -12,22 +12,10 @@
           rem   - P0 handled separately; P1-P5 use indexed stores
           rem   - Must be included in bank 16 to preserve kernel locality
 SetPlayerGlyphFromFont
-          asm
-            lda temp1
-            asl
-            asl
-            asl
-            asl
-            sta temp6
-            ; Compute ROM pointer to glyph into temp4/temp5
-            lda # <FontData
-            clc
-            adc temp6
-            sta temp4
-            lda # >FontData
-            adc #0
-            sta temp5
-          end
+          let temp6 = temp1 * 16
+          let temp4 = FontData + temp6
+          let temp5 = temp4 / 256
+          let temp4 = temp4 & 255
 
           rem Player 0 handled specially; others via indexed stores
           if temp3 = 0 then SetP0

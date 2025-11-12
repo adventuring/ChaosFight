@@ -91,3 +91,6 @@ ApplyPlayerSpecialMovement
           
           rem All other characters use standard physics
           return
+          asm
+ApplySpecialMovement = .ApplySpecialMovement
+end

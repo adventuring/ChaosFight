@@ -50,6 +50,9 @@ LCS_CopyQuestionGlyph
           temp4 = SpriteQuestionMark
           gosub CopyGlyphToPlayer bank16
           return
+          asm
+LoadCharacterSprite = .LoadCharacterSprite
+end
 
 LoadPlayerSprite
           asm
@@ -91,6 +94,9 @@ end
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank10
           return
+          asm
+LoadPlayerSprite = .LoadPlayerSprite
+end
           
 LoadPlayerSpriteDispatch
           rem removed (was a small shim); callers now use inline block above

@@ -13,6 +13,6 @@ SetGameScreenLayout
           pfrowheight = ScreenPfRowHeight
           pfrows = ScreenPfRows
           return
-asm
+          asm
 SetGameScreenLayout = .SetGameScreenLayout
 end

@@ -150,4 +150,4 @@ end
 
           asm
 LoadSoundNote1 = .LoadSoundNote1
-          end
+end

@@ -236,6 +236,9 @@ HGI_CheckGuardRelease
           return
 
 ConvertPlayerXToPlayfieldColumn
+          asm
+ConvertPlayerXToPlayfieldColumn
+end
           rem
           rem Playfield Coordinate Conversion
           rem Converts player X position to playfield column index

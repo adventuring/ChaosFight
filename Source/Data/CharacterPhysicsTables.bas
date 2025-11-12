@@ -17,9 +17,9 @@ end
 end
 
           rem Square lookup table (v^2 / 4 for velocities 0-24)
+SquareTable
           asm
-          SquareTable = .SquareTable
-
+SquareTable
 end
           data SquareTable
             0, 1, 2, 4, 6, 9, 12, 16, 20, 25, 30, 36, 42, 49, 56, 64, 72, 81, 90, 100, 110, 121, 132, 144

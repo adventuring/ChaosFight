@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CheckBoundaryCollisions
+          asm
+CheckBoundaryCollisions
+end
           rem Player Physics - Collisions
           rem Handles boundary, playfield, and player-to-player
           rem collisions.
@@ -129,6 +132,9 @@ SkipPlayer3
           return
 
 CheckPlayfieldCollisionAllDirections
+          asm
+CheckPlayfieldCollisionAllDirections
+end
           rem
           rem Check Playfield Collision All Directions
           rem
@@ -552,11 +558,3 @@ PFCheckDown_CheckRight
 
 CheckPlayfieldCollisionUpDone
           return
-
-          asm
-          CheckBoundaryCollisions = .CheckBoundaryCollisions
-          CheckPlayfieldCollisionAllDirections = .CheckPlayfieldCollisionAllDirections
-          ConvertPlayerXToPlayfieldColumn = .ConvertPlayerXToPlayfieldColumn
-          DivideByPfrowheight = .DivideByPfrowheight
-end
-

@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CheckAllMissileCollisions
+          asm
+CheckAllMissileCollisions
+end
           rem Missile Collision System
           rem Handles all collision detection for missiles and
           rem   area-of-effect attacks.
@@ -57,6 +60,9 @@ CheckAllMissileCollisions
 
 
 CheckVisibleMissileCollision
+          asm
+CheckVisibleMissileCollision
+end
           rem
           rem Check Visible Missile Collision
           rem Checks collision between a visible missile and all
@@ -131,6 +137,9 @@ NextPlayerCheck
           return
 
 CheckAOECollision
+          asm
+CheckAOECollision
+end
           rem
           rem Check Aoe Collision
           rem Checks collision for area-of-effect melee attacks (no
@@ -184,6 +193,9 @@ CheckAOELeftDirection
           return
 
 CheckBernieAOE
+          asm
+CheckBernieAOE
+end
           rem Bernie: Check right direction first
           gosub CheckAOEDirection_Right
 
@@ -194,23 +206,18 @@ CheckBernieAOE
           return
 
 CheckBernieAOELeft
+          asm
+CheckBernieAOELeft
+end
           rem Check left direction
           gosub CheckAOEDirection_Left
 
           return
-          asm
-          CheckAllMissileCollisions = .CheckAllMissileCollisions
-          CheckVisibleMissileCollision = .CheckVisibleMissileCollision
-          CheckAOECollision = .CheckAOECollision
-          CheckAOEDirection_Right = .CheckAOEDirection_Right
-          CheckAOEDirection_Left = .CheckAOEDirection_Left
-          CheckBernieAOE = .CheckBernieAOE
-          CheckBernieAOELeft = .CheckBernieAOELeft
-          CheckRoboTitoStretchMissileCollisions = .CheckRoboTitoStretchMissileCollisions
-          MissileCollPF = .MissileCollPF
-end
-
+          
 CheckAOEDirection_Right
+          asm
+CheckAOEDirection_Right
+end
           rem
           rem Check Aoe Direction - Right
           rem Checks AOE collision when attacking to the right.
@@ -318,6 +325,9 @@ DoneAOEPlayer3
           return
 
 CheckAOEDirection_Left
+          asm
+CheckAOEDirection_Left
+end
           rem
           rem Check Aoe Direction - Left
           rem Checks AOE collision when attacking to the left.
@@ -429,6 +439,9 @@ DoneThirdPlayer3
           return
 
 MissileCollPF
+          asm
+MissileCollPF
+end
           rem
           rem Check Missile-playfield Collision
           rem Checks if missile hit the playfield (walls, obstacles).

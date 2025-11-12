@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CheckRoboTitoStretchMissileCollisions
+          asm
+CheckRoboTitoStretchMissileCollisions
+end
           rem Detects RoboTito stretch missile hits against other players
           rem Inputs: playerCharacter[], playerState[], characterStateFlags_R[],
           rem         missileStretchHeight_R[], playerX[], playerY[], playerHealth[]

@@ -382,6 +382,9 @@ DivideBy100
           return
 
 DivideByPfrowheight
+          asm
+DivideByPfrowheight
+end
           rem DivideByPfrowheight: compute value / pfrowheight using bit
           rem   shifts
           rem

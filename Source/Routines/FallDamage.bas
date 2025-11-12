@@ -312,7 +312,6 @@ SetHorizontalMomentumRight
           let playerVelocityX[currentPlayer] = 4
           rem Facing right: set positive momentum
 SetVerticalMomentum
-
           rem Set downward momentum (using temp variable for now)
           rem Integrate with vertical momentum system
           rem This is handled by PlayerPhysicsGravity.bas

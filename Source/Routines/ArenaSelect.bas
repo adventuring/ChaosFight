@@ -155,7 +155,7 @@ DrawTensDigit
           let COLUP4 = ColGrey(14)
           let temp3 = 4
           rem Use player4 for tens digit
-          gosub SetGlyph bank16
+          gosub SetFontGlyph bank16
 SkipTens
 
           let temp1 = temp4
@@ -166,7 +166,7 @@ SkipTens
           let COLUP5 = ColGrey(14)
           let temp3 = 5
           rem Use player5 for ones digit
-gosub SetGlyph bank16
+gosub SetFontGlyph bank16
 
 goto DisplayDone
 
@@ -182,7 +182,7 @@ DisplayRandomArena
           let temp3 = 4
           rem White
           rem Use player4
-gosub SetGlyph bank16
+gosub SetFontGlyph bank16
 
           rem Second question mark: set P5 fixed position/color
           let player5x = 88
@@ -190,7 +190,7 @@ gosub SetGlyph bank16
           let COLUP5 = ColGrey(14)
           let temp3 = 5
           rem Use player5
-gosub SetGlyph bank16
+gosub SetFontGlyph bank16
 
 DisplayDone
 

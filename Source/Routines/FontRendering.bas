@@ -15,6 +15,6 @@
           rem GENERATED FILES:
           rem Source/Generated/Numbers.bas (universal, not TV-specific)
 
-          rem Bank 16 exposes only SetGlyph for arena digits
+          rem Bank 16 exposes only SetFontGlyph for arena digits
           rem Callers must set temp1 = glyph (0-15) and temp3 = sprite (4 or 5)
 

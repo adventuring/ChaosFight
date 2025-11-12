@@ -198,6 +198,17 @@ CheckBernieAOELeft
           gosub CheckAOEDirection_Left
 
           return
+          asm
+CheckAllMissileCollisions = .CheckAllMissileCollisions
+CheckVisibleMissileCollision = .CheckVisibleMissileCollision
+CheckAOECollision = .CheckAOECollision
+CheckAOEDirection_Right = .CheckAOEDirection_Right
+CheckAOEDirection_Left = .CheckAOEDirection_Left
+CheckBernieAOE = .CheckBernieAOE
+CheckBernieAOELeft = .CheckBernieAOELeft
+CheckRoboTitoStretchMissileCollisions = .CheckRoboTitoStretchMissileCollisions
+MissileCollPF = .MissileCollPF
+end
 
 CheckAOEDirection_Right
           rem

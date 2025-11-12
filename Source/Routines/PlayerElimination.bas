@@ -336,6 +336,22 @@ CheckPlayer4ActiveFlag
 UpdatePlayers34ActiveDone
           return
 
+          asm
+CheckAllPlayerEliminations = .CheckAllPlayerEliminations
+CheckPlayerElimination = .CheckPlayerElimination
+UpdatePlayers34Done = .UpdatePlayers34Done
+TriggerEliminationEffects = .TriggerEliminationEffects
+DeactivatePlayerMissiles = .DeactivatePlayerMissiles
+CountRemainingPlayers = .CountRemainingPlayers
+IsPlayerEliminated = .IsPlayerEliminated
+IsPlayerAlive = .IsPlayerAlive
+FindWinner = .FindWinner
+FindLastEliminated = .FindLastEliminated
+UpdatePlayers34ActiveFlag = .UpdatePlayers34ActiveFlag
+CheckPlayer4ActiveFlag = .CheckPlayer4ActiveFlag
+UpdatePlayers34ActiveDone = .UpdatePlayers34ActiveDone
+end
+
           rem AND masks to clear player missile bits (inverted BitMask values)
           data PlayerANDMask
           $FE, $FD, $FB, $F7

@@ -84,25 +84,34 @@ RenderPlayerPreviewInvoke
           temp3 = 0
 PlayerPreviewApplyColor
           rem Apply base color returned in temp6 to the appropriate sprite register
-          if currentPlayer = 0 then COLUP0 = ColIndigo(12) : return
-          if currentPlayer = 1 then _COLUP1 = ColRed(12) : return
-          if currentPlayer = 2 then COLUP2 = ColYellow(12) : return
+          if currentPlayer = 0 then COLUP0 = ColIndigo(12)
+          if currentPlayer = 0 then return
+          if currentPlayer = 1 then _COLUP1 = ColRed(12)
+          if currentPlayer = 1 then return
+          if currentPlayer = 2 then COLUP2 = ColYellow(12)
+          if currentPlayer = 2 then return
           COLUP3 = ColTurquoise(12)
           return
 
 SelectSetPlayerColorUnlocked
           rem Override sprite color to indicate unlocked state (white)
-          if currentPlayer = 0 then COLUP0 = ColGrey(14) : return
-          if currentPlayer = 1 then _COLUP1 = ColGrey(14) : return
-          if currentPlayer = 2 then COLUP2 = ColGrey(14) : return
+          if currentPlayer = 0 then COLUP0 = ColGrey(14)
+          if currentPlayer = 0 then return
+          if currentPlayer = 1 then _COLUP1 = ColGrey(14)
+          if currentPlayer = 1 then return
+          if currentPlayer = 2 then COLUP2 = ColGrey(14)
+          if currentPlayer = 2 then return
           COLUP3 = ColGrey(14)
           return
 
 SelectSetPlayerColorHandicap
           rem Override sprite color to indicate handicap lock (dim player color)
-          if currentPlayer = 0 then COLUP0 = ColIndigo(6) : return
-          if currentPlayer = 1 then _COLUP1 = ColRed(6) : return
-          if currentPlayer = 2 then COLUP2 = ColYellow(6) : return
+          if currentPlayer = 0 then COLUP0 = ColIndigo(6)
+          if currentPlayer = 0 then return
+          if currentPlayer = 1 then _COLUP1 = ColRed(6)
+          if currentPlayer = 1 then return
+          if currentPlayer = 2 then COLUP2 = ColYellow(6)
+          if currentPlayer = 2 then return
           COLUP3 = ColTurquoise(6)
           return
 
@@ -111,7 +120,9 @@ SelectUpdateAnimations
 .SelectUpdateAnimations
 end
           rem Update character select animations for all players
-          let temp1 = 0 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer0Animation
+          let temp1 = 0
+          gosub GetPlayerLocked
+          if temp2 then goto SelectDonePlayer0Animation
           if playerCharacter[0] = CPUCharacter then goto SelectDonePlayer0Animation
           if playerCharacter[0] = NoCharacter then goto SelectDonePlayer0Animation
           if playerCharacter[0] = RandomCharacter then goto SelectDonePlayer0Animation

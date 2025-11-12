@@ -3,8 +3,8 @@
 
 SetSpritePositions
           asm
-          SetSpritePositions = .SetSpritePositions
-          end
+.SetSpritePositions
+end
           rem Player Sprite Rendering
           rem Handles sprite positioning, colors, and graphics for all
           rem   players.

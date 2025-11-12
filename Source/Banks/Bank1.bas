@@ -15,7 +15,6 @@
           rem Note: Strings are defined in BuildInfo.s and included with
           rem   ♯include inside asm so the build date macros expand before assembly
           asm
-          asm
           #include "Source/Common/BuildInfo.s"
 end
 

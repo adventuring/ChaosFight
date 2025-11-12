@@ -146,8 +146,8 @@ end
           rem Draw tens digit (player4) - only if tensDigit > 0 (for
           rem arenas 10-32)
           if temp2 > 0 then DrawTensDigit
-goto DoneTensDigit
-DrawTensDigit
+          goto DoneTensDigit
+          DrawTensDigit
           let temp1 = temp2
           rem Set P4 fixed position and color (arena digits)
           player4x = 80
@@ -155,8 +155,8 @@ DrawTensDigit
           let COLUP4 = ColGrey(14)
           let temp3 = 4
           rem Use player4 for tens digit
-gosub SetPlayerGlyphFromFont bank16
-DoneTensDigit
+          gosub SetPlayerGlyphFromFont bank16
+          DoneTensDigit
 
           let temp1 = temp4
           rem Draw ones digit (player5)
@@ -201,8 +201,8 @@ goto ArenaSelectDoneConfirm
 ArenaSelectConfirm
           let temp1 = SoundMenuSelect
           rem Play selection sound
-gosub PlaySoundEffect bank15
-goto StartGame1
+          gosub PlaySoundEffect bank15
+          goto StartGame1
           rem tail call
 ArenaSelectDoneConfirm
 
@@ -245,8 +245,8 @@ ReturnToCharacterSelect
           rem Constraints: Must be colocated with ArenaSelect1
           let fireHoldTimer_W = 0
           let gameMode = ModeCharacterSelect
-gosub ChangeGameMode bank14
-return
+          gosub ChangeGameMode bank14
+          return
 
 StartGame1
           rem Start game with selected arena
@@ -261,8 +261,8 @@ StartGame1
           rem mode state
           rem Constraints: Must be colocated with ArenaSelect1
           let gameMode = ModeGame
-gosub ChangeGameMode bank14
-return
+          gosub ChangeGameMode bank14
+          return
 
           rem
           rem Character Display And Animation

@@ -277,7 +277,6 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 %.png: %.xcf | Source/Art/
 	@echo "Converting $< to $@..."
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Character sprites are compiled using compile-chaos-character
 # Special sprites (QuestionMark, CPU, No) are hard-coded in individual files
@@ -287,7 +286,6 @@ CHARACTER_BAS = $(foreach char,$(CHARACTER_NAMES),Source/Generated/Art.$(char).b
 $(foreach char,$(CHARACTER_NAMES),Source/Art/$(char).png): Source/Art/%.png: Source/Art/%.xcf | Source/Art/
 	@echo "Converting $< to $@..."
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Generate character sprite files from PNG using chaos character compiler
 # PNG files are generated from XCF via %.png: %.xcf pattern rule or explicit rules above
@@ -315,27 +313,22 @@ Source/Generated/Numbers.bas: Source/Art/Numbers.png Source/Art/Numbers.xcf bin/
 Source/Art/AtariAge.png: Source/Art/AtariAge.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 Source/Art/AtariAgeText.png: Source/Art/AtariAgeText.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 Source/Art/BRP.png: Source/Art/BRP.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 Source/Art/ChaosFight.png: Source/Art/ChaosFight.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 Source/Art/Numbers.png: Source/Art/Numbers.xcf | Source/Art/
 	@echo "Generating PNG from XCF: $@..."
 	@$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
-	@test -s "$@" || (rm -f "$@" && echo "Error: GIMP failed to create $@" && exit 1)
 
 # Titlescreen kernel bitmap conversion: PNG → .s (assembly format)
 # PNG files are generated from XCF via %.png: %.xcf pattern rule

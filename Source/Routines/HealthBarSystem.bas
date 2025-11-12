@@ -356,5 +356,40 @@ end
           
           let scorecolor = ColGrey(14)
           rem Set score color to white
-          
+
           return
+
+DrawHealthBarRow0
+          rem Draw health bar for Player 1
+          rem Input: temp6 = health bar length (0-8 pixels)
+          rem TODO: Implement actual playfield drawing
+          return
+
+DrawHealthBarRow1
+          rem Draw health bar for Player 2
+          rem Input: temp6 = health bar length (0-8 pixels)
+          rem TODO: Implement actual playfield drawing
+          return
+
+DrawHealthBarRow2
+          rem Draw health bar for Player 3
+          rem Input: temp6 = health bar length (0-8 pixels)
+          rem TODO: Implement actual playfield drawing
+          return
+
+DrawHealthBarRow3
+          rem Draw health bar for Player 4
+          rem Input: temp6 = health bar length (0-8 pixels)
+          rem TODO: Implement actual playfield drawing
+          return
+
+          asm
+UpdatePlayer12HealthBars = .UpdatePlayer12HealthBars
+UpdatePlayer34HealthBars = .UpdatePlayer34HealthBars
+DrawHealthBarRow0 = .DrawHealthBarRow0
+DrawHealthBarRow1 = .DrawHealthBarRow1
+DrawHealthBarRow2 = .DrawHealthBarRow2
+DrawHealthBarRow3 = .DrawHealthBarRow3
+InitializeHealthBars = .InitializeHealthBars
+DisplayHealth = .DisplayHealth
+end

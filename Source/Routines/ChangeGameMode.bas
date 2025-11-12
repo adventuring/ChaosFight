@@ -39,7 +39,7 @@ SetupPublisherPrelude
           rem Called Routines: BeginPublisherPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub bank14 BeginPublisherPrelude
+          gosub BeginPublisherPrelude bank14
           return
           
 SetupAuthorPrelude
@@ -55,7 +55,7 @@ SetupAuthorPrelude
           rem Called Routines: BeginAuthorPrelude (bank14) - accesses
           rem prelude state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub bank14 BeginAuthorPrelude
+          gosub BeginAuthorPrelude bank14
           return
           
 SetupTitle
@@ -71,7 +71,7 @@ SetupTitle
           rem Called Routines: BeginTitleScreen (bank14) - accesses title
           rem screen state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub bank14 BeginTitleScreen
+          gosub BeginTitleScreen bank14
           return
           
 SetupCharacterSelect
@@ -102,7 +102,7 @@ SetupFallingAnimation
           rem Called Routines: BeginFallingAnimation (bank6) - accesses
           rem animation state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub bank6 BeginFallingAnimation
+          gosub BeginFallingAnimation bank6
           return
           
 SetupArenaSelect
@@ -118,7 +118,7 @@ SetupArenaSelect
           rem Called Routines: BeginArenaSelect (bank12) - accesses
           rem arena select state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub bank12 BeginArenaSelect
+          gosub BeginArenaSelect bank12
           return
 
 SetupGame
@@ -136,7 +136,7 @@ SetupGame
           rem Constraints: Must be colocated with ChangeGameMode
           rem BeginGameLoop resets gameplay state and returns
           rem MainLoop will dispatch to GameMainLoop when gameMode = ModeGame
-          gosub bank11 BeginGameLoop
+          gosub BeginGameLoop bank11
           return
 
 SetupWinner
@@ -152,7 +152,7 @@ SetupWinner
           rem Called Routines: BeginWinnerAnnouncement (bank12) -
           rem accesses winner state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub bank12 BeginWinnerAnnouncement
+          gosub BeginWinnerAnnouncement bank12
           return
 
 SetupAttract
@@ -168,5 +168,5 @@ SetupAttract
           rem Called Routines: BeginAttractMode (bank14) - accesses
           rem attract mode state
           rem Constraints: Must be colocated with ChangeGameMode
-          gosub bank14 BeginAttractMode
+          gosub BeginAttractMode bank14
           return

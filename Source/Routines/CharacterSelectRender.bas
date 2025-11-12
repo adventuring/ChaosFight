@@ -175,3 +175,10 @@ CharacterSelectDoRescan
           gosub CtrlDetPads bank14
 CharacterSelectRescanDone
           return
+
+          asm
+PlayerPreviewSetPosition = .PlayerPreviewSetPosition
+RenderPlayerPreview = .RenderPlayerPreview
+SelectHideLowerPlayerPreviews = .SelectHideLowerPlayerPreviews
+CharacterSelectCheckControllerRescan = .CharacterSelectCheckControllerRescan
+end

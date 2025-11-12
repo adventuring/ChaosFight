@@ -108,6 +108,7 @@ temp5            EQU $CF
 temp6            EQU $D0
 temp7            EQU $D1
 score            EQU $D2
+qtcontroller     EQU $E7
 scorecolor       EQU $D5
 rand             EQU $D6
 spritesort       EQU $F1
@@ -170,6 +171,8 @@ var44            EQU $D0
 var45            EQU $D1
 var46            EQU $D2
 var47            EQU $D3
+pfrowheight      EQU $D4
+pfrows           EQU $D5
 
 A                EQU $D7
 a                EQU $D7
@@ -487,6 +490,22 @@ r125             EQU $F0FD
 r126             EQU $F0FE
 r127             EQU $F0FF
 ;
+; --- Optional kernel subroutines --------------------------------------------
+;
+vblank_bB_code                    ; Dummy - not used in this game
+        rts
+
+switchbw        EQU $0282         ; Console switches register (SWCHB)
+
+        ; Global exports for batariBASIC entry points
+        GLOBAL start
+
+        ; Screen dimensions
+screenheight     EQU 192          ; NTSC screen height
+
+        ; Random number variables
+rand16           EQU $F2           ; 16-bit random number (2 bytes: $F2-$F3)
+;
 ; --- Kernel helper macros ---------------------------------------------------
 ;
         MAC   RETURN
@@ -496,3 +515,5 @@ r127             EQU $F0FF
              jmp BS_return
            endif
         ENDM
+
+ include "2600basic_variable_redefs.h"

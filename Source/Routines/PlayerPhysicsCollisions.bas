@@ -523,3 +523,10 @@ PFCheckDown_CheckRight
 CheckPlayfieldCollisionUpDone
           return
 
+          asm
+CheckBoundaryCollisions = .CheckBoundaryCollisions
+CheckPlayfieldCollisionAllDirections = .CheckPlayfieldCollisionAllDirections
+ConvertPlayerXToPlayfieldColumn = .ConvertPlayerXToPlayfieldColumn
+DivideByPfrowheight = .DivideByPfrowheight
+end
+

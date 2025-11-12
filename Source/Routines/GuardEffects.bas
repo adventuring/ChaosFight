@@ -236,3 +236,7 @@ GuardTimerExpired
           rem Start cooldown timer (same duration as guard)
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           return
+
+          asm
+StartGuard = .StartGuard
+          end

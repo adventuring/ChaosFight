@@ -2,11 +2,8 @@
           rem ChaosFight - Source/Data/Arenas.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem Arena playfield data (not generated - edit manually)
-          rem Arena Data - Pure Data Format
           rem
-          rem Game arenas: 16 pixels wide (left half) mirrored, 8 rows
           rem   high (pfres=8)
-          rem Memory constraint: 8 rows × 4 bytes = 32 bytes
           rem   (var96-var127)
           rem Use X for solid, . = empty
           rem Each arena has:
@@ -17,7 +14,6 @@
           rem All arenas share ArenaColorsBW for B&W mode
           rem Shared B&w Color Definition
           rem All arenas use the same B&W colors (all white)
-
           data ArenaColorsBW
             ColGrey(14),
             ColGrey(14),
@@ -28,13 +24,10 @@
             ColGrey(14),
             ColGrey(14)
 end
-
           rem
           rem Arena Playfields (32 Arenas: Indices 0-31)
           
-
 Arena0Playfield
-
           playfield:
           XXXXXXXXXXXXXXXX
           X...............
@@ -56,8 +49,6 @@ Arena0Colors
             ColBrown(14),
             ColBrown(0)
 end
-
-
 Arena1Playfield
           playfield:
           X...............
@@ -80,8 +71,6 @@ Arena1Colors
             ColTurquoise(4),
             ColTurquoise(2)
 end
-
-
 Arena2Playfield
           playfield:
           XXXXX...........
@@ -104,8 +93,6 @@ Arena2Colors
             ColTurquoise(4),
             ColTurquoise(2)
 end
-
-
 Arena3Playfield
           playfield:
           X...............
@@ -128,9 +115,6 @@ Arena3Colors
             ColSeafoam(2),
             ColSeafoam(6)
 end
-
-
-
 Arena4Playfield
           playfield:
           ................
@@ -153,9 +137,6 @@ Arena4Colors
             ColYellow(12),
             ColYellow(12)
 end
-
-
-
 Arena5Playfield
           playfield:
           XXXXXX..........
@@ -178,9 +159,6 @@ Arena5Colors
             ColBlue(4),
             ColBlue(4)
 end
-
-
-
 Arena6Playfield
           rem Arena 6: Multi-Platform (multiple small platforms)
           playfield:
@@ -204,9 +182,6 @@ Arena6Colors
             ColRed(2),
             ColRed(8)
 end
-
-
-
 Arena7Playfield
           rem Arena 7: The Gauntlet (maze-like walls)
           playfield:
@@ -230,9 +205,6 @@ Arena7Colors
             ColGold(2),
             ColGold(6)
 end
-
-
-
 Arena8Playfield
           playfield:
           XXXXXXXXXXXXXXXX
@@ -255,9 +227,6 @@ Arena8Colors
             ColPurple(6),
             ColPurple(2)
 end
-
-
-
 Arena9Playfield
           playfield:
           XXXXXXXXXXXXXXXX
@@ -280,9 +249,6 @@ Arena9Colors
             ColRed(4),
             ColRed(2)
 end
-
-
-
 Arena10Playfield
           rem Arena 10: Sky Battlefield (variant of Arena 2 with
           rem   elevated platforms)
@@ -307,10 +273,7 @@ Arena10Colors
             ColCyan(2),
             ColCyan(8)
 end
-
-
           rem Arena color/playfield pointers computed at runtime to save ROM
-
 Arena11Playfield
           rem Arena 11: Floating Platforms (variant of Arena 3 with four
           rem   floating blocks when mirrored)
@@ -335,9 +298,6 @@ Arena11Colors
             ColGreen(2),
             ColGreen(8)
 end
-
-
-
 Arena12Playfield
           rem Arena 12: The Chasm (variant of Arena 4 with wider bridge)
           playfield:
@@ -361,9 +321,6 @@ Arena12Colors
             ColBrown(12),
             ColBrown(12)
 end
-
-
-
 Arena13Playfield
           rem Arena 13: Fortress Walls (variant of Arena 5 with
           rem   symmetrical corners)
@@ -388,9 +345,6 @@ Arena13Colors
             ColTurquoise(4),
             ColTurquoise(4)
 end
-
-
-
 Arena14Playfield
           rem Arena 14: Floating Islands (variant of Arena 6 with more
           rem   platforms)
@@ -415,9 +369,6 @@ Arena14Colors
             ColMagenta(4),
             ColMagenta(8)
 end
-
-
-
 Arena15Playfield
           rem Arena 15: The Labyrinth (variant of Arena 7 with more
           rem   complex maze)
@@ -442,9 +393,6 @@ Arena15Colors
             ColSpringGreen(2),
             ColSpringGreen(8)
 end
-
-
-
 Arena16Playfield
           rem Arena 16: Danger Zone (variant of Arena 8 with alternating
           rem   obstacles)
@@ -469,9 +417,6 @@ Arena16Colors
             ColIndigo(6),
             ColIndigo(8)
 end
-
-
-
 Arena17Playfield
           rem Arena 17: The Spire (vertical tower platforms)
           playfield:
@@ -495,9 +440,6 @@ Arena17Colors
             ColGreen(2),
             ColGreen(8)
 end
-
-
-
 Arena18Playfield
           rem Arena 18: The Bridge (wide center platform)
           playfield:
@@ -521,9 +463,6 @@ Arena18Colors
             ColTeal(12),
             ColTeal(12)
 end
-
-
-
 Arena19Playfield
           rem Arena 19: The Pits (narrow platforms with gaps)
           playfield:
@@ -547,9 +486,6 @@ Arena19Colors
             ColRed(2),
             ColRed(4)
 end
-
-
-
 Arena20Playfield
           rem Arena 20: The Stairs (stepped platforms)
           playfield:
@@ -573,9 +509,6 @@ Arena20Colors
             ColBlue(8),
             ColBlue(2)
 end
-
-
-
 Arena21Playfield
           rem Arena 21: The Grid (checkerboard pattern)
           playfield:
@@ -599,9 +532,6 @@ Arena21Colors
             ColBrown(6),
             ColBrown(6)
 end
-
-
-
 Arena22Playfield
           rem Arena 22: The Columns (vertical pillars)
           playfield:
@@ -625,9 +555,6 @@ Arena22Colors
             ColRed(4),
             ColRed(6)
 end
-
-
-
 Arena23Playfield
           rem Arena 23: The Waves (curved platforms)
           playfield:
@@ -651,9 +578,6 @@ Arena23Colors
             ColCyan(2),
             ColCyan(6)
 end
-
-
-
 Arena24Playfield
           rem Arena 24: The Cross (cross-shaped platform)
           playfield:
@@ -677,9 +601,6 @@ Arena24Colors
             ColGrey(4),
             ColGrey(4)
 end
-
-
-
 Arena25Playfield
           rem Arena 25: The Maze (complex wall pattern)
           playfield:
@@ -703,9 +624,6 @@ Arena25Colors
             ColPurple(4),
             ColPurple(2)
 end
-
-
-
 Arena26Playfield
           rem Arena 26: The Islands (scattered platforms)
           playfield:
@@ -729,9 +647,6 @@ Arena26Colors
             ColOrange(2),
             ColOrange(2)
 end
-
-
-
 Arena27Playfield
           rem Arena 27: The Rings (concentric platforms)
           playfield:
@@ -755,9 +670,6 @@ Arena27Colors
             ColYellow(4),
             ColYellow(2)
 end
-
-
-
 Arena28Playfield
           rem Arena 28: The Slopes (diagonal platforms)
           playfield:
@@ -781,9 +693,6 @@ Arena28Colors
             ColGreen(4),
             ColGreen(2)
 end
-
-
-
 Arena29Playfield
           rem Arena 29: The Zigzag (zigzag pattern)
           playfield:
@@ -807,9 +716,6 @@ Arena29Colors
             ColMagenta(4),
             ColMagenta(2)
 end
-
-
-
 Arena30Playfield
           rem Arena 30: The Ladder (vertical rungs)
           playfield:
@@ -833,9 +739,6 @@ Arena30Colors
             ColSpringGreen(4),
             ColSpringGreen(6)
 end
-
-
-
 Arena31Playfield
           rem Arena 31: The Final Battle (complex multi-platform)
           playfield:
@@ -859,4 +762,3 @@ Arena31Colors
             ColGrey(6),
             ColGrey(8)
 end
-

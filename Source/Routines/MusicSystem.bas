@@ -165,12 +165,12 @@ UpdateMusic
           rem song is
           rem   Chaotica (26) for looping
           rem Only Chaotica loops - other songs stop when both voices end
-          if musicVoice0Pointer then MusicUpdateDone
+          if musicVoice0Pointer then goto MusicUpdateDone
           rem Voice 0 still active, no reset needed
-          if musicVoice1Pointer then MusicUpdateDone
+          if musicVoice1Pointer then goto MusicUpdateDone
           rem Voice 1 still active, no reset needed
           rem Both voices inactive - check if Chaotica (song ID 26)
-          if currentSongID_R = 26 then IsChaotica
+          if currentSongID_R = 26 then goto IsChaotica
           goto MusicUpdateDone
 IsChaotica
           rem Not Chaotica - stop playback (no loop)

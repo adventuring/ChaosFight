@@ -39,9 +39,8 @@ GetPlayerLocked
 
 SetPlayerLocked
           asm
-.SetPlayerLocked
-
-end
+          SetPlayerLocked = .SetPlayerLocked
+          end
           rem
           rem Set Player Locked State
           rem Sets the locked state for a specific player

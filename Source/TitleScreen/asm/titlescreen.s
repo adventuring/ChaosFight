@@ -3,12 +3,12 @@
  include "TitleScreen/titlescreen_layout.s.backup"
 
  ; Optional bitmap index offsets (default to 0)
- bmp_48x2_1_index = 0
- bmp_48x2_2_index = 0
- bmp_48x2_3_index = 0
- bmp_48x2_4_index = 0
- scorefade = 0
- score_kernel_fade = 0
+ bmp_48x2_1_index equ 0
+ bmp_48x2_2_index equ 0
+ bmp_48x2_3_index equ 0
+ bmp_48x2_4_index equ 0
+ scorefade equ 0
+ score_kernel_fade equ 0
 
 titledrawscreen
 title_eat_overscan

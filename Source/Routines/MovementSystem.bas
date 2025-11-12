@@ -42,7 +42,6 @@ UpdatePlayerMovement
           rem Called Routines: UpdatePlayerMovementSingle
           rem Constraints: Must be colocated with UpdatePlayerMovementQuadtariSkip (goto target)
           for currentPlayer = 0 to 1
-          rem Update movement for each active player
               gosub UpdatePlayerMovementSingle
           next
           rem Players 2-3 only if Quadtari detected

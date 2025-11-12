@@ -119,7 +119,6 @@ SelectSetPlayerColorHandicap
 
 SelectUpdateAnimations
           asm
-          asm
           SelectUpdateAnimations = .SelectUpdateAnimations
           end
           rem Update character select animations for all players

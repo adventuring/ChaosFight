@@ -2,11 +2,20 @@
  include "TitleScreen/asm/layoutmacros.s"
  include "TitleScreen/titlescreen_layout.s.backup"
 
- ; Optional bitmap index offsets (default to 0)
- bmp_48x2_1_index equ 0
- bmp_48x2_2_index equ 0
- bmp_48x2_3_index equ 0
- bmp_48x2_4_index equ 0
+; Optional bitmap index offsets (all are 0)
+bmp_48x2_1_index_value
+          BYTE 0
+bmp_48x2_2_index_value
+          BYTE 0
+bmp_48x2_3_index_value
+          BYTE 0
+bmp_48x2_4_index_value
+          BYTE 0
+
+bmp_48x2_1_index = bmp_48x2_1_index_value
+bmp_48x2_2_index = bmp_48x2_2_index_value
+bmp_48x2_3_index = bmp_48x2_3_index_value
+bmp_48x2_4_index = bmp_48x2_4_index_value
  scorefade equ 0
  score_kernel_fade equ 0
 

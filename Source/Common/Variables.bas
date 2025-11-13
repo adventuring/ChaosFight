@@ -1007,7 +1007,7 @@
           rem Animation system temporary (used in AnimationSystem.bas)
           dim C6E_stateFlags = var45
 
-          rem Sound effect parameter (used in PlayerElimination.bas)
+          rem Sound effect parameter (used in TriggerEliminationEffects.bas)
           rem temp1 is used directly for sound ID
 
           rem       Scratch relocation summary:

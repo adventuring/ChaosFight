@@ -118,7 +118,7 @@ CheckFallDamage
 
           rem Trigger color shift to darker shade (damage visual
           rem   feedback)
-          rem This is handled by PlayerRendering.bas using
+          rem This is handled by SetPlayerSprites.bas using
           rem   playerRecoveryFrames
 
           return

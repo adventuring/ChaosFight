@@ -35,11 +35,11 @@ BeginWinnerAnnouncement
           rem Constraints: Called from ChangeGameMode when transitioning
           rem to ModeWinner
           rem              winnerPlayerIndex must be set by game end
-          rem              logic (FindWinner in PlayerElimination.bas)
+          rem              logic (FindWinner.bas)
 
           rem Initialize Winner Announcement mode
           rem winnerPlayerIndex should already be set by game end logic
-          rem   (FindWinner in PlayerElimination.bas)
+          rem   (FindWinner.bas)
 
           gosub SetGameScreenLayout bank7
           rem Set screen layout (32×8 for character display)

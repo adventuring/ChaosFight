@@ -142,7 +142,7 @@ The game supports these sprite configurations per player:
 ### Animation System (`Source/Routines/AnimationSystem.bas`)
 - 8 frames × 16 actions per character
 - 10fps update rate (spread across frames)
-- Character-specific attack dispatches to `CharacterAttacks.bas`
+- Character-specific attack dispatches to individual attack routines (BernieAttack.bas, HarpyAttack.bas, etc.)
 
 ## Asset Pipeline
 

@@ -355,6 +355,26 @@ Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png Source/Art/ChaosFig
 	@echo "Converting 48×42 bitmap $< to titlescreen kernel $@..."
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
+# Color files are generated automatically when bitmap files are generated
+# Combine all titlescreen color tables into a single include file for efficient packing
+# This file includes all four color tables without alignment requirements
+Source/TitleScreen/titlescreen_colors.s: \
+	Source/Generated/Art.AtariAge.colors.s \
+	Source/Generated/Art.AtariAgeText.colors.s \
+	Source/Generated/Art.Author.colors.s \
+	Source/Generated/Art.ChaosFight.colors.s | Source/TitleScreen/
+	@echo "Creating combined titlescreen colors file $@..."
+	@echo ";;; Chaos Fight - $@" > "$@"
+	@echo ";;; This is a generated file, do not edit." >> "$@"
+	@echo ";;; Color tables for all titlescreen bitmaps (combined for efficient packing)" >> "$@"
+	@echo ";;; Color tables are separated from bitmap data to allow bitmap data to be page-aligned" >> "$@"
+	@echo "" >> "$@"
+	@echo ";;; Include color tables for all titlescreen bitmaps" >> "$@"
+	@echo "include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"
+	@echo "include \"Source/Generated/Art.AtariAgeText.colors.s\"" >> "$@"
+	@echo "include \"Source/Generated/Art.ChaosFight.colors.s\"" >> "$@"
+	@echo "include \"Source/Generated/Art.Author.colors.s\"" >> "$@"
+
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf | Source/Art/
 	$(GIMP) -b '(xcf-export "$<" "$@")' -b '(gimp-quit 0)'
@@ -377,6 +397,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas: Source/Platform/NTSC.bas \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
 	Source/Generated/Numbers.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Author.s \
+	Source/TitleScreen/titlescreen_colors.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
@@ -388,6 +409,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas: Source/Platform/PAL.bas \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
 	Source/Generated/Numbers.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Author.s \
+	Source/TitleScreen/titlescreen_colors.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
@@ -400,6 +422,7 @@ Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas: Source/Platform/SECAM.bas \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
 	Source/Generated/Numbers.bas \
 	Source/Generated/Art.AtariAge.s Source/Generated/Art.AtariAgeText.s Source/Generated/Art.ChaosFight.s Source/Generated/Art.Author.s \
+	Source/TitleScreen/titlescreen_colors.s \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \

@@ -9,7 +9,7 @@
           rem data must precede code
           rem all Title Screen modes must be in this bank
           asm
-
+100 
 #include "Source/Generated/Art.AtariAge.s"
 #include "Source/Generated/Art.AtariAgeText.s"
 #include "Source/Generated/Art.Author.s"

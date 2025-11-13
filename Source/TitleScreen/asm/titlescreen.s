@@ -76,6 +76,7 @@ title_playfield
 
  include "TitleScreen/asm/position48.s"
  include "TitleScreen/titlescreen_color.s"
+ include "TitleScreen/titlescreen_colors.s"
 
 	; Unused 48x1 kernels removed - only 48x2 bitmaps are active
 

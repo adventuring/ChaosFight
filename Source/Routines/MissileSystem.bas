@@ -973,7 +973,7 @@ HandleMissileHit
           rem Apply damage from attacker to defender
           let temp3 = temp1
           let temp1 = temp5
-          gosub GetCharacterDamage bank6
+          gosub GetCharacterDamage bank8
           let temp6 = temp2
           let temp1 = temp3
           rem Base damage derived from character definition

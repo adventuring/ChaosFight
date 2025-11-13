@@ -220,7 +220,7 @@ GameEndCheckDone
           rem gosub SetSpritePositions
           rem Replaced by UpdatePlayerMovement
 
-          gosub SetPlayerSprites bank6
+          gosub SetPlayerSprites bank8
           rem Set sprite graphics (in Bank 6)
 
           gosub DisplayHealth bank6

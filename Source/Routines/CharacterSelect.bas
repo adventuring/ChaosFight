@@ -43,7 +43,7 @@ CharacterSelectEntry
           let characterSelectAnimationFrame  = 0
           rem Start with first character
 
-          gosub CharacterSelectDetectQuadtari
+          gosub CharacterSelectDetectQuadtari bank7
           rem Check for Quadtari adapter
 
           COLUBK = ColGray(0)

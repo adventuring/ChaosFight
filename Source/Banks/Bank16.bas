@@ -18,7 +18,6 @@ Bank16DataEnds
 #include "Source/Routines/MainLoop.bas"
 #include "Source/Routines/SpriteLoader.bas"
 #include "Source/Routines/CopyGlyphToPlayer.bas"
-#include "Source/Routines/LoadCharacterColors.bas"
 #include "Source/Routines/SetPlayerGlyphFromFont.bas"
 #include "Source/Routines/FontRendering.bas"
           rem None of these modules above may be moved to other banks.

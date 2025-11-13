@@ -40,10 +40,10 @@ ApplyDamage
           rem PlayDamageSound (called via goto)
 
           let temp1 = playerCharacter[attackerID]
-          gosub GetCharacterDamage bank6
+          gosub GetCharacterDamage bank8
           let temp4 = temp2
           let temp1 = playerCharacter[defenderID]
-          gosub GetCharacterDamage bank6
+          gosub GetCharacterDamage bank8
           let temp1 = temp4 - temp2
           rem Calculate damage (considering defender state)
           rem Minimum damage

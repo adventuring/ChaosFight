@@ -480,7 +480,7 @@ end
           let temp2 = playerRecoveryFrames[0]
           rem Guard flag (non-zero = guarding)
           let temp3 = playerState[0] & PlayerStateBitGuarding
-          gosub LoadCharacterColors bank16
+          gosub LoadCharacterColors bank14
           COLUP0 = temp6
 Player1ColorDone
 
@@ -510,7 +510,7 @@ end
           let temp2 = playerRecoveryFrames[1]
           rem Guard flag (non-zero = guarding)
           let temp3 = playerState[1] & PlayerStateBitGuarding
-          gosub LoadCharacterColors bank16
+          gosub LoadCharacterColors bank14
           _COLUP1 = temp6
 
 Player2ColorDone
@@ -560,7 +560,7 @@ end
           let temp2 = playerRecoveryFrames[2]
           rem Guard flag (non-zero = guarding)
           let temp3 = playerState[2] & PlayerStateBitGuarding
-          gosub LoadCharacterColors bank16
+          gosub LoadCharacterColors bank14
           COLUP2 = temp6
           rem fall through to Player3ColorDone
 
@@ -607,7 +607,7 @@ DonePlayer3Sprite
           let temp2 = playerRecoveryFrames[3]
           rem Guard flag (non-zero = guarding)
           let temp3 = playerState[3] & PlayerStateBitGuarding
-          gosub LoadCharacterColors bank16
+          gosub LoadCharacterColors bank14
           COLUP3 = temp6
 
 Player4ColorDone

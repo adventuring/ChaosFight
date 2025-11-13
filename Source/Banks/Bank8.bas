@@ -18,5 +18,7 @@ Bank8DataEnds
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 #include "Source/Routines/HealthBarSystem.bas"
 #include "Source/Routines/Physics.bas"
+#include "Source/Routines/CharacterDamage.bas"
+#include "Source/Routines/PlayerRendering.bas"
 
 Bank8CodeEnds

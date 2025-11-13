@@ -17,5 +17,7 @@ Bank7DataEnds
 #include "Source/Routines/PerformMeleeAttack.bas"
 #include "Source/Routines/FrameBudgeting.bas"
 #include "Source/Routines/MissileCollision.bas"
+#include "Source/Routines/CharacterSelectFire.bas"
+#include "Source/Routines/CharacterSelectHelpers.bas"
 
 Bank7CodeEnds

@@ -43,7 +43,6 @@ bin/zx7mini:	SkylineTool/zx7mini/zx7mini.c | bin/
 # batariBASIC tool links
 # Explicitly mark upstream tool binaries as fixed files so GNU make
 # doesn't try to regenerate them with the built-in ".sh →" implicit rule
-Tools/batariBASIC/2600basic \
 Tools/batariBASIC/preprocess \
 Tools/batariBASIC/postprocess \
 Tools/batariBASIC/optimize \
@@ -62,6 +61,9 @@ bin/postprocess: Tools/batariBASIC/postprocess | bin/
 bin/optimize: Tools/batariBASIC/optimize | bin/
 	cp "$<" "$@"
 	chmod +x "$@"
+
+Tools/batariBASIC/2600basic: Tools/batariBASIC/2600bas.c Tools/batariBASIC/statements.c Tools/batariBASIC/keywords.c Tools/batariBASIC/statements.h Tools/batariBASIC/keywords.h
+	$(MAKE) -C Tools/batariBASIC 2600basic
 
 bin/2600basic: Tools/batariBASIC/2600basic | bin/
 	cp "$<" "$@"
@@ -356,20 +358,23 @@ Source/Generated/Art.ChaosFight.s: Source/Art/ChaosFight.png Source/Art/ChaosFig
 	bin/skyline-tool compile-batari-48px "$<" "$@" "t" "NTSC"
 
 # Color files are generated automatically when bitmap files are generated
-# Combine all titlescreen color tables into a single include file for efficient packing
-# This file includes all four color tables without alignment requirements
+# Combine all titlescreen color tables, PF1, PF2, and background into a single file at $f500
+# Bitmap data is at $f100, $f200, $f300, $f400 (page-aligned)
+# All other data (colors, PF1, PF2, background) starts at $f500
 Source/TitleScreen/titlescreen_colors.s: \
 	Source/Generated/Art.AtariAge.colors.s \
 	Source/Generated/Art.AtariAgeText.colors.s \
 	Source/Generated/Art.Author.colors.s \
 	Source/Generated/Art.ChaosFight.colors.s | Source/TitleScreen/
-	@echo "Creating combined titlescreen colors file $@..."
+	@echo "Creating combined titlescreen colors file $@ at \$$f500..."
 	@echo ";;; Chaos Fight - $@" > "$@"
 	@echo ";;; This is a generated file, do not edit." >> "$@"
-	@echo ";;; Color tables for all titlescreen bitmaps (combined for efficient packing)" >> "$@"
-	@echo ";;; Color tables are separated from bitmap data to allow bitmap data to be page-aligned" >> "$@"
+	@echo ";;; Color tables, PF1, PF2, and background for all titlescreen bitmaps" >> "$@"
+	@echo ";;; Combined at \$$f500 (after bitmap data at \$$f100-\$$f400)" >> "$@"
 	@echo "" >> "$@"
-	@echo ";;; Include color tables for all titlescreen bitmaps" >> "$@"
+	@echo "   org \$$f500" >> "$@"
+	@echo "" >> "$@"
+	@echo ";;; Include color tables, PF1, PF2, and background for all titlescreen bitmaps" >> "$@"
 	@echo "include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"
 	@echo "include \"Source/Generated/Art.AtariAgeText.colors.s\"" >> "$@"
 	@echo "include \"Source/Generated/Art.ChaosFight.colors.s\"" >> "$@"

@@ -5,7 +5,9 @@
           rem Console handling (detection, controllers, game mode transitions,
           rem   character controls, startup routines)
 
+          asm
 Bank14DataEnds
+end
 
           rem Routines moved from Bank 1 - not needed for drawscreen
           rem calls
@@ -30,4 +32,6 @@ Bank14DataEnds
 #include "Source/Routines/TitlescreenWindowControl.bas"
 #include "Source/Routines/AttractMode.bas"
 
+          asm
 Bank14CodeEnds
+end

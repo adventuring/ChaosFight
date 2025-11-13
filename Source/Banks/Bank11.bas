@@ -4,11 +4,15 @@
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Gameplay loop (init/main/collision resolution/animation) + attack support data
 
+          asm
 Bank11DataEnds
+end
 
 #include "Source/Routines/GameLoopInit.bas"
 #include "Source/Routines/GameLoopMain.bas"
 #include "Source/Routines/PlayerCollisionResolution.bas"
 #include "Source/Routines/AnimationSystem.bas"
 
+          asm
 Bank11CodeEnds
+end

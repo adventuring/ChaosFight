@@ -186,7 +186,7 @@ NoHit
 CalculateAttackHitbox
           rem Compute attack hitbox bounds from attacker position and facing.
           rem Inputs: attackerID (global), playerX[], playerY[], PlayerAttackType[],
-          rem        PlayerFacing[], PlayerSpriteWidth, PlayerSpriteHeight
+          rem        playerState[] (for facing direction), PlayerSpriteWidth, PlayerSpriteHeight
           rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W,
           rem         cachedHitboxBottom_W (global hitbox bounds)
           rem Mutates: temp1, temp2, cachedHitboxLeft_W, cachedHitboxRight_W,
@@ -211,7 +211,7 @@ MeleeHitbox
           rem Melee hitbox extends PlayerSpriteWidth pixels in facing
           rem direction
           rem
-          rem Input: attackerID, PlayerFacing[] (from
+          rem Input: attackerID, playerState[] (from
           rem CalculateAttackHitbox)
           rem
           rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W, cachedHitboxBottom_W
@@ -224,14 +224,11 @@ MeleeHitbox
           rem
           rem Constraints: Must be colocated with CalculateAttackHitbox,
           rem FacingRight, FacingLeft, FacingUp, FacingDown
-          rem Use temporary variable to avoid compiler bug with array
-          rem indexing
-          rem in on statement
-          let temp2 = PlayerFacing[attackerID]
-          if temp2 = 0 then goto FacingRight
-          if temp2 = 1 then goto FacingLeft
-          if temp2 = 2 then goto FacingUp
-          if temp2 = 3 then goto FacingDown
+          rem Extract facing from playerState bit 3: 1=right (goto FacingRight), 0=left (goto FacingLeft)
+          rem FacingUp and FacingDown are unreachable (no up/down facing in game)
+          let temp2 = playerState[attackerID] & PlayerStateBitFacing
+          if temp2 then goto FacingRight
+          goto FacingLeft
 
 FacingRight
           rem Hitbox extends 16 pixels forward from sprite right edge
@@ -376,7 +373,7 @@ ProcessAttackerAttacks
           rem
           rem Input: attackerID (global) = attacker player index,
           rem playerX[], playerY[] (global arrays) = player positions,
-          rem PlayerAttackType[], PlayerFacing[] (global arrays) =
+          rem PlayerAttackType[], playerState[] (global arrays) =
           rem attack type and facing, playerHealth[] (global array) =
           rem player health values
           rem

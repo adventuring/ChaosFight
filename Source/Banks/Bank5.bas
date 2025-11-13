@@ -17,10 +17,11 @@
 #include "Source/Generated/Character30.bas"
 #include "Source/Generated/MethHound.bas"
 
+          asm
 Bank5DataEnds
+end
 
           asm
 #include "Source/Routines/CharacterArtBank5.s"
-end
-
 Bank5CodeEnds
+end

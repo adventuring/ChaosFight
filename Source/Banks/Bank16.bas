@@ -10,7 +10,9 @@
 #include "Source/Generated/Numbers.bas"
 #include "Source/Data/PlayerColors.bas"
 
+          asm
 Bank16DataEnds
+end
 
           rem Second — routines locked to that data. Cannot be moved.
 #include "Source/Routines/ArenaLoader.bas"
@@ -21,4 +23,6 @@ Bank16DataEnds
 #include "Source/Routines/SetPlayerGlyphFromFont.bas"
 #include "Source/Routines/FontRendering.bas"
           rem None of these modules above may be moved to other banks.
+          asm
 Bank16CodeEnds
+end

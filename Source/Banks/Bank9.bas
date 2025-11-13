@@ -21,7 +21,9 @@
 #include "Source/Generated/Art.Author.s"
 end
 
+          asm
 Bank9DataEnds
+end
 
           asm
 #include "Source/TitleScreen/asm/titlescreen.s"
@@ -29,4 +31,6 @@ end
 #include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/CharacterSelectMain.bas"
 
+          asm
 Bank9CodeEnds
+end

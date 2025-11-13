@@ -428,8 +428,9 @@
           rem PlayerCharacter[0-3] - Character type indices (0-MaxCharacter)
           dim PlayerCharacter = var48
 
-          rem PlayerFacing[0-3] - Facing direction for each player (0=right, 1=left, 2=up, 3=down)
-          dim PlayerFacing = var53
+          rem PlayerFacing is extracted from playerState bit 3 (PlayerStateBitFacing)
+          rem 0=right (bit 3=1), 1=left (bit 3=0)
+          rem No separate PlayerFacing array needed - use playerState & PlayerStateBitFacing
 
           rem Player sprite pointer aliases (built-in batariBASIC multisprite kernel variables)
           rem These are aliases for the lo/hi byte pairs used by the multisprite kernel

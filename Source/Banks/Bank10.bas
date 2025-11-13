@@ -5,7 +5,9 @@
           rem Sprite rendering (character art loader, player rendering, elimination) +
           rem   character attacks system and falling animation controller
 
+          asm
 Bank10DataEnds
+end
 
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 #include "Source/Routines/CharacterAttacks.bas"
@@ -13,4 +15,6 @@ Bank10DataEnds
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/FallingAnimation.bas"
 
+          asm
 Bank10CodeEnds
+end

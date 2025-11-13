@@ -159,9 +159,13 @@ end
 #include "Source/Generated/Song.Interworldly.PAL.bas"
 #endif
 
+          asm
 Bank1DataEnds
+end
 
 
 #include "Source/Routines/MusicSystem.bas"
 #include "Source/Routines/MusicBankHelpers.bas"
+          asm
 Bank1CodeEnds
+end

@@ -18,10 +18,12 @@
 #include "Source/Generated/Harpy.bas"
 #include "Source/Generated/KnightGuy.bas"
 
+          asm
 Bank2DataEnds
+end
 
           asm
           ;; Character art lookup routines for Bank 2 (characters 0-7)
 #include "Source/Routines/CharacterArtBank2.s"
-end
 Bank2CodeEnds
+end

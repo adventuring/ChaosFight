@@ -5,7 +5,9 @@
           rem Character data system (definitions, cycles, fall damage) +
           rem Titlescreen graphics and kernel
 
+          asm
 Bank12DataEnds
+end
 
           rem Titlescreen assets are in Bank 9 - this bank contains only logic
 
@@ -18,4 +20,6 @@ Bank12DataEnds
 #include "Source/Routines/WinnerAnnouncement.bas"
 #include "Source/Routines/BeginWinnerAnnouncement.bas"
 
+          asm
 Bank12CodeEnds
+end

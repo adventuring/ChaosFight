@@ -185,8 +185,8 @@ UpdateHealthBarPlayer1
           rem Output: Score colors set for health bar display
           rem
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
-          rem Constraints: None
-          let temp6 = playerHealth[1] / 3
+          rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
+          let temp6 = playerHealth[1] / 12
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)

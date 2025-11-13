@@ -8,12 +8,17 @@
 
           rem data must precede code
           rem all Title Screen modes must be in this bank
+          rem Bitmap data is packed at page-aligned addresses:
+          rem   Art.AtariAge.s at $f100 (bmp_48x2_1)
+          rem   Art.AtariAgeText.s at $f200 (bmp_48x2_2)
+          rem   Art.ChaosFight.s at $f300 (bmp_48x2_3)
+          rem   Art.Author.s at $f400 (bmp_48x2_4)
+          rem Colors, PF1, PF2, and background are at $f500 (in titlescreen_colors.s)
           asm
-100 
 #include "Source/Generated/Art.AtariAge.s"
 #include "Source/Generated/Art.AtariAgeText.s"
-#include "Source/Generated/Art.Author.s"
 #include "Source/Generated/Art.ChaosFight.s"
+#include "Source/Generated/Art.Author.s"
 end
 
 Bank9DataEnds

@@ -530,7 +530,18 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/MainLoop.bas \
 	Source/Routines/MissileCollision.bas \
 	Source/Routines/MissileSystem.bas \
-	Source/Routines/MovementSystem.bas \
+	Source/Routines/UpdatePlayerMovement.bas \
+	Source/Routines/UpdatePlayerMovementSingle.bas \
+	Source/Routines/SetPlayerVelocity.bas \
+	Source/Routines/SetPlayerPosition.bas \
+	Source/Routines/GetPlayerPosition.bas \
+	Source/Routines/GetPlayerVelocity.bas \
+	Source/Routines/MovementApplyGravity.bas \
+	Source/Routines/AddVelocitySubpixelY.bas \
+	Source/Routines/ApplyFriction.bas \
+	Source/Routines/CheckPlayerCollision.bas \
+	Source/Routines/ConstrainToScreen.bas \
+	Source/Routines/InitializeMovementSystem.bas \
 	Source/Routines/MusicBankHelpers15.bas \
 	Source/Routines/MusicBankHelpers.bas \
 	Source/Routines/MusicSystem.bas \

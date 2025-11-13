@@ -575,8 +575,14 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/PublisherPrelude.bas \
 	Source/Routines/ScreenLayout.bas \
 	Source/Routines/SetPlayerGlyphFromFont.bas \
-	Source/Routines/SoundBankHelpers.bas \
-	Source/Routines/SoundSystem.bas \
+	Source/Routines/LoadSoundPointer.bas \
+	Source/Routines/LoadSoundNote.bas \
+	Source/Routines/LoadSoundNote1.bas \
+	Source/Routines/PlaySoundEffect.bas \
+	Source/Routines/UpdateSoundEffect.bas \
+	Source/Routines/UpdateSoundEffectVoice0.bas \
+	Source/Routines/UpdateSoundEffectVoice1.bas \
+	Source/Routines/StopSoundEffects.bas \
 	Source/Routines/SpriteLoader.bas \
 	Source/Routines/SpriteLoaderCharacterArt.bas \
 	Source/Routines/SpritePointerInit.bas \

@@ -164,8 +164,8 @@ Bank1DataEnds
 end
 
 
-#include "Source/Routines/MusicSystem.bas"
 #include "Source/Routines/MusicBankHelpers.bas"
+#include "Source/Routines/MusicSystem.bas"
           asm
 Bank1CodeEnds
 end

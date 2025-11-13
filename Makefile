@@ -571,7 +571,9 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/PlayerInput.bas \
 	Source/Routines/PlayerLockedHelpers.bas \
 	Source/Routines/PlayerPhysicsGravity.bas \
-	Source/Routines/PlayerRendering.bas \
+	Source/Routines/SetSpritePositions.bas \
+	Source/Routines/SetPlayerSprites.bas \
+	Source/Routines/DisplayHealth.bas \
 	Source/Routines/PublisherPrelude.bas \
 	Source/Routines/ScreenLayout.bas \
 	Source/Routines/SetPlayerGlyphFromFont.bas \

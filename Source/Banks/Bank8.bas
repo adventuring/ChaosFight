@@ -32,7 +32,9 @@ end
 #include "Source/Routines/HealthBarSystem.bas"
 #include "Source/Routines/Physics.bas"
 #include "Source/Routines/CharacterDamage.bas"
-#include "Source/Routines/PlayerRendering.bas"
+#include "Source/Routines/SetSpritePositions.bas"
+#include "Source/Routines/SetPlayerSprites.bas"
+#include "Source/Routines/DisplayHealth.bas"
 
           asm
 Bank8CodeEnds

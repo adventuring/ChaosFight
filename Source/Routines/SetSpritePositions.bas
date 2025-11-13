@@ -1,4 +1,4 @@
-          rem ChaosFight - Source/Routines/PlayerRendering.bas
+          rem ChaosFight - Source/Routines/SetSpritePositions.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 SetSpritePositions
@@ -123,7 +123,7 @@ DonePlayer4Position
           rem Use this flag instead of QuadtariDetected for missile
           rem   multiplexing
           rem because we only need to multiplex when participants 3 or 4
-          rem are actually in the game
+          rem   are actually in the game
           if (controllerStatus & SetPlayers34Active) = 0 then goto RenderMissiles2Player
 
           rem 4-player mode: Use frame multiplexing
@@ -141,7 +141,7 @@ DonePlayer4Position
           let temp4 = missileActive & 4
           rem Clear missile height first
           if temp4 then goto RenderMissile0P3
-          gosub RenderRoboTitoStretchMissile0
+          gosub RenderRoboTitoStretchMissile0 bank8
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM0 remains 0 (no blank
           goto RenderMissile1P4
@@ -163,7 +163,7 @@ RenderMissile1P4
           let temp4 = missileActive & 8
           rem Clear missile height first
           if temp4 then goto RenderMissile1P4Active
-          gosub RenderRoboTitoStretchMissile1
+          gosub RenderRoboTitoStretchMissile1 bank8
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM1 remains 0 (no blank
           rem   missile)
@@ -188,7 +188,7 @@ RenderMissilesEvenFrame
           let temp4 = missileActive & 1
           rem Clear missile height first
           if temp4 then goto RenderMissile0P1
-          gosub RenderRoboTitoStretchMissile0
+          gosub RenderRoboTitoStretchMissile0 bank8
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM0 remains 0 (no blank
           goto RenderMissile1P2
@@ -210,7 +210,7 @@ RenderMissile1P2
           let temp4 = missileActive & 2
           rem Clear missile height first
           if temp4 then goto RenderMissile1P2Active
-          gosub RenderRoboTitoStretchMissile1
+          gosub RenderRoboTitoStretchMissile1 bank8
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM1 remains 0 (no blank
           rem   missile)
@@ -236,7 +236,7 @@ RenderMissiles2Player
           let temp4 = missileActive & 1
           rem Clear missile height first
           if temp4 then goto RenderMissile0P1_2P
-          gosub RenderRoboTitoStretchMissile0
+          gosub RenderRoboTitoStretchMissile0 bank8
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM0 remains 0 (no blank
           goto RenderMissile1P2_2P
@@ -260,7 +260,7 @@ RenderMissile1P2_2P
           let temp4 = missileActive & 2
           rem Clear missile height first
           if temp4 then goto RenderMissile1P2_2PActive
-          gosub RenderRoboTitoStretchMissile1
+          gosub RenderRoboTitoStretchMissile1 bank8
           rem Check for RoboTito stretch missile if no projectile missile
           rem If no stretch missile rendered, ENAM1 remains 0 (no blank
           rem   missile)
@@ -432,287 +432,5 @@ RRTM1_IsStretching
           ENAM1 = 1
           NUSIZ1 = 0
           rem 1x size (NUSIZ bits 4-6 = 00)
-          return
-
-SetPlayerSprites
-          asm
-.SetPlayerSprites
-
-end
-          rem
-          rem Set Player Sprites
-          rem Sets colors and graphics for all player sprites.
-          rem Colors depend on hurt and guard state only (player-index palettes).
-          rem Sets colors and graphics for all player sprites with hurt
-          rem state and facing direction handling
-          rem
-          rem Input: playerCharacter[] (global array) = character types,
-          rem playerRecoveryFrames[] (global array) = recovery frame
-          rem counts, playerState[] (global array) = player states,
-          rem controllerStatus (global) = controller state,
-          rem playerHealth[] (global array) = player
-          rem health, currentCharacter (global) = character index for
-          rem sprite loading
-          rem
-          rem Output: All player sprite colors and graphics set, sprite
-          rem reflections set based on facing direction
-          rem
-          rem Mutates: temp1-temp3 (color parameter packing), COLUP0,
-          rem COLUP1, COLUP2, COLUP3 (TIA registers) = player colors,
-          rem REFP0 (TIA register) = player 0 reflection, _NUSIZ1,
-          rem NewNUSIZ+2, NewNUSIZ+3 (TIA registers) = player sprite
-          rem reflections, player sprite pointers (via
-          rem LoadCharacterSprite), currentPlayer + temp2-temp3 (LoadCharacterColors parameters) = color
-          rem loading parameters (hurt flag, guard flag)
-          rem
-          rem Called Routines: LoadCharacterColors (bank16) - loads
-          rem player colors, LoadCharacterSprite (bank10) - loads sprite
-          rem graphics
-          rem
-          rem Constraints: Multisprite kernel requires _COLUP1 and
-          rem _NUSIZ1 for Player 2 virtual sprite. Players 3/4 only
-          rem rendered if Quadtari detected and selected
-          rem Set Player 1 color and sprite
-          rem Use LoadCharacterColors for consistent color handling
-          rem Player index
-          let currentPlayer = 0
-          rem Hurt flag (non-zero = recovering)
-          let temp2 = playerRecoveryFrames[0]
-          rem Guard flag (non-zero = guarding)
-          let temp3 = playerState[0] & PlayerStateBitGuarding
-          gosub LoadCharacterColors bank14
-          COLUP0 = temp6
-Player1ColorDone
-
-          rem Set sprite reflection based on facing direction (bit 3:
-          rem   0=left, 1=right) - matches REFP0 bit 3 for direct copy
-          asm
-            lda playerState
-            and #PlayerStateBitFacing
-            sta REFP0
-
-end
-
-          let currentCharacter = playerCharacter[0]
-          rem Load sprite data from character definition
-          let temp2 = 0
-          rem Animation frame (0 = idle)
-          let temp3 = 0
-          rem Animation action (0 = idle)
-          gosub LoadCharacterSprite bank16
-
-          rem Set Player 2 color and sprite
-          rem Use LoadCharacterColors for consistent color handling
-          rem NOTE: Multi-sprite kernel requires _COLUP1 (with
-          rem Player index
-          let currentPlayer = 1
-          rem Hurt flag (non-zero = recovering)
-          let temp2 = playerRecoveryFrames[1]
-          rem Guard flag (non-zero = guarding)
-          let temp3 = playerState[1] & PlayerStateBitGuarding
-          gosub LoadCharacterColors bank14
-          _COLUP1 = temp6
-
-Player2ColorDone
-
-          rem Set sprite reflection based on facing direction
-          rem NOTE: Multi-sprite kernel requires _NUSIZ1 (not NewNUSIZ+1)
-          rem   for Player 2 virtual sprite
-          rem NUSIZ reflection uses bit 6 - preserve other bits (size,
-          rem   etc.)
-          asm
-          lda _NUSIZ1
-          and #NUSIZMaskReflection
-          sta _NUSIZ1
-          lda playerState+1
-          and #PlayerStateBitFacing
-          beq .Player2ReflectionDone
-          lda _NUSIZ1
-          ora #PlayerStateBitFacingNUSIZ
-          sta _NUSIZ1
-.Player2ReflectionDone
-
-end
-
-          let currentCharacter = playerCharacter[1]
-          rem Load sprite data from character definition
-          let temp2 = 0
-          rem Animation frame (0 = idle)
-          let temp3 = 0
-          rem Animation action (0 = idle)
-          gosub LoadCharacterSprite bank16
-
-          rem Set colors for Players 3 & 4 (multisprite kernel)
-          rem Players 3 & 4 have independent COLUP2/COLUP3 registers
-          rem No color inheritance issues with proper multisprite
-          rem   implementation
-
-          rem Set Player 3 color and sprite (if active)
-
-          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer3Sprite
-          if playerCharacter[2] = NoCharacter then goto DonePlayer3Sprite
-          if ! playerHealth[2] then goto DonePlayer3Sprite
-
-          rem Use LoadCharacterColors for consistent color handling
-          rem Player index
-          let currentPlayer = 2
-          rem Hurt flag (non-zero = recovering)
-          let temp2 = playerRecoveryFrames[2]
-          rem Guard flag (non-zero = guarding)
-          let temp3 = playerState[2] & PlayerStateBitGuarding
-          gosub LoadCharacterColors bank14
-          COLUP2 = temp6
-          rem fall through to Player3ColorDone
-
-Player3ColorDone
-
-          rem Set sprite reflection based on facing direction
-          rem NUSIZ reflection uses bit 6 - preserve other bits (size,
-          rem   etc.)
-          asm
-            lda NewNUSIZ+2
-            and #NUSIZMaskReflection
-            sta NewNUSIZ+2
-            lda playerState+2
-            and #PlayerStateBitFacing
-            beq .Player3ReflectionDone
-            lda NewNUSIZ+2
-            ora #PlayerStateBitFacingNUSIZ
-            sta NewNUSIZ+2
-.Player3ReflectionDone
-
-end
-
-          let currentCharacter = playerCharacter[2]
-          rem Load sprite data from character definition
-          let temp2 = 0
-          rem Animation frame (0 = idle)
-          let temp3 = 0
-          rem Animation action (0 = idle)
-          gosub LoadCharacterSprite bank16
-
-DonePlayer3Sprite
-
-          rem Set Player 4 color and sprite (if active)
-
-          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer4Sprite
-          if playerCharacter[3] = NoCharacter then goto DonePlayer4Sprite
-          if ! playerHealth[3] then goto DonePlayer4Sprite
-
-          rem Use LoadCharacterColors for consistent color handling
-          rem Player 4: Turquoise (player index color), hurt handled by
-          rem Player index
-          let currentPlayer = 3
-          rem Hurt flag (non-zero = recovering)
-          let temp2 = playerRecoveryFrames[3]
-          rem Guard flag (non-zero = guarding)
-          let temp3 = playerState[3] & PlayerStateBitGuarding
-          gosub LoadCharacterColors bank14
-          COLUP3 = temp6
-
-Player4ColorDone
-
-          rem Set sprite reflection based on facing direction
-          rem NUSIZ reflection uses bit 6 - preserve other bits (size,
-          rem   etc.)
-          asm
-            lda NewNUSIZ+3
-            and # NUSIZMaskReflection
-            sta NewNUSIZ+3
-            lda playerState+3
-            and # PlayerStateBitFacing
-            beq .Player4ReflectionDone
-            lda NewNUSIZ+3
-            ora #PlayerStateBitFacingNUSIZ
-            sta NewNUSIZ+3
-.Player4ReflectionDone
-
-end
-
-          let currentCharacter = playerCharacter[3]
-          rem Load sprite data from character definition
-          let temp2 = 0
-          rem Animation frame (0 = idle)
-          let temp3 = 0
-          rem Animation action (0 = idle)
-          gosub LoadCharacterSprite bank16
-
-DonePlayer4Sprite
-
-          return
-
-DisplayHealth
-          rem
-          rem Display Health
-          rem Shows health status for all active players.
-          rem Flashes sprites when health is critically low.
-          rem Shows health status for all active players by flashing
-          rem sprites when health is critically low
-          rem
-          rem Input: playerHealth[] (global array) = player health
-          rem values, playerRecoveryFrames[] (global array) = recovery
-          rem frame counts, controllerStatus (global) = controller
-          rem state, playerCharacter[] (global array) = selections,
-          rem frame (global) = frame counter
-          rem
-          rem Output: Sprites flashed (hidden) when health < 25 and not
-          rem in recovery
-          rem
-          rem Mutates: player0x, player1x, player2x, player3x (TIA
-          rem registers) = sprite positions (set to 200 to hide when
-          rem flashing)
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Only flashes when health < 25 and not in
-          rem recovery. Players 3/4 only checked if Quadtari detected
-          rem and selected
-          rem Flash Participant 1 sprite (array [0], P0) if health is
-          rem   low (but not during recovery)
-          rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[0] >= 25 then goto DoneParticipant1Flash
-          if playerRecoveryFrames[0] = 0 then FlashParticipant1
-          goto DoneParticipant1Flash
-FlashParticipant1
-          if frame & 8 then player0x = 200
-DoneParticipant1Flash
-          rem Hide P0 sprite
-
-          rem Flash Participant 2 sprite (array [1], P1) if health is
-          rem   low
-          rem Use skip-over pattern to avoid complex || operator
-          if playerHealth[1] >= 25 then goto DoneParticipant2Flash
-          if playerRecoveryFrames[1] = 0 then FlashParticipant2
-          goto DoneParticipant2Flash
-FlashParticipant2
-          if frame & 8 then player1x = 200
-DoneParticipant2Flash
-
-          rem Flash Player 3 sprite if health is low (but alive)
-
-          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer3Flash
-          if playerCharacter[2] = NoCharacter then goto DonePlayer3Flash
-          if ! playerHealth[2] then goto DonePlayer3Flash
-          if playerHealth[2] >= 25 then goto DonePlayer3Flash
-          if playerRecoveryFrames[2] = 0 then FlashPlayer3
-          goto DonePlayer3Flash
-FlashPlayer3
-          if frame & 8 then player2x = 200
-DonePlayer3Flash
-          rem Player 3 uses player2 sprite
-
-          rem Flash Player 4 sprite if health is low (but alive)
-
-          if (controllerStatus & SetQuadtariDetected) = 0 then goto DonePlayer4Flash
-          if playerCharacter[3] = NoCharacter then goto DonePlayer4Flash
-          if ! playerHealth[3] then goto DonePlayer4Flash
-          if playerHealth[3] >= 25 then goto DonePlayer4Flash
-          if playerRecoveryFrames[3] = 0 then FlashPlayer4
-          goto DonePlayer4Flash
-FlashPlayer4
-          if frame & 8 then player3x = 200
-DonePlayer4Flash
-          rem Player 4 uses player3 sprite
-
           return
 

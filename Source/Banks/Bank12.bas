@@ -11,7 +11,9 @@ end
 
           rem Titlescreen assets are in Bank 9 - this bank contains only logic
 
-#include "Source/Routines/CharacterData.bas"
+#include "Source/Routines/GetCharacterAttackType.bas"
+#include "Source/Routines/IsCharacterRanged.bas"
+#include "Source/Routines/IsCharacterMelee.bas"
 #include "Source/Routines/MissileSystem.bas"
 #include "Source/Routines/CheckAllPlayerEliminations.bas"
 #include "Source/Routines/CheckPlayerElimination.bas"

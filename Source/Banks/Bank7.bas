@@ -9,7 +9,9 @@
 #include "Source/Routines/CharacterMissileData.bas"
 #include "Source/Data/HealthBarPatterns.bas"
 
+          asm
 Bank7DataEnds
+end
 
 #include "Source/Routines/ScreenLayout.bas"
 #include "Source/Routines/CharacterAttacksDispatch.bas"
@@ -20,4 +22,6 @@ Bank7DataEnds
 #include "Source/Routines/CharacterSelectFire.bas"
 #include "Source/Routines/CharacterSelectHelpers.bas"
 
+          asm
 Bank7CodeEnds
+end

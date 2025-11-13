@@ -1,11 +1,11 @@
           rem ChaosFight - Source/Banks/Bank12.bas
-Bank12DataEnds
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Character data system (definitions, cycles, fall damage) +
           rem Titlescreen graphics and kernel
 
+Bank12DataEnds
 
           rem Titlescreen assets are in Bank 9 - this bank contains only logic
 

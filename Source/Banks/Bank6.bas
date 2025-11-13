@@ -11,5 +11,4 @@ Bank6DataEnds
 #include "Source/Routines/CharacterSelectRender.bas"
 #include "Source/Routines/CharacterSelectEntry.bas"
 
-
 Bank6CodeEnds

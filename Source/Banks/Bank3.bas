@@ -25,4 +25,5 @@ Bank3DataEnds
           ; rem   and 24-31)
 #include "Source/Routines/CharacterArtBank3.s"
 end
+
 Bank3CodeEnds

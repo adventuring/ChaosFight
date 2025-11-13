@@ -9,7 +9,9 @@
           rem Code segment
 #include "Source/Data/CharacterPhysicsTables.bas"
 
+          asm
 Bank8DataEnds
+end
 
 #include "Source/Routines/PlayerInput.bas"
 #include "Source/Routines/PlayerPhysicsGravity.bas"
@@ -21,4 +23,6 @@ Bank8DataEnds
 #include "Source/Routines/CharacterDamage.bas"
 #include "Source/Routines/PlayerRendering.bas"
 
+          asm
 Bank8CodeEnds
+end

@@ -537,7 +537,16 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/PerformMeleeAttack.bas \
 	Source/Routines/PerformRangedAttack.bas \
 	Source/Routines/PlayerCollisionResolution.bas \
-	Source/Routines/PlayerElimination.bas \
+	Source/Routines/CheckAllPlayerEliminations.bas \
+	Source/Routines/CheckPlayerElimination.bas \
+	Source/Routines/CountRemainingPlayers.bas \
+	Source/Routines/DeactivatePlayerMissiles.bas \
+	Source/Routines/FindLastEliminated.bas \
+	Source/Routines/FindWinner.bas \
+	Source/Routines/IsPlayerAlive.bas \
+	Source/Routines/IsPlayerEliminated.bas \
+	Source/Routines/TriggerEliminationEffects.bas \
+	Source/Routines/UpdatePlayers34ActiveFlag.bas \
 	Source/Routines/PlayerInput.bas \
 	Source/Routines/PlayerLockedHelpers.bas \
 	Source/Routines/PlayerPhysicsGravity.bas \
@@ -613,17 +622,17 @@ Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.
 Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
-	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
 Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
-	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
 
 Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
-	cd Object && ../bin/dasm ../$< -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
+	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator
 emu: $(ROM) Dist/$(GAME)$(GAMEYEAR).NTSC.pro

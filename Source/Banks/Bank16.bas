@@ -4,6 +4,7 @@
           rem SPECIAL PURPOSE BANK: Arenas + Drawscreen
           rem Main loop, drawscreen, arena data/loader, special sprites, numbers font, font rendering
 
+          bank 16
 
           rem First — data. Must come first. Cannot be moved.
 #include "Source/Data/Arenas.bas"

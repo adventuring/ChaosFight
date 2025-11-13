@@ -5,6 +5,8 @@
           rem Sprite rendering (character art loader, player rendering, elimination) +
           rem   character attacks system and falling animation controller
 
+          bank 10
+
           asm
 Bank10DataEnds
 end

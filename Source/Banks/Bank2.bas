@@ -5,6 +5,7 @@
           rem Character sprites (0-7): Bernie, Curler, DragonOfStorms, ZoeRyen,
           rem   FatTony, Megax, Harpy, KnightGuy + MissileCollision routine
 
+          bank 2
 
           rem Character sprite data for characters 0-7
           rem Bank 2 dedicated to character art only - leave room for

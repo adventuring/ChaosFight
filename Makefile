@@ -43,12 +43,20 @@ bin/zx7mini:	SkylineTool/zx7mini/zx7mini.c | bin/
 # batariBASIC tool links
 # Explicitly mark upstream tool binaries as fixed files so GNU make
 # doesn't try to regenerate them with the built-in ".sh →" implicit rule
-Tools/batariBASIC/preprocess \
-Tools/batariBASIC/postprocess \
-Tools/batariBASIC/optimize \
-Tools/batariBASIC/bbfilter \
 Tools/batariBASIC/dasm.Linux.x64:
 	@:
+
+Tools/batariBASIC/preprocess: Tools/batariBASIC/preprocess.lex
+	$(MAKE) -C Tools/batariBASIC preprocess
+
+Tools/batariBASIC/postprocess: Tools/batariBASIC/postprocess.c
+	$(MAKE) -C Tools/batariBASIC postprocess
+
+Tools/batariBASIC/optimize: Tools/batariBASIC/optimize.lex
+	$(MAKE) -C Tools/batariBASIC optimize
+
+Tools/batariBASIC/bbfilter: Tools/batariBASIC/bbfilter.c
+	$(MAKE) -C Tools/batariBASIC bbfilter
 
 bin/preprocess: Tools/batariBASIC/preprocess | bin/
 	cp "$<" "$@"
@@ -375,10 +383,10 @@ Source/TitleScreen/titlescreen_colors.s: \
 	@echo "   org \$$f500" >> "$@"
 	@echo "" >> "$@"
 	@echo ";;; Include color tables, PF1, PF2, and background for all titlescreen bitmaps" >> "$@"
-	@echo "include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"
-	@echo "include \"Source/Generated/Art.AtariAgeText.colors.s\"" >> "$@"
-	@echo "include \"Source/Generated/Art.ChaosFight.colors.s\"" >> "$@"
-	@echo "include \"Source/Generated/Art.Author.colors.s\"" >> "$@"
+	@echo " include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"
+	@echo " include \"Source/Generated/Art.AtariAgeText.colors.s\"" >> "$@"
+	@echo " include \"Source/Generated/Art.ChaosFight.colors.s\"" >> "$@"
+	@echo " include \"Source/Generated/Art.Author.colors.s\"" >> "$@"
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf | Source/Art/

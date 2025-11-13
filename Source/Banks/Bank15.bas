@@ -5,6 +5,7 @@
           rem Sound effects + character theme songs (IDs 0-6): Bernie, OCascadia,
           rem   Revontuli, EXO, Grizzards, MagicalFairyForce, Bolero
 
+          bank 15
 
           rem SOUND BANK 2 --- NOTHING but sounds & music are allowed here.
 

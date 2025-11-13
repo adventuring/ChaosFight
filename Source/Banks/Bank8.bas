@@ -5,6 +5,7 @@
           rem Physics system (gravity, movement, special abilities) + screen layout +
           rem   health bars
 
+          bank 8
 
           rem Code segment
 #include "Source/Data/CharacterPhysicsTables.bas"

@@ -5,6 +5,8 @@
           rem Console handling (detection, controllers, game mode transitions,
           rem   character controls, startup routines)
 
+          bank 14
+
           asm
 Bank14DataEnds
 end

@@ -5,6 +5,7 @@
           rem Character theme songs (IDs 6-28): LowRes, RoboTito, SongOfTheBear,
           rem   DucksAway, Character16-30 themes
 
+          bank 1
 
           rem
           rem Build Info - Version Tracking And Attribution
@@ -14,7 +15,7 @@
           rem Note: Strings are defined in BuildInfo.s and included with
           rem   ♯include inside asm so the build date macros expand before assembly
           asm
-          #include "Source/Common/BuildInfo.s"
+#include "Source/Common/BuildInfo.s"
 end
 
 #include "Source/Data/SongPointers1.bas"

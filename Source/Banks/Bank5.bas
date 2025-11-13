@@ -4,6 +4,7 @@
           rem ASSET BANK: Character Art Assets (separate memory budget)
           rem Character sprites (24-31): Character24-30, MethHound + PlayerInput routine
 
+          bank 5
 
           rem Bank 5 dedicated to character art only - leave room for
           rem   animation frames
@@ -19,9 +20,7 @@
 
           asm
 Bank5DataEnds
-end
 
-          asm
 #include "Source/Routines/CharacterArtBank5.s"
 Bank5CodeEnds
 end

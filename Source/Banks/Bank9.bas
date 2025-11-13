@@ -5,6 +5,7 @@
           rem Graphics assets, titlescreen kernel, preambles, attract mode,
           rem   winner screen data, character data tables
 
+          bank 9
 
           rem data must precede code
           rem all Title Screen modes must be in this bank

@@ -4,6 +4,8 @@
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
           rem Input system (movement, player input, guard effects)
 
+          bank 13
+
           asm
 Bank13DataEnds
 end

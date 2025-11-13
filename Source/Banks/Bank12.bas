@@ -5,6 +5,8 @@
           rem Character data system (definitions, cycles, fall damage) +
           rem Titlescreen graphics and kernel
 
+          bank 12
+
           asm
 Bank12DataEnds
 end

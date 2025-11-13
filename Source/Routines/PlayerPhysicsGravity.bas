@@ -63,7 +63,7 @@ PhysicsApplyGravity
           rem rowYPosition, rowCounter (global) = calculation
           rem temporaries
           rem
-          rem Called Routines: AddVelocitySubpixelY (bank13) - adds
+          rem Called Routines: AddVelocitySubpixelY (bank14) - adds
           rem gravity to vertical velocity,
           rem ConvertPlayerXToPlayfieldColumn (bank13) - converts player
           rem X to playfield column, DivideByPfrowheight - divides Y by

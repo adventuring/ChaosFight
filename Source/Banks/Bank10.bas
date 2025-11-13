@@ -25,6 +25,9 @@ end
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/FallingAnimation.bas"
 
+          rem Physics gravity routine moved from Bank 6 for ROM balance
+#include "Source/Routines/PlayerPhysicsGravity.bas"
+
           asm
 Bank10CodeEnds
 end

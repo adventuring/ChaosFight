@@ -20,8 +20,6 @@ end
 
           rem Character damage routine moved from Bank 8 for ROM balance
 #include "Source/Routines/CharacterDamage.bas"
-#include "Source/Routines/IsPlayerEliminated.bas"
-#include "Source/Routines/IsPlayerAlive.bas"
 #include "Source/Routines/DeactivatePlayerMissiles.bas"
 #include "Source/Routines/TriggerEliminationEffects.bas"
 #include "Source/Routines/UpdatePlayers34ActiveFlag.bas"

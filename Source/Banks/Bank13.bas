@@ -15,6 +15,15 @@ end
 #include "Source/Routines/IsCharacterRanged.bas"
 #include "Source/Routines/IsCharacterMelee.bas"
 
+          rem Physics/collision routines moved from Bank 8 for ROM balance
+#include "Source/Routines/CheckPlayerCollision.bas"
+#include "Source/Routines/ConstrainToScreen.bas"
+#include "Source/Routines/FallDamage.bas"
+
+          rem Player state routines moved from Bank 12 for ROM balance
+#include "Source/Routines/IsPlayerEliminated.bas"
+#include "Source/Routines/IsPlayerAlive.bas"
+
 #include "Source/Routines/CharacterControlsDown.bas"
 #include "Source/Routines/ConsoleHandling.bas"
 #include "Source/Routines/CharacterControlsJump.bas"

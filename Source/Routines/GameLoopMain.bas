@@ -72,7 +72,7 @@ GameMainLoop
           rem HandleConsoleSwitches (bank13),
           rem   InputHandleAllPlayers (bank8), UpdateGuardTimers (bank10),
           rem   UpdateCharacterAnimations (bank11),
-          rem   UpdatePlayerMovement (bank8), PhysicsApplyGravity (bank8),
+          rem   UpdatePlayerMovement (bank8), PhysicsApplyGravity (bank10),
           rem   ApplyMomentumAndRecovery (bank8),
           rem   CheckBoundaryCollisions (bank10),
           rem   CheckPlayfieldCollisionAllDirections (bank10),
@@ -112,7 +112,7 @@ GameMainLoop
           gosub UpdatePlayerMovement bank8 :
           rem Update movement system (full frame rate movement) (in Bank 11)
 
-          gosub PhysicsApplyGravity bank8
+          gosub PhysicsApplyGravity bank10
           rem Apply gravity and physics (in Bank 11)
 
           gosub ApplyMomentumAndRecovery bank8

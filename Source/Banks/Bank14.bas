@@ -11,6 +11,18 @@
 Bank14DataEnds
 end
 
+          rem Player position/velocity getter/setter routines moved from Bank 8 for ROM balance
+#include "Source/Routines/GetPlayerPosition.bas"
+#include "Source/Routines/GetPlayerVelocity.bas"
+#include "Source/Routines/SetPlayerPosition.bas"
+#include "Source/Routines/SetPlayerVelocity.bas"
+
+          rem Physics helper routines moved from Bank 8 for ROM balance
+#include "Source/Routines/InitializeMovementSystem.bas"
+#include "Source/Routines/MovementApplyGravity.bas"
+#include "Source/Routines/AddVelocitySubpixelY.bas"
+#include "Source/Routines/ApplyFriction.bas"
+
           rem Routines moved from Bank 1 - not needed for drawscreen
           rem calls
           rem These are called before/after drawscreen, not during it

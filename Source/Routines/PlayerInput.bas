@@ -78,7 +78,7 @@ InputHandleAllPlayers
           if qtcontroller then goto InputHandleQuadtariPlayers
 
           rem Even frame: Handle Players 1 & 2 - only if alive
-          let currentPlayer = 0 : gosub IsPlayerAlive bank12
+          let currentPlayer = 0 : gosub IsPlayerAlive bank13
           if temp2 = 0 then InputDonePlayer0Input
           if (PlayerState[0] & 8) then InputDonePlayer0Input
           let temp1 = 0 : gosub InputHandleLeftPortPlayerFunction
@@ -96,7 +96,7 @@ InputDonePlayer0Input
           rem
           rem Constraints: Must be colocated with InputHandleAllPlayers
 
-          let currentPlayer = 1 : gosub IsPlayerAlive bank12
+          let currentPlayer = 1 : gosub IsPlayerAlive bank13
           if temp2 = 0 then InputDonePlayer1Input
           if (PlayerState[1] & 8) then InputDonePlayer1Input
           goto InputHandlePlayer1
@@ -158,7 +158,7 @@ InputHandleQuadtariPlayers
           rem alive)
           if (ControllerStatus & SetQuadtariDetected) = 0 then InputDonePlayer3Input
           if playerCharacter[2] = NoCharacter then InputDonePlayer3Input
-          let currentPlayer = 2 : gosub IsPlayerAlive bank12
+          let currentPlayer = 2 : gosub IsPlayerAlive bank13
           if temp2 = 0 then InputDonePlayer3Input
           if (PlayerState[2] & 8) then InputDonePlayer3Input
           let temp1 = 2 : gosub InputHandleLeftPortPlayerFunction
@@ -176,7 +176,7 @@ InputDonePlayer3Input
           rem Constraints: Must be colocated with InputHandleQuadtariPlayers
           if (ControllerStatus & SetQuadtariDetected) = 0 then InputDonePlayer4Input
           if playerCharacter[3] = NoCharacter then InputDonePlayer4Input
-          let currentPlayer = 3 : gosub IsPlayerAlive bank12
+          let currentPlayer = 3 : gosub IsPlayerAlive bank13
           if temp2 = 0 then InputDonePlayer4Input
           if (PlayerState[3] & 8) then InputDonePlayer4Input
           let temp1 = 3 : gosub InputHandleRightPortPlayerFunction

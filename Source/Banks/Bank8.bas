@@ -15,8 +15,8 @@ end
 
 #include "Source/Routines/PlayerInput.bas"
 #include "Source/Routines/PlayerPhysicsGravity.bas"
-#include "Source/Routines/UpdatePlayerMovement.bas"
 #include "Source/Routines/UpdatePlayerMovementSingle.bas"
+#include "Source/Routines/UpdatePlayerMovement.bas"
 #include "Source/Routines/SetPlayerVelocity.bas"
 #include "Source/Routines/SetPlayerPosition.bas"
 #include "Source/Routines/GetPlayerPosition.bas"

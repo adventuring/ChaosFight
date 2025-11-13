@@ -147,10 +147,10 @@ end
 #include "Source/Routines/LoadSoundPointer.bas"
 #include "Source/Routines/LoadSoundNote.bas"
 #include "Source/Routines/LoadSoundNote1.bas"
-#include "Source/Routines/PlaySoundEffect.bas"
-#include "Source/Routines/UpdateSoundEffect.bas"
 #include "Source/Routines/UpdateSoundEffectVoice0.bas"
 #include "Source/Routines/UpdateSoundEffectVoice1.bas"
+#include "Source/Routines/PlaySoundEffect.bas"
+#include "Source/Routines/UpdateSoundEffect.bas"
 #include "Source/Routines/StopSoundEffects.bas"
 #include "Source/Routines/MusicBankHelpers15.bas"
 

@@ -101,11 +101,10 @@ CharacterSelectLoop
           rem Unlock by moving up
           if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-          if joy0fire then Player1LockSelection
-          goto DonePlayer1
+          if !joy0fire then DonePlayer1
 
 Player1LockSelection
-          if joy0down then Player1HandicapSelection
+          if joy0down then goto Player1HandicapSelection
           let temp2 = PlayerLockedNormal
           goto Player1LockSelectionDone
           rem Locked normal (100% health)
@@ -126,11 +125,10 @@ DonePlayer1
           rem Unlock by moving up
           if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-          if joy1fire then Player2LockSelection
-          goto DonePlayer2
+          if !joy1fire then DonePlayer2
 
 Player2LockSelection
-          if joy1down then Player2HandicapSelection
+          if joy1down then goto Player2HandicapSelection
           let temp2 = PlayerLockedNormal
           goto Player2LockSelectionDone
           rem Locked normal (100% health)
@@ -160,8 +158,7 @@ CharacterSelectHandlePlayer3
           rem Unlock by moving up
           if joy0up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-          if joy0fire then Player3LockSelection
-          goto DonePlayer3
+          if !joy0fire then DonePlayer3
 
 Player3LockSelection
           if joy0down then Player3HandicapSelection
@@ -191,8 +188,7 @@ CharacterSelectHandlePlayer4
           rem Unlock by moving up
           if joy1up then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
 
-          if joy1fire then Player4LockSelection
-          goto DonePlayer4
+          if !joy1fire then DonePlayer4
 
 Player4LockSelection
           if joy1down then Player4HandicapSelection

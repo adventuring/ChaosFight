@@ -1,4 +1,5 @@
           rem ChaosFight - Source/Banks/Bank12.bas
+Bank12DataEnds
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
@@ -17,3 +18,4 @@
 #include "Source/Routines/WinnerAnnouncement.bas"
 #include "Source/Routines/BeginWinnerAnnouncement.bas"
 
+Bank12CodeEnds

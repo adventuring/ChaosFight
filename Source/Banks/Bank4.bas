@@ -18,13 +18,12 @@
 #include "Source/Generated/Character22.bas"
 #include "Source/Generated/Character23.bas"
 
+Bank4DataEnds
+
           asm
           ; rem Character art lookup routines for Bank 4 (characters
           ; rem   16-23)
 #include "Source/Routines/CharacterArtBank4.s"
 end
 
-          rem batariBASIC auto-generates _length constants for data
-          rem blocks
-          rem Manual calculations removed - let batariBASIC handle them
-          rem to avoid unresolved local label issues
+Bank4CodeEnds

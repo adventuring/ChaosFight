@@ -73,7 +73,7 @@ HCSF_HandleFire
           rem Constraints: Must be colocated with
           rem HandleCharacterSelectFire
           rem Check if RandomCharacter selected
-          if playerCharacter[temp1] = RandomCharacter then gosub HCSF_HandleRandom
+          if playerCharacter[temp1] = RandomCharacter then goto HCSF_HandleRandom
           rem Check for handicap mode (down+fire = 75% health)
           if temp4 then HCSF_HandleHandicap
           let temp3 = temp1
@@ -104,6 +104,7 @@ HCSF_HandleHandicap
           rem Play selection sound
           gosub PlaySoundEffect bank15
           return
+
 HCSF_HandleRandom
           rem Handle random character selection
           rem

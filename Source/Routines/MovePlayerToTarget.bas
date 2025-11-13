@@ -98,8 +98,11 @@ AtTarget
           rem Check if player is at target position
           rem Input: temp1 = player, temp2 = target X, temp3 = target Y
           rem Output: Returns if at target, otherwise calls nudge functions
-          if playerX[temp1] <> temp2 then gosub NudgePlayerFromPlayfield
-          if playerY[temp1] <> temp3 then gosub NudgePlayerFromPlayfield
+          if playerX[temp1] = temp2 then goto CheckY
+          gosub NudgePlayerFromPlayfield
+CheckY
+          if playerY[temp1] = temp3 then return
+          gosub NudgePlayerFromPlayfield
           return
 
 NudgePlayerFromPlayfield

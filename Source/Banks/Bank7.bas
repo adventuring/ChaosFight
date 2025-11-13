@@ -8,6 +8,9 @@
 #include "Source/Data/CharacterMissileTables.bas"
 #include "Source/Routines/CharacterMissileData.bas"
 #include "Source/Data/HealthBarPatterns.bas"
+
+Bank7DataEnds
+
 #include "Source/Routines/ScreenLayout.bas"
 #include "Source/Routines/CharacterAttacksDispatch.bas"
 #include "Source/Routines/PerformRangedAttack.bas"
@@ -15,3 +18,4 @@
 #include "Source/Routines/FrameBudgeting.bas"
 #include "Source/Routines/MissileCollision.bas"
 
+Bank7CodeEnds

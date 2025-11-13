@@ -7,6 +7,11 @@
 
 
           rem Code segment
+#include "Source/Data/CharacterPhysicsTables.bas"
+
+Bank8DataEnds
+
+#include "Source/Routines/PlayerInput.bas"
 #include "Source/Routines/PlayerPhysicsGravity.bas"
 #include "Source/Routines/MovementSystem.bas"
 #include "Source/Routines/FallDamage.bas"
@@ -14,3 +19,4 @@
 #include "Source/Routines/HealthBarSystem.bas"
 #include "Source/Routines/Physics.bas"
 
+Bank8CodeEnds

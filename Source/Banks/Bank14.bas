@@ -1,4 +1,5 @@
           rem ChaosFight - Source/Banks/Bank14.bas
+Bank14DataEnds
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
@@ -29,3 +30,4 @@
 #include "Source/Routines/TitlescreenWindowControl.bas"
 #include "Source/Routines/AttractMode.bas"
 
+Bank14CodeEnds

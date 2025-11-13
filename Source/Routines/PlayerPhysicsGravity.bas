@@ -196,8 +196,8 @@ GravityRowCalcDone
 
           rem If RoboTito, set stretch permission on landing
 
-          if temp6 <> CharacterRoboTito then goto GravityNextPlayer
-          rem fall through to PAG_SetRoboTitoStretchPermission
+          if temp6 = CharacterRoboTito then goto PAG_SetRoboTitoStretchPermission
+          goto GravityNextPlayer
 
 PAG_SetRoboTitoStretchPermission
           rem Set RoboTito stretch permission on landing (allows

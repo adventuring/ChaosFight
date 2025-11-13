@@ -58,7 +58,7 @@ fontstyle = STOCK
  endif
 
  ;fix up the table alignment, if necessary
- if >. != >[.+81]
+ if >. != >(* + 81)
       align 256
  endif
 

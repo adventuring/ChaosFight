@@ -195,9 +195,15 @@ skip_activation3
           rem Reset win screen timer
 
           rem Count additional human/CPU players beyond Player 1
-          if playerCharacter[1] <> NoCharacter then let playersRemaining_W = playersRemaining_R + 1
-          if playerCharacter[2] <> NoCharacter then let playersRemaining_W = playersRemaining_R + 1
-          if playerCharacter[3] <> NoCharacter then let playersRemaining_W = playersRemaining_R + 1
+          if playerCharacter[1] = NoCharacter then goto SkipPlayer2
+          let playersRemaining_W = playersRemaining_R + 1
+SkipPlayer2
+          if playerCharacter[2] = NoCharacter then goto SkipPlayer3
+          let playersRemaining_W = playersRemaining_R + 1
+SkipPlayer3
+          if playerCharacter[3] = NoCharacter then goto SkipPlayer4
+          let playersRemaining_W = playersRemaining_R + 1
+SkipPlayer4
 
           rem Frame counter is automatically initialized and incremented
           rem by batariBASIC kernel

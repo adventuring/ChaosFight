@@ -68,7 +68,7 @@ bmp_48x2_2_pointersetup
         sta PF2
 
  	jmp draw_bmp_48x2_X
-	
+
 bmp_48x2_2_values
         .word (bmp_48x2_2_00+#bmp_48x2_2_height-#bmp_48x2_2_window)
         .word (bmp_48x2_2_01+#bmp_48x2_2_height-#bmp_48x2_2_window)

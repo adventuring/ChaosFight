@@ -224,7 +224,6 @@ UpdateSprite
           rem
           rem Constraints: Must be colocated with UpdatePlayerAnimation,
           rem AdvanceAnimationFrame, HandleFrame7Transition
-const US_SEPARATOR = 0
           rem Update character sprite with current animation frame and
           rem   action
           rem
@@ -242,7 +241,6 @@ const US_SEPARATOR = 0
           rem Frame is from this sprite 10fps counter
           rem   (currentAnimationFrame), not global frame counter
           rem SCRAM read: Read from r081
-          rem NOTE: US_SEPARATOR const added to work around compiler bug
           let temp2 = currentAnimationFrame_R[currentPlayer]
           rem   where dim entries concatenate with subsequent constants
           let temp3 = currentAnimationSeq_R[currentPlayer]

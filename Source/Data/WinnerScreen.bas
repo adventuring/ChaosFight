@@ -22,7 +22,8 @@ WinnerScreenPlayfield
             XXXXXXXXXXXXXXXX
 end
 
-          data WinnerScreenColors
+WinnerScreenColorsColor
+          data WinnerScreenColorsColor
           ColGold(14)
           ColGold(12)
           ColGold(10)

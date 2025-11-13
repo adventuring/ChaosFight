@@ -19,6 +19,7 @@ end
 
 #include "Source/Data/SongPointers1.bas"
 
+
           rem Song Data (Bank 1)
           rem Song IDs hosted here: Bank1MinSongID-28 (currently 7-28) - character themes plus admin screen music
           rem Songs 0-Bank15MaxSongID reside in Bank 15
@@ -158,5 +159,9 @@ end
 #include "Source/Generated/Song.Interworldly.PAL.bas"
 #endif
 
+Bank1DataEnds
+
+
 #include "Source/Routines/MusicSystem.bas"
 #include "Source/Routines/MusicBankHelpers.bas"
+Bank1CodeEnds

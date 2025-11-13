@@ -94,9 +94,9 @@ BernieWrapP1
 SkipP1BottomCheck
 
           rem Player 2 - boundaries (if Quadtari and active)
-          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer2
+          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer2Physics
           goto SkipPlayer2
-ProcessPlayer2
+ProcessPlayer2Physics
           if playerCharacter[2] = NoCharacter then goto SkipPlayer2
           let temp1 = 2
           if playerX[2] < PlayerLeftWrapThreshold then let playerX[2] = PlayerRightEdge : let playerSubpixelX_W[2] = PlayerRightEdge : let playerSubpixelX_WL[2] = 0
@@ -112,9 +112,9 @@ BernieWrapP2
 SkipPlayer2
 
           rem Player 3 - boundaries (if Quadtari and active)
-          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer3
+          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer3Physics
           goto SkipPlayer3
-ProcessPlayer3
+ProcessPlayer3Physics
           if playerCharacter[3] = NoCharacter then goto SkipPlayer3
           let temp1 = 3
           if playerX[3] < PlayerLeftWrapThreshold then let playerX[3] = PlayerRightEdge : let playerSubpixelX_W[3] = PlayerRightEdge : let playerSubpixelX_WL[3] = 0

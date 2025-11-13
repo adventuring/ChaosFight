@@ -144,7 +144,7 @@ skipdrawP1
 	jmp continueP1	;5
 
 
-   if >. != >[.+$55]
+   if >. != >(* + $55)
       align 256
    endif
 

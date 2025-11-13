@@ -7,7 +7,7 @@ bmp_48x2_4_window = 5
  ;*** the data...
 bmp_48x2_4_height = 5
 
-   if >. != >[.+(bmp_48x2_4_height)]
+   if >. != >(* + bmp_48x2_4_height)
       align 256
    endif
  BYTE 0 ; leave this here!
@@ -34,7 +34,7 @@ bmp_48x2_4_background
  endif
         BYTE $c2
 
-   if >. != >[.+bmp_48x2_4_height]
+   if >. != >(* + bmp_48x2_4_height)
       align 256
    endif
 
@@ -48,7 +48,7 @@ bmp_48x2_4_00
 	BYTE %11101110
 
 
-   if >. != >[.+bmp_48x2_4_height]
+   if >. != >(* + bmp_48x2_4_height)
       align 256
    endif
 
@@ -62,7 +62,7 @@ bmp_48x2_4_01
 	BYTE %10001011
 
 
-   if >. != >[.+bmp_48x2_4_height]
+   if >. != >(* + bmp_48x2_4_height)
       align 256
    endif
 
@@ -76,7 +76,7 @@ bmp_48x2_4_02
 	BYTE %10000101
 
 
-   if >. != >[.+bmp_48x2_4_height]
+   if >. != >(* + bmp_48x2_4_height)
       align 256
    endif
 
@@ -90,7 +90,7 @@ bmp_48x2_4_03
 	BYTE %01110000
 
 
-   if >. != >[.+bmp_48x2_4_height]
+   if >. != >(* + bmp_48x2_4_height)
       align 256
    endif
 
@@ -104,7 +104,7 @@ bmp_48x2_4_04
 	BYTE %01110000
 
 
-   if >. != >[.+bmp_48x2_4_height]
+   if >. != >(* + bmp_48x2_4_height)
       align 256
    endif
 

@@ -16,13 +16,9 @@ DisplayWinScreen
           rem        elimination order for each player
           rem        playerCharacter[] (global array) = player character
           rem        selections
-          rem        switchbw (hardware) = Color/B&W switch state
-          rem        systemFlags (global) = system flags
-          rem        (SystemFlagColorBWOverride)
           rem        WinnerScreenPlayfield (ROM constant) = playfield
           rem        pattern data
-          rem        WinnerScreenColorsBW, WinnerScreenColorsColor (ROM
-          rem        constants) = color tables
+          rem        WinnerScreenColorsColor (ROM constant) = color table
           rem
           rem Output: Screen layout set, playfield pattern loaded,
           rem colors loaded, player sprites positioned and loaded
@@ -32,16 +28,14 @@ DisplayWinScreen
           rem         PF1pointer, PF2pointer (playfield pointers, set
           rem         via inline assembly),
           rem         pfcolortable (playfield color table pointer, set
-          rem         via DWS_LoadBWColors/ColorColors),
+          rem         via DWS_LoadColorColors),
           rem         playerX[0-3], playerY[0-3] (TIA registers), player
           rem         sprite pointers (via LoadCharacterSprite),
-          rem         temp1-temp6 plus SCRAM scratch (used for ranking calculations),
-          rem         temp2
+          rem         temp1-temp6 plus SCRAM scratch (used for ranking calculations)
           rem
           rem Called Routines: SetGameScreenLayout (bank7) - sets
           rem screen layout,
-          rem   DWS_GetBWMode - accesses switchbw, systemFlags,
-          rem   DWS_LoadBWColors, DWS_LoadColorColors - set color table
+          rem   DWS_LoadColorColors - set color table
           rem   pointers,
           rem   LoadCharacterSprite (bank10) - loads character sprites
           rem
@@ -73,11 +67,8 @@ DisplayWinScreen
           sta PF2pointer+1
 end
 
-          gosub DWS_GetBWMode
-          rem Load playfield colors based on B&W mode
-          if temp2 then gosub DWS_LoadBWColors : goto DisplaySkipElse
           gosub DWS_LoadColorColors
-DisplaySkipElse
+          rem Winner screen always uses color mode
 
           let temp1 = playersRemaining_R
           rem Get players remaining count (SCRAM read)
@@ -417,52 +408,6 @@ DWS_Hide3Player3Done
           rem Constraints: Must be colocated with DisplayWinScreen
           let playerX[3] = 0
           rem Hide unused player
-          return
-
-DWS_GetBWMode
-          rem Check if B&W mode is active
-          rem
-          rem Input: switchbw (hardware) = Color/B&W switch state
-          rem        systemFlags (global) = system flags
-          rem        (SystemFlagColorBWOverride)
-          rem
-          rem Output: temp2 set to 1 if B&W mode, 0 otherwise
-          rem
-          rem Mutates: temp2 (used for B&W mode check), temp2
-          rem
-          rem Called Routines: None
-          rem
-          rem Constraints: Must be colocated with DisplayWinScreen
-          rem   (ColorBWOverride) can force B&W
-          rem switchbw=1 means B&W mode, systemFlags bit 6
-          rem Uses temp2 for temp2 (temp2 saved by
-          let temp2 = 0
-          rem   caller)
-          if switchbw then temp2 = 1
-          if systemFlags & SystemFlagColorBWOverride then temp2 = 1
-          return
-
-DWS_LoadBWColors
-          asm
-          ; rem Load B&W colors (all white)
-          ; rem
-          ; rem Input: WinnerScreenColorsBW (ROM constant) = B&W color
-          ; rem table
-          ; rem
-          ; rem Output: pfcolortable pointer set to WinnerScreenColorsBW
-          ; rem
-          ; rem Mutates: pfcolortable (playfield color table pointer, set
-          ; rem via inline assembly)
-          ; rem
-          ; rem Called Routines: None (uses inline assembly)
-          ; rem
-          ; rem Constraints: Must be colocated with DisplayWinScreen
-          ; rem Set pfcolortable pointer to WinnerScreenColorsBW
-            lda #<WinnerScreenColorsBW
-            sta pfcolortable
-            lda #>WinnerScreenColorsBW
-            sta pfcolortable+1
-end
           return
 
 DWS_LoadColorColors

@@ -147,18 +147,18 @@ SelectDonePlayer0Animation
           let temp1 = 1
           gosub SelectUpdatePlayerAnimation
 SelectDonePlayer1Animation
-          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer2
+          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer2Animation
           goto SelectDonePlayer23Animation
-ProcessPlayer2
+ProcessPlayer2Animation
           let temp1 = 2 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer2Animation
           if playerCharacter[2] = NoCharacter then goto SelectDonePlayer2Animation
           if playerCharacter[2] = RandomCharacter then goto SelectDonePlayer2Animation
           let temp1 = 2
           gosub SelectUpdatePlayerAnimation
 SelectDonePlayer2Animation
-          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer3
+          if controllerStatus & SetQuadtariDetected then goto ProcessPlayer3Animation
           goto SelectDonePlayer23Animation
-ProcessPlayer3
+ProcessPlayer3Animation
           let temp1 = 3 : gosub GetPlayerLocked : if temp2 then goto SelectDonePlayer23Animation
           if playerCharacter[3] = NoCharacter then goto SelectDonePlayer23Animation
           if playerCharacter[3] = RandomCharacter then goto SelectDonePlayer23Animation

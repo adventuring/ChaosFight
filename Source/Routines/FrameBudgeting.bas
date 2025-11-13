@@ -61,15 +61,13 @@ BudgetedHealthBarUpdate
           rem        HealthBarMaxLength (constant) = maximum health bar
           rem        length
           rem
-          rem Output: One player health bar updated per frame, COLUPF
-          rem set, health bar drawn
+          rem Output: One player health bar updated per frame, COLUPF/COLUP0/COLUP1
+          rem set to same color for score minikernel
           rem
-          rem Mutates: temp6 (health bar length), COLUPF (TIA register),
-          rem playfield data (via DrawHealthBarRow*)
+          rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem
           rem Called Routines: UpdateHealthBarPlayer0-3 - update
-          rem individual player health bars,
-          rem   DrawHealthBarRow0-3 (bank8) - draw health bar rows
+          rem individual player health bars
           rem
           rem Constraints: Must be colocated with
           rem CheckPlayer2HealthUpdate, DonePlayer2HealthUpdate,
@@ -162,18 +160,17 @@ UpdateHealthBarPlayer0
           rem        HealthBarMaxLength (constant) = maximum health bar
           rem        length
           rem
-          rem Output: COLUPF set to Player 1 color, health bar drawn
+          rem Output: Score colors set for health bar display
           rem
-          rem Mutates: temp6 (health bar length), COLUPF (TIA register),
-          rem playfield data (via DrawHealthBarRow0)
-          rem
-          rem Called Routines: DrawHealthBarRow0 (bank8) - draws Player
-          rem 1 health bar row
-          rem Constraints: None
-          let temp6 = playerHealth[0] / 3
+          rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
+          rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
+          let temp6 = playerHealth[0] / 12
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          COLUPF = ColBlue(12)
-          gosub DrawHealthBarRow0 bank8
+          COLUPF = ColGray(14)
+          COLUP0 = ColGray(14)
+          COLUP1 = ColGray(14)
+          rem Score minikernel requires all three color registers set to same color
+          rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
           return
 
 UpdateHealthBarPlayer1
@@ -185,18 +182,17 @@ UpdateHealthBarPlayer1
           rem        HealthBarMaxLength (constant) = maximum health bar
           rem        length
           rem
-          rem Output: COLUPF set to Player 2 color, health bar drawn
+          rem Output: Score colors set for health bar display
           rem
-          rem Mutates: temp6 (health bar length), COLUPF (TIA register),
-          rem playfield data (via DrawHealthBarRow1)
-          rem
-          rem Called Routines: DrawHealthBarRow1 (bank8) - draws Player
-          rem 2 health bar row
+          rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Constraints: None
           let temp6 = playerHealth[1] / 3
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          COLUPF = ColRed(12)
-          gosub DrawHealthBarRow1 bank8
+          COLUPF = ColGray(14)
+          COLUP0 = ColGray(14)
+          COLUP1 = ColGray(14)
+          rem Score minikernel requires all three color registers set to same color
+          rem Health bars for players 1/2 are displayed using score registers (pfscore/pfscore2)
           return
 
 UpdateHealthBarPlayer2
@@ -209,18 +205,17 @@ UpdateHealthBarPlayer2
           rem        HealthBarMaxLength (constant) = maximum health bar
           rem        length
           rem
-          rem Output: COLUPF set to Player 3 color, health bar drawn
+          rem Output: Score colors set for health digit display
           rem
-          rem Mutates: temp6 (health bar length), COLUPF (TIA register),
-          rem playfield data (via DrawHealthBarRow2)
-          rem
-          rem Called Routines: DrawHealthBarRow2 (bank8) - draws Player
-          rem 3 health bar row
-          rem Constraints: None
-          let temp6 = playerHealth[2] / 3
+          rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
+          rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
+          let temp6 = playerHealth[2] / 12
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          COLUPF = ColYellow(12)
-          gosub DrawHealthBarRow2 bank8
+          COLUPF = ColGray(14)
+          COLUP0 = ColGray(14)
+          COLUP1 = ColGray(14)
+          rem Score minikernel requires all three color registers set to same color
+          rem Players 3/4 health displayed as digits in score area
           return
 
 UpdateHealthBarPlayer3
@@ -233,18 +228,17 @@ UpdateHealthBarPlayer3
           rem        HealthBarMaxLength (constant) = maximum health bar
           rem        length
           rem
-          rem Output: COLUPF set to Player 4 color, health bar drawn
+          rem Output: Score colors set for health digit display
           rem
-          rem Mutates: temp6 (health bar length), COLUPF (TIA register),
-          rem playfield data (via DrawHealthBarRow3)
-          rem
-          rem Called Routines: DrawHealthBarRow3 (bank8) - draws Player
-          rem 4 health bar row
-          rem Constraints: None
-          let temp6 = playerHealth[3] / 3
+          rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
+          rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
+          let temp6 = playerHealth[3] / 12
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
-          COLUPF = ColGreen(12)
-          gosub DrawHealthBarRow3 bank8
+          COLUPF = ColGray(14)
+          COLUP0 = ColGray(14)
+          COLUP1 = ColGray(14)
+          rem Score minikernel requires all three color registers set to same color
+          rem Players 3/4 health displayed as digits in score area
           return
 
           rem

@@ -124,6 +124,10 @@
           dim attackerID = o
           dim defenderID = q
 
+          rem GetPlayerLocked helper variables (set by GetPlayerLocked function)
+          dim GPL_playerIndex = r
+          dim GPL_lockedState = s
+
           rem Game state and system flags (consolidated to save RAM)
           rem Game mode index (0-8): ModePublisherPrelude, ModeAuthorPrelude, etc.
           rem System flags (packed byte):
@@ -142,6 +146,9 @@
           rem HandicapMode - defined locally in CharacterSelect.bas as
           rem   temp1 (local scope only)
           dim controllerStatus = h
+
+          rem Frame phase counter (cycles 0-3 each frame for multi-frame operations)
+          dim FramePhase = i
 
           rem Character selection results (set during ADMIN, read during GAME)
           rem Player-character selection (0-31) cached across contexts
@@ -420,6 +427,17 @@
 
           rem PlayerCharacter[0-3] - Character type indices (0-MaxCharacter)
           dim PlayerCharacter = var48
+
+          rem PlayerFacing[0-3] - Facing direction for each player (0=right, 1=left, 2=up, 3=down)
+          dim PlayerFacing = var53
+
+          rem Player sprite pointer aliases (built-in batariBASIC multisprite kernel variables)
+          rem These are aliases for the lo/hi byte pairs used by the multisprite kernel
+          dim player1pointer = player1pointerlo.player1pointerhi
+          dim player2pointer = player2pointerlo.player2pointerhi
+          dim player3pointer = player3pointerlo.player3pointerhi
+          dim player4pointer = player4pointerlo.player4pointerhi
+          dim player5pointer = player5pointerlo.player5pointerhi
 
           rem playerRecoveryFrames[0-3] - Recovery/hitstun frame
           rem   counters

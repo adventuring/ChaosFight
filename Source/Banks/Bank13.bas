@@ -1,4 +1,5 @@
           rem ChaosFight - Source/Banks/Bank13.bas
+Bank13DataEnds
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem
           rem GENERAL CODE BANK (shared memory budget - 8 banks total)
@@ -9,3 +10,4 @@
 #include "Source/Routines/ConsoleHandling.bas"
 #include "Source/Routines/CharacterControlsJump.bas"
 
+Bank13CodeEnds

@@ -14,21 +14,22 @@ GetPlayerLocked
           rem Get Player Locked State
           rem Input: temp1 = player index (0-3), playerLocked (bit-packed)
           rem Output: temp2 = locked state (0=unlocked, 1=normal, 2=handicap)
-          rem Mutates: temp2
+          rem         GPL_lockedState = same as temp2
+          rem Mutates: temp2, GPL_lockedState
           rem
           rem Called Routines: None
           rem Constraints: None
 
           rem Invalid index check (temp1 should be 0-3)
           rem if temp1 < 0 then temp2 = 0 : return
-          if temp1 > 3 then temp2 = 0 : return
+          if temp1 > 3 then temp2 = 0 : GPL_lockedState = temp2 : return
 
           rem Extract 2 bits for this player
           rem Use division and masking operations compatible with batariBASIC
-          if temp1 = 0 then temp2 = playerLocked & 3 : return
-          if temp1 = 1 then temp2 = (playerLocked / 4) & 3 : return
-          if temp1 = 2 then temp2 = (playerLocked / 16) & 3 : return
-          if temp1 = 3 then temp2 = (playerLocked / 64) & 3 : return
+          if temp1 = 0 then temp2 = playerLocked & 3 : GPL_lockedState = temp2 : return
+          if temp1 = 1 then temp2 = (playerLocked / 4) & 3 : GPL_lockedState = temp2 : return
+          if temp1 = 2 then temp2 = (playerLocked / 16) & 3 : GPL_lockedState = temp2 : return
+          if temp1 = 3 then temp2 = (playerLocked / 64) & 3 : GPL_lockedState = temp2 : return
 
           return
 

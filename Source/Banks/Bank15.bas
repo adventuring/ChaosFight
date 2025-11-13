@@ -139,8 +139,7 @@
 #include "Source/Data/SoundPointers.bas"
 #include "Source/Data/SongPointers2.bas"
 
-#include "Source/Data/WinnerScreen.bas"
-#include "Source/Routines/DisplayWinScreen.bas"
+Bank15DataEnds
 
           rem Sounds Bank Helper Functions And Data
 #include "Source/Routines/SoundBankHelpers.bas"
@@ -148,7 +147,8 @@
 #include "Source/Routines/MusicBankHelpers15.bas"
 
 
+#include "Source/Data/WinnerScreen.bas"
+#include "Source/Routines/DisplayWinScreen.bas"
 
 
-
-
+Bank15CodeEnds

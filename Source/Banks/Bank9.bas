@@ -9,18 +9,18 @@
           rem data must precede code
           rem all Title Screen modes must be in this bank
           asm
-          include "vcs.h"
-          include "macro.h"
-
-          ORG $A000
-          RORG $F000
 
 #include "Source/Generated/Art.AtariAge.s"
 #include "Source/Generated/Art.AtariAgeText.s"
 #include "Source/Generated/Art.Author.s"
 #include "Source/Generated/Art.ChaosFight.s"
-#include "Source/TitleScreen/asm/titlescreen.s"
 end
 
+Bank9DataEnds
+
+          asm
+#include "Source/TitleScreen/asm/titlescreen.s"
+end
 #include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/CharacterSelectMain.bas"
+Bank9CodeEnds

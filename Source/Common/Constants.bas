@@ -49,9 +49,9 @@
           rem Sentinel for CPU-controlled selection
           const CPUCharacter = 254
 
-          const MissileLifetimeInfinite = 255
           rem Sentinel and special value constants
           rem Missile lifetime value for infinite (until collision, no decrement)
+          const MissileLifetimeInfinite = 255
           rem Sentinel value indicating no hit found in collision checks
           const MissileHitNotFound = 255
           rem Maximum 8-bit value ($FF), used for two’s complement operations
@@ -267,9 +267,15 @@
 
           const PlayerHealthMax = 100
           rem Player health constants
+
+          rem Animation system constants
+          const US_SEPARATOR = 0
+          rem Workaround for compiler bug with dim/const concatenation
           rem Maximum player health (100% = full health, range 0-100)
+          const HealthBarMaxLength = 8
+          rem Maximum health bar length in pixels (100 ÷ 12½ = 8)
           const PlayerHealthHandicap = 75
-          rem Handicap player health (75% of max = 75/100)
+          rem Handicap player health (75% of max = 75 ÷ 100)
           const SetPlayers34Active = $40
           rem Set bit 6 (Players34Active)
           const SetLeftPortGenesis = $01

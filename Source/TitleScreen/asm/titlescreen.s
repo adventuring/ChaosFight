@@ -4,11 +4,8 @@
 
 ; Optional bitmap index offsets (all are 0)
 bmp_48x2_1_index_value
-          BYTE 0
 bmp_48x2_2_index_value
-          BYTE 0
 bmp_48x2_3_index_value
-          BYTE 0
 bmp_48x2_4_index_value
           BYTE 0
 
@@ -95,6 +92,7 @@ bmp_48x2_0_window = bmp_48x2_1_window
 bmp_48x2_0_values = bmp_48x2_1_values
 
  include "TitleScreen/asm/draw_bmp_48x2_X.s"
+ include "TitleScreen/asm/draw_bmp_48x1_X.s"
 
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 

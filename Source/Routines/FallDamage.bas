@@ -255,8 +255,10 @@ HandleFrootyVertical
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if currentCharacter <> CharacterFrooty then return
-          rem Not Frooty
+          if currentCharacter = CharacterFrooty then goto FrootyFallDamage
+          return
+FrootyFallDamage
+          rem Frooty fall damage
 
           rem Get joystick state
           rem This needs to be integrated with PlayerInput.bas
@@ -294,8 +296,10 @@ HandleHarpySwoopAttack
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
           rem Check character type to confirm
-          if currentCharacter <> CharacterHarpy then return 
-          rem Not Harpy
+          if currentCharacter = CharacterHarpy then goto HarpyDive
+          return
+HarpyDive
+          rem Harpy dive
 
           let temp6 = playerState[currentPlayer] & PlayerStateBitFacing
           rem Get facing direction from playerState bit 0

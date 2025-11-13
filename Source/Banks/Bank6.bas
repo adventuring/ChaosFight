@@ -23,6 +23,14 @@ end
 #include "Source/Routines/SetSpritePositions.bas"
 #include "Source/Routines/SetPlayerSprites.bas"
 
+          rem Guard system routines moved from Bank 10 for ROM balance
+#include "Source/Routines/ApplyGuardColor.bas"
+#include "Source/Routines/RestoreNormalPlayerColor.bas"
+#include "Source/Routines/CheckGuardCooldown.bas"
+#include "Source/Routines/StartGuard.bas"
+#include "Source/Routines/UpdateSingleGuardTimer.bas"
+#include "Source/Routines/UpdateGuardTimers.bas"
+
           asm
 Bank6CodeEnds
 end

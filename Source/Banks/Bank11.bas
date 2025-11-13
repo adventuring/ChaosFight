@@ -15,9 +15,6 @@ end
 #include "Source/Routines/PlayerCollisionResolution.bas"
 #include "Source/Routines/AnimationSystem.bas"
 
-          rem Physics gravity routine moved from Bank 14 for ROM balance
-#include "Source/Routines/PlayerPhysicsGravity.bas"
-
           asm
 Bank11CodeEnds
 end

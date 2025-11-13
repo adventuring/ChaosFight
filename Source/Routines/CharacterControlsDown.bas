@@ -309,8 +309,8 @@ StandardGuard
           rem playerState[], playerTimers[] (global arrays) = player
           rem states and timers (via StartGuard)
           rem
-          rem Called Routines: CheckGuardCooldown (bank10) - checks
-          rem guard cooldown, StartGuard (bank10) - activates guard
+          rem Called Routines: CheckGuardCooldown (bank6) - checks
+          rem guard cooldown, StartGuard (bank6) - activates guard
           rem
           rem Constraints: Flying characters (Frooty=8, Dragon of
           rem Storms=2, Harpy=6) cannot guard. Guard blocked if in
@@ -326,9 +326,9 @@ StandardGuard
           if temp4 = CharacterHarpy then return
 
           rem Check if guard is allowed (not in cooldown)
-          gosub CheckGuardCooldown bank10
+          gosub CheckGuardCooldown bank6
           if temp2 = 0 then return
           rem Guard blocked by cooldown
 
-          goto StartGuard bank10
+          goto StartGuard bank6
 

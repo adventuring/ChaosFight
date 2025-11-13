@@ -19,7 +19,6 @@ end
 
           rem Physics helper routines moved from Bank 8 for ROM balance
 #include "Source/Routines/InitializeMovementSystem.bas"
-#include "Source/Routines/MovementApplyGravity.bas"
 #include "Source/Routines/AddVelocitySubpixelY.bas"
 #include "Source/Routines/ApplyFriction.bas"
 

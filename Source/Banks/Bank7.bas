@@ -23,6 +23,9 @@ end
 #include "Source/Routines/CharacterSelectFire.bas"
 #include "Source/Routines/CharacterSelectHelpers.bas"
 
+          rem Physics helper routine moved from Bank 14 for ROM balance
+#include "Source/Routines/MovementApplyGravity.bas"
+
           asm
 Bank7CodeEnds
 end

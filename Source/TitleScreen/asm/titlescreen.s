@@ -85,12 +85,6 @@ title_playfield
  include "TitleScreen/asm/48x2_3_kernel.s"
  include "TitleScreen/asm/48x2_4_kernel.s"
 
-	; Legacy alias: slot 0 reuses AtariAge logo data (slot 1)
-bmp_48x2_0_colors = bmp_48x2_1_colors
-bmp_48x2_0_height = bmp_48x2_1_height
-bmp_48x2_0_window = bmp_48x2_1_window
-bmp_48x2_0_values = bmp_48x2_1_values
-
  include "TitleScreen/asm/draw_bmp_48x2_X.s"
  include "TitleScreen/asm/draw_bmp_48x1_X.s"
 

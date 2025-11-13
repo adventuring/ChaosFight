@@ -3,6 +3,9 @@
           rem Arena color reloading utilities moved for bank optimization
 
 ReloadArenaColors
+          asm
+ReloadArenaColors
+end
           rem Reload arena colors based on current Color/B&W switch
           rem state
           rem Uses same logic as LoadArenaColors (consolidated to avoid duplication)
@@ -18,12 +21,11 @@ ReloadArenaColors
           if systemFlags & SystemFlagColorBWOverride then temp2 = 1
 
 ReloadArenaColorsDispatch
+          asm
+ReloadArenaColorsDispatch
+end
           rem Use existing LoadArena color functions (identical behavior)
           if temp2 then goto LoadArenaColorsBWLabel bank16
           goto LoadArenaColorsColor bank16
 
-          asm
-          ReloadArenaColors = .ReloadArenaColors
-          ReloadArenaColorsDispatch = .ReloadArenaColorsDispatch
-end
 

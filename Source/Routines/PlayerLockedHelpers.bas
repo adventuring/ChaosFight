@@ -34,7 +34,7 @@ GetPlayerLocked
 
 SetPlayerLocked
           asm
-          SetPlayerLocked = .SetPlayerLocked
+SetPlayerLocked
 end
           rem
           rem Set Player Locked State

@@ -1,4 +1,7 @@
 PerformRangedAttack
+          asm
+PerformRangedAttack
+end
           rem
           rem ChaosFight - Source/Routines/PerformRangedAttack.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
@@ -37,7 +40,4 @@ PerformRangedAttack
           rem Set animation state 14 (attack execution)
 
           return
-          asm
-          PerformRangedAttack = .PerformRangedAttack
-end
 

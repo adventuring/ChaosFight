@@ -89,7 +89,7 @@ TryVoice1
 
 UpdateSoundEffect
           asm
-          UpdateSoundEffect = .UpdateSoundEffect
+UpdateSoundEffect
 end
           rem UpdateSoundEffect - Update sound effect playback each
           rem   frame

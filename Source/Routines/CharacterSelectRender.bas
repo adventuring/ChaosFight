@@ -34,6 +34,9 @@ SelectRenderPlayerPreview
           return
 
 PlayerPreviewSetPosition
+          asm
+PlayerPreviewSetPosition
+end
           rem Position player preview sprites in the four select quadrants
           if temp1 = 0 then goto PlayerPreviewSetPositionP0
           if temp1 = 1 then goto PlayerPreviewSetPositionP1
@@ -57,12 +60,18 @@ PlayerPreviewSetPositionP3
           return
 
 SelectHideLowerPlayerPreviews
+          asm
+SelectHideLowerPlayerPreviews
+end
           rem Move lower-player previews off-screen when Quadtari is absent
           player2y = 200
           player3y = 200
           return
 
 RenderPlayerPreview
+          asm
+RenderPlayerPreview
+end
           rem Load preview sprite and base color for admin screens
           let currentPlayer = temp1
           let currentCharacter = playerCharacter[currentPlayer]
@@ -119,7 +128,7 @@ SelectSetPlayerColorHandicap
 
 SelectUpdateAnimations
           asm
-          SelectUpdateAnimations = .SelectUpdateAnimations
+SelectUpdateAnimations
 end
           rem Update character select animations for all players
           let temp1 = 0
@@ -184,6 +193,9 @@ SelectUpdatePlayerAnimation
           return
 
 CharacterSelectCheckControllerRescan
+          asm
+CharacterSelectCheckControllerRescan
+end
           rem Re-detect controllers on Select/Pause/ColorB&W toggle
           if switchselect then goto CharacterSelectDoRescan
           let temp6 = switchbw
@@ -196,10 +208,4 @@ CharacterSelectDoRescan
 CharacterSelectRescanDone
           return
 
-          asm
-          PlayerPreviewSetPosition = .PlayerPreviewSetPosition
-          RenderPlayerPreview = .RenderPlayerPreview
-          SelectHideLowerPlayerPreviews = .SelectHideLowerPlayerPreviews
-          CharacterSelectCheckControllerRescan = .CharacterSelectCheckControllerRescan
 
-end

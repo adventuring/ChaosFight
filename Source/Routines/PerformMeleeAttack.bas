@@ -1,4 +1,7 @@
 PerformMeleeAttack
+          asm
+PerformMeleeAttack
+end
           rem
           rem ChaosFight - Source/Routines/PerformMeleeAttack.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
@@ -42,6 +45,3 @@ PerformMeleeAttack
           rem For now, collision will be handled in UpdateAllMissiles
 
           return
-          asm
-          PerformMeleeAttack = .PerformMeleeAttack
-end

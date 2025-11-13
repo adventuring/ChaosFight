@@ -89,6 +89,9 @@ end
           return
 
 LoadSoundNote1
+          asm
+LoadSoundNote1
+end
           rem Load next note from sound effect stream for Voice 1
           rem
           rem Input: soundEffectPointer1 (global 16-bit) points to current note in
@@ -148,6 +151,3 @@ end
 
           return
 
-          asm
-          LoadSoundNote1 = .LoadSoundNote1
-end

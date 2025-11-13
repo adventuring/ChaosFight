@@ -1,4 +1,7 @@
 SetGameScreenLayout
+          asm
+SetGameScreenLayout
+end
           rem Set screen layout for all screens (32×8) with health bar
           rem space
           rem
@@ -13,6 +16,3 @@ SetGameScreenLayout
           pfrowheight = ScreenPfRowHeight
           pfrows = ScreenPfRows
           return
-          asm
-          SetGameScreenLayout = .SetGameScreenLayout
-end

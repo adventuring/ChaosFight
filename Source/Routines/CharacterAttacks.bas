@@ -173,7 +173,7 @@ HarpySetVerticalVelocity
 
 UrsuloAttack
           asm
-          UrsuloAttack = .UrsuloAttack
+UrsuloAttack
 end
           rem Ursulo (Character 14) - Melee attack (claw swipe)
           rem
@@ -194,7 +194,7 @@ end
 
 ShamoneAttack
           asm
-          ShamoneAttack = .ShamoneAttack
+ShamoneAttack
 end
           rem Shamone (Character 15) - Special attack: jumps while
           rem attacking simultaneously

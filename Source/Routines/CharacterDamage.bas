@@ -7,6 +7,9 @@
           rem character select utilities in bank 6 to balance ROM usage.
 
 GetCharacterDamage
+          asm
+GetCharacterDamage
+end
           rem Get base damage value for character attacks.
           rem Input: temp1 = character index (0-MaxCharacter)
           rem Output: temp2 = base damage value (12=light, 18=medium, 22=heavy)
@@ -27,7 +30,4 @@ GetCharacterDamage
 GetCharacterDamageEnd
           return
 
-          asm
-          GetCharacterDamage = .GetCharacterDamage
-end
 

@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 DrawTitleScreen
+          asm
+DrawTitleScreen
+end
           rem Title Screen Rendering
           rem Render the title screen using a 48×42 bitmap generated from Source/Art/ChaosFight.xcf
           rem and included as Source/Generated/Art.ChaosFight.s
@@ -59,10 +62,6 @@ end
 
           return
 
-          asm
-          DrawTitleScreen = .DrawTitleScreen
-          LoadTitleBitmap = .LoadTitleBitmap
-end
 
           rem
           rem Load Title Bitmap
@@ -74,6 +73,9 @@ end
           rem - BitmapChaosFightColors: 84 color values (double-height)
 
 LoadTitleBitmap
+          asm
+LoadTitleBitmap
+end
           return
           rem Configure titlescreen kernel to show Title (ChaosFight)
           rem   bitmap

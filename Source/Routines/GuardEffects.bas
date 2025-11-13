@@ -97,6 +97,9 @@ GuardCooldownBlocked
           return
 
 StartGuard
+          asm
+StartGuard
+end
           rem
           rem Start Guard
           rem Activate guard state for the specified player.
@@ -124,7 +127,7 @@ StartGuard
 
 UpdateGuardTimers
           asm
-          UpdateGuardTimers = .UpdateGuardTimers
+UpdateGuardTimers
 end
           rem
           rem Update guard duration and cooldown timers each frame (invoked from main loop).
@@ -240,6 +243,3 @@ GuardTimerExpired
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           return
 
-          asm
-          StartGuard = .StartGuard
-end

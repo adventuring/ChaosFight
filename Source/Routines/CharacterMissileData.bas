@@ -7,6 +7,9 @@
           rem accessed through these optimized lookup routines.
 
 GetCharacterWeightValue
+          asm
+GetCharacterWeightValue
+end
           rem Return the character’s weight.
           rem Input: temp1 = character index (0-MaxCharacter)
           rem Output: temp2 = character weight
@@ -17,6 +20,9 @@ GetCharacterWeightValue
           return
 
 GetCharacterMissileHeight
+          asm
+GetCharacterMissileHeight
+end
           rem Return missile height slot (0 = none, 1-2 = height).
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileHeights lookup)
           rem Output: temp2 = missile height slot
@@ -27,6 +33,9 @@ GetCharacterMissileHeight
           return
 
 GetCharacterMissileMaxX
+          asm
+GetCharacterMissileMaxX
+end
           rem Return missile maximum X range.
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMaxX lookup)
           rem Output: temp2 = missile max X range
@@ -37,6 +46,9 @@ GetCharacterMissileMaxX
           return
 
 GetCharacterMissileMaxY
+          asm
+GetCharacterMissileMaxY
+end
           rem Return missile maximum Y range.
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMaxY lookup)
           rem Output: temp2 = missile max Y range
@@ -47,6 +59,9 @@ GetCharacterMissileMaxY
           return
 
 GetMissileWidth
+          asm
+GetMissileWidth
+end
           rem Return missile width from CharacterMissileWidths[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileHeights lookup)
           rem Output: temp2 = missile width
@@ -56,6 +71,9 @@ GetMissileWidth
           return
 
 GetMissileHeight
+          asm
+GetMissileHeight
+end
           rem Return missile height from CharacterMissileHeights[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileFlags lookup)
           rem Output: temp2 = missile height
@@ -65,6 +83,9 @@ GetMissileHeight
           return
 
 GetMissileFlags
+          asm
+GetMissileFlags
+end
           rem Return missile flags from CharacterMissileFlags[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMomentumX lookup)
           rem Output: temp2 = missile flags
@@ -74,6 +95,9 @@ GetMissileFlags
           return
 
 GetMissileMomentumX
+          asm
+GetMissileMomentumX
+end
           rem Return missile horizontal momentum from CharacterMissileMomentumX[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMomentumY lookup)
           rem Output: temp2 = missile momentum X
@@ -83,6 +107,9 @@ GetMissileMomentumX
           return
 
 GetMissileMomentumY
+          asm
+GetMissileMomentumY
+end
           rem Return missile vertical momentum from CharacterMissileMomentumY[temp1].
           rem Parameters: temp1 = character index (0-MaxCharacter)
           rem Output: temp2 = missile momentum Y
@@ -90,14 +117,3 @@ GetMissileMomentumY
           rem Constraints: None (table lookup - missile momentum Y)
           let temp2 = CharacterMissileMomentumY[temp1]
           return
-          asm
-          GetMissileWidth = .GetMissileWidth
-          GetMissileHeight = .GetMissileHeight
-          GetMissileFlags = .GetMissileFlags
-          GetCharacterWeightValue = .GetCharacterWeightValue
-          GetCharacterMissileHeight = .GetCharacterMissileHeight
-          GetCharacterMissileMaxX = .GetCharacterMissileMaxX
-          GetCharacterMissileMaxY = .GetCharacterMissileMaxY
-          GetMissileMomentumX = .GetMissileMomentumX
-          GetMissileMomentumY = .GetMissileMomentumY
-end

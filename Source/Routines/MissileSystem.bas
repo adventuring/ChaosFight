@@ -193,7 +193,7 @@ VelocityDone
 
 UpdateAllMissiles
           asm
-          UpdateAllMissiles = .UpdateAllMissiles
+UpdateAllMissiles
 end
           rem
           rem Update All Missiles

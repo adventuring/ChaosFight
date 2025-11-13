@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CheckAllPlayerEliminations
+          asm
+CheckAllPlayerEliminations
+end
           rem Player Elimination System
           rem Handles player elimination when health reaches 0, game end
           rem   conditions,
@@ -68,6 +71,9 @@ CheckAllPlayerEliminations
           return
 
 CheckPlayerElimination
+          asm
+CheckPlayerElimination
+end
           rem
           rem Check Single Player Elimination
           rem
@@ -142,6 +148,9 @@ CheckPlayerElimination
           if currentPlayer = 2 then gosub UpdatePlayers34ActiveFlag : goto UpdatePlayers34Done
           if currentPlayer = 3 then gosub UpdatePlayers34ActiveFlag
 UpdatePlayers34Done
+          asm
+UpdatePlayers34Done
+end
 
           let temp2 = eliminationCounter_R + 1
           rem Record elimination order
@@ -154,6 +163,9 @@ UpdatePlayers34Done
 
 
 TriggerEliminationEffects
+          asm
+TriggerEliminationEffects
+end
           rem
           rem Trigger elimination audio/visual effects for currentPlayer.
           rem Input: currentPlayer (0-3), SoundPlayerEliminated
@@ -199,6 +211,9 @@ TriggerEliminationEffects
           return
 
 DeactivatePlayerMissiles
+          asm
+DeactivatePlayerMissiles
+end
           rem
           rem Hide Eliminated Player Sprite
           rem Move eliminated player sprite off-screen.
@@ -218,6 +233,9 @@ DeactivatePlayerMissiles
           return
 
 CountRemainingPlayers
+          asm
+CountRemainingPlayers
+end
           rem
           rem Count Remaining Players
           rem Input: playersEliminated_R (SCRAM flags), PlayerEliminatedPlayer0-3 masks
@@ -236,6 +254,9 @@ CountRemainingPlayers
           return
 
 IsPlayerEliminated
+          asm
+IsPlayerEliminated
+end
           rem
           rem Is Player Eliminated
           rem Input: currentPlayer (0-3), playersEliminated_R, PlayerEliminatedPlayer0-3 masks
@@ -249,6 +270,9 @@ IsEliminatedDone
           return
 
 IsPlayerAlive
+          asm
+IsPlayerAlive
+end
           rem
           rem Is Player Alive
           rem Check if specified player is alive (not eliminated AND
@@ -273,6 +297,9 @@ IsPlayerAlive
           return
 
 FindWinner
+          asm
+FindWinner
+end
           rem
           rem Find Winner
           rem Identify the last standing player.
@@ -296,6 +323,9 @@ FindWinner
           return
 
 FindLastEliminated
+          asm
+FindLastEliminated
+end
           rem
           rem Find player eliminated most recently (highest elimination order).
           rem Input: currentPlayer loop variable, eliminationOrder[]
@@ -313,6 +343,9 @@ FindLastEliminated
           next
 
 UpdatePlayers34ActiveFlag
+          asm
+UpdatePlayers34ActiveFlag
+end
           rem Update Players34Active flag when players 3/4 are present.
           rem Input: playerCharacter[] (global array), playersEliminated_R,
           rem        PlayerEliminatedPlayer2/3 masks, controllerStatus
@@ -328,29 +361,20 @@ UpdatePlayers34ActiveFlag
           rem Player 3 is active
 
 CheckPlayer4ActiveFlag
+          asm
+CheckPlayer4ActiveFlag
+end
           rem Check if Player 4 is active (selected and not eliminated)
           if playerCharacter[3] = NoCharacter then UpdatePlayers34ActiveDone
           if PlayerEliminatedPlayer3 & playersEliminated_R then UpdatePlayers34ActiveDone
           let controllerStatus = controllerStatus | SetPlayers34Active
           rem Player 4 is active
 UpdatePlayers34ActiveDone
+          asm
+UpdatePlayers34ActiveDone
+end
           return
 
-          asm
-          CheckAllPlayerEliminations = .CheckAllPlayerEliminations
-          CheckPlayerElimination = .CheckPlayerElimination
-          UpdatePlayers34Done = .UpdatePlayers34Done
-          TriggerEliminationEffects = .TriggerEliminationEffects
-          DeactivatePlayerMissiles = .DeactivatePlayerMissiles
-          CountRemainingPlayers = .CountRemainingPlayers
-          IsPlayerEliminated = .IsPlayerEliminated
-          IsPlayerAlive = .IsPlayerAlive
-          FindWinner = .FindWinner
-          FindLastEliminated = .FindLastEliminated
-          UpdatePlayers34ActiveFlag = .UpdatePlayers34ActiveFlag
-          CheckPlayer4ActiveFlag = .CheckPlayer4ActiveFlag
-          UpdatePlayers34ActiveDone = .UpdatePlayers34ActiveDone
-end
 
           rem AND masks to clear player missile bits (inverted BitMask values)
           data PlayerANDMask

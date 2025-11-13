@@ -68,7 +68,7 @@ SetAuthorWindowValues
 
 SetTitleWindowValues
           asm
-          SetTitleWindowValues = .SetTitleWindowValues
+SetTitleWindowValues
 end
           rem Initialize window values for Title screen
           rem Shows: ChaosFight (bmp_48x2_3) only

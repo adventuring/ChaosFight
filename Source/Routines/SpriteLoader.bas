@@ -18,6 +18,9 @@
 end
 
 LoadCharacterSprite
+          asm
+LoadCharacterSprite
+end
           rem Load character sprite data - calls LocateCharacterArt (bank10)
           rem Input: currentCharacter (global), currentPlayer (global)
           rem        temp2 = animation frame (0-7), temp3 = animation action (0-15)
@@ -50,11 +53,11 @@ LCS_CopyQuestionGlyph
           let temp4 = SpriteQuestionMark
           gosub CopyGlyphToPlayer bank16
           return
-          asm
-          LoadCharacterSprite = .LoadCharacterSprite
-end
 
 LoadPlayerSprite
+          asm
+LoadPlayerSprite
+end
           asm
 ;
 ; LOAD PLAYER SPRITE (generic Dispatcher)
@@ -94,9 +97,6 @@ end
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank10
           return
-          asm
-          LoadPlayerSprite = .LoadPlayerSprite
-end
 
 LoadPlayerSpriteDispatch
           rem removed (was a small shim); callers now use inline block above

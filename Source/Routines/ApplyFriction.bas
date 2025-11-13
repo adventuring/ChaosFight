@@ -9,7 +9,7 @@ ApplyFriction
           rem
           rem Constraints: Simple decrement approach for 8-bit CPU.
           rem Positive velocities (>0 and not negative) decremented,
-          rem negative velocities (≥128 in two's complement) incremented
+          rem negative velocities (≥128 in two’s complement) incremented
           if playerVelocityX[temp1] > 0 then let playerVelocityX[temp1] = playerVelocityX[temp1] - 1
           rem Check for negative velocity using twos complement (values
           rem ≥ 128 are negative)

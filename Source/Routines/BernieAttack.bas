@@ -2,7 +2,7 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 BernieAttack
-          rem Executes Bernie's ground-thump area attack
+          rem Executes Bernie’s ground-thump area attack
           rem Each character has a unique attack subroutine that:
           rem 1. Calls either PerformMeleeAttack or PerformRangedAttack
           rem   2. Sets the appropriate animation state

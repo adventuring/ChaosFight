@@ -8,7 +8,7 @@ end
           rem
           rem Deactivate Player Missiles
           rem Input: currentPlayer (0-3), missileActive flags
-          rem Output: Clears this player's missile bit
+          rem Output: Clears this player’s missile bit
           rem Mutates: missileActive
           rem Clear missile active bit for this player
           let missileActive = missileActive & PlayerANDMask[currentPlayer]

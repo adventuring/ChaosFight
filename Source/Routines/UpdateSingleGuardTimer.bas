@@ -68,7 +68,7 @@ UpdateGuardTimerActive
           let temp3 = playerTimers_R[temp1]
           rem Player is guarding - decrement guard duration timer
           if temp3 = 0 then GuardTimerExpired
-          rem Guard timer already expired (shouldn't happen, but safety
+          rem Guard timer already expired (shouldn’t happen, but safety
           rem   check)
 
           let temp3 = temp3 - 1

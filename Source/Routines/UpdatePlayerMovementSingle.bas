@@ -15,7 +15,7 @@ UpdatePlayerMovementSingle
           if playerHealth[currentPlayer] = 0 then return
 
           rem Apply X Velocity To X Position (8.8 fixed-point)
-          rem Use batariBASIC's built-in 16-bit addition for carry detection
+          rem Use batariBASIC’s built-in 16-bit addition for carry detection
           let subpixelAccumulator = playerSubpixelX_RL[currentPlayer] + playerVelocityXL[currentPlayer]
           let playerSubpixelX_WL[currentPlayer] = temp2
           if temp3 > 0 then let playerSubpixelX_W[currentPlayer] = playerSubpixelX_R[currentPlayer] + 1
@@ -27,7 +27,7 @@ UpdatePlayerMovementSingle
           let playerX[currentPlayer] = playerSubpixelX_R[currentPlayer]
 
           rem Apply Y Velocity To Y Position (8.8 fixed-point)
-          rem Use batariBASIC's built-in 16-bit addition for carry detection
+          rem Use batariBASIC’s built-in 16-bit addition for carry detection
           let subpixelAccumulator = playerSubpixelY_RL[currentPlayer] + playerVelocityYL[currentPlayer]
           let playerSubpixelY_WL[currentPlayer] = temp2
           if temp3 > 0 then let playerSubpixelY_W[currentPlayer] = playerSubpixelY_R[currentPlayer] + 1

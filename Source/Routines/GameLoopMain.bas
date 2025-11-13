@@ -6,6 +6,9 @@
           rem SEQUENCE PER FRAME:
 
 ReadEnhancedButtons
+          asm
+ReadEnhancedButtons
+end
           rem Read enhanced controller buttons (Genesis Button C, Joy2B+ Button II)
           rem Only players 1-2 can have enhanced controllers (players 3-4 require Quadtari)
           rem Stores button states in enhancedButtonStates for use throughout the frame

@@ -383,10 +383,10 @@ Source/TitleScreen/titlescreen_colors.s: \
 	@echo "   org \$$f500" >> "$@"
 	@echo "" >> "$@"
 	@echo ";;; Include color tables, PF1, PF2, and background for all titlescreen bitmaps" >> "$@"
-	@echo " include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"
-	@echo " include \"Source/Generated/Art.AtariAgeText.colors.s\"" >> "$@"
-	@echo " include \"Source/Generated/Art.ChaosFight.colors.s\"" >> "$@"
-	@echo " include \"Source/Generated/Art.Author.colors.s\"" >> "$@"
+	@echo "          include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"
+	@echo "          include \"Source/Generated/Art.AtariAgeText.colors.s\"" >> "$@"
+	@echo "          include \"Source/Generated/Art.ChaosFight.colors.s\"" >> "$@"
+	@echo "          include \"Source/Generated/Art.Author.colors.s\"" >> "$@"
 
 # Convert XCF to PNG for maps
 Source/Art/Map-%.png: Source/Art/Map-%.xcf | Source/Art/

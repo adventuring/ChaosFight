@@ -525,7 +525,12 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/FontRendering.bas \
 	Source/Routines/GameLoopInit.bas \
 	Source/Routines/GameLoopMain.bas \
-	Source/Routines/GuardEffects.bas \
+	Source/Routines/ApplyGuardColor.bas \
+	Source/Routines/RestoreNormalPlayerColor.bas \
+	Source/Routines/CheckGuardCooldown.bas \
+	Source/Routines/StartGuard.bas \
+	Source/Routines/UpdateGuardTimers.bas \
+	Source/Routines/UpdateSingleGuardTimer.bas \
 	Source/Routines/HealthBarSystem.bas \
 	Source/Routines/MainLoop.bas \
 	Source/Routines/MissileCollision.bas \

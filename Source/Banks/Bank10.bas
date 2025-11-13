@@ -11,7 +11,12 @@ end
 
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
 #include "Source/Routines/CharacterAttacks.bas"
-#include "Source/Routines/GuardEffects.bas"
+#include "Source/Routines/ApplyGuardColor.bas"
+#include "Source/Routines/RestoreNormalPlayerColor.bas"
+#include "Source/Routines/CheckGuardCooldown.bas"
+#include "Source/Routines/StartGuard.bas"
+#include "Source/Routines/UpdateGuardTimers.bas"
+#include "Source/Routines/UpdateSingleGuardTimer.bas"
 #include "Source/Routines/PlayerPhysicsCollisions.bas"
 #include "Source/Routines/FallingAnimation.bas"
 

@@ -8,6 +8,9 @@
           rem Duplicate of MusicBankHelpers.bas but for Bank 15 songs
 
 LoadSongPointer
+          asm
+LoadSongPointer
+end
           rem Lookup song pointer from tables (Bank 15 songs: 0-Bank15MaxSongID)
           rem
           rem Input: temp1 = song ID (Bank 15 songs: 0-Bank15MaxSongID),
@@ -34,6 +37,9 @@ LSP15_InvalidSong
           return
 
 LoadSongVoice1PointerBank15
+          asm
+LoadSongVoice1PointerBank15
+end
           rem Lookup Voice 1 song pointer from tables (Bank 15 songs)
           rem
           rem Input: temp1 = song ID (Bank 15 songs: 0-Bank15MaxSongID),

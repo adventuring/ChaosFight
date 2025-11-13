@@ -8,6 +8,9 @@
           rem   provides legacy aliases for the historical “16” labels)
 
 LoadSongPointer
+          asm
+LoadSongPointer
+end
           rem Lookup 16-bit song pointer for Bank 1 songs.
           rem Input: temp1 = song ID (Bank1MinSongID-28), SongPointers1L[]/SongPointers1H[]
           rem Output: songPointer updated (points to Song_Voice0 stream)
@@ -42,6 +45,9 @@ LSP_InvalidSong
           return
 
 LoadSongVoice1PointerBank1
+          asm
+LoadSongVoice1PointerBank1
+end
           rem Lookup Voice 1 song pointer from tables (Bank 1 songs)
           rem
           rem Input: temp1 = song ID (Bank 1 songs: Bank1MinSongID-28),

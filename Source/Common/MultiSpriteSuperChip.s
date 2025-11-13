@@ -2,9 +2,79 @@
 ; The upstream multisprite definitions are included separately.
 ; Licensed under CC0 to match upstream batariBASIC headers.
 
+ processor 6502
+ include "vcs.h"
+ include "macro.h"
+
 ; Issue #930: Ensure every SuperChip SCRAM port symbol is exported here so
 ; cross-bank routines rely on one authoritative header.
  include "2600basic_variable_redefs.h"
+
+; Bank boundary definitions for 64K SuperChip ROM (16 banks x 4K each)
+; Each bank reserves space for bankswitching code at the end
+; Bankswitch code starts at $FE0 - bscode_length in each bank's ORG space
+; BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
+ ifconst bscode_length
+BANK1_END = $0000 + $FE0 - bscode_length
+BANK2_END = $1000 + $FE0 - bscode_length
+BANK3_END = $2000 + $FE0 - bscode_length
+BANK4_END = $3000 + $FE0 - bscode_length
+BANK5_END = $4000 + $FE0 - bscode_length
+BANK6_END = $5000 + $FE0 - bscode_length
+BANK7_END = $6000 + $FE0 - bscode_length
+BANK8_END = $7000 + $FE0 - bscode_length
+BANK9_END = $8000 + $FE0 - bscode_length
+BANK10_END = $9000 + $FE0 - bscode_length
+BANK11_END = $A000 + $FE0 - bscode_length
+BANK12_END = $B000 + $FE0 - bscode_length
+BANK13_END = $C000 + $FE0 - bscode_length
+BANK14_END = $D000 + $FE0 - bscode_length
+BANK15_END = $E000 + $FE0 - bscode_length
+BANK16_END = $F000 + $FE0 - bscode_length
+ else
+; Fallback values if bscode_length not yet defined (assumes 32 bytes = $20)
+; $FE0 - $20 = $FC0
+BANK1_END = $0000 + $FC0
+BANK2_END = $1000 + $FC0
+BANK3_END = $2000 + $FC0
+BANK4_END = $3000 + $FC0
+BANK5_END = $4000 + $FC0
+BANK6_END = $5000 + $FC0
+BANK7_END = $6000 + $FC0
+BANK8_END = $7000 + $FC0
+BANK9_END = $8000 + $FC0
+BANK10_END = $9000 + $FC0
+BANK11_END = $A000 + $FC0
+BANK12_END = $B000 + $FC0
+BANK13_END = $C000 + $FC0
+BANK14_END = $D000 + $FC0
+BANK15_END = $E000 + $FC0
+BANK16_END = $F000 + $FC0
+ endif
+
+ ifconst bankswitch
+  if bankswitch == 8
+     ORG $1000
+     RORG $D000
+  endif
+  if bankswitch == 16
+     ORG $1000
+     RORG $9000
+  endif
+  if bankswitch == 32
+     ORG $1000
+     RORG $1000
+  endif
+  if bankswitch == 64
+     ORG $0000
+     RORG $F000
+  endif
+ else
+   ORG $F000
+ endif
+ repeat 256
+ .byte $ff
+ repend
 
 ; ChaosFight combined multisprite + superchip header.
 ; Provides the 2600basic variable map alongside the multisprite kernel aliases

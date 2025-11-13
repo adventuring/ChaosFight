@@ -10,6 +10,7 @@
 #include "Source/Data/Arenas.bas"
 #include "Source/Generated/Numbers.bas"
 #include "Source/Data/PlayerColors.bas"
+#include "Source/Data/WinnerScreen.bas"
 
           asm
 Bank16DataEnds
@@ -23,6 +24,7 @@ end
 #include "Source/Routines/CopyGlyphToPlayer.bas"
 #include "Source/Routines/SetPlayerGlyphFromFont.bas"
 #include "Source/Routines/FontRendering.bas"
+#include "Source/Routines/DisplayWinScreen.bas"
           rem None of these modules above may be moved to other banks.
           asm
 Bank16CodeEnds

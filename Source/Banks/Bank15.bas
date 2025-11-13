@@ -155,9 +155,6 @@ end
 #include "Source/Routines/StopSoundEffects.bas"
 #include "Source/Routines/MusicBankHelpers15.bas"
 
-#include "Source/Data/WinnerScreen.bas"
-#include "Source/Routines/DisplayWinScreen.bas"
-
           asm
 Bank15CodeEnds
 end

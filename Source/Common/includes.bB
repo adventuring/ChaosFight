@@ -1,4 +1,3 @@
-multispritesuperchipheader.asm
 ../../Source/Common/MultiSpriteSuperChip.s
 bB.asm
 multisprite_kernel.asm

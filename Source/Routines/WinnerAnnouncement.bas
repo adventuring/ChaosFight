@@ -8,7 +8,7 @@ WinnerAnnouncementLoop
           rem        switchselect (hardware) = select switch state
           rem Output: Dispatches to WinnerAdvanceToCharacterSelect or returns
           rem
-          rem Called Routines: DisplayWinScreen (bank15) - accesses
+          rem Called Routines: DisplayWinScreen (bank16) - accesses
           rem winner screen state
           rem
           rem Constraints: Must be colocated with WinnerAdvanceToCharacterSelect
@@ -18,7 +18,7 @@ WinnerAnnouncementLoop
           if switchselect then WinnerAdvanceToCharacterSelect
 
           rem Display win screen and continue loop
-          gosub DisplayWinScreen bank15
+          gosub DisplayWinScreen bank16
           rem drawscreen called by MainLoop
           return
 

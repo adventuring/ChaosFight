@@ -29,13 +29,7 @@ end
 #include "Source/Routines/ConstrainToScreen.bas"
 #include "Source/Routines/InitializeMovementSystem.bas"
 #include "Source/Routines/FallDamage.bas"
-#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
-#include "Source/Routines/HealthBarSystem.bas"
 #include "Source/Routines/Physics.bas"
-#include "Source/Routines/CharacterDamage.bas"
-#include "Source/Routines/SetSpritePositions.bas"
-#include "Source/Routines/SetPlayerSprites.bas"
-#include "Source/Routines/DisplayHealth.bas"
 
           asm
 Bank8CodeEnds

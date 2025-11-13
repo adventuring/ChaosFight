@@ -32,7 +32,7 @@ end
           rem LoadCharacterSprite), currentPlayer + temp2-temp3 (LoadCharacterColors parameters) = color
           rem loading parameters (hurt flag, guard flag)
           rem
-          rem Called Routines: LoadCharacterColors (bank16) - loads
+          rem Called Routines: LoadCharacterColors (bank14) - loads
           rem player colors, LoadCharacterSprite (bank10) - loads sprite
           rem graphics
           rem

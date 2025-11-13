@@ -15,6 +15,14 @@ end
 #include "Source/Routines/CharacterSelectRender.bas"
 #include "Source/Routines/CharacterSelectEntry.bas"
 
+          rem Health display routines moved from Bank 11 for ROM balance
+#include "Source/Routines/DisplayHealth.bas"
+#include "Source/Routines/HealthBarSystem.bas"
+
+          rem Sprite rendering routines moved from Bank 10 for ROM balance
+#include "Source/Routines/SetSpritePositions.bas"
+#include "Source/Routines/SetPlayerSprites.bas"
+
           asm
 Bank6CodeEnds
 end

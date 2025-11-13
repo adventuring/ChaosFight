@@ -79,9 +79,9 @@ GameMainLoop
           rem   CheckAllPlayerCollisions (bank8),
           rem   CheckAllPlayerEliminations,
           rem   UpdateAllMissiles (bank12),
-          rem   CheckRoboTitoStretchMissileCollisions, SetPlayerSprites (bank6),
-          rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank8),
-          rem   UpdatePlayer34HealthBars (bank8), UpdateSoundEffect
+          rem   CheckRoboTitoStretchMissileCollisions (bank12), SetPlayerSprites (bank6),
+          rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank6),
+          rem   UpdatePlayer34HealthBars (bank6), UpdateSoundEffect
           rem   (bank15)
           rem
           rem Constraints: Must be colocated with
@@ -216,23 +216,23 @@ GameEndCheckDone
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
-          gosub CheckRoboTitoStretchMissileCollisions bank8
+          gosub CheckRoboTitoStretchMissileCollisions bank12
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)
           rem gosub SetSpritePositions
           rem Replaced by UpdatePlayerMovement
 
-          gosub SetPlayerSprites bank8
+          gosub SetPlayerSprites bank6
           rem Set sprite graphics (in Bank 6)
 
           gosub DisplayHealth bank6
           rem Display health information (in Bank 6)
 
-          gosub UpdatePlayer12HealthBars bank8
+          gosub UpdatePlayer12HealthBars bank6
           rem Update P1/P2 health bars using pfscore system
 
-          gosub UpdatePlayer34HealthBars bank8
+          gosub UpdatePlayer34HealthBars bank6
           rem Update P3/P4 health bars using playfield system
 
           gosub UpdateSoundEffect bank15

@@ -13,10 +13,13 @@ end
 
           rem Titlescreen assets are in Bank 9 - this bank contains only logic
 
-#include "Source/Routines/GetCharacterAttackType.bas"
-#include "Source/Routines/IsCharacterRanged.bas"
-#include "Source/Routines/IsCharacterMelee.bas"
 #include "Source/Routines/MissileSystem.bas"
+
+          rem Missile collision routine moved from Bank 8 for ROM balance
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+
+          rem Character damage routine moved from Bank 8 for ROM balance
+#include "Source/Routines/CharacterDamage.bas"
 #include "Source/Routines/IsPlayerEliminated.bas"
 #include "Source/Routines/IsPlayerAlive.bas"
 #include "Source/Routines/DeactivatePlayerMissiles.bas"

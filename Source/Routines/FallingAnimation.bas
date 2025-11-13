@@ -205,7 +205,7 @@ DonePlayer4Move
           rem Use dynamic sprite setting instead of relying on player
           gosub SetSpritePositions bank6
           rem   declarations
-          gosub SetPlayerSprites bank8
+          gosub SetPlayerSprites bank6
 
           rem drawscreen called by MainLoop
           return

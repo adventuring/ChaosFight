@@ -434,7 +434,8 @@ InputHandleLeftPortPlayerFunction
           rem and attack checks)
           gosub GetPlayerAnimationStateFunction
           rem   block movement during attack animations (states 13-15)
-          if temp2 >= 13 then DoneLeftPortMovement
+          rem Use goto to avoid branch out of range (target is 310+ bytes away)
+          if temp2 >= 13 then goto DoneLeftPortMovement
           rem Block movement during attack windup/execute/recovery
 
           rem Process left/right movement (with playfield collision for
@@ -442,8 +443,9 @@ InputHandleLeftPortPlayerFunction
           rem Frooty (8) and Dragon of Storms (2) need collision checks
           let temp5 = PlayerCharacter[temp1]
           rem   for horizontal movement
-          if temp5 = 8 then IHLP_FlyingMovement
-          if temp5 = 2 then IHLP_FlyingMovement
+          rem Use goto to avoid branch out of range (target is 298+ bytes away)
+          if temp5 = 8 then goto IHLP_FlyingMovement
+          if temp5 = 2 then goto IHLP_FlyingMovement
 
           rem Standard horizontal movement (modifies velocity, not
           rem position)
@@ -599,18 +601,22 @@ ShamoneJumpCheckEnhanced
           rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
           if PlayerCharacter[temp1] = 15 then if temp3 then let PlayerCharacter[temp1] = 31 : goto InputDoneLeftPortJump
           if PlayerCharacter[temp1] = 31 then if temp3 then let PlayerCharacter[temp1] = 15 : goto InputDoneLeftPortJump
-          if temp3 = 0 then InputDoneLeftPortJump
+          rem Use goto to avoid branch out of range (target is 244+ bytes away)
+          if temp3 = 0 then goto InputDoneLeftPortJump
           rem Allow Zoe (3) a single mid-air double-jump
           if PlayerCharacter[temp1] = 3 then goto LeftZoeEnhancedCheck
-          if (PlayerState[temp1] & 4) then InputDoneLeftPortJump
+          rem Use goto to avoid branch out of range (target is 224+ bytes away)
+          if (PlayerState[temp1] & 4) then goto InputDoneLeftPortJump
           goto LeftEnhancedJumpProceed
 LeftZoeEnhancedCheck
           let temp6 = 0
           if (PlayerState[temp1] & 4) then temp6 = 1
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then InputDoneLeftPortJump
+          rem Use goto to avoid branch out of range (target is 189+ bytes away)
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneLeftPortJump
 LeftEnhancedJumpProceed
           rem Use cached animation state - block jump during attack animations (states 13-15)
-          if temp2 >= 13 then InputDoneLeftPortJump
+          rem Use goto to avoid branch out of range (target is 183+ bytes away)
+          if temp2 >= 13 then goto InputDoneLeftPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank13
@@ -623,19 +629,23 @@ SkipEnhancedJumpCheck
 
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as
-          if temp3 = 0 then InputDoneLeftPortJump
+          rem Use goto to avoid branch out of range (target is 244+ bytes away)
+          if temp3 = 0 then goto InputDoneLeftPortJump
           rem Allow Zoe (3) a single mid-air double-jump
           if PlayerCharacter[temp1] = 3 then goto LeftZoeStdJumpCheck
-          if (PlayerState[temp1] & 4) then InputDoneLeftPortJump
+          rem Use goto to avoid branch out of range (target is 224+ bytes away)
+          if (PlayerState[temp1] & 4) then goto InputDoneLeftPortJump
           goto LeftStdJumpProceed
 LeftZoeStdJumpCheck
           let temp6 = 0
           if (PlayerState[temp1] & 4) then temp6 = 1
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then InputDoneLeftPortJump
+          rem Use goto to avoid branch out of range (target is 189+ bytes away)
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneLeftPortJump
 LeftStdJumpProceed
           rem Use cached animation state - block jump during attack
           rem animations (states 13-15)
-          if temp2 >= 13 then InputDoneLeftPortJump
+          rem Use goto to avoid branch out of range (target is 183+ bytes away)
+          if temp2 >= 13 then goto InputDoneLeftPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank13
@@ -679,21 +689,24 @@ InputHandleRightPortPlayerFunction
           rem and attack checks)
           gosub GetPlayerAnimationStateFunction
           rem   block movement during attack animations (states 13-15)
-          if temp2 >= 13 then DoneRightPortMovement
+          rem Use goto to avoid branch out of range (target is 327+ bytes away)
+          if temp2 >= 13 then goto DoneRightPortMovement
           rem Block movement during attack windup/execute/recovery
 
           rem Process left/right movement (with playfield collision for
           rem   flying characters)
           let temp6 = PlayerState[temp1] & 2
           rem Check if player is guarding - guard blocks movement
-          if temp6 then DoneRightPortMovement
+          rem Use goto to avoid branch out of range (target is 314+ bytes away)
+          if temp6 then goto DoneRightPortMovement
           rem Guarding - block movement
 
           rem Frooty (8) and Dragon of Storms (2) need collision checks
           let temp5 = PlayerCharacter[temp1]
           rem   for horizontal movement
-          if temp5 = 8 then IHRP_FlyingMovement
-          if temp5 = 2 then IHRP_FlyingMovement
+          rem Use goto to avoid branch out of range (target is 302+ bytes away)
+          if temp5 = 8 then goto IHRP_FlyingMovement
+          if temp5 = 2 then goto IHRP_FlyingMovement
 
           rem Standard horizontal movement (no collision check)
 
@@ -853,18 +866,22 @@ ShamoneJumpCheckEnhancedRight
           rem For Shamone/Meth Hound, treat enhanced button as UP (toggle forms)
           if PlayerCharacter[temp1] = 15 then if temp3 then let PlayerCharacter[temp1] = 31 : goto InputDoneRightPortJump
           if PlayerCharacter[temp1] = 31 then if temp3 then let PlayerCharacter[temp1] = 15 : goto InputDoneRightPortJump
-          if temp3 = 0 then InputDoneRightPortJump
+          rem Use goto to avoid branch out of range (target is 218+ bytes away)
+          if temp3 = 0 then goto InputDoneRightPortJump
           rem Allow Zoe (3) a single mid-air double-jump
           if PlayerCharacter[temp1] = 3 then goto RightZoeEnhancedCheck
-          if (PlayerState[temp1] & 4) then InputDoneRightPortJump
+          rem Use goto to avoid branch out of range (target is 198+ bytes away)
+          if (PlayerState[temp1] & 4) then goto InputDoneRightPortJump
           goto RightEnhancedJumpProceed
 RightZoeEnhancedCheck
           let temp6 = 0
           if (PlayerState[temp1] & 4) then temp6 = 1
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then InputDoneRightPortJump
+          rem Use goto to avoid branch out of range (target is 163+ bytes away)
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneRightPortJump
 RightEnhancedJumpProceed
           rem Use cached animation state - block jump during attack animations (states 13-15)
-          if temp2 >= 13 then InputDoneRightPortJump
+          rem Use goto to avoid branch out of range (target is 157+ bytes away)
+          if temp2 >= 13 then goto InputDoneRightPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank13
@@ -879,19 +896,23 @@ SkipEnhancedJumpCheckRight
           rem Execute jump if pressed and not already jumping
           rem Handle MethHound jump (character 31 uses same jump as
           rem Shamone)
-          if temp3 = 0 then InputDoneRightPortJump
+          rem Use goto to avoid branch out of range (target is 218+ bytes away)
+          if temp3 = 0 then goto InputDoneRightPortJump
           rem Allow Zoe (3) a single mid-air double-jump
           if PlayerCharacter[temp1] = 3 then goto RightZoeStdJumpCheck
-          if (PlayerState[temp1] & 4) then InputDoneRightPortJump
+          rem Use goto to avoid branch out of range (target is 198+ bytes away)
+          if (PlayerState[temp1] & 4) then goto InputDoneRightPortJump
           goto RightStdJumpProceed
 RightZoeStdJumpCheck
           let temp6 = 0
           if (PlayerState[temp1] & 4) then temp6 = 1
-          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then InputDoneRightPortJump
+          rem Use goto to avoid branch out of range (target is 163+ bytes away)
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneRightPortJump
 RightStdJumpProceed
           rem Use cached animation state - block jump during attack
           rem animations (states 13-15)
-          if temp2 >= 13 then InputDoneRightPortJump
+          rem Use goto to avoid branch out of range (target is 157+ bytes away)
+          if temp2 >= 13 then goto InputDoneRightPortJump
           let temp4 = PlayerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
           gosub DispatchCharacterJump bank13

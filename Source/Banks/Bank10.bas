@@ -10,7 +10,10 @@ Bank10DataEnds
 end
 
 #include "Source/Routines/SpriteLoaderCharacterArt.bas"
-#include "Source/Routines/CharacterAttacks.bas"
+#include "Source/Routines/BernieAttack.bas"
+#include "Source/Routines/HarpyAttack.bas"
+#include "Source/Routines/UrsuloAttack.bas"
+#include "Source/Routines/ShamoneAttack.bas"
 #include "Source/Routines/ApplyGuardColor.bas"
 #include "Source/Routines/RestoreNormalPlayerColor.bas"
 #include "Source/Routines/CheckGuardCooldown.bas"

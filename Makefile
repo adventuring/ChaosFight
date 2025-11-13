@@ -505,7 +505,10 @@ BUILD_DEPS = $(ALL_SOURCES)  \
 	Source/Routines/BeginTitleScreen.bas \
 	Source/Routines/BeginWinnerAnnouncement.bas \
 	Source/Routines/ChangeGameMode.bas \
-	Source/Routines/CharacterAttacks.bas \
+	Source/Routines/BernieAttack.bas \
+	Source/Routines/HarpyAttack.bas \
+	Source/Routines/UrsuloAttack.bas \
+	Source/Routines/ShamoneAttack.bas \
 	Source/Routines/CharacterAttacksDispatch.bas \
 	Source/Routines/CharacterControlsDown.bas \
 	Source/Routines/CharacterControlsJump.bas \

@@ -28,6 +28,7 @@ end
 #include "Source/Routines/BeginPublisherPrelude.bas"
 #include "Source/Routines/PublisherPrelude.bas"
           rem PublisherPrelude moved from Bank 9 for ROM balance
+
 #include "Source/Routines/ControllerDetection.bas"
 #include "Source/Routines/ConsoleDetection.bas"
 #include "Source/Routines/ChangeGameMode.bas"

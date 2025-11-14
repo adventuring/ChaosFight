@@ -3,6 +3,7 @@ bB.asm
 multisprite_kernel.asm
 startup.asm
 std_routines.asm
+div_mul.asm
 bB2.asm
 score_graphics.asm
 banksw.asm

@@ -40,12 +40,3 @@
             SongCharacter24Theme, SongCharacter25Theme, SongCharacter26Theme, SongCharacter27Theme, SongCharacter28Theme, SongCharacter29Theme, SongCharacter30Theme, SongDucksAway
 end
 
-          rem Global label for cross-bank access to CharacterThemeSongIndices data table
-          rem The data statement creates CharacterThemeSongIndices as a global label
-          rem Ensure it's accessible across banks
-          asm
-          ifnconst CharacterThemeSongIndices
-CharacterThemeSongIndices = CharacterThemeSongIndices
-          endif
-end
-

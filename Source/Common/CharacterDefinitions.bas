@@ -116,7 +116,7 @@ GetCharacterAttackTypeSub
           let temp5 = temp2
 GetCharacterAttackTypeSubShiftLoop
           if temp5 = 0 then goto GetCharacterAttackTypeSubShiftDone
-          let temp4 = temp4 / 2
+          let temp4 = temp4 >> 1
           let temp5 = temp5 - 1
           goto GetCharacterAttackTypeSubShiftLoop
 GetCharacterAttackTypeSubShiftDone

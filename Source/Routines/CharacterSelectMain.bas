@@ -228,7 +228,7 @@ end
 
           rem Consolidated input handling with Quadtari multiplexing
           let temp3 = 0
-          if controllerStatus & SetQuadtariDetected then temp3 = qtcontroller * 2
+          if controllerStatus & SetQuadtariDetected then temp3 = qtcontroller << 1
           rem Player offset: 0=P1/P2, 2=P3/P4
           gosub CharacterSelectHandleTwoPlayers
 

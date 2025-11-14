@@ -6,9 +6,13 @@
             GlyphQuestionMark, GlyphCPU, GlyphNo
 end
 
-          rem Helper function to copy glyph sprite to player
+          rem Helper: CopyGlyphToPlayer
+
 CopyGlyphToPlayer
-          rem CopyGlyphToPlayer - Helper function to copy glyph sprite to player
+          asm
+CopyGlyphToPlayer
+
+end
           rem Input: temp3 = player number (0-3)
           rem        temp4 = sprite type (0=QuestionMark, 1=CPU, 2=No)
           rem Output: Sprite data loaded from unified font
@@ -26,8 +30,3 @@ CopyGlyphToPlayer
           if temp3 = 3 then player3pointer = FontData + temp2 : player3height = 16
 
           return
-
-          rem Global label for cross-bank access to CopyGlyphToPlayer
-          asm
-CopyGlyphToPlayer = .CopyGlyphToPlayer
-end

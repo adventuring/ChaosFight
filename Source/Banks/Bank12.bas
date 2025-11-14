@@ -7,6 +7,9 @@
 
           bank 12
 
+          rem Character data tables
+#include "Source/Data/CharacterThemeSongIndices.bas"
+
           asm
 Bank12DataEnds
 end
@@ -14,10 +17,8 @@ end
           rem Titlescreen assets are in Bank 9 - this bank contains only logic
 
 #include "Source/Routines/MissileSystem.bas"
-
           rem Missile collision routine moved from Bank 8 for ROM balance
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
-
           rem Character damage routine moved from Bank 8 for ROM balance
 #include "Source/Routines/CharacterDamage.bas"
 #include "Source/Routines/DeactivatePlayerMissiles.bas"

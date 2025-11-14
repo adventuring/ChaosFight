@@ -38,26 +38,4 @@ end
 
           asm
 Bank9CodeEnds
-
- ; Generate Bank 9's bankswitching code and Bank 10's ORG immediately after Bank 9 ends
- ; This must come before any Bank 10 content to prevent "Origin Reverse-indexed" errors
- ; Order: Bank 9 ORG -> Bank 9 bankswitching code -> Bank 10 ORG
- ifconst bscode_length
-  if Bank9CodeEnds <= ($FFE0 - bscode_length)
-   ; Set position for Bank 9's bankswitching code
-   ORG $FFE0-bscode_length
-   RORG $FFE0-bscode_length
-   
-   ; Generate start_bank8 label (Bank 9 uses 0-based index: bank - 1 = 8)
-   ; The compiler generates start_bank%d where %d = bank - 1
-start_bank8
-   include "Source/Common/BankSwitching.s"
-   
-   ; Now set position for Bank 10's bankswitching code
-   ORG $9FE0-bscode_length
-   RORG $FFE0-bscode_length
-  else
-   echo "ERROR: Bank 9 overflowed - cannot generate bankswitching code ORG for Bank 10"
-  endif
- endif
 end

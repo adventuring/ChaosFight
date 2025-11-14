@@ -34,6 +34,9 @@ end
           rem Falling animation setup routine
 #include "Source/Routines/BeginFallingAnimation.bas"
 
+          rem CheckRoboTitoStretchMissileCollisions moved from Bank 12 for ROM balance
+#include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
+
           asm
 Bank6CodeEnds
 end

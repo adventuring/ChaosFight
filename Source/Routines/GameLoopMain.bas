@@ -83,7 +83,7 @@ end
           rem   CheckAllPlayerCollisions (bank8),
           rem   CheckAllPlayerEliminations,
           rem   UpdateAllMissiles (bank12),
-          rem   CheckRoboTitoStretchMissileCollisions (bank12), SetPlayerSprites (bank6),
+          rem   CheckRoboTitoStretchMissileCollisions (bank6), SetPlayerSprites (bank6),
           rem   DisplayHealth (bank6), UpdatePlayer12HealthBars (bank6),
           rem   UpdatePlayer34HealthBars (bank6), UpdateSoundEffect
           rem   (bank15)
@@ -223,7 +223,7 @@ GameEndCheckDone
           rem   by UpdateAllMissiles
           rem No separate CheckMissileCollisions call needed
 
-          gosub CheckRoboTitoStretchMissileCollisions bank12
+          gosub CheckRoboTitoStretchMissileCollisions bank6
           rem Check RoboTito stretch missile collisions
 
           rem Set sprite positions (now handled by movement system)

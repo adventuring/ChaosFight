@@ -118,6 +118,9 @@ PlayerDies
 
 
 CheckAttackHit
+          asm
+CheckAttackHit
+end
           rem Check if attack hits defender
           rem Inputs: attackerID, defenderID (must be set before
           rem   calling)
@@ -193,7 +196,7 @@ CalculateAttackHitbox
 
 end
           rem Compute attack hitbox bounds from attacker position and facing.
-          rem Inputs: attackerID (global), playerX[], playerY[], PlayerAttackType[],
+          rem Inputs: attackerID (global), playerX[], playerY[], playerAttackType[],
           rem        playerState[] (for facing direction), PlayerSpriteWidth, PlayerSpriteHeight
           rem Output: cachedHitboxLeft_W, cachedHitboxRight_W, cachedHitboxTop_W,
           rem         cachedHitboxBottom_W (global hitbox bounds)
@@ -210,7 +213,7 @@ end
           rem Use temporary variable to avoid compiler bug with array
           rem indexing
           rem in on statement
-          let temp1 = PlayerAttackType[attackerID]
+          let temp1 = playerAttackType[attackerID]
           if temp1 = 0 then goto MeleeHitbox
           if temp1 = 1 then goto ProjectileHitbox
           if temp1 = 2 then goto AreaHitbox
@@ -375,13 +378,16 @@ AreaHitbox
           return
 
 ProcessAttackerAttacks
+          asm
+ProcessAttackerAttacks
+end
           rem Process attacks for one attacker against all defenders.
           rem Input: attackerID (must be set before calling); facing handled by
           rem        CalculateAttackHitbox which caches bounds once per attacker.
           rem
           rem Input: attackerID (global) = attacker player index,
           rem playerX[], playerY[] (global arrays) = player positions,
-          rem PlayerAttackType[], playerState[] (global arrays) =
+          rem playerAttackType[], playerState[] (global arrays) =
           rem attack type and facing, playerHealth[] (global array) =
           rem player health values
           rem

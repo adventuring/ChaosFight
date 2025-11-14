@@ -414,6 +414,9 @@ IsPlayerJumping
           return
 
 HandleAnimationTransition
+          asm
+HandleAnimationTransition
+end
           let temp1 = currentAnimationSeq_R[currentPlayer]
           if ActionAttackRecovery < temp1 then goto TransitionLoopAnimation
 

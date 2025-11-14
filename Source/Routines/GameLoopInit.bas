@@ -33,7 +33,7 @@ BeginGameLoop
 end
           rem Initialize all game state for the main gameplay loop
           rem
-          rem Input: ControllerStatus (global) = controller detection
+          rem Input: controllerStatus (global) = controller detection
           rem state
           rem        playerCharacter[] (global array) = character selections
           rem        PlayerLocked[] (global array) = lock states for
@@ -47,7 +47,7 @@ end
           rem         playerVelocityXL[],
           rem         playerVelocityYL[], playerSubpixelX[],
           rem         playerSubpixelY[],
-          rem         PlayerDamage[], ControllerStatus, MissileActive,
+          rem         PlayerDamage[], controllerStatus, missileActive,
           rem         PlayersEliminated,
           rem         PlayersRemaining, GameEndTimer,
           rem         EliminationCounter, EliminationOrder[],
@@ -83,7 +83,7 @@ end
           rem All players start at second row from top (Y=24, center of
           rem   row 1)
           rem Check if 4-player mode (Quadtari detected)
-          if ControllerStatus & SetQuadtariDetected then Init4PlayerPositions
+          if controllerStatus & SetQuadtariDetected then Init4PlayerPositions
 
           let playerX[0] = 53 : playerY[0] = 24
           rem 2-player mode positions
@@ -161,12 +161,12 @@ PlayerHealthInitDone
           next
 
           rem Optimized: Set Players34Active flag based on character selections
-          let ControllerStatus = ControllerStatus & ClearPlayers34Active
+          let controllerStatus = controllerStatus & ClearPlayers34Active
           if playerCharacter[2] = NoCharacter then goto skip_activation2
-          let ControllerStatus = ControllerStatus | SetPlayers34Active
+          let controllerStatus = controllerStatus | SetPlayers34Active
 skip_activation2
           if playerCharacter[3] = NoCharacter then goto skip_activation3
-          let ControllerStatus = ControllerStatus | SetPlayers34Active
+          let controllerStatus = controllerStatus | SetPlayers34Active
 skip_activation3
 
           rem Initialize missiles

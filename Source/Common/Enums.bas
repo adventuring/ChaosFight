@@ -105,3 +105,8 @@
           rem Bits 0-4 set: HitBackground|HitPlayer|Gravity|Bounce|Friction
           const MissileFlagCurlerFull = 31
 
+          rem Attack Type Constants (for CharacterAttackTypes data table and PlayerAttackType array)
+          const MeleeAttack = 0
+          const RangedAttack = 1
+          const AreaAttack = 2
+

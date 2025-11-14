@@ -12,6 +12,9 @@
           rem Row 6: Left and right platforms (2nd/3rd place)
 
 WinnerScreenPlayfield
+          asm
+WinnerScreenPlayfield = WinnerScreenPlayfield
+end
           playfield:
             ................
             ................

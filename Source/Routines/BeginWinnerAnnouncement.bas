@@ -17,7 +17,7 @@ end
           rem
           rem Input: winnerPlayerIndex (global) = winner player index
           rem (set by game end logic)
-          rem        PlayerCharacter[] (global array) = player character
+          rem        playerCharacter[] (global array) = player character
           rem        selections
           rem        CharacterThemeSongIndices[] (global array) =
           rem        character theme song mapping
@@ -57,10 +57,10 @@ end
 
           let temp1 = winnerPlayerIndex_R
           rem Get winner’s character index
-          if temp1 = 0 then temp2 = PlayerCharacter[0]
-          if temp1 = 1 then temp2 = PlayerCharacter[1]
-          if temp1 = 2 then temp2 = PlayerCharacter[2]
-          if temp1 = 3 then temp2 = PlayerCharacter[3]
+          if temp1 = 0 then temp2 = playerCharacter[0]
+          if temp1 = 1 then temp2 = playerCharacter[1]
+          if temp1 = 2 then temp2 = playerCharacter[2]
+          if temp1 = 3 then temp2 = playerCharacter[3]
 
           rem Look up full song ID from mapping table (table contains
           let temp1 = CharacterThemeSongIndices[temp2]

@@ -138,6 +138,9 @@
           rem Bit mask for bit 0 (PlayerStateRecovery)
           rem Bit mask for bit 4 (PlayerStateAttacking)
 
+          rem Mask to clear guard bit (bit 1): 255 - 2 = 253 ($FD)
+          const MaskClearGuard = 253
+
           rem Bit mask for preserving playerState flags (bits 0-3) while
           rem clearing animation state (bits 4-7)
           const MaskPlayerStateFlags = 15

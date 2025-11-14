@@ -309,6 +309,9 @@ DoneFramePhaseChecks
           return
 
 CheckCollisionP1vsP2
+          asm
+CheckCollisionP1vsP2
+end
           rem Individual collision check routines
           if playerX[0] >= playerX[1] then CalcP1vsP2AbsDiff
           let temp2 = playerX[1] - playerX[0]
@@ -335,6 +338,9 @@ DonePlayerSeparation
           return
 
 CheckCollisionP1vsP3
+          asm
+CheckCollisionP1vsP3
+end
           if playerX[0] >= playerX[2] then CalcP1vsP3AbsDiff
           let temp2 = playerX[2] - playerX[0]
           goto DoneCalcP1vsP3Diff
@@ -353,6 +359,9 @@ CheckCollisionP1vsP3Aux
           return
 
 CheckCollisionP1vsP4
+          asm
+CheckCollisionP1vsP4
+end
           if playerX[0] >= playerX[3] then CalcP1vsP4AbsDiff
           let temp2 = playerX[3] - playerX[0]
           goto DoneCalcP1vsP4Diff
@@ -371,6 +380,9 @@ CheckCollisionP1vsP4Aux
           return
 
 CheckCollisionP2vsP3
+          asm
+CheckCollisionP2vsP3
+end
           if playerX[1] >= playerX[2] then CalcP2vsP3AbsDiff
           let temp2 = playerX[2] - playerX[1]
           goto DoneCalcP2vsP3Diff
@@ -389,6 +401,9 @@ CheckCollisionP2vsP3Aux
           return
 
 CheckCollisionP2vsP4
+          asm
+CheckCollisionP2vsP4
+end
           if playerX[1] >= playerX[3] then CalcP2vsP4AbsDiff
           let temp2 = playerX[3] - playerX[1]
           goto DoneCalcP2vsP4Diff
@@ -407,6 +422,9 @@ CheckCollisionP2vsP4Aux
           return
 
 CheckCollisionP3vsP4
+          asm
+CheckCollisionP3vsP4
+end
           if playerX[2] >= playerX[3] then CalcP3vsP4AbsDiff
           let temp2 = playerX[3] - playerX[2]
           goto DoneCalcP3vsP4Diff

@@ -147,6 +147,9 @@
           rem   temp1 (local scope only)
           dim controllerStatus = h
 
+          rem Pause button debouncing state (0=not pressed, 1=pressed)
+          dim pauseButtonPrev = t
+
           rem Frame phase counter (cycles 0-3 each frame for multi-frame operations)
           dim framePhase = i
 
@@ -434,6 +437,10 @@
 
           rem playerCharacter[0-3] - Character type indices (0-MaxCharacter)
           dim playerCharacter = var48
+
+          rem playerAttackType[0-3] - Attack type for each player (0=MeleeAttack, 1=RangedAttack, 2=AreaAttack)
+          rem Initialized from CharacterAttackTypes[playerCharacter[playerIndex]]
+          dim playerAttackType = var52
 
           rem PlayerFacing is extracted from playerState bit 3 (PlayerStateBitFacing)
           rem 0=right (bit 3=1), 1=left (bit 3=0)

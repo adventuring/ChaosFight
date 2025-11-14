@@ -123,6 +123,10 @@ ParadeCharacterLeft
           return
 
 DrawParadeCharacter
+          asm
+DrawParadeCharacter
+
+end
           rem
           rem Draw Parade Character
           rem Render the current parade character at the bottom of the screen.

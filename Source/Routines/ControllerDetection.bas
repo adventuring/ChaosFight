@@ -128,6 +128,10 @@ CDP_NoGenesisRight
           return
 
 CDP_DetectJoy2bPlus
+          asm
+CDP_DetectJoy2bPlus
+
+end
           rem
           rem Joy2bplus Detection Subroutine
           rem Detect Joy2b+ enhanced controllers by checking paddle port

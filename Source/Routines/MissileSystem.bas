@@ -809,6 +809,10 @@ MissileSysPF
           return
 
 Div5Compute
+          asm
+Div5Compute
+
+end
           rem Div5Compute: compute floor(temp2/5) into temp6 via
           rem   repeated subtraction
           rem Helper: Computes floor(temp2/5) into temp6 via repeated

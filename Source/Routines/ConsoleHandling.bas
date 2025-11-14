@@ -158,6 +158,10 @@ CEP_CheckPlayer2
           rem Color/B&W switch change detection (triggers controller re-detect)
 
 CheckColorBWToggle
+          asm
+CheckColorBWToggle
+
+end
           rem Check switch state and trigger DetectPads when it flips
           rem
           rem Input: switchbw (hardware) = Color/B&W switch state

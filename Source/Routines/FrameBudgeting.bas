@@ -24,24 +24,24 @@ UpdateFramePhase
           rem   - Update animations for 1 player per frame
           rem AVAILABLE VARIABLES:
           rem   frame - Global frame counter
-          rem   FramePhase - Which phase of multi-frame operation (0-3)
+          rem   framePhase - Which phase of multi-frame operation (0-3)
           rem
           rem HealthBarUpdatePlayer - Which player health bar to update
           rem CollisionCheckPair - Which collision pair to check this
           rem   frame
           rem Update Frame Phase
-          rem Updates FramePhase (0-3) once per frame to schedule multi-frame operations.
+          rem Updates framePhase (0-3) once per frame to schedule multi-frame operations.
           rem
           rem Input: frame (global) = global frame counter
           rem
-          rem Output: FramePhase set to frame & 3 (cycles 0, 1, 2, 3, 0,
+          rem Output: framePhase set to frame & 3 (cycles 0, 1, 2, 3, 0,
           rem 1, 2, 3...)
           rem
-          rem Mutates: FramePhase (set to frame & 3)
+          rem Mutates: framePhase (set to frame & 3)
           rem
           rem Called Routines: None
           rem Constraints: Called once per frame at the start of game loop
-          let FramePhase = frame & 3
+          let framePhase = frame & 3
           rem Cycle 0, 1, 2, 3, 0, 1, 2, 3...
           return
 
@@ -50,9 +50,9 @@ UpdateFramePhase
           rem Draw only one player health bar per frame (down from four) to cut pfpixel work by 75%.
 
 BudgetedHealthBarUpdate
-          rem Uses FramePhase (0-3) to determine which player health bar to refresh each frame.
+          rem Uses framePhase (0-3) to determine which player health bar to refresh each frame.
           rem
-          rem Input: FramePhase (global) = frame phase counter (0-3)
+          rem Input: framePhase (global) = frame phase counter (0-3)
           rem        controllerStatus (global) = controller detection
           rem        state
           rem        playerCharacter[] (global array) = character selections
@@ -77,10 +77,10 @@ BudgetedHealthBarUpdate
           rem              (all called via goto or gosub)
           rem Determine which player to update based on frame phase
           rem tail call
-          if FramePhase = 0 then goto BudgetedHealthBarPlayer0
+          if framePhase = 0 then goto BudgetedHealthBarPlayer0
           rem tail call
-          if FramePhase = 1 then goto BudgetedHealthBarPlayer1
-          if FramePhase = 2 then CheckPlayer2HealthUpdate
+          if framePhase = 1 then goto BudgetedHealthBarPlayer1
+          if framePhase = 2 then CheckPlayer2HealthUpdate
           goto DonePlayer2HealthUpdate
 BudgetedHealthBarPlayer0
           rem Local trampoline so branch stays in range; tail-calls target
@@ -117,7 +117,7 @@ DonePlayer2HealthUpdate
           rem
           rem Called Routines: None
           rem Constraints: Must be colocated with BudgetedHealthBarUpdate
-          if FramePhase = 3 then CheckPlayer3HealthUpdate
+          if framePhase = 3 then CheckPlayer3HealthUpdate
           goto DonePlayer3HealthUpdate
 CheckPlayer3HealthUpdate
           rem Check if Player 4 health bar should be updated (4-player
@@ -153,7 +153,7 @@ UpdateHealthBarPlayer0
           rem Constraints: Must be colocated with
           rem BudgetedHealthBarUpdate
           rem Update Player 1 health bar
-          rem Update Player 1 health bar (FramePhase 0)
+          rem Update Player 1 health bar (framePhase 0)
           rem
           rem Input: playerHealth[] (global array) = player health
           rem values
@@ -175,7 +175,7 @@ UpdateHealthBarPlayer0
 
 UpdateHealthBarPlayer1
           rem Update Player 2 health bar
-          rem Update Player 2 health bar (FramePhase 1)
+          rem Update Player 2 health bar (framePhase 1)
           rem
           rem Input: playerHealth[] (global array) = player health
           rem values
@@ -201,7 +201,7 @@ UpdateHealthBarPlayer2
 
 end
           rem Update Player 3 health bar
-          rem Update Player 3 health bar (FramePhase 2, 4-player mode
+          rem Update Player 3 health bar (framePhase 2, 4-player mode
           rem only)
           rem
           rem Input: playerHealth[] (global array) = player health
@@ -228,7 +228,7 @@ UpdateHealthBarPlayer3
 
 end
           rem Update Player 4 health bar
-          rem Update Player 4 health bar (FramePhase 3, 4-player mode
+          rem Update Player 4 health bar (framePhase 3, 4-player mode
           rem only)
           rem
           rem Input: playerHealth[] (global array) = player health
@@ -279,8 +279,8 @@ BudgetedCollisionCheck
 
           rem Check additional pairs based on frame phase
 
-          if FramePhase = 0 then CheckPhase0Collisions
-          if FramePhase = 1 then CheckPhase1Collisions
+          if framePhase = 0 then CheckPhase0Collisions
+          if framePhase = 1 then CheckPhase1Collisions
           goto DonePhase0And1Collisions
 CheckPhase0Collisions
           if playerCharacter[2] = NoCharacter then DoneFramePhaseChecks
@@ -294,7 +294,7 @@ CheckPhase1P3
           gosub CheckCollisionP2vsP3
           goto DoneFramePhaseChecks
 DonePhase0And1Collisions
-          if FramePhase = 2 then CheckPhase2Collisions
+          if framePhase = 2 then CheckPhase2Collisions
           goto DonePhase2Collisions
 CheckPhase2Collisions
           if playerCharacter[3] = NoCharacter then DoneCheckP2vsP4
@@ -445,9 +445,9 @@ BudgetedMissileCollisionCheck
 
           if (controllerStatus & SetQuadtariDetected) = 0 then BudgetedMissileCollisionCheck2P
 
-          let temp1 = FramePhase
+          let temp1 = framePhase
           rem 4-player mode: check one missile per frame
-          rem FramePhase 0-3 maps to Game Players 0-3
+          rem framePhase 0-3 maps to Game Players 0-3
           rem Calculate bit flag using O(1) array lookup:
           rem BitMask[playerIndex] (1, 2, 4, 8)
           let temp6 = BitMask[temp1]

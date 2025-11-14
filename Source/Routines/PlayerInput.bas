@@ -981,7 +981,7 @@ Joy2bPauseDone
           rem 1)
           if temp1 = 0 then DonePauseToggle
           if PauseButtonPrev then DonePauseToggle
-          let GameState  = GameState ^ 1
+          let gameState = gameState ^ 1
 DonePauseToggle
           rem Toggle pause (0<->1)
 

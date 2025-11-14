@@ -104,7 +104,7 @@ end
           rem
           rem Mutates: temp2-temp6 (used for calculations), AUDC0,
           rem AUDF0, AUDV0 (TIA registers) = sound registers (updated),
-          rem MusicVoice0TargetAUDV, MusicVoice0TotalFrames (global) =
+          rem musicVoice0TargetAUDV, musicVoice0TotalFrames (global) =
           rem envelope parameters (stored), musicVoice0Frame_W (global
           rem SCRAM) = frame counter (set to Duration + Delay),
           rem musicVoice0Pointer (global 16-bit) = voice pointer (advanced by 4 bytes)
@@ -140,16 +140,16 @@ end
           let temp6 = temp2 & %11110000
           rem   AUDCV
           let temp6 = temp6 / 16
-          let MusicVoice0TargetAUDV_W = temp2 & %00001111
+          let musicVoice0TargetAUDV_W = temp2 & %00001111
 
           rem Store target AUDV and total frames for envelope
-          let MusicVoice0TotalFrames_W = temp4 + temp5
+          let musicVoice0TotalFrames_W = temp4 + temp5
 
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice0)
           AUDC0 = temp6
           AUDF0 = temp3
-          AUDV0 = MusicVoice0TargetAUDV_R
+          AUDV0 = musicVoice0TargetAUDV_R
 
           let musicVoice0Frame_W = temp4 + temp5
           rem Set frame counter = Duration + Delay
@@ -199,7 +199,7 @@ end
           rem
           rem Mutates: temp2-temp6 (used for calculations), AUDC1,
           rem AUDF1, AUDV1 (TIA registers) = sound registers (updated),
-          rem MusicVoice1TargetAUDV, MusicVoice1TotalFrames (global) =
+          rem musicVoice1TargetAUDV, musicVoice1TotalFrames (global) =
           rem envelope parameters (stored), musicVoice1Frame_W (global
           rem SCRAM) = frame counter (set to Duration + Delay),
           rem musicVoice1Pointer (global 16-bit) = voice pointer (advanced by 4 bytes)
@@ -234,16 +234,16 @@ end
           let temp6 = temp2 & %11110000
           rem Extract AUDC and AUDV
           let temp6 = temp6 / 16
-          let MusicVoice1TargetAUDV_W = temp2 & %00001111
+          let musicVoice1TargetAUDV_W = temp2 & %00001111
 
           rem Store target AUDV and total frames for envelope
-          let MusicVoice1TotalFrames_W = temp4 + temp5
+          let musicVoice1TotalFrames_W = temp4 + temp5
 
           rem Write to TIA registers (will be adjusted by envelope in
           rem   UpdateMusicVoice1)
           AUDC1 = temp6
           AUDF1 = temp3
-          AUDV1 = MusicVoice1TargetAUDV_R
+          AUDV1 = musicVoice1TargetAUDV_R
 
           let musicVoice1Frame_W = temp4 + temp5
           rem Set frame counter = Duration + Delay

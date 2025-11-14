@@ -148,7 +148,7 @@
           dim controllerStatus = h
 
           rem Frame phase counter (cycles 0-3 each frame for multi-frame operations)
-          dim FramePhase = i
+          dim framePhase = i
 
           rem Character selection results (set during ADMIN, read during GAME)
           rem Player-character selection (0-31) cached across contexts
@@ -249,25 +249,25 @@
 
           rem Music System Envelope State (SCRAM - used in Admin Mode)
           rem Uses w071-w074 so w036-w039 can be reused for playerSubpixelX
-          rem   for PlayerFrameBuffer (w000-w063)
+          rem   for playerFrameBuffer (w000-w063)
           rem NOTE: Overlaps with Game Mode playerSubpixelY - safe since
           rem Admin and Game Mode never run simultaneously
           rem   Admin and Game Mode never run simultaneously
-          dim MusicVoice0TargetAUDV_W = w071
+          dim musicVoice0TargetAUDV_W = w071
           rem Target AUDV value from note data (envelope calculation)
-          dim MusicVoice0TargetAUDV_R = r071
-          dim MusicVoice1TargetAUDV_R = r072
+          dim musicVoice0TargetAUDV_R = r071
+          dim musicVoice1TargetAUDV_R = r072
           rem   envelope calculation target
           rem Total frames (Duration + Delay) captured when the note loaded (voice 0)
-          dim MusicVoice1TargetAUDV_W = w072
+          dim musicVoice1TargetAUDV_W = w072
           rem   envelope duration tracking
-          dim MusicVoice0TotalFrames_W = w073
+          dim musicVoice0TotalFrames_W = w073
           rem Total frames (Duration + Delay) captured when the note loaded (voice 1)
-          dim MusicVoice0TotalFrames_R = r073
+          dim musicVoice0TotalFrames_R = r073
           rem   envelope duration tracking
-          dim MusicVoice1TotalFrames_W = w074
+          dim musicVoice1TotalFrames_W = w074
           rem Note: Duration + Delay precomputes total sustain time for envelope math
-          dim MusicVoice1TotalFrames_R = r074
+          dim musicVoice1TotalFrames_R = r074
 
           rem Sound Effect System Frame Counters (SCRAM - used in Game
           rem   Mode)
@@ -446,8 +446,8 @@ end
           rem   player3Health, player4Health
           dim playerHealth = var12
 
-          rem PlayerCharacter[0-3] - Character type indices (0-MaxCharacter)
-          dim PlayerCharacter = var48
+          rem playerCharacter[0-3] - Character type indices (0-MaxCharacter)
+          dim playerCharacter = var48
 
           rem PlayerFacing is extracted from playerState bit 3 (PlayerStateBitFacing)
           rem 0=right (bit 3=1), 1=left (bit 3=0)
@@ -563,7 +563,7 @@ end
           rem Game Mode: Game state (0=normal play, 1=paused, 2=game ending)
           rem Used for pause toggle and game state tracking during gameplay
           rem NOTE: Using letter variable 'u' - redimmed from characterSelectAnimationIndex (Admin Mode)
-          dim GameState = u
+          dim gameState = u
           rem Scratch: playersEliminated_R | BitMask[currentPlayer] (PlayerElimination)
           dim CPE_eliminatedFlags = var47
 
@@ -662,7 +662,7 @@ end
           rem GAME MODE - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
 
-          rem PlayerFrameBuffer (64-byte contiguous block for sprite
+          rem playerFrameBuffer (64-byte contiguous block for sprite
           rem   rendering)
           rem OPTIMIZED: Allocated at w000-w063 (64 bytes) after moving
           rem   variables to higher addresses
@@ -670,11 +670,11 @@ end
           rem   rendering operations
           rem Physical addresses: $F000-$F03F (write ports), $F080-$F0BF
           rem   (read ports)
-          dim PlayerFrameBuffer_W = w000
+          dim playerFrameBuffer_W = w000
           rem 64-byte buffer for player frame data (w000-w063)
-          rem Array accessible as PlayerFrameBuffer[0] through
-          rem   PlayerFrameBuffer[63]
-          dim PlayerFrameBuffer_R = r000
+          rem Array accessible as playerFrameBuffer[0] through
+          rem   playerFrameBuffer[63]
+          dim playerFrameBuffer_R = r000
 
           rem Game Mode: Missile Y positions [0-3] - using SCRAM
           rem   (SuperChip RAM)

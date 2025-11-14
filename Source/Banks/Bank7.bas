@@ -9,6 +9,7 @@
 #include "Source/Data/CharacterMissileTables.bas"
 #include "Source/Routines/CharacterMissileData.bas"
 #include "Source/Data/HealthBarPatterns.bas"
+#include "Source/Data/CharacterDataTables.bas"
 
           asm
 Bank7DataEnds

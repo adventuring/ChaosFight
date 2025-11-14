@@ -241,17 +241,17 @@ end
           rem AUDV. Clamps AUDV to 0-15
           rem Get voice-specific variables
           if temp1 = 0 then CMVE_GetVoice0Vars
-          let temp2 = MusicVoice1TotalFrames_R
+          let temp2 = musicVoice1TotalFrames_R
           rem Voice 1
           let temp3 = musicVoice1Frame_R
-          let temp5 = MusicVoice1TargetAUDV_R
+          let temp5 = musicVoice1TargetAUDV_R
           goto CMVE_CalcElapsed
 CMVE_GetVoice0Vars
           rem Helper: Gets Voice 0 specific variables
           rem
-          rem Input: MusicVoice0TotalFrames (global) = total frames,
+          rem Input: musicVoice0TotalFrames (global) = total frames,
           rem musicVoice0Frame_R (global SCRAM) = frame counter,
-          rem MusicVoice0TargetAUDV (global) = target volume
+          rem musicVoice0TargetAUDV (global) = target volume
           rem
           rem Output: Voice 0 variables loaded
           rem
@@ -262,10 +262,10 @@ CMVE_GetVoice0Vars
           rem
           rem Constraints: Internal helper for
           rem CalculateMusicVoiceEnvelope, only called for voice 0
-          let temp2 = MusicVoice0TotalFrames_R
+          let temp2 = musicVoice0TotalFrames_R
           rem Voice 0
           let temp3 = musicVoice0Frame_R
-          let temp5 = MusicVoice0TargetAUDV_R
+          let temp5 = musicVoice0TargetAUDV_R
 CMVE_CalcElapsed
           rem Helper: Calculates frames elapsed and determines envelope
           rem phase
@@ -372,7 +372,7 @@ end
           rem
           rem Update Voice 0 playback (envelope, frame counter, note stepping).
           rem Input: musicVoice0Frame_R, musicVoice0Pointer (16-bit), currentSongID_R,
-          rem        MusicVoice0TotalFrames/TargetAUDV, NoteAttackFrames, NoteDecayFrames
+          rem        musicVoice0TotalFrames/TargetAUDV, NoteAttackFrames, NoteDecayFrames
           rem Output: Envelope applied, frame counter decremented, next note loaded when counter hits 0
           rem Mutates: temp1, temp4, musicVoice0Frame_W, musicVoice0Pointer
           rem pointer (advanced via LoadMusicNote0), AUDC0, AUDF0, AUDV0
@@ -419,7 +419,7 @@ end
           rem Input: musicVoice1Frame_R (global SCRAM) = frame counter,
           rem musicVoice1Pointer (global 16-bit) = voice pointer,
           rem currentSongID_R (global SCRAM) = current song ID,
-          rem MusicVoice1TotalFrames, MusicVoice1TargetAUDV (global) =
+          rem musicVoice1TotalFrames, musicVoice1TargetAUDV (global) =
           rem envelope parameters, NoteAttackFrames, NoteDecayFrames
           rem (global constants) = envelope constants
           rem

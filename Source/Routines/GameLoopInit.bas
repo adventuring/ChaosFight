@@ -212,7 +212,7 @@ SkipPlayer4
           rem Frame counter is automatically initialized and incremented
           rem by batariBASIC kernel
 
-          let GameState  = 0
+          let gameState = 0
           rem Initialize game state
           rem 0 = normal play, 1 = paused, 2 = game ending
 

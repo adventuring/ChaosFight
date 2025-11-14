@@ -15,6 +15,11 @@
           const RandomArena=255
           const RecoveryFrameCount=8
           const KnockbackDistance=12
+          rem Minimum horizontal separation distance (in pixels) between players
+          rem If players are this distance or more apart, skip collision separation
+          rem Characters are 8px wide, so 16px provides 2× sprite width separation
+          rem Matches hardcoded value used in other collision checks (P1vsP3, P1vsP4, etc.)
+          const CollisionSeparationDistance=16
 
           rem
           rem PHYSICS CONSTANTS - Gravity And Terminal Velocity

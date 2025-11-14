@@ -402,14 +402,6 @@ ECHOFIRST = 0
 frame = $00F5
   endif
   
-  ; Forward declarations for bankswitch routines (defined in banksw.asm)
-  ; These are labels, not constants - they will resolve as forward references
-  ; banksw.asm is included in chaosfight.inc via banksw.asm
-  
-  ; Forward declarations for math routines (defined in div_mul.asm)
-  ; These are labels, not constants - they will resolve as forward references
-  ; div_mul.asm is included in chaosfight.inc
-  
   MS_ASSIGN  interlaced, 0
   MS_ASSIGN  shakescreen, 0
   MS_ASSIGN  vblank_time, 43

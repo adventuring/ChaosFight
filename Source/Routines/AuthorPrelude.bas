@@ -4,6 +4,7 @@
           rem Author Prelude Screen
           rem Displays the Interworldly author logo/artwork with music.
           rem This is the second screen shown at cold start.
+          
           rem FLOW:
           rem 1. Display 48×42 bitmap from Source/Art/Interworldly.xcf
           rem   (via titlescreen kernel)
@@ -46,6 +47,11 @@
           rem No explicit loading needed - titlescreen kernel handles
           rem   bitmap display
 
+AuthorPrelude
+          asm
+AuthorPrelude
+
+end
           rem Check for button press on any controller to skip
           rem Use skip-over pattern to avoid complex || operator issues
           if joy0fire then AuthorPreludeComplete
@@ -100,11 +106,4 @@ AuthorPreludeComplete
           rem   (double-height)
           rem The titlescreen kernel handles bitmap display
           rem   automatically - no explicit loading needed.
-
-          rem Global label for cross-bank access to AuthorPrelude
-          asm
-          ifnconst AuthorPrelude
-AuthorPrelude = .AuthorPrelude
-          endif
-end
 

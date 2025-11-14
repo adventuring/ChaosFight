@@ -42,6 +42,10 @@ end
 
           rem Global label for cross-bank access to CharacterThemeSongIndices data table
           rem The data statement creates CharacterThemeSongIndices as a global label
-          rem No assignment needed - label is already global
-          rem (This comment block kept for documentation purposes)
+          rem Ensure it's accessible across banks
+          asm
+          ifnconst CharacterThemeSongIndices
+CharacterThemeSongIndices = CharacterThemeSongIndices
+          endif
+end
 

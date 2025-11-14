@@ -392,6 +392,24 @@ debugcycles
   endif
   ; Note: debugcycles is defined above as a label, not a constant
   ; This matches the kernel's usage where jsr debugcycles is called
+  
+  ; Forward declarations for batariBASIC built-in variables and routines
+  ; These will be defined by batariBASIC compiler/generated code
+  ifnconst ECHOFIRST
+ECHOFIRST = 0
+  endif
+  ifnconst frame
+frame = $00F5
+  endif
+  
+  ; Forward declarations for bankswitch routines (defined in banksw.asm)
+  ; These are labels, not constants - they will resolve as forward references
+  ; banksw.asm is included in chaosfight.inc via banksw.asm
+  
+  ; Forward declarations for math routines (defined in div_mul.asm)
+  ; These are labels, not constants - they will resolve as forward references
+  ; div_mul.asm is included in chaosfight.inc
+  
   MS_ASSIGN  interlaced, 0
   MS_ASSIGN  shakescreen, 0
   MS_ASSIGN  vblank_time, 43

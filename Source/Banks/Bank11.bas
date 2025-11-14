@@ -16,6 +16,17 @@ end
 #include "Source/Routines/PlayerCollisionResolution.bas"
 #include "Source/Routines/AnimationSystem.bas"
 
+          rem Player position/velocity getter/setter routines moved from Bank 14 for ROM balance
+#include "Source/Routines/GetPlayerPosition.bas"
+#include "Source/Routines/GetPlayerVelocity.bas"
+#include "Source/Routines/SetPlayerPosition.bas"
+#include "Source/Routines/SetPlayerVelocity.bas"
+
+          rem Physics helper routines moved from Bank 14 for ROM balance
+#include "Source/Routines/InitializeMovementSystem.bas"
+#include "Source/Routines/AddVelocitySubpixelY.bas"
+#include "Source/Routines/ApplyFriction.bas"
+
           asm
 Bank11CodeEnds
 end

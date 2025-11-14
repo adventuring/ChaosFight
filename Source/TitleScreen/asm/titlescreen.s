@@ -76,7 +76,8 @@ title_playfield
 
  include "TitleScreen/asm/position48.s"
  include "TitleScreen/titlescreen_color.s"
- include "TitleScreen/titlescreen_colors.s"
+          ; titlescreen_colors.s is now included in Bank9.bas after bitmap data,
+          ;   not here, to avoid origin reverse-indexed errors
 
 	; Unused 48x1 kernels removed - only 48x2 bitmaps are active
 

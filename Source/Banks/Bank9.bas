@@ -20,6 +20,9 @@
 #include "Source/Generated/Art.AtariAgeText.s"
 #include "Source/Generated/Art.ChaosFight.s"
 #include "Source/Generated/Art.Author.s"
+          ; Colors must be included here, right after bitmap data,
+          ;   before titlescreen.s includes other files that advance past $f500
+#include "Source/TitleScreen/titlescreen_colors.s"
 end
 
           asm
@@ -31,7 +34,7 @@ end
 end
 #include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/CharacterSelectMain.bas"
-#include "Source/Routines/PublisherPrelude.bas"
+          rem PublisherPrelude moved to Bank 14 for ROM balance
 
           asm
 Bank9CodeEnds

@@ -11,16 +11,11 @@
 Bank14DataEnds
 end
 
-          rem Player position/velocity getter/setter routines moved from Bank 8 for ROM balance
-#include "Source/Routines/GetPlayerPosition.bas"
-#include "Source/Routines/GetPlayerVelocity.bas"
-#include "Source/Routines/SetPlayerPosition.bas"
-#include "Source/Routines/SetPlayerVelocity.bas"
+          rem Player position/velocity getter/setter routines moved to Bank 11 for ROM balance
+          rem (moved from Bank 14 due to overflow)
 
-          rem Physics helper routines moved from Bank 8 for ROM balance
-#include "Source/Routines/InitializeMovementSystem.bas"
-#include "Source/Routines/AddVelocitySubpixelY.bas"
-#include "Source/Routines/ApplyFriction.bas"
+          rem Physics helper routines moved to Bank 11 for ROM balance  
+          rem (moved from Bank 14 due to overflow)
 
           rem Routines moved from Bank 1 - not needed for drawscreen
           rem calls
@@ -31,6 +26,8 @@ end
           rem Player locked helpers
 #include "Source/Routines/BeginTitleScreen.bas"
 #include "Source/Routines/BeginPublisherPrelude.bas"
+#include "Source/Routines/PublisherPrelude.bas"
+          rem PublisherPrelude moved from Bank 9 for ROM balance
 #include "Source/Routines/ControllerDetection.bas"
 #include "Source/Routines/ConsoleDetection.bas"
 #include "Source/Routines/ChangeGameMode.bas"
@@ -44,6 +41,7 @@ end
 #include "Source/Routines/TitleCharacterParade.bas"
 #include "Source/Routines/TitlescreenWindowControl.bas"
 #include "Source/Routines/AttractMode.bas"
+#include "Source/Routines/AuthorPrelude.bas"
 #include "Source/Routines/LoadCharacterColors.bas"
 
           asm

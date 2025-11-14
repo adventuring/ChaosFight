@@ -103,6 +103,8 @@ AuthorPreludeComplete
 
           rem Global label for cross-bank access to AuthorPrelude
           asm
+          ifnconst AuthorPrelude
 AuthorPrelude = .AuthorPrelude
+          endif
 end
 

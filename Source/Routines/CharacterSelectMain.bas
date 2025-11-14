@@ -230,6 +230,10 @@ end
           goto CharacterSelectInputComplete
 
 CharacterSelectHandleTwoPlayers
+          asm
+CharacterSelectHandleTwoPlayers
+
+end
           rem Handle input for two players (P1/P2 or P3/P4 based on temp3)
           rem temp3 = player offset (0 or 2)
 
@@ -285,7 +289,11 @@ CharacterSelectHandleRandomRolls
           goto CharacterSelectRollsDone
 
 CharacterSelectRollRandomPlayer
-          rem Handle random character roll for the current player’s slot.
+          asm
+CharacterSelectRollRandomPlayer
+
+end
+          rem Handle random character roll for the current player's slot.
           rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        randomSelectFlags_R[] (SCRAM, read port) = handicap flags

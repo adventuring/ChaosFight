@@ -139,6 +139,9 @@
           rem   Bit 3: Game state ending (SystemFlagGameStateEnding = $08, 0=normal, 1=ending)
           rem   Bits 0-2: Reserved for future use
           dim gameMode = p
+          rem Game state (0=normal play, 1=paused, 2=game ending)
+          rem Used for pause toggle and game state tracking
+          dim GameState = var6
           rem Packed controller status bits: $80=Quadtari,
           rem   $01=LeftGenesis, $02=LeftJoy2b+, $04=RightGenesis,
           rem   $08=RightJoy2b+

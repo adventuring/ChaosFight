@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
           rem COMBAT SYSTEM - Generic Subroutines Using Player Arrays
 ApplyDamage
+          asm
+ApplyDamage
+
+end
           rem Apply damage from attacker to defender
           rem Inputs: attackerID, defenderID (must be set before
           rem   calling)
@@ -184,6 +188,10 @@ NoHit
           return
 
 CalculateAttackHitbox
+          asm
+CalculateAttackHitbox
+
+end
           rem Compute attack hitbox bounds from attacker position and facing.
           rem Inputs: attackerID (global), playerX[], playerY[], PlayerAttackType[],
           rem        playerState[] (for facing direction), PlayerSpriteWidth, PlayerSpriteHeight

@@ -17,6 +17,11 @@ end
             MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack
 end
 
+          rem Global label for cross-bank access to CharacterAttackTypes data table
+          asm
+CharacterAttackTypes = CharacterAttackTypes
+end
+
           rem Area-of-effect offsets
           data CharacterAOEOffsets
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0

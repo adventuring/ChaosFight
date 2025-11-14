@@ -1,4 +1,8 @@
 GetPlayerAnimationStateFunction
+          asm
+GetPlayerAnimationStateFunction
+
+end
           rem
           rem ChaosFight - Source/Routines/PlayerInput.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
@@ -691,6 +695,10 @@ InputDoneLeftPortAttack
           return
 
 InputHandleRightPortPlayerFunction
+          asm
+InputHandleRightPortPlayerFunction
+
+end
           rem
           rem RIGHT PORT PLAYER INPUT HANDLER (joy1 - Players 2 & 4)
           rem

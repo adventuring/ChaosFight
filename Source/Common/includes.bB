@@ -6,5 +6,5 @@ std_routines.asm
 div_mul.asm
 bB2.asm
 score_graphics.asm
-banksw.asm
+../../Source/Common/BankSwitching.s
 2600basicfooter.asm

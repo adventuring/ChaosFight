@@ -48,7 +48,7 @@ bB2.asm
 score_graphics.asm
 
 ;bankswitch support
-banksw.asm
+../../Source/Common/BankSwitching.s
 
 
 ; below is the footer, which contains the score digits and startup vectors.

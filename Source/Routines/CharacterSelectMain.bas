@@ -110,7 +110,6 @@ HCSC_CheckJoy1Left
 HandleCharacterSelectCycle
           asm
 HandleCharacterSelectCycle
-
 end
           rem Perform character cycling
           rem
@@ -185,7 +184,6 @@ HCSC_RightFromMax
 HCSC_GetPlayer2Tail
           asm
 HCSC_GetPlayer2Tail
-
 end
           rem Determine whether Player 2 wraps to CPU or NO
           let temp6 = CPUCharacter
@@ -290,7 +288,6 @@ CharacterSelectInputComplete
 CharacterSelectHandleRandomRolls
           asm
 CharacterSelectHandleRandomRolls
-
 end
           rem Check each player for pending random roll
           let temp1 = 1

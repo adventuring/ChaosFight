@@ -1,11 +1,5 @@
           rem ChaosFight - Source/Routines/AuthorPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
-
-AuthorPrelude
-          asm
-AuthorPrelude
-
-end
           rem Displays the Interworldly author logo/artwork with music.
           rem Author Prelude Screen
           rem Displays the Interworldly author logo/artwork with music.
@@ -106,4 +100,9 @@ AuthorPreludeComplete
           rem   (double-height)
           rem The titlescreen kernel handles bitmap display
           rem   automatically - no explicit loading needed.
+
+          rem Global label for cross-bank access to AuthorPrelude
+          asm
+AuthorPrelude = .AuthorPrelude
+end
 

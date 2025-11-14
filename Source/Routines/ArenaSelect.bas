@@ -275,7 +275,6 @@ StartGame1
 ArenaSelectDrawCharacters
           asm
 ArenaSelectDrawCharacters
-
 end
           rem Draw all selected characters at their character select
           rem positions

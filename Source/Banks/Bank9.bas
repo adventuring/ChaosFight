@@ -31,6 +31,7 @@ end
 end
 #include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/CharacterSelectMain.bas"
+#include "Source/Routines/PublisherPrelude.bas"
 
           asm
 Bank9CodeEnds

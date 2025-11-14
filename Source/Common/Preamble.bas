@@ -15,7 +15,7 @@
 
 #include "Source/Common/AssemblyConfig.bas"
 
-          includesfile multisprite_superchip.inc
+          includesfile chaosfight.inc
 
 #include "Source/Common/Colors.h"
 #include "Source/Common/Constants.bas"

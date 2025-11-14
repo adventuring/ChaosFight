@@ -4,7 +4,6 @@
 UpdatePlayerMovementSingle
           asm
 UpdatePlayerMovementSingle
-
 end
           rem Move one player using 8.8 fixed-point velocity integration.
           rem Input: currentPlayer (global) = player index (0-3)

@@ -160,7 +160,6 @@ CEP_CheckPlayer2
 CheckColorBWToggle
           asm
 CheckColorBWToggle
-
 end
           rem Check switch state and trigger DetectPads when it flips
           rem

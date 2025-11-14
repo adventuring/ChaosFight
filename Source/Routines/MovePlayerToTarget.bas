@@ -75,7 +75,6 @@ end
 CalcDeltaYUp
           asm
 CalcDeltaYUp
-
 end
           rem Calculate Y distance upward
           rem Input: temp1 = player, temp3 = target Y
@@ -122,7 +121,6 @@ VerticalDone
 MoveUp
           asm
 MoveUp
-
 end
           rem Move player up by 1 pixel
           rem Input: temp1 = player index
@@ -133,7 +131,6 @@ end
 AtTarget
           asm
 AtTarget
-
 end
           rem Check if player is at target position
           rem Input: temp1 = player, temp2 = target X, temp3 = target Y
@@ -159,7 +156,6 @@ end
 NudgeFromPF
           asm
 NudgeFromPF
-
 end
           rem Detect playfield collision and nudge accordingly
           rem Input: temp1 = player index (preserved)

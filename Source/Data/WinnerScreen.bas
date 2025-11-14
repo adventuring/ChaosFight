@@ -22,9 +22,9 @@
             XXXXXXXXXXXXXXXX
 end
 
-          rem Global label for WinnerScreenPlayfield (playfield statement creates local label)
-          rem The playfield statement automatically creates .WinnerScreenPlayfield as a local label
-          rem We need to make it global for cross-bank access
+          rem Global label for cross-bank access to WinnerScreenPlayfield
+          rem The playfield statement creates .WinnerScreenPlayfield as a local label
+          rem We assign it to a global label for cross-bank access
           asm
           ifnconst WinnerScreenPlayfield
 WinnerScreenPlayfield = .WinnerScreenPlayfield

@@ -24,22 +24,22 @@ end
           rem
           rem Called Routines: None
           rem
-          rem Constraints: Must remain in bank16 with PlayerColors tables
+          rem Constraints: Must remain in bank14 (called from SetPlayerSprites bank6)
 
           rem Guard state takes priority over hurt state
           if temp3 then let temp6 = ColCyan(12) : return
 
           rem Hurt state handling
-          if temp2 then
-#ifdef TV_SECAM
-            let temp6 = ColMagenta(12)
-#else
-            let temp6 = PlayerColors6[currentPlayer]
-#endif
-          end
-          if temp2 then return
-
+          if temp2 then goto HurtColorState
           rem Normal color state
           let temp6 = PlayerColors12[currentPlayer]
+          return
+
+HurtColorState
+#ifdef TV_SECAM
+          let temp6 = ColMagenta(12)
+#else
+          let temp6 = PlayerColors6[currentPlayer]
+#endif
           return
 

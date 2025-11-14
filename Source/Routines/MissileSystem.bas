@@ -9,7 +9,6 @@
 GetPlayerMissileBitFlag
           asm
 GetPlayerMissileBitFlag
-
 end
           rem   - Ranged projectile (bullet, arrow, magic spell)
           rem   - Melee attack visual (sword, fist, kick sprite)
@@ -229,7 +228,6 @@ end
 UpdateOneMissile
           asm
 UpdateOneMissile
-
 end
           rem
           rem Update One Missile
@@ -811,7 +809,6 @@ MissileSysPF
 Div5Compute
           asm
 Div5Compute
-
 end
           rem Div5Compute: compute floor(temp2/5) into temp6 via
           rem   repeated subtraction
@@ -943,7 +940,6 @@ MissileCollisionReturn
 HandleMissileHit
           asm
 HandleMissileHit
-
 end
           rem
           rem Handle Missile Hit

@@ -10,6 +10,33 @@
 ; cross-bank routines rely on one authoritative header.
  include "2600basic_variable_redefs.h"
 
+; Define compiler constants if not already defined by batariBASIC
+; These are forward declarations that may be redefined by batariBASIC's generated constants
+  ifnconst pfres
+pfres = 8
+  endif
+  ifnconst bscode_length
+bscode_length = $20
+  endif
+  ifnconst multisprite
+multisprite = 2
+  endif
+  ifnconst superchip
+superchip = 1
+  endif
+  ifnconst bankswitch
+bankswitch = 64
+  endif
+  ifnconst bankswitch_hotspot
+bankswitch_hotspot = $FFF8
+  endif
+  ifnconst overscan_time
+overscan_time = 36
+  endif
+  ifnconst vblank_bB_code
+vblank_bB_code = $0000
+  endif
+
 ; Bank boundary definitions for 64K SuperChip ROM (16 banks x 4K each)
 ; Each bank reserves space for bankswitching code at the end
 ; Bankswitch code starts at $FE0 - bscode_length in each bank's ORG space
@@ -350,7 +377,6 @@ BANK16_END = $F000 + $FC0
   MS_ASSIGN  var46, $D2
   MS_ASSIGN  var47, $D3
   MS_ASSIGN  var48, $D4
-  MS_ASSIGN  var52, w118
   MS_ASSIGN  pfrowheight, $D4
   MS_ASSIGN  pfrows, $D5
   MS_ASSIGN  pfscore, 1

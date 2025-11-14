@@ -4,7 +4,6 @@
 HarpyAttack
           asm
 HarpyAttack
-
 end
           rem
           rem Harpy (character 6) - Diagonal downward swoop attack

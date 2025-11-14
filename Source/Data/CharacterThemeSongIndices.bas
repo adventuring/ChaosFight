@@ -41,7 +41,9 @@
 end
 
           rem Global label for cross-bank access to CharacterThemeSongIndices data table
+          rem The data statement creates .CharacterThemeSongIndices as a local label
+          rem We assign it to a global label for cross-bank access
           asm
-CharacterThemeSongIndices = CharacterThemeSongIndices
+CharacterThemeSongIndices = .CharacterThemeSongIndices
 end
 

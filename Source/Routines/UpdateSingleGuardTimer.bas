@@ -4,7 +4,6 @@
 UpdateSingleGuardTimer
           asm
 UpdateSingleGuardTimer
-
 end
           rem Update guard timer or cooldown for a single player
           rem

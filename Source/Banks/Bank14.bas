@@ -44,6 +44,7 @@ end
 #include "Source/Routines/TitleCharacterParade.bas"
 #include "Source/Routines/TitlescreenWindowControl.bas"
 #include "Source/Routines/AttractMode.bas"
+#include "Source/Routines/LoadCharacterColors.bas"
 
           asm
 Bank14CodeEnds

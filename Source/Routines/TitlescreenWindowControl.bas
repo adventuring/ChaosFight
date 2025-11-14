@@ -1,4 +1,7 @@
 SetPublisherWindowValues
+          asm
+SetPublisherWindowValues
+end
           rem
           rem ChaosFight - Source/Routines/TitlescreenWindowControl.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.

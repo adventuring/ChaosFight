@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 HarpyAttack
+          asm
+HarpyAttack
+
+end
           rem
           rem Harpy (character 6) - Diagonal downward swoop attack
           rem Attack moves the character along a 45° downward path; the sprite acts

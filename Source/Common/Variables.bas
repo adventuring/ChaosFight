@@ -139,9 +139,6 @@
           rem   Bit 3: Game state ending (SystemFlagGameStateEnding = $08, 0=normal, 1=ending)
           rem   Bits 0-2: Reserved for future use
           dim gameMode = p
-          rem Game state (0=normal play, 1=paused, 2=game ending)
-          rem Used for pause toggle and game state tracking
-          dim GameState = var6
           rem Packed controller status bits: $80=Quadtari,
           rem   $01=LeftGenesis, $02=LeftJoy2b+, $04=RightGenesis,
           rem   $08=RightJoy2b+
@@ -563,6 +560,10 @@ end
           rem NOTE: var37-var40 used for playerAttackCooldown (Game
           rem   Mode), var37-var38 used for characterSelect (Admin Mode)
           dim playerAttackCooldown = var37
+          rem Game Mode: Game state (0=normal play, 1=paused, 2=game ending)
+          rem Used for pause toggle and game state tracking during gameplay
+          rem NOTE: Using letter variable 'u' - redimmed from characterSelectAnimationIndex (Admin Mode)
+          dim GameState = u
           rem Scratch: playersEliminated_R | BitMask[currentPlayer] (PlayerElimination)
           dim CPE_eliminatedFlags = var47
 

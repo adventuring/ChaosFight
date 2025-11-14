@@ -280,6 +280,10 @@ CharacterSelectInputComplete
           rem Re-roll random selections until valid (0-15), then lock
 
 CharacterSelectHandleRandomRolls
+          asm
+CharacterSelectHandleRandomRolls
+
+end
           rem Check each player for pending random roll
           let temp1 = 1
           if controllerStatus & SetQuadtariDetected then temp1 = 3
@@ -293,7 +297,7 @@ CharacterSelectRollRandomPlayer
 CharacterSelectRollRandomPlayer
 
 end
-          rem Handle random character roll for the current player's slot.
+          rem Handle random character roll for the current player’s slot.
           rem
           rem Input: currentPlayer (global) = player index (0-3)
           rem        randomSelectFlags_R[] (SCRAM, read port) = handicap flags

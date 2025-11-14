@@ -94,6 +94,10 @@ CRTSMC_NextPlayer
           return
 
 HandleRoboTitoStretchMissileHit
+          asm
+HandleRoboTitoStretchMissileHit
+
+end
           rem Resolves stretch missile collisions and resets stretch state
           rem Inputs: temp1 = RoboTito player index, temp5 = hit player index
           rem Outputs: Updates playerState[], characterStateFlags_W[], roboTitoCanStretch_W

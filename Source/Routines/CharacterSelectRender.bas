@@ -113,6 +113,10 @@ PlayerPreviewApplyColor
           return
 
 SelectSetPlayerColorUnlocked
+          asm
+SelectSetPlayerColorUnlocked
+
+end
           rem Override sprite color to indicate unlocked state (white)
           if currentPlayer = 0 then COLUP0 = ColGrey(14)
           if currentPlayer = 0 then return

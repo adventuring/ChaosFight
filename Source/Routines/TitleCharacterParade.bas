@@ -2,6 +2,9 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 UpdateCharacterParade
+          asm
+UpdateCharacterParade
+end
           rem Title Screen Character Parade
           rem Manages the animated character parade that runs across the bottom of the title screen after 5 seconds (when copyright disappears).
           rem AVAILABLE VARIABLES (from Variables.bas):

@@ -73,6 +73,10 @@ end
           return
 
 CalcDeltaYUp
+          asm
+CalcDeltaYUp
+
+end
           rem Calculate Y distance upward
           rem Input: temp1 = player, temp3 = target Y
           rem Output: distanceUp_W = distance up (0 if at or below target)
@@ -116,6 +120,10 @@ VerticalDone
           return
 
 MoveUp
+          asm
+MoveUp
+
+end
           rem Move player up by 1 pixel
           rem Input: temp1 = player index
           rem Output: playerY[temp1] decremented
@@ -123,6 +131,10 @@ MoveUp
           return
 
 AtTarget
+          asm
+AtTarget
+
+end
           rem Check if player is at target position
           rem Input: temp1 = player, temp2 = target X, temp3 = target Y
           rem Output: Returns if at target, otherwise calls nudge functions
@@ -145,6 +157,10 @@ end
           return
 
 NudgeFromPF
+          asm
+NudgeFromPF
+
+end
           rem Detect playfield collision and nudge accordingly
           rem Input: temp1 = player index (preserved)
           rem Output: Player nudged right/left based on collision

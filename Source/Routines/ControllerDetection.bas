@@ -405,6 +405,9 @@ Joy2PlusDone
           rem flipping the physical switch on the console
 
 Check7800Pause
+          asm
+Check7800Pause
+end
           rem Handle 7800 pause button (toggles Color/B&W override on
           rem 7800 console)
           rem

@@ -929,6 +929,10 @@ MissileCollisionReturn
           return
 
 HandleMissileHit
+          asm
+HandleMissileHit
+
+end
           rem
           rem Handle Missile Hit
           rem Processes a missile hitting a player.

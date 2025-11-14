@@ -10,6 +10,11 @@
             10, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16
 end
 
+          rem Global label for cross-bank access to CharacterHeights data table
+          asm
+CharacterHeights = CharacterHeights
+end
+
           data CharacterAttackTypes
             MeleeAttack, RangedAttack, RangedAttack, RangedAttack
             MeleeAttack, MeleeAttack, MeleeAttack, MeleeAttack

@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 UpdateSingleGuardTimer
+          asm
+UpdateSingleGuardTimer
+
+end
           rem Update guard timer or cooldown for a single player
           rem
           rem Input: temp1 = player index (0-3)

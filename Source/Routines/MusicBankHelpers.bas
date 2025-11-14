@@ -194,7 +194,7 @@ end
           rem pointer to current note in Song_Voice1 stream
           rem
           rem Output: TIA registers updated (AUDC1, AUDF1, AUDV1),
-          rem pointer advanced by 4 bytes, MusicVoice1Frame set,
+          rem pointer advanced by 4 bytes, musicVoice1Frame set,
           rem envelope parameters stored
           rem
           rem Mutates: temp2-temp6 (used for calculations), AUDC1,

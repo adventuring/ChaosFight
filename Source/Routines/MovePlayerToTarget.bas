@@ -35,6 +35,10 @@ end
           return
 
 CalcDeltaXRight
+          asm
+CalcDeltaXRight
+
+end
           rem Calculate X distance to the right
           rem Input: temp1 = player, temp2 = target X
           rem Output: temp4 = distance right (0 if at or left of target)
@@ -57,6 +61,10 @@ DeltaYDone
           return
 
 CalcDeltaXLeft
+          asm
+CalcDeltaXLeft
+
+end
           rem Calculate X distance to the left
           rem Input: temp1 = player, temp2 = target X
           rem Output: temp5 = distance left (0 if at or right of target)
@@ -73,6 +81,10 @@ CalcDeltaYUp
           return
 
 MoveRight
+          asm
+MoveRight
+
+end
           rem Move player right by 1 pixel
           rem Input: temp1 = player index
           rem Output: playerX[temp1] incremented
@@ -81,6 +93,10 @@ HorizontalDone
           return
 
 MoveLeft
+          asm
+MoveLeft
+
+end
           rem Move player left by 1 pixel
           rem Input: temp1 = player index
           rem Output: playerX[temp1] decremented
@@ -144,6 +160,10 @@ NudgeHorizontalDone
           return
 
 NudgeRight
+          asm
+NudgeRight
+
+end
           rem Check if nudging right avoids collision
           rem Input: temp1 = player, originalPlayerX_W = original X, originalPlayerY_W = original Y
           rem Output: playerX adjusted if no collision detected

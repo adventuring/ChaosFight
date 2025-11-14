@@ -29,6 +29,10 @@ AnimationNextPlayer
             rem Continue to next player
           next
 UpdatePlayerAnimation
+          asm
+UpdatePlayerAnimation
+
+end
           rem Skip Player 3/4 animations (2-player mode only, label
           rem only)
           rem

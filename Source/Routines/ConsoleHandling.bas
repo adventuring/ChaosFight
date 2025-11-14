@@ -110,6 +110,10 @@ DonePlayer2Pause
           return
 
 CheckEnhancedPause
+          asm
+CheckEnhancedPause
+
+end
           rem Check if pause buttons are pressed (console Game Select switch or enhanced controller buttons)
           rem Game Select switch (always) + Joy2B+ Button III (INPT1/INPT3) or Genesis Button C (INPT0/INPT2)
           rem

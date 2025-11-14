@@ -55,6 +55,10 @@ DCD_HandleRoboTitoDown
           goto StandardGuard
 
 CCJ_ConvertPlayerXToPlayfieldColumn
+          asm
+CCJ_ConvertPlayerXToPlayfieldColumn
+
+end
           rem Convert player X position to playfield column for jump routines
           rem
           rem Input: temp1 = player index (0-3)

@@ -227,6 +227,9 @@
           rem Frame counters for current notes on each voice (SCRAM
           rem   acceptable)
           dim musicVoice1Frame_R = r065
+          rem Music system frame counter aliases (mirroring sound system pattern)
+          dim MS_frameCount = musicVoice0Frame_W
+          dim MS_frameCount1 = musicVoice1Frame_W
 
           rem Music System Current Song ID and Loop Pointers (SCRAM -
           rem   used in Admin Mode)
@@ -275,6 +278,9 @@
           rem Frame counters for current sound effect notes on each
           rem   voice (SCRAM acceptable)
           dim soundEffectFrame1_R = r112
+          rem Sound effect frame counter aliases (mirroring music system pattern)
+          dim SS_frameCount = soundEffectFrame_W
+          dim SS_frameCount1 = soundEffectFrame1_W
 
           rem ADMIN MODE VARIABLES (may be re-used in Game Mode for
           rem

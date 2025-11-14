@@ -110,6 +110,9 @@ end
           gosub UpdateGuardTimers bank6
           rem Update guard timers (duration and cooldown)
 
+          gosub UpdateAttackCooldowns
+          rem Update attack cooldown timers
+
           gosub UpdateCharacterAnimations
           rem Update animation system (10fps character animation) (in Bank 11)
 

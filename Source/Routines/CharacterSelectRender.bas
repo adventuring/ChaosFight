@@ -124,6 +124,10 @@ SelectSetPlayerColorUnlocked
           return
 
 SelectSetPlayerColorHandicap
+          asm
+SelectSetPlayerColorHandicap
+
+end
           rem Override sprite color to indicate handicap lock (dim player color)
           if currentPlayer = 0 then COLUP0 = ColIndigo(6)
           if currentPlayer = 0 then return
@@ -176,6 +180,10 @@ SelectDonePlayer23Animation
           return
 
 SelectUpdatePlayerAnimation
+          asm
+SelectUpdatePlayerAnimation
+
+end
           rem Update character select animation counters for one player
           rem
           rem Input: temp1 = player index (0-3)

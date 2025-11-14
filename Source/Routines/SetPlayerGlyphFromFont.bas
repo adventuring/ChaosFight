@@ -12,6 +12,10 @@
           rem   - P0-P5 are all virtual sprites in multisprite kernel - just set pointers to ROM glyphs
           rem   - Must be included in bank 16 to preserve kernel locality
 SetGlyph
+          asm
+SetGlyph
+
+end
           rem Calculate offset into FontData (16 bytes per glyph)
           temp2 = temp1 * 16
 

@@ -192,6 +192,10 @@ DWS_RankNext
           goto DWS_Position3Players
 
 DWS_LoadIdleSprite
+          asm
+DWS_LoadIdleSprite
+
+end
           rem Helper: Set temp2=0, temp3=0 and load sprite (saves bytes by eliminating repeated assignments)
           let temp2 = 0
           let temp3 = 0

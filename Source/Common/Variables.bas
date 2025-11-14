@@ -274,13 +274,16 @@
 
           rem Sound Effect System Frame Counters (SCRAM - used in Game
           rem   Mode)
-          dim soundEffectFrame_W = w111
-          dim soundEffectFrame_R = r111
-          dim soundEffectFrame1_W = w112
-          rem Located at w111/w112 to avoid conflicts with arena select data
+          rem Moved from w111-w112 to avoid conflict with missileLifetime (w110-w113)
+          dim soundEffectFrame_W = w100
+          dim soundEffectFrame_R = r100
+          dim soundEffectFrame1_W = w102
+          rem Located at w100 and w102 to avoid conflicts with missileLifetime and harpyLastFlapFrame
           rem Frame counters for current sound effect notes on each
           rem   voice (SCRAM acceptable)
-          dim soundEffectFrame1_R = r112
+          rem NOTE: w101-w104 used by harpyLastFlapFrame, so soundEffectFrame1 uses w102
+          rem       (skipping w101 which is first byte of harpyLastFlapFrame array)
+          dim soundEffectFrame1_R = r102
           rem Sound effect frame counter aliases (mirroring music system pattern)
           dim SS_frameCount = soundEffectFrame_W
           dim SS_frameCount1 = soundEffectFrame1_W
@@ -440,9 +443,12 @@
 
           rem playerAttackType[0-3] - Attack type for each player (0=MeleeAttack, 1=RangedAttack, 2=AreaAttack)
           rem Initialized from CharacterAttackTypes[playerCharacter[playerIndex]]
-          rem Stored in SuperChip RAM at w113-w116 (4 bytes for 4 players)
-          dim playerAttackType_W = w113
-          dim playerAttackType_R = r113
+          rem Stored in SuperChip RAM at w075-w078 (4 bytes for 4 players)
+          rem NOTE: w075 is Admin Mode only (randomSelectFlags), so free in Game Mode
+          rem       w076-w077 overlap with Game Mode (playerSubpixelY_WL, animationCounter_W)
+          rem       but w076-w077 are REDIMMED between modes, so OK
+          dim playerAttackType_W = w075
+          dim playerAttackType_R = r075
 
           rem PlayerFacing is extracted from playerState bit 3 (PlayerStateBitFacing)
           rem 0=right (bit 3=1), 1=left (bit 3=0)
@@ -709,21 +715,28 @@
 
           rem Character-specific state flags for special mechanics
           rem   (SCRAM)
-          dim characterStateFlags_W = w093
+          rem Moved from w093-w096 to avoid conflict with playerTimers
+          dim characterStateFlags_W = w124
           rem [0]=P1, [1]=P2, [2]=P3, [3]=P4 character state bits (4
-          rem   bytes)
+          rem   bytes: w124-w127)
           rem Bit 0: RoboTito ceiling latched
           rem Bit 1: Harpy in flight mode
           rem Bit 2: Harpy in dive mode
           rem Bit 3-7: Reserved for future character mechanics
-          dim characterStateFlags_R = r093
+          rem NOTE: Shares w124-w127 with cachedHitbox - both are temp/per-frame
+          rem       and never used simultaneously (cachedHitbox only during attack processing)
+          dim characterStateFlags_R = r124
 
           rem Missile angular velocity for curling stone rotation
           rem   (SCRAM)
-          dim missileAngularVel_W = w097
-          rem [0-3] angular velocity for rotation effects (4 bytes,
-          rem   reserved for future)
-          dim missileAngularVel_R = r097
+          rem Moved from w097 to avoid conflict with missileY (w097-w100)
+          rem RESERVED for future implementation - not currently used
+          dim missileAngularVel_W = w105
+          rem [0-3] angular velocity for rotation effects (4 bytes:
+          rem   w105-w108, reserved for future)
+          rem NOTE: w105-w108 partially used by eliminationOrder, but
+          rem       missileAngularVel is reserved for future and not currently used
+          dim missileAngularVel_R = r105
 
           rem Missile NUSIZ tracking (SCRAM)
           rem Tracks NUSIZ register values for each missile (0-3) to
@@ -933,17 +946,25 @@
           rem Impulse strength for knockback momentum calculation
           dim impulseStrength_R = var40
 
-          dim originalPlayerX_W = w114
+          rem Original player positions and distance for collision nudging (SCRAM)
+          rem Moved from w114-w116 to avoid conflict with missileNUSIZ (w114-w117)
+          dim originalPlayerX_W = w103
           rem Original player X position for collision checking and nudging
-          dim originalPlayerX_R = r114
+          dim originalPlayerX_R = r103
 
-          dim originalPlayerY_W = w115
+          dim originalPlayerY_W = w104
           rem Original player Y position for collision checking and nudging
-          dim originalPlayerY_R = r115
+          rem NOTE: w104 partially overlaps with harpyLastFlapFrame (w101-w104),
+          rem       but originalPlayerY only needs 1 byte (w104), and harpyLastFlapFrame
+          rem       uses w101-w104 as an array. These should not conflict if we verify
+          rem       originalPlayerY is only used when harpyLastFlapFrame is not in use.
+          dim originalPlayerY_R = r104
 
-          dim distanceUp_W = w116
+          dim distanceUp_W = w105
           rem Distance to move player upward toward target
-          dim distanceUp_R = r116
+          rem NOTE: w105 partially overlaps with eliminationOrder (w105), but distanceUp
+          rem       is only a single byte and eliminationOrder is an array. Verify no conflict.
+          dim distanceUp_R = r105
 
           dim gravityRate_W = var42
           rem Gravity acceleration rate (normal or reduced)

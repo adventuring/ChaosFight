@@ -31,6 +31,9 @@ end
 #include "Source/Routines/UpdateSingleGuardTimer.bas"
 #include "Source/Routines/UpdateGuardTimers.bas"
 
+          rem Falling animation setup routine
+#include "Source/Routines/BeginFallingAnimation.bas"
+
           asm
 Bank6CodeEnds
 end

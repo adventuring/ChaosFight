@@ -449,6 +449,11 @@ end
           rem playerCharacter[0-3] - Character type indices (0-MaxCharacter)
           dim playerCharacter = var48
 
+          rem Global alias for playerCharacter (for assembly/cross-bank access)
+          asm
+PlayerCharacter = playerCharacter
+end
+
           rem PlayerFacing is extracted from playerState bit 3 (PlayerStateBitFacing)
           rem 0=right (bit 3=1), 1=left (bit 3=0)
           rem No separate PlayerFacing array needed - use playerState & PlayerStateBitFacing

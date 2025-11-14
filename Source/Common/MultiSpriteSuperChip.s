@@ -350,10 +350,7 @@ BANK16_END = $F000 + $FC0
   MS_ASSIGN  var46, $D2
   MS_ASSIGN  var47, $D3
   MS_ASSIGN  var48, $D4
-  MS_ASSIGN  var49, w000
-  MS_ASSIGN  var50, w001
-  MS_ASSIGN  var51, w002
-  MS_ASSIGN  var52, w003
+  MS_ASSIGN  var52, w113
   MS_ASSIGN  pfrowheight, $D4
   MS_ASSIGN  pfrows, $D5
   MS_ASSIGN  pfscore, 1

@@ -3,6 +3,10 @@
           rem Arena loading function
 
 LoadArenaByIndex
+          asm
+LoadArenaByIndex
+
+end
           rem Load arena data by index into playfield RAM
           rem Input: temp1 = arena index (0-31)
           rem Output: Playfield RAM loaded with arena data
@@ -13,32 +17,35 @@ LoadArenaByIndex
           rem Calculate arena data pointer: Arena0Playfield + (arena_index × 24)
           rem Each arena stores 16 bytes of playfield data followed by 8 bytes of row colors (16 + 8 = 24)
           asm
-            ; Compute arena offset = (arena_index × 16) + (arena_index × 8)
+            ; Optimized: Multiply by 24 = multiply by 8, then multiply by 3
+            ; 24 = 8 * 3, so: arena_index * 24 = (arena_index * 8) * 3
             lda temp1
             sta temp2
             lda #0
             sta temp3
-
-            ldx #4
-.MultiplyBy16
+            
+            ; Multiply by 8 (3 shifts)
+            ldx #3
+.MultiplyBy8
             asl temp2
             rol temp3
             dex
-            bne .MultiplyBy16
-
-            lda temp1
-            sta temp4
-            lda #0
-            sta temp5
-            ldx #3
-.MultiplyBy8
-            asl temp4
-            rol temp5
-            dex
             bne .MultiplyBy8
-
+            
+            ; Now multiply by 3: temp2/temp3 * 3 = temp2/temp3 + (temp2/temp3 * 2)
+            ; Store original value for addition
             lda temp2
+            sta temp4
+            lda temp3
+            sta temp5
+            
+            ; Multiply by 2 (1 shift)
+            asl temp2
+            rol temp3
+            
+            ; Add original to get * 3
             clc
+            lda temp2
             adc temp4
             sta temp2
             lda temp3

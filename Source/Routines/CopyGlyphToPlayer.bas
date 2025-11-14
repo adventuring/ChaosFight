@@ -1,17 +1,24 @@
           rem ChaosFight - Source/Routines/CopyGlyphToPlayer.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
+          rem Glyph lookup table: sprite type (0-2) -> glyph index
+          data GlyphLookupTable
+          GlyphQuestionMark, GlyphCPU, GlyphNo
+end
+
           rem Helper: CopyGlyphToPlayer
 
 CopyGlyphToPlayer
+          asm
+CopyGlyphToPlayer
+
+end
           rem Input: temp3 = player number (0-3)
           rem        temp4 = sprite type (0=QuestionMark, 1=CPU, 2=No)
           rem Output: Sprite data loaded from unified font
 
-          rem Set glyph index based on sprite type
-          if temp4 = 0 then temp1 = GlyphQuestionMark
-          if temp4 = 1 then temp1 = GlyphCPU
-          if temp4 = 2 then temp1 = GlyphNo
+          rem Set glyph index based on sprite type (lookup table optimization)
+          temp1 = GlyphLookupTable[temp4]
 
           rem Calculate offset into font data (16 bytes per glyph)
           let temp2 = temp1 * 16

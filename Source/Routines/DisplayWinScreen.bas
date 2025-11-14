@@ -1,6 +1,10 @@
           rem ChaosFight - Source/Routines/DisplayWinScreen.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 DisplayWinScreen
+          asm
+DisplayWinScreen
+
+end
           rem Displays the winner podium with character sprites
           rem Layout:
           rem   - Fixed playfield pattern (podium/platform design)
@@ -187,6 +191,13 @@ DWS_RankNext
           if temp1 = 2 then DWS_Position2Players
           goto DWS_Position3Players
 
+DWS_LoadIdleSprite
+          rem Helper: Set temp2=0, temp3=0 and load sprite (saves bytes by eliminating repeated assignments)
+          let temp2 = 0
+          let temp3 = 0
+          gosub LoadCharacterSprite bank16
+          return
+
 DWS_Position1Player
           rem 1 player: Winner centered on podium
           rem
@@ -209,16 +220,9 @@ DWS_Position1Player
           let currentCharacter = playerCharacter[temp2]
           rem Load winner sprite
           let currentPlayer = 0
-          let temp2 = 0
-          rem Animation frame 0 (idle)
-          let temp3 = 0
-          rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank16
+          gosub DWS_LoadIdleSprite
           rem Player 0
-          let playerX[1] = 0
-          rem Hide other players
-          let playerX[2] = 0
-          let playerX[3] = 0
+          gosub DWS_HidePlayers123
           return
 
 DWS_Position2Players
@@ -245,11 +249,7 @@ DWS_Position2Players
           let playerY[0] = 192
           let currentCharacter = playerCharacter[temp2]
           let currentPlayer = 0
-          let temp2 = 0
-          rem Animation frame 0 (idle)
-          let temp3 = 0
-          rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank16
+          gosub DWS_LoadIdleSprite
 
           rem Runner-up (P1) - only if valid
 
@@ -258,11 +258,7 @@ DWS_Position2Players
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
           let currentPlayer = 1
-          let temp2 = 0
-          rem Animation frame 0 (idle)
-          let temp3 = 0
-          rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank16
+          gosub DWS_LoadIdleSprite
           goto DWS_Hide2PlayerDone
 DWS_Hide2Player
           rem Hide Player 2 (no runner-up)
@@ -290,9 +286,7 @@ DWS_Hide2PlayerDone
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with DisplayWinScreen
-          let playerX[2] = 0
-          rem Hide unused players
-          let playerX[3] = 0
+          gosub DWS_HidePlayers123
           return
 
 DWS_Position3Players
@@ -321,11 +315,7 @@ DWS_Position3Players
           rem Row 16 = 128 pixels (16 * 8)
           let currentCharacter = playerCharacter[temp2]
           let currentPlayer = 0
-          let temp2 = 0
-          rem Animation frame 0 (idle)
-          let temp3 = 0
-          rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank16
+          gosub DWS_LoadIdleSprite
 
           rem 2nd place (P1) - left platform
 
@@ -334,11 +324,7 @@ DWS_Position3Players
           let playerY[1] = 192
           let currentCharacter = playerCharacter[temp3]
           let currentPlayer = 1
-          let temp2 = 0
-          rem Animation frame 0 (idle)
-          let temp3 = 0
-          rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank16
+          gosub DWS_LoadIdleSprite
           goto DWS_Hide3Player2Done
 DWS_Hide3Player2
           rem Hide Player 2 (no 2nd place)
@@ -374,11 +360,7 @@ DWS_Hide3Player2Done
           let playerY[2] = 192
           let currentCharacter = playerCharacter[temp4]
           let currentPlayer = 2
-          let temp2 = 0
-          rem Animation frame 0 (idle)
-          let temp3 = 0
-          rem Animation action 0 (idle)
-          gosub LoadCharacterSprite bank16
+          gosub DWS_LoadIdleSprite
           goto DWS_Hide3Player3Done
 DWS_Hide3Player3
           rem Hide Player 3 (no 3rd place)
@@ -408,6 +390,13 @@ DWS_Hide3Player3Done
           rem Constraints: Must be colocated with DisplayWinScreen
           let playerX[3] = 0
           rem Hide unused player
+          return
+
+DWS_HidePlayers123
+          rem Helper: Hide players 1, 2, 3 (saves bytes by consolidating repeated code)
+          let playerX[1] = 0
+          let playerX[2] = 0
+          let playerX[3] = 0
           return
 
 DWS_LoadColorColors

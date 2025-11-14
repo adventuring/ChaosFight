@@ -7,6 +7,10 @@
           rem   can be:
 
 GetPlayerMissileBitFlag
+          asm
+GetPlayerMissileBitFlag
+
+end
           rem   - Ranged projectile (bullet, arrow, magic spell)
           rem   - Melee attack visual (sword, fist, kick sprite)
           rem MISSILE VARIABLES (from Variables.bas):
@@ -223,6 +227,10 @@ end
           return
 
 UpdateOneMissile
+          asm
+UpdateOneMissile
+
+end
           rem
           rem Update One Missile
           rem Updates a single player missile.

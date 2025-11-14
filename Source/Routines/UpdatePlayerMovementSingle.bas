@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 UpdatePlayerMovementSingle
+          asm
+UpdatePlayerMovementSingle
+
+end
           rem Move one player using 8.8 fixed-point velocity integration.
           rem Input: currentPlayer (global) = player index (0-3)
           rem        playerHealth[], playerSubpixelX/Y (SCRAM),

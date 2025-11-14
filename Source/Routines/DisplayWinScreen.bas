@@ -397,6 +397,10 @@ DWS_Hide3Player3Done
           return
 
 DWS_HidePlayers123
+          asm
+DWS_HidePlayers123
+
+end
           rem Helper: Hide players 1, 2, 3 (saves bytes by consolidating repeated code)
           let playerX[1] = 0
           let playerX[2] = 0

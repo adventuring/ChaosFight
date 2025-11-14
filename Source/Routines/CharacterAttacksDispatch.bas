@@ -53,6 +53,10 @@ end
           return
 
 CheckEnhancedJumpButton
+          asm
+CheckEnhancedJumpButton
+
+end
           rem
           rem Shared Enhanced Button Check
           rem Checks Genesis/Joy2b+ Button C/II for jump input

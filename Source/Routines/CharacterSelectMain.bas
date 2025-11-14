@@ -108,6 +108,10 @@ HCSC_CheckJoy1Left
           rem Constraints: Must be colocated with HandleCharacterSelectCycle
           if !joy1left then return
 HandleCharacterSelectCycle
+          asm
+HandleCharacterSelectCycle
+
+end
           rem Perform character cycling
           rem
           rem Input: temp1, temp2 (from
@@ -179,6 +183,10 @@ HCSC_RightFromMax
           let temp1 = NoCharacter
           goto HCSC_CycleDone
 HCSC_GetPlayer2Tail
+          asm
+HCSC_GetPlayer2Tail
+
+end
           rem Determine whether Player 2 wraps to CPU or NO
           let temp6 = CPUCharacter
           if playerCharacter[2] = NoCharacter then goto HCSC_P2TailCheckP4

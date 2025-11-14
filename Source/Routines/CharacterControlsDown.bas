@@ -228,6 +228,10 @@ FrootyDown
           return
 
 RoboTitoDown
+          asm
+RoboTitoDown
+
+end
           rem ROBO TITO (13) - DOWN: Drops if latched, else guards
           rem Voluntary drop from ceiling if latched; otherwise standard guard
           rem Input: temp1 = player index

@@ -22,6 +22,10 @@
           rem   %11111111
 
 UpdatePlayer1HealthBar
+          asm
+UpdatePlayer1HealthBar
+
+end
           rem
           rem Update Player 1 health bar (pfscore1).
           rem Input: temp1 = health value (0-100)

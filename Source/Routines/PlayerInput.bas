@@ -270,6 +270,10 @@ end
           return
 
 HandleFlyingCharacterMovement
+          asm
+HandleFlyingCharacterMovement
+
+end
           rem
           rem Shared Flying Character Movement
           rem Handles horizontal movement with collision for flying

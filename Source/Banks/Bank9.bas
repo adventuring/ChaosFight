@@ -38,4 +38,12 @@ end
 
           asm
 Bank9CodeEnds
+ rem Generate bankswitching ORG immediately after Bank9CodeEnds
+ rem This prevents "Origin Reverse-indexed" error by executing ORG before output position moves
+ ifconst bscode_length
+  if Bank9CodeEnds <= ($FFE0 - bscode_length)
+   ORG $9FE0-bscode_length
+   RORG $FFE0-bscode_length
+  endif
+ endif
 end

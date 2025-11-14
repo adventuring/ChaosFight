@@ -140,7 +140,7 @@ GravityCheckCharacter
           rem Check playfield collision for ground detection (downward)
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
-          gosub ConvertPlayerXToPlayfieldColumn bank8
+          gosub CCJ_ConvertPlayerXToPlayfieldColumn bank8
 
           rem Calculate row where player feet are (bottom of sprite)
           let temp3 = playerY[temp1] + PlayerSpriteHeight

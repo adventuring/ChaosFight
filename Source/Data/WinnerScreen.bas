@@ -11,10 +11,6 @@
           rem Row 4: Central high platform (winner podium)
           rem Row 6: Left and right platforms (2nd/3rd place)
 
-WinnerScreenPlayfield
-          asm
-WinnerScreenPlayfield = WinnerScreenPlayfield
-end
           playfield:
             ................
             ................
@@ -24,6 +20,15 @@ end
             ....XXXXXXXXXXXX
             ....XXXXXXXXXXXX
             XXXXXXXXXXXXXXXX
+end
+
+          rem Global label for WinnerScreenPlayfield (playfield statement creates local label)
+          rem The playfield statement automatically creates .WinnerScreenPlayfield as a local label
+          rem We need to make it global for cross-bank access
+          asm
+          ifnconst WinnerScreenPlayfield
+WinnerScreenPlayfield = .WinnerScreenPlayfield
+          endif
 end
 
 WinnerScreenColorsColor

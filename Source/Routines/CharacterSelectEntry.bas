@@ -21,8 +21,8 @@ CharacterSelectEntry
           rem
           rem Constraints: Entry point for character select screen
           rem initialization
-          rem              Must be colocated with CharacterSelectLoop (called
-          rem              via goto)
+          rem              Per-frame loop is handled by CharacterSelectInputEntry
+          rem              (in CharacterSelectMain.bas, called from MainLoop)
           let playerCharacter[0] = 0
           rem Initialize character selections
           let playerCharacter[1] = 0
@@ -43,11 +43,12 @@ CharacterSelectEntry
           let characterSelectAnimationFrame  = 0
           rem Start with first character
 
-          goto CharacterSelectDetectQuadtari
+          gosub CharacterSelectDetectQuadtari bank7
           rem Check for Quadtari adapter
 
           COLUBK = ColGray(0)
           rem Set background color (B&W safe)
           rem Always black background
 
-          goto CharacterSelectLoop
+          return
+          rem Initialization complete - per-frame loop handled by CharacterSelectInputEntry

@@ -51,6 +51,10 @@ CharacterSelectEntry
           rem Always black background
 
 CharacterSelectLoop
+          asm
+CharacterSelectLoop
+
+end
           rem Per-frame character select screen loop with Quadtari
           rem multiplexing
           rem

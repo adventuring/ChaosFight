@@ -661,6 +661,22 @@ pfread
   MS_ASSIGN  screenheight, 192
   MS_ASSIGN  rand16, $00F2
 
+; --- Additional variable definitions -----------------------------------------
+; Define var52 for playerAttackType (multisprite.h only defines up to var48)
+  MS_ASSIGN  var52, $00F4
+
+; --- batariBASIC built-in symbols --------------------------------------------
+; Forward declarations for compiler-generated symbols
+  ifnconst ECHOFIRST
+ECHOFIRST = 0
+  endif
+  ifnconst frame
+frame = $00F5
+  endif
+  ifnconst vblank_bB_code
+vblank_bB_code = $0000
+  endif
+
 ; --- Multisprite compatibility macros ----------------------------------------
 ; Preserve the RETURN macro expected by multisprite-generated assembly.
         MAC   RETURN

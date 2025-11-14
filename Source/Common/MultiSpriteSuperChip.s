@@ -350,7 +350,7 @@ BANK16_END = $F000 + $FC0
   MS_ASSIGN  var46, $D2
   MS_ASSIGN  var47, $D3
   MS_ASSIGN  var48, $D4
-  MS_ASSIGN  var52, w113
+  MS_ASSIGN  var52, w118
   MS_ASSIGN  pfrowheight, $D4
   MS_ASSIGN  pfrows, $D5
   MS_ASSIGN  pfscore, 1
@@ -661,18 +661,6 @@ pfread
   MS_ASSIGN  switchbw, $0282
   MS_ASSIGN  screenheight, 192
   MS_ASSIGN  rand16, $00F2
-
-; --- batariBASIC built-in symbols --------------------------------------------
-; Forward declarations for compiler-generated symbols
-  ifnconst ECHOFIRST
-ECHOFIRST = 0
-  endif
-  ifnconst frame
-frame = $00F5
-  endif
-  ifnconst vblank_bB_code
-vblank_bB_code = $0000
-  endif
 
 ; --- Multisprite compatibility macros ----------------------------------------
 ; Preserve the RETURN macro expected by multisprite-generated assembly.

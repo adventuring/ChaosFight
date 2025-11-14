@@ -440,7 +440,8 @@
 
           rem playerAttackType[0-3] - Attack type for each player (0=MeleeAttack, 1=RangedAttack, 2=AreaAttack)
           rem Initialized from CharacterAttackTypes[playerCharacter[playerIndex]]
-          dim playerAttackType = var52
+          rem Stored in SuperChip RAM at w113-w116 (4 bytes for 4 players)
+          dim playerAttackType = w113
 
           rem PlayerFacing is extracted from playerState bit 3 (PlayerStateBitFacing)
           rem 0=right (bit 3=1), 1=left (bit 3=0)

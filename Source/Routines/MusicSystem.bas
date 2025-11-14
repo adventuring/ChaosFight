@@ -213,6 +213,10 @@ IsChaotica
 MusicUpdateDone
           return
 CalculateMusicVoiceEnvelope
+          asm
+CalculateMusicVoiceEnvelope
+
+end
           rem Helper: End of UpdateMusic (label only)
           rem
           rem Input: None (label only)
@@ -361,6 +365,10 @@ CMVE_ApplyDecay
           return
 
 UpdateMusicVoice0
+          asm
+UpdateMusicVoice0
+
+end
           rem
           rem Update Voice 0 playback (envelope, frame counter, note stepping).
           rem Input: musicVoice0Frame_R, musicVoice0Pointer (16-bit), currentSongID_R,
@@ -397,6 +405,10 @@ UpdateMusicVoice0
           return
 
 UpdateMusicVoice1
+          asm
+UpdateMusicVoice1
+
+end
           rem
           rem Updatemusicvoice1 - Update Voice 1 Playback
           rem Applies envelope (attack/decay), decrements frame counter,

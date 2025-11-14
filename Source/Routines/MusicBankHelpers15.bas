@@ -39,6 +39,7 @@ LSP15_InvalidSong
 LoadSongVoice1PointerBank15
           asm
 LoadSongVoice1PointerBank15
+
 end
           rem Lookup Voice 1 song pointer from tables (Bank 15 songs)
           rem

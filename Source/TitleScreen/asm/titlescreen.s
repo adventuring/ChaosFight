@@ -95,9 +95,37 @@ title_playfield
 		include "TitleScreen/asm/score_kernel.s"
 	endif ;mk_score_on
 
-	ifconst mk_gameselect_on
-		include "TitleScreen/asm/gameselect_kernel.s"
-	endif ;mk_gameselect_on
+	; Gameselect minikernel removed - not used (mk_gameselect_on = 0)
+	; Gameselect symbols defined as stubs to avoid unresolved symbol errors
+	; These are referenced by batariBASIC compiler output but never used
+	ifnconst bmp_gameselect_color
+bmp_gameselect_color
+	endif
+		.byte $00
+	ifnconst bmp_gameselect_CHAR0
+bmp_gameselect_CHAR0
+	endif
+		.byte $00, $00, $00, $00, $00
+	ifnconst bmp_gameselect_CHAR1
+bmp_gameselect_CHAR1
+	endif
+		.byte $00, $00, $00, $00, $00
+	ifnconst bmp_gameselect_CHAR2
+bmp_gameselect_CHAR2
+	endif
+		.byte $00, $00, $00, $00, $00
+	ifnconst bmp_gameselect_CHAR3
+bmp_gameselect_CHAR3
+	endif
+		.byte $00, $00, $00, $00, $00
+	ifnconst font_gameselect_img
+font_gameselect_img
+	endif
+		.byte $00
+	ifnconst gamenumber
+gamenumber
+	endif
+		.byte $00
 
 PFWAIT
         lda INTIM 
@@ -145,7 +173,5 @@ TitleScreenFixPlayerHeights:
 	; endif
 
 	; Removed unused player, score, and gameselect minikernels
-
-
 
 	RETURN

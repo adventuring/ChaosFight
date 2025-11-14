@@ -399,7 +399,31 @@ DWS_HidePlayers123
           let playerX[3] = 0
           return
 
+DWS_GetBWMode
+          asm
+DWS_GetBWMode
+
+end
+          rem Get Color/BW mode state for arena loading
+          rem
+          rem Input: systemFlags (global) = system flags including ColorBWOverride bit
+          rem
+          rem Output: temp2 = 1 if BW mode (ColorBWOverride active), 0 if color mode
+          rem
+          rem Mutates: temp2 (used as return value)
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must reside in bank 15 (DisplayWinScreen.bas)
+          let temp2 = systemFlags & SystemFlagColorBWOverride
+          if temp2 then temp2 = 1
+          return
+
 DWS_LoadColorColors
+          asm
+DWS_LoadColorColors
+
+end
           asm
           ; rem Load color colors (gold gradient)
           ; rem

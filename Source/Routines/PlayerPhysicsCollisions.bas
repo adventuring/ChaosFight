@@ -95,39 +95,39 @@ SkipP1BottomCheck
 
           rem Player 2 - boundaries (if Quadtari and active)
           if controllerStatus & SetQuadtariDetected then goto ProcessPlayer2Physics
-          goto SkipPlayer2
+          goto PPC_SkipPlayer2
 ProcessPlayer2Physics
-          if playerCharacter[2] = NoCharacter then goto SkipPlayer2
+          if playerCharacter[2] = NoCharacter then goto PPC_SkipPlayer2
           let temp1 = 2
           if playerX[2] < PlayerLeftWrapThreshold then let playerX[2] = PlayerRightEdge : let playerSubpixelX_W[2] = PlayerRightEdge : let playerSubpixelX_WL[2] = 0
           if playerX[2] > PlayerRightWrapThreshold then let playerX[2] = PlayerLeftEdge : let playerSubpixelX_W[2] = PlayerLeftEdge : let playerSubpixelX_WL[2] = 0
           if playerY[2] < 20 then let playerY[2] = 20 : let playerSubpixelY_W[2] = 20 : let playerSubpixelY_WL[2] = 0 : let playerVelocityY[2] = 0 : let playerVelocityYL[2] = 0
           rem Check for screen bottom elimination/wrap
-          if playerY[2] <= ScreenBottom then goto SkipPlayer2
+          if playerY[2] <= ScreenBottom then goto PPC_SkipPlayer2
           if playerCharacter[2] = CharacterBernie then goto BernieWrapP2
           let playerHealth[2] = 0 : let currentPlayer = 2 : gosub CheckPlayerElimination bank12
-          goto SkipPlayer2
+          goto PPC_SkipPlayer2
 BernieWrapP2
           let playerY[2] = 0 : let playerSubpixelY_W[2] = 0 : let playerSubpixelY_WL[2] = 0
-SkipPlayer2
+PPC_SkipPlayer2
 
           rem Player 3 - boundaries (if Quadtari and active)
           if controllerStatus & SetQuadtariDetected then goto ProcessPlayer3Physics
-          goto SkipPlayer3
+          goto PPC_SkipPlayer3
 ProcessPlayer3Physics
-          if playerCharacter[3] = NoCharacter then goto SkipPlayer3
+          if playerCharacter[3] = NoCharacter then goto PPC_SkipPlayer3
           let temp1 = 3
           if playerX[3] < PlayerLeftWrapThreshold then let playerX[3] = PlayerRightEdge : let playerSubpixelX_W[3] = PlayerRightEdge : let playerSubpixelX_WL[3] = 0
           if playerX[3] > PlayerRightWrapThreshold then let playerX[3] = PlayerLeftEdge : let playerSubpixelX_W[3] = PlayerLeftEdge : let playerSubpixelX_WL[3] = 0
           if playerY[3] < 20 then let playerY[3] = 20 : let playerSubpixelY_W[3] = 20 : let playerSubpixelY_WL[3] = 0 : let playerVelocityY[3] = 0 : let playerVelocityYL[3] = 0
           rem Check for screen bottom elimination/wrap
-          if playerY[3] <= ScreenBottom then goto SkipPlayer3
+          if playerY[3] <= ScreenBottom then goto PPC_SkipPlayer3
           if playerCharacter[3] = CharacterBernie then goto BernieWrapP3
           let playerHealth[3] = 0 : let currentPlayer = 3 : gosub CheckPlayerElimination bank12
-          goto SkipPlayer3
+          goto PPC_SkipPlayer3
 BernieWrapP3
           let playerY[3] = 0 : let playerSubpixelY_W[3] = 0 : let playerSubpixelY_WL[3] = 0
-SkipPlayer3
+PPC_SkipPlayer3
 
           return
 

@@ -5,6 +5,10 @@
           rem smartbranching off
 
 PhysicsApplyGravity
+          asm
+PhysicsApplyGravity
+
+end
           rem Player Physics - Gravity And Momentum
           rem Handles gravity, momentum, and recovery for all players.
           rem Split from PlayerPhysics.bas to reduce bank size.
@@ -268,6 +272,10 @@ GravityNextPlayer
           rem   duplicate .MomentumRecoveryNext labels trying to walk past $10000. One copy
           rem   is plenty; see Issue #875 if you’re tempted to clone it again.
 ApplyMomentumAndRecovery
+          asm
+ApplyMomentumAndRecovery
+
+end
           rem
           rem Apply Momentum And Recovery
           rem Updates recovery frames and applies velocity during

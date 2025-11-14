@@ -13,7 +13,7 @@
           rem   - Frame counter and game state
           rem   - Arena data
 
-          rem STATE FLAG DEFINITIONS (in PlayerState):
+          rem STATE FLAG DEFINITIONS (in playerState):
           rem   Bit 0: Facing (1 = right, 0 = left)
           rem   Bit 1: Guarding
           rem   Bit 2: Jumping
@@ -27,6 +27,10 @@
           rem   10=Jumping, 11=Falling, 12=Landing, 13-15=Reserved
 
 BeginGameLoop
+          asm
+BeginGameLoop
+
+end
           rem Initialize all game state for the main gameplay loop
           rem
           rem Input: ControllerStatus (global) = controller detection
@@ -37,7 +41,7 @@ BeginGameLoop
           rem
           rem Output: All game state initialized for gameplay
           rem
-          rem Mutates: PlayerX[], PlayerY[], PlayerState[],
+          rem Mutates: playerX[], playerY[], playerState[],
           rem PlayerHealth[], playerCharacter[],
           rem         PlayerTimers[], playerVelocityX[],
           rem         playerVelocityXL[],
@@ -81,12 +85,12 @@ BeginGameLoop
           rem Check if 4-player mode (Quadtari detected)
           if ControllerStatus & SetQuadtariDetected then Init4PlayerPositions
 
-          let playerX[0] = 53 : PlayerY[0] = 24
+          let playerX[0] = 53 : playerY[0] = 24
           rem 2-player mode positions
-          let playerX[1] = 107 : PlayerY[1] = 24
-          let playerX[2] = 53 : PlayerY[2] = 24
+          let playerX[1] = 107 : playerY[1] = 24
+          let playerX[2] = 53 : playerY[2] = 24
           rem Players 3 & 4 use same as P1/P2 if not in 4-player mode
-          let playerX[3] = 107 : PlayerY[3] = 24
+          let playerX[3] = 107 : playerY[3] = 24
           goto InitPositionsDone
 
 Init4PlayerPositions
@@ -94,21 +98,21 @@ Init4PlayerPositions
           rem
           rem Input: None (called from BeginGameLoop)
           rem
-          rem Output: PlayerX[], PlayerY[] set for 4-player layout
+          rem Output: playerX[], playerY[] set for 4-player layout
           rem
-          rem Mutates: PlayerX[], PlayerY[]
+          rem Mutates: playerX[], playerY[]
           rem
           rem Called Routines: None
           rem
           rem Constraints: Must be colocated with BeginGameLoop,
           rem InitPositionsDone
-          let playerX[0] = 32 : PlayerY[0] = 24
+          let playerX[0] = 32 : playerY[0] = 24
           rem 4-player mode positions
-          let playerX[2] = 64 : PlayerY[2] = 24
+          let playerX[2] = 64 : playerY[2] = 24
           rem Player 1: 1/5 width
-          let playerX[3] = 96 : PlayerY[3] = 24
+          let playerX[3] = 96 : playerY[3] = 24
           rem Player 3: 2/5 width
-          let playerX[1] = 128 : PlayerY[1] = 24
+          let playerX[1] = 128 : playerY[1] = 24
           rem Player 4: 3/5 width
           rem Player 2: 4/5 width
 
@@ -166,9 +170,9 @@ skip_activation2
 skip_activation3
 
           rem Initialize missiles
-          rem MissileActive uses bit flags: bit 0 = Player 0, bit 1 =
+          rem missileActive uses bit flags: bit 0 = Player 0, bit 1 =
           rem   Player 1, bit 2 = Player 2, bit 3 = Player 3
-          let MissileActive  = 0
+          let missileActive  = 0
 
           let playersEliminated_W = 0
           rem Initialize elimination system
@@ -195,12 +199,12 @@ skip_activation3
           rem Reset win screen timer
 
           rem Count additional human/CPU players beyond Player 1
-          if playerCharacter[1] = NoCharacter then goto SkipPlayer2
+          if playerCharacter[1] = NoCharacter then goto GLI_SkipPlayer2
           let playersRemaining_W = playersRemaining_R + 1
-SkipPlayer2
-          if playerCharacter[2] = NoCharacter then goto SkipPlayer3
+GLI_SkipPlayer2
+          if playerCharacter[2] = NoCharacter then goto GLI_SkipPlayer3
           let playersRemaining_W = playersRemaining_R + 1
-SkipPlayer3
+GLI_SkipPlayer3
           if playerCharacter[3] = NoCharacter then goto SkipPlayer4
           let playersRemaining_W = playersRemaining_R + 1
 SkipPlayer4

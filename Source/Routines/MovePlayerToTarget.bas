@@ -3,6 +3,10 @@
           rem Helper functions for falling animation player movement
 
 MovePlayerToTarget
+          asm
+MovePlayerToTarget
+
+end
           rem Move player toward target position (called from FallingAnimation1)
           rem Input: temp1 = player index (0-3)
           rem        temp2 = target X position
@@ -40,6 +44,10 @@ DeltaXDone
           return
 
 CalcDeltaYDown
+          asm
+CalcDeltaYDown
+
+end
           rem Calculate Y distance downward
           rem Input: temp1 = player, temp3 = target Y
           rem Output: temp6 = distance down (0 if at or above target)
@@ -80,6 +88,10 @@ MoveLeft
           return
 
 MoveDown
+          asm
+MoveDown
+
+end
           rem Move player down by 1 pixel
           rem Input: temp1 = player index
           rem Output: playerY[temp1] incremented
@@ -106,6 +118,10 @@ CheckY
           return
 
 NudgePlayerFromPlayfield
+          asm
+NudgePlayerFromPlayfield
+
+end
           rem Nudge player away from playfield collision
           rem Input: temp1 = player index
           rem Output: Player position adjusted to avoid playfield
@@ -164,6 +180,10 @@ NudgeRight
           return
 
 NudgeLeft
+          asm
+NudgeLeft
+
+end
           rem Check if nudging left avoids collision
           rem Input: temp1 = player, originalPlayerX_W = original X, originalPlayerY_W = original Y
           rem Output: playerX adjusted if no collision detected

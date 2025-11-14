@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 TitleScreenMain
+          asm
+TitleScreenMain
+
+end
           rem Title Screen - Per-frame Loop
           rem Per-frame title screen display and input handling.
           rem Called from MainLoop each frame (gameMode 2).

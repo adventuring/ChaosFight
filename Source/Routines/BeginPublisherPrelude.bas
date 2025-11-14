@@ -1,4 +1,8 @@
 BeginPublisherPrelude
+          asm
+BeginPublisherPrelude
+
+end
           rem
           rem ChaosFight - Source/Routines/BeginPublisherPrelude.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.

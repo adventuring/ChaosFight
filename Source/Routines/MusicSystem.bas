@@ -4,6 +4,10 @@
           rem Local music-system scratch variables (using built-in temp4/temp5)
 
 StartMusic
+          asm
+StartMusic
+
+end
           rem MUSIC SUBSYSTEM - Polyphony 2 Implementation
           rem Music system for publisher/author/title/winner screens
           rem   (gameMode 0-2, 7)
@@ -76,7 +80,7 @@ LoadSongFromBank15
           rem
           rem Constraints: Internal helper for StartMusic, only called
           rem for songs 0-Bank15MaxSongID
-          gosub LoadSongPointer bank15
+          gosub LoadSongPointerBank15 bank15
           rem Song in Bank 15
           gosub LoadSongVoice1PointerBank15 bank15
 LoadSongPointersDone
@@ -123,6 +127,10 @@ LoadSongPointersDone
           rem tail call
 
 UpdateMusic
+          asm
+UpdateMusic
+
+end
           rem
           rem Updatemusic - Update Music Playback Each Frame
           rem Called every frame from MainLoop for gameMode 0-2, 7
@@ -383,7 +391,7 @@ UpdateMusicVoice0
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank
           rem 1: others)
-          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0 bank15 : return
+          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote0Bank15 bank15 : return
           gosub LoadMusicNote0 bank1
           rem Song in Bank 1
           return
@@ -434,7 +442,7 @@ UpdateMusicVoice1
           rem bank
           rem Check which bank this song is in (Bank 15: songs 0-Bank15MaxSongID, Bank
           rem 1: others)
-          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1 bank15 : return
+          if currentSongID_R < Bank1MinSongID then gosub LoadMusicNote1Bank15 bank15 : return
           gosub LoadMusicNote1 bank1
           rem Song in Bank 1
           return

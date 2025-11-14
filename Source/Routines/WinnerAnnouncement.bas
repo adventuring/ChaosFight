@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 WinnerAnnouncementLoop
+          asm
+WinnerAnnouncementLoop
+
+end
           rem Winner announcement mode per-frame loop
           rem
           rem Input: joy0fire, joy1fire (hardware) = button states

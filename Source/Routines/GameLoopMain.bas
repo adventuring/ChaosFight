@@ -41,6 +41,10 @@ end
           return
 
 GameMainLoop
+          asm
+GameMainLoop
+
+end
           rem   1. Handle console switches (pause, reset, color)
           rem   2. Handle player input via PlayerInput.bas
           rem   3. Apply physics (gravity, momentum, collisions)

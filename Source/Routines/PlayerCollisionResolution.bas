@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CheckAllPlayerCollisions
+          asm
+CheckAllPlayerCollisions
+
+end
           rem Check Multi-player Collisions
           rem Handles player-to-player collisions, resolving positional
           rem separation and applying impulse forces based on character

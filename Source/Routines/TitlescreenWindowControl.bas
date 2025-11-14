@@ -44,6 +44,10 @@ SetPublisherWindowValues
           return
 
 SetAuthorWindowValues
+          asm
+SetAuthorWindowValues
+
+end
           rem Initialize window values for Author screen
           rem Shows: BRP (slot 4)
           rem Hides: AtariAge logo (bmp_48x2_1), AtariAgeText

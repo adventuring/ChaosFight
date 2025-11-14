@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 UpdateCharacterAnimations
+          asm
+UpdateCharacterAnimations
+
+end
           rem Drives the 10fps animation system for every active player
           rem Inputs: controllerStatus (global), currentPlayer (global scratch)
           rem         animationCounter_R[] (SCRAM), currentAnimationFrame_R[],
@@ -249,6 +253,10 @@ UpdateSprite
           return
 
 SetPlayerAnimation
+          asm
+SetPlayerAnimation
+
+end
           rem Set animation action for a player
           rem
           rem INPUT: currentPlayer = player index (0-3), temp2 =

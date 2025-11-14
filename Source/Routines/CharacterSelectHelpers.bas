@@ -34,6 +34,10 @@ SelectStickRight
           return
 
 CharacterSelectDetectQuadtari
+          asm
+CharacterSelectDetectQuadtari
+
+end
           rem Detect Quadtari adapter
           rem Detect Quadtari adapter (canonical detection: check paddle
           rem ports INPT0-3)

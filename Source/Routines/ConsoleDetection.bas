@@ -18,6 +18,10 @@
           rem Main console detection routine
 
 ConsoleDetHW
+          asm
+ConsoleDetHW
+
+end
           rem Detect whether running on Atari 2600 or 7800 console
           rem
           rem Input: $D0, $D1 (hardware registers) = console detection

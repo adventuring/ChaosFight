@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 LoadSoundNote
+          asm
+LoadSoundNote
+
+end
           rem Load next sound-effect note (assembly pointer access, Voice 0).
           rem Input: soundEffectPointer (global 16-bit) = current note pointer
           rem Output: Updates AUDC0/AUDF0/AUDV0, advances pointer, sets SoundEffectFrame

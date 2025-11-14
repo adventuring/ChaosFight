@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 LocateCharacterArt
+          asm
+LocateCharacterArt
+
+end
           rem batariBASIC wrapper for character art location with bank
           rem Character Art Location Wrapper
           rem Wrapper that determines correct bank and switches to it

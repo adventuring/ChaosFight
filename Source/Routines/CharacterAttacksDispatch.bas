@@ -1,4 +1,8 @@
 DispatchCharacterAttack
+          asm
+DispatchCharacterAttack
+
+end
           rem Dispatch to character-specific attack handler (0-31)
           rem MethHound (31) uses ShamoneAttack handler
           rem Direct cross-bank gotos route to character-specific logic or the

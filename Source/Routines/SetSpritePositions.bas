@@ -279,6 +279,10 @@ RenderMissile1P2_2PActive
           return
 
 RenderRoboTitoStretchMissile0
+          asm
+RenderRoboTitoStretchMissile0
+
+end
           rem
           rem Render Robotito Stretch Missiles
           rem Helper functions to render RoboTito stretch visual
@@ -360,6 +364,10 @@ RRTM_IsStretching
           return
 
 RenderRoboTitoStretchMissile1
+          asm
+RenderRoboTitoStretchMissile1
+
+end
           rem Renders RoboTito stretch visual missile for missile1 (only
           rem if RoboTito, stretching, and no projectile missile)
           rem

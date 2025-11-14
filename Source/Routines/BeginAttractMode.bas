@@ -1,4 +1,8 @@
 BeginAttractMode
+          asm
+BeginAttractMode
+
+end
           rem
           rem ChaosFight - Source/Routines/BeginAttractMode.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.

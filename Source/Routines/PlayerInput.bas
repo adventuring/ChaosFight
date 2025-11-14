@@ -11,9 +11,9 @@ GetPlayerAnimationStateFunction
           rem   Even frames (qtcontroller=0): joy0=Player1, joy1=Player2
           rem   Odd frames (qtcontroller=1): joy0=Player3, joy1=Player4
           rem AVAILABLE VARIABLES (from Variables.bas):
-          rem   PlayerX[0-3] - X positions
-          rem   PlayerY[0-3] - Y positions
-          rem PlayerState[0-3] - State flags (attacking, guarding,
+          rem   playerX[0-3] - X positions
+          rem   playerY[0-3] - Y positions
+          rem playerState[0-3] - State flags (attacking, guarding,
           rem   jumping, etc.)
           rem PlayerCharacter[0-3] - Character type indices (0-MaxCharacter)
           rem playerVelocityX[0-3] - Horizontal velocity (8.8
@@ -22,7 +22,7 @@ GetPlayerAnimationStateFunction
           rem   part
           rem   ControllerStatus - Packed controller detection status
           rem   qtcontroller - Multiplexing state (0=P1/P2, 1=P3/P4)
-          rem STATE FLAGS (in PlayerState):
+          rem STATE FLAGS (in playerState):
           rem   Bit 0: Facing (1 = right, 0 = left)
           rem   Bit 1: Guarding
           rem   Bit 2: Jumping
@@ -46,6 +46,10 @@ GetPlayerAnimationStateFunction
           return
 
 InputHandleAllPlayers
+          asm
+InputHandleAllPlayers
+
+end
           rem Main input handler for all players
           rem Main input handler for all players with Quadtari
           rem multiplexing
@@ -55,7 +59,7 @@ InputHandleAllPlayers
           rem        ControllerStatus (global) = controller detection
           rem        state
           rem        playerCharacter[] (global array) = character selections
-          rem        PlayerState[] (global array) = player state flags
+          rem        playerState[] (global array) = player state flags
           rem
           rem Output: Input processed for active players, qtcontroller
           rem toggled
@@ -80,7 +84,7 @@ InputHandleAllPlayers
           rem Even frame: Handle Players 1 & 2 - only if alive
           let currentPlayer = 0 : gosub IsPlayerAlive bank13
           if temp2 = 0 then InputDonePlayer0Input
-          if (PlayerState[0] & 8) then InputDonePlayer0Input
+          if (playerState[0] & 8) then InputDonePlayer0Input
           let temp1 = 0 : gosub InputHandleLeftPortPlayerFunction
 
 InputDonePlayer0Input
@@ -98,7 +102,7 @@ InputDonePlayer0Input
 
           let currentPlayer = 1 : gosub IsPlayerAlive bank13
           if temp2 = 0 then InputDonePlayer1Input
-          if (PlayerState[1] & 8) then InputDonePlayer1Input
+          if (playerState[1] & 8) then InputDonePlayer1Input
           goto InputHandlePlayer1
 
           goto InputDonePlayer1Input
@@ -106,7 +110,7 @@ InputDonePlayer0Input
 InputHandlePlayer1
           rem Handle Player 1 input (right port)
           rem
-          rem Input: temp1 (set to 1), PlayerState[] (global array)
+          rem Input: temp1 (set to 1), playerState[] (global array)
           rem
           rem Output: Player 1 input processed
           rem
@@ -137,7 +141,7 @@ InputHandleQuadtariPlayers
           rem alive)
           rem
           rem Input: ControllerStatus (global), playerCharacter[] (global array),
-          rem        PlayerState[] (global array)
+          rem        playerState[] (global array)
           rem
           rem Output: Input processed for Players 3 & 4 if conditions
           rem met, qtcontroller reset to 0
@@ -160,7 +164,7 @@ InputHandleQuadtariPlayers
           if playerCharacter[2] = NoCharacter then InputDonePlayer3Input
           let currentPlayer = 2 : gosub IsPlayerAlive bank13
           if temp2 = 0 then InputDonePlayer3Input
-          if (PlayerState[2] & 8) then InputDonePlayer3Input
+          if (playerState[2] & 8) then InputDonePlayer3Input
           let temp1 = 2 : gosub InputHandleLeftPortPlayerFunction
 
 InputDonePlayer3Input
@@ -178,7 +182,7 @@ InputDonePlayer3Input
           if playerCharacter[3] = NoCharacter then InputDonePlayer4Input
           let currentPlayer = 3 : gosub IsPlayerAlive bank13
           if temp2 = 0 then InputDonePlayer4Input
-          if (PlayerState[3] & 8) then InputDonePlayer4Input
+          if (playerState[3] & 8) then InputDonePlayer4Input
           let temp1 = 3 : gosub InputHandleRightPortPlayerFunction
 
 InputDonePlayer4Input
@@ -201,6 +205,10 @@ InputDonePlayer4Input
           return
 
 HandleGuardInput
+          asm
+HandleGuardInput
+
+end
           rem
           rem Shared Guard Input Handling
           rem Handles down/guard input for both ports
@@ -225,11 +233,11 @@ HGI_HandleDownPressed
           gosub DispatchCharacterDown bank13
           return
 HGI_CheckGuardRelease
-          let temp2 = PlayerState[temp1] & 2
+          let temp2 = playerState[temp1] & 2
           rem DOWN released - check for early guard release
           if !temp2 then return
           rem Not guarding, nothing to do
-          let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitGuarding)
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
           rem Stop guard early and start cooldown
           let playerTimers_W[temp1] = GuardTimerMaxFrames
           rem Start cooldown timer
@@ -288,7 +296,7 @@ HFCM_CheckLeftCollision
           let temp3 = temp2 - 1
           rem Already at left edge
           rem checkColumn = column to the left
-          let temp4 = PlayerY[temp1]
+          let temp4 = playerY[temp1]
           rem Check player current row (check both top and bottom of sprite)
           let temp2 = temp4
           gosub DivideByPfrowheight bank8
@@ -335,7 +343,7 @@ SPF_InlineYes1
 SPF_InlineNo1
           let temp3 = 0
 SPF_InlineDone1
-          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
+          if !temp3 then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
 HFCM_CheckRightMovement
           rem Determine which joy port to use for right movement
           if temp1 = 0 then HFCM_CheckRightJoy0
@@ -356,7 +364,7 @@ HFCM_DoRightMovement
           let temp3 = temp2 + 1
           rem Already at right edge
           rem checkColumn = column to the right
-          let temp4 = PlayerY[temp1]
+          let temp4 = playerY[temp1]
           rem Check player current row (check both top and bottom of sprite)
           let temp2 = temp4
           gosub DivideByPfrowheight bank8
@@ -404,7 +412,7 @@ SPF_InlineYes2
 SPF_InlineNo2
           let temp3 = 0
 SPF_InlineDone2
-          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
+          if !temp3 then let playerState[temp1] = playerState[temp1] | 1
           rem Vertical control for flying characters: UP/DOWN
           if temp1 & 2 = 0 then HFCM_VertJoy0
           if joy1up then HFCM_VertUp
@@ -424,6 +432,10 @@ HFCM_VertDown
           return
 
 InputHandleLeftPortPlayerFunction
+          asm
+InputHandleLeftPortPlayerFunction
+
+end
           rem
           rem LEFT PORT PLAYER INPUT HANDLER (joy0 - Players 1 & 3)
           rem
@@ -477,7 +489,7 @@ SPF_InlineYes3
 SPF_InlineNo3
           let temp3 = 0
 SPF_InlineDone3
-          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
+          if !temp3 then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
 IHLP_DoneLeftMovement
           rem Right movement: set positive velocity
           if !joy0right then goto IHLP_DoneFlyingLeftRight
@@ -504,7 +516,7 @@ SPF_InlineYes4
 SPF_InlineNo4
           let temp3 = 0
 SPF_InlineDone4
-          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
+          if !temp3 then let playerState[temp1] = playerState[temp1] | 1
           rem Right movement complete
 DoneLeftPortMovement
 IHLP_FlyingMovement
@@ -606,11 +618,11 @@ ShamoneJumpCheckEnhanced
           rem Allow Zoe (3) a single mid-air double-jump
           if PlayerCharacter[temp1] = 3 then goto LeftZoeEnhancedCheck
           rem Use goto to avoid branch out of range (target is 224+ bytes away)
-          if (PlayerState[temp1] & 4) then goto InputDoneLeftPortJump
+          if (playerState[temp1] & 4) then goto InputDoneLeftPortJump
           goto LeftEnhancedJumpProceed
 LeftZoeEnhancedCheck
           let temp6 = 0
-          if (PlayerState[temp1] & 4) then temp6 = 1
+          if (playerState[temp1] & 4) then temp6 = 1
           rem Use goto to avoid branch out of range (target is 189+ bytes away)
           if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneLeftPortJump
 LeftEnhancedJumpProceed
@@ -634,11 +646,11 @@ SkipEnhancedJumpCheck
           rem Allow Zoe (3) a single mid-air double-jump
           if PlayerCharacter[temp1] = 3 then goto LeftZoeStdJumpCheck
           rem Use goto to avoid branch out of range (target is 224+ bytes away)
-          if (PlayerState[temp1] & 4) then goto InputDoneLeftPortJump
+          if (playerState[temp1] & 4) then goto InputDoneLeftPortJump
           goto LeftStdJumpProceed
 LeftZoeStdJumpCheck
           let temp6 = 0
-          if (PlayerState[temp1] & 4) then temp6 = 1
+          if (playerState[temp1] & 4) then temp6 = 1
           rem Use goto to avoid branch out of range (target is 189+ bytes away)
           if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneLeftPortJump
 LeftStdJumpProceed
@@ -665,12 +677,12 @@ InputDoneLeftPortJump
           rem animations (states 13-15)
           if temp2 >= 13 then InputDoneLeftPortAttack
           rem Block attack input during attack windup/execute/recovery
-          let temp2 = PlayerState[temp1] & 2
+          let temp2 = playerState[temp1] & 2
           rem Check if player is guarding - guard blocks attacks
           if temp2 then InputDoneLeftPortAttack
           rem Guarding - block attack input
           if !joy0fire then InputDoneLeftPortAttack
-          if (PlayerState[temp1] & PlayerStateBitFacing) then InputDoneLeftPortAttack
+          if (playerState[temp1] & PlayerStateBitFacing) then InputDoneLeftPortAttack
           let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack bank7
 InputDoneLeftPortAttack
@@ -695,7 +707,7 @@ InputHandleRightPortPlayerFunction
 
           rem Process left/right movement (with playfield collision for
           rem   flying characters)
-          let temp6 = PlayerState[temp1] & 2
+          let temp6 = playerState[temp1] & 2
           rem Check if player is guarding - guard blocks movement
           rem Use goto to avoid branch out of range (target is 314+ bytes away)
           if temp6 then goto DoneRightPortMovement
@@ -737,7 +749,7 @@ SPF_InlineYes5
 SPF_InlineNo5
           let temp3 = 0
 SPF_InlineDone5
-          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] & (255 - PlayerStateBitFacing)
+          if !temp3 then let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitFacing)
 IHRP_DoneLeftMovement
 
           if !joy1right then goto IHRP_DoneFlyingLeftRight
@@ -766,7 +778,7 @@ SPF_InlineYes6
 SPF_InlineNo6
           let temp3 = 0
 SPF_InlineDone6
-          if !temp3 then let PlayerState[temp1] = PlayerState[temp1] | 1
+          if !temp3 then let playerState[temp1] = playerState[temp1] | 1
           rem Right movement complete (right port)
 
 DoneRightPortMovement
@@ -871,11 +883,11 @@ ShamoneJumpCheckEnhancedRight
           rem Allow Zoe (3) a single mid-air double-jump
           if PlayerCharacter[temp1] = 3 then goto RightZoeEnhancedCheck
           rem Use goto to avoid branch out of range (target is 198+ bytes away)
-          if (PlayerState[temp1] & 4) then goto InputDoneRightPortJump
+          if (playerState[temp1] & 4) then goto InputDoneRightPortJump
           goto RightEnhancedJumpProceed
 RightZoeEnhancedCheck
           let temp6 = 0
-          if (PlayerState[temp1] & 4) then temp6 = 1
+          if (playerState[temp1] & 4) then temp6 = 1
           rem Use goto to avoid branch out of range (target is 163+ bytes away)
           if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneRightPortJump
 RightEnhancedJumpProceed
@@ -901,11 +913,11 @@ SkipEnhancedJumpCheckRight
           rem Allow Zoe (3) a single mid-air double-jump
           if PlayerCharacter[temp1] = 3 then goto RightZoeStdJumpCheck
           rem Use goto to avoid branch out of range (target is 198+ bytes away)
-          if (PlayerState[temp1] & 4) then goto InputDoneRightPortJump
+          if (playerState[temp1] & 4) then goto InputDoneRightPortJump
           goto RightStdJumpProceed
 RightZoeStdJumpCheck
           let temp6 = 0
-          if (PlayerState[temp1] & 4) then temp6 = 1
+          if (playerState[temp1] & 4) then temp6 = 1
           rem Use goto to avoid branch out of range (target is 163+ bytes away)
           if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then goto InputDoneRightPortJump
 RightStdJumpProceed
@@ -926,11 +938,11 @@ InputDoneRightPortJump
           rem animations (states 13-15)
           if temp2 >= 13 then InputDoneRightPortAttack
           rem Block attack input during attack windup/execute/recovery
-          let temp2 = PlayerState[temp1] & 2 PlayerStateBitGuarding
+          let temp2 = playerState[temp1] & 2 PlayerStateBitGuarding
           if temp2 then InputDoneRightPortAttack
           rem Guarding - block attack input
           if !joy1fire then InputDoneRightPortAttack
-          if (PlayerState[temp1] & PlayerStateBitFacing) then InputDoneRightPortAttack
+          if (playerState[temp1] & PlayerStateBitFacing) then InputDoneRightPortAttack
           let temp4 = PlayerCharacter[temp1]
           gosub DispatchCharacterAttack bank7
 InputDoneRightPortAttack

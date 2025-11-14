@@ -3,7 +3,7 @@
 
 SetPlayerSprites
           asm
-.SetPlayerSprites
+SetPlayerSprites
 
 end
           rem

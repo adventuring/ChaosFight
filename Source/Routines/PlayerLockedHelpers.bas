@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 GetPlayerLocked
+          asm
+GetPlayerLocked
+
+end
           rem Player Locked Helper Functions
           rem Helper functions to access bit-packed playerLocked
           rem variable

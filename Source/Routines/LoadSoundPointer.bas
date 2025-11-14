@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 LoadSoundPointer
+          asm
+LoadSoundPointer
+
+end
           rem Lookup sound pointer from tables (Bank 15 sounds: 0-9)
           rem
           rem Input: temp1 = sound ID (0-9), SoundPointersL[],

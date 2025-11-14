@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 ArenaSelect1
+          asm
+ArenaSelect1
+
+end
 ArenaSelect1Loop
           rem Arena Select - Per-frame Loop
           rem Handles the arena carousel (1-32 plus random) each frame.

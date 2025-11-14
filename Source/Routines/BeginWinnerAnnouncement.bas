@@ -1,4 +1,8 @@
 BeginWinnerAnnouncement
+          asm
+BeginWinnerAnnouncement
+
+end
           rem
           rem ChaosFight - Source/Routines/BeginWinnerAnnouncement.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.

@@ -27,31 +27,17 @@ end
           rem Output: Sprite loaded via bank10 routines
           rem Inputs are trusted in internal context; skip range validation
 
-          if currentCharacter = NoCharacter then goto LCS_CopyNoGlyph
-          if currentCharacter = CPUCharacter then goto LCS_CopyCPUGlyph
-          if currentCharacter = RandomCharacter then goto LCS_CopyQuestionGlyph
+          rem Handle special sprite cases first
+          if currentCharacter = NoCharacter then let temp3 = currentPlayer : let temp4 = SpriteNo : gosub CopyGlyphToPlayer bank16 : return
 
+          if currentCharacter = CPUCharacter then let temp3 = currentPlayer : let temp4 = SpriteCPU : gosub CopyGlyphToPlayer bank16 : return
+
+          if currentCharacter = RandomCharacter then let temp3 = currentPlayer : let temp4 = SpriteQuestionMark : gosub CopyGlyphToPlayer bank16 : return
+
+          rem Normal character sprite loading
           let temp4 = currentPlayer
           let temp1 = currentCharacter
           gosub LocateCharacterArt bank10
-          return
-
-LCS_CopyNoGlyph
-          let temp3 = currentPlayer
-          let temp4 = SpriteNo
-          gosub CopyGlyphToPlayer bank16
-          return
-
-LCS_CopyCPUGlyph
-          let temp3 = currentPlayer
-          let temp4 = SpriteCPU
-          gosub CopyGlyphToPlayer bank16
-          return
-
-LCS_CopyQuestionGlyph
-          let temp3 = currentPlayer
-          let temp4 = SpriteQuestionMark
-          gosub CopyGlyphToPlayer bank16
           return
 
 LoadPlayerSprite

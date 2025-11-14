@@ -1,4 +1,8 @@
 InitializeSpritePointers
+          asm
+InitializeSpritePointers
+
+end
           rem
           rem ChaosFight - Source/Routines/SpritePointerInit.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.

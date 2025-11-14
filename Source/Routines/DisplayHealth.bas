@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 DisplayHealth
+          asm
+DisplayHealth
+
+end
           rem
           rem Display Health
           rem Shows health status for all active players.

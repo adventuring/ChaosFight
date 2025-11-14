@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 AuthorPrelude
+          asm
+AuthorPrelude
+
+end
           rem Displays the Interworldly author logo/artwork with music.
           rem Author Prelude Screen
           rem Displays the Interworldly author logo/artwork with music.

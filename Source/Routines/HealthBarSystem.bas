@@ -159,6 +159,10 @@ P2SetPattern
           return
 
 UpdatePlayer12HealthBars
+          asm
+UpdatePlayer12HealthBars
+
+end
           rem Update both P1 and P2 health bars
           rem
           rem Input: playerHealth[0] and playerHealth[1] arrays
@@ -229,6 +233,10 @@ end
           rem Uses bad BCD technique: $AA and $CF are invalid BCD but
           rem   display as hex characters
 UpdatePlayer34HealthBars
+          asm
+UpdatePlayer34HealthBars
+
+end
 
           rem Check if Quadtari is present
           if (controllerStatus & SetQuadtariDetected) = 0 then goto DisplayCF2025

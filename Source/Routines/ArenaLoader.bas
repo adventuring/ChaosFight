@@ -3,6 +3,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 LoadArena
+          asm
+LoadArena
+
+end
           rem Arena Loader
           rem Loads arena playfield data and colors based on
           rem   selectedArena.
@@ -43,10 +47,25 @@ LoadArenaDispatch
           gosub DWS_GetBWMode bank15
           let temp6 = temp2
           gosub LoadArenaByIndex
-          if temp6 then goto LoadArenaColorsBWLabel
-          goto LoadArenaColorsColor
+          if temp6 then goto LA_LoadBWColors
+          rem Load color color table - fall through to LoadArenaColorsColor
+          goto LA_LoadColorColors
+LA_LoadBWColors
+          rem Load B&W color table
+          asm
+            lda #<ArenaColorsBW
+            sta pfcolortable
+            lda #>ArenaColorsBW
+            sta pfcolortable+1
+end
+          return
+LA_LoadColorColors
 
 LoadArenaColorsColor
+          asm
+LoadArenaColorsColor
+
+end
           rem Load arena color table pointer using stride calculation
           asm
             lda #<Arena0Colors
@@ -72,17 +91,6 @@ LoadArenaColorsColor
 end
           return
 
-LoadArenaColorsBWLabel
-          asm
-          ;; Load B&W color table - all arenas use same white colors
-          ;; Set pfcolortable pointer to ArenaColorsBW
-            lda #<ArenaColorsBW
-            sta pfcolortable
-            lda #>ArenaColorsBW
-            sta pfcolortable+1
-end
-          return
-
 LoadArenaRandom
           rem Select random arena (0-31) using proper random number
           rem generator
@@ -103,4 +111,20 @@ LoadArenaRandom
           let temp1 = rand
           let temp1 = temp1 & 31
           if temp1 > MaxArenaID then LoadArenaRandom
-          goto LoadArenaDispatch
+          rem Fall through to LoadArenaDispatch logic (inline to avoid goto)
+          gosub DWS_GetBWMode bank15
+          let temp6 = temp2
+          gosub LoadArenaByIndex
+          if temp6 then goto LAR_LoadBWColors
+          rem Load color color table (use gosub to avoid goto)
+          gosub LoadArenaColorsColor
+          return
+LAR_LoadBWColors
+          rem Load B&W color table
+          asm
+            lda #<ArenaColorsBW
+            sta pfcolortable
+            lda #>ArenaColorsBW
+            sta pfcolortable+1
+end
+          return

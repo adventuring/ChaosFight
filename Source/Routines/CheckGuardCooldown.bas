@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 CheckGuardCooldown
+          asm
+CheckGuardCooldown
+
+end
           rem
           rem Check guard cooldown (1 second lockout after guard ends).
           rem Input: temp1 = player index (0-3)

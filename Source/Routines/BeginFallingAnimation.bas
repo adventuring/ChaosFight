@@ -3,6 +3,10 @@
           rem Begin Falling Animation
 
 BeginFallingAnimation
+          asm
+BeginFallingAnimation
+
+end
           rem Setup routine for Falling In animation.
           rem Sets players in quadrant starting positions and
           rem   initializes state.

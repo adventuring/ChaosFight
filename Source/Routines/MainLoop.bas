@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 MainLoop
+          asm
+MainLoop
+
+end
           rem Dispatches game modes and handles reset entry point
           rem Inputs: switchreset (hardware), gameMode (global 0-7)
           rem Outputs: Dispatches to mode-specific handlers

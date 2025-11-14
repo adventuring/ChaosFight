@@ -41,6 +41,10 @@ GetPlayerMissileBitFlag
           return
 
 SpawnMissile
+          asm
+SpawnMissile
+
+end
           rem
           rem Spawn Missile
           rem Creates a new missile/attack visual for a player.
@@ -1089,6 +1093,10 @@ KnockbackDone
           return
 
 HandleMissileBounce
+          asm
+HandleMissileBounce
+
+end
           rem
           rem Handle Missile Bounce
           rem Handles wall bounce for missiles with bounce flag set.

@@ -1,4 +1,8 @@
 BeginAuthorPrelude
+          asm
+BeginAuthorPrelude
+
+end
           rem ChaosFight - Source/Routines/BeginAuthorPrelude.bas
           rem Setup routine for Author Prelude. Sets initial state
           rem   only.

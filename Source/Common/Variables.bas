@@ -404,8 +404,18 @@
           rem playerX[0-3] = player1X, player2X, player3X, player4X
           dim playerX = var0
 
-          rem PlayerY[0-3] = player1Y, player2Y, player3Y, player4Y
-          dim PlayerY = var4
+          rem Global alias for playerX (for assembly/cross-bank access)
+          asm
+PlayerX = playerX
+end
+
+          rem playerY[0-3] = player1Y, player2Y, player3Y, player4Y
+          dim playerY = var4
+
+          rem Global alias for playerY (for assembly/cross-bank access)
+          asm
+PlayerY = playerY
+end
 
           rem playerState[0-3] = player1State, player2State,
           rem   player3State, player4State
@@ -420,6 +430,11 @@
           rem   Bit 3: Recovery (hitstun)
           rem   Bits 4-7: Animation state (0-15)
           dim playerState = var8
+
+          rem Global alias for playerState (for assembly/cross-bank access)
+          asm
+PlayerState = playerState
+end
 
           rem playerHealth[0-3] = player1Health, player2Health,
           rem   player3Health, player4Health

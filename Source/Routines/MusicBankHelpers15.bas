@@ -7,9 +7,9 @@
           rem   Bank 15
           rem Duplicate of MusicBankHelpers.bas but for Bank 15 songs
 
-LoadSongPointer
+LoadSongPointerBank15
           asm
-LoadSongPointer
+LoadSongPointerBank15
 end
           rem Lookup song pointer from tables (Bank 15 songs: 0-Bank15MaxSongID)
           rem
@@ -64,7 +64,11 @@ end
           let songPointer = songPointer + SongPointers2SecondL[temp2]
           return
 
-LoadMusicNote0
+LoadMusicNote0Bank15
+          asm
+LoadMusicNote0Bank15
+
+end
           rem Load next note from Voice 0 stream (Bank 15, assembly pointer access).
           rem Input: musicVoice0Pointer (global 16-bit) = current Song_Voice0 pointer
           rem Output: Updates AUDC0/AUDF0/AUDV0, stores envelope parameters, advances pointer
@@ -150,7 +154,11 @@ LoadMusicNote0EndOfTrack
           AUDV0 = 0
           return
 
-LoadMusicNote1
+LoadMusicNote1Bank15
+          asm
+LoadMusicNote1Bank15
+
+end
           rem Load next note from Voice 1 stream using assembly for pointer access (Bank 15)
           rem
           rem Input: musicVoice1Pointer (global 16-bit) =

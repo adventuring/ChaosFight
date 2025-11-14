@@ -1,5 +1,9 @@
           rem ConsoleHandling.bas - Console switch handling
 WarmStart
+          asm
+WarmStart
+
+end
           rem Warm Start / Reset Handler
           rem
           rem Input: None (called from MainLoop on RESET)
@@ -56,6 +60,10 @@ WarmStart
           rem   new mode
 
 HandleConsoleSwitches
+          asm
+HandleConsoleSwitches
+
+end
           rem Main console switch handler
 
           rem Game Select switch or Joy2B+ Button III - toggle pause

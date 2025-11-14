@@ -3,6 +3,10 @@
           rem Player color loading function - colors are player-specific, not character-specific
 
 LoadCharacterColors
+          asm
+LoadCharacterColors
+
+end
           rem Load player colors based on guard and hurt state.
           rem Player colors are fixed per player index:
           rem   Player 0 → Indigo, Player 1 → Red, Player 2 → Yellow, Player 3 → Turquoise.
@@ -22,22 +26,20 @@ LoadCharacterColors
           rem
           rem Constraints: Must remain in bank16 with PlayerColors tables
 
-          if temp3 then goto LCC_GuardColor
-          if temp2 then goto LCC_HurtColor
+          rem Guard state takes priority over hurt state
+          if temp3 then let temp6 = ColCyan(12) : return
 
-LCC_NormalColor
-          let temp6 = PlayerColors12[currentPlayer]
-          return
-
-LCC_HurtColor
+          rem Hurt state handling
+          if temp2 then
 #ifdef TV_SECAM
-          let temp6 = ColMagenta(12)
+            let temp6 = ColMagenta(12)
 #else
-          let temp6 = PlayerColors6[currentPlayer]
+            let temp6 = PlayerColors6[currentPlayer]
 #endif
-          return
+          end
+          if temp2 then return
 
-LCC_GuardColor
-          let temp6 = ColCyan(12)
+          rem Normal color state
+          let temp6 = PlayerColors12[currentPlayer]
           return
 

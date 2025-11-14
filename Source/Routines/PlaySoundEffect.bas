@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 PlaySoundEffect
+          asm
+PlaySoundEffect
+
+end
           rem SOUND EFFECT SUBSYSTEM - Polyphony 2 Implementation
           rem Sound effects for gameplay (gameMode 6)
           rem Uses interleaved 4-byte streams: AUDCV, AUDF, Duration,

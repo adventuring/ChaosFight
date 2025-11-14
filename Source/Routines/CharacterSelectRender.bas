@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 SelectDrawScreen
+          asm
+SelectDrawScreen
+
+end
           rem Character Select drawing (sprites and HUD)
           rem Shared preview renderer used by Character Select and Arena Select flows
           rem Playfield layout is static; no runtime register writes
@@ -21,6 +25,10 @@ SelectDrawScreenDone
           return
 
 SelectRenderPlayerPreview
+          asm
+SelectRenderPlayerPreview
+
+end
           rem Draw character preview for the specified player and apply lock tinting
           gosub PlayerPreviewSetPosition
           gosub RenderPlayerPreview

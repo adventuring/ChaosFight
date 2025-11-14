@@ -4,6 +4,10 @@
           rem Moves players from quadrant staging positions to arena row 2.
 
 FallingAnimation1
+          asm
+FallingAnimation1
+
+end
           rem Moves active players from quadrant spawn points to row 2 starting positions
           rem Called each frame while gameMode = ModeFallingAnimation1
           rem Flow:

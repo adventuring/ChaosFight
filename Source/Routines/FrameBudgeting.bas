@@ -196,6 +196,10 @@ UpdateHealthBarPlayer1
           return
 
 UpdateHealthBarPlayer2
+          asm
+UpdateHealthBarPlayer2
+
+end
           rem Update Player 3 health bar
           rem Update Player 3 health bar (FramePhase 2, 4-player mode
           rem only)
@@ -219,6 +223,10 @@ UpdateHealthBarPlayer2
           return
 
 UpdateHealthBarPlayer3
+          asm
+UpdateHealthBarPlayer3
+
+end
           rem Update Player 4 health bar
           rem Update Player 4 health bar (FramePhase 3, 4-player mode
           rem only)

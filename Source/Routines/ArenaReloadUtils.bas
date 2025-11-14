@@ -25,7 +25,23 @@ ReloadArenaColorsDispatch
 ReloadArenaColorsDispatch
 end
           rem Use existing LoadArena color functions (identical behavior)
-          if temp2 then goto LoadArenaColorsBWLabel bank16
-          goto LoadArenaColorsColor bank16
+          rem Call LoadArenaDispatch to handle color/B&W selection
+          rem (inline logic avoids cross-bank goto issues)
+          gosub DWS_GetBWMode bank15
+          let temp6 = temp2
+          gosub LoadArenaByIndex bank16
+          if temp6 then goto RAU_LoadBWColors
+          rem Load color color table
+          gosub LoadArenaColorsColor bank16
+          return
+RAU_LoadBWColors
+          rem Load B&W color table
+          asm
+            lda #<ArenaColorsBW
+            sta pfcolortable
+            lda #>ArenaColorsBW
+            sta pfcolortable+1
+          end
+          return
 
 

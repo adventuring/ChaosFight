@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 UpdateSoundEffectVoice1
+          asm
+UpdateSoundEffectVoice1
+
+end
           rem
           rem Updatesoundeffectvoice1 - Update Voice 1 Sound Effect
           rem Update Voice 1 sound effect playback (decrements frame

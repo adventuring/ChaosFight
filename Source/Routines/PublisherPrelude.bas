@@ -2,6 +2,10 @@
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
 PublisherPreludeMain
+          asm
+PublisherPreludeMain
+
+end
           rem Publisher Prelude Screen - Per-frame Loop
           rem Per-frame publisher prelude display and input handling.
           rem Called from MainLoop each frame (gameMode 0).

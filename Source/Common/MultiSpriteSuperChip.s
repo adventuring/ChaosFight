@@ -356,7 +356,15 @@ BANK16_END = $F000 + $FC0
   MS_ASSIGN  noscore, 0
   MS_ASSIGN  ROM2k, 0
   MS_ASSIGN  PXE, 0
-  MS_ASSIGN  debugcycles, 0
+  ; Define debugcycles as a stub label (kernel defines it when debugscore enabled)
+  ; MS_ASSIGN would create a constant, but we need a label for jsr debugcycles
+  ; This prevents phase errors when debugscore is disabled but jsr debugcycles is generated
+  ifnconst debugcycles
+debugcycles
+	rts
+  endif
+  ; Note: debugcycles is defined above as a label, not a constant
+  ; This matches the kernel's usage where jsr debugcycles is called
   MS_ASSIGN  interlaced, 0
   MS_ASSIGN  shakescreen, 0
   MS_ASSIGN  vblank_time, 43

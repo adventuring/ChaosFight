@@ -1,4 +1,8 @@
 BeginArenaSelect
+          asm
+BeginArenaSelect
+
+end
           rem
           rem ChaosFight - Source/Routines/BeginArenaSelect.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.

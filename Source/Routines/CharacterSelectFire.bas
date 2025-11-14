@@ -3,6 +3,10 @@
           rem Character select fire handling moved for bank optimization
 
 HandleCharacterSelectFire
+          asm
+HandleCharacterSelectFire
+
+end
           rem Handle fire input (selection)
           rem
           rem Handle fire input (selection) for a player

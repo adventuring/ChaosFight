@@ -67,6 +67,10 @@ CDP_MergeStatus
           return
 
 CDP_DetectGenesis
+          asm
+CDP_DetectGenesis
+
+end
           rem
           rem Genesis Detection Subroutine
           rem Detect Genesis/MegaDrive controllers by grounding paddle

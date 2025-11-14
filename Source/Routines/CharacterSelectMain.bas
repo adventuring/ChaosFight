@@ -214,6 +214,10 @@ HCSC_CycleDone
           return
 
 CharacterSelectInputEntry
+          asm
+CharacterSelectInputEntry
+
+end
           gosub CharacterSelectCheckControllerRescan bank6
 
           rem Consolidated input handling with Quadtari multiplexing

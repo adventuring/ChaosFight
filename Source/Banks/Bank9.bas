@@ -29,11 +29,12 @@ end
 Bank9DataEnds
 end
 
+#include "Source/Routines/TitleScreenRender.bas"
+          rem TitleScreenRender must be colocated with titlescreen.s
           asm
 #include "Source/TitleScreen/asm/titlescreen.s"
 end
-#include "Source/Routines/TitleScreenRender.bas"
-#include "Source/Routines/CharacterSelectMain.bas"
+          rem CharacterSelectMain moved to Bank 14 for ROM balance
           rem PublisherPrelude moved to Bank 14 for ROM balance
 
           asm

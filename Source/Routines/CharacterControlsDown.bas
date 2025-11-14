@@ -28,7 +28,7 @@ DragonOfStormsDown
           let temp2 = playerX[temp1]
           rem Check collision before moving
           let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 >> 2
+          let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp2 & $80 then temp2 = 0
@@ -37,7 +37,7 @@ DragonOfStormsDown
           let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
           let temp3 = temp3 + 16
-          let temp4 = temp3 >> 4
+          let temp4 = temp3 / pfrowheight
           rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row
@@ -136,7 +136,7 @@ HarpyNormalDown
           let temp2 = playerX[temp1]
           rem Check collision before moving
           let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 >> 2
+          let temp2 = temp2 / 4
           rem pfColumn = playfield column (0-31)
           rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
           if temp2 & $80 then temp2 = 0
@@ -145,7 +145,7 @@ HarpyNormalDown
           let temp3 = playerY[temp1]
           rem Check row below player (feet at bottom of sprite)
           let temp3 = temp3 + 16
-          let temp4 = temp3 >> 4
+          let temp4 = temp3 / 16
           rem feetY = feet Y position
           rem feetRow = row below feet
           rem Check if at or beyond bottom row

@@ -103,6 +103,9 @@ RenderPlayerPreviewInvoke
           let temp3 = 0
 PlayerPreviewApplyColor
           rem Apply base color returned in temp6 to the appropriate sprite register
+          rem Player colors are always player-specific regardless of B&W mode
+          rem (B&W switch affects TV display, not color selection)
+          rem Player 0 → Indigo, Player 1 → Red, Player 2 → Yellow, Player 3 → Turquoise
           if currentPlayer = 0 then COLUP0 = ColIndigo(12)
           if currentPlayer = 0 then return
           if currentPlayer = 1 then _COLUP1 = ColRed(12)

@@ -72,13 +72,13 @@ TitleDoneQuad
           gosub UpdateCharacterParade bank14
 
           rem Draw title screen
-          gosub DrawTitleScreen bank9
+          gosub DrawTitleScreen bank14
 
           rem Draw screen with titlescreen kernel minikernel
           rem (titlescreen system in Bank 9)
           rem Note: MainLoop calls titledrawscreen, so this is only
           rem reached if called directly
-          gosub DrawTitleScreen bank9
+          gosub DrawTitleScreen bank14
 
           return
 

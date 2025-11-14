@@ -11,6 +11,9 @@
           rem Row 4: Central high platform (winner podium)
           rem Row 6: Left and right platforms (2nd/3rd place)
 
+          asm
+WinnerScreenPlayfield
+end
 WinnerScreenPlayfield
           playfield:
             ................
@@ -23,15 +26,6 @@ WinnerScreenPlayfield
             XXXXXXXXXXXXXXXX
 end
 
-          rem Global label for cross-bank access to WinnerScreenPlayfield
-          rem The playfield statement creates .WinnerScreenPlayfield as a local label
-          rem We assign it to a global label for cross-bank access
-          asm
-          ifnconst WinnerScreenPlayfield
-WinnerScreenPlayfield = .WinnerScreenPlayfield
-          endif
-end
-
 WinnerScreenColorsColor
           data WinnerScreenColorsColor
           ColGold(14)
@@ -42,4 +36,19 @@ WinnerScreenColorsColor
           ColGold(4)
           ColGold(2)
           ColGold(2)
+end
+
+          rem Winner Screen B&W Color Table
+          rem All rows use white (ColGrey(14)) for B&W mode
+          rem Matches ArenaColorsBW pattern
+WinnerScreenColorsBW
+          data WinnerScreenColorsBW
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
+          ColGrey(14)
 end

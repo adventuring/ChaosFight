@@ -228,7 +228,7 @@ end
 
           rem Consolidated input handling with Quadtari multiplexing
           let temp3 = 0
-          if controllerStatus & SetQuadtariDetected then temp3 = qtcontroller << 1
+          if controllerStatus & SetQuadtariDetected then temp3 = qtcontroller * 2
           rem Player offset: 0=P1/P2, 2=P3/P4
           gosub CharacterSelectHandleTwoPlayers
 
@@ -396,11 +396,6 @@ DoneCharacter4Facing
           let gameMode = ModeFallingAnimation
           rem Transition to falling animation
           gosub ChangeGameMode bank14
-          return
-
-CycleRightFromNO
-          let temp1 = 0
-          rem NoCharacter(255) goes to 0
           return
 
           rem Animation helpers moved to CharacterSelectRender.bas (bank 10)

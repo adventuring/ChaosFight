@@ -458,10 +458,10 @@ TransitionHandleFallBack
           let temp5 = playerX[currentPlayer]
           rem Convert player X position to playfield column (0-31)
           let temp5 = temp5 - ScreenInsetX
-          let temp5 = temp5 >> 2
+          let temp5 = temp5 / 4
           let temp6 = playerY[currentPlayer]
           rem Convert player Y position to playfield row (0-7)
-          let temp6 = temp6 >> 3
+          let temp6 = temp6 / 8
           rem Check if player hit a wall (playfield pixel is set)
           if pfread(temp5, temp6) then TransitionHandleFallBack_HitWall
           let temp2 = ActionFallen

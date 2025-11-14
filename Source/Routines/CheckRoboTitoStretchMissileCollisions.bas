@@ -132,7 +132,7 @@ end
           rem Clear stretch permission flag for this player
           let temp2 = roboTitoCanStretch_R
           let temp3 = 1
-          if temp1 > 0 then for temp4 = 1 to temp1 : temp3 = temp3 << 1 : next
+          if temp1 > 0 then for temp4 = 1 to temp1 : temp3 = temp3 * 2 : next
           let temp2 = temp2 & (255 - temp3)
           rem Clear the appropriate bit
           let roboTitoCanStretch_W = temp2

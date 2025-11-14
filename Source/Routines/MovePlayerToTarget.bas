@@ -5,7 +5,6 @@
 MovePlayerToTarget
           asm
 MovePlayerToTarget
-
 end
           rem Move player toward target position (called from FallingAnimation1)
           rem Input: temp1 = player index (0-3)

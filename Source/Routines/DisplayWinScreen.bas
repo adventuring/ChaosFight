@@ -426,27 +426,47 @@ end
           if temp2 then temp2 = 1
           return
 
+DWS_LoadBWColors
+          asm
+DWS_LoadBWColors
+
+end
+          rem Load B&W colors (all white)
+          rem
+          rem Input: WinnerScreenColorsBW (ROM constant) = B&W color table
+          rem
+          rem Output: pfcolortable pointer set to WinnerScreenColorsBW
+          rem
+          rem Mutates: pfcolortable (playfield color table pointer, set via inline assembly)
+          rem
+          rem Called Routines: None (uses inline assembly)
+          rem
+          rem Constraints: Must be colocated with DisplayWinScreen
+          asm
+            lda #<WinnerScreenColorsBW
+            sta pfcolortable
+            lda #>WinnerScreenColorsBW
+            sta pfcolortable+1
+end
+          return
+
 DWS_LoadColorColors
           asm
 DWS_LoadColorColors
 
 end
+          rem Load color colors (gold gradient)
+          rem
+          rem Input: WinnerScreenColorsColor (ROM constant) = color table
+          rem
+          rem Output: pfcolortable pointer set to WinnerScreenColorsColor
+          rem
+          rem Mutates: pfcolortable (playfield color table pointer, set via inline assembly)
+          rem
+          rem Called Routines: None (uses inline assembly)
+          rem
+          rem Constraints: Must be colocated with DisplayWinScreen
           asm
-          ; rem Load color colors (gold gradient)
-          ; rem
-          ; rem Input: WinnerScreenColorsColor (ROM constant) = color
-          ; rem table
-          ; rem
-          ; rem Output: pfcolortable pointer set to
-          ; rem WinnerScreenColorsColor
-          ; rem
-          ; rem Mutates: pfcolortable (playfield color table pointer, set
-          ; rem via inline assembly)
-          ; rem
-          ; rem Called Routines: None (uses inline assembly)
-          ; rem
-          ; rem Constraints: Must be colocated with DisplayWinScreen
-          ; rem Set pfcolortable pointer to WinnerScreenColorsColor
             lda #<WinnerScreenColorsColor
             sta pfcolortable
             lda #>WinnerScreenColorsColor

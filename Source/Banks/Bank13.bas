@@ -23,6 +23,10 @@ end
           rem Player state routines moved from Bank 12 for ROM balance
 #include "Source/Routines/IsPlayerEliminated.bas"
 #include "Source/Routines/IsPlayerAlive.bas"
+          rem DeactivatePlayerMissiles moved from Bank 12 for ROM balance (Bank 12 overflow)
+#include "Source/Routines/DeactivatePlayerMissiles.bas"
+          rem CountRemainingPlayers moved from Bank 12 for ROM balance (Bank 12 overflow)
+#include "Source/Routines/CountRemainingPlayers.bas"
 
 #include "Source/Routines/CharacterControlsDown.bas"
 #include "Source/Routines/ConsoleHandling.bas"

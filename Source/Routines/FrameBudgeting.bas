@@ -164,7 +164,31 @@ UpdateHealthBarPlayer0
           rem
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
-          let temp6 = playerHealth[0] / 12
+          rem Calculate health bar length using optimized shift-and-subtract: x/12 ≈ (x>>3) - (x>>5)
+          asm
+            lda playerHealth
+            lsr                 ; x >> 3
+            lsr
+            lsr
+            sta temp6
+            lda playerHealth
+            lsr                 ; x >> 5
+            lsr
+            lsr
+            lsr
+            lsr
+            sec
+            sbc temp6
+            eor #$ff            ; Negate: temp6 - (x>>5) = (x>>3) - (x>>5)
+            clc
+            adc #1
+            sta temp6
+            bpl div12_done_p1
+            lda #0              ; Clamp to 0 if negative
+            sta temp6
+div12_done_p1
+end
+
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)
@@ -186,7 +210,31 @@ UpdateHealthBarPlayer1
           rem
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
-          let temp6 = playerHealth[1] / 12
+          rem Calculate health bar length using optimized shift-and-subtract: x/12 ≈ (x>>3) - (x>>5)
+          asm
+            lda playerHealth+1
+            lsr                 ; x >> 3
+            lsr
+            lsr
+            sta temp6
+            lda playerHealth+1
+            lsr                 ; x >> 5
+            lsr
+            lsr
+            lsr
+            lsr
+            sec
+            sbc temp6
+            eor #$ff            ; Negate: temp6 - (x>>5) = (x>>3) - (x>>5)
+            clc
+            adc #1
+            sta temp6
+            bpl div12_done_p2
+            lda #0              ; Clamp to 0 if negative
+            sta temp6
+div12_done_p2
+end
+
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)
@@ -213,7 +261,31 @@ end
           rem
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
-          let temp6 = playerHealth[2] / 12
+          rem Calculate health bar length using optimized shift-and-subtract: x/12 ≈ (x>>3) - (x>>5)
+          asm
+            lda playerHealth+2
+            lsr                 ; x >> 3
+            lsr
+            lsr
+            sta temp6
+            lda playerHealth+2
+            lsr                 ; x >> 5
+            lsr
+            lsr
+            lsr
+            lsr
+            sec
+            sbc temp6
+            eor #$ff            ; Negate: temp6 - (x>>5) = (x>>3) - (x>>5)
+            clc
+            adc #1
+            sta temp6
+            bpl div12_done_p3
+            lda #0              ; Clamp to 0 if negative
+            sta temp6
+div12_done_p3
+end
+
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)
@@ -240,7 +312,31 @@ end
           rem
           rem Mutates: temp6 (health bar length), COLUPF/COLUP0/COLUP1 (TIA registers)
           rem Constraints: None (note: actual maths is ÷ 12½ but 12 is easy enough to fake it)
-          let temp6 = playerHealth[3] / 12
+          rem Calculate health bar length using optimized shift-and-subtract: x/12 ≈ (x>>3) - (x>>5)
+          asm
+            lda playerHealth+3
+            lsr                 ; x >> 3
+            lsr
+            lsr
+            sta temp6
+            lda playerHealth+3
+            lsr                 ; x >> 5
+            lsr
+            lsr
+            lsr
+            lsr
+            sec
+            sbc temp6
+            eor #$ff            ; Negate: temp6 - (x>>5) = (x>>3) - (x>>5)
+            clc
+            adc #1
+            sta temp6
+            bpl div12_done_p4
+            lda #0              ; Clamp to 0 if negative
+            sta temp6
+div12_done_p4
+end
+
           if temp6 > HealthBarMaxLength then temp6 = HealthBarMaxLength
           COLUPF = ColGray(14)
           COLUP0 = ColGray(14)

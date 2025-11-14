@@ -61,7 +61,7 @@ end
 
           rem Count remaining players and check game end (inline
           rem   CheckGameEndCondition)
-          gosub CountRemainingPlayers bank12
+          gosub CountRemainingPlayers bank13
           rem Game ends when 1 or fewer players remain
           if playersRemaining_R > 0 then return
           rem If players still remain, no game end yet

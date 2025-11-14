@@ -40,18 +40,14 @@ end
           if temp4 >= 32 then return
 
           rem Optimized: Group characters with identical down/guard behavior
-          rem Special handlers: DragonOfStormsDown(2), HarpyDown(6), FrootyDown(8), RoboTitoDown(13)
-          if temp4 = 2 then goto DragonOfStormsDown
-          if temp4 = 6 then goto HarpyDown
-          if temp4 = 8 then goto FrootyDown
-          if temp4 = 13 then goto DCD_HandleRoboTitoDown
-          rem StandardGuard: All others (0,1,3,4,5,7,9,10,11,12,14,15,16-31)
-          goto StandardGuard
-
-DCD_HandleRoboTitoDown
-          rem Internal: RoboTito drop vs guard dispatch helper
-          gosub RoboTitoDown
-          if temp2 = 1 then return
+          rem Special handlers: DragonOfStormsDown(CharDragonOfStorms), HarpyDown(CharHarpy), FrootyDown(CharFrooty), RoboTitoDown(CharRoboTito)
+          if temp4 = CharDragonOfStorms then goto DragonOfStormsDown
+          if temp4 = CharHarpy then goto HarpyDown
+          if temp4 = CharFrooty then goto FrootyDown
+          if temp4 = CharRoboTito then gosub RoboTitoDown
+          if temp4 = CharRoboTito then if temp2 = GuardDownPressed then return
+          if temp4 = CharRoboTito then goto StandardGuard
+          rem StandardGuard: All others (CharBernie,CharCurler,CharZoeRyen,CharFatTony,CharKnightGuy,CharFrooty,CharNinjishGuy,CharPorkChop,CharRadishGoblin,CharUrsulo,CharShamone,CharMethHound,Char indices 16-31)
           goto StandardGuard
 
 CCJ_ConvertPlayerXToPlayfieldColumn

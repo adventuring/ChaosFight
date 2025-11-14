@@ -21,10 +21,10 @@ end
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
           rem Character damage routine moved from Bank 8 for ROM balance
 #include "Source/Routines/CharacterDamage.bas"
-#include "Source/Routines/DeactivatePlayerMissiles.bas"
+          rem DeactivatePlayerMissiles moved to Bank 13 for ROM balance (Bank 12 overflow)
 #include "Source/Routines/TriggerEliminationEffects.bas"
 #include "Source/Routines/UpdatePlayers34ActiveFlag.bas"
-#include "Source/Routines/CountRemainingPlayers.bas"
+          rem CountRemainingPlayers moved to Bank 13 for ROM balance (Bank 12 overflow)
 #include "Source/Routines/FindLastEliminated.bas"
 #include "Source/Routines/FindWinner.bas"
 #include "Source/Routines/CheckPlayerElimination.bas"

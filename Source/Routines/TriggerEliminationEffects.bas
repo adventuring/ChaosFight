@@ -43,7 +43,7 @@ end
           rem Player 4 uses player3 sprite (multisprite)
 
           rem Stop any active missiles for this player
-          goto DeactivatePlayerMissiles bank12
+          goto DeactivatePlayerMissiles bank13
           rem tail call
 
 

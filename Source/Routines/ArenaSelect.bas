@@ -129,7 +129,39 @@ ArenaSelectDoneRight
           let temp1 = selectedArena_R + 1
           rem   10-19, 2 for 20-29, 3 for 30-32)
           rem arenaNumber = arena number (1-32)
-          let temp2 = temp1 / 10
+          rem Calculate tens digit using optimized shift-and-subtract: x/10 ≈ (x>>3) + (x>>4) - (x>>8)
+          asm
+            lda temp1
+            lsr                 ; x >> 3
+            lsr
+            lsr
+            sta temp2
+            lda temp1
+            lsr                 ; x >> 4
+            lsr
+            lsr
+            lsr
+            clc
+            adc temp2           ; (x>>3) + (x>>4)
+            sta temp2
+            lda temp1
+            lsr                 ; x >> 8 (for values 0-32, this is 0, but included for accuracy)
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sec
+            sbc temp2
+            sta temp2           ; Result: (x>>3) + (x>>4) - (x>>8)
+            bpl div10_done
+            lda #0              ; Clamp to 0 if negative
+            sta temp2
+div10_done
+end
+
           rem Calculate tens digit
           rem Calculate ones digit using optimized assembly
           asm

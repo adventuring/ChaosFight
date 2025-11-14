@@ -473,7 +473,36 @@ end
           let temp3 = missileY_R[temp1]
 
           rem Convert X to playfield coordinates
-          let temp6 = temp2 / 5
+          rem Calculate playfield column using optimized shift-and-subtract: x/5 ≈ (x>>2) + (x>>3) - (x>>7)
+          asm
+            lda temp2
+            lsr                 ; x >> 2
+            lsr
+            sta temp6
+            lda temp2
+            lsr                 ; x >> 3
+            lsr
+            lsr
+            clc
+            adc temp6           ; (x>>2) + (x>>3)
+            sta temp6
+            lda temp2
+            lsr                 ; x >> 7 (for values 0-160, this contributes minimally)
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            lsr
+            sec
+            sbc temp6
+            sta temp6           ; Result: (x>>2) + (x>>3) - (x>>7)
+            bpl div5_done
+            lda #0              ; Clamp to 0 if negative
+            sta temp6
+div5_done
+end
+
           rem Playfield is 32 pixels wide (doubled to 160 screen pixels)
           rem Convert X pixel to playfield column (160/32 ≈ 5)
 

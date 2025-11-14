@@ -152,7 +152,7 @@
 
           rem Character selection results (set during ADMIN, read during GAME)
           rem Player-character selection (0-31) cached across contexts
-          dim playerCharacter = j
+          rem Note: playerCharacter is defined below as var48 - do not redefine here
           rem COMMON VARS - SCRAM (r000-r127/w000-w127) - sorted
           rem   numerically
           rem Array accessible as playerLocked[0] through playerLocked[3]

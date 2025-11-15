@@ -7,7 +7,21 @@
 
           bank 1
           asm
+            ;; "Start of data" is at CPU space $F100 in Bank 1
+            ;; Since RORG $F000 is active, Bank 1 file space $0000-$0FFF maps to CPU $F000-$FFFF
+            ;; The scram (256 bytes of $FF) is at file space $0000-$00FF (CPU space $F000-$F0FF)
+            ;; "Start of data" is at file space $0100 (CPU space $F100), after the scram
+            ;; it would be immensely stupid to fuck with this "ECHO" because it is reporting the actual
+            ;; address that the assembler will use, so we will instead fix the ORG and RORG if 
+            ;; it reports that they are wrong.
+            ;; Position address counter at start of data (file space $0100, CPU space $F100)
+            ORG $0100
+            RORG $F100
             ECHO "Start of data at ", .
+            if . != $F100
+                ECHO "ORG or RORG error before start of bank 1"
+                ERR
+            endif
 end
 
           rem
@@ -35,7 +49,7 @@ end
           rem Songs 0-Bank15MaxSongID reside in Bank 15
 
           asm
-            ECHO "Start of data at ", .
+            ECHO "Start of songs at ", .
 end
 
           rem Character theme songs (IDs Bank1MinSongID-25)

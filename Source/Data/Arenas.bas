@@ -14,6 +14,10 @@
           rem All arenas share ArenaColorsBW for B&W mode
           rem Shared B&w Color Definition
           rem All arenas use the same B&W colors (all white)
+          rem
+          rem Suppress pointer-setting code to maintain 24-byte alignment
+          rem LoadArenaByIndex routine handles pointer calculation dynamically
+          const _suppress_pf_pointer_code = 1
           data ArenaColorsBW
             ColGrey(14),
             ColGrey(14),

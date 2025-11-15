@@ -5,6 +5,12 @@
           rem Character theme songs (IDs 6-28): LowRes, RoboTito, SongOfTheBear,
           rem   DucksAway, Character16-30 themes
 
+          asm
+            if . != $f100
+              echo "ORG or RORG error in preamble"
+            endif
+end
+
           bank 1
           asm
             ;; "Start of data" is at CPU space $F100 in Bank 1
@@ -14,9 +20,6 @@
             ;; it would be immensely stupid to fuck with this "ECHO" because it is reporting the actual
             ;; address that the assembler will use, so we will instead fix the ORG and RORG if 
             ;; it reports that they are wrong.
-            ;; Position address counter at start of data (file space $0100, CPU space $F100)
-            ORG $0100
-            RORG $F100
             ECHO "Start of data at ", .
             if . != $F100
                 ECHO "ORG or RORG error before start of bank 1"

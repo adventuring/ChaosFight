@@ -386,10 +386,7 @@ BANK16_END = $F000 + $FC0
   ; Define debugcycles as a stub label (kernel defines it when debugscore enabled)
   ; MS_ASSIGN would create a constant, but we need a label for jsr debugcycles
   ; This prevents phase errors when debugscore is disabled but jsr debugcycles is generated
-  ifnconst debugcycles
-debugcycles
-	rts
-  endif
+  ; NOTE: Moved to end of file to avoid adding byte before data section
   ; Note: debugcycles is defined above as a label, not a constant
   ; This matches the kernel's usage where jsr debugcycles is called
   
@@ -428,9 +425,7 @@ frame = $00F5
   MS_ASSIGN  mk_gameselect_on, 0
   MS_ASSIGN  qtcontroller, $E7
   MS_ASSIGN  scoretable, $FF80
-
-pfread
-          rts
+; NOTE: pfread stub moved to end of file to avoid adding byte before data section
 
 ; --- Superchip RAM mapping --------------------------------------------------
 ; Mirror the standard SuperChip read/write port map so DASM exports every alias.
@@ -708,3 +703,6 @@ pfread
            endif
         ENDM
 
+; Stubs moved here to avoid adding bytes before data section at $F100
+; NOTE: pfread doesn't need rts - it's only used as an address, not called with jsr
+pfread

@@ -28,7 +28,7 @@ CRTSMC_IsRoboTito
           rem = 10)
           rem Latched to ceiling, no stretch missile
           let temp5 = characterStateFlags_R[temp1] & 1
-          if temp5 then CRTSMC_NextPlayer
+          if temp5 then goto CRTSMC_NextPlayer
           let playerStateTemp_W = playerState[temp1]
           rem Mask bits 4-7 (animation state)
           let playerStateTemp_W = playerStateTemp_W & MaskPlayerStateAnimation
@@ -89,7 +89,7 @@ CRTSMC_DoneSelf
 
 CRTSMC_NextPlayer
           let temp1 = temp1 + 1
-          if temp1 < 4 then CRTSMC_PlayerLoop
+          if temp1 < 4 then goto CRTSMC_PlayerLoop
 
           return
 

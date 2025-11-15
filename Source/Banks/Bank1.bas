@@ -37,23 +37,12 @@ end
           asm
 #include "Source/Common/BuildInfo.s"
 end
-          asm
-            ECHO "End of Build Info at ", .
-end
 
 #include "Source/Data/SongPointers1.bas"
-
-          asm
-            ECHO "End of Song Pointers 1  at ", .
-end
 
           rem Song Data (Bank 1)
           rem Song IDs hosted here: Bank1MinSongID-28 (currently 7-28) - character themes plus admin screen music
           rem Songs 0-Bank15MaxSongID reside in Bank 15
-
-          asm
-            ECHO "Start of songs at ", .
-end
 
           rem Character theme songs (IDs Bank1MinSongID-25)
 
@@ -63,19 +52,11 @@ end
 #include "Source/Generated/Song.LowRes.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song LowRes, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.RoboTito.NTSC.bas"
 #else
 #include "Source/Generated/Song.RoboTito.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song RoboTito, ", .
-end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.SongOfTheBear.NTSC.bas"
@@ -83,19 +64,11 @@ end
 #include "Source/Generated/Song.SongOfTheBear.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song SongOfTheBear, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.DucksAway.NTSC.bas"
 #else
 #include "Source/Generated/Song.DucksAway.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song DucksAway, ", .
-end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character16Theme.NTSC.bas"
@@ -103,19 +76,11 @@ end
 #include "Source/Generated/Song.Character16Theme.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song Character16Theme, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character17Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character17Theme.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song Character17Theme, ", .
-end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character18Theme.NTSC.bas"
@@ -123,19 +88,11 @@ end
 #include "Source/Generated/Song.Character18Theme.PAL.bas"
 #endif
 
-          asm
-           ECHO "After song Character18Theme, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character19Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character19Theme.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song Character19Theme, ", .
-end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character20Theme.NTSC.bas"
@@ -143,19 +100,11 @@ end
 #include "Source/Generated/Song.Character20Theme.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song Character20Theme, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character21Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character21Theme.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song Character21Theme, ", .
-end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character22Theme.NTSC.bas"
@@ -163,19 +112,11 @@ end
 #include "Source/Generated/Song.Character22Theme.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song Character22Theme, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character23Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character23Theme.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song Character23Theme, ", .
-end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character24Theme.NTSC.bas"
@@ -183,19 +124,11 @@ end
 #include "Source/Generated/Song.Character24Theme.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song Character24Theme, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character25Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character25Theme.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song Character25Theme, ", .
-end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character26Theme.NTSC.bas"
@@ -203,19 +136,11 @@ end
 #include "Source/Generated/Song.Character26Theme.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song Character26Theme, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character27Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character27Theme.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song Character27Theme, ", .
-end
 
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character28Theme.NTSC.bas"
@@ -223,29 +148,17 @@ end
 #include "Source/Generated/Song.Character28Theme.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song Character28Theme, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character29Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character29Theme.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song Character29Theme, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Character30Theme.NTSC.bas"
 #else
 #include "Source/Generated/Song.Character30Theme.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song Character30Theme, ", .
-end
 
           rem Admin screen songs (IDs 26-28)
 #ifdef TV_NTSC
@@ -254,29 +167,17 @@ end
 #include "Source/Generated/Song.Chaotica.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song Chaotica, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.AtariToday.NTSC.bas"
 #else
 #include "Source/Generated/Song.AtariToday.PAL.bas"
 #endif
 
-          asm
-            ECHO "After song AtariToday, ", .
-end
-
 #ifdef TV_NTSC
 #include "Source/Generated/Song.Interworldly.NTSC.bas"
 #else
 #include "Source/Generated/Song.Interworldly.PAL.bas"
 #endif
-
-          asm
-            ECHO "After song Interworldly, ", .
-end
 
           asm
 Bank1DataEnds
@@ -286,15 +187,7 @@ end
 
 #include "Source/Routines/MusicBankHelpers.bas"
 
-          asm
-            ECHO "After MusicBankHelpers, ", .
-end
-
 #include "Source/Routines/MusicSystem.bas"
-
-          asm
-            ECHO "After MusicSystem, ", .
-end
 
           asm
 Bank1CodeEnds

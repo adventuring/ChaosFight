@@ -6,6 +6,13 @@
           rem   FatTony, Megax, Harpy, KnightGuy + MissileCollision routine
 
           bank 2
+          asm
+            ECHO "Bank 2 starts at ", .
+            if . != $F100
+              ECHO "ORG or RORG error in transition to bank 2"
+              ERR
+            endif
+end
 
           rem Character sprite data for characters 0-7
           rem Bank 2 dedicated to character art only - leave room for
@@ -21,6 +28,7 @@
 
           asm
 Bank2DataEnds
+          ECHO "Bank 2 data ends at ", .
 end
 
           asm

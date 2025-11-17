@@ -89,10 +89,15 @@ Reset:
           sta bankswitch_hotspot ; switch to bank 14
           jmp MainLoop
 
-          ; Reset vectors are handled by batariBASIC after including this file
-          ; batariBASIC sets ORG $XFFC and places .word (start_bankN & $ffff) vectors
-          ; We cannot set ORG here because file position may have advanced to next bank
-          ; causing "Origin Reverse-indexed" errors
+          ; Reset vectors at $fffc-$ffff
+          ; $fffc-$fffd: Reset vector
+          ; $fffe-$ffff: IRQ/BRK vector
+          ; Both point to Reset handler
+          ; Calculate ORG from current_bank: ORG = (current_bank * $1000) | $0FFC
+          ORG ((current_bank * $1000) | $0FFC)
+          RORG $fffc
+          .word Reset
+          .word Reset
 
           ; CPU address space check: should end at exactly $10000
           ; After reset vectors at $fffc-$ffff, we should be at $10000

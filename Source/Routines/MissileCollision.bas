@@ -48,10 +48,8 @@ end
           rem Get character type to determine missile properties
 
           rem Check if this is a visible missile or AOE attack
-          rem Read missile width from character data (in Bank 6)
-          let temp1 = temp5
-          gosub GetMissileWidth bank7
-          let temp6 = temp2
+          rem Read missile width from character data (inlined for performance)
+          let temp6 = CharacterMissileWidths[temp5]
           rem Missile width (0 = AOE, >0 = visible missile)
 
           if temp6 = 0 then goto CheckAOECollision
@@ -97,18 +95,14 @@ end
           rem Get missile X/Y position
           let temp3 = missileY_R[temp1]
 
-          rem Get missile size from character data (in Bank 6)
+          rem Get missile size from character data (inlined for performance)
           let temp5 = playerCharacter[temp1]
           rem Get character type from player
           rem Use characterType as index (preserve attackerIndex)
-          let temp1 = temp5
-          gosub GetMissileWidth
-          let temp6 = temp2
-          rem Missile width (temp2 now contains width)
-          let temp1 = temp5
-          gosub GetMissileHeight
-          let temp3 = temp2
-          rem Missile height (temp2 now contains height)
+          let temp6 = CharacterMissileWidths[temp5]
+          rem Missile width (inlined)
+          let temp3 = CharacterMissileHeights[temp5]
+          rem Missile height (inlined)
           rem Restore missileX/Y after width/height lookup
 
           rem Missile bounding box:

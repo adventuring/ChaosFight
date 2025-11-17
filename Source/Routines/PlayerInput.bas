@@ -233,9 +233,17 @@ HGI_CheckJoy0
           if !joy0down then goto HGI_CheckGuardRelease
 HGI_HandleDownPressed
           let temp4 = playerCharacter[temp1]
-          rem DOWN pressed - dispatch to character-specific down handler
-          gosub DispatchCharacterDown bank13
-          return
+          rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
+          if temp4 >= 32 then return
+          if temp4 = 2 then goto DragonOfStormsDown
+          if temp4 = 6 then goto HarpyDown
+          if temp4 = 8 then goto FrootyDown
+          if temp4 = 13 then goto DCD_HandleRoboTitoDown
+          goto StandardGuard
+DCD_HandleRoboTitoDown
+          gosub RoboTitoDown
+          if temp2 = 1 then return
+          goto StandardGuard
 HGI_CheckGuardRelease
           let temp2 = playerState[temp1] & 2
           rem DOWN released - check for early guard release
@@ -690,8 +698,11 @@ LeftEnhancedJumpProceed
           if temp2 >= 13 then goto InputDoneLeftPortJump
           let temp4 = playerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump bank13
-          if playerCharacter[temp1] = 3 then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
+          rem Dispatch character jump (inlined for performance)
+          if temp4 >= 32 then goto InputDoneLeftPortJump
+          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
+          if temp4 = 31 then goto ShamoneJump
+          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
           goto InputDoneLeftPortJump
 
 SkipEnhancedJumpCheck
@@ -719,15 +730,51 @@ LeftStdJumpProceed
           if temp2 >= 13 then goto InputDoneLeftPortJump
           let temp4 = playerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump bank13
+          rem Dispatch character jump (inlined for performance)
+          if temp4 >= 32 then goto InputDoneLeftPortJump2
+          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
+          if temp4 = 31 then goto ShamoneJump
+          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
+          goto InputDoneLeftPortJump2
+InputDoneLeftPortJump2
           if playerCharacter[temp1] = 3 then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
 InputDoneLeftPortJump
 
-
-
-          gosub HandleGuardInput
-          rem Process down/guard input
-
+          rem Process down/guard input (inlined for performance)
+          rem Frooty (8) cannot guard
+          if playerCharacter[temp1] = 8 then goto HGI_Done1
+          rem Players 0,2 use joy0; Players 1,3 use joy1
+          if temp1 = 0 then HGI_CheckJoy0_1
+          if temp1 = 2 then HGI_CheckJoy0_1
+          rem Players 1,3 use joy1
+          if !joy1down then goto HGI_CheckGuardRelease1
+          goto HGI_HandleDownPressed1
+HGI_CheckJoy0_1
+          rem Players 0,2 use joy0
+          if !joy0down then goto HGI_CheckGuardRelease1
+HGI_HandleDownPressed1
+          let temp4 = playerCharacter[temp1]
+          rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
+          if temp4 >= 32 then goto HGI_Done1
+          if temp4 = 2 then goto DragonOfStormsDown
+          if temp4 = 6 then goto HarpyDown
+          if temp4 = 8 then goto FrootyDown
+          if temp4 = 13 then goto DCD_HandleRoboTitoDown1
+          goto StandardGuard
+DCD_HandleRoboTitoDown1
+          gosub RoboTitoDown
+          if temp2 = 1 then goto HGI_Done1
+          goto StandardGuard
+HGI_CheckGuardRelease1
+          let temp2 = playerState[temp1] & 2
+          rem DOWN released - check for early guard release
+          if !temp2 then goto HGI_Done1
+          rem Not guarding, nothing to do
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          rem Stop guard early and start cooldown
+          let playerTimers_W[temp1] = GuardTimerMaxFrames
+          rem Start cooldown timer
+HGI_Done1
 
           rem Process attack input
           rem Map MethHound (31) to ShamoneAttack handler
@@ -978,8 +1025,11 @@ RightEnhancedJumpProceed
           if temp2 >= 13 then goto InputDoneRightPortJump
           let temp4 = playerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump bank13
-          if playerCharacter[temp1] = 3 then if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
+          rem Dispatch character jump (inlined for performance)
+          if temp4 >= 32 then goto InputDoneRightPortJump
+          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
+          if temp4 = 31 then goto ShamoneJump
+          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
           goto InputDoneRightPortJump
 
 SkipEnhancedJumpCheckRight
@@ -1009,10 +1059,47 @@ RightStdJumpProceed
           if temp2 >= 13 then goto InputDoneRightPortJump
           let temp4 = playerCharacter[temp1]
           rem Block jump during attack windup/execute/recovery
-          gosub DispatchCharacterJump bank13
+          rem Dispatch character jump (inlined for performance)
+          if temp4 >= 32 then goto InputDoneRightPortJump
+          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
+          if temp4 = 31 then goto ShamoneJump
+          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
 InputDoneRightPortJump
-          gosub HandleGuardInput
-          rem Process down/guard input
+          rem Process down/guard input (inlined for performance)
+          rem Frooty (8) cannot guard
+          if playerCharacter[temp1] = 8 then goto HGI_Done2
+          rem Players 0,2 use joy0; Players 1,3 use joy1
+          if temp1 = 0 then HGI_CheckJoy0_2
+          if temp1 = 2 then HGI_CheckJoy0_2
+          rem Players 1,3 use joy1
+          if !joy1down then goto HGI_CheckGuardRelease2
+          goto HGI_HandleDownPressed2
+HGI_CheckJoy0_2
+          rem Players 0,2 use joy0
+          if !joy0down then goto HGI_CheckGuardRelease2
+HGI_HandleDownPressed2
+          let temp4 = playerCharacter[temp1]
+          rem DOWN pressed - dispatch to character-specific down handler (inlined for performance)
+          if temp4 >= 32 then goto HGI_Done2
+          if temp4 = 2 then goto DragonOfStormsDown
+          if temp4 = 6 then goto HarpyDown
+          if temp4 = 8 then goto FrootyDown
+          if temp4 = 13 then goto DCD_HandleRoboTitoDown2
+          goto StandardGuard
+DCD_HandleRoboTitoDown2
+          gosub RoboTitoDown
+          if temp2 = 1 then goto HGI_Done2
+          goto StandardGuard
+HGI_CheckGuardRelease2
+          let temp2 = playerState[temp1] & 2
+          rem DOWN released - check for early guard release
+          if !temp2 then goto HGI_Done2
+          rem Not guarding, nothing to do
+          let playerState[temp1] = playerState[temp1] & (255 - PlayerStateBitGuarding)
+          rem Stop guard early and start cooldown
+          let playerTimers_W[temp1] = GuardTimerMaxFrames
+          rem Start cooldown timer
+HGI_Done2
 
           rem Process attack input
           rem Use cached animation state - block attack input during

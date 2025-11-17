@@ -1,58 +1,13 @@
           rem ChaosFight - Source/Routines/CharacterControls.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-DispatchCharacterJump
-          asm
-DispatchCharacterJump
+rem DispatchCharacterJump - INLINED
+rem This function has been inlined at all call sites for performance.
+rem See PlayerInput.bas, ProcessJumpInput.bas, InputHandle*PortPlayerFunction.bas for inlined implementation.
 
-end
-          rem Dispatches character-specific jump handlers via ON...GOTO
-          rem Inputs: temp4 = character index (0-31)
-          rem Outputs: None; jumps to character handler or returns
-          rem Mutates: None
-          rem Calls: BernieJump, CurlerJump, ... ShamoneJump via dispatch table
-          rem Constraints: Index 31 uses ShamoneJump; 16-30 default to StandardJump
-
-          if temp4 >= 32 then return
-
-          rem Optimized: Group characters with identical jump behavior
-          rem StandardJump: Characters 16-30
-          if temp4 >= 16 && temp4 <= 30 then goto StandardJump
-          rem ShamoneJump: Character 31 (MethHound mirrors Shamone)
-          if temp4 = 31 then goto ShamoneJump
-
-          rem Unique jump handlers: Characters 0-15 (optimized dispatch)
-          on temp4 goto BernieJump StandardJump DragonOfStormsJump ZoeRyenJump FatTonyJump StandardJump HarpyJump KnightGuyJump FrootyJump StandardJump NinjishGuyJump PorkChopJump RadishGoblinJump RoboTitoJump UrsuloJump ShamoneJump
-          return
-
-DispatchCharacterDown
-          asm
-DispatchCharacterDown
-
-end
-          rem Dispatches down/guard handlers for each character
-          rem Inputs: temp4 = character index (0-31)
-          rem Outputs: None; branches to handler or returns
-          rem Mutates: None
-          rem Calls: StandardGuard, DragonOfStormsDown, HarpyDown, RoboTitoDown
-          rem Constraints: Index 31 mirrors Shamone; unmapped indices use StandardGuard
-
-          if temp4 >= 32 then return
-
-          rem Optimized: Group characters with identical down/guard behavior
-          rem Special handlers: DragonOfStormsDown(2), HarpyDown(6), FrootyDown(8), RoboTitoDown(13)
-          if temp4 = 2 then goto DragonOfStormsDown
-          if temp4 = 6 then goto HarpyDown
-          if temp4 = 8 then goto FrootyDown
-          if temp4 = 13 then goto DCD_HandleRoboTitoDown
-          rem StandardGuard: All others (0,1,3,4,5,7,9,10,11,12,14,15,16-31)
-          goto StandardGuard
-
-DCD_HandleRoboTitoDown
-          rem Internal: RoboTito drop vs guard dispatch helper
-          gosub RoboTitoDown
-          if temp2 = 1 then return
-          goto StandardGuard
+rem DispatchCharacterDown - INLINED
+rem This function has been inlined at all call sites for performance.
+rem See PlayerInput.bas, HandleGuardInput.bas for inlined implementation.
 
 CCJ_ConvertPlayerXToPlayfieldColumn
           asm

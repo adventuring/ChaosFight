@@ -304,13 +304,9 @@ end
           rem Y velocity
 
           let temp5 = playerCharacter[temp1]
-          rem Read missile flags from character data
-          let temp1 = temp5
-          rem Get character index
-          gosub GetMissileFlags bank7
-          rem Use temp1 for flags lookup (temp1 will be overwritten)
-          let temp5 = temp2
-          rem Store flags
+          rem Read missile flags from character data (inlined for performance)
+          let temp5 = CharacterMissileFlags[temp5]
+          rem Store flags (inlined)
 
           let temp1 = temp6
           rem Restore player index and get flags back
@@ -439,13 +435,10 @@ FrictionDone
           rem Off-screen vertically, deactivate
 
           rem Check collision with playfield if flag is set
-          rem Reload missile flags (temp5 was overwritten with Y
+          rem Reload missile flags (temp5 was overwritten with Y position above)
           let temp5 = playerCharacter[temp1]
-          rem   position above)
-          let temp1 = temp5
-          gosub GetMissileFlags bank7
-          let temp5 = temp2
-          rem temp5 now contains missile flags again
+          let temp5 = CharacterMissileFlags[temp5]
+          rem temp5 now contains missile flags again (inlined)
           rem Restore player index for MissileCollPF
           if (temp5 & MissileFlagHitBackground) = 0 then PlayfieldCollisionDone
           gosub MissileCollPF bank7

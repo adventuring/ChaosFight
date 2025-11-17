@@ -1,0 +1,128 @@
+          rem ChaosFight - Source/Routines/ProcessJumpInput.bas
+          rem Copyright © 2025 Interworldly Adventuring, LLC.
+
+ProcessJumpInput
+          asm
+ProcessJumpInput
+
+end
+          rem
+          rem Shared Jump Input Handler
+          rem Handles jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
+          rem Must be identical in effect to ProcessUpInput for all characters
+          rem Processes jump logic including Zoe double-jump and character-specific behaviors
+          rem
+          rem INPUT: temp1 = player index (0-3), temp2 = cached animation state
+          rem
+          rem OUTPUT: Jump or character-specific behavior executed if conditions met
+          rem
+          rem Mutates: temp3, temp4, temp6, playerCharacter[], playerState[],
+          rem         playerY[], characterStateFlags_W[]
+          rem
+          rem Called Routines: CheckEnhancedJumpButton, BernieJump (bank13),
+          rem         HarpyJump (bank13), DispatchCharacterJump (bank13), PlayfieldRead (bank16)
+          rem
+          rem Constraints: Must be colocated with PJI_CheckEnhanced, PJI_CharacterBehaviors helpers
+          rem Process jump input from enhanced buttons (Genesis/Joy2b+ Button C/II)
+          rem Note: For Shamone/MethHound, UP is form switch, so jump via enhanced buttons only
+          rem Note: For Bernie, UP is fall-through, so jump via enhanced buttons only
+          rem Note: For Harpy, UP is flap, so jump via enhanced buttons only
+          rem Check enhanced button first (sets temp3 = 1 if pressed, 0 otherwise)
+          gosub CheckEnhancedJumpButton
+          rem Check Genesis/Joy2b+ Button C/II
+          
+          rem If enhanced button not pressed, return (no jump)
+          if temp3 = 0 then return
+          
+          rem For characters with special UP behaviors, enhanced button acts as UP
+          rem Check Shamone form switching first (Character 15 <-> 31)
+          if playerCharacter[temp1] = 15 then let playerCharacter[temp1] = 31 : return
+          rem Switch Shamone -> MethHound
+          if playerCharacter[temp1] = 31 then let playerCharacter[temp1] = 15 : return
+          rem Switch MethHound -> Shamone
+
+          rem Robo Tito (13): Hold enhanced button to ascend; auto-latch on ceiling contact
+          if playerCharacter[temp1] = 13 then PJI_RoboTitoAscend
+
+          rem Check Bernie fall-through (Character 0)
+          if playerCharacter[temp1] = 0 then PJI_BernieFallThrough
+
+          rem Check Harpy flap (Character 6)
+          if playerCharacter[temp1] = 6 then PJI_HarpyFlap
+
+          rem For all other characters, enhanced button is jump
+          rem Allow Zoe (3) a single mid-air double-jump
+          if playerCharacter[temp1] = 3 then goto PJI_ZoeJumpCheck
+          rem Use cached animation state - block jump during attack animations (states 13-15)
+          if temp2 >= 13 then return
+          rem Block jump during attack windup/execute/recovery
+          let temp4 = playerCharacter[temp1]
+          gosub DispatchCharacterJump bank13
+          return
+
+PJI_ZoeJumpCheck
+          let temp6 = 0
+          if (playerState[temp1] & 4) then temp6 = 1
+          rem Use goto to avoid branch out of range
+          if temp6 = 1 then if (characterStateFlags_R[temp1] & 8) then return
+          rem Use cached animation state - block jump during attack animations (states 13-15)
+          if temp2 >= 13 then return
+          let temp4 = playerCharacter[temp1]
+          rem Block jump during attack windup/execute/recovery
+          gosub DispatchCharacterJump bank13
+          if temp6 = 1 then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 8
+          return
+
+PJI_BernieFallThrough
+          rem Bernie enhanced button handled in BernieJump routine (fall through 1-row floors)
+          gosub BernieJump bank13
+          return
+
+PJI_HarpyFlap
+          gosub HarpyJump bank13
+          rem Harpy enhanced button handled in HarpyJump routine (flap to fly)
+          return
+
+PJI_RoboTitoAscend
+          rem Ascend toward ceiling (same logic as ProcessUpInput)
+          let temp6 = playerCharacter[temp1]
+          let temp6 = CharacterMovementSpeed[temp6]
+          let playerY[temp1] = playerY[temp1] - temp6
+          rem Compute playfield column
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          asm
+            lsr temp2
+            lsr temp2
+end
+          if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
+          let temp4 = temp2
+          rem Save playfield column (temp2 will be overwritten)
+          rem Compute head row and check ceiling contact
+          let temp2 = playerY[temp1]
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
+          if temp2 = 0 then goto PJI_RoboTitoLatch
+          let temp3 = temp2 - 1
+          let currentPlayer = temp1
+          let temp1 = temp4
+          let temp2 = temp3
+          gosub PlayfieldRead bank16
+          if temp1 then PJI_RoboTitoLatch
+          let temp1 = currentPlayer
+          rem Clear latch if DOWN pressed (check appropriate port)
+          if temp1 & 2 = 0 then PJI_CheckJoy0Down
+          if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          return
+PJI_CheckJoy0Down
+          if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
+          return
+PJI_RoboTitoLatch
+          let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] | 1
+          return
+

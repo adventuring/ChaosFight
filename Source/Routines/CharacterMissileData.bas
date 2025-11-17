@@ -58,41 +58,9 @@ end
           rem Use direct array access for O(1) lookup
           return
 
-GetMissileWidth
-          asm
-GetMissileWidth
-end
-          rem Return missile width from CharacterMissileWidths[temp1].
-          rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileHeights lookup)
-          rem Output: temp2 = missile width
-          rem Mutates: temp2 (return value - missile width)
-          rem Constraints: None (table lookup - missile width)
-          let temp2 = CharacterMissileWidths[temp1]
-          return
-
-GetMissileHeight
-          asm
-GetMissileHeight
-end
-          rem Return missile height from CharacterMissileHeights[temp1].
-          rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileFlags lookup)
-          rem Output: temp2 = missile height
-          rem Mutates: temp2 (return value - missile height)
-          rem Constraints: None (table lookup - missile height)
-          let temp2 = CharacterMissileHeights[temp1]
-          return
-
-GetMissileFlags
-          asm
-GetMissileFlags
-end
-          rem Return missile flags from CharacterMissileFlags[temp1].
-          rem Parameters: temp1 = character index (0-MaxCharacter, CharacterMissileMomentumX lookup)
-          rem Output: temp2 = missile flags
-          rem Mutates: temp2 (return value - missile flags)
-          rem Constraints: None (table lookup - missile flags)
-          let temp2 = CharacterMissileFlags[temp1]
-          return
+rem GetMissileWidth, GetMissileHeight, GetMissileFlags - INLINED
+rem These functions have been inlined at all call sites for performance.
+rem Direct array access: CharacterMissileWidths[], CharacterMissileHeights[], CharacterMissileFlags[]
 
 GetMissileMomentumX
           asm

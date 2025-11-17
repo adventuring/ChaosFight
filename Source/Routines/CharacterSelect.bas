@@ -43,8 +43,16 @@ CharacterSelectEntry
           let characterSelectAnimationFrame  = 0
           rem Start with first character
 
-          gosub CharacterSelectDetectQuadtari bank7
-          rem Check for Quadtari adapter
+          rem Check for Quadtari adapter (inlined for performance)
+          rem CANONICAL QUADTARI DETECTION: Check paddle ports INPT0-3
+          rem Require BOTH sides present: Left (INPT0 LOW, INPT1 HIGH) AND Right (INPT2 LOW, INPT3 HIGH)
+          if INPT0{7} then goto CharacterSelectQuadtariAbsent
+          if !INPT1{7} then goto CharacterSelectQuadtariAbsent
+          if INPT2{7} then goto CharacterSelectQuadtariAbsent
+          if !INPT3{7} then goto CharacterSelectQuadtariAbsent
+          rem All checks passed - Quadtari detected
+          let controllerStatus = controllerStatus | SetQuadtariDetected
+CharacterSelectQuadtariAbsent
 
           COLUBK = ColGray(0)
           rem Set background color (B&W safe)

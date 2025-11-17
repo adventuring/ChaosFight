@@ -78,7 +78,7 @@ end
           goto CEJB_Done
 CEJB_CheckPlayer0
           rem Player 0: Check Genesis controller first
-          if !controllerStatus{0} then CEJB_CheckPlayer0Joy2bPlus
+          if !controllerStatus{0} then goto CEJB_CheckPlayer0Joy2bPlus
 CEJB_ReadButton0
           rem Shared button read for Player 0 enhanced controllers (Button C/II)
           if !INPT0{7} then temp3 = 1

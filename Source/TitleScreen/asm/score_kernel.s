@@ -3,8 +3,7 @@
 ; titlescreen code. Refer to the bB license before you use this in
 ; a non-bB program.
 
-; Include macro.h for SLEEP macro
-        include "Tools/batariBASIC/includes/macro.h"
+; macro.h is already included via MultiSpriteSuperChip.s in Preamble.bas
 
 draw_score_display
 
@@ -130,7 +129,7 @@ scoreloop2end
         STA NUSIZ0
         STA NUSIZ1
 
- ; clear out the score pointers in case they're stolen DPC variables...
+ ; clear out the score pointers in case they’re stolen DPC variables...
  ldx #11
 clearscoreploop
  sta scorepointers,x

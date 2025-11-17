@@ -1,5 +1,4 @@
-; Include macro.h for SLEEP macro
-        include "Tools/batariBASIC/includes/macro.h"
+; macro.h is already included via MultiSpriteSuperChip.s in Preamble.bas
 
 position48
 

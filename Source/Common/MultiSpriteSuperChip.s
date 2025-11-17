@@ -3,15 +3,15 @@
 ; Licensed under CC0 to match upstream batariBASIC headers.
 
  processor 6502
- include "vcs.h"
- include "macro.h"
+ #include "vcs.h"
+ #include "macro.h"
 
 ; Issue #930: Ensure every SuperChip SCRAM port symbol is exported here so
 ; cross-bank routines rely on one authoritative header.
- include "2600basic_variable_redefs.h"
+ #include "2600basic_variable_redefs.h"
 
 ; Define compiler constants if not already defined by batariBASIC
-; These are forward declarations that may be redefined by batariBASIC's generated constants
+; These are forward declarations that may be redefined by batariBASIC’s generated constants
   ifnconst pfres
 pfres = 8
   endif
@@ -41,7 +41,7 @@ vblank_bB_code = $0000
 
 ; Bank boundary definitions for 64K SuperChip ROM (16 banks x 4K each)
 ; Each bank reserves space for bankswitching code at the end
-; Bankswitch code starts at $FE0 - bscode_length in each bank's ORG space
+; Bankswitch code starts at $FE0 - bscode_length in each bank’s ORG space
 ; BANKN_END = (N-1)*$1000 + $FE0 - bscode_length
  ifconst bscode_length
 BANK1_END = $0000 + $FE0 - bscode_length
@@ -82,7 +82,7 @@ BANK16_END = $F000 + $FC0
  endif
 
 ; Note: ORG/RORG and repeat block removed - these cause issues when included
-; in batariBASIC asm blocks. The variable definitions below don't require
+; in batariBASIC asm blocks. The variable definitions below don’t require
 ; these directives.
 ; ORG $0000
 ; RORG $F000
@@ -432,7 +432,7 @@ var48 EQU $D4
   ; This prevents phase errors when debugscore is disabled but jsr debugcycles is generated
   ; NOTE: Moved to end of file to avoid adding byte before data section
   ; Note: debugcycles is defined above as a label, not a constant
-  ; This matches the kernel's usage where jsr debugcycles is called
+  ; This matches the kernel’s usage where jsr debugcycles is called
   
   ; Forward declarations for batariBASIC built-in variables and routines
   ; These will be defined by batariBASIC compiler/generated code
@@ -748,5 +748,5 @@ frame = $00F5
         ENDM
 
 ; Stubs moved here to avoid adding bytes before data section at $F100
-; NOTE: pfread doesn't need rts - it's only used as an address, not called with jsr
+; NOTE: pfread doesn’t need rts - it’s only used as an address, not called with jsr
 pfread

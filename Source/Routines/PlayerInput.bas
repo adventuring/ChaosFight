@@ -247,28 +247,6 @@ HGI_CheckGuardRelease
           rem Start cooldown timer
           return
 
-ConvertplayerXToPlayfieldColumn
-          asm
-ConvertplayerXToPlayfieldColumn
-end
-          rem
-          rem Playfield Coordinate Conversion
-          rem Converts player X position to playfield column index
-          rem
-          rem INPUT: temp1 = player index (0-3)
-          rem
-          rem OUTPUT: temp2 = playfield column (0-31)
-          rem MUTATES: temp2 (return value)
-          let temp2 = playerX[temp1]
-          rem Convert player position to playfield coordinates
-          let temp2 = temp2 - ScreenInsetX
-          let temp2 = temp2 / 4
-          rem pfColumn = playfield column
-          if temp2 > 31 then temp2 = 31
-          rem Check for wraparound: if subtraction wrapped negative, result ≥ 128
-          if temp2 & $80 then temp2 = 0
-          return
-
 HandleFlyingCharacterMovement
           asm
 HandleFlyingCharacterMovement
@@ -295,8 +273,15 @@ HFCM_UseJoy0
           if joy0left then HFCM_CheckLeftCollision
           goto HFCM_CheckRightMovement
 HFCM_CheckLeftCollision
-          gosub ConvertplayerXToPlayfieldColumn
           rem Convert player position to playfield coordinates
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          asm
+            lsr temp2
+            lsr temp2
+end
+          if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
 
           rem Check column to the left
 
@@ -304,25 +289,45 @@ HFCM_CheckLeftCollision
           let temp3 = temp2 - 1
           rem Already at left edge
           rem checkColumn = column to the left
+          let currentPlayer = temp1
+          rem Save player index to global variable
           let temp4 = playerY[temp1]
           rem Check player current row (check both top and bottom of sprite)
           let temp2 = temp4
-          gosub DivideByPfrowheight bank8
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           let temp6 = temp2
-          rem pfRow = top row
+          rem pfRow = top row  
           rem Check if blocked in current row
           let temp5 = 0
           rem Reset left-collision flag
-          if pfread(temp3, temp6) then temp5 = 1
+          let temp1 = temp3
+          let temp2 = temp6
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = currentPlayer
           if temp5 = 1 then goto HFCM_CheckRightMovement
           rem Blocked, cannot move left
           let temp2 = temp4 + 16
           rem Also check bottom row (feet)
-          gosub DivideByPfrowheight bank8
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveLeftOK
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then temp5 = 1
+          let temp1 = temp3
+          let temp2 = temp6
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = currentPlayer
           if temp5 = 1 then goto HFCM_CheckRightMovement
 HFCM_MoveLeftOK
           rem Blocked at bottom too
@@ -363,8 +368,15 @@ HFCM_CheckRightJoy0
           rem Players 0,2 use joy0
           if !joy0right then return
 HFCM_DoRightMovement
-          gosub ConvertplayerXToPlayfieldColumn
           rem Convert player position to playfield coordinates
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          asm
+            lsr temp2
+            lsr temp2
+end
+          if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
 
           rem Check column to the right
 
@@ -372,26 +384,46 @@ HFCM_DoRightMovement
           let temp3 = temp2 + 1
           rem Already at right edge
           rem checkColumn = column to the right
+          let currentPlayer = temp1
+          rem Save player index to global variable
           let temp4 = playerY[temp1]
           rem Check player current row (check both top and bottom of sprite)
           let temp2 = temp4
-          gosub DivideByPfrowheight bank8
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           let temp6 = temp2
           rem pfRow = top row
           rem Check if blocked in current row
           let temp5 = 0
           rem Reset right-collision flag
-          if pfread(temp3, temp6) then temp5 = 1
+          let temp1 = temp3
+          let temp2 = temp6
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = currentPlayer
           if temp5 = 1 then return
           rem Blocked, cannot move right
           let temp4 = temp4 + 16
           rem Also check bottom row (feet)
           let temp2 = temp4
-          gosub DivideByPfrowheight bank8
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           let temp6 = temp2
           if temp6 >= pfrows then goto HFCM_MoveRightOK
           rem Do not check if beyond screen
-          if pfread(temp3, temp6) then temp5 = 1
+          let temp1 = temp3
+          let temp2 = temp6
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = currentPlayer
           if temp5 = 1 then return
 HFCM_MoveRightOK
           rem Blocked at bottom too
@@ -574,13 +606,32 @@ RoboTitoAscendLeft
           let temp6 = CharacterMovementSpeed[temp6]
           let playerY[temp1] = playerY[temp1] - temp6
           rem Compute playfield column
-          gosub ConvertplayerXToPlayfieldColumn
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          asm
+            lsr temp2
+            lsr temp2
+end
+          if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
+          let temp4 = temp2
+          rem Save playfield column (temp2 will be overwritten)
           rem Compute head row and check ceiling contact
           let temp2 = playerY[temp1]
-          gosub DivideByPfrowheight bank8
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           if temp2 = 0 then goto RoboTitoLatchLeft
           let temp3 = temp2 - 1
-          if pfread(temp2, temp3) then RoboTitoLatchLeft
+          let currentPlayer = temp1
+          let temp1 = temp4
+          let temp2 = temp3
+          gosub PlayfieldRead bank16
+          if temp1 then RoboTitoLatchLeft
+          let temp1 = currentPlayer
           rem Clear latch if DOWN pressed
           if joy0down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           goto DoneJumpInput
@@ -843,13 +894,32 @@ RoboTitoAscendRight
           let temp6 = CharacterMovementSpeed[temp6]
           let playerY[temp1] = playerY[temp1] - temp6
           rem Compute playfield column
-          gosub ConvertplayerXToPlayfieldColumn
+          let temp2 = playerX[temp1]
+          let temp2 = temp2 - ScreenInsetX
+          asm
+            lsr temp2
+            lsr temp2
+end
+          if temp2 > 31 then temp2 = 31
+          if temp2 & $80 then temp2 = 0
+          let temp4 = temp2
+          rem Save playfield column (temp2 will be overwritten)
           rem Compute head row and check ceiling contact
           let temp2 = playerY[temp1]
-          gosub DivideByPfrowheight bank8
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           if temp2 = 0 then goto RoboTitoLatchRight
           let temp3 = temp2 - 1
-          if pfread(temp2, temp3) then RoboTitoLatchRight
+          let currentPlayer = temp1
+          let temp1 = temp4
+          let temp2 = temp3
+          gosub PlayfieldRead bank16
+          if temp1 then RoboTitoLatchRight
+          let temp1 = currentPlayer
           rem Clear latch if DOWN pressed
           if joy1down then let characterStateFlags_W[temp1] = characterStateFlags_R[temp1] & (255 - 1)
           goto DoneJumpInputRight

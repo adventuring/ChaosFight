@@ -385,38 +385,6 @@ DivideBy100
           let temp2 = 0
           return
 
-DivideByPfrowheight
-          asm
-DivideByPfrowheight
-end
-          rem DivideByPfrowheight: compute value / pfrowheight using bit
-          rem   shifts
-          rem
-          rem INPUT: temp2 = dividend (Y position value)
-          rem
-          rem OUTPUT: temp2 = quotient (row index)
-          rem pfrowheight is either 8 (admin) or 16 (game), both powers
-          rem   of 2
-          rem Uses conditional bit shifts based on runtime value
-          rem Check if pfrowheight is 8 or 16
-          if pfrowheight = 8 then DBPF_DivideBy8
-          rem pfrowheight is 16, divide by 16 (4 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          return
-DBPF_DivideBy8
-          rem pfrowheight is 8, divide by 8 (3 right shifts)
-          asm
-            lsr temp2
-            lsr temp2
-            lsr temp2
-end
-          return
-
 CalculateSafeFallDistance
           rem
           rem Calculate Safe Fall Distance

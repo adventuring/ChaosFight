@@ -114,7 +114,12 @@ end
           rem Check if there is solid ground directly below feet
           let temp4 = 0
           rem Track pfread result (1 = ground present)
-          if pfread(temp2, temp6) then temp4 = 1
+          let temp3 = temp1
+          let temp1 = temp2
+          let temp2 = temp6
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
+          let temp1 = temp3
           if temp4 = 0 then return
           rem No floor directly below feet, cannot fall through
 
@@ -131,7 +136,12 @@ end
           rem checkRow = row below the floor row
           let temp5 = 0
           rem Track pfread result (1 = floor continues)
-          if pfread(temp2, temp4) then temp5 = 1
+          let temp3 = temp1
+          let temp1 = temp2
+          let temp2 = temp4
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = temp3
           if temp5 = 1 then return
           rem Floor is 2+ rows deep, cannot fall through
 
@@ -164,7 +174,12 @@ BernieCheckBottomWrap
           rem topRow = top row (row 0)
           let temp5 = 0
           rem Track pfread result (1 = top row blocked)
-          if pfread(temp2, temp4) then temp5 = 1
+          let temp3 = temp1
+          let temp1 = temp2
+          let temp2 = temp4
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = temp3
           if temp5 = 1 then return
           rem Top row is blocked, cannot wrap
 
@@ -213,7 +228,12 @@ DragonOfStormsJump
           rem Check if playfield pixel is clear
           let temp5 = 0
           rem Track pfread result (1 = blocked)
-          if pfread(temp2, temp4) then temp5 = 1
+          let temp6 = temp1
+          let temp1 = temp2
+          let temp2 = temp4
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = temp6
           if temp5 = 1 then return
           rem Blocked, cannot move up
 
@@ -444,7 +464,12 @@ FrootyJump
           rem Check if playfield pixel is clear
           let temp5 = 0
           rem Track pfread result (1 = blocked)
-          if pfread(temp2, temp4) then temp5 = 1
+          let temp6 = temp1
+          let temp1 = temp2
+          let temp2 = temp4
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = temp6
           if temp5 = 1 then return
           rem Blocked, cannot move up
 
@@ -663,7 +688,12 @@ GroundSearchLoop
 
           rem Check if playfield pixel is set in current row
           let temp6 = 0
-          if pfread(temp4, temp5) then temp6 = 1
+          let temp3 = temp1
+          let temp1 = temp4
+          let temp2 = temp5
+          gosub PlayfieldRead bank16
+          if temp1 then let temp6 = 1
+          let temp1 = temp3
           if temp6 = 1 then goto GroundFound
           rem Ground pixel found in this row
 
@@ -773,7 +803,12 @@ RoboTitoCheckCeiling
           let temp4 = temp3 / pfrowheight
           if temp4 <= 0 then RoboTitoLatch
           let temp4 = temp4 - 1
-          if pfread(temp2, temp4) then RoboTitoLatch
+          let temp5 = temp1
+          let temp1 = temp2
+          let temp2 = temp4
+          gosub PlayfieldRead bank16
+          if temp1 then RoboTitoLatch
+          let temp1 = temp5
 
           let playerY[temp1] = playerY[temp1] - 3
           rem No ceiling contact, continue stretching

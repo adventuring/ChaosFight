@@ -35,13 +35,13 @@ end
           gosub LoadArenaColorsColor bank16
           return
 RAU_LoadBWColors
-            rem Load B&W color table
-            asm
-              lda #<ArenaColorsBW
-              sta pfcolortable
-              lda #>ArenaColorsBW
-              sta pfcolortable+1
-            end
+          rem Load B&W color table
+          asm
+            lda #<ArenaColorsBW
+            sta pfcolortable
+            lda #>ArenaColorsBW
+            sta pfcolortable + 1
+end
           return
 
 

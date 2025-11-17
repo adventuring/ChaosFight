@@ -34,9 +34,11 @@ end
 end
 #include "Source/Routines/TitleScreenRender.bas"
 #include "Source/Routines/CharacterSelectMain.bas"
-          rem PublisherPrelude moved to Bank 14 for ROM balance
 
           asm
 Bank9CodeEnds
+            ORG $8FE0 - bscode_length
+            RORG $FFE0 - bscode_length
+            include "Source/Common/BankSwitching.s"
 end
 

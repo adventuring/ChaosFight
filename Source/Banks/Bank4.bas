@@ -27,4 +27,7 @@ end
           ; rem   16-23)
 #include "Source/Routines/CharacterArtBank4.s"
 Bank4CodeEnds
+            ORG $3FE0 - bscode_length
+            RORG $FFE0 - bscode_length
+            include "Source/Common/BankSwitching.s"
 end

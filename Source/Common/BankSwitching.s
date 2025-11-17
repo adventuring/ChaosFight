@@ -6,7 +6,7 @@
 ; note: lines not starting with a space are not placed in all banks
 ;
 
-begin_bscode
+begin_bscode:
           ldx #$ff
           txs
           lda #(>(start-1) & $0F)
@@ -14,7 +14,7 @@ begin_bscode
           pha
           lda #<(start-1)
           pha
-BS_return
+BS_return:
           pha
           txa
           pha
@@ -35,7 +35,7 @@ BS_return
           pla ; restore bank number
           tax ; bank number (0-F) now in X
           inx ; convert to 1-based index (bank 0 -> 1, bank 1 -> 2, etc.)
-BS_jsr
+BS_jsr:
           lda bankswitch_hotspot-1,x
           pla
           tax
@@ -76,7 +76,7 @@ BS_jsr
           ; We just need to set RORG and place the EFSC header
           ; Do NOT set ORG here - batariBASIC handles all ORG positioning
           RORG bankswitch_hotspot
-EFSC_Header
+EFSC_Header:
           byte "EFSC",0
           byte "BRPocock",0
           byte $25,$00
@@ -84,9 +84,10 @@ EFSC_Header
           ; Reset code at $fff0 - batariBASIC should set ORG before this section
           ; We only set RORG for CPU address space
           RORG $fff0
-Reset
-          nop bankswitch_hotspot - 1 + 14 ; switch to bank 14
-          jmp game
+Reset:
+          lda #14
+          sta bankswitch_hotspot ; switch to bank 14
+          jmp MainLoop
 
           ; Reset vectors are handled by batariBASIC after including this file
           ; batariBASIC sets ORG $XFFC and places .word (start_bankN & $ffff) vectors
@@ -95,7 +96,7 @@ Reset
 
           ; CPU address space check: should end at exactly $10000
           ; After reset vectors at $fffc-$ffff, we should be at $10000
-          ; Note: We don't check file position (*) here because it may already
+          ; Note: We don't check file position (asterisk) here because it may already
           ; be in the next bank. The ORG directives above ensure code is placed
           ; at the correct physical locations within this bank.
           IF . > $10000

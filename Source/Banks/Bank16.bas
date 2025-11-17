@@ -39,8 +39,13 @@ Bank16DataEnds
 end
 
           rem Second — routines locked to that data. Cannot be moved.
+          rem Multisprite kernel (contains drawscreen) must be before MainLoop
+          asm
+#include "Source/Common/MultiSpriteKernel.s"
+end
 #include "Source/Routines/ArenaLoader.bas"
 #include "Source/Routines/LoadArenaByIndex.bas"
+#include "Source/Routines/PlayfieldRead.bas"
 #include "Source/Routines/MainLoop.bas"
 #include "Source/Routines/SpriteLoader.bas"
 #include "Source/Routines/CopyGlyphToPlayer.bas"

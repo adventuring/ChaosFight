@@ -20,11 +20,12 @@ end
           rem   titleParadeActive - Whether parade is currently running
           rem   QuadtariDetected - Whether 4-player mode is active
           rem FLOW PER FRAME:
-          rem 1. Handle input - any button press goes to character
+          rem 1. Update random number generator (every frame)
+          rem 2. Handle input - any button press goes to character
           rem   select
-          rem   2. Update character parade
-          rem   3. Draw screen
-          rem   4. Return to MainLoop
+          rem 3. Update character parade
+          rem 4. Draw screen
+          rem 5. Return to MainLoop
           rem Per-frame title screen display and input handling
           rem
           rem Input: joy0fire, joy1fire (hardware) = button states
@@ -35,7 +36,7 @@ end
           rem
           rem Output: Dispatches to TitleScreenComplete or returns
           rem
-          rem Mutates: None (dispatcher only)
+          rem Mutates: rand (global) - random number generator state
           rem
           rem Called Routines: UpdateCharacterParade (bank14) - accesses
           rem parade state,
@@ -45,6 +46,15 @@ end
           rem Constraints: Must be colocated with TitleSkipQuad,
           rem TitleScreenComplete
           rem              Called from MainLoop each frame (gameMode 2)
+          rem Update random number generator (inlined from std_routines.asm)
+          asm
+          lda rand
+          lsr
+          bcc TitleRandomizeNoEor
+          eor #$B4
+TitleRandomizeNoEor
+          sta rand
+end
           rem Handle input - any button press goes to character select
           rem Check standard controllers (Player 1 & 2)
           rem Use skip-over pattern to avoid complex || operator issues

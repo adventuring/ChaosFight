@@ -480,7 +480,10 @@ end
           rem Check if playfield pixel is set at missile position
           let temp4 = 0
           rem Assume clear until pfread says otherwise
-          if pfread(temp6, temp3) then temp4 = 1 : return
+          let temp1 = temp6
+          let temp2 = temp3
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1 : return
           rem pfread(column, row) returns 0 if clear, non-zero if set
           rem Clear
           return

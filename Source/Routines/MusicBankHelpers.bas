@@ -48,6 +48,7 @@ LoadSongVoice1PointerBank1
           asm
 LoadSongVoice1PointerBank1
 end
+
           rem Lookup Voice 1 song pointer from tables (Bank 1 songs)
           rem
           rem Input: temp1 = song ID (Bank 1 songs: Bank1MinSongID-28),

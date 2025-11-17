@@ -46,7 +46,12 @@ DragonOfStormsDown
           rem Check if playfield pixel is clear
           let temp5 = 0
           rem Track pfread result (1 = blocked)
-          if pfread(temp2, temp4) then temp5 = 1
+          let temp6 = temp1
+          let temp1 = temp2
+          let temp2 = temp4
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = temp6
           if temp5 = 1 then return
           rem Blocked, cannot move down
 
@@ -154,7 +159,12 @@ HarpyNormalDown
           rem Check if playfield pixel is clear
           let temp5 = 0
           rem Track pfread result (1 = blocked)
-          if pfread(temp2, temp4) then temp5 = 1
+          let temp6 = temp1
+          let temp1 = temp2
+          let temp2 = temp4
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = temp6
           if temp5 = 1 then return
           rem Blocked, cannot move down
 
@@ -215,7 +225,12 @@ FrootyDown
           rem Check if playfield pixel is clear
           let temp5 = 0
           rem Track pfread result (1 = blocked)
-          if pfread(temp2, temp4) then temp5 = 1
+          let temp6 = temp1
+          let temp1 = temp2
+          let temp2 = temp4
+          gosub PlayfieldRead bank16
+          if temp1 then let temp5 = 1
+          let temp1 = temp6
           if temp5 = 1 then return
           rem Blocked, cannot move down
 

@@ -463,7 +463,12 @@ TransitionHandleFallBack
           rem Convert player Y position to playfield row (0-7)
           let temp6 = temp6 / 8
           rem Check if player hit a wall (playfield pixel is set)
-          if pfread(temp5, temp6) then TransitionHandleFallBack_HitWall
+          let temp1 = temp5
+          let temp3 = temp2
+          let temp2 = temp6
+          gosub PlayfieldRead bank16
+          let temp2 = temp3
+          if temp1 then TransitionHandleFallBack_HitWall
           let temp2 = ActionFallen
           rem No wall collision, transition to fallen
           goto SetPlayerAnimation

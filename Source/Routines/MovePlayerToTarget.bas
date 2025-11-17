@@ -192,20 +192,36 @@ end
 
           let temp3 = originalPlayerY_W
           let temp4 = temp3
-          gosub DivideByPfrowheight bank8
-          let temp5 = temp2
+          let temp5 = temp3
+          asm
+            lsr temp5
+            lsr temp5
+            lsr temp5
+            lsr temp5
+end
           rem temp5 = top row
 
           let temp6 = 0
           rem Reset collision flag
-          if pfread(temp2, temp5) then temp6 = 1
+          let temp4 = temp1
+          let temp1 = temp2
+          let temp2 = temp5
+          gosub PlayfieldRead bank16
+          if temp1 then let temp6 = 1
+          let temp1 = temp4
 
           rem Check bottom row too
           let temp3 = temp3 + 16
           let temp4 = temp3
-          gosub DivideByPfrowheight bank8
+          let temp2 = temp3
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           let temp5 = temp2
-          if temp5 < pfrows then if pfread(temp2, temp5) then temp6 = 1
+          if temp5 < pfrows then let temp4 = temp1 : let temp1 = temp2 : let temp2 = temp5 : gosub PlayfieldRead bank16 : if temp1 then let temp6 = 1 : let temp1 = temp4
 
           rem If collision detected, revert position
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W
@@ -232,20 +248,37 @@ end
 
           let temp3 = originalPlayerY_W
           let temp4 = temp3
-          gosub DivideByPfrowheight bank8
+          let temp2 = temp3
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           let temp5 = temp2
           rem temp5 = top row
 
           let temp6 = 0
           rem Reset collision flag
-          if pfread(temp2, temp5) then temp6 = 1
+          let temp4 = temp1
+          let temp1 = temp2
+          let temp2 = temp5
+          gosub PlayfieldRead bank16
+          if temp1 then let temp6 = 1
+          let temp1 = temp4
 
           rem Check bottom row too
           let temp3 = temp3 + 16
           let temp4 = temp3
-          gosub DivideByPfrowheight bank8
+          let temp2 = temp3
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           let temp5 = temp2
-          if temp5 < pfrows then if pfread(temp2, temp5) then temp6 = 1
+          if temp5 < pfrows then let temp4 = temp1 : let temp1 = temp2 : let temp2 = temp5 : gosub PlayfieldRead bank16 : if temp1 then let temp6 = 1 : let temp1 = temp4
 
           rem If collision detected, revert position
           if temp6 = 1 then let playerX[temp1] = originalPlayerX_W

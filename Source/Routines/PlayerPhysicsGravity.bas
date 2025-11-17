@@ -141,13 +141,20 @@ GravityCheckCharacter
           rem Convert player X position to playfield column (0-31)
           rem Use shared coordinate conversion subroutine
           gosub CCJ_ConvertPlayerXToPlayfieldColumn bank8
+          let temp6 = temp2
+          rem Save playfield column (temp2 will be overwritten)
 
           rem Calculate row where player feet are (bottom of sprite)
           let temp3 = playerY[temp1] + PlayerSpriteHeight
           rem Feet are at playerY + PlayerSpriteHeight (16 pixels)
           let temp2 = temp3
-          rem Divide by pfrowheight using helper
-          gosub DivideByPfrowheight bank8
+          rem Divide by pfrowheight (16) using 4 right shifts
+          asm
+            lsr temp2
+            lsr temp2
+            lsr temp2
+            lsr temp2
+end
           let temp4 = temp2
           rem feetRow = row where feet are
 
@@ -165,7 +172,12 @@ GravityCheckCharacter
           rem Check if playfield pixel exists in row below feet
           let temp3 = 0
           rem Track pfread result (1 = ground pixel set)
-          if pfread(temp2, temp5) then temp3 = 1
+          let temp4 = temp1
+          let temp1 = temp6
+          let temp2 = temp5
+          gosub PlayfieldRead bank16
+          if temp1 then let temp3 = 1
+          let temp1 = temp4
           if temp3 = 0 then goto GravityNextPlayer
           rem Ground detected! Stop falling and clamp position to ground
           let playerVelocityY[temp1] = 0

@@ -253,7 +253,10 @@ DBPF_InlineDivideDone
           rem Check head position (top of sprite)
           let temp4 = 0
           rem Reset left-collision flag
-          if pfread(playfieldColumn_R, playfieldRow_R) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = playfieldRow_R
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
           rem Check middle position
           rem Calculate (temp5 / 2) / pfrowheight
@@ -284,7 +287,10 @@ DBPF_InlineDivideDone_1
           rem temp2 now contains (temp5 / 2) / pfrowheight
           let rowCounter_W = playfieldRow_R + temp2
           if rowCounter_R >= pfrows then goto PFCheckRight
-          if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = rowCounter_R
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
           rem Check feet position (bottom of sprite)
           let temp2 = temp5
@@ -309,7 +315,10 @@ DBPF_InlineDivideDone_2
           rem temp2 now contains temp5 / pfrowheight
           let rowCounter_W = playfieldRow_R + temp2
           if rowCounter_R >= pfrows then goto PFCheckRight
-          if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = rowCounter_R
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockLeft
 
           goto PFCheckRight
@@ -353,7 +362,10 @@ PFCheckRight
           rem Check head, middle, and feet positions
           let temp4 = 0
           rem Reset right-collision flag
-          if pfread(playfieldColumn_R, playfieldRow) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = playfieldRow
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockRight
           rem Calculate (temp5 / 2) / pfrowheight
           asm
@@ -383,7 +395,10 @@ DBPF_InlineDivideDone_6
           rem temp2 now contains (temp5 / 2) / pfrowheight
           let rowCounter_W = playfieldRow + temp2
           if rowCounter_R >= pfrows then goto PFCheckUp
-          if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = rowCounter_R
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockRight
           rem Reset temp2 to character height for feet check
           let temp2 = temp5
@@ -408,7 +423,10 @@ DBPF_InlineDivideDone_7
           rem temp2 now contains temp5 / pfrowheight
           let rowCounter_W = playfieldRow + temp2
           if rowCounter_R >= pfrows then goto PFCheckUp
-          if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = rowCounter_R
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockRight
 
           goto PFCheckUp
@@ -449,18 +467,27 @@ PFCheckUp
           rem Check center column (temp6)
           let temp4 = 0
           rem Reset upward-collision flag
-          if pfread(temp6, rowCounter_R) then temp4 = 1
+          let temp1 = temp6
+          let temp2 = rowCounter_R
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
           rem Check left edge column
           if temp6 = 0 then goto PFCheckUp_CheckRight
           let playfieldColumn_W = temp6 - 1
-          if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = rowCounter_R
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
 PFCheckUp_CheckRight
           rem Check right edge column
           if temp6 >= 31 then goto PFCheckDown_Body
           let playfieldColumn_W = temp6 + 1
-          if pfread(playfieldColumn_R, rowCounter_R) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = rowCounter_R
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockUp
 
           goto PFCheckDown_Body
@@ -542,16 +569,25 @@ DBPF_InlineDivideDone_5
           rem Check center, left, and right columns below feet
           let temp4 = 0
           rem Reset downward-collision flag
-          if pfread(temp6, playfieldRow) then temp4 = 1
+          let temp1 = temp6
+          let temp2 = playfieldRow
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
           if temp6 = 0 then goto PFCheckDown_CheckRight
           let playfieldColumn_W = temp6 - 1
-          if pfread(playfieldColumn_R, playfieldRow) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = playfieldRow
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
 PFCheckDown_CheckRight
           if temp6 >= 31 then return
           let playfieldColumn_W = temp6 + 1
-          if pfread(playfieldColumn_R, playfieldRow) then temp4 = 1
+          let temp1 = playfieldColumn_R
+          let temp2 = playfieldRow
+          gosub PlayfieldRead bank16
+          if temp1 then let temp4 = 1
           if temp4 = 1 then goto PFBlockDown
 
           return

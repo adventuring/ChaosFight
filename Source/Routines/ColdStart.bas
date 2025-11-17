@@ -11,11 +11,6 @@ ColdStart
           rem correct stanza format (Bank1 jumps to ColdStart in
           rem   Bank14).
           rem
-          rem batariBASIC’s startup.asm include handles:
-          rem   - RAM clearing (all RAM set to 0)
-          rem   - Stack initialization (SP = $FF)
-          rem   - Register initialization (A = X = Y = 0)
-          rem   - Decimal mode disabled (CLD)
           rem This routine handles game-specific initialization:
           rem   1. Hardware detection (console type)
           rem   2. TIA register initialization (colors, audio)
@@ -47,24 +42,38 @@ ColdStart
           rem
           rem Constraints: Must be entry point for cold start (called
           rem from Bank1)
-          gosub ConsoleDetHW :
-          rem              Only reachable via goto from Bank1 startup code
+          gosub ConsoleDetHW
 
+          rem After console detection, we need to initialize:
+          rem   - RAM clearing (all RAM set to 0)
+          rem   - Stack initialization (SP = $FF)
+          rem   - Register initialization (A = X = Y = 0)
+          rem   - Decimal mode disabled (CLD)
+          rem This routine is designed to be included directly
+          rem here and will fall through to continue.
+
+          asm
+#include "Source/Common/Startup.s"
+end
           rem Step 2: Initialize sprite pointers to RAM addresses
           rem Must be done before any sprite loading to ensure pointers
-          gosub InitializeSpritePointers bank14
           rem   point to SCRAM buffers instead of ROM
+          gosub InitializeSpritePointers bank14
 
           rem Step 3: Initialize TIA color registers to safe defaults
           rem Prevents undefined colors on cold start
-          COLUBK = ColGray(0)
           rem Background: black
-          COLUPF = ColGrey(14)
+          COLUBK = ColGray(0)
           rem Playfield: white
-          COLUP0 = ColBlue(14)
-          rem Player 0: bright blue
-          _COLUP1 = ColRed(14)
-          rem Player 1: bright red (multisprite kernel requires _COLUP1)
+          COLUPF = ColGrey(14)
+          rem Player 1 (P0): indigo
+          COLUP0 = ColIndigo(12)
+          rem Player 2: bright red (multisprite kernel requires _COLUP1)
+          _COLUP1 = ColRed(12)
+          rem Player 3: yellow
+          COLUP2 = ColYellow(12)
+          rem Player 4: green
+          COLUP3 = ColGreen(12)
 
           rem Step 4: Initialize audio channels (silent on cold start)
           AUDC0 = 0
@@ -73,14 +82,14 @@ ColdStart
           AUDV1 = 0
 
           rem Step 5: Initialize game state and transition to first mode
-          let gameMode = ModePublisherPrelude :
           rem Set initial game mode (Publisher Prelude)
-          gosub ChangeGameMode bank14
+          let gameMode = ModePublisherPrelude
           rem ChangeGameMode calls SetupPublisherPrelude and sets up
           rem   music
+          gosub ChangeGameMode bank14
 
           rem Step 6: Jump to MainLoop (in Bank 16)
           rem MainLoop will handle the game mode dispatch and frame
-          goto MainLoop bank16
           rem   rendering
+          goto MainLoop bank16
 

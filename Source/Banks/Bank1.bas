@@ -192,4 +192,7 @@ end
           asm
 Bank1CodeEnds
             ECHO "Bank1CodeEnds at ", .
+            ORG $0FE0 - bscode_length
+            RORG $FFE0 - bscode_length
+#include "Source/Common/BankSwitching.s"
 end

@@ -35,5 +35,5 @@ end
           ;; Character art lookup routines for Bank 2 (characters 0-7)
 #include "Source/Routines/CharacterArtBank2.s"
 Bank2CodeEnds
-            include "Source/Common/BankSwitching.s"
+#include "Source/Common/BankSwitching.s"
 end

@@ -26,5 +26,5 @@ end
           ;; Character art lookup routines for Bank 5 (characters 24-31)
 #include "Source/Routines/CharacterArtBank5.s"
 Bank5CodeEnds
-            include "Source/Common/BankSwitching.s"
+#include "Source/Common/BankSwitching.s"
 end

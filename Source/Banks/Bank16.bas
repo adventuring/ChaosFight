@@ -62,5 +62,5 @@ end
 ; the per‑bank Reset vectors back to $0000.
 Bank16CodeEnds
 
- include "Source/Common/BankSwitching.s"
+#include "Source/Common/BankSwitching.s"
 end

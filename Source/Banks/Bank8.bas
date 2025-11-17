@@ -21,5 +21,5 @@ end
 
           asm
 Bank8CodeEnds
-            include "Source/Common/BankSwitching.s"
+#include "Source/Common/BankSwitching.s"
 end

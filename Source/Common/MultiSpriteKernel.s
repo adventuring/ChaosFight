@@ -42,10 +42,6 @@ SetCopyHeight
  rts
 
 drawscreen
- ifconst debugscore
- jsr debugcycles
- endif
-
 WaitForOverscanEnd
 	lda INTIM
 	bmi WaitForOverscanEnd
@@ -1046,47 +1042,6 @@ swaploop
 shiftdone
 ; sty SpriteGfxIndex,x
  rts
-
- ifconst debugscore
-debugcycles
-   ldx #14
-   lda INTIM ; display # cycles left in the score
-
- ifconst mincycles
- lda mincycles 
- cmp INTIM
- lda mincycles
- bcc nochange
- lda INTIM
- sta mincycles
-nochange
- endif
-
-;   cmp #$2B
-;   bcs no_cycles_left
-   bmi cycles_left
-   ldx #64
-   eor #$ff ;make negative
-cycles_left
-   stx scorecolor
-   and #$7f ; clear sign bit
-   tax
-   lda scorebcd,x
-   sta score+2
-   lda scorebcd1,x
-   sta score+1
-   rts
-scorebcd
- .byte $00, $64, $28, $92, $56, $20, $84, $48, $12, $76, $40
- .byte $04, $68, $32, $96, $60, $24, $88, $52, $16, $80, $44
- .byte $08, $72, $36, $00, $64, $28, $92, $56, $20, $84, $48
- .byte $12, $76, $40, $04, $68, $32, $96, $60, $24, $88
-scorebcd1
- .byte 0, 0, 1, 1, 2, 3, 3, 4, 5, 5, 6
- .byte 7, 7, 8, 8, 9, $10, $10, $11, $12, $12, $13
- .byte $14, $14, $15, $16, $16, $17, $17, $18, $19, $19, $20
- .byte $21, $21, $22, $23, $23, $24, $24, $25, $26, $26
- endif
 
     ;echo "Multi-sprite kernel ends at ", *
 

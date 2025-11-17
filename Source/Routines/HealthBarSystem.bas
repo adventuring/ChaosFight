@@ -235,6 +235,35 @@ end
           rem Score display uses 6 digits total (3 bytes)
           rem Uses bad BCD technique: $AA and $CF are invalid BCD but
           rem   display as hex characters
+
+ConvertToBCD
+          rem Convert binary value (0-99) to packed BCD format
+          rem
+          rem Input: temp1 = binary value (0-99)
+          rem
+          rem Output: temp1 = packed BCD value (e.g., 75 -> $75)
+          rem
+          rem Mutates: temp1 (input value, then output), temp6 (tens digit)
+          rem
+          rem Called Routines: None
+          rem
+          rem Constraints: Must be colocated with UpdatePlayer34HealthBars
+          let temp6 = 0
+ConvertToBCDLoop
+          if temp1 < 10 then goto ConvertToBCDFinalize
+          let temp1 = temp1 - 10
+          let temp6 = temp6 + 1
+          goto ConvertToBCDLoop
+ConvertToBCDFinalize
+          rem temp1 now contains ones digit (0-9), temp6 contains tens digit (0-9)
+          rem Save ones digit before overwriting temp1
+          let temp2 = temp1
+          rem Combine into packed BCD: tens * 16 + ones
+          let temp1 = temp6 * 16
+          let temp1 = temp1 + temp2
+          rem temp1 now contains packed BCD (e.g., $75 for 75)
+          return
+
 UpdatePlayer34HealthBars
           asm
 UpdatePlayer34HealthBars
@@ -267,16 +296,9 @@ P3UseAA
 
 P3ConvertHealth
           rem Convert Player 3 health to packed BCD (00-99)
-          let temp6 = 0
-P3ConvertLoop
-          if temp1 < 10 then goto P3Finalize
-          let temp1 = temp1 - 10
-          let temp6 = temp6 + 1
-          goto P3ConvertLoop
-P3Finalize
-          let temp4 = temp6 * 16
-          let temp4 = temp4 + temp1
-          rem p3BCD now contains P3 health as BCD (e.g., $75 for 75)
+          gosub ConvertToBCD
+          let temp4 = temp1
+          rem temp4 now contains P3 health as BCD (e.g., $75 for 75)
 
 P4GetHealth
           rem Get Player 4 health (0-100), clamp to 99
@@ -298,16 +320,10 @@ P4UseAA
 
 P4ConvertHealth
           rem Convert Player 4 health to packed BCD (00-99)
-          let temp6 = 0
-P4ConvertLoop
-          if temp2 < 10 then goto P4Finalize
-          let temp2 = temp2 - 10
-          let temp6 = temp6 + 1
-          goto P4ConvertLoop
-P4Finalize
-          let temp5 = temp6 * 16
-          let temp5 = temp5 + temp2
-          rem p4BCD now contains P4 health as BCD (e.g., $50 for 50)
+          let temp1 = temp2
+          gosub ConvertToBCD
+          let temp5 = temp1
+          rem temp5 now contains P4 health as BCD (e.g., $50 for 50)
 
 SetScoreBytes
           rem Set score for AACFAA format using bad BCD values

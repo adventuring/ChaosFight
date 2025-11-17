@@ -7,10 +7,8 @@
 
           bank 2
           asm
-            ECHO "Bank 2 starts at ", .
             if . != $F100
-              ECHO "ORG or RORG error in transition to bank 2"
-              ERR
+              err
             endif
 end
 
@@ -28,12 +26,10 @@ end
 
           asm
 Bank2DataEnds
-          ECHO "Bank 2 data ends at ", .
 end
 
           asm
           ;; Character art lookup routines for Bank 2 (characters 0-7)
 #include "Source/Routines/CharacterArtBank2.s"
 Bank2CodeEnds
-#include "Source/Common/BankSwitching.s"
 end

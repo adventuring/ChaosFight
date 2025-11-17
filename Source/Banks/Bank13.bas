@@ -30,5 +30,4 @@ end
 
           asm
 Bank13CodeEnds
-#include "Source/Common/BankSwitching.s"
 end

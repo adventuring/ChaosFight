@@ -27,5 +27,4 @@ end
           ; rem   16-23)
 #include "Source/Routines/CharacterArtBank4.s"
 Bank4CodeEnds
-#include "Source/Common/BankSwitching.s"
 end

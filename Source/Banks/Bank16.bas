@@ -55,5 +55,4 @@ end
           rem None of these modules above may be moved to other banks.
           asm
 Bank16CodeEnds
-#include "Source/Common/BankSwitching.s"
 end

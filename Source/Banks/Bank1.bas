@@ -7,7 +7,7 @@
 
           asm
             if . != $f100
-              echo "ORG or RORG error in preamble"
+              err
             endif
 end
 
@@ -17,13 +17,8 @@ end
             ;; Since RORG $F000 is active, Bank 1 file space $0000-$0FFF maps to CPU $F000-$FFFF
             ;; The scram (256 bytes of $FF) is at file space $0000-$00FF (CPU space $F000-$F0FF)
             ;; "Start of data" is at file space $0100 (CPU space $F100), after the scram
-            ;; it would be immensely stupid to fuck with this "ECHO" because it is reporting the actual
-            ;; address that the assembler will use, so we will instead fix the ORG and RORG if 
-            ;; it reports that they are wrong.
-            ECHO "Start of data at ", .
             if . != $F100
-                ECHO "ORG or RORG error before start of bank 1"
-                ERR
+                err
             endif
 end
 
@@ -181,7 +176,6 @@ end
 
           asm
 Bank1DataEnds
-            ECHO "Bank1DataEnds at ", .
 end
 
 
@@ -191,6 +185,4 @@ end
 
           asm
 Bank1CodeEnds
-            ECHO "Bank1CodeEnds at ", .
-#include "Source/Common/BankSwitching.s"
 end

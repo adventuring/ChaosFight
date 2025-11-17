@@ -37,6 +37,5 @@ end
 
           asm
 Bank9CodeEnds
-#include "Source/Common/BankSwitching.s"
 end
 

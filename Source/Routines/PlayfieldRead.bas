@@ -15,19 +15,24 @@ PlayfieldRead
           rem
           rem Constraints: Must be in Bank 16 where playfield data
           rem        resides. Uses kernel routines setuppointers and
-          rem        setbyte table.
+          rem        BitMask table.
           asm
           ldx temp1
           ldy temp2
           jsr setuppointers
 
-          lda setbyte, x
+          lda BitMask, x
           and playfield, y
-          eor setbyte, x
+          eor BitMask, x
           beq ReadZero
           lda #$80
 ReadZero
           sta temp1
 end
           return
+
+          rem Bit mask lookup table for playfield column bits
+          asm
+BitMask   BYTE 1,2,4,8,$10,$20,$40,$80
+end
 

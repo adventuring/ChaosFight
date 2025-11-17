@@ -61,9 +61,47 @@ CheckFallDamage
           rem Use lookup table for weight/20, then multiply by damage
           rem temp2 = weight / 20 from lookup table
           let temp2 = WeightDividedBy20[currentCharacter]
-          rem Apply weight-based damage multiplier using optimized BASIC
+          rem Apply weight-based damage multiplier using optimized inline assembly
           rem temp2 = weight / 20 from lookup table (0-5 range)
-          if temp2 > 1 then temp4 = temp4 * temp2
+          rem Optimize multiplication for small values (0-5) without mul8 call
+          if temp2 = 0 then temp4 = 0 : goto WeightMultDone
+          if temp2 = 1 then goto WeightMultDone
+          rem temp2 is 2-5, use optimized inline multiplication
+          asm
+            lda temp4
+            ldx temp2
+            cpx #2
+            beq mult2
+            cpx #3
+            beq mult3
+            cpx #4
+            beq mult4
+            cpx #5
+            beq mult5
+            sta temp4
+            jmp multdone
+mult2:      asl a
+            sta temp4
+            jmp multdone
+mult3:      sta temp3
+            asl a
+            clc
+            adc temp3
+            sta temp4
+            jmp multdone
+mult4:      asl a
+            asl a
+            sta temp4
+            jmp multdone
+mult5:      sta temp3
+            asl a
+            asl a
+            clc
+            adc temp3
+            sta temp4
+multdone:
+end
+WeightMultDone
           rem temp4 = damage * (weight / 20) (weight-based multiplier applied)
 
           rem Apply damage reduction for characters with fall damage

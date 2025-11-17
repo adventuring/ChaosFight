@@ -134,23 +134,30 @@ ArenaSelectDoneRight
           let temp1 = selectedArena_R + 1
           rem   10-19, 2 for 20-29, 3 for 30-32)
           rem arenaNumber = arena number (1-32)
-          let temp2 = temp1 / 10
-          rem Calculate tens digit
-          rem Calculate ones digit using optimized assembly
+          rem Fast BCD extraction: extract tens and ones digits using assembly
+          rem For arena numbers 1-32, extract tens (0-3) and ones (0-9) digits
           asm
-            lda temp2
-            sta temp3
-            asl
-            asl
-            asl
-            clc
-            adc temp3
-            asl
-            sta temp3
+            lda temp1
+            ldx #0
+FastBCDDivideBy10
+            sec
+            sbc #10
+            bcc FastBCDOnesDigit
+            inx
+            cpx #3
+            beq FastBCDMaxTens
+            bcc FastBCDDivideBy10
+FastBCDMaxTens
+            sta temp4
+            stx temp2
+            jmp FastBCDDone
+FastBCDOnesDigit
+            adc #10
+            sta temp4
+            stx temp2
+FastBCDDone
 end
-          let temp4 = temp1 - temp3
-          rem multiplier = tensDigit * 10
-          rem onesDigit = ones digit (0-9)
+          rem temp2 = tens digit (0-3), temp4 = ones digit (0-9)
 
           rem Draw tens digit (player4) - only if tensDigit > 0 (for
           rem arenas 10-32)

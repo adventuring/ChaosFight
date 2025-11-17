@@ -498,11 +498,9 @@ PFBlockUp
           rem ≥ 128 are negative)
           if playerVelocityY[currentPlayer] & $80 then let playerVelocityY[currentPlayer] = 0 : let playerVelocityYL[currentPlayer] = 0
           rem Also clamp position to prevent overlap
-          rem Multiply (playfieldRow + 1) by pfrowheight (8 or 16)
+          rem Multiply (playfieldRow + 1) by pfrowheight (always 16)
           let rowYPosition_W = playfieldRow + 1
-          rem Check if pfrowheight is 8 or 16
-          if pfrowheight = 8 then goto DBPF_MultiplyBy8
-          rem pfrowheight is 16, multiply by 16 (4 left shifts)
+          rem pfrowheight is always 16, multiply by 16 (4 left shifts)
           asm
             lda rowYPosition_R
             asl a
@@ -511,17 +509,6 @@ PFBlockUp
             asl a
             sta rowYPosition_W
 end
-          goto DBPF_MultiplyDone
-DBPF_MultiplyBy8
-          rem pfrowheight is 8, multiply by 8 (3 left shifts)
-          asm
-            lda rowYPosition_R
-            asl a
-            asl a
-            asl a
-            sta rowYPosition_W
-end
-DBPF_MultiplyDone
           if playerY[currentPlayer] < rowYPosition_R then let playerY[currentPlayer] = rowYPosition_R
           if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_W[currentPlayer] = rowYPosition_R
           if playerY[currentPlayer] < rowYPosition_R then let playerSubpixelY_WL[currentPlayer] = 0

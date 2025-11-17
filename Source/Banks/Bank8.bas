@@ -14,7 +14,13 @@
 Bank8DataEnds
 end
 
-#include "Source/Routines/PlayerInput.bas"
+#include "Source/Routines/GetPlayerAnimationStateFunction.bas"
+#include "Source/Routines/InputHandleAllPlayers.bas"
+#include "Source/Routines/HandleGuardInput.bas"
+#include "Source/Routines/HandleFlyingCharacterMovement.bas"
+#include "Source/Routines/InputHandleLeftPortPlayerFunction.bas"
+#include "Source/Routines/InputHandleRightPortPlayerFunction.bas"
+#include "Source/Routines/HandlePauseInput.bas"
 #include "Source/Routines/UpdatePlayerMovementSingle.bas"
 #include "Source/Routines/UpdatePlayerMovement.bas"
 #include "Source/Routines/Physics.bas"

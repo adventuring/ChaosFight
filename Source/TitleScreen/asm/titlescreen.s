@@ -1,8 +1,6 @@
-; Include multisprite.h for RETURN macro (bankswitching return)
-        include "Tools/batariBASIC/includes/multisprite.h"
 
- include "TitleScreen/asm/layoutmacros.s"
- include "TitleScreen/titlescreen_layout.s.backup"
+ #include "TitleScreen/asm/layoutmacros.s"
+ #include "TitleScreen/titlescreen_layout.s.backup"
 
 ; Optional bitmap index offsets (all are 0)
 bmp_48x2_1_index_value
@@ -76,26 +74,26 @@ title_playfield
 
 	jmp PFWAIT ; kernel is done. Finish off the screen
 
- include "TitleScreen/asm/position48.s"
- include "TitleScreen/titlescreen_color.s"
+ #include "TitleScreen/asm/position48.s"
+ #include "TitleScreen/titlescreen_color.s"
           ; titlescreen_colors.s is now included in Bank9.bas after bitmap data,
           ;   not here, to avoid origin reverse-indexed errors
 
 	; Unused 48x1 kernels removed - only 48x2 bitmaps are active
 
 	; Load per-bitmap pointer tables and wrappers
- include "TitleScreen/asm/48x2_1_kernel.s"
- include "TitleScreen/asm/48x2_2_kernel.s"
- include "TitleScreen/asm/48x2_3_kernel.s"
- include "TitleScreen/asm/48x2_4_kernel.s"
+ #include "TitleScreen/asm/48x2_1_kernel.s"
+ #include "TitleScreen/asm/48x2_2_kernel.s"
+ #include "TitleScreen/asm/48x2_3_kernel.s"
+ #include "TitleScreen/asm/48x2_4_kernel.s"
 
- include "TitleScreen/asm/draw_bmp_48x2_X.s"
- include "TitleScreen/asm/draw_bmp_48x1_X.s"
+ #include "TitleScreen/asm/draw_bmp_48x2_X.s"
+ #include "TitleScreen/asm/draw_bmp_48x1_X.s"
 
 	; Unused minikernels removed: 48x2_5-8, 48x1_*, 96x2_* - 48x2_1, 48x2_2, 48x2_3, 48x2_4 are used
 
 	ifconst mk_score_on
-		include "TitleScreen/asm/score_kernel.s"
+		#include "TitleScreen/asm/score_kernel.s"
 	endif ;mk_score_on
 
 	; Gameselect minikernel removed - not used (mk_gameselect_on = 0)

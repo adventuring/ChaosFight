@@ -1,9 +1,9 @@
 
- ; To use a minikernel, just list it below. They'll be drawn on the screen in
+ ; To use a minikernel, just list it below. They’ll be drawn on the screen in
  ; in the order they were listed.
  ;
- ; If a minikernel isn't listed, it won't be compiled into your program, and
- ; it won't use any rom space.
+ ; If a minikernel isn’t listed, it won’t be compiled into your program, and
+ ; it won’t use any rom space.
 
  MAC titlescreenlayout
 	; For 48×42 bitmaps using ×2 drawing style (double-height mode)

@@ -409,6 +409,7 @@ Source/Generated/Font.bas: Source/Art/Font.png bin/skyline-tool | Source/Generat
 # Numbers font is needed by FontRendering.bas (in Bank14), must exist before cpp runs.
 # Bank15.bas includes Sound.*.bas files, so they must be dependencies here.
 # Bitmap .s files must exist before cpp runs, so they need PNG dependencies.
+# 2600basic_variable_redefs.h must exist before cpp preprocessing (MultiSpriteSuperChip.s includes it)
 Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
 	Source/Banks/Bank1.bas Source/Banks/Bank2.bas Source/Banks/Bank3.bas Source/Banks/Bank4.bas Source/Banks/Bank5.bas Source/Banks/Bank12.bas Source/Banks/Bank16.bas \
@@ -418,8 +419,9 @@ Source/Generated/$(GAME)$(GAMEYEAR).NTSC.bas: Source/Platform/NTSC.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).NTSC.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).NTSC.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).NTSC.bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
-	cpp -P -I. -ISource -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
+	Object/2600basic_variable_redefs.h | Source/Generated/
+	cpp -P -I. -ISource -IObject -ITools/batariBASIC/includes -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach char,$(CHARACTER_NAMES),Source/Generated/$(char).bas) \
@@ -430,8 +432,9 @@ Source/Generated/$(GAME)$(GAMEYEAR).PAL.bas: Source/Platform/PAL.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
-	cpp -P -I. -ISource -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
+	Object/2600basic_variable_redefs.h | Source/Generated/
+	cpp -P -I. -ISource -IObject -ITools/batariBASIC/includes -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 # SECAM build uses PAL music/sound files via conditional includes in Bank15/16.bas
 Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas: Source/Platform/SECAM.bas \
@@ -443,8 +446,9 @@ Source/Generated/$(GAME)$(GAMEYEAR).SECAM.bas: Source/Platform/SECAM.bas \
 	$(foreach sound,$(SOUND_NAMES),Source/Generated/Sound.$(sound).PAL.bas) \
 	$(foreach song,$(MUSIC_NAMES),Source/Generated/Song.$(song).PAL.bas) \
 	$(foreach song,$(GAME_THEME_SONGS),Source/Generated/Song.$(song).PAL.bas) \
-	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) | Source/Generated/
-	cpp -P -I. -ISource -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
+	$(foreach bitmap,$(BITMAP_NAMES),Source/Art/$(bitmap).png) \
+	Object/2600basic_variable_redefs.h | Source/Generated/
+	cpp -P -I. -ISource -IObject -ITools/batariBASIC/includes -DBUILD_YEAR=$(shell date +%Y) -DBUILD_DAY=$(shell date +%j) -DBUILD_DATE_STRING=\"$(shell date +%Y).$(shell date +%j)\" -Wno-trigraphs -Wno-format $< > $@
 
 # Bank file dependencies - each bank explicitly depends on the files it includes
 Source/Banks/Bank1.bas:
@@ -664,16 +668,34 @@ Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s: Object/$(GAME)$(GAMEYEAR).bB.SECAM.
 Dist/$(GAME)$(GAMEYEAR).NTSC.a26 Dist/$(GAME)$(GAMEYEAR).NTSC.sym Dist/$(GAME)$(GAMEYEAR).NTSC.lst: Source/Generated/$(GAME)$(GAMEYEAR).NTSC.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
+	@echo "Moving 2600basic_variable_redefs.h include to top of file..."
+	@sed -i '/^[[:space:]]*include[[:space:]]*"2600basic_variable_redefs\.h"/d' $<
+	@sed -i '/^[[:space:]]*processor[[:space:]]*6502/a\
+\
+ include "2600basic_variable_redefs.h"\
+' $<
 	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -R -p10 -v3 -S -l../Dist/$(GAME)$(GAMEYEAR).NTSC.lst -s../Dist/$(GAME)$(GAMEYEAR).NTSC.sym -o../Dist/$(GAME)$(GAMEYEAR).NTSC.a26
 
 Dist/$(GAME)$(GAMEYEAR).PAL.a26 Dist/$(GAME)$(GAMEYEAR).PAL.sym Dist/$(GAME)$(GAMEYEAR).PAL.lst: Source/Generated/$(GAME)$(GAMEYEAR).PAL.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
+	@echo "Moving 2600basic_variable_redefs.h include to top of file..."
+	@sed -i '/^[[:space:]]*include[[:space:]]*"2600basic_variable_redefs\.h"/d' $<
+	@sed -i '/^[[:space:]]*processor[[:space:]]*6502/a\
+\
+ include "2600basic_variable_redefs.h"\
+' $<
 	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -R -p10 -v3 -S -l../Dist/$(GAME)$(GAMEYEAR).PAL.lst -s../Dist/$(GAME)$(GAMEYEAR).PAL.sym -o../Dist/$(GAME)$(GAMEYEAR).PAL.a26
 
 Dist/$(GAME)$(GAMEYEAR).SECAM.a26 Dist/$(GAME)$(GAMEYEAR).SECAM.sym Dist/$(GAME)$(GAMEYEAR).SECAM.lst: Source/Generated/$(GAME)$(GAMEYEAR).SECAM.s Object/2600basic_variable_redefs.h bin/dasm | Dist/ Object/
 	@echo "Fixing include paths in generated assembly for DASM..."
 	@sed -i 's|include "Source/Routines/CharacterArtBank|include "CharacterArtBank|g' $<
+	@echo "Moving 2600basic_variable_redefs.h include to top of file..."
+	@sed -i '/^[[:space:]]*include[[:space:]]*"2600basic_variable_redefs\.h"/d' $<
+	@sed -i '/^[[:space:]]*processor[[:space:]]*6502/a\
+\
+ include "2600basic_variable_redefs.h"\
+' $<
 	cd Object && ../bin/dasm ../$< -I.. -I../Tools/batariBASIC/includes -I. -I../Source -I../Source/Common -I../Source/Routines -f3 -E2 -R -p10 -v3 -S -l../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -s../Dist/$(GAME)$(GAMEYEAR).SECAM.lst -o../Dist/$(GAME)$(GAMEYEAR).SECAM.a26
 
 # Run emulator

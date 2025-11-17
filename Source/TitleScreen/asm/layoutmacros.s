@@ -1,5 +1,5 @@
 
- ; the macro's used in the "titlescreen_layout.s" file
+ ; the macro’s used in the "titlescreen_layout.s" file
 
  MAC draw_96x2_1
 mk_96x2_1_on = 1

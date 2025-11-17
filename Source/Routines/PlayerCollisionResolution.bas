@@ -57,9 +57,7 @@ CollisionCheckDistance
           let totalWeight_W = halfHeight1_R + halfHeight2_R
           if totalWeight_R = 0 then goto CollisionNextInner
           rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          if playerX[temp1] >= playerX[temp2] then SkipCollisionSepLeft
-          goto CollisionSepLeft
-SkipCollisionSepLeft
+          if playerX[temp1] < playerX[temp2] then goto CollisionSepLeft
           let weightDifference_W = halfHeight1_R - halfHeight2_R
           if halfHeight1_R >= halfHeight2_R then CalcWeightDiff1Heavier
           let impulseStrength_W = weightDifference_R
@@ -69,9 +67,7 @@ CalcWeightDiff1Heavier
           let impulseStrength_W = weightDifference_R
 ApplyImpulseRight
           rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          if halfHeight1_R >= halfHeight2_R then SkipApplyImpulse1Heavier
-          goto ApplyImpulse1Heavier
-SkipApplyImpulse1Heavier
+          if halfHeight1_R < halfHeight2_R then goto ApplyImpulse1Heavier
           asm
             lda impulseStrength_R
             asl
@@ -147,9 +143,7 @@ CalcWeightDiff1HeavierLeft
           let impulseStrength_W = weightDifference_R
 ApplyImpulseLeft
           rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
-          if characterWeight_R < halfHeight2_R then SkipApplyImpulse1HeavierLeft
-          goto ApplyImpulse1HeavierLeft
-SkipApplyImpulse1HeavierLeft
+          if characterWeight_R >= halfHeight2_R then goto ApplyImpulse1HeavierLeft
           asm
             lda impulseStrength_R
             asl

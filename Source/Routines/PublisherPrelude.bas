@@ -57,20 +57,20 @@ end
           rem   bitmap display
 
           rem Check for button press on any controller to skip
-          rem Use skip-over pattern to avoid complex || operator issues
-          if joy0fire then PublisherPreludeComplete
-          if joy1fire then PublisherPreludeComplete
+          rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
+          if joy0fire then goto PublisherPreludeComplete
+          if joy1fire then goto PublisherPreludeComplete
 
           rem Check Quadtari controllers if detected (inline to avoid label)
-
-          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then PublisherPreludeComplete
-          if controllerStatus & SetQuadtariDetected then if !INPT2{7} then PublisherPreludeComplete
+          rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
+          if controllerStatus & SetQuadtariDetected then if !INPT0{7} then goto PublisherPreludeComplete
+          if controllerStatus & SetQuadtariDetected then if !INPT2{7} then goto PublisherPreludeComplete
 
           rem Music update handled by MainLoop after per-frame logic
 
           rem Auto-advance after music completes + 0.5s
-
-          if preambleTimer > 30 && musicPlaying = 0 then PublisherPreludeComplete
+          rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
+          if preambleTimer > 30 && musicPlaying = 0 then goto PublisherPreludeComplete
 
           let preambleTimer = preambleTimer + 1
 

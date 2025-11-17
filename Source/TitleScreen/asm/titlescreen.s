@@ -1,3 +1,5 @@
+; Include multisprite.h for RETURN macro (bankswitching return)
+        include "Tools/batariBASIC/includes/multisprite.h"
 
  include "TitleScreen/asm/layoutmacros.s"
  include "TitleScreen/titlescreen_layout.s.backup"

@@ -1,3 +1,5 @@
+; Include macro.h for SLEEP macro
+        include "Tools/batariBASIC/includes/macro.h"
 
 position48
 
@@ -15,7 +17,7 @@ position48
         inc temp1
         dec temp1
         inc temp1
-        sleep 2
+        SLEEP 2
         sta RESP0       ;  +3
         sta RESP1       ;  +3
         dec temp1       ;  +5
@@ -23,7 +25,7 @@ position48
         dec temp1       ;  +5
         inc temp1       ;  +5
         dec temp1       ;  +5
-        sleep 3
+        SLEEP 3
         sta HMOVE       ; +76
  RTS
 

@@ -185,7 +185,7 @@ TSDivLoop
 wastetimeloop1
         dey ;2
         bpl wastetimeloop1 ;3/2
-        sleep 2
+        SLEEP 2
         sta HMOVE
 	dex
 	bpl TSpositionp0p1Loop

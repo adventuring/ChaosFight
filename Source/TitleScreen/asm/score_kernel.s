@@ -3,6 +3,9 @@
 ; titlescreen code. Refer to the bB license before you use this in
 ; a non-bB program.
 
+; Include macro.h for SLEEP macro
+        include "Tools/batariBASIC/includes/macro.h"
+
 draw_score_display
 
  lax score+0
@@ -30,7 +33,7 @@ draw_score_display
  STx GRP0  ; 3 3
  STx GRP1  ; 3 6 seems to be needed because of vdel
 
- sleep 7   ; 7 13
+ SLEEP 7   ; 7 13
 
  lda #>miniscoretable   ; 2 15
  sta scorepointers+1,x  ; 4 19
@@ -67,7 +70,7 @@ draw_score_display
  sta  GRP0
  lda  (scorepointers+8),y
  sta WSYNC
- sleep 2
+ SLEEP 2
  jmp beginscoreloop
 
  if ((<*)>$28)
@@ -80,7 +83,7 @@ scoreloop2
    sta COLUP0
    sta COLUP1
  else
-   sleep 9
+   SLEEP 9
  endif
  lda  (scorepointers),y     ;+5  68  204
  sta  GRP0            ;+3  71  213      D1     --      --     --
@@ -97,9 +100,9 @@ beginscoreloop
  ifconst scorefade
  dec stack2
  else
- sleep 5
+ SLEEP 5
  endif
- sleep 2
+ SLEEP 2
 
  lda  (scorepointers+$A),y  ;+5  21   63 DIGIT 6
  stx  GRP1            ;+3  44  132      D3     D3      D4     D2!

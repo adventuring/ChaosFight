@@ -50,7 +50,7 @@ SetCopyHeight
 
 
 
-; since we can't turn off pf, point PF to BlankPlayfield in Bank 16
+; since we can’t turn off pf, point PF to BlankPlayfield in Bank 16
  lda #>BlankPlayfield
  sta PF2pointer+1
  sta PF1pointer+1
@@ -1046,7 +1046,7 @@ nonetoohigh
 
 shiftnumbers
  ; stick current x at end, shift others down
- ; if x=4: don't do anything
+ ; if x=4: don’t do anything
  ; if x=3: swap 3 and 4
  ; if x=2: 2=3, 3=4, 4=2
  ; if x=1: 1=2, 2=3, 3=4, 4=1

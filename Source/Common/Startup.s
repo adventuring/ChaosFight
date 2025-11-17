@@ -29,7 +29,7 @@ SetCopyHeight
           dex
           bpl SetCopyHeight
 
-          ; since we can't turn off pf, point PF to BlankPlayfield in Bank 16
+          ; since we can’t turn off pf, point PF to BlankPlayfield in Bank 16
           lda # >BlankPlayfield
           sta PF2pointer+1
           sta PF1pointer+1

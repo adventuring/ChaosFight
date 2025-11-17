@@ -96,13 +96,7 @@ Reset:
 
           ; CPU address space check: should end at exactly $10000
           ; After reset vectors at $fffc-$ffff, we should be at $10000
-          ; Note: We don't check file position (asterisk) here because it may already
-          ; be in the next bank. The ORG directives above ensure code is placed
-          ; at the correct physical locations within this bank.
-          IF . > $10000
+          IF . != $10000
           echo "ERROR: BankSwitching.s CPU address overflow! Ends at ", ., " but should be $10000"
           err
-          endif
-          IF . < $10000
-          echo "WARNING: BankSwitching.s CPU address ends at ", ., " but should end at $10000"
           endif

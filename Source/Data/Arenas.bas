@@ -28,9 +28,38 @@
             ColGrey(14),
             ColGrey(14)
 end
+
+          rem
+          rem Blank playfield for score/transition frames.
+          rem This does not participate in the indexed Arena0-31 system and is
+          rem loaded explicitly when we want a neutral background behind the
+          rem score/kernel.
+BlankPlayfield
+          playfield:
+          ................
+          ................
+          ................
+          ................
+          ................
+          ................
+          ................
+          ................
+end
+BlankPlayfieldColors
+          data BlankPlayfieldColors
+            ColGrey(14),
+            ColGrey(14),
+            ColGrey(14),
+            ColGrey(14),
+            ColGrey(14),
+            ColGrey(14),
+            ColGrey(14),
+            ColGrey(14)
+end
+
           rem
           rem Arena Playfields (32 Arenas: Indices 0-31)
-
+          
 Arena0Playfield
           playfield:
           XXXXXXXXXXXXXXXX

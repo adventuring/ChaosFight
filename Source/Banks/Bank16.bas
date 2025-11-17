@@ -49,5 +49,15 @@ end
 #include "Source/Routines/DisplayWinScreen.bas"
           rem None of these modules above may be moved to other banks.
           asm
+; Bank 16's bankswitching code and vector table
+; These MUST be at the end of Bank 16, after Bank16CodeEnds.
+; NOTE: The shared 64kSC bankswitch stub, EFSC header, and Reset/IRQ vectors
+; are now provided exclusively by `Source/Common/BankSwitching.s` for ALL banks.
+; Do not emit an extra ORG/$FFFC vector table here, or it will overwrite
+; the per‑bank Reset vectors back to $0000.
 Bank16CodeEnds
+
+ ORG $FFE0-bscode_length
+ RORG $FFE0-bscode_length
+ include "Source/Common/BankSwitching.s"
 end

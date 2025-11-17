@@ -3,7 +3,7 @@
 ;;; Color tables, PF1, PF2, and background for all titlescreen bitmaps
 ;;; Combined at $f500 (after bitmap data at $f100-$f400)
 
-   org $f500
+   rorg $f500
 
 ;;; Include color tables, PF1, PF2, and background for all titlescreen bitmaps
           include "Source/Generated/Art.AtariAge.colors.s"

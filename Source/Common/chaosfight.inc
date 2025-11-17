@@ -45,7 +45,11 @@ bB2.asm
 
 
 ; score gfx
-score_graphics.asm
+; ChaosFight uses its own numbers/font system in bank 16 (Numbers.bas +
+; FontRendering), so we do not include the generic batariBASIC score_graphics
+; header here. This avoids duplicate font data and wasted ROM at the very end
+; of the image.
+;score_graphics.asm
 
 ;bankswitch support
 ../../Source/Common/BankSwitching.s

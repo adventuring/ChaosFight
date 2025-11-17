@@ -20,7 +20,10 @@
 
           asm
 Bank5DataEnds
+end
 
+          asm
+          ;; Character art lookup routines for Bank 5 (characters 24-31)
 #include "Source/Routines/CharacterArtBank5.s"
 Bank5CodeEnds
 end

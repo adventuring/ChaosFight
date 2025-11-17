@@ -81,7 +81,11 @@ bin/bbfilter: Tools/batariBASIC/bbfilter | bin/
 	cp "$<" "$@"
 	chmod +x "$@"
 
-bin/dasm: Tools/batariBASIC/dasm.Linux.x64 | bin/
+# DASM: build from the local Tools/dasm sources so we get our patched diagnostics
+Tools/dasm/bin/dasm: $(wildcard Tools/dasm/src/*.c) $(wildcard Tools/dasm/src/*.h)
+	$(MAKE) -C Tools/dasm
+
+bin/dasm: Tools/dasm/bin/dasm | bin/
 	cp "$<" "$@"
 	chmod +x "$@"
 
@@ -380,7 +384,7 @@ Source/TitleScreen/titlescreen_colors.s: \
 	@echo ";;; Color tables, PF1, PF2, and background for all titlescreen bitmaps" >> "$@"
 	@echo ";;; Combined at \$$f500 (after bitmap data at \$$f100-\$$f400)" >> "$@"
 	@echo "" >> "$@"
-	@echo "   org \$$f500" >> "$@"
+	@echo "   rorg \$$f500" >> "$@"
 	@echo "" >> "$@"
 	@echo ";;; Include color tables, PF1, PF2, and background for all titlescreen bitmaps" >> "$@"
 	@echo "          include \"Source/Generated/Art.AtariAge.colors.s\"" >> "$@"

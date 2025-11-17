@@ -29,7 +29,5 @@ end
 
           asm
 Bank11CodeEnds
-            ORG $AFE0 - bscode_length
-            RORG $FFE0 - bscode_length
             include "Source/Common/BankSwitching.s"
 end

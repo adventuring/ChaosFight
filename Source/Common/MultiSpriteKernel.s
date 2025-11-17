@@ -2,6 +2,24 @@
 ; Copyright © 2025 Interworldly Adventuring, LLC.
 ; Derived from Tools/batariBASIC/includes/multisprite_kernel.asm (CC0)
 
+; Score area color constants (matches ColIndigo(12) and ColRed(12) from Colors.h)
+; NTSC: ColIndigo(12) = $7C, ColRed(12) = $4C
+; PAL: ColIndigo(12) = $8C, ColRed(12) = $4C
+; SECAM: ColIndigo(12) = 3, ColRed(12) = 1
+ ifconst TV_NTSC
+ScoreColorIndigo12 = $7C
+ScoreColorRed12 = $4C
+ else
+  ifconst TV_PAL
+ScoreColorIndigo12 = $8C
+ScoreColorRed12 = $4C
+  else
+; SECAM
+ScoreColorIndigo12 = 3
+ScoreColorRed12 = 1
+  endif
+ endif
+
     ;echo "Multi-sprite kernel starts at ", *
 
 PFStart
@@ -780,8 +798,9 @@ BottomOfKernelLoop
         STy VDELP1
         LDA #$10
         STA HMP1
-               LDA scorecolor 
+               LDA #ScoreColorIndigo12
                 STA COLUP0
+                LDA #ScoreColorRed12
                 STA COLUP1
  
         LDA #$03
@@ -795,7 +814,8 @@ BottomOfKernelLoop
  lda  (scorepointers),y
  sta  GRP0
  ifconst pfscore
- lda pfscorecolor
+; Set playfield to score colors (use indigo for left side)
+ lda #ScoreColorIndigo12
  sta COLUPF
  else
  sleep 6

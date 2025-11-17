@@ -26,7 +26,5 @@ end
           ;; Character art lookup routines for Bank 5 (characters 24-31)
 #include "Source/Routines/CharacterArtBank5.s"
 Bank5CodeEnds
-            ORG $4FE0 - bscode_length
-            RORG $FFE0 - bscode_length
             include "Source/Common/BankSwitching.s"
 end

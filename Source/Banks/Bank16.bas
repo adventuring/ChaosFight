@@ -62,7 +62,5 @@ end
 ; the per‑bank Reset vectors back to $0000.
 Bank16CodeEnds
 
- ORG $FFE0-bscode_length
- RORG $FFE0-bscode_length
  include "Source/Common/BankSwitching.s"
 end

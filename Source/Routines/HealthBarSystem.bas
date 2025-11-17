@@ -351,16 +351,10 @@ SetScoreBytes
             STA score+2
 end
 
-          rem Set score colors for score mode
-          rem Left side (Player 3): indigo, Right side (Player 4): red
-          rem In multisprite kernel, scorecolor applies to the score
-          rem   area
-          rem Note: Per-side colors may require additional kernel
-          rem   support
-          rem For now, set to white (Neutral color)
-          rem TODO: Investigate if multisprite kernel supports separate
-          let scorecolor = ColGrey(14)
-          rem   left/right score colors (Issue #600)
+          rem Score colors are now set directly in MultiSpriteKernel.s
+          rem COLUP0 = ColIndigo(12), COLUP1 = ColRed(12)
+          rem COLUPF = ColIndigo(12) (for pfscore mode)
+          rem (Issue #600 - completed)
 
           return
 
@@ -381,7 +375,7 @@ DisplayCF2025
             STA score+2
 end
 
-          let scorecolor = ColGrey(14)
-          rem Set score color to white
+          rem Score colors are set directly in MultiSpriteKernel.s
+          rem (Issue #600 - completed)
 
           return

@@ -37,4 +37,5 @@ SetCopyHeight
           sta PF2pointer
           sta PF1pointer
 
+          jmp MainLoop
 

@@ -110,7 +110,7 @@ end
           gosub UpdateGuardTimers bank6
           rem Update guard timers (duration and cooldown)
 
-          gosub UpdateAttackCooldowns
+          gosub UpdateAttackCooldowns bank11
           rem Update attack cooldown timers
 
           gosub UpdateCharacterAnimations
@@ -233,7 +233,7 @@ GameEndCheckDone
           gosub SetPlayerSprites bank6
           rem Set sprite graphics (in Bank 6)
 
-          gosub DisplayHealth bank6
+          gosub DisplayHealth bank12
           rem Display health information (in Bank 6)
 
           gosub UpdatePlayer12HealthBars bank6

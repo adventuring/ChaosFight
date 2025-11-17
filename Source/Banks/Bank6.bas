@@ -15,8 +15,7 @@ end
 #include "Source/Routines/CharacterSelectRender.bas"
 #include "Source/Routines/CharacterSelectEntry.bas"
 
-          rem Health display routines moved from Bank 11 for ROM balance
-#include "Source/Routines/DisplayHealth.bas"
+          rem Health display routines (HealthBarSystem here, DisplayHealth in Bank 12)
 #include "Source/Routines/HealthBarSystem.bas"
 
           rem Sprite rendering routines moved from Bank 10 for ROM balance
@@ -34,7 +33,7 @@ end
           rem Falling animation setup routine
 #include "Source/Routines/BeginFallingAnimation.bas"
 
-          rem CheckRoboTitoStretchMissileCollisions moved from Bank 12 for ROM balance
+          rem CheckRoboTitoStretchMissileCollisions moved back from Bank 12 for ROM balance
 #include "Source/Routines/CheckRoboTitoStretchMissileCollisions.bas"
 
           asm

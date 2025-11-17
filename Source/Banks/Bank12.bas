@@ -18,10 +18,24 @@ end
 
 #include "Source/Routines/MissileSystem.bas"
 
-          rem CheckRoboTitoStretchMissileCollisions moved to Bank 6 for ROM balance
+          rem Health display routines (DisplayHealth only - HealthBarSystem moved to Bank 8)
+#include "Source/Routines/DisplayHealth.bas"
 
           rem Character damage routine moved from Bank 8 for ROM balance
 #include "Source/Routines/CharacterDamage.bas"
+
+          rem Attack cooldown routine moved back to Bank 11 for ROM balance (Bank 12 too full)
+
+          rem Player position/velocity helpers moved to Bank 7 for ROM balance
+
+          rem Physics helper moved to Bank 7 for ROM balance
+
+          rem Character attack type helpers moved back to Bank 13 for ROM balance (Bank 12 too full)
+
+          rem Player state helpers moved back to Bank 13 for ROM balance (Bank 12 too full)
+
+          rem Character attack routines moved back to Bank 10 for ROM balance (Bank 12 too full)
+
 #include "Source/Routines/DeactivatePlayerMissiles.bas"
 #include "Source/Routines/TriggerEliminationEffects.bas"
 #include "Source/Routines/UpdatePlayers34ActiveFlag.bas"

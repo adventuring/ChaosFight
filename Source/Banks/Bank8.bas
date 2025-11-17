@@ -15,6 +15,12 @@ Bank8DataEnds
 end
 
 #include "Source/Routines/GetPlayerAnimationStateFunction.bas"
+          rem ConstrainToScreen moved from Bank 13 for ROM balance (physics-related)
+#include "Source/Routines/ConstrainToScreen.bas"
+          rem ApplyMomentumAndRecovery moved from Bank 10 for ROM balance
+#include "Source/Routines/ApplyMomentumAndRecovery.bas"
+          rem AddVelocitySubpixelY moved from Bank 11 for ROM balance
+#include "Source/Routines/AddVelocitySubpixelY.bas"
 #include "Source/Routines/InputHandleAllPlayers.bas"
 #include "Source/Routines/HandleGuardInput.bas"
 #include "Source/Routines/HandleFlyingCharacterMovement.bas"

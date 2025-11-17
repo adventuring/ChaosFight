@@ -52,7 +52,10 @@ ArenaSelect1Loop
           gosub ArenaSelectDrawCharacters
           rem Draw locked-in player characters
           rem Check Game Select switch - return to Character Select
-          if switchselect then ReturnToCharacterSelect
+          rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
+          if !switchselect then SkipReturnToCharacterSelect
+          goto ReturnToCharacterSelect
+SkipReturnToCharacterSelect
 
           rem Check fire button hold detection (1 second to return to
           let temp1 = 0
@@ -62,7 +65,10 @@ ArenaSelect1Loop
           rem Check Player 2 fire button
           if joy1fire then let temp1 = 1
           rem Check Quadtari players (3 & 4) if active
-          if controllerStatus & SetQuadtariDetected then CheckQuadtariFireHold
+          rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
+          if (controllerStatus & SetQuadtariDetected) = 0 then SkipCheckQuadtariFireHold
+          goto CheckQuadtariFireHold
+SkipCheckQuadtariFireHold
 
           rem If fire button held, increment timer
 
@@ -121,7 +127,10 @@ ArenaSelectDoneRight
           rem   Y=20)
           rem Note: Tens digit only shown for arenas 10-32 (tensDigit >
           rem 0)
-          if selectedArena_R = RandomArena then DisplayRandomArena
+          rem Long branch - use goto (generates JMP) instead of if-then (generates branch)
+          if selectedArena_R <> RandomArena then SkipDisplayRandomArena
+          goto DisplayRandomArena
+SkipDisplayRandomArena
 
           rem Display arena number (selectedArena + 1 = 1-32)
           rem Convert to two-digit display: tens and ones

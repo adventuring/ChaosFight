@@ -27,6 +27,15 @@ end
           rem Physics helper routine moved from Bank 14 for ROM balance
 #include "Source/Routines/MovementApplyGravity.bas"
 
+          rem Player position/velocity helpers moved from Bank 12 for ROM balance
+#include "Source/Routines/GetPlayerPosition.bas"
+#include "Source/Routines/GetPlayerVelocity.bas"
+#include "Source/Routines/SetPlayerPosition.bas"
+#include "Source/Routines/SetPlayerVelocity.bas"
+
+          rem Physics helper moved from Bank 12 for ROM balance
+#include "Source/Routines/ApplyFriction.bas"
+
           asm
 Bank7CodeEnds
 end

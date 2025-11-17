@@ -1,14 +1,6 @@
           rem ChaosFight - Source/Routines/CharacterControls.bas
           rem Copyright © 2025 Interworldly Adventuring, LLC.
 
-rem DispatchCharacterJump - INLINED
-rem This function has been inlined at all call sites for performance.
-rem See PlayerInput.bas, ProcessJumpInput.bas, InputHandle*PortPlayerFunction.bas for inlined implementation.
-
-rem DispatchCharacterDown - INLINED
-rem This function has been inlined at all call sites for performance.
-rem See PlayerInput.bas, HandleGuardInput.bas for inlined implementation.
-
 CCJ_ConvertPlayerXToPlayfieldColumn
           asm
 CCJ_ConvertPlayerXToPlayfieldColumn

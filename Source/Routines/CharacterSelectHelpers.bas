@@ -32,7 +32,3 @@ SelectStickRight
           if playerCharacter[currentPlayer] > MaxCharacter then let playerCharacter[currentPlayer] = 0
           if playerCharacter[currentPlayer] > MaxCharacter then temp1 = currentPlayer : temp2 = PlayerLockedUnlocked : gosub SetPlayerLocked
           return
-
-rem CharacterSelectDetectQuadtari - INLINED
-rem This function has been inlined at all call sites for performance.
-rem See CharacterSelect.bas and CharacterSelectEntry.bas for inlined implementation.

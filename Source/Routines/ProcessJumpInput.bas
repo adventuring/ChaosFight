@@ -42,13 +42,13 @@ end
           rem Switch MethHound -> Shamone
 
           rem Robo Tito (13): Hold enhanced button to ascend; auto-latch on ceiling contact
-          if playerCharacter[temp1] = 13 then PJI_RoboTitoAscend
+          if playerCharacter[temp1] = 13 then goto PJI_RoboTitoAscend
 
           rem Check Bernie fall-through (Character 0)
-          if playerCharacter[temp1] = 0 then PJI_BernieFallThrough
+          if playerCharacter[temp1] = 0 then goto PJI_BernieFallThrough
 
           rem Check Harpy flap (Character 6)
-          if playerCharacter[temp1] = 6 then PJI_HarpyFlap
+          if playerCharacter[temp1] = 6 then goto PJI_HarpyFlap
 
           rem For all other characters, enhanced button is jump
           rem Allow Zoe (3) a single mid-air double-jump

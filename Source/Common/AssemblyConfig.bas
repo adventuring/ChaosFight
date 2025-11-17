@@ -3,6 +3,12 @@
 
           rem Configuration for kernel, romsize, and other batariBASIC settings
 
+          rem Set processor directive early so BankSwitching.s can use assembly instructions
+          rem Note: Use 6502 for Atari 2600 (6507) - DASM doesn't support 6507, but they're identical
+          asm
+ processor 6502
+end
+
           const multisprite = 2
           set kernel_options playercolors player1colors pfcolors
           set romsize 64kSC
